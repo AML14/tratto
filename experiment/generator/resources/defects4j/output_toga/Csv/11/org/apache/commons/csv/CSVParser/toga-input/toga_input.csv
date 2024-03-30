@@ -1,0 +1,814 @@
+focal_method,test_prefix,docstring
+"CSVRecord nextRecord() throws IOException {
+    CSVRecord result = null;
+    this.record.clear();
+    StringBuilder sb = null;
+    do {
+        this.reusableToken.reset();
+        this.lexer.nextToken(this.reusableToken);
+        switch(this.reusableToken.type) {
+            case TOKEN:
+                this.addRecordValue();
+                break;
+            case EORECORD:
+                this.addRecordValue();
+                break;
+            case EOF:
+                if (this.reusableToken.isReady) {
+                    this.addRecordValue();
+                }
+                break;
+            case INVALID:
+                throw new IOException(""(line "" + this.getCurrentLineNumber() + "") invalid parse sequence"");
+            case // Ignored currently
+            COMMENT:
+                if (sb == null) {
+                    // first comment for this record
+                    sb = new StringBuilder();
+                } else {
+                    sb.append(Constants.LF);
+                }
+                sb.append(this.reusableToken.content);
+                // Read another token
+                this.reusableToken.type = TOKEN;
+                break;
+            default:
+                throw new IllegalStateException(""Unexpected Token type: "" + this.reusableToken.type);
+        }
+    } while (this.reusableToken.type == TOKEN);
+    if (!this.record.isEmpty()) {
+        this.recordNumber++;
+        final String comment = sb == null ? null : sb.toString();
+        result = new CSVRecord(this.record.toArray(new String[this.record.size()]), this.headerMap, comment, this.recordNumber);
+    }
+    return result;
+}","public void test000() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.MYSQL;
+    CSVParser cSVParser0 = CSVParser.parse("""", cSVFormat0);
+    CSVRecord cSVRecord0 = cSVParser0.nextRecord();
+    assertNull(cSVRecord0);
+}","/**
+ * Parses the next record from the current point in the stream.
+ *
+ * @return the record as an array of values, or <tt>null</tt> if the end of the stream has been reached
+ * @throws IOException
+ *             on parse error or input read-failure
+ */"
+"public long getRecordNumber() {
+    return this.recordNumber;
+}","public void test011() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.RFC4180;
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = "">"";
+    stringArray0[1] = ""string"";
+    CSVFormat cSVFormat1 = cSVFormat0.withHeader(stringArray0);
+    CSVParser cSVParser0 = CSVParser.parse(""string"", cSVFormat1);
+    assertEquals(0L, cSVParser0.getRecordNumber());
+}","/**
+ * Returns the current record number in the input stream.
+ *
+ * <p>
+ * <strong>ATTENTION:</strong> If your CSV input has multi-line values, the returned number does not correspond to
+ * the line number.
+ * </p>
+ *
+ * @return current line number
+ */"
+"public boolean isConsistent() {
+    return mapping == null || mapping.size() == values.length;
+}","public void test012() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.RFC4180;
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = "">"";
+    stringArray0[1] = ""string"";
+    CSVFormat cSVFormat1 = cSVFormat0.withHeader(stringArray0);
+    CSVParser cSVParser0 = CSVParser.parse(""string"", cSVFormat1);
+    CSVRecord cSVRecord0 = cSVParser0.nextRecord();
+    assertFalse(cSVRecord0.isConsistent());
+}","/**
+ * Returns true if this record is consistent, false if not. Currently, the only check is matching the record size to
+ * the header size. Some programs can export files that fails this test but still produce parsable files.
+ *
+ * @return true of this record is valid, false if not
+ */"
+"public boolean isClosed() {
+    return this.lexer.isClosed();
+}","public void test023() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.RFC4180;
+    PipedWriter pipedWriter0 = new PipedWriter();
+    PipedReader pipedReader0 = new PipedReader(pipedWriter0, 35);
+    CSVParser cSVParser0 = cSVFormat0.parse(pipedReader0);
+    cSVParser0.close();
+    boolean boolean0 = cSVParser0.isClosed();
+    assertTrue(boolean0);
+}",""
+"public <T extends Collection<CSVRecord>> T getRecords(final T records) throws IOException {
+    CSVRecord rec;
+    while ((rec = this.nextRecord()) != null) {
+        records.add(rec);
+    }
+    return records;
+}","public void test034() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.MYSQL;
+    CSVParser cSVParser0 = CSVParser.parse(""(line "", cSVFormat0);
+    cSVParser0.nextRecord();
+    LinkedList<CSVRecord> linkedList0 = cSVParser0.getRecords((LinkedList<CSVRecord>) null);
+    assertNull(linkedList0);
+}","/**
+ * Parses the CSV input according to the given format and adds the content to the collection of {@link CSVRecord
+ * CSVRecords}.
+ *
+ * <p>
+ * The returned content starts at the current parse-position in the stream.
+ * </p>
+ *
+ * @param records
+ *            The collection to add to.
+ * @param <T> the type of collection used.
+ * @return a collection of {@link CSVRecord CSVRecords}, may be empty
+ * @throws IOException
+ *             on parse error or input read-failure
+ */"
+"public static CSVParser parse(final URL url, final Charset charset, final CSVFormat format) throws IOException {
+    Assertions.notNull(url, ""url"");
+    Assertions.notNull(charset, ""charset"");
+    Assertions.notNull(format, ""format"");
+    return new CSVParser(new InputStreamReader(url.openStream(), charset), format);
+}","public void test045() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.TDF;
+    URI uRI0 = MockURI.aFileURI;
+    URL uRL0 = MockURI.toURL(uRI0);
+    Charset charset0 = Charset.defaultCharset();
+    // Undeclared exception!
+    try {
+        CSVParser.parse(uRL0, charset0, cSVFormat0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.net.URL"", e);
+    }
+}","/**
+ * Creates a parser for the given URL.
+ *
+ * <p>
+ * If you do not read all records from the given {@code url}, you should call {@link #close()} on the parser, unless
+ * you close the {@code url}.
+ * </p>
+ *
+ * @param url
+ *            a URL. Must not be null.
+ * @param charset
+ *            the charset for the resource. Must not be null.
+ * @param format
+ *            the CSVFormat used for CSV parsing. Must not be null.
+ * @return a new parser
+ * @throws IllegalArgumentException
+ *             If the parameters of the format are inconsistent or if either url, charset or format are null.
+ * @throws IOException
+ *             If an I/O error occurs
+ */"
+"public static CSVParser parse(final URL url, final Charset charset, final CSVFormat format) throws IOException {
+    Assertions.notNull(url, ""url"");
+    Assertions.notNull(charset, ""charset"");
+    Assertions.notNull(format, ""format"");
+    return new CSVParser(new InputStreamReader(url.openStream(), charset), format);
+}","public void test056() throws Throwable {
+    Charset charset0 = Charset.defaultCharset();
+    // Undeclared exception!
+    try {
+        CSVParser.parse((URL) null, charset0, (CSVFormat) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Parameter 'url' must not be null!
+        //
+        verifyException(""org.apache.commons.csv.Assertions"", e);
+    }
+}","/**
+ * Creates a parser for the given URL.
+ *
+ * <p>
+ * If you do not read all records from the given {@code url}, you should call {@link #close()} on the parser, unless
+ * you close the {@code url}.
+ * </p>
+ *
+ * @param url
+ *            a URL. Must not be null.
+ * @param charset
+ *            the charset for the resource. Must not be null.
+ * @param format
+ *            the CSVFormat used for CSV parsing. Must not be null.
+ * @return a new parser
+ * @throws IllegalArgumentException
+ *             If the parameters of the format are inconsistent or if either url, charset or format are null.
+ * @throws IOException
+ *             If an I/O error occurs
+ */"
+"public static CSVParser parse(final String string, final CSVFormat format) throws IOException {
+    Assertions.notNull(string, ""string"");
+    Assertions.notNull(format, ""format"");
+    return new CSVParser(new StringReader(string), format);
+}","public void test067() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.TDF;
+    String[] stringArray0 = new String[1];
+    CSVFormat cSVFormat1 = cSVFormat0.withHeader(stringArray0);
+    // Undeclared exception!
+    try {
+        CSVParser.parse("""", cSVFormat1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.csv.CSVParser"", e);
+    }
+}","/**
+ * Creates a parser for the given {@link String}.
+ *
+ * @param string
+ *            a CSV string. Must not be null.
+ * @param format
+ *            the CSVFormat used for CSV parsing. Must not be null.
+ * @return a new parser
+ * @throws IllegalArgumentException
+ *             If the parameters of the format are inconsistent or if either string or format are null.
+ * @throws IOException
+ *             If an I/O error occurs
+ */"
+"public static CSVParser parse(final String string, final CSVFormat format) throws IOException {
+    Assertions.notNull(string, ""string"");
+    Assertions.notNull(format, ""format"");
+    return new CSVParser(new StringReader(string), format);
+}","public void test078() throws Throwable {
+    // Undeclared exception!
+    try {
+        CSVParser.parse(""gtjqJAKF$}f4^#"", (CSVFormat) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Parameter 'format' must not be null!
+        //
+        verifyException(""org.apache.commons.csv.Assertions"", e);
+    }
+}","/**
+ * Creates a parser for the given {@link String}.
+ *
+ * @param string
+ *            a CSV string. Must not be null.
+ * @param format
+ *            the CSVFormat used for CSV parsing. Must not be null.
+ * @return a new parser
+ * @throws IllegalArgumentException
+ *             If the parameters of the format are inconsistent or if either string or format are null.
+ * @throws IOException
+ *             If an I/O error occurs
+ */"
+"public static CSVParser parse(final File file, final Charset charset, final CSVFormat format) throws IOException {
+    Assertions.notNull(file, ""file"");
+    Assertions.notNull(format, ""format"");
+    // Use the default Charset explicitly
+    return new CSVParser(new InputStreamReader(new FileInputStream(file), charset), format);
+}","public void test089() throws Throwable {
+    File file0 = MockFile.createTempFile(""ygTPJ><bl[d^LLv.`hn"", ""[LrS_H&F+GyXtIZ:`"");
+    CSVFormat cSVFormat0 = CSVFormat.newFormat('$');
+    // Undeclared exception!
+    try {
+        CSVParser.parse(file0, (Charset) null, cSVFormat0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // charset
+        //
+        verifyException(""java.io.InputStreamReader"", e);
+    }
+}","/**
+ * Creates a parser for the given {@link File}.
+ *
+ * <p><strong>Note:</strong> This method internally creates a FileReader using
+ * {@link FileReader#FileReader(java.io.File)} which in turn relies on the default encoding of the JVM that
+ * is executing the code. If this is insufficient create a URL to the file and use
+ * {@link #parse(URL, Charset, CSVFormat)}</p>
+ *
+ * @param file
+ *            a CSV file. Must not be null.
+ * @param charset
+ *            A charset
+ * @param format
+ *            the CSVFormat used for CSV parsing. Must not be null.
+ * @return a new parser
+ * @throws IllegalArgumentException
+ *             If the parameters of the format are inconsistent or if either file or format are null.
+ * @throws IOException
+ *             If an I/O error occurs
+ */"
+"public static CSVParser parse(final File file, final Charset charset, final CSVFormat format) throws IOException {
+    Assertions.notNull(file, ""file"");
+    Assertions.notNull(format, ""format"");
+    // Use the default Charset explicitly
+    return new CSVParser(new InputStreamReader(new FileInputStream(file), charset), format);
+}","public void test0910() throws Throwable {
+    MockFile mockFile0 = new MockFile("",`g|C]bw%"", "",`g|C]bw%"");
+    Charset charset0 = Charset.defaultCharset();
+    CSVFormat cSVFormat0 = CSVFormat.MYSQL;
+    try {
+        CSVParser.parse((File) mockFile0, charset0, cSVFormat0);
+        fail(""Expecting exception: FileNotFoundException"");
+    } catch (FileNotFoundException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.mock.java.io.MockFileInputStream"", e);
+    }
+}","/**
+ * Creates a parser for the given {@link File}.
+ *
+ * <p><strong>Note:</strong> This method internally creates a FileReader using
+ * {@link FileReader#FileReader(java.io.File)} which in turn relies on the default encoding of the JVM that
+ * is executing the code. If this is insufficient create a URL to the file and use
+ * {@link #parse(URL, Charset, CSVFormat)}</p>
+ *
+ * @param file
+ *            a CSV file. Must not be null.
+ * @param charset
+ *            A charset
+ * @param format
+ *            the CSVFormat used for CSV parsing. Must not be null.
+ * @return a new parser
+ * @throws IllegalArgumentException
+ *             If the parameters of the format are inconsistent or if either file or format are null.
+ * @throws IOException
+ *             If an I/O error occurs
+ */"
+"CSVRecord nextRecord() throws IOException {
+    CSVRecord result = null;
+    this.record.clear();
+    StringBuilder sb = null;
+    do {
+        this.reusableToken.reset();
+        this.lexer.nextToken(this.reusableToken);
+        switch(this.reusableToken.type) {
+            case TOKEN:
+                this.addRecordValue();
+                break;
+            case EORECORD:
+                this.addRecordValue();
+                break;
+            case EOF:
+                if (this.reusableToken.isReady) {
+                    this.addRecordValue();
+                }
+                break;
+            case INVALID:
+                throw new IOException(""(line "" + this.getCurrentLineNumber() + "") invalid parse sequence"");
+            case // Ignored currently
+            COMMENT:
+                if (sb == null) {
+                    // first comment for this record
+                    sb = new StringBuilder();
+                } else {
+                    sb.append(Constants.LF);
+                }
+                sb.append(this.reusableToken.content);
+                // Read another token
+                this.reusableToken.type = TOKEN;
+                break;
+            default:
+                throw new IllegalStateException(""Unexpected Token type: "" + this.reusableToken.type);
+        }
+    } while (this.reusableToken.type == TOKEN);
+    if (!this.record.isEmpty()) {
+        this.recordNumber++;
+        final String comment = sb == null ? null : sb.toString();
+        result = new CSVRecord(this.record.toArray(new String[this.record.size()]), this.headerMap, comment, this.recordNumber);
+    }
+    return result;
+}","public void test1011() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.RFC4180;
+    PipedReader pipedReader0 = new PipedReader();
+    CSVParser cSVParser0 = cSVFormat0.parse(pipedReader0);
+    try {
+        cSVParser0.nextRecord();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Pipe not connected
+        //
+        verifyException(""java.io.PipedReader"", e);
+    }
+}","/**
+ * Parses the next record from the current point in the stream.
+ *
+ * @return the record as an array of values, or <tt>null</tt> if the end of the stream has been reached
+ * @throws IOException
+ *             on parse error or input read-failure
+ */"
+"public <T extends Collection<CSVRecord>> T getRecords(final T records) throws IOException {
+    CSVRecord rec;
+    while ((rec = this.nextRecord()) != null) {
+        records.add(rec);
+    }
+    return records;
+}","public void test1112() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.RFC4180;
+    PipedWriter pipedWriter0 = new PipedWriter();
+    PipedReader pipedReader0 = new PipedReader(pipedWriter0, 35);
+    CSVParser cSVParser0 = cSVFormat0.parse(pipedReader0);
+    cSVParser0.close();
+    LinkedList<CSVRecord> linkedList0 = new LinkedList<CSVRecord>();
+    try {
+        cSVParser0.getRecords(linkedList0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream closed
+        //
+        verifyException(""java.io.BufferedReader"", e);
+    }
+}","/**
+ * Parses the CSV input according to the given format and adds the content to the collection of {@link CSVRecord
+ * CSVRecords}.
+ *
+ * <p>
+ * The returned content starts at the current parse-position in the stream.
+ * </p>
+ *
+ * @param records
+ *            The collection to add to.
+ * @param <T> the type of collection used.
+ * @return a collection of {@link CSVRecord CSVRecords}, may be empty
+ * @throws IOException
+ *             on parse error or input read-failure
+ */"
+"public <T extends Collection<CSVRecord>> T getRecords(final T records) throws IOException {
+    CSVRecord rec;
+    while ((rec = this.nextRecord()) != null) {
+        records.add(rec);
+    }
+    return records;
+}","public void test1314() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.EXCEL;
+    CSVParser cSVParser0 = CSVParser.parse(""XhdDY"", cSVFormat0);
+    LinkedList<CSVRecord> linkedList0 = new LinkedList<CSVRecord>();
+    LinkedList<CSVRecord> linkedList1 = cSVParser0.getRecords(linkedList0);
+    assertSame(linkedList0, linkedList1);
+}","/**
+ * Parses the CSV input according to the given format and adds the content to the collection of {@link CSVRecord
+ * CSVRecords}.
+ *
+ * <p>
+ * The returned content starts at the current parse-position in the stream.
+ * </p>
+ *
+ * @param records
+ *            The collection to add to.
+ * @param <T> the type of collection used.
+ * @return a collection of {@link CSVRecord CSVRecords}, may be empty
+ * @throws IOException
+ *             on parse error or input read-failure
+ */"
+"public boolean isClosed() {
+    return this.lexer.isClosed();
+}","public void test1415() throws Throwable {
+    PipedReader pipedReader0 = new PipedReader(98);
+    CSVFormat cSVFormat0 = CSVFormat.MYSQL;
+    CSVParser cSVParser0 = new CSVParser(pipedReader0, cSVFormat0);
+    boolean boolean0 = cSVParser0.isClosed();
+    assertFalse(boolean0);
+}",""
+"public List<CSVRecord> getRecords() throws IOException {
+    return getRecords(new ArrayList<CSVRecord>());
+}","public void test1516() throws Throwable {
+    PipedReader pipedReader0 = new PipedReader(288);
+    CSVFormat cSVFormat0 = CSVFormat.EXCEL;
+    CSVParser cSVParser0 = new CSVParser(pipedReader0, cSVFormat0);
+    try {
+        cSVParser0.getRecords();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Pipe not connected
+        //
+        verifyException(""java.io.PipedReader"", e);
+    }
+}","/**
+ * Parses the CSV input according to the given format and returns the content as a list of
+ * {@link CSVRecord CSVRecords}.
+ *
+ * <p>
+ * The returned content starts at the current parse-position in the stream.
+ * </p>
+ *
+ * @return list of {@link CSVRecord CSVRecords}, may be empty
+ * @throws IOException
+ *             on parse error or input read-failure
+ */"
+"public long getRecordNumber() {
+    return this.recordNumber;
+}","public void test1617() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.DEFAULT;
+    CSVParser cSVParser0 = CSVParser.parse(""*#"", cSVFormat0);
+    cSVParser0.close();
+    Consumer<CSVRecord> consumer0 = (Consumer<CSVRecord>) mock(Consumer.class, new ViolatedAssumptionAnswer());
+    cSVParser0.forEach(consumer0);
+    assertEquals(0L, cSVParser0.getRecordNumber());
+}","/**
+ * Returns the current record number in the input stream.
+ *
+ * <p>
+ * <strong>ATTENTION:</strong> If your CSV input has multi-line values, the returned number does not correspond to
+ * the line number.
+ * </p>
+ *
+ * @return current line number
+ */"
+"public CSVParser parse(final Reader in) throws IOException {
+    return new CSVParser(in, this);
+}","public void test1718() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.newFormat(',');
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = ""org.apache.commons.csv.CSVParser"";
+    CSVFormat cSVFormat1 = cSVFormat0.withHeader(stringArray0);
+    CSVFormat cSVFormat2 = cSVFormat1.withSkipHeaderRecord(true);
+    PipedReader pipedReader0 = new PipedReader(2097);
+    try {
+        cSVFormat2.parse(pipedReader0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Pipe not connected
+        //
+        verifyException(""java.io.PipedReader"", e);
+    }
+}","/**
+ * Parses the specified content.
+ *
+ * <p>
+ * See also the various static parse methods on {@link CSVParser}.
+ * </p>
+ *
+ * @param in
+ *            the input stream
+ * @return a parser over a stream of {@link CSVRecord}s.
+ * @throws IOException
+ *             If an I/O error occurs
+ */"
+"public long getRecordNumber() {
+    return this.recordNumber;
+}","public void test1819() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.TDF;
+    String[] stringArray0 = new String[0];
+    CSVFormat cSVFormat1 = cSVFormat0.withHeader(stringArray0);
+    CSVParser cSVParser0 = CSVParser.parse("") "", cSVFormat1);
+    assertEquals(1L, cSVParser0.getRecordNumber());
+}","/**
+ * Returns the current record number in the input stream.
+ *
+ * <p>
+ * <strong>ATTENTION:</strong> If your CSV input has multi-line values, the returned number does not correspond to
+ * the line number.
+ * </p>
+ *
+ * @return current line number
+ */"
+"public Map<String, Integer> getHeaderMap() {
+    return this.headerMap == null ? null : new LinkedHashMap<String, Integer>(this.headerMap);
+}","public void test2122() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.RFC4180;
+    CSVParser cSVParser0 = CSVParser.parse(""string"", cSVFormat0);
+    Map<String, Integer> map0 = cSVParser0.getHeaderMap();
+    assertNull(map0);
+}","/**
+ * Returns a copy of the header map that iterates in column order.
+ * <p>
+ * The map keys are column names. The map values are 0-based indices.
+ * </p>
+ * @return a copy of the header map that iterates in column order.
+ */"
+"public Map<String, Integer> getHeaderMap() {
+    return this.headerMap == null ? null : new LinkedHashMap<String, Integer>(this.headerMap);
+}","public void test2224() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.RFC4180;
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = "">"";
+    stringArray0[1] = ""string"";
+    CSVFormat cSVFormat1 = cSVFormat0.withHeader(stringArray0);
+    PipedWriter pipedWriter0 = new PipedWriter();
+    PipedReader pipedReader0 = new PipedReader(pipedWriter0, 35);
+    CSVParser cSVParser0 = cSVFormat1.parse(pipedReader0);
+    Map<String, Integer> map0 = cSVParser0.getHeaderMap();
+    assertNotNull(map0);
+}","/**
+ * Returns a copy of the header map that iterates in column order.
+ * <p>
+ * The map keys are column names. The map values are 0-based indices.
+ * </p>
+ * @return a copy of the header map that iterates in column order.
+ */"
+"@Override
+public String toString() {
+    return Arrays.toString(values);
+}","public void test2325() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.EXCEL;
+    CSVFormat cSVFormat1 = cSVFormat0.withNullString(""The delimiter cannot be a line break"");
+    CSVParser cSVParser0 = CSVParser.parse(""The delimiter cannot be a line break"", cSVFormat1);
+    CSVRecord cSVRecord0 = cSVParser0.nextRecord();
+    assertEquals(""[null]"", cSVRecord0.toString());
+}",""
+"@Override
+public String toString() {
+    return Arrays.toString(values);
+}","public void test2426() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.RFC4180;
+    CSVFormat cSVFormat1 = cSVFormat0.withNullString(""6+<SO]1CEx]vC4+W#$"");
+    CSVParser cSVParser0 = CSVParser.parse(""string"", cSVFormat1);
+    CSVRecord cSVRecord0 = cSVParser0.nextRecord();
+    assertEquals(""[string]"", cSVRecord0.toString());
+}",""
+"public long getRecordNumber() {
+    return this.recordNumber;
+}","public void test2527() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.RFC4180;
+    CSVParser cSVParser0 = CSVParser.parse(""(line "", cSVFormat0);
+    long long0 = cSVParser0.getRecordNumber();
+    assertEquals(0L, long0);
+}","/**
+ * Returns the current record number in the input stream.
+ *
+ * <p>
+ * <strong>ATTENTION:</strong> If your CSV input has multi-line values, the returned number does not correspond to
+ * the line number.
+ * </p>
+ *
+ * @return current line number
+ */"
+"public long getCurrentLineNumber() {
+    return this.lexer.getCurrentLineNumber();
+}","public void test2628() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.EXCEL;
+    CSVParser cSVParser0 = CSVParser.parse(""XhdDY"", cSVFormat0);
+    long long0 = cSVParser0.getCurrentLineNumber();
+    assertEquals(0L, long0);
+}","/**
+ * Returns the current line number in the input stream.
+ *
+ * <p>
+ * <strong>ATTENTION:</strong> If your CSV input has multi-line values, the returned number does not correspond to
+ * the record number.
+ * </p>
+ *
+ * @return current line number
+ */"
+"public long getRecordNumber() {
+    return this.recordNumber;
+}","public void test2830() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.RFC4180;
+    CSVParser cSVParser0 = CSVParser.parse(""(line "", cSVFormat0);
+    Consumer<CSVRecord> consumer0 = (Consumer<CSVRecord>) mock(Consumer.class, new ViolatedAssumptionAnswer());
+    cSVParser0.forEach(consumer0);
+    long long0 = cSVParser0.getRecordNumber();
+    assertEquals(1L, long0);
+}","/**
+ * Returns the current record number in the input stream.
+ *
+ * <p>
+ * <strong>ATTENTION:</strong> If your CSV input has multi-line values, the returned number does not correspond to
+ * the line number.
+ * </p>
+ *
+ * @return current line number
+ */"
+"public static CSVParser parse(final URL url, final Charset charset, final CSVFormat format) throws IOException {
+    Assertions.notNull(url, ""url"");
+    Assertions.notNull(charset, ""charset"");
+    Assertions.notNull(format, ""format"");
+    return new CSVParser(new InputStreamReader(url.openStream(), charset), format);
+}","public void test2931() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.TDF;
+    URL uRL0 = MockURL.getHttpExample();
+    Charset charset0 = Charset.defaultCharset();
+    try {
+        CSVParser.parse(uRL0, charset0, cSVFormat0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Could not find: www.someFakeButWellFormedURL.org
+        //
+        verifyException(""org.evosuite.runtime.mock.java.net.EvoHttpURLConnection"", e);
+    }
+}","/**
+ * Creates a parser for the given URL.
+ *
+ * <p>
+ * If you do not read all records from the given {@code url}, you should call {@link #close()} on the parser, unless
+ * you close the {@code url}.
+ * </p>
+ *
+ * @param url
+ *            a URL. Must not be null.
+ * @param charset
+ *            the charset for the resource. Must not be null.
+ * @param format
+ *            the CSVFormat used for CSV parsing. Must not be null.
+ * @return a new parser
+ * @throws IllegalArgumentException
+ *             If the parameters of the format are inconsistent or if either url, charset or format are null.
+ * @throws IOException
+ *             If an I/O error occurs
+ */"
+"public Iterator<CSVRecord> iterator() {
+    return new Iterator<CSVRecord>() {
+
+        private CSVRecord current;
+
+        private CSVRecord getNextRecord() {
+            try {
+                return CSVParser.this.nextRecord();
+            } catch (final IOException e) {
+                // TODO: This is not great, throw an ISE instead?
+                throw new RuntimeException(e);
+            }
+        }
+
+        public boolean hasNext() {
+            if (CSVParser.this.isClosed()) {
+                return false;
+            }
+            if (this.current == null) {
+                this.current = this.getNextRecord();
+            }
+            return this.current != null;
+        }
+
+        public CSVRecord next() {
+            if (CSVParser.this.isClosed()) {
+                throw new NoSuchElementException(""CSVParser has been closed"");
+            }
+            CSVRecord next = this.current;
+            this.current = null;
+            if (next == null) {
+                // hasNext() wasn't called before
+                next = this.getNextRecord();
+                if (next == null) {
+                    throw new NoSuchElementException(""No more CSV records available"");
+                }
+            }
+            return next;
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+    };
+}","public void test3032() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.EXCEL;
+    CSVParser cSVParser0 = CSVParser.parse(""XhdDY"", cSVFormat0);
+    Iterator<CSVRecord> iterator0 = cSVParser0.iterator();
+    assertNotNull(iterator0);
+}","/**
+ * Returns an iterator on the records.
+ *
+ * <p>IOExceptions occurring during the iteration are wrapped in a
+ * RuntimeException.
+ * If the parser is closed a call to {@code next()} will throw a
+ * NoSuchElementException.</p>
+ */"
+"public static CSVParser parse(final File file, final Charset charset, final CSVFormat format) throws IOException {
+    Assertions.notNull(file, ""file"");
+    Assertions.notNull(format, ""format"");
+    // Use the default Charset explicitly
+    return new CSVParser(new InputStreamReader(new FileInputStream(file), charset), format);
+}","public void test3133() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.EXCEL;
+    Charset charset0 = Charset.defaultCharset();
+    // Undeclared exception!
+    try {
+        CSVParser.parse((File) null, charset0, cSVFormat0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Parameter 'file' must not be null!
+        //
+        verifyException(""org.apache.commons.csv.Assertions"", e);
+    }
+}","/**
+ * Creates a parser for the given {@link File}.
+ *
+ * <p><strong>Note:</strong> This method internally creates a FileReader using
+ * {@link FileReader#FileReader(java.io.File)} which in turn relies on the default encoding of the JVM that
+ * is executing the code. If this is insufficient create a URL to the file and use
+ * {@link #parse(URL, Charset, CSVFormat)}</p>
+ *
+ * @param file
+ *            a CSV file. Must not be null.
+ * @param charset
+ *            A charset
+ * @param format
+ *            the CSVFormat used for CSV parsing. Must not be null.
+ * @return a new parser
+ * @throws IllegalArgumentException
+ *             If the parameters of the format are inconsistent or if either file or format are null.
+ * @throws IOException
+ *             If an I/O error occurs
+ */"

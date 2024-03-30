@@ -1,0 +1,676 @@
+focal_method,test_prefix,docstring
+"@Override
+public int read(byte[] b, int offset, int len) throws IOException {
+    if (b == null) {
+        throw new NullPointerException();
+    } else if (offset < 0 || len < 0) {
+        throw new IndexOutOfBoundsException();
+    } else if (offset > b.length || offset + len > b.length) {
+        throw new IndexOutOfBoundsException();
+    } else if (len == 0) {
+        return 0;
+    } else {
+        int readLen = 0;
+        /*
+             Rationale for while-loop on (readLen == 0):
+             -----
+             Base32.readResults() usually returns > 0 or EOF (-1).  In the
+             rare case where it returns 0, we just keep trying.
+
+             This is essentially an undocumented contract for InputStream
+             implementors that want their code to work properly with
+             java.io.InputStreamReader, since the latter hates it when
+             InputStream.read(byte[]) returns a zero.  Unfortunately our
+             readResults() call must return 0 if a large amount of the data
+             being decoded was non-base32, so this while-loop enables proper
+             interop with InputStreamReader for that scenario.
+             -----
+             This is a fix for CODEC-101
+            */
+        while (readLen == 0) {
+            if (!baseNCodec.hasData()) {
+                byte[] buf = new byte[doEncode ? 4096 : 8192];
+                int c = in.read(buf);
+                if (doEncode) {
+                    baseNCodec.encode(buf, 0, c);
+                } else {
+                    baseNCodec.decode(buf, 0, c);
+                }
+            }
+            readLen = baseNCodec.readResults(b, offset, len);
+        }
+        return readLen;
+    }
+}","public void test000() throws Throwable {
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    PipedInputStream pipedInputStream0 = new PipedInputStream(pipedOutputStream0);
+    byte[] byteArray0 = new byte[2];
+    byte[] byteArray1 = new byte[0];
+    Base64 base64_0 = new Base64((-734), byteArray0, false);
+    BaseNCodecInputStream baseNCodecInputStream0 = new BaseNCodecInputStream(pipedInputStream0, base64_0, false);
+    // Undeclared exception!
+    try {
+        baseNCodecInputStream0.read(byteArray1, 0, 3440);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.codec.binary.BaseNCodecInputStream"", e);
+    }
+}","/**
+ * Attempts to read <code>len</code> bytes into the specified <code>b</code> array starting at <code>offset</code>
+ * from this InputStream.
+ *
+ * @param b
+ *            destination byte array
+ * @param offset
+ *            where to start writing the bytes
+ * @param len
+ *            maximum number of bytes to read
+ *
+ * @return number of bytes read
+ * @throws IOException
+ *             if an I/O error occurs.
+ * @throws NullPointerException
+ *             if the byte array parameter is null
+ * @throws IndexOutOfBoundsException
+ *             if offset, len or buffer size are invalid
+ */"
+"@Override
+public int read(byte[] b, int offset, int len) throws IOException {
+    if (b == null) {
+        throw new NullPointerException();
+    } else if (offset < 0 || len < 0) {
+        throw new IndexOutOfBoundsException();
+    } else if (offset > b.length || offset + len > b.length) {
+        throw new IndexOutOfBoundsException();
+    } else if (len == 0) {
+        return 0;
+    } else {
+        int readLen = 0;
+        /*
+             Rationale for while-loop on (readLen == 0):
+             -----
+             Base32.readResults() usually returns > 0 or EOF (-1).  In the
+             rare case where it returns 0, we just keep trying.
+
+             This is essentially an undocumented contract for InputStream
+             implementors that want their code to work properly with
+             java.io.InputStreamReader, since the latter hates it when
+             InputStream.read(byte[]) returns a zero.  Unfortunately our
+             readResults() call must return 0 if a large amount of the data
+             being decoded was non-base32, so this while-loop enables proper
+             interop with InputStreamReader for that scenario.
+             -----
+             This is a fix for CODEC-101
+            */
+        while (readLen == 0) {
+            if (!baseNCodec.hasData()) {
+                byte[] buf = new byte[doEncode ? 4096 : 8192];
+                int c = in.read(buf);
+                if (doEncode) {
+                    baseNCodec.encode(buf, 0, c);
+                } else {
+                    baseNCodec.decode(buf, 0, c);
+                }
+            }
+            readLen = baseNCodec.readResults(b, offset, len);
+        }
+        return readLen;
+    }
+}","public void test011() throws Throwable {
+    byte[] byteArray0 = new byte[7];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, 0, (byte) 0);
+    Base32 base32_0 = new Base32(false);
+    BaseNCodecInputStream baseNCodecInputStream0 = new BaseNCodecInputStream(byteArrayInputStream0, base32_0, false);
+    int int0 = baseNCodecInputStream0.read(byteArray0, 0, (int) (byte) 1);
+    assertEquals((-1), int0);
+}","/**
+ * Attempts to read <code>len</code> bytes into the specified <code>b</code> array starting at <code>offset</code>
+ * from this InputStream.
+ *
+ * @param b
+ *            destination byte array
+ * @param offset
+ *            where to start writing the bytes
+ * @param len
+ *            maximum number of bytes to read
+ *
+ * @return number of bytes read
+ * @throws IOException
+ *             if an I/O error occurs.
+ * @throws NullPointerException
+ *             if the byte array parameter is null
+ * @throws IndexOutOfBoundsException
+ *             if offset, len or buffer size are invalid
+ */"
+"@Override
+public int read() throws IOException {
+    int r = read(singleByte, 0, 1);
+    while (r == 0) {
+        r = read(singleByte, 0, 1);
+    }
+    if (r > 0) {
+        final byte b = singleByte[0];
+        return b < 0 ? 256 + b : b;
+    }
+    return EOF;
+}","public void test022() throws Throwable {
+    Base64 base64_0 = new Base64((-3173));
+    BaseNCodecInputStream baseNCodecInputStream0 = new BaseNCodecInputStream((InputStream) null, base64_0, true);
+    // Undeclared exception!
+    try {
+        baseNCodecInputStream0.read();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.codec.binary.BaseNCodecInputStream"", e);
+    }
+}","/**
+ * Reads one <code>byte</code> from this input stream.
+ *
+ * @return the byte as an integer in the range 0 to 255. Returns -1 if EOF has been reached.
+ * @throws IOException
+ *             if an I/O error occurs.
+ */"
+"@Override
+public int read() throws IOException {
+    int r = read(singleByte, 0, 1);
+    while (r == 0) {
+        r = read(singleByte, 0, 1);
+    }
+    if (r > 0) {
+        final byte b = singleByte[0];
+        return b < 0 ? 256 + b : b;
+    }
+    return EOF;
+}","public void test033() throws Throwable {
+    FileDescriptor fileDescriptor0 = new FileDescriptor();
+    MockFileInputStream mockFileInputStream0 = new MockFileInputStream(fileDescriptor0);
+    Base64 base64_0 = new Base64(false);
+    BaseNCodecInputStream baseNCodecInputStream0 = new BaseNCodecInputStream(mockFileInputStream0, base64_0, false);
+    try {
+        baseNCodecInputStream0.read();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.mock.java.io.NativeMockedIO"", e);
+    }
+}","/**
+ * Reads one <code>byte</code> from this input stream.
+ *
+ * @return the byte as an integer in the range 0 to 255. Returns -1 if EOF has been reached.
+ * @throws IOException
+ *             if an I/O error occurs.
+ */"
+"@Override
+public int read() throws IOException {
+    int r = read(singleByte, 0, 1);
+    while (r == 0) {
+        r = read(singleByte, 0, 1);
+    }
+    if (r > 0) {
+        final byte b = singleByte[0];
+        return b < 0 ? 256 + b : b;
+    }
+    return EOF;
+}","public void test056() throws Throwable {
+    byte[] byteArray0 = new byte[5];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    Base32 base32_0 = new Base32(0);
+    BaseNCodecInputStream baseNCodecInputStream0 = new BaseNCodecInputStream(byteArrayInputStream0, base32_0, false);
+    int int0 = baseNCodecInputStream0.read();
+    assertEquals((-1), int0);
+}","/**
+ * Reads one <code>byte</code> from this input stream.
+ *
+ * @return the byte as an integer in the range 0 to 255. Returns -1 if EOF has been reached.
+ * @throws IOException
+ *             if an I/O error occurs.
+ */"
+"@Override
+public int read() throws IOException {
+    int r = read(singleByte, 0, 1);
+    while (r == 0) {
+        r = read(singleByte, 0, 1);
+    }
+    if (r > 0) {
+        final byte b = singleByte[0];
+        return b < 0 ? 256 + b : b;
+    }
+    return EOF;
+}","public void test067() throws Throwable {
+    Enumeration<InputStream> enumeration0 = (Enumeration<InputStream>) mock(Enumeration.class, new ViolatedAssumptionAnswer());
+    doReturn(false).when(enumeration0).hasMoreElements();
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(enumeration0);
+    Base32 base32_0 = new Base32(false);
+    base32_0.ensureBufferSize(68);
+    BaseNCodecInputStream baseNCodecInputStream0 = new BaseNCodecInputStream(sequenceInputStream0, base32_0, true);
+    int int0 = baseNCodecInputStream0.read();
+    assertEquals((-1), int0);
+}","/**
+ * Reads one <code>byte</code> from this input stream.
+ *
+ * @return the byte as an integer in the range 0 to 255. Returns -1 if EOF has been reached.
+ * @throws IOException
+ *             if an I/O error occurs.
+ */"
+"@Override
+public int read(byte[] b, int offset, int len) throws IOException {
+    if (b == null) {
+        throw new NullPointerException();
+    } else if (offset < 0 || len < 0) {
+        throw new IndexOutOfBoundsException();
+    } else if (offset > b.length || offset + len > b.length) {
+        throw new IndexOutOfBoundsException();
+    } else if (len == 0) {
+        return 0;
+    } else {
+        int readLen = 0;
+        /*
+             Rationale for while-loop on (readLen == 0):
+             -----
+             Base32.readResults() usually returns > 0 or EOF (-1).  In the
+             rare case where it returns 0, we just keep trying.
+
+             This is essentially an undocumented contract for InputStream
+             implementors that want their code to work properly with
+             java.io.InputStreamReader, since the latter hates it when
+             InputStream.read(byte[]) returns a zero.  Unfortunately our
+             readResults() call must return 0 if a large amount of the data
+             being decoded was non-base32, so this while-loop enables proper
+             interop with InputStreamReader for that scenario.
+             -----
+             This is a fix for CODEC-101
+            */
+        while (readLen == 0) {
+            if (!baseNCodec.hasData()) {
+                byte[] buf = new byte[doEncode ? 4096 : 8192];
+                int c = in.read(buf);
+                if (doEncode) {
+                    baseNCodec.encode(buf, 0, c);
+                } else {
+                    baseNCodec.decode(buf, 0, c);
+                }
+            }
+            readLen = baseNCodec.readResults(b, offset, len);
+        }
+        return readLen;
+    }
+}","public void test078() throws Throwable {
+    Enumeration<InputStream> enumeration0 = (Enumeration<InputStream>) mock(Enumeration.class, new ViolatedAssumptionAnswer());
+    doReturn(false).when(enumeration0).hasMoreElements();
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(enumeration0);
+    BufferedInputStream bufferedInputStream0 = new BufferedInputStream(sequenceInputStream0, 551);
+    Base64 base64_0 = new Base64(551);
+    BaseNCodecInputStream baseNCodecInputStream0 = new BaseNCodecInputStream(bufferedInputStream0, base64_0, true);
+    byte[] byteArray0 = new byte[7];
+    int int0 = baseNCodecInputStream0.read(byteArray0, (int) (byte) 0, (int) (byte) 0);
+    assertEquals(0, int0);
+}","/**
+ * Attempts to read <code>len</code> bytes into the specified <code>b</code> array starting at <code>offset</code>
+ * from this InputStream.
+ *
+ * @param b
+ *            destination byte array
+ * @param offset
+ *            where to start writing the bytes
+ * @param len
+ *            maximum number of bytes to read
+ *
+ * @return number of bytes read
+ * @throws IOException
+ *             if an I/O error occurs.
+ * @throws NullPointerException
+ *             if the byte array parameter is null
+ * @throws IndexOutOfBoundsException
+ *             if offset, len or buffer size are invalid
+ */"
+"@Override
+public int read(byte[] b, int offset, int len) throws IOException {
+    if (b == null) {
+        throw new NullPointerException();
+    } else if (offset < 0 || len < 0) {
+        throw new IndexOutOfBoundsException();
+    } else if (offset > b.length || offset + len > b.length) {
+        throw new IndexOutOfBoundsException();
+    } else if (len == 0) {
+        return 0;
+    } else {
+        int readLen = 0;
+        /*
+             Rationale for while-loop on (readLen == 0):
+             -----
+             Base32.readResults() usually returns > 0 or EOF (-1).  In the
+             rare case where it returns 0, we just keep trying.
+
+             This is essentially an undocumented contract for InputStream
+             implementors that want their code to work properly with
+             java.io.InputStreamReader, since the latter hates it when
+             InputStream.read(byte[]) returns a zero.  Unfortunately our
+             readResults() call must return 0 if a large amount of the data
+             being decoded was non-base32, so this while-loop enables proper
+             interop with InputStreamReader for that scenario.
+             -----
+             This is a fix for CODEC-101
+            */
+        while (readLen == 0) {
+            if (!baseNCodec.hasData()) {
+                byte[] buf = new byte[doEncode ? 4096 : 8192];
+                int c = in.read(buf);
+                if (doEncode) {
+                    baseNCodec.encode(buf, 0, c);
+                } else {
+                    baseNCodec.decode(buf, 0, c);
+                }
+            }
+            readLen = baseNCodec.readResults(b, offset, len);
+        }
+        return readLen;
+    }
+}","public void test089() throws Throwable {
+    byte[] byteArray0 = new byte[4];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) 0, (byte) 0);
+    Base64 base64_0 = new Base64(2543);
+    BaseNCodecInputStream baseNCodecInputStream0 = new BaseNCodecInputStream(byteArrayInputStream0, base64_0, false);
+    // Undeclared exception!
+    try {
+        baseNCodecInputStream0.read(byteArray0, 2543, 757);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.codec.binary.BaseNCodecInputStream"", e);
+    }
+}","/**
+ * Attempts to read <code>len</code> bytes into the specified <code>b</code> array starting at <code>offset</code>
+ * from this InputStream.
+ *
+ * @param b
+ *            destination byte array
+ * @param offset
+ *            where to start writing the bytes
+ * @param len
+ *            maximum number of bytes to read
+ *
+ * @return number of bytes read
+ * @throws IOException
+ *             if an I/O error occurs.
+ * @throws NullPointerException
+ *             if the byte array parameter is null
+ * @throws IndexOutOfBoundsException
+ *             if offset, len or buffer size are invalid
+ */"
+"@Override
+public int read(byte[] b, int offset, int len) throws IOException {
+    if (b == null) {
+        throw new NullPointerException();
+    } else if (offset < 0 || len < 0) {
+        throw new IndexOutOfBoundsException();
+    } else if (offset > b.length || offset + len > b.length) {
+        throw new IndexOutOfBoundsException();
+    } else if (len == 0) {
+        return 0;
+    } else {
+        int readLen = 0;
+        /*
+             Rationale for while-loop on (readLen == 0):
+             -----
+             Base32.readResults() usually returns > 0 or EOF (-1).  In the
+             rare case where it returns 0, we just keep trying.
+
+             This is essentially an undocumented contract for InputStream
+             implementors that want their code to work properly with
+             java.io.InputStreamReader, since the latter hates it when
+             InputStream.read(byte[]) returns a zero.  Unfortunately our
+             readResults() call must return 0 if a large amount of the data
+             being decoded was non-base32, so this while-loop enables proper
+             interop with InputStreamReader for that scenario.
+             -----
+             This is a fix for CODEC-101
+            */
+        while (readLen == 0) {
+            if (!baseNCodec.hasData()) {
+                byte[] buf = new byte[doEncode ? 4096 : 8192];
+                int c = in.read(buf);
+                if (doEncode) {
+                    baseNCodec.encode(buf, 0, c);
+                } else {
+                    baseNCodec.decode(buf, 0, c);
+                }
+            }
+            readLen = baseNCodec.readResults(b, offset, len);
+        }
+        return readLen;
+    }
+}","public void test0910() throws Throwable {
+    Enumeration<InputStream> enumeration0 = (Enumeration<InputStream>) mock(Enumeration.class, new ViolatedAssumptionAnswer());
+    doReturn(false).when(enumeration0).hasMoreElements();
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(enumeration0);
+    Base32 base32_0 = new Base32(false);
+    BaseNCodecInputStream baseNCodecInputStream0 = new BaseNCodecInputStream(sequenceInputStream0, base32_0, true);
+    byte[] byteArray0 = new byte[0];
+    // Undeclared exception!
+    try {
+        baseNCodecInputStream0.read(byteArray0, 76, (-353));
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.codec.binary.BaseNCodecInputStream"", e);
+    }
+}","/**
+ * Attempts to read <code>len</code> bytes into the specified <code>b</code> array starting at <code>offset</code>
+ * from this InputStream.
+ *
+ * @param b
+ *            destination byte array
+ * @param offset
+ *            where to start writing the bytes
+ * @param len
+ *            maximum number of bytes to read
+ *
+ * @return number of bytes read
+ * @throws IOException
+ *             if an I/O error occurs.
+ * @throws NullPointerException
+ *             if the byte array parameter is null
+ * @throws IndexOutOfBoundsException
+ *             if offset, len or buffer size are invalid
+ */"
+"@Override
+public int read(byte[] b, int offset, int len) throws IOException {
+    if (b == null) {
+        throw new NullPointerException();
+    } else if (offset < 0 || len < 0) {
+        throw new IndexOutOfBoundsException();
+    } else if (offset > b.length || offset + len > b.length) {
+        throw new IndexOutOfBoundsException();
+    } else if (len == 0) {
+        return 0;
+    } else {
+        int readLen = 0;
+        /*
+             Rationale for while-loop on (readLen == 0):
+             -----
+             Base32.readResults() usually returns > 0 or EOF (-1).  In the
+             rare case where it returns 0, we just keep trying.
+
+             This is essentially an undocumented contract for InputStream
+             implementors that want their code to work properly with
+             java.io.InputStreamReader, since the latter hates it when
+             InputStream.read(byte[]) returns a zero.  Unfortunately our
+             readResults() call must return 0 if a large amount of the data
+             being decoded was non-base32, so this while-loop enables proper
+             interop with InputStreamReader for that scenario.
+             -----
+             This is a fix for CODEC-101
+            */
+        while (readLen == 0) {
+            if (!baseNCodec.hasData()) {
+                byte[] buf = new byte[doEncode ? 4096 : 8192];
+                int c = in.read(buf);
+                if (doEncode) {
+                    baseNCodec.encode(buf, 0, c);
+                } else {
+                    baseNCodec.decode(buf, 0, c);
+                }
+            }
+            readLen = baseNCodec.readResults(b, offset, len);
+        }
+        return readLen;
+    }
+}","public void test1011() throws Throwable {
+    byte[] byteArray0 = new byte[7];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    Base32 base32_0 = new Base32((byte) (-1), byteArray0, false);
+    BaseNCodecInputStream baseNCodecInputStream0 = new BaseNCodecInputStream(byteArrayInputStream0, base32_0, true);
+    // Undeclared exception!
+    try {
+        baseNCodecInputStream0.read(byteArray0, (-823), (int) (byte) (-1));
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.codec.binary.BaseNCodecInputStream"", e);
+    }
+}","/**
+ * Attempts to read <code>len</code> bytes into the specified <code>b</code> array starting at <code>offset</code>
+ * from this InputStream.
+ *
+ * @param b
+ *            destination byte array
+ * @param offset
+ *            where to start writing the bytes
+ * @param len
+ *            maximum number of bytes to read
+ *
+ * @return number of bytes read
+ * @throws IOException
+ *             if an I/O error occurs.
+ * @throws NullPointerException
+ *             if the byte array parameter is null
+ * @throws IndexOutOfBoundsException
+ *             if offset, len or buffer size are invalid
+ */"
+"@Override
+public int read(byte[] b, int offset, int len) throws IOException {
+    if (b == null) {
+        throw new NullPointerException();
+    } else if (offset < 0 || len < 0) {
+        throw new IndexOutOfBoundsException();
+    } else if (offset > b.length || offset + len > b.length) {
+        throw new IndexOutOfBoundsException();
+    } else if (len == 0) {
+        return 0;
+    } else {
+        int readLen = 0;
+        /*
+             Rationale for while-loop on (readLen == 0):
+             -----
+             Base32.readResults() usually returns > 0 or EOF (-1).  In the
+             rare case where it returns 0, we just keep trying.
+
+             This is essentially an undocumented contract for InputStream
+             implementors that want their code to work properly with
+             java.io.InputStreamReader, since the latter hates it when
+             InputStream.read(byte[]) returns a zero.  Unfortunately our
+             readResults() call must return 0 if a large amount of the data
+             being decoded was non-base32, so this while-loop enables proper
+             interop with InputStreamReader for that scenario.
+             -----
+             This is a fix for CODEC-101
+            */
+        while (readLen == 0) {
+            if (!baseNCodec.hasData()) {
+                byte[] buf = new byte[doEncode ? 4096 : 8192];
+                int c = in.read(buf);
+                if (doEncode) {
+                    baseNCodec.encode(buf, 0, c);
+                } else {
+                    baseNCodec.decode(buf, 0, c);
+                }
+            }
+            readLen = baseNCodec.readResults(b, offset, len);
+        }
+        return readLen;
+    }
+}","public void test1112() throws Throwable {
+    Base64 base64_0 = new Base64();
+    BaseNCodecInputStream baseNCodecInputStream0 = new BaseNCodecInputStream((InputStream) null, base64_0, true);
+    // Undeclared exception!
+    try {
+        baseNCodecInputStream0.read((byte[]) null, (-319), 76);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.codec.binary.BaseNCodecInputStream"", e);
+    }
+}","/**
+ * Attempts to read <code>len</code> bytes into the specified <code>b</code> array starting at <code>offset</code>
+ * from this InputStream.
+ *
+ * @param b
+ *            destination byte array
+ * @param offset
+ *            where to start writing the bytes
+ * @param len
+ *            maximum number of bytes to read
+ *
+ * @return number of bytes read
+ * @throws IOException
+ *             if an I/O error occurs.
+ * @throws NullPointerException
+ *             if the byte array parameter is null
+ * @throws IndexOutOfBoundsException
+ *             if offset, len or buffer size are invalid
+ */"
+"@Override
+public int read() throws IOException {
+    int r = read(singleByte, 0, 1);
+    while (r == 0) {
+        r = read(singleByte, 0, 1);
+    }
+    if (r > 0) {
+        final byte b = singleByte[0];
+        return b < 0 ? 256 + b : b;
+    }
+    return EOF;
+}","public void test1214() throws Throwable {
+    byte[] byteArray0 = new byte[7];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    Base32 base32_0 = new Base32((byte) (-1), byteArray0, false);
+    BaseNCodecInputStream baseNCodecInputStream0 = new BaseNCodecInputStream(byteArrayInputStream0, base32_0, true);
+    int int0 = baseNCodecInputStream0.read();
+    assertEquals(65, int0);
+}","/**
+ * Reads one <code>byte</code> from this input stream.
+ *
+ * @return the byte as an integer in the range 0 to 255. Returns -1 if EOF has been reached.
+ * @throws IOException
+ *             if an I/O error occurs.
+ */"
+"@Override
+public boolean markSupported() {
+    // not an easy job to support marks
+    return false;
+}","public void test1315() throws Throwable {
+    Base64 base64_0 = new Base64((-195));
+    BaseNCodecInputStream baseNCodecInputStream0 = new BaseNCodecInputStream((InputStream) null, base64_0, true);
+    boolean boolean0 = baseNCodecInputStream0.markSupported();
+    assertFalse(boolean0);
+}","/**
+ * {@inheritDoc}
+ *
+ * @return false
+ */"

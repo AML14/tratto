@@ -1,0 +1,905 @@
+{
+  "test124125" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test124125() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"JSCompiler_aias_VOID\", \"JSCompiler_aias_VOID\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    TightenTypes tightenTypes0 = new TightenTypes(compiler0);\n    JSTypeRegistry jSTypeRegistry0 = tightenTypes0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    Comparator<Object> comparator0 = (Comparator<Object>) mock(Comparator.class, new ViolatedAssumptionAnswer());\n    doReturn(36, 0).when(comparator0).compare(any(), any());\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>(comparator0);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    JSTypeNative jSTypeNative0 = JSTypeNative.DATE_FUNCTION_TYPE;\n    CodingConvention.AssertionFunctionSpec codingConvention_AssertionFunctionSpec0 = new CodingConvention.AssertionFunctionSpec(\"Not declared as a constructor\", jSTypeNative0);\n    treeMap0.putIfAbsent(\"jv=)+(TOj+1Su\", codingConvention_AssertionFunctionSpec0);\n    FlowScope flowScope0 = typeInference0.createEntryLattice();\n    Node node1 = new Node(37, node0, node0, 41, 54);\n    FlowScope flowScope1 = typeInference0.flowThrough(node1, flowScope0);\n}",
+    "testName" : "test124125"
+  },
+  "test0000" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0000() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"pG!x=Riw'Ti\", \"pG!x=Riw'Ti\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    Node node1 = new Node(100, node0, node0, node0, 12, 40);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    ReverseAbstractInterpreter reverseAbstractInterpreter0 = compiler0.getReverseAbstractInterpreter();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, reverseAbstractInterpreter0, scope0, (Map<String, CodingConvention.AssertionFunctionSpec>) null);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test0000"
+  },
+  "test0088" : {
+    "methodSignature" : "List<FlowScope> branchedFlowThrough(Node source, FlowScope input)",
+    "methodName" : "branchedFlowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0088() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"6$#w++j\", \"6$#w++j\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null, true);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    ControlFlowGraph.Branch controlFlowGraph_Branch0 = ControlFlowGraph.Branch.ON_TRUE;\n    controlFlowGraph0.connect(node0, controlFlowGraph_Branch0, node0);\n    ReverseAbstractInterpreter reverseAbstractInterpreter0 = compiler0.getReverseAbstractInterpreter();\n    HashMap<String, CodingConvention.AssertionFunctionSpec> hashMap0 = new HashMap<String, CodingConvention.AssertionFunctionSpec>();\n    Scope scope0 = new Scope(node0, objectType0);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, reverseAbstractInterpreter0, scope0, hashMap0);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    typeInference0.branchedFlowThrough(node0, linkedFlowScope0);\n}",
+    "testName" : "test0088"
+  },
+  "test107107" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test107107() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"JSCompiler_alias_VOID\", \"JSCompiler_alias_VOID\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null, true);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    Node node1 = new Node(119, node0, node0, node0, 2092, 53);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    FlowScope flowScope0 = typeInference0.createEntryLattice();\n    FlowScope flowScope1 = typeInference0.flowThrough(node1, flowScope0);\n}",
+    "testName" : "test107107"
+  },
+  "test03636" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test03636() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"IG9N#\", \"IG9N#\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    Node node1 = new Node(42, node0, node0, node0, 49, 39);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test03636"
+  },
+  "test02424" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test02424() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"$<uAW?MPuq-<0,\", \"$<uAW?MPuq-<0,\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    Node node1 = Node.newString(24, \"$<uAW?MPuq-<0,\", 4095, 50);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test02424"
+  },
+  "test129130" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test129130() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"2\", \"2\");\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    Node node1 = new Node(35, node0, node0, node0, 12, 47);\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    node0.setJSType(objectType0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test129130"
+  },
+  "test04848" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test04848() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"JSCompiler_alias_VOID\", \"JSCompiler_alias_VOID\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);\n    Scope scope0 = typedScopeCreator0.createInitialScope(node0);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, (Map<String, CodingConvention.AssertionFunctionSpec>) null);\n    Node node1 = new Node(54, node0, node0, node0, 51, 4095);\n    FlowScope flowScope0 = typeInference0.createEntryLattice();\n    FlowScope flowScope1 = typeInference0.flowThrough(node1, flowScope0);\n}",
+    "testName" : "test04848"
+  },
+  "test01212" : {
+    "methodSignature" : "List<FlowScope> branchedFlowThrough(Node source, FlowScope input)",
+    "methodName" : "branchedFlowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test01212() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"JSCompilblias_VGOID\", \"JSCompilblias_VGOID\");\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(7, node0, node0, node0, 37, 2);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    typeInference0.branchedFlowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test01212"
+  },
+  "test05656" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test05656() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"JSCompiler_alias_VOID\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    ReverseAbstractInterpreter reverseAbstractInterpreter0 = compiler0.getReverseAbstractInterpreter();\n    HashMap<String, CodingConvention.AssertionFunctionSpec> hashMap0 = new HashMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, reverseAbstractInterpreter0, scope0, hashMap0);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    Node node1 = new Node(62, node0, node0, node0, 4095, 39);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test05656"
+  },
+  "test06868" : {
+    "methodSignature" : "List<FlowScope> branchedFlowThrough(Node source, FlowScope input)",
+    "methodName" : "branchedFlowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test06868() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \";:_?@'dT(Xd7%c@\", \"JSCompiler_alias_VOID\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    ReverseAbstractInterpreter reverseAbstractInterpreter0 = compiler0.getReverseAbstractInterpreter();\n    HashMap<String, CodingConvention.AssertionFunctionSpec> hashMap0 = new HashMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, reverseAbstractInterpreter0, scope0, hashMap0);\n    FlowScope flowScope0 = typeInference0.createEntryLattice();\n    Node node1 = new Node(76, node0, node0, node0, 44, 3);\n    typeInference0.branchedFlowThrough(node1, flowScope0);\n}",
+    "testName" : "test06868"
+  },
+  "test02828" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test02828() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"JSCompilblias_VGOID\", \"JSCompilblias_VGOID\");\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(28, node0, node0, node0, 37, 2);\n    FlowScope flowScope0 = typeInference0.createEntryLattice();\n    FlowScope flowScope1 = typeInference0.flowThrough(node1, flowScope0);\n}",
+    "testName" : "test02828"
+  },
+  "test113113" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test113113() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \".\", \".\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(126, node0, node0, node0, 1, 44);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test113113"
+  },
+  "test01616" : {
+    "methodSignature" : "List<FlowScope> branchedFlowThrough(Node source, FlowScope input)",
+    "methodName" : "branchedFlowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test01616() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"q9NGnT=Be\", \"q9NGnT=Be\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    Node node1 = Node.newString(11, \"q9NGnT=Be\", 4095, 50);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    typeInference0.branchedFlowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test01616"
+  },
+  "test08484" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test08484() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"6k#p+j\", \"6k#p+j\");\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    Node node1 = new Node(94);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test08484"
+  },
+  "test07272" : {
+    "methodSignature" : "List<FlowScope> branchedFlowThrough(Node source, FlowScope input)",
+    "methodName" : "branchedFlowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test07272() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"e6 Yy@,S8A\\\"ab\", \"e6 Yy@,S8A\\\"ab\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    Node node1 = new Node(80, node0, node0, node0, 0, 50);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    ReverseAbstractInterpreter reverseAbstractInterpreter0 = compiler0.getReverseAbstractInterpreter();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, reverseAbstractInterpreter0, scope0, treeMap0);\n    typeInference0.branchedFlowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test07272"
+  },
+  "test04040" : {
+    "methodSignature" : "List<FlowScope> branchedFlowThrough(Node source, FlowScope input)",
+    "methodName" : "branchedFlowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test04040() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"%b-a`f^Mx?F# n4_\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(46, node0, node0, node0, 52, (-948));\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    typeInference0.branchedFlowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test04040"
+  },
+  "test121121" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test121121() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseSyntheticCode(\"$<u?MPuq-<0,\", \"$<u?MPuq-<0,\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    Node node1 = new Node(64, node0, node0, node0, 0, 2);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    node1.setJSType(objectType0);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test121121"
+  },
+  "test0011" : {
+    "methodSignature" : "List<FlowScope> branchedFlowThrough(Node source, FlowScope input)",
+    "methodName" : "branchedFlowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0011() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"com.google.common.collect.ExplicitOrdering\", \"nmn%L;S\\\"|f|M{l+\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = node0.removeChildren();\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    typeInference0.branchedFlowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test0011"
+  },
+  "test0099" : {
+    "methodSignature" : "List<FlowScope> branchedFlowThrough(Node source, FlowScope input)",
+    "methodName" : "branchedFlowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0099() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"6$#w++j\", \"6$#w++j\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null, true);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    ControlFlowGraph.Branch controlFlowGraph_Branch0 = ControlFlowGraph.Branch.ON_FALSE;\n    controlFlowGraph0.connect(node0, controlFlowGraph_Branch0, node0);\n    ReverseAbstractInterpreter reverseAbstractInterpreter0 = compiler0.getReverseAbstractInterpreter();\n    HashMap<String, CodingConvention.AssertionFunctionSpec> hashMap0 = new HashMap<String, CodingConvention.AssertionFunctionSpec>();\n    Scope scope0 = new Scope(node0, objectType0);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, reverseAbstractInterpreter0, scope0, hashMap0);\n    FlowScope flowScope0 = typeInference0.createEntryLattice();\n    typeInference0.branchedFlowThrough(node0, flowScope0);\n}",
+    "testName" : "test0099"
+  },
+  "test09292" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test09292() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \".\", \".\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(104, node0, node0, node0, 1, 44);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test09292"
+  },
+  "test06060" : {
+    "methodSignature" : "List<FlowScope> branchedFlowThrough(Node source, FlowScope input)",
+    "methodName" : "branchedFlowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test06060() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"e6 Yy@,S8A\\\"ab\", \"e6 Yy@,S8A\\\"ab\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    Node node1 = new Node(68, node0, node0, node0, 30, 137);\n    typeInference0.branchedFlowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test06060"
+  },
+  "test03232" : {
+    "methodSignature" : "List<FlowScope> branchedFlowThrough(Node source, FlowScope input)",
+    "methodName" : "branchedFlowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test03232() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"$\", \"$\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null, true);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(34, node0, node0, node0, 15, 46);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    typeInference0.branchedFlowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test03232"
+  },
+  "test08888" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test08888() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"6$#w++j\", \"6$#w++j\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(98, node0, node0, node0, 1, 44);\n    FlowScope flowScope0 = typeInference0.createEntryLattice();\n    typeInference0.flowThrough(node1, flowScope0);\n}",
+    "testName" : "test08888"
+  },
+  "test102102" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test102102() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"Root module '{0}' must contain at least one source code input\", \"Root module '{0}' must contain at least one source code input\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>((Node) null, false, false);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    Node node1 = Node.newString(114, \"Function literal argument refers to undefined this argument\", 49, (-1311));\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test102102"
+  },
+  "test02020" : {
+    "methodSignature" : "List<FlowScope> branchedFlowThrough(Node source, FlowScope input)",
+    "methodName" : "branchedFlowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test02020() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"6$#w++j\", \"6$#w++j\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(16, 53, 35);\n    FlowScope flowScope0 = typeInference0.createEntryLattice();\n    typeInference0.branchedFlowThrough(node1, flowScope0);\n}",
+    "testName" : "test02020"
+  },
+  "test04444" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test04444() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"6$#w+k+j\", \"6$#w+k+j\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(50, node0, node0, node0, 40, 41);\n    FlowScope flowScope0 = typeInference0.createEntryLattice();\n    FlowScope flowScope1 = typeInference0.flowThrough(node1, flowScope0);\n}",
+    "testName" : "test04444"
+  },
+  "test07676" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test07676() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \".\", \".\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(84, node0, node0, node0, 84, 36);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test07676"
+  },
+  "test05252" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test05252() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseSyntheticCode(\"$<u?MPuq-<0,\", \"$<u?MPuq-<0,\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(58, node0, node0, node0, 758, 5);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice((Scope) null);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test05252"
+  },
+  "test09696" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test09696() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"$<uW`Puq-00\", \"$<uW`Puq-00\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    Node node1 = Node.newString(108, \"$<uW`Puq-00\", 4095, 50);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test09696"
+  },
+  "test06464" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test06464() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"$<uAW?MPuq-<0,\", \"$<uAW?MPuq-<0,\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    HashMap<String, CodingConvention.AssertionFunctionSpec> hashMap0 = new HashMap<String, CodingConvention.AssertionFunctionSpec>(treeMap0);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, hashMap0);\n    Node node1 = new Node(72, node0, node0, node0, 2874, 52);\n    FlowScope flowScope0 = typeInference0.createEntryLattice();\n    FlowScope flowScope1 = typeInference0.flowThrough(node1, flowScope0);\n}",
+    "testName" : "test06464"
+  },
+  "test110110" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test110110() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"JSComH9lbliaZ_VGOID\", \"JSComH9lbliaZ_VGOID\");\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(123, node0, node0, node0, 46, 51);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test110110"
+  },
+  "test08080" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test08080() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"JSCompiler_alias_VOID\", \"JSCompiler_alias_VOID\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    FlowScope flowScope0 = typeInference0.createEntryLattice();\n    Node node1 = Node.newString(89, \"\", 47, 49);\n    FlowScope flowScope1 = typeInference0.flowThrough(node1, flowScope0);\n}",
+    "testName" : "test08080"
+  },
+  "test122122" : {
+    "methodSignature" : "public boolean hasCachedValues()",
+    "methodName" : "hasCachedValues",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test122122() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"9\", \"9\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    Node node1 = Node.newString(4, \"Not declared as a type name\", 29, 16);\n    Node node2 = new Node(93, node0, node0, node1, 0, 1);\n    node0.setJSType(objectType0);\n    HashMap<String, CodingConvention.AssertionFunctionSpec> hashMap0 = new HashMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, hashMap0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node2, linkedFlowScope0);\n    objectType0.hasCachedValues();\n}",
+    "testName" : "test122122"
+  },
+  "test122123" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test122123() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"9\", \"9\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    Node node1 = Node.newString(4, \"Not declared as a type name\", 29, 16);\n    Node node2 = new Node(93, node0, node0, node1, 0, 1);\n    node0.setJSType(objectType0);\n    HashMap<String, CodingConvention.AssertionFunctionSpec> hashMap0 = new HashMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, hashMap0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node2, linkedFlowScope0);\n}",
+    "testName" : "test122123"
+  },
+  "test0022" : {
+    "methodSignature" : "List<FlowScope> branchedFlowThrough(Node source, FlowScope input)",
+    "methodName" : "branchedFlowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0022() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"JSCompiler_alias_VOID\", \"ND\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    node0.setJSType(objectType0);\n    ReverseAbstractInterpreter reverseAbstractInterpreter0 = compiler0.getReverseAbstractInterpreter();\n    HashMap<String, CodingConvention.AssertionFunctionSpec> hashMap0 = new HashMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, reverseAbstractInterpreter0, scope0, hashMap0);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    Node node1 = new Node(101, node0, node0, node0, 106, 39);\n    typeInference0.branchedFlowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test0022"
+  },
+  "test105105" : {
+    "methodSignature" : "List<FlowScope> branchedFlowThrough(Node source, FlowScope input)",
+    "methodName" : "branchedFlowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test105105() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"6$#w++=\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(117, node0, node0, node0, 119, 30);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    typeInference0.branchedFlowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test105105"
+  },
+  "test01313" : {
+    "methodSignature" : "List<FlowScope> branchedFlowThrough(Node source, FlowScope input)",
+    "methodName" : "branchedFlowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test01313() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"6$#w++j\", \"6$#w++j\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(8, node0, node0, node0, node0);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    typeInference0.branchedFlowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test01313"
+  },
+  "test06969" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test06969() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \".\", \".\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(77, node0, node0, node0, 1, 44);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test06969"
+  },
+  "test03737" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test03737() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \".\", \".\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(43, node0, node0, node0, 52, 129);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test03737"
+  },
+  "test04545" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test04545() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"6$#w++j\", \"6$#w++j\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(51, node0, node0, node0, 1, 44);\n    FlowScope flowScope0 = typeInference0.createEntryLattice();\n    FlowScope flowScope1 = typeInference0.flowThrough(node1, flowScope0);\n}",
+    "testName" : "test04545"
+  },
+  "test08989" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test08989() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"%b-a`f^Mx?F# n4_\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    Node node1 = new Node(99, node0, node0, node0, 38, 46);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test08989"
+  },
+  "test02525" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test02525() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"JSComH9lbliaZ_VGOID\", \"JSComH9lbliaZ_VGOID\");\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(25, node0, node0, node0, 37, 2);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test02525"
+  },
+  "test05757" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test05757() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"%b-a`f^Mx?F# n4_\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    Node node1 = new Node(65, node0, node0, node0, 38, 46);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test05757"
+  },
+  "test01717" : {
+    "methodSignature" : "List<FlowScope> branchedFlowThrough(Node source, FlowScope input)",
+    "methodName" : "branchedFlowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test01717() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"9\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    Node node1 = Node.newString(12, \"Named type with empty name component\", 48, 50);\n    typeInference0.branchedFlowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test01717"
+  },
+  "test119119" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test119119() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"6k#p+j\");\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    Node node1 = new Node(4, node0, node0, node0, 42, 54);\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test119119"
+  },
+  "test111111" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test111111() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"\", \"\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(124, node0, node0, node0, 8, 8);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test111111"
+  },
+  "test04949" : {
+    "methodSignature" : "List<FlowScope> branchedFlowThrough(Node source, FlowScope input)",
+    "methodName" : "branchedFlowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test04949() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"JSCompiler_alias_VOID\", \"\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null, true);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(55, node0, node0, node0, 0, 2);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    typeInference0.branchedFlowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test04949"
+  },
+  "test02929" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test02929() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"JSCompile_liasR_VOID\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(29, node0, node0, node0, 46, 200000);\n    FlowScope flowScope0 = typeInference0.createEntryLattice();\n    FlowScope flowScope1 = typeInference0.flowThrough(node1, flowScope0);\n}",
+    "testName" : "test02929"
+  },
+  "test06161" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test06161() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \".\", \".\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    Node node1 = Node.newString(69, \"Not declared as a type name\", 2, 1);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test06161"
+  },
+  "test07373" : {
+    "methodSignature" : "List<FlowScope> branchedFlowThrough(Node source, FlowScope input)",
+    "methodName" : "branchedFlowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test07373() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"IG9Na#\", \"IG9Na#\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    Node node1 = new Node(81, node0, node0, node0, 52, 35);\n    typeInference0.branchedFlowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test07373"
+  },
+  "test09393" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test09393() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \":#e?=v~T%o\", \":#e?=v~T%o\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(105, node0, node0, node0, 50, 2);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test09393"
+  },
+  "test0033" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0033() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \")q\", \")q\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(120, node0, node0, node0, 8, 8);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test0033"
+  },
+  "test08181" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test08181() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \".\", \".\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(90, node0, node0, node0, 124, 30);\n    FlowScope flowScope0 = typeInference0.createEntryLattice();\n    FlowScope flowScope1 = typeInference0.flowThrough(node1, flowScope0);\n}",
+    "testName" : "test08181"
+  },
+  "test07777" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test07777() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"JSComH9lbliaZ_VGOID\", \"JSComH9lbliaZ_VGOID\");\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(85, node0, node0, node0, 37, 2);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test07777"
+  },
+  "test06565" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test06565() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"$<u?MPuq-<0,\", \"$<u?MPuq-<0,\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(73, node0, node0, node0, 0, 2);\n    FlowScope flowScope0 = typeInference0.createEntryLattice();\n    FlowScope flowScope1 = typeInference0.flowThrough(node1, flowScope0);\n}",
+    "testName" : "test06565"
+  },
+  "test03333" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test03333() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \".\", \".\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(36, node0, node0, node0, 1, 44);\n    FlowScope flowScope0 = typeInference0.createEntryLattice();\n    FlowScope flowScope1 = typeInference0.flowThrough(node1, flowScope0);\n}",
+    "testName" : "test03333"
+  },
+  "test100100" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test100100() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \".\", \".\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(112, node0, node0, node0, 1, 44);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test100100"
+  },
+  "test127128" : {
+    "methodSignature" : "public boolean hasCachedValues()",
+    "methodName" : "hasCachedValues",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test127128() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \".\", \".\");\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    Node node1 = new Node(30, node0, node0, node0, 42, 4084);\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    node0.setJSType(objectType0);\n    typeInference0.flowThrough(node1, linkedFlowScope0);\n    objectType0.hasCachedValues();\n}",
+    "testName" : "test127128"
+  },
+  "test04141" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test04141() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"$w+k+j\", \"$w+k+j\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(47, node0, node0, node0, 35, 45);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test04141"
+  },
+  "test09797" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test09797() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"JSCompiler_alias_VOID\", \"JSCompiler_alias_VOID\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null, true);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    Node node1 = new Node(109, node0, node0, node0, 32, 52);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test09797"
+  },
+  "test08585" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test08585() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"$<u?MPuq-<0,\", \"$<u?MPuq-<0,\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(95, node0, node0, node0, 0, 2);\n    FlowScope flowScope0 = typeInference0.createEntryLattice();\n    FlowScope flowScope1 = typeInference0.flowThrough(node1, flowScope0);\n}",
+    "testName" : "test08585"
+  },
+  "test02121" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test02121() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"$\", \"$\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(17, node0, node0, node0, 200000, 30);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test02121"
+  },
+  "test05353" : {
+    "methodSignature" : "List<FlowScope> branchedFlowThrough(Node source, FlowScope input)",
+    "methodName" : "branchedFlowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test05353() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"$\", \"$\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null, true);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(59, node0, node0, node0, 15, 46);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    typeInference0.branchedFlowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test05353"
+  },
+  "test108108" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test108108() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"9\", \"9\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    Node node1 = new Node(121, node0, node0, node0, 54, 39);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test108108"
+  },
+  "test116116" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test116116() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"e6 Yy@,S8A\\\"ab\", \"e6 Yy@,S8A\\\"ab\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    Node node1 = Node.newString(129, \"I^u5S\", (-2666), (-48));\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test116116"
+  },
+  "test0044" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0044() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"JSCompiler_alias_VOID\", \"JSCompiler_alias_VOID\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);\n    Scope scope0 = typedScopeCreator0.createInitialScope(node0);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, (Map<String, CodingConvention.AssertionFunctionSpec>) null);\n    Node node1 = new Node(86, node0, node0, node0, 51, 4095);\n    FlowScope flowScope0 = typeInference0.createEntryLattice();\n    FlowScope flowScope1 = typeInference0.flowThrough(node1, flowScope0);\n}",
+    "testName" : "test0044"
+  },
+  "test120120" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test120120() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"6k#p+j\", \"6k#p+j\");\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    Node node1 = new Node(4, node0, node0, node0, 42, 54);\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    node0.setJSType(objectType0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test120120"
+  },
+  "test103103" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test103103() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"$<u?MPuq-<0,\", \"\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(115, node0, node0, node0, 0, 2);\n    FlowScope flowScope0 = typeInference0.createEntryLattice();\n    FlowScope flowScope1 = typeInference0.flowThrough(node1, flowScope0);\n}",
+    "testName" : "test103103"
+  },
+  "test128129" : {
+    "methodSignature" : "static BooleanLiteralSet getBooleanOutcomes(BooleanLiteralSet left, BooleanLiteralSet right, boolean condition)",
+    "methodName" : "getBooleanOutcomes",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test128129() throws Throwable {\n    BooleanLiteralSet booleanLiteralSet0 = BooleanLiteralSet.BOTH;\n    BooleanLiteralSet booleanLiteralSet1 = TypeInference.getBooleanOutcomes(booleanLiteralSet0, booleanLiteralSet0, false);\n}",
+    "testName" : "test128129"
+  },
+  "test05858" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test05858() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"6$#w++j\", \"6$#w++j\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(66, node0, node0, node0, 1, 44);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test05858"
+  },
+  "test03434" : {
+    "methodSignature" : "List<FlowScope> branchedFlowThrough(Node source, FlowScope input)",
+    "methodName" : "branchedFlowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test03434() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"JSCompiler_alias_VOID\", \"JSCompiler_alias_VOID\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);\n    Scope scope0 = typedScopeCreator0.createInitialScope(node0);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, (Map<String, CodingConvention.AssertionFunctionSpec>) null);\n    Node node1 = Node.newNumber((double) 0, 114, 1257);\n    Node node2 = new Node(30, node0, node0, node1, 95, 301);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    typeInference0.branchedFlowThrough(node2, linkedFlowScope0);\n}",
+    "testName" : "test03434"
+  },
+  "test02626" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test02626() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \".\", \".\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(26, node0, node0, node0, 32, 29);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test02626"
+  },
+  "test04646" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test04646() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"$\", \"$\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null, true);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(52, node0, node0, node0, 15, 46);\n    FlowScope flowScope0 = typeInference0.createEntryLattice();\n    FlowScope flowScope1 = typeInference0.flowThrough(node1, flowScope0);\n}",
+    "testName" : "test04646"
+  },
+  "test07878" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test07878() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \".\", \".\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(87, node0, node0, node0, 1, 44);\n    FlowScope flowScope0 = typeInference0.createEntryLattice();\n    FlowScope flowScope1 = typeInference0.flowThrough(node1, flowScope0);\n}",
+    "testName" : "test07878"
+  },
+  "test01414" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test01414() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"JSCompiler_alias_VOID\", \"JSCompiler_alias_VOID\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    TightenTypes tightenTypes0 = new TightenTypes(compiler0);\n    JSTypeRegistry jSTypeRegistry0 = tightenTypes0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(9, node0, node0, node0, (-978), 130);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test01414"
+  },
+  "test117117" : {
+    "methodSignature" : "List<FlowScope> branchedFlowThrough(Node source, FlowScope input)",
+    "methodName" : "branchedFlowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test117117() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"$\", \"$\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = node0.removeChildren();\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    typeInference0.branchedFlowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test117117"
+  },
+  "test03838" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test03838() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseSyntheticCode(\"$<u?MPuq-<0,\", \"$<u?MPuq-<0,\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    Node node1 = new Node(44, node0, node0, node0, 0, 2);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test03838"
+  },
+  "test01818" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test01818() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"$<uW`Puq-00\", \"$<uW`Puq-00\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(13, node0, node0, node0, 3, 2129);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test01818"
+  },
+  "test05050" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test05050() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"6$#w++j\", \"6$#w++j\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    FlowScope flowScope0 = typeInference0.createEntryLattice();\n    Node node1 = new Node(56, node0, node0, node0, 2, 54);\n    FlowScope flowScope1 = typeInference0.flowThrough(node1, flowScope0);\n}",
+    "testName" : "test05050"
+  },
+  "test09494" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test09494() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"JSCompiler_alias_VOID\", \"JSCompiler_alias_VOID\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(106, node0, node0, node0, 120, 53);\n    FlowScope flowScope0 = typeInference0.createEntryLattice();\n    FlowScope flowScope1 = typeInference0.flowThrough(node1, flowScope0);\n}",
+    "testName" : "test09494"
+  },
+  "test06262" : {
+    "methodSignature" : "List<FlowScope> branchedFlowThrough(Node source, FlowScope input)",
+    "methodName" : "branchedFlowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test06262() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"%b-a`f^Mx?F# n4_\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    Node node1 = new Node(70, node0, node0, node0, 38, 46);\n    typeInference0.branchedFlowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test06262"
+  },
+  "test08282" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test08282() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \".\", \".\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(91, node0, node0, node0, 1, 44);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test08282"
+  },
+  "test125126" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test125126() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"JSCompiler_aiaS_VOpD\", \"JSCompiler_aiaS_VOpD\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    Comparator<Object> comparator0 = (Comparator<Object>) mock(Comparator.class, new ViolatedAssumptionAnswer());\n    doReturn(36, 0).when(comparator0).compare(any(), any());\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>(comparator0);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    CodingConvention.AssertionFunctionSpec codingConvention_AssertionFunctionSpec0 = new CodingConvention.AssertionFunctionSpec(\"Not declared as a constructor\");\n    treeMap0.putIfAbsent(\"jv=)+(TOj+1Su\", codingConvention_AssertionFunctionSpec0);\n    FlowScope flowScope0 = typeInference0.createEntryLattice();\n    Node node1 = Normalize.parseAndNormalizeTestCode(compiler0, \"JSCompiler_aiaS_VOpD\", \"JSCompiler_aiaS_VOpD\");\n    Node node2 = new Node(37, node1, node0, 47, 54);\n    FlowScope flowScope1 = typeInference0.flowThrough(node2, flowScope0);\n}",
+    "testName" : "test125126"
+  },
+  "test07070" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test07070() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"JSqompiler_alias_VOSD\", \"JSqompiler_alias_VOSD\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null, false);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(78, node0, node0, node0, 54, 46);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test07070"
+  },
+  "test0055" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0055() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"\", \"\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    Node node1 = new Node(63, node0, node0, node0, 0, 50);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    ReverseAbstractInterpreter reverseAbstractInterpreter0 = compiler0.getReverseAbstractInterpreter();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, reverseAbstractInterpreter0, scope0, treeMap0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test0055"
+  },
+  "test05454" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test05454() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"JSCompiler_alias_VOID\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    Node node1 = new Node(60, node0, node0, node0, 88, (-2291));\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test05454"
+  },
+  "test09898" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test09898() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"JSCompiler_alias_VOID\", \"JSCompiler_alias_VOID\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null, true);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(110, node0, node0, node0, 30, 38);\n    FlowScope flowScope0 = typeInference0.createEntryLattice();\n    FlowScope flowScope1 = typeInference0.flowThrough(node1, flowScope0);\n}",
+    "testName" : "test09898"
+  },
+  "test06666" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test06666() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \".\", \".\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(74, node0, node0, node0, 1, 44);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test06666"
+  },
+  "test03030" : {
+    "methodSignature" : "List<FlowScope> branchedFlowThrough(Node source, FlowScope input)",
+    "methodName" : "branchedFlowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test03030() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"X\", \"X\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(31, node0, 47, 39);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    typeInference0.branchedFlowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test03030"
+  },
+  "test08686" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test08686() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"6$#w++j\", \"6$#w++j\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(96, node0, node0, node0, 39, 35);\n    FlowScope flowScope0 = typeInference0.createEntryLattice();\n    FlowScope flowScope1 = typeInference0.flowThrough(node1, flowScope0);\n}",
+    "testName" : "test08686"
+  },
+  "test02222" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test02222() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"JSComH9lbliaZ_VGOID\", \"JSComH9lbliaZ_VGOID\");\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(19, node0, node0, node0, 37, 2);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test02222"
+  },
+  "test07474" : {
+    "methodSignature" : "List<FlowScope> branchedFlowThrough(Node source, FlowScope input)",
+    "methodName" : "branchedFlowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test07474() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"9\", \"9\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    Node node1 = Node.newString(82, \"Unknown class name\", 3, 111);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    typeInference0.branchedFlowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test07474"
+  },
+  "test04242" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test04242() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"9\", \"9\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(48, node0, node0, node0, 200000, 122);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test04242"
+  },
+  "test106106" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test106106() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseSyntheticCode(\"$<u?MPuq-<0,\", \"$<u?MPuq-<0,\");\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    Node node1 = new Node(118, node0, node0, node0, 735, 31);\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test106106"
+  },
+  "test01010" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test01010() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"JSCompiler_alias_VOID\", \"JSCompiler_alias_VOID\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);\n    Scope scope0 = typedScopeCreator0.createInitialScope(node0);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, (Map<String, CodingConvention.AssertionFunctionSpec>) null);\n    Node node1 = new Node(5, node0, node0, node0, 16, 4095);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test01010"
+  },
+  "test09090" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test09090() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"\", \"\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    Node node1 = new Node(102, node0, node0, 4, 47);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test09090"
+  },
+  "test114114" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test114114() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"$<u?MPuq-<0,\", \"\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null, false);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    Node node1 = new Node(127, node0, node0, node0, 32, 2);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test114114"
+  },
+  "test0066" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0066() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"6$J#w+k+j\", \"6$J#w+k+j\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    FlowScope flowScope0 = typeInference0.createInitialEstimateLattice();\n    FlowScope flowScope1 = typeInference0.flowThrough(node0, flowScope0);\n}",
+    "testName" : "test0066"
+  },
+  "test101101" : {
+    "methodSignature" : "List<FlowScope> branchedFlowThrough(Node source, FlowScope input)",
+    "methodName" : "branchedFlowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test101101() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"e6 Yy@,S8A\\\"ab\", \"e6 Yy@,S8A\\\"ab\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    Node node1 = new Node(113, node0, node0, node0, 0, 2);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    ReverseAbstractInterpreter reverseAbstractInterpreter0 = compiler0.getReverseAbstractInterpreter();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, reverseAbstractInterpreter0, scope0, treeMap0);\n    typeInference0.branchedFlowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test101101"
+  },
+  "test126127" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test126127() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"JSCompiler_aiaS_VOpD\", \"JSCompiler_aiaS_VOpD\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    TightenTypes tightenTypes0 = new TightenTypes(compiler0);\n    JSTypeRegistry jSTypeRegistry0 = tightenTypes0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    Comparator<Object> comparator0 = (Comparator<Object>) mock(Comparator.class, new ViolatedAssumptionAnswer());\n    doReturn(36, 0).when(comparator0).compare(any(), any());\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>(comparator0);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    JSTypeNative jSTypeNative0 = JSTypeNative.DATE_FUNCTION_TYPE;\n    CodingConvention.AssertionFunctionSpec codingConvention_AssertionFunctionSpec0 = new CodingConvention.AssertionFunctionSpec(\"Not declared as a constructor\", jSTypeNative0);\n    treeMap0.putIfAbsent(\"jv=)+(TOj+1Su\", codingConvention_AssertionFunctionSpec0);\n    FlowScope flowScope0 = typeInference0.createEntryLattice();\n    Node node1 = Normalize.parseAndNormalizeTestCode(compiler0, \"JSCompiler_aiaS_VOpD\", \"JSCompiler_aiaS_VOpD\");\n    Node node2 = new Node(37, node1, node0, 47, 54);\n    FlowScope flowScope1 = typeInference0.flowThrough(node2, flowScope0);\n}",
+    "testName" : "test126127"
+  },
+  "test109109" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test109109() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"JSCompiler@alpas_VOID\", \"JSCompiler@alpas_VOID\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);\n    Scope scope0 = typedScopeCreator0.createInitialScope(node0);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, (Map<String, CodingConvention.AssertionFunctionSpec>) null);\n    Node node1 = new Node(122, node0, node0, node0, 51, 4095);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test109109"
+  },
+  "test04747" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test04747() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"e6 Yy@,S8A\\\"ab\", \"e6 Yy@,S8A\\\"ab\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(53, node0, node0, node0, 30, 53);\n    FlowScope flowScope0 = typeInference0.createEntryLattice();\n    FlowScope flowScope1 = typeInference0.flowThrough(node1, flowScope0);\n}",
+    "testName" : "test04747"
+  },
+  "test02323" : {
+    "methodSignature" : "List<FlowScope> branchedFlowThrough(Node source, FlowScope input)",
+    "methodName" : "branchedFlowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test02323() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"q9NGnT=Be\", \"q9NGnT=Be\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    Node node1 = Node.newString(20, \"q9NGnT=Be\", 4095, 50);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    typeInference0.branchedFlowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test02323"
+  },
+  "test05959" : {
+    "methodSignature" : "List<FlowScope> branchedFlowThrough(Node source, FlowScope input)",
+    "methodName" : "branchedFlowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test05959() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"9\", \"9\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null, false);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    Node node1 = new Node(67, node0, node0, node0, 43, 4095);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    ReverseAbstractInterpreter reverseAbstractInterpreter0 = compiler0.getReverseAbstractInterpreter();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, reverseAbstractInterpreter0, scope0, treeMap0);\n    typeInference0.branchedFlowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test05959"
+  },
+  "test07979" : {
+    "methodSignature" : "List<FlowScope> branchedFlowThrough(Node source, FlowScope input)",
+    "methodName" : "branchedFlowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test07979() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"$<uW`Puq-00,\", \"$<uW`Puq-00,\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    ReverseAbstractInterpreter reverseAbstractInterpreter0 = compiler0.getReverseAbstractInterpreter();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, reverseAbstractInterpreter0, scope0, treeMap0);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    Node node1 = Node.newString(88, \"Named type with empty name component\", 36, 54);\n    typeInference0.branchedFlowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test07979"
+  },
+  "test01515" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test01515() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"6$J#w+k+j\", \"6$J#w+k+j\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    Node node1 = Node.newString(10, \"qitCjDXNt}RZ4}w\", (-1), 4095);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test01515"
+  },
+  "test06767" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test06767() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"JSCompiler_alias_VOID\", \"ND\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    ReverseAbstractInterpreter reverseAbstractInterpreter0 = compiler0.getReverseAbstractInterpreter();\n    HashMap<String, CodingConvention.AssertionFunctionSpec> hashMap0 = new HashMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, reverseAbstractInterpreter0, scope0, hashMap0);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    Node node1 = new Node(75, node0, node0, node0, 106, 39);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test06767"
+  },
+  "test03535" : {
+    "methodSignature" : "List<FlowScope> branchedFlowThrough(Node source, FlowScope input)",
+    "methodName" : "branchedFlowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test03535() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"%b-a`f^Mx?F# n4_\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    Node node1 = new Node(41, node0, node0, node0, 38, 46);\n    typeInference0.branchedFlowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test03535"
+  },
+  "test02727" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test02727() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"f0~P6rd7fI{!\", \"\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, false);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(27, node0, node0, node0, 39, 1843);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test02727"
+  },
+  "test115115" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test115115() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"JSComH9lbliaZ_VGOID\", \"JSComH9lbliaZ_VGOID\");\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(128, node0, node0, node0, 37, 2);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test115115"
+  },
+  "test01919" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test01919() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"6$#w++j\", \"6$#w++j\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(15, node0, node0, node0, 49, 54);\n    FlowScope flowScope0 = typeInference0.createEntryLattice();\n    FlowScope flowScope1 = typeInference0.flowThrough(node1, flowScope0);\n}",
+    "testName" : "test01919"
+  },
+  "test03939" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test03939() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"6$J#w+k+j\", \"6$J#w+k+j\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    FlowScope flowScope0 = typeInference0.createEntryLattice();\n    Node node1 = new Node(45, node0, node0, 54, 54);\n    FlowScope flowScope1 = typeInference0.flowThrough(node1, flowScope0);\n}",
+    "testName" : "test03939"
+  },
+  "test09595" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test09595() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \".\", \".\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(107, node0, node0, node0, 1, 44);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test09595"
+  },
+  "test08383" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test08383() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"$w+k+j\", \"$w+k+j\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(92, node0, node0, node0, 36, 36);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test08383"
+  },
+  "test05151" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test05151() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"6$J#w+k+j\", \"6$J#w+k+j\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    Node node1 = new Node(57, node0, node0, node0, 46, (-757));\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice((Scope) null);\n    ReverseAbstractInterpreter reverseAbstractInterpreter0 = compiler0.getReverseAbstractInterpreter();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, reverseAbstractInterpreter0, scope0, treeMap0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test05151"
+  },
+  "test123124" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test123124() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"JSCompiler_alias_VOID\", \"JSCompiler_alias_VOID\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    Node node1 = new Node(37, node0, node0, node0, 2704, 100);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    HashMap<String, CodingConvention.AssertionFunctionSpec> hashMap0 = new HashMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, hashMap0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test123124"
+  },
+  "test07171" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test07171() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"\", \"\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    Node node1 = new Node(79, node0, node0, 4, 47);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test07171"
+  },
+  "test04343" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test04343() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"2\", \"2\");\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(49, node0, node0, node0, 37, 2);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test04343"
+  },
+  "test09999" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test09999() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"$<u?MPuq-<0,\", \"$<u?MPuq-<0,\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    Node node1 = new Node(111, node0, node0, node0, 0, 2);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test09999"
+  },
+  "test104104" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test104104() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"JSCompilblias_VGOID\", \"JSCompilblias_VGOID\");\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(116, node0, node0, node0, 0, 50);\n    FlowScope flowScope0 = typeInference0.createEntryLattice();\n    FlowScope flowScope1 = typeInference0.flowThrough(node1, flowScope0);\n}",
+    "testName" : "test104104"
+  },
+  "test08787" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test08787() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"9\", \"9\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    Node node1 = new Node(97, node0, node0, node0, 0, 1);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test08787"
+  },
+  "test05555" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test05555() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"$<u?MPuq-<0,\", \"$<u?MPuq-<0,\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(61, node0, node0, node0, 0, 2);\n    FlowScope flowScope0 = typeInference0.createEntryLattice();\n    FlowScope flowScope1 = typeInference0.flowThrough(node1, flowScope0);\n}",
+    "testName" : "test05555"
+  },
+  "test01111" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test01111() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"e6 Yy@,S8A\\\"ab\", \"\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null, false);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    Node node1 = Node.newString(6, \"Not declared as a constructor\", 1437, 48);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test01111"
+  },
+  "test06363" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test06363() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"$\", \"$\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null, true);\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(71, node0, node0, node0, 15, 46);\n    FlowScope flowScope0 = typeInference0.createEntryLattice();\n    FlowScope flowScope1 = typeInference0.flowThrough(node1, flowScope0);\n}",
+    "testName" : "test06363"
+  },
+  "test03131" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test03131() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"9\", \"9\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    Node node1 = Node.newString(32, \"Named type with empty name component\");\n    Node node2 = new Node(93, node0, node0, node1, 0, 1);\n    FlowScope flowScope0 = typeInference0.flowThrough(node2, linkedFlowScope0);\n}",
+    "testName" : "test03131"
+  },
+  "test07575" : {
+    "methodSignature" : "List<FlowScope> branchedFlowThrough(Node source, FlowScope input)",
+    "methodName" : "branchedFlowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test07575() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"JSCompilblias_VGOID\", \"JSCompilblias_VGOID\");\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    FlowScope flowScope0 = typeInference0.createEntryLattice();\n    LinkedList<JSType> linkedList0 = new LinkedList<JSType>();\n    Node node1 = jSTypeRegistry0.createParameters((List<JSType>) linkedList0);\n    typeInference0.branchedFlowThrough(node1, flowScope0);\n}",
+    "testName" : "test07575"
+  },
+  "test09191" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test09191() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \".\", \".\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(103, node0, node0, node0, 1, 44);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test09191"
+  },
+  "test112112" : {
+    "methodSignature" : "FlowScope flowThrough(Node n, FlowScope input)",
+    "methodName" : "flowThrough",
+    "className" : "com.google.javascript.jscomp.TypeInference",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test112112() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, \"6$J#w+k+j\", \"6$J#w+k+j\");\n    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();\n    Scope scope0 = new Scope(node0, objectType0);\n    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();\n    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);\n    Node node1 = new Node(125, node0, node0, node0, (-2088), 4);\n    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);\n    FlowScope flowScope0 = typeInference0.flowThrough(node1, linkedFlowScope0);\n}",
+    "testName" : "test112112"
+  }
+}

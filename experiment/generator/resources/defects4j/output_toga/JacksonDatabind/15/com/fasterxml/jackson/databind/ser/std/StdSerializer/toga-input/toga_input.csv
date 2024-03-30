@@ -1,0 +1,596 @@
+focal_method,test_prefix,docstring
+"public boolean hasPrefetchedSerializer() {
+    return _prefetch.hasSerializer();
+}","public void test000() throws Throwable {
+    Class<IOException> class0 = IOException.class;
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectWriter objectWriter0 = objectMapper0.writerFor((Class<?>) class0);
+    assertTrue(objectWriter0.hasPrefetchedSerializer());
+}","/**
+ * Diagnostics method that can be called to check whether this writer
+ * has pre-fetched serializer to use: pre-fetching improves performance
+ * when writer instances are reused as it avoids a per-call serializer
+ * lookup.
+ *
+ * @since 2.2
+ */"
+"public boolean isLong() {
+    return false;
+}","public void test011() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    Class<RuntimeException> class0 = RuntimeException.class;
+    StdDelegatingSerializer stdDelegatingSerializer0 = new StdDelegatingSerializer(class0, (Converter<RuntimeException, ?>) null);
+    JsonNode jsonNode0 = stdDelegatingSerializer0.getSchema((SerializerProvider) defaultSerializerProvider_Impl0, (Type) class0, false);
+    assertFalse(jsonNode0.isLong());
+}","/**
+ * Method that can be used to check whether contained value
+ * is a number represented as Java <code>long</code>.
+ * Note, however, that even if this method returns false, it
+ * is possible that conversion would be possible from other numeric
+ * types -- to check if this is possible, use
+ * {@link #canConvertToInt()} instead.
+ *
+ * @return True if the value contained by this node is stored as Java <code>long</code>
+ */"
+"@Override
+public final boolean isInterface() {
+    return _class.isInterface();
+}","public void test033() throws Throwable {
+    Class<Error> class0 = Error.class;
+    SimpleType simpleType0 = SimpleType.constructUnsafe(class0);
+    StdKeySerializers.StringKeySerializer stdKeySerializers_StringKeySerializer0 = new StdKeySerializers.StringKeySerializer();
+    JsonFormatVisitorWrapper.Base jsonFormatVisitorWrapper_Base0 = new JsonFormatVisitorWrapper.Base();
+    stdKeySerializers_StringKeySerializer0.acceptJsonFormatVisitor(jsonFormatVisitorWrapper_Base0, simpleType0);
+    assertFalse(simpleType0.isInterface());
+}",""
+"/*
+    /**********************************************************
+    /* Helper methods, other
+    /**********************************************************
+     */
+/**
+ * Method that can be called to determine if given serializer is the default
+ * serializer Jackson uses; as opposed to a custom serializer installed by
+ * a module or calling application. Determination is done using
+ * {@link JacksonStdImpl} annotation on serializer class.
+ */
+protected boolean isDefaultSerializer(JsonSerializer<?> serializer) {
+    return ClassUtil.isJacksonStdImpl(serializer);
+}","public void test044() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    Class<JsonMappingException> class0 = JsonMappingException.class;
+    RawSerializer<IOException> rawSerializer0 = new RawSerializer<IOException>(class0);
+    boolean boolean0 = rawSerializer0.isDefaultSerializer(defaultSerializerProvider_Impl0.DEFAULT_NULL_KEY_SERIALIZER);
+    assertFalse(boolean0);
+}",""
+"/*
+    /**********************************************************
+    /* TreeNode implementation
+    /**********************************************************
+     */
+//  public abstract JsonToken asToken();
+//  public abstract JsonToken traverse();
+//  public abstract JsonToken traverse(ObjectCodec codec);
+//  public abstract JsonParser.NumberType numberType();
+@Override
+public int size() {
+    return 0;
+}","public void test055() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    Class<ObjectNode> class0 = ObjectNode.class;
+    RawSerializer<InvocationTargetException> rawSerializer0 = new RawSerializer<InvocationTargetException>(class0);
+    JsonNode jsonNode0 = rawSerializer0.getSchema((SerializerProvider) defaultSerializerProvider_Impl0, (Type) class0, true);
+    assertEquals(1, jsonNode0.size());
+}",""
+"/*
+    /**********************************************************
+    /* TreeNode implementation
+    /**********************************************************
+     */
+//  public abstract JsonToken asToken();
+//  public abstract JsonToken traverse();
+//  public abstract JsonToken traverse(ObjectCodec codec);
+//  public abstract JsonParser.NumberType numberType();
+@Override
+public int size() {
+    return 0;
+}","public void test066() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    Class<ObjectNode> class0 = ObjectNode.class;
+    RawSerializer<InvocationTargetException> rawSerializer0 = new RawSerializer<InvocationTargetException>(class0);
+    JsonNode jsonNode0 = rawSerializer0.getSchema((SerializerProvider) defaultSerializerProvider_Impl0, (Type) class0, false);
+    assertEquals(2, jsonNode0.size());
+}",""
+"@Override
+public int size() {
+    return _children.size();
+}","public void test077() throws Throwable {
+    Class<PropertyAccessor> class0 = PropertyAccessor.class;
+    RawSerializer<ObjectNode> rawSerializer0 = new RawSerializer<ObjectNode>(class0);
+    ObjectNode objectNode0 = rawSerializer0.createSchemaNode(""FAIL_ON_UNRESOLVED_OBJECT_IDS"", false);
+    assertEquals(2, objectNode0.size());
+}",""
+"/*
+    /**********************************************************
+    /* Helper methods for exception handling
+    /**********************************************************
+     */
+/**
+ *  Method that will modify caught exception (passed in as argument)
+ *  as necessary to include reference information, and to ensure it
+ *  is a subtype of {@link IOException}, or an unchecked exception.
+ * <p>
+ *  Rules for wrapping and unwrapping are bit complicated; essentially:
+ * <ul>
+ *  <li>Errors are to be passed as is (if uncovered via unwrapping)
+ *  <li>""Plain"" IOExceptions (ones that are not of type
+ *    {@link JsonMappingException} are to be passed as is
+ * </ul>
+ */
+public void wrapAndThrow(SerializerProvider provider, Throwable t, Object bean, String fieldName) throws IOException {
+    /* 05-Mar-2009, tatu: But one nasty edge is when we get
+         *   StackOverflow: usually due to infinite loop. But that
+         *   usually gets hidden within an InvocationTargetException...
+         */
+    while (t instanceof InvocationTargetException && t.getCause() != null) {
+        t = t.getCause();
+    }
+    // Errors and ""plain"" IOExceptions to be passed as is
+    if (t instanceof Error) {
+        throw (Error) t;
+    }
+    // Ditto for IOExceptions... except for mapping exceptions!
+    boolean wrap = (provider == null) || provider.isEnabled(SerializationFeature.WRAP_EXCEPTIONS);
+    if (t instanceof IOException) {
+        if (!wrap || !(t instanceof JsonMappingException)) {
+            throw (IOException) t;
+        }
+    } else if (!wrap) {
+        // [JACKSON-407] -- allow disabling wrapping for unchecked exceptions
+        if (t instanceof RuntimeException) {
+            throw (RuntimeException) t;
+        }
+    }
+    // [JACKSON-55] Need to add reference information
+    throw JsonMappingException.wrapWithPath(t, bean, fieldName);
+}","public void test088() throws Throwable {
+    MockIOException mockIOException0 = new MockIOException();
+    Class<InputStream> class0 = InputStream.class;
+    RawSerializer<InvocationTargetException> rawSerializer0 = new RawSerializer<InvocationTargetException>(class0);
+    try {
+        rawSerializer0.wrapAndThrow((SerializerProvider) null, (Throwable) mockIOException0, (Object) class0, ""Can not write a field name, expecting a value"");
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Helper methods for exception handling
+    /**********************************************************
+     */
+/**
+ *  Method that will modify caught exception (passed in as argument)
+ *  as necessary to include reference information, and to ensure it
+ *  is a subtype of {@link IOException}, or an unchecked exception.
+ * <p>
+ *  Rules for wrapping and unwrapping are bit complicated; essentially:
+ * <ul>
+ *  <li>Errors are to be passed as is (if uncovered via unwrapping)
+ *  <li>""Plain"" IOExceptions (ones that are not of type
+ *    {@link JsonMappingException} are to be passed as is
+ * </ul>
+ */
+public void wrapAndThrow(SerializerProvider provider, Throwable t, Object bean, String fieldName) throws IOException {
+    /* 05-Mar-2009, tatu: But one nasty edge is when we get
+         *   StackOverflow: usually due to infinite loop. But that
+         *   usually gets hidden within an InvocationTargetException...
+         */
+    while (t instanceof InvocationTargetException && t.getCause() != null) {
+        t = t.getCause();
+    }
+    // Errors and ""plain"" IOExceptions to be passed as is
+    if (t instanceof Error) {
+        throw (Error) t;
+    }
+    // Ditto for IOExceptions... except for mapping exceptions!
+    boolean wrap = (provider == null) || provider.isEnabled(SerializationFeature.WRAP_EXCEPTIONS);
+    if (t instanceof IOException) {
+        if (!wrap || !(t instanceof JsonMappingException)) {
+            throw (IOException) t;
+        }
+    } else if (!wrap) {
+        // [JACKSON-407] -- allow disabling wrapping for unchecked exceptions
+        if (t instanceof RuntimeException) {
+            throw (RuntimeException) t;
+        }
+    }
+    // [JACKSON-55] Need to add reference information
+    throw JsonMappingException.wrapWithPath(t, bean, fieldName);
+}","public void test099() throws Throwable {
+    Class<InputStream> class0 = InputStream.class;
+    Class<String> class1 = String.class;
+    RawSerializer<InvocationTargetException> rawSerializer0 = new RawSerializer<InvocationTargetException>(class1);
+    InvocationTargetException invocationTargetException0 = new InvocationTargetException((Throwable) null);
+    try {
+        rawSerializer0.wrapAndThrow((SerializerProvider) null, (Throwable) invocationTargetException0, (Object) class0, ""t"");
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // (was java.lang.reflect.InvocationTargetException) (through reference chain: java.io.InputStream[\""t\""])
+        //
+        verifyException(""com.fasterxml.jackson.databind.JsonMappingException"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Helper methods for exception handling
+    /**********************************************************
+     */
+/**
+ *  Method that will modify caught exception (passed in as argument)
+ *  as necessary to include reference information, and to ensure it
+ *  is a subtype of {@link IOException}, or an unchecked exception.
+ * <p>
+ *  Rules for wrapping and unwrapping are bit complicated; essentially:
+ * <ul>
+ *  <li>Errors are to be passed as is (if uncovered via unwrapping)
+ *  <li>""Plain"" IOExceptions (ones that are not of type
+ *    {@link JsonMappingException} are to be passed as is
+ * </ul>
+ */
+public void wrapAndThrow(SerializerProvider provider, Throwable t, Object bean, String fieldName) throws IOException {
+    /* 05-Mar-2009, tatu: But one nasty edge is when we get
+         *   StackOverflow: usually due to infinite loop. But that
+         *   usually gets hidden within an InvocationTargetException...
+         */
+    while (t instanceof InvocationTargetException && t.getCause() != null) {
+        t = t.getCause();
+    }
+    // Errors and ""plain"" IOExceptions to be passed as is
+    if (t instanceof Error) {
+        throw (Error) t;
+    }
+    // Ditto for IOExceptions... except for mapping exceptions!
+    boolean wrap = (provider == null) || provider.isEnabled(SerializationFeature.WRAP_EXCEPTIONS);
+    if (t instanceof IOException) {
+        if (!wrap || !(t instanceof JsonMappingException)) {
+            throw (IOException) t;
+        }
+    } else if (!wrap) {
+        // [JACKSON-407] -- allow disabling wrapping for unchecked exceptions
+        if (t instanceof RuntimeException) {
+            throw (RuntimeException) t;
+        }
+    }
+    // [JACKSON-55] Need to add reference information
+    throw JsonMappingException.wrapWithPath(t, bean, fieldName);
+}","public void test1010() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    SQLTransactionRollbackException sQLTransactionRollbackException0 = new SQLTransactionRollbackException(""'tK[3E7,e%~`20OS6"");
+    InvocationTargetException invocationTargetException0 = new InvocationTargetException(sQLTransactionRollbackException0);
+    Class<ClassKey> class0 = ClassKey.class;
+    RawSerializer<InvocationTargetException> rawSerializer0 = new RawSerializer<InvocationTargetException>(class0);
+    // Undeclared exception!
+    try {
+        rawSerializer0.wrapAndThrow((SerializerProvider) defaultSerializerProvider_Impl0, (Throwable) invocationTargetException0, (Object) class0, ""'tK[3E7,e%~`20OS6"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.SerializerProvider"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Helper methods for exception handling
+    /**********************************************************
+     */
+/**
+ *  Method that will modify caught exception (passed in as argument)
+ *  as necessary to include reference information, and to ensure it
+ *  is a subtype of {@link IOException}, or an unchecked exception.
+ * <p>
+ *  Rules for wrapping and unwrapping are bit complicated; essentially:
+ * <ul>
+ *  <li>Errors are to be passed as is (if uncovered via unwrapping)
+ *  <li>""Plain"" IOExceptions (ones that are not of type
+ *    {@link JsonMappingException} are to be passed as is
+ * </ul>
+ */
+public void wrapAndThrow(SerializerProvider provider, Throwable t, Object bean, String fieldName) throws IOException {
+    /* 05-Mar-2009, tatu: But one nasty edge is when we get
+         *   StackOverflow: usually due to infinite loop. But that
+         *   usually gets hidden within an InvocationTargetException...
+         */
+    while (t instanceof InvocationTargetException && t.getCause() != null) {
+        t = t.getCause();
+    }
+    // Errors and ""plain"" IOExceptions to be passed as is
+    if (t instanceof Error) {
+        throw (Error) t;
+    }
+    // Ditto for IOExceptions... except for mapping exceptions!
+    boolean wrap = (provider == null) || provider.isEnabled(SerializationFeature.WRAP_EXCEPTIONS);
+    if (t instanceof IOException) {
+        if (!wrap || !(t instanceof JsonMappingException)) {
+            throw (IOException) t;
+        }
+    } else if (!wrap) {
+        // [JACKSON-407] -- allow disabling wrapping for unchecked exceptions
+        if (t instanceof RuntimeException) {
+            throw (RuntimeException) t;
+        }
+    }
+    // [JACKSON-55] Need to add reference information
+    throw JsonMappingException.wrapWithPath(t, bean, fieldName);
+}","public void test1111() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    Class<IOException> class0 = IOException.class;
+    RawSerializer<InvocationTargetException> rawSerializer0 = new RawSerializer<InvocationTargetException>(class0);
+    MockError mockError0 = new MockError();
+    // Undeclared exception!
+    try {
+        rawSerializer0.wrapAndThrow((SerializerProvider) defaultSerializerProvider_Impl0, (Throwable) mockError0, (Object) ""Can not write a field name, eWpecting a value"", ""Can not write a field name, eWpecting a value"");
+        fail(""Expecting exception: Error"");
+    } catch (Error e) {
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Helper methods for exception handling
+    /**********************************************************
+     */
+/**
+ *  Method that will modify caught exception (passed in as argument)
+ *  as necessary to include reference information, and to ensure it
+ *  is a subtype of {@link IOException}, or an unchecked exception.
+ * <p>
+ *  Rules for wrapping and unwrapping are bit complicated; essentially:
+ * <ul>
+ *  <li>Errors are to be passed as is (if uncovered via unwrapping)
+ *  <li>""Plain"" IOExceptions (ones that are not of type
+ *    {@link JsonMappingException} are to be passed as is
+ * </ul>
+ */
+public void wrapAndThrow(SerializerProvider provider, Throwable t, Object bean, String fieldName) throws IOException {
+    /* 05-Mar-2009, tatu: But one nasty edge is when we get
+         *   StackOverflow: usually due to infinite loop. But that
+         *   usually gets hidden within an InvocationTargetException...
+         */
+    while (t instanceof InvocationTargetException && t.getCause() != null) {
+        t = t.getCause();
+    }
+    // Errors and ""plain"" IOExceptions to be passed as is
+    if (t instanceof Error) {
+        throw (Error) t;
+    }
+    // Ditto for IOExceptions... except for mapping exceptions!
+    boolean wrap = (provider == null) || provider.isEnabled(SerializationFeature.WRAP_EXCEPTIONS);
+    if (t instanceof IOException) {
+        if (!wrap || !(t instanceof JsonMappingException)) {
+            throw (IOException) t;
+        }
+    } else if (!wrap) {
+        // [JACKSON-407] -- allow disabling wrapping for unchecked exceptions
+        if (t instanceof RuntimeException) {
+            throw (RuntimeException) t;
+        }
+    }
+    // [JACKSON-55] Need to add reference information
+    throw JsonMappingException.wrapWithPath(t, bean, fieldName);
+}","public void test1212() throws Throwable {
+    JsonMappingException jsonMappingException0 = new JsonMappingException(""h8PG?prI,Ejddxm&:"");
+    Class<InputStream> class0 = InputStream.class;
+    RawSerializer<InvocationTargetException> rawSerializer0 = new RawSerializer<InvocationTargetException>(class0);
+    try {
+        rawSerializer0.wrapAndThrow((SerializerProvider) null, (Throwable) jsonMappingException0, (Object) jsonMappingException0, ""h8PG?prI,Ejddxm&:"");
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+    }
+}",""
+"public void wrapAndThrow(SerializerProvider provider, Throwable t, Object bean, int index) throws IOException {
+    while (t instanceof InvocationTargetException && t.getCause() != null) {
+        t = t.getCause();
+    }
+    // Errors are to be passed as is
+    if (t instanceof Error) {
+        throw (Error) t;
+    }
+    // Ditto for IOExceptions... except for mapping exceptions!
+    boolean wrap = (provider == null) || provider.isEnabled(SerializationFeature.WRAP_EXCEPTIONS);
+    if (t instanceof IOException) {
+        if (!wrap || !(t instanceof JsonMappingException)) {
+            throw (IOException) t;
+        }
+    } else if (!wrap) {
+        // [JACKSON-407] -- allow disabling wrapping for unchecked exceptions
+        if (t instanceof RuntimeException) {
+            throw (RuntimeException) t;
+        }
+    }
+    // [JACKSON-55] Need to add reference information
+    throw JsonMappingException.wrapWithPath(t, bean, index);
+}","public void test1313() throws Throwable {
+    SqlDateSerializer sqlDateSerializer0 = new SqlDateSerializer();
+    MockIOException mockIOException0 = new MockIOException();
+    try {
+        sqlDateSerializer0.wrapAndThrow((SerializerProvider) null, (Throwable) mockIOException0, (Object) null, (-3586));
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+    }
+}",""
+"public void wrapAndThrow(SerializerProvider provider, Throwable t, Object bean, int index) throws IOException {
+    while (t instanceof InvocationTargetException && t.getCause() != null) {
+        t = t.getCause();
+    }
+    // Errors are to be passed as is
+    if (t instanceof Error) {
+        throw (Error) t;
+    }
+    // Ditto for IOExceptions... except for mapping exceptions!
+    boolean wrap = (provider == null) || provider.isEnabled(SerializationFeature.WRAP_EXCEPTIONS);
+    if (t instanceof IOException) {
+        if (!wrap || !(t instanceof JsonMappingException)) {
+            throw (IOException) t;
+        }
+    } else if (!wrap) {
+        // [JACKSON-407] -- allow disabling wrapping for unchecked exceptions
+        if (t instanceof RuntimeException) {
+            throw (RuntimeException) t;
+        }
+    }
+    // [JACKSON-55] Need to add reference information
+    throw JsonMappingException.wrapWithPath(t, bean, index);
+}","public void test1414() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    SQLTransactionRollbackException sQLTransactionRollbackException0 = new SQLTransactionRollbackException(""DtC[3E7pe%~?7`2S6"");
+    InvocationTargetException invocationTargetException0 = new InvocationTargetException(sQLTransactionRollbackException0);
+    SqlDateSerializer sqlDateSerializer0 = new SqlDateSerializer();
+    // Undeclared exception!
+    try {
+        sqlDateSerializer0.wrapAndThrow((SerializerProvider) defaultSerializerProvider_Impl0, (Throwable) invocationTargetException0, (Object) ""DtC[3E7pe%~?7`2S6"", (-327));
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.SerializerProvider"", e);
+    }
+}",""
+"public void wrapAndThrow(SerializerProvider provider, Throwable t, Object bean, int index) throws IOException {
+    while (t instanceof InvocationTargetException && t.getCause() != null) {
+        t = t.getCause();
+    }
+    // Errors are to be passed as is
+    if (t instanceof Error) {
+        throw (Error) t;
+    }
+    // Ditto for IOExceptions... except for mapping exceptions!
+    boolean wrap = (provider == null) || provider.isEnabled(SerializationFeature.WRAP_EXCEPTIONS);
+    if (t instanceof IOException) {
+        if (!wrap || !(t instanceof JsonMappingException)) {
+            throw (IOException) t;
+        }
+    } else if (!wrap) {
+        // [JACKSON-407] -- allow disabling wrapping for unchecked exceptions
+        if (t instanceof RuntimeException) {
+            throw (RuntimeException) t;
+        }
+    }
+    // [JACKSON-55] Need to add reference information
+    throw JsonMappingException.wrapWithPath(t, bean, index);
+}","public void test1515() throws Throwable {
+    InvocationTargetException invocationTargetException0 = new InvocationTargetException((Throwable) null);
+    SqlDateSerializer sqlDateSerializer0 = new SqlDateSerializer();
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    // Undeclared exception!
+    try {
+        sqlDateSerializer0.wrapAndThrow((SerializerProvider) defaultSerializerProvider_Impl0, (Throwable) invocationTargetException0, (Object) defaultSerializerProvider_Impl0, 0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.SerializerProvider"", e);
+    }
+}",""
+"public void wrapAndThrow(SerializerProvider provider, Throwable t, Object bean, int index) throws IOException {
+    while (t instanceof InvocationTargetException && t.getCause() != null) {
+        t = t.getCause();
+    }
+    // Errors are to be passed as is
+    if (t instanceof Error) {
+        throw (Error) t;
+    }
+    // Ditto for IOExceptions... except for mapping exceptions!
+    boolean wrap = (provider == null) || provider.isEnabled(SerializationFeature.WRAP_EXCEPTIONS);
+    if (t instanceof IOException) {
+        if (!wrap || !(t instanceof JsonMappingException)) {
+            throw (IOException) t;
+        }
+    } else if (!wrap) {
+        // [JACKSON-407] -- allow disabling wrapping for unchecked exceptions
+        if (t instanceof RuntimeException) {
+            throw (RuntimeException) t;
+        }
+    }
+    // [JACKSON-55] Need to add reference information
+    throw JsonMappingException.wrapWithPath(t, bean, index);
+}","public void test1616() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    SqlDateSerializer sqlDateSerializer0 = new SqlDateSerializer();
+    MockError mockError0 = new MockError();
+    // Undeclared exception!
+    try {
+        sqlDateSerializer0.wrapAndThrow((SerializerProvider) defaultSerializerProvider_Impl0, (Throwable) mockError0, (Object) mockError0, 1);
+        fail(""Expecting exception: Error"");
+    } catch (Error e) {
+    }
+}",""
+"public void wrapAndThrow(SerializerProvider provider, Throwable t, Object bean, int index) throws IOException {
+    while (t instanceof InvocationTargetException && t.getCause() != null) {
+        t = t.getCause();
+    }
+    // Errors are to be passed as is
+    if (t instanceof Error) {
+        throw (Error) t;
+    }
+    // Ditto for IOExceptions... except for mapping exceptions!
+    boolean wrap = (provider == null) || provider.isEnabled(SerializationFeature.WRAP_EXCEPTIONS);
+    if (t instanceof IOException) {
+        if (!wrap || !(t instanceof JsonMappingException)) {
+            throw (IOException) t;
+        }
+    } else if (!wrap) {
+        // [JACKSON-407] -- allow disabling wrapping for unchecked exceptions
+        if (t instanceof RuntimeException) {
+            throw (RuntimeException) t;
+        }
+    }
+    // [JACKSON-55] Need to add reference information
+    throw JsonMappingException.wrapWithPath(t, bean, index);
+}","public void test1717() throws Throwable {
+    SQLTimeoutException sQLTimeoutException0 = new SQLTimeoutException();
+    SqlDateSerializer sqlDateSerializer0 = new SqlDateSerializer();
+    try {
+        sqlDateSerializer0.wrapAndThrow((SerializerProvider) null, (Throwable) sQLTimeoutException0, (Object) sQLTimeoutException0, 1167);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // (was java.sql.SQLTimeoutException) (through reference chain: java.sql.SQLTimeoutException[1167])
+        //
+        verifyException(""com.fasterxml.jackson.databind.JsonMappingException"", e);
+    }
+}",""
+"public void wrapAndThrow(SerializerProvider provider, Throwable t, Object bean, int index) throws IOException {
+    while (t instanceof InvocationTargetException && t.getCause() != null) {
+        t = t.getCause();
+    }
+    // Errors are to be passed as is
+    if (t instanceof Error) {
+        throw (Error) t;
+    }
+    // Ditto for IOExceptions... except for mapping exceptions!
+    boolean wrap = (provider == null) || provider.isEnabled(SerializationFeature.WRAP_EXCEPTIONS);
+    if (t instanceof IOException) {
+        if (!wrap || !(t instanceof JsonMappingException)) {
+            throw (IOException) t;
+        }
+    } else if (!wrap) {
+        // [JACKSON-407] -- allow disabling wrapping for unchecked exceptions
+        if (t instanceof RuntimeException) {
+            throw (RuntimeException) t;
+        }
+    }
+    // [JACKSON-55] Need to add reference information
+    throw JsonMappingException.wrapWithPath(t, bean, index);
+}","public void test1818() throws Throwable {
+    JsonMappingException jsonMappingException0 = new JsonMappingException(""B8XTC+A|Q1?0"");
+    SqlDateSerializer sqlDateSerializer0 = new SqlDateSerializer();
+    try {
+        sqlDateSerializer0.wrapAndThrow((SerializerProvider) null, (Throwable) jsonMappingException0, (Object) ""B8XTC+A|Q1?0"", 0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+    }
+}",""

@@ -1,0 +1,525 @@
+focal_method,test_prefix,docstring
+"@Override
+public void process(Node externs, Node root) {
+    (new NodeTraversal(compiler, this)).traverse(root);
+}","public void test000() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""(function(t){})(y.prototype);"");
+    FlowSensitiveInlineVariables flowSensitiveInlineVariables0 = new FlowSensitiveInlineVariables(compiler0);
+    // Undeclared exception!
+    try {
+        flowSensitiveInlineVariables0.process(node0, node0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",""
+"public String getSourceName() {
+    return sourceName;
+}","public void test011() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""[source unknown]"", ""[source unknown]"");
+    Denormalize.StripConstantAnnotations denormalize_StripConstantAnnotations0 = new Denormalize.StripConstantAnnotations(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, denormalize_StripConstantAnnotations0);
+    Scope scope0 = new Scope(node0, compiler0);
+    nodeTraversal0.traverseAtScope(scope0);
+    assertEquals(""[source unknown]"", nodeTraversal0.getSourceName());
+}","/**
+ * Gets the current input source name.
+ *
+ * @return A string that may be empty, but not null
+ */"
+"InputId getInputId() {
+    return inputId;
+}","public void test022() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    GatherRawExports gatherRawExports0 = new GatherRawExports(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, gatherRawExports0);
+    InputId inputId0 = nodeTraversal0.getInputId();
+    assertNull(inputId0);
+}",""
+"public int getCharno() {
+    return charno;
+}","public void test033() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    MoveFunctionDeclarations moveFunctionDeclarations0 = new MoveFunctionDeclarations(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, moveFunctionDeclarations0);
+    Node node0 = Node.newString(""iu[a\""+.Z<v)"");
+    JSError jSError0 = nodeTraversal0.makeError(node0, compiler0.OPTIMIZE_LOOP_ERROR, (String[]) null);
+    assertEquals((-1), jSError0.getCharno());
+}","/**
+ * Get the character number.
+ */"
+"public Node getCurrentNode() {
+    return curNode;
+}","public void test044() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    MoveFunctionDeclarations moveFunctionDeclarations0 = new MoveFunctionDeclarations(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, moveFunctionDeclarations0);
+    Node node0 = nodeTraversal0.getCurrentNode();
+    assertNull(node0);
+}","/**
+ * Returns the node currently being traversed.
+ */"
+"public int getLineNumber() {
+    Node cur = curNode;
+    while (cur != null) {
+        int line = cur.getLineno();
+        if (line >= 0) {
+            return line;
+        }
+        cur = cur.getParent();
+    }
+    return 0;
+}","public void test055() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    StrictModeCheck strictModeCheck0 = new StrictModeCheck(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, strictModeCheck0);
+    Node node0 = compiler0.parseTestCode(""com.google.javascript.jscomp.NodeTraversal$AbstractPostOrderCallback"");
+    nodeTraversal0.traverse(node0);
+    assertEquals(1, nodeTraversal0.getLineNumber());
+}","/**
+ * Gets the current line number, or zero if it cannot be determined. The line
+ * number is retrieved lazily as a running time optimization.
+ */"
+"@Override
+public double getProgress() {
+    return progress;
+}","public void test066() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    CheckDebuggerStatement checkDebuggerStatement0 = new CheckDebuggerStatement(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, checkDebuggerStatement0);
+    Compiler compiler1 = nodeTraversal0.getCompiler();
+    assertEquals(0.0, compiler1.getProgress(), 0.01);
+}",""
+"public JSError makeError(Node n, CheckLevel level, DiagnosticType type, String... arguments) {
+    return JSError.make(getSourceName(), n, level, type, arguments);
+}","public void test077() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, (NodeTraversal.Callback) null);
+    CheckLevel checkLevel0 = CheckLevel.WARNING;
+    // Undeclared exception!
+    try {
+        nodeTraversal0.makeError((Node) null, checkLevel0, compiler0.OPTIMIZE_LOOP_ERROR, (String[]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.JSError"", e);
+    }
+}","/**
+ * Creates a JSError during NodeTraversal.
+ *
+ * @param n Determines the line and char position within the source file name
+ * @param type The DiagnosticType
+ * @param arguments Arguments to be incorporated into the message
+ */"
+"@VisibleForTesting
+Scope createInitialScope(Node root) {
+    NodeTraversal.traverse(compiler, root, new DiscoverEnumsAndTypedefs(typeRegistry));
+    Scope s = new Scope(root, compiler);
+    declareNativeFunctionType(s, ARRAY_FUNCTION_TYPE);
+    declareNativeFunctionType(s, BOOLEAN_OBJECT_FUNCTION_TYPE);
+    declareNativeFunctionType(s, DATE_FUNCTION_TYPE);
+    declareNativeFunctionType(s, ERROR_FUNCTION_TYPE);
+    declareNativeFunctionType(s, EVAL_ERROR_FUNCTION_TYPE);
+    declareNativeFunctionType(s, FUNCTION_FUNCTION_TYPE);
+    declareNativeFunctionType(s, NUMBER_OBJECT_FUNCTION_TYPE);
+    declareNativeFunctionType(s, OBJECT_FUNCTION_TYPE);
+    declareNativeFunctionType(s, RANGE_ERROR_FUNCTION_TYPE);
+    declareNativeFunctionType(s, REFERENCE_ERROR_FUNCTION_TYPE);
+    declareNativeFunctionType(s, REGEXP_FUNCTION_TYPE);
+    declareNativeFunctionType(s, STRING_OBJECT_FUNCTION_TYPE);
+    declareNativeFunctionType(s, SYNTAX_ERROR_FUNCTION_TYPE);
+    declareNativeFunctionType(s, TYPE_ERROR_FUNCTION_TYPE);
+    declareNativeFunctionType(s, URI_ERROR_FUNCTION_TYPE);
+    declareNativeValueType(s, ""undefined"", VOID_TYPE);
+    // ActiveXObject is unqiuely special, because it can be used to construct
+    // any type (the type that it creates is related to the arguments you
+    // pass to it).
+    declareNativeValueType(s, ""ActiveXObject"", NO_OBJECT_TYPE);
+    return s;
+}","public void test088() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""u:Kc"", ""u:Kc"");
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    // Undeclared exception!
+    try {
+        typedScopeCreator0.createInitialScope(node0);
+        fail(""Expecting exception: NoSuchElementException"");
+    } catch (NoSuchElementException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.LinkedList"", e);
+    }
+}","/**
+ * Create the outermost scope. This scope contains native binding such as
+ * {@code Object}, {@code Date}, etc.
+ */"
+"@Override
+public Scope createScope(Node root, Scope parent) {
+    // Constructing the global scope is very different than constructing
+    // inner scopes, because only global scopes can contain named classes that
+    // show up in the type registry.
+    Scope newScope = null;
+    AbstractScopeBuilder scopeBuilder = null;
+    if (parent == null) {
+        // Run a first-order analysis over the syntax tree.
+        (new FirstOrderFunctionAnalyzer(compiler, functionAnalysisResults)).process(root.getFirstChild(), root.getLastChild());
+        // Find all the classes in the global scope.
+        newScope = createInitialScope(root);
+        GlobalScopeBuilder globalScopeBuilder = new GlobalScopeBuilder(newScope);
+        scopeBuilder = globalScopeBuilder;
+        NodeTraversal.traverse(compiler, root, scopeBuilder);
+    } else {
+        newScope = new Scope(parent, root);
+        LocalScopeBuilder localScopeBuilder = new LocalScopeBuilder(newScope);
+        scopeBuilder = localScopeBuilder;
+        localScopeBuilder.build();
+    }
+    scopeBuilder.resolveStubDeclarations();
+    scopeBuilder.resolveTypes();
+    // Gather the properties in each function that we found in the
+    // global scope, if that function has a @this type that we can
+    // build properties on.
+    for (Node functionNode : scopeBuilder.nonExternFunctions) {
+        JSType type = functionNode.getJSType();
+        if (type != null && type.isFunctionType()) {
+            FunctionType fnType = type.toMaybeFunctionType();
+            ObjectType fnThisType = fnType.getTypeOfThis();
+            if (!fnThisType.isUnknownType()) {
+                NodeTraversal.traverse(compiler, functionNode.getLastChild(), scopeBuilder.new CollectProperties(fnThisType));
+            }
+        }
+    }
+    if (parent == null) {
+        codingConvention.defineDelegateProxyPrototypeProperties(typeRegistry, newScope, delegateProxyPrototypes, delegateCallingConventions);
+    }
+    return newScope;
+}","public void test099() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""t"");
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    // Undeclared exception!
+    try {
+        typedScopeCreator0.createScope(node0, (Scope) null);
+        fail(""Expecting exception: NoSuchElementException"");
+    } catch (NoSuchElementException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.LinkedList"", e);
+    }
+}","/**
+ * Creates a scope with all types declared. Declares newly discovered types
+ * and type properties in the type registry.
+ */"
+"public void traverse(Node root) {
+    try {
+        inputId = NodeUtil.getInputId(root);
+        sourceName = """";
+        curNode = root;
+        pushScope(root);
+        traverseBranch(root, null);
+        popScope();
+    } catch (Exception unexpectedException) {
+        throwUnexpectedException(unexpectedException);
+    }
+}","public void test1313() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode("""");
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, (NodeTraversal.Callback) null);
+    // Undeclared exception!
+    try {
+        nodeTraversal0.traverse(node0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}","/**
+ * Traverses a parse tree recursively.
+ */"
+"@Override
+public void process(Node externs, Node root) {
+    NodeTraversal.traverseRoots(compiler, Lists.newArrayList(externs, root), this);
+    NodeTraversal.traverse(compiler, root, new NonExternChecks());
+}","public void test1515() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""GPC(bbmyFZ:]-G"", ""GPC(bbmyFZ:]-G"");
+    StrictModeCheck strictModeCheck0 = new StrictModeCheck(compiler0);
+    // Undeclared exception!
+    try {
+        strictModeCheck0.process(node0, node0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // null
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",""
+"public static void traverseRoots(AbstractCompiler compiler, Callback cb, Node... roots) {
+    NodeTraversal t = new NodeTraversal(compiler, cb);
+    t.traverseRoots(roots);
+}","public void test1616() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    MoveFunctionDeclarations moveFunctionDeclarations0 = new MoveFunctionDeclarations(compiler0);
+    Node node0 = compiler0.parseTestCode(""t"");
+    Node[] nodeArray0 = new Node[6];
+    nodeArray0[0] = node0;
+    Node node1 = new Node(45, node0);
+    nodeArray0[1] = node1;
+    // Undeclared exception!
+    try {
+        NodeTraversal.traverseRoots((AbstractCompiler) compiler0, (NodeTraversal.Callback) moveFunctionDeclarations0, nodeArray0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // null
+        //   Node(SCRIPT):  [testcode] :1:0
+        // t
+        //   Parent(SHEQ):  [testcode] :-1:-1
+        // [source unknown]
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",""
+"public String getSourceName() {
+    return sourceName;
+}","public void test1717() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    MoveFunctionDeclarations moveFunctionDeclarations0 = new MoveFunctionDeclarations(compiler0);
+    Node node0 = compiler0.parseSyntheticCode(""t"", ""t"");
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, moveFunctionDeclarations0);
+    nodeTraversal0.traverseInnerNode(node0, node0, (Scope) null);
+    assertEquals(""t"", nodeTraversal0.getSourceName());
+}","/**
+ * Gets the current input source name.
+ *
+ * @return A string that may be empty, but not null
+ */"
+"public String getSourceName() {
+    return sourceName;
+}","public void test1818() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""7tq!!x`d*%KCgqtY"", ""7tq!!x`d*%KCgqtY"");
+    Scope scope0 = new Scope(node0, compiler0);
+    MakeDeclaredNamesUnique makeDeclaredNamesUnique0 = new MakeDeclaredNamesUnique();
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, makeDeclaredNamesUnique0);
+    nodeTraversal0.traverseInnerNode(node0, node0, scope0);
+    assertEquals(""7tq!!x`d*%KCgqtY"", nodeTraversal0.getSourceName());
+}","/**
+ * Gets the current input source name.
+ *
+ * @return A string that may be empty, but not null
+ */"
+"public int getLineNumber() {
+    Node cur = curNode;
+    while (cur != null) {
+        int line = cur.getLineno();
+        if (line >= 0) {
+            return line;
+        }
+        cur = cur.getParent();
+    }
+    return 0;
+}","public void test1919() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    MoveFunctionDeclarations moveFunctionDeclarations0 = new MoveFunctionDeclarations(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, moveFunctionDeclarations0);
+    Node node0 = Node.newString(12, ""Z"", 12, 12);
+    Scope scope0 = new Scope(node0, (ObjectType) null);
+    nodeTraversal0.traverseInnerNode(node0, node0, scope0);
+    int int0 = nodeTraversal0.getLineNumber();
+    assertEquals(12, int0);
+}","/**
+ * Gets the current line number, or zero if it cannot be determined. The line
+ * number is retrieved lazily as a running time optimization.
+ */"
+"public int getLineNumber() {
+    Node cur = curNode;
+    while (cur != null) {
+        int line = cur.getLineno();
+        if (line >= 0) {
+            return line;
+        }
+        cur = cur.getParent();
+    }
+    return 0;
+}","public void test2020() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    MoveFunctionDeclarations moveFunctionDeclarations0 = new MoveFunctionDeclarations(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, moveFunctionDeclarations0);
+    Node node0 = Node.newString(2, """");
+    Scope scope0 = new Scope(node0, (ObjectType) null);
+    nodeTraversal0.traverseInnerNode(node0, node0, scope0);
+    int int0 = nodeTraversal0.getLineNumber();
+    assertEquals(0, int0);
+}","/**
+ * Gets the current line number, or zero if it cannot be determined. The line
+ * number is retrieved lazily as a running time optimization.
+ */"
+"public int getLineNumber() {
+    Node cur = curNode;
+    while (cur != null) {
+        int line = cur.getLineno();
+        if (line >= 0) {
+            return line;
+        }
+        cur = cur.getParent();
+    }
+    return 0;
+}","public void test2121() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""t"");
+    MakeDeclaredNamesUnique makeDeclaredNamesUnique0 = new MakeDeclaredNamesUnique();
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, makeDeclaredNamesUnique0);
+    nodeTraversal0.traverse(node0);
+    nodeTraversal0.getModule();
+    assertEquals(1, nodeTraversal0.getLineNumber());
+}","/**
+ * Gets the current line number, or zero if it cannot be determined. The line
+ * number is retrieved lazily as a running time optimization.
+ */"
+"public JSModule getModule() {
+    CompilerInput input = getInput();
+    return input == null ? null : input.getModule();
+}","public void test2222() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    MoveFunctionDeclarations moveFunctionDeclarations0 = new MoveFunctionDeclarations(compiler0);
+    compiler0.parseTestCode(""could not determine the type of this expression"");
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, moveFunctionDeclarations0);
+    JSModule jSModule0 = nodeTraversal0.getModule();
+    assertNull(jSModule0);
+}","/**
+ * Gets the current input module.
+ */"
+"@Override
+public void process(Node externs, Node root) {
+    NodeTraversal.traverse(compiler, root, this);
+}","public void test2424() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""(function(){})(y.protCtype);"");
+    CoalesceVariableNames coalesceVariableNames0 = new CoalesceVariableNames(compiler0, false);
+    // Undeclared exception!
+    try {
+        coalesceVariableNames0.process(node0, node0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",""
+"public int getCharno() {
+    return extractCharno(sourcePosition);
+}","public void test2525() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""@TV(q`[Qqq4'uz)<"", ""var JSCompiler_stubMap = [];function JSCompiler_stubMethod(JSCompiler_stubMethod_id) {  return function() {    return JSCompiler_stubMap[JSCompiler_stubMethod_id].apply(        this, arguments);  };}function JSCompiler_unstubMethod(    JSCompiler_unstubMethod_id, JSCompiler_unstubMethod_body) {  return JSCompiler_stubMap[JSCompiler_unstubMethod_id] =       JSCompiler_unstubMethod_body;}"");
+    assertEquals(0, node0.getCharno());
+}",""
+"@SuppressWarnings(""unchecked"")
+public Node getEnclosingFunction() {
+    if (scopes.size() + scopeRoots.size() < 2) {
+        return null;
+    } else {
+        if (scopeRoots.isEmpty()) {
+            return scopes.peek().getRootNode();
+        } else {
+            return scopeRoots.peek();
+        }
+    }
+}","public void test2626() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    MoveFunctionDeclarations moveFunctionDeclarations0 = new MoveFunctionDeclarations(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, moveFunctionDeclarations0);
+    Node node0 = nodeTraversal0.getEnclosingFunction();
+    assertNull(node0);
+}","/**
+ * Examines the functions stack for the last instance of a function node.
+ */"
+"@Override
+void process(CompilerPass p) {
+    p.process(externsRoot, jsRoot);
+}","public void test2727() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    MoveFunctionDeclarations moveFunctionDeclarations0 = new MoveFunctionDeclarations(compiler0);
+    // Undeclared exception!
+    try {
+        compiler0.process(moveFunctionDeclarations0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // null
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",""
+"protected void traverseInnerNode(Node node, Node parent, Scope refinedScope) {
+    Preconditions.checkNotNull(parent);
+    if (refinedScope != null && getScope() != refinedScope) {
+        curNode = node;
+        pushScope(refinedScope);
+        traverseBranch(node, parent);
+        popScope();
+    } else {
+        traverseBranch(node, parent);
+    }
+}","public void test2828() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""[source unknown]"", ""[source unknown]"");
+    Scope scope0 = new Scope(node0, compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, (NodeTraversal.Callback) null);
+    // Undeclared exception!
+    try {
+        nodeTraversal0.traverseInnerNode((Node) null, node0, scope0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * Traverses an inner node recursively with a refined scope. An inner node may
+ * be any node with a non {@code null} parent (i.e. all nodes except the
+ * root).
+ *
+ * @param node the node to traverse
+ * @param parent the node's parent, it may be not be {@code null}
+ * @param refinedScope the refined scope of the scope currently at the top of
+ *     the scope stack or in trivial cases that very scope or {@code null}
+ */"
+"public boolean hasScope() {
+    return !(scopes.isEmpty() && scopeRoots.isEmpty());
+}","public void test2929() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    MoveFunctionDeclarations moveFunctionDeclarations0 = new MoveFunctionDeclarations(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, moveFunctionDeclarations0);
+    boolean boolean0 = nodeTraversal0.hasScope();
+    assertFalse(boolean0);
+}",""
+"public void traverse(Node root) {
+    try {
+        inputId = NodeUtil.getInputId(root);
+        sourceName = """";
+        curNode = root;
+        pushScope(root);
+        traverseBranch(root, null);
+        popScope();
+    } catch (Exception unexpectedException) {
+        throwUnexpectedException(unexpectedException);
+    }
+}","public void test3030() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = new Node(132);
+    Denormalize.StripConstantAnnotations denormalize_StripConstantAnnotations0 = new Denormalize.StripConstantAnnotations(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, denormalize_StripConstantAnnotations0);
+    nodeTraversal0.traverse(node0);
+    assertEquals(44, Node.IS_OPTIONAL_PARAM);
+}","/**
+ * Traverses a parse tree recursively.
+ */"

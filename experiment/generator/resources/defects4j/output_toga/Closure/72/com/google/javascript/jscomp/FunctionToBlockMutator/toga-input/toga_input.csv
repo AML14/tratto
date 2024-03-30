@@ -1,0 +1,59 @@
+focal_method,test_prefix,docstring
+"Node mutate(String fnName, Node fnNode, Node callNode, String resultName, boolean needsDefaultResult, boolean isCallInLoop) {
+    Node newFnNode = fnNode.cloneTree();
+    // Now that parameter names have been replaced, make sure all the local
+    // names are unique, to allow functions to be inlined multiple times
+    // without causing conflicts.
+    makeLocalNamesUnique(newFnNode, isCallInLoop);
+    // TODO(johnlenz): Mark NAME nodes constant for parameters that are not
+    // modified.
+    Set<String> namesToAlias = FunctionArgumentInjector.findModifiedParameters(newFnNode);
+    LinkedHashMap<String, Node> args = FunctionArgumentInjector.getFunctionCallParameterMap(newFnNode, callNode, this.safeNameIdSupplier);
+    boolean hasArgs = !args.isEmpty();
+    if (hasArgs) {
+        FunctionArgumentInjector.maybeAddTempsForCallArguments(newFnNode, args, namesToAlias, compiler.getCodingConvention());
+    }
+    Node newBlock = NodeUtil.getFunctionBody(newFnNode);
+    // Make the newBlock insertable .
+    newBlock.detachFromParent();
+    if (hasArgs) {
+        Node inlineResult = aliasAndInlineArguments(newBlock, args, namesToAlias);
+        Preconditions.checkState(newBlock == inlineResult);
+    }
+    //
+    // For calls inlined into loops, VAR declarations are not reinitialized to
+    // undefined as they would have been if the function were called, so ensure
+    // that they are properly initialized.
+    //
+    if (isCallInLoop) {
+        fixUnitializedVarDeclarations(newBlock);
+    }
+    String labelName = getLabelNameForFunction(fnName);
+    Node injectableBlock = replaceReturns(newBlock, resultName, labelName, needsDefaultResult);
+    Preconditions.checkState(injectableBlock != null);
+    return injectableBlock;
+}","public void test00() throws Throwable {
+    RenameLabels.DefaultNameSupplier renameLabels_DefaultNameSupplier0 = new RenameLabels.DefaultNameSupplier();
+    FunctionToBlockMutator functionToBlockMutator0 = new FunctionToBlockMutator((AbstractCompiler) null, renameLabels_DefaultNameSupplier0);
+    Node node0 = Node.newString(""J;z"");
+    // Undeclared exception!
+    try {
+        functionToBlockMutator0.mutate(""J;z"", node0, node0, ""J;z"", false, false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.FunctionToBlockMutator"", e);
+    }
+}","/**
+ * @param fnName The name to use when preparing human readable names.
+ * @param fnNode The function to prepare.
+ * @param callNode The call node that will be replaced.
+ * @param resultName Function results should be assigned to this name.
+ * @param needsDefaultResult Whether the result value must be set.
+ * @param isCallInLoop Whether the function body must be prepared to be
+ *   injected into the body of a loop.
+ * @return A clone of the function body mutated to be suitable for injection
+ *   as a statement into another code block.
+ */"

@@ -1,0 +1,471 @@
+focal_method,test_prefix,docstring
+"@Override
+public DeserializerFactory withConfig(DeserializerFactoryConfig config) {
+    if (_factoryConfig == config) {
+        return this;
+    }
+    /* 22-Nov-2010, tatu: Handling of subtypes is tricky if we do immutable-with-copy-ctor;
+         *    and we pretty much have to here either choose between losing subtype instance
+         *    when registering additional deserializers, or losing deserializers.
+         *    Instead, let's actually just throw an error if this method is called when subtype
+         *    has not properly overridden this method; this to indicate problem as soon as possible.
+         */
+    if (getClass() != BeanDeserializerFactory.class) {
+        throw new IllegalStateException(""Subtype of BeanDeserializerFactory ("" + getClass().getName() + "") has not properly overridden method 'withAdditionalDeserializers': can not instantiate subtype with "" + ""additional deserializer definitions"");
+    }
+    return new BeanDeserializerFactory(config);
+}","public void test000() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = new BeanDeserializerFactory((DeserializerFactoryConfig) null);
+    beanDeserializerFactory0.withConfig((DeserializerFactoryConfig) null);
+}","/**
+ * Method used by module registration functionality, to construct a new bean
+ * deserializer factory
+ * with different configuration settings.
+ */"
+"@Override
+public DeserializerFactory withConfig(DeserializerFactoryConfig config) {
+    if (_factoryConfig == config) {
+        return this;
+    }
+    /* 22-Nov-2010, tatu: Handling of subtypes is tricky if we do immutable-with-copy-ctor;
+         *    and we pretty much have to here either choose between losing subtype instance
+         *    when registering additional deserializers, or losing deserializers.
+         *    Instead, let's actually just throw an error if this method is called when subtype
+         *    has not properly overridden this method; this to indicate problem as soon as possible.
+         */
+    if (getClass() != BeanDeserializerFactory.class) {
+        throw new IllegalStateException(""Subtype of BeanDeserializerFactory ("" + getClass().getName() + "") has not properly overridden method 'withAdditionalDeserializers': can not instantiate subtype with "" + ""additional deserializer definitions"");
+    }
+    return new BeanDeserializerFactory(config);
+}","public void test011() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DeserializerFactoryConfig deserializerFactoryConfig0 = new DeserializerFactoryConfig();
+    beanDeserializerFactory0.withConfig(deserializerFactoryConfig0);
+}","/**
+ * Method used by module registration functionality, to construct a new bean
+ * deserializer factory
+ * with different configuration settings.
+ */"
+"/*
+    /**********************************************************
+    /* Helper methods for Bean deserializer, other
+    /**********************************************************
+     */
+/**
+ *  Helper method used to skip processing for types that we know
+ *  can not be (i.e. are never consider to be) beans:
+ *  things like primitives, Arrays, Enums, and proxy types.
+ * <p>
+ *  Note that usually we shouldn't really be getting these sort of
+ *  types anyway; but better safe than sorry.
+ */
+protected boolean isPotentialBeanType(Class<?> type) {
+    String typeStr = ClassUtil.canBeABeanType(type);
+    if (typeStr != null) {
+        throw new IllegalArgumentException(""Can not deserialize Class "" + type.getName() + "" (of type "" + typeStr + "") as a Bean"");
+    }
+    if (ClassUtil.isProxyType(type)) {
+        throw new IllegalArgumentException(""Can not deserialize Proxy class "" + type.getName() + "" as a Bean"");
+    }
+    /* also: can't deserialize some local classes: static are ok; in-method not;
+         * and with [JACKSON-594], other non-static inner classes are ok
+         */
+    typeStr = ClassUtil.isLocalType(type, true);
+    if (typeStr != null) {
+        throw new IllegalArgumentException(""Can not deserialize Class "" + type.getName() + "" (of type "" + typeStr + "") as a Bean"");
+    }
+    return true;
+}","public void test033() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    Class<Throwable> class0 = Throwable.class;
+    beanDeserializerFactory0.isPotentialBeanType(class0);
+}",""
+"protected JavaType materializeAbstractType(DeserializationContext ctxt, JavaType type, BeanDescription beanDesc) throws JsonMappingException {
+    // May have multiple resolvers, call in precedence order until one returns non-null
+    for (AbstractTypeResolver r : _factoryConfig.abstractTypeResolvers()) {
+        JavaType concrete = r.resolveAbstractType(ctxt.getConfig(), beanDesc);
+        if (concrete != null) {
+            return concrete;
+        }
+    }
+    return null;
+}","public void test044() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    Class<ObjectIdGenerators.IntSequenceGenerator> class0 = ObjectIdGenerators.IntSequenceGenerator.class;
+    beanDeserializerFactory0.isPotentialBeanType(class0);
+    BeanDeserializerModifier beanDeserializerModifier0 = mock(BeanDeserializerModifier.class, new ViolatedAssumptionAnswer());
+    Deserializers.Base deserializers_Base0 = new Deserializers.Base();
+    BeanDeserializerModifier beanDeserializerModifier1 = mock(BeanDeserializerModifier.class, new ViolatedAssumptionAnswer());
+    BeanDeserializerModifier beanDeserializerModifier2 = mock(BeanDeserializerModifier.class, new ViolatedAssumptionAnswer());
+    DeserializationContext deserializationContext0 = null;
+    JavaType javaType0 = null;
+    BeanDescription beanDescription0 = null;
+    beanDeserializerFactory0.createBuilderBasedDeserializer((DeserializationContext) null, (JavaType) null, (BeanDescription) null, class0);
+    // Undeclared exception!
+    try {
+        beanDeserializerFactory0.materializeAbstractType(deserializationContext0, javaType0, beanDescription0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.BeanDeserializerFactory"", e);
+    }
+}",""
+"protected void addInjectables(DeserializationContext ctxt, BeanDescription beanDesc, BeanDeserializerBuilder builder) throws JsonMappingException {
+    Map<Object, AnnotatedMember> raw = beanDesc.findInjectables();
+    if (raw != null) {
+        boolean fixAccess = ctxt.canOverrideAccessModifiers();
+        boolean forceAccess = fixAccess && ctxt.isEnabled(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS);
+        for (Map.Entry<Object, AnnotatedMember> entry : raw.entrySet()) {
+            AnnotatedMember m = entry.getValue();
+            if (fixAccess) {
+                // to ensure we can call it
+                m.fixAccess(forceAccess);
+            }
+            builder.addInjectable(PropertyName.construct(m.getName()), m.getType(), beanDesc.getClassAnnotations(), m, entry.getKey());
+        }
+    }
+}","public void test055() throws Throwable {
+    POJOPropertiesCollector pOJOPropertiesCollector0 = mock(POJOPropertiesCollector.class, new ViolatedAssumptionAnswer());
+    doReturn((AnnotatedClass) null).when(pOJOPropertiesCollector0).getClassDef();
+    doReturn((MapperConfig) null).when(pOJOPropertiesCollector0).getConfig();
+    doReturn((Map) null).when(pOJOPropertiesCollector0).getInjectables();
+    doReturn((ObjectIdInfo) null).when(pOJOPropertiesCollector0).getObjectIdInfo();
+    doReturn((JavaType) null).when(pOJOPropertiesCollector0).getType();
+    BasicBeanDescription basicBeanDescription0 = BasicBeanDescription.forDeserialization(pOJOPropertiesCollector0);
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    beanDeserializerFactory0.addInjectables(defaultDeserializationContext_Impl0, basicBeanDescription0, (BeanDeserializerBuilder) null);
+}","/**
+ * Method called locate all members used for value injection (if any),
+ * constructor {@link com.fasterxml.jackson.databind.deser.impl.ValueInjector} instances, and add them to builder.
+ */"
+"protected JavaType materializeAbstractType(DeserializationContext ctxt, JavaType type, BeanDescription beanDesc) throws JsonMappingException {
+    // May have multiple resolvers, call in precedence order until one returns non-null
+    for (AbstractTypeResolver r : _factoryConfig.abstractTypeResolvers()) {
+        JavaType concrete = r.resolveAbstractType(ctxt.getConfig(), beanDesc);
+        if (concrete != null) {
+            return concrete;
+        }
+    }
+    return null;
+}","public void test066() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    JavaType javaType0 = TypeFactory.unknownType();
+    beanDeserializerFactory0.materializeAbstractType((DeserializationContext) null, javaType0, (BeanDescription) null);
+}",""
+"/*
+    /**********************************************************
+    /* Helper methods for Bean deserializer, other
+    /**********************************************************
+     */
+/**
+ *  Helper method used to skip processing for types that we know
+ *  can not be (i.e. are never consider to be) beans:
+ *  things like primitives, Arrays, Enums, and proxy types.
+ * <p>
+ *  Note that usually we shouldn't really be getting these sort of
+ *  types anyway; but better safe than sorry.
+ */
+protected boolean isPotentialBeanType(Class<?> type) {
+    String typeStr = ClassUtil.canBeABeanType(type);
+    if (typeStr != null) {
+        throw new IllegalArgumentException(""Can not deserialize Class "" + type.getName() + "" (of type "" + typeStr + "") as a Bean"");
+    }
+    if (ClassUtil.isProxyType(type)) {
+        throw new IllegalArgumentException(""Can not deserialize Proxy class "" + type.getName() + "" as a Bean"");
+    }
+    /* also: can't deserialize some local classes: static are ok; in-method not;
+         * and with [JACKSON-594], other non-static inner classes are ok
+         */
+    typeStr = ClassUtil.isLocalType(type, true);
+    if (typeStr != null) {
+        throw new IllegalArgumentException(""Can not deserialize Class "" + type.getName() + "" (of type "" + typeStr + "") as a Bean"");
+    }
+    return true;
+}","public void test088() throws Throwable {
+    DeserializerFactoryConfig deserializerFactoryConfig0 = new DeserializerFactoryConfig();
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    Class<Month> class0 = Month.class;
+    beanDeserializerFactory0.isPotentialBeanType(class0);
+}",""
+"protected JavaType materializeAbstractType(DeserializationContext ctxt, JavaType type, BeanDescription beanDesc) throws JsonMappingException {
+    // May have multiple resolvers, call in precedence order until one returns non-null
+    for (AbstractTypeResolver r : _factoryConfig.abstractTypeResolvers()) {
+        JavaType concrete = r.resolveAbstractType(ctxt.getConfig(), beanDesc);
+        if (concrete != null) {
+            return concrete;
+        }
+    }
+    return null;
+}","public void test099() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    SimpleAbstractTypeResolver simpleAbstractTypeResolver0 = new SimpleAbstractTypeResolver();
+    BeanDeserializerFactory beanDeserializerFactory1 = (BeanDeserializerFactory) beanDeserializerFactory0.withAbstractTypeResolver(simpleAbstractTypeResolver0);
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory1);
+    SimpleType simpleType0 = (SimpleType) TypeFactory.unknownType();
+    beanDeserializerFactory1.materializeAbstractType(defaultDeserializationContext_Impl0, simpleType0, (BeanDescription) null);
+}",""
+"/*
+    /**********************************************************
+    /* Helper methods for Bean deserializer, other
+    /**********************************************************
+     */
+/**
+ *  Helper method used to skip processing for types that we know
+ *  can not be (i.e. are never consider to be) beans:
+ *  things like primitives, Arrays, Enums, and proxy types.
+ * <p>
+ *  Note that usually we shouldn't really be getting these sort of
+ *  types anyway; but better safe than sorry.
+ */
+protected boolean isPotentialBeanType(Class<?> type) {
+    String typeStr = ClassUtil.canBeABeanType(type);
+    if (typeStr != null) {
+        throw new IllegalArgumentException(""Can not deserialize Class "" + type.getName() + "" (of type "" + typeStr + "") as a Bean"");
+    }
+    if (ClassUtil.isProxyType(type)) {
+        throw new IllegalArgumentException(""Can not deserialize Proxy class "" + type.getName() + "" as a Bean"");
+    }
+    /* also: can't deserialize some local classes: static are ok; in-method not;
+         * and with [JACKSON-594], other non-static inner classes are ok
+         */
+    typeStr = ClassUtil.isLocalType(type, true);
+    if (typeStr != null) {
+        throw new IllegalArgumentException(""Can not deserialize Class "" + type.getName() + "" (of type "" + typeStr + "") as a Bean"");
+    }
+    return true;
+}","public void test1010() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    Class<BeanDeserializer> class0 = BeanDeserializer.class;
+    objectReader0.forType(class0);
+    beanDeserializerFactory0.isPotentialBeanType(class0);
+}",""
+"protected void addBeanProps(DeserializationContext ctxt, BeanDescription beanDesc, BeanDeserializerBuilder builder) throws JsonMappingException {
+    final SettableBeanProperty[] creatorProps = builder.getValueInstantiator().getFromObjectArguments(ctxt.getConfig());
+    final boolean isConcrete = !beanDesc.getType().isAbstract();
+    // Things specified as ""ok to ignore""?
+    AnnotationIntrospector intr = ctxt.getAnnotationIntrospector();
+    if (intr != null) {
+        Boolean B = intr.findIgnoreUnknownProperties(beanDesc.getClassInfo());
+        if (B != null) {
+            builder.setIgnoreUnknownProperties(B.booleanValue());
+        }
+    }
+    // Or explicit/implicit definitions?
+    Set<String> ignored = ArrayBuilders.arrayToSet(intr.findPropertiesToIgnore(beanDesc.getClassInfo(), false));
+    for (String propName : ignored) {
+        builder.addIgnorable(propName);
+    }
+    // Also, do we have a fallback ""any"" setter?
+    AnnotatedMethod anySetter = beanDesc.findAnySetter();
+    if (anySetter != null) {
+        builder.setAnySetter(constructAnySetter(ctxt, beanDesc, anySetter));
+    }
+    // NOTE: we do NOT add @JsonIgnore'd properties into blocked ones if there's any-setter
+    // Implicit ones via @JsonIgnore and equivalent?
+    if (anySetter == null) {
+        Collection<String> ignored2 = beanDesc.getIgnoredPropertyNames();
+        if (ignored2 != null) {
+            for (String propName : ignored2) {
+                // allow ignoral of similarly named JSON property, but do not force;
+                // latter means NOT adding this to 'ignored':
+                builder.addIgnorable(propName);
+            }
+        }
+    }
+    final boolean useGettersAsSetters = (ctxt.isEnabled(MapperFeature.USE_GETTERS_AS_SETTERS) && ctxt.isEnabled(MapperFeature.AUTO_DETECT_GETTERS));
+    // Ok: let's then filter out property definitions
+    List<BeanPropertyDefinition> propDefs = filterBeanProps(ctxt, beanDesc, builder, beanDesc.findProperties(), ignored);
+    // After which we can let custom code change the set
+    if (_factoryConfig.hasDeserializerModifiers()) {
+        for (BeanDeserializerModifier mod : _factoryConfig.deserializerModifiers()) {
+            propDefs = mod.updateProperties(ctxt.getConfig(), beanDesc, propDefs);
+        }
+    }
+    // At which point we still have all kinds of properties; not all with mutators:
+    for (BeanPropertyDefinition propDef : propDefs) {
+        SettableBeanProperty prop = null;
+        /* 18-Oct-2013, tatu: Although constructor parameters have highest precedence,
+             *   we need to do linkage (as per [databind#318]), and so need to start with
+             *   other types, and only then create constructor parameter, if any.
+             */
+        if (propDef.hasSetter()) {
+            JavaType propertyType = propDef.getSetter().getParameterType(0);
+            prop = constructSettableProperty(ctxt, beanDesc, propDef, propertyType);
+        } else if (propDef.hasField()) {
+            JavaType propertyType = propDef.getField().getType();
+            prop = constructSettableProperty(ctxt, beanDesc, propDef, propertyType);
+        } else if (useGettersAsSetters && propDef.hasGetter()) {
+            /* May also need to consider getters
+                 * for Map/Collection properties; but with lowest precedence
+                 */
+            AnnotatedMethod getter = propDef.getGetter();
+            // should only consider Collections and Maps, for now?
+            Class<?> rawPropertyType = getter.getRawType();
+            if (Collection.class.isAssignableFrom(rawPropertyType) || Map.class.isAssignableFrom(rawPropertyType)) {
+                prop = constructSetterlessProperty(ctxt, beanDesc, propDef);
+            }
+        }
+        // 25-Sep-2014, tatu: No point in finding constructor parameters for abstract types
+        //   (since they are never used anyway)
+        if (isConcrete && propDef.hasConstructorParameter()) {
+            /* If property is passed via constructor parameter, we must
+                 * handle things in special way. Not sure what is the most optimal way...
+                 * for now, let's just call a (new) method in builder, which does nothing.
+                 */
+            // but let's call a method just to allow custom builders to be aware...
+            final String name = propDef.getName();
+            CreatorProperty cprop = null;
+            if (creatorProps != null) {
+                for (SettableBeanProperty cp : creatorProps) {
+                    if (name.equals(cp.getName()) && (cp instanceof CreatorProperty)) {
+                        cprop = (CreatorProperty) cp;
+                        break;
+                    }
+                }
+            }
+            if (cprop == null) {
+                throw ctxt.mappingException(""Could not find creator property with name '%s' (in class %s)"", name, beanDesc.getBeanClass().getName());
+            }
+            if (prop != null) {
+                cprop.setFallbackSetter(prop);
+            }
+            prop = cprop;
+            builder.addCreatorProperty(cprop);
+            continue;
+        }
+        if (prop != null) {
+            Class<?>[] views = propDef.findViews();
+            if (views == null) {
+                // one more twist: if default inclusion disabled, need to force empty set of views
+                if (!ctxt.isEnabled(MapperFeature.DEFAULT_VIEW_INCLUSION)) {
+                    views = NO_VIEWS;
+                }
+            }
+            // one more thing before adding to builder: copy any metadata
+            prop.setViews(views);
+            builder.addProperty(prop);
+        }
+    }
+}","public void test1111() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    JsonNodeFactory jsonNodeFactory0 = JsonNodeFactory.withExactBigDecimals(false);
+    JsonFactory jsonFactory0 = new JsonFactory();
+    JsonParser.Feature jsonParser_Feature0 = JsonParser.Feature.ALLOW_NUMERIC_LEADING_ZEROS;
+    JsonFactory jsonFactory1 = jsonFactory0.enable(jsonParser_Feature0);
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory1);
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    DefaultSerializerProvider defaultSerializerProvider0 = defaultSerializerProvider_Impl0.copy();
+    ObjectMapper objectMapper1 = objectMapper0.setSerializerProvider(defaultSerializerProvider0);
+    ObjectMapper.DefaultTyping objectMapper_DefaultTyping0 = ObjectMapper.DefaultTyping.NON_FINAL;
+    ObjectMapper objectMapper2 = objectMapper1.enableDefaultTypingAsProperty(objectMapper_DefaultTyping0, ""com.fasterxml.jackson.databind.deser.std.EnumMapDeserializer"");
+    ObjectReader objectReader0 = objectMapper2.reader(jsonNodeFactory0);
+    Locale locale0 = Locale.CHINA;
+    ObjectReader objectReader1 = objectReader0.with(locale0);
+    objectReader0.getTypeFactory();
+    Class<CreatorProperty> class0 = CreatorProperty.class;
+    objectReader1.forType(class0);
+    BeanDescription beanDescription0 = null;
+    BeanDeserializerBuilder beanDeserializerBuilder0 = beanDeserializerFactory0.constructBeanDeserializerBuilder(defaultDeserializationContext_Impl0, (BeanDescription) null);
+    beanDeserializerFactory0.addBeanProps(defaultDeserializationContext_Impl0, beanDescription0, beanDeserializerBuilder0);
+}","/**
+ *  Method called to figure out settable properties for the
+ *  bean deserializer to use.
+ * <p>
+ *  Note: designed to be overridable, and effort is made to keep interface
+ *  similar between versions.
+ */"
+"/*
+    /**********************************************************
+    /* Helper methods for Bean deserializer, other
+    /**********************************************************
+     */
+/**
+ *  Helper method used to skip processing for types that we know
+ *  can not be (i.e. are never consider to be) beans:
+ *  things like primitives, Arrays, Enums, and proxy types.
+ * <p>
+ *  Note that usually we shouldn't really be getting these sort of
+ *  types anyway; but better safe than sorry.
+ */
+protected boolean isPotentialBeanType(Class<?> type) {
+    String typeStr = ClassUtil.canBeABeanType(type);
+    if (typeStr != null) {
+        throw new IllegalArgumentException(""Can not deserialize Class "" + type.getName() + "" (of type "" + typeStr + "") as a Bean"");
+    }
+    if (ClassUtil.isProxyType(type)) {
+        throw new IllegalArgumentException(""Can not deserialize Proxy class "" + type.getName() + "" as a Bean"");
+    }
+    /* also: can't deserialize some local classes: static are ok; in-method not;
+         * and with [JACKSON-594], other non-static inner classes are ok
+         */
+    typeStr = ClassUtil.isLocalType(type, true);
+    if (typeStr != null) {
+        throw new IllegalArgumentException(""Can not deserialize Class "" + type.getName() + "" (of type "" + typeStr + "") as a Bean"");
+    }
+    return true;
+}","public void test1212() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<Throwable> class0 = Throwable.class;
+    ObjectReader objectReader0 = objectMapper0.reader();
+    Class<Integer> class1 = Integer.TYPE;
+    objectReader0.forType(class1);
+    beanDeserializerFactory0.isPotentialBeanType(class0);
+}",""
+"/*
+    /**********************************************************
+    /* Helper methods for Bean deserializer, other
+    /**********************************************************
+     */
+/**
+ *  Helper method used to skip processing for types that we know
+ *  can not be (i.e. are never consider to be) beans:
+ *  things like primitives, Arrays, Enums, and proxy types.
+ * <p>
+ *  Note that usually we shouldn't really be getting these sort of
+ *  types anyway; but better safe than sorry.
+ */
+protected boolean isPotentialBeanType(Class<?> type) {
+    String typeStr = ClassUtil.canBeABeanType(type);
+    if (typeStr != null) {
+        throw new IllegalArgumentException(""Can not deserialize Class "" + type.getName() + "" (of type "" + typeStr + "") as a Bean"");
+    }
+    if (ClassUtil.isProxyType(type)) {
+        throw new IllegalArgumentException(""Can not deserialize Proxy class "" + type.getName() + "" as a Bean"");
+    }
+    /* also: can't deserialize some local classes: static are ok; in-method not;
+         * and with [JACKSON-594], other non-static inner classes are ok
+         */
+    typeStr = ClassUtil.isLocalType(type, true);
+    if (typeStr != null) {
+        throw new IllegalArgumentException(""Can not deserialize Class "" + type.getName() + "" (of type "" + typeStr + "") as a Bean"");
+    }
+    return true;
+}","public void test1313() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    MapperFeature[] mapperFeatureArray0 = new MapperFeature[5];
+    MapperFeature mapperFeature0 = MapperFeature.REQUIRE_SETTERS_FOR_GETTERS;
+    mapperFeatureArray0[0] = mapperFeature0;
+    MapperFeature mapperFeature1 = MapperFeature.IGNORE_DUPLICATE_MODULE_REGISTRATIONS;
+    mapperFeatureArray0[1] = mapperFeature1;
+    MapperFeature mapperFeature2 = MapperFeature.AUTO_DETECT_IS_GETTERS;
+    mapperFeatureArray0[2] = mapperFeature2;
+    MapperFeature mapperFeature3 = MapperFeature.DEFAULT_VIEW_INCLUSION;
+    mapperFeatureArray0[3] = mapperFeature3;
+    MapperFeature mapperFeature4 = MapperFeature.DEFAULT_VIEW_INCLUSION;
+    mapperFeatureArray0[4] = mapperFeature4;
+    objectMapper0.disable(mapperFeatureArray0);
+    Class<Throwable> class0 = Throwable.class;
+    ObjectReader objectReader0 = objectMapper0.reader();
+    JsonPointer jsonPointer0 = JsonPointer.compile((String) null);
+    objectReader0.at(jsonPointer0);
+    objectReader0.forType(class0);
+    beanDeserializerFactory0.isPotentialBeanType(class0);
+}",""

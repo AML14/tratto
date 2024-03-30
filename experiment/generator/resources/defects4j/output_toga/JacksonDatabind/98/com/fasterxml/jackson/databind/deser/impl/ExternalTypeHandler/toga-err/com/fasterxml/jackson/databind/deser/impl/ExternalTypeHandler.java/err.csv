@@ -1,0 +1,41 @@
+com.fasterxml.jackson.databind.deser.impl.ExternalTypeHandler,@Test(timeout = 4000)
+public void test1111() throws Throwable {
+    ExternalTypeHandler.Builder externalTypeHandler_Builder0 = new ExternalTypeHandler.Builder((JavaType) null);
+    BeanProperty.Bogus beanProperty_Bogus0 = new BeanProperty.Bogus();
+    PropertyName propertyName0 = beanProperty_Bogus0.getFullName();
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    ClassNameIdResolver classNameIdResolver0 = new ClassNameIdResolver((JavaType) null, typeFactory0);
+    JsonTypeInfo.As jsonTypeInfo_As0 = JsonTypeInfo.As.EXISTING_PROPERTY;
+    AsPropertyTypeDeserializer asPropertyTypeDeserializer0 = new AsPropertyTypeDeserializer((JavaType) null, classNameIdResolver0, "" gIXH0wcL"", false, (JavaType) null, jsonTypeInfo_As0);
+    Class<Annotation> class0 = Annotation.class;
+    Class<SimpleObjectIdResolver> class1 = SimpleObjectIdResolver.class;
+    AnnotationCollector.TwoAnnotations annotationCollector_TwoAnnotations0 = new AnnotationCollector.TwoAnnotations(class1, (Annotation) null, class0, (Annotation) null);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_REQUIRED;
+    CreatorProperty creatorProperty0 = new CreatorProperty(propertyName0, (JavaType) null, propertyName0, asPropertyTypeDeserializer0, annotationCollector_TwoAnnotations0, (AnnotatedParameter) null, 0, (Object) null, propertyMetadata0);
+    externalTypeHandler_Builder0.addExternal(creatorProperty0, asPropertyTypeDeserializer0);
+    HashMap<String, List<PropertyName>> hashMap0 = new HashMap<String, List<PropertyName>>();
+    TreeSet<SettableBeanProperty> treeSet0 = new TreeSet<SettableBeanProperty>();
+    BeanPropertyMap beanPropertyMap0 = BeanPropertyMap.construct((Collection<SettableBeanProperty>) treeSet0, false, (Map<String, List<PropertyName>>) hashMap0);
+    ExternalTypeHandler externalTypeHandler0 = externalTypeHandler_Builder0.build(beanPropertyMap0);
+    ExternalTypeHandler externalTypeHandler1 = new ExternalTypeHandler(externalTypeHandler0);
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    AnnotationCollector.TwoAnnotations annotationCollector_TwoAnnotations1 = (AnnotationCollector.TwoAnnotations) externalTypeHandler1.complete((JsonParser) null, (DeserializationContext) defaultDeserializationContext_Impl0, (Object) annotationCollector_TwoAnnotations0);
+    annotationCollector_TwoAnnotations1.size();
+},ERROR,java.nio.file.NoSuchFileException,/home/star_usit_group/tratto/experiment/generator/resources/defects4j/temp/JacksonDatabind_98b/src/main/java/com/fasterxml/jackson/databind/introspect/AnnotationCollector/TwoAnnotations.java
+com.fasterxml.jackson.databind.deser.impl.ExternalTypeHandler,@Test(timeout = 4000)
+public void test1313() throws Throwable {
+    ExternalTypeHandler.Builder externalTypeHandler_Builder0 = ExternalTypeHandler.builder((JavaType) null);
+    Class<ChronoLocalDate> class0 = ChronoLocalDate.class;
+    AnnotationCollector.TwoAnnotations annotationCollector_TwoAnnotations0 = new AnnotationCollector.TwoAnnotations(class0, (Annotation) null, class0, (Annotation) null);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_OPTIONAL;
+    BeanProperty.Bogus beanProperty_Bogus0 = new BeanProperty.Bogus();
+    PropertyName propertyName0 = beanProperty_Bogus0.getFullName();
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    ClassNameIdResolver classNameIdResolver0 = new ClassNameIdResolver((JavaType) null, typeFactory0);
+    AsExternalTypeDeserializer asExternalTypeDeserializer0 = new AsExternalTypeDeserializer((JavaType) null, classNameIdResolver0, (String) null, false, (JavaType) null);
+    CreatorProperty creatorProperty0 = new CreatorProperty(propertyName0, (JavaType) null, propertyName0, asExternalTypeDeserializer0, annotationCollector_TwoAnnotations0, (AnnotatedParameter) null, 0, annotationCollector_TwoAnnotations0, propertyMetadata0);
+    externalTypeHandler_Builder0.addExternal(creatorProperty0, asExternalTypeDeserializer0);
+    externalTypeHandler_Builder0.addExternal(creatorProperty0, asExternalTypeDeserializer0);
+    creatorProperty0.getPropertyIndex();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.

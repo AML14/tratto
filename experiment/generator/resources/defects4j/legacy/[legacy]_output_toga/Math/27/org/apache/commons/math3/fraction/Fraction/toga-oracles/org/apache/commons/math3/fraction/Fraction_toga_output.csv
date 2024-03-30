@@ -1,0 +1,391 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    int int0 = 2;
+    Fraction fraction0 = new Fraction(14.101419448852539, 2);
+    fraction0.doubleValue();
+    Fraction fraction1 = Fraction.ZERO;
+    fraction0.divide(fraction1);
+    // Undeclared exception!
+    try {
+        fraction1.divide(fraction0);
+        fail(""Expecting exception: ArithmeticException"");
+    } catch (ArithmeticException e) {
+        //
+        // the fraction to divide by must not be zero: 0/1
+        //
+        verifyException(""org.apache.commons.math3.fraction.Fraction"", e);
+    }
+}",1,
+project,0,test021,"public void test021() throws Throwable {
+    Fraction fraction0 = Fraction.TWO;
+    fraction0.equals(""Me|<[@o.O]r,Iz"");
+    Fraction fraction1 = fraction0.subtract(753);
+    Fraction fraction2 = fraction1.reciprocal();
+    int int0 = 2379;
+    fraction2.MINUS_ONE.percentageValue();
+    Fraction fraction3 = fraction1.ONE_QUARTER.subtract(2379);
+    fraction3.FOUR_FIFTHS.add(2379);
+    fraction0.negate();
+    Fraction fraction4 = new Fraction((double) 2379, 753);
+    fraction4.TWO.toString();
+    // Undeclared exception!
+    try {
+        fraction4.THREE_FIFTHS.add(fraction2);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // illegal state: Overflow trying to convert 2,379 to fraction (9,223,372,036,854,773,430/9,223,372,036,854,775,807)
+        //
+        verifyException(""org.apache.commons.math3.fraction.Fraction"", e);
+    }
+}",1,
+project,0,test032,"public void test032() throws Throwable {
+    Fraction fraction0 = Fraction.TWO;
+    Fraction fraction1 = Fraction.TWO;
+    Fraction fraction2 = fraction0.add(fraction1);
+    int int0 = 2236;
+    Fraction fraction3 = Fraction.getReducedFraction(2236, (-2329));
+    fraction0.getNumerator();
+    Fraction fraction4 = new Fraction(2);
+    Fraction fraction5 = fraction0.FOUR_FIFTHS.divide(fraction4);
+    Fraction fraction6 = fraction3.TWO_FIFTHS.multiply(fraction5);
+    fraction6.add(fraction5);
+    Fraction fraction7 = fraction5.ONE_THIRD.add(fraction2);
+    fraction0.hashCode();
+    Fraction fraction8 = fraction0.subtract(613);
+    fraction0.compareTo(fraction1);
+    fraction0.getField();
+    fraction5.equals(fraction4);
+    Fraction fraction9 = fraction0.subtract(fraction8);
+    fraction9.ONE_FIFTH.percentageValue();
+    fraction8.MINUS_ONE.divide(0);
+    fraction8.abs();
+    // Undeclared exception!
+    try {
+        fraction3.multiply(fraction7);
+        fail(""Expecting exception: ArithmeticException"");
+    } catch (ArithmeticException e) {
+        //
+        // zero denominator in fraction -1/0
+        //
+        verifyException(""org.apache.commons.math3.fraction.Fraction"", e);
+    }
+}",1,
+project,0,test083,"public void test083() throws Throwable {
+    Fraction fraction0 = Fraction.ZERO;
+    int int0 = 37;
+    Fraction fraction1 = fraction0.THREE_FIFTHS.subtract(37);
+    fraction1.ZERO.multiply(fraction0);
+    fraction1.ONE.negate();
+    fraction0.TWO_FIFTHS.abs();
+    fraction0.ONE_FIFTH.add(fraction0);
+    // Undeclared exception!
+    try {
+        fraction0.reciprocal();
+        fail(""Expecting exception: ArithmeticException"");
+    } catch (ArithmeticException e) {
+        //
+        // zero denominator in fraction 1/0
+        //
+        verifyException(""org.apache.commons.math3.fraction.Fraction"", e);
+    }
+}",1,
+project,0,test114,"public void test114() throws Throwable {
+    Fraction fraction0 = Fraction.ONE_QUARTER;
+    fraction0.ONE_THIRD.getField();
+    fraction0.getField();
+    Fraction fraction1 = null;
+    fraction0.ONE_QUARTER.negate();
+    // Undeclared exception!
+    try {
+        fraction0.subtract((Fraction) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // fraction
+        //
+        verifyException(""org.apache.commons.math3.fraction.Fraction"", e);
+    }
+}",1,
+project,0,test125,"public void test125() throws Throwable {
+    int int0 = (-2038);
+    Fraction fraction0 = new Fraction((-1886.8021), (-1.0), (-2038));
+    Fraction fraction1 = fraction0.ONE_QUARTER.abs();
+    // Undeclared exception!
+    try {
+        fraction1.percentageValue();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // illegal state: Unable to convert -1,886.802 to fraction after -2,038 iterations
+        //
+        verifyException(""org.apache.commons.math3.fraction.Fraction"", e);
+    }
+}",0,
+project,0,test617,"public void test617() throws Throwable {
+    Fraction fraction0 = new Fraction((-1066), (-1066));
+    Fraction fraction1 = fraction0.divide(199);
+    Fraction fraction2 = fraction0.add(fraction1);
+    fraction2.ONE_THIRD.multiply(fraction1);
+    Fraction fraction3 = Fraction.TWO;
+    Fraction fraction4 = fraction3.subtract(fraction1);
+    Fraction fraction5 = fraction4.divide(Integer.MIN_VALUE);
+    Fraction fraction6 = fraction5.THREE_FIFTHS.add(fraction4);
+    int int0 = 2936;
+    // Undeclared exception!
+    try {
+        fraction6.divide(int0);
+        fail(""Expecting exception: ArithmeticException"");
+    } catch (ArithmeticException e) {
+        //
+        // overflow in fraction 397/-2,147,483,648, cannot negate
+        //
+        verifyException(""org.apache.commons.math3.fraction.Fraction"", e);
+    }
+}",1,
+project,0,test628,"public void test628() throws Throwable {
+    int int0 = 1;
+    int int1 = 0;
+    Fraction fraction0 = null;
+    try {
+        fraction0 = new Fraction(1, 0);
+        fail(""Expecting exception: ArithmeticException"");
+    } catch (ArithmeticException e) {
+        //
+        // zero denominator in fraction 1/0
+        //
+        verifyException(""org.apache.commons.math3.fraction.Fraction"", e);
+    }
+}",1,
+project,0,test669,"public void test669() throws Throwable {
+    Fraction fraction0 = Fraction.TWO_FIFTHS;
+    Fraction fraction1 = fraction0.TWO_QUARTERS.add((-1059));
+    Fraction fraction2 = fraction1.multiply((Fraction) null);
+    fraction1.ONE_THIRD.toString();
+    // Undeclared exception!
+    try {
+        fraction2.THREE_FIFTHS.reciprocal();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // fraction
+        //
+        verifyException(""org.apache.commons.math3.fraction.Fraction"", e);
+    }
+}",1,
+project,0,test7211,"public void test7211() throws Throwable {
+    Fraction fraction0 = new Fraction(577.784);
+    Fraction fraction1 = fraction0.MINUS_ONE.negate();
+    Fraction fraction2 = Fraction.ONE_FIFTH;
+    Fraction fraction3 = fraction0.ONE_QUARTER.divide(fraction2);
+    int int0 = 1317;
+    Fraction fraction4 = fraction1.TWO_THIRDS.multiply(1317);
+    fraction4.TWO.add(fraction2);
+    Fraction fraction5 = fraction0.FOUR_FIFTHS.abs();
+    fraction5.MINUS_ONE.divide(fraction1);
+    fraction3.ZERO.reciprocal();
+    // Undeclared exception!
+    try {
+        fraction5.TWO.toString();
+        fail(""Expecting exception: ArithmeticException"");
+    } catch (ArithmeticException e) {
+        //
+        // zero denominator in fraction 1/0
+        //
+        verifyException(""org.apache.commons.math3.fraction.Fraction"", e);
+    }
+}",1,
+project,0,test7312,"public void test7312() throws Throwable {
+    Fraction fraction0 = Fraction.TWO_FIFTHS;
+    fraction0.THREE_QUARTERS.subtract((Fraction) null);
+    // Undeclared exception!
+    try {
+        fraction0.abs();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // fraction
+        //
+        verifyException(""org.apache.commons.math3.fraction.Fraction"", e);
+    }
+}",0,
+project,0,test7413,"public void test7413() throws Throwable {
+    Fraction fraction0 = Fraction.ONE_FIFTH;
+    Fraction fraction1 = null;
+    // Undeclared exception!
+    try {
+        fraction0.ZERO.add((Fraction) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // fraction
+        //
+        verifyException(""org.apache.commons.math3.fraction.Fraction"", e);
+    }
+}",1,
+project,0,test7714,"public void test7714() throws Throwable {
+    int int0 = (-3077);
+    Fraction fraction0 = new Fraction(2219.5, (-3077));
+    fraction0.ZERO.toString();
+    int int1 = fraction0.compareTo((Fraction) null);
+    Fraction fraction1 = fraction0.multiply(int1);
+    // Undeclared exception!
+    try {
+        fraction1.divide(int1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math3.fraction.Fraction"", e);
+    }
+}",1,
+project,0,test8015,"public void test8015() throws Throwable {
+    int int0 = (-17);
+    int int1 = 0;
+    // Undeclared exception!
+    try {
+        Fraction.getReducedFraction((-17), 0);
+        fail(""Expecting exception: ArithmeticException"");
+    } catch (ArithmeticException e) {
+        //
+        // zero denominator in fraction -17/0
+        //
+        verifyException(""org.apache.commons.math3.fraction.Fraction"", e);
+    }
+}",1,
+project,0,test8316,"public void test8316() throws Throwable {
+    Fraction fraction0 = Fraction.ONE;
+    Fraction fraction1 = fraction0.multiply(1);
+    Fraction fraction2 = fraction1.TWO_QUARTERS.multiply(fraction0);
+    Fraction fraction3 = fraction0.reciprocal();
+    Fraction fraction4 = Fraction.getReducedFraction(1, 1);
+    Fraction fraction5 = fraction4.TWO_QUARTERS.multiply((-80));
+    fraction3.floatValue();
+    Fraction fraction6 = fraction3.add(0);
+    int int0 = 1;
+    int int1 = 8;
+    fraction6.MINUS_ONE.multiply(3);
+    Fraction fraction7 = Fraction.getReducedFraction(1, 8);
+    fraction7.THREE_QUARTERS.add(1349);
+    fraction0.percentageValue();
+    Fraction fraction8 = fraction3.add(fraction6);
+    Fraction fraction9 = fraction8.ZERO.negate();
+    Fraction fraction10 = fraction9.TWO_FIFTHS.divide(fraction5);
+    fraction10.FOUR_FIFTHS.toString();
+    Fraction fraction11 = fraction2.divide((Fraction) null);
+    Fraction fraction12 = fraction11.divide(fraction9);
+    fraction1.getNumerator();
+    fraction4.compareTo(fraction8);
+    Fraction fraction13 = fraction12.divide(fraction9);
+    fraction1.floatValue();
+    // Undeclared exception!
+    try {
+        fraction13.multiply(int0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // fraction
+        //
+        verifyException(""org.apache.commons.math3.fraction.Fraction"", e);
+    }
+}",1,
+project,0,test8417,"public void test8417() throws Throwable {
+    int int0 = 275;
+    Fraction fraction0 = new Fraction(275);
+    fraction0.ZERO.subtract((Fraction) null);
+    // Undeclared exception!
+    try {
+        fraction0.THREE_QUARTERS.toString();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // fraction
+        //
+        verifyException(""org.apache.commons.math3.fraction.Fraction"", e);
+    }
+}",1,
+project,0,test8618,"public void test8618() throws Throwable {
+    Fraction fraction0 = Fraction.TWO;
+    Fraction fraction1 = Fraction.TWO;
+    Fraction fraction2 = fraction0.add(fraction1);
+    int int0 = 2236;
+    Fraction fraction3 = Fraction.getReducedFraction(2236, (-2329));
+    fraction0.getNumerator();
+    Fraction fraction4 = new Fraction(2);
+    Fraction fraction5 = fraction0.FOUR_FIFTHS.divide(fraction4);
+    fraction3.TWO_FIFTHS.multiply(fraction5);
+    Fraction fraction6 = fraction5.ONE_THIRD.add(fraction2);
+    fraction0.hashCode();
+    Fraction fraction7 = fraction0.subtract(613);
+    fraction0.compareTo(fraction1);
+    fraction0.getField();
+    fraction5.equals(fraction4);
+    Fraction fraction8 = fraction0.subtract(fraction7);
+    fraction8.ONE_FIFTH.percentageValue();
+    fraction7.MINUS_ONE.divide(0);
+    fraction7.abs();
+    // Undeclared exception!
+    try {
+        fraction3.multiply(fraction6);
+        fail(""Expecting exception: ArithmeticException"");
+    } catch (ArithmeticException e) {
+        //
+        // zero denominator in fraction -1/0
+        //
+        verifyException(""org.apache.commons.math3.fraction.Fraction"", e);
+    }
+}",1,
+project,0,test8719,"public void test8719() throws Throwable {
+    Fraction fraction0 = Fraction.THREE_FIFTHS;
+    Fraction fraction1 = fraction0.ONE_FIFTH.reciprocal();
+    fraction1.FOUR_FIFTHS.abs();
+    Object object0 = new Object();
+    fraction0.equals(object0);
+    fraction0.ZERO.toString();
+    fraction0.floatValue();
+    Fraction fraction2 = Fraction.MINUS_ONE;
+    fraction0.FOUR_FIFTHS.divide(fraction2);
+    Fraction fraction3 = Fraction.FOUR_FIFTHS;
+    int int0 = Integer.MAX_VALUE;
+    Fraction fraction4 = Fraction.getReducedFraction((-3869), Integer.MAX_VALUE);
+    Fraction fraction5 = fraction4.TWO.negate();
+    Fraction fraction6 = Fraction.TWO;
+    fraction5.MINUS_ONE.multiply(fraction6);
+    fraction5.ONE_THIRD.negate();
+    Fraction fraction7 = fraction3.ONE_FIFTH.divide(Integer.MAX_VALUE);
+    fraction7.THREE_QUARTERS.add(fraction4);
+    // Undeclared exception!
+    try {
+        fraction0.compareTo(fraction3);
+        fail(""Expecting exception: ArithmeticException"");
+    } catch (ArithmeticException e) {
+        //
+        // arithmetic exception
+        //
+        verifyException(""org.apache.commons.math3.util.ArithmeticUtils"", e);
+    }
+}",0,
+project,0,test8920,"public void test8920() throws Throwable {
+    int int0 = 3;
+    Fraction fraction0 = new Fraction((-378), 3);
+    Fraction fraction1 = Fraction.getReducedFraction(584703393, 3);
+    Object object0 = new Object();
+    Fraction.getReducedFraction(584703393, (-378));
+    fraction1.ZERO.abs();
+    Fraction fraction2 = Fraction.getReducedFraction(3, 3);
+    fraction2.reciprocal();
+    fraction0.equals(object0);
+    Fraction fraction3 = fraction0.multiply(fraction1);
+    Fraction fraction4 = fraction3.subtract(int0);
+    // Undeclared exception!
+    try {
+        fraction4.subtract(int0);
+        fail(""Expecting exception: ArithmeticException"");
+    } catch (ArithmeticException e) {
+        //
+        // arithmetic exception
+        //
+        verifyException(""org.apache.commons.math3.util.ArithmeticUtils"", e);
+    }
+}",1,

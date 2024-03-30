@@ -1,0 +1,1334 @@
+focal_method,test_prefix,docstring
+"public static double midpoint(double a, double b) {
+    return (a + b) * .5;
+}","public void test000() throws Throwable {
+    double double0 = UnivariateRealSolverUtils.midpoint(352.617872, 0.5);
+    assertEquals(176.558936, double0, 0.01);
+}","/**
+ * Compute the midpoint of two values.
+ *
+ * @param a first value.
+ * @param b second value.
+ * @return the midpoint.
+ */"
+"public static double[] bracket(UnivariateRealFunction function, double initial, double lowerBound, double upperBound) throws ConvergenceException, FunctionEvaluationException {
+    return bracket(function, initial, lowerBound, upperBound, Integer.MAX_VALUE);
+}","public void test011() throws Throwable {
+    double[] doubleArray0 = new double[3];
+    PolynomialFunctionLagrangeForm polynomialFunctionLagrangeForm0 = new PolynomialFunctionLagrangeForm(doubleArray0, doubleArray0);
+    try {
+        UnivariateRealSolverUtils.bracket((UnivariateRealFunction) polynomialFunctionLagrangeForm0, Double.NaN, (-453.1300898761805), 0.0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Abscissa 0 is duplicated at both indices 1 and 1
+        //
+        verifyException(""org.apache.commons.math.analysis.polynomials.PolynomialFunctionLagrangeForm"", e);
+    }
+}","/**
+ * This method attempts to find two values a and b satisfying <ul>
+ * <li> <code> lowerBound <= a < initial < b <= upperBound</code> </li>
+ * <li> <code> f(a) * f(b) < 0 </code></li>
+ * </ul>
+ * If f is continuous on <code>[a,b],</code> this means that <code>a</code>
+ * and <code>b</code> bracket a root of f.
+ * <p>
+ * The algorithm starts by setting
+ * <code>a := initial -1; b := initial +1,</code> examines the value of the
+ * function at <code>a</code> and <code>b</code> and keeps moving
+ * the endpoints out by one unit each time through a loop that terminates
+ * when one of the following happens: <ul>
+ * <li> <code> f(a) * f(b) < 0 </code> --  success!</li>
+ * <li> <code> a = lower </code> and <code> b = upper</code>
+ * -- ConvergenceException </li>
+ * <li> <code> Integer.MAX_VALUE</code> iterations elapse
+ * -- ConvergenceException </li>
+ * </ul></p>
+ * <p>
+ * <strong>Note: </strong> this method can take
+ * <code>Integer.MAX_VALUE</code> iterations to throw a
+ * <code>ConvergenceException.</code>  Unless you are confident that there
+ * is a root between <code>lowerBound</code> and <code>upperBound</code>
+ * near <code>initial,</code> it is better to use
+ * {@link #bracket(UnivariateRealFunction, double, double, double, int)},
+ * explicitly specifying the maximum number of iterations.</p>
+ *
+ * @param function the function
+ * @param initial initial midpoint of interval being expanded to
+ * bracket a root
+ * @param lowerBound lower bound (a is never lower than this value)
+ * @param upperBound upper bound (b never is greater than this
+ * value)
+ * @return a two element array holding {a, b}
+ * @throws ConvergenceException if a root can not be bracketted
+ * @throws FunctionEvaluationException if an error occurs evaluating the
+ * function
+ * @throws IllegalArgumentException if function is null, maximumIterations
+ * is not positive, or initial is not between lowerBound and upperBound
+ */"
+"public static double[] bracket(UnivariateRealFunction function, double initial, double lowerBound, double upperBound, int maximumIterations) throws ConvergenceException, FunctionEvaluationException {
+    if (function == null) {
+        throw MathRuntimeException.createIllegalArgumentException(""function is null"");
+    }
+    if (maximumIterations <= 0) {
+        throw MathRuntimeException.createIllegalArgumentException(""bad value for maximum iterations number: {0}"", maximumIterations);
+    }
+    if (initial < lowerBound || initial > upperBound || lowerBound >= upperBound) {
+        throw MathRuntimeException.createIllegalArgumentException(""invalid bracketing parameters:  lower bound={0},  initial={1}, upper bound={2}"", lowerBound, initial, upperBound);
+    }
+    double a = initial;
+    double b = initial;
+    double fa;
+    double fb;
+    int numIterations = 0;
+    do {
+        a = Math.max(a - 1.0, lowerBound);
+        b = Math.min(b + 1.0, upperBound);
+        fa = function.value(a);
+        fb = function.value(b);
+        numIterations++;
+    } while ((fa * fb > 0.0) && (numIterations < maximumIterations) && ((a > lowerBound) || (b < upperBound)));
+    if (fa * fb >= 0.0) {
+        throw new ConvergenceException(""number of iterations={0}, maximum iterations={1}, "" + ""initial={2}, lower bound={3}, upper bound={4}, final a value={5}, "" + ""final b value={6}, f(a)={7}, f(b)={8}"", numIterations, maximumIterations, initial, lowerBound, upperBound, a, b, fa, fb);
+    }
+    return new double[] { a, b };
+}","public void test022() throws Throwable {
+    double[] doubleArray0 = new double[5];
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    // Undeclared exception!
+    try {
+        UnivariateRealSolverUtils.bracket((UnivariateRealFunction) polynomialFunction0, (-1418.193365), (-172.56756), (-172.56756), 0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // bad value for maximum iterations number: 0
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}","/**
+ * This method attempts to find two values a and b satisfying <ul>
+ * <li> <code> lowerBound <= a < initial < b <= upperBound</code> </li>
+ * <li> <code> f(a) * f(b) <= 0 </code> </li>
+ * </ul>
+ * If f is continuous on <code>[a,b],</code> this means that <code>a</code>
+ * and <code>b</code> bracket a root of f.
+ * <p>
+ * The algorithm starts by setting
+ * <code>a := initial -1; b := initial +1,</code> examines the value of the
+ * function at <code>a</code> and <code>b</code> and keeps moving
+ * the endpoints out by one unit each time through a loop that terminates
+ * when one of the following happens: <ul>
+ * <li> <code> f(a) * f(b) <= 0 </code> --  success!</li>
+ * <li> <code> a = lower </code> and <code> b = upper</code>
+ * -- ConvergenceException </li>
+ * <li> <code> maximumIterations</code> iterations elapse
+ * -- ConvergenceException </li></ul></p>
+ *
+ * @param function the function
+ * @param initial initial midpoint of interval being expanded to
+ * bracket a root
+ * @param lowerBound lower bound (a is never lower than this value)
+ * @param upperBound upper bound (b never is greater than this
+ * value)
+ * @param maximumIterations maximum number of iterations to perform
+ * @return a two element array holding {a, b}.
+ * @throws ConvergenceException if the algorithm fails to find a and b
+ * satisfying the desired conditions
+ * @throws FunctionEvaluationException if an error occurs evaluating the
+ * function
+ * @throws IllegalArgumentException if function is null, maximumIterations
+ * is not positive, or initial is not between lowerBound and upperBound
+ */"
+"public static double solve(UnivariateRealFunction f, double x0, double x1, double absoluteAccuracy) throws ConvergenceException, FunctionEvaluationException {
+    setup(f);
+    UnivariateRealSolver solver = LazyHolder.FACTORY.newDefaultSolver();
+    solver.setAbsoluteAccuracy(absoluteAccuracy);
+    return solver.solve(f, x0, x1);
+}","public void test033() throws Throwable {
+    double[] doubleArray0 = new double[4];
+    doubleArray0[1] = 6.0;
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    double double0 = UnivariateRealSolverUtils.solve((UnivariateRealFunction) polynomialFunction0, (-473.83763), 0.0, 0.0);
+    assertEquals(0.0, double0, 0.01);
+}","/**
+ * Convenience method to find a zero of a univariate real function.  A default
+ * solver is used.
+ *
+ * @param f the function
+ * @param x0 the lower bound for the interval
+ * @param x1 the upper bound for the interval
+ * @param absoluteAccuracy the accuracy to be used by the solver
+ * @return a value where the function is zero
+ * @throws ConvergenceException if the iteration count is exceeded
+ * @throws FunctionEvaluationException if an error occurs evaluating the
+ * function
+ * @throws IllegalArgumentException if f is null, the endpoints do not
+ * specify a valid interval, or the absoluteAccuracy is not valid for the
+ * default solver
+ */"
+"public static double solve(UnivariateRealFunction f, double x0, double x1, double absoluteAccuracy) throws ConvergenceException, FunctionEvaluationException {
+    setup(f);
+    UnivariateRealSolver solver = LazyHolder.FACTORY.newDefaultSolver();
+    solver.setAbsoluteAccuracy(absoluteAccuracy);
+    return solver.solve(f, x0, x1);
+}","public void test044() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[0] = 2514.9414599383;
+    PolynomialFunctionLagrangeForm polynomialFunctionLagrangeForm0 = new PolynomialFunctionLagrangeForm(doubleArray0, doubleArray0);
+    double double0 = UnivariateRealSolverUtils.solve((UnivariateRealFunction) polynomialFunctionLagrangeForm0, (-2516.294219155), 1.5, 243.992729932158);
+    assertEquals(1.5, double0, 0.01);
+}","/**
+ * Convenience method to find a zero of a univariate real function.  A default
+ * solver is used.
+ *
+ * @param f the function
+ * @param x0 the lower bound for the interval
+ * @param x1 the upper bound for the interval
+ * @param absoluteAccuracy the accuracy to be used by the solver
+ * @return a value where the function is zero
+ * @throws ConvergenceException if the iteration count is exceeded
+ * @throws FunctionEvaluationException if an error occurs evaluating the
+ * function
+ * @throws IllegalArgumentException if f is null, the endpoints do not
+ * specify a valid interval, or the absoluteAccuracy is not valid for the
+ * default solver
+ */"
+"public static double solve(UnivariateRealFunction f, double x0, double x1, double absoluteAccuracy) throws ConvergenceException, FunctionEvaluationException {
+    setup(f);
+    UnivariateRealSolver solver = LazyHolder.FACTORY.newDefaultSolver();
+    solver.setAbsoluteAccuracy(absoluteAccuracy);
+    return solver.solve(f, x0, x1);
+}","public void test055() throws Throwable {
+    double[] doubleArray0 = new double[6];
+    doubleArray0[1] = 2381.909530279;
+    doubleArray0[5] = (-22.812964);
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    UnivariateRealFunction univariateRealFunction0 = polynomialFunction0.derivative();
+    double double0 = UnivariateRealSolverUtils.solve(univariateRealFunction0, (-1421.05262768), 0.0, 0.5);
+    assertEquals((-2.062782174033903), double0, 0.01);
+}","/**
+ * Convenience method to find a zero of a univariate real function.  A default
+ * solver is used.
+ *
+ * @param f the function
+ * @param x0 the lower bound for the interval
+ * @param x1 the upper bound for the interval
+ * @param absoluteAccuracy the accuracy to be used by the solver
+ * @return a value where the function is zero
+ * @throws ConvergenceException if the iteration count is exceeded
+ * @throws FunctionEvaluationException if an error occurs evaluating the
+ * function
+ * @throws IllegalArgumentException if f is null, the endpoints do not
+ * specify a valid interval, or the absoluteAccuracy is not valid for the
+ * default solver
+ */"
+"public static double solve(UnivariateRealFunction f, double x0, double x1) throws ConvergenceException, FunctionEvaluationException {
+    setup(f);
+    return LazyHolder.FACTORY.newDefaultSolver().solve(f, x0, x1);
+}","public void test066() throws Throwable {
+    double[] doubleArray0 = new double[6];
+    doubleArray0[0] = (-1595.0);
+    doubleArray0[1] = 938.0;
+    doubleArray0[2] = 1108.004441853651;
+    doubleArray0[3] = 1350.6452156541468;
+    doubleArray0[4] = (-838.931759972695);
+    PolynomialFunctionLagrangeForm polynomialFunctionLagrangeForm0 = new PolynomialFunctionLagrangeForm(doubleArray0, doubleArray0);
+    double double0 = UnivariateRealSolverUtils.solve((UnivariateRealFunction) polynomialFunctionLagrangeForm0, (-838.931759972695), 0.0);
+    assertEquals(0.0, double0, 0.01);
+}","/**
+ * Convenience method to find a zero of a univariate real function.  A default
+ * solver is used.
+ *
+ * @param f the function.
+ * @param x0 the lower bound for the interval.
+ * @param x1 the upper bound for the interval.
+ * @return a value where the function is zero.
+ * @throws ConvergenceException if the iteration count was exceeded
+ * @throws FunctionEvaluationException if an error occurs evaluating
+ * the function
+ * @throws IllegalArgumentException if f is null or the endpoints do not
+ * specify a valid interval
+ */"
+"public static double solve(UnivariateRealFunction f, double x0, double x1) throws ConvergenceException, FunctionEvaluationException {
+    setup(f);
+    return LazyHolder.FACTORY.newDefaultSolver().solve(f, x0, x1);
+}","public void test077() throws Throwable {
+    double[] doubleArray0 = new double[6];
+    doubleArray0[0] = Double.POSITIVE_INFINITY;
+    doubleArray0[1] = Double.POSITIVE_INFINITY;
+    doubleArray0[2] = 1752.95617;
+    doubleArray0[3] = 164.5;
+    doubleArray0[5] = (-1918.61816);
+    PolynomialFunctionLagrangeForm polynomialFunctionLagrangeForm0 = new PolynomialFunctionLagrangeForm(doubleArray0, doubleArray0);
+    double double0 = UnivariateRealSolverUtils.solve((UnivariateRealFunction) polynomialFunctionLagrangeForm0, 1.0, Double.POSITIVE_INFINITY);
+    assertEquals(Double.POSITIVE_INFINITY, double0, 0.01);
+}","/**
+ * Convenience method to find a zero of a univariate real function.  A default
+ * solver is used.
+ *
+ * @param f the function.
+ * @param x0 the lower bound for the interval.
+ * @param x1 the upper bound for the interval.
+ * @return a value where the function is zero.
+ * @throws ConvergenceException if the iteration count was exceeded
+ * @throws FunctionEvaluationException if an error occurs evaluating
+ * the function
+ * @throws IllegalArgumentException if f is null or the endpoints do not
+ * specify a valid interval
+ */"
+"public static double solve(UnivariateRealFunction f, double x0, double x1) throws ConvergenceException, FunctionEvaluationException {
+    setup(f);
+    return LazyHolder.FACTORY.newDefaultSolver().solve(f, x0, x1);
+}","public void test088() throws Throwable {
+    double[] doubleArray0 = new double[7];
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    double double0 = UnivariateRealSolverUtils.solve((UnivariateRealFunction) polynomialFunction0, (-373.40972633), 0.0);
+    assertEquals((-373.40972633), double0, 0.01);
+}","/**
+ * Convenience method to find a zero of a univariate real function.  A default
+ * solver is used.
+ *
+ * @param f the function.
+ * @param x0 the lower bound for the interval.
+ * @param x1 the upper bound for the interval.
+ * @return a value where the function is zero.
+ * @throws ConvergenceException if the iteration count was exceeded
+ * @throws FunctionEvaluationException if an error occurs evaluating
+ * the function
+ * @throws IllegalArgumentException if f is null or the endpoints do not
+ * specify a valid interval
+ */"
+"public static double midpoint(double a, double b) {
+    return (a + b) * .5;
+}","public void test099() throws Throwable {
+    double double0 = UnivariateRealSolverUtils.midpoint(0.0, 0.0);
+    assertEquals(0.0, double0, 0.01);
+}","/**
+ * Compute the midpoint of two values.
+ *
+ * @param a first value.
+ * @param b second value.
+ * @return the midpoint.
+ */"
+"public static double[] bracket(UnivariateRealFunction function, double initial, double lowerBound, double upperBound) throws ConvergenceException, FunctionEvaluationException {
+    return bracket(function, initial, lowerBound, upperBound, Integer.MAX_VALUE);
+}","public void test1010() throws Throwable {
+    double[] doubleArray0 = new double[5];
+    doubleArray0[2] = 366.5560145;
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    UnivariateRealFunction univariateRealFunction0 = polynomialFunction0.derivative();
+    double[] doubleArray1 = UnivariateRealSolverUtils.bracket(univariateRealFunction0, 0.0, (-853.96784643052), 879.67);
+    assertArrayEquals(new double[] { (-1.0), 1.0 }, doubleArray1, 0.01);
+}","/**
+ * This method attempts to find two values a and b satisfying <ul>
+ * <li> <code> lowerBound <= a < initial < b <= upperBound</code> </li>
+ * <li> <code> f(a) * f(b) < 0 </code></li>
+ * </ul>
+ * If f is continuous on <code>[a,b],</code> this means that <code>a</code>
+ * and <code>b</code> bracket a root of f.
+ * <p>
+ * The algorithm starts by setting
+ * <code>a := initial -1; b := initial +1,</code> examines the value of the
+ * function at <code>a</code> and <code>b</code> and keeps moving
+ * the endpoints out by one unit each time through a loop that terminates
+ * when one of the following happens: <ul>
+ * <li> <code> f(a) * f(b) < 0 </code> --  success!</li>
+ * <li> <code> a = lower </code> and <code> b = upper</code>
+ * -- ConvergenceException </li>
+ * <li> <code> Integer.MAX_VALUE</code> iterations elapse
+ * -- ConvergenceException </li>
+ * </ul></p>
+ * <p>
+ * <strong>Note: </strong> this method can take
+ * <code>Integer.MAX_VALUE</code> iterations to throw a
+ * <code>ConvergenceException.</code>  Unless you are confident that there
+ * is a root between <code>lowerBound</code> and <code>upperBound</code>
+ * near <code>initial,</code> it is better to use
+ * {@link #bracket(UnivariateRealFunction, double, double, double, int)},
+ * explicitly specifying the maximum number of iterations.</p>
+ *
+ * @param function the function
+ * @param initial initial midpoint of interval being expanded to
+ * bracket a root
+ * @param lowerBound lower bound (a is never lower than this value)
+ * @param upperBound upper bound (b never is greater than this
+ * value)
+ * @return a two element array holding {a, b}
+ * @throws ConvergenceException if a root can not be bracketted
+ * @throws FunctionEvaluationException if an error occurs evaluating the
+ * function
+ * @throws IllegalArgumentException if function is null, maximumIterations
+ * is not positive, or initial is not between lowerBound and upperBound
+ */"
+"public static double solve(UnivariateRealFunction f, double x0, double x1, double absoluteAccuracy) throws ConvergenceException, FunctionEvaluationException {
+    setup(f);
+    UnivariateRealSolver solver = LazyHolder.FACTORY.newDefaultSolver();
+    solver.setAbsoluteAccuracy(absoluteAccuracy);
+    return solver.solve(f, x0, x1);
+}","public void test1111() throws Throwable {
+    // Undeclared exception!
+    try {
+        UnivariateRealSolverUtils.solve((UnivariateRealFunction) null, 2028.36210992623, 2028.36210992623, 0.0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // function is null
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}","/**
+ * Convenience method to find a zero of a univariate real function.  A default
+ * solver is used.
+ *
+ * @param f the function
+ * @param x0 the lower bound for the interval
+ * @param x1 the upper bound for the interval
+ * @param absoluteAccuracy the accuracy to be used by the solver
+ * @return a value where the function is zero
+ * @throws ConvergenceException if the iteration count is exceeded
+ * @throws FunctionEvaluationException if an error occurs evaluating the
+ * function
+ * @throws IllegalArgumentException if f is null, the endpoints do not
+ * specify a valid interval, or the absoluteAccuracy is not valid for the
+ * default solver
+ */"
+"public static double solve(UnivariateRealFunction f, double x0, double x1, double absoluteAccuracy) throws ConvergenceException, FunctionEvaluationException {
+    setup(f);
+    UnivariateRealSolver solver = LazyHolder.FACTORY.newDefaultSolver();
+    solver.setAbsoluteAccuracy(absoluteAccuracy);
+    return solver.solve(f, x0, x1);
+}","public void test1212() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[1] = 1161.5534;
+    PolynomialFunction[] polynomialFunctionArray0 = new PolynomialFunction[1];
+    PolynomialSplineFunction polynomialSplineFunction0 = new PolynomialSplineFunction(doubleArray0, polynomialFunctionArray0);
+    try {
+        UnivariateRealSolverUtils.solve((UnivariateRealFunction) polynomialSplineFunction0, (-2054.5238297), 1161.5534, (-2054.5238297));
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Argument -2,054.524 outside domain [0 ; 1,161.553]
+        //
+        verifyException(""org.apache.commons.math.analysis.polynomials.PolynomialSplineFunction"", e);
+    }
+}","/**
+ * Convenience method to find a zero of a univariate real function.  A default
+ * solver is used.
+ *
+ * @param f the function
+ * @param x0 the lower bound for the interval
+ * @param x1 the upper bound for the interval
+ * @param absoluteAccuracy the accuracy to be used by the solver
+ * @return a value where the function is zero
+ * @throws ConvergenceException if the iteration count is exceeded
+ * @throws FunctionEvaluationException if an error occurs evaluating the
+ * function
+ * @throws IllegalArgumentException if f is null, the endpoints do not
+ * specify a valid interval, or the absoluteAccuracy is not valid for the
+ * default solver
+ */"
+"public static double solve(UnivariateRealFunction f, double x0, double x1) throws ConvergenceException, FunctionEvaluationException {
+    setup(f);
+    return LazyHolder.FACTORY.newDefaultSolver().solve(f, x0, x1);
+}","public void test1313() throws Throwable {
+    double[] doubleArray0 = new double[6];
+    PolynomialFunctionLagrangeForm polynomialFunctionLagrangeForm0 = new PolynomialFunctionLagrangeForm(doubleArray0, doubleArray0);
+    try {
+        UnivariateRealSolverUtils.solve((UnivariateRealFunction) polynomialFunctionLagrangeForm0, 1.0, Double.POSITIVE_INFINITY);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Abscissa 0 is duplicated at both indices 1 and 1
+        //
+        verifyException(""org.apache.commons.math.analysis.polynomials.PolynomialFunctionLagrangeForm"", e);
+    }
+}","/**
+ * Convenience method to find a zero of a univariate real function.  A default
+ * solver is used.
+ *
+ * @param f the function.
+ * @param x0 the lower bound for the interval.
+ * @param x1 the upper bound for the interval.
+ * @return a value where the function is zero.
+ * @throws ConvergenceException if the iteration count was exceeded
+ * @throws FunctionEvaluationException if an error occurs evaluating
+ * the function
+ * @throws IllegalArgumentException if f is null or the endpoints do not
+ * specify a valid interval
+ */"
+"public static double[] bracket(UnivariateRealFunction function, double initial, double lowerBound, double upperBound, int maximumIterations) throws ConvergenceException, FunctionEvaluationException {
+    if (function == null) {
+        throw MathRuntimeException.createIllegalArgumentException(""function is null"");
+    }
+    if (maximumIterations <= 0) {
+        throw MathRuntimeException.createIllegalArgumentException(""bad value for maximum iterations number: {0}"", maximumIterations);
+    }
+    if (initial < lowerBound || initial > upperBound || lowerBound >= upperBound) {
+        throw MathRuntimeException.createIllegalArgumentException(""invalid bracketing parameters:  lower bound={0},  initial={1}, upper bound={2}"", lowerBound, initial, upperBound);
+    }
+    double a = initial;
+    double b = initial;
+    double fa;
+    double fb;
+    int numIterations = 0;
+    do {
+        a = Math.max(a - 1.0, lowerBound);
+        b = Math.min(b + 1.0, upperBound);
+        fa = function.value(a);
+        fb = function.value(b);
+        numIterations++;
+    } while ((fa * fb > 0.0) && (numIterations < maximumIterations) && ((a > lowerBound) || (b < upperBound)));
+    if (fa * fb >= 0.0) {
+        throw new ConvergenceException(""number of iterations={0}, maximum iterations={1}, "" + ""initial={2}, lower bound={3}, upper bound={4}, final a value={5}, "" + ""final b value={6}, f(a)={7}, f(b)={8}"", numIterations, maximumIterations, initial, lowerBound, upperBound, a, b, fa, fb);
+    }
+    return new double[] { a, b };
+}","public void test1414() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[0] = 865.9414599382999;
+    PolynomialFunctionLagrangeForm polynomialFunctionLagrangeForm0 = new PolynomialFunctionLagrangeForm(doubleArray0, doubleArray0);
+    // Undeclared exception!
+    UnivariateRealSolverUtils.bracket((UnivariateRealFunction) polynomialFunctionLagrangeForm0, 865.9414599382999, 865.9414599382999, 2142582.8990391945, 2022);
+}","/**
+ * This method attempts to find two values a and b satisfying <ul>
+ * <li> <code> lowerBound <= a < initial < b <= upperBound</code> </li>
+ * <li> <code> f(a) * f(b) <= 0 </code> </li>
+ * </ul>
+ * If f is continuous on <code>[a,b],</code> this means that <code>a</code>
+ * and <code>b</code> bracket a root of f.
+ * <p>
+ * The algorithm starts by setting
+ * <code>a := initial -1; b := initial +1,</code> examines the value of the
+ * function at <code>a</code> and <code>b</code> and keeps moving
+ * the endpoints out by one unit each time through a loop that terminates
+ * when one of the following happens: <ul>
+ * <li> <code> f(a) * f(b) <= 0 </code> --  success!</li>
+ * <li> <code> a = lower </code> and <code> b = upper</code>
+ * -- ConvergenceException </li>
+ * <li> <code> maximumIterations</code> iterations elapse
+ * -- ConvergenceException </li></ul></p>
+ *
+ * @param function the function
+ * @param initial initial midpoint of interval being expanded to
+ * bracket a root
+ * @param lowerBound lower bound (a is never lower than this value)
+ * @param upperBound upper bound (b never is greater than this
+ * value)
+ * @param maximumIterations maximum number of iterations to perform
+ * @return a two element array holding {a, b}.
+ * @throws ConvergenceException if the algorithm fails to find a and b
+ * satisfying the desired conditions
+ * @throws FunctionEvaluationException if an error occurs evaluating the
+ * function
+ * @throws IllegalArgumentException if function is null, maximumIterations
+ * is not positive, or initial is not between lowerBound and upperBound
+ */"
+"public static double[] bracket(UnivariateRealFunction function, double initial, double lowerBound, double upperBound) throws ConvergenceException, FunctionEvaluationException {
+    return bracket(function, initial, lowerBound, upperBound, Integer.MAX_VALUE);
+}","public void test1515() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[0] = 2514.9414599383;
+    PolynomialFunctionLagrangeForm polynomialFunctionLagrangeForm0 = new PolynomialFunctionLagrangeForm(doubleArray0, doubleArray0);
+    // Undeclared exception!
+    UnivariateRealSolverUtils.bracket((UnivariateRealFunction) polynomialFunctionLagrangeForm0, 2514.9414599383, 0.0, 2514.9414599383);
+}","/**
+ * This method attempts to find two values a and b satisfying <ul>
+ * <li> <code> lowerBound <= a < initial < b <= upperBound</code> </li>
+ * <li> <code> f(a) * f(b) < 0 </code></li>
+ * </ul>
+ * If f is continuous on <code>[a,b],</code> this means that <code>a</code>
+ * and <code>b</code> bracket a root of f.
+ * <p>
+ * The algorithm starts by setting
+ * <code>a := initial -1; b := initial +1,</code> examines the value of the
+ * function at <code>a</code> and <code>b</code> and keeps moving
+ * the endpoints out by one unit each time through a loop that terminates
+ * when one of the following happens: <ul>
+ * <li> <code> f(a) * f(b) < 0 </code> --  success!</li>
+ * <li> <code> a = lower </code> and <code> b = upper</code>
+ * -- ConvergenceException </li>
+ * <li> <code> Integer.MAX_VALUE</code> iterations elapse
+ * -- ConvergenceException </li>
+ * </ul></p>
+ * <p>
+ * <strong>Note: </strong> this method can take
+ * <code>Integer.MAX_VALUE</code> iterations to throw a
+ * <code>ConvergenceException.</code>  Unless you are confident that there
+ * is a root between <code>lowerBound</code> and <code>upperBound</code>
+ * near <code>initial,</code> it is better to use
+ * {@link #bracket(UnivariateRealFunction, double, double, double, int)},
+ * explicitly specifying the maximum number of iterations.</p>
+ *
+ * @param function the function
+ * @param initial initial midpoint of interval being expanded to
+ * bracket a root
+ * @param lowerBound lower bound (a is never lower than this value)
+ * @param upperBound upper bound (b never is greater than this
+ * value)
+ * @return a two element array holding {a, b}
+ * @throws ConvergenceException if a root can not be bracketted
+ * @throws FunctionEvaluationException if an error occurs evaluating the
+ * function
+ * @throws IllegalArgumentException if function is null, maximumIterations
+ * is not positive, or initial is not between lowerBound and upperBound
+ */"
+"public static double[] bracket(UnivariateRealFunction function, double initial, double lowerBound, double upperBound, int maximumIterations) throws ConvergenceException, FunctionEvaluationException {
+    if (function == null) {
+        throw MathRuntimeException.createIllegalArgumentException(""function is null"");
+    }
+    if (maximumIterations <= 0) {
+        throw MathRuntimeException.createIllegalArgumentException(""bad value for maximum iterations number: {0}"", maximumIterations);
+    }
+    if (initial < lowerBound || initial > upperBound || lowerBound >= upperBound) {
+        throw MathRuntimeException.createIllegalArgumentException(""invalid bracketing parameters:  lower bound={0},  initial={1}, upper bound={2}"", lowerBound, initial, upperBound);
+    }
+    double a = initial;
+    double b = initial;
+    double fa;
+    double fb;
+    int numIterations = 0;
+    do {
+        a = Math.max(a - 1.0, lowerBound);
+        b = Math.min(b + 1.0, upperBound);
+        fa = function.value(a);
+        fb = function.value(b);
+        numIterations++;
+    } while ((fa * fb > 0.0) && (numIterations < maximumIterations) && ((a > lowerBound) || (b < upperBound)));
+    if (fa * fb >= 0.0) {
+        throw new ConvergenceException(""number of iterations={0}, maximum iterations={1}, "" + ""initial={2}, lower bound={3}, upper bound={4}, final a value={5}, "" + ""final b value={6}, f(a)={7}, f(b)={8}"", numIterations, maximumIterations, initial, lowerBound, upperBound, a, b, fa, fb);
+    }
+    return new double[] { a, b };
+}","public void test1616() throws Throwable {
+    double[] doubleArray0 = new double[1];
+    doubleArray0[0] = (-1454.0);
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    try {
+        UnivariateRealSolverUtils.bracket((UnivariateRealFunction) polynomialFunction0, (-1454.0), (-1454.0), 291.9966, 2565);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // number of iterations=1,746, maximum iterations=2,565, initial=-1,454, lower bound=-1,454, upper bound=291.997, final a value=-1,454, final b value=291.997, f(a)=-1,454, f(b)=-1,454
+        //
+        verifyException(""org.apache.commons.math.analysis.solvers.UnivariateRealSolverUtils"", e);
+    }
+}","/**
+ * This method attempts to find two values a and b satisfying <ul>
+ * <li> <code> lowerBound <= a < initial < b <= upperBound</code> </li>
+ * <li> <code> f(a) * f(b) <= 0 </code> </li>
+ * </ul>
+ * If f is continuous on <code>[a,b],</code> this means that <code>a</code>
+ * and <code>b</code> bracket a root of f.
+ * <p>
+ * The algorithm starts by setting
+ * <code>a := initial -1; b := initial +1,</code> examines the value of the
+ * function at <code>a</code> and <code>b</code> and keeps moving
+ * the endpoints out by one unit each time through a loop that terminates
+ * when one of the following happens: <ul>
+ * <li> <code> f(a) * f(b) <= 0 </code> --  success!</li>
+ * <li> <code> a = lower </code> and <code> b = upper</code>
+ * -- ConvergenceException </li>
+ * <li> <code> maximumIterations</code> iterations elapse
+ * -- ConvergenceException </li></ul></p>
+ *
+ * @param function the function
+ * @param initial initial midpoint of interval being expanded to
+ * bracket a root
+ * @param lowerBound lower bound (a is never lower than this value)
+ * @param upperBound upper bound (b never is greater than this
+ * value)
+ * @param maximumIterations maximum number of iterations to perform
+ * @return a two element array holding {a, b}.
+ * @throws ConvergenceException if the algorithm fails to find a and b
+ * satisfying the desired conditions
+ * @throws FunctionEvaluationException if an error occurs evaluating the
+ * function
+ * @throws IllegalArgumentException if function is null, maximumIterations
+ * is not positive, or initial is not between lowerBound and upperBound
+ */"
+"public static double[] bracket(UnivariateRealFunction function, double initial, double lowerBound, double upperBound, int maximumIterations) throws ConvergenceException, FunctionEvaluationException {
+    if (function == null) {
+        throw MathRuntimeException.createIllegalArgumentException(""function is null"");
+    }
+    if (maximumIterations <= 0) {
+        throw MathRuntimeException.createIllegalArgumentException(""bad value for maximum iterations number: {0}"", maximumIterations);
+    }
+    if (initial < lowerBound || initial > upperBound || lowerBound >= upperBound) {
+        throw MathRuntimeException.createIllegalArgumentException(""invalid bracketing parameters:  lower bound={0},  initial={1}, upper bound={2}"", lowerBound, initial, upperBound);
+    }
+    double a = initial;
+    double b = initial;
+    double fa;
+    double fb;
+    int numIterations = 0;
+    do {
+        a = Math.max(a - 1.0, lowerBound);
+        b = Math.min(b + 1.0, upperBound);
+        fa = function.value(a);
+        fb = function.value(b);
+        numIterations++;
+    } while ((fa * fb > 0.0) && (numIterations < maximumIterations) && ((a > lowerBound) || (b < upperBound)));
+    if (fa * fb >= 0.0) {
+        throw new ConvergenceException(""number of iterations={0}, maximum iterations={1}, "" + ""initial={2}, lower bound={3}, upper bound={4}, final a value={5}, "" + ""final b value={6}, f(a)={7}, f(b)={8}"", numIterations, maximumIterations, initial, lowerBound, upperBound, a, b, fa, fb);
+    }
+    return new double[] { a, b };
+}","public void test1717() throws Throwable {
+    double[] doubleArray0 = new double[7];
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    // Undeclared exception!
+    try {
+        UnivariateRealSolverUtils.bracket((UnivariateRealFunction) polynomialFunction0, (-1.0), 770.90204361892, 0.5, 7);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // invalid bracketing parameters:  lower bound=770.902,  initial=-1, upper bound=0.5
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}","/**
+ * This method attempts to find two values a and b satisfying <ul>
+ * <li> <code> lowerBound <= a < initial < b <= upperBound</code> </li>
+ * <li> <code> f(a) * f(b) <= 0 </code> </li>
+ * </ul>
+ * If f is continuous on <code>[a,b],</code> this means that <code>a</code>
+ * and <code>b</code> bracket a root of f.
+ * <p>
+ * The algorithm starts by setting
+ * <code>a := initial -1; b := initial +1,</code> examines the value of the
+ * function at <code>a</code> and <code>b</code> and keeps moving
+ * the endpoints out by one unit each time through a loop that terminates
+ * when one of the following happens: <ul>
+ * <li> <code> f(a) * f(b) <= 0 </code> --  success!</li>
+ * <li> <code> a = lower </code> and <code> b = upper</code>
+ * -- ConvergenceException </li>
+ * <li> <code> maximumIterations</code> iterations elapse
+ * -- ConvergenceException </li></ul></p>
+ *
+ * @param function the function
+ * @param initial initial midpoint of interval being expanded to
+ * bracket a root
+ * @param lowerBound lower bound (a is never lower than this value)
+ * @param upperBound upper bound (b never is greater than this
+ * value)
+ * @param maximumIterations maximum number of iterations to perform
+ * @return a two element array holding {a, b}.
+ * @throws ConvergenceException if the algorithm fails to find a and b
+ * satisfying the desired conditions
+ * @throws FunctionEvaluationException if an error occurs evaluating the
+ * function
+ * @throws IllegalArgumentException if function is null, maximumIterations
+ * is not positive, or initial is not between lowerBound and upperBound
+ */"
+"public static double[] bracket(UnivariateRealFunction function, double initial, double lowerBound, double upperBound, int maximumIterations) throws ConvergenceException, FunctionEvaluationException {
+    if (function == null) {
+        throw MathRuntimeException.createIllegalArgumentException(""function is null"");
+    }
+    if (maximumIterations <= 0) {
+        throw MathRuntimeException.createIllegalArgumentException(""bad value for maximum iterations number: {0}"", maximumIterations);
+    }
+    if (initial < lowerBound || initial > upperBound || lowerBound >= upperBound) {
+        throw MathRuntimeException.createIllegalArgumentException(""invalid bracketing parameters:  lower bound={0},  initial={1}, upper bound={2}"", lowerBound, initial, upperBound);
+    }
+    double a = initial;
+    double b = initial;
+    double fa;
+    double fb;
+    int numIterations = 0;
+    do {
+        a = Math.max(a - 1.0, lowerBound);
+        b = Math.min(b + 1.0, upperBound);
+        fa = function.value(a);
+        fb = function.value(b);
+        numIterations++;
+    } while ((fa * fb > 0.0) && (numIterations < maximumIterations) && ((a > lowerBound) || (b < upperBound)));
+    if (fa * fb >= 0.0) {
+        throw new ConvergenceException(""number of iterations={0}, maximum iterations={1}, "" + ""initial={2}, lower bound={3}, upper bound={4}, final a value={5}, "" + ""final b value={6}, f(a)={7}, f(b)={8}"", numIterations, maximumIterations, initial, lowerBound, upperBound, a, b, fa, fb);
+    }
+    return new double[] { a, b };
+}","public void test1818() throws Throwable {
+    double[] doubleArray0 = new double[3];
+    PolynomialFunctionLagrangeForm polynomialFunctionLagrangeForm0 = new PolynomialFunctionLagrangeForm(doubleArray0, doubleArray0);
+    // Undeclared exception!
+    try {
+        UnivariateRealSolverUtils.bracket((UnivariateRealFunction) polynomialFunctionLagrangeForm0, Double.NaN, 2262.6, 1302.54756, 2147481241);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // invalid bracketing parameters:  lower bound=2,262.6,  initial=\uFFFD, upper bound=1,302.548
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}","/**
+ * This method attempts to find two values a and b satisfying <ul>
+ * <li> <code> lowerBound <= a < initial < b <= upperBound</code> </li>
+ * <li> <code> f(a) * f(b) <= 0 </code> </li>
+ * </ul>
+ * If f is continuous on <code>[a,b],</code> this means that <code>a</code>
+ * and <code>b</code> bracket a root of f.
+ * <p>
+ * The algorithm starts by setting
+ * <code>a := initial -1; b := initial +1,</code> examines the value of the
+ * function at <code>a</code> and <code>b</code> and keeps moving
+ * the endpoints out by one unit each time through a loop that terminates
+ * when one of the following happens: <ul>
+ * <li> <code> f(a) * f(b) <= 0 </code> --  success!</li>
+ * <li> <code> a = lower </code> and <code> b = upper</code>
+ * -- ConvergenceException </li>
+ * <li> <code> maximumIterations</code> iterations elapse
+ * -- ConvergenceException </li></ul></p>
+ *
+ * @param function the function
+ * @param initial initial midpoint of interval being expanded to
+ * bracket a root
+ * @param lowerBound lower bound (a is never lower than this value)
+ * @param upperBound upper bound (b never is greater than this
+ * value)
+ * @param maximumIterations maximum number of iterations to perform
+ * @return a two element array holding {a, b}.
+ * @throws ConvergenceException if the algorithm fails to find a and b
+ * satisfying the desired conditions
+ * @throws FunctionEvaluationException if an error occurs evaluating the
+ * function
+ * @throws IllegalArgumentException if function is null, maximumIterations
+ * is not positive, or initial is not between lowerBound and upperBound
+ */"
+"public static double[] bracket(UnivariateRealFunction function, double initial, double lowerBound, double upperBound, int maximumIterations) throws ConvergenceException, FunctionEvaluationException {
+    if (function == null) {
+        throw MathRuntimeException.createIllegalArgumentException(""function is null"");
+    }
+    if (maximumIterations <= 0) {
+        throw MathRuntimeException.createIllegalArgumentException(""bad value for maximum iterations number: {0}"", maximumIterations);
+    }
+    if (initial < lowerBound || initial > upperBound || lowerBound >= upperBound) {
+        throw MathRuntimeException.createIllegalArgumentException(""invalid bracketing parameters:  lower bound={0},  initial={1}, upper bound={2}"", lowerBound, initial, upperBound);
+    }
+    double a = initial;
+    double b = initial;
+    double fa;
+    double fb;
+    int numIterations = 0;
+    do {
+        a = Math.max(a - 1.0, lowerBound);
+        b = Math.min(b + 1.0, upperBound);
+        fa = function.value(a);
+        fb = function.value(b);
+        numIterations++;
+    } while ((fa * fb > 0.0) && (numIterations < maximumIterations) && ((a > lowerBound) || (b < upperBound)));
+    if (fa * fb >= 0.0) {
+        throw new ConvergenceException(""number of iterations={0}, maximum iterations={1}, "" + ""initial={2}, lower bound={3}, upper bound={4}, final a value={5}, "" + ""final b value={6}, f(a)={7}, f(b)={8}"", numIterations, maximumIterations, initial, lowerBound, upperBound, a, b, fa, fb);
+    }
+    return new double[] { a, b };
+}","public void test1919() throws Throwable {
+    // Undeclared exception!
+    try {
+        UnivariateRealSolverUtils.bracket((UnivariateRealFunction) null, (-1490.0), (-1490.0), 0.5, 0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // function is null
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}","/**
+ * This method attempts to find two values a and b satisfying <ul>
+ * <li> <code> lowerBound <= a < initial < b <= upperBound</code> </li>
+ * <li> <code> f(a) * f(b) <= 0 </code> </li>
+ * </ul>
+ * If f is continuous on <code>[a,b],</code> this means that <code>a</code>
+ * and <code>b</code> bracket a root of f.
+ * <p>
+ * The algorithm starts by setting
+ * <code>a := initial -1; b := initial +1,</code> examines the value of the
+ * function at <code>a</code> and <code>b</code> and keeps moving
+ * the endpoints out by one unit each time through a loop that terminates
+ * when one of the following happens: <ul>
+ * <li> <code> f(a) * f(b) <= 0 </code> --  success!</li>
+ * <li> <code> a = lower </code> and <code> b = upper</code>
+ * -- ConvergenceException </li>
+ * <li> <code> maximumIterations</code> iterations elapse
+ * -- ConvergenceException </li></ul></p>
+ *
+ * @param function the function
+ * @param initial initial midpoint of interval being expanded to
+ * bracket a root
+ * @param lowerBound lower bound (a is never lower than this value)
+ * @param upperBound upper bound (b never is greater than this
+ * value)
+ * @param maximumIterations maximum number of iterations to perform
+ * @return a two element array holding {a, b}.
+ * @throws ConvergenceException if the algorithm fails to find a and b
+ * satisfying the desired conditions
+ * @throws FunctionEvaluationException if an error occurs evaluating the
+ * function
+ * @throws IllegalArgumentException if function is null, maximumIterations
+ * is not positive, or initial is not between lowerBound and upperBound
+ */"
+"public static double[] bracket(UnivariateRealFunction function, double initial, double lowerBound, double upperBound, int maximumIterations) throws ConvergenceException, FunctionEvaluationException {
+    if (function == null) {
+        throw MathRuntimeException.createIllegalArgumentException(""function is null"");
+    }
+    if (maximumIterations <= 0) {
+        throw MathRuntimeException.createIllegalArgumentException(""bad value for maximum iterations number: {0}"", maximumIterations);
+    }
+    if (initial < lowerBound || initial > upperBound || lowerBound >= upperBound) {
+        throw MathRuntimeException.createIllegalArgumentException(""invalid bracketing parameters:  lower bound={0},  initial={1}, upper bound={2}"", lowerBound, initial, upperBound);
+    }
+    double a = initial;
+    double b = initial;
+    double fa;
+    double fb;
+    int numIterations = 0;
+    do {
+        a = Math.max(a - 1.0, lowerBound);
+        b = Math.min(b + 1.0, upperBound);
+        fa = function.value(a);
+        fb = function.value(b);
+        numIterations++;
+    } while ((fa * fb > 0.0) && (numIterations < maximumIterations) && ((a > lowerBound) || (b < upperBound)));
+    if (fa * fb >= 0.0) {
+        throw new ConvergenceException(""number of iterations={0}, maximum iterations={1}, "" + ""initial={2}, lower bound={3}, upper bound={4}, final a value={5}, "" + ""final b value={6}, f(a)={7}, f(b)={8}"", numIterations, maximumIterations, initial, lowerBound, upperBound, a, b, fa, fb);
+    }
+    return new double[] { a, b };
+}","public void test2020() throws Throwable {
+    double[] doubleArray0 = new double[5];
+    doubleArray0[1] = (-127.63355408236791);
+    doubleArray0[2] = (-2963.22064613);
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    UnivariateRealFunction univariateRealFunction0 = polynomialFunction0.derivative();
+    double[] doubleArray1 = UnivariateRealSolverUtils.bracket(univariateRealFunction0, 0.0, (-127.63355408236791), 0.0, 7);
+    assertArrayEquals(new double[] { (-1.0), 0.0 }, doubleArray1, 0.01);
+}","/**
+ * This method attempts to find two values a and b satisfying <ul>
+ * <li> <code> lowerBound <= a < initial < b <= upperBound</code> </li>
+ * <li> <code> f(a) * f(b) <= 0 </code> </li>
+ * </ul>
+ * If f is continuous on <code>[a,b],</code> this means that <code>a</code>
+ * and <code>b</code> bracket a root of f.
+ * <p>
+ * The algorithm starts by setting
+ * <code>a := initial -1; b := initial +1,</code> examines the value of the
+ * function at <code>a</code> and <code>b</code> and keeps moving
+ * the endpoints out by one unit each time through a loop that terminates
+ * when one of the following happens: <ul>
+ * <li> <code> f(a) * f(b) <= 0 </code> --  success!</li>
+ * <li> <code> a = lower </code> and <code> b = upper</code>
+ * -- ConvergenceException </li>
+ * <li> <code> maximumIterations</code> iterations elapse
+ * -- ConvergenceException </li></ul></p>
+ *
+ * @param function the function
+ * @param initial initial midpoint of interval being expanded to
+ * bracket a root
+ * @param lowerBound lower bound (a is never lower than this value)
+ * @param upperBound upper bound (b never is greater than this
+ * value)
+ * @param maximumIterations maximum number of iterations to perform
+ * @return a two element array holding {a, b}.
+ * @throws ConvergenceException if the algorithm fails to find a and b
+ * satisfying the desired conditions
+ * @throws FunctionEvaluationException if an error occurs evaluating the
+ * function
+ * @throws IllegalArgumentException if function is null, maximumIterations
+ * is not positive, or initial is not between lowerBound and upperBound
+ */"
+"public static double[] bracket(UnivariateRealFunction function, double initial, double lowerBound, double upperBound, int maximumIterations) throws ConvergenceException, FunctionEvaluationException {
+    if (function == null) {
+        throw MathRuntimeException.createIllegalArgumentException(""function is null"");
+    }
+    if (maximumIterations <= 0) {
+        throw MathRuntimeException.createIllegalArgumentException(""bad value for maximum iterations number: {0}"", maximumIterations);
+    }
+    if (initial < lowerBound || initial > upperBound || lowerBound >= upperBound) {
+        throw MathRuntimeException.createIllegalArgumentException(""invalid bracketing parameters:  lower bound={0},  initial={1}, upper bound={2}"", lowerBound, initial, upperBound);
+    }
+    double a = initial;
+    double b = initial;
+    double fa;
+    double fb;
+    int numIterations = 0;
+    do {
+        a = Math.max(a - 1.0, lowerBound);
+        b = Math.min(b + 1.0, upperBound);
+        fa = function.value(a);
+        fb = function.value(b);
+        numIterations++;
+    } while ((fa * fb > 0.0) && (numIterations < maximumIterations) && ((a > lowerBound) || (b < upperBound)));
+    if (fa * fb >= 0.0) {
+        throw new ConvergenceException(""number of iterations={0}, maximum iterations={1}, "" + ""initial={2}, lower bound={3}, upper bound={4}, final a value={5}, "" + ""final b value={6}, f(a)={7}, f(b)={8}"", numIterations, maximumIterations, initial, lowerBound, upperBound, a, b, fa, fb);
+    }
+    return new double[] { a, b };
+}","public void test2121() throws Throwable {
+    double[] doubleArray0 = new double[8];
+    doubleArray0[4] = (-1836.04);
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    try {
+        UnivariateRealSolverUtils.bracket((UnivariateRealFunction) polynomialFunction0, (-445.1300898761805), (-453.1300898761805), 1541.17589679727, 9);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // number of iterations=9, maximum iterations=9, initial=-445.13, lower bound=-453.13, upper bound=1,541.176, final a value=-453.13, final b value=-436.13, f(a)=-77,405,843,488,326.89, f(b)=-66,427,260,504,085.83
+        //
+        verifyException(""org.apache.commons.math.analysis.solvers.UnivariateRealSolverUtils"", e);
+    }
+}","/**
+ * This method attempts to find two values a and b satisfying <ul>
+ * <li> <code> lowerBound <= a < initial < b <= upperBound</code> </li>
+ * <li> <code> f(a) * f(b) <= 0 </code> </li>
+ * </ul>
+ * If f is continuous on <code>[a,b],</code> this means that <code>a</code>
+ * and <code>b</code> bracket a root of f.
+ * <p>
+ * The algorithm starts by setting
+ * <code>a := initial -1; b := initial +1,</code> examines the value of the
+ * function at <code>a</code> and <code>b</code> and keeps moving
+ * the endpoints out by one unit each time through a loop that terminates
+ * when one of the following happens: <ul>
+ * <li> <code> f(a) * f(b) <= 0 </code> --  success!</li>
+ * <li> <code> a = lower </code> and <code> b = upper</code>
+ * -- ConvergenceException </li>
+ * <li> <code> maximumIterations</code> iterations elapse
+ * -- ConvergenceException </li></ul></p>
+ *
+ * @param function the function
+ * @param initial initial midpoint of interval being expanded to
+ * bracket a root
+ * @param lowerBound lower bound (a is never lower than this value)
+ * @param upperBound upper bound (b never is greater than this
+ * value)
+ * @param maximumIterations maximum number of iterations to perform
+ * @return a two element array holding {a, b}.
+ * @throws ConvergenceException if the algorithm fails to find a and b
+ * satisfying the desired conditions
+ * @throws FunctionEvaluationException if an error occurs evaluating the
+ * function
+ * @throws IllegalArgumentException if function is null, maximumIterations
+ * is not positive, or initial is not between lowerBound and upperBound
+ */"
+"public static double[] bracket(UnivariateRealFunction function, double initial, double lowerBound, double upperBound) throws ConvergenceException, FunctionEvaluationException {
+    return bracket(function, initial, lowerBound, upperBound, Integer.MAX_VALUE);
+}","public void test2222() throws Throwable {
+    double[] doubleArray0 = new double[7];
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    try {
+        UnivariateRealSolverUtils.bracket((UnivariateRealFunction) polynomialFunction0, 0.0, (-3018.643523973796), 0.0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // number of iterations=1, maximum iterations=2,147,483,647, initial=0, lower bound=-3,018.644, upper bound=0, final a value=-1, final b value=0, f(a)=0, f(b)=0
+        //
+        verifyException(""org.apache.commons.math.analysis.solvers.UnivariateRealSolverUtils"", e);
+    }
+}","/**
+ * This method attempts to find two values a and b satisfying <ul>
+ * <li> <code> lowerBound <= a < initial < b <= upperBound</code> </li>
+ * <li> <code> f(a) * f(b) < 0 </code></li>
+ * </ul>
+ * If f is continuous on <code>[a,b],</code> this means that <code>a</code>
+ * and <code>b</code> bracket a root of f.
+ * <p>
+ * The algorithm starts by setting
+ * <code>a := initial -1; b := initial +1,</code> examines the value of the
+ * function at <code>a</code> and <code>b</code> and keeps moving
+ * the endpoints out by one unit each time through a loop that terminates
+ * when one of the following happens: <ul>
+ * <li> <code> f(a) * f(b) < 0 </code> --  success!</li>
+ * <li> <code> a = lower </code> and <code> b = upper</code>
+ * -- ConvergenceException </li>
+ * <li> <code> Integer.MAX_VALUE</code> iterations elapse
+ * -- ConvergenceException </li>
+ * </ul></p>
+ * <p>
+ * <strong>Note: </strong> this method can take
+ * <code>Integer.MAX_VALUE</code> iterations to throw a
+ * <code>ConvergenceException.</code>  Unless you are confident that there
+ * is a root between <code>lowerBound</code> and <code>upperBound</code>
+ * near <code>initial,</code> it is better to use
+ * {@link #bracket(UnivariateRealFunction, double, double, double, int)},
+ * explicitly specifying the maximum number of iterations.</p>
+ *
+ * @param function the function
+ * @param initial initial midpoint of interval being expanded to
+ * bracket a root
+ * @param lowerBound lower bound (a is never lower than this value)
+ * @param upperBound upper bound (b never is greater than this
+ * value)
+ * @return a two element array holding {a, b}
+ * @throws ConvergenceException if a root can not be bracketted
+ * @throws FunctionEvaluationException if an error occurs evaluating the
+ * function
+ * @throws IllegalArgumentException if function is null, maximumIterations
+ * is not positive, or initial is not between lowerBound and upperBound
+ */"
+"public static double[] bracket(UnivariateRealFunction function, double initial, double lowerBound, double upperBound) throws ConvergenceException, FunctionEvaluationException {
+    return bracket(function, initial, lowerBound, upperBound, Integer.MAX_VALUE);
+}","public void test2323() throws Throwable {
+    double[] doubleArray0 = new double[17];
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    // Undeclared exception!
+    try {
+        UnivariateRealSolverUtils.bracket((UnivariateRealFunction) polynomialFunction0, 0.0, 0.0, 0.0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // invalid bracketing parameters:  lower bound=0,  initial=0, upper bound=0
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}","/**
+ * This method attempts to find two values a and b satisfying <ul>
+ * <li> <code> lowerBound <= a < initial < b <= upperBound</code> </li>
+ * <li> <code> f(a) * f(b) < 0 </code></li>
+ * </ul>
+ * If f is continuous on <code>[a,b],</code> this means that <code>a</code>
+ * and <code>b</code> bracket a root of f.
+ * <p>
+ * The algorithm starts by setting
+ * <code>a := initial -1; b := initial +1,</code> examines the value of the
+ * function at <code>a</code> and <code>b</code> and keeps moving
+ * the endpoints out by one unit each time through a loop that terminates
+ * when one of the following happens: <ul>
+ * <li> <code> f(a) * f(b) < 0 </code> --  success!</li>
+ * <li> <code> a = lower </code> and <code> b = upper</code>
+ * -- ConvergenceException </li>
+ * <li> <code> Integer.MAX_VALUE</code> iterations elapse
+ * -- ConvergenceException </li>
+ * </ul></p>
+ * <p>
+ * <strong>Note: </strong> this method can take
+ * <code>Integer.MAX_VALUE</code> iterations to throw a
+ * <code>ConvergenceException.</code>  Unless you are confident that there
+ * is a root between <code>lowerBound</code> and <code>upperBound</code>
+ * near <code>initial,</code> it is better to use
+ * {@link #bracket(UnivariateRealFunction, double, double, double, int)},
+ * explicitly specifying the maximum number of iterations.</p>
+ *
+ * @param function the function
+ * @param initial initial midpoint of interval being expanded to
+ * bracket a root
+ * @param lowerBound lower bound (a is never lower than this value)
+ * @param upperBound upper bound (b never is greater than this
+ * value)
+ * @return a two element array holding {a, b}
+ * @throws ConvergenceException if a root can not be bracketted
+ * @throws FunctionEvaluationException if an error occurs evaluating the
+ * function
+ * @throws IllegalArgumentException if function is null, maximumIterations
+ * is not positive, or initial is not between lowerBound and upperBound
+ */"
+"public static double[] bracket(UnivariateRealFunction function, double initial, double lowerBound, double upperBound, int maximumIterations) throws ConvergenceException, FunctionEvaluationException {
+    if (function == null) {
+        throw MathRuntimeException.createIllegalArgumentException(""function is null"");
+    }
+    if (maximumIterations <= 0) {
+        throw MathRuntimeException.createIllegalArgumentException(""bad value for maximum iterations number: {0}"", maximumIterations);
+    }
+    if (initial < lowerBound || initial > upperBound || lowerBound >= upperBound) {
+        throw MathRuntimeException.createIllegalArgumentException(""invalid bracketing parameters:  lower bound={0},  initial={1}, upper bound={2}"", lowerBound, initial, upperBound);
+    }
+    double a = initial;
+    double b = initial;
+    double fa;
+    double fb;
+    int numIterations = 0;
+    do {
+        a = Math.max(a - 1.0, lowerBound);
+        b = Math.min(b + 1.0, upperBound);
+        fa = function.value(a);
+        fb = function.value(b);
+        numIterations++;
+    } while ((fa * fb > 0.0) && (numIterations < maximumIterations) && ((a > lowerBound) || (b < upperBound)));
+    if (fa * fb >= 0.0) {
+        throw new ConvergenceException(""number of iterations={0}, maximum iterations={1}, "" + ""initial={2}, lower bound={3}, upper bound={4}, final a value={5}, "" + ""final b value={6}, f(a)={7}, f(b)={8}"", numIterations, maximumIterations, initial, lowerBound, upperBound, a, b, fa, fb);
+    }
+    return new double[] { a, b };
+}","public void test2424() throws Throwable {
+    double[] doubleArray0 = new double[6];
+    PolynomialFunctionLagrangeForm polynomialFunctionLagrangeForm0 = new PolynomialFunctionLagrangeForm(doubleArray0, doubleArray0);
+    // Undeclared exception!
+    try {
+        UnivariateRealSolverUtils.bracket((UnivariateRealFunction) polynomialFunctionLagrangeForm0, 839.7158, (-1094.0609), (-4005.44912496), 1804);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // invalid bracketing parameters:  lower bound=-1,094.061,  initial=839.716, upper bound=-4,005.449
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}","/**
+ * This method attempts to find two values a and b satisfying <ul>
+ * <li> <code> lowerBound <= a < initial < b <= upperBound</code> </li>
+ * <li> <code> f(a) * f(b) <= 0 </code> </li>
+ * </ul>
+ * If f is continuous on <code>[a,b],</code> this means that <code>a</code>
+ * and <code>b</code> bracket a root of f.
+ * <p>
+ * The algorithm starts by setting
+ * <code>a := initial -1; b := initial +1,</code> examines the value of the
+ * function at <code>a</code> and <code>b</code> and keeps moving
+ * the endpoints out by one unit each time through a loop that terminates
+ * when one of the following happens: <ul>
+ * <li> <code> f(a) * f(b) <= 0 </code> --  success!</li>
+ * <li> <code> a = lower </code> and <code> b = upper</code>
+ * -- ConvergenceException </li>
+ * <li> <code> maximumIterations</code> iterations elapse
+ * -- ConvergenceException </li></ul></p>
+ *
+ * @param function the function
+ * @param initial initial midpoint of interval being expanded to
+ * bracket a root
+ * @param lowerBound lower bound (a is never lower than this value)
+ * @param upperBound upper bound (b never is greater than this
+ * value)
+ * @param maximumIterations maximum number of iterations to perform
+ * @return a two element array holding {a, b}.
+ * @throws ConvergenceException if the algorithm fails to find a and b
+ * satisfying the desired conditions
+ * @throws FunctionEvaluationException if an error occurs evaluating the
+ * function
+ * @throws IllegalArgumentException if function is null, maximumIterations
+ * is not positive, or initial is not between lowerBound and upperBound
+ */"
+"public static double[] bracket(UnivariateRealFunction function, double initial, double lowerBound, double upperBound, int maximumIterations) throws ConvergenceException, FunctionEvaluationException {
+    if (function == null) {
+        throw MathRuntimeException.createIllegalArgumentException(""function is null"");
+    }
+    if (maximumIterations <= 0) {
+        throw MathRuntimeException.createIllegalArgumentException(""bad value for maximum iterations number: {0}"", maximumIterations);
+    }
+    if (initial < lowerBound || initial > upperBound || lowerBound >= upperBound) {
+        throw MathRuntimeException.createIllegalArgumentException(""invalid bracketing parameters:  lower bound={0},  initial={1}, upper bound={2}"", lowerBound, initial, upperBound);
+    }
+    double a = initial;
+    double b = initial;
+    double fa;
+    double fb;
+    int numIterations = 0;
+    do {
+        a = Math.max(a - 1.0, lowerBound);
+        b = Math.min(b + 1.0, upperBound);
+        fa = function.value(a);
+        fb = function.value(b);
+        numIterations++;
+    } while ((fa * fb > 0.0) && (numIterations < maximumIterations) && ((a > lowerBound) || (b < upperBound)));
+    if (fa * fb >= 0.0) {
+        throw new ConvergenceException(""number of iterations={0}, maximum iterations={1}, "" + ""initial={2}, lower bound={3}, upper bound={4}, final a value={5}, "" + ""final b value={6}, f(a)={7}, f(b)={8}"", numIterations, maximumIterations, initial, lowerBound, upperBound, a, b, fa, fb);
+    }
+    return new double[] { a, b };
+}","public void test2525() throws Throwable {
+    double[] doubleArray0 = new double[5];
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    // Undeclared exception!
+    try {
+        UnivariateRealSolverUtils.bracket((UnivariateRealFunction) polynomialFunction0, (-1418.19337), (-2963.22064613), (-2963.22064613), (-35));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // bad value for maximum iterations number: -35
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}","/**
+ * This method attempts to find two values a and b satisfying <ul>
+ * <li> <code> lowerBound <= a < initial < b <= upperBound</code> </li>
+ * <li> <code> f(a) * f(b) <= 0 </code> </li>
+ * </ul>
+ * If f is continuous on <code>[a,b],</code> this means that <code>a</code>
+ * and <code>b</code> bracket a root of f.
+ * <p>
+ * The algorithm starts by setting
+ * <code>a := initial -1; b := initial +1,</code> examines the value of the
+ * function at <code>a</code> and <code>b</code> and keeps moving
+ * the endpoints out by one unit each time through a loop that terminates
+ * when one of the following happens: <ul>
+ * <li> <code> f(a) * f(b) <= 0 </code> --  success!</li>
+ * <li> <code> a = lower </code> and <code> b = upper</code>
+ * -- ConvergenceException </li>
+ * <li> <code> maximumIterations</code> iterations elapse
+ * -- ConvergenceException </li></ul></p>
+ *
+ * @param function the function
+ * @param initial initial midpoint of interval being expanded to
+ * bracket a root
+ * @param lowerBound lower bound (a is never lower than this value)
+ * @param upperBound upper bound (b never is greater than this
+ * value)
+ * @param maximumIterations maximum number of iterations to perform
+ * @return a two element array holding {a, b}.
+ * @throws ConvergenceException if the algorithm fails to find a and b
+ * satisfying the desired conditions
+ * @throws FunctionEvaluationException if an error occurs evaluating the
+ * function
+ * @throws IllegalArgumentException if function is null, maximumIterations
+ * is not positive, or initial is not between lowerBound and upperBound
+ */"
+"public static double solve(UnivariateRealFunction f, double x0, double x1, double absoluteAccuracy) throws ConvergenceException, FunctionEvaluationException {
+    setup(f);
+    UnivariateRealSolver solver = LazyHolder.FACTORY.newDefaultSolver();
+    solver.setAbsoluteAccuracy(absoluteAccuracy);
+    return solver.solve(f, x0, x1);
+}","public void test2626() throws Throwable {
+    double[] doubleArray0 = new double[6];
+    PolynomialFunctionLagrangeForm polynomialFunctionLagrangeForm0 = new PolynomialFunctionLagrangeForm(doubleArray0, doubleArray0);
+    try {
+        UnivariateRealSolverUtils.solve((UnivariateRealFunction) polynomialFunctionLagrangeForm0, (-1595.0), 1350.6452156541468, (-838.931759972695));
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Abscissa 0 is duplicated at both indices 1 and 1
+        //
+        verifyException(""org.apache.commons.math.analysis.polynomials.PolynomialFunctionLagrangeForm"", e);
+    }
+}","/**
+ * Convenience method to find a zero of a univariate real function.  A default
+ * solver is used.
+ *
+ * @param f the function
+ * @param x0 the lower bound for the interval
+ * @param x1 the upper bound for the interval
+ * @param absoluteAccuracy the accuracy to be used by the solver
+ * @return a value where the function is zero
+ * @throws ConvergenceException if the iteration count is exceeded
+ * @throws FunctionEvaluationException if an error occurs evaluating the
+ * function
+ * @throws IllegalArgumentException if f is null, the endpoints do not
+ * specify a valid interval, or the absoluteAccuracy is not valid for the
+ * default solver
+ */"
+"public static double midpoint(double a, double b) {
+    return (a + b) * .5;
+}","public void test2727() throws Throwable {
+    double double0 = UnivariateRealSolverUtils.midpoint((-4935.6723), (-4935.6723));
+    assertEquals((-4935.6723), double0, 0.01);
+}","/**
+ * Compute the midpoint of two values.
+ *
+ * @param a first value.
+ * @param b second value.
+ * @return the midpoint.
+ */"
+"public static double solve(UnivariateRealFunction f, double x0, double x1) throws ConvergenceException, FunctionEvaluationException {
+    setup(f);
+    return LazyHolder.FACTORY.newDefaultSolver().solve(f, x0, x1);
+}","public void test2828() throws Throwable {
+    // Undeclared exception!
+    try {
+        UnivariateRealSolverUtils.solve((UnivariateRealFunction) null, 0.0, 0.0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // function is null
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}","/**
+ * Convenience method to find a zero of a univariate real function.  A default
+ * solver is used.
+ *
+ * @param f the function.
+ * @param x0 the lower bound for the interval.
+ * @param x1 the upper bound for the interval.
+ * @return a value where the function is zero.
+ * @throws ConvergenceException if the iteration count was exceeded
+ * @throws FunctionEvaluationException if an error occurs evaluating
+ * the function
+ * @throws IllegalArgumentException if f is null or the endpoints do not
+ * specify a valid interval
+ */"

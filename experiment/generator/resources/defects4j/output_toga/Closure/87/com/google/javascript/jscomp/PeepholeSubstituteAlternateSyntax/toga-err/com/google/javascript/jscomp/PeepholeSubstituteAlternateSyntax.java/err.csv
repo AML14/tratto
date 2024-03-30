@@ -1,0 +1,51 @@
+com.google.javascript.jscomp.PeepholeSubstituteAlternateSyntax,@Test(timeout = 4000)
+public void test012() throws Throwable {
+    Node node0 = new Node(0, 0, 0);
+    Node node1 = new Node(26, node0, 15, 4);
+    PeepholeSubstituteAlternateSyntax peepholeSubstituteAlternateSyntax0 = new PeepholeSubstituteAlternateSyntax();
+    Node node2 = peepholeSubstituteAlternateSyntax0.optimizeSubtree(node1);
+    node2.getType();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.google.javascript.jscomp.PeepholeSubstituteAlternateSyntax,@Test(timeout = 4000)
+public void test089() throws Throwable {
+    Node node0 = new Node(105, 105, 105);
+    Node node1 = new Node(4, 25, 11);
+    node0.addChildToBack(node1);
+    PeepholeSubstituteAlternateSyntax peepholeSubstituteAlternateSyntax0 = new PeepholeSubstituteAlternateSyntax();
+    Node node2 = peepholeSubstituteAlternateSyntax0.optimizeSubtree(node1);
+    node2.isNoSideEffectsCall();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.google.javascript.jscomp.PeepholeSubstituteAlternateSyntax,@Test(timeout = 4000)
+public void test1719() throws Throwable {
+    Node node0 = new Node(108);
+    Node node1 = Node.newNumber((double) 2);
+    node0.addChildToBack(node1);
+    PeepholeSubstituteAlternateSyntax peepholeSubstituteAlternateSyntax0 = new PeepholeSubstituteAlternateSyntax();
+    Compiler compiler0 = new Compiler();
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, (NodeTraversal.Callback) null);
+    peepholeSubstituteAlternateSyntax0.beginTraversal(nodeTraversal0);
+    Node node2 = peepholeSubstituteAlternateSyntax0.optimizeSubtree(node0);
+    node2.hasChildren();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.google.javascript.jscomp.PeepholeSubstituteAlternateSyntax,@Test(timeout = 4000)
+public void test2729() throws Throwable {
+    Node node0 = new Node(30);
+    node0.addChildToBack(node0);
+    PeepholeSubstituteAlternateSyntax peepholeSubstituteAlternateSyntax0 = new PeepholeSubstituteAlternateSyntax();
+    Compiler compiler0 = new Compiler();
+    compiler0.setNormalized();
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, (NodeTraversal.Callback) null);
+    peepholeSubstituteAlternateSyntax0.beginTraversal(nodeTraversal0);
+    Node node1 = peepholeSubstituteAlternateSyntax0.optimizeSubtree(node0);
+    node1.isLocalResultCall();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.google.javascript.jscomp.PeepholeSubstituteAlternateSyntax,@Test(timeout = 4000)
+public void test2830() throws Throwable {
+    Node node0 = new Node(37, 37, 37);
+    PeepholeSubstituteAlternateSyntax peepholeSubstituteAlternateSyntax0 = new PeepholeSubstituteAlternateSyntax();
+    Compiler compiler0 = new Compiler();
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, (NodeTraversal.Callback) null);
+    peepholeSubstituteAlternateSyntax0.beginTraversal(nodeTraversal0);
+    Node node1 = peepholeSubstituteAlternateSyntax0.optimizeSubtree(node0);
+    node1.isOnlyModifiesThisCall();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.

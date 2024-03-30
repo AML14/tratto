@@ -1,0 +1,148 @@
+focal_method,test_prefix,docstring
+"JSModule getModule() {
+    return module;
+}","public void test00() throws Throwable {
+    ProcessCommonJSModules processCommonJSModules0 = new ProcessCommonJSModules((AbstractCompiler) null, ""U\""(.s>>e#=*>"");
+    JSModule jSModule0 = processCommonJSModules0.getModule();
+    assertNull(jSModule0);
+}","/**
+ * For every file that is being processed this returns the module that
+ * created for it.
+ */"
+"@Override
+public void process(Node externs, Node root) {
+    NodeTraversal.traverse(compiler, root, new ProcessCommonJsModulesCallback());
+}","public void test11() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""module.exports"");
+    ProcessCommonJSModules processCommonJSModules0 = new ProcessCommonJSModules(compiler0, ""module$"");
+    processCommonJSModules0.process(node0, node0);
+}",""
+"String guessCJSModuleName(String filename) {
+    return toModuleName(normalizeSourceName(filename));
+}","public void test22() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ProcessCommonJSModules processCommonJSModules0 = new ProcessCommonJSModules(compiler0, ""S)(o.R!-j`Km/"");
+    String string0 = processCommonJSModules0.guessCJSModuleName(""S)(o.R!-j`Km/"");
+    assertEquals(""module$"", string0);
+}",""
+"public static String toModuleName(String requiredFilename, String currentFilename) {
+    requiredFilename = requiredFilename.replaceAll(""\\.js$"", """");
+    currentFilename = currentFilename.replaceAll(""\\.js$"", """");
+    if (requiredFilename.startsWith(""."" + MODULE_SLASH) || requiredFilename.startsWith("".."" + MODULE_SLASH)) {
+        try {
+            requiredFilename = (new URI(currentFilename)).resolve(new URI(requiredFilename)).toString();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    return toModuleName(requiredFilename);
+}","public void test33() throws Throwable {
+    String string0 = ProcessCommonJSModules.toModuleName(""./'="", ""./'="");
+    assertEquals(""module$'="", string0);
+}","/**
+ * Turn a filename into a moduleName with support for relative addressing
+ * with ./ and ../ based on currentFilename;
+ */"
+"public static String toModuleName(String requiredFilename, String currentFilename) {
+    requiredFilename = requiredFilename.replaceAll(""\\.js$"", """");
+    currentFilename = currentFilename.replaceAll(""\\.js$"", """");
+    if (requiredFilename.startsWith(""."" + MODULE_SLASH) || requiredFilename.startsWith("".."" + MODULE_SLASH)) {
+        try {
+            requiredFilename = (new URI(currentFilename)).resolve(new URI(requiredFilename)).toString();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    return toModuleName(requiredFilename);
+}","public void test44() throws Throwable {
+    // Undeclared exception!
+    try {
+        ProcessCommonJSModules.toModuleName(""..//"", ""_5.`A1tl{d2"");
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // java.net.URISyntaxException: Illegal character in path at index 3: _5.`A1tl{d2
+        //
+        verifyException(""com.google.javascript.jscomp.ProcessCommonJSModules"", e);
+    }
+}","/**
+ * Turn a filename into a moduleName with support for relative addressing
+ * with ./ and ../ based on currentFilename;
+ */"
+"public static String toModuleName(String requiredFilename, String currentFilename) {
+    requiredFilename = requiredFilename.replaceAll(""\\.js$"", """");
+    currentFilename = currentFilename.replaceAll(""\\.js$"", """");
+    if (requiredFilename.startsWith(""."" + MODULE_SLASH) || requiredFilename.startsWith("".."" + MODULE_SLASH)) {
+        try {
+            requiredFilename = (new URI(currentFilename)).resolve(new URI(requiredFilename)).toString();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    return toModuleName(requiredFilename);
+}","public void test55() throws Throwable {
+    String string0 = ProcessCommonJSModules.toModuleName(""c~n"", ""c~n"");
+    assertEquals(""module$c~n"", string0);
+}","/**
+ * Turn a filename into a moduleName with support for relative addressing
+ * with ./ and ../ based on currentFilename;
+ */"
+"public boolean isBlock() {
+    return this.getType() == Token.BLOCK;
+}","public void test66() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ProcessCommonJSModules processCommonJSModules0 = new ProcessCommonJSModules(compiler0, ""/A=F2+tB"");
+    Node node0 = compiler0.parseTestCode(""./"");
+    Node node1 = new Node(37, node0, 2, (-135791284));
+    processCommonJSModules0.process(node1, node1);
+    assertFalse(node1.isBlock());
+}",""
+"@Override
+public void process(Node externs, Node root) {
+    NodeTraversal.traverse(compiler, root, new ProcessCommonJsModulesCallback());
+}","public void test77() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""P1H'-{xTS."");
+    SourceFile sourceFile0 = SourceFile.fromFile(""./"");
+    Node node1 = compiler0.parse(sourceFile0);
+    node0.addChildrenToBack(node1);
+    ProcessCommonJSModules processCommonJSModules0 = new ProcessCommonJSModules(compiler0, ""\n"", false);
+    // Undeclared exception!
+    try {
+        processCommonJSModules0.process(node0, node0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // ProcessCommonJSModules supports only one invocation per CompilerInput / script node
+        //   Node(SCRIPT): [testcode]:-1:-1
+        // [source unknown]
+        //   Parent: NULL
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",""
+"public boolean isComma() {
+    return this.getType() == Token.COMMA;
+}","public void test88() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""exports"");
+    ProcessCommonJSModules processCommonJSModules0 = new ProcessCommonJSModules(compiler0, ""<>|=b_E$>8]"");
+    processCommonJSModules0.process(node0, node0);
+    assertFalse(node0.isComma());
+}",""
+"public int getErrorCount() {
+    return errorManager.getErrorCount();
+}","public void test99() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ProcessCommonJSModules processCommonJSModules0 = new ProcessCommonJSModules(compiler0, ""module$exports"");
+    Node node0 = compiler0.parseTestCode(""./"");
+    processCommonJSModules0.process(node0, node0);
+    node0.setSourceFileForTesting(""./"");
+    processCommonJSModules0.process(node0, node0);
+    assertEquals(1, compiler0.getErrorCount());
+}","/**
+ * Gets the number of errors.
+ */"

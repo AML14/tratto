@@ -1,0 +1,332 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    BigInteger bigInteger0 = BigInteger.ONE;
+    // Undeclared exception!
+    try {
+        Base64.encodeInteger(bigInteger0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // lineSeperator must not contain base64 characters: [\u0001Q]
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}",0,
+project,0,test011,"public void test011() throws Throwable {
+    Base64 base64_0 = null;
+    try {
+        base64_0 = new Base64();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // lineSeperator must not contain base64 characters: [\u0001Q]
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}",0,
+project,0,test022,"public void test022() throws Throwable {
+    BigInteger bigInteger0 = BigInteger.ONE;
+    byte[] byteArray0 = Base64.toIntegerBytes(bigInteger0);
+    Base64 base64_0 = new Base64((short) 1, byteArray0, true);
+    String string0 = base64_0.encodeToString(byteArray0);
+    assertEquals(""AQ"", string0);
+}",0,
+project,0,test033,"public void test033() throws Throwable {
+    String string0 = Base64.encodeBase64String((byte[]) null);
+    assertNull(string0);
+}",0,
+project,0,test044,"public void test044() throws Throwable {
+    // Undeclared exception!
+    try {
+        Base64.decodeBase64(""Parameter supplied to Base64 encode is not a byte[]"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // lineSeperator must not contain base64 characters: [\u0001Q]
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}",0,
+project,0,test055,"public void test055() throws Throwable {
+    byte[] byteArray0 = Base64.CHUNK_SEPARATOR;
+    // Undeclared exception!
+    try {
+        Base64.encodeBase64URLSafe(byteArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // lineSeperator must not contain base64 characters: [\u0001Q]
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}",0,
+project,0,test066,"public void test066() throws Throwable {
+    Base64 base64_0 = null;
+    try {
+        base64_0 = new Base64(38, (byte[]) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // lineSeperator must not contain base64 characters: [\u0001Q]
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}",0,
+project,0,test077,"public void test077() throws Throwable {
+    // Undeclared exception!
+    try {
+        Base64.decodeBase64(""}-5mqB4Dh.X@PwC=J"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // lineSeperator must not contain base64 characters: [\u0001Q]
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}",1,
+project,0,test088,"public void test088() throws Throwable {
+    Base64 base64_0 = null;
+    try {
+        base64_0 = new Base64(false);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // lineSeperator must not contain base64 characters: [\u0001Q]
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}",0,
+project,0,test1212,"public void test1212() throws Throwable {
+    byte[] byteArray0 = new byte[8];
+    Base64 base64_0 = new Base64(12, byteArray0);
+    byte[] byteArray1 = base64_0.encode(byteArray0);
+    int int0 = base64_0.readResults(byteArray1, (byte) (-84), (byte) 110);
+    assertEquals(20, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test1314,"public void test1314() throws Throwable {
+    Base64 base64_0 = null;
+    try {
+        base64_0 = new Base64(6);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // lineSeperator must not contain base64 characters: [\u0001Q]
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}",1,
+project,0,test1415,"public void test1415() throws Throwable {
+    byte[] byteArray0 = new byte[0];
+    Base64 base64_0 = null;
+    try {
+        base64_0 = new Base64();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // lineSeperator must not contain base64 characters: [\u0001Q]
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}",0,
+project,0,test1516,"public void test1516() throws Throwable {
+    Base64 base64_0 = null;
+    try {
+        base64_0 = new Base64((-1837));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // lineSeperator must not contain base64 characters: [\u0001Q]
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}",1,
+project,0,test1617,"public void test1617() throws Throwable {
+    BigInteger bigInteger0 = BigInteger.ZERO;
+    Base64.encodeInteger(bigInteger0);
+    Base64 base64_0 = null;
+    try {
+        base64_0 = new Base64();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // lineSeperator must not contain base64 characters: [\u0001Q]
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}",0,
+project,0,test1718,"public void test1718() throws Throwable {
+    BigInteger bigInteger0 = BigInteger.ONE;
+    Base64.toIntegerBytes(bigInteger0);
+    Base64 base64_0 = null;
+    try {
+        base64_0 = new Base64();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // lineSeperator must not contain base64 characters: [\u0001Q]
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}",0,
+project,0,test1819,"public void test1819() throws Throwable {
+    BigInteger bigInteger0 = BigInteger.ZERO;
+    Base64.encodeInteger(bigInteger0);
+    Base64 base64_0 = null;
+    try {
+        base64_0 = new Base64(72);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // lineSeperator must not contain base64 characters: [\u0001Q]
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}",0,
+project,0,test2021,"public void test2021() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    byteArray0[0] = (byte) 54;
+    // Undeclared exception!
+    try {
+        Base64.decodeInteger(byteArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // lineSeperator must not contain base64 characters: [\u0001Q]
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}",0,
+project,0,test2122,"public void test2122() throws Throwable {
+    byte[] byteArray0 = Base64.CHUNK_SEPARATOR;
+    // Undeclared exception!
+    try {
+        Base64.encodeBase64Chunked(byteArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // lineSeperator must not contain base64 characters: [\u0001Q]
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}",0,
+project,0,test2324,"public void test2324() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    byteArray0[0] = (byte) 125;
+    Base64 base64_0 = new Base64((-324), byteArray0, true);
+    assertTrue(base64_0.isUrlSafe());
+}",0,assertTrue(base64_0.isUrlSafe())
+project,0,test2526,"public void test2526() throws Throwable {
+    BigInteger bigInteger0 = BigInteger.ZERO;
+    Base64 base64_0 = null;
+    try {
+        base64_0 = new Base64(false);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // lineSeperator must not contain base64 characters: [\u0001Q]
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}",0,
+project,0,test2627,"public void test2627() throws Throwable {
+    // Undeclared exception!
+    try {
+        Base64.decodeInteger((byte[]) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // lineSeperator must not contain base64 characters: [\u0001Q]
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}",1,
+project,0,test2728,"public void test2728() throws Throwable {
+    byte[] byteArray0 = new byte[0];
+    // Undeclared exception!
+    try {
+        Base64.decodeInteger(byteArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // lineSeperator must not contain base64 characters: [\u0001Q]
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}",0,
+project,0,test2829,"public void test2829() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    // Undeclared exception!
+    try {
+        Base64.encodeBase64(byteArray0, false, false, (int) (byte) 0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Input array too big, the output array would be bigger (6) than the specified maxium size of 0
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}",0,
+project,0,test2930,"public void test2930() throws Throwable {
+    BigInteger bigInteger0 = BigInteger.ONE;
+    byte[] byteArray0 = Base64.toIntegerBytes(bigInteger0);
+    byte[] byteArray1 = Base64.discardWhitespace(byteArray0);
+    assertEquals(1, byteArray1.length);
+}",0,
+project,0,test3033,"public void test3033() throws Throwable {
+    MockRandom mockRandom0 = new MockRandom(8);
+    BigInteger bigInteger0 = BigInteger.probablePrime(2064, mockRandom0);
+    byte[] byteArray0 = Base64.toIntegerBytes(bigInteger0);
+    byte[] byteArray1 = Base64.discardWhitespace(byteArray0);
+    assertEquals(254, byteArray1.length);
+}",0,
+project,0,test3134,"public void test3134() throws Throwable {
+    byte[] byteArray0 = new byte[4];
+    byteArray0[0] = (byte) 9;
+    boolean boolean0 = Base64.isArrayByteBase64(byteArray0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test3235,"public void test3235() throws Throwable {
+    byte[] byteArray0 = new byte[4];
+    byteArray0[0] = (byte) 73;
+    byteArray0[1] = (byte) 32;
+    boolean boolean0 = Base64.isArrayByteBase64(byteArray0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test3437,"public void test3437() throws Throwable {
+    Base64 base64_0 = null;
+    try {
+        base64_0 = new Base64(true);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // lineSeperator must not contain base64 characters: [\u0001Q]
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}",0,
+project,0,test3538,"public void test3538() throws Throwable {
+    BigInteger bigInteger0 = BigInteger.ZERO;
+    Base64.toIntegerBytes(bigInteger0);
+    Base64 base64_0 = null;
+    try {
+        base64_0 = new Base64(false);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // lineSeperator must not contain base64 characters: [\u0001Q]
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}",0,
+project,0,test3740,"public void test3740() throws Throwable {
+    // Undeclared exception!
+    try {
+        Base64.encodeInteger((BigInteger) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // encodeInteger called with null parameter
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}",0,

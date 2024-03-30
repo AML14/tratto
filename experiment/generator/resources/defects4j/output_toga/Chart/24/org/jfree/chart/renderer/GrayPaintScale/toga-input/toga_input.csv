@@ -1,0 +1,695 @@
+focal_method,test_prefix,docstring
+"public boolean equals(Object obj) {
+    if (obj == this) {
+        return true;
+    }
+    if (!(obj instanceof GrayPaintScale)) {
+        return false;
+    }
+    GrayPaintScale that = (GrayPaintScale) obj;
+    if (this.lowerBound != that.lowerBound) {
+        return false;
+    }
+    if (this.upperBound != that.upperBound) {
+        return false;
+    }
+    return true;
+}","public void test000() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale(0.0, 255.0);
+    GrayPaintScale grayPaintScale1 = new GrayPaintScale();
+    boolean boolean0 = grayPaintScale1.equals(grayPaintScale0);
+    assertFalse(boolean0);
+}","/**
+ * Tests this <code>GrayPaintScale</code> instance for equality with an
+ * arbitrary object.  This method returns <code>true</code> if and only
+ * if:
+ * <ul>
+ * <li><code>obj</code> is not <code>null</code>;</li>
+ * <li><code>obj</code> is an instance of <code>GrayPaintScale</code>;</li>
+ * </ul>
+ *
+ * @param obj  the object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public double getLowerBound() {
+    return this.lowerBound;
+}","public void test001() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale(0.0, 255.0);
+    GrayPaintScale grayPaintScale1 = new GrayPaintScale();
+    boolean boolean0 = grayPaintScale1.equals(grayPaintScale0);
+    assertEquals(0.0, grayPaintScale1.getLowerBound(), 0.01);
+}","/**
+ * Returns the lower bound.
+ *
+ * @return The lower bound.
+ *
+ * @see #getUpperBound()
+ */"
+"public boolean equals(Object obj) {
+    if (obj == this) {
+        return true;
+    }
+    if (!(obj instanceof GrayPaintScale)) {
+        return false;
+    }
+    GrayPaintScale that = (GrayPaintScale) obj;
+    if (this.lowerBound != that.lowerBound) {
+        return false;
+    }
+    if (this.upperBound != that.upperBound) {
+        return false;
+    }
+    return true;
+}","public void test002() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale(0.0, 255.0);
+    GrayPaintScale grayPaintScale1 = new GrayPaintScale();
+    boolean boolean0 = grayPaintScale1.equals(grayPaintScale0);
+    assertFalse(grayPaintScale0.equals((Object) grayPaintScale1));
+}","/**
+ * Tests this <code>GrayPaintScale</code> instance for equality with an
+ * arbitrary object.  This method returns <code>true</code> if and only
+ * if:
+ * <ul>
+ * <li><code>obj</code> is not <code>null</code>;</li>
+ * <li><code>obj</code> is an instance of <code>GrayPaintScale</code>;</li>
+ * </ul>
+ *
+ * @param obj  the object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public boolean equals(Object obj) {
+    if (obj == this) {
+        return true;
+    }
+    if (!(obj instanceof GrayPaintScale)) {
+        return false;
+    }
+    GrayPaintScale that = (GrayPaintScale) obj;
+    if (this.lowerBound != that.lowerBound) {
+        return false;
+    }
+    if (this.upperBound != that.upperBound) {
+        return false;
+    }
+    return true;
+}","public void test013() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale((-1479.849912401), (-1062.40207109));
+    GrayPaintScale grayPaintScale1 = new GrayPaintScale();
+    boolean boolean0 = grayPaintScale0.equals(grayPaintScale1);
+    assertFalse(boolean0);
+}","/**
+ * Tests this <code>GrayPaintScale</code> instance for equality with an
+ * arbitrary object.  This method returns <code>true</code> if and only
+ * if:
+ * <ul>
+ * <li><code>obj</code> is not <code>null</code>;</li>
+ * <li><code>obj</code> is an instance of <code>GrayPaintScale</code>;</li>
+ * </ul>
+ *
+ * @param obj  the object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public double getLowerBound() {
+    return this.lowerBound;
+}","public void test014() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale((-1479.849912401), (-1062.40207109));
+    GrayPaintScale grayPaintScale1 = new GrayPaintScale();
+    boolean boolean0 = grayPaintScale0.equals(grayPaintScale1);
+    assertEquals(0.0, grayPaintScale1.getLowerBound(), 0.01);
+}","/**
+ * Returns the lower bound.
+ *
+ * @return The lower bound.
+ *
+ * @see #getUpperBound()
+ */"
+"public Paint getPaint(double value) {
+    double v = Math.max(value, this.lowerBound);
+    v = Math.min(v, this.upperBound);
+    int g = (int) ((value - this.lowerBound) / (this.upperBound - this.lowerBound) * 255.0);
+    return new Color(g, g, g);
+}","public void test025() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale(177.0, 1937.46546);
+    // Undeclared exception!
+    try {
+        grayPaintScale0.getPaint(0.0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Color parameter outside of expected range: Red Green Blue
+        //
+        verifyException(""java.awt.Color"", e);
+    }
+}","/**
+ * Returns a paint for the specified value.
+ *
+ * @param value  the value (must be within the range specified by the
+ *         lower and upper bounds for the scale).
+ *
+ * @return A paint for the specified value.
+ */"
+"public double getUpperBound() {
+    return this.upperBound;
+}","public void test036() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale((-1227.8371), 0.0);
+    double double0 = grayPaintScale0.getUpperBound();
+    assertEquals(0.0, double0, 0.01);
+}","/**
+ * Returns the upper bound.
+ *
+ * @return The upper bound.
+ *
+ * @see #getLowerBound()
+ */"
+"public double getLowerBound() {
+    return this.lowerBound;
+}","public void test037() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale((-1227.8371), 0.0);
+    double double0 = grayPaintScale0.getUpperBound();
+    assertEquals((-1227.8371), grayPaintScale0.getLowerBound(), 0.01);
+}","/**
+ * Returns the lower bound.
+ *
+ * @return The lower bound.
+ *
+ * @see #getUpperBound()
+ */"
+"public double getLowerBound() {
+    return this.lowerBound;
+}","public void test048() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale((-1479.849912401), (-1062.40207109));
+    double double0 = grayPaintScale0.getUpperBound();
+    assertEquals((-1479.849912401), grayPaintScale0.getLowerBound(), 0.01);
+}","/**
+ * Returns the lower bound.
+ *
+ * @return The lower bound.
+ *
+ * @see #getUpperBound()
+ */"
+"public double getUpperBound() {
+    return this.upperBound;
+}","public void test049() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale((-1479.849912401), (-1062.40207109));
+    double double0 = grayPaintScale0.getUpperBound();
+    assertEquals((-1062.40207109), double0, 0.01);
+}","/**
+ * Returns the upper bound.
+ *
+ * @return The upper bound.
+ *
+ * @see #getLowerBound()
+ */"
+"public double getUpperBound() {
+    return this.upperBound;
+}","public void test0510() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale(562.6361001936054, 2908.0);
+    assertEquals(2908.0, grayPaintScale0.getUpperBound(), 0.01);
+}","/**
+ * Returns the upper bound.
+ *
+ * @return The upper bound.
+ *
+ * @see #getLowerBound()
+ */"
+"public double getLowerBound() {
+    return this.lowerBound;
+}","public void test0511() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale(562.6361001936054, 2908.0);
+    Color color0 = (Color) grayPaintScale0.getPaint(2908.0);
+    assertEquals(562.6361001936054, grayPaintScale0.getLowerBound(), 0.01);
+}","/**
+ * Returns the lower bound.
+ *
+ * @return The lower bound.
+ *
+ * @see #getUpperBound()
+ */"
+"public double getLowerBound() {
+    return this.lowerBound;
+}","public void test0613() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale();
+    double double0 = grayPaintScale0.getLowerBound();
+    assertEquals(0.0, double0, 0.01);
+}","/**
+ * Returns the lower bound.
+ *
+ * @return The lower bound.
+ *
+ * @see #getUpperBound()
+ */"
+"public double getUpperBound() {
+    return this.upperBound;
+}","public void test0614() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale();
+    double double0 = grayPaintScale0.getLowerBound();
+    assertEquals(1.0, grayPaintScale0.getUpperBound(), 0.01);
+}","/**
+ * Returns the upper bound.
+ *
+ * @return The upper bound.
+ *
+ * @see #getLowerBound()
+ */"
+"public double getLowerBound() {
+    return this.lowerBound;
+}","public void test0715() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale((-1479.849912401), (-1062.40207109));
+    double double0 = grayPaintScale0.getLowerBound();
+    assertEquals((-1479.849912401), double0, 0.01);
+}","/**
+ * Returns the lower bound.
+ *
+ * @return The lower bound.
+ *
+ * @see #getUpperBound()
+ */"
+"public double getUpperBound() {
+    return this.upperBound;
+}","public void test0716() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale((-1479.849912401), (-1062.40207109));
+    double double0 = grayPaintScale0.getLowerBound();
+    assertEquals((-1062.40207109), grayPaintScale0.getUpperBound(), 0.01);
+}","/**
+ * Returns the upper bound.
+ *
+ * @return The upper bound.
+ *
+ * @see #getLowerBound()
+ */"
+"public double getLowerBound() {
+    return this.lowerBound;
+}","public void test0817() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale(0.0, 255.0);
+    GrayPaintScale grayPaintScale1 = new GrayPaintScale();
+    boolean boolean0 = grayPaintScale0.equals(grayPaintScale1);
+    assertEquals(0.0, grayPaintScale1.getLowerBound(), 0.01);
+}","/**
+ * Returns the lower bound.
+ *
+ * @return The lower bound.
+ *
+ * @see #getUpperBound()
+ */"
+"public boolean equals(Object obj) {
+    if (obj == this) {
+        return true;
+    }
+    if (!(obj instanceof GrayPaintScale)) {
+        return false;
+    }
+    GrayPaintScale that = (GrayPaintScale) obj;
+    if (this.lowerBound != that.lowerBound) {
+        return false;
+    }
+    if (this.upperBound != that.upperBound) {
+        return false;
+    }
+    return true;
+}","public void test0818() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale(0.0, 255.0);
+    GrayPaintScale grayPaintScale1 = new GrayPaintScale();
+    boolean boolean0 = grayPaintScale0.equals(grayPaintScale1);
+    assertFalse(boolean0);
+}","/**
+ * Tests this <code>GrayPaintScale</code> instance for equality with an
+ * arbitrary object.  This method returns <code>true</code> if and only
+ * if:
+ * <ul>
+ * <li><code>obj</code> is not <code>null</code>;</li>
+ * <li><code>obj</code> is an instance of <code>GrayPaintScale</code>;</li>
+ * </ul>
+ *
+ * @param obj  the object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public double getUpperBound() {
+    return this.upperBound;
+}","public void test0819() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale(0.0, 255.0);
+    GrayPaintScale grayPaintScale1 = new GrayPaintScale();
+    boolean boolean0 = grayPaintScale0.equals(grayPaintScale1);
+    assertEquals(1.0, grayPaintScale1.getUpperBound(), 0.01);
+}","/**
+ * Returns the upper bound.
+ *
+ * @return The upper bound.
+ *
+ * @see #getLowerBound()
+ */"
+"public boolean equals(Object obj) {
+    if (obj == this) {
+        return true;
+    }
+    if (!(obj instanceof GrayPaintScale)) {
+        return false;
+    }
+    GrayPaintScale that = (GrayPaintScale) obj;
+    if (this.lowerBound != that.lowerBound) {
+        return false;
+    }
+    if (this.upperBound != that.upperBound) {
+        return false;
+    }
+    return true;
+}","public void test0820() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale(0.0, 255.0);
+    GrayPaintScale grayPaintScale1 = new GrayPaintScale();
+    boolean boolean0 = grayPaintScale0.equals(grayPaintScale1);
+    assertFalse(grayPaintScale1.equals((Object) grayPaintScale0));
+}","/**
+ * Tests this <code>GrayPaintScale</code> instance for equality with an
+ * arbitrary object.  This method returns <code>true</code> if and only
+ * if:
+ * <ul>
+ * <li><code>obj</code> is not <code>null</code>;</li>
+ * <li><code>obj</code> is an instance of <code>GrayPaintScale</code>;</li>
+ * </ul>
+ *
+ * @param obj  the object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public boolean equals(Object obj) {
+    if (obj == this) {
+        return true;
+    }
+    if (!(obj instanceof GrayPaintScale)) {
+        return false;
+    }
+    GrayPaintScale that = (GrayPaintScale) obj;
+    if (this.lowerBound != that.lowerBound) {
+        return false;
+    }
+    if (this.upperBound != that.upperBound) {
+        return false;
+    }
+    return true;
+}","public void test0921() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale(562.6361001936054, 2908.0);
+    Object object0 = new Object();
+    boolean boolean0 = grayPaintScale0.equals(object0);
+    assertFalse(boolean0);
+}","/**
+ * Tests this <code>GrayPaintScale</code> instance for equality with an
+ * arbitrary object.  This method returns <code>true</code> if and only
+ * if:
+ * <ul>
+ * <li><code>obj</code> is not <code>null</code>;</li>
+ * <li><code>obj</code> is an instance of <code>GrayPaintScale</code>;</li>
+ * </ul>
+ *
+ * @param obj  the object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public double getLowerBound() {
+    return this.lowerBound;
+}","public void test0922() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale(562.6361001936054, 2908.0);
+    Object object0 = new Object();
+    boolean boolean0 = grayPaintScale0.equals(object0);
+    assertEquals(562.6361001936054, grayPaintScale0.getLowerBound(), 0.01);
+}","/**
+ * Returns the lower bound.
+ *
+ * @return The lower bound.
+ *
+ * @see #getUpperBound()
+ */"
+"public double getUpperBound() {
+    return this.upperBound;
+}","public void test0923() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale(562.6361001936054, 2908.0);
+    Object object0 = new Object();
+    boolean boolean0 = grayPaintScale0.equals(object0);
+    assertEquals(2908.0, grayPaintScale0.getUpperBound(), 0.01);
+}","/**
+ * Returns the upper bound.
+ *
+ * @return The upper bound.
+ *
+ * @see #getLowerBound()
+ */"
+"public boolean equals(Object obj) {
+    if (obj == this) {
+        return true;
+    }
+    if (!(obj instanceof GrayPaintScale)) {
+        return false;
+    }
+    GrayPaintScale that = (GrayPaintScale) obj;
+    if (this.lowerBound != that.lowerBound) {
+        return false;
+    }
+    if (this.upperBound != that.upperBound) {
+        return false;
+    }
+    return true;
+}","public void test1024() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale(562.6361001936054, 2908.0);
+    boolean boolean0 = grayPaintScale0.equals(grayPaintScale0);
+    assertTrue(boolean0);
+}","/**
+ * Tests this <code>GrayPaintScale</code> instance for equality with an
+ * arbitrary object.  This method returns <code>true</code> if and only
+ * if:
+ * <ul>
+ * <li><code>obj</code> is not <code>null</code>;</li>
+ * <li><code>obj</code> is an instance of <code>GrayPaintScale</code>;</li>
+ * </ul>
+ *
+ * @param obj  the object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public double getUpperBound() {
+    return this.upperBound;
+}","public void test1025() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale(562.6361001936054, 2908.0);
+    boolean boolean0 = grayPaintScale0.equals(grayPaintScale0);
+    assertEquals(2908.0, grayPaintScale0.getUpperBound(), 0.01);
+}","/**
+ * Returns the upper bound.
+ *
+ * @return The upper bound.
+ *
+ * @see #getLowerBound()
+ */"
+"public double getLowerBound() {
+    return this.lowerBound;
+}","public void test1026() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale(562.6361001936054, 2908.0);
+    boolean boolean0 = grayPaintScale0.equals(grayPaintScale0);
+    assertEquals(562.6361001936054, grayPaintScale0.getLowerBound(), 0.01);
+}","/**
+ * Returns the lower bound.
+ *
+ * @return The lower bound.
+ *
+ * @see #getUpperBound()
+ */"
+"public double getLowerBound() {
+    return this.lowerBound;
+}","public void test1127() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale(562.6361001936054, 2908.0);
+    GrayPaintScale grayPaintScale1 = new GrayPaintScale();
+    boolean boolean0 = grayPaintScale0.equals(grayPaintScale1);
+    assertEquals(0.0, grayPaintScale1.getLowerBound(), 0.01);
+}","/**
+ * Returns the lower bound.
+ *
+ * @return The lower bound.
+ *
+ * @see #getUpperBound()
+ */"
+"public double getUpperBound() {
+    return this.upperBound;
+}","public void test1128() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale(562.6361001936054, 2908.0);
+    GrayPaintScale grayPaintScale1 = new GrayPaintScale();
+    boolean boolean0 = grayPaintScale0.equals(grayPaintScale1);
+    assertEquals(1.0, grayPaintScale1.getUpperBound(), 0.01);
+}","/**
+ * Returns the upper bound.
+ *
+ * @return The upper bound.
+ *
+ * @see #getLowerBound()
+ */"
+"public boolean equals(Object obj) {
+    if (obj == this) {
+        return true;
+    }
+    if (!(obj instanceof GrayPaintScale)) {
+        return false;
+    }
+    GrayPaintScale that = (GrayPaintScale) obj;
+    if (this.lowerBound != that.lowerBound) {
+        return false;
+    }
+    if (this.upperBound != that.upperBound) {
+        return false;
+    }
+    return true;
+}","public void test1129() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale(562.6361001936054, 2908.0);
+    GrayPaintScale grayPaintScale1 = new GrayPaintScale();
+    boolean boolean0 = grayPaintScale0.equals(grayPaintScale1);
+    assertFalse(boolean0);
+}","/**
+ * Tests this <code>GrayPaintScale</code> instance for equality with an
+ * arbitrary object.  This method returns <code>true</code> if and only
+ * if:
+ * <ul>
+ * <li><code>obj</code> is not <code>null</code>;</li>
+ * <li><code>obj</code> is an instance of <code>GrayPaintScale</code>;</li>
+ * </ul>
+ *
+ * @param obj  the object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public GrayPaintScale(double lowerBound, double upperBound) {
+    if (lowerBound >= upperBound) {
+        throw new IllegalArgumentException(""Requires lowerBound < upperBound."");
+    }
+    this.lowerBound = lowerBound;
+    this.upperBound = upperBound;
+}","public void test1230() throws Throwable {
+    GrayPaintScale grayPaintScale0 = null;
+    try {
+        grayPaintScale0 = new GrayPaintScale(0.0, (-1.0));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Requires lowerBound < upperBound.
+        //
+        verifyException(""org.jfree.chart.renderer.GrayPaintScale"", e);
+    }
+}","/**
+ * Creates a new paint scale for values in the specified range.
+ *
+ * @param lowerBound  the lower bound.
+ * @param upperBound  the upper bound.
+ *
+ * @throws IllegalArgumentException if <code>lowerBound</code> is not
+ *       less than <code>upperBound</code>.
+ */"
+"public double getLowerBound() {
+    return this.lowerBound;
+}","public void test1331() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale(562.6361001936054, 2908.0);
+    double double0 = grayPaintScale0.getUpperBound();
+    assertEquals(562.6361001936054, grayPaintScale0.getLowerBound(), 0.01);
+}","/**
+ * Returns the lower bound.
+ *
+ * @return The lower bound.
+ *
+ * @see #getUpperBound()
+ */"
+"public double getUpperBound() {
+    return this.upperBound;
+}","public void test1332() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale(562.6361001936054, 2908.0);
+    double double0 = grayPaintScale0.getUpperBound();
+    assertEquals(2908.0, double0, 0.01);
+}","/**
+ * Returns the upper bound.
+ *
+ * @return The upper bound.
+ *
+ * @see #getLowerBound()
+ */"
+"public boolean equals(Object obj) {
+    if (obj == this) {
+        return true;
+    }
+    if (!(obj instanceof GrayPaintScale)) {
+        return false;
+    }
+    GrayPaintScale that = (GrayPaintScale) obj;
+    if (this.lowerBound != that.lowerBound) {
+        return false;
+    }
+    if (this.upperBound != that.upperBound) {
+        return false;
+    }
+    return true;
+}","public void test1433() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale(562.6361001936054, 2908.0);
+    GrayPaintScale grayPaintScale1 = (GrayPaintScale) grayPaintScale0.clone();
+    boolean boolean0 = grayPaintScale1.equals(grayPaintScale0);
+    assertTrue(boolean0);
+}","/**
+ * Tests this <code>GrayPaintScale</code> instance for equality with an
+ * arbitrary object.  This method returns <code>true</code> if and only
+ * if:
+ * <ul>
+ * <li><code>obj</code> is not <code>null</code>;</li>
+ * <li><code>obj</code> is an instance of <code>GrayPaintScale</code>;</li>
+ * </ul>
+ *
+ * @param obj  the object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public double getLowerBound() {
+    return this.lowerBound;
+}","public void test1434() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale(562.6361001936054, 2908.0);
+    GrayPaintScale grayPaintScale1 = (GrayPaintScale) grayPaintScale0.clone();
+    boolean boolean0 = grayPaintScale1.equals(grayPaintScale0);
+    assertEquals(562.6361001936054, grayPaintScale1.getLowerBound(), 0.01);
+}","/**
+ * Returns the lower bound.
+ *
+ * @return The lower bound.
+ *
+ * @see #getUpperBound()
+ */"
+"public double getUpperBound() {
+    return this.upperBound;
+}","public void test1435() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale(562.6361001936054, 2908.0);
+    GrayPaintScale grayPaintScale1 = (GrayPaintScale) grayPaintScale0.clone();
+    boolean boolean0 = grayPaintScale1.equals(grayPaintScale0);
+    assertEquals(2908.0, grayPaintScale1.getUpperBound(), 0.01);
+}","/**
+ * Returns the upper bound.
+ *
+ * @return The upper bound.
+ *
+ * @see #getLowerBound()
+ */"
+"public double getLowerBound() {
+    return this.lowerBound;
+}","public void test1536() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale(562.6361001936054, 2908.0);
+    double double0 = grayPaintScale0.getLowerBound();
+    assertEquals(562.6361001936054, double0, 0.01);
+}","/**
+ * Returns the lower bound.
+ *
+ * @return The lower bound.
+ *
+ * @see #getUpperBound()
+ */"
+"public double getUpperBound() {
+    return this.upperBound;
+}","public void test1537() throws Throwable {
+    GrayPaintScale grayPaintScale0 = new GrayPaintScale(562.6361001936054, 2908.0);
+    double double0 = grayPaintScale0.getLowerBound();
+    assertEquals(2908.0, grayPaintScale0.getUpperBound(), 0.01);
+}","/**
+ * Returns the upper bound.
+ *
+ * @return The upper bound.
+ *
+ * @see #getLowerBound()
+ */"

@@ -1,0 +1,91 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    AnalyzePrototypeProperties analyzePrototypeProperties0 = new AnalyzePrototypeProperties(compiler0, (JSModuleGraph) null, true, true);
+    Node node0 = compiler0.parseTestCode(""var JSCompiler_stubMap = [];function JSCompiler_stubMethod(JSCompiler_stubMethod_id) {  return function() {    return JSCompiler_stubMap[JSCompiler_stubMethod_id].apply(        this, arguments);  };}function JSCompiler_unstubMethod(    JSCompiler_unstubMethod_id, JSCompiler_unstubMethod_body) {  return JSCompiler_stubMap[JSCompiler_unstubMethod_id] =       JSCompiler_unstubMethod_body;}"");
+    analyzePrototypeProperties0.process(node0, node0);
+    assertEquals(48, Node.DIRECTIVES);
+}",0,
+project,0,test033,"public void test033() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    AnalyzePrototypeProperties analyzePrototypeProperties0 = new AnalyzePrototypeProperties(compiler0, (JSModuleGraph) null, true, true);
+    Collection<AnalyzePrototypeProperties.NameInfo> collection0 = analyzePrototypeProperties0.getAllNameInfo();
+    assertNotNull(collection0);
+}",0,assertNotNull(collection0)
+project,0,test1111,"public void test1111() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    AnalyzePrototypeProperties analyzePrototypeProperties0 = new AnalyzePrototypeProperties(compiler0, (JSModuleGraph) null, false, false);
+    Node node0 = compiler0.parseTestCode(""var JSCompiler_stubMap = [];function JSCompiler_stubMethod(JSCompiler_stubMethod_id) {  return function() {    return JSCompiler_stubMap[JSCompiler_stubMethod_id].apply(        this, arguments);  };}function JSCompiler_unstubMethod(    JSCompiler_unstubMethod_id, JSCompiler_unstubMethod_body) {  return JSCompiler_stubMap[JSCompiler_unstubMethod_id] =       JSCompiler_unstubMethod_body;}"");
+    analyzePrototypeProperties0.process(node0, node0);
+    assertEquals(16, Node.FLAG_LOCAL_RESULTS);
+}",0,
+project,0,test1212,"public void test1212() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""*P{Z(p'AXlh"");
+    node0.setType(105);
+    Node node1 = new Node(38, node0, node0, 119, 35);
+    AnalyzePrototypeProperties analyzePrototypeProperties0 = new AnalyzePrototypeProperties(compiler0, (JSModuleGraph) null, true, true);
+    // Undeclared exception!
+    try {
+        analyzePrototypeProperties0.process(node0, node1);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",0,
+project,0,test1313,"public void test1313() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""MK~$)M +0y}`"");
+    node0.setType(64);
+    Node node1 = new Node(86, node0, node0, 16, 2);
+    AnalyzePrototypeProperties analyzePrototypeProperties0 = new AnalyzePrototypeProperties(compiler0, (JSModuleGraph) null, false, false);
+    analyzePrototypeProperties0.process(node1, node1);
+    assertEquals(18, Node.SPECIAL_PROP_PROP);
+}",0,
+project,0,test1414,"public void test1414() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""ast"");
+    node0.setType(64);
+    Node node1 = new Node((-1), node0, node0, 42, 8);
+    AnalyzePrototypeProperties analyzePrototypeProperties0 = new AnalyzePrototypeProperties(compiler0, (JSModuleGraph) null, false, false);
+    // Undeclared exception!
+    try {
+        analyzePrototypeProperties0.process(node1, node1);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",0,
+project,0,test1515,"public void test1515() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""var JSCompiler_stubMap = [];function JSCompiler_stubMethod(JSCompiler_stubMethod_id) {  return function() {    return JSCompiler_stubMap[JSCompiler_stubMethod_id].apply(        this, arguments);  };}function JSCompiler_unstubMethod(    JSCompiler_unstubMethod_id, JSCompiler_unstubMethod_body) {  return JSCompiler_stubMap[JSCompiler_unstubMethod_id] =       JSCompiler_unstubMethod_body;}"");
+    node0.setType(25);
+    AnalyzePrototypeProperties analyzePrototypeProperties0 = new AnalyzePrototypeProperties(compiler0, (JSModuleGraph) null, false, false);
+    analyzePrototypeProperties0.process(node0, node0);
+    assertEquals(0, node0.getSideEffectFlags());
+}",0,"assertEquals(0, node0.getSideEffectFlags())"
+project,0,test1616,"public void test1616() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""com.google.common.base.CharMatcher$And"");
+    node0.setType(33);
+    Node node1 = new Node(86, node0, node0, 16, 2);
+    AnalyzePrototypeProperties analyzePrototypeProperties0 = new AnalyzePrototypeProperties(compiler0, (JSModuleGraph) null, true, true);
+    // Undeclared exception!
+    try {
+        analyzePrototypeProperties0.process(node1, node1);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",0,
+project,0,test1919,"public void test1919() throws Throwable {
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""[w#fVQl|l}4$]'Bh"");
+    PrintStreamErrorManager printStreamErrorManager0 = new PrintStreamErrorManager(mockPrintStream0);
+    Compiler compiler0 = new Compiler(printStreamErrorManager0);
+    JSModule jSModule0 = new JSModule(""[w#fVQl|l}4$]'Bh"");
+    Set<JSModule> set0 = jSModule0.getThisAndAllDependencies();
+    LinkedList<JSModule> linkedList0 = new LinkedList<JSModule>(set0);
+    Node node0 = compiler0.parseTestCode(""[w#fVQl|l}4$]'Bh"");
+    JSModuleGraph jSModuleGraph0 = new JSModuleGraph(linkedList0);
+    AnalyzePrototypeProperties analyzePrototypeProperties0 = new AnalyzePrototypeProperties(compiler0, jSModuleGraph0, false, false);
+    analyzePrototypeProperties0.process(node0, node0);
+    analyzePrototypeProperties0.process(node0, node0);
+    assertEquals(16, Node.SOURCENAME_PROP);
+}",0,

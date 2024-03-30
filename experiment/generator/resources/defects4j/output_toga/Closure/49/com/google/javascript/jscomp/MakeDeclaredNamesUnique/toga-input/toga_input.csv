@@ -1,0 +1,215 @@
+focal_method,test_prefix,docstring
+"static Node parseAndNormalizeTestCode(AbstractCompiler compiler, String code, String prefix) {
+    Node js = compiler.parseTestCode(code);
+    NodeTraversal.traverse(compiler, js, new Normalize.NormalizeStatements(compiler, false));
+    NodeTraversal.traverse(compiler, js, new MakeDeclaredNamesUnique());
+    return js;
+}","public void test000() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    MakeDeclaredNamesUnique.getContextualRenameInverter(compiler0);
+    // Undeclared exception!
+    try {
+        Normalize.parseAndNormalizeTestCode(compiler0, ""arguments"", ""arguments"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // duplicate key: consistentIdGenerator
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",""
+"@Override
+Node parseTestCode(String js) {
+    initCompilerOptionsIfTesting();
+    CompilerInput input = new CompilerInput(JSSourceFile.fromCode("" [testcode] "", js));
+    if (inputsById == null) {
+        inputsById = Maps.newHashMap();
+    }
+    inputsById.put(input.getInputId(), input);
+    return input.getAstRoot(this);
+}","public void test011() throws Throwable {
+    MakeDeclaredNamesUnique makeDeclaredNamesUnique0 = new MakeDeclaredNamesUnique();
+    Compiler compiler0 = new Compiler();
+    // Undeclared exception!
+    try {
+        compiler0.parseTestCode(""function JSCompiler_mptyFn() {  return function() {}}"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // duplicate key: consistentIdGenerator
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",""
+"@Override
+Node parseTestCode(String js) {
+    initCompilerOptionsIfTesting();
+    CompilerInput input = new CompilerInput(JSSourceFile.fromCode("" [testcode] "", js));
+    if (inputsById == null) {
+        inputsById = Maps.newHashMap();
+    }
+    inputsById.put(input.getInputId(), input);
+    return input.getAstRoot(this);
+}","public void test022() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    // Undeclared exception!
+    try {
+        compiler0.parseTestCode(""function JSCompiler_emptyFn() {  return function() {}}"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // duplicate key: consistentIdGenerator
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",""
+"@Override
+public void visit(NodeTraversal t, Node n, Node parent) {
+    switch(n.getType()) {
+        case Token.NAME:
+            String newName = getReplacementName(n.getString());
+            if (newName != null) {
+                Renamer renamer = nameStack.peek();
+                if (renamer.stripConstIfReplaced()) {
+                    // TODO(johnlenz): Do we need to do anything about the javadoc?
+                    n.removeProp(Node.IS_CONSTANT_NAME);
+                }
+                n.setString(newName);
+                t.getCompiler().reportCodeChange();
+            }
+            break;
+        case Token.FUNCTION:
+            // Remove the function body scope
+            // Remove function recursive name (if any).
+            nameStack.pop();
+            break;
+        // Note: The parameters and function body variables live in the
+        // same scope, we introduce the scope when in the ""shouldTraverse""
+        // visit of LP, but remove it when when we exit the function above.
+        case Token.CATCH:
+            // Remove catch except name from the stack of names.
+            nameStack.pop();
+            break;
+    }
+}","public void test044() throws Throwable {
+    RenameLabels.DefaultNameSupplier renameLabels_DefaultNameSupplier0 = new RenameLabels.DefaultNameSupplier();
+    MakeDeclaredNamesUnique.BoilerplateRenamer makeDeclaredNamesUnique_BoilerplateRenamer0 = new MakeDeclaredNamesUnique.BoilerplateRenamer(renameLabels_DefaultNameSupplier0, ""GJ"");
+    MakeDeclaredNamesUnique makeDeclaredNamesUnique0 = new MakeDeclaredNamesUnique(makeDeclaredNamesUnique_BoilerplateRenamer0);
+    Compiler compiler0 = new Compiler();
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, makeDeclaredNamesUnique0, (ScopeCreator) null);
+    Node node0 = new Node(120);
+    // Undeclared exception!
+    try {
+        makeDeclaredNamesUnique0.visit(nodeTraversal0, node0, node0);
+        fail(""Expecting exception: NoSuchElementException"");
+    } catch (NoSuchElementException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.ArrayDeque"", e);
+    }
+}",""
+"public void traverse(Node root) {
+    try {
+        inputId = NodeUtil.getInputId(root);
+        sourceName = """";
+        curNode = root;
+        pushScope(root);
+        traverseBranch(root, null);
+        popScope();
+    } catch (Exception unexpectedException) {
+        throwUnexpectedException(unexpectedException);
+    }
+}","public void test066() throws Throwable {
+    MakeDeclaredNamesUnique makeDeclaredNamesUnique0 = new MakeDeclaredNamesUnique();
+    Node node0 = new Node(105);
+    Compiler compiler0 = new Compiler();
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, makeDeclaredNamesUnique0);
+    // Undeclared exception!
+    try {
+        nodeTraversal0.traverse(node0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // null
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * Traverses a parse tree recursively.
+ */"
+"public void traverse(Node root) {
+    try {
+        inputId = NodeUtil.getInputId(root);
+        sourceName = """";
+        curNode = root;
+        pushScope(root);
+        traverseBranch(root, null);
+        popScope();
+    } catch (Exception unexpectedException) {
+        throwUnexpectedException(unexpectedException);
+    }
+}","public void test077() throws Throwable {
+    Node node0 = new Node(105, 105, 105);
+    Compiler compiler0 = new Compiler();
+    MakeDeclaredNamesUnique makeDeclaredNamesUnique0 = new MakeDeclaredNamesUnique((MakeDeclaredNamesUnique.Renamer) null);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, makeDeclaredNamesUnique0);
+    // Undeclared exception!
+    try {
+        nodeTraversal0.traverse(node0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}","/**
+ * Traverses a parse tree recursively.
+ */"
+"public void traverse(Node root) {
+    try {
+        inputId = NodeUtil.getInputId(root);
+        sourceName = """";
+        curNode = root;
+        pushScope(root);
+        traverseBranch(root, null);
+        popScope();
+    } catch (Exception unexpectedException) {
+        throwUnexpectedException(unexpectedException);
+    }
+}","public void test088() throws Throwable {
+    MakeDeclaredNamesUnique makeDeclaredNamesUnique0 = new MakeDeclaredNamesUnique();
+    Compiler compiler0 = new Compiler();
+    Node node0 = new Node(120);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, makeDeclaredNamesUnique0);
+    // Undeclared exception!
+    try {
+        nodeTraversal0.traverse(node0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}","/**
+ * Traverses a parse tree recursively.
+ */"
+"@Override
+Node parseTestCode(String js) {
+    initCompilerOptionsIfTesting();
+    CompilerInput input = new CompilerInput(JSSourceFile.fromCode("" [testcode] "", js));
+    if (inputsById == null) {
+        inputsById = Maps.newHashMap();
+    }
+    inputsById.put(input.getInputId(), input);
+    return input.getAstRoot(this);
+}","public void test1010() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    MakeDeclaredNamesUnique.getContextualRenameInverter(compiler0);
+    // Undeclared exception!
+    try {
+        compiler0.parseTestCode(""function JSCompiler_mptyFn() {  return function() {}}"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // duplicate key: consistentIdGenerator
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",""

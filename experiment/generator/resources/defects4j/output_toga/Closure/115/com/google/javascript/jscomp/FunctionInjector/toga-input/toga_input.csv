@@ -1,0 +1,755 @@
+focal_method,test_prefix,docstring
+"void maybePrepareCall(Node callNode) {
+    CallSiteType callSiteType = classifyCallSite(callNode);
+    callSiteType.prepare(this, callNode);
+}","public void test000() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Supplier<String> supplier0 = compiler0.getUniqueNameIdSupplier();
+    FunctionInjector functionInjector0 = new FunctionInjector(compiler0, supplier0, true, true, true);
+    // Undeclared exception!
+    try {
+        functionInjector0.maybePrepareCall((Node) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.FunctionInjector"", e);
+    }
+}","/**
+ * If required, rewrite the statement containing the call expression.
+ * @see ExpressionDecomposer#canExposeExpression
+ */"
+"CanInlineResult canInlineReferenceToFunction(NodeTraversal t, Node callNode, Node fnNode, Set<String> needAliases, InliningMode mode, boolean referencesThis, boolean containsFunctions) {
+    // TODO(johnlenz): This function takes too many parameter, without
+    // context.  Modify the API to take a structure describing the function.
+    // Allow direct function calls or ""fn.call"" style calls.
+    if (!isSupportedCallType(callNode)) {
+        return CanInlineResult.NO;
+    }
+    // Limit where functions that contain functions can be inline.  Introducing
+    // an inner function into another function can capture a variable and cause
+    // a memory leak.  This isn't a problem in the global scope as those values
+    // last until explicitly cleared.
+    if (containsFunctions) {
+        if (!assumeMinimumCapture && !t.inGlobalScope()) {
+            // TODO(johnlenz): Allow inlining into any scope without local names or
+            // inner functions.
+            return CanInlineResult.NO;
+        } else if (NodeUtil.isWithinLoop(callNode)) {
+            // An inner closure maybe relying on a local value holding a value for a
+            // single iteration through a loop.
+            return CanInlineResult.NO;
+        }
+    }
+    // TODO(johnlenz): Add support for 'apply'
+    if (referencesThis && !NodeUtil.isFunctionObjectCall(callNode)) {
+        // TODO(johnlenz): Allow 'this' references to be replaced with a
+        // global 'this' object.
+        return CanInlineResult.NO;
+    }
+    if (mode == InliningMode.DIRECT) {
+        return canInlineReferenceDirectly(callNode, fnNode);
+    } else {
+        return canInlineReferenceAsStatementBlock(t, callNode, fnNode, needAliases);
+    }
+}","public void test011() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Supplier<String> supplier0 = compiler0.getUniqueNameIdSupplier();
+    FunctionInjector functionInjector0 = new FunctionInjector(compiler0, supplier0, true, true, true);
+    LinkedHashSet<String> linkedHashSet0 = new LinkedHashSet<String>();
+    Node node0 = Node.newString(""VAR_DECL_SIMPLE_ASSIGNMENT"", 55, 39);
+    Node node1 = new Node(4095, node0, node0, node0, node0);
+    FunctionInjector.InliningMode functionInjector_InliningMode0 = FunctionInjector.InliningMode.BLOCK;
+    // Undeclared exception!
+    try {
+        functionInjector0.canInlineReferenceToFunction((NodeTraversal) null, node1, (Node) null, linkedHashSet0, functionInjector_InliningMode0, false, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.FunctionInjector"", e);
+    }
+}","/**
+ * @param t  The traversal use to reach the call site.
+ * @param callNode The CALL node.
+ * @param fnNode The function to evaluate for inlining.
+ * @param needAliases A set of function parameter names that can not be
+ *     used without aliasing. Returned by getUnsafeParameterNames().
+ * @param mode Inlining mode to be used.
+ * @param referencesThis Whether fnNode contains references to its this
+ *     object.
+ * @param containsFunctions Whether fnNode contains inner functions.
+ * @return Whether the inlining can occur.
+ */"
+"CanInlineResult canInlineReferenceToFunction(NodeTraversal t, Node callNode, Node fnNode, Set<String> needAliases, InliningMode mode, boolean referencesThis, boolean containsFunctions) {
+    // TODO(johnlenz): This function takes too many parameter, without
+    // context.  Modify the API to take a structure describing the function.
+    // Allow direct function calls or ""fn.call"" style calls.
+    if (!isSupportedCallType(callNode)) {
+        return CanInlineResult.NO;
+    }
+    // Limit where functions that contain functions can be inline.  Introducing
+    // an inner function into another function can capture a variable and cause
+    // a memory leak.  This isn't a problem in the global scope as those values
+    // last until explicitly cleared.
+    if (containsFunctions) {
+        if (!assumeMinimumCapture && !t.inGlobalScope()) {
+            // TODO(johnlenz): Allow inlining into any scope without local names or
+            // inner functions.
+            return CanInlineResult.NO;
+        } else if (NodeUtil.isWithinLoop(callNode)) {
+            // An inner closure maybe relying on a local value holding a value for a
+            // single iteration through a loop.
+            return CanInlineResult.NO;
+        }
+    }
+    // TODO(johnlenz): Add support for 'apply'
+    if (referencesThis && !NodeUtil.isFunctionObjectCall(callNode)) {
+        // TODO(johnlenz): Allow 'this' references to be replaced with a
+        // global 'this' object.
+        return CanInlineResult.NO;
+    }
+    if (mode == InliningMode.DIRECT) {
+        return canInlineReferenceDirectly(callNode, fnNode);
+    } else {
+        return canInlineReferenceAsStatementBlock(t, callNode, fnNode, needAliases);
+    }
+}","public void test022() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Supplier<String> supplier0 = compiler0.getUniqueNameIdSupplier();
+    FunctionInjector functionInjector0 = new FunctionInjector(compiler0, supplier0, true, true, false);
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0);
+    LinkedHashSet<String> linkedHashSet0 = new LinkedHashSet<String>();
+    Node node0 = Node.newString(""$VALES"", (-525), (-525));
+    Node node1 = new Node(31, node0, node0, node0, node0);
+    FunctionInjector.InliningMode functionInjector_InliningMode0 = FunctionInjector.InliningMode.BLOCK;
+    functionInjector0.canInlineReferenceToFunction(nodeTraversal0, node1, node0, linkedHashSet0, functionInjector_InliningMode0, true, true);
+}","/**
+ * @param t  The traversal use to reach the call site.
+ * @param callNode The CALL node.
+ * @param fnNode The function to evaluate for inlining.
+ * @param needAliases A set of function parameter names that can not be
+ *     used without aliasing. Returned by getUnsafeParameterNames().
+ * @param mode Inlining mode to be used.
+ * @param referencesThis Whether fnNode contains references to its this
+ *     object.
+ * @param containsFunctions Whether fnNode contains inner functions.
+ * @return Whether the inlining can occur.
+ */"
+"CanInlineResult canInlineReferenceToFunction(NodeTraversal t, Node callNode, Node fnNode, Set<String> needAliases, InliningMode mode, boolean referencesThis, boolean containsFunctions) {
+    // TODO(johnlenz): This function takes too many parameter, without
+    // context.  Modify the API to take a structure describing the function.
+    // Allow direct function calls or ""fn.call"" style calls.
+    if (!isSupportedCallType(callNode)) {
+        return CanInlineResult.NO;
+    }
+    // Limit where functions that contain functions can be inline.  Introducing
+    // an inner function into another function can capture a variable and cause
+    // a memory leak.  This isn't a problem in the global scope as those values
+    // last until explicitly cleared.
+    if (containsFunctions) {
+        if (!assumeMinimumCapture && !t.inGlobalScope()) {
+            // TODO(johnlenz): Allow inlining into any scope without local names or
+            // inner functions.
+            return CanInlineResult.NO;
+        } else if (NodeUtil.isWithinLoop(callNode)) {
+            // An inner closure maybe relying on a local value holding a value for a
+            // single iteration through a loop.
+            return CanInlineResult.NO;
+        }
+    }
+    // TODO(johnlenz): Add support for 'apply'
+    if (referencesThis && !NodeUtil.isFunctionObjectCall(callNode)) {
+        // TODO(johnlenz): Allow 'this' references to be replaced with a
+        // global 'this' object.
+        return CanInlineResult.NO;
+    }
+    if (mode == InliningMode.DIRECT) {
+        return canInlineReferenceDirectly(callNode, fnNode);
+    } else {
+        return canInlineReferenceAsStatementBlock(t, callNode, fnNode, needAliases);
+    }
+}","public void test033() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Supplier<String> supplier0 = compiler0.getUniqueNameIdSupplier();
+    FunctionInjector functionInjector0 = new FunctionInjector(compiler0, supplier0, false, false, false);
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0);
+    Set<String> set0 = NameAnalyzer.DEFAULT_GLOBAL_NAMES;
+    Node node0 = Node.newString(""jvAUE<"", (-596), (-596));
+    Node node1 = new Node((-596), node0, node0, node0, node0, 48, 52);
+    FunctionInjector.InliningMode functionInjector_InliningMode0 = FunctionInjector.InliningMode.DIRECT;
+    // Undeclared exception!
+    try {
+        functionInjector0.canInlineReferenceToFunction(nodeTraversal0, node1, node0, set0, functionInjector_InliningMode0, false, false);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * @param t  The traversal use to reach the call site.
+ * @param callNode The CALL node.
+ * @param fnNode The function to evaluate for inlining.
+ * @param needAliases A set of function parameter names that can not be
+ *     used without aliasing. Returned by getUnsafeParameterNames().
+ * @param mode Inlining mode to be used.
+ * @param referencesThis Whether fnNode contains references to its this
+ *     object.
+ * @param containsFunctions Whether fnNode contains inner functions.
+ * @return Whether the inlining can occur.
+ */"
+"Node inline(Node callNode, String fnName, Node fnNode, InliningMode mode) {
+    Preconditions.checkState(compiler.getLifeCycleStage().isNormalized());
+    if (mode == InliningMode.DIRECT) {
+        return inlineReturnValue(callNode, fnNode);
+    } else {
+        return inlineFunction(callNode, fnNode, fnName);
+    }
+}","public void test044() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Supplier<String> supplier0 = compiler0.getUniqueNameIdSupplier();
+    FunctionInjector functionInjector0 = new FunctionInjector(compiler0, supplier0, true, true, true);
+    FunctionInjector.InliningMode functionInjector_InliningMode0 = FunctionInjector.InliningMode.BLOCK;
+    AbstractCompiler.LifeCycleStage abstractCompiler_LifeCycleStage0 = AbstractCompiler.LifeCycleStage.NORMALIZED_OBFUSCATED;
+    compiler0.setLifeCycleStage(abstractCompiler_LifeCycleStage0);
+    // Undeclared exception!
+    try {
+        functionInjector0.inline((Node) null, ""g$ oP"", (Node) null, functionInjector_InliningMode0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.FunctionInjector"", e);
+    }
+}","/**
+ * Inline a function into the call site.
+ */"
+"Node inline(Node callNode, String fnName, Node fnNode, InliningMode mode) {
+    Preconditions.checkState(compiler.getLifeCycleStage().isNormalized());
+    if (mode == InliningMode.DIRECT) {
+        return inlineReturnValue(callNode, fnNode);
+    } else {
+        return inlineFunction(callNode, fnNode, fnName);
+    }
+}","public void test055() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Supplier<String> supplier0 = compiler0.getUniqueNameIdSupplier();
+    FunctionInjector functionInjector0 = new FunctionInjector(compiler0, supplier0, true, true, true);
+    AbstractCompiler.LifeCycleStage abstractCompiler_LifeCycleStage0 = AbstractCompiler.LifeCycleStage.NORMALIZED_OBFUSCATED;
+    compiler0.setLifeCycleStage(abstractCompiler_LifeCycleStage0);
+    FunctionInjector.InliningMode functionInjector_InliningMode0 = FunctionInjector.InliningMode.DIRECT;
+    // Undeclared exception!
+    try {
+        functionInjector0.inline((Node) null, ""?bvr.2jH+#Ma"", (Node) null, functionInjector_InliningMode0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.FunctionInjector"", e);
+    }
+}","/**
+ * Inline a function into the call site.
+ */"
+"CanInlineResult canInlineReferenceToFunction(NodeTraversal t, Node callNode, Node fnNode, Set<String> needAliases, InliningMode mode, boolean referencesThis, boolean containsFunctions) {
+    // TODO(johnlenz): This function takes too many parameter, without
+    // context.  Modify the API to take a structure describing the function.
+    // Allow direct function calls or ""fn.call"" style calls.
+    if (!isSupportedCallType(callNode)) {
+        return CanInlineResult.NO;
+    }
+    // Limit where functions that contain functions can be inline.  Introducing
+    // an inner function into another function can capture a variable and cause
+    // a memory leak.  This isn't a problem in the global scope as those values
+    // last until explicitly cleared.
+    if (containsFunctions) {
+        if (!assumeMinimumCapture && !t.inGlobalScope()) {
+            // TODO(johnlenz): Allow inlining into any scope without local names or
+            // inner functions.
+            return CanInlineResult.NO;
+        } else if (NodeUtil.isWithinLoop(callNode)) {
+            // An inner closure maybe relying on a local value holding a value for a
+            // single iteration through a loop.
+            return CanInlineResult.NO;
+        }
+    }
+    // TODO(johnlenz): Add support for 'apply'
+    if (referencesThis && !NodeUtil.isFunctionObjectCall(callNode)) {
+        // TODO(johnlenz): Allow 'this' references to be replaced with a
+        // global 'this' object.
+        return CanInlineResult.NO;
+    }
+    if (mode == InliningMode.DIRECT) {
+        return canInlineReferenceDirectly(callNode, fnNode);
+    } else {
+        return canInlineReferenceAsStatementBlock(t, callNode, fnNode, needAliases);
+    }
+}","public void test066() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Supplier<String> supplier0 = compiler0.getUniqueNameIdSupplier();
+    Node node0 = Node.newString(2929, ""; "");
+    Node node1 = new Node(4095, node0, node0, node0);
+    FunctionInjector.InliningMode functionInjector_InliningMode0 = FunctionInjector.InliningMode.BLOCK;
+    FunctionInjector functionInjector0 = new FunctionInjector(compiler0, supplier0, true, true, true);
+    Node node2 = new Node(4, node1);
+    CompilerOptions compilerOptions0 = compiler0.newCompilerOptions();
+    // Undeclared exception!
+    try {
+        functionInjector0.canInlineReferenceToFunction((NodeTraversal) null, node1, node2, compilerOptions0.stripNamePrefixes, functionInjector_InliningMode0, false, false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.NodeUtil"", e);
+    }
+}","/**
+ * @param t  The traversal use to reach the call site.
+ * @param callNode The CALL node.
+ * @param fnNode The function to evaluate for inlining.
+ * @param needAliases A set of function parameter names that can not be
+ *     used without aliasing. Returned by getUnsafeParameterNames().
+ * @param mode Inlining mode to be used.
+ * @param referencesThis Whether fnNode contains references to its this
+ *     object.
+ * @param containsFunctions Whether fnNode contains inner functions.
+ * @return Whether the inlining can occur.
+ */"
+"boolean inliningLowersCost(JSModule fnModule, Node fnNode, Collection<? extends Reference> refs, Set<String> namesToAlias, boolean isRemovable, boolean referencesThis) {
+    int referenceCount = refs.size();
+    if (referenceCount == 0) {
+        return true;
+    }
+    int referencesUsingBlockInlining = 0;
+    boolean checkModules = isRemovable && fnModule != null;
+    JSModuleGraph moduleGraph = compiler.getModuleGraph();
+    for (Reference ref : refs) {
+        if (ref.mode == InliningMode.BLOCK) {
+            referencesUsingBlockInlining++;
+        }
+        // Check if any of the references cross the module boundaries.
+        if (checkModules && ref.module != null) {
+            if (ref.module != fnModule && !moduleGraph.dependsOn(ref.module, fnModule)) {
+                // Calculate the cost as if the function were non-removable,
+                // if it still lowers the cost inline it.
+                isRemovable = false;
+                // no need to check additional modules.
+                checkModules = false;
+            }
+        }
+    }
+    int referencesUsingDirectInlining = referenceCount - referencesUsingBlockInlining;
+    // Don't bother calculating the cost of function for simple functions where
+    // possible.
+    // However, when inlining a complex function, even a single reference may be
+    // larger than the original function if there are many returns (resulting
+    // in additional assignments) or many parameters that need to be aliased
+    // so use the cost estimating.
+    if (referenceCount == 1 && isRemovable && referencesUsingDirectInlining == 1) {
+        return true;
+    }
+    int callCost = estimateCallCost(fnNode, referencesThis);
+    int overallCallCost = callCost * referenceCount;
+    int costDeltaDirect = inlineCostDelta(fnNode, namesToAlias, InliningMode.DIRECT);
+    int costDeltaBlock = inlineCostDelta(fnNode, namesToAlias, InliningMode.BLOCK);
+    return doesLowerCost(fnNode, overallCallCost, referencesUsingDirectInlining, costDeltaDirect, referencesUsingBlockInlining, costDeltaBlock, isRemovable);
+}","public void test077() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Supplier<String> supplier0 = compiler0.getUniqueNameIdSupplier();
+    FunctionInjector.InliningMode functionInjector_InliningMode0 = FunctionInjector.InliningMode.DIRECT;
+    FunctionInjector.Reference functionInjector_Reference0 = new FunctionInjector.Reference((Node) null, (JSModule) null, functionInjector_InliningMode0);
+    FunctionInjector functionInjector0 = new FunctionInjector(compiler0, supplier0, false, true, true);
+    ImmutableList<FunctionInjector.Reference> immutableList0 = ImmutableList.of(functionInjector_Reference0);
+    boolean boolean0 = functionInjector0.inliningLowersCost((JSModule) null, (Node) null, immutableList0, (Set<String>) null, true, true);
+    assertTrue(boolean0);
+}","/**
+ * Determine if inlining the function is likely to reduce the code size.
+ * @param namesToAlias
+ */"
+"boolean inliningLowersCost(JSModule fnModule, Node fnNode, Collection<? extends Reference> refs, Set<String> namesToAlias, boolean isRemovable, boolean referencesThis) {
+    int referenceCount = refs.size();
+    if (referenceCount == 0) {
+        return true;
+    }
+    int referencesUsingBlockInlining = 0;
+    boolean checkModules = isRemovable && fnModule != null;
+    JSModuleGraph moduleGraph = compiler.getModuleGraph();
+    for (Reference ref : refs) {
+        if (ref.mode == InliningMode.BLOCK) {
+            referencesUsingBlockInlining++;
+        }
+        // Check if any of the references cross the module boundaries.
+        if (checkModules && ref.module != null) {
+            if (ref.module != fnModule && !moduleGraph.dependsOn(ref.module, fnModule)) {
+                // Calculate the cost as if the function were non-removable,
+                // if it still lowers the cost inline it.
+                isRemovable = false;
+                // no need to check additional modules.
+                checkModules = false;
+            }
+        }
+    }
+    int referencesUsingDirectInlining = referenceCount - referencesUsingBlockInlining;
+    // Don't bother calculating the cost of function for simple functions where
+    // possible.
+    // However, when inlining a complex function, even a single reference may be
+    // larger than the original function if there are many returns (resulting
+    // in additional assignments) or many parameters that need to be aliased
+    // so use the cost estimating.
+    if (referenceCount == 1 && isRemovable && referencesUsingDirectInlining == 1) {
+        return true;
+    }
+    int callCost = estimateCallCost(fnNode, referencesThis);
+    int overallCallCost = callCost * referenceCount;
+    int costDeltaDirect = inlineCostDelta(fnNode, namesToAlias, InliningMode.DIRECT);
+    int costDeltaBlock = inlineCostDelta(fnNode, namesToAlias, InliningMode.BLOCK);
+    return doesLowerCost(fnNode, overallCallCost, referencesUsingDirectInlining, costDeltaDirect, referencesUsingBlockInlining, costDeltaBlock, isRemovable);
+}","public void test088() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Supplier<String> supplier0 = compiler0.getUniqueNameIdSupplier();
+    FunctionInjector functionInjector0 = new FunctionInjector(compiler0, supplier0, true, true, true);
+    JSModule jSModule0 = new JSModule("":M=HTm<-9\"",An%p"");
+    ImmutableList<FunctionInjector.Reference> immutableList0 = ImmutableList.of();
+    boolean boolean0 = functionInjector0.inliningLowersCost(jSModule0, (Node) null, immutableList0, (Set<String>) null, true, true);
+    assertTrue(boolean0);
+}","/**
+ * Determine if inlining the function is likely to reduce the code size.
+ * @param namesToAlias
+ */"
+"boolean inliningLowersCost(JSModule fnModule, Node fnNode, Collection<? extends Reference> refs, Set<String> namesToAlias, boolean isRemovable, boolean referencesThis) {
+    int referenceCount = refs.size();
+    if (referenceCount == 0) {
+        return true;
+    }
+    int referencesUsingBlockInlining = 0;
+    boolean checkModules = isRemovable && fnModule != null;
+    JSModuleGraph moduleGraph = compiler.getModuleGraph();
+    for (Reference ref : refs) {
+        if (ref.mode == InliningMode.BLOCK) {
+            referencesUsingBlockInlining++;
+        }
+        // Check if any of the references cross the module boundaries.
+        if (checkModules && ref.module != null) {
+            if (ref.module != fnModule && !moduleGraph.dependsOn(ref.module, fnModule)) {
+                // Calculate the cost as if the function were non-removable,
+                // if it still lowers the cost inline it.
+                isRemovable = false;
+                // no need to check additional modules.
+                checkModules = false;
+            }
+        }
+    }
+    int referencesUsingDirectInlining = referenceCount - referencesUsingBlockInlining;
+    // Don't bother calculating the cost of function for simple functions where
+    // possible.
+    // However, when inlining a complex function, even a single reference may be
+    // larger than the original function if there are many returns (resulting
+    // in additional assignments) or many parameters that need to be aliased
+    // so use the cost estimating.
+    if (referenceCount == 1 && isRemovable && referencesUsingDirectInlining == 1) {
+        return true;
+    }
+    int callCost = estimateCallCost(fnNode, referencesThis);
+    int overallCallCost = callCost * referenceCount;
+    int costDeltaDirect = inlineCostDelta(fnNode, namesToAlias, InliningMode.DIRECT);
+    int costDeltaBlock = inlineCostDelta(fnNode, namesToAlias, InliningMode.BLOCK);
+    return doesLowerCost(fnNode, overallCallCost, referencesUsingDirectInlining, costDeltaDirect, referencesUsingBlockInlining, costDeltaBlock, isRemovable);
+}","public void test099() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Supplier<String> supplier0 = compiler0.getUniqueNameIdSupplier();
+    FunctionInjector functionInjector0 = new FunctionInjector(compiler0, supplier0, true, true, true);
+    FunctionInjector.InliningMode functionInjector_InliningMode0 = FunctionInjector.InliningMode.DIRECT;
+    JSModule jSModule0 = new JSModule("""");
+    FunctionInjector.Reference functionInjector_Reference0 = new FunctionInjector.Reference((Node) null, jSModule0, functionInjector_InliningMode0);
+    ImmutableList<FunctionInjector.Reference> immutableList0 = ImmutableList.of(functionInjector_Reference0, functionInjector_Reference0, functionInjector_Reference0, functionInjector_Reference0, functionInjector_Reference0, functionInjector_Reference0, functionInjector_Reference0, functionInjector_Reference0, functionInjector_Reference0, functionInjector_Reference0, functionInjector_Reference0);
+    InlineSimpleMethods inlineSimpleMethods0 = new InlineSimpleMethods(compiler0);
+    Set<String> set0 = inlineSimpleMethods0.externMethods;
+    // Undeclared exception!
+    try {
+        functionInjector0.inliningLowersCost(jSModule0, (Node) null, immutableList0, set0, true, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.NodeUtil"", e);
+    }
+}","/**
+ * Determine if inlining the function is likely to reduce the code size.
+ * @param namesToAlias
+ */"
+"boolean inliningLowersCost(JSModule fnModule, Node fnNode, Collection<? extends Reference> refs, Set<String> namesToAlias, boolean isRemovable, boolean referencesThis) {
+    int referenceCount = refs.size();
+    if (referenceCount == 0) {
+        return true;
+    }
+    int referencesUsingBlockInlining = 0;
+    boolean checkModules = isRemovable && fnModule != null;
+    JSModuleGraph moduleGraph = compiler.getModuleGraph();
+    for (Reference ref : refs) {
+        if (ref.mode == InliningMode.BLOCK) {
+            referencesUsingBlockInlining++;
+        }
+        // Check if any of the references cross the module boundaries.
+        if (checkModules && ref.module != null) {
+            if (ref.module != fnModule && !moduleGraph.dependsOn(ref.module, fnModule)) {
+                // Calculate the cost as if the function were non-removable,
+                // if it still lowers the cost inline it.
+                isRemovable = false;
+                // no need to check additional modules.
+                checkModules = false;
+            }
+        }
+    }
+    int referencesUsingDirectInlining = referenceCount - referencesUsingBlockInlining;
+    // Don't bother calculating the cost of function for simple functions where
+    // possible.
+    // However, when inlining a complex function, even a single reference may be
+    // larger than the original function if there are many returns (resulting
+    // in additional assignments) or many parameters that need to be aliased
+    // so use the cost estimating.
+    if (referenceCount == 1 && isRemovable && referencesUsingDirectInlining == 1) {
+        return true;
+    }
+    int callCost = estimateCallCost(fnNode, referencesThis);
+    int overallCallCost = callCost * referenceCount;
+    int costDeltaDirect = inlineCostDelta(fnNode, namesToAlias, InliningMode.DIRECT);
+    int costDeltaBlock = inlineCostDelta(fnNode, namesToAlias, InliningMode.BLOCK);
+    return doesLowerCost(fnNode, overallCallCost, referencesUsingDirectInlining, costDeltaDirect, referencesUsingBlockInlining, costDeltaBlock, isRemovable);
+}","public void test1010() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Supplier<String> supplier0 = compiler0.getUniqueNameIdSupplier();
+    FunctionInjector functionInjector0 = new FunctionInjector(compiler0, supplier0, true, true, true);
+    FunctionInjector.InliningMode functionInjector_InliningMode0 = FunctionInjector.InliningMode.DIRECT;
+    FunctionInjector.Reference functionInjector_Reference0 = new FunctionInjector.Reference((Node) null, (JSModule) null, functionInjector_InliningMode0);
+    ImmutableList<FunctionInjector.Reference> immutableList0 = ImmutableList.of(functionInjector_Reference0, functionInjector_Reference0, functionInjector_Reference0, functionInjector_Reference0, functionInjector_Reference0, functionInjector_Reference0, functionInjector_Reference0, functionInjector_Reference0, functionInjector_Reference0, functionInjector_Reference0, functionInjector_Reference0);
+    LinkedHashSet<String> linkedHashSet0 = new LinkedHashSet<String>();
+    JSModule jSModule0 = new JSModule(""AFTER_PREPARATION"");
+    // Undeclared exception!
+    try {
+        functionInjector0.inliningLowersCost(jSModule0, (Node) null, immutableList0, linkedHashSet0, true, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.NodeUtil"", e);
+    }
+}","/**
+ * Determine if inlining the function is likely to reduce the code size.
+ * @param namesToAlias
+ */"
+"boolean inliningLowersCost(JSModule fnModule, Node fnNode, Collection<? extends Reference> refs, Set<String> namesToAlias, boolean isRemovable, boolean referencesThis) {
+    int referenceCount = refs.size();
+    if (referenceCount == 0) {
+        return true;
+    }
+    int referencesUsingBlockInlining = 0;
+    boolean checkModules = isRemovable && fnModule != null;
+    JSModuleGraph moduleGraph = compiler.getModuleGraph();
+    for (Reference ref : refs) {
+        if (ref.mode == InliningMode.BLOCK) {
+            referencesUsingBlockInlining++;
+        }
+        // Check if any of the references cross the module boundaries.
+        if (checkModules && ref.module != null) {
+            if (ref.module != fnModule && !moduleGraph.dependsOn(ref.module, fnModule)) {
+                // Calculate the cost as if the function were non-removable,
+                // if it still lowers the cost inline it.
+                isRemovable = false;
+                // no need to check additional modules.
+                checkModules = false;
+            }
+        }
+    }
+    int referencesUsingDirectInlining = referenceCount - referencesUsingBlockInlining;
+    // Don't bother calculating the cost of function for simple functions where
+    // possible.
+    // However, when inlining a complex function, even a single reference may be
+    // larger than the original function if there are many returns (resulting
+    // in additional assignments) or many parameters that need to be aliased
+    // so use the cost estimating.
+    if (referenceCount == 1 && isRemovable && referencesUsingDirectInlining == 1) {
+        return true;
+    }
+    int callCost = estimateCallCost(fnNode, referencesThis);
+    int overallCallCost = callCost * referenceCount;
+    int costDeltaDirect = inlineCostDelta(fnNode, namesToAlias, InliningMode.DIRECT);
+    int costDeltaBlock = inlineCostDelta(fnNode, namesToAlias, InliningMode.BLOCK);
+    return doesLowerCost(fnNode, overallCallCost, referencesUsingDirectInlining, costDeltaDirect, referencesUsingBlockInlining, costDeltaBlock, isRemovable);
+}","public void test1111() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Supplier<String> supplier0 = compiler0.getUniqueNameIdSupplier();
+    FunctionInjector functionInjector0 = new FunctionInjector(compiler0, supplier0, true, true, true);
+    FunctionInjector.InliningMode functionInjector_InliningMode0 = FunctionInjector.InliningMode.DIRECT;
+    JSModule jSModule0 = new JSModule((String) null);
+    FunctionInjector.Reference functionInjector_Reference0 = new FunctionInjector.Reference((Node) null, jSModule0, functionInjector_InliningMode0);
+    ImmutableList<FunctionInjector.Reference> immutableList0 = ImmutableList.of(functionInjector_Reference0, functionInjector_Reference0, functionInjector_Reference0, functionInjector_Reference0, functionInjector_Reference0, functionInjector_Reference0, functionInjector_Reference0, functionInjector_Reference0, functionInjector_Reference0, functionInjector_Reference0, functionInjector_Reference0);
+    LinkedHashSet<String> linkedHashSet0 = new LinkedHashSet<String>();
+    JSModule jSModule1 = new JSModule((String) null);
+    // Undeclared exception!
+    try {
+        functionInjector0.inliningLowersCost(jSModule1, (Node) null, immutableList0, linkedHashSet0, true, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.FunctionInjector"", e);
+    }
+}","/**
+ * Determine if inlining the function is likely to reduce the code size.
+ * @param namesToAlias
+ */"
+"boolean inliningLowersCost(JSModule fnModule, Node fnNode, Collection<? extends Reference> refs, Set<String> namesToAlias, boolean isRemovable, boolean referencesThis) {
+    int referenceCount = refs.size();
+    if (referenceCount == 0) {
+        return true;
+    }
+    int referencesUsingBlockInlining = 0;
+    boolean checkModules = isRemovable && fnModule != null;
+    JSModuleGraph moduleGraph = compiler.getModuleGraph();
+    for (Reference ref : refs) {
+        if (ref.mode == InliningMode.BLOCK) {
+            referencesUsingBlockInlining++;
+        }
+        // Check if any of the references cross the module boundaries.
+        if (checkModules && ref.module != null) {
+            if (ref.module != fnModule && !moduleGraph.dependsOn(ref.module, fnModule)) {
+                // Calculate the cost as if the function were non-removable,
+                // if it still lowers the cost inline it.
+                isRemovable = false;
+                // no need to check additional modules.
+                checkModules = false;
+            }
+        }
+    }
+    int referencesUsingDirectInlining = referenceCount - referencesUsingBlockInlining;
+    // Don't bother calculating the cost of function for simple functions where
+    // possible.
+    // However, when inlining a complex function, even a single reference may be
+    // larger than the original function if there are many returns (resulting
+    // in additional assignments) or many parameters that need to be aliased
+    // so use the cost estimating.
+    if (referenceCount == 1 && isRemovable && referencesUsingDirectInlining == 1) {
+        return true;
+    }
+    int callCost = estimateCallCost(fnNode, referencesThis);
+    int overallCallCost = callCost * referenceCount;
+    int costDeltaDirect = inlineCostDelta(fnNode, namesToAlias, InliningMode.DIRECT);
+    int costDeltaBlock = inlineCostDelta(fnNode, namesToAlias, InliningMode.BLOCK);
+    return doesLowerCost(fnNode, overallCallCost, referencesUsingDirectInlining, costDeltaDirect, referencesUsingBlockInlining, costDeltaBlock, isRemovable);
+}","public void test1212() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Supplier<String> supplier0 = compiler0.getUniqueNameIdSupplier();
+    FunctionInjector functionInjector0 = new FunctionInjector(compiler0, supplier0, false, false, false);
+    FunctionInjector.InliningMode functionInjector_InliningMode0 = FunctionInjector.InliningMode.BLOCK;
+    FunctionInjector.Reference functionInjector_Reference0 = new FunctionInjector.Reference((Node) null, (JSModule) null, functionInjector_InliningMode0);
+    ImmutableList<FunctionInjector.Reference> immutableList0 = ImmutableList.of(functionInjector_Reference0);
+    // Undeclared exception!
+    try {
+        functionInjector0.inliningLowersCost((JSModule) null, (Node) null, immutableList0, (Set<String>) null, false, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.NodeUtil"", e);
+    }
+}","/**
+ * Determine if inlining the function is likely to reduce the code size.
+ * @param namesToAlias
+ */"
+"boolean inliningLowersCost(JSModule fnModule, Node fnNode, Collection<? extends Reference> refs, Set<String> namesToAlias, boolean isRemovable, boolean referencesThis) {
+    int referenceCount = refs.size();
+    if (referenceCount == 0) {
+        return true;
+    }
+    int referencesUsingBlockInlining = 0;
+    boolean checkModules = isRemovable && fnModule != null;
+    JSModuleGraph moduleGraph = compiler.getModuleGraph();
+    for (Reference ref : refs) {
+        if (ref.mode == InliningMode.BLOCK) {
+            referencesUsingBlockInlining++;
+        }
+        // Check if any of the references cross the module boundaries.
+        if (checkModules && ref.module != null) {
+            if (ref.module != fnModule && !moduleGraph.dependsOn(ref.module, fnModule)) {
+                // Calculate the cost as if the function were non-removable,
+                // if it still lowers the cost inline it.
+                isRemovable = false;
+                // no need to check additional modules.
+                checkModules = false;
+            }
+        }
+    }
+    int referencesUsingDirectInlining = referenceCount - referencesUsingBlockInlining;
+    // Don't bother calculating the cost of function for simple functions where
+    // possible.
+    // However, when inlining a complex function, even a single reference may be
+    // larger than the original function if there are many returns (resulting
+    // in additional assignments) or many parameters that need to be aliased
+    // so use the cost estimating.
+    if (referenceCount == 1 && isRemovable && referencesUsingDirectInlining == 1) {
+        return true;
+    }
+    int callCost = estimateCallCost(fnNode, referencesThis);
+    int overallCallCost = callCost * referenceCount;
+    int costDeltaDirect = inlineCostDelta(fnNode, namesToAlias, InliningMode.DIRECT);
+    int costDeltaBlock = inlineCostDelta(fnNode, namesToAlias, InliningMode.BLOCK);
+    return doesLowerCost(fnNode, overallCallCost, referencesUsingDirectInlining, costDeltaDirect, referencesUsingBlockInlining, costDeltaBlock, isRemovable);
+}","public void test1313() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Supplier<String> supplier0 = compiler0.getUniqueNameIdSupplier();
+    FunctionInjector functionInjector0 = new FunctionInjector(compiler0, supplier0, true, true, true);
+    FunctionInjector.InliningMode functionInjector_InliningMode0 = FunctionInjector.InliningMode.BLOCK;
+    FunctionInjector.Reference functionInjector_Reference0 = new FunctionInjector.Reference((Node) null, (JSModule) null, functionInjector_InliningMode0);
+    ImmutableList<FunctionInjector.Reference> immutableList0 = ImmutableList.of(functionInjector_Reference0);
+    // Undeclared exception!
+    try {
+        functionInjector0.inliningLowersCost((JSModule) null, (Node) null, immutableList0, (Set<String>) null, true, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.NodeUtil"", e);
+    }
+}","/**
+ * Determine if inlining the function is likely to reduce the code size.
+ * @param namesToAlias
+ */"
+"public void setKnownConstants(Set<String> knownConstants) {
+    // This is only expected to be set once. The same set should be used
+    // when evaluating call-sites and inlining calls.
+    Preconditions.checkState(this.knownConstants.isEmpty());
+    this.knownConstants = knownConstants;
+}","public void test1414() throws Throwable {
+    Set<String> set0 = NameAnalyzer.DEFAULT_GLOBAL_NAMES;
+    Compiler compiler0 = new Compiler();
+    Supplier<String> supplier0 = compiler0.getUniqueNameIdSupplier();
+    FunctionInjector functionInjector0 = new FunctionInjector(compiler0, supplier0, false, false, false);
+    functionInjector0.setKnownConstants(set0);
+    // Undeclared exception!
+    try {
+        functionInjector0.setKnownConstants(set0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * Store the names of known constants to be used when classifying call-sites
+ * in expressions.
+ */"

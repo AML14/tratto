@@ -1,0 +1,15 @@
+focal_method,test_prefix,docstring
+"@Override
+public void process(Node externs, Node root) {
+    ReferenceCollectingCallback callback = new ReferenceCollectingCallback(compiler, new InliningBehavior());
+    callback.process(externs, root);
+}","public void test00() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    InlineObjectLiterals inlineObjectLiterals0 = new InlineObjectLiterals(compiler0, (Supplier<String>) null);
+    // Undeclared exception!
+    try {
+        inlineObjectLiterals0.process((Node) null, (Node) null);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",""

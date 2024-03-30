@@ -1,0 +1,417 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    Class<Object> class0 = Object.class;
+    ParameterizedType parameterizedType0 = mock(ParameterizedType.class, new ViolatedAssumptionAnswer());
+    doReturn((Type) null).when(parameterizedType0).getRawType();
+    // Undeclared exception!
+    try {
+        TypeUtils.getRawType(parameterizedType0, class0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Wait... What!? Type of rawType: null
+        //
+        verifyException(""org.apache.commons.lang3.reflect.TypeUtils"", e);
+    }
+}",0,
+project,0,test022,"public void test022() throws Throwable {
+    Type[] typeArray0 = new Type[2];
+    Type[] typeArray1 = TypeUtils.normalizeUpperBounds(typeArray0);
+    assertEquals(1, typeArray1.length);
+}",0,
+project,0,test033,"public void test033() throws Throwable {
+    Class<Object> class0 = Object.class;
+    ParameterizedType parameterizedType0 = mock(ParameterizedType.class, new ViolatedAssumptionAnswer());
+    doReturn(class0, (Type) null).when(parameterizedType0).getRawType();
+    // Undeclared exception!
+    try {
+        TypeUtils.determineTypeArguments(class0, parameterizedType0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Wait... What!? Type of rawType: null
+        //
+        verifyException(""org.apache.commons.lang3.reflect.TypeUtils"", e);
+    }
+}",0,
+project,0,test044,"public void test044() throws Throwable {
+    Class<Integer> class0 = Integer.class;
+    Type[] typeArray0 = new Type[5];
+    boolean boolean0 = TypeUtils.isAssignable(class0, typeArray0[2]);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test066,"public void test066() throws Throwable {
+    Class<Object> class0 = Object.class;
+    Type[] typeArray0 = new Type[3];
+    typeArray0[0] = (Type) class0;
+    typeArray0[1] = (Type) class0;
+    typeArray0[2] = (Type) class0;
+    ParameterizedType parameterizedType0 = mock(ParameterizedType.class, new ViolatedAssumptionAnswer());
+    doReturn((Object) typeArray0, (Object) typeArray0).when(parameterizedType0).getActualTypeArguments();
+    doReturn(typeArray0[2], typeArray0[0]).when(parameterizedType0).getOwnerType();
+    doReturn(class0, class0, typeArray0[1], typeArray0[2], typeArray0[2]).when(parameterizedType0).getRawType();
+    Map<TypeVariable<?>, Type> map0 = TypeUtils.determineTypeArguments(class0, parameterizedType0);
+    Type[] typeArray1 = new Type[7];
+    typeArray1[0] = (Type) class0;
+    typeArray1[1] = (Type) parameterizedType0;
+    typeArray1[2] = (Type) parameterizedType0;
+    typeArray1[3] = (Type) class0;
+    typeArray1[2] = (Type) parameterizedType0;
+    typeArray1[5] = (Type) parameterizedType0;
+    TypeUtils.normalizeUpperBounds(typeArray1);
+    WildcardType wildcardType0 = mock(WildcardType.class, new ViolatedAssumptionAnswer());
+    Class<Object> class1 = Object.class;
+    ParameterizedType parameterizedType1 = mock(ParameterizedType.class, new ViolatedAssumptionAnswer());
+    doReturn(typeArray0).when(parameterizedType1).getActualTypeArguments();
+    doReturn(typeArray1[1]).when(parameterizedType1).getOwnerType();
+    doReturn(typeArray0[0], typeArray0[0]).when(parameterizedType1).getRawType();
+    TypeUtils.determineTypeArguments(class1, parameterizedType1);
+    TypeUtils.isArrayType(typeArray1[3]);
+    TypeUtils.isAssignable(typeArray1[4], typeArray1[5]);
+    ParameterizedType parameterizedType2 = null;
+    TypeUtils.getArrayComponentType(typeArray0[0]);
+    TypeUtils.getArrayComponentType((Type) null);
+    TypeUtils.getRawType(typeArray0[0], typeArray0[1]);
+    Object object0 = new Object();
+    Class<?> class2 = TypeUtils.getRawType(typeArray1[0], class0);
+    TypeUtils.isInstance(object0, class2);
+    TypeUtils.typesSatisfyVariables(map0);
+    ParameterizedType parameterizedType3 = mock(ParameterizedType.class, new ViolatedAssumptionAnswer());
+    doReturn(typeArray0[1], (Type) null).when(parameterizedType3).getRawType();
+    // Undeclared exception!
+    try {
+        TypeUtils.getTypeArguments(parameterizedType3);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Wait... What!? Type of rawType: null
+        //
+        verifyException(""org.apache.commons.lang3.reflect.TypeUtils"", e);
+    }
+}",0,
+project,0,test077,"public void test077() throws Throwable {
+    // Undeclared exception!
+    try {
+        TypeUtils.typesSatisfyVariables((Map<TypeVariable<?>, Type>) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang3.reflect.TypeUtils"", e);
+    }
+}",0,
+project,0,test088,"public void test088() throws Throwable {
+    // Undeclared exception!
+    try {
+        TypeUtils.normalizeUpperBounds((Type[]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang3.reflect.TypeUtils"", e);
+    }
+}",0,
+project,0,test099,"public void test099() throws Throwable {
+    Class<Object> class0 = Object.class;
+    Type[] typeArray0 = new Type[0];
+    Class<?> class1 = TypeUtils.getRawType(class0, class0);
+    ParameterizedType parameterizedType0 = mock(ParameterizedType.class, new ViolatedAssumptionAnswer());
+    doReturn(typeArray0).when(parameterizedType0).getActualTypeArguments();
+    doReturn(class0).when(parameterizedType0).getOwnerType();
+    doReturn(class0, class0, class0, class1, (Type) null).when(parameterizedType0).getRawType();
+    TypeUtils.determineTypeArguments(class0, parameterizedType0);
+    Type[] typeArray1 = new Type[7];
+    typeArray1[0] = (Type) class0;
+    typeArray1[1] = (Type) parameterizedType0;
+    typeArray1[2] = (Type) parameterizedType0;
+    // Undeclared exception!
+    try {
+        TypeUtils.normalizeUpperBounds(typeArray1);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Wait... What!? Type of rawType: null
+        //
+        verifyException(""org.apache.commons.lang3.reflect.TypeUtils"", e);
+    }
+}",0,
+project,0,test1010,"public void test1010() throws Throwable {
+    Type type0 = mock(Type.class, new ViolatedAssumptionAnswer());
+    doReturn((String) null).when(type0).toString();
+    // Undeclared exception!
+    try {
+        TypeUtils.isInstance(""J9ivp9Dti"", type0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // found an unhandled type: null
+        //
+        verifyException(""org.apache.commons.lang3.reflect.TypeUtils"", e);
+    }
+}",0,
+project,0,test1111,"public void test1111() throws Throwable {
+    Class<String> class0 = String.class;
+    Type[] typeArray0 = new Type[4];
+    typeArray0[3] = (Type) class0;
+    ParameterizedType parameterizedType0 = mock(ParameterizedType.class, new ViolatedAssumptionAnswer());
+    doReturn(typeArray0).when(parameterizedType0).getActualTypeArguments();
+    doReturn(class0).when(parameterizedType0).getOwnerType();
+    doReturn(class0, typeArray0[3], typeArray0[2]).when(parameterizedType0).getRawType();
+    TypeUtils.determineTypeArguments(class0, parameterizedType0);
+    Type[] typeArray1 = new Type[3];
+    typeArray1[0] = (Type) parameterizedType0;
+    // Undeclared exception!
+    try {
+        TypeUtils.getRawType(typeArray1[0], typeArray1[0]);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Wait... What!? Type of rawType: null
+        //
+        verifyException(""org.apache.commons.lang3.reflect.TypeUtils"", e);
+    }
+}",0,
+project,0,test1212,"public void test1212() throws Throwable {
+    // Undeclared exception!
+    try {
+        TypeUtils.getImplicitUpperBounds((WildcardType) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang3.reflect.TypeUtils"", e);
+    }
+}",0,
+project,0,test1313,"public void test1313() throws Throwable {
+    Type[] typeArray0 = new Type[16];
+    Type type0 = mock(Type.class, new ViolatedAssumptionAnswer());
+    doReturn((String) null).when(type0).toString();
+    typeArray0[0] = type0;
+    WildcardType wildcardType0 = mock(WildcardType.class, new ViolatedAssumptionAnswer());
+    doReturn(typeArray0).when(wildcardType0).getUpperBounds();
+    // Undeclared exception!
+    try {
+        TypeUtils.getImplicitUpperBounds(wildcardType0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // found an unhandled type: null
+        //
+        verifyException(""org.apache.commons.lang3.reflect.TypeUtils"", e);
+    }
+}",0,
+project,0,test1414,"public void test1414() throws Throwable {
+    Class<Object> class0 = Object.class;
+    // Undeclared exception!
+    try {
+        TypeUtils.determineTypeArguments(class0, (ParameterizedType) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang3.reflect.TypeUtils"", e);
+    }
+}",0,
+project,0,test1515,"public void test1515() throws Throwable {
+    ParameterizedType parameterizedType0 = mock(ParameterizedType.class, new ViolatedAssumptionAnswer());
+    boolean boolean0 = TypeUtils.isArrayType(parameterizedType0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test1616,"public void test1616() throws Throwable {
+    Class<Object> class0 = Object.class;
+    WildcardType wildcardType0 = mock(WildcardType.class, new ViolatedAssumptionAnswer());
+    Class<?> class1 = TypeUtils.getRawType(wildcardType0, class0);
+    assertNull(class1);
+}",0,
+project,0,test1717,"public void test1717() throws Throwable {
+    Type[] typeArray0 = new Type[3];
+    // Undeclared exception!
+    try {
+        TypeUtils.getRawType(typeArray0[1], typeArray0[0]);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // unknown type: null
+        //
+        verifyException(""org.apache.commons.lang3.reflect.TypeUtils"", e);
+    }
+}",0,
+project,0,test1818,"public void test1818() throws Throwable {
+    Type[] typeArray0 = new Type[0];
+    WildcardType wildcardType0 = mock(WildcardType.class, new ViolatedAssumptionAnswer());
+    doReturn(typeArray0).when(wildcardType0).getLowerBounds();
+    Type[] typeArray1 = TypeUtils.getImplicitLowerBounds(wildcardType0);
+    assertEquals(1, typeArray1.length);
+}",0,
+project,0,test1919,"public void test1919() throws Throwable {
+    Type[] typeArray0 = new Type[5];
+    WildcardType wildcardType0 = mock(WildcardType.class, new ViolatedAssumptionAnswer());
+    doReturn(typeArray0).when(wildcardType0).getLowerBounds();
+    Type[] typeArray1 = TypeUtils.getImplicitLowerBounds(wildcardType0);
+    assertEquals(5, typeArray1.length);
+}",0,
+project,0,test2020,"public void test2020() throws Throwable {
+    Type[] typeArray0 = new Type[0];
+    WildcardType wildcardType0 = mock(WildcardType.class, new ViolatedAssumptionAnswer());
+    doReturn(typeArray0).when(wildcardType0).getUpperBounds();
+    Type[] typeArray1 = TypeUtils.getImplicitUpperBounds(wildcardType0);
+    assertEquals(1, typeArray1.length);
+}",0,
+project,0,test2121,"public void test2121() throws Throwable {
+    Type[] typeArray0 = new Type[8];
+    WildcardType wildcardType0 = mock(WildcardType.class, new ViolatedAssumptionAnswer());
+    doReturn(typeArray0).when(wildcardType0).getUpperBounds();
+    Type[] typeArray1 = TypeUtils.getImplicitUpperBounds(wildcardType0);
+    Type[] typeArray2 = TypeUtils.normalizeUpperBounds(typeArray1);
+    assertEquals(1, typeArray2.length);
+}",0,
+project,0,test2122,"public void test2122() throws Throwable {
+    Type[] typeArray0 = new Type[8];
+    WildcardType wildcardType0 = mock(WildcardType.class, new ViolatedAssumptionAnswer());
+    doReturn(typeArray0).when(wildcardType0).getUpperBounds();
+    Type[] typeArray1 = TypeUtils.getImplicitUpperBounds(wildcardType0);
+    Type[] typeArray2 = TypeUtils.normalizeUpperBounds(typeArray1);
+    assertSame(typeArray2, typeArray1);
+}",0,
+project,0,test2223,"public void test2223() throws Throwable {
+    Class<Object> class0 = Object.class;
+    boolean boolean0 = TypeUtils.isInstance((Object) null, class0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2324,"public void test2324() throws Throwable {
+    ParameterizedType parameterizedType0 = mock(ParameterizedType.class, new ViolatedAssumptionAnswer());
+    boolean boolean0 = TypeUtils.isInstance((Object) null, parameterizedType0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2425,"public void test2425() throws Throwable {
+    boolean boolean0 = TypeUtils.isInstance((Object) null, (Type) null);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2526,"public void test2526() throws Throwable {
+    Class<Object> class0 = Object.class;
+    Class<?> class1 = TypeUtils.getRawType(class0, class0);
+    ParameterizedType parameterizedType0 = mock(ParameterizedType.class, new ViolatedAssumptionAnswer());
+    doReturn(class0, class0, class1, (Type) null).when(parameterizedType0).getRawType();
+    Class<Integer> class2 = Integer.class;
+    // Undeclared exception!
+    try {
+        TypeUtils.determineTypeArguments(class2, parameterizedType0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Wait... What!? Type of rawType: null
+        //
+        verifyException(""org.apache.commons.lang3.reflect.TypeUtils"", e);
+    }
+}",0,
+project,0,test2627,"public void test2627() throws Throwable {
+    Class<String> class0 = String.class;
+    Class<Object> class1 = Object.class;
+    ParameterizedType parameterizedType0 = mock(ParameterizedType.class, new ViolatedAssumptionAnswer());
+    doReturn(class0).when(parameterizedType0).getRawType();
+    Map<TypeVariable<?>, Type> map0 = TypeUtils.determineTypeArguments(class1, parameterizedType0);
+    assertNull(map0);
+}",0,
+project,0,test2728,"public void test2728() throws Throwable {
+    Class<Object> class0 = Object.class;
+    Type[] typeArray0 = new Type[0];
+    ParameterizedType parameterizedType0 = mock(ParameterizedType.class, new ViolatedAssumptionAnswer());
+    doReturn(typeArray0).when(parameterizedType0).getActualTypeArguments();
+    doReturn(class0).when(parameterizedType0).getOwnerType();
+    doReturn(class0, class0, class0).when(parameterizedType0).getRawType();
+    Map<TypeVariable<?>, Type> map0 = TypeUtils.determineTypeArguments(class0, parameterizedType0);
+    assertNotNull(map0);
+}",0,
+project,0,test2729,"public void test2729() throws Throwable {
+    Class<Object> class0 = Object.class;
+    Type[] typeArray0 = new Type[0];
+    ParameterizedType parameterizedType0 = mock(ParameterizedType.class, new ViolatedAssumptionAnswer());
+    doReturn(typeArray0).when(parameterizedType0).getActualTypeArguments();
+    doReturn(class0).when(parameterizedType0).getOwnerType();
+    doReturn(class0, class0, class0).when(parameterizedType0).getRawType();
+    Map<TypeVariable<?>, Type> map0 = TypeUtils.determineTypeArguments(class0, parameterizedType0);
+    boolean boolean0 = TypeUtils.isInstance(map0, parameterizedType0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2830,"public void test2830() throws Throwable {
+    Class<Object> class0 = Object.class;
+    ParameterizedType parameterizedType0 = mock(ParameterizedType.class, new ViolatedAssumptionAnswer());
+    doReturn(class0).when(parameterizedType0).getRawType();
+    ParameterizedType parameterizedType1 = mock(ParameterizedType.class, new ViolatedAssumptionAnswer());
+    boolean boolean0 = TypeUtils.isInstance(parameterizedType1, parameterizedType0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2931,"public void test2931() throws Throwable {
+    Class<Object> class0 = Object.class;
+    ParameterizedType parameterizedType0 = mock(ParameterizedType.class, new ViolatedAssumptionAnswer());
+    doReturn(class0).when(parameterizedType0).getRawType();
+    Class<String> class1 = String.class;
+    Map<TypeVariable<?>, Type> map0 = TypeUtils.getTypeArguments((Type) parameterizedType0, (Class<?>) class1);
+    assertNull(map0);
+}",0,assertNotNull(map0)
+project,0,test3032,"public void test3032() throws Throwable {
+    Type[] typeArray0 = new Type[5];
+    Class<String> class0 = String.class;
+    // Undeclared exception!
+    try {
+        TypeUtils.getTypeArguments(typeArray0[2], class0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // found an unhandled type: null
+        //
+        verifyException(""org.apache.commons.lang3.reflect.TypeUtils"", e);
+    }
+}",0,
+project,0,test3133,"public void test3133() throws Throwable {
+    ParameterizedType parameterizedType0 = mock(ParameterizedType.class, new ViolatedAssumptionAnswer());
+    boolean boolean0 = TypeUtils.isAssignable(parameterizedType0, parameterizedType0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test3234,"public void test3234() throws Throwable {
+    boolean boolean0 = TypeUtils.isAssignable((Type) null, (Type) null);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test3335,"public void test3335() throws Throwable {
+    Type type0 = mock(Type.class, new ViolatedAssumptionAnswer());
+    doReturn("""").when(type0).toString();
+    // Undeclared exception!
+    try {
+        TypeUtils.isAssignable(type0, type0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // found an unhandled type:
+        //
+        verifyException(""org.apache.commons.lang3.reflect.TypeUtils"", e);
+    }
+}",0,
+project,0,test3436,"public void test3436() throws Throwable {
+    Class<Object> class0 = Object.class;
+    Type[] typeArray0 = new Type[5];
+    typeArray0[0] = (Type) class0;
+    Type[] typeArray1 = TypeUtils.normalizeUpperBounds(typeArray0);
+    assertEquals(1, typeArray1.length);
+}",0,
+project,0,test3637,"public void test3637() throws Throwable {
+    Class<Object> class0 = Object.class;
+    Class<String> class1 = String.class;
+    Map<TypeVariable<?>, Type> map0 = TypeUtils.getTypeArguments((Type) class0, (Class<?>) class1);
+    assertNull(map0);
+}",0,
+project,0,test3738,"public void test3738() throws Throwable {
+    // Undeclared exception!
+    try {
+        TypeUtils.getTypeArguments((ParameterizedType) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang3.reflect.TypeUtils"", e);
+    }
+}",0,

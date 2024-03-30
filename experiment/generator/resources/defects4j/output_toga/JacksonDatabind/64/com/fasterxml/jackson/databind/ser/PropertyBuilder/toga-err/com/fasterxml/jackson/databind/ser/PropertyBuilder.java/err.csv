@@ -1,0 +1,19 @@
+com.fasterxml.jackson.databind.ser.PropertyBuilder,@Test(timeout = 4000)
+public void test00() throws Throwable {
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    SimpleMixInResolver simpleMixInResolver0 = new SimpleMixInResolver((ClassIntrospector.MixInResolver) null);
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    ConfigOverrides configOverrides0 = new ConfigOverrides();
+    SerializationConfig serializationConfig0 = new SerializationConfig((BaseSettings) null, stdSubtypeResolver0, simpleMixInResolver0, rootNameLookup0, configOverrides0);
+    Class<Integer> class0 = Integer.TYPE;
+    SimpleType simpleType0 = SimpleType.constructUnsafe(class0);
+    MapperFeature mapperFeature0 = MapperFeature.USE_ANNOTATIONS;
+    MapperFeature[] mapperFeatureArray0 = new MapperFeature[1];
+    mapperFeatureArray0[0] = mapperFeature0;
+    SerializationConfig serializationConfig1 = serializationConfig0.without(mapperFeatureArray0);
+    BasicClassIntrospector basicClassIntrospector0 = new BasicClassIntrospector();
+    BasicBeanDescription basicBeanDescription0 = basicClassIntrospector0.forDirectClassAnnotations(serializationConfig0, simpleType0, serializationConfig0);
+    PropertyBuilder propertyBuilder0 = new PropertyBuilder(serializationConfig1, basicBeanDescription0);
+    Annotations annotations0 = propertyBuilder0.getClassAnnotations();
+    annotations0.size();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.

@@ -1,0 +1,1531 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    Year year0 = new Year(1431);
+    XYSeries xYSeries0 = new XYSeries(year0);
+    xYSeries0.add((double) 9999, (Number) 9999, true);
+    XYDataItem xYDataItem0 = new XYDataItem((Number) 9999, (Number) 9999);
+    xYSeries0.add(xYDataItem0, false);
+    xYSeries0.add((double) 1431, 1945.925, true);
+    xYSeries0.add(xYDataItem0);
+    xYSeries0.add((double) year0.MINIMUM_YEAR, 495.8750692);
+    xYSeries0.hashCode();
+}",0,
+project,0,test011,"public void test011() throws Throwable {
+    Year year0 = new Year(1433);
+    XYSeries xYSeries0 = new XYSeries(year0);
+    xYSeries0.setMaximumItemCount(0);
+    Object object0 = xYSeries0.clone();
+    xYSeries0.setMaximumItemCount(9999);
+    boolean boolean0 = xYSeries0.equals(object0);
+    assertEquals(9999, xYSeries0.getMaximumItemCount());
+}",0,"assertEquals(0, xYSeries0.getMaximumItemCount())"
+project,0,test012,"public void test012() throws Throwable {
+    Year year0 = new Year(1433);
+    XYSeries xYSeries0 = new XYSeries(year0);
+    xYSeries0.setMaximumItemCount(0);
+    Object object0 = xYSeries0.clone();
+    xYSeries0.setMaximumItemCount(9999);
+    boolean boolean0 = xYSeries0.equals(object0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test023,"public void test023() throws Throwable {
+    Year year0 = new Year();
+    XYSeries xYSeries0 = new XYSeries(year0, false, false);
+    Float float0 = new Float((double) 9999);
+    xYSeries0.addOrUpdate((Number) 9999, (Number) float0);
+    xYSeries0.addOrUpdate((Number) 9999, (Number) 9999);
+    assertEquals(1, xYSeries0.getItemCount());
+}",0,"assertEquals(1, xYSeries0.getItemCount())"
+project,0,test034,"public void test034() throws Throwable {
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond(1L);
+    XYSeries xYSeries0 = new XYSeries(fixedMillisecond0, false);
+    Float float0 = new Float((float) 1L);
+    xYSeries0.add((Number) float0, (Number) float0, true);
+    xYSeries0.add((double) 1L, (Number) float0);
+    xYSeries0.addOrUpdate((double) 1L, 1876.0);
+    assertEquals(3, xYSeries0.getItemCount());
+}",0,"assertEquals(1, xYSeries0.getItemCount())"
+project,0,test045,"public void test045() throws Throwable {
+    Year year0 = new Year(1433);
+    XYSeries xYSeries0 = new XYSeries(year0);
+    Integer integer0 = new Integer((-9999));
+    XYDataItem xYDataItem0 = new XYDataItem((Number) 9999, (Number) 9999);
+    xYSeries0.add(xYDataItem0);
+    xYSeries0.add((double) integer0, 495.8750692);
+    xYSeries0.update(9999, integer0);
+    assertEquals(Integer.MAX_VALUE, xYSeries0.getMaximumItemCount());
+}",0,
+project,0,test056,"public void test056() throws Throwable {
+    MockDate mockDate0 = new MockDate();
+    Day day0 = new Day(mockDate0);
+    Hour hour0 = new Hour(0, day0);
+    XYSeries xYSeries0 = new XYSeries(hour0, false);
+    xYSeries0.addOrUpdate(0.0, 0.0);
+    // Undeclared exception!
+    try {
+        xYSeries0.delete(0, 2);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 0, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}",0,
+project,0,test067,"public void test067() throws Throwable {
+    Hour hour0 = new Hour();
+    XYSeries xYSeries0 = new XYSeries(hour0, true);
+    xYSeries0.addOrUpdate((Number) 23, (Number) 0);
+    xYSeries0.delete(0, 0);
+    assertEquals(0, xYSeries0.getItemCount());
+}",0,
+project,0,test078,"public void test078() throws Throwable {
+    SerialDate serialDate0 = SerialDate.createInstance(3019);
+    XYSeries xYSeries0 = new XYSeries(serialDate0);
+    xYSeries0.add((double) 1, (Number) 6, true);
+    xYSeries0.add(1680.0022375513813, (Number) 0, false);
+    xYSeries0.add((Number) 2, (Number) 2);
+    xYSeries0.add(Double.NaN, (Number) 2958465);
+    assertEquals(Integer.MAX_VALUE, xYSeries0.getMaximumItemCount());
+}",0,"assertEquals(1, xYSeries0.getMaximumItemCount())"
+project,0,test089,"public void test089() throws Throwable {
+    Year year0 = new Year((-4));
+    XYSeries xYSeries0 = new XYSeries(year0, true);
+    Short short0 = new Short((short) (-1));
+    xYSeries0.add(1.0, (Number) short0, true);
+    xYSeries0.updateByIndex(0, 9999);
+    assertEquals(Integer.MAX_VALUE, xYSeries0.getMaximumItemCount());
+}",0,
+project,0,test0910,"public void test0910() throws Throwable {
+    Year year0 = new Year(1433);
+    XYSeries xYSeries0 = new XYSeries(year0);
+    Integer integer0 = new Integer((-9999));
+    xYSeries0.add((double) integer0, 495.8750692);
+    xYSeries0.update((-9999), (-9999));
+    xYSeries0.remove((Number) integer0);
+    assertEquals(Integer.MAX_VALUE, xYSeries0.getMaximumItemCount());
+}",0,"assertEquals(0, xYSeries0.getMaximumItemCount())"
+project,0,test1011,"public void test1011() throws Throwable {
+    XYSeries xYSeries0 = new XYSeries(""rg.frWe.data.Ra_ge"", false, true);
+    Integer integer0 = JLayeredPane.DEFAULT_LAYER;
+    xYSeries0.addOrUpdate((Number) integer0, (Number) integer0);
+    xYSeries0.remove((Number) integer0);
+    assertFalse(xYSeries0.getAutoSort());
+}",0,assertTrue(xYSeries0.getAutoSort())
+project,0,test1012,"public void test1012() throws Throwable {
+    XYSeries xYSeries0 = new XYSeries(""rg.frWe.data.Ra_ge"", false, true);
+    Integer integer0 = JLayeredPane.DEFAULT_LAYER;
+    xYSeries0.addOrUpdate((Number) integer0, (Number) integer0);
+    xYSeries0.remove((Number) integer0);
+    assertTrue(xYSeries0.getAllowDuplicateXValues());
+}",0,assertTrue(xYSeries0.getAllowDuplicateXValues())
+project,0,test1013,"public void test1013() throws Throwable {
+    XYSeries xYSeries0 = new XYSeries(""rg.frWe.data.Ra_ge"", false, true);
+    Integer integer0 = JLayeredPane.DEFAULT_LAYER;
+    xYSeries0.addOrUpdate((Number) integer0, (Number) integer0);
+    xYSeries0.remove((Number) integer0);
+    assertEquals(Integer.MAX_VALUE, xYSeries0.getMaximumItemCount());
+}",0,"assertEquals(0, xYSeries0.getMaximumItemCount())"
+project,0,test1114,"public void test1114() throws Throwable {
+    Second second0 = new Second();
+    XYSeries xYSeries0 = new XYSeries(second0, true, true);
+    xYSeries0.add((double) 59, (Number) 59, false);
+    assertTrue(xYSeries0.getAutoSort());
+}",0,assertTrue(xYSeries0.getAutoSort())
+project,0,test1115,"public void test1115() throws Throwable {
+    Second second0 = new Second();
+    XYSeries xYSeries0 = new XYSeries(second0, true, true);
+    xYSeries0.add((double) 59, (Number) 59, false);
+    xYSeries0.remove((Number) 59);
+    assertEquals(Integer.MAX_VALUE, xYSeries0.getMaximumItemCount());
+}",0,"assertEquals(1, xYSeries0.getMaximumItemCount())"
+project,0,test1216,"public void test1216() throws Throwable {
+    MockDate mockDate0 = new MockDate();
+    Day day0 = new Day(mockDate0);
+    Hour hour0 = new Hour(0, day0);
+    XYSeries xYSeries0 = new XYSeries(hour0, false);
+    xYSeries0.addOrUpdate((Number) 23, (Number) 0);
+    XYDataItem xYDataItem0 = xYSeries0.remove(0);
+    assertFalse(xYSeries0.getAutoSort());
+}",0,assertTrue(xYSeries0.getAutoSort())
+project,0,test1217,"public void test1217() throws Throwable {
+    MockDate mockDate0 = new MockDate();
+    Day day0 = new Day(mockDate0);
+    Hour hour0 = new Hour(0, day0);
+    XYSeries xYSeries0 = new XYSeries(hour0, false);
+    xYSeries0.addOrUpdate((Number) 23, (Number) 0);
+    XYDataItem xYDataItem0 = xYSeries0.remove(0);
+    assertTrue(xYSeries0.getAllowDuplicateXValues());
+}",0,assertTrue(xYSeries0.getAllowDuplicateXValues())
+project,0,test1218,"public void test1218() throws Throwable {
+    MockDate mockDate0 = new MockDate();
+    Day day0 = new Day(mockDate0);
+    Hour hour0 = new Hour(0, day0);
+    XYSeries xYSeries0 = new XYSeries(hour0, false);
+    xYSeries0.addOrUpdate((Number) 23, (Number) 0);
+    XYDataItem xYDataItem0 = xYSeries0.remove(0);
+    assertEquals(0.0, xYDataItem0.getYValue(), 0.01);
+}",0,
+project,0,test1219,"public void test1219() throws Throwable {
+    MockDate mockDate0 = new MockDate();
+    Day day0 = new Day(mockDate0);
+    Hour hour0 = new Hour(0, day0);
+    XYSeries xYSeries0 = new XYSeries(hour0, false);
+    xYSeries0.addOrUpdate((Number) 23, (Number) 0);
+    XYDataItem xYDataItem0 = xYSeries0.remove(0);
+    assertEquals(Integer.MAX_VALUE, xYSeries0.getMaximumItemCount());
+}",0,"assertEquals(0, xYSeries0.getMaximumItemCount())"
+project,0,test1320,"public void test1320() throws Throwable {
+    Hour hour0 = new Hour();
+    XYSeries xYSeries0 = new XYSeries(hour0);
+    xYSeries0.addOrUpdate((Number) 23, (Number) 23);
+    xYSeries0.remove(0);
+    assertEquals(Integer.MAX_VALUE, xYSeries0.getMaximumItemCount());
+}",0,"assertEquals(0, xYSeries0.getMaximumItemCount())"
+project,0,test1321,"public void test1321() throws Throwable {
+    Hour hour0 = new Hour();
+    XYSeries xYSeries0 = new XYSeries(hour0);
+    xYSeries0.addOrUpdate((Number) 23, (Number) 23);
+    xYSeries0.remove(0);
+    assertTrue(xYSeries0.getAutoSort());
+}",0,assertTrue(xYSeries0.getAutoSort())
+project,0,test1422,"public void test1422() throws Throwable {
+    Year year0 = new Year(1433);
+    XYSeries xYSeries0 = new XYSeries(year0);
+    XYDataItem xYDataItem0 = new XYDataItem((Number) 9999, (Number) 9999);
+    xYSeries0.add(xYDataItem0);
+    xYSeries0.add((double) 0, 495.8750692);
+    int int0 = xYSeries0.indexOf(9999);
+    assertEquals(Integer.MAX_VALUE, xYSeries0.getMaximumItemCount());
+}",0,"assertEquals(0, xYSeries0.getMaximumItemCount())"
+project,0,test1423,"public void test1423() throws Throwable {
+    Year year0 = new Year(1433);
+    XYSeries xYSeries0 = new XYSeries(year0);
+    XYDataItem xYDataItem0 = new XYDataItem((Number) 9999, (Number) 9999);
+    xYSeries0.add(xYDataItem0);
+    xYSeries0.add((double) 0, 495.8750692);
+    int int0 = xYSeries0.indexOf(9999);
+    assertEquals(1, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test1524,"public void test1524() throws Throwable {
+    Minute minute0 = new Minute();
+    XYSeries xYSeries0 = new XYSeries(minute0, false);
+    XYDataItem xYDataItem0 = new XYDataItem(Double.POSITIVE_INFINITY, (double) 0);
+    xYSeries0.add(xYDataItem0);
+    xYSeries0.getY(0);
+    assertEquals(Integer.MAX_VALUE, xYSeries0.getMaximumItemCount());
+}",0,"assertEquals(0, xYSeries0.getMaximumItemCount())"
+project,0,test1525,"public void test1525() throws Throwable {
+    Minute minute0 = new Minute();
+    XYSeries xYSeries0 = new XYSeries(minute0, false);
+    XYDataItem xYDataItem0 = new XYDataItem(Double.POSITIVE_INFINITY, (double) 0);
+    xYSeries0.add(xYDataItem0);
+    xYSeries0.getY(0);
+    assertTrue(xYSeries0.getAllowDuplicateXValues());
+}",0,assertTrue(xYSeries0.getAllowDuplicateXValues())
+project,0,test1526,"public void test1526() throws Throwable {
+    Minute minute0 = new Minute();
+    XYSeries xYSeries0 = new XYSeries(minute0, false);
+    XYDataItem xYDataItem0 = new XYDataItem(Double.POSITIVE_INFINITY, (double) 0);
+    xYSeries0.add(xYDataItem0);
+    xYSeries0.getY(0);
+    assertFalse(xYSeries0.getAutoSort());
+}",0,assertTrue(xYSeries0.getAutoSort())
+project,0,test1627,"public void test1627() throws Throwable {
+    Minute minute0 = new Minute();
+    XYSeries xYSeries0 = new XYSeries(minute0, false);
+    xYSeries0.addOrUpdate((double) Integer.MAX_VALUE, (-1011.0262385));
+    Number number0 = xYSeries0.getY(0);
+    assertEquals((-1011.0262385), number0);
+}",0,
+project,0,test1628,"public void test1628() throws Throwable {
+    Minute minute0 = new Minute();
+    XYSeries xYSeries0 = new XYSeries(minute0, false);
+    xYSeries0.addOrUpdate((double) Integer.MAX_VALUE, (-1011.0262385));
+    Number number0 = xYSeries0.getY(0);
+    assertEquals(Integer.MAX_VALUE, xYSeries0.getMaximumItemCount());
+}",0,"assertEquals(1, xYSeries0.getMaximumItemCount())"
+project,0,test1629,"public void test1629() throws Throwable {
+    Minute minute0 = new Minute();
+    XYSeries xYSeries0 = new XYSeries(minute0, false);
+    xYSeries0.addOrUpdate((double) Integer.MAX_VALUE, (-1011.0262385));
+    Number number0 = xYSeries0.getY(0);
+    assertTrue(xYSeries0.getAllowDuplicateXValues());
+}",0,assertTrue(xYSeries0.getAllowDuplicateXValues())
+project,0,test1630,"public void test1630() throws Throwable {
+    Minute minute0 = new Minute();
+    XYSeries xYSeries0 = new XYSeries(minute0, false);
+    xYSeries0.addOrUpdate((double) Integer.MAX_VALUE, (-1011.0262385));
+    Number number0 = xYSeries0.getY(0);
+    assertFalse(xYSeries0.getAutoSort());
+}",0,assertTrue(xYSeries0.getAutoSort())
+project,0,test1731,"public void test1731() throws Throwable {
+    Year year0 = new Year(1433);
+    XYSeries xYSeries0 = new XYSeries(year0);
+    xYSeries0.add((double) 0, 495.8750692);
+    Number number0 = xYSeries0.getX(0);
+    assertEquals(Integer.MAX_VALUE, xYSeries0.getMaximumItemCount());
+}",0,"assertEquals(0, xYSeries0.getMaximumItemCount())"
+project,0,test1732,"public void test1732() throws Throwable {
+    Year year0 = new Year(1433);
+    XYSeries xYSeries0 = new XYSeries(year0);
+    xYSeries0.add((double) 0, 495.8750692);
+    Number number0 = xYSeries0.getX(0);
+    assertTrue(xYSeries0.getAutoSort());
+}",0,assertTrue(xYSeries0.getAutoSort())
+project,0,test1733,"public void test1733() throws Throwable {
+    Year year0 = new Year(1433);
+    XYSeries xYSeries0 = new XYSeries(year0);
+    xYSeries0.add((double) 0, 495.8750692);
+    Number number0 = xYSeries0.getX(0);
+    assertEquals(0.0, number0);
+}",0,
+project,0,test1834,"public void test1834() throws Throwable {
+    Hour hour0 = new Hour();
+    XYSeries xYSeries0 = new XYSeries(hour0);
+    xYSeries0.addOrUpdate((Number) 23, (Number) 23);
+    xYSeries0.getX(0);
+    assertEquals(Integer.MAX_VALUE, xYSeries0.getMaximumItemCount());
+}",0,"assertEquals(0, xYSeries0.getMaximumItemCount())"
+project,0,test1835,"public void test1835() throws Throwable {
+    Hour hour0 = new Hour();
+    XYSeries xYSeries0 = new XYSeries(hour0);
+    xYSeries0.addOrUpdate((Number) 23, (Number) 23);
+    xYSeries0.getX(0);
+    assertTrue(xYSeries0.getAutoSort());
+}",0,assertTrue(xYSeries0.getAutoSort())
+project,0,test1936,"public void test1936() throws Throwable {
+    SerialDate serialDate0 = SerialDate.createInstance(3019);
+    XYSeries xYSeries0 = new XYSeries(serialDate0);
+    xYSeries0.add((-1597.7069284375646), (Number) 0);
+    Number number0 = xYSeries0.getX(0);
+    assertEquals((-1597.7069284375646), number0);
+}",0,
+project,0,test1937,"public void test1937() throws Throwable {
+    SerialDate serialDate0 = SerialDate.createInstance(3019);
+    XYSeries xYSeries0 = new XYSeries(serialDate0);
+    xYSeries0.add((-1597.7069284375646), (Number) 0);
+    Number number0 = xYSeries0.getX(0);
+    assertEquals(Integer.MAX_VALUE, xYSeries0.getMaximumItemCount());
+}",0,"assertEquals(0, xYSeries0.getMaximumItemCount())"
+project,0,test1938,"public void test1938() throws Throwable {
+    SerialDate serialDate0 = SerialDate.createInstance(3019);
+    XYSeries xYSeries0 = new XYSeries(serialDate0);
+    xYSeries0.add((-1597.7069284375646), (Number) 0);
+    Number number0 = xYSeries0.getX(0);
+    assertTrue(xYSeries0.getAutoSort());
+}",0,assertTrue(xYSeries0.getAutoSort())
+project,0,test2039,"public void test2039() throws Throwable {
+    Year year0 = new Year(1433);
+    XYSeries xYSeries0 = new XYSeries(year0);
+    xYSeries0.setMaximumItemCount(0);
+    int int0 = xYSeries0.getMaximumItemCount();
+    assertEquals(0, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test2140,"public void test2140() throws Throwable {
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond(1L);
+    XYSeries xYSeries0 = new XYSeries(fixedMillisecond0, false);
+    Float float0 = new Float((float) 1L);
+    xYSeries0.add((double) 1L, (Number) float0);
+    xYSeries0.getItemCount();
+    assertFalse(xYSeries0.getAutoSort());
+}",0,
+project,0,test2141,"public void test2141() throws Throwable {
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond(1L);
+    XYSeries xYSeries0 = new XYSeries(fixedMillisecond0, false);
+    Float float0 = new Float((float) 1L);
+    xYSeries0.add((double) 1L, (Number) float0);
+    xYSeries0.getItemCount();
+    assertTrue(xYSeries0.getAllowDuplicateXValues());
+}",0,assertTrue(xYSeries0.getAllowDuplicateXValues())
+project,0,test2142,"public void test2142() throws Throwable {
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond(1L);
+    XYSeries xYSeries0 = new XYSeries(fixedMillisecond0, false);
+    Float float0 = new Float((float) 1L);
+    xYSeries0.add((double) 1L, (Number) float0);
+    xYSeries0.getItemCount();
+    assertEquals(Integer.MAX_VALUE, xYSeries0.getMaximumItemCount());
+}",0,"assertEquals(0, xYSeries0.getMaximumItemCount())"
+project,0,test2243,"public void test2243() throws Throwable {
+    Minute minute0 = new Minute();
+    XYSeries xYSeries0 = new XYSeries(minute0, false, true);
+    xYSeries0.add((Number) 0, (Number) 0);
+    xYSeries0.getDataItem(0);
+    assertFalse(xYSeries0.getAutoSort());
+}",0,assertTrue(xYSeries0.getAutoSort())
+project,0,test2244,"public void test2244() throws Throwable {
+    Minute minute0 = new Minute();
+    XYSeries xYSeries0 = new XYSeries(minute0, false, true);
+    xYSeries0.add((Number) 0, (Number) 0);
+    xYSeries0.getDataItem(0);
+    assertTrue(xYSeries0.getAllowDuplicateXValues());
+}",0,assertTrue(xYSeries0.getAllowDuplicateXValues())
+project,0,test2245,"public void test2245() throws Throwable {
+    Minute minute0 = new Minute();
+    XYSeries xYSeries0 = new XYSeries(minute0, false, true);
+    xYSeries0.add((Number) 0, (Number) 0);
+    xYSeries0.getDataItem(0);
+    assertEquals(Integer.MAX_VALUE, xYSeries0.getMaximumItemCount());
+}",0,"assertEquals(0, xYSeries0.getMaximumItemCount())"
+project,0,test2346,"public void test2346() throws Throwable {
+    Hour hour0 = new Hour();
+    XYSeries xYSeries0 = new XYSeries(hour0);
+    xYSeries0.addOrUpdate(1537.2601524381548, (double) 23);
+    assertEquals(1, xYSeries0.getItemCount());
+}",0,"assertEquals(1, xYSeries0.getItemCount())"
+project,0,test2347,"public void test2347() throws Throwable {
+    Hour hour0 = new Hour();
+    XYSeries xYSeries0 = new XYSeries(hour0);
+    xYSeries0.addOrUpdate(1537.2601524381548, (double) 23);
+    XYDataItem xYDataItem0 = xYSeries0.getDataItem(0);
+    assertEquals(1537.2601524381548, xYDataItem0.getXValue(), 0.01);
+}",0,
+project,0,test2448,"public void test2448() throws Throwable {
+    Quarter quarter0 = new Quarter();
+    XYSeries xYSeries0 = new XYSeries(quarter0, false);
+    boolean boolean0 = xYSeries0.getAutoSort();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2449,"public void test2449() throws Throwable {
+    Quarter quarter0 = new Quarter();
+    XYSeries xYSeries0 = new XYSeries(quarter0, false);
+    boolean boolean0 = xYSeries0.getAutoSort();
+    assertEquals(Integer.MAX_VALUE, xYSeries0.getMaximumItemCount());
+}",0,"assertEquals(0, xYSeries0.getMaximumItemCount())"
+project,0,test2450,"public void test2450() throws Throwable {
+    Quarter quarter0 = new Quarter();
+    XYSeries xYSeries0 = new XYSeries(quarter0, false);
+    boolean boolean0 = xYSeries0.getAutoSort();
+    assertTrue(xYSeries0.getAllowDuplicateXValues());
+}",0,assertTrue(xYSeries0.getAllowDuplicateXValues())
+project,0,test2551,"public void test2551() throws Throwable {
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond(0L);
+    XYSeries xYSeries0 = new XYSeries(fixedMillisecond0, true, true);
+    xYSeries0.getAllowDuplicateXValues();
+    assertEquals(Integer.MAX_VALUE, xYSeries0.getMaximumItemCount());
+}",0,"assertEquals(0, xYSeries0.getMaximumItemCount())"
+project,0,test2552,"public void test2552() throws Throwable {
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond(0L);
+    XYSeries xYSeries0 = new XYSeries(fixedMillisecond0, true, true);
+    xYSeries0.getAllowDuplicateXValues();
+    assertTrue(xYSeries0.getAutoSort());
+}",0,assertTrue(xYSeries0.getAutoSort())
+project,0,test2653,"public void test2653() throws Throwable {
+    Hour hour0 = new Hour();
+    XYSeries xYSeries0 = new XYSeries(hour0);
+    xYSeries0.setNotify(false);
+    XYSeries xYSeries1 = xYSeries0.createCopy(0, 0);
+    assertNotSame(xYSeries1, xYSeries0);
+}",0,
+project,0,test2654,"public void test2654() throws Throwable {
+    Hour hour0 = new Hour();
+    XYSeries xYSeries0 = new XYSeries(hour0);
+    xYSeries0.setNotify(false);
+    XYSeries xYSeries1 = xYSeries0.createCopy(0, 0);
+    assertEquals(Integer.MAX_VALUE, xYSeries1.getMaximumItemCount());
+}",0,
+project,0,test2655,"public void test2655() throws Throwable {
+    Hour hour0 = new Hour();
+    XYSeries xYSeries0 = new XYSeries(hour0);
+    xYSeries0.setNotify(false);
+    XYSeries xYSeries1 = xYSeries0.createCopy(0, 0);
+    assertTrue(xYSeries1.getAutoSort());
+}",0,assertFalse(xYSeries1.getAutoSort())
+project,0,test2756,"public void test2756() throws Throwable {
+    MockDate mockDate0 = new MockDate();
+    Day day0 = new Day(mockDate0);
+    Hour hour0 = new Hour(0, day0);
+    XYSeries xYSeries0 = new XYSeries(hour0, false);
+    xYSeries0.setMaximumItemCount(0);
+    xYSeries0.createCopy(2, 0);
+    assertEquals(0, xYSeries0.getMaximumItemCount());
+}",0,"assertEquals(0, xYSeries0.getMaximumItemCount())"
+project,0,test2857,"public void test2857() throws Throwable {
+    Year year0 = new Year();
+    XYSeries xYSeries0 = new XYSeries(year0, false, false);
+    Float float0 = new Float((double) (-9999));
+    xYSeries0.addOrUpdate((Number) 9999, (Number) float0);
+    xYSeries0.addOrUpdate((Number) 9999, (Number) 9999);
+    assertEquals(1, xYSeries0.getItemCount());
+}",0,"assertEquals(0, xYSeries0.getItemCount())"
+project,0,test2958,"public void test2958() throws Throwable {
+    Year year0 = new Year();
+    XYSeries xYSeries0 = new XYSeries(year0);
+    xYSeries0.data = null;
+    // Undeclared exception!
+    try {
+        xYSeries0.updateByIndex(1969, 9999);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.xy.XYSeries"", e);
+    }
+}",0,
+project,0,test3059,"public void test3059() throws Throwable {
+    Integer integer0 = Integer.valueOf((-1314));
+    XYSeries xYSeries0 = new XYSeries(integer0);
+    // Undeclared exception!
+    try {
+        xYSeries0.updateByIndex((-1314), integer0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test3160,"public void test3160() throws Throwable {
+    Year year0 = new Year();
+    XYSeries xYSeries0 = new XYSeries(year0);
+    xYSeries0.data = null;
+    // Undeclared exception!
+    try {
+        xYSeries0.update(9999, (-9999));
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.Collections"", e);
+    }
+}",1,
+project,0,test3261,"public void test3261() throws Throwable {
+    Year year0 = new Year(1433);
+    XYSeries xYSeries0 = new XYSeries(year0);
+    BigInteger bigInteger0 = BigInteger.ONE;
+    // Undeclared exception!
+    try {
+        xYSeries0.update((Number) null, bigInteger0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'x' argument.
+        //
+        verifyException(""org.jfree.data.xy.XYDataItem"", e);
+    }
+}",1,
+project,0,test3362,"public void test3362() throws Throwable {
+    Integer integer0 = JLayeredPane.DRAG_LAYER;
+    XYSeries xYSeries0 = new XYSeries(integer0);
+    // Undeclared exception!
+    try {
+        xYSeries0.setMaximumItemCount((-1858));
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 0, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}",0,
+project,0,test3463,"public void test3463() throws Throwable {
+    Second second0 = new Second();
+    XYSeries xYSeries0 = new XYSeries(second0, true, true);
+    LinkedList<Integer> linkedList0 = new LinkedList<Integer>();
+    xYSeries0.data = (List) linkedList0;
+    // Undeclared exception!
+    try {
+        xYSeries0.remove((Number) 0);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: -1, Size: 0
+        //
+        verifyException(""java.util.LinkedList"", e);
+    }
+}",0,
+project,0,test3564,"public void test3564() throws Throwable {
+    XYDataItem xYDataItem0 = new XYDataItem((double) 1605, 0.0);
+    XYSeries xYSeries0 = new XYSeries(xYDataItem0, true, true);
+    // Undeclared exception!
+    try {
+        xYSeries0.remove((Number) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'x' argument.
+        //
+        verifyException(""org.jfree.data.xy.XYDataItem"", e);
+    }
+}",0,
+project,0,test3665,"public void test3665() throws Throwable {
+    Year year0 = new Year();
+    XYSeries xYSeries0 = new XYSeries(year0, true, false);
+    xYSeries0.data = null;
+    // Undeclared exception!
+    try {
+        xYSeries0.remove((-9999));
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.xy.XYSeries"", e);
+    }
+}",0,
+project,0,test3766,"public void test3766() throws Throwable {
+    Quarter quarter0 = new Quarter();
+    XYSeries xYSeries0 = new XYSeries(quarter0, true);
+    java.util.Vector<String> vector0 = new java.util.Vector<String>();
+    xYSeries0.data = (List) vector0;
+    xYSeries0.addOrUpdate((Number) 1, (Number) 1);
+    vector0.add(""Lt](Tf@6cg0.UC2!"");
+    // Undeclared exception!
+    try {
+        xYSeries0.remove(1);
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // java.lang.String cannot be cast to org.jfree.data.xy.XYDataItem
+        //
+        verifyException(""org.jfree.data.xy.XYSeries"", e);
+    }
+}",0,
+project,0,test3867,"public void test3867() throws Throwable {
+    Hour hour0 = new Hour();
+    XYSeries xYSeries0 = new XYSeries(hour0);
+    // Undeclared exception!
+    try {
+        xYSeries0.remove((-607));
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test3968,"public void test3968() throws Throwable {
+    Minute minute0 = new Minute();
+    XYSeries xYSeries0 = new XYSeries(minute0, false, false);
+    xYSeries0.data = null;
+    // Undeclared exception!
+    try {
+        xYSeries0.getY(8);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.xy.XYSeries"", e);
+    }
+}",0,
+project,0,test4069,"public void test4069() throws Throwable {
+    Minute minute0 = new Minute();
+    XYSeries xYSeries0 = new XYSeries(minute0, false);
+    ArrayList<Object> arrayList0 = new ArrayList<Object>();
+    xYSeries0.data = (List) arrayList0;
+    arrayList0.add((Object) minute0);
+    // Undeclared exception!
+    try {
+        xYSeries0.getY(0);
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // org.jfree.data.time.Minute cannot be cast to org.jfree.data.xy.XYDataItem
+        //
+        verifyException(""org.jfree.data.xy.XYSeries"", e);
+    }
+}",0,
+project,0,test4170,"public void test4170() throws Throwable {
+    MockSimpleDateFormat mockSimpleDateFormat0 = new MockSimpleDateFormat();
+    Date date0 = mockSimpleDateFormat0.get2DigitYearStart();
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond(date0);
+    XYSeries xYSeries0 = new XYSeries(fixedMillisecond0, false);
+    // Undeclared exception!
+    try {
+        xYSeries0.getY((-1));
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test4271,"public void test4271() throws Throwable {
+    XYSeries xYSeries0 = new XYSeries(""No observation for x = "", false, false);
+    // Undeclared exception!
+    try {
+        xYSeries0.getX((-915));
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test4372,"public void test4372() throws Throwable {
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond(1L);
+    XYSeries xYSeries0 = new XYSeries(fixedMillisecond0, false, false);
+    xYSeries0.data = null;
+    // Undeclared exception!
+    try {
+        xYSeries0.getItems();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.Collections$UnmodifiableCollection"", e);
+    }
+}",1,
+project,0,test4473,"public void test4473() throws Throwable {
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond();
+    XYSeries xYSeries0 = new XYSeries(fixedMillisecond0, true, false);
+    // Undeclared exception!
+    try {
+        xYSeries0.getDataItem(6);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 6, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}",0,
+project,0,test4574,"public void test4574() throws Throwable {
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar((-413), (-1869), (-413));
+    XYSeries xYSeries0 = new XYSeries(mockGregorianCalendar0, true);
+    // Undeclared exception!
+    try {
+        xYSeries0.delete((-413), 748);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test4675,"public void test4675() throws Throwable {
+    Hour hour0 = new Hour();
+    XYSeries xYSeries0 = new XYSeries(hour0);
+    xYSeries0.addOrUpdate((Number) 23, (Number) 23);
+    // Undeclared exception!
+    try {
+        xYSeries0.createCopy(0, 120);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 1, Size: 1
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}",0,
+project,0,test4776,"public void test4776() throws Throwable {
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond(0L);
+    XYSeries xYSeries0 = new XYSeries(fixedMillisecond0, true, true);
+    xYSeries0.add(0.0, 0.0);
+    // Undeclared exception!
+    try {
+        xYSeries0.createCopy((-602), 4173);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test4877,"public void test4877() throws Throwable {
+    Quarter quarter0 = new Quarter();
+    XYSeries xYSeries0 = new XYSeries(quarter0, true);
+    java.util.Vector<String> vector0 = new java.util.Vector<String>();
+    xYSeries0.data = (List) vector0;
+    vector0.add("""");
+    // Undeclared exception!
+    try {
+        xYSeries0.addOrUpdate((Number) 1, (Number) 1);
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test4978,"public void test4978() throws Throwable {
+    Year year0 = new Year((-3235));
+    XYSeries xYSeries0 = new XYSeries(year0, true);
+    XYSeries xYSeries1 = xYSeries0.createCopy((-3235), 9999);
+    List list0 = xYSeries1.getItems();
+    xYSeries1.data = list0;
+    // Undeclared exception!
+    try {
+        xYSeries1.addOrUpdate(3863.0, 3863.0);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.Collections$UnmodifiableList"", e);
+    }
+}",0,
+project,0,test5079,"public void test5079() throws Throwable {
+    SimpleHistogramBin simpleHistogramBin0 = new SimpleHistogramBin((-1297.567131072433), 0.0);
+    XYSeries xYSeries0 = new XYSeries(simpleHistogramBin0, false);
+    // Undeclared exception!
+    try {
+        xYSeries0.add((Number) null, (Number) null, false);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'x' argument.
+        //
+        verifyException(""org.jfree.data.xy.XYDataItem"", e);
+    }
+}",0,
+project,0,test5180,"public void test5180() throws Throwable {
+    XYSeries xYSeries0 = new XYSeries("""", false, false);
+    Integer integer0 = JLayeredPane.MODAL_LAYER;
+    XYDataItem xYDataItem0 = new XYDataItem((Number) integer0, (Number) integer0);
+    xYSeries0.add(xYDataItem0, false);
+    // Undeclared exception!
+    try {
+        xYSeries0.add((Number) integer0, (Number) integer0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // X-value already exists.
+        //
+        verifyException(""org.jfree.data.xy.XYSeries"", e);
+    }
+}",1,
+project,0,test5281,"public void test5281() throws Throwable {
+    XYSeries xYSeries0 = new XYSeries(""No observation for x = "", false, false);
+    // Undeclared exception!
+    try {
+        xYSeries0.add((Number) null, (Number) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'x' argument.
+        //
+        verifyException(""org.jfree.data.xy.XYDataItem"", e);
+    }
+}",1,
+project,0,test5382,"public void test5382() throws Throwable {
+    XYSeries xYSeries0 = null;
+    try {
+        xYSeries0 = new XYSeries((Comparable) null, false, false);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'key' argument.
+        //
+        verifyException(""org.jfree.data.general.Series"", e);
+    }
+}",0,
+project,0,test5483,"public void test5483() throws Throwable {
+    XYSeries xYSeries0 = null;
+    try {
+        xYSeries0 = new XYSeries((Comparable) null, false);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'key' argument.
+        //
+        verifyException(""org.jfree.data.general.Series"", e);
+    }
+}",0,
+project,0,test5584,"public void test5584() throws Throwable {
+    XYSeries xYSeries0 = null;
+    try {
+        xYSeries0 = new XYSeries((Comparable) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'key' argument.
+        //
+        verifyException(""org.jfree.data.general.Series"", e);
+    }
+}",0,
+project,0,test5685,"public void test5685() throws Throwable {
+    Year year0 = new Year(0);
+    XYSeries xYSeries0 = new XYSeries(year0, false, false);
+    xYSeries0.addOrUpdate((Number) 9999, (Number) 9999);
+    int int0 = xYSeries0.indexOf(9999);
+    assertEquals(1, xYSeries0.getItemCount());
+}",0,"assertEquals(0, xYSeries0.getItemCount())"
+project,0,test5686,"public void test5686() throws Throwable {
+    Year year0 = new Year(0);
+    XYSeries xYSeries0 = new XYSeries(year0, false, false);
+    xYSeries0.addOrUpdate((Number) 9999, (Number) 9999);
+    int int0 = xYSeries0.indexOf(9999);
+    assertEquals(0, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test5787,"public void test5787() throws Throwable {
+    MockSimpleDateFormat mockSimpleDateFormat0 = new MockSimpleDateFormat();
+    Date date0 = mockSimpleDateFormat0.get2DigitYearStart();
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond(date0);
+    XYSeries xYSeries0 = new XYSeries(fixedMillisecond0, false);
+    XYDataItem xYDataItem0 = new XYDataItem(0.0, 1.0);
+    xYSeries0.add(xYDataItem0, false);
+    Double double0 = new Double(1.0);
+    int int0 = xYSeries0.indexOf(double0);
+    assertEquals((-1), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test5788,"public void test5788() throws Throwable {
+    MockSimpleDateFormat mockSimpleDateFormat0 = new MockSimpleDateFormat();
+    Date date0 = mockSimpleDateFormat0.get2DigitYearStart();
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond(date0);
+    XYSeries xYSeries0 = new XYSeries(fixedMillisecond0, false);
+    XYDataItem xYDataItem0 = new XYDataItem(0.0, 1.0);
+    xYSeries0.add(xYDataItem0, false);
+    Double double0 = new Double(1.0);
+    int int0 = xYSeries0.indexOf(double0);
+    assertEquals(Integer.MAX_VALUE, xYSeries0.getMaximumItemCount());
+}",0,"assertEquals(0, xYSeries0.getMaximumItemCount())"
+project,0,test5789,"public void test5789() throws Throwable {
+    MockSimpleDateFormat mockSimpleDateFormat0 = new MockSimpleDateFormat();
+    Date date0 = mockSimpleDateFormat0.get2DigitYearStart();
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond(date0);
+    XYSeries xYSeries0 = new XYSeries(fixedMillisecond0, false);
+    XYDataItem xYDataItem0 = new XYDataItem(0.0, 1.0);
+    xYSeries0.add(xYDataItem0, false);
+    Double double0 = new Double(1.0);
+    int int0 = xYSeries0.indexOf(double0);
+    assertTrue(xYSeries0.getAllowDuplicateXValues());
+}",0,assertFalse(xYSeries0.getAllowDuplicateXValues())
+project,0,test5890,"public void test5890() throws Throwable {
+    MockDate mockDate0 = new MockDate();
+    OHLCDataItem oHLCDataItem0 = new OHLCDataItem(mockDate0, (-3988.109824807), (-2171.037731516), (-3988.109824807), 0.0, 0.0);
+    XYSeries xYSeries0 = new XYSeries(oHLCDataItem0);
+    // Undeclared exception!
+    try {
+        xYSeries0.indexOf((Number) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'x' argument.
+        //
+        verifyException(""org.jfree.data.xy.XYDataItem"", e);
+    }
+}",0,
+project,0,test5991,"public void test5991() throws Throwable {
+    Year year0 = new Year(1433);
+    XYSeries xYSeries0 = new XYSeries(year0);
+    xYSeries0.setMaximumItemCount(0);
+    xYSeries0.addOrUpdate((Number) 9999, (Number) year0.MINIMUM_YEAR);
+    assertEquals(0, xYSeries0.getMaximumItemCount());
+}",0,
+project,0,test6092,"public void test6092() throws Throwable {
+    Year year0 = new Year(1431);
+    XYSeries xYSeries0 = new XYSeries(year0);
+    xYSeries0.add((double) 9999, (Number) 9999, true);
+    XYDataItem xYDataItem0 = new XYDataItem((Number) (-9999), (Number) 1);
+    xYSeries0.add(xYDataItem0);
+    xYSeries0.add(xYDataItem0, true);
+    assertTrue(xYSeries0.getAutoSort());
+}",0,assertTrue(xYSeries0.getAutoSort())
+project,0,test6093,"public void test6093() throws Throwable {
+    Year year0 = new Year(1431);
+    XYSeries xYSeries0 = new XYSeries(year0);
+    xYSeries0.add((double) 9999, (Number) 9999, true);
+    XYDataItem xYDataItem0 = new XYDataItem((Number) (-9999), (Number) 1);
+    xYSeries0.add(xYDataItem0);
+    xYSeries0.add(xYDataItem0, true);
+    assertEquals(Integer.MAX_VALUE, xYSeries0.getMaximumItemCount());
+}",0,"assertEquals(0, xYSeries0.getMaximumItemCount())"
+project,0,test6194,"public void test6194() throws Throwable {
+    Year year0 = new Year();
+    XYSeries xYSeries0 = new XYSeries(year0, true, false);
+    // Undeclared exception!
+    try {
+        xYSeries0.add((XYDataItem) null, false);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'item' argument.
+        //
+        verifyException(""org.jfree.data.xy.XYSeries"", e);
+    }
+}",1,
+project,0,test6295,"public void test6295() throws Throwable {
+    Hour hour0 = new Hour();
+    XYSeries xYSeries0 = new XYSeries(hour0);
+    // Undeclared exception!
+    try {
+        xYSeries0.getX(0);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 0, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}",0,
+project,0,test6396,"public void test6396() throws Throwable {
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond();
+    XYSeries xYSeries0 = new XYSeries(fixedMillisecond0, true);
+    // Undeclared exception!
+    try {
+        xYSeries0.getDataItem((-688));
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test6497,"public void test6497() throws Throwable {
+    Year year0 = new Year(1433);
+    XYSeries xYSeries0 = new XYSeries(year0);
+    // Undeclared exception!
+    try {
+        xYSeries0.remove(1);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 1, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}",0,
+project,0,test6598,"public void test6598() throws Throwable {
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond(1L);
+    XYSeries xYSeries0 = new XYSeries(fixedMillisecond0, false);
+    xYSeries0.getItemCount();
+    assertEquals(Integer.MAX_VALUE, xYSeries0.getMaximumItemCount());
+}",0,"assertEquals(0, xYSeries0.getMaximumItemCount())"
+project,0,test6599,"public void test6599() throws Throwable {
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond(1L);
+    XYSeries xYSeries0 = new XYSeries(fixedMillisecond0, false);
+    xYSeries0.getItemCount();
+    assertTrue(xYSeries0.getAllowDuplicateXValues());
+}",0,assertFalse(xYSeries0.getAllowDuplicateXValues())
+project,0,test65100,"public void test65100() throws Throwable {
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond(1L);
+    XYSeries xYSeries0 = new XYSeries(fixedMillisecond0, false);
+    xYSeries0.getItemCount();
+    assertFalse(xYSeries0.getAutoSort());
+}",0,assertTrue(xYSeries0.getAutoSort())
+project,0,test66101,"public void test66101() throws Throwable {
+    XYSeries xYSeries0 = new XYSeries("""", false, false);
+    xYSeries0.hashCode();
+    assertFalse(xYSeries0.getAutoSort());
+}",0,
+project,0,test66102,"public void test66102() throws Throwable {
+    XYSeries xYSeries0 = new XYSeries("""", false, false);
+    xYSeries0.hashCode();
+    assertEquals(Integer.MAX_VALUE, xYSeries0.getMaximumItemCount());
+}",0,"assertEquals(0, xYSeries0.getMaximumItemCount())"
+project,0,test67103,"public void test67103() throws Throwable {
+    Year year0 = new Year(1433);
+    XYSeries xYSeries0 = new XYSeries(year0);
+    xYSeries0.add((double) 9999, 495.8750692);
+    xYSeries0.add((double) 0, (Number) (-9999), false);
+    xYSeries0.hashCode();
+    assertTrue(xYSeries0.getAutoSort());
+}",0,assertTrue(xYSeries0.getAutoSort())
+project,0,test67104,"public void test67104() throws Throwable {
+    Year year0 = new Year(1433);
+    XYSeries xYSeries0 = new XYSeries(year0);
+    xYSeries0.add((double) 9999, 495.8750692);
+    xYSeries0.add((double) 0, (Number) (-9999), false);
+    xYSeries0.hashCode();
+    assertEquals(Integer.MAX_VALUE, xYSeries0.getMaximumItemCount());
+}",0,"assertEquals(0, xYSeries0.getMaximumItemCount())"
+project,0,test68105,"public void test68105() throws Throwable {
+    XYSeries xYSeries0 = new XYSeries("""", false, false);
+    XYSeries xYSeries1 = xYSeries0.createCopy(1556, 1556);
+    assertTrue(xYSeries1.equals((Object) xYSeries0));
+}",0,
+project,0,test68106,"public void test68106() throws Throwable {
+    XYSeries xYSeries0 = new XYSeries("""", false, false);
+    XYSeries xYSeries1 = xYSeries0.createCopy(1556, 1556);
+    Integer integer0 = JLayeredPane.MODAL_LAYER;
+    XYDataItem xYDataItem0 = new XYDataItem((Number) integer0, (Number) integer0);
+    xYSeries1.add(xYDataItem0, false);
+    boolean boolean0 = xYSeries0.equals(xYSeries1);
+    assertFalse(xYSeries1.equals((Object) xYSeries0));
+}",0,
+project,0,test68107,"public void test68107() throws Throwable {
+    XYSeries xYSeries0 = new XYSeries("""", false, false);
+    XYSeries xYSeries1 = xYSeries0.createCopy(1556, 1556);
+    Integer integer0 = JLayeredPane.MODAL_LAYER;
+    XYDataItem xYDataItem0 = new XYDataItem((Number) integer0, (Number) integer0);
+    xYSeries1.add(xYDataItem0, false);
+    boolean boolean0 = xYSeries0.equals(xYSeries1);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test69108,"public void test69108() throws Throwable {
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond(1L);
+    XYSeries xYSeries0 = new XYSeries(fixedMillisecond0, false);
+    XYSeries xYSeries1 = new XYSeries(fixedMillisecond0, false, false);
+    boolean boolean0 = xYSeries0.equals(xYSeries1);
+    assertEquals(Integer.MAX_VALUE, xYSeries1.getMaximumItemCount());
+}",0,"assertEquals(0, xYSeries1.getMaximumItemCount())"
+project,0,test69109,"public void test69109() throws Throwable {
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond(1L);
+    XYSeries xYSeries0 = new XYSeries(fixedMillisecond0, false);
+    XYSeries xYSeries1 = new XYSeries(fixedMillisecond0, false, false);
+    boolean boolean0 = xYSeries0.equals(xYSeries1);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test69110,"public void test69110() throws Throwable {
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond(1L);
+    XYSeries xYSeries0 = new XYSeries(fixedMillisecond0, false);
+    XYSeries xYSeries1 = new XYSeries(fixedMillisecond0, false, false);
+    boolean boolean0 = xYSeries0.equals(xYSeries1);
+    assertFalse(xYSeries0.getAutoSort());
+}",0,assertTrue(xYSeries0.getAutoSort())
+project,0,test70111,"public void test70111() throws Throwable {
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond(1L);
+    XYSeries xYSeries0 = new XYSeries(fixedMillisecond0, false);
+    XYSeries xYSeries1 = new XYSeries(fixedMillisecond0, true);
+    boolean boolean0 = xYSeries0.equals(xYSeries1);
+    assertTrue(xYSeries1.getAutoSort());
+}",0,assertTrue(xYSeries1.getAutoSort())
+project,0,test70112,"public void test70112() throws Throwable {
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond(1L);
+    XYSeries xYSeries0 = new XYSeries(fixedMillisecond0, false);
+    XYSeries xYSeries1 = new XYSeries(fixedMillisecond0, true);
+    boolean boolean0 = xYSeries0.equals(xYSeries1);
+    assertEquals(Integer.MAX_VALUE, xYSeries1.getMaximumItemCount());
+}",0,"assertEquals(0, xYSeries1.getMaximumItemCount())"
+project,0,test70113,"public void test70113() throws Throwable {
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond(1L);
+    XYSeries xYSeries0 = new XYSeries(fixedMillisecond0, false);
+    XYSeries xYSeries1 = new XYSeries(fixedMillisecond0, true);
+    boolean boolean0 = xYSeries0.equals(xYSeries1);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test70114,"public void test70114() throws Throwable {
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond(1L);
+    XYSeries xYSeries0 = new XYSeries(fixedMillisecond0, false);
+    XYSeries xYSeries1 = new XYSeries(fixedMillisecond0, true);
+    boolean boolean0 = xYSeries0.equals(xYSeries1);
+    assertTrue(xYSeries0.getAllowDuplicateXValues());
+}",0,
+project,0,test71115,"public void test71115() throws Throwable {
+    MockDate mockDate0 = new MockDate();
+    Day day0 = new Day(mockDate0);
+    Hour hour0 = new Hour((-18), day0);
+    XYSeries xYSeries0 = new XYSeries(hour0, false);
+    XYSeries xYSeries1 = xYSeries0.createCopy(23, 0);
+    xYSeries1.setMaximumItemCount(0);
+    boolean boolean0 = xYSeries1.equals(xYSeries0);
+    assertEquals(0, xYSeries1.getMaximumItemCount());
+}",0,"assertEquals(0, xYSeries1.getMaximumItemCount())"
+project,0,test71116,"public void test71116() throws Throwable {
+    MockDate mockDate0 = new MockDate();
+    Day day0 = new Day(mockDate0);
+    Hour hour0 = new Hour((-18), day0);
+    XYSeries xYSeries0 = new XYSeries(hour0, false);
+    XYSeries xYSeries1 = xYSeries0.createCopy(23, 0);
+    xYSeries1.setMaximumItemCount(0);
+    boolean boolean0 = xYSeries1.equals(xYSeries0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test72117,"public void test72117() throws Throwable {
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond(1L);
+    RegularTimePeriod regularTimePeriod0 = fixedMillisecond0.previous();
+    XYSeries xYSeries0 = new XYSeries(regularTimePeriod0, false);
+    xYSeries0.setKey(fixedMillisecond0);
+    XYSeries xYSeries1 = new XYSeries(regularTimePeriod0, false, false);
+    boolean boolean0 = xYSeries0.equals(xYSeries1);
+    assertTrue(xYSeries0.getAllowDuplicateXValues());
+}",0,assertFalse(xYSeries0.getAllowDuplicateXValues())
+project,0,test72118,"public void test72118() throws Throwable {
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond(1L);
+    RegularTimePeriod regularTimePeriod0 = fixedMillisecond0.previous();
+    XYSeries xYSeries0 = new XYSeries(regularTimePeriod0, false);
+    xYSeries0.setKey(fixedMillisecond0);
+    XYSeries xYSeries1 = new XYSeries(regularTimePeriod0, false, false);
+    boolean boolean0 = xYSeries0.equals(xYSeries1);
+    assertFalse(xYSeries0.getAutoSort());
+}",0,assertFalse(xYSeries0.getAutoSort())
+project,0,test72119,"public void test72119() throws Throwable {
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond(1L);
+    RegularTimePeriod regularTimePeriod0 = fixedMillisecond0.previous();
+    XYSeries xYSeries0 = new XYSeries(regularTimePeriod0, false);
+    xYSeries0.setKey(fixedMillisecond0);
+    XYSeries xYSeries1 = new XYSeries(regularTimePeriod0, false, false);
+    boolean boolean0 = xYSeries0.equals(xYSeries1);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test72120,"public void test72120() throws Throwable {
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond(1L);
+    RegularTimePeriod regularTimePeriod0 = fixedMillisecond0.previous();
+    XYSeries xYSeries0 = new XYSeries(regularTimePeriod0, false);
+    xYSeries0.setKey(fixedMillisecond0);
+    XYSeries xYSeries1 = new XYSeries(regularTimePeriod0, false, false);
+    boolean boolean0 = xYSeries0.equals(xYSeries1);
+    assertEquals(Integer.MAX_VALUE, xYSeries1.getMaximumItemCount());
+}",0,"assertEquals(0, xYSeries1.getMaximumItemCount())"
+project,0,test73121,"public void test73121() throws Throwable {
+    Year year0 = new Year(1433);
+    XYSeries xYSeries0 = new XYSeries(year0);
+    boolean boolean0 = xYSeries0.equals(xYSeries0);
+    assertTrue(xYSeries0.getAutoSort());
+}",0,assertTrue(xYSeries0.getAutoSort())
+project,0,test73122,"public void test73122() throws Throwable {
+    Year year0 = new Year(1433);
+    XYSeries xYSeries0 = new XYSeries(year0);
+    boolean boolean0 = xYSeries0.equals(xYSeries0);
+    assertEquals(Integer.MAX_VALUE, xYSeries0.getMaximumItemCount());
+}",0,"assertEquals(0, xYSeries0.getMaximumItemCount())"
+project,0,test73123,"public void test73123() throws Throwable {
+    Year year0 = new Year(1433);
+    XYSeries xYSeries0 = new XYSeries(year0);
+    boolean boolean0 = xYSeries0.equals(xYSeries0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test74124,"public void test74124() throws Throwable {
+    MockDate mockDate0 = new MockDate();
+    Day day0 = new Day(mockDate0);
+    Hour hour0 = new Hour((-18), day0);
+    XYSeries xYSeries0 = new XYSeries(hour0, false);
+    boolean boolean0 = xYSeries0.equals(hour0);
+    assertTrue(xYSeries0.getAllowDuplicateXValues());
+}",0,assertTrue(xYSeries0.getAllowDuplicateXValues())
+project,0,test74125,"public void test74125() throws Throwable {
+    MockDate mockDate0 = new MockDate();
+    Day day0 = new Day(mockDate0);
+    Hour hour0 = new Hour((-18), day0);
+    XYSeries xYSeries0 = new XYSeries(hour0, false);
+    boolean boolean0 = xYSeries0.equals(hour0);
+    assertEquals(Integer.MAX_VALUE, xYSeries0.getMaximumItemCount());
+}",0,"assertEquals(0, xYSeries0.getMaximumItemCount())"
+project,0,test74126,"public void test74126() throws Throwable {
+    MockDate mockDate0 = new MockDate();
+    Day day0 = new Day(mockDate0);
+    Hour hour0 = new Hour((-18), day0);
+    XYSeries xYSeries0 = new XYSeries(hour0, false);
+    boolean boolean0 = xYSeries0.equals(hour0);
+    assertFalse(xYSeries0.getAutoSort());
+}",0,assertTrue(xYSeries0.getAutoSort())
+project,0,test74127,"public void test74127() throws Throwable {
+    MockDate mockDate0 = new MockDate();
+    Day day0 = new Day(mockDate0);
+    Hour hour0 = new Hour((-18), day0);
+    XYSeries xYSeries0 = new XYSeries(hour0, false);
+    boolean boolean0 = xYSeries0.equals(hour0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test75128,"public void test75128() throws Throwable {
+    Hour hour0 = new Hour();
+    XYSeries xYSeries0 = new XYSeries(hour0);
+    xYSeries0.addOrUpdate((Number) 23, (Number) 23);
+    xYSeries0.createCopy(0, 0);
+    assertEquals(1, xYSeries0.getItemCount());
+}",0,"assertEquals(1, xYSeries0.getItemCount())"
+project,0,test76129,"public void test76129() throws Throwable {
+    MockDate mockDate0 = new MockDate();
+    Day day0 = new Day(mockDate0);
+    Hour hour0 = new Hour((-18), day0);
+    XYSeries xYSeries0 = new XYSeries(hour0, false);
+    XYSeries xYSeries1 = xYSeries0.createCopy(23, 0);
+    boolean boolean0 = xYSeries1.equals(xYSeries0);
+    assertNotSame(xYSeries1, xYSeries0);
+}",0,
+project,0,test76131,"public void test76131() throws Throwable {
+    MockDate mockDate0 = new MockDate();
+    Day day0 = new Day(mockDate0);
+    Hour hour0 = new Hour((-18), day0);
+    XYSeries xYSeries0 = new XYSeries(hour0, false);
+    XYSeries xYSeries1 = xYSeries0.createCopy(23, 0);
+    boolean boolean0 = xYSeries1.equals(xYSeries0);
+    assertTrue(xYSeries1.getAllowDuplicateXValues());
+}",0,assertTrue(xYSeries1.getAllowDuplicateXValues())
+project,0,test76132,"public void test76132() throws Throwable {
+    MockDate mockDate0 = new MockDate();
+    Day day0 = new Day(mockDate0);
+    Hour hour0 = new Hour((-18), day0);
+    XYSeries xYSeries0 = new XYSeries(hour0, false);
+    XYSeries xYSeries1 = xYSeries0.createCopy(23, 0);
+    boolean boolean0 = xYSeries1.equals(xYSeries0);
+    assertFalse(xYSeries1.getAutoSort());
+}",0,assertTrue(xYSeries1.getAutoSort())
+project,0,test76133,"public void test76133() throws Throwable {
+    MockDate mockDate0 = new MockDate();
+    Day day0 = new Day(mockDate0);
+    Hour hour0 = new Hour((-18), day0);
+    XYSeries xYSeries0 = new XYSeries(hour0, false);
+    XYSeries xYSeries1 = xYSeries0.createCopy(23, 0);
+    boolean boolean0 = xYSeries1.equals(xYSeries0);
+    assertEquals(Integer.MAX_VALUE, xYSeries1.getMaximumItemCount());
+}",0,"assertEquals(0, xYSeries1.getMaximumItemCount())"
+project,0,test77134,"public void test77134() throws Throwable {
+    Minute minute0 = new Minute();
+    XYSeries xYSeries0 = new XYSeries(minute0, false);
+    xYSeries0.addOrUpdate((Number) 0, (Number) null);
+    xYSeries0.toArray();
+    assertEquals(1, xYSeries0.getItemCount());
+}",0,"assertEquals(1, xYSeries0.getItemCount())"
+project,0,test78135,"public void test78135() throws Throwable {
+    Year year0 = new Year(1433);
+    XYSeries xYSeries0 = new XYSeries(year0);
+    xYSeries0.add((double) year0.MINIMUM_YEAR, 495.8750692);
+    // Undeclared exception!
+    try {
+        xYSeries0.addOrUpdate((Number) (-9999), (Number) 9999);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: -1, Size: 1
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}",0,
+project,0,test79136,"public void test79136() throws Throwable {
+    XYDataItem xYDataItem0 = new XYDataItem((double) 1611, (double) 1611);
+    XYSeries xYSeries0 = new XYSeries(xYDataItem0, true, true);
+    // Undeclared exception!
+    try {
+        xYSeries0.addOrUpdate((Number) null, (Number) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'x' argument.
+        //
+        verifyException(""org.jfree.data.xy.XYSeries"", e);
+    }
+}",0,
+project,0,test80137,"public void test80137() throws Throwable {
+    Year year0 = new Year(1433);
+    XYSeries xYSeries0 = new XYSeries(year0);
+    // Undeclared exception!
+    try {
+        xYSeries0.update((-9999), (-9999));
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // No observation for x = -9999
+        //
+        verifyException(""org.jfree.data.xy.XYSeries"", e);
+    }
+}",1,
+project,0,test81138,"public void test81138() throws Throwable {
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond(1L);
+    XYSeries xYSeries0 = new XYSeries(fixedMillisecond0, false);
+    Float float0 = new Float((float) 1L);
+    xYSeries0.add((double) 1L, (Number) float0);
+    xYSeries0.clear();
+    assertEquals(0, xYSeries0.getItemCount());
+}",0,"assertEquals(1, xYSeries0.getItemCount())"
+project,0,test82139,"public void test82139() throws Throwable {
+    Minute minute0 = new Minute();
+    XYSeries xYSeries0 = new XYSeries(minute0, false);
+    xYSeries0.clear();
+    assertEquals(Integer.MAX_VALUE, xYSeries0.getMaximumItemCount());
+}",0,
+project,0,test82140,"public void test82140() throws Throwable {
+    Minute minute0 = new Minute();
+    XYSeries xYSeries0 = new XYSeries(minute0, false);
+    xYSeries0.clear();
+    assertTrue(xYSeries0.getAllowDuplicateXValues());
+}",0,assertFalse(xYSeries0.getAllowDuplicateXValues())
+project,0,test82141,"public void test82141() throws Throwable {
+    Minute minute0 = new Minute();
+    XYSeries xYSeries0 = new XYSeries(minute0, false);
+    xYSeries0.clear();
+    assertFalse(xYSeries0.getAutoSort());
+}",0,assertFalse(xYSeries0.getAutoSort())
+project,0,test83142,"public void test83142() throws Throwable {
+    Year year0 = new Year(1433);
+    XYSeries xYSeries0 = new XYSeries(year0);
+    XYDataItem xYDataItem0 = new XYDataItem((Number) 9999, (Number) 9999);
+    xYSeries0.setMaximumItemCount(0);
+    xYSeries0.add(xYDataItem0, false);
+    assertEquals(0, xYSeries0.getMaximumItemCount());
+}",0,"assertEquals(0, xYSeries0.getMaximumItemCount())"
+project,0,test84143,"public void test84143() throws Throwable {
+    XYSeries xYSeries0 = new XYSeries("""", false, false);
+    Integer integer0 = JLayeredPane.MODAL_LAYER;
+    XYDataItem xYDataItem0 = new XYDataItem((Number) integer0, (Number) integer0);
+    xYSeries0.add(xYDataItem0, false);
+    // Undeclared exception!
+    try {
+        xYSeries0.add(xYDataItem0, false);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // X-value already exists.
+        //
+        verifyException(""org.jfree.data.xy.XYSeries"", e);
+    }
+}",1,
+project,0,test85144,"public void test85144() throws Throwable {
+    Year year0 = new Year();
+    XYSeries xYSeries0 = new XYSeries(year0, true, false);
+    Float float0 = new Float((double) 9999);
+    xYSeries0.addOrUpdate((Number) 9999, (Number) float0);
+    XYDataItem xYDataItem0 = xYSeries0.addOrUpdate((Number) 9999, (Number) 9999);
+    // Undeclared exception!
+    try {
+        xYSeries0.add(xYDataItem0, false);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // X-value already exists.
+        //
+        verifyException(""org.jfree.data.xy.XYSeries"", e);
+    }
+}",0,
+project,0,test86145,"public void test86145() throws Throwable {
+    Year year0 = new Year(1433);
+    XYSeries xYSeries0 = new XYSeries(year0);
+    xYSeries0.add((double) 0, 495.8750692);
+    xYSeries0.add((double) 0, (Number) (-9999), false);
+    assertEquals(2, xYSeries0.getItemCount());
+}",0,"assertEquals(1, xYSeries0.getItemCount())"
+project,0,test86146,"public void test86146() throws Throwable {
+    Year year0 = new Year(1433);
+    XYSeries xYSeries0 = new XYSeries(year0);
+    xYSeries0.add((double) 0, 495.8750692);
+    xYSeries0.add((double) 0, (Number) (-9999), false);
+    XYDataItem xYDataItem0 = xYSeries0.remove(1);
+    assertEquals((-9999.0), xYDataItem0.getYValue(), 0.01);
+}",0,
+project,0,test87147,"public void test87147() throws Throwable {
+    MockDate mockDate0 = new MockDate();
+    Day day0 = new Day(mockDate0);
+    Hour hour0 = new Hour((-18), day0);
+    XYSeries xYSeries0 = new XYSeries(hour0, false);
+    // Undeclared exception!
+    try {
+        xYSeries0.add((XYDataItem) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'item' argument.
+        //
+        verifyException(""org.jfree.data.xy.XYSeries"", e);
+    }
+}",1,
+project,0,test88148,"public void test88148() throws Throwable {
+    Quarter quarter0 = new Quarter();
+    XYSeries xYSeries0 = new XYSeries(quarter0, true);
+    boolean boolean0 = xYSeries0.getAutoSort();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test88149,"public void test88149() throws Throwable {
+    Quarter quarter0 = new Quarter();
+    XYSeries xYSeries0 = new XYSeries(quarter0, true);
+    boolean boolean0 = xYSeries0.getAutoSort();
+    assertEquals(Integer.MAX_VALUE, xYSeries0.getMaximumItemCount());
+}",0,
+project,0,test88150,"public void test88150() throws Throwable {
+    Quarter quarter0 = new Quarter();
+    XYSeries xYSeries0 = new XYSeries(quarter0, true);
+    boolean boolean0 = xYSeries0.getAutoSort();
+    assertTrue(xYSeries0.getAllowDuplicateXValues());
+}",0,assertFalse(xYSeries0.getAllowDuplicateXValues())
+project,0,test89151,"public void test89151() throws Throwable {
+    Year year0 = new Year();
+    XYSeries xYSeries0 = new XYSeries(year0, true, false);
+    boolean boolean0 = xYSeries0.getAllowDuplicateXValues();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test89152,"public void test89152() throws Throwable {
+    Year year0 = new Year();
+    XYSeries xYSeries0 = new XYSeries(year0, true, false);
+    boolean boolean0 = xYSeries0.getAllowDuplicateXValues();
+    assertEquals(Integer.MAX_VALUE, xYSeries0.getMaximumItemCount());
+}",0,"assertEquals(0, xYSeries0.getMaximumItemCount())"
+project,0,test89153,"public void test89153() throws Throwable {
+    Year year0 = new Year();
+    XYSeries xYSeries0 = new XYSeries(year0, true, false);
+    boolean boolean0 = xYSeries0.getAllowDuplicateXValues();
+    assertTrue(xYSeries0.getAutoSort());
+}",0,assertTrue(xYSeries0.getAutoSort())
+project,0,test90154,"public void test90154() throws Throwable {
+    Second second0 = new Second();
+    XYSeries xYSeries0 = new XYSeries(second0, true, true);
+    // Undeclared exception!
+    try {
+        xYSeries0.remove((Number) 59);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test91155,"public void test91155() throws Throwable {
+    Year year0 = new Year(1433);
+    XYSeries xYSeries0 = new XYSeries(year0);
+    XYDataItem xYDataItem0 = new XYDataItem((Number) 9999, (Number) 9999);
+    xYSeries0.add(xYDataItem0);
+    xYSeries0.setMaximumItemCount(0);
+    assertEquals(0, xYSeries0.getMaximumItemCount());
+}",0,"assertEquals(0, xYSeries0.getMaximumItemCount())"
+project,0,test92156,"public void test92156() throws Throwable {
+    Year year0 = new Year(1431);
+    XYSeries xYSeries0 = new XYSeries(year0);
+    // Undeclared exception!
+    try {
+        xYSeries0.updateByIndex(1431, (-9999));
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 1431, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}",0,
+project,0,test93157,"public void test93157() throws Throwable {
+    Second second0 = new Second();
+    XYSeries xYSeries0 = new XYSeries(second0, true, true);
+    // Undeclared exception!
+    try {
+        xYSeries0.getY(0);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 0, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}",0,
+project,0,test94158,"public void test94158() throws Throwable {
+    Second second0 = new Second();
+    XYSeries xYSeries0 = new XYSeries(second0, true, true);
+    xYSeries0.add((double) 59, (Number) 59, false);
+    assertEquals(1, xYSeries0.getItemCount());
+}",0,"assertEquals(0, xYSeries0.getItemCount())"
+project,0,test94159,"public void test94159() throws Throwable {
+    Second second0 = new Second();
+    XYSeries xYSeries0 = new XYSeries(second0, true, true);
+    xYSeries0.add((double) 59, (Number) 59, false);
+    Number number0 = xYSeries0.getY(0);
+    assertEquals(59, number0);
+}",0,"assertEquals(1, number0)"
+project,0,test95160,"public void test95160() throws Throwable {
+    Minute minute0 = new Minute();
+    XYSeries xYSeries0 = new XYSeries(minute0, false);
+    xYSeries0.add((double) 0, (double) 59, false);
+    xYSeries0.toArray();
+    assertEquals(1, xYSeries0.getItemCount());
+}",0,"assertEquals(0, xYSeries0.getItemCount())"
+project,0,test96161,"public void test96161() throws Throwable {
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond((-13L));
+    XYSeries xYSeries0 = new XYSeries(fixedMillisecond0, true);
+    Float float0 = new Float((float) (-13L));
+    xYSeries0.add((double) (-13L), (Number) float0);
+    // Undeclared exception!
+    try {
+        xYSeries0.addOrUpdate((double) (-13L), 1876.0);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: -1, Size: 1
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}",0,
+project,0,test97162,"public void test97162() throws Throwable {
+    XYSeries xYSeries0 = new XYSeries(""No observation for x = "", false, false);
+    int int0 = xYSeries0.getMaximumItemCount();
+    assertEquals(Integer.MAX_VALUE, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test97163,"public void test97163() throws Throwable {
+    XYSeries xYSeries0 = new XYSeries(""No observation for x = "", false, false);
+    int int0 = xYSeries0.getMaximumItemCount();
+    assertFalse(xYSeries0.getAllowDuplicateXValues());
+}",0,assertTrue(xYSeries0.getAllowDuplicateXValues())
+project,0,test97164,"public void test97164() throws Throwable {
+    XYSeries xYSeries0 = new XYSeries(""No observation for x = "", false, false);
+    int int0 = xYSeries0.getMaximumItemCount();
+    assertFalse(xYSeries0.getAutoSort());
+}",0,assertTrue(xYSeries0.getAutoSort())

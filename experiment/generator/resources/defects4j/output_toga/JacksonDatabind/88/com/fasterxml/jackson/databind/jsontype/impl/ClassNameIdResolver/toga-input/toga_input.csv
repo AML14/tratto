@@ -1,0 +1,227 @@
+focal_method,test_prefix,docstring
+"@Override
+public JsonTypeInfo.Id getMechanism() {
+    return JsonTypeInfo.Id.CLASS;
+}","public void test00() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    ClassNameIdResolver classNameIdResolver0 = new ClassNameIdResolver((JavaType) null, typeFactory0);
+    Class<String> class0 = String.class;
+    classNameIdResolver0.registerSubtype(class0, ""com.fasterxml.jackson.databind.introspect.ConcreteBeanPropertyBase"");
+    assertEquals(JsonTypeInfo.Id.CLASS, classNameIdResolver0.getMechanism());
+}",""
+"@Override
+public JavaType typeFromId(DatabindContext context, String id) throws IOException {
+    return _typeFromId(id, context);
+}","public void test22() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    ClassNameIdResolver classNameIdResolver0 = new ClassNameIdResolver((JavaType) null, typeFactory0);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    SerializerProvider serializerProvider0 = objectMapper0.getSerializerProviderInstance();
+    JavaType javaType0 = classNameIdResolver0.typeFromId(serializerProvider0, ""java.utilcom.fasterxml.jackson.databind.MapperFeature"");
+    assertNull(javaType0);
+}",""
+"@Override
+public String getDescForKnownTypeIds() {
+    return ""class name used as type id"";
+}","public void test33() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    JavaType javaType0 = TypeFactory.unknownType();
+    ClassNameIdResolver classNameIdResolver0 = new ClassNameIdResolver(javaType0, typeFactory0);
+    String string0 = classNameIdResolver0.getDescForKnownTypeIds();
+    assertEquals(""class name used as type id"", string0);
+}",""
+"@Override
+public String idFromValue(Object value) {
+    return _idFrom(value, value.getClass(), _typeFactory);
+}","public void test44() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<EnumSet> class0 = EnumSet.class;
+    CollectionType collectionType0 = typeFactory0.constructCollectionType(class0, class0);
+    ClassNameIdResolver classNameIdResolver0 = new ClassNameIdResolver(collectionType0, typeFactory0);
+    String string0 = classNameIdResolver0.idFromValue(typeFactory0);
+    assertEquals(""com.fasterxml.jackson.databind.type.TypeFactory"", string0);
+}",""
+"@Override
+public JavaType typeFromId(DatabindContext context, String id) throws IOException {
+    return _typeFromId(id, context);
+}","public void test55() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    JavaType javaType0 = TypeFactory.unknownType();
+    ClassNameIdResolver classNameIdResolver0 = new ClassNameIdResolver(javaType0, typeFactory0);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    SerializerProvider serializerProvider0 = objectMapper0.getSerializerProviderInstance();
+    // Undeclared exception!
+    try {
+        classNameIdResolver0.typeFromId(serializerProvider0, ""g/}<F:L\""Mc"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Failed to parse type 'g/}<F:L\""Mc' (remaining: '<F:L\""Mc'): Can not locate class 'g/}', problem: g/}
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeParser"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Internal methods
+    /**********************************************************
+     */
+protected final String _idFrom(Object value, Class<?> cls, TypeFactory typeFactory) {
+    // Need to ensure that ""enum subtypes"" work too
+    if (Enum.class.isAssignableFrom(cls)) {
+        if (!cls.isEnum()) {
+            // means that it's sub-class of base enum, so:
+            cls = cls.getSuperclass();
+        }
+    }
+    String str = cls.getName();
+    if (str.startsWith(""java.util"")) {
+        // 25-Jan-2009, tatu: There are some internal classes that we can not access as is.
+        //     We need better mechanism; for now this has to do...
+        // Enum sets and maps are problematic since we MUST know type of
+        // contained enums, to be able to deserialize.
+        // In addition, EnumSet is not a concrete type either
+        if (value instanceof EnumSet<?>) {
+            // Regular- and JumboEnumSet...
+            Class<?> enumClass = ClassUtil.findEnumType((EnumSet<?>) value);
+            // not optimal: but EnumSet is not a customizable type so this is sort of ok
+            str = typeFactory.constructCollectionType(EnumSet.class, enumClass).toCanonical();
+        } else if (value instanceof EnumMap<?, ?>) {
+            Class<?> enumClass = ClassUtil.findEnumType((EnumMap<?, ?>) value);
+            Class<?> valueClass = Object.class;
+            // not optimal: but EnumMap is not a customizable type so this is sort of ok
+            str = typeFactory.constructMapType(EnumMap.class, enumClass, valueClass).toCanonical();
+        } else {
+            String end = str.substring(9);
+            if ((end.startsWith("".Arrays$"") || end.startsWith("".Collections$"")) && str.indexOf(""List"") >= 0) {
+                /* 17-Feb-2010, tatus: Another such case: result of
+                     *    Arrays.asList() is named like so in Sun JDK...
+                     *   Let's just plain old ArrayList in its place
+                     * NOTE: chances are there are plenty of similar cases
+                     * for other wrappers... (immutable, singleton, synced etc)
+                     */
+                str = ""java.util.ArrayList"";
+            }
+        }
+    } else if (str.indexOf('$') >= 0) {
+        /* Other special handling may be needed for inner classes, [JACKSON-584].
+             * The best way to handle would be to find 'hidden' constructor; pass parent
+             * value etc (which is actually done for non-anonymous static classes!),
+             * but that is just not possible due to various things. So, we will instead
+             * try to generalize type into something we will be more likely to be able
+             * construct.
+             */
+        Class<?> outer = ClassUtil.getOuterClass(cls);
+        if (outer != null) {
+            /* one more check: let's actually not worry if the declared
+                 * static type is non-static as well; if so, deserializer does
+                 * have a chance at figuring it all out.
+                 */
+            Class<?> staticType = _baseType.getRawClass();
+            if (ClassUtil.getOuterClass(staticType) == null) {
+                // Is this always correct? Seems like it should be...
+                cls = _baseType.getRawClass();
+                str = cls.getName();
+            }
+        }
+    }
+    return str;
+}","public void test66() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<AnnotationIntrospector.ReferenceProperty.Type> class0 = AnnotationIntrospector.ReferenceProperty.Type.class;
+    ArrayType arrayType0 = typeFactory0.constructArrayType(class0);
+    ClassNameIdResolver classNameIdResolver0 = new ClassNameIdResolver(arrayType0, typeFactory0);
+    String string0 = classNameIdResolver0._idFrom(class0, class0, typeFactory0);
+    assertEquals(""com.fasterxml.jackson.databind.AnnotationIntrospector$ReferenceProperty$Type"", string0);
+}",""
+"@Override
+public String idFromBaseType() {
+    /* By default we will just defer to regular handling, handing out the
+         * base type; and since there is no value, must just pass null here
+         * assuming that implementations can deal with it.
+         * Alternative would be to pass a bogus Object, but that does not seem right.
+         */
+    return idFromValueAndType(null, _baseType.getRawClass());
+}","public void test77() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<EnumSet> class0 = EnumSet.class;
+    CollectionType collectionType0 = typeFactory0.constructCollectionType(class0, class0);
+    ClassNameIdResolver classNameIdResolver0 = new ClassNameIdResolver(collectionType0, typeFactory0);
+    String string0 = classNameIdResolver0.idFromBaseType();
+    assertEquals(""java.util.EnumSet"", string0);
+}",""
+"/*
+    /**********************************************************
+    /* Internal methods
+    /**********************************************************
+     */
+protected final String _idFrom(Object value, Class<?> cls, TypeFactory typeFactory) {
+    // Need to ensure that ""enum subtypes"" work too
+    if (Enum.class.isAssignableFrom(cls)) {
+        if (!cls.isEnum()) {
+            // means that it's sub-class of base enum, so:
+            cls = cls.getSuperclass();
+        }
+    }
+    String str = cls.getName();
+    if (str.startsWith(""java.util"")) {
+        // 25-Jan-2009, tatu: There are some internal classes that we can not access as is.
+        //     We need better mechanism; for now this has to do...
+        // Enum sets and maps are problematic since we MUST know type of
+        // contained enums, to be able to deserialize.
+        // In addition, EnumSet is not a concrete type either
+        if (value instanceof EnumSet<?>) {
+            // Regular- and JumboEnumSet...
+            Class<?> enumClass = ClassUtil.findEnumType((EnumSet<?>) value);
+            // not optimal: but EnumSet is not a customizable type so this is sort of ok
+            str = typeFactory.constructCollectionType(EnumSet.class, enumClass).toCanonical();
+        } else if (value instanceof EnumMap<?, ?>) {
+            Class<?> enumClass = ClassUtil.findEnumType((EnumMap<?, ?>) value);
+            Class<?> valueClass = Object.class;
+            // not optimal: but EnumMap is not a customizable type so this is sort of ok
+            str = typeFactory.constructMapType(EnumMap.class, enumClass, valueClass).toCanonical();
+        } else {
+            String end = str.substring(9);
+            if ((end.startsWith("".Arrays$"") || end.startsWith("".Collections$"")) && str.indexOf(""List"") >= 0) {
+                /* 17-Feb-2010, tatus: Another such case: result of
+                     *    Arrays.asList() is named like so in Sun JDK...
+                     *   Let's just plain old ArrayList in its place
+                     * NOTE: chances are there are plenty of similar cases
+                     * for other wrappers... (immutable, singleton, synced etc)
+                     */
+                str = ""java.util.ArrayList"";
+            }
+        }
+    } else if (str.indexOf('$') >= 0) {
+        /* Other special handling may be needed for inner classes, [JACKSON-584].
+             * The best way to handle would be to find 'hidden' constructor; pass parent
+             * value etc (which is actually done for non-anonymous static classes!),
+             * but that is just not possible due to various things. So, we will instead
+             * try to generalize type into something we will be more likely to be able
+             * construct.
+             */
+        Class<?> outer = ClassUtil.getOuterClass(cls);
+        if (outer != null) {
+            /* one more check: let's actually not worry if the declared
+                 * static type is non-static as well; if so, deserializer does
+                 * have a chance at figuring it all out.
+                 */
+            Class<?> staticType = _baseType.getRawClass();
+            if (ClassUtil.getOuterClass(staticType) == null) {
+                // Is this always correct? Seems like it should be...
+                cls = _baseType.getRawClass();
+                str = cls.getName();
+            }
+        }
+    }
+    return str;
+}","public void test88() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<ArrayDeque> class0 = ArrayDeque.class;
+    ArrayType arrayType0 = typeFactory0.constructArrayType(class0);
+    MinimalClassNameIdResolver minimalClassNameIdResolver0 = new MinimalClassNameIdResolver(arrayType0, typeFactory0);
+    Class<ObjectMapper.DefaultTyping> class1 = ObjectMapper.DefaultTyping.class;
+    EnumMap<ObjectMapper.DefaultTyping, ObjectMapper.DefaultTyping> enumMap0 = new EnumMap<ObjectMapper.DefaultTyping, ObjectMapper.DefaultTyping>(class1);
+    String string0 = minimalClassNameIdResolver0._idFrom(enumMap0, class0, typeFactory0);
+    assertEquals(""java.util.EnumMap<com.fasterxml.jackson.databind.ObjectMapper$DefaultTyping,java.lang.Object>"", string0);
+}",""

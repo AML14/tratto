@@ -1,0 +1,71 @@
+focal_method,test_prefix,docstring
+"@Override
+public void process(Node externs, Node root) {
+    SimpleDefinitionFinder defFinder = new SimpleDefinitionFinder(compiler);
+    defFinder.process(externs, root);
+    for (DefinitionSite defSite : defFinder.getDefinitionSites()) {
+        rewriteDefinitionIfEligible(defSite, defFinder);
+    }
+}","public void test00() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    DevirtualizePrototypeMethods devirtualizePrototypeMethods0 = new DevirtualizePrototypeMethods(compiler0);
+    Node node0 = compiler0.parseTestCode(""msg.prop.defined"");
+    // Undeclared exception!
+    try {
+        devirtualizePrototypeMethods0.process(node0, node0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // Unexpected lValue type GETPROP
+        //   Node(GETPROP):  [testcode] :1:0
+        // [source unknown]
+        //   Parent(EXPR_RESULT):  [testcode] :1:0
+        // [source unknown]
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",""
+"@Override
+public void process(Node externs, Node root) {
+    SimpleDefinitionFinder defFinder = new SimpleDefinitionFinder(compiler);
+    defFinder.process(externs, root);
+    for (DefinitionSite defSite : defFinder.getDefinitionSites()) {
+        rewriteDefinitionIfEligible(defSite, defFinder);
+    }
+}","public void test11() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""$=3"");
+    DevirtualizePrototypeMethods devirtualizePrototypeMethods0 = new DevirtualizePrototypeMethods(compiler0);
+    devirtualizePrototypeMethods0.process(node0, node0);
+    assertEquals(4, Node.DESCENDANTS_FLAG);
+}",""
+"@Override
+public void process(Node externs, Node root) {
+    SimpleDefinitionFinder defFinder = new SimpleDefinitionFinder(compiler);
+    defFinder.process(externs, root);
+    for (DefinitionSite defSite : defFinder.getDefinitionSites()) {
+        rewriteDefinitionIfEligible(defSite, defFinder);
+    }
+}","public void test22() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""J$=4/r"");
+    DevirtualizePrototypeMethods devirtualizePrototypeMethods0 = new DevirtualizePrototypeMethods(compiler0);
+    // Undeclared exception!
+    try {
+        devirtualizePrototypeMethods0.process(node0, node0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // Unexpected lValue type NAME
+        //   Node(NAME J$):  [testcode] :1:0
+        // [source unknown]
+        //   Parent(ASSIGN):  [testcode] :1:2
+        // [source unknown]
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",""

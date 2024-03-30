@@ -1,0 +1,2700 @@
+focal_method,test_prefix,docstring
+"public String toString() {
+    return getID();
+}","public void test000() throws Throwable {
+    ZoneOffset zoneOffset0 = ZoneOffset.ofHours(1);
+    TimeZone timeZone0 = TimeZone.getTimeZone((ZoneId) zoneOffset0);
+    DateTimeZone dateTimeZone0 = DateTimeZone.forTimeZone(timeZone0);
+    assertEquals(""+01:00"", dateTimeZone0.toString());
+}","/**
+ * Gets the datetime zone as a string, which is simply its ID.
+ * @return the id of the zone
+ */"
+"public static DateTimeZone forTimeZone(TimeZone zone) {
+    if (zone == null) {
+        return getDefault();
+    }
+    final String id = zone.getID();
+    if (id.equals(""UTC"")) {
+        return DateTimeZone.UTC;
+    }
+    // Convert from old alias before consulting provider since they may differ.
+    DateTimeZone dtz = null;
+    String convId = getConvertedId(id);
+    if (convId != null) {
+        dtz = cProvider.getZone(convId);
+    }
+    if (dtz == null) {
+        dtz = cProvider.getZone(id);
+    }
+    if (dtz != null) {
+        return dtz;
+    }
+    // Support GMT+/-hh:mm formats
+    if (convId == null) {
+        convId = zone.getDisplayName();
+        if (convId.startsWith(""GMT+"") || convId.startsWith(""GMT-"")) {
+            convId = convId.substring(3);
+            int offset = parseOffset(convId);
+            if (offset == 0L) {
+                return DateTimeZone.UTC;
+            } else {
+                convId = printOffset(offset);
+                return fixedOffsetZone(convId, offset);
+            }
+        }
+    }
+    throw new IllegalArgumentException(""The datetime zone id '"" + id + ""' is not recognised"");
+}","public void test001() throws Throwable {
+    ZoneOffset zoneOffset0 = ZoneOffset.ofHours(1);
+    TimeZone timeZone0 = TimeZone.getTimeZone((ZoneId) zoneOffset0);
+    DateTimeZone dateTimeZone0 = DateTimeZone.forTimeZone(timeZone0);
+    assertNotNull(dateTimeZone0);
+}","/**
+ * Gets a time zone instance for a JDK TimeZone.
+ * <p>
+ * DateTimeZone only accepts a subset of the IDs from TimeZone. The
+ * excluded IDs are the short three letter form (except UTC). This
+ * method will attempt to convert between time zones created using the
+ * short IDs and the full version.
+ * <p>
+ * This method is not designed to parse time zones with rules created by
+ * applications using <code>SimpleTimeZone</code> directly.
+ *
+ * @param zone  the zone to convert, null means default
+ * @return the DateTimeZone object for the zone
+ * @throws IllegalArgumentException if the zone is not recognised
+ */"
+"public static DateTimeZone forTimeZone(TimeZone zone) {
+    if (zone == null) {
+        return getDefault();
+    }
+    final String id = zone.getID();
+    if (id.equals(""UTC"")) {
+        return DateTimeZone.UTC;
+    }
+    // Convert from old alias before consulting provider since they may differ.
+    DateTimeZone dtz = null;
+    String convId = getConvertedId(id);
+    if (convId != null) {
+        dtz = cProvider.getZone(convId);
+    }
+    if (dtz == null) {
+        dtz = cProvider.getZone(id);
+    }
+    if (dtz != null) {
+        return dtz;
+    }
+    // Support GMT+/-hh:mm formats
+    if (convId == null) {
+        convId = zone.getDisplayName();
+        if (convId.startsWith(""GMT+"") || convId.startsWith(""GMT-"")) {
+            convId = convId.substring(3);
+            int offset = parseOffset(convId);
+            if (offset == 0L) {
+                return DateTimeZone.UTC;
+            } else {
+                convId = printOffset(offset);
+                return fixedOffsetZone(convId, offset);
+            }
+        }
+    }
+    throw new IllegalArgumentException(""The datetime zone id '"" + id + ""' is not recognised"");
+}","public void test012() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstance();
+    DateTimeZone dateTimeZone0 = gJChronology0.getZone();
+    TimeZone timeZone0 = dateTimeZone0.toTimeZone();
+    DateTimeZone dateTimeZone1 = DateTimeZone.forTimeZone(timeZone0);
+    //  // Unstable assertion: assertNotSame(dateTimeZone1, dateTimeZone0);
+}","/**
+ * Gets a time zone instance for a JDK TimeZone.
+ * <p>
+ * DateTimeZone only accepts a subset of the IDs from TimeZone. The
+ * excluded IDs are the short three letter form (except UTC). This
+ * method will attempt to convert between time zones created using the
+ * short IDs and the full version.
+ * <p>
+ * This method is not designed to parse time zones with rules created by
+ * applications using <code>SimpleTimeZone</code> directly.
+ *
+ * @param zone  the zone to convert, null means default
+ * @return the DateTimeZone object for the zone
+ * @throws IllegalArgumentException if the zone is not recognised
+ */"
+"public static DateTimeZone forOffsetHoursMinutes(int hoursOffset, int minutesOffset) throws IllegalArgumentException {
+    if (hoursOffset == 0 && minutesOffset == 0) {
+        return DateTimeZone.UTC;
+    }
+    if (minutesOffset < 0 || minutesOffset > 59) {
+        throw new IllegalArgumentException(""Minutes out of range: "" + minutesOffset);
+    }
+    int offset = 0;
+    try {
+        int hoursInMinutes = FieldUtils.safeMultiply(hoursOffset, 60);
+        if (hoursInMinutes < 0) {
+            minutesOffset = FieldUtils.safeAdd(hoursInMinutes, -minutesOffset);
+        } else {
+            minutesOffset = FieldUtils.safeAdd(hoursInMinutes, minutesOffset);
+        }
+        offset = FieldUtils.safeMultiply(minutesOffset, DateTimeConstants.MILLIS_PER_MINUTE);
+    } catch (ArithmeticException ex) {
+        throw new IllegalArgumentException(""Offset is too large"");
+    }
+    return forOffsetMillis(offset);
+}","public void test023() throws Throwable {
+    try {
+        DateTimeZone.forOffsetHoursMinutes((-621), 59);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Offset is too large
+        //
+        verifyException(""org.joda.time.DateTimeZone"", e);
+    }
+}","/**
+ * Gets a time zone instance for the specified offset to UTC in hours and minutes.
+ * This method assumes 60 minutes in an hour, and standard length minutes.
+ * <p>
+ * This factory is a convenient way of constructing zones with a fixed offset.
+ * The minutes value is always positive and in the range 0 to 59.
+ * If constructed with the values (-2, 30), the resulting zone is '-02:30'.
+ *
+ * @param hoursOffset  the offset in hours from UTC
+ * @param minutesOffset  the offset in minutes from UTC, must be between 0 and 59 inclusive
+ * @return the DateTimeZone object for the offset
+ * @throws IllegalArgumentException if the offset or minute is too large or too small
+ */"
+"// Principal methods
+//--------------------------------------------------------------------
+/**
+ * Gets the ID of this datetime zone.
+ *
+ * @return the ID of this datetime zone
+ */
+@ToString
+public final String getID() {
+    return iID;
+}","public void test034() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forID(""-08:00"");
+    assertEquals(""-08:00"", dateTimeZone0.getID());
+}",""
+"public String toString() {
+    return getID();
+}","public void test045() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    DateTimeZone.setDefault(dateTimeZone0);
+    assertEquals(""America/Los_Angeles"", dateTimeZone0.toString());
+}","/**
+ * Gets the datetime zone as a string, which is simply its ID.
+ * @return the id of the zone
+ */"
+"public int hashCode() {
+    return 57 + getID().hashCode();
+}","public void test056() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstanceUTC();
+    DateTimeZone dateTimeZone0 = buddhistChronology0.getZone();
+    dateTimeZone0.hashCode();
+}","/**
+ * Gets a hash code compatable with equals.
+ *
+ * @return suitable hashcode
+ */"
+"public String toString() {
+    return getID();
+}","public void test067() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(549);
+    TimeZone timeZone0 = dateTimeZone0.toTimeZone();
+    assertEquals(""java.util.SimpleTimeZone[id=+549:00,offset=1976400000,dstSavings=3600000,useDaylight=false,startYear=0,startMode=0,startMonth=0,startDay=0,startDayOfWeek=0,startTime=0,startTimeMode=0,endMode=0,endMonth=0,endDay=0,endDayOfWeek=0,endTime=0,endTimeMode=0]"", timeZone0.toString());
+}","/**
+ * Gets the datetime zone as a string, which is simply its ID.
+ * @return the id of the zone
+ */"
+"// Principal methods
+//--------------------------------------------------------------------
+/**
+ * Gets the ID of this datetime zone.
+ *
+ * @return the ID of this datetime zone
+ */
+@ToString
+public final String getID() {
+    return iID;
+}","public void test068() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(549);
+    TimeZone timeZone0 = dateTimeZone0.toTimeZone();
+    assertEquals(""+549:00"", dateTimeZone0.getID());
+}",""
+"public long previousTransition(long instant) {
+    return instant;
+}","public void test079() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    long long0 = fixedDateTimeZone0.previousTransition(0L);
+    assertEquals(0L, long0);
+}",""
+"public long previousTransition(long instant) {
+    return instant;
+}","public void test0810() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    long long0 = fixedDateTimeZone0.previousTransition(2189L);
+    assertEquals(2189L, long0);
+}",""
+"public abstract long previousTransition(long instant);","public void test0911() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance();
+    DateTimeZone dateTimeZone0 = buddhistChronology0.getZone();
+    long long0 = dateTimeZone0.previousTransition(1);
+    assertEquals((-5756400001L), long0);
+}","/**
+ * Retreats the given instant to where the time zone offset or name changes.
+ * If the instant returned is exactly the same as passed in, then
+ * no changes occur before the given instant.
+ *
+ * @param instant  milliseconds from 1970-01-01T00:00:00Z
+ * @return milliseconds from 1970-01-01T00:00:00Z
+ */"
+"public abstract long nextTransition(long instant);","public void test1012() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    long long0 = dateTimeZone0.UTC.nextTransition(0L);
+    assertEquals(0L, long0);
+}","/**
+ * Advances the given instant to where the time zone offset or name changes.
+ * If the instant returned is exactly the same as passed in, then
+ * no changes occur after the given instant.
+ *
+ * @param instant  milliseconds from 1970-01-01T00:00:00Z
+ * @return milliseconds from 1970-01-01T00:00:00Z
+ */"
+"public abstract long nextTransition(long instant);","public void test1113() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    long long0 = dateTimeZone0.nextTransition(637L);
+    assertEquals(9972000000L, long0);
+}","/**
+ * Advances the given instant to where the time zone offset or name changes.
+ * If the instant returned is exactly the same as passed in, then
+ * no changes occur after the given instant.
+ *
+ * @param instant  milliseconds from 1970-01-01T00:00:00Z
+ * @return milliseconds from 1970-01-01T00:00:00Z
+ */"
+"public String toString() {
+    return getID();
+}","public void test1214() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis(1);
+    dateTimeZone0.nextTransition((-2180L));
+    assertEquals(""+00:00:00.001"", dateTimeZone0.toString());
+}","/**
+ * Gets the datetime zone as a string, which is simply its ID.
+ * @return the id of the zone
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Returns true if this time zone has no transitions.
+ *
+ * @return true if no transitions
+ */
+public abstract boolean isFixed();","public void test1315() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstanceUTC();
+    DateTimeZone dateTimeZone0 = buddhistChronology0.getZone();
+    boolean boolean0 = dateTimeZone0.isFixed();
+    assertTrue(boolean0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Returns true if this time zone has no transitions.
+ *
+ * @return true if no transitions
+ */
+public abstract boolean isFixed();","public void test1416() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    boolean boolean0 = dateTimeZone0.isFixed();
+    assertFalse(boolean0);
+}",""
+"public abstract int getStandardOffset(long instant);","public void test1517() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstanceUTC();
+    DateTimeZone dateTimeZone0 = buddhistChronology0.getZone();
+    int int0 = dateTimeZone0.getStandardOffset((-266L));
+    assertEquals(0, int0);
+}","/**
+ * Gets the standard millisecond offset to add to UTC to get local time,
+ * when standard time is in effect.
+ *
+ * @param instant  milliseconds from 1970-01-01T00:00:00Z to get the offset for
+ * @return the millisecond offset to add to UTC to get local time
+ */"
+"public String toString() {
+    return getID();
+}","public void test1618() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(3);
+    int int0 = dateTimeZone0.getStandardOffset(0L);
+    assertEquals(""+03:00"", dateTimeZone0.toString());
+}","/**
+ * Gets the datetime zone as a string, which is simply its ID.
+ * @return the id of the zone
+ */"
+"public abstract int getStandardOffset(long instant);","public void test1619() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(3);
+    int int0 = dateTimeZone0.getStandardOffset(0L);
+    assertEquals(10800000, int0);
+}","/**
+ * Gets the standard millisecond offset to add to UTC to get local time,
+ * when standard time is in effect.
+ *
+ * @param instant  milliseconds from 1970-01-01T00:00:00Z to get the offset for
+ * @return the millisecond offset to add to UTC to get local time
+ */"
+"public abstract int getStandardOffset(long instant);","public void test1720() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis((-1314));
+    int int0 = dateTimeZone0.getStandardOffset((-1314));
+    assertEquals((-1314), int0);
+}","/**
+ * Gets the standard millisecond offset to add to UTC to get local time,
+ * when standard time is in effect.
+ *
+ * @param instant  milliseconds from 1970-01-01T00:00:00Z to get the offset for
+ * @return the millisecond offset to add to UTC to get local time
+ */"
+"public String toString() {
+    return getID();
+}","public void test1721() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis((-1314));
+    int int0 = dateTimeZone0.getStandardOffset((-1314));
+    assertEquals(""-00:00:01.314"", dateTimeZone0.toString());
+}","/**
+ * Gets the datetime zone as a string, which is simply its ID.
+ * @return the id of the zone
+ */"
+"public int getOffsetFromLocal(long instantLocal) {
+    // get the offset at instantLocal (first estimate)
+    final int offsetLocal = getOffset(instantLocal);
+    // adjust instantLocal using the estimate and recalc the offset
+    final long instantAdjusted = instantLocal - offsetLocal;
+    final int offsetAdjusted = getOffset(instantAdjusted);
+    // if the offsets differ, we must be near a DST boundary
+    if (offsetLocal != offsetAdjusted) {
+        // we need to ensure that time is always after the DST gap
+        // this happens naturally for positive offsets, but not for negative
+        if ((offsetLocal - offsetAdjusted) < 0) {
+            // if we just return offsetAdjusted then the time is pushed
+            // back before the transition, whereas it should be
+            // on or after the transition
+            long nextLocal = nextTransition(instantAdjusted);
+            long nextAdjusted = nextTransition(instantLocal - offsetAdjusted);
+            if (nextLocal != nextAdjusted) {
+                return offsetLocal;
+            }
+        }
+    }
+    return offsetAdjusted;
+}","public void test1822() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance();
+    DateTimeZone dateTimeZone0 = buddhistChronology0.getZone();
+    int int0 = dateTimeZone0.UTC.getOffsetFromLocal(1);
+    assertEquals(0, int0);
+}","/**
+ * Gets the millisecond offset to subtract from local time to get UTC time.
+ * This offset can be used to undo adding the offset obtained by getOffset.
+ *
+ * <pre>
+ * millisLocal == millisUTC   + getOffset(millisUTC)
+ * millisUTC   == millisLocal - getOffsetFromLocal(millisLocal)
+ * </pre>
+ *
+ * NOTE: After calculating millisLocal, some error may be introduced. At
+ * offset transitions (due to DST or other historical changes), ranges of
+ * local times may map to different UTC times.
+ * <p>
+ * This method will return an offset suitable for calculating an instant
+ * after any DST gap. For example, consider a zone with a cutover
+ * from 01:00 to 01:59:<br />
+ * Input: 00:00  Output: 00:00<br />
+ * Input: 00:30  Output: 00:30<br />
+ * Input: 01:00  Output: 02:00<br />
+ * Input: 01:30  Output: 02:30<br />
+ * Input: 02:00  Output: 02:00<br />
+ * Input: 02:30  Output: 02:30<br />
+ * <p>
+ * During a DST overlap (where the local time is ambiguous) this method will return
+ * the earlier instant. The combination of these two rules is to always favour
+ * daylight (summer) time over standard (winter) time.
+ * <p>
+ * NOTE: Prior to v2.0, the DST overlap behaviour was not defined and varied by hemisphere.
+ * Prior to v1.5, the DST gap behaviour was also not defined.
+ *
+ * @param instantLocal  the millisecond instant, relative to this time zone, to get the offset for
+ * @return the millisecond offset to subtract from local time to get UTC time
+ */"
+"public int getOffsetFromLocal(long instantLocal) {
+    // get the offset at instantLocal (first estimate)
+    final int offsetLocal = getOffset(instantLocal);
+    // adjust instantLocal using the estimate and recalc the offset
+    final long instantAdjusted = instantLocal - offsetLocal;
+    final int offsetAdjusted = getOffset(instantAdjusted);
+    // if the offsets differ, we must be near a DST boundary
+    if (offsetLocal != offsetAdjusted) {
+        // we need to ensure that time is always after the DST gap
+        // this happens naturally for positive offsets, but not for negative
+        if ((offsetLocal - offsetAdjusted) < 0) {
+            // if we just return offsetAdjusted then the time is pushed
+            // back before the transition, whereas it should be
+            // on or after the transition
+            long nextLocal = nextTransition(instantAdjusted);
+            long nextAdjusted = nextTransition(instantLocal - offsetAdjusted);
+            if (nextLocal != nextAdjusted) {
+                return offsetLocal;
+            }
+        }
+    }
+    return offsetAdjusted;
+}","public void test1923() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(1);
+    int int0 = dateTimeZone0.getOffsetFromLocal(0L);
+    assertEquals(3600000, int0);
+}","/**
+ * Gets the millisecond offset to subtract from local time to get UTC time.
+ * This offset can be used to undo adding the offset obtained by getOffset.
+ *
+ * <pre>
+ * millisLocal == millisUTC   + getOffset(millisUTC)
+ * millisUTC   == millisLocal - getOffsetFromLocal(millisLocal)
+ * </pre>
+ *
+ * NOTE: After calculating millisLocal, some error may be introduced. At
+ * offset transitions (due to DST or other historical changes), ranges of
+ * local times may map to different UTC times.
+ * <p>
+ * This method will return an offset suitable for calculating an instant
+ * after any DST gap. For example, consider a zone with a cutover
+ * from 01:00 to 01:59:<br />
+ * Input: 00:00  Output: 00:00<br />
+ * Input: 00:30  Output: 00:30<br />
+ * Input: 01:00  Output: 02:00<br />
+ * Input: 01:30  Output: 02:30<br />
+ * Input: 02:00  Output: 02:00<br />
+ * Input: 02:30  Output: 02:30<br />
+ * <p>
+ * During a DST overlap (where the local time is ambiguous) this method will return
+ * the earlier instant. The combination of these two rules is to always favour
+ * daylight (summer) time over standard (winter) time.
+ * <p>
+ * NOTE: Prior to v2.0, the DST overlap behaviour was not defined and varied by hemisphere.
+ * Prior to v1.5, the DST gap behaviour was also not defined.
+ *
+ * @param instantLocal  the millisecond instant, relative to this time zone, to get the offset for
+ * @return the millisecond offset to subtract from local time to get UTC time
+ */"
+"// Principal methods
+//--------------------------------------------------------------------
+/**
+ * Gets the ID of this datetime zone.
+ *
+ * @return the ID of this datetime zone
+ */
+@ToString
+public final String getID() {
+    return iID;
+}","public void test1924() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(1);
+    int int0 = dateTimeZone0.getOffsetFromLocal(0L);
+    assertEquals(""+01:00"", dateTimeZone0.getID());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test2025() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    DateMidnight dateMidnight0 = new DateMidnight(dateTimeZone0);
+    int int0 = dateTimeZone0.getOffset((ReadableInstant) dateMidnight0);
+    assertEquals(1392364800000L, dateMidnight0.getMillis());
+}",""
+"public final int getOffset(ReadableInstant instant) {
+    if (instant == null) {
+        return getOffset(DateTimeUtils.currentTimeMillis());
+    }
+    return getOffset(instant.getMillis());
+}","public void test2026() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    DateMidnight dateMidnight0 = new DateMidnight(dateTimeZone0);
+    int int0 = dateTimeZone0.getOffset((ReadableInstant) dateMidnight0);
+    assertEquals((-28800000), int0);
+}","/**
+ * Gets the millisecond offset to add to UTC to get local time.
+ *
+ * @param instant  instant to get the offset for, null means now
+ * @return the millisecond offset to add to UTC to get local time
+ */"
+"public abstract int getOffset(long instant);","public void test2127() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstanceUTC();
+    DateTimeZone dateTimeZone0 = buddhistChronology0.getZone();
+    int int0 = dateTimeZone0.getOffset(0L);
+    assertEquals(0, int0);
+}","/**
+ * Gets the millisecond offset to add to UTC to get local time.
+ *
+ * @param instant  milliseconds from 1970-01-01T00:00:00Z to get the offset for
+ * @return the millisecond offset to add to UTC to get local time
+ */"
+"public abstract int getOffset(long instant);","public void test2228() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis(1189);
+    int int0 = dateTimeZone0.getOffset(2587L);
+    assertEquals(1189, int0);
+}","/**
+ * Gets the millisecond offset to add to UTC to get local time.
+ *
+ * @param instant  milliseconds from 1970-01-01T00:00:00Z to get the offset for
+ * @return the millisecond offset to add to UTC to get local time
+ */"
+"// Principal methods
+//--------------------------------------------------------------------
+/**
+ * Gets the ID of this datetime zone.
+ *
+ * @return the ID of this datetime zone
+ */
+@ToString
+public final String getID() {
+    return iID;
+}","public void test2229() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis(1189);
+    int int0 = dateTimeZone0.getOffset(2587L);
+    assertEquals(""+00:00:01.189"", dateTimeZone0.getID());
+}",""
+"public abstract int getOffset(long instant);","public void test2330() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    int int0 = dateTimeZone0.getOffset(162L);
+    assertEquals((-28800000), int0);
+}","/**
+ * Gets the millisecond offset to add to UTC to get local time.
+ *
+ * @param instant  milliseconds from 1970-01-01T00:00:00Z to get the offset for
+ * @return the millisecond offset to add to UTC to get local time
+ */"
+"public String toString() {
+    return getID();
+}","public void test2431() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(3);
+    dateTimeZone0.getNameKey(918518400000L);
+    assertEquals(""+03:00"", dateTimeZone0.toString());
+}","/**
+ * Gets the datetime zone as a string, which is simply its ID.
+ * @return the id of the zone
+ */"
+"public abstract String getNameKey(long instant);","public void test2532() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance();
+    DateTimeZone dateTimeZone0 = buddhistChronology0.getZone();
+    String string0 = dateTimeZone0.getNameKey((-2642L));
+    assertEquals(""PST"", string0);
+}","/**
+ * Returns a non-localized name that is unique to this time zone. It can be
+ * combined with id to form a unique key for fetching localized names.
+ *
+ * @param instant  milliseconds from 1970-01-01T00:00:00Z to get the name for
+ * @return name key or null if id should be used for names
+ */"
+"public abstract boolean equals(Object object);","public void test2633() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstanceUTC();
+    DateTimeZone dateTimeZone0 = buddhistChronology0.getZone();
+    boolean boolean0 = dateTimeZone0.equals(dateTimeZone0);
+    assertTrue(boolean0);
+}","/**
+ * Compare this datetime zone with another.
+ *
+ * @param object the object to compare with
+ * @return true if equal, based on the ID and all internal rules
+ */"
+"public long convertUTCToLocal(long instantUTC) {
+    int offset = getOffset(instantUTC);
+    long instantLocal = instantUTC + offset;
+    // If there is a sign change, but the two values have the same sign...
+    if ((instantUTC ^ instantLocal) < 0 && (instantUTC ^ offset) >= 0) {
+        throw new ArithmeticException(""Adding time zone offset caused overflow"");
+    }
+    return instantLocal;
+}","public void test2734() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(0);
+    long long0 = dateTimeZone0.convertUTCToLocal(15778800000L);
+    assertEquals(15778800000L, long0);
+}","/**
+ * Converts a standard UTC instant to a local instant with the same
+ * local time. This conversion is used before performing a calculation
+ * so that the calculation can be done using a simple local zone.
+ *
+ * @param instantUTC  the UTC instant to convert to local
+ * @return the local instant with the same local time
+ * @throws ArithmeticException if the result overflows a long
+ * @since 1.5
+ */"
+"public long convertLocalToUTC(long instantLocal, boolean strict, long originalInstantUTC) {
+    int offsetOriginal = getOffset(originalInstantUTC);
+    long instantUTC = instantLocal - offsetOriginal;
+    int offsetLocalFromOriginal = getOffset(instantUTC);
+    if (offsetLocalFromOriginal == offsetOriginal) {
+        return instantUTC;
+    }
+    return convertLocalToUTC(instantLocal, strict);
+}","public void test2835() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    long long0 = dateTimeZone0.UTC.convertLocalToUTC(0L, false, 0L);
+    assertEquals(0L, long0);
+}","/**
+ * Converts a local instant to a standard UTC instant with the same
+ * local time attempting to use the same offset as the original.
+ * <p>
+ * This conversion is used after performing a calculation
+ * where the calculation was done using a simple local zone.
+ * Whenever possible, the same offset as the original offset will be used.
+ * This is most significant during a daylight savings overlap.
+ *
+ * @param instantLocal  the local instant to convert to UTC
+ * @param strict  whether the conversion should reject non-existent local times
+ * @param originalInstantUTC  the original instant that the calculation is based on
+ * @return the UTC instant with the same local time,
+ * @throws ArithmeticException if the result overflows a long
+ * @throws IllegalArgumentException if the zone has no equivalent local time
+ * @since 2.0
+ */"
+"public long convertLocalToUTC(long instantLocal, boolean strict, long originalInstantUTC) {
+    int offsetOriginal = getOffset(originalInstantUTC);
+    long instantUTC = instantLocal - offsetOriginal;
+    int offsetLocalFromOriginal = getOffset(instantUTC);
+    if (offsetLocalFromOriginal == offsetOriginal) {
+        return instantUTC;
+    }
+    return convertLocalToUTC(instantLocal, strict);
+}","public void test2936() throws Throwable {
+    UTCProvider uTCProvider0 = new UTCProvider();
+    DateTimeZone dateTimeZone0 = uTCProvider0.getZone(""UTC"");
+    long long0 = dateTimeZone0.convertLocalToUTC((-1L), false, (-1L));
+    assertEquals((-1L), long0);
+}","/**
+ * Converts a local instant to a standard UTC instant with the same
+ * local time attempting to use the same offset as the original.
+ * <p>
+ * This conversion is used after performing a calculation
+ * where the calculation was done using a simple local zone.
+ * Whenever possible, the same offset as the original offset will be used.
+ * This is most significant during a daylight savings overlap.
+ *
+ * @param instantLocal  the local instant to convert to UTC
+ * @param strict  whether the conversion should reject non-existent local times
+ * @param originalInstantUTC  the original instant that the calculation is based on
+ * @return the UTC instant with the same local time,
+ * @throws ArithmeticException if the result overflows a long
+ * @throws IllegalArgumentException if the zone has no equivalent local time
+ * @since 2.0
+ */"
+"public String toString() {
+    return getID();
+}","public void test3037() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(1);
+    long long0 = dateTimeZone0.convertLocalToUTC((long) 1, false);
+    assertEquals(""+01:00"", dateTimeZone0.toString());
+}","/**
+ * Gets the datetime zone as a string, which is simply its ID.
+ * @return the id of the zone
+ */"
+"public long convertLocalToUTC(long instantLocal, boolean strict) {
+    // get the offset at instantLocal (first estimate)
+    int offsetLocal = getOffset(instantLocal);
+    // adjust instantLocal using the estimate and recalc the offset
+    int offset = getOffset(instantLocal - offsetLocal);
+    // if the offsets differ, we must be near a DST boundary
+    if (offsetLocal != offset) {
+        // if strict then always check if in DST gap
+        // otherwise only check if zone in Western hemisphere (as the
+        // value of offset is already correct for Eastern hemisphere)
+        if (strict || offsetLocal < 0) {
+            // determine if we are in the DST gap
+            long nextLocal = nextTransition(instantLocal - offsetLocal);
+            if (nextLocal == (instantLocal - offsetLocal)) {
+                nextLocal = Long.MAX_VALUE;
+            }
+            long nextAdjusted = nextTransition(instantLocal - offset);
+            if (nextAdjusted == (instantLocal - offset)) {
+                nextAdjusted = Long.MAX_VALUE;
+            }
+            if (nextLocal != nextAdjusted) {
+                // yes we are in the DST gap
+                if (strict) {
+                    // DST gap is not acceptable
+                    throw new IllegalArgumentException(""Illegal instant due to time zone offset transition: "" + DateTimeFormat.forPattern(""yyyy-MM-dd'T'HH:mm:ss.SSS"").print(new Instant(instantLocal)) + "" ("" + getID() + "")"");
+                } else {
+                    // DST gap is acceptable, but for the Western hemisphere
+                    // the offset is wrong and will result in local times
+                    // before the cutover so use the offsetLocal instead
+                    offset = offsetLocal;
+                }
+            }
+        }
+    }
+    // check for overflow
+    long instantUTC = instantLocal - offset;
+    // If there is a sign change, but the two values have different signs...
+    if ((instantLocal ^ instantUTC) < 0 && (instantLocal ^ offset) < 0) {
+        throw new ArithmeticException(""Subtracting time zone offset caused overflow"");
+    }
+    return instantUTC;
+}","public void test3038() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(1);
+    long long0 = dateTimeZone0.convertLocalToUTC((long) 1, false);
+    assertEquals((-3599999L), long0);
+}","/**
+ * Converts a local instant to a standard UTC instant with the same
+ * local time. This conversion is used after performing a calculation
+ * where the calculation was done using a simple local zone.
+ *
+ * @param instantLocal  the local instant to convert to UTC
+ * @param strict  whether the conversion should reject non-existent local times
+ * @return the UTC instant with the same local time,
+ * @throws ArithmeticException if the result overflows a long
+ * @throws IllegalArgumentException if the zone has no equivalent local time
+ * @since 1.5
+ */"
+"//    //-----------------------------------------------------------------------
+//    /**
+//     * Checks if the given {@link LocalDateTime} is within an overlap.
+//     * <p>
+//     * When switching from Daylight Savings Time to standard time there is
+//     * typically an overlap where the same clock hour occurs twice. This
+//     * method identifies whether the local datetime refers to such an overlap.
+//     *
+//     * @param localDateTime  the time to check, not null
+//     * @return true if the given datetime refers to an overlap
+//     */
+//    public boolean isLocalDateTimeOverlap(LocalDateTime localDateTime) {
+//        if (isFixed()) {
+//            return false;
+//        }
+//        long instantLocal = localDateTime.toDateTime(DateTimeZone.UTC).getMillis();
+//        // get the offset at instantLocal (first estimate)
+//        int offsetLocal = getOffset(instantLocal);
+//        // adjust instantLocal using the estimate and recalc the offset
+//        int offset = getOffset(instantLocal - offsetLocal);
+//        // if the offsets differ, we must be near a DST boundary
+//        if (offsetLocal != offset) {
+//            long nextLocal = nextTransition(instantLocal - offsetLocal);
+//            long nextAdjusted = nextTransition(instantLocal - offset);
+//            if (nextLocal != nextAdjusted) {
+//                // in DST gap
+//                return false;
+//            }
+//            long diff = Math.abs(offset - offsetLocal);
+//            DateTime dateTime = localDateTime.toDateTime(this);
+//            DateTime adjusted = dateTime.plus(diff);
+//            if (dateTime.getHourOfDay() == adjusted.getHourOfDay() &&
+//                    dateTime.getMinuteOfHour() == adjusted.getMinuteOfHour() &&
+//                    dateTime.getSecondOfMinute() == adjusted.getSecondOfMinute()) {
+//                return true;
+//            }
+//            adjusted = dateTime.minus(diff);
+//            if (dateTime.getHourOfDay() == adjusted.getHourOfDay() &&
+//                    dateTime.getMinuteOfHour() == adjusted.getMinuteOfHour() &&
+//                    dateTime.getSecondOfMinute() == adjusted.getSecondOfMinute()) {
+//                return true;
+//            }
+//            return false;
+//        }
+//        return false;
+//    }
+//
+//
+//        DateTime dateTime = null;
+//        try {
+//            dateTime = localDateTime.toDateTime(this);
+//        } catch (IllegalArgumentException ex) {
+//            return false;  // it is a gap, not an overlap
+//        }
+//        long offset1 = Math.abs(getOffset(dateTime.getMillis() + 1) - getStandardOffset(dateTime.getMillis() + 1));
+//        long offset2 = Math.abs(getOffset(dateTime.getMillis() - 1) - getStandardOffset(dateTime.getMillis() - 1));
+//        long offset = Math.max(offset1, offset2);
+//        if (offset == 0) {
+//            return false;
+//        }
+//        DateTime adjusted = dateTime.plus(offset);
+//        if (dateTime.getHourOfDay() == adjusted.getHourOfDay() &&
+//                dateTime.getMinuteOfHour() == adjusted.getMinuteOfHour() &&
+//                dateTime.getSecondOfMinute() == adjusted.getSecondOfMinute()) {
+//            return true;
+//        }
+//        adjusted = dateTime.minus(offset);
+//        if (dateTime.getHourOfDay() == adjusted.getHourOfDay() &&
+//                dateTime.getMinuteOfHour() == adjusted.getMinuteOfHour() &&
+//                dateTime.getSecondOfMinute() == adjusted.getSecondOfMinute()) {
+//            return true;
+//        }
+//        return false;
+//        long millis = dateTime.getMillis();
+//        long nextTransition = nextTransition(millis);
+//        long previousTransition = previousTransition(millis);
+//        long deltaToPreviousTransition = millis - previousTransition;
+//        long deltaToNextTransition = nextTransition - millis;
+//        if (deltaToNextTransition < deltaToPreviousTransition) {
+//            int offset = getOffset(nextTransition);
+//            int standardOffset = getStandardOffset(nextTransition);
+//            if (Math.abs(offset - standardOffset) >= deltaToNextTransition) {
+//                return true;
+//            }
+//        } else  {
+//            int offset = getOffset(previousTransition);
+//            int standardOffset = getStandardOffset(previousTransition);
+//            if (Math.abs(offset - standardOffset) >= deltaToPreviousTransition) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+/**
+ * Checks if the given {@link LocalDateTime} is within a gap.
+ * <p>
+ * When switching from standard time to Daylight Savings Time there is
+ * typically a gap where a clock hour is missing. This method identifies
+ * whether the local datetime refers to such a gap.
+ *
+ * @param localDateTime  the time to check, not null
+ * @return true if the given datetime refers to a gap
+ * @since 1.6
+ */
+public boolean isLocalDateTimeGap(LocalDateTime localDateTime) {
+    if (isFixed()) {
+        return false;
+    }
+    try {
+        localDateTime.toDateTime(this);
+        return false;
+    } catch (IllegalArgumentException ex) {
+        return true;
+    }
+}","public void test3139() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance();
+    DateTimeZone dateTimeZone0 = buddhistChronology0.getZone();
+    // Undeclared exception!
+    try {
+        dateTimeZone0.isLocalDateTimeGap((LocalDateTime) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.DateTimeZone"", e);
+    }
+}",""
+"public static DateTimeZone forOffsetHours(int hoursOffset) throws IllegalArgumentException {
+    return forOffsetHoursMinutes(hoursOffset, 0);
+}","public void test3240() throws Throwable {
+    try {
+        DateTimeZone.forOffsetHours((-1585));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Offset is too large
+        //
+        verifyException(""org.joda.time.DateTimeZone"", e);
+    }
+}","/**
+ * Gets a time zone instance for the specified offset to UTC in hours.
+ * This method assumes standard length hours.
+ * <p>
+ * This factory is a convenient way of constructing zones with a fixed offset.
+ *
+ * @param hoursOffset  the offset in hours from UTC
+ * @return the DateTimeZone object for the offset
+ * @throws IllegalArgumentException if the offset is too large or too small
+ */"
+"public String toString() {
+    return getID();
+}","public void test3341() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(3);
+    dateTimeZone0.getMillisKeepLocal(dateTimeZone0, 0L);
+    assertEquals(""+03:00"", dateTimeZone0.toString());
+}","/**
+ * Gets the datetime zone as a string, which is simply its ID.
+ * @return the id of the zone
+ */"
+"public long convertLocalToUTC(long instantLocal, boolean strict, long originalInstantUTC) {
+    int offsetOriginal = getOffset(originalInstantUTC);
+    long instantUTC = instantLocal - offsetOriginal;
+    int offsetLocalFromOriginal = getOffset(instantUTC);
+    if (offsetLocalFromOriginal == offsetOriginal) {
+        return instantUTC;
+    }
+    return convertLocalToUTC(instantLocal, strict);
+}","public void test3442() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    long long0 = dateTimeZone0.convertLocalToUTC(0L, false, 9223372036854775807L);
+    assertEquals(28800000L, long0);
+}","/**
+ * Converts a local instant to a standard UTC instant with the same
+ * local time attempting to use the same offset as the original.
+ * <p>
+ * This conversion is used after performing a calculation
+ * where the calculation was done using a simple local zone.
+ * Whenever possible, the same offset as the original offset will be used.
+ * This is most significant during a daylight savings overlap.
+ *
+ * @param instantLocal  the local instant to convert to UTC
+ * @param strict  whether the conversion should reject non-existent local times
+ * @param originalInstantUTC  the original instant that the calculation is based on
+ * @return the UTC instant with the same local time,
+ * @throws ArithmeticException if the result overflows a long
+ * @throws IllegalArgumentException if the zone has no equivalent local time
+ * @since 2.0
+ */"
+"public long convertUTCToLocal(long instantUTC) {
+    int offset = getOffset(instantUTC);
+    long instantLocal = instantUTC + offset;
+    // If there is a sign change, but the two values have the same sign...
+    if ((instantUTC ^ instantLocal) < 0 && (instantUTC ^ offset) >= 0) {
+        throw new ArithmeticException(""Adding time zone offset caused overflow"");
+    }
+    return instantLocal;
+}","public void test3543() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis((-1841));
+    long long0 = dateTimeZone0.convertUTCToLocal(1);
+    assertEquals((-1840L), long0);
+}","/**
+ * Converts a standard UTC instant to a local instant with the same
+ * local time. This conversion is used before performing a calculation
+ * so that the calculation can be done using a simple local zone.
+ *
+ * @param instantUTC  the UTC instant to convert to local
+ * @return the local instant with the same local time
+ * @throws ArithmeticException if the result overflows a long
+ * @since 1.5
+ */"
+"public String toString() {
+    return getID();
+}","public void test3544() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis((-1841));
+    long long0 = dateTimeZone0.convertUTCToLocal(1);
+    assertEquals(""-00:00:01.841"", dateTimeZone0.toString());
+}","/**
+ * Gets the datetime zone as a string, which is simply its ID.
+ * @return the id of the zone
+ */"
+"public long convertUTCToLocal(long instantUTC) {
+    int offset = getOffset(instantUTC);
+    long instantLocal = instantUTC + offset;
+    // If there is a sign change, but the two values have the same sign...
+    if ((instantUTC ^ instantLocal) < 0 && (instantUTC ^ offset) >= 0) {
+        throw new ArithmeticException(""Adding time zone offset caused overflow"");
+    }
+    return instantLocal;
+}","public void test3645() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstanceUTC();
+    DateTimeZone dateTimeZone0 = buddhistChronology0.getZone();
+    long long0 = dateTimeZone0.convertUTCToLocal(0L);
+    assertEquals(0L, long0);
+}","/**
+ * Converts a standard UTC instant to a local instant with the same
+ * local time. This conversion is used before performing a calculation
+ * so that the calculation can be done using a simple local zone.
+ *
+ * @param instantUTC  the UTC instant to convert to local
+ * @return the local instant with the same local time
+ * @throws ArithmeticException if the result overflows a long
+ * @since 1.5
+ */"
+"public int getOffsetFromLocal(long instantLocal) {
+    // get the offset at instantLocal (first estimate)
+    final int offsetLocal = getOffset(instantLocal);
+    // adjust instantLocal using the estimate and recalc the offset
+    final long instantAdjusted = instantLocal - offsetLocal;
+    final int offsetAdjusted = getOffset(instantAdjusted);
+    // if the offsets differ, we must be near a DST boundary
+    if (offsetLocal != offsetAdjusted) {
+        // we need to ensure that time is always after the DST gap
+        // this happens naturally for positive offsets, but not for negative
+        if ((offsetLocal - offsetAdjusted) < 0) {
+            // if we just return offsetAdjusted then the time is pushed
+            // back before the transition, whereas it should be
+            // on or after the transition
+            long nextLocal = nextTransition(instantAdjusted);
+            long nextAdjusted = nextTransition(instantLocal - offsetAdjusted);
+            if (nextLocal != nextAdjusted) {
+                return offsetLocal;
+            }
+        }
+    }
+    return offsetAdjusted;
+}","public void test3746() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    int int0 = dateTimeZone0.getOffsetFromLocal(9223372036854775807L);
+    assertEquals((-28378000), int0);
+}","/**
+ * Gets the millisecond offset to subtract from local time to get UTC time.
+ * This offset can be used to undo adding the offset obtained by getOffset.
+ *
+ * <pre>
+ * millisLocal == millisUTC   + getOffset(millisUTC)
+ * millisUTC   == millisLocal - getOffsetFromLocal(millisLocal)
+ * </pre>
+ *
+ * NOTE: After calculating millisLocal, some error may be introduced. At
+ * offset transitions (due to DST or other historical changes), ranges of
+ * local times may map to different UTC times.
+ * <p>
+ * This method will return an offset suitable for calculating an instant
+ * after any DST gap. For example, consider a zone with a cutover
+ * from 01:00 to 01:59:<br />
+ * Input: 00:00  Output: 00:00<br />
+ * Input: 00:30  Output: 00:30<br />
+ * Input: 01:00  Output: 02:00<br />
+ * Input: 01:30  Output: 02:30<br />
+ * Input: 02:00  Output: 02:00<br />
+ * Input: 02:30  Output: 02:30<br />
+ * <p>
+ * During a DST overlap (where the local time is ambiguous) this method will return
+ * the earlier instant. The combination of these two rules is to always favour
+ * daylight (summer) time over standard (winter) time.
+ * <p>
+ * NOTE: Prior to v2.0, the DST overlap behaviour was not defined and varied by hemisphere.
+ * Prior to v1.5, the DST gap behaviour was also not defined.
+ *
+ * @param instantLocal  the millisecond instant, relative to this time zone, to get the offset for
+ * @return the millisecond offset to subtract from local time to get UTC time
+ */"
+"public int getOffsetFromLocal(long instantLocal) {
+    // get the offset at instantLocal (first estimate)
+    final int offsetLocal = getOffset(instantLocal);
+    // adjust instantLocal using the estimate and recalc the offset
+    final long instantAdjusted = instantLocal - offsetLocal;
+    final int offsetAdjusted = getOffset(instantAdjusted);
+    // if the offsets differ, we must be near a DST boundary
+    if (offsetLocal != offsetAdjusted) {
+        // we need to ensure that time is always after the DST gap
+        // this happens naturally for positive offsets, but not for negative
+        if ((offsetLocal - offsetAdjusted) < 0) {
+            // if we just return offsetAdjusted then the time is pushed
+            // back before the transition, whereas it should be
+            // on or after the transition
+            long nextLocal = nextTransition(instantAdjusted);
+            long nextAdjusted = nextTransition(instantLocal - offsetAdjusted);
+            if (nextLocal != nextAdjusted) {
+                return offsetLocal;
+            }
+        }
+    }
+    return offsetAdjusted;
+}","public void test3847() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance();
+    DateTimeZone dateTimeZone0 = buddhistChronology0.getZone();
+    int int0 = dateTimeZone0.getOffsetFromLocal((-1L));
+    assertEquals((-28800000), int0);
+}","/**
+ * Gets the millisecond offset to subtract from local time to get UTC time.
+ * This offset can be used to undo adding the offset obtained by getOffset.
+ *
+ * <pre>
+ * millisLocal == millisUTC   + getOffset(millisUTC)
+ * millisUTC   == millisLocal - getOffsetFromLocal(millisLocal)
+ * </pre>
+ *
+ * NOTE: After calculating millisLocal, some error may be introduced. At
+ * offset transitions (due to DST or other historical changes), ranges of
+ * local times may map to different UTC times.
+ * <p>
+ * This method will return an offset suitable for calculating an instant
+ * after any DST gap. For example, consider a zone with a cutover
+ * from 01:00 to 01:59:<br />
+ * Input: 00:00  Output: 00:00<br />
+ * Input: 00:30  Output: 00:30<br />
+ * Input: 01:00  Output: 02:00<br />
+ * Input: 01:30  Output: 02:30<br />
+ * Input: 02:00  Output: 02:00<br />
+ * Input: 02:30  Output: 02:30<br />
+ * <p>
+ * During a DST overlap (where the local time is ambiguous) this method will return
+ * the earlier instant. The combination of these two rules is to always favour
+ * daylight (summer) time over standard (winter) time.
+ * <p>
+ * NOTE: Prior to v2.0, the DST overlap behaviour was not defined and varied by hemisphere.
+ * Prior to v1.5, the DST gap behaviour was also not defined.
+ *
+ * @param instantLocal  the millisecond instant, relative to this time zone, to get the offset for
+ * @return the millisecond offset to subtract from local time to get UTC time
+ */"
+"public String getName(long instant, Locale locale) {
+    if (locale == null) {
+        locale = Locale.getDefault();
+    }
+    String nameKey = getNameKey(instant);
+    if (nameKey == null) {
+        return iID;
+    }
+    String name = cNameProvider.getName(locale, iID, nameKey);
+    if (name != null) {
+        return name;
+    }
+    return printOffset(getOffset(instant));
+}","public void test3948() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    String string0 = dateTimeZone0.getName(465L, (Locale) null);
+    assertNotNull(string0);
+}","/**
+ * Gets the long name of this datetime zone suitable for display using
+ * the specified locale.
+ * <p>
+ * If the name is not available for the locale, then this method returns a
+ * string in the format <code>[+-]hh:mm</code>.
+ *
+ * @param instant  milliseconds from 1970-01-01T00:00:00Z to get the name for
+ * @param locale  the locale to get the name for
+ * @return the human-readable long name in the specified locale
+ */"
+"public String getShortName(long instant, Locale locale) {
+    if (locale == null) {
+        locale = Locale.getDefault();
+    }
+    String nameKey = getNameKey(instant);
+    if (nameKey == null) {
+        return iID;
+    }
+    String name = cNameProvider.getShortName(locale, iID, nameKey);
+    if (name != null) {
+        return name;
+    }
+    return printOffset(getOffset(instant));
+}","public void test4050() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis((-1778));
+    String string0 = dateTimeZone0.getShortName(793L, (Locale) null);
+    assertEquals(""-00:00:01.778"", string0);
+}","/**
+ * Gets the short name of this datetime zone suitable for display using
+ * the specified locale.
+ * <p>
+ * If the name is not available for the locale, then this method returns a
+ * string in the format <code>[+-]hh:mm</code>.
+ *
+ * @param instant  milliseconds from 1970-01-01T00:00:00Z to get the name for
+ * @param locale  the locale to get the name for
+ * @return the human-readable short name in the specified locale
+ */"
+"public String toString() {
+    return getID();
+}","public void test4151() throws Throwable {
+    TimeZone timeZone0 = TimeZone.getTimeZone(""-08:00"");
+    DateTimeZone dateTimeZone0 = DateTimeZone.forTimeZone(timeZone0);
+    assertEquals(""UTC"", dateTimeZone0.toString());
+}","/**
+ * Gets the datetime zone as a string, which is simply its ID.
+ * @return the id of the zone
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Gets a time zone instance for the specified time zone id.
+ * <p>
+ * The time zone id may be one of those returned by getAvailableIDs.
+ * Short ids, as accepted by {@link java.util.TimeZone}, are not accepted.
+ * All IDs must be specified in the long format.
+ * The exception is UTC, which is an acceptable id.
+ * <p>
+ * Alternatively a locale independent, fixed offset, datetime zone can
+ * be specified. The form <code>[+-]hh:mm</code> can be used.
+ *
+ * @param id  the ID of the datetime zone, null means default
+ * @return the DateTimeZone object for the ID
+ * @throws IllegalArgumentException if the ID is not recognised
+ */
+@FromString
+public static DateTimeZone forID(String id) {
+    if (id == null) {
+        return getDefault();
+    }
+    if (id.equals(""UTC"")) {
+        return DateTimeZone.UTC;
+    }
+    DateTimeZone zone = cProvider.getZone(id);
+    if (zone != null) {
+        return zone;
+    }
+    if (id.startsWith(""+"") || id.startsWith(""-"")) {
+        int offset = parseOffset(id);
+        if (offset == 0L) {
+            return DateTimeZone.UTC;
+        } else {
+            id = printOffset(offset);
+            return fixedOffsetZone(id, offset);
+        }
+    }
+    throw new IllegalArgumentException(""The datetime zone id '"" + id + ""' is not recognised"");
+}","public void test4252() throws Throwable {
+    // Undeclared exception!
+    try {
+        DateTimeZone.forID(""Eg&"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The datetime zone id 'Eg&' is not recognised
+        //
+        verifyException(""org.joda.time.DateTimeZone"", e);
+    }
+}",""
+"// Principal methods
+//--------------------------------------------------------------------
+/**
+ * Gets the ID of this datetime zone.
+ *
+ * @return the ID of this datetime zone
+ */
+@ToString
+public final String getID() {
+    return iID;
+}","public void test4353() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forID(""MST"");
+    assertEquals(""MST"", dateTimeZone0.getID());
+}",""
+"// Principal methods
+//--------------------------------------------------------------------
+/**
+ * Gets the ID of this datetime zone.
+ *
+ * @return the ID of this datetime zone
+ */
+@ToString
+public final String getID() {
+    return iID;
+}","public void test4454() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance();
+    DateTimeZone dateTimeZone0 = buddhistChronology0.getZone();
+    String string0 = dateTimeZone0.getID();
+    assertEquals(""America/Los_Angeles"", string0);
+}",""
+"//    //-----------------------------------------------------------------------
+//    /**
+//     * Checks if the given {@link LocalDateTime} is within an overlap.
+//     * <p>
+//     * When switching from Daylight Savings Time to standard time there is
+//     * typically an overlap where the same clock hour occurs twice. This
+//     * method identifies whether the local datetime refers to such an overlap.
+//     *
+//     * @param localDateTime  the time to check, not null
+//     * @return true if the given datetime refers to an overlap
+//     */
+//    public boolean isLocalDateTimeOverlap(LocalDateTime localDateTime) {
+//        if (isFixed()) {
+//            return false;
+//        }
+//        long instantLocal = localDateTime.toDateTime(DateTimeZone.UTC).getMillis();
+//        // get the offset at instantLocal (first estimate)
+//        int offsetLocal = getOffset(instantLocal);
+//        // adjust instantLocal using the estimate and recalc the offset
+//        int offset = getOffset(instantLocal - offsetLocal);
+//        // if the offsets differ, we must be near a DST boundary
+//        if (offsetLocal != offset) {
+//            long nextLocal = nextTransition(instantLocal - offsetLocal);
+//            long nextAdjusted = nextTransition(instantLocal - offset);
+//            if (nextLocal != nextAdjusted) {
+//                // in DST gap
+//                return false;
+//            }
+//            long diff = Math.abs(offset - offsetLocal);
+//            DateTime dateTime = localDateTime.toDateTime(this);
+//            DateTime adjusted = dateTime.plus(diff);
+//            if (dateTime.getHourOfDay() == adjusted.getHourOfDay() &&
+//                    dateTime.getMinuteOfHour() == adjusted.getMinuteOfHour() &&
+//                    dateTime.getSecondOfMinute() == adjusted.getSecondOfMinute()) {
+//                return true;
+//            }
+//            adjusted = dateTime.minus(diff);
+//            if (dateTime.getHourOfDay() == adjusted.getHourOfDay() &&
+//                    dateTime.getMinuteOfHour() == adjusted.getMinuteOfHour() &&
+//                    dateTime.getSecondOfMinute() == adjusted.getSecondOfMinute()) {
+//                return true;
+//            }
+//            return false;
+//        }
+//        return false;
+//    }
+//
+//
+//        DateTime dateTime = null;
+//        try {
+//            dateTime = localDateTime.toDateTime(this);
+//        } catch (IllegalArgumentException ex) {
+//            return false;  // it is a gap, not an overlap
+//        }
+//        long offset1 = Math.abs(getOffset(dateTime.getMillis() + 1) - getStandardOffset(dateTime.getMillis() + 1));
+//        long offset2 = Math.abs(getOffset(dateTime.getMillis() - 1) - getStandardOffset(dateTime.getMillis() - 1));
+//        long offset = Math.max(offset1, offset2);
+//        if (offset == 0) {
+//            return false;
+//        }
+//        DateTime adjusted = dateTime.plus(offset);
+//        if (dateTime.getHourOfDay() == adjusted.getHourOfDay() &&
+//                dateTime.getMinuteOfHour() == adjusted.getMinuteOfHour() &&
+//                dateTime.getSecondOfMinute() == adjusted.getSecondOfMinute()) {
+//            return true;
+//        }
+//        adjusted = dateTime.minus(offset);
+//        if (dateTime.getHourOfDay() == adjusted.getHourOfDay() &&
+//                dateTime.getMinuteOfHour() == adjusted.getMinuteOfHour() &&
+//                dateTime.getSecondOfMinute() == adjusted.getSecondOfMinute()) {
+//            return true;
+//        }
+//        return false;
+//        long millis = dateTime.getMillis();
+//        long nextTransition = nextTransition(millis);
+//        long previousTransition = previousTransition(millis);
+//        long deltaToPreviousTransition = millis - previousTransition;
+//        long deltaToNextTransition = nextTransition - millis;
+//        if (deltaToNextTransition < deltaToPreviousTransition) {
+//            int offset = getOffset(nextTransition);
+//            int standardOffset = getStandardOffset(nextTransition);
+//            if (Math.abs(offset - standardOffset) >= deltaToNextTransition) {
+//                return true;
+//            }
+//        } else  {
+//            int offset = getOffset(previousTransition);
+//            int standardOffset = getStandardOffset(previousTransition);
+//            if (Math.abs(offset - standardOffset) >= deltaToPreviousTransition) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+/**
+ * Checks if the given {@link LocalDateTime} is within a gap.
+ * <p>
+ * When switching from standard time to Daylight Savings Time there is
+ * typically a gap where a clock hour is missing. This method identifies
+ * whether the local datetime refers to such a gap.
+ *
+ * @param localDateTime  the time to check, not null
+ * @return true if the given datetime refers to a gap
+ * @since 1.6
+ */
+public boolean isLocalDateTimeGap(LocalDateTime localDateTime) {
+    if (isFixed()) {
+        return false;
+    }
+    try {
+        localDateTime.toDateTime(this);
+        return false;
+    } catch (IllegalArgumentException ex) {
+        return true;
+    }
+}","public void test4555() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    boolean boolean0 = fixedDateTimeZone0.UTC.isLocalDateTimeGap((LocalDateTime) null);
+    assertFalse(boolean0);
+}",""
+"//    //-----------------------------------------------------------------------
+//    /**
+//     * Checks if the given {@link LocalDateTime} is within an overlap.
+//     * <p>
+//     * When switching from Daylight Savings Time to standard time there is
+//     * typically an overlap where the same clock hour occurs twice. This
+//     * method identifies whether the local datetime refers to such an overlap.
+//     *
+//     * @param localDateTime  the time to check, not null
+//     * @return true if the given datetime refers to an overlap
+//     */
+//    public boolean isLocalDateTimeOverlap(LocalDateTime localDateTime) {
+//        if (isFixed()) {
+//            return false;
+//        }
+//        long instantLocal = localDateTime.toDateTime(DateTimeZone.UTC).getMillis();
+//        // get the offset at instantLocal (first estimate)
+//        int offsetLocal = getOffset(instantLocal);
+//        // adjust instantLocal using the estimate and recalc the offset
+//        int offset = getOffset(instantLocal - offsetLocal);
+//        // if the offsets differ, we must be near a DST boundary
+//        if (offsetLocal != offset) {
+//            long nextLocal = nextTransition(instantLocal - offsetLocal);
+//            long nextAdjusted = nextTransition(instantLocal - offset);
+//            if (nextLocal != nextAdjusted) {
+//                // in DST gap
+//                return false;
+//            }
+//            long diff = Math.abs(offset - offsetLocal);
+//            DateTime dateTime = localDateTime.toDateTime(this);
+//            DateTime adjusted = dateTime.plus(diff);
+//            if (dateTime.getHourOfDay() == adjusted.getHourOfDay() &&
+//                    dateTime.getMinuteOfHour() == adjusted.getMinuteOfHour() &&
+//                    dateTime.getSecondOfMinute() == adjusted.getSecondOfMinute()) {
+//                return true;
+//            }
+//            adjusted = dateTime.minus(diff);
+//            if (dateTime.getHourOfDay() == adjusted.getHourOfDay() &&
+//                    dateTime.getMinuteOfHour() == adjusted.getMinuteOfHour() &&
+//                    dateTime.getSecondOfMinute() == adjusted.getSecondOfMinute()) {
+//                return true;
+//            }
+//            return false;
+//        }
+//        return false;
+//    }
+//
+//
+//        DateTime dateTime = null;
+//        try {
+//            dateTime = localDateTime.toDateTime(this);
+//        } catch (IllegalArgumentException ex) {
+//            return false;  // it is a gap, not an overlap
+//        }
+//        long offset1 = Math.abs(getOffset(dateTime.getMillis() + 1) - getStandardOffset(dateTime.getMillis() + 1));
+//        long offset2 = Math.abs(getOffset(dateTime.getMillis() - 1) - getStandardOffset(dateTime.getMillis() - 1));
+//        long offset = Math.max(offset1, offset2);
+//        if (offset == 0) {
+//            return false;
+//        }
+//        DateTime adjusted = dateTime.plus(offset);
+//        if (dateTime.getHourOfDay() == adjusted.getHourOfDay() &&
+//                dateTime.getMinuteOfHour() == adjusted.getMinuteOfHour() &&
+//                dateTime.getSecondOfMinute() == adjusted.getSecondOfMinute()) {
+//            return true;
+//        }
+//        adjusted = dateTime.minus(offset);
+//        if (dateTime.getHourOfDay() == adjusted.getHourOfDay() &&
+//                dateTime.getMinuteOfHour() == adjusted.getMinuteOfHour() &&
+//                dateTime.getSecondOfMinute() == adjusted.getSecondOfMinute()) {
+//            return true;
+//        }
+//        return false;
+//        long millis = dateTime.getMillis();
+//        long nextTransition = nextTransition(millis);
+//        long previousTransition = previousTransition(millis);
+//        long deltaToPreviousTransition = millis - previousTransition;
+//        long deltaToNextTransition = nextTransition - millis;
+//        if (deltaToNextTransition < deltaToPreviousTransition) {
+//            int offset = getOffset(nextTransition);
+//            int standardOffset = getStandardOffset(nextTransition);
+//            if (Math.abs(offset - standardOffset) >= deltaToNextTransition) {
+//                return true;
+//            }
+//        } else  {
+//            int offset = getOffset(previousTransition);
+//            int standardOffset = getStandardOffset(previousTransition);
+//            if (Math.abs(offset - standardOffset) >= deltaToPreviousTransition) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+/**
+ * Checks if the given {@link LocalDateTime} is within a gap.
+ * <p>
+ * When switching from standard time to Daylight Savings Time there is
+ * typically a gap where a clock hour is missing. This method identifies
+ * whether the local datetime refers to such a gap.
+ *
+ * @param localDateTime  the time to check, not null
+ * @return true if the given datetime refers to a gap
+ * @since 1.6
+ */
+public boolean isLocalDateTimeGap(LocalDateTime localDateTime) {
+    if (isFixed()) {
+        return false;
+    }
+    try {
+        localDateTime.toDateTime(this);
+        return false;
+    } catch (IllegalArgumentException ex) {
+        return true;
+    }
+}","public void test4656() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    LocalDateTime localDateTime0 = new LocalDateTime(dateTimeZone0);
+    boolean boolean0 = dateTimeZone0.isLocalDateTimeGap(localDateTime0);
+    assertFalse(boolean0);
+}",""
+"public String toString() {
+    return getID();
+}","public void test4757() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis((-3185));
+    long long0 = dateTimeZone0.convertLocalToUTC((long) (-3185), true);
+    assertEquals(""-00:00:03.185"", dateTimeZone0.toString());
+}","/**
+ * Gets the datetime zone as a string, which is simply its ID.
+ * @return the id of the zone
+ */"
+"public long convertLocalToUTC(long instantLocal, boolean strict) {
+    // get the offset at instantLocal (first estimate)
+    int offsetLocal = getOffset(instantLocal);
+    // adjust instantLocal using the estimate and recalc the offset
+    int offset = getOffset(instantLocal - offsetLocal);
+    // if the offsets differ, we must be near a DST boundary
+    if (offsetLocal != offset) {
+        // if strict then always check if in DST gap
+        // otherwise only check if zone in Western hemisphere (as the
+        // value of offset is already correct for Eastern hemisphere)
+        if (strict || offsetLocal < 0) {
+            // determine if we are in the DST gap
+            long nextLocal = nextTransition(instantLocal - offsetLocal);
+            if (nextLocal == (instantLocal - offsetLocal)) {
+                nextLocal = Long.MAX_VALUE;
+            }
+            long nextAdjusted = nextTransition(instantLocal - offset);
+            if (nextAdjusted == (instantLocal - offset)) {
+                nextAdjusted = Long.MAX_VALUE;
+            }
+            if (nextLocal != nextAdjusted) {
+                // yes we are in the DST gap
+                if (strict) {
+                    // DST gap is not acceptable
+                    throw new IllegalArgumentException(""Illegal instant due to time zone offset transition: "" + DateTimeFormat.forPattern(""yyyy-MM-dd'T'HH:mm:ss.SSS"").print(new Instant(instantLocal)) + "" ("" + getID() + "")"");
+                } else {
+                    // DST gap is acceptable, but for the Western hemisphere
+                    // the offset is wrong and will result in local times
+                    // before the cutover so use the offsetLocal instead
+                    offset = offsetLocal;
+                }
+            }
+        }
+    }
+    // check for overflow
+    long instantUTC = instantLocal - offset;
+    // If there is a sign change, but the two values have different signs...
+    if ((instantLocal ^ instantUTC) < 0 && (instantLocal ^ offset) < 0) {
+        throw new ArithmeticException(""Subtracting time zone offset caused overflow"");
+    }
+    return instantUTC;
+}","public void test4758() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis((-3185));
+    long long0 = dateTimeZone0.convertLocalToUTC((long) (-3185), true);
+    assertEquals(0L, long0);
+}","/**
+ * Converts a local instant to a standard UTC instant with the same
+ * local time. This conversion is used after performing a calculation
+ * where the calculation was done using a simple local zone.
+ *
+ * @param instantLocal  the local instant to convert to UTC
+ * @param strict  whether the conversion should reject non-existent local times
+ * @return the UTC instant with the same local time,
+ * @throws ArithmeticException if the result overflows a long
+ * @throws IllegalArgumentException if the zone has no equivalent local time
+ * @since 1.5
+ */"
+"public long convertLocalToUTC(long instantLocal, boolean strict) {
+    // get the offset at instantLocal (first estimate)
+    int offsetLocal = getOffset(instantLocal);
+    // adjust instantLocal using the estimate and recalc the offset
+    int offset = getOffset(instantLocal - offsetLocal);
+    // if the offsets differ, we must be near a DST boundary
+    if (offsetLocal != offset) {
+        // if strict then always check if in DST gap
+        // otherwise only check if zone in Western hemisphere (as the
+        // value of offset is already correct for Eastern hemisphere)
+        if (strict || offsetLocal < 0) {
+            // determine if we are in the DST gap
+            long nextLocal = nextTransition(instantLocal - offsetLocal);
+            if (nextLocal == (instantLocal - offsetLocal)) {
+                nextLocal = Long.MAX_VALUE;
+            }
+            long nextAdjusted = nextTransition(instantLocal - offset);
+            if (nextAdjusted == (instantLocal - offset)) {
+                nextAdjusted = Long.MAX_VALUE;
+            }
+            if (nextLocal != nextAdjusted) {
+                // yes we are in the DST gap
+                if (strict) {
+                    // DST gap is not acceptable
+                    throw new IllegalArgumentException(""Illegal instant due to time zone offset transition: "" + DateTimeFormat.forPattern(""yyyy-MM-dd'T'HH:mm:ss.SSS"").print(new Instant(instantLocal)) + "" ("" + getID() + "")"");
+                } else {
+                    // DST gap is acceptable, but for the Western hemisphere
+                    // the offset is wrong and will result in local times
+                    // before the cutover so use the offsetLocal instead
+                    offset = offsetLocal;
+                }
+            }
+        }
+    }
+    // check for overflow
+    long instantUTC = instantLocal - offset;
+    // If there is a sign change, but the two values have different signs...
+    if ((instantLocal ^ instantUTC) < 0 && (instantLocal ^ offset) < 0) {
+        throw new ArithmeticException(""Subtracting time zone offset caused overflow"");
+    }
+    return instantUTC;
+}","public void test4859() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    // Undeclared exception!
+    try {
+        dateTimeZone0.convertLocalToUTC(9223372036854775807L, true);
+        fail(""Expecting exception: ArithmeticException"");
+    } catch (ArithmeticException e) {
+        //
+        // Subtracting time zone offset caused overflow
+        //
+        verifyException(""org.joda.time.DateTimeZone"", e);
+    }
+}","/**
+ * Converts a local instant to a standard UTC instant with the same
+ * local time. This conversion is used after performing a calculation
+ * where the calculation was done using a simple local zone.
+ *
+ * @param instantLocal  the local instant to convert to UTC
+ * @param strict  whether the conversion should reject non-existent local times
+ * @return the UTC instant with the same local time,
+ * @throws ArithmeticException if the result overflows a long
+ * @throws IllegalArgumentException if the zone has no equivalent local time
+ * @since 1.5
+ */"
+"public long convertLocalToUTC(long instantLocal, boolean strict) {
+    // get the offset at instantLocal (first estimate)
+    int offsetLocal = getOffset(instantLocal);
+    // adjust instantLocal using the estimate and recalc the offset
+    int offset = getOffset(instantLocal - offsetLocal);
+    // if the offsets differ, we must be near a DST boundary
+    if (offsetLocal != offset) {
+        // if strict then always check if in DST gap
+        // otherwise only check if zone in Western hemisphere (as the
+        // value of offset is already correct for Eastern hemisphere)
+        if (strict || offsetLocal < 0) {
+            // determine if we are in the DST gap
+            long nextLocal = nextTransition(instantLocal - offsetLocal);
+            if (nextLocal == (instantLocal - offsetLocal)) {
+                nextLocal = Long.MAX_VALUE;
+            }
+            long nextAdjusted = nextTransition(instantLocal - offset);
+            if (nextAdjusted == (instantLocal - offset)) {
+                nextAdjusted = Long.MAX_VALUE;
+            }
+            if (nextLocal != nextAdjusted) {
+                // yes we are in the DST gap
+                if (strict) {
+                    // DST gap is not acceptable
+                    throw new IllegalArgumentException(""Illegal instant due to time zone offset transition: "" + DateTimeFormat.forPattern(""yyyy-MM-dd'T'HH:mm:ss.SSS"").print(new Instant(instantLocal)) + "" ("" + getID() + "")"");
+                } else {
+                    // DST gap is acceptable, but for the Western hemisphere
+                    // the offset is wrong and will result in local times
+                    // before the cutover so use the offsetLocal instead
+                    offset = offsetLocal;
+                }
+            }
+        }
+    }
+    // check for overflow
+    long instantUTC = instantLocal - offset;
+    // If there is a sign change, but the two values have different signs...
+    if ((instantLocal ^ instantUTC) < 0 && (instantLocal ^ offset) < 0) {
+        throw new ArithmeticException(""Subtracting time zone offset caused overflow"");
+    }
+    return instantUTC;
+}","public void test4960() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance();
+    DateTimeZone dateTimeZone0 = buddhistChronology0.getZone();
+    long long0 = dateTimeZone0.convertLocalToUTC(249L, false);
+    assertEquals(28800249L, long0);
+}","/**
+ * Converts a local instant to a standard UTC instant with the same
+ * local time. This conversion is used after performing a calculation
+ * where the calculation was done using a simple local zone.
+ *
+ * @param instantLocal  the local instant to convert to UTC
+ * @param strict  whether the conversion should reject non-existent local times
+ * @return the UTC instant with the same local time,
+ * @throws ArithmeticException if the result overflows a long
+ * @throws IllegalArgumentException if the zone has no equivalent local time
+ * @since 1.5
+ */"
+"public long convertUTCToLocal(long instantUTC) {
+    int offset = getOffset(instantUTC);
+    long instantLocal = instantUTC + offset;
+    // If there is a sign change, but the two values have the same sign...
+    if ((instantUTC ^ instantLocal) < 0 && (instantUTC ^ offset) >= 0) {
+        throw new ArithmeticException(""Adding time zone offset caused overflow"");
+    }
+    return instantLocal;
+}","public void test5061() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(256);
+    // Undeclared exception!
+    try {
+        dateTimeZone0.convertUTCToLocal(9223372036854775807L);
+        fail(""Expecting exception: ArithmeticException"");
+    } catch (ArithmeticException e) {
+        //
+        // Adding time zone offset caused overflow
+        //
+        verifyException(""org.joda.time.DateTimeZone"", e);
+    }
+}","/**
+ * Converts a standard UTC instant to a local instant with the same
+ * local time. This conversion is used before performing a calculation
+ * so that the calculation can be done using a simple local zone.
+ *
+ * @param instantUTC  the UTC instant to convert to local
+ * @return the local instant with the same local time
+ * @throws ArithmeticException if the result overflows a long
+ * @since 1.5
+ */"
+"public long getMillisKeepLocal(DateTimeZone newZone, long oldInstant) {
+    if (newZone == null) {
+        newZone = DateTimeZone.getDefault();
+    }
+    if (newZone == this) {
+        return oldInstant;
+    }
+    long instantLocal = oldInstant + getOffset(oldInstant);
+    return instantLocal - newZone.getOffsetFromLocal(instantLocal);
+}","public void test5162() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    long long0 = fixedDateTimeZone0.getMillisKeepLocal(dateTimeZone0, 9223372036854775807L);
+    assertEquals((-9223372036826397809L), long0);
+}","/**
+ * Gets the millisecond instant in another zone keeping the same local time.
+ * <p>
+ * The conversion is performed by converting the specified UTC millis to local
+ * millis in this zone, then converting back to UTC millis in the new zone.
+ *
+ * @param newZone  the new zone, null means default
+ * @param oldInstant  the UTC millisecond instant to convert
+ * @return the UTC millisecond instant with the same local time in the new zone
+ */"
+"public long getMillisKeepLocal(DateTimeZone newZone, long oldInstant) {
+    if (newZone == null) {
+        newZone = DateTimeZone.getDefault();
+    }
+    if (newZone == this) {
+        return oldInstant;
+    }
+    long instantLocal = oldInstant + getOffset(oldInstant);
+    return instantLocal - newZone.getOffsetFromLocal(instantLocal);
+}","public void test5263() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis(24);
+    long long0 = dateTimeZone0.getMillisKeepLocal((DateTimeZone) null, (-580L));
+    assertEquals(28799444L, long0);
+}","/**
+ * Gets the millisecond instant in another zone keeping the same local time.
+ * <p>
+ * The conversion is performed by converting the specified UTC millis to local
+ * millis in this zone, then converting back to UTC millis in the new zone.
+ *
+ * @param newZone  the new zone, null means default
+ * @param oldInstant  the UTC millisecond instant to convert
+ * @return the UTC millisecond instant with the same local time in the new zone
+ */"
+"public String toString() {
+    return getID();
+}","public void test5264() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis(24);
+    long long0 = dateTimeZone0.getMillisKeepLocal((DateTimeZone) null, (-580L));
+    assertEquals(""+00:00:00.024"", dateTimeZone0.toString());
+}","/**
+ * Gets the datetime zone as a string, which is simply its ID.
+ * @return the id of the zone
+ */"
+"public boolean isStandardOffset(long instant) {
+    return getOffset(instant) == getStandardOffset(instant);
+}","public void test5365() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    boolean boolean0 = fixedDateTimeZone0.isStandardOffset(1L);
+    assertTrue(boolean0);
+}","/**
+ * Checks whether, at a particular instant, the offset is standard or not.
+ * <p>
+ * This method can be used to determine whether Summer Time (DST) applies.
+ * As a general rule, if the offset at the specified instant is standard,
+ * then either Winter time applies, or there is no Summer Time. If the
+ * instant is not standard, then Summer Time applies.
+ * <p>
+ * The implementation of the method is simply whether {@link #getOffset(long)}
+ * equals {@link #getStandardOffset(long)} at the specified instant.
+ *
+ * @param instant  milliseconds from 1970-01-01T00:00:00Z to get the offset for
+ * @return true if the offset at the given instant is the standard offset
+ * @since 1.5
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Gets the default time zone.
+ * <p>
+ * The default time zone is derived from the system property {@code user.timezone}.
+ * If that is {@code null} or is not a valid identifier, then the value of the
+ * JDK {@code TimeZone} default is converted. If that fails, {@code UTC} is used.
+ * <p>
+ * NOTE: If the {@code java.util.TimeZone} default is updated <i>after</i> calling this
+ * method, then the change will not be picked up here.
+ *
+ * @return the default datetime zone object
+ */
+public static DateTimeZone getDefault() {
+    DateTimeZone zone = cDefault;
+    if (zone == null) {
+        synchronized (DateTimeZone.class) {
+            zone = cDefault;
+            if (zone == null) {
+                DateTimeZone temp = null;
+                try {
+                    try {
+                        String id = System.getProperty(""user.timezone"");
+                        if (id != null) {
+                            // null check avoids stack overflow
+                            temp = forID(id);
+                        }
+                    } catch (RuntimeException ex) {
+                        // ignored
+                    }
+                    if (temp == null) {
+                        temp = forTimeZone(TimeZone.getDefault());
+                    }
+                } catch (IllegalArgumentException ex) {
+                    // ignored
+                }
+                if (temp == null) {
+                    temp = UTC;
+                }
+                cDefault = zone = temp;
+            }
+        }
+    }
+    return zone;
+}","public void test5466() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    assertNotNull(dateTimeZone0);
+}",""
+"public boolean isStandardOffset(long instant) {
+    return getOffset(instant) == getStandardOffset(instant);
+}","public void test5467() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    boolean boolean0 = dateTimeZone0.isStandardOffset(9223372036854775807L);
+    assertFalse(boolean0);
+}","/**
+ * Checks whether, at a particular instant, the offset is standard or not.
+ * <p>
+ * This method can be used to determine whether Summer Time (DST) applies.
+ * As a general rule, if the offset at the specified instant is standard,
+ * then either Winter time applies, or there is no Summer Time. If the
+ * instant is not standard, then Summer Time applies.
+ * <p>
+ * The implementation of the method is simply whether {@link #getOffset(long)}
+ * equals {@link #getStandardOffset(long)} at the specified instant.
+ *
+ * @param instant  milliseconds from 1970-01-01T00:00:00Z to get the offset for
+ * @return true if the offset at the given instant is the standard offset
+ * @since 1.5
+ */"
+"public String toString() {
+    return getID();
+}","public void test5568() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHoursMinutes(1, 2);
+    int int0 = dateTimeZone0.getOffset((ReadableInstant) null);
+    assertEquals(""+01:02"", dateTimeZone0.toString());
+}","/**
+ * Gets the datetime zone as a string, which is simply its ID.
+ * @return the id of the zone
+ */"
+"public final int getOffset(ReadableInstant instant) {
+    if (instant == null) {
+        return getOffset(DateTimeUtils.currentTimeMillis());
+    }
+    return getOffset(instant.getMillis());
+}","public void test5569() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHoursMinutes(1, 2);
+    int int0 = dateTimeZone0.getOffset((ReadableInstant) null);
+    assertEquals(3720000, int0);
+}","/**
+ * Gets the millisecond offset to add to UTC to get local time.
+ *
+ * @param instant  instant to get the offset for, null means now
+ * @return the millisecond offset to add to UTC to get local time
+ */"
+"public final int getOffset(ReadableInstant instant) {
+    if (instant == null) {
+        return getOffset(DateTimeUtils.currentTimeMillis());
+    }
+    return getOffset(instant.getMillis());
+}","public void test5670() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    DateMidnight dateMidnight0 = new DateMidnight(0L, (DateTimeZone) fixedDateTimeZone0);
+    int int0 = fixedDateTimeZone0.getOffset((ReadableInstant) dateMidnight0);
+    assertEquals(0, int0);
+}","/**
+ * Gets the millisecond offset to add to UTC to get local time.
+ *
+ * @param instant  instant to get the offset for, null means now
+ * @return the millisecond offset to add to UTC to get local time
+ */"
+"public String getName(long instant, Locale locale) {
+    if (locale == null) {
+        locale = Locale.getDefault();
+    }
+    String nameKey = getNameKey(instant);
+    if (nameKey == null) {
+        return iID;
+    }
+    String name = cNameProvider.getName(locale, iID, nameKey);
+    if (name != null) {
+        return name;
+    }
+    return printOffset(getOffset(instant));
+}","public void test5771() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis(24);
+    Locale locale0 = Locale.ROOT;
+    String string0 = dateTimeZone0.getName(877L, locale0);
+    assertEquals(""+00:00:00.024"", string0);
+}","/**
+ * Gets the long name of this datetime zone suitable for display using
+ * the specified locale.
+ * <p>
+ * If the name is not available for the locale, then this method returns a
+ * string in the format <code>[+-]hh:mm</code>.
+ *
+ * @param instant  milliseconds from 1970-01-01T00:00:00Z to get the name for
+ * @param locale  the locale to get the name for
+ * @return the human-readable long name in the specified locale
+ */"
+"public final String getShortName(long instant) {
+    return getShortName(instant, null);
+}","public void test5872() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis(24);
+    String string0 = dateTimeZone0.getShortName(877L);
+    assertEquals(""+00:00:00.024"", string0);
+}","/**
+ * Gets the short name of this datetime zone suitable for display using
+ * the default locale.
+ * <p>
+ * If the name is not available for the locale, then this method returns a
+ * string in the format <code>[+-]hh:mm</code>.
+ *
+ * @param instant  milliseconds from 1970-01-01T00:00:00Z to get the name for
+ * @return the human-readable short name in the default locale
+ */"
+"public String getShortName(long instant, Locale locale) {
+    if (locale == null) {
+        locale = Locale.getDefault();
+    }
+    String nameKey = getNameKey(instant);
+    if (nameKey == null) {
+        return iID;
+    }
+    String name = cNameProvider.getShortName(locale, iID, nameKey);
+    if (name != null) {
+        return name;
+    }
+    return printOffset(getOffset(instant));
+}","public void test5973() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    Locale locale0 = Locale.ITALY;
+    String string0 = fixedDateTimeZone0.getShortName(0L, locale0);
+    assertNotNull(string0);
+}","/**
+ * Gets the short name of this datetime zone suitable for display using
+ * the specified locale.
+ * <p>
+ * If the name is not available for the locale, then this method returns a
+ * string in the format <code>[+-]hh:mm</code>.
+ *
+ * @param instant  milliseconds from 1970-01-01T00:00:00Z to get the name for
+ * @param locale  the locale to get the name for
+ * @return the human-readable short name in the specified locale
+ */"
+"public String toString() {
+    return getID();
+}","public void test6075() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis((-28378000));
+    assertEquals(""-07:52:58"", dateTimeZone0.toString());
+}","/**
+ * Gets the datetime zone as a string, which is simply its ID.
+ * @return the id of the zone
+ */"
+"public static void setNameProvider(NameProvider nameProvider) throws SecurityException {
+    SecurityManager sm = System.getSecurityManager();
+    if (sm != null) {
+        sm.checkPermission(new JodaTimePermission(""DateTimeZone.setNameProvider""));
+    }
+    setNameProvider0(nameProvider);
+}","public void test6176() throws Throwable {
+    DateTimeZone.setNameProvider((NameProvider) null);
+}","/**
+ * Sets the name provider factory.
+ * <p>
+ * The name provider is a pluggable instance factory that supplies the
+ * names of each DateTimeZone.
+ *
+ * @param nameProvider  provider to use, or null for default
+ * @throws SecurityException if you do not have the permission DateTimeZone.setNameProvider
+ * @throws IllegalArgumentException if the provider is invalid
+ */"
+"public static void setNameProvider(NameProvider nameProvider) throws SecurityException {
+    SecurityManager sm = System.getSecurityManager();
+    if (sm != null) {
+        sm.checkPermission(new JodaTimePermission(""DateTimeZone.setNameProvider""));
+    }
+    setNameProvider0(nameProvider);
+}","public void test6277() throws Throwable {
+    DefaultNameProvider defaultNameProvider0 = new DefaultNameProvider();
+    DateTimeZone.setNameProvider(defaultNameProvider0);
+}","/**
+ * Sets the name provider factory.
+ * <p>
+ * The name provider is a pluggable instance factory that supplies the
+ * names of each DateTimeZone.
+ *
+ * @param nameProvider  provider to use, or null for default
+ * @throws SecurityException if you do not have the permission DateTimeZone.setNameProvider
+ * @throws IllegalArgumentException if the provider is invalid
+ */"
+"public static void setProvider(Provider provider) throws SecurityException {
+    SecurityManager sm = System.getSecurityManager();
+    if (sm != null) {
+        sm.checkPermission(new JodaTimePermission(""DateTimeZone.setProvider""));
+    }
+    setProvider0(provider);
+}","public void test6378() throws Throwable {
+    DateTimeZone.setProvider((Provider) null);
+}","/**
+ * Sets the zone provider factory.
+ * <p>
+ * The zone provider is a pluggable instance factory that supplies the
+ * actual instances of DateTimeZone.
+ *
+ * @param provider  provider to use, or null for default
+ * @throws SecurityException if you do not have the permission DateTimeZone.setProvider
+ * @throws IllegalArgumentException if the provider is invalid
+ */"
+"public String toString() {
+    return getID();
+}","public void test6479() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis(24);
+    DateTimeZone dateTimeZone1 = DateTimeZone.forID(""+00:00:00.024"");
+    assertEquals(""+00:00:00.024"", dateTimeZone1.toString());
+}","/**
+ * Gets the datetime zone as a string, which is simply its ID.
+ * @return the id of the zone
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Gets a time zone instance for the specified time zone id.
+ * <p>
+ * The time zone id may be one of those returned by getAvailableIDs.
+ * Short ids, as accepted by {@link java.util.TimeZone}, are not accepted.
+ * All IDs must be specified in the long format.
+ * The exception is UTC, which is an acceptable id.
+ * <p>
+ * Alternatively a locale independent, fixed offset, datetime zone can
+ * be specified. The form <code>[+-]hh:mm</code> can be used.
+ *
+ * @param id  the ID of the datetime zone, null means default
+ * @return the DateTimeZone object for the ID
+ * @throws IllegalArgumentException if the ID is not recognised
+ */
+@FromString
+public static DateTimeZone forID(String id) {
+    if (id == null) {
+        return getDefault();
+    }
+    if (id.equals(""UTC"")) {
+        return DateTimeZone.UTC;
+    }
+    DateTimeZone zone = cProvider.getZone(id);
+    if (zone != null) {
+        return zone;
+    }
+    if (id.startsWith(""+"") || id.startsWith(""-"")) {
+        int offset = parseOffset(id);
+        if (offset == 0L) {
+            return DateTimeZone.UTC;
+        } else {
+            id = printOffset(offset);
+            return fixedOffsetZone(id, offset);
+        }
+    }
+    throw new IllegalArgumentException(""The datetime zone id '"" + id + ""' is not recognised"");
+}","public void test6480() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis(24);
+    DateTimeZone dateTimeZone1 = DateTimeZone.forID(""+00:00:00.024"");
+    assertSame(dateTimeZone1, dateTimeZone0);
+}",""
+"public String toString() {
+    return getID();
+}","public void test6581() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis(0);
+    assertEquals(""UTC"", dateTimeZone0.toString());
+}","/**
+ * Gets the datetime zone as a string, which is simply its ID.
+ * @return the id of the zone
+ */"
+"public String toString() {
+    return getID();
+}","public void test6682() throws Throwable {
+    ZoneOffset zoneOffset0 = ZoneOffset.MIN;
+    TimeZone timeZone0 = TimeZone.getTimeZone((ZoneId) zoneOffset0);
+    DateTimeZone.forTimeZone(timeZone0);
+    DateTimeZone dateTimeZone0 = DateTimeZone.forTimeZone(timeZone0);
+    assertEquals(""-18:00"", dateTimeZone0.toString());
+}","/**
+ * Gets the datetime zone as a string, which is simply its ID.
+ * @return the id of the zone
+ */"
+"public static DateTimeZone forTimeZone(TimeZone zone) {
+    if (zone == null) {
+        return getDefault();
+    }
+    final String id = zone.getID();
+    if (id.equals(""UTC"")) {
+        return DateTimeZone.UTC;
+    }
+    // Convert from old alias before consulting provider since they may differ.
+    DateTimeZone dtz = null;
+    String convId = getConvertedId(id);
+    if (convId != null) {
+        dtz = cProvider.getZone(convId);
+    }
+    if (dtz == null) {
+        dtz = cProvider.getZone(id);
+    }
+    if (dtz != null) {
+        return dtz;
+    }
+    // Support GMT+/-hh:mm formats
+    if (convId == null) {
+        convId = zone.getDisplayName();
+        if (convId.startsWith(""GMT+"") || convId.startsWith(""GMT-"")) {
+            convId = convId.substring(3);
+            int offset = parseOffset(convId);
+            if (offset == 0L) {
+                return DateTimeZone.UTC;
+            } else {
+                convId = printOffset(offset);
+                return fixedOffsetZone(convId, offset);
+            }
+        }
+    }
+    throw new IllegalArgumentException(""The datetime zone id '"" + id + ""' is not recognised"");
+}","public void test6683() throws Throwable {
+    ZoneOffset zoneOffset0 = ZoneOffset.MIN;
+    TimeZone timeZone0 = TimeZone.getTimeZone((ZoneId) zoneOffset0);
+    DateTimeZone.forTimeZone(timeZone0);
+    DateTimeZone dateTimeZone0 = DateTimeZone.forTimeZone(timeZone0);
+    assertNotNull(dateTimeZone0);
+}","/**
+ * Gets a time zone instance for a JDK TimeZone.
+ * <p>
+ * DateTimeZone only accepts a subset of the IDs from TimeZone. The
+ * excluded IDs are the short three letter form (except UTC). This
+ * method will attempt to convert between time zones created using the
+ * short IDs and the full version.
+ * <p>
+ * This method is not designed to parse time zones with rules created by
+ * applications using <code>SimpleTimeZone</code> directly.
+ *
+ * @param zone  the zone to convert, null means default
+ * @return the DateTimeZone object for the zone
+ * @throws IllegalArgumentException if the zone is not recognised
+ */"
+"public static DateTimeZone forTimeZone(TimeZone zone) {
+    if (zone == null) {
+        return getDefault();
+    }
+    final String id = zone.getID();
+    if (id.equals(""UTC"")) {
+        return DateTimeZone.UTC;
+    }
+    // Convert from old alias before consulting provider since they may differ.
+    DateTimeZone dtz = null;
+    String convId = getConvertedId(id);
+    if (convId != null) {
+        dtz = cProvider.getZone(convId);
+    }
+    if (dtz == null) {
+        dtz = cProvider.getZone(id);
+    }
+    if (dtz != null) {
+        return dtz;
+    }
+    // Support GMT+/-hh:mm formats
+    if (convId == null) {
+        convId = zone.getDisplayName();
+        if (convId.startsWith(""GMT+"") || convId.startsWith(""GMT-"")) {
+            convId = convId.substring(3);
+            int offset = parseOffset(convId);
+            if (offset == 0L) {
+                return DateTimeZone.UTC;
+            } else {
+                convId = printOffset(offset);
+                return fixedOffsetZone(convId, offset);
+            }
+        }
+    }
+    throw new IllegalArgumentException(""The datetime zone id '"" + id + ""' is not recognised"");
+}","public void test6784() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    TimeZone timeZone0 = fixedDateTimeZone0.UTC.toTimeZone();
+    DateTimeZone dateTimeZone0 = DateTimeZone.forTimeZone(timeZone0);
+    assertSame(dateTimeZone0, fixedDateTimeZone0);
+}","/**
+ * Gets a time zone instance for a JDK TimeZone.
+ * <p>
+ * DateTimeZone only accepts a subset of the IDs from TimeZone. The
+ * excluded IDs are the short three letter form (except UTC). This
+ * method will attempt to convert between time zones created using the
+ * short IDs and the full version.
+ * <p>
+ * This method is not designed to parse time zones with rules created by
+ * applications using <code>SimpleTimeZone</code> directly.
+ *
+ * @param zone  the zone to convert, null means default
+ * @return the DateTimeZone object for the zone
+ * @throws IllegalArgumentException if the zone is not recognised
+ */"
+"// Principal methods
+//--------------------------------------------------------------------
+/**
+ * Gets the ID of this datetime zone.
+ *
+ * @return the ID of this datetime zone
+ */
+@ToString
+public final String getID() {
+    return iID;
+}","public void test6885() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forTimeZone((TimeZone) null);
+    assertEquals(""America/Los_Angeles"", dateTimeZone0.getID());
+}",""
+"public static DateTimeZone forOffsetHoursMinutes(int hoursOffset, int minutesOffset) throws IllegalArgumentException {
+    if (hoursOffset == 0 && minutesOffset == 0) {
+        return DateTimeZone.UTC;
+    }
+    if (minutesOffset < 0 || minutesOffset > 59) {
+        throw new IllegalArgumentException(""Minutes out of range: "" + minutesOffset);
+    }
+    int offset = 0;
+    try {
+        int hoursInMinutes = FieldUtils.safeMultiply(hoursOffset, 60);
+        if (hoursInMinutes < 0) {
+            minutesOffset = FieldUtils.safeAdd(hoursInMinutes, -minutesOffset);
+        } else {
+            minutesOffset = FieldUtils.safeAdd(hoursInMinutes, minutesOffset);
+        }
+        offset = FieldUtils.safeMultiply(minutesOffset, DateTimeConstants.MILLIS_PER_MINUTE);
+    } catch (ArithmeticException ex) {
+        throw new IllegalArgumentException(""Offset is too large"");
+    }
+    return forOffsetMillis(offset);
+}","public void test6986() throws Throwable {
+    try {
+        DateTimeZone.forOffsetHoursMinutes(89, 75);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Minutes out of range: 75
+        //
+        verifyException(""org.joda.time.DateTimeZone"", e);
+    }
+}","/**
+ * Gets a time zone instance for the specified offset to UTC in hours and minutes.
+ * This method assumes 60 minutes in an hour, and standard length minutes.
+ * <p>
+ * This factory is a convenient way of constructing zones with a fixed offset.
+ * The minutes value is always positive and in the range 0 to 59.
+ * If constructed with the values (-2, 30), the resulting zone is '-02:30'.
+ *
+ * @param hoursOffset  the offset in hours from UTC
+ * @param minutesOffset  the offset in minutes from UTC, must be between 0 and 59 inclusive
+ * @return the DateTimeZone object for the offset
+ * @throws IllegalArgumentException if the offset or minute is too large or too small
+ */"
+"public static DateTimeZone forOffsetHoursMinutes(int hoursOffset, int minutesOffset) throws IllegalArgumentException {
+    if (hoursOffset == 0 && minutesOffset == 0) {
+        return DateTimeZone.UTC;
+    }
+    if (minutesOffset < 0 || minutesOffset > 59) {
+        throw new IllegalArgumentException(""Minutes out of range: "" + minutesOffset);
+    }
+    int offset = 0;
+    try {
+        int hoursInMinutes = FieldUtils.safeMultiply(hoursOffset, 60);
+        if (hoursInMinutes < 0) {
+            minutesOffset = FieldUtils.safeAdd(hoursInMinutes, -minutesOffset);
+        } else {
+            minutesOffset = FieldUtils.safeAdd(hoursInMinutes, minutesOffset);
+        }
+        offset = FieldUtils.safeMultiply(minutesOffset, DateTimeConstants.MILLIS_PER_MINUTE);
+    } catch (ArithmeticException ex) {
+        throw new IllegalArgumentException(""Offset is too large"");
+    }
+    return forOffsetMillis(offset);
+}","public void test7087() throws Throwable {
+    try {
+        DateTimeZone.forOffsetHoursMinutes(0, (-4177984));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Minutes out of range: -4177984
+        //
+        verifyException(""org.joda.time.DateTimeZone"", e);
+    }
+}","/**
+ * Gets a time zone instance for the specified offset to UTC in hours and minutes.
+ * This method assumes 60 minutes in an hour, and standard length minutes.
+ * <p>
+ * This factory is a convenient way of constructing zones with a fixed offset.
+ * The minutes value is always positive and in the range 0 to 59.
+ * If constructed with the values (-2, 30), the resulting zone is '-02:30'.
+ *
+ * @param hoursOffset  the offset in hours from UTC
+ * @param minutesOffset  the offset in minutes from UTC, must be between 0 and 59 inclusive
+ * @return the DateTimeZone object for the offset
+ * @throws IllegalArgumentException if the offset or minute is too large or too small
+ */"
+"// Principal methods
+//--------------------------------------------------------------------
+/**
+ * Gets the ID of this datetime zone.
+ *
+ * @return the ID of this datetime zone
+ */
+@ToString
+public final String getID() {
+    return iID;
+}","public void test7188() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHoursMinutes(0, 0);
+    assertEquals(""UTC"", dateTimeZone0.getID());
+}",""
+"// Principal methods
+//--------------------------------------------------------------------
+/**
+ * Gets the ID of this datetime zone.
+ *
+ * @return the ID of this datetime zone
+ */
+@ToString
+public final String getID() {
+    return iID;
+}","public void test7289() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHoursMinutes(0, 1);
+    assertEquals(""+00:01"", dateTimeZone0.getID());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets a time zone instance for the specified time zone id.
+ * <p>
+ * The time zone id may be one of those returned by getAvailableIDs.
+ * Short ids, as accepted by {@link java.util.TimeZone}, are not accepted.
+ * All IDs must be specified in the long format.
+ * The exception is UTC, which is an acceptable id.
+ * <p>
+ * Alternatively a locale independent, fixed offset, datetime zone can
+ * be specified. The form <code>[+-]hh:mm</code> can be used.
+ *
+ * @param id  the ID of the datetime zone, null means default
+ * @return the DateTimeZone object for the ID
+ * @throws IllegalArgumentException if the ID is not recognised
+ */
+@FromString
+public static DateTimeZone forID(String id) {
+    if (id == null) {
+        return getDefault();
+    }
+    if (id.equals(""UTC"")) {
+        return DateTimeZone.UTC;
+    }
+    DateTimeZone zone = cProvider.getZone(id);
+    if (zone != null) {
+        return zone;
+    }
+    if (id.startsWith(""+"") || id.startsWith(""-"")) {
+        int offset = parseOffset(id);
+        if (offset == 0L) {
+            return DateTimeZone.UTC;
+        } else {
+            id = printOffset(offset);
+            return fixedOffsetZone(id, offset);
+        }
+    }
+    throw new IllegalArgumentException(""The datetime zone id '"" + id + ""' is not recognised"");
+}","public void test7390() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forID(""+00:00"");
+    assertNotNull(dateTimeZone0);
+}",""
+"public String toString() {
+    return getID();
+}","public void test7391() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forID(""+00:00"");
+    assertEquals(""UTC"", dateTimeZone0.toString());
+}","/**
+ * Gets the datetime zone as a string, which is simply its ID.
+ * @return the id of the zone
+ */"
+"// Principal methods
+//--------------------------------------------------------------------
+/**
+ * Gets the ID of this datetime zone.
+ *
+ * @return the ID of this datetime zone
+ */
+@ToString
+public final String getID() {
+    return iID;
+}","public void test7492() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forID(""UTC"");
+    assertEquals(""UTC"", dateTimeZone0.getID());
+}",""
+"public String toString() {
+    return getID();
+}","public void test7593() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forID((String) null);
+    assertEquals(""America/Los_Angeles"", dateTimeZone0.toString());
+}","/**
+ * Gets the datetime zone as a string, which is simply its ID.
+ * @return the id of the zone
+ */"
+"public static void setDefault(DateTimeZone zone) throws SecurityException {
+    SecurityManager sm = System.getSecurityManager();
+    if (sm != null) {
+        sm.checkPermission(new JodaTimePermission(""DateTimeZone.setDefault""));
+    }
+    if (zone == null) {
+        throw new IllegalArgumentException(""The datetime zone must not be null"");
+    }
+    synchronized (DateTimeZone.class) {
+        cDefault = zone;
+    }
+}","public void test7694() throws Throwable {
+    // Undeclared exception!
+    try {
+        DateTimeZone.setDefault((DateTimeZone) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The datetime zone must not be null
+        //
+        verifyException(""org.joda.time.DateTimeZone"", e);
+    }
+}","/**
+ * Sets the default time zone.
+ * <p>
+ * NOTE: Calling this method does <i>not</i> set the {@code java.util.TimeZone} default.
+ *
+ * @param zone  the default datetime zone object, must not be null
+ * @throws IllegalArgumentException if the zone is null
+ * @throws SecurityException if the application has insufficient security rights
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Gets the default time zone.
+ * <p>
+ * The default time zone is derived from the system property {@code user.timezone}.
+ * If that is {@code null} or is not a valid identifier, then the value of the
+ * JDK {@code TimeZone} default is converted. If that fails, {@code UTC} is used.
+ * <p>
+ * NOTE: If the {@code java.util.TimeZone} default is updated <i>after</i> calling this
+ * method, then the change will not be picked up here.
+ *
+ * @return the default datetime zone object
+ */
+public static DateTimeZone getDefault() {
+    DateTimeZone zone = cDefault;
+    if (zone == null) {
+        synchronized (DateTimeZone.class) {
+            zone = cDefault;
+            if (zone == null) {
+                DateTimeZone temp = null;
+                try {
+                    try {
+                        String id = System.getProperty(""user.timezone"");
+                        if (id != null) {
+                            // null check avoids stack overflow
+                            temp = forID(id);
+                        }
+                    } catch (RuntimeException ex) {
+                        // ignored
+                    }
+                    if (temp == null) {
+                        temp = forTimeZone(TimeZone.getDefault());
+                    }
+                } catch (IllegalArgumentException ex) {
+                    // ignored
+                }
+                if (temp == null) {
+                    temp = UTC;
+                }
+                cDefault = zone = temp;
+            }
+        }
+    }
+    return zone;
+}","public void test7795() throws Throwable {
+    UTCProvider uTCProvider0 = new UTCProvider();
+    DateTimeZone.setProvider(uTCProvider0);
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    //  // Unstable assertion: assertEquals(""UTC"", dateTimeZone0.getID());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the default time zone.
+ * <p>
+ * The default time zone is derived from the system property {@code user.timezone}.
+ * If that is {@code null} or is not a valid identifier, then the value of the
+ * JDK {@code TimeZone} default is converted. If that fails, {@code UTC} is used.
+ * <p>
+ * NOTE: If the {@code java.util.TimeZone} default is updated <i>after</i> calling this
+ * method, then the change will not be picked up here.
+ *
+ * @return the default datetime zone object
+ */
+public static DateTimeZone getDefault() {
+    DateTimeZone zone = cDefault;
+    if (zone == null) {
+        synchronized (DateTimeZone.class) {
+            zone = cDefault;
+            if (zone == null) {
+                DateTimeZone temp = null;
+                try {
+                    try {
+                        String id = System.getProperty(""user.timezone"");
+                        if (id != null) {
+                            // null check avoids stack overflow
+                            temp = forID(id);
+                        }
+                    } catch (RuntimeException ex) {
+                        // ignored
+                    }
+                    if (temp == null) {
+                        temp = forTimeZone(TimeZone.getDefault());
+                    }
+                } catch (IllegalArgumentException ex) {
+                    // ignored
+                }
+                if (temp == null) {
+                    temp = UTC;
+                }
+                cDefault = zone = temp;
+            }
+        }
+    }
+    return zone;
+}","public void test7896() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    DateTimeZone dateTimeZone1 = DateTimeZone.getDefault();
+    assertSame(dateTimeZone1, dateTimeZone0);
+}",""
+"// Principal methods
+//--------------------------------------------------------------------
+/**
+ * Gets the ID of this datetime zone.
+ *
+ * @return the ID of this datetime zone
+ */
+@ToString
+public final String getID() {
+    return iID;
+}","public void test7997() throws Throwable {
+    Provider provider0 = DateTimeZone.getProvider();
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(1);
+    dateTimeZone0.equals(provider0);
+    assertEquals(""+01:00"", dateTimeZone0.getID());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the name provider factory.
+ * <p>
+ * The name provider is a pluggable instance factory that supplies the
+ * names of each DateTimeZone.
+ *
+ * @return the provider
+ */
+public static NameProvider getNameProvider() {
+    return cNameProvider;
+}","public void test8098() throws Throwable {
+    NameProvider nameProvider0 = DateTimeZone.getNameProvider();
+    assertNotNull(nameProvider0);
+}",""
+"public String toString() {
+    return getID();
+}","public void test82100() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    String string0 = fixedDateTimeZone0.toString();
+    assertEquals(""UTC"", string0);
+}","/**
+ * Gets the datetime zone as a string, which is simply its ID.
+ * @return the id of the zone
+ */"
+"public final String getName(long instant) {
+    return getName(instant, null);
+}","public void test83101() throws Throwable {
+    SimpleTimeZone simpleTimeZone0 = new SimpleTimeZone(2831, ""hsZfnd<-{UF+T"");
+    DateTimeZone dateTimeZone0 = DateTimeZone.forTimeZone(simpleTimeZone0);
+    String string0 = dateTimeZone0.getName((long) 807);
+    assertEquals(""+00:00"", string0);
+}","/**
+ * Gets the long name of this datetime zone suitable for display using
+ * the default locale.
+ * <p>
+ * If the name is not available for the locale, then this method returns a
+ * string in the format <code>[+-]hh:mm</code>.
+ *
+ * @param instant  milliseconds from 1970-01-01T00:00:00Z to get the name for
+ * @return the human-readable long name in the default locale
+ */"
+"public static DateTimeZone forTimeZone(TimeZone zone) {
+    if (zone == null) {
+        return getDefault();
+    }
+    final String id = zone.getID();
+    if (id.equals(""UTC"")) {
+        return DateTimeZone.UTC;
+    }
+    // Convert from old alias before consulting provider since they may differ.
+    DateTimeZone dtz = null;
+    String convId = getConvertedId(id);
+    if (convId != null) {
+        dtz = cProvider.getZone(convId);
+    }
+    if (dtz == null) {
+        dtz = cProvider.getZone(id);
+    }
+    if (dtz != null) {
+        return dtz;
+    }
+    // Support GMT+/-hh:mm formats
+    if (convId == null) {
+        convId = zone.getDisplayName();
+        if (convId.startsWith(""GMT+"") || convId.startsWith(""GMT-"")) {
+            convId = convId.substring(3);
+            int offset = parseOffset(convId);
+            if (offset == 0L) {
+                return DateTimeZone.UTC;
+            } else {
+                convId = printOffset(offset);
+                return fixedOffsetZone(convId, offset);
+            }
+        }
+    }
+    throw new IllegalArgumentException(""The datetime zone id '"" + id + ""' is not recognised"");
+}","public void test84103() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours((-589));
+    TimeZone timeZone0 = dateTimeZone0.toTimeZone();
+    // Undeclared exception!
+    try {
+        DateTimeZone.forTimeZone(timeZone0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid format: \""-j9:00\"" is malformed at \""j9:00\""
+        //
+        verifyException(""org.joda.time.format.DateTimeFormatter"", e);
+    }
+}","/**
+ * Gets a time zone instance for a JDK TimeZone.
+ * <p>
+ * DateTimeZone only accepts a subset of the IDs from TimeZone. The
+ * excluded IDs are the short three letter form (except UTC). This
+ * method will attempt to convert between time zones created using the
+ * short IDs and the full version.
+ * <p>
+ * This method is not designed to parse time zones with rules created by
+ * applications using <code>SimpleTimeZone</code> directly.
+ *
+ * @param zone  the zone to convert, null means default
+ * @return the DateTimeZone object for the zone
+ * @throws IllegalArgumentException if the zone is not recognised
+ */"
+"protected Object writeReplace() throws ObjectStreamException {
+    return new Stub(iID);
+}","public void test85104() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    Object object0 = fixedDateTimeZone0.UTC.writeReplace();
+    assertNotNull(object0);
+}","/**
+ * By default, when DateTimeZones are serialized, only a ""stub"" object
+ * referring to the id is written out. When the stub is read in, it
+ * replaces itself with a DateTimeZone object.
+ * @return a stub object to go in the stream
+ */"

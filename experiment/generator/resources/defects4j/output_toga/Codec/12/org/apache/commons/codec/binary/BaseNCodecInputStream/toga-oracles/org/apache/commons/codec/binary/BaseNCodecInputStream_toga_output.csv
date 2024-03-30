@@ -1,0 +1,163 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    PipedInputStream pipedInputStream0 = new PipedInputStream(pipedOutputStream0);
+    byte[] byteArray0 = new byte[2];
+    byte[] byteArray1 = new byte[0];
+    Base64 base64_0 = new Base64((-734), byteArray0, false);
+    BaseNCodecInputStream baseNCodecInputStream0 = new BaseNCodecInputStream(pipedInputStream0, base64_0, false);
+    // Undeclared exception!
+    try {
+        baseNCodecInputStream0.read(byteArray1, 0, 3440);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.codec.binary.BaseNCodecInputStream"", e);
+    }
+}",1,
+project,0,test011,"public void test011() throws Throwable {
+    byte[] byteArray0 = new byte[7];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, 0, (byte) 0);
+    Base32 base32_0 = new Base32(false);
+    BaseNCodecInputStream baseNCodecInputStream0 = new BaseNCodecInputStream(byteArrayInputStream0, base32_0, false);
+    int int0 = baseNCodecInputStream0.read(byteArray0, 0, (int) (byte) 1);
+    assertEquals((-1), int0);
+}",1,
+project,0,test022,"public void test022() throws Throwable {
+    Base64 base64_0 = new Base64((-3173));
+    BaseNCodecInputStream baseNCodecInputStream0 = new BaseNCodecInputStream((InputStream) null, base64_0, true);
+    // Undeclared exception!
+    try {
+        baseNCodecInputStream0.read();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.codec.binary.BaseNCodecInputStream"", e);
+    }
+}",0,
+project,0,test033,"public void test033() throws Throwable {
+    FileDescriptor fileDescriptor0 = new FileDescriptor();
+    MockFileInputStream mockFileInputStream0 = new MockFileInputStream(fileDescriptor0);
+    Base64 base64_0 = new Base64(false);
+    BaseNCodecInputStream baseNCodecInputStream0 = new BaseNCodecInputStream(mockFileInputStream0, base64_0, false);
+    try {
+        baseNCodecInputStream0.read();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.mock.java.io.NativeMockedIO"", e);
+    }
+}",0,
+project,0,test056,"public void test056() throws Throwable {
+    byte[] byteArray0 = new byte[5];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    Base32 base32_0 = new Base32(0);
+    BaseNCodecInputStream baseNCodecInputStream0 = new BaseNCodecInputStream(byteArrayInputStream0, base32_0, false);
+    int int0 = baseNCodecInputStream0.read();
+    assertEquals((-1), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test067,"public void test067() throws Throwable {
+    Enumeration<InputStream> enumeration0 = (Enumeration<InputStream>) mock(Enumeration.class, new ViolatedAssumptionAnswer());
+    doReturn(false).when(enumeration0).hasMoreElements();
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(enumeration0);
+    Base32 base32_0 = new Base32(false);
+    base32_0.ensureBufferSize(68);
+    BaseNCodecInputStream baseNCodecInputStream0 = new BaseNCodecInputStream(sequenceInputStream0, base32_0, true);
+    int int0 = baseNCodecInputStream0.read();
+    assertEquals((-1), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test078,"public void test078() throws Throwable {
+    Enumeration<InputStream> enumeration0 = (Enumeration<InputStream>) mock(Enumeration.class, new ViolatedAssumptionAnswer());
+    doReturn(false).when(enumeration0).hasMoreElements();
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(enumeration0);
+    BufferedInputStream bufferedInputStream0 = new BufferedInputStream(sequenceInputStream0, 551);
+    Base64 base64_0 = new Base64(551);
+    BaseNCodecInputStream baseNCodecInputStream0 = new BaseNCodecInputStream(bufferedInputStream0, base64_0, true);
+    byte[] byteArray0 = new byte[7];
+    int int0 = baseNCodecInputStream0.read(byteArray0, (int) (byte) 0, (int) (byte) 0);
+    assertEquals(0, int0);
+}",1,
+project,0,test089,"public void test089() throws Throwable {
+    byte[] byteArray0 = new byte[4];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) 0, (byte) 0);
+    Base64 base64_0 = new Base64(2543);
+    BaseNCodecInputStream baseNCodecInputStream0 = new BaseNCodecInputStream(byteArrayInputStream0, base64_0, false);
+    // Undeclared exception!
+    try {
+        baseNCodecInputStream0.read(byteArray0, 2543, 757);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.codec.binary.BaseNCodecInputStream"", e);
+    }
+}",1,
+project,0,test0910,"public void test0910() throws Throwable {
+    Enumeration<InputStream> enumeration0 = (Enumeration<InputStream>) mock(Enumeration.class, new ViolatedAssumptionAnswer());
+    doReturn(false).when(enumeration0).hasMoreElements();
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(enumeration0);
+    Base32 base32_0 = new Base32(false);
+    BaseNCodecInputStream baseNCodecInputStream0 = new BaseNCodecInputStream(sequenceInputStream0, base32_0, true);
+    byte[] byteArray0 = new byte[0];
+    // Undeclared exception!
+    try {
+        baseNCodecInputStream0.read(byteArray0, 76, (-353));
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.codec.binary.BaseNCodecInputStream"", e);
+    }
+}",1,
+project,0,test1011,"public void test1011() throws Throwable {
+    byte[] byteArray0 = new byte[7];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    Base32 base32_0 = new Base32((byte) (-1), byteArray0, false);
+    BaseNCodecInputStream baseNCodecInputStream0 = new BaseNCodecInputStream(byteArrayInputStream0, base32_0, true);
+    // Undeclared exception!
+    try {
+        baseNCodecInputStream0.read(byteArray0, (-823), (int) (byte) (-1));
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.codec.binary.BaseNCodecInputStream"", e);
+    }
+}",1,
+project,0,test1112,"public void test1112() throws Throwable {
+    Base64 base64_0 = new Base64();
+    BaseNCodecInputStream baseNCodecInputStream0 = new BaseNCodecInputStream((InputStream) null, base64_0, true);
+    // Undeclared exception!
+    try {
+        baseNCodecInputStream0.read((byte[]) null, (-319), 76);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.codec.binary.BaseNCodecInputStream"", e);
+    }
+}",1,
+project,0,test1214,"public void test1214() throws Throwable {
+    byte[] byteArray0 = new byte[7];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    Base32 base32_0 = new Base32((byte) (-1), byteArray0, false);
+    BaseNCodecInputStream baseNCodecInputStream0 = new BaseNCodecInputStream(byteArrayInputStream0, base32_0, true);
+    int int0 = baseNCodecInputStream0.read();
+    assertEquals(65, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test1315,"public void test1315() throws Throwable {
+    Base64 base64_0 = new Base64((-195));
+    BaseNCodecInputStream baseNCodecInputStream0 = new BaseNCodecInputStream((InputStream) null, base64_0, true);
+    boolean boolean0 = baseNCodecInputStream0.markSupported();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)

@@ -1,0 +1,107 @@
+focal_method,test_prefix,docstring
+"public static GenericMetadataSupport inferFrom(Type type) {
+    Checks.checkNotNull(type, ""type"");
+    if (type instanceof Class) {
+        return new FromClassGenericMetadataSupport((Class<?>) type);
+    }
+    if (type instanceof ParameterizedType) {
+        return new FromParameterizedTypeGenericMetadataSupport((ParameterizedType) type);
+    }
+    throw new MockitoException(""Type meta-data for this Type ("" + type.getClass().getCanonicalName() + "") is not supported : "" + type);
+}","public void test000() throws Throwable {
+    Type[] typeArray0 = new Type[2];
+    TypeVariable<Method> typeVariable0 = (TypeVariable<Method>) mock(TypeVariable.class, new ViolatedAssumptionAnswer());
+    doReturn((Object) typeArray0, (Object) null).when(typeVariable0).getBounds();
+    GenericMetadataSupport.TypeVarBoundedType genericMetadataSupport_TypeVarBoundedType0 = new GenericMetadataSupport.TypeVarBoundedType(typeVariable0);
+    // Undeclared exception!
+    try {
+        GenericMetadataSupport.inferFrom(genericMetadataSupport_TypeVarBoundedType0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.mockito.internal.util.reflection.GenericMetadataSupport$TypeVarBoundedType"", e);
+    }
+}","/**
+ * Create an new instance of {@link GenericMetadataSupport} inferred from a {@link Type}.
+ *
+ * <p>
+ *     At the moment <code>type</code> can only be a {@link Class} or a {@link ParameterizedType}, otherwise
+ *     it'll throw a {@link MockitoException}.
+ * </p>
+ *
+ * @param type The class from which the {@link GenericMetadataSupport} should be built.
+ * @return The new {@link GenericMetadataSupport}.
+ * @throws MockitoException Raised if type is not a {@link Class} or a {@link ParameterizedType}.
+ */"
+"public static GenericMetadataSupport inferFrom(Type type) {
+    Checks.checkNotNull(type, ""type"");
+    if (type instanceof Class) {
+        return new FromClassGenericMetadataSupport((Class<?>) type);
+    }
+    if (type instanceof ParameterizedType) {
+        return new FromParameterizedTypeGenericMetadataSupport((ParameterizedType) type);
+    }
+    throw new MockitoException(""Type meta-data for this Type ("" + type.getClass().getCanonicalName() + "") is not supported : "" + type);
+}","public void test088() throws Throwable {
+    Type[] typeArray0 = new Type[0];
+    WildcardType wildcardType0 = mock(WildcardType.class, new ViolatedAssumptionAnswer());
+    doReturn(typeArray0).when(wildcardType0).getLowerBounds();
+    doReturn(typeArray0).when(wildcardType0).getUpperBounds();
+    GenericMetadataSupport.WildCardBoundedType genericMetadataSupport_WildCardBoundedType0 = new GenericMetadataSupport.WildCardBoundedType(wildcardType0);
+    // Undeclared exception!
+    try {
+        GenericMetadataSupport.inferFrom(genericMetadataSupport_WildCardBoundedType0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 0
+        //
+        verifyException(""org.mockito.internal.util.reflection.GenericMetadataSupport$WildCardBoundedType"", e);
+    }
+}","/**
+ * Create an new instance of {@link GenericMetadataSupport} inferred from a {@link Type}.
+ *
+ * <p>
+ *     At the moment <code>type</code> can only be a {@link Class} or a {@link ParameterizedType}, otherwise
+ *     it'll throw a {@link MockitoException}.
+ * </p>
+ *
+ * @param type The class from which the {@link GenericMetadataSupport} should be built.
+ * @return The new {@link GenericMetadataSupport}.
+ * @throws MockitoException Raised if type is not a {@link Class} or a {@link ParameterizedType}.
+ */"
+"public static GenericMetadataSupport inferFrom(Type type) {
+    Checks.checkNotNull(type, ""type"");
+    if (type instanceof Class) {
+        return new FromClassGenericMetadataSupport((Class<?>) type);
+    }
+    if (type instanceof ParameterizedType) {
+        return new FromParameterizedTypeGenericMetadataSupport((ParameterizedType) type);
+    }
+    throw new MockitoException(""Type meta-data for this Type ("" + type.getClass().getCanonicalName() + "") is not supported : "" + type);
+}","public void test099() throws Throwable {
+    Type[] typeArray0 = new Type[1];
+    WildcardType wildcardType0 = mock(WildcardType.class, new ViolatedAssumptionAnswer());
+    doReturn(typeArray0).when(wildcardType0).getLowerBounds();
+    doReturn(typeArray0).when(wildcardType0).getUpperBounds();
+    GenericMetadataSupport.WildCardBoundedType genericMetadataSupport_WildCardBoundedType0 = new GenericMetadataSupport.WildCardBoundedType(wildcardType0);
+    // Undeclared exception!
+    try {
+        GenericMetadataSupport.inferFrom(genericMetadataSupport_WildCardBoundedType0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}","/**
+ * Create an new instance of {@link GenericMetadataSupport} inferred from a {@link Type}.
+ *
+ * <p>
+ *     At the moment <code>type</code> can only be a {@link Class} or a {@link ParameterizedType}, otherwise
+ *     it'll throw a {@link MockitoException}.
+ * </p>
+ *
+ * @param type The class from which the {@link GenericMetadataSupport} should be built.
+ * @return The new {@link GenericMetadataSupport}.
+ * @throws MockitoException Raised if type is not a {@link Class} or a {@link ParameterizedType}.
+ */"

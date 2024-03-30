@@ -1,0 +1,407 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    int int0 = 123;
+    char[] charArray0 = new char[0];
+    // Undeclared exception!
+    try {
+        RandomStringUtils.random(123, charArray0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test021,"public void test021() throws Throwable {
+    RandomStringUtils.randomAscii(0);
+    RandomStringUtils.randomAlphanumeric(0);
+    RandomStringUtils.randomAlphabetic(0);
+    RandomStringUtils.randomAscii(0);
+    char[] charArray0 = new char[6];
+    charArray0[0] = '@';
+    charArray0[1] = 't';
+    charArray0[2] = 'l';
+    charArray0[3] = 'f';
+    charArray0[4] = '$';
+    charArray0[5] = '1';
+    RandomStringUtils.random(1, charArray0);
+    RandomStringUtils.randomAlphanumeric(0);
+    RandomStringUtils.random(0, (-1), 0, false, false, charArray0, (Random) null);
+    // Undeclared exception!
+    try {
+        RandomStringUtils.random(1, 0, 3375, false, true, charArray0, (Random) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test032,"public void test032() throws Throwable {
+    int int0 = 822;
+    int int1 = 1;
+    int int2 = (-943);
+    boolean boolean0 = true;
+    char[] charArray0 = new char[6];
+    charArray0[0] = 'a';
+    charArray0[1] = '3';
+    charArray0[2] = 'i';
+    charArray0[3] = '%';
+    charArray0[4] = 'l';
+    charArray0[5] = 'C';
+    RandomStringUtils.random(822, 1, (-943), true, true, charArray0);
+    int int3 = (-222);
+    // Undeclared exception!
+    try {
+        RandomStringUtils.randomAscii((-222));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Requested random string length -222 is less than 0.
+        //
+        verifyException(""org.apache.commons.lang3.RandomStringUtils"", e);
+    }
+}",0,
+project,0,test043,"public void test043() throws Throwable {
+    RandomStringUtils randomStringUtils0 = new RandomStringUtils();
+    char[] charArray0 = new char[8];
+    charArray0[0] = ' ';
+    charArray0[1] = 'i';
+    charArray0[2] = 'I';
+    charArray0[3] = '\'';
+    charArray0[4] = '(';
+    charArray0[5] = 'B';
+    charArray0[6] = ')';
+    charArray0[7] = 'E';
+    // Undeclared exception!
+    try {
+        RandomStringUtils.random(128, (-1745), 0, true, true, charArray0, (Random) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test054,"public void test054() throws Throwable {
+    RandomStringUtils.random(21, ""pf1?dV6"");
+    RandomStringUtils.randomAscii(0);
+    // Undeclared exception!
+    try {
+        RandomStringUtils.random(21, """");
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test065,"public void test065() throws Throwable {
+    int int0 = 1059;
+    boolean boolean0 = false;
+    // Undeclared exception!
+    try {
+        RandomStringUtils.random(1059, 1059, 1059, false, false);
+        fail(""Expecting exception: ArithmeticException"");
+    } catch (ArithmeticException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test076,"public void test076() throws Throwable {
+    char[] charArray0 = new char[6];
+    charArray0[0] = '2';
+    charArray0[1] = '&';
+    charArray0[2] = '}';
+    charArray0[3] = 'j';
+    charArray0[4] = '>';
+    charArray0[5] = '4';
+    MockRandom mockRandom0 = new MockRandom((-4759));
+    // Undeclared exception!
+    try {
+        RandomStringUtils.random((-4759), 937, 0, true, true, charArray0, (Random) mockRandom0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Requested random string length -4759 is less than 0.
+        //
+        verifyException(""org.apache.commons.lang3.RandomStringUtils"", e);
+    }
+}",0,
+project,0,test097,"public void test097() throws Throwable {
+    MockRandom mockRandom0 = new MockRandom();
+    // Undeclared exception!
+    try {
+        RandomStringUtils.random(57343, 57343, 57343, false, false, (char[]) null, (Random) mockRandom0);
+        fail(""Expecting exception: ArithmeticException"");
+    } catch (ArithmeticException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test158,"public void test158() throws Throwable {
+    int int0 = (-2531);
+    // Undeclared exception!
+    try {
+        RandomStringUtils.randomNumeric((-2531));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Requested random string length -2531 is less than 0.
+        //
+        verifyException(""org.apache.commons.lang3.RandomStringUtils"", e);
+    }
+}",0,
+project,0,test169,"public void test169() throws Throwable {
+    int int0 = 0;
+    RandomStringUtils.random(0, 2528, (-266), false, false);
+    // Undeclared exception!
+    try {
+        RandomStringUtils.random(2528, """");
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test1710,"public void test1710() throws Throwable {
+    // Undeclared exception!
+    try {
+        RandomStringUtils.random((-190), ""-o'u91%9~:ny|"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Requested random string length -190 is less than 0.
+        //
+        verifyException(""org.apache.commons.lang3.RandomStringUtils"", e);
+    }
+}",1,
+project,0,test1811,"public void test1811() throws Throwable {
+    char[] charArray0 = new char[1];
+    charArray0[0] = '6';
+    // Undeclared exception!
+    try {
+        RandomStringUtils.random(1935, 1935, 0, true, true, charArray0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test2112,"public void test2112() throws Throwable {
+    char[] charArray0 = new char[4];
+    charArray0[0] = '6';
+    charArray0[1] = 'u';
+    charArray0[2] = 'j';
+    charArray0[3] = 'e';
+    // Undeclared exception!
+    try {
+        RandomStringUtils.random(1, 1, 1, false, true, charArray0);
+        fail(""Expecting exception: ArithmeticException"");
+    } catch (ArithmeticException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test2213,"public void test2213() throws Throwable {
+    int int0 = 0;
+    boolean boolean0 = false;
+    char[] charArray0 = new char[5];
+    charArray0[0] = '(';
+    charArray0[1] = '3';
+    charArray0[2] = '9';
+    charArray0[3] = '*';
+    charArray0[4] = 'u';
+    // Undeclared exception!
+    try {
+        RandomStringUtils.random((-2237), 0, (-2237), false, false, charArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Requested random string length -2237 is less than 0.
+        //
+        verifyException(""org.apache.commons.lang3.RandomStringUtils"", e);
+    }
+}",0,
+project,0,test2414,"public void test2414() throws Throwable {
+    int int0 = 0;
+    // Undeclared exception!
+    try {
+        RandomStringUtils.random((-938), 0, (-938), true, true);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Requested random string length -938 is less than 0.
+        //
+        verifyException(""org.apache.commons.lang3.RandomStringUtils"", e);
+    }
+}",0,
+project,0,test2515,"public void test2515() throws Throwable {
+    int int0 = (-1);
+    // Undeclared exception!
+    try {
+        RandomStringUtils.random((-1));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Requested random string length -1 is less than 0.
+        //
+        verifyException(""org.apache.commons.lang3.RandomStringUtils"", e);
+    }
+}",1,
+project,0,test2616,"public void test2616() throws Throwable {
+    char[] charArray0 = new char[9];
+    charArray0[0] = '~';
+    charArray0[1] = '.';
+    charArray0[2] = 'E';
+    charArray0[3] = 's';
+    charArray0[4] = 'J';
+    charArray0[5] = '~';
+    charArray0[6] = 'k';
+    charArray0[7] = '[';
+    charArray0[8] = 'q';
+    // Undeclared exception!
+    try {
+        RandomStringUtils.random((-4002), charArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Requested random string length -4002 is less than 0.
+        //
+        verifyException(""org.apache.commons.lang3.RandomStringUtils"", e);
+    }
+}",0,
+project,0,test2917,"public void test2917() throws Throwable {
+    int int0 = 0;
+    RandomStringUtils.randomAlphanumeric(0);
+    RandomStringUtils randomStringUtils0 = new RandomStringUtils();
+    // Undeclared exception!
+    try {
+        RandomStringUtils.randomAscii((-1207));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Requested random string length -1207 is less than 0.
+        //
+        verifyException(""org.apache.commons.lang3.RandomStringUtils"", e);
+    }
+}",0,
+project,0,test3218,"public void test3218() throws Throwable {
+    char[] charArray0 = new char[7];
+    charArray0[0] = '{';
+    charArray0[1] = 'c';
+    charArray0[2] = ' ';
+    charArray0[3] = 'f';
+    charArray0[4] = '7';
+    charArray0[5] = '1';
+    charArray0[6] = 'I';
+    MockRandom mockRandom0 = new MockRandom(2807L);
+    // Undeclared exception!
+    try {
+        RandomStringUtils.random(713, 713, 254, false, false, charArray0, (Random) mockRandom0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test3319,"public void test3319() throws Throwable {
+    int int0 = (-1134);
+    // Undeclared exception!
+    try {
+        RandomStringUtils.randomAlphanumeric((-1134));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Requested random string length -1134 is less than 0.
+        //
+        verifyException(""org.apache.commons.lang3.RandomStringUtils"", e);
+    }
+}",0,
+project,0,test3520,"public void test3520() throws Throwable {
+    int int0 = (-563);
+    boolean boolean0 = false;
+    // Undeclared exception!
+    try {
+        RandomStringUtils.random((-563), false, false);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Requested random string length -563 is less than 0.
+        //
+        verifyException(""org.apache.commons.lang3.RandomStringUtils"", e);
+    }
+}",0,
+project,0,test3721,"public void test3721() throws Throwable {
+    // Undeclared exception!
+    try {
+        RandomStringUtils.randomAlphabetic((-417));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Requested random string length -417 is less than 0.
+        //
+        verifyException(""org.apache.commons.lang3.RandomStringUtils"", e);
+    }
+}",0,
+project,0,test4022,"public void test4022() throws Throwable {
+    boolean boolean0 = true;
+    // Undeclared exception!
+    try {
+        RandomStringUtils.random((-738), (-738), (-738), true, true);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Requested random string length -738 is less than 0.
+        //
+        verifyException(""org.apache.commons.lang3.RandomStringUtils"", e);
+    }
+}",0,
+project,0,test4123,"public void test4123() throws Throwable {
+    char[] charArray0 = new char[1];
+    charArray0[0] = 'f';
+    MockRandom mockRandom0 = new MockRandom((-1L));
+    // Undeclared exception!
+    try {
+        RandomStringUtils.random(1, 1, 1, true, false, charArray0, (Random) mockRandom0);
+        fail(""Expecting exception: ArithmeticException"");
+    } catch (ArithmeticException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test4324,"public void test4324() throws Throwable {
+    // Undeclared exception!
+    try {
+        RandomStringUtils.random((-1333), (String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Requested random string length -1333 is less than 0.
+        //
+        verifyException(""org.apache.commons.lang3.RandomStringUtils"", e);
+    }
+}",1,
+project,0,test4625,"public void test4625() throws Throwable {
+    int int0 = 0;
+    boolean boolean0 = false;
+    RandomStringUtils.random(0, (-2681), (-2426), false, false);
+    int int1 = (-3004);
+    // Undeclared exception!
+    try {
+        RandomStringUtils.randomNumeric((-3004));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Requested random string length -3004 is less than 0.
+        //
+        verifyException(""org.apache.commons.lang3.RandomStringUtils"", e);
+    }
+}",0,

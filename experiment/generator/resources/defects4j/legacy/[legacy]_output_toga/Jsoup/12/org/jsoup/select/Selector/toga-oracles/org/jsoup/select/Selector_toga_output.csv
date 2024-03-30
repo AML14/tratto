@@ -1,0 +1,230 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    Document document0 = new Document(""PARAM"");
+    Element element0 = document0.createElement(""PARAM"");
+    Elements elements0 = Selector.select(""PARAM"", element0);
+    assertFalse(elements0.isEmpty());
+}",0,assertTrue(elements0.isEmpty())
+project,0,test011,"public void test011() throws Throwable {
+    Tag tag0 = Tag.valueOf(""A9"");
+    Element element0 = new Element(tag0, ""A9"");
+    Pattern pattern0 = Pattern.compile(""^"", 32);
+    Elements elements0 = element0.getElementsMatchingText(pattern0);
+    Elements elements1 = Selector.select(""A9"", (Iterable<Element>) elements0);
+    assertNotSame(elements1, elements0);
+}",0,
+project,0,test022,"public void test022() throws Throwable {
+    Document document0 = Document.createShell(""MENU"");
+    Elements elements0 = document0.getElementsByAttributeValueNot(""1V}\""VycY"", ""1V}\""VycY"");
+    Elements elements1 = Selector.select(""MENU"", (Iterable<Element>) elements0);
+    Elements elements2 = Selector.filterOut(elements0, elements1);
+    assertEquals(4, elements2.size());
+}",0,"assertEquals(0, elements2.size())"
+project,0,test043,"public void test043() throws Throwable {
+    Document document0 = new Document(""?+b"");
+    Elements elements0 = document0.getAllElements();
+    // Undeclared exception!
+    try {
+        Selector.select(""?+b"", (Iterable<Element>) elements0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Could not parse query '?+b': unexpected token at '?+b'
+        //
+        verifyException(""org.jsoup.select.Selector"", e);
+    }
+}",0,
+project,0,test054,"public void test054() throws Throwable {
+    Document document0 = Document.createShell("":M."");
+    Element element0 = document0.text("",!iyHx;LGjoGE"");
+    Pattern pattern0 = Pattern.compile("",!iyHx;LGjoGE"", 856);
+    Elements elements0 = element0.getElementsMatchingText(pattern0);
+    LinkedList<Element> linkedList0 = new LinkedList<Element>(elements0);
+    // Undeclared exception!
+    try {
+        Selector.select("",!iyHx;LGjoGE"", (Iterable<Element>) linkedList0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Unknown combinator: ,
+        //
+        verifyException(""org.jsoup.select.Selector"", e);
+    }
+}",0,
+project,0,test065,"public void test065() throws Throwable {
+    // Undeclared exception!
+    try {
+        Selector.filterOut((Collection<Element>) null, (Collection<Element>) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.select.Selector"", e);
+    }
+}",0,
+project,0,test086,"public void test086() throws Throwable {
+    Document document0 = Document.createShell(""O=(3KH.9.)(>0P*"");
+    Elements elements0 = document0.getAllElements();
+    Elements elements1 = Selector.filterOut(elements0, elements0);
+    assertEquals(0, elements1.size());
+}",0,"assertEquals(0, elements1.size())"
+project,0,test097,"public void test097() throws Throwable {
+    Document document0 = Document.createShell(""O=(3KH.9.)(>0P*"");
+    Elements elements0 = Selector.select(""N~SCRIPT"", (Element) document0);
+    assertEquals(0, elements0.size());
+}",0,"assertEquals(1, elements0.size())"
+project,0,test108,"public void test108() throws Throwable {
+    Document document0 = Document.createShell("":has(el) subselect must not be empty"");
+    // Undeclared exception!
+    try {
+        Selector.select(""wu[sx="", (Element) document0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test119,"public void test119() throws Throwable {
+    Document document0 = Document.createShell(""MENU"");
+    // Undeclared exception!
+    try {
+        Selector.select(""F7|(2,|H>|~Rnbe!9`"", (Element) document0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Could not parse query 'F7|(2,|H>|~Rnbe!9`': unexpected token at '(2,|H>|~Rnbe!9`'
+        //
+        verifyException(""org.jsoup.select.Selector"", e);
+    }
+}",0,
+project,0,test1210,"public void test1210() throws Throwable {
+    Document document0 = new Document(""Kq.)gNG^9HEwi/w7LcC"");
+    // Undeclared exception!
+    try {
+        Selector.select("":matchesOwn("", (Element) document0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // :matches(regex) query must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test1311,"public void test1311() throws Throwable {
+    Document document0 = Document.createShell(""gX8b[tzFGEbA,#.*%Qe"");
+    Elements elements0 = Selector.select("":matches(regex) query must not be empty"", (Element) document0);
+    assertEquals(0, elements0.size());
+}",0,"assertEquals(1, elements0.size())"
+project,0,test1412,"public void test1412() throws Throwable {
+    Document document0 = Document.createShell(""O=(3KH.9.)(>0P*"");
+    Elements elements0 = document0.getAllElements();
+    // Undeclared exception!
+    try {
+        Selector.select("":contains("", (Iterable<Element>) elements0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // :contains(text) query must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test1513,"public void test1513() throws Throwable {
+    Document document0 = new Document(""?+b"");
+    Elements elements0 = Selector.select(""BAS[5"", (Element) document0);
+    assertEquals(0, elements0.size());
+}",0,"assertEquals(1, elements0.size())"
+project,0,test1614,"public void test1614() throws Throwable {
+    Document document0 = new Document(""*EG>~."");
+    // Undeclared exception!
+    try {
+        Selector.select("","", (Element) document0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Unknown combinator: ,
+        //
+        verifyException(""org.jsoup.select.Selector"", e);
+    }
+}",0,
+project,0,test1715,"public void test1715() throws Throwable {
+    Document document0 = Document.createShell(""pxNv!/^A}@6hHb"");
+    Comparator<Object> comparator0 = (Comparator<Object>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    PriorityQueue<Element> priorityQueue0 = new PriorityQueue<Element>(8770, comparator0);
+    priorityQueue0.add(document0);
+    Elements elements0 = Selector.select(""+DfL"", (Iterable<Element>) priorityQueue0);
+    assertTrue(elements0.isEmpty());
+}",0,assertTrue(elements0.isEmpty())
+project,0,test1816,"public void test1816() throws Throwable {
+    Document document0 = Document.createShell(""O=(3KH.9.)(>0P*"");
+    Elements elements0 = Selector.select(""G,M>XM Lx0]Dj%3Fy"", (Element) document0);
+    assertTrue(elements0.isEmpty());
+}",0,assertTrue(elements0.isEmpty())
+project,0,test1917,"public void test1917() throws Throwable {
+    Document document0 = Document.createShell(""MENU"");
+    Elements elements0 = document0.getElementsByAttributeValueNot(""1V}\""VycY"", ""ObiSSF:$%RX*"");
+    // Undeclared exception!
+    try {
+        Selector.select("":gt(%d)"", (Iterable<Element>) elements0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Index must be numeric
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test2018,"public void test2018() throws Throwable {
+    Tag tag0 = Tag.valueOf(""`Y2"");
+    Attributes attributes0 = new Attributes();
+    Element element0 = new Element(tag0, ""^(z,C2REO^.q8>\""G"", attributes0);
+    // Undeclared exception!
+    try {
+        Selector.select("":lt("", element0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Index must be numeric
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test2119,"public void test2119() throws Throwable {
+    Document document0 = new Document(""?+b"");
+    // Undeclared exception!
+    try {
+        Selector.select(""~.y6V@Ai4w].gnH|M8"", (Element) document0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Could not parse query '.y6V@Ai4w].gnH|M8': unexpected token at '@Ai4w].gnH|M8'
+        //
+        verifyException(""org.jsoup.select.Selector"", e);
+    }
+}",0,
+project,0,test2220,"public void test2220() throws Throwable {
+    Document document0 = new Document("":not(selector) subselect must not be empty"");
+    Elements elements0 = Selector.select("":not(selector) subselect must not be empty"", (Element) document0);
+    assertEquals(0, elements0.size());
+}",0,"assertEquals(1, elements0.size())"
+project,0,test2321,"public void test2321() throws Throwable {
+    Document document0 = Document.createShell("":has(el) subselect must not be empty"");
+    Elements elements0 = Selector.select("":has(el) subselect must not be empty"", (Element) document0);
+    assertEquals(0, elements0.size());
+}",0,"assertEquals(1, elements0.size())"
+project,0,test2422,"public void test2422() throws Throwable {
+    Document document0 = Document.createShell(""MENU"");
+    // Undeclared exception!
+    try {
+        Selector.select(""J*B#4v:'[~\""M_* <F"", (Element) document0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Could not parse query 'J*B#4v:'[~\""M_* <F': unexpected token at ':'[~\""M_* <F'
+        //
+        verifyException(""org.jsoup.select.Selector"", e);
+    }
+}",0,

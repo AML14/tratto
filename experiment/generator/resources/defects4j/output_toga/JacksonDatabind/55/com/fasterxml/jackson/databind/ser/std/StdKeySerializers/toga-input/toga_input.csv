@@ -1,0 +1,241 @@
+focal_method,test_prefix,docstring
+"public boolean usesObjectId() {
+    return false;
+}","public void test000() throws Throwable {
+    JsonSerializer<Object> jsonSerializer0 = StdKeySerializers.getDefault();
+    assertFalse(jsonSerializer0.usesObjectId());
+}","/**
+ * Method that can be called to see whether this serializer instance
+ * will use Object Id to handle cyclic references.
+ */"
+"/*
+    /**********************************************************
+    /* Serialization
+    /**********************************************************
+     */
+@Override
+public abstract void serialize(T value, JsonGenerator gen, SerializerProvider provider) throws IOException;","public void test011() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    StdKeySerializers.Dynamic stdKeySerializers_Dynamic0 = new StdKeySerializers.Dynamic();
+    SerializerProvider serializerProvider0 = objectMapper0.getSerializerProviderInstance();
+    ObjectMapper.DefaultTyping objectMapper_DefaultTyping0 = ObjectMapper.DefaultTyping.NON_FINAL;
+    // Undeclared exception!
+    try {
+        stdKeySerializers_Dynamic0.serialize(objectMapper_DefaultTyping0, (JsonGenerator) null, serializerProvider0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.ser.std.StdKeySerializers$Default"", e);
+    }
+}",""
+"public boolean usesObjectId() {
+    return false;
+}","public void test022() throws Throwable {
+    StdKeySerializers.Dynamic stdKeySerializers_Dynamic0 = new StdKeySerializers.Dynamic();
+    StdKeySerializers.Dynamic stdKeySerializers_Dynamic1 = (StdKeySerializers.Dynamic) stdKeySerializers_Dynamic0.readResolve();
+    assertFalse(stdKeySerializers_Dynamic1.usesObjectId());
+}","/**
+ * Method that can be called to see whether this serializer instance
+ * will use Object Id to handle cyclic references.
+ */"
+"public boolean isUnwrappingSerializer() {
+    return false;
+}","public void test033() throws Throwable {
+    StdKeySerializers.StringKeySerializer stdKeySerializers_StringKeySerializer0 = new StdKeySerializers.StringKeySerializer();
+    assertFalse(stdKeySerializers_StringKeySerializer0.isUnwrappingSerializer());
+}","/**
+ * Accessor for checking whether this serializer is an
+ * ""unwrapping"" serializer; this is necessary to know since
+ * it may also require caller to suppress writing of the
+ * leading property name.
+ */"
+"/*
+    /**********************************************************
+    /* Serialization
+    /**********************************************************
+     */
+@Override
+public abstract void serialize(T value, JsonGenerator gen, SerializerProvider provider) throws IOException;","public void test044() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    StdKeySerializers.Dynamic stdKeySerializers_Dynamic0 = new StdKeySerializers.Dynamic();
+    SerializerProvider serializerProvider0 = objectMapper0.getSerializerProviderInstance();
+    // Undeclared exception!
+    try {
+        stdKeySerializers_Dynamic0.serialize(""artifactId"", (JsonGenerator) null, serializerProvider0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.ser.std.StdKeySerializers$StringKeySerializer"", e);
+    }
+}",""
+"public boolean usesObjectId() {
+    return false;
+}","public void test055() throws Throwable {
+    JsonSerializer<Object> jsonSerializer0 = StdKeySerializers.getStdKeySerializer((SerializationConfig) null, (Class<?>) null, true);
+    assertFalse(jsonSerializer0.usesObjectId());
+}","/**
+ * Method that can be called to see whether this serializer instance
+ * will use Object Id to handle cyclic references.
+ */"
+"public boolean isUnwrappingSerializer() {
+    return false;
+}","public void test066() throws Throwable {
+    Class<Object> class0 = Object.class;
+    JsonSerializer<Object> jsonSerializer0 = StdKeySerializers.getStdKeySerializer((SerializationConfig) null, class0, false);
+    assertFalse(jsonSerializer0.isUnwrappingSerializer());
+}","/**
+ * Accessor for checking whether this serializer is an
+ * ""unwrapping"" serializer; this is necessary to know since
+ * it may also require caller to suppress writing of the
+ * leading property name.
+ */"
+"public boolean usesObjectId() {
+    return false;
+}","public void test077() throws Throwable {
+    Class<Integer> class0 = Integer.TYPE;
+    JsonSerializer<Object> jsonSerializer0 = StdKeySerializers.getStdKeySerializer((SerializationConfig) null, class0, true);
+    assertFalse(jsonSerializer0.usesObjectId());
+}","/**
+ * Method that can be called to see whether this serializer instance
+ * will use Object Id to handle cyclic references.
+ */"
+"public boolean usesObjectId() {
+    return false;
+}","public void test088() throws Throwable {
+    Class<Long> class0 = Long.class;
+    JsonSerializer<Object> jsonSerializer0 = StdKeySerializers.getStdKeySerializer((SerializationConfig) null, class0, false);
+    assertFalse(jsonSerializer0.usesObjectId());
+}","/**
+ * Method that can be called to see whether this serializer instance
+ * will use Object Id to handle cyclic references.
+ */"
+"/*
+    /**********************************************************
+    /* Serialization
+    /**********************************************************
+     */
+@Override
+public abstract void serialize(T value, JsonGenerator gen, SerializerProvider provider) throws IOException;","public void test099() throws Throwable {
+    Class<AnnotationIntrospector.ReferenceProperty.Type> class0 = AnnotationIntrospector.ReferenceProperty.Type.class;
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    StdKeySerializers.Dynamic stdKeySerializers_Dynamic0 = new StdKeySerializers.Dynamic();
+    SerializerProvider serializerProvider0 = objectMapper0.getSerializerProviderInstance();
+    // Undeclared exception!
+    try {
+        stdKeySerializers_Dynamic0.serialize(class0, (JsonGenerator) null, serializerProvider0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.ser.std.StdKeySerializers$Default"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Serialization
+    /**********************************************************
+     */
+@Override
+public abstract void serialize(T value, JsonGenerator gen, SerializerProvider provider) throws IOException;","public void test1212() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    StdKeySerializers.Dynamic stdKeySerializers_Dynamic0 = new StdKeySerializers.Dynamic();
+    SerializerProvider serializerProvider0 = objectMapper0.getSerializerProviderInstance();
+    UUID uUID0 = MockUUID.randomUUID();
+    // Undeclared exception!
+    try {
+        stdKeySerializers_Dynamic0.serialize(uUID0, (JsonGenerator) null, serializerProvider0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.ser.std.StdKeySerializers$Default"", e);
+    }
+}",""
+"public boolean usesObjectId() {
+    return false;
+}","public void test1313() throws Throwable {
+    Class<Module> class0 = Module.class;
+    JsonSerializer<Object> jsonSerializer0 = StdKeySerializers.getStdKeySerializer((SerializationConfig) null, class0, true);
+    assertFalse(jsonSerializer0.usesObjectId());
+}","/**
+ * Method that can be called to see whether this serializer instance
+ * will use Object Id to handle cyclic references.
+ */"
+"public boolean isUnwrappingSerializer() {
+    return false;
+}","public void test1414() throws Throwable {
+    JsonSerializer<Object> jsonSerializer0 = StdKeySerializers.getFallbackKeySerializer((SerializationConfig) null, (Class<?>) null);
+    assertFalse(jsonSerializer0.isUnwrappingSerializer());
+}","/**
+ * Accessor for checking whether this serializer is an
+ * ""unwrapping"" serializer; this is necessary to know since
+ * it may also require caller to suppress writing of the
+ * leading property name.
+ */"
+"/*
+    /**********************************************************
+    /* Serialization
+    /**********************************************************
+     */
+@Override
+public abstract void serialize(T value, JsonGenerator gen, SerializerProvider provider) throws IOException;","public void test1515() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    StdKeySerializers.Dynamic stdKeySerializers_Dynamic0 = new StdKeySerializers.Dynamic();
+    SerializerProvider serializerProvider0 = objectMapper0.getSerializerProviderInstance();
+    // Undeclared exception!
+    try {
+        stdKeySerializers_Dynamic0.serialize(serializerProvider0, (JsonGenerator) null, serializerProvider0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.ser.std.StdKeySerializer"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Serialization
+    /**********************************************************
+     */
+@Override
+public abstract void serialize(T value, JsonGenerator gen, SerializerProvider provider) throws IOException;","public void test1616() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    ObjectMapper.DefaultTyping objectMapper_DefaultTyping0 = ObjectMapper.DefaultTyping.NON_FINAL;
+    Class<Date> class0 = Date.class;
+    StdKeySerializers.Default stdKeySerializers_Default0 = new StdKeySerializers.Default((-20), class0);
+    // Undeclared exception!
+    try {
+        stdKeySerializers_Default0.serialize(objectMapper_DefaultTyping0, (JsonGenerator) null, defaultSerializerProvider_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.ser.std.StdKeySerializers$Default"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Serialization
+    /**********************************************************
+     */
+@Override
+public abstract void serialize(T value, JsonGenerator gen, SerializerProvider provider) throws IOException;","public void test1717() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    StdKeySerializers.Dynamic stdKeySerializers_Dynamic0 = new StdKeySerializers.Dynamic();
+    SerializerProvider serializerProvider0 = objectMapper0.getSerializerProviderInstance();
+    serializerProvider0.setDefaultKeySerializer(stdKeySerializers_Dynamic0);
+    // Undeclared exception!
+    try {
+        stdKeySerializers_Dynamic0.serialize(serializerProvider0, (JsonGenerator) null, serializerProvider0);
+        fail(""Expecting exception: StackOverflowError"");
+    } catch (StackOverflowError e) {
+    }
+}",""

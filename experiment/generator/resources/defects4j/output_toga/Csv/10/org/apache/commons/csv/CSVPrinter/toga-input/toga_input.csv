@@ -1,0 +1,693 @@
+focal_method,test_prefix,docstring
+"public void print(final Object value) throws IOException {
+    // null values are considered empty
+    String strValue;
+    if (value == null) {
+        final String nullString = format.getNullString();
+        strValue = nullString == null ? Constants.EMPTY : nullString;
+    } else {
+        strValue = value.toString();
+    }
+    this.print(value, strValue, 0, strValue.length());
+}","public void test000() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.newFormat('R');
+    CSVFormat cSVFormat1 = cSVFormat0.withEscape('d');
+    CharArrayWriter charArrayWriter0 = new CharArrayWriter(0);
+    CSVPrinter cSVPrinter0 = cSVFormat1.print(charArrayWriter0);
+    cSVPrinter0.print(charArrayWriter0);
+}","/**
+ * Prints the string as the next value on the line. The value will be escaped or encapsulated as needed.
+ *
+ * @param value
+ *            value to be output.
+ * @throws IOException
+ *             If an I/O error occurs
+ */"
+"public void printRecords(final Object[] values) throws IOException {
+    for (final Object value : values) {
+        if (value instanceof Object[]) {
+            this.printRecord((Object[]) value);
+        } else if (value instanceof Iterable) {
+            this.printRecord((Iterable<?>) value);
+        } else {
+            this.printRecord(value);
+        }
+    }
+}","public void test011() throws Throwable {
+    Charset charset0 = Charset.defaultCharset();
+    ByteBuffer byteBuffer0 = ByteBuffer.allocateDirect(30);
+    CharBuffer charBuffer0 = charset0.decode(byteBuffer0);
+    CharBuffer charBuffer1 = CharBuffer.wrap((CharSequence) charBuffer0);
+    CSVFormat cSVFormat0 = CSVFormat.DEFAULT;
+    CSVPrinter cSVPrinter0 = new CSVPrinter(charBuffer1, cSVFormat0);
+    Object[] objectArray0 = new Object[3];
+    // Undeclared exception!
+    try {
+        cSVPrinter0.printRecords(objectArray0);
+        fail(""Expecting exception: ReadOnlyBufferException"");
+    } catch (ReadOnlyBufferException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.nio.StringCharBuffer"", e);
+    }
+}","/**
+ * Prints all the objects in the given array.
+ *
+ * @param values
+ *            the values to print.
+ * @throws IOException
+ *             If an I/O error occurs
+ */"
+"public void printRecords(final Object[] values) throws IOException {
+    for (final Object value : values) {
+        if (value instanceof Object[]) {
+            this.printRecord((Object[]) value);
+        } else if (value instanceof Iterable) {
+            this.printRecord((Iterable<?>) value);
+        } else {
+            this.printRecord(value);
+        }
+    }
+}","public void test022() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.newFormat('5');
+    CharArrayWriter charArrayWriter0 = new CharArrayWriter(0);
+    CSVPrinter cSVPrinter0 = cSVFormat0.print(charArrayWriter0);
+    // Undeclared exception!
+    try {
+        cSVPrinter0.printRecords((Object[]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.csv.CSVPrinter"", e);
+    }
+}","/**
+ * Prints all the objects in the given array.
+ *
+ * @param values
+ *            the values to print.
+ * @throws IOException
+ *             If an I/O error occurs
+ */"
+"public void printRecords(final Object[] values) throws IOException {
+    for (final Object value : values) {
+        if (value instanceof Object[]) {
+            this.printRecord((Object[]) value);
+        } else if (value instanceof Iterable) {
+            this.printRecord((Iterable<?>) value);
+        } else {
+            this.printRecord(value);
+        }
+    }
+}","public void test033() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.TDF;
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""M%+A%RMx~,Ds"");
+    OutputStreamWriter outputStreamWriter0 = new OutputStreamWriter(mockFileOutputStream0);
+    CSVPrinter cSVPrinter0 = cSVFormat0.print(outputStreamWriter0);
+    cSVPrinter0.close();
+    Object[] objectArray0 = new Object[2];
+    try {
+        cSVPrinter0.printRecords(objectArray0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+    }
+}","/**
+ * Prints all the objects in the given array.
+ *
+ * @param values
+ *            the values to print.
+ * @throws IOException
+ *             If an I/O error occurs
+ */"
+"public void printRecords(final ResultSet resultSet) throws SQLException, IOException {
+    final int columnCount = resultSet.getMetaData().getColumnCount();
+    while (resultSet.next()) {
+        for (int i = 1; i <= columnCount; i++) {
+            print(resultSet.getString(i));
+        }
+        println();
+    }
+}","public void test044() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.DEFAULT;
+    CharArrayWriter charArrayWriter0 = new CharArrayWriter();
+    CSVPrinter cSVPrinter0 = cSVFormat0.print(charArrayWriter0);
+    ResultSetMetaData resultSetMetaData0 = mock(ResultSetMetaData.class, new ViolatedAssumptionAnswer());
+    doReturn(2876).when(resultSetMetaData0).getColumnCount();
+    ResultSet resultSet0 = mock(ResultSet.class, new ViolatedAssumptionAnswer());
+    doReturn(resultSetMetaData0).when(resultSet0).getMetaData();
+    doReturn(""dMWn|h+[{SVr/Af{l"", ""dMWn|h+[{SVr/Af{l"", ""dMWn|h+[{SVr/Af{l"", ""\u0085"", """").when(resultSet0).getString(anyInt());
+    doReturn(true).when(resultSet0).next();
+    // Undeclared exception!
+    cSVPrinter0.printRecords(resultSet0);
+}","/**
+ * Prints all the objects in the given JDBC result set.
+ *
+ * @param resultSet result set
+ *            the values to print.
+ * @throws IOException
+ *             If an I/O error occurs
+ * @throws SQLException if a database access error occurs
+ */"
+"public void printRecords(final ResultSet resultSet) throws SQLException, IOException {
+    final int columnCount = resultSet.getMetaData().getColumnCount();
+    while (resultSet.next()) {
+        for (int i = 1; i <= columnCount; i++) {
+            print(resultSet.getString(i));
+        }
+        println();
+    }
+}","public void test055() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.TDF;
+    CharBuffer charBuffer0 = CharBuffer.wrap((CharSequence) ""$zqx9U"");
+    CSVPrinter cSVPrinter0 = cSVFormat0.print(charBuffer0);
+    // Undeclared exception!
+    try {
+        cSVPrinter0.printRecords((ResultSet) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * Prints all the objects in the given JDBC result set.
+ *
+ * @param resultSet result set
+ *            the values to print.
+ * @throws IOException
+ *             If an I/O error occurs
+ * @throws SQLException if a database access error occurs
+ */"
+"public void printRecords(final Iterable<?> values) throws IOException {
+    for (final Object value : values) {
+        if (value instanceof Object[]) {
+            this.printRecord((Object[]) value);
+        } else if (value instanceof Iterable) {
+            this.printRecord((Iterable<?>) value);
+        } else {
+            this.printRecord(value);
+        }
+    }
+}","public void test066() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream(1754);
+    BufferedOutputStream bufferedOutputStream0 = new BufferedOutputStream(byteArrayOutputStream0);
+    MockPrintWriter mockPrintWriter0 = new MockPrintWriter(bufferedOutputStream0, true);
+    CSVFormat cSVFormat0 = CSVFormat.MYSQL;
+    CSVPrinter cSVPrinter0 = new CSVPrinter(mockPrintWriter0, cSVFormat0);
+    // Undeclared exception!
+    try {
+        cSVPrinter0.printRecords((Iterable<?>) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.csv.CSVPrinter"", e);
+    }
+}","/**
+ * Prints all the objects in the given collection.
+ *
+ * @param values
+ *            the values to print.
+ * @throws IOException
+ *             If an I/O error occurs
+ */"
+"public void printRecord(final Iterable<?> values) throws IOException {
+    for (final Object value : values) {
+        print(value);
+    }
+    println();
+}","public void test1010() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.RFC4180;
+    StringWriter stringWriter0 = new StringWriter(1295);
+    CSVPrinter cSVPrinter0 = cSVFormat0.print(stringWriter0);
+    // Undeclared exception!
+    try {
+        cSVPrinter0.printRecord((Iterable<?>) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.csv.CSVPrinter"", e);
+    }
+}","/**
+ * Prints a single line of delimiter separated values. The values will be quoted if needed. Quotes and newLine
+ * characters will be escaped.
+ *
+ * @param values
+ *            values to output.
+ * @throws IOException
+ *             If an I/O error occurs
+ */"
+"public void printComment(final String comment) throws IOException {
+    if (!format.isCommentingEnabled()) {
+        return;
+    }
+    if (!newRecord) {
+        println();
+    }
+    out.append(format.getCommentStart().charValue());
+    out.append(SP);
+    for (int i = 0; i < comment.length(); i++) {
+        final char c = comment.charAt(i);
+        switch(c) {
+            case CR:
+                if (i + 1 < comment.length() && comment.charAt(i + 1) == LF) {
+                    i++;
+                }
+            //$FALL-THROUGH$ break intentionally excluded.
+            case LF:
+                println();
+                out.append(format.getCommentStart().charValue());
+                out.append(SP);
+                break;
+            default:
+                out.append(c);
+                break;
+        }
+    }
+    println();
+}","public void test1111() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream(1754);
+    BufferedOutputStream bufferedOutputStream0 = new BufferedOutputStream(byteArrayOutputStream0);
+    MockPrintWriter mockPrintWriter0 = new MockPrintWriter(bufferedOutputStream0, true);
+    CSVFormat cSVFormat0 = CSVFormat.MYSQL;
+    CSVFormat cSVFormat1 = cSVFormat0.withCommentStart('+');
+    CSVPrinter cSVPrinter0 = new CSVPrinter(mockPrintWriter0, cSVFormat1);
+    // Undeclared exception!
+    try {
+        cSVPrinter0.printComment((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.csv.CSVPrinter"", e);
+    }
+}","/**
+ * Prints a comment on a new line among the delimiter separated values.
+ *
+ * <p>
+ * Comments will always begin on a new line and occupy a least one full line. The character specified to start
+ * comments and a space will be inserted at the beginning of each new line in the comment.
+ * </p>
+ *
+ * If comments are disabled in the current CSV format this method does nothing.
+ *
+ * @param comment
+ *            the comment to output
+ * @throws IOException
+ *             If an I/O error occurs
+ */"
+"public void print(final Object value) throws IOException {
+    // null values are considered empty
+    String strValue;
+    if (value == null) {
+        final String nullString = format.getNullString();
+        strValue = nullString == null ? Constants.EMPTY : nullString;
+    } else {
+        strValue = value.toString();
+    }
+    this.print(value, strValue, 0, strValue.length());
+}","public void test1212() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.DEFAULT;
+    CharBuffer charBuffer0 = CharBuffer.allocate(0);
+    CSVPrinter cSVPrinter0 = cSVFormat0.print(charBuffer0);
+    // Undeclared exception!
+    try {
+        cSVPrinter0.print(cSVFormat0);
+        fail(""Expecting exception: BufferOverflowException"");
+    } catch (BufferOverflowException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.nio.CharBuffer"", e);
+    }
+}","/**
+ * Prints the string as the next value on the line. The value will be escaped or encapsulated as needed.
+ *
+ * @param value
+ *            value to be output.
+ * @throws IOException
+ *             If an I/O error occurs
+ */"
+"public void flush() throws IOException {
+    if (out instanceof Flushable) {
+        ((Flushable) out).flush();
+    }
+}","public void test1313() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.TDF;
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""M%+A%RMx~,Ds"");
+    OutputStreamWriter outputStreamWriter0 = new OutputStreamWriter(mockFileOutputStream0);
+    outputStreamWriter0.close();
+    CSVPrinter cSVPrinter0 = cSVFormat0.print(outputStreamWriter0);
+    try {
+        cSVPrinter0.flush();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+    }
+}","/**
+ * Flushes the underlying stream.
+ *
+ * @throws IOException
+ *             If an I/O error occurs
+ */"
+"public CSVPrinter(final Appendable out, final CSVFormat format) throws IOException {
+    Assertions.notNull(out, ""out"");
+    Assertions.notNull(format, ""format"");
+    this.out = out;
+    this.format = format;
+    this.format.validate();
+    // TODO: Is it a good idea to do this here instead of on the first call to a print method?
+    // It seems a pain to have to track whether the header has already been printed or not.
+}","public void test1414() throws Throwable {
+    MockPrintWriter mockPrintWriter0 = new MockPrintWriter(""\"""");
+    CSVFormat cSVFormat0 = CSVFormat.newFormat('c');
+    CSVFormat cSVFormat1 = cSVFormat0.withCommentStart('c');
+    CSVFormat cSVFormat2 = cSVFormat1.withEscape((Character) null);
+    CSVPrinter cSVPrinter0 = null;
+    try {
+        cSVPrinter0 = new CSVPrinter(mockPrintWriter0, cSVFormat2);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // The comment start character and the delimiter cannot be the same ('c')
+        //
+        verifyException(""org.apache.commons.csv.CSVFormat"", e);
+    }
+}","/**
+ * Creates a printer that will print values to the given stream following the CSVFormat.
+ * <p>
+ * Currently, only a pure encapsulation format or a pure escaping format is supported. Hybrid formats (encapsulation
+ * and escaping with a different character) are not supported.
+ * </p>
+ *
+ * @param out
+ *        stream to which to print. Must not be null.
+ * @param format
+ *        the CSV format. Must not be null.
+ * @throws IOException
+ *         thrown if the optional header cannot be printed.
+ * @throws IllegalArgumentException
+ *         thrown if the parameters of the format are inconsistent or if either out or format are null.
+ */"
+"public void println() throws IOException {
+    final String recordSeparator = format.getRecordSeparator();
+    if (recordSeparator != null) {
+        out.append(recordSeparator);
+    }
+    newRecord = true;
+}","public void test1515() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.EXCEL;
+    MockPrintWriter mockPrintWriter0 = new MockPrintWriter("";eI]{*%n"");
+    CSVPrinter cSVPrinter0 = cSVFormat0.print(mockPrintWriter0);
+    cSVPrinter0.println();
+}","/**
+ * Outputs the record separator.
+ *
+ * @throws IOException
+ *             If an I/O error occurs
+ */"
+"public void printRecords(final ResultSet resultSet) throws SQLException, IOException {
+    final int columnCount = resultSet.getMetaData().getColumnCount();
+    while (resultSet.next()) {
+        for (int i = 1; i <= columnCount; i++) {
+            print(resultSet.getString(i));
+        }
+        println();
+    }
+}","public void test1819() throws Throwable {
+    CharArrayWriter charArrayWriter0 = new CharArrayWriter();
+    CSVFormat cSVFormat0 = CSVFormat.TDF;
+    CSVPrinter cSVPrinter0 = new CSVPrinter(charArrayWriter0, cSVFormat0);
+    ResultSetMetaData resultSetMetaData0 = mock(ResultSetMetaData.class, new ViolatedAssumptionAnswer());
+    doReturn(434).when(resultSetMetaData0).getColumnCount();
+    ResultSet resultSet0 = mock(ResultSet.class, new ViolatedAssumptionAnswer());
+    doReturn(resultSetMetaData0).when(resultSet0).getMetaData();
+    doReturn((String) null, (String) null, (String) null, (String) null, (String) null).when(resultSet0).getString(anyInt());
+    doReturn(true, false).when(resultSet0).next();
+    cSVPrinter0.printRecords(resultSet0);
+}","/**
+ * Prints all the objects in the given JDBC result set.
+ *
+ * @param resultSet result set
+ *            the values to print.
+ * @throws IOException
+ *             If an I/O error occurs
+ * @throws SQLException if a database access error occurs
+ */"
+"public void printComment(final String comment) throws IOException {
+    if (!format.isCommentingEnabled()) {
+        return;
+    }
+    if (!newRecord) {
+        println();
+    }
+    out.append(format.getCommentStart().charValue());
+    out.append(SP);
+    for (int i = 0; i < comment.length(); i++) {
+        final char c = comment.charAt(i);
+        switch(c) {
+            case CR:
+                if (i + 1 < comment.length() && comment.charAt(i + 1) == LF) {
+                    i++;
+                }
+            //$FALL-THROUGH$ break intentionally excluded.
+            case LF:
+                println();
+                out.append(format.getCommentStart().charValue());
+                out.append(SP);
+                break;
+            default:
+                out.append(c);
+                break;
+        }
+    }
+    println();
+}","public void test2324() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.DEFAULT;
+    MockPrintStream mockPrintStream0 = new MockPrintStream("">{Dz~nER$ 3[Z~zTxip"");
+    CSVPrinter cSVPrinter0 = cSVFormat0.print(mockPrintStream0);
+    cSVPrinter0.printComment("""");
+}","/**
+ * Prints a comment on a new line among the delimiter separated values.
+ *
+ * <p>
+ * Comments will always begin on a new line and occupy a least one full line. The character specified to start
+ * comments and a space will be inserted at the beginning of each new line in the comment.
+ * </p>
+ *
+ * If comments are disabled in the current CSV format this method does nothing.
+ *
+ * @param comment
+ *            the comment to output
+ * @throws IOException
+ *             If an I/O error occurs
+ */"
+"public void printRecords(final Object[] values) throws IOException {
+    for (final Object value : values) {
+        if (value instanceof Object[]) {
+            this.printRecord((Object[]) value);
+        } else if (value instanceof Iterable) {
+            this.printRecord((Iterable<?>) value);
+        } else {
+            this.printRecord(value);
+        }
+    }
+}","public void test2425() throws Throwable {
+    MockPrintWriter mockPrintWriter0 = new MockPrintWriter(""/3kPo[q{N7q&"");
+    CSVFormat cSVFormat0 = CSVFormat.newFormat('j');
+    CSVFormat cSVFormat1 = cSVFormat0.withQuoteChar('\\');
+    CSVPrinter cSVPrinter0 = new CSVPrinter(mockPrintWriter0, cSVFormat1);
+    Object[] objectArray0 = new Object[1];
+    objectArray0[0] = (Object) mockPrintWriter0;
+    cSVPrinter0.printRecords(objectArray0);
+    assertEquals(1, objectArray0.length);
+}","/**
+ * Prints all the objects in the given array.
+ *
+ * @param values
+ *            the values to print.
+ * @throws IOException
+ *             If an I/O error occurs
+ */"
+"public void printRecords(final Object[] values) throws IOException {
+    for (final Object value : values) {
+        if (value instanceof Object[]) {
+            this.printRecord((Object[]) value);
+        } else if (value instanceof Iterable) {
+            this.printRecord((Iterable<?>) value);
+        } else {
+            this.printRecord(value);
+        }
+    }
+}","public void test2526() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.DEFAULT;
+    CSVFormat cSVFormat1 = cSVFormat0.withQuoteChar('@');
+    CharBuffer charBuffer0 = CharBuffer.allocate(101);
+    CSVPrinter cSVPrinter0 = cSVFormat1.print(charBuffer0);
+    cSVPrinter0.print(cSVFormat1);
+    Object[] objectArray0 = new Object[4];
+    objectArray0[0] = (Object) cSVFormat0;
+    // Undeclared exception!
+    try {
+        cSVPrinter0.printRecords(objectArray0);
+        fail(""Expecting exception: BufferOverflowException"");
+    } catch (BufferOverflowException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.nio.CharBuffer"", e);
+    }
+}","/**
+ * Prints all the objects in the given array.
+ *
+ * @param values
+ *            the values to print.
+ * @throws IOException
+ *             If an I/O error occurs
+ */"
+"public void print(final Object value) throws IOException {
+    // null values are considered empty
+    String strValue;
+    if (value == null) {
+        final String nullString = format.getNullString();
+        strValue = nullString == null ? Constants.EMPTY : nullString;
+    } else {
+        strValue = value.toString();
+    }
+    this.print(value, strValue, 0, strValue.length());
+}","public void test2627() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.TDF;
+    Quote quote0 = Quote.NON_NUMERIC;
+    CSVFormat cSVFormat1 = cSVFormat0.withQuotePolicy(quote0);
+    CharBuffer charBuffer0 = CharBuffer.wrap((CharSequence) ""$zqx9U"");
+    CSVPrinter cSVPrinter0 = cSVFormat1.print(charBuffer0);
+    // Undeclared exception!
+    try {
+        cSVPrinter0.print(cSVFormat0);
+        fail(""Expecting exception: ReadOnlyBufferException"");
+    } catch (ReadOnlyBufferException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.nio.StringCharBuffer"", e);
+    }
+}","/**
+ * Prints the string as the next value on the line. The value will be escaped or encapsulated as needed.
+ *
+ * @param value
+ *            value to be output.
+ * @throws IOException
+ *             If an I/O error occurs
+ */"
+"public void printRecords(final Object[] values) throws IOException {
+    for (final Object value : values) {
+        if (value instanceof Object[]) {
+            this.printRecord((Object[]) value);
+        } else if (value instanceof Iterable) {
+            this.printRecord((Iterable<?>) value);
+        } else {
+            this.printRecord(value);
+        }
+    }
+}","public void test2728() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream(1754);
+    BufferedOutputStream bufferedOutputStream0 = new BufferedOutputStream(byteArrayOutputStream0);
+    MockPrintWriter mockPrintWriter0 = new MockPrintWriter(bufferedOutputStream0, true);
+    CSVFormat cSVFormat0 = CSVFormat.MYSQL;
+    CSVPrinter cSVPrinter0 = new CSVPrinter(mockPrintWriter0, cSVFormat0);
+    Object[] objectArray0 = new Object[3];
+    objectArray0[0] = (Object) cSVFormat0;
+    cSVPrinter0.printRecords(objectArray0);
+    assertEquals(3, objectArray0.length);
+}","/**
+ * Prints all the objects in the given array.
+ *
+ * @param values
+ *            the values to print.
+ * @throws IOException
+ *             If an I/O error occurs
+ */"
+"public String format(final Object... values) {
+    final StringWriter out = new StringWriter();
+    try {
+        new CSVPrinter(out, this).printRecord(values);
+        return out.toString().trim();
+    } catch (final IOException e) {
+        // should not happen because a StringWriter does not do IO.
+        throw new IllegalStateException(e);
+    }
+}","public void test2829() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.newFormat('G');
+    Object[] objectArray0 = new Object[5];
+    objectArray0[0] = (Object) cSVFormat0;
+    String string0 = cSVFormat0.format(objectArray0);
+    assertNotNull(string0);
+}","/**
+ * Formats the specified values.
+ *
+ * @param values
+ *            the values to format
+ * @return the formatted values
+ */"
+"public void flush() throws IOException {
+    if (out instanceof Flushable) {
+        ((Flushable) out).flush();
+    }
+}","public void test2930() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.newFormat('G');
+    StringWriter stringWriter0 = new StringWriter(0);
+    CSVPrinter cSVPrinter0 = cSVFormat0.print(stringWriter0);
+    cSVPrinter0.flush();
+}","/**
+ * Flushes the underlying stream.
+ *
+ * @throws IOException
+ *             If an I/O error occurs
+ */"
+"public void flush() throws IOException {
+    if (out instanceof Flushable) {
+        ((Flushable) out).flush();
+    }
+}","public void test3031() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.TDF;
+    CharBuffer charBuffer0 = CharBuffer.wrap((CharSequence) ""$zqx9U"");
+    CSVPrinter cSVPrinter0 = cSVFormat0.print(charBuffer0);
+    cSVPrinter0.flush();
+}","/**
+ * Flushes the underlying stream.
+ *
+ * @throws IOException
+ *             If an I/O error occurs
+ */"
+"// ======================================================
+// printing implementation
+// ======================================================
+public void close() throws IOException {
+    if (out instanceof Closeable) {
+        ((Closeable) out).close();
+    }
+}","public void test3132() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.TDF;
+    char[] charArray0 = new char[4];
+    CharBuffer charBuffer0 = CharBuffer.wrap(charArray0);
+    CSVPrinter cSVPrinter0 = cSVFormat0.print(charBuffer0);
+    cSVPrinter0.close();
+}",""
+"public Appendable getOut() {
+    return this.out;
+}","public void test3233() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.newFormat('$');
+    MockFileWriter mockFileWriter0 = new MockFileWriter(""org.apache.commons.csv.CSVPrinter$1"", false);
+    CSVPrinter cSVPrinter0 = cSVFormat0.print(mockFileWriter0);
+    Appendable appendable0 = cSVPrinter0.getOut();
+    assertSame(mockFileWriter0, appendable0);
+}","/**
+ * Gets the target Appendable.
+ *
+ * @return the target Appendable.
+ */"

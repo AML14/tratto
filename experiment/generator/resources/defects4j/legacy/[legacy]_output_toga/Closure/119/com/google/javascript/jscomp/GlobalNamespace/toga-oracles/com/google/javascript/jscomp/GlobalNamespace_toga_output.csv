@@ -1,0 +1,138 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""(>?`zkbywZ%'L<2DG"");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""(>?`zkbywZ%'L<2DG"");
+    Predicate<String> predicate0 = (Predicate<String>) mock(Predicate.class, new ViolatedAssumptionAnswer());
+    GlobalNamespace.Tracker globalNamespace_Tracker0 = new GlobalNamespace.Tracker(compiler0, mockPrintStream0, predicate0);
+    globalNamespace_Tracker0.process(node0, node0);
+    assertFalse(node0.isFor());
+}",0,assertTrue(node0.isFor())
+project,0,test011,"public void test011() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""com.google.javascript.rhino.jstype.NumberType"");
+    GlobalNamespace globalNamespace0 = new GlobalNamespace(compiler0, node0, node0);
+    GlobalNamespace.Name globalNamespace_Name0 = globalNamespace0.getSlot("""");
+    assertNull(globalNamespace_Name0);
+}",0,assertNotNull(globalNamespace_Name0)
+project,0,test022,"public void test022() throws Throwable {
+    LightweightMessageFormatter lightweightMessageFormatter0 = LightweightMessageFormatter.withoutSource();
+    MockFile mockFile0 = new MockFile(""JSC_MISSING_NAME_MAP_FOR_GENERATOR"");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(mockFile0);
+    PrintStreamErrorManager printStreamErrorManager0 = new PrintStreamErrorManager(lightweightMessageFormatter0, mockPrintStream0);
+    Compiler compiler0 = new Compiler(printStreamErrorManager0);
+    Node node0 = new Node(1873);
+    GlobalNamespace globalNamespace0 = new GlobalNamespace(compiler0, node0);
+    StaticScope<JSType> staticScope0 = globalNamespace0.getParentScope();
+    assertNull(staticScope0);
+}",0,assertNotNull(staticScope0)
+project,0,test033,"public void test033() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    GlobalNamespace globalNamespace0 = new GlobalNamespace(compiler0, (Node) null);
+    StaticScope<JSType> staticScope0 = globalNamespace0.getScope((GlobalNamespace.Name) null);
+    assertSame(globalNamespace0, staticScope0);
+}",0,
+project,0,test044,"public void test044() throws Throwable {
+    GlobalNamespace globalNamespace0 = new GlobalNamespace((AbstractCompiler) null, (Node) null);
+    // Undeclared exception!
+    try {
+        globalNamespace0.getNameForest();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.NodeTraversal"", e);
+    }
+}",0,
+project,0,test055,"public void test055() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    GlobalNamespace globalNamespace0 = new GlobalNamespace(compiler0, (Node) null);
+    // Undeclared exception!
+    try {
+        globalNamespace0.getReferences((GlobalNamespace.Name) null);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // null
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",0,
+project,0,test066,"public void test066() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    GlobalNamespace globalNamespace0 = new GlobalNamespace(compiler0, (Node) null, (Node) null);
+    // Undeclared exception!
+    try {
+        globalNamespace0.getAllSymbols();
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // null
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",0,
+project,0,test077,"public void test077() throws Throwable {
+    Node node0 = Node.newNumber((-1087.028290587), 160, (-455));
+    GlobalNamespace globalNamespace0 = new GlobalNamespace((AbstractCompiler) null, node0);
+    Node node1 = globalNamespace0.getRootNode();
+    assertNull(node1);
+}",0,
+project,0,test088,"public void test088() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    GlobalNamespace globalNamespace0 = new GlobalNamespace(compiler0, (Node) null);
+    // Undeclared exception!
+    try {
+        globalNamespace0.getTypeOfThis();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.Compiler"", e);
+    }
+}",0,
+project,0,test2222,"public void test2222() throws Throwable {
+    LightweightMessageFormatter lightweightMessageFormatter0 = LightweightMessageFormatter.withoutSource();
+    MockFile mockFile0 = new MockFile(""JSC_MISSING_NAME_MAP_FOR_GENERATOR"");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(mockFile0);
+    PrintStreamErrorManager printStreamErrorManager0 = new PrintStreamErrorManager(lightweightMessageFormatter0, mockPrintStream0);
+    Compiler compiler0 = new Compiler(printStreamErrorManager0);
+    Node node0 = new Node(1873);
+    GlobalNamespace globalNamespace0 = new GlobalNamespace(compiler0, node0);
+    boolean boolean0 = globalNamespace0.hasExternsRoot();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2323,"public void test2323() throws Throwable {
+    Node node0 = new Node((-3117), (-3117), (-3117));
+    GlobalNamespace globalNamespace0 = new GlobalNamespace((AbstractCompiler) null, node0, node0);
+    boolean boolean0 = globalNamespace0.hasExternsRoot();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2424,"public void test2424() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode("""");
+    GlobalNamespace globalNamespace0 = new GlobalNamespace(compiler0, node0, node0);
+    globalNamespace0.getSlot(""t)2be!"");
+    GlobalNamespace.Name globalNamespace_Name0 = globalNamespace0.getSlot("""");
+    assertNull(globalNamespace_Name0);
+}",0,assertNotNull(globalNamespace_Name0)
+project,0,test2727,"public void test2727() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""ALIASING_GET"");
+    GlobalNamespace globalNamespace0 = new GlobalNamespace(compiler0, node0, node0);
+    GlobalNamespace.Name globalNamespace_Name0 = globalNamespace0.getSlot(""ALIASING_GET"");
+    assertNull(globalNamespace_Name0);
+}",0,assertNotNull(globalNamespace_Name0)
+project,0,test2828,"public void test2828() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""spx"");
+    GlobalNamespace globalNamespace0 = new GlobalNamespace(compiler0, (Node) null, node0);
+    GlobalNamespace.Name globalNamespace_Name0 = globalNamespace0.getSlot(""sst&|e?!kBD"");
+    assertNull(globalNamespace_Name0);
+}",0,assertNotNull(globalNamespace_Name0)

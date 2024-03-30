@@ -1,0 +1,700 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""UxRS~L`&zjDqX/"", 0);
+    assertFalse(jsonPointer0.matches());
+}",1,
+project,0,test001,"public void test001() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""UxRS~L`&zjDqX/"", 0);
+    assertEquals(""~UxRS~L`&zjDqX"", jsonPointer0.getMatchingProperty());
+}",0,assertNotNull(jsonPointer0.getMatchingProperty())
+project,0,test002,"public void test002() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""UxRS~L`&zjDqX/"", 0);
+    assertFalse(jsonPointer0.mayMatchElement());
+}",0,assertFalse(jsonPointer0.mayMatchElement())
+project,0,test003,"public void test003() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""UxRS~L`&zjDqX/"", 0);
+    assertEquals(""UxRS~L`&zjDqX/"", jsonPointer0.toString());
+}",0,assertNotNull(jsonPointer0.toString())
+project,0,test014,"public void test014() throws Throwable {
+    // Undeclared exception!
+    try {
+        JsonPointer._parseQuotedTail("""", 2);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",1,
+project,0,test025,"public void test025() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""\""9 *EsdbB"", 8);
+    assertEquals(""\""9 *EsdbB"", jsonPointer0.toString());
+}",0,assertNotNull(jsonPointer0.toString())
+project,0,test026,"public void test026() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""\""9 *EsdbB"", 8);
+    assertEquals((-1), jsonPointer0.getMatchingIndex());
+}",0,"assertEquals(0, jsonPointer0.getMatchingIndex())"
+project,0,test027,"public void test027() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""\""9 *EsdbB"", 8);
+    assertEquals(""9 *Esd~B"", jsonPointer0.getMatchingProperty());
+}",0,assertNotNull(jsonPointer0.getMatchingProperty())
+project,0,test038,"public void test038() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""2wKWi"", 0);
+    jsonPointer0.hashCode();
+    assertEquals(""~2wKWi"", jsonPointer0.getMatchingProperty());
+}",0,assertNotNull(jsonPointer0.getMatchingProperty())
+project,0,test039,"public void test039() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""2wKWi"", 0);
+    jsonPointer0.hashCode();
+    assertEquals((-1), jsonPointer0.getMatchingIndex());
+}",0,
+project,0,test0410,"public void test0410() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""\"""");
+    jsonPointer0.matchElement((-1006));
+    assertEquals("""", jsonPointer0.getMatchingProperty());
+}",0,assertNotNull(jsonPointer0.getMatchingProperty())
+project,0,test0411,"public void test0411() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""\"""");
+    jsonPointer0.matchElement((-1006));
+    assertEquals(""\"""", jsonPointer0.toString());
+}",0,assertNotNull(jsonPointer0.toString())
+project,0,test0412,"public void test0412() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""\"""");
+    jsonPointer0.matchElement((-1006));
+    assertFalse(jsonPointer0.matches());
+}",1,
+project,0,test0413,"public void test0413() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""\"""");
+    jsonPointer0.matchElement((-1006));
+    assertEquals((-1), jsonPointer0.getMatchingIndex());
+}",0,"assertEquals(0, jsonPointer0.getMatchingIndex())"
+project,0,test0514,"public void test0514() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""com.fasterxml.jackson.core.JsonPointer"");
+    boolean boolean0 = jsonPointer0.mayMatchProperty();
+    assertEquals(""om.fasterxml.jackson.core.JsonPointer"", jsonPointer0.getMatchingProperty());
+}",0,assertNotNull(jsonPointer0.getMatchingProperty())
+project,0,test0515,"public void test0515() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""com.fasterxml.jackson.core.JsonPointer"");
+    boolean boolean0 = jsonPointer0.mayMatchProperty();
+    assertEquals(""com.fasterxml.jackson.core.JsonPointer"", jsonPointer0.toString());
+}",0,assertNotNull(jsonPointer0.toString())
+project,0,test0516,"public void test0516() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""com.fasterxml.jackson.core.JsonPointer"");
+    boolean boolean0 = jsonPointer0.mayMatchProperty();
+    assertEquals((-1), jsonPointer0.getMatchingIndex());
+}",0,"assertEquals(0, jsonPointer0.getMatchingIndex())"
+project,0,test0517,"public void test0517() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""com.fasterxml.jackson.core.JsonPointer"");
+    boolean boolean0 = jsonPointer0.mayMatchProperty();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test0518,"public void test0518() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""com.fasterxml.jackson.core.JsonPointer"");
+    boolean boolean0 = jsonPointer0.mayMatchProperty();
+    assertFalse(jsonPointer0.matches());
+}",0,
+project,0,test0619,"public void test0619() throws Throwable {
+    try {
+        JsonPointer.compile(""\"" can not be represented as BigDecimal"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid input: JSON Pointer expression must start with '/': \""\"" can not be represented as BigDecimal\""
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonPointer"", e);
+    }
+}",0,
+project,0,test0720,"public void test0720() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer.EMPTY;
+    String string0 = jsonPointer0.toString();
+    assertEquals("""", string0);
+}",0,assertNotNull(string0)
+project,0,test0821,"public void test0821() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""'"", 0);
+    JsonPointer jsonPointer1 = new JsonPointer(""'"", ""'"", jsonPointer0);
+    JsonPointer jsonPointer2 = jsonPointer1.tail();
+    assertEquals(""~'"", jsonPointer2.getMatchingProperty());
+}",0,assertNotNull(jsonPointer2.getMatchingProperty())
+project,0,test0822,"public void test0822() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""'"", 0);
+    JsonPointer jsonPointer1 = new JsonPointer(""'"", ""'"", jsonPointer0);
+    JsonPointer jsonPointer2 = jsonPointer1.tail();
+    assertEquals((-1), jsonPointer2.getMatchingIndex());
+}",0,"assertEquals(0, jsonPointer2.getMatchingIndex())"
+project,0,test0823,"public void test0823() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""'"", 0);
+    JsonPointer jsonPointer1 = new JsonPointer(""'"", ""'"", jsonPointer0);
+    JsonPointer jsonPointer2 = jsonPointer1.tail();
+    assertEquals(""'"", jsonPointer2.toString());
+}",0,assertNotNull(jsonPointer2.toString())
+project,0,test0824,"public void test0824() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""'"", 0);
+    JsonPointer jsonPointer1 = new JsonPointer(""'"", ""'"", jsonPointer0);
+    JsonPointer jsonPointer2 = jsonPointer1.tail();
+    assertNotNull(jsonPointer2);
+}",0,
+project,0,test0925,"public void test0925() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""#)FP\""Z"");
+    JsonPointer jsonPointer1 = new JsonPointer(""|)z_l/&t?Lhvg~9=PF"", ""Re<Syn?x~0Gpvyl"", jsonPointer0);
+    JsonPointer jsonPointer2 = jsonPointer1.matchProperty(""Re<Syn?x~0Gpvyl"");
+    assertEquals((-1), jsonPointer2.getMatchingIndex());
+}",0,"assertEquals(1, jsonPointer2.getMatchingIndex())"
+project,0,test0926,"public void test0926() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""#)FP\""Z"");
+    JsonPointer jsonPointer1 = new JsonPointer(""|)z_l/&t?Lhvg~9=PF"", ""Re<Syn?x~0Gpvyl"", jsonPointer0);
+    JsonPointer jsonPointer2 = jsonPointer1.matchProperty(""Re<Syn?x~0Gpvyl"");
+    assertEquals((-1), jsonPointer1.getMatchingIndex());
+}",0,"assertEquals(0, jsonPointer1.getMatchingIndex())"
+project,0,test0927,"public void test0927() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""#)FP\""Z"");
+    JsonPointer jsonPointer1 = new JsonPointer(""|)z_l/&t?Lhvg~9=PF"", ""Re<Syn?x~0Gpvyl"", jsonPointer0);
+    JsonPointer jsonPointer2 = jsonPointer1.matchProperty(""Re<Syn?x~0Gpvyl"");
+    assertNotNull(jsonPointer2);
+}",0,
+project,0,test0928,"public void test0928() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""#)FP\""Z"");
+    JsonPointer jsonPointer1 = new JsonPointer(""|)z_l/&t?Lhvg~9=PF"", ""Re<Syn?x~0Gpvyl"", jsonPointer0);
+    JsonPointer jsonPointer2 = jsonPointer1.matchProperty(""Re<Syn?x~0Gpvyl"");
+    assertEquals("")FP\""Z"", jsonPointer2.getMatchingProperty());
+}",0,assertNotNull(jsonPointer2.getMatchingProperty())
+project,0,test1029,"public void test1029() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""3F*^fz99E<t;!CB;/"", 0);
+    String string0 = jsonPointer0.getMatchingProperty();
+    assertFalse(jsonPointer0.matches());
+}",1,
+project,0,test1030,"public void test1030() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""3F*^fz99E<t;!CB;/"", 0);
+    String string0 = jsonPointer0.getMatchingProperty();
+    assertEquals(""3F*^fz99E<t;!CB;/"", jsonPointer0.toString());
+}",0,assertNotNull(jsonPointer0.toString())
+project,0,test1031,"public void test1031() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""3F*^fz99E<t;!CB;/"", 0);
+    String string0 = jsonPointer0.getMatchingProperty();
+    assertEquals(""~3F*^fz99E<t;!CB;"", string0);
+}",0,assertNotNull(string0)
+project,0,test1032,"public void test1032() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""3F*^fz99E<t;!CB;/"", 0);
+    String string0 = jsonPointer0.getMatchingProperty();
+    assertEquals((-1), jsonPointer0.getMatchingIndex());
+}",0,"assertEquals(0, jsonPointer0.getMatchingIndex())"
+project,0,test1133,"public void test1133() throws Throwable {
+    JsonPointer jsonPointer0 = new JsonPointer();
+    JsonPointer jsonPointer1 = new JsonPointer(""H"", ""0"", jsonPointer0);
+    int int0 = jsonPointer1.getMatchingIndex();
+    assertEquals((-1), jsonPointer0.getMatchingIndex());
+}",0,
+project,0,test1134,"public void test1134() throws Throwable {
+    JsonPointer jsonPointer0 = new JsonPointer();
+    JsonPointer jsonPointer1 = new JsonPointer(""H"", ""0"", jsonPointer0);
+    int int0 = jsonPointer1.getMatchingIndex();
+    assertEquals(""H"", jsonPointer1.toString());
+}",0,assertNotNull(jsonPointer1.toString())
+project,0,test1135,"public void test1135() throws Throwable {
+    JsonPointer jsonPointer0 = new JsonPointer();
+    JsonPointer jsonPointer1 = new JsonPointer(""H"", ""0"", jsonPointer0);
+    int int0 = jsonPointer1.getMatchingIndex();
+    assertEquals(""0"", jsonPointer1.getMatchingProperty());
+}",0,assertNotNull(jsonPointer1.getMatchingProperty())
+project,0,test1136,"public void test1136() throws Throwable {
+    JsonPointer jsonPointer0 = new JsonPointer();
+    JsonPointer jsonPointer1 = new JsonPointer(""H"", ""0"", jsonPointer0);
+    int int0 = jsonPointer1.getMatchingIndex();
+    assertEquals(0, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test1137,"public void test1137() throws Throwable {
+    JsonPointer jsonPointer0 = new JsonPointer();
+    JsonPointer jsonPointer1 = new JsonPointer(""H"", ""0"", jsonPointer0);
+    int int0 = jsonPointer1.getMatchingIndex();
+    assertFalse(jsonPointer1.matches());
+}",1,
+project,0,test1238,"public void test1238() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""G04"");
+    int int0 = jsonPointer0.getMatchingIndex();
+    assertEquals(4, int0);
+}",0,
+project,0,test1239,"public void test1239() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""G04"");
+    int int0 = jsonPointer0.getMatchingIndex();
+    assertEquals(""04"", jsonPointer0.getMatchingProperty());
+}",0,assertNotNull(jsonPointer0.getMatchingProperty())
+project,0,test1240,"public void test1240() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""G04"");
+    int int0 = jsonPointer0.getMatchingIndex();
+    assertFalse(jsonPointer0.matches());
+}",1,
+project,0,test1241,"public void test1241() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""G04"");
+    int int0 = jsonPointer0.getMatchingIndex();
+    assertEquals(""G04"", jsonPointer0.toString());
+}",0,assertNotNull(jsonPointer0.toString())
+project,0,test1342,"public void test1342() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""G0"");
+    assertEquals(""G0"", jsonPointer0.toString());
+}",0,assertNotNull(jsonPointer0.toString())
+project,0,test1343,"public void test1343() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""G0"");
+    assertTrue(jsonPointer0.mayMatchElement());
+}",0,assertTrue(jsonPointer0.mayMatchElement())
+project,0,test1344,"public void test1344() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""G0"");
+    assertEquals(""0"", jsonPointer0.getMatchingProperty());
+}",0,assertNotNull(jsonPointer0.getMatchingProperty())
+project,0,test1345,"public void test1345() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""G0"");
+    assertFalse(jsonPointer0.matches());
+}",1,
+project,0,test1446,"public void test1446() throws Throwable {
+    // Undeclared exception!
+    try {
+        JsonPointer.valueOf(""Invalid input: JSON Pointer expression must start with '/': \"""");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid input: JSON Pointer expression must start with '/': \""Invalid input: JSON Pointer expression must start with '/': \""\""
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonPointer"", e);
+    }
+}",0,
+project,0,test1547,"public void test1547() throws Throwable {
+    // Undeclared exception!
+    try {
+        JsonPointer._parseTail("""");
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",0,
+project,0,test1648,"public void test1648() throws Throwable {
+    // Undeclared exception!
+    try {
+        JsonPointer._parseTail(""p7[506"");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // For input string: \""7[506\""
+        //
+        verifyException(""java.lang.NumberFormatException"", e);
+    }
+}",0,
+project,0,test1749,"public void test1749() throws Throwable {
+    // Undeclared exception!
+    try {
+        JsonPointer._parseTail((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonPointer"", e);
+    }
+}",0,
+project,0,test1850,"public void test1850() throws Throwable {
+    // Undeclared exception!
+    try {
+        JsonPointer._parseQuotedTail((String) null, 646);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonPointer"", e);
+    }
+}",0,
+project,0,test1951,"public void test1951() throws Throwable {
+    // Undeclared exception!
+    try {
+        JsonPointer._parseQuotedTail(""UxRS~L`&zjDqX/"", 1143);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // start 1, end 1142, s.length() 15
+        //
+        verifyException(""java.lang.AbstractStringBuilder"", e);
+    }
+}",0,
+project,0,test2052,"public void test2052() throws Throwable {
+    JsonPointer jsonPointer0 = null;
+    try {
+        jsonPointer0 = new JsonPointer(""3!7E"", ""3!7E"", (JsonPointer) null);
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // For input string: \""3!7E\""
+        //
+        verifyException(""java.lang.NumberFormatException"", e);
+    }
+}",0,
+project,0,test2153,"public void test2153() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer.EMPTY;
+    JsonPointer jsonPointer1 = null;
+    try {
+        jsonPointer1 = new JsonPointer((String) null, (String) null, jsonPointer0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonPointer"", e);
+    }
+}",0,
+project,0,test2254,"public void test2254() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer.compile(""/PV8}XI{l'YJO9E($"");
+    assertEquals(""PV8}XI{l'YJO9E($"", jsonPointer0.getMatchingProperty());
+}",0,
+project,0,test2255,"public void test2255() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer.compile(""/PV8}XI{l'YJO9E($"");
+    assertEquals((-1), jsonPointer0.getMatchingIndex());
+}",0,"assertEquals(0, jsonPointer0.getMatchingIndex())"
+project,0,test2256,"public void test2256() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer.compile(""/PV8}XI{l'YJO9E($"");
+    assertFalse(jsonPointer0.matches());
+}",1,
+project,0,test2257,"public void test2257() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer.compile(""/PV8}XI{l'YJO9E($"");
+    assertEquals(""/PV8}XI{l'YJO9E($"", jsonPointer0.toString());
+}",0,assertNotNull(jsonPointer0.toString())
+project,0,test2358,"public void test2358() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer.compile("""");
+    JsonPointer jsonPointer1 = jsonPointer0.tail();
+    assertNull(jsonPointer1);
+}",1,
+project,0,test2459,"public void test2459() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""2.2250738585072012e-308"", 16);
+    assertFalse(jsonPointer0.matches());
+}",1,
+project,0,test2460,"public void test2460() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""2.2250738585072012e-308"", 16);
+    assertEquals(""2.2250738585072012e-308"", jsonPointer0.toString());
+}",0,assertNotNull(jsonPointer0.toString())
+project,0,test2461,"public void test2461() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""2.2250738585072012e-308"", 16);
+    assertFalse(jsonPointer0.mayMatchElement());
+}",0,assertTrue(jsonPointer0.mayMatchElement())
+project,0,test2462,"public void test2462() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""2.2250738585072012e-308"", 16);
+    assertEquals("".2250738585072/2e-308"", jsonPointer0.getMatchingProperty());
+}",0,assertNotNull(jsonPointer0.getMatchingProperty())
+project,0,test2563,"public void test2563() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""Re<Syn?x~0Gpvyl"", 0);
+    assertEquals((-1), jsonPointer0.getMatchingIndex());
+}",0,"assertEquals(0, jsonPointer0.getMatchingIndex())"
+project,0,test2564,"public void test2564() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""Re<Syn?x~0Gpvyl"", 0);
+    assertFalse(jsonPointer0.matches());
+}",1,
+project,0,test2565,"public void test2565() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""Re<Syn?x~0Gpvyl"", 0);
+    assertEquals(""Re<Syn?x~0Gpvyl"", jsonPointer0.toString());
+}",0,assertNotNull(jsonPointer0.toString())
+project,0,test2566,"public void test2566() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""Re<Syn?x~0Gpvyl"", 0);
+    assertEquals(""~Re<Syn?x~Gpvyl"", jsonPointer0.getMatchingProperty());
+}",0,assertNotNull(jsonPointer0.getMatchingProperty())
+project,0,test2667,"public void test2667() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""$ZxSb~"");
+    assertEquals(""ZxSb~"", jsonPointer0.getMatchingProperty());
+}",0,assertNotNull(jsonPointer0.getMatchingProperty())
+project,0,test2668,"public void test2668() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""$ZxSb~"");
+    assertFalse(jsonPointer0.matches());
+}",1,
+project,0,test2669,"public void test2669() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""$ZxSb~"");
+    assertEquals((-1), jsonPointer0.getMatchingIndex());
+}",0,"assertEquals(0, jsonPointer0.getMatchingIndex())"
+project,0,test2670,"public void test2670() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""$ZxSb~"");
+    assertEquals(""$ZxSb~"", jsonPointer0.toString());
+}",0,
+project,0,test2771,"public void test2771() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""|)z_l/&t?Lhvg~9=PF"");
+    assertEquals(""|)z_l/&t?Lhvg~9=PF"", jsonPointer0.toString());
+}",0,assertNotNull(jsonPointer0.toString())
+project,0,test2772,"public void test2772() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""|)z_l/&t?Lhvg~9=PF"");
+    assertEquals((-1), jsonPointer0.getMatchingIndex());
+}",0,"assertEquals(0, jsonPointer0.getMatchingIndex())"
+project,0,test2773,"public void test2773() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""|)z_l/&t?Lhvg~9=PF"");
+    assertEquals("")z_l"", jsonPointer0.getMatchingProperty());
+}",0,assertNotNull(jsonPointer0.getMatchingProperty())
+project,0,test2774,"public void test2774() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""|)z_l/&t?Lhvg~9=PF"");
+    assertFalse(jsonPointer0.matches());
+}",1,
+project,0,test2875,"public void test2875() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""3F*^fz99E<t;!CB;/"");
+    assertEquals(""F*^fz99E<t;!CB;"", jsonPointer0.getMatchingProperty());
+}",0,assertNotNull(jsonPointer0.getMatchingProperty())
+project,0,test2876,"public void test2876() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""3F*^fz99E<t;!CB;/"");
+    assertFalse(jsonPointer0.matches());
+}",1,
+project,0,test2877,"public void test2877() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""3F*^fz99E<t;!CB;/"");
+    assertEquals((-1), jsonPointer0.getMatchingIndex());
+}",0,
+project,0,test2878,"public void test2878() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""3F*^fz99E<t;!CB;/"");
+    assertEquals(""3F*^fz99E<t;!CB;/"", jsonPointer0.toString());
+}",0,assertNotNull(jsonPointer0.toString())
+project,0,test2979,"public void test2979() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""~)kx^$<MFG"");
+    assertEquals((-1), jsonPointer0.getMatchingIndex());
+}",0,"assertEquals(0, jsonPointer0.getMatchingIndex())"
+project,0,test2980,"public void test2980() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""~)kx^$<MFG"");
+    assertEquals(""~)kx^$<MFG"", jsonPointer0.toString());
+}",0,
+project,0,test2981,"public void test2981() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""~)kx^$<MFG"");
+    assertEquals("")kx^$<MFG"", jsonPointer0.getMatchingProperty());
+}",0,
+project,0,test2982,"public void test2982() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""~)kx^$<MFG"");
+    assertFalse(jsonPointer0.matches());
+}",1,
+project,0,test3083,"public void test3083() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer.EMPTY;
+    Object object0 = new Object();
+    boolean boolean0 = jsonPointer0.equals(object0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test3184,"public void test3184() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer.EMPTY;
+    JsonPointer jsonPointer1 = new JsonPointer((String) null, ""3F*^fz99E<t;!CB;/"", (JsonPointer) null);
+    // Undeclared exception!
+    try {
+        jsonPointer1.equals(jsonPointer0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+    }
+}",0,
+project,0,test3285,"public void test3285() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""3F*^fz99E<t;!CB;/"", 0);
+    boolean boolean0 = jsonPointer0.equals(jsonPointer0);
+    assertEquals((-1), jsonPointer0.getMatchingIndex());
+}",0,"assertEquals(0, jsonPointer0.getMatchingIndex())"
+project,0,test3286,"public void test3286() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""3F*^fz99E<t;!CB;/"", 0);
+    boolean boolean0 = jsonPointer0.equals(jsonPointer0);
+    assertEquals(""~3F*^fz99E<t;!CB;"", jsonPointer0.getMatchingProperty());
+}",0,assertNotNull(jsonPointer0.getMatchingProperty())
+project,0,test3287,"public void test3287() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""3F*^fz99E<t;!CB;/"", 0);
+    boolean boolean0 = jsonPointer0.equals(jsonPointer0);
+    assertFalse(jsonPointer0.matches());
+}",1,
+project,0,test3288,"public void test3288() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""3F*^fz99E<t;!CB;/"", 0);
+    boolean boolean0 = jsonPointer0.equals(jsonPointer0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test3289,"public void test3289() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""3F*^fz99E<t;!CB;/"", 0);
+    boolean boolean0 = jsonPointer0.equals(jsonPointer0);
+    assertEquals(""3F*^fz99E<t;!CB;/"", jsonPointer0.toString());
+}",0,assertNotNull(jsonPointer0.toString())
+project,0,test3390,"public void test3390() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer.compile((String) null);
+    boolean boolean0 = jsonPointer0.equals((Object) null);
+    assertFalse(boolean0);
+}",1,
+project,0,test3491,"public void test3491() throws Throwable {
+    JsonPointer jsonPointer0 = new JsonPointer();
+    jsonPointer0.matchElement((-1));
+    assertEquals((-1), jsonPointer0.getMatchingIndex());
+}",0,"assertEquals(0, jsonPointer0.getMatchingIndex())"
+project,0,test3592,"public void test3592() throws Throwable {
+    JsonPointer jsonPointer0 = new JsonPointer();
+    jsonPointer0.matchElement(0);
+    assertEquals((-1), jsonPointer0.getMatchingIndex());
+}",0,"assertEquals(0, jsonPointer0.getMatchingIndex())"
+project,0,test3693,"public void test3693() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""pcB%"", 1);
+    JsonPointer jsonPointer1 = jsonPointer0.matchProperty(""pcB%"");
+    assertEquals(""~cB%"", jsonPointer0.getMatchingProperty());
+}",0,assertNotNull(jsonPointer0.getMatchingProperty())
+project,0,test3694,"public void test3694() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""pcB%"", 1);
+    JsonPointer jsonPointer1 = jsonPointer0.matchProperty(""pcB%"");
+    assertEquals((-1), jsonPointer0.getMatchingIndex());
+}",0,
+project,0,test3695,"public void test3695() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""pcB%"", 1);
+    JsonPointer jsonPointer1 = jsonPointer0.matchProperty(""pcB%"");
+    assertEquals(""pcB%"", jsonPointer0.toString());
+}",0,assertNotNull(jsonPointer0.toString())
+project,0,test3696,"public void test3696() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""pcB%"", 1);
+    JsonPointer jsonPointer1 = jsonPointer0.matchProperty(""pcB%"");
+    assertNull(jsonPointer1);
+}",0,
+project,0,test3797,"public void test3797() throws Throwable {
+    JsonPointer jsonPointer0 = new JsonPointer();
+    JsonPointer jsonPointer1 = new JsonPointer(""T"", ""T"", jsonPointer0);
+    assertTrue(jsonPointer1.mayMatchProperty());
+}",0,assertTrue(jsonPointer1.mayMatchProperty())
+project,0,test3798,"public void test3798() throws Throwable {
+    JsonPointer jsonPointer0 = new JsonPointer();
+    JsonPointer jsonPointer1 = new JsonPointer(""T"", ""T"", jsonPointer0);
+    JsonPointer jsonPointer2 = jsonPointer1.matchProperty(""T"");
+    assertEquals((-1), jsonPointer2.getMatchingIndex());
+}",0,
+project,0,test3799,"public void test3799() throws Throwable {
+    JsonPointer jsonPointer0 = new JsonPointer();
+    JsonPointer jsonPointer1 = new JsonPointer(""T"", ""T"", jsonPointer0);
+    JsonPointer jsonPointer2 = jsonPointer1.matchProperty(""T"");
+    assertNotNull(jsonPointer2);
+}",0,
+project,0,test37100,"public void test37100() throws Throwable {
+    JsonPointer jsonPointer0 = new JsonPointer();
+    JsonPointer jsonPointer1 = new JsonPointer(""T"", ""T"", jsonPointer0);
+    JsonPointer jsonPointer2 = jsonPointer1.matchProperty(""T"");
+    assertEquals((-1), jsonPointer1.getMatchingIndex());
+}",0,
+project,0,test38102,"public void test38102() throws Throwable {
+    JsonPointer jsonPointer0 = new JsonPointer();
+    jsonPointer0.matchProperty("""");
+    assertEquals((-1), jsonPointer0.getMatchingIndex());
+}",0,"assertEquals(0, jsonPointer0.getMatchingIndex())"
+project,0,test39103,"public void test39103() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""G04"");
+    boolean boolean0 = jsonPointer0.mayMatchElement();
+    assertEquals(""04"", jsonPointer0.getMatchingProperty());
+}",0,
+project,0,test39104,"public void test39104() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""G04"");
+    boolean boolean0 = jsonPointer0.mayMatchElement();
+    assertFalse(jsonPointer0.matches());
+}",1,
+project,0,test39105,"public void test39105() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""G04"");
+    boolean boolean0 = jsonPointer0.mayMatchElement();
+    assertTrue(jsonPointer0.mayMatchProperty());
+}",0,assertTrue(jsonPointer0.mayMatchProperty())
+project,0,test39106,"public void test39106() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""G04"");
+    boolean boolean0 = jsonPointer0.mayMatchElement();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test39107,"public void test39107() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""G04"");
+    boolean boolean0 = jsonPointer0.mayMatchElement();
+    assertEquals(""G04"", jsonPointer0.toString());
+}",0,
+project,0,test40108,"public void test40108() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer.EMPTY;
+    boolean boolean0 = jsonPointer0.mayMatchElement();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test41109,"public void test41109() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer.compile((String) null);
+    boolean boolean0 = jsonPointer0.matches();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test42110,"public void test42110() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""G04"");
+    boolean boolean0 = jsonPointer0.matches();
+    assertFalse(boolean0);
+}",1,
+project,0,test42111,"public void test42111() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""G04"");
+    boolean boolean0 = jsonPointer0.matches();
+    assertEquals(""04"", jsonPointer0.getMatchingProperty());
+}",0,assertNotNull(jsonPointer0.getMatchingProperty())
+project,0,test42112,"public void test42112() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""G04"");
+    boolean boolean0 = jsonPointer0.matches();
+    assertEquals(""G04"", jsonPointer0.toString());
+}",0,assertNotNull(jsonPointer0.toString())
+project,0,test42113,"public void test42113() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""G04"");
+    boolean boolean0 = jsonPointer0.matches();
+    assertEquals(4, jsonPointer0.getMatchingIndex());
+}",0,
+project,0,test42114,"public void test42114() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""G04"");
+    boolean boolean0 = jsonPointer0.matches();
+    assertTrue(jsonPointer0.mayMatchProperty());
+}",0,assertFalse(jsonPointer0.mayMatchProperty())
+project,0,test43115,"public void test43115() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer.valueOf(""/"");
+    assertTrue(jsonPointer0.mayMatchProperty());
+}",0,assertTrue(jsonPointer0.mayMatchProperty())
+project,0,test43116,"public void test43116() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer.valueOf(""/"");
+    assertEquals(""/"", jsonPointer0.toString());
+}",0,assertNotNull(jsonPointer0.toString())
+project,0,test43117,"public void test43117() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer.valueOf(""/"");
+    assertFalse(jsonPointer0.matches());
+}",1,
+project,0,test43118,"public void test43118() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer.valueOf(""/"");
+    assertEquals("""", jsonPointer0.getMatchingProperty());
+}",0,
+project,0,test43119,"public void test43119() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer.valueOf(""/"");
+    assertEquals((-1), jsonPointer0.getMatchingIndex());
+}",0,"assertEquals(0, jsonPointer0.getMatchingIndex())"
+project,0,test44120,"public void test44120() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer.valueOf("""");
+    assertEquals("""", jsonPointer0.getMatchingProperty());
+}",0,assertNotNull(jsonPointer0.getMatchingProperty())
+project,0,test45121,"public void test45121() throws Throwable {
+    JsonPointer jsonPointer0 = new JsonPointer();
+    int int0 = jsonPointer0.getMatchingIndex();
+    assertEquals((-1), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test46122,"public void test46122() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""G04"");
+    String string0 = jsonPointer0.toString();
+    assertEquals(""G04"", string0);
+}",0,assertNotNull(string0)
+project,0,test46124,"public void test46124() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""G04"");
+    String string0 = jsonPointer0.toString();
+    assertEquals(""04"", jsonPointer0.getMatchingProperty());
+}",0,
+project,0,test46125,"public void test46125() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""G04"");
+    String string0 = jsonPointer0.toString();
+    assertTrue(jsonPointer0.mayMatchElement());
+}",0,
+project,0,test46126,"public void test46126() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""G04"");
+    String string0 = jsonPointer0.toString();
+    assertFalse(jsonPointer0.matches());
+}",1,
+project,0,test46127,"public void test46127() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseTail(""G04"");
+    String string0 = jsonPointer0.toString();
+    assertTrue(jsonPointer0.mayMatchProperty());
+}",0,
+project,0,test47128,"public void test47128() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""$ZxSb~"", 0);
+    JsonPointer jsonPointer1 = jsonPointer0.tail();
+    assertNotNull(jsonPointer1);
+}",0,
+project,0,test47129,"public void test47129() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""$ZxSb~"", 0);
+    JsonPointer jsonPointer1 = jsonPointer0.tail();
+    assertEquals(""~$ZxSb~"", jsonPointer0.getMatchingProperty());
+}",0,assertNotNull(jsonPointer0.getMatchingProperty())
+project,0,test47130,"public void test47130() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""$ZxSb~"", 0);
+    JsonPointer jsonPointer1 = jsonPointer0.tail();
+    assertEquals((-1), jsonPointer0.getMatchingIndex());
+}",0,
+project,0,test47131,"public void test47131() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""$ZxSb~"", 0);
+    JsonPointer jsonPointer1 = jsonPointer0.tail();
+    assertTrue(jsonPointer0.mayMatchProperty());
+}",0,assertTrue(jsonPointer0.mayMatchProperty())
+project,0,test47132,"public void test47132() throws Throwable {
+    JsonPointer jsonPointer0 = JsonPointer._parseQuotedTail(""$ZxSb~"", 0);
+    JsonPointer jsonPointer1 = jsonPointer0.tail();
+    assertEquals("""", jsonPointer1.toString());
+}",0,assertNotNull(jsonPointer1.toString())
+project,0,test48133,"public void test48133() throws Throwable {
+    JsonPointer jsonPointer0 = new JsonPointer();
+    jsonPointer0.getMatchingProperty();
+    assertEquals((-1), jsonPointer0.getMatchingIndex());
+}",0,"assertEquals(0, jsonPointer0.getMatchingIndex())"

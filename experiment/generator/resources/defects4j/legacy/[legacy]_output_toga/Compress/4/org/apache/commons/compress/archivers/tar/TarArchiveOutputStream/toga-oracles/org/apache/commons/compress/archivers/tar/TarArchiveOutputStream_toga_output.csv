@@ -1,0 +1,89 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(byteArrayOutputStream0);
+    tarArchiveOutputStream0.flush();
+    assertEquals(0, TarArchiveOutputStream.LONGFILE_ERROR);
+}",0,
+project,0,test011,"public void test011() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(byteArrayOutputStream0, 223);
+    assertEquals(1, TarArchiveOutputStream.LONGFILE_TRUNCATE);
+}",0,
+project,0,test022,"public void test022() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(byteArrayOutputStream0, 1756, 1756);
+    int int0 = tarArchiveOutputStream0.getRecordSize();
+    assertEquals(1756, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test033,"public void test033() throws Throwable {
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""V!^/XJ_6vB*2="");
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(mockPrintStream0);
+    MockFile mockFile0 = new MockFile("""", ""V!^/XJ_6vB*2="");
+    ArchiveEntry archiveEntry0 = tarArchiveOutputStream0.createArchiveEntry(mockFile0, ""V!^/XJ_6vB*2="");
+    tarArchiveOutputStream0.putArchiveEntry(archiveEntry0);
+    try {
+        tarArchiveOutputStream0.close();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // This archives contains unclosed entries.
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarArchiveOutputStream"", e);
+    }
+}",0,
+project,0,test055,"public void test055() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream(475);
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(byteArrayOutputStream0, 475, 475);
+    MockFile mockFile0 = new MockFile(""org.apache.com+ons.compress.archivers.zip.ZipArchiveEntGy"", ""org.apache.com+ons.compress.archivers.zip.ZipArchiveEntGy"");
+    TarArchiveEntry tarArchiveEntry0 = new TarArchiveEntry(mockFile0);
+    // Undeclared exception!
+    try {
+        tarArchiveOutputStream0.putArchiveEntry(tarArchiveEntry0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // file name 'Users/elliottzackrone/IdeaProjects/defects4jprefix/org.apache.com+ons.compress.archivers.zip.ZipArchiveEntGy/org.apache.com+ons.compress.archivers.zip.ZipArchiveEntGy' is too long ( > 100 bytes)
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarArchiveOutputStream"", e);
+    }
+}",0,
+project,0,test077,"public void test077() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    MockFile mockFile0 = new MockFile("""");
+    TarArchiveEntry tarArchiveEntry0 = new TarArchiveEntry(mockFile0);
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(byteArrayOutputStream0);
+    tarArchiveOutputStream0.putArchiveEntry(tarArchiveEntry0);
+    assertEquals(16877, tarArchiveEntry0.getMode());
+}",0,"assertEquals(0, tarArchiveEntry0.getMode())"
+project,0,test0910,"public void test0910() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream(2090);
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(byteArrayOutputStream0, 2090, 2090);
+    tarArchiveOutputStream0.setLongFileMode(2);
+    MockFile mockFile0 = new MockFile(""org.apache.commons.compress.archivers.zip.ZipArchiveEntry"", ""org.apache.commons.compress.archivers.zip.ZipArchiveEntry"");
+    TarArchiveEntry tarArchiveEntry0 = new TarArchiveEntry(mockFile0);
+    tarArchiveEntry0.setSize(1L);
+    tarArchiveOutputStream0.putArchiveEntry(tarArchiveEntry0);
+    try {
+        tarArchiveOutputStream0.closeArchiveEntry();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // entry 'Users/elliottzackrone/IdeaProjects/defects4jprefix/org.apache.commons.compress.archivers.zip.ZipArchiveEntry/org.apache.commons.compress.archivers.zip.ZipArchiveEntry' closed at '0' before the '1' bytes specified in the header were written
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarArchiveOutputStream"", e);
+    }
+}",0,
+project,0,test1011,"public void test1011() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(byteArrayOutputStream0);
+    try {
+        tarArchiveOutputStream0.write(0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // request to write '1' bytes exceeds size in header of '0' bytes for entry 'null'
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarArchiveOutputStream"", e);
+    }
+}",0,

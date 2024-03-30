@@ -1,0 +1,840 @@
+focal_method,test_prefix,docstring
+"public String getEncoding() {
+    return encoding;
+}","public void test000() throws Throwable {
+    MockFile mockFile0 = new MockFile(""|Z<S)|q:+V;KN8Ck`#"");
+    ZipArchiveOutputStream zipArchiveOutputStream0 = new ZipArchiveOutputStream(mockFile0);
+    String string0 = zipArchiveOutputStream0.getEncoding();
+    assertEquals(""UTF8"", string0);
+}","/**
+ * The encoding to use for filenames and the file comment.
+ *
+ * @return null if using the platform's default character encoding.
+ */"
+"public void close() throws IOException {
+    finish();
+    if (raf != null) {
+        raf.close();
+    }
+    if (out != null) {
+        out.close();
+    }
+}","public void test011() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    ZipArchiveOutputStream zipArchiveOutputStream0 = new ZipArchiveOutputStream(byteArrayOutputStream0);
+    zipArchiveOutputStream0.putArchiveEntry(zipArchiveEntry0);
+    try {
+        zipArchiveOutputStream0.close();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // This archives contains unclosed entries.
+        //
+        verifyException(""org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream"", e);
+    }
+}","/**
+ * Closes this output stream and releases any system resources
+ * associated with the stream.
+ *
+ * @exception  IOException  if an I/O error occurs.
+ */"
+"public String getEncoding() {
+    return encoding;
+}","public void test033() throws Throwable {
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    ZipArchiveOutputStream zipArchiveOutputStream0 = new ZipArchiveOutputStream(pipedOutputStream0);
+    zipArchiveOutputStream0.setFallbackToUTF8(true);
+    assertEquals(""UTF8"", zipArchiveOutputStream0.getEncoding());
+}","/**
+ * The encoding to use for filenames and the file comment.
+ *
+ * @return null if using the platform's default character encoding.
+ */"
+"public String getEncoding() {
+    return encoding;
+}","public void test044() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    ZipArchiveOutputStream zipArchiveOutputStream0 = new ZipArchiveOutputStream(byteArrayOutputStream0);
+    zipArchiveOutputStream0.setEncoding(""93Z"");
+    zipArchiveOutputStream0.setUseLanguageEncodingFlag(true);
+    assertEquals(""93Z"", zipArchiveOutputStream0.getEncoding());
+}","/**
+ * The encoding to use for filenames and the file comment.
+ *
+ * @return null if using the platform's default character encoding.
+ */"
+"public ArchiveEntry createArchiveEntry(File inputFile, String entryName) throws IOException {
+    return new ZipArchiveEntry(inputFile, entryName);
+}","public void test055() throws Throwable {
+    ZipArchiveOutputStream zipArchiveOutputStream0 = new ZipArchiveOutputStream((OutputStream) null);
+    // Undeclared exception!
+    try {
+        zipArchiveOutputStream0.createArchiveEntry((File) null, ""Invalid compression level: "");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.zip.ZipArchiveEntry"", e);
+    }
+}",""
+"public String getEncoding() {
+    return encoding;
+}","public void test099() throws Throwable {
+    MockFile mockFile0 = new MockFile(""g&>96:qIxO^90966vs"");
+    ZipArchiveOutputStream zipArchiveOutputStream0 = new ZipArchiveOutputStream(mockFile0);
+    ZipArchiveOutputStream zipArchiveOutputStream1 = new ZipArchiveOutputStream(zipArchiveOutputStream0);
+    boolean boolean0 = zipArchiveOutputStream1.isSeekable();
+    assertEquals(""UTF8"", zipArchiveOutputStream1.getEncoding());
+}","/**
+ * The encoding to use for filenames and the file comment.
+ *
+ * @return null if using the platform's default character encoding.
+ */"
+"public boolean isSeekable() {
+    return raf != null;
+}","public void test0910() throws Throwable {
+    MockFile mockFile0 = new MockFile(""g&>96:qIxO^90966vs"");
+    ZipArchiveOutputStream zipArchiveOutputStream0 = new ZipArchiveOutputStream(mockFile0);
+    ZipArchiveOutputStream zipArchiveOutputStream1 = new ZipArchiveOutputStream(zipArchiveOutputStream0);
+    boolean boolean0 = zipArchiveOutputStream1.isSeekable();
+    assertFalse(boolean0);
+}","/**
+ * This method indicates whether this archive is writing to a
+ * seekable stream (i.e., to a random access file).
+ *
+ * <p>For seekable streams, you don't need to calculate the CRC or
+ * uncompressed size for {@link #STORED} entries before
+ * invoking {@link #putArchiveEntry(ArchiveEntry)}.
+ * @return true if seekable
+ */"
+"public String getEncoding() {
+    return encoding;
+}","public void test0911() throws Throwable {
+    MockFile mockFile0 = new MockFile(""g&>96:qIxO^90966vs"");
+    ZipArchiveOutputStream zipArchiveOutputStream0 = new ZipArchiveOutputStream(mockFile0);
+    ZipArchiveOutputStream zipArchiveOutputStream1 = new ZipArchiveOutputStream(zipArchiveOutputStream0);
+    boolean boolean0 = zipArchiveOutputStream1.isSeekable();
+    assertEquals(""UTF8"", zipArchiveOutputStream0.getEncoding());
+}","/**
+ * The encoding to use for filenames and the file comment.
+ *
+ * @return null if using the platform's default character encoding.
+ */"
+"public String getEncoding() {
+    return encoding;
+}","public void test1012() throws Throwable {
+    String string0 = ""!O\\uHYC<"";
+    MockFile mockFile0 = new MockFile("""", string0);
+    ZipArchiveOutputStream zipArchiveOutputStream0 = new ZipArchiveOutputStream(mockFile0);
+    boolean boolean0 = zipArchiveOutputStream0.isSeekable();
+    assertEquals(""UTF8"", zipArchiveOutputStream0.getEncoding());
+}","/**
+ * The encoding to use for filenames and the file comment.
+ *
+ * @return null if using the platform's default character encoding.
+ */"
+"public boolean isSeekable() {
+    return raf != null;
+}","public void test1013() throws Throwable {
+    String string0 = ""!O\\uHYC<"";
+    MockFile mockFile0 = new MockFile("""", string0);
+    ZipArchiveOutputStream zipArchiveOutputStream0 = new ZipArchiveOutputStream(mockFile0);
+    boolean boolean0 = zipArchiveOutputStream0.isSeekable();
+    assertTrue(boolean0);
+}","/**
+ * This method indicates whether this archive is writing to a
+ * seekable stream (i.e., to a random access file).
+ *
+ * <p>For seekable streams, you don't need to calculate the CRC or
+ * uncompressed size for {@link #STORED} entries before
+ * invoking {@link #putArchiveEntry(ArchiveEntry)}.
+ * @return true if seekable
+ */"
+"public String getEncoding() {
+    return encoding;
+}","public void test1114() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    ZipArchiveOutputStream zipArchiveOutputStream0 = new ZipArchiveOutputStream(byteArrayOutputStream0);
+    zipArchiveOutputStream0.setUseLanguageEncodingFlag(true);
+    assertEquals(""UTF8"", zipArchiveOutputStream0.getEncoding());
+}","/**
+ * The encoding to use for filenames and the file comment.
+ *
+ * @return null if using the platform's default character encoding.
+ */"
+"// @throws ClassCastException if entry is not an instance of ZipArchiveEntry
+public void putArchiveEntry(ArchiveEntry archiveEntry) throws IOException {
+    closeArchiveEntry();
+    entry = ((ZipArchiveEntry) archiveEntry);
+    entries.add(entry);
+    if (entry.getMethod() == -1) {
+        // not specified
+        entry.setMethod(method);
+    }
+    if (entry.getTime() == -1) {
+        // not specified
+        entry.setTime(System.currentTimeMillis());
+    }
+    // Size/CRC not required if RandomAccessFile is used
+    if (entry.getMethod() == STORED && raf == null) {
+        if (entry.getSize() == -1) {
+            throw new ZipException(""uncompressed size is required for"" + "" STORED method when not writing to a"" + "" file"");
+        }
+        if (entry.getCrc() == -1) {
+            throw new ZipException(""crc checksum is required for STORED"" + "" method when not writing to a file"");
+        }
+        entry.setCompressedSize(entry.getSize());
+    }
+    if (entry.getMethod() == DEFLATED && hasCompressionLevelChanged) {
+        def.setLevel(level);
+        hasCompressionLevelChanged = false;
+    }
+    writeLocalFileHeader(entry);
+}","public void test1419() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    ZipArchiveOutputStream zipArchiveOutputStream0 = new ZipArchiveOutputStream(byteArrayOutputStream0);
+    zipArchiveEntry0.setCrc(3);
+    zipArchiveEntry0.setSize(0);
+    zipArchiveOutputStream0.setMethod(0);
+    zipArchiveOutputStream0.putArchiveEntry(zipArchiveEntry0);
+    try {
+        zipArchiveOutputStream0.putArchiveEntry(zipArchiveEntry0);
+        fail(""Expecting exception: ZipException"");
+    } catch (ZipException e) {
+        //
+        // bad CRC checksum for entry : 3 instead of 0
+        //
+        verifyException(""org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"// @throws ClassCastException if entry is not an instance of ZipArchiveEntry
+public void putArchiveEntry(ArchiveEntry archiveEntry) throws IOException {
+    closeArchiveEntry();
+    entry = ((ZipArchiveEntry) archiveEntry);
+    entries.add(entry);
+    if (entry.getMethod() == -1) {
+        // not specified
+        entry.setMethod(method);
+    }
+    if (entry.getTime() == -1) {
+        // not specified
+        entry.setTime(System.currentTimeMillis());
+    }
+    // Size/CRC not required if RandomAccessFile is used
+    if (entry.getMethod() == STORED && raf == null) {
+        if (entry.getSize() == -1) {
+            throw new ZipException(""uncompressed size is required for"" + "" STORED method when not writing to a"" + "" file"");
+        }
+        if (entry.getCrc() == -1) {
+            throw new ZipException(""crc checksum is required for STORED"" + "" method when not writing to a file"");
+        }
+        entry.setCompressedSize(entry.getSize());
+    }
+    if (entry.getMethod() == DEFLATED && hasCompressionLevelChanged) {
+        def.setLevel(level);
+        hasCompressionLevelChanged = false;
+    }
+    writeLocalFileHeader(entry);
+}","public void test1520() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    ZipArchiveOutputStream zipArchiveOutputStream0 = new ZipArchiveOutputStream(byteArrayOutputStream0);
+    zipArchiveEntry0.setCrc(0);
+    zipArchiveEntry0.setSize(8);
+    zipArchiveOutputStream0.setMethod(0);
+    zipArchiveOutputStream0.putArchiveEntry(zipArchiveEntry0);
+    try {
+        zipArchiveOutputStream0.putArchiveEntry(zipArchiveEntry0);
+        fail(""Expecting exception: ZipException"");
+    } catch (ZipException e) {
+        //
+        // bad size for entry : 8 instead of 0
+        //
+        verifyException(""org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"// @throws ClassCastException if entry is not an instance of ZipArchiveEntry
+public void putArchiveEntry(ArchiveEntry archiveEntry) throws IOException {
+    closeArchiveEntry();
+    entry = ((ZipArchiveEntry) archiveEntry);
+    entries.add(entry);
+    if (entry.getMethod() == -1) {
+        // not specified
+        entry.setMethod(method);
+    }
+    if (entry.getTime() == -1) {
+        // not specified
+        entry.setTime(System.currentTimeMillis());
+    }
+    // Size/CRC not required if RandomAccessFile is used
+    if (entry.getMethod() == STORED && raf == null) {
+        if (entry.getSize() == -1) {
+            throw new ZipException(""uncompressed size is required for"" + "" STORED method when not writing to a"" + "" file"");
+        }
+        if (entry.getCrc() == -1) {
+            throw new ZipException(""crc checksum is required for STORED"" + "" method when not writing to a file"");
+        }
+        entry.setCompressedSize(entry.getSize());
+    }
+    if (entry.getMethod() == DEFLATED && hasCompressionLevelChanged) {
+        def.setLevel(level);
+        hasCompressionLevelChanged = false;
+    }
+    writeLocalFileHeader(entry);
+}","public void test1621() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    MockFile mockFile0 = new MockFile(""not encodeable"", ""not encodeable"");
+    ZipArchiveOutputStream zipArchiveOutputStream0 = new ZipArchiveOutputStream(mockFile0);
+    zipArchiveOutputStream0.setMethod(0);
+    try {
+        zipArchiveOutputStream0.putArchiveEntry(zipArchiveEntry0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Error in writing to file
+        //
+        verifyException(""org.evosuite.runtime.mock.java.io.NativeMockedIO"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"// @throws ClassCastException if entry is not an instance of ZipArchiveEntry
+public void putArchiveEntry(ArchiveEntry archiveEntry) throws IOException {
+    closeArchiveEntry();
+    entry = ((ZipArchiveEntry) archiveEntry);
+    entries.add(entry);
+    if (entry.getMethod() == -1) {
+        // not specified
+        entry.setMethod(method);
+    }
+    if (entry.getTime() == -1) {
+        // not specified
+        entry.setTime(System.currentTimeMillis());
+    }
+    // Size/CRC not required if RandomAccessFile is used
+    if (entry.getMethod() == STORED && raf == null) {
+        if (entry.getSize() == -1) {
+            throw new ZipException(""uncompressed size is required for"" + "" STORED method when not writing to a"" + "" file"");
+        }
+        if (entry.getCrc() == -1) {
+            throw new ZipException(""crc checksum is required for STORED"" + "" method when not writing to a file"");
+        }
+        entry.setCompressedSize(entry.getSize());
+    }
+    if (entry.getMethod() == DEFLATED && hasCompressionLevelChanged) {
+        def.setLevel(level);
+        hasCompressionLevelChanged = false;
+    }
+    writeLocalFileHeader(entry);
+}","public void test1722() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    ZipArchiveOutputStream zipArchiveOutputStream0 = new ZipArchiveOutputStream(byteArrayOutputStream0);
+    zipArchiveOutputStream0.setMethod(0);
+    try {
+        zipArchiveOutputStream0.putArchiveEntry(zipArchiveEntry0);
+        fail(""Expecting exception: ZipException"");
+    } catch (ZipException e) {
+        //
+        // uncompressed size is required for STORED method when not writing to a file
+        //
+        verifyException(""org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"// @throws ClassCastException if entry is not an instance of ZipArchiveEntry
+public void putArchiveEntry(ArchiveEntry archiveEntry) throws IOException {
+    closeArchiveEntry();
+    entry = ((ZipArchiveEntry) archiveEntry);
+    entries.add(entry);
+    if (entry.getMethod() == -1) {
+        // not specified
+        entry.setMethod(method);
+    }
+    if (entry.getTime() == -1) {
+        // not specified
+        entry.setTime(System.currentTimeMillis());
+    }
+    // Size/CRC not required if RandomAccessFile is used
+    if (entry.getMethod() == STORED && raf == null) {
+        if (entry.getSize() == -1) {
+            throw new ZipException(""uncompressed size is required for"" + "" STORED method when not writing to a"" + "" file"");
+        }
+        if (entry.getCrc() == -1) {
+            throw new ZipException(""crc checksum is required for STORED"" + "" method when not writing to a file"");
+        }
+        entry.setCompressedSize(entry.getSize());
+    }
+    if (entry.getMethod() == DEFLATED && hasCompressionLevelChanged) {
+        def.setLevel(level);
+        hasCompressionLevelChanged = false;
+    }
+    writeLocalFileHeader(entry);
+}","public void test1823() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream(0);
+    ZipArchiveOutputStream zipArchiveOutputStream0 = new ZipArchiveOutputStream(byteArrayOutputStream0);
+    zipArchiveEntry0.setSize(8);
+    zipArchiveOutputStream0.setMethod(0);
+    try {
+        zipArchiveOutputStream0.putArchiveEntry(zipArchiveEntry0);
+        fail(""Expecting exception: ZipException"");
+    } catch (ZipException e) {
+        //
+        // crc checksum is required for STORED method when not writing to a file
+        //
+        verifyException(""org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"public void setLevel(int level) {
+    if (level < Deflater.DEFAULT_COMPRESSION || level > Deflater.BEST_COMPRESSION) {
+        throw new IllegalArgumentException(""Invalid compression level: "" + level);
+    }
+    hasCompressionLevelChanged = (this.level != level);
+    this.level = level;
+}","public void test2026() throws Throwable {
+    ZipArchiveOutputStream zipArchiveOutputStream0 = new ZipArchiveOutputStream((OutputStream) null);
+    // Undeclared exception!
+    try {
+        zipArchiveOutputStream0.setLevel((-437));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid compression level: -437
+        //
+        verifyException(""org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream"", e);
+    }
+}","/**
+ * Sets the compression level for subsequent entries.
+ *
+ * <p>Default is Deflater.DEFAULT_COMPRESSION.</p>
+ * @param level the compression level.
+ * @throws IllegalArgumentException if an invalid compression
+ * level is specified.
+ */"
+"public void setLevel(int level) {
+    if (level < Deflater.DEFAULT_COMPRESSION || level > Deflater.BEST_COMPRESSION) {
+        throw new IllegalArgumentException(""Invalid compression level: "" + level);
+    }
+    hasCompressionLevelChanged = (this.level != level);
+    this.level = level;
+}","public void test2127() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    ZipArchiveOutputStream zipArchiveOutputStream0 = new ZipArchiveOutputStream(byteArrayOutputStream0);
+    // Undeclared exception!
+    try {
+        zipArchiveOutputStream0.setLevel(2048);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid compression level: 2048
+        //
+        verifyException(""org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream"", e);
+    }
+}","/**
+ * Sets the compression level for subsequent entries.
+ *
+ * <p>Default is Deflater.DEFAULT_COMPRESSION.</p>
+ * @param level the compression level.
+ * @throws IllegalArgumentException if an invalid compression
+ * level is specified.
+ */"
+"public String getEncoding() {
+    return encoding;
+}","public void test2228() throws Throwable {
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""] for UniCode path extra data."");
+    ZipArchiveOutputStream zipArchiveOutputStream0 = new ZipArchiveOutputStream(mockPrintStream0);
+    zipArchiveOutputStream0.setLevel((-1));
+    assertEquals(""UTF8"", zipArchiveOutputStream0.getEncoding());
+}","/**
+ * The encoding to use for filenames and the file comment.
+ *
+ * @return null if using the platform's default character encoding.
+ */"
+"public void write(byte[] b, int offset, int length) throws IOException {
+    if (entry.getMethod() == DEFLATED) {
+        if (length > 0) {
+            if (!def.finished()) {
+                if (length <= DEFLATER_BLOCK_SIZE) {
+                    def.setInput(b, offset, length);
+                    deflateUntilInputIsNeeded();
+                } else {
+                    final int fullblocks = length / DEFLATER_BLOCK_SIZE;
+                    for (int i = 0; i < fullblocks; i++) {
+                        def.setInput(b, offset + i * DEFLATER_BLOCK_SIZE, DEFLATER_BLOCK_SIZE);
+                        deflateUntilInputIsNeeded();
+                    }
+                    final int done = fullblocks * DEFLATER_BLOCK_SIZE;
+                    if (done < length) {
+                        def.setInput(b, offset + done, length - done);
+                        deflateUntilInputIsNeeded();
+                    }
+                }
+            }
+        }
+    } else {
+        writeOut(b, offset, length);
+        written += length;
+    }
+    crc.update(b, offset, length);
+}","public void test2329() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    ZipArchiveOutputStream zipArchiveOutputStream0 = new ZipArchiveOutputStream(byteArrayOutputStream0);
+    zipArchiveOutputStream0.putArchiveEntry(zipArchiveEntry0);
+    zipArchiveEntry0.setMethod(0);
+    // Undeclared exception!
+    try {
+        zipArchiveOutputStream0.write((byte[]) null, 3, 8249);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * Writes bytes to ZIP entry.
+ * @param b the byte array to write
+ * @param offset the start position to write from
+ * @param length the number of bytes to write
+ * @throws IOException on error
+ */"
+"protected void writeCentralFileHeader(ZipArchiveEntry ze) throws IOException {
+    writeOut(CFH_SIG);
+    written += WORD;
+    // version made by
+    // CheckStyle:MagicNumber OFF
+    writeOut(ZipShort.getBytes((ze.getPlatform() << 8) | 20));
+    written += SHORT;
+    final int zipMethod = ze.getMethod();
+    final boolean encodable = zipEncoding.canEncode(ze.getName());
+    writeVersionNeededToExtractAndGeneralPurposeBits(zipMethod, !encodable && fallbackToUTF8);
+    written += WORD;
+    // compression method
+    writeOut(ZipShort.getBytes(zipMethod));
+    written += SHORT;
+    // last mod. time and date
+    writeOut(ZipUtil.toDosTime(ze.getTime()));
+    written += WORD;
+    // CRC
+    // compressed length
+    // uncompressed length
+    writeOut(ZipLong.getBytes(ze.getCrc()));
+    writeOut(ZipLong.getBytes(ze.getCompressedSize()));
+    writeOut(ZipLong.getBytes(ze.getSize()));
+    // CheckStyle:MagicNumber OFF
+    written += 12;
+    // CheckStyle:MagicNumber ON
+    // file name length
+    final ZipEncoding entryEncoding;
+    if (!encodable && fallbackToUTF8) {
+        entryEncoding = ZipEncodingHelper.UTF8_ZIP_ENCODING;
+    } else {
+        entryEncoding = zipEncoding;
+    }
+    ByteBuffer name = entryEncoding.encode(ze.getName());
+    writeOut(ZipShort.getBytes(name.limit()));
+    written += SHORT;
+    // extra field length
+    byte[] extra = ze.getCentralDirectoryExtra();
+    writeOut(ZipShort.getBytes(extra.length));
+    written += SHORT;
+    // file comment length
+    String comm = ze.getComment();
+    if (comm == null) {
+        comm = """";
+    }
+    ByteBuffer commentB = entryEncoding.encode(comm);
+    writeOut(ZipShort.getBytes(commentB.limit()));
+    written += SHORT;
+    // disk number start
+    writeOut(ZERO);
+    written += SHORT;
+    // internal file attributes
+    writeOut(ZipShort.getBytes(ze.getInternalAttributes()));
+    written += SHORT;
+    // external file attributes
+    writeOut(ZipLong.getBytes(ze.getExternalAttributes()));
+    written += WORD;
+    // relative offset of LFH
+    writeOut((byte[]) offsets.get(ze));
+    written += WORD;
+    // file name
+    writeOut(name.array(), name.arrayOffset(), name.limit());
+    written += name.limit();
+    // extra field
+    writeOut(extra);
+    written += extra.length;
+    // file comment
+    writeOut(commentB.array(), commentB.arrayOffset(), commentB.limit());
+    written += commentB.limit();
+}","public void test2430() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    ZipArchiveOutputStream zipArchiveOutputStream0 = new ZipArchiveOutputStream(byteArrayOutputStream0);
+    zipArchiveOutputStream0.putArchiveEntry(zipArchiveEntry0);
+    ZipArchiveOutputStream zipArchiveOutputStream1 = new ZipArchiveOutputStream(zipArchiveOutputStream0);
+    // Undeclared exception!
+    try {
+        zipArchiveOutputStream1.writeCentralFileHeader(zipArchiveEntry0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * Writes the central file header entry.
+ * @param ze the entry to write
+ * @throws IOException on error
+ */"
+"public void write(byte[] b, int offset, int length) throws IOException {
+    if (entry.getMethod() == DEFLATED) {
+        if (length > 0) {
+            if (!def.finished()) {
+                if (length <= DEFLATER_BLOCK_SIZE) {
+                    def.setInput(b, offset, length);
+                    deflateUntilInputIsNeeded();
+                } else {
+                    final int fullblocks = length / DEFLATER_BLOCK_SIZE;
+                    for (int i = 0; i < fullblocks; i++) {
+                        def.setInput(b, offset + i * DEFLATER_BLOCK_SIZE, DEFLATER_BLOCK_SIZE);
+                        deflateUntilInputIsNeeded();
+                    }
+                    final int done = fullblocks * DEFLATER_BLOCK_SIZE;
+                    if (done < length) {
+                        def.setInput(b, offset + done, length - done);
+                        deflateUntilInputIsNeeded();
+                    }
+                }
+            }
+        }
+    } else {
+        writeOut(b, offset, length);
+        written += length;
+    }
+    crc.update(b, offset, length);
+}","public void test2633() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    ZipArchiveOutputStream zipArchiveOutputStream0 = new ZipArchiveOutputStream(byteArrayOutputStream0);
+    byte[] byteArray0 = new byte[1];
+    zipArchiveOutputStream0.putArchiveEntry(zipArchiveEntry0);
+    // Undeclared exception!
+    try {
+        zipArchiveOutputStream0.write(byteArray0, 0, 8263);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.zip.Deflater"", e);
+    }
+}","/**
+ * Writes bytes to ZIP entry.
+ * @param b the byte array to write
+ * @param offset the start position to write from
+ * @param length the number of bytes to write
+ * @throws IOException on error
+ */"
+"public String getEncoding() {
+    return encoding;
+}","public void test2836() throws Throwable {
+    ZipArchiveOutputStream zipArchiveOutputStream0 = new ZipArchiveOutputStream((OutputStream) null);
+    ZipArchiveOutputStream zipArchiveOutputStream1 = new ZipArchiveOutputStream(zipArchiveOutputStream0);
+    zipArchiveOutputStream1.flush();
+    assertEquals(""UTF8"", zipArchiveOutputStream1.getEncoding());
+}","/**
+ * The encoding to use for filenames and the file comment.
+ *
+ * @return null if using the platform's default character encoding.
+ */"
+"// @throws ClassCastException if entry is not an instance of ZipArchiveEntry
+public void putArchiveEntry(ArchiveEntry archiveEntry) throws IOException {
+    closeArchiveEntry();
+    entry = ((ZipArchiveEntry) archiveEntry);
+    entries.add(entry);
+    if (entry.getMethod() == -1) {
+        // not specified
+        entry.setMethod(method);
+    }
+    if (entry.getTime() == -1) {
+        // not specified
+        entry.setTime(System.currentTimeMillis());
+    }
+    // Size/CRC not required if RandomAccessFile is used
+    if (entry.getMethod() == STORED && raf == null) {
+        if (entry.getSize() == -1) {
+            throw new ZipException(""uncompressed size is required for"" + "" STORED method when not writing to a"" + "" file"");
+        }
+        if (entry.getCrc() == -1) {
+            throw new ZipException(""crc checksum is required for STORED"" + "" method when not writing to a file"");
+        }
+        entry.setCompressedSize(entry.getSize());
+    }
+    if (entry.getMethod() == DEFLATED && hasCompressionLevelChanged) {
+        def.setLevel(level);
+        hasCompressionLevelChanged = false;
+    }
+    writeLocalFileHeader(entry);
+}","public void test3243() throws Throwable {
+    ZipArchiveOutputStream zipArchiveOutputStream0 = new ZipArchiveOutputStream((OutputStream) null);
+    ZipArchiveOutputStream.UnicodeExtraFieldPolicy zipArchiveOutputStream_UnicodeExtraFieldPolicy0 = ZipArchiveOutputStream.UnicodeExtraFieldPolicy.NOT_ENCODEABLE;
+    zipArchiveOutputStream0.setCreateUnicodeExtraFields(zipArchiveOutputStream_UnicodeExtraFieldPolicy0);
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setComment(""org.apache.commons.compress.archivers.zip.AbstractUnicodeExtraField"");
+    // Undeclared exception!
+    try {
+        zipArchiveOutputStream0.putArchiveEntry(zipArchiveEntry0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"protected void writeCentralFileHeader(ZipArchiveEntry ze) throws IOException {
+    writeOut(CFH_SIG);
+    written += WORD;
+    // version made by
+    // CheckStyle:MagicNumber OFF
+    writeOut(ZipShort.getBytes((ze.getPlatform() << 8) | 20));
+    written += SHORT;
+    final int zipMethod = ze.getMethod();
+    final boolean encodable = zipEncoding.canEncode(ze.getName());
+    writeVersionNeededToExtractAndGeneralPurposeBits(zipMethod, !encodable && fallbackToUTF8);
+    written += WORD;
+    // compression method
+    writeOut(ZipShort.getBytes(zipMethod));
+    written += SHORT;
+    // last mod. time and date
+    writeOut(ZipUtil.toDosTime(ze.getTime()));
+    written += WORD;
+    // CRC
+    // compressed length
+    // uncompressed length
+    writeOut(ZipLong.getBytes(ze.getCrc()));
+    writeOut(ZipLong.getBytes(ze.getCompressedSize()));
+    writeOut(ZipLong.getBytes(ze.getSize()));
+    // CheckStyle:MagicNumber OFF
+    written += 12;
+    // CheckStyle:MagicNumber ON
+    // file name length
+    final ZipEncoding entryEncoding;
+    if (!encodable && fallbackToUTF8) {
+        entryEncoding = ZipEncodingHelper.UTF8_ZIP_ENCODING;
+    } else {
+        entryEncoding = zipEncoding;
+    }
+    ByteBuffer name = entryEncoding.encode(ze.getName());
+    writeOut(ZipShort.getBytes(name.limit()));
+    written += SHORT;
+    // extra field length
+    byte[] extra = ze.getCentralDirectoryExtra();
+    writeOut(ZipShort.getBytes(extra.length));
+    written += SHORT;
+    // file comment length
+    String comm = ze.getComment();
+    if (comm == null) {
+        comm = """";
+    }
+    ByteBuffer commentB = entryEncoding.encode(comm);
+    writeOut(ZipShort.getBytes(commentB.limit()));
+    written += SHORT;
+    // disk number start
+    writeOut(ZERO);
+    written += SHORT;
+    // internal file attributes
+    writeOut(ZipShort.getBytes(ze.getInternalAttributes()));
+    written += SHORT;
+    // external file attributes
+    writeOut(ZipLong.getBytes(ze.getExternalAttributes()));
+    written += WORD;
+    // relative offset of LFH
+    writeOut((byte[]) offsets.get(ze));
+    written += WORD;
+    // file name
+    writeOut(name.array(), name.arrayOffset(), name.limit());
+    written += name.limit();
+    // extra field
+    writeOut(extra);
+    written += extra.length;
+    // file comment
+    writeOut(commentB.array(), commentB.arrayOffset(), commentB.limit());
+    written += commentB.limit();
+}","public void test3445() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    zipArchiveEntry0.setComment(""S3k?iq%%csEW>(QI"");
+    ZipArchiveOutputStream zipArchiveOutputStream0 = new ZipArchiveOutputStream(byteArrayOutputStream0);
+    // Undeclared exception!
+    try {
+        zipArchiveOutputStream0.writeCentralFileHeader(zipArchiveEntry0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * Writes the central file header entry.
+ * @param ze the entry to write
+ * @throws IOException on error
+ */"
+"// @throws ClassCastException if entry is not an instance of ZipArchiveEntry
+public void putArchiveEntry(ArchiveEntry archiveEntry) throws IOException {
+    closeArchiveEntry();
+    entry = ((ZipArchiveEntry) archiveEntry);
+    entries.add(entry);
+    if (entry.getMethod() == -1) {
+        // not specified
+        entry.setMethod(method);
+    }
+    if (entry.getTime() == -1) {
+        // not specified
+        entry.setTime(System.currentTimeMillis());
+    }
+    // Size/CRC not required if RandomAccessFile is used
+    if (entry.getMethod() == STORED && raf == null) {
+        if (entry.getSize() == -1) {
+            throw new ZipException(""uncompressed size is required for"" + "" STORED method when not writing to a"" + "" file"");
+        }
+        if (entry.getCrc() == -1) {
+            throw new ZipException(""crc checksum is required for STORED"" + "" method when not writing to a file"");
+        }
+        entry.setCompressedSize(entry.getSize());
+    }
+    if (entry.getMethod() == DEFLATED && hasCompressionLevelChanged) {
+        def.setLevel(level);
+        hasCompressionLevelChanged = false;
+    }
+    writeLocalFileHeader(entry);
+}","public void test3648() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    MockFile mockFile0 = new MockFile(""Q6x$|*^L+fM("");
+    ZipArchiveOutputStream zipArchiveOutputStream0 = new ZipArchiveOutputStream(mockFile0);
+    try {
+        zipArchiveOutputStream0.putArchiveEntry(zipArchiveEntry0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Error in writing to file
+        //
+        verifyException(""org.evosuite.runtime.mock.java.io.NativeMockedIO"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"

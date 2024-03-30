@@ -1,0 +1,33 @@
+com.fasterxml.jackson.databind.deser.impl.ObjectIdValueProperty,@Test(timeout = 4000)
+public void test11() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    PropertyName propertyName0 = PropertyName.USE_DEFAULT;
+    SimpleObjectIdResolver simpleObjectIdResolver0 = new SimpleObjectIdResolver();
+    ObjectIdReader objectIdReader0 = new ObjectIdReader(javaType0, propertyName0, (ObjectIdGenerator<?>) null, (JsonDeserializer<?>) null, (SettableBeanProperty) null, simpleObjectIdResolver0);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_REQUIRED_OR_OPTIONAL;
+    ObjectIdValueProperty objectIdValueProperty0 = new ObjectIdValueProperty(objectIdReader0, propertyMetadata0);
+    SettableBeanProperty settableBeanProperty0 = objectIdValueProperty0.withSimpleName(""Numeric value (%s) out of range of %s"");
+    settableBeanProperty0.hasValueDeserializer();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.fasterxml.jackson.databind.deser.impl.ObjectIdValueProperty,@Test(timeout = 4000)
+public void test77() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    PropertyName propertyName0 = new PropertyName(""]"");
+    Class<Integer> class0 = Integer.TYPE;
+    ObjectIdGenerator.IdKey objectIdGenerator_IdKey0 = new ObjectIdGenerator.IdKey(class0, class0, propertyName0);
+    ObjectIdGenerator<RoundingMode> objectIdGenerator0 = (ObjectIdGenerator<RoundingMode>) mock(ObjectIdGenerator.class, new ViolatedAssumptionAnswer());
+    doReturn(objectIdGenerator_IdKey0).when(objectIdGenerator0).key(any());
+    RoundingMode roundingMode0 = RoundingMode.FLOOR;
+    JsonDeserializer<RoundingMode> jsonDeserializer0 = (JsonDeserializer<RoundingMode>) mock(JsonDeserializer.class, new ViolatedAssumptionAnswer());
+    doReturn(roundingMode0).when(jsonDeserializer0).deserialize(any(com.fasterxml.jackson.core.JsonParser.class), any(com.fasterxml.jackson.databind.DeserializationContext.class));
+    SimpleObjectIdResolver simpleObjectIdResolver0 = new SimpleObjectIdResolver();
+    ObjectIdReader objectIdReader0 = new ObjectIdReader(javaType0, propertyName0, objectIdGenerator0, jsonDeserializer0, (SettableBeanProperty) null, simpleObjectIdResolver0);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_REQUIRED_OR_OPTIONAL;
+    ObjectIdValueProperty objectIdValueProperty0 = new ObjectIdValueProperty(objectIdReader0, propertyMetadata0);
+    JsonFactory jsonFactory0 = new JsonFactory();
+    JsonParser jsonParser0 = jsonFactory0.createNonBlockingByteArrayParser();
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    objectIdValueProperty0.deserializeAndSet(jsonParser0, defaultDeserializationContext_Impl0, objectIdReader0);
+    jsonParser0.getCurrentTokenId();
+},ERROR,java.nio.file.NoSuchFileException,/home/star_usit_group/tratto/experiment/generator/resources/defects4j/temp/JacksonDatabind_111b/src/main/java/com/fasterxml/jackson/core/JsonParser.java

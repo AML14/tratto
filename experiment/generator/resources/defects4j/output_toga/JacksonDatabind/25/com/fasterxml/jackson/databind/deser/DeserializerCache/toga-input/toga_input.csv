@@ -1,0 +1,326 @@
+focal_method,test_prefix,docstring
+"/*
+    /**********************************************************
+    /* Access to caching aspects
+    /**********************************************************
+     */
+/**
+ *  Method that can be used to determine how many deserializers this
+ *  provider is caching currently
+ *  (if it does caching: default implementation does)
+ *  Exact count depends on what kind of deserializers get cached;
+ *  default implementation caches only dynamically constructed deserializers,
+ *  but not eagerly constructed standard deserializers (which is different
+ *  from how serializer provider works).
+ * <p>
+ *  The main use case for this method is to allow conditional flushing of
+ *  deserializer cache, if certain number of entries is reached.
+ */
+public int cachedDeserializersCount() {
+    return _cachedDeserializers.size();
+}","public void test000() throws Throwable {
+    DeserializerCache deserializerCache0 = new DeserializerCache();
+    int int0 = deserializerCache0.cachedDeserializersCount();
+    assertEquals(0, int0);
+}",""
+"/*
+    /**********************************************************
+    /* JDK serialization handling
+    /**********************************************************
+     */
+Object writeReplace() {
+    // instead of making this transient, just clear it:
+    _incompleteDeserializers.clear();
+    // TODO: clear out ""cheap"" cached deserializers?
+    return this;
+}","public void test011() throws Throwable {
+    DeserializerCache deserializerCache0 = new DeserializerCache();
+    Object object0 = deserializerCache0.writeReplace();
+    assertSame(object0, deserializerCache0);
+}",""
+"public void flushCachedDeserializers() {
+    _cachedDeserializers.clear();
+}","public void test022() throws Throwable {
+    DeserializerCache deserializerCache0 = new DeserializerCache();
+    deserializerCache0.flushCachedDeserializers();
+}","/**
+ * Method that will drop all dynamically constructed deserializers (ones that
+ * are counted as result value for {@link #cachedDeserializersCount}).
+ * This can be used to remove memory usage (in case some deserializers are
+ * only used once or so), or to force re-construction of deserializers after
+ * configuration changes for mapper than owns the provider.
+ */"
+"public ObjectReader readerFor(JavaType type) {
+    return _newReader(getDeserializationConfig(), type, null, null, _injectableValues);
+}","public void test033() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<ConcurrentHashMap> class0 = ConcurrentHashMap.class;
+    MapType mapType0 = typeFactory0.constructMapType(class0, class0, class0);
+    ObjectReader objectReader0 = objectMapper0.readerFor((JavaType) mapType0);
+    assertNotNull(objectReader0);
+}","/**
+ * Factory method for constructing {@link ObjectReader} that will
+ * read or update instances of specified type
+ *
+ * @since 2.6
+ */"
+"public ObjectReader readerFor(JavaType type) {
+    return _newReader(getDeserializationConfig(), type, null, null, _injectableValues);
+}","public void test055() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<MapType> class0 = MapType.class;
+    CollectionLikeType collectionLikeType0 = typeFactory0.constructRawCollectionLikeType(class0);
+    ObjectReader objectReader0 = objectMapper0.readerFor((JavaType) collectionLikeType0);
+    assertNotNull(objectReader0);
+}","/**
+ * Factory method for constructing {@link ObjectReader} that will
+ * read or update instances of specified type
+ *
+ * @since 2.6
+ */"
+"public ObjectReader readerFor(JavaType type) {
+    return _newReader(getDeserializationConfig(), type, null, null, _injectableValues);
+}","public void test066() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<ConcurrentHashMap> class0 = ConcurrentHashMap.class;
+    Class<Object> class1 = Object.class;
+    MapType mapType0 = typeFactory0.constructMapType(class0, class1, class0);
+    ObjectReader objectReader0 = objectMapper0.readerFor((JavaType) mapType0);
+    assertNotNull(objectReader0);
+}","/**
+ * Factory method for constructing {@link ObjectReader} that will
+ * read or update instances of specified type
+ *
+ * @since 2.6
+ */"
+"public boolean canDeserialize(JavaType type) {
+    return createDeserializationContext(null, getDeserializationConfig()).hasValueDeserializerFor(type, null);
+}","public void test077() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    JavaType javaType0 = TypeFactory.unknownType();
+    objectMapper0.readerFor(javaType0);
+    boolean boolean0 = objectMapper0.canDeserialize(javaType0);
+    assertTrue(boolean0);
+}","/**
+ *  Method that can be called to check whether mapper thinks
+ *  it could deserialize an Object of given type.
+ *  Check is done by checking whether a registered deserializer can
+ *  be found or built for the type; if not (either by no mapping being
+ *  found, or through an <code>Exception</code> being thrown, false
+ *  is returned.
+ * <p>
+ *  <b>NOTE</b>: in case an exception is thrown during course of trying
+ *  co construct matching deserializer, it will be effectively swallowed.
+ *  If you want access to that exception, call
+ *  {@link #canDeserialize(JavaType, AtomicReference)} instead.
+ *
+ *  @return True if mapper can find a serializer for instances of
+ *   given class (potentially serializable), false otherwise (not
+ *   serializable)
+ */"
+"public boolean canDeserialize(JavaType type) {
+    return createDeserializationContext(null, getDeserializationConfig()).hasValueDeserializerFor(type, null);
+}","public void test088() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<ShortNode> class0 = ShortNode.class;
+    TypeBindings typeBindings0 = new TypeBindings(typeFactory0, class0);
+    Class<CollectionType> class1 = CollectionType.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructMapLikeType(class1, typeBindings0.UNBOUND, typeBindings0.UNBOUND);
+    boolean boolean0 = objectMapper0.canDeserialize((JavaType) mapLikeType0);
+    assertFalse(boolean0);
+}","/**
+ *  Method that can be called to check whether mapper thinks
+ *  it could deserialize an Object of given type.
+ *  Check is done by checking whether a registered deserializer can
+ *  be found or built for the type; if not (either by no mapping being
+ *  found, or through an <code>Exception</code> being thrown, false
+ *  is returned.
+ * <p>
+ *  <b>NOTE</b>: in case an exception is thrown during course of trying
+ *  co construct matching deserializer, it will be effectively swallowed.
+ *  If you want access to that exception, call
+ *  {@link #canDeserialize(JavaType, AtomicReference)} instead.
+ *
+ *  @return True if mapper can find a serializer for instances of
+ *   given class (potentially serializable), false otherwise (not
+ *   serializable)
+ */"
+"public boolean hasValueDeserializerFor(DeserializationContext ctxt, DeserializerFactory factory, JavaType type) throws JsonMappingException {
+    /* Note: mostly copied from findValueDeserializer, except for
+         * handling of unknown types
+         */
+    JsonDeserializer<Object> deser = _findCachedDeserializer(type);
+    if (deser == null) {
+        deser = _createAndCacheValueDeserializer(ctxt, factory, type);
+    }
+    return (deser != null);
+}","public void test099() throws Throwable {
+    DeserializerCache deserializerCache0 = new DeserializerCache();
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    // Undeclared exception!
+    try {
+        deserializerCache0.hasValueDeserializerFor(defaultDeserializationContext_Impl0, beanDeserializerFactory0, (JavaType) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null JavaType passed
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.DeserializerCache"", e);
+    }
+}","/**
+ * Method called to find out whether provider would be able to find
+ * a deserializer for given type, using a root reference (i.e. not
+ * through fields or membership in an array or collection)
+ */"
+"public ObjectReader readerFor(JavaType type) {
+    return _newReader(getDeserializationConfig(), type, null, null, _injectableValues);
+}","public void test1010() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<BuilderBasedDeserializer> class0 = BuilderBasedDeserializer.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    ObjectMapper objectMapper1 = objectMapper0.enableDefaultTyping();
+    ObjectReader objectReader0 = objectMapper1.readerFor((JavaType) simpleType0);
+    assertNotNull(objectReader0);
+}","/**
+ * Factory method for constructing {@link ObjectReader} that will
+ * read or update instances of specified type
+ *
+ * @since 2.6
+ */"
+"public ObjectReader readerFor(JavaType type) {
+    return _newReader(getDeserializationConfig(), type, null, null, _injectableValues);
+}","public void test1111() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    MapperFeature mapperFeature0 = MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES;
+    objectMapper0.configure(mapperFeature0, true);
+    Class<BuilderBasedDeserializer> class0 = BuilderBasedDeserializer.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    // Undeclared exception!
+    try {
+        objectMapper0.readerFor((JavaType) simpleType0);
+        fail(""Expecting exception: NoSuchElementException"");
+    } catch (NoSuchElementException e) {
+        //
+        // No entry 'knownPropertyNames' found, can't replace
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.impl.BeanPropertyMap"", e);
+    }
+}","/**
+ * Factory method for constructing {@link ObjectReader} that will
+ * read or update instances of specified type
+ *
+ * @since 2.6
+ */"
+"public ObjectReader readerFor(JavaType type) {
+    return _newReader(getDeserializationConfig(), type, null, null, _injectableValues);
+}","public void test1212() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<ConcurrentHashMap> class0 = ConcurrentHashMap.class;
+    Class<Object> class1 = Object.class;
+    MapType mapType0 = typeFactory0.constructMapType(class0, class0, class1);
+    ArrayType arrayType0 = ArrayType.construct(mapType0, mapType0, class1);
+    MapLikeType mapLikeType0 = mapType0.withContentValueHandler(arrayType0);
+    // Undeclared exception!
+    try {
+        objectMapper0.readerFor((JavaType) mapLikeType0);
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // com.fasterxml.jackson.databind.type.ArrayType cannot be cast to com.fasterxml.jackson.databind.JsonDeserializer
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.BasicDeserializerFactory"", e);
+    }
+}","/**
+ * Factory method for constructing {@link ObjectReader} that will
+ * read or update instances of specified type
+ *
+ * @since 2.6
+ */"
+"public ObjectReader readerFor(JavaType type) {
+    return _newReader(getDeserializationConfig(), type, null, null, _injectableValues);
+}","public void test1313() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<SerializationFeature> class0 = SerializationFeature.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    ObjectReader objectReader0 = objectMapper0.readerFor((JavaType) simpleType0);
+    assertNotNull(objectReader0);
+}","/**
+ * Factory method for constructing {@link ObjectReader} that will
+ * read or update instances of specified type
+ *
+ * @since 2.6
+ */"
+"public ObjectReader readerFor(JavaType type) {
+    return _newReader(getDeserializationConfig(), type, null, null, _injectableValues);
+}","public void test1414() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<NullNode> class0 = NullNode.class;
+    ArrayType arrayType0 = typeFactory0.constructArrayType(class0);
+    ObjectReader objectReader0 = objectMapper0.readerFor((JavaType) arrayType0);
+    assertNotNull(objectReader0);
+}","/**
+ * Factory method for constructing {@link ObjectReader} that will
+ * read or update instances of specified type
+ *
+ * @since 2.6
+ */"
+"public ObjectReader readerFor(JavaType type) {
+    return _newReader(getDeserializationConfig(), type, null, null, _injectableValues);
+}","public void test1515() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<ConcurrentHashMap> class0 = ConcurrentHashMap.class;
+    Class<MissingNode> class1 = MissingNode.class;
+    MapType mapType0 = typeFactory0.constructMapType(class0, class0, class1);
+    MapLikeType mapLikeType0 = mapType0.withKeyValueHandler(class0);
+    // Undeclared exception!
+    try {
+        objectMapper0.readerFor((JavaType) mapLikeType0);
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // java.lang.Class cannot be cast to com.fasterxml.jackson.databind.KeyDeserializer
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.BasicDeserializerFactory"", e);
+    }
+}","/**
+ * Factory method for constructing {@link ObjectReader} that will
+ * read or update instances of specified type
+ *
+ * @since 2.6
+ */"
+"/*
+    /**********************************************************
+    /* Overridable error reporting methods
+    /**********************************************************
+     */
+protected JsonDeserializer<Object> _handleUnknownValueDeserializer(JavaType type) throws JsonMappingException {
+    /* Let's try to figure out the reason, to give better error
+         * messages
+         */
+    Class<?> rawClass = type.getRawClass();
+    if (!ClassUtil.isConcrete(rawClass)) {
+        throw new JsonMappingException(""Can not find a Value deserializer for abstract type "" + type);
+    }
+    throw new JsonMappingException(""Can not find a Value deserializer for type "" + type);
+}","public void test1616() throws Throwable {
+    DeserializerCache deserializerCache0 = new DeserializerCache();
+    Class<Module> class0 = Module.class;
+    SimpleType simpleType0 = SimpleType.constructUnsafe(class0);
+    try {
+        deserializerCache0._handleUnknownValueDeserializer(simpleType0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Can not find a Value deserializer for abstract type [simple type, class com.fasterxml.jackson.databind.Module]
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.DeserializerCache"", e);
+    }
+}",""

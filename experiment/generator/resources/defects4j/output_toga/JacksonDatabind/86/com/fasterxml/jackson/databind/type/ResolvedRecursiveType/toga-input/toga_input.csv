@@ -1,0 +1,309 @@
+focal_method,test_prefix,docstring
+"@Override
+public boolean equals(Object o) {
+    if (o == this)
+        return true;
+    if (o == null)
+        return false;
+    // Do NOT ever match unresolved references
+    if (_referencedType == null) {
+        return false;
+    }
+    return (o.getClass() == getClass() && _referencedType.equals(((ResolvedRecursiveType) o).getSelfReferencedType()));
+}","public void test000() throws Throwable {
+    Class<Object> class0 = Object.class;
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, (TypeBindings) null);
+    resolvedRecursiveType0.setReference(resolvedRecursiveType0);
+    ResolvedRecursiveType resolvedRecursiveType1 = new ResolvedRecursiveType(class0, (TypeBindings) null);
+    boolean boolean0 = resolvedRecursiveType0.equals(resolvedRecursiveType1);
+    assertFalse(boolean0);
+}",""
+"@Override
+public StringBuilder getGenericSignature(StringBuilder sb) {
+    return _referencedType.getGenericSignature(sb);
+}","public void test011() throws Throwable {
+    TypeBindings typeBindings0 = TypeBindings.emptyBindings();
+    Class<JsonFormat.Shape> class0 = JsonFormat.Shape.class;
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, typeBindings0);
+    // Undeclared exception!
+    try {
+        resolvedRecursiveType0.getGenericSignature((StringBuilder) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.ResolvedRecursiveType"", e);
+    }
+}",""
+"@Override
+public boolean isAbstract() {
+    return Modifier.isAbstract(_class.getModifiers());
+}","public void test022() throws Throwable {
+    Class<Object> class0 = Object.class;
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, (TypeBindings) null);
+    JavaType javaType0 = resolvedRecursiveType0.withTypeHandler((Object) null);
+    assertFalse(javaType0.isAbstract());
+}",""
+"@Override
+public boolean isCollectionLikeType() {
+    return false;
+}","public void test033() throws Throwable {
+    Class<Object> class0 = Object.class;
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, (TypeBindings) null);
+    JavaType javaType0 = resolvedRecursiveType0.withContentType(resolvedRecursiveType0);
+    assertFalse(javaType0.isCollectionLikeType());
+}","/**
+ * @return True if type is either true {@link java.util.Collection} type,
+ *    or something similar (meaning it has at least one type parameter,
+ *    which describes type of contents)
+ */"
+"@Override
+public boolean isContainerType() {
+    return false;
+}","public void test044() throws Throwable {
+    Class<String> class0 = String.class;
+    ArrayList<JavaType> arrayList0 = new ArrayList<JavaType>();
+    TypeBindings typeBindings0 = TypeBindings.create((Class<?>) class0, (List<JavaType>) arrayList0);
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, typeBindings0);
+    boolean boolean0 = resolvedRecursiveType0.isContainerType();
+    assertFalse(boolean0);
+}",""
+"@Override
+public final boolean isInterface() {
+    return _class.isInterface();
+}","public void test055() throws Throwable {
+    Class<Integer> class0 = Integer.class;
+    TypeBindings typeBindings0 = TypeFactory.EMPTY_BINDINGS;
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, typeBindings0);
+    JavaType javaType0 = resolvedRecursiveType0.withContentTypeHandler(resolvedRecursiveType0);
+    assertFalse(javaType0.isInterface());
+}",""
+"public String getErasedSignature() {
+    StringBuilder sb = new StringBuilder(40);
+    getErasedSignature(sb);
+    return sb.toString();
+}","public void test066() throws Throwable {
+    Class<Object> class0 = Object.class;
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, (TypeBindings) null);
+    // Undeclared exception!
+    try {
+        resolvedRecursiveType0.getErasedSignature();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.ResolvedRecursiveType"", e);
+    }
+}","/**
+ * Method for accessing signature without generic
+ * type information, in form compatible with all versions
+ * of JVM, and specifically used for type descriptions
+ * when generating byte code.
+ */"
+"@Override
+public boolean isCollectionLikeType() {
+    return false;
+}","public void test077() throws Throwable {
+    Class<Object> class0 = Object.class;
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, (TypeBindings) null);
+    JavaType javaType0 = resolvedRecursiveType0.withValueHandler(resolvedRecursiveType0);
+    assertFalse(javaType0.isCollectionLikeType());
+}","/**
+ * @return True if type is either true {@link java.util.Collection} type,
+ *    or something similar (meaning it has at least one type parameter,
+ *    which describes type of contents)
+ */"
+"@Override
+public JavaType refine(Class<?> rawType, TypeBindings bindings, JavaType superClass, JavaType[] superInterfaces) {
+    return null;
+}","public void test088() throws Throwable {
+    Class<Object> class0 = Object.class;
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, (TypeBindings) null);
+    Class<Integer> class1 = Integer.class;
+    Class<String> class2 = String.class;
+    JavaType[] javaTypeArray0 = new JavaType[1];
+    CollectionType collectionType0 = CollectionType.construct((Class<?>) class2, (TypeBindings) null, (JavaType) resolvedRecursiveType0, javaTypeArray0, (JavaType) resolvedRecursiveType0);
+    JavaType javaType0 = resolvedRecursiveType0.refine(class1, (TypeBindings) null, collectionType0, javaTypeArray0);
+    assertNull(javaType0);
+}",""
+"@Override
+public boolean isCollectionLikeType() {
+    return false;
+}","public void test099() throws Throwable {
+    Class<Object> class0 = Object.class;
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, (TypeBindings) null);
+    JavaType javaType0 = resolvedRecursiveType0.withStaticTyping();
+    assertFalse(javaType0.isCollectionLikeType());
+}","/**
+ * @return True if type is either true {@link java.util.Collection} type,
+ *    or something similar (meaning it has at least one type parameter,
+ *    which describes type of contents)
+ */"
+"@Override
+public boolean isArrayType() {
+    return false;
+}","public void test1010() throws Throwable {
+    Class<ResolvedRecursiveType> class0 = ResolvedRecursiveType.class;
+    TypeBindings typeBindings0 = TypeBindings.emptyBindings();
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, typeBindings0);
+    JavaType javaType0 = resolvedRecursiveType0.withContentValueHandler(class0);
+    assertFalse(javaType0.isArrayType());
+}",""
+"@Override
+public boolean isConcrete() {
+    int mod = _class.getModifiers();
+    if ((mod & (Modifier.INTERFACE | Modifier.ABSTRACT)) == 0) {
+        return true;
+    }
+    /* 19-Feb-2010, tatus: Holy mackarel; primitive types
+         *    have 'abstract' flag set...
+         */
+    return _class.isPrimitive();
+}","public void test1111() throws Throwable {
+    Class<Object> class0 = Object.class;
+    TypeBindings typeBindings0 = TypeBindings.createIfNeeded(class0, (JavaType[]) null);
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, typeBindings0);
+    Class<Integer> class1 = Integer.class;
+    JavaType javaType0 = resolvedRecursiveType0._narrow(class1);
+    assertTrue(javaType0.isConcrete());
+}","/**
+ * Convenience method for checking whether underlying Java type
+ * is a concrete class or not: abstract classes and interfaces
+ * are not.
+ */"
+"public void setReference(JavaType ref) {
+    // sanity check; should not be called multiple times
+    if (_referencedType != null) {
+        throw new IllegalStateException(""Trying to re-set self reference; old value = "" + _referencedType + "", new = "" + ref);
+    }
+    _referencedType = ref;
+}","public void test1212() throws Throwable {
+    Class<Object> class0 = Object.class;
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, (TypeBindings) null);
+    resolvedRecursiveType0.setReference(resolvedRecursiveType0);
+    // Undeclared exception!
+    try {
+        resolvedRecursiveType0.setReference(resolvedRecursiveType0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Trying to re-set self reference; old value = [recursive type; java.lang.Object, new = [recursive type; java.lang.Object
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.ResolvedRecursiveType"", e);
+    }
+}",""
+"@Override
+public String toString() {
+    StringBuilder sb = new StringBuilder(40).append(""[recursive type; "");
+    if (_referencedType == null) {
+        sb.append(""UNRESOLVED"");
+    } else {
+        // [databind#1301]: Typically resolves to a loop so short-cut
+        //   and only include type-erased class
+        sb.append(_referencedType.getRawClass().getName());
+    }
+    return sb.toString();
+}","public void test1313() throws Throwable {
+    Class<Object> class0 = Object.class;
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, (TypeBindings) null);
+    String string0 = resolvedRecursiveType0.toString();
+    assertEquals(""[recursive type; UNRESOLVED"", string0);
+}",""
+"@Override
+public boolean equals(Object o) {
+    if (o == this)
+        return true;
+    if (o == null)
+        return false;
+    // Do NOT ever match unresolved references
+    if (_referencedType == null) {
+        return false;
+    }
+    return (o.getClass() == getClass() && _referencedType.equals(((ResolvedRecursiveType) o).getSelfReferencedType()));
+}","public void test1414() throws Throwable {
+    Class<Object> class0 = Object.class;
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, (TypeBindings) null);
+    resolvedRecursiveType0.setReference(resolvedRecursiveType0);
+    ResolvedRecursiveType resolvedRecursiveType1 = new ResolvedRecursiveType(class0, (TypeBindings) null);
+    assertFalse(resolvedRecursiveType1.equals((Object) resolvedRecursiveType0));
+}",""
+"@Override
+public boolean equals(Object o) {
+    if (o == this)
+        return true;
+    if (o == null)
+        return false;
+    // Do NOT ever match unresolved references
+    if (_referencedType == null) {
+        return false;
+    }
+    return (o.getClass() == getClass() && _referencedType.equals(((ResolvedRecursiveType) o).getSelfReferencedType()));
+}","public void test1415() throws Throwable {
+    Class<Object> class0 = Object.class;
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, (TypeBindings) null);
+    resolvedRecursiveType0.setReference(resolvedRecursiveType0);
+    ResolvedRecursiveType resolvedRecursiveType1 = new ResolvedRecursiveType(class0, (TypeBindings) null);
+    resolvedRecursiveType1.setReference(resolvedRecursiveType0);
+    boolean boolean0 = resolvedRecursiveType0.equals(resolvedRecursiveType1);
+    assertTrue(resolvedRecursiveType1.equals((Object) resolvedRecursiveType0));
+}",""
+"@Override
+public boolean equals(Object o) {
+    if (o == this)
+        return true;
+    if (o == null)
+        return false;
+    // Do NOT ever match unresolved references
+    if (_referencedType == null) {
+        return false;
+    }
+    return (o.getClass() == getClass() && _referencedType.equals(((ResolvedRecursiveType) o).getSelfReferencedType()));
+}","public void test1416() throws Throwable {
+    Class<Object> class0 = Object.class;
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, (TypeBindings) null);
+    resolvedRecursiveType0.setReference(resolvedRecursiveType0);
+    ResolvedRecursiveType resolvedRecursiveType1 = new ResolvedRecursiveType(class0, (TypeBindings) null);
+    resolvedRecursiveType1.setReference(resolvedRecursiveType0);
+    boolean boolean0 = resolvedRecursiveType0.equals(resolvedRecursiveType1);
+    assertTrue(boolean0);
+}",""
+"@Override
+public boolean equals(Object o) {
+    if (o == this)
+        return true;
+    if (o == null)
+        return false;
+    // Do NOT ever match unresolved references
+    if (_referencedType == null) {
+        return false;
+    }
+    return (o.getClass() == getClass() && _referencedType.equals(((ResolvedRecursiveType) o).getSelfReferencedType()));
+}","public void test1517() throws Throwable {
+    Class<Object> class0 = Object.class;
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, (TypeBindings) null);
+    MissingNode missingNode0 = MissingNode.getInstance();
+    boolean boolean0 = resolvedRecursiveType0.equals(missingNode0);
+    assertFalse(boolean0);
+}",""
+"@Override
+public boolean equals(Object o) {
+    if (o == this)
+        return true;
+    if (o == null)
+        return false;
+    // Do NOT ever match unresolved references
+    if (_referencedType == null) {
+        return false;
+    }
+    return (o.getClass() == getClass() && _referencedType.equals(((ResolvedRecursiveType) o).getSelfReferencedType()));
+}","public void test1618() throws Throwable {
+    Class<ResolvedRecursiveType> class0 = ResolvedRecursiveType.class;
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, (TypeBindings) null);
+    JavaType javaType0 = TypeFactory.unknownType();
+    resolvedRecursiveType0.setReference(javaType0);
+    MissingNode missingNode0 = MissingNode.getInstance();
+    boolean boolean0 = resolvedRecursiveType0.equals(missingNode0);
+    assertFalse(boolean0);
+}",""

@@ -1,0 +1,2851 @@
+focal_method,test_prefix,docstring
+"public static boolean isBase64(byte[] arrayOctet) {
+    for (int i = 0; i < arrayOctet.length; i++) {
+        if (!isBase64(arrayOctet[i]) && !isWhiteSpace(arrayOctet[i])) {
+            return false;
+        }
+    }
+    return true;
+}","public void test000() throws Throwable {
+    byte[] byteArray0 = new byte[6];
+    byteArray0[0] = (byte) 123;
+    boolean boolean0 = Base64.isBase64(byteArray0);
+    assertFalse(boolean0);
+}","/**
+ * Tests a given byte array to see if it contains only valid characters within the Base64 alphabet. Currently the
+ * method treats whitespace as valid.
+ *
+ * @param arrayOctet
+ *            byte array to test
+ * @return <code>true</code> if all bytes are valid characters in the Base64 alphabet or if the byte array is empty;
+ *         <code>false</code>, otherwise
+ * @since 1.5
+ */"
+"public byte[] encode(byte[] pArray) {
+    reset();
+    if (pArray == null || pArray.length == 0) {
+        return pArray;
+    }
+    encode(pArray, 0, pArray.length);
+    // Notify encoder of EOF.
+    encode(pArray, 0, -1);
+    byte[] buf = new byte[pos - readPos];
+    readResults(buf, 0, buf.length);
+    return buf;
+}","public void test011() throws Throwable {
+    Base64 base64_0 = new Base64(0);
+    byte[] byteArray0 = new byte[7];
+    byteArray0[3] = (byte) (-106);
+    byte[] byteArray1 = base64_0.encode(byteArray0);
+    assertEquals(12, byteArray1.length);
+}","/**
+ * Encodes a byte[] containing binary data, into a byte[] containing characters in the Base64 alphabet.
+ *
+ * @param pArray
+ *            a byte array containing binary data
+ * @return A byte array containing only Base64 character data
+ */"
+"static byte[] toIntegerBytes(BigInteger bigInt) {
+    int bitlen = bigInt.bitLength();
+    // round bitlen
+    bitlen = ((bitlen + 7) >> 3) << 3;
+    byte[] bigBytes = bigInt.toByteArray();
+    if (((bigInt.bitLength() % 8) != 0) && (((bigInt.bitLength() / 8) + 1) == (bitlen / 8))) {
+        return bigBytes;
+    }
+    // set up params for copying everything but sign bit
+    int startSrc = 0;
+    int len = bigBytes.length;
+    // if bigInt is exactly byte-aligned, just skip signbit in copy
+    if ((bigInt.bitLength() % 8) == 0) {
+        startSrc = 1;
+        len--;
+    }
+    // to pad w/ nulls as per spec
+    int startDst = bitlen / 8 - len;
+    byte[] resizedBytes = new byte[bitlen / 8];
+    System.arraycopy(bigBytes, startSrc, resizedBytes, startDst, len);
+    return resizedBytes;
+}","public void test022() throws Throwable {
+    byte[] byteArray0 = new byte[0];
+    BigInteger bigInteger0 = Base64.decodeInteger(byteArray0);
+    byte[] byteArray1 = Base64.toIntegerBytes(bigInteger0);
+    assertEquals(0, byteArray1.length);
+}","/**
+ * Returns a byte-array representation of a <code>BigInteger</code> without sign bit.
+ *
+ * @param bigInt
+ *            <code>BigInteger</code> to be converted
+ * @return a byte array representation of the BigInteger parameter
+ */"
+"public static boolean isBase64(String base64) {
+    return isBase64(StringUtils.getBytesUtf8(base64));
+}","public void test033() throws Throwable {
+    boolean boolean0 = Base64.isBase64("""");
+    assertTrue(boolean0);
+}","/**
+ * Tests a given String to see if it contains only valid characters within the Base64 alphabet. Currently the
+ * method treats whitespace as valid.
+ *
+ * @param base64
+ *            String to test
+ * @return <code>true</code> if all characters in the String are valid characters in the Base64 alphabet or if
+ *         the String is empty; <code>false</code>, otherwise
+ *  @since 1.5
+ */"
+"public boolean isUrlSafe() {
+    return this.encodeTable == URL_SAFE_ENCODE_TABLE;
+}","public void test044() throws Throwable {
+    Base64 base64_0 = new Base64();
+    byte[] byteArray0 = new byte[0];
+    String string0 = base64_0.encodeToString(byteArray0);
+    assertFalse(base64_0.isUrlSafe());
+}","/**
+ * Returns our current encode mode. True if we're URL-SAFE, false otherwise.
+ *
+ * @return true if we're in URL-SAFE mode, false otherwise.
+ * @since 1.4
+ */"
+"public String encodeToString(byte[] pArray) {
+    return StringUtils.newStringUtf8(encode(pArray));
+}","public void test045() throws Throwable {
+    Base64 base64_0 = new Base64();
+    byte[] byteArray0 = new byte[0];
+    String string0 = base64_0.encodeToString(byteArray0);
+    assertEquals("""", string0);
+}","/**
+ * Encodes a byte[] containing binary data, into a String containing characters in the Base64 alphabet.
+ *
+ * @param pArray
+ *            a byte array containing binary data
+ * @return A String containing only Base64 character data
+ * @since 1.4
+ */"
+"public static byte[] encodeInteger(BigInteger bigInt) {
+    if (bigInt == null) {
+        throw new NullPointerException(""encodeInteger called with null parameter"");
+    }
+    return encodeBase64(toIntegerBytes(bigInt), false);
+}","public void test056() throws Throwable {
+    BigInteger bigInteger0 = BigInteger.ONE;
+    byte[] byteArray0 = Base64.encodeInteger(bigInteger0);
+    assertArrayEquals(new byte[] { (byte) 65, (byte) 81, (byte) 61, (byte) 61 }, byteArray0);
+}","/**
+ * Encodes to a byte64-encoded integer according to crypto standards such as W3C's XML-Signature
+ *
+ * @param bigInt
+ *            a BigInteger
+ * @return A byte array containing base64 character data
+ * @throws NullPointerException
+ *             if null is passed in
+ * @since 1.4
+ */"
+"public static String encodeBase64URLSafeString(byte[] binaryData) {
+    return StringUtils.newStringUtf8(encodeBase64(binaryData, false, true));
+}","public void test068() throws Throwable {
+    String string0 = Base64.encodeBase64URLSafeString((byte[]) null);
+    assertNull(string0);
+}","/**
+ * Encodes binary data using a URL-safe variation of the base64 algorithm but does not chunk the output. The
+ * url-safe variation emits - and _ instead of + and / characters.
+ *
+ * @param binaryData
+ *            binary data to encode
+ * @return String containing Base64 characters
+ * @since 1.4
+ */"
+"public static String encodeBase64URLSafeString(byte[] binaryData) {
+    return StringUtils.newStringUtf8(encodeBase64(binaryData, false, true));
+}","public void test079() throws Throwable {
+    Base64 base64_0 = new Base64();
+    byte[] byteArray0 = new byte[0];
+    byte[] byteArray1 = base64_0.encode(byteArray0);
+    String string0 = Base64.encodeBase64URLSafeString(byteArray1);
+    assertEquals("""", string0);
+}","/**
+ * Encodes binary data using a URL-safe variation of the base64 algorithm but does not chunk the output. The
+ * url-safe variation emits - and _ instead of + and / characters.
+ *
+ * @param binaryData
+ *            binary data to encode
+ * @return String containing Base64 characters
+ * @since 1.4
+ */"
+"public boolean isUrlSafe() {
+    return this.encodeTable == URL_SAFE_ENCODE_TABLE;
+}","public void test0710() throws Throwable {
+    Base64 base64_0 = new Base64();
+    byte[] byteArray0 = new byte[0];
+    byte[] byteArray1 = base64_0.encode(byteArray0);
+    String string0 = Base64.encodeBase64URLSafeString(byteArray1);
+    assertFalse(base64_0.isUrlSafe());
+}","/**
+ * Returns our current encode mode. True if we're URL-SAFE, false otherwise.
+ *
+ * @return true if we're in URL-SAFE mode, false otherwise.
+ * @since 1.4
+ */"
+"public static byte[] encodeBase64URLSafe(byte[] binaryData) {
+    return encodeBase64(binaryData, false, true);
+}","public void test0812() throws Throwable {
+    byte[] byteArray0 = Base64.encodeBase64URLSafe((byte[]) null);
+    assertNull(byteArray0);
+}","/**
+ * Encodes binary data using a URL-safe variation of the base64 algorithm but does not chunk the output. The
+ * url-safe variation emits - and _ instead of + and / characters.
+ *
+ * @param binaryData
+ *            binary data to encode
+ * @return byte[] containing Base64 characters in their UTF-8 representation.
+ * @since 1.4
+ */"
+"public static String encodeBase64String(byte[] binaryData) {
+    return StringUtils.newStringUtf8(encodeBase64(binaryData, false));
+}","public void test0913() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    String string0 = Base64.encodeBase64String(byteArray0);
+    assertEquals(""AA=="", string0);
+}","/**
+ * Encodes binary data using the base64 algorithm but does not chunk the output.
+ *
+ * NOTE:  We changed the behaviour of this method from multi-line chunking (commons-codec-1.4) to
+ * single-line non-chunking (commons-codec-1.5).
+ *
+ * @param binaryData
+ *            binary data to encode
+ * @return String containing Base64 characters.
+ * @since 1.4 (NOTE:  1.4 chunked the output, whereas 1.5 does not).
+ */"
+"public static String encodeBase64String(byte[] binaryData) {
+    return StringUtils.newStringUtf8(encodeBase64(binaryData, false));
+}","public void test1014() throws Throwable {
+    byte[] byteArray0 = new byte[0];
+    String string0 = Base64.encodeBase64String(byteArray0);
+    assertEquals("""", string0);
+}","/**
+ * Encodes binary data using the base64 algorithm but does not chunk the output.
+ *
+ * NOTE:  We changed the behaviour of this method from multi-line chunking (commons-codec-1.4) to
+ * single-line non-chunking (commons-codec-1.5).
+ *
+ * @param binaryData
+ *            binary data to encode
+ * @return String containing Base64 characters.
+ * @since 1.4 (NOTE:  1.4 chunked the output, whereas 1.5 does not).
+ */"
+"public static byte[] encodeBase64Chunked(byte[] binaryData) {
+    return encodeBase64(binaryData, true);
+}","public void test1115() throws Throwable {
+    byte[] byteArray0 = Base64.encodeBase64Chunked((byte[]) null);
+    assertNull(byteArray0);
+}","/**
+ * Encodes binary data using the base64 algorithm and chunks the encoded output into 76 character blocks
+ *
+ * @param binaryData
+ *            binary data to encode
+ * @return Base64 characters chunked in 76 character blocks
+ */"
+"public static byte[] encodeBase64Chunked(byte[] binaryData) {
+    return encodeBase64(binaryData, true);
+}","public void test1216() throws Throwable {
+    byte[] byteArray0 = new byte[0];
+    byte[] byteArray1 = Base64.encodeBase64Chunked(byteArray0);
+    assertEquals(0, byteArray1.length);
+}","/**
+ * Encodes binary data using the base64 algorithm and chunks the encoded output into 76 character blocks
+ *
+ * @param binaryData
+ *            binary data to encode
+ * @return Base64 characters chunked in 76 character blocks
+ */"
+"public static byte[] encodeBase64(byte[] binaryData, boolean isChunked, boolean urlSafe) {
+    return encodeBase64(binaryData, isChunked, urlSafe, Integer.MAX_VALUE);
+}","public void test1317() throws Throwable {
+    byte[] byteArray0 = Base64.encodeBase64((byte[]) null, true, false);
+    assertNull(byteArray0);
+}","/**
+ * Encodes binary data using the base64 algorithm, optionally chunking the output into 76 character blocks.
+ *
+ * @param binaryData
+ *            Array containing binary data to encode.
+ * @param isChunked
+ *            if <code>true</code> this encoder will chunk the base64 output into 76 character blocks
+ * @param urlSafe
+ *            if <code>true</code> this encoder will emit - and _ instead of the usual + and / characters.
+ * @return Base64-encoded data.
+ * @throws IllegalArgumentException
+ *             Thrown when the input array needs an output array bigger than {@link Integer#MAX_VALUE}
+ * @since 1.4
+ */"
+"public static byte[] encodeBase64(byte[] binaryData, boolean isChunked, boolean urlSafe) {
+    return encodeBase64(binaryData, isChunked, urlSafe, Integer.MAX_VALUE);
+}","public void test1418() throws Throwable {
+    Base64 base64_0 = new Base64();
+    byte[] byteArray0 = new byte[0];
+    byte[] byteArray1 = base64_0.encode(byteArray0);
+    byte[] byteArray2 = Base64.encodeBase64(byteArray1, true, true);
+    assertSame(byteArray2, byteArray0);
+}","/**
+ * Encodes binary data using the base64 algorithm, optionally chunking the output into 76 character blocks.
+ *
+ * @param binaryData
+ *            Array containing binary data to encode.
+ * @param isChunked
+ *            if <code>true</code> this encoder will chunk the base64 output into 76 character blocks
+ * @param urlSafe
+ *            if <code>true</code> this encoder will emit - and _ instead of the usual + and / characters.
+ * @return Base64-encoded data.
+ * @throws IllegalArgumentException
+ *             Thrown when the input array needs an output array bigger than {@link Integer#MAX_VALUE}
+ * @since 1.4
+ */"
+"public boolean isUrlSafe() {
+    return this.encodeTable == URL_SAFE_ENCODE_TABLE;
+}","public void test1419() throws Throwable {
+    Base64 base64_0 = new Base64();
+    byte[] byteArray0 = new byte[0];
+    byte[] byteArray1 = base64_0.encode(byteArray0);
+    byte[] byteArray2 = Base64.encodeBase64(byteArray1, true, true);
+    assertFalse(base64_0.isUrlSafe());
+}","/**
+ * Returns our current encode mode. True if we're URL-SAFE, false otherwise.
+ *
+ * @return true if we're in URL-SAFE mode, false otherwise.
+ * @since 1.4
+ */"
+"public static byte[] encodeBase64(byte[] binaryData, boolean isChunked) {
+    return encodeBase64(binaryData, isChunked, false);
+}","public void test1520() throws Throwable {
+    byte[] byteArray0 = Base64.encodeBase64((byte[]) null, false);
+    assertNull(byteArray0);
+}","/**
+ * Encodes binary data using the base64 algorithm, optionally chunking the output into 76 character blocks.
+ *
+ * @param binaryData
+ *            Array containing binary data to encode.
+ * @param isChunked
+ *            if <code>true</code> this encoder will chunk the base64 output into 76 character blocks
+ * @return Base64-encoded data.
+ * @throws IllegalArgumentException
+ *             Thrown when the input array needs an output array bigger than {@link Integer#MAX_VALUE}
+ */"
+"public static byte[] encodeBase64(byte[] binaryData, boolean isChunked) {
+    return encodeBase64(binaryData, isChunked, false);
+}","public void test1621() throws Throwable {
+    byte[] byteArray0 = new byte[3];
+    byte[] byteArray1 = Base64.encodeBase64(byteArray0, true);
+    //  // Unstable assertion: assertArrayEquals(new byte[] {(byte)65, (byte)65, (byte)65, (byte)65, (byte) (-8), (byte)0}, byteArray1);
+}","/**
+ * Encodes binary data using the base64 algorithm, optionally chunking the output into 76 character blocks.
+ *
+ * @param binaryData
+ *            Array containing binary data to encode.
+ * @param isChunked
+ *            if <code>true</code> this encoder will chunk the base64 output into 76 character blocks
+ * @return Base64-encoded data.
+ * @throws IllegalArgumentException
+ *             Thrown when the input array needs an output array bigger than {@link Integer#MAX_VALUE}
+ */"
+"public static byte[] encodeBase64(byte[] binaryData) {
+    return encodeBase64(binaryData, false);
+}","public void test1722() throws Throwable {
+    byte[] byteArray0 = new byte[0];
+    byte[] byteArray1 = Base64.encodeBase64(byteArray0);
+    assertEquals(0, byteArray1.length);
+}","/**
+ * Encodes binary data using the base64 algorithm but does not chunk the output.
+ *
+ * @param binaryData
+ *            binary data to encode
+ * @return byte[] containing Base64 characters in their UTF-8 representation.
+ */"
+"// Implementation of integer encoding used for crypto
+/**
+ * Decodes a byte64-encoded integer according to crypto standards such as W3C's XML-Signature
+ *
+ * @param pArray
+ *            a byte array containing base64 character data
+ * @return A BigInteger
+ * @since 1.4
+ */
+public static BigInteger decodeInteger(byte[] pArray) {
+    return new BigInteger(1, decodeBase64(pArray));
+}","public void test1824() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    Base64 base64_0 = new Base64((-1438), byteArray0);
+    byte[] byteArray1 = new byte[5];
+    byteArray1[3] = (byte) (-57);
+    byte[] byteArray2 = base64_0.encode(byteArray1);
+    BigInteger bigInteger0 = Base64.decodeInteger(byteArray2);
+    assertArrayEquals(new byte[] { (byte) 65, (byte) 65, (byte) 65, (byte) 65, (byte) 120, (byte) 119, (byte) 65, (byte) 61 }, byteArray2);
+}",""
+"public static byte[] decodeBase64(byte[] base64Data) {
+    return new Base64().decode(base64Data);
+}","public void test2026() throws Throwable {
+    byte[] byteArray0 = new byte[6];
+    byteArray0[3] = (byte) 43;
+    byteArray0[5] = (byte) 56;
+    byte[] byteArray1 = Base64.decodeBase64(byteArray0);
+    assertArrayEquals(new byte[] { (byte) (-5) }, byteArray1);
+}","/**
+ * Decodes Base64 data into octets
+ *
+ * @param base64Data
+ *            Byte array containing Base64 data
+ * @return Array containing decoded data.
+ */"
+"public static byte[] decodeBase64(byte[] base64Data) {
+    return new Base64().decode(base64Data);
+}","public void test2127() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    byte[] byteArray1 = Base64.decodeBase64(byteArray0);
+    assertEquals(0, byteArray1.length);
+}","/**
+ * Decodes Base64 data into octets
+ *
+ * @param base64Data
+ *            Byte array containing Base64 data
+ * @return Array containing decoded data.
+ */"
+"public static byte[] decodeBase64(String base64String) {
+    return new Base64().decode(base64String);
+}","public void test2228() throws Throwable {
+    byte[] byteArray0 = Base64.decodeBase64((String) null);
+    assertNull(byteArray0);
+}","/**
+ * Decodes a Base64 String into octets
+ *
+ * @param base64String
+ *            String containing Base64 data
+ * @return Array containing decoded data.
+ * @since 1.4
+ */"
+"public static byte[] decodeBase64(String base64String) {
+    return new Base64().decode(base64String);
+}","public void test2329() throws Throwable {
+    byte[] byteArray0 = Base64.decodeBase64(""))%"");
+    assertEquals(0, byteArray0.length);
+}","/**
+ * Decodes a Base64 String into octets
+ *
+ * @param base64String
+ *            String containing Base64 data
+ * @return Array containing decoded data.
+ * @since 1.4
+ */"
+"public byte[] decode(String pArray) {
+    return decode(StringUtils.getBytesUtf8(pArray));
+}","public void test2430() throws Throwable {
+    Base64 base64_0 = new Base64(false);
+    byte[] byteArray0 = base64_0.decode((String) null);
+    assertNull(byteArray0);
+}","/**
+ * Decodes a String containing characters in the Base64 alphabet.
+ *
+ * @param pArray
+ *            A String containing Base64 character data
+ * @return a byte array containing binary data
+ * @since 1.4
+ */"
+"public boolean isUrlSafe() {
+    return this.encodeTable == URL_SAFE_ENCODE_TABLE;
+}","public void test2431() throws Throwable {
+    Base64 base64_0 = new Base64(false);
+    byte[] byteArray0 = base64_0.decode((String) null);
+    assertFalse(base64_0.isUrlSafe());
+}","/**
+ * Returns our current encode mode. True if we're URL-SAFE, false otherwise.
+ *
+ * @return true if we're in URL-SAFE mode, false otherwise.
+ * @since 1.4
+ */"
+"static byte[] toIntegerBytes(BigInteger bigInt) {
+    int bitlen = bigInt.bitLength();
+    // round bitlen
+    bitlen = ((bitlen + 7) >> 3) << 3;
+    byte[] bigBytes = bigInt.toByteArray();
+    if (((bigInt.bitLength() % 8) != 0) && (((bigInt.bitLength() / 8) + 1) == (bitlen / 8))) {
+        return bigBytes;
+    }
+    // set up params for copying everything but sign bit
+    int startSrc = 0;
+    int len = bigBytes.length;
+    // if bigInt is exactly byte-aligned, just skip signbit in copy
+    if ((bigInt.bitLength() % 8) == 0) {
+        startSrc = 1;
+        len--;
+    }
+    // to pad w/ nulls as per spec
+    int startDst = bitlen / 8 - len;
+    byte[] resizedBytes = new byte[bitlen / 8];
+    System.arraycopy(bigBytes, startSrc, resizedBytes, startDst, len);
+    return resizedBytes;
+}","public void test2532() throws Throwable {
+    // Undeclared exception!
+    try {
+        Base64.toIntegerBytes((BigInteger) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}","/**
+ * Returns a byte-array representation of a <code>BigInteger</code> without sign bit.
+ *
+ * @param bigInt
+ *            <code>BigInteger</code> to be converted
+ * @return a byte array representation of the BigInteger parameter
+ */"
+"int readResults(byte[] b, int bPos, int bAvail) {
+    if (buffer != null) {
+        int len = Math.min(avail(), bAvail);
+        System.arraycopy(buffer, readPos, b, bPos, len);
+        readPos += len;
+        if (readPos >= pos) {
+            buffer = null;
+        }
+        return len;
+    }
+    return eof ? -1 : 0;
+}","public void test2633() throws Throwable {
+    Base64 base64_0 = new Base64((-1783));
+    byte[] byteArray0 = new byte[6];
+    base64_0.encode(byteArray0, (int) (byte) (-118), (int) (byte) (-45));
+    // Undeclared exception!
+    try {
+        base64_0.readResults(byteArray0, (-767), (-391));
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}","/**
+ * Extracts buffered data into the provided byte[] array, starting at position bPos, up to a maximum of bAvail
+ * bytes. Returns how many bytes were actually extracted.
+ *
+ * @param b
+ *            byte[] array to extract the buffered data into.
+ * @param bPos
+ *            position in byte[] array to start extraction at.
+ * @param bAvail
+ *            amount of bytes we're allowed to extract. We may extract fewer (if fewer are available).
+ * @return The number of bytes successfully extracted into the provided byte[] array.
+ */"
+"public static boolean isBase64(byte[] arrayOctet) {
+    for (int i = 0; i < arrayOctet.length; i++) {
+        if (!isBase64(arrayOctet[i]) && !isWhiteSpace(arrayOctet[i])) {
+            return false;
+        }
+    }
+    return true;
+}","public void test2734() throws Throwable {
+    // Undeclared exception!
+    try {
+        Base64.isBase64((byte[]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}","/**
+ * Tests a given byte array to see if it contains only valid characters within the Base64 alphabet. Currently the
+ * method treats whitespace as valid.
+ *
+ * @param arrayOctet
+ *            byte array to test
+ * @return <code>true</code> if all bytes are valid characters in the Base64 alphabet or if the byte array is empty;
+ *         <code>false</code>, otherwise
+ * @since 1.5
+ */"
+"public static boolean isBase64(String base64) {
+    return isBase64(StringUtils.getBytesUtf8(base64));
+}","public void test2835() throws Throwable {
+    // Undeclared exception!
+    try {
+        Base64.isBase64((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}","/**
+ * Tests a given String to see if it contains only valid characters within the Base64 alphabet. Currently the
+ * method treats whitespace as valid.
+ *
+ * @param base64
+ *            String to test
+ * @return <code>true</code> if all characters in the String are valid characters in the Base64 alphabet or if
+ *         the String is empty; <code>false</code>, otherwise
+ *  @since 1.5
+ */"
+"public static boolean isArrayByteBase64(byte[] arrayOctet) {
+    return isBase64(arrayOctet);
+}","public void test2936() throws Throwable {
+    // Undeclared exception!
+    try {
+        Base64.isArrayByteBase64((byte[]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}","/**
+ * Tests a given byte array to see if it contains only valid characters within the Base64 alphabet. Currently the
+ * method treats whitespace as valid.
+ *
+ * @param arrayOctet
+ *            byte array to test
+ * @return <code>true</code> if all bytes are valid characters in the Base64 alphabet or if the byte array is empty;
+ *         <code>false</code>, otherwise
+ * @deprecated 1.5 Use {@link #isBase64(byte[])}
+ */"
+"public byte[] encode(byte[] pArray) {
+    reset();
+    if (pArray == null || pArray.length == 0) {
+        return pArray;
+    }
+    encode(pArray, 0, pArray.length);
+    // Notify encoder of EOF.
+    encode(pArray, 0, -1);
+    byte[] buf = new byte[pos - readPos];
+    readResults(buf, 0, buf.length);
+    return buf;
+}","public void test3037() throws Throwable {
+    BigInteger bigInteger0 = BigInteger.ZERO;
+    byte[] byteArray0 = Base64.encodeInteger(bigInteger0);
+    Base64 base64_0 = new Base64((-485), byteArray0);
+    byte[] byteArray1 = new byte[9];
+    // Undeclared exception!
+    try {
+        base64_0.encode(byteArray1);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -1
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}","/**
+ * Encodes a byte[] containing binary data, into a byte[] containing characters in the Base64 alphabet.
+ *
+ * @param pArray
+ *            a byte array containing binary data
+ * @return A byte array containing only Base64 character data
+ */"
+"static byte[] discardWhitespace(byte[] data) {
+    byte[] groomedData = new byte[data.length];
+    int bytesCopied = 0;
+    for (int i = 0; i < data.length; i++) {
+        switch(data[i]) {
+            case ' ':
+            case '\n':
+            case '\r':
+            case '\t':
+                break;
+            default:
+                groomedData[bytesCopied++] = data[i];
+        }
+    }
+    byte[] packedData = new byte[bytesCopied];
+    System.arraycopy(groomedData, 0, packedData, 0, bytesCopied);
+    return packedData;
+}","public void test3138() throws Throwable {
+    // Undeclared exception!
+    try {
+        Base64.discardWhitespace((byte[]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}","/**
+ * Discards any whitespace from a base-64 encoded block.
+ *
+ * @param data
+ *            The base-64 encoded data to discard the whitespace from.
+ * @return The data, less whitespace (see RFC 2045).
+ * @deprecated This method is no longer needed
+ */"
+"// Implementation of integer encoding used for crypto
+/**
+ * Decodes a byte64-encoded integer according to crypto standards such as W3C's XML-Signature
+ *
+ * @param pArray
+ *            a byte array containing base64 character data
+ * @return A BigInteger
+ * @since 1.4
+ */
+public static BigInteger decodeInteger(byte[] pArray) {
+    return new BigInteger(1, decodeBase64(pArray));
+}","public void test3239() throws Throwable {
+    // Undeclared exception!
+    try {
+        Base64.decodeInteger((byte[]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"public static byte[] encodeBase64(byte[] binaryData, boolean isChunked, boolean urlSafe, int maxResultSize) {
+    if (binaryData == null || binaryData.length == 0) {
+        return binaryData;
+    }
+    long len = getEncodeLength(binaryData, MIME_CHUNK_SIZE, CHUNK_SEPARATOR);
+    if (len > maxResultSize) {
+        throw new IllegalArgumentException(""Input array too big, the output array would be bigger ("" + len + "") than the specified maxium size of "" + maxResultSize);
+    }
+    Base64 b64 = isChunked ? new Base64(urlSafe) : new Base64(0, CHUNK_SEPARATOR, urlSafe);
+    return b64.encode(binaryData);
+}","public void test3340() throws Throwable {
+    byte[] byteArray0 = new byte[5];
+    byte[] byteArray1 = Base64.encodeBase64(byteArray0, true, true, (int) (byte) 102);
+    //  // Unstable assertion: assertArrayEquals(new byte[] {(byte)65, (byte)65, (byte)65, (byte)65, (byte)65, (byte)65, (byte)65, (byte) (-8), (byte)0}, byteArray1);
+}","/**
+ * Encodes binary data using the base64 algorithm, optionally chunking the output into 76 character blocks.
+ *
+ * @param binaryData
+ *            Array containing binary data to encode.
+ * @param isChunked
+ *            if <code>true</code> this encoder will chunk the base64 output into 76 character blocks
+ * @param urlSafe
+ *            if <code>true</code> this encoder will emit - and _ instead of the usual + and / characters.
+ * @param maxResultSize
+ *            The maximum result size to accept.
+ * @return Base64-encoded data.
+ * @throws IllegalArgumentException
+ *             Thrown when the input array needs an output array bigger than maxResultSize
+ * @since 1.4
+ */"
+"public static byte[] encodeBase64(byte[] binaryData, boolean isChunked, boolean urlSafe, int maxResultSize) {
+    if (binaryData == null || binaryData.length == 0) {
+        return binaryData;
+    }
+    long len = getEncodeLength(binaryData, MIME_CHUNK_SIZE, CHUNK_SEPARATOR);
+    if (len > maxResultSize) {
+        throw new IllegalArgumentException(""Input array too big, the output array would be bigger ("" + len + "") than the specified maxium size of "" + maxResultSize);
+    }
+    Base64 b64 = isChunked ? new Base64(urlSafe) : new Base64(0, CHUNK_SEPARATOR, urlSafe);
+    return b64.encode(binaryData);
+}","public void test3441() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    byte[] byteArray1 = Base64.encodeBase64(byteArray0, false, false, 64);
+    assertArrayEquals(new byte[] { (byte) 65, (byte) 65, (byte) 61, (byte) 61 }, byteArray1);
+}","/**
+ * Encodes binary data using the base64 algorithm, optionally chunking the output into 76 character blocks.
+ *
+ * @param binaryData
+ *            Array containing binary data to encode.
+ * @param isChunked
+ *            if <code>true</code> this encoder will chunk the base64 output into 76 character blocks
+ * @param urlSafe
+ *            if <code>true</code> this encoder will emit - and _ instead of the usual + and / characters.
+ * @param maxResultSize
+ *            The maximum result size to accept.
+ * @return Base64-encoded data.
+ * @throws IllegalArgumentException
+ *             Thrown when the input array needs an output array bigger than maxResultSize
+ * @since 1.4
+ */"
+"public static byte[] encodeBase64(byte[] binaryData, boolean isChunked, boolean urlSafe, int maxResultSize) {
+    if (binaryData == null || binaryData.length == 0) {
+        return binaryData;
+    }
+    long len = getEncodeLength(binaryData, MIME_CHUNK_SIZE, CHUNK_SEPARATOR);
+    if (len > maxResultSize) {
+        throw new IllegalArgumentException(""Input array too big, the output array would be bigger ("" + len + "") than the specified maxium size of "" + maxResultSize);
+    }
+    Base64 b64 = isChunked ? new Base64(urlSafe) : new Base64(0, CHUNK_SEPARATOR, urlSafe);
+    return b64.encode(binaryData);
+}","public void test3543() throws Throwable {
+    byte[] byteArray0 = Base64.encodeBase64((byte[]) null, false, false, 76);
+    assertNull(byteArray0);
+}","/**
+ * Encodes binary data using the base64 algorithm, optionally chunking the output into 76 character blocks.
+ *
+ * @param binaryData
+ *            Array containing binary data to encode.
+ * @param isChunked
+ *            if <code>true</code> this encoder will chunk the base64 output into 76 character blocks
+ * @param urlSafe
+ *            if <code>true</code> this encoder will emit - and _ instead of the usual + and / characters.
+ * @param maxResultSize
+ *            The maximum result size to accept.
+ * @return Base64-encoded data.
+ * @throws IllegalArgumentException
+ *             Thrown when the input array needs an output array bigger than maxResultSize
+ * @since 1.4
+ */"
+"public byte[] decode(byte[] pArray) {
+    reset();
+    if (pArray == null || pArray.length == 0) {
+        return pArray;
+    }
+    decode(pArray, 0, pArray.length);
+    // Notify decoder of EOF.
+    decode(pArray, 0, -1);
+    byte[] result = new byte[pos];
+    readResults(result, 0, result.length);
+    return result;
+}","public void test3644() throws Throwable {
+    Base64 base64_0 = new Base64(0, (byte[]) null);
+    byte[] byteArray0 = base64_0.decode((byte[]) null);
+    assertNull(byteArray0);
+}","/**
+ * Decodes a byte[] containing characters in the Base64 alphabet.
+ *
+ * @param pArray
+ *            A byte array containing Base64 character data
+ * @return a byte array containing binary data
+ */"
+"public boolean isUrlSafe() {
+    return this.encodeTable == URL_SAFE_ENCODE_TABLE;
+}","public void test3645() throws Throwable {
+    Base64 base64_0 = new Base64(0, (byte[]) null);
+    byte[] byteArray0 = base64_0.decode((byte[]) null);
+    assertFalse(base64_0.isUrlSafe());
+}","/**
+ * Returns our current encode mode. True if we're URL-SAFE, false otherwise.
+ *
+ * @return true if we're in URL-SAFE mode, false otherwise.
+ * @since 1.4
+ */"
+"static byte[] discardWhitespace(byte[] data) {
+    byte[] groomedData = new byte[data.length];
+    int bytesCopied = 0;
+    for (int i = 0; i < data.length; i++) {
+        switch(data[i]) {
+            case ' ':
+            case '\n':
+            case '\r':
+            case '\t':
+                break;
+            default:
+                groomedData[bytesCopied++] = data[i];
+        }
+    }
+    byte[] packedData = new byte[bytesCopied];
+    System.arraycopy(groomedData, 0, packedData, 0, bytesCopied);
+    return packedData;
+}","public void test3746() throws Throwable {
+    Base64 base64_0 = new Base64(103);
+    byte[] byteArray0 = new byte[0];
+    byte[] byteArray1 = base64_0.decode(byteArray0);
+    byte[] byteArray2 = Base64.encodeBase64URLSafe(byteArray1);
+    byte[] byteArray3 = Base64.discardWhitespace(byteArray2);
+    assertSame(byteArray1, byteArray0);
+}","/**
+ * Discards any whitespace from a base-64 encoded block.
+ *
+ * @param data
+ *            The base-64 encoded data to discard the whitespace from.
+ * @return The data, less whitespace (see RFC 2045).
+ * @deprecated This method is no longer needed
+ */"
+"public boolean isUrlSafe() {
+    return this.encodeTable == URL_SAFE_ENCODE_TABLE;
+}","public void test3747() throws Throwable {
+    Base64 base64_0 = new Base64(103);
+    byte[] byteArray0 = new byte[0];
+    byte[] byteArray1 = base64_0.decode(byteArray0);
+    byte[] byteArray2 = Base64.encodeBase64URLSafe(byteArray1);
+    byte[] byteArray3 = Base64.discardWhitespace(byteArray2);
+    assertFalse(base64_0.isUrlSafe());
+}","/**
+ * Returns our current encode mode. True if we're URL-SAFE, false otherwise.
+ *
+ * @return true if we're in URL-SAFE mode, false otherwise.
+ * @since 1.4
+ */"
+"public static boolean isBase64(byte[] arrayOctet) {
+    for (int i = 0; i < arrayOctet.length; i++) {
+        if (!isBase64(arrayOctet[i]) && !isWhiteSpace(arrayOctet[i])) {
+            return false;
+        }
+    }
+    return true;
+}","public void test3850() throws Throwable {
+    byte[] byteArray0 = new byte[3];
+    byte[] byteArray1 = Base64.encodeBase64(byteArray0, true, false);
+    boolean boolean0 = Base64.isBase64(byteArray1);
+    //  // Unstable assertion: assertFalse(boolean0);
+    //  // Unstable assertion: assertArrayEquals(new byte[] {(byte)65, (byte)65, (byte)65, (byte)65, (byte) (-8), (byte)0}, byteArray1);
+    //  // Unstable assertion: assertEquals(6, byteArray1.length);
+}","/**
+ * Tests a given byte array to see if it contains only valid characters within the Base64 alphabet. Currently the
+ * method treats whitespace as valid.
+ *
+ * @param arrayOctet
+ *            byte array to test
+ * @return <code>true</code> if all bytes are valid characters in the Base64 alphabet or if the byte array is empty;
+ *         <code>false</code>, otherwise
+ * @since 1.5
+ */"
+"public static boolean isBase64(byte octet) {
+    return octet == PAD || (octet >= 0 && octet < DECODE_TABLE.length && DECODE_TABLE[octet] != -1);
+}","public void test3951() throws Throwable {
+    boolean boolean0 = Base64.isBase64((byte) 81);
+    assertTrue(boolean0);
+}","/**
+ * Returns whether or not the <code>octet</code> is in the base 64 alphabet.
+ *
+ * @param octet
+ *            The value to test
+ * @return <code>true</code> if the value is defined in the the base 64 alphabet, <code>false</code> otherwise.
+ * @since 1.4
+ */"
+"public static boolean isBase64(byte octet) {
+    return octet == PAD || (octet >= 0 && octet < DECODE_TABLE.length && DECODE_TABLE[octet] != -1);
+}","public void test4052() throws Throwable {
+    boolean boolean0 = Base64.isBase64((byte) 0);
+    assertFalse(boolean0);
+}","/**
+ * Returns whether or not the <code>octet</code> is in the base 64 alphabet.
+ *
+ * @param octet
+ *            The value to test
+ * @return <code>true</code> if the value is defined in the the base 64 alphabet, <code>false</code> otherwise.
+ * @since 1.4
+ */"
+"public static boolean isBase64(byte octet) {
+    return octet == PAD || (octet >= 0 && octet < DECODE_TABLE.length && DECODE_TABLE[octet] != -1);
+}","public void test4153() throws Throwable {
+    boolean boolean0 = Base64.isBase64((byte) 126);
+    assertFalse(boolean0);
+}","/**
+ * Returns whether or not the <code>octet</code> is in the base 64 alphabet.
+ *
+ * @param octet
+ *            The value to test
+ * @return <code>true</code> if the value is defined in the the base 64 alphabet, <code>false</code> otherwise.
+ * @since 1.4
+ */"
+"public static boolean isBase64(byte octet) {
+    return octet == PAD || (octet >= 0 && octet < DECODE_TABLE.length && DECODE_TABLE[octet] != -1);
+}","public void test4254() throws Throwable {
+    boolean boolean0 = Base64.isBase64((byte) (-126));
+    assertFalse(boolean0);
+}","/**
+ * Returns whether or not the <code>octet</code> is in the base 64 alphabet.
+ *
+ * @param octet
+ *            The value to test
+ * @return <code>true</code> if the value is defined in the the base 64 alphabet, <code>false</code> otherwise.
+ * @since 1.4
+ */"
+"public static boolean isBase64(byte octet) {
+    return octet == PAD || (octet >= 0 && octet < DECODE_TABLE.length && DECODE_TABLE[octet] != -1);
+}","public void test4355() throws Throwable {
+    boolean boolean0 = Base64.isBase64((byte) 61);
+    assertTrue(boolean0);
+}","/**
+ * Returns whether or not the <code>octet</code> is in the base 64 alphabet.
+ *
+ * @param octet
+ *            The value to test
+ * @return <code>true</code> if the value is defined in the the base 64 alphabet, <code>false</code> otherwise.
+ * @since 1.4
+ */"
+"public byte[] encode(byte[] pArray) {
+    reset();
+    if (pArray == null || pArray.length == 0) {
+        return pArray;
+    }
+    encode(pArray, 0, pArray.length);
+    // Notify encoder of EOF.
+    encode(pArray, 0, -1);
+    byte[] buf = new byte[pos - readPos];
+    readResults(buf, 0, buf.length);
+    return buf;
+}","public void test4456() throws Throwable {
+    Base64 base64_0 = new Base64(false);
+    byte[] byteArray0 = new byte[0];
+    byte[] byteArray1 = base64_0.decode(""+&OxR7{L] |au,X"");
+    byte[] byteArray2 = base64_0.encode(byteArray0);
+    assertSame(byteArray2, byteArray0);
+}","/**
+ * Encodes a byte[] containing binary data, into a byte[] containing characters in the Base64 alphabet.
+ *
+ * @param pArray
+ *            a byte array containing binary data
+ * @return A byte array containing only Base64 character data
+ */"
+"void decode(byte[] in, int inPos, int inAvail) {
+    if (eof) {
+        return;
+    }
+    if (inAvail < 0) {
+        eof = true;
+    }
+    for (int i = 0; i < inAvail; i++) {
+        if (buffer == null || buffer.length - pos < decodeSize) {
+            resizeBuffer();
+        }
+        byte b = in[inPos++];
+        if (b == PAD) {
+            // We're done.
+            eof = true;
+            break;
+        } else {
+            if (b >= 0 && b < DECODE_TABLE.length) {
+                int result = DECODE_TABLE[b];
+                if (result >= 0) {
+                    modulus = (++modulus) % 4;
+                    x = (x << 6) + result;
+                    if (modulus == 0) {
+                        buffer[pos++] = (byte) ((x >> 16) & MASK_8BITS);
+                        buffer[pos++] = (byte) ((x >> 8) & MASK_8BITS);
+                        buffer[pos++] = (byte) (x & MASK_8BITS);
+                    }
+                }
+            }
+        }
+    }
+    // Two forms of EOF as far as base64 decoder is concerned: actual
+    // EOF (-1) and first time '=' character is encountered in stream.
+    // This approach makes the '=' padding characters completely optional.
+    if (eof && modulus != 0) {
+        if (buffer == null || buffer.length - pos < decodeSize) {
+            resizeBuffer();
+        }
+        // We have some spare bits remaining
+        // Output all whole multiples of 8 bits and ignore the rest
+        switch(modulus) {
+            //   case 1: // 6 bits - ignore entirely
+            //       break;
+            case // 12 bits = 8 + 4
+            2:
+                x = x >> 4;
+                buffer[pos++] = (byte) ((x) & MASK_8BITS);
+                break;
+            case // 18 bits = 8 + 8 + 2
+            3:
+                x = x >> 2;
+                buffer[pos++] = (byte) ((x >> 8) & MASK_8BITS);
+                buffer[pos++] = (byte) ((x) & MASK_8BITS);
+                break;
+        }
+    }
+}","public void test4457() throws Throwable {
+    Base64 base64_0 = new Base64(false);
+    byte[] byteArray0 = new byte[0];
+    byte[] byteArray1 = base64_0.decode(""+&OxR7{L] |au,X"");
+    byte[] byteArray2 = base64_0.encode(byteArray0);
+    base64_0.decode(byteArray1, 0, 0);
+    assertEquals(6, byteArray1.length);
+}","/**
+ * <p>
+ * Decodes all of the provided data, starting at inPos, for inAvail bytes. Should be called at least twice: once
+ * with the data to decode, and once with inAvail set to ""-1"" to alert decoder that EOF has been reached. The ""-1""
+ * call is not necessary when decoding, but it doesn't hurt, either.
+ * </p>
+ * <p>
+ * Ignores all non-base64 characters. This is how chunked (e.g. 76 character) data is handled, since CR and LF are
+ * silently ignored, but has implications for other bytes, too. This method subscribes to the garbage-in,
+ * garbage-out philosophy: it will not check the provided data for validity.
+ * </p>
+ * <p>
+ * Thanks to ""commons"" project in ws.apache.org for the bitwise operations, and general approach.
+ * http://svn.apache.org/repos/asf/webservices/commons/trunk/modules/util/
+ * </p>
+ *
+ * @param in
+ *            byte[] array of ascii data to base64 decode.
+ * @param inPos
+ *            Position to start reading data from.
+ * @param inAvail
+ *            Amount of bytes available from input for encoding.
+ */"
+"void decode(byte[] in, int inPos, int inAvail) {
+    if (eof) {
+        return;
+    }
+    if (inAvail < 0) {
+        eof = true;
+    }
+    for (int i = 0; i < inAvail; i++) {
+        if (buffer == null || buffer.length - pos < decodeSize) {
+            resizeBuffer();
+        }
+        byte b = in[inPos++];
+        if (b == PAD) {
+            // We're done.
+            eof = true;
+            break;
+        } else {
+            if (b >= 0 && b < DECODE_TABLE.length) {
+                int result = DECODE_TABLE[b];
+                if (result >= 0) {
+                    modulus = (++modulus) % 4;
+                    x = (x << 6) + result;
+                    if (modulus == 0) {
+                        buffer[pos++] = (byte) ((x >> 16) & MASK_8BITS);
+                        buffer[pos++] = (byte) ((x >> 8) & MASK_8BITS);
+                        buffer[pos++] = (byte) (x & MASK_8BITS);
+                    }
+                }
+            }
+        }
+    }
+    // Two forms of EOF as far as base64 decoder is concerned: actual
+    // EOF (-1) and first time '=' character is encountered in stream.
+    // This approach makes the '=' padding characters completely optional.
+    if (eof && modulus != 0) {
+        if (buffer == null || buffer.length - pos < decodeSize) {
+            resizeBuffer();
+        }
+        // We have some spare bits remaining
+        // Output all whole multiples of 8 bits and ignore the rest
+        switch(modulus) {
+            //   case 1: // 6 bits - ignore entirely
+            //       break;
+            case // 12 bits = 8 + 4
+            2:
+                x = x >> 4;
+                buffer[pos++] = (byte) ((x) & MASK_8BITS);
+                break;
+            case // 18 bits = 8 + 8 + 2
+            3:
+                x = x >> 2;
+                buffer[pos++] = (byte) ((x >> 8) & MASK_8BITS);
+                buffer[pos++] = (byte) ((x) & MASK_8BITS);
+                break;
+        }
+    }
+}","public void test4559() throws Throwable {
+    byte[] byteArray0 = new byte[8];
+    byteArray0[4] = (byte) 118;
+    Base64 base64_0 = new Base64();
+    // Undeclared exception!
+    try {
+        base64_0.decode(byteArray0, (int) (byte) 1, 87);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 8
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}","/**
+ * <p>
+ * Decodes all of the provided data, starting at inPos, for inAvail bytes. Should be called at least twice: once
+ * with the data to decode, and once with inAvail set to ""-1"" to alert decoder that EOF has been reached. The ""-1""
+ * call is not necessary when decoding, but it doesn't hurt, either.
+ * </p>
+ * <p>
+ * Ignores all non-base64 characters. This is how chunked (e.g. 76 character) data is handled, since CR and LF are
+ * silently ignored, but has implications for other bytes, too. This method subscribes to the garbage-in,
+ * garbage-out philosophy: it will not check the provided data for validity.
+ * </p>
+ * <p>
+ * Thanks to ""commons"" project in ws.apache.org for the bitwise operations, and general approach.
+ * http://svn.apache.org/repos/asf/webservices/commons/trunk/modules/util/
+ * </p>
+ *
+ * @param in
+ *            byte[] array of ascii data to base64 decode.
+ * @param inPos
+ *            Position to start reading data from.
+ * @param inAvail
+ *            Amount of bytes available from input for encoding.
+ */"
+"void decode(byte[] in, int inPos, int inAvail) {
+    if (eof) {
+        return;
+    }
+    if (inAvail < 0) {
+        eof = true;
+    }
+    for (int i = 0; i < inAvail; i++) {
+        if (buffer == null || buffer.length - pos < decodeSize) {
+            resizeBuffer();
+        }
+        byte b = in[inPos++];
+        if (b == PAD) {
+            // We're done.
+            eof = true;
+            break;
+        } else {
+            if (b >= 0 && b < DECODE_TABLE.length) {
+                int result = DECODE_TABLE[b];
+                if (result >= 0) {
+                    modulus = (++modulus) % 4;
+                    x = (x << 6) + result;
+                    if (modulus == 0) {
+                        buffer[pos++] = (byte) ((x >> 16) & MASK_8BITS);
+                        buffer[pos++] = (byte) ((x >> 8) & MASK_8BITS);
+                        buffer[pos++] = (byte) (x & MASK_8BITS);
+                    }
+                }
+            }
+        }
+    }
+    // Two forms of EOF as far as base64 decoder is concerned: actual
+    // EOF (-1) and first time '=' character is encountered in stream.
+    // This approach makes the '=' padding characters completely optional.
+    if (eof && modulus != 0) {
+        if (buffer == null || buffer.length - pos < decodeSize) {
+            resizeBuffer();
+        }
+        // We have some spare bits remaining
+        // Output all whole multiples of 8 bits and ignore the rest
+        switch(modulus) {
+            //   case 1: // 6 bits - ignore entirely
+            //       break;
+            case // 12 bits = 8 + 4
+            2:
+                x = x >> 4;
+                buffer[pos++] = (byte) ((x) & MASK_8BITS);
+                break;
+            case // 18 bits = 8 + 8 + 2
+            3:
+                x = x >> 2;
+                buffer[pos++] = (byte) ((x >> 8) & MASK_8BITS);
+                buffer[pos++] = (byte) ((x) & MASK_8BITS);
+                break;
+        }
+    }
+}","public void test4660() throws Throwable {
+    byte[] byteArray0 = new byte[8];
+    byteArray0[1] = (byte) (-35);
+    Base64 base64_0 = new Base64();
+    // Undeclared exception!
+    try {
+        base64_0.decode(byteArray0, (int) (byte) 1, 87);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 8
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}","/**
+ * <p>
+ * Decodes all of the provided data, starting at inPos, for inAvail bytes. Should be called at least twice: once
+ * with the data to decode, and once with inAvail set to ""-1"" to alert decoder that EOF has been reached. The ""-1""
+ * call is not necessary when decoding, but it doesn't hurt, either.
+ * </p>
+ * <p>
+ * Ignores all non-base64 characters. This is how chunked (e.g. 76 character) data is handled, since CR and LF are
+ * silently ignored, but has implications for other bytes, too. This method subscribes to the garbage-in,
+ * garbage-out philosophy: it will not check the provided data for validity.
+ * </p>
+ * <p>
+ * Thanks to ""commons"" project in ws.apache.org for the bitwise operations, and general approach.
+ * http://svn.apache.org/repos/asf/webservices/commons/trunk/modules/util/
+ * </p>
+ *
+ * @param in
+ *            byte[] array of ascii data to base64 decode.
+ * @param inPos
+ *            Position to start reading data from.
+ * @param inAvail
+ *            Amount of bytes available from input for encoding.
+ */"
+"void decode(byte[] in, int inPos, int inAvail) {
+    if (eof) {
+        return;
+    }
+    if (inAvail < 0) {
+        eof = true;
+    }
+    for (int i = 0; i < inAvail; i++) {
+        if (buffer == null || buffer.length - pos < decodeSize) {
+            resizeBuffer();
+        }
+        byte b = in[inPos++];
+        if (b == PAD) {
+            // We're done.
+            eof = true;
+            break;
+        } else {
+            if (b >= 0 && b < DECODE_TABLE.length) {
+                int result = DECODE_TABLE[b];
+                if (result >= 0) {
+                    modulus = (++modulus) % 4;
+                    x = (x << 6) + result;
+                    if (modulus == 0) {
+                        buffer[pos++] = (byte) ((x >> 16) & MASK_8BITS);
+                        buffer[pos++] = (byte) ((x >> 8) & MASK_8BITS);
+                        buffer[pos++] = (byte) (x & MASK_8BITS);
+                    }
+                }
+            }
+        }
+    }
+    // Two forms of EOF as far as base64 decoder is concerned: actual
+    // EOF (-1) and first time '=' character is encountered in stream.
+    // This approach makes the '=' padding characters completely optional.
+    if (eof && modulus != 0) {
+        if (buffer == null || buffer.length - pos < decodeSize) {
+            resizeBuffer();
+        }
+        // We have some spare bits remaining
+        // Output all whole multiples of 8 bits and ignore the rest
+        switch(modulus) {
+            //   case 1: // 6 bits - ignore entirely
+            //       break;
+            case // 12 bits = 8 + 4
+            2:
+                x = x >> 4;
+                buffer[pos++] = (byte) ((x) & MASK_8BITS);
+                break;
+            case // 18 bits = 8 + 8 + 2
+            3:
+                x = x >> 2;
+                buffer[pos++] = (byte) ((x >> 8) & MASK_8BITS);
+                buffer[pos++] = (byte) ((x) & MASK_8BITS);
+                break;
+        }
+    }
+}","public void test4761() throws Throwable {
+    Base64 base64_0 = new Base64(14);
+    byte[] byteArray0 = new byte[5];
+    byte[] byteArray1 = Base64.encodeBase64Chunked(byteArray0);
+    base64_0.decode(byteArray1, 7, (int) (byte) 6);
+    //  // Unstable assertion: assertArrayEquals(new byte[] {(byte)65, (byte)65, (byte)65, (byte)65, (byte)65, (byte)65, (byte)65, (byte)61, (byte)0, (byte)0}, byteArray1);
+}","/**
+ * <p>
+ * Decodes all of the provided data, starting at inPos, for inAvail bytes. Should be called at least twice: once
+ * with the data to decode, and once with inAvail set to ""-1"" to alert decoder that EOF has been reached. The ""-1""
+ * call is not necessary when decoding, but it doesn't hurt, either.
+ * </p>
+ * <p>
+ * Ignores all non-base64 characters. This is how chunked (e.g. 76 character) data is handled, since CR and LF are
+ * silently ignored, but has implications for other bytes, too. This method subscribes to the garbage-in,
+ * garbage-out philosophy: it will not check the provided data for validity.
+ * </p>
+ * <p>
+ * Thanks to ""commons"" project in ws.apache.org for the bitwise operations, and general approach.
+ * http://svn.apache.org/repos/asf/webservices/commons/trunk/modules/util/
+ * </p>
+ *
+ * @param in
+ *            byte[] array of ascii data to base64 decode.
+ * @param inPos
+ *            Position to start reading data from.
+ * @param inAvail
+ *            Amount of bytes available from input for encoding.
+ */"
+"void decode(byte[] in, int inPos, int inAvail) {
+    if (eof) {
+        return;
+    }
+    if (inAvail < 0) {
+        eof = true;
+    }
+    for (int i = 0; i < inAvail; i++) {
+        if (buffer == null || buffer.length - pos < decodeSize) {
+            resizeBuffer();
+        }
+        byte b = in[inPos++];
+        if (b == PAD) {
+            // We're done.
+            eof = true;
+            break;
+        } else {
+            if (b >= 0 && b < DECODE_TABLE.length) {
+                int result = DECODE_TABLE[b];
+                if (result >= 0) {
+                    modulus = (++modulus) % 4;
+                    x = (x << 6) + result;
+                    if (modulus == 0) {
+                        buffer[pos++] = (byte) ((x >> 16) & MASK_8BITS);
+                        buffer[pos++] = (byte) ((x >> 8) & MASK_8BITS);
+                        buffer[pos++] = (byte) (x & MASK_8BITS);
+                    }
+                }
+            }
+        }
+    }
+    // Two forms of EOF as far as base64 decoder is concerned: actual
+    // EOF (-1) and first time '=' character is encountered in stream.
+    // This approach makes the '=' padding characters completely optional.
+    if (eof && modulus != 0) {
+        if (buffer == null || buffer.length - pos < decodeSize) {
+            resizeBuffer();
+        }
+        // We have some spare bits remaining
+        // Output all whole multiples of 8 bits and ignore the rest
+        switch(modulus) {
+            //   case 1: // 6 bits - ignore entirely
+            //       break;
+            case // 12 bits = 8 + 4
+            2:
+                x = x >> 4;
+                buffer[pos++] = (byte) ((x) & MASK_8BITS);
+                break;
+            case // 18 bits = 8 + 8 + 2
+            3:
+                x = x >> 2;
+                buffer[pos++] = (byte) ((x >> 8) & MASK_8BITS);
+                buffer[pos++] = (byte) ((x) & MASK_8BITS);
+                break;
+        }
+    }
+}","public void test4862() throws Throwable {
+    Base64 base64_0 = new Base64();
+    // Undeclared exception!
+    try {
+        base64_0.decode((byte[]) null, (int) (byte) (-43), 1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}","/**
+ * <p>
+ * Decodes all of the provided data, starting at inPos, for inAvail bytes. Should be called at least twice: once
+ * with the data to decode, and once with inAvail set to ""-1"" to alert decoder that EOF has been reached. The ""-1""
+ * call is not necessary when decoding, but it doesn't hurt, either.
+ * </p>
+ * <p>
+ * Ignores all non-base64 characters. This is how chunked (e.g. 76 character) data is handled, since CR and LF are
+ * silently ignored, but has implications for other bytes, too. This method subscribes to the garbage-in,
+ * garbage-out philosophy: it will not check the provided data for validity.
+ * </p>
+ * <p>
+ * Thanks to ""commons"" project in ws.apache.org for the bitwise operations, and general approach.
+ * http://svn.apache.org/repos/asf/webservices/commons/trunk/modules/util/
+ * </p>
+ *
+ * @param in
+ *            byte[] array of ascii data to base64 decode.
+ * @param inPos
+ *            Position to start reading data from.
+ * @param inAvail
+ *            Amount of bytes available from input for encoding.
+ */"
+"public boolean isUrlSafe() {
+    return this.encodeTable == URL_SAFE_ENCODE_TABLE;
+}","public void test4963() throws Throwable {
+    Base64 base64_0 = new Base64((-2737), (byte[]) null);
+    base64_0.decode((byte[]) null, 76, (-1));
+    assertFalse(base64_0.isUrlSafe());
+}","/**
+ * Returns our current encode mode. True if we're URL-SAFE, false otherwise.
+ *
+ * @return true if we're in URL-SAFE mode, false otherwise.
+ * @since 1.4
+ */"
+"void encode(byte[] in, int inPos, int inAvail) {
+    if (eof) {
+        return;
+    }
+    // inAvail < 0 is how we're informed of EOF in the underlying data we're
+    // encoding.
+    if (inAvail < 0) {
+        eof = true;
+        if (buffer == null || buffer.length - pos < encodeSize) {
+            resizeBuffer();
+        }
+        switch(modulus) {
+            case 1:
+                buffer[pos++] = encodeTable[(x >> 2) & MASK_6BITS];
+                buffer[pos++] = encodeTable[(x << 4) & MASK_6BITS];
+                // URL-SAFE skips the padding to further reduce size.
+                if (encodeTable == STANDARD_ENCODE_TABLE) {
+                    buffer[pos++] = PAD;
+                    buffer[pos++] = PAD;
+                }
+                break;
+            case 2:
+                buffer[pos++] = encodeTable[(x >> 10) & MASK_6BITS];
+                buffer[pos++] = encodeTable[(x >> 4) & MASK_6BITS];
+                buffer[pos++] = encodeTable[(x << 2) & MASK_6BITS];
+                // URL-SAFE skips the padding to further reduce size.
+                if (encodeTable == STANDARD_ENCODE_TABLE) {
+                    buffer[pos++] = PAD;
+                }
+                break;
+        }
+        // Don't want to append the CRLF two times in a row, so make sure previous
+        // character is not from CRLF!
+        byte b = lineSeparator[lineSeparator.length - 1];
+        if (lineLength > 0 && pos > 0 && buffer[pos - 1] != b) {
+            System.arraycopy(lineSeparator, 0, buffer, pos, lineSeparator.length);
+            pos += lineSeparator.length;
+        }
+    } else {
+        for (int i = 0; i < inAvail; i++) {
+            if (buffer == null || buffer.length - pos < encodeSize) {
+                resizeBuffer();
+            }
+            modulus = (++modulus) % 3;
+            int b = in[inPos++];
+            if (b < 0) {
+                b += 256;
+            }
+            x = (x << 8) + b;
+            if (0 == modulus) {
+                buffer[pos++] = encodeTable[(x >> 18) & MASK_6BITS];
+                buffer[pos++] = encodeTable[(x >> 12) & MASK_6BITS];
+                buffer[pos++] = encodeTable[(x >> 6) & MASK_6BITS];
+                buffer[pos++] = encodeTable[x & MASK_6BITS];
+                currentLinePos += 4;
+                if (lineLength > 0 && lineLength <= currentLinePos) {
+                    System.arraycopy(lineSeparator, 0, buffer, pos, lineSeparator.length);
+                    pos += lineSeparator.length;
+                    currentLinePos = 0;
+                }
+            }
+        }
+    }
+}","public void test5064() throws Throwable {
+    byte[] byteArray0 = new byte[7];
+    Base64 base64_0 = new Base64();
+    // Undeclared exception!
+    try {
+        base64_0.encode(byteArray0, (int) (byte) 0, (int) (byte) 49);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 7
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}","/**
+ * <p>
+ * Encodes all of the provided data, starting at inPos, for inAvail bytes. Must be called at least twice: once with
+ * the data to encode, and once with inAvail set to ""-1"" to alert encoder that EOF has been reached, so flush last
+ * remaining bytes (if not multiple of 3).
+ * </p>
+ * <p>
+ * Thanks to ""commons"" project in ws.apache.org for the bitwise operations, and general approach.
+ * http://svn.apache.org/repos/asf/webservices/commons/trunk/modules/util/
+ * </p>
+ *
+ * @param in
+ *            byte[] array of binary data to base64 encode.
+ * @param inPos
+ *            Position to start reading data from.
+ * @param inAvail
+ *            Amount of bytes available from input for encoding.
+ */"
+"void encode(byte[] in, int inPos, int inAvail) {
+    if (eof) {
+        return;
+    }
+    // inAvail < 0 is how we're informed of EOF in the underlying data we're
+    // encoding.
+    if (inAvail < 0) {
+        eof = true;
+        if (buffer == null || buffer.length - pos < encodeSize) {
+            resizeBuffer();
+        }
+        switch(modulus) {
+            case 1:
+                buffer[pos++] = encodeTable[(x >> 2) & MASK_6BITS];
+                buffer[pos++] = encodeTable[(x << 4) & MASK_6BITS];
+                // URL-SAFE skips the padding to further reduce size.
+                if (encodeTable == STANDARD_ENCODE_TABLE) {
+                    buffer[pos++] = PAD;
+                    buffer[pos++] = PAD;
+                }
+                break;
+            case 2:
+                buffer[pos++] = encodeTable[(x >> 10) & MASK_6BITS];
+                buffer[pos++] = encodeTable[(x >> 4) & MASK_6BITS];
+                buffer[pos++] = encodeTable[(x << 2) & MASK_6BITS];
+                // URL-SAFE skips the padding to further reduce size.
+                if (encodeTable == STANDARD_ENCODE_TABLE) {
+                    buffer[pos++] = PAD;
+                }
+                break;
+        }
+        // Don't want to append the CRLF two times in a row, so make sure previous
+        // character is not from CRLF!
+        byte b = lineSeparator[lineSeparator.length - 1];
+        if (lineLength > 0 && pos > 0 && buffer[pos - 1] != b) {
+            System.arraycopy(lineSeparator, 0, buffer, pos, lineSeparator.length);
+            pos += lineSeparator.length;
+        }
+    } else {
+        for (int i = 0; i < inAvail; i++) {
+            if (buffer == null || buffer.length - pos < encodeSize) {
+                resizeBuffer();
+            }
+            modulus = (++modulus) % 3;
+            int b = in[inPos++];
+            if (b < 0) {
+                b += 256;
+            }
+            x = (x << 8) + b;
+            if (0 == modulus) {
+                buffer[pos++] = encodeTable[(x >> 18) & MASK_6BITS];
+                buffer[pos++] = encodeTable[(x >> 12) & MASK_6BITS];
+                buffer[pos++] = encodeTable[(x >> 6) & MASK_6BITS];
+                buffer[pos++] = encodeTable[x & MASK_6BITS];
+                currentLinePos += 4;
+                if (lineLength > 0 && lineLength <= currentLinePos) {
+                    System.arraycopy(lineSeparator, 0, buffer, pos, lineSeparator.length);
+                    pos += lineSeparator.length;
+                    currentLinePos = 0;
+                }
+            }
+        }
+    }
+}","public void test5165() throws Throwable {
+    byte[] byteArray0 = new byte[7];
+    byteArray0[4] = (byte) (-26);
+    Base64 base64_0 = new Base64(true);
+    // Undeclared exception!
+    try {
+        base64_0.encode(byteArray0, (int) (byte) 3, 77);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 7
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}","/**
+ * <p>
+ * Encodes all of the provided data, starting at inPos, for inAvail bytes. Must be called at least twice: once with
+ * the data to encode, and once with inAvail set to ""-1"" to alert encoder that EOF has been reached, so flush last
+ * remaining bytes (if not multiple of 3).
+ * </p>
+ * <p>
+ * Thanks to ""commons"" project in ws.apache.org for the bitwise operations, and general approach.
+ * http://svn.apache.org/repos/asf/webservices/commons/trunk/modules/util/
+ * </p>
+ *
+ * @param in
+ *            byte[] array of binary data to base64 encode.
+ * @param inPos
+ *            Position to start reading data from.
+ * @param inAvail
+ *            Amount of bytes available from input for encoding.
+ */"
+"public boolean isUrlSafe() {
+    return this.encodeTable == URL_SAFE_ENCODE_TABLE;
+}","public void test5266() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    Base64 base64_0 = new Base64();
+    base64_0.encode(byteArray0, (-728), (int) (byte) 0);
+    assertFalse(base64_0.isUrlSafe());
+}","/**
+ * Returns our current encode mode. True if we're URL-SAFE, false otherwise.
+ *
+ * @return true if we're in URL-SAFE mode, false otherwise.
+ * @since 1.4
+ */"
+"void encode(byte[] in, int inPos, int inAvail) {
+    if (eof) {
+        return;
+    }
+    // inAvail < 0 is how we're informed of EOF in the underlying data we're
+    // encoding.
+    if (inAvail < 0) {
+        eof = true;
+        if (buffer == null || buffer.length - pos < encodeSize) {
+            resizeBuffer();
+        }
+        switch(modulus) {
+            case 1:
+                buffer[pos++] = encodeTable[(x >> 2) & MASK_6BITS];
+                buffer[pos++] = encodeTable[(x << 4) & MASK_6BITS];
+                // URL-SAFE skips the padding to further reduce size.
+                if (encodeTable == STANDARD_ENCODE_TABLE) {
+                    buffer[pos++] = PAD;
+                    buffer[pos++] = PAD;
+                }
+                break;
+            case 2:
+                buffer[pos++] = encodeTable[(x >> 10) & MASK_6BITS];
+                buffer[pos++] = encodeTable[(x >> 4) & MASK_6BITS];
+                buffer[pos++] = encodeTable[(x << 2) & MASK_6BITS];
+                // URL-SAFE skips the padding to further reduce size.
+                if (encodeTable == STANDARD_ENCODE_TABLE) {
+                    buffer[pos++] = PAD;
+                }
+                break;
+        }
+        // Don't want to append the CRLF two times in a row, so make sure previous
+        // character is not from CRLF!
+        byte b = lineSeparator[lineSeparator.length - 1];
+        if (lineLength > 0 && pos > 0 && buffer[pos - 1] != b) {
+            System.arraycopy(lineSeparator, 0, buffer, pos, lineSeparator.length);
+            pos += lineSeparator.length;
+        }
+    } else {
+        for (int i = 0; i < inAvail; i++) {
+            if (buffer == null || buffer.length - pos < encodeSize) {
+                resizeBuffer();
+            }
+            modulus = (++modulus) % 3;
+            int b = in[inPos++];
+            if (b < 0) {
+                b += 256;
+            }
+            x = (x << 8) + b;
+            if (0 == modulus) {
+                buffer[pos++] = encodeTable[(x >> 18) & MASK_6BITS];
+                buffer[pos++] = encodeTable[(x >> 12) & MASK_6BITS];
+                buffer[pos++] = encodeTable[(x >> 6) & MASK_6BITS];
+                buffer[pos++] = encodeTable[x & MASK_6BITS];
+                currentLinePos += 4;
+                if (lineLength > 0 && lineLength <= currentLinePos) {
+                    System.arraycopy(lineSeparator, 0, buffer, pos, lineSeparator.length);
+                    pos += lineSeparator.length;
+                    currentLinePos = 0;
+                }
+            }
+        }
+    }
+}","public void test5367() throws Throwable {
+    Base64 base64_0 = new Base64(0);
+    // Undeclared exception!
+    try {
+        base64_0.encode((byte[]) null, 0, 40);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}","/**
+ * <p>
+ * Encodes all of the provided data, starting at inPos, for inAvail bytes. Must be called at least twice: once with
+ * the data to encode, and once with inAvail set to ""-1"" to alert encoder that EOF has been reached, so flush last
+ * remaining bytes (if not multiple of 3).
+ * </p>
+ * <p>
+ * Thanks to ""commons"" project in ws.apache.org for the bitwise operations, and general approach.
+ * http://svn.apache.org/repos/asf/webservices/commons/trunk/modules/util/
+ * </p>
+ *
+ * @param in
+ *            byte[] array of binary data to base64 encode.
+ * @param inPos
+ *            Position to start reading data from.
+ * @param inAvail
+ *            Amount of bytes available from input for encoding.
+ */"
+"public boolean isUrlSafe() {
+    return this.encodeTable == URL_SAFE_ENCODE_TABLE;
+}","public void test5468() throws Throwable {
+    byte[] byteArray0 = new byte[2];
+    Base64 base64_0 = new Base64((-289), byteArray0, true);
+    assertTrue(base64_0.isUrlSafe());
+}","/**
+ * Returns our current encode mode. True if we're URL-SAFE, false otherwise.
+ *
+ * @return true if we're in URL-SAFE mode, false otherwise.
+ * @since 1.4
+ */"
+"public Base64(int lineLength, byte[] lineSeparator, boolean urlSafe) {
+    if (lineSeparator == null) {
+        // disable chunk-separating
+        lineLength = 0;
+        // this just gets ignored
+        lineSeparator = CHUNK_SEPARATOR;
+    }
+    this.lineLength = lineLength > 0 ? (lineLength / 4) * 4 : 0;
+    this.lineSeparator = new byte[lineSeparator.length];
+    System.arraycopy(lineSeparator, 0, this.lineSeparator, 0, lineSeparator.length);
+    if (lineLength > 0) {
+        this.encodeSize = 4 + lineSeparator.length;
+    } else {
+        this.encodeSize = 4;
+    }
+    this.decodeSize = this.encodeSize - 1;
+    if (containsBase64Byte(lineSeparator)) {
+        String sep = StringUtils.newStringUtf8(lineSeparator);
+        throw new IllegalArgumentException(""lineSeperator must not contain base64 characters: ["" + sep + ""]"");
+    }
+    this.encodeTable = urlSafe ? URL_SAFE_ENCODE_TABLE : STANDARD_ENCODE_TABLE;
+}","public void test5569() throws Throwable {
+    byte[] byteArray0 = new byte[2];
+    byteArray0[0] = (byte) 79;
+    Base64 base64_0 = null;
+    try {
+        base64_0 = new Base64((-1551), byteArray0, false);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // lineSeperator must not contain base64 characters: [O\u0000]
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}","/**
+ * Creates a Base64 codec used for decoding (all modes) and encoding in URL-unsafe mode.
+ * <p>
+ * When encoding the line length and line separator are given in the constructor, and the encoding table is
+ * STANDARD_ENCODE_TABLE.
+ * </p>
+ * <p>
+ * Line lengths that aren't multiples of 4 will still essentially end up being multiples of 4 in the encoded data.
+ * </p>
+ * <p>
+ * When decoding all variants are supported.
+ * </p>
+ *
+ * @param lineLength
+ *            Each line of encoded data will be at most of the given length (rounded down to nearest multiple of 4).
+ *            If lineLength <= 0, then the output will not be divided into lines (chunks). Ignored when decoding.
+ * @param lineSeparator
+ *            Each line of encoded data will end with this sequence of bytes.
+ * @param urlSafe
+ *            Instead of emitting '+' and '/' we emit '-' and '_' respectively. urlSafe is only applied to encode
+ *            operations. Decoding seamlessly handles both modes.
+ * @throws IllegalArgumentException
+ *             The provided lineSeparator included some base64 characters. That's not going to work!
+ * @since 1.4
+ */"
+"public boolean isUrlSafe() {
+    return this.encodeTable == URL_SAFE_ENCODE_TABLE;
+}","public void test5670() throws Throwable {
+    Base64 base64_0 = new Base64((-2149), (byte[]) null, false);
+    String string0 = base64_0.encodeToString((byte[]) null);
+    assertFalse(base64_0.isUrlSafe());
+}","/**
+ * Returns our current encode mode. True if we're URL-SAFE, false otherwise.
+ *
+ * @return true if we're in URL-SAFE mode, false otherwise.
+ * @since 1.4
+ */"
+"public String encodeToString(byte[] pArray) {
+    return StringUtils.newStringUtf8(encode(pArray));
+}","public void test5671() throws Throwable {
+    Base64 base64_0 = new Base64((-2149), (byte[]) null, false);
+    String string0 = base64_0.encodeToString((byte[]) null);
+    assertNull(string0);
+}","/**
+ * Encodes a byte[] containing binary data, into a String containing characters in the Base64 alphabet.
+ *
+ * @param pArray
+ *            a byte array containing binary data
+ * @return A String containing only Base64 character data
+ * @since 1.4
+ */"
+"public static byte[] encodeBase64(byte[] binaryData, boolean isChunked, boolean urlSafe, int maxResultSize) {
+    if (binaryData == null || binaryData.length == 0) {
+        return binaryData;
+    }
+    long len = getEncodeLength(binaryData, MIME_CHUNK_SIZE, CHUNK_SEPARATOR);
+    if (len > maxResultSize) {
+        throw new IllegalArgumentException(""Input array too big, the output array would be bigger ("" + len + "") than the specified maxium size of "" + maxResultSize);
+    }
+    Base64 b64 = isChunked ? new Base64(urlSafe) : new Base64(0, CHUNK_SEPARATOR, urlSafe);
+    return b64.encode(binaryData);
+}","public void test5772() throws Throwable {
+    byte[] byteArray0 = new byte[0];
+    byte[] byteArray1 = Base64.encodeBase64(byteArray0, false);
+    byte[] byteArray2 = Base64.encodeBase64(byteArray1, false, false, 567);
+    assertEquals(0, byteArray2.length);
+}","/**
+ * Encodes binary data using the base64 algorithm, optionally chunking the output into 76 character blocks.
+ *
+ * @param binaryData
+ *            Array containing binary data to encode.
+ * @param isChunked
+ *            if <code>true</code> this encoder will chunk the base64 output into 76 character blocks
+ * @param urlSafe
+ *            if <code>true</code> this encoder will emit - and _ instead of the usual + and / characters.
+ * @param maxResultSize
+ *            The maximum result size to accept.
+ * @return Base64-encoded data.
+ * @throws IllegalArgumentException
+ *             Thrown when the input array needs an output array bigger than maxResultSize
+ * @since 1.4
+ */"
+"public static byte[] encodeInteger(BigInteger bigInt) {
+    if (bigInt == null) {
+        throw new NullPointerException(""encodeInteger called with null parameter"");
+    }
+    return encodeBase64(toIntegerBytes(bigInt), false);
+}","public void test5873() throws Throwable {
+    // Undeclared exception!
+    try {
+        Base64.encodeInteger((BigInteger) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // encodeInteger called with null parameter
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}","/**
+ * Encodes to a byte64-encoded integer according to crypto standards such as W3C's XML-Signature
+ *
+ * @param bigInt
+ *            a BigInteger
+ * @return A byte array containing base64 character data
+ * @throws NullPointerException
+ *             if null is passed in
+ * @since 1.4
+ */"
+"public byte[] encode(byte[] pArray) {
+    reset();
+    if (pArray == null || pArray.length == 0) {
+        return pArray;
+    }
+    encode(pArray, 0, pArray.length);
+    // Notify encoder of EOF.
+    encode(pArray, 0, -1);
+    byte[] buf = new byte[pos - readPos];
+    readResults(buf, 0, buf.length);
+    return buf;
+}","public void test5974() throws Throwable {
+    Base64 base64_0 = new Base64(0, (byte[]) null);
+    byte[] byteArray0 = base64_0.encode((byte[]) null);
+    assertNull(byteArray0);
+}","/**
+ * Encodes a byte[] containing binary data, into a byte[] containing characters in the Base64 alphabet.
+ *
+ * @param pArray
+ *            a byte array containing binary data
+ * @return A byte array containing only Base64 character data
+ */"
+"public boolean isUrlSafe() {
+    return this.encodeTable == URL_SAFE_ENCODE_TABLE;
+}","public void test5975() throws Throwable {
+    Base64 base64_0 = new Base64(0, (byte[]) null);
+    byte[] byteArray0 = base64_0.encode((byte[]) null);
+    assertFalse(base64_0.isUrlSafe());
+}","/**
+ * Returns our current encode mode. True if we're URL-SAFE, false otherwise.
+ *
+ * @return true if we're in URL-SAFE mode, false otherwise.
+ * @since 1.4
+ */"
+"// Implementation of the Encoder Interface
+/**
+ * Encodes an Object using the base64 algorithm. This method is provided in order to satisfy the requirements of the
+ * Encoder interface, and will throw an EncoderException if the supplied object is not of type byte[].
+ *
+ * @param pObject
+ *            Object to encode
+ * @return An object (of type byte[]) containing the base64 encoded data which corresponds to the byte[] supplied.
+ * @throws EncoderException
+ *             if the parameter supplied is not of type byte[]
+ */
+public Object encode(Object pObject) throws EncoderException {
+    if (!(pObject instanceof byte[])) {
+        throw new EncoderException(""Parameter supplied to Base64 encode is not a byte[]"");
+    }
+    return encode((byte[]) pObject);
+}","public void test6076() throws Throwable {
+    byte[] byteArray0 = new byte[3];
+    Base64 base64_0 = new Base64((byte) 36, byteArray0);
+    BigInteger bigInteger0 = BigInteger.TEN;
+    try {
+        base64_0.encode((Object) bigInteger0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Parameter supplied to Base64 encode is not a byte[]
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}",""
+"// Implementation of the Encoder Interface
+/**
+ * Encodes an Object using the base64 algorithm. This method is provided in order to satisfy the requirements of the
+ * Encoder interface, and will throw an EncoderException if the supplied object is not of type byte[].
+ *
+ * @param pObject
+ *            Object to encode
+ * @return An object (of type byte[]) containing the base64 encoded data which corresponds to the byte[] supplied.
+ * @throws EncoderException
+ *             if the parameter supplied is not of type byte[]
+ */
+public Object encode(Object pObject) throws EncoderException {
+    if (!(pObject instanceof byte[])) {
+        throw new EncoderException(""Parameter supplied to Base64 encode is not a byte[]"");
+    }
+    return encode((byte[]) pObject);
+}","public void test6177() throws Throwable {
+    Base64 base64_0 = new Base64(0, (byte[]) null);
+    Object object0 = base64_0.decode((Object) ""]%3(Mbn@0l6/vRxq+=x"");
+    Object object1 = base64_0.encode(object0);
+    assertNotSame(object1, object0);
+}",""
+"public boolean isUrlSafe() {
+    return this.encodeTable == URL_SAFE_ENCODE_TABLE;
+}","public void test6178() throws Throwable {
+    Base64 base64_0 = new Base64(0, (byte[]) null);
+    Object object0 = base64_0.decode((Object) ""]%3(Mbn@0l6/vRxq+=x"");
+    Object object1 = base64_0.encode(object0);
+    assertFalse(base64_0.isUrlSafe());
+}","/**
+ * Returns our current encode mode. True if we're URL-SAFE, false otherwise.
+ *
+ * @return true if we're in URL-SAFE mode, false otherwise.
+ * @since 1.4
+ */"
+"public static boolean isBase64(String base64) {
+    return isBase64(StringUtils.getBytesUtf8(base64));
+}","public void test6279() throws Throwable {
+    boolean boolean0 = Base64.isBase64(""Parameter supplied to Base64 encode is not a byte[]"");
+    assertFalse(boolean0);
+}","/**
+ * Tests a given String to see if it contains only valid characters within the Base64 alphabet. Currently the
+ * method treats whitespace as valid.
+ *
+ * @param base64
+ *            String to test
+ * @return <code>true</code> if all characters in the String are valid characters in the Base64 alphabet or if
+ *         the String is empty; <code>false</code>, otherwise
+ *  @since 1.5
+ */"
+"public static boolean isBase64(byte[] arrayOctet) {
+    for (int i = 0; i < arrayOctet.length; i++) {
+        if (!isBase64(arrayOctet[i]) && !isWhiteSpace(arrayOctet[i])) {
+            return false;
+        }
+    }
+    return true;
+}","public void test6380() throws Throwable {
+    byte[] byteArray0 = new byte[7];
+    byteArray0[0] = (byte) 9;
+    boolean boolean0 = Base64.isBase64(byteArray0);
+    assertFalse(boolean0);
+}","/**
+ * Tests a given byte array to see if it contains only valid characters within the Base64 alphabet. Currently the
+ * method treats whitespace as valid.
+ *
+ * @param arrayOctet
+ *            byte array to test
+ * @return <code>true</code> if all bytes are valid characters in the Base64 alphabet or if the byte array is empty;
+ *         <code>false</code>, otherwise
+ * @since 1.5
+ */"
+"static byte[] discardWhitespace(byte[] data) {
+    byte[] groomedData = new byte[data.length];
+    int bytesCopied = 0;
+    for (int i = 0; i < data.length; i++) {
+        switch(data[i]) {
+            case ' ':
+            case '\n':
+            case '\r':
+            case '\t':
+                break;
+            default:
+                groomedData[bytesCopied++] = data[i];
+        }
+    }
+    byte[] packedData = new byte[bytesCopied];
+    System.arraycopy(groomedData, 0, packedData, 0, bytesCopied);
+    return packedData;
+}","public void test6481() throws Throwable {
+    byte[] byteArray0 = new byte[8];
+    byteArray0[0] = (byte) 32;
+    byte[] byteArray1 = Base64.discardWhitespace(byteArray0);
+    assertArrayEquals(new byte[] { (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0 }, byteArray1);
+}","/**
+ * Discards any whitespace from a base-64 encoded block.
+ *
+ * @param data
+ *            The base-64 encoded data to discard the whitespace from.
+ * @return The data, less whitespace (see RFC 2045).
+ * @deprecated This method is no longer needed
+ */"
+"static byte[] discardWhitespace(byte[] data) {
+    byte[] groomedData = new byte[data.length];
+    int bytesCopied = 0;
+    for (int i = 0; i < data.length; i++) {
+        switch(data[i]) {
+            case ' ':
+            case '\n':
+            case '\r':
+            case '\t':
+                break;
+            default:
+                groomedData[bytesCopied++] = data[i];
+        }
+    }
+    byte[] packedData = new byte[bytesCopied];
+    System.arraycopy(groomedData, 0, packedData, 0, bytesCopied);
+    return packedData;
+}","public void test6584() throws Throwable {
+    byte[] byteArray0 = new byte[4];
+    byte[] byteArray1 = Base64.encodeBase64Chunked(byteArray0);
+    byte[] byteArray2 = Base64.discardWhitespace(byteArray1);
+    //  // Unstable assertion: assertEquals(10, byteArray2.length);
+    //  // Unstable assertion: assertArrayEquals(new byte[] {(byte)65, (byte)65, (byte)65, (byte)65, (byte)65, (byte)65, (byte)61, (byte)61, (byte)0, (byte)0}, byteArray2);
+}","/**
+ * Discards any whitespace from a base-64 encoded block.
+ *
+ * @param data
+ *            The base-64 encoded data to discard the whitespace from.
+ * @return The data, less whitespace (see RFC 2045).
+ * @deprecated This method is no longer needed
+ */"
+"public static byte[] encodeBase64(byte[] binaryData, boolean isChunked, boolean urlSafe, int maxResultSize) {
+    if (binaryData == null || binaryData.length == 0) {
+        return binaryData;
+    }
+    long len = getEncodeLength(binaryData, MIME_CHUNK_SIZE, CHUNK_SEPARATOR);
+    if (len > maxResultSize) {
+        throw new IllegalArgumentException(""Input array too big, the output array would be bigger ("" + len + "") than the specified maxium size of "" + maxResultSize);
+    }
+    Base64 b64 = isChunked ? new Base64(urlSafe) : new Base64(0, CHUNK_SEPARATOR, urlSafe);
+    return b64.encode(binaryData);
+}","public void test6685() throws Throwable {
+    byte[] byteArray0 = new byte[7];
+    byteArray0[0] = (byte) 10;
+    byte[] byteArray1 = Base64.discardWhitespace(byteArray0);
+    byte[] byteArray2 = Base64.encodeBase64(byteArray1, true, true, (int) (byte) 10);
+    //  // Unstable assertion: assertEquals(6, byteArray1.length);
+    //  // Unstable assertion: assertEquals(10, byteArray2.length);
+    //  // Unstable assertion: assertArrayEquals(new byte[] {(byte)10, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0}, byteArray0);
+    //  // Unstable assertion: assertArrayEquals(new byte[] {(byte)65, (byte)65, (byte)65, (byte)65, (byte)65, (byte)65, (byte)65, (byte)65, (byte)0, (byte)0}, byteArray2);
+}","/**
+ * Encodes binary data using the base64 algorithm, optionally chunking the output into 76 character blocks.
+ *
+ * @param binaryData
+ *            Array containing binary data to encode.
+ * @param isChunked
+ *            if <code>true</code> this encoder will chunk the base64 output into 76 character blocks
+ * @param urlSafe
+ *            if <code>true</code> this encoder will emit - and _ instead of the usual + and / characters.
+ * @param maxResultSize
+ *            The maximum result size to accept.
+ * @return Base64-encoded data.
+ * @throws IllegalArgumentException
+ *             Thrown when the input array needs an output array bigger than maxResultSize
+ * @since 1.4
+ */"
+"static byte[] discardWhitespace(byte[] data) {
+    byte[] groomedData = new byte[data.length];
+    int bytesCopied = 0;
+    for (int i = 0; i < data.length; i++) {
+        switch(data[i]) {
+            case ' ':
+            case '\n':
+            case '\r':
+            case '\t':
+                break;
+            default:
+                groomedData[bytesCopied++] = data[i];
+        }
+    }
+    byte[] packedData = new byte[bytesCopied];
+    System.arraycopy(groomedData, 0, packedData, 0, bytesCopied);
+    return packedData;
+}","public void test6786() throws Throwable {
+    byte[] byteArray0 = new byte[7];
+    byteArray0[3] = (byte) 9;
+    byte[] byteArray1 = Base64.discardWhitespace(byteArray0);
+    assertArrayEquals(new byte[] { (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0 }, byteArray1);
+}","/**
+ * Discards any whitespace from a base-64 encoded block.
+ *
+ * @param data
+ *            The base-64 encoded data to discard the whitespace from.
+ * @return The data, less whitespace (see RFC 2045).
+ * @deprecated This method is no longer needed
+ */"
+"public boolean isUrlSafe() {
+    return this.encodeTable == URL_SAFE_ENCODE_TABLE;
+}","public void test6889() throws Throwable {
+    byte[] byteArray0 = new byte[7];
+    Base64 base64_0 = new Base64((byte) 1, byteArray0, false);
+    base64_0.decode("""");
+    assertFalse(base64_0.isUrlSafe());
+}","/**
+ * Returns our current encode mode. True if we're URL-SAFE, false otherwise.
+ *
+ * @return true if we're in URL-SAFE mode, false otherwise.
+ * @since 1.4
+ */"
+"public Object decode(Object pObject) throws DecoderException {
+    if (pObject instanceof byte[]) {
+        return decode((byte[]) pObject);
+    } else if (pObject instanceof String) {
+        return decode((String) pObject);
+    } else {
+        throw new DecoderException(""Parameter supplied to Base64 decode is not a byte[] or a String"");
+    }
+}","public void test6990() throws Throwable {
+    byte[] byteArray0 = new byte[8];
+    BigInteger bigInteger0 = Base64.decodeInteger(byteArray0);
+    Base64 base64_0 = new Base64(false);
+    try {
+        base64_0.decode((Object) bigInteger0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Parameter supplied to Base64 decode is not a byte[] or a String
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}","/**
+ * Decodes an Object using the base64 algorithm. This method is provided in order to satisfy the requirements of the
+ * Decoder interface, and will throw a DecoderException if the supplied object is not of type byte[] or String.
+ *
+ * @param pObject
+ *            Object to decode
+ * @return An object (of type byte[]) containing the binary data which corresponds to the byte[] or String supplied.
+ * @throws DecoderException
+ *             if the parameter supplied is not of type byte[]
+ */"
+"public boolean isUrlSafe() {
+    return this.encodeTable == URL_SAFE_ENCODE_TABLE;
+}","public void test7091() throws Throwable {
+    BigInteger bigInteger0 = BigInteger.ONE;
+    byte[] byteArray0 = Base64.toIntegerBytes(bigInteger0);
+    Base64 base64_0 = new Base64((-2998), byteArray0, false);
+    Object object0 = base64_0.decode((Object) ""encodeInteger called with null parameter"");
+    Object object1 = base64_0.decode(object0);
+    assertFalse(base64_0.isUrlSafe());
+}","/**
+ * Returns our current encode mode. True if we're URL-SAFE, false otherwise.
+ *
+ * @return true if we're in URL-SAFE mode, false otherwise.
+ * @since 1.4
+ */"
+"public Object decode(Object pObject) throws DecoderException {
+    if (pObject instanceof byte[]) {
+        return decode((byte[]) pObject);
+    } else if (pObject instanceof String) {
+        return decode((String) pObject);
+    } else {
+        throw new DecoderException(""Parameter supplied to Base64 decode is not a byte[] or a String"");
+    }
+}","public void test7092() throws Throwable {
+    BigInteger bigInteger0 = BigInteger.ONE;
+    byte[] byteArray0 = Base64.toIntegerBytes(bigInteger0);
+    Base64 base64_0 = new Base64((-2998), byteArray0, false);
+    Object object0 = base64_0.decode((Object) ""encodeInteger called with null parameter"");
+    Object object1 = base64_0.decode(object0);
+    assertNotSame(object1, object0);
+}","/**
+ * Decodes an Object using the base64 algorithm. This method is provided in order to satisfy the requirements of the
+ * Decoder interface, and will throw a DecoderException if the supplied object is not of type byte[] or String.
+ *
+ * @param pObject
+ *            Object to decode
+ * @return An object (of type byte[]) containing the binary data which corresponds to the byte[] or String supplied.
+ * @throws DecoderException
+ *             if the parameter supplied is not of type byte[]
+ */"
+"public static boolean isArrayByteBase64(byte[] arrayOctet) {
+    return isBase64(arrayOctet);
+}","public void test7193() throws Throwable {
+    byte[] byteArray0 = new byte[5];
+    byte[] byteArray1 = Base64.encodeBase64Chunked(byteArray0);
+    Base64.isArrayByteBase64(byteArray1);
+}","/**
+ * Tests a given byte array to see if it contains only valid characters within the Base64 alphabet. Currently the
+ * method treats whitespace as valid.
+ *
+ * @param arrayOctet
+ *            byte array to test
+ * @return <code>true</code> if all bytes are valid characters in the Base64 alphabet or if the byte array is empty;
+ *         <code>false</code>, otherwise
+ * @deprecated 1.5 Use {@link #isBase64(byte[])}
+ */"
+"public byte[] decode(byte[] pArray) {
+    reset();
+    if (pArray == null || pArray.length == 0) {
+        return pArray;
+    }
+    decode(pArray, 0, pArray.length);
+    // Notify decoder of EOF.
+    decode(pArray, 0, -1);
+    byte[] result = new byte[pos];
+    readResults(result, 0, result.length);
+    return result;
+}","public void test7294() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    Base64 base64_0 = new Base64((-3966), (byte[]) null);
+    byte[] byteArray1 = Base64.encodeBase64(byteArray0, false, false);
+    byte[] byteArray2 = base64_0.decode(byteArray1);
+    assertEquals(1, byteArray2.length);
+}","/**
+ * Decodes a byte[] containing characters in the Base64 alphabet.
+ *
+ * @param pArray
+ *            A byte array containing Base64 character data
+ * @return a byte array containing binary data
+ */"
+"public byte[] encode(byte[] pArray) {
+    reset();
+    if (pArray == null || pArray.length == 0) {
+        return pArray;
+    }
+    encode(pArray, 0, pArray.length);
+    // Notify encoder of EOF.
+    encode(pArray, 0, -1);
+    byte[] buf = new byte[pos - readPos];
+    readResults(buf, 0, buf.length);
+    return buf;
+}","public void test7396() throws Throwable {
+    Base64 base64_0 = new Base64();
+    byte[] byteArray0 = new byte[5];
+    byte[] byteArray1 = base64_0.encode(byteArray0);
+    assertArrayEquals(new byte[] { (byte) 65, (byte) 65, (byte) 65, (byte) 65, (byte) 65, (byte) 65, (byte) 65, (byte) 61 }, byteArray1);
+}","/**
+ * Encodes a byte[] containing binary data, into a byte[] containing characters in the Base64 alphabet.
+ *
+ * @param pArray
+ *            a byte array containing binary data
+ * @return A byte array containing only Base64 character data
+ */"
+"void decode(byte[] in, int inPos, int inAvail) {
+    if (eof) {
+        return;
+    }
+    if (inAvail < 0) {
+        eof = true;
+    }
+    for (int i = 0; i < inAvail; i++) {
+        if (buffer == null || buffer.length - pos < decodeSize) {
+            resizeBuffer();
+        }
+        byte b = in[inPos++];
+        if (b == PAD) {
+            // We're done.
+            eof = true;
+            break;
+        } else {
+            if (b >= 0 && b < DECODE_TABLE.length) {
+                int result = DECODE_TABLE[b];
+                if (result >= 0) {
+                    modulus = (++modulus) % 4;
+                    x = (x << 6) + result;
+                    if (modulus == 0) {
+                        buffer[pos++] = (byte) ((x >> 16) & MASK_8BITS);
+                        buffer[pos++] = (byte) ((x >> 8) & MASK_8BITS);
+                        buffer[pos++] = (byte) (x & MASK_8BITS);
+                    }
+                }
+            }
+        }
+    }
+    // Two forms of EOF as far as base64 decoder is concerned: actual
+    // EOF (-1) and first time '=' character is encountered in stream.
+    // This approach makes the '=' padding characters completely optional.
+    if (eof && modulus != 0) {
+        if (buffer == null || buffer.length - pos < decodeSize) {
+            resizeBuffer();
+        }
+        // We have some spare bits remaining
+        // Output all whole multiples of 8 bits and ignore the rest
+        switch(modulus) {
+            //   case 1: // 6 bits - ignore entirely
+            //       break;
+            case // 12 bits = 8 + 4
+            2:
+                x = x >> 4;
+                buffer[pos++] = (byte) ((x) & MASK_8BITS);
+                break;
+            case // 18 bits = 8 + 8 + 2
+            3:
+                x = x >> 2;
+                buffer[pos++] = (byte) ((x >> 8) & MASK_8BITS);
+                buffer[pos++] = (byte) ((x) & MASK_8BITS);
+                break;
+        }
+    }
+}","public void test7398() throws Throwable {
+    Base64 base64_0 = new Base64();
+    byte[] byteArray0 = new byte[5];
+    byte[] byteArray1 = base64_0.encode(byteArray0);
+    base64_0.decode(byteArray0, 1, 296);
+    assertNotSame(byteArray0, byteArray1);
+}","/**
+ * <p>
+ * Decodes all of the provided data, starting at inPos, for inAvail bytes. Should be called at least twice: once
+ * with the data to decode, and once with inAvail set to ""-1"" to alert decoder that EOF has been reached. The ""-1""
+ * call is not necessary when decoding, but it doesn't hurt, either.
+ * </p>
+ * <p>
+ * Ignores all non-base64 characters. This is how chunked (e.g. 76 character) data is handled, since CR and LF are
+ * silently ignored, but has implications for other bytes, too. This method subscribes to the garbage-in,
+ * garbage-out philosophy: it will not check the provided data for validity.
+ * </p>
+ * <p>
+ * Thanks to ""commons"" project in ws.apache.org for the bitwise operations, and general approach.
+ * http://svn.apache.org/repos/asf/webservices/commons/trunk/modules/util/
+ * </p>
+ *
+ * @param in
+ *            byte[] array of ascii data to base64 decode.
+ * @param inPos
+ *            Position to start reading data from.
+ * @param inAvail
+ *            Amount of bytes available from input for encoding.
+ */"
+"public byte[] encode(byte[] pArray) {
+    reset();
+    if (pArray == null || pArray.length == 0) {
+        return pArray;
+    }
+    encode(pArray, 0, pArray.length);
+    // Notify encoder of EOF.
+    encode(pArray, 0, -1);
+    byte[] buf = new byte[pos - readPos];
+    readResults(buf, 0, buf.length);
+    return buf;
+}","public void test7499() throws Throwable {
+    byte[] byteArray0 = new byte[9];
+    Base64 base64_0 = new Base64(4, byteArray0);
+    byte[] byteArray1 = base64_0.encode(byteArray0);
+    assertEquals(39, byteArray1.length);
+}","/**
+ * Encodes a byte[] containing binary data, into a byte[] containing characters in the Base64 alphabet.
+ *
+ * @param pArray
+ *            a byte array containing binary data
+ * @return A byte array containing only Base64 character data
+ */"
+"public boolean isUrlSafe() {
+    return this.encodeTable == URL_SAFE_ENCODE_TABLE;
+}","public void test74100() throws Throwable {
+    byte[] byteArray0 = new byte[9];
+    Base64 base64_0 = new Base64(4, byteArray0);
+    byte[] byteArray1 = base64_0.encode(byteArray0);
+    assertFalse(base64_0.isUrlSafe());
+}","/**
+ * Returns our current encode mode. True if we're URL-SAFE, false otherwise.
+ *
+ * @return true if we're in URL-SAFE mode, false otherwise.
+ * @since 1.4
+ */"
+"public boolean isUrlSafe() {
+    return this.encodeTable == URL_SAFE_ENCODE_TABLE;
+}","public void test75101() throws Throwable {
+    Base64 base64_0 = new Base64(true);
+    byte[] byteArray0 = new byte[4];
+    base64_0.encode(byteArray0, (int) (byte) (-19), (-148));
+    assertTrue(base64_0.isUrlSafe());
+}","/**
+ * Returns our current encode mode. True if we're URL-SAFE, false otherwise.
+ *
+ * @return true if we're in URL-SAFE mode, false otherwise.
+ * @since 1.4
+ */"
+"public static byte[] encodeBase64(byte[] binaryData) {
+    return encodeBase64(binaryData, false);
+}","public void test76102() throws Throwable {
+    BigInteger bigInteger0 = BigInteger.ONE;
+    byte[] byteArray0 = Base64.toIntegerBytes(bigInteger0);
+    byte[] byteArray1 = Base64.encodeBase64URLSafe(byteArray0);
+    byte[] byteArray2 = Base64.encodeBase64(byteArray1);
+    assertArrayEquals(new byte[] { (byte) 81, (byte) 86, (byte) 69, (byte) 61 }, byteArray2);
+}","/**
+ * Encodes binary data using the base64 algorithm but does not chunk the output.
+ *
+ * @param binaryData
+ *            binary data to encode
+ * @return byte[] containing Base64 characters in their UTF-8 representation.
+ */"
+"public byte[] decode(byte[] pArray) {
+    reset();
+    if (pArray == null || pArray.length == 0) {
+        return pArray;
+    }
+    decode(pArray, 0, pArray.length);
+    // Notify decoder of EOF.
+    decode(pArray, 0, -1);
+    byte[] result = new byte[pos];
+    readResults(result, 0, result.length);
+    return result;
+}","public void test77103() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    Base64 base64_0 = new Base64((-3966), (byte[]) null);
+    byte[] byteArray1 = base64_0.decode(byteArray0);
+    assertEquals(0, byteArray1.length);
+}","/**
+ * Decodes a byte[] containing characters in the Base64 alphabet.
+ *
+ * @param pArray
+ *            A byte array containing Base64 character data
+ * @return a byte array containing binary data
+ */"
+"public boolean isUrlSafe() {
+    return this.encodeTable == URL_SAFE_ENCODE_TABLE;
+}","public void test77104() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    Base64 base64_0 = new Base64((-3966), (byte[]) null);
+    byte[] byteArray1 = base64_0.decode(byteArray0);
+    base64_0.encode(byteArray0, (-3966), (int) (byte) 0);
+    assertFalse(base64_0.isUrlSafe());
+}","/**
+ * Returns our current encode mode. True if we're URL-SAFE, false otherwise.
+ *
+ * @return true if we're in URL-SAFE mode, false otherwise.
+ * @since 1.4
+ */"
+"public byte[] decode(String pArray) {
+    return decode(StringUtils.getBytesUtf8(pArray));
+}","public void test78105() throws Throwable {
+    byte[] byteArray0 = new byte[7];
+    Base64 base64_0 = new Base64(1, byteArray0);
+    byte[] byteArray1 = base64_0.decode(""4%*Y'ZxA"");
+    assertEquals(3, byteArray1.length);
+}","/**
+ * Decodes a String containing characters in the Base64 alphabet.
+ *
+ * @param pArray
+ *            A String containing Base64 character data
+ * @return a byte array containing binary data
+ * @since 1.4
+ */"
+"int readResults(byte[] b, int bPos, int bAvail) {
+    if (buffer != null) {
+        int len = Math.min(avail(), bAvail);
+        System.arraycopy(buffer, readPos, b, bPos, len);
+        readPos += len;
+        if (readPos >= pos) {
+            buffer = null;
+        }
+        return len;
+    }
+    return eof ? -1 : 0;
+}","public void test78107() throws Throwable {
+    byte[] byteArray0 = new byte[7];
+    Base64 base64_0 = new Base64(1, byteArray0);
+    byte[] byteArray1 = base64_0.decode(""4%*Y'ZxA"");
+    int int0 = base64_0.readResults(byteArray0, (byte) 120, (byte) 0);
+    assertEquals((-1), int0);
+}","/**
+ * Extracts buffered data into the provided byte[] array, starting at position bPos, up to a maximum of bAvail
+ * bytes. Returns how many bytes were actually extracted.
+ *
+ * @param b
+ *            byte[] array to extract the buffered data into.
+ * @param bPos
+ *            position in byte[] array to start extraction at.
+ * @param bAvail
+ *            amount of bytes we're allowed to extract. We may extract fewer (if fewer are available).
+ * @return The number of bytes successfully extracted into the provided byte[] array.
+ */"
+"public boolean isUrlSafe() {
+    return this.encodeTable == URL_SAFE_ENCODE_TABLE;
+}","public void test79108() throws Throwable {
+    Base64 base64_0 = new Base64(true);
+    int int0 = base64_0.readResults((byte[]) null, 2563, 2563);
+    assertTrue(base64_0.isUrlSafe());
+}","/**
+ * Returns our current encode mode. True if we're URL-SAFE, false otherwise.
+ *
+ * @return true if we're in URL-SAFE mode, false otherwise.
+ * @since 1.4
+ */"
+"int readResults(byte[] b, int bPos, int bAvail) {
+    if (buffer != null) {
+        int len = Math.min(avail(), bAvail);
+        System.arraycopy(buffer, readPos, b, bPos, len);
+        readPos += len;
+        if (readPos >= pos) {
+            buffer = null;
+        }
+        return len;
+    }
+    return eof ? -1 : 0;
+}","public void test79109() throws Throwable {
+    Base64 base64_0 = new Base64(true);
+    int int0 = base64_0.readResults((byte[]) null, 2563, 2563);
+    assertEquals(0, int0);
+}","/**
+ * Extracts buffered data into the provided byte[] array, starting at position bPos, up to a maximum of bAvail
+ * bytes. Returns how many bytes were actually extracted.
+ *
+ * @param b
+ *            byte[] array to extract the buffered data into.
+ * @param bPos
+ *            position in byte[] array to start extraction at.
+ * @param bAvail
+ *            amount of bytes we're allowed to extract. We may extract fewer (if fewer are available).
+ * @return The number of bytes successfully extracted into the provided byte[] array.
+ */"
+"int avail() {
+    return buffer != null ? pos - readPos : 0;
+}","public void test80110() throws Throwable {
+    BigInteger bigInteger0 = BigInteger.ONE;
+    byte[] byteArray0 = Base64.toIntegerBytes(bigInteger0);
+    Base64 base64_0 = new Base64((-2998), byteArray0, false);
+    int int0 = base64_0.avail();
+    assertEquals(0, int0);
+}","/**
+ * Returns the amount of buffered data available for reading.
+ *
+ * @return The amount of buffered data available for reading.
+ */"
+"public boolean isUrlSafe() {
+    return this.encodeTable == URL_SAFE_ENCODE_TABLE;
+}","public void test80112() throws Throwable {
+    BigInteger bigInteger0 = BigInteger.ONE;
+    byte[] byteArray0 = Base64.toIntegerBytes(bigInteger0);
+    Base64 base64_0 = new Base64((-2998), byteArray0, false);
+    int int0 = base64_0.avail();
+    assertFalse(base64_0.isUrlSafe());
+}","/**
+ * Returns our current encode mode. True if we're URL-SAFE, false otherwise.
+ *
+ * @return true if we're in URL-SAFE mode, false otherwise.
+ * @since 1.4
+ */"
+"boolean hasData() {
+    return this.buffer != null;
+}","public void test81113() throws Throwable {
+    byte[] byteArray0 = new byte[7];
+    Base64 base64_0 = new Base64((byte) 1, byteArray0, false);
+    base64_0.encode(byteArray0, (int) (byte) (-1), (int) (byte) (-1));
+    boolean boolean0 = base64_0.hasData();
+    assertTrue(boolean0);
+}","/**
+ * Returns true if this Base64 object has buffered data for reading.
+ *
+ * @return true if there is Base64 object still available for reading.
+ */"
+"public boolean isUrlSafe() {
+    return this.encodeTable == URL_SAFE_ENCODE_TABLE;
+}","public void test81114() throws Throwable {
+    byte[] byteArray0 = new byte[7];
+    Base64 base64_0 = new Base64((byte) 1, byteArray0, false);
+    base64_0.encode(byteArray0, (int) (byte) (-1), (int) (byte) (-1));
+    boolean boolean0 = base64_0.hasData();
+    assertFalse(base64_0.isUrlSafe());
+}","/**
+ * Returns our current encode mode. True if we're URL-SAFE, false otherwise.
+ *
+ * @return true if we're in URL-SAFE mode, false otherwise.
+ * @since 1.4
+ */"
+"public boolean isUrlSafe() {
+    return this.encodeTable == URL_SAFE_ENCODE_TABLE;
+}","public void test82115() throws Throwable {
+    Base64 base64_0 = new Base64(true);
+    boolean boolean0 = base64_0.isUrlSafe();
+    assertTrue(boolean0);
+}","/**
+ * Returns our current encode mode. True if we're URL-SAFE, false otherwise.
+ *
+ * @return true if we're in URL-SAFE mode, false otherwise.
+ * @since 1.4
+ */"
+"public boolean isUrlSafe() {
+    return this.encodeTable == URL_SAFE_ENCODE_TABLE;
+}","public void test83116() throws Throwable {
+    byte[] byteArray0 = new byte[7];
+    Base64 base64_0 = new Base64(1, byteArray0);
+    boolean boolean0 = base64_0.isUrlSafe();
+    assertFalse(boolean0);
+}","/**
+ * Returns our current encode mode. True if we're URL-SAFE, false otherwise.
+ *
+ * @return true if we're in URL-SAFE mode, false otherwise.
+ * @since 1.4
+ */"
+"public Base64(int lineLength, byte[] lineSeparator) {
+    this(lineLength, lineSeparator, false);
+}","public void test84117() throws Throwable {
+    byte[] byteArray0 = new byte[32];
+    byte[] byteArray1 = Base64.encodeBase64(byteArray0, true, true);
+    Base64 base64_0 = null;
+    try {
+        base64_0 = new Base64(98, byteArray1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // lineSeperator must not contain base64 characters: [AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\uFFFD\u0000]
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}","/**
+ * Creates a Base64 codec used for decoding (all modes) and encoding in URL-unsafe mode.
+ * <p>
+ * When encoding the line length and line separator are given in the constructor, and the encoding table is
+ * STANDARD_ENCODE_TABLE.
+ * </p>
+ * <p>
+ * Line lengths that aren't multiples of 4 will still essentially end up being multiples of 4 in the encoded data.
+ * </p>
+ * <p>
+ * When decoding all variants are supported.
+ * </p>
+ *
+ * @param lineLength
+ *            Each line of encoded data will be at most of the given length (rounded down to nearest multiple of 4).
+ *            If lineLength <= 0, then the output will not be divided into lines (chunks). Ignored when decoding.
+ * @param lineSeparator
+ *            Each line of encoded data will end with this sequence of bytes.
+ * @throws IllegalArgumentException
+ *             Thrown when the provided lineSeparator included some base64 characters.
+ * @since 1.4
+ */"
+"public static boolean isArrayByteBase64(byte[] arrayOctet) {
+    return isBase64(arrayOctet);
+}","public void test85118() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    boolean boolean0 = Base64.isArrayByteBase64(byteArray0);
+    assertFalse(boolean0);
+}","/**
+ * Tests a given byte array to see if it contains only valid characters within the Base64 alphabet. Currently the
+ * method treats whitespace as valid.
+ *
+ * @param arrayOctet
+ *            byte array to test
+ * @return <code>true</code> if all bytes are valid characters in the Base64 alphabet or if the byte array is empty;
+ *         <code>false</code>, otherwise
+ * @deprecated 1.5 Use {@link #isBase64(byte[])}
+ */"
+"public static byte[] encodeInteger(BigInteger bigInt) {
+    if (bigInt == null) {
+        throw new NullPointerException(""encodeInteger called with null parameter"");
+    }
+    return encodeBase64(toIntegerBytes(bigInt), false);
+}","public void test86119() throws Throwable {
+    byte[] byteArray0 = Base64.decodeBase64(""x$PW bOeg1/`gL<X|"");
+    BigInteger bigInteger0 = Base64.decodeInteger(byteArray0);
+    byte[] byteArray1 = Base64.encodeInteger(bigInteger0);
+    assertArrayEquals(new byte[] { (byte) 57, (byte) 119, (byte) 61, (byte) 61 }, byteArray1);
+}","/**
+ * Encodes to a byte64-encoded integer according to crypto standards such as W3C's XML-Signature
+ *
+ * @param bigInt
+ *            a BigInteger
+ * @return A byte array containing base64 character data
+ * @throws NullPointerException
+ *             if null is passed in
+ * @since 1.4
+ */"
+"public static String encodeBase64URLSafeString(byte[] binaryData) {
+    return StringUtils.newStringUtf8(encodeBase64(binaryData, false, true));
+}","public void test87121() throws Throwable {
+    byte[] byteArray0 = Base64.decodeBase64(""lineSeperator must not contain base64 characters: ["");
+    String string0 = Base64.encodeBase64URLSafeString(byteArray0);
+    assertEquals(""lineSeperatormustnotcontainbase64characters"", string0);
+}","/**
+ * Encodes binary data using a URL-safe variation of the base64 algorithm but does not chunk the output. The
+ * url-safe variation emits - and _ instead of + and / characters.
+ *
+ * @param binaryData
+ *            binary data to encode
+ * @return String containing Base64 characters
+ * @since 1.4
+ */"
+"public static byte[] encodeBase64(byte[] binaryData, boolean isChunked, boolean urlSafe, int maxResultSize) {
+    if (binaryData == null || binaryData.length == 0) {
+        return binaryData;
+    }
+    long len = getEncodeLength(binaryData, MIME_CHUNK_SIZE, CHUNK_SEPARATOR);
+    if (len > maxResultSize) {
+        throw new IllegalArgumentException(""Input array too big, the output array would be bigger ("" + len + "") than the specified maxium size of "" + maxResultSize);
+    }
+    Base64 b64 = isChunked ? new Base64(urlSafe) : new Base64(0, CHUNK_SEPARATOR, urlSafe);
+    return b64.encode(binaryData);
+}","public void test88122() throws Throwable {
+    byte[] byteArray0 = Base64.decodeBase64(""org.apache.commons.codec.DecoderException"");
+    // Undeclared exception!
+    try {
+        Base64.encodeBase64(byteArray0, true, false, 12);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Input array too big, the output array would be bigger (38) than the specified maxium size of 12
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}","/**
+ * Encodes binary data using the base64 algorithm, optionally chunking the output into 76 character blocks.
+ *
+ * @param binaryData
+ *            Array containing binary data to encode.
+ * @param isChunked
+ *            if <code>true</code> this encoder will chunk the base64 output into 76 character blocks
+ * @param urlSafe
+ *            if <code>true</code> this encoder will emit - and _ instead of the usual + and / characters.
+ * @param maxResultSize
+ *            The maximum result size to accept.
+ * @return Base64-encoded data.
+ * @throws IllegalArgumentException
+ *             Thrown when the input array needs an output array bigger than maxResultSize
+ * @since 1.4
+ */"
+"public static String encodeBase64String(byte[] binaryData) {
+    return StringUtils.newStringUtf8(encodeBase64(binaryData, false));
+}","public void test89123() throws Throwable {
+    String string0 = Base64.encodeBase64String((byte[]) null);
+    assertNull(string0);
+}","/**
+ * Encodes binary data using the base64 algorithm but does not chunk the output.
+ *
+ * NOTE:  We changed the behaviour of this method from multi-line chunking (commons-codec-1.4) to
+ * single-line non-chunking (commons-codec-1.5).
+ *
+ * @param binaryData
+ *            binary data to encode
+ * @return String containing Base64 characters.
+ * @since 1.4 (NOTE:  1.4 chunked the output, whereas 1.5 does not).
+ */"
+"public String encodeToString(byte[] pArray) {
+    return StringUtils.newStringUtf8(encode(pArray));
+}","public void test90124() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    Base64 base64_0 = new Base64((-3966), (byte[]) null);
+    String string0 = base64_0.encodeToString(byteArray0);
+    assertEquals(""AA=="", string0);
+}","/**
+ * Encodes a byte[] containing binary data, into a String containing characters in the Base64 alphabet.
+ *
+ * @param pArray
+ *            a byte array containing binary data
+ * @return A String containing only Base64 character data
+ * @since 1.4
+ */"
+"public static byte[] decodeBase64(byte[] base64Data) {
+    return new Base64().decode(base64Data);
+}","public void test91125() throws Throwable {
+    byte[] byteArray0 = Base64.decodeBase64((byte[]) null);
+    assertNull(byteArray0);
+}","/**
+ * Decodes Base64 data into octets
+ *
+ * @param base64Data
+ *            Byte array containing Base64 data
+ * @return Array containing decoded data.
+ */"
+"public boolean isUrlSafe() {
+    return this.encodeTable == URL_SAFE_ENCODE_TABLE;
+}","public void test92126() throws Throwable {
+    Base64 base64_0 = new Base64();
+    boolean boolean0 = base64_0.hasData();
+    assertFalse(base64_0.isUrlSafe());
+}","/**
+ * Returns our current encode mode. True if we're URL-SAFE, false otherwise.
+ *
+ * @return true if we're in URL-SAFE mode, false otherwise.
+ * @since 1.4
+ */"
+"boolean hasData() {
+    return this.buffer != null;
+}","public void test92127() throws Throwable {
+    Base64 base64_0 = new Base64();
+    boolean boolean0 = base64_0.hasData();
+    assertFalse(boolean0);
+}","/**
+ * Returns true if this Base64 object has buffered data for reading.
+ *
+ * @return true if there is Base64 object still available for reading.
+ */"
+"public static byte[] encodeBase64(byte[] binaryData) {
+    return encodeBase64(binaryData, false);
+}","public void test93128() throws Throwable {
+    byte[] byteArray0 = Base64.encodeBase64((byte[]) null);
+    assertNull(byteArray0);
+}","/**
+ * Encodes binary data using the base64 algorithm but does not chunk the output.
+ *
+ * @param binaryData
+ *            binary data to encode
+ * @return byte[] containing Base64 characters in their UTF-8 representation.
+ */"

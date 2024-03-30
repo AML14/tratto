@@ -1,0 +1,553 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test010,"public void test010() throws Throwable {
+    byte[] byteArray0 = new byte[5];
+    // Undeclared exception!
+    try {
+        TarUtils.formatLongOctalOrBinaryBytes((-1L), byteArray0, (byte) 14, (byte) 9);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}",0,
+project,0,test021,"public void test021() throws Throwable {
+    // Undeclared exception!
+    try {
+        TarUtils.formatLongOctalOrBinaryBytes(8589934591L, (byte[]) null, 1, 1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // 8589934591=77777777777 will not fit in octal number buffer of length 0
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}",0,
+project,0,test032,"public void test032() throws Throwable {
+    byte[] byteArray0 = new byte[3];
+    // Undeclared exception!
+    try {
+        TarUtils.formatLongOctalOrBinaryBytes(0L, byteArray0, 1407, 0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 1405
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}",0,
+project,0,test043,"public void test043() throws Throwable {
+    byte[] byteArray0 = new byte[17];
+    byteArray0[0] = (byte) 38;
+    byteArray0[1] = (byte) (-111);
+    // Undeclared exception!
+    try {
+        TarUtils.parseOctalOrBinary(byteArray0, 0, 2);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid byte 38 at offset 0 in '&\uFFFD' len=2
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}",0,
+project,0,test054,"public void test054() throws Throwable {
+    byte[] byteArray0 = new byte[9];
+    byteArray0[8] = (byte) (-86);
+    // Undeclared exception!
+    try {
+        TarUtils.parseOctal(byteArray0, 8, 5396);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 5403
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}",0,
+project,0,test065,"public void test065() throws Throwable {
+    byte[] byteArray0 = new byte[5];
+    // Undeclared exception!
+    try {
+        TarUtils.formatLongOctalBytes(0L, byteArray0, (byte) 32, (byte) 3);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 33
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}",0,
+project,0,test156,"public void test156() throws Throwable {
+    // Undeclared exception!
+    try {
+        TarUtils.verifyCheckSum((byte[]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}",0,
+project,0,test167,"public void test167() throws Throwable {
+    // Undeclared exception!
+    try {
+        TarUtils.parseOctalOrBinary((byte[]) null, (-1010), 2270);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}",0,
+project,0,test178,"public void test178() throws Throwable {
+    // Undeclared exception!
+    try {
+        TarUtils.parseOctal((byte[]) null, (-2971), 9);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}",1,
+project,0,test189,"public void test189() throws Throwable {
+    ZipEncoding zipEncoding0 = TarUtils.DEFAULT_ENCODING;
+    // Undeclared exception!
+    try {
+        TarUtils.parseName((byte[]) null, (-4302), 253, zipEncoding0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}",0,
+project,0,test1910,"public void test1910() throws Throwable {
+    byte[] byteArray0 = new byte[4];
+    ZipEncoding zipEncoding0 = TarUtils.DEFAULT_ENCODING;
+    // Undeclared exception!
+    try {
+        TarUtils.parseName(byteArray0, (int) (byte) 0, 7, zipEncoding0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 6
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}",0,
+project,0,test2011,"public void test2011() throws Throwable {
+    byte[] byteArray0 = new byte[7];
+    // Undeclared exception!
+    try {
+        TarUtils.parseName(byteArray0, (-3843), 1663);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -2181
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}",0,
+project,0,test2112,"public void test2112() throws Throwable {
+    // Undeclared exception!
+    try {
+        TarUtils.parseBoolean((byte[]) null, (-49));
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}",0,
+project,0,test2213,"public void test2213() throws Throwable {
+    byte[] byteArray0 = new byte[8];
+    // Undeclared exception!
+    try {
+        TarUtils.parseBoolean(byteArray0, 55);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 55
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}",0,
+project,0,test2314,"public void test2314() throws Throwable {
+    // Undeclared exception!
+    try {
+        TarUtils.formatOctalBytes(0L, (byte[]) null, 3293, 3293);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}",0,
+project,0,test2415,"public void test2415() throws Throwable {
+    byte[] byteArray0 = new byte[7];
+    // Undeclared exception!
+    try {
+        TarUtils.formatOctalBytes(929L, byteArray0, 225, (-3730));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // 929=1641 will not fit in octal number buffer of length -3732
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}",0,
+project,0,test2516,"public void test2516() throws Throwable {
+    byte[] byteArray0 = new byte[3];
+    // Undeclared exception!
+    try {
+        TarUtils.formatNameBytes(""\""jpGIED/po-SHzQnU"", byteArray0, 0, (int) (byte) 106, (ZipEncoding) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}",0,
+project,0,test2617,"public void test2617() throws Throwable {
+    byte[] byteArray0 = new byte[0];
+    // Undeclared exception!
+    try {
+        TarUtils.formatNameBytes("""", byteArray0, 1846, 566);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}",0,
+project,0,test2718,"public void test2718() throws Throwable {
+    // Undeclared exception!
+    try {
+        TarUtils.formatLongOctalOrBinaryBytes(818L, (byte[]) null, 8730, 8730);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}",0,
+project,0,test2819,"public void test2819() throws Throwable {
+    // Undeclared exception!
+    try {
+        TarUtils.formatLongOctalBytes(0L, (byte[]) null, 9, 2);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}",0,
+project,0,test2920,"public void test2920() throws Throwable {
+    byte[] byteArray0 = new byte[5];
+    // Undeclared exception!
+    try {
+        TarUtils.formatLongOctalBytes((-20L), byteArray0, (byte) 1, (byte) 3);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // -20=1777777777777777777754 will not fit in octal number buffer of length 2
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}",0,
+project,0,test3021,"public void test3021() throws Throwable {
+    // Undeclared exception!
+    try {
+        TarUtils.formatCheckSumOctalBytes(0L, (byte[]) null, 789, 789);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}",0,
+project,0,test3122,"public void test3122() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    // Undeclared exception!
+    try {
+        TarUtils.formatCheckSumOctalBytes((-1L), byteArray0, 168, 6);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 171
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}",0,
+project,0,test3223,"public void test3223() throws Throwable {
+    // Undeclared exception!
+    try {
+        TarUtils.computeCheckSum((byte[]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}",0,
+project,0,test3324,"public void test3324() throws Throwable {
+    byte[] byteArray0 = new byte[5];
+    // Undeclared exception!
+    try {
+        TarUtils.formatUnsignedOctalString((-570L), byteArray0, (byte) (-63), (byte) 0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // -570=1777777777777777776706 will not fit in octal number buffer of length 0
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}",0,
+project,0,test3425,"public void test3425() throws Throwable {
+    byte[] byteArray0 = new byte[0];
+    // Undeclared exception!
+    try {
+        TarUtils.formatUnsignedOctalString(0L, byteArray0, 4572, 913);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 5484
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}",0,
+project,0,test3626,"public void test3626() throws Throwable {
+    byte[] byteArray0 = new byte[9];
+    byteArray0[2] = (byte) 24;
+    // Undeclared exception!
+    try {
+        TarUtils.parseOctal(byteArray0, (byte) 2, (byte) 2);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid byte 24 at offset 0 in '\u0018{NUL}' len=2
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}",1,
+project,0,test3727,"public void test3727() throws Throwable {
+    byte[] byteArray0 = new byte[9];
+    byteArray0[0] = (byte) 116;
+    // Undeclared exception!
+    try {
+        TarUtils.parseOctal(byteArray0, 0, (byte) 9);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid byte 116 at offset 0 in 't{NUL}{NUL}{NUL}{NUL}{NUL}{NUL}{NUL}{NUL}' len=9
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}",0,
+project,0,test3828,"public void test3828() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    byteArray0[0] = (byte) 33;
+    boolean boolean0 = TarUtils.verifyCheckSum(byteArray0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test3929,"public void test3929() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    boolean boolean0 = TarUtils.verifyCheckSum(byteArray0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4030,"public void test4030() throws Throwable {
+    byte[] byteArray0 = new byte[14];
+    long long0 = TarUtils.computeCheckSum(byteArray0);
+    assertEquals(0L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test4131,"public void test4131() throws Throwable {
+    byte[] byteArray0 = new byte[9];
+    // Undeclared exception!
+    try {
+        TarUtils.formatLongOctalOrBinaryBytes((-939L), byteArray0, 799, (-786));
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}",0,
+project,0,test4232,"public void test4232() throws Throwable {
+    byte[] byteArray0 = new byte[9];
+    // Undeclared exception!
+    try {
+        TarUtils.formatLongOctalOrBinaryBytes((-4136L), byteArray0, 0, (byte) (-63));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value -4136 is too large for -63 byte field.
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}",0,
+project,0,test4333,"public void test4333() throws Throwable {
+    byte[] byteArray0 = new byte[9];
+    // Undeclared exception!
+    try {
+        TarUtils.formatLongOctalOrBinaryBytes(2305843009213693949L, byteArray0, (byte) (-86), 228);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}",0,
+project,0,test4434,"public void test4434() throws Throwable {
+    byte[] byteArray0 = new byte[2];
+    // Undeclared exception!
+    try {
+        TarUtils.formatLongOctalOrBinaryBytes((-808L), byteArray0, (byte) 45, 8);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 52
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}",0,
+project,0,test4535,"public void test4535() throws Throwable {
+    byte[] byteArray0 = new byte[14];
+    ZipEncoding zipEncoding0 = TarUtils.FALLBACK_ENCODING;
+    // Undeclared exception!
+    try {
+        TarUtils.formatNameBytes(""{NUL}"", byteArray0, (int) (byte) 1, 162, zipEncoding0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 14
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}",0,
+project,0,test4636,"public void test4636() throws Throwable {
+    byte[] byteArray0 = new byte[14];
+    byteArray0[1] = (byte) 1;
+    boolean boolean0 = TarUtils.parseBoolean(byteArray0, (byte) 1);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4737,"public void test4737() throws Throwable {
+    byte[] byteArray0 = new byte[14];
+    boolean boolean0 = TarUtils.parseBoolean(byteArray0, (byte) 1);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4838,"public void test4838() throws Throwable {
+    byte[] byteArray0 = new byte[3];
+    byteArray0[1] = (byte) (-71);
+    long long0 = TarUtils.parseOctalOrBinary(byteArray0, 1, (byte) (-71));
+    assertEquals(0L, long0);
+}",0,
+project,0,test4939,"public void test4939() throws Throwable {
+    byte[] byteArray0 = new byte[5];
+    byteArray0[0] = (byte) (-1);
+    long long0 = TarUtils.parseOctalOrBinary(byteArray0, 0, (byte) (-1));
+    assertEquals(0L, long0);
+}",0,
+project,0,test5040,"public void test5040() throws Throwable {
+    byte[] byteArray0 = new byte[3];
+    byteArray0[1] = (byte) (-7);
+    // Undeclared exception!
+    try {
+        TarUtils.parseOctalOrBinary(byteArray0, 1, (byte) 113);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}",0,
+project,0,test5141,"public void test5141() throws Throwable {
+    byte[] byteArray0 = new byte[9];
+    TarUtils.formatUnsignedOctalString(540L, byteArray0, 0, 9);
+    long long0 = TarUtils.parseOctal(byteArray0, 0, (byte) 2);
+    assertArrayEquals(new byte[] { (byte) 48, (byte) 48, (byte) 48, (byte) 48, (byte) 48, (byte) 49, (byte) 48, (byte) 51, (byte) 52 }, byteArray0);
+}",1,
+project,0,test5142,"public void test5142() throws Throwable {
+    byte[] byteArray0 = new byte[9];
+    TarUtils.formatUnsignedOctalString(540L, byteArray0, 0, 9);
+    long long0 = TarUtils.parseOctal(byteArray0, 0, (byte) 2);
+    assertEquals(0L, long0);
+}",1,
+project,0,test5243,"public void test5243() throws Throwable {
+    byte[] byteArray0 = new byte[9];
+    long long0 = TarUtils.parseOctal(byteArray0, 8, 5396);
+    assertEquals(0L, long0);
+}",1,
+project,0,test5344,"public void test5344() throws Throwable {
+    // Undeclared exception!
+    try {
+        TarUtils.parseOctal((byte[]) null, (-2971), (-2971));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Length -2971 must be at least 2
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}",1,
+project,0,test5445,"public void test5445() throws Throwable {
+    byte[] byteArray0 = new byte[4];
+    byteArray0[2] = (byte) 3;
+    ZipEncoding zipEncoding0 = TarUtils.FALLBACK_ENCODING;
+    String string0 = TarUtils.parseName(byteArray0, 0, (int) (byte) 3, zipEncoding0);
+    assertEquals("""", string0);
+}",0,
+project,0,test5546,"public void test5546() throws Throwable {
+    byte[] byteArray0 = new byte[4];
+    byteArray0[0] = (byte) 3;
+    ZipEncoding zipEncoding0 = TarUtils.FALLBACK_ENCODING;
+    String string0 = TarUtils.parseName(byteArray0, 0, (int) (byte) 3, zipEncoding0);
+    assertEquals(""\u0003"", string0);
+}",0,
+project,0,test5647,"public void test5647() throws Throwable {
+    byte[] byteArray0 = new byte[14];
+    ZipEncoding zipEncoding0 = TarUtils.FALLBACK_ENCODING;
+    int int0 = TarUtils.formatNameBytes(""{NUL}"", byteArray0, (int) (byte) 1, (-668), zipEncoding0);
+    assertEquals((-667), int0);
+}",0,"assertEquals(1, int0)"
+project,0,test5748,"public void test5748() throws Throwable {
+    byte[] byteArray0 = new byte[0];
+    String string0 = TarUtils.parseName(byteArray0, 0, 0);
+    assertEquals("""", string0);
+}",0,
+project,0,test5849,"public void test5849() throws Throwable {
+    byte[] byteArray0 = new byte[4];
+    // Undeclared exception!
+    try {
+        TarUtils.formatOctalBytes(0L, byteArray0, (byte) 3, (byte) 48);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 48
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}",0,
+project,0,test5950,"public void test5950() throws Throwable {
+    byte[] byteArray0 = new byte[0];
+    // Undeclared exception!
+    try {
+        TarUtils.formatCheckSumOctalBytes((-1260L), byteArray0, 55, (-3132));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // -1260=1777777777777777775424 will not fit in octal number buffer of length -3134
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}",0,
+project,0,test6051,"public void test6051() throws Throwable {
+    byte[] byteArray0 = new byte[7];
+    // Undeclared exception!
+    try {
+        TarUtils.formatNameBytes((String) null, byteArray0, (int) (byte) 0, (int) (byte) (-128));
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}",0,

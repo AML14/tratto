@@ -1,0 +1,921 @@
+focal_method,test_prefix,docstring
+"public int getVarIndex(String var) {
+    return jsScope.getVar(var).index;
+}","public void test011() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, """", """");
+    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, true);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    Scope scope0 = syntacticScopeCreator0.createScope(node0, (Scope) null);
+    LiveVariablesAnalysis liveVariablesAnalysis0 = new LiveVariablesAnalysis(controlFlowGraph0, scope0, compiler0);
+    // Undeclared exception!
+    try {
+        liveVariablesAnalysis0.getVarIndex(""arguments"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.LiveVariablesAnalysis"", e);
+    }
+}",""
+"final void analyze(int maxSteps) {
+    initialize();
+    int step = 0;
+    while (!orderedWorkSet.isEmpty()) {
+        if (step > maxSteps) {
+            throw new MaxIterationsExceededException(""Analysis did not terminate after "" + maxSteps + "" iterations"");
+        }
+        DiGraphNode<N, Branch> curNode = orderedWorkSet.iterator().next();
+        orderedWorkSet.remove(curNode);
+        joinInputs(curNode);
+        if (flow(curNode)) {
+            // If there is a change in the current node, we want to grab the list
+            // of nodes that this node affects.
+            List<DiGraphNode<N, Branch>> nextNodes = isForward() ? cfg.getDirectedSuccNodes(curNode) : cfg.getDirectedPredNodes(curNode);
+            for (DiGraphNode<N, Branch> nextNode : nextNodes) {
+                if (nextNode != cfg.getImplicitReturn()) {
+                    orderedWorkSet.add(nextNode);
+                }
+            }
+        }
+        step++;
+    }
+    if (isForward()) {
+        joinInputs(getCfg().getImplicitReturn());
+    }
+}","public void test022() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, """", """");
+    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    ControlFlowGraph.Branch controlFlowGraph_Branch0 = ControlFlowGraph.Branch.ON_EX;
+    controlFlowGraph0.connectToImplicitReturn(node0, controlFlowGraph_Branch0);
+    Scope scope0 = syntacticScopeCreator0.createScope(node0, (Scope) null);
+    LiveVariablesAnalysis liveVariablesAnalysis0 = new LiveVariablesAnalysis(controlFlowGraph0, scope0, compiler0);
+    liveVariablesAnalysis0.analyze(5);
+}","/**
+ * Finds a fixed-point solution. The function has the side effect of replacing
+ * the existing node annotations with the computed solutions using {@link
+ * com.google.javascript.jscomp.graph.GraphNode#setAnnotation(Annotation)}.
+ *
+ * <p>Initially, each node's input and output flow state contains the value
+ * given by {@link #createInitialEstimateLattice()} (with the exception of the
+ * entry node of the graph which takes on the {@link #createEntryLattice()}
+ * value. Each node will use the output state of its predecessor and compute a
+ * output state according to the instruction. At that time, any nodes that
+ * depends on the node's newly modified output value will need to recompute
+ * their output state again. Each step will perform a computation at one node
+ * until no extra computation will modify any existing output state anymore.
+ *
+ * @param maxSteps Max number of iterations before the method stops and throw
+ *        a {@link MaxIterationsExceededException}. This will prevent the
+ *        analysis from going into a infinite loop.
+ */"
+"@SuppressWarnings(""unchecked"")
+protected L join(L latticeA, L latticeB) {
+    return joinOp.apply(Lists.<L>newArrayList(latticeA, latticeB));
+}","public void test066() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""}A=P@Yq[Qhyj"", ""}A=P@Yq[Qhyj"");
+    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    Scope scope0 = syntacticScopeCreator0.createScope(node0, (Scope) null);
+    LiveVariablesAnalysis liveVariablesAnalysis0 = new LiveVariablesAnalysis(controlFlowGraph0, scope0, compiler0);
+    LiveVariablesAnalysis.LiveVariableLattice liveVariablesAnalysis_LiveVariableLattice0 = liveVariablesAnalysis0.createEntryLattice();
+    LiveVariablesAnalysis.LiveVariableLattice liveVariablesAnalysis_LiveVariableLattice1 = liveVariablesAnalysis0.join(liveVariablesAnalysis_LiveVariableLattice0, liveVariablesAnalysis_LiveVariableLattice0);
+    assertNotSame(liveVariablesAnalysis_LiveVariableLattice0, liveVariablesAnalysis_LiveVariableLattice1);
+}",""
+"final void analyze(int maxSteps) {
+    initialize();
+    int step = 0;
+    while (!orderedWorkSet.isEmpty()) {
+        if (step > maxSteps) {
+            throw new MaxIterationsExceededException(""Analysis did not terminate after "" + maxSteps + "" iterations"");
+        }
+        DiGraphNode<N, Branch> curNode = orderedWorkSet.iterator().next();
+        orderedWorkSet.remove(curNode);
+        joinInputs(curNode);
+        if (flow(curNode)) {
+            // If there is a change in the current node, we want to grab the list
+            // of nodes that this node affects.
+            List<DiGraphNode<N, Branch>> nextNodes = isForward() ? cfg.getDirectedSuccNodes(curNode) : cfg.getDirectedPredNodes(curNode);
+            for (DiGraphNode<N, Branch> nextNode : nextNodes) {
+                if (nextNode != cfg.getImplicitReturn()) {
+                    orderedWorkSet.add(nextNode);
+                }
+            }
+        }
+        step++;
+    }
+    if (isForward()) {
+        joinInputs(getCfg().getImplicitReturn());
+    }
+}","public void test088() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""g5xD3>UE?$(/^Ayc{\""o"", ""g5xD3>UE?$(/^Ayc{\""o"");
+    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    ControlFlowGraph.Branch controlFlowGraph_Branch0 = ControlFlowGraph.Branch.ON_FALSE;
+    controlFlowGraph0.connect(node0, controlFlowGraph_Branch0, node0);
+    Scope scope0 = syntacticScopeCreator0.createScope(node0, (Scope) null);
+    LiveVariablesAnalysis liveVariablesAnalysis0 = new LiveVariablesAnalysis(controlFlowGraph0, scope0, compiler0);
+    liveVariablesAnalysis0.analyze(0);
+}","/**
+ * Finds a fixed-point solution. The function has the side effect of replacing
+ * the existing node annotations with the computed solutions using {@link
+ * com.google.javascript.jscomp.graph.GraphNode#setAnnotation(Annotation)}.
+ *
+ * <p>Initially, each node's input and output flow state contains the value
+ * given by {@link #createInitialEstimateLattice()} (with the exception of the
+ * entry node of the graph which takes on the {@link #createEntryLattice()}
+ * value. Each node will use the output state of its predecessor and compute a
+ * output state according to the instruction. At that time, any nodes that
+ * depends on the node's newly modified output value will need to recompute
+ * their output state again. Each step will perform a computation at one node
+ * until no extra computation will modify any existing output state anymore.
+ *
+ * @param maxSteps Max number of iterations before the method stops and throw
+ *        a {@link MaxIterationsExceededException}. This will prevent the
+ *        analysis from going into a infinite loop.
+ */"
+"final void analyze(int maxSteps) {
+    initialize();
+    int step = 0;
+    while (!orderedWorkSet.isEmpty()) {
+        if (step > maxSteps) {
+            throw new MaxIterationsExceededException(""Analysis did not terminate after "" + maxSteps + "" iterations"");
+        }
+        DiGraphNode<N, Branch> curNode = orderedWorkSet.iterator().next();
+        orderedWorkSet.remove(curNode);
+        joinInputs(curNode);
+        if (flow(curNode)) {
+            // If there is a change in the current node, we want to grab the list
+            // of nodes that this node affects.
+            List<DiGraphNode<N, Branch>> nextNodes = isForward() ? cfg.getDirectedSuccNodes(curNode) : cfg.getDirectedPredNodes(curNode);
+            for (DiGraphNode<N, Branch> nextNode : nextNodes) {
+                if (nextNode != cfg.getImplicitReturn()) {
+                    orderedWorkSet.add(nextNode);
+                }
+            }
+        }
+        step++;
+    }
+    if (isForward()) {
+        joinInputs(getCfg().getImplicitReturn());
+    }
+}","public void test099() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""R"", ""R"");
+    Node node1 = Node.newString(118, ""R"");
+    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node1, true, true);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    Scope scope0 = syntacticScopeCreator0.createScope(node1, (Scope) null);
+    node1.addChildrenToFront(node0);
+    LiveVariablesAnalysis liveVariablesAnalysis0 = new LiveVariablesAnalysis(controlFlowGraph0, scope0, compiler0);
+    // Undeclared exception!
+    try {
+        liveVariablesAnalysis0.analyze(32);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * Finds a fixed-point solution. The function has the side effect of replacing
+ * the existing node annotations with the computed solutions using {@link
+ * com.google.javascript.jscomp.graph.GraphNode#setAnnotation(Annotation)}.
+ *
+ * <p>Initially, each node's input and output flow state contains the value
+ * given by {@link #createInitialEstimateLattice()} (with the exception of the
+ * entry node of the graph which takes on the {@link #createEntryLattice()}
+ * value. Each node will use the output state of its predecessor and compute a
+ * output state according to the instruction. At that time, any nodes that
+ * depends on the node's newly modified output value will need to recompute
+ * their output state again. Each step will perform a computation at one node
+ * until no extra computation will modify any existing output state anymore.
+ *
+ * @param maxSteps Max number of iterations before the method stops and throw
+ *        a {@link MaxIterationsExceededException}. This will prevent the
+ *        analysis from going into a infinite loop.
+ */"
+"final void analyze(int maxSteps) {
+    initialize();
+    int step = 0;
+    while (!orderedWorkSet.isEmpty()) {
+        if (step > maxSteps) {
+            throw new MaxIterationsExceededException(""Analysis did not terminate after "" + maxSteps + "" iterations"");
+        }
+        DiGraphNode<N, Branch> curNode = orderedWorkSet.iterator().next();
+        orderedWorkSet.remove(curNode);
+        joinInputs(curNode);
+        if (flow(curNode)) {
+            // If there is a change in the current node, we want to grab the list
+            // of nodes that this node affects.
+            List<DiGraphNode<N, Branch>> nextNodes = isForward() ? cfg.getDirectedSuccNodes(curNode) : cfg.getDirectedPredNodes(curNode);
+            for (DiGraphNode<N, Branch> nextNode : nextNodes) {
+                if (nextNode != cfg.getImplicitReturn()) {
+                    orderedWorkSet.add(nextNode);
+                }
+            }
+        }
+        step++;
+    }
+    if (isForward()) {
+        joinInputs(getCfg().getImplicitReturn());
+    }
+}","public void test1010() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""eJp {+KUEi:~ !9q=Xw,"", ""eJp {+KUEi:~ !9q=Xw,"");
+    Node node1 = Node.newString(98, ""eJp {+KUEi:~ !9q=Xw,"");
+    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node1, true, true);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    Scope scope0 = syntacticScopeCreator0.createScope(node0, (Scope) null);
+    LiveVariablesAnalysis liveVariablesAnalysis0 = new LiveVariablesAnalysis(controlFlowGraph0, scope0, compiler0);
+    // Undeclared exception!
+    try {
+        liveVariablesAnalysis0.analyze(4);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.LiveVariablesAnalysis"", e);
+    }
+}","/**
+ * Finds a fixed-point solution. The function has the side effect of replacing
+ * the existing node annotations with the computed solutions using {@link
+ * com.google.javascript.jscomp.graph.GraphNode#setAnnotation(Annotation)}.
+ *
+ * <p>Initially, each node's input and output flow state contains the value
+ * given by {@link #createInitialEstimateLattice()} (with the exception of the
+ * entry node of the graph which takes on the {@link #createEntryLattice()}
+ * value. Each node will use the output state of its predecessor and compute a
+ * output state according to the instruction. At that time, any nodes that
+ * depends on the node's newly modified output value will need to recompute
+ * their output state again. Each step will perform a computation at one node
+ * until no extra computation will modify any existing output state anymore.
+ *
+ * @param maxSteps Max number of iterations before the method stops and throw
+ *        a {@link MaxIterationsExceededException}. This will prevent the
+ *        analysis from going into a infinite loop.
+ */"
+"final void analyze(int maxSteps) {
+    initialize();
+    int step = 0;
+    while (!orderedWorkSet.isEmpty()) {
+        if (step > maxSteps) {
+            throw new MaxIterationsExceededException(""Analysis did not terminate after "" + maxSteps + "" iterations"");
+        }
+        DiGraphNode<N, Branch> curNode = orderedWorkSet.iterator().next();
+        orderedWorkSet.remove(curNode);
+        joinInputs(curNode);
+        if (flow(curNode)) {
+            // If there is a change in the current node, we want to grab the list
+            // of nodes that this node affects.
+            List<DiGraphNode<N, Branch>> nextNodes = isForward() ? cfg.getDirectedSuccNodes(curNode) : cfg.getDirectedPredNodes(curNode);
+            for (DiGraphNode<N, Branch> nextNode : nextNodes) {
+                if (nextNode != cfg.getImplicitReturn()) {
+                    orderedWorkSet.add(nextNode);
+                }
+            }
+        }
+        step++;
+    }
+    if (isForward()) {
+        joinInputs(getCfg().getImplicitReturn());
+    }
+}","public void test1111() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, "")Gg8=cacX>>r|gD"", "")Gg8=cacX>>r|gD"");
+    Node node1 = Node.newString(100, ""Should be unreachable."");
+    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node1, true, true);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    Scope scope0 = syntacticScopeCreator0.createScope(node0, (Scope) null);
+    LiveVariablesAnalysis liveVariablesAnalysis0 = new LiveVariablesAnalysis(controlFlowGraph0, scope0, compiler0);
+    // Undeclared exception!
+    try {
+        liveVariablesAnalysis0.analyze(2);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.LiveVariablesAnalysis"", e);
+    }
+}","/**
+ * Finds a fixed-point solution. The function has the side effect of replacing
+ * the existing node annotations with the computed solutions using {@link
+ * com.google.javascript.jscomp.graph.GraphNode#setAnnotation(Annotation)}.
+ *
+ * <p>Initially, each node's input and output flow state contains the value
+ * given by {@link #createInitialEstimateLattice()} (with the exception of the
+ * entry node of the graph which takes on the {@link #createEntryLattice()}
+ * value. Each node will use the output state of its predecessor and compute a
+ * output state according to the instruction. At that time, any nodes that
+ * depends on the node's newly modified output value will need to recompute
+ * their output state again. Each step will perform a computation at one node
+ * until no extra computation will modify any existing output state anymore.
+ *
+ * @param maxSteps Max number of iterations before the method stops and throw
+ *        a {@link MaxIterationsExceededException}. This will prevent the
+ *        analysis from going into a infinite loop.
+ */"
+"final void analyze(int maxSteps) {
+    initialize();
+    int step = 0;
+    while (!orderedWorkSet.isEmpty()) {
+        if (step > maxSteps) {
+            throw new MaxIterationsExceededException(""Analysis did not terminate after "" + maxSteps + "" iterations"");
+        }
+        DiGraphNode<N, Branch> curNode = orderedWorkSet.iterator().next();
+        orderedWorkSet.remove(curNode);
+        joinInputs(curNode);
+        if (flow(curNode)) {
+            // If there is a change in the current node, we want to grab the list
+            // of nodes that this node affects.
+            List<DiGraphNode<N, Branch>> nextNodes = isForward() ? cfg.getDirectedSuccNodes(curNode) : cfg.getDirectedPredNodes(curNode);
+            for (DiGraphNode<N, Branch> nextNode : nextNodes) {
+                if (nextNode != cfg.getImplicitReturn()) {
+                    orderedWorkSet.add(nextNode);
+                }
+            }
+        }
+        step++;
+    }
+    if (isForward()) {
+        joinInputs(getCfg().getImplicitReturn());
+    }
+}","public void test1212() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""%"", ""%"");
+    Node node1 = Node.newString(101, ""%"");
+    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node1, true, true);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    Scope scope0 = syntacticScopeCreator0.createScope(node0, (Scope) null);
+    LiveVariablesAnalysis liveVariablesAnalysis0 = new LiveVariablesAnalysis(controlFlowGraph0, scope0, compiler0);
+    // Undeclared exception!
+    try {
+        liveVariablesAnalysis0.analyze(35);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.LiveVariablesAnalysis"", e);
+    }
+}","/**
+ * Finds a fixed-point solution. The function has the side effect of replacing
+ * the existing node annotations with the computed solutions using {@link
+ * com.google.javascript.jscomp.graph.GraphNode#setAnnotation(Annotation)}.
+ *
+ * <p>Initially, each node's input and output flow state contains the value
+ * given by {@link #createInitialEstimateLattice()} (with the exception of the
+ * entry node of the graph which takes on the {@link #createEntryLattice()}
+ * value. Each node will use the output state of its predecessor and compute a
+ * output state according to the instruction. At that time, any nodes that
+ * depends on the node's newly modified output value will need to recompute
+ * their output state again. Each step will perform a computation at one node
+ * until no extra computation will modify any existing output state anymore.
+ *
+ * @param maxSteps Max number of iterations before the method stops and throw
+ *        a {@link MaxIterationsExceededException}. This will prevent the
+ *        analysis from going into a infinite loop.
+ */"
+"final void analyze(int maxSteps) {
+    initialize();
+    int step = 0;
+    while (!orderedWorkSet.isEmpty()) {
+        if (step > maxSteps) {
+            throw new MaxIterationsExceededException(""Analysis did not terminate after "" + maxSteps + "" iterations"");
+        }
+        DiGraphNode<N, Branch> curNode = orderedWorkSet.iterator().next();
+        orderedWorkSet.remove(curNode);
+        joinInputs(curNode);
+        if (flow(curNode)) {
+            // If there is a change in the current node, we want to grab the list
+            // of nodes that this node affects.
+            List<DiGraphNode<N, Branch>> nextNodes = isForward() ? cfg.getDirectedSuccNodes(curNode) : cfg.getDirectedPredNodes(curNode);
+            for (DiGraphNode<N, Branch> nextNode : nextNodes) {
+                if (nextNode != cfg.getImplicitReturn()) {
+                    orderedWorkSet.add(nextNode);
+                }
+            }
+        }
+        step++;
+    }
+    if (isForward()) {
+        joinInputs(getCfg().getImplicitReturn());
+    }
+}","public void test1313() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""ep {+KEi:~ !q=Xw9"", ""ep {+KEi:~ !q=Xw9"");
+    Node node1 = Node.newString(105, ""ep {+KEi:~ !q=Xw9"");
+    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node1, true, true);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    Scope scope0 = syntacticScopeCreator0.createScope(node0, (Scope) null);
+    LiveVariablesAnalysis liveVariablesAnalysis0 = new LiveVariablesAnalysis(controlFlowGraph0, scope0, compiler0);
+    liveVariablesAnalysis0.analyze(14);
+}","/**
+ * Finds a fixed-point solution. The function has the side effect of replacing
+ * the existing node annotations with the computed solutions using {@link
+ * com.google.javascript.jscomp.graph.GraphNode#setAnnotation(Annotation)}.
+ *
+ * <p>Initially, each node's input and output flow state contains the value
+ * given by {@link #createInitialEstimateLattice()} (with the exception of the
+ * entry node of the graph which takes on the {@link #createEntryLattice()}
+ * value. Each node will use the output state of its predecessor and compute a
+ * output state according to the instruction. At that time, any nodes that
+ * depends on the node's newly modified output value will need to recompute
+ * their output state again. Each step will perform a computation at one node
+ * until no extra computation will modify any existing output state anymore.
+ *
+ * @param maxSteps Max number of iterations before the method stops and throw
+ *        a {@link MaxIterationsExceededException}. This will prevent the
+ *        analysis from going into a infinite loop.
+ */"
+"final void analyze(int maxSteps) {
+    initialize();
+    int step = 0;
+    while (!orderedWorkSet.isEmpty()) {
+        if (step > maxSteps) {
+            throw new MaxIterationsExceededException(""Analysis did not terminate after "" + maxSteps + "" iterations"");
+        }
+        DiGraphNode<N, Branch> curNode = orderedWorkSet.iterator().next();
+        orderedWorkSet.remove(curNode);
+        joinInputs(curNode);
+        if (flow(curNode)) {
+            // If there is a change in the current node, we want to grab the list
+            // of nodes that this node affects.
+            List<DiGraphNode<N, Branch>> nextNodes = isForward() ? cfg.getDirectedSuccNodes(curNode) : cfg.getDirectedPredNodes(curNode);
+            for (DiGraphNode<N, Branch> nextNode : nextNodes) {
+                if (nextNode != cfg.getImplicitReturn()) {
+                    orderedWorkSet.add(nextNode);
+                }
+            }
+        }
+        step++;
+    }
+    if (isForward()) {
+        joinInputs(getCfg().getImplicitReturn());
+    }
+}","public void test1414() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Normalize.parseAndNormalizeTestCode(compiler0, """", """");
+    Node node0 = Node.newString(108, """");
+    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    Scope scope0 = syntacticScopeCreator0.createScope(node0, (Scope) null);
+    LiveVariablesAnalysis liveVariablesAnalysis0 = new LiveVariablesAnalysis(controlFlowGraph0, scope0, compiler0);
+    // Undeclared exception!
+    try {
+        liveVariablesAnalysis0.analyze(5);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.LiveVariablesAnalysis"", e);
+    }
+}","/**
+ * Finds a fixed-point solution. The function has the side effect of replacing
+ * the existing node annotations with the computed solutions using {@link
+ * com.google.javascript.jscomp.graph.GraphNode#setAnnotation(Annotation)}.
+ *
+ * <p>Initially, each node's input and output flow state contains the value
+ * given by {@link #createInitialEstimateLattice()} (with the exception of the
+ * entry node of the graph which takes on the {@link #createEntryLattice()}
+ * value. Each node will use the output state of its predecessor and compute a
+ * output state according to the instruction. At that time, any nodes that
+ * depends on the node's newly modified output value will need to recompute
+ * their output state again. Each step will perform a computation at one node
+ * until no extra computation will modify any existing output state anymore.
+ *
+ * @param maxSteps Max number of iterations before the method stops and throw
+ *        a {@link MaxIterationsExceededException}. This will prevent the
+ *        analysis from going into a infinite loop.
+ */"
+"final void analyze(int maxSteps) {
+    initialize();
+    int step = 0;
+    while (!orderedWorkSet.isEmpty()) {
+        if (step > maxSteps) {
+            throw new MaxIterationsExceededException(""Analysis did not terminate after "" + maxSteps + "" iterations"");
+        }
+        DiGraphNode<N, Branch> curNode = orderedWorkSet.iterator().next();
+        orderedWorkSet.remove(curNode);
+        joinInputs(curNode);
+        if (flow(curNode)) {
+            // If there is a change in the current node, we want to grab the list
+            // of nodes that this node affects.
+            List<DiGraphNode<N, Branch>> nextNodes = isForward() ? cfg.getDirectedSuccNodes(curNode) : cfg.getDirectedPredNodes(curNode);
+            for (DiGraphNode<N, Branch> nextNode : nextNodes) {
+                if (nextNode != cfg.getImplicitReturn()) {
+                    orderedWorkSet.add(nextNode);
+                }
+            }
+        }
+        step++;
+    }
+    if (isForward()) {
+        joinInputs(getCfg().getImplicitReturn());
+    }
+}","public void test1515() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""%"", ""%"");
+    Node node1 = Node.newString(113, ""%"");
+    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node1, true, true);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    Scope scope0 = syntacticScopeCreator0.createScope(node0, (Scope) null);
+    LiveVariablesAnalysis liveVariablesAnalysis0 = new LiveVariablesAnalysis(controlFlowGraph0, scope0, compiler0);
+    // Undeclared exception!
+    try {
+        liveVariablesAnalysis0.analyze(15);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.LiveVariablesAnalysis"", e);
+    }
+}","/**
+ * Finds a fixed-point solution. The function has the side effect of replacing
+ * the existing node annotations with the computed solutions using {@link
+ * com.google.javascript.jscomp.graph.GraphNode#setAnnotation(Annotation)}.
+ *
+ * <p>Initially, each node's input and output flow state contains the value
+ * given by {@link #createInitialEstimateLattice()} (with the exception of the
+ * entry node of the graph which takes on the {@link #createEntryLattice()}
+ * value. Each node will use the output state of its predecessor and compute a
+ * output state according to the instruction. At that time, any nodes that
+ * depends on the node's newly modified output value will need to recompute
+ * their output state again. Each step will perform a computation at one node
+ * until no extra computation will modify any existing output state anymore.
+ *
+ * @param maxSteps Max number of iterations before the method stops and throw
+ *        a {@link MaxIterationsExceededException}. This will prevent the
+ *        analysis from going into a infinite loop.
+ */"
+"final void analyze(int maxSteps) {
+    initialize();
+    int step = 0;
+    while (!orderedWorkSet.isEmpty()) {
+        if (step > maxSteps) {
+            throw new MaxIterationsExceededException(""Analysis did not terminate after "" + maxSteps + "" iterations"");
+        }
+        DiGraphNode<N, Branch> curNode = orderedWorkSet.iterator().next();
+        orderedWorkSet.remove(curNode);
+        joinInputs(curNode);
+        if (flow(curNode)) {
+            // If there is a change in the current node, we want to grab the list
+            // of nodes that this node affects.
+            List<DiGraphNode<N, Branch>> nextNodes = isForward() ? cfg.getDirectedSuccNodes(curNode) : cfg.getDirectedPredNodes(curNode);
+            for (DiGraphNode<N, Branch> nextNode : nextNodes) {
+                if (nextNode != cfg.getImplicitReturn()) {
+                    orderedWorkSet.add(nextNode);
+                }
+            }
+        }
+        step++;
+    }
+    if (isForward()) {
+        joinInputs(getCfg().getImplicitReturn());
+    }
+}","public void test1616() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Normalize.parseAndNormalizeTestCode(compiler0, ""U.Pv<"", ""U.Pv<"");
+    Node node0 = Node.newString(114, ""U.Pv<"");
+    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    Scope scope0 = syntacticScopeCreator0.createScope(node0, (Scope) null);
+    LiveVariablesAnalysis liveVariablesAnalysis0 = new LiveVariablesAnalysis(controlFlowGraph0, scope0, compiler0);
+    // Undeclared exception!
+    try {
+        liveVariablesAnalysis0.analyze(1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.LiveVariablesAnalysis"", e);
+    }
+}","/**
+ * Finds a fixed-point solution. The function has the side effect of replacing
+ * the existing node annotations with the computed solutions using {@link
+ * com.google.javascript.jscomp.graph.GraphNode#setAnnotation(Annotation)}.
+ *
+ * <p>Initially, each node's input and output flow state contains the value
+ * given by {@link #createInitialEstimateLattice()} (with the exception of the
+ * entry node of the graph which takes on the {@link #createEntryLattice()}
+ * value. Each node will use the output state of its predecessor and compute a
+ * output state according to the instruction. At that time, any nodes that
+ * depends on the node's newly modified output value will need to recompute
+ * their output state again. Each step will perform a computation at one node
+ * until no extra computation will modify any existing output state anymore.
+ *
+ * @param maxSteps Max number of iterations before the method stops and throw
+ *        a {@link MaxIterationsExceededException}. This will prevent the
+ *        analysis from going into a infinite loop.
+ */"
+"final void analyze(int maxSteps) {
+    initialize();
+    int step = 0;
+    while (!orderedWorkSet.isEmpty()) {
+        if (step > maxSteps) {
+            throw new MaxIterationsExceededException(""Analysis did not terminate after "" + maxSteps + "" iterations"");
+        }
+        DiGraphNode<N, Branch> curNode = orderedWorkSet.iterator().next();
+        orderedWorkSet.remove(curNode);
+        joinInputs(curNode);
+        if (flow(curNode)) {
+            // If there is a change in the current node, we want to grab the list
+            // of nodes that this node affects.
+            List<DiGraphNode<N, Branch>> nextNodes = isForward() ? cfg.getDirectedSuccNodes(curNode) : cfg.getDirectedPredNodes(curNode);
+            for (DiGraphNode<N, Branch> nextNode : nextNodes) {
+                if (nextNode != cfg.getImplicitReturn()) {
+                    orderedWorkSet.add(nextNode);
+                }
+            }
+        }
+        step++;
+    }
+    if (isForward()) {
+        joinInputs(getCfg().getImplicitReturn());
+    }
+}","public void test1717() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""com.google.javascript.jscmp.LiveVaiabesAnalysis$LiveVariableJoinOp"", ""com.google.javascript.jscmp.LiveVaiabesAnalysis$LiveVariableJoinOp"");
+    Node node1 = Node.newString(115, ""com.google.javascript.jscmp.LiveVaiabesAnalysis$LiveVariableJoinOp"");
+    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node1, true, true);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    Scope scope0 = syntacticScopeCreator0.createScope(node0, (Scope) null);
+    LiveVariablesAnalysis liveVariablesAnalysis0 = new LiveVariablesAnalysis(controlFlowGraph0, scope0, compiler0);
+    // Undeclared exception!
+    try {
+        liveVariablesAnalysis0.analyze(36);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // malformed 'for' statement FOR com.google.javascript.jscmp.LiveVaiabesAnalysis$LiveVariableJoinOp
+        //
+        verifyException(""com.google.javascript.jscomp.NodeUtil"", e);
+    }
+}","/**
+ * Finds a fixed-point solution. The function has the side effect of replacing
+ * the existing node annotations with the computed solutions using {@link
+ * com.google.javascript.jscomp.graph.GraphNode#setAnnotation(Annotation)}.
+ *
+ * <p>Initially, each node's input and output flow state contains the value
+ * given by {@link #createInitialEstimateLattice()} (with the exception of the
+ * entry node of the graph which takes on the {@link #createEntryLattice()}
+ * value. Each node will use the output state of its predecessor and compute a
+ * output state according to the instruction. At that time, any nodes that
+ * depends on the node's newly modified output value will need to recompute
+ * their output state again. Each step will perform a computation at one node
+ * until no extra computation will modify any existing output state anymore.
+ *
+ * @param maxSteps Max number of iterations before the method stops and throw
+ *        a {@link MaxIterationsExceededException}. This will prevent the
+ *        analysis from going into a infinite loop.
+ */"
+"final void analyze(int maxSteps) {
+    initialize();
+    int step = 0;
+    while (!orderedWorkSet.isEmpty()) {
+        if (step > maxSteps) {
+            throw new MaxIterationsExceededException(""Analysis did not terminate after "" + maxSteps + "" iterations"");
+        }
+        DiGraphNode<N, Branch> curNode = orderedWorkSet.iterator().next();
+        orderedWorkSet.remove(curNode);
+        joinInputs(curNode);
+        if (flow(curNode)) {
+            // If there is a change in the current node, we want to grab the list
+            // of nodes that this node affects.
+            List<DiGraphNode<N, Branch>> nextNodes = isForward() ? cfg.getDirectedSuccNodes(curNode) : cfg.getDirectedPredNodes(curNode);
+            for (DiGraphNode<N, Branch> nextNode : nextNodes) {
+                if (nextNode != cfg.getImplicitReturn()) {
+                    orderedWorkSet.add(nextNode);
+                }
+            }
+        }
+        step++;
+    }
+    if (isForward()) {
+        joinInputs(getCfg().getImplicitReturn());
+    }
+}","public void test1818() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Normalize.parseAndNormalizeTestCode(compiler0, ""R"", ""R"");
+    Node node0 = Node.newString(125, ""9TS[fA;KO;9<kLRW"");
+    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    Scope scope0 = syntacticScopeCreator0.createScope(node0, (Scope) null);
+    LiveVariablesAnalysis liveVariablesAnalysis0 = new LiveVariablesAnalysis(controlFlowGraph0, scope0, compiler0);
+    liveVariablesAnalysis0.analyze(1024);
+}","/**
+ * Finds a fixed-point solution. The function has the side effect of replacing
+ * the existing node annotations with the computed solutions using {@link
+ * com.google.javascript.jscomp.graph.GraphNode#setAnnotation(Annotation)}.
+ *
+ * <p>Initially, each node's input and output flow state contains the value
+ * given by {@link #createInitialEstimateLattice()} (with the exception of the
+ * entry node of the graph which takes on the {@link #createEntryLattice()}
+ * value. Each node will use the output state of its predecessor and compute a
+ * output state according to the instruction. At that time, any nodes that
+ * depends on the node's newly modified output value will need to recompute
+ * their output state again. Each step will perform a computation at one node
+ * until no extra computation will modify any existing output state anymore.
+ *
+ * @param maxSteps Max number of iterations before the method stops and throw
+ *        a {@link MaxIterationsExceededException}. This will prevent the
+ *        analysis from going into a infinite loop.
+ */"
+"final void analyze(int maxSteps) {
+    initialize();
+    int step = 0;
+    while (!orderedWorkSet.isEmpty()) {
+        if (step > maxSteps) {
+            throw new MaxIterationsExceededException(""Analysis did not terminate after "" + maxSteps + "" iterations"");
+        }
+        DiGraphNode<N, Branch> curNode = orderedWorkSet.iterator().next();
+        orderedWorkSet.remove(curNode);
+        joinInputs(curNode);
+        if (flow(curNode)) {
+            // If there is a change in the current node, we want to grab the list
+            // of nodes that this node affects.
+            List<DiGraphNode<N, Branch>> nextNodes = isForward() ? cfg.getDirectedSuccNodes(curNode) : cfg.getDirectedPredNodes(curNode);
+            for (DiGraphNode<N, Branch> nextNode : nextNodes) {
+                if (nextNode != cfg.getImplicitReturn()) {
+                    orderedWorkSet.add(nextNode);
+                }
+            }
+        }
+        step++;
+    }
+    if (isForward()) {
+        joinInputs(getCfg().getImplicitReturn());
+    }
+}","public void test1919() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, """", """");
+    Node node1 = Node.newString(118, """");
+    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node1, true, true);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    Scope scope0 = syntacticScopeCreator0.createScope(node1, (Scope) null);
+    node1.addChildrenToFront(node0);
+    LiveVariablesAnalysis liveVariablesAnalysis0 = new LiveVariablesAnalysis(controlFlowGraph0, scope0, compiler0);
+    liveVariablesAnalysis0.analyze(20);
+}","/**
+ * Finds a fixed-point solution. The function has the side effect of replacing
+ * the existing node annotations with the computed solutions using {@link
+ * com.google.javascript.jscomp.graph.GraphNode#setAnnotation(Annotation)}.
+ *
+ * <p>Initially, each node's input and output flow state contains the value
+ * given by {@link #createInitialEstimateLattice()} (with the exception of the
+ * entry node of the graph which takes on the {@link #createEntryLattice()}
+ * value. Each node will use the output state of its predecessor and compute a
+ * output state according to the instruction. At that time, any nodes that
+ * depends on the node's newly modified output value will need to recompute
+ * their output state again. Each step will perform a computation at one node
+ * until no extra computation will modify any existing output state anymore.
+ *
+ * @param maxSteps Max number of iterations before the method stops and throw
+ *        a {@link MaxIterationsExceededException}. This will prevent the
+ *        analysis from going into a infinite loop.
+ */"
+"final void analyze(int maxSteps) {
+    initialize();
+    int step = 0;
+    while (!orderedWorkSet.isEmpty()) {
+        if (step > maxSteps) {
+            throw new MaxIterationsExceededException(""Analysis did not terminate after "" + maxSteps + "" iterations"");
+        }
+        DiGraphNode<N, Branch> curNode = orderedWorkSet.iterator().next();
+        orderedWorkSet.remove(curNode);
+        joinInputs(curNode);
+        if (flow(curNode)) {
+            // If there is a change in the current node, we want to grab the list
+            // of nodes that this node affects.
+            List<DiGraphNode<N, Branch>> nextNodes = isForward() ? cfg.getDirectedSuccNodes(curNode) : cfg.getDirectedPredNodes(curNode);
+            for (DiGraphNode<N, Branch> nextNode : nextNodes) {
+                if (nextNode != cfg.getImplicitReturn()) {
+                    orderedWorkSet.add(nextNode);
+                }
+            }
+        }
+        step++;
+    }
+    if (isForward()) {
+        joinInputs(getCfg().getImplicitReturn());
+    }
+}","public void test2020() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""`"", ""`"");
+    Node node1 = Node.newString(97, ""`"");
+    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node1, true, true);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    Scope scope0 = syntacticScopeCreator0.createScope(node1, (Scope) null);
+    node1.addChildrenToFront(node0);
+    LiveVariablesAnalysis liveVariablesAnalysis0 = new LiveVariablesAnalysis(controlFlowGraph0, scope0, compiler0);
+    liveVariablesAnalysis0.analyze(19);
+}","/**
+ * Finds a fixed-point solution. The function has the side effect of replacing
+ * the existing node annotations with the computed solutions using {@link
+ * com.google.javascript.jscomp.graph.GraphNode#setAnnotation(Annotation)}.
+ *
+ * <p>Initially, each node's input and output flow state contains the value
+ * given by {@link #createInitialEstimateLattice()} (with the exception of the
+ * entry node of the graph which takes on the {@link #createEntryLattice()}
+ * value. Each node will use the output state of its predecessor and compute a
+ * output state according to the instruction. At that time, any nodes that
+ * depends on the node's newly modified output value will need to recompute
+ * their output state again. Each step will perform a computation at one node
+ * until no extra computation will modify any existing output state anymore.
+ *
+ * @param maxSteps Max number of iterations before the method stops and throw
+ *        a {@link MaxIterationsExceededException}. This will prevent the
+ *        analysis from going into a infinite loop.
+ */"
+"final void analyze(int maxSteps) {
+    initialize();
+    int step = 0;
+    while (!orderedWorkSet.isEmpty()) {
+        if (step > maxSteps) {
+            throw new MaxIterationsExceededException(""Analysis did not terminate after "" + maxSteps + "" iterations"");
+        }
+        DiGraphNode<N, Branch> curNode = orderedWorkSet.iterator().next();
+        orderedWorkSet.remove(curNode);
+        joinInputs(curNode);
+        if (flow(curNode)) {
+            // If there is a change in the current node, we want to grab the list
+            // of nodes that this node affects.
+            List<DiGraphNode<N, Branch>> nextNodes = isForward() ? cfg.getDirectedSuccNodes(curNode) : cfg.getDirectedPredNodes(curNode);
+            for (DiGraphNode<N, Branch> nextNode : nextNodes) {
+                if (nextNode != cfg.getImplicitReturn()) {
+                    orderedWorkSet.add(nextNode);
+                }
+            }
+        }
+        step++;
+    }
+    if (isForward()) {
+        joinInputs(getCfg().getImplicitReturn());
+    }
+}","public void test2121() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""R"", ""R"");
+    Node node1 = Node.newString(118, ""R"");
+    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node1, true, true);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    Scope scope0 = syntacticScopeCreator0.createScope(node1, (Scope) null);
+    scope0.declare(""R"", node0, (JSType) null, (CompilerInput) null, true);
+    node1.addChildrenToFront(node0);
+    LiveVariablesAnalysis liveVariablesAnalysis0 = new LiveVariablesAnalysis(controlFlowGraph0, scope0, compiler0);
+    // Undeclared exception!
+    try {
+        liveVariablesAnalysis0.analyze(32);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * Finds a fixed-point solution. The function has the side effect of replacing
+ * the existing node annotations with the computed solutions using {@link
+ * com.google.javascript.jscomp.graph.GraphNode#setAnnotation(Annotation)}.
+ *
+ * <p>Initially, each node's input and output flow state contains the value
+ * given by {@link #createInitialEstimateLattice()} (with the exception of the
+ * entry node of the graph which takes on the {@link #createEntryLattice()}
+ * value. Each node will use the output state of its predecessor and compute a
+ * output state according to the instruction. At that time, any nodes that
+ * depends on the node's newly modified output value will need to recompute
+ * their output state again. Each step will perform a computation at one node
+ * until no extra computation will modify any existing output state anymore.
+ *
+ * @param maxSteps Max number of iterations before the method stops and throw
+ *        a {@link MaxIterationsExceededException}. This will prevent the
+ *        analysis from going into a infinite loop.
+ */"
+"void markAllParametersEscaped() {
+    Node lp = jsScope.getRootNode().getFirstChild().getNext();
+    for (Node arg = lp.getFirstChild(); arg != null; arg = arg.getNext()) {
+        escaped.add(jsScope.getVar(arg.getString()));
+    }
+}","public void test2222() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""OBJECT_NUMBER_STRING_BOOLEAN"", ""OBJECT_NUMBER_STRING_BOOLEAN"");
+    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    Scope scope0 = syntacticScopeCreator0.createScope(node0, (Scope) null);
+    LiveVariablesAnalysis liveVariablesAnalysis0 = new LiveVariablesAnalysis(controlFlowGraph0, scope0, compiler0);
+    node0.addChildrenToFront(node0);
+    liveVariablesAnalysis0.markAllParametersEscaped();
+}","/**
+ * Give up computing liveness of formal parameter by putting all the parameter
+ * names in the escaped set.
+ */"

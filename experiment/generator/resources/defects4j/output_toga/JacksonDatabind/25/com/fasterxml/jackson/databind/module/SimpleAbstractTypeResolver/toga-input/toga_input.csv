@@ -1,0 +1,193 @@
+focal_method,test_prefix,docstring
+"@Override
+public JavaType resolveAbstractType(DeserializationConfig config, JavaType type) {
+    // never materialize anything, so:
+    return null;
+}","public void test00() throws Throwable {
+    SimpleAbstractTypeResolver simpleAbstractTypeResolver0 = new SimpleAbstractTypeResolver();
+    JavaType javaType0 = simpleAbstractTypeResolver0.resolveAbstractType((DeserializationConfig) null, (JavaType) null);
+    assertNull(javaType0);
+}",""
+"public <T> SimpleAbstractTypeResolver addMapping(Class<T> superType, Class<? extends T> subType) {
+    // Sanity checks, just in case someone tries to force typing...
+    if (superType == subType) {
+        throw new IllegalArgumentException(""Can not add mapping from class to itself"");
+    }
+    if (!superType.isAssignableFrom(subType)) {
+        throw new IllegalArgumentException(""Can not add mapping from class "" + superType.getName() + "" to "" + subType.getName() + "", as latter is not a subtype of former"");
+    }
+    if (!Modifier.isAbstract(superType.getModifiers())) {
+        throw new IllegalArgumentException(""Can not add mapping from class "" + superType.getName() + "" since it is not abstract"");
+    }
+    _mappings.put(new ClassKey(superType), subType);
+    return this;
+}","public void test11() throws Throwable {
+    SimpleAbstractTypeResolver simpleAbstractTypeResolver0 = new SimpleAbstractTypeResolver();
+    Class<Object> class0 = Object.class;
+    // Undeclared exception!
+    try {
+        simpleAbstractTypeResolver0.addMapping(class0, (Class<?>) class0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Can not add mapping from class to itself
+        //
+        verifyException(""com.fasterxml.jackson.databind.module.SimpleAbstractTypeResolver"", e);
+    }
+}","/**
+ * Method for adding a mapping from super type to specific subtype.
+ * Arguments will be checked by method, to ensure that <code>superType</code>
+ * is abstract (since resolver is never called for concrete classes);
+ * as well as to ensure that there is supertype/subtype relationship
+ * (to ensure there won't be cycles during resolution).
+ *
+ * @param superType Abstract type to resolve
+ * @param subType Sub-class of superType, to map superTo to
+ *
+ * @return This resolver, to allow chaining of initializations
+ */"
+"public <T> SimpleAbstractTypeResolver addMapping(Class<T> superType, Class<? extends T> subType) {
+    // Sanity checks, just in case someone tries to force typing...
+    if (superType == subType) {
+        throw new IllegalArgumentException(""Can not add mapping from class to itself"");
+    }
+    if (!superType.isAssignableFrom(subType)) {
+        throw new IllegalArgumentException(""Can not add mapping from class "" + superType.getName() + "" to "" + subType.getName() + "", as latter is not a subtype of former"");
+    }
+    if (!Modifier.isAbstract(superType.getModifiers())) {
+        throw new IllegalArgumentException(""Can not add mapping from class "" + superType.getName() + "" since it is not abstract"");
+    }
+    _mappings.put(new ClassKey(superType), subType);
+    return this;
+}","public void test22() throws Throwable {
+    SimpleAbstractTypeResolver simpleAbstractTypeResolver0 = new SimpleAbstractTypeResolver();
+    Class<Object> class0 = Object.class;
+    Class<Integer> class1 = Integer.TYPE;
+    // Undeclared exception!
+    try {
+        simpleAbstractTypeResolver0.addMapping(class0, (Class<?>) class1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Can not add mapping from class java.lang.Object to int, as latter is not a subtype of former
+        //
+        verifyException(""com.fasterxml.jackson.databind.module.SimpleAbstractTypeResolver"", e);
+    }
+}","/**
+ * Method for adding a mapping from super type to specific subtype.
+ * Arguments will be checked by method, to ensure that <code>superType</code>
+ * is abstract (since resolver is never called for concrete classes);
+ * as well as to ensure that there is supertype/subtype relationship
+ * (to ensure there won't be cycles during resolution).
+ *
+ * @param superType Abstract type to resolve
+ * @param subType Sub-class of superType, to map superTo to
+ *
+ * @return This resolver, to allow chaining of initializations
+ */"
+"public <T> SimpleAbstractTypeResolver addMapping(Class<T> superType, Class<? extends T> subType) {
+    // Sanity checks, just in case someone tries to force typing...
+    if (superType == subType) {
+        throw new IllegalArgumentException(""Can not add mapping from class to itself"");
+    }
+    if (!superType.isAssignableFrom(subType)) {
+        throw new IllegalArgumentException(""Can not add mapping from class "" + superType.getName() + "" to "" + subType.getName() + "", as latter is not a subtype of former"");
+    }
+    if (!Modifier.isAbstract(superType.getModifiers())) {
+        throw new IllegalArgumentException(""Can not add mapping from class "" + superType.getName() + "" since it is not abstract"");
+    }
+    _mappings.put(new ClassKey(superType), subType);
+    return this;
+}","public void test33() throws Throwable {
+    SimpleAbstractTypeResolver simpleAbstractTypeResolver0 = new SimpleAbstractTypeResolver();
+    Class<Object> class0 = Object.class;
+    Class<String> class1 = String.class;
+    // Undeclared exception!
+    try {
+        simpleAbstractTypeResolver0.addMapping(class0, (Class<?>) class1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Can not add mapping from class java.lang.Object since it is not abstract
+        //
+        verifyException(""com.fasterxml.jackson.databind.module.SimpleAbstractTypeResolver"", e);
+    }
+}","/**
+ * Method for adding a mapping from super type to specific subtype.
+ * Arguments will be checked by method, to ensure that <code>superType</code>
+ * is abstract (since resolver is never called for concrete classes);
+ * as well as to ensure that there is supertype/subtype relationship
+ * (to ensure there won't be cycles during resolution).
+ *
+ * @param superType Abstract type to resolve
+ * @param subType Sub-class of superType, to map superTo to
+ *
+ * @return This resolver, to allow chaining of initializations
+ */"
+"@Override
+public JavaType findTypeMapping(DeserializationConfig config, JavaType type) {
+    // this is the main mapping base, so let's
+    Class<?> src = type.getRawClass();
+    Class<?> dst = _mappings.get(new ClassKey(src));
+    if (dst == null) {
+        return null;
+    }
+    // 09-Aug-2015, tatu: Instead of direct call via JavaType, better use TypeFactory
+    return type.narrowBy(dst);
+}","public void test44() throws Throwable {
+    SimpleAbstractTypeResolver simpleAbstractTypeResolver0 = new SimpleAbstractTypeResolver();
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<Map> class0 = Map.class;
+    TypeBindings typeBindings0 = new TypeBindings(typeFactory0, class0);
+    Class<ObjectIdResolver> class1 = ObjectIdResolver.class;
+    Class<SimpleObjectIdResolver> class2 = SimpleObjectIdResolver.class;
+    SimpleAbstractTypeResolver simpleAbstractTypeResolver1 = simpleAbstractTypeResolver0.addMapping(class1, (Class<? extends ObjectIdResolver>) class2);
+    CollectionType collectionType0 = CollectionType.construct(class1, typeBindings0.UNBOUND);
+    JavaType javaType0 = simpleAbstractTypeResolver1.findTypeMapping((DeserializationConfig) null, collectionType0);
+    assertNotNull(javaType0);
+}",""
+"@Override
+public boolean isConcrete() {
+    int mod = _class.getModifiers();
+    if ((mod & (Modifier.INTERFACE | Modifier.ABSTRACT)) == 0) {
+        return true;
+    }
+    /* 19-Feb-2010, tatus: Holy mackarel; primitive types
+         *    have 'abstract' flag set...
+         */
+    return _class.isPrimitive();
+}","public void test45() throws Throwable {
+    SimpleAbstractTypeResolver simpleAbstractTypeResolver0 = new SimpleAbstractTypeResolver();
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<Map> class0 = Map.class;
+    TypeBindings typeBindings0 = new TypeBindings(typeFactory0, class0);
+    Class<ObjectIdResolver> class1 = ObjectIdResolver.class;
+    Class<SimpleObjectIdResolver> class2 = SimpleObjectIdResolver.class;
+    SimpleAbstractTypeResolver simpleAbstractTypeResolver1 = simpleAbstractTypeResolver0.addMapping(class1, (Class<? extends ObjectIdResolver>) class2);
+    CollectionType collectionType0 = CollectionType.construct(class1, typeBindings0.UNBOUND);
+    JavaType javaType0 = simpleAbstractTypeResolver1.findTypeMapping((DeserializationConfig) null, collectionType0);
+    assertTrue(javaType0.isConcrete());
+}","/**
+ * Convenience method for checking whether underlying Java type
+ * is a concrete class or not: abstract classes and interfaces
+ * are not.
+ */"
+"@Override
+public JavaType findTypeMapping(DeserializationConfig config, JavaType type) {
+    // this is the main mapping base, so let's
+    Class<?> src = type.getRawClass();
+    Class<?> dst = _mappings.get(new ClassKey(src));
+    if (dst == null) {
+        return null;
+    }
+    // 09-Aug-2015, tatu: Instead of direct call via JavaType, better use TypeFactory
+    return type.narrowBy(dst);
+}","public void test56() throws Throwable {
+    SimpleAbstractTypeResolver simpleAbstractTypeResolver0 = new SimpleAbstractTypeResolver();
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<Map> class0 = Map.class;
+    TypeBindings typeBindings0 = new TypeBindings(typeFactory0, class0);
+    JavaType javaType0 = typeFactory0.constructType((Type) class0, typeBindings0);
+    JavaType javaType1 = simpleAbstractTypeResolver0.findTypeMapping((DeserializationConfig) null, javaType0);
+    assertNull(javaType1);
+}",""

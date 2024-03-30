@@ -1,0 +1,557 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    assertTrue(jsonWriteContext0.inRoot());
+}",0,assertTrue(jsonWriteContext0.inRoot())
+project,0,test001,"public void test001() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.reset(1666);
+    jsonWriteContext1.toString();
+    assertFalse(jsonWriteContext1.inRoot());
+}",0,assertTrue(jsonWriteContext1.inRoot())
+project,0,test012,"public void test012() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.reset(1666);
+    int int0 = jsonWriteContext1.writeValue();
+    assertEquals(1, jsonWriteContext1.getEntryCount());
+}",0,"assertEquals(0, jsonWriteContext1.getEntryCount())"
+project,0,test013,"public void test013() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.reset(1666);
+    int int0 = jsonWriteContext1.writeValue();
+    assertEquals(0, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test024,"public void test024() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    jsonWriteContext0.writeValue();
+    jsonWriteContext0.writeValue();
+    int int0 = jsonWriteContext0.writeFieldName(""p1zlWIIjB`i3 N"");
+    assertEquals(1, jsonWriteContext0.getCurrentIndex());
+}",0,"assertEquals(0, jsonWriteContext0.getCurrentIndex())"
+project,0,test025,"public void test025() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    jsonWriteContext0.writeValue();
+    jsonWriteContext0.writeValue();
+    int int0 = jsonWriteContext0.writeFieldName(""p1zlWIIjB`i3 N"");
+    assertEquals(1, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test037,"public void test037() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    StringBuilder stringBuilder0 = new StringBuilder(""WRITE_BIGDECIMAL_AS_PLAIN"");
+    jsonWriteContext0.appendDesc(stringBuilder0);
+    assertEquals(""ROOT"", jsonWriteContext0.getTypeDesc());
+}",0,
+project,0,test048,"public void test048() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext((DupDetector) null);
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildArrayContext();
+    JsonWriteContext jsonWriteContext2 = jsonWriteContext1.withDupDetector((DupDetector) null);
+    jsonWriteContext0.createChildObjectContext();
+    jsonWriteContext2.withDupDetector((DupDetector) null);
+    assertEquals(""OBJECT"", jsonWriteContext2.getTypeDesc());
+}",0,
+project,0,test049,"public void test049() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext((DupDetector) null);
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildArrayContext();
+    JsonWriteContext jsonWriteContext2 = jsonWriteContext1.withDupDetector((DupDetector) null);
+    jsonWriteContext0.createChildObjectContext();
+    jsonWriteContext2.withDupDetector((DupDetector) null);
+    assertTrue(jsonWriteContext0.inRoot());
+}",0,assertTrue(jsonWriteContext0.inRoot())
+project,0,test0510,"public void test0510() throws Throwable {
+    DupDetector dupDetector0 = DupDetector.rootDetector((JsonParser) null);
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext(dupDetector0);
+    jsonWriteContext0.writeValue();
+    jsonWriteContext0.writeValue();
+    jsonWriteContext0.withDupDetector(dupDetector0);
+    assertEquals(1, jsonWriteContext0.getCurrentIndex());
+}",0,"assertEquals(0, jsonWriteContext0.getCurrentIndex())"
+project,0,test0611,"public void test0611() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    assertFalse(jsonWriteContext0.inObject());
+}",0,
+project,0,test0612,"public void test0612() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    jsonWriteContext0.reset(2);
+    assertTrue(jsonWriteContext0.inObject());
+}",0,assertFalse(jsonWriteContext0.inObject())
+project,0,test0713,"public void test0713() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    assertTrue(jsonWriteContext0.inRoot());
+}",0,assertTrue(jsonWriteContext0.inRoot())
+project,0,test0714,"public void test0714() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.reset(1);
+    assertFalse(jsonWriteContext1.inRoot());
+}",0,
+project,0,test0815,"public void test0815() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    jsonWriteContext0.reset(0);
+    assertEquals(0, jsonWriteContext0.getEntryCount());
+}",0,"assertEquals(1, jsonWriteContext0.getEntryCount())"
+project,0,test0816,"public void test0816() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    jsonWriteContext0.reset(0);
+    assertEquals(""ROOT"", jsonWriteContext0.getTypeDesc());
+}",0,
+project,0,test0917,"public void test0917() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildObjectContext();
+    JsonWriteContext jsonWriteContext2 = jsonWriteContext1.createChildArrayContext();
+    JsonWriteContext jsonWriteContext3 = jsonWriteContext2.getParent();
+    assertEquals(""ARRAY"", jsonWriteContext2.getTypeDesc());
+}",0,
+project,0,test0918,"public void test0918() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildObjectContext();
+    JsonWriteContext jsonWriteContext2 = jsonWriteContext1.createChildArrayContext();
+    JsonWriteContext jsonWriteContext3 = jsonWriteContext2.getParent();
+    assertFalse(jsonWriteContext0.inArray());
+}",0,assertTrue(jsonWriteContext0.inArray())
+project,0,test0919,"public void test0919() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildObjectContext();
+    JsonWriteContext jsonWriteContext2 = jsonWriteContext1.createChildArrayContext();
+    JsonWriteContext jsonWriteContext3 = jsonWriteContext2.getParent();
+    assertEquals(""OBJECT"", jsonWriteContext3.getTypeDesc());
+}",0,
+project,0,test0920,"public void test0920() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildObjectContext();
+    JsonWriteContext jsonWriteContext2 = jsonWriteContext1.createChildArrayContext();
+    JsonWriteContext jsonWriteContext3 = jsonWriteContext2.getParent();
+    assertEquals(0, jsonWriteContext3.getEntryCount());
+}",0,"assertEquals(0, jsonWriteContext3.getEntryCount())"
+project,0,test0921,"public void test0921() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildObjectContext();
+    JsonWriteContext jsonWriteContext2 = jsonWriteContext1.createChildArrayContext();
+    JsonWriteContext jsonWriteContext3 = jsonWriteContext2.getParent();
+    assertNotNull(jsonWriteContext3);
+}",0,
+project,0,test1022,"public void test1022() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildArrayContext();
+    JsonWriteContext jsonWriteContext2 = jsonWriteContext1.createChildArrayContext();
+    JsonWriteContext jsonWriteContext3 = jsonWriteContext2.getParent();
+    assertNotSame(jsonWriteContext3, jsonWriteContext2);
+}",0,
+project,0,test1023,"public void test1023() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildArrayContext();
+    JsonWriteContext jsonWriteContext2 = jsonWriteContext1.createChildArrayContext();
+    JsonWriteContext jsonWriteContext3 = jsonWriteContext2.getParent();
+    assertFalse(jsonWriteContext0.inArray());
+}",0,assertTrue(jsonWriteContext0.inArray())
+project,0,test1024,"public void test1024() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildArrayContext();
+    JsonWriteContext jsonWriteContext2 = jsonWriteContext1.createChildArrayContext();
+    JsonWriteContext jsonWriteContext3 = jsonWriteContext2.getParent();
+    assertEquals(0, jsonWriteContext3.getEntryCount());
+}",0,
+project,0,test1025,"public void test1025() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildArrayContext();
+    JsonWriteContext jsonWriteContext2 = jsonWriteContext1.createChildArrayContext();
+    JsonWriteContext jsonWriteContext3 = jsonWriteContext2.getParent();
+    assertNotNull(jsonWriteContext3);
+}",0,
+project,0,test1026,"public void test1026() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildArrayContext();
+    JsonWriteContext jsonWriteContext2 = jsonWriteContext1.createChildArrayContext();
+    JsonWriteContext jsonWriteContext3 = jsonWriteContext2.getParent();
+    assertTrue(jsonWriteContext3.inArray());
+}",0,assertFalse(jsonWriteContext3.inArray())
+project,0,test1127,"public void test1127() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildObjectContext();
+    JsonWriteContext jsonWriteContext2 = jsonWriteContext1.getParent();
+    assertNotNull(jsonWriteContext2);
+}",0,
+project,0,test1128,"public void test1128() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildObjectContext();
+    JsonWriteContext jsonWriteContext2 = jsonWriteContext1.getParent();
+    assertEquals(""OBJECT"", jsonWriteContext1.getTypeDesc());
+}",0,
+project,0,test1129,"public void test1129() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildObjectContext();
+    JsonWriteContext jsonWriteContext2 = jsonWriteContext1.getParent();
+    assertTrue(jsonWriteContext2.inRoot());
+}",0,assertTrue(jsonWriteContext2.inRoot())
+project,0,test1130,"public void test1130() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildObjectContext();
+    JsonWriteContext jsonWriteContext2 = jsonWriteContext1.getParent();
+    assertEquals(0, jsonWriteContext2.getEntryCount());
+}",0,
+project,0,test1231,"public void test1231() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    jsonWriteContext0.writeValue();
+    jsonWriteContext0.writeValue();
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildArrayContext();
+    jsonWriteContext1.getParent();
+    assertEquals(2, jsonWriteContext0.getEntryCount());
+}",0,"assertEquals(1, jsonWriteContext0.getEntryCount())"
+project,0,test1232,"public void test1232() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    jsonWriteContext0.writeValue();
+    jsonWriteContext0.writeValue();
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildArrayContext();
+    jsonWriteContext1.getParent();
+    assertEquals(1, jsonWriteContext0.getCurrentIndex());
+}",0,"assertEquals(1, jsonWriteContext0.getCurrentIndex())"
+project,0,test1333,"public void test1333() throws Throwable {
+    DupDetector dupDetector0 = DupDetector.rootDetector((JsonParser) null);
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext(dupDetector0);
+    DupDetector dupDetector1 = jsonWriteContext0.getDupDetector();
+    assertEquals(0, jsonWriteContext0.getEntryCount());
+}",0,"assertEquals(1, jsonWriteContext0.getEntryCount())"
+project,0,test1334,"public void test1334() throws Throwable {
+    DupDetector dupDetector0 = DupDetector.rootDetector((JsonParser) null);
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext(dupDetector0);
+    DupDetector dupDetector1 = jsonWriteContext0.getDupDetector();
+    assertTrue(jsonWriteContext0.inRoot());
+}",0,assertTrue(jsonWriteContext0.inRoot())
+project,0,test1335,"public void test1335() throws Throwable {
+    DupDetector dupDetector0 = DupDetector.rootDetector((JsonParser) null);
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext(dupDetector0);
+    DupDetector dupDetector1 = jsonWriteContext0.getDupDetector();
+    assertNotNull(dupDetector1);
+}",0,
+project,0,test1436,"public void test1436() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    jsonWriteContext0.setCurrentValue(""a"");
+    Object object0 = jsonWriteContext0.getCurrentValue();
+    assertNotNull(object0);
+}",0,
+project,0,test1437,"public void test1437() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    jsonWriteContext0.setCurrentValue(""a"");
+    Object object0 = jsonWriteContext0.getCurrentValue();
+    assertEquals(0, jsonWriteContext0.getEntryCount());
+}",0,"assertEquals(1, jsonWriteContext0.getEntryCount())"
+project,0,test1438,"public void test1438() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    jsonWriteContext0.setCurrentValue(""a"");
+    Object object0 = jsonWriteContext0.getCurrentValue();
+    assertEquals(""ROOT"", jsonWriteContext0.getTypeDesc());
+}",0,
+project,0,test1539,"public void test1539() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    int int0 = jsonWriteContext0.writeFieldName(""{?}"");
+    assertEquals(0, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test1540,"public void test1540() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    int int0 = jsonWriteContext0.writeFieldName(""{?}"");
+    String string0 = jsonWriteContext0.getCurrentName();
+    assertEquals(0, jsonWriteContext0.getEntryCount());
+}",0,"assertEquals(0, jsonWriteContext0.getEntryCount())"
+project,0,test1541,"public void test1541() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    int int0 = jsonWriteContext0.writeFieldName(""{?}"");
+    String string0 = jsonWriteContext0.getCurrentName();
+    assertTrue(jsonWriteContext0.inRoot());
+}",0,assertTrue(jsonWriteContext0.inRoot())
+project,0,test1542,"public void test1542() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    int int0 = jsonWriteContext0.writeFieldName(""{?}"");
+    String string0 = jsonWriteContext0.getCurrentName();
+    assertNotNull(string0);
+}",0,
+project,0,test1643,"public void test1643() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext((DupDetector) null);
+    int int0 = jsonWriteContext0.writeFieldName("""");
+    assertEquals(0, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test1644,"public void test1644() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext((DupDetector) null);
+    int int0 = jsonWriteContext0.writeFieldName("""");
+    String string0 = jsonWriteContext0.getCurrentName();
+    assertNotNull(string0);
+}",0,
+project,0,test1645,"public void test1645() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext((DupDetector) null);
+    int int0 = jsonWriteContext0.writeFieldName("""");
+    String string0 = jsonWriteContext0.getCurrentName();
+    assertEquals(0, jsonWriteContext0.getEntryCount());
+}",0,"assertEquals(0, jsonWriteContext0.getEntryCount())"
+project,0,test1646,"public void test1646() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext((DupDetector) null);
+    int int0 = jsonWriteContext0.writeFieldName("""");
+    String string0 = jsonWriteContext0.getCurrentName();
+    assertTrue(jsonWriteContext0.inRoot());
+}",0,assertTrue(jsonWriteContext0.inRoot())
+project,0,test1747,"public void test1747() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    // Undeclared exception!
+    try {
+        jsonWriteContext0.appendDesc((StringBuilder) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.json.JsonWriteContext"", e);
+    }
+}",0,
+project,0,test1848,"public void test1848() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildArrayContext();
+    String string0 = jsonWriteContext1.toString();
+    assertFalse(jsonWriteContext0.inArray());
+}",0,assertFalse(jsonWriteContext0.inArray())
+project,0,test1850,"public void test1850() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildArrayContext();
+    String string0 = jsonWriteContext1.toString();
+    assertEquals(0, jsonWriteContext1.getEntryCount());
+}",0,
+project,0,test1951,"public void test1951() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildObjectContext();
+    String string0 = jsonWriteContext1.toString();
+    assertEquals(0, jsonWriteContext1.getEntryCount());
+}",0,
+project,0,test1952,"public void test1952() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildObjectContext();
+    String string0 = jsonWriteContext1.toString();
+    assertTrue(jsonWriteContext0.inRoot());
+}",0,assertTrue(jsonWriteContext0.inRoot())
+project,0,test2054,"public void test2054() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    jsonWriteContext0.writeValue();
+    int int0 = jsonWriteContext0.writeFieldName(""{?}"");
+    assertEquals(1, jsonWriteContext0.getEntryCount());
+}",0,
+project,0,test2055,"public void test2055() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    jsonWriteContext0.writeValue();
+    int int0 = jsonWriteContext0.writeFieldName(""{?}"");
+    assertEquals(1, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test2156,"public void test2156() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    DupDetector dupDetector0 = DupDetector.rootDetector((JsonParser) null);
+    JsonWriteContext jsonWriteContext1 = new JsonWriteContext(4, jsonWriteContext0, dupDetector0);
+    jsonWriteContext1.writeFieldName(""z"");
+    JsonWriteContext jsonWriteContext2 = new JsonWriteContext(3, jsonWriteContext1, dupDetector0);
+    // Undeclared exception!
+    try {
+        jsonWriteContext2.writeFieldName((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.json.DupDetector"", e);
+    }
+}",0,
+project,0,test2257,"public void test2257() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    int int0 = jsonWriteContext0.writeFieldName(""{?}"");
+    assertEquals(0, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test2258,"public void test2258() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    int int0 = jsonWriteContext0.writeFieldName(""{?}"");
+    int int1 = jsonWriteContext0.writeFieldName(""{?}"");
+    assertEquals(0, jsonWriteContext0.getEntryCount());
+}",0,"assertEquals(1, jsonWriteContext0.getEntryCount())"
+project,0,test2259,"public void test2259() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    int int0 = jsonWriteContext0.writeFieldName(""{?}"");
+    int int1 = jsonWriteContext0.writeFieldName(""{?}"");
+    assertEquals(4, int1);
+}",0,
+project,0,test2260,"public void test2260() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    int int0 = jsonWriteContext0.writeFieldName(""{?}"");
+    int int1 = jsonWriteContext0.writeFieldName(""{?}"");
+    assertTrue(jsonWriteContext0.inRoot());
+}",0,assertTrue(jsonWriteContext0.inRoot())
+project,0,test2361,"public void test2361() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildObjectContext();
+    assertNotNull(jsonWriteContext1);
+}",0,
+project,0,test2362,"public void test2362() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildObjectContext();
+    jsonWriteContext1.writeValue();
+    int int0 = jsonWriteContext1.writeValue();
+    assertEquals(1, jsonWriteContext1.getCurrentIndex());
+}",0,"assertEquals(0, jsonWriteContext1.getCurrentIndex())"
+project,0,test2363,"public void test2363() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildObjectContext();
+    jsonWriteContext1.writeValue();
+    int int0 = jsonWriteContext1.writeValue();
+    assertEquals(2, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test2464,"public void test2464() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildArrayContext();
+    assertNotNull(jsonWriteContext1);
+}",0,
+project,0,test2465,"public void test2465() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildArrayContext();
+    jsonWriteContext1.writeValue();
+    jsonWriteContext1.writeValue();
+    int int0 = jsonWriteContext1.writeValue();
+    assertEquals(3, jsonWriteContext1.getEntryCount());
+}",0,"assertEquals(0, jsonWriteContext1.getEntryCount())"
+project,0,test2466,"public void test2466() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildArrayContext();
+    jsonWriteContext1.writeValue();
+    jsonWriteContext1.writeValue();
+    int int0 = jsonWriteContext1.writeValue();
+    assertEquals(1, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test2567,"public void test2567() throws Throwable {
+    DupDetector dupDetector0 = DupDetector.rootDetector((JsonParser) null);
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext(dupDetector0);
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildArrayContext();
+    assertNotNull(jsonWriteContext1);
+}",0,
+project,0,test2568,"public void test2568() throws Throwable {
+    DupDetector dupDetector0 = DupDetector.rootDetector((JsonParser) null);
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext(dupDetector0);
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildArrayContext();
+    assertEquals(0, jsonWriteContext1.getEntryCount());
+}",0,
+project,0,test2569,"public void test2569() throws Throwable {
+    DupDetector dupDetector0 = DupDetector.rootDetector((JsonParser) null);
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext(dupDetector0);
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildArrayContext();
+    assertTrue(jsonWriteContext1.inArray());
+}",0,
+project,0,test2570,"public void test2570() throws Throwable {
+    DupDetector dupDetector0 = DupDetector.rootDetector((JsonParser) null);
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext(dupDetector0);
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildArrayContext();
+    assertFalse(jsonWriteContext0.inArray());
+}",0,assertTrue(jsonWriteContext0.inArray())
+project,0,test2671,"public void test2671() throws Throwable {
+    DupDetector dupDetector0 = DupDetector.rootDetector((JsonParser) null);
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext(dupDetector0);
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildObjectContext();
+    assertEquals(""OBJECT"", jsonWriteContext1.getTypeDesc());
+}",0,
+project,0,test2672,"public void test2672() throws Throwable {
+    DupDetector dupDetector0 = DupDetector.rootDetector((JsonParser) null);
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext(dupDetector0);
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildObjectContext();
+    assertNotNull(jsonWriteContext1);
+}",0,
+project,0,test2673,"public void test2673() throws Throwable {
+    DupDetector dupDetector0 = DupDetector.rootDetector((JsonParser) null);
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext(dupDetector0);
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildObjectContext();
+    JsonWriteContext jsonWriteContext2 = jsonWriteContext0.createChildArrayContext();
+    assertEquals(""ROOT"", jsonWriteContext0.getTypeDesc());
+}",0,
+project,0,test2674,"public void test2674() throws Throwable {
+    DupDetector dupDetector0 = DupDetector.rootDetector((JsonParser) null);
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext(dupDetector0);
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildObjectContext();
+    JsonWriteContext jsonWriteContext2 = jsonWriteContext0.createChildArrayContext();
+    assertSame(jsonWriteContext2, jsonWriteContext1);
+}",0,
+project,0,test2675,"public void test2675() throws Throwable {
+    DupDetector dupDetector0 = DupDetector.rootDetector((JsonParser) null);
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext(dupDetector0);
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildObjectContext();
+    JsonWriteContext jsonWriteContext2 = jsonWriteContext0.createChildArrayContext();
+    assertEquals(0, jsonWriteContext2.getEntryCount());
+}",0,
+project,0,test2676,"public void test2676() throws Throwable {
+    DupDetector dupDetector0 = DupDetector.rootDetector((JsonParser) null);
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext(dupDetector0);
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.createChildObjectContext();
+    JsonWriteContext jsonWriteContext2 = jsonWriteContext0.createChildArrayContext();
+    assertEquals(""ARRAY"", jsonWriteContext2.getTypeDesc());
+}",0,
+project,0,test2777,"public void test2777() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    jsonWriteContext0._child = jsonWriteContext0;
+    assertFalse(jsonWriteContext0._child.inObject());
+}",0,
+project,0,test2778,"public void test2778() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    jsonWriteContext0._child = jsonWriteContext0;
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0._child.createChildObjectContext();
+    jsonWriteContext0.writeFieldName(""lS]T}alLC5\""4sA"");
+    String string0 = jsonWriteContext1.toString();
+    assertEquals(""OBJECT"", jsonWriteContext0.getTypeDesc());
+}",0,assertNotNull(jsonWriteContext0.getTypeDesc())
+project,0,test2880,"public void test2880() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    DupDetector dupDetector0 = DupDetector.rootDetector((JsonParser) null);
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.withDupDetector(dupDetector0);
+    jsonWriteContext1.writeFieldName(""z"");
+    JsonWriteContext jsonWriteContext2 = JsonWriteContext.createRootContext(dupDetector0);
+    try {
+        jsonWriteContext2.writeFieldName(""z"");
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Duplicate field 'z'
+        //
+        verifyException(""com.fasterxml.jackson.core.json.JsonWriteContext"", e);
+    }
+}",0,
+project,0,test2981,"public void test2981() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    jsonWriteContext0.getCurrentValue();
+    assertEquals(0, jsonWriteContext0.getEntryCount());
+}",0,
+project,0,test2982,"public void test2982() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    jsonWriteContext0.getCurrentValue();
+    assertEquals(""ROOT"", jsonWriteContext0.getTypeDesc());
+}",0,
+project,0,test3083,"public void test3083() throws Throwable {
+    DupDetector dupDetector0 = DupDetector.rootDetector((JsonParser) null);
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext(dupDetector0);
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.getParent();
+    assertNull(jsonWriteContext1);
+}",0,
+project,0,test3084,"public void test3084() throws Throwable {
+    DupDetector dupDetector0 = DupDetector.rootDetector((JsonParser) null);
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext(dupDetector0);
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.getParent();
+    assertTrue(jsonWriteContext0.inRoot());
+}",0,assertTrue(jsonWriteContext0.inRoot())
+project,0,test3085,"public void test3085() throws Throwable {
+    DupDetector dupDetector0 = DupDetector.rootDetector((JsonParser) null);
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext(dupDetector0);
+    JsonWriteContext jsonWriteContext1 = jsonWriteContext0.getParent();
+    assertEquals(0, jsonWriteContext0.getEntryCount());
+}",0,"assertEquals(0, jsonWriteContext0.getEntryCount())"
+project,0,test3186,"public void test3186() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    jsonWriteContext0.getDupDetector();
+    assertEquals(0, jsonWriteContext0.getEntryCount());
+}",0,
+project,0,test3187,"public void test3187() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    jsonWriteContext0.getDupDetector();
+    assertTrue(jsonWriteContext0.inRoot());
+}",0,assertTrue(jsonWriteContext0.inRoot())
+project,0,test3288,"public void test3288() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    jsonWriteContext0.getCurrentName();
+    assertTrue(jsonWriteContext0.inRoot());
+}",0,assertTrue(jsonWriteContext0.inRoot())
+project,0,test3289,"public void test3289() throws Throwable {
+    JsonWriteContext jsonWriteContext0 = JsonWriteContext.createRootContext();
+    jsonWriteContext0.getCurrentName();
+    assertEquals(0, jsonWriteContext0.getEntryCount());
+}",0,

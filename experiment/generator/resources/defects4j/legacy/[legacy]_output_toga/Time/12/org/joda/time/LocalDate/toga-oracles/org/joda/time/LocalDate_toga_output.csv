@@ -1,0 +1,920 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test0371,"public void test0371() throws Throwable {
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar((-4001), 44, 44, 40, (-4001), 2);
+    LocalDate localDate0 = LocalDate.fromCalendarFields(mockGregorianCalendar0);
+    // Undeclared exception!
+    try {
+        localDate0.withYearOfEra((-4001));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value -4001 for yearOfEra must be in the range [1,292278993]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",0,
+project,0,test0382,"public void test0382() throws Throwable {
+    LocalDate localDate0 = new LocalDate();
+    // Undeclared exception!
+    try {
+        localDate0.withYearOfCentury(1687);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 1687 for yearOfCentury must be in the range [0,99]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",0,
+project,0,test0393,"public void test0393() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstance();
+    LocalDate localDate0 = new LocalDate(0L, (Chronology) gJChronology0);
+    // Undeclared exception!
+    try {
+        localDate0.withYear(0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 0 for year is not supported
+        //
+        verifyException(""org.joda.time.chrono.JulianChronology"", e);
+    }
+}",0,
+project,0,test0404,"public void test0404() throws Throwable {
+    DateTimePrinter dateTimePrinter0 = mock(DateTimePrinter.class, new ViolatedAssumptionAnswer());
+    DateTimeParser dateTimeParser0 = mock(DateTimeParser.class, new ViolatedAssumptionAnswer());
+    doReturn(87).when(dateTimeParser0).parseInto(any(org.joda.time.format.DateTimeParserBucket.class), anyString(), anyInt());
+    DateTimeFormatter dateTimeFormatter0 = new DateTimeFormatter(dateTimePrinter0, dateTimeParser0);
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstance();
+    DateTimeFormatter dateTimeFormatter1 = dateTimeFormatter0.withChronology(islamicChronology0);
+    LocalDate localDate0 = LocalDate.parse(""org.joda.time.field.PreciseDurationField"", dateTimeFormatter1);
+    // Undeclared exception!
+    try {
+        localDate0.withWeekyear((-1320));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The resulting instant is below the supported minimum of 0001-01-01T00:00:00.000Z (IslamicChronology[UTC])
+        //
+        verifyException(""org.joda.time.chrono.LimitChronology"", e);
+    }
+}",0,
+project,0,test0415,"public void test0415() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(3);
+    LocalDate localDate0 = LocalDate.now(dateTimeZone0);
+    // Undeclared exception!
+    try {
+        localDate0.withWeekOfWeekyear(0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 0 for weekOfWeekyear must be in the range [1,52]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",0,
+project,0,test0426,"public void test0426() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    LocalDate localDate0 = new LocalDate(dateTimeZone0);
+    JulianChronology julianChronology0 = JulianChronology.getInstance();
+    Period period0 = new Period(0L, (Chronology) julianChronology0);
+    Period period1 = period0.withMillis((-782));
+    // Undeclared exception!
+    try {
+        localDate0.withPeriodAdded(period1, 10209375);
+        fail(""Expecting exception: ArithmeticException"");
+    } catch (ArithmeticException e) {
+        //
+        // Multiplication overflows an int: -782 * 10209375
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",0,
+project,0,test0437,"public void test0437() throws Throwable {
+    LocalDate localDate0 = new LocalDate();
+    // Undeclared exception!
+    try {
+        localDate0.withMonthOfYear(20);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 20 for monthOfYear must be in the range [1,12]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",0,
+project,0,test0448,"public void test0448() throws Throwable {
+    DateTimePrinter dateTimePrinter0 = mock(DateTimePrinter.class, new ViolatedAssumptionAnswer());
+    DateTimeParser dateTimeParser0 = mock(DateTimeParser.class, new ViolatedAssumptionAnswer());
+    doReturn(1761).when(dateTimeParser0).parseInto(any(org.joda.time.format.DateTimeParserBucket.class), anyString(), anyInt());
+    DateTimeFormatter dateTimeFormatter0 = new DateTimeFormatter(dateTimePrinter0, dateTimeParser0);
+    LocalDate localDate0 = LocalDate.parse(""WB]X}Vjj"", dateTimeFormatter0);
+    // Undeclared exception!
+    try {
+        localDate0.withEra(2090);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 2090 for era must be in the range [0,1]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",0,
+project,0,test0459,"public void test0459() throws Throwable {
+    CopticChronology copticChronology0 = CopticChronology.getInstanceUTC();
+    LocalDate localDate0 = new LocalDate((Chronology) copticChronology0);
+    // Undeclared exception!
+    try {
+        localDate0.withDayOfYear(951);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 951 for dayOfYear must be in the range [1,365]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",0,
+project,0,test04610,"public void test04610() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(37);
+    LocalDate localDate0 = LocalDate.now(dateTimeZone0);
+    // Undeclared exception!
+    try {
+        localDate0.withDayOfMonth((-108));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value -108 for dayOfMonth must be in the range [1,28]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",0,
+project,0,test04711,"public void test04711() throws Throwable {
+    MockDate mockDate0 = new MockDate(0, (-1320), 1900);
+    LocalDate localDate0 = LocalDate.fromDateFields(mockDate0);
+    // Undeclared exception!
+    try {
+        localDate0.withCenturyOfEra((-2));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value -2 for centuryOfEra must be in the range [0,2922789]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",0,
+project,0,test04812,"public void test04812() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis((-2973));
+    EthiopicChronology ethiopicChronology0 = EthiopicChronology.getInstance(dateTimeZone0);
+    LocalDate localDate0 = new LocalDate((Chronology) ethiopicChronology0);
+    // Undeclared exception!
+    try {
+        localDate0.plusYears((-2973));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The resulting instant is below the supported minimum of 0001-01-01T00:00:00.000Z (EthiopicChronology[UTC])
+        //
+        verifyException(""org.joda.time.chrono.LimitChronology"", e);
+    }
+}",0,
+project,0,test04913,"public void test04913() throws Throwable {
+    LocalDate localDate0 = new LocalDate();
+    Years years0 = Years.MAX_VALUE;
+    // Undeclared exception!
+    try {
+        localDate0.plus(years0);
+        fail(""Expecting exception: ArithmeticException"");
+    } catch (ArithmeticException e) {
+        //
+        // The calculation caused an overflow: 2014 + 2147483647
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",0,
+project,0,test05014,"public void test05014() throws Throwable {
+    DateTimePrinter dateTimePrinter0 = mock(DateTimePrinter.class, new ViolatedAssumptionAnswer());
+    DateTimeParser dateTimeParser0 = mock(DateTimeParser.class, new ViolatedAssumptionAnswer());
+    doReturn((-2147483646)).when(dateTimeParser0).parseInto(any(org.joda.time.format.DateTimeParserBucket.class), anyString(), anyInt());
+    DateTimeFormatter dateTimeFormatter0 = new DateTimeFormatter(dateTimePrinter0, dateTimeParser0);
+    // Undeclared exception!
+    try {
+        LocalDate.parse(""org.joda.time.field.PreciseDurationField"", dateTimeFormatter0);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",0,
+project,0,test05115,"public void test05115() throws Throwable {
+    // Undeclared exception!
+    try {
+        LocalDate.parse("">PN:7W}S(^"", (DateTimeFormatter) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.LocalDate"", e);
+    }
+}",0,
+project,0,test05216,"public void test05216() throws Throwable {
+    DateTimePrinter dateTimePrinter0 = mock(DateTimePrinter.class, new ViolatedAssumptionAnswer());
+    DateTimeParser dateTimeParser0 = mock(DateTimeParser.class, new ViolatedAssumptionAnswer());
+    doReturn(0).when(dateTimeParser0).parseInto(any(org.joda.time.format.DateTimeParserBucket.class), anyString(), anyInt());
+    DateTimeFormatter dateTimeFormatter0 = new DateTimeFormatter(dateTimePrinter0, dateTimeParser0);
+    // Undeclared exception!
+    try {
+        LocalDate.parse(""WB]X}Vjj"", dateTimeFormatter0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid format: \""WB]X}Vjj\""
+        //
+        verifyException(""org.joda.time.format.DateTimeFormatter"", e);
+    }
+}",0,
+project,0,test05317,"public void test05317() throws Throwable {
+    // Undeclared exception!
+    try {
+        LocalDate.parse((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.format.DateTimeFormatterBuilder$NumberFormatter"", e);
+    }
+}",0,
+project,0,test05418,"public void test05418() throws Throwable {
+    MockDate mockDate0 = new MockDate((-3620), 2587, 623191204, (-1688), 2477, 2587);
+    LocalDate localDate0 = LocalDate.fromDateFields(mockDate0);
+    // Undeclared exception!
+    try {
+        localDate0.minusYears(2147483639);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value -2145778905 for year must be in the range [-292275054,292278993]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",0,
+project,0,test05519,"public void test05519() throws Throwable {
+    LocalDate localDate0 = new LocalDate();
+    // Undeclared exception!
+    try {
+        localDate0.minusYears((-2147483646));
+        fail(""Expecting exception: ArithmeticException"");
+    } catch (ArithmeticException e) {
+        //
+        // The calculation caused an overflow: 2014 + 2147483646
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",0,
+project,0,test05620,"public void test05620() throws Throwable {
+    EthiopicChronology ethiopicChronology0 = EthiopicChronology.getInstance();
+    LocalDate localDate0 = new LocalDate((Chronology) ethiopicChronology0);
+    LocalDate localDate1 = localDate0.withWeekyear(1);
+    // Undeclared exception!
+    try {
+        localDate1.minusWeeks(1900);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The resulting instant is below the supported minimum of 0001-01-01T00:00:00.000Z (EthiopicChronology[UTC])
+        //
+        verifyException(""org.joda.time.chrono.LimitChronology"", e);
+    }
+}",0,
+project,0,test05721,"public void test05721() throws Throwable {
+    LocalDate localDate0 = new LocalDate();
+    Days days0 = Days.MIN_VALUE;
+    // Undeclared exception!
+    try {
+        localDate0.minus(days0);
+        fail(""Expecting exception: ArithmeticException"");
+    } catch (ArithmeticException e) {
+        //
+        // Multiplication overflows an int: -2147483648 * -1
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",0,
+project,0,test05822,"public void test05822() throws Throwable {
+    Partial partial0 = new Partial();
+    LocalDate localDate0 = null;
+    try {
+        localDate0 = new LocalDate(partial0, (DateTimeZone) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Field 'year' is not supported
+        //
+        verifyException(""org.joda.time.base.AbstractPartial"", e);
+    }
+}",0,
+project,0,test05923,"public void test05923() throws Throwable {
+    LocalDate localDate0 = null;
+    try {
+        localDate0 = new LocalDate(""eg1/`gL<X|%"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid format: \""eg1/`gL<X|%\""
+        //
+        verifyException(""org.joda.time.format.DateTimeFormatter"", e);
+    }
+}",0,
+project,0,test06024,"public void test06024() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstanceUTC();
+    LocalDate localDate0 = null;
+    try {
+        localDate0 = new LocalDate((-9223372036854775808L), (Chronology) buddhistChronology0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The instant is below the supported minimum of 0001-01-01T00:00:00.000Z (BuddhistChronology[UTC])
+        //
+        verifyException(""org.joda.time.chrono.LimitChronology"", e);
+    }
+}",0,
+project,0,test06125,"public void test06125() throws Throwable {
+    LocalDate localDate0 = null;
+    try {
+        localDate0 = new LocalDate(943, (-3028), (-1566), (Chronology) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value -3028 for monthOfYear must be in the range [1,12]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",0,
+project,0,test06226,"public void test06226() throws Throwable {
+    LocalDate localDate0 = null;
+    try {
+        localDate0 = new LocalDate(0, 0, 0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 0 for monthOfYear must be in the range [1,12]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",1,
+project,0,test06627,"public void test06627() throws Throwable {
+    CopticChronology copticChronology0 = CopticChronology.getInstance();
+    LocalDate localDate0 = new LocalDate((Chronology) copticChronology0);
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours((-288));
+    LocalTime localTime0 = new LocalTime((long) 1, dateTimeZone0);
+    // Undeclared exception!
+    try {
+        localDate0.toDateTime(localTime0, dateTimeZone0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The chronology of the time does not match
+        //
+        verifyException(""org.joda.time.LocalDate"", e);
+    }
+}",0,
+project,0,test07028,"public void test07028() throws Throwable {
+    LocalDate localDate0 = new LocalDate();
+    LocalTime localTime0 = new LocalTime((-2271L));
+    // Undeclared exception!
+    try {
+        localDate0.compareTo((ReadablePartial) localTime0);
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // ReadablePartial objects must have matching field types
+        //
+        verifyException(""org.joda.time.base.AbstractPartial"", e);
+    }
+}",0,
+project,0,test08729,"public void test08729() throws Throwable {
+    DateTimePrinter dateTimePrinter0 = mock(DateTimePrinter.class, new ViolatedAssumptionAnswer());
+    DateTimeFormatter dateTimeFormatter0 = new DateTimeFormatter(dateTimePrinter0, (DateTimeParser) null);
+    // Undeclared exception!
+    try {
+        LocalDate.parse(""d4?"", dateTimeFormatter0);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // Parsing not supported
+        //
+        verifyException(""org.joda.time.format.DateTimeFormatter"", e);
+    }
+}",0,
+project,0,test09230,"public void test09230() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstance();
+    LocalDate localDate0 = null;
+    try {
+        localDate0 = new LocalDate(gJChronology0, gJChronology0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // No partial converter found for type: org.joda.time.chrono.GJChronology
+        //
+        verifyException(""org.joda.time.convert.ConverterManager"", e);
+    }
+}",0,
+project,0,test09631,"public void test09631() throws Throwable {
+    MockDate mockDate0 = new MockDate((-27), (-1320), 1900);
+    LocalDate localDate0 = LocalDate.fromDateFields(mockDate0);
+    // Undeclared exception!
+    try {
+        localDate0.toString(""org.joda.time.field.PreciseDurationField"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Illegal pattern component: o
+        //
+        verifyException(""org.joda.time.format.DateTimeFormat"", e);
+    }
+}",0,
+project,0,test09732,"public void test09732() throws Throwable {
+    LocalDate localDate0 = LocalDate.now();
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.secondOfDay();
+    // Undeclared exception!
+    try {
+        localDate0.property(dateTimeFieldType0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Field 'secondOfDay' is not supported
+        //
+        verifyException(""org.joda.time.LocalDate"", e);
+    }
+}",1,
+project,0,test09833,"public void test09833() throws Throwable {
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar(58, 58, (-2699));
+    LocalDate localDate0 = LocalDate.fromCalendarFields(mockGregorianCalendar0);
+    // Undeclared exception!
+    try {
+        localDate0.property((DateTimeFieldType) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The DateTimeFieldType must not be null
+        //
+        verifyException(""org.joda.time.LocalDate"", e);
+    }
+}",1,
+project,0,test11434,"public void test11434() throws Throwable {
+    LocalDate localDate0 = new LocalDate(0L);
+    // Undeclared exception!
+    try {
+        localDate0.withFieldAdded((DurationFieldType) null, 2);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Field must not be null
+        //
+        verifyException(""org.joda.time.LocalDate"", e);
+    }
+}",1,
+project,0,test11535,"public void test11535() throws Throwable {
+    LocalDate localDate0 = new LocalDate();
+    DurationFieldType durationFieldType0 = DurationFieldType.MILLIS_TYPE;
+    // Undeclared exception!
+    try {
+        localDate0.withFieldAdded(durationFieldType0, 1900);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Field 'millis' is not supported
+        //
+        verifyException(""org.joda.time.LocalDate"", e);
+    }
+}",1,
+project,0,test11636,"public void test11636() throws Throwable {
+    ISOChronology iSOChronology0 = ISOChronology.getInstance();
+    DateTime dateTime0 = new DateTime((Chronology) iSOChronology0);
+    LocalDate localDate0 = dateTime0.toLocalDate();
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.clockhourOfDay();
+    // Undeclared exception!
+    try {
+        localDate0.withField(dateTimeFieldType0, (-1978));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Field 'clockhourOfDay' is not supported
+        //
+        verifyException(""org.joda.time.LocalDate"", e);
+    }
+}",1,
+project,0,test11737,"public void test11737() throws Throwable {
+    LocalDate localDate0 = new LocalDate(1L);
+    // Undeclared exception!
+    try {
+        localDate0.withField((DateTimeFieldType) null, (-2857));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Field must not be null
+        //
+        verifyException(""org.joda.time.LocalDate"", e);
+    }
+}",1,
+project,0,test11838,"public void test11838() throws Throwable {
+    ISOChronology iSOChronology0 = ISOChronology.getInstance();
+    DateTime dateTime0 = new DateTime((Chronology) iSOChronology0);
+    LocalDate localDate0 = dateTime0.toLocalDate();
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.centuryOfEra();
+    // Undeclared exception!
+    try {
+        localDate0.withField(dateTimeFieldType0, (-1978));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value -1978 for centuryOfEra must be in the range [0,2922789]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",1,
+project,0,test12039,"public void test12039() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(1);
+    LocalDate localDate0 = new LocalDate(dateTimeZone0);
+    GregorianChronology gregorianChronology0 = GregorianChronology.getInstanceUTC();
+    LocalTime localTime0 = new LocalTime(3600L, (Chronology) gregorianChronology0);
+    // Undeclared exception!
+    try {
+        localDate0.toDateTime(localTime0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The chronology of the time does not match
+        //
+        verifyException(""org.joda.time.LocalDate"", e);
+    }
+}",0,
+project,0,test12240,"public void test12240() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    LocalDate localDate0 = LocalDate.now((DateTimeZone) fixedDateTimeZone0);
+    CopticChronology copticChronology0 = CopticChronology.getInstanceUTC();
+    LocalDateTime localDateTime0 = new LocalDateTime((Chronology) copticChronology0);
+    LocalTime localTime0 = new LocalTime(localDateTime0);
+    // Undeclared exception!
+    try {
+        localDate0.toLocalDateTime(localTime0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The chronology of the time does not match
+        //
+        verifyException(""org.joda.time.LocalDate"", e);
+    }
+}",0,
+project,0,test12341,"public void test12341() throws Throwable {
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstanceUTC();
+    LocalDate localDate0 = new LocalDate(100000000000000000L, (Chronology) islamicChronology0);
+    // Undeclared exception!
+    try {
+        localDate0.toLocalDateTime((LocalTime) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The time must not be null
+        //
+        verifyException(""org.joda.time.LocalDate"", e);
+    }
+}",1,
+project,0,test13043,"public void test13043() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    LocalDate localDate0 = LocalDate.now((DateTimeZone) fixedDateTimeZone0);
+    DurationFieldType durationFieldType0 = DurationFieldType.MONTHS_TYPE;
+    boolean boolean0 = localDate0.isSupported(durationFieldType0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test13144,"public void test13144() throws Throwable {
+    EthiopicChronology ethiopicChronology0 = EthiopicChronology.getInstance();
+    LocalDate localDate0 = new LocalDate(0L, (Chronology) ethiopicChronology0);
+    boolean boolean0 = localDate0.isSupported((DurationFieldType) null);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test13245,"public void test13245() throws Throwable {
+    CopticChronology copticChronology0 = CopticChronology.getInstanceUTC();
+    LocalDate localDate0 = LocalDate.now((Chronology) copticChronology0);
+    DateTime dateTime0 = DateTime.now((Chronology) copticChronology0);
+    Hours hours0 = Hours.hoursBetween((ReadableInstant) dateTime0, (ReadableInstant) dateTime0);
+    LocalDate localDate1 = localDate0.plus(hours0);
+    assertSame(localDate1, localDate0);
+}",0,
+project,0,test13346,"public void test13346() throws Throwable {
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstanceUTC();
+    LocalDate localDate0 = new LocalDate((Chronology) islamicChronology0);
+    boolean boolean0 = localDate0.isSupported((DateTimeFieldType) null);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test13447,"public void test13447() throws Throwable {
+    LocalDate localDate0 = new LocalDate();
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.secondOfDay();
+    // Undeclared exception!
+    try {
+        localDate0.get(dateTimeFieldType0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Field 'secondOfDay' is not supported
+        //
+        verifyException(""org.joda.time.LocalDate"", e);
+    }
+}",0,
+project,0,test13548,"public void test13548() throws Throwable {
+    CopticChronology copticChronology0 = CopticChronology.getInstanceUTC();
+    LocalDate localDate0 = LocalDate.now((Chronology) copticChronology0);
+    // Undeclared exception!
+    try {
+        localDate0.get((DateTimeFieldType) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The DateTimeFieldType must not be null
+        //
+        verifyException(""org.joda.time.LocalDate"", e);
+    }
+}",0,
+project,0,test13649,"public void test13649() throws Throwable {
+    LocalDate localDate0 = new LocalDate();
+    // Undeclared exception!
+    try {
+        localDate0.getValue(3);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Invalid index: 3
+        //
+        verifyException(""org.joda.time.LocalDate"", e);
+    }
+}",0,
+project,0,test13750,"public void test13750() throws Throwable {
+    EthiopicChronology ethiopicChronology0 = EthiopicChronology.getInstance();
+    LocalDate localDate0 = new LocalDate(0L, (Chronology) ethiopicChronology0);
+    // Undeclared exception!
+    try {
+        localDate0.getField(62, (Chronology) ethiopicChronology0);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Invalid index: 62
+        //
+        verifyException(""org.joda.time.LocalDate"", e);
+    }
+}",1,
+project,0,test13851,"public void test13851() throws Throwable {
+    // Undeclared exception!
+    try {
+        LocalDate.fromDateFields((Date) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The date must not be null
+        //
+        verifyException(""org.joda.time.LocalDate"", e);
+    }
+}",1,
+project,0,test13952,"public void test13952() throws Throwable {
+    // Undeclared exception!
+    try {
+        LocalDate.fromCalendarFields((Calendar) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The calendar must not be null
+        //
+        verifyException(""org.joda.time.LocalDate"", e);
+    }
+}",0,
+project,0,test14053,"public void test14053() throws Throwable {
+    // Undeclared exception!
+    try {
+        LocalDate.now((Chronology) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // Chronology must not be null
+        //
+        verifyException(""org.joda.time.LocalDate"", e);
+    }
+}",0,
+project,0,test14154,"public void test14154() throws Throwable {
+    // Undeclared exception!
+    try {
+        LocalDate.now((DateTimeZone) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // Zone must not be null
+        //
+        verifyException(""org.joda.time.LocalDate"", e);
+    }
+}",1,
+project,0,test14558,"public void test14558() throws Throwable {
+    LocalDate localDate0 = new LocalDate();
+    LocalDate.Property localDate_Property0 = localDate0.year();
+    LocalDate localDate1 = localDate_Property0.getLocalDate();
+    assertEquals(3, localDate1.size());
+}",0,"assertEquals(1, localDate1.size())"
+project,0,test15063,"public void test15063() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstanceUTC();
+    LocalDateTime localDateTime0 = new LocalDateTime(21600000L, (Chronology) buddhistChronology0);
+    LocalDate localDate0 = new LocalDate(localDateTime0, (DateTimeZone) null);
+    Locale locale0 = Locale.CANADA_FRENCH;
+    try {
+        localDate0.toString(""14G/mB\""Y^M9;~k2RFk"", locale0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Illegal pattern component: B
+        //
+        verifyException(""org.joda.time.format.DateTimeFormat"", e);
+    }
+}",0,
+project,0,test15164,"public void test15164() throws Throwable {
+    LocalDate localDate0 = new LocalDate();
+    int int0 = localDate0.getEra();
+    assertEquals(1, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test15265,"public void test15265() throws Throwable {
+    LocalDate localDate0 = new LocalDate((Object) null);
+    DateTime dateTime0 = localDate0.toDateTimeAtStartOfDay();
+    assertEquals(1392364800000L, dateTime0.getMillis());
+}",0,"assertEquals(0, dateTime0.getMillis())"
+project,0,test15366,"public void test15366() throws Throwable {
+    LocalDate localDate0 = new LocalDate();
+    int int0 = localDate0.getWeekOfWeekyear();
+    assertEquals(7, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test15467,"public void test15467() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    LocalDate localDate0 = new LocalDate(dateTimeZone0);
+    // Undeclared exception!
+    try {
+        localDate0.withDayOfWeek((-28800000));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value -28800000 for dayOfWeek must be in the range [1,7]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",0,
+project,0,test15568,"public void test15568() throws Throwable {
+    CopticChronology copticChronology0 = CopticChronology.getInstanceUTC();
+    LocalDate localDate0 = LocalDate.now((Chronology) copticChronology0);
+    LocalTime localTime0 = new LocalTime(3600000L, (Chronology) copticChronology0);
+    DateTime dateTime0 = localDate0.toDateTime(localTime0);
+    assertEquals(1392368400000L, dateTime0.getMillis());
+}",0,"assertEquals(0, dateTime0.getMillis())"
+project,0,test15669,"public void test15669() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    LocalDate localDate0 = new LocalDate(dateTimeZone0);
+    int int0 = localDate0.getYearOfEra();
+    assertEquals(2014, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test15770,"public void test15770() throws Throwable {
+    EthiopicChronology ethiopicChronology0 = EthiopicChronology.getInstance();
+    LocalDate localDate0 = new LocalDate(0L, (Chronology) ethiopicChronology0);
+    LocalDate.Property localDate_Property0 = localDate0.era();
+    assertNotNull(localDate_Property0);
+}",0,
+project,0,test15871,"public void test15871() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    LocalDate localDate0 = new LocalDate(dateTimeZone0);
+    int int0 = localDate0.getWeekyear();
+    assertEquals(2014, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test15972,"public void test15972() throws Throwable {
+    LocalDate localDate0 = new LocalDate((Object) null);
+    LocalDate.Property localDate_Property0 = localDate0.dayOfWeek();
+    assertNotNull(localDate_Property0);
+}",0,
+project,0,test16073,"public void test16073() throws Throwable {
+    EthiopicChronology ethiopicChronology0 = EthiopicChronology.getInstance();
+    LocalDate localDate0 = new LocalDate(0L, (Chronology) ethiopicChronology0);
+    int int0 = localDate0.getDayOfYear();
+    assertEquals(112, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test16376,"public void test16376() throws Throwable {
+    LocalDate localDate0 = new LocalDate();
+    LocalDate.Property localDate_Property0 = localDate0.weekyear();
+    assertNotNull(localDate_Property0);
+}",0,
+project,0,test16477,"public void test16477() throws Throwable {
+    LocalDate localDate0 = new LocalDate();
+    LocalDate.Property localDate_Property0 = localDate0.dayOfMonth();
+    assertNotNull(localDate_Property0);
+}",0,
+project,0,test16578,"public void test16578() throws Throwable {
+    EthiopicChronology ethiopicChronology0 = EthiopicChronology.getInstance();
+    LocalDate localDate0 = new LocalDate(0L, (Chronology) ethiopicChronology0);
+    int int0 = localDate0.getYearOfCentury();
+    assertEquals(62, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test16679,"public void test16679() throws Throwable {
+    // Undeclared exception!
+    try {
+        LocalDate.parse(""k+4%tE`lkM32"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid format: \""k+4%tE`lkM32\""
+        //
+        verifyException(""org.joda.time.format.DateTimeFormatter"", e);
+    }
+}",0,
+project,0,test16780,"public void test16780() throws Throwable {
+    LocalDate localDate0 = new LocalDate();
+    int int0 = localDate0.getCenturyOfEra();
+    assertEquals(20, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test16881,"public void test16881() throws Throwable {
+    LocalDate localDate0 = new LocalDate();
+    LocalDate.Property localDate_Property0 = localDate0.weekOfWeekyear();
+    assertNotNull(localDate_Property0);
+}",0,assertNotNull(localDate_Property0)
+project,0,test16982,"public void test16982() throws Throwable {
+    LocalDate localDate0 = new LocalDate();
+    int int0 = localDate0.getDayOfWeek();
+    assertEquals(5, int0);
+}",0,
+project,0,test17083,"public void test17083() throws Throwable {
+    LocalDate localDate0 = new LocalDate();
+    LocalDate localDate1 = localDate0.withWeekOfWeekyear(1);
+    assertNotSame(localDate1, localDate0);
+}",0,
+project,0,test17184,"public void test17184() throws Throwable {
+    EthiopicChronology ethiopicChronology0 = EthiopicChronology.getInstance();
+    LocalDate localDate0 = new LocalDate(0L, (Chronology) ethiopicChronology0);
+    DateTime dateTime0 = localDate0.toDateTimeAtMidnight();
+    assertEquals((-57600000L), dateTime0.getMillis());
+}",0,"assertEquals(0, dateTime0.getMillis())"
+project,0,test17285,"public void test17285() throws Throwable {
+    LocalDate localDate0 = new LocalDate();
+    LocalDate localDate1 = localDate0.withCenturyOfEra(14);
+    assertNotSame(localDate1, localDate0);
+}",0,
+project,0,test17386,"public void test17386() throws Throwable {
+    MockDate mockDate0 = new MockDate((-27), (-1320), 1900);
+    LocalDate localDate0 = LocalDate.fromDateFields(mockDate0);
+    LocalDate localDate1 = localDate0.withYearOfEra(5);
+    assertNotSame(localDate1, localDate0);
+}",0,
+project,0,test17487,"public void test17487() throws Throwable {
+    LocalDate localDate0 = new LocalDate();
+    DateMidnight dateMidnight0 = localDate0.toDateMidnight();
+    assertEquals(1392364800000L, dateMidnight0.getMillis());
+}",0,"assertEquals(0, dateMidnight0.getMillis())"
+project,0,test17588,"public void test17588() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    LocalDate localDate0 = new LocalDate(dateTimeZone0);
+    int int0 = localDate0.getYear();
+    assertEquals(2014, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test17689,"public void test17689() throws Throwable {
+    EthiopicChronology ethiopicChronology0 = EthiopicChronology.getInstance();
+    LocalDate localDate0 = new LocalDate(0L, (Chronology) ethiopicChronology0);
+    LocalDate localDate1 = localDate0.withMonthOfYear(1);
+    assertNotSame(localDate1, localDate0);
+}",0,
+project,0,test17790,"public void test17790() throws Throwable {
+    LocalDate localDate0 = new LocalDate(1L);
+    LocalDate localDate1 = localDate0.withDayOfYear(2);
+    assertNotSame(localDate1, localDate0);
+}",0,
+project,0,test17891,"public void test17891() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    LocalDate localDate0 = LocalDate.now((DateTimeZone) fixedDateTimeZone0);
+    DateTime dateTime0 = localDate0.toDateTimeAtCurrentTime();
+    assertEquals(3, localDate0.size());
+}",0,"assertEquals(1, localDate0.size())"
+project,0,test17892,"public void test17892() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    LocalDate localDate0 = LocalDate.now((DateTimeZone) fixedDateTimeZone0);
+    DateTime dateTime0 = localDate0.toDateTimeAtCurrentTime();
+    assertEquals(1392409281320L, dateTime0.getMillis());
+}",0,"assertEquals(0, dateTime0.getMillis())"
+project,0,test17993,"public void test17993() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    LocalDate localDate0 = new LocalDate(dateTimeZone0);
+    Interval interval0 = localDate0.toInterval();
+    assertEquals(1392451200000L, interval0.getEndMillis());
+}",0,"assertEquals(0, interval0.getEndMillis())"
+project,0,test17994,"public void test17994() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    LocalDate localDate0 = new LocalDate(dateTimeZone0);
+    Interval interval0 = localDate0.toInterval();
+    assertEquals(1392364800000L, interval0.getStartMillis());
+}",0,"assertEquals(0, interval0.getStartMillis())"
+project,0,test18196,"public void test18196() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    LocalDate localDate0 = new LocalDate(dateTimeZone0);
+    String string0 = localDate0.toString();
+    assertEquals(""2014-02-14"", string0);
+}",0,
+project,0,test18297,"public void test18297() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    LocalDate localDate0 = new LocalDate(dateTimeZone0);
+    LocalDate localDate1 = localDate0.withEra(0);
+    assertNotSame(localDate1, localDate0);
+}",0,

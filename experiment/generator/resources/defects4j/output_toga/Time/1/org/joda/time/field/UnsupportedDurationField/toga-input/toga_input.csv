@@ -1,0 +1,555 @@
+focal_method,test_prefix,docstring
+"public String toString() {
+    return getName();
+}","public void test000() throws Throwable {
+    DurationFieldType durationFieldType0 = DurationFieldType.weekyears();
+    UnsupportedDurationField unsupportedDurationField0 = UnsupportedDurationField.getInstance(durationFieldType0);
+    DurationFieldType durationFieldType1 = unsupportedDurationField0.getType();
+    assertEquals(""weekyears"", durationFieldType1.toString());
+}","/**
+ * Get a suitable debug string.
+ *
+ * @return debug string
+ */"
+"public String toString() {
+    return ""UnsupportedDurationField["" + getName() + ']';
+}","public void test011() throws Throwable {
+    UnsupportedDurationField unsupportedDurationField0 = UnsupportedDurationField.getInstance((DurationFieldType) null);
+    // Undeclared exception!
+    try {
+        unsupportedDurationField0.toString();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.field.UnsupportedDurationField"", e);
+    }
+}","/**
+ * Get a suitable debug string.
+ *
+ * @return debug string
+ */"
+"public int hashCode() {
+    return getName().hashCode();
+}","public void test022() throws Throwable {
+    UnsupportedDurationField unsupportedDurationField0 = UnsupportedDurationField.getInstance((DurationFieldType) null);
+    // Undeclared exception!
+    try {
+        unsupportedDurationField0.hashCode();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.field.UnsupportedDurationField"", e);
+    }
+}","/**
+ * Gets a suitable hashcode.
+ *
+ * @return the hashcode
+ */"
+"public String getName() {
+    return iType.getName();
+}","public void test033() throws Throwable {
+    UnsupportedDurationField unsupportedDurationField0 = UnsupportedDurationField.getInstance((DurationFieldType) null);
+    // Undeclared exception!
+    try {
+        unsupportedDurationField0.getName();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.field.UnsupportedDurationField"", e);
+    }
+}",""
+"public int compareTo(DurationField durationField) {
+    if (durationField.isSupported()) {
+        return 1;
+    }
+    return 0;
+}","public void test044() throws Throwable {
+    Months months0 = Months.THREE;
+    DurationFieldType durationFieldType0 = months0.getFieldType();
+    UnsupportedDurationField unsupportedDurationField0 = UnsupportedDurationField.getInstance(durationFieldType0);
+    // Undeclared exception!
+    try {
+        unsupportedDurationField0.compareTo((DurationField) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.field.UnsupportedDurationField"", e);
+    }
+}","/**
+ * Always returns zero, indicating that sort order is not relevent.
+ *
+ * @return zero always
+ */"
+"public static synchronized UnsupportedDurationField getInstance(DurationFieldType type) {
+    UnsupportedDurationField field;
+    if (cCache == null) {
+        cCache = new HashMap<DurationFieldType, UnsupportedDurationField>(7);
+        field = null;
+    } else {
+        field = cCache.get(type);
+    }
+    if (field == null) {
+        field = new UnsupportedDurationField(type);
+        cCache.put(type, field);
+    }
+    return field;
+}","public void test055() throws Throwable {
+    DurationFieldType durationFieldType0 = DurationFieldType.months();
+    UnsupportedDurationField unsupportedDurationField0 = UnsupportedDurationField.getInstance(durationFieldType0);
+    UnsupportedDurationField unsupportedDurationField1 = UnsupportedDurationField.getInstance(durationFieldType0);
+    assertSame(unsupportedDurationField1, unsupportedDurationField0);
+}","/**
+ * Gets an instance of UnsupportedDurationField for a specific named field.
+ * The returned instance is cached.
+ *
+ * @param type  the type to obtain
+ * @return the instance
+ */"
+"public boolean isSupported() {
+    return false;
+}","public void test066() throws Throwable {
+    DurationFieldType durationFieldType0 = DurationFieldType.millis();
+    UnsupportedDurationField unsupportedDurationField0 = UnsupportedDurationField.getInstance(durationFieldType0);
+    boolean boolean0 = unsupportedDurationField0.isSupported();
+    assertFalse(boolean0);
+}","/**
+ * This field is not supported.
+ *
+ * @return false always
+ */"
+"public long getUnitMillis() {
+    return 0;
+}","public void test077() throws Throwable {
+    DurationFieldType durationFieldType0 = DurationFieldType.halfdays();
+    UnsupportedDurationField unsupportedDurationField0 = UnsupportedDurationField.getInstance(durationFieldType0);
+    long long0 = unsupportedDurationField0.getUnitMillis();
+    assertEquals(0L, long0);
+}","/**
+ * Always returns zero.
+ *
+ * @return zero always
+ */"
+"public String getName() {
+    return iType.getName();
+}","public void test088() throws Throwable {
+    DurationFieldType durationFieldType0 = DurationFieldType.eras();
+    UnsupportedDurationField unsupportedDurationField0 = UnsupportedDurationField.getInstance(durationFieldType0);
+    String string0 = unsupportedDurationField0.getName();
+    assertEquals(""eras"", string0);
+}",""
+"//------------------------------------------------------------------------
+/**
+ * Compares this duration field to another.
+ *
+ * @param obj  the object to compare to
+ * @return true if equal
+ */
+public boolean equals(Object obj) {
+    if (this == obj) {
+        return true;
+    } else if (obj instanceof UnsupportedDurationField) {
+        UnsupportedDurationField other = (UnsupportedDurationField) obj;
+        if (other.getName() == null) {
+            return (getName() == null);
+        }
+        return (other.getName().equals(getName()));
+    }
+    return false;
+}","public void test099() throws Throwable {
+    DurationFieldType durationFieldType0 = DurationFieldType.eras();
+    UnsupportedDurationField unsupportedDurationField0 = UnsupportedDurationField.getInstance((DurationFieldType) null);
+    UnsupportedDurationField unsupportedDurationField1 = UnsupportedDurationField.getInstance(durationFieldType0);
+    // Undeclared exception!
+    try {
+        unsupportedDurationField0.equals(unsupportedDurationField1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.field.UnsupportedDurationField"", e);
+    }
+}",""
+"//------------------------------------------------------------------------
+/**
+ * Compares this duration field to another.
+ *
+ * @param obj  the object to compare to
+ * @return true if equal
+ */
+public boolean equals(Object obj) {
+    if (this == obj) {
+        return true;
+    } else if (obj instanceof UnsupportedDurationField) {
+        UnsupportedDurationField other = (UnsupportedDurationField) obj;
+        if (other.getName() == null) {
+            return (getName() == null);
+        }
+        return (other.getName().equals(getName()));
+    }
+    return false;
+}","public void test1010() throws Throwable {
+    DurationFieldType durationFieldType0 = DurationFieldType.halfdays();
+    UnsupportedDurationField unsupportedDurationField0 = UnsupportedDurationField.getInstance(durationFieldType0);
+    boolean boolean0 = unsupportedDurationField0.equals(unsupportedDurationField0);
+    assertTrue(boolean0);
+}",""
+"//------------------------------------------------------------------------
+/**
+ * Compares this duration field to another.
+ *
+ * @param obj  the object to compare to
+ * @return true if equal
+ */
+public boolean equals(Object obj) {
+    if (this == obj) {
+        return true;
+    } else if (obj instanceof UnsupportedDurationField) {
+        UnsupportedDurationField other = (UnsupportedDurationField) obj;
+        if (other.getName() == null) {
+            return (getName() == null);
+        }
+        return (other.getName().equals(getName()));
+    }
+    return false;
+}","public void test1111() throws Throwable {
+    DurationFieldType durationFieldType0 = DurationFieldType.months();
+    UnsupportedDurationField unsupportedDurationField0 = UnsupportedDurationField.getInstance(durationFieldType0);
+    boolean boolean0 = unsupportedDurationField0.equals(durationFieldType0);
+    assertFalse(boolean0);
+}",""
+"public int compareTo(DurationField durationField) {
+    if (durationField.isSupported()) {
+        return 1;
+    }
+    return 0;
+}","public void test1212() throws Throwable {
+    UnsupportedDurationField unsupportedDurationField0 = UnsupportedDurationField.getInstance((DurationFieldType) null);
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstanceUTC();
+    DurationField durationField0 = buddhistChronology0.weekyears();
+    int int0 = unsupportedDurationField0.compareTo(durationField0);
+    assertEquals(1, int0);
+}","/**
+ * Always returns zero, indicating that sort order is not relevent.
+ *
+ * @return zero always
+ */"
+"public boolean isSupported() {
+    return false;
+}","public void test1213() throws Throwable {
+    UnsupportedDurationField unsupportedDurationField0 = UnsupportedDurationField.getInstance((DurationFieldType) null);
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstanceUTC();
+    DurationField durationField0 = buddhistChronology0.weekyears();
+    int int0 = unsupportedDurationField0.compareTo(durationField0);
+    assertFalse(unsupportedDurationField0.isSupported());
+}","/**
+ * This field is not supported.
+ *
+ * @return false always
+ */"
+"public int compareTo(DurationField durationField) {
+    if (durationField.isSupported()) {
+        return 1;
+    }
+    return 0;
+}","public void test1314() throws Throwable {
+    DurationFieldType durationFieldType0 = DurationFieldType.eras();
+    UnsupportedDurationField unsupportedDurationField0 = UnsupportedDurationField.getInstance(durationFieldType0);
+    int int0 = unsupportedDurationField0.compareTo((DurationField) unsupportedDurationField0);
+    assertEquals(0, int0);
+}","/**
+ * Always returns zero, indicating that sort order is not relevent.
+ *
+ * @return zero always
+ */"
+"public String toString() {
+    return ""UnsupportedDurationField["" + getName() + ']';
+}","public void test1415() throws Throwable {
+    DurationFieldType durationFieldType0 = DurationFieldType.centuries();
+    UnsupportedDurationField unsupportedDurationField0 = UnsupportedDurationField.getInstance(durationFieldType0);
+    String string0 = unsupportedDurationField0.toString();
+    assertEquals(""UnsupportedDurationField[centuries]"", string0);
+}","/**
+ * Get a suitable debug string.
+ *
+ * @return debug string
+ */"
+"public long getValueAsLong(long duration, long instant) {
+    throw unsupported();
+}","public void test1516() throws Throwable {
+    DurationFieldType durationFieldType0 = DurationFieldType.halfdays();
+    UnsupportedDurationField unsupportedDurationField0 = UnsupportedDurationField.getInstance(durationFieldType0);
+    // Undeclared exception!
+    try {
+        unsupportedDurationField0.getValueAsLong(232L, 232L);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // halfdays field is unsupported
+        //
+        verifyException(""org.joda.time.field.UnsupportedDurationField"", e);
+    }
+}","/**
+ * Always throws UnsupportedOperationException
+ *
+ * @throws UnsupportedOperationException
+ */"
+"public long getMillis(int value) {
+    throw unsupported();
+}","public void test1617() throws Throwable {
+    DurationFieldType durationFieldType0 = DurationFieldType.months();
+    UnsupportedDurationField unsupportedDurationField0 = UnsupportedDurationField.getInstance(durationFieldType0);
+    // Undeclared exception!
+    try {
+        unsupportedDurationField0.getMillis(165);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // months field is unsupported
+        //
+        verifyException(""org.joda.time.field.UnsupportedDurationField"", e);
+    }
+}","/**
+ * Always throws UnsupportedOperationException
+ *
+ * @throws UnsupportedOperationException
+ */"
+"public long getMillis(long value) {
+    throw unsupported();
+}","public void test1718() throws Throwable {
+    UnsupportedDurationField unsupportedDurationField0 = UnsupportedDurationField.getInstance((DurationFieldType) null);
+    // Undeclared exception!
+    try {
+        unsupportedDurationField0.getMillis((-26L));
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // null field is unsupported
+        //
+        verifyException(""org.joda.time.field.UnsupportedDurationField"", e);
+    }
+}","/**
+ * Always throws UnsupportedOperationException
+ *
+ * @throws UnsupportedOperationException
+ */"
+"public boolean isPrecise() {
+    return true;
+}","public void test1819() throws Throwable {
+    DurationFieldType durationFieldType0 = DurationFieldType.hours();
+    UnsupportedDurationField unsupportedDurationField0 = UnsupportedDurationField.getInstance(durationFieldType0);
+    boolean boolean0 = unsupportedDurationField0.isPrecise();
+    assertTrue(boolean0);
+}","/**
+ * This field is precise.
+ *
+ * @return true always
+ */"
+"public int getValue(long duration, long instant) {
+    throw unsupported();
+}","public void test1920() throws Throwable {
+    DurationFieldType durationFieldType0 = DurationFieldType.halfdays();
+    UnsupportedDurationField unsupportedDurationField0 = UnsupportedDurationField.getInstance(durationFieldType0);
+    // Undeclared exception!
+    try {
+        unsupportedDurationField0.getValue((long) (-850), (long) (-850));
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // halfdays field is unsupported
+        //
+        verifyException(""org.joda.time.field.UnsupportedDurationField"", e);
+    }
+}","/**
+ * Always throws UnsupportedOperationException
+ *
+ * @throws UnsupportedOperationException
+ */"
+"//-----------------------------------------------------------------------
+// Design note: Simple Accessors return a suitable value, but methods
+// intended to perform calculations throw an UnsupportedOperationException.
+public final DurationFieldType getType() {
+    return iType;
+}","public void test2021() throws Throwable {
+    UnsupportedDurationField unsupportedDurationField0 = UnsupportedDurationField.getInstance((DurationFieldType) null);
+    DurationFieldType durationFieldType0 = unsupportedDurationField0.getType();
+    assertNull(durationFieldType0);
+}",""
+"public int getDifference(long minuendInstant, long subtrahendInstant) {
+    throw unsupported();
+}","public void test2122() throws Throwable {
+    DurationFieldType durationFieldType0 = DurationFieldType.eras();
+    UnsupportedDurationField unsupportedDurationField0 = UnsupportedDurationField.getInstance(durationFieldType0);
+    // Undeclared exception!
+    try {
+        unsupportedDurationField0.getDifference(1, 1);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // eras field is unsupported
+        //
+        verifyException(""org.joda.time.field.UnsupportedDurationField"", e);
+    }
+}","/**
+ * Always throws UnsupportedOperationException
+ *
+ * @throws UnsupportedOperationException
+ */"
+"public int hashCode() {
+    return getName().hashCode();
+}","public void test2223() throws Throwable {
+    DurationFieldType durationFieldType0 = DurationFieldType.eras();
+    UnsupportedDurationField unsupportedDurationField0 = UnsupportedDurationField.getInstance(durationFieldType0);
+    unsupportedDurationField0.hashCode();
+}","/**
+ * Gets a suitable hashcode.
+ *
+ * @return the hashcode
+ */"
+"public long getMillis(long value, long instant) {
+    throw unsupported();
+}","public void test2324() throws Throwable {
+    DurationFieldType durationFieldType0 = DurationFieldType.eras();
+    UnsupportedDurationField unsupportedDurationField0 = UnsupportedDurationField.getInstance(durationFieldType0);
+    // Undeclared exception!
+    try {
+        unsupportedDurationField0.getMillis(0L, (-763L));
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // eras field is unsupported
+        //
+        verifyException(""org.joda.time.field.UnsupportedDurationField"", e);
+    }
+}","/**
+ * Always throws UnsupportedOperationException
+ *
+ * @throws UnsupportedOperationException
+ */"
+"public long getValueAsLong(long duration) {
+    throw unsupported();
+}","public void test2425() throws Throwable {
+    UnsupportedDurationField unsupportedDurationField0 = UnsupportedDurationField.getInstance((DurationFieldType) null);
+    // Undeclared exception!
+    try {
+        unsupportedDurationField0.getValueAsLong(1L);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // null field is unsupported
+        //
+        verifyException(""org.joda.time.field.UnsupportedDurationField"", e);
+    }
+}","/**
+ * Always throws UnsupportedOperationException
+ *
+ * @throws UnsupportedOperationException
+ */"
+"public int getValue(long duration) {
+    throw unsupported();
+}","public void test2526() throws Throwable {
+    DurationFieldType durationFieldType0 = DurationFieldType.halfdays();
+    UnsupportedDurationField unsupportedDurationField0 = UnsupportedDurationField.getInstance(durationFieldType0);
+    // Undeclared exception!
+    try {
+        unsupportedDurationField0.getValue((long) (-2371));
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // halfdays field is unsupported
+        //
+        verifyException(""org.joda.time.field.UnsupportedDurationField"", e);
+    }
+}","/**
+ * Always throws UnsupportedOperationException
+ *
+ * @throws UnsupportedOperationException
+ */"
+"public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
+    throw unsupported();
+}","public void test2627() throws Throwable {
+    DurationFieldType durationFieldType0 = DurationFieldType.weekyears();
+    UnsupportedDurationField unsupportedDurationField0 = UnsupportedDurationField.getInstance(durationFieldType0);
+    // Undeclared exception!
+    try {
+        unsupportedDurationField0.getDifferenceAsLong(1, 1);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // weekyears field is unsupported
+        //
+        verifyException(""org.joda.time.field.UnsupportedDurationField"", e);
+    }
+}","/**
+ * Always throws UnsupportedOperationException
+ *
+ * @throws UnsupportedOperationException
+ */"
+"public long add(long instant, int value) {
+    throw unsupported();
+}","public void test2728() throws Throwable {
+    DurationFieldType durationFieldType0 = DurationFieldType.eras();
+    UnsupportedDurationField unsupportedDurationField0 = UnsupportedDurationField.getInstance(durationFieldType0);
+    // Undeclared exception!
+    try {
+        unsupportedDurationField0.add(0L, (-980));
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // eras field is unsupported
+        //
+        verifyException(""org.joda.time.field.UnsupportedDurationField"", e);
+    }
+}","/**
+ * Always throws UnsupportedOperationException
+ *
+ * @throws UnsupportedOperationException
+ */"
+"public long add(long instant, long value) {
+    throw unsupported();
+}","public void test2829() throws Throwable {
+    DurationFieldType durationFieldType0 = DurationFieldType.hours();
+    UnsupportedDurationField unsupportedDurationField0 = UnsupportedDurationField.getInstance(durationFieldType0);
+    // Undeclared exception!
+    try {
+        unsupportedDurationField0.add(0L, 0L);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // hours field is unsupported
+        //
+        verifyException(""org.joda.time.field.UnsupportedDurationField"", e);
+    }
+}","/**
+ * Always throws UnsupportedOperationException
+ *
+ * @throws UnsupportedOperationException
+ */"
+"public long getMillis(int value, long instant) {
+    throw unsupported();
+}","public void test2930() throws Throwable {
+    DurationFieldType durationFieldType0 = DurationFieldType.centuries();
+    UnsupportedDurationField unsupportedDurationField0 = UnsupportedDurationField.getInstance(durationFieldType0);
+    // Undeclared exception!
+    try {
+        unsupportedDurationField0.getMillis(2408, (long) 2408);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // centuries field is unsupported
+        //
+        verifyException(""org.joda.time.field.UnsupportedDurationField"", e);
+    }
+}","/**
+ * Always throws UnsupportedOperationException
+ *
+ * @throws UnsupportedOperationException
+ */"

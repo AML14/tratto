@@ -1,0 +1,433 @@
+focal_method,test_prefix,docstring
+"public boolean isCall() {
+    return this.getType() == Token.CALL;
+}","public void test00() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""function JSCompiler_emptyFn() {  return function() {}}"");
+    node0.setType(113);
+    MinimizeExitPoints minimizeExitPoints0 = new MinimizeExitPoints(compiler0);
+    minimizeExitPoints0.process(node0, node0);
+    assertFalse(node0.isCall());
+}",""
+"@Override
+public void process(Node externs, Node root) {
+    NodeTraversal.traverse(compiler, root, this);
+}","public void test11() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    MinimizeExitPoints minimizeExitPoints0 = new MinimizeExitPoints(compiler0);
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""J;xg3*=h4t48^$@Z"");
+    Node node1 = new Node(114, node0, node0, node0, 29, 0);
+    minimizeExitPoints0.process(node0, node1);
+    assertEquals(40, Node.ORIGINALNAME_PROP);
+}",""
+"public boolean isName() {
+    return this.getType() == Token.NAME;
+}","public void test22() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""7;"");
+    MinimizeExitPoints minimizeExitPoints0 = new MinimizeExitPoints(compiler0);
+    Node node1 = new Node(115, node0, 34, 40);
+    minimizeExitPoints0.process(node0, node1);
+    assertFalse(node0.isName());
+}",""
+"@Override
+public void process(Node externs, Node root) {
+    NodeTraversal.traverse(compiler, root, this);
+}","public void test33() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    MinimizeExitPoints minimizeExitPoints0 = new MinimizeExitPoints(compiler0);
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, """");
+    Node node1 = new Node(126, node0, node0, node0, 29, 0);
+    // Undeclared exception!
+    try {
+        minimizeExitPoints0.process(node0, node1);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",""
+"void tryMinimizeExits(Node n, int exitType, String labelName) {
+    // Just an 'exit'.
+    if (matchingExitNode(n, exitType, labelName)) {
+        NodeUtil.removeChild(n.getParent(), n);
+        compiler.reportCodeChange();
+        return;
+    }
+    // Just an 'if'.
+    if (n.isIf()) {
+        Node ifBlock = n.getFirstChild().getNext();
+        tryMinimizeExits(ifBlock, exitType, labelName);
+        Node elseBlock = ifBlock.getNext();
+        if (elseBlock != null) {
+            tryMinimizeExits(elseBlock, exitType, labelName);
+        }
+        return;
+    }
+    // Just a 'try/catch/finally'.
+    if (n.isTry()) {
+        Node tryBlock = n.getFirstChild();
+        tryMinimizeExits(tryBlock, exitType, labelName);
+        Node allCatchNodes = NodeUtil.getCatchBlock(n);
+        if (NodeUtil.hasCatchHandler(allCatchNodes)) {
+            Preconditions.checkState(allCatchNodes.hasOneChild());
+            Node catchNode = allCatchNodes.getFirstChild();
+            Node catchCodeBlock = catchNode.getLastChild();
+            tryMinimizeExits(catchCodeBlock, exitType, labelName);
+        }
+        /* Don't try to minimize the exits of finally blocks, as this
+       * can cause problems if it changes the completion type of the finally
+       * block. See ECMA 262 Sections 8.9 & 12.14
+       */
+        if (NodeUtil.hasFinally(n)) {
+            Node finallyBlock = n.getLastChild();
+            tryMinimizeExits(finallyBlock, exitType, labelName);
+        }
+    }
+    // Just a 'label'.
+    if (n.isLabel()) {
+        Node labelBlock = n.getLastChild();
+        tryMinimizeExits(labelBlock, exitType, labelName);
+    }
+    // TODO(johnlenz): The last case of SWITCH statement?
+    // The rest assumes a block with at least one child, bail on anything else.
+    if (!n.isBlock() || n.getLastChild() == null) {
+        return;
+    }
+    // Multiple if-exits can be converted in a single pass.
+    // Convert ""if (blah) break;  if (blah2) break; other_stmt;"" to
+    // become ""if (blah); else { if (blah2); else { other_stmt; } }""
+    // which will get converted to ""if (!blah && !blah2) { other_stmt; }"".
+    for (Node c : n.children()) {
+        // An 'if' block to process below.
+        if (c.isIf()) {
+            Node ifTree = c;
+            Node trueBlock, falseBlock;
+            // First, the true condition block.
+            trueBlock = ifTree.getFirstChild().getNext();
+            falseBlock = trueBlock.getNext();
+            tryMinimizeIfBlockExits(trueBlock, falseBlock, ifTree, exitType, labelName);
+            // Now the else block.
+            // The if blocks may have changed, get them again.
+            trueBlock = ifTree.getFirstChild().getNext();
+            falseBlock = trueBlock.getNext();
+            if (falseBlock != null) {
+                tryMinimizeIfBlockExits(falseBlock, trueBlock, ifTree, exitType, labelName);
+            }
+        }
+        if (c == n.getLastChild()) {
+            break;
+        }
+    }
+    // Now try to minimize the exits of the last child, if it is removed
+    // look at what has become the last child.
+    for (Node c = n.getLastChild(); c != null; c = n.getLastChild()) {
+        tryMinimizeExits(c, exitType, labelName);
+        // If the node is still the last child, we are done.
+        if (c == n.getLastChild()) {
+            break;
+        }
+    }
+}","public void test44() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = new Node((-219), 102, (-2314));
+    Node node1 = new Node(77, node0);
+    MinimizeExitPoints minimizeExitPoints0 = new MinimizeExitPoints(compiler0);
+    // Undeclared exception!
+    try {
+        minimizeExitPoints0.tryMinimizeExits(node1, (-219), (String) null);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // -219
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}","/**
+ * Attempts to minimize the number of explicit exit points in a control
+ * structure to take advantage of the implied exit at the end of the
+ * structure.  This is accomplished by removing redundant statements, and
+ * moving statements following a qualifying IF node into that node.
+ * For example:
+ *
+ * function () {
+ *   if (x) return;
+ *   else blah();
+ *   foo();
+ * }
+ *
+ * becomes:
+ *
+ * function () {
+ *  if (x) ;
+ *  else {
+ *    blah();
+ *    foo();
+ *  }
+ *
+ * @param n The execution node of a parent to inspect.
+ * @param exitType The type of exit to look for.
+ * @param labelName If parent is a label the name of the label to look for,
+ *   null otherwise.
+ * @nullable labelName non-null only for breaks within labels.
+ */"
+"void tryMinimizeExits(Node n, int exitType, String labelName) {
+    // Just an 'exit'.
+    if (matchingExitNode(n, exitType, labelName)) {
+        NodeUtil.removeChild(n.getParent(), n);
+        compiler.reportCodeChange();
+        return;
+    }
+    // Just an 'if'.
+    if (n.isIf()) {
+        Node ifBlock = n.getFirstChild().getNext();
+        tryMinimizeExits(ifBlock, exitType, labelName);
+        Node elseBlock = ifBlock.getNext();
+        if (elseBlock != null) {
+            tryMinimizeExits(elseBlock, exitType, labelName);
+        }
+        return;
+    }
+    // Just a 'try/catch/finally'.
+    if (n.isTry()) {
+        Node tryBlock = n.getFirstChild();
+        tryMinimizeExits(tryBlock, exitType, labelName);
+        Node allCatchNodes = NodeUtil.getCatchBlock(n);
+        if (NodeUtil.hasCatchHandler(allCatchNodes)) {
+            Preconditions.checkState(allCatchNodes.hasOneChild());
+            Node catchNode = allCatchNodes.getFirstChild();
+            Node catchCodeBlock = catchNode.getLastChild();
+            tryMinimizeExits(catchCodeBlock, exitType, labelName);
+        }
+        /* Don't try to minimize the exits of finally blocks, as this
+       * can cause problems if it changes the completion type of the finally
+       * block. See ECMA 262 Sections 8.9 & 12.14
+       */
+        if (NodeUtil.hasFinally(n)) {
+            Node finallyBlock = n.getLastChild();
+            tryMinimizeExits(finallyBlock, exitType, labelName);
+        }
+    }
+    // Just a 'label'.
+    if (n.isLabel()) {
+        Node labelBlock = n.getLastChild();
+        tryMinimizeExits(labelBlock, exitType, labelName);
+    }
+    // TODO(johnlenz): The last case of SWITCH statement?
+    // The rest assumes a block with at least one child, bail on anything else.
+    if (!n.isBlock() || n.getLastChild() == null) {
+        return;
+    }
+    // Multiple if-exits can be converted in a single pass.
+    // Convert ""if (blah) break;  if (blah2) break; other_stmt;"" to
+    // become ""if (blah); else { if (blah2); else { other_stmt; } }""
+    // which will get converted to ""if (!blah && !blah2) { other_stmt; }"".
+    for (Node c : n.children()) {
+        // An 'if' block to process below.
+        if (c.isIf()) {
+            Node ifTree = c;
+            Node trueBlock, falseBlock;
+            // First, the true condition block.
+            trueBlock = ifTree.getFirstChild().getNext();
+            falseBlock = trueBlock.getNext();
+            tryMinimizeIfBlockExits(trueBlock, falseBlock, ifTree, exitType, labelName);
+            // Now the else block.
+            // The if blocks may have changed, get them again.
+            trueBlock = ifTree.getFirstChild().getNext();
+            falseBlock = trueBlock.getNext();
+            if (falseBlock != null) {
+                tryMinimizeIfBlockExits(falseBlock, trueBlock, ifTree, exitType, labelName);
+            }
+        }
+        if (c == n.getLastChild()) {
+            break;
+        }
+    }
+    // Now try to minimize the exits of the last child, if it is removed
+    // look at what has become the last child.
+    for (Node c = n.getLastChild(); c != null; c = n.getLastChild()) {
+        tryMinimizeExits(c, exitType, labelName);
+        // If the node is still the last child, we are done.
+        if (c == n.getLastChild()) {
+            break;
+        }
+    }
+}","public void test55() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""function JSCompiler_emptyFn() {  return function() {}}"");
+    Node node1 = new Node(126, node0);
+    MinimizeExitPoints minimizeExitPoints0 = new MinimizeExitPoints(compiler0);
+    minimizeExitPoints0.tryMinimizeExits(node1, (-816), ""com.google.javascript.jscomp.MinimizeExitPoints"");
+    assertEquals(4, Node.FLAG_ARGUMENTS_UNMODIFIED);
+}","/**
+ * Attempts to minimize the number of explicit exit points in a control
+ * structure to take advantage of the implied exit at the end of the
+ * structure.  This is accomplished by removing redundant statements, and
+ * moving statements following a qualifying IF node into that node.
+ * For example:
+ *
+ * function () {
+ *   if (x) return;
+ *   else blah();
+ *   foo();
+ * }
+ *
+ * becomes:
+ *
+ * function () {
+ *  if (x) ;
+ *  else {
+ *    blah();
+ *    foo();
+ *  }
+ *
+ * @param n The execution node of a parent to inspect.
+ * @param exitType The type of exit to look for.
+ * @param labelName If parent is a label the name of the label to look for,
+ *   null otherwise.
+ * @nullable labelName non-null only for breaks within labels.
+ */"
+"public boolean isString() {
+    return this.getType() == Token.STRING;
+}","public void test66() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newString(""com.google.javascript.jscomp.LinkedFlowScope$FlatFlowScopeCache"");
+    MinimizeExitPoints minimizeExitPoints0 = new MinimizeExitPoints(compiler0);
+    minimizeExitPoints0.tryMinimizeExits(node0, 40, ""com.google.javascript.jscomp.LinkedFlowScope$FlatFlowScopeCache"");
+    assertTrue(node0.isString());
+}",""
+"public boolean isNoSideEffectsCall() {
+    return areBitFlagsSet(getSideEffectFlags(), NO_SIDE_EFFECTS);
+}","public void test77() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""7;"");
+    MinimizeExitPoints minimizeExitPoints0 = new MinimizeExitPoints(compiler0);
+    Node node1 = new Node(115, node0, 34, 40);
+    minimizeExitPoints0.tryMinimizeExits(node1, 115, (String) null);
+    assertFalse(node1.isNoSideEffectsCall());
+}","/**
+ * Returns true if this node is a function or constructor call that
+ * has no side effects.
+ */"
+"void tryMinimizeExits(Node n, int exitType, String labelName) {
+    // Just an 'exit'.
+    if (matchingExitNode(n, exitType, labelName)) {
+        NodeUtil.removeChild(n.getParent(), n);
+        compiler.reportCodeChange();
+        return;
+    }
+    // Just an 'if'.
+    if (n.isIf()) {
+        Node ifBlock = n.getFirstChild().getNext();
+        tryMinimizeExits(ifBlock, exitType, labelName);
+        Node elseBlock = ifBlock.getNext();
+        if (elseBlock != null) {
+            tryMinimizeExits(elseBlock, exitType, labelName);
+        }
+        return;
+    }
+    // Just a 'try/catch/finally'.
+    if (n.isTry()) {
+        Node tryBlock = n.getFirstChild();
+        tryMinimizeExits(tryBlock, exitType, labelName);
+        Node allCatchNodes = NodeUtil.getCatchBlock(n);
+        if (NodeUtil.hasCatchHandler(allCatchNodes)) {
+            Preconditions.checkState(allCatchNodes.hasOneChild());
+            Node catchNode = allCatchNodes.getFirstChild();
+            Node catchCodeBlock = catchNode.getLastChild();
+            tryMinimizeExits(catchCodeBlock, exitType, labelName);
+        }
+        /* Don't try to minimize the exits of finally blocks, as this
+       * can cause problems if it changes the completion type of the finally
+       * block. See ECMA 262 Sections 8.9 & 12.14
+       */
+        if (NodeUtil.hasFinally(n)) {
+            Node finallyBlock = n.getLastChild();
+            tryMinimizeExits(finallyBlock, exitType, labelName);
+        }
+    }
+    // Just a 'label'.
+    if (n.isLabel()) {
+        Node labelBlock = n.getLastChild();
+        tryMinimizeExits(labelBlock, exitType, labelName);
+    }
+    // TODO(johnlenz): The last case of SWITCH statement?
+    // The rest assumes a block with at least one child, bail on anything else.
+    if (!n.isBlock() || n.getLastChild() == null) {
+        return;
+    }
+    // Multiple if-exits can be converted in a single pass.
+    // Convert ""if (blah) break;  if (blah2) break; other_stmt;"" to
+    // become ""if (blah); else { if (blah2); else { other_stmt; } }""
+    // which will get converted to ""if (!blah && !blah2) { other_stmt; }"".
+    for (Node c : n.children()) {
+        // An 'if' block to process below.
+        if (c.isIf()) {
+            Node ifTree = c;
+            Node trueBlock, falseBlock;
+            // First, the true condition block.
+            trueBlock = ifTree.getFirstChild().getNext();
+            falseBlock = trueBlock.getNext();
+            tryMinimizeIfBlockExits(trueBlock, falseBlock, ifTree, exitType, labelName);
+            // Now the else block.
+            // The if blocks may have changed, get them again.
+            trueBlock = ifTree.getFirstChild().getNext();
+            falseBlock = trueBlock.getNext();
+            if (falseBlock != null) {
+                tryMinimizeIfBlockExits(falseBlock, trueBlock, ifTree, exitType, labelName);
+            }
+        }
+        if (c == n.getLastChild()) {
+            break;
+        }
+    }
+    // Now try to minimize the exits of the last child, if it is removed
+    // look at what has become the last child.
+    for (Node c = n.getLastChild(); c != null; c = n.getLastChild()) {
+        tryMinimizeExits(c, exitType, labelName);
+        // If the node is still the last child, we are done.
+        if (c == n.getLastChild()) {
+            break;
+        }
+    }
+}","public void test88() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    MinimizeExitPoints minimizeExitPoints0 = new MinimizeExitPoints(compiler0);
+    Node node0 = new Node(0, 0, 0);
+    Node node1 = new Node(0, node0);
+    // Undeclared exception!
+    try {
+        minimizeExitPoints0.tryMinimizeExits(node1, 0, """");
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 0
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}","/**
+ * Attempts to minimize the number of explicit exit points in a control
+ * structure to take advantage of the implied exit at the end of the
+ * structure.  This is accomplished by removing redundant statements, and
+ * moving statements following a qualifying IF node into that node.
+ * For example:
+ *
+ * function () {
+ *   if (x) return;
+ *   else blah();
+ *   foo();
+ * }
+ *
+ * becomes:
+ *
+ * function () {
+ *  if (x) ;
+ *  else {
+ *    blah();
+ *    foo();
+ *  }
+ *
+ * @param n The execution node of a parent to inspect.
+ * @param exitType The type of exit to look for.
+ * @param labelName If parent is a label the name of the label to look for,
+ *   null otherwise.
+ * @nullable labelName non-null only for breaks within labels.
+ */"

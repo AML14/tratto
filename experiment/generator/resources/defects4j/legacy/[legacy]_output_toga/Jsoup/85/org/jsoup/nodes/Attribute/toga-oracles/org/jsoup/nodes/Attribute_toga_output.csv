@@ -1,0 +1,447 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    boolean boolean0 = Attribute.isBooleanAttribute(""allowfullscreen"");
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test011,"public void test011() throws Throwable {
+    Attributes attributes0 = new Attributes();
+    Attribute attribute0 = new Attribute(""allowfullscreen"", ""allowfullscreen"", attributes0);
+    boolean boolean0 = attribute0.isBooleanAttribute();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test022,"public void test022() throws Throwable {
+    Attribute attribute0 = Attribute.createFromEncoded(""disabled"", ""disabled"");
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    boolean boolean0 = attribute0.shouldCollapseAttribute(document_OutputSettings0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test033,"public void test033() throws Throwable {
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    boolean boolean0 = Attribute.shouldCollapseAttribute("""", (String) null, document_OutputSettings0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test044,"public void test044() throws Throwable {
+    boolean boolean0 = Attribute.isDataAttribute(""data-org.jsoup.nodes.Entities$1=\""data-org.jsoup.nodes.Entities$1\"""");
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test055,"public void test055() throws Throwable {
+    Attribute attribute0 = Attribute.createFromEncoded(""base"", ""base"");
+    boolean boolean0 = attribute0.isDataAttribute();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test066,"public void test066() throws Throwable {
+    boolean boolean0 = Attribute.isBooleanAttribute(""Oz[4"");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test077,"public void test077() throws Throwable {
+    Attribute attribute0 = Attribute.createFromEncoded(""base"", ""base"");
+    String string0 = attribute0.getValue();
+    assertEquals(""base"", string0);
+}",0,
+project,0,test088,"public void test088() throws Throwable {
+    Attribute attribute0 = Attribute.createFromEncoded(""#root"", """");
+    String string0 = attribute0.getValue();
+    assertEquals("""", string0);
+}",0,
+project,0,test099,"public void test099() throws Throwable {
+    Attribute attribute0 = new Attribute(""                "", ""ot(''6~bug%:"");
+    attribute0.getKey();
+    assertEquals(""ot(''6~bug%:"", attribute0.getValue());
+}",0,assertNotNull(attribute0.getValue())
+project,0,test1010,"public void test1010() throws Throwable {
+    Attribute attribute0 = new Attribute(""e'E,YoM(JP{m&"", ""e'E,YoM(JP{m&"");
+    // Undeclared exception!
+    try {
+        attribute0.shouldCollapseAttribute((Document.OutputSettings) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Attribute"", e);
+    }
+}",0,
+project,0,test1111,"public void test1111() throws Throwable {
+    // Undeclared exception!
+    try {
+        Attribute.shouldCollapseAttribute(""|w2kb2{.\""W90"", ""+8>TZ"", (Document.OutputSettings) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Attribute"", e);
+    }
+}",0,
+project,0,test1212,"public void test1212() throws Throwable {
+    Attribute attribute0 = Attribute.createFromEncoded(""#root"", """");
+    // Undeclared exception!
+    try {
+        attribute0.setValue("")"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Attribute"", e);
+    }
+}",0,
+project,0,test1313,"public void test1313() throws Throwable {
+    Attribute attribute0 = Attribute.createFromEncoded(""RiLoHH<Ej_AmK-"", ""RiLoHH<Ej_AmK-"");
+    Attributes attributes0 = new Attributes();
+    Attributes attributes1 = attributes0.clone();
+    Attributes attributes2 = attributes1.put(""RiLoHH<Ej_AmK-"", true);
+    attribute0.parent = attributes2;
+    String[] stringArray0 = new String[0];
+    attributes1.keys = stringArray0;
+    // Undeclared exception!
+    try {
+        attribute0.setValue(""RiLoHH<Ej_AmK-"");
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 0
+        //
+        verifyException(""org.jsoup.nodes.Attributes"", e);
+    }
+}",0,
+project,0,test1414,"public void test1414() throws Throwable {
+    Attribute attribute0 = Attribute.createFromEncoded(""L?#"", ""MAx;9kK5=$j:6P1A["");
+    // Undeclared exception!
+    try {
+        attribute0.setKey("""");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",1,
+project,0,test1515,"public void test1515() throws Throwable {
+    Attribute attribute0 = Attribute.createFromEncoded(""Oz[4"", ""Oz[4"");
+    Attributes attributes0 = new Attributes();
+    Attributes attributes1 = attributes0.put(attribute0);
+    Attributes attributes2 = attributes1.clone();
+    String[] stringArray0 = new String[0];
+    attributes2.keys = stringArray0;
+    attribute0.parent = attributes2;
+    // Undeclared exception!
+    try {
+        attribute0.setKey(""[sb[T<s]Qn%"");
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 0
+        //
+        verifyException(""org.jsoup.nodes.Attributes"", e);
+    }
+}",1,
+project,0,test1616,"public void test1616() throws Throwable {
+    // Undeclared exception!
+    try {
+        Attribute.isDataAttribute((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test1717,"public void test1717() throws Throwable {
+    // Undeclared exception!
+    try {
+        Attribute.isBooleanAttribute((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test1818,"public void test1818() throws Throwable {
+    CharBuffer charBuffer0 = CharBuffer.wrap((CharSequence) ""declare"");
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    // Undeclared exception!
+    try {
+        Attribute.html(""*c7BNKA}abGu(cxUj"", ""*c7BNKA}abGu(cxUj"", (Appendable) charBuffer0, document_OutputSettings0);
+        fail(""Expecting exception: ReadOnlyBufferException"");
+    } catch (ReadOnlyBufferException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.nio.CharBuffer"", e);
+    }
+}",0,
+project,0,test1919,"public void test1919() throws Throwable {
+    CharBuffer charBuffer0 = CharBuffer.allocate(2);
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    // Undeclared exception!
+    try {
+        Attribute.html(""N=gxE[6rvT[~6CN#"", ""reado"", (Appendable) charBuffer0, document_OutputSettings0);
+        fail(""Expecting exception: BufferOverflowException"");
+    } catch (BufferOverflowException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.nio.CharBuffer"", e);
+    }
+}",0,
+project,0,test2020,"public void test2020() throws Throwable {
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    // Undeclared exception!
+    try {
+        Attribute.html("""", """", (Appendable) null, document_OutputSettings0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Attribute"", e);
+    }
+}",0,
+project,0,test2121,"public void test2121() throws Throwable {
+    Attributes attributes0 = new Attributes();
+    Attribute attribute0 = new Attribute(""YhjH X&BodRuSpBVc"", ""YhjH X&BodRuSpBVc"", attributes0);
+    CharBuffer charBuffer0 = CharBuffer.wrap((CharSequence) ""1"");
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    // Undeclared exception!
+    try {
+        attribute0.html((Appendable) charBuffer0, document_OutputSettings0);
+        fail(""Expecting exception: ReadOnlyBufferException"");
+    } catch (ReadOnlyBufferException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.nio.CharBuffer"", e);
+    }
+}",0,
+project,0,test2222,"public void test2222() throws Throwable {
+    Attributes attributes0 = new Attributes();
+    Attribute attribute0 = new Attribute(""?sW,9,"", ""t_IH22J_RVbg<"", attributes0);
+    char[] charArray0 = new char[9];
+    CharBuffer charBuffer0 = CharBuffer.wrap(charArray0);
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    // Undeclared exception!
+    try {
+        attribute0.html((Appendable) charBuffer0, document_OutputSettings0);
+        fail(""Expecting exception: BufferOverflowException"");
+    } catch (BufferOverflowException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.nio.Buffer"", e);
+    }
+}",0,
+project,0,test2323,"public void test2323() throws Throwable {
+    Attributes attributes0 = new Attributes();
+    Attribute attribute0 = new Attribute(""          "", ""xml"", attributes0);
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    // Undeclared exception!
+    try {
+        attribute0.html((Appendable) null, document_OutputSettings0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Attribute"", e);
+    }
+}",0,
+project,0,test2424,"public void test2424() throws Throwable {
+    Attribute attribute0 = new Attribute(""DoctypeName"", (String) null);
+    MockFileWriter mockFileWriter0 = new MockFileWriter(""z"", true);
+    mockFileWriter0.close();
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    try {
+        attribute0.html((Appendable) mockFileWriter0, document_OutputSettings0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+    }
+}",0,
+project,0,test2525,"public void test2525() throws Throwable {
+    // Undeclared exception!
+    try {
+        Attribute.createFromEncoded("""", (String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test2626,"public void test2626() throws Throwable {
+    // Undeclared exception!
+    try {
+        Attribute.createFromEncoded("""", ""compact"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test2727,"public void test2727() throws Throwable {
+    Attribute attribute0 = null;
+    try {
+        attribute0 = new Attribute("""", (String) null, (Attributes) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test2828,"public void test2828() throws Throwable {
+    Attribute attribute0 = null;
+    try {
+        attribute0 = new Attribute("""", """");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",1,
+project,0,test3132,"public void test3132() throws Throwable {
+    Attribute attribute0 = new Attribute(""t'Q:, L\""`AZ,}#"", ""org.jsoup.nodes.Entities$1"");
+    MockFile mockFile0 = new MockFile(""t'Q:, L\""`AZ,}#"", ""t'Q:, L\""`AZ,}#"");
+    MockPrintWriter mockPrintWriter0 = new MockPrintWriter(mockFile0);
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    attribute0.html((Appendable) mockPrintWriter0, document_OutputSettings0);
+    assertEquals(""org.jsoup.nodes.Entities$1"", attribute0.getValue());
+}",0,assertNotNull(attribute0.getValue())
+project,0,test3233,"public void test3233() throws Throwable {
+    Attribute attribute0 = new Attribute(""u9/o po>@6G"", (String) null);
+    String string0 = attribute0.getValue();
+    assertNull(string0);
+}",0,assertNotNull(string0)
+project,0,test3334,"public void test3334() throws Throwable {
+    Attributes attributes0 = new Attributes();
+    Attribute attribute0 = new Attribute(""n"", ""n"", attributes0);
+    String string0 = attribute0.getKey();
+    assertEquals(""n"", string0);
+}",0,assertNotNull(string0)
+project,0,test3835,"public void test3835() throws Throwable {
+    Attributes attributes0 = new Attributes();
+    Attribute attribute0 = new Attribute(""bT@JuZR.:Vi"", (String) null, attributes0);
+    Attribute attribute1 = attribute0.clone();
+    boolean boolean0 = attribute0.equals(attribute1);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test3936,"public void test3936() throws Throwable {
+    Attribute attribute0 = new Attribute(""readonly"", ""noframes"", (Attributes) null);
+    Attribute attribute1 = new Attribute(""noframes"", """", (Attributes) null);
+    boolean boolean0 = attribute0.equals(attribute1);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test3937,"public void test3937() throws Throwable {
+    Attribute attribute0 = new Attribute(""readonly"", ""noframes"", (Attributes) null);
+    Attribute attribute1 = new Attribute(""noframes"", """", (Attributes) null);
+    boolean boolean0 = attribute0.equals(attribute1);
+    assertEquals("""", attribute1.getValue());
+}",0,assertNotNull(attribute1.getValue())
+project,0,test4038,"public void test4038() throws Throwable {
+    Attribute attribute0 = new Attribute(""YhjH X&BodRuSpBVc"", ""YhjH X&BodRuSpBVc"");
+    boolean boolean0 = attribute0.equals((Object) null);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4139,"public void test4139() throws Throwable {
+    Attributes attributes0 = new Attributes();
+    Attribute attribute0 = new Attribute(""bT@JuZR.:Vi"", (String) null, attributes0);
+    boolean boolean0 = attribute0.equals(attribute0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4240,"public void test4240() throws Throwable {
+    Attribute attribute0 = Attribute.createFromEncoded(""Oz[4"", ""Oz[4"");
+    boolean boolean0 = attribute0.equals(""Oz[4=\""Oz[4\"""");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4341,"public void test4341() throws Throwable {
+    Attributes attributes0 = new Attributes();
+    Attribute attribute0 = new Attribute(""bT@JuZR.:Vi"", (String) null, attributes0);
+    boolean boolean0 = attribute0.isBooleanAttribute();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4442,"public void test4442() throws Throwable {
+    Attribute attribute0 = Attribute.createFromEncoded(""Oz[4"", ""Oz[4"");
+    boolean boolean0 = attribute0.isBooleanAttribute();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4543,"public void test4543() throws Throwable {
+    Attribute attribute0 = new Attribute(""readonly"", ""noframes"", (Attributes) null);
+    boolean boolean0 = attribute0.isBooleanAttribute();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4544,"public void test4544() throws Throwable {
+    Attribute attribute0 = new Attribute(""readonly"", ""noframes"", (Attributes) null);
+    boolean boolean0 = attribute0.isBooleanAttribute();
+    assertEquals(""noframes"", attribute0.getValue());
+}",0,assertNotNull(attribute0.getValue())
+project,0,test4645,"public void test4645() throws Throwable {
+    Attribute attribute0 = Attribute.createFromEncoded(""Oz[4"", ""Oz[4"");
+    attribute0.setKey(""value"");
+    String string0 = attribute0.html();
+    assertEquals(""value=\""Oz[4\"""", string0);
+}",0,
+project,0,test4746,"public void test4746() throws Throwable {
+    Attributes attributes0 = new Attributes();
+    Attribute attribute0 = new Attribute(""T"", """", attributes0);
+    String string0 = attribute0.toString();
+    assertEquals(""T=\""\"""", string0);
+}",0,assertNotNull(string0)
+project,0,test4847,"public void test4847() throws Throwable {
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    Document.OutputSettings.Syntax document_OutputSettings_Syntax0 = Document.OutputSettings.Syntax.xml;
+    document_OutputSettings0.syntax(document_OutputSettings_Syntax0);
+    boolean boolean0 = Attribute.shouldCollapseAttribute(""nowrap"", ""l{{a7;~eiyx`ftLu"", document_OutputSettings0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4948,"public void test4948() throws Throwable {
+    boolean boolean0 = Attribute.isDataAttribute(""data-"");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test5049,"public void test5049() throws Throwable {
+    Attributes attributes0 = new Attributes();
+    Attribute attribute0 = new Attribute(""n"", ""n"", attributes0);
+    String string0 = attribute0.setValue(""n"");
+    assertEquals(""n"", attribute0.getValue());
+}",0,assertNotNull(attribute0.getValue())
+project,0,test5050,"public void test5050() throws Throwable {
+    Attributes attributes0 = new Attributes();
+    Attribute attribute0 = new Attribute(""n"", ""n"", attributes0);
+    String string0 = attribute0.setValue(""n"");
+    assertEquals("""", string0);
+}",0,
+project,0,test5151,"public void test5151() throws Throwable {
+    Attribute attribute0 = Attribute.createFromEncoded(""Oz[4"", ""Oz[4"");
+    Attributes attributes0 = new Attributes();
+    attributes0.put(attribute0);
+    attribute0.setValue(""value=\""Oz[4\"""");
+    assertEquals(""value=\""Oz[4\"""", attribute0.getValue());
+}",0,assertNotNull(attribute0.getValue())
+project,0,test5252,"public void test5252() throws Throwable {
+    Attributes attributes0 = new Attributes();
+    Attribute attribute0 = new Attribute(""n"", ""n"", attributes0);
+    attribute0.setKey(""M"");
+    assertEquals(""M"", attribute0.getKey());
+}",0,
+project,0,test5353,"public void test5353() throws Throwable {
+    Attribute attribute0 = new Attribute(""e'E,YoM(JP{m&"", ""e'E,YoM(JP{m&"");
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    boolean boolean0 = attribute0.shouldCollapseAttribute(document_OutputSettings0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test5454,"public void test5454() throws Throwable {
+    Attribute attribute0 = Attribute.createFromEncoded(""data-readonly"", ""declare"");
+    boolean boolean0 = attribute0.isDataAttribute();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test5455,"public void test5455() throws Throwable {
+    Attribute attribute0 = Attribute.createFromEncoded(""data-readonly"", ""declare"");
+    boolean boolean0 = attribute0.isDataAttribute();
+    assertEquals(""declare"", attribute0.getValue());
+}",0,

@@ -1,0 +1,213 @@
+focal_method,test_prefix,docstring
+"public boolean isContextDependent() {
+    if (!contextDependencyKnown) {
+        contextDependent = computeContextDependent();
+        contextDependencyKnown = true;
+    }
+    return contextDependent;
+}","public void test022() throws Throwable {
+    Float float0 = new Float(2250.7079);
+    Constant constant0 = new Constant(float0);
+    NameAttributeTest nameAttributeTest0 = new NameAttributeTest(constant0, constant0);
+    boolean boolean0 = nameAttributeTest0.isContextDependent();
+    assertTrue(boolean0);
+}","/**
+ * Returns true if this expression should be re-evaluated
+ * each time the current position in the context changes.
+ */"
+"public abstract boolean computeContextDependent();","public void test033() throws Throwable {
+    Expression[] expressionArray0 = new Expression[7];
+    QName qName0 = new QName("""", """");
+    ExtensionFunction extensionFunction0 = new ExtensionFunction(qName0, expressionArray0);
+    expressionArray0[1] = (Expression) extensionFunction0;
+    boolean boolean0 = expressionArray0[1].computeContextDependent();
+    assertTrue(boolean0);
+}","/**
+ * Implemented by subclasses and result is cached by isContextDependent()
+ */"
+"public abstract boolean computeContextDependent();","public void test044() throws Throwable {
+    Expression[] expressionArray0 = new Expression[6];
+    Short short0 = new Short((short) 46);
+    Constant constant0 = new Constant(short0);
+    expressionArray0[0] = (Expression) constant0;
+    boolean boolean0 = expressionArray0[0].computeContextDependent();
+    assertFalse(boolean0);
+}","/**
+ * Implemented by subclasses and result is cached by isContextDependent()
+ */"
+"public abstract Object compute(EvalContext context);","public void test055() throws Throwable {
+    Expression[] expressionArray0 = new Expression[4];
+    CoreFunction coreFunction0 = new CoreFunction((-571), expressionArray0);
+    CoreOperationNotEqual coreOperationNotEqual0 = new CoreOperationNotEqual(coreFunction0, coreFunction0);
+    CoreOperationEqual coreOperationEqual0 = new CoreOperationEqual(coreOperationNotEqual0, coreOperationNotEqual0);
+    expressionArray0[3] = (Expression) coreOperationEqual0;
+    Object object0 = expressionArray0[3].compute((EvalContext) null);
+    assertEquals(true, object0);
+}",""
+"public Iterator iteratePointers(EvalContext context) {
+    Object result = compute(context);
+    if (result == null) {
+        return Collections.EMPTY_LIST.iterator();
+    }
+    if (result instanceof EvalContext) {
+        return (EvalContext) result;
+    }
+    return new PointerIterator(ValueUtils.iterate(result), new QName(null, ""value""), context.getRootContext().getCurrentNodePointer().getLocale());
+}","public void test066() throws Throwable {
+    Expression[] expressionArray0 = new Expression[1];
+    QName qName0 = new QName(""No such function: "");
+    ExtensionFunction extensionFunction0 = new ExtensionFunction(qName0, expressionArray0);
+    CoreOperationLessThanOrEqual coreOperationLessThanOrEqual0 = new CoreOperationLessThanOrEqual(extensionFunction0, extensionFunction0);
+    expressionArray0[0] = (Expression) coreOperationLessThanOrEqual0;
+    // Undeclared exception!
+    try {
+        coreOperationLessThanOrEqual0.iteratePointers((EvalContext) null);
+        fail(""Expecting exception: StackOverflowError"");
+    } catch (StackOverflowError e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"public Iterator iterate(EvalContext context) {
+    Object result = compute(context);
+    if (result instanceof EvalContext) {
+        return new ValueIterator((EvalContext) result);
+    }
+    return ValueUtils.iterate(result);
+}","public void test077() throws Throwable {
+    CoreOperationOr coreOperationOr0 = new CoreOperationOr((Expression[]) null);
+    NodeTypeTest nodeTypeTest0 = new NodeTypeTest(0);
+    AncestorContext ancestorContext0 = new AncestorContext((EvalContext) null, true, nodeTypeTest0);
+    // Undeclared exception!
+    try {
+        coreOperationOr0.iterate(ancestorContext0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.compiler.CoreOperationOr"", e);
+    }
+}",""
+"public boolean isContextDependent() {
+    if (!contextDependencyKnown) {
+        contextDependent = computeContextDependent();
+        contextDependencyKnown = true;
+    }
+    return contextDependent;
+}","public void test088() throws Throwable {
+    CoreOperationGreaterThan coreOperationGreaterThan0 = new CoreOperationGreaterThan((Expression) null, (Expression) null);
+    // Undeclared exception!
+    try {
+        coreOperationGreaterThan0.isContextDependent();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.compiler.Operation"", e);
+    }
+}","/**
+ * Returns true if this expression should be re-evaluated
+ * each time the current position in the context changes.
+ */"
+"public abstract Object computeValue(EvalContext context);","public void test099() throws Throwable {
+    Expression[] expressionArray0 = new Expression[2];
+    CoreOperationAnd coreOperationAnd0 = new CoreOperationAnd(expressionArray0);
+    expressionArray0[1] = (Expression) coreOperationAnd0;
+    EvalContext evalContext0 = null;
+    // Undeclared exception!
+    try {
+        expressionArray0[1].computeValue(evalContext0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.compiler.CoreOperationAnd"", e);
+    }
+}","/**
+ * Evaluates the expression. If the result is a node set, returns
+ * the first element of the node set.
+ */"
+"public boolean computeContextDependent() {
+    if (args != null) {
+        for (int i = 0; i < args.length; i++) {
+            if (args[i].isContextDependent()) {
+                return true;
+            }
+        }
+    }
+    return false;
+}","public void test1010() throws Throwable {
+    Expression[] expressionArray0 = new Expression[6];
+    Constant constant0 = new Constant(""org.apache.commons.jxpath.ri.compiler.Expression$ValueIterator"");
+    CoreOperationUnion coreOperationUnion0 = new CoreOperationUnion(expressionArray0);
+    CoreOperationEqual coreOperationEqual0 = new CoreOperationEqual(coreOperationUnion0, constant0);
+    // Undeclared exception!
+    try {
+        coreOperationEqual0.computeContextDependent();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.compiler.Operation"", e);
+    }
+}",""
+"public Object compute(EvalContext context) {
+    return computeValue(context);
+}","public void test1111() throws Throwable {
+    CoreOperationGreaterThanOrEqual coreOperationGreaterThanOrEqual0 = new CoreOperationGreaterThanOrEqual((Expression) null, (Expression) null);
+    AttributeContext attributeContext0 = new AttributeContext((EvalContext) null, (NodeTest) null);
+    // Undeclared exception!
+    try {
+        coreOperationGreaterThanOrEqual0.compute(attributeContext0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.compiler.CoreOperationGreaterThanOrEqual"", e);
+    }
+}",""
+"public Iterator iteratePointers(EvalContext context) {
+    Object result = compute(context);
+    if (result == null) {
+        return Collections.EMPTY_LIST.iterator();
+    }
+    if (result instanceof EvalContext) {
+        return (EvalContext) result;
+    }
+    return new PointerIterator(ValueUtils.iterate(result), new QName(null, ""value""), context.getRootContext().getCurrentNodePointer().getLocale());
+}","public void test1212() throws Throwable {
+    Double double0 = new Double(1.0);
+    Constant constant0 = new Constant(double0);
+    // Undeclared exception!
+    try {
+        constant0.iteratePointers((EvalContext) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.compiler.Expression"", e);
+    }
+}",""
+"public boolean isContextDependent() {
+    if (!contextDependencyKnown) {
+        contextDependent = computeContextDependent();
+        contextDependencyKnown = true;
+    }
+    return contextDependent;
+}","public void test1313() throws Throwable {
+    Constant constant0 = new Constant("""");
+    CoreOperationNotEqual coreOperationNotEqual0 = new CoreOperationNotEqual(constant0, constant0);
+    boolean boolean0 = coreOperationNotEqual0.isContextDependent();
+    boolean boolean1 = coreOperationNotEqual0.isContextDependent();
+    assertTrue(boolean1 == boolean0);
+}","/**
+ * Returns true if this expression should be re-evaluated
+ * each time the current position in the context changes.
+ */"

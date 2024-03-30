@@ -1,0 +1,1245 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    int int0 = ByteQuadsCanonicalizer._calcTertiaryShift(4096);
+    assertEquals(6, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test011,"public void test011() throws Throwable {
+    int int0 = ByteQuadsCanonicalizer._calcTertiaryShift((-1));
+    assertEquals(4, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test022,"public void test022() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    int[] intArray0 = new int[6];
+    intArray0[3] = (-1134);
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer0.findName(intArray0, 32768);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 6
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",0,
+project,0,test033,"public void test033() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    int[] intArray0 = new int[7];
+    intArray0[3] = 3208;
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer0.addName("""", intArray0, 1134);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 7
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",0,
+project,0,test044,"public void test044() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    int[] intArray0 = new int[7];
+    intArray0[2] = 4033;
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer0.addName("""", intArray0, 1134);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 7
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",0,
+project,0,test055,"public void test055() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    int[] intArray0 = new int[7];
+    intArray0[1] = 4;
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer0.addName("""", intArray0, 1134);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 7
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",0,
+project,0,test066,"public void test066() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(7);
+    int[] intArray0 = new int[8];
+    intArray0[3] = 7;
+    byteQuadsCanonicalizer0._tertiaryShift = 7;
+    byteQuadsCanonicalizer0._hashArea = intArray0;
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer0.addName(""w|cN^aF"", 7);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",0,
+project,0,test077,"public void test077() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot((-9));
+    int[] intArray0 = new int[11];
+    intArray0[3] = (-9);
+    byteQuadsCanonicalizer0._hashArea = intArray0;
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer0.addName(""w|cN^aF"", (-9));
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",0,
+project,0,test088,"public void test088() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(7);
+    int[] intArray0 = new int[8];
+    intArray0[3] = 7;
+    intArray0[4] = 7;
+    byteQuadsCanonicalizer0._hashArea = intArray0;
+    byteQuadsCanonicalizer0._spilloverEnd = 7;
+    byteQuadsCanonicalizer0.findName(7);
+    assertEquals(1, byteQuadsCanonicalizer0.spilloverCount());
+}",0,
+project,0,test099,"public void test099() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot((-24));
+    int[] intArray0 = new int[8];
+    intArray0[0] = (-24);
+    intArray0[3] = (-24);
+    byteQuadsCanonicalizer0._hashArea = intArray0;
+    assertEquals((-24), byteQuadsCanonicalizer0.hashSeed());
+}",0,"assertEquals(0, byteQuadsCanonicalizer0.hashSeed())"
+project,0,test0910,"public void test0910() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot((-24));
+    int[] intArray0 = new int[8];
+    intArray0[0] = (-24);
+    intArray0[3] = (-24);
+    byteQuadsCanonicalizer0._hashArea = intArray0;
+    byteQuadsCanonicalizer0.findName((-24));
+    assertEquals(0, byteQuadsCanonicalizer0.size());
+}",0,"assertEquals(0, byteQuadsCanonicalizer0.size())"
+project,0,test0911,"public void test0911() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot((-24));
+    int[] intArray0 = new int[8];
+    intArray0[0] = (-24);
+    intArray0[3] = (-24);
+    byteQuadsCanonicalizer0._hashArea = intArray0;
+    byteQuadsCanonicalizer0.findName((-24));
+    assertEquals(0, byteQuadsCanonicalizer0.spilloverCount());
+}",0,"assertEquals(0, byteQuadsCanonicalizer0.spilloverCount())"
+project,0,test1012,"public void test1012() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(19);
+    byteQuadsCanonicalizer0._tertiaryShift = 423;
+    int[] intArray0 = new int[4];
+    intArray0[3] = 19;
+    byteQuadsCanonicalizer0._hashArea = intArray0;
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer0.findName(19);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 7
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",0,
+project,0,test1113,"public void test1113() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot((-24));
+    int[] intArray0 = new int[8];
+    intArray0[3] = (-24);
+    byteQuadsCanonicalizer0._hashArea = intArray0;
+    assertEquals((-24), byteQuadsCanonicalizer0.hashSeed());
+}",0,"assertEquals(0, byteQuadsCanonicalizer0.hashSeed())"
+project,0,test1114,"public void test1114() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot((-24));
+    int[] intArray0 = new int[8];
+    intArray0[3] = (-24);
+    byteQuadsCanonicalizer0._hashArea = intArray0;
+    byteQuadsCanonicalizer0.findName((-24));
+    assertEquals(0, byteQuadsCanonicalizer0.spilloverCount());
+}",0,"assertEquals(0, byteQuadsCanonicalizer0.spilloverCount())"
+project,0,test1215,"public void test1215() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(0);
+    byteQuadsCanonicalizer1._hashSize = 2;
+    byteQuadsCanonicalizer1.toString();
+    assertEquals(108, byteQuadsCanonicalizer1.spilloverCount());
+}",0,"assertEquals(0, byteQuadsCanonicalizer1.spilloverCount())"
+project,0,test1316,"public void test1316() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(33);
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild((-1));
+    byteQuadsCanonicalizer1._secondaryStart = 487;
+    String string0 = byteQuadsCanonicalizer1.toString();
+    assertEquals(0, byteQuadsCanonicalizer1.spilloverCount());
+}",0,"assertEquals(0, byteQuadsCanonicalizer1.spilloverCount())"
+project,0,test1317,"public void test1317() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(33);
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild((-1));
+    byteQuadsCanonicalizer1._secondaryStart = 487;
+    String string0 = byteQuadsCanonicalizer1.toString();
+    assertEquals(33, byteQuadsCanonicalizer1.hashSeed());
+}",0,
+project,0,test1318,"public void test1318() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(33);
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild((-1));
+    byteQuadsCanonicalizer1._secondaryStart = 487;
+    String string0 = byteQuadsCanonicalizer1.toString();
+    assertEquals(""[com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer: size=0, hashSize=64, 0/0/0/0 pri/sec/ter/spill (=0), total:0]"", string0);
+}",0,
+project,0,test1319,"public void test1319() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(33);
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild((-1));
+    byteQuadsCanonicalizer1._secondaryStart = 487;
+    String string0 = byteQuadsCanonicalizer1.toString();
+    assertFalse(byteQuadsCanonicalizer1.maybeDirty());
+}",0,assertTrue(byteQuadsCanonicalizer1.maybeDirty())
+project,0,test1420,"public void test1420() throws Throwable {
+    System.setCurrentTimeMillis(3905L);
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    assertEquals(3905, byteQuadsCanonicalizer0.hashSeed());
+}",0,"assertEquals(0, byteQuadsCanonicalizer0.hashSeed())"
+project,0,test1521,"public void test1521() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    byteQuadsCanonicalizer0._reportTooManyCollisions();
+    assertEquals(839877741, byteQuadsCanonicalizer0.hashSeed());
+}",0,"assertEquals(0, byteQuadsCanonicalizer0.hashSeed())"
+project,0,test1522,"public void test1522() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    byteQuadsCanonicalizer0._reportTooManyCollisions();
+    assertEquals(0, byteQuadsCanonicalizer0.size());
+}",0,"assertEquals(0, byteQuadsCanonicalizer0.size())"
+project,0,test1623,"public void test1623() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    int[] intArray0 = new int[5];
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer0.addName(""$"", intArray0, 4);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",0,
+project,0,test1724,"public void test1724() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot((-1691));
+    int int0 = byteQuadsCanonicalizer0.totalCount();
+    assertEquals(0, byteQuadsCanonicalizer0.size());
+}",0,"assertEquals(0, byteQuadsCanonicalizer0.size())"
+project,0,test1725,"public void test1725() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot((-1691));
+    int int0 = byteQuadsCanonicalizer0.totalCount();
+    assertEquals((-1691), byteQuadsCanonicalizer0.hashSeed());
+}",0,"assertEquals(0, byteQuadsCanonicalizer0.hashSeed())"
+project,0,test1726,"public void test1726() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot((-1691));
+    int int0 = byteQuadsCanonicalizer0.totalCount();
+    assertEquals(0, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test1827,"public void test1827() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    byteQuadsCanonicalizer0._hashSize = (-377);
+    int int0 = byteQuadsCanonicalizer0.spilloverCount();
+    assertEquals(659, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test1928,"public void test1928() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(2416);
+    byteQuadsCanonicalizer0._hashSize = 2416;
+    int int0 = byteQuadsCanonicalizer0.spilloverCount();
+    assertEquals((-4228), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test2029,"public void test2029() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(4276);
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(4276);
+    byteQuadsCanonicalizer1._count = 4276;
+    int int0 = byteQuadsCanonicalizer1.size();
+    assertEquals(4276, int0);
+}",0,
+project,0,test2130,"public void test2130() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot((-80));
+    int int0 = byteQuadsCanonicalizer0.secondaryCount();
+    assertEquals(0, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test2131,"public void test2131() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot((-80));
+    int int0 = byteQuadsCanonicalizer0.secondaryCount();
+    assertEquals(0, byteQuadsCanonicalizer0.size());
+}",0,"assertEquals(0, byteQuadsCanonicalizer0.size())"
+project,0,test2132,"public void test2132() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot((-80));
+    int int0 = byteQuadsCanonicalizer0.secondaryCount();
+    assertEquals((-80), byteQuadsCanonicalizer0.hashSeed());
+}",0,"assertEquals(0, byteQuadsCanonicalizer0.hashSeed())"
+project,0,test2233,"public void test2233() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    int int0 = byteQuadsCanonicalizer0.primaryCount();
+    assertEquals(839877741, byteQuadsCanonicalizer0.hashSeed());
+}",0,"assertEquals(0, byteQuadsCanonicalizer0.hashSeed())"
+project,0,test2234,"public void test2234() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    int int0 = byteQuadsCanonicalizer0.primaryCount();
+    assertEquals(0, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test2235,"public void test2235() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    int int0 = byteQuadsCanonicalizer0.primaryCount();
+    assertEquals(0, byteQuadsCanonicalizer0.size());
+}",0,"assertEquals(0, byteQuadsCanonicalizer0.size())"
+project,0,test2336,"public void test2336() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot((-1599));
+    int int0 = byteQuadsCanonicalizer0.hashSeed();
+    assertEquals(0, byteQuadsCanonicalizer0.size());
+}",0,"assertEquals(0, byteQuadsCanonicalizer0.size())"
+project,0,test2337,"public void test2337() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot((-1599));
+    int int0 = byteQuadsCanonicalizer0.hashSeed();
+    assertEquals((-1599), int0);
+}",0,"assertEquals(1, int0)"
+project,0,test2438,"public void test2438() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild((-1));
+    int[] intArray0 = new int[1];
+    byteQuadsCanonicalizer1.findName(intArray0, (-1717));
+    assertEquals(0, byteQuadsCanonicalizer1.spilloverCount());
+}",0,"assertEquals(0, byteQuadsCanonicalizer1.spilloverCount())"
+project,0,test2439,"public void test2439() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild((-1));
+    int[] intArray0 = new int[1];
+    byteQuadsCanonicalizer1.findName(intArray0, (-1717));
+    assertEquals(64, byteQuadsCanonicalizer1.bucketCount());
+}",0,"assertEquals(0, byteQuadsCanonicalizer1.bucketCount())"
+project,0,test2440,"public void test2440() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild((-1));
+    int[] intArray0 = new int[1];
+    byteQuadsCanonicalizer1.findName(intArray0, (-1717));
+    assertEquals(0, byteQuadsCanonicalizer1.size());
+}",0,
+project,0,test2441,"public void test2441() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild((-1));
+    int[] intArray0 = new int[1];
+    byteQuadsCanonicalizer1.findName(intArray0, (-1717));
+    assertEquals(839877741, byteQuadsCanonicalizer1.hashSeed());
+}",0,"assertEquals(0, byteQuadsCanonicalizer1.hashSeed())"
+project,0,test2542,"public void test2542() throws Throwable {
+    System.setCurrentTimeMillis((-1L));
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    assertEquals((-1), byteQuadsCanonicalizer0.hashSeed());
+}",0,"assertEquals(0, byteQuadsCanonicalizer0.hashSeed())"
+project,0,test2643,"public void test2643() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    int[] intArray0 = new int[4];
+    intArray0[0] = (-1147);
+    int int0 = byteQuadsCanonicalizer0.calcHash(intArray0, 4);
+    assertEquals(173736282, int0);
+}",1,
+project,0,test2744,"public void test2744() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(1707);
+    int int0 = byteQuadsCanonicalizer0.calcHash((-3), (-3), 0);
+    assertEquals((-1264803167), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test2745,"public void test2745() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(1707);
+    int int0 = byteQuadsCanonicalizer0.calcHash((-3), (-3), 0);
+    assertEquals(0, byteQuadsCanonicalizer0.size());
+}",0,"assertEquals(0, byteQuadsCanonicalizer0.size())"
+project,0,test2846,"public void test2846() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(0);
+    int int0 = byteQuadsCanonicalizer0.calcHash(0, 0);
+    assertEquals(0, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test2847,"public void test2847() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(0);
+    int int0 = byteQuadsCanonicalizer0.calcHash(0, 0);
+    assertEquals(0, byteQuadsCanonicalizer0.size());
+}",0,"assertEquals(0, byteQuadsCanonicalizer0.size())"
+project,0,test2948,"public void test2948() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(1707);
+    int int0 = byteQuadsCanonicalizer0.calcHash((-1), 0);
+    assertEquals(1120185, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test3049,"public void test3049() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(19);
+    int int0 = byteQuadsCanonicalizer0.calcHash(19);
+    assertEquals(0, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test3050,"public void test3050() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(19);
+    int int0 = byteQuadsCanonicalizer0.calcHash(19);
+    assertEquals(0, byteQuadsCanonicalizer0.size());
+}",0,"assertEquals(0, byteQuadsCanonicalizer0.size())"
+project,0,test3151,"public void test3151() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    int int0 = byteQuadsCanonicalizer0.calcHash((-423));
+    assertEquals(0, byteQuadsCanonicalizer0.size());
+}",0,"assertEquals(0, byteQuadsCanonicalizer0.size())"
+project,0,test3152,"public void test3152() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    int int0 = byteQuadsCanonicalizer0.calcHash((-423));
+    assertEquals((-839018704), int0);
+}",0,"assertEquals(1, int0)"
+project,0,test3253,"public void test3253() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(224);
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(596);
+    int int0 = byteQuadsCanonicalizer1.bucketCount();
+    assertEquals(0, byteQuadsCanonicalizer1.spilloverCount());
+}",0,
+project,0,test3254,"public void test3254() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(224);
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(596);
+    int int0 = byteQuadsCanonicalizer1.bucketCount();
+    assertEquals(224, byteQuadsCanonicalizer1.hashSeed());
+}",0,"assertEquals(0, byteQuadsCanonicalizer1.hashSeed())"
+project,0,test3255,"public void test3255() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(224);
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(596);
+    int int0 = byteQuadsCanonicalizer1.bucketCount();
+    assertEquals(0, byteQuadsCanonicalizer1.size());
+}",0,
+project,0,test3256,"public void test3256() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(224);
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(596);
+    int int0 = byteQuadsCanonicalizer1.bucketCount();
+    assertEquals(64, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test3357,"public void test3357() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    byteQuadsCanonicalizer0._hashSize = (-377);
+    int int0 = byteQuadsCanonicalizer0.bucketCount();
+    assertEquals((-377), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test3458,"public void test3458() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(224);
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(596);
+    byteQuadsCanonicalizer1.addName((String) null, (-1490), 596, 224);
+    assertEquals(1, byteQuadsCanonicalizer1.size());
+}",0,
+project,0,test3559,"public void test3559() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild((-1));
+    byteQuadsCanonicalizer1.addName("""", 1902, 1902, 0);
+    assertEquals(1, byteQuadsCanonicalizer1.size());
+}",0,
+project,0,test3660,"public void test3660() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild((-1));
+    byteQuadsCanonicalizer1.addName(""($&ki{s"", 495, (-1916));
+    assertEquals(1, byteQuadsCanonicalizer1.totalCount());
+}",0,"assertEquals(0, byteQuadsCanonicalizer1.totalCount())"
+project,0,test3761,"public void test3761() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild((-1));
+    byteQuadsCanonicalizer1.addName("""", (-2005));
+    assertEquals(1, byteQuadsCanonicalizer1.size());
+}",0,
+project,0,test3862,"public void test3862() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    byteQuadsCanonicalizer0._hashSize = 10;
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer0.totalCount();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test3963,"public void test3963() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(7);
+    int[] intArray0 = new int[8];
+    byteQuadsCanonicalizer0._hashSize = 7;
+    byteQuadsCanonicalizer0._hashArea = intArray0;
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer0.totalCount();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test4064,"public void test4064() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(37);
+    byteQuadsCanonicalizer0._hashSize = 1870;
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer0.toString();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",0,
+project,0,test4165,"public void test4165() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(33);
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild((-1));
+    int[] intArray0 = new int[3];
+    byteQuadsCanonicalizer1._hashArea = intArray0;
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer1.toString();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test4266,"public void test4266() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(425);
+    byteQuadsCanonicalizer0._hashSize = 425;
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer0.tertiaryCount();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",0,
+project,0,test4367,"public void test4367() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(0);
+    byteQuadsCanonicalizer0._secondaryStart = 1702;
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer0.primaryCount();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test4468,"public void test4468() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot((-1691));
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild((-1691));
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer1.makeChild((-1691));
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",0,
+project,0,test4569,"public void test4569() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    int[] intArray0 = new int[3];
+    byteQuadsCanonicalizer0._hashArea = intArray0;
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer0.findName(0, 0, 0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -2007127093
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",0,
+project,0,test4670,"public void test4670() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer0.findName((-2218), (-1422));
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",0,
+project,0,test4771,"public void test4771() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(425);
+    int[] intArray0 = new int[7];
+    byteQuadsCanonicalizer0._hashArea = intArray0;
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer0.findName(0, 2185);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 2446887
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",0,
+project,0,test4872,"public void test4872() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer0.findName(0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",0,
+project,0,test4973,"public void test4973() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    int[] intArray0 = new int[3];
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer0.calcHash(intArray0, 4);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 3
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",0,
+project,0,test5074,"public void test5074() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild((-1));
+    byteQuadsCanonicalizer1._count = 1902;
+    byteQuadsCanonicalizer1.addName(""($&ki{s"", 2448, 7, (-4933));
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer1.addName(""($&ki{s"", 1902, 1902, 0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Failed rehash(): old count=1903, copyCount=1
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",1,
+project,0,test5175,"public void test5175() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    int[] intArray0 = new int[1];
+    byteQuadsCanonicalizer0._hashArea = intArray0;
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer0.addName(""|!vv&07dZ=[}&"", 180, 180, 180);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -1078114749
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",0,
+project,0,test5276,"public void test5276() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(63);
+    int[] intArray0 = new int[2];
+    byteQuadsCanonicalizer0._hashArea = intArray0;
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer0.addName(""[com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer: size=0, hashSize=0, 0/0/0/0 pri/sec/ter/spill (=0), total:0]"", 63, 425);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 481683
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",0,
+project,0,test5377,"public void test5377() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    int[] intArray0 = new int[4];
+    int int0 = byteQuadsCanonicalizer0.calcHash(intArray0, 4);
+    assertEquals((-1246727123), int0);
+}",1,
+project,0,test5478,"public void test5478() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer0.calcHash((int[]) null, 37);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",0,
+project,0,test5579,"public void test5579() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    int[] intArray0 = new int[9];
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer0.addName("") does not override copy(); it has to"", intArray0, 1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",0,
+project,0,test5680,"public void test5680() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(0);
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(0);
+    int[] intArray0 = new int[8];
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer1.addName(""Spill-over slots in symbol table with "", intArray0, (-936));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",0,
+project,0,test5781,"public void test5781() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot((-80));
+    byteQuadsCanonicalizer0.tertiaryCount();
+    assertEquals(0, byteQuadsCanonicalizer0.size());
+}",0,
+project,0,test5782,"public void test5782() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot((-80));
+    byteQuadsCanonicalizer0.tertiaryCount();
+    assertEquals((-80), byteQuadsCanonicalizer0.hashSeed());
+}",0,"assertEquals(0, byteQuadsCanonicalizer0.hashSeed())"
+project,0,test5883,"public void test5883() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    boolean boolean0 = byteQuadsCanonicalizer0.maybeDirty();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test5884,"public void test5884() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    boolean boolean0 = byteQuadsCanonicalizer0.maybeDirty();
+    assertEquals(0, byteQuadsCanonicalizer0.size());
+}",0,
+project,0,test5885,"public void test5885() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    boolean boolean0 = byteQuadsCanonicalizer0.maybeDirty();
+    assertEquals(839877741, byteQuadsCanonicalizer0.hashSeed());
+}",0,"assertEquals(0, byteQuadsCanonicalizer0.hashSeed())"
+project,0,test5986,"public void test5986() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(4);
+    boolean boolean0 = byteQuadsCanonicalizer1.maybeDirty();
+    assertEquals(64, byteQuadsCanonicalizer1.bucketCount());
+}",0,"assertEquals(1, byteQuadsCanonicalizer1.bucketCount())"
+project,0,test5987,"public void test5987() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(4);
+    boolean boolean0 = byteQuadsCanonicalizer1.maybeDirty();
+    assertEquals(0, byteQuadsCanonicalizer1.size());
+}",0,
+project,0,test5988,"public void test5988() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(4);
+    boolean boolean0 = byteQuadsCanonicalizer1.maybeDirty();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test5989,"public void test5989() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(4);
+    boolean boolean0 = byteQuadsCanonicalizer1.maybeDirty();
+    assertEquals(839877741, byteQuadsCanonicalizer1.hashSeed());
+}",0,"assertEquals(0, byteQuadsCanonicalizer1.hashSeed())"
+project,0,test5990,"public void test5990() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(4);
+    boolean boolean0 = byteQuadsCanonicalizer1.maybeDirty();
+    assertEquals(0, byteQuadsCanonicalizer1.spilloverCount());
+}",0,"assertEquals(0, byteQuadsCanonicalizer1.spilloverCount())"
+project,0,test6091,"public void test6091() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot((-546));
+    int int0 = byteQuadsCanonicalizer0.calcHash(6000);
+    assertEquals(0, byteQuadsCanonicalizer0.size());
+}",0,"assertEquals(0, byteQuadsCanonicalizer0.size())"
+project,0,test6092,"public void test6092() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot((-546));
+    int int0 = byteQuadsCanonicalizer0.calcHash(6000);
+    assertEquals(60067, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test6193,"public void test6193() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    int int0 = byteQuadsCanonicalizer0.calcHash(0, (-998));
+    assertEquals(0, byteQuadsCanonicalizer0.size());
+}",0,
+project,0,test6194,"public void test6194() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    int int0 = byteQuadsCanonicalizer0.calcHash(0, (-998));
+    assertEquals((-895122595), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test6295,"public void test6295() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot((-1599));
+    int int0 = byteQuadsCanonicalizer0.calcHash((-704), (-898), 2122);
+    assertEquals(0, byteQuadsCanonicalizer0.size());
+}",0,"assertEquals(0, byteQuadsCanonicalizer0.size())"
+project,0,test6296,"public void test6296() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot((-1599));
+    int int0 = byteQuadsCanonicalizer0.calcHash((-704), (-898), 2122);
+    assertEquals(628642162, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test6397,"public void test6397() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(0);
+    int int0 = byteQuadsCanonicalizer0.spilloverCount();
+    assertEquals(0, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test6398,"public void test6398() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(0);
+    int int0 = byteQuadsCanonicalizer0.spilloverCount();
+    assertEquals(0, byteQuadsCanonicalizer0.hashSeed());
+}",0,"assertEquals(0, byteQuadsCanonicalizer0.hashSeed())"
+project,0,test6499,"public void test6499() throws Throwable {
+    int int0 = ByteQuadsCanonicalizer._calcTertiaryShift(4276);
+    assertEquals(7, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test65100,"public void test65100() throws Throwable {
+    int int0 = ByteQuadsCanonicalizer._calcTertiaryShift(1893);
+    assertEquals(6, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test66101,"public void test66101() throws Throwable {
+    int int0 = ByteQuadsCanonicalizer._calcTertiaryShift(507);
+    assertEquals(5, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test67102,"public void test67102() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(1707);
+    byteQuadsCanonicalizer0._hashSize = 1120185;
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer0._reportTooManyCollisions();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Spill-over slots in symbol table with 0 entries, hash area of 1120185 slots is now full (all 140023 slots -- suspect a DoS attack based on hash collisions. You can disable the check via `JsonFactory.Feature.FAIL_ON_SYMBOL_HASH_OVERFLOW`
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",0,
+project,0,test68103,"public void test68103() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    int[] intArray0 = new int[9];
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer0.findName(intArray0, 4);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",0,
+project,0,test69104,"public void test69104() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    int[] intArray0 = new int[1];
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer0.calcHash(intArray0, 0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",0,
+project,0,test70105,"public void test70105() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(7);
+    int[] intArray0 = new int[8];
+    intArray0[3] = 7;
+    byteQuadsCanonicalizer0._hashArea = intArray0;
+    byteQuadsCanonicalizer0._spilloverEnd = 7;
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer0.addName(""w|cN^aF"", 7);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 10
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",0,
+project,0,test71106,"public void test71106() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild((-1));
+    byteQuadsCanonicalizer1._count = 1902;
+    byteQuadsCanonicalizer1._spilloverEnd = 1902;
+    byteQuadsCanonicalizer1.addName(""($&ki{s"", 1902, 1902, 0);
+    assertEquals(1, byteQuadsCanonicalizer1.primaryCount());
+}",0,"assertEquals(1, byteQuadsCanonicalizer1.primaryCount())"
+project,0,test72107,"public void test72107() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    int[] intArray0 = new int[6];
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer0.addName(""Failed copy(): "", intArray0, 2);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",0,
+project,0,test73108,"public void test73108() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild((-1));
+    byteQuadsCanonicalizer1.addName(""U%I4h|ch2F"", 1902);
+    byteQuadsCanonicalizer1._count = 1902;
+    byteQuadsCanonicalizer1.addName(""($&ki{s"", 1902, 1902, 0);
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer1.addName(""($&ki{s"", 0, (-1916));
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Failed rehash(): old count=1903, copyCount=2
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",0,
+project,0,test74109,"public void test74109() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(1156);
+    byteQuadsCanonicalizer1._count = 1156;
+    byteQuadsCanonicalizer1.addName(""($&ki{s"", 1156, 1156, 0);
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer1.addName((String) null, 0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Failed rehash(): old count=1157, copyCount=1
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",0,
+project,0,test75110,"public void test75110() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer0.addName(""($&ki{s"", 0, 0, 0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",0,
+project,0,test76111,"public void test76111() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer0.addName(""W2kvM`gi}5(gPbyz"", 0, 0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",0,
+project,0,test77112,"public void test77112() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(19);
+    int[] intArray0 = new int[4];
+    intArray0[0] = 19;
+    intArray0[1] = 19;
+    intArray0[3] = 19;
+    byteQuadsCanonicalizer0._hashArea = intArray0;
+    String string0 = byteQuadsCanonicalizer0.findName(19, 0);
+    assertNull(string0);
+}",0,
+project,0,test78113,"public void test78113() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(19);
+    int[] intArray0 = new int[4];
+    intArray0[0] = 19;
+    intArray0[3] = 19;
+    byteQuadsCanonicalizer0._hashArea = intArray0;
+    byteQuadsCanonicalizer0.findName(19, 0);
+    assertEquals(0, byteQuadsCanonicalizer0.size());
+}",0,"assertEquals(0, byteQuadsCanonicalizer0.size())"
+project,0,test79114,"public void test79114() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(7);
+    int[] intArray0 = new int[8];
+    intArray0[0] = 7;
+    intArray0[3] = 7;
+    byteQuadsCanonicalizer0._hashArea = intArray0;
+    byteQuadsCanonicalizer0._spilloverEnd = 7;
+    String string0 = byteQuadsCanonicalizer0.findName(7);
+    assertNull(string0);
+}",0,
+project,0,test80115,"public void test80115() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(2);
+    int[] intArray0 = new int[5];
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer0.findName(intArray0, 2);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",0,
+project,0,test81116,"public void test81116() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(6);
+    int[] intArray0 = new int[3];
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer0.findName(intArray0, 3);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",0,
+project,0,test82117,"public void test82117() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot((-80));
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(37);
+    byteQuadsCanonicalizer1.findName(1, 3795, (-2408));
+    assertEquals((-80), byteQuadsCanonicalizer1.hashSeed());
+}",0,"assertEquals(0, byteQuadsCanonicalizer1.hashSeed())"
+project,0,test82118,"public void test82118() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot((-80));
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(37);
+    byteQuadsCanonicalizer1.findName(1, 3795, (-2408));
+    assertEquals(64, byteQuadsCanonicalizer1.bucketCount());
+}",0,"assertEquals(0, byteQuadsCanonicalizer1.bucketCount())"
+project,0,test83119,"public void test83119() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(19);
+    int[] intArray0 = new int[4];
+    intArray0[3] = 19;
+    byteQuadsCanonicalizer0._hashArea = intArray0;
+    assertEquals(0, byteQuadsCanonicalizer0.spilloverCount());
+}",0,"assertEquals(0, byteQuadsCanonicalizer0.spilloverCount())"
+project,0,test83120,"public void test83120() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(19);
+    int[] intArray0 = new int[4];
+    intArray0[3] = 19;
+    byteQuadsCanonicalizer0._hashArea = intArray0;
+    byteQuadsCanonicalizer0.findName(19, 0);
+    assertEquals(0, byteQuadsCanonicalizer0.size());
+}",0,"assertEquals(0, byteQuadsCanonicalizer0.size())"
+project,0,test84121,"public void test84121() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot((-80));
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(37);
+    byteQuadsCanonicalizer1.findName(37, (-2408));
+    assertEquals(0, byteQuadsCanonicalizer1.size());
+}",0,
+project,0,test84122,"public void test84122() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot((-80));
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(37);
+    byteQuadsCanonicalizer1.findName(37, (-2408));
+    assertEquals(0, byteQuadsCanonicalizer1.spilloverCount());
+}",0,"assertEquals(0, byteQuadsCanonicalizer1.spilloverCount())"
+project,0,test84123,"public void test84123() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot((-80));
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(37);
+    byteQuadsCanonicalizer1.findName(37, (-2408));
+    assertEquals(64, byteQuadsCanonicalizer1.bucketCount());
+}",0,"assertEquals(0, byteQuadsCanonicalizer1.bucketCount())"
+project,0,test84124,"public void test84124() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot((-80));
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(37);
+    byteQuadsCanonicalizer1.findName(37, (-2408));
+    assertEquals((-80), byteQuadsCanonicalizer1.hashSeed());
+}",0,"assertEquals(0, byteQuadsCanonicalizer1.hashSeed())"
+project,0,test85125,"public void test85125() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(1166);
+    int[] intArray0 = new int[1];
+    byteQuadsCanonicalizer1.addName(""UkI4h|ch2F"", 0);
+    byteQuadsCanonicalizer1.findName(intArray0, (-1756));
+    assertEquals(1, byteQuadsCanonicalizer1.primaryCount());
+}",0,
+project,0,test85126,"public void test85126() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(1166);
+    int[] intArray0 = new int[1];
+    byteQuadsCanonicalizer1.addName(""UkI4h|ch2F"", 0);
+    byteQuadsCanonicalizer1.findName(intArray0, (-1756));
+    assertEquals(0, byteQuadsCanonicalizer1.spilloverCount());
+}",0,"assertEquals(0, byteQuadsCanonicalizer1.spilloverCount())"
+project,0,test86127,"public void test86127() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(7);
+    int[] intArray0 = new int[8];
+    byteQuadsCanonicalizer0._hashArea = intArray0;
+    String string0 = byteQuadsCanonicalizer0.findName(7);
+    assertNull(string0);
+}",0,
+project,0,test87128,"public void test87128() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot((-80));
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(37);
+    byteQuadsCanonicalizer1.addName("""", (-2089), (-2089));
+    int int0 = byteQuadsCanonicalizer1.totalCount();
+    assertEquals(1, byteQuadsCanonicalizer1.primaryCount());
+}",0,
+project,0,test87129,"public void test87129() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot((-80));
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(37);
+    byteQuadsCanonicalizer1.addName("""", (-2089), (-2089));
+    int int0 = byteQuadsCanonicalizer1.totalCount();
+    assertEquals(1, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test88130,"public void test88130() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(3507);
+    int[] intArray0 = new int[9];
+    intArray0[3] = 3507;
+    byteQuadsCanonicalizer0._hashArea = intArray0;
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(3);
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer2 = byteQuadsCanonicalizer1._parent;
+    byteQuadsCanonicalizer2._hashSize = 3507;
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer2.tertiaryCount();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 11
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",0,
+project,0,test89131,"public void test89131() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(1156);
+    byteQuadsCanonicalizer1.addName(""UkI4h|ch2F"", 0);
+    byteQuadsCanonicalizer1.addName((String) null, 0);
+    int int0 = byteQuadsCanonicalizer1.secondaryCount();
+    assertEquals(2, byteQuadsCanonicalizer1.size());
+}",0,
+project,0,test89132,"public void test89132() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(1156);
+    byteQuadsCanonicalizer1.addName(""UkI4h|ch2F"", 0);
+    byteQuadsCanonicalizer1.addName((String) null, 0);
+    int int0 = byteQuadsCanonicalizer1.secondaryCount();
+    assertEquals(1, int0);
+}",0,
+project,0,test90133,"public void test90133() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot((-80));
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild((-80));
+    byteQuadsCanonicalizer1.addName("""", (-2089), (-2089));
+    int int0 = byteQuadsCanonicalizer1.primaryCount();
+    assertTrue(byteQuadsCanonicalizer1.maybeDirty());
+}",0,assertTrue(byteQuadsCanonicalizer1.maybeDirty())
+project,0,test90134,"public void test90134() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot((-80));
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild((-80));
+    byteQuadsCanonicalizer1.addName("""", (-2089), (-2089));
+    int int0 = byteQuadsCanonicalizer1.primaryCount();
+    assertEquals(1, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test91135,"public void test91135() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(33);
+    int int0 = byteQuadsCanonicalizer0.size();
+    assertEquals(33, byteQuadsCanonicalizer0.hashSeed());
+}",0,
+project,0,test91136,"public void test91136() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(33);
+    int int0 = byteQuadsCanonicalizer0.size();
+    assertEquals(0, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test92137,"public void test92137() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(1);
+    byteQuadsCanonicalizer1.release();
+    assertEquals(0, byteQuadsCanonicalizer1.size());
+}",0,
+project,0,test92138,"public void test92138() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(1);
+    byteQuadsCanonicalizer1.release();
+    assertEquals(64, byteQuadsCanonicalizer1.bucketCount());
+}",0,"assertEquals(0, byteQuadsCanonicalizer1.bucketCount())"
+project,0,test92139,"public void test92139() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(1);
+    byteQuadsCanonicalizer1.release();
+    assertEquals(839877741, byteQuadsCanonicalizer1.hashSeed());
+}",0,"assertEquals(0, byteQuadsCanonicalizer1.hashSeed())"
+project,0,test92140,"public void test92140() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(1);
+    byteQuadsCanonicalizer1.release();
+    assertFalse(byteQuadsCanonicalizer1.maybeDirty());
+}",0,
+project,0,test92141,"public void test92141() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(1);
+    byteQuadsCanonicalizer1.release();
+    assertEquals(0, byteQuadsCanonicalizer1.spilloverCount());
+}",0,"assertEquals(0, byteQuadsCanonicalizer1.spilloverCount())"
+project,0,test93142,"public void test93142() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    byteQuadsCanonicalizer0.release();
+    assertEquals(0, byteQuadsCanonicalizer0.size());
+}",0,"assertEquals(0, byteQuadsCanonicalizer0.size())"
+project,0,test93143,"public void test93143() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    byteQuadsCanonicalizer0.release();
+    assertEquals(839877741, byteQuadsCanonicalizer0.hashSeed());
+}",0,"assertEquals(0, byteQuadsCanonicalizer0.hashSeed())"
+project,0,test94144,"public void test94144() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(6);
+    int int0 = byteQuadsCanonicalizer0.bucketCount();
+    assertEquals(0, byteQuadsCanonicalizer0.size());
+}",0,"assertEquals(0, byteQuadsCanonicalizer0.size())"
+project,0,test94145,"public void test94145() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(6);
+    int int0 = byteQuadsCanonicalizer0.bucketCount();
+    assertEquals(6, byteQuadsCanonicalizer0.hashSeed());
+}",0,"assertEquals(0, byteQuadsCanonicalizer0.hashSeed())"
+project,0,test94146,"public void test94146() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot(6);
+    int int0 = byteQuadsCanonicalizer0.bucketCount();
+    assertEquals(0, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test95147,"public void test95147() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot((-80));
+    // Undeclared exception!
+    try {
+        byteQuadsCanonicalizer0.findName(1, 3795, (-2408));
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer"", e);
+    }
+}",0,
+project,0,test96148,"public void test96148() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    int int0 = byteQuadsCanonicalizer0.hashSeed();
+    assertEquals(0, byteQuadsCanonicalizer0.size());
+}",0,"assertEquals(0, byteQuadsCanonicalizer0.size())"
+project,0,test96149,"public void test96149() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    int int0 = byteQuadsCanonicalizer0.hashSeed();
+    assertEquals(839877741, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test97150,"public void test97150() throws Throwable {
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot((-80));
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(37);
+    byteQuadsCanonicalizer1.addName("""", (-2089), (-2089));
+    byteQuadsCanonicalizer1.release();
+    assertEquals(1, byteQuadsCanonicalizer1.size());
+}",0,

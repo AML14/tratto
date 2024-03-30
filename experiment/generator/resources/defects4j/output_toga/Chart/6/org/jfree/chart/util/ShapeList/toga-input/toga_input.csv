@@ -1,0 +1,146 @@
+focal_method,test_prefix,docstring
+"public int size() {
+    return this.size;
+}","public void test00() throws Throwable {
+    ShapeList shapeList0 = new ShapeList();
+    Polygon polygon0 = new Polygon();
+    shapeList0.setShape(0, polygon0);
+    shapeList0.getShape(0);
+    assertEquals(1, shapeList0.size());
+}","/**
+ * Returns the size of the list.
+ *
+ * @return The size of the list.
+ */"
+"public void setShape(int index, Shape shape) {
+    set(index, shape);
+}","public void test11() throws Throwable {
+    ShapeList shapeList0 = new ShapeList();
+    Dimension dimension0 = new Dimension();
+    Rectangle rectangle0 = new Rectangle(dimension0);
+    // Undeclared exception!
+    try {
+        shapeList0.setShape((-1386), rectangle0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Requires index >= 0.
+        //
+        verifyException(""org.jfree.chart.util.AbstractObjectList"", e);
+    }
+}","/**
+ * Sets the {@link Shape} for an item in the list.  The list is expanded
+ * if necessary.
+ *
+ * @param index  the index (zero-based).
+ * @param shape  the {@link Shape}.
+ */"
+"public Shape getShape(int index) {
+    return (Shape) get(index);
+}","public void test22() throws Throwable {
+    ShapeList shapeList0 = new ShapeList();
+    shapeList0.set(570, shapeList0);
+    // Undeclared exception!
+    try {
+        shapeList0.getShape(570);
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // org.jfree.chart.util.ShapeList cannot be cast to java.awt.Shape
+        //
+        verifyException(""org.jfree.chart.util.ShapeList"", e);
+    }
+}","/**
+ * Returns a {@link Shape} object from the list.
+ *
+ * @param index the index (zero-based).
+ *
+ * @return The object.
+ */"
+"public boolean equals(Object obj) {
+    if (obj == this) {
+        return true;
+    }
+    if (!(obj instanceof ShapeList)) {
+        return false;
+    }
+    return super.equals(obj);
+}","public void test33() throws Throwable {
+    ShapeList shapeList0 = new ShapeList();
+    ShapeList shapeList1 = (ShapeList) shapeList0.clone();
+    Rectangle2D.Float rectangle2D_Float0 = new Rectangle2D.Float();
+    Rectangle rectangle0 = new Rectangle(8, 8);
+    Rectangle2D.Double rectangle2D_Double0 = (Rectangle2D.Double) rectangle2D_Float0.createIntersection(rectangle0);
+    shapeList1.setShape(65535, rectangle2D_Double0);
+    // Undeclared exception!
+    shapeList1.equals(shapeList0);
+}","/**
+ * Tests the list for equality with another object (typically also a list).
+ *
+ * @param obj  the other object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public boolean equals(Object obj) {
+    if (obj == this) {
+        return true;
+    }
+    if (!(obj instanceof ShapeList)) {
+        return false;
+    }
+    return super.equals(obj);
+}","public void test44() throws Throwable {
+    ShapeList shapeList0 = new ShapeList();
+    boolean boolean0 = shapeList0.equals(shapeList0);
+    assertTrue(boolean0);
+}","/**
+ * Tests the list for equality with another object (typically also a list).
+ *
+ * @param obj  the other object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public boolean equals(Object obj) {
+    if (obj == this) {
+        return true;
+    }
+    if (!(obj instanceof ShapeList)) {
+        return false;
+    }
+    return super.equals(obj);
+}","public void test55() throws Throwable {
+    ShapeList shapeList0 = new ShapeList();
+    Dimension dimension0 = new Dimension((-1999), 8);
+    Rectangle rectangle0 = new Rectangle(dimension0);
+    boolean boolean0 = shapeList0.equals(rectangle0);
+    assertFalse(boolean0);
+}","/**
+ * Tests the list for equality with another object (typically also a list).
+ *
+ * @param obj  the other object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public Shape getShape(int index) {
+    return (Shape) get(index);
+}","public void test66() throws Throwable {
+    ShapeList shapeList0 = new ShapeList();
+    Shape shape0 = shapeList0.getShape((-1999));
+    assertNull(shape0);
+}","/**
+ * Returns a {@link Shape} object from the list.
+ *
+ * @param index the index (zero-based).
+ *
+ * @return The object.
+ */"
+"public int hashCode() {
+    return super.hashCode();
+}","public void test77() throws Throwable {
+    ShapeList shapeList0 = new ShapeList();
+    shapeList0.hashCode();
+}","/**
+ * Returns a hash code value for the object.
+ *
+ * @return the hashcode
+ */"

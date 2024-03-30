@@ -1,0 +1,659 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    Locale locale0 = Locale.KOREA;
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(locale0, locale0);
+    boolean boolean0 = jDOMNodePointer0.isCollection();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test011,"public void test011() throws Throwable {
+    Locale locale0 = Locale.CANADA;
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(locale0, locale0);
+    NodePointer nodePointer0 = jDOMNodePointer0.namespacePointer(""http://www.w3.org/2000/xmlns/"");
+    assertFalse(nodePointer0.isAttribute());
+}",0,assertFalse(nodePointer0.isAttribute())
+project,0,test022,"public void test022() throws Throwable {
+    Locale locale0 = Locale.CANADA_FRENCH;
+    Element element0 = new Element(""l"", ""l"", ""l"");
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(element0, locale0);
+    JDOMNodePointer jDOMNodePointer1 = new JDOMNodePointer(jDOMNodePointer0, element0);
+    NamespaceResolver namespaceResolver0 = new NamespaceResolver((NamespaceResolver) null);
+    namespaceResolver0.setNamespaceContextPointer(jDOMNodePointer1);
+    jDOMNodePointer1.setNamespaceResolver(namespaceResolver0);
+    String string0 = jDOMNodePointer1.asPath();
+    assertEquals(""/l:l[1]"", string0);
+}",0,
+project,0,test033,"public void test033() throws Throwable {
+    Locale locale0 = Locale.CHINESE;
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer("" Km`h"", locale0);
+    int int0 = jDOMNodePointer0.getLength();
+    assertEquals(1, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test044,"public void test044() throws Throwable {
+    Locale locale0 = Locale.ITALY;
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(locale0, locale0);
+    ProcessingInstructionTest processingInstructionTest0 = new ProcessingInstructionTest(""http://www.w3.org/XML/1998/namespace"");
+    boolean boolean0 = jDOMNodePointer0.testNode((NodeTest) processingInstructionTest0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test055,"public void test055() throws Throwable {
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer((NodePointer) null, (Object) null);
+    NodeTypeTest nodeTypeTest0 = new NodeTypeTest(Integer.MIN_VALUE);
+    NodeIterator nodeIterator0 = jDOMNodePointer0.childIterator(nodeTypeTest0, false, (NodePointer) null);
+    assertEquals(0, nodeIterator0.getPosition());
+}",0,"assertEquals(0, nodeIterator0.getPosition())"
+project,0,test066,"public void test066() throws Throwable {
+    Locale locale0 = Locale.FRENCH;
+    Element element0 = new Element(""lzZo"", ""lzZo"", ""lzZo"");
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(element0, locale0);
+    int int0 = jDOMNodePointer0.compareChildNodePointers(jDOMNodePointer0, jDOMNodePointer0);
+    assertEquals(0, int0);
+}",0,
+project,0,test077,"public void test077() throws Throwable {
+    Locale locale0 = Locale.UK;
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(locale0, locale0);
+    QName qName0 = jDOMNodePointer0.getName();
+    NodeIterator nodeIterator0 = jDOMNodePointer0.attributeIterator(qName0);
+    assertEquals(0, nodeIterator0.getPosition());
+}",0,"assertEquals(0, nodeIterator0.getPosition())"
+project,0,test088,"public void test088() throws Throwable {
+    Locale locale0 = Locale.GERMAN;
+    Element element0 = new Element(""Gocapl-are"");
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(element0, locale0);
+    jDOMNodePointer0.hashCode();
+}",0,
+project,0,test099,"public void test099() throws Throwable {
+    Locale locale0 = Locale.GERMAN;
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(locale0, locale0);
+    QName qName0 = new QName(""http://www.w3.org/XML/1998/namespace"");
+    // Undeclared exception!
+    try {
+        jDOMNodePointer0.createChild((JXPathContext) null, qName0, Integer.MIN_VALUE, (Object) qName0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.jdom.JDOMNodePointer"", e);
+    }
+}",0,
+project,0,test1010,"public void test1010() throws Throwable {
+    Object object0 = new Object();
+    Locale locale0 = Locale.UK;
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(object0, locale0);
+    String string0 = jDOMNodePointer0.getNamespaceURI();
+    assertNull(string0);
+}",0,assertNotNull(string0)
+project,0,test1111,"public void test1111() throws Throwable {
+    Locale locale0 = Locale.UK;
+    Element element0 = new Element(""lTo"");
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(element0, locale0);
+    String string0 = jDOMNodePointer0.getNamespaceURI(""lTo"");
+    assertNull(string0);
+}",0,assertNotNull(string0)
+project,0,test1212,"public void test1212() throws Throwable {
+    Element element0 = new Element(""J"", ""J"", ""J"");
+    Document document0 = new Document(element0);
+    Locale locale0 = Locale.UK;
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(document0, locale0);
+    String string0 = jDOMNodePointer0.getNamespaceURI(""J"");
+    assertEquals(""J"", string0);
+}",0,
+project,0,test1313,"public void test1313() throws Throwable {
+    Locale locale0 = Locale.ITALY;
+    Element element0 = new Element(""org.apache.commons.jxpath.ri.compiler.Constant"", ""org.apache.commons.jxpath.ri.compiler.Constant"");
+    Document document0 = new Document(element0);
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(document0, locale0);
+    String string0 = jDOMNodePointer0.getNamespaceURI(""org.apache.commons.jxpath.ri.compiler.Constant"");
+    assertNull(string0);
+}",0,assertNotNull(string0)
+project,0,test1414,"public void test1414() throws Throwable {
+    Object object0 = new Object();
+    Locale locale0 = Locale.CHINESE;
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(object0, locale0);
+    String string0 = jDOMNodePointer0.getNamespaceURI(""http://www.w3.org/XML/1998/namespace"");
+    assertNull(string0);
+}",0,
+project,0,test1515,"public void test1515() throws Throwable {
+    Locale locale0 = Locale.UK;
+    Element element0 = new Element(""lTo"", ""lTo"", ""lTo"");
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(element0, locale0);
+    String string0 = jDOMNodePointer0.getNamespaceURI(""lTo"");
+    assertEquals(""lTo"", string0);
+}",0,assertNotNull(string0)
+project,0,test1616,"public void test1616() throws Throwable {
+    Attribute attribute0 = new Attribute(""Ks"", ""Ks"");
+    CDATA cDATA0 = new CDATA(""Ks"");
+    Locale locale0 = Locale.JAPANESE;
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(cDATA0, locale0, ""Ks"");
+    JDOMNodePointer jDOMNodePointer1 = new JDOMNodePointer(attribute0, locale0, ""Ks"");
+    int int0 = jDOMNodePointer0.compareChildNodePointers(jDOMNodePointer1, jDOMNodePointer0);
+    assertEquals((-1), int0);
+}",0,
+project,0,test1717,"public void test1717() throws Throwable {
+    Attribute attribute0 = new Attribute(""rxL"", ""rxL"");
+    Locale locale0 = Locale.JAPAN;
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(attribute0, locale0, ""rxL"");
+    JDOMNodePointer jDOMNodePointer1 = new JDOMNodePointer(jDOMNodePointer0, ""rxL"");
+    int int0 = jDOMNodePointer0.compareChildNodePointers(jDOMNodePointer1, jDOMNodePointer0);
+    assertEquals(1, int0);
+}",0,
+project,0,test1818,"public void test1818() throws Throwable {
+    Locale locale0 = Locale.GERMAN;
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(locale0, locale0);
+    JDOMNodePointer jDOMNodePointer1 = new JDOMNodePointer(jDOMNodePointer0, locale0, ""<<unknown namespace>>"");
+    // Undeclared exception!
+    try {
+        jDOMNodePointer0.compareChildNodePointers(jDOMNodePointer1, jDOMNodePointer0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // JXPath internal error: compareChildNodes called for de
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.jdom.JDOMNodePointer"", e);
+    }
+}",0,
+project,0,test1919,"public void test1919() throws Throwable {
+    Locale locale0 = Locale.FRENCH;
+    Element element0 = new Element(""lzZo"", ""lzZo"", ""lzZo"");
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(element0, locale0);
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) ""lzZo"");
+    NodePointer nodePointer0 = jDOMNodePointer0.createPath(jXPathContext0, (Object) locale0);
+    JDOMNodePointer jDOMNodePointer1 = new JDOMNodePointer(""lzZo"", locale0, ""http://www.w3.org/2000/xmlns/"");
+    int int0 = nodePointer0.compareChildNodePointers(nodePointer0, jDOMNodePointer1);
+    assertEquals(0, int0);
+}",0,
+project,0,test2020,"public void test2020() throws Throwable {
+    Locale locale0 = Locale.JAPANESE;
+    Element element0 = new Element(""ETo"");
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(element0, locale0, ""ETo"");
+    boolean boolean0 = jDOMNodePointer0.isLeaf();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2121,"public void test2121() throws Throwable {
+    Locale locale0 = Locale.JAPANESE;
+    Element element0 = new Element(""ETo"");
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(element0, locale0, ""ETo"");
+    jDOMNodePointer0.setValue(""ETo"");
+    boolean boolean0 = jDOMNodePointer0.isLeaf();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2222,"public void test2222() throws Throwable {
+    Locale locale0 = Locale.KOREA;
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(locale0, locale0);
+    boolean boolean0 = jDOMNodePointer0.isLeaf();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2323,"public void test2323() throws Throwable {
+    Locale locale0 = Locale.ITALY;
+    Element element0 = new Element(""orgRapacheqcommons.jxpath.ri.compiler.Constant"", ""orgRapacheqcommons.jxpath.ri.compiler.Constant"");
+    Document document0 = new Document(element0);
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(document0, locale0);
+    boolean boolean0 = jDOMNodePointer0.isLeaf();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2424,"public void test2424() throws Throwable {
+    Element element0 = new Element(""lTo"");
+    Locale locale0 = Locale.FRENCH;
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(element0, locale0, ""lTo"");
+    QName qName0 = jDOMNodePointer0.getName();
+    assertEquals(""lTo"", qName0.getName());
+}",0,assertNotNull(qName0.getName())
+project,0,test2525,"public void test2525() throws Throwable {
+    Locale locale0 = Locale.ITALY;
+    ProcessingInstruction processingInstruction0 = new ProcessingInstruction(""lTo"", ""lTo"");
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(processingInstruction0, locale0, ""lTo"");
+    QName qName0 = jDOMNodePointer0.getName();
+    assertEquals(""lTo"", qName0.getName());
+}",0,assertNotNull(qName0.getName())
+project,0,test2626,"public void test2626() throws Throwable {
+    Comment comment0 = new Comment(""locaxl-name"");
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer((NodePointer) null, comment0);
+    Object object0 = jDOMNodePointer0.getValue();
+    assertEquals(""locaxl-name"", object0);
+}",0,assertNotNull(object0)
+project,0,test2728,"public void test2728() throws Throwable {
+    Element element0 = new Element(""lTo"", ""lTo"");
+    Locale locale0 = Locale.ITALY;
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(element0, locale0);
+    Object object0 = jDOMNodePointer0.getValue();
+    assertEquals("""", object0);
+}",0,assertNotNull(object0)
+project,0,test2829,"public void test2829() throws Throwable {
+    Locale locale0 = Locale.FRANCE;
+    CDATA cDATA0 = new CDATA(""lTo"");
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(cDATA0, locale0);
+    Object object0 = jDOMNodePointer0.getValue();
+    assertEquals(""lTo"", object0);
+}",0,assertNotNull(object0)
+project,0,test2930,"public void test2930() throws Throwable {
+    Locale locale0 = Locale.UK;
+    ProcessingInstruction processingInstruction0 = new ProcessingInstruction(""lTo"", ""lTo"");
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(processingInstruction0, locale0, ""lTo"");
+    Object object0 = jDOMNodePointer0.getValue();
+    assertNotNull(object0);
+}",0,assertNotNull(object0)
+project,0,test3032,"public void test3032() throws Throwable {
+    Locale locale0 = Locale.KOREA;
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(locale0, locale0);
+    Object object0 = jDOMNodePointer0.getValue();
+    assertNull(object0);
+}",0,assertNotNull(object0)
+project,0,test3133,"public void test3133() throws Throwable {
+    CDATA cDATA0 = new CDATA(""~hfeBbgWQ:!k XEm2G"");
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer((NodePointer) null, cDATA0);
+    // Undeclared exception!
+    try {
+        jDOMNodePointer0.setValue((Object) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.jdom.JDOMNodePointer"", e);
+    }
+}",0,
+project,0,test3235,"public void test3235() throws Throwable {
+    CDATA cDATA0 = new CDATA(""wo"");
+    Locale locale0 = Locale.KOREAN;
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(cDATA0, locale0);
+    jDOMNodePointer0.setValue(""wo"");
+    assertEquals(""wo"", cDATA0.getValue());
+}",0,assertNotNull(cDATA0.getValue())
+project,0,test3336,"public void test3336() throws Throwable {
+    CDATA cDATA0 = new CDATA("""");
+    Locale locale0 = Locale.CANADA_FRENCH;
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(cDATA0, locale0, """");
+    // Undeclared exception!
+    try {
+        jDOMNodePointer0.setValue("""");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.jdom.JDOMNodePointer"", e);
+    }
+}",0,
+project,0,test3437,"public void test3437() throws Throwable {
+    Locale locale0 = Locale.JAPANESE;
+    Element element0 = new Element(""ETo"");
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(element0, locale0, ""ETo"");
+    jDOMNodePointer0.setValue(element0);
+    assertEquals(1, jDOMNodePointer0.getLength());
+}",0,"assertEquals(1, jDOMNodePointer0.getLength())"
+project,0,test3538,"public void test3538() throws Throwable {
+    Element element0 = new Element(""LU"");
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer((NodePointer) null, element0);
+    CDATA cDATA0 = new CDATA(""LU"");
+    jDOMNodePointer0.setValue(cDATA0);
+    assertFalse(jDOMNodePointer0.isContainer());
+}",0,assertFalse(jDOMNodePointer0.isContainer())
+project,0,test3639,"public void test3639() throws Throwable {
+    Element element0 = new Element(""local-nama"", ""local-nama"");
+    ProcessingInstruction processingInstruction0 = new ProcessingInstruction(""local-nama"", ""local-nama"");
+    Locale locale0 = new Locale(""local-nama"", ""local-nama"");
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(element0, locale0, "".yv)!l8w"");
+    jDOMNodePointer0.setValue(processingInstruction0);
+    assertEquals(Integer.MIN_VALUE, NodePointer.WHOLE_COLLECTION);
+}",0,
+project,0,test3740,"public void test3740() throws Throwable {
+    Element element0 = new Element(""xml"");
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer((NodePointer) null, element0);
+    Comment comment0 = new Comment(""http://www.w3.org/2000/xmlns/"");
+    jDOMNodePointer0.setValue(comment0);
+    assertFalse(jDOMNodePointer0.isCollection());
+}",0,assertFalse(jDOMNodePointer0.isCollection())
+project,0,test3841,"public void test3841() throws Throwable {
+    Element element0 = new Element(""PB"", ""PB"");
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(element0, (Locale) null);
+    jDOMNodePointer0.setValue((Object) null);
+    assertEquals(Integer.MIN_VALUE, jDOMNodePointer0.getIndex());
+}",0,"assertEquals(0, jDOMNodePointer0.getIndex())"
+project,0,test3942,"public void test3942() throws Throwable {
+    Locale locale0 = Locale.GERMAN;
+    Element element0 = new Element(""Gocapl-are"");
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(element0, locale0);
+    jDOMNodePointer0.setValue("""");
+    assertEquals(Integer.MIN_VALUE, jDOMNodePointer0.getIndex());
+}",0,"assertEquals(0, jDOMNodePointer0.getIndex())"
+project,0,test4144,"public void test4144() throws Throwable {
+    boolean boolean0 = JDOMNodePointer.testNode((NodePointer) null, (Object) null, (NodeTest) null);
+    assertTrue(boolean0);
+}",0,
+project,0,test4245,"public void test4245() throws Throwable {
+    NodeNameTest nodeNameTest0 = new NodeNameTest((QName) null);
+    boolean boolean0 = JDOMNodePointer.testNode((NodePointer) null, (Object) null, (NodeTest) nodeNameTest0);
+    assertFalse(boolean0);
+}",0,
+project,0,test4346,"public void test4346() throws Throwable {
+    Locale locale0 = Locale.UK;
+    Element element0 = new Element(""lo"", ""lo"", ""lo"");
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(element0, locale0);
+    QName qName0 = new QName(""http://www.w3.org/XML/1998/namespace"", ""http://www.w3.org/XML/1998/namespace"");
+    NodeNameTest nodeNameTest0 = new NodeNameTest(qName0, ""lo"");
+    boolean boolean0 = JDOMNodePointer.testNode((NodePointer) jDOMNodePointer0, (Object) element0, (NodeTest) nodeNameTest0);
+    assertFalse(boolean0);
+}",0,
+project,0,test4447,"public void test4447() throws Throwable {
+    NodeTypeTest nodeTypeTest0 = new NodeTypeTest(2);
+    boolean boolean0 = JDOMNodePointer.testNode((NodePointer) null, (Object) null, (NodeTest) nodeTypeTest0);
+    assertFalse(boolean0);
+}",0,
+project,0,test4548,"public void test4548() throws Throwable {
+    NodeTypeTest nodeTypeTest0 = new NodeTypeTest(1);
+    boolean boolean0 = JDOMNodePointer.testNode((NodePointer) null, (Object) nodeTypeTest0, (NodeTest) nodeTypeTest0);
+    assertFalse(boolean0);
+}",0,
+project,0,test4649,"public void test4649() throws Throwable {
+    NodeTypeTest nodeTypeTest0 = new NodeTypeTest(3);
+    boolean boolean0 = JDOMNodePointer.testNode((NodePointer) null, (Object) nodeTypeTest0, (NodeTest) nodeTypeTest0);
+    assertFalse(boolean0);
+}",0,
+project,0,test4750,"public void test4750() throws Throwable {
+    NodeTypeTest nodeTypeTest0 = new NodeTypeTest(4);
+    boolean boolean0 = JDOMNodePointer.testNode((NodePointer) null, (Object) null, (NodeTest) nodeTypeTest0);
+    assertFalse(boolean0);
+}",0,
+project,0,test4851,"public void test4851() throws Throwable {
+    Locale locale0 = Locale.ITALY;
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(locale0, locale0);
+    NodeTypeTest nodeTypeTest0 = new NodeTypeTest(Integer.MIN_VALUE);
+    boolean boolean0 = JDOMNodePointer.testNode((NodePointer) jDOMNodePointer0, (Object) jDOMNodePointer0, (NodeTest) nodeTypeTest0);
+    assertFalse(boolean0);
+}",0,
+project,0,test4952,"public void test4952() throws Throwable {
+    NodeTypeTest nodeTypeTest0 = new NodeTypeTest(2);
+    CDATA cDATA0 = new CDATA(""|g:2^!@fjp[MeUgSlz"");
+    boolean boolean0 = JDOMNodePointer.testNode((NodePointer) null, (Object) cDATA0, (NodeTest) nodeTypeTest0);
+    assertTrue(boolean0);
+}",0,
+project,0,test5053,"public void test5053() throws Throwable {
+    Locale locale0 = Locale.UK;
+    ProcessingInstruction processingInstruction0 = new ProcessingInstruction(""K"", ""K"");
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(processingInstruction0, locale0);
+    ProcessingInstructionTest processingInstructionTest0 = new ProcessingInstructionTest(""<<unknown namespace>>"");
+    boolean boolean0 = JDOMNodePointer.testNode((NodePointer) jDOMNodePointer0, (Object) processingInstruction0, (NodeTest) processingInstructionTest0);
+    assertFalse(boolean0);
+}",0,
+project,0,test5154,"public void test5154() throws Throwable {
+    Element element0 = new Element(""nm"", ""nm"");
+    QName qName0 = new QName(""nm"");
+    NodeNameTest nodeNameTest0 = new NodeNameTest(qName0);
+    boolean boolean0 = JDOMNodePointer.testNode((NodePointer) null, (Object) element0, (NodeTest) nodeNameTest0);
+    assertFalse(boolean0);
+}",0,
+project,0,test5255,"public void test5255() throws Throwable {
+    Element element0 = new Element(""g"", ""g"");
+    QName qName0 = new QName(""g"", ""g"");
+    VariablePointer variablePointer0 = new VariablePointer(qName0);
+    NodeNameTest nodeNameTest0 = new NodeNameTest(qName0, ""<<unknown namespace>>"");
+    boolean boolean0 = JDOMNodePointer.testNode((NodePointer) variablePointer0, (Object) element0, (NodeTest) nodeNameTest0);
+    assertFalse(boolean0);
+}",0,
+project,0,test5356,"public void test5356() throws Throwable {
+    Element element0 = new Element(""g"", ""g"");
+    QName qName0 = new QName(""g"", ""g"");
+    VariablePointer variablePointer0 = new VariablePointer(qName0);
+    NodeNameTest nodeNameTest0 = new NodeNameTest(qName0, ""g"");
+    boolean boolean0 = JDOMNodePointer.testNode((NodePointer) variablePointer0, (Object) element0, (NodeTest) nodeNameTest0);
+    assertTrue(boolean0);
+}",0,
+project,0,test5457,"public void test5457() throws Throwable {
+    Attribute attribute0 = new Attribute(""lzZo"", ""lzZo"");
+    String string0 = JDOMNodePointer.getPrefix(attribute0);
+    assertNull(string0);
+}",0,
+project,0,test5558,"public void test5558() throws Throwable {
+    Element element0 = new Element(""lTo"", ""lTo"", ""lTo"");
+    String string0 = JDOMNodePointer.getPrefix(element0);
+    assertEquals(""lTo"", string0);
+}",0,
+project,0,test5660,"public void test5660() throws Throwable {
+    Element element0 = new Element(""lTo"");
+    String string0 = JDOMNodePointer.getPrefix(element0);
+    assertNull(string0);
+}",0,
+project,0,test5761,"public void test5761() throws Throwable {
+    Object object0 = new Object();
+    String string0 = JDOMNodePointer.getPrefix(object0);
+    assertNull(string0);
+}",0,
+project,0,test5862,"public void test5862() throws Throwable {
+    Attribute attribute0 = new Attribute(""lzZo"", ""lzZo"");
+    Namespace namespace0 = Namespace.getNamespace(""lzZo"", ""lzZo"");
+    attribute0.setNamespace(namespace0);
+    String string0 = JDOMNodePointer.getPrefix(attribute0);
+    assertNotNull(string0);
+}",0,
+project,0,test5964,"public void test5964() throws Throwable {
+    String string0 = JDOMNodePointer.getLocalName((Object) null);
+    assertNull(string0);
+}",0,
+project,0,test6065,"public void test6065() throws Throwable {
+    Attribute attribute0 = new Attribute(""VUml"", ""VUml"");
+    String string0 = JDOMNodePointer.getLocalName(attribute0);
+    assertEquals(""VUml"", string0);
+}",0,
+project,0,test6166,"public void test6166() throws Throwable {
+    Element element0 = new Element(""J"", ""J"", ""J"");
+    Document document0 = new Document(element0);
+    Locale locale0 = Locale.UK;
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(document0, locale0);
+    boolean boolean0 = jDOMNodePointer0.isLanguage(""J"");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test6267,"public void test6267() throws Throwable {
+    Element element0 = new Element(""g"");
+    Element element1 = new Element(""g"");
+    element0.addContent((Content) element1);
+    Locale locale0 = Locale.KOREAN;
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(element1, locale0, ""<<unknown namespace>>"");
+    String string0 = jDOMNodePointer0.getLanguage();
+    assertNull(string0);
+}",0,assertNotNull(string0)
+project,0,test6368,"public void test6368() throws Throwable {
+    Locale locale0 = Locale.ITALY;
+    ProcessingInstruction processingInstruction0 = new ProcessingInstruction(""lTo"", ""lTo"");
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(processingInstruction0, locale0, ""lTo"");
+    // Undeclared exception!
+    try {
+        jDOMNodePointer0.remove();
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Cannot remove root JDOM node
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.jdom.JDOMNodePointer"", e);
+    }
+}",1,
+project,0,test6469,"public void test6469() throws Throwable {
+    Comment comment0 = new Comment(""locaxl-name"");
+    Locale locale0 = Locale.US;
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(comment0, locale0, ""locaxl-name"");
+    // Undeclared exception!
+    try {
+        jDOMNodePointer0.remove();
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Cannot remove root JDOM node
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.jdom.JDOMNodePointer"", e);
+    }
+}",1,
+project,0,test6570,"public void test6570() throws Throwable {
+    Locale locale0 = Locale.CHINA;
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(locale0, locale0);
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) locale0);
+    QName qName0 = new QName(""<<unknown namespace>>"");
+    // Undeclared exception!
+    try {
+        jDOMNodePointer0.createChild(jXPathContext0, qName0, (-2260));
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Factory is not set on the JXPathContext - cannot create path:
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.jdom.JDOMNodePointer"", e);
+    }
+}",0,
+project,0,test6671,"public void test6671() throws Throwable {
+    Locale locale0 = Locale.UK;
+    Element element0 = new Element(""lTo"", ""lTo"", ""lTo"");
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(element0, locale0);
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) jDOMNodePointer0);
+    QName qName0 = jDOMNodePointer0.getName();
+    jDOMNodePointer0.createAttribute(jXPathContext0, qName0);
+    NodePointer nodePointer0 = jDOMNodePointer0.createAttribute(jXPathContext0, qName0);
+    assertFalse(nodePointer0.isAttribute());
+}",0,assertTrue(nodePointer0.isAttribute())
+project,0,test6772,"public void test6772() throws Throwable {
+    Object object0 = new Object();
+    Locale locale0 = Locale.KOREA;
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(locale0, locale0);
+    JXPathContext jXPathContext0 = JXPathContext.newContext(object0);
+    QName qName0 = new QName(""http://www.w3.org/2000/xmlns/"");
+    // Undeclared exception!
+    try {
+        jDOMNodePointer0.createAttribute(jXPathContext0, qName0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Cannot create an attribute for path /@http://www.w3.org/2000/xmlns/, operation is not allowed for this type of node
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.NodePointer"", e);
+    }
+}",0,
+project,0,test6873,"public void test6873() throws Throwable {
+    Locale locale0 = Locale.UK;
+    Element element0 = new Element(""lTo"", ""lTo"", ""lTo"");
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(element0, locale0);
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) ""<<unknown namespace>>"");
+    QName qName0 = new QName(""lTo"");
+    jDOMNodePointer0.createAttribute(jXPathContext0, qName0);
+    NodePointer nodePointer0 = jDOMNodePointer0.createAttribute(jXPathContext0, qName0);
+    assertTrue(nodePointer0.isNode());
+}",0,
+project,0,test6974,"public void test6974() throws Throwable {
+    Locale locale0 = Locale.UK;
+    Element element0 = new Element(""lTo"", ""lTo"", ""lTo"");
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(element0, locale0);
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) ""<<unknown namespace>>"");
+    QName qName0 = new QName(""http://www.w3.org/XML/1998/namespace"");
+    // Undeclared exception!
+    try {
+        jDOMNodePointer0.createAttribute(jXPathContext0, qName0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Unknown namespace prefix: http
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.jdom.JDOMNodePointer"", e);
+    }
+}",0,
+project,0,test7075,"public void test7075() throws Throwable {
+    Element element0 = new Element(""ZrgRapacheqcommons.jxpath.ri.compiler.Constant"", ""ZrgRapacheqcommons.jxpath.ri.compiler.Constant"", ""ZrgRapacheqcommons.jxpath.ri.compiler.Constant"");
+    CDATA cDATA0 = new CDATA(""ZrgRapacheqcommons.jxpath.ri.compiler.Constant"");
+    element0.setContent((Content) cDATA0);
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer((NodePointer) null, cDATA0);
+    jDOMNodePointer0.remove();
+    assertEquals(1, jDOMNodePointer0.getLength());
+}",0,"assertEquals(1, jDOMNodePointer0.getLength())"
+project,0,test7176,"public void test7176() throws Throwable {
+    Locale locale0 = Locale.KOREA;
+    Element element0 = new Element(""ETo"");
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(element0, locale0, ""ETo"");
+    JDOMNodePointer jDOMNodePointer1 = new JDOMNodePointer(jDOMNodePointer0, element0);
+    // Undeclared exception!
+    try {
+        jDOMNodePointer1.asPath();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.jdom.JDOMNodePointer"", e);
+    }
+}",0,
+project,0,test7277,"public void test7277() throws Throwable {
+    Locale locale0 = Locale.GERMANY;
+    Element element0 = new Element(""bTo"");
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(element0, locale0);
+    JDOMNodePointer jDOMNodePointer1 = new JDOMNodePointer(jDOMNodePointer0, element0);
+    NamespaceResolver namespaceResolver0 = new NamespaceResolver((NamespaceResolver) null);
+    jDOMNodePointer1.setNamespaceResolver(namespaceResolver0);
+    String string0 = jDOMNodePointer1.asPath();
+    assertEquals(""/bTo[1]"", string0);
+}",0,
+project,0,test7378,"public void test7378() throws Throwable {
+    Locale locale0 = Locale.CANADA_FRENCH;
+    Element element0 = new Element(""l"", ""l"");
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(element0, locale0);
+    JDOMNodePointer jDOMNodePointer1 = new JDOMNodePointer(jDOMNodePointer0, element0);
+    NamespaceResolver namespaceResolver0 = new NamespaceResolver((NamespaceResolver) null);
+    namespaceResolver0.setNamespaceContextPointer(jDOMNodePointer1);
+    jDOMNodePointer1.setNamespaceResolver(namespaceResolver0);
+    String string0 = jDOMNodePointer1.asPath();
+    assertEquals(""/node()[1]"", string0);
+}",0,
+project,0,test7479,"public void test7479() throws Throwable {
+    CDATA cDATA0 = new CDATA(""orgRapacheqcommons.jxpath.ri.compiler.Constant"");
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer((NodePointer) null, cDATA0);
+    String string0 = jDOMNodePointer0.asPath();
+    assertEquals(""/text()[1]"", string0);
+}",0,
+project,0,test7580,"public void test7580() throws Throwable {
+    ProcessingInstruction processingInstruction0 = new ProcessingInstruction(""g"", ""g"");
+    Locale locale0 = new Locale(""g"", ""g"", ""g"");
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(processingInstruction0, locale0);
+    String string0 = jDOMNodePointer0.asPath();
+    assertEquals(""/processing-instruction('g')[1]"", string0);
+}",0,
+project,0,test7681,"public void test7681() throws Throwable {
+    Locale locale0 = Locale.GERMAN;
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(locale0, locale0, ""6-m'}@S"");
+    String string0 = jDOMNodePointer0.asPath();
+    assertEquals(""id('6-m&apos;}@S')"", string0);
+}",0,
+project,0,test7782,"public void test7782() throws Throwable {
+    Locale locale0 = Locale.ITALIAN;
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(""\"""", locale0, ""\"""");
+    String string0 = jDOMNodePointer0.asPath();
+    assertEquals(""id('&quot;')"", string0);
+}",0,
+project,0,test7883,"public void test7883() throws Throwable {
+    Element element0 = new Element(""orgRapacheqcommons.jxpath.ri.compiler.Constant"", ""orgRapacheqcommons.jxpath.ri.compiler.Constant"", ""orgRapacheqcommons.jxpath.ri.compiler.Constant"");
+    CDATA cDATA0 = new CDATA(""orgRapacheqcommons.jxpath.ri.compiler.Constant"");
+    element0.setContent((Content) cDATA0);
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer((NodePointer) null, cDATA0);
+    String string0 = jDOMNodePointer0.asPath();
+    assertEquals(""/text()[1]"", string0);
+}",0,
+project,0,test7984,"public void test7984() throws Throwable {
+    Element element0 = new Element(""g"", ""g"");
+    ProcessingInstruction processingInstruction0 = new ProcessingInstruction(""g"", ""g"");
+    element0.setContent((Content) processingInstruction0);
+    Locale locale0 = new Locale(""g"", ""g"", ""g"");
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(processingInstruction0, locale0);
+    String string0 = jDOMNodePointer0.asPath();
+    assertEquals(""/processing-instruction('g')[1]"", string0);
+}",0,
+project,0,test8085,"public void test8085() throws Throwable {
+    NodeTypeTest nodeTypeTest0 = new NodeTypeTest(2554);
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer(nodeTypeTest0, (Locale) null);
+    boolean boolean0 = jDOMNodePointer0.equals((Object) null);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test8186,"public void test8186() throws Throwable {
+    Locale locale0 = Locale.KOREAN;
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer("""", locale0, """");
+    boolean boolean0 = jDOMNodePointer0.equals(jDOMNodePointer0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test8287,"public void test8287() throws Throwable {
+    Locale locale0 = Locale.KOREAN;
+    JDOMNodePointer jDOMNodePointer0 = new JDOMNodePointer("""", locale0, """");
+    JDOMNodePointer jDOMNodePointer1 = new JDOMNodePointer("""", locale0);
+    boolean boolean0 = jDOMNodePointer1.equals(jDOMNodePointer0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)

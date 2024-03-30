@@ -1,0 +1,657 @@
+focal_method,test_prefix,docstring
+"@Override
+public Object deserializeWithType(JsonParser jp, DeserializationContext ctxt, TypeDeserializer typeDeserializer) throws IOException, JsonProcessingException {
+    // In future could check current token... for now this should be enough:
+    return typeDeserializer.deserializeTypedFromObject(jp, ctxt);
+}","public void test000() throws Throwable {
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    MapDeserializer mapDeserializer0 = new MapDeserializer((JavaType) null, jsonLocationInstantiator0, (KeyDeserializer) null, (JsonDeserializer<Object>) null, (TypeDeserializer) null);
+    // Undeclared exception!
+    try {
+        mapDeserializer0.deserializeWithType((JsonParser) null, (DeserializationContext) null, (TypeDeserializer) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.MapDeserializer"", e);
+    }
+}",""
+"@Override
+public JavaType getValueType() {
+    return _mapType;
+}","public void test022() throws Throwable {
+    Class<String> class0 = String.class;
+    Class<JsonMappingException> class1 = JsonMappingException.class;
+    SimpleType simpleType0 = SimpleType.construct(class1);
+    CollectionLikeType collectionLikeType0 = CollectionLikeType.construct(class0, simpleType0);
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    CoreXMLDeserializers.Std coreXMLDeserializers_Std0 = new CoreXMLDeserializers.Std(class1, (-3214));
+    MapDeserializer mapDeserializer0 = new MapDeserializer(collectionLikeType0, jsonLocationInstantiator0, (KeyDeserializer) null, coreXMLDeserializers_Std0, (TypeDeserializer) null);
+    JavaType javaType0 = mapDeserializer0.getValueType();
+    assertSame(collectionLikeType0, javaType0);
+}",""
+"public ObjectReader withType(java.lang.reflect.Type valueType) {
+    return withType(_config.getTypeFactory().constructType(valueType));
+}","public void test033() throws Throwable {
+    Class<JsonMappingException> class0 = JsonMappingException.class;
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    ObjectReader objectReader1 = objectReader0.withType((Type) class0);
+    assertNotSame(objectReader1, objectReader0);
+}","/**
+ *  Method for constructing a new reader instance that is configured
+ *  to data bind into specified type.
+ * <p>
+ *  Note that the method does NOT change state of this reader, but
+ *  rather construct and returns a newly configured instance.
+ */"
+"/*
+    /**********************************************************
+    /* Overrides
+    /**********************************************************
+     */
+@Override
+public SettableBeanProperty findBackReference(String refName) {
+    JsonDeserializer<Object> valueDeser = getContentDeserializer();
+    if (valueDeser == null) {
+        throw new IllegalArgumentException(""Can not handle managed/back reference '"" + refName + ""': type: container deserializer of type "" + getClass().getName() + "" returned null for 'getContentDeserializer()'"");
+    }
+    return valueDeser.findBackReference(refName);
+}","public void test044() throws Throwable {
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    MapDeserializer mapDeserializer0 = new MapDeserializer((JavaType) null, jsonLocationInstantiator0, (KeyDeserializer) null, (JsonDeserializer<Object>) null, (TypeDeserializer) null);
+    // Undeclared exception!
+    try {
+        mapDeserializer0.findBackReference("""");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Can not handle managed/back reference '': type: container deserializer of type com.fasterxml.jackson.databind.deser.std.MapDeserializer returned null for 'getContentDeserializer()'
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.ContainerDeserializerBase"", e);
+    }
+}",""
+"@Override
+@SuppressWarnings(""unchecked"")
+public Map<Object, Object> deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+    if (_propertyBasedCreator != null) {
+        return _deserializeUsingCreator(jp, ctxt);
+    }
+    if (_delegateDeserializer != null) {
+        return (Map<Object, Object>) _valueInstantiator.createUsingDelegate(ctxt, _delegateDeserializer.deserialize(jp, ctxt));
+    }
+    if (!_hasDefaultCreator) {
+        throw ctxt.instantiationException(getMapClass(), ""No default constructor found"");
+    }
+    // Ok: must point to START_OBJECT, FIELD_NAME or END_OBJECT
+    JsonToken t = jp.getCurrentToken();
+    if (t != JsonToken.START_OBJECT && t != JsonToken.FIELD_NAME && t != JsonToken.END_OBJECT) {
+        // [JACKSON-620] (empty) String may be ok however:
+        if (t == JsonToken.VALUE_STRING) {
+            return (Map<Object, Object>) _valueInstantiator.createFromString(ctxt, jp.getText());
+        }
+        throw ctxt.mappingException(getMapClass());
+    }
+    final Map<Object, Object> result = (Map<Object, Object>) _valueInstantiator.createUsingDefault(ctxt);
+    if (_standardStringKey) {
+        _readAndBindStringMap(jp, ctxt, result);
+        return result;
+    }
+    _readAndBind(jp, ctxt, result);
+    return result;
+}","public void test055() throws Throwable {
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    MapDeserializer mapDeserializer0 = new MapDeserializer((JavaType) null, jsonLocationInstantiator0, (KeyDeserializer) null, (JsonDeserializer<Object>) null, (TypeDeserializer) null);
+    // Undeclared exception!
+    try {
+        mapDeserializer0.deserialize((JsonParser) null, (DeserializationContext) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.MapDeserializer"", e);
+    }
+}",""
+"@Override
+public final boolean isPrimitive() {
+    return _class.isPrimitive();
+}","public void test066() throws Throwable {
+    Class<ObjectIdGenerators.IntSequenceGenerator> class0 = ObjectIdGenerators.IntSequenceGenerator.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    Class<NamedType> class1 = NamedType.class;
+    CollectionLikeType collectionLikeType0 = CollectionLikeType.construct(class1, simpleType0);
+    Class<Integer> class2 = Integer.class;
+    CoreXMLDeserializers.Std coreXMLDeserializers_Std0 = new CoreXMLDeserializers.Std(class2, 15);
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    MapDeserializer mapDeserializer0 = new MapDeserializer(collectionLikeType0, jsonLocationInstantiator0, (KeyDeserializer) null, coreXMLDeserializers_Std0, (TypeDeserializer) null);
+    JavaType javaType0 = mapDeserializer0.getContentType();
+    assertFalse(javaType0.isPrimitive());
+}",""
+"@SuppressWarnings(""unchecked"")
+protected MapDeserializer withResolved(KeyDeserializer keyDeser, TypeDeserializer valueTypeDeser, JsonDeserializer<?> valueDeser, HashSet<String> ignorable) {
+    if ((_keyDeserializer == keyDeser) && (_valueDeserializer == valueDeser) && (_valueTypeDeserializer == valueTypeDeser) && (_ignorableProperties == ignorable)) {
+        return this;
+    }
+    return new MapDeserializer(this, keyDeser, (JsonDeserializer<Object>) valueDeser, valueTypeDeser, ignorable);
+}","public void test077() throws Throwable {
+    Class<Integer> class0 = Integer.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    MapDeserializer mapDeserializer0 = new MapDeserializer(simpleType0, jsonLocationInstantiator0, (KeyDeserializer) null, (JsonDeserializer<Object>) null, (TypeDeserializer) null);
+    MapDeserializer mapDeserializer1 = mapDeserializer0.withResolved((KeyDeserializer) null, (TypeDeserializer) null, (JsonDeserializer<?>) null, (HashSet<String>) null);
+    assertSame(mapDeserializer1, mapDeserializer0);
+}","/**
+ * Fluent factory method used to create a copy with slightly
+ * different settings. When sub-classing, MUST be overridden.
+ */"
+"/*
+    /**********************************************************
+    /* JsonDeserializer API
+    /**********************************************************
+     */
+/**
+ *  Turns out that these are expensive enough to create so that caching
+ *  does make sense.
+ * <p>
+ *  IMPORTANT: but, note, that instances CAN NOT BE CACHED if there is
+ *  a value type deserializer; this caused an issue with 2.4.4 of
+ *  JAXB Annotations (failing a test).
+ *  It is also possible that some other settings could make deserializers
+ *  un-cacheable; but on the other hand, caching can make a big positive
+ *  difference with performance... so it's a hard choice.
+ *
+ *  @since 2.4.4
+ */
+@Override
+public boolean isCachable() {
+    /* As per [databind#735], existence of value or key deserializer (only passed
+         * if annotated to use non-standard one) should also prevent caching.
+         */
+    return (_valueTypeDeserializer == null) && (_ignorableProperties == null);
+}","public void test088() throws Throwable {
+    Class<JsonMappingException> class0 = JsonMappingException.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    CoreXMLDeserializers.Std coreXMLDeserializers_Std0 = new CoreXMLDeserializers.Std(class0, (-1602));
+    MapDeserializer mapDeserializer0 = new MapDeserializer(simpleType0, jsonLocationInstantiator0, (KeyDeserializer) null, coreXMLDeserializers_Std0, (TypeDeserializer) null);
+    HashSet<String> hashSet0 = new HashSet<String>();
+    MapDeserializer mapDeserializer1 = mapDeserializer0.withResolved((KeyDeserializer) null, (TypeDeserializer) null, mapDeserializer0, hashSet0);
+    assertFalse(mapDeserializer1.isCachable());
+}",""
+"/*
+    /**********************************************************
+    /* JsonDeserializer API
+    /**********************************************************
+     */
+/**
+ *  Turns out that these are expensive enough to create so that caching
+ *  does make sense.
+ * <p>
+ *  IMPORTANT: but, note, that instances CAN NOT BE CACHED if there is
+ *  a value type deserializer; this caused an issue with 2.4.4 of
+ *  JAXB Annotations (failing a test).
+ *  It is also possible that some other settings could make deserializers
+ *  un-cacheable; but on the other hand, caching can make a big positive
+ *  difference with performance... so it's a hard choice.
+ *
+ *  @since 2.4.4
+ */
+@Override
+public boolean isCachable() {
+    /* As per [databind#735], existence of value or key deserializer (only passed
+         * if annotated to use non-standard one) should also prevent caching.
+         */
+    return (_valueTypeDeserializer == null) && (_ignorableProperties == null);
+}","public void test099() throws Throwable {
+    Class<JsonMappingException> class0 = JsonMappingException.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    CoreXMLDeserializers.Std coreXMLDeserializers_Std0 = new CoreXMLDeserializers.Std(class0, (-2065));
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    ClassNameIdResolver classNameIdResolver0 = new ClassNameIdResolver(simpleType0, typeFactory0);
+    Class<Error> class1 = Error.class;
+    AsPropertyTypeDeserializer asPropertyTypeDeserializer0 = new AsPropertyTypeDeserializer(simpleType0, classNameIdResolver0, """", false, class1);
+    MapDeserializer mapDeserializer0 = new MapDeserializer(simpleType0, jsonLocationInstantiator0, (KeyDeserializer) null, coreXMLDeserializers_Std0, asPropertyTypeDeserializer0);
+    HashSet<String> hashSet0 = new HashSet<String>();
+    MapDeserializer mapDeserializer1 = mapDeserializer0.withResolved((KeyDeserializer) null, (TypeDeserializer) null, coreXMLDeserializers_Std0, hashSet0);
+    assertFalse(mapDeserializer1.isCachable());
+}",""
+"/*
+    /**********************************************************
+    /* JsonDeserializer API
+    /**********************************************************
+     */
+/**
+ *  Turns out that these are expensive enough to create so that caching
+ *  does make sense.
+ * <p>
+ *  IMPORTANT: but, note, that instances CAN NOT BE CACHED if there is
+ *  a value type deserializer; this caused an issue with 2.4.4 of
+ *  JAXB Annotations (failing a test).
+ *  It is also possible that some other settings could make deserializers
+ *  un-cacheable; but on the other hand, caching can make a big positive
+ *  difference with performance... so it's a hard choice.
+ *
+ *  @since 2.4.4
+ */
+@Override
+public boolean isCachable() {
+    /* As per [databind#735], existence of value or key deserializer (only passed
+         * if annotated to use non-standard one) should also prevent caching.
+         */
+    return (_valueTypeDeserializer == null) && (_ignorableProperties == null);
+}","public void test0910() throws Throwable {
+    Class<JsonMappingException> class0 = JsonMappingException.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    CoreXMLDeserializers.Std coreXMLDeserializers_Std0 = new CoreXMLDeserializers.Std(class0, (-2065));
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    ClassNameIdResolver classNameIdResolver0 = new ClassNameIdResolver(simpleType0, typeFactory0);
+    Class<Error> class1 = Error.class;
+    AsPropertyTypeDeserializer asPropertyTypeDeserializer0 = new AsPropertyTypeDeserializer(simpleType0, classNameIdResolver0, """", false, class1);
+    MapDeserializer mapDeserializer0 = new MapDeserializer(simpleType0, jsonLocationInstantiator0, (KeyDeserializer) null, coreXMLDeserializers_Std0, asPropertyTypeDeserializer0);
+    HashSet<String> hashSet0 = new HashSet<String>();
+    MapDeserializer mapDeserializer1 = mapDeserializer0.withResolved((KeyDeserializer) null, (TypeDeserializer) null, coreXMLDeserializers_Std0, hashSet0);
+    assertFalse(mapDeserializer0.isCachable());
+}",""
+"/*
+    /**********************************************************
+    /* JsonDeserializer API
+    /**********************************************************
+     */
+/**
+ *  Turns out that these are expensive enough to create so that caching
+ *  does make sense.
+ * <p>
+ *  IMPORTANT: but, note, that instances CAN NOT BE CACHED if there is
+ *  a value type deserializer; this caused an issue with 2.4.4 of
+ *  JAXB Annotations (failing a test).
+ *  It is also possible that some other settings could make deserializers
+ *  un-cacheable; but on the other hand, caching can make a big positive
+ *  difference with performance... so it's a hard choice.
+ *
+ *  @since 2.4.4
+ */
+@Override
+public boolean isCachable() {
+    /* As per [databind#735], existence of value or key deserializer (only passed
+         * if annotated to use non-standard one) should also prevent caching.
+         */
+    return (_valueTypeDeserializer == null) && (_ignorableProperties == null);
+}","public void test1011() throws Throwable {
+    Class<JsonMappingException> class0 = JsonMappingException.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    CoreXMLDeserializers.Std coreXMLDeserializers_Std0 = new CoreXMLDeserializers.Std(class0, (-3214));
+    MapDeserializer mapDeserializer0 = new MapDeserializer(simpleType0, jsonLocationInstantiator0, (KeyDeserializer) null, coreXMLDeserializers_Std0, (TypeDeserializer) null);
+    LinkedHashSet<String> linkedHashSet0 = new LinkedHashSet<String>();
+    MapDeserializer mapDeserializer1 = mapDeserializer0.withResolved((KeyDeserializer) null, (TypeDeserializer) null, coreXMLDeserializers_Std0, linkedHashSet0);
+    boolean boolean0 = mapDeserializer1.isCachable();
+    assertTrue(mapDeserializer0.isCachable());
+}",""
+"/*
+    /**********************************************************
+    /* JsonDeserializer API
+    /**********************************************************
+     */
+/**
+ *  Turns out that these are expensive enough to create so that caching
+ *  does make sense.
+ * <p>
+ *  IMPORTANT: but, note, that instances CAN NOT BE CACHED if there is
+ *  a value type deserializer; this caused an issue with 2.4.4 of
+ *  JAXB Annotations (failing a test).
+ *  It is also possible that some other settings could make deserializers
+ *  un-cacheable; but on the other hand, caching can make a big positive
+ *  difference with performance... so it's a hard choice.
+ *
+ *  @since 2.4.4
+ */
+@Override
+public boolean isCachable() {
+    /* As per [databind#735], existence of value or key deserializer (only passed
+         * if annotated to use non-standard one) should also prevent caching.
+         */
+    return (_valueTypeDeserializer == null) && (_ignorableProperties == null);
+}","public void test1012() throws Throwable {
+    Class<JsonMappingException> class0 = JsonMappingException.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    CoreXMLDeserializers.Std coreXMLDeserializers_Std0 = new CoreXMLDeserializers.Std(class0, (-3214));
+    MapDeserializer mapDeserializer0 = new MapDeserializer(simpleType0, jsonLocationInstantiator0, (KeyDeserializer) null, coreXMLDeserializers_Std0, (TypeDeserializer) null);
+    LinkedHashSet<String> linkedHashSet0 = new LinkedHashSet<String>();
+    MapDeserializer mapDeserializer1 = mapDeserializer0.withResolved((KeyDeserializer) null, (TypeDeserializer) null, coreXMLDeserializers_Std0, linkedHashSet0);
+    boolean boolean0 = mapDeserializer1.isCachable();
+    assertFalse(boolean0);
+}",""
+"@Override
+public JsonDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty property) throws JsonMappingException {
+    KeyDeserializer kd = _keyDeserializer;
+    if (kd == null) {
+        kd = ctxt.findKeyDeserializer(_mapType.getKeyType(), property);
+    } else {
+        if (kd instanceof ContextualKeyDeserializer) {
+            kd = ((ContextualKeyDeserializer) kd).createContextual(ctxt, property);
+        }
+    }
+    JsonDeserializer<?> vd = _valueDeserializer;
+    // #125: May have a content converter
+    vd = findConvertingContentDeserializer(ctxt, property, vd);
+    if (vd == null) {
+        vd = ctxt.findContextualValueDeserializer(_mapType.getContentType(), property);
+    } else {
+        // if directly assigned, probably not yet contextual, so:
+        vd = ctxt.handleSecondaryContextualization(vd, property);
+    }
+    TypeDeserializer vtd = _valueTypeDeserializer;
+    if (vtd != null) {
+        vtd = vtd.forProperty(property);
+    }
+    HashSet<String> ignored = _ignorableProperties;
+    AnnotationIntrospector intr = ctxt.getAnnotationIntrospector();
+    if (intr != null && property != null) {
+        String[] moreToIgnore = intr.findPropertiesToIgnore(property.getMember());
+        if (moreToIgnore != null) {
+            ignored = (ignored == null) ? new HashSet<String>() : new HashSet<String>(ignored);
+            for (String str : moreToIgnore) {
+                ignored.add(str);
+            }
+        }
+    }
+    return withResolved(kd, vtd, vd, ignored);
+}","public void test1113() throws Throwable {
+    Class<JsonMappingException> class0 = JsonMappingException.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    StdKeyDeserializer.StringKD stdKeyDeserializer_StringKD0 = StdKeyDeserializer.StringKD.forType(class0);
+    MapDeserializer mapDeserializer0 = new MapDeserializer(simpleType0, jsonLocationInstantiator0, stdKeyDeserializer_StringKD0, (JsonDeserializer<Object>) null, (TypeDeserializer) null);
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    // Undeclared exception!
+    try {
+        mapDeserializer0.createContextual(defaultDeserializationContext_Impl0, (BeanProperty) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationContext"", e);
+    }
+}","/**
+ * Method called to finalize setup of this deserializer,
+ * when it is known for which property deserializer is needed for.
+ */"
+"/*
+    /**********************************************************
+    /* JsonDeserializer API
+    /**********************************************************
+     */
+/**
+ *  Turns out that these are expensive enough to create so that caching
+ *  does make sense.
+ * <p>
+ *  IMPORTANT: but, note, that instances CAN NOT BE CACHED if there is
+ *  a value type deserializer; this caused an issue with 2.4.4 of
+ *  JAXB Annotations (failing a test).
+ *  It is also possible that some other settings could make deserializers
+ *  un-cacheable; but on the other hand, caching can make a big positive
+ *  difference with performance... so it's a hard choice.
+ *
+ *  @since 2.4.4
+ */
+@Override
+public boolean isCachable() {
+    /* As per [databind#735], existence of value or key deserializer (only passed
+         * if annotated to use non-standard one) should also prevent caching.
+         */
+    return (_valueTypeDeserializer == null) && (_ignorableProperties == null);
+}","public void test1214() throws Throwable {
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    Class<InvocationTargetException> class0 = InvocationTargetException.class;
+    CoreXMLDeserializers.Std coreXMLDeserializers_Std0 = new CoreXMLDeserializers.Std(class0, 47);
+    StdKeyDeserializer.StringKD stdKeyDeserializer_StringKD0 = StdKeyDeserializer.StringKD.forType(class0);
+    Class<SimpleObjectIdResolver> class1 = SimpleObjectIdResolver.class;
+    SimpleType simpleType0 = (SimpleType) TypeBindings.UNBOUND;
+    MapLikeType mapLikeType0 = MapLikeType.construct(class0, simpleType0, simpleType0);
+    ArrayType arrayType0 = ArrayType.construct(mapLikeType0, jsonLocationInstantiator0, jsonLocationInstantiator0);
+    MapType mapType0 = MapType.construct(class1, arrayType0, simpleType0);
+    MapDeserializer mapDeserializer0 = new MapDeserializer(mapType0, jsonLocationInstantiator0, stdKeyDeserializer_StringKD0, coreXMLDeserializers_Std0, (TypeDeserializer) null);
+    assertTrue(mapDeserializer0.isCachable());
+}",""
+"/*
+    /**********************************************************
+    /* JsonDeserializer API
+    /**********************************************************
+     */
+/**
+ *  Turns out that these are expensive enough to create so that caching
+ *  does make sense.
+ * <p>
+ *  IMPORTANT: but, note, that instances CAN NOT BE CACHED if there is
+ *  a value type deserializer; this caused an issue with 2.4.4 of
+ *  JAXB Annotations (failing a test).
+ *  It is also possible that some other settings could make deserializers
+ *  un-cacheable; but on the other hand, caching can make a big positive
+ *  difference with performance... so it's a hard choice.
+ *
+ *  @since 2.4.4
+ */
+@Override
+public boolean isCachable() {
+    /* As per [databind#735], existence of value or key deserializer (only passed
+         * if annotated to use non-standard one) should also prevent caching.
+         */
+    return (_valueTypeDeserializer == null) && (_ignorableProperties == null);
+}","public void test1315() throws Throwable {
+    Class<Object> class0 = Object.class;
+    SimpleType simpleType0 = SimpleType.constructUnsafe(class0);
+    MapType mapType0 = MapType.construct(class0, simpleType0, simpleType0);
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    JsonDeserializer<ArrayNode> jsonDeserializer0 = (JsonDeserializer<ArrayNode>) mock(JsonDeserializer.class, new ViolatedAssumptionAnswer());
+    StdKeyDeserializer.DelegatingKD stdKeyDeserializer_DelegatingKD0 = new StdKeyDeserializer.DelegatingKD(class0, jsonDeserializer0);
+    Class<InvocationTargetException> class1 = InvocationTargetException.class;
+    CoreXMLDeserializers.Std coreXMLDeserializers_Std0 = new CoreXMLDeserializers.Std(class1, 0);
+    AsArrayTypeDeserializer asArrayTypeDeserializer0 = new AsArrayTypeDeserializer(simpleType0, (TypeIdResolver) null, ""nG4 p2%)A"", false, class1);
+    MapDeserializer mapDeserializer0 = new MapDeserializer(mapType0, jsonLocationInstantiator0, stdKeyDeserializer_DelegatingKD0, coreXMLDeserializers_Std0, asArrayTypeDeserializer0);
+    assertFalse(mapDeserializer0.isCachable());
+}",""
+"/*
+    /**********************************************************
+    /* JsonDeserializer API
+    /**********************************************************
+     */
+/**
+ *  Turns out that these are expensive enough to create so that caching
+ *  does make sense.
+ * <p>
+ *  IMPORTANT: but, note, that instances CAN NOT BE CACHED if there is
+ *  a value type deserializer; this caused an issue with 2.4.4 of
+ *  JAXB Annotations (failing a test).
+ *  It is also possible that some other settings could make deserializers
+ *  un-cacheable; but on the other hand, caching can make a big positive
+ *  difference with performance... so it's a hard choice.
+ *
+ *  @since 2.4.4
+ */
+@Override
+public boolean isCachable() {
+    /* As per [databind#735], existence of value or key deserializer (only passed
+         * if annotated to use non-standard one) should also prevent caching.
+         */
+    return (_valueTypeDeserializer == null) && (_ignorableProperties == null);
+}","public void test1416() throws Throwable {
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    MapDeserializer mapDeserializer0 = new MapDeserializer((JavaType) null, jsonLocationInstantiator0, (KeyDeserializer) null, (JsonDeserializer<Object>) null, (TypeDeserializer) null);
+    String[] stringArray0 = new String[0];
+    mapDeserializer0.setIgnorableProperties(stringArray0);
+    assertTrue(mapDeserializer0.isCachable());
+}",""
+"/*
+    /**********************************************************
+    /* JsonDeserializer API
+    /**********************************************************
+     */
+/**
+ *  Turns out that these are expensive enough to create so that caching
+ *  does make sense.
+ * <p>
+ *  IMPORTANT: but, note, that instances CAN NOT BE CACHED if there is
+ *  a value type deserializer; this caused an issue with 2.4.4 of
+ *  JAXB Annotations (failing a test).
+ *  It is also possible that some other settings could make deserializers
+ *  un-cacheable; but on the other hand, caching can make a big positive
+ *  difference with performance... so it's a hard choice.
+ *
+ *  @since 2.4.4
+ */
+@Override
+public boolean isCachable() {
+    /* As per [databind#735], existence of value or key deserializer (only passed
+         * if annotated to use non-standard one) should also prevent caching.
+         */
+    return (_valueTypeDeserializer == null) && (_ignorableProperties == null);
+}","public void test1517() throws Throwable {
+    Class<JsonMappingException> class0 = JsonMappingException.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    CoreXMLDeserializers.Std coreXMLDeserializers_Std0 = new CoreXMLDeserializers.Std(class0, 0);
+    MapDeserializer mapDeserializer0 = new MapDeserializer(simpleType0, jsonLocationInstantiator0, (KeyDeserializer) null, coreXMLDeserializers_Std0, (TypeDeserializer) null);
+    String[] stringArray0 = new String[1];
+    mapDeserializer0.setIgnorableProperties(stringArray0);
+    assertFalse(mapDeserializer0.isCachable());
+}",""
+"/*
+    /**********************************************************
+    /* Validation, post-processing (ResolvableDeserializer)
+    /**********************************************************
+     */
+@Override
+public void resolve(DeserializationContext ctxt) throws JsonMappingException {
+    // May need to resolve types for delegate- and/or property-based creators:
+    if (_valueInstantiator.canCreateUsingDelegate()) {
+        JavaType delegateType = _valueInstantiator.getDelegateType(ctxt.getConfig());
+        if (delegateType == null) {
+            throw new IllegalArgumentException(""Invalid delegate-creator definition for "" + _mapType + "": value instantiator ("" + _valueInstantiator.getClass().getName() + "") returned true for 'canCreateUsingDelegate()', but null for 'getDelegateType()'"");
+        }
+        /* Theoretically should be able to get CreatorProperty for delegate
+             * parameter to pass; but things get tricky because DelegateCreator
+             * may contain injectable values. So, for now, let's pass nothing.
+             */
+        _delegateDeserializer = findDeserializer(ctxt, delegateType, null);
+    }
+    if (_valueInstantiator.canCreateFromObjectWith()) {
+        SettableBeanProperty[] creatorProps = _valueInstantiator.getFromObjectArguments(ctxt.getConfig());
+        _propertyBasedCreator = PropertyBasedCreator.construct(ctxt, _valueInstantiator, creatorProps);
+    }
+    _standardStringKey = _isStdKeyDeser(_mapType, _keyDeserializer);
+}","public void test1618() throws Throwable {
+    Class<Integer> class0 = Integer.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    MapDeserializer mapDeserializer0 = new MapDeserializer(simpleType0, jsonLocationInstantiator0, (KeyDeserializer) null, (JsonDeserializer<Object>) null, (TypeDeserializer) null);
+    // Undeclared exception!
+    try {
+        mapDeserializer0.resolve((DeserializationContext) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.MapDeserializer"", e);
+    }
+}",""
+"public ObjectReader withType(java.lang.reflect.Type valueType) {
+    return withType(_config.getTypeFactory().constructType(valueType));
+}","public void test1719() throws Throwable {
+    Class<JsonMappingException> class0 = JsonMappingException.class;
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    objectMapper0.enableDefaultTyping();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    ObjectReader objectReader1 = objectReader0.withType((Type) class0);
+    assertNotSame(objectReader0, objectReader1);
+}","/**
+ *  Method for constructing a new reader instance that is configured
+ *  to data bind into specified type.
+ * <p>
+ *  Note that the method does NOT change state of this reader, but
+ *  rather construct and returns a newly configured instance.
+ */"
+"@Override
+public Map<Object, Object> deserialize(JsonParser jp, DeserializationContext ctxt, Map<Object, Object> result) throws IOException, JsonProcessingException {
+    // Ok: must point to START_OBJECT or FIELD_NAME
+    JsonToken t = jp.getCurrentToken();
+    if (t != JsonToken.START_OBJECT && t != JsonToken.FIELD_NAME) {
+        throw ctxt.mappingException(getMapClass());
+    }
+    if (_standardStringKey) {
+        _readAndBindStringMap(jp, ctxt, result);
+        return result;
+    }
+    _readAndBind(jp, ctxt, result);
+    return result;
+}","public void test1820() throws Throwable {
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    MapDeserializer mapDeserializer0 = new MapDeserializer((JavaType) null, jsonLocationInstantiator0, (KeyDeserializer) null, (JsonDeserializer<Object>) null, (TypeDeserializer) null);
+    JsonFactory jsonFactory0 = new JsonFactory();
+    JsonParser jsonParser0 = jsonFactory0.createParser(""JSON"");
+    HashMap<Object, Object> hashMap0 = new HashMap<Object, Object>();
+    // Undeclared exception!
+    try {
+        mapDeserializer0.deserialize(jsonParser0, (DeserializationContext) null, (Map<Object, Object>) hashMap0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.MapDeserializer"", e);
+    }
+}",""
+"// note: copied from BeanDeserializer; should try to share somehow...
+protected void wrapAndThrow(Throwable t, Object ref, String key) throws IOException {
+    // to handle StackOverflow:
+    while (t instanceof InvocationTargetException && t.getCause() != null) {
+        t = t.getCause();
+    }
+    // Errors and ""plain"" IOExceptions to be passed as is
+    if (t instanceof Error) {
+        throw (Error) t;
+    }
+    // ... except for mapping exceptions
+    if (t instanceof IOException && !(t instanceof JsonMappingException)) {
+        throw (IOException) t;
+    }
+    throw JsonMappingException.wrapWithPath(t, ref, key);
+}","public void test2325() throws Throwable {
+    Class<String> class0 = String.class;
+    Class<JsonMappingException> class1 = JsonMappingException.class;
+    SimpleType simpleType0 = SimpleType.construct(class1);
+    CollectionLikeType collectionLikeType0 = CollectionLikeType.construct(class0, simpleType0);
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    CoreXMLDeserializers.Std coreXMLDeserializers_Std0 = new CoreXMLDeserializers.Std(class1, 2070);
+    MapDeserializer mapDeserializer0 = new MapDeserializer(collectionLikeType0, jsonLocationInstantiator0, (KeyDeserializer) null, coreXMLDeserializers_Std0, (TypeDeserializer) null);
+    MockError mockError0 = new MockError("""");
+    // Undeclared exception!
+    try {
+        mapDeserializer0.wrapAndThrow(mockError0, (Object) null, """");
+        fail(""Expecting exception: Error"");
+    } catch (Error e) {
+    }
+}",""
+"// since 2.5
+@Deprecated
+protected void wrapAndThrow(Throwable t, Object ref) throws IOException {
+    wrapAndThrow(t, ref, null);
+}","public void test2426() throws Throwable {
+    Class<JsonMappingException> class0 = JsonMappingException.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    MapDeserializer mapDeserializer0 = new MapDeserializer(simpleType0, jsonLocationInstantiator0, (KeyDeserializer) null, (JsonDeserializer<Object>) null, (TypeDeserializer) null);
+    MockIOException mockIOException0 = new MockIOException((String) null);
+    try {
+        mapDeserializer0.wrapAndThrow(mockIOException0, simpleType0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+    }
+}",""

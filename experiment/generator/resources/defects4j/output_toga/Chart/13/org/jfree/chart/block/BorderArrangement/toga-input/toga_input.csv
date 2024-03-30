@@ -1,0 +1,2595 @@
+focal_method,test_prefix,docstring
+"public Size2D arrange(BlockContainer container, Graphics2D g2, RectangleConstraint constraint) {
+    RectangleConstraint contentConstraint = container.toContentConstraint(constraint);
+    Size2D contentSize = null;
+    LengthConstraintType w = contentConstraint.getWidthConstraintType();
+    LengthConstraintType h = contentConstraint.getHeightConstraintType();
+    if (w == LengthConstraintType.NONE) {
+        if (h == LengthConstraintType.NONE) {
+            contentSize = arrangeNN(container, g2);
+        } else if (h == LengthConstraintType.FIXED) {
+            throw new RuntimeException(""Not implemented."");
+        } else if (h == LengthConstraintType.RANGE) {
+            throw new RuntimeException(""Not implemented."");
+        }
+    } else if (w == LengthConstraintType.FIXED) {
+        if (h == LengthConstraintType.NONE) {
+            contentSize = arrangeFN(container, g2, constraint.getWidth());
+        } else if (h == LengthConstraintType.FIXED) {
+            contentSize = arrangeFF(container, g2, constraint);
+        } else if (h == LengthConstraintType.RANGE) {
+            contentSize = arrangeFR(container, g2, constraint);
+        }
+    } else if (w == LengthConstraintType.RANGE) {
+        if (h == LengthConstraintType.NONE) {
+            throw new RuntimeException(""Not implemented."");
+        } else if (h == LengthConstraintType.FIXED) {
+            throw new RuntimeException(""Not implemented."");
+        } else if (h == LengthConstraintType.RANGE) {
+            contentSize = arrangeRR(container, constraint.getWidthRange(), constraint.getHeightRange(), g2);
+        }
+    }
+    return new Size2D(container.calculateTotalWidth(contentSize.getWidth()), container.calculateTotalHeight(contentSize.getHeight()));
+}","public void test000() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BlockContainer blockContainer0 = new BlockContainer();
+    Rectangle2D.Double rectangle2D_Double0 = new Rectangle2D.Double((-186.01), 1428.270794, 0.0, (-186.01));
+    blockContainer0.trimBorder(rectangle2D_Double0);
+    FileSystemHandling.appendLineToFile((EvoSuiteFile) null, """");
+    Graphics2D graphics2D0 = null;
+    blockContainer0.setPadding(1428.270794, (-1.0), (-1183.96070736), (-1.7976931348623157E308));
+    FileSystemHandling.appendLineToFile((EvoSuiteFile) null, ""["");
+    DefaultTableXYDataset defaultTableXYDataset0 = new DefaultTableXYDataset(false);
+    IntervalXYDelegate intervalXYDelegate0 = new IntervalXYDelegate(defaultTableXYDataset0);
+    intervalXYDelegate0.getDomainBounds(false);
+    borderArrangement0.arrangeFN(blockContainer0, (Graphics2D) null, 0.0);
+    RectangleConstraint rectangleConstraint0 = new RectangleConstraint(0.0, (Range) null);
+    // Undeclared exception!
+    try {
+        borderArrangement0.arrange(blockContainer0, (Graphics2D) null, rectangleConstraint0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.chart.block.BorderArrangement"", e);
+    }
+}","/**
+ * Arranges the items in the specified container, subject to the given
+ * constraint.
+ *
+ * @param container  the container.
+ * @param g2  the graphics device.
+ * @param constraint  the constraint.
+ *
+ * @return The block size.
+ */"
+"public Size2D arrange(Graphics2D g2, RectangleConstraint constraint) {
+    return this.arrangement.arrange(this, g2, constraint);
+}","public void test011() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BlockContainer blockContainer0 = new BlockContainer(borderArrangement0);
+    Graphics2D graphics2D0 = null;
+    TimeTableXYDataset timeTableXYDataset0 = new TimeTableXYDataset();
+    byte[] byteArray0 = new byte[2];
+    byteArray0[0] = (byte) (-127);
+    byteArray0[1] = (byte) 114;
+    FileSystemHandling.appendDataToFile((EvoSuiteFile) null, byteArray0);
+    RectangleConstraint rectangleConstraint0 = new RectangleConstraint((-458.6479027), (-912.3));
+    borderArrangement0.arrangeFF(blockContainer0, (Graphics2D) null, rectangleConstraint0);
+    Range range0 = new Range(13.100398612273521, 13.100398612273521);
+    LengthConstraintType lengthConstraintType0 = LengthConstraintType.FIXED;
+    RectangleConstraint rectangleConstraint1 = new RectangleConstraint(13.100398612273521, range0, lengthConstraintType0, 0.0, range0, lengthConstraintType0);
+    blockContainer0.arrange((Graphics2D) null, rectangleConstraint1);
+    // Undeclared exception!
+    try {
+        blockContainer0.arrange((Graphics2D) null, (RectangleConstraint) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'c' argument.
+        //
+        verifyException(""org.jfree.chart.block.AbstractBlock"", e);
+    }
+}","/**
+ * Arranges the contents of the block, within the given constraints, and
+ * returns the block size.
+ *
+ * @param g2  the graphics device.
+ * @param constraint  the constraint (<code>null</code> not permitted).
+ *
+ * @return The block size (in Java2D units, never <code>null</code>).
+ */"
+"public Size2D arrange(Graphics2D g2, RectangleConstraint constraint) {
+    return this.arrangement.arrange(this, g2, constraint);
+}","public void test022() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BlockContainer blockContainer0 = new BlockContainer(borderArrangement0);
+    Graphics2D graphics2D0 = null;
+    byte[] byteArray0 = new byte[2];
+    byteArray0[0] = (byte) 4;
+    byteArray0[1] = (byte) 65;
+    FileSystemHandling.appendDataToFile((EvoSuiteFile) null, byteArray0);
+    TimeTableXYDataset timeTableXYDataset0 = new TimeTableXYDataset();
+    Range range0 = new Range((-17.214925318493947), (-17.214925318493947));
+    LengthConstraintType lengthConstraintType0 = LengthConstraintType.RANGE;
+    RectangleConstraint rectangleConstraint0 = new RectangleConstraint((-17.214925318493947), range0, lengthConstraintType0, 0.0, range0, lengthConstraintType0);
+    RectangleConstraint rectangleConstraint1 = rectangleConstraint0.toFixedHeight(1176.7792870805408);
+    blockContainer0.arrange((Graphics2D) null, rectangleConstraint0);
+    borderArrangement0.arrangeFF(blockContainer0, (Graphics2D) null, rectangleConstraint1);
+    // Undeclared exception!
+    try {
+        blockContainer0.arrange((Graphics2D) null, (RectangleConstraint) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'c' argument.
+        //
+        verifyException(""org.jfree.chart.block.AbstractBlock"", e);
+    }
+}","/**
+ * Arranges the contents of the block, within the given constraints, and
+ * returns the block size.
+ *
+ * @param g2  the graphics device.
+ * @param constraint  the constraint (<code>null</code> not permitted).
+ *
+ * @return The block size (in Java2D units, never <code>null</code>).
+ */"
+"public boolean equals(Object obj) {
+    if (obj == this) {
+        return true;
+    }
+    if (!(obj instanceof BorderArrangement)) {
+        return false;
+    }
+    BorderArrangement that = (BorderArrangement) obj;
+    if (!ObjectUtilities.equal(this.topBlock, that.topBlock)) {
+        return false;
+    }
+    if (!ObjectUtilities.equal(this.bottomBlock, that.bottomBlock)) {
+        return false;
+    }
+    if (!ObjectUtilities.equal(this.leftBlock, that.leftBlock)) {
+        return false;
+    }
+    if (!ObjectUtilities.equal(this.rightBlock, that.rightBlock)) {
+        return false;
+    }
+    if (!ObjectUtilities.equal(this.centerBlock, that.centerBlock)) {
+        return false;
+    }
+    return true;
+}","public void test033() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    RectangleEdge rectangleEdge0 = RectangleEdge.LEFT;
+    boolean boolean0 = borderArrangement0.equals(rectangleEdge0);
+    assertFalse(boolean0);
+}","/**
+ * Tests this arrangement for equality with an arbitrary object.
+ *
+ * @param obj  the object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public String toString() {
+    return this.name;
+}","public void test034() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    RectangleEdge rectangleEdge0 = RectangleEdge.LEFT;
+    boolean boolean0 = borderArrangement0.equals(rectangleEdge0);
+    borderArrangement0.clear();
+    Clock clock0 = MockClock.systemDefaultZone();
+    MockLocalDate.now(clock0);
+    FileSystemHandling.shouldAllThrowIOExceptions();
+    borderArrangement0.clear();
+    FileSystemHandling.shouldThrowIOException((EvoSuiteFile) null);
+    int[] intArray0 = new int[7];
+    borderArrangement0.add((Block) null, rectangleEdge0);
+    assertEquals(""RectangleEdge.LEFT"", rectangleEdge0.toString());
+}","/**
+ * Returns a string representing the object.
+ *
+ * @return The string.
+ */"
+"public String toString() {
+    return this.name;
+}","public void test045() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    RectangleEdge rectangleEdge0 = RectangleEdge.BOTTOM;
+    borderArrangement0.equals(rectangleEdge0);
+    borderArrangement0.clear();
+    Clock clock0 = MockClock.systemDefaultZone();
+    LocalDate localDate0 = MockLocalDate.now(clock0);
+    borderArrangement0.equals(localDate0);
+    borderArrangement0.clear();
+    FileSystemHandling.setPermissions((EvoSuiteFile) null, false, false, false);
+    int[] intArray0 = new int[7];
+    borderArrangement0.add((Block) null, rectangleEdge0);
+    assertEquals(""RectangleEdge.BOTTOM"", rectangleEdge0.toString());
+}","/**
+ * Returns a string representing the object.
+ *
+ * @return The string.
+ */"
+"public void add(Block block, Object key) {
+    if (key == null) {
+        this.centerBlock = block;
+    } else {
+        RectangleEdge edge = (RectangleEdge) key;
+        if (edge == RectangleEdge.TOP) {
+            this.topBlock = block;
+        } else if (edge == RectangleEdge.BOTTOM) {
+            this.bottomBlock = block;
+        } else if (edge == RectangleEdge.LEFT) {
+            this.leftBlock = block;
+        } else if (edge == RectangleEdge.RIGHT) {
+            this.rightBlock = block;
+        }
+    }
+}","public void test056() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BlockContainer blockContainer0 = new BlockContainer();
+    Graphics2D graphics2D0 = null;
+    Range range0 = new Range(0.0, 0.0);
+    LengthConstraintType lengthConstraintType0 = LengthConstraintType.NONE;
+    FileSystemHandling.shouldAllThrowIOExceptions();
+    RectangleConstraint rectangleConstraint0 = new RectangleConstraint(0.0, range0);
+    SeriesChangeEvent seriesChangeEvent0 = new SeriesChangeEvent(""Nd4"");
+    borderArrangement0.arrangeFR(blockContainer0, (Graphics2D) null, rectangleConstraint0);
+    borderArrangement0.arrangeNN(blockContainer0, (Graphics2D) null);
+    borderArrangement0.equals(seriesChangeEvent0);
+    borderArrangement0.arrangeFF(blockContainer0, (Graphics2D) null, rectangleConstraint0);
+    borderArrangement0.equals((Object) null);
+    EmptyBlock emptyBlock0 = new EmptyBlock(2.0, 2.0);
+    Rectangle2D.Double rectangle2D_Double0 = new Rectangle2D.Double();
+    Rectangle rectangle0 = new Rectangle();
+    // Undeclared exception!
+    try {
+        borderArrangement0.add(emptyBlock0, emptyBlock0);
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // org.jfree.chart.block.EmptyBlock cannot be cast to org.jfree.chart.util.RectangleEdge
+        //
+        verifyException(""org.jfree.chart.block.BorderArrangement"", e);
+    }
+}","/**
+ * Adds a block to the arrangement manager at the specified edge.
+ *
+ * @param block  the block (<code>null</code> permitted).
+ * @param key  the edge (an instance of {@link RectangleEdge}) or
+ *             <code>null</code> for the center block.
+ */"
+"protected Size2D arrangeFR(BlockContainer container, Graphics2D g2, RectangleConstraint constraint) {
+    Size2D size1 = arrangeFN(container, g2, constraint.getWidth());
+    if (constraint.getHeightRange().contains(size1.getHeight())) {
+        return size1;
+    } else {
+        double h = constraint.getHeightRange().constrain(size1.getHeight());
+        RectangleConstraint c2 = constraint.toFixedHeight(h);
+        return arrange(container, g2, c2);
+    }
+}","public void test067() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BlockContainer blockContainer0 = new BlockContainer(borderArrangement0);
+    Graphics2D graphics2D0 = null;
+    Range range0 = new Range(13.100398612273521, 13.100398612273521);
+    LengthConstraintType lengthConstraintType0 = LengthConstraintType.NONE;
+    FileSystemHandling.shouldAllThrowIOExceptions();
+    RectangleConstraint rectangleConstraint0 = new RectangleConstraint(13.100398612273521, range0, lengthConstraintType0, 0.0, range0, lengthConstraintType0);
+    SeriesChangeEvent seriesChangeEvent0 = new SeriesChangeEvent(""Nd4"");
+    // Undeclared exception!
+    try {
+        borderArrangement0.arrangeFR(blockContainer0, (Graphics2D) null, rectangleConstraint0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Not implemented.
+        //
+        verifyException(""org.jfree.chart.block.BorderArrangement"", e);
+    }
+}","/**
+ * Performs an arrangement with a fixed width and a range for the height.
+ *
+ * @param container  the container.
+ * @param g2  the graphics device.
+ * @param constraint  the constraint.
+ *
+ * @return The container size after the arrangement.
+ */"
+"protected Size2D arrangeFR(BlockContainer container, Graphics2D g2, RectangleConstraint constraint) {
+    Size2D size1 = arrangeFN(container, g2, constraint.getWidth());
+    if (constraint.getHeightRange().contains(size1.getHeight())) {
+        return size1;
+    } else {
+        double h = constraint.getHeightRange().constrain(size1.getHeight());
+        RectangleConstraint c2 = constraint.toFixedHeight(h);
+        return arrange(container, g2, c2);
+    }
+}","public void test078() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    byte[] byteArray0 = new byte[5];
+    byteArray0[0] = (byte) 0;
+    byteArray0[1] = (byte) 118;
+    byteArray0[2] = (byte) (-12);
+    byteArray0[3] = (byte) 59;
+    byteArray0[4] = (byte) 0;
+    FileSystemHandling.appendDataToFile((EvoSuiteFile) null, byteArray0);
+    BlockContainer blockContainer0 = new BlockContainer(borderArrangement0);
+    blockContainer0.setMargin((double) (byte) 0, (double) (byte) (-12), (double) (byte) (-12), (double) (byte) (-12));
+    RectangleConstraint rectangleConstraint0 = RectangleConstraint.NONE;
+    borderArrangement0.arrange(blockContainer0, (Graphics2D) null, rectangleConstraint0);
+    BlockContainer blockContainer1 = new BlockContainer();
+    FileSystemHandling.shouldAllThrowIOExceptions();
+    borderArrangement0.arrangeFF(blockContainer1, (Graphics2D) null, rectangleConstraint0);
+    borderArrangement0.arrangeFN(blockContainer1, (Graphics2D) null, (byte) 59);
+    System.setCurrentTimeMillis((byte) 59);
+    CenterArrangement centerArrangement0 = new CenterArrangement();
+    borderArrangement0.add(blockContainer1, (Object) null);
+    borderArrangement0.arrange(blockContainer1, (Graphics2D) null, rectangleConstraint0);
+    // Undeclared exception!
+    try {
+        borderArrangement0.arrangeFR(blockContainer1, (Graphics2D) null, rectangleConstraint0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.chart.block.BorderArrangement"", e);
+    }
+}","/**
+ * Performs an arrangement with a fixed width and a range for the height.
+ *
+ * @param container  the container.
+ * @param g2  the graphics device.
+ * @param constraint  the constraint.
+ *
+ * @return The container size after the arrangement.
+ */"
+"public void clear() {
+    this.centerBlock = null;
+    this.topBlock = null;
+    this.bottomBlock = null;
+    this.leftBlock = null;
+    this.rightBlock = null;
+}","public void test089() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    borderArrangement0.equals(borderArrangement0);
+    BlockContainer blockContainer0 = new BlockContainer();
+    AffineTransform affineTransform0 = AffineTransform.getTranslateInstance((-2100.724604096333), (-2100.724604096333));
+    HashMap<RenderingHints.Key, ChronoLocalDate> hashMap0 = new HashMap<RenderingHints.Key, ChronoLocalDate>();
+    RenderingHints renderingHints0 = new RenderingHints(hashMap0);
+    AffineTransformOp affineTransformOp0 = new AffineTransformOp(affineTransform0, renderingHints0);
+    byte[] byteArray0 = new byte[1];
+    RectangleConstraint rectangleConstraint0 = RectangleConstraint.NONE;
+    borderArrangement0.clear();
+}","/**
+ * Clears the layout.
+ */"
+"public boolean equals(Object obj) {
+    if (obj == this) {
+        return true;
+    }
+    if (!(obj instanceof BorderArrangement)) {
+        return false;
+    }
+    BorderArrangement that = (BorderArrangement) obj;
+    if (!ObjectUtilities.equal(this.topBlock, that.topBlock)) {
+        return false;
+    }
+    if (!ObjectUtilities.equal(this.bottomBlock, that.bottomBlock)) {
+        return false;
+    }
+    if (!ObjectUtilities.equal(this.leftBlock, that.leftBlock)) {
+        return false;
+    }
+    if (!ObjectUtilities.equal(this.rightBlock, that.rightBlock)) {
+        return false;
+    }
+    if (!ObjectUtilities.equal(this.centerBlock, that.centerBlock)) {
+        return false;
+    }
+    return true;
+}","public void test0910() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BlockContainer blockContainer0 = new BlockContainer();
+    borderArrangement0.arrangeNN(blockContainer0, (Graphics2D) null);
+    RectangleEdge rectangleEdge0 = RectangleEdge.TOP;
+    boolean boolean0 = borderArrangement0.equals(rectangleEdge0);
+    assertFalse(boolean0);
+}","/**
+ * Tests this arrangement for equality with an arbitrary object.
+ *
+ * @param obj  the object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public Size2D arrange(BlockContainer container, Graphics2D g2, RectangleConstraint constraint) {
+    RectangleConstraint contentConstraint = container.toContentConstraint(constraint);
+    Size2D contentSize = null;
+    LengthConstraintType w = contentConstraint.getWidthConstraintType();
+    LengthConstraintType h = contentConstraint.getHeightConstraintType();
+    if (w == LengthConstraintType.NONE) {
+        if (h == LengthConstraintType.NONE) {
+            contentSize = arrangeNN(container, g2);
+        } else if (h == LengthConstraintType.FIXED) {
+            throw new RuntimeException(""Not implemented."");
+        } else if (h == LengthConstraintType.RANGE) {
+            throw new RuntimeException(""Not implemented."");
+        }
+    } else if (w == LengthConstraintType.FIXED) {
+        if (h == LengthConstraintType.NONE) {
+            contentSize = arrangeFN(container, g2, constraint.getWidth());
+        } else if (h == LengthConstraintType.FIXED) {
+            contentSize = arrangeFF(container, g2, constraint);
+        } else if (h == LengthConstraintType.RANGE) {
+            contentSize = arrangeFR(container, g2, constraint);
+        }
+    } else if (w == LengthConstraintType.RANGE) {
+        if (h == LengthConstraintType.NONE) {
+            throw new RuntimeException(""Not implemented."");
+        } else if (h == LengthConstraintType.FIXED) {
+            throw new RuntimeException(""Not implemented."");
+        } else if (h == LengthConstraintType.RANGE) {
+            contentSize = arrangeRR(container, constraint.getWidthRange(), constraint.getHeightRange(), g2);
+        }
+    }
+    return new Size2D(container.calculateTotalWidth(contentSize.getWidth()), container.calculateTotalHeight(contentSize.getHeight()));
+}","public void test0911() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BlockContainer blockContainer0 = new BlockContainer();
+    borderArrangement0.arrangeNN(blockContainer0, (Graphics2D) null);
+    RectangleEdge rectangleEdge0 = RectangleEdge.TOP;
+    boolean boolean0 = borderArrangement0.equals(rectangleEdge0);
+    LengthConstraintType lengthConstraintType0 = LengthConstraintType.FIXED;
+    RectangleConstraint rectangleConstraint0 = new RectangleConstraint(0.0, (Range) null, lengthConstraintType0, (-287.4701887638619), (Range) null, lengthConstraintType0);
+    Size2D size2D0 = borderArrangement0.arrange(blockContainer0, (Graphics2D) null, rectangleConstraint0);
+    assertEquals((-287.4701887638619), size2D0.height, 0.01);
+}","/**
+ * Arranges the items in the specified container, subject to the given
+ * constraint.
+ *
+ * @param container  the container.
+ * @param g2  the graphics device.
+ * @param constraint  the constraint.
+ *
+ * @return The block size.
+ */"
+"public void add(Block block, Object key) {
+    if (key == null) {
+        this.centerBlock = block;
+    } else {
+        RectangleEdge edge = (RectangleEdge) key;
+        if (edge == RectangleEdge.TOP) {
+            this.topBlock = block;
+        } else if (edge == RectangleEdge.BOTTOM) {
+            this.bottomBlock = block;
+        } else if (edge == RectangleEdge.LEFT) {
+            this.leftBlock = block;
+        } else if (edge == RectangleEdge.RIGHT) {
+            this.rightBlock = block;
+        }
+    }
+}","public void test1012() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BlockContainer blockContainer0 = new BlockContainer(borderArrangement0);
+    RectangleEdge rectangleEdge0 = RectangleEdge.BOTTOM;
+    HashMap<AttributedCharacterIterator.Attribute, Integer> hashMap0 = new HashMap<AttributedCharacterIterator.Attribute, Integer>();
+    Font font0 = Font.getFont((Map<? extends AttributedCharacterIterator.Attribute, ?>) hashMap0);
+    char[] charArray0 = new char[8];
+    charArray0[0] = 'O';
+    charArray0[1] = 'I';
+    charArray0[2] = '/';
+    charArray0[3] = 'D';
+    charArray0[4] = 'I';
+    charArray0[5] = '<';
+    charArray0[6] = 's';
+    charArray0[7] = ';';
+    AffineTransform affineTransform0 = AffineTransform.getTranslateInstance((-1.0), 0.0);
+    FontRenderContext fontRenderContext0 = new FontRenderContext(affineTransform0, true, true);
+    Rectangle2D rectangle2D0 = font0.getStringBounds(charArray0, (int) (byte) 0, (int) (byte) 0, fontRenderContext0);
+    RectangleEdge rectangleEdge1 = RectangleEdge.TOP;
+    RectangleEdge.coordinate(rectangle2D0, rectangleEdge1);
+    RectangleEdge rectangleEdge2 = RectangleEdge.opposite(rectangleEdge0);
+    borderArrangement0.add(blockContainer0, rectangleEdge2);
+    assertSame(rectangleEdge2, rectangleEdge1);
+}","/**
+ * Adds a block to the arrangement manager at the specified edge.
+ *
+ * @param block  the block (<code>null</code> permitted).
+ * @param key  the edge (an instance of {@link RectangleEdge}) or
+ *             <code>null</code> for the center block.
+ */"
+"public void add(Block block, Object key) {
+    if (key == null) {
+        this.centerBlock = block;
+    } else {
+        RectangleEdge edge = (RectangleEdge) key;
+        if (edge == RectangleEdge.TOP) {
+            this.topBlock = block;
+        } else if (edge == RectangleEdge.BOTTOM) {
+            this.bottomBlock = block;
+        } else if (edge == RectangleEdge.LEFT) {
+            this.leftBlock = block;
+        } else if (edge == RectangleEdge.RIGHT) {
+            this.rightBlock = block;
+        }
+    }
+}","public void test1113() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BlockContainer blockContainer0 = new BlockContainer();
+    Graphics2D graphics2D0 = null;
+    TimeZone timeZone0 = TimeZone.getTimeZone(""Not implemented."");
+    TimeTableXYDataset timeTableXYDataset0 = new TimeTableXYDataset(timeZone0);
+    boolean boolean0 = false;
+    Range range0 = new Range(0.0, 855.4494347);
+    RectangleConstraint rectangleConstraint0 = new RectangleConstraint(855.4494347, range0);
+    blockContainer0.arrange((Graphics2D) null, rectangleConstraint0);
+    timeTableXYDataset0.getDomainBounds(false);
+    RectangleConstraint rectangleConstraint1 = new RectangleConstraint(855.4494347, (Range) null);
+    AttributedCharacterIterator.Attribute attributedCharacterIterator_Attribute0 = AttributedCharacterIterator.Attribute.LANGUAGE;
+    // Undeclared exception!
+    try {
+        borderArrangement0.add(blockContainer0, attributedCharacterIterator_Attribute0);
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // java.text.AttributedCharacterIterator$Attribute cannot be cast to org.jfree.chart.util.RectangleEdge
+        //
+        verifyException(""org.jfree.chart.block.BorderArrangement"", e);
+    }
+}","/**
+ * Adds a block to the arrangement manager at the specified edge.
+ *
+ * @param block  the block (<code>null</code> permitted).
+ * @param key  the edge (an instance of {@link RectangleEdge}) or
+ *             <code>null</code> for the center block.
+ */"
+"protected Size2D arrangeFR(BlockContainer container, Graphics2D g2, RectangleConstraint constraint) {
+    Size2D size1 = arrangeFN(container, g2, constraint.getWidth());
+    if (constraint.getHeightRange().contains(size1.getHeight())) {
+        return size1;
+    } else {
+        double h = constraint.getHeightRange().constrain(size1.getHeight());
+        RectangleConstraint c2 = constraint.toFixedHeight(h);
+        return arrange(container, g2, c2);
+    }
+}","public void test1214() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    byte[] byteArray0 = new byte[5];
+    byteArray0[0] = (byte) 0;
+    byteArray0[1] = (byte) 118;
+    byteArray0[2] = (byte) (-12);
+    byteArray0[3] = (byte) 59;
+    byteArray0[4] = (byte) 0;
+    FileSystemHandling.appendDataToFile((EvoSuiteFile) null, byteArray0);
+    BlockContainer blockContainer0 = new BlockContainer(borderArrangement0);
+    blockContainer0.clear();
+    RectangleConstraint rectangleConstraint0 = RectangleConstraint.NONE;
+    borderArrangement0.arrange(blockContainer0, (Graphics2D) null, rectangleConstraint0);
+    BlockContainer blockContainer1 = new BlockContainer();
+    FileSystemHandling.shouldAllThrowIOExceptions();
+    borderArrangement0.arrangeNN(blockContainer1, (Graphics2D) null);
+    borderArrangement0.arrangeFN(blockContainer1, (Graphics2D) null, (byte) 59);
+    System.setCurrentTimeMillis((byte) 59);
+    CenterArrangement centerArrangement0 = new CenterArrangement();
+    borderArrangement0.add(blockContainer1, (Object) null);
+    borderArrangement0.arrange(blockContainer1, (Graphics2D) null, rectangleConstraint0);
+    DefaultBoxAndWhiskerCategoryDataset defaultBoxAndWhiskerCategoryDataset0 = new DefaultBoxAndWhiskerCategoryDataset();
+    Range range0 = defaultBoxAndWhiskerCategoryDataset0.getRangeBounds(true);
+    borderArrangement0.arrangeRR(blockContainer1, range0, range0, (Graphics2D) null);
+    // Undeclared exception!
+    try {
+        borderArrangement0.arrangeFR(blockContainer1, (Graphics2D) null, rectangleConstraint0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.chart.block.BorderArrangement"", e);
+    }
+}","/**
+ * Performs an arrangement with a fixed width and a range for the height.
+ *
+ * @param container  the container.
+ * @param g2  the graphics device.
+ * @param constraint  the constraint.
+ *
+ * @return The container size after the arrangement.
+ */"
+"protected Size2D arrangeRR(BlockContainer container, Range widthRange, Range heightRange, Graphics2D g2) {
+    double[] w = new double[5];
+    double[] h = new double[5];
+    if (this.topBlock != null) {
+        RectangleConstraint c1 = new RectangleConstraint(widthRange, heightRange);
+        Size2D size = this.topBlock.arrange(g2, c1);
+        w[0] = size.width;
+        h[0] = size.height;
+    }
+    if (this.bottomBlock != null) {
+        Range heightRange2 = Range.shift(heightRange, -h[0], false);
+        RectangleConstraint c2 = new RectangleConstraint(widthRange, heightRange2);
+        Size2D size = this.bottomBlock.arrange(g2, c2);
+        w[1] = size.width;
+        h[1] = size.height;
+    }
+    Range heightRange3 = Range.shift(heightRange, -(h[0] + h[1]));
+    if (this.leftBlock != null) {
+        RectangleConstraint c3 = new RectangleConstraint(widthRange, heightRange3);
+        Size2D size = this.leftBlock.arrange(g2, c3);
+        w[2] = size.width;
+        h[2] = size.height;
+    }
+    Range widthRange2 = Range.shift(widthRange, -w[2], false);
+    if (this.rightBlock != null) {
+        RectangleConstraint c4 = new RectangleConstraint(widthRange2, heightRange3);
+        Size2D size = this.rightBlock.arrange(g2, c4);
+        w[3] = size.width;
+        h[3] = size.height;
+    }
+    h[2] = Math.max(h[2], h[3]);
+    h[3] = h[2];
+    Range widthRange3 = Range.shift(widthRange, -(w[2] + w[3]), false);
+    if (this.centerBlock != null) {
+        RectangleConstraint c5 = new RectangleConstraint(widthRange3, heightRange3);
+        // TODO:  the width and height ranges should be reduced by the
+        // height required for the top and bottom, and the width required
+        // by the left and right
+        Size2D size = this.centerBlock.arrange(g2, c5);
+        w[4] = size.width;
+        h[4] = size.height;
+    }
+    double width = Math.max(w[0], Math.max(w[1], w[2] + w[4] + w[3]));
+    double height = h[0] + h[1] + Math.max(h[2], Math.max(h[3], h[4]));
+    if (this.topBlock != null) {
+        this.topBlock.setBounds(new Rectangle2D.Double(0.0, 0.0, width, h[0]));
+    }
+    if (this.bottomBlock != null) {
+        this.bottomBlock.setBounds(new Rectangle2D.Double(0.0, height - h[1], width, h[1]));
+    }
+    if (this.leftBlock != null) {
+        this.leftBlock.setBounds(new Rectangle2D.Double(0.0, h[0], w[2], h[2]));
+    }
+    if (this.rightBlock != null) {
+        this.rightBlock.setBounds(new Rectangle2D.Double(width - w[3], h[0], w[3], h[3]));
+    }
+    if (this.centerBlock != null) {
+        this.centerBlock.setBounds(new Rectangle2D.Double(w[2], h[0], width - w[2] - w[3], height - h[0] - h[1]));
+    }
+    return new Size2D(width, height);
+}","public void test1315() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BlockContainer blockContainer0 = new BlockContainer(borderArrangement0);
+    Graphics2D graphics2D0 = null;
+    Range range0 = new Range(13.100398612273521, 13.100398612273521);
+    LengthConstraintType lengthConstraintType0 = LengthConstraintType.FIXED;
+    RectangleConstraint rectangleConstraint0 = new RectangleConstraint(0.0, range0);
+    RectangleConstraint rectangleConstraint1 = null;
+    CategoryTableXYDataset categoryTableXYDataset0 = new CategoryTableXYDataset();
+    SeriesChangeEvent seriesChangeEvent0 = new SeriesChangeEvent(""N4"");
+    categoryTableXYDataset0.getDomainBounds(true);
+    borderArrangement0.arrangeFR(blockContainer0, (Graphics2D) null, rectangleConstraint0);
+    borderArrangement0.arrangeFN(blockContainer0, (Graphics2D) null, 13.100398612273521);
+    // Undeclared exception!
+    try {
+        borderArrangement0.arrangeRR(blockContainer0, range0, (Range) null, (Graphics2D) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.Range"", e);
+    }
+}","/**
+ * Performs an arrangement with range constraints on both the vertical
+ * and horizontal sides.
+ *
+ * @param container  the container.
+ * @param widthRange  the allowable range for the container width.
+ * @param heightRange  the allowable range for the container height.
+ * @param g2  the graphics device.
+ *
+ * @return The container size.
+ */"
+"protected Size2D arrangeFR(BlockContainer container, Graphics2D g2, RectangleConstraint constraint) {
+    Size2D size1 = arrangeFN(container, g2, constraint.getWidth());
+    if (constraint.getHeightRange().contains(size1.getHeight())) {
+        return size1;
+    } else {
+        double h = constraint.getHeightRange().constrain(size1.getHeight());
+        RectangleConstraint c2 = constraint.toFixedHeight(h);
+        return arrange(container, g2, c2);
+    }
+}","public void test1416() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    byte[] byteArray0 = new byte[5];
+    byteArray0[0] = (byte) 0;
+    byteArray0[1] = (byte) 118;
+    byteArray0[2] = (byte) (-12);
+    byteArray0[3] = (byte) 59;
+    byteArray0[4] = (byte) 0;
+    FileSystemHandling.appendDataToFile((EvoSuiteFile) null, byteArray0);
+    BlockContainer blockContainer0 = new BlockContainer(borderArrangement0);
+    RectangleConstraint rectangleConstraint0 = RectangleConstraint.NONE;
+    borderArrangement0.arrange(blockContainer0, (Graphics2D) null, rectangleConstraint0);
+    BlockContainer blockContainer1 = new BlockContainer();
+    FileSystemHandling.shouldAllThrowIOExceptions();
+    borderArrangement0.arrangeNN(blockContainer1, (Graphics2D) null);
+    borderArrangement0.arrangeFN(blockContainer1, (Graphics2D) null, (byte) 59);
+    System.setCurrentTimeMillis((byte) 59);
+    CenterArrangement centerArrangement0 = new CenterArrangement();
+    borderArrangement0.add(blockContainer1, (Object) null);
+    borderArrangement0.arrange(blockContainer1, (Graphics2D) null, rectangleConstraint0);
+    // Undeclared exception!
+    try {
+        borderArrangement0.arrangeFR(blockContainer1, (Graphics2D) null, rectangleConstraint0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.chart.block.BorderArrangement"", e);
+    }
+}","/**
+ * Performs an arrangement with a fixed width and a range for the height.
+ *
+ * @param container  the container.
+ * @param g2  the graphics device.
+ * @param constraint  the constraint.
+ *
+ * @return The container size after the arrangement.
+ */"
+"protected Size2D arrangeFR(BlockContainer container, Graphics2D g2, RectangleConstraint constraint) {
+    Size2D size1 = arrangeFN(container, g2, constraint.getWidth());
+    if (constraint.getHeightRange().contains(size1.getHeight())) {
+        return size1;
+    } else {
+        double h = constraint.getHeightRange().constrain(size1.getHeight());
+        RectangleConstraint c2 = constraint.toFixedHeight(h);
+        return arrange(container, g2, c2);
+    }
+}","public void test1517() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    byte[] byteArray0 = new byte[5];
+    byteArray0[0] = (byte) 0;
+    byteArray0[1] = (byte) 118;
+    byteArray0[2] = (byte) (-12);
+    byteArray0[3] = (byte) 59;
+    byteArray0[4] = (byte) 0;
+    FileSystemHandling.appendDataToFile((EvoSuiteFile) null, byteArray0);
+    BlockContainer blockContainer0 = new BlockContainer(borderArrangement0);
+    RectangleConstraint rectangleConstraint0 = RectangleConstraint.NONE;
+    borderArrangement0.arrange(blockContainer0, (Graphics2D) null, rectangleConstraint0);
+    BlockContainer blockContainer1 = new BlockContainer();
+    FileSystemHandling.shouldAllThrowIOExceptions();
+    borderArrangement0.arrangeNN(blockContainer1, (Graphics2D) null);
+    borderArrangement0.arrangeFN(blockContainer1, (Graphics2D) null, (byte) 59);
+    FileSystemHandling.createFolder((EvoSuiteFile) null);
+    System.setCurrentTimeMillis((byte) 59);
+    CenterArrangement centerArrangement0 = new CenterArrangement();
+    BlockContainer blockContainer2 = new BlockContainer(centerArrangement0);
+    CategoryTableXYDataset categoryTableXYDataset0 = new CategoryTableXYDataset();
+    RectangleInsets rectangleInsets0 = new RectangleInsets();
+    blockContainer1.setMargin(rectangleInsets0);
+    categoryTableXYDataset0.getDomainBounds(false);
+    borderArrangement0.arrange(blockContainer1, (Graphics2D) null, rectangleConstraint0);
+    // Undeclared exception!
+    try {
+        borderArrangement0.arrangeFR(blockContainer2, (Graphics2D) null, rectangleConstraint0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.chart.block.BorderArrangement"", e);
+    }
+}","/**
+ * Performs an arrangement with a fixed width and a range for the height.
+ *
+ * @param container  the container.
+ * @param g2  the graphics device.
+ * @param constraint  the constraint.
+ *
+ * @return The container size after the arrangement.
+ */"
+"protected Size2D arrangeFN(BlockContainer container, Graphics2D g2, double width) {
+    double[] w = new double[5];
+    double[] h = new double[5];
+    RectangleConstraint c1 = new RectangleConstraint(width, null, LengthConstraintType.FIXED, 0.0, null, LengthConstraintType.NONE);
+    if (this.topBlock != null) {
+        Size2D size = this.topBlock.arrange(g2, c1);
+        w[0] = size.width;
+        h[0] = size.height;
+    }
+    if (this.bottomBlock != null) {
+        Size2D size = this.bottomBlock.arrange(g2, c1);
+        w[1] = size.width;
+        h[1] = size.height;
+    }
+    RectangleConstraint c2 = new RectangleConstraint(0.0, new Range(0.0, width), LengthConstraintType.RANGE, 0.0, null, LengthConstraintType.NONE);
+    if (this.leftBlock != null) {
+        Size2D size = this.leftBlock.arrange(g2, c2);
+        w[2] = size.width;
+        h[2] = size.height;
+    }
+    if (this.rightBlock != null) {
+        double maxW = Math.max(width - w[2], 0.0);
+        RectangleConstraint c3 = new RectangleConstraint(0.0, new Range(Math.min(w[2], maxW), maxW), LengthConstraintType.RANGE, 0.0, null, LengthConstraintType.NONE);
+        Size2D size = this.rightBlock.arrange(g2, c3);
+        w[3] = size.width;
+        h[3] = size.height;
+    }
+    h[2] = Math.max(h[2], h[3]);
+    h[3] = h[2];
+    if (this.centerBlock != null) {
+        RectangleConstraint c4 = new RectangleConstraint(width - w[2] - w[3], null, LengthConstraintType.FIXED, 0.0, null, LengthConstraintType.NONE);
+        Size2D size = this.centerBlock.arrange(g2, c4);
+        w[4] = size.width;
+        h[4] = size.height;
+    }
+    double height = h[0] + h[1] + Math.max(h[2], Math.max(h[3], h[4]));
+    return arrange(container, g2, new RectangleConstraint(width, height));
+}","public void test1618() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    byte[] byteArray0 = new byte[5];
+    byteArray0[0] = (byte) 0;
+    byteArray0[1] = (byte) 118;
+    byteArray0[2] = (byte) (-12);
+    byteArray0[3] = (byte) 59;
+    byteArray0[4] = (byte) 0;
+    FileSystemHandling.appendDataToFile((EvoSuiteFile) null, byteArray0);
+    BlockContainer blockContainer0 = new BlockContainer(borderArrangement0);
+    RectangleConstraint rectangleConstraint0 = RectangleConstraint.NONE;
+    Size2D size2D0 = borderArrangement0.arrange(blockContainer0, (Graphics2D) null, rectangleConstraint0);
+    BlockContainer blockContainer1 = new BlockContainer();
+    FileSystemHandling.shouldAllThrowIOExceptions();
+    rectangleConstraint0.calculateConstrainedSize(size2D0);
+    borderArrangement0.arrangeFN(blockContainer1, (Graphics2D) null, (byte) 59);
+    System.setCurrentTimeMillis((byte) 59);
+    CenterArrangement centerArrangement0 = new CenterArrangement();
+    BlockContainer blockContainer2 = new BlockContainer(centerArrangement0);
+    SunHints.Key sunHints_Key0 = (SunHints.Key) RenderingHints.KEY_ALPHA_INTERPOLATION;
+    blockContainer2.add((Block) blockContainer1, (Object) sunHints_Key0);
+    CategoryTableXYDataset categoryTableXYDataset0 = new CategoryTableXYDataset();
+    Range range0 = new Range((byte) 0, (byte) 118);
+    borderArrangement0.add(blockContainer2, (Object) null);
+    borderArrangement0.arrange(blockContainer1, (Graphics2D) null, rectangleConstraint0);
+    // Undeclared exception!
+    try {
+        borderArrangement0.arrangeFN(blockContainer2, (Graphics2D) null, 0.0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Not implemented.
+        //
+        verifyException(""org.jfree.chart.block.CenterArrangement"", e);
+    }
+}","/**
+ * Arranges the container width a fixed width and no constraint on the
+ * height.
+ *
+ * @param container  the container.
+ * @param g2  the graphics device.
+ * @param width  the fixed width.
+ *
+ * @return The container size after arranging the contents.
+ */"
+"protected Size2D arrangeFR(BlockContainer container, Graphics2D g2, RectangleConstraint constraint) {
+    Size2D size1 = arrangeFN(container, g2, constraint.getWidth());
+    if (constraint.getHeightRange().contains(size1.getHeight())) {
+        return size1;
+    } else {
+        double h = constraint.getHeightRange().constrain(size1.getHeight());
+        RectangleConstraint c2 = constraint.toFixedHeight(h);
+        return arrange(container, g2, c2);
+    }
+}","public void test1719() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    byte[] byteArray0 = new byte[5];
+    byteArray0[0] = (byte) 0;
+    byteArray0[1] = (byte) 118;
+    byteArray0[2] = (byte) (-12);
+    byteArray0[3] = (byte) 59;
+    byteArray0[4] = (byte) 0;
+    FileSystemHandling.appendDataToFile((EvoSuiteFile) null, byteArray0);
+    BlockContainer blockContainer0 = new BlockContainer(borderArrangement0);
+    RectangleConstraint rectangleConstraint0 = RectangleConstraint.NONE;
+    borderArrangement0.arrange(blockContainer0, (Graphics2D) null, rectangleConstraint0);
+    BlockContainer blockContainer1 = new BlockContainer();
+    FileSystemHandling.shouldAllThrowIOExceptions();
+    borderArrangement0.arrangeNN(blockContainer1, (Graphics2D) null);
+    borderArrangement0.arrangeFN(blockContainer1, (Graphics2D) null, (byte) 59);
+    System.setCurrentTimeMillis((byte) 59);
+    CenterArrangement centerArrangement0 = new CenterArrangement();
+    BlockContainer blockContainer2 = new BlockContainer(centerArrangement0);
+    SunHints.Key sunHints_Key0 = (SunHints.Key) RenderingHints.KEY_ALPHA_INTERPOLATION;
+    blockContainer2.add((Block) blockContainer1, (Object) sunHints_Key0);
+    CategoryTableXYDataset categoryTableXYDataset0 = new CategoryTableXYDataset();
+    categoryTableXYDataset0.getDomainBounds(false);
+    borderArrangement0.add(blockContainer2, (Object) null);
+    borderArrangement0.arrange(blockContainer1, (Graphics2D) null, rectangleConstraint0);
+    // Undeclared exception!
+    try {
+        borderArrangement0.arrangeFR(blockContainer2, (Graphics2D) null, rectangleConstraint0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Not implemented.
+        //
+        verifyException(""org.jfree.chart.block.CenterArrangement"", e);
+    }
+}","/**
+ * Performs an arrangement with a fixed width and a range for the height.
+ *
+ * @param container  the container.
+ * @param g2  the graphics device.
+ * @param constraint  the constraint.
+ *
+ * @return The container size after the arrangement.
+ */"
+"public Size2D arrange(BlockContainer container, Graphics2D g2, RectangleConstraint constraint) {
+    RectangleConstraint contentConstraint = container.toContentConstraint(constraint);
+    Size2D contentSize = null;
+    LengthConstraintType w = contentConstraint.getWidthConstraintType();
+    LengthConstraintType h = contentConstraint.getHeightConstraintType();
+    if (w == LengthConstraintType.NONE) {
+        if (h == LengthConstraintType.NONE) {
+            contentSize = arrangeNN(container, g2);
+        } else if (h == LengthConstraintType.FIXED) {
+            throw new RuntimeException(""Not implemented."");
+        } else if (h == LengthConstraintType.RANGE) {
+            throw new RuntimeException(""Not implemented."");
+        }
+    } else if (w == LengthConstraintType.FIXED) {
+        if (h == LengthConstraintType.NONE) {
+            contentSize = arrangeFN(container, g2, constraint.getWidth());
+        } else if (h == LengthConstraintType.FIXED) {
+            contentSize = arrangeFF(container, g2, constraint);
+        } else if (h == LengthConstraintType.RANGE) {
+            contentSize = arrangeFR(container, g2, constraint);
+        }
+    } else if (w == LengthConstraintType.RANGE) {
+        if (h == LengthConstraintType.NONE) {
+            throw new RuntimeException(""Not implemented."");
+        } else if (h == LengthConstraintType.FIXED) {
+            throw new RuntimeException(""Not implemented."");
+        } else if (h == LengthConstraintType.RANGE) {
+            contentSize = arrangeRR(container, constraint.getWidthRange(), constraint.getHeightRange(), g2);
+        }
+    }
+    return new Size2D(container.calculateTotalWidth(contentSize.getWidth()), container.calculateTotalHeight(contentSize.getHeight()));
+}","public void test1820() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    IsoEra isoEra0 = IsoEra.BCE;
+    borderArrangement0.equals(isoEra0);
+    BlockContainer blockContainer0 = new BlockContainer(borderArrangement0);
+    RectangleConstraint rectangleConstraint0 = new RectangleConstraint((Range) null, 0.0);
+    // Undeclared exception!
+    try {
+        borderArrangement0.arrange(blockContainer0, (Graphics2D) null, rectangleConstraint0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Not implemented.
+        //
+        verifyException(""org.jfree.chart.block.BorderArrangement"", e);
+    }
+}","/**
+ * Arranges the items in the specified container, subject to the given
+ * constraint.
+ *
+ * @param container  the container.
+ * @param g2  the graphics device.
+ * @param constraint  the constraint.
+ *
+ * @return The block size.
+ */"
+"protected Size2D arrangeFR(BlockContainer container, Graphics2D g2, RectangleConstraint constraint) {
+    Size2D size1 = arrangeFN(container, g2, constraint.getWidth());
+    if (constraint.getHeightRange().contains(size1.getHeight())) {
+        return size1;
+    } else {
+        double h = constraint.getHeightRange().constrain(size1.getHeight());
+        RectangleConstraint c2 = constraint.toFixedHeight(h);
+        return arrange(container, g2, c2);
+    }
+}","public void test1921() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BlockContainer blockContainer0 = new BlockContainer(borderArrangement0);
+    Graphics2D graphics2D0 = null;
+    Range range0 = new Range(13.100398612273521, 13.100398612273521);
+    LengthConstraintType lengthConstraintType0 = LengthConstraintType.RANGE;
+    RectangleConstraint rectangleConstraint0 = new RectangleConstraint(13.100398612273521, range0, lengthConstraintType0, 0.0, range0, lengthConstraintType0);
+    CategoryTableXYDataset categoryTableXYDataset0 = new CategoryTableXYDataset();
+    categoryTableXYDataset0.getDomainBounds(true);
+    // Undeclared exception!
+    try {
+        borderArrangement0.arrangeFR(blockContainer0, (Graphics2D) null, rectangleConstraint0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Not implemented.
+        //
+        verifyException(""org.jfree.chart.block.BorderArrangement"", e);
+    }
+}","/**
+ * Performs an arrangement with a fixed width and a range for the height.
+ *
+ * @param container  the container.
+ * @param g2  the graphics device.
+ * @param constraint  the constraint.
+ *
+ * @return The container size after the arrangement.
+ */"
+"public void add(Block block, Object key) {
+    if (key == null) {
+        this.centerBlock = block;
+    } else {
+        RectangleEdge edge = (RectangleEdge) key;
+        if (edge == RectangleEdge.TOP) {
+            this.topBlock = block;
+        } else if (edge == RectangleEdge.BOTTOM) {
+            this.bottomBlock = block;
+        } else if (edge == RectangleEdge.LEFT) {
+            this.leftBlock = block;
+        } else if (edge == RectangleEdge.RIGHT) {
+            this.rightBlock = block;
+        }
+    }
+}","public void test2123() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BlockContainer blockContainer0 = new BlockContainer();
+    TimeZone timeZone0 = TimeZone.getTimeZone(""Not implemented."");
+    TimeTableXYDataset timeTableXYDataset0 = new TimeTableXYDataset(timeZone0);
+    boolean boolean0 = false;
+    Range range0 = new Range(855.4494347, 855.4494347);
+    RectangleConstraint rectangleConstraint0 = new RectangleConstraint(855.4494347, range0);
+    borderArrangement0.arrangeFR(blockContainer0, (Graphics2D) null, rectangleConstraint0);
+    AttributedCharacterIterator.Attribute attributedCharacterIterator_Attribute0 = AttributedCharacterIterator.Attribute.LANGUAGE;
+    // Undeclared exception!
+    try {
+        borderArrangement0.add(blockContainer0, attributedCharacterIterator_Attribute0);
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // java.text.AttributedCharacterIterator$Attribute cannot be cast to org.jfree.chart.util.RectangleEdge
+        //
+        verifyException(""org.jfree.chart.block.BorderArrangement"", e);
+    }
+}","/**
+ * Adds a block to the arrangement manager at the specified edge.
+ *
+ * @param block  the block (<code>null</code> permitted).
+ * @param key  the edge (an instance of {@link RectangleEdge}) or
+ *             <code>null</code> for the center block.
+ */"
+"protected Size2D arrangeFR(BlockContainer container, Graphics2D g2, RectangleConstraint constraint) {
+    Size2D size1 = arrangeFN(container, g2, constraint.getWidth());
+    if (constraint.getHeightRange().contains(size1.getHeight())) {
+        return size1;
+    } else {
+        double h = constraint.getHeightRange().constrain(size1.getHeight());
+        RectangleConstraint c2 = constraint.toFixedHeight(h);
+        return arrange(container, g2, c2);
+    }
+}","public void test2224() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BlockContainer blockContainer0 = new BlockContainer();
+    Graphics2D graphics2D0 = null;
+    Locale.forLanguageTag(""d8p(z5BV7{;=aL"");
+    RectangleConstraint rectangleConstraint0 = new RectangleConstraint((-1.0), (-2348.746));
+    rectangleConstraint0.toString();
+    // Undeclared exception!
+    try {
+        borderArrangement0.arrangeFR(blockContainer0, (Graphics2D) null, rectangleConstraint0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Range(double, double): require lower (0.0) <= upper (-1.0).
+        //
+        verifyException(""org.jfree.data.Range"", e);
+    }
+}","/**
+ * Performs an arrangement with a fixed width and a range for the height.
+ *
+ * @param container  the container.
+ * @param g2  the graphics device.
+ * @param constraint  the constraint.
+ *
+ * @return The container size after the arrangement.
+ */"
+"public Size2D arrange(BlockContainer container, Graphics2D g2, RectangleConstraint constraint) {
+    RectangleConstraint contentConstraint = container.toContentConstraint(constraint);
+    Size2D contentSize = null;
+    LengthConstraintType w = contentConstraint.getWidthConstraintType();
+    LengthConstraintType h = contentConstraint.getHeightConstraintType();
+    if (w == LengthConstraintType.NONE) {
+        if (h == LengthConstraintType.NONE) {
+            contentSize = arrangeNN(container, g2);
+        } else if (h == LengthConstraintType.FIXED) {
+            throw new RuntimeException(""Not implemented."");
+        } else if (h == LengthConstraintType.RANGE) {
+            throw new RuntimeException(""Not implemented."");
+        }
+    } else if (w == LengthConstraintType.FIXED) {
+        if (h == LengthConstraintType.NONE) {
+            contentSize = arrangeFN(container, g2, constraint.getWidth());
+        } else if (h == LengthConstraintType.FIXED) {
+            contentSize = arrangeFF(container, g2, constraint);
+        } else if (h == LengthConstraintType.RANGE) {
+            contentSize = arrangeFR(container, g2, constraint);
+        }
+    } else if (w == LengthConstraintType.RANGE) {
+        if (h == LengthConstraintType.NONE) {
+            throw new RuntimeException(""Not implemented."");
+        } else if (h == LengthConstraintType.FIXED) {
+            throw new RuntimeException(""Not implemented."");
+        } else if (h == LengthConstraintType.RANGE) {
+            contentSize = arrangeRR(container, constraint.getWidthRange(), constraint.getHeightRange(), g2);
+        }
+    }
+    return new Size2D(container.calculateTotalWidth(contentSize.getWidth()), container.calculateTotalHeight(contentSize.getHeight()));
+}","public void test2325() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    byte[] byteArray0 = new byte[5];
+    byteArray0[0] = (byte) 0;
+    byteArray0[1] = (byte) 118;
+    byteArray0[2] = (byte) (-12);
+    byteArray0[3] = (byte) 59;
+    byteArray0[4] = (byte) 0;
+    FileSystemHandling.appendDataToFile((EvoSuiteFile) null, byteArray0);
+    BlockContainer blockContainer0 = new BlockContainer(borderArrangement0);
+    RectangleConstraint rectangleConstraint0 = RectangleConstraint.NONE;
+    RectangleConstraint rectangleConstraint1 = blockContainer0.toContentConstraint(rectangleConstraint0);
+    borderArrangement0.arrange(blockContainer0, (Graphics2D) null, rectangleConstraint1);
+    BlockContainer blockContainer1 = new BlockContainer();
+    Graphics2D graphics2D0 = null;
+    FileSystemHandling.shouldAllThrowIOExceptions();
+    borderArrangement0.arrangeNN(blockContainer1, (Graphics2D) null);
+    borderArrangement0.arrangeFN(blockContainer1, (Graphics2D) null, (byte) 59);
+    System.setCurrentTimeMillis((byte) 59);
+    CenterArrangement centerArrangement0 = new CenterArrangement();
+    BlockContainer blockContainer2 = new BlockContainer(centerArrangement0);
+    CategoryTableXYDataset categoryTableXYDataset0 = new CategoryTableXYDataset();
+    categoryTableXYDataset0.getDomainBounds(false);
+    LengthConstraintType lengthConstraintType0 = LengthConstraintType.RANGE;
+    RectangleConstraint rectangleConstraint2 = new RectangleConstraint((-1.0), (Range) null, lengthConstraintType0, (byte) 118, (Range) null, lengthConstraintType0);
+    // Undeclared exception!
+    try {
+        borderArrangement0.arrange(blockContainer2, (Graphics2D) null, rectangleConstraint2);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.Range"", e);
+    }
+}","/**
+ * Arranges the items in the specified container, subject to the given
+ * constraint.
+ *
+ * @param container  the container.
+ * @param g2  the graphics device.
+ * @param constraint  the constraint.
+ *
+ * @return The block size.
+ */"
+"public Size2D arrange(BlockContainer container, Graphics2D g2, RectangleConstraint constraint) {
+    RectangleConstraint contentConstraint = container.toContentConstraint(constraint);
+    Size2D contentSize = null;
+    LengthConstraintType w = contentConstraint.getWidthConstraintType();
+    LengthConstraintType h = contentConstraint.getHeightConstraintType();
+    if (w == LengthConstraintType.NONE) {
+        if (h == LengthConstraintType.NONE) {
+            contentSize = arrangeNN(container, g2);
+        } else if (h == LengthConstraintType.FIXED) {
+            throw new RuntimeException(""Not implemented."");
+        } else if (h == LengthConstraintType.RANGE) {
+            throw new RuntimeException(""Not implemented."");
+        }
+    } else if (w == LengthConstraintType.FIXED) {
+        if (h == LengthConstraintType.NONE) {
+            contentSize = arrangeFN(container, g2, constraint.getWidth());
+        } else if (h == LengthConstraintType.FIXED) {
+            contentSize = arrangeFF(container, g2, constraint);
+        } else if (h == LengthConstraintType.RANGE) {
+            contentSize = arrangeFR(container, g2, constraint);
+        }
+    } else if (w == LengthConstraintType.RANGE) {
+        if (h == LengthConstraintType.NONE) {
+            throw new RuntimeException(""Not implemented."");
+        } else if (h == LengthConstraintType.FIXED) {
+            throw new RuntimeException(""Not implemented."");
+        } else if (h == LengthConstraintType.RANGE) {
+            contentSize = arrangeRR(container, constraint.getWidthRange(), constraint.getHeightRange(), g2);
+        }
+    }
+    return new Size2D(container.calculateTotalWidth(contentSize.getWidth()), container.calculateTotalHeight(contentSize.getHeight()));
+}","public void test2426() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BlockContainer blockContainer0 = new BlockContainer();
+    FileSystemHandling.appendLineToFile((EvoSuiteFile) null, """");
+    Graphics2D graphics2D0 = null;
+    DefaultTableXYDataset defaultTableXYDataset0 = new DefaultTableXYDataset(false);
+    IntervalXYDelegate intervalXYDelegate0 = new IntervalXYDelegate(defaultTableXYDataset0);
+    intervalXYDelegate0.getDomainBounds(false);
+    RectangleConstraint rectangleConstraint0 = new RectangleConstraint(0.0, (Range) null);
+    // Undeclared exception!
+    try {
+        borderArrangement0.arrange(blockContainer0, (Graphics2D) null, rectangleConstraint0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.chart.block.BorderArrangement"", e);
+    }
+}","/**
+ * Arranges the items in the specified container, subject to the given
+ * constraint.
+ *
+ * @param container  the container.
+ * @param g2  the graphics device.
+ * @param constraint  the constraint.
+ *
+ * @return The block size.
+ */"
+"public Size2D arrange(Graphics2D g2, RectangleConstraint constraint) {
+    return this.arrangement.arrange(this, g2, constraint);
+}","public void test2527() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BlockContainer blockContainer0 = new BlockContainer(borderArrangement0);
+    EmptyBlock emptyBlock0 = new EmptyBlock(5905.80729, Double.POSITIVE_INFINITY);
+    blockContainer0.add((Block) emptyBlock0);
+    Graphics2D graphics2D0 = null;
+    RectangleConstraint rectangleConstraint0 = new RectangleConstraint((-2.147483648E9), 0.0);
+    RectangleConstraint rectangleConstraint1 = rectangleConstraint0.toUnconstrainedHeight();
+    // Undeclared exception!
+    try {
+        blockContainer0.arrange((Graphics2D) null, rectangleConstraint1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Range(double, double): require lower (0.0) <= upper (-2.147483648E9).
+        //
+        verifyException(""org.jfree.data.Range"", e);
+    }
+}","/**
+ * Arranges the contents of the block, within the given constraints, and
+ * returns the block size.
+ *
+ * @param g2  the graphics device.
+ * @param constraint  the constraint (<code>null</code> not permitted).
+ *
+ * @return The block size (in Java2D units, never <code>null</code>).
+ */"
+"protected Size2D arrangeFF(BlockContainer container, Graphics2D g2, RectangleConstraint constraint) {
+    double[] w = new double[5];
+    double[] h = new double[5];
+    w[0] = constraint.getWidth();
+    if (this.topBlock != null) {
+        RectangleConstraint c1 = new RectangleConstraint(w[0], null, LengthConstraintType.FIXED, 0.0, new Range(0.0, constraint.getHeight()), LengthConstraintType.RANGE);
+        Size2D size = this.topBlock.arrange(g2, c1);
+        h[0] = size.height;
+    }
+    w[1] = w[0];
+    if (this.bottomBlock != null) {
+        RectangleConstraint c2 = new RectangleConstraint(w[0], null, LengthConstraintType.FIXED, 0.0, new Range(0.0, constraint.getHeight() - h[0]), LengthConstraintType.RANGE);
+        Size2D size = this.bottomBlock.arrange(g2, c2);
+        h[1] = size.height;
+    }
+    h[2] = constraint.getHeight() - h[1] - h[0];
+    if (this.leftBlock != null) {
+        RectangleConstraint c3 = new RectangleConstraint(0.0, new Range(0.0, constraint.getWidth()), LengthConstraintType.RANGE, h[2], null, LengthConstraintType.FIXED);
+        Size2D size = this.leftBlock.arrange(g2, c3);
+        w[2] = size.width;
+    }
+    h[3] = h[2];
+    if (this.rightBlock != null) {
+        RectangleConstraint c4 = new RectangleConstraint(0.0, new Range(0.0, constraint.getWidth() - w[2]), LengthConstraintType.RANGE, h[2], null, LengthConstraintType.FIXED);
+        Size2D size = this.rightBlock.arrange(g2, c4);
+        w[3] = size.width;
+    }
+    h[4] = h[2];
+    w[4] = constraint.getWidth() - w[3] - w[2];
+    RectangleConstraint c5 = new RectangleConstraint(w[4], h[4]);
+    if (this.centerBlock != null) {
+        this.centerBlock.arrange(g2, c5);
+    }
+    if (this.topBlock != null) {
+        this.topBlock.setBounds(new Rectangle2D.Double(0.0, 0.0, w[0], h[0]));
+    }
+    if (this.bottomBlock != null) {
+        this.bottomBlock.setBounds(new Rectangle2D.Double(0.0, h[0] + h[2], w[1], h[1]));
+    }
+    if (this.leftBlock != null) {
+        this.leftBlock.setBounds(new Rectangle2D.Double(0.0, h[0], w[2], h[2]));
+    }
+    if (this.rightBlock != null) {
+        this.rightBlock.setBounds(new Rectangle2D.Double(w[2] + w[4], h[0], w[3], h[3]));
+    }
+    if (this.centerBlock != null) {
+        this.centerBlock.setBounds(new Rectangle2D.Double(w[2], h[0], w[4], h[4]));
+    }
+    return new Size2D(constraint.getWidth(), constraint.getHeight());
+}","public void test2628() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BlockContainer blockContainer0 = new BlockContainer();
+    BufferedImage bufferedImage0 = new BufferedImage(193, 193, 7);
+    Graphics2D graphics2D0 = bufferedImage0.createGraphics();
+    RectangleConstraint rectangleConstraint0 = new RectangleConstraint(7, 7);
+    Size2D size2D0 = borderArrangement0.arrangeFF(blockContainer0, graphics2D0, rectangleConstraint0);
+    assertEquals(7.0, size2D0.height, 0.01);
+}","/**
+ * Arranges the items within a container.
+ *
+ * @param container  the container.
+ * @param constraint  the constraint.
+ * @param g2  the graphics device.
+ *
+ * @return The container size after the arrangement.
+ */"
+"protected Size2D arrangeNN(BlockContainer container, Graphics2D g2) {
+    double[] w = new double[5];
+    double[] h = new double[5];
+    if (this.topBlock != null) {
+        Size2D size = this.topBlock.arrange(g2, RectangleConstraint.NONE);
+        w[0] = size.width;
+        h[0] = size.height;
+    }
+    if (this.bottomBlock != null) {
+        Size2D size = this.bottomBlock.arrange(g2, RectangleConstraint.NONE);
+        w[1] = size.width;
+        h[1] = size.height;
+    }
+    if (this.leftBlock != null) {
+        Size2D size = this.leftBlock.arrange(g2, RectangleConstraint.NONE);
+        w[2] = size.width;
+        h[2] = size.height;
+    }
+    if (this.rightBlock != null) {
+        Size2D size = this.rightBlock.arrange(g2, RectangleConstraint.NONE);
+        w[3] = size.width;
+        h[3] = size.height;
+    }
+    h[2] = Math.max(h[2], h[3]);
+    h[3] = h[2];
+    if (this.centerBlock != null) {
+        Size2D size = this.centerBlock.arrange(g2, RectangleConstraint.NONE);
+        w[4] = size.width;
+        h[4] = size.height;
+    }
+    double width = Math.max(w[0], Math.max(w[1], w[2] + w[4] + w[3]));
+    double centerHeight = Math.max(h[2], Math.max(h[3], h[4]));
+    double height = h[0] + h[1] + centerHeight;
+    if (this.topBlock != null) {
+        this.topBlock.setBounds(new Rectangle2D.Double(0.0, 0.0, width, h[0]));
+    }
+    if (this.bottomBlock != null) {
+        this.bottomBlock.setBounds(new Rectangle2D.Double(0.0, height - h[1], width, h[1]));
+    }
+    if (this.leftBlock != null) {
+        this.leftBlock.setBounds(new Rectangle2D.Double(0.0, h[0], w[2], centerHeight));
+    }
+    if (this.rightBlock != null) {
+        this.rightBlock.setBounds(new Rectangle2D.Double(width - w[3], h[0], w[3], centerHeight));
+    }
+    if (this.centerBlock != null) {
+        this.centerBlock.setBounds(new Rectangle2D.Double(w[2], h[0], width - w[2] - w[3], centerHeight));
+    }
+    return new Size2D(width, height);
+}","public void test2729() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BlockContainer blockContainer0 = new BlockContainer(borderArrangement0);
+    Size2D size2D0 = borderArrangement0.arrangeNN(blockContainer0, (Graphics2D) null);
+    assertEquals(0.0, size2D0.width, 0.01);
+}","/**
+ * Performs an arrangement without constraints.
+ *
+ * @param container  the container.
+ * @param g2  the graphics device.
+ *
+ * @return The container size after the arrangement.
+ */"
+"public void add(Block block, Object key) {
+    if (key == null) {
+        this.centerBlock = block;
+    } else {
+        RectangleEdge edge = (RectangleEdge) key;
+        if (edge == RectangleEdge.TOP) {
+            this.topBlock = block;
+        } else if (edge == RectangleEdge.BOTTOM) {
+            this.bottomBlock = block;
+        } else if (edge == RectangleEdge.LEFT) {
+            this.leftBlock = block;
+        } else if (edge == RectangleEdge.RIGHT) {
+            this.rightBlock = block;
+        }
+    }
+}","public void test2830() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BlockContainer blockContainer0 = new BlockContainer(borderArrangement0);
+    Color color0 = Color.getColor(""Ve!CDbg19FKCi"", 3441);
+    ColorBlock colorBlock0 = new ColorBlock(color0, 3441, 3441);
+    RectangleEdge rectangleEdge0 = RectangleEdge.TOP;
+    blockContainer0.add((Block) colorBlock0, (Object) rectangleEdge0);
+    // Undeclared exception!
+    try {
+        borderArrangement0.add(blockContainer0, blockContainer0);
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // org.jfree.chart.block.BlockContainer cannot be cast to org.jfree.chart.util.RectangleEdge
+        //
+        verifyException(""org.jfree.chart.block.BorderArrangement"", e);
+    }
+}","/**
+ * Adds a block to the arrangement manager at the specified edge.
+ *
+ * @param block  the block (<code>null</code> permitted).
+ * @param key  the edge (an instance of {@link RectangleEdge}) or
+ *             <code>null</code> for the center block.
+ */"
+"protected Size2D arrangeFF(BlockContainer container, Graphics2D g2, RectangleConstraint constraint) {
+    double[] w = new double[5];
+    double[] h = new double[5];
+    w[0] = constraint.getWidth();
+    if (this.topBlock != null) {
+        RectangleConstraint c1 = new RectangleConstraint(w[0], null, LengthConstraintType.FIXED, 0.0, new Range(0.0, constraint.getHeight()), LengthConstraintType.RANGE);
+        Size2D size = this.topBlock.arrange(g2, c1);
+        h[0] = size.height;
+    }
+    w[1] = w[0];
+    if (this.bottomBlock != null) {
+        RectangleConstraint c2 = new RectangleConstraint(w[0], null, LengthConstraintType.FIXED, 0.0, new Range(0.0, constraint.getHeight() - h[0]), LengthConstraintType.RANGE);
+        Size2D size = this.bottomBlock.arrange(g2, c2);
+        h[1] = size.height;
+    }
+    h[2] = constraint.getHeight() - h[1] - h[0];
+    if (this.leftBlock != null) {
+        RectangleConstraint c3 = new RectangleConstraint(0.0, new Range(0.0, constraint.getWidth()), LengthConstraintType.RANGE, h[2], null, LengthConstraintType.FIXED);
+        Size2D size = this.leftBlock.arrange(g2, c3);
+        w[2] = size.width;
+    }
+    h[3] = h[2];
+    if (this.rightBlock != null) {
+        RectangleConstraint c4 = new RectangleConstraint(0.0, new Range(0.0, constraint.getWidth() - w[2]), LengthConstraintType.RANGE, h[2], null, LengthConstraintType.FIXED);
+        Size2D size = this.rightBlock.arrange(g2, c4);
+        w[3] = size.width;
+    }
+    h[4] = h[2];
+    w[4] = constraint.getWidth() - w[3] - w[2];
+    RectangleConstraint c5 = new RectangleConstraint(w[4], h[4]);
+    if (this.centerBlock != null) {
+        this.centerBlock.arrange(g2, c5);
+    }
+    if (this.topBlock != null) {
+        this.topBlock.setBounds(new Rectangle2D.Double(0.0, 0.0, w[0], h[0]));
+    }
+    if (this.bottomBlock != null) {
+        this.bottomBlock.setBounds(new Rectangle2D.Double(0.0, h[0] + h[2], w[1], h[1]));
+    }
+    if (this.leftBlock != null) {
+        this.leftBlock.setBounds(new Rectangle2D.Double(0.0, h[0], w[2], h[2]));
+    }
+    if (this.rightBlock != null) {
+        this.rightBlock.setBounds(new Rectangle2D.Double(w[2] + w[4], h[0], w[3], h[3]));
+    }
+    if (this.centerBlock != null) {
+        this.centerBlock.setBounds(new Rectangle2D.Double(w[2], h[0], w[4], h[4]));
+    }
+    return new Size2D(constraint.getWidth(), constraint.getHeight());
+}","public void test2931() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BlockContainer blockContainer0 = new BlockContainer();
+    // Undeclared exception!
+    try {
+        borderArrangement0.arrangeFF(blockContainer0, (Graphics2D) null, (RectangleConstraint) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.chart.block.BorderArrangement"", e);
+    }
+}","/**
+ * Arranges the items within a container.
+ *
+ * @param container  the container.
+ * @param constraint  the constraint.
+ * @param g2  the graphics device.
+ *
+ * @return The container size after the arrangement.
+ */"
+"protected Size2D arrangeFN(BlockContainer container, Graphics2D g2, double width) {
+    double[] w = new double[5];
+    double[] h = new double[5];
+    RectangleConstraint c1 = new RectangleConstraint(width, null, LengthConstraintType.FIXED, 0.0, null, LengthConstraintType.NONE);
+    if (this.topBlock != null) {
+        Size2D size = this.topBlock.arrange(g2, c1);
+        w[0] = size.width;
+        h[0] = size.height;
+    }
+    if (this.bottomBlock != null) {
+        Size2D size = this.bottomBlock.arrange(g2, c1);
+        w[1] = size.width;
+        h[1] = size.height;
+    }
+    RectangleConstraint c2 = new RectangleConstraint(0.0, new Range(0.0, width), LengthConstraintType.RANGE, 0.0, null, LengthConstraintType.NONE);
+    if (this.leftBlock != null) {
+        Size2D size = this.leftBlock.arrange(g2, c2);
+        w[2] = size.width;
+        h[2] = size.height;
+    }
+    if (this.rightBlock != null) {
+        double maxW = Math.max(width - w[2], 0.0);
+        RectangleConstraint c3 = new RectangleConstraint(0.0, new Range(Math.min(w[2], maxW), maxW), LengthConstraintType.RANGE, 0.0, null, LengthConstraintType.NONE);
+        Size2D size = this.rightBlock.arrange(g2, c3);
+        w[3] = size.width;
+        h[3] = size.height;
+    }
+    h[2] = Math.max(h[2], h[3]);
+    h[3] = h[2];
+    if (this.centerBlock != null) {
+        RectangleConstraint c4 = new RectangleConstraint(width - w[2] - w[3], null, LengthConstraintType.FIXED, 0.0, null, LengthConstraintType.NONE);
+        Size2D size = this.centerBlock.arrange(g2, c4);
+        w[4] = size.width;
+        h[4] = size.height;
+    }
+    double height = h[0] + h[1] + Math.max(h[2], Math.max(h[3], h[4]));
+    return arrange(container, g2, new RectangleConstraint(width, height));
+}","public void test3032() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    CenterArrangement centerArrangement0 = new CenterArrangement();
+    BlockContainer blockContainer0 = new BlockContainer(centerArrangement0);
+    Graphics2D graphics2D0 = null;
+    borderArrangement0.arrangeFN(blockContainer0, (Graphics2D) null, Double.NaN);
+    DefaultTableXYDataset defaultTableXYDataset0 = new DefaultTableXYDataset();
+    // Undeclared exception!
+    try {
+        borderArrangement0.arrangeFN(blockContainer0, (Graphics2D) null, (-60.24901));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Range(double, double): require lower (0.0) <= upper (-60.24901).
+        //
+        verifyException(""org.jfree.data.Range"", e);
+    }
+}","/**
+ * Arranges the container width a fixed width and no constraint on the
+ * height.
+ *
+ * @param container  the container.
+ * @param g2  the graphics device.
+ * @param width  the fixed width.
+ *
+ * @return The container size after arranging the contents.
+ */"
+"protected Size2D arrangeFN(BlockContainer container, Graphics2D g2, double width) {
+    double[] w = new double[5];
+    double[] h = new double[5];
+    RectangleConstraint c1 = new RectangleConstraint(width, null, LengthConstraintType.FIXED, 0.0, null, LengthConstraintType.NONE);
+    if (this.topBlock != null) {
+        Size2D size = this.topBlock.arrange(g2, c1);
+        w[0] = size.width;
+        h[0] = size.height;
+    }
+    if (this.bottomBlock != null) {
+        Size2D size = this.bottomBlock.arrange(g2, c1);
+        w[1] = size.width;
+        h[1] = size.height;
+    }
+    RectangleConstraint c2 = new RectangleConstraint(0.0, new Range(0.0, width), LengthConstraintType.RANGE, 0.0, null, LengthConstraintType.NONE);
+    if (this.leftBlock != null) {
+        Size2D size = this.leftBlock.arrange(g2, c2);
+        w[2] = size.width;
+        h[2] = size.height;
+    }
+    if (this.rightBlock != null) {
+        double maxW = Math.max(width - w[2], 0.0);
+        RectangleConstraint c3 = new RectangleConstraint(0.0, new Range(Math.min(w[2], maxW), maxW), LengthConstraintType.RANGE, 0.0, null, LengthConstraintType.NONE);
+        Size2D size = this.rightBlock.arrange(g2, c3);
+        w[3] = size.width;
+        h[3] = size.height;
+    }
+    h[2] = Math.max(h[2], h[3]);
+    h[3] = h[2];
+    if (this.centerBlock != null) {
+        RectangleConstraint c4 = new RectangleConstraint(width - w[2] - w[3], null, LengthConstraintType.FIXED, 0.0, null, LengthConstraintType.NONE);
+        Size2D size = this.centerBlock.arrange(g2, c4);
+        w[4] = size.width;
+        h[4] = size.height;
+    }
+    double height = h[0] + h[1] + Math.max(h[2], Math.max(h[3], h[4]));
+    return arrange(container, g2, new RectangleConstraint(width, height));
+}","public void test3133() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    borderArrangement0.equals((Object) null);
+    Object object0 = new Object();
+    borderArrangement0.equals(object0);
+    RectangleConstraint rectangleConstraint0 = RectangleConstraint.NONE;
+    rectangleConstraint0.toString();
+    borderArrangement0.arrangeFF((BlockContainer) null, (Graphics2D) null, rectangleConstraint0);
+    // Undeclared exception!
+    try {
+        borderArrangement0.arrangeFN((BlockContainer) null, (Graphics2D) null, 0.0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * Arranges the container width a fixed width and no constraint on the
+ * height.
+ *
+ * @param container  the container.
+ * @param g2  the graphics device.
+ * @param width  the fixed width.
+ *
+ * @return The container size after arranging the contents.
+ */"
+"protected Size2D arrangeFR(BlockContainer container, Graphics2D g2, RectangleConstraint constraint) {
+    Size2D size1 = arrangeFN(container, g2, constraint.getWidth());
+    if (constraint.getHeightRange().contains(size1.getHeight())) {
+        return size1;
+    } else {
+        double h = constraint.getHeightRange().constrain(size1.getHeight());
+        RectangleConstraint c2 = constraint.toFixedHeight(h);
+        return arrange(container, g2, c2);
+    }
+}","public void test3234() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BlockContainer blockContainer0 = new BlockContainer();
+    Graphics2D graphics2D0 = null;
+    RectangleConstraint rectangleConstraint0 = null;
+    // Undeclared exception!
+    try {
+        borderArrangement0.arrangeFR(blockContainer0, (Graphics2D) null, (RectangleConstraint) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.chart.block.BorderArrangement"", e);
+    }
+}","/**
+ * Performs an arrangement with a fixed width and a range for the height.
+ *
+ * @param container  the container.
+ * @param g2  the graphics device.
+ * @param constraint  the constraint.
+ *
+ * @return The container size after the arrangement.
+ */"
+"protected Size2D arrangeFR(BlockContainer container, Graphics2D g2, RectangleConstraint constraint) {
+    Size2D size1 = arrangeFN(container, g2, constraint.getWidth());
+    if (constraint.getHeightRange().contains(size1.getHeight())) {
+        return size1;
+    } else {
+        double h = constraint.getHeightRange().constrain(size1.getHeight());
+        RectangleConstraint c2 = constraint.toFixedHeight(h);
+        return arrange(container, g2, c2);
+    }
+}","public void test3335() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BlockContainer blockContainer0 = new BlockContainer();
+    Graphics2D graphics2D0 = null;
+    TimeZone timeZone0 = TimeZone.getTimeZone("""");
+    TimeTableXYDataset timeTableXYDataset0 = new TimeTableXYDataset(timeZone0);
+    boolean boolean0 = false;
+    timeTableXYDataset0.getDomainBounds(false);
+    timeTableXYDataset0.clear();
+    RectangleConstraint rectangleConstraint0 = new RectangleConstraint((Range) null, (Range) null);
+    // Undeclared exception!
+    try {
+        borderArrangement0.arrangeFR(blockContainer0, (Graphics2D) null, rectangleConstraint0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.chart.block.BorderArrangement"", e);
+    }
+}","/**
+ * Performs an arrangement with a fixed width and a range for the height.
+ *
+ * @param container  the container.
+ * @param g2  the graphics device.
+ * @param constraint  the constraint.
+ *
+ * @return The container size after the arrangement.
+ */"
+"protected Size2D arrangeFN(BlockContainer container, Graphics2D g2, double width) {
+    double[] w = new double[5];
+    double[] h = new double[5];
+    RectangleConstraint c1 = new RectangleConstraint(width, null, LengthConstraintType.FIXED, 0.0, null, LengthConstraintType.NONE);
+    if (this.topBlock != null) {
+        Size2D size = this.topBlock.arrange(g2, c1);
+        w[0] = size.width;
+        h[0] = size.height;
+    }
+    if (this.bottomBlock != null) {
+        Size2D size = this.bottomBlock.arrange(g2, c1);
+        w[1] = size.width;
+        h[1] = size.height;
+    }
+    RectangleConstraint c2 = new RectangleConstraint(0.0, new Range(0.0, width), LengthConstraintType.RANGE, 0.0, null, LengthConstraintType.NONE);
+    if (this.leftBlock != null) {
+        Size2D size = this.leftBlock.arrange(g2, c2);
+        w[2] = size.width;
+        h[2] = size.height;
+    }
+    if (this.rightBlock != null) {
+        double maxW = Math.max(width - w[2], 0.0);
+        RectangleConstraint c3 = new RectangleConstraint(0.0, new Range(Math.min(w[2], maxW), maxW), LengthConstraintType.RANGE, 0.0, null, LengthConstraintType.NONE);
+        Size2D size = this.rightBlock.arrange(g2, c3);
+        w[3] = size.width;
+        h[3] = size.height;
+    }
+    h[2] = Math.max(h[2], h[3]);
+    h[3] = h[2];
+    if (this.centerBlock != null) {
+        RectangleConstraint c4 = new RectangleConstraint(width - w[2] - w[3], null, LengthConstraintType.FIXED, 0.0, null, LengthConstraintType.NONE);
+        Size2D size = this.centerBlock.arrange(g2, c4);
+        w[4] = size.width;
+        h[4] = size.height;
+    }
+    double height = h[0] + h[1] + Math.max(h[2], Math.max(h[3], h[4]));
+    return arrange(container, g2, new RectangleConstraint(width, height));
+}","public void test3436() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BlockContainer blockContainer0 = new BlockContainer();
+    // Undeclared exception!
+    try {
+        borderArrangement0.arrangeFN(blockContainer0, (Graphics2D) null, (-381.85331276));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Range(double, double): require lower (0.0) <= upper (-381.85331276).
+        //
+        verifyException(""org.jfree.data.Range"", e);
+    }
+}","/**
+ * Arranges the container width a fixed width and no constraint on the
+ * height.
+ *
+ * @param container  the container.
+ * @param g2  the graphics device.
+ * @param width  the fixed width.
+ *
+ * @return The container size after arranging the contents.
+ */"
+"public void add(Block block, Object key) {
+    if (key == null) {
+        this.centerBlock = block;
+    } else {
+        RectangleEdge edge = (RectangleEdge) key;
+        if (edge == RectangleEdge.TOP) {
+            this.topBlock = block;
+        } else if (edge == RectangleEdge.BOTTOM) {
+            this.bottomBlock = block;
+        } else if (edge == RectangleEdge.LEFT) {
+            this.leftBlock = block;
+        } else if (edge == RectangleEdge.RIGHT) {
+            this.rightBlock = block;
+        }
+    }
+}","public void test3537() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    Block block0 = null;
+    String string0 = ""FbXJ`I2+'9,v"";
+    // Undeclared exception!
+    try {
+        borderArrangement0.add((Block) null, ""FbXJ`I2+'9,v"");
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // java.lang.String cannot be cast to org.jfree.chart.util.RectangleEdge
+        //
+        verifyException(""org.jfree.chart.block.BorderArrangement"", e);
+    }
+}","/**
+ * Adds a block to the arrangement manager at the specified edge.
+ *
+ * @param block  the block (<code>null</code> permitted).
+ * @param key  the edge (an instance of {@link RectangleEdge}) or
+ *             <code>null</code> for the center block.
+ */"
+"public Size2D arrange(Graphics2D g2, RectangleConstraint constraint) {
+    return this.arrangement.arrange(this, g2, constraint);
+}","public void test3638() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BlockContainer blockContainer0 = new BlockContainer();
+    Graphics2D graphics2D0 = null;
+    DefaultTableXYDataset defaultTableXYDataset0 = new DefaultTableXYDataset();
+    defaultTableXYDataset0.getDomainBounds(false);
+    RectangleConstraint rectangleConstraint0 = new RectangleConstraint((Range) null, 2936.85);
+    // Undeclared exception!
+    try {
+        blockContainer0.arrange((Graphics2D) null, rectangleConstraint0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Not implemented.
+        //
+        verifyException(""org.jfree.chart.block.BorderArrangement"", e);
+    }
+}","/**
+ * Arranges the contents of the block, within the given constraints, and
+ * returns the block size.
+ *
+ * @param g2  the graphics device.
+ * @param constraint  the constraint (<code>null</code> not permitted).
+ *
+ * @return The block size (in Java2D units, never <code>null</code>).
+ */"
+"public Size2D arrange(BlockContainer container, Graphics2D g2, RectangleConstraint constraint) {
+    RectangleConstraint contentConstraint = container.toContentConstraint(constraint);
+    Size2D contentSize = null;
+    LengthConstraintType w = contentConstraint.getWidthConstraintType();
+    LengthConstraintType h = contentConstraint.getHeightConstraintType();
+    if (w == LengthConstraintType.NONE) {
+        if (h == LengthConstraintType.NONE) {
+            contentSize = arrangeNN(container, g2);
+        } else if (h == LengthConstraintType.FIXED) {
+            throw new RuntimeException(""Not implemented."");
+        } else if (h == LengthConstraintType.RANGE) {
+            throw new RuntimeException(""Not implemented."");
+        }
+    } else if (w == LengthConstraintType.FIXED) {
+        if (h == LengthConstraintType.NONE) {
+            contentSize = arrangeFN(container, g2, constraint.getWidth());
+        } else if (h == LengthConstraintType.FIXED) {
+            contentSize = arrangeFF(container, g2, constraint);
+        } else if (h == LengthConstraintType.RANGE) {
+            contentSize = arrangeFR(container, g2, constraint);
+        }
+    } else if (w == LengthConstraintType.RANGE) {
+        if (h == LengthConstraintType.NONE) {
+            throw new RuntimeException(""Not implemented."");
+        } else if (h == LengthConstraintType.FIXED) {
+            throw new RuntimeException(""Not implemented."");
+        } else if (h == LengthConstraintType.RANGE) {
+            contentSize = arrangeRR(container, constraint.getWidthRange(), constraint.getHeightRange(), g2);
+        }
+    }
+    return new Size2D(container.calculateTotalWidth(contentSize.getWidth()), container.calculateTotalHeight(contentSize.getHeight()));
+}","public void test3739() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BlockContainer blockContainer0 = new BlockContainer();
+    // Undeclared exception!
+    try {
+        borderArrangement0.arrange(blockContainer0, (Graphics2D) null, (RectangleConstraint) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'c' argument.
+        //
+        verifyException(""org.jfree.chart.block.AbstractBlock"", e);
+    }
+}","/**
+ * Arranges the items in the specified container, subject to the given
+ * constraint.
+ *
+ * @param container  the container.
+ * @param g2  the graphics device.
+ * @param constraint  the constraint.
+ *
+ * @return The block size.
+ */"
+"protected Size2D arrangeRR(BlockContainer container, Range widthRange, Range heightRange, Graphics2D g2) {
+    double[] w = new double[5];
+    double[] h = new double[5];
+    if (this.topBlock != null) {
+        RectangleConstraint c1 = new RectangleConstraint(widthRange, heightRange);
+        Size2D size = this.topBlock.arrange(g2, c1);
+        w[0] = size.width;
+        h[0] = size.height;
+    }
+    if (this.bottomBlock != null) {
+        Range heightRange2 = Range.shift(heightRange, -h[0], false);
+        RectangleConstraint c2 = new RectangleConstraint(widthRange, heightRange2);
+        Size2D size = this.bottomBlock.arrange(g2, c2);
+        w[1] = size.width;
+        h[1] = size.height;
+    }
+    Range heightRange3 = Range.shift(heightRange, -(h[0] + h[1]));
+    if (this.leftBlock != null) {
+        RectangleConstraint c3 = new RectangleConstraint(widthRange, heightRange3);
+        Size2D size = this.leftBlock.arrange(g2, c3);
+        w[2] = size.width;
+        h[2] = size.height;
+    }
+    Range widthRange2 = Range.shift(widthRange, -w[2], false);
+    if (this.rightBlock != null) {
+        RectangleConstraint c4 = new RectangleConstraint(widthRange2, heightRange3);
+        Size2D size = this.rightBlock.arrange(g2, c4);
+        w[3] = size.width;
+        h[3] = size.height;
+    }
+    h[2] = Math.max(h[2], h[3]);
+    h[3] = h[2];
+    Range widthRange3 = Range.shift(widthRange, -(w[2] + w[3]), false);
+    if (this.centerBlock != null) {
+        RectangleConstraint c5 = new RectangleConstraint(widthRange3, heightRange3);
+        // TODO:  the width and height ranges should be reduced by the
+        // height required for the top and bottom, and the width required
+        // by the left and right
+        Size2D size = this.centerBlock.arrange(g2, c5);
+        w[4] = size.width;
+        h[4] = size.height;
+    }
+    double width = Math.max(w[0], Math.max(w[1], w[2] + w[4] + w[3]));
+    double height = h[0] + h[1] + Math.max(h[2], Math.max(h[3], h[4]));
+    if (this.topBlock != null) {
+        this.topBlock.setBounds(new Rectangle2D.Double(0.0, 0.0, width, h[0]));
+    }
+    if (this.bottomBlock != null) {
+        this.bottomBlock.setBounds(new Rectangle2D.Double(0.0, height - h[1], width, h[1]));
+    }
+    if (this.leftBlock != null) {
+        this.leftBlock.setBounds(new Rectangle2D.Double(0.0, h[0], w[2], h[2]));
+    }
+    if (this.rightBlock != null) {
+        this.rightBlock.setBounds(new Rectangle2D.Double(width - w[3], h[0], w[3], h[3]));
+    }
+    if (this.centerBlock != null) {
+        this.centerBlock.setBounds(new Rectangle2D.Double(w[2], h[0], width - w[2] - w[3], height - h[0] - h[1]));
+    }
+    return new Size2D(width, height);
+}","public void test3840() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BlockContainer blockContainer0 = new BlockContainer();
+    CategoryTableXYDataset categoryTableXYDataset0 = new CategoryTableXYDataset();
+    categoryTableXYDataset0.getDomainBounds(false);
+    Graphics2D graphics2D0 = null;
+    // Undeclared exception!
+    try {
+        borderArrangement0.arrangeRR(blockContainer0, (Range) null, (Range) null, (Graphics2D) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.Range"", e);
+    }
+}","/**
+ * Performs an arrangement with range constraints on both the vertical
+ * and horizontal sides.
+ *
+ * @param container  the container.
+ * @param widthRange  the allowable range for the container width.
+ * @param heightRange  the allowable range for the container height.
+ * @param g2  the graphics device.
+ *
+ * @return The container size.
+ */"
+"public boolean equals(Object obj) {
+    if (obj == this) {
+        return true;
+    }
+    if (!(obj instanceof BorderArrangement)) {
+        return false;
+    }
+    BorderArrangement that = (BorderArrangement) obj;
+    if (!ObjectUtilities.equal(this.topBlock, that.topBlock)) {
+        return false;
+    }
+    if (!ObjectUtilities.equal(this.bottomBlock, that.bottomBlock)) {
+        return false;
+    }
+    if (!ObjectUtilities.equal(this.leftBlock, that.leftBlock)) {
+        return false;
+    }
+    if (!ObjectUtilities.equal(this.rightBlock, that.rightBlock)) {
+        return false;
+    }
+    if (!ObjectUtilities.equal(this.centerBlock, that.centerBlock)) {
+        return false;
+    }
+    return true;
+}","public void test3941() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BlockContainer blockContainer0 = new BlockContainer(borderArrangement0);
+    DynamicTimeSeriesCollection dynamicTimeSeriesCollection0 = new DynamicTimeSeriesCollection(0, 0);
+    Range range0 = dynamicTimeSeriesCollection0.getRangeBounds(false);
+    Range range1 = Range.combine(range0, range0);
+    Range.shift(range1, (double) 0);
+    borderArrangement0.arrangeRR(blockContainer0, range1, range0, (Graphics2D) null);
+    boolean boolean0 = borderArrangement0.equals(range0);
+    assertFalse(boolean0);
+}","/**
+ * Tests this arrangement for equality with an arbitrary object.
+ *
+ * @param obj  the object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public void add(Block block, Object key) {
+    if (key == null) {
+        this.centerBlock = block;
+    } else {
+        RectangleEdge edge = (RectangleEdge) key;
+        if (edge == RectangleEdge.TOP) {
+            this.topBlock = block;
+        } else if (edge == RectangleEdge.BOTTOM) {
+            this.bottomBlock = block;
+        } else if (edge == RectangleEdge.LEFT) {
+            this.leftBlock = block;
+        } else if (edge == RectangleEdge.RIGHT) {
+            this.rightBlock = block;
+        }
+    }
+}","public void test4143() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    EmptyBlock emptyBlock0 = new EmptyBlock(0.0, 0.0);
+    // Undeclared exception!
+    try {
+        borderArrangement0.add(emptyBlock0, ""Z=h;WujZ]t;@sI"");
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // java.lang.String cannot be cast to org.jfree.chart.util.RectangleEdge
+        //
+        verifyException(""org.jfree.chart.block.BorderArrangement"", e);
+    }
+}","/**
+ * Adds a block to the arrangement manager at the specified edge.
+ *
+ * @param block  the block (<code>null</code> permitted).
+ * @param key  the edge (an instance of {@link RectangleEdge}) or
+ *             <code>null</code> for the center block.
+ */"
+"public boolean equals(Object obj) {
+    if (obj == this) {
+        return true;
+    }
+    if (!(obj instanceof BorderArrangement)) {
+        return false;
+    }
+    BorderArrangement that = (BorderArrangement) obj;
+    if (!ObjectUtilities.equal(this.topBlock, that.topBlock)) {
+        return false;
+    }
+    if (!ObjectUtilities.equal(this.bottomBlock, that.bottomBlock)) {
+        return false;
+    }
+    if (!ObjectUtilities.equal(this.leftBlock, that.leftBlock)) {
+        return false;
+    }
+    if (!ObjectUtilities.equal(this.rightBlock, that.rightBlock)) {
+        return false;
+    }
+    if (!ObjectUtilities.equal(this.centerBlock, that.centerBlock)) {
+        return false;
+    }
+    return true;
+}","public void test4244() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BorderArrangement borderArrangement1 = new BorderArrangement();
+    boolean boolean0 = borderArrangement0.equals(borderArrangement1);
+    assertTrue(boolean0);
+}","/**
+ * Tests this arrangement for equality with an arbitrary object.
+ *
+ * @param obj  the object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public boolean equals(Object obj) {
+    if (obj == this) {
+        return true;
+    }
+    if (!(obj instanceof BorderArrangement)) {
+        return false;
+    }
+    BorderArrangement that = (BorderArrangement) obj;
+    if (!ObjectUtilities.equal(this.topBlock, that.topBlock)) {
+        return false;
+    }
+    if (!ObjectUtilities.equal(this.bottomBlock, that.bottomBlock)) {
+        return false;
+    }
+    if (!ObjectUtilities.equal(this.leftBlock, that.leftBlock)) {
+        return false;
+    }
+    if (!ObjectUtilities.equal(this.rightBlock, that.rightBlock)) {
+        return false;
+    }
+    if (!ObjectUtilities.equal(this.centerBlock, that.centerBlock)) {
+        return false;
+    }
+    return true;
+}","public void test4245() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BorderArrangement borderArrangement1 = new BorderArrangement();
+    boolean boolean0 = borderArrangement0.equals(borderArrangement1);
+    BlockContainer blockContainer0 = new BlockContainer();
+    AffineTransform affineTransform0 = AffineTransform.getTranslateInstance((-2100.724604096333), (-2100.724604096333));
+    HashMap<RenderingHints.Key, ChronoLocalDate> hashMap0 = new HashMap<RenderingHints.Key, ChronoLocalDate>();
+    RenderingHints renderingHints0 = new RenderingHints(hashMap0);
+    AffineTransformOp affineTransformOp0 = new AffineTransformOp(affineTransform0, renderingHints0);
+    byte[] byteArray0 = new byte[1];
+    RectangleConstraint rectangleConstraint0 = RectangleConstraint.NONE;
+    borderArrangement1.clear();
+    assertTrue(borderArrangement1.equals((Object) borderArrangement0));
+}","/**
+ * Tests this arrangement for equality with an arbitrary object.
+ *
+ * @param obj  the object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public boolean equals(Object obj) {
+    if (obj == this) {
+        return true;
+    }
+    if (!(obj instanceof BorderArrangement)) {
+        return false;
+    }
+    BorderArrangement that = (BorderArrangement) obj;
+    if (!ObjectUtilities.equal(this.topBlock, that.topBlock)) {
+        return false;
+    }
+    if (!ObjectUtilities.equal(this.bottomBlock, that.bottomBlock)) {
+        return false;
+    }
+    if (!ObjectUtilities.equal(this.leftBlock, that.leftBlock)) {
+        return false;
+    }
+    if (!ObjectUtilities.equal(this.rightBlock, that.rightBlock)) {
+        return false;
+    }
+    if (!ObjectUtilities.equal(this.centerBlock, that.centerBlock)) {
+        return false;
+    }
+    return true;
+}","public void test4246() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BorderArrangement borderArrangement1 = new BorderArrangement();
+    boolean boolean0 = borderArrangement0.equals(borderArrangement1);
+    BlockContainer blockContainer0 = new BlockContainer();
+    AffineTransform affineTransform0 = AffineTransform.getTranslateInstance((-2100.724604096333), (-2100.724604096333));
+    HashMap<RenderingHints.Key, ChronoLocalDate> hashMap0 = new HashMap<RenderingHints.Key, ChronoLocalDate>();
+    RenderingHints renderingHints0 = new RenderingHints(hashMap0);
+    AffineTransformOp affineTransformOp0 = new AffineTransformOp(affineTransform0, renderingHints0);
+    byte[] byteArray0 = new byte[1];
+    RectangleConstraint rectangleConstraint0 = RectangleConstraint.NONE;
+    borderArrangement1.clear();
+    borderArrangement1.add(blockContainer0, (Object) null);
+    boolean boolean1 = borderArrangement1.equals(borderArrangement0);
+    assertFalse(boolean1);
+}","/**
+ * Tests this arrangement for equality with an arbitrary object.
+ *
+ * @param obj  the object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public void clear() {
+    this.centerBlock = null;
+    this.topBlock = null;
+    this.bottomBlock = null;
+    this.leftBlock = null;
+    this.rightBlock = null;
+}","public void test4347() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    borderArrangement0.clear();
+}","/**
+ * Clears the layout.
+ */"
+"public void add(Block block, Object key) {
+    if (key == null) {
+        this.centerBlock = block;
+    } else {
+        RectangleEdge edge = (RectangleEdge) key;
+        if (edge == RectangleEdge.TOP) {
+            this.topBlock = block;
+        } else if (edge == RectangleEdge.BOTTOM) {
+            this.bottomBlock = block;
+        } else if (edge == RectangleEdge.LEFT) {
+            this.leftBlock = block;
+        } else if (edge == RectangleEdge.RIGHT) {
+            this.rightBlock = block;
+        }
+    }
+}","public void test4549() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BlockContainer blockContainer0 = new BlockContainer();
+    Graphics2D graphics2D0 = null;
+    Range range0 = new Range(0.0, 0.0);
+    LengthConstraintType lengthConstraintType0 = LengthConstraintType.NONE;
+    FileSystemHandling.shouldAllThrowIOExceptions();
+    RectangleConstraint rectangleConstraint0 = new RectangleConstraint(0.0, range0);
+    SeriesChangeEvent seriesChangeEvent0 = new SeriesChangeEvent("""");
+    borderArrangement0.arrangeFR(blockContainer0, (Graphics2D) null, rectangleConstraint0);
+    borderArrangement0.arrangeNN(blockContainer0, (Graphics2D) null);
+    borderArrangement0.equals(seriesChangeEvent0);
+    borderArrangement0.arrangeFF(blockContainer0, (Graphics2D) null, rectangleConstraint0);
+    borderArrangement0.equals((Object) null);
+    EmptyBlock emptyBlock0 = new EmptyBlock(2.0, 2.0);
+    Rectangle2D.Double rectangle2D_Double0 = new Rectangle2D.Double();
+    DefaultCaret defaultCaret0 = new DefaultCaret();
+    // Undeclared exception!
+    try {
+        borderArrangement0.add(emptyBlock0, emptyBlock0);
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // org.jfree.chart.block.EmptyBlock cannot be cast to org.jfree.chart.util.RectangleEdge
+        //
+        verifyException(""org.jfree.chart.block.BorderArrangement"", e);
+    }
+}","/**
+ * Adds a block to the arrangement manager at the specified edge.
+ *
+ * @param block  the block (<code>null</code> permitted).
+ * @param key  the edge (an instance of {@link RectangleEdge}) or
+ *             <code>null</code> for the center block.
+ */"
+"protected Size2D arrangeFR(BlockContainer container, Graphics2D g2, RectangleConstraint constraint) {
+    Size2D size1 = arrangeFN(container, g2, constraint.getWidth());
+    if (constraint.getHeightRange().contains(size1.getHeight())) {
+        return size1;
+    } else {
+        double h = constraint.getHeightRange().constrain(size1.getHeight());
+        RectangleConstraint c2 = constraint.toFixedHeight(h);
+        return arrange(container, g2, c2);
+    }
+}","public void test4751() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    byte[] byteArray0 = new byte[5];
+    byteArray0[0] = (byte) 0;
+    byteArray0[1] = (byte) 118;
+    byteArray0[2] = (byte) (-12);
+    byteArray0[3] = (byte) 59;
+    byteArray0[4] = (byte) 0;
+    FileSystemHandling.appendDataToFile((EvoSuiteFile) null, byteArray0);
+    BlockContainer blockContainer0 = new BlockContainer(borderArrangement0);
+    blockContainer0.clear();
+    RectangleConstraint rectangleConstraint0 = RectangleConstraint.NONE;
+    borderArrangement0.arrange(blockContainer0, (Graphics2D) null, rectangleConstraint0);
+    BlockContainer blockContainer1 = new BlockContainer();
+    FileSystemHandling.shouldAllThrowIOExceptions();
+    borderArrangement0.arrangeNN(blockContainer1, (Graphics2D) null);
+    borderArrangement0.arrangeFN(blockContainer1, (Graphics2D) null, (byte) 59);
+    System.setCurrentTimeMillis((byte) 59);
+    CenterArrangement centerArrangement0 = new CenterArrangement();
+    borderArrangement0.add(blockContainer1, (Object) null);
+    borderArrangement0.arrange(blockContainer1, (Graphics2D) null, rectangleConstraint0);
+    DefaultBoxAndWhiskerCategoryDataset defaultBoxAndWhiskerCategoryDataset0 = new DefaultBoxAndWhiskerCategoryDataset();
+    Range range0 = defaultBoxAndWhiskerCategoryDataset0.getRangeBounds(true);
+    Range.shift(range0, (double) (byte) (-12));
+    borderArrangement0.arrangeRR(blockContainer1, range0, range0, (Graphics2D) null);
+    // Undeclared exception!
+    try {
+        borderArrangement0.arrangeFR(blockContainer1, (Graphics2D) null, rectangleConstraint0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.chart.block.BorderArrangement"", e);
+    }
+}","/**
+ * Performs an arrangement with a fixed width and a range for the height.
+ *
+ * @param container  the container.
+ * @param g2  the graphics device.
+ * @param constraint  the constraint.
+ *
+ * @return The container size after the arrangement.
+ */"
+"public Size2D arrange(BlockContainer container, Graphics2D g2, RectangleConstraint constraint) {
+    RectangleConstraint contentConstraint = container.toContentConstraint(constraint);
+    Size2D contentSize = null;
+    LengthConstraintType w = contentConstraint.getWidthConstraintType();
+    LengthConstraintType h = contentConstraint.getHeightConstraintType();
+    if (w == LengthConstraintType.NONE) {
+        if (h == LengthConstraintType.NONE) {
+            contentSize = arrangeNN(container, g2);
+        } else if (h == LengthConstraintType.FIXED) {
+            throw new RuntimeException(""Not implemented."");
+        } else if (h == LengthConstraintType.RANGE) {
+            throw new RuntimeException(""Not implemented."");
+        }
+    } else if (w == LengthConstraintType.FIXED) {
+        if (h == LengthConstraintType.NONE) {
+            contentSize = arrangeFN(container, g2, constraint.getWidth());
+        } else if (h == LengthConstraintType.FIXED) {
+            contentSize = arrangeFF(container, g2, constraint);
+        } else if (h == LengthConstraintType.RANGE) {
+            contentSize = arrangeFR(container, g2, constraint);
+        }
+    } else if (w == LengthConstraintType.RANGE) {
+        if (h == LengthConstraintType.NONE) {
+            throw new RuntimeException(""Not implemented."");
+        } else if (h == LengthConstraintType.FIXED) {
+            throw new RuntimeException(""Not implemented."");
+        } else if (h == LengthConstraintType.RANGE) {
+            contentSize = arrangeRR(container, constraint.getWidthRange(), constraint.getHeightRange(), g2);
+        }
+    }
+    return new Size2D(container.calculateTotalWidth(contentSize.getWidth()), container.calculateTotalHeight(contentSize.getHeight()));
+}","public void test4852() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BlockContainer blockContainer0 = new BlockContainer(borderArrangement0);
+    Range range0 = new Range(1.5, 1.5);
+    RectangleConstraint rectangleConstraint0 = new RectangleConstraint(range0, 1.5);
+    // Undeclared exception!
+    try {
+        borderArrangement0.arrange(blockContainer0, (Graphics2D) null, rectangleConstraint0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Not implemented.
+        //
+        verifyException(""org.jfree.chart.block.BorderArrangement"", e);
+    }
+}","/**
+ * Arranges the items in the specified container, subject to the given
+ * constraint.
+ *
+ * @param container  the container.
+ * @param g2  the graphics device.
+ * @param constraint  the constraint.
+ *
+ * @return The block size.
+ */"
+"public Size2D arrange(BlockContainer container, Graphics2D g2, RectangleConstraint constraint) {
+    RectangleConstraint contentConstraint = container.toContentConstraint(constraint);
+    Size2D contentSize = null;
+    LengthConstraintType w = contentConstraint.getWidthConstraintType();
+    LengthConstraintType h = contentConstraint.getHeightConstraintType();
+    if (w == LengthConstraintType.NONE) {
+        if (h == LengthConstraintType.NONE) {
+            contentSize = arrangeNN(container, g2);
+        } else if (h == LengthConstraintType.FIXED) {
+            throw new RuntimeException(""Not implemented."");
+        } else if (h == LengthConstraintType.RANGE) {
+            throw new RuntimeException(""Not implemented."");
+        }
+    } else if (w == LengthConstraintType.FIXED) {
+        if (h == LengthConstraintType.NONE) {
+            contentSize = arrangeFN(container, g2, constraint.getWidth());
+        } else if (h == LengthConstraintType.FIXED) {
+            contentSize = arrangeFF(container, g2, constraint);
+        } else if (h == LengthConstraintType.RANGE) {
+            contentSize = arrangeFR(container, g2, constraint);
+        }
+    } else if (w == LengthConstraintType.RANGE) {
+        if (h == LengthConstraintType.NONE) {
+            throw new RuntimeException(""Not implemented."");
+        } else if (h == LengthConstraintType.FIXED) {
+            throw new RuntimeException(""Not implemented."");
+        } else if (h == LengthConstraintType.RANGE) {
+            contentSize = arrangeRR(container, constraint.getWidthRange(), constraint.getHeightRange(), g2);
+        }
+    }
+    return new Size2D(container.calculateTotalWidth(contentSize.getWidth()), container.calculateTotalHeight(contentSize.getHeight()));
+}","public void test4953() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BlockContainer blockContainer0 = new BlockContainer();
+    Graphics2D graphics2D0 = null;
+    DefaultTableXYDataset defaultTableXYDataset0 = new DefaultTableXYDataset(false);
+    IntervalXYDelegate intervalXYDelegate0 = new IntervalXYDelegate(defaultTableXYDataset0);
+    intervalXYDelegate0.getDomainBounds(false);
+    RectangleConstraint rectangleConstraint0 = new RectangleConstraint(817.131161005, (Range) null);
+    // Undeclared exception!
+    try {
+        borderArrangement0.arrange(blockContainer0, (Graphics2D) null, rectangleConstraint0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.chart.block.BorderArrangement"", e);
+    }
+}","/**
+ * Arranges the items in the specified container, subject to the given
+ * constraint.
+ *
+ * @param container  the container.
+ * @param g2  the graphics device.
+ * @param constraint  the constraint.
+ *
+ * @return The block size.
+ */"
+"public Size2D arrange(BlockContainer container, Graphics2D g2, RectangleConstraint constraint) {
+    RectangleConstraint contentConstraint = container.toContentConstraint(constraint);
+    Size2D contentSize = null;
+    LengthConstraintType w = contentConstraint.getWidthConstraintType();
+    LengthConstraintType h = contentConstraint.getHeightConstraintType();
+    if (w == LengthConstraintType.NONE) {
+        if (h == LengthConstraintType.NONE) {
+            contentSize = arrangeNN(container, g2);
+        } else if (h == LengthConstraintType.FIXED) {
+            throw new RuntimeException(""Not implemented."");
+        } else if (h == LengthConstraintType.RANGE) {
+            throw new RuntimeException(""Not implemented."");
+        }
+    } else if (w == LengthConstraintType.FIXED) {
+        if (h == LengthConstraintType.NONE) {
+            contentSize = arrangeFN(container, g2, constraint.getWidth());
+        } else if (h == LengthConstraintType.FIXED) {
+            contentSize = arrangeFF(container, g2, constraint);
+        } else if (h == LengthConstraintType.RANGE) {
+            contentSize = arrangeFR(container, g2, constraint);
+        }
+    } else if (w == LengthConstraintType.RANGE) {
+        if (h == LengthConstraintType.NONE) {
+            throw new RuntimeException(""Not implemented."");
+        } else if (h == LengthConstraintType.FIXED) {
+            throw new RuntimeException(""Not implemented."");
+        } else if (h == LengthConstraintType.RANGE) {
+            contentSize = arrangeRR(container, constraint.getWidthRange(), constraint.getHeightRange(), g2);
+        }
+    }
+    return new Size2D(container.calculateTotalWidth(contentSize.getWidth()), container.calculateTotalHeight(contentSize.getHeight()));
+}","public void test5054() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BlockContainer blockContainer0 = new BlockContainer();
+    Rectangle2D.Double rectangle2D_Double0 = new Rectangle2D.Double((-186.01), 1428.270794, 1.0, (-186.01));
+    blockContainer0.trimBorder(rectangle2D_Double0);
+    FileSystemHandling.appendLineToFile((EvoSuiteFile) null, """");
+    Graphics2D graphics2D0 = null;
+    DefaultTableXYDataset defaultTableXYDataset0 = new DefaultTableXYDataset(false);
+    IntervalXYDelegate intervalXYDelegate0 = new IntervalXYDelegate(defaultTableXYDataset0);
+    intervalXYDelegate0.getDomainBounds(false);
+    RectangleConstraint rectangleConstraint0 = new RectangleConstraint(0.0, (Range) null);
+    // Undeclared exception!
+    try {
+        borderArrangement0.arrange(blockContainer0, (Graphics2D) null, rectangleConstraint0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.chart.block.BorderArrangement"", e);
+    }
+}","/**
+ * Arranges the items in the specified container, subject to the given
+ * constraint.
+ *
+ * @param container  the container.
+ * @param g2  the graphics device.
+ * @param constraint  the constraint.
+ *
+ * @return The block size.
+ */"
+"protected Size2D arrangeFR(BlockContainer container, Graphics2D g2, RectangleConstraint constraint) {
+    Size2D size1 = arrangeFN(container, g2, constraint.getWidth());
+    if (constraint.getHeightRange().contains(size1.getHeight())) {
+        return size1;
+    } else {
+        double h = constraint.getHeightRange().constrain(size1.getHeight());
+        RectangleConstraint c2 = constraint.toFixedHeight(h);
+        return arrange(container, g2, c2);
+    }
+}","public void test5155() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BlockContainer blockContainer0 = new BlockContainer(borderArrangement0);
+    Graphics2D graphics2D0 = null;
+    Range range0 = new Range(0.13834176695915446, 0.13834176695915446);
+    LengthConstraintType lengthConstraintType0 = LengthConstraintType.NONE;
+    FileSystemHandling.shouldAllThrowIOExceptions();
+    RectangleConstraint rectangleConstraint0 = new RectangleConstraint(0.13834176695915446, range0, lengthConstraintType0, 0.0, range0, lengthConstraintType0);
+    SeriesChangeEvent seriesChangeEvent0 = new SeriesChangeEvent(""Nd4"");
+    // Undeclared exception!
+    try {
+        borderArrangement0.arrangeFR(blockContainer0, (Graphics2D) null, rectangleConstraint0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Not implemented.
+        //
+        verifyException(""org.jfree.chart.block.BorderArrangement"", e);
+    }
+}","/**
+ * Performs an arrangement with a fixed width and a range for the height.
+ *
+ * @param container  the container.
+ * @param g2  the graphics device.
+ * @param constraint  the constraint.
+ *
+ * @return The container size after the arrangement.
+ */"
+"public Size2D arrange(Graphics2D g2, RectangleConstraint constraint) {
+    return this.arrangement.arrange(this, g2, constraint);
+}","public void test5256() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    BlockContainer blockContainer0 = new BlockContainer(borderArrangement0);
+    Graphics2D graphics2D0 = null;
+    TimeTableXYDataset timeTableXYDataset0 = new TimeTableXYDataset();
+    Range range0 = new Range(13.100398612273521, 13.100398612273521);
+    LengthConstraintType lengthConstraintType0 = LengthConstraintType.RANGE;
+    RectangleConstraint rectangleConstraint0 = new RectangleConstraint(13.100398612273521, range0, lengthConstraintType0, 0.0, range0, lengthConstraintType0);
+    blockContainer0.arrange((Graphics2D) null, rectangleConstraint0);
+    // Undeclared exception!
+    try {
+        blockContainer0.arrange((Graphics2D) null, (RectangleConstraint) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'c' argument.
+        //
+        verifyException(""org.jfree.chart.block.AbstractBlock"", e);
+    }
+}","/**
+ * Arranges the contents of the block, within the given constraints, and
+ * returns the block size.
+ *
+ * @param g2  the graphics device.
+ * @param constraint  the constraint (<code>null</code> not permitted).
+ *
+ * @return The block size (in Java2D units, never <code>null</code>).
+ */"
+"public String toString() {
+    return this.name;
+}","public void test5458() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    RectangleEdge rectangleEdge0 = RectangleEdge.RIGHT;
+    borderArrangement0.equals(rectangleEdge0);
+    borderArrangement0.clear();
+    FileSystemHandling.shouldAllThrowIOExceptions();
+    borderArrangement0.clear();
+    int[] intArray0 = new int[7];
+    borderArrangement0.add((Block) null, rectangleEdge0);
+    assertEquals(""RectangleEdge.RIGHT"", rectangleEdge0.toString());
+}","/**
+ * Returns a string representing the object.
+ *
+ * @return The string.
+ */"
+"public String toString() {
+    return this.name;
+}","public void test5559() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    RectangleEdge rectangleEdge0 = RectangleEdge.TOP;
+    borderArrangement0.equals(rectangleEdge0);
+    borderArrangement0.clear();
+    FileSystemHandling.shouldAllThrowIOExceptions();
+    borderArrangement0.clear();
+    int[] intArray0 = new int[7];
+    borderArrangement0.clear();
+    borderArrangement0.add((Block) null, rectangleEdge0);
+    assertEquals(""RectangleEdge.TOP"", rectangleEdge0.toString());
+}","/**
+ * Returns a string representing the object.
+ *
+ * @return The string.
+ */"
+"public void clear() {
+    this.centerBlock = null;
+    this.topBlock = null;
+    this.bottomBlock = null;
+    this.leftBlock = null;
+    this.rightBlock = null;
+}","public void test5660() throws Throwable {
+    BorderArrangement borderArrangement0 = new BorderArrangement();
+    borderArrangement0.equals(borderArrangement0);
+    AffineTransform.getTranslateInstance((-2100.724604096333), (-2100.724604096333));
+    byte[] byteArray0 = new byte[0];
+    borderArrangement0.clear();
+}","/**
+ * Clears the layout.
+ */"
+"public double getHeight() {
+    return this.height;
+}","public void test5761() throws Throwable {
+    BlockContainer blockContainer0 = new BlockContainer();
+    RectangleConstraint rectangleConstraint0 = new RectangleConstraint(7, 7);
+    FlowArrangement flowArrangement0 = new FlowArrangement();
+    BlockContainer blockContainer1 = new BlockContainer(flowArrangement0);
+    assertEquals(0.0, blockContainer1.getHeight(), 0.01);
+}","/**
+ * Returns the natural height of the block, if this is known in advance.
+ * The actual height of the block may be overridden if layout constraints
+ * make this necessary.
+ *
+ * @return The height.
+ *
+ * @see #setHeight(double)
+ */"

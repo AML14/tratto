@@ -1,0 +1,4798 @@
+focal_method,test_prefix,docstring
+"public boolean isMetaphoneEqual(String str1, String str2) {
+    return metaphone(str1).equals(metaphone(str2));
+}","public void test000() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.isMetaphoneEqual(""V?R o|=cMEo\n`"", ""V?R o|=cMEo\n`"");
+}","/**
+ * Tests is the metaphones of two strings are identical.
+ *
+ * @param str1 First of two strings to compare
+ * @param str2 Second of two strings to compare
+ * @return <code>true</code> if the metaphones of these strings are identical,
+ *        <code>false</code> otherwise.
+ */"
+"public void setMaxCodeLen(int maxCodeLen) {
+    this.maxCodeLen = maxCodeLen;
+}","public void test011() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.setMaxCodeLen((-1));
+}","/**
+ * Sets the maxCodeLen.
+ * @param maxCodeLen The maxCodeLen to set
+ */"
+"public String encode(String pString) {
+    return metaphone(pString);
+}","public void test022() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.encode("""");
+}","/**
+ * Encodes a String using the Metaphone algorithm.
+ *
+ * @param pString String object to encode
+ * @return The metaphone code corresponding to the String supplied
+ */"
+"public String metaphone(String txt) {
+    boolean hard = false;
+    if ((txt == null) || (txt.length() == 0)) {
+        return """";
+    }
+    // single character is itself
+    if (txt.length() == 1) {
+        return txt.toUpperCase();
+    }
+    char[] inwd = txt.toUpperCase(java.util.Locale.ENGLISH).toCharArray();
+    // manipulate
+    StringBuffer local = new StringBuffer(40);
+    //   output
+    StringBuffer code = new StringBuffer(10);
+    // handle initial 2 characters exceptions
+    switch(inwd[0]) {
+        case 'K':
+        case 'G':
+        case 'P':
+            /* looking for KN, etc*/
+            if (inwd[1] == 'N') {
+                local.append(inwd, 1, inwd.length - 1);
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'A':
+            /* looking for AE */
+            if (inwd[1] == 'E') {
+                local.append(inwd, 1, inwd.length - 1);
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'W':
+            /* looking for WR or WH */
+            if (inwd[1] == 'R') {
+                // WR -> R
+                local.append(inwd, 1, inwd.length - 1);
+                break;
+            }
+            if (inwd[1] == 'H') {
+                local.append(inwd, 1, inwd.length - 1);
+                // WH -> W
+                local.setCharAt(0, 'W');
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'X':
+            /* initial X becomes S */
+            inwd[0] = 'S';
+            local.append(inwd);
+            break;
+        default:
+            local.append(inwd);
+    }
+    // now local has working string with initials fixed
+    int wdsz = local.length();
+    int n = 0;
+    while ((code.length() < this.getMaxCodeLen()) && (n < wdsz)) {
+        // max code size of 4 works well
+        char symb = local.charAt(n);
+        // remove duplicate letters except C
+        if ((symb != 'C') && (isPreviousChar(local, n, symb))) {
+            n++;
+        } else {
+            // not dup
+            switch(symb) {
+                case 'A':
+                case 'E':
+                case 'I':
+                case 'O':
+                case 'U':
+                    if (n == 0) {
+                        code.append(symb);
+                    }
+                    // only use vowel if leading char
+                    break;
+                case 'B':
+                    if (isPreviousChar(local, n, 'M') && isLastChar(wdsz, n)) {
+                        // B is silent if word ends in MB
+                        break;
+                    }
+                    code.append(symb);
+                    break;
+                case // lots of C special cases
+                'C':
+                    /* discard if SCI, SCE or SCY */
+                    if (isPreviousChar(local, n, 'S') && !isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0)) {
+                        break;
+                    }
+                    if (regionMatch(local, n, ""CIA"")) {
+                        // ""CIA"" -> X
+                        code.append('X');
+                        break;
+                    }
+                    if (!isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0)) {
+                        code.append('S');
+                        // CI,CE,CY -> S
+                        break;
+                    }
+                    if (isPreviousChar(local, n, 'S') && isNextChar(local, n, 'H')) {
+                        // SCH->sk
+                        code.append('K');
+                        break;
+                    }
+                    if (isNextChar(local, n, 'H')) {
+                        // detect CH
+                        if ((n == 0) && (wdsz >= 3) && isVowel(local, 2)) {
+                            // CH consonant -> K consonant
+                            code.append('K');
+                        } else {
+                            // CHvowel -> X
+                            code.append('X');
+                        }
+                    } else {
+                        code.append('K');
+                    }
+                    break;
+                case 'D':
+                    if (!isLastChar(wdsz, n + 1) && isNextChar(local, n, 'G') && (FRONTV.indexOf(local.charAt(n + 2)) >= 0)) {
+                        // DGE DGI DGY -> J
+                        code.append('J');
+                        n += 2;
+                    } else {
+                        code.append('T');
+                    }
+                    break;
+                case // GH silent at end or before consonant
+                'G':
+                    if (isLastChar(wdsz, n + 1) && isNextChar(local, n, 'H')) {
+                        break;
+                    }
+                    if (!isLastChar(wdsz, n + 1) && isNextChar(local, n, 'H') && !isVowel(local, n + 2)) {
+                        break;
+                    }
+                    if ((n > 0) && (regionMatch(local, n, ""GN"") || regionMatch(local, n, ""GNED""))) {
+                        // silent G
+                        break;
+                    }
+                    if (isPreviousChar(local, n, 'G')) {
+                        hard = true;
+                    } else {
+                        hard = false;
+                    }
+                    if (!isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0) && (!hard)) {
+                        code.append('J');
+                    } else {
+                        code.append('K');
+                    }
+                    break;
+                case 'H':
+                    if (isLastChar(wdsz, n)) {
+                        // terminal H
+                        break;
+                    }
+                    if ((n > 0) && (VARSON.indexOf(local.charAt(n - 1)) >= 0)) {
+                        break;
+                    }
+                    if (isVowel(local, n + 1)) {
+                        // Hvowel
+                        code.append('H');
+                    }
+                    break;
+                case 'F':
+                case 'J':
+                case 'L':
+                case 'M':
+                case 'N':
+                case 'R':
+                    code.append(symb);
+                    break;
+                case 'K':
+                    if (n > 0) {
+                        // not initial
+                        if (!isPreviousChar(local, n, 'C')) {
+                            code.append(symb);
+                        }
+                    } else {
+                        // initial K
+                        code.append(symb);
+                    }
+                    break;
+                case 'P':
+                    if (isNextChar(local, n, 'H')) {
+                        // PH -> F
+                        code.append('F');
+                    } else {
+                        code.append(symb);
+                    }
+                    break;
+                case 'Q':
+                    code.append('K');
+                    break;
+                case 'S':
+                    if (regionMatch(local, n, ""SH"") || regionMatch(local, n, ""SIO"") || regionMatch(local, n, ""SIA"")) {
+                        code.append('X');
+                    } else {
+                        code.append('S');
+                    }
+                    break;
+                case 'T':
+                    if (regionMatch(local, n, ""TIA"") || regionMatch(local, n, ""TIO"")) {
+                        code.append('X');
+                        break;
+                    }
+                    if (regionMatch(local, n, ""TCH"")) {
+                        // Silent if in ""TCH""
+                        break;
+                    }
+                    // substitute numeral 0 for TH (resembles theta after all)
+                    if (regionMatch(local, n, ""TH"")) {
+                        code.append('0');
+                    } else {
+                        code.append('T');
+                    }
+                    break;
+                case 'V':
+                    code.append('F');
+                    break;
+                case 'W':
+                case // silent if not followed by vowel
+                'Y':
+                    if (!isLastChar(wdsz, n) && isVowel(local, n + 1)) {
+                        code.append(symb);
+                    }
+                    break;
+                case 'X':
+                    code.append('K');
+                    code.append('S');
+                    break;
+                case 'Z':
+                    code.append('S');
+                    break;
+            }
+            // end switch
+            n++;
+        }
+        // end else from symb != 'C'
+        if (code.length() > this.getMaxCodeLen()) {
+            code.setLength(this.getMaxCodeLen());
+        }
+    }
+    return code.toString();
+}","public void test033() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.metaphone(""oF'lp"");
+}","/**
+ * Find the metaphone value of a String. This is similar to the
+ * soundex algorithm, but better at finding similar sounding words.
+ * All input is converted to upper case.
+ * Limitations: Input format is expected to be a single ASCII word
+ * with only characters in the A - Z range, no punctuation or numbers.
+ *
+ * @param txt String to find the metaphone code for
+ * @return A metaphone code corresponding to the String supplied
+ */"
+"public Object encode(Object pObject) throws EncoderException {
+    if (!(pObject instanceof java.lang.String)) {
+        throw new EncoderException(""Parameter supplied to Metaphone encode is not of type java.lang.String"");
+    }
+    return metaphone((String) pObject);
+}","public void test044() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    Object object0 = new Object();
+    try {
+        metaphone0.encode(object0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Parameter supplied to Metaphone encode is not of type java.lang.String
+        //
+        verifyException(""org.apache.commons.codec.language.Metaphone"", e);
+    }
+}","/**
+ * Encodes an Object using the metaphone algorithm.  This method
+ * is provided in order to satisfy the requirements of the
+ * Encoder interface, and will throw an EncoderException if the
+ * supplied object is not of type java.lang.String.
+ *
+ * @param pObject Object to encode
+ * @return An object (or type java.lang.String) containing the
+ *         metaphone code which corresponds to the String supplied.
+ * @throws EncoderException if the parameter supplied is not
+ *                          of type java.lang.String
+ */"
+"public String metaphone(String txt) {
+    boolean hard = false;
+    if ((txt == null) || (txt.length() == 0)) {
+        return """";
+    }
+    // single character is itself
+    if (txt.length() == 1) {
+        return txt.toUpperCase();
+    }
+    char[] inwd = txt.toUpperCase(java.util.Locale.ENGLISH).toCharArray();
+    // manipulate
+    StringBuffer local = new StringBuffer(40);
+    //   output
+    StringBuffer code = new StringBuffer(10);
+    // handle initial 2 characters exceptions
+    switch(inwd[0]) {
+        case 'K':
+        case 'G':
+        case 'P':
+            /* looking for KN, etc*/
+            if (inwd[1] == 'N') {
+                local.append(inwd, 1, inwd.length - 1);
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'A':
+            /* looking for AE */
+            if (inwd[1] == 'E') {
+                local.append(inwd, 1, inwd.length - 1);
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'W':
+            /* looking for WR or WH */
+            if (inwd[1] == 'R') {
+                // WR -> R
+                local.append(inwd, 1, inwd.length - 1);
+                break;
+            }
+            if (inwd[1] == 'H') {
+                local.append(inwd, 1, inwd.length - 1);
+                // WH -> W
+                local.setCharAt(0, 'W');
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'X':
+            /* initial X becomes S */
+            inwd[0] = 'S';
+            local.append(inwd);
+            break;
+        default:
+            local.append(inwd);
+    }
+    // now local has working string with initials fixed
+    int wdsz = local.length();
+    int n = 0;
+    while ((code.length() < this.getMaxCodeLen()) && (n < wdsz)) {
+        // max code size of 4 works well
+        char symb = local.charAt(n);
+        // remove duplicate letters except C
+        if ((symb != 'C') && (isPreviousChar(local, n, symb))) {
+            n++;
+        } else {
+            // not dup
+            switch(symb) {
+                case 'A':
+                case 'E':
+                case 'I':
+                case 'O':
+                case 'U':
+                    if (n == 0) {
+                        code.append(symb);
+                    }
+                    // only use vowel if leading char
+                    break;
+                case 'B':
+                    if (isPreviousChar(local, n, 'M') && isLastChar(wdsz, n)) {
+                        // B is silent if word ends in MB
+                        break;
+                    }
+                    code.append(symb);
+                    break;
+                case // lots of C special cases
+                'C':
+                    /* discard if SCI, SCE or SCY */
+                    if (isPreviousChar(local, n, 'S') && !isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0)) {
+                        break;
+                    }
+                    if (regionMatch(local, n, ""CIA"")) {
+                        // ""CIA"" -> X
+                        code.append('X');
+                        break;
+                    }
+                    if (!isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0)) {
+                        code.append('S');
+                        // CI,CE,CY -> S
+                        break;
+                    }
+                    if (isPreviousChar(local, n, 'S') && isNextChar(local, n, 'H')) {
+                        // SCH->sk
+                        code.append('K');
+                        break;
+                    }
+                    if (isNextChar(local, n, 'H')) {
+                        // detect CH
+                        if ((n == 0) && (wdsz >= 3) && isVowel(local, 2)) {
+                            // CH consonant -> K consonant
+                            code.append('K');
+                        } else {
+                            // CHvowel -> X
+                            code.append('X');
+                        }
+                    } else {
+                        code.append('K');
+                    }
+                    break;
+                case 'D':
+                    if (!isLastChar(wdsz, n + 1) && isNextChar(local, n, 'G') && (FRONTV.indexOf(local.charAt(n + 2)) >= 0)) {
+                        // DGE DGI DGY -> J
+                        code.append('J');
+                        n += 2;
+                    } else {
+                        code.append('T');
+                    }
+                    break;
+                case // GH silent at end or before consonant
+                'G':
+                    if (isLastChar(wdsz, n + 1) && isNextChar(local, n, 'H')) {
+                        break;
+                    }
+                    if (!isLastChar(wdsz, n + 1) && isNextChar(local, n, 'H') && !isVowel(local, n + 2)) {
+                        break;
+                    }
+                    if ((n > 0) && (regionMatch(local, n, ""GN"") || regionMatch(local, n, ""GNED""))) {
+                        // silent G
+                        break;
+                    }
+                    if (isPreviousChar(local, n, 'G')) {
+                        hard = true;
+                    } else {
+                        hard = false;
+                    }
+                    if (!isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0) && (!hard)) {
+                        code.append('J');
+                    } else {
+                        code.append('K');
+                    }
+                    break;
+                case 'H':
+                    if (isLastChar(wdsz, n)) {
+                        // terminal H
+                        break;
+                    }
+                    if ((n > 0) && (VARSON.indexOf(local.charAt(n - 1)) >= 0)) {
+                        break;
+                    }
+                    if (isVowel(local, n + 1)) {
+                        // Hvowel
+                        code.append('H');
+                    }
+                    break;
+                case 'F':
+                case 'J':
+                case 'L':
+                case 'M':
+                case 'N':
+                case 'R':
+                    code.append(symb);
+                    break;
+                case 'K':
+                    if (n > 0) {
+                        // not initial
+                        if (!isPreviousChar(local, n, 'C')) {
+                            code.append(symb);
+                        }
+                    } else {
+                        // initial K
+                        code.append(symb);
+                    }
+                    break;
+                case 'P':
+                    if (isNextChar(local, n, 'H')) {
+                        // PH -> F
+                        code.append('F');
+                    } else {
+                        code.append(symb);
+                    }
+                    break;
+                case 'Q':
+                    code.append('K');
+                    break;
+                case 'S':
+                    if (regionMatch(local, n, ""SH"") || regionMatch(local, n, ""SIO"") || regionMatch(local, n, ""SIA"")) {
+                        code.append('X');
+                    } else {
+                        code.append('S');
+                    }
+                    break;
+                case 'T':
+                    if (regionMatch(local, n, ""TIA"") || regionMatch(local, n, ""TIO"")) {
+                        code.append('X');
+                        break;
+                    }
+                    if (regionMatch(local, n, ""TCH"")) {
+                        // Silent if in ""TCH""
+                        break;
+                    }
+                    // substitute numeral 0 for TH (resembles theta after all)
+                    if (regionMatch(local, n, ""TH"")) {
+                        code.append('0');
+                    } else {
+                        code.append('T');
+                    }
+                    break;
+                case 'V':
+                    code.append('F');
+                    break;
+                case 'W':
+                case // silent if not followed by vowel
+                'Y':
+                    if (!isLastChar(wdsz, n) && isVowel(local, n + 1)) {
+                        code.append(symb);
+                    }
+                    break;
+                case 'X':
+                    code.append('K');
+                    code.append('S');
+                    break;
+                case 'Z':
+                    code.append('S');
+                    break;
+            }
+            // end switch
+            n++;
+        }
+        // end else from symb != 'C'
+        if (code.length() > this.getMaxCodeLen()) {
+            code.setLength(this.getMaxCodeLen());
+        }
+    }
+    return code.toString();
+}","public void test055() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.metaphone(""90PU9"");
+}","/**
+ * Find the metaphone value of a String. This is similar to the
+ * soundex algorithm, but better at finding similar sounding words.
+ * All input is converted to upper case.
+ * Limitations: Input format is expected to be a single ASCII word
+ * with only characters in the A - Z range, no punctuation or numbers.
+ *
+ * @param txt String to find the metaphone code for
+ * @return A metaphone code corresponding to the String supplied
+ */"
+"public boolean isMetaphoneEqual(String str1, String str2) {
+    return metaphone(str1).equals(metaphone(str2));
+}","public void test066() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.isMetaphoneEqual(""h\""Xsf"", ""h\""Xsf"");
+}","/**
+ * Tests is the metaphones of two strings are identical.
+ *
+ * @param str1 First of two strings to compare
+ * @param str2 Second of two strings to compare
+ * @return <code>true</code> if the metaphones of these strings are identical,
+ *        <code>false</code> otherwise.
+ */"
+"public String metaphone(String txt) {
+    boolean hard = false;
+    if ((txt == null) || (txt.length() == 0)) {
+        return """";
+    }
+    // single character is itself
+    if (txt.length() == 1) {
+        return txt.toUpperCase();
+    }
+    char[] inwd = txt.toUpperCase(java.util.Locale.ENGLISH).toCharArray();
+    // manipulate
+    StringBuffer local = new StringBuffer(40);
+    //   output
+    StringBuffer code = new StringBuffer(10);
+    // handle initial 2 characters exceptions
+    switch(inwd[0]) {
+        case 'K':
+        case 'G':
+        case 'P':
+            /* looking for KN, etc*/
+            if (inwd[1] == 'N') {
+                local.append(inwd, 1, inwd.length - 1);
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'A':
+            /* looking for AE */
+            if (inwd[1] == 'E') {
+                local.append(inwd, 1, inwd.length - 1);
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'W':
+            /* looking for WR or WH */
+            if (inwd[1] == 'R') {
+                // WR -> R
+                local.append(inwd, 1, inwd.length - 1);
+                break;
+            }
+            if (inwd[1] == 'H') {
+                local.append(inwd, 1, inwd.length - 1);
+                // WH -> W
+                local.setCharAt(0, 'W');
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'X':
+            /* initial X becomes S */
+            inwd[0] = 'S';
+            local.append(inwd);
+            break;
+        default:
+            local.append(inwd);
+    }
+    // now local has working string with initials fixed
+    int wdsz = local.length();
+    int n = 0;
+    while ((code.length() < this.getMaxCodeLen()) && (n < wdsz)) {
+        // max code size of 4 works well
+        char symb = local.charAt(n);
+        // remove duplicate letters except C
+        if ((symb != 'C') && (isPreviousChar(local, n, symb))) {
+            n++;
+        } else {
+            // not dup
+            switch(symb) {
+                case 'A':
+                case 'E':
+                case 'I':
+                case 'O':
+                case 'U':
+                    if (n == 0) {
+                        code.append(symb);
+                    }
+                    // only use vowel if leading char
+                    break;
+                case 'B':
+                    if (isPreviousChar(local, n, 'M') && isLastChar(wdsz, n)) {
+                        // B is silent if word ends in MB
+                        break;
+                    }
+                    code.append(symb);
+                    break;
+                case // lots of C special cases
+                'C':
+                    /* discard if SCI, SCE or SCY */
+                    if (isPreviousChar(local, n, 'S') && !isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0)) {
+                        break;
+                    }
+                    if (regionMatch(local, n, ""CIA"")) {
+                        // ""CIA"" -> X
+                        code.append('X');
+                        break;
+                    }
+                    if (!isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0)) {
+                        code.append('S');
+                        // CI,CE,CY -> S
+                        break;
+                    }
+                    if (isPreviousChar(local, n, 'S') && isNextChar(local, n, 'H')) {
+                        // SCH->sk
+                        code.append('K');
+                        break;
+                    }
+                    if (isNextChar(local, n, 'H')) {
+                        // detect CH
+                        if ((n == 0) && (wdsz >= 3) && isVowel(local, 2)) {
+                            // CH consonant -> K consonant
+                            code.append('K');
+                        } else {
+                            // CHvowel -> X
+                            code.append('X');
+                        }
+                    } else {
+                        code.append('K');
+                    }
+                    break;
+                case 'D':
+                    if (!isLastChar(wdsz, n + 1) && isNextChar(local, n, 'G') && (FRONTV.indexOf(local.charAt(n + 2)) >= 0)) {
+                        // DGE DGI DGY -> J
+                        code.append('J');
+                        n += 2;
+                    } else {
+                        code.append('T');
+                    }
+                    break;
+                case // GH silent at end or before consonant
+                'G':
+                    if (isLastChar(wdsz, n + 1) && isNextChar(local, n, 'H')) {
+                        break;
+                    }
+                    if (!isLastChar(wdsz, n + 1) && isNextChar(local, n, 'H') && !isVowel(local, n + 2)) {
+                        break;
+                    }
+                    if ((n > 0) && (regionMatch(local, n, ""GN"") || regionMatch(local, n, ""GNED""))) {
+                        // silent G
+                        break;
+                    }
+                    if (isPreviousChar(local, n, 'G')) {
+                        hard = true;
+                    } else {
+                        hard = false;
+                    }
+                    if (!isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0) && (!hard)) {
+                        code.append('J');
+                    } else {
+                        code.append('K');
+                    }
+                    break;
+                case 'H':
+                    if (isLastChar(wdsz, n)) {
+                        // terminal H
+                        break;
+                    }
+                    if ((n > 0) && (VARSON.indexOf(local.charAt(n - 1)) >= 0)) {
+                        break;
+                    }
+                    if (isVowel(local, n + 1)) {
+                        // Hvowel
+                        code.append('H');
+                    }
+                    break;
+                case 'F':
+                case 'J':
+                case 'L':
+                case 'M':
+                case 'N':
+                case 'R':
+                    code.append(symb);
+                    break;
+                case 'K':
+                    if (n > 0) {
+                        // not initial
+                        if (!isPreviousChar(local, n, 'C')) {
+                            code.append(symb);
+                        }
+                    } else {
+                        // initial K
+                        code.append(symb);
+                    }
+                    break;
+                case 'P':
+                    if (isNextChar(local, n, 'H')) {
+                        // PH -> F
+                        code.append('F');
+                    } else {
+                        code.append(symb);
+                    }
+                    break;
+                case 'Q':
+                    code.append('K');
+                    break;
+                case 'S':
+                    if (regionMatch(local, n, ""SH"") || regionMatch(local, n, ""SIO"") || regionMatch(local, n, ""SIA"")) {
+                        code.append('X');
+                    } else {
+                        code.append('S');
+                    }
+                    break;
+                case 'T':
+                    if (regionMatch(local, n, ""TIA"") || regionMatch(local, n, ""TIO"")) {
+                        code.append('X');
+                        break;
+                    }
+                    if (regionMatch(local, n, ""TCH"")) {
+                        // Silent if in ""TCH""
+                        break;
+                    }
+                    // substitute numeral 0 for TH (resembles theta after all)
+                    if (regionMatch(local, n, ""TH"")) {
+                        code.append('0');
+                    } else {
+                        code.append('T');
+                    }
+                    break;
+                case 'V':
+                    code.append('F');
+                    break;
+                case 'W':
+                case // silent if not followed by vowel
+                'Y':
+                    if (!isLastChar(wdsz, n) && isVowel(local, n + 1)) {
+                        code.append(symb);
+                    }
+                    break;
+                case 'X':
+                    code.append('K');
+                    code.append('S');
+                    break;
+                case 'Z':
+                    code.append('S');
+                    break;
+            }
+            // end switch
+            n++;
+        }
+        // end else from symb != 'C'
+        if (code.length() > this.getMaxCodeLen()) {
+            code.setLength(this.getMaxCodeLen());
+        }
+    }
+    return code.toString();
+}","public void test077() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.metaphone(""pFB]r[E&mk[h"");
+}","/**
+ * Find the metaphone value of a String. This is similar to the
+ * soundex algorithm, but better at finding similar sounding words.
+ * All input is converted to upper case.
+ * Limitations: Input format is expected to be a single ASCII word
+ * with only characters in the A - Z range, no punctuation or numbers.
+ *
+ * @param txt String to find the metaphone code for
+ * @return A metaphone code corresponding to the String supplied
+ */"
+"public String metaphone(String txt) {
+    boolean hard = false;
+    if ((txt == null) || (txt.length() == 0)) {
+        return """";
+    }
+    // single character is itself
+    if (txt.length() == 1) {
+        return txt.toUpperCase();
+    }
+    char[] inwd = txt.toUpperCase(java.util.Locale.ENGLISH).toCharArray();
+    // manipulate
+    StringBuffer local = new StringBuffer(40);
+    //   output
+    StringBuffer code = new StringBuffer(10);
+    // handle initial 2 characters exceptions
+    switch(inwd[0]) {
+        case 'K':
+        case 'G':
+        case 'P':
+            /* looking for KN, etc*/
+            if (inwd[1] == 'N') {
+                local.append(inwd, 1, inwd.length - 1);
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'A':
+            /* looking for AE */
+            if (inwd[1] == 'E') {
+                local.append(inwd, 1, inwd.length - 1);
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'W':
+            /* looking for WR or WH */
+            if (inwd[1] == 'R') {
+                // WR -> R
+                local.append(inwd, 1, inwd.length - 1);
+                break;
+            }
+            if (inwd[1] == 'H') {
+                local.append(inwd, 1, inwd.length - 1);
+                // WH -> W
+                local.setCharAt(0, 'W');
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'X':
+            /* initial X becomes S */
+            inwd[0] = 'S';
+            local.append(inwd);
+            break;
+        default:
+            local.append(inwd);
+    }
+    // now local has working string with initials fixed
+    int wdsz = local.length();
+    int n = 0;
+    while ((code.length() < this.getMaxCodeLen()) && (n < wdsz)) {
+        // max code size of 4 works well
+        char symb = local.charAt(n);
+        // remove duplicate letters except C
+        if ((symb != 'C') && (isPreviousChar(local, n, symb))) {
+            n++;
+        } else {
+            // not dup
+            switch(symb) {
+                case 'A':
+                case 'E':
+                case 'I':
+                case 'O':
+                case 'U':
+                    if (n == 0) {
+                        code.append(symb);
+                    }
+                    // only use vowel if leading char
+                    break;
+                case 'B':
+                    if (isPreviousChar(local, n, 'M') && isLastChar(wdsz, n)) {
+                        // B is silent if word ends in MB
+                        break;
+                    }
+                    code.append(symb);
+                    break;
+                case // lots of C special cases
+                'C':
+                    /* discard if SCI, SCE or SCY */
+                    if (isPreviousChar(local, n, 'S') && !isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0)) {
+                        break;
+                    }
+                    if (regionMatch(local, n, ""CIA"")) {
+                        // ""CIA"" -> X
+                        code.append('X');
+                        break;
+                    }
+                    if (!isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0)) {
+                        code.append('S');
+                        // CI,CE,CY -> S
+                        break;
+                    }
+                    if (isPreviousChar(local, n, 'S') && isNextChar(local, n, 'H')) {
+                        // SCH->sk
+                        code.append('K');
+                        break;
+                    }
+                    if (isNextChar(local, n, 'H')) {
+                        // detect CH
+                        if ((n == 0) && (wdsz >= 3) && isVowel(local, 2)) {
+                            // CH consonant -> K consonant
+                            code.append('K');
+                        } else {
+                            // CHvowel -> X
+                            code.append('X');
+                        }
+                    } else {
+                        code.append('K');
+                    }
+                    break;
+                case 'D':
+                    if (!isLastChar(wdsz, n + 1) && isNextChar(local, n, 'G') && (FRONTV.indexOf(local.charAt(n + 2)) >= 0)) {
+                        // DGE DGI DGY -> J
+                        code.append('J');
+                        n += 2;
+                    } else {
+                        code.append('T');
+                    }
+                    break;
+                case // GH silent at end or before consonant
+                'G':
+                    if (isLastChar(wdsz, n + 1) && isNextChar(local, n, 'H')) {
+                        break;
+                    }
+                    if (!isLastChar(wdsz, n + 1) && isNextChar(local, n, 'H') && !isVowel(local, n + 2)) {
+                        break;
+                    }
+                    if ((n > 0) && (regionMatch(local, n, ""GN"") || regionMatch(local, n, ""GNED""))) {
+                        // silent G
+                        break;
+                    }
+                    if (isPreviousChar(local, n, 'G')) {
+                        hard = true;
+                    } else {
+                        hard = false;
+                    }
+                    if (!isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0) && (!hard)) {
+                        code.append('J');
+                    } else {
+                        code.append('K');
+                    }
+                    break;
+                case 'H':
+                    if (isLastChar(wdsz, n)) {
+                        // terminal H
+                        break;
+                    }
+                    if ((n > 0) && (VARSON.indexOf(local.charAt(n - 1)) >= 0)) {
+                        break;
+                    }
+                    if (isVowel(local, n + 1)) {
+                        // Hvowel
+                        code.append('H');
+                    }
+                    break;
+                case 'F':
+                case 'J':
+                case 'L':
+                case 'M':
+                case 'N':
+                case 'R':
+                    code.append(symb);
+                    break;
+                case 'K':
+                    if (n > 0) {
+                        // not initial
+                        if (!isPreviousChar(local, n, 'C')) {
+                            code.append(symb);
+                        }
+                    } else {
+                        // initial K
+                        code.append(symb);
+                    }
+                    break;
+                case 'P':
+                    if (isNextChar(local, n, 'H')) {
+                        // PH -> F
+                        code.append('F');
+                    } else {
+                        code.append(symb);
+                    }
+                    break;
+                case 'Q':
+                    code.append('K');
+                    break;
+                case 'S':
+                    if (regionMatch(local, n, ""SH"") || regionMatch(local, n, ""SIO"") || regionMatch(local, n, ""SIA"")) {
+                        code.append('X');
+                    } else {
+                        code.append('S');
+                    }
+                    break;
+                case 'T':
+                    if (regionMatch(local, n, ""TIA"") || regionMatch(local, n, ""TIO"")) {
+                        code.append('X');
+                        break;
+                    }
+                    if (regionMatch(local, n, ""TCH"")) {
+                        // Silent if in ""TCH""
+                        break;
+                    }
+                    // substitute numeral 0 for TH (resembles theta after all)
+                    if (regionMatch(local, n, ""TH"")) {
+                        code.append('0');
+                    } else {
+                        code.append('T');
+                    }
+                    break;
+                case 'V':
+                    code.append('F');
+                    break;
+                case 'W':
+                case // silent if not followed by vowel
+                'Y':
+                    if (!isLastChar(wdsz, n) && isVowel(local, n + 1)) {
+                        code.append(symb);
+                    }
+                    break;
+                case 'X':
+                    code.append('K');
+                    code.append('S');
+                    break;
+                case 'Z':
+                    code.append('S');
+                    break;
+            }
+            // end switch
+            n++;
+        }
+        // end else from symb != 'C'
+        if (code.length() > this.getMaxCodeLen()) {
+            code.setLength(this.getMaxCodeLen());
+        }
+    }
+    return code.toString();
+}","public void test088() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.metaphone(""KJ&%XJyh,HQm7"");
+}","/**
+ * Find the metaphone value of a String. This is similar to the
+ * soundex algorithm, but better at finding similar sounding words.
+ * All input is converted to upper case.
+ * Limitations: Input format is expected to be a single ASCII word
+ * with only characters in the A - Z range, no punctuation or numbers.
+ *
+ * @param txt String to find the metaphone code for
+ * @return A metaphone code corresponding to the String supplied
+ */"
+"public String metaphone(String txt) {
+    boolean hard = false;
+    if ((txt == null) || (txt.length() == 0)) {
+        return """";
+    }
+    // single character is itself
+    if (txt.length() == 1) {
+        return txt.toUpperCase();
+    }
+    char[] inwd = txt.toUpperCase(java.util.Locale.ENGLISH).toCharArray();
+    // manipulate
+    StringBuffer local = new StringBuffer(40);
+    //   output
+    StringBuffer code = new StringBuffer(10);
+    // handle initial 2 characters exceptions
+    switch(inwd[0]) {
+        case 'K':
+        case 'G':
+        case 'P':
+            /* looking for KN, etc*/
+            if (inwd[1] == 'N') {
+                local.append(inwd, 1, inwd.length - 1);
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'A':
+            /* looking for AE */
+            if (inwd[1] == 'E') {
+                local.append(inwd, 1, inwd.length - 1);
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'W':
+            /* looking for WR or WH */
+            if (inwd[1] == 'R') {
+                // WR -> R
+                local.append(inwd, 1, inwd.length - 1);
+                break;
+            }
+            if (inwd[1] == 'H') {
+                local.append(inwd, 1, inwd.length - 1);
+                // WH -> W
+                local.setCharAt(0, 'W');
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'X':
+            /* initial X becomes S */
+            inwd[0] = 'S';
+            local.append(inwd);
+            break;
+        default:
+            local.append(inwd);
+    }
+    // now local has working string with initials fixed
+    int wdsz = local.length();
+    int n = 0;
+    while ((code.length() < this.getMaxCodeLen()) && (n < wdsz)) {
+        // max code size of 4 works well
+        char symb = local.charAt(n);
+        // remove duplicate letters except C
+        if ((symb != 'C') && (isPreviousChar(local, n, symb))) {
+            n++;
+        } else {
+            // not dup
+            switch(symb) {
+                case 'A':
+                case 'E':
+                case 'I':
+                case 'O':
+                case 'U':
+                    if (n == 0) {
+                        code.append(symb);
+                    }
+                    // only use vowel if leading char
+                    break;
+                case 'B':
+                    if (isPreviousChar(local, n, 'M') && isLastChar(wdsz, n)) {
+                        // B is silent if word ends in MB
+                        break;
+                    }
+                    code.append(symb);
+                    break;
+                case // lots of C special cases
+                'C':
+                    /* discard if SCI, SCE or SCY */
+                    if (isPreviousChar(local, n, 'S') && !isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0)) {
+                        break;
+                    }
+                    if (regionMatch(local, n, ""CIA"")) {
+                        // ""CIA"" -> X
+                        code.append('X');
+                        break;
+                    }
+                    if (!isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0)) {
+                        code.append('S');
+                        // CI,CE,CY -> S
+                        break;
+                    }
+                    if (isPreviousChar(local, n, 'S') && isNextChar(local, n, 'H')) {
+                        // SCH->sk
+                        code.append('K');
+                        break;
+                    }
+                    if (isNextChar(local, n, 'H')) {
+                        // detect CH
+                        if ((n == 0) && (wdsz >= 3) && isVowel(local, 2)) {
+                            // CH consonant -> K consonant
+                            code.append('K');
+                        } else {
+                            // CHvowel -> X
+                            code.append('X');
+                        }
+                    } else {
+                        code.append('K');
+                    }
+                    break;
+                case 'D':
+                    if (!isLastChar(wdsz, n + 1) && isNextChar(local, n, 'G') && (FRONTV.indexOf(local.charAt(n + 2)) >= 0)) {
+                        // DGE DGI DGY -> J
+                        code.append('J');
+                        n += 2;
+                    } else {
+                        code.append('T');
+                    }
+                    break;
+                case // GH silent at end or before consonant
+                'G':
+                    if (isLastChar(wdsz, n + 1) && isNextChar(local, n, 'H')) {
+                        break;
+                    }
+                    if (!isLastChar(wdsz, n + 1) && isNextChar(local, n, 'H') && !isVowel(local, n + 2)) {
+                        break;
+                    }
+                    if ((n > 0) && (regionMatch(local, n, ""GN"") || regionMatch(local, n, ""GNED""))) {
+                        // silent G
+                        break;
+                    }
+                    if (isPreviousChar(local, n, 'G')) {
+                        hard = true;
+                    } else {
+                        hard = false;
+                    }
+                    if (!isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0) && (!hard)) {
+                        code.append('J');
+                    } else {
+                        code.append('K');
+                    }
+                    break;
+                case 'H':
+                    if (isLastChar(wdsz, n)) {
+                        // terminal H
+                        break;
+                    }
+                    if ((n > 0) && (VARSON.indexOf(local.charAt(n - 1)) >= 0)) {
+                        break;
+                    }
+                    if (isVowel(local, n + 1)) {
+                        // Hvowel
+                        code.append('H');
+                    }
+                    break;
+                case 'F':
+                case 'J':
+                case 'L':
+                case 'M':
+                case 'N':
+                case 'R':
+                    code.append(symb);
+                    break;
+                case 'K':
+                    if (n > 0) {
+                        // not initial
+                        if (!isPreviousChar(local, n, 'C')) {
+                            code.append(symb);
+                        }
+                    } else {
+                        // initial K
+                        code.append(symb);
+                    }
+                    break;
+                case 'P':
+                    if (isNextChar(local, n, 'H')) {
+                        // PH -> F
+                        code.append('F');
+                    } else {
+                        code.append(symb);
+                    }
+                    break;
+                case 'Q':
+                    code.append('K');
+                    break;
+                case 'S':
+                    if (regionMatch(local, n, ""SH"") || regionMatch(local, n, ""SIO"") || regionMatch(local, n, ""SIA"")) {
+                        code.append('X');
+                    } else {
+                        code.append('S');
+                    }
+                    break;
+                case 'T':
+                    if (regionMatch(local, n, ""TIA"") || regionMatch(local, n, ""TIO"")) {
+                        code.append('X');
+                        break;
+                    }
+                    if (regionMatch(local, n, ""TCH"")) {
+                        // Silent if in ""TCH""
+                        break;
+                    }
+                    // substitute numeral 0 for TH (resembles theta after all)
+                    if (regionMatch(local, n, ""TH"")) {
+                        code.append('0');
+                    } else {
+                        code.append('T');
+                    }
+                    break;
+                case 'V':
+                    code.append('F');
+                    break;
+                case 'W':
+                case // silent if not followed by vowel
+                'Y':
+                    if (!isLastChar(wdsz, n) && isVowel(local, n + 1)) {
+                        code.append(symb);
+                    }
+                    break;
+                case 'X':
+                    code.append('K');
+                    code.append('S');
+                    break;
+                case 'Z':
+                    code.append('S');
+                    break;
+            }
+            // end switch
+            n++;
+        }
+        // end else from symb != 'C'
+        if (code.length() > this.getMaxCodeLen()) {
+            code.setLength(this.getMaxCodeLen());
+        }
+    }
+    return code.toString();
+}","public void test099() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.metaphone(""og.apache.commons.codec.EncodrException"");
+}","/**
+ * Find the metaphone value of a String. This is similar to the
+ * soundex algorithm, but better at finding similar sounding words.
+ * All input is converted to upper case.
+ * Limitations: Input format is expected to be a single ASCII word
+ * with only characters in the A - Z range, no punctuation or numbers.
+ *
+ * @param txt String to find the metaphone code for
+ * @return A metaphone code corresponding to the String supplied
+ */"
+"public String metaphone(String txt) {
+    boolean hard = false;
+    if ((txt == null) || (txt.length() == 0)) {
+        return """";
+    }
+    // single character is itself
+    if (txt.length() == 1) {
+        return txt.toUpperCase();
+    }
+    char[] inwd = txt.toUpperCase(java.util.Locale.ENGLISH).toCharArray();
+    // manipulate
+    StringBuffer local = new StringBuffer(40);
+    //   output
+    StringBuffer code = new StringBuffer(10);
+    // handle initial 2 characters exceptions
+    switch(inwd[0]) {
+        case 'K':
+        case 'G':
+        case 'P':
+            /* looking for KN, etc*/
+            if (inwd[1] == 'N') {
+                local.append(inwd, 1, inwd.length - 1);
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'A':
+            /* looking for AE */
+            if (inwd[1] == 'E') {
+                local.append(inwd, 1, inwd.length - 1);
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'W':
+            /* looking for WR or WH */
+            if (inwd[1] == 'R') {
+                // WR -> R
+                local.append(inwd, 1, inwd.length - 1);
+                break;
+            }
+            if (inwd[1] == 'H') {
+                local.append(inwd, 1, inwd.length - 1);
+                // WH -> W
+                local.setCharAt(0, 'W');
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'X':
+            /* initial X becomes S */
+            inwd[0] = 'S';
+            local.append(inwd);
+            break;
+        default:
+            local.append(inwd);
+    }
+    // now local has working string with initials fixed
+    int wdsz = local.length();
+    int n = 0;
+    while ((code.length() < this.getMaxCodeLen()) && (n < wdsz)) {
+        // max code size of 4 works well
+        char symb = local.charAt(n);
+        // remove duplicate letters except C
+        if ((symb != 'C') && (isPreviousChar(local, n, symb))) {
+            n++;
+        } else {
+            // not dup
+            switch(symb) {
+                case 'A':
+                case 'E':
+                case 'I':
+                case 'O':
+                case 'U':
+                    if (n == 0) {
+                        code.append(symb);
+                    }
+                    // only use vowel if leading char
+                    break;
+                case 'B':
+                    if (isPreviousChar(local, n, 'M') && isLastChar(wdsz, n)) {
+                        // B is silent if word ends in MB
+                        break;
+                    }
+                    code.append(symb);
+                    break;
+                case // lots of C special cases
+                'C':
+                    /* discard if SCI, SCE or SCY */
+                    if (isPreviousChar(local, n, 'S') && !isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0)) {
+                        break;
+                    }
+                    if (regionMatch(local, n, ""CIA"")) {
+                        // ""CIA"" -> X
+                        code.append('X');
+                        break;
+                    }
+                    if (!isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0)) {
+                        code.append('S');
+                        // CI,CE,CY -> S
+                        break;
+                    }
+                    if (isPreviousChar(local, n, 'S') && isNextChar(local, n, 'H')) {
+                        // SCH->sk
+                        code.append('K');
+                        break;
+                    }
+                    if (isNextChar(local, n, 'H')) {
+                        // detect CH
+                        if ((n == 0) && (wdsz >= 3) && isVowel(local, 2)) {
+                            // CH consonant -> K consonant
+                            code.append('K');
+                        } else {
+                            // CHvowel -> X
+                            code.append('X');
+                        }
+                    } else {
+                        code.append('K');
+                    }
+                    break;
+                case 'D':
+                    if (!isLastChar(wdsz, n + 1) && isNextChar(local, n, 'G') && (FRONTV.indexOf(local.charAt(n + 2)) >= 0)) {
+                        // DGE DGI DGY -> J
+                        code.append('J');
+                        n += 2;
+                    } else {
+                        code.append('T');
+                    }
+                    break;
+                case // GH silent at end or before consonant
+                'G':
+                    if (isLastChar(wdsz, n + 1) && isNextChar(local, n, 'H')) {
+                        break;
+                    }
+                    if (!isLastChar(wdsz, n + 1) && isNextChar(local, n, 'H') && !isVowel(local, n + 2)) {
+                        break;
+                    }
+                    if ((n > 0) && (regionMatch(local, n, ""GN"") || regionMatch(local, n, ""GNED""))) {
+                        // silent G
+                        break;
+                    }
+                    if (isPreviousChar(local, n, 'G')) {
+                        hard = true;
+                    } else {
+                        hard = false;
+                    }
+                    if (!isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0) && (!hard)) {
+                        code.append('J');
+                    } else {
+                        code.append('K');
+                    }
+                    break;
+                case 'H':
+                    if (isLastChar(wdsz, n)) {
+                        // terminal H
+                        break;
+                    }
+                    if ((n > 0) && (VARSON.indexOf(local.charAt(n - 1)) >= 0)) {
+                        break;
+                    }
+                    if (isVowel(local, n + 1)) {
+                        // Hvowel
+                        code.append('H');
+                    }
+                    break;
+                case 'F':
+                case 'J':
+                case 'L':
+                case 'M':
+                case 'N':
+                case 'R':
+                    code.append(symb);
+                    break;
+                case 'K':
+                    if (n > 0) {
+                        // not initial
+                        if (!isPreviousChar(local, n, 'C')) {
+                            code.append(symb);
+                        }
+                    } else {
+                        // initial K
+                        code.append(symb);
+                    }
+                    break;
+                case 'P':
+                    if (isNextChar(local, n, 'H')) {
+                        // PH -> F
+                        code.append('F');
+                    } else {
+                        code.append(symb);
+                    }
+                    break;
+                case 'Q':
+                    code.append('K');
+                    break;
+                case 'S':
+                    if (regionMatch(local, n, ""SH"") || regionMatch(local, n, ""SIO"") || regionMatch(local, n, ""SIA"")) {
+                        code.append('X');
+                    } else {
+                        code.append('S');
+                    }
+                    break;
+                case 'T':
+                    if (regionMatch(local, n, ""TIA"") || regionMatch(local, n, ""TIO"")) {
+                        code.append('X');
+                        break;
+                    }
+                    if (regionMatch(local, n, ""TCH"")) {
+                        // Silent if in ""TCH""
+                        break;
+                    }
+                    // substitute numeral 0 for TH (resembles theta after all)
+                    if (regionMatch(local, n, ""TH"")) {
+                        code.append('0');
+                    } else {
+                        code.append('T');
+                    }
+                    break;
+                case 'V':
+                    code.append('F');
+                    break;
+                case 'W':
+                case // silent if not followed by vowel
+                'Y':
+                    if (!isLastChar(wdsz, n) && isVowel(local, n + 1)) {
+                        code.append(symb);
+                    }
+                    break;
+                case 'X':
+                    code.append('K');
+                    code.append('S');
+                    break;
+                case 'Z':
+                    code.append('S');
+                    break;
+            }
+            // end switch
+            n++;
+        }
+        // end else from symb != 'C'
+        if (code.length() > this.getMaxCodeLen()) {
+            code.setLength(this.getMaxCodeLen());
+        }
+    }
+    return code.toString();
+}","public void test1010() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.metaphone(""zt TSkQjV+/ 8qf%s!"");
+}","/**
+ * Find the metaphone value of a String. This is similar to the
+ * soundex algorithm, but better at finding similar sounding words.
+ * All input is converted to upper case.
+ * Limitations: Input format is expected to be a single ASCII word
+ * with only characters in the A - Z range, no punctuation or numbers.
+ *
+ * @param txt String to find the metaphone code for
+ * @return A metaphone code corresponding to the String supplied
+ */"
+"public String metaphone(String txt) {
+    boolean hard = false;
+    if ((txt == null) || (txt.length() == 0)) {
+        return """";
+    }
+    // single character is itself
+    if (txt.length() == 1) {
+        return txt.toUpperCase();
+    }
+    char[] inwd = txt.toUpperCase(java.util.Locale.ENGLISH).toCharArray();
+    // manipulate
+    StringBuffer local = new StringBuffer(40);
+    //   output
+    StringBuffer code = new StringBuffer(10);
+    // handle initial 2 characters exceptions
+    switch(inwd[0]) {
+        case 'K':
+        case 'G':
+        case 'P':
+            /* looking for KN, etc*/
+            if (inwd[1] == 'N') {
+                local.append(inwd, 1, inwd.length - 1);
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'A':
+            /* looking for AE */
+            if (inwd[1] == 'E') {
+                local.append(inwd, 1, inwd.length - 1);
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'W':
+            /* looking for WR or WH */
+            if (inwd[1] == 'R') {
+                // WR -> R
+                local.append(inwd, 1, inwd.length - 1);
+                break;
+            }
+            if (inwd[1] == 'H') {
+                local.append(inwd, 1, inwd.length - 1);
+                // WH -> W
+                local.setCharAt(0, 'W');
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'X':
+            /* initial X becomes S */
+            inwd[0] = 'S';
+            local.append(inwd);
+            break;
+        default:
+            local.append(inwd);
+    }
+    // now local has working string with initials fixed
+    int wdsz = local.length();
+    int n = 0;
+    while ((code.length() < this.getMaxCodeLen()) && (n < wdsz)) {
+        // max code size of 4 works well
+        char symb = local.charAt(n);
+        // remove duplicate letters except C
+        if ((symb != 'C') && (isPreviousChar(local, n, symb))) {
+            n++;
+        } else {
+            // not dup
+            switch(symb) {
+                case 'A':
+                case 'E':
+                case 'I':
+                case 'O':
+                case 'U':
+                    if (n == 0) {
+                        code.append(symb);
+                    }
+                    // only use vowel if leading char
+                    break;
+                case 'B':
+                    if (isPreviousChar(local, n, 'M') && isLastChar(wdsz, n)) {
+                        // B is silent if word ends in MB
+                        break;
+                    }
+                    code.append(symb);
+                    break;
+                case // lots of C special cases
+                'C':
+                    /* discard if SCI, SCE or SCY */
+                    if (isPreviousChar(local, n, 'S') && !isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0)) {
+                        break;
+                    }
+                    if (regionMatch(local, n, ""CIA"")) {
+                        // ""CIA"" -> X
+                        code.append('X');
+                        break;
+                    }
+                    if (!isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0)) {
+                        code.append('S');
+                        // CI,CE,CY -> S
+                        break;
+                    }
+                    if (isPreviousChar(local, n, 'S') && isNextChar(local, n, 'H')) {
+                        // SCH->sk
+                        code.append('K');
+                        break;
+                    }
+                    if (isNextChar(local, n, 'H')) {
+                        // detect CH
+                        if ((n == 0) && (wdsz >= 3) && isVowel(local, 2)) {
+                            // CH consonant -> K consonant
+                            code.append('K');
+                        } else {
+                            // CHvowel -> X
+                            code.append('X');
+                        }
+                    } else {
+                        code.append('K');
+                    }
+                    break;
+                case 'D':
+                    if (!isLastChar(wdsz, n + 1) && isNextChar(local, n, 'G') && (FRONTV.indexOf(local.charAt(n + 2)) >= 0)) {
+                        // DGE DGI DGY -> J
+                        code.append('J');
+                        n += 2;
+                    } else {
+                        code.append('T');
+                    }
+                    break;
+                case // GH silent at end or before consonant
+                'G':
+                    if (isLastChar(wdsz, n + 1) && isNextChar(local, n, 'H')) {
+                        break;
+                    }
+                    if (!isLastChar(wdsz, n + 1) && isNextChar(local, n, 'H') && !isVowel(local, n + 2)) {
+                        break;
+                    }
+                    if ((n > 0) && (regionMatch(local, n, ""GN"") || regionMatch(local, n, ""GNED""))) {
+                        // silent G
+                        break;
+                    }
+                    if (isPreviousChar(local, n, 'G')) {
+                        hard = true;
+                    } else {
+                        hard = false;
+                    }
+                    if (!isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0) && (!hard)) {
+                        code.append('J');
+                    } else {
+                        code.append('K');
+                    }
+                    break;
+                case 'H':
+                    if (isLastChar(wdsz, n)) {
+                        // terminal H
+                        break;
+                    }
+                    if ((n > 0) && (VARSON.indexOf(local.charAt(n - 1)) >= 0)) {
+                        break;
+                    }
+                    if (isVowel(local, n + 1)) {
+                        // Hvowel
+                        code.append('H');
+                    }
+                    break;
+                case 'F':
+                case 'J':
+                case 'L':
+                case 'M':
+                case 'N':
+                case 'R':
+                    code.append(symb);
+                    break;
+                case 'K':
+                    if (n > 0) {
+                        // not initial
+                        if (!isPreviousChar(local, n, 'C')) {
+                            code.append(symb);
+                        }
+                    } else {
+                        // initial K
+                        code.append(symb);
+                    }
+                    break;
+                case 'P':
+                    if (isNextChar(local, n, 'H')) {
+                        // PH -> F
+                        code.append('F');
+                    } else {
+                        code.append(symb);
+                    }
+                    break;
+                case 'Q':
+                    code.append('K');
+                    break;
+                case 'S':
+                    if (regionMatch(local, n, ""SH"") || regionMatch(local, n, ""SIO"") || regionMatch(local, n, ""SIA"")) {
+                        code.append('X');
+                    } else {
+                        code.append('S');
+                    }
+                    break;
+                case 'T':
+                    if (regionMatch(local, n, ""TIA"") || regionMatch(local, n, ""TIO"")) {
+                        code.append('X');
+                        break;
+                    }
+                    if (regionMatch(local, n, ""TCH"")) {
+                        // Silent if in ""TCH""
+                        break;
+                    }
+                    // substitute numeral 0 for TH (resembles theta after all)
+                    if (regionMatch(local, n, ""TH"")) {
+                        code.append('0');
+                    } else {
+                        code.append('T');
+                    }
+                    break;
+                case 'V':
+                    code.append('F');
+                    break;
+                case 'W':
+                case // silent if not followed by vowel
+                'Y':
+                    if (!isLastChar(wdsz, n) && isVowel(local, n + 1)) {
+                        code.append(symb);
+                    }
+                    break;
+                case 'X':
+                    code.append('K');
+                    code.append('S');
+                    break;
+                case 'Z':
+                    code.append('S');
+                    break;
+            }
+            // end switch
+            n++;
+        }
+        // end else from symb != 'C'
+        if (code.length() > this.getMaxCodeLen()) {
+            code.setLength(this.getMaxCodeLen());
+        }
+    }
+    return code.toString();
+}","public void test1111() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.metaphone(""SP"");
+}","/**
+ * Find the metaphone value of a String. This is similar to the
+ * soundex algorithm, but better at finding similar sounding words.
+ * All input is converted to upper case.
+ * Limitations: Input format is expected to be a single ASCII word
+ * with only characters in the A - Z range, no punctuation or numbers.
+ *
+ * @param txt String to find the metaphone code for
+ * @return A metaphone code corresponding to the String supplied
+ */"
+"public String encode(String pString) {
+    return metaphone(pString);
+}","public void test1212() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.encode(""iXT,"");
+}","/**
+ * Encodes a String using the Metaphone algorithm.
+ *
+ * @param pString String object to encode
+ * @return The metaphone code corresponding to the String supplied
+ */"
+"public String encode(String pString) {
+    return metaphone(pString);
+}","public void test1313() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.encode(""Parameter supplied to Metaphone encode is not of type java.lang.String"");
+}","/**
+ * Encodes a String using the Metaphone algorithm.
+ *
+ * @param pString String object to encode
+ * @return The metaphone code corresponding to the String supplied
+ */"
+"public String metaphone(String txt) {
+    boolean hard = false;
+    if ((txt == null) || (txt.length() == 0)) {
+        return """";
+    }
+    // single character is itself
+    if (txt.length() == 1) {
+        return txt.toUpperCase();
+    }
+    char[] inwd = txt.toUpperCase(java.util.Locale.ENGLISH).toCharArray();
+    // manipulate
+    StringBuffer local = new StringBuffer(40);
+    //   output
+    StringBuffer code = new StringBuffer(10);
+    // handle initial 2 characters exceptions
+    switch(inwd[0]) {
+        case 'K':
+        case 'G':
+        case 'P':
+            /* looking for KN, etc*/
+            if (inwd[1] == 'N') {
+                local.append(inwd, 1, inwd.length - 1);
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'A':
+            /* looking for AE */
+            if (inwd[1] == 'E') {
+                local.append(inwd, 1, inwd.length - 1);
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'W':
+            /* looking for WR or WH */
+            if (inwd[1] == 'R') {
+                // WR -> R
+                local.append(inwd, 1, inwd.length - 1);
+                break;
+            }
+            if (inwd[1] == 'H') {
+                local.append(inwd, 1, inwd.length - 1);
+                // WH -> W
+                local.setCharAt(0, 'W');
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'X':
+            /* initial X becomes S */
+            inwd[0] = 'S';
+            local.append(inwd);
+            break;
+        default:
+            local.append(inwd);
+    }
+    // now local has working string with initials fixed
+    int wdsz = local.length();
+    int n = 0;
+    while ((code.length() < this.getMaxCodeLen()) && (n < wdsz)) {
+        // max code size of 4 works well
+        char symb = local.charAt(n);
+        // remove duplicate letters except C
+        if ((symb != 'C') && (isPreviousChar(local, n, symb))) {
+            n++;
+        } else {
+            // not dup
+            switch(symb) {
+                case 'A':
+                case 'E':
+                case 'I':
+                case 'O':
+                case 'U':
+                    if (n == 0) {
+                        code.append(symb);
+                    }
+                    // only use vowel if leading char
+                    break;
+                case 'B':
+                    if (isPreviousChar(local, n, 'M') && isLastChar(wdsz, n)) {
+                        // B is silent if word ends in MB
+                        break;
+                    }
+                    code.append(symb);
+                    break;
+                case // lots of C special cases
+                'C':
+                    /* discard if SCI, SCE or SCY */
+                    if (isPreviousChar(local, n, 'S') && !isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0)) {
+                        break;
+                    }
+                    if (regionMatch(local, n, ""CIA"")) {
+                        // ""CIA"" -> X
+                        code.append('X');
+                        break;
+                    }
+                    if (!isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0)) {
+                        code.append('S');
+                        // CI,CE,CY -> S
+                        break;
+                    }
+                    if (isPreviousChar(local, n, 'S') && isNextChar(local, n, 'H')) {
+                        // SCH->sk
+                        code.append('K');
+                        break;
+                    }
+                    if (isNextChar(local, n, 'H')) {
+                        // detect CH
+                        if ((n == 0) && (wdsz >= 3) && isVowel(local, 2)) {
+                            // CH consonant -> K consonant
+                            code.append('K');
+                        } else {
+                            // CHvowel -> X
+                            code.append('X');
+                        }
+                    } else {
+                        code.append('K');
+                    }
+                    break;
+                case 'D':
+                    if (!isLastChar(wdsz, n + 1) && isNextChar(local, n, 'G') && (FRONTV.indexOf(local.charAt(n + 2)) >= 0)) {
+                        // DGE DGI DGY -> J
+                        code.append('J');
+                        n += 2;
+                    } else {
+                        code.append('T');
+                    }
+                    break;
+                case // GH silent at end or before consonant
+                'G':
+                    if (isLastChar(wdsz, n + 1) && isNextChar(local, n, 'H')) {
+                        break;
+                    }
+                    if (!isLastChar(wdsz, n + 1) && isNextChar(local, n, 'H') && !isVowel(local, n + 2)) {
+                        break;
+                    }
+                    if ((n > 0) && (regionMatch(local, n, ""GN"") || regionMatch(local, n, ""GNED""))) {
+                        // silent G
+                        break;
+                    }
+                    if (isPreviousChar(local, n, 'G')) {
+                        hard = true;
+                    } else {
+                        hard = false;
+                    }
+                    if (!isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0) && (!hard)) {
+                        code.append('J');
+                    } else {
+                        code.append('K');
+                    }
+                    break;
+                case 'H':
+                    if (isLastChar(wdsz, n)) {
+                        // terminal H
+                        break;
+                    }
+                    if ((n > 0) && (VARSON.indexOf(local.charAt(n - 1)) >= 0)) {
+                        break;
+                    }
+                    if (isVowel(local, n + 1)) {
+                        // Hvowel
+                        code.append('H');
+                    }
+                    break;
+                case 'F':
+                case 'J':
+                case 'L':
+                case 'M':
+                case 'N':
+                case 'R':
+                    code.append(symb);
+                    break;
+                case 'K':
+                    if (n > 0) {
+                        // not initial
+                        if (!isPreviousChar(local, n, 'C')) {
+                            code.append(symb);
+                        }
+                    } else {
+                        // initial K
+                        code.append(symb);
+                    }
+                    break;
+                case 'P':
+                    if (isNextChar(local, n, 'H')) {
+                        // PH -> F
+                        code.append('F');
+                    } else {
+                        code.append(symb);
+                    }
+                    break;
+                case 'Q':
+                    code.append('K');
+                    break;
+                case 'S':
+                    if (regionMatch(local, n, ""SH"") || regionMatch(local, n, ""SIO"") || regionMatch(local, n, ""SIA"")) {
+                        code.append('X');
+                    } else {
+                        code.append('S');
+                    }
+                    break;
+                case 'T':
+                    if (regionMatch(local, n, ""TIA"") || regionMatch(local, n, ""TIO"")) {
+                        code.append('X');
+                        break;
+                    }
+                    if (regionMatch(local, n, ""TCH"")) {
+                        // Silent if in ""TCH""
+                        break;
+                    }
+                    // substitute numeral 0 for TH (resembles theta after all)
+                    if (regionMatch(local, n, ""TH"")) {
+                        code.append('0');
+                    } else {
+                        code.append('T');
+                    }
+                    break;
+                case 'V':
+                    code.append('F');
+                    break;
+                case 'W':
+                case // silent if not followed by vowel
+                'Y':
+                    if (!isLastChar(wdsz, n) && isVowel(local, n + 1)) {
+                        code.append(symb);
+                    }
+                    break;
+                case 'X':
+                    code.append('K');
+                    code.append('S');
+                    break;
+                case 'Z':
+                    code.append('S');
+                    break;
+            }
+            // end switch
+            n++;
+        }
+        // end else from symb != 'C'
+        if (code.length() > this.getMaxCodeLen()) {
+            code.setLength(this.getMaxCodeLen());
+        }
+    }
+    return code.toString();
+}","public void test1414() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.metaphone((String) null);
+}","/**
+ * Find the metaphone value of a String. This is similar to the
+ * soundex algorithm, but better at finding similar sounding words.
+ * All input is converted to upper case.
+ * Limitations: Input format is expected to be a single ASCII word
+ * with only characters in the A - Z range, no punctuation or numbers.
+ *
+ * @param txt String to find the metaphone code for
+ * @return A metaphone code corresponding to the String supplied
+ */"
+"public String metaphone(String txt) {
+    boolean hard = false;
+    if ((txt == null) || (txt.length() == 0)) {
+        return """";
+    }
+    // single character is itself
+    if (txt.length() == 1) {
+        return txt.toUpperCase();
+    }
+    char[] inwd = txt.toUpperCase(java.util.Locale.ENGLISH).toCharArray();
+    // manipulate
+    StringBuffer local = new StringBuffer(40);
+    //   output
+    StringBuffer code = new StringBuffer(10);
+    // handle initial 2 characters exceptions
+    switch(inwd[0]) {
+        case 'K':
+        case 'G':
+        case 'P':
+            /* looking for KN, etc*/
+            if (inwd[1] == 'N') {
+                local.append(inwd, 1, inwd.length - 1);
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'A':
+            /* looking for AE */
+            if (inwd[1] == 'E') {
+                local.append(inwd, 1, inwd.length - 1);
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'W':
+            /* looking for WR or WH */
+            if (inwd[1] == 'R') {
+                // WR -> R
+                local.append(inwd, 1, inwd.length - 1);
+                break;
+            }
+            if (inwd[1] == 'H') {
+                local.append(inwd, 1, inwd.length - 1);
+                // WH -> W
+                local.setCharAt(0, 'W');
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'X':
+            /* initial X becomes S */
+            inwd[0] = 'S';
+            local.append(inwd);
+            break;
+        default:
+            local.append(inwd);
+    }
+    // now local has working string with initials fixed
+    int wdsz = local.length();
+    int n = 0;
+    while ((code.length() < this.getMaxCodeLen()) && (n < wdsz)) {
+        // max code size of 4 works well
+        char symb = local.charAt(n);
+        // remove duplicate letters except C
+        if ((symb != 'C') && (isPreviousChar(local, n, symb))) {
+            n++;
+        } else {
+            // not dup
+            switch(symb) {
+                case 'A':
+                case 'E':
+                case 'I':
+                case 'O':
+                case 'U':
+                    if (n == 0) {
+                        code.append(symb);
+                    }
+                    // only use vowel if leading char
+                    break;
+                case 'B':
+                    if (isPreviousChar(local, n, 'M') && isLastChar(wdsz, n)) {
+                        // B is silent if word ends in MB
+                        break;
+                    }
+                    code.append(symb);
+                    break;
+                case // lots of C special cases
+                'C':
+                    /* discard if SCI, SCE or SCY */
+                    if (isPreviousChar(local, n, 'S') && !isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0)) {
+                        break;
+                    }
+                    if (regionMatch(local, n, ""CIA"")) {
+                        // ""CIA"" -> X
+                        code.append('X');
+                        break;
+                    }
+                    if (!isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0)) {
+                        code.append('S');
+                        // CI,CE,CY -> S
+                        break;
+                    }
+                    if (isPreviousChar(local, n, 'S') && isNextChar(local, n, 'H')) {
+                        // SCH->sk
+                        code.append('K');
+                        break;
+                    }
+                    if (isNextChar(local, n, 'H')) {
+                        // detect CH
+                        if ((n == 0) && (wdsz >= 3) && isVowel(local, 2)) {
+                            // CH consonant -> K consonant
+                            code.append('K');
+                        } else {
+                            // CHvowel -> X
+                            code.append('X');
+                        }
+                    } else {
+                        code.append('K');
+                    }
+                    break;
+                case 'D':
+                    if (!isLastChar(wdsz, n + 1) && isNextChar(local, n, 'G') && (FRONTV.indexOf(local.charAt(n + 2)) >= 0)) {
+                        // DGE DGI DGY -> J
+                        code.append('J');
+                        n += 2;
+                    } else {
+                        code.append('T');
+                    }
+                    break;
+                case // GH silent at end or before consonant
+                'G':
+                    if (isLastChar(wdsz, n + 1) && isNextChar(local, n, 'H')) {
+                        break;
+                    }
+                    if (!isLastChar(wdsz, n + 1) && isNextChar(local, n, 'H') && !isVowel(local, n + 2)) {
+                        break;
+                    }
+                    if ((n > 0) && (regionMatch(local, n, ""GN"") || regionMatch(local, n, ""GNED""))) {
+                        // silent G
+                        break;
+                    }
+                    if (isPreviousChar(local, n, 'G')) {
+                        hard = true;
+                    } else {
+                        hard = false;
+                    }
+                    if (!isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0) && (!hard)) {
+                        code.append('J');
+                    } else {
+                        code.append('K');
+                    }
+                    break;
+                case 'H':
+                    if (isLastChar(wdsz, n)) {
+                        // terminal H
+                        break;
+                    }
+                    if ((n > 0) && (VARSON.indexOf(local.charAt(n - 1)) >= 0)) {
+                        break;
+                    }
+                    if (isVowel(local, n + 1)) {
+                        // Hvowel
+                        code.append('H');
+                    }
+                    break;
+                case 'F':
+                case 'J':
+                case 'L':
+                case 'M':
+                case 'N':
+                case 'R':
+                    code.append(symb);
+                    break;
+                case 'K':
+                    if (n > 0) {
+                        // not initial
+                        if (!isPreviousChar(local, n, 'C')) {
+                            code.append(symb);
+                        }
+                    } else {
+                        // initial K
+                        code.append(symb);
+                    }
+                    break;
+                case 'P':
+                    if (isNextChar(local, n, 'H')) {
+                        // PH -> F
+                        code.append('F');
+                    } else {
+                        code.append(symb);
+                    }
+                    break;
+                case 'Q':
+                    code.append('K');
+                    break;
+                case 'S':
+                    if (regionMatch(local, n, ""SH"") || regionMatch(local, n, ""SIO"") || regionMatch(local, n, ""SIA"")) {
+                        code.append('X');
+                    } else {
+                        code.append('S');
+                    }
+                    break;
+                case 'T':
+                    if (regionMatch(local, n, ""TIA"") || regionMatch(local, n, ""TIO"")) {
+                        code.append('X');
+                        break;
+                    }
+                    if (regionMatch(local, n, ""TCH"")) {
+                        // Silent if in ""TCH""
+                        break;
+                    }
+                    // substitute numeral 0 for TH (resembles theta after all)
+                    if (regionMatch(local, n, ""TH"")) {
+                        code.append('0');
+                    } else {
+                        code.append('T');
+                    }
+                    break;
+                case 'V':
+                    code.append('F');
+                    break;
+                case 'W':
+                case // silent if not followed by vowel
+                'Y':
+                    if (!isLastChar(wdsz, n) && isVowel(local, n + 1)) {
+                        code.append(symb);
+                    }
+                    break;
+                case 'X':
+                    code.append('K');
+                    code.append('S');
+                    break;
+                case 'Z':
+                    code.append('S');
+                    break;
+            }
+            // end switch
+            n++;
+        }
+        // end else from symb != 'C'
+        if (code.length() > this.getMaxCodeLen()) {
+            code.setLength(this.getMaxCodeLen());
+        }
+    }
+    return code.toString();
+}","public void test1515() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.metaphone("""");
+}","/**
+ * Find the metaphone value of a String. This is similar to the
+ * soundex algorithm, but better at finding similar sounding words.
+ * All input is converted to upper case.
+ * Limitations: Input format is expected to be a single ASCII word
+ * with only characters in the A - Z range, no punctuation or numbers.
+ *
+ * @param txt String to find the metaphone code for
+ * @return A metaphone code corresponding to the String supplied
+ */"
+"public Object encode(Object pObject) throws EncoderException {
+    if (!(pObject instanceof java.lang.String)) {
+        throw new EncoderException(""Parameter supplied to Metaphone encode is not of type java.lang.String"");
+    }
+    return metaphone((String) pObject);
+}","public void test1616() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.encode((Object) ""\""|ckUNd(G8sM!YGONw"");
+}","/**
+ * Encodes an Object using the metaphone algorithm.  This method
+ * is provided in order to satisfy the requirements of the
+ * Encoder interface, and will throw an EncoderException if the
+ * supplied object is not of type java.lang.String.
+ *
+ * @param pObject Object to encode
+ * @return An object (or type java.lang.String) containing the
+ *         metaphone code which corresponds to the String supplied.
+ * @throws EncoderException if the parameter supplied is not
+ *                          of type java.lang.String
+ */"
+"public boolean isMetaphoneEqual(String str1, String str2) {
+    return metaphone(str1).equals(metaphone(str2));
+}","public void test1717() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.isMetaphoneEqual(""TH"", ""TH"");
+}","/**
+ * Tests is the metaphones of two strings are identical.
+ *
+ * @param str1 First of two strings to compare
+ * @param str2 Second of two strings to compare
+ * @return <code>true</code> if the metaphones of these strings are identical,
+ *        <code>false</code> otherwise.
+ */"
+"public boolean isMetaphoneEqual(String str1, String str2) {
+    return metaphone(str1).equals(metaphone(str2));
+}","public void test1818() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.isMetaphoneEqual("" {,'DqH>"", "" {,'DqH>"");
+}","/**
+ * Tests is the metaphones of two strings are identical.
+ *
+ * @param str1 First of two strings to compare
+ * @param str2 Second of two strings to compare
+ * @return <code>true</code> if the metaphones of these strings are identical,
+ *        <code>false</code> otherwise.
+ */"
+"public String encode(String pString) {
+    return metaphone(pString);
+}","public void test1919() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.encode(""SC"");
+}","/**
+ * Encodes a String using the Metaphone algorithm.
+ *
+ * @param pString String object to encode
+ * @return The metaphone code corresponding to the String supplied
+ */"
+"public String metaphone(String txt) {
+    boolean hard = false;
+    if ((txt == null) || (txt.length() == 0)) {
+        return """";
+    }
+    // single character is itself
+    if (txt.length() == 1) {
+        return txt.toUpperCase();
+    }
+    char[] inwd = txt.toUpperCase(java.util.Locale.ENGLISH).toCharArray();
+    // manipulate
+    StringBuffer local = new StringBuffer(40);
+    //   output
+    StringBuffer code = new StringBuffer(10);
+    // handle initial 2 characters exceptions
+    switch(inwd[0]) {
+        case 'K':
+        case 'G':
+        case 'P':
+            /* looking for KN, etc*/
+            if (inwd[1] == 'N') {
+                local.append(inwd, 1, inwd.length - 1);
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'A':
+            /* looking for AE */
+            if (inwd[1] == 'E') {
+                local.append(inwd, 1, inwd.length - 1);
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'W':
+            /* looking for WR or WH */
+            if (inwd[1] == 'R') {
+                // WR -> R
+                local.append(inwd, 1, inwd.length - 1);
+                break;
+            }
+            if (inwd[1] == 'H') {
+                local.append(inwd, 1, inwd.length - 1);
+                // WH -> W
+                local.setCharAt(0, 'W');
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'X':
+            /* initial X becomes S */
+            inwd[0] = 'S';
+            local.append(inwd);
+            break;
+        default:
+            local.append(inwd);
+    }
+    // now local has working string with initials fixed
+    int wdsz = local.length();
+    int n = 0;
+    while ((code.length() < this.getMaxCodeLen()) && (n < wdsz)) {
+        // max code size of 4 works well
+        char symb = local.charAt(n);
+        // remove duplicate letters except C
+        if ((symb != 'C') && (isPreviousChar(local, n, symb))) {
+            n++;
+        } else {
+            // not dup
+            switch(symb) {
+                case 'A':
+                case 'E':
+                case 'I':
+                case 'O':
+                case 'U':
+                    if (n == 0) {
+                        code.append(symb);
+                    }
+                    // only use vowel if leading char
+                    break;
+                case 'B':
+                    if (isPreviousChar(local, n, 'M') && isLastChar(wdsz, n)) {
+                        // B is silent if word ends in MB
+                        break;
+                    }
+                    code.append(symb);
+                    break;
+                case // lots of C special cases
+                'C':
+                    /* discard if SCI, SCE or SCY */
+                    if (isPreviousChar(local, n, 'S') && !isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0)) {
+                        break;
+                    }
+                    if (regionMatch(local, n, ""CIA"")) {
+                        // ""CIA"" -> X
+                        code.append('X');
+                        break;
+                    }
+                    if (!isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0)) {
+                        code.append('S');
+                        // CI,CE,CY -> S
+                        break;
+                    }
+                    if (isPreviousChar(local, n, 'S') && isNextChar(local, n, 'H')) {
+                        // SCH->sk
+                        code.append('K');
+                        break;
+                    }
+                    if (isNextChar(local, n, 'H')) {
+                        // detect CH
+                        if ((n == 0) && (wdsz >= 3) && isVowel(local, 2)) {
+                            // CH consonant -> K consonant
+                            code.append('K');
+                        } else {
+                            // CHvowel -> X
+                            code.append('X');
+                        }
+                    } else {
+                        code.append('K');
+                    }
+                    break;
+                case 'D':
+                    if (!isLastChar(wdsz, n + 1) && isNextChar(local, n, 'G') && (FRONTV.indexOf(local.charAt(n + 2)) >= 0)) {
+                        // DGE DGI DGY -> J
+                        code.append('J');
+                        n += 2;
+                    } else {
+                        code.append('T');
+                    }
+                    break;
+                case // GH silent at end or before consonant
+                'G':
+                    if (isLastChar(wdsz, n + 1) && isNextChar(local, n, 'H')) {
+                        break;
+                    }
+                    if (!isLastChar(wdsz, n + 1) && isNextChar(local, n, 'H') && !isVowel(local, n + 2)) {
+                        break;
+                    }
+                    if ((n > 0) && (regionMatch(local, n, ""GN"") || regionMatch(local, n, ""GNED""))) {
+                        // silent G
+                        break;
+                    }
+                    if (isPreviousChar(local, n, 'G')) {
+                        hard = true;
+                    } else {
+                        hard = false;
+                    }
+                    if (!isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0) && (!hard)) {
+                        code.append('J');
+                    } else {
+                        code.append('K');
+                    }
+                    break;
+                case 'H':
+                    if (isLastChar(wdsz, n)) {
+                        // terminal H
+                        break;
+                    }
+                    if ((n > 0) && (VARSON.indexOf(local.charAt(n - 1)) >= 0)) {
+                        break;
+                    }
+                    if (isVowel(local, n + 1)) {
+                        // Hvowel
+                        code.append('H');
+                    }
+                    break;
+                case 'F':
+                case 'J':
+                case 'L':
+                case 'M':
+                case 'N':
+                case 'R':
+                    code.append(symb);
+                    break;
+                case 'K':
+                    if (n > 0) {
+                        // not initial
+                        if (!isPreviousChar(local, n, 'C')) {
+                            code.append(symb);
+                        }
+                    } else {
+                        // initial K
+                        code.append(symb);
+                    }
+                    break;
+                case 'P':
+                    if (isNextChar(local, n, 'H')) {
+                        // PH -> F
+                        code.append('F');
+                    } else {
+                        code.append(symb);
+                    }
+                    break;
+                case 'Q':
+                    code.append('K');
+                    break;
+                case 'S':
+                    if (regionMatch(local, n, ""SH"") || regionMatch(local, n, ""SIO"") || regionMatch(local, n, ""SIA"")) {
+                        code.append('X');
+                    } else {
+                        code.append('S');
+                    }
+                    break;
+                case 'T':
+                    if (regionMatch(local, n, ""TIA"") || regionMatch(local, n, ""TIO"")) {
+                        code.append('X');
+                        break;
+                    }
+                    if (regionMatch(local, n, ""TCH"")) {
+                        // Silent if in ""TCH""
+                        break;
+                    }
+                    // substitute numeral 0 for TH (resembles theta after all)
+                    if (regionMatch(local, n, ""TH"")) {
+                        code.append('0');
+                    } else {
+                        code.append('T');
+                    }
+                    break;
+                case 'V':
+                    code.append('F');
+                    break;
+                case 'W':
+                case // silent if not followed by vowel
+                'Y':
+                    if (!isLastChar(wdsz, n) && isVowel(local, n + 1)) {
+                        code.append(symb);
+                    }
+                    break;
+                case 'X':
+                    code.append('K');
+                    code.append('S');
+                    break;
+                case 'Z':
+                    code.append('S');
+                    break;
+            }
+            // end switch
+            n++;
+        }
+        // end else from symb != 'C'
+        if (code.length() > this.getMaxCodeLen()) {
+            code.setLength(this.getMaxCodeLen());
+        }
+    }
+    return code.toString();
+}","public void test2020() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.metaphone(""T"");
+}","/**
+ * Find the metaphone value of a String. This is similar to the
+ * soundex algorithm, but better at finding similar sounding words.
+ * All input is converted to upper case.
+ * Limitations: Input format is expected to be a single ASCII word
+ * with only characters in the A - Z range, no punctuation or numbers.
+ *
+ * @param txt String to find the metaphone code for
+ * @return A metaphone code corresponding to the String supplied
+ */"
+"public boolean isMetaphoneEqual(String str1, String str2) {
+    return metaphone(str1).equals(metaphone(str2));
+}","public void test2121() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.isMetaphoneEqual(""mBw@+c_3gmD"", ""mBw@+c_3gmD"");
+}","/**
+ * Tests is the metaphones of two strings are identical.
+ *
+ * @param str1 First of two strings to compare
+ * @param str2 Second of two strings to compare
+ * @return <code>true</code> if the metaphones of these strings are identical,
+ *        <code>false</code> otherwise.
+ */"
+"public String metaphone(String txt) {
+    boolean hard = false;
+    if ((txt == null) || (txt.length() == 0)) {
+        return """";
+    }
+    // single character is itself
+    if (txt.length() == 1) {
+        return txt.toUpperCase();
+    }
+    char[] inwd = txt.toUpperCase(java.util.Locale.ENGLISH).toCharArray();
+    // manipulate
+    StringBuffer local = new StringBuffer(40);
+    //   output
+    StringBuffer code = new StringBuffer(10);
+    // handle initial 2 characters exceptions
+    switch(inwd[0]) {
+        case 'K':
+        case 'G':
+        case 'P':
+            /* looking for KN, etc*/
+            if (inwd[1] == 'N') {
+                local.append(inwd, 1, inwd.length - 1);
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'A':
+            /* looking for AE */
+            if (inwd[1] == 'E') {
+                local.append(inwd, 1, inwd.length - 1);
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'W':
+            /* looking for WR or WH */
+            if (inwd[1] == 'R') {
+                // WR -> R
+                local.append(inwd, 1, inwd.length - 1);
+                break;
+            }
+            if (inwd[1] == 'H') {
+                local.append(inwd, 1, inwd.length - 1);
+                // WH -> W
+                local.setCharAt(0, 'W');
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'X':
+            /* initial X becomes S */
+            inwd[0] = 'S';
+            local.append(inwd);
+            break;
+        default:
+            local.append(inwd);
+    }
+    // now local has working string with initials fixed
+    int wdsz = local.length();
+    int n = 0;
+    while ((code.length() < this.getMaxCodeLen()) && (n < wdsz)) {
+        // max code size of 4 works well
+        char symb = local.charAt(n);
+        // remove duplicate letters except C
+        if ((symb != 'C') && (isPreviousChar(local, n, symb))) {
+            n++;
+        } else {
+            // not dup
+            switch(symb) {
+                case 'A':
+                case 'E':
+                case 'I':
+                case 'O':
+                case 'U':
+                    if (n == 0) {
+                        code.append(symb);
+                    }
+                    // only use vowel if leading char
+                    break;
+                case 'B':
+                    if (isPreviousChar(local, n, 'M') && isLastChar(wdsz, n)) {
+                        // B is silent if word ends in MB
+                        break;
+                    }
+                    code.append(symb);
+                    break;
+                case // lots of C special cases
+                'C':
+                    /* discard if SCI, SCE or SCY */
+                    if (isPreviousChar(local, n, 'S') && !isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0)) {
+                        break;
+                    }
+                    if (regionMatch(local, n, ""CIA"")) {
+                        // ""CIA"" -> X
+                        code.append('X');
+                        break;
+                    }
+                    if (!isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0)) {
+                        code.append('S');
+                        // CI,CE,CY -> S
+                        break;
+                    }
+                    if (isPreviousChar(local, n, 'S') && isNextChar(local, n, 'H')) {
+                        // SCH->sk
+                        code.append('K');
+                        break;
+                    }
+                    if (isNextChar(local, n, 'H')) {
+                        // detect CH
+                        if ((n == 0) && (wdsz >= 3) && isVowel(local, 2)) {
+                            // CH consonant -> K consonant
+                            code.append('K');
+                        } else {
+                            // CHvowel -> X
+                            code.append('X');
+                        }
+                    } else {
+                        code.append('K');
+                    }
+                    break;
+                case 'D':
+                    if (!isLastChar(wdsz, n + 1) && isNextChar(local, n, 'G') && (FRONTV.indexOf(local.charAt(n + 2)) >= 0)) {
+                        // DGE DGI DGY -> J
+                        code.append('J');
+                        n += 2;
+                    } else {
+                        code.append('T');
+                    }
+                    break;
+                case // GH silent at end or before consonant
+                'G':
+                    if (isLastChar(wdsz, n + 1) && isNextChar(local, n, 'H')) {
+                        break;
+                    }
+                    if (!isLastChar(wdsz, n + 1) && isNextChar(local, n, 'H') && !isVowel(local, n + 2)) {
+                        break;
+                    }
+                    if ((n > 0) && (regionMatch(local, n, ""GN"") || regionMatch(local, n, ""GNED""))) {
+                        // silent G
+                        break;
+                    }
+                    if (isPreviousChar(local, n, 'G')) {
+                        hard = true;
+                    } else {
+                        hard = false;
+                    }
+                    if (!isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0) && (!hard)) {
+                        code.append('J');
+                    } else {
+                        code.append('K');
+                    }
+                    break;
+                case 'H':
+                    if (isLastChar(wdsz, n)) {
+                        // terminal H
+                        break;
+                    }
+                    if ((n > 0) && (VARSON.indexOf(local.charAt(n - 1)) >= 0)) {
+                        break;
+                    }
+                    if (isVowel(local, n + 1)) {
+                        // Hvowel
+                        code.append('H');
+                    }
+                    break;
+                case 'F':
+                case 'J':
+                case 'L':
+                case 'M':
+                case 'N':
+                case 'R':
+                    code.append(symb);
+                    break;
+                case 'K':
+                    if (n > 0) {
+                        // not initial
+                        if (!isPreviousChar(local, n, 'C')) {
+                            code.append(symb);
+                        }
+                    } else {
+                        // initial K
+                        code.append(symb);
+                    }
+                    break;
+                case 'P':
+                    if (isNextChar(local, n, 'H')) {
+                        // PH -> F
+                        code.append('F');
+                    } else {
+                        code.append(symb);
+                    }
+                    break;
+                case 'Q':
+                    code.append('K');
+                    break;
+                case 'S':
+                    if (regionMatch(local, n, ""SH"") || regionMatch(local, n, ""SIO"") || regionMatch(local, n, ""SIA"")) {
+                        code.append('X');
+                    } else {
+                        code.append('S');
+                    }
+                    break;
+                case 'T':
+                    if (regionMatch(local, n, ""TIA"") || regionMatch(local, n, ""TIO"")) {
+                        code.append('X');
+                        break;
+                    }
+                    if (regionMatch(local, n, ""TCH"")) {
+                        // Silent if in ""TCH""
+                        break;
+                    }
+                    // substitute numeral 0 for TH (resembles theta after all)
+                    if (regionMatch(local, n, ""TH"")) {
+                        code.append('0');
+                    } else {
+                        code.append('T');
+                    }
+                    break;
+                case 'V':
+                    code.append('F');
+                    break;
+                case 'W':
+                case // silent if not followed by vowel
+                'Y':
+                    if (!isLastChar(wdsz, n) && isVowel(local, n + 1)) {
+                        code.append(symb);
+                    }
+                    break;
+                case 'X':
+                    code.append('K');
+                    code.append('S');
+                    break;
+                case 'Z':
+                    code.append('S');
+                    break;
+            }
+            // end switch
+            n++;
+        }
+        // end else from symb != 'C'
+        if (code.length() > this.getMaxCodeLen()) {
+            code.setLength(this.getMaxCodeLen());
+        }
+    }
+    return code.toString();
+}","public void test2222() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.metaphone(""y._D#`"");
+}","/**
+ * Find the metaphone value of a String. This is similar to the
+ * soundex algorithm, but better at finding similar sounding words.
+ * All input is converted to upper case.
+ * Limitations: Input format is expected to be a single ASCII word
+ * with only characters in the A - Z range, no punctuation or numbers.
+ *
+ * @param txt String to find the metaphone code for
+ * @return A metaphone code corresponding to the String supplied
+ */"
+"public boolean isMetaphoneEqual(String str1, String str2) {
+    return metaphone(str1).equals(metaphone(str2));
+}","public void test2323() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.isMetaphoneEqual(""p)>zyU\""ESfN7nW"", ""p)>zyU\""ESfN7nW"");
+}","/**
+ * Tests is the metaphones of two strings are identical.
+ *
+ * @param str1 First of two strings to compare
+ * @param str2 Second of two strings to compare
+ * @return <code>true</code> if the metaphones of these strings are identical,
+ *        <code>false</code> otherwise.
+ */"
+"public String metaphone(String txt) {
+    boolean hard = false;
+    if ((txt == null) || (txt.length() == 0)) {
+        return """";
+    }
+    // single character is itself
+    if (txt.length() == 1) {
+        return txt.toUpperCase();
+    }
+    char[] inwd = txt.toUpperCase(java.util.Locale.ENGLISH).toCharArray();
+    // manipulate
+    StringBuffer local = new StringBuffer(40);
+    //   output
+    StringBuffer code = new StringBuffer(10);
+    // handle initial 2 characters exceptions
+    switch(inwd[0]) {
+        case 'K':
+        case 'G':
+        case 'P':
+            /* looking for KN, etc*/
+            if (inwd[1] == 'N') {
+                local.append(inwd, 1, inwd.length - 1);
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'A':
+            /* looking for AE */
+            if (inwd[1] == 'E') {
+                local.append(inwd, 1, inwd.length - 1);
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'W':
+            /* looking for WR or WH */
+            if (inwd[1] == 'R') {
+                // WR -> R
+                local.append(inwd, 1, inwd.length - 1);
+                break;
+            }
+            if (inwd[1] == 'H') {
+                local.append(inwd, 1, inwd.length - 1);
+                // WH -> W
+                local.setCharAt(0, 'W');
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'X':
+            /* initial X becomes S */
+            inwd[0] = 'S';
+            local.append(inwd);
+            break;
+        default:
+            local.append(inwd);
+    }
+    // now local has working string with initials fixed
+    int wdsz = local.length();
+    int n = 0;
+    while ((code.length() < this.getMaxCodeLen()) && (n < wdsz)) {
+        // max code size of 4 works well
+        char symb = local.charAt(n);
+        // remove duplicate letters except C
+        if ((symb != 'C') && (isPreviousChar(local, n, symb))) {
+            n++;
+        } else {
+            // not dup
+            switch(symb) {
+                case 'A':
+                case 'E':
+                case 'I':
+                case 'O':
+                case 'U':
+                    if (n == 0) {
+                        code.append(symb);
+                    }
+                    // only use vowel if leading char
+                    break;
+                case 'B':
+                    if (isPreviousChar(local, n, 'M') && isLastChar(wdsz, n)) {
+                        // B is silent if word ends in MB
+                        break;
+                    }
+                    code.append(symb);
+                    break;
+                case // lots of C special cases
+                'C':
+                    /* discard if SCI, SCE or SCY */
+                    if (isPreviousChar(local, n, 'S') && !isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0)) {
+                        break;
+                    }
+                    if (regionMatch(local, n, ""CIA"")) {
+                        // ""CIA"" -> X
+                        code.append('X');
+                        break;
+                    }
+                    if (!isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0)) {
+                        code.append('S');
+                        // CI,CE,CY -> S
+                        break;
+                    }
+                    if (isPreviousChar(local, n, 'S') && isNextChar(local, n, 'H')) {
+                        // SCH->sk
+                        code.append('K');
+                        break;
+                    }
+                    if (isNextChar(local, n, 'H')) {
+                        // detect CH
+                        if ((n == 0) && (wdsz >= 3) && isVowel(local, 2)) {
+                            // CH consonant -> K consonant
+                            code.append('K');
+                        } else {
+                            // CHvowel -> X
+                            code.append('X');
+                        }
+                    } else {
+                        code.append('K');
+                    }
+                    break;
+                case 'D':
+                    if (!isLastChar(wdsz, n + 1) && isNextChar(local, n, 'G') && (FRONTV.indexOf(local.charAt(n + 2)) >= 0)) {
+                        // DGE DGI DGY -> J
+                        code.append('J');
+                        n += 2;
+                    } else {
+                        code.append('T');
+                    }
+                    break;
+                case // GH silent at end or before consonant
+                'G':
+                    if (isLastChar(wdsz, n + 1) && isNextChar(local, n, 'H')) {
+                        break;
+                    }
+                    if (!isLastChar(wdsz, n + 1) && isNextChar(local, n, 'H') && !isVowel(local, n + 2)) {
+                        break;
+                    }
+                    if ((n > 0) && (regionMatch(local, n, ""GN"") || regionMatch(local, n, ""GNED""))) {
+                        // silent G
+                        break;
+                    }
+                    if (isPreviousChar(local, n, 'G')) {
+                        hard = true;
+                    } else {
+                        hard = false;
+                    }
+                    if (!isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0) && (!hard)) {
+                        code.append('J');
+                    } else {
+                        code.append('K');
+                    }
+                    break;
+                case 'H':
+                    if (isLastChar(wdsz, n)) {
+                        // terminal H
+                        break;
+                    }
+                    if ((n > 0) && (VARSON.indexOf(local.charAt(n - 1)) >= 0)) {
+                        break;
+                    }
+                    if (isVowel(local, n + 1)) {
+                        // Hvowel
+                        code.append('H');
+                    }
+                    break;
+                case 'F':
+                case 'J':
+                case 'L':
+                case 'M':
+                case 'N':
+                case 'R':
+                    code.append(symb);
+                    break;
+                case 'K':
+                    if (n > 0) {
+                        // not initial
+                        if (!isPreviousChar(local, n, 'C')) {
+                            code.append(symb);
+                        }
+                    } else {
+                        // initial K
+                        code.append(symb);
+                    }
+                    break;
+                case 'P':
+                    if (isNextChar(local, n, 'H')) {
+                        // PH -> F
+                        code.append('F');
+                    } else {
+                        code.append(symb);
+                    }
+                    break;
+                case 'Q':
+                    code.append('K');
+                    break;
+                case 'S':
+                    if (regionMatch(local, n, ""SH"") || regionMatch(local, n, ""SIO"") || regionMatch(local, n, ""SIA"")) {
+                        code.append('X');
+                    } else {
+                        code.append('S');
+                    }
+                    break;
+                case 'T':
+                    if (regionMatch(local, n, ""TIA"") || regionMatch(local, n, ""TIO"")) {
+                        code.append('X');
+                        break;
+                    }
+                    if (regionMatch(local, n, ""TCH"")) {
+                        // Silent if in ""TCH""
+                        break;
+                    }
+                    // substitute numeral 0 for TH (resembles theta after all)
+                    if (regionMatch(local, n, ""TH"")) {
+                        code.append('0');
+                    } else {
+                        code.append('T');
+                    }
+                    break;
+                case 'V':
+                    code.append('F');
+                    break;
+                case 'W':
+                case // silent if not followed by vowel
+                'Y':
+                    if (!isLastChar(wdsz, n) && isVowel(local, n + 1)) {
+                        code.append(symb);
+                    }
+                    break;
+                case 'X':
+                    code.append('K');
+                    code.append('S');
+                    break;
+                case 'Z':
+                    code.append('S');
+                    break;
+            }
+            // end switch
+            n++;
+        }
+        // end else from symb != 'C'
+        if (code.length() > this.getMaxCodeLen()) {
+            code.setLength(this.getMaxCodeLen());
+        }
+    }
+    return code.toString();
+}","public void test2424() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.metaphone(""XKSR"");
+}","/**
+ * Find the metaphone value of a String. This is similar to the
+ * soundex algorithm, but better at finding similar sounding words.
+ * All input is converted to upper case.
+ * Limitations: Input format is expected to be a single ASCII word
+ * with only characters in the A - Z range, no punctuation or numbers.
+ *
+ * @param txt String to find the metaphone code for
+ * @return A metaphone code corresponding to the String supplied
+ */"
+"public boolean isMetaphoneEqual(String str1, String str2) {
+    return metaphone(str1).equals(metaphone(str2));
+}","public void test2525() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.isMetaphoneEqual(""EIY"", ""org.apache.commons.codec.EncoderException"");
+}","/**
+ * Tests is the metaphones of two strings are identical.
+ *
+ * @param str1 First of two strings to compare
+ * @param str2 Second of two strings to compare
+ * @return <code>true</code> if the metaphones of these strings are identical,
+ *        <code>false</code> otherwise.
+ */"
+"public String metaphone(String txt) {
+    boolean hard = false;
+    if ((txt == null) || (txt.length() == 0)) {
+        return """";
+    }
+    // single character is itself
+    if (txt.length() == 1) {
+        return txt.toUpperCase();
+    }
+    char[] inwd = txt.toUpperCase(java.util.Locale.ENGLISH).toCharArray();
+    // manipulate
+    StringBuffer local = new StringBuffer(40);
+    //   output
+    StringBuffer code = new StringBuffer(10);
+    // handle initial 2 characters exceptions
+    switch(inwd[0]) {
+        case 'K':
+        case 'G':
+        case 'P':
+            /* looking for KN, etc*/
+            if (inwd[1] == 'N') {
+                local.append(inwd, 1, inwd.length - 1);
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'A':
+            /* looking for AE */
+            if (inwd[1] == 'E') {
+                local.append(inwd, 1, inwd.length - 1);
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'W':
+            /* looking for WR or WH */
+            if (inwd[1] == 'R') {
+                // WR -> R
+                local.append(inwd, 1, inwd.length - 1);
+                break;
+            }
+            if (inwd[1] == 'H') {
+                local.append(inwd, 1, inwd.length - 1);
+                // WH -> W
+                local.setCharAt(0, 'W');
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'X':
+            /* initial X becomes S */
+            inwd[0] = 'S';
+            local.append(inwd);
+            break;
+        default:
+            local.append(inwd);
+    }
+    // now local has working string with initials fixed
+    int wdsz = local.length();
+    int n = 0;
+    while ((code.length() < this.getMaxCodeLen()) && (n < wdsz)) {
+        // max code size of 4 works well
+        char symb = local.charAt(n);
+        // remove duplicate letters except C
+        if ((symb != 'C') && (isPreviousChar(local, n, symb))) {
+            n++;
+        } else {
+            // not dup
+            switch(symb) {
+                case 'A':
+                case 'E':
+                case 'I':
+                case 'O':
+                case 'U':
+                    if (n == 0) {
+                        code.append(symb);
+                    }
+                    // only use vowel if leading char
+                    break;
+                case 'B':
+                    if (isPreviousChar(local, n, 'M') && isLastChar(wdsz, n)) {
+                        // B is silent if word ends in MB
+                        break;
+                    }
+                    code.append(symb);
+                    break;
+                case // lots of C special cases
+                'C':
+                    /* discard if SCI, SCE or SCY */
+                    if (isPreviousChar(local, n, 'S') && !isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0)) {
+                        break;
+                    }
+                    if (regionMatch(local, n, ""CIA"")) {
+                        // ""CIA"" -> X
+                        code.append('X');
+                        break;
+                    }
+                    if (!isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0)) {
+                        code.append('S');
+                        // CI,CE,CY -> S
+                        break;
+                    }
+                    if (isPreviousChar(local, n, 'S') && isNextChar(local, n, 'H')) {
+                        // SCH->sk
+                        code.append('K');
+                        break;
+                    }
+                    if (isNextChar(local, n, 'H')) {
+                        // detect CH
+                        if ((n == 0) && (wdsz >= 3) && isVowel(local, 2)) {
+                            // CH consonant -> K consonant
+                            code.append('K');
+                        } else {
+                            // CHvowel -> X
+                            code.append('X');
+                        }
+                    } else {
+                        code.append('K');
+                    }
+                    break;
+                case 'D':
+                    if (!isLastChar(wdsz, n + 1) && isNextChar(local, n, 'G') && (FRONTV.indexOf(local.charAt(n + 2)) >= 0)) {
+                        // DGE DGI DGY -> J
+                        code.append('J');
+                        n += 2;
+                    } else {
+                        code.append('T');
+                    }
+                    break;
+                case // GH silent at end or before consonant
+                'G':
+                    if (isLastChar(wdsz, n + 1) && isNextChar(local, n, 'H')) {
+                        break;
+                    }
+                    if (!isLastChar(wdsz, n + 1) && isNextChar(local, n, 'H') && !isVowel(local, n + 2)) {
+                        break;
+                    }
+                    if ((n > 0) && (regionMatch(local, n, ""GN"") || regionMatch(local, n, ""GNED""))) {
+                        // silent G
+                        break;
+                    }
+                    if (isPreviousChar(local, n, 'G')) {
+                        hard = true;
+                    } else {
+                        hard = false;
+                    }
+                    if (!isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0) && (!hard)) {
+                        code.append('J');
+                    } else {
+                        code.append('K');
+                    }
+                    break;
+                case 'H':
+                    if (isLastChar(wdsz, n)) {
+                        // terminal H
+                        break;
+                    }
+                    if ((n > 0) && (VARSON.indexOf(local.charAt(n - 1)) >= 0)) {
+                        break;
+                    }
+                    if (isVowel(local, n + 1)) {
+                        // Hvowel
+                        code.append('H');
+                    }
+                    break;
+                case 'F':
+                case 'J':
+                case 'L':
+                case 'M':
+                case 'N':
+                case 'R':
+                    code.append(symb);
+                    break;
+                case 'K':
+                    if (n > 0) {
+                        // not initial
+                        if (!isPreviousChar(local, n, 'C')) {
+                            code.append(symb);
+                        }
+                    } else {
+                        // initial K
+                        code.append(symb);
+                    }
+                    break;
+                case 'P':
+                    if (isNextChar(local, n, 'H')) {
+                        // PH -> F
+                        code.append('F');
+                    } else {
+                        code.append(symb);
+                    }
+                    break;
+                case 'Q':
+                    code.append('K');
+                    break;
+                case 'S':
+                    if (regionMatch(local, n, ""SH"") || regionMatch(local, n, ""SIO"") || regionMatch(local, n, ""SIA"")) {
+                        code.append('X');
+                    } else {
+                        code.append('S');
+                    }
+                    break;
+                case 'T':
+                    if (regionMatch(local, n, ""TIA"") || regionMatch(local, n, ""TIO"")) {
+                        code.append('X');
+                        break;
+                    }
+                    if (regionMatch(local, n, ""TCH"")) {
+                        // Silent if in ""TCH""
+                        break;
+                    }
+                    // substitute numeral 0 for TH (resembles theta after all)
+                    if (regionMatch(local, n, ""TH"")) {
+                        code.append('0');
+                    } else {
+                        code.append('T');
+                    }
+                    break;
+                case 'V':
+                    code.append('F');
+                    break;
+                case 'W':
+                case // silent if not followed by vowel
+                'Y':
+                    if (!isLastChar(wdsz, n) && isVowel(local, n + 1)) {
+                        code.append(symb);
+                    }
+                    break;
+                case 'X':
+                    code.append('K');
+                    code.append('S');
+                    break;
+                case 'Z':
+                    code.append('S');
+                    break;
+            }
+            // end switch
+            n++;
+        }
+        // end else from symb != 'C'
+        if (code.length() > this.getMaxCodeLen()) {
+            code.setLength(this.getMaxCodeLen());
+        }
+    }
+    return code.toString();
+}","public void test2626() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.metaphone(""SCQ"");
+}","/**
+ * Find the metaphone value of a String. This is similar to the
+ * soundex algorithm, but better at finding similar sounding words.
+ * All input is converted to upper case.
+ * Limitations: Input format is expected to be a single ASCII word
+ * with only characters in the A - Z range, no punctuation or numbers.
+ *
+ * @param txt String to find the metaphone code for
+ * @return A metaphone code corresponding to the String supplied
+ */"
+"public boolean isMetaphoneEqual(String str1, String str2) {
+    return metaphone(str1).equals(metaphone(str2));
+}","public void test2727() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.isMetaphoneEqual("".|SH5's[aW|j:;K."", "".|SH5's[aW|j:;K."");
+}","/**
+ * Tests is the metaphones of two strings are identical.
+ *
+ * @param str1 First of two strings to compare
+ * @param str2 Second of two strings to compare
+ * @return <code>true</code> if the metaphones of these strings are identical,
+ *        <code>false</code> otherwise.
+ */"
+"public boolean isMetaphoneEqual(String str1, String str2) {
+    return metaphone(str1).equals(metaphone(str2));
+}","public void test2828() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.isMetaphoneEqual(""Y`Y1go"", ""Y`Y1go"");
+}","/**
+ * Tests is the metaphones of two strings are identical.
+ *
+ * @param str1 First of two strings to compare
+ * @param str2 Second of two strings to compare
+ * @return <code>true</code> if the metaphones of these strings are identical,
+ *        <code>false</code> otherwise.
+ */"
+"public boolean isMetaphoneEqual(String str1, String str2) {
+    return metaphone(str1).equals(metaphone(str2));
+}","public void test2929() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.isMetaphoneEqual(""ph`/O{&dOS<V"", ""ph`/O{&dOS<V"");
+}","/**
+ * Tests is the metaphones of two strings are identical.
+ *
+ * @param str1 First of two strings to compare
+ * @param str2 Second of two strings to compare
+ * @return <code>true</code> if the metaphones of these strings are identical,
+ *        <code>false</code> otherwise.
+ */"
+"public String metaphone(String txt) {
+    boolean hard = false;
+    if ((txt == null) || (txt.length() == 0)) {
+        return """";
+    }
+    // single character is itself
+    if (txt.length() == 1) {
+        return txt.toUpperCase();
+    }
+    char[] inwd = txt.toUpperCase(java.util.Locale.ENGLISH).toCharArray();
+    // manipulate
+    StringBuffer local = new StringBuffer(40);
+    //   output
+    StringBuffer code = new StringBuffer(10);
+    // handle initial 2 characters exceptions
+    switch(inwd[0]) {
+        case 'K':
+        case 'G':
+        case 'P':
+            /* looking for KN, etc*/
+            if (inwd[1] == 'N') {
+                local.append(inwd, 1, inwd.length - 1);
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'A':
+            /* looking for AE */
+            if (inwd[1] == 'E') {
+                local.append(inwd, 1, inwd.length - 1);
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'W':
+            /* looking for WR or WH */
+            if (inwd[1] == 'R') {
+                // WR -> R
+                local.append(inwd, 1, inwd.length - 1);
+                break;
+            }
+            if (inwd[1] == 'H') {
+                local.append(inwd, 1, inwd.length - 1);
+                // WH -> W
+                local.setCharAt(0, 'W');
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'X':
+            /* initial X becomes S */
+            inwd[0] = 'S';
+            local.append(inwd);
+            break;
+        default:
+            local.append(inwd);
+    }
+    // now local has working string with initials fixed
+    int wdsz = local.length();
+    int n = 0;
+    while ((code.length() < this.getMaxCodeLen()) && (n < wdsz)) {
+        // max code size of 4 works well
+        char symb = local.charAt(n);
+        // remove duplicate letters except C
+        if ((symb != 'C') && (isPreviousChar(local, n, symb))) {
+            n++;
+        } else {
+            // not dup
+            switch(symb) {
+                case 'A':
+                case 'E':
+                case 'I':
+                case 'O':
+                case 'U':
+                    if (n == 0) {
+                        code.append(symb);
+                    }
+                    // only use vowel if leading char
+                    break;
+                case 'B':
+                    if (isPreviousChar(local, n, 'M') && isLastChar(wdsz, n)) {
+                        // B is silent if word ends in MB
+                        break;
+                    }
+                    code.append(symb);
+                    break;
+                case // lots of C special cases
+                'C':
+                    /* discard if SCI, SCE or SCY */
+                    if (isPreviousChar(local, n, 'S') && !isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0)) {
+                        break;
+                    }
+                    if (regionMatch(local, n, ""CIA"")) {
+                        // ""CIA"" -> X
+                        code.append('X');
+                        break;
+                    }
+                    if (!isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0)) {
+                        code.append('S');
+                        // CI,CE,CY -> S
+                        break;
+                    }
+                    if (isPreviousChar(local, n, 'S') && isNextChar(local, n, 'H')) {
+                        // SCH->sk
+                        code.append('K');
+                        break;
+                    }
+                    if (isNextChar(local, n, 'H')) {
+                        // detect CH
+                        if ((n == 0) && (wdsz >= 3) && isVowel(local, 2)) {
+                            // CH consonant -> K consonant
+                            code.append('K');
+                        } else {
+                            // CHvowel -> X
+                            code.append('X');
+                        }
+                    } else {
+                        code.append('K');
+                    }
+                    break;
+                case 'D':
+                    if (!isLastChar(wdsz, n + 1) && isNextChar(local, n, 'G') && (FRONTV.indexOf(local.charAt(n + 2)) >= 0)) {
+                        // DGE DGI DGY -> J
+                        code.append('J');
+                        n += 2;
+                    } else {
+                        code.append('T');
+                    }
+                    break;
+                case // GH silent at end or before consonant
+                'G':
+                    if (isLastChar(wdsz, n + 1) && isNextChar(local, n, 'H')) {
+                        break;
+                    }
+                    if (!isLastChar(wdsz, n + 1) && isNextChar(local, n, 'H') && !isVowel(local, n + 2)) {
+                        break;
+                    }
+                    if ((n > 0) && (regionMatch(local, n, ""GN"") || regionMatch(local, n, ""GNED""))) {
+                        // silent G
+                        break;
+                    }
+                    if (isPreviousChar(local, n, 'G')) {
+                        hard = true;
+                    } else {
+                        hard = false;
+                    }
+                    if (!isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0) && (!hard)) {
+                        code.append('J');
+                    } else {
+                        code.append('K');
+                    }
+                    break;
+                case 'H':
+                    if (isLastChar(wdsz, n)) {
+                        // terminal H
+                        break;
+                    }
+                    if ((n > 0) && (VARSON.indexOf(local.charAt(n - 1)) >= 0)) {
+                        break;
+                    }
+                    if (isVowel(local, n + 1)) {
+                        // Hvowel
+                        code.append('H');
+                    }
+                    break;
+                case 'F':
+                case 'J':
+                case 'L':
+                case 'M':
+                case 'N':
+                case 'R':
+                    code.append(symb);
+                    break;
+                case 'K':
+                    if (n > 0) {
+                        // not initial
+                        if (!isPreviousChar(local, n, 'C')) {
+                            code.append(symb);
+                        }
+                    } else {
+                        // initial K
+                        code.append(symb);
+                    }
+                    break;
+                case 'P':
+                    if (isNextChar(local, n, 'H')) {
+                        // PH -> F
+                        code.append('F');
+                    } else {
+                        code.append(symb);
+                    }
+                    break;
+                case 'Q':
+                    code.append('K');
+                    break;
+                case 'S':
+                    if (regionMatch(local, n, ""SH"") || regionMatch(local, n, ""SIO"") || regionMatch(local, n, ""SIA"")) {
+                        code.append('X');
+                    } else {
+                        code.append('S');
+                    }
+                    break;
+                case 'T':
+                    if (regionMatch(local, n, ""TIA"") || regionMatch(local, n, ""TIO"")) {
+                        code.append('X');
+                        break;
+                    }
+                    if (regionMatch(local, n, ""TCH"")) {
+                        // Silent if in ""TCH""
+                        break;
+                    }
+                    // substitute numeral 0 for TH (resembles theta after all)
+                    if (regionMatch(local, n, ""TH"")) {
+                        code.append('0');
+                    } else {
+                        code.append('T');
+                    }
+                    break;
+                case 'V':
+                    code.append('F');
+                    break;
+                case 'W':
+                case // silent if not followed by vowel
+                'Y':
+                    if (!isLastChar(wdsz, n) && isVowel(local, n + 1)) {
+                        code.append(symb);
+                    }
+                    break;
+                case 'X':
+                    code.append('K');
+                    code.append('S');
+                    break;
+                case 'Z':
+                    code.append('S');
+                    break;
+            }
+            // end switch
+            n++;
+        }
+        // end else from symb != 'C'
+        if (code.length() > this.getMaxCodeLen()) {
+            code.setLength(this.getMaxCodeLen());
+        }
+    }
+    return code.toString();
+}","public void test3030() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.metaphone(""hcU8nbb88]MP"");
+}","/**
+ * Find the metaphone value of a String. This is similar to the
+ * soundex algorithm, but better at finding similar sounding words.
+ * All input is converted to upper case.
+ * Limitations: Input format is expected to be a single ASCII word
+ * with only characters in the A - Z range, no punctuation or numbers.
+ *
+ * @param txt String to find the metaphone code for
+ * @return A metaphone code corresponding to the String supplied
+ */"
+"public String encode(String pString) {
+    return metaphone(pString);
+}","public void test3131() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.encode(""T;lc'BG(OO<A+("");
+}","/**
+ * Encodes a String using the Metaphone algorithm.
+ *
+ * @param pString String object to encode
+ * @return The metaphone code corresponding to the String supplied
+ */"
+"public boolean isMetaphoneEqual(String str1, String str2) {
+    return metaphone(str1).equals(metaphone(str2));
+}","public void test3232() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.isMetaphoneEqual(""_dS"", ""_dS"");
+}","/**
+ * Tests is the metaphones of two strings are identical.
+ *
+ * @param str1 First of two strings to compare
+ * @param str2 Second of two strings to compare
+ * @return <code>true</code> if the metaphones of these strings are identical,
+ *        <code>false</code> otherwise.
+ */"
+"public boolean isMetaphoneEqual(String str1, String str2) {
+    return metaphone(str1).equals(metaphone(str2));
+}","public void test3333() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.isMetaphoneEqual(""wSaUWn"", "" 9v(u/Bfg"");
+}","/**
+ * Tests is the metaphones of two strings are identical.
+ *
+ * @param str1 First of two strings to compare
+ * @param str2 Second of two strings to compare
+ * @return <code>true</code> if the metaphones of these strings are identical,
+ *        <code>false</code> otherwise.
+ */"
+"public boolean isMetaphoneEqual(String str1, String str2) {
+    return metaphone(str1).equals(metaphone(str2));
+}","public void test3434() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.isMetaphoneEqual(""wSa6UWn"", ""wSa6UWn"");
+}","/**
+ * Tests is the metaphones of two strings are identical.
+ *
+ * @param str1 First of two strings to compare
+ * @param str2 Second of two strings to compare
+ * @return <code>true</code> if the metaphones of these strings are identical,
+ *        <code>false</code> otherwise.
+ */"
+"public boolean isMetaphoneEqual(String str1, String str2) {
+    return metaphone(str1).equals(metaphone(str2));
+}","public void test3535() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.isMetaphoneEqual(""GN"", ""GN"");
+}","/**
+ * Tests is the metaphones of two strings are identical.
+ *
+ * @param str1 First of two strings to compare
+ * @param str2 Second of two strings to compare
+ * @return <code>true</code> if the metaphones of these strings are identical,
+ *        <code>false</code> otherwise.
+ */"
+"public String metaphone(String txt) {
+    boolean hard = false;
+    if ((txt == null) || (txt.length() == 0)) {
+        return """";
+    }
+    // single character is itself
+    if (txt.length() == 1) {
+        return txt.toUpperCase();
+    }
+    char[] inwd = txt.toUpperCase(java.util.Locale.ENGLISH).toCharArray();
+    // manipulate
+    StringBuffer local = new StringBuffer(40);
+    //   output
+    StringBuffer code = new StringBuffer(10);
+    // handle initial 2 characters exceptions
+    switch(inwd[0]) {
+        case 'K':
+        case 'G':
+        case 'P':
+            /* looking for KN, etc*/
+            if (inwd[1] == 'N') {
+                local.append(inwd, 1, inwd.length - 1);
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'A':
+            /* looking for AE */
+            if (inwd[1] == 'E') {
+                local.append(inwd, 1, inwd.length - 1);
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'W':
+            /* looking for WR or WH */
+            if (inwd[1] == 'R') {
+                // WR -> R
+                local.append(inwd, 1, inwd.length - 1);
+                break;
+            }
+            if (inwd[1] == 'H') {
+                local.append(inwd, 1, inwd.length - 1);
+                // WH -> W
+                local.setCharAt(0, 'W');
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'X':
+            /* initial X becomes S */
+            inwd[0] = 'S';
+            local.append(inwd);
+            break;
+        default:
+            local.append(inwd);
+    }
+    // now local has working string with initials fixed
+    int wdsz = local.length();
+    int n = 0;
+    while ((code.length() < this.getMaxCodeLen()) && (n < wdsz)) {
+        // max code size of 4 works well
+        char symb = local.charAt(n);
+        // remove duplicate letters except C
+        if ((symb != 'C') && (isPreviousChar(local, n, symb))) {
+            n++;
+        } else {
+            // not dup
+            switch(symb) {
+                case 'A':
+                case 'E':
+                case 'I':
+                case 'O':
+                case 'U':
+                    if (n == 0) {
+                        code.append(symb);
+                    }
+                    // only use vowel if leading char
+                    break;
+                case 'B':
+                    if (isPreviousChar(local, n, 'M') && isLastChar(wdsz, n)) {
+                        // B is silent if word ends in MB
+                        break;
+                    }
+                    code.append(symb);
+                    break;
+                case // lots of C special cases
+                'C':
+                    /* discard if SCI, SCE or SCY */
+                    if (isPreviousChar(local, n, 'S') && !isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0)) {
+                        break;
+                    }
+                    if (regionMatch(local, n, ""CIA"")) {
+                        // ""CIA"" -> X
+                        code.append('X');
+                        break;
+                    }
+                    if (!isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0)) {
+                        code.append('S');
+                        // CI,CE,CY -> S
+                        break;
+                    }
+                    if (isPreviousChar(local, n, 'S') && isNextChar(local, n, 'H')) {
+                        // SCH->sk
+                        code.append('K');
+                        break;
+                    }
+                    if (isNextChar(local, n, 'H')) {
+                        // detect CH
+                        if ((n == 0) && (wdsz >= 3) && isVowel(local, 2)) {
+                            // CH consonant -> K consonant
+                            code.append('K');
+                        } else {
+                            // CHvowel -> X
+                            code.append('X');
+                        }
+                    } else {
+                        code.append('K');
+                    }
+                    break;
+                case 'D':
+                    if (!isLastChar(wdsz, n + 1) && isNextChar(local, n, 'G') && (FRONTV.indexOf(local.charAt(n + 2)) >= 0)) {
+                        // DGE DGI DGY -> J
+                        code.append('J');
+                        n += 2;
+                    } else {
+                        code.append('T');
+                    }
+                    break;
+                case // GH silent at end or before consonant
+                'G':
+                    if (isLastChar(wdsz, n + 1) && isNextChar(local, n, 'H')) {
+                        break;
+                    }
+                    if (!isLastChar(wdsz, n + 1) && isNextChar(local, n, 'H') && !isVowel(local, n + 2)) {
+                        break;
+                    }
+                    if ((n > 0) && (regionMatch(local, n, ""GN"") || regionMatch(local, n, ""GNED""))) {
+                        // silent G
+                        break;
+                    }
+                    if (isPreviousChar(local, n, 'G')) {
+                        hard = true;
+                    } else {
+                        hard = false;
+                    }
+                    if (!isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0) && (!hard)) {
+                        code.append('J');
+                    } else {
+                        code.append('K');
+                    }
+                    break;
+                case 'H':
+                    if (isLastChar(wdsz, n)) {
+                        // terminal H
+                        break;
+                    }
+                    if ((n > 0) && (VARSON.indexOf(local.charAt(n - 1)) >= 0)) {
+                        break;
+                    }
+                    if (isVowel(local, n + 1)) {
+                        // Hvowel
+                        code.append('H');
+                    }
+                    break;
+                case 'F':
+                case 'J':
+                case 'L':
+                case 'M':
+                case 'N':
+                case 'R':
+                    code.append(symb);
+                    break;
+                case 'K':
+                    if (n > 0) {
+                        // not initial
+                        if (!isPreviousChar(local, n, 'C')) {
+                            code.append(symb);
+                        }
+                    } else {
+                        // initial K
+                        code.append(symb);
+                    }
+                    break;
+                case 'P':
+                    if (isNextChar(local, n, 'H')) {
+                        // PH -> F
+                        code.append('F');
+                    } else {
+                        code.append(symb);
+                    }
+                    break;
+                case 'Q':
+                    code.append('K');
+                    break;
+                case 'S':
+                    if (regionMatch(local, n, ""SH"") || regionMatch(local, n, ""SIO"") || regionMatch(local, n, ""SIA"")) {
+                        code.append('X');
+                    } else {
+                        code.append('S');
+                    }
+                    break;
+                case 'T':
+                    if (regionMatch(local, n, ""TIA"") || regionMatch(local, n, ""TIO"")) {
+                        code.append('X');
+                        break;
+                    }
+                    if (regionMatch(local, n, ""TCH"")) {
+                        // Silent if in ""TCH""
+                        break;
+                    }
+                    // substitute numeral 0 for TH (resembles theta after all)
+                    if (regionMatch(local, n, ""TH"")) {
+                        code.append('0');
+                    } else {
+                        code.append('T');
+                    }
+                    break;
+                case 'V':
+                    code.append('F');
+                    break;
+                case 'W':
+                case // silent if not followed by vowel
+                'Y':
+                    if (!isLastChar(wdsz, n) && isVowel(local, n + 1)) {
+                        code.append(symb);
+                    }
+                    break;
+                case 'X':
+                    code.append('K');
+                    code.append('S');
+                    break;
+                case 'Z':
+                    code.append('S');
+                    break;
+            }
+            // end switch
+            n++;
+        }
+        // end else from symb != 'C'
+        if (code.length() > this.getMaxCodeLen()) {
+            code.setLength(this.getMaxCodeLen());
+        }
+    }
+    return code.toString();
+}","public void test3636() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    Metaphone metaphone1 = new Metaphone();
+    metaphone1.metaphone(""nRlUW)_}-39xb-/z^gU"");
+}","/**
+ * Find the metaphone value of a String. This is similar to the
+ * soundex algorithm, but better at finding similar sounding words.
+ * All input is converted to upper case.
+ * Limitations: Input format is expected to be a single ASCII word
+ * with only characters in the A - Z range, no punctuation or numbers.
+ *
+ * @param txt String to find the metaphone code for
+ * @return A metaphone code corresponding to the String supplied
+ */"
+"public boolean isMetaphoneEqual(String str1, String str2) {
+    return metaphone(str1).equals(metaphone(str2));
+}","public void test3737() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.isMetaphoneEqual("";2j9H@s& my2he^]"", "";2j9H@s& my2he^]"");
+}","/**
+ * Tests is the metaphones of two strings are identical.
+ *
+ * @param str1 First of two strings to compare
+ * @param str2 Second of two strings to compare
+ * @return <code>true</code> if the metaphones of these strings are identical,
+ *        <code>false</code> otherwise.
+ */"
+"public boolean isMetaphoneEqual(String str1, String str2) {
+    return metaphone(str1).equals(metaphone(str2));
+}","public void test3838() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.isMetaphoneEqual(""GIEB"", ""GIEB"");
+}","/**
+ * Tests is the metaphones of two strings are identical.
+ *
+ * @param str1 First of two strings to compare
+ * @param str2 Second of two strings to compare
+ * @return <code>true</code> if the metaphones of these strings are identical,
+ *        <code>false</code> otherwise.
+ */"
+"public String encode(String pString) {
+    return metaphone(pString);
+}","public void test3939() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.encode(""AEIOU"");
+}","/**
+ * Encodes a String using the Metaphone algorithm.
+ *
+ * @param pString String object to encode
+ * @return The metaphone code corresponding to the String supplied
+ */"
+"public String metaphone(String txt) {
+    boolean hard = false;
+    if ((txt == null) || (txt.length() == 0)) {
+        return """";
+    }
+    // single character is itself
+    if (txt.length() == 1) {
+        return txt.toUpperCase();
+    }
+    char[] inwd = txt.toUpperCase(java.util.Locale.ENGLISH).toCharArray();
+    // manipulate
+    StringBuffer local = new StringBuffer(40);
+    //   output
+    StringBuffer code = new StringBuffer(10);
+    // handle initial 2 characters exceptions
+    switch(inwd[0]) {
+        case 'K':
+        case 'G':
+        case 'P':
+            /* looking for KN, etc*/
+            if (inwd[1] == 'N') {
+                local.append(inwd, 1, inwd.length - 1);
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'A':
+            /* looking for AE */
+            if (inwd[1] == 'E') {
+                local.append(inwd, 1, inwd.length - 1);
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'W':
+            /* looking for WR or WH */
+            if (inwd[1] == 'R') {
+                // WR -> R
+                local.append(inwd, 1, inwd.length - 1);
+                break;
+            }
+            if (inwd[1] == 'H') {
+                local.append(inwd, 1, inwd.length - 1);
+                // WH -> W
+                local.setCharAt(0, 'W');
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'X':
+            /* initial X becomes S */
+            inwd[0] = 'S';
+            local.append(inwd);
+            break;
+        default:
+            local.append(inwd);
+    }
+    // now local has working string with initials fixed
+    int wdsz = local.length();
+    int n = 0;
+    while ((code.length() < this.getMaxCodeLen()) && (n < wdsz)) {
+        // max code size of 4 works well
+        char symb = local.charAt(n);
+        // remove duplicate letters except C
+        if ((symb != 'C') && (isPreviousChar(local, n, symb))) {
+            n++;
+        } else {
+            // not dup
+            switch(symb) {
+                case 'A':
+                case 'E':
+                case 'I':
+                case 'O':
+                case 'U':
+                    if (n == 0) {
+                        code.append(symb);
+                    }
+                    // only use vowel if leading char
+                    break;
+                case 'B':
+                    if (isPreviousChar(local, n, 'M') && isLastChar(wdsz, n)) {
+                        // B is silent if word ends in MB
+                        break;
+                    }
+                    code.append(symb);
+                    break;
+                case // lots of C special cases
+                'C':
+                    /* discard if SCI, SCE or SCY */
+                    if (isPreviousChar(local, n, 'S') && !isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0)) {
+                        break;
+                    }
+                    if (regionMatch(local, n, ""CIA"")) {
+                        // ""CIA"" -> X
+                        code.append('X');
+                        break;
+                    }
+                    if (!isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0)) {
+                        code.append('S');
+                        // CI,CE,CY -> S
+                        break;
+                    }
+                    if (isPreviousChar(local, n, 'S') && isNextChar(local, n, 'H')) {
+                        // SCH->sk
+                        code.append('K');
+                        break;
+                    }
+                    if (isNextChar(local, n, 'H')) {
+                        // detect CH
+                        if ((n == 0) && (wdsz >= 3) && isVowel(local, 2)) {
+                            // CH consonant -> K consonant
+                            code.append('K');
+                        } else {
+                            // CHvowel -> X
+                            code.append('X');
+                        }
+                    } else {
+                        code.append('K');
+                    }
+                    break;
+                case 'D':
+                    if (!isLastChar(wdsz, n + 1) && isNextChar(local, n, 'G') && (FRONTV.indexOf(local.charAt(n + 2)) >= 0)) {
+                        // DGE DGI DGY -> J
+                        code.append('J');
+                        n += 2;
+                    } else {
+                        code.append('T');
+                    }
+                    break;
+                case // GH silent at end or before consonant
+                'G':
+                    if (isLastChar(wdsz, n + 1) && isNextChar(local, n, 'H')) {
+                        break;
+                    }
+                    if (!isLastChar(wdsz, n + 1) && isNextChar(local, n, 'H') && !isVowel(local, n + 2)) {
+                        break;
+                    }
+                    if ((n > 0) && (regionMatch(local, n, ""GN"") || regionMatch(local, n, ""GNED""))) {
+                        // silent G
+                        break;
+                    }
+                    if (isPreviousChar(local, n, 'G')) {
+                        hard = true;
+                    } else {
+                        hard = false;
+                    }
+                    if (!isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0) && (!hard)) {
+                        code.append('J');
+                    } else {
+                        code.append('K');
+                    }
+                    break;
+                case 'H':
+                    if (isLastChar(wdsz, n)) {
+                        // terminal H
+                        break;
+                    }
+                    if ((n > 0) && (VARSON.indexOf(local.charAt(n - 1)) >= 0)) {
+                        break;
+                    }
+                    if (isVowel(local, n + 1)) {
+                        // Hvowel
+                        code.append('H');
+                    }
+                    break;
+                case 'F':
+                case 'J':
+                case 'L':
+                case 'M':
+                case 'N':
+                case 'R':
+                    code.append(symb);
+                    break;
+                case 'K':
+                    if (n > 0) {
+                        // not initial
+                        if (!isPreviousChar(local, n, 'C')) {
+                            code.append(symb);
+                        }
+                    } else {
+                        // initial K
+                        code.append(symb);
+                    }
+                    break;
+                case 'P':
+                    if (isNextChar(local, n, 'H')) {
+                        // PH -> F
+                        code.append('F');
+                    } else {
+                        code.append(symb);
+                    }
+                    break;
+                case 'Q':
+                    code.append('K');
+                    break;
+                case 'S':
+                    if (regionMatch(local, n, ""SH"") || regionMatch(local, n, ""SIO"") || regionMatch(local, n, ""SIA"")) {
+                        code.append('X');
+                    } else {
+                        code.append('S');
+                    }
+                    break;
+                case 'T':
+                    if (regionMatch(local, n, ""TIA"") || regionMatch(local, n, ""TIO"")) {
+                        code.append('X');
+                        break;
+                    }
+                    if (regionMatch(local, n, ""TCH"")) {
+                        // Silent if in ""TCH""
+                        break;
+                    }
+                    // substitute numeral 0 for TH (resembles theta after all)
+                    if (regionMatch(local, n, ""TH"")) {
+                        code.append('0');
+                    } else {
+                        code.append('T');
+                    }
+                    break;
+                case 'V':
+                    code.append('F');
+                    break;
+                case 'W':
+                case // silent if not followed by vowel
+                'Y':
+                    if (!isLastChar(wdsz, n) && isVowel(local, n + 1)) {
+                        code.append(symb);
+                    }
+                    break;
+                case 'X':
+                    code.append('K');
+                    code.append('S');
+                    break;
+                case 'Z':
+                    code.append('S');
+                    break;
+            }
+            // end switch
+            n++;
+        }
+        // end else from symb != 'C'
+        if (code.length() > this.getMaxCodeLen()) {
+            code.setLength(this.getMaxCodeLen());
+        }
+    }
+    return code.toString();
+}","public void test4040() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.metaphone(""6L0`IO7tezCe"");
+    metaphone0.metaphone("""");
+    metaphone0.metaphone(""C]G^m$b"");
+}","/**
+ * Find the metaphone value of a String. This is similar to the
+ * soundex algorithm, but better at finding similar sounding words.
+ * All input is converted to upper case.
+ * Limitations: Input format is expected to be a single ASCII word
+ * with only characters in the A - Z range, no punctuation or numbers.
+ *
+ * @param txt String to find the metaphone code for
+ * @return A metaphone code corresponding to the String supplied
+ */"
+"public boolean isMetaphoneEqual(String str1, String str2) {
+    return metaphone(str1).equals(metaphone(str2));
+}","public void test4141() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.isMetaphoneEqual(""CHE"", ""CHE"");
+}","/**
+ * Tests is the metaphones of two strings are identical.
+ *
+ * @param str1 First of two strings to compare
+ * @param str2 Second of two strings to compare
+ * @return <code>true</code> if the metaphones of these strings are identical,
+ *        <code>false</code> otherwise.
+ */"
+"public boolean isMetaphoneEqual(String str1, String str2) {
+    return metaphone(str1).equals(metaphone(str2));
+}","public void test4242() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.setMaxCodeLen(595);
+    metaphone0.encode(""7HSCqb)rF(1<ghv"");
+    metaphone0.isMetaphoneEqual(""7HSCqb)rF(1<ghv"", ""XXKBRFF"");
+}","/**
+ * Tests is the metaphones of two strings are identical.
+ *
+ * @param str1 First of two strings to compare
+ * @param str2 Second of two strings to compare
+ * @return <code>true</code> if the metaphones of these strings are identical,
+ *        <code>false</code> otherwise.
+ */"
+"public boolean isMetaphoneEqual(String str1, String str2) {
+    return metaphone(str1).equals(metaphone(str2));
+}","public void test4343() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.isMetaphoneEqual(""AZm[miAtF$["", (String) null);
+}","/**
+ * Tests is the metaphones of two strings are identical.
+ *
+ * @param str1 First of two strings to compare
+ * @param str2 Second of two strings to compare
+ * @return <code>true</code> if the metaphones of these strings are identical,
+ *        <code>false</code> otherwise.
+ */"
+"public boolean isMetaphoneEqual(String str1, String str2) {
+    return metaphone(str1).equals(metaphone(str2));
+}","public void test4444() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.isMetaphoneEqual(""5FDg,NZmLx84\""usQ"", ""5FDg,NZmLx84\""usQ"");
+}","/**
+ * Tests is the metaphones of two strings are identical.
+ *
+ * @param str1 First of two strings to compare
+ * @param str2 Second of two strings to compare
+ * @return <code>true</code> if the metaphones of these strings are identical,
+ *        <code>false</code> otherwise.
+ */"
+"public String metaphone(String txt) {
+    boolean hard = false;
+    if ((txt == null) || (txt.length() == 0)) {
+        return """";
+    }
+    // single character is itself
+    if (txt.length() == 1) {
+        return txt.toUpperCase();
+    }
+    char[] inwd = txt.toUpperCase(java.util.Locale.ENGLISH).toCharArray();
+    // manipulate
+    StringBuffer local = new StringBuffer(40);
+    //   output
+    StringBuffer code = new StringBuffer(10);
+    // handle initial 2 characters exceptions
+    switch(inwd[0]) {
+        case 'K':
+        case 'G':
+        case 'P':
+            /* looking for KN, etc*/
+            if (inwd[1] == 'N') {
+                local.append(inwd, 1, inwd.length - 1);
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'A':
+            /* looking for AE */
+            if (inwd[1] == 'E') {
+                local.append(inwd, 1, inwd.length - 1);
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'W':
+            /* looking for WR or WH */
+            if (inwd[1] == 'R') {
+                // WR -> R
+                local.append(inwd, 1, inwd.length - 1);
+                break;
+            }
+            if (inwd[1] == 'H') {
+                local.append(inwd, 1, inwd.length - 1);
+                // WH -> W
+                local.setCharAt(0, 'W');
+            } else {
+                local.append(inwd);
+            }
+            break;
+        case 'X':
+            /* initial X becomes S */
+            inwd[0] = 'S';
+            local.append(inwd);
+            break;
+        default:
+            local.append(inwd);
+    }
+    // now local has working string with initials fixed
+    int wdsz = local.length();
+    int n = 0;
+    while ((code.length() < this.getMaxCodeLen()) && (n < wdsz)) {
+        // max code size of 4 works well
+        char symb = local.charAt(n);
+        // remove duplicate letters except C
+        if ((symb != 'C') && (isPreviousChar(local, n, symb))) {
+            n++;
+        } else {
+            // not dup
+            switch(symb) {
+                case 'A':
+                case 'E':
+                case 'I':
+                case 'O':
+                case 'U':
+                    if (n == 0) {
+                        code.append(symb);
+                    }
+                    // only use vowel if leading char
+                    break;
+                case 'B':
+                    if (isPreviousChar(local, n, 'M') && isLastChar(wdsz, n)) {
+                        // B is silent if word ends in MB
+                        break;
+                    }
+                    code.append(symb);
+                    break;
+                case // lots of C special cases
+                'C':
+                    /* discard if SCI, SCE or SCY */
+                    if (isPreviousChar(local, n, 'S') && !isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0)) {
+                        break;
+                    }
+                    if (regionMatch(local, n, ""CIA"")) {
+                        // ""CIA"" -> X
+                        code.append('X');
+                        break;
+                    }
+                    if (!isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0)) {
+                        code.append('S');
+                        // CI,CE,CY -> S
+                        break;
+                    }
+                    if (isPreviousChar(local, n, 'S') && isNextChar(local, n, 'H')) {
+                        // SCH->sk
+                        code.append('K');
+                        break;
+                    }
+                    if (isNextChar(local, n, 'H')) {
+                        // detect CH
+                        if ((n == 0) && (wdsz >= 3) && isVowel(local, 2)) {
+                            // CH consonant -> K consonant
+                            code.append('K');
+                        } else {
+                            // CHvowel -> X
+                            code.append('X');
+                        }
+                    } else {
+                        code.append('K');
+                    }
+                    break;
+                case 'D':
+                    if (!isLastChar(wdsz, n + 1) && isNextChar(local, n, 'G') && (FRONTV.indexOf(local.charAt(n + 2)) >= 0)) {
+                        // DGE DGI DGY -> J
+                        code.append('J');
+                        n += 2;
+                    } else {
+                        code.append('T');
+                    }
+                    break;
+                case // GH silent at end or before consonant
+                'G':
+                    if (isLastChar(wdsz, n + 1) && isNextChar(local, n, 'H')) {
+                        break;
+                    }
+                    if (!isLastChar(wdsz, n + 1) && isNextChar(local, n, 'H') && !isVowel(local, n + 2)) {
+                        break;
+                    }
+                    if ((n > 0) && (regionMatch(local, n, ""GN"") || regionMatch(local, n, ""GNED""))) {
+                        // silent G
+                        break;
+                    }
+                    if (isPreviousChar(local, n, 'G')) {
+                        hard = true;
+                    } else {
+                        hard = false;
+                    }
+                    if (!isLastChar(wdsz, n) && (FRONTV.indexOf(local.charAt(n + 1)) >= 0) && (!hard)) {
+                        code.append('J');
+                    } else {
+                        code.append('K');
+                    }
+                    break;
+                case 'H':
+                    if (isLastChar(wdsz, n)) {
+                        // terminal H
+                        break;
+                    }
+                    if ((n > 0) && (VARSON.indexOf(local.charAt(n - 1)) >= 0)) {
+                        break;
+                    }
+                    if (isVowel(local, n + 1)) {
+                        // Hvowel
+                        code.append('H');
+                    }
+                    break;
+                case 'F':
+                case 'J':
+                case 'L':
+                case 'M':
+                case 'N':
+                case 'R':
+                    code.append(symb);
+                    break;
+                case 'K':
+                    if (n > 0) {
+                        // not initial
+                        if (!isPreviousChar(local, n, 'C')) {
+                            code.append(symb);
+                        }
+                    } else {
+                        // initial K
+                        code.append(symb);
+                    }
+                    break;
+                case 'P':
+                    if (isNextChar(local, n, 'H')) {
+                        // PH -> F
+                        code.append('F');
+                    } else {
+                        code.append(symb);
+                    }
+                    break;
+                case 'Q':
+                    code.append('K');
+                    break;
+                case 'S':
+                    if (regionMatch(local, n, ""SH"") || regionMatch(local, n, ""SIO"") || regionMatch(local, n, ""SIA"")) {
+                        code.append('X');
+                    } else {
+                        code.append('S');
+                    }
+                    break;
+                case 'T':
+                    if (regionMatch(local, n, ""TIA"") || regionMatch(local, n, ""TIO"")) {
+                        code.append('X');
+                        break;
+                    }
+                    if (regionMatch(local, n, ""TCH"")) {
+                        // Silent if in ""TCH""
+                        break;
+                    }
+                    // substitute numeral 0 for TH (resembles theta after all)
+                    if (regionMatch(local, n, ""TH"")) {
+                        code.append('0');
+                    } else {
+                        code.append('T');
+                    }
+                    break;
+                case 'V':
+                    code.append('F');
+                    break;
+                case 'W':
+                case // silent if not followed by vowel
+                'Y':
+                    if (!isLastChar(wdsz, n) && isVowel(local, n + 1)) {
+                        code.append(symb);
+                    }
+                    break;
+                case 'X':
+                    code.append('K');
+                    code.append('S');
+                    break;
+                case 'Z':
+                    code.append('S');
+                    break;
+            }
+            // end switch
+            n++;
+        }
+        // end else from symb != 'C'
+        if (code.length() > this.getMaxCodeLen()) {
+            code.setLength(this.getMaxCodeLen());
+        }
+    }
+    return code.toString();
+}","public void test4545() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.isMetaphoneEqual(""CI,"", (String) null);
+    metaphone0.isMetaphoneEqual(""~N>gM"", ""~N>gM"");
+    metaphone0.encode((Object) ""org.apache.commons.codec.EncoderExc7ption"");
+    metaphone0.isMetaphoneEqual(""CI,"", ""WCR!"");
+    Metaphone metaphone1 = new Metaphone();
+    metaphone1.isMetaphoneEqual(""O:['Scyd>cl"", ""~N>gM"");
+    metaphone0.metaphone(""O:['Scyd>cl"");
+    metaphone0.metaphone(""nf4}]mqzm"");
+}","/**
+ * Find the metaphone value of a String. This is similar to the
+ * soundex algorithm, but better at finding similar sounding words.
+ * All input is converted to upper case.
+ * Limitations: Input format is expected to be a single ASCII word
+ * with only characters in the A - Z range, no punctuation or numbers.
+ *
+ * @param txt String to find the metaphone code for
+ * @return A metaphone code corresponding to the String supplied
+ */"
+"public boolean isMetaphoneEqual(String str1, String str2) {
+    return metaphone(str1).equals(metaphone(str2));
+}","public void test4646() throws Throwable {
+    Metaphone metaphone0 = new Metaphone();
+    metaphone0.encode(""6QnMbs"");
+    metaphone0.encode(""6QnMbs"");
+    metaphone0.isMetaphoneEqual(""k,'Hi'>Xci="", ""KNMB"");
+}","/**
+ * Tests is the metaphones of two strings are identical.
+ *
+ * @param str1 First of two strings to compare
+ * @param str2 Second of two strings to compare
+ * @return <code>true</code> if the metaphones of these strings are identical,
+ *        <code>false</code> otherwise.
+ */"

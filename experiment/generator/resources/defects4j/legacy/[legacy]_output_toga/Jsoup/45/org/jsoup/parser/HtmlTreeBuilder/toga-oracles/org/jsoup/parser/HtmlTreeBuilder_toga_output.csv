@@ -1,0 +1,1232 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test0000,"public void test0000() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = htmlTreeBuilder0.parse("""", ""aside"");
+    Document document1 = document0.clone();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.replaceActiveFormattingElement(document1, document0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Must be true
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test0011,"public void test0011() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    String[] stringArray0 = new String[1];
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.inScope(stringArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test0022,"public void test0022() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = htmlTreeBuilder0.parse("""", """");
+    assertEquals(1, document0.childNodeSize());
+}",0,"assertEquals(1, document0.childNodeSize())"
+project,0,test0023,"public void test0023() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = htmlTreeBuilder0.parse("""", """");
+    boolean boolean0 = htmlTreeBuilder0.inScope(""textarea"", htmlTreeBuilder0.TagsSearchInScope);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test0034,"public void test0034() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = htmlTreeBuilder0.parse(""Q[{bt1CoW<8"", ""Q[{bt1CoW<8"");
+    Element element0 = document0.head();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.replaceOnStack(document0, element0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Must be true
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test0045,"public void test0045() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = htmlTreeBuilder0.parse(""TreeBuilder{currentToken=org.jsoup.parser.Token$EOF@13, state=InBody, currentElement=<body>\n _\n</body>}"", ""aV"");
+    Document document1 = document0.clone();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.insertOnStackAfter(document1, document0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Must be true
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test0056,"public void test0056() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = htmlTreeBuilder0.parse(""F"", ""F"", (ParseErrorList) null);
+    htmlTreeBuilder0.insertInFosterParent(document0);
+    assertEquals(2, document0.siblingIndex());
+}",0,"assertEquals(0, document0.siblingIndex())"
+project,0,test0078,"public void test0078() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = htmlTreeBuilder0.parse(""sGCm Tw\""jt+7rNsfGIS"", ""sGCm Tw\""jt+7rNsfGIS"", (ParseErrorList) null);
+    htmlTreeBuilder0.insert(document0);
+    assertEquals(1, document0.siblingIndex());
+}",0,"assertEquals(0, document0.siblingIndex())"
+project,0,test0079,"public void test0079() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = htmlTreeBuilder0.parse(""sGCm Tw\""jt+7rNsfGIS"", ""sGCm Tw\""jt+7rNsfGIS"", (ParseErrorList) null);
+    htmlTreeBuilder0.insert(document0);
+    assertEquals(1, document0.childNodeSize());
+}",0,"assertEquals(0, document0.childNodeSize())"
+project,0,test00910,"public void test00910() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = htmlTreeBuilder0.parse("""", """");
+    htmlTreeBuilder0.setHeadElement(document0);
+    assertEquals(1, document0.childNodeSize());
+}",0,"assertEquals(0, document0.childNodeSize())"
+project,0,test01211,"public void test01211() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Token.StartTag token_StartTag0 = new Token.StartTag();
+    Attributes attributes0 = new Attributes();
+    Token.StartTag token_StartTag1 = token_StartTag0.nameAttr(""h6"", attributes0);
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.insertEmpty(token_StartTag1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test01512,"public void test01512() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    htmlTreeBuilder0.parse("""", """");
+    String string0 = htmlTreeBuilder0.toString();
+    assertNotNull(string0);
+}",0,assertNotNull(string0)
+project,0,test01713,"public void test01713() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    htmlTreeBuilder0.parse(""body"", ""uS\""c%)-V"", parseErrorList0);
+    CharacterReader characterReader0 = htmlTreeBuilder0.reader;
+    Tokeniser tokeniser0 = new Tokeniser(characterReader0, parseErrorList0);
+    Token.Comment token_Comment0 = tokeniser0.commentPending;
+    boolean boolean0 = htmlTreeBuilder0.process(token_Comment0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test01814,"public void test01814() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    htmlTreeBuilder0.parse(""body"", ""uS\""c%)-V"", parseErrorList0);
+    Element element0 = htmlTreeBuilder0.pop();
+    assertEquals(""uS\""c%)-V"", element0.baseUri());
+}",0,assertNotNull(element0.baseUri())
+project,0,test01815,"public void test01815() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    htmlTreeBuilder0.parse(""body"", ""uS\""c%)-V"", parseErrorList0);
+    Element element0 = htmlTreeBuilder0.pop();
+    assertEquals(1, element0.siblingIndex());
+}",0,
+project,0,test01816,"public void test01816() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    htmlTreeBuilder0.parse(""body"", ""uS\""c%)-V"", parseErrorList0);
+    Element element0 = htmlTreeBuilder0.pop();
+    boolean boolean0 = htmlTreeBuilder0.inSelectScope(""'TjF"");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test01917,"public void test01917() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = htmlTreeBuilder0.parse(""Q[{btCo,W<8"", ""Q[{btCo,W<8"");
+    Element element0 = document0.head();
+    boolean boolean0 = htmlTreeBuilder0.isSpecial(element0);
+    assertEquals(0, element0.siblingIndex());
+}",0,"assertEquals(0, element0.siblingIndex())"
+project,0,test01918,"public void test01918() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = htmlTreeBuilder0.parse(""Q[{btCo,W<8"", ""Q[{btCo,W<8"");
+    Element element0 = document0.head();
+    boolean boolean0 = htmlTreeBuilder0.isSpecial(element0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test02019,"public void test02019() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""colgroup"");
+    boolean boolean0 = htmlTreeBuilder0.isSpecial(document0);
+    assertFalse(boolean0);
+}",0,
+project,0,test02120,"public void test02120() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    boolean boolean0 = htmlTreeBuilder0.isFosterInserts();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test02221,"public void test02221() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    htmlTreeBuilder0.parse("""", """");
+    Element element0 = htmlTreeBuilder0.insertStartTag(""style"");
+    assertEquals(0, element0.siblingIndex());
+}",0,"assertEquals(0, element0.siblingIndex())"
+project,0,test02322,"public void test02322() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    htmlTreeBuilder0.parse(""Vl};:e"", ""progress"");
+    CharacterReader characterReader0 = new CharacterReader(""noscript"");
+    Tokeniser tokeniser0 = new Tokeniser(characterReader0, (ParseErrorList) null);
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    Attributes attributes0 = new Attributes();
+    Token.StartTag token_StartTag1 = token_StartTag0.nameAttr(""RKjuL-3TR3)%"", attributes0);
+    Element element0 = htmlTreeBuilder0.insert(token_StartTag1);
+    assertEquals(1, element0.siblingIndex());
+}",0,"assertEquals(0, element0.siblingIndex())"
+project,0,test02323,"public void test02323() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    htmlTreeBuilder0.parse(""Vl};:e"", ""progress"");
+    CharacterReader characterReader0 = new CharacterReader(""noscript"");
+    Tokeniser tokeniser0 = new Tokeniser(characterReader0, (ParseErrorList) null);
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    Attributes attributes0 = new Attributes();
+    Token.StartTag token_StartTag1 = token_StartTag0.nameAttr(""RKjuL-3TR3)%"", attributes0);
+    Element element0 = htmlTreeBuilder0.insert(token_StartTag1);
+    assertEquals(""progress"", element0.baseUri());
+}",0,assertNotNull(element0.baseUri())
+project,0,test02424,"public void test02424() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = htmlTreeBuilder0.parse(""thead"", "" > "");
+    assertEquals(1, document0.childNodeSize());
+}",0,"assertEquals(1, document0.childNodeSize())"
+project,0,test02425,"public void test02425() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = htmlTreeBuilder0.parse(""thead"", "" > "");
+    assertEquals("">"", document0.baseUri());
+}",0,assertNotNull(document0.baseUri())
+project,0,test02426,"public void test02426() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = htmlTreeBuilder0.parse(""thead"", "" > "");
+    boolean boolean0 = htmlTreeBuilder0.inTableScope(""EgTf$"");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test02527,"public void test02527() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Document document0 = htmlTreeBuilder0.parse(""body"", ""uS\""c%)-V"", parseErrorList0);
+    assertEquals(""uS\""c%)-V"", document0.location());
+}",0,assertNotNull(document0.location())
+project,0,test02528,"public void test02528() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Document document0 = htmlTreeBuilder0.parse(""body"", ""uS\""c%)-V"", parseErrorList0);
+    assertEquals(1, document0.childNodeSize());
+}",0,"assertEquals(0, document0.childNodeSize())"
+project,0,test02529,"public void test02529() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Document document0 = htmlTreeBuilder0.parse(""body"", ""uS\""c%)-V"", parseErrorList0);
+    boolean boolean0 = htmlTreeBuilder0.inScope(""body"", htmlTreeBuilder0.TagsSearchInScope);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test02630,"public void test02630() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ArrayList<Element> arrayList0 = htmlTreeBuilder0.getStack();
+    assertNull(arrayList0);
+}",0,assertNotNull(arrayList0)
+project,0,test02832,"public void test02832() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    htmlTreeBuilder0.parse(""body"", ""uS\""c%)-V"", parseErrorList0);
+    Element element0 = htmlTreeBuilder0.getHeadElement();
+    assertEquals(0, element0.siblingIndex());
+}",0,"assertEquals(1, element0.siblingIndex())"
+project,0,test02833,"public void test02833() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    htmlTreeBuilder0.parse(""body"", ""uS\""c%)-V"", parseErrorList0);
+    Element element0 = htmlTreeBuilder0.getHeadElement();
+    assertEquals(""uS\""c%)-V"", element0.baseUri());
+}",0,assertNotNull(element0.baseUri())
+project,0,test02834,"public void test02834() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    htmlTreeBuilder0.parse(""body"", ""uS\""c%)-V"", parseErrorList0);
+    Element element0 = htmlTreeBuilder0.getHeadElement();
+    assertEquals(0, element0.childNodeSize());
+}",0,"assertEquals(1, element0.childNodeSize())"
+project,0,test02935,"public void test02935() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    htmlTreeBuilder0.parse("""", """");
+    Element element0 = htmlTreeBuilder0.getFromStack(""TreeBuilder{currentToken=org.jsoup.parser.Token$EOF@13, state=InBody, currentElement=<body />}"");
+    assertNull(element0);
+}",0,assertNotNull(element0)
+project,0,test03036,"public void test03036() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    htmlTreeBuilder0.initialiseParse(""Ca"", ""'jF"", (ParseErrorList) null);
+    Document document0 = htmlTreeBuilder0.getDocument();
+    assertEquals(""'jF"", document0.location());
+}",0,assertNotNull(document0.location())
+project,0,test03137,"public void test03137() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    htmlTreeBuilder0.parse(""F"", ""F"", (ParseErrorList) null);
+    Document document0 = htmlTreeBuilder0.getDocument();
+    assertEquals(1, document0.childNodeSize());
+}",0,"assertEquals(0, document0.childNodeSize())"
+project,0,test03238,"public void test03238() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    htmlTreeBuilder0.parse("""", """");
+    String string0 = htmlTreeBuilder0.getBaseUri();
+    assertEquals("""", string0);
+}",0,assertNotNull(string0)
+project,0,test03339,"public void test03339() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    boolean boolean0 = htmlTreeBuilder0.framesetOk();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test03440,"public void test03440() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Document document0 = htmlTreeBuilder0.parse(""body"", ""uS\""c%)-V"", parseErrorList0);
+    assertEquals(1, document0.childNodeSize());
+}",0,"assertEquals(0, document0.childNodeSize())"
+project,0,test03441,"public void test03441() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Document document0 = htmlTreeBuilder0.parse(""body"", ""uS\""c%)-V"", parseErrorList0);
+    assertEquals(""uS\""c%)-V"", document0.baseUri());
+}",0,assertNotNull(document0.baseUri())
+project,0,test03442,"public void test03442() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Document document0 = htmlTreeBuilder0.parse(""body"", ""uS\""c%)-V"", parseErrorList0);
+    boolean boolean0 = htmlTreeBuilder0.framesetOk();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test03543,"public void test03543() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.resetInsertionMode();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test03644,"public void test03644() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.replaceOnStack((Element) null, (Element) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test03745,"public void test03745() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""WyEI]'7rN"");
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.removeFromStack(document0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test03846,"public void test03846() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.push((Element) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test03947,"public void test03947() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterAfterFrameset;
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.process((Token) null, htmlTreeBuilderState0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilderState$22"", e);
+    }
+}",0,
+project,0,test04048,"public void test04048() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    CharacterReader characterReader0 = new CharacterReader(""pre"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(1223);
+    Tokeniser tokeniser0 = new Tokeniser(characterReader0, parseErrorList0);
+    Token.Tag token_Tag0 = tokeniser0.createTagPending(true);
+    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.InHeadNoscript;
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Must be false
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test04149,"public void test04149() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    CharacterReader characterReader0 = new CharacterReader(""table"");
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Tokeniser tokeniser0 = new Tokeniser(characterReader0, parseErrorList0);
+    Token.Doctype token_Doctype0 = tokeniser0.doctypePending;
+    Token.TokenType token_TokenType0 = Token.TokenType.Character;
+    token_Doctype0.type = token_TokenType0;
+    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.BeforeHead;
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.process(token_Doctype0, htmlTreeBuilderState0);
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // org.jsoup.parser.Token$Doctype cannot be cast to org.jsoup.parser.Token$Character
+        //
+        verifyException(""org.jsoup.parser.Token"", e);
+    }
+}",0,
+project,0,test04250,"public void test04250() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    CharacterReader characterReader0 = new CharacterReader(""f2*BS>:okK]H<=p([+:"");
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Tokeniser tokeniser0 = new Tokeniser(characterReader0, parseErrorList0);
+    Token.Doctype token_Doctype0 = tokeniser0.doctypePending;
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.process(token_Doctype0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test04351,"public void test04351() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    htmlTreeBuilder0.parse(""center"", ""center"");
+    Token.StartTag token_StartTag0 = new Token.StartTag();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.process(token_StartTag0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Must be false
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test04452,"public void test04452() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.popStackToClose(""5"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test04553,"public void test04553() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.popStackToBefore((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test04654,"public void test04654() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.pop();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test04755,"public void test04755() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = htmlTreeBuilder0.parse(""Q[{bt1CoW<8"", ""Q[{bt1CoW<8"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking((-684));
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.parseFragment((String) null, document0, ""utf"", parseErrorList0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String input must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test04856,"public void test04856() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(1186);
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.parse(""StartTag"", (String) null, parseErrorList0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // BaseURI must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test04957,"public void test04957() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.onStack((Element) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test05058,"public void test05058() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.maybeSetBaseUri((Element) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test05159,"public void test05159() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.insertStartTag("""");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test05260,"public void test05260() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Tag tag0 = Tag.valueOf(""3y8r]MK("");
+    TextNode textNode0 = TextNode.createFromEncoded(""sQ+V0KT4wmmv6.e=t"", ""sQ+V0KT4wmmv6.e=t"");
+    Attributes attributes0 = textNode0.attributes();
+    Element element0 = new Element(tag0, ""sQ+V0KT4wmmv6.e=t"", attributes0);
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.insertOnStackAfter(element0, element0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test05361,"public void test05361() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.insertInFosterParent((Node) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test05462,"public void test05462() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = htmlTreeBuilder0.parse(""Q[{bt1CoW<8"", ""Q[{bt1CoW<8"");
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = ""Q[{bt1CoW<8"";
+    stringArray0[1] = ""Q[{bt1CoW<8"";
+    htmlTreeBuilder0.popStackToClose(stringArray0);
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.insertInFosterParent(document0);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 0, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}",0,
+project,0,test05563,"public void test05563() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.insertForm((Token.StartTag) null, false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test05664,"public void test05664() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    CharacterReader characterReader0 = new CharacterReader("""");
+    Tokeniser tokeniser0 = new Tokeniser(characterReader0, (ParseErrorList) null);
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.insertForm(token_StartTag0, false);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Must be false
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test05765,"public void test05765() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.insertEmpty((Token.StartTag) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test05866,"public void test05866() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.insert((Token.StartTag) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test05967,"public void test05967() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.insert((Token.Comment) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test06068,"public void test06068() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.insert((Token.Character) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.TreeBuilder"", e);
+    }
+}",0,
+project,0,test06169,"public void test06169() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.insert((Element) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test06270,"public void test06270() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    htmlTreeBuilder0.parse(""Q[{bt1CoW<8"", ""Q[{bt1CoW<8"");
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = ""Q[{bt1CoW<8"";
+    stringArray0[1] = ""Q[{bt1CoW<8"";
+    htmlTreeBuilder0.popStackToClose(stringArray0);
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.inTableScope(""Q[{bt1CoW<8"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Should not be reachable
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test06371,"public void test06371() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.inSelectScope((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test06472,"public void test06472() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    htmlTreeBuilder0.parse("""", """");
+    htmlTreeBuilder0.popStackToClose(""AfterDoctypeSystemIdentifier"");
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.inScope(""textarea"", htmlTreeBuilder0.TagsSearchInScope);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Should not be reachable
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test06573,"public void test06573() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.getFromStack((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test06674,"public void test06674() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.generateImpliedEndTags("""");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.TreeBuilder"", e);
+    }
+}",0,
+project,0,test06775,"public void test06775() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterFrameset;
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.error(htmlTreeBuilderState0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test06876,"public void test06876() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.aboveOnStack((Element) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test07177,"public void test07177() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Document document0 = htmlTreeBuilder0.parse(""body"", ""uS\""c%)-V"", parseErrorList0);
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.aboveOnStack(document0);
+        fail(""Expecting exception: AssertionError"");
+    } catch (AssertionError e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test07378,"public void test07378() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    htmlTreeBuilder0.parse(""Q[{bt1CoW<8"", ""Q[{bt1CoW<8"");
+    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    TextNode textNode0 = new TextNode(""uS\""c%)-V"", ""Q[{bt1CoW<8"");
+    Attributes attributes0 = textNode0.attributes();
+    Token.StartTag token_StartTag1 = token_StartTag0.nameAttr(""style"", attributes0);
+    FormElement formElement0 = htmlTreeBuilder0.insertForm(token_StartTag1, false);
+    assertEquals(1, formElement0.siblingIndex());
+}",0,"assertEquals(1, formElement0.siblingIndex())"
+project,0,test07479,"public void test07479() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Tag tag0 = Tag.valueOf(""BZ(%L.wD^u+"");
+    TextNode textNode0 = TextNode.createFromEncoded(""BZ(%L.wD^u+"", ""2 =`hrBUh16cL="");
+    Attributes attributes0 = textNode0.attributes();
+    FormElement formElement0 = new FormElement(tag0, ""BZ(%L.wD^u+"", attributes0);
+    htmlTreeBuilder0.maybeSetBaseUri(formElement0);
+    assertEquals(0, formElement0.childNodeSize());
+}",0,"assertEquals(1, formElement0.childNodeSize())"
+project,0,test07580,"public void test07580() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.inListItemScope(""Q[{bt1CoW<8"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test07881,"public void test07881() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = htmlTreeBuilder0.getDocument();
+    assertNull(document0);
+}",0,assertNotNull(document0)
+project,0,test07982,"public void test07982() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    String string0 = htmlTreeBuilder0.getBaseUri();
+    assertNull(string0);
+}",0,
+project,0,test08083,"public void test08083() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    htmlTreeBuilder0.pushActiveFormattingElements((Element) null);
+    Element element0 = htmlTreeBuilder0.getActiveFormattingElement(""7Sy~(C-Jv"");
+    assertNull(element0);
+}",0,assertNotNull(element0)
+project,0,test08184,"public void test08184() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Element element0 = htmlTreeBuilder0.getActiveFormattingElement(""%>vDE"");
+    assertNull(element0);
+}",0,assertNotNull(element0)
+project,0,test08385,"public void test08385() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Element element0 = htmlTreeBuilder0.removeLastFormattingElement();
+    assertNull(element0);
+}",0,
+project,0,test08486,"public void test08486() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    htmlTreeBuilder0.pushActiveFormattingElements((Element) null);
+    Element element0 = htmlTreeBuilder0.lastFormattingElement();
+    assertNull(element0);
+}",0,assertNotNull(element0)
+project,0,test08587,"public void test08587() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Document document0 = htmlTreeBuilder0.parse(""body"", ""body"", parseErrorList0);
+    assertEquals(1, document0.childNodeSize());
+}",0,"assertEquals(0, document0.childNodeSize())"
+project,0,test08588,"public void test08588() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Document document0 = htmlTreeBuilder0.parse(""body"", ""body"", parseErrorList0);
+    boolean boolean0 = htmlTreeBuilder0.inSelectScope(""body"");
+    assertTrue(boolean0);
+}",0,
+project,0,test08689,"public void test08689() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    htmlTreeBuilder0.parse(""body"", ""uS\""c%)-V"", parseErrorList0);
+    htmlTreeBuilder0.popStackToClose(""sGCm 3w\""jt+7rNsfIS"");
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.inSelectScope(""'QjF"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Should not be reachable
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test08790,"public void test08790() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Document document0 = htmlTreeBuilder0.parse(""body"", ""uS\""c%)-V"", parseErrorList0);
+    assertEquals(""uS\""c%)-V"", document0.baseUri());
+}",0,assertNotNull(document0.baseUri())
+project,0,test08791,"public void test08791() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Document document0 = htmlTreeBuilder0.parse(""body"", ""uS\""c%)-V"", parseErrorList0);
+    assertEquals(1, document0.childNodeSize());
+}",0,"assertEquals(0, document0.childNodeSize())"
+project,0,test08792,"public void test08792() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Document document0 = htmlTreeBuilder0.parse(""body"", ""uS\""c%)-V"", parseErrorList0);
+    boolean boolean0 = htmlTreeBuilder0.inButtonScope(""Qu.e9l!"");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test08893,"public void test08893() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Document document0 = htmlTreeBuilder0.parse(""body"", ""uS\""c%)-V"", parseErrorList0);
+    assertEquals(1, document0.childNodeSize());
+}",0,"assertEquals(0, document0.childNodeSize())"
+project,0,test08894,"public void test08894() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Document document0 = htmlTreeBuilder0.parse(""body"", ""uS\""c%)-V"", parseErrorList0);
+    assertEquals(""uS\""c%)-V"", document0.baseUri());
+}",0,assertNotNull(document0.baseUri())
+project,0,test08895,"public void test08895() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Document document0 = htmlTreeBuilder0.parse(""body"", ""uS\""c%)-V"", parseErrorList0);
+    boolean boolean0 = htmlTreeBuilder0.inButtonScope(""body"");
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test09096,"public void test09096() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = htmlTreeBuilder0.parse(""Q[{bt1CoW<8"", ""Q[{bt1CoW<8"");
+    Element element0 = document0.head();
+    ParseErrorList parseErrorList0 = htmlTreeBuilder0.errors;
+    List<Node> list0 = htmlTreeBuilder0.parseFragment(""Q[{bt1CoW<8"", element0, ""Q[{bt1CoW<8"", parseErrorList0);
+    assertEquals(0, element0.siblingIndex());
+}",0,"assertEquals(0, element0.siblingIndex())"
+project,0,test09097,"public void test09097() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = htmlTreeBuilder0.parse(""Q[{bt1CoW<8"", ""Q[{bt1CoW<8"");
+    Element element0 = document0.head();
+    ParseErrorList parseErrorList0 = htmlTreeBuilder0.errors;
+    List<Node> list0 = htmlTreeBuilder0.parseFragment(""Q[{bt1CoW<8"", element0, ""Q[{bt1CoW<8"", parseErrorList0);
+    assertEquals(0, element0.childNodeSize());
+}",0,"assertEquals(1, element0.childNodeSize())"
+project,0,test09199,"public void test09199() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = htmlTreeBuilder0.parse(""Q[{bt1CoW<8"", ""Q[{bt1CoW<8"");
+    htmlTreeBuilder0.push(document0);
+    htmlTreeBuilder0.replaceOnStack(document0, document0);
+    assertEquals(1, document0.childNodeSize());
+}",0,"assertEquals(0, document0.childNodeSize())"
+project,0,test095100,"public void test095100() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    htmlTreeBuilder0.parse(""Q[{bt1CoW<8"", ""Q[{bt1CoW<8"");
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = ""Q[{bt1CoW<8"";
+    stringArray0[1] = ""Q[{bt1CoW<8"";
+    htmlTreeBuilder0.popStackToClose(stringArray0);
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.inScope(""Q[{bt1CoW<8"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Should not be reachable
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test096101,"public void test096101() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Document document0 = htmlTreeBuilder0.parse(""body"", ""uS\""c%)-V"", parseErrorList0);
+    boolean boolean0 = htmlTreeBuilder0.removeFromStack(document0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test096102,"public void test096102() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Document document0 = htmlTreeBuilder0.parse(""body"", ""uS\""c%)-V"", parseErrorList0);
+    boolean boolean0 = htmlTreeBuilder0.removeFromStack(document0);
+    assertEquals(""uS\""c%)-V"", document0.location());
+}",0,assertNotNull(document0.location())
+project,0,test096103,"public void test096103() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Document document0 = htmlTreeBuilder0.parse(""body"", ""uS\""c%)-V"", parseErrorList0);
+    boolean boolean0 = htmlTreeBuilder0.removeFromStack(document0);
+    assertEquals(1, document0.childNodeSize());
+}",0,"assertEquals(1, document0.childNodeSize())"
+project,0,test097104,"public void test097104() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    htmlTreeBuilder0.parse(""body"", ""body"", parseErrorList0);
+    Element element0 = htmlTreeBuilder0.getFromStack(""body"");
+    assertNotNull(element0);
+}",0,assertNotNull(element0)
+project,0,test097105,"public void test097105() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    htmlTreeBuilder0.parse(""body"", ""body"", parseErrorList0);
+    Element element0 = htmlTreeBuilder0.getFromStack(""body"");
+    assertEquals(1, element0.siblingIndex());
+}",0,"assertEquals(0, element0.siblingIndex())"
+project,0,test098106,"public void test098106() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    htmlTreeBuilder0.parse(""Q[{bt1CoW<8"", ""Q[{bt1CoW<8"");
+    Element element0 = htmlTreeBuilder0.currentElement();
+    boolean boolean0 = htmlTreeBuilder0.onStack(element0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test098107,"public void test098107() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    htmlTreeBuilder0.parse(""Q[{bt1CoW<8"", ""Q[{bt1CoW<8"");
+    Element element0 = htmlTreeBuilder0.currentElement();
+    boolean boolean0 = htmlTreeBuilder0.onStack(element0);
+    assertEquals(1, element0.siblingIndex());
+}",0,"assertEquals(0, element0.siblingIndex())"
+project,0,test099108,"public void test099108() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    htmlTreeBuilder0.parse(""Q[{bt1CoW<8"", ""Q[{bt1CoW<8"");
+    Element element0 = htmlTreeBuilder0.insertStartTag(""input"");
+    assertEquals(1, element0.siblingIndex());
+}",0,"assertEquals(0, element0.siblingIndex())"
+project,0,test101109,"public void test101109() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    htmlTreeBuilder0.parse("""", """");
+    htmlTreeBuilder0.setFosterInserts(true);
+    Element element0 = htmlTreeBuilder0.insertStartTag(""systemId"");
+    assertEquals(2, element0.siblingIndex());
+}",0,"assertEquals(0, element0.siblingIndex())"
+project,0,test102110,"public void test102110() throws Throwable {
+    Token.StartTag token_StartTag0 = new Token.StartTag();
+    token_StartTag0.selfClosing = true;
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.insert(token_StartTag0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Must be false
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test103112,"public void test103112() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = new ParseErrorList(512, 512);
+    Document document0 = htmlTreeBuilder0.parse(""TreeBuilder{currentToken=org.jsoup.parser.Token$EOF@13, state=InBody, currentElement=<body />}"", ""TreeBuilder{currentToken=org.jsoup.parser.Token$EOF@13, state=InBody, currentElement=<body />}"", parseErrorList0);
+    assertEquals(1, document0.childNodeSize());
+}",0,"assertEquals(1, document0.childNodeSize())"
+project,0,test104113,"public void test104113() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = htmlTreeBuilder0.parse(""thead"", "" > "");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(1302);
+    htmlTreeBuilder0.parseFragment(""thead"", document0, ""-(<(LWqCI8<W5Pk"", parseErrorList0);
+    boolean boolean0 = htmlTreeBuilder0.isFragmentParsing();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test106115,"public void test106115() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.clearStackToTableContext();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test108116,"public void test108116() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.inTableScope(""Q[{bt1CoW<8"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test109117,"public void test109117() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Token.Comment token_Comment0 = new Token.Comment();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.insert(token_Comment0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test110118,"public void test110118() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.isSpecial((Element) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test111119,"public void test111119() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = htmlTreeBuilder0.parse(""Q[{bt1CoW<8"", ""Q[{bt1CoW<8"");
+    htmlTreeBuilder0.push(document0);
+    boolean boolean0 = htmlTreeBuilder0.removeFromStack(document0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test111120,"public void test111120() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = htmlTreeBuilder0.parse(""Q[{bt1CoW<8"", ""Q[{bt1CoW<8"");
+    htmlTreeBuilder0.push(document0);
+    boolean boolean0 = htmlTreeBuilder0.removeFromStack(document0);
+    assertEquals(1, document0.childNodeSize());
+}",0,"assertEquals(1, document0.childNodeSize())"
+project,0,test112121,"public void test112121() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    htmlTreeBuilder0.setFosterInserts(true);
+    boolean boolean0 = htmlTreeBuilder0.isFosterInserts();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test113122,"public void test113122() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    boolean boolean0 = htmlTreeBuilder0.isFragmentParsing();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test114123,"public void test114123() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = htmlTreeBuilder0.parse(""Q[{bt1CoW<8"", ""Q[{bt1CoW<8"");
+    boolean boolean0 = htmlTreeBuilder0.onStack(document0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test114124,"public void test114124() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = htmlTreeBuilder0.parse(""Q[{bt1CoW<8"", ""Q[{bt1CoW<8"");
+    boolean boolean0 = htmlTreeBuilder0.onStack(document0);
+    assertEquals(1, document0.childNodeSize());
+}",0,
+project,0,test116126,"public void test116126() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.inScope(""n7{>J#A%Cur/S3{A="");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test119128,"public void test119128() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.clearStackToTableRowContext();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test120129,"public void test120129() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    FormElement formElement0 = htmlTreeBuilder0.getFormElement();
+    assertNull(formElement0);
+}",0,assertNotNull(formElement0)
+project,0,test124130,"public void test124130() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Token.EOF token_EOF0 = new Token.EOF();
+    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterAfterFrameset;
+    boolean boolean0 = htmlTreeBuilder0.process(token_EOF0, htmlTreeBuilderState0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test125131,"public void test125131() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.toString();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.TreeBuilder"", e);
+    }
+}",0,
+project,0,test126132,"public void test126132() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.clearStackToTableBodyContext();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test127133,"public void test127133() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Element element0 = htmlTreeBuilder0.getHeadElement();
+    assertNull(element0);
+}",0,assertNotNull(element0)

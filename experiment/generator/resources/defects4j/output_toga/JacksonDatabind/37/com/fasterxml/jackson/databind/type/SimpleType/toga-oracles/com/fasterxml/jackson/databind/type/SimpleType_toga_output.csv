@@ -1,0 +1,167 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test011,"public void test011() throws Throwable {
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_ENUM;
+    // Undeclared exception!
+    try {
+        simpleType0.withContentValueHandler(simpleType0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Simple types have no content types; can not call withContenValueHandler()
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.SimpleType"", e);
+    }
+}",1,
+project,0,test022,"public void test022() throws Throwable {
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_CLASS;
+    // Undeclared exception!
+    try {
+        simpleType0.withContentTypeHandler(""Can not construct SimpleType for a Collection (class: "");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Simple types have no content types; can not call withContenTypeHandler()
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.SimpleType"", e);
+    }
+}",0,
+project,0,test033,"public void test033() throws Throwable {
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_STRING;
+    boolean boolean0 = simpleType0.isContainerType();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test044,"public void test044() throws Throwable {
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_STRING;
+    // Undeclared exception!
+    try {
+        simpleType0.withContentType(simpleType0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Simple types have no content types; can not call withContentType()
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.SimpleType"", e);
+    }
+}",1,
+project,0,test055,"public void test055() throws Throwable {
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_STRING;
+    ReferenceType referenceType0 = new ReferenceType(simpleType0, simpleType0);
+    ReferenceType referenceType1 = referenceType0.withTypeHandler(simpleType0);
+    assertFalse(referenceType1.isArrayType());
+}",0,assertTrue(referenceType1.isArrayType())
+project,0,test066,"public void test066() throws Throwable {
+    Class<Object> class0 = Object.class;
+    SimpleType simpleType0 = SimpleType.constructUnsafe(class0);
+    assertFalse(simpleType0.useStaticType());
+}",0,assertFalse(simpleType0.useStaticType())
+project,0,test077,"public void test077() throws Throwable {
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_LONG;
+    String string0 = simpleType0.getErasedSignature();
+    assertEquals(""J"", string0);
+}",0,
+project,0,test088,"public void test088() throws Throwable {
+    Class<String> class0 = String.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    JavaType javaType0 = simpleType0._narrow(class0);
+    assertSame(javaType0, simpleType0);
+}",0,
+project,0,test099,"public void test099() throws Throwable {
+    Class<HashMap> class0 = HashMap.class;
+    // Undeclared exception!
+    try {
+        SimpleType.construct(class0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Can not construct SimpleType for a Map (class: java.util.HashMap)
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.SimpleType"", e);
+    }
+}",1,
+project,0,test1010,"public void test1010() throws Throwable {
+    Class<LinkedList> class0 = LinkedList.class;
+    // Undeclared exception!
+    try {
+        SimpleType.construct(class0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Can not construct SimpleType for a Collection (class: java.util.LinkedList)
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.SimpleType"", e);
+    }
+}",0,
+project,0,test1111,"public void test1111() throws Throwable {
+    Class<String> class0 = String.class;
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_INT;
+    JavaType javaType0 = simpleType0._narrow(class0);
+    assertFalse(javaType0.isPrimitive());
+}",0,assertTrue(javaType0.isPrimitive())
+project,0,test1212,"public void test1212() throws Throwable {
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_ENUM;
+    SimpleType simpleType1 = simpleType0.withTypeHandler(simpleType0);
+    assertNotSame(simpleType1, simpleType0);
+}",0,
+project,0,test1313,"public void test1313() throws Throwable {
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_ENUM;
+    SimpleType simpleType1 = simpleType0.withTypeHandler((Object) null);
+    assertSame(simpleType1, simpleType0);
+}",0,
+project,0,test1414,"public void test1414() throws Throwable {
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_COMPARABLE;
+    SimpleType simpleType1 = simpleType0.withValueHandler(simpleType0);
+    assertTrue(simpleType1.hasValueHandler());
+}",0,assertFalse(simpleType1.hasValueHandler())
+project,0,test1515,"public void test1515() throws Throwable {
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_COMPARABLE;
+    SimpleType simpleType1 = simpleType0.withValueHandler((Object) null);
+    assertSame(simpleType1, simpleType0);
+}",0,
+project,0,test1616,"public void test1616() throws Throwable {
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_STRING;
+    SimpleType simpleType1 = simpleType0.withStaticTyping();
+    boolean boolean0 = simpleType0.equals(simpleType1);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test1617,"public void test1617() throws Throwable {
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_STRING;
+    SimpleType simpleType1 = simpleType0.withStaticTyping();
+    boolean boolean0 = simpleType0.equals(simpleType1);
+    assertTrue(simpleType1.useStaticType());
+}",0,assertFalse(simpleType1.useStaticType())
+project,0,test1718,"public void test1718() throws Throwable {
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_BOOL;
+    SimpleType simpleType1 = simpleType0.withStaticTyping();
+    SimpleType simpleType2 = simpleType1.withStaticTyping();
+    assertTrue(simpleType2.useStaticType());
+}",0,
+project,0,test1819,"public void test1819() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<HashMap> class0 = HashMap.class;
+    MapType mapType0 = typeFactory0.constructRawMapType(class0);
+    SimpleType simpleType0 = new SimpleType(mapType0);
+    String string0 = simpleType0.getGenericSignature();
+    assertEquals(""Ljava/util/HashMap<Ljava/lang/Object;Ljava/lang/Object;>;"", string0);
+}",0,
+project,0,test1920,"public void test1920() throws Throwable {
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_INT;
+    boolean boolean0 = simpleType0.equals(simpleType0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2021,"public void test2021() throws Throwable {
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_STRING;
+    boolean boolean0 = simpleType0.equals((Object) null);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2122,"public void test2122() throws Throwable {
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_COMPARABLE;
+    MatchStrength matchStrength0 = MatchStrength.WEAK_MATCH;
+    boolean boolean0 = simpleType0.equals(matchStrength0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2223,"public void test2223() throws Throwable {
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_STRING;
+    SimpleType simpleType1 = TypeFactory.CORE_TYPE_CLASS;
+    boolean boolean0 = simpleType0.equals(simpleType1);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)

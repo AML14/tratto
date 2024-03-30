@@ -1,0 +1,662 @@
+focal_method,test_prefix,docstring
+"//-----------------------------------------------------------------------
+/**
+ * <p>Converts a String to a Locale.</p>
+ *
+ * <p>This method takes the string format of a locale and creates the
+ * locale object from it.</p>
+ *
+ * <pre>
+ *   LocaleUtils.toLocale(""en"")         = new Locale(""en"", """")
+ *   LocaleUtils.toLocale(""en_GB"")      = new Locale(""en"", ""GB"")
+ *   LocaleUtils.toLocale(""en_GB_xxx"")  = new Locale(""en"", ""GB"", ""xxx"")   (#)
+ * </pre>
+ *
+ * <p>(#) The behaviour of the JDK variant constructor changed between JDK1.3 and JDK1.4.
+ * In JDK1.3, the constructor upper cases the variant, in JDK1.4, it doesn't.
+ * Thus, the result from getVariant() may vary depending on your JDK.</p>
+ *
+ * <p>This method validates the input strictly.
+ * The language code must be lowercase.
+ * The country code must be uppercase.
+ * The separator must be an underscore.
+ * The length must be correct.
+ * </p>
+ *
+ * @param str  the locale String to convert, null returns null
+ * @return a Locale, null if null input
+ * @throws IllegalArgumentException if the string is an invalid format
+ */
+public static Locale toLocale(String str) {
+    if (str == null) {
+        return null;
+    }
+    int len = str.length();
+    if (len != 2 && len != 5 && len < 7) {
+        throw new IllegalArgumentException(""Invalid locale format: "" + str);
+    }
+    char ch0 = str.charAt(0);
+    char ch1 = str.charAt(1);
+    if (ch0 < 'a' || ch0 > 'z' || ch1 < 'a' || ch1 > 'z') {
+        throw new IllegalArgumentException(""Invalid locale format: "" + str);
+    }
+    if (len == 2) {
+        return new Locale(str, """");
+    } else {
+        if (str.charAt(2) != '_') {
+            throw new IllegalArgumentException(""Invalid locale format: "" + str);
+        }
+        char ch3 = str.charAt(3);
+        char ch4 = str.charAt(4);
+        if (ch3 < 'A' || ch3 > 'Z' || ch4 < 'A' || ch4 > 'Z') {
+            throw new IllegalArgumentException(""Invalid locale format: "" + str);
+        }
+        if (len == 5) {
+            return new Locale(str.substring(0, 2), str.substring(3, 5));
+        } else {
+            if (str.charAt(5) != '_') {
+                throw new IllegalArgumentException(""Invalid locale format: "" + str);
+            }
+            return new Locale(str.substring(0, 2), str.substring(3, 5), str.substring(6));
+        }
+    }
+}","public void test000() throws Throwable {
+    // Undeclared exception!
+    try {
+        LocaleUtils.toLocale(""sz}\"":;`\""JEfu-J"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid locale format: sz}\"":;`\""JEfu-J
+        //
+        verifyException(""org.apache.commons.lang.LocaleUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>Converts a String to a Locale.</p>
+ *
+ * <p>This method takes the string format of a locale and creates the
+ * locale object from it.</p>
+ *
+ * <pre>
+ *   LocaleUtils.toLocale(""en"")         = new Locale(""en"", """")
+ *   LocaleUtils.toLocale(""en_GB"")      = new Locale(""en"", ""GB"")
+ *   LocaleUtils.toLocale(""en_GB_xxx"")  = new Locale(""en"", ""GB"", ""xxx"")   (#)
+ * </pre>
+ *
+ * <p>(#) The behaviour of the JDK variant constructor changed between JDK1.3 and JDK1.4.
+ * In JDK1.3, the constructor upper cases the variant, in JDK1.4, it doesn't.
+ * Thus, the result from getVariant() may vary depending on your JDK.</p>
+ *
+ * <p>This method validates the input strictly.
+ * The language code must be lowercase.
+ * The country code must be uppercase.
+ * The separator must be an underscore.
+ * The length must be correct.
+ * </p>
+ *
+ * @param str  the locale String to convert, null returns null
+ * @return a Locale, null if null input
+ * @throws IllegalArgumentException if the string is an invalid format
+ */
+public static Locale toLocale(String str) {
+    if (str == null) {
+        return null;
+    }
+    int len = str.length();
+    if (len != 2 && len != 5 && len < 7) {
+        throw new IllegalArgumentException(""Invalid locale format: "" + str);
+    }
+    char ch0 = str.charAt(0);
+    char ch1 = str.charAt(1);
+    if (ch0 < 'a' || ch0 > 'z' || ch1 < 'a' || ch1 > 'z') {
+        throw new IllegalArgumentException(""Invalid locale format: "" + str);
+    }
+    if (len == 2) {
+        return new Locale(str, """");
+    } else {
+        if (str.charAt(2) != '_') {
+            throw new IllegalArgumentException(""Invalid locale format: "" + str);
+        }
+        char ch3 = str.charAt(3);
+        char ch4 = str.charAt(4);
+        if (ch3 < 'A' || ch3 > 'Z' || ch4 < 'A' || ch4 > 'Z') {
+            throw new IllegalArgumentException(""Invalid locale format: "" + str);
+        }
+        if (len == 5) {
+            return new Locale(str.substring(0, 2), str.substring(3, 5));
+        } else {
+            if (str.charAt(5) != '_') {
+                throw new IllegalArgumentException(""Invalid locale format: "" + str);
+            }
+            return new Locale(str.substring(0, 2), str.substring(3, 5), str.substring(6));
+        }
+    }
+}","public void test022() throws Throwable {
+    // Undeclared exception!
+    try {
+        LocaleUtils.toLocale(""zh-CN"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid locale format: zh-CN
+        //
+        verifyException(""org.apache.commons.lang.LocaleUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>Converts a String to a Locale.</p>
+ *
+ * <p>This method takes the string format of a locale and creates the
+ * locale object from it.</p>
+ *
+ * <pre>
+ *   LocaleUtils.toLocale(""en"")         = new Locale(""en"", """")
+ *   LocaleUtils.toLocale(""en_GB"")      = new Locale(""en"", ""GB"")
+ *   LocaleUtils.toLocale(""en_GB_xxx"")  = new Locale(""en"", ""GB"", ""xxx"")   (#)
+ * </pre>
+ *
+ * <p>(#) The behaviour of the JDK variant constructor changed between JDK1.3 and JDK1.4.
+ * In JDK1.3, the constructor upper cases the variant, in JDK1.4, it doesn't.
+ * Thus, the result from getVariant() may vary depending on your JDK.</p>
+ *
+ * <p>This method validates the input strictly.
+ * The language code must be lowercase.
+ * The country code must be uppercase.
+ * The separator must be an underscore.
+ * The length must be correct.
+ * </p>
+ *
+ * @param str  the locale String to convert, null returns null
+ * @return a Locale, null if null input
+ * @throws IllegalArgumentException if the string is an invalid format
+ */
+public static Locale toLocale(String str) {
+    if (str == null) {
+        return null;
+    }
+    int len = str.length();
+    if (len != 2 && len != 5 && len < 7) {
+        throw new IllegalArgumentException(""Invalid locale format: "" + str);
+    }
+    char ch0 = str.charAt(0);
+    char ch1 = str.charAt(1);
+    if (ch0 < 'a' || ch0 > 'z' || ch1 < 'a' || ch1 > 'z') {
+        throw new IllegalArgumentException(""Invalid locale format: "" + str);
+    }
+    if (len == 2) {
+        return new Locale(str, """");
+    } else {
+        if (str.charAt(2) != '_') {
+            throw new IllegalArgumentException(""Invalid locale format: "" + str);
+        }
+        char ch3 = str.charAt(3);
+        char ch4 = str.charAt(4);
+        if (ch3 < 'A' || ch3 > 'Z' || ch4 < 'A' || ch4 > 'Z') {
+            throw new IllegalArgumentException(""Invalid locale format: "" + str);
+        }
+        if (len == 5) {
+            return new Locale(str.substring(0, 2), str.substring(3, 5));
+        } else {
+            if (str.charAt(5) != '_') {
+                throw new IllegalArgumentException(""Invalid locale format: "" + str);
+            }
+            return new Locale(str.substring(0, 2), str.substring(3, 5), str.substring(6));
+        }
+    }
+}","public void test033() throws Throwable {
+    // Undeclared exception!
+    try {
+        LocaleUtils.toLocale(""ae|Wpu)I8n"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid locale format: ae|Wpu)I8n
+        //
+        verifyException(""org.apache.commons.lang.LocaleUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>Checks if the locale specified is in the list of available locales.</p>
+ *
+ * @param locale the Locale object to check if it is available
+ * @return true if the locale is a known locale
+ */
+public static boolean isAvailableLocale(Locale locale) {
+    return cAvailableLocaleSet.contains(locale);
+}","public void test1010() throws Throwable {
+    LocaleUtils.countriesByLanguage((String) null);
+    LocaleUtils.languagesByCountry((String) null);
+    LocaleUtils.languagesByCountry((String) null);
+    LocaleUtils localeUtils0 = new LocaleUtils();
+    LocaleUtils.languagesByCountry(""W8%Q&dA}l\""6)L}yU1}("");
+    LocaleUtils.toLocale((String) null);
+    // Undeclared exception!
+    try {
+        LocaleUtils.isAvailableLocale((Locale) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>Checks if the locale specified is in the list of available locales.</p>
+ *
+ * @param locale the Locale object to check if it is available
+ * @return true if the locale is a known locale
+ */
+public static boolean isAvailableLocale(Locale locale) {
+    return cAvailableLocaleSet.contains(locale);
+}","public void test1111() throws Throwable {
+    Locale locale0 = LocaleUtils.toLocale(""es"");
+    LocaleUtils.availableLocaleSet();
+    boolean boolean0 = LocaleUtils.isAvailableLocale(locale0);
+    assertTrue(boolean0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>Obtains an unmodifiable set of installed locales.</p>
+ *
+ * <p>This method is a wrapper around {@link Locale#getAvailableLocales()}.
+ * It is more efficient, as the JDK method must create a new array each
+ * time it is called.</p>
+ *
+ * @return the unmodifiable set of available locales
+ */
+public static Set availableLocaleSet() {
+    Set set = cAvailableLocaleSet;
+    if (set == null) {
+        set = new HashSet(availableLocaleList());
+        set = Collections.unmodifiableSet(set);
+        cAvailableLocaleSet = set;
+    }
+    return set;
+}","public void test1212() throws Throwable {
+    Set set0 = LocaleUtils.availableLocaleSet();
+    assertNotNull(set0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>Checks if the locale specified is in the list of available locales.</p>
+ *
+ * @param locale the Locale object to check if it is available
+ * @return true if the locale is a known locale
+ */
+public static boolean isAvailableLocale(Locale locale) {
+    return cAvailableLocaleSet.contains(locale);
+}","public void test1213() throws Throwable {
+    Set set0 = LocaleUtils.availableLocaleSet();
+    boolean boolean0 = LocaleUtils.isAvailableLocale((Locale) null);
+    assertFalse(boolean0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>Converts a String to a Locale.</p>
+ *
+ * <p>This method takes the string format of a locale and creates the
+ * locale object from it.</p>
+ *
+ * <pre>
+ *   LocaleUtils.toLocale(""en"")         = new Locale(""en"", """")
+ *   LocaleUtils.toLocale(""en_GB"")      = new Locale(""en"", ""GB"")
+ *   LocaleUtils.toLocale(""en_GB_xxx"")  = new Locale(""en"", ""GB"", ""xxx"")   (#)
+ * </pre>
+ *
+ * <p>(#) The behaviour of the JDK variant constructor changed between JDK1.3 and JDK1.4.
+ * In JDK1.3, the constructor upper cases the variant, in JDK1.4, it doesn't.
+ * Thus, the result from getVariant() may vary depending on your JDK.</p>
+ *
+ * <p>This method validates the input strictly.
+ * The language code must be lowercase.
+ * The country code must be uppercase.
+ * The separator must be an underscore.
+ * The length must be correct.
+ * </p>
+ *
+ * @param str  the locale String to convert, null returns null
+ * @return a Locale, null if null input
+ * @throws IllegalArgumentException if the string is an invalid format
+ */
+public static Locale toLocale(String str) {
+    if (str == null) {
+        return null;
+    }
+    int len = str.length();
+    if (len != 2 && len != 5 && len < 7) {
+        throw new IllegalArgumentException(""Invalid locale format: "" + str);
+    }
+    char ch0 = str.charAt(0);
+    char ch1 = str.charAt(1);
+    if (ch0 < 'a' || ch0 > 'z' || ch1 < 'a' || ch1 > 'z') {
+        throw new IllegalArgumentException(""Invalid locale format: "" + str);
+    }
+    if (len == 2) {
+        return new Locale(str, """");
+    } else {
+        if (str.charAt(2) != '_') {
+            throw new IllegalArgumentException(""Invalid locale format: "" + str);
+        }
+        char ch3 = str.charAt(3);
+        char ch4 = str.charAt(4);
+        if (ch3 < 'A' || ch3 > 'Z' || ch4 < 'A' || ch4 > 'Z') {
+            throw new IllegalArgumentException(""Invalid locale format: "" + str);
+        }
+        if (len == 5) {
+            return new Locale(str.substring(0, 2), str.substring(3, 5));
+        } else {
+            if (str.charAt(5) != '_') {
+                throw new IllegalArgumentException(""Invalid locale format: "" + str);
+            }
+            return new Locale(str.substring(0, 2), str.substring(3, 5), str.substring(6));
+        }
+    }
+}","public void test1617() throws Throwable {
+    // Undeclared exception!
+    try {
+        LocaleUtils.toLocale(""wrp8S!^Uid]%,U"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid locale format: wrp8S!^Uid]%,U
+        //
+        verifyException(""org.apache.commons.lang.LocaleUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>Converts a String to a Locale.</p>
+ *
+ * <p>This method takes the string format of a locale and creates the
+ * locale object from it.</p>
+ *
+ * <pre>
+ *   LocaleUtils.toLocale(""en"")         = new Locale(""en"", """")
+ *   LocaleUtils.toLocale(""en_GB"")      = new Locale(""en"", ""GB"")
+ *   LocaleUtils.toLocale(""en_GB_xxx"")  = new Locale(""en"", ""GB"", ""xxx"")   (#)
+ * </pre>
+ *
+ * <p>(#) The behaviour of the JDK variant constructor changed between JDK1.3 and JDK1.4.
+ * In JDK1.3, the constructor upper cases the variant, in JDK1.4, it doesn't.
+ * Thus, the result from getVariant() may vary depending on your JDK.</p>
+ *
+ * <p>This method validates the input strictly.
+ * The language code must be lowercase.
+ * The country code must be uppercase.
+ * The separator must be an underscore.
+ * The length must be correct.
+ * </p>
+ *
+ * @param str  the locale String to convert, null returns null
+ * @return a Locale, null if null input
+ * @throws IllegalArgumentException if the string is an invalid format
+ */
+public static Locale toLocale(String str) {
+    if (str == null) {
+        return null;
+    }
+    int len = str.length();
+    if (len != 2 && len != 5 && len < 7) {
+        throw new IllegalArgumentException(""Invalid locale format: "" + str);
+    }
+    char ch0 = str.charAt(0);
+    char ch1 = str.charAt(1);
+    if (ch0 < 'a' || ch0 > 'z' || ch1 < 'a' || ch1 > 'z') {
+        throw new IllegalArgumentException(""Invalid locale format: "" + str);
+    }
+    if (len == 2) {
+        return new Locale(str, """");
+    } else {
+        if (str.charAt(2) != '_') {
+            throw new IllegalArgumentException(""Invalid locale format: "" + str);
+        }
+        char ch3 = str.charAt(3);
+        char ch4 = str.charAt(4);
+        if (ch3 < 'A' || ch3 > 'Z' || ch4 < 'A' || ch4 > 'Z') {
+            throw new IllegalArgumentException(""Invalid locale format: "" + str);
+        }
+        if (len == 5) {
+            return new Locale(str.substring(0, 2), str.substring(3, 5));
+        } else {
+            if (str.charAt(5) != '_') {
+                throw new IllegalArgumentException(""Invalid locale format: "" + str);
+            }
+            return new Locale(str.substring(0, 2), str.substring(3, 5), str.substring(6));
+        }
+    }
+}","public void test1718() throws Throwable {
+    // Undeclared exception!
+    try {
+        LocaleUtils.toLocale(""i!<{nUY"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid locale format: i!<{nUY
+        //
+        verifyException(""org.apache.commons.lang.LocaleUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>Converts a String to a Locale.</p>
+ *
+ * <p>This method takes the string format of a locale and creates the
+ * locale object from it.</p>
+ *
+ * <pre>
+ *   LocaleUtils.toLocale(""en"")         = new Locale(""en"", """")
+ *   LocaleUtils.toLocale(""en_GB"")      = new Locale(""en"", ""GB"")
+ *   LocaleUtils.toLocale(""en_GB_xxx"")  = new Locale(""en"", ""GB"", ""xxx"")   (#)
+ * </pre>
+ *
+ * <p>(#) The behaviour of the JDK variant constructor changed between JDK1.3 and JDK1.4.
+ * In JDK1.3, the constructor upper cases the variant, in JDK1.4, it doesn't.
+ * Thus, the result from getVariant() may vary depending on your JDK.</p>
+ *
+ * <p>This method validates the input strictly.
+ * The language code must be lowercase.
+ * The country code must be uppercase.
+ * The separator must be an underscore.
+ * The length must be correct.
+ * </p>
+ *
+ * @param str  the locale String to convert, null returns null
+ * @return a Locale, null if null input
+ * @throws IllegalArgumentException if the string is an invalid format
+ */
+public static Locale toLocale(String str) {
+    if (str == null) {
+        return null;
+    }
+    int len = str.length();
+    if (len != 2 && len != 5 && len < 7) {
+        throw new IllegalArgumentException(""Invalid locale format: "" + str);
+    }
+    char ch0 = str.charAt(0);
+    char ch1 = str.charAt(1);
+    if (ch0 < 'a' || ch0 > 'z' || ch1 < 'a' || ch1 > 'z') {
+        throw new IllegalArgumentException(""Invalid locale format: "" + str);
+    }
+    if (len == 2) {
+        return new Locale(str, """");
+    } else {
+        if (str.charAt(2) != '_') {
+            throw new IllegalArgumentException(""Invalid locale format: "" + str);
+        }
+        char ch3 = str.charAt(3);
+        char ch4 = str.charAt(4);
+        if (ch3 < 'A' || ch3 > 'Z' || ch4 < 'A' || ch4 > 'Z') {
+            throw new IllegalArgumentException(""Invalid locale format: "" + str);
+        }
+        if (len == 5) {
+            return new Locale(str.substring(0, 2), str.substring(3, 5));
+        } else {
+            if (str.charAt(5) != '_') {
+                throw new IllegalArgumentException(""Invalid locale format: "" + str);
+            }
+            return new Locale(str.substring(0, 2), str.substring(3, 5), str.substring(6));
+        }
+    }
+}","public void test1819() throws Throwable {
+    // Undeclared exception!
+    try {
+        LocaleUtils.toLocale(""|{G,c6}UK%I^^["");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid locale format: |{G,c6}UK%I^^[
+        //
+        verifyException(""org.apache.commons.lang.LocaleUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>Converts a String to a Locale.</p>
+ *
+ * <p>This method takes the string format of a locale and creates the
+ * locale object from it.</p>
+ *
+ * <pre>
+ *   LocaleUtils.toLocale(""en"")         = new Locale(""en"", """")
+ *   LocaleUtils.toLocale(""en_GB"")      = new Locale(""en"", ""GB"")
+ *   LocaleUtils.toLocale(""en_GB_xxx"")  = new Locale(""en"", ""GB"", ""xxx"")   (#)
+ * </pre>
+ *
+ * <p>(#) The behaviour of the JDK variant constructor changed between JDK1.3 and JDK1.4.
+ * In JDK1.3, the constructor upper cases the variant, in JDK1.4, it doesn't.
+ * Thus, the result from getVariant() may vary depending on your JDK.</p>
+ *
+ * <p>This method validates the input strictly.
+ * The language code must be lowercase.
+ * The country code must be uppercase.
+ * The separator must be an underscore.
+ * The length must be correct.
+ * </p>
+ *
+ * @param str  the locale String to convert, null returns null
+ * @return a Locale, null if null input
+ * @throws IllegalArgumentException if the string is an invalid format
+ */
+public static Locale toLocale(String str) {
+    if (str == null) {
+        return null;
+    }
+    int len = str.length();
+    if (len != 2 && len != 5 && len < 7) {
+        throw new IllegalArgumentException(""Invalid locale format: "" + str);
+    }
+    char ch0 = str.charAt(0);
+    char ch1 = str.charAt(1);
+    if (ch0 < 'a' || ch0 > 'z' || ch1 < 'a' || ch1 > 'z') {
+        throw new IllegalArgumentException(""Invalid locale format: "" + str);
+    }
+    if (len == 2) {
+        return new Locale(str, """");
+    } else {
+        if (str.charAt(2) != '_') {
+            throw new IllegalArgumentException(""Invalid locale format: "" + str);
+        }
+        char ch3 = str.charAt(3);
+        char ch4 = str.charAt(4);
+        if (ch3 < 'A' || ch3 > 'Z' || ch4 < 'A' || ch4 > 'Z') {
+            throw new IllegalArgumentException(""Invalid locale format: "" + str);
+        }
+        if (len == 5) {
+            return new Locale(str.substring(0, 2), str.substring(3, 5));
+        } else {
+            if (str.charAt(5) != '_') {
+                throw new IllegalArgumentException(""Invalid locale format: "" + str);
+            }
+            return new Locale(str.substring(0, 2), str.substring(3, 5), str.substring(6));
+        }
+    }
+}","public void test1920() throws Throwable {
+    // Undeclared exception!
+    try {
+        LocaleUtils.toLocale(""7744;[8lT"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid locale format: 7744;[8lT
+        //
+        verifyException(""org.apache.commons.lang.LocaleUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>Converts a String to a Locale.</p>
+ *
+ * <p>This method takes the string format of a locale and creates the
+ * locale object from it.</p>
+ *
+ * <pre>
+ *   LocaleUtils.toLocale(""en"")         = new Locale(""en"", """")
+ *   LocaleUtils.toLocale(""en_GB"")      = new Locale(""en"", ""GB"")
+ *   LocaleUtils.toLocale(""en_GB_xxx"")  = new Locale(""en"", ""GB"", ""xxx"")   (#)
+ * </pre>
+ *
+ * <p>(#) The behaviour of the JDK variant constructor changed between JDK1.3 and JDK1.4.
+ * In JDK1.3, the constructor upper cases the variant, in JDK1.4, it doesn't.
+ * Thus, the result from getVariant() may vary depending on your JDK.</p>
+ *
+ * <p>This method validates the input strictly.
+ * The language code must be lowercase.
+ * The country code must be uppercase.
+ * The separator must be an underscore.
+ * The length must be correct.
+ * </p>
+ *
+ * @param str  the locale String to convert, null returns null
+ * @return a Locale, null if null input
+ * @throws IllegalArgumentException if the string is an invalid format
+ */
+public static Locale toLocale(String str) {
+    if (str == null) {
+        return null;
+    }
+    int len = str.length();
+    if (len != 2 && len != 5 && len < 7) {
+        throw new IllegalArgumentException(""Invalid locale format: "" + str);
+    }
+    char ch0 = str.charAt(0);
+    char ch1 = str.charAt(1);
+    if (ch0 < 'a' || ch0 > 'z' || ch1 < 'a' || ch1 > 'z') {
+        throw new IllegalArgumentException(""Invalid locale format: "" + str);
+    }
+    if (len == 2) {
+        return new Locale(str, """");
+    } else {
+        if (str.charAt(2) != '_') {
+            throw new IllegalArgumentException(""Invalid locale format: "" + str);
+        }
+        char ch3 = str.charAt(3);
+        char ch4 = str.charAt(4);
+        if (ch3 < 'A' || ch3 > 'Z' || ch4 < 'A' || ch4 > 'Z') {
+            throw new IllegalArgumentException(""Invalid locale format: "" + str);
+        }
+        if (len == 5) {
+            return new Locale(str.substring(0, 2), str.substring(3, 5));
+        } else {
+            if (str.charAt(5) != '_') {
+                throw new IllegalArgumentException(""Invalid locale format: "" + str);
+            }
+            return new Locale(str.substring(0, 2), str.substring(3, 5), str.substring(6));
+        }
+    }
+}","public void test2021() throws Throwable {
+    // Undeclared exception!
+    try {
+        LocaleUtils.toLocale("""");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid locale format:
+        //
+        verifyException(""org.apache.commons.lang.LocaleUtils"", e);
+    }
+}",""

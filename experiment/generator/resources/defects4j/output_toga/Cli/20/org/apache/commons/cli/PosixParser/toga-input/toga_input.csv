@@ -1,0 +1,859 @@
+focal_method,test_prefix,docstring
+"protected void burstToken(String token, boolean stopAtNonOption) {
+    for (int i = 1; i < token.length(); i++) {
+        String ch = String.valueOf(token.charAt(i));
+        if (options.hasOption(ch)) {
+            tokens.add(""-"" + ch);
+            currentOption = options.getOption(ch);
+            if (currentOption.hasArg() && (token.length() != (i + 1))) {
+                tokens.add(token.substring(i + 1));
+                break;
+            }
+        } else if (stopAtNonOption) {
+            process(token.substring(i));
+            break;
+        } else {
+            tokens.add(token);
+            break;
+        }
+    }
+}","public void test000() throws Throwable {
+    PosixParser posixParser0 = new PosixParser();
+    Options options0 = new Options();
+    String[] stringArray0 = new String[0];
+    posixParser0.parse(options0, stringArray0);
+    options0.addOption("""", true, ""6-^"");
+    posixParser0.burstToken(""6-^"", true);
+    posixParser0.burstToken(""H%s"", true);
+}","/**
+ * <p>Breaks <code>token</code> into its constituent parts
+ * using the following algorithm.
+ * <ul>
+ *  <li>ignore the first character (""<b>-</b>"")</li>
+ *  <li>foreach remaining character check if an {@link Option}
+ *  exists with that id.</li>
+ *  <li>if an {@link Option} does exist then add that character
+ *  prepended with ""<b>-</b>"" to the list of processed tokens.</li>
+ *  <li>if the {@link Option} can have an argument value and there
+ *  are remaining characters in the token then add the remaining
+ *  characters as a token to the list of processed tokens.</li>
+ *  <li>if an {@link Option} does <b>NOT</b> exist <b>AND</b>
+ *  <code>stopAtNonOption</code> <b>IS</b> set then add the special token
+ *  ""<b>--</b>"" followed by the remaining characters and also
+ *  the remaining tokens directly to the processed tokens list.</li>
+ *  <li>if an {@link Option} does <b>NOT</b> exist <b>AND</b>
+ *  <code>stopAtNonOption</code> <b>IS NOT</b> set then add that
+ *  character prepended with ""<b>-</b>"".</li>
+ * </ul>
+ * </p>
+ *
+ * @param token The current token to be <b>burst</b>
+ * @param stopAtNonOption Specifies whether to stop processing
+ * at the first non-Option encountered.
+ */"
+"protected String[] flatten(Options options, String[] arguments, boolean stopAtNonOption) {
+    init();
+    this.options = options;
+    // an iterator for the command line tokens
+    Iterator iter = Arrays.asList(arguments).iterator();
+    // process each command line token
+    while (iter.hasNext()) {
+        // get the next command line token
+        String token = (String) iter.next();
+        // handle long option --foo or --foo=bar
+        if (token.startsWith(""--"")) {
+            if (token.indexOf('=') != -1) {
+                tokens.add(token.substring(0, token.indexOf('=')));
+                tokens.add(token.substring(token.indexOf('=') + 1, token.length()));
+            } else {
+                tokens.add(token);
+            }
+        } else // single hyphen
+        if (""-"".equals(token)) {
+            tokens.add(token);
+        } else if (token.startsWith(""-"")) {
+            if (token.length() == 2) {
+                processOptionToken(token, stopAtNonOption);
+            } else if (options.hasOption(token)) {
+                tokens.add(token);
+            } else // requires bursting
+            {
+                burstToken(token, stopAtNonOption);
+            }
+        } else if (stopAtNonOption) {
+            process(token);
+        } else {
+            tokens.add(token);
+        }
+        gobble(iter);
+    }
+    return (String[]) tokens.toArray(new String[tokens.size()]);
+}","public void test011() throws Throwable {
+    PosixParser posixParser0 = new PosixParser();
+    Options options0 = new Options();
+    String[] stringArray0 = new String[7];
+    stringArray0[0] = ""--22h=4)6o"";
+    // Undeclared exception!
+    try {
+        posixParser0.flatten(options0, stringArray0, false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * <p>An implementation of {@link Parser}'s abstract
+ * {@link Parser#flatten(Options,String[],boolean) flatten} method.</p>
+ *
+ * <p>The following are the rules used by this flatten method.
+ * <ol>
+ *  <li>if <code>stopAtNonOption</code> is <b>true</b> then do not
+ *  burst anymore of <code>arguments</code> entries, just add each
+ *  successive entry without further processing.  Otherwise, ignore
+ *  <code>stopAtNonOption</code>.</li>
+ *  <li>if the current <code>arguments</code> entry is ""<b>--</b>""
+ *  just add the entry to the list of processed tokens</li>
+ *  <li>if the current <code>arguments</code> entry is ""<b>-</b>""
+ *  just add the entry to the list of processed tokens</li>
+ *  <li>if the current <code>arguments</code> entry is two characters
+ *  in length and the first character is ""<b>-</b>"" then check if this
+ *  is a valid {@link Option} id.  If it is a valid id, then add the
+ *  entry to the list of processed tokens and set the current {@link Option}
+ *  member.  If it is not a valid id and <code>stopAtNonOption</code>
+ *  is true, then the remaining entries are copied to the list of
+ *  processed tokens.  Otherwise, the current entry is ignored.</li>
+ *  <li>if the current <code>arguments</code> entry is more than two
+ *  characters in length and the first character is ""<b>-</b>"" then
+ *  we need to burst the entry to determine its constituents.  For more
+ *  information on the bursting algorithm see
+ *  {@link PosixParser#burstToken(String, boolean) burstToken}.</li>
+ *  <li>if the current <code>arguments</code> entry is not handled
+ *  by any of the previous rules, then the entry is added to the list
+ *  of processed tokens.</li>
+ * </ol>
+ * </p>
+ *
+ * @param options The command line {@link Options}
+ * @param arguments The command line arguments to be parsed
+ * @param stopAtNonOption Specifies whether to stop flattening
+ * when an non option is found.
+ * @return The flattened <code>arguments</code> String array.
+ */"
+"protected String[] flatten(Options options, String[] arguments, boolean stopAtNonOption) {
+    init();
+    this.options = options;
+    // an iterator for the command line tokens
+    Iterator iter = Arrays.asList(arguments).iterator();
+    // process each command line token
+    while (iter.hasNext()) {
+        // get the next command line token
+        String token = (String) iter.next();
+        // handle long option --foo or --foo=bar
+        if (token.startsWith(""--"")) {
+            if (token.indexOf('=') != -1) {
+                tokens.add(token.substring(0, token.indexOf('=')));
+                tokens.add(token.substring(token.indexOf('=') + 1, token.length()));
+            } else {
+                tokens.add(token);
+            }
+        } else // single hyphen
+        if (""-"".equals(token)) {
+            tokens.add(token);
+        } else if (token.startsWith(""-"")) {
+            if (token.length() == 2) {
+                processOptionToken(token, stopAtNonOption);
+            } else if (options.hasOption(token)) {
+                tokens.add(token);
+            } else // requires bursting
+            {
+                burstToken(token, stopAtNonOption);
+            }
+        } else if (stopAtNonOption) {
+            process(token);
+        } else {
+            tokens.add(token);
+        }
+        gobble(iter);
+    }
+    return (String[]) tokens.toArray(new String[tokens.size()]);
+}","public void test022() throws Throwable {
+    PosixParser posixParser0 = new PosixParser();
+    Options options0 = new Options();
+    String[] stringArray0 = new String[7];
+    stringArray0[0] = ""--22hE4)6o"";
+    // Undeclared exception!
+    try {
+        posixParser0.flatten(options0, stringArray0, false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * <p>An implementation of {@link Parser}'s abstract
+ * {@link Parser#flatten(Options,String[],boolean) flatten} method.</p>
+ *
+ * <p>The following are the rules used by this flatten method.
+ * <ol>
+ *  <li>if <code>stopAtNonOption</code> is <b>true</b> then do not
+ *  burst anymore of <code>arguments</code> entries, just add each
+ *  successive entry without further processing.  Otherwise, ignore
+ *  <code>stopAtNonOption</code>.</li>
+ *  <li>if the current <code>arguments</code> entry is ""<b>--</b>""
+ *  just add the entry to the list of processed tokens</li>
+ *  <li>if the current <code>arguments</code> entry is ""<b>-</b>""
+ *  just add the entry to the list of processed tokens</li>
+ *  <li>if the current <code>arguments</code> entry is two characters
+ *  in length and the first character is ""<b>-</b>"" then check if this
+ *  is a valid {@link Option} id.  If it is a valid id, then add the
+ *  entry to the list of processed tokens and set the current {@link Option}
+ *  member.  If it is not a valid id and <code>stopAtNonOption</code>
+ *  is true, then the remaining entries are copied to the list of
+ *  processed tokens.  Otherwise, the current entry is ignored.</li>
+ *  <li>if the current <code>arguments</code> entry is more than two
+ *  characters in length and the first character is ""<b>-</b>"" then
+ *  we need to burst the entry to determine its constituents.  For more
+ *  information on the bursting algorithm see
+ *  {@link PosixParser#burstToken(String, boolean) burstToken}.</li>
+ *  <li>if the current <code>arguments</code> entry is not handled
+ *  by any of the previous rules, then the entry is added to the list
+ *  of processed tokens.</li>
+ * </ol>
+ * </p>
+ *
+ * @param options The command line {@link Options}
+ * @param arguments The command line arguments to be parsed
+ * @param stopAtNonOption Specifies whether to stop flattening
+ * when an non option is found.
+ * @return The flattened <code>arguments</code> String array.
+ */"
+"protected String[] flatten(Options options, String[] arguments, boolean stopAtNonOption) {
+    init();
+    this.options = options;
+    // an iterator for the command line tokens
+    Iterator iter = Arrays.asList(arguments).iterator();
+    // process each command line token
+    while (iter.hasNext()) {
+        // get the next command line token
+        String token = (String) iter.next();
+        // handle long option --foo or --foo=bar
+        if (token.startsWith(""--"")) {
+            if (token.indexOf('=') != -1) {
+                tokens.add(token.substring(0, token.indexOf('=')));
+                tokens.add(token.substring(token.indexOf('=') + 1, token.length()));
+            } else {
+                tokens.add(token);
+            }
+        } else // single hyphen
+        if (""-"".equals(token)) {
+            tokens.add(token);
+        } else if (token.startsWith(""-"")) {
+            if (token.length() == 2) {
+                processOptionToken(token, stopAtNonOption);
+            } else if (options.hasOption(token)) {
+                tokens.add(token);
+            } else // requires bursting
+            {
+                burstToken(token, stopAtNonOption);
+            }
+        } else if (stopAtNonOption) {
+            process(token);
+        } else {
+            tokens.add(token);
+        }
+        gobble(iter);
+    }
+    return (String[]) tokens.toArray(new String[tokens.size()]);
+}","public void test033() throws Throwable {
+    PosixParser posixParser0 = new PosixParser();
+    Options options0 = new Options();
+    String[] stringArray0 = new String[3];
+    stringArray0[0] = ""-"";
+    // Undeclared exception!
+    try {
+        posixParser0.flatten(options0, stringArray0, false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * <p>An implementation of {@link Parser}'s abstract
+ * {@link Parser#flatten(Options,String[],boolean) flatten} method.</p>
+ *
+ * <p>The following are the rules used by this flatten method.
+ * <ol>
+ *  <li>if <code>stopAtNonOption</code> is <b>true</b> then do not
+ *  burst anymore of <code>arguments</code> entries, just add each
+ *  successive entry without further processing.  Otherwise, ignore
+ *  <code>stopAtNonOption</code>.</li>
+ *  <li>if the current <code>arguments</code> entry is ""<b>--</b>""
+ *  just add the entry to the list of processed tokens</li>
+ *  <li>if the current <code>arguments</code> entry is ""<b>-</b>""
+ *  just add the entry to the list of processed tokens</li>
+ *  <li>if the current <code>arguments</code> entry is two characters
+ *  in length and the first character is ""<b>-</b>"" then check if this
+ *  is a valid {@link Option} id.  If it is a valid id, then add the
+ *  entry to the list of processed tokens and set the current {@link Option}
+ *  member.  If it is not a valid id and <code>stopAtNonOption</code>
+ *  is true, then the remaining entries are copied to the list of
+ *  processed tokens.  Otherwise, the current entry is ignored.</li>
+ *  <li>if the current <code>arguments</code> entry is more than two
+ *  characters in length and the first character is ""<b>-</b>"" then
+ *  we need to burst the entry to determine its constituents.  For more
+ *  information on the bursting algorithm see
+ *  {@link PosixParser#burstToken(String, boolean) burstToken}.</li>
+ *  <li>if the current <code>arguments</code> entry is not handled
+ *  by any of the previous rules, then the entry is added to the list
+ *  of processed tokens.</li>
+ * </ol>
+ * </p>
+ *
+ * @param options The command line {@link Options}
+ * @param arguments The command line arguments to be parsed
+ * @param stopAtNonOption Specifies whether to stop flattening
+ * when an non option is found.
+ * @return The flattened <code>arguments</code> String array.
+ */"
+"protected String[] flatten(Options options, String[] arguments, boolean stopAtNonOption) {
+    init();
+    this.options = options;
+    // an iterator for the command line tokens
+    Iterator iter = Arrays.asList(arguments).iterator();
+    // process each command line token
+    while (iter.hasNext()) {
+        // get the next command line token
+        String token = (String) iter.next();
+        // handle long option --foo or --foo=bar
+        if (token.startsWith(""--"")) {
+            if (token.indexOf('=') != -1) {
+                tokens.add(token.substring(0, token.indexOf('=')));
+                tokens.add(token.substring(token.indexOf('=') + 1, token.length()));
+            } else {
+                tokens.add(token);
+            }
+        } else // single hyphen
+        if (""-"".equals(token)) {
+            tokens.add(token);
+        } else if (token.startsWith(""-"")) {
+            if (token.length() == 2) {
+                processOptionToken(token, stopAtNonOption);
+            } else if (options.hasOption(token)) {
+                tokens.add(token);
+            } else // requires bursting
+            {
+                burstToken(token, stopAtNonOption);
+            }
+        } else if (stopAtNonOption) {
+            process(token);
+        } else {
+            tokens.add(token);
+        }
+        gobble(iter);
+    }
+    return (String[]) tokens.toArray(new String[tokens.size()]);
+}","public void test044() throws Throwable {
+    PosixParser posixParser0 = new PosixParser();
+    Options options0 = new Options();
+    String[] stringArray0 = new String[8];
+    stringArray0[0] = ""-v"";
+    String[] stringArray1 = posixParser0.flatten(options0, stringArray0, true);
+    assertEquals(8, stringArray1.length);
+}","/**
+ * <p>An implementation of {@link Parser}'s abstract
+ * {@link Parser#flatten(Options,String[],boolean) flatten} method.</p>
+ *
+ * <p>The following are the rules used by this flatten method.
+ * <ol>
+ *  <li>if <code>stopAtNonOption</code> is <b>true</b> then do not
+ *  burst anymore of <code>arguments</code> entries, just add each
+ *  successive entry without further processing.  Otherwise, ignore
+ *  <code>stopAtNonOption</code>.</li>
+ *  <li>if the current <code>arguments</code> entry is ""<b>--</b>""
+ *  just add the entry to the list of processed tokens</li>
+ *  <li>if the current <code>arguments</code> entry is ""<b>-</b>""
+ *  just add the entry to the list of processed tokens</li>
+ *  <li>if the current <code>arguments</code> entry is two characters
+ *  in length and the first character is ""<b>-</b>"" then check if this
+ *  is a valid {@link Option} id.  If it is a valid id, then add the
+ *  entry to the list of processed tokens and set the current {@link Option}
+ *  member.  If it is not a valid id and <code>stopAtNonOption</code>
+ *  is true, then the remaining entries are copied to the list of
+ *  processed tokens.  Otherwise, the current entry is ignored.</li>
+ *  <li>if the current <code>arguments</code> entry is more than two
+ *  characters in length and the first character is ""<b>-</b>"" then
+ *  we need to burst the entry to determine its constituents.  For more
+ *  information on the bursting algorithm see
+ *  {@link PosixParser#burstToken(String, boolean) burstToken}.</li>
+ *  <li>if the current <code>arguments</code> entry is not handled
+ *  by any of the previous rules, then the entry is added to the list
+ *  of processed tokens.</li>
+ * </ol>
+ * </p>
+ *
+ * @param options The command line {@link Options}
+ * @param arguments The command line arguments to be parsed
+ * @param stopAtNonOption Specifies whether to stop flattening
+ * when an non option is found.
+ * @return The flattened <code>arguments</code> String array.
+ */"
+"protected String[] flatten(Options options, String[] arguments, boolean stopAtNonOption) {
+    init();
+    this.options = options;
+    // an iterator for the command line tokens
+    Iterator iter = Arrays.asList(arguments).iterator();
+    // process each command line token
+    while (iter.hasNext()) {
+        // get the next command line token
+        String token = (String) iter.next();
+        // handle long option --foo or --foo=bar
+        if (token.startsWith(""--"")) {
+            if (token.indexOf('=') != -1) {
+                tokens.add(token.substring(0, token.indexOf('=')));
+                tokens.add(token.substring(token.indexOf('=') + 1, token.length()));
+            } else {
+                tokens.add(token);
+            }
+        } else // single hyphen
+        if (""-"".equals(token)) {
+            tokens.add(token);
+        } else if (token.startsWith(""-"")) {
+            if (token.length() == 2) {
+                processOptionToken(token, stopAtNonOption);
+            } else if (options.hasOption(token)) {
+                tokens.add(token);
+            } else // requires bursting
+            {
+                burstToken(token, stopAtNonOption);
+            }
+        } else if (stopAtNonOption) {
+            process(token);
+        } else {
+            tokens.add(token);
+        }
+        gobble(iter);
+    }
+    return (String[]) tokens.toArray(new String[tokens.size()]);
+}","public void test055() throws Throwable {
+    PosixParser posixParser0 = new PosixParser();
+    Options options0 = new Options();
+    String[] stringArray0 = new String[7];
+    stringArray0[0] = ""-v%ZQE"";
+    Options options1 = options0.addOption("""", ""v%ZQE"", true, ""v%ZQE"");
+    // Undeclared exception!
+    try {
+        posixParser0.flatten(options1, stringArray0, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * <p>An implementation of {@link Parser}'s abstract
+ * {@link Parser#flatten(Options,String[],boolean) flatten} method.</p>
+ *
+ * <p>The following are the rules used by this flatten method.
+ * <ol>
+ *  <li>if <code>stopAtNonOption</code> is <b>true</b> then do not
+ *  burst anymore of <code>arguments</code> entries, just add each
+ *  successive entry without further processing.  Otherwise, ignore
+ *  <code>stopAtNonOption</code>.</li>
+ *  <li>if the current <code>arguments</code> entry is ""<b>--</b>""
+ *  just add the entry to the list of processed tokens</li>
+ *  <li>if the current <code>arguments</code> entry is ""<b>-</b>""
+ *  just add the entry to the list of processed tokens</li>
+ *  <li>if the current <code>arguments</code> entry is two characters
+ *  in length and the first character is ""<b>-</b>"" then check if this
+ *  is a valid {@link Option} id.  If it is a valid id, then add the
+ *  entry to the list of processed tokens and set the current {@link Option}
+ *  member.  If it is not a valid id and <code>stopAtNonOption</code>
+ *  is true, then the remaining entries are copied to the list of
+ *  processed tokens.  Otherwise, the current entry is ignored.</li>
+ *  <li>if the current <code>arguments</code> entry is more than two
+ *  characters in length and the first character is ""<b>-</b>"" then
+ *  we need to burst the entry to determine its constituents.  For more
+ *  information on the bursting algorithm see
+ *  {@link PosixParser#burstToken(String, boolean) burstToken}.</li>
+ *  <li>if the current <code>arguments</code> entry is not handled
+ *  by any of the previous rules, then the entry is added to the list
+ *  of processed tokens.</li>
+ * </ol>
+ * </p>
+ *
+ * @param options The command line {@link Options}
+ * @param arguments The command line arguments to be parsed
+ * @param stopAtNonOption Specifies whether to stop flattening
+ * when an non option is found.
+ * @return The flattened <code>arguments</code> String array.
+ */"
+"protected String[] flatten(Options options, String[] arguments, boolean stopAtNonOption) {
+    init();
+    this.options = options;
+    // an iterator for the command line tokens
+    Iterator iter = Arrays.asList(arguments).iterator();
+    // process each command line token
+    while (iter.hasNext()) {
+        // get the next command line token
+        String token = (String) iter.next();
+        // handle long option --foo or --foo=bar
+        if (token.startsWith(""--"")) {
+            if (token.indexOf('=') != -1) {
+                tokens.add(token.substring(0, token.indexOf('=')));
+                tokens.add(token.substring(token.indexOf('=') + 1, token.length()));
+            } else {
+                tokens.add(token);
+            }
+        } else // single hyphen
+        if (""-"".equals(token)) {
+            tokens.add(token);
+        } else if (token.startsWith(""-"")) {
+            if (token.length() == 2) {
+                processOptionToken(token, stopAtNonOption);
+            } else if (options.hasOption(token)) {
+                tokens.add(token);
+            } else // requires bursting
+            {
+                burstToken(token, stopAtNonOption);
+            }
+        } else if (stopAtNonOption) {
+            process(token);
+        } else {
+            tokens.add(token);
+        }
+        gobble(iter);
+    }
+    return (String[]) tokens.toArray(new String[tokens.size()]);
+}","public void test066() throws Throwable {
+    PosixParser posixParser0 = new PosixParser();
+    Options options0 = new Options();
+    String[] stringArray0 = new String[5];
+    stringArray0[0] = ""6--"";
+    String[] stringArray1 = posixParser0.flatten(options0, stringArray0, true);
+    assertEquals(6, stringArray1.length);
+}","/**
+ * <p>An implementation of {@link Parser}'s abstract
+ * {@link Parser#flatten(Options,String[],boolean) flatten} method.</p>
+ *
+ * <p>The following are the rules used by this flatten method.
+ * <ol>
+ *  <li>if <code>stopAtNonOption</code> is <b>true</b> then do not
+ *  burst anymore of <code>arguments</code> entries, just add each
+ *  successive entry without further processing.  Otherwise, ignore
+ *  <code>stopAtNonOption</code>.</li>
+ *  <li>if the current <code>arguments</code> entry is ""<b>--</b>""
+ *  just add the entry to the list of processed tokens</li>
+ *  <li>if the current <code>arguments</code> entry is ""<b>-</b>""
+ *  just add the entry to the list of processed tokens</li>
+ *  <li>if the current <code>arguments</code> entry is two characters
+ *  in length and the first character is ""<b>-</b>"" then check if this
+ *  is a valid {@link Option} id.  If it is a valid id, then add the
+ *  entry to the list of processed tokens and set the current {@link Option}
+ *  member.  If it is not a valid id and <code>stopAtNonOption</code>
+ *  is true, then the remaining entries are copied to the list of
+ *  processed tokens.  Otherwise, the current entry is ignored.</li>
+ *  <li>if the current <code>arguments</code> entry is more than two
+ *  characters in length and the first character is ""<b>-</b>"" then
+ *  we need to burst the entry to determine its constituents.  For more
+ *  information on the bursting algorithm see
+ *  {@link PosixParser#burstToken(String, boolean) burstToken}.</li>
+ *  <li>if the current <code>arguments</code> entry is not handled
+ *  by any of the previous rules, then the entry is added to the list
+ *  of processed tokens.</li>
+ * </ol>
+ * </p>
+ *
+ * @param options The command line {@link Options}
+ * @param arguments The command line arguments to be parsed
+ * @param stopAtNonOption Specifies whether to stop flattening
+ * when an non option is found.
+ * @return The flattened <code>arguments</code> String array.
+ */"
+"protected void burstToken(String token, boolean stopAtNonOption) {
+    for (int i = 1; i < token.length(); i++) {
+        String ch = String.valueOf(token.charAt(i));
+        if (options.hasOption(ch)) {
+            tokens.add(""-"" + ch);
+            currentOption = options.getOption(ch);
+            if (currentOption.hasArg() && (token.length() != (i + 1))) {
+                tokens.add(token.substring(i + 1));
+                break;
+            }
+        } else if (stopAtNonOption) {
+            process(token.substring(i));
+            break;
+        } else {
+            tokens.add(token);
+            break;
+        }
+    }
+}","public void test077() throws Throwable {
+    PosixParser posixParser0 = new PosixParser();
+    Options options0 = new Options();
+    String[] stringArray0 = new String[1];
+    stringArray0[0] = ""6-^"";
+    Options options1 = options0.addOption("""", ""6-^"", false, """");
+    posixParser0.flatten(options1, stringArray0, false);
+    posixParser0.burstToken(""6-^"", true);
+}","/**
+ * <p>Breaks <code>token</code> into its constituent parts
+ * using the following algorithm.
+ * <ul>
+ *  <li>ignore the first character (""<b>-</b>"")</li>
+ *  <li>foreach remaining character check if an {@link Option}
+ *  exists with that id.</li>
+ *  <li>if an {@link Option} does exist then add that character
+ *  prepended with ""<b>-</b>"" to the list of processed tokens.</li>
+ *  <li>if the {@link Option} can have an argument value and there
+ *  are remaining characters in the token then add the remaining
+ *  characters as a token to the list of processed tokens.</li>
+ *  <li>if an {@link Option} does <b>NOT</b> exist <b>AND</b>
+ *  <code>stopAtNonOption</code> <b>IS</b> set then add the special token
+ *  ""<b>--</b>"" followed by the remaining characters and also
+ *  the remaining tokens directly to the processed tokens list.</li>
+ *  <li>if an {@link Option} does <b>NOT</b> exist <b>AND</b>
+ *  <code>stopAtNonOption</code> <b>IS NOT</b> set then add that
+ *  character prepended with ""<b>-</b>"".</li>
+ * </ul>
+ * </p>
+ *
+ * @param token The current token to be <b>burst</b>
+ * @param stopAtNonOption Specifies whether to stop processing
+ * at the first non-Option encountered.
+ */"
+"protected String[] flatten(Options options, String[] arguments, boolean stopAtNonOption) {
+    init();
+    this.options = options;
+    // an iterator for the command line tokens
+    Iterator iter = Arrays.asList(arguments).iterator();
+    // process each command line token
+    while (iter.hasNext()) {
+        // get the next command line token
+        String token = (String) iter.next();
+        // handle long option --foo or --foo=bar
+        if (token.startsWith(""--"")) {
+            if (token.indexOf('=') != -1) {
+                tokens.add(token.substring(0, token.indexOf('=')));
+                tokens.add(token.substring(token.indexOf('=') + 1, token.length()));
+            } else {
+                tokens.add(token);
+            }
+        } else // single hyphen
+        if (""-"".equals(token)) {
+            tokens.add(token);
+        } else if (token.startsWith(""-"")) {
+            if (token.length() == 2) {
+                processOptionToken(token, stopAtNonOption);
+            } else if (options.hasOption(token)) {
+                tokens.add(token);
+            } else // requires bursting
+            {
+                burstToken(token, stopAtNonOption);
+            }
+        } else if (stopAtNonOption) {
+            process(token);
+        } else {
+            tokens.add(token);
+        }
+        gobble(iter);
+    }
+    return (String[]) tokens.toArray(new String[tokens.size()]);
+}","public void test088() throws Throwable {
+    PosixParser posixParser0 = new PosixParser();
+    Options options0 = new Options();
+    String[] stringArray0 = new String[7];
+    stringArray0[0] = ""-v%ZQE"";
+    stringArray0[1] = ""-v%ZQE"";
+    stringArray0[2] = ""-v%ZQE"";
+    stringArray0[3] = ""-y"";
+    options0.addOption(""y"", true, ""y"");
+    // Undeclared exception!
+    try {
+        posixParser0.flatten(options0, stringArray0, false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * <p>An implementation of {@link Parser}'s abstract
+ * {@link Parser#flatten(Options,String[],boolean) flatten} method.</p>
+ *
+ * <p>The following are the rules used by this flatten method.
+ * <ol>
+ *  <li>if <code>stopAtNonOption</code> is <b>true</b> then do not
+ *  burst anymore of <code>arguments</code> entries, just add each
+ *  successive entry without further processing.  Otherwise, ignore
+ *  <code>stopAtNonOption</code>.</li>
+ *  <li>if the current <code>arguments</code> entry is ""<b>--</b>""
+ *  just add the entry to the list of processed tokens</li>
+ *  <li>if the current <code>arguments</code> entry is ""<b>-</b>""
+ *  just add the entry to the list of processed tokens</li>
+ *  <li>if the current <code>arguments</code> entry is two characters
+ *  in length and the first character is ""<b>-</b>"" then check if this
+ *  is a valid {@link Option} id.  If it is a valid id, then add the
+ *  entry to the list of processed tokens and set the current {@link Option}
+ *  member.  If it is not a valid id and <code>stopAtNonOption</code>
+ *  is true, then the remaining entries are copied to the list of
+ *  processed tokens.  Otherwise, the current entry is ignored.</li>
+ *  <li>if the current <code>arguments</code> entry is more than two
+ *  characters in length and the first character is ""<b>-</b>"" then
+ *  we need to burst the entry to determine its constituents.  For more
+ *  information on the bursting algorithm see
+ *  {@link PosixParser#burstToken(String, boolean) burstToken}.</li>
+ *  <li>if the current <code>arguments</code> entry is not handled
+ *  by any of the previous rules, then the entry is added to the list
+ *  of processed tokens.</li>
+ * </ol>
+ * </p>
+ *
+ * @param options The command line {@link Options}
+ * @param arguments The command line arguments to be parsed
+ * @param stopAtNonOption Specifies whether to stop flattening
+ * when an non option is found.
+ * @return The flattened <code>arguments</code> String array.
+ */"
+"protected String[] flatten(Options options, String[] arguments, boolean stopAtNonOption) {
+    init();
+    this.options = options;
+    // an iterator for the command line tokens
+    Iterator iter = Arrays.asList(arguments).iterator();
+    // process each command line token
+    while (iter.hasNext()) {
+        // get the next command line token
+        String token = (String) iter.next();
+        // handle long option --foo or --foo=bar
+        if (token.startsWith(""--"")) {
+            if (token.indexOf('=') != -1) {
+                tokens.add(token.substring(0, token.indexOf('=')));
+                tokens.add(token.substring(token.indexOf('=') + 1, token.length()));
+            } else {
+                tokens.add(token);
+            }
+        } else // single hyphen
+        if (""-"".equals(token)) {
+            tokens.add(token);
+        } else if (token.startsWith(""-"")) {
+            if (token.length() == 2) {
+                processOptionToken(token, stopAtNonOption);
+            } else if (options.hasOption(token)) {
+                tokens.add(token);
+            } else // requires bursting
+            {
+                burstToken(token, stopAtNonOption);
+            }
+        } else if (stopAtNonOption) {
+            process(token);
+        } else {
+            tokens.add(token);
+        }
+        gobble(iter);
+    }
+    return (String[]) tokens.toArray(new String[tokens.size()]);
+}","public void test099() throws Throwable {
+    PosixParser posixParser0 = new PosixParser();
+    Options options0 = new Options();
+    String[] stringArray0 = new String[6];
+    stringArray0[0] = ""-v"";
+    // Undeclared exception!
+    try {
+        posixParser0.flatten(options0, stringArray0, false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * <p>An implementation of {@link Parser}'s abstract
+ * {@link Parser#flatten(Options,String[],boolean) flatten} method.</p>
+ *
+ * <p>The following are the rules used by this flatten method.
+ * <ol>
+ *  <li>if <code>stopAtNonOption</code> is <b>true</b> then do not
+ *  burst anymore of <code>arguments</code> entries, just add each
+ *  successive entry without further processing.  Otherwise, ignore
+ *  <code>stopAtNonOption</code>.</li>
+ *  <li>if the current <code>arguments</code> entry is ""<b>--</b>""
+ *  just add the entry to the list of processed tokens</li>
+ *  <li>if the current <code>arguments</code> entry is ""<b>-</b>""
+ *  just add the entry to the list of processed tokens</li>
+ *  <li>if the current <code>arguments</code> entry is two characters
+ *  in length and the first character is ""<b>-</b>"" then check if this
+ *  is a valid {@link Option} id.  If it is a valid id, then add the
+ *  entry to the list of processed tokens and set the current {@link Option}
+ *  member.  If it is not a valid id and <code>stopAtNonOption</code>
+ *  is true, then the remaining entries are copied to the list of
+ *  processed tokens.  Otherwise, the current entry is ignored.</li>
+ *  <li>if the current <code>arguments</code> entry is more than two
+ *  characters in length and the first character is ""<b>-</b>"" then
+ *  we need to burst the entry to determine its constituents.  For more
+ *  information on the bursting algorithm see
+ *  {@link PosixParser#burstToken(String, boolean) burstToken}.</li>
+ *  <li>if the current <code>arguments</code> entry is not handled
+ *  by any of the previous rules, then the entry is added to the list
+ *  of processed tokens.</li>
+ * </ol>
+ * </p>
+ *
+ * @param options The command line {@link Options}
+ * @param arguments The command line arguments to be parsed
+ * @param stopAtNonOption Specifies whether to stop flattening
+ * when an non option is found.
+ * @return The flattened <code>arguments</code> String array.
+ */"
+"protected void burstToken(String token, boolean stopAtNonOption) {
+    for (int i = 1; i < token.length(); i++) {
+        String ch = String.valueOf(token.charAt(i));
+        if (options.hasOption(ch)) {
+            tokens.add(""-"" + ch);
+            currentOption = options.getOption(ch);
+            if (currentOption.hasArg() && (token.length() != (i + 1))) {
+                tokens.add(token.substring(i + 1));
+                break;
+            }
+        } else if (stopAtNonOption) {
+            process(token.substring(i));
+            break;
+        } else {
+            tokens.add(token);
+            break;
+        }
+    }
+}","public void test1010() throws Throwable {
+    PosixParser posixParser0 = new PosixParser();
+    Options options0 = new Options();
+    String[] stringArray0 = new String[0];
+    posixParser0.parse(options0, stringArray0);
+    options0.addOption("""", true, ""6-"");
+    posixParser0.burstToken(""6-"", true);
+}","/**
+ * <p>Breaks <code>token</code> into its constituent parts
+ * using the following algorithm.
+ * <ul>
+ *  <li>ignore the first character (""<b>-</b>"")</li>
+ *  <li>foreach remaining character check if an {@link Option}
+ *  exists with that id.</li>
+ *  <li>if an {@link Option} does exist then add that character
+ *  prepended with ""<b>-</b>"" to the list of processed tokens.</li>
+ *  <li>if the {@link Option} can have an argument value and there
+ *  are remaining characters in the token then add the remaining
+ *  characters as a token to the list of processed tokens.</li>
+ *  <li>if an {@link Option} does <b>NOT</b> exist <b>AND</b>
+ *  <code>stopAtNonOption</code> <b>IS</b> set then add the special token
+ *  ""<b>--</b>"" followed by the remaining characters and also
+ *  the remaining tokens directly to the processed tokens list.</li>
+ *  <li>if an {@link Option} does <b>NOT</b> exist <b>AND</b>
+ *  <code>stopAtNonOption</code> <b>IS NOT</b> set then add that
+ *  character prepended with ""<b>-</b>"".</li>
+ * </ul>
+ * </p>
+ *
+ * @param token The current token to be <b>burst</b>
+ * @param stopAtNonOption Specifies whether to stop processing
+ * at the first non-Option encountered.
+ */"

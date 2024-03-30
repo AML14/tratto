@@ -1,0 +1,836 @@
+focal_method,test_prefix,docstring
+"public static boolean matches(byte[] signature, int length) {
+    // 3c21 7261 6863 0a3e
+    if (length < 8) {
+        return false;
+    }
+    if (signature[0] != 0x21) {
+        return false;
+    }
+    if (signature[1] != 0x3c) {
+        return false;
+    }
+    if (signature[2] != 0x61) {
+        return false;
+    }
+    if (signature[3] != 0x72) {
+        return false;
+    }
+    if (signature[4] != 0x63) {
+        return false;
+    }
+    if (signature[5] != 0x68) {
+        return false;
+    }
+    if (signature[6] != 0x3e) {
+        return false;
+    }
+    if (signature[7] != 0x0a) {
+        return false;
+    }
+    return true;
+}","public void test000() throws Throwable {
+    byte[] byteArray0 = new byte[17];
+    byteArray0[0] = (byte) 126;
+    boolean boolean0 = ArArchiveInputStream.matches(byteArray0, (byte) 126);
+    assertFalse(boolean0);
+}",""
+"public static boolean matches(byte[] signature, int length) {
+    // 3c21 7261 6863 0a3e
+    if (length < 8) {
+        return false;
+    }
+    if (signature[0] != 0x21) {
+        return false;
+    }
+    if (signature[1] != 0x3c) {
+        return false;
+    }
+    if (signature[2] != 0x61) {
+        return false;
+    }
+    if (signature[3] != 0x72) {
+        return false;
+    }
+    if (signature[4] != 0x63) {
+        return false;
+    }
+    if (signature[5] != 0x68) {
+        return false;
+    }
+    if (signature[6] != 0x3e) {
+        return false;
+    }
+    if (signature[7] != 0x0a) {
+        return false;
+    }
+    return true;
+}","public void test011() throws Throwable {
+    byte[] byteArray0 = new byte[2];
+    boolean boolean0 = ArArchiveInputStream.matches(byteArray0, 8);
+    assertFalse(boolean0);
+}",""
+"public int read(byte[] b, final int off, final int len) throws IOException {
+    int toRead = len;
+    final int ret = this.input.read(b, off, toRead);
+    offset += (ret > 0 ? ret : 0);
+    return ret;
+}","public void test022() throws Throwable {
+    byte[] byteArray0 = new byte[17];
+    FileDescriptor fileDescriptor0 = new FileDescriptor();
+    MockFileInputStream mockFileInputStream0 = new MockFileInputStream(fileDescriptor0);
+    ArArchiveInputStream arArchiveInputStream0 = new ArArchiveInputStream(mockFileInputStream0);
+    int int0 = arArchiveInputStream0.read(byteArray0, 3826, (-77));
+    assertEquals(0, int0);
+}",""
+"public int read(byte[] b) throws IOException {
+    return read(b, 0, b.length);
+}","public void test033() throws Throwable {
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    PipedInputStream pipedInputStream0 = new PipedInputStream(pipedOutputStream0);
+    ArArchiveInputStream arArchiveInputStream0 = new ArArchiveInputStream(pipedInputStream0);
+    byte[] byteArray0 = new byte[0];
+    int int0 = arArchiveInputStream0.read(byteArray0);
+    assertEquals(0, int0);
+}",""
+"public int read(byte[] b) throws IOException {
+    return read(b, 0, b.length);
+}","public void test045() throws Throwable {
+    byte[] byteArray0 = new byte[2];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    ArArchiveInputStream arArchiveInputStream0 = new ArArchiveInputStream(byteArrayInputStream0);
+    int int0 = arArchiveInputStream0.read(byteArray0);
+    assertEquals(2, int0);
+}",""
+"public int read() throws IOException {
+    final int ret = input.read();
+    offset += (ret > 0 ? 1 : 0);
+    return ret;
+}","public void test056() throws Throwable {
+    byte[] byteArray0 = new byte[0];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (-277), (-277));
+    ArArchiveInputStream arArchiveInputStream0 = new ArArchiveInputStream(byteArrayInputStream0);
+    int int0 = arArchiveInputStream0.read();
+    assertEquals((-1), int0);
+}",""
+"public int read(byte[] b, final int off, final int len) throws IOException {
+    int toRead = len;
+    final int ret = this.input.read(b, off, toRead);
+    offset += (ret > 0 ? ret : 0);
+    return ret;
+}","public void test067() throws Throwable {
+    PipedInputStream pipedInputStream0 = new PipedInputStream(5);
+    BufferedInputStream bufferedInputStream0 = new BufferedInputStream(pipedInputStream0);
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(bufferedInputStream0, pipedInputStream0);
+    ArArchiveInputStream arArchiveInputStream0 = new ArArchiveInputStream(sequenceInputStream0);
+    // Undeclared exception!
+    try {
+        arArchiveInputStream0.read((byte[]) null, 5, 0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.io.SequenceInputStream"", e);
+    }
+}",""
+"public int read(byte[] b, final int off, final int len) throws IOException {
+    int toRead = len;
+    final int ret = this.input.read(b, off, toRead);
+    offset += (ret > 0 ? ret : 0);
+    return ret;
+}","public void test078() throws Throwable {
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    PipedInputStream pipedInputStream0 = new PipedInputStream(pipedOutputStream0);
+    ArArchiveInputStream arArchiveInputStream0 = new ArArchiveInputStream(pipedInputStream0);
+    byte[] byteArray0 = new byte[0];
+    // Undeclared exception!
+    try {
+        arArchiveInputStream0.read(byteArray0, 10, (-470));
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.io.PipedInputStream"", e);
+    }
+}",""
+"public int read(byte[] b, final int off, final int len) throws IOException {
+    int toRead = len;
+    final int ret = this.input.read(b, off, toRead);
+    offset += (ret > 0 ? ret : 0);
+    return ret;
+}","public void test089() throws Throwable {
+    FileDescriptor fileDescriptor0 = new FileDescriptor();
+    MockFileInputStream mockFileInputStream0 = new MockFileInputStream(fileDescriptor0);
+    PushbackInputStream pushbackInputStream0 = new PushbackInputStream(mockFileInputStream0);
+    ArArchiveInputStream arArchiveInputStream0 = new ArArchiveInputStream(pushbackInputStream0);
+    arArchiveInputStream0.close();
+    try {
+        arArchiveInputStream0.read((byte[]) null, 1930, 33);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream closed
+        //
+        verifyException(""java.io.PushbackInputStream"", e);
+    }
+}",""
+"public int read(byte[] b) throws IOException {
+    return read(b, 0, b.length);
+}","public void test0910() throws Throwable {
+    FileDescriptor fileDescriptor0 = new FileDescriptor();
+    MockFileInputStream mockFileInputStream0 = new MockFileInputStream(fileDescriptor0);
+    ArArchiveInputStream arArchiveInputStream0 = new ArArchiveInputStream(mockFileInputStream0);
+    // Undeclared exception!
+    try {
+        arArchiveInputStream0.read((byte[]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.ar.ArArchiveInputStream"", e);
+    }
+}",""
+"public int read(byte[] b) throws IOException {
+    return read(b, 0, b.length);
+}","public void test1011() throws Throwable {
+    PipedInputStream pipedInputStream0 = new PipedInputStream();
+    ArArchiveInputStream arArchiveInputStream0 = new ArArchiveInputStream(pipedInputStream0);
+    byte[] byteArray0 = new byte[5];
+    try {
+        arArchiveInputStream0.read(byteArray0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Pipe not connected
+        //
+        verifyException(""java.io.PipedInputStream"", e);
+    }
+}",""
+"public int read() throws IOException {
+    final int ret = input.read();
+    offset += (ret > 0 ? 1 : 0);
+    return ret;
+}","public void test1112() throws Throwable {
+    ArArchiveInputStream arArchiveInputStream0 = new ArArchiveInputStream((InputStream) null);
+    // Undeclared exception!
+    try {
+        arArchiveInputStream0.read();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.ar.ArArchiveInputStream"", e);
+    }
+}",""
+"public int read() throws IOException {
+    final int ret = input.read();
+    offset += (ret > 0 ? 1 : 0);
+    return ret;
+}","public void test1213() throws Throwable {
+    byte[] byteArray0 = new byte[3];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) (-7), (byte) 63);
+    ArArchiveInputStream arArchiveInputStream0 = new ArArchiveInputStream(byteArrayInputStream0);
+    // Undeclared exception!
+    try {
+        arArchiveInputStream0.read();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -7
+        //
+        verifyException(""java.io.ByteArrayInputStream"", e);
+    }
+}",""
+"public int read() throws IOException {
+    final int ret = input.read();
+    offset += (ret > 0 ? 1 : 0);
+    return ret;
+}","public void test1314() throws Throwable {
+    FileDescriptor fileDescriptor0 = new FileDescriptor();
+    MockFileInputStream mockFileInputStream0 = new MockFileInputStream(fileDescriptor0);
+    ArArchiveInputStream arArchiveInputStream0 = new ArArchiveInputStream(mockFileInputStream0);
+    try {
+        arArchiveInputStream0.read();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.mock.java.io.NativeMockedIO"", e);
+    }
+}",""
+"public static boolean matches(byte[] signature, int length) {
+    // 3c21 7261 6863 0a3e
+    if (length < 8) {
+        return false;
+    }
+    if (signature[0] != 0x21) {
+        return false;
+    }
+    if (signature[1] != 0x3c) {
+        return false;
+    }
+    if (signature[2] != 0x61) {
+        return false;
+    }
+    if (signature[3] != 0x72) {
+        return false;
+    }
+    if (signature[4] != 0x63) {
+        return false;
+    }
+    if (signature[5] != 0x68) {
+        return false;
+    }
+    if (signature[6] != 0x3e) {
+        return false;
+    }
+    if (signature[7] != 0x0a) {
+        return false;
+    }
+    return true;
+}","public void test1415() throws Throwable {
+    // Undeclared exception!
+    try {
+        ArArchiveInputStream.matches((byte[]) null, 1686);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.ar.ArArchiveInputStream"", e);
+    }
+}",""
+"public static boolean matches(byte[] signature, int length) {
+    // 3c21 7261 6863 0a3e
+    if (length < 8) {
+        return false;
+    }
+    if (signature[0] != 0x21) {
+        return false;
+    }
+    if (signature[1] != 0x3c) {
+        return false;
+    }
+    if (signature[2] != 0x61) {
+        return false;
+    }
+    if (signature[3] != 0x72) {
+        return false;
+    }
+    if (signature[4] != 0x63) {
+        return false;
+    }
+    if (signature[5] != 0x68) {
+        return false;
+    }
+    if (signature[6] != 0x3e) {
+        return false;
+    }
+    if (signature[7] != 0x0a) {
+        return false;
+    }
+    return true;
+}","public void test1516() throws Throwable {
+    byte[] byteArray0 = new byte[0];
+    // Undeclared exception!
+    try {
+        ArArchiveInputStream.matches(byteArray0, 728);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 0
+        //
+        verifyException(""org.apache.commons.compress.archivers.ar.ArArchiveInputStream"", e);
+    }
+}",""
+"public ArArchiveEntry getNextArEntry() throws IOException {
+    // hit EOF before previous entry was complete
+    // TODO: throw an exception instead?
+    if (offset == 0) {
+        final byte[] expected = ArArchiveEntry.HEADER.getBytes();
+        final byte[] realized = new byte[expected.length];
+        final int read = read(realized);
+        if (read != expected.length) {
+            throw new IOException(""failed to read header"");
+        }
+        for (int i = 0; i < expected.length; i++) {
+            if (expected[i] != realized[i]) {
+                throw new IOException(""invalid header "" + new String(realized));
+            }
+        }
+    }
+    // hit eof
+    if (input.available() == 0) {
+        return null;
+    }
+    if (offset % 2 != 0) {
+        read();
+    }
+    final byte[] name = new byte[16];
+    final byte[] lastmodified = new byte[12];
+    final byte[] userid = new byte[6];
+    final byte[] groupid = new byte[6];
+    final byte[] filemode = new byte[8];
+    final byte[] length = new byte[10];
+    read(name);
+    read(lastmodified);
+    read(userid);
+    read(groupid);
+    read(filemode);
+    read(length);
+    {
+        final byte[] expected = ArArchiveEntry.TRAILER.getBytes();
+        final byte[] realized = new byte[expected.length];
+        final int read = read(realized);
+        if (read != expected.length) {
+            throw new IOException(""failed to read entry header"");
+        }
+        for (int i = 0; i < expected.length; i++) {
+            if (expected[i] != realized[i]) {
+                throw new IOException(""invalid entry header. not read the content?"");
+            }
+        }
+    }
+    return new ArArchiveEntry(new String(name).trim(), Long.parseLong(new String(length).trim()));
+}","public void test1617() throws Throwable {
+    ArArchiveInputStream arArchiveInputStream0 = new ArArchiveInputStream((InputStream) null);
+    // Undeclared exception!
+    try {
+        arArchiveInputStream0.getNextArEntry();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.ar.ArArchiveInputStream"", e);
+    }
+}","/**
+ * Returns the next AR entry in this stream.
+ *
+ * @return the next AR entry.
+ * @throws IOException
+ *             if the entry could not be read
+ */"
+"public void close() throws IOException {
+    if (!closed) {
+        closed = true;
+        input.close();
+    }
+}","public void test1718() throws Throwable {
+    ArArchiveInputStream arArchiveInputStream0 = new ArArchiveInputStream((InputStream) null);
+    // Undeclared exception!
+    try {
+        arArchiveInputStream0.close();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.ar.ArArchiveInputStream"", e);
+    }
+}",""
+"public int read(byte[] b, final int off, final int len) throws IOException {
+    int toRead = len;
+    final int ret = this.input.read(b, off, toRead);
+    offset += (ret > 0 ? ret : 0);
+    return ret;
+}","public void test1819() throws Throwable {
+    MockFile mockFile0 = new MockFile(""@-dw}?TDcHSV"", ""@-dw}?TDcHSV"");
+    File file0 = MockFile.createTempFile(""@-dw}?TDcHSV"", ""n"", (File) mockFile0);
+    MockFileInputStream mockFileInputStream0 = new MockFileInputStream(file0);
+    ArArchiveInputStream arArchiveInputStream0 = new ArArchiveInputStream(mockFileInputStream0);
+    byte[] byteArray0 = new byte[4];
+    int int0 = arArchiveInputStream0.read(byteArray0, 1, 33188);
+    assertEquals((-1), int0);
+}",""
+"public ArArchiveEntry getNextArEntry() throws IOException {
+    // hit EOF before previous entry was complete
+    // TODO: throw an exception instead?
+    if (offset == 0) {
+        final byte[] expected = ArArchiveEntry.HEADER.getBytes();
+        final byte[] realized = new byte[expected.length];
+        final int read = read(realized);
+        if (read != expected.length) {
+            throw new IOException(""failed to read header"");
+        }
+        for (int i = 0; i < expected.length; i++) {
+            if (expected[i] != realized[i]) {
+                throw new IOException(""invalid header "" + new String(realized));
+            }
+        }
+    }
+    // hit eof
+    if (input.available() == 0) {
+        return null;
+    }
+    if (offset % 2 != 0) {
+        read();
+    }
+    final byte[] name = new byte[16];
+    final byte[] lastmodified = new byte[12];
+    final byte[] userid = new byte[6];
+    final byte[] groupid = new byte[6];
+    final byte[] filemode = new byte[8];
+    final byte[] length = new byte[10];
+    read(name);
+    read(lastmodified);
+    read(userid);
+    read(groupid);
+    read(filemode);
+    read(length);
+    {
+        final byte[] expected = ArArchiveEntry.TRAILER.getBytes();
+        final byte[] realized = new byte[expected.length];
+        final int read = read(realized);
+        if (read != expected.length) {
+            throw new IOException(""failed to read entry header"");
+        }
+        for (int i = 0; i < expected.length; i++) {
+            if (expected[i] != realized[i]) {
+                throw new IOException(""invalid entry header. not read the content?"");
+            }
+        }
+    }
+    return new ArArchiveEntry(new String(name).trim(), Long.parseLong(new String(length).trim()));
+}","public void test1920() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    byteArray0[0] = (byte) (-31);
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(byteArrayInputStream0, byteArrayInputStream0);
+    ArArchiveInputStream arArchiveInputStream0 = new ArArchiveInputStream(sequenceInputStream0);
+    arArchiveInputStream0.read();
+    ArArchiveEntry arArchiveEntry0 = arArchiveInputStream0.getNextArEntry();
+    assertNull(arArchiveEntry0);
+}","/**
+ * Returns the next AR entry in this stream.
+ *
+ * @return the next AR entry.
+ * @throws IOException
+ *             if the entry could not be read
+ */"
+"public ArArchiveEntry getNextArEntry() throws IOException {
+    // hit EOF before previous entry was complete
+    // TODO: throw an exception instead?
+    if (offset == 0) {
+        final byte[] expected = ArArchiveEntry.HEADER.getBytes();
+        final byte[] realized = new byte[expected.length];
+        final int read = read(realized);
+        if (read != expected.length) {
+            throw new IOException(""failed to read header"");
+        }
+        for (int i = 0; i < expected.length; i++) {
+            if (expected[i] != realized[i]) {
+                throw new IOException(""invalid header "" + new String(realized));
+            }
+        }
+    }
+    // hit eof
+    if (input.available() == 0) {
+        return null;
+    }
+    if (offset % 2 != 0) {
+        read();
+    }
+    final byte[] name = new byte[16];
+    final byte[] lastmodified = new byte[12];
+    final byte[] userid = new byte[6];
+    final byte[] groupid = new byte[6];
+    final byte[] filemode = new byte[8];
+    final byte[] length = new byte[10];
+    read(name);
+    read(lastmodified);
+    read(userid);
+    read(groupid);
+    read(filemode);
+    read(length);
+    {
+        final byte[] expected = ArArchiveEntry.TRAILER.getBytes();
+        final byte[] realized = new byte[expected.length];
+        final int read = read(realized);
+        if (read != expected.length) {
+            throw new IOException(""failed to read entry header"");
+        }
+        for (int i = 0; i < expected.length; i++) {
+            if (expected[i] != realized[i]) {
+                throw new IOException(""invalid entry header. not read the content?"");
+            }
+        }
+    }
+    return new ArArchiveEntry(new String(name).trim(), Long.parseLong(new String(length).trim()));
+}","public void test2021() throws Throwable {
+    byte[] byteArray0 = new byte[20];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    ArArchiveInputStream arArchiveInputStream0 = new ArArchiveInputStream(byteArrayInputStream0);
+    try {
+        arArchiveInputStream0.getNextArEntry();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // invalid header \u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000
+        //
+        verifyException(""org.apache.commons.compress.archivers.ar.ArArchiveInputStream"", e);
+    }
+}","/**
+ * Returns the next AR entry in this stream.
+ *
+ * @return the next AR entry.
+ * @throws IOException
+ *             if the entry could not be read
+ */"
+"public ArArchiveEntry getNextArEntry() throws IOException {
+    // hit EOF before previous entry was complete
+    // TODO: throw an exception instead?
+    if (offset == 0) {
+        final byte[] expected = ArArchiveEntry.HEADER.getBytes();
+        final byte[] realized = new byte[expected.length];
+        final int read = read(realized);
+        if (read != expected.length) {
+            throw new IOException(""failed to read header"");
+        }
+        for (int i = 0; i < expected.length; i++) {
+            if (expected[i] != realized[i]) {
+                throw new IOException(""invalid header "" + new String(realized));
+            }
+        }
+    }
+    // hit eof
+    if (input.available() == 0) {
+        return null;
+    }
+    if (offset % 2 != 0) {
+        read();
+    }
+    final byte[] name = new byte[16];
+    final byte[] lastmodified = new byte[12];
+    final byte[] userid = new byte[6];
+    final byte[] groupid = new byte[6];
+    final byte[] filemode = new byte[8];
+    final byte[] length = new byte[10];
+    read(name);
+    read(lastmodified);
+    read(userid);
+    read(groupid);
+    read(filemode);
+    read(length);
+    {
+        final byte[] expected = ArArchiveEntry.TRAILER.getBytes();
+        final byte[] realized = new byte[expected.length];
+        final int read = read(realized);
+        if (read != expected.length) {
+            throw new IOException(""failed to read entry header"");
+        }
+        for (int i = 0; i < expected.length; i++) {
+            if (expected[i] != realized[i]) {
+                throw new IOException(""invalid entry header. not read the content?"");
+            }
+        }
+    }
+    return new ArArchiveEntry(new String(name).trim(), Long.parseLong(new String(length).trim()));
+}","public void test2122() throws Throwable {
+    byte[] byteArray0 = new byte[2];
+    byteArray0[0] = (byte) (-30);
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    ArArchiveInputStream arArchiveInputStream0 = new ArArchiveInputStream(byteArrayInputStream0);
+    arArchiveInputStream0.read();
+    try {
+        arArchiveInputStream0.getNextArEntry();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // failed to read entry header
+        //
+        verifyException(""org.apache.commons.compress.archivers.ar.ArArchiveInputStream"", e);
+    }
+}","/**
+ * Returns the next AR entry in this stream.
+ *
+ * @return the next AR entry.
+ * @throws IOException
+ *             if the entry could not be read
+ */"
+"public static boolean matches(byte[] signature, int length) {
+    // 3c21 7261 6863 0a3e
+    if (length < 8) {
+        return false;
+    }
+    if (signature[0] != 0x21) {
+        return false;
+    }
+    if (signature[1] != 0x3c) {
+        return false;
+    }
+    if (signature[2] != 0x61) {
+        return false;
+    }
+    if (signature[3] != 0x72) {
+        return false;
+    }
+    if (signature[4] != 0x63) {
+        return false;
+    }
+    if (signature[5] != 0x68) {
+        return false;
+    }
+    if (signature[6] != 0x3e) {
+        return false;
+    }
+    if (signature[7] != 0x0a) {
+        return false;
+    }
+    return true;
+}","public void test2223() throws Throwable {
+    byte[] byteArray0 = new byte[2];
+    boolean boolean0 = ArArchiveInputStream.matches(byteArray0, (-1));
+    assertFalse(boolean0);
+}",""
+"public int read() throws IOException {
+    final int ret = input.read();
+    offset += (ret > 0 ? 1 : 0);
+    return ret;
+}","public void test2324() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(byteArrayInputStream0, byteArrayInputStream0);
+    ArArchiveInputStream arArchiveInputStream0 = new ArArchiveInputStream(sequenceInputStream0);
+    int int0 = arArchiveInputStream0.read();
+    assertEquals(0, int0);
+}",""
+"public int read(byte[] b) throws IOException {
+    return read(b, 0, b.length);
+}","public void test2325() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(byteArrayInputStream0, byteArrayInputStream0);
+    ArArchiveInputStream arArchiveInputStream0 = new ArArchiveInputStream(sequenceInputStream0);
+    int int0 = arArchiveInputStream0.read();
+    int int1 = arArchiveInputStream0.read(byteArray0);
+    assertEquals((-1), int1);
+}",""
+"public void close() throws IOException {
+    if (!closed) {
+        closed = true;
+        input.close();
+    }
+}","public void test2426() throws Throwable {
+    PipedInputStream pipedInputStream0 = new PipedInputStream();
+    ArArchiveInputStream arArchiveInputStream0 = new ArArchiveInputStream(pipedInputStream0);
+    arArchiveInputStream0.close();
+    arArchiveInputStream0.close();
+}",""
+"public ArArchiveEntry getNextArEntry() throws IOException {
+    // hit EOF before previous entry was complete
+    // TODO: throw an exception instead?
+    if (offset == 0) {
+        final byte[] expected = ArArchiveEntry.HEADER.getBytes();
+        final byte[] realized = new byte[expected.length];
+        final int read = read(realized);
+        if (read != expected.length) {
+            throw new IOException(""failed to read header"");
+        }
+        for (int i = 0; i < expected.length; i++) {
+            if (expected[i] != realized[i]) {
+                throw new IOException(""invalid header "" + new String(realized));
+            }
+        }
+    }
+    // hit eof
+    if (input.available() == 0) {
+        return null;
+    }
+    if (offset % 2 != 0) {
+        read();
+    }
+    final byte[] name = new byte[16];
+    final byte[] lastmodified = new byte[12];
+    final byte[] userid = new byte[6];
+    final byte[] groupid = new byte[6];
+    final byte[] filemode = new byte[8];
+    final byte[] length = new byte[10];
+    read(name);
+    read(lastmodified);
+    read(userid);
+    read(groupid);
+    read(filemode);
+    read(length);
+    {
+        final byte[] expected = ArArchiveEntry.TRAILER.getBytes();
+        final byte[] realized = new byte[expected.length];
+        final int read = read(realized);
+        if (read != expected.length) {
+            throw new IOException(""failed to read entry header"");
+        }
+        for (int i = 0; i < expected.length; i++) {
+            if (expected[i] != realized[i]) {
+                throw new IOException(""invalid entry header. not read the content?"");
+            }
+        }
+    }
+    return new ArArchiveEntry(new String(name).trim(), Long.parseLong(new String(length).trim()));
+}","public void test2527() throws Throwable {
+    byte[] byteArray0 = new byte[7];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    ArArchiveInputStream arArchiveInputStream0 = new ArArchiveInputStream(byteArrayInputStream0);
+    try {
+        arArchiveInputStream0.getNextArEntry();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // failed to read header
+        //
+        verifyException(""org.apache.commons.compress.archivers.ar.ArArchiveInputStream"", e);
+    }
+}","/**
+ * Returns the next AR entry in this stream.
+ *
+ * @return the next AR entry.
+ * @throws IOException
+ *             if the entry could not be read
+ */"
+"public ArchiveEntry getNextEntry() throws IOException {
+    return getNextArEntry();
+}","public void test2628() throws Throwable {
+    byte[] byteArray0 = new byte[8];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    ArArchiveInputStream arArchiveInputStream0 = new ArArchiveInputStream(byteArrayInputStream0);
+    try {
+        arArchiveInputStream0.getNextEntry();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // invalid header \u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000
+        //
+        verifyException(""org.apache.commons.compress.archivers.ar.ArArchiveInputStream"", e);
+    }
+}",""
+"public ArchiveEntry getNextEntry() throws IOException {
+    return getNextArEntry();
+}","public void test2729() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    byteArray0[0] = (byte) (-31);
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(byteArrayInputStream0, byteArrayInputStream0);
+    ArArchiveInputStream arArchiveInputStream0 = new ArArchiveInputStream(sequenceInputStream0);
+    arArchiveInputStream0.read();
+    ArchiveEntry archiveEntry0 = arArchiveInputStream0.getNextEntry();
+    assertNull(archiveEntry0);
+}",""
+"public ArchiveEntry getNextEntry() throws IOException {
+    return getNextArEntry();
+}","public void test2830() throws Throwable {
+    ArArchiveInputStream arArchiveInputStream0 = new ArArchiveInputStream((InputStream) null);
+    // Undeclared exception!
+    try {
+        arArchiveInputStream0.getNextEntry();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.ar.ArArchiveInputStream"", e);
+    }
+}",""

@@ -1,0 +1,297 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Normalize normalize0 = new Normalize(compiler0, false);
+    Node node0 = compiler0.parseSyntheticCode(""com.googlecommn.base.Predicates$InPredicate"", ""com.googlecommn.base.Predicates$InPredicate"");
+    Node node1 = new Node(37, node0);
+    normalize0.process(node0, node0);
+    assertEquals(41, Node.BRACELESS_TYPE);
+}",0,
+project,0,test011,"public void test011() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Normalize.VerifyConstants normalize_VerifyConstants0 = new Normalize.VerifyConstants(compiler0, true);
+    TightenTypes tightenTypes0 = new TightenTypes(compiler0);
+    JSTypeRegistry jSTypeRegistry0 = tightenTypes0.getTypeRegistry();
+    JSType[] jSTypeArray0 = new JSType[1];
+    JSTypeNative jSTypeNative0 = JSTypeNative.TYPE_ERROR_TYPE;
+    ObjectType objectType0 = jSTypeRegistry0.getNativeObjectType(jSTypeNative0);
+    jSTypeArray0[0] = (JSType) objectType0;
+    Node node0 = jSTypeRegistry0.createOptionalParameters(jSTypeArray0);
+    NodeTraversal.traverse((AbstractCompiler) compiler0, node0, (NodeTraversal.Callback) normalize_VerifyConstants0);
+    assertEquals(4, Node.ENUM_PROP);
+}",1,
+project,0,test044,"public void test044() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Normalize.VerifyConstants normalize_VerifyConstants0 = new Normalize.VerifyConstants(compiler0, true);
+    Node node0 = compiler0.parseTestCode(""AITI"");
+    NodeTraversal.traverse((AbstractCompiler) compiler0, node0, (NodeTraversal.Callback) normalize_VerifyConstants0);
+    assertFalse(node0.isQuotedString());
+}",0,assertTrue(node0.isQuotedString())
+project,0,test055,"public void test055() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Normalize.VerifyConstants normalize_VerifyConstants0 = new Normalize.VerifyConstants(compiler0, false);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, normalize_VerifyConstants0);
+    Node node0 = compiler0.parseTestCode(""ATI"");
+    nodeTraversal0.traverseInnerNode(node0, node0, (Scope) null);
+    nodeTraversal0.traverseInnerNode(node0, node0, (Scope) null);
+    assertEquals(40, Node.ORIGINALNAME_PROP);
+}",0,
+project,0,test066,"public void test066() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Normalize.VerifyConstants normalize_VerifyConstants0 = new Normalize.VerifyConstants(compiler0, true);
+    Node node0 = compiler0.parseTestCode(""I"");
+    NodeTraversal.traverse((AbstractCompiler) compiler0, node0, (NodeTraversal.Callback) normalize_VerifyConstants0);
+    assertFalse(node0.isVarArgs());
+}",0,
+project,0,test077,"public void test077() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newString(126, ""AFR"");
+    Node node1 = new Node(115, node0, node0);
+    node0.addChildToBack(node1);
+    Normalize normalize0 = new Normalize(compiler0, false);
+    // Undeclared exception!
+    try {
+        normalize0.process(node0, node0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",0,
+project,0,test088,"public void test088() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newString(126, ""i5"");
+    Node node1 = new Node(116, node0, node0);
+    node0.addChildToBack(node1);
+    Normalize normalize0 = new Normalize(compiler0, true);
+    // Undeclared exception!
+    try {
+        normalize0.process(node1, node0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // Normalize constraints violated:
+        // LABEL normalization
+        //
+        verifyException(""com.google.javascript.jscomp.Normalize$NormalizeStatements"", e);
+    }
+}",0,
+project,0,test099,"public void test099() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newString(113, ""C:`^req->R:MdF%SKX"");
+    Normalize normalize0 = new Normalize(compiler0, false);
+    // Undeclared exception!
+    try {
+        normalize0.process(node0, node0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // The existing child node of the parent should not be null.
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",0,
+project,0,test1010,"public void test1010() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""=rbX{5<F.&x~sU"", ""JM"");
+    Node node1 = new Node(105, node0, node0);
+    node0.addChildToBack(node1);
+    Normalize normalize0 = new Normalize(compiler0, false);
+    // Undeclared exception!
+    try {
+        normalize0.process(node0, node0);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // SCRIPT [source name: null] [encoded source length: 0] [base line: -1] [end line: -1] 1 [sourcename: java.lang.String@0000000456] [synthetic: 1] is not a string node
+        //
+        verifyException(""com.google.javascript.rhino.Node"", e);
+    }
+}",0,
+project,0,test1111,"public void test1111() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newString(126, ""com.google.javascript.jscomp.RemoveConstantExpressions$1"");
+    Node node1 = new Node(113, node0, node0);
+    node0.addChildToBack(node1);
+    Normalize normalize0 = new Normalize(compiler0, true);
+    // Undeclared exception!
+    try {
+        normalize0.process(node1, node1);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",0,
+project,0,test1212,"public void test1212() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newString(118, ""="");
+    Node node1 = new Node(126, node0, node0);
+    Normalize normalize0 = new Normalize(compiler0, true);
+    // Undeclared exception!
+    try {
+        normalize0.process(node0, node1);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // Normalize constraints violated:
+        // LABEL normalization
+        //
+        verifyException(""com.google.javascript.jscomp.Normalize$NormalizeStatements"", e);
+    }
+}",0,
+project,0,test1313,"public void test1313() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newString(126, ""`e>\""\""\""YV"");
+    Node node1 = new Node(119, node0, node0);
+    node0.addChildToBack(node1);
+    Normalize normalize0 = new Normalize(compiler0, false);
+    // Undeclared exception!
+    try {
+        normalize0.process(node1, node0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",0,
+project,0,test1414,"public void test1414() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newString(126, ""i["");
+    Node node1 = new Node(120, node0, node0);
+    node0.addChildToBack(node1);
+    Normalize normalize0 = new Normalize(compiler0, false);
+    // Undeclared exception!
+    try {
+        normalize0.process(node1, node0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // null
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",0,
+project,0,test1515,"public void test1515() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newString(126, ""i5"");
+    Node node1 = new Node(122, node0, node0);
+    node0.addChildToBack(node1);
+    Normalize normalize0 = new Normalize(compiler0, false);
+    // Undeclared exception!
+    try {
+        normalize0.process(node0, node0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",0,
+project,0,test1616,"public void test1616() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newString(126, ""4JG/@x7bNj}[FmJG^u"");
+    Node node1 = new Node(124, node0, node0);
+    node0.addChildToBack(node1);
+    Normalize normalize0 = new Normalize(compiler0, false);
+    // Undeclared exception!
+    try {
+        normalize0.process(node0, node0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",0,
+project,0,test1717,"public void test1717() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Normalize normalize0 = new Normalize(compiler0, false);
+    Node node0 = new Node(126);
+    node0.addChildToFront(node0);
+    // Undeclared exception!
+    try {
+        normalize0.process(node0, node0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",0,
+project,0,test1818,"public void test1818() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Normalize normalize0 = new Normalize(compiler0, false);
+    Node node0 = new Node(126);
+    Node node1 = new Node(20, node0, node0, node0, node0);
+    node0.addChildToFront(node1);
+    // Undeclared exception!
+    try {
+        normalize0.process(node0, node0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",0,
+project,0,test1919,"public void test1919() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""=rbX{5<F&x~sU"", ""=rbX{5<F&x~sU"");
+    Node node1 = new Node(118, node0, node0);
+    node0.addChildToBack(node1);
+    Normalize normalize0 = new Normalize(compiler0, true);
+    // Undeclared exception!
+    try {
+        normalize0.process(node0, node0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",0,
+project,0,test2020,"public void test2020() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""=rbX{5<F&x~sU"", ""=rbX{5<F&x~sU"");
+    Node node1 = new Node(118, node0, node0);
+    node1.removeChildren();
+    node0.addChildToBack(node1);
+    Normalize normalize0 = new Normalize(compiler0, true);
+    // Undeclared exception!
+    try {
+        normalize0.process(node0, node0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // Empty VAR node.
+        //
+        verifyException(""com.google.javascript.jscomp.Normalize$NormalizeStatements"", e);
+    }
+}",0,
+project,0,test2121,"public void test2121() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode("":&2/eh^ ^+p%q"", ""com.google.javascript.jscomp.mozilla.rhino.ast.Block"");
+    Node node1 = compiler0.parseSyntheticCode("":&2/eh^ ^+p%q"", ""com.google.javascript.jscomp.mozilla.rhino.ast.Block"");
+    Node node2 = new Node(118, node0, node1);
+    node0.addChildToBack(node2);
+    Normalize normalize0 = new Normalize(compiler0, false);
+    // Undeclared exception!
+    try {
+        normalize0.process(node2, node0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.Compiler"", e);
+    }
+}",0,
+project,0,test2222,"public void test2222() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""=rbX{5<F.&x~sU"", ""=rbX{5<F.&x~sU"");
+    Node node1 = new Node(105, node0, node0);
+    node0.addChildToBack(node1);
+    Normalize normalize0 = new Normalize(compiler0, false);
+    // Undeclared exception!
+    try {
+        normalize0.process(node1, node0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // null
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",0,

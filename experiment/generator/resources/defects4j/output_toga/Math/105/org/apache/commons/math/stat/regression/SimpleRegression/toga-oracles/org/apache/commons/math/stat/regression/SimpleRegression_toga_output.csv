@@ -1,0 +1,588 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[8][9];
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getIntercept();
+    assertEquals(8L, simpleRegression0.getN());
+}",0,"assertEquals(0, simpleRegression0.getN())"
+project,0,test001,"public void test001() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[8][9];
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getIntercept();
+    assertEquals(Double.NaN, double0, 0.01);
+}",0,
+project,0,test012,"public void test012() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    // Undeclared exception!
+    try {
+        simpleRegression0.getSlopeConfidenceInterval((-332.6275957666524));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.stat.regression.SimpleRegression"", e);
+    }
+}",1,
+project,0,test023,"public void test023() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    simpleRegression0.predict(2856.9300351024867);
+    assertEquals(Double.NaN, simpleRegression0.getSumSquaredErrors(), 0.01);
+}",0,
+project,0,test024,"public void test024() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    simpleRegression0.predict(2856.9300351024867);
+    assertEquals(0L, simpleRegression0.getN());
+}",0,"assertEquals(1, simpleRegression0.getN())"
+project,0,test025,"public void test025() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    simpleRegression0.predict(2856.9300351024867);
+    assertEquals(Double.NaN, simpleRegression0.getRegressionSumSquares(), 0.01);
+}",0,
+project,0,test036,"public void test036() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[8][1];
+    double[] doubleArray1 = new double[3];
+    doubleArray1[1] = (-664.5058);
+    doubleArray0[0] = doubleArray1;
+    double[] doubleArray2 = new double[3];
+    doubleArray0[1] = doubleArray2;
+    doubleArray0[2] = doubleArray1;
+    doubleArray0[3] = doubleArray0[2];
+    doubleArray0[4] = doubleArray2;
+    doubleArray0[5] = doubleArray0[3];
+    doubleArray0[6] = doubleArray0[0];
+    doubleArray0[7] = doubleArray0[1];
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getTotalSumSquares();
+    assertEquals(8L, simpleRegression0.getN());
+}",0,
+project,0,test037,"public void test037() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[8][1];
+    double[] doubleArray1 = new double[3];
+    doubleArray1[1] = (-664.5058);
+    doubleArray0[0] = doubleArray1;
+    double[] doubleArray2 = new double[3];
+    doubleArray0[1] = doubleArray2;
+    doubleArray0[2] = doubleArray1;
+    doubleArray0[3] = doubleArray0[2];
+    doubleArray0[4] = doubleArray2;
+    doubleArray0[5] = doubleArray0[3];
+    doubleArray0[6] = doubleArray0[0];
+    doubleArray0[7] = doubleArray0[1];
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getTotalSumSquares();
+    assertEquals(827939.9216880751, double0, 0.01);
+}",0,
+project,0,test048,"public void test048() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[8][3];
+    double[] doubleArray1 = new double[6];
+    doubleArray1[1] = (-1699.8032292);
+    doubleArray0[0] = doubleArray1;
+    double[] doubleArray2 = new double[3];
+    doubleArray2[0] = 608.60225;
+    doubleArray0[2] = doubleArray2;
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getSlopeConfidenceInterval();
+    assertEquals(51595.19674997763, simpleRegression0.getRegressionSumSquares(), 0.01);
+}",0,
+project,0,test049,"public void test049() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[8][3];
+    double[] doubleArray1 = new double[6];
+    doubleArray1[1] = (-1699.8032292);
+    doubleArray0[0] = doubleArray1;
+    double[] doubleArray2 = new double[3];
+    doubleArray2[0] = 608.60225;
+    doubleArray0[2] = doubleArray2;
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getSlopeConfidenceInterval();
+    assertEquals(2.761406698728713, double0, 0.01);
+}",0,
+project,0,test0510,"public void test0510() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[6][3];
+    double[] doubleArray1 = new double[5];
+    doubleArray1[0] = 350.1744551119643;
+    doubleArray0[0] = doubleArray1;
+    double[] doubleArray2 = new double[8];
+    doubleArray2[1] = (-2509.484689958194);
+    doubleArray0[2] = doubleArray2;
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getSignificance();
+    assertEquals(6L, simpleRegression0.getN());
+}",0,"assertEquals(1, simpleRegression0.getN())"
+project,0,test0511,"public void test0511() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[6][3];
+    double[] doubleArray1 = new double[5];
+    doubleArray1[0] = 350.1744551119643;
+    doubleArray0[0] = doubleArray1;
+    double[] doubleArray2 = new double[8];
+    doubleArray2[1] = (-2509.484689958194);
+    doubleArray0[2] = doubleArray2;
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getSignificance();
+    assertEquals(0.7039999999999997, double0, 0.01);
+}",0,
+project,0,test0612,"public void test0612() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[8][3];
+    double[] doubleArray1 = new double[6];
+    doubleArray1[0] = 608.60225;
+    doubleArray1[1] = (-1699.8032292);
+    doubleArray0[0] = doubleArray1;
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getRegressionSumSquares();
+    assertEquals(8L, simpleRegression0.getN());
+}",0,"assertEquals(1, simpleRegression0.getN())"
+project,0,test0613,"public void test0613() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[8][3];
+    double[] doubleArray1 = new double[6];
+    doubleArray1[0] = 608.60225;
+    doubleArray1[1] = (-1699.8032292);
+    doubleArray0[0] = doubleArray1;
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getRegressionSumSquares();
+    assertEquals(2528164.6407489046, double0, 0.01);
+}",0,
+project,0,test0714,"public void test0714() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[6][3];
+    double[] doubleArray1 = new double[5];
+    doubleArray1[0] = 350.1744551119643;
+    doubleArray0[0] = doubleArray1;
+    double[] doubleArray2 = new double[8];
+    doubleArray2[1] = (-2509.484689958194);
+    doubleArray0[2] = doubleArray2;
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getRSquare();
+    assertEquals(6L, simpleRegression0.getN());
+}",0,"assertEquals(1, simpleRegression0.getN())"
+project,0,test0715,"public void test0715() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[6][3];
+    double[] doubleArray1 = new double[5];
+    doubleArray1[0] = 350.1744551119643;
+    doubleArray0[0] = doubleArray1;
+    double[] doubleArray2 = new double[8];
+    doubleArray2[1] = (-2509.484689958194);
+    doubleArray0[2] = doubleArray2;
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getRSquare();
+    assertEquals(0.03999999999999997, double0, 0.01);
+}",0,
+project,0,test0816,"public void test0816() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[2][2];
+    simpleRegression0.addData(doubleArray0);
+    long long0 = simpleRegression0.getN();
+    assertEquals(2L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test0917,"public void test0917() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[6][8];
+    double[] doubleArray1 = new double[5];
+    doubleArray1[0] = 1811.9723634207528;
+    doubleArray1[1] = (-1.0);
+    doubleArray0[0] = doubleArray1;
+    doubleArray0[1] = doubleArray0[0];
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getMeanSquareError();
+    assertEquals(6L, simpleRegression0.getN());
+}",0,"assertEquals(1, simpleRegression0.getN())"
+project,0,test0918,"public void test0918() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[6][8];
+    double[] doubleArray1 = new double[5];
+    doubleArray1[0] = 1811.9723634207528;
+    doubleArray1[1] = (-1.0);
+    doubleArray0[0] = doubleArray1;
+    doubleArray0[1] = doubleArray0[0];
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getMeanSquareError();
+    assertEquals(5.551115123125783E-17, double0, 0.01);
+}",0,
+project,0,test1019,"public void test1019() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[8][3];
+    double[] doubleArray1 = new double[6];
+    doubleArray1[1] = (-1699.8032292);
+    doubleArray0[0] = doubleArray1;
+    double[] doubleArray2 = new double[3];
+    doubleArray2[0] = 608.60225;
+    doubleArray0[2] = doubleArray2;
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getInterceptStdErr();
+    assertEquals(8L, simpleRegression0.getN());
+}",0,"assertEquals(1, simpleRegression0.getN())"
+project,0,test1020,"public void test1020() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[8][3];
+    double[] doubleArray1 = new double[6];
+    doubleArray1[1] = (-1699.8032292);
+    doubleArray0[0] = doubleArray1;
+    double[] doubleArray2 = new double[3];
+    doubleArray2[0] = 608.60225;
+    doubleArray0[2] = doubleArray2;
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getInterceptStdErr();
+    assertEquals(242.82903274285715, double0, 0.01);
+}",0,
+project,0,test1121,"public void test1121() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    // Undeclared exception!
+    try {
+        simpleRegression0.addData((double[][]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.stat.regression.SimpleRegression"", e);
+    }
+}",0,
+project,0,test1222,"public void test1222() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[6][9];
+    double[] doubleArray1 = new double[1];
+    doubleArray0[4] = doubleArray1;
+    // Undeclared exception!
+    try {
+        simpleRegression0.addData(doubleArray0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 1
+        //
+        verifyException(""org.apache.commons.math.stat.regression.SimpleRegression"", e);
+    }
+}",0,
+project,0,test1323,"public void test1323() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    // Undeclared exception!
+    try {
+        simpleRegression0.getSlopeConfidenceInterval(0.05);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // degrees of freedom must be positive.
+        //
+        verifyException(""org.apache.commons.math.distribution.TDistributionImpl"", e);
+    }
+}",1,
+project,0,test1424,"public void test1424() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double double0 = simpleRegression0.getMeanSquareError();
+    assertEquals(Double.NaN, double0, 0.01);
+}",0,
+project,0,test1425,"public void test1425() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double double0 = simpleRegression0.getMeanSquareError();
+    assertEquals(0L, simpleRegression0.getN());
+}",0,"assertEquals(1, simpleRegression0.getN())"
+project,0,test1426,"public void test1426() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double double0 = simpleRegression0.getMeanSquareError();
+    assertEquals(Double.NaN, simpleRegression0.getSumSquaredErrors(), 0.01);
+}",0,
+project,0,test1527,"public void test1527() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double double0 = simpleRegression0.getTotalSumSquares();
+    assertEquals(Double.NaN, double0, 0.01);
+}",0,
+project,0,test1528,"public void test1528() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double double0 = simpleRegression0.getTotalSumSquares();
+    assertEquals(0L, simpleRegression0.getN());
+}",0,"assertEquals(0, simpleRegression0.getN())"
+project,0,test1529,"public void test1529() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double double0 = simpleRegression0.getTotalSumSquares();
+    assertEquals(Double.NaN, simpleRegression0.getSumSquaredErrors(), 0.01);
+}",0,
+project,0,test1630,"public void test1630() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[8][1];
+    double[] doubleArray1 = new double[3];
+    doubleArray0[0] = doubleArray1;
+    doubleArray0[1] = doubleArray0[0];
+    doubleArray0[2] = doubleArray0[1];
+    doubleArray0[3] = doubleArray0[1];
+    doubleArray0[4] = doubleArray0[3];
+    doubleArray0[5] = doubleArray1;
+    doubleArray0[6] = doubleArray0[1];
+    doubleArray0[7] = doubleArray0[1];
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getTotalSumSquares();
+    assertEquals(8L, simpleRegression0.getN());
+}",0,"assertEquals(1, simpleRegression0.getN())"
+project,0,test1631,"public void test1631() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[8][1];
+    double[] doubleArray1 = new double[3];
+    doubleArray0[0] = doubleArray1;
+    doubleArray0[1] = doubleArray0[0];
+    doubleArray0[2] = doubleArray0[1];
+    doubleArray0[3] = doubleArray0[1];
+    doubleArray0[4] = doubleArray0[3];
+    doubleArray0[5] = doubleArray1;
+    doubleArray0[6] = doubleArray0[1];
+    doubleArray0[7] = doubleArray0[1];
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getTotalSumSquares();
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test1732,"public void test1732() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[7][1];
+    double[] doubleArray1 = new double[3];
+    doubleArray1[0] = Double.NaN;
+    doubleArray0[0] = doubleArray1;
+    doubleArray0[1] = doubleArray0[0];
+    doubleArray0[2] = doubleArray1;
+    doubleArray0[3] = doubleArray1;
+    doubleArray0[4] = doubleArray0[3];
+    doubleArray0[5] = doubleArray1;
+    doubleArray0[6] = doubleArray1;
+    simpleRegression0.addData(doubleArray0);
+    simpleRegression0.getSlope();
+    assertEquals(7L, simpleRegression0.getN());
+}",0,
+project,0,test1833,"public void test1833() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[7][1];
+    double[] doubleArray1 = new double[3];
+    doubleArray0[0] = doubleArray1;
+    doubleArray0[1] = doubleArray1;
+    doubleArray0[2] = doubleArray0[0];
+    doubleArray0[3] = doubleArray1;
+    doubleArray0[4] = doubleArray0[2];
+    doubleArray0[5] = doubleArray0[1];
+    doubleArray0[6] = doubleArray0[0];
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getSlope();
+    assertEquals(7L, simpleRegression0.getN());
+}",0,
+project,0,test1834,"public void test1834() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[7][1];
+    double[] doubleArray1 = new double[3];
+    doubleArray0[0] = doubleArray1;
+    doubleArray0[1] = doubleArray1;
+    doubleArray0[2] = doubleArray0[0];
+    doubleArray0[3] = doubleArray1;
+    doubleArray0[4] = doubleArray0[2];
+    doubleArray0[5] = doubleArray0[1];
+    doubleArray0[6] = doubleArray0[0];
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getSlope();
+    assertEquals(Double.NaN, double0, 0.01);
+}",0,
+project,0,test1935,"public void test1935() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double double0 = simpleRegression0.getSlope();
+    assertEquals(Double.NaN, simpleRegression0.getSumSquaredErrors(), 0.01);
+}",0,
+project,0,test1936,"public void test1936() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double double0 = simpleRegression0.getSlope();
+    assertEquals(Double.NaN, double0, 0.01);
+}",0,
+project,0,test1937,"public void test1937() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double double0 = simpleRegression0.getSlope();
+    assertEquals(0L, simpleRegression0.getN());
+}",0,"assertEquals(0, simpleRegression0.getN())"
+project,0,test2038,"public void test2038() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[8][1];
+    double[] doubleArray1 = new double[3];
+    doubleArray0[0] = doubleArray1;
+    doubleArray0[1] = doubleArray1;
+    doubleArray0[2] = doubleArray1;
+    doubleArray0[3] = doubleArray1;
+    doubleArray0[4] = doubleArray0[0];
+    doubleArray0[5] = doubleArray1;
+    doubleArray0[6] = doubleArray0[2];
+    doubleArray0[7] = doubleArray0[3];
+    simpleRegression0.addData(doubleArray0);
+    simpleRegression0.addData((-968.4603129835), (-968.4603129835));
+    assertEquals(833702.5580658657, simpleRegression0.getTotalSumSquares(), 0.01);
+}",0,
+project,0,test2139,"public void test2139() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double double0 = simpleRegression0.getSlopeStdErr();
+    assertEquals(0L, simpleRegression0.getN());
+}",0,"assertEquals(0, simpleRegression0.getN())"
+project,0,test2140,"public void test2140() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double double0 = simpleRegression0.getSlopeStdErr();
+    assertEquals(Double.NaN, simpleRegression0.getMeanSquareError(), 0.01);
+}",0,
+project,0,test2141,"public void test2141() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double double0 = simpleRegression0.getSlopeStdErr();
+    assertEquals(Double.NaN, simpleRegression0.getSumSquaredErrors(), 0.01);
+}",0,
+project,0,test2142,"public void test2142() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double double0 = simpleRegression0.getSlopeStdErr();
+    assertEquals(Double.NaN, double0, 0.01);
+}",0,
+project,0,test2243,"public void test2243() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double double0 = simpleRegression0.getSumSquaredErrors();
+    assertEquals(0L, simpleRegression0.getN());
+}",0,"assertEquals(1, simpleRegression0.getN())"
+project,0,test2244,"public void test2244() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double double0 = simpleRegression0.getSumSquaredErrors();
+    assertEquals(Double.NaN, double0, 0.01);
+}",0,
+project,0,test2345,"public void test2345() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    // Undeclared exception!
+    try {
+        simpleRegression0.getSlopeConfidenceInterval(0.0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.stat.regression.SimpleRegression"", e);
+    }
+}",1,
+project,0,test2446,"public void test2446() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    // Undeclared exception!
+    try {
+        simpleRegression0.getSlopeConfidenceInterval(909.40891273);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.stat.regression.SimpleRegression"", e);
+    }
+}",1,
+project,0,test2547,"public void test2547() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[1][0];
+    double[] doubleArray1 = new double[8];
+    doubleArray1[1] = 663.000092736518;
+    simpleRegression0.addData(128.80567165176635, 0.0);
+    doubleArray0[0] = doubleArray1;
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getR();
+    assertEquals(1.0000000000000002, simpleRegression0.getRSquare(), 0.01);
+}",0,
+project,0,test2548,"public void test2548() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[1][0];
+    double[] doubleArray1 = new double[8];
+    doubleArray1[1] = 663.000092736518;
+    simpleRegression0.addData(128.80567165176635, 0.0);
+    doubleArray0[0] = doubleArray1;
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getR();
+    assertEquals((-1.0), double0, 0.01);
+}",0,
+project,0,test2649,"public void test2649() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    simpleRegression0.getR();
+    assertEquals(Double.NaN, simpleRegression0.getRegressionSumSquares(), 0.01);
+}",0,
+project,0,test2650,"public void test2650() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    simpleRegression0.getR();
+    assertEquals(0L, simpleRegression0.getN());
+}",0,"assertEquals(0, simpleRegression0.getN())"
+project,0,test2651,"public void test2651() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    simpleRegression0.getR();
+    assertEquals(Double.NaN, simpleRegression0.getSumSquaredErrors(), 0.01);
+}",0,
+project,0,test2652,"public void test2652() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    simpleRegression0.getR();
+    assertEquals(Double.NaN, simpleRegression0.getTotalSumSquares(), 0.01);
+}",0,
+project,0,test2753,"public void test2753() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[8][9];
+    double[] doubleArray1 = new double[6];
+    doubleArray1[0] = 3052.94544;
+    doubleArray0[1] = doubleArray1;
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getIntercept();
+    assertEquals(8L, simpleRegression0.getN());
+}",0,"assertEquals(1, simpleRegression0.getN())"
+project,0,test2754,"public void test2754() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[8][9];
+    double[] doubleArray1 = new double[6];
+    doubleArray1[0] = 3052.94544;
+    doubleArray0[1] = doubleArray1;
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getIntercept();
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test2855,"public void test2855() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    // Undeclared exception!
+    try {
+        simpleRegression0.getSlopeConfidenceInterval();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // degrees of freedom must be positive.
+        //
+        verifyException(""org.apache.commons.math.distribution.TDistributionImpl"", e);
+    }
+}",0,
+project,0,test2956,"public void test2956() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[8][9];
+    simpleRegression0.addData(doubleArray0);
+    simpleRegression0.getSignificance();
+    assertEquals(0.0, simpleRegression0.getTotalSumSquares(), 0.01);
+}",0,
+project,0,test3057,"public void test3057() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    long long0 = simpleRegression0.getN();
+    assertEquals(Double.NaN, simpleRegression0.getSumSquaredErrors(), 0.01);
+}",0,
+project,0,test3058,"public void test3058() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    long long0 = simpleRegression0.getN();
+    assertEquals(0L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test3159,"public void test3159() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    simpleRegression0.clear();
+    assertEquals(Double.NaN, simpleRegression0.getSumSquaredErrors(), 0.01);
+}",0,
+project,0,test3160,"public void test3160() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    simpleRegression0.clear();
+    assertEquals(0L, simpleRegression0.getN());
+}",0,"assertEquals(0, simpleRegression0.getN())"
+project,0,test3261,"public void test3261() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    // Undeclared exception!
+    try {
+        simpleRegression0.getSignificance();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // degrees of freedom must be positive.
+        //
+        verifyException(""org.apache.commons.math.distribution.TDistributionImpl"", e);
+    }
+}",0,

@@ -1,0 +1,74 @@
+focal_method,test_prefix,docstring
+"@Override
+public void process(Node externs, Node root) {
+    (new NodeTraversal(compiler, this)).traverse(root);
+}","public void test00() throws Throwable {
+    FlowSensitiveInlineVariables flowSensitiveInlineVariables0 = new FlowSensitiveInlineVariables((AbstractCompiler) null);
+    // Undeclared exception!
+    try {
+        flowSensitiveInlineVariables0.process((Node) null, (Node) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.NodeTraversal"", e);
+    }
+}",""
+"public int getLineNumber() {
+    Node cur = curNode;
+    while (cur != null) {
+        int line = cur.getLineno();
+        if (line >= 0) {
+            return line;
+        }
+        cur = cur.getParent();
+    }
+    return 0;
+}","public void test11() throws Throwable {
+    FlowSensitiveInlineVariables flowSensitiveInlineVariables0 = new FlowSensitiveInlineVariables((AbstractCompiler) null);
+    NodeTraversal nodeTraversal0 = new NodeTraversal((AbstractCompiler) null, flowSensitiveInlineVariables0);
+    flowSensitiveInlineVariables0.exitScope(nodeTraversal0);
+    assertEquals(0, nodeTraversal0.getLineNumber());
+}","/**
+ * Gets the current line number, or zero if it cannot be determined. The line
+ * number is retrieved lazily as a running time optimization.
+ */"
+"public int getLineNumber() {
+    Node cur = curNode;
+    while (cur != null) {
+        int line = cur.getLineno();
+        if (line >= 0) {
+            return line;
+        }
+        cur = cur.getParent();
+    }
+    return 0;
+}","public void test22() throws Throwable {
+    FlowSensitiveInlineVariables flowSensitiveInlineVariables0 = new FlowSensitiveInlineVariables((AbstractCompiler) null);
+    NodeTraversal nodeTraversal0 = new NodeTraversal((AbstractCompiler) null, flowSensitiveInlineVariables0);
+    flowSensitiveInlineVariables0.visit(nodeTraversal0, (Node) null, (Node) null);
+    assertEquals(0, nodeTraversal0.getLineNumber());
+}","/**
+ * Gets the current line number, or zero if it cannot be determined. The line
+ * number is retrieved lazily as a running time optimization.
+ */"
+"public int getLineNumber() {
+    Node cur = curNode;
+    while (cur != null) {
+        int line = cur.getLineno();
+        if (line >= 0) {
+            return line;
+        }
+        cur = cur.getParent();
+    }
+    return 0;
+}","public void test33() throws Throwable {
+    FlowSensitiveInlineVariables flowSensitiveInlineVariables0 = new FlowSensitiveInlineVariables((AbstractCompiler) null);
+    NodeTraversal nodeTraversal0 = new NodeTraversal((AbstractCompiler) null, flowSensitiveInlineVariables0);
+    flowSensitiveInlineVariables0.enterScope(nodeTraversal0);
+    assertEquals(0, nodeTraversal0.getLineNumber());
+}","/**
+ * Gets the current line number, or zero if it cannot be determined. The line
+ * number is retrieved lazily as a running time optimization.
+ */"

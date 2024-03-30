@@ -1,0 +1,1302 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    Number[][] numberArray0 = new Number[20][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Comparable comparable0 = defaultIntervalCategoryDataset0.getRowKey(16);
+    assertEquals(20, defaultIntervalCategoryDataset0.getRowCount());
+}",0,
+project,0,test001,"public void test001() throws Throwable {
+    Number[][] numberArray0 = new Number[20][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Comparable comparable0 = defaultIntervalCategoryDataset0.getRowKey(16);
+    assertEquals(""Series 17"", comparable0);
+}",1,
+project,0,test012,"public void test012() throws Throwable {
+    double[][] doubleArray0 = new double[1][3];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getRowKey(1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The 'row' argument is out of bounds.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",1,
+project,0,test023,"public void test023() throws Throwable {
+    Number[][] numberArray0 = new Number[1][8];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    MockDate mockDate0 = new MockDate(0);
+    SimpleTimePeriod simpleTimePeriod0 = new SimpleTimePeriod(mockDate0, mockDate0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.setStartValue(0, simpleTimePeriod0, 2);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.setValue: unrecognised category.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",1,
+project,0,test034,"public void test034() throws Throwable {
+    Number[][] numberArray0 = new Number[12][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    defaultIntervalCategoryDataset0.getEndValue(6, 0);
+    assertEquals(12, defaultIntervalCategoryDataset0.getRowCount());
+}",0,"assertEquals(0, defaultIntervalCategoryDataset0.getRowCount())"
+project,0,test035,"public void test035() throws Throwable {
+    Number[][] numberArray0 = new Number[12][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    defaultIntervalCategoryDataset0.getEndValue(6, 0);
+    assertEquals(6, defaultIntervalCategoryDataset0.getCategoryCount());
+}",0,
+project,0,test046,"public void test046() throws Throwable {
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset((Number[][]) null, (Number[][]) null);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getValue(0, 0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.getValue(): series index out of range.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",0,
+project,0,test057,"public void test057() throws Throwable {
+    Number[][] numberArray0 = new Number[1][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getStartValue(1, 957);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.getValue(): series index out of range.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",1,
+project,0,test068,"public void test068() throws Throwable {
+    Number[][] numberArray0 = new Number[1][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    defaultIntervalCategoryDataset0.getStartValue(0, 0);
+    assertEquals(1, defaultIntervalCategoryDataset0.getRowCount());
+}",0,
+project,0,test069,"public void test069() throws Throwable {
+    Number[][] numberArray0 = new Number[1][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    defaultIntervalCategoryDataset0.getStartValue(0, 0);
+    assertEquals(6, defaultIntervalCategoryDataset0.getCategoryCount());
+}",0,"assertEquals(0, defaultIntervalCategoryDataset0.getCategoryCount())"
+project,0,test0710,"public void test0710() throws Throwable {
+    Number[][] numberArray0 = new Number[2][6];
+    BigInteger bigInteger0 = BigInteger.ZERO;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Comparable<DefaultIntervalCategoryDataset>[] comparableArray0 = (Comparable<DefaultIntervalCategoryDataset>[]) Array.newInstance(Comparable.class, 2);
+    Instant instant0 = MockInstant.now();
+    Date date0 = Date.from(instant0);
+    Minute minute0 = new Minute(date0);
+    Day day0 = minute0.getDay();
+    comparableArray0[0] = (Comparable<DefaultIntervalCategoryDataset>) day0;
+    defaultIntervalCategoryDataset0.setSeriesKeys(comparableArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getStartValue((Comparable) comparableArray0[0], (Comparable) bigInteger0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unknown 'category' key.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",0,
+project,0,test0811,"public void test0811() throws Throwable {
+    Comparable<Object>[] comparableArray0 = (Comparable<Object>[]) Array.newInstance(Comparable.class, 5);
+    Number[][] numberArray0 = new Number[3][8];
+    Number[] numberArray1 = new Number[4];
+    numberArray0[0] = numberArray1;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.setCategoryKeys(comparableArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The number of categories does not match the data.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",1,
+project,0,test0912,"public void test0912() throws Throwable {
+    double[][] doubleArray0 = new double[1][3];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    Comparable<Integer>[] comparableArray0 = (Comparable<Integer>[]) Array.newInstance(Comparable.class, 0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.setSeriesKeys(comparableArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The number of series keys does not match the data.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",1,
+project,0,test1013,"public void test1013() throws Throwable {
+    Number[][] numberArray0 = new Number[0][3];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getSeriesKey(0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // No such series : 0
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",1,
+project,0,test1114,"public void test1114() throws Throwable {
+    String[] stringArray0 = new String[6];
+    Number[][] numberArray0 = new Number[6][1];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(stringArray0, numberArray0, numberArray0);
+    assertEquals(1, defaultIntervalCategoryDataset0.getColumnCount());
+}",0,"assertEquals(0, defaultIntervalCategoryDataset0.getColumnCount())"
+project,0,test1215,"public void test1215() throws Throwable {
+    Number[][] numberArray0 = new Number[2][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Integer integer0 = new Integer(0);
+    defaultIntervalCategoryDataset0.getValue((int) integer0, 0);
+    assertEquals(2, defaultIntervalCategoryDataset0.getRowCount());
+}",0,"assertEquals(0, defaultIntervalCategoryDataset0.getRowCount())"
+project,0,test1216,"public void test1216() throws Throwable {
+    Number[][] numberArray0 = new Number[2][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Integer integer0 = new Integer(0);
+    defaultIntervalCategoryDataset0.getValue((int) integer0, 0);
+    assertEquals(6, defaultIntervalCategoryDataset0.getCategoryCount());
+}",0,"assertEquals(0, defaultIntervalCategoryDataset0.getCategoryCount())"
+project,0,test1317,"public void test1317() throws Throwable {
+    double[][] doubleArray0 = new double[8][9];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    defaultIntervalCategoryDataset0.getValue(0, 0);
+    assertEquals(9, defaultIntervalCategoryDataset0.getCategoryCount());
+}",0,
+project,0,test1318,"public void test1318() throws Throwable {
+    double[][] doubleArray0 = new double[8][9];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    defaultIntervalCategoryDataset0.getValue(0, 0);
+    assertEquals(8, defaultIntervalCategoryDataset0.getRowCount());
+}",0,"assertEquals(0, defaultIntervalCategoryDataset0.getRowCount())"
+project,0,test1419,"public void test1419() throws Throwable {
+    Number[][] numberArray0 = new Number[2][6];
+    Number[] numberArray1 = new Number[2];
+    BigInteger bigInteger0 = BigInteger.TEN;
+    numberArray1[0] = (Number) bigInteger0;
+    numberArray0[0] = numberArray1;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Number number0 = defaultIntervalCategoryDataset0.getValue(0, 0);
+    assertEquals(2, defaultIntervalCategoryDataset0.getCategoryCount());
+}",0,"assertEquals(0, defaultIntervalCategoryDataset0.getCategoryCount())"
+project,0,test1420,"public void test1420() throws Throwable {
+    Number[][] numberArray0 = new Number[2][6];
+    Number[] numberArray1 = new Number[2];
+    BigInteger bigInteger0 = BigInteger.TEN;
+    numberArray1[0] = (Number) bigInteger0;
+    numberArray0[0] = numberArray1;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Number number0 = defaultIntervalCategoryDataset0.getValue(0, 0);
+    assertNotNull(number0);
+}",0,"assertEquals(numberArray0, number0)"
+project,0,test1421,"public void test1421() throws Throwable {
+    Number[][] numberArray0 = new Number[2][6];
+    Number[] numberArray1 = new Number[2];
+    BigInteger bigInteger0 = BigInteger.TEN;
+    numberArray1[0] = (Number) bigInteger0;
+    numberArray0[0] = numberArray1;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Number number0 = defaultIntervalCategoryDataset0.getValue(0, 0);
+    assertEquals(2, defaultIntervalCategoryDataset0.getRowCount());
+}",0,"assertEquals(0, defaultIntervalCategoryDataset0.getRowCount())"
+project,0,test1522,"public void test1522() throws Throwable {
+    double[][] doubleArray0 = new double[9][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    defaultIntervalCategoryDataset0.getSeriesCount();
+    assertEquals(9, defaultIntervalCategoryDataset0.getRowCount());
+}",0,"assertEquals(0, defaultIntervalCategoryDataset0.getRowCount())"
+project,0,test1623,"public void test1623() throws Throwable {
+    Number[][] numberArray0 = new Number[3][8];
+    Number[] numberArray1 = new Number[4];
+    numberArray1[0] = (Number) 0;
+    numberArray0[0] = numberArray1;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Number number0 = defaultIntervalCategoryDataset0.getEndValue(0, 0);
+    assertEquals(3, defaultIntervalCategoryDataset0.getRowCount());
+}",0,"assertEquals(0, defaultIntervalCategoryDataset0.getRowCount())"
+project,0,test1624,"public void test1624() throws Throwable {
+    Number[][] numberArray0 = new Number[3][8];
+    Number[] numberArray1 = new Number[4];
+    numberArray1[0] = (Number) 0;
+    numberArray0[0] = numberArray1;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Number number0 = defaultIntervalCategoryDataset0.getEndValue(0, 0);
+    assertEquals(4, defaultIntervalCategoryDataset0.getCategoryCount());
+}",0,"assertEquals(1, defaultIntervalCategoryDataset0.getCategoryCount())"
+project,0,test1625,"public void test1625() throws Throwable {
+    Number[][] numberArray0 = new Number[3][8];
+    Number[] numberArray1 = new Number[4];
+    numberArray1[0] = (Number) 0;
+    numberArray0[0] = numberArray1;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Number number0 = defaultIntervalCategoryDataset0.getEndValue(0, 0);
+    assertNotNull(number0);
+}",1,
+project,0,test1726,"public void test1726() throws Throwable {
+    double[][] doubleArray0 = new double[5][7];
+    double[] doubleArray1 = new double[2];
+    doubleArray1[0] = (-1430.6215251);
+    doubleArray0[0] = doubleArray1;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    Number number0 = defaultIntervalCategoryDataset0.getEndValue(0, 0);
+    assertEquals(5, defaultIntervalCategoryDataset0.getRowCount());
+}",0,
+project,0,test1727,"public void test1727() throws Throwable {
+    double[][] doubleArray0 = new double[5][7];
+    double[] doubleArray1 = new double[2];
+    doubleArray1[0] = (-1430.6215251);
+    doubleArray0[0] = doubleArray1;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    Number number0 = defaultIntervalCategoryDataset0.getEndValue(0, 0);
+    assertEquals(2, defaultIntervalCategoryDataset0.getCategoryCount());
+}",0,"assertEquals(0, defaultIntervalCategoryDataset0.getCategoryCount())"
+project,0,test1728,"public void test1728() throws Throwable {
+    double[][] doubleArray0 = new double[5][7];
+    double[] doubleArray1 = new double[2];
+    doubleArray1[0] = (-1430.6215251);
+    doubleArray0[0] = doubleArray1;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    Number number0 = defaultIntervalCategoryDataset0.getEndValue(0, 0);
+    assertEquals((-1430.6215251), number0);
+}",1,
+project,0,test1829,"public void test1829() throws Throwable {
+    Number[] numberArray0 = new Number[4];
+    Float float0 = new Float(1526.7344931);
+    numberArray0[0] = (Number) float0;
+    Number[][] numberArray1 = new Number[6][1];
+    numberArray1[0] = numberArray0;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray1, numberArray1);
+    Number number0 = defaultIntervalCategoryDataset0.getEndValue(0, 0);
+    assertEquals(4, defaultIntervalCategoryDataset0.getColumnCount());
+}",0,"assertEquals(0, defaultIntervalCategoryDataset0.getColumnCount())"
+project,0,test1830,"public void test1830() throws Throwable {
+    Number[] numberArray0 = new Number[4];
+    Float float0 = new Float(1526.7344931);
+    numberArray0[0] = (Number) float0;
+    Number[][] numberArray1 = new Number[6][1];
+    numberArray1[0] = numberArray0;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray1, numberArray1);
+    Number number0 = defaultIntervalCategoryDataset0.getEndValue(0, 0);
+    assertNotNull(number0);
+}",1,
+project,0,test1831,"public void test1831() throws Throwable {
+    Number[] numberArray0 = new Number[4];
+    Float float0 = new Float(1526.7344931);
+    numberArray0[0] = (Number) float0;
+    Number[][] numberArray1 = new Number[6][1];
+    numberArray1[0] = numberArray0;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray1, numberArray1);
+    Number number0 = defaultIntervalCategoryDataset0.getEndValue(0, 0);
+    assertEquals(4, defaultIntervalCategoryDataset0.getCategoryCount());
+}",0,"assertEquals(0, defaultIntervalCategoryDataset0.getCategoryCount())"
+project,0,test1932,"public void test1932() throws Throwable {
+    Number[][] numberArray0 = new Number[1][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Comparable comparable0 = defaultIntervalCategoryDataset0.getColumnKey(0);
+    assertEquals(""Category 1"", comparable0);
+}",0,
+project,0,test1933,"public void test1933() throws Throwable {
+    Number[][] numberArray0 = new Number[1][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Comparable comparable0 = defaultIntervalCategoryDataset0.getColumnKey(0);
+    assertEquals(1, defaultIntervalCategoryDataset0.getRowCount());
+}",0,
+project,0,test2034,"public void test2034() throws Throwable {
+    double[][] doubleArray0 = new double[4][1];
+    double[] doubleArray1 = new double[0];
+    doubleArray0[0] = doubleArray1;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    int int0 = defaultIntervalCategoryDataset0.getColumnCount();
+    assertEquals(4, defaultIntervalCategoryDataset0.getRowCount());
+}",0,"assertEquals(0, defaultIntervalCategoryDataset0.getRowCount())"
+project,0,test2035,"public void test2035() throws Throwable {
+    double[][] doubleArray0 = new double[4][1];
+    double[] doubleArray1 = new double[0];
+    doubleArray0[0] = doubleArray1;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    int int0 = defaultIntervalCategoryDataset0.getColumnCount();
+    assertEquals(0, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test2136,"public void test2136() throws Throwable {
+    String[] stringArray0 = new String[4];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(stringArray0, (Number[][]) null, (Number[][]) null);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.setCategoryKeys(stringArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",1,
+project,0,test2237,"public void test2237() throws Throwable {
+    Comparable<Object>[] comparableArray0 = (Comparable<Object>[]) Array.newInstance(Comparable.class, 5);
+    Number[][] numberArray0 = new Number[0][0];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(comparableArray0, comparableArray0, numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.setCategoryKeys(comparableArray0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 0
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",1,
+project,0,test2338,"public void test2338() throws Throwable {
+    Number[][] numberArray0 = new Number[0][3];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getValue((Comparable) null, (Comparable) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",0,
+project,0,test2439,"public void test2439() throws Throwable {
+    Number[][] numberArray0 = new Number[3][8];
+    Number[] numberArray1 = new Number[0];
+    numberArray0[2] = numberArray1;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getValue(2, 2);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 2
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",0,
+project,0,test2540,"public void test2540() throws Throwable {
+    String[] stringArray0 = new String[2];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(stringArray0, (Number[][]) null, (Number[][]) null);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getStartValue((Comparable) """", (Comparable) """");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",1,
+project,0,test2641,"public void test2641() throws Throwable {
+    Number[][] numberArray0 = new Number[2][6];
+    BigInteger bigInteger0 = BigInteger.TEN;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, (Number[][]) null);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getSeriesIndex(bigInteger0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",0,
+project,0,test2742,"public void test2742() throws Throwable {
+    String[] stringArray0 = new String[9];
+    Number[][] numberArray0 = new Number[0][5];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(stringArray0, numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getRowKey(0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",1,
+project,0,test2843,"public void test2843() throws Throwable {
+    String[] stringArray0 = new String[8];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(stringArray0, (Number[][]) null, (Number[][]) null);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getEndValue((Comparable) """", (Comparable) ""q@T2"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",1,
+project,0,test2944,"public void test2944() throws Throwable {
+    double[][] doubleArray0 = new double[6][3];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getColumnKey((-4677));
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -4677
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",0,
+project,0,test3045,"public void test3045() throws Throwable {
+    String[] stringArray0 = new String[6];
+    Number[][] numberArray0 = new Number[0][2];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(stringArray0, numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getColumnIndex(""tB1@(uonG)"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",0,
+project,0,test3146,"public void test3146() throws Throwable {
+    Comparable<String>[] comparableArray0 = (Comparable<String>[]) Array.newInstance(Comparable.class, 2);
+    Number[][] numberArray0 = new Number[0][8];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(comparableArray0, comparableArray0, numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getColumnCount();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",0,
+project,0,test3247,"public void test3247() throws Throwable {
+    Comparable<Object>[] comparableArray0 = (Comparable<Object>[]) Array.newInstance(Comparable.class, 5);
+    Number[][] numberArray0 = new Number[0][0];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(comparableArray0, comparableArray0, numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getCategoryIndex(comparableArray0[1]);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",0,
+project,0,test3348,"public void test3348() throws Throwable {
+    String[] stringArray0 = new String[6];
+    Number[][] numberArray0 = new Number[0][1];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(stringArray0, numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.clone();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",0,
+project,0,test3449,"public void test3449() throws Throwable {
+    Number[][] numberArray0 = new Number[2][4];
+    Number[][] numberArray1 = new Number[8][7];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = null;
+    try {
+        defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset: the number of series in the start value dataset does not match the number of series in the end value dataset.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",0,
+project,0,test3550,"public void test3550() throws Throwable {
+    double[][] doubleArray0 = new double[2][7];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    int int0 = defaultIntervalCategoryDataset0.getColumnIndex((-1));
+    assertEquals((-1), int0);
+}",0,"assertEquals(1, int0)"
+project,0,test3551,"public void test3551() throws Throwable {
+    double[][] doubleArray0 = new double[2][7];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    int int0 = defaultIntervalCategoryDataset0.getColumnIndex((-1));
+    assertEquals(2, defaultIntervalCategoryDataset0.getRowCount());
+}",0,"assertEquals(0, defaultIntervalCategoryDataset0.getRowCount())"
+project,0,test3652,"public void test3652() throws Throwable {
+    Number[][] numberArray0 = new Number[4][9];
+    Integer integer0 = JLayeredPane.POPUP_LAYER;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset((String[]) null, numberArray0, numberArray0);
+    int int0 = defaultIntervalCategoryDataset0.getCategoryIndex(integer0);
+    assertEquals(4, defaultIntervalCategoryDataset0.getRowCount());
+}",0,"assertEquals(0, defaultIntervalCategoryDataset0.getRowCount())"
+project,0,test3653,"public void test3653() throws Throwable {
+    Number[][] numberArray0 = new Number[4][9];
+    Integer integer0 = JLayeredPane.POPUP_LAYER;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset((String[]) null, numberArray0, numberArray0);
+    int int0 = defaultIntervalCategoryDataset0.getCategoryIndex(integer0);
+    assertEquals((-1), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test3754,"public void test3754() throws Throwable {
+    Number[][] numberArray0 = new Number[3][8];
+    Number[] numberArray1 = new Number[0];
+    numberArray0[0] = numberArray1;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getEndValue(0, 0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.getValue(): category index out of range.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",1,
+project,0,test3855,"public void test3855() throws Throwable {
+    double[][] doubleArray0 = new double[4][5];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getEndValue((-265), (-259));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.getValue(): series index out of range.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",0,
+project,0,test3956,"public void test3956() throws Throwable {
+    Number[][] numberArray0 = new Number[12][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    int int0 = defaultIntervalCategoryDataset0.getCategoryCount();
+    assertEquals(6, int0);
+}",0,
+project,0,test3957,"public void test3957() throws Throwable {
+    Number[][] numberArray0 = new Number[12][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    int int0 = defaultIntervalCategoryDataset0.getCategoryCount();
+    assertEquals(12, defaultIntervalCategoryDataset0.getRowCount());
+}",0,"assertEquals(0, defaultIntervalCategoryDataset0.getRowCount())"
+project,0,test4058,"public void test4058() throws Throwable {
+    Number[][] numberArray0 = new Number[5][0];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset((Comparable[]) null, (Comparable[]) null, numberArray0, numberArray0);
+    Comparable comparable0 = defaultIntervalCategoryDataset0.getSeriesKey(0);
+    assertEquals(5, defaultIntervalCategoryDataset0.getRowCount());
+}",0,
+project,0,test4059,"public void test4059() throws Throwable {
+    Number[][] numberArray0 = new Number[5][0];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset((Comparable[]) null, (Comparable[]) null, numberArray0, numberArray0);
+    Comparable comparable0 = defaultIntervalCategoryDataset0.getSeriesKey(0);
+    assertEquals(""Series 1"", comparable0);
+}",1,
+project,0,test4160,"public void test4160() throws Throwable {
+    double[][] doubleArray0 = new double[2][3];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    int int0 = defaultIntervalCategoryDataset0.getSeriesIndex(0.0);
+    assertEquals((-1), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test4161,"public void test4161() throws Throwable {
+    double[][] doubleArray0 = new double[2][3];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    int int0 = defaultIntervalCategoryDataset0.getSeriesIndex(0.0);
+    assertEquals(2, defaultIntervalCategoryDataset0.getRowCount());
+}",0,
+project,0,test4262,"public void test4262() throws Throwable {
+    String[] stringArray0 = new String[5];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(stringArray0, (Number[][]) null, (Number[][]) null);
+    int int0 = defaultIntervalCategoryDataset0.getSeriesCount();
+    assertEquals(0, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test4363,"public void test4363() throws Throwable {
+    Comparable<DefaultIntervalCategoryDataset>[] comparableArray0 = (Comparable<DefaultIntervalCategoryDataset>[]) Array.newInstance(Comparable.class, 0);
+    Number[][] numberArray0 = new Number[1][8];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = null;
+    try {
+        defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(comparableArray0, comparableArray0, numberArray0, numberArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The number of series keys does not match the number of series in the data.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",0,
+project,0,test4464,"public void test4464() throws Throwable {
+    Number[][] numberArray0 = new Number[4][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset((Comparable[]) null, (Comparable[]) null, numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getEndValue(555, 555);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.getValue(): series index out of range.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",0,
+project,0,test4565,"public void test4565() throws Throwable {
+    Number[][] numberArray0 = new Number[12][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    int int0 = defaultIntervalCategoryDataset0.getRowCount();
+    assertEquals(12, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test4666,"public void test4666() throws Throwable {
+    double[][] doubleArray0 = new double[3][5];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    Number[][] numberArray0 = new Number[0][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset1 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    boolean boolean0 = defaultIntervalCategoryDataset0.equals(defaultIntervalCategoryDataset1);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4667,"public void test4667() throws Throwable {
+    double[][] doubleArray0 = new double[3][5];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    Number[][] numberArray0 = new Number[0][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset1 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    boolean boolean0 = defaultIntervalCategoryDataset0.equals(defaultIntervalCategoryDataset1);
+    assertEquals(3, defaultIntervalCategoryDataset0.getRowCount());
+}",0,"assertEquals(0, defaultIntervalCategoryDataset0.getRowCount())"
+project,0,test4768,"public void test4768() throws Throwable {
+    double[][] doubleArray0 = new double[6][1];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset1 = (DefaultIntervalCategoryDataset) defaultIntervalCategoryDataset0.clone();
+    boolean boolean0 = defaultIntervalCategoryDataset0.equals(defaultIntervalCategoryDataset1);
+    assertEquals(6, defaultIntervalCategoryDataset1.getRowCount());
+}",0,"assertEquals(0, defaultIntervalCategoryDataset1.getRowCount())"
+project,0,test4769,"public void test4769() throws Throwable {
+    double[][] doubleArray0 = new double[6][1];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset1 = (DefaultIntervalCategoryDataset) defaultIntervalCategoryDataset0.clone();
+    boolean boolean0 = defaultIntervalCategoryDataset0.equals(defaultIntervalCategoryDataset1);
+    assertNotSame(defaultIntervalCategoryDataset1, defaultIntervalCategoryDataset0);
+}",0,
+project,0,test4770,"public void test4770() throws Throwable {
+    double[][] doubleArray0 = new double[6][1];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset1 = (DefaultIntervalCategoryDataset) defaultIntervalCategoryDataset0.clone();
+    boolean boolean0 = defaultIntervalCategoryDataset0.equals(defaultIntervalCategoryDataset1);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4871,"public void test4871() throws Throwable {
+    double[][] doubleArray0 = new double[6][1];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    boolean boolean0 = defaultIntervalCategoryDataset0.equals(defaultIntervalCategoryDataset0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4872,"public void test4872() throws Throwable {
+    double[][] doubleArray0 = new double[6][1];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    boolean boolean0 = defaultIntervalCategoryDataset0.equals(defaultIntervalCategoryDataset0);
+    assertEquals(6, defaultIntervalCategoryDataset0.getRowCount());
+}",0,"assertEquals(0, defaultIntervalCategoryDataset0.getRowCount())"
+project,0,test4973,"public void test4973() throws Throwable {
+    Number[][] numberArray0 = new Number[3][8];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Object object0 = new Object();
+    boolean boolean0 = defaultIntervalCategoryDataset0.equals(object0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4974,"public void test4974() throws Throwable {
+    Number[][] numberArray0 = new Number[3][8];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Object object0 = new Object();
+    boolean boolean0 = defaultIntervalCategoryDataset0.equals(object0);
+    assertEquals(3, defaultIntervalCategoryDataset0.getRowCount());
+}",0,
+project,0,test5075,"public void test5075() throws Throwable {
+    double[][] doubleArray0 = new double[3][5];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getRowKey((-2873));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The 'row' argument is out of bounds.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",1,
+project,0,test5176,"public void test5176() throws Throwable {
+    double[][] doubleArray0 = new double[1][3];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getRowKey(2080);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The 'row' argument is out of bounds.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",1,
+project,0,test5479,"public void test5479() throws Throwable {
+    double[][] doubleArray0 = new double[5][8];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getColumnIndex((Comparable) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'columnKey' argument.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",0,
+project,0,test5580,"public void test5580() throws Throwable {
+    Number[][] numberArray0 = new Number[6][3];
+    Integer integer0 = JLayeredPane.MODAL_LAYER;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.setEndValue(292, integer0, integer0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.setValue: series outside valid range.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",0,
+project,0,test5681,"public void test5681() throws Throwable {
+    Number[][] numberArray0 = new Number[9][8];
+    Number[] numberArray1 = new Number[5];
+    Long long0 = new Long(1L);
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.setEndValue((byte) 0, long0, numberArray1[0]);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.setValue: unrecognised category.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",1,
+project,0,test5782,"public void test5782() throws Throwable {
+    String[] stringArray0 = new String[3];
+    Number[][] numberArray0 = new Number[0][4];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(stringArray0, numberArray0, numberArray0);
+    Short short0 = new Short((short) (-407));
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.setEndValue((-339), ""KJV'!i,^+L3w<EOT,X_"", short0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.setValue: series outside valid range.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",1,
+project,0,test5883,"public void test5883() throws Throwable {
+    double[][] doubleArray0 = new double[3][5];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.setStartValue(28, 1604.2356, 2008.385);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.setValue: series outside valid range.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",1,
+project,0,test5984,"public void test5984() throws Throwable {
+    double[][] doubleArray0 = new double[5][7];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.setStartValue(0, (-1430.6215251), (-1430.6215251));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.setValue: unrecognised category.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",1,
+project,0,test6085,"public void test6085() throws Throwable {
+    double[][] doubleArray0 = new double[1][9];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.setStartValue((-610), (-1179.8902091), (-1179.8902091));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.setValue: series outside valid range.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",1,
+project,0,test6186,"public void test6186() throws Throwable {
+    Number[][] numberArray0 = new Number[12][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getEndValue(4, (-373));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.getValue(): category index out of range.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",0,
+project,0,test6287,"public void test6287() throws Throwable {
+    Number[][] numberArray0 = new Number[2][6];
+    BigInteger bigInteger0 = BigInteger.TEN;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getEndValue((Comparable) bigInteger0, (Comparable) bigInteger0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unknown 'series' key.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",1,
+project,0,test6388,"public void test6388() throws Throwable {
+    Number[][] numberArray0 = new Number[12][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getStartValue(1, 957);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.getValue(): category index out of range.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",1,
+project,0,test6489,"public void test6489() throws Throwable {
+    Number[][] numberArray0 = new Number[12][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getStartValue(1, (-1408));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.getValue(): category index out of range.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",1,
+project,0,test6590,"public void test6590() throws Throwable {
+    Number[][] numberArray0 = new Number[12][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getStartValue(1377, (-1408));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.getValue(): series index out of range.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",1,
+project,0,test6691,"public void test6691() throws Throwable {
+    Number[][] numberArray0 = new Number[12][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    defaultIntervalCategoryDataset0.getStartValue(1, 0);
+    assertEquals(6, defaultIntervalCategoryDataset0.getCategoryCount());
+}",0,"assertEquals(0, defaultIntervalCategoryDataset0.getCategoryCount())"
+project,0,test6692,"public void test6692() throws Throwable {
+    Number[][] numberArray0 = new Number[12][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    defaultIntervalCategoryDataset0.getStartValue(1, 0);
+    assertEquals(12, defaultIntervalCategoryDataset0.getRowCount());
+}",0,"assertEquals(0, defaultIntervalCategoryDataset0.getRowCount())"
+project,0,test6793,"public void test6793() throws Throwable {
+    Number[][] numberArray0 = new Number[7][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getStartValue((-1), (-1408));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.getValue(): series index out of range.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",1,
+project,0,test6894,"public void test6894() throws Throwable {
+    double[][] doubleArray0 = new double[2][7];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getStartValue((Comparable) (-2643.736), (Comparable) (-498.0));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unknown 'series' key.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",1,
+project,0,test6995,"public void test6995() throws Throwable {
+    Comparable<Object>[] comparableArray0 = (Comparable<Object>[]) Array.newInstance(Comparable.class, 5);
+    Number[][] numberArray0 = new Number[3][8];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond();
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getValue((Comparable) fixedMillisecond0, (Comparable) comparableArray0[1]);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unknown 'series' key.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",1,
+project,0,test7096,"public void test7096() throws Throwable {
+    Number[][] numberArray0 = new Number[0][9];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset((String[]) null, numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.setCategoryKeys((Comparable[]) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'categoryKeys' argument.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",1,
+project,0,test7197,"public void test7197() throws Throwable {
+    Number[][] numberArray0 = new Number[2][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Comparable<DefaultIntervalCategoryDataset>[] comparableArray0 = (Comparable<DefaultIntervalCategoryDataset>[]) Array.newInstance(Comparable.class, 2);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.setCategoryKeys(comparableArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The number of categories does not match the data.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",1,
+project,0,test7298,"public void test7298() throws Throwable {
+    Number[][] numberArray0 = new Number[2][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, (Number[][]) null);
+    defaultIntervalCategoryDataset0.getColumnKeys();
+    assertEquals(2, defaultIntervalCategoryDataset0.getSeriesCount());
+}",0,"assertEquals(1, defaultIntervalCategoryDataset0.getSeriesCount())"
+project,0,test73100,"public void test73100() throws Throwable {
+    Number[][] numberArray0 = new Number[2][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    List list0 = defaultIntervalCategoryDataset0.getColumnKeys();
+    assertEquals(2, defaultIntervalCategoryDataset0.getRowCount());
+}",0,
+project,0,test74101,"public void test74101() throws Throwable {
+    Comparable<Object>[] comparableArray0 = (Comparable<Object>[]) Array.newInstance(Comparable.class, 5);
+    Number[][] numberArray0 = new Number[0][0];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(comparableArray0, comparableArray0, numberArray0, numberArray0);
+    int int0 = defaultIntervalCategoryDataset0.getCategoryCount();
+    assertEquals(0, int0);
+}",0,
+project,0,test75102,"public void test75102() throws Throwable {
+    Comparable<Object>[] comparableArray0 = (Comparable<Object>[]) Array.newInstance(Comparable.class, 0);
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(comparableArray0, comparableArray0, (Number[][]) null, (Number[][]) null);
+    int int0 = defaultIntervalCategoryDataset0.getCategoryCount();
+    assertEquals(0, int0);
+}",0,
+project,0,test76103,"public void test76103() throws Throwable {
+    String[] stringArray0 = new String[5];
+    Number[][] numberArray0 = new Number[0][1];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(stringArray0, numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.setSeriesKeys(stringArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The number of series keys does not match the data.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",1,
+project,0,test77104,"public void test77104() throws Throwable {
+    double[][] doubleArray0 = new double[2][7];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.setSeriesKeys((Comparable[]) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'seriesKeys' argument.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",1,
+project,0,test78105,"public void test78105() throws Throwable {
+    Number[][] numberArray0 = new Number[2][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    assertEquals(2, defaultIntervalCategoryDataset0.getRowCount());
+}",0,"assertEquals(0, defaultIntervalCategoryDataset0.getRowCount())"
+project,0,test78106,"public void test78106() throws Throwable {
+    Number[][] numberArray0 = new Number[2][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    assertEquals(2, defaultIntervalCategoryDataset0.getSeriesCount());
+}",0,"assertEquals(0, defaultIntervalCategoryDataset0.getSeriesCount())"
+project,0,test78107,"public void test78107() throws Throwable {
+    Number[][] numberArray0 = new Number[2][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Comparable<DefaultIntervalCategoryDataset>[] comparableArray0 = (Comparable<DefaultIntervalCategoryDataset>[]) Array.newInstance(Comparable.class, 2);
+    defaultIntervalCategoryDataset0.setSeriesKeys(comparableArray0);
+    defaultIntervalCategoryDataset0.getRowKey(0);
+    assertEquals(6, defaultIntervalCategoryDataset0.getColumnCount());
+}",0,"assertEquals(0, defaultIntervalCategoryDataset0.getColumnCount())"
+project,0,test79108,"public void test79108() throws Throwable {
+    String[] stringArray0 = new String[3];
+    Number[][] numberArray0 = new Number[0][1];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(stringArray0, numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getSeriesKey((-1331));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // No such series : -1331
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",1,
+project,0,test80109,"public void test80109() throws Throwable {
+    double[][] doubleArray0 = new double[8][5];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    defaultIntervalCategoryDataset0.indexOf(0.0);
+    assertEquals(8, defaultIntervalCategoryDataset0.getRowCount());
+}",0,
+project,0,test80110,"public void test80110() throws Throwable {
+    double[][] doubleArray0 = new double[8][5];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    defaultIntervalCategoryDataset0.indexOf(0.0);
+    assertEquals(8, defaultIntervalCategoryDataset0.getSeriesCount());
+}",0,
+project,0,test81111,"public void test81111() throws Throwable {
+    Number[][] numberArray0 = new Number[8][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getSeriesKey(794);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // No such series : 794
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",1,
+project,0,test82112,"public void test82112() throws Throwable {
+    Comparable<Object>[] comparableArray0 = (Comparable<Object>[]) Array.newInstance(Comparable.class, 5);
+    Number[][] numberArray0 = new Number[3][8];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond();
+    comparableArray0[2] = (Comparable<Object>) fixedMillisecond0;
+    int int0 = defaultIntervalCategoryDataset0.getRowIndex(comparableArray0[2]);
+    assertEquals((-1), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test82113,"public void test82113() throws Throwable {
+    Comparable<Object>[] comparableArray0 = (Comparable<Object>[]) Array.newInstance(Comparable.class, 5);
+    Number[][] numberArray0 = new Number[3][8];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond();
+    comparableArray0[2] = (Comparable<Object>) fixedMillisecond0;
+    int int0 = defaultIntervalCategoryDataset0.getRowIndex(comparableArray0[2]);
+    assertEquals(3, defaultIntervalCategoryDataset0.getRowCount());
+}",0,"assertEquals(0, defaultIntervalCategoryDataset0.getRowCount())"
+project,0,test83114,"public void test83114() throws Throwable {
+    Number[][] numberArray0 = new Number[12][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Integer integer0 = new Integer(0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getValue((int) integer0, 90);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.getValue(): category index out of range.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",0,
+project,0,test84115,"public void test84115() throws Throwable {
+    double[][] doubleArray0 = new double[2][9];
+    double[][] doubleArray1 = new double[2][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = null;
+    try {
+        defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset: the number of categories in the start value dataset does not match the number of categories in the end value dataset.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",0,
+project,0,test85116,"public void test85116() throws Throwable {
+    Number[][] numberArray0 = new Number[9][0];
+    Comparable<DefaultIntervalCategoryDataset>[] comparableArray0 = (Comparable<DefaultIntervalCategoryDataset>[]) Array.newInstance(Comparable.class, 9);
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = null;
+    try {
+        defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(comparableArray0, comparableArray0, numberArray0, numberArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The number of category keys does not match the number of categories in the data.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",0,
+project,0,test86117,"public void test86117() throws Throwable {
+    String[] stringArray0 = new String[0];
+    Number[][] numberArray0 = new Number[9][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = null;
+    try {
+        defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(stringArray0, numberArray0, numberArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The number of series keys does not match the number of series in the data.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",0,
+project,0,test87118,"public void test87118() throws Throwable {
+    String[] stringArray0 = new String[8];
+    Number[][] numberArray0 = new Number[3][4];
+    Number[][] numberArray1 = new Number[2][5];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = null;
+    try {
+        defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(stringArray0, stringArray0, numberArray0, numberArray1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset: the number of series in the start value dataset does not match the number of series in the end value dataset.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",0,
+project,0,test88119,"public void test88119() throws Throwable {
+    Number[][] numberArray0 = new Number[3][8];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, (Number[][]) null);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getEndValue(0, 0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",1,
+project,0,test89120,"public void test89120() throws Throwable {
+    Comparable<Object>[] comparableArray0 = (Comparable<Object>[]) Array.newInstance(Comparable.class, 5);
+    Number[][] numberArray0 = new Number[0][0];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(comparableArray0, comparableArray0, numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getColumnKey((-456));
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",0,
+project,0,test90121,"public void test90121() throws Throwable {
+    String[] stringArray0 = new String[0];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(stringArray0, (Number[][]) null, (Number[][]) null);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getRowCount();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",0,
+project,0,test91122,"public void test91122() throws Throwable {
+    Comparable<Object>[] comparableArray0 = (Comparable<Object>[]) Array.newInstance(Comparable.class, 5);
+    Number[][] numberArray0 = new Number[3][8];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getRowIndex(comparableArray0[2]);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",0,
+project,0,test92123,"public void test92123() throws Throwable {
+    double[][] doubleArray0 = new double[4][1];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    int int0 = defaultIntervalCategoryDataset0.getColumnCount();
+    assertEquals(4, defaultIntervalCategoryDataset0.getRowCount());
+}",0,"assertEquals(0, defaultIntervalCategoryDataset0.getRowCount())"
+project,0,test92124,"public void test92124() throws Throwable {
+    double[][] doubleArray0 = new double[4][1];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    int int0 = defaultIntervalCategoryDataset0.getColumnCount();
+    assertEquals(1, int0);
+}",0,"assertEquals(0, int0)"

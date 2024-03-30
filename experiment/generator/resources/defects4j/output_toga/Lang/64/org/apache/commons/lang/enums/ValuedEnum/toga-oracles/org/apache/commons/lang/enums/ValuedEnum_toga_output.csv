@@ -1,0 +1,26 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test00,"public void test00() throws Throwable {
+    // Undeclared exception!
+    try {
+        ValuedEnum.getEnum((Class) null, (-38));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The Enum Class must not be null
+        //
+        verifyException(""org.apache.commons.lang.enums.ValuedEnum"", e);
+    }
+}",1,
+project,0,test11,"public void test11() throws Throwable {
+    Class<Object> class0 = Object.class;
+    // Undeclared exception!
+    try {
+        ValuedEnum.getEnum(class0, (-1));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The Class must be a subclass of Enum
+        //
+        verifyException(""org.apache.commons.lang.enums.Enum"", e);
+    }
+}",1,

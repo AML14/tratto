@@ -1,0 +1,15 @@
+focal_method,test_prefix,docstring
+"@Override
+public void process(Node externRoot, Node root) {
+    // If there are < 2 modules, then we will never move anything,
+    // so we're done.
+    if (moduleGraph != null && moduleGraph.getModuleCount() > 1) {
+        analyzer.process(externRoot, root);
+        moveMethods(analyzer.getAllNameInfo());
+    }
+}","public void test00() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    CrossModuleMethodMotion.IdGenerator crossModuleMethodMotion_IdGenerator0 = new CrossModuleMethodMotion.IdGenerator();
+    CrossModuleMethodMotion crossModuleMethodMotion0 = new CrossModuleMethodMotion(compiler0, crossModuleMethodMotion_IdGenerator0, false);
+    crossModuleMethodMotion0.process((Node) null, (Node) null);
+}",""

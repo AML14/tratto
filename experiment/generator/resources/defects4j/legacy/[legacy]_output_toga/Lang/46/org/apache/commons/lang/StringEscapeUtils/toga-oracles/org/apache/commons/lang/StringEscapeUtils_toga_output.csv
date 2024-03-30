@@ -1,0 +1,282 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    String string0 = ""\\u"";
+    String string1 = StringEscapeUtils.unescapeCsv(string0);
+    assertEquals(""\\u"", string1);
+}",0,assertNotNull(string1)
+project,0,test011,"public void test011() throws Throwable {
+    String string0 = StringEscapeUtils.escapeJavaScript(""@\""rMHcw|cN^a"");
+    assertEquals(""@\\\""rMHcw|cN^a"", string0);
+}",0,assertNotNull(string0)
+project,0,test033,"public void test033() throws Throwable {
+    String string0 = StringEscapeUtils.unescapeXml("""");
+    assertEquals("""", string0);
+}",0,
+project,0,test044,"public void test044() throws Throwable {
+    String string0 = StringEscapeUtils.unescapeJavaScript((String) null);
+    assertNull(string0);
+}",0,assertNotNull(string0)
+project,0,test055,"public void test055() throws Throwable {
+    String string0 = ""\\u0"";
+    String string1 = StringEscapeUtils.unescapeJava(string0);
+    assertEquals("""", string1);
+}",0,
+project,0,test066,"public void test066() throws Throwable {
+    String string0 = StringEscapeUtils.unescapeHtml("""");
+    assertEquals("""", string0);
+}",0,
+project,0,test077,"public void test077() throws Throwable {
+    String string0 = StringEscapeUtils.escapeXml("""");
+    assertEquals("""", string0);
+}",0,
+project,0,test088,"public void test088() throws Throwable {
+    String string0 = StringEscapeUtils.escapeSql(""ZUvr2"");
+    assertEquals(""ZUvr2"", string0);
+}",0,
+project,0,test099,"public void test099() throws Throwable {
+    String string0 = StringEscapeUtils.escapeJavaScript((String) null);
+    assertNull(string0);
+}",0,assertNotNull(string0)
+project,0,test1010,"public void test1010() throws Throwable {
+    String string0 = StringEscapeUtils.escapeJavaScript("""");
+    assertEquals("""", string0);
+}",0,assertNotNull(string0)
+project,0,test1111,"public void test1111() throws Throwable {
+    String string0 = StringEscapeUtils.escapeHtml(""The Writer must not be null."");
+    assertEquals(""The Writer must not be null."", string0);
+}",0,
+project,0,test1212,"public void test1212() throws Throwable {
+    String string0 = StringEscapeUtils.escapeCsv((String) null);
+    assertNull(string0);
+}",0,
+project,0,test1313,"public void test1313() throws Throwable {
+    // Undeclared exception!
+    try {
+        StringEscapeUtils.unescapeJavaScript((Writer) null, ""U\""(.s>>e#=*>"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The Writer must not be null
+        //
+        verifyException(""org.apache.commons.lang.StringEscapeUtils"", e);
+    }
+}",0,
+project,0,test1414,"public void test1414() throws Throwable {
+    // Undeclared exception!
+    try {
+        StringEscapeUtils.unescapeCsv((Writer) null, ""!fQ8HU0Q]DkqNF`VcO&"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang.StringEscapeUtils"", e);
+    }
+}",0,
+project,0,test1515,"public void test1515() throws Throwable {
+    // Undeclared exception!
+    try {
+        StringEscapeUtils.escapeJavaScript((Writer) null, ""tx!%#af<!=,@"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The Writer must not be null
+        //
+        verifyException(""org.apache.commons.lang.StringEscapeUtils"", e);
+    }
+}",0,
+project,0,test1616,"public void test1616() throws Throwable {
+    // Undeclared exception!
+    try {
+        StringEscapeUtils.escapeCsv((Writer) null, """");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang.StringEscapeUtils"", e);
+    }
+}",0,
+project,0,test2828,"public void test2828() throws Throwable {
+    String string0 = StringEscapeUtils.unescapeCsv((String) null);
+    assertNull(string0);
+}",0,
+project,0,test2929,"public void test2929() throws Throwable {
+    String string0 = StringEscapeUtils.unescapeCsv("""");
+    assertEquals("""", string0);
+}",0,assertNotNull(string0)
+project,0,test3030,"public void test3030() throws Throwable {
+    String string0 = StringEscapeUtils.escapeCsv(""\""Tsz,WMx}CI%oE,}\"""");
+    assertEquals(""\""\""\""Tsz,WMx}CI%oE,}\""\""\"""", string0);
+}",0,
+project,0,test3232,"public void test3232() throws Throwable {
+    String string0 = StringEscapeUtils.escapeCsv("""");
+    assertEquals("""", string0);
+}",0,
+project,0,test3333,"public void test3333() throws Throwable {
+    String string0 = StringEscapeUtils.escapeSql((String) null);
+    assertNull(string0);
+}",0,
+project,0,test3434,"public void test3434() throws Throwable {
+    String string0 = StringEscapeUtils.escapeSql("""");
+    assertEquals("""", string0);
+}",0,
+project,0,test3535,"public void test3535() throws Throwable {
+    String string0 = StringEscapeUtils.unescapeXml((String) null);
+    assertNull(string0);
+}",0,
+project,0,test3636,"public void test3636() throws Throwable {
+    String string0 = StringEscapeUtils.unescapeXml(""8<\""Oyk'i"");
+    assertEquals(""8<\""Oyk'i"", string0);
+}",0,
+project,0,test3838,"public void test3838() throws Throwable {
+    // Undeclared exception!
+    try {
+        StringEscapeUtils.unescapeXml((Writer) null, ""''"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The Writer must not be null.
+        //
+        verifyException(""org.apache.commons.lang.StringEscapeUtils"", e);
+    }
+}",0,
+project,0,test4040,"public void test4040() throws Throwable {
+    String string0 = StringEscapeUtils.escapeXml((String) null);
+    assertNull(string0);
+}",0,
+project,0,test4141,"public void test4141() throws Throwable {
+    String string0 = StringEscapeUtils.escapeXml(""Unable to parse unicode value: "");
+    assertEquals(""Unable to parse unicode value: "", string0);
+}",0,assertNotNull(string0)
+project,0,test4343,"public void test4343() throws Throwable {
+    // Undeclared exception!
+    try {
+        StringEscapeUtils.escapeXml((Writer) null, ""Z>7eWFsdqQn<6$94fs6"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The Writer must not be null.
+        //
+        verifyException(""org.apache.commons.lang.StringEscapeUtils"", e);
+    }
+}",0,
+project,0,test4646,"public void test4646() throws Throwable {
+    // Undeclared exception!
+    try {
+        StringEscapeUtils.unescapeHtml((Writer) null, ""@''<Rgshk6Ih-PL"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The Writer must not be null.
+        //
+        verifyException(""org.apache.commons.lang.StringEscapeUtils"", e);
+    }
+}",1,
+project,0,test4747,"public void test4747() throws Throwable {
+    String string0 = StringEscapeUtils.unescapeHtml((String) null);
+    assertNull(string0);
+}",0,
+project,0,test4848,"public void test4848() throws Throwable {
+    String string0 = StringEscapeUtils.unescapeHtml("";tI{s)H=H`$W"");
+    assertNotNull(string0);
+}",0,
+project,0,test4849,"public void test4849() throws Throwable {
+    String string0 = StringEscapeUtils.unescapeHtml("";tI{s)H=H`$W"");
+    assertEquals("";tI{s)H=H`$W"", string0);
+}",0,
+project,0,test5051,"public void test5051() throws Throwable {
+    // Undeclared exception!
+    try {
+        StringEscapeUtils.escapeHtml((Writer) null, (String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The Writer must not be null.
+        //
+        verifyException(""org.apache.commons.lang.StringEscapeUtils"", e);
+    }
+}",1,
+project,0,test5152,"public void test5152() throws Throwable {
+    String string0 = StringEscapeUtils.escapeHtml((String) null);
+    assertNull(string0);
+}",0,
+project,0,test5253,"public void test5253() throws Throwable {
+    String string0 = StringEscapeUtils.escapeHtml("""");
+    assertEquals("""", string0);
+}",0,
+project,0,test5354,"public void test5354() throws Throwable {
+    String string0 = StringEscapeUtils.unescapeJava(""]q\"""");
+    assertEquals(""]q\"""", string0);
+}",0,
+project,0,test5455,"public void test5455() throws Throwable {
+    String string0 = StringEscapeUtils.unescapeJavaScript(""\""k"");
+    assertEquals(""\""k"", string0);
+}",0,
+project,0,test5556,"public void test5556() throws Throwable {
+    // Undeclared exception!
+    try {
+        StringEscapeUtils.unescapeJava((Writer) null, """");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The Writer must not be null
+        //
+        verifyException(""org.apache.commons.lang.StringEscapeUtils"", e);
+    }
+}",0,
+project,0,test5657,"public void test5657() throws Throwable {
+    String string0 = StringEscapeUtils.unescapeJava((String) null);
+    assertNull(string0);
+}",0,
+project,0,test5758,"public void test5758() throws Throwable {
+    String string0 = StringEscapeUtils.escapeJava(""\""rPd&B,t'f`w"");
+    assertEquals(""\\\""rPd&B,t'f`w"", string0);
+}",0,
+project,0,test5859,"public void test5859() throws Throwable {
+    String string0 = ""\\u00"";
+    String string1 = StringEscapeUtils.escapeJava(string0);
+    assertEquals(""\\\\u00"", string1);
+}",0,
+project,0,test6061,"public void test6061() throws Throwable {
+    String string0 = StringEscapeUtils.escapeJavaScript(""8<\""Oyk'i"");
+    assertEquals(""8<\\\""Oyk\\'i"", string0);
+}",0,assertNotNull(string0)
+project,0,test6263,"public void test6263() throws Throwable {
+    String string0 = StringEscapeUtils.escapeJava((String) null);
+    assertNull(string0);
+}",0,assertNotNull(string0)
+project,0,test6364,"public void test6364() throws Throwable {
+    String string0 = StringEscapeUtils.escapeJava("""");
+    assertEquals("""", string0);
+}",0,assertNotNull(string0)
+project,0,test6666,"public void test6666() throws Throwable {
+    String string0 = StringEscapeUtils.escapeJavaScript(""Unable to parse unicode value: "");
+    assertNotNull(string0);
+}",0,assertNotNull(string0)
+project,0,test6667,"public void test6667() throws Throwable {
+    String string0 = StringEscapeUtils.escapeJavaScript(""Unable to parse unicode value: "");
+    assertEquals(""Unable to parse unicode value: "", string0);
+}",0,assertNotNull(string0)
+project,0,test6768,"public void test6768() throws Throwable {
+    // Undeclared exception!
+    try {
+        StringEscapeUtils.escapeJava((Writer) null, ""8"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The Writer must not be null
+        //
+        verifyException(""org.apache.commons.lang.StringEscapeUtils"", e);
+    }
+}",0,
+project,0,test6869,"public void test6869() throws Throwable {
+    String string0 = ""\\u0"";
+    String string1 = StringEscapeUtils.unescapeJavaScript(string0);
+    assertEquals("""", string1);
+}",0,assertNotNull(string1)
+project,0,test6870,"public void test6870() throws Throwable {
+    String string0 = ""\\u0"";
+    String string1 = StringEscapeUtils.unescapeJavaScript(string0);
+    assertNotNull(string1);
+}",0,assertNotNull(string1)

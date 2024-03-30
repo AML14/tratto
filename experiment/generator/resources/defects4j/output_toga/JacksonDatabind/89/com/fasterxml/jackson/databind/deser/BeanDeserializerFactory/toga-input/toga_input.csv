@@ -1,0 +1,233 @@
+focal_method,test_prefix,docstring
+"@Override
+public final DeserializerFactory withValueInstantiators(ValueInstantiators instantiators) {
+    return withConfig(_factoryConfig.withValueInstantiators(instantiators));
+}","public void test000() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    ValueInstantiators.Base valueInstantiators_Base0 = new ValueInstantiators.Base();
+    DeserializerFactory deserializerFactory0 = beanDeserializerFactory0.withValueInstantiators(valueInstantiators_Base0);
+    assertNotSame(deserializerFactory0, beanDeserializerFactory0);
+}","/**
+ * Convenience method for creating a new factory instance with additional
+ * {@link ValueInstantiators}.
+ */"
+"@Override
+public JsonDeserializer<Object> createBuilderBasedDeserializer(DeserializationContext ctxt, JavaType valueType, BeanDescription beanDesc, Class<?> builderClass) throws JsonMappingException {
+    // First: need a BeanDescription for builder class
+    JavaType builderType = ctxt.constructType(builderClass);
+    BeanDescription builderDesc = ctxt.getConfig().introspectForBuilder(builderType);
+    return buildBuilderBasedDeserializer(ctxt, valueType, builderDesc);
+}","public void test011() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    Class<AnnotatedParameter> class0 = AnnotatedParameter.class;
+    // Undeclared exception!
+    try {
+        beanDeserializerFactory0.instance.createBuilderBasedDeserializer((DeserializationContext) null, (JavaType) null, (BeanDescription) null, class0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.BeanDeserializerFactory"", e);
+    }
+}",""
+"@Override
+public DeserializerFactory withConfig(DeserializerFactoryConfig config) {
+    if (_factoryConfig == config) {
+        return this;
+    }
+    /* 22-Nov-2010, tatu: Handling of subtypes is tricky if we do immutable-with-copy-ctor;
+         *    and we pretty much have to here either choose between losing subtype instance
+         *    when registering additional deserializers, or losing deserializers.
+         *    Instead, let's actually just throw an error if this method is called when subtype
+         *    has not properly overridden this method; this to indicate problem as soon as possible.
+         */
+    if (getClass() != BeanDeserializerFactory.class) {
+        throw new IllegalStateException(""Subtype of BeanDeserializerFactory ("" + getClass().getName() + "") has not properly overridden method 'withAdditionalDeserializers': can not instantiate subtype with "" + ""additional deserializer definitions"");
+    }
+    return new BeanDeserializerFactory(config);
+}","public void test022() throws Throwable {
+    DeserializerFactoryConfig deserializerFactoryConfig0 = new DeserializerFactoryConfig();
+    BeanDeserializerFactory beanDeserializerFactory0 = new BeanDeserializerFactory(deserializerFactoryConfig0);
+    DeserializerFactory deserializerFactory0 = beanDeserializerFactory0.withConfig(deserializerFactoryConfig0);
+    assertSame(deserializerFactory0, beanDeserializerFactory0);
+}","/**
+ * Method used by module registration functionality, to construct a new bean
+ * deserializer factory
+ * with different configuration settings.
+ */"
+"protected JavaType materializeAbstractType(DeserializationContext ctxt, JavaType type, BeanDescription beanDesc) throws JsonMappingException {
+    // May have multiple resolvers, call in precedence order until one returns non-null
+    for (AbstractTypeResolver r : _factoryConfig.abstractTypeResolvers()) {
+        JavaType concrete = r.resolveAbstractType(ctxt.getConfig(), beanDesc);
+        if (concrete != null) {
+            return concrete;
+        }
+    }
+    return null;
+}","public void test044() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    DeserializerFactoryConfig deserializerFactoryConfig0 = new DeserializerFactoryConfig();
+    SimpleAbstractTypeResolver simpleAbstractTypeResolver0 = new SimpleAbstractTypeResolver();
+    DeserializerFactoryConfig deserializerFactoryConfig1 = deserializerFactoryConfig0.withAbstractTypeResolver(simpleAbstractTypeResolver0);
+    BeanDeserializerFactory beanDeserializerFactory1 = new BeanDeserializerFactory(deserializerFactoryConfig1);
+    JavaType javaType0 = beanDeserializerFactory1.materializeAbstractType(defaultDeserializationContext_Impl0, (JavaType) null, (BeanDescription) null);
+    assertNull(javaType0);
+}",""
+"@Override
+public String findClassDescription() {
+    return (_annotationIntrospector == null) ? null : _annotationIntrospector.findClassDescription(_classInfo);
+}","public void test088() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    POJOPropertiesCollector pOJOPropertiesCollector0 = mock(POJOPropertiesCollector.class, new ViolatedAssumptionAnswer());
+    doReturn((AnnotatedClass) null).when(pOJOPropertiesCollector0).getClassDef();
+    doReturn((MapperConfig) null).when(pOJOPropertiesCollector0).getConfig();
+    doReturn((Map) null).when(pOJOPropertiesCollector0).getInjectables();
+    doReturn((ObjectIdInfo) null).when(pOJOPropertiesCollector0).getObjectIdInfo();
+    doReturn((JavaType) null).when(pOJOPropertiesCollector0).getType();
+    BasicBeanDescription basicBeanDescription0 = BasicBeanDescription.forDeserialization(pOJOPropertiesCollector0);
+    BeanDeserializerBuilder beanDeserializerBuilder0 = beanDeserializerFactory0.constructBeanDeserializerBuilder(defaultDeserializationContext_Impl0, basicBeanDescription0);
+    beanDeserializerFactory0.addInjectables(defaultDeserializationContext_Impl0, basicBeanDescription0, beanDeserializerBuilder0);
+    assertNull(basicBeanDescription0.findClassDescription());
+}",""
+"@SuppressWarnings(""unchecked"")
+protected SettableAnyProperty constructAnySetter(DeserializationContext ctxt, BeanDescription beanDesc, AnnotatedMember mutator) throws JsonMappingException {
+    //find the java type based on the annotated setter method or setter field
+    JavaType type = null;
+    if (mutator instanceof AnnotatedMethod) {
+        // we know it's a 2-arg method, second arg is the value
+        type = ((AnnotatedMethod) mutator).getParameterType(1);
+    } else if (mutator instanceof AnnotatedField) {
+        // get the type from the content type of the map object
+        type = ((AnnotatedField) mutator).getType().getContentType();
+    }
+    // First: various annotations on type itself, as well as type-overrides
+    // on accessor need to be resolved
+    type = resolveMemberAndTypeAnnotations(ctxt, mutator, type);
+    BeanProperty.Std prop = new BeanProperty.Std(PropertyName.construct(mutator.getName()), type, null, beanDesc.getClassAnnotations(), mutator, PropertyMetadata.STD_OPTIONAL);
+    // and then possible direct deserializer override on accessor
+    JsonDeserializer<Object> deser = findDeserializerFromAnnotation(ctxt, mutator);
+    if (deser == null) {
+        deser = type.getValueHandler();
+    }
+    if (deser != null) {
+        // As per [databind#462] need to ensure we contextualize deserializer before passing it on
+        deser = (JsonDeserializer<Object>) ctxt.handlePrimaryContextualization(deser, prop, type);
+    }
+    TypeDeserializer typeDeser = type.getTypeHandler();
+    return new SettableAnyProperty(prop, mutator, type, deser, typeDeser);
+}","public void test099() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    AnnotationMap annotationMap0 = new AnnotationMap();
+    AnnotatedField annotatedField0 = new AnnotatedField((TypeResolutionContext) null, (Field) null, annotationMap0);
+    // Undeclared exception!
+    try {
+        beanDeserializerFactory0.constructAnySetter(defaultDeserializationContext_Impl0, (BeanDescription) null, annotatedField0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.introspect.AnnotatedField"", e);
+    }
+}","/**
+ * Method called to construct fallback {@link SettableAnyProperty}
+ * for handling unknown bean properties, given a method that
+ * has been designated as such setter.
+ *
+ * @param mutator Either 2-argument method (setter, with key and value), or Field
+ *     that contains Map; either way accessor used for passing ""any values""
+ */"
+"@SuppressWarnings(""unchecked"")
+protected SettableAnyProperty constructAnySetter(DeserializationContext ctxt, BeanDescription beanDesc, AnnotatedMember mutator) throws JsonMappingException {
+    //find the java type based on the annotated setter method or setter field
+    JavaType type = null;
+    if (mutator instanceof AnnotatedMethod) {
+        // we know it's a 2-arg method, second arg is the value
+        type = ((AnnotatedMethod) mutator).getParameterType(1);
+    } else if (mutator instanceof AnnotatedField) {
+        // get the type from the content type of the map object
+        type = ((AnnotatedField) mutator).getType().getContentType();
+    }
+    // First: various annotations on type itself, as well as type-overrides
+    // on accessor need to be resolved
+    type = resolveMemberAndTypeAnnotations(ctxt, mutator, type);
+    BeanProperty.Std prop = new BeanProperty.Std(PropertyName.construct(mutator.getName()), type, null, beanDesc.getClassAnnotations(), mutator, PropertyMetadata.STD_OPTIONAL);
+    // and then possible direct deserializer override on accessor
+    JsonDeserializer<Object> deser = findDeserializerFromAnnotation(ctxt, mutator);
+    if (deser == null) {
+        deser = type.getValueHandler();
+    }
+    if (deser != null) {
+        // As per [databind#462] need to ensure we contextualize deserializer before passing it on
+        deser = (JsonDeserializer<Object>) ctxt.handlePrimaryContextualization(deser, prop, type);
+    }
+    TypeDeserializer typeDeser = type.getTypeHandler();
+    return new SettableAnyProperty(prop, mutator, type, deser, typeDeser);
+}","public void test1010() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    // Undeclared exception!
+    try {
+        beanDeserializerFactory0.constructAnySetter(defaultDeserializationContext_Impl0, (BeanDescription) null, (AnnotatedMember) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationContext"", e);
+    }
+}","/**
+ * Method called to construct fallback {@link SettableAnyProperty}
+ * for handling unknown bean properties, given a method that
+ * has been designated as such setter.
+ *
+ * @param mutator Either 2-argument method (setter, with key and value), or Field
+ *     that contains Map; either way accessor used for passing ""any values""
+ */"
+"/*
+    /**********************************************************
+    /* Helper methods for Bean deserializer, other
+    /**********************************************************
+     */
+/**
+ *  Helper method used to skip processing for types that we know
+ *  can not be (i.e. are never consider to be) beans:
+ *  things like primitives, Arrays, Enums, and proxy types.
+ * <p>
+ *  Note that usually we shouldn't really be getting these sort of
+ *  types anyway; but better safe than sorry.
+ */
+protected boolean isPotentialBeanType(Class<?> type) {
+    String typeStr = ClassUtil.canBeABeanType(type);
+    if (typeStr != null) {
+        throw new IllegalArgumentException(""Can not deserialize Class "" + type.getName() + "" (of type "" + typeStr + "") as a Bean"");
+    }
+    if (ClassUtil.isProxyType(type)) {
+        throw new IllegalArgumentException(""Can not deserialize Proxy class "" + type.getName() + "" as a Bean"");
+    }
+    /* also: can't deserialize some local classes: static are ok; in-method not;
+         * other non-static inner classes are ok
+         */
+    typeStr = ClassUtil.isLocalType(type, true);
+    if (typeStr != null) {
+        throw new IllegalArgumentException(""Can not deserialize Class "" + type.getName() + "" (of type "" + typeStr + "") as a Bean"");
+    }
+    return true;
+}","public void test1111() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    Class<ClientInfoStatus> class0 = ClientInfoStatus.class;
+    // Undeclared exception!
+    try {
+        beanDeserializerFactory0.isPotentialBeanType(class0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Can not deserialize Class java.sql.ClientInfoStatus (of type enum) as a Bean
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.BeanDeserializerFactory"", e);
+    }
+}",""

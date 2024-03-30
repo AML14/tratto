@@ -1,0 +1,126 @@
+focal_method,test_prefix,docstring
+"public void validate(Answer<?> answer, Invocation invocation) {
+    if (answer instanceof ThrowsException) {
+        validateException((ThrowsException) answer, invocation);
+    }
+    if (answer instanceof Returns) {
+        validateReturnValue((Returns) answer, invocation);
+    }
+    if (answer instanceof DoesNothing) {
+        validateDoNothing((DoesNothing) answer, invocation);
+    }
+}","public void test00() throws Throwable {
+    AnswersValidator answersValidator0 = new AnswersValidator();
+    Returns returns0 = new Returns(answersValidator0);
+    // Undeclared exception!
+    try {
+        answersValidator0.validate(returns0, (Invocation) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.mockito.internal.stubbing.answers.AnswersValidator"", e);
+    }
+}",""
+"public void validate(Answer<?> answer, Invocation invocation) {
+    if (answer instanceof ThrowsException) {
+        validateException((ThrowsException) answer, invocation);
+    }
+    if (answer instanceof Returns) {
+        validateReturnValue((Returns) answer, invocation);
+    }
+    if (answer instanceof DoesNothing) {
+        validateDoNothing((DoesNothing) answer, invocation);
+    }
+}","public void test11() throws Throwable {
+    AnswersValidator answersValidator0 = new AnswersValidator();
+    MockError mockError0 = new MockError();
+    ThrowsException throwsException0 = new ThrowsException(mockError0);
+    answersValidator0.validate(throwsException0, (Invocation) null);
+}",""
+"public void validate(Answer<?> answer, Invocation invocation) {
+    if (answer instanceof ThrowsException) {
+        validateException((ThrowsException) answer, invocation);
+    }
+    if (answer instanceof Returns) {
+        validateReturnValue((Returns) answer, invocation);
+    }
+    if (answer instanceof DoesNothing) {
+        validateDoNothing((DoesNothing) answer, invocation);
+    }
+}","public void test22() throws Throwable {
+    DoesNothing doesNothing0 = new DoesNothing();
+    AnswersValidator answersValidator0 = new AnswersValidator();
+    // Undeclared exception!
+    try {
+        answersValidator0.validate(doesNothing0, (Invocation) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.mockito.internal.stubbing.answers.AnswersValidator"", e);
+    }
+}",""
+"public void validate(Answer<?> answer, Invocation invocation) {
+    if (answer instanceof ThrowsException) {
+        validateException((ThrowsException) answer, invocation);
+    }
+    if (answer instanceof Returns) {
+        validateReturnValue((Returns) answer, invocation);
+    }
+    if (answer instanceof DoesNothing) {
+        validateDoNothing((DoesNothing) answer, invocation);
+    }
+}","public void test33() throws Throwable {
+    AnswersValidator answersValidator0 = new AnswersValidator();
+    ThrowsException throwsException0 = new ThrowsException((Throwable) null);
+    // Undeclared exception!
+    try {
+        answersValidator0.validate(throwsException0, (Invocation) null);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",""
+"public void validate(Answer<?> answer, Invocation invocation) {
+    if (answer instanceof ThrowsException) {
+        validateException((ThrowsException) answer, invocation);
+    }
+    if (answer instanceof Returns) {
+        validateReturnValue((Returns) answer, invocation);
+    }
+    if (answer instanceof DoesNothing) {
+        validateDoNothing((DoesNothing) answer, invocation);
+    }
+}","public void test44() throws Throwable {
+    AnswersValidator answersValidator0 = new AnswersValidator();
+    MockRuntimeException mockRuntimeException0 = new MockRuntimeException();
+    ThrowsException throwsException0 = new ThrowsException(mockRuntimeException0);
+    answersValidator0.validate(throwsException0, (Invocation) null);
+}",""
+"public void validate(Answer<?> answer, Invocation invocation) {
+    if (answer instanceof ThrowsException) {
+        validateException((ThrowsException) answer, invocation);
+    }
+    if (answer instanceof Returns) {
+        validateReturnValue((Returns) answer, invocation);
+    }
+    if (answer instanceof DoesNothing) {
+        validateDoNothing((DoesNothing) answer, invocation);
+    }
+}","public void test55() throws Throwable {
+    AnswersValidator answersValidator0 = new AnswersValidator();
+    MockThrowable mockThrowable0 = new MockThrowable();
+    ThrowsException throwsException0 = new ThrowsException(mockThrowable0);
+    // Undeclared exception!
+    try {
+        answersValidator0.validate(throwsException0, (Invocation) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.mockito.internal.stubbing.answers.AnswersValidator"", e);
+    }
+}",""

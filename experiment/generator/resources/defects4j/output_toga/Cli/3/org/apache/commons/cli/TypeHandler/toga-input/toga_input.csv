@@ -1,0 +1,165 @@
+focal_method,test_prefix,docstring
+"public static Object createValue(String str, Object obj) {
+    return createValue(str, (Class) obj);
+}","public void test00() throws Throwable {
+    Object object0 = TypeHandler.createValue((String) null, (Object) null);
+    assertNull(object0);
+}","/**
+ * <p>Returns the <code>Object</code> of type <code>obj</code>
+ * with the value of <code>str</code>.</p>
+ *
+ * @param str the command line value
+ * @param obj the type of argument
+ * @return The instance of <code>obj</code> initialised with
+ * the value of <code>str</code>.
+ */"
+"public static Class createClass(String str) {
+    try {
+        return Class.forName(str);
+    } catch (ClassNotFoundException cnfe) {
+        System.err.println(""Unable to find: "" + str);
+        return null;
+    }
+}","public void test11() throws Throwable {
+    Class class0 = TypeHandler.createClass(""jOXbD"");
+    assertNull(class0);
+}","/**
+ * <p>Returns the class whose name is <code>str</code>.</p>
+ *
+ * @param str the class name
+ * @return The class if it is found, otherwise return null
+ */"
+"public static Number createNumber(String str) {
+    try {
+        return org.apache.commons.lang.math.NumberUtils.createNumber(str);
+    } catch (NumberFormatException nfe) {
+        System.err.println(nfe.getMessage());
+    }
+    return null;
+}","public void test22() throws Throwable {
+    Number number0 = TypeHandler.createNumber("""");
+    assertNull(number0);
+}","/**
+ * <p>Create a number from a String. If a . is present, it creates a
+ *    Double, otherwise a Long. </p>
+ *
+ * @param str the value
+ * @return the number represented by <code>str</code>, if <code>str</code>
+ * is not a number, null is returned.
+ */"
+"public static File[] createFiles(String str) {
+    // to implement/port:
+    //        return FileW.findFiles(str);
+    return null;
+}","public void test33() throws Throwable {
+    File[] fileArray0 = TypeHandler.createFiles(""aJV~dXoV'?g0:"");
+    assertNull(fileArray0);
+}","/**
+ * <p>Returns the File[] represented by <code>str</code>.</p>
+ *
+ * @param str the paths to the files
+ * @return The File[] represented by <code>str</code>.
+ */"
+"public static URL createURL(String str) {
+    try {
+        return new URL(str);
+    } catch (MalformedURLException mue) {
+        System.err.println(""Unable to parse: "" + str);
+        return null;
+    }
+}","public void test55() throws Throwable {
+    URL uRL0 = TypeHandler.createURL(""lDb?p$J4@s"");
+    assertNull(uRL0);
+}","/**
+ * <p>Returns the URL represented by <code>str</code>.</p>
+ *
+ * @param str the URL string
+ * @return The URL is <code>str</code> is well-formed, otherwise
+ * return null.
+ */"
+"public static Object createValue(String str, Class clazz) {
+    if (PatternOptionBuilder.STRING_VALUE == clazz) {
+        return str;
+    } else if (PatternOptionBuilder.OBJECT_VALUE == clazz) {
+        return createObject(str);
+    } else if (PatternOptionBuilder.NUMBER_VALUE == clazz) {
+        return createNumber(str);
+    } else if (PatternOptionBuilder.DATE_VALUE == clazz) {
+        return createDate(str);
+    } else if (PatternOptionBuilder.CLASS_VALUE == clazz) {
+        return createClass(str);
+    } else if (PatternOptionBuilder.FILE_VALUE == clazz) {
+        return createFile(str);
+    } else if (PatternOptionBuilder.EXISTING_FILE_VALUE == clazz) {
+        return createFile(str);
+    } else if (PatternOptionBuilder.FILES_VALUE == clazz) {
+        return createFiles(str);
+    } else if (PatternOptionBuilder.URL_VALUE == clazz) {
+        return createURL(str);
+    } else {
+        return null;
+    }
+}","public void test77() throws Throwable {
+    Class<Object> class0 = Object.class;
+    Object object0 = TypeHandler.createValue("",9W5+1J}b!&8["", class0);
+    assertNull(object0);
+}","/**
+ * <p>Returns the <code>Object</code> of type <code>clazz</code>
+ * with the value of <code>str</code>.</p>
+ *
+ * @param str the command line value
+ * @param clazz the type of argument
+ * @return The instance of <code>clazz</code> initialised with
+ * the value of <code>str</code>.
+ */"
+"public static Object createValue(String str, Class clazz) {
+    if (PatternOptionBuilder.STRING_VALUE == clazz) {
+        return str;
+    } else if (PatternOptionBuilder.OBJECT_VALUE == clazz) {
+        return createObject(str);
+    } else if (PatternOptionBuilder.NUMBER_VALUE == clazz) {
+        return createNumber(str);
+    } else if (PatternOptionBuilder.DATE_VALUE == clazz) {
+        return createDate(str);
+    } else if (PatternOptionBuilder.CLASS_VALUE == clazz) {
+        return createClass(str);
+    } else if (PatternOptionBuilder.FILE_VALUE == clazz) {
+        return createFile(str);
+    } else if (PatternOptionBuilder.EXISTING_FILE_VALUE == clazz) {
+        return createFile(str);
+    } else if (PatternOptionBuilder.FILES_VALUE == clazz) {
+        return createFiles(str);
+    } else if (PatternOptionBuilder.URL_VALUE == clazz) {
+        return createURL(str);
+    } else {
+        return null;
+    }
+}","public void test88() throws Throwable {
+    Class<String> class0 = String.class;
+    Object object0 = TypeHandler.createValue(""B."", class0);
+    assertEquals(""B."", object0);
+}","/**
+ * <p>Returns the <code>Object</code> of type <code>clazz</code>
+ * with the value of <code>str</code>.</p>
+ *
+ * @param str the command line value
+ * @param clazz the type of argument
+ * @return The instance of <code>clazz</code> initialised with
+ * the value of <code>str</code>.
+ */"
+"public static Date createDate(String str) {
+    Date date = null;
+    if (date == null) {
+        System.err.println(""Unable to parse: "" + str);
+    }
+    return date;
+}","public void test99() throws Throwable {
+    Date date0 = TypeHandler.createDate(""Jt!^"");
+    assertNull(date0);
+}","/**
+ * <p>Returns the date represented by <code>str</code>.</p>
+ *
+ * @param str the date string
+ * @return The date if <code>str</code> is a valid date string,
+ * otherwise return null.
+ */"

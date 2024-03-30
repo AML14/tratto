@@ -1,0 +1,454 @@
+focal_method,test_prefix,docstring
+"public boolean usesObjectId() {
+    return false;
+}","public void test000() throws Throwable {
+    SimpleType simpleType0 = (SimpleType) MapSerializer.UNSPECIFIED_TYPE;
+    BeanPropertyWriter[] beanPropertyWriterArray0 = new BeanPropertyWriter[9];
+    BeanSerializer beanSerializer0 = new BeanSerializer(simpleType0, (BeanSerializerBuilder) null, beanPropertyWriterArray0, beanPropertyWriterArray0);
+    NameTransformer nameTransformer0 = NameTransformer.NOP;
+    NameTransformer nameTransformer1 = NameTransformer.chainedTransformer(nameTransformer0, nameTransformer0);
+    JsonSerializer<Object> jsonSerializer0 = beanSerializer0.unwrappingSerializer(nameTransformer1);
+    assertFalse(jsonSerializer0.usesObjectId());
+}","/**
+ * Method that can be called to see whether this serializer instance
+ * will use Object Id to handle cyclic references.
+ */"
+"public boolean usesObjectId() {
+    return false;
+}","public void test011() throws Throwable {
+    SimpleType simpleType0 = (SimpleType) MapSerializer.UNSPECIFIED_TYPE;
+    BeanSerializer beanSerializer0 = BeanSerializer.createDummy(simpleType0);
+    JsonSerializer<Object> jsonSerializer0 = beanSerializer0.unwrappingSerializer((NameTransformer) null);
+    assertFalse(jsonSerializer0.usesObjectId());
+}","/**
+ * Method that can be called to see whether this serializer instance
+ * will use Object Id to handle cyclic references.
+ */"
+"public boolean isUnwrappingSerializer() {
+    return false;
+}","public void test022() throws Throwable {
+    SimpleType simpleType0 = (SimpleType) MapSerializer.UNSPECIFIED_TYPE;
+    BeanPropertyWriter[] beanPropertyWriterArray0 = new BeanPropertyWriter[9];
+    BeanSerializer beanSerializer0 = new BeanSerializer(simpleType0, (BeanSerializerBuilder) null, beanPropertyWriterArray0, beanPropertyWriterArray0);
+    JsonSerializer<Object> jsonSerializer0 = beanSerializer0.unwrappingSerializer((NameTransformer) null);
+    assertTrue(jsonSerializer0.isUnwrappingSerializer());
+}","/**
+ * Accessor for checking whether this serializer is an
+ * ""unwrapping"" serializer; this is necessary to know since
+ * it may also require caller to suppress writing of the
+ * leading property name.
+ */"
+"public boolean usesObjectId() {
+    return false;
+}","public void test033() throws Throwable {
+    SimpleType simpleType0 = (SimpleType) MapSerializer.UNSPECIFIED_TYPE;
+    BeanPropertyWriter[] beanPropertyWriterArray0 = new BeanPropertyWriter[9];
+    BeanSerializer beanSerializer0 = new BeanSerializer(simpleType0, (BeanSerializerBuilder) null, beanPropertyWriterArray0, beanPropertyWriterArray0);
+    NameTransformer nameTransformer0 = NameTransformer.NOP;
+    JsonSerializer<Object> jsonSerializer0 = beanSerializer0.unwrappingSerializer(nameTransformer0);
+    assertFalse(jsonSerializer0.usesObjectId());
+}","/**
+ * Method that can be called to see whether this serializer instance
+ * will use Object Id to handle cyclic references.
+ */"
+"/*
+    /**********************************************************
+    /* Post-constriction processing: resolvable, contextual
+    /**********************************************************
+     */
+/**
+ * We need to implement {@link ResolvableSerializer} to be able to
+ * properly handle cyclic type references.
+ */
+@Override
+public void resolve(SerializerProvider provider) throws JsonMappingException {
+    int filteredCount = (_filteredProps == null) ? 0 : _filteredProps.length;
+    for (int i = 0, len = _props.length; i < len; ++i) {
+        BeanPropertyWriter prop = _props[i];
+        // let's start with null serializer resolution actually
+        if (!prop.willSuppressNulls() && !prop.hasNullSerializer()) {
+            JsonSerializer<Object> nullSer = provider.findNullValueSerializer(prop);
+            if (nullSer != null) {
+                prop.assignNullSerializer(nullSer);
+                // also: remember to replace filtered property too? (see [JACKSON-364])
+                if (i < filteredCount) {
+                    BeanPropertyWriter w2 = _filteredProps[i];
+                    if (w2 != null) {
+                        w2.assignNullSerializer(nullSer);
+                    }
+                }
+            }
+        }
+        if (prop.hasSerializer()) {
+            continue;
+        }
+        // [Issue#124]: allow use of converters
+        JsonSerializer<Object> ser = findConvertingSerializer(provider, prop);
+        if (ser == null) {
+            // Was the serialization type hard-coded? If so, use it
+            JavaType type = prop.getSerializationType();
+            // It not, we can use declared return type if and only if declared type is final:
+            // if not, we don't really know the actual type until we get the instance.
+            if (type == null) {
+                type = provider.constructType(prop.getGenericPropertyType());
+                if (!type.isFinal()) {
+                    if (type.isContainerType() || type.containedTypeCount() > 0) {
+                        prop.setNonTrivialBaseType(type);
+                    }
+                    continue;
+                }
+            }
+            ser = provider.findValueSerializer(type, prop);
+            /* 04-Feb-2010, tatu: We may have stashed type serializer for content types
+                 *   too, earlier; if so, it's time to connect the dots here:
+                 */
+            if (type.isContainerType()) {
+                TypeSerializer typeSer = type.getContentType().getTypeHandler();
+                if (typeSer != null) {
+                    // for now, can do this only for standard containers...
+                    if (ser instanceof ContainerSerializer<?>) {
+                        // ugly casts... but necessary
+                        @SuppressWarnings(""unchecked"")
+                        JsonSerializer<Object> ser2 = (JsonSerializer<Object>) ((ContainerSerializer<?>) ser).withValueTypeSerializer(typeSer);
+                        ser = ser2;
+                    }
+                }
+            }
+        }
+        prop.assignSerializer(ser);
+        // and maybe replace filtered property too? (see [JACKSON-364])
+        if (i < filteredCount) {
+            BeanPropertyWriter w2 = _filteredProps[i];
+            if (w2 != null) {
+                w2.assignSerializer(ser);
+            }
+        }
+    }
+    // also, any-getter may need to be resolved
+    if (_anyGetterWriter != null) {
+        // 23-Feb-2015, tatu: Misleading, as this actually triggers call to contextualization...
+        _anyGetterWriter.resolve(provider);
+    }
+}","public void test044() throws Throwable {
+    SimpleType simpleType0 = (SimpleType) MapSerializer.UNSPECIFIED_TYPE;
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    BeanPropertyWriter[] beanPropertyWriterArray0 = new BeanPropertyWriter[13];
+    BeanSerializer beanSerializer0 = new BeanSerializer(simpleType0, (BeanSerializerBuilder) null, beanPropertyWriterArray0, beanPropertyWriterArray0);
+    // Undeclared exception!
+    try {
+        beanSerializer0.resolve(defaultSerializerProvider_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.ser.std.BeanSerializerBase"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Partial JsonSerializer implementation
+    /**********************************************************
+     */
+@Override
+public boolean usesObjectId() {
+    return (_objectIdWriter != null);
+}","public void test077() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<StdArraySerializers.BooleanArraySerializer> class0 = StdArraySerializers.BooleanArraySerializer.class;
+    CollectionLikeType collectionLikeType0 = typeFactory0.constructRawCollectionLikeType(class0);
+    BeanSerializer beanSerializer0 = BeanSerializer.createDummy(collectionLikeType0);
+    boolean boolean0 = beanSerializer0.usesObjectId();
+    assertFalse(boolean0);
+}",""
+"/*
+    /**********************************************************
+    /* Partial JsonSerializer implementation
+    /**********************************************************
+     */
+@Override
+public boolean usesObjectId() {
+    return (_objectIdWriter != null);
+}","public void test088() throws Throwable {
+    Class<StdArraySerializers.LongArraySerializer> class0 = StdArraySerializers.LongArraySerializer.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    BeanSerializer beanSerializer0 = BeanSerializer.createDummy(simpleType0);
+    PropertyName propertyName0 = PropertyName.NO_NAME;
+    ObjectIdGenerator<AsExistingPropertyTypeSerializer> objectIdGenerator0 = (ObjectIdGenerator<AsExistingPropertyTypeSerializer>) mock(ObjectIdGenerator.class, new ViolatedAssumptionAnswer());
+    ObjectIdWriter objectIdWriter0 = ObjectIdWriter.construct((JavaType) simpleType0, propertyName0, (ObjectIdGenerator<?>) objectIdGenerator0, true);
+    BeanSerializerBase beanSerializerBase0 = beanSerializer0.withObjectIdWriter(objectIdWriter0);
+    boolean boolean0 = beanSerializerBase0.usesObjectId();
+    assertTrue(boolean0);
+}",""
+"public void serializeWithType(T value, JsonGenerator gen, SerializerProvider serializers, TypeSerializer typeSer) throws IOException {
+    Class<?> clz = handledType();
+    if (clz == null) {
+        clz = value.getClass();
+    }
+    throw serializers.mappingException(""Type id handling not implemented for type %s (by serializer of type %s)"", clz.getName(), getClass().getName());
+}","public void test1010() throws Throwable {
+    SimpleType simpleType0 = (SimpleType) MapSerializer.UNSPECIFIED_TYPE;
+    POJOPropertiesCollector pOJOPropertiesCollector0 = mock(POJOPropertiesCollector.class, new ViolatedAssumptionAnswer());
+    doReturn((AnnotatedMethod) null).when(pOJOPropertiesCollector0).getAnySetterMethod();
+    doReturn((AnnotatedClass) null).when(pOJOPropertiesCollector0).getClassDef();
+    doReturn((MapperConfig) null).when(pOJOPropertiesCollector0).getConfig();
+    doReturn((Set) null).when(pOJOPropertiesCollector0).getIgnoredPropertyNames();
+    doReturn((Map) null).when(pOJOPropertiesCollector0).getInjectables();
+    doReturn((AnnotatedMethod) null).when(pOJOPropertiesCollector0).getJsonValueMethod();
+    doReturn((ObjectIdInfo) null).when(pOJOPropertiesCollector0).getObjectIdInfo();
+    doReturn((List) null).when(pOJOPropertiesCollector0).getProperties();
+    doReturn((JavaType) null).when(pOJOPropertiesCollector0).getType();
+    BasicBeanDescription basicBeanDescription0 = BasicBeanDescription.forDeserialization(pOJOPropertiesCollector0);
+    BeanSerializerBuilder beanSerializerBuilder0 = new BeanSerializerBuilder(basicBeanDescription0);
+    ObjectIdWriter objectIdWriter0 = ObjectIdWriter.construct((JavaType) simpleType0, (PropertyName) null, (ObjectIdGenerator<?>) null, false);
+    beanSerializerBuilder0.setObjectIdWriter(objectIdWriter0);
+    BeanSerializer beanSerializer0 = new BeanSerializer(objectIdWriter0.idType, beanSerializerBuilder0, (BeanPropertyWriter[]) null, (BeanPropertyWriter[]) null);
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    // Undeclared exception!
+    try {
+        beanSerializer0.serializeWithType((Object) null, (JsonGenerator) null, defaultSerializerProvider_Impl0, (TypeSerializer) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.SerializerProvider"", e);
+    }
+}","/**
+ *  Method that can be called to ask implementation to serialize
+ *  values of type this serializer handles, using specified type serializer
+ *  for embedding necessary type information.
+ * <p>
+ *  Default implementation will throw {@link UnsupportedOperationException}
+ *  to indicate that proper type handling needs to be implemented.
+ * <p>
+ *  For simple datatypes written as a single scalar value (JSON String, Number, Boolean),
+ *  implementation would look like:
+ * <pre>
+ *   // note: method to call depends on whether this type is serialized as JSON scalar, object or Array!
+ *   typeSer.writeTypePrefixForScalar(value, gen);
+ *   serialize(value, gen, provider);
+ *   typeSer.writeTypeSuffixForScalar(value, gen);
+ * </pre>
+ *  and implementations for type serialized as JSON Arrays or Objects would differ slightly,
+ *  as <code>START-ARRAY>/<code>END-ARRAY</code> and
+ *  <code>START-OBJECT>/<code>END-OBJECT</code> pairs
+ *  need to be properly handled with respect to serializing of contents.
+ *
+ *  @param value Value to serialize; can <b>not</b> be null.
+ *  @param gen Generator used to output resulting Json content
+ *  @param serializers Provider that can be used to get serializers for
+ *    serializing Objects value contains, if any.
+ *  @param typeSer Type serializer to use for including type information
+ */"
+"protected void serializeFieldsFiltered(Object bean, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonGenerationException {
+    /* note: almost verbatim copy of ""serializeFields""; copied (instead of merged)
+         * so that old method need not add check for existence of filter.
+         */
+    final BeanPropertyWriter[] props;
+    if (_filteredProps != null && provider.getActiveView() != null) {
+        props = _filteredProps;
+    } else {
+        props = _props;
+    }
+    final PropertyFilter filter = findPropertyFilter(provider, _propertyFilterId, bean);
+    // better also allow missing filter actually..
+    if (filter == null) {
+        serializeFields(bean, jgen, provider);
+        return;
+    }
+    int i = 0;
+    try {
+        for (final int len = props.length; i < len; ++i) {
+            BeanPropertyWriter prop = props[i];
+            if (prop != null) {
+                // can have nulls in filtered list
+                filter.serializeAsField(bean, jgen, provider, prop);
+            }
+        }
+        if (_anyGetterWriter != null) {
+            _anyGetterWriter.getAndFilter(bean, jgen, provider, filter);
+        }
+    } catch (Exception e) {
+        String name = (i == props.length) ? ""[anySetter]"" : props[i].getName();
+        wrapAndThrow(provider, e, bean, name);
+    } catch (StackOverflowError e) {
+        JsonMappingException mapE = new JsonMappingException(""Infinite recursion (StackOverflowError)"", e);
+        String name = (i == props.length) ? ""[anySetter]"" : props[i].getName();
+        mapE.prependPath(new JsonMappingException.Reference(bean, name));
+        throw mapE;
+    }
+}","public void test1313() throws Throwable {
+    SimpleType simpleType0 = (SimpleType) MapSerializer.UNSPECIFIED_TYPE;
+    BeanSerializer beanSerializer0 = BeanSerializer.createDummy(simpleType0);
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    // Undeclared exception!
+    try {
+        ((BeanSerializerBase) beanSerializer0).serializeFieldsFiltered(beanSerializer0, (JsonGenerator) null, defaultSerializerProvider_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.SerializerProvider"", e);
+    }
+}","/**
+ * Alternative serialization method that gets called when there is a
+ * {@link PropertyFilter} that needs to be called to determine
+ * which properties are to be serialized (and possibly how)
+ */"
+"protected void serializeFieldsFiltered(Object bean, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonGenerationException {
+    /* note: almost verbatim copy of ""serializeFields""; copied (instead of merged)
+         * so that old method need not add check for existence of filter.
+         */
+    final BeanPropertyWriter[] props;
+    if (_filteredProps != null && provider.getActiveView() != null) {
+        props = _filteredProps;
+    } else {
+        props = _props;
+    }
+    final PropertyFilter filter = findPropertyFilter(provider, _propertyFilterId, bean);
+    // better also allow missing filter actually..
+    if (filter == null) {
+        serializeFields(bean, jgen, provider);
+        return;
+    }
+    int i = 0;
+    try {
+        for (final int len = props.length; i < len; ++i) {
+            BeanPropertyWriter prop = props[i];
+            if (prop != null) {
+                // can have nulls in filtered list
+                filter.serializeAsField(bean, jgen, provider, prop);
+            }
+        }
+        if (_anyGetterWriter != null) {
+            _anyGetterWriter.getAndFilter(bean, jgen, provider, filter);
+        }
+    } catch (Exception e) {
+        String name = (i == props.length) ? ""[anySetter]"" : props[i].getName();
+        wrapAndThrow(provider, e, bean, name);
+    } catch (StackOverflowError e) {
+        JsonMappingException mapE = new JsonMappingException(""Infinite recursion (StackOverflowError)"", e);
+        String name = (i == props.length) ? ""[anySetter]"" : props[i].getName();
+        mapE.prependPath(new JsonMappingException.Reference(bean, name));
+        throw mapE;
+    }
+}","public void test1414() throws Throwable {
+    SimpleType simpleType0 = (SimpleType) MapSerializer.UNSPECIFIED_TYPE;
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ByteArrayBuilder byteArrayBuilder0 = new ByteArrayBuilder();
+    JsonEncoding jsonEncoding0 = JsonEncoding.UTF8;
+    JsonGenerator jsonGenerator0 = jsonFactory0.createGenerator((OutputStream) byteArrayBuilder0, jsonEncoding0);
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    BeanPropertyWriter[] beanPropertyWriterArray0 = new BeanPropertyWriter[9];
+    BeanSerializer beanSerializer0 = new BeanSerializer(simpleType0, (BeanSerializerBuilder) null, beanPropertyWriterArray0, beanPropertyWriterArray0);
+    // Undeclared exception!
+    try {
+        ((BeanSerializerBase) beanSerializer0).serializeFieldsFiltered(jsonFactory0, jsonGenerator0, defaultSerializerProvider_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.SerializerProvider"", e);
+    }
+}","/**
+ * Alternative serialization method that gets called when there is a
+ * {@link PropertyFilter} that needs to be called to determine
+ * which properties are to be serialized (and possibly how)
+ */"
+"@Deprecated
+@Override
+public JsonNode getSchema(SerializerProvider provider, Type typeHint) throws JsonMappingException {
+    ObjectNode o = createSchemaNode(""object"", true);
+    // [JACKSON-813]: Add optional JSON Schema id attribute, if found
+    // NOTE: not optimal, does NOT go through AnnotationIntrospector etc:
+    JsonSerializableSchema ann = _handledType.getAnnotation(JsonSerializableSchema.class);
+    if (ann != null) {
+        String id = ann.id();
+        if (id != null && id.length() > 0) {
+            o.put(""id"", id);
+        }
+    }
+    //todo: should the classname go in the title?
+    //o.put(""title"", _className);
+    ObjectNode propertiesNode = o.objectNode();
+    final PropertyFilter filter;
+    if (_propertyFilterId != null) {
+        filter = findPropertyFilter(provider, _propertyFilterId, null);
+    } else {
+        filter = null;
+    }
+    for (int i = 0; i < _props.length; i++) {
+        BeanPropertyWriter prop = _props[i];
+        if (filter == null) {
+            prop.depositSchemaProperty(propertiesNode, provider);
+        } else {
+            filter.depositSchemaProperty(prop, propertiesNode, provider);
+        }
+    }
+    o.put(""properties"", propertiesNode);
+    return o;
+}","public void test1515() throws Throwable {
+    SimpleType simpleType0 = (SimpleType) MapSerializer.UNSPECIFIED_TYPE;
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    BeanPropertyWriter[] beanPropertyWriterArray0 = new BeanPropertyWriter[13];
+    BeanSerializer beanSerializer0 = new BeanSerializer(simpleType0, (BeanSerializerBuilder) null, beanPropertyWriterArray0, beanPropertyWriterArray0);
+    // Undeclared exception!
+    try {
+        beanSerializer0.getSchema((SerializerProvider) defaultSerializerProvider_Impl0, (Type) simpleType0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.ser.std.BeanSerializerBase"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* TreeNode implementation
+    /**********************************************************
+     */
+//  public abstract JsonToken asToken();
+//  public abstract JsonToken traverse();
+//  public abstract JsonToken traverse(ObjectCodec codec);
+//  public abstract JsonParser.NumberType numberType();
+@Override
+public int size() {
+    return 0;
+}","public void test1616() throws Throwable {
+    SimpleType simpleType0 = (SimpleType) MapSerializer.UNSPECIFIED_TYPE;
+    BeanSerializer beanSerializer0 = BeanSerializer.createDummy(simpleType0);
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    JsonNode jsonNode0 = beanSerializer0.getSchema((SerializerProvider) defaultSerializerProvider_Impl0, (Type) simpleType0);
+    assertEquals(2, jsonNode0.size());
+}",""
+"@Override
+public boolean isCollectionLikeType() {
+    return false;
+}","public void test1717() throws Throwable {
+    SimpleType simpleType0 = (SimpleType) MapSerializer.UNSPECIFIED_TYPE;
+    BeanSerializer beanSerializer0 = BeanSerializer.createDummy(simpleType0);
+    JsonFormatVisitorWrapper.Base jsonFormatVisitorWrapper_Base0 = new JsonFormatVisitorWrapper.Base();
+    beanSerializer0.acceptJsonFormatVisitor(jsonFormatVisitorWrapper_Base0, simpleType0);
+    assertFalse(simpleType0.isCollectionLikeType());
+}","/**
+ * @return True if type is either true {@link java.util.Collection} type,
+ *    or something similar (meaning it has at least one type parameter,
+ *    which describes type of contents)
+ */"
+"public boolean isUnwrappingSerializer() {
+    return false;
+}","public void test1818() throws Throwable {
+    SimpleType simpleType0 = (SimpleType) MapSerializer.UNSPECIFIED_TYPE;
+    BeanSerializer beanSerializer0 = BeanSerializer.createDummy(simpleType0);
+    beanSerializer0.acceptJsonFormatVisitor((JsonFormatVisitorWrapper) null, simpleType0);
+    assertFalse(beanSerializer0.isUnwrappingSerializer());
+}","/**
+ * Accessor for checking whether this serializer is an
+ * ""unwrapping"" serializer; this is necessary to know since
+ * it may also require caller to suppress writing of the
+ * leading property name.
+ */"

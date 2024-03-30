@@ -1,0 +1,213 @@
+focal_method,test_prefix,docstring
+"public String baseUri() {
+    return baseUri;
+}","public void test000() throws Throwable {
+    Document document0 = Parser.parseBodyFragment(""<BasE"", ""<BasE"");
+    assertEquals(""<BasE"", document0.baseUri());
+}","/**
+ *     Get the base URI of this node.
+ *     @return base URI
+ */"
+"public boolean isBlock() {
+    return tag.isBlock();
+}","public void test011() throws Throwable {
+    Document document0 = Parser.parse(""<!-"", ""<!-"");
+    assertFalse(document0.isBlock());
+}","/**
+ * Test if this element is a block-level element. (E.g. {@code <div> == true} or an inline element
+ * {@code <p> == false}).
+ *
+ * @return true if block, false if not (and thus inline)
+ */"
+"public boolean isBlock() {
+    return tag.isBlock();
+}","public void test022() throws Throwable {
+    Document document0 = Parser.parse(""<![CDATA["", ""<![CDATA["");
+    assertFalse(document0.isBlock());
+}","/**
+ * Test if this element is a block-level element. (E.g. {@code <div> == true} or an inline element
+ * {@code <p> == false}).
+ *
+ * @return true if block, false if not (and thus inline)
+ */"
+"@Override
+public String nodeName() {
+    return ""#document"";
+}","public void test033() throws Throwable {
+    Document document0 = Parser.parseBodyFragment(""=mS/d(jJ'>|<4{mL/>+"", ""=mS/d(jJ'>|<4{mL/>+"");
+    assertEquals(""#document"", document0.nodeName());
+}",""
+"public String baseUri() {
+    return baseUri;
+}","public void test044() throws Throwable {
+    Document document0 = Parser.parseBodyFragment(""<!--%s-->"", ""<!--%s-->"");
+    assertEquals(""<!--%s-->"", document0.baseUri());
+}","/**
+ *     Get the base URI of this node.
+ *     @return base URI
+ */"
+"public String tagName() {
+    return tag.getName();
+}","public void test055() throws Throwable {
+    Document document0 = Parser.parse(""<?"", ""<?"");
+    assertEquals(""#root"", document0.tagName());
+}","/**
+ * Get the name of the tag for this element. E.g. {@code div}
+ *
+ * @return the tag name
+ */"
+"@Override
+public String nodeName() {
+    return ""#document"";
+}","public void test066() throws Throwable {
+    Document document0 = Parser.parse(""<!--"", ""<!--"");
+    assertEquals(""#document"", document0.nodeName());
+}",""
+"public boolean isBlock() {
+    return tag.isBlock();
+}","public void test077() throws Throwable {
+    Document document0 = Parser.parse(""</"", ""</"");
+    assertFalse(document0.isBlock());
+}","/**
+ * Test if this element is a block-level element. (E.g. {@code <div> == true} or an inline element
+ * {@code <p> == false}).
+ *
+ * @return true if block, false if not (and thus inline)
+ */"
+"public String baseUri() {
+    return baseUri;
+}","public void test088() throws Throwable {
+    Document document0 = Parser.parse(""htx<_"", ""htx<_"");
+    assertEquals(""htx<_"", document0.baseUri());
+}","/**
+ *     Get the base URI of this node.
+ *     @return base URI
+ */"
+"public String baseUri() {
+    return baseUri;
+}","public void test099() throws Throwable {
+    Document document0 = Parser.parse(""<html>\n<head>\n</head>\n<body>\n</body>\n</html>\n<noframes></noframes>"", ""{K<BBrE"");
+    assertEquals(""{K<BBrE"", document0.baseUri());
+}","/**
+ *     Get the base URI of this node.
+ *     @return base URI
+ */"
+"@Override
+public String nodeName() {
+    return ""#document"";
+}","public void test1010() throws Throwable {
+    Document document0 = Parser.parse(""<title></title>\n<html>\n<head>\n</head>\n<body> {-QEx?AV]87\n</body>\n</html>"", ""<title></title>\n<html>\n<head>\n</head>\n<body> {-QEx?AV]87\n</body>\n</html>"");
+    assertEquals(""#document"", document0.nodeName());
+}",""
+"public String baseUri() {
+    return baseUri;
+}","public void test1111() throws Throwable {
+    Document document0 = Parser.parse(""<html>\n<head>\n</head>\n<body>\n</body>\n</html><textarea></textarea>"", ""{K<BBrE"");
+    assertEquals(""{K<BBrE"", document0.baseUri());
+}","/**
+ *     Get the base URI of this node.
+ *     @return base URI
+ */"
+"public boolean isBlock() {
+    return tag.isBlock();
+}","public void test1212() throws Throwable {
+    Document document0 = Parser.parse(""#C{<GWgL-=izCK"", ""#C{<GWgL-=izCK"");
+    assertFalse(document0.isBlock());
+}","/**
+ * Test if this element is a block-level element. (E.g. {@code <div> == true} or an inline element
+ * {@code <p> == false}).
+ *
+ * @return true if block, false if not (and thus inline)
+ */"
+"public Element wrap(String html) {
+    Validate.notEmpty(html);
+    Element wrapBody = Parser.parseBodyFragment(html, baseUri).body();
+    Elements wrapChildren = wrapBody.children();
+    Element wrap = wrapChildren.first();
+    if (// nothing to wrap with; noop
+    wrap == null)
+        return null;
+    Element deepest = getDeepChild(wrap);
+    parentNode.replaceChild(this, wrap);
+    deepest.addChild(this);
+    // remainder (unbalananced wrap, like <div></div><p></p> -- The <p> is remainder
+    if (wrapChildren.size() > 1) {
+        for (int i = 1; i < wrapChildren.size(); i++) {
+            // skip first
+            Element remainder = wrapChildren.get(i);
+            remainder.parentNode.removeChild(remainder);
+            wrap.appendChild(remainder);
+        }
+    }
+    return this;
+}","public void test1313() throws Throwable {
+    Document document0 = Parser.parseBodyFragment(""yFF5j='13a4s"", ""hcue"");
+    // Undeclared exception!
+    try {
+        document0.wrap(""<yff5j='13a4s>\n</yff5j='13a4s>\n<html>\n<head>\n</head>\n<body>\n yFF5j='13a4s\n</body>\n</html>"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Element"", e);
+    }
+}","/**
+ *     Wrap the supplied HTML around this element.
+ *     @param html HTML to wrap around this element, e.g. {@code <div class=""head""></div>}. Can be arbitralily deep.
+ *     @return this element, for chaining.
+ */"
+"@Override
+public String nodeName() {
+    return ""#document"";
+}","public void test1414() throws Throwable {
+    Document document0 = Parser.parse(""<html>\n<head>\n <title>#C{&lt;GWgL-=izCK</title>\n</head>\n<body> #C{<gwgl -=\""izCK\"">\n </gwgl>\n</body>\n</html>"", ""<html>\n<head>\n <title>#C{&lt;GWgL-=izCK</title>\n</head>\n<body> #C{<gwgl -=\""izCK\"">\n </gwgl>\n</body>\n</html>"");
+    assertEquals(""#document"", document0.nodeName());
+}",""
+"public boolean isBlock() {
+    return tag.isBlock();
+}","public void test1515() throws Throwable {
+    Document document0 = Parser.parse(""<PS{eoDT9=>$4K"", ""<PS{eoDT9=>$4K"");
+    assertFalse(document0.isBlock());
+}","/**
+ * Test if this element is a block-level element. (E.g. {@code <div> == true} or an inline element
+ * {@code <p> == false}).
+ *
+ * @return true if block, false if not (and thus inline)
+ */"
+"public String baseUri() {
+    return baseUri;
+}","public void test1616() throws Throwable {
+    Document document0 = Parser.parse(""-<n]@]=M J-.y"", ""-<n]@]=M J-.y"");
+    assertEquals(""-<n]@]=M J-.y"", document0.baseUri());
+}","/**
+ *     Get the base URI of this node.
+ *     @return base URI
+ */"
+"@Override
+public String nodeName() {
+    return ""#document"";
+}","public void test1717() throws Throwable {
+    Document document0 = Parser.parse(""<Br"", ""<Br"");
+    assertEquals(""#document"", document0.nodeName());
+}",""
+"public boolean isBlock() {
+    return tag.isBlock();
+}","public void test1818() throws Throwable {
+    Document document0 = Parser.parse(""]qG}x</InP3"", ""]qG}x</InP3"");
+    assertFalse(document0.isBlock());
+}","/**
+ * Test if this element is a block-level element. (E.g. {@code <div> == true} or an inline element
+ * {@code <p> == false}).
+ *
+ * @return true if block, false if not (and thus inline)
+ */"
+"public String baseUri() {
+    return baseUri;
+}","public void test1919() throws Throwable {
+    Document document0 = Parser.parse(""<html>\n</html>\n<html>\n<head>\n</head>\n<body> a:;hpGDx1.c(|MX\n</body>\n</html>"", ""<html>\n</html>\n<html>\n<head>\n</head>\n<body> a:;hpGDx1.c(|MX\n</body>\n</html>"");
+    assertEquals(""<html>\n</html>\n<html>\n<head>\n</head>\n<body> a:;hpGDx1.c(|MX\n</body>\n</html>"", document0.baseUri());
+}","/**
+ *     Get the base URI of this node.
+ *     @return base URI
+ */"

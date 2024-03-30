@@ -1,0 +1,36 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test00,"public void test00() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<Integer> class0 = Integer.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructRawMapLikeType(class0);
+    AsPropertyTypeDeserializer asPropertyTypeDeserializer0 = new AsPropertyTypeDeserializer(mapLikeType0, (TypeIdResolver) null, ""Y46&.\""gCa@,bhPcfm"", false, mapLikeType0);
+    PropertyName propertyName0 = PropertyName.USE_DEFAULT;
+    CreatorProperty creatorProperty0 = new CreatorProperty(propertyName0, mapLikeType0, propertyName0, asPropertyTypeDeserializer0, (Annotations) null, (AnnotatedParameter) null, 0, ""Y46&.\""gCa@,bhPcfm"", (PropertyMetadata) null);
+    assertFalse(creatorProperty0.isRequired());
+}",0,assertTrue(creatorProperty0.isRequired())
+project,0,test11,"public void test11() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    AsPropertyTypeDeserializer asPropertyTypeDeserializer0 = new AsPropertyTypeDeserializer((JavaType) null, (TypeIdResolver) null, "".Gz#9\""#C"", false, (JavaType) null);
+    String string0 = objectMapper0.writeValueAsString(asPropertyTypeDeserializer0);
+    assertEquals(""{\""typeInclusion\"":\""PROPERTY\"",\""typeIdResolver\"":null,\""defaultImpl\"":null,\""propertyName\"":\"".Gz#9\\\""#C\""}"", string0);
+}",0,
+project,0,test22,"public void test22() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<Map> class0 = Map.class;
+    MapType mapType0 = typeFactory0.constructRawMapType(class0);
+    ClassNameIdResolver classNameIdResolver0 = new ClassNameIdResolver(mapType0, typeFactory0);
+    JsonTypeInfo.As jsonTypeInfo_As0 = JsonTypeInfo.As.PROPERTY;
+    AsPropertyTypeDeserializer asPropertyTypeDeserializer0 = new AsPropertyTypeDeserializer(mapType0, classNameIdResolver0, ""u6"", true, mapType0, jsonTypeInfo_As0);
+    TypeDeserializer typeDeserializer0 = asPropertyTypeDeserializer0.forProperty((BeanProperty) null);
+    assertSame(typeDeserializer0, asPropertyTypeDeserializer0);
+}",0,
+project,0,test45,"public void test45() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DeserializationContext deserializationContext0 = objectMapper0.getDeserializationContext();
+    BooleanNode booleanNode0 = BooleanNode.getFalse();
+    JsonParser jsonParser0 = objectMapper0.treeAsTokens(booleanNode0);
+    AsPropertyTypeDeserializer asPropertyTypeDeserializer0 = new AsPropertyTypeDeserializer((JavaType) null, (TypeIdResolver) null, """", true, (JavaType) null);
+    TokenBuffer tokenBuffer0 = new TokenBuffer(jsonParser0, deserializationContext0);
+    Object object0 = asPropertyTypeDeserializer0._deserializeTypedUsingDefaultImpl(jsonParser0, deserializationContext0, tokenBuffer0);
+    assertNull(object0);
+}",0,

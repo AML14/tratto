@@ -1,0 +1,1885 @@
+focal_method,test_prefix,docstring
+"@Override
+public boolean isNativeObjectType() {
+    return referencedObjType == null ? false : referencedObjType.isNativeObjectType();
+}","public void test000() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = jSTypeRegistry0.createRecordType(hashMap0);
+    IndexedType indexedType0 = new IndexedType(jSTypeRegistry0, recordType0, recordType0);
+    boolean boolean0 = indexedType0.matchesObjectContext();
+    assertFalse(indexedType0.isNativeObjectType());
+}",""
+"@Override
+public boolean hasReferenceName() {
+    return referencedObjType == null ? null : referencedObjType.hasReferenceName();
+}","public void test001() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = jSTypeRegistry0.createRecordType(hashMap0);
+    IndexedType indexedType0 = new IndexedType(jSTypeRegistry0, recordType0, recordType0);
+    boolean boolean0 = indexedType0.matchesObjectContext();
+    assertFalse(indexedType0.hasReferenceName());
+}",""
+"@Override
+public boolean matchesObjectContext() {
+    return referencedType.matchesObjectContext();
+}","public void test002() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = jSTypeRegistry0.createRecordType(hashMap0);
+    IndexedType indexedType0 = new IndexedType(jSTypeRegistry0, recordType0, recordType0);
+    boolean boolean0 = indexedType0.matchesObjectContext();
+    assertTrue(boolean0);
+}",""
+"@Override
+public boolean isNativeObjectType() {
+    return nativeType;
+}","public void test013() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = jSTypeRegistry0.createRecordType(hashMap0);
+    recordType0.canBeCalled();
+    assertFalse(recordType0.isNativeObjectType());
+}","/**
+ * Whether this is a built-in object.
+ */"
+"@Override
+public boolean hasReferenceName() {
+    return className != null || ownerFunction != null;
+}","public void test014() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = jSTypeRegistry0.createRecordType(hashMap0);
+    recordType0.canBeCalled();
+    assertFalse(recordType0.hasReferenceName());
+}",""
+"@Override
+public boolean hasCachedValues() {
+    return prototypeSlot != null || super.hasCachedValues();
+}","public void test025() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""v-bwxk+4%tE`lkM32"");
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    errorFunctionType0.setPropertyJSDocInfo(""v-bwxk+4%tE`lkM32"", jSDocInfo0);
+    int int0 = errorFunctionType0.getPropertiesCount();
+    assertTrue(errorFunctionType0.hasCachedValues());
+}",""
+"@Override
+public int getPropertiesCount() {
+    ObjectType implicitPrototype = getImplicitPrototype();
+    if (implicitPrototype == null) {
+        return this.properties.size();
+    }
+    int localCount = 0;
+    for (String property : properties.keySet()) {
+        if (!implicitPrototype.hasProperty(property)) {
+            localCount++;
+        }
+    }
+    return implicitPrototype.getPropertiesCount() + localCount;
+}","public void test026() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""v-bwxk+4%tE`lkM32"");
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    errorFunctionType0.setPropertyJSDocInfo(""v-bwxk+4%tE`lkM32"", jSDocInfo0);
+    int int0 = errorFunctionType0.getPropertiesCount();
+    assertEquals(1, int0);
+}","/**
+ * Gets the number of properties of this object.
+ */"
+"@Override
+public int getPropertiesCount() {
+    ObjectType implicitPrototype = getImplicitPrototype();
+    if (implicitPrototype == null) {
+        return this.properties.size();
+    }
+    int localCount = 0;
+    for (String property : properties.keySet()) {
+        if (!implicitPrototype.hasProperty(property)) {
+            localCount++;
+        }
+    }
+    return implicitPrototype.getPropertiesCount() + localCount;
+}","public void test037() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""v-bwxk+4%tE`lkM32"");
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, ""Named type with empty name component"", ""Named type with empty name component"", 3336, 3336);
+    errorFunctionType0.setImplicitPrototype(namedType0);
+    errorFunctionType0.setPropertyJSDocInfo(""v-bwxk+4%tE`lkM32"", jSDocInfo0);
+    int int0 = errorFunctionType0.getPropertiesCount();
+    assertEquals(Integer.MAX_VALUE, int0);
+}","/**
+ * Gets the number of properties of this object.
+ */"
+"public final boolean isNominalConstructor() {
+    if (isConstructor() || isInterface()) {
+        FunctionType fn = toMaybeFunctionType();
+        if (fn == null) {
+            return false;
+        }
+        // Programmer-defined constructors will have a link
+        // back to the original function in the source tree.
+        // Structural constructors will not.
+        if (fn.getSource() != null) {
+            return true;
+        }
+        // Native constructors are always nominal.
+        return fn.isNativeObjectType();
+    }
+    return false;
+}","public void test038() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""v-bwxk+4%tE`lkM32"");
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, ""Named type with empty name component"", ""Named type with empty name component"", 3336, 3336);
+    errorFunctionType0.setImplicitPrototype(namedType0);
+    errorFunctionType0.setPropertyJSDocInfo(""v-bwxk+4%tE`lkM32"", jSDocInfo0);
+    int int0 = errorFunctionType0.getPropertiesCount();
+    assertTrue(errorFunctionType0.isNominalConstructor());
+}","/**
+ * Whether this type is the original constructor of a nominal type.
+ * Does not include structural constructors.
+ */"
+"public boolean isNominalType() {
+    return false;
+}","public void test049() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    NumberType numberType0 = new NumberType(jSTypeRegistry0);
+    JSType jSType0 = numberType0.autoboxesTo();
+    RecordTypeBuilder.RecordProperty recordTypeBuilder_RecordProperty0 = new RecordTypeBuilder.RecordProperty(jSType0, (Node) null);
+    hashMap0.put(""a^vr(A?hM>"", recordTypeBuilder_RecordProperty0);
+    hashMap0.put(""Named type with empty name component"", recordTypeBuilder_RecordProperty0);
+    assertTrue(jSType0.isNominalType());
+}","/**
+ * Whether this type is a nominal type (a named instance object or
+ * a named enum).
+ */"
+"@Override
+public boolean isNativeObjectType() {
+    return nativeType;
+}","public void test0410() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    NumberType numberType0 = new NumberType(jSTypeRegistry0);
+    JSType jSType0 = numberType0.autoboxesTo();
+    RecordTypeBuilder.RecordProperty recordTypeBuilder_RecordProperty0 = new RecordTypeBuilder.RecordProperty(jSType0, (Node) null);
+    hashMap0.put(""a^vr(A?hM>"", recordTypeBuilder_RecordProperty0);
+    hashMap0.put(""Named type with empty name component"", recordTypeBuilder_RecordProperty0);
+    jSTypeRegistry0.createRecordType(hashMap0);
+    RecordType recordType0 = jSTypeRegistry0.createRecordType(hashMap0);
+    assertFalse(recordType0.isNativeObjectType());
+}","/**
+ * Whether this is a built-in object.
+ */"
+"@Override
+public boolean hasReferenceName() {
+    return className != null || ownerFunction != null;
+}","public void test0411() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    NumberType numberType0 = new NumberType(jSTypeRegistry0);
+    JSType jSType0 = numberType0.autoboxesTo();
+    RecordTypeBuilder.RecordProperty recordTypeBuilder_RecordProperty0 = new RecordTypeBuilder.RecordProperty(jSType0, (Node) null);
+    hashMap0.put(""a^vr(A?hM>"", recordTypeBuilder_RecordProperty0);
+    hashMap0.put(""Named type with empty name component"", recordTypeBuilder_RecordProperty0);
+    jSTypeRegistry0.createRecordType(hashMap0);
+    RecordType recordType0 = jSTypeRegistry0.createRecordType(hashMap0);
+    assertFalse(recordType0.hasReferenceName());
+}",""
+"@Override
+public boolean hasCachedValues() {
+    return prototypeSlot != null || super.hasCachedValues();
+}","public void test0512() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, "", ..."");
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    errorFunctionType0.setPropertyJSDocInfo("", ..."", jSDocInfo0);
+    boolean boolean0 = errorFunctionType0.defineProperty("", ..."", (JSType) null, true, (Node) null);
+    assertTrue(errorFunctionType0.hasCachedValues());
+}",""
+"@Override
+boolean defineProperty(String name, JSType type, boolean inferred, Node propertyNode) {
+    if (""prototype"".equals(name)) {
+        ObjectType objType = type.toObjectType();
+        if (objType != null) {
+            if (prototypeSlot != null && objType.isEquivalentTo(prototypeSlot.getType())) {
+                return true;
+            }
+            this.setPrototypeBasedOn(objType, propertyNode);
+            return true;
+        } else {
+            return false;
+        }
+    }
+    return super.defineProperty(name, type, inferred, propertyNode);
+}","public void test0513() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, "", ..."");
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    errorFunctionType0.setPropertyJSDocInfo("", ..."", jSDocInfo0);
+    boolean boolean0 = errorFunctionType0.defineProperty("", ..."", (JSType) null, true, (Node) null);
+    assertTrue(boolean0);
+}",""
+"public final boolean isNominalConstructor() {
+    if (isConstructor() || isInterface()) {
+        FunctionType fn = toMaybeFunctionType();
+        if (fn == null) {
+            return false;
+        }
+        // Programmer-defined constructors will have a link
+        // back to the original function in the source tree.
+        // Structural constructors will not.
+        if (fn.getSource() != null) {
+            return true;
+        }
+        // Native constructors are always nominal.
+        return fn.isNativeObjectType();
+    }
+    return false;
+}","public void test0614() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""toString"");
+    boolean boolean0 = errorFunctionType0.isPropertyTypeDeclared(""Yf:&&rzG(+6ub~50("");
+    assertTrue(errorFunctionType0.isNominalConstructor());
+}","/**
+ * Whether this type is the original constructor of a nominal type.
+ * Does not include structural constructors.
+ */"
+"@Override
+public boolean isPropertyTypeDeclared(String property) {
+    StaticSlot<JSType> slot = getSlot(property);
+    if (slot == null) {
+        return false;
+    }
+    return !slot.isTypeInferred();
+}","public void test0615() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""toString"");
+    boolean boolean0 = errorFunctionType0.isPropertyTypeDeclared(""Yf:&&rzG(+6ub~50("");
+    assertFalse(boolean0);
+}",""
+"@Override
+public boolean hasReferenceName() {
+    return className != null || ownerFunction != null;
+}","public void test0716() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""String"");
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordTypeBuilder.RecordProperty recordTypeBuilder_RecordProperty0 = new RecordTypeBuilder.RecordProperty(errorFunctionType0, (Node) null);
+    hashMap0.put(""Not declared as a type name"", recordTypeBuilder_RecordProperty0);
+    RecordType recordType0 = jSTypeRegistry0.createRecordType(hashMap0);
+    Set<String> set0 = recordType0.getPropertyNames();
+    assertFalse(recordType0.hasReferenceName());
+}",""
+"@Override
+public boolean isNativeObjectType() {
+    return nativeType;
+}","public void test0718() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""String"");
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordTypeBuilder.RecordProperty recordTypeBuilder_RecordProperty0 = new RecordTypeBuilder.RecordProperty(errorFunctionType0, (Node) null);
+    hashMap0.put(""Not declared as a type name"", recordTypeBuilder_RecordProperty0);
+    RecordType recordType0 = jSTypeRegistry0.createRecordType(hashMap0);
+    Set<String> set0 = recordType0.getPropertyNames();
+    assertFalse(recordType0.isNativeObjectType());
+}","/**
+ * Whether this is a built-in object.
+ */"
+"@Override
+public boolean hasCachedValues() {
+    return prototypeSlot != null || super.hasCachedValues();
+}","public void test0819() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""toString"");
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    errorFunctionType0.setPropertyJSDocInfo(""toString"", jSDocInfo0);
+    boolean boolean0 = errorFunctionType0.isPropertyTypeInferred(""toString"");
+    assertTrue(errorFunctionType0.hasCachedValues());
+}",""
+"@Override
+public boolean isPropertyTypeInferred(String property) {
+    StaticSlot<JSType> slot = getSlot(property);
+    if (slot == null) {
+        return false;
+    }
+    return slot.isTypeInferred();
+}","public void test0820() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""toString"");
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    errorFunctionType0.setPropertyJSDocInfo(""toString"", jSDocInfo0);
+    boolean boolean0 = errorFunctionType0.isPropertyTypeInferred(""toString"");
+    assertTrue(boolean0);
+}",""
+"public final boolean isNominalConstructor() {
+    if (isConstructor() || isInterface()) {
+        FunctionType fn = toMaybeFunctionType();
+        if (fn == null) {
+            return false;
+        }
+        // Programmer-defined constructors will have a link
+        // back to the original function in the source tree.
+        // Structural constructors will not.
+        if (fn.getSource() != null) {
+            return true;
+        }
+        // Native constructors are always nominal.
+        return fn.isNativeObjectType();
+    }
+    return false;
+}","public void test0921() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""toString"");
+    boolean boolean0 = errorFunctionType0.isPropertyTypeInferred(""Yf:&&rzG(+6ub~50("");
+    assertTrue(errorFunctionType0.isNominalConstructor());
+}","/**
+ * Whether this type is the original constructor of a nominal type.
+ * Does not include structural constructors.
+ */"
+"@Override
+public boolean isPropertyTypeInferred(String property) {
+    StaticSlot<JSType> slot = getSlot(property);
+    if (slot == null) {
+        return false;
+    }
+    return slot.isTypeInferred();
+}","public void test0922() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""toString"");
+    boolean boolean0 = errorFunctionType0.isPropertyTypeInferred(""Yf:&&rzG(+6ub~50("");
+    assertFalse(boolean0);
+}",""
+"@Override
+public boolean isNativeObjectType() {
+    return nativeType;
+}","public void test1023() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = jSTypeRegistry0.createRecordType(hashMap0);
+    boolean boolean0 = recordType0.isPropertyInExterns(""Named type with empty name component"");
+    assertFalse(recordType0.isNativeObjectType());
+}","/**
+ * Whether this is a built-in object.
+ */"
+"@Override
+public boolean isPropertyInExterns(String propertyName) {
+    Property p = properties.get(propertyName);
+    if (p != null) {
+        return p.isFromExterns();
+    }
+    ObjectType implicitPrototype = getImplicitPrototype();
+    if (implicitPrototype != null) {
+        return implicitPrototype.isPropertyInExterns(propertyName);
+    }
+    return false;
+}","public void test1024() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = jSTypeRegistry0.createRecordType(hashMap0);
+    boolean boolean0 = recordType0.isPropertyInExterns(""Named type with empty name component"");
+    assertFalse(boolean0);
+}",""
+"@Override
+public boolean hasReferenceName() {
+    return className != null || ownerFunction != null;
+}","public void test1025() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = jSTypeRegistry0.createRecordType(hashMap0);
+    boolean boolean0 = recordType0.isPropertyInExterns(""Named type with empty name component"");
+    assertFalse(recordType0.hasReferenceName());
+}",""
+"public final boolean defineDeclaredProperty(String propertyName, JSType type, Node propertyNode) {
+    boolean result = defineProperty(propertyName, type, false, propertyNode);
+    // All property definitions go through this method
+    // or defineDeclaredProperty. Because the properties defined an an
+    // object can affect subtyping, it's slightly more efficient
+    // to register this after defining the property.
+    registry.registerPropertyOnType(propertyName, this);
+    return result;
+}","public void test1126() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""AApvF hS+1;U"");
+    boolean boolean0 = errorFunctionType0.defineDeclaredProperty("""", (JSType) null, (Node) null);
+    assertTrue(boolean0);
+}","/**
+ * Defines a property whose type is synthesized (i.e. not inferred).
+ * @param propertyName the property's name
+ * @param type the type
+ * @param propertyNode the node corresponding to the declaration of property
+ *        which might later be accessed using {@code getPropertyNode}.
+ */"
+"public final boolean isNominalConstructor() {
+    if (isConstructor() || isInterface()) {
+        FunctionType fn = toMaybeFunctionType();
+        if (fn == null) {
+            return false;
+        }
+        // Programmer-defined constructors will have a link
+        // back to the original function in the source tree.
+        // Structural constructors will not.
+        if (fn.getSource() != null) {
+            return true;
+        }
+        // Native constructors are always nominal.
+        return fn.isNativeObjectType();
+    }
+    return false;
+}","public void test1127() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""AApvF hS+1;U"");
+    boolean boolean0 = errorFunctionType0.defineDeclaredProperty("""", (JSType) null, (Node) null);
+    errorFunctionType0.isPropertyInExterns("""");
+    assertTrue(errorFunctionType0.isNominalConstructor());
+}","/**
+ * Whether this type is the original constructor of a nominal type.
+ * Does not include structural constructors.
+ */"
+"@Override
+boolean defineProperty(String name, JSType type, boolean inferred, Node propertyNode) {
+    if (""prototype"".equals(name)) {
+        ObjectType objType = type.toObjectType();
+        if (objType != null) {
+            if (prototypeSlot != null && objType.isEquivalentTo(prototypeSlot.getType())) {
+                return true;
+            }
+            this.setPrototypeBasedOn(objType, propertyNode);
+            return true;
+        } else {
+            return false;
+        }
+    }
+    return super.defineProperty(name, type, inferred, propertyNode);
+}","public void test1228() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""String"");
+    boolean boolean0 = errorFunctionType0.defineDeclaredProperty(""String"", errorFunctionType0, (Node) null);
+    JSType.TypePair jSType_TypePair0 = errorFunctionType0.getTypesUnderEquality(errorFunctionType0);
+    boolean boolean1 = errorFunctionType0.defineProperty(""String"", jSType_TypePair0.typeB, false, (Node) null);
+    assertFalse(boolean1 == boolean0);
+}",""
+"public final boolean isNominalConstructor() {
+    if (isConstructor() || isInterface()) {
+        FunctionType fn = toMaybeFunctionType();
+        if (fn == null) {
+            return false;
+        }
+        // Programmer-defined constructors will have a link
+        // back to the original function in the source tree.
+        // Structural constructors will not.
+        if (fn.getSource() != null) {
+            return true;
+        }
+        // Native constructors are always nominal.
+        return fn.isNativeObjectType();
+    }
+    return false;
+}","public void test1229() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""String"");
+    boolean boolean0 = errorFunctionType0.defineDeclaredProperty(""String"", errorFunctionType0, (Node) null);
+    JSType.TypePair jSType_TypePair0 = errorFunctionType0.getTypesUnderEquality(errorFunctionType0);
+    boolean boolean1 = errorFunctionType0.defineProperty(""String"", jSType_TypePair0.typeB, false, (Node) null);
+    assertTrue(errorFunctionType0.isNominalConstructor());
+}","/**
+ * Whether this type is the original constructor of a nominal type.
+ * Does not include structural constructors.
+ */"
+"public final boolean isNominalConstructor() {
+    if (isConstructor() || isInterface()) {
+        FunctionType fn = toMaybeFunctionType();
+        if (fn == null) {
+            return false;
+        }
+        // Programmer-defined constructors will have a link
+        // back to the original function in the source tree.
+        // Structural constructors will not.
+        if (fn.getSource() != null) {
+            return true;
+        }
+        // Native constructors are always nominal.
+        return fn.isNativeObjectType();
+    }
+    return false;
+}","public void test1331() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, "",W0f6m~5KbMlm$-|"");
+    boolean boolean0 = errorFunctionType0.removeProperty("",W0f6m~5KbMlm$-|"");
+    assertTrue(errorFunctionType0.isNominalConstructor());
+}","/**
+ * Whether this type is the original constructor of a nominal type.
+ * Does not include structural constructors.
+ */"
+"@Override
+public boolean removeProperty(String name) {
+    return properties.remove(name) != null;
+}","public void test1332() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, "",W0f6m~5KbMlm$-|"");
+    boolean boolean0 = errorFunctionType0.removeProperty("",W0f6m~5KbMlm$-|"");
+    assertFalse(boolean0);
+}",""
+"@Override
+public boolean hasCachedValues() {
+    return prototypeSlot != null || super.hasCachedValues();
+}","public void test1433() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""String"");
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    errorFunctionType0.setPropertyJSDocInfo(""String"", jSDocInfo0);
+    boolean boolean0 = errorFunctionType0.removeProperty(""String"");
+    assertTrue(errorFunctionType0.hasCachedValues());
+}",""
+"@Override
+public boolean removeProperty(String name) {
+    return properties.remove(name) != null;
+}","public void test1434() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""String"");
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    errorFunctionType0.setPropertyJSDocInfo(""String"", jSDocInfo0);
+    boolean boolean0 = errorFunctionType0.removeProperty(""String"");
+    assertTrue(boolean0);
+}",""
+"@Override
+public boolean hasReferenceName() {
+    return referencedObjType == null ? null : referencedObjType.hasReferenceName();
+}","public void test1535() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""String"");
+    IndexedType indexedType0 = new IndexedType(jSTypeRegistry0, errorFunctionType0, errorFunctionType0);
+    indexedType0.getPropertyNode(""Unknown class name"");
+    assertTrue(indexedType0.hasReferenceName());
+}",""
+"public final boolean isNominalConstructor() {
+    if (isConstructor() || isInterface()) {
+        FunctionType fn = toMaybeFunctionType();
+        if (fn == null) {
+            return false;
+        }
+        // Programmer-defined constructors will have a link
+        // back to the original function in the source tree.
+        // Structural constructors will not.
+        if (fn.getSource() != null) {
+            return true;
+        }
+        // Native constructors are always nominal.
+        return fn.isNativeObjectType();
+    }
+    return false;
+}","public void test1536() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""String"");
+    IndexedType indexedType0 = new IndexedType(jSTypeRegistry0, errorFunctionType0, errorFunctionType0);
+    indexedType0.getPropertyNode(""Unknown class name"");
+    assertTrue(indexedType0.isNominalConstructor());
+}","/**
+ * Whether this type is the original constructor of a nominal type.
+ * Does not include structural constructors.
+ */"
+"@Override
+boolean defineProperty(String name, JSType type, boolean inferred, Node propertyNode) {
+    if (hasOwnDeclaredProperty(name)) {
+        return false;
+    }
+    Property newProp = new Property(name, type, inferred, propertyNode);
+    Property oldProp = properties.get(name);
+    if (oldProp != null) {
+        // This is to keep previously inferred jsdoc info, e.g., in a
+        // replaceScript scenario.
+        newProp.setJSDocInfo(oldProp.getJSDocInfo());
+    }
+    properties.put(name, newProp);
+    return true;
+}","public void test1637() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""SHNE"");
+    Node node0 = Node.newString(""Named type with empty name component"");
+    EnumType enumType0 = jSTypeRegistry0.createEnumType("""", node0, errorFunctionType0);
+    boolean boolean0 = enumType0.defineProperty("""", errorFunctionType0, false, node0);
+    assertTrue(boolean0);
+}",""
+"@Override
+public Node getPropertyNode(String propertyName) {
+    Property p = properties.get(propertyName);
+    if (p != null) {
+        return p.getNode();
+    }
+    ObjectType implicitPrototype = getImplicitPrototype();
+    if (implicitPrototype != null) {
+        return implicitPrototype.getPropertyNode(propertyName);
+    }
+    return null;
+}","public void test1638() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""SHNE"");
+    Node node0 = Node.newString(""Named type with empty name component"");
+    EnumType enumType0 = jSTypeRegistry0.createEnumType("""", node0, errorFunctionType0);
+    boolean boolean0 = enumType0.defineProperty("""", errorFunctionType0, false, node0);
+    Node node1 = enumType0.getPropertyNode("""");
+    assertNotNull(node1);
+}",""
+"public final boolean isNominalConstructor() {
+    if (isConstructor() || isInterface()) {
+        FunctionType fn = toMaybeFunctionType();
+        if (fn == null) {
+            return false;
+        }
+        // Programmer-defined constructors will have a link
+        // back to the original function in the source tree.
+        // Structural constructors will not.
+        if (fn.getSource() != null) {
+            return true;
+        }
+        // Native constructors are always nominal.
+        return fn.isNativeObjectType();
+    }
+    return false;
+}","public void test1639() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""SHNE"");
+    Node node0 = Node.newString(""Named type with empty name component"");
+    EnumType enumType0 = jSTypeRegistry0.createEnumType("""", node0, errorFunctionType0);
+    boolean boolean0 = enumType0.defineProperty("""", errorFunctionType0, false, node0);
+    Node node1 = enumType0.getPropertyNode("""");
+    assertTrue(errorFunctionType0.isNominalConstructor());
+}","/**
+ * Whether this type is the original constructor of a nominal type.
+ * Does not include structural constructors.
+ */"
+"@Override
+public boolean hasReferenceName() {
+    return className != null || ownerFunction != null;
+}","public void test1740() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = jSTypeRegistry0.createRecordType(hashMap0);
+    recordType0.getOwnPropertyJSDocInfo(""Not declared as a type name"");
+    assertFalse(recordType0.hasReferenceName());
+}",""
+"@Override
+public boolean isNativeObjectType() {
+    return nativeType;
+}","public void test1741() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = jSTypeRegistry0.createRecordType(hashMap0);
+    recordType0.getOwnPropertyJSDocInfo(""Not declared as a type name"");
+    assertFalse(recordType0.isNativeObjectType());
+}","/**
+ * Whether this is a built-in object.
+ */"
+"@Override
+public boolean isNativeObjectType() {
+    return nativeType;
+}","public void test1842() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""}"");
+    RecordTypeBuilder.RecordProperty recordTypeBuilder_RecordProperty0 = new RecordTypeBuilder.RecordProperty(errorFunctionType0, (Node) null);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    hashMap0.put(""Not declared as a constructor"", recordTypeBuilder_RecordProperty0);
+    RecordType recordType0 = new RecordType(jSTypeRegistry0, hashMap0);
+    recordType0.getOwnPropertyJSDocInfo(""Not declared as a constructor"");
+    assertFalse(recordType0.isNativeObjectType());
+}","/**
+ * Whether this is a built-in object.
+ */"
+"@Override
+public boolean hasReferenceName() {
+    return className != null || ownerFunction != null;
+}","public void test1843() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""}"");
+    RecordTypeBuilder.RecordProperty recordTypeBuilder_RecordProperty0 = new RecordTypeBuilder.RecordProperty(errorFunctionType0, (Node) null);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    hashMap0.put(""Not declared as a constructor"", recordTypeBuilder_RecordProperty0);
+    RecordType recordType0 = new RecordType(jSTypeRegistry0, hashMap0);
+    recordType0.getOwnPropertyJSDocInfo(""Not declared as a constructor"");
+    assertFalse(recordType0.hasReferenceName());
+}",""
+"@Override
+public boolean hasCachedValues() {
+    return prototypeSlot != null || super.hasCachedValues();
+}","public void test1944() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""Yf:&&rzG(+6ub~50("");
+    errorFunctionType0.setPropertyJSDocInfo(""Yf:&&rzG(+6ub~50("", (JSDocInfo) null);
+    assertFalse(errorFunctionType0.hasCachedValues());
+}",""
+"public final boolean isNominalConstructor() {
+    if (isConstructor() || isInterface()) {
+        FunctionType fn = toMaybeFunctionType();
+        if (fn == null) {
+            return false;
+        }
+        // Programmer-defined constructors will have a link
+        // back to the original function in the source tree.
+        // Structural constructors will not.
+        if (fn.getSource() != null) {
+            return true;
+        }
+        // Native constructors are always nominal.
+        return fn.isNativeObjectType();
+    }
+    return false;
+}","public void test1945() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""Yf:&&rzG(+6ub~50("");
+    errorFunctionType0.setPropertyJSDocInfo(""Yf:&&rzG(+6ub~50("", (JSDocInfo) null);
+    assertTrue(errorFunctionType0.isNominalConstructor());
+}","/**
+ * Whether this type is the original constructor of a nominal type.
+ * Does not include structural constructors.
+ */"
+"@Override
+public boolean hasCachedValues() {
+    return prototypeSlot != null || super.hasCachedValues();
+}","public void test2046() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""vsg_G*!u^op@[q~d"");
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    errorFunctionType0.setPropertyJSDocInfo(""vsg_G*!u^op@[q~d"", jSDocInfo0);
+    errorFunctionType0.setPropertyJSDocInfo(""vsg_G*!u^op@[q~d"", jSDocInfo0);
+    assertTrue(errorFunctionType0.hasCachedValues());
+}",""
+"@Override
+public boolean hasCachedValues() {
+    return super.hasCachedValues();
+}","public void test2147() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = jSTypeRegistry0.createRecordType(hashMap0);
+    recordType0.setPropertyJSDocInfo(""{...}"", jSDocInfo0);
+    assertTrue(recordType0.hasCachedValues());
+}",""
+"@Override
+public boolean matchesNumberContext() {
+    return isNumberObjectType() || isDateType() || isBooleanObjectType() || isStringObjectType() || hasOverridenNativeProperty(""valueOf"");
+}","public void test2248() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NumberType numberType0 = new NumberType(jSTypeRegistry0);
+    InstanceObjectType instanceObjectType0 = (InstanceObjectType) numberType0.autoboxesTo();
+    boolean boolean0 = instanceObjectType0.matchesNumberContext();
+    assertTrue(boolean0);
+}",""
+"@Override
+public boolean hasReferenceName() {
+    return getConstructor().hasReferenceName();
+}","public void test2249() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NumberType numberType0 = new NumberType(jSTypeRegistry0);
+    InstanceObjectType instanceObjectType0 = (InstanceObjectType) numberType0.autoboxesTo();
+    boolean boolean0 = instanceObjectType0.matchesNumberContext();
+    assertTrue(instanceObjectType0.hasReferenceName());
+}",""
+"@Override
+public boolean hasReferenceName() {
+    return className != null || ownerFunction != null;
+}","public void test2350() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = jSTypeRegistry0.createRecordType(hashMap0);
+    boolean boolean0 = recordType0.matchesNumberContext();
+    assertFalse(recordType0.hasReferenceName());
+}",""
+"@Override
+public boolean matchesNumberContext() {
+    return isNumberObjectType() || isDateType() || isBooleanObjectType() || isStringObjectType() || hasOverridenNativeProperty(""valueOf"");
+}","public void test2351() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = jSTypeRegistry0.createRecordType(hashMap0);
+    boolean boolean0 = recordType0.matchesNumberContext();
+    assertFalse(boolean0);
+}",""
+"@Override
+public boolean isNativeObjectType() {
+    return nativeType;
+}","public void test2352() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = jSTypeRegistry0.createRecordType(hashMap0);
+    boolean boolean0 = recordType0.matchesNumberContext();
+    assertFalse(recordType0.isNativeObjectType());
+}","/**
+ * Whether this is a built-in object.
+ */"
+"@Override
+public boolean matchesNumberContext() {
+    return isNumberObjectType() || isDateType() || isBooleanObjectType() || isStringObjectType() || hasOverridenNativeProperty(""valueOf"");
+}","public void test2453() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = jSTypeRegistry0.createRecordType(hashMap0);
+    Node node0 = Node.newString(""Unknown class name"", 843, (-521));
+    ArrowType arrowType0 = new ArrowType(jSTypeRegistry0, node0, recordType0, true);
+    FunctionType functionType0 = new FunctionType(jSTypeRegistry0, ""Date"", (Node) null, arrowType0, recordType0, ""Date"", true, true);
+    InstanceObjectType instanceObjectType0 = new InstanceObjectType(jSTypeRegistry0, functionType0, false);
+    boolean boolean0 = instanceObjectType0.matchesNumberContext();
+    assertTrue(boolean0);
+}",""
+"@Override
+public boolean hasReferenceName() {
+    return className != null || ownerFunction != null;
+}","public void test2454() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = jSTypeRegistry0.createRecordType(hashMap0);
+    Node node0 = Node.newString(""Unknown class name"", 843, (-521));
+    ArrowType arrowType0 = new ArrowType(jSTypeRegistry0, node0, recordType0, true);
+    FunctionType functionType0 = new FunctionType(jSTypeRegistry0, ""Date"", (Node) null, arrowType0, recordType0, ""Date"", true, true);
+    InstanceObjectType instanceObjectType0 = new InstanceObjectType(jSTypeRegistry0, functionType0, false);
+    boolean boolean0 = instanceObjectType0.matchesNumberContext();
+    assertFalse(recordType0.hasReferenceName());
+}",""
+"@Override
+public boolean hasReferenceName() {
+    return getConstructor().hasReferenceName();
+}","public void test2455() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = jSTypeRegistry0.createRecordType(hashMap0);
+    Node node0 = Node.newString(""Unknown class name"", 843, (-521));
+    ArrowType arrowType0 = new ArrowType(jSTypeRegistry0, node0, recordType0, true);
+    FunctionType functionType0 = new FunctionType(jSTypeRegistry0, ""Date"", (Node) null, arrowType0, recordType0, ""Date"", true, true);
+    InstanceObjectType instanceObjectType0 = new InstanceObjectType(jSTypeRegistry0, functionType0, false);
+    boolean boolean0 = instanceObjectType0.matchesNumberContext();
+    assertTrue(instanceObjectType0.hasReferenceName());
+}",""
+"public final boolean matchesInt32Context() {
+    return matchesNumberContext();
+}","public void test2556() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    BooleanType booleanType0 = new BooleanType(jSTypeRegistry0);
+    InstanceObjectType instanceObjectType0 = (InstanceObjectType) booleanType0.autoboxesTo();
+    boolean boolean0 = instanceObjectType0.matchesInt32Context();
+    assertTrue(boolean0);
+}","/**
+ * This predicate is used to test whether a given type can appear in a
+ * 'Int32' context.  This context includes, for example, the operands of a
+ * bitwise or operator.  Since we do not currently support integer types,
+ * this is a synonym for {@code Number}.
+ */"
+"@Override
+public boolean hasReferenceName() {
+    return getConstructor().hasReferenceName();
+}","public void test2557() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    BooleanType booleanType0 = new BooleanType(jSTypeRegistry0);
+    InstanceObjectType instanceObjectType0 = (InstanceObjectType) booleanType0.autoboxesTo();
+    boolean boolean0 = instanceObjectType0.matchesInt32Context();
+    assertTrue(instanceObjectType0.hasReferenceName());
+}",""
+"@Override
+public boolean isNominalType() {
+    return hasReferenceName();
+}","public void test2658() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""String"");
+    InstanceObjectType instanceObjectType0 = new InstanceObjectType(jSTypeRegistry0, errorFunctionType0);
+    boolean boolean0 = instanceObjectType0.matchesNumberContext();
+    assertTrue(instanceObjectType0.isNominalType());
+}",""
+"@Override
+public boolean matchesNumberContext() {
+    return isNumberObjectType() || isDateType() || isBooleanObjectType() || isStringObjectType() || hasOverridenNativeProperty(""valueOf"");
+}","public void test2659() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""String"");
+    InstanceObjectType instanceObjectType0 = new InstanceObjectType(jSTypeRegistry0, errorFunctionType0);
+    boolean boolean0 = instanceObjectType0.matchesNumberContext();
+    assertTrue(boolean0);
+}",""
+"@Override
+public boolean hasReferenceName() {
+    return className != null || ownerFunction != null;
+}","public void test2760() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NumberType numberType0 = new NumberType(jSTypeRegistry0);
+    RecordTypeBuilder.RecordProperty recordTypeBuilder_RecordProperty0 = new RecordTypeBuilder.RecordProperty(numberType0, (Node) null);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    hashMap0.put(""valueOf"", recordTypeBuilder_RecordProperty0);
+    RecordType recordType0 = jSTypeRegistry0.createRecordType(hashMap0);
+    boolean boolean0 = recordType0.matchesNumberContext();
+    assertFalse(recordType0.hasReferenceName());
+}",""
+"@Override
+public boolean matchesNumberContext() {
+    return isNumberObjectType() || isDateType() || isBooleanObjectType() || isStringObjectType() || hasOverridenNativeProperty(""valueOf"");
+}","public void test2761() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NumberType numberType0 = new NumberType(jSTypeRegistry0);
+    RecordTypeBuilder.RecordProperty recordTypeBuilder_RecordProperty0 = new RecordTypeBuilder.RecordProperty(numberType0, (Node) null);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    hashMap0.put(""valueOf"", recordTypeBuilder_RecordProperty0);
+    RecordType recordType0 = jSTypeRegistry0.createRecordType(hashMap0);
+    boolean boolean0 = recordType0.matchesNumberContext();
+    assertTrue(boolean0);
+}",""
+"@Override
+public boolean hasReferenceName() {
+    return getConstructor().hasReferenceName();
+}","public void test2862() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, (String) null);
+    FunctionType functionType0 = errorFunctionType0.getSuperClassConstructor();
+    InstanceObjectType instanceObjectType0 = new InstanceObjectType(jSTypeRegistry0, functionType0, false);
+    boolean boolean0 = instanceObjectType0.matchesStringContext();
+    assertTrue(instanceObjectType0.hasReferenceName());
+}",""
+"@Override
+public boolean matchesStringContext() {
+    return isTheObjectType() || isStringObjectType() || isDateType() || isRegexpType() || isArrayType() || isNumberObjectType() || isBooleanObjectType() || hasOverridenNativeProperty(""toString"");
+}","public void test2863() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, (String) null);
+    FunctionType functionType0 = errorFunctionType0.getSuperClassConstructor();
+    InstanceObjectType instanceObjectType0 = new InstanceObjectType(jSTypeRegistry0, functionType0, false);
+    boolean boolean0 = instanceObjectType0.matchesStringContext();
+    assertTrue(boolean0);
+}",""
+"@Override
+public boolean matchesStringContext() {
+    return isTheObjectType() || isStringObjectType() || isDateType() || isRegexpType() || isArrayType() || isNumberObjectType() || isBooleanObjectType() || hasOverridenNativeProperty(""toString"");
+}","public void test2964() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""String"");
+    InstanceObjectType instanceObjectType0 = new InstanceObjectType(jSTypeRegistry0, errorFunctionType0);
+    boolean boolean0 = instanceObjectType0.matchesStringContext();
+    assertTrue(boolean0);
+}",""
+"@Override
+public boolean hasReferenceName() {
+    return getConstructor().hasReferenceName();
+}","public void test2965() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""String"");
+    InstanceObjectType instanceObjectType0 = new InstanceObjectType(jSTypeRegistry0, errorFunctionType0);
+    boolean boolean0 = instanceObjectType0.matchesStringContext();
+    assertTrue(instanceObjectType0.hasReferenceName());
+}",""
+"@Override
+public boolean matchesStringContext() {
+    return isTheObjectType() || isStringObjectType() || isDateType() || isRegexpType() || isArrayType() || isNumberObjectType() || isBooleanObjectType() || hasOverridenNativeProperty(""toString"");
+}","public void test3066() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.DATE_FUNCTION_TYPE;
+    FunctionType functionType0 = jSTypeRegistry0.getNativeFunctionType(jSTypeNative0);
+    InstanceObjectType instanceObjectType0 = new InstanceObjectType(jSTypeRegistry0, functionType0);
+    boolean boolean0 = instanceObjectType0.matchesStringContext();
+    assertTrue(boolean0);
+}",""
+"@Override
+public boolean hasReferenceName() {
+    return getConstructor().hasReferenceName();
+}","public void test3067() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.DATE_FUNCTION_TYPE;
+    FunctionType functionType0 = jSTypeRegistry0.getNativeFunctionType(jSTypeNative0);
+    InstanceObjectType instanceObjectType0 = new InstanceObjectType(jSTypeRegistry0, functionType0);
+    boolean boolean0 = instanceObjectType0.matchesStringContext();
+    assertTrue(instanceObjectType0.hasReferenceName());
+}",""
+"public boolean isNominalType() {
+    return false;
+}","public void test3168() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NumberType numberType0 = new NumberType(jSTypeRegistry0);
+    JSType jSType0 = numberType0.autoboxesTo();
+    boolean boolean0 = jSType0.matchesStringContext();
+    assertTrue(jSType0.isNominalType());
+}","/**
+ * Whether this type is a nominal type (a named instance object or
+ * a named enum).
+ */"
+"public boolean matchesStringContext() {
+    return false;
+}","public void test3169() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NumberType numberType0 = new NumberType(jSTypeRegistry0);
+    JSType jSType0 = numberType0.autoboxesTo();
+    boolean boolean0 = jSType0.matchesStringContext();
+    assertTrue(boolean0);
+}","/**
+ * This predicate is used to test whether a given type can appear in a
+ * {@code String} context, such as an operand of a string concat (+) operator.
+ *
+ * All types have at least the potential for converting to {@code String}.
+ * When we add externally defined types, such as a browser OM, we may choose
+ * to add types that do not automatically convert to {@code String}.
+ */"
+"@Override
+public boolean hasReferenceName() {
+    return getConstructor().hasReferenceName();
+}","public void test3270() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    BooleanType booleanType0 = new BooleanType(jSTypeRegistry0);
+    InstanceObjectType instanceObjectType0 = (InstanceObjectType) booleanType0.autoboxesTo();
+    boolean boolean0 = instanceObjectType0.matchesStringContext();
+    assertTrue(instanceObjectType0.hasReferenceName());
+}",""
+"@Override
+public boolean matchesStringContext() {
+    return isTheObjectType() || isStringObjectType() || isDateType() || isRegexpType() || isArrayType() || isNumberObjectType() || isBooleanObjectType() || hasOverridenNativeProperty(""toString"");
+}","public void test3271() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    BooleanType booleanType0 = new BooleanType(jSTypeRegistry0);
+    InstanceObjectType instanceObjectType0 = (InstanceObjectType) booleanType0.autoboxesTo();
+    boolean boolean0 = instanceObjectType0.matchesStringContext();
+    assertTrue(boolean0);
+}",""
+"@Override
+public boolean matchesStringContext() {
+    return isTheObjectType() || isStringObjectType() || isDateType() || isRegexpType() || isArrayType() || isNumberObjectType() || isBooleanObjectType() || hasOverridenNativeProperty(""toString"");
+}","public void test3372() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordTypeBuilder.RecordProperty recordTypeBuilder_RecordProperty0 = new RecordTypeBuilder.RecordProperty((JSType) null, (Node) null);
+    hashMap0.put(""toString"", recordTypeBuilder_RecordProperty0);
+    RecordType recordType0 = jSTypeRegistry0.createRecordType(hashMap0);
+    boolean boolean0 = recordType0.matchesStringContext();
+    assertTrue(boolean0);
+}",""
+"@Override
+public boolean hasReferenceName() {
+    return className != null || ownerFunction != null;
+}","public void test3373() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordTypeBuilder.RecordProperty recordTypeBuilder_RecordProperty0 = new RecordTypeBuilder.RecordProperty((JSType) null, (Node) null);
+    hashMap0.put(""toString"", recordTypeBuilder_RecordProperty0);
+    RecordType recordType0 = jSTypeRegistry0.createRecordType(hashMap0);
+    boolean boolean0 = recordType0.matchesStringContext();
+    assertFalse(recordType0.hasReferenceName());
+}",""
+"public final boolean isNominalConstructor() {
+    if (isConstructor() || isInterface()) {
+        FunctionType fn = toMaybeFunctionType();
+        if (fn == null) {
+            return false;
+        }
+        // Programmer-defined constructors will have a link
+        // back to the original function in the source tree.
+        // Structural constructors will not.
+        if (fn.getSource() != null) {
+            return true;
+        }
+        // Native constructors are always nominal.
+        return fn.isNativeObjectType();
+    }
+    return false;
+}","public void test3474() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""v-bwxk+4%tE`lkM32"");
+    boolean boolean0 = errorFunctionType0.matchesStringContext();
+    assertTrue(errorFunctionType0.isNominalConstructor());
+}","/**
+ * Whether this type is the original constructor of a nominal type.
+ * Does not include structural constructors.
+ */"
+"@Override
+public boolean matchesStringContext() {
+    return isTheObjectType() || isStringObjectType() || isDateType() || isRegexpType() || isArrayType() || isNumberObjectType() || isBooleanObjectType() || hasOverridenNativeProperty(""toString"");
+}","public void test3475() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""v-bwxk+4%tE`lkM32"");
+    boolean boolean0 = errorFunctionType0.matchesStringContext();
+    assertFalse(boolean0);
+}",""
+"@Override
+public boolean matchesStringContext() {
+    return isTheObjectType() || isStringObjectType() || isDateType() || isRegexpType() || isArrayType() || isNumberObjectType() || isBooleanObjectType() || hasOverridenNativeProperty(""toString"");
+}","public void test3576() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.GREATEST_FUNCTION_TYPE;
+    FunctionType functionType0 = jSTypeRegistry0.getNativeFunctionType(jSTypeNative0);
+    boolean boolean0 = functionType0.matchesStringContext();
+    assertFalse(boolean0);
+}",""
+"public final boolean isNominalConstructor() {
+    if (isConstructor() || isInterface()) {
+        FunctionType fn = toMaybeFunctionType();
+        if (fn == null) {
+            return false;
+        }
+        // Programmer-defined constructors will have a link
+        // back to the original function in the source tree.
+        // Structural constructors will not.
+        if (fn.getSource() != null) {
+            return true;
+        }
+        // Native constructors are always nominal.
+        return fn.isNativeObjectType();
+    }
+    return false;
+}","public void test3677() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""v-bwxk+4%tE`lkM32"");
+    JSType jSType0 = errorFunctionType0.unboxesTo();
+    assertTrue(errorFunctionType0.isNominalConstructor());
+}","/**
+ * Whether this type is the original constructor of a nominal type.
+ * Does not include structural constructors.
+ */"
+"@Override
+public JSType unboxesTo() {
+    if (isStringObjectType()) {
+        return getNativeType(JSTypeNative.STRING_TYPE);
+    } else if (isBooleanObjectType()) {
+        return getNativeType(JSTypeNative.BOOLEAN_TYPE);
+    } else if (isNumberObjectType()) {
+        return getNativeType(JSTypeNative.NUMBER_TYPE);
+    } else {
+        return super.unboxesTo();
+    }
+}","public void test3678() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""v-bwxk+4%tE`lkM32"");
+    JSType jSType0 = errorFunctionType0.unboxesTo();
+    assertNull(jSType0);
+}",""
+"@Override
+public boolean isNominalType() {
+    return hasReferenceName();
+}","public void test3779() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.STRING_OBJECT_FUNCTION_TYPE;
+    FunctionType functionType0 = jSTypeRegistry0.getNativeFunctionType(jSTypeNative0);
+    InstanceObjectType instanceObjectType0 = new InstanceObjectType(jSTypeRegistry0, functionType0);
+    JSType jSType0 = instanceObjectType0.unboxesTo();
+    assertTrue(instanceObjectType0.isNominalType());
+}",""
+"@Override
+public JSType unboxesTo() {
+    if (isStringObjectType()) {
+        return getNativeType(JSTypeNative.STRING_TYPE);
+    } else if (isBooleanObjectType()) {
+        return getNativeType(JSTypeNative.BOOLEAN_TYPE);
+    } else if (isNumberObjectType()) {
+        return getNativeType(JSTypeNative.NUMBER_TYPE);
+    } else {
+        return super.unboxesTo();
+    }
+}","public void test3780() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.STRING_OBJECT_FUNCTION_TYPE;
+    FunctionType functionType0 = jSTypeRegistry0.getNativeFunctionType(jSTypeNative0);
+    InstanceObjectType instanceObjectType0 = new InstanceObjectType(jSTypeRegistry0, functionType0);
+    JSType jSType0 = instanceObjectType0.unboxesTo();
+    assertNotNull(jSType0);
+}",""
+"@Override
+public JSType unboxesTo() {
+    if (isStringObjectType()) {
+        return getNativeType(JSTypeNative.STRING_TYPE);
+    } else if (isBooleanObjectType()) {
+        return getNativeType(JSTypeNative.BOOLEAN_TYPE);
+    } else if (isNumberObjectType()) {
+        return getNativeType(JSTypeNative.NUMBER_TYPE);
+    } else {
+        return super.unboxesTo();
+    }
+}","public void test3881() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    BooleanType booleanType0 = new BooleanType(jSTypeRegistry0);
+    InstanceObjectType instanceObjectType0 = (InstanceObjectType) booleanType0.autoboxesTo();
+    BooleanType booleanType1 = (BooleanType) instanceObjectType0.unboxesTo();
+    assertNotNull(booleanType1);
+}",""
+"@Override
+public boolean hasReferenceName() {
+    return getConstructor().hasReferenceName();
+}","public void test3882() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    BooleanType booleanType0 = new BooleanType(jSTypeRegistry0);
+    InstanceObjectType instanceObjectType0 = (InstanceObjectType) booleanType0.autoboxesTo();
+    BooleanType booleanType1 = (BooleanType) instanceObjectType0.unboxesTo();
+    assertTrue(instanceObjectType0.hasReferenceName());
+}",""
+"public boolean isNominalType() {
+    return false;
+}","public void test3983() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NumberType numberType0 = new NumberType(jSTypeRegistry0);
+    JSType jSType0 = numberType0.autoboxesTo();
+    JSType jSType1 = jSType0.unboxesTo();
+    assertTrue(jSType0.isNominalType());
+}","/**
+ * Whether this type is a nominal type (a named instance object or
+ * a named enum).
+ */"
+"public JSType unboxesTo() {
+    return null;
+}","public void test3984() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NumberType numberType0 = new NumberType(jSTypeRegistry0);
+    JSType jSType0 = numberType0.autoboxesTo();
+    JSType jSType1 = jSType0.unboxesTo();
+    assertNotNull(jSType1);
+}","/**
+ * Gets the type to which this type unboxes.
+ *
+ * @return the unboxed type or {@code null} if this type does not unbox.
+ */"
+"@Override
+public boolean hasCachedValues() {
+    return prototypeSlot != null || super.hasCachedValues();
+}","public void test4085() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, (String) null);
+    errorFunctionType0.toStringHelper(true);
+    assertTrue(errorFunctionType0.hasCachedValues());
+}",""
+"@Override
+String toStringHelper(boolean forAnnotations) {
+    if (hasReferenceName()) {
+        return getReferenceName();
+    } else if (prettyPrint) {
+        // Don't pretty print recursively.
+        prettyPrint = false;
+        // Use a tree set so that the properties are sorted.
+        Set<String> propertyNames = Sets.newTreeSet();
+        for (ObjectType current = this; current != null && !current.isNativeObjectType() && propertyNames.size() <= MAX_PRETTY_PRINTED_PROPERTIES; current = current.getImplicitPrototype()) {
+            propertyNames.addAll(current.getOwnPropertyNames());
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(""{"");
+        int i = 0;
+        for (String property : propertyNames) {
+            if (i > 0) {
+                sb.append("", "");
+            }
+            sb.append(property);
+            sb.append("": "");
+            sb.append(getPropertyType(property).toString());
+            ++i;
+            if (i == MAX_PRETTY_PRINTED_PROPERTIES) {
+                sb.append("", ..."");
+                break;
+            }
+        }
+        sb.append(""}"");
+        prettyPrint = true;
+        return sb.toString();
+    } else {
+        return ""{...}"";
+    }
+}","public void test4186() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    NumberType numberType0 = new NumberType(jSTypeRegistry0);
+    JSType jSType0 = numberType0.autoboxesTo();
+    RecordTypeBuilder.RecordProperty recordTypeBuilder_RecordProperty0 = new RecordTypeBuilder.RecordProperty(jSType0, (Node) null);
+    hashMap0.put(""a^vr(A?hM>"", recordTypeBuilder_RecordProperty0);
+    hashMap0.put(""Unknown class name"", recordTypeBuilder_RecordProperty0);
+    RecordType recordType0 = jSTypeRegistry0.createRecordType(hashMap0);
+    String string0 = recordType0.toStringHelper(false);
+    assertEquals(""{Unknown class name: Number, a^vr(A?hM>: Number}"", string0);
+}",""
+"@Override
+String toStringHelper(boolean forAnnotations) {
+    if (hasReferenceName()) {
+        return getReferenceName();
+    } else if (prettyPrint) {
+        // Don't pretty print recursively.
+        prettyPrint = false;
+        // Use a tree set so that the properties are sorted.
+        Set<String> propertyNames = Sets.newTreeSet();
+        for (ObjectType current = this; current != null && !current.isNativeObjectType() && propertyNames.size() <= MAX_PRETTY_PRINTED_PROPERTIES; current = current.getImplicitPrototype()) {
+            propertyNames.addAll(current.getOwnPropertyNames());
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(""{"");
+        int i = 0;
+        for (String property : propertyNames) {
+            if (i > 0) {
+                sb.append("", "");
+            }
+            sb.append(property);
+            sb.append("": "");
+            sb.append(getPropertyType(property).toString());
+            ++i;
+            if (i == MAX_PRETTY_PRINTED_PROPERTIES) {
+                sb.append("", ..."");
+                break;
+            }
+        }
+        sb.append(""}"");
+        prettyPrint = true;
+        return sb.toString();
+    } else {
+        return ""{...}"";
+    }
+}","public void test4288() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    NumberType numberType0 = new NumberType(jSTypeRegistry0);
+    JSType jSType0 = numberType0.autoboxesTo();
+    RecordTypeBuilder.RecordProperty recordTypeBuilder_RecordProperty0 = new RecordTypeBuilder.RecordProperty(jSType0, (Node) null);
+    hashMap0.put(""a^vr(A?hM>"", recordTypeBuilder_RecordProperty0);
+    hashMap0.put(""Unknown class name"", recordTypeBuilder_RecordProperty0);
+    hashMap0.put(""Named type with empty name component"", recordTypeBuilder_RecordProperty0);
+    RecordTypeBuilder.RecordProperty recordTypeBuilder_RecordProperty1 = new RecordTypeBuilder.RecordProperty(jSType0, (Node) null);
+    hashMap0.put(""Not declared as a constructor"", recordTypeBuilder_RecordProperty1);
+    RecordType recordType0 = jSTypeRegistry0.createRecordType(hashMap0);
+    String string0 = recordType0.toStringHelper(false);
+    assertEquals(""{Named type with empty name component: Number, Not declared as a constructor: Number, Unknown class name: Number, a^vr(A?hM>: Number, ...}"", string0);
+}",""
+"final void setImplicitPrototype(ObjectType implicitPrototype) {
+    checkState(!hasCachedValues());
+    this.implicitPrototypeFallback = implicitPrototype;
+}","public void test4390() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    FunctionType functionType0 = jSTypeRegistry0.createInterfaceType(""\""AhCaX0 >)0-"", (Node) null);
+    InstanceObjectType instanceObjectType0 = new InstanceObjectType(jSTypeRegistry0, functionType0);
+    instanceObjectType0.isNullable();
+    // Undeclared exception!
+    try {
+        instanceObjectType0.setImplicitPrototype(functionType0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * This should only be reset on the FunctionPrototypeType, only to fix an
+ * incorrectly established prototype chain due to the user having a mismatch
+ * in super class declaration, and only before properties on that type are
+ * processed.
+ */"
+"@Override
+public boolean hasReferenceName() {
+    return className != null || ownerFunction != null;
+}","public void test4491() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = new RecordType(jSTypeRegistry0, hashMap0);
+    JSType[] jSTypeArray0 = new JSType[1];
+    FunctionType functionType0 = jSTypeRegistry0.createConstructorType((JSType) recordType0, jSTypeArray0);
+    assertFalse(recordType0.hasReferenceName());
+}",""
+"@Override
+String toStringHelper(boolean forAnnotations) {
+    if (hasReferenceName()) {
+        return getReferenceName();
+    } else if (prettyPrint) {
+        // Don't pretty print recursively.
+        prettyPrint = false;
+        // Use a tree set so that the properties are sorted.
+        Set<String> propertyNames = Sets.newTreeSet();
+        for (ObjectType current = this; current != null && !current.isNativeObjectType() && propertyNames.size() <= MAX_PRETTY_PRINTED_PROPERTIES; current = current.getImplicitPrototype()) {
+            propertyNames.addAll(current.getOwnPropertyNames());
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(""{"");
+        int i = 0;
+        for (String property : propertyNames) {
+            if (i > 0) {
+                sb.append("", "");
+            }
+            sb.append(property);
+            sb.append("": "");
+            sb.append(getPropertyType(property).toString());
+            ++i;
+            if (i == MAX_PRETTY_PRINTED_PROPERTIES) {
+                sb.append("", ..."");
+                break;
+            }
+        }
+        sb.append(""}"");
+        prettyPrint = true;
+        return sb.toString();
+    } else {
+        return ""{...}"";
+    }
+}","public void test4492() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = new RecordType(jSTypeRegistry0, hashMap0);
+    JSType[] jSTypeArray0 = new JSType[1];
+    FunctionType functionType0 = jSTypeRegistry0.createConstructorType((JSType) recordType0, jSTypeArray0);
+    recordType0.setOwnerFunction(functionType0);
+    String string0 = recordType0.toStringHelper(false);
+    assertEquals(""null.prototype"", string0);
+}",""
+"@Override
+public boolean isSubtype(JSType that) {
+    if (JSType.isSubtypeHelper(this, that)) {
+        return true;
+    }
+    if (that.isFunctionType()) {
+        FunctionType other = that.toMaybeFunctionType();
+        if (other.isInterface()) {
+            // Any function can be assigned to an interface function.
+            return true;
+        }
+        if (this.isInterface()) {
+            // An interface function cannot be assigned to anything.
+            return false;
+        }
+        // If functionA is a subtype of functionB, then their ""this"" types
+        // should be contravariant. However, this causes problems because
+        // of the way we enforce overrides. Because function(this:SubFoo)
+        // is not a subtype of function(this:Foo), our override check treats
+        // this as an error. It also screws up out standard method
+        // for aliasing constructors. Let's punt on all this for now.
+        // TODO(nicksantos): fix this.
+        boolean treatThisTypesAsCovariant = // If either one of these is a ctor, skip 'this' checking.
+        this.isConstructor() || other.isConstructor() || // An interface 'this'-type is non-restrictive.
+        // In practical terms, if C implements I, and I has a method m,
+        // then any m doesn't necessarily have to C#m's 'this'
+        // type doesn't need to match I.
+        (other.typeOfThis.getConstructor() != null && other.typeOfThis.getConstructor().isInterface()) || // If one of the 'this' types is covariant of the other,
+        // then we'll treat them as covariant (see comment above).
+        other.typeOfThis.isSubtype(this.typeOfThis) || this.typeOfThis.isSubtype(other.typeOfThis);
+        return treatThisTypesAsCovariant && this.call.isSubtype(other.call);
+    }
+    return getNativeType(JSTypeNative.FUNCTION_PROTOTYPE).isSubtype(that);
+}","public void test4593() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, (String) null);
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithNewThisType(errorFunctionType0, errorFunctionType0);
+    boolean boolean0 = errorFunctionType0.isSubtype(functionType0);
+    assertTrue(boolean0);
+}","/**
+ * A function is a subtype of another if their call methods are related via
+ * subtyping and {@code this} is a subtype of {@code that} with regard to
+ * the prototype chain.
+ */"
+"public final boolean isNominalConstructor() {
+    if (isConstructor() || isInterface()) {
+        FunctionType fn = toMaybeFunctionType();
+        if (fn == null) {
+            return false;
+        }
+        // Programmer-defined constructors will have a link
+        // back to the original function in the source tree.
+        // Structural constructors will not.
+        if (fn.getSource() != null) {
+            return true;
+        }
+        // Native constructors are always nominal.
+        return fn.isNativeObjectType();
+    }
+    return false;
+}","public void test4594() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, (String) null);
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithNewThisType(errorFunctionType0, errorFunctionType0);
+    boolean boolean0 = errorFunctionType0.isSubtype(functionType0);
+    assertTrue(errorFunctionType0.isNominalConstructor());
+}","/**
+ * Whether this type is the original constructor of a nominal type.
+ * Does not include structural constructors.
+ */"
+"public final boolean isString() {
+    return this.isSubtype(getNativeType(JSTypeNative.STRING_VALUE_OR_OBJECT_TYPE));
+}","public void test4695() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, (String) null);
+    boolean boolean0 = errorFunctionType0.isString();
+    assertFalse(boolean0);
+}","/**
+ * Tests whether the type is a string (value or Object).
+ * @return {@code this &lt;: (String, string)}
+ */"
+"public final boolean isNominalConstructor() {
+    if (isConstructor() || isInterface()) {
+        FunctionType fn = toMaybeFunctionType();
+        if (fn == null) {
+            return false;
+        }
+        // Programmer-defined constructors will have a link
+        // back to the original function in the source tree.
+        // Structural constructors will not.
+        if (fn.getSource() != null) {
+            return true;
+        }
+        // Native constructors are always nominal.
+        return fn.isNativeObjectType();
+    }
+    return false;
+}","public void test4696() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, (String) null);
+    boolean boolean0 = errorFunctionType0.isString();
+    assertTrue(errorFunctionType0.isNominalConstructor());
+}","/**
+ * Whether this type is the original constructor of a nominal type.
+ * Does not include structural constructors.
+ */"
+"@Override
+public boolean isSubtype(JSType that) {
+    if (JSType.isSubtypeHelper(this, that)) {
+        return true;
+    }
+    if (that.isFunctionType()) {
+        FunctionType other = that.toMaybeFunctionType();
+        if (other.isInterface()) {
+            // Any function can be assigned to an interface function.
+            return true;
+        }
+        if (this.isInterface()) {
+            // An interface function cannot be assigned to anything.
+            return false;
+        }
+        // If functionA is a subtype of functionB, then their ""this"" types
+        // should be contravariant. However, this causes problems because
+        // of the way we enforce overrides. Because function(this:SubFoo)
+        // is not a subtype of function(this:Foo), our override check treats
+        // this as an error. It also screws up out standard method
+        // for aliasing constructors. Let's punt on all this for now.
+        // TODO(nicksantos): fix this.
+        boolean treatThisTypesAsCovariant = // If either one of these is a ctor, skip 'this' checking.
+        this.isConstructor() || other.isConstructor() || // An interface 'this'-type is non-restrictive.
+        // In practical terms, if C implements I, and I has a method m,
+        // then any m doesn't necessarily have to C#m's 'this'
+        // type doesn't need to match I.
+        (other.typeOfThis.getConstructor() != null && other.typeOfThis.getConstructor().isInterface()) || // If one of the 'this' types is covariant of the other,
+        // then we'll treat them as covariant (see comment above).
+        other.typeOfThis.isSubtype(this.typeOfThis) || this.typeOfThis.isSubtype(other.typeOfThis);
+        return treatThisTypesAsCovariant && this.call.isSubtype(other.call);
+    }
+    return getNativeType(JSTypeNative.FUNCTION_PROTOTYPE).isSubtype(that);
+}","public void test4797() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    FunctionType functionType0 = jSTypeRegistry0.createInterfaceType(""yi=!DH/M-[<#k=cS"", (Node) null);
+    InstanceObjectType instanceObjectType0 = new InstanceObjectType(jSTypeRegistry0, functionType0);
+    boolean boolean0 = functionType0.isSubtype(instanceObjectType0);
+    assertFalse(boolean0);
+}","/**
+ * A function is a subtype of another if their call methods are related via
+ * subtyping and {@code this} is a subtype of {@code that} with regard to
+ * the prototype chain.
+ */"
+"@Override
+public boolean isNominalType() {
+    return hasReferenceName();
+}","public void test4798() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    FunctionType functionType0 = jSTypeRegistry0.createInterfaceType(""yi=!DH/M-[<#k=cS"", (Node) null);
+    InstanceObjectType instanceObjectType0 = new InstanceObjectType(jSTypeRegistry0, functionType0);
+    boolean boolean0 = functionType0.isSubtype(instanceObjectType0);
+    assertTrue(instanceObjectType0.isNominalType());
+}",""
+"@Override
+public boolean isNativeObjectType() {
+    return nativeType;
+}","public void test4799() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    FunctionType functionType0 = jSTypeRegistry0.createInterfaceType(""yi=!DH/M-[<#k=cS"", (Node) null);
+    InstanceObjectType instanceObjectType0 = new InstanceObjectType(jSTypeRegistry0, functionType0);
+    boolean boolean0 = functionType0.isSubtype(instanceObjectType0);
+    assertFalse(instanceObjectType0.isNativeObjectType());
+}","/**
+ * Whether this is a built-in object.
+ */"
+"@Override
+public boolean hasReferenceName() {
+    return getConstructor().hasReferenceName();
+}","public void test48100() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    FunctionType functionType0 = FunctionType.forInterface(jSTypeRegistry0, ""{...}"", (Node) null);
+    UnknownType unknownType0 = new UnknownType(jSTypeRegistry0, true);
+    functionType0.setPrototypeBasedOn(unknownType0);
+    InstanceObjectType instanceObjectType0 = new InstanceObjectType(jSTypeRegistry0, functionType0);
+    boolean boolean0 = instanceObjectType0.isSubtype(functionType0);
+    assertTrue(instanceObjectType0.hasReferenceName());
+}",""
+"@Override
+public boolean isSubtype(JSType that) {
+    if (JSType.isSubtypeHelper(this, that)) {
+        return true;
+    }
+    // Union types
+    if (that.isUnionType()) {
+        // The static {@code JSType.isSubtype} check already decomposed
+        // union types, so we don't need to check those again.
+        return false;
+    }
+    // record types
+    if (that.isRecordType()) {
+        return RecordType.isSubtype(this, that.toMaybeRecordType());
+    }
+    // Interfaces
+    // Find all the interfaces implemented by this class and compare each one
+    // to the interface instance.
+    ObjectType thatObj = that.toObjectType();
+    ObjectType thatCtor = thatObj == null ? null : thatObj.getConstructor();
+    if (thatCtor != null && thatCtor.isInterface()) {
+        Iterable<ObjectType> thisInterfaces = getCtorImplementedInterfaces();
+        for (ObjectType thisInterface : thisInterfaces) {
+            if (thisInterface.isSubtype(that)) {
+                return true;
+            }
+        }
+    }
+    if (getConstructor() != null && getConstructor().isInterface()) {
+        for (ObjectType thisInterface : getCtorExtendedInterfaces()) {
+            if (thisInterface.isSubtype(that)) {
+                return true;
+            }
+        }
+    }
+    // other prototype based objects
+    if (isUnknownType() || implicitPrototypeChainIsUnknown()) {
+        // If unsure, say 'yes', to avoid spurious warnings.
+        // TODO(user): resolve the prototype chain completely in all cases,
+        // to avoid guessing.
+        return true;
+    }
+    return this.isImplicitPrototype(thatObj);
+}","public void test48101() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    FunctionType functionType0 = FunctionType.forInterface(jSTypeRegistry0, ""{...}"", (Node) null);
+    UnknownType unknownType0 = new UnknownType(jSTypeRegistry0, true);
+    functionType0.setPrototypeBasedOn(unknownType0);
+    InstanceObjectType instanceObjectType0 = new InstanceObjectType(jSTypeRegistry0, functionType0);
+    boolean boolean0 = instanceObjectType0.isSubtype(functionType0);
+    assertTrue(boolean0);
+}",""
+"@Override
+public boolean hasCachedValues() {
+    return super.hasCachedValues();
+}","public void test48102() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    FunctionType functionType0 = FunctionType.forInterface(jSTypeRegistry0, ""{...}"", (Node) null);
+    UnknownType unknownType0 = new UnknownType(jSTypeRegistry0, true);
+    functionType0.setPrototypeBasedOn(unknownType0);
+    InstanceObjectType instanceObjectType0 = new InstanceObjectType(jSTypeRegistry0, functionType0);
+    boolean boolean0 = instanceObjectType0.isSubtype(functionType0);
+    assertFalse(instanceObjectType0.hasCachedValues());
+}",""
+"@Override
+public boolean hasCachedValues() {
+    return prototypeSlot != null || super.hasCachedValues();
+}","public void test49103() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    FunctionType functionType0 = jSTypeRegistry0.createInterfaceType(""`Ec"", (Node) null);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""Unknown class name"");
+    errorFunctionType0.getSuperClassConstructor();
+    errorFunctionType0.setPrototypeBasedOn((ObjectType) functionType0, (Node) null);
+    assertTrue(functionType0.hasCachedValues());
+}",""
+"public final boolean isNominalConstructor() {
+    if (isConstructor() || isInterface()) {
+        FunctionType fn = toMaybeFunctionType();
+        if (fn == null) {
+            return false;
+        }
+        // Programmer-defined constructors will have a link
+        // back to the original function in the source tree.
+        // Structural constructors will not.
+        if (fn.getSource() != null) {
+            return true;
+        }
+        // Native constructors are always nominal.
+        return fn.isNativeObjectType();
+    }
+    return false;
+}","public void test49104() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    FunctionType functionType0 = jSTypeRegistry0.createInterfaceType(""`Ec"", (Node) null);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""Unknown class name"");
+    errorFunctionType0.getSuperClassConstructor();
+    errorFunctionType0.setPrototypeBasedOn((ObjectType) functionType0, (Node) null);
+    assertFalse(functionType0.isNominalConstructor());
+}","/**
+ * Whether this type is the original constructor of a nominal type.
+ * Does not include structural constructors.
+ */"
+"void setOwnerFunction(FunctionType type) {
+    Preconditions.checkState(ownerFunction == null || type == null);
+    ownerFunction = type;
+}","public void test50105() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JSType[] jSTypeArray0 = new JSType[0];
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionType((JSType) null, true, jSTypeArray0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = jSTypeRegistry0.createRecordType(hashMap0);
+    recordType0.setOwnerFunction(functionType0);
+    // Undeclared exception!
+    try {
+        recordType0.setOwnerFunction(functionType0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",""
+"public final boolean isNominalConstructor() {
+    if (isConstructor() || isInterface()) {
+        FunctionType fn = toMaybeFunctionType();
+        if (fn == null) {
+            return false;
+        }
+        // Programmer-defined constructors will have a link
+        // back to the original function in the source tree.
+        // Structural constructors will not.
+        if (fn.getSource() != null) {
+            return true;
+        }
+        // Native constructors are always nominal.
+        return fn.isNativeObjectType();
+    }
+    return false;
+}","public void test51106() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""String"");
+    errorFunctionType0.getCtorImplementedInterfaces();
+    assertTrue(errorFunctionType0.isNominalConstructor());
+}","/**
+ * Whether this type is the original constructor of a nominal type.
+ * Does not include structural constructors.
+ */"
+"@Override
+public boolean hasCachedValues() {
+    return prototypeSlot != null || super.hasCachedValues();
+}","public void test52107() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""j>u8@RdqZf:u[+K"");
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    errorFunctionType0.setPropertyJSDocInfo(""j>u8@RdqZf:u[+K"", jSDocInfo0);
+    assertTrue(errorFunctionType0.hasCachedValues());
+}",""
+"public final boolean isNominalConstructor() {
+    if (isConstructor() || isInterface()) {
+        FunctionType fn = toMaybeFunctionType();
+        if (fn == null) {
+            return false;
+        }
+        // Programmer-defined constructors will have a link
+        // back to the original function in the source tree.
+        // Structural constructors will not.
+        if (fn.getSource() != null) {
+            return true;
+        }
+        // Native constructors are always nominal.
+        return fn.isNativeObjectType();
+    }
+    return false;
+}","public void test52108() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""j>u8@RdqZf:u[+K"");
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    errorFunctionType0.setPropertyJSDocInfo(""j>u8@RdqZf:u[+K"", jSDocInfo0);
+    JSType.safeResolve(errorFunctionType0, simpleErrorReporter0, errorFunctionType0);
+    assertTrue(errorFunctionType0.isNominalConstructor());
+}","/**
+ * Whether this type is the original constructor of a nominal type.
+ * Does not include structural constructors.
+ */"

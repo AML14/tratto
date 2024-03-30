@@ -1,0 +1,221 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    MinMaxCategoryRenderer minMaxCategoryRenderer0 = new MinMaxCategoryRenderer();
+    Color color0 = Color.MAGENTA;
+    minMaxCategoryRenderer0.setGroupPaint(color0);
+    Color color1 = (Color) minMaxCategoryRenderer0.getGroupPaint();
+    assertFalse(minMaxCategoryRenderer0.isDrawLines());
+}",0,
+project,0,test012,"public void test012() throws Throwable {
+    MinMaxCategoryRenderer minMaxCategoryRenderer0 = new MinMaxCategoryRenderer();
+    CategoryAxis3D categoryAxis3D0 = new CategoryAxis3D(""iS~"");
+    CombinedDomainCategoryPlot combinedDomainCategoryPlot0 = new CombinedDomainCategoryPlot(categoryAxis3D0);
+    JFreeChart jFreeChart0 = new JFreeChart(combinedDomainCategoryPlot0);
+    ChartRenderingInfo chartRenderingInfo0 = new ChartRenderingInfo((EntityCollection) null);
+    BufferedImage bufferedImage0 = jFreeChart0.createBufferedImage(93, 10, 2201.36027707, 1.0, chartRenderingInfo0);
+    Graphics2D graphics2D0 = bufferedImage0.createGraphics();
+    PlotRenderingInfo plotRenderingInfo0 = new PlotRenderingInfo(chartRenderingInfo0);
+    CategoryItemRendererState categoryItemRendererState0 = minMaxCategoryRenderer0.createState(plotRenderingInfo0);
+    ChartPanel chartPanel0 = new ChartPanel(jFreeChart0, true);
+    Rectangle rectangle0 = chartPanel0.getVisibleRect();
+    PeriodAxis periodAxis0 = new PeriodAxis(""ZOOM_DOMAIN_BOTH"");
+    // Undeclared exception!
+    try {
+        minMaxCategoryRenderer0.drawItem(graphics2D0, categoryItemRendererState0, rectangle0, combinedDomainCategoryPlot0, categoryAxis3D0, periodAxis0, (CategoryDataset) null, 243, (-5042), 53);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.chart.renderer.category.MinMaxCategoryRenderer"", e);
+    }
+}",0,
+project,0,test023,"public void test023() throws Throwable {
+    MinMaxCategoryRenderer minMaxCategoryRenderer0 = new MinMaxCategoryRenderer();
+    BoxAndWhiskerRenderer boxAndWhiskerRenderer0 = new BoxAndWhiskerRenderer();
+    MockDate mockDate0 = (MockDate) DateAxis.DEFAULT_ANCHOR_DATE;
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond(mockDate0);
+    PeriodAxis periodAxis0 = new PeriodAxis("""", fixedMillisecond0, fixedMillisecond0);
+    CombinedRangeCategoryPlot combinedRangeCategoryPlot0 = new CombinedRangeCategoryPlot(periodAxis0);
+    ChartRenderingInfo chartRenderingInfo0 = new ChartRenderingInfo();
+    PlotRenderingInfo plotRenderingInfo0 = new PlotRenderingInfo(chartRenderingInfo0);
+    CategoryItemRendererState categoryItemRendererState0 = boxAndWhiskerRenderer0.initialise((Graphics2D) null, (Rectangle2D) null, combinedRangeCategoryPlot0, 10, plotRenderingInfo0);
+    CategoryAxis categoryAxis0 = new CategoryAxis();
+    DefaultKeyedValues2DDataset defaultKeyedValues2DDataset0 = new DefaultKeyedValues2DDataset();
+    // Undeclared exception!
+    try {
+        minMaxCategoryRenderer0.drawItem((Graphics2D) null, categoryItemRendererState0, (Rectangle2D) null, combinedRangeCategoryPlot0, categoryAxis0, periodAxis0, defaultKeyedValues2DDataset0, 1, 1, 1);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 1, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}",0,
+project,0,test034,"public void test034() throws Throwable {
+    MinMaxCategoryRenderer minMaxCategoryRenderer0 = new MinMaxCategoryRenderer();
+    CategoryAxis3D categoryAxis3D0 = new CategoryAxis3D(""iS~"");
+    CombinedDomainCategoryPlot combinedDomainCategoryPlot0 = new CombinedDomainCategoryPlot(categoryAxis3D0);
+    JFreeChart jFreeChart0 = new JFreeChart(combinedDomainCategoryPlot0);
+    ChartRenderingInfo chartRenderingInfo0 = new ChartRenderingInfo((EntityCollection) null);
+    BufferedImage bufferedImage0 = jFreeChart0.createBufferedImage(10, 10, (double) 1.0F, (double) 10, chartRenderingInfo0);
+    Graphics2D graphics2D0 = bufferedImage0.createGraphics();
+    PlotRenderingInfo plotRenderingInfo0 = new PlotRenderingInfo(chartRenderingInfo0);
+    CategoryItemRendererState categoryItemRendererState0 = minMaxCategoryRenderer0.createState(plotRenderingInfo0);
+    ChartPanel chartPanel0 = new ChartPanel(jFreeChart0, true);
+    Rectangle rectangle0 = chartPanel0.getVisibleRect();
+    Minute minute0 = new Minute();
+    Second second0 = new Second(600, minute0);
+    PeriodAxis periodAxis0 = new PeriodAxis(""l>V-^\""}P"", second0, minute0);
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset((Number[][]) null, (Number[][]) null);
+    // Undeclared exception!
+    try {
+        minMaxCategoryRenderer0.drawItem(graphics2D0, categoryItemRendererState0, rectangle0, combinedDomainCategoryPlot0, categoryAxis3D0, periodAxis0, defaultIntervalCategoryDataset0, 59, 680, 500);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.getValue(): series index out of range.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",0,
+project,0,test045,"public void test045() throws Throwable {
+    MinMaxCategoryRenderer minMaxCategoryRenderer0 = new MinMaxCategoryRenderer();
+    Rectangle2D.Double rectangle2D_Double0 = (Rectangle2D.Double) minMaxCategoryRenderer0.lookupSeriesShape(0);
+    CategoryAxis3D categoryAxis3D0 = new CategoryAxis3D();
+    CategoryPlot categoryPlot0 = new CategoryPlot();
+    DefaultKeyedValues2DDataset defaultKeyedValues2DDataset0 = new DefaultKeyedValues2DDataset();
+    // Undeclared exception!
+    try {
+        minMaxCategoryRenderer0.drawItem((Graphics2D) null, (CategoryItemRendererState) null, rectangle2D_Double0, categoryPlot0, categoryAxis3D0, (ValueAxis) null, defaultKeyedValues2DDataset0, (-2470), 93, 658);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test056,"public void test056() throws Throwable {
+    MinMaxCategoryRenderer minMaxCategoryRenderer0 = new MinMaxCategoryRenderer();
+    // Undeclared exception!
+    try {
+        minMaxCategoryRenderer0.setMinIcon((Icon) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'icon' argument.
+        //
+        verifyException(""org.jfree.chart.renderer.category.MinMaxCategoryRenderer"", e);
+    }
+}",0,
+project,0,test067,"public void test067() throws Throwable {
+    MinMaxCategoryRenderer minMaxCategoryRenderer0 = new MinMaxCategoryRenderer();
+    MockFile mockFile0 = new MockFile("""");
+    MockJFileChooser mockJFileChooser0 = new MockJFileChooser(mockFile0);
+    Icon icon0 = mockJFileChooser0.getIcon(mockFile0);
+    minMaxCategoryRenderer0.setMinIcon(icon0);
+    assertFalse(minMaxCategoryRenderer0.isDrawLines());
+}",0,assertTrue(minMaxCategoryRenderer0.isDrawLines())
+project,0,test078,"public void test078() throws Throwable {
+    MinMaxCategoryRenderer minMaxCategoryRenderer0 = new MinMaxCategoryRenderer();
+    // Undeclared exception!
+    try {
+        minMaxCategoryRenderer0.setMaxIcon((Icon) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'icon' argument.
+        //
+        verifyException(""org.jfree.chart.renderer.category.MinMaxCategoryRenderer"", e);
+    }
+}",0,
+project,0,test089,"public void test089() throws Throwable {
+    MinMaxCategoryRenderer minMaxCategoryRenderer0 = new MinMaxCategoryRenderer();
+    MockFile mockFile0 = new MockFile("""");
+    MockJFileChooser mockJFileChooser0 = new MockJFileChooser(mockFile0);
+    Icon icon0 = mockJFileChooser0.getIcon(mockFile0);
+    minMaxCategoryRenderer0.setMaxIcon(icon0);
+    assertFalse(minMaxCategoryRenderer0.isDrawLines());
+}",0,
+project,0,test0910,"public void test0910() throws Throwable {
+    MinMaxCategoryRenderer minMaxCategoryRenderer0 = new MinMaxCategoryRenderer();
+    // Undeclared exception!
+    try {
+        minMaxCategoryRenderer0.setObjectIcon((Icon) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'icon' argument.
+        //
+        verifyException(""org.jfree.chart.renderer.category.MinMaxCategoryRenderer"", e);
+    }
+}",0,
+project,0,test1011,"public void test1011() throws Throwable {
+    MinMaxCategoryRenderer minMaxCategoryRenderer0 = new MinMaxCategoryRenderer();
+    // Undeclared exception!
+    try {
+        minMaxCategoryRenderer0.setGroupStroke((Stroke) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'stroke' argument.
+        //
+        verifyException(""org.jfree.chart.renderer.category.MinMaxCategoryRenderer"", e);
+    }
+}",1,
+project,0,test1112,"public void test1112() throws Throwable {
+    MinMaxCategoryRenderer minMaxCategoryRenderer0 = new MinMaxCategoryRenderer();
+    BasicStroke basicStroke0 = (BasicStroke) CategoryPlot.DEFAULT_GRIDLINE_STROKE;
+    minMaxCategoryRenderer0.setGroupStroke(basicStroke0);
+    assertFalse(minMaxCategoryRenderer0.isDrawLines());
+}",0,
+project,0,test1213,"public void test1213() throws Throwable {
+    MinMaxCategoryRenderer minMaxCategoryRenderer0 = new MinMaxCategoryRenderer();
+    // Undeclared exception!
+    try {
+        minMaxCategoryRenderer0.setGroupPaint((Paint) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'paint' argument.
+        //
+        verifyException(""org.jfree.chart.renderer.category.MinMaxCategoryRenderer"", e);
+    }
+}",0,
+project,0,test1314,"public void test1314() throws Throwable {
+    MinMaxCategoryRenderer minMaxCategoryRenderer0 = new MinMaxCategoryRenderer();
+    assertFalse(minMaxCategoryRenderer0.isDrawLines());
+}",0,assertFalse(minMaxCategoryRenderer0.isDrawLines())
+project,0,test1315,"public void test1315() throws Throwable {
+    MinMaxCategoryRenderer minMaxCategoryRenderer0 = new MinMaxCategoryRenderer();
+    minMaxCategoryRenderer0.setDrawLines(true);
+    boolean boolean0 = minMaxCategoryRenderer0.isDrawLines();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test1416,"public void test1416() throws Throwable {
+    MinMaxCategoryRenderer minMaxCategoryRenderer0 = new MinMaxCategoryRenderer();
+    minMaxCategoryRenderer0.setDrawLines(false);
+    assertTrue(minMaxCategoryRenderer0.getBaseCreateEntities());
+}",0,assertFalse(minMaxCategoryRenderer0.getBaseCreateEntities())
+project,0,test1618,"public void test1618() throws Throwable {
+    MinMaxCategoryRenderer minMaxCategoryRenderer0 = new MinMaxCategoryRenderer();
+    minMaxCategoryRenderer0.getMaxIcon();
+    assertFalse(minMaxCategoryRenderer0.isDrawLines());
+}",0,assertTrue(minMaxCategoryRenderer0.isDrawLines())
+project,0,test1719,"public void test1719() throws Throwable {
+    MinMaxCategoryRenderer minMaxCategoryRenderer0 = new MinMaxCategoryRenderer();
+    boolean boolean0 = minMaxCategoryRenderer0.isDrawLines();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test1820,"public void test1820() throws Throwable {
+    MinMaxCategoryRenderer minMaxCategoryRenderer0 = new MinMaxCategoryRenderer();
+    Icon icon0 = minMaxCategoryRenderer0.getObjectIcon();
+    minMaxCategoryRenderer0.setObjectIcon(icon0);
+    assertFalse(minMaxCategoryRenderer0.isDrawLines());
+}",0,
+project,0,test1921,"public void test1921() throws Throwable {
+    MinMaxCategoryRenderer minMaxCategoryRenderer0 = new MinMaxCategoryRenderer();
+    minMaxCategoryRenderer0.getMinIcon();
+    assertFalse(minMaxCategoryRenderer0.isDrawLines());
+}",0,assertTrue(minMaxCategoryRenderer0.isDrawLines())

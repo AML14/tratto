@@ -1,0 +1,330 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test011,"public void test011() throws Throwable {
+    // Undeclared exception!
+    try {
+        DataUtil.readToByteBuffer((InputStream) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.helper.DataUtil"", e);
+    }
+}",0,
+project,0,test022,"public void test022() throws Throwable {
+    FileDescriptor fileDescriptor0 = new FileDescriptor();
+    MockFileInputStream mockFileInputStream0 = new MockFileInputStream(fileDescriptor0);
+    try {
+        DataUtil.readToByteBuffer(mockFileInputStream0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.mock.java.io.NativeMockedIO"", e);
+    }
+}",0,
+project,0,test033,"public void test033() throws Throwable {
+    byte[] byteArray0 = new byte[9];
+    ByteBuffer byteBuffer0 = ByteBuffer.wrap(byteArray0);
+    Parser parser0 = Parser.xmlParser();
+    // Undeclared exception!
+    try {
+        DataUtil.parseByteData(byteBuffer0, ""charset"", (String) null, parser0);
+        fail(""Expecting exception: UnsupportedCharsetException"");
+    } catch (UnsupportedCharsetException e) {
+        //
+        // charset
+        //
+        verifyException(""java.nio.charset.Charset"", e);
+    }
+}",0,
+project,0,test044,"public void test044() throws Throwable {
+    Charset charset0 = Charset.defaultCharset();
+    ByteBuffer byteBuffer0 = charset0.encode(""org.jsoup.helper.DataUtil"");
+    Parser parser0 = Parser.xmlParser();
+    // Undeclared exception!
+    try {
+        DataUtil.parseByteData(byteBuffer0, ""rQ]69>0KK$J{YU2%"", ""rQ]69>0KK$J{YU2%"", parser0);
+        fail(""Expecting exception: IllegalCharsetNameException"");
+    } catch (IllegalCharsetNameException e) {
+        //
+        // rQ]69>0KK$J{YU2%
+        //
+        verifyException(""java.nio.charset.Charset"", e);
+    }
+}",0,
+project,0,test055,"public void test055() throws Throwable {
+    // Undeclared exception!
+    try {
+        DataUtil.parseByteData((ByteBuffer) null, (String) null, (String) null, (Parser) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.nio.charset.CharsetDecoder"", e);
+    }
+}",0,
+project,0,test066,"public void test066() throws Throwable {
+    Charset charset0 = Charset.defaultCharset();
+    ByteBuffer byteBuffer0 = charset0.encode("""");
+    Parser parser0 = Parser.htmlParser();
+    // Undeclared exception!
+    try {
+        DataUtil.parseByteData(byteBuffer0, """", """", parser0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Must set charset arg to character set of file to parse. Set to null to attempt to detect from HTML
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test077,"public void test077() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) 12, 65279);
+    BufferedInputStream bufferedInputStream0 = new BufferedInputStream(byteArrayInputStream0, (byte) 12);
+    // Undeclared exception!
+    try {
+        DataUtil.load((InputStream) bufferedInputStream0, ""m"", ""m"", (Parser) null);
+        fail(""Expecting exception: UnsupportedCharsetException"");
+    } catch (UnsupportedCharsetException e) {
+        //
+        // m
+        //
+        verifyException(""java.nio.charset.Charset"", e);
+    }
+}",1,
+project,0,test088,"public void test088() throws Throwable {
+    MockFile mockFile0 = new MockFile("""", ""|2|"");
+    File file0 = MockFile.createTempFile(""|2|"", ""|2|"", (File) mockFile0);
+    MockFileInputStream mockFileInputStream0 = new MockFileInputStream(file0);
+    Parser parser0 = Parser.xmlParser();
+    // Undeclared exception!
+    try {
+        DataUtil.load((InputStream) mockFileInputStream0, ""|2|"", """", parser0);
+        fail(""Expecting exception: IllegalCharsetNameException"");
+    } catch (IllegalCharsetNameException e) {
+        //
+        // |2|
+        //
+        verifyException(""java.nio.charset.Charset"", e);
+    }
+}",0,
+project,0,test099,"public void test099() throws Throwable {
+    Parser parser0 = Parser.xmlParser();
+    // Undeclared exception!
+    try {
+        DataUtil.load((InputStream) null, """", """", parser0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.helper.DataUtil"", e);
+    }
+}",1,
+project,0,test1010,"public void test1010() throws Throwable {
+    PipedInputStream pipedInputStream0 = new PipedInputStream(3);
+    Parser parser0 = Parser.htmlParser();
+    try {
+        DataUtil.load((InputStream) pipedInputStream0, (String) null, (String) null, parser0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Pipe not connected
+        //
+        verifyException(""java.io.PipedInputStream"", e);
+    }
+}",0,
+project,0,test1111,"public void test1111() throws Throwable {
+    byte[] byteArray0 = new byte[3];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) (-1), 0);
+    // Undeclared exception!
+    try {
+        DataUtil.load((InputStream) byteArrayInputStream0, ""http-equiv"", ""bPee$@q"");
+        fail(""Expecting exception: UnsupportedCharsetException"");
+    } catch (UnsupportedCharsetException e) {
+        //
+        // http-equiv
+        //
+        verifyException(""java.nio.charset.Charset"", e);
+    }
+}",0,
+project,0,test1212,"public void test1212() throws Throwable {
+    byte[] byteArray0 = new byte[7];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, 2309, (byte) (-40));
+    // Undeclared exception!
+    try {
+        DataUtil.load((InputStream) byteArrayInputStream0, ""J\""k!#N $O!CJ]g)K"", ""J\""k!#N $O!CJ]g)K"");
+        fail(""Expecting exception: IllegalCharsetNameException"");
+    } catch (IllegalCharsetNameException e) {
+        //
+        // J\""k!#N $O!CJ]g)K
+        //
+        verifyException(""java.nio.charset.Charset"", e);
+    }
+}",0,
+project,0,test1313,"public void test1313() throws Throwable {
+    byte[] byteArray0 = new byte[5];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) 0, 375);
+    // Undeclared exception!
+    try {
+        DataUtil.load((InputStream) byteArrayInputStream0, """", ""charset"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Must set charset arg to character set of file to parse. Set to null to attempt to detect from HTML
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test1414,"public void test1414() throws Throwable {
+    byte[] byteArray0 = new byte[6];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) (-73), 1);
+    // Undeclared exception!
+    try {
+        DataUtil.load((InputStream) byteArrayInputStream0, ""J"", ""J"");
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.io.ByteArrayInputStream"", e);
+    }
+}",0,
+project,0,test1515,"public void test1515() throws Throwable {
+    FileDescriptor fileDescriptor0 = new FileDescriptor();
+    MockFileInputStream mockFileInputStream0 = new MockFileInputStream(fileDescriptor0);
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(mockFileInputStream0, mockFileInputStream0);
+    try {
+        DataUtil.load((InputStream) sequenceInputStream0, ""1lk7KQ@~ "", ""Must set charset arg to character set of file to parse. Set to null to attempt to detect from HTML"");
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.mock.java.io.NativeMockedIO"", e);
+    }
+}",0,
+project,0,test1616,"public void test1616() throws Throwable {
+    File file0 = MockFile.createTempFile(""}I^BQbZ>9E]lM"", ""1h{x"");
+    // Undeclared exception!
+    try {
+        DataUtil.load(file0, ""1h{x"", ""}I^BQbZ>9E]lM"");
+        fail(""Expecting exception: IllegalCharsetNameException"");
+    } catch (IllegalCharsetNameException e) {
+        //
+        // 1h{x
+        //
+        verifyException(""java.nio.charset.Charset"", e);
+    }
+}",0,
+project,0,test1717,"public void test1717() throws Throwable {
+    MockFile mockFile0 = new MockFile(""%i#IWVpcB''hy7"");
+    File file0 = MockFile.createTempFile(""%i#IWVpcB''hy7"", ""%i#IWVpcB''hy7"", (File) mockFile0);
+    // Undeclared exception!
+    try {
+        DataUtil.load(file0, """", ""%i#IWVpcB''hy7"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Must set charset arg to character set of file to parse. Set to null to attempt to detect from HTML
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",1,
+project,0,test1818,"public void test1818() throws Throwable {
+    MockFile mockFile0 = new MockFile(""org.jsoup.nodes.Attribute"");
+    try {
+        DataUtil.load((File) mockFile0, ""vB*2=go T"", ""[P#W6*\""H"");
+        fail(""Expecting exception: FileNotFoundException"");
+    } catch (FileNotFoundException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.mock.java.io.MockFileInputStream"", e);
+    }
+}",0,
+project,0,test1919,"public void test1919() throws Throwable {
+    String string0 = DataUtil.getCharsetFromContentType((String) null);
+    assertNull(string0);
+}",0,
+project,0,test2020,"public void test2020() throws Throwable {
+    String string0 = DataUtil.getCharsetFromContentType("""");
+    assertNull(string0);
+}",0,
+project,0,test2121,"public void test2121() throws Throwable {
+    byte[] byteArray0 = new byte[5];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    DataInputStream dataInputStream0 = new DataInputStream(byteArrayInputStream0);
+    PushbackInputStream pushbackInputStream0 = new PushbackInputStream(dataInputStream0);
+    Document document0 = DataUtil.load((InputStream) pushbackInputStream0, (String) null, """");
+    assertEquals("""", document0.baseUri());
+}",0,assertNotNull(document0.baseUri())
+project,0,test2222,"public void test2222() throws Throwable {
+    ByteBuffer byteBuffer0 = ByteBuffer.allocateDirect(20);
+    Parser parser0 = Parser.htmlParser();
+    Document document0 = DataUtil.parseByteData(byteBuffer0, ""UTF-8"", ""-5s'(s"", parser0);
+    assertFalse(document0.isBlock());
+}",0,assertFalse(document0.isBlock())
+project,0,test2323,"public void test2323() throws Throwable {
+    MockFile mockFile0 = new MockFile(""eMOm7:77|eeBPQG1J4"");
+    File file0 = MockFile.createTempFile(""eMOm7:77|eeBPQG1J4"", ""B|J).FQ"", (File) mockFile0);
+    // Undeclared exception!
+    try {
+        DataUtil.load(file0, ""f"", ""AyhlOB%Rm_a"");
+        fail(""Expecting exception: UnsupportedCharsetException"");
+    } catch (UnsupportedCharsetException e) {
+        //
+        // f
+        //
+        verifyException(""java.nio.charset.Charset"", e);
+    }
+}",1,
+project,0,test2424,"public void test2424() throws Throwable {
+    // Undeclared exception!
+    try {
+        DataUtil.load((File) null, """", """");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.mock.java.io.MockFileInputStream"", e);
+    }
+}",1,
+project,0,test2525,"public void test2525() throws Throwable {
+    File file0 = MockFile.createTempFile(""4(0VrUXQ*zG_q"", (String) null);
+    Document document0 = DataUtil.load(file0, (String) null, ""4(0VrUXQ*zG_q"");
+    assertEquals(""4(0VrUXQ*zG_q"", document0.baseUri());
+}",0,assertNotNull(document0.baseUri())
+project,0,test2626,"public void test2626() throws Throwable {
+    Enumeration<InputStream> enumeration0 = (Enumeration<InputStream>) mock(Enumeration.class, new ViolatedAssumptionAnswer());
+    doReturn(false).when(enumeration0).hasMoreElements();
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(enumeration0);
+    Parser parser0 = Parser.htmlParser();
+    // Undeclared exception!
+    try {
+        DataUtil.load((InputStream) sequenceInputStream0, """", """", parser0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Must set charset arg to character set of file to parse. Set to null to attempt to detect from HTML
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test2727,"public void test2727() throws Throwable {
+    // Undeclared exception!
+    try {
+        DataUtil.load((InputStream) null, ""|"", ""|"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.helper.DataUtil"", e);
+    }
+}",0,

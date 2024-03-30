@@ -1,0 +1,182 @@
+focal_method,test_prefix,docstring
+"public boolean isSerializable() {
+    return extraInterfaces != null && java.util.Arrays.asList(extraInterfaces).contains(java.io.Serializable.class);
+}","public void test000() throws Throwable {
+    MockSettingsImpl mockSettingsImpl0 = new MockSettingsImpl();
+    MockSettingsImpl mockSettingsImpl1 = (MockSettingsImpl) mockSettingsImpl0.serializable();
+    boolean boolean0 = mockSettingsImpl1.isSerializable();
+    assertTrue(boolean0);
+}",""
+"public MockSettings name(String name) {
+    this.name = name;
+    return this;
+}","public void test011() throws Throwable {
+    MockSettingsImpl mockSettingsImpl0 = new MockSettingsImpl();
+    MockSettings mockSettings0 = mockSettingsImpl0.name("""");
+    assertSame(mockSettings0, mockSettingsImpl0);
+}",""
+"public Class<?>[] getExtraInterfaces() {
+    return extraInterfaces;
+}","public void test022() throws Throwable {
+    MockSettingsImpl mockSettingsImpl0 = new MockSettingsImpl();
+    Class<?>[] classArray0 = mockSettingsImpl0.getExtraInterfaces();
+    assertNull(classArray0);
+}",""
+"public MockSettings spiedInstance(Object spiedInstance) {
+    this.spiedInstance = spiedInstance;
+    return this;
+}","public void test033() throws Throwable {
+    MockSettingsImpl mockSettingsImpl0 = new MockSettingsImpl();
+    MockSettings mockSettings0 = mockSettingsImpl0.spiedInstance((Object) null);
+    assertSame(mockSettingsImpl0, mockSettings0);
+}",""
+"@SuppressWarnings(""unchecked"")
+public MockSettings defaultAnswer(Answer defaultAnswer) {
+    this.defaultAnswer = defaultAnswer;
+    return this;
+}","public void test044() throws Throwable {
+    MockSettingsImpl mockSettingsImpl0 = new MockSettingsImpl();
+    ClonesArguments clonesArguments0 = new ClonesArguments();
+    MockSettings mockSettings0 = mockSettingsImpl0.defaultAnswer(clonesArguments0);
+    assertSame(mockSettings0, mockSettingsImpl0);
+}",""
+"public void initiateMockName(Class classToMock) {
+    mockName = new MockName(name, classToMock);
+}","public void test055() throws Throwable {
+    MockSettingsImpl mockSettingsImpl0 = new MockSettingsImpl();
+    Class<Integer> class0 = Integer.class;
+    mockSettingsImpl0.initiateMockName(class0);
+}",""
+"public Answer<Object> getDefaultAnswer() {
+    return defaultAnswer;
+}","public void test066() throws Throwable {
+    MockSettingsImpl mockSettingsImpl0 = new MockSettingsImpl();
+    Answer<Object> answer0 = mockSettingsImpl0.getDefaultAnswer();
+    assertNull(answer0);
+}",""
+"public Object getSpiedInstance() {
+    return spiedInstance;
+}","public void test077() throws Throwable {
+    MockSettingsImpl mockSettingsImpl0 = new MockSettingsImpl();
+    Object object0 = mockSettingsImpl0.getSpiedInstance();
+    assertNull(object0);
+}",""
+"public MockName getMockName() {
+    return mockName;
+}","public void test088() throws Throwable {
+    MockSettingsImpl mockSettingsImpl0 = new MockSettingsImpl();
+    MockName mockName0 = mockSettingsImpl0.getMockName();
+    assertNull(mockName0);
+}",""
+"public MockSettings extraInterfaces(Class<?>... extraInterfaces) {
+    if (extraInterfaces == null || extraInterfaces.length == 0) {
+        new Reporter().extraInterfacesRequiresAtLeastOneInterface();
+    }
+    for (Class<?> i : extraInterfaces) {
+        if (i == null) {
+            new Reporter().extraInterfacesDoesNotAcceptNullParameters();
+        } else if (!i.isInterface()) {
+            new Reporter().extraInterfacesAcceptsOnlyInterfaces(i);
+        }
+    }
+    this.extraInterfaces = extraInterfaces;
+    return this;
+}","public void test099() throws Throwable {
+    MockSettingsImpl mockSettingsImpl0 = new MockSettingsImpl();
+    // Undeclared exception!
+    try {
+        mockSettingsImpl0.extraInterfaces((Class<?>[]) null);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",""
+"public MockSettings extraInterfaces(Class<?>... extraInterfaces) {
+    if (extraInterfaces == null || extraInterfaces.length == 0) {
+        new Reporter().extraInterfacesRequiresAtLeastOneInterface();
+    }
+    for (Class<?> i : extraInterfaces) {
+        if (i == null) {
+            new Reporter().extraInterfacesDoesNotAcceptNullParameters();
+        } else if (!i.isInterface()) {
+            new Reporter().extraInterfacesAcceptsOnlyInterfaces(i);
+        }
+    }
+    this.extraInterfaces = extraInterfaces;
+    return this;
+}","public void test1010() throws Throwable {
+    MockSettingsImpl mockSettingsImpl0 = new MockSettingsImpl();
+    Class<Object>[] classArray0 = (Class<Object>[]) Array.newInstance(Class.class, 0);
+    // Undeclared exception!
+    try {
+        mockSettingsImpl0.extraInterfaces(classArray0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",""
+"public MockSettings extraInterfaces(Class<?>... extraInterfaces) {
+    if (extraInterfaces == null || extraInterfaces.length == 0) {
+        new Reporter().extraInterfacesRequiresAtLeastOneInterface();
+    }
+    for (Class<?> i : extraInterfaces) {
+        if (i == null) {
+            new Reporter().extraInterfacesDoesNotAcceptNullParameters();
+        } else if (!i.isInterface()) {
+            new Reporter().extraInterfacesAcceptsOnlyInterfaces(i);
+        }
+    }
+    this.extraInterfaces = extraInterfaces;
+    return this;
+}","public void test1111() throws Throwable {
+    MockSettingsImpl mockSettingsImpl0 = new MockSettingsImpl();
+    Class<Integer>[] classArray0 = (Class<Integer>[]) Array.newInstance(Class.class, 1);
+    // Undeclared exception!
+    try {
+        mockSettingsImpl0.extraInterfaces(classArray0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",""
+"public MockSettings extraInterfaces(Class<?>... extraInterfaces) {
+    if (extraInterfaces == null || extraInterfaces.length == 0) {
+        new Reporter().extraInterfacesRequiresAtLeastOneInterface();
+    }
+    for (Class<?> i : extraInterfaces) {
+        if (i == null) {
+            new Reporter().extraInterfacesDoesNotAcceptNullParameters();
+        } else if (!i.isInterface()) {
+            new Reporter().extraInterfacesAcceptsOnlyInterfaces(i);
+        }
+    }
+    this.extraInterfaces = extraInterfaces;
+    return this;
+}","public void test1212() throws Throwable {
+    MockSettingsImpl mockSettingsImpl0 = new MockSettingsImpl();
+    Class<String>[] classArray0 = (Class<String>[]) Array.newInstance(Class.class, 1);
+    Class<String> class0 = String.class;
+    classArray0[0] = class0;
+    // Undeclared exception!
+    try {
+        mockSettingsImpl0.extraInterfaces(classArray0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",""
+"public boolean isSerializable() {
+    return extraInterfaces != null && java.util.Arrays.asList(extraInterfaces).contains(java.io.Serializable.class);
+}","public void test1313() throws Throwable {
+    MockSettingsImpl mockSettingsImpl0 = new MockSettingsImpl();
+    boolean boolean0 = mockSettingsImpl0.isSerializable();
+    assertFalse(boolean0);
+}",""
+"public boolean isSerializable() {
+    return extraInterfaces != null && java.util.Arrays.asList(extraInterfaces).contains(java.io.Serializable.class);
+}","public void test1414() throws Throwable {
+    MockSettingsImpl mockSettingsImpl0 = new MockSettingsImpl();
+    Class<Annotation>[] classArray0 = (Class<Annotation>[]) Array.newInstance(Class.class, 2);
+    Class<Annotation> class0 = Annotation.class;
+    classArray0[0] = class0;
+    classArray0[1] = classArray0[0];
+    mockSettingsImpl0.extraInterfaces(classArray0);
+    boolean boolean0 = mockSettingsImpl0.isSerializable();
+    assertFalse(boolean0);
+}",""

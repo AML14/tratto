@@ -1,0 +1,1300 @@
+focal_method,test_prefix,docstring
+"public static GJChronology getInstance(DateTimeZone zone, long gregorianCutover, int minDaysInFirstWeek) {
+    Instant cutoverInstant;
+    if (gregorianCutover == DEFAULT_CUTOVER.getMillis()) {
+        cutoverInstant = null;
+    } else {
+        cutoverInstant = new Instant(gregorianCutover);
+    }
+    return getInstance(zone, cutoverInstant, minDaysInFirstWeek);
+}","public void test000() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    // Undeclared exception!
+    try {
+        GJChronology.getInstance(dateTimeZone0, (-62064835199996L), (-809));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid min days in first week: -809
+        //
+        verifyException(""org.joda.time.chrono.JulianChronology"", e);
+    }
+}","/**
+ * Factory method returns instances of the GJ cutover chronology. Any
+ * cutover date may be specified.
+ *
+ * @param zone  the time zone to use, null is default
+ * @param gregorianCutover  the cutover to use
+ * @param minDaysInFirstWeek  minimum number of days in first week of the year; default is 4
+ */"
+"protected void assemble(Fields fields) {
+    Object[] params = (Object[]) getParam();
+    JulianChronology julian = (JulianChronology) params[0];
+    GregorianChronology gregorian = (GregorianChronology) params[1];
+    Instant cutoverInstant = (Instant) params[2];
+    iCutoverMillis = cutoverInstant.getMillis();
+    iJulianChronology = julian;
+    iGregorianChronology = gregorian;
+    iCutoverInstant = cutoverInstant;
+    if (getBase() != null) {
+        return;
+    }
+    if (julian.getMinimumDaysInFirstWeek() != gregorian.getMinimumDaysInFirstWeek()) {
+        throw new IllegalArgumentException();
+    }
+    // Compute difference between the chronologies at the cutover instant
+    iGapDuration = iCutoverMillis - julianToGregorianByYear(iCutoverMillis);
+    // Begin field definitions.
+    // First just copy all the Gregorian fields and then override those
+    // that need special attention.
+    fields.copyFieldsFrom(gregorian);
+    // Assuming cutover is at midnight, all time of day fields can be
+    // gregorian since they are unaffected by cutover.
+    // Verify assumption.
+    if (gregorian.millisOfDay().get(iCutoverMillis) == 0) {
+        // Cutover is sometime in the day, so cutover fields are required
+        // for time of day.
+        fields.millisOfSecond = new CutoverField(julian.millisOfSecond(), fields.millisOfSecond, iCutoverMillis);
+        fields.millisOfDay = new CutoverField(julian.millisOfDay(), fields.millisOfDay, iCutoverMillis);
+        fields.secondOfMinute = new CutoverField(julian.secondOfMinute(), fields.secondOfMinute, iCutoverMillis);
+        fields.secondOfDay = new CutoverField(julian.secondOfDay(), fields.secondOfDay, iCutoverMillis);
+        fields.minuteOfHour = new CutoverField(julian.minuteOfHour(), fields.minuteOfHour, iCutoverMillis);
+        fields.minuteOfDay = new CutoverField(julian.minuteOfDay(), fields.minuteOfDay, iCutoverMillis);
+        fields.hourOfDay = new CutoverField(julian.hourOfDay(), fields.hourOfDay, iCutoverMillis);
+        fields.hourOfHalfday = new CutoverField(julian.hourOfHalfday(), fields.hourOfHalfday, iCutoverMillis);
+        fields.clockhourOfDay = new CutoverField(julian.clockhourOfDay(), fields.clockhourOfDay, iCutoverMillis);
+        fields.clockhourOfHalfday = new CutoverField(julian.clockhourOfHalfday(), fields.clockhourOfHalfday, iCutoverMillis);
+        fields.halfdayOfDay = new CutoverField(julian.halfdayOfDay(), fields.halfdayOfDay, iCutoverMillis);
+    }
+    // These fields just require basic cutover support.
+    {
+        fields.era = new CutoverField(julian.era(), fields.era, iCutoverMillis);
+    }
+    // DayOfYear and weekOfWeekyear require special handling since cutover
+    // year has fewer days and weeks. Extend the cutover to the start of
+    // the next year or weekyear. This keeps the sequence unbroken during
+    // the cutover year.
+    {
+        long cutover = gregorian.year().roundCeiling(iCutoverMillis);
+        fields.dayOfYear = new CutoverField(julian.dayOfYear(), fields.dayOfYear, cutover);
+    }
+    {
+        long cutover = gregorian.weekyear().roundCeiling(iCutoverMillis);
+        fields.weekOfWeekyear = new CutoverField(julian.weekOfWeekyear(), fields.weekOfWeekyear, cutover, true);
+    }
+    // These fields are special because they have imprecise durations. The
+    // family of addition methods need special attention. Override affected
+    // duration fields as well.
+    {
+        fields.year = new ImpreciseCutoverField(julian.year(), fields.year, iCutoverMillis);
+        fields.years = fields.year.getDurationField();
+        fields.yearOfEra = new ImpreciseCutoverField(julian.yearOfEra(), fields.yearOfEra, fields.years, iCutoverMillis);
+        fields.yearOfCentury = new ImpreciseCutoverField(julian.yearOfCentury(), fields.yearOfCentury, fields.years, iCutoverMillis);
+        fields.centuryOfEra = new ImpreciseCutoverField(julian.centuryOfEra(), fields.centuryOfEra, iCutoverMillis);
+        fields.centuries = fields.centuryOfEra.getDurationField();
+        fields.monthOfYear = new ImpreciseCutoverField(julian.monthOfYear(), fields.monthOfYear, iCutoverMillis);
+        fields.months = fields.monthOfYear.getDurationField();
+        fields.weekyear = new ImpreciseCutoverField(julian.weekyear(), fields.weekyear, null, iCutoverMillis, true);
+        fields.weekyearOfCentury = new ImpreciseCutoverField(julian.weekyearOfCentury(), fields.weekyearOfCentury, fields.weekyears, iCutoverMillis);
+        fields.weekyears = fields.weekyear.getDurationField();
+    }
+    // These fields require basic cutover support, except they must link to
+    // imprecise durations.
+    {
+        CutoverField cf = new CutoverField(julian.dayOfMonth(), fields.dayOfMonth, iCutoverMillis);
+        cf.iRangeDurationField = fields.months;
+        fields.dayOfMonth = cf;
+    }
+}","public void test011() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstance();
+    AssembledChronology.Fields assembledChronology_Fields0 = new AssembledChronology.Fields();
+    gJChronology0.assemble(assembledChronology_Fields0);
+}",""
+"public static GJChronology getInstance(DateTimeZone zone, long gregorianCutover, int minDaysInFirstWeek) {
+    Instant cutoverInstant;
+    if (gregorianCutover == DEFAULT_CUTOVER.getMillis()) {
+        cutoverInstant = null;
+    } else {
+        cutoverInstant = new Instant(gregorianCutover);
+    }
+    return getInstance(zone, cutoverInstant, minDaysInFirstWeek);
+}","public void test022() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHoursMinutes(0, 0);
+    // Undeclared exception!
+    try {
+        GJChronology.getInstance(dateTimeZone0, 3327L, 0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid min days in first week: 0
+        //
+        verifyException(""org.joda.time.chrono.JulianChronology"", e);
+    }
+}","/**
+ * Factory method returns instances of the GJ cutover chronology. Any
+ * cutover date may be specified.
+ *
+ * @param zone  the time zone to use, null is default
+ * @param gregorianCutover  the cutover to use
+ * @param minDaysInFirstWeek  minimum number of days in first week of the year; default is 4
+ */"
+"long julianToGregorianByYear(long instant) {
+    return convertByYear(instant, iJulianChronology, iGregorianChronology);
+}","public void test033() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstanceUTC();
+    gJChronology0.julianToGregorianByYear(1209600004L);
+}",""
+"long julianToGregorianByWeekyear(long instant) {
+    return convertByWeekyear(instant, iJulianChronology, iGregorianChronology);
+}","public void test044() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstanceUTC();
+    gJChronology0.julianToGregorianByWeekyear(1209600000L);
+}",""
+"long julianToGregorianByWeekyear(long instant) {
+    return convertByWeekyear(instant, iJulianChronology, iGregorianChronology);
+}","public void test055() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstanceUTC();
+    gJChronology0.julianToGregorianByWeekyear(31536000000L);
+}",""
+"long gregorianToJulianByYear(long instant) {
+    return convertByYear(instant, iGregorianChronology, iJulianChronology);
+}","public void test066() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance();
+    DateTimeZone dateTimeZone0 = buddhistChronology0.getZone();
+    GJChronology gJChronology0 = GJChronology.getInstance(dateTimeZone0);
+    gJChronology0.gregorianToJulianByYear((-62072525218914L));
+}",""
+"long gregorianToJulianByWeekyear(long instant) {
+    return convertByWeekyear(instant, iGregorianChronology, iJulianChronology);
+}","public void test077() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance();
+    DateTimeZone dateTimeZone0 = buddhistChronology0.getZone();
+    GJChronology gJChronology0 = GJChronology.getInstance(dateTimeZone0);
+    gJChronology0.gregorianToJulianByWeekyear((-62072525218914L));
+}",""
+"public Instant getGregorianCutover() {
+    return iCutoverInstant;
+}","public void test088() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    GJChronology gJChronology0 = GJChronology.getInstance(dateTimeZone0, (long) 4, 4);
+    gJChronology0.getGregorianCutover();
+}","/**
+ * Gets the cutover instant between Gregorian and Julian chronologies.
+ * @return the cutover instant
+ */"
+"long gregorianToJulianByYear(long instant) {
+    return convertByYear(instant, iGregorianChronology, iJulianChronology);
+}","public void test099() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstance();
+    // Undeclared exception!
+    try {
+        gJChronology0.gregorianToJulianByYear(9223372036854775807L);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 292278994 for year must be in the range [-292269054,292272992]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",""
+"long gregorianToJulianByWeekyear(long instant) {
+    return convertByWeekyear(instant, iGregorianChronology, iJulianChronology);
+}","public void test1010() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forID(""America/Sao_Paulo"");
+    GJChronology gJChronology0 = GJChronology.getInstance(dateTimeZone0);
+    // Undeclared exception!
+    try {
+        gJChronology0.gregorianToJulianByWeekyear((-62135754750999L));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 0 for year is not supported
+        //
+        verifyException(""org.joda.time.field.SkipDateTimeField"", e);
+    }
+}",""
+"public static synchronized GJChronology getInstance(DateTimeZone zone, ReadableInstant gregorianCutover, int minDaysInFirstWeek) {
+    zone = DateTimeUtils.getZone(zone);
+    Instant cutoverInstant;
+    if (gregorianCutover == null) {
+        cutoverInstant = DEFAULT_CUTOVER;
+    } else {
+        cutoverInstant = gregorianCutover.toInstant();
+    }
+    GJChronology chrono;
+    synchronized (cCache) {
+        ArrayList<GJChronology> chronos = cCache.get(zone);
+        if (chronos == null) {
+            chronos = new ArrayList<GJChronology>(2);
+            cCache.put(zone, chronos);
+        } else {
+            for (int i = chronos.size(); --i >= 0; ) {
+                chrono = chronos.get(i);
+                if (minDaysInFirstWeek == chrono.getMinimumDaysInFirstWeek() && cutoverInstant.equals(chrono.getGregorianCutover())) {
+                    return chrono;
+                }
+            }
+        }
+        if (zone == DateTimeZone.UTC) {
+            chrono = new GJChronology(JulianChronology.getInstance(zone, minDaysInFirstWeek), GregorianChronology.getInstance(zone, minDaysInFirstWeek), cutoverInstant);
+        } else {
+            chrono = getInstance(DateTimeZone.UTC, cutoverInstant, minDaysInFirstWeek);
+            chrono = new GJChronology(ZonedChronology.getInstance(chrono, zone), chrono.iJulianChronology, chrono.iGregorianChronology, chrono.iCutoverInstant);
+        }
+        chronos.add(chrono);
+    }
+    return chrono;
+}","public void test1111() throws Throwable {
+    TimeZone timeZone0 = TimeZone.getDefault();
+    DateTimeZone dateTimeZone0 = DateTimeZone.forTimeZone(timeZone0);
+    DateTime dateTime0 = new DateTime(292278993, 1, 5, 1, 1, 1);
+    // Undeclared exception!
+    try {
+        GJChronology.getInstance(dateTimeZone0, (ReadableInstant) dateTime0, 5);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 292278994 for weekyear must be in the range [-292275054,292278993]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}","/**
+ * Factory method returns instances of the GJ cutover chronology. Any
+ * cutover date may be specified.
+ *
+ * @param zone  the time zone to use, null is default
+ * @param gregorianCutover  the cutover to use, null means default
+ * @param minDaysInFirstWeek  minimum number of days in first week of the year; default is 4
+ */"
+"protected void assemble(Fields fields) {
+    Object[] params = (Object[]) getParam();
+    JulianChronology julian = (JulianChronology) params[0];
+    GregorianChronology gregorian = (GregorianChronology) params[1];
+    Instant cutoverInstant = (Instant) params[2];
+    iCutoverMillis = cutoverInstant.getMillis();
+    iJulianChronology = julian;
+    iGregorianChronology = gregorian;
+    iCutoverInstant = cutoverInstant;
+    if (getBase() != null) {
+        return;
+    }
+    if (julian.getMinimumDaysInFirstWeek() != gregorian.getMinimumDaysInFirstWeek()) {
+        throw new IllegalArgumentException();
+    }
+    // Compute difference between the chronologies at the cutover instant
+    iGapDuration = iCutoverMillis - julianToGregorianByYear(iCutoverMillis);
+    // Begin field definitions.
+    // First just copy all the Gregorian fields and then override those
+    // that need special attention.
+    fields.copyFieldsFrom(gregorian);
+    // Assuming cutover is at midnight, all time of day fields can be
+    // gregorian since they are unaffected by cutover.
+    // Verify assumption.
+    if (gregorian.millisOfDay().get(iCutoverMillis) == 0) {
+        // Cutover is sometime in the day, so cutover fields are required
+        // for time of day.
+        fields.millisOfSecond = new CutoverField(julian.millisOfSecond(), fields.millisOfSecond, iCutoverMillis);
+        fields.millisOfDay = new CutoverField(julian.millisOfDay(), fields.millisOfDay, iCutoverMillis);
+        fields.secondOfMinute = new CutoverField(julian.secondOfMinute(), fields.secondOfMinute, iCutoverMillis);
+        fields.secondOfDay = new CutoverField(julian.secondOfDay(), fields.secondOfDay, iCutoverMillis);
+        fields.minuteOfHour = new CutoverField(julian.minuteOfHour(), fields.minuteOfHour, iCutoverMillis);
+        fields.minuteOfDay = new CutoverField(julian.minuteOfDay(), fields.minuteOfDay, iCutoverMillis);
+        fields.hourOfDay = new CutoverField(julian.hourOfDay(), fields.hourOfDay, iCutoverMillis);
+        fields.hourOfHalfday = new CutoverField(julian.hourOfHalfday(), fields.hourOfHalfday, iCutoverMillis);
+        fields.clockhourOfDay = new CutoverField(julian.clockhourOfDay(), fields.clockhourOfDay, iCutoverMillis);
+        fields.clockhourOfHalfday = new CutoverField(julian.clockhourOfHalfday(), fields.clockhourOfHalfday, iCutoverMillis);
+        fields.halfdayOfDay = new CutoverField(julian.halfdayOfDay(), fields.halfdayOfDay, iCutoverMillis);
+    }
+    // These fields just require basic cutover support.
+    {
+        fields.era = new CutoverField(julian.era(), fields.era, iCutoverMillis);
+    }
+    // DayOfYear and weekOfWeekyear require special handling since cutover
+    // year has fewer days and weeks. Extend the cutover to the start of
+    // the next year or weekyear. This keeps the sequence unbroken during
+    // the cutover year.
+    {
+        long cutover = gregorian.year().roundCeiling(iCutoverMillis);
+        fields.dayOfYear = new CutoverField(julian.dayOfYear(), fields.dayOfYear, cutover);
+    }
+    {
+        long cutover = gregorian.weekyear().roundCeiling(iCutoverMillis);
+        fields.weekOfWeekyear = new CutoverField(julian.weekOfWeekyear(), fields.weekOfWeekyear, cutover, true);
+    }
+    // These fields are special because they have imprecise durations. The
+    // family of addition methods need special attention. Override affected
+    // duration fields as well.
+    {
+        fields.year = new ImpreciseCutoverField(julian.year(), fields.year, iCutoverMillis);
+        fields.years = fields.year.getDurationField();
+        fields.yearOfEra = new ImpreciseCutoverField(julian.yearOfEra(), fields.yearOfEra, fields.years, iCutoverMillis);
+        fields.yearOfCentury = new ImpreciseCutoverField(julian.yearOfCentury(), fields.yearOfCentury, fields.years, iCutoverMillis);
+        fields.centuryOfEra = new ImpreciseCutoverField(julian.centuryOfEra(), fields.centuryOfEra, iCutoverMillis);
+        fields.centuries = fields.centuryOfEra.getDurationField();
+        fields.monthOfYear = new ImpreciseCutoverField(julian.monthOfYear(), fields.monthOfYear, iCutoverMillis);
+        fields.months = fields.monthOfYear.getDurationField();
+        fields.weekyear = new ImpreciseCutoverField(julian.weekyear(), fields.weekyear, null, iCutoverMillis, true);
+        fields.weekyearOfCentury = new ImpreciseCutoverField(julian.weekyearOfCentury(), fields.weekyearOfCentury, fields.weekyears, iCutoverMillis);
+        fields.weekyears = fields.weekyear.getDurationField();
+    }
+    // These fields require basic cutover support, except they must link to
+    // imprecise durations.
+    {
+        CutoverField cf = new CutoverField(julian.dayOfMonth(), fields.dayOfMonth, iCutoverMillis);
+        cf.iRangeDurationField = fields.months;
+        fields.dayOfMonth = cf;
+    }
+}","public void test1212() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstanceUTC();
+    // Undeclared exception!
+    try {
+        gJChronology0.assemble((AssembledChronology.Fields) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.chrono.GJChronology"", e);
+    }
+}",""
+"public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute, int millisOfSecond) throws IllegalArgumentException {
+    Chronology base;
+    if ((base = getBase()) != null) {
+        return base.getDateTimeMillis(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+    }
+    // Assume date is Gregorian.
+    long instant;
+    try {
+        instant = iGregorianChronology.getDateTimeMillis(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+    } catch (IllegalFieldValueException ex) {
+        if (monthOfYear != 2 || dayOfMonth != 29) {
+            throw ex;
+        }
+        instant = iGregorianChronology.getDateTimeMillis(year, monthOfYear, 28, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+        if (instant >= iCutoverMillis) {
+            throw ex;
+        }
+    }
+    if (instant < iCutoverMillis) {
+        // Maybe it's Julian.
+        instant = iJulianChronology.getDateTimeMillis(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+        if (instant >= iCutoverMillis) {
+            // Okay, it's in the illegal cutover gap.
+            throw new IllegalArgumentException(""Specified date does not exist"");
+        }
+    }
+    return instant;
+}","public void test1313() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstanceUTC();
+    gJChronology0.getDateTimeMillis(9, 9, 9, 9, 9, 9, 9);
+}",""
+"public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute, int millisOfSecond) throws IllegalArgumentException {
+    Chronology base;
+    if ((base = getBase()) != null) {
+        return base.getDateTimeMillis(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+    }
+    // Assume date is Gregorian.
+    long instant;
+    try {
+        instant = iGregorianChronology.getDateTimeMillis(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+    } catch (IllegalFieldValueException ex) {
+        if (monthOfYear != 2 || dayOfMonth != 29) {
+            throw ex;
+        }
+        instant = iGregorianChronology.getDateTimeMillis(year, monthOfYear, 28, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+        if (instant >= iCutoverMillis) {
+            throw ex;
+        }
+    }
+    if (instant < iCutoverMillis) {
+        // Maybe it's Julian.
+        instant = iJulianChronology.getDateTimeMillis(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+        if (instant >= iCutoverMillis) {
+            // Okay, it's in the illegal cutover gap.
+            throw new IllegalArgumentException(""Specified date does not exist"");
+        }
+    }
+    return instant;
+}","public void test1414() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstanceUTC();
+    try {
+        gJChronology0.getDateTimeMillis((-1), 2, 2, 2, 5006, 5006, (-1));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 5006 for minuteOfHour must be in the range [0,59]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",""
+"public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute, int millisOfSecond) throws IllegalArgumentException {
+    Chronology base;
+    if ((base = getBase()) != null) {
+        return base.getDateTimeMillis(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+    }
+    // Assume date is Gregorian.
+    long instant;
+    try {
+        instant = iGregorianChronology.getDateTimeMillis(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+    } catch (IllegalFieldValueException ex) {
+        if (monthOfYear != 2 || dayOfMonth != 29) {
+            throw ex;
+        }
+        instant = iGregorianChronology.getDateTimeMillis(year, monthOfYear, 28, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+        if (instant >= iCutoverMillis) {
+            throw ex;
+        }
+    }
+    if (instant < iCutoverMillis) {
+        // Maybe it's Julian.
+        instant = iJulianChronology.getDateTimeMillis(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+        if (instant >= iCutoverMillis) {
+            // Okay, it's in the illegal cutover gap.
+            throw new IllegalArgumentException(""Specified date does not exist"");
+        }
+    }
+    return instant;
+}","public void test1515() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstanceUTC();
+    try {
+        gJChronology0.getDateTimeMillis(0, 0, 0, 4, (-222), (-222), (-2839));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value -222 for minuteOfHour must be in the range [0,59]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",""
+"public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth, int millisOfDay) throws IllegalArgumentException {
+    Chronology base;
+    if ((base = getBase()) != null) {
+        return base.getDateTimeMillis(year, monthOfYear, dayOfMonth, millisOfDay);
+    }
+    // Assume date is Gregorian.
+    long instant = iGregorianChronology.getDateTimeMillis(year, monthOfYear, dayOfMonth, millisOfDay);
+    if (instant < iCutoverMillis) {
+        // Maybe it's Julian.
+        instant = iJulianChronology.getDateTimeMillis(year, monthOfYear, dayOfMonth, millisOfDay);
+        if (instant >= iCutoverMillis) {
+            // Okay, it's in the illegal cutover gap.
+            throw new IllegalArgumentException(""Specified date does not exist"");
+        }
+    }
+    return instant;
+}","public void test1616() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstanceUTC();
+    gJChronology0.getDateTimeMillis(3, 4, 2, 4);
+}",""
+"public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth, int millisOfDay) throws IllegalArgumentException {
+    Chronology base;
+    if ((base = getBase()) != null) {
+        return base.getDateTimeMillis(year, monthOfYear, dayOfMonth, millisOfDay);
+    }
+    // Assume date is Gregorian.
+    long instant = iGregorianChronology.getDateTimeMillis(year, monthOfYear, dayOfMonth, millisOfDay);
+    if (instant < iCutoverMillis) {
+        // Maybe it's Julian.
+        instant = iJulianChronology.getDateTimeMillis(year, monthOfYear, dayOfMonth, millisOfDay);
+        if (instant >= iCutoverMillis) {
+            // Okay, it's in the illegal cutover gap.
+            throw new IllegalArgumentException(""Specified date does not exist"");
+        }
+    }
+    return instant;
+}","public void test1717() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstanceUTC();
+    try {
+        gJChronology0.getDateTimeMillis(91, 2311, 91, 91);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 2311 for monthOfYear must be in the range [1,12]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",""
+"public Chronology withZone(DateTimeZone zone) {
+    if (zone == null) {
+        zone = DateTimeZone.getDefault();
+    }
+    if (zone == getZone()) {
+        return this;
+    }
+    return getInstance(zone, iCutoverInstant, getMinimumDaysInFirstWeek());
+}","public void test1818() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forID(""America/Sao_Paulo"");
+    GJChronology gJChronology0 = GJChronology.getInstance(dateTimeZone0);
+    gJChronology0.withZone(dateTimeZone0);
+}","/**
+ * Gets the Chronology in a specific time zone.
+ *
+ * @param zone  the zone to get the chronology in, null is default
+ * @return the chronology
+ */"
+"public DateTimeZone getZone() {
+    Chronology base;
+    if ((base = getBase()) != null) {
+        return base.getZone();
+    }
+    return DateTimeZone.UTC;
+}","public void test1919() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstanceUTC();
+    gJChronology0.getZone();
+}",""
+"public DateTimeZone getZone() {
+    Chronology base;
+    if ((base = getBase()) != null) {
+        return base.getZone();
+    }
+    return DateTimeZone.UTC;
+}","public void test2020() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstance();
+    gJChronology0.getZone();
+}",""
+"public static synchronized GJChronology getInstance(DateTimeZone zone, ReadableInstant gregorianCutover, int minDaysInFirstWeek) {
+    zone = DateTimeUtils.getZone(zone);
+    Instant cutoverInstant;
+    if (gregorianCutover == null) {
+        cutoverInstant = DEFAULT_CUTOVER;
+    } else {
+        cutoverInstant = gregorianCutover.toInstant();
+    }
+    GJChronology chrono;
+    synchronized (cCache) {
+        ArrayList<GJChronology> chronos = cCache.get(zone);
+        if (chronos == null) {
+            chronos = new ArrayList<GJChronology>(2);
+            cCache.put(zone, chronos);
+        } else {
+            for (int i = chronos.size(); --i >= 0; ) {
+                chrono = chronos.get(i);
+                if (minDaysInFirstWeek == chrono.getMinimumDaysInFirstWeek() && cutoverInstant.equals(chrono.getGregorianCutover())) {
+                    return chrono;
+                }
+            }
+        }
+        if (zone == DateTimeZone.UTC) {
+            chrono = new GJChronology(JulianChronology.getInstance(zone, minDaysInFirstWeek), GregorianChronology.getInstance(zone, minDaysInFirstWeek), cutoverInstant);
+        } else {
+            chrono = getInstance(DateTimeZone.UTC, cutoverInstant, minDaysInFirstWeek);
+            chrono = new GJChronology(ZonedChronology.getInstance(chrono, zone), chrono.iJulianChronology, chrono.iGregorianChronology, chrono.iCutoverInstant);
+        }
+        chronos.add(chrono);
+    }
+    return chrono;
+}","public void test2121() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    // Undeclared exception!
+    try {
+        GJChronology.getInstance((DateTimeZone) fixedDateTimeZone0, (ReadableInstant) null, 0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid min days in first week: 0
+        //
+        verifyException(""org.joda.time.chrono.JulianChronology"", e);
+    }
+}","/**
+ * Factory method returns instances of the GJ cutover chronology. Any
+ * cutover date may be specified.
+ *
+ * @param zone  the time zone to use, null is default
+ * @param gregorianCutover  the cutover to use, null means default
+ * @param minDaysInFirstWeek  minimum number of days in first week of the year; default is 4
+ */"
+"public static synchronized GJChronology getInstance(DateTimeZone zone, ReadableInstant gregorianCutover, int minDaysInFirstWeek) {
+    zone = DateTimeUtils.getZone(zone);
+    Instant cutoverInstant;
+    if (gregorianCutover == null) {
+        cutoverInstant = DEFAULT_CUTOVER;
+    } else {
+        cutoverInstant = gregorianCutover.toInstant();
+    }
+    GJChronology chrono;
+    synchronized (cCache) {
+        ArrayList<GJChronology> chronos = cCache.get(zone);
+        if (chronos == null) {
+            chronos = new ArrayList<GJChronology>(2);
+            cCache.put(zone, chronos);
+        } else {
+            for (int i = chronos.size(); --i >= 0; ) {
+                chrono = chronos.get(i);
+                if (minDaysInFirstWeek == chrono.getMinimumDaysInFirstWeek() && cutoverInstant.equals(chrono.getGregorianCutover())) {
+                    return chrono;
+                }
+            }
+        }
+        if (zone == DateTimeZone.UTC) {
+            chrono = new GJChronology(JulianChronology.getInstance(zone, minDaysInFirstWeek), GregorianChronology.getInstance(zone, minDaysInFirstWeek), cutoverInstant);
+        } else {
+            chrono = getInstance(DateTimeZone.UTC, cutoverInstant, minDaysInFirstWeek);
+            chrono = new GJChronology(ZonedChronology.getInstance(chrono, zone), chrono.iJulianChronology, chrono.iGregorianChronology, chrono.iCutoverInstant);
+        }
+        chronos.add(chrono);
+    }
+    return chrono;
+}","public void test2222() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis(1253);
+    MonthDay monthDay0 = MonthDay.now(dateTimeZone0);
+    LocalDate localDate0 = monthDay0.toLocalDate(0);
+    DateTime dateTime0 = localDate0.toDateTimeAtCurrentTime();
+    // Undeclared exception!
+    try {
+        GJChronology.getInstance(dateTimeZone0, (ReadableInstant) dateTime0, 0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid min days in first week: 0
+        //
+        verifyException(""org.joda.time.chrono.JulianChronology"", e);
+    }
+}","/**
+ * Factory method returns instances of the GJ cutover chronology. Any
+ * cutover date may be specified.
+ *
+ * @param zone  the time zone to use, null is default
+ * @param gregorianCutover  the cutover to use, null means default
+ * @param minDaysInFirstWeek  minimum number of days in first week of the year; default is 4
+ */"
+"public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute, int millisOfSecond) throws IllegalArgumentException {
+    Chronology base;
+    if ((base = getBase()) != null) {
+        return base.getDateTimeMillis(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+    }
+    // Assume date is Gregorian.
+    long instant;
+    try {
+        instant = iGregorianChronology.getDateTimeMillis(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+    } catch (IllegalFieldValueException ex) {
+        if (monthOfYear != 2 || dayOfMonth != 29) {
+            throw ex;
+        }
+        instant = iGregorianChronology.getDateTimeMillis(year, monthOfYear, 28, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+        if (instant >= iCutoverMillis) {
+            throw ex;
+        }
+    }
+    if (instant < iCutoverMillis) {
+        // Maybe it's Julian.
+        instant = iJulianChronology.getDateTimeMillis(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+        if (instant >= iCutoverMillis) {
+            // Okay, it's in the illegal cutover gap.
+            throw new IllegalArgumentException(""Specified date does not exist"");
+        }
+    }
+    return instant;
+}","public void test2323() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forTimeZone((TimeZone) null);
+    DateTime dateTime0 = DateTime.now();
+    GJChronology gJChronology0 = GJChronology.getInstance(dateTimeZone0, (ReadableInstant) dateTime0, 1);
+    try {
+        gJChronology0.getDateTimeMillis(315, 315, 1, 1, 0, 1, 0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 315 for monthOfYear must be in the range [1,12]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",""
+"public Instant getGregorianCutover() {
+    return iCutoverInstant;
+}","public void test2424() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forID(""America/Sao_Paulo"");
+    GJChronology gJChronology0 = GJChronology.getInstance(dateTimeZone0);
+    gJChronology0.getGregorianCutover();
+}","/**
+ * Gets the cutover instant between Gregorian and Julian chronologies.
+ * @return the cutover instant
+ */"
+"public int getMinimumDaysInFirstWeek() {
+    return iGregorianChronology.getMinimumDaysInFirstWeek();
+}","public void test2525() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forID(""America/Sao_Paulo"");
+    GJChronology gJChronology0 = GJChronology.getInstance(dateTimeZone0);
+    gJChronology0.getMinimumDaysInFirstWeek();
+}","/**
+ * Gets the minimum days needed for a week to be the first week in a year.
+ *
+ * @return the minimum days
+ */"
+"public long add(ReadablePeriod period, long instant, int scalar) {
+    if (scalar != 0 && period != null) {
+        for (int i = 0, isize = period.size(); i < isize; i++) {
+            // use long to allow for multiplication (fits OK)
+            long value = period.getValue(i);
+            if (value != 0) {
+                instant = period.getFieldType(i).getField(this).add(instant, value * scalar);
+            }
+        }
+    }
+    return instant;
+}","public void test2626() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstanceUTC();
+    Months months0 = Months.TEN;
+    gJChronology0.add((ReadablePeriod) months0, (-667L), 4);
+}","/**
+ * Adds the period to the instant, specifying the number of times to add.
+ *
+ * @param period  the period to add, null means add nothing
+ * @param instant  the instant to add to
+ * @param scalar  the number of times to add
+ * @return the updated instant
+ */"
+"public long add(ReadablePeriod period, long instant, int scalar) {
+    if (scalar != 0 && period != null) {
+        for (int i = 0, isize = period.size(); i < isize; i++) {
+            // use long to allow for multiplication (fits OK)
+            long value = period.getValue(i);
+            if (value != 0) {
+                instant = period.getFieldType(i).getField(this).add(instant, value * scalar);
+            }
+        }
+    }
+    return instant;
+}","public void test2727() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime((DateTimeZone) null);
+    Months months0 = Months.TEN;
+    DateTime dateTime0 = mutableDateTime0.toDateTime();
+    GJChronology gJChronology0 = GJChronology.getInstance((DateTimeZone) null, (ReadableInstant) dateTime0);
+    gJChronology0.add((ReadablePeriod) months0, 392L, (-2578));
+}","/**
+ * Adds the period to the instant, specifying the number of times to add.
+ *
+ * @param period  the period to add, null means add nothing
+ * @param instant  the instant to add to
+ * @param scalar  the number of times to add
+ * @return the updated instant
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Gets the values of a period from an interval.
+ *
+ * @param period  the period instant to use
+ * @param startInstant  the start instant of an interval to query
+ * @param endInstant  the start instant of an interval to query
+ * @return the values of the period extracted from the interval
+ */
+public abstract int[] get(ReadablePeriod period, long startInstant, long endInstant);","public void test2828() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstanceUTC();
+    Months months0 = Months.TEN;
+    Chronology chronology0 = gJChronology0.withZone((DateTimeZone) null);
+    chronology0.get((ReadablePeriod) months0, (-12219292800000L), 131327999333L);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the values of a period from an interval.
+ *
+ * @param period  the period instant to use
+ * @param startInstant  the start instant of an interval to query
+ * @param endInstant  the start instant of an interval to query
+ * @return the values of the period extracted from the interval
+ */
+public int[] get(ReadablePeriod period, long startInstant, long endInstant) {
+    int size = period.size();
+    int[] values = new int[size];
+    if (startInstant != endInstant) {
+        for (int i = 0; i < size; i++) {
+            DurationField field = period.getFieldType(i).getField(this);
+            int value = field.getDifference(endInstant, startInstant);
+            startInstant = field.add(startInstant, value);
+            values[i] = value;
+        }
+    }
+    return values;
+}","public void test2929() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstanceUTC();
+    Months months0 = Months.MAX_VALUE;
+    gJChronology0.get((ReadablePeriod) months0, (-2414L), 1583L);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the values of a period from an interval.
+ *
+ * @param period  the period instant to use
+ * @param startInstant  the start instant of an interval to query
+ * @param endInstant  the start instant of an interval to query
+ * @return the values of the period extracted from the interval
+ */
+public int[] get(ReadablePeriod period, long startInstant, long endInstant) {
+    int size = period.size();
+    int[] values = new int[size];
+    if (startInstant != endInstant) {
+        for (int i = 0; i < size; i++) {
+            DurationField field = period.getFieldType(i).getField(this);
+            int value = field.getDifference(endInstant, startInstant);
+            startInstant = field.add(startInstant, value);
+            values[i] = value;
+        }
+    }
+    return values;
+}","public void test3030() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime((DateTimeZone) null);
+    Months months0 = Months.TEN;
+    DateTime dateTime0 = mutableDateTime0.toDateTime();
+    GJChronology gJChronology0 = GJChronology.getInstance((DateTimeZone) null, (ReadableInstant) dateTime0);
+    gJChronology0.get((ReadablePeriod) months0, (-12219292800000L), (-20958393600667L));
+}",""
+"public LocalDate withWeekyear(int weekyear) {
+    return withLocalMillis(getChronology().weekyear().set(getLocalMillis(), weekyear));
+}","public void test3131() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstanceUTC();
+    LocalDate localDate0 = new LocalDate((Chronology) gJChronology0);
+    localDate0.withWeekyear(178);
+}","/**
+ * Returns a copy of this date with the weekyear field updated.
+ * <p>
+ * The weekyear is the year that matches with the weekOfWeekyear field.
+ * In the standard ISO8601 week algorithm, the first week of the year
+ * is that in which at least 4 days are in the year. As a result of this
+ * definition, day 1 of the first week may be in the previous year.
+ * The weekyear allows you to query the effective year for that day.
+ * <p>
+ * LocalDate is immutable, so there are no set methods.
+ * Instead, this method returns a new instance with the value of
+ * weekyear changed.
+ *
+ * @param weekyear  the weekyear to set
+ * @return a copy of this object with the field set
+ * @throws IllegalArgumentException if the value is invalid
+ */"
+"public long set(ReadablePartial partial, long instant) {
+    for (int i = 0, isize = partial.size(); i < isize; i++) {
+        instant = partial.getFieldType(i).getField(this).set(instant, partial.getValue(i));
+    }
+    return instant;
+}","public void test3232() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstanceUTC();
+    LocalDateTime localDateTime0 = new LocalDateTime((-12219321178000L));
+    // Undeclared exception!
+    try {
+        gJChronology0.set(localDateTime0, (-12219321178000L));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 14 for dayOfMonth is not supported
+        //
+        verifyException(""org.joda.time.chrono.GJChronology$CutoverField"", e);
+    }
+}","/**
+ * Sets the partial into the instant.
+ *
+ * @param partial  the partial instant to use
+ * @param instant  the instant to update
+ * @return the updated instant
+ */"
+"public long set(ReadablePartial partial, long instant) {
+    for (int i = 0, isize = partial.size(); i < isize; i++) {
+        instant = partial.getFieldType(i).getField(this).set(instant, partial.getValue(i));
+    }
+    return instant;
+}","public void test3333() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstanceUTC();
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    gJChronology0.set(localDateTime0, (-79302582000000L));
+}","/**
+ * Sets the partial into the instant.
+ *
+ * @param partial  the partial instant to use
+ * @param instant  the instant to update
+ * @return the updated instant
+ */"
+"public LocalDateTime(Object instant, Chronology chronology) {
+    PartialConverter converter = ConverterManager.getInstance().getPartialConverter(instant);
+    chronology = converter.getChronology(instant, chronology);
+    chronology = DateTimeUtils.getChronology(chronology);
+    iChronology = chronology.withUTC();
+    int[] values = converter.getPartialValues(this, instant, chronology, ISODateTimeFormat.localDateOptionalTimeParser());
+    iLocalMillis = iChronology.getDateTimeMillis(values[0], values[1], values[2], values[3]);
+}","public void test3434() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime((DateTimeZone) null);
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstanceUTC();
+    LocalDateTime localDateTime0 = new LocalDateTime(mutableDateTime0, buddhistChronology0);
+}","/**
+ * Constructs an instance from an Object that represents a datetime,
+ * using the specified chronology.
+ * <p>
+ * If the chronology is null, ISO in the default time zone is used.
+ * Once the constructor is completed, the zone is no longer used.
+ * If the instant contains a chronology, it will be ignored.
+ * For example, passing a {@code LocalDate} and a different chronology
+ * will return a date with the year/month/day from the date applied
+ * unaltered to the specified chronology.
+ * <p>
+ * The recognised object types are defined in
+ * {@link org.joda.time.convert.ConverterManager ConverterManager} and
+ * include ReadablePartial, ReadableInstant, String, Calendar and Date.
+ * The String formats are described by {@link ISODateTimeFormat#localDateOptionalTimeParser()}.
+ * The default String converter ignores the zone and only parses the field values.
+ *
+ * @param instant  the datetime object
+ * @param chronology  the chronology
+ * @throws IllegalArgumentException if the instant is invalid
+ */"
+"// Output
+//-----------------------------------------------------------------------
+/**
+ * Gets a debugging toString.
+ *
+ * @return a debugging string
+ */
+public String toString() {
+    StringBuffer sb = new StringBuffer(60);
+    sb.append(""GJChronology"");
+    sb.append('[');
+    sb.append(getZone().getID());
+    if (iCutoverMillis != DEFAULT_CUTOVER.getMillis()) {
+        sb.append("",cutover="");
+        DateTimeFormatter printer;
+        if (withUTC().dayOfYear().remainder(iCutoverMillis) == 0) {
+            printer = ISODateTimeFormat.date();
+        } else {
+            printer = ISODateTimeFormat.dateTime();
+        }
+        printer.withChronology(withUTC()).printTo(sb, iCutoverMillis);
+    }
+    if (getMinimumDaysInFirstWeek() != 4) {
+        sb.append("",mdfw="");
+        sb.append(getMinimumDaysInFirstWeek());
+    }
+    sb.append(']');
+    return sb.toString();
+}","public void test3535() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstanceUTC();
+    gJChronology0.toString();
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Checks if this chronology instance equals another.
+ *
+ * @param obj  the object to compare to
+ * @return true if equal
+ * @since 1.6
+ */
+public boolean equals(Object obj) {
+    if (this == obj) {
+        return true;
+    }
+    if (obj instanceof GJChronology) {
+        GJChronology chrono = (GJChronology) obj;
+        return iCutoverMillis == chrono.iCutoverMillis && getMinimumDaysInFirstWeek() == chrono.getMinimumDaysInFirstWeek() && getZone().equals(chrono.getZone());
+    }
+    return false;
+}","public void test3636() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstance();
+    GJChronology gJChronology1 = GJChronology.getInstanceUTC();
+    gJChronology0.equals(gJChronology1);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Checks if this chronology instance equals another.
+ *
+ * @param obj  the object to compare to
+ * @return true if equal
+ * @since 1.6
+ */
+public boolean equals(Object obj) {
+    if (this == obj) {
+        return true;
+    }
+    if (obj instanceof GJChronology) {
+        GJChronology chrono = (GJChronology) obj;
+        return iCutoverMillis == chrono.iCutoverMillis && getMinimumDaysInFirstWeek() == chrono.getMinimumDaysInFirstWeek() && getZone().equals(chrono.getZone());
+    }
+    return false;
+}","public void test3737() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstance();
+    gJChronology0.equals(gJChronology0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Checks if this chronology instance equals another.
+ *
+ * @param obj  the object to compare to
+ * @return true if equal
+ * @since 1.6
+ */
+public boolean equals(Object obj) {
+    if (this == obj) {
+        return true;
+    }
+    if (obj instanceof GJChronology) {
+        GJChronology chrono = (GJChronology) obj;
+        return iCutoverMillis == chrono.iCutoverMillis && getMinimumDaysInFirstWeek() == chrono.getMinimumDaysInFirstWeek() && getZone().equals(chrono.getZone());
+    }
+    return false;
+}","public void test3838() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forID(""America/Sao_Paulo"");
+    GJChronology gJChronology0 = GJChronology.getInstance(dateTimeZone0);
+    gJChronology0.equals(dateTimeZone0);
+}",""
+"public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth, int millisOfDay) throws IllegalArgumentException {
+    Chronology base;
+    if ((base = getBase()) != null) {
+        return base.getDateTimeMillis(year, monthOfYear, dayOfMonth, millisOfDay);
+    }
+    // Assume date is Gregorian.
+    long instant = iGregorianChronology.getDateTimeMillis(year, monthOfYear, dayOfMonth, millisOfDay);
+    if (instant < iCutoverMillis) {
+        // Maybe it's Julian.
+        instant = iJulianChronology.getDateTimeMillis(year, monthOfYear, dayOfMonth, millisOfDay);
+        if (instant >= iCutoverMillis) {
+            // Okay, it's in the illegal cutover gap.
+            throw new IllegalArgumentException(""Specified date does not exist"");
+        }
+    }
+    return instant;
+}","public void test3939() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstance();
+    gJChronology0.getDateTimeMillis(2597, 2, 2, 2597);
+}",""
+"public static GJChronology getInstance(DateTimeZone zone, long gregorianCutover, int minDaysInFirstWeek) {
+    Instant cutoverInstant;
+    if (gregorianCutover == DEFAULT_CUTOVER.getMillis()) {
+        cutoverInstant = null;
+    } else {
+        cutoverInstant = new Instant(gregorianCutover);
+    }
+    return getInstance(zone, cutoverInstant, minDaysInFirstWeek);
+}","public void test4040() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    GJChronology.getInstance((DateTimeZone) fixedDateTimeZone0, (-12219292800000L), 1);
+}","/**
+ * Factory method returns instances of the GJ cutover chronology. Any
+ * cutover date may be specified.
+ *
+ * @param zone  the time zone to use, null is default
+ * @param gregorianCutover  the cutover to use
+ * @param minDaysInFirstWeek  minimum number of days in first week of the year; default is 4
+ */"
+"// Output
+//-----------------------------------------------------------------------
+/**
+ * Gets a debugging toString.
+ *
+ * @return a debugging string
+ */
+public String toString() {
+    StringBuffer sb = new StringBuffer(60);
+    sb.append(""GJChronology"");
+    sb.append('[');
+    sb.append(getZone().getID());
+    if (iCutoverMillis != DEFAULT_CUTOVER.getMillis()) {
+        sb.append("",cutover="");
+        DateTimeFormatter printer;
+        if (withUTC().dayOfYear().remainder(iCutoverMillis) == 0) {
+            printer = ISODateTimeFormat.date();
+        } else {
+            printer = ISODateTimeFormat.dateTime();
+        }
+        printer.withChronology(withUTC()).printTo(sb, iCutoverMillis);
+    }
+    if (getMinimumDaysInFirstWeek() != 4) {
+        sb.append("",mdfw="");
+        sb.append(getMinimumDaysInFirstWeek());
+    }
+    sb.append(']');
+    return sb.toString();
+}","public void test4141() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forID(""America/Sao_Paulo"");
+    GJChronology gJChronology0 = GJChronology.getInstance(dateTimeZone0, (-1076L), 1);
+    String string0 = gJChronology0.toString();
+    assertEquals(""GJChronology[America/Sao_Paulo,cutover=1969-12-31T23:59:58.924Z,mdfw=1]"", string0);
+}",""
+"public int getMinimumDaysInFirstWeek() {
+    return iGregorianChronology.getMinimumDaysInFirstWeek();
+}","public void test4242() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstance();
+    Months months0 = Months.TEN;
+    long long0 = gJChronology0.add((ReadablePeriod) months0, (-667L), (-797));
+    assertEquals(4, gJChronology0.getMinimumDaysInFirstWeek());
+}","/**
+ * Gets the minimum days needed for a week to be the first week in a year.
+ *
+ * @return the minimum days
+ */"
+"public long add(ReadablePeriod period, long instant, int scalar) {
+    if (scalar != 0 && period != null) {
+        for (int i = 0, isize = period.size(); i < isize; i++) {
+            // use long to allow for multiplication (fits OK)
+            long value = period.getValue(i);
+            if (value != 0) {
+                instant = period.getFieldType(i).getField(this).add(instant, value * scalar);
+            }
+        }
+    }
+    return instant;
+}","public void test4243() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstance();
+    Months months0 = Months.TEN;
+    long long0 = gJChronology0.add((ReadablePeriod) months0, (-667L), (-797));
+    assertEquals((-20958394022667L), long0);
+}","/**
+ * Adds the period to the instant, specifying the number of times to add.
+ *
+ * @param period  the period to add, null means add nothing
+ * @param instant  the instant to add to
+ * @param scalar  the number of times to add
+ * @return the updated instant
+ */"
+"public int getMinimumDaysInFirstWeek() {
+    return iGregorianChronology.getMinimumDaysInFirstWeek();
+}","public void test4344() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstance();
+    StrictChronology.getInstance(gJChronology0);
+    assertEquals(4, gJChronology0.getMinimumDaysInFirstWeek());
+}","/**
+ * Gets the minimum days needed for a week to be the first week in a year.
+ *
+ * @return the minimum days
+ */"
+"long gregorianToJulianByWeekyear(long instant) {
+    return convertByWeekyear(instant, iGregorianChronology, iJulianChronology);
+}","public void test4445() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstance();
+    long long0 = gJChronology0.gregorianToJulianByWeekyear(4);
+    assertEquals(1209600004L, long0);
+}",""
+"public int getMinimumDaysInFirstWeek() {
+    return iGregorianChronology.getMinimumDaysInFirstWeek();
+}","public void test4446() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstance();
+    long long0 = gJChronology0.gregorianToJulianByWeekyear(4);
+    assertEquals(4, gJChronology0.getMinimumDaysInFirstWeek());
+}","/**
+ * Gets the minimum days needed for a week to be the first week in a year.
+ *
+ * @return the minimum days
+ */"
+"public int getMinimumDaysInFirstWeek() {
+    return iGregorianChronology.getMinimumDaysInFirstWeek();
+}","public void test4547() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstance();
+    gJChronology0.hashCode();
+    assertEquals(4, gJChronology0.getMinimumDaysInFirstWeek());
+}","/**
+ * Gets the minimum days needed for a week to be the first week in a year.
+ *
+ * @return the minimum days
+ */"
+"public int getMinimumDaysInFirstWeek() {
+    return iGregorianChronology.getMinimumDaysInFirstWeek();
+}","public void test4648() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forID(""America/Sao_Paulo"");
+    GJChronology gJChronology0 = GJChronology.getInstance(dateTimeZone0);
+    GJChronology gJChronology1 = (GJChronology) gJChronology0.withUTC();
+    assertEquals(4, gJChronology1.getMinimumDaysInFirstWeek());
+}","/**
+ * Gets the minimum days needed for a week to be the first week in a year.
+ *
+ * @return the minimum days
+ */"
+"// Conversion
+//-----------------------------------------------------------------------
+/**
+ * Gets the Chronology in the UTC time zone.
+ *
+ * @return the chronology in UTC
+ */
+public Chronology withUTC() {
+    return withZone(DateTimeZone.UTC);
+}","public void test4649() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forID(""America/Sao_Paulo"");
+    GJChronology gJChronology0 = GJChronology.getInstance(dateTimeZone0);
+    GJChronology gJChronology1 = (GJChronology) gJChronology0.withUTC();
+    assertNotSame(gJChronology1, gJChronology0);
+}",""
+"long gregorianToJulianByYear(long instant) {
+    return convertByYear(instant, iGregorianChronology, iJulianChronology);
+}","public void test4750() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstance();
+    long long0 = gJChronology0.gregorianToJulianByYear(1280L);
+    assertEquals(1123201280L, long0);
+}",""
+"public int getMinimumDaysInFirstWeek() {
+    return iGregorianChronology.getMinimumDaysInFirstWeek();
+}","public void test4751() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstance();
+    long long0 = gJChronology0.gregorianToJulianByYear(1280L);
+    assertEquals(4, gJChronology0.getMinimumDaysInFirstWeek());
+}","/**
+ * Gets the minimum days needed for a week to be the first week in a year.
+ *
+ * @return the minimum days
+ */"
+"public int getMinimumDaysInFirstWeek() {
+    return iGregorianChronology.getMinimumDaysInFirstWeek();
+}","public void test4852() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstance();
+    long long0 = gJChronology0.julianToGregorianByYear(4);
+    assertEquals(4, gJChronology0.getMinimumDaysInFirstWeek());
+}","/**
+ * Gets the minimum days needed for a week to be the first week in a year.
+ *
+ * @return the minimum days
+ */"
+"long julianToGregorianByYear(long instant) {
+    return convertByYear(instant, iJulianChronology, iGregorianChronology);
+}","public void test4853() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstance();
+    long long0 = gJChronology0.julianToGregorianByYear(4);
+    assertEquals((-1123199996L), long0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the values of a period from an interval.
+ *
+ * @param period  the period instant to use
+ * @param startInstant  the start instant of an interval to query
+ * @param endInstant  the start instant of an interval to query
+ * @return the values of the period extracted from the interval
+ */
+public int[] get(ReadablePeriod period, long startInstant, long endInstant) {
+    int size = period.size();
+    int[] values = new int[size];
+    if (startInstant != endInstant) {
+        for (int i = 0; i < size; i++) {
+            DurationField field = period.getFieldType(i).getField(this);
+            int value = field.getDifference(endInstant, startInstant);
+            startInstant = field.add(startInstant, value);
+            values[i] = value;
+        }
+    }
+    return values;
+}","public void test4954() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstanceUTC();
+    Months months0 = Months.TEN;
+    int[] intArray0 = gJChronology0.get((ReadablePeriod) months0, (long) 44481320, (-20958393600667L));
+    assertArrayEquals(new int[] { (-7970) }, intArray0);
+}",""
+"public int getMinimumDaysInFirstWeek() {
+    return iGregorianChronology.getMinimumDaysInFirstWeek();
+}","public void test4955() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstanceUTC();
+    Months months0 = Months.TEN;
+    int[] intArray0 = gJChronology0.get((ReadablePeriod) months0, (long) 44481320, (-20958393600667L));
+    assertEquals(4, gJChronology0.getMinimumDaysInFirstWeek());
+}","/**
+ * Gets the minimum days needed for a week to be the first week in a year.
+ *
+ * @return the minimum days
+ */"
+"public int getMinimumDaysInFirstWeek() {
+    return iGregorianChronology.getMinimumDaysInFirstWeek();
+}","public void test5056() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstance();
+    long long0 = gJChronology0.julianToGregorianByWeekyear(0);
+    assertEquals(4, gJChronology0.getMinimumDaysInFirstWeek());
+}","/**
+ * Gets the minimum days needed for a week to be the first week in a year.
+ *
+ * @return the minimum days
+ */"
+"long julianToGregorianByWeekyear(long instant) {
+    return convertByWeekyear(instant, iJulianChronology, iGregorianChronology);
+}","public void test5057() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstance();
+    long long0 = gJChronology0.julianToGregorianByWeekyear(0);
+    assertEquals((-1209600000L), long0);
+}",""

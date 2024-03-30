@@ -1,0 +1,531 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    Gson gson0 = new Gson();
+    ZoneOffset zoneOffset0 = ZoneOffset.MAX;
+    TimeZone timeZone0 = TimeZone.getTimeZone((ZoneId) zoneOffset0);
+    Locale locale0 = Locale.ITALIAN;
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar(timeZone0, locale0);
+    JsonElement jsonElement0 = gson0.toJsonTree((Object) mockGregorianCalendar0);
+    String string0 = gson0.toJson(jsonElement0);
+    assertNotNull(string0);
+}",0,
+project,0,test011,"public void test011() throws Throwable {
+    Gson gson0 = new Gson();
+    String string0 = gson0.toString();
+    assertNotNull(string0);
+}",0,
+project,0,test022,"public void test022() throws Throwable {
+    Class<Boolean> class0 = Boolean.class;
+    Gson gson0 = new Gson();
+    TypeAdapter<Boolean> typeAdapter0 = TypeAdapters.BOOLEAN_AS_STRING;
+    TypeAdapterRuntimeTypeWrapper<Boolean> typeAdapterRuntimeTypeWrapper0 = new TypeAdapterRuntimeTypeWrapper<Boolean>(gson0, typeAdapter0, class0);
+    TypeAdapterFactory typeAdapterFactory0 = TypeAdapters.newFactoryForMultipleTypes(class0, (Class<? extends Boolean>) class0, (TypeAdapter<? super Boolean>) typeAdapterRuntimeTypeWrapper0);
+    assertNotNull(typeAdapterFactory0);
+}",1,
+project,0,test033,"public void test033() throws Throwable {
+    Class<Character> class0 = Character.class;
+    TypeAdapterFactory typeAdapterFactory0 = TypeAdapters.newTypeHierarchyFactory(class0, (TypeAdapter<Character>) null);
+    assertNotNull(typeAdapterFactory0);
+}",0,
+project,0,test044,"public void test044() throws Throwable {
+    Class<Object> class0 = Object.class;
+    TypeToken<Object> typeToken0 = TypeToken.get(class0);
+    Gson gson0 = new Gson();
+    TypeAdapter<Object> typeAdapter0 = gson0.getAdapter(typeToken0);
+    TypeAdapterFactory typeAdapterFactory0 = TypeAdapters.newFactory(typeToken0, typeAdapter0);
+    assertNotNull(typeAdapterFactory0);
+}",1,
+project,0,test055,"public void test055() throws Throwable {
+    Gson gson0 = new Gson();
+    Short short0 = new Short((short) 1);
+    JsonPrimitive jsonPrimitive0 = (JsonPrimitive) gson0.toJsonTree((Object) short0);
+    assertFalse(jsonPrimitive0.isString());
+}",0,assertTrue(jsonPrimitive0.isString())
+project,0,test066,"public void test066() throws Throwable {
+    Gson gson0 = new Gson();
+    InetAddress inetAddress0 = MockInetAddress.getByName(""BEGIN_OBJECT"");
+    JsonElement jsonElement0 = gson0.toJsonTree((Object) inetAddress0);
+    assertFalse(jsonElement0.isJsonArray());
+}",0,
+project,0,test077,"public void test077() throws Throwable {
+    Gson gson0 = new Gson();
+    Byte byte0 = new Byte((byte) 9);
+    JsonPrimitive jsonPrimitive0 = (JsonPrimitive) gson0.toJsonTree((Object) byte0);
+    assertFalse(jsonPrimitive0.isBoolean());
+}",0,
+project,0,test088,"public void test088() throws Throwable {
+    Gson gson0 = new Gson();
+    AtomicBoolean atomicBoolean0 = new AtomicBoolean(false);
+    JsonElement jsonElement0 = gson0.toJsonTree((Object) atomicBoolean0);
+    Class<JsonPrimitive> class0 = JsonPrimitive.class;
+    JsonPrimitive jsonPrimitive0 = gson0.fromJson(jsonElement0, class0);
+    assertNotSame(jsonElement0, jsonPrimitive0);
+}",0,
+project,0,test099,"public void test099() throws Throwable {
+    Gson gson0 = new Gson();
+    JsonArray jsonArray0 = new JsonArray();
+    Class<AtomicInteger> class0 = AtomicInteger.class;
+    try {
+        gson0.fromJson((JsonElement) jsonArray0, class0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // org.evosuite.runtime.mock.java.lang.MockThrowable: Expected NUMBER but was BEGIN_ARRAY
+        //
+        verifyException(""com.google.gson.Gson"", e);
+    }
+}",0,
+project,0,test1010,"public void test1010() throws Throwable {
+    Gson gson0 = new Gson();
+    AtomicInteger atomicInteger0 = new AtomicInteger(267);
+    JsonElement jsonElement0 = gson0.toJsonTree((Object) atomicInteger0);
+    assertFalse(jsonElement0.isJsonObject());
+}",0,assertTrue(jsonElement0.isJsonObject())
+project,0,test1111,"public void test1111() throws Throwable {
+    Gson gson0 = new Gson();
+    Locale locale0 = Locale.CHINA;
+    Currency currency0 = Currency.getInstance(locale0);
+    JsonElement jsonElement0 = gson0.toJsonTree((Object) currency0);
+    assertFalse(jsonElement0.isJsonNull());
+}",0,assertTrue(jsonElement0.isJsonNull())
+project,0,test1212,"public void test1212() throws Throwable {
+    Gson gson0 = new Gson();
+    Class<Currency> class0 = Currency.class;
+    TypeToken<Currency> typeToken0 = TypeToken.get(class0);
+    Type type0 = typeToken0.getType();
+    // Undeclared exception!
+    try {
+        gson0.fromJson(""duplicate"", type0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.Currency"", e);
+    }
+}",1,
+project,0,test1313,"public void test1313() throws Throwable {
+    Class<BitSet> class0 = BitSet.class;
+    Gson gson0 = new Gson();
+    try {
+        gson0.fromJson(""[hMu]="", (Type) class0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Error: Expecting: bitset number value (1, 0), Found: hMu
+        //
+        verifyException(""com.google.gson.internal.bind.TypeAdapters$6"", e);
+    }
+}",1,
+project,0,test1414,"public void test1414() throws Throwable {
+    Gson gson0 = new Gson();
+    Class<BitSet> class0 = BitSet.class;
+    TypeAdapter<BitSet> typeAdapter0 = gson0.getAdapter(class0);
+    TypeAdapterRuntimeTypeWrapper<BitSet> typeAdapterRuntimeTypeWrapper0 = new TypeAdapterRuntimeTypeWrapper<BitSet>(gson0, typeAdapter0, class0);
+    BitSet bitSet0 = typeAdapterRuntimeTypeWrapper0.fromJson(""null"");
+    assertNull(bitSet0);
+}",0,
+project,0,test1515,"public void test1515() throws Throwable {
+    Gson gson0 = new Gson();
+    Class<BitSet> class0 = BitSet.class;
+    String string0 = gson0.toJson((Object) null, (Type) class0);
+    assertEquals(""null"", string0);
+}",0,assertNotNull(string0)
+project,0,test1616,"public void test1616() throws Throwable {
+    Gson gson0 = new Gson();
+    byte[] byteArray0 = new byte[2];
+    byteArray0[0] = (byte) 57;
+    BitSet bitSet0 = BitSet.valueOf(byteArray0);
+    JsonArray jsonArray0 = (JsonArray) gson0.toJsonTree((Object) bitSet0);
+    assertEquals(6, jsonArray0.size());
+}",0,"assertEquals(1, jsonArray0.size())"
+project,0,test1717,"public void test1717() throws Throwable {
+    Gson gson0 = new Gson();
+    JsonArray jsonArray0 = new JsonArray();
+    Class<Boolean> class0 = Boolean.TYPE;
+    try {
+        gson0.fromJson((JsonElement) jsonArray0, (Type) class0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // org.evosuite.runtime.mock.java.lang.MockThrowable: Expected BOOLEAN but was BEGIN_ARRAY
+        //
+        verifyException(""com.google.gson.Gson"", e);
+    }
+}",0,
+project,0,test1818,"public void test1818() throws Throwable {
+    Gson gson0 = new Gson();
+    Class<Boolean> class0 = Boolean.TYPE;
+    Long long0 = gson0.fromJson(""null"", (Type) class0);
+    assertNull(long0);
+}",1,
+project,0,test1919,"public void test1919() throws Throwable {
+    Gson gson0 = new Gson();
+    Class<Boolean> class0 = Boolean.TYPE;
+    try {
+        gson0.fromJson(""Error: Expecting: bitset number value (1, 0), Found: "", (Type) class0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // org.evosuite.runtime.mock.java.lang.MockThrowable: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 7 path $
+        //
+        verifyException(""com.google.gson.Gson"", e);
+    }
+}",1,
+project,0,test2020,"public void test2020() throws Throwable {
+    Gson gson0 = new Gson();
+    Class<Boolean> class0 = Boolean.TYPE;
+    String string0 = gson0.toJson((Object) null, (Type) class0);
+    assertEquals(""null"", string0);
+}",0,
+project,0,test2121,"public void test2121() throws Throwable {
+    Gson gson0 = new Gson();
+    Class<Byte> class0 = Byte.TYPE;
+    try {
+        gson0.fromJson(""'wDTS'Xdd"", (Type) class0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // java.lang.NumberFormatException: For input string: \""wDTS\""
+        //
+        verifyException(""com.google.gson.internal.bind.TypeAdapters$9"", e);
+    }
+}",0,
+project,0,test2222,"public void test2222() throws Throwable {
+    Gson gson0 = new Gson();
+    Class<Short> class0 = Short.TYPE;
+    try {
+        gson0.fromJson(""com.google.gson.internal.LinkedTreeMap$Node"", (Type) class0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // java.lang.NumberFormatException: For input string: \""com.google.gson.internal.LinkedTreeMap$Node\""
+        //
+        verifyException(""com.google.gson.internal.bind.TypeAdapters$10"", e);
+    }
+}",1,
+project,0,test2323,"public void test2323() throws Throwable {
+    Gson gson0 = new Gson();
+    Class<Integer> class0 = Integer.TYPE;
+    try {
+        gson0.fromJson(""Error"", (Type) class0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // java.lang.NumberFormatException: For input string: \""Error\""
+        //
+        verifyException(""com.google.gson.internal.bind.TypeAdapters$11"", e);
+    }
+}",1,
+project,0,test2424,"public void test2424() throws Throwable {
+    Gson gson0 = new Gson();
+    int[] intArray0 = new int[1];
+    AtomicIntegerArray atomicIntegerArray0 = new AtomicIntegerArray(intArray0);
+    JsonArray jsonArray0 = (JsonArray) gson0.toJsonTree((Object) atomicIntegerArray0);
+    assertEquals(1, jsonArray0.size());
+}",0,
+project,0,test2525,"public void test2525() throws Throwable {
+    Gson gson0 = new Gson();
+    Class<Long> class0 = Long.TYPE;
+    try {
+        gson0.fromJson(""Error: Expecting: bitset number value (1, 0), Found: "", (Type) class0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // java.lang.NumberFormatException: For input string: \""Error\""
+        //
+        verifyException(""com.google.gson.internal.bind.TypeAdapters$12"", e);
+    }
+}",1,
+project,0,test2626,"public void test2626() throws Throwable {
+    Class<Long> class0 = Long.class;
+    Gson gson0 = new Gson();
+    StringReader stringReader0 = new StringReader(""null"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    GregorianCalendar gregorianCalendar0 = gson0.fromJson(jsonReader0, (Type) class0);
+    assertNull(gregorianCalendar0);
+}",1,
+project,0,test2727,"public void test2727() throws Throwable {
+    Gson gson0 = new Gson();
+    Class<Character> class0 = Character.TYPE;
+    try {
+        gson0.fromJson(""H#L[a|Yce5}9{$~+j"", (Type) class0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // org.evosuite.runtime.mock.java.lang.MockThrowable: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 3 path $
+        //
+        verifyException(""com.google.gson.Gson"", e);
+    }
+}",1,
+project,0,test2828,"public void test2828() throws Throwable {
+    Gson gson0 = new Gson();
+    Class<Character> class0 = Character.TYPE;
+    Long long0 = gson0.fromJson(""null"", (Type) class0);
+    assertNull(long0);
+}",1,
+project,0,test2929,"public void test2929() throws Throwable {
+    Gson gson0 = new Gson();
+    Class<Character> class0 = Character.TYPE;
+    try {
+        gson0.fromJson(""yOvN cannTthn:udle"", (Type) class0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Expecting character, got: yOvN
+        //
+        verifyException(""com.google.gson.internal.bind.TypeAdapters$16"", e);
+    }
+}",1,
+project,0,test3030,"public void test3030() throws Throwable {
+    Gson gson0 = new Gson();
+    Character character0 = Character.valueOf('2');
+    JsonElement jsonElement0 = gson0.toJsonTree((Object) character0);
+    Class<GregorianCalendar> class0 = GregorianCalendar.class;
+    try {
+        gson0.fromJson(jsonElement0, class0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // org.evosuite.runtime.mock.java.lang.MockThrowable: Expected BEGIN_OBJECT but was STRING
+        //
+        verifyException(""com.google.gson.Gson"", e);
+    }
+}",0,
+project,0,test3131,"public void test3131() throws Throwable {
+    Gson gson0 = new Gson();
+    Class<Character> class0 = Character.TYPE;
+    JsonElement jsonElement0 = gson0.toJsonTree((Object) null, (Type) class0);
+    assertTrue(jsonElement0.isJsonNull());
+}",0,assertTrue(jsonElement0.isJsonNull())
+project,0,test3232,"public void test3232() throws Throwable {
+    Gson gson0 = new Gson();
+    StringReader stringReader0 = new StringReader(""wz4v"");
+    Class<String> class0 = String.class;
+    String string0 = gson0.fromJson((Reader) stringReader0, class0);
+    assertEquals(""wz4v"", string0);
+}",1,
+project,0,test3333,"public void test3333() throws Throwable {
+    Gson gson0 = new Gson();
+    StringReader stringReader0 = new StringReader(""null"");
+    Class<String> class0 = String.class;
+    String string0 = gson0.fromJson((Reader) stringReader0, class0);
+    assertNull(string0);
+}",1,
+project,0,test3434,"public void test3434() throws Throwable {
+    Gson gson0 = new Gson();
+    StringBuilder stringBuilder0 = new StringBuilder();
+    JsonElement jsonElement0 = gson0.toJsonTree((Object) stringBuilder0);
+    assertTrue(jsonElement0.isJsonPrimitive());
+}",0,assertTrue(jsonElement0.isJsonPrimitive())
+project,0,test3535,"public void test3535() throws Throwable {
+    Gson gson0 = new Gson();
+    StringBuffer stringBuffer0 = new StringBuffer();
+    JsonPrimitive jsonPrimitive0 = (JsonPrimitive) gson0.toJsonTree((Object) stringBuffer0);
+    assertTrue(jsonPrimitive0.isString());
+}",0,assertTrue(jsonPrimitive0.isString())
+project,0,test3636,"public void test3636() throws Throwable {
+    Gson gson0 = new Gson();
+    Class<URL> class0 = URL.class;
+    URL uRL0 = gson0.fromJson(""null"", class0);
+    assertNull(uRL0);
+}",0,
+project,0,test3737,"public void test3737() throws Throwable {
+    Gson gson0 = new Gson();
+    URL uRL0 = MockURL.getFileExample();
+    JsonPrimitive jsonPrimitive0 = (JsonPrimitive) gson0.toJsonTree((Object) uRL0);
+    assertFalse(jsonPrimitive0.isBoolean());
+}",0,assertTrue(jsonPrimitive0.isBoolean())
+project,0,test3838,"public void test3838() throws Throwable {
+    Gson gson0 = new Gson();
+    Class<URI> class0 = URI.class;
+    // Undeclared exception!
+    try {
+        gson0.fromJson("">X"", class0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // java.net.URISyntaxException: Illegal character in path at index 0: >X
+        //
+        verifyException(""com.google.gson.internal.bind.TypeAdapters$23"", e);
+    }
+}",0,
+project,0,test3939,"public void test3939() throws Throwable {
+    Gson gson0 = new Gson();
+    Class<URI> class0 = URI.class;
+    URI uRI0 = gson0.fromJson(""null"", class0);
+    assertNull(uRI0);
+}",1,
+project,0,test4040,"public void test4040() throws Throwable {
+    Gson gson0 = new Gson();
+    URI uRI0 = MockURI.aHttpURI;
+    JsonElement jsonElement0 = gson0.toJsonTree((Object) uRI0);
+    assertFalse(jsonElement0.isJsonObject());
+}",0,
+project,0,test4141,"public void test4141() throws Throwable {
+    Gson gson0 = new Gson();
+    Class<InetAddress> class0 = InetAddress.class;
+    try {
+        gson0.fromJson(""yOvN cannTthn:udle"", class0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // org.evosuite.runtime.mock.java.lang.MockThrowable: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 7 path $
+        //
+        verifyException(""com.google.gson.Gson"", e);
+    }
+}",0,
+project,0,test4242,"public void test4242() throws Throwable {
+    Gson gson0 = new Gson();
+    Class<InetAddress> class0 = InetAddress.class;
+    InetAddress inetAddress0 = gson0.fromJson(""null"", class0);
+    assertNull(inetAddress0);
+}",0,
+project,0,test4343,"public void test4343() throws Throwable {
+    Gson gson0 = new Gson();
+    UUID uUID0 = MockUUID.randomUUID();
+    JsonPrimitive jsonPrimitive0 = (JsonPrimitive) gson0.toJsonTree((Object) uUID0);
+    assertFalse(jsonPrimitive0.isNumber());
+}",0,
+project,0,test4444,"public void test4444() throws Throwable {
+    Gson gson0 = new Gson();
+    Class<GregorianCalendar> class0 = GregorianCalendar.class;
+    Long long0 = gson0.fromJson(""null"", (Type) class0);
+    assertNull(long0);
+}",1,
+project,0,test4545,"public void test4545() throws Throwable {
+    Gson gson0 = new Gson();
+    Class<GregorianCalendar> class0 = GregorianCalendar.class;
+    TypeToken<GregorianCalendar> typeToken0 = TypeToken.get(class0);
+    Class<? super GregorianCalendar> class1 = typeToken0.getRawType();
+    try {
+        gson0.fromJson(""{NM%K}.T\""]"", (Type) class1);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // org.evosuite.runtime.mock.java.lang.MockThrowable: Expected ':' at line 1 column 7 path $.NM%K
+        //
+        verifyException(""com.google.gson.Gson"", e);
+    }
+}",1,
+project,0,test4747,"public void test4747() throws Throwable {
+    Gson gson0 = new Gson();
+    Class<GregorianCalendar> class0 = GregorianCalendar.class;
+    TypeToken<GregorianCalendar> typeToken0 = TypeToken.get(class0);
+    Class<? super GregorianCalendar> class1 = typeToken0.getRawType();
+    JsonElement jsonElement0 = gson0.toJsonTree((Object) null, (Type) class1);
+    assertTrue(jsonElement0.isJsonNull());
+}",0,assertTrue(jsonElement0.isJsonNull())
+project,0,test4848,"public void test4848() throws Throwable {
+    Gson gson0 = new Gson();
+    Class<Locale> class0 = Locale.class;
+    try {
+        gson0.fromJson(""(#U[\""@6Z~.2"", class0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // org.evosuite.runtime.mock.java.lang.MockThrowable: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 3 path $
+        //
+        verifyException(""com.google.gson.Gson"", e);
+    }
+}",0,
+project,0,test4949,"public void test4949() throws Throwable {
+    Class<Locale> class0 = Locale.class;
+    Gson gson0 = new Gson();
+    // Undeclared exception!
+    try {
+        gson0.fromJson(""_"", class0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.Locale"", e);
+    }
+}",0,
+project,0,test5050,"public void test5050() throws Throwable {
+    Gson gson0 = new Gson();
+    Locale locale0 = Locale.UK;
+    JsonPrimitive jsonPrimitive0 = (JsonPrimitive) gson0.toJsonTree((Object) locale0);
+    assertTrue(jsonPrimitive0.isString());
+}",0,assertTrue(jsonPrimitive0.isString())
+project,0,test5151,"public void test5151() throws Throwable {
+    Gson gson0 = new Gson();
+    Class<BitSet> class0 = BitSet.class;
+    TypeToken<BitSet> typeToken0 = TypeToken.get(class0);
+    JsonDeserializer<BitSet> jsonDeserializer0 = (JsonDeserializer<BitSet>) mock(JsonDeserializer.class, new ViolatedAssumptionAnswer());
+    doReturn((Object) null).when(jsonDeserializer0).deserialize(any(com.google.gson.JsonElement.class), any(java.lang.reflect.Type.class), any(com.google.gson.JsonDeserializationContext.class));
+    TreeTypeAdapter<BitSet> treeTypeAdapter0 = new TreeTypeAdapter<BitSet>((JsonSerializer<BitSet>) null, jsonDeserializer0, gson0, typeToken0, (TypeAdapterFactory) null);
+    TypeAdapterRuntimeTypeWrapper<BitSet> typeAdapterRuntimeTypeWrapper0 = new TypeAdapterRuntimeTypeWrapper<BitSet>(gson0, treeTypeAdapter0, class0);
+    BitSet bitSet0 = typeAdapterRuntimeTypeWrapper0.fromJson(""6}UK%^^[\""Ku"");
+    assertNull(bitSet0);
+}",0,
+project,0,test5252,"public void test5252() throws Throwable {
+    Gson gson0 = new Gson();
+    JsonObject jsonObject0 = new JsonObject();
+    Class<JsonPrimitive> class0 = JsonPrimitive.class;
+    try {
+        gson0.fromJson((JsonElement) jsonObject0, class0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Expected a com.google.gson.JsonPrimitive but was com.google.gson.JsonObject
+        //
+        verifyException(""com.google.gson.internal.bind.TypeAdapters$35$1"", e);
+    }
+}",0,
+project,0,test5353,"public void test5353() throws Throwable {
+    Gson gson0 = new Gson();
+    Character character0 = Character.valueOf('_');
+    JsonPrimitive jsonPrimitive0 = new JsonPrimitive(character0);
+    Class<JsonPrimitive> class0 = JsonPrimitive.class;
+    JsonPrimitive jsonPrimitive1 = gson0.fromJson((JsonElement) jsonPrimitive0, class0);
+    assertFalse(jsonPrimitive1.isBoolean());
+}",0,assertTrue(jsonPrimitive1.isBoolean())
+project,0,test5454,"public void test5454() throws Throwable {
+    Gson gson0 = new Gson();
+    Class<GregorianCalendar> class0 = GregorianCalendar.class;
+    Class<BitSet> class1 = BitSet.class;
+    TypeToken<BitSet> typeToken0 = TypeToken.get(class1);
+    JsonDeserializer<BitSet> jsonDeserializer0 = (JsonDeserializer<BitSet>) mock(JsonDeserializer.class, new ViolatedAssumptionAnswer());
+    TreeTypeAdapter<BitSet> treeTypeAdapter0 = new TreeTypeAdapter<BitSet>((JsonSerializer<BitSet>) null, jsonDeserializer0, gson0, typeToken0, (TypeAdapterFactory) null);
+    TypeAdapterRuntimeTypeWrapper<BitSet> typeAdapterRuntimeTypeWrapper0 = new TypeAdapterRuntimeTypeWrapper<BitSet>(gson0, treeTypeAdapter0, class0);
+    BitSet bitSet0 = typeAdapterRuntimeTypeWrapper0.fromJson(""null"");
+    assertNull(bitSet0);
+}",1,
+project,0,test5555,"public void test5555() throws Throwable {
+    Gson gson0 = new Gson();
+    String string0 = gson0.toJson((JsonElement) null);
+    assertEquals(""null"", string0);
+}",0,
+project,0,test5656,"public void test5656() throws Throwable {
+    Gson gson0 = new Gson();
+    JsonNull jsonNull0 = JsonNull.INSTANCE;
+    JsonElement jsonElement0 = gson0.toJsonTree((Object) jsonNull0);
+    assertTrue(jsonElement0.isJsonNull());
+}",0,assertTrue(jsonElement0.isJsonNull())
+project,0,test5757,"public void test5757() throws Throwable {
+    Gson gson0 = new Gson();
+    JsonElement jsonElement0 = gson0.toJsonTree((Object) gson0);
+    assertFalse(jsonElement0.isJsonPrimitive());
+}",0,assertFalse(jsonElement0.isJsonPrimitive())
+project,0,test5858,"public void test5858() throws Throwable {
+    ObjectConstructor<Short> objectConstructor0 = (ObjectConstructor<Short>) mock(ObjectConstructor.class, new ViolatedAssumptionAnswer());
+    Gson gson0 = new Gson();
+    // Undeclared exception!
+    try {
+        gson0.toJsonTree((Object) objectConstructor0);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // Attempted to serialize java.lang.Class: com.google.gson.internal.ObjectConstructor. Forgot to register a type adapter?
+        //
+        verifyException(""com.google.gson.internal.bind.TypeAdapters$5"", e);
+    }
+}",0,
+project,0,test5959,"public void test5959() throws Throwable {
+    Gson gson0 = new Gson();
+    Class<Calendar> class0 = Calendar.class;
+    TypeAdapter<Calendar> typeAdapter0 = gson0.getAdapter(class0);
+    assertNotNull(typeAdapter0);
+}",0,

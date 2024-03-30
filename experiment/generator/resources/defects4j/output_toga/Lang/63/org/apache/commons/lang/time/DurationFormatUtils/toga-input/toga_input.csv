@@ -1,0 +1,613 @@
+focal_method,test_prefix,docstring
+"public static String formatPeriod(long startMillis, long endMillis, String format, boolean padWithZeros, TimeZone timezone) {
+    long millis = endMillis - startMillis;
+    if (millis < 28 * DateUtils.MILLIS_PER_DAY) {
+        return formatDuration(millis, format, padWithZeros);
+    }
+    Token[] tokens = lexx(format);
+    // timezones get funky around 0, so normalizing everything to GMT
+    // stops the hours being off
+    Calendar start = Calendar.getInstance(timezone);
+    start.setTime(new Date(startMillis));
+    Calendar end = Calendar.getInstance(timezone);
+    end.setTime(new Date(endMillis));
+    // initial estimates
+    int milliseconds = end.get(Calendar.MILLISECOND) - start.get(Calendar.MILLISECOND);
+    int seconds = end.get(Calendar.SECOND) - start.get(Calendar.SECOND);
+    int minutes = end.get(Calendar.MINUTE) - start.get(Calendar.MINUTE);
+    int hours = end.get(Calendar.HOUR_OF_DAY) - start.get(Calendar.HOUR_OF_DAY);
+    int days = end.get(Calendar.DAY_OF_MONTH) - start.get(Calendar.DAY_OF_MONTH);
+    int months = end.get(Calendar.MONTH) - start.get(Calendar.MONTH);
+    int years = end.get(Calendar.YEAR) - start.get(Calendar.YEAR);
+    // each initial estimate is adjusted in case it is under 0
+    while (milliseconds < 0) {
+        milliseconds += 1000;
+        seconds -= 1;
+    }
+    while (seconds < 0) {
+        seconds += 60;
+        minutes -= 1;
+    }
+    while (minutes < 0) {
+        minutes += 60;
+        hours -= 1;
+    }
+    while (hours < 0) {
+        hours += 24;
+        days -= 1;
+    }
+    while (days < 0) {
+        days += 31;
+        //days += 31; // TODO: Need tests to show this is bad and the new code is good.
+        // HEN: It's a tricky subject. Jan 15th to March 10th. If I count days-first it is
+        // 1 month and 26 days, but if I count month-first then it is 1 month and 23 days.
+        // Also it's contextual - if asked for no M in the format then I should probably
+        // be doing no calculating here.
+        months -= 1;
+    }
+    while (months < 0) {
+        months += 12;
+        years -= 1;
+    }
+    milliseconds -= reduceAndCorrect(start, end, Calendar.MILLISECOND, milliseconds);
+    seconds -= reduceAndCorrect(start, end, Calendar.SECOND, seconds);
+    minutes -= reduceAndCorrect(start, end, Calendar.MINUTE, minutes);
+    hours -= reduceAndCorrect(start, end, Calendar.HOUR_OF_DAY, hours);
+    days -= reduceAndCorrect(start, end, Calendar.DAY_OF_MONTH, days);
+    months -= reduceAndCorrect(start, end, Calendar.MONTH, months);
+    years -= reduceAndCorrect(start, end, Calendar.YEAR, years);
+    // This next block of code adds in values that
+    // aren't requested. This allows the user to ask for the
+    // number of months and get the real count and not just 0->11.
+    if (!Token.containsTokenWithValue(tokens, y)) {
+        if (Token.containsTokenWithValue(tokens, M)) {
+            months += 12 * years;
+            years = 0;
+        } else {
+            // TODO: this is a bit weak, needs work to know about leap years
+            days += 365 * years;
+            years = 0;
+        }
+    }
+    if (!Token.containsTokenWithValue(tokens, M)) {
+        days += end.get(Calendar.DAY_OF_YEAR) - start.get(Calendar.DAY_OF_YEAR);
+        months = 0;
+    }
+    if (!Token.containsTokenWithValue(tokens, d)) {
+        hours += 24 * days;
+        days = 0;
+    }
+    if (!Token.containsTokenWithValue(tokens, H)) {
+        minutes += 60 * hours;
+        hours = 0;
+    }
+    if (!Token.containsTokenWithValue(tokens, m)) {
+        seconds += 60 * minutes;
+        minutes = 0;
+    }
+    if (!Token.containsTokenWithValue(tokens, s)) {
+        milliseconds += 1000 * seconds;
+        seconds = 0;
+    }
+    return format(tokens, years, months, days, hours, minutes, seconds, milliseconds, padWithZeros);
+}","public void test011() throws Throwable {
+    TimeZone timeZone0 = TimeZone.getDefault();
+    String string0 = DurationFormatUtils.formatPeriod((-553L), (-553L), ""0java.lang.StringBuffer@00000000090java.lang.StringBuffer@00000000100java.lang.StringBuffer@00000000110java.lang.StringBuffer@0000000012"", false, timeZone0);
+    assertNotNull(string0);
+}","/**
+ * <p>Formats the time gap as a string, using the specified format.
+ * Padding the left hand side of numbers with zeroes is optional and
+ * the timezone may be specified.
+ *
+ * @param startMillis  the start of the duration
+ * @param endMillis  the end of the duration
+ * @param format  the way in which to format the duration
+ * @param padWithZeros whether to pad the left hand side of numbers with 0's
+ * @param timezone the millis are defined in
+ * @return the time as a String
+ */"
+"public static String formatDurationISO(long durationMillis) {
+    return formatDuration(durationMillis, ISO_EXTENDED_FORMAT_PATTERN, false);
+}","public void test033() throws Throwable {
+    String string0 = DurationFormatUtils.formatDurationISO((-712L));
+    assertNotNull(string0);
+}","/**
+ * <p>Formats the time gap as a string.</p>
+ *
+ * <p>The format used is the ISO8601 period format.</p>
+ *
+ * <p>This method formats durations using the days and lower fields of the
+ * ISO format pattern, such as P7D6TH5M4.321S.</p>
+ *
+ * @param durationMillis  the duration to format
+ * @return the time as a String
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * <p>Formats the time gap as a string.</p>
+ *
+ * <p>The format used is the ISO8601 period format.</p>
+ *
+ * @param startMillis  the start of the duration to format
+ * @param endMillis  the end of the duration to format
+ * @return the time as a String
+ */
+public static String formatPeriodISO(long startMillis, long endMillis) {
+    return formatPeriod(startMillis, endMillis, ISO_EXTENDED_FORMAT_PATTERN, false, TimeZone.getDefault());
+}","public void test044() throws Throwable {
+    String string0 = DurationFormatUtils.formatPeriodISO((-3266L), 2419200527L);
+    assertNotNull(string0);
+}",""
+"public DurationFormatUtils() {
+    super();
+}","public void test055() throws Throwable {
+    DurationFormatUtils durationFormatUtils0 = new DurationFormatUtils();
+}","/**
+ * <p>DurationFormatUtils instances should NOT be constructed in standard programming.</p>
+ *
+ * <p>This constructor is public to permit tools that require a JavaBean instance
+ * to operate.</p>
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * <p>Formats the time gap as a string.</p>
+ *
+ * <p>The format used is ISO8601-like:
+ * <i>H</i>:<i>m</i>:<i>s</i>.<i>S</i>.</p>
+ *
+ * @param durationMillis  the duration to format
+ * @return the time as a String
+ */
+public static String formatDurationHMS(long durationMillis) {
+    return formatDuration(durationMillis, ""H:mm:ss.SSS"");
+}","public void test066() throws Throwable {
+    String string0 = DurationFormatUtils.formatDurationHMS((-712L));
+    assertNotNull(string0);
+}",""
+"public static String formatPeriod(long startMillis, long endMillis, String format) {
+    return formatPeriod(startMillis, endMillis, format, true, TimeZone.getDefault());
+}","public void test077() throws Throwable {
+    String string0 = DurationFormatUtils.formatPeriod(297L, 297L, ""Jw!"");
+    assertNotNull(string0);
+}","/**
+ * <p>Formats the time gap as a string, using the specified format.
+ * Padding the left hand side of numbers with zeroes is optional.
+ *
+ * @param startMillis  the start of the duration
+ * @param endMillis  the end of the duration
+ * @param format  the way in which to format the duration
+ * @return the time as a String
+ */"
+"public static String formatDurationWords(long durationMillis, boolean suppressLeadingZeroElements, boolean suppressTrailingZeroElements) {
+    // This method is generally replacable by the format method, but
+    // there are a series of tweaks and special cases that require
+    // trickery to replicate.
+    String duration = formatDuration(durationMillis, ""d' days 'H' hours 'm' minutes 's' seconds'"");
+    if (suppressLeadingZeroElements) {
+        // this is a temporary marker on the front. Like ^ in regexp.
+        duration = "" "" + duration;
+        String tmp = StringUtils.replaceOnce(duration, "" 0 days"", """");
+        if (tmp.length() != duration.length()) {
+            duration = tmp;
+            tmp = StringUtils.replaceOnce(duration, "" 0 hours"", """");
+            if (tmp.length() != duration.length()) {
+                duration = tmp;
+                tmp = StringUtils.replaceOnce(duration, "" 0 minutes"", """");
+                duration = tmp;
+                if (tmp.length() != duration.length()) {
+                    duration = StringUtils.replaceOnce(tmp, "" 0 seconds"", """");
+                }
+            }
+        }
+        if (duration.length() != 0) {
+            // strip the space off again
+            duration = duration.substring(1);
+        }
+    }
+    if (suppressTrailingZeroElements) {
+        String tmp = StringUtils.replaceOnce(duration, "" 0 seconds"", """");
+        if (tmp.length() != duration.length()) {
+            duration = tmp;
+            tmp = StringUtils.replaceOnce(duration, "" 0 minutes"", """");
+            if (tmp.length() != duration.length()) {
+                duration = tmp;
+                tmp = StringUtils.replaceOnce(duration, "" 0 hours"", """");
+                if (tmp.length() != duration.length()) {
+                    duration = StringUtils.replaceOnce(tmp, "" 0 days"", """");
+                }
+            }
+        }
+    }
+    // handle plurals
+    duration = "" "" + duration;
+    duration = StringUtils.replaceOnce(duration, "" 1 seconds"", "" 1 second"");
+    duration = StringUtils.replaceOnce(duration, "" 1 minutes"", "" 1 minute"");
+    duration = StringUtils.replaceOnce(duration, "" 1 hours"", "" 1 hour"");
+    duration = StringUtils.replaceOnce(duration, "" 1 days"", "" 1 day"");
+    return duration.trim();
+}","public void test088() throws Throwable {
+    String string0 = DurationFormatUtils.formatDurationWords((-553L), false, false);
+    assertNotNull(string0);
+}","/**
+ * <p>Formats an elapsed time into a plurialization correct string.</p>
+ *
+ * <p>This method formats durations using the days and lower fields of the
+ * format pattern. Months and larger are not used.</p>
+ *
+ * @param durationMillis  the elapsed time to report in milliseconds
+ * @param suppressLeadingZeroElements  suppresses leading 0 elements
+ * @param suppressTrailingZeroElements  suppresses trailing 0 elements
+ * @return the formatted text in days/hours/minutes/seconds
+ */"
+"public static String formatDurationWords(long durationMillis, boolean suppressLeadingZeroElements, boolean suppressTrailingZeroElements) {
+    // This method is generally replacable by the format method, but
+    // there are a series of tweaks and special cases that require
+    // trickery to replicate.
+    String duration = formatDuration(durationMillis, ""d' days 'H' hours 'm' minutes 's' seconds'"");
+    if (suppressLeadingZeroElements) {
+        // this is a temporary marker on the front. Like ^ in regexp.
+        duration = "" "" + duration;
+        String tmp = StringUtils.replaceOnce(duration, "" 0 days"", """");
+        if (tmp.length() != duration.length()) {
+            duration = tmp;
+            tmp = StringUtils.replaceOnce(duration, "" 0 hours"", """");
+            if (tmp.length() != duration.length()) {
+                duration = tmp;
+                tmp = StringUtils.replaceOnce(duration, "" 0 minutes"", """");
+                duration = tmp;
+                if (tmp.length() != duration.length()) {
+                    duration = StringUtils.replaceOnce(tmp, "" 0 seconds"", """");
+                }
+            }
+        }
+        if (duration.length() != 0) {
+            // strip the space off again
+            duration = duration.substring(1);
+        }
+    }
+    if (suppressTrailingZeroElements) {
+        String tmp = StringUtils.replaceOnce(duration, "" 0 seconds"", """");
+        if (tmp.length() != duration.length()) {
+            duration = tmp;
+            tmp = StringUtils.replaceOnce(duration, "" 0 minutes"", """");
+            if (tmp.length() != duration.length()) {
+                duration = tmp;
+                tmp = StringUtils.replaceOnce(duration, "" 0 hours"", """");
+                if (tmp.length() != duration.length()) {
+                    duration = StringUtils.replaceOnce(tmp, "" 0 days"", """");
+                }
+            }
+        }
+    }
+    // handle plurals
+    duration = "" "" + duration;
+    duration = StringUtils.replaceOnce(duration, "" 1 seconds"", "" 1 second"");
+    duration = StringUtils.replaceOnce(duration, "" 1 minutes"", "" 1 minute"");
+    duration = StringUtils.replaceOnce(duration, "" 1 hours"", "" 1 hour"");
+    duration = StringUtils.replaceOnce(duration, "" 1 days"", "" 1 day"");
+    return duration.trim();
+}","public void test099() throws Throwable {
+    String string0 = DurationFormatUtils.formatDurationWords(0L, true, true);
+    assertNotNull(string0);
+}","/**
+ * <p>Formats an elapsed time into a plurialization correct string.</p>
+ *
+ * <p>This method formats durations using the days and lower fields of the
+ * format pattern. Months and larger are not used.</p>
+ *
+ * @param durationMillis  the elapsed time to report in milliseconds
+ * @param suppressLeadingZeroElements  suppresses leading 0 elements
+ * @param suppressTrailingZeroElements  suppresses trailing 0 elements
+ * @return the formatted text in days/hours/minutes/seconds
+ */"
+"public static String formatPeriod(long startMillis, long endMillis, String format, boolean padWithZeros, TimeZone timezone) {
+    long millis = endMillis - startMillis;
+    if (millis < 28 * DateUtils.MILLIS_PER_DAY) {
+        return formatDuration(millis, format, padWithZeros);
+    }
+    Token[] tokens = lexx(format);
+    // timezones get funky around 0, so normalizing everything to GMT
+    // stops the hours being off
+    Calendar start = Calendar.getInstance(timezone);
+    start.setTime(new Date(startMillis));
+    Calendar end = Calendar.getInstance(timezone);
+    end.setTime(new Date(endMillis));
+    // initial estimates
+    int milliseconds = end.get(Calendar.MILLISECOND) - start.get(Calendar.MILLISECOND);
+    int seconds = end.get(Calendar.SECOND) - start.get(Calendar.SECOND);
+    int minutes = end.get(Calendar.MINUTE) - start.get(Calendar.MINUTE);
+    int hours = end.get(Calendar.HOUR_OF_DAY) - start.get(Calendar.HOUR_OF_DAY);
+    int days = end.get(Calendar.DAY_OF_MONTH) - start.get(Calendar.DAY_OF_MONTH);
+    int months = end.get(Calendar.MONTH) - start.get(Calendar.MONTH);
+    int years = end.get(Calendar.YEAR) - start.get(Calendar.YEAR);
+    // each initial estimate is adjusted in case it is under 0
+    while (milliseconds < 0) {
+        milliseconds += 1000;
+        seconds -= 1;
+    }
+    while (seconds < 0) {
+        seconds += 60;
+        minutes -= 1;
+    }
+    while (minutes < 0) {
+        minutes += 60;
+        hours -= 1;
+    }
+    while (hours < 0) {
+        hours += 24;
+        days -= 1;
+    }
+    while (days < 0) {
+        days += 31;
+        //days += 31; // TODO: Need tests to show this is bad and the new code is good.
+        // HEN: It's a tricky subject. Jan 15th to March 10th. If I count days-first it is
+        // 1 month and 26 days, but if I count month-first then it is 1 month and 23 days.
+        // Also it's contextual - if asked for no M in the format then I should probably
+        // be doing no calculating here.
+        months -= 1;
+    }
+    while (months < 0) {
+        months += 12;
+        years -= 1;
+    }
+    milliseconds -= reduceAndCorrect(start, end, Calendar.MILLISECOND, milliseconds);
+    seconds -= reduceAndCorrect(start, end, Calendar.SECOND, seconds);
+    minutes -= reduceAndCorrect(start, end, Calendar.MINUTE, minutes);
+    hours -= reduceAndCorrect(start, end, Calendar.HOUR_OF_DAY, hours);
+    days -= reduceAndCorrect(start, end, Calendar.DAY_OF_MONTH, days);
+    months -= reduceAndCorrect(start, end, Calendar.MONTH, months);
+    years -= reduceAndCorrect(start, end, Calendar.YEAR, years);
+    // This next block of code adds in values that
+    // aren't requested. This allows the user to ask for the
+    // number of months and get the real count and not just 0->11.
+    if (!Token.containsTokenWithValue(tokens, y)) {
+        if (Token.containsTokenWithValue(tokens, M)) {
+            months += 12 * years;
+            years = 0;
+        } else {
+            // TODO: this is a bit weak, needs work to know about leap years
+            days += 365 * years;
+            years = 0;
+        }
+    }
+    if (!Token.containsTokenWithValue(tokens, M)) {
+        days += end.get(Calendar.DAY_OF_YEAR) - start.get(Calendar.DAY_OF_YEAR);
+        months = 0;
+    }
+    if (!Token.containsTokenWithValue(tokens, d)) {
+        hours += 24 * days;
+        days = 0;
+    }
+    if (!Token.containsTokenWithValue(tokens, H)) {
+        minutes += 60 * hours;
+        hours = 0;
+    }
+    if (!Token.containsTokenWithValue(tokens, m)) {
+        seconds += 60 * minutes;
+        minutes = 0;
+    }
+    if (!Token.containsTokenWithValue(tokens, s)) {
+        milliseconds += 1000 * seconds;
+        seconds = 0;
+    }
+    return format(tokens, years, months, days, hours, minutes, seconds, milliseconds, padWithZeros);
+}","public void test1010() throws Throwable {
+    TimeZone timeZone0 = TimeZone.getTimeZone("")t{v^g"");
+    String string0 = DurationFormatUtils.formatPeriod((-1989L), 2419199989L, "")t{v^g"", true, timeZone0);
+    assertNotNull(string0);
+}","/**
+ * <p>Formats the time gap as a string, using the specified format.
+ * Padding the left hand side of numbers with zeroes is optional and
+ * the timezone may be specified.
+ *
+ * @param startMillis  the start of the duration
+ * @param endMillis  the end of the duration
+ * @param format  the way in which to format the duration
+ * @param padWithZeros whether to pad the left hand side of numbers with 0's
+ * @param timezone the millis are defined in
+ * @return the time as a String
+ */"
+"public static String formatPeriod(long startMillis, long endMillis, String format, boolean padWithZeros, TimeZone timezone) {
+    long millis = endMillis - startMillis;
+    if (millis < 28 * DateUtils.MILLIS_PER_DAY) {
+        return formatDuration(millis, format, padWithZeros);
+    }
+    Token[] tokens = lexx(format);
+    // timezones get funky around 0, so normalizing everything to GMT
+    // stops the hours being off
+    Calendar start = Calendar.getInstance(timezone);
+    start.setTime(new Date(startMillis));
+    Calendar end = Calendar.getInstance(timezone);
+    end.setTime(new Date(endMillis));
+    // initial estimates
+    int milliseconds = end.get(Calendar.MILLISECOND) - start.get(Calendar.MILLISECOND);
+    int seconds = end.get(Calendar.SECOND) - start.get(Calendar.SECOND);
+    int minutes = end.get(Calendar.MINUTE) - start.get(Calendar.MINUTE);
+    int hours = end.get(Calendar.HOUR_OF_DAY) - start.get(Calendar.HOUR_OF_DAY);
+    int days = end.get(Calendar.DAY_OF_MONTH) - start.get(Calendar.DAY_OF_MONTH);
+    int months = end.get(Calendar.MONTH) - start.get(Calendar.MONTH);
+    int years = end.get(Calendar.YEAR) - start.get(Calendar.YEAR);
+    // each initial estimate is adjusted in case it is under 0
+    while (milliseconds < 0) {
+        milliseconds += 1000;
+        seconds -= 1;
+    }
+    while (seconds < 0) {
+        seconds += 60;
+        minutes -= 1;
+    }
+    while (minutes < 0) {
+        minutes += 60;
+        hours -= 1;
+    }
+    while (hours < 0) {
+        hours += 24;
+        days -= 1;
+    }
+    while (days < 0) {
+        days += 31;
+        //days += 31; // TODO: Need tests to show this is bad and the new code is good.
+        // HEN: It's a tricky subject. Jan 15th to March 10th. If I count days-first it is
+        // 1 month and 26 days, but if I count month-first then it is 1 month and 23 days.
+        // Also it's contextual - if asked for no M in the format then I should probably
+        // be doing no calculating here.
+        months -= 1;
+    }
+    while (months < 0) {
+        months += 12;
+        years -= 1;
+    }
+    milliseconds -= reduceAndCorrect(start, end, Calendar.MILLISECOND, milliseconds);
+    seconds -= reduceAndCorrect(start, end, Calendar.SECOND, seconds);
+    minutes -= reduceAndCorrect(start, end, Calendar.MINUTE, minutes);
+    hours -= reduceAndCorrect(start, end, Calendar.HOUR_OF_DAY, hours);
+    days -= reduceAndCorrect(start, end, Calendar.DAY_OF_MONTH, days);
+    months -= reduceAndCorrect(start, end, Calendar.MONTH, months);
+    years -= reduceAndCorrect(start, end, Calendar.YEAR, years);
+    // This next block of code adds in values that
+    // aren't requested. This allows the user to ask for the
+    // number of months and get the real count and not just 0->11.
+    if (!Token.containsTokenWithValue(tokens, y)) {
+        if (Token.containsTokenWithValue(tokens, M)) {
+            months += 12 * years;
+            years = 0;
+        } else {
+            // TODO: this is a bit weak, needs work to know about leap years
+            days += 365 * years;
+            years = 0;
+        }
+    }
+    if (!Token.containsTokenWithValue(tokens, M)) {
+        days += end.get(Calendar.DAY_OF_YEAR) - start.get(Calendar.DAY_OF_YEAR);
+        months = 0;
+    }
+    if (!Token.containsTokenWithValue(tokens, d)) {
+        hours += 24 * days;
+        days = 0;
+    }
+    if (!Token.containsTokenWithValue(tokens, H)) {
+        minutes += 60 * hours;
+        hours = 0;
+    }
+    if (!Token.containsTokenWithValue(tokens, m)) {
+        seconds += 60 * minutes;
+        minutes = 0;
+    }
+    if (!Token.containsTokenWithValue(tokens, s)) {
+        milliseconds += 1000 * seconds;
+        seconds = 0;
+    }
+    return format(tokens, years, months, days, hours, minutes, seconds, milliseconds, padWithZeros);
+}","public void test1111() throws Throwable {
+    TimeZone timeZone0 = TimeZone.getDefault();
+    String string0 = DurationFormatUtils.formatPeriod((-2278L), 2419200033L, ""Minimum abbreviation width wih offset is 7"", false, timeZone0);
+    assertNotNull(string0);
+}","/**
+ * <p>Formats the time gap as a string, using the specified format.
+ * Padding the left hand side of numbers with zeroes is optional and
+ * the timezone may be specified.
+ *
+ * @param startMillis  the start of the duration
+ * @param endMillis  the end of the duration
+ * @param format  the way in which to format the duration
+ * @param padWithZeros whether to pad the left hand side of numbers with 0's
+ * @param timezone the millis are defined in
+ * @return the time as a String
+ */"
+"public static String formatDuration(long durationMillis, String format) {
+    return formatDuration(durationMillis, format, true);
+}","public void test1212() throws Throwable {
+    String string0 = DurationFormatUtils.formatDuration(11286L, ""'P'yyyy'Y'M'M'd'DT'H'H'm'M's.S'S'"");
+    assertNotNull(string0);
+}","/**
+ * <p>Formats the time gap as a string, using the specified format, and padding with zeros and
+ * using the default timezone.</p>
+ *
+ * <p>This method formats durations using the days and lower fields of the
+ * format pattern. Months and larger are not used.</p>
+ *
+ * @param durationMillis  the duration to format
+ * @param format  the way in which to format the duration
+ * @return the time as a String
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * <p>The internal method to do the formatting.</p>
+ *
+ * @param tokens  the tokens
+ * @param years  the number of years
+ * @param months  the number of months
+ * @param days  the number of days
+ * @param hours  the number of hours
+ * @param minutes  the number of minutes
+ * @param seconds  the number of seconds
+ * @param milliseconds  the number of millis
+ * @param padWithZeros  whether to pad
+ * @return the formetted string
+ */
+static String format(Token[] tokens, int years, int months, int days, int hours, int minutes, int seconds, int milliseconds, boolean padWithZeros) {
+    StringBuffer buffer = new StringBuffer();
+    boolean lastOutputSeconds = false;
+    int sz = tokens.length;
+    for (int i = 0; i < sz; i++) {
+        Token token = tokens[i];
+        Object value = token.getValue();
+        int count = token.getCount();
+        if (value instanceof StringBuffer) {
+            buffer.append(value.toString());
+        } else {
+            if (value == y) {
+                buffer.append(padWithZeros ? StringUtils.leftPad(Integer.toString(years), count, '0') : Integer.toString(years));
+                lastOutputSeconds = false;
+            } else if (value == M) {
+                buffer.append(padWithZeros ? StringUtils.leftPad(Integer.toString(months), count, '0') : Integer.toString(months));
+                lastOutputSeconds = false;
+            } else if (value == d) {
+                buffer.append(padWithZeros ? StringUtils.leftPad(Integer.toString(days), count, '0') : Integer.toString(days));
+                lastOutputSeconds = false;
+            } else if (value == H) {
+                buffer.append(padWithZeros ? StringUtils.leftPad(Integer.toString(hours), count, '0') : Integer.toString(hours));
+                lastOutputSeconds = false;
+            } else if (value == m) {
+                buffer.append(padWithZeros ? StringUtils.leftPad(Integer.toString(minutes), count, '0') : Integer.toString(minutes));
+                lastOutputSeconds = false;
+            } else if (value == s) {
+                buffer.append(padWithZeros ? StringUtils.leftPad(Integer.toString(seconds), count, '0') : Integer.toString(seconds));
+                lastOutputSeconds = true;
+            } else if (value == S) {
+                if (lastOutputSeconds) {
+                    milliseconds += 1000;
+                    String str = padWithZeros ? StringUtils.leftPad(Integer.toString(milliseconds), count, '0') : Integer.toString(milliseconds);
+                    buffer.append(str.substring(1));
+                } else {
+                    buffer.append(padWithZeros ? StringUtils.leftPad(Integer.toString(milliseconds), count, '0') : Integer.toString(milliseconds));
+                }
+                lastOutputSeconds = false;
+            }
+        }
+    }
+    return buffer.toString();
+}","public void test1313() throws Throwable {
+    Object object0 = new Object();
+    DurationFormatUtils.Token durationFormatUtils_Token0 = new DurationFormatUtils.Token(object0);
+    DurationFormatUtils.Token[] durationFormatUtils_TokenArray0 = new DurationFormatUtils.Token[1];
+    durationFormatUtils_TokenArray0[0] = durationFormatUtils_Token0;
+    String string0 = DurationFormatUtils.format(durationFormatUtils_TokenArray0, 0, 0, 0, 0, 0, 0, 0, false);
+    assertEquals("""", string0);
+}",""
+"public static String formatDuration(long durationMillis, String format) {
+    return formatDuration(durationMillis, format, true);
+}","public void test1414() throws Throwable {
+    String string0 = DurationFormatUtils.formatDuration(1000L, ""FWX)(MS>cJ}"");
+    assertNotNull(string0);
+}","/**
+ * <p>Formats the time gap as a string, using the specified format, and padding with zeros and
+ * using the default timezone.</p>
+ *
+ * <p>This method formats durations using the days and lower fields of the
+ * format pattern. Months and larger are not used.</p>
+ *
+ * @param durationMillis  the duration to format
+ * @param format  the way in which to format the duration
+ * @return the time as a String
+ */"

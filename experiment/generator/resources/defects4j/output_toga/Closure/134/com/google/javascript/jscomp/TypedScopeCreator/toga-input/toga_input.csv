@@ -1,0 +1,361 @@
+focal_method,test_prefix,docstring
+"public boolean isLocal() {
+    return !isGlobal();
+}","public void test000() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    Node node0 = compiler0.parseTestCode(""com.google.javascript.jscomp.AnalyzePrototypeProperties$ProcessProperties"");
+    Scope scope0 = typedScopeCreator0.createScope(node0, (Scope) null);
+    assertFalse(scope0.isLocal());
+}","/**
+ * Returns whether this is a local scope (i.e. not the global scope).
+ */"
+"public Scope createScope(Node root, Scope parent) {
+    // Constructing the global scope is very different than constructing
+    // inner scopes, because only global scopes can contain named classes that
+    // show up in the type registry.
+    Scope newScope = null;
+    if (parent == null) {
+        // Find all the classes in the global scope.
+        newScope = createInitialScope(root);
+        GlobalScopeBuilder scopeBuilder = new GlobalScopeBuilder(newScope);
+        NodeTraversal.traverse(compiler, root, scopeBuilder);
+        scopeBuilder.resolveStubDeclarations();
+        // Gather the properties in each function that we found in the
+        // global scope, if that function has a @this type that we can
+        // build properties on.
+        for (Node functionNode : scopeBuilder.nonExternFunctions) {
+            JSType type = functionNode.getJSType();
+            if (type != null && type instanceof FunctionType) {
+                FunctionType fnType = (FunctionType) type;
+                ObjectType fnThisType = fnType.getTypeOfThis();
+                if (!fnThisType.isUnknownType()) {
+                    NodeTraversal.traverse(compiler, functionNode.getLastChild(), scopeBuilder.new CollectProperties(fnThisType));
+                }
+            }
+        }
+        codingConvention.defineDelegateProxyProperties(typeRegistry, newScope, delegateProxyMap);
+    } else {
+        newScope = new Scope(parent, root);
+        (new LocalScopeBuilder(newScope)).build();
+    }
+    typeRegistry.resolveTypesInScope(newScope);
+    return newScope;
+}","public void test011() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = new Node(105);
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    // Undeclared exception!
+    try {
+        typedScopeCreator0.createScope(node0, (Scope) null);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // null
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * Creates a scope with all types declared. Declares newly discovered types
+ * and type properties in the type registry.
+ */"
+"public Scope createScope(Node root, Scope parent) {
+    // Constructing the global scope is very different than constructing
+    // inner scopes, because only global scopes can contain named classes that
+    // show up in the type registry.
+    Scope newScope = null;
+    if (parent == null) {
+        // Find all the classes in the global scope.
+        newScope = createInitialScope(root);
+        GlobalScopeBuilder scopeBuilder = new GlobalScopeBuilder(newScope);
+        NodeTraversal.traverse(compiler, root, scopeBuilder);
+        scopeBuilder.resolveStubDeclarations();
+        // Gather the properties in each function that we found in the
+        // global scope, if that function has a @this type that we can
+        // build properties on.
+        for (Node functionNode : scopeBuilder.nonExternFunctions) {
+            JSType type = functionNode.getJSType();
+            if (type != null && type instanceof FunctionType) {
+                FunctionType fnType = (FunctionType) type;
+                ObjectType fnThisType = fnType.getTypeOfThis();
+                if (!fnThisType.isUnknownType()) {
+                    NodeTraversal.traverse(compiler, functionNode.getLastChild(), scopeBuilder.new CollectProperties(fnThisType));
+                }
+            }
+        }
+        codingConvention.defineDelegateProxyProperties(typeRegistry, newScope, delegateProxyMap);
+    } else {
+        newScope = new Scope(parent, root);
+        (new LocalScopeBuilder(newScope)).build();
+    }
+    typeRegistry.resolveTypesInScope(newScope);
+    return newScope;
+}","public void test022() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = new Node(118, 118, 118);
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    // Undeclared exception!
+    try {
+        typedScopeCreator0.createScope(node0, (Scope) null);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // null
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * Creates a scope with all types declared. Declares newly discovered types
+ * and type properties in the type registry.
+ */"
+"public boolean isLocal() {
+    return !isGlobal();
+}","public void test033() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    Node node0 = compiler0.parseSyntheticCode(""$sg.d=p.label"", ""$sg.d=p.label"");
+    Scope scope0 = typedScopeCreator0.createScope(node0, (Scope) null);
+    assertFalse(scope0.isLocal());
+}","/**
+ * Returns whether this is a local scope (i.e. not the global scope).
+ */"
+"public Scope createScope(Node root, Scope parent) {
+    // Constructing the global scope is very different than constructing
+    // inner scopes, because only global scopes can contain named classes that
+    // show up in the type registry.
+    Scope newScope = null;
+    if (parent == null) {
+        // Find all the classes in the global scope.
+        newScope = createInitialScope(root);
+        GlobalScopeBuilder scopeBuilder = new GlobalScopeBuilder(newScope);
+        NodeTraversal.traverse(compiler, root, scopeBuilder);
+        scopeBuilder.resolveStubDeclarations();
+        // Gather the properties in each function that we found in the
+        // global scope, if that function has a @this type that we can
+        // build properties on.
+        for (Node functionNode : scopeBuilder.nonExternFunctions) {
+            JSType type = functionNode.getJSType();
+            if (type != null && type instanceof FunctionType) {
+                FunctionType fnType = (FunctionType) type;
+                ObjectType fnThisType = fnType.getTypeOfThis();
+                if (!fnThisType.isUnknownType()) {
+                    NodeTraversal.traverse(compiler, functionNode.getLastChild(), scopeBuilder.new CollectProperties(fnThisType));
+                }
+            }
+        }
+        codingConvention.defineDelegateProxyProperties(typeRegistry, newScope, delegateProxyMap);
+    } else {
+        newScope = new Scope(parent, root);
+        (new LocalScopeBuilder(newScope)).build();
+    }
+    typeRegistry.resolveTypesInScope(newScope);
+    return newScope;
+}","public void test044() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    Stack<JSType> stack0 = new Stack<JSType>();
+    Node node0 = jSTypeRegistry0.createParameters((List<JSType>) stack0);
+    Node node1 = Node.newString(""os"");
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, ""os"", ""os"", 6, 4);
+    Node node2 = new Node(24, node1, node0);
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0, (CodingConvention) null);
+    Scope scope0 = new Scope(node0, namedType0);
+    // Undeclared exception!
+    try {
+        typedScopeCreator0.createScope(node2, scope0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // null
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * Creates a scope with all types declared. Declares newly discovered types
+ * and type properties in the type registry.
+ */"
+"public int getVarCount() {
+    return vars.size();
+}","public void test055() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    Node node0 = new Node(106);
+    Node node1 = new Node(37, node0, node0, node0);
+    Scope scope0 = typedScopeCreator0.createScope(node1, (Scope) null);
+    assertEquals(33, scope0.getVarCount());
+}","/**
+ * Returns number of variables in this scope
+ */"
+"public int getVarCount() {
+    return vars.size();
+}","public void test066() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    Node node0 = compiler0.parseSyntheticCode(""EmZ|TCN4D=jvq"", ""EmZ|TCN4D=jvq"");
+    Scope scope0 = typedScopeCreator0.createScope(node0, (Scope) null);
+    assertEquals(33, scope0.getVarCount());
+}","/**
+ * Returns number of variables in this scope
+ */"
+"public boolean isLocal() {
+    return !isGlobal();
+}","public void test077() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    Node node0 = compiler0.parseTestCode(""goog.typedef"");
+    Scope scope0 = typedScopeCreator0.createScope(node0, (Scope) null);
+    assertFalse(scope0.isLocal());
+}","/**
+ * Returns whether this is a local scope (i.e. not the global scope).
+ */"
+"public boolean isLocal() {
+    return !isGlobal();
+}","public void test088() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    Stack<JSType> stack0 = new Stack<JSType>();
+    Node node0 = jSTypeRegistry0.createParameters((List<JSType>) stack0);
+    Node node1 = new Node(36, node0, node0);
+    Scope scope0 = typedScopeCreator0.createInitialScope(node0);
+    Node node2 = new Node(42, node1, node1);
+    Scope scope1 = typedScopeCreator0.createScope(node2, scope0);
+    assertTrue(scope1.isLocal());
+}","/**
+ * Returns whether this is a local scope (i.e. not the global scope).
+ */"
+"public Scope createScope(Node root, Scope parent) {
+    // Constructing the global scope is very different than constructing
+    // inner scopes, because only global scopes can contain named classes that
+    // show up in the type registry.
+    Scope newScope = null;
+    if (parent == null) {
+        // Find all the classes in the global scope.
+        newScope = createInitialScope(root);
+        GlobalScopeBuilder scopeBuilder = new GlobalScopeBuilder(newScope);
+        NodeTraversal.traverse(compiler, root, scopeBuilder);
+        scopeBuilder.resolveStubDeclarations();
+        // Gather the properties in each function that we found in the
+        // global scope, if that function has a @this type that we can
+        // build properties on.
+        for (Node functionNode : scopeBuilder.nonExternFunctions) {
+            JSType type = functionNode.getJSType();
+            if (type != null && type instanceof FunctionType) {
+                FunctionType fnType = (FunctionType) type;
+                ObjectType fnThisType = fnType.getTypeOfThis();
+                if (!fnThisType.isUnknownType()) {
+                    NodeTraversal.traverse(compiler, functionNode.getLastChild(), scopeBuilder.new CollectProperties(fnThisType));
+                }
+            }
+        }
+        codingConvention.defineDelegateProxyProperties(typeRegistry, newScope, delegateProxyMap);
+    } else {
+        newScope = new Scope(parent, root);
+        (new LocalScopeBuilder(newScope)).build();
+    }
+    typeRegistry.resolveTypesInScope(newScope);
+    return newScope;
+}","public void test099() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = new Node(118);
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    Node node1 = new Node(20, node0, node0, node0, node0);
+    Scope scope0 = typedScopeCreator0.createInitialScope(node0);
+    // Undeclared exception!
+    try {
+        typedScopeCreator0.createScope(node1, scope0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // null
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * Creates a scope with all types declared. Declares newly discovered types
+ * and type properties in the type registry.
+ */"
+"public boolean isLocal() {
+    return !isGlobal();
+}","public void test1010() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    Stack<JSType> stack0 = new Stack<JSType>();
+    Node node0 = jSTypeRegistry0.createParameters((List<JSType>) stack0);
+    Node node1 = Node.newString("""");
+    Node node2 = new Node(24, node1, node0);
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    Scope scope0 = typedScopeCreator0.createScope(node0, (Scope) null);
+    Scope scope1 = typedScopeCreator0.createScope(node2, scope0);
+    assertTrue(scope1.isLocal());
+}","/**
+ * Returns whether this is a local scope (i.e. not the global scope).
+ */"
+"public Scope createScope(Node root, Scope parent) {
+    // Constructing the global scope is very different than constructing
+    // inner scopes, because only global scopes can contain named classes that
+    // show up in the type registry.
+    Scope newScope = null;
+    if (parent == null) {
+        // Find all the classes in the global scope.
+        newScope = createInitialScope(root);
+        GlobalScopeBuilder scopeBuilder = new GlobalScopeBuilder(newScope);
+        NodeTraversal.traverse(compiler, root, scopeBuilder);
+        scopeBuilder.resolveStubDeclarations();
+        // Gather the properties in each function that we found in the
+        // global scope, if that function has a @this type that we can
+        // build properties on.
+        for (Node functionNode : scopeBuilder.nonExternFunctions) {
+            JSType type = functionNode.getJSType();
+            if (type != null && type instanceof FunctionType) {
+                FunctionType fnType = (FunctionType) type;
+                ObjectType fnThisType = fnType.getTypeOfThis();
+                if (!fnThisType.isUnknownType()) {
+                    NodeTraversal.traverse(compiler, functionNode.getLastChild(), scopeBuilder.new CollectProperties(fnThisType));
+                }
+            }
+        }
+        codingConvention.defineDelegateProxyProperties(typeRegistry, newScope, delegateProxyMap);
+    } else {
+        newScope = new Scope(parent, root);
+        (new LocalScopeBuilder(newScope)).build();
+    }
+    typeRegistry.resolveTypesInScope(newScope);
+    return newScope;
+}","public void test1111() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    Stack<JSType> stack0 = new Stack<JSType>();
+    Node node0 = jSTypeRegistry0.createParameters((List<JSType>) stack0);
+    Node node1 = Node.newString(""os"");
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, ""os"", ""os"", 6, 4);
+    Node node2 = new Node(24, node1, node0);
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0, (CodingConvention) null);
+    Scope scope0 = new Scope(node0, namedType0);
+    JSSourceFile jSSourceFile0 = JSSourceFile.fromFile(""Named type with empty name component"");
+    CompilerInput compilerInput0 = new CompilerInput(jSSourceFile0, false);
+    scope0.declare(""os"", node0, namedType0, compilerInput0, false);
+    // Undeclared exception!
+    try {
+        typedScopeCreator0.createScope(node2, scope0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // null
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * Creates a scope with all types declared. Declares newly discovered types
+ * and type properties in the type registry.
+ */"

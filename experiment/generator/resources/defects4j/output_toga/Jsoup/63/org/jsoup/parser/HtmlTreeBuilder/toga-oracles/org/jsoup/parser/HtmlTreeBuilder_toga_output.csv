@@ -1,0 +1,1850 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test0000,"public void test0000() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    Token.Tag token_Tag0 = token_StartTag0.name(""b"");
+    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;
+    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);
+    htmlTreeBuilder0.process(token_StartTag0, htmlTreeBuilderState0);
+    Element element0 = htmlTreeBuilder0.getActiveFormattingElement("".snBr2DXG0"");
+    assertNull(element0);
+}",0,
+project,0,test0012,"public void test0012() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    List<Node> list0 = htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    Token.Tag token_Tag0 = token_StartTag0.name(""b"");
+    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;
+    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);
+    boolean boolean0 = htmlTreeBuilder0.inSelectScope(""39|<Y"");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test0023,"public void test0023() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""6<v;\""na3/E/)sX^"");
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.replaceActiveFormattingElement(document0, (Element) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test0034,"public void test0034() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document("""");
+    Document document1 = document0.clone();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.insertOnStackAfter(document0, document1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test0045,"public void test0045() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", (Element) null, ""dl"", parseErrorList0, parseSettings0);
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.insertInFosterParent((Node) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test0056,"public void test0056() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    htmlTreeBuilder0.pushActiveFormattingElements(document0);
+    assertFalse(document0.updateMetaCharsetElement());
+}",0,assertFalse(document0.updateMetaCharsetElement())
+project,0,test0078,"public void test0078() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    StringReader stringReader0 = new StringReader(""iframe"");
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    ParseSettings parseSettings0 = new ParseSettings(true, true);
+    Document document0 = htmlTreeBuilder0.parse(stringReader0, """", parseErrorList0, parseSettings0);
+    htmlTreeBuilder0.insert(document0);
+    assertEquals(1, document0.siblingIndex());
+}",0,
+project,0,test0089,"public void test0089() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);
+    ParseSettings parseSettings0 = new ParseSettings(false, false);
+    htmlTreeBuilder0.parseFragment(""InTableText"", (Element) null, ""noresize"", parseErrorList0, parseSettings0);
+    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.BeforeHead;
+    htmlTreeBuilder0.error(htmlTreeBuilderState0);
+}",0,
+project,0,test00910,"public void test00910() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.InFrameset;
+    htmlTreeBuilder0.transition(htmlTreeBuilderState0);
+}",0,
+project,0,test01011,"public void test01011() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = Document.createShell(""marquee"");
+    htmlTreeBuilder0.setHeadElement(document0);
+    assertEquals(""marquee"", document0.location());
+}",0,assertNotNull(document0.location())
+project,0,test01112,"public void test01112() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    htmlTreeBuilder0.framesetOk(false);
+}",0,
+project,0,test01213,"public void test01213() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    StringReader stringReader0 = new StringReader(""$?K5X-n2"");
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    ParseSettings parseSettings0 = new ParseSettings(false, false);
+    htmlTreeBuilder0.parse(stringReader0, ""$?K5X-n2"", parseErrorList0, parseSettings0);
+    htmlTreeBuilder0.push((Element) null);
+}",0,
+project,0,test01314,"public void test01314() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    htmlTreeBuilder0.insertInFosterParent(document0);
+    assertEquals(1, document0.siblingIndex());
+}",0,"assertEquals(0, document0.siblingIndex())"
+project,0,test01415,"public void test01415() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);
+    ParseSettings parseSettings0 = new ParseSettings(false, false);
+    htmlTreeBuilder0.parseFragment(""InTableText"", (Element) null, ""noresize"", parseErrorList0, parseSettings0);
+    htmlTreeBuilder0.clearStackToTableRowContext();
+}",0,
+project,0,test01516,"public void test01516() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);
+    ParseSettings parseSettings0 = new ParseSettings(false, false);
+    htmlTreeBuilder0.parseFragment(""InTableText"", (Element) null, ""noresize"", parseErrorList0, parseSettings0);
+    htmlTreeBuilder0.clearStackToTableBodyContext();
+}",0,
+project,0,test01617,"public void test01617() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    String string0 = htmlTreeBuilder0.toString();
+    assertNotNull(string0);
+}",0,
+project,0,test01718,"public void test01718() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking((-2511));
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    htmlTreeBuilder0.state();
+}",0,
+project,0,test01819,"public void test01819() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    Token.Tag token_Tag0 = token_StartTag0.name(""b"");
+    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;
+    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);
+    htmlTreeBuilder0.process(token_StartTag0, htmlTreeBuilderState0);
+    Element element0 = htmlTreeBuilder0.removeLastFormattingElement();
+    assertNotNull(element0);
+}",0,assertNotNull(element0)
+project,0,test01820,"public void test01820() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    Token.Tag token_Tag0 = token_StartTag0.name(""b"");
+    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;
+    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);
+    htmlTreeBuilder0.process(token_StartTag0, htmlTreeBuilderState0);
+    Element element0 = htmlTreeBuilder0.removeLastFormattingElement();
+    assertEquals(0, element0.siblingIndex());
+}",0,"assertEquals(0, element0.siblingIndex())"
+project,0,test01921,"public void test01921() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    Token.Tag token_Tag0 = token_StartTag0.name(""b"");
+    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;
+    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);
+    Element element0 = htmlTreeBuilder0.removeLastFormattingElement();
+    assertFalse(element0.isBlock());
+}",0,
+project,0,test02022,"public void test02022() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    Token.Tag token_Tag0 = token_StartTag0.name(""w&b"");
+    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.InSelectInTable;
+    boolean boolean0 = htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test02123,"public void test02123() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    boolean boolean0 = htmlTreeBuilder0.onStack(document0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test02224,"public void test02224() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    Element element0 = htmlTreeBuilder0.lastFormattingElement();
+    assertNull(element0);
+}",0,assertNotNull(element0)
+project,0,test02326,"public void test02326() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    Token.Tag token_Tag0 = token_StartTag0.name(""b"");
+    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;
+    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);
+    htmlTreeBuilder0.process(token_StartTag0, htmlTreeBuilderState0);
+    Element element0 = htmlTreeBuilder0.lastFormattingElement();
+    assertNotNull(element0);
+}",0,assertNotNull(element0)
+project,0,test02327,"public void test02327() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    Token.Tag token_Tag0 = token_StartTag0.name(""b"");
+    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;
+    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);
+    htmlTreeBuilder0.process(token_StartTag0, htmlTreeBuilderState0);
+    Element element0 = htmlTreeBuilder0.lastFormattingElement();
+    assertEquals(0, element0.siblingIndex());
+}",0,"assertEquals(0, element0.siblingIndex())"
+project,0,test02428,"public void test02428() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    Token.Tag token_Tag0 = token_StartTag0.name(""b"");
+    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;
+    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);
+    Element element0 = htmlTreeBuilder0.lastFormattingElement();
+    assertEquals(""dl"", element0.baseUri());
+}",0,assertNotNull(element0.baseUri())
+project,0,test02529,"public void test02529() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Element element0 = new Element(""param"");
+    boolean boolean0 = htmlTreeBuilder0.isSpecial(element0);
+    assertTrue(boolean0);
+}",0,
+project,0,test02630,"public void test02630() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = Document.createShell(""pre"");
+    boolean boolean0 = htmlTreeBuilder0.isSpecial(document0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test02733,"public void test02733() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    List<Node> list0 = htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    boolean boolean0 = htmlTreeBuilder0.isFragmentParsing();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test02834,"public void test02834() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    boolean boolean0 = htmlTreeBuilder0.isFosterInserts();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test02936,"public void test02936() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    List<Node> list0 = htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    Token.Tag token_Tag0 = token_StartTag0.name(""b"");
+    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;
+    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);
+    Element element0 = htmlTreeBuilder0.insertStartTag("";/"");
+    assertEquals(0, element0.siblingIndex());
+}",0,
+project,0,test03037,"public void test03037() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);
+    ParseSettings parseSettings0 = new ParseSettings(false, false);
+    htmlTreeBuilder0.parseFragment(""InTableText"", (Element) null, ""noresize"", parseErrorList0, parseSettings0);
+    Element element0 = htmlTreeBuilder0.insertStartTag(""frameset"");
+    assertEquals(""noresize"", element0.baseUri());
+}",0,assertNotNull(element0.baseUri())
+project,0,test03038,"public void test03038() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);
+    ParseSettings parseSettings0 = new ParseSettings(false, false);
+    htmlTreeBuilder0.parseFragment(""InTableText"", (Element) null, ""noresize"", parseErrorList0, parseSettings0);
+    Element element0 = htmlTreeBuilder0.insertStartTag(""frameset"");
+    assertEquals(1, element0.siblingIndex());
+}",0,"assertEquals(0, element0.siblingIndex())"
+project,0,test03139,"public void test03139() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    Token.Tag token_Tag0 = token_StartTag0.name(""b"");
+    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;
+    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);
+    FormElement formElement0 = htmlTreeBuilder0.insertForm(token_StartTag0, false);
+    assertEquals(0, formElement0.siblingIndex());
+}",0,"assertEquals(0, formElement0.siblingIndex())"
+project,0,test03240,"public void test03240() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    Token.StartTag token_StartTag0 = new Token.StartTag();
+    TextNode textNode0 = new TextNode(""S&,0"", ""html"");
+    Attributes attributes0 = textNode0.attributes();
+    Token.StartTag token_StartTag1 = token_StartTag0.nameAttr(""plaintext"", attributes0);
+    FormElement formElement0 = htmlTreeBuilder0.insertForm(token_StartTag1, false);
+    assertTrue(formElement0.isBlock());
+}",0,assertFalse(formElement0.isBlock())
+project,0,test03342,"public void test03342() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    List<Node> list0 = htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    Token.StartTag token_StartTag1 = (Token.StartTag) token_StartTag0.name(""b"");
+    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;
+    htmlTreeBuilder0.process(token_StartTag1, htmlTreeBuilderState0);
+    Element element0 = htmlTreeBuilder0.insertEmpty(token_StartTag1);
+    assertEquals(0, element0.siblingIndex());
+}",0,
+project,0,test03443,"public void test03443() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    token_StartTag0.name(""dl"");
+    Element element0 = htmlTreeBuilder0.insertEmpty(token_StartTag0);
+    assertEquals(0, element0.childNodeSize());
+}",0,"assertEquals(1, element0.childNodeSize())"
+project,0,test03544,"public void test03544() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = Document.createShell(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = ""dl"";
+    stringArray0[1] = ""dl"";
+    boolean boolean0 = htmlTreeBuilder0.inScope(stringArray0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test03646,"public void test03646() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);
+    ParseSettings parseSettings0 = new ParseSettings(false, false);
+    List<Node> list0 = htmlTreeBuilder0.parseFragment(""InTableText"", (Element) null, ""noresize"", parseErrorList0, parseSettings0);
+    boolean boolean0 = htmlTreeBuilder0.inScope(""InTableText"", (String[]) null);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test03748,"public void test03748() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    boolean boolean0 = htmlTreeBuilder0.inScope(""html"");
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test03850,"public void test03850() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);
+    ParseSettings parseSettings0 = new ParseSettings(false, false);
+    List<Node> list0 = htmlTreeBuilder0.parseFragment(""InTableText"", (Element) null, ""noresize"", parseErrorList0, parseSettings0);
+    boolean boolean0 = htmlTreeBuilder0.inScope(""TreeBuilder{currentToken=org.jsoup.parser.Token$EOF@14, state=InBody, currentElement=<html>\n <head></head>\n <body>\n  InTableText\n </body>\n</html>}"");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test03952,"public void test03952() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    List<Node> list0 = htmlTreeBuilder0.parseFragment(""dl"", (Element) null, ""dl"", parseErrorList0, parseSettings0);
+    boolean boolean0 = htmlTreeBuilder0.inListItemScope(""html"");
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test04054,"public void test04054() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    boolean boolean0 = htmlTreeBuilder0.inListItemScope(""plaintext"");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test04156,"public void test04156() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);
+    ParseSettings parseSettings0 = new ParseSettings(false, false);
+    List<Node> list0 = htmlTreeBuilder0.parseFragment(""InTableText"", (Element) null, ""noresize"", parseErrorList0, parseSettings0);
+    boolean boolean0 = htmlTreeBuilder0.inButtonScope(""$g|Q@"");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test04257,"public void test04257() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ArrayList<Element> arrayList0 = htmlTreeBuilder0.getStack();
+    assertNull(arrayList0);
+}",0,assertNotNull(arrayList0)
+project,0,test04561,"public void test04561() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);
+    ParseSettings parseSettings0 = new ParseSettings(false, false);
+    htmlTreeBuilder0.parseFragment(""InTableText"", (Element) null, ""noresize"", parseErrorList0, parseSettings0);
+    Element element0 = htmlTreeBuilder0.getHeadElement();
+    assertEquals(0, element0.childNodeSize());
+}",0,"assertEquals(1, element0.childNodeSize())"
+project,0,test04562,"public void test04562() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);
+    ParseSettings parseSettings0 = new ParseSettings(false, false);
+    htmlTreeBuilder0.parseFragment(""InTableText"", (Element) null, ""noresize"", parseErrorList0, parseSettings0);
+    Element element0 = htmlTreeBuilder0.getHeadElement();
+    assertEquals(0, element0.siblingIndex());
+}",0,
+project,0,test04563,"public void test04563() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);
+    ParseSettings parseSettings0 = new ParseSettings(false, false);
+    htmlTreeBuilder0.parseFragment(""InTableText"", (Element) null, ""noresize"", parseErrorList0, parseSettings0);
+    Element element0 = htmlTreeBuilder0.getHeadElement();
+    assertEquals(""noresize"", element0.baseUri());
+}",0,assertNotNull(element0.baseUri())
+project,0,test04664,"public void test04664() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    Element element0 = htmlTreeBuilder0.getFromStack(""mfmnMK"");
+    assertNull(element0);
+}",0,
+project,0,test04765,"public void test04765() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    StringReader stringReader0 = new StringReader(""ybS4X_Yz-!d"");
+    ParseErrorList parseErrorList0 = new ParseErrorList(2054, 2054);
+    htmlTreeBuilder0.initialiseParse(stringReader0, ""base"", parseErrorList0, (ParseSettings) null);
+    Document document0 = htmlTreeBuilder0.getDocument();
+    assertEquals(""#document"", document0.nodeName());
+}",0,assertNotNull(document0.nodeName())
+project,0,test04867,"public void test04867() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = Document.createShell(""'c=RMmMJP+I^L7)"");
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    List<Node> list0 = htmlTreeBuilder0.parseFragment(""'c=RMmMJP+I^L7)"", document0, ""script"", (ParseErrorList) null, parseSettings0);
+    Document document1 = htmlTreeBuilder0.getDocument();
+    assertEquals(""script"", document1.location());
+}",0,assertNotNull(document1.location())
+project,0,test04968,"public void test04968() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    String string0 = htmlTreeBuilder0.getBaseUri();
+    assertEquals(""dl"", string0);
+}",0,assertNotNull(string0)
+project,0,test05069,"public void test05069() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    Token.Tag token_Tag0 = token_StartTag0.name(""b"");
+    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;
+    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);
+    boolean boolean0 = htmlTreeBuilder0.framesetOk();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test05170,"public void test05170() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    boolean boolean0 = htmlTreeBuilder0.framesetOk();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test05271,"public void test05271() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.resetInsertionMode();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test05372,"public void test05372() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.replaceOnStack(document0, document0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Must be true
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test05473,"public void test05473() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.removeLastFormattingElement();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test05574,"public void test05574() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.removeFromStack((Element) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test05675,"public void test05675() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = Document.createShell(""P _r,Ji8EW^9@/"");
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.removeFromActiveFormattingElements(document0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test05776,"public void test05776() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.reconstructFormattingElements();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test05877,"public void test05877() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = Document.createShell("""");
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.pushActiveFormattingElements(document0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test05978,"public void test05978() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Token.StartTag token_StartTag0 = new Token.StartTag();
+    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.Initial;
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.process(token_StartTag0, htmlTreeBuilderState0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilderState$2"", e);
+    }
+}",0,
+project,0,test06079,"public void test06079() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    Token.Tag token_Tag0 = token_StartTag0.name("""");
+    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Must be false
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test06180,"public void test06180() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    Token.TokenType token_TokenType0 = Token.TokenType.Comment;
+    token_StartTag0.type = token_TokenType0;
+    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.process(token_StartTag0, htmlTreeBuilderState0);
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // org.jsoup.parser.Token$StartTag cannot be cast to org.jsoup.parser.Token$Comment
+        //
+        verifyException(""org.jsoup.parser.Token"", e);
+    }
+}",0,
+project,0,test06281,"public void test06281() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Token.StartTag token_StartTag0 = new Token.StartTag();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.process(token_StartTag0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",1,
+project,0,test06382,"public void test06382() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.popStackToClose((String[]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test06483,"public void test06483() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.popStackToClose("".K0"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test06584,"public void test06584() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.popStackToBefore(""@'p(7k{iZw(8"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test06685,"public void test06685() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    htmlTreeBuilder0.popStackToBefore(""noscript"");
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.pop();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test06786,"public void test06786() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.parseFragment(""InTableText"", (Element) null, ""noresize"", parseErrorList0, (ParseSettings) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test06887,"public void test06887() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = Document.createShell("""");
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.onStack(document0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test06988,"public void test06988() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.maybeSetBaseUri((Element) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test07089,"public void test07089() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.lastFormattingElement();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test07190,"public void test07190() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.isSpecial((Element) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test07291,"public void test07291() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.insertStartTag("":0.=2x}*"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test07392,"public void test07392() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.insertInFosterParent((Node) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test07493,"public void test07493() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    htmlTreeBuilder0.pop();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.insertInFosterParent((Node) null);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 0, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}",0,
+project,0,test07594,"public void test07594() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.insertForm((Token.StartTag) null, false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test07695,"public void test07695() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    CharacterReader characterReader0 = new CharacterReader(""AfterDoctypePublicIdentifier"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(0);
+    Tokeniser tokeniser0 = new Tokeniser(characterReader0, parseErrorList0);
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.insertForm(token_StartTag0, true);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Must be false
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test07796,"public void test07796() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.insertEmpty((Token.StartTag) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test07897,"public void test07897() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Token.StartTag token_StartTag0 = new Token.StartTag();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.insertEmpty(token_StartTag0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Must be false
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test07998,"public void test07998() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    CharacterReader characterReader0 = new CharacterReader(""org.jsoup.select.Evaluator$AttributeWithValueMatching"");
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Tokeniser tokeniser0 = new Tokeniser(characterReader0, parseErrorList0);
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    Attributes attributes0 = new Attributes();
+    Token.StartTag token_StartTag1 = token_StartTag0.nameAttr(""org.jsoup.select.Evaluator$AttributeWithValueMatching"", attributes0);
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.insert(token_StartTag1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test08099,"public void test08099() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Token.StartTag token_StartTag0 = new Token.StartTag();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.insert(token_StartTag0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Must be false
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",1,
+project,0,test081100,"public void test081100() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.insert((Token.Comment) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test082101,"public void test082101() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Token.Character token_Character0 = new Token.Character();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.insert(token_Character0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.TreeBuilder"", e);
+    }
+}",0,
+project,0,test083102,"public void test083102() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.insert((Element) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test084103,"public void test084103() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    StringReader stringReader0 = new StringReader(""ybS4X_Yz-!d"");
+    ParseErrorList parseErrorList0 = new ParseErrorList(2062, 2062);
+    stringReader0.close();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.initialiseParse(stringReader0, ""base"", parseErrorList0, (ParseSettings) null);
+        fail(""Expecting exception: Error"");
+    } catch (Error e) {
+        //
+        // java.io.IOException: Stream closed
+        //
+        verifyException(""org.jsoup.parser.CharacterReader"", e);
+    }
+}",0,
+project,0,test085104,"public void test085104() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.initialiseParse((Reader) null, ""dKJ"", parseErrorList0, parseSettings0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String input must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test086105,"public void test086105() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.inSelectScope(""h!0"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test087106,"public void test087106() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    String[] stringArray0 = new String[8];
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.inScope(""param"", stringArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test088107,"public void test088107() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    StringReader stringReader0 = new StringReader(""ybS4X_Yz-!d"");
+    ParseErrorList parseErrorList0 = new ParseErrorList(2062, 2062);
+    htmlTreeBuilder0.initialiseParse(stringReader0, ""base"", parseErrorList0, (ParseSettings) null);
+    String[] stringArray0 = new String[8];
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.inScope(""form"", stringArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Should not be reachable
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test089108,"public void test089108() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.inButtonScope(""DAC-ekb8WG,FA+}o]]"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test090109,"public void test090109() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.getFromStack(""8jfmDD"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test091110,"public void test091110() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.getActiveFormattingElement(""dl"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test092111,"public void test092111() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.InTableText;
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.error(htmlTreeBuilderState0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test093112,"public void test093112() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.clearFormattingElementsToLastMarker();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+    }
+}",0,
+project,0,test094113,"public void test094113() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    htmlTreeBuilder0.insertMarkerToFormattingElements();
+    Element element0 = htmlTreeBuilder0.getActiveFormattingElement(""aside"");
+    assertNull(element0);
+}",0,assertNotNull(element0)
+project,0,test095114,"public void test095114() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);
+    ParseSettings parseSettings0 = new ParseSettings(false, false);
+    htmlTreeBuilder0.parseFragment(""InTableText"", (Element) null, ""noresize"", parseErrorList0, parseSettings0);
+    htmlTreeBuilder0.removeFromActiveFormattingElements((Element) null);
+}",0,
+project,0,test096115,"public void test096115() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    htmlTreeBuilder0.insertMarkerToFormattingElements();
+    htmlTreeBuilder0.clearFormattingElementsToLastMarker();
+}",0,
+project,0,test097116,"public void test097116() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    Token.Tag token_Tag0 = token_StartTag0.name(""b"");
+    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;
+    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);
+    htmlTreeBuilder0.clearFormattingElementsToLastMarker();
+}",0,
+project,0,test098117,"public void test098117() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    Token.Tag token_Tag0 = token_StartTag0.name(""b"");
+    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;
+    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);
+    htmlTreeBuilder0.popStackToClose(""html"");
+    boolean boolean0 = htmlTreeBuilder0.process(token_StartTag0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test099119,"public void test099119() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    Token.Tag token_Tag0 = token_StartTag0.name(""b"");
+    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;
+    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);
+    htmlTreeBuilder0.process(token_StartTag0, htmlTreeBuilderState0);
+    htmlTreeBuilder0.popStackToClose(""html"");
+    boolean boolean0 = htmlTreeBuilder0.process(token_StartTag0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test100120,"public void test100120() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    htmlTreeBuilder0.insertMarkerToFormattingElements();
+    Element element0 = htmlTreeBuilder0.removeLastFormattingElement();
+    assertNull(element0);
+}",0,assertNotNull(element0)
+project,0,test101121,"public void test101121() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    Element element0 = htmlTreeBuilder0.removeLastFormattingElement();
+    assertNull(element0);
+}",0,assertNotNull(element0)
+project,0,test102122,"public void test102122() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);
+    ParseSettings parseSettings0 = new ParseSettings(false, false);
+    htmlTreeBuilder0.parseFragment(""InTableText"", (Element) null, ""noresize"", parseErrorList0, parseSettings0);
+    htmlTreeBuilder0.generateImpliedEndTags(""intabletext"");
+}",0,
+project,0,test103123,"public void test103123() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.generateImpliedEndTags(""intabletext"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.TreeBuilder"", e);
+    }
+}",0,
+project,0,test104126,"public void test104126() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    List<Node> list0 = htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    boolean boolean0 = htmlTreeBuilder0.inSelectScope(""dl"");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test105127,"public void test105127() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    htmlTreeBuilder0.popStackToClose(""`irYhVQv;"");
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.inSelectScope(""dl"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Should not be reachable
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test106129,"public void test106129() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    token_StartTag0.appendTagName(""header"");
+    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;
+    htmlTreeBuilder0.process(token_StartTag0, htmlTreeBuilderState0);
+    boolean boolean0 = htmlTreeBuilder0.inTableScope(""head"");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test107132,"public void test107132() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    List<Node> list0 = htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    String[] stringArray0 = new String[3];
+    stringArray0[0] = ""&$hnD:P1Za)*co/=d"";
+    stringArray0[1] = ""plaitex"";
+    stringArray0[2] = ""html"";
+    boolean boolean0 = htmlTreeBuilder0.inScope(stringArray0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test108133,"public void test108133() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    token_StartTag0.name(""dl"");
+    htmlTreeBuilder0.popStackToClose(""html"");
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.process(token_StartTag0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Should not be reachable
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test109134,"public void test109134() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    Token.Tag token_Tag0 = token_StartTag0.name(""b"");
+    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;
+    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);
+    htmlTreeBuilder0.resetInsertionMode();
+}",0,
+project,0,test110135,"public void test110135() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);
+    ParseSettings parseSettings0 = new ParseSettings(false, true);
+    htmlTreeBuilder0.parseFragment(""InTableText"", (Element) null, ""noresize"", parseErrorList0, parseSettings0);
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.replaceActiveFormattingElement((Element) null, (Element) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Must be true
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test111136,"public void test111136() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.insertOnStackAfter(document0, document0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Must be true
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test112137,"public void test112137() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.aboveOnStack((Element) null);
+        fail(""Expecting exception: AssertionError"");
+    } catch (AssertionError e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test113138,"public void test113138() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    CharacterReader characterReader0 = new CharacterReader(""html"");
+    Tokeniser tokeniser0 = new Tokeniser(characterReader0, parseErrorList0);
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    Attributes attributes0 = new Attributes();
+    Token.StartTag token_StartTag1 = token_StartTag0.nameAttr("":/xHSZS$2uxdyI"", attributes0);
+    Element element0 = htmlTreeBuilder0.insert(token_StartTag1);
+    Element element1 = htmlTreeBuilder0.aboveOnStack(element0);
+    assertEquals(2, element1.childNodeSize());
+}",0,"assertEquals(0, element1.childNodeSize())"
+project,0,test113140,"public void test113140() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    CharacterReader characterReader0 = new CharacterReader(""html"");
+    Tokeniser tokeniser0 = new Tokeniser(characterReader0, parseErrorList0);
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    Attributes attributes0 = new Attributes();
+    Token.StartTag token_StartTag1 = token_StartTag0.nameAttr("":/xHSZS$2uxdyI"", attributes0);
+    Element element0 = htmlTreeBuilder0.insert(token_StartTag1);
+    Element element1 = htmlTreeBuilder0.aboveOnStack(element0);
+    assertEquals(0, element1.siblingIndex());
+}",0,
+project,0,test113141,"public void test113141() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    CharacterReader characterReader0 = new CharacterReader(""html"");
+    Tokeniser tokeniser0 = new Tokeniser(characterReader0, parseErrorList0);
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    Attributes attributes0 = new Attributes();
+    Token.StartTag token_StartTag1 = token_StartTag0.nameAttr("":/xHSZS$2uxdyI"", attributes0);
+    Element element0 = htmlTreeBuilder0.insert(token_StartTag1);
+    Element element1 = htmlTreeBuilder0.aboveOnStack(element0);
+    assertNotNull(element1);
+}",0,
+project,0,test114142,"public void test114142() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);
+    ParseSettings parseSettings0 = new ParseSettings(false, false);
+    htmlTreeBuilder0.parseFragment(""InTableText"", (Element) null, ""noresize"", parseErrorList0, parseSettings0);
+    htmlTreeBuilder0.clearStackToTableContext();
+}",0,
+project,0,test115143,"public void test115143() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Element element0 = new Element(""noresize"");
+    Pattern pattern0 = Pattern.compile(""noresize"", 501);
+    Elements elements0 = element0.getElementsMatchingOwnText(pattern0);
+    htmlTreeBuilder0.stack = (ArrayList<Element>) elements0;
+    htmlTreeBuilder0.clearStackToTableContext();
+}",0,
+project,0,test116144,"public void test116144() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""|!3"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = htmlTreeBuilder0.defaultSettings();
+    htmlTreeBuilder0.parseFragment(""|!3"", document0, ""|!3"", parseErrorList0, parseSettings0);
+    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    Token.Tag token_Tag0 = token_StartTag0.name(""b"");
+    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;
+    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);
+    htmlTreeBuilder0.popStackToBefore(""b"");
+}",0,
+project,0,test117145,"public void test117145() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    htmlTreeBuilder0.popStackToBefore(""noscript"");
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.inScope(""html"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Should not be reachable
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test118146,"public void test118146() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    String[] stringArray0 = new String[4];
+    stringArray0[0] = ""html"";
+    htmlTreeBuilder0.popStackToClose(stringArray0);
+    assertEquals(4, stringArray0.length);
+}",0,
+project,0,test119147,"public void test119147() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", (Element) null, ""dl"", parseErrorList0, parseSettings0);
+    String[] stringArray0 = new String[6];
+    stringArray0[0] = ""dl"";
+    stringArray0[1] = ""dl"";
+    stringArray0[2] = ""dl"";
+    stringArray0[3] = ""dl"";
+    stringArray0[4] = ""dl"";
+    stringArray0[5] = ""dl"";
+    htmlTreeBuilder0.popStackToClose(stringArray0);
+    assertEquals(6, stringArray0.length);
+}",0,
+project,0,test120148,"public void test120148() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    htmlTreeBuilder0.popStackToClose(""html"");
+    htmlTreeBuilder0.resetInsertionMode();
+}",0,
+project,0,test121150,"public void test121150() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);
+    ParseSettings parseSettings0 = new ParseSettings(false, false);
+    List<Node> list0 = htmlTreeBuilder0.parseFragment(""InTableText"", (Element) null, ""noresize"", parseErrorList0, parseSettings0);
+    boolean boolean0 = htmlTreeBuilder0.removeFromStack((Element) null);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test122151,"public void test122151() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    Token.Tag token_Tag0 = token_StartTag0.name(""b"");
+    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;
+    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);
+    htmlTreeBuilder0.reconstructFormattingElements();
+}",0,
+project,0,test123154,"public void test123154() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    List<Node> list0 = htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    boolean boolean0 = htmlTreeBuilder0.isInActiveFormattingElements(document0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test124155,"public void test124155() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    Token.StartTag token_StartTag1 = (Token.StartTag) token_StartTag0.name(""b"");
+    FormElement formElement0 = htmlTreeBuilder0.insertForm(token_StartTag1, true);
+    assertEquals(0, formElement0.childNodeSize());
+}",0,"assertEquals(0, formElement0.childNodeSize())"
+project,0,test125156,"public void test125156() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    htmlTreeBuilder0.maybeSetBaseUri(document0);
+    assertEquals(Document.QuirksMode.noQuirks, document0.quirksMode());
+}",0,assertNotNull(document0.quirksMode())
+project,0,test127159,"public void test127159() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.clearStackToTableContext();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test128160,"public void test128160() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    htmlTreeBuilder0.originalState();
+}",0,
+project,0,test129161,"public void test129161() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.inTableScope(""dl"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test130162,"public void test130162() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Token.Comment token_Comment0 = new Token.Comment();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.insert(token_Comment0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test131163,"public void test131163() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""V'DgO6![}VK]5#a-w:"");
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.push(document0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test132164,"public void test132164() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    htmlTreeBuilder0.setFosterInserts(true);
+}",0,
+project,0,test133165,"public void test133165() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    boolean boolean0 = htmlTreeBuilder0.isFragmentParsing();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test134166,"public void test134166() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);
+    ParseSettings parseSettings0 = new ParseSettings(false, false);
+    htmlTreeBuilder0.parseFragment(""InTableText"", (Element) null, ""noresize"", parseErrorList0, parseSettings0);
+    Token.Comment token_Comment0 = new Token.Comment();
+    htmlTreeBuilder0.insert(token_Comment0);
+}",0,
+project,0,test135167,"public void test135167() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.isInActiveFormattingElements(document0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test136168,"public void test136168() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.aboveOnStack((Element) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test137169,"public void test137169() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    List<String> list0 = htmlTreeBuilder0.getPendingTableCharacters();
+    assertNull(list0);
+}",0,assertNotNull(list0)
+project,0,test138170,"public void test138170() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    String string0 = htmlTreeBuilder0.getBaseUri();
+    assertNull(string0);
+}",0,
+project,0,test139171,"public void test139171() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.inScope(""html"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test140172,"public void test140172() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.pop();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test141173,"public void test141173() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = htmlTreeBuilder0.getDocument();
+    assertNull(document0);
+}",0,assertNotNull(document0)
+project,0,test142174,"public void test142174() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    htmlTreeBuilder0.setPendingTableCharacters((List<String>) null);
+}",0,
+project,0,test143175,"public void test143175() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    String[] stringArray0 = new String[3];
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.inScope(stringArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test144176,"public void test144176() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    htmlTreeBuilder0.state();
+}",0,
+project,0,test145177,"public void test145177() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.clearStackToTableRowContext();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test146178,"public void test146178() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    FormElement formElement0 = htmlTreeBuilder0.getFormElement();
+    assertNull(formElement0);
+}",0,assertNotNull(formElement0)
+project,0,test147179,"public void test147179() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    htmlTreeBuilder0.newPendingTableCharacters();
+}",0,
+project,0,test148180,"public void test148180() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.insertMarkerToFormattingElements();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test149181,"public void test149181() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    htmlTreeBuilder0.generateImpliedEndTags();
+}",0,
+project,0,test150182,"public void test150182() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    htmlTreeBuilder0.markInsertionMode();
+}",0,
+project,0,test151183,"public void test151183() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.toString();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.TreeBuilder"", e);
+    }
+}",0,
+project,0,test152184,"public void test152184() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.inListItemScope(""plaitex"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test153185,"public void test153185() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.clearStackToTableBodyContext();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test154186,"public void test154186() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    htmlTreeBuilder0.setFormElement((FormElement) null);
+}",0,
+project,0,test155187,"public void test155187() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Element element0 = htmlTreeBuilder0.getHeadElement();
+    assertNull(element0);
+}",0,assertNotNull(element0)
+project,0,test156188,"public void test156188() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.replaceOnStack((Element) null, (Element) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test157189,"public void test157189() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    // Undeclared exception!
+    try {
+        htmlTreeBuilder0.insertStartTag(""b"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test158190,"public void test158190() throws Throwable {
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Document document0 = new Document(""dl"");
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    htmlTreeBuilder0.parseFragment(""dl"", document0, ""dl"", parseErrorList0, parseSettings0);
+    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    Token.Tag token_Tag0 = token_StartTag0.name(""b"");
+    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;
+    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);
+    htmlTreeBuilder0.isInActiveFormattingElements(document0);
+}",0,

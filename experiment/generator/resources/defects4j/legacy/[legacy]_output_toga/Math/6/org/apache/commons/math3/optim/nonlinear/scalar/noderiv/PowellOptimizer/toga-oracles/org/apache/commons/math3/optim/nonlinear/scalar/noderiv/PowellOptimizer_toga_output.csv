@@ -1,0 +1,55 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test20,"public void test20() throws Throwable {
+    PowellOptimizer powellOptimizer0 = new PowellOptimizer(1.0E-15, 1.0E-15);
+    powellOptimizer0.getIterations();
+    OptimizationData[] optimizationDataArray0 = new OptimizationData[2];
+    SimpleBounds simpleBounds0 = SimpleBounds.unbounded(0);
+    optimizationDataArray0[1] = (OptimizationData) simpleBounds0;
+    powellOptimizer0.optimize(optimizationDataArray0);
+    // Undeclared exception!
+    try {
+        powellOptimizer0.doOptimize();
+        fail(""Expecting exception: MathUnsupportedOperationException"");
+    } catch (MathUnsupportedOperationException e) {
+        //
+        // constraint
+        //
+        verifyException(""org.apache.commons.math3.optim.nonlinear.scalar.noderiv.PowellOptimizer"", e);
+    }
+}",0,
+project,0,test41,"public void test41() throws Throwable {
+    OptimizationData[] optimizationDataArray0 = new OptimizationData[8];
+    double[] doubleArray0 = new double[1];
+    InitialGuess initialGuess0 = new InitialGuess(doubleArray0);
+    optimizationDataArray0[0] = (OptimizationData) initialGuess0;
+    PowellOptimizer powellOptimizer0 = new PowellOptimizer(1377.0, 1377.0);
+    powellOptimizer0.optimize(optimizationDataArray0);
+    // Undeclared exception!
+    try {
+        powellOptimizer0.doOptimize();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // illegal state: maximal count (0) exceeded: evaluations
+        //
+        verifyException(""org.apache.commons.math3.optim.BaseOptimizer$MaxEvalCallback"", e);
+    }
+}",0,
+project,0,test52,"public void test52() throws Throwable {
+    OptimizationData[] optimizationDataArray0 = new OptimizationData[1];
+    double[] doubleArray0 = new double[0];
+    InitialGuess initialGuess0 = new InitialGuess(doubleArray0);
+    optimizationDataArray0[0] = (OptimizationData) initialGuess0;
+    PowellOptimizer powellOptimizer0 = new PowellOptimizer(1377.0, 1377.0);
+    powellOptimizer0.optimize(optimizationDataArray0);
+    // Undeclared exception!
+    try {
+        powellOptimizer0.doOptimize();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // illegal state: maximal count (0) exceeded: evaluations
+        //
+        verifyException(""org.apache.commons.math3.optim.BaseOptimizer$MaxEvalCallback"", e);
+    }
+}",0,

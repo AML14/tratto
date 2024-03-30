@@ -1,0 +1,511 @@
+focal_method,test_prefix,docstring
+"public String nodeName() {
+    return ""#comment"";
+}","public void test011() throws Throwable {
+    Comment comment0 = new Comment((String) null);
+    comment0.getData();
+    assertEquals(""#comment"", comment0.nodeName());
+}",""
+"public String nodeName() {
+    return ""#comment"";
+}","public void test022() throws Throwable {
+    Comment comment0 = new Comment("""", ""iframe"");
+    comment0.getData();
+    assertEquals(""#comment"", comment0.nodeName());
+}",""
+"public XmlDeclaration asXmlDeclaration() {
+    String data = getData();
+    Document doc = Jsoup.parse(""<"" + data.substring(1, data.length() - 1) + "">"", baseUri(), Parser.xmlParser());
+    XmlDeclaration decl = null;
+    if (doc.childNodeSize() > 0) {
+        Element el = doc.child(0);
+        decl = new XmlDeclaration(NodeUtils.parser(doc).settings().normalizeTag(el.tagName()), data.startsWith(""!""));
+        decl.attributes().addAll(el.attributes());
+    }
+    return decl;
+}","public void test033() throws Throwable {
+    Comment comment0 = new Comment("";ZMy"", "";ZMy"");
+    XmlDeclaration xmlDeclaration0 = comment0.asXmlDeclaration();
+    assertNotNull(xmlDeclaration0);
+}","/**
+ * Attempt to cast this comment to an XML Declaration note.
+ * @return an XML declaration if it could be parsed as one, null otherwise.
+ */"
+"public String nodeName() {
+    return ""#comment"";
+}","public void test034() throws Throwable {
+    Comment comment0 = new Comment("";ZMy"", "";ZMy"");
+    XmlDeclaration xmlDeclaration0 = comment0.asXmlDeclaration();
+    assertEquals(""#comment"", comment0.nodeName());
+}",""
+"@Override
+public String toString() {
+    return outerHtml();
+}","public void test045() throws Throwable {
+    Comment comment0 = new Comment(""j7)*@new9&DAC-ekb8W"", ""j7)*@new9&DAC-ekb8W"");
+    comment0.reparentChild(comment0);
+    // Undeclared exception!
+    comment0.toString();
+}",""
+"@Override
+public String toString() {
+    return outerHtml();
+}","public void test056() throws Throwable {
+    Comment comment0 = new Comment(""?EF'5F+\"""", ""comment"");
+    Object object0 = new Object();
+    comment0.value = object0;
+    // Undeclared exception!
+    try {
+        comment0.toString();
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // java.lang.Object cannot be cast to java.lang.String
+        //
+        verifyException(""org.jsoup.nodes.LeafNode"", e);
+    }
+}",""
+"@Override
+public String toString() {
+    return outerHtml();
+}","public void test067() throws Throwable {
+    Comment comment0 = new Comment("";ZMy"", "";ZMy"");
+    Parser parser0 = Parser.xmlParser();
+    Document document0 = parser0.parseInput(""+!_]D7gjO9H]'9|"", ""+!_]D7gjO9H]'9|"");
+    comment0.setParentNode(document0);
+    comment0.siblingIndex = (-923);
+    // Undeclared exception!
+    try {
+        comment0.toString();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"void outerHtmlHead(Appendable accum, int depth, Document.OutputSettings out) throws IOException {
+    if (out.prettyPrint())
+        indent(accum, depth, out);
+    accum.append(""<!--"").append(getData()).append(""-->"");
+}","public void test078() throws Throwable {
+    Comment comment0 = new Comment(""comment"", ""em"");
+    StringWriter stringWriter0 = new StringWriter();
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    document_OutputSettings0.indentAmount(35);
+    // Undeclared exception!
+    comment0.outerHtmlHead(stringWriter0, 958, document_OutputSettings0);
+}",""
+"void outerHtmlHead(Appendable accum, int depth, Document.OutputSettings out) throws IOException {
+    if (out.prettyPrint())
+        indent(accum, depth, out);
+    accum.append(""<!--"").append(getData()).append(""-->"");
+}","public void test089() throws Throwable {
+    Comment comment0 = new Comment(""org.jsoup.SerializationException"");
+    CharBuffer charBuffer0 = CharBuffer.wrap((CharSequence) ""#comment"");
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    // Undeclared exception!
+    try {
+        comment0.outerHtmlHead(charBuffer0, 27, document_OutputSettings0);
+        fail(""Expecting exception: ReadOnlyBufferException"");
+    } catch (ReadOnlyBufferException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.nio.StringCharBuffer"", e);
+    }
+}",""
+"void outerHtmlHead(Appendable accum, int depth, Document.OutputSettings out) throws IOException {
+    if (out.prettyPrint())
+        indent(accum, depth, out);
+    accum.append(""<!--"").append(getData()).append(""-->"");
+}","public void test0910() throws Throwable {
+    Comment comment0 = new Comment("""");
+    char[] charArray0 = new char[6];
+    CharBuffer charBuffer0 = CharBuffer.wrap(charArray0);
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    // Undeclared exception!
+    try {
+        comment0.outerHtmlHead(charBuffer0, 1, document_OutputSettings0);
+        fail(""Expecting exception: BufferOverflowException"");
+    } catch (BufferOverflowException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.nio.CharBuffer"", e);
+    }
+}",""
+"void outerHtmlHead(Appendable accum, int depth, Document.OutputSettings out) throws IOException {
+    if (out.prettyPrint())
+        indent(accum, depth, out);
+    accum.append(""<!--"").append(getData()).append(""-->"");
+}","public void test1011() throws Throwable {
+    Comment comment0 = new Comment(""org.jsoup.nodes.Comment"");
+    // Undeclared exception!
+    try {
+        comment0.outerHtmlHead((Appendable) null, 3720, (Document.OutputSettings) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Comment"", e);
+    }
+}",""
+"void outerHtmlHead(Appendable accum, int depth, Document.OutputSettings out) throws IOException {
+    if (out.prettyPrint())
+        indent(accum, depth, out);
+    accum.append(""<!--"").append(getData()).append(""-->"");
+}","public void test1112() throws Throwable {
+    Comment comment0 = new Comment(""GXy}3"", ""GXy}3"");
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    StringBuilder stringBuilder0 = new StringBuilder(1);
+    // Undeclared exception!
+    try {
+        comment0.outerHtmlHead(stringBuilder0, (-20569767), document_OutputSettings0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // width must be > 0
+        //
+        verifyException(""org.jsoup.internal.StringUtil"", e);
+    }
+}",""
+"void outerHtmlHead(Appendable accum, int depth, Document.OutputSettings out) throws IOException {
+    if (out.prettyPrint())
+        indent(accum, depth, out);
+    accum.append(""<!--"").append(getData()).append(""-->"");
+}","public void test1213() throws Throwable {
+    Comment comment0 = new Comment("""", ""!>206&d5"");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""!>206&d5"");
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    comment0.value = (Object) document_OutputSettings0;
+    // Undeclared exception!
+    try {
+        comment0.outerHtmlHead(mockPrintStream0, 79, document_OutputSettings0);
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // org.jsoup.nodes.Document$OutputSettings cannot be cast to java.lang.String
+        //
+        verifyException(""org.jsoup.nodes.LeafNode"", e);
+    }
+}",""
+"void outerHtmlHead(Appendable accum, int depth, Document.OutputSettings out) throws IOException {
+    if (out.prettyPrint())
+        indent(accum, depth, out);
+    accum.append(""<!--"").append(getData()).append(""-->"");
+}","public void test1314() throws Throwable {
+    Comment comment0 = new Comment("">206&d5"", "">206&d5"");
+    PipedWriter pipedWriter0 = new PipedWriter();
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    try {
+        comment0.outerHtmlHead(pipedWriter0, 26, document_OutputSettings0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Pipe not connected
+        //
+        verifyException(""java.io.PipedWriter"", e);
+    }
+}",""
+"public boolean isXmlDeclaration() {
+    String data = getData();
+    return (data.length() > 1 && (data.startsWith(""!"") || data.startsWith(""?"")));
+}","public void test1415() throws Throwable {
+    Comment comment0 = new Comment((String) null);
+    // Undeclared exception!
+    try {
+        comment0.isXmlDeclaration();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Comment"", e);
+    }
+}","/**
+ * Check if this comment looks like an XML Declaration.
+ * @return true if it looks like, maybe, it's an XML Declaration.
+ */"
+"public boolean isXmlDeclaration() {
+    String data = getData();
+    return (data.length() > 1 && (data.startsWith(""!"") || data.startsWith(""?"")));
+}","public void test1516() throws Throwable {
+    Comment comment0 = new Comment("""");
+    Object object0 = new Object();
+    comment0.value = object0;
+    // Undeclared exception!
+    try {
+        comment0.isXmlDeclaration();
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // java.lang.Object cannot be cast to java.lang.String
+        //
+        verifyException(""org.jsoup.nodes.LeafNode"", e);
+    }
+}","/**
+ * Check if this comment looks like an XML Declaration.
+ * @return true if it looks like, maybe, it's an XML Declaration.
+ */"
+"public String getData() {
+    return coreValue();
+}","public void test1617() throws Throwable {
+    Comment comment0 = new Comment(""?EF'5F+\"""", ""comment"");
+    Object object0 = new Object();
+    comment0.value = object0;
+    // Undeclared exception!
+    try {
+        comment0.getData();
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // java.lang.Object cannot be cast to java.lang.String
+        //
+        verifyException(""org.jsoup.nodes.LeafNode"", e);
+    }
+}","/**
+ *     Get the contents of the comment.
+ *     @return comment content
+ */"
+"public XmlDeclaration asXmlDeclaration() {
+    String data = getData();
+    Document doc = Jsoup.parse(""<"" + data.substring(1, data.length() - 1) + "">"", baseUri(), Parser.xmlParser());
+    XmlDeclaration decl = null;
+    if (doc.childNodeSize() > 0) {
+        Element el = doc.child(0);
+        decl = new XmlDeclaration(NodeUtils.parser(doc).settings().normalizeTag(el.tagName()), data.startsWith(""!""));
+        decl.attributes().addAll(el.attributes());
+    }
+    return decl;
+}","public void test1718() throws Throwable {
+    Comment comment0 = new Comment("""", """");
+    // Undeclared exception!
+    try {
+        comment0.asXmlDeclaration();
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}","/**
+ * Attempt to cast this comment to an XML Declaration note.
+ * @return an XML declaration if it could be parsed as one, null otherwise.
+ */"
+"public XmlDeclaration asXmlDeclaration() {
+    String data = getData();
+    Document doc = Jsoup.parse(""<"" + data.substring(1, data.length() - 1) + "">"", baseUri(), Parser.xmlParser());
+    XmlDeclaration decl = null;
+    if (doc.childNodeSize() > 0) {
+        Element el = doc.child(0);
+        decl = new XmlDeclaration(NodeUtils.parser(doc).settings().normalizeTag(el.tagName()), data.startsWith(""!""));
+        decl.attributes().addAll(el.attributes());
+    }
+    return decl;
+}","public void test1819() throws Throwable {
+    Comment comment0 = new Comment((String) null);
+    // Undeclared exception!
+    try {
+        comment0.asXmlDeclaration();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Comment"", e);
+    }
+}","/**
+ * Attempt to cast this comment to an XML Declaration note.
+ * @return an XML declaration if it could be parsed as one, null otherwise.
+ */"
+"public XmlDeclaration asXmlDeclaration() {
+    String data = getData();
+    Document doc = Jsoup.parse(""<"" + data.substring(1, data.length() - 1) + "">"", baseUri(), Parser.xmlParser());
+    XmlDeclaration decl = null;
+    if (doc.childNodeSize() > 0) {
+        Element el = doc.child(0);
+        decl = new XmlDeclaration(NodeUtils.parser(doc).settings().normalizeTag(el.tagName()), data.startsWith(""!""));
+        decl.attributes().addAll(el.attributes());
+    }
+    return decl;
+}","public void test1920() throws Throwable {
+    Comment comment0 = new Comment(""!stZ9RYK_*dt!B:`e8h"", ""^4pj{Mp:,@&"");
+    Tag tag0 = Tag.valueOf(""<"");
+    Attributes attributes0 = new Attributes();
+    PseudoTextElement pseudoTextElement0 = new PseudoTextElement(tag0, ""G"", attributes0);
+    comment0.value = (Object) pseudoTextElement0;
+    // Undeclared exception!
+    try {
+        comment0.asXmlDeclaration();
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // org.jsoup.nodes.PseudoTextElement cannot be cast to java.lang.String
+        //
+        verifyException(""org.jsoup.nodes.LeafNode"", e);
+    }
+}","/**
+ * Attempt to cast this comment to an XML Declaration note.
+ * @return an XML declaration if it could be parsed as one, null otherwise.
+ */"
+"public String nodeName() {
+    return ""#comment"";
+}","public void test2021() throws Throwable {
+    Comment comment0 = new Comment(""?NV^SU^"", """");
+    boolean boolean0 = comment0.isXmlDeclaration();
+    assertEquals(""#comment"", comment0.nodeName());
+}",""
+"public boolean isXmlDeclaration() {
+    String data = getData();
+    return (data.length() > 1 && (data.startsWith(""!"") || data.startsWith(""?"")));
+}","public void test2022() throws Throwable {
+    Comment comment0 = new Comment(""?NV^SU^"", """");
+    boolean boolean0 = comment0.isXmlDeclaration();
+    assertTrue(boolean0);
+}","/**
+ * Check if this comment looks like an XML Declaration.
+ * @return true if it looks like, maybe, it's an XML Declaration.
+ */"
+"public String nodeName() {
+    return ""#comment"";
+}","public void test2123() throws Throwable {
+    Comment comment0 = new Comment(""comment"", ""em"");
+    comment0.getData();
+    assertEquals(""#comment"", comment0.nodeName());
+}",""
+"public String nodeName() {
+    return ""#comment"";
+}","public void test2224() throws Throwable {
+    Comment comment0 = new Comment(""org.jsoup.SerializationException"");
+    String string0 = comment0.nodeName();
+    assertEquals(""#comment"", string0);
+}",""
+"public XmlDeclaration asXmlDeclaration() {
+    String data = getData();
+    Document doc = Jsoup.parse(""<"" + data.substring(1, data.length() - 1) + "">"", baseUri(), Parser.xmlParser());
+    XmlDeclaration decl = null;
+    if (doc.childNodeSize() > 0) {
+        Element el = doc.child(0);
+        decl = new XmlDeclaration(NodeUtils.parser(doc).settings().normalizeTag(el.tagName()), data.startsWith(""!""));
+        decl.attributes().addAll(el.attributes());
+    }
+    return decl;
+}","public void test2325() throws Throwable {
+    Comment comment0 = new Comment(""m/i4B(xa"", ""m/i4B(xa"");
+    XmlDeclaration xmlDeclaration0 = comment0.asXmlDeclaration();
+    assertNull(xmlDeclaration0);
+}","/**
+ * Attempt to cast this comment to an XML Declaration note.
+ * @return an XML declaration if it could be parsed as one, null otherwise.
+ */"
+"public String nodeName() {
+    return ""#comment"";
+}","public void test2326() throws Throwable {
+    Comment comment0 = new Comment(""m/i4B(xa"", ""m/i4B(xa"");
+    XmlDeclaration xmlDeclaration0 = comment0.asXmlDeclaration();
+    assertEquals(""#comment"", comment0.nodeName());
+}",""
+"public XmlDeclaration asXmlDeclaration() {
+    String data = getData();
+    Document doc = Jsoup.parse(""<"" + data.substring(1, data.length() - 1) + "">"", baseUri(), Parser.xmlParser());
+    XmlDeclaration decl = null;
+    if (doc.childNodeSize() > 0) {
+        Element el = doc.child(0);
+        decl = new XmlDeclaration(NodeUtils.parser(doc).settings().normalizeTag(el.tagName()), data.startsWith(""!""));
+        decl.attributes().addAll(el.attributes());
+    }
+    return decl;
+}","public void test2427() throws Throwable {
+    Comment comment0 = new Comment(""m?j49`a"");
+    // Undeclared exception!
+    try {
+        comment0.asXmlDeclaration();
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 0, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}","/**
+ * Attempt to cast this comment to an XML Declaration note.
+ * @return an XML declaration if it could be parsed as one, null otherwise.
+ */"
+"public boolean isXmlDeclaration() {
+    String data = getData();
+    return (data.length() > 1 && (data.startsWith(""!"") || data.startsWith(""?"")));
+}","public void test2528() throws Throwable {
+    Comment comment0 = new Comment(""GXy}3"", ""GXy}3"");
+    boolean boolean0 = comment0.isXmlDeclaration();
+    assertFalse(boolean0);
+}","/**
+ * Check if this comment looks like an XML Declaration.
+ * @return true if it looks like, maybe, it's an XML Declaration.
+ */"
+"public String nodeName() {
+    return ""#comment"";
+}","public void test2529() throws Throwable {
+    Comment comment0 = new Comment(""GXy}3"", ""GXy}3"");
+    boolean boolean0 = comment0.isXmlDeclaration();
+    assertEquals(""#comment"", comment0.nodeName());
+}",""
+"public boolean isXmlDeclaration() {
+    String data = getData();
+    return (data.length() > 1 && (data.startsWith(""!"") || data.startsWith(""?"")));
+}","public void test2630() throws Throwable {
+    Comment comment0 = new Comment("""", ""!>206&d5"");
+    boolean boolean0 = comment0.isXmlDeclaration();
+    assertFalse(boolean0);
+}","/**
+ * Check if this comment looks like an XML Declaration.
+ * @return true if it looks like, maybe, it's an XML Declaration.
+ */"
+"public String nodeName() {
+    return ""#comment"";
+}","public void test2631() throws Throwable {
+    Comment comment0 = new Comment("""", ""!>206&d5"");
+    boolean boolean0 = comment0.isXmlDeclaration();
+    assertEquals(""#comment"", comment0.nodeName());
+}",""
+"public String nodeName() {
+    return ""#comment"";
+}","public void test2732() throws Throwable {
+    Comment comment0 = new Comment("";ZMy"", "";ZMy"");
+    String string0 = comment0.toString();
+    assertEquals(""#comment"", comment0.nodeName());
+}",""
+"@Override
+public String toString() {
+    return outerHtml();
+}","public void test2733() throws Throwable {
+    Comment comment0 = new Comment("";ZMy"", "";ZMy"");
+    String string0 = comment0.toString();
+    assertEquals(""\n<!--;ZMy-->"", string0);
+}",""
+"public String nodeName() {
+    return ""#comment"";
+}","public void test2834() throws Throwable {
+    Comment comment0 = new Comment("""", ""!>206&d5"");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""!>206&d5"");
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    Document.OutputSettings document_OutputSettings1 = document_OutputSettings0.prettyPrint(false);
+    comment0.outerHtmlHead(mockPrintStream0, 79, document_OutputSettings1);
+    assertEquals(""#comment"", comment0.nodeName());
+}",""
+"public String nodeName() {
+    return ""#comment"";
+}","public void test2935() throws Throwable {
+    Comment comment0 = new Comment(""!+PV"");
+    boolean boolean0 = comment0.isXmlDeclaration();
+    assertEquals(""#comment"", comment0.nodeName());
+}",""
+"public boolean isXmlDeclaration() {
+    String data = getData();
+    return (data.length() > 1 && (data.startsWith(""!"") || data.startsWith(""?"")));
+}","public void test2936() throws Throwable {
+    Comment comment0 = new Comment(""!+PV"");
+    boolean boolean0 = comment0.isXmlDeclaration();
+    assertTrue(boolean0);
+}","/**
+ * Check if this comment looks like an XML Declaration.
+ * @return true if it looks like, maybe, it's an XML Declaration.
+ */"

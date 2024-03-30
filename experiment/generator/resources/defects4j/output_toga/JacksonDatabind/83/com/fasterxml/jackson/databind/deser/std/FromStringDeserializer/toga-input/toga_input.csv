@@ -1,0 +1,460 @@
+focal_method,test_prefix,docstring
+"protected T _deserializeFromEmptyString() throws IOException {
+    return null;
+}","public void test022() throws Throwable {
+    Class<InetSocketAddress> class0 = InetSocketAddress.class;
+    FromStringDeserializer.Std fromStringDeserializer_Std0 = new FromStringDeserializer.Std(class0, 9);
+    Object object0 = fromStringDeserializer_Std0._deserializeFromEmptyString();
+    assertNull(object0);
+}",""
+"public static Class<?>[] types() {
+    return new Class<?>[] { File.class, URL.class, URI.class, Class.class, JavaType.class, Currency.class, Pattern.class, Locale.class, Charset.class, TimeZone.class, InetAddress.class, InetSocketAddress.class, StringBuilder.class };
+}","public void test033() throws Throwable {
+    Class<?>[] classArray0 = FromStringDeserializer.types();
+    assertEquals(13, classArray0.length);
+}",""
+"/*
+    /**********************************************************
+    /* Deserializer implementations
+    /**********************************************************
+     */
+@SuppressWarnings(""unchecked"")
+@Override
+public T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+    // 22-Sep-2012, tatu: For 2.1, use this new method, may force coercion:
+    String text = p.getValueAsString();
+    if (text != null) {
+        // has String representation
+        if (text.length() == 0 || (text = text.trim()).length() == 0) {
+            // 04-Feb-2013, tatu: Usually should become null; but not always
+            return _deserializeFromEmptyString();
+        }
+        Exception cause = null;
+        try {
+            // 19-May-2017, tatu: Used to require non-null result (assuming `null`
+            //    indicated error; but that seems wrong. Should be able to return
+            //    `null` as value.
+            if (_deserialize(text, ctxt) != null) {
+                return _deserialize(text, ctxt);
+            }
+        } catch (IllegalArgumentException iae) {
+            cause = iae;
+        } catch (MalformedURLException me) {
+            cause = me;
+        }
+        String msg = ""not a valid textual representation"";
+        if (cause != null) {
+            String m2 = cause.getMessage();
+            if (m2 != null) {
+                msg = msg + "", problem: "" + m2;
+            }
+        }
+        // 05-May-2016, tatu: Unlike most usage, this seems legit, so...
+        JsonMappingException e = ctxt.weirdStringException(text, _valueClass, msg);
+        if (cause != null) {
+            e.initCause(cause);
+        }
+        throw e;
+        // nothing to do here, yet? We'll fail anyway
+    }
+    JsonToken t = p.getCurrentToken();
+    // [databind#381]
+    if (t == JsonToken.START_ARRAY) {
+        return _deserializeFromArray(p, ctxt);
+    }
+    if (t == JsonToken.VALUE_EMBEDDED_OBJECT) {
+        // Trivial cases; null to null, instance of type itself returned as is
+        Object ob = p.getEmbeddedObject();
+        if (ob == null) {
+            return null;
+        }
+        if (_valueClass.isAssignableFrom(ob.getClass())) {
+            return (T) ob;
+        }
+        return _deserializeEmbedded(ob, ctxt);
+    }
+    return (T) ctxt.handleUnexpectedToken(_valueClass, p);
+}","public void test044() throws Throwable {
+    Class<File> class0 = File.class;
+    FromStringDeserializer.Std fromStringDeserializer_Std0 = FromStringDeserializer.findDeserializer(class0);
+    JsonNodeFactory jsonNodeFactory0 = JsonNodeFactory.instance;
+    ArrayNode arrayNode0 = new ArrayNode(jsonNodeFactory0, 8);
+    JsonParser jsonParser0 = arrayNode0.traverse();
+    // Undeclared exception!
+    try {
+        fromStringDeserializer_Std0.deserialize(jsonParser0, (DeserializationContext) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.FromStringDeserializer"", e);
+    }
+}",""
+"public static Std findDeserializer(Class<?> rawType) {
+    int kind = 0;
+    if (rawType == File.class) {
+        kind = Std.STD_FILE;
+    } else if (rawType == URL.class) {
+        kind = Std.STD_URL;
+    } else if (rawType == URI.class) {
+        kind = Std.STD_URI;
+    } else if (rawType == Class.class) {
+        kind = Std.STD_CLASS;
+    } else if (rawType == JavaType.class) {
+        kind = Std.STD_JAVA_TYPE;
+    } else if (rawType == Currency.class) {
+        kind = Std.STD_CURRENCY;
+    } else if (rawType == Pattern.class) {
+        kind = Std.STD_PATTERN;
+    } else if (rawType == Locale.class) {
+        kind = Std.STD_LOCALE;
+    } else if (rawType == Charset.class) {
+        kind = Std.STD_CHARSET;
+    } else if (rawType == TimeZone.class) {
+        kind = Std.STD_TIME_ZONE;
+    } else if (rawType == InetAddress.class) {
+        kind = Std.STD_INET_ADDRESS;
+    } else if (rawType == InetSocketAddress.class) {
+        kind = Std.STD_INET_SOCKET_ADDRESS;
+    } else if (rawType == StringBuilder.class) {
+        kind = Std.STD_STRING_BUILDER;
+    } else {
+        return null;
+    }
+    return new Std(rawType, kind);
+}","public void test055() throws Throwable {
+    Class<URL> class0 = URL.class;
+    FromStringDeserializer.Std fromStringDeserializer_Std0 = FromStringDeserializer.findDeserializer(class0);
+    assertEquals(10, FromStringDeserializer.Std.STD_TIME_ZONE);
+}","/**
+ * Factory method for trying to find a deserializer for one of supported
+ * types that have simple from-String serialization.
+ */"
+"public ObjectReader readerForUpdating(Object valueToUpdate) {
+    JavaType t = _typeFactory.constructType(valueToUpdate.getClass());
+    return _newReader(getDeserializationConfig(), t, valueToUpdate, null, _injectableValues);
+}","public void test066() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<TimeZone> class0 = TimeZone.class;
+    ObjectReader objectReader0 = objectMapper0.readerForUpdating(class0);
+    assertNotNull(objectReader0);
+}","/**
+ * Factory method for constructing {@link ObjectReader} that will
+ * update given Object (usually Bean, but can be a Collection or Map
+ * as well, but NOT an array) with JSON data. Deserialization occurs
+ * normally except that the root-level value in JSON is not used for
+ * instantiating a new object; instead give updateable object is used
+ * as root.
+ * Runtime type of value object is used for locating deserializer,
+ * unless overridden by other factory methods of {@link ObjectReader}
+ */"
+"@SuppressWarnings(""unchecked"")
+@Override
+public <T> T treeToValue(TreeNode n, Class<T> valueType) throws JsonProcessingException {
+    try {
+        // Simple cast when we just want to cast to, say, ObjectNode
+        // ... one caveat; while everything is Object.class, let's not take shortcut
+        if (valueType != Object.class && valueType.isAssignableFrom(n.getClass())) {
+            return (T) n;
+        }
+        // 20-Apr-2016, tatu: Another thing: for VALUE_EMBEDDED_OBJECT, assume similar
+        //    short-cut coercion
+        if (n.asToken() == JsonToken.VALUE_EMBEDDED_OBJECT) {
+            if (n instanceof POJONode) {
+                Object ob = ((POJONode) n).getPojo();
+                if ((ob == null) || valueType.isInstance(ob)) {
+                    return (T) ob;
+                }
+            }
+        }
+        return readValue(treeAsTokens(n), valueType);
+    } catch (JsonProcessingException e) {
+        throw e;
+    } catch (IOException e) {
+        // should not occur, no real i/o...
+        throw new IllegalArgumentException(e.getMessage(), e);
+    }
+}","public void test077() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    IntNode intNode0 = new IntNode(3);
+    Class<Currency> class0 = Currency.class;
+    try {
+        objectMapper0.treeToValue((TreeNode) intNode0, class0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Can not deserialize value of type java.util.Currency from String \""3\"": not a valid textual representation
+        //  at [Source: java.lang.String@0000000002; line: -1, column: -1]
+        //
+        verifyException(""com.fasterxml.jackson.databind.exc.InvalidFormatException"", e);
+    }
+}","/**
+ *  Convenience conversion method that will bind data given JSON tree
+ *  contains into specific value (usually bean) type.
+ * <p>
+ *  Functionally equivalent to:
+ * <pre>
+ *    objectMapper.convertValue(n, valueClass);
+ * </pre>
+ */"
+"public static Std findDeserializer(Class<?> rawType) {
+    int kind = 0;
+    if (rawType == File.class) {
+        kind = Std.STD_FILE;
+    } else if (rawType == URL.class) {
+        kind = Std.STD_URL;
+    } else if (rawType == URI.class) {
+        kind = Std.STD_URI;
+    } else if (rawType == Class.class) {
+        kind = Std.STD_CLASS;
+    } else if (rawType == JavaType.class) {
+        kind = Std.STD_JAVA_TYPE;
+    } else if (rawType == Currency.class) {
+        kind = Std.STD_CURRENCY;
+    } else if (rawType == Pattern.class) {
+        kind = Std.STD_PATTERN;
+    } else if (rawType == Locale.class) {
+        kind = Std.STD_LOCALE;
+    } else if (rawType == Charset.class) {
+        kind = Std.STD_CHARSET;
+    } else if (rawType == TimeZone.class) {
+        kind = Std.STD_TIME_ZONE;
+    } else if (rawType == InetAddress.class) {
+        kind = Std.STD_INET_ADDRESS;
+    } else if (rawType == InetSocketAddress.class) {
+        kind = Std.STD_INET_SOCKET_ADDRESS;
+    } else if (rawType == StringBuilder.class) {
+        kind = Std.STD_STRING_BUILDER;
+    } else {
+        return null;
+    }
+    return new Std(rawType, kind);
+}","public void test088() throws Throwable {
+    Class<TimeZone> class0 = TimeZone.class;
+    FromStringDeserializer.Std fromStringDeserializer_Std0 = FromStringDeserializer.findDeserializer(class0);
+    assertEquals(7, FromStringDeserializer.Std.STD_PATTERN);
+}","/**
+ * Factory method for trying to find a deserializer for one of supported
+ * types that have simple from-String serialization.
+ */"
+"public boolean isCachable() {
+    return false;
+}","public void test099() throws Throwable {
+    Class<Pattern> class0 = Pattern.class;
+    FromStringDeserializer.Std fromStringDeserializer_Std0 = FromStringDeserializer.findDeserializer(class0);
+    assertFalse(fromStringDeserializer_Std0.isCachable());
+}","/**
+ *  Method called to see if deserializer instance is cachable and
+ *  usable for other properties of same type (type for which instance
+ *  was created).
+ * <p>
+ *  Note that cached instances are still resolved on per-property basis,
+ *  if instance implements {@link com.fasterxml.jackson.databind.deser.ResolvableDeserializer}:
+ *  cached instance is just as the base. This means that in most cases it is safe to
+ *  cache instances; however, it only makes sense to cache instances
+ *  if instantiation is expensive, or if instances are heavy-weight.
+ * <p>
+ *  Default implementation returns false, to indicate that no caching
+ *  is done.
+ */"
+"public static Std findDeserializer(Class<?> rawType) {
+    int kind = 0;
+    if (rawType == File.class) {
+        kind = Std.STD_FILE;
+    } else if (rawType == URL.class) {
+        kind = Std.STD_URL;
+    } else if (rawType == URI.class) {
+        kind = Std.STD_URI;
+    } else if (rawType == Class.class) {
+        kind = Std.STD_CLASS;
+    } else if (rawType == JavaType.class) {
+        kind = Std.STD_JAVA_TYPE;
+    } else if (rawType == Currency.class) {
+        kind = Std.STD_CURRENCY;
+    } else if (rawType == Pattern.class) {
+        kind = Std.STD_PATTERN;
+    } else if (rawType == Locale.class) {
+        kind = Std.STD_LOCALE;
+    } else if (rawType == Charset.class) {
+        kind = Std.STD_CHARSET;
+    } else if (rawType == TimeZone.class) {
+        kind = Std.STD_TIME_ZONE;
+    } else if (rawType == InetAddress.class) {
+        kind = Std.STD_INET_ADDRESS;
+    } else if (rawType == InetSocketAddress.class) {
+        kind = Std.STD_INET_SOCKET_ADDRESS;
+    } else if (rawType == StringBuilder.class) {
+        kind = Std.STD_STRING_BUILDER;
+    } else {
+        return null;
+    }
+    return new Std(rawType, kind);
+}","public void test1111() throws Throwable {
+    Class<Charset> class0 = Charset.class;
+    FromStringDeserializer.Std fromStringDeserializer_Std0 = FromStringDeserializer.findDeserializer(class0);
+    assertEquals(7, FromStringDeserializer.Std.STD_PATTERN);
+}","/**
+ * Factory method for trying to find a deserializer for one of supported
+ * types that have simple from-String serialization.
+ */"
+"public static Std findDeserializer(Class<?> rawType) {
+    int kind = 0;
+    if (rawType == File.class) {
+        kind = Std.STD_FILE;
+    } else if (rawType == URL.class) {
+        kind = Std.STD_URL;
+    } else if (rawType == URI.class) {
+        kind = Std.STD_URI;
+    } else if (rawType == Class.class) {
+        kind = Std.STD_CLASS;
+    } else if (rawType == JavaType.class) {
+        kind = Std.STD_JAVA_TYPE;
+    } else if (rawType == Currency.class) {
+        kind = Std.STD_CURRENCY;
+    } else if (rawType == Pattern.class) {
+        kind = Std.STD_PATTERN;
+    } else if (rawType == Locale.class) {
+        kind = Std.STD_LOCALE;
+    } else if (rawType == Charset.class) {
+        kind = Std.STD_CHARSET;
+    } else if (rawType == TimeZone.class) {
+        kind = Std.STD_TIME_ZONE;
+    } else if (rawType == InetAddress.class) {
+        kind = Std.STD_INET_ADDRESS;
+    } else if (rawType == InetSocketAddress.class) {
+        kind = Std.STD_INET_SOCKET_ADDRESS;
+    } else if (rawType == StringBuilder.class) {
+        kind = Std.STD_STRING_BUILDER;
+    } else {
+        return null;
+    }
+    return new Std(rawType, kind);
+}","public void test1212() throws Throwable {
+    Class<Integer> class0 = Integer.class;
+    FromStringDeserializer.Std fromStringDeserializer_Std0 = FromStringDeserializer.findDeserializer(class0);
+    assertNull(fromStringDeserializer_Std0);
+}","/**
+ * Factory method for trying to find a deserializer for one of supported
+ * types that have simple from-String serialization.
+ */"
+"public static Std findDeserializer(Class<?> rawType) {
+    int kind = 0;
+    if (rawType == File.class) {
+        kind = Std.STD_FILE;
+    } else if (rawType == URL.class) {
+        kind = Std.STD_URL;
+    } else if (rawType == URI.class) {
+        kind = Std.STD_URI;
+    } else if (rawType == Class.class) {
+        kind = Std.STD_CLASS;
+    } else if (rawType == JavaType.class) {
+        kind = Std.STD_JAVA_TYPE;
+    } else if (rawType == Currency.class) {
+        kind = Std.STD_CURRENCY;
+    } else if (rawType == Pattern.class) {
+        kind = Std.STD_PATTERN;
+    } else if (rawType == Locale.class) {
+        kind = Std.STD_LOCALE;
+    } else if (rawType == Charset.class) {
+        kind = Std.STD_CHARSET;
+    } else if (rawType == TimeZone.class) {
+        kind = Std.STD_TIME_ZONE;
+    } else if (rawType == InetAddress.class) {
+        kind = Std.STD_INET_ADDRESS;
+    } else if (rawType == InetSocketAddress.class) {
+        kind = Std.STD_INET_SOCKET_ADDRESS;
+    } else if (rawType == StringBuilder.class) {
+        kind = Std.STD_STRING_BUILDER;
+    } else {
+        return null;
+    }
+    return new Std(rawType, kind);
+}","public void test1313() throws Throwable {
+    Class<InetAddress> class0 = InetAddress.class;
+    FromStringDeserializer.Std fromStringDeserializer_Std0 = FromStringDeserializer.findDeserializer(class0);
+    assertEquals(5, FromStringDeserializer.Std.STD_JAVA_TYPE);
+}","/**
+ * Factory method for trying to find a deserializer for one of supported
+ * types that have simple from-String serialization.
+ */"
+"public static Std findDeserializer(Class<?> rawType) {
+    int kind = 0;
+    if (rawType == File.class) {
+        kind = Std.STD_FILE;
+    } else if (rawType == URL.class) {
+        kind = Std.STD_URL;
+    } else if (rawType == URI.class) {
+        kind = Std.STD_URI;
+    } else if (rawType == Class.class) {
+        kind = Std.STD_CLASS;
+    } else if (rawType == JavaType.class) {
+        kind = Std.STD_JAVA_TYPE;
+    } else if (rawType == Currency.class) {
+        kind = Std.STD_CURRENCY;
+    } else if (rawType == Pattern.class) {
+        kind = Std.STD_PATTERN;
+    } else if (rawType == Locale.class) {
+        kind = Std.STD_LOCALE;
+    } else if (rawType == Charset.class) {
+        kind = Std.STD_CHARSET;
+    } else if (rawType == TimeZone.class) {
+        kind = Std.STD_TIME_ZONE;
+    } else if (rawType == InetAddress.class) {
+        kind = Std.STD_INET_ADDRESS;
+    } else if (rawType == InetSocketAddress.class) {
+        kind = Std.STD_INET_SOCKET_ADDRESS;
+    } else if (rawType == StringBuilder.class) {
+        kind = Std.STD_STRING_BUILDER;
+    } else {
+        return null;
+    }
+    return new Std(rawType, kind);
+}","public void test1414() throws Throwable {
+    Class<InetSocketAddress> class0 = InetSocketAddress.class;
+    FromStringDeserializer.Std fromStringDeserializer_Std0 = FromStringDeserializer.findDeserializer(class0);
+    assertEquals(6, FromStringDeserializer.Std.STD_CURRENCY);
+}","/**
+ * Factory method for trying to find a deserializer for one of supported
+ * types that have simple from-String serialization.
+ */"
+"public static Std findDeserializer(Class<?> rawType) {
+    int kind = 0;
+    if (rawType == File.class) {
+        kind = Std.STD_FILE;
+    } else if (rawType == URL.class) {
+        kind = Std.STD_URL;
+    } else if (rawType == URI.class) {
+        kind = Std.STD_URI;
+    } else if (rawType == Class.class) {
+        kind = Std.STD_CLASS;
+    } else if (rawType == JavaType.class) {
+        kind = Std.STD_JAVA_TYPE;
+    } else if (rawType == Currency.class) {
+        kind = Std.STD_CURRENCY;
+    } else if (rawType == Pattern.class) {
+        kind = Std.STD_PATTERN;
+    } else if (rawType == Locale.class) {
+        kind = Std.STD_LOCALE;
+    } else if (rawType == Charset.class) {
+        kind = Std.STD_CHARSET;
+    } else if (rawType == TimeZone.class) {
+        kind = Std.STD_TIME_ZONE;
+    } else if (rawType == InetAddress.class) {
+        kind = Std.STD_INET_ADDRESS;
+    } else if (rawType == InetSocketAddress.class) {
+        kind = Std.STD_INET_SOCKET_ADDRESS;
+    } else if (rawType == StringBuilder.class) {
+        kind = Std.STD_STRING_BUILDER;
+    } else {
+        return null;
+    }
+    return new Std(rawType, kind);
+}","public void test1515() throws Throwable {
+    Class<StringBuilder> class0 = StringBuilder.class;
+    FromStringDeserializer.Std fromStringDeserializer_Std0 = FromStringDeserializer.findDeserializer(class0);
+    assertEquals(6, FromStringDeserializer.Std.STD_CURRENCY);
+}","/**
+ * Factory method for trying to find a deserializer for one of supported
+ * types that have simple from-String serialization.
+ */"

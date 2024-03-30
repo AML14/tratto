@@ -1,0 +1,52 @@
+com.google.gson.DefaultDateTypeAdapter,@Test(timeout = 4000)
+public void test000() throws Throwable {
+    Class<Timestamp> class0 = Timestamp.class;
+    DateFormat dateFormat0 = MockDateFormat.getDateTimeInstance();
+    DefaultDateTypeAdapter defaultDateTypeAdapter0 = new DefaultDateTypeAdapter(class0, dateFormat0, dateFormat0);
+    JsonElement jsonElement0 = defaultDateTypeAdapter0.toJsonTree((Date) null);
+    jsonElement0.isJsonArray();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.google.gson.DefaultDateTypeAdapter,@Test(timeout = 4000)
+public void test011() throws Throwable {
+    Class<Timestamp> class0 = Timestamp.class;
+    DefaultDateTypeAdapter defaultDateTypeAdapter0 = new DefaultDateTypeAdapter(class0, """");
+    MockDate mockDate0 = new MockDate(1462, 1462, 0, 0, 8233);
+    JsonElement jsonElement0 = defaultDateTypeAdapter0.toJsonTree(mockDate0);
+    defaultDateTypeAdapter0.fromJsonTree(jsonElement0);
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.google.gson.DefaultDateTypeAdapter,@Test(timeout = 4000)
+public void test099() throws Throwable {
+    Class<java.sql.Date> class0 = java.sql.Date.class;
+    DateFormat dateFormat0 = MockDateFormat.getDateTimeInstance();
+    DefaultDateTypeAdapter defaultDateTypeAdapter0 = new DefaultDateTypeAdapter(class0, dateFormat0, dateFormat0);
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    java.sql.Date date0 = new java.sql.Date((-1L));
+    defaultDateTypeAdapter0.write(jsonWriter0, (Date) date0);
+    jsonWriter0.isLenient();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.google.gson.DefaultDateTypeAdapter,@Test(timeout = 4000)
+public void test1111() throws Throwable {
+    Class<Date> class0 = Date.class;
+    DateFormat dateFormat0 = MockDateFormat.getTimeInstance();
+    DefaultDateTypeAdapter defaultDateTypeAdapter0 = new DefaultDateTypeAdapter(class0, dateFormat0, dateFormat0);
+    JsonNull jsonNull0 = JsonNull.INSTANCE;
+    defaultDateTypeAdapter0.fromJsonTree(jsonNull0);
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.google.gson.DefaultDateTypeAdapter,@Test(timeout = 4000)
+public void test1515() throws Throwable {
+    DefaultDateTypeAdapter defaultDateTypeAdapter0 = new DefaultDateTypeAdapter(0, 0);
+    MockDate mockDate0 = new MockDate(0);
+    JsonElement jsonElement0 = defaultDateTypeAdapter0.toJsonTree(mockDate0);
+    Date date0 = defaultDateTypeAdapter0.fromJsonTree(jsonElement0);
+    date0.toString();
+},ERROR,java.nio.file.NoSuchFileException,/home/star_usit_group/tratto/experiment/generator/resources/defects4j/temp/Gson_17b/gson/src/main/java/java/util/Date.java
+com.google.gson.DefaultDateTypeAdapter,@Test(timeout = 4000)
+public void test1717() throws Throwable {
+    Class<java.sql.Date> class0 = java.sql.Date.class;
+    DateFormat dateFormat0 = MockDateFormat.getDateTimeInstance(0, 0);
+    DefaultDateTypeAdapter defaultDateTypeAdapter0 = new DefaultDateTypeAdapter(class0, dateFormat0, dateFormat0);
+    MockDate mockDate0 = new MockDate(0);
+    JsonElement jsonElement0 = defaultDateTypeAdapter0.toJsonTree(mockDate0);
+    Date date0 = defaultDateTypeAdapter0.fromJsonTree(jsonElement0);
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.

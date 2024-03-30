@@ -1,0 +1,231 @@
+focal_method,test_prefix,docstring
+"@Override
+public AnnotatedMember getMember() {
+    return null;
+}","public void test00() throws Throwable {
+    Class<String> class0 = String.class;
+    SimpleType simpleType0 = SimpleType.constructUnsafe(class0);
+    MapLikeType mapLikeType0 = MapLikeType.construct(class0, simpleType0, simpleType0);
+    PropertyName propertyName0 = new PropertyName("""");
+    ObjectIdGenerator<ObjectReader> objectIdGenerator0 = (ObjectIdGenerator<ObjectReader>) mock(ObjectIdGenerator.class, new ViolatedAssumptionAnswer());
+    JsonDeserializer<Annotation> jsonDeserializer0 = (JsonDeserializer<Annotation>) mock(JsonDeserializer.class, new ViolatedAssumptionAnswer());
+    SimpleObjectIdResolver simpleObjectIdResolver0 = new SimpleObjectIdResolver();
+    ObjectIdReader objectIdReader0 = new ObjectIdReader(mapLikeType0, propertyName0, objectIdGenerator0, jsonDeserializer0, (SettableBeanProperty) null, simpleObjectIdResolver0);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_REQUIRED;
+    ObjectIdValueProperty objectIdValueProperty0 = new ObjectIdValueProperty(objectIdReader0, propertyMetadata0);
+    AnnotatedMember annotatedMember0 = objectIdValueProperty0.getMember();
+    assertNull(annotatedMember0);
+}",""
+"public int getCreatorIndex() {
+    return -1;
+}","public void test11() throws Throwable {
+    Class<String> class0 = String.class;
+    SimpleType simpleType0 = SimpleType.constructUnsafe(class0);
+    MapLikeType mapLikeType0 = MapLikeType.construct(class0, simpleType0, simpleType0);
+    PropertyName propertyName0 = new PropertyName("""");
+    ObjectIdGenerator<ObjectReader> objectIdGenerator0 = (ObjectIdGenerator<ObjectReader>) mock(ObjectIdGenerator.class, new ViolatedAssumptionAnswer());
+    JsonDeserializer<Annotation> jsonDeserializer0 = (JsonDeserializer<Annotation>) mock(JsonDeserializer.class, new ViolatedAssumptionAnswer());
+    SimpleObjectIdResolver simpleObjectIdResolver0 = new SimpleObjectIdResolver();
+    ObjectIdReader objectIdReader0 = new ObjectIdReader(mapLikeType0, propertyName0, objectIdGenerator0, jsonDeserializer0, (SettableBeanProperty) null, simpleObjectIdResolver0);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_REQUIRED;
+    ObjectIdValueProperty objectIdValueProperty0 = new ObjectIdValueProperty(objectIdReader0, propertyMetadata0);
+    ObjectIdValueProperty objectIdValueProperty1 = new ObjectIdValueProperty(objectIdValueProperty0, """");
+    assertEquals((-1), objectIdValueProperty1.getCreatorIndex());
+}","/**
+ * Method for accessing index of the creator property: for other
+ * types of properties will simply return -1.
+ *
+ * @since 2.1
+ */"
+"@Override
+public void set(Object instance, Object value) throws IOException {
+    setAndReturn(instance, value);
+}","public void test22() throws Throwable {
+    Class<String> class0 = String.class;
+    SimpleType simpleType0 = SimpleType.constructUnsafe(class0);
+    MapLikeType mapLikeType0 = MapLikeType.construct(class0, simpleType0, simpleType0);
+    PropertyName propertyName0 = new PropertyName("""", """");
+    ObjectIdGenerator<ObjectReader> objectIdGenerator0 = (ObjectIdGenerator<ObjectReader>) mock(ObjectIdGenerator.class, new ViolatedAssumptionAnswer());
+    JsonDeserializer<Annotation> jsonDeserializer0 = (JsonDeserializer<Annotation>) mock(JsonDeserializer.class, new ViolatedAssumptionAnswer());
+    SimpleObjectIdResolver simpleObjectIdResolver0 = new SimpleObjectIdResolver();
+    ObjectIdReader objectIdReader0 = new ObjectIdReader(mapLikeType0, propertyName0, objectIdGenerator0, jsonDeserializer0, (SettableBeanProperty) null, simpleObjectIdResolver0);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_REQUIRED;
+    ObjectIdValueProperty objectIdValueProperty0 = new ObjectIdValueProperty(objectIdReader0, propertyMetadata0);
+    PipedInputStream pipedInputStream0 = new PipedInputStream();
+    // Undeclared exception!
+    try {
+        objectIdValueProperty0.set(objectIdReader0, pipedInputStream0);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // Should not call set() on ObjectIdProperty that has no SettableBeanProperty
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.impl.ObjectIdValueProperty"", e);
+    }
+}",""
+"// // // BeanProperty impl
+@Override
+public <A extends Annotation> A getAnnotation(Class<A> acls) {
+    return null;
+}","public void test33() throws Throwable {
+    Class<String> class0 = String.class;
+    SimpleType simpleType0 = SimpleType.constructUnsafe(class0);
+    MapLikeType mapLikeType0 = MapLikeType.construct(class0, simpleType0, simpleType0);
+    PropertyName propertyName0 = PropertyName.NO_NAME;
+    ObjectIdGenerator<ObjectReader> objectIdGenerator0 = (ObjectIdGenerator<ObjectReader>) mock(ObjectIdGenerator.class, new ViolatedAssumptionAnswer());
+    JsonDeserializer<Annotation> jsonDeserializer0 = (JsonDeserializer<Annotation>) mock(JsonDeserializer.class, new ViolatedAssumptionAnswer());
+    SimpleObjectIdResolver simpleObjectIdResolver0 = new SimpleObjectIdResolver();
+    ObjectIdReader objectIdReader0 = new ObjectIdReader(mapLikeType0, propertyName0, objectIdGenerator0, jsonDeserializer0, (SettableBeanProperty) null, simpleObjectIdResolver0);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_REQUIRED_OR_OPTIONAL;
+    ObjectIdValueProperty objectIdValueProperty0 = new ObjectIdValueProperty(objectIdReader0, propertyMetadata0);
+    Class<Annotation> class1 = Annotation.class;
+    Annotation annotation0 = objectIdValueProperty0.getAnnotation(class1);
+    assertNull(annotation0);
+}",""
+"public boolean hasValueTypeDeserializer() {
+    return (_valueTypeDeserializer != null);
+}","public void test44() throws Throwable {
+    Class<String> class0 = String.class;
+    SimpleType simpleType0 = SimpleType.constructUnsafe(class0);
+    PropertyName propertyName0 = PropertyName.USE_DEFAULT;
+    PipedInputStream pipedInputStream0 = new PipedInputStream(1361);
+    ObjectIdGenerator.IdKey objectIdGenerator_IdKey0 = new ObjectIdGenerator.IdKey(class0, class0, pipedInputStream0);
+    ObjectIdGenerator<ObjectReader> objectIdGenerator0 = (ObjectIdGenerator<ObjectReader>) mock(ObjectIdGenerator.class, new ViolatedAssumptionAnswer());
+    doReturn(objectIdGenerator_IdKey0).when(objectIdGenerator0).key(any());
+    SimpleObjectIdResolver simpleObjectIdResolver0 = new SimpleObjectIdResolver();
+    JsonDeserializer<PipedInputStream> jsonDeserializer0 = (JsonDeserializer<PipedInputStream>) mock(JsonDeserializer.class, new ViolatedAssumptionAnswer());
+    doReturn(pipedInputStream0).when(jsonDeserializer0).deserialize(any(com.fasterxml.jackson.core.JsonParser.class), any(com.fasterxml.jackson.databind.DeserializationContext.class));
+    ObjectIdReader objectIdReader0 = new ObjectIdReader(simpleType0, propertyName0, objectIdGenerator0, jsonDeserializer0, (SettableBeanProperty) null, simpleObjectIdResolver0);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_REQUIRED;
+    ObjectIdValueProperty objectIdValueProperty0 = new ObjectIdValueProperty(objectIdReader0, propertyMetadata0);
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    objectIdValueProperty0.deserializeAndSet((JsonParser) null, defaultDeserializationContext_Impl0, (Object) null);
+    assertFalse(objectIdValueProperty0.hasValueTypeDeserializer());
+}",""
+"public SettableBeanProperty withSimpleName(String simpleName) {
+    PropertyName n = (_propName == null) ? new PropertyName(simpleName) : _propName.withSimpleName(simpleName);
+    return (n == _propName) ? this : withName(n);
+}","public void test55() throws Throwable {
+    Class<String> class0 = String.class;
+    SimpleType simpleType0 = SimpleType.constructUnsafe(class0);
+    MapLikeType mapLikeType0 = MapLikeType.construct(class0, simpleType0, simpleType0);
+    PropertyName propertyName0 = PropertyName.NO_NAME;
+    ObjectIdGenerator<ObjectReader> objectIdGenerator0 = (ObjectIdGenerator<ObjectReader>) mock(ObjectIdGenerator.class, new ViolatedAssumptionAnswer());
+    JsonDeserializer<Annotation> jsonDeserializer0 = (JsonDeserializer<Annotation>) mock(JsonDeserializer.class, new ViolatedAssumptionAnswer());
+    SimpleObjectIdResolver simpleObjectIdResolver0 = new SimpleObjectIdResolver();
+    ObjectIdReader objectIdReader0 = new ObjectIdReader(mapLikeType0, propertyName0, objectIdGenerator0, jsonDeserializer0, (SettableBeanProperty) null, simpleObjectIdResolver0);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_REQUIRED;
+    ObjectIdValueProperty objectIdValueProperty0 = new ObjectIdValueProperty(objectIdReader0, propertyMetadata0);
+    SettableBeanProperty settableBeanProperty0 = objectIdValueProperty0.withSimpleName(""N>N!ju{TM;xq]-"");
+    assertNotSame(objectIdValueProperty0, settableBeanProperty0);
+}","/**
+ * @since 2.3
+ */"
+"public int getCreatorIndex() {
+    return -1;
+}","public void test66() throws Throwable {
+    Class<String> class0 = String.class;
+    SimpleType simpleType0 = SimpleType.constructUnsafe(class0);
+    MapLikeType mapLikeType0 = MapLikeType.construct(class0, simpleType0, simpleType0);
+    PropertyName propertyName0 = PropertyName.NO_NAME;
+    ObjectIdGenerator<ObjectReader> objectIdGenerator0 = (ObjectIdGenerator<ObjectReader>) mock(ObjectIdGenerator.class, new ViolatedAssumptionAnswer());
+    JsonDeserializer<Annotation> jsonDeserializer0 = (JsonDeserializer<Annotation>) mock(JsonDeserializer.class, new ViolatedAssumptionAnswer());
+    SimpleObjectIdResolver simpleObjectIdResolver0 = new SimpleObjectIdResolver();
+    ObjectIdReader objectIdReader0 = new ObjectIdReader(mapLikeType0, propertyName0, objectIdGenerator0, jsonDeserializer0, (SettableBeanProperty) null, simpleObjectIdResolver0);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_REQUIRED_OR_OPTIONAL;
+    ObjectIdValueProperty objectIdValueProperty0 = new ObjectIdValueProperty(objectIdReader0, propertyMetadata0);
+    JsonDeserializer<Integer> jsonDeserializer1 = (JsonDeserializer<Integer>) mock(JsonDeserializer.class, new ViolatedAssumptionAnswer());
+    doReturn((Object) null).when(jsonDeserializer1).getNullValue();
+    ObjectIdValueProperty objectIdValueProperty1 = objectIdValueProperty0.withValueDeserializer(jsonDeserializer1);
+    assertEquals((-1), objectIdValueProperty1.getCreatorIndex());
+}","/**
+ * Method for accessing index of the creator property: for other
+ * types of properties will simply return -1.
+ *
+ * @since 2.1
+ */"
+"@Override
+public Object deserializeSetAndReturn(JsonParser jp, DeserializationContext ctxt, Object instance) throws IOException {
+    // note: no null checks (unlike usually); deserializer should fail if one found
+    Object id = _valueDeserializer.deserialize(jp, ctxt);
+    /* 02-Apr-2015, tatu: Actually, as per [databind#742], let it be;
+         *  missing or null id is needed for some cases, such as cases where id
+         *  will be generated externally, at a later point, and is not available
+         *  quite yet. Typical use case is with DB inserts.
+         */
+    ReadableObjectId roid = ctxt.findObjectId(id, _objectIdReader.generator, _objectIdReader.resolver);
+    roid.bindItem(instance);
+    // also: may need to set a property value as well
+    SettableBeanProperty idProp = _objectIdReader.idProperty;
+    if (idProp != null) {
+        return idProp.setAndReturn(instance, id);
+    }
+    return instance;
+}","public void test77() throws Throwable {
+    Class<String> class0 = String.class;
+    SimpleType simpleType0 = SimpleType.constructUnsafe(class0);
+    MapLikeType mapLikeType0 = MapLikeType.construct(class0, simpleType0, simpleType0);
+    PropertyName propertyName0 = new PropertyName("""");
+    PipedInputStream pipedInputStream0 = new PipedInputStream(1373);
+    ObjectIdGenerator.IdKey objectIdGenerator_IdKey0 = new ObjectIdGenerator.IdKey(class0, class0, pipedInputStream0);
+    ObjectIdGenerator<ObjectReader> objectIdGenerator0 = (ObjectIdGenerator<ObjectReader>) mock(ObjectIdGenerator.class, new ViolatedAssumptionAnswer());
+    doReturn(objectIdGenerator_IdKey0).when(objectIdGenerator0).key(any());
+    JsonDeserializer<Annotation> jsonDeserializer0 = (JsonDeserializer<Annotation>) mock(JsonDeserializer.class, new ViolatedAssumptionAnswer());
+    SimpleObjectIdResolver simpleObjectIdResolver0 = new SimpleObjectIdResolver();
+    ObjectIdReader objectIdReader0 = new ObjectIdReader(mapLikeType0, propertyName0, objectIdGenerator0, jsonDeserializer0, (SettableBeanProperty) null, simpleObjectIdResolver0);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_REQUIRED;
+    ObjectIdValueProperty objectIdValueProperty0 = new ObjectIdValueProperty(objectIdReader0, propertyMetadata0);
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    JsonDeserializer<JsonSerializer<String>> jsonDeserializer1 = (JsonDeserializer<JsonSerializer<String>>) mock(JsonDeserializer.class, new ViolatedAssumptionAnswer());
+    doReturn((Object) null).when(jsonDeserializer1).deserialize(any(com.fasterxml.jackson.core.JsonParser.class), any(com.fasterxml.jackson.databind.DeserializationContext.class));
+    ObjectIdReader objectIdReader1 = new ObjectIdReader(mapLikeType0, propertyName0, objectIdReader0.generator, jsonDeserializer1, objectIdValueProperty0, simpleObjectIdResolver0);
+    ObjectIdValueProperty objectIdValueProperty1 = new ObjectIdValueProperty(objectIdReader1, (PropertyMetadata) null);
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    // Undeclared exception!
+    try {
+        objectIdValueProperty1.deserializeSetAndReturn((JsonParser) null, defaultDeserializationContext_Impl0, simpleType0);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // Should not call set() on ObjectIdProperty that has no SettableBeanProperty
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.impl.ObjectIdValueProperty"", e);
+    }
+}",""
+"@Override
+public Object setAndReturn(Object instance, Object value) throws IOException {
+    SettableBeanProperty idProp = _objectIdReader.idProperty;
+    if (idProp == null) {
+        throw new UnsupportedOperationException(""Should not call set() on ObjectIdProperty that has no SettableBeanProperty"");
+    }
+    return idProp.setAndReturn(instance, value);
+}","public void test88() throws Throwable {
+    Class<String> class0 = String.class;
+    SimpleType simpleType0 = SimpleType.constructUnsafe(class0);
+    MapLikeType mapLikeType0 = MapLikeType.construct(class0, simpleType0, simpleType0);
+    PropertyName propertyName0 = new PropertyName("""");
+    Enumeration<InputStream> enumeration0 = (Enumeration<InputStream>) mock(Enumeration.class, new ViolatedAssumptionAnswer());
+    doReturn(false).when(enumeration0).hasMoreElements();
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(enumeration0);
+    ObjectIdGenerator<ObjectReader> objectIdGenerator0 = (ObjectIdGenerator<ObjectReader>) mock(ObjectIdGenerator.class, new ViolatedAssumptionAnswer());
+    JsonDeserializer<Annotation> jsonDeserializer0 = (JsonDeserializer<Annotation>) mock(JsonDeserializer.class, new ViolatedAssumptionAnswer());
+    SimpleObjectIdResolver simpleObjectIdResolver0 = new SimpleObjectIdResolver();
+    ObjectIdReader objectIdReader0 = new ObjectIdReader(mapLikeType0, propertyName0, objectIdGenerator0, jsonDeserializer0, (SettableBeanProperty) null, simpleObjectIdResolver0);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_REQUIRED;
+    ObjectIdValueProperty objectIdValueProperty0 = new ObjectIdValueProperty(objectIdReader0, propertyMetadata0);
+    JsonDeserializer<Annotation> jsonDeserializer1 = (JsonDeserializer<Annotation>) mock(JsonDeserializer.class, new ViolatedAssumptionAnswer());
+    ObjectIdReader objectIdReader1 = new ObjectIdReader(simpleType0, propertyName0, objectIdReader0.generator, jsonDeserializer1, objectIdValueProperty0, simpleObjectIdResolver0);
+    ObjectIdValueProperty objectIdValueProperty1 = new ObjectIdValueProperty(objectIdReader1, propertyMetadata0);
+    BufferedInputStream bufferedInputStream0 = new BufferedInputStream(sequenceInputStream0);
+    // Undeclared exception!
+    try {
+        objectIdValueProperty1.setAndReturn((Object) null, bufferedInputStream0);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // Should not call set() on ObjectIdProperty that has no SettableBeanProperty
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.impl.ObjectIdValueProperty"", e);
+    }
+}",""

@@ -1,0 +1,29 @@
+focal_method,test_prefix,docstring
+"@Override
+public void process(Node externs, Node root) {
+    (new NodeTraversal(compiler, this)).traverseRoots(externs, root);
+}","public void test00() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    FlowSensitiveInlineVariables flowSensitiveInlineVariables0 = new FlowSensitiveInlineVariables(compiler0);
+    // Undeclared exception!
+    try {
+        flowSensitiveInlineVariables0.process((Node) null, (Node) null);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",""
+"public boolean hasOneChild() {
+    return first != null && first == last;
+}","public void test11() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    FlowSensitiveInlineVariables flowSensitiveInlineVariables0 = new FlowSensitiveInlineVariables(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, flowSensitiveInlineVariables0);
+    Node node0 = Node.newNumber((-702.4));
+    nodeTraversal0.traverse(node0);
+    assertFalse(node0.hasOneChild());
+}","/**
+ * Check for one child more efficiently than by iterating over all the
+ * children as is done with Node.getChildCount().
+ *
+ * @return Whether the node has exactly one child.
+ */"

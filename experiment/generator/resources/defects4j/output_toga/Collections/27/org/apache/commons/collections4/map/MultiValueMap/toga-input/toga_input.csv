@@ -1,0 +1,582 @@
+focal_method,test_prefix,docstring
+"public boolean isEmpty() {
+    return decorated().isEmpty();
+}","public void test000() throws Throwable {
+    MultiValueMap<String, LinkedList<Object>> multiValueMap0 = new MultiValueMap<String, LinkedList<Object>>();
+    ArrayList<LinkedList<String>> arrayList0 = new ArrayList<LinkedList<String>>();
+    ConstantFactory<Collection<LinkedList<String>>> constantFactory0 = new ConstantFactory<Collection<LinkedList<String>>>(arrayList0);
+    MultiValueMap<String, LinkedList<String>> multiValueMap1 = MultiValueMap.multiValueMap((Map<String, ? super Collection<LinkedList<String>>>) multiValueMap0, (Factory<Collection<LinkedList<String>>>) constantFactory0);
+    BiFunction<Object, Object, String> biFunction0 = (BiFunction<Object, Object, String>) mock(BiFunction.class, new ViolatedAssumptionAnswer());
+    Object object0 = multiValueMap1.merge(null, arrayList0, biFunction0);
+    assertFalse(multiValueMap1.isEmpty());
+}",""
+"boolean removeMapping(K key, V item);","public void test001() throws Throwable {
+    MultiValueMap<String, LinkedList<Object>> multiValueMap0 = new MultiValueMap<String, LinkedList<Object>>();
+    ArrayList<LinkedList<String>> arrayList0 = new ArrayList<LinkedList<String>>();
+    ConstantFactory<Collection<LinkedList<String>>> constantFactory0 = new ConstantFactory<Collection<LinkedList<String>>>(arrayList0);
+    MultiValueMap<String, LinkedList<String>> multiValueMap1 = MultiValueMap.multiValueMap((Map<String, ? super Collection<LinkedList<String>>>) multiValueMap0, (Factory<Collection<LinkedList<String>>>) constantFactory0);
+    BiFunction<Object, Object, String> biFunction0 = (BiFunction<Object, Object, String>) mock(BiFunction.class, new ViolatedAssumptionAnswer());
+    Object object0 = multiValueMap1.merge(null, arrayList0, biFunction0);
+    boolean boolean0 = multiValueMap0.removeMapping((Object) null, object0);
+    assertTrue(boolean0);
+}","/**
+ * Removes a specific value from map.
+ * <p>
+ * The item is removed from the collection mapped to the specified key.
+ * Other values attached to that key are unaffected.
+ * <p>
+ * If the last value for a key is removed, implementations typically
+ * return <code>null</code> from a subsequent <code>get(Object)</code>, however
+ * they may choose to return an empty collection.
+ *
+ * @param key  the key to remove from
+ * @param item  the item to remove
+ * @return {@code true} if the mapping was removed, {@code false} otherwise
+ * @throws UnsupportedOperationException if the map is unmodifiable
+ * @throws ClassCastException if the key or value is of an invalid type
+ * @throws NullPointerException if the key or value is null and null is invalid
+ * @since 4.0 (signature in previous releases: V remove(K, V))
+ */"
+"public Iterator<Entry<K, V>> iterator() {
+    final Collection<K> allKeys = new ArrayList<K>(keySet());
+    final Iterator<K> keyIterator = allKeys.iterator();
+    return new LazyIteratorChain<Entry<K, V>>() {
+
+        @Override
+        protected Iterator<? extends Entry<K, V>> nextIterator(int count) {
+            if (!keyIterator.hasNext()) {
+                return null;
+            }
+            final K key = keyIterator.next();
+            final Transformer<V, Entry<K, V>> transformer = new Transformer<V, Entry<K, V>>() {
+
+                @Override
+                public Entry<K, V> transform(final V input) {
+                    return new Entry<K, V>() {
+
+                        @Override
+                        public K getKey() {
+                            return key;
+                        }
+
+                        @Override
+                        public V getValue() {
+                            return input;
+                        }
+
+                        @Override
+                        public V setValue(V value) {
+                            throw new UnsupportedOperationException();
+                        }
+                    };
+                }
+            };
+            return new TransformIterator<V, Entry<K, V>>(new ValuesIterator(key), transformer);
+        }
+    };
+}","public void test012() throws Throwable {
+    MultiValueMap<Integer, AbstractMap.SimpleImmutableEntry<String, Object>> multiValueMap0 = new MultiValueMap<Integer, AbstractMap.SimpleImmutableEntry<String, Object>>();
+    MultiValueMap<Integer, LinkedList<Object>> multiValueMap1 = MultiValueMap.multiValueMap((Map<Integer, ? super Collection<LinkedList<Object>>>) multiValueMap0);
+    Iterator<Map.Entry<Integer, LinkedList<Object>>> iterator0 = (Iterator<Map.Entry<Integer, LinkedList<Object>>>) multiValueMap1.iterator();
+    assertNotNull(iterator0);
+}","/**
+ * Gets an iterator for all mappings stored in this {@link MultiValueMap}.
+ * <p>
+ * The iterator will return multiple Entry objects with the same key
+ * if there are multiple values mapped to this key.
+ * <p>
+ * NOTE: calling {@link java.util.Map.Entry#setValue(Object)} on any of the returned
+ * elements will result in a {@link UnsupportedOperationException}.
+ *
+ * @return the iterator of all mappings in this map
+ * @since 4.0
+ */"
+"public boolean isEmpty() {
+    return decorated().isEmpty();
+}","public void test023() throws Throwable {
+    MultiValueMap<Collection<Integer>, ConstantFactory<String>> multiValueMap0 = new MultiValueMap<Collection<Integer>, ConstantFactory<String>>();
+    multiValueMap0.clear();
+    assertTrue(multiValueMap0.isEmpty());
+}",""
+"public int size() {
+    return decorated().size();
+}","public void test034() throws Throwable {
+    MultiValueMap<String, Integer> multiValueMap0 = new MultiValueMap<String, Integer>();
+    multiValueMap0.put(""P"", ""P"");
+    MultiValueMap<String, String> multiValueMap1 = MultiValueMap.multiValueMap((Map<String, ? super Collection<String>>) multiValueMap0);
+    boolean boolean0 = multiValueMap1.containsValue((Object) ""P"");
+    assertEquals(1, multiValueMap0.size());
+}",""
+"@Override
+@SuppressWarnings(""unchecked"")
+public boolean containsValue(final Object value) {
+    final Set<Map.Entry<K, Object>> pairs = decorated().entrySet();
+    if (pairs != null) {
+        for (final Map.Entry<K, Object> entry : pairs) {
+            if (((Collection<V>) entry.getValue()).contains(value)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}","public void test035() throws Throwable {
+    MultiValueMap<String, Integer> multiValueMap0 = new MultiValueMap<String, Integer>();
+    multiValueMap0.put(""P"", ""P"");
+    MultiValueMap<String, String> multiValueMap1 = MultiValueMap.multiValueMap((Map<String, ? super Collection<String>>) multiValueMap0);
+    boolean boolean0 = multiValueMap1.containsValue((Object) ""P"");
+    assertTrue(boolean0);
+}","/**
+ * Checks whether the map contains the value specified.
+ * <p>
+ * This checks all collections against all keys for the value, and thus could be slow.
+ *
+ * @param value  the value to search for
+ * @return true if the map contains the value
+ */"
+"@Override
+@SuppressWarnings(""unchecked"")
+public Collection<Object> values() {
+    final Collection<V> vs = valuesView;
+    return (Collection<Object>) (vs != null ? vs : (valuesView = new Values()));
+}","public void test046() throws Throwable {
+    MultiValueMap<Collection<Object>, Object> multiValueMap0 = new MultiValueMap<Collection<Object>, Object>();
+    MultiValueMap<ConstantFactory<Object>, Collection<Object>> multiValueMap1 = new MultiValueMap<ConstantFactory<Object>, Collection<Object>>();
+    Collection<Object> collection0 = multiValueMap1.values();
+    assertNotNull(collection0);
+}","/**
+ * Gets a collection containing all the values in the map.
+ * <p>
+ * This returns a collection containing the combination of values from all keys.
+ *
+ * @return a collection view of the values contained in this map
+ */"
+"public boolean putAll(final K key, final Collection<V> values) {
+    if (values == null || values.size() == 0) {
+        return false;
+    }
+    boolean result = false;
+    Collection<V> coll = getCollection(key);
+    if (coll == null) {
+        // might produce a non-empty collection
+        coll = createCollection(values.size());
+        coll.addAll(values);
+        if (coll.size() > 0) {
+            // only add if non-zero size to maintain class state
+            decorated().put(key, coll);
+            // map definitely changed
+            result = true;
+        }
+    } else {
+        result = coll.addAll(values);
+    }
+    return result;
+}","public void test047() throws Throwable {
+    MultiValueMap<Collection<Object>, Object> multiValueMap0 = new MultiValueMap<Collection<Object>, Object>();
+    MultiValueMap<ConstantFactory<Object>, Collection<Object>> multiValueMap1 = new MultiValueMap<ConstantFactory<Object>, Collection<Object>>();
+    Collection<Object> collection0 = multiValueMap1.values();
+    boolean boolean0 = multiValueMap0.putAll(collection0, collection0);
+    assertFalse(boolean0);
+}","/**
+ * Adds a collection of values to the collection associated with
+ * the specified key.
+ *
+ * @param key  the key to store against
+ * @param values  the values to add to the collection at the key, null ignored
+ * @return true if this map changed
+ */"
+"public boolean isEmpty() {
+    return decorated().isEmpty();
+}","public void test059() throws Throwable {
+    MultiValueMap<Collection<Object>, Object> multiValueMap0 = new MultiValueMap<Collection<Object>, Object>();
+    ArrayList<String> arrayList0 = new ArrayList<String>();
+    arrayList0.add(""PrototypeCloneFactory: The clone method must exist and be public "");
+    LinkedList<String> linkedList0 = new LinkedList<String>(arrayList0);
+    Factory<Collection<String>> factory0 = ConstantFactory.constantFactory((Collection<String>) linkedList0);
+    MultiValueMap<Collection<Object>, String> multiValueMap1 = new MultiValueMap<Collection<Object>, String>((Map<Collection<Object>, ? super Collection<String>>) multiValueMap0, factory0);
+    ArrayList<Object> arrayList1 = new ArrayList<Object>();
+    multiValueMap1.putAll((Collection<Object>) arrayList1, (Collection<String>) arrayList0);
+    multiValueMap1.iterator((Object) arrayList1);
+    assertFalse(multiValueMap0.isEmpty());
+}",""
+"public int size() {
+    return decorated().size();
+}","public void test0610() throws Throwable {
+    MultiValueMap<Collection<Integer>, Object> multiValueMap0 = new MultiValueMap<Collection<Integer>, Object>();
+    MultiValueMap<Collection<Integer>, AbstractMap.SimpleEntry<ArrayList<String>, Object>> multiValueMap1 = MultiValueMap.multiValueMap((Map<Collection<Integer>, ? super Collection<AbstractMap.SimpleEntry<ArrayList<String>, Object>>>) multiValueMap0);
+    ArrayList<Integer> arrayList0 = new ArrayList<Integer>();
+    multiValueMap0.putIfAbsent(arrayList0, multiValueMap1);
+    MultiValueMap<Collection<Integer>, LinkedList<Object>> multiValueMap2 = MultiValueMap.multiValueMap((Map<Collection<Integer>, ? super Collection<LinkedList<Object>>>) multiValueMap0);
+    int int0 = multiValueMap2.totalSize();
+    assertEquals(1, multiValueMap0.size());
+}",""
+"public int totalSize() {
+    int total = 0;
+    for (final Object v : decorated().values()) {
+        total += CollectionUtils.size(v);
+    }
+    return total;
+}","public void test0611() throws Throwable {
+    MultiValueMap<Collection<Integer>, Object> multiValueMap0 = new MultiValueMap<Collection<Integer>, Object>();
+    MultiValueMap<Collection<Integer>, AbstractMap.SimpleEntry<ArrayList<String>, Object>> multiValueMap1 = MultiValueMap.multiValueMap((Map<Collection<Integer>, ? super Collection<AbstractMap.SimpleEntry<ArrayList<String>, Object>>>) multiValueMap0);
+    ArrayList<Integer> arrayList0 = new ArrayList<Integer>();
+    multiValueMap0.putIfAbsent(arrayList0, multiValueMap1);
+    MultiValueMap<Collection<Integer>, LinkedList<Object>> multiValueMap2 = MultiValueMap.multiValueMap((Map<Collection<Integer>, ? super Collection<LinkedList<Object>>>) multiValueMap0);
+    int int0 = multiValueMap2.totalSize();
+    assertEquals(1, int0);
+}","/**
+ * Gets the total size of the map by counting all the values.
+ *
+ * @return the total size of the map counting all values
+ */"
+"public static <K, V, C extends Collection<V>> MultiValueMap<K, V> multiValueMap(final Map<K, ? super C> map, final Factory<C> collectionFactory) {
+    return new MultiValueMap<K, V>(map, collectionFactory);
+}","public void test0712() throws Throwable {
+    MultiValueMap<String, Object> multiValueMap0 = new MultiValueMap<String, Object>();
+    // Undeclared exception!
+    try {
+        MultiValueMap.multiValueMap((Map<String, ? super Collection<Integer>>) multiValueMap0, (Factory<Collection<Integer>>) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The factory must not be null
+        //
+        verifyException(""org.apache.commons.collections4.map.MultiValueMap"", e);
+    }
+}","/**
+ * Creates a map which decorates the given <code>map</code> and
+ * creates the value collections using the supplied <code>collectionFactory</code>.
+ *
+ * @param <K>  the key type
+ * @param <V>  the value type
+ * @param <C>  the collection class type
+ * @param map  the map to decorate
+ * @param collectionFactory  the collection factory (must return a Collection object).
+ * @return a new multi-value map
+ * @since 4.0
+ */"
+"boolean removeMapping(K key, V item);","public void test0813() throws Throwable {
+    HashMap<AbstractMap.SimpleImmutableEntry<Object, Object>, Collection<Object>> hashMap0 = new HashMap<AbstractMap.SimpleImmutableEntry<Object, Object>, Collection<Object>>();
+    MultiValueMap<AbstractMap.SimpleImmutableEntry<Object, Object>, Object> multiValueMap0 = MultiValueMap.multiValueMap((Map<AbstractMap.SimpleImmutableEntry<Object, Object>, ? super Collection<Object>>) hashMap0);
+    boolean boolean0 = multiValueMap0.removeMapping((Object) null, (Object) null);
+    assertFalse(boolean0);
+}","/**
+ * Removes a specific value from map.
+ * <p>
+ * The item is removed from the collection mapped to the specified key.
+ * Other values attached to that key are unaffected.
+ * <p>
+ * If the last value for a key is removed, implementations typically
+ * return <code>null</code> from a subsequent <code>get(Object)</code>, however
+ * they may choose to return an empty collection.
+ *
+ * @param key  the key to remove from
+ * @param item  the item to remove
+ * @return {@code true} if the mapping was removed, {@code false} otherwise
+ * @throws UnsupportedOperationException if the map is unmodifiable
+ * @throws ClassCastException if the key or value is of an invalid type
+ * @throws NullPointerException if the key or value is null and null is invalid
+ * @since 4.0 (signature in previous releases: V remove(K, V))
+ */"
+"public boolean isEmpty() {
+    return decorated().isEmpty();
+}","public void test0914() throws Throwable {
+    LinkedList<Integer> linkedList0 = new LinkedList<Integer>();
+    Integer integer0 = new Integer((-1437));
+    linkedList0.add(integer0);
+    MultiValueMap<String, Integer> multiValueMap0 = new MultiValueMap<String, Integer>();
+    multiValueMap0.putAll(""h$M.mL6!(<I{hV"", (Collection<Integer>) linkedList0);
+    MultiValueMap<String, String> multiValueMap1 = MultiValueMap.multiValueMap((Map<String, ? super Collection<String>>) multiValueMap0);
+    LinkedList<Object> linkedList1 = new LinkedList<Object>();
+    boolean boolean0 = multiValueMap1.removeMapping(""h$M.mL6!(<I{hV"", linkedList1);
+    assertFalse(multiValueMap0.isEmpty());
+}",""
+"boolean removeMapping(K key, V item);","public void test0915() throws Throwable {
+    LinkedList<Integer> linkedList0 = new LinkedList<Integer>();
+    Integer integer0 = new Integer((-1437));
+    linkedList0.add(integer0);
+    MultiValueMap<String, Integer> multiValueMap0 = new MultiValueMap<String, Integer>();
+    multiValueMap0.putAll(""h$M.mL6!(<I{hV"", (Collection<Integer>) linkedList0);
+    MultiValueMap<String, String> multiValueMap1 = MultiValueMap.multiValueMap((Map<String, ? super Collection<String>>) multiValueMap0);
+    LinkedList<Object> linkedList1 = new LinkedList<Object>();
+    boolean boolean0 = multiValueMap1.removeMapping(""h$M.mL6!(<I{hV"", linkedList1);
+    assertFalse(boolean0);
+}","/**
+ * Removes a specific value from map.
+ * <p>
+ * The item is removed from the collection mapped to the specified key.
+ * Other values attached to that key are unaffected.
+ * <p>
+ * If the last value for a key is removed, implementations typically
+ * return <code>null</code> from a subsequent <code>get(Object)</code>, however
+ * they may choose to return an empty collection.
+ *
+ * @param key  the key to remove from
+ * @param item  the item to remove
+ * @return {@code true} if the mapping was removed, {@code false} otherwise
+ * @throws UnsupportedOperationException if the map is unmodifiable
+ * @throws ClassCastException if the key or value is of an invalid type
+ * @throws NullPointerException if the key or value is null and null is invalid
+ * @since 4.0 (signature in previous releases: V remove(K, V))
+ */"
+"public boolean isEmpty() {
+    return decorated().isEmpty();
+}","public void test1016() throws Throwable {
+    MultiValueMap<HashMap<Object, Integer>, String> multiValueMap0 = new MultiValueMap<HashMap<Object, Integer>, String>();
+    HashMap<Object, Integer> hashMap0 = new HashMap<Object, Integer>();
+    multiValueMap0.putIfAbsent(hashMap0, hashMap0);
+    boolean boolean0 = multiValueMap0.containsValue((Object) multiValueMap0);
+    assertFalse(multiValueMap0.isEmpty());
+}",""
+"@Override
+@SuppressWarnings(""unchecked"")
+public boolean containsValue(final Object value) {
+    final Set<Map.Entry<K, Object>> pairs = decorated().entrySet();
+    if (pairs != null) {
+        for (final Map.Entry<K, Object> entry : pairs) {
+            if (((Collection<V>) entry.getValue()).contains(value)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}","public void test1017() throws Throwable {
+    MultiValueMap<HashMap<Object, Integer>, String> multiValueMap0 = new MultiValueMap<HashMap<Object, Integer>, String>();
+    HashMap<Object, Integer> hashMap0 = new HashMap<Object, Integer>();
+    multiValueMap0.putIfAbsent(hashMap0, hashMap0);
+    boolean boolean0 = multiValueMap0.containsValue((Object) multiValueMap0);
+    assertFalse(boolean0);
+}","/**
+ * Checks whether the map contains the value specified.
+ * <p>
+ * This checks all collections against all keys for the value, and thus could be slow.
+ *
+ * @param value  the value to search for
+ * @return true if the map contains the value
+ */"
+"public int size() {
+    return decorated().size();
+}","public void test1118() throws Throwable {
+    MultiValueMap<String, Object> multiValueMap0 = new MultiValueMap<String, Object>();
+    multiValueMap0.put((String) null, (Object) null);
+    MultiValueMap<String, ConstantFactory<String>> multiValueMap1 = MultiValueMap.multiValueMap((Map<String, ? super Collection<ConstantFactory<String>>>) multiValueMap0);
+    multiValueMap1.put((String) null, (Object) null);
+    assertEquals(1, multiValueMap0.size());
+}",""
+"public boolean isEmpty() {
+    return decorated().isEmpty();
+}","public void test1119() throws Throwable {
+    MultiValueMap<String, Object> multiValueMap0 = new MultiValueMap<String, Object>();
+    multiValueMap0.put((String) null, (Object) null);
+    MultiValueMap<String, ConstantFactory<String>> multiValueMap1 = MultiValueMap.multiValueMap((Map<String, ? super Collection<ConstantFactory<String>>>) multiValueMap0);
+    multiValueMap1.put((String) null, (Object) null);
+    assertFalse(multiValueMap0.isEmpty());
+}",""
+"public int size() {
+    return decorated().size();
+}","public void test1220() throws Throwable {
+    MultiValueMap<Integer, AbstractMap.SimpleImmutableEntry<String, Object>> multiValueMap0 = new MultiValueMap<Integer, AbstractMap.SimpleImmutableEntry<String, Object>>();
+    MultiValueMap<Integer, LinkedList<Object>> multiValueMap1 = MultiValueMap.multiValueMap((Map<Integer, ? super Collection<LinkedList<Object>>>) multiValueMap0);
+    Integer integer0 = new Integer(706);
+    ArrayList<String> arrayList0 = new ArrayList<String>();
+    multiValueMap1.putIfAbsent(integer0, arrayList0);
+    multiValueMap1.putAll((Map<? extends Integer, ?>) multiValueMap0);
+    assertEquals(1, multiValueMap1.size());
+}",""
+"public int size() {
+    return decorated().size();
+}","public void test1321() throws Throwable {
+    MultiValueMap<String, LinkedList<Object>> multiValueMap0 = new MultiValueMap<String, LinkedList<Object>>();
+    HashMap<String, String> hashMap0 = new HashMap<String, String>();
+    hashMap0.put((String) null, ""The collection must not be null"");
+    multiValueMap0.putAll((Map<? extends String, ?>) hashMap0);
+    assertEquals(1, multiValueMap0.size());
+}",""
+"@Override
+@SuppressWarnings(""unchecked"")
+public Collection<Object> values() {
+    final Collection<V> vs = valuesView;
+    return (Collection<Object>) (vs != null ? vs : (valuesView = new Values()));
+}","public void test1422() throws Throwable {
+    MultiValueMap<Integer, ConstantFactory<String>> multiValueMap0 = new MultiValueMap<Integer, ConstantFactory<String>>();
+    Collection<Object> collection0 = multiValueMap0.values();
+    Collection<Object> collection1 = multiValueMap0.values();
+    assertSame(collection1, collection0);
+}","/**
+ * Gets a collection containing all the values in the map.
+ * <p>
+ * This returns a collection containing the combination of values from all keys.
+ *
+ * @return a collection view of the values contained in this map
+ */"
+"public boolean isEmpty() {
+    return decorated().isEmpty();
+}","public void test1523() throws Throwable {
+    MultiValueMap<String, AbstractMap.SimpleEntry<Integer, Object>> multiValueMap0 = new MultiValueMap<String, AbstractMap.SimpleEntry<Integer, Object>>();
+    MultiValueMap<HashMap<Object, String>, ArrayList<String>> multiValueMap1 = new MultiValueMap<HashMap<Object, String>, ArrayList<String>>();
+    HashMap<Object, String> hashMap0 = new HashMap<Object, String>();
+    multiValueMap1.putIfAbsent(hashMap0, hashMap0);
+    Object object0 = new Object();
+    boolean boolean0 = multiValueMap1.containsValue((Object) multiValueMap0, object0);
+    assertFalse(multiValueMap1.isEmpty());
+}",""
+"public boolean containsValue(final Object key, final Object value) {
+    final Collection<V> coll = getCollection(key);
+    if (coll == null) {
+        return false;
+    }
+    return coll.contains(value);
+}","public void test1524() throws Throwable {
+    MultiValueMap<String, AbstractMap.SimpleEntry<Integer, Object>> multiValueMap0 = new MultiValueMap<String, AbstractMap.SimpleEntry<Integer, Object>>();
+    MultiValueMap<HashMap<Object, String>, ArrayList<String>> multiValueMap1 = new MultiValueMap<HashMap<Object, String>, ArrayList<String>>();
+    HashMap<Object, String> hashMap0 = new HashMap<Object, String>();
+    multiValueMap1.putIfAbsent(hashMap0, hashMap0);
+    Object object0 = new Object();
+    boolean boolean0 = multiValueMap1.containsValue((Object) multiValueMap0, object0);
+    assertFalse(boolean0);
+}","/**
+ * Checks whether the collection at the specified key contains the value.
+ *
+ * @param key  the key to search for
+ * @param value  the value to search for
+ * @return true if the map contains the value
+ */"
+"public boolean containsValue(final Object key, final Object value) {
+    final Collection<V> coll = getCollection(key);
+    if (coll == null) {
+        return false;
+    }
+    return coll.contains(value);
+}","public void test1625() throws Throwable {
+    MultiValueMap<Collection<Object>, Object> multiValueMap0 = new MultiValueMap<Collection<Object>, Object>();
+    ArrayList<String> arrayList0 = new ArrayList<String>();
+    LinkedList<String> linkedList0 = new LinkedList<String>(arrayList0);
+    Factory<Collection<String>> factory0 = ConstantFactory.constantFactory((Collection<String>) linkedList0);
+    MultiValueMap<Collection<Object>, String> multiValueMap1 = new MultiValueMap<Collection<Object>, String>((Map<Collection<Object>, ? super Collection<String>>) multiValueMap0, factory0);
+    Integer integer0 = new Integer((-851));
+    boolean boolean0 = multiValueMap0.containsValue((Object) multiValueMap1, (Object) integer0);
+    assertFalse(boolean0);
+}","/**
+ * Checks whether the collection at the specified key contains the value.
+ *
+ * @param key  the key to search for
+ * @param value  the value to search for
+ * @return true if the map contains the value
+ */"
+"public boolean isEmpty() {
+    return decorated().isEmpty();
+}","public void test1726() throws Throwable {
+    MultiValueMap<HashMap<Object, String>, ArrayList<String>> multiValueMap0 = new MultiValueMap<HashMap<Object, String>, ArrayList<String>>();
+    HashMap<Object, String> hashMap0 = new HashMap<Object, String>();
+    Object object0 = multiValueMap0.putIfAbsent(hashMap0, hashMap0);
+    boolean boolean0 = multiValueMap0.containsValue(object0, (Object) hashMap0);
+    assertFalse(multiValueMap0.isEmpty());
+}",""
+"public boolean containsValue(final Object key, final Object value) {
+    final Collection<V> coll = getCollection(key);
+    if (coll == null) {
+        return false;
+    }
+    return coll.contains(value);
+}","public void test1727() throws Throwable {
+    MultiValueMap<HashMap<Object, String>, ArrayList<String>> multiValueMap0 = new MultiValueMap<HashMap<Object, String>, ArrayList<String>>();
+    HashMap<Object, String> hashMap0 = new HashMap<Object, String>();
+    Object object0 = multiValueMap0.putIfAbsent(hashMap0, hashMap0);
+    boolean boolean0 = multiValueMap0.containsValue(object0, (Object) hashMap0);
+    assertTrue(boolean0);
+}","/**
+ * Checks whether the collection at the specified key contains the value.
+ *
+ * @param key  the key to search for
+ * @param value  the value to search for
+ * @return true if the map contains the value
+ */"
+"public int size() {
+    return decorated().size();
+}","public void test1828() throws Throwable {
+    MultiValueMap<String, Integer> multiValueMap0 = new MultiValueMap<String, Integer>();
+    multiValueMap0.put(""P"", ""P"");
+    int int0 = multiValueMap0.size((Object) ""P"");
+    assertEquals(1, multiValueMap0.size());
+}",""
+"public int size(final Object key) {
+    final Collection<V> coll = getCollection(key);
+    if (coll == null) {
+        return 0;
+    }
+    return coll.size();
+}","public void test1829() throws Throwable {
+    MultiValueMap<String, Integer> multiValueMap0 = new MultiValueMap<String, Integer>();
+    multiValueMap0.put(""P"", ""P"");
+    int int0 = multiValueMap0.size((Object) ""P"");
+    assertEquals(1, int0);
+}","/**
+ * Gets the size of the collection mapped to the specified key.
+ *
+ * @param key  the key to get size for
+ * @return the size of the collection at the key, zero if key not in map
+ */"
+"public int size(final Object key) {
+    final Collection<V> coll = getCollection(key);
+    if (coll == null) {
+        return 0;
+    }
+    return coll.size();
+}","public void test1930() throws Throwable {
+    MultiValueMap<LinkedList<String>, String> multiValueMap0 = new MultiValueMap<LinkedList<String>, String>();
+    MultiValueMap<LinkedList<String>, Integer> multiValueMap1 = MultiValueMap.multiValueMap((Map<LinkedList<String>, ? super Collection<Integer>>) multiValueMap0);
+    int int0 = multiValueMap1.size((Object) multiValueMap0);
+    assertEquals(0, int0);
+}","/**
+ * Gets the size of the collection mapped to the specified key.
+ *
+ * @param key  the key to get size for
+ * @return the size of the collection at the key, zero if key not in map
+ */"
+"public boolean putAll(final K key, final Collection<V> values) {
+    if (values == null || values.size() == 0) {
+        return false;
+    }
+    boolean result = false;
+    Collection<V> coll = getCollection(key);
+    if (coll == null) {
+        // might produce a non-empty collection
+        coll = createCollection(values.size());
+        coll.addAll(values);
+        if (coll.size() > 0) {
+            // only add if non-zero size to maintain class state
+            decorated().put(key, coll);
+            // map definitely changed
+            result = true;
+        }
+    } else {
+        result = coll.addAll(values);
+    }
+    return result;
+}","public void test2031() throws Throwable {
+    MultiValueMap<String, LinkedList<Object>> multiValueMap0 = new MultiValueMap<String, LinkedList<Object>>();
+    boolean boolean0 = multiValueMap0.putAll(""MV9uE[/u:72W"", (Collection<LinkedList<Object>>) null);
+    assertFalse(boolean0);
+}","/**
+ * Adds a collection of values to the collection associated with
+ * the specified key.
+ *
+ * @param key  the key to store against
+ * @param values  the values to add to the collection at the key, null ignored
+ * @return true if this map changed
+ */"
+"public Iterator<V> iterator(final Object key) {
+    if (!containsKey(key)) {
+        return EmptyIterator.<V>emptyIterator();
+    }
+    return new ValuesIterator(key);
+}","public void test2132() throws Throwable {
+    HashMap<LinkedList<Object>, Object> hashMap0 = new HashMap<LinkedList<Object>, Object>();
+    MultiValueMap<LinkedList<Object>, Object> multiValueMap0 = MultiValueMap.multiValueMap((Map<LinkedList<Object>, ? super Collection<Object>>) hashMap0);
+    Iterator<Object> iterator0 = multiValueMap0.iterator((Object) hashMap0);
+    assertNotNull(iterator0);
+}","/**
+ * Gets an iterator for the collection mapped to the specified key.
+ *
+ * @param key  the key to get an iterator for
+ * @return the iterator of the collection at the key, empty iterator if key not in map
+ */"

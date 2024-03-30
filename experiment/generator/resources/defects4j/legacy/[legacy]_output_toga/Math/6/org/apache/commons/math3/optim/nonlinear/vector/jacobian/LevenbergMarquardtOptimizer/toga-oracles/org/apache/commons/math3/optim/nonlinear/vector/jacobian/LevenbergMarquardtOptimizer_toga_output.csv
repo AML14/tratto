@@ -1,0 +1,14 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test10,"public void test10() throws Throwable {
+    LevenbergMarquardtOptimizer levenbergMarquardtOptimizer0 = new LevenbergMarquardtOptimizer();
+    // Undeclared exception!
+    try {
+        levenbergMarquardtOptimizer0.doOptimize();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math3.optim.nonlinear.vector.MultivariateVectorOptimizer"", e);
+    }
+}",0,

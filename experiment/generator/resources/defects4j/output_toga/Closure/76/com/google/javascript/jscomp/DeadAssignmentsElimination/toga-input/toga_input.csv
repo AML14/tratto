@@ -1,0 +1,22 @@
+focal_method,test_prefix,docstring
+"@Override
+public void process(Node externs, Node root) {
+    Preconditions.checkNotNull(externs);
+    Preconditions.checkNotNull(root);
+    NodeTraversal.traverse(compiler, root, this);
+}","public void test00() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""var JSCompiler_stubMap = [];function JSCompiler_stubMethod(JSCompiler_stubMethod_id) {  return function() {    return JSCompiler_stubMap[JSCompiler_stubMethod_id].apply(        this, arguments);  };}function JSCompiler_unstubMethod(    JSCompiler_unstubMethod_id, JSCompiler_unstubMethod_body) {  return JSCompiler_st=bMap[JSCompiler_unstubMetho_id] =       JSCompiler_unstubMehod_body;}"");
+    DeadAssignmentsElimination deadAssignmentsElimination0 = new DeadAssignmentsElimination(compiler0);
+    deadAssignmentsElimination0.process(node0, node0);
+    assertEquals(9, Node.FIXUPS_PROP);
+}",""
+"public boolean hasChildren() {
+    return first != null;
+}","public void test11() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""var JSCompiler_stubMap = [];function JSCompiler_stubMethod(JSCompiler_stubMethod_id) {  return function() {    return JSCompiler_stubMap[JSCompiler_stubMethod_id].apply(        this, arguments);  };}function JSCompiler_unstubMethod(    JSCompiler_unstubMethod_id, JSCompiler_unstubMethod_body) {  return JSCompiler_stubMap[JSCompiler_unstubMethod_id] =       JSCompiler_unstubMethod_body;}"");
+    DeadAssignmentsElimination deadAssignmentsElimination0 = new DeadAssignmentsElimination(compiler0);
+    deadAssignmentsElimination0.process(node0, node0);
+    assertTrue(node0.hasChildren());
+}",""

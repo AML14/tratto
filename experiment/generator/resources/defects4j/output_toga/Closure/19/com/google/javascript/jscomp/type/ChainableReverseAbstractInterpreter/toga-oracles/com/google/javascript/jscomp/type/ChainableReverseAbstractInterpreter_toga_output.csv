@@ -1,0 +1,638 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNumberType();
+    JSType jSType1 = semanticReverseAbstractInterpreter0.getRestrictedWithoutNull(jSType0);
+    assertEquals(""number"", jSType1.getDisplayName());
+}",0,assertNotNull(jSType1.getDisplayName())
+project,0,test011,"public void test011() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseUnknownType();
+    JSType jSType1 = semanticReverseAbstractInterpreter0.getRestrictedWithoutNull(jSType0);
+    assertFalse(jSType1.isFunctionType());
+}",0,assertFalse(jSType1.isFunctionType())
+project,0,test022,"public void test022() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.NO_TYPE;
+    JSType jSType0 = jSTypeRegistry0.getNativeType(jSTypeNative0);
+    JSType jSType1 = semanticReverseAbstractInterpreter0.getRestrictedWithoutNull(jSType0);
+    assertFalse(jSType1.isBooleanValueType());
+}",0,assertFalse(jSType1.isBooleanValueType())
+project,0,test033,"public void test033() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    JSType jSType1 = semanticReverseAbstractInterpreter0.getRestrictedWithoutNull(jSType0);
+    assertNull(jSType1);
+}",0,
+project,0,test044,"public void test044() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNoObjectType();
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSType jSType1 = semanticReverseAbstractInterpreter0.getRestrictedWithoutNull(jSType0);
+    assertFalse(jSType1.isEnumType());
+}",0,assertFalse(jSType1.isEnumType())
+project,0,test055,"public void test055() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseBooleanType();
+    JSType jSType1 = semanticReverseAbstractInterpreter0.getRestrictedWithoutNull(jSType0);
+    assertFalse(jSType1.isRecordType());
+}",0,assertTrue(jSType1.isRecordType())
+project,0,test066,"public void test066() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.U2U_FUNCTION_TYPE;
+    FunctionType functionType0 = (FunctionType) jSTypeRegistry0.getNativeType(jSTypeNative0);
+    ParameterizedType parameterizedType0 = jSTypeRegistry0.createParameterizedType(functionType0, functionType0);
+    ParameterizedType parameterizedType1 = (ParameterizedType) semanticReverseAbstractInterpreter0.getRestrictedWithoutNull(parameterizedType0);
+    assertFalse(parameterizedType1.isRecordType());
+}",0,assertTrue(parameterizedType1.isRecordType())
+project,0,test077,"public void test077() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.ALL_TYPE;
+    JSType jSType0 = jSTypeRegistry0.getNativeType(jSTypeNative0);
+    JSType jSType1 = semanticReverseAbstractInterpreter0.getRestrictedWithoutNull(jSType0);
+    assertFalse(jSType1.isBooleanValueType());
+}",0,
+project,0,test088,"public void test088() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();
+    LinkedList<JSType> linkedList0 = new LinkedList<JSType>();
+    JSType jSType0 = jSTypeRegistry0.createFunctionTypeWithVarArgs(objectType0, (JSType) objectType0, (List<JSType>) linkedList0);
+    JSType jSType1 = semanticReverseAbstractInterpreter0.getRestrictedWithoutNull(jSType0);
+    assertFalse(jSType1.isAllType());
+}",0,
+project,0,test099,"public void test099() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.NULL_VOID;
+    JSType jSType0 = jSTypeRegistry0.getNativeType(jSTypeNative0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSType jSType1 = semanticReverseAbstractInterpreter0.getRestrictedWithoutNull(jSType0);
+    JSType jSType2 = semanticReverseAbstractInterpreter0.getRestrictedWithoutNull(jSType1);
+    assertFalse(jSType2.isResolved());
+}",0,assertFalse(jSType2.isResolved())
+project,0,test1010,"public void test1010() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.OBJECT_NUMBER_STRING_BOOLEAN;
+    JSType jSType0 = jSTypeRegistry0.getNativeType(jSTypeNative0);
+    JSType jSType1 = semanticReverseAbstractInterpreter0.getRestrictedByTypeOfResult(jSType0, ""function"", true);
+    assertEquals(1, JSType.ENUMDECL);
+}",0,
+project,0,test1111,"public void test1111() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.CHECKED_UNKNOWN_TYPE;
+    JSType jSType0 = jSTypeRegistry0.getNativeType(jSTypeNative0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    Node node0 = Node.newString(""com.google.common.base.Predicates$CompositionPredicate"", 1, 3586);
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""com.google.javascript.jscomp.type.ChainableReverseAbstractInterpreter$RestrictByTypeOfResultVisitor"", node0, jSType0);
+    EnumElementType enumElementType0 = enumType0.getElementsType();
+    JSType jSType1 = semanticReverseAbstractInterpreter0.getRestrictedByTypeOfResult(enumElementType0, ""Not declared as a type name"", true);
+    assertFalse(jSType1.isNoType());
+}",0,assertTrue(jSType1.isNoType())
+project,0,test1212,"public void test1212() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, (JSTypeRegistry) null);
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ParameterizedType parameterizedType0 = jSTypeRegistry0.createParameterizedType((ObjectType) null, (JSType) null);
+    JSType jSType0 = semanticReverseAbstractInterpreter0.getRestrictedByTypeOfResult(parameterizedType0, ""Not declared as a constructor"", false);
+    assertNull(jSType0);
+}",0,assertNotNull(jSType0)
+project,0,test1313,"public void test1313() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNoType();
+    JSType jSType1 = semanticReverseAbstractInterpreter0.getRestrictedByTypeOfResult(jSType0, ""Not declared as a type name"", false);
+    assertFalse(jSType1.isFunctionPrototypeType());
+}",0,
+project,0,test1414,"public void test1414() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseAllType();
+    JSType jSType1 = semanticReverseAbstractInterpreter0.getRestrictedByTypeOfResult(jSType0, ""Unknown class name"", true);
+    assertFalse(jSType1.isInterface());
+}",0,assertFalse(jSType1.isInterface())
+project,0,test1515,"public void test1515() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    ChainableReverseAbstractInterpreter chainableReverseAbstractInterpreter0 = semanticReverseAbstractInterpreter0.getFirst();
+    assertSame(semanticReverseAbstractInterpreter0, chainableReverseAbstractInterpreter0);
+}",0,
+project,0,test1616,"public void test1616() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    Node node0 = new Node(496);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(jqueryCodingConvention0, (JSTypeRegistry) null);
+    FlowScope flowScope0 = closureReverseAbstractInterpreter0.firstPreciserScopeKnowingConditionOutcome(node0, (FlowScope) null, false);
+    assertNull(flowScope0);
+}",0,assertNotNull(flowScope0)
+project,0,test1717,"public void test1717() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNumberType();
+    JSType jSType1 = jSTypeRegistry0.getGreatestSubtypeWithProperty(jSType0, ""P]I7G7D~`h"");
+    JSType jSType2 = semanticReverseAbstractInterpreter0.getRestrictedWithoutUndefined(jSType1);
+    assertFalse(jSType2.isNullType());
+}",0,assertTrue(jSType2.isNullType())
+project,0,test1818,"public void test1818() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    ParameterizedType parameterizedType0 = jSTypeRegistry0.createParameterizedType((ObjectType) null, (JSType) null);
+    JSType jSType0 = semanticReverseAbstractInterpreter0.getRestrictedWithoutUndefined(parameterizedType0);
+    assertEquals(1, JSType.ENUMDECL);
+}",0,
+project,0,test1919,"public void test1919() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseUnknownType();
+    UnknownType unknownType0 = (UnknownType) semanticReverseAbstractInterpreter0.getRestrictedWithoutUndefined(jSType0);
+    assertFalse(unknownType0.hasReferenceName());
+}",0,assertFalse(unknownType0.hasReferenceName())
+project,0,test2020,"public void test2020() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.OBJECT_NUMBER_STRING_BOOLEAN;
+    JSType jSType0 = jSTypeRegistry0.getNativeType(jSTypeNative0);
+    JSType jSType1 = semanticReverseAbstractInterpreter0.getRestrictedWithoutUndefined(jSType0);
+    assertEquals(0, JSType.NOT_ENUMDECL);
+}",0,
+project,0,test2121,"public void test2121() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseAllType();
+    JSType jSType1 = semanticReverseAbstractInterpreter0.getRestrictedWithoutUndefined(jSType0);
+    assertFalse(jSType1.isEnumElementType());
+}",0,assertTrue(jSType1.isEnumElementType())
+project,0,test2222,"public void test2222() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.TYPE_ERROR_FUNCTION_TYPE;
+    JSType jSType0 = jSTypeRegistry0.getNativeType(jSTypeNative0);
+    JSType jSType1 = semanticReverseAbstractInterpreter0.getRestrictedWithoutUndefined(jSType0);
+    assertFalse(jSType1.isNoResolvedType());
+}",0,assertTrue(jSType1.isNoResolvedType())
+project,0,test2323,"public void test2323() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.NUMBER_TYPE;
+    JSType jSType0 = jSTypeRegistry0.getNativeType(jSTypeNative0);
+    JSType jSType1 = semanticReverseAbstractInterpreter0.getRestrictedWithoutUndefined(jSType0);
+    assertSame(jSType1, jSType0);
+}",0,
+project,0,test2424,"public void test2424() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseBooleanType();
+    JSType jSType1 = semanticReverseAbstractInterpreter0.getRestrictedWithoutUndefined(jSType0);
+    assertFalse(jSType1.isFunctionType());
+}",0,assertTrue(jSType1.isFunctionType())
+project,0,test2525,"public void test2525() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNoObjectType();
+    JSType jSType1 = semanticReverseAbstractInterpreter0.getRestrictedWithoutUndefined(jSType0);
+    assertFalse(jSType1.isRecordType());
+}",0,assertTrue(jSType1.isRecordType())
+project,0,test2626,"public void test2626() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.NULL_TYPE;
+    JSType jSType0 = jSTypeRegistry0.getNativeType(jSTypeNative0);
+    JSType jSType1 = semanticReverseAbstractInterpreter0.getRestrictedWithoutUndefined(jSType0);
+    assertSame(jSType1, jSType0);
+}",0,
+project,0,test2727,"public void test2727() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    closureReverseAbstractInterpreter0.append(semanticReverseAbstractInterpreter0);
+    // Undeclared exception!
+    try {
+        semanticReverseAbstractInterpreter0.append(closureReverseAbstractInterpreter0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",1,
+project,0,test2828,"public void test2828() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    Node node0 = new Node((-359));
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(closureCodingConvention0, (JSTypeRegistry) null);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, (JSTypeRegistry) null);
+    semanticReverseAbstractInterpreter0.append(closureReverseAbstractInterpreter0);
+    FlowScope flowScope0 = semanticReverseAbstractInterpreter0.getPreciserScopeKnowingConditionOutcome(node0, (FlowScope) null, false);
+    assertNull(flowScope0);
+}",0,
+project,0,test2929,"public void test2929() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    Node node0 = Node.newNumber((double) 33);
+    Node node1 = new Node(33, node0, node0, 49, 48);
+    JSType jSType0 = semanticReverseAbstractInterpreter0.getTypeIfRefinable(node1, (FlowScope) null);
+    assertNull(jSType0);
+}",0,
+project,0,test3030,"public void test3030() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    Node node0 = new Node((-359));
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(closureCodingConvention0, (JSTypeRegistry) null);
+    JSType jSType0 = semanticReverseAbstractInterpreter0.getTypeIfRefinable(node0, (FlowScope) null);
+    assertNull(jSType0);
+}",0,
+project,0,test3131,"public void test3131() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    Node node0 = new Node(38, 38, 38);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, (JSTypeRegistry) null);
+    // Undeclared exception!
+    try {
+        semanticReverseAbstractInterpreter0.getTypeIfRefinable(node0, (FlowScope) null);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // NAME 38 is not a string node
+        //
+        verifyException(""com.google.javascript.rhino.Node"", e);
+    }
+}",0,
+project,0,test3232,"public void test3232() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    Node node0 = new Node(33);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, (JSTypeRegistry) null);
+    // Undeclared exception!
+    try {
+        semanticReverseAbstractInterpreter0.declareNameInScope((FlowScope) null, node0, (JSType) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.rhino.Node"", e);
+    }
+}",0,
+project,0,test3333,"public void test3333() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    Node node0 = new Node(38);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, (JSTypeRegistry) null);
+    // Undeclared exception!
+    try {
+        semanticReverseAbstractInterpreter0.declareNameInScope((FlowScope) null, node0, (JSType) null);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // NAME is not a string node
+        //
+        verifyException(""com.google.javascript.rhino.Node"", e);
+    }
+}",0,
+project,0,test3434,"public void test3434() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();
+    Node node0 = Node.newString(""Unknown class name"");
+    // Undeclared exception!
+    try {
+        semanticReverseAbstractInterpreter0.declareNameInScope((FlowScope) null, node0, objectType0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Node cannot be refined.
+        // STRING Unknown class name
+        //
+        verifyException(""com.google.javascript.jscomp.type.ChainableReverseAbstractInterpreter"", e);
+    }
+}",0,
+project,0,test3535,"public void test3535() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    Node node0 = new Node(33, 33, 33);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseVoidType();
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""@geXDYjahV"", node0, jSType0);
+    EnumElementType enumElementType0 = enumType0.getElementsType();
+    JSType jSType1 = semanticReverseAbstractInterpreter0.getRestrictedWithoutUndefined(enumElementType0);
+    assertNull(jSType1);
+}",0,
+project,0,test3636,"public void test3636() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    Node node0 = Node.newNumber((-2801.9986874646775));
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseStringType();
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Named type with empty name component"", node0, jSType0);
+    EnumElementType enumElementType0 = enumType0.getElementsType();
+    JSType jSType1 = semanticReverseAbstractInterpreter0.getRestrictedWithoutUndefined(enumElementType0);
+    assertSame(enumElementType0, jSType1);
+}",0,
+project,0,test3737,"public void test3737() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSTypeRegistry jSTypeRegistry1 = new JSTypeRegistry(simpleErrorReporter0);
+    Node node0 = Node.newNumber((-2801.9986874646775));
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry1);
+    JSType jSType0 = modificationVisitor0.caseStringType();
+    EnumType enumType0 = jSTypeRegistry1.createEnumType(""Named type with empty name component"", node0, jSType0);
+    EnumElementType enumElementType0 = enumType0.getElementsType();
+    JSType jSType1 = semanticReverseAbstractInterpreter0.getRestrictedWithoutUndefined(enumElementType0);
+    assertFalse(jSType1.isNumberValueType());
+}",0,assertTrue(jSType1.isNumberValueType())
+project,0,test3838,"public void test3838() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSTypeRegistry jSTypeRegistry1 = new JSTypeRegistry(simpleErrorReporter0);
+    Node.newNumber(0.0);
+    UnionType unionType0 = mock(UnionType.class, new ViolatedAssumptionAnswer());
+    doReturn((Iterable) null).when(unionType0).getAlternates();
+    // Undeclared exception!
+    try {
+        modificationVisitor0.caseUnionType(unionType0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.rhino.jstype.ModificationVisitor"", e);
+    }
+}",0,
+project,0,test3939,"public void test3939() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();
+    Node node0 = Node.newString(""Unknown class name"", 0, 1);
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Not declared as a constructor"", node0, objectType0);
+    EnumElementType enumElementType0 = enumType0.getElementsType();
+    JSType jSType0 = semanticReverseAbstractInterpreter0.getRestrictedWithoutNull(enumElementType0);
+    assertFalse(jSType0.isNoObjectType());
+}",0,assertTrue(jSType0.isNoObjectType())
+project,0,test4040,"public void test4040() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    JSTypeRegistry jSTypeRegistry1 = new JSTypeRegistry(simpleErrorReporter0, true);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry1);
+    JSType jSType0 = modificationVisitor0.caseStringType();
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Named type with empty name component"", (Node) null, jSType0);
+    EnumElementType enumElementType0 = enumType0.getElementsType();
+    JSType jSType1 = semanticReverseAbstractInterpreter0.getRestrictedWithoutNull(enumElementType0);
+    assertFalse(jSType1.isEnumType());
+}",0,
+project,0,test4141,"public void test4141() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();
+    Node node0 = Node.newString(""Unknown class name"", 0, 1);
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Not declared as a constructor"", node0, objectType0);
+    EnumElementType enumElementType0 = enumType0.getElementsType();
+    JSType jSType0 = semanticReverseAbstractInterpreter0.getRestrictedByTypeOfResult(enumElementType0, ""Unknown class name"", false);
+    assertNull(jSType0);
+}",0,assertNotNull(jSType0)
+project,0,test4242,"public void test4242() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNoObjectType();
+    Node node0 = Node.newString(0, ""WB@ur8'6S^h"");
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Named type with empty name component"", node0, jSType0);
+    EnumElementType enumElementType0 = enumType0.getElementsType();
+    JSType jSType1 = jSTypeRegistry0.createOptionalNullableType(enumElementType0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    JSType jSType2 = semanticReverseAbstractInterpreter0.getRestrictedByTypeOfResult(jSType1, ""Unknown class name"", false);
+    assertFalse(jSType2.isNoObjectType());
+}",0,assertTrue(jSType2.isNoObjectType())
+project,0,test4343,"public void test4343() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    JSType jSType0 = jSTypeRegistry0.createNamedType(""Named type with empty name component"", ""Unknown class name"", 1, 1);
+    UnknownType unknownType0 = (UnknownType) semanticReverseAbstractInterpreter0.getRestrictedByTypeOfResult(jSType0, ""Named type with empty name component"", false);
+    assertFalse(unknownType0.hasCachedValues());
+}",0,assertFalse(unknownType0.hasCachedValues())
+project,0,test4444,"public void test4444() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.UNKNOWN_TYPE;
+    JSType jSType0 = jSTypeRegistry0.getNativeType(jSTypeNative0);
+    JSType jSType1 = semanticReverseAbstractInterpreter0.getRestrictedByTypeOfResult(jSType0, ""undefined"", true);
+    assertFalse(jSType1.matchesObjectContext());
+}",0,assertTrue(jSType1.matchesObjectContext())
+project,0,test4545,"public void test4545() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNoObjectType();
+    JSType jSType1 = semanticReverseAbstractInterpreter0.getRestrictedByTypeOfResult(jSType0, ""object"", true);
+    assertFalse(jSType1.isEnumType());
+}",0,assertTrue(jSType1.isEnumType())
+project,0,test4646,"public void test4646() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNoObjectType();
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    JSType jSType1 = closureReverseAbstractInterpreter0.getRestrictedByTypeOfResult(jSType0, ""function"", false);
+    assertNull(jSType1);
+}",0,"assertEquals(jSType0, jSType1)"
+project,0,test4747,"public void test4747() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.U2U_FUNCTION_TYPE;
+    JSType jSType0 = jSTypeRegistry0.getNativeType(jSTypeNative0);
+    JSType jSType1 = semanticReverseAbstractInterpreter0.getRestrictedByTypeOfResult(jSType0, ""Unknown class name"", false);
+    assertNull(jSType1);
+}",0,"assertEquals(jSType0, jSType1)"
+project,0,test4848,"public void test4848() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();
+    semanticReverseAbstractInterpreter0.getRestrictedByTypeOfResult(objectType0, ""function"", false);
+    assertFalse(objectType0.hasCachedValues());
+}",0,
+project,0,test4949,"public void test4949() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();
+    semanticReverseAbstractInterpreter0.getRestrictedByTypeOfResult(objectType0, ""function"", true);
+    assertTrue(objectType0.hasCachedValues());
+}",0,
+project,0,test5050,"public void test5050() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSType jSType0 = semanticReverseAbstractInterpreter0.getRestrictedWithoutUndefined((JSType) null);
+    assertNull(jSType0);
+}",0,
+project,0,test5151,"public void test5151() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    JSType jSType0 = semanticReverseAbstractInterpreter0.getRestrictedWithoutNull((JSType) null);
+    assertNull(jSType0);
+}",0,
+project,0,test5252,"public void test5252() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(closureCodingConvention0, (JSTypeRegistry) null);
+    // Undeclared exception!
+    try {
+        semanticReverseAbstractInterpreter0.getRestrictedByTypeOfResult((JSType) null, ""number"", true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.type.ChainableReverseAbstractInterpreter"", e);
+    }
+}",0,
+project,0,test5353,"public void test5353() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, (JSTypeRegistry) null);
+    JSType jSType0 = semanticReverseAbstractInterpreter0.getRestrictedByTypeOfResult((JSType) null, (String) null, false);
+    assertNull(jSType0);
+}",0,assertNotNull(jSType0)
+project,0,test5454,"public void test5454() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSType jSType0 = semanticReverseAbstractInterpreter0.getRestrictedByTypeOfResult((JSType) null, ""function"", true);
+    assertEquals(1, JSType.ENUMDECL);
+}",0,
+project,0,test5555,"public void test5555() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, (JSTypeRegistry) null);
+    // Undeclared exception!
+    try {
+        semanticReverseAbstractInterpreter0.getRestrictedByTypeOfResult((JSType) null, ""^+1[0&,kz"", true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.type.ChainableReverseAbstractInterpreter"", e);
+    }
+}",0,
+project,0,test5656,"public void test5656() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    JSType jSType0 = semanticReverseAbstractInterpreter0.getRestrictedByTypeOfResult((JSType) null, ""boolean"", true);
+    assertFalse(jSType0.isNominalConstructor());
+}",0,assertTrue(jSType0.isNominalConstructor())
+project,0,test5757,"public void test5757() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, (JSTypeRegistry) null);
+    // Undeclared exception!
+    try {
+        semanticReverseAbstractInterpreter0.getRestrictedByTypeOfResult((JSType) null, ""string"", true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.type.ChainableReverseAbstractInterpreter"", e);
+    }
+}",0,

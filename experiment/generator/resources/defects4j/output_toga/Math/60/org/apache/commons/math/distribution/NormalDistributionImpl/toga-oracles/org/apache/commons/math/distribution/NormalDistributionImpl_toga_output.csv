@@ -1,0 +1,396 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
+    double double0 = normalDistributionImpl0.getInitialDomain(Double.NaN);
+    assertEquals(Double.POSITIVE_INFINITY, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}",0,
+project,0,test001,"public void test001() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
+    double double0 = normalDistributionImpl0.getInitialDomain(Double.NaN);
+    assertEquals(Double.POSITIVE_INFINITY, double0, 0.01);
+}",0,
+project,0,test012,"public void test012() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.getDomainLowerBound(0.5);
+    assertEquals(1.0, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}",0,
+project,0,test013,"public void test013() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.getDomainLowerBound(0.5);
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test024,"public void test024() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    // Undeclared exception!
+    try {
+        normalDistributionImpl0.inverseCumulativeProbability(901.9696468329073);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // 901.97 out of [0, 1] range
+        //
+        verifyException(""org.apache.commons.math.distribution.AbstractContinuousDistribution"", e);
+    }
+}",0,
+project,0,test035,"public void test035() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.sample();
+    assertEquals(1.0, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}",0,
+project,0,test036,"public void test036() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.sample();
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test037,"public void test037() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.sample();
+    assertEquals(0.0, normalDistributionImpl0.getMean(), 0.01);
+}",0,
+project,0,test048,"public void test048() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1273.944844), 6.283185307179586, (-2317.66173462341));
+    double double0 = normalDistributionImpl0.sample();
+    assertEquals((-1273.944844), double0, 0.01);
+}",0,
+project,0,test049,"public void test049() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1273.944844), 6.283185307179586, (-2317.66173462341));
+    double double0 = normalDistributionImpl0.sample();
+    assertEquals(6.283185307179586, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}",0,
+project,0,test0510,"public void test0510() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.inverseCumulativeProbability(0.5000000000042687);
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test0511,"public void test0511() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.inverseCumulativeProbability(0.5000000000042687);
+    assertEquals(1.0, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}",0,
+project,0,test0612,"public void test0612() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1914.57745749), 782.268, 0.0);
+    double double0 = normalDistributionImpl0.getSolverAbsoluteAccuracy();
+    assertEquals(782.268, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}",0,
+project,0,test0613,"public void test0613() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1914.57745749), 782.268, 0.0);
+    double double0 = normalDistributionImpl0.getSolverAbsoluteAccuracy();
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test0614,"public void test0614() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1914.57745749), 782.268, 0.0);
+    double double0 = normalDistributionImpl0.getSolverAbsoluteAccuracy();
+    assertEquals((-1914.57745749), normalDistributionImpl0.getMean(), 0.01);
+}",0,
+project,0,test0715,"public void test0715() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-2186.7531), 1.0E-9);
+    double double0 = normalDistributionImpl0.getSolverAbsoluteAccuracy();
+    assertEquals(1.0E-9, double0, 0.01);
+}",0,
+project,0,test0716,"public void test0716() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-2186.7531), 1.0E-9);
+    double double0 = normalDistributionImpl0.getSolverAbsoluteAccuracy();
+    assertEquals((-2186.7531), normalDistributionImpl0.getMean(), 0.01);
+}",0,
+project,0,test0817,"public void test0817() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-2.0), Double.POSITIVE_INFINITY, (-1.7976931348623157E308));
+    double double0 = normalDistributionImpl0.getSolverAbsoluteAccuracy();
+    assertEquals((-1.7976931348623157E308), double0, 0.01);
+}",0,
+project,0,test0818,"public void test0818() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-2.0), Double.POSITIVE_INFINITY, (-1.7976931348623157E308));
+    double double0 = normalDistributionImpl0.getSolverAbsoluteAccuracy();
+    assertEquals(Double.POSITIVE_INFINITY, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}",0,
+project,0,test0819,"public void test0819() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-2.0), Double.POSITIVE_INFINITY, (-1.7976931348623157E308));
+    double double0 = normalDistributionImpl0.getSolverAbsoluteAccuracy();
+    assertEquals((-2.0), normalDistributionImpl0.getMean(), 0.01);
+}",0,
+project,0,test0920,"public void test0920() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl(2776.689, 2776.689, 1.2393345855018391E-8);
+    double double0 = normalDistributionImpl0.getMean();
+    assertEquals(2776.689, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}",0,
+project,0,test0921,"public void test0921() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl(2776.689, 2776.689, 1.2393345855018391E-8);
+    double double0 = normalDistributionImpl0.getMean();
+    assertEquals(2776.689, double0, 0.01);
+}",0,
+project,0,test1022,"public void test1022() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1914.57745749), 782.268, 0.0);
+    double double0 = normalDistributionImpl0.getMean();
+    assertEquals((-1914.57745749), double0, 0.01);
+}",0,
+project,0,test1023,"public void test1023() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1914.57745749), 782.268, 0.0);
+    double double0 = normalDistributionImpl0.getMean();
+    assertEquals(782.268, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}",0,
+project,0,test1124,"public void test1124() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1914.57745749), 782.268, 0.0);
+    double double0 = normalDistributionImpl0.getInitialDomain(0.0);
+    assertEquals((-2696.8454574899997), double0, 0.01);
+}",0,
+project,0,test1225,"public void test1225() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.getDomainUpperBound(0.0);
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test1226,"public void test1226() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.getDomainUpperBound(0.0);
+    assertEquals(1.0, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}",0,
+project,0,test1327,"public void test1327() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl(0.75, 0.5, 0.75);
+    double double0 = normalDistributionImpl0.getDomainUpperBound(0.5);
+    assertEquals(0.75, normalDistributionImpl0.getMean(), 0.01);
+}",0,
+project,0,test1328,"public void test1328() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl(0.75, 0.5, 0.75);
+    double double0 = normalDistributionImpl0.getDomainUpperBound(0.5);
+    assertEquals(0.5, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}",0,
+project,0,test1329,"public void test1329() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl(0.75, 0.5, 0.75);
+    double double0 = normalDistributionImpl0.getDomainUpperBound(0.5);
+    assertEquals(1.7976931348623157E308, double0, 0.01);
+}",0,
+project,0,test1430,"public void test1430() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-2186.7531), 1.0E-9);
+    double double0 = normalDistributionImpl0.getDomainUpperBound((-7736.567));
+    assertEquals((-2186.7531), double0, 0.01);
+}",0,
+project,0,test1531,"public void test1531() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl(4.7421875, 4.7421875);
+    double double0 = normalDistributionImpl0.getDomainLowerBound(2.0);
+    assertEquals(4.7421875, double0, 0.01);
+}",0,
+project,0,test1532,"public void test1532() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl(4.7421875, 4.7421875);
+    double double0 = normalDistributionImpl0.getDomainLowerBound(2.0);
+    assertEquals(4.7421875, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}",0,
+project,0,test1633,"public void test1633() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1.7976931348623157E308), 209.088917880791, 209.088917880791);
+    normalDistributionImpl0.getDomainLowerBound((-1.7976931348623157E308));
+    assertEquals((-1.7976931348623157E308), normalDistributionImpl0.getMean(), 0.01);
+}",0,
+project,0,test1634,"public void test1634() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1.7976931348623157E308), 209.088917880791, 209.088917880791);
+    normalDistributionImpl0.getDomainLowerBound((-1.7976931348623157E308));
+    assertEquals(209.088917880791, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}",0,
+project,0,test1735,"public void test1735() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-2186.7531), 1.0E-9);
+    double double0 = normalDistributionImpl0.density((-1484.7644277));
+    assertEquals((-2186.7531), normalDistributionImpl0.getMean(), 0.01);
+}",0,
+project,0,test1736,"public void test1736() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-2186.7531), 1.0E-9);
+    double double0 = normalDistributionImpl0.density((-1484.7644277));
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test1837,"public void test1837() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.cumulativeProbability((-1806.763993368636));
+    assertEquals(0.0, normalDistributionImpl0.getMean(), 0.01);
+}",0,
+project,0,test1838,"public void test1838() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.cumulativeProbability((-1806.763993368636));
+    assertEquals(1.0, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}",0,
+project,0,test1839,"public void test1839() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.cumulativeProbability((-1806.763993368636));
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test1940,"public void test1940() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1273.944844), 6.283185307179586, (-2317.66173462341));
+    double double0 = normalDistributionImpl0.cumulativeProbability(0.0);
+    assertEquals(6.283185307179586, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}",0,
+project,0,test1941,"public void test1941() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1273.944844), 6.283185307179586, (-2317.66173462341));
+    double double0 = normalDistributionImpl0.cumulativeProbability(0.0);
+    assertEquals((-1273.944844), normalDistributionImpl0.getMean(), 0.01);
+}",0,
+project,0,test1942,"public void test1942() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1273.944844), 6.283185307179586, (-2317.66173462341));
+    double double0 = normalDistributionImpl0.cumulativeProbability(0.0);
+    assertEquals(1.0, double0, 0.01);
+}",0,
+project,0,test2043,"public void test2043() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-2606.330267894), 1.4456468917292502E-16);
+    // Undeclared exception!
+    try {
+        normalDistributionImpl0.inverseCumulativeProbability(1.0E-9);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Continued fraction diverged to NaN for value \u221E
+        //
+        verifyException(""org.apache.commons.math.distribution.AbstractContinuousDistribution$1"", e);
+    }
+}",0,
+project,0,test2144,"public void test2144() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl(468.56833404566, 468.56833404566);
+    // Undeclared exception!
+    normalDistributionImpl0.inverseCumulativeProbability(1.0E-9);
+}",0,
+project,0,test2245,"public void test2245() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1914.57745749), 782.268, 0.0);
+    // Undeclared exception!
+    try {
+        normalDistributionImpl0.inverseCumulativeProbability((-1914.57745749));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // -1,914.577 out of [0, 1] range
+        //
+        verifyException(""org.apache.commons.math.distribution.AbstractContinuousDistribution"", e);
+    }
+}",0,
+project,0,test2346,"public void test2346() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1.7976931348623157E308), 209.088917880791, 209.088917880791);
+    try {
+        normalDistributionImpl0.cumulativeProbability(0.0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Continued fraction diverged to NaN for value \u221E
+        //
+        verifyException(""org.apache.commons.math.util.ContinuedFraction"", e);
+    }
+}",0,
+project,0,test2447,"public void test2447() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = null;
+    try {
+        normalDistributionImpl0 = new NormalDistributionImpl((-2289.0505632029985), (-36.04));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // -36.04 is smaller than, or equal to, the minimum (0): standard deviation (-36.04)
+        //
+        verifyException(""org.apache.commons.math.distribution.NormalDistributionImpl"", e);
+    }
+}",0,
+project,0,test2548,"public void test2548() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.getInitialDomain(0.5);
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test2549,"public void test2549() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.getInitialDomain(0.5);
+    assertEquals(1.0, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}",0,
+project,0,test2650,"public void test2650() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.inverseCumulativeProbability(1.0E-9);
+    assertEquals((-5.997807014826545), double0, 0.01);
+}",0,
+project,0,test2751,"public void test2751() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl(0.0, 0.008333333333333333);
+    double double0 = normalDistributionImpl0.inverseCumulativeProbability(1.0);
+    assertEquals(0.008333333333333333, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}",0,
+project,0,test2752,"public void test2752() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl(0.0, 0.008333333333333333);
+    double double0 = normalDistributionImpl0.inverseCumulativeProbability(1.0);
+    assertEquals(0.0, normalDistributionImpl0.getMean(), 0.01);
+}",0,
+project,0,test2753,"public void test2753() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl(0.0, 0.008333333333333333);
+    double double0 = normalDistributionImpl0.inverseCumulativeProbability(1.0);
+    assertEquals(Double.POSITIVE_INFINITY, double0, 0.01);
+}",0,
+project,0,test2854,"public void test2854() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1914.57745749), 782.268, 0.0);
+    double double0 = normalDistributionImpl0.inverseCumulativeProbability(0.0);
+    assertEquals(Double.NEGATIVE_INFINITY, double0, 0.01);
+}",0,
+project,0,test2855,"public void test2855() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1914.57745749), 782.268, 0.0);
+    double double0 = normalDistributionImpl0.inverseCumulativeProbability(0.0);
+    assertEquals((-1914.57745749), normalDistributionImpl0.getMean(), 0.01);
+}",0,
+project,0,test2856,"public void test2856() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1914.57745749), 782.268, 0.0);
+    double double0 = normalDistributionImpl0.inverseCumulativeProbability(0.0);
+    assertEquals(782.268, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}",0,
+project,0,test2957,"public void test2957() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = null;
+    try {
+        normalDistributionImpl0 = new NormalDistributionImpl((-1507.8600820797808), (-1507.8600820797808), (-1507.8600820797808));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // -1,507.86 is smaller than, or equal to, the minimum (0): standard deviation (-1,507.86)
+        //
+        verifyException(""org.apache.commons.math.distribution.NormalDistributionImpl"", e);
+    }
+}",1,
+project,0,test3058,"public void test3058() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-3298.3076802071), Double.POSITIVE_INFINITY);
+    try {
+        normalDistributionImpl0.inverseCumulativeProbability(0.9999997615814209);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // \u221E is larger than, or equal to, the maximum (179,769,313,486,231,570,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000): endpoints do not specify an interval: [\u221E, 179,769,313,486,231,570,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000]
+        //
+        verifyException(""org.apache.commons.math.distribution.AbstractContinuousDistribution"", e);
+    }
+}",0,
+project,0,test3159,"public void test3159() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.getStandardDeviation();
+    assertEquals(0.0, normalDistributionImpl0.getMean(), 0.01);
+}",0,
+project,0,test3160,"public void test3160() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.getStandardDeviation();
+    assertEquals(1.0, double0, 0.01);
+}",0,
+project,0,test3261,"public void test3261() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-3298.3076802071), Double.POSITIVE_INFINITY);
+    normalDistributionImpl0.sample();
+    double double0 = normalDistributionImpl0.sample();
+    assertEquals((-3298.3076802071), normalDistributionImpl0.getMean(), 0.01);
+}",0,
+project,0,test3262,"public void test3262() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-3298.3076802071), Double.POSITIVE_INFINITY);
+    normalDistributionImpl0.sample();
+    double double0 = normalDistributionImpl0.sample();
+    assertEquals(Double.POSITIVE_INFINITY, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}",0,
+project,0,test3263,"public void test3263() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-3298.3076802071), Double.POSITIVE_INFINITY);
+    normalDistributionImpl0.sample();
+    double double0 = normalDistributionImpl0.sample();
+    assertEquals(Double.POSITIVE_INFINITY, double0, 0.01);
+}",0,
+project,0,test3364,"public void test3364() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.density(0.5000000003989423);
+    assertEquals(0.0, normalDistributionImpl0.getMean(), 0.01);
+}",0,
+project,0,test3365,"public void test3365() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.density(0.5000000003989423);
+    assertEquals(0.35206532669407264, double0, 0.01);
+}",0,
+project,0,test3466,"public void test3466() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.getMean();
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test3467,"public void test3467() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.getMean();
+    assertEquals(1.0, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}",0,

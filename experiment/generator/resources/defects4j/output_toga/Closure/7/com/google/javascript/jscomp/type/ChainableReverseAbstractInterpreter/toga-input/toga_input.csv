@@ -1,0 +1,1473 @@
+focal_method,test_prefix,docstring
+"public boolean isStringValueType() {
+    return false;
+}","public void test000() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNumberType();
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSType jSType1 = closureReverseAbstractInterpreter0.getRestrictedWithoutNull(jSType0);
+    assertFalse(jSType1.isStringValueType());
+}",""
+"public abstract BooleanLiteralSet getPossibleToBooleanOutcomes();","public void test011() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseStringType();
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSType jSType1 = closureReverseAbstractInterpreter0.getRestrictedWithoutNull(jSType0);
+    assertEquals(BooleanLiteralSet.BOTH, jSType1.getPossibleToBooleanOutcomes());
+}","/**
+ * Computes the set of possible outcomes of the {@code ToBoolean} predicate
+ * for this type. The {@code ToBoolean} predicate is defined by the ECMA-262
+ * standard, 3<sup>rd</sup> edition. Its behavior for simple types can be
+ * summarized by the following table:
+ * <table>
+ * <tr><th>type</th><th>result</th></tr>
+ * <tr><td>{@code undefined}</td><td>{false}</td></tr>
+ * <tr><td>{@code null}</td><td>{false}</td></tr>
+ * <tr><td>{@code boolean}</td><td>{true, false}</td></tr>
+ * <tr><td>{@code number}</td><td>{true, false}</td></tr>
+ * <tr><td>{@code string}</td><td>{true, false}</td></tr>
+ * <tr><td>{@code Object}</td><td>{true}</td></tr>
+ * </table>
+ * @return the set of boolean literals for this type
+ */"
+"public boolean matchesStringContext() {
+    return false;
+}","public void test022() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JSType jSType0 = jSTypeRegistry0.createNamedType(""Unknown class name"", ""Named type with empty name component"", 1, 1);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSType jSType1 = closureReverseAbstractInterpreter0.getRestrictedWithoutNull(jSType0);
+    assertTrue(jSType1.matchesStringContext());
+}","/**
+ * This predicate is used to test whether a given type can appear in a
+ * {@code String} context, such as an operand of a string concat (+) operator.
+ *
+ * All types have at least the potential for converting to {@code String}.
+ * When we add externally defined types, such as a browser OM, we may choose
+ * to add types that do not automatically convert to {@code String}.
+ */"
+"public boolean matchesStringContext() {
+    return false;
+}","public void test033() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNoType();
+    JSType jSType1 = closureReverseAbstractInterpreter0.getRestrictedWithoutNull(jSType0);
+    assertTrue(jSType1.matchesStringContext());
+}","/**
+ * This predicate is used to test whether a given type can appear in a
+ * {@code String} context, such as an operand of a string concat (+) operator.
+ *
+ * All types have at least the potential for converting to {@code String}.
+ * When we add externally defined types, such as a browser OM, we may choose
+ * to add types that do not automatically convert to {@code String}.
+ */"
+"protected final JSType getRestrictedWithoutNull(JSType type) {
+    return type == null ? null : type.visit(restrictNullVisitor);
+}","public void test044() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Named type with empty name component"", (Node) null, jSType0);
+    EnumElementType enumElementType0 = enumType0.getElementsType();
+    JSType jSType1 = closureReverseAbstractInterpreter0.getRestrictedWithoutNull(enumElementType0);
+    assertNull(jSType1);
+}","/**
+ * Returns a version of type where null is not present.
+ */"
+"public final boolean isNominalConstructor() {
+    if (isConstructor() || isInterface()) {
+        FunctionType fn = toMaybeFunctionType();
+        if (fn == null) {
+            return false;
+        }
+        // Programmer-defined constructors will have a link
+        // back to the original function in the source tree.
+        // Structural constructors will not.
+        if (fn.getSource() != null) {
+            return true;
+        }
+        // Native constructors are always nominal.
+        return fn.isNativeObjectType();
+    }
+    return false;
+}","public void test055() throws Throwable {
+    GoogleCodingConvention googleCodingConvention0 = new GoogleCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNoObjectType();
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(googleCodingConvention0, jSTypeRegistry0);
+    JSType jSType1 = closureReverseAbstractInterpreter0.getRestrictedWithoutNull(jSType0);
+    assertFalse(jSType1.isNominalConstructor());
+}","/**
+ * Whether this type is the original constructor of a nominal type.
+ * Does not include structural constructors.
+ */"
+"public boolean isVoidType() {
+    return false;
+}","public void test066() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseBooleanType();
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSType jSType1 = semanticReverseAbstractInterpreter0.getRestrictedWithoutNull(jSType0);
+    assertFalse(jSType1.isVoidType());
+}",""
+"protected final JSType getRestrictedWithoutNull(JSType type) {
+    return type == null ? null : type.visit(restrictNullVisitor);
+}","public void test077() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.OBJECT_FUNCTION_TYPE;
+    FunctionType functionType0 = (FunctionType) closureReverseAbstractInterpreter0.getNativeType(jSTypeNative0);
+    ParameterizedType parameterizedType0 = jSTypeRegistry0.createParameterizedType(functionType0, functionType0);
+    ParameterizedType parameterizedType1 = (ParameterizedType) closureReverseAbstractInterpreter0.getRestrictedWithoutNull(parameterizedType0);
+    assertEquals(0, JSType.NOT_ENUMDECL);
+}","/**
+ * Returns a version of type where null is not present.
+ */"
+"public final boolean isFunctionType() {
+    return toMaybeFunctionType() != null;
+}","public void test088() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseAllType();
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSType jSType1 = closureReverseAbstractInterpreter0.getRestrictedWithoutNull(jSType0);
+    assertFalse(jSType1.isFunctionType());
+}","/**
+ * Returns true if toMaybeFunctionType returns a non-null FunctionType.
+ */"
+"public boolean isNoObjectType() {
+    return false;
+}","public void test099() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.TYPE_ERROR_FUNCTION_TYPE;
+    FunctionType functionType0 = jSTypeRegistry0.getNativeFunctionType(jSTypeNative0);
+    JSType jSType0 = closureReverseAbstractInterpreter0.getRestrictedWithoutNull(functionType0);
+    assertFalse(jSType0.isNoObjectType());
+}",""
+"public final boolean isEnumElementType() {
+    return toMaybeEnumElementType() != null;
+}","public void test1010() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseVoidType();
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    JSType jSType1 = closureReverseAbstractInterpreter0.getRestrictedWithoutNull(jSType0);
+    assertFalse(jSType1.isEnumElementType());
+}",""
+"public final boolean isParameterizedType() {
+    return toMaybeParameterizedType() != null;
+}","public void test1111() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.NULL_VOID;
+    JSType jSType0 = jSTypeRegistry0.getNativeType(jSTypeNative0);
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""_0wU7^>~o6,Tl%D"", (Node) null, jSType0);
+    EnumElementType enumElementType0 = enumType0.getElementsType();
+    JSType jSType1 = closureReverseAbstractInterpreter0.getRestrictedWithoutNull(enumElementType0);
+    assertFalse(jSType1.isParameterizedType());
+}",""
+"JSType getRestrictedByTypeOfResult(JSType type, String value, boolean resultEqualsValue) {
+    if (type == null) {
+        if (resultEqualsValue) {
+            JSType result = getNativeTypeForTypeOf(value);
+            return result == null ? getNativeType(CHECKED_UNKNOWN_TYPE) : result;
+        } else {
+            return null;
+        }
+    }
+    return type.visit(new RestrictByOneTypeOfResultVisitor(value, resultEqualsValue));
+}","public void test1212() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNoObjectType();
+    GoogleCodingConvention googleCodingConvention0 = new GoogleCodingConvention();
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(googleCodingConvention0, jSTypeRegistry0);
+    JSType jSType1 = jSTypeRegistry0.createOptionalNullableType(jSType0);
+    JSType jSType2 = closureReverseAbstractInterpreter0.getRestrictedByTypeOfResult(jSType1, ""object"", false);
+    assertNull(jSType2);
+}","/**
+ * Returns a version of {@code type} that is restricted by some knowledge
+ * about the result of the {@code typeof} operation.
+ * <p>
+ * The behavior of the {@code typeof} operator can be summarized by the
+ * following table:
+ * <table>
+ * <tr><th>type</th><th>result</th></tr>
+ * <tr><td>{@code undefined}</td><td>""undefined""</td></tr>
+ * <tr><td>{@code null}</td><td>""object""</td></tr>
+ * <tr><td>{@code boolean}</td><td>""boolean""</td></tr>
+ * <tr><td>{@code number}</td><td>""number""</td></tr>
+ * <tr><td>{@code string}</td><td>""string""</td></tr>
+ * <tr><td>{@code Object} (which doesn't implement [[Call]])</td>
+ *     <td>""object""</td></tr>
+ * <tr><td>{@code Object} (which implements [[Call]])</td>
+ *     <td>""function""</td></tr>
+ * </table>
+ * @param type the type to restrict
+ * @param value A value known to be equal or not equal to the result of the
+ *        {@code typeof} operation
+ * @param resultEqualsValue {@code true} if the {@code typeOf} result is known
+ *        to equal {@code value}; {@code false} if it is known <em>not</em> to
+ *        equal {@code value}
+ * @return the restricted type or null if no version of the type matches the
+ *         restriction
+ */"
+"public boolean isNoType() {
+    return false;
+}","public void test1313() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.CHECKED_UNKNOWN_TYPE;
+    JSType jSType0 = jSTypeRegistry0.getNativeType(jSTypeNative0);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSType jSType1 = closureReverseAbstractInterpreter0.getRestrictedByTypeOfResult(jSType0, ""undefined"", true);
+    assertFalse(jSType1.isNoType());
+}",""
+"JSType getRestrictedByTypeOfResult(JSType type, String value, boolean resultEqualsValue) {
+    if (type == null) {
+        if (resultEqualsValue) {
+            JSType result = getNativeTypeForTypeOf(value);
+            return result == null ? getNativeType(CHECKED_UNKNOWN_TYPE) : result;
+        } else {
+            return null;
+        }
+    }
+    return type.visit(new RestrictByOneTypeOfResultVisitor(value, resultEqualsValue));
+}","public void test1414() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    ParameterizedType parameterizedType0 = jSTypeRegistry0.createParameterizedType((ObjectType) null, (JSType) null);
+    JSType jSType0 = closureReverseAbstractInterpreter0.getRestrictedByTypeOfResult(parameterizedType0, ""Not declared as a type name"", false);
+    assertNull(jSType0);
+}","/**
+ * Returns a version of {@code type} that is restricted by some knowledge
+ * about the result of the {@code typeof} operation.
+ * <p>
+ * The behavior of the {@code typeof} operator can be summarized by the
+ * following table:
+ * <table>
+ * <tr><th>type</th><th>result</th></tr>
+ * <tr><td>{@code undefined}</td><td>""undefined""</td></tr>
+ * <tr><td>{@code null}</td><td>""object""</td></tr>
+ * <tr><td>{@code boolean}</td><td>""boolean""</td></tr>
+ * <tr><td>{@code number}</td><td>""number""</td></tr>
+ * <tr><td>{@code string}</td><td>""string""</td></tr>
+ * <tr><td>{@code Object} (which doesn't implement [[Call]])</td>
+ *     <td>""object""</td></tr>
+ * <tr><td>{@code Object} (which implements [[Call]])</td>
+ *     <td>""function""</td></tr>
+ * </table>
+ * @param type the type to restrict
+ * @param value A value known to be equal or not equal to the result of the
+ *        {@code typeof} operation
+ * @param resultEqualsValue {@code true} if the {@code typeOf} result is known
+ *        to equal {@code value}; {@code false} if it is known <em>not</em> to
+ *        equal {@code value}
+ * @return the restricted type or null if no version of the type matches the
+ *         restriction
+ */"
+"public boolean isEnumType() {
+    return toMaybeEnumType() != null;
+}","public void test1515() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNoType();
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""object"", (Node) null, jSType0);
+    EnumElementType enumElementType0 = enumType0.getElementsType();
+    JSType jSType1 = closureReverseAbstractInterpreter0.getRestrictedByTypeOfResult(enumElementType0, ""Not declared as a constructor"", true);
+    assertFalse(jSType1.isEnumType());
+}",""
+"public final boolean isResolved() {
+    return resolved;
+}","public void test1616() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseAllType();
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSType jSType1 = closureReverseAbstractInterpreter0.getRestrictedByTypeOfResult(jSType0, ""Not declared as a constructor"", true);
+    assertFalse(jSType1.isResolved());
+}","/**
+ * Whether the type has been resolved.
+ */"
+"public ChainableReverseAbstractInterpreter getFirst() {
+    return firstLink;
+}","public void test1717() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    ChainableReverseAbstractInterpreter chainableReverseAbstractInterpreter0 = semanticReverseAbstractInterpreter0.getFirst();
+    assertSame(chainableReverseAbstractInterpreter0, semanticReverseAbstractInterpreter0);
+}","/**
+ * Gets the first link of this chain.
+ */"
+"protected FlowScope firstPreciserScopeKnowingConditionOutcome(Node condition, FlowScope blindScope, boolean outcome) {
+    return firstLink.getPreciserScopeKnowingConditionOutcome(condition, blindScope, outcome);
+}","public void test1818() throws Throwable {
+    Node node0 = new Node(38, 38, 38);
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, (JSTypeRegistry) null);
+    FlowScope flowScope0 = closureReverseAbstractInterpreter0.firstPreciserScopeKnowingConditionOutcome(node0, (FlowScope) null, true);
+    assertNull(flowScope0);
+}","/**
+ * Calculates the preciser scope starting with the first link.
+ */"
+"public boolean isVoidType() {
+    return false;
+}","public void test1919() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseStringType();
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSType jSType1 = jSTypeRegistry0.getGreatestSubtypeWithProperty(jSType0, ""Unknown class name"");
+    JSType jSType2 = closureReverseAbstractInterpreter0.getRestrictedWithoutUndefined(jSType1);
+    assertFalse(jSType2.isVoidType());
+}",""
+"public abstract BooleanLiteralSet getPossibleToBooleanOutcomes();","public void test2020() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSType jSType0 = jSTypeRegistry0.createNamedType(""pypjof"", ""pypjof"", 62, 62);
+    JSType jSType1 = closureReverseAbstractInterpreter0.getRestrictedWithoutUndefined(jSType0);
+    assertEquals(BooleanLiteralSet.BOTH, jSType1.getPossibleToBooleanOutcomes());
+}","/**
+ * Computes the set of possible outcomes of the {@code ToBoolean} predicate
+ * for this type. The {@code ToBoolean} predicate is defined by the ECMA-262
+ * standard, 3<sup>rd</sup> edition. Its behavior for simple types can be
+ * summarized by the following table:
+ * <table>
+ * <tr><th>type</th><th>result</th></tr>
+ * <tr><td>{@code undefined}</td><td>{false}</td></tr>
+ * <tr><td>{@code null}</td><td>{false}</td></tr>
+ * <tr><td>{@code boolean}</td><td>{true, false}</td></tr>
+ * <tr><td>{@code number}</td><td>{true, false}</td></tr>
+ * <tr><td>{@code string}</td><td>{true, false}</td></tr>
+ * <tr><td>{@code Object}</td><td>{true}</td></tr>
+ * </table>
+ * @return the set of boolean literals for this type
+ */"
+"public boolean matchesObjectContext() {
+    return false;
+}","public void test2121() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);
+    JSTypeNative jSTypeNative0 = JSTypeNative.NULL_VOID;
+    JSType jSType0 = jSTypeRegistry0.getNativeType(jSTypeNative0);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    Node node0 = Node.newString(""Not declared as a constructor"", (-1575), 0);
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Not declared as a type name"", node0, jSType0);
+    EnumElementType enumElementType0 = enumType0.getElementsType();
+    JSType jSType1 = closureReverseAbstractInterpreter0.getRestrictedWithoutUndefined(enumElementType0);
+    assertFalse(jSType1.matchesObjectContext());
+}","/**
+ * This predicate is used to test whether a given type can appear in an
+ * {@code Object} context, such as the expression in a with statement.
+ *
+ * Most types we will encounter, except notably {@code null}, have at least
+ * the potential for converting to {@code Object}.  Host defined objects can
+ * get peculiar.
+ */"
+"public boolean isRecordType() {
+    return toMaybeRecordType() != null;
+}","public void test2222() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseAllType();
+    JSType jSType1 = closureReverseAbstractInterpreter0.getRestrictedWithoutUndefined(jSType0);
+    assertFalse(jSType1.isRecordType());
+}",""
+"public boolean isConstructor() {
+    return false;
+}","public void test2323() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.GREATEST_FUNCTION_TYPE;
+    JSType jSType0 = jSTypeRegistry0.getNativeType(jSTypeNative0);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSType jSType1 = closureReverseAbstractInterpreter0.getRestrictedWithoutUndefined(jSType0);
+    assertFalse(jSType1.isConstructor());
+}","/**
+ * Whether this type is a {@link FunctionType} that is a constructor or a
+ * named type that points to such a type.
+ */"
+"public abstract BooleanLiteralSet getPossibleToBooleanOutcomes();","public void test2424() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNumberType();
+    JSType jSType1 = closureReverseAbstractInterpreter0.getRestrictedWithoutUndefined(jSType0);
+    assertEquals(BooleanLiteralSet.BOTH, jSType1.getPossibleToBooleanOutcomes());
+}","/**
+ * Computes the set of possible outcomes of the {@code ToBoolean} predicate
+ * for this type. The {@code ToBoolean} predicate is defined by the ECMA-262
+ * standard, 3<sup>rd</sup> edition. Its behavior for simple types can be
+ * summarized by the following table:
+ * <table>
+ * <tr><th>type</th><th>result</th></tr>
+ * <tr><td>{@code undefined}</td><td>{false}</td></tr>
+ * <tr><td>{@code null}</td><td>{false}</td></tr>
+ * <tr><td>{@code boolean}</td><td>{true, false}</td></tr>
+ * <tr><td>{@code number}</td><td>{true, false}</td></tr>
+ * <tr><td>{@code string}</td><td>{true, false}</td></tr>
+ * <tr><td>{@code Object}</td><td>{true}</td></tr>
+ * </table>
+ * @return the set of boolean literals for this type
+ */"
+"public boolean isNoObjectType() {
+    return false;
+}","public void test2525() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseBooleanType();
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSType jSType1 = closureReverseAbstractInterpreter0.getRestrictedWithoutUndefined(jSType0);
+    assertFalse(jSType1.isNoObjectType());
+}",""
+"public boolean isFunctionPrototypeType() {
+    return false;
+}","public void test2626() throws Throwable {
+    GoogleCodingConvention googleCodingConvention0 = new GoogleCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(googleCodingConvention0, jSTypeRegistry0);
+    ParameterizedType parameterizedType0 = jSTypeRegistry0.createParameterizedType((ObjectType) null, (JSType) null);
+    JSType jSType0 = closureReverseAbstractInterpreter0.getRestrictedWithoutUndefined(parameterizedType0);
+    assertFalse(jSType0.isFunctionPrototypeType());
+}","/**
+ * Whether this is the prototype of a function.
+ */"
+"public boolean matchesObjectContext() {
+    return false;
+}","public void test2727() throws Throwable {
+    GoogleCodingConvention googleCodingConvention0 = new GoogleCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNoObjectType();
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(googleCodingConvention0, jSTypeRegistry0);
+    JSType jSType1 = closureReverseAbstractInterpreter0.getRestrictedWithoutUndefined(jSType0);
+    assertTrue(jSType1.matchesObjectContext());
+}","/**
+ * This predicate is used to test whether a given type can appear in an
+ * {@code Object} context, such as the expression in a with statement.
+ *
+ * Most types we will encounter, except notably {@code null}, have at least
+ * the potential for converting to {@code Object}.  Host defined objects can
+ * get peculiar.
+ */"
+"public final boolean isFunctionType() {
+    return toMaybeFunctionType() != null;
+}","public void test2828() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseStringType();
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSType jSType1 = closureReverseAbstractInterpreter0.getRestrictedWithoutUndefined(jSType0);
+    assertFalse(jSType1.isFunctionType());
+}","/**
+ * Returns true if toMaybeFunctionType returns a non-null FunctionType.
+ */"
+"protected final JSType getRestrictedWithoutUndefined(JSType type) {
+    return type == null ? null : type.visit(restrictUndefinedVisitor);
+}","public void test2929() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);
+    JSTypeNative jSTypeNative0 = JSTypeNative.VOID_TYPE;
+    JSType jSType0 = jSTypeRegistry0.getNativeType(jSTypeNative0);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSType[] jSTypeArray0 = new JSType[4];
+    jSTypeArray0[2] = jSType0;
+    jSTypeArray0[3] = jSType0;
+    Node node0 = jSTypeRegistry0.createParametersWithVarArgs(jSTypeArray0);
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Named type with empty name component"", node0, jSTypeArray0[2]);
+    EnumElementType enumElementType0 = enumType0.getElementsType();
+    JSType jSType1 = closureReverseAbstractInterpreter0.getRestrictedWithoutUndefined(enumElementType0);
+    assertNull(jSType1);
+}","/**
+ * Returns a version of type where undefined is not present.
+ */"
+"public boolean isNullable() {
+    return this.isSubtype(getNativeType(JSTypeNative.NULL_TYPE));
+}","public void test3030() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    JSType jSType1 = closureReverseAbstractInterpreter0.getRestrictedWithoutUndefined(jSType0);
+    assertTrue(jSType1.isNullable());
+}","/**
+ * Tests whether this type is nullable.
+ */"
+"public ChainableReverseAbstractInterpreter append(ChainableReverseAbstractInterpreter lastLink) {
+    Preconditions.checkArgument(lastLink.nextLink == null);
+    this.nextLink = lastLink;
+    lastLink.firstLink = this.firstLink;
+    return lastLink;
+}","public void test3131() throws Throwable {
+    GoogleCodingConvention googleCodingConvention0 = new GoogleCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(googleCodingConvention0, jSTypeRegistry0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(googleCodingConvention0, jSTypeRegistry0);
+    ChainableReverseAbstractInterpreter chainableReverseAbstractInterpreter0 = semanticReverseAbstractInterpreter0.append(closureReverseAbstractInterpreter0);
+    // Undeclared exception!
+    try {
+        chainableReverseAbstractInterpreter0.append(semanticReverseAbstractInterpreter0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * Appends a link to {@code this}, returning the updated last link.
+ * <p>
+ * The pattern {@code new X().append(new Y())...append(new Z())} forms a
+ * chain starting with X, then Y, then ... Z.
+ * @param lastLink a chainable interpreter, with no next link
+ * @return the updated last link
+ */"
+"protected FlowScope firstPreciserScopeKnowingConditionOutcome(Node condition, FlowScope blindScope, boolean outcome) {
+    return firstLink.getPreciserScopeKnowingConditionOutcome(condition, blindScope, outcome);
+}","public void test3232() throws Throwable {
+    Node node0 = new Node(38, 38, 38);
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, (JSTypeRegistry) null);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(closureCodingConvention0, (JSTypeRegistry) null);
+    closureReverseAbstractInterpreter0.append(semanticReverseAbstractInterpreter0);
+    // Undeclared exception!
+    try {
+        closureReverseAbstractInterpreter0.firstPreciserScopeKnowingConditionOutcome(node0, (FlowScope) null, true);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // NAME 38 is not a string node
+        //
+        verifyException(""com.google.javascript.rhino.Node"", e);
+    }
+}","/**
+ * Calculates the preciser scope starting with the first link.
+ */"
+"protected JSType getTypeIfRefinable(Node node, FlowScope scope) {
+    switch(node.getType()) {
+        case Token.NAME:
+            StaticSlot<JSType> nameVar = scope.getSlot(node.getString());
+            if (nameVar != null) {
+                JSType nameVarType = nameVar.getType();
+                if (nameVarType == null) {
+                    nameVarType = node.getJSType();
+                }
+                return nameVarType;
+            }
+            return null;
+        case Token.GETPROP:
+            String qualifiedName = node.getQualifiedName();
+            if (qualifiedName == null) {
+                return null;
+            }
+            StaticSlot<JSType> propVar = scope.getSlot(qualifiedName);
+            JSType propVarType = null;
+            if (propVar != null) {
+                propVarType = propVar.getType();
+            }
+            if (propVarType == null) {
+                propVarType = node.getJSType();
+            }
+            if (propVarType == null) {
+                propVarType = getNativeType(UNKNOWN_TYPE);
+            }
+            return propVarType;
+    }
+    return null;
+}","public void test3333() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    Node node0 = Node.newNumber((double) 33, 33, 33);
+    Node node1 = new Node(33, node0);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSType jSType0 = closureReverseAbstractInterpreter0.getTypeIfRefinable(node1, (FlowScope) null);
+    assertNull(jSType0);
+}","/**
+ * Returns the type of a node in the given scope if the node corresponds to a
+ * name whose type is capable of being refined.
+ * @return The current type of the node if it can be refined, null otherwise.
+ */"
+"protected JSType getTypeIfRefinable(Node node, FlowScope scope) {
+    switch(node.getType()) {
+        case Token.NAME:
+            StaticSlot<JSType> nameVar = scope.getSlot(node.getString());
+            if (nameVar != null) {
+                JSType nameVarType = nameVar.getType();
+                if (nameVarType == null) {
+                    nameVarType = node.getJSType();
+                }
+                return nameVarType;
+            }
+            return null;
+        case Token.GETPROP:
+            String qualifiedName = node.getQualifiedName();
+            if (qualifiedName == null) {
+                return null;
+            }
+            StaticSlot<JSType> propVar = scope.getSlot(qualifiedName);
+            JSType propVarType = null;
+            if (propVar != null) {
+                propVarType = propVar.getType();
+            }
+            if (propVarType == null) {
+                propVarType = node.getJSType();
+            }
+            if (propVarType == null) {
+                propVarType = getNativeType(UNKNOWN_TYPE);
+            }
+            return propVarType;
+    }
+    return null;
+}","public void test3434() throws Throwable {
+    GoogleCodingConvention googleCodingConvention0 = new GoogleCodingConvention();
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(googleCodingConvention0, (JSTypeRegistry) null);
+    Node node0 = new Node((-4248));
+    JSType jSType0 = semanticReverseAbstractInterpreter0.getTypeIfRefinable(node0, (FlowScope) null);
+    assertNull(jSType0);
+}","/**
+ * Returns the type of a node in the given scope if the node corresponds to a
+ * name whose type is capable of being refined.
+ * @return The current type of the node if it can be refined, null otherwise.
+ */"
+"protected void declareNameInScope(FlowScope scope, Node node, JSType type) {
+    switch(node.getType()) {
+        case Token.NAME:
+            scope.inferSlotType(node.getString(), type);
+            break;
+        case Token.GETPROP:
+            String qualifiedName = node.getQualifiedName();
+            Preconditions.checkNotNull(qualifiedName);
+            JSType origType = node.getJSType();
+            origType = origType == null ? getNativeType(UNKNOWN_TYPE) : origType;
+            scope.inferQualifiedSlot(node, qualifiedName, origType, type);
+            break;
+        case Token.THIS:
+            // ""this"" references aren't currently modeled in the CFG.
+            break;
+        default:
+            throw new IllegalArgumentException(""Node cannot be refined. \n"" + node.toStringTree());
+    }
+}","public void test3535() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    Node node0 = new Node(33, 33, 33);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();
+    // Undeclared exception!
+    try {
+        closureReverseAbstractInterpreter0.declareNameInScope((FlowScope) null, node0, objectType0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.rhino.Node"", e);
+    }
+}","/**
+ * Declares a refined type in {@code scope} for the name represented by
+ * {@code node}. It must be possible to refine the type of the given node in
+ * the given scope, as determined by {@link #getTypeIfRefinable}.
+ */"
+"protected void declareNameInScope(FlowScope scope, Node node, JSType type) {
+    switch(node.getType()) {
+        case Token.NAME:
+            scope.inferSlotType(node.getString(), type);
+            break;
+        case Token.GETPROP:
+            String qualifiedName = node.getQualifiedName();
+            Preconditions.checkNotNull(qualifiedName);
+            JSType origType = node.getJSType();
+            origType = origType == null ? getNativeType(UNKNOWN_TYPE) : origType;
+            scope.inferQualifiedSlot(node, qualifiedName, origType, type);
+            break;
+        case Token.THIS:
+            // ""this"" references aren't currently modeled in the CFG.
+            break;
+        default:
+            throw new IllegalArgumentException(""Node cannot be refined. \n"" + node.toStringTree());
+    }
+}","public void test3636() throws Throwable {
+    Node node0 = new Node(38);
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, (JSTypeRegistry) null);
+    // Undeclared exception!
+    try {
+        closureReverseAbstractInterpreter0.declareNameInScope((FlowScope) null, node0, (JSType) null);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // NAME is not a string node
+        //
+        verifyException(""com.google.javascript.rhino.Node"", e);
+    }
+}","/**
+ * Declares a refined type in {@code scope} for the name represented by
+ * {@code node}. It must be possible to refine the type of the given node in
+ * the given scope, as determined by {@link #getTypeIfRefinable}.
+ */"
+"public boolean isNoResolvedType() {
+    return false;
+}","public void test3737() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    Node node0 = new Node(42);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();
+    closureReverseAbstractInterpreter0.declareNameInScope((FlowScope) null, node0, objectType0);
+    assertFalse(objectType0.isNoResolvedType());
+}",""
+"protected void declareNameInScope(FlowScope scope, Node node, JSType type) {
+    switch(node.getType()) {
+        case Token.NAME:
+            scope.inferSlotType(node.getString(), type);
+            break;
+        case Token.GETPROP:
+            String qualifiedName = node.getQualifiedName();
+            Preconditions.checkNotNull(qualifiedName);
+            JSType origType = node.getJSType();
+            origType = origType == null ? getNativeType(UNKNOWN_TYPE) : origType;
+            scope.inferQualifiedSlot(node, qualifiedName, origType, type);
+            break;
+        case Token.THIS:
+            // ""this"" references aren't currently modeled in the CFG.
+            break;
+        default:
+            throw new IllegalArgumentException(""Node cannot be refined. \n"" + node.toStringTree());
+    }
+}","public void test3838() throws Throwable {
+    GoogleCodingConvention googleCodingConvention0 = new GoogleCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(googleCodingConvention0, jSTypeRegistry0);
+    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();
+    Node node0 = Node.newString(1, ""Not declared as a type name"");
+    // Undeclared exception!
+    try {
+        closureReverseAbstractInterpreter0.declareNameInScope((FlowScope) null, node0, objectType0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 1
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}","/**
+ * Declares a refined type in {@code scope} for the name represented by
+ * {@code node}. It must be possible to refine the type of the given node in
+ * the given scope, as determined by {@link #getTypeIfRefinable}.
+ */"
+"public boolean isNativeObjectType() {
+    return false;
+}","public void test3939() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);
+    JSTypeNative jSTypeNative0 = JSTypeNative.OBJECT_NUMBER_STRING_BOOLEAN;
+    JSType jSType0 = jSTypeRegistry0.getNativeType(jSTypeNative0);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    Node node0 = Node.newString(1, ""Unknown class name"", 1, 1);
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Not declared as a type name"", node0, jSType0);
+    EnumElementType enumElementType0 = enumType0.getElementsType();
+    EnumElementType enumElementType1 = (EnumElementType) closureReverseAbstractInterpreter0.getRestrictedWithoutUndefined(enumElementType0);
+    assertFalse(enumElementType1.isNativeObjectType());
+}","/**
+ * Whether this is a built-in object.
+ */"
+"public final boolean isParameterizedType() {
+    return toMaybeParameterizedType() != null;
+}","public void test4040() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.OBJECT_NUMBER_STRING;
+    JSType jSType0 = jSTypeRegistry0.getNativeType(jSTypeNative0);
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Not declared as a constructor"", (Node) null, jSType0);
+    EnumElementType enumElementType0 = enumType0.getElementsType();
+    JSType jSType1 = closureReverseAbstractInterpreter0.getRestrictedWithoutNull(enumElementType0);
+    assertFalse(jSType1.isParameterizedType());
+}",""
+"JSType getRestrictedByTypeOfResult(JSType type, String value, boolean resultEqualsValue) {
+    if (type == null) {
+        if (resultEqualsValue) {
+            JSType result = getNativeTypeForTypeOf(value);
+            return result == null ? getNativeType(CHECKED_UNKNOWN_TYPE) : result;
+        } else {
+            return null;
+        }
+    }
+    return type.visit(new RestrictByOneTypeOfResultVisitor(value, resultEqualsValue));
+}","public void test4141() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.OBJECT_NUMBER_STRING;
+    JSType jSType0 = jSTypeRegistry0.getNativeType(jSTypeNative0);
+    JSType jSType1 = closureReverseAbstractInterpreter0.getRestrictedByTypeOfResult(jSType0, ""function"", true);
+    assertEquals(1, JSType.ENUMDECL);
+}","/**
+ * Returns a version of {@code type} that is restricted by some knowledge
+ * about the result of the {@code typeof} operation.
+ * <p>
+ * The behavior of the {@code typeof} operator can be summarized by the
+ * following table:
+ * <table>
+ * <tr><th>type</th><th>result</th></tr>
+ * <tr><td>{@code undefined}</td><td>""undefined""</td></tr>
+ * <tr><td>{@code null}</td><td>""object""</td></tr>
+ * <tr><td>{@code boolean}</td><td>""boolean""</td></tr>
+ * <tr><td>{@code number}</td><td>""number""</td></tr>
+ * <tr><td>{@code string}</td><td>""string""</td></tr>
+ * <tr><td>{@code Object} (which doesn't implement [[Call]])</td>
+ *     <td>""object""</td></tr>
+ * <tr><td>{@code Object} (which implements [[Call]])</td>
+ *     <td>""function""</td></tr>
+ * </table>
+ * @param type the type to restrict
+ * @param value A value known to be equal or not equal to the result of the
+ *        {@code typeof} operation
+ * @param resultEqualsValue {@code true} if the {@code typeOf} result is known
+ *        to equal {@code value}; {@code false} if it is known <em>not</em> to
+ *        equal {@code value}
+ * @return the restricted type or null if no version of the type matches the
+ *         restriction
+ */"
+"JSType getRestrictedByTypeOfResult(JSType type, String value, boolean resultEqualsValue) {
+    if (type == null) {
+        if (resultEqualsValue) {
+            JSType result = getNativeTypeForTypeOf(value);
+            return result == null ? getNativeType(CHECKED_UNKNOWN_TYPE) : result;
+        } else {
+            return null;
+        }
+    }
+    return type.visit(new RestrictByOneTypeOfResultVisitor(value, resultEqualsValue));
+}","public void test4242() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeNative jSTypeNative0 = JSTypeNative.STRING_VALUE_OR_OBJECT_TYPE;
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JSType jSType0 = jSTypeRegistry0.getNativeType(jSTypeNative0);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Unknown class name"", (Node) null, jSType0);
+    EnumElementType enumElementType0 = enumType0.getElementsType();
+    JSType jSType1 = closureReverseAbstractInterpreter0.getRestrictedByTypeOfResult(enumElementType0, ""Named type with empty name component"", false);
+    assertNull(jSType1);
+}","/**
+ * Returns a version of {@code type} that is restricted by some knowledge
+ * about the result of the {@code typeof} operation.
+ * <p>
+ * The behavior of the {@code typeof} operator can be summarized by the
+ * following table:
+ * <table>
+ * <tr><th>type</th><th>result</th></tr>
+ * <tr><td>{@code undefined}</td><td>""undefined""</td></tr>
+ * <tr><td>{@code null}</td><td>""object""</td></tr>
+ * <tr><td>{@code boolean}</td><td>""boolean""</td></tr>
+ * <tr><td>{@code number}</td><td>""number""</td></tr>
+ * <tr><td>{@code string}</td><td>""string""</td></tr>
+ * <tr><td>{@code Object} (which doesn't implement [[Call]])</td>
+ *     <td>""object""</td></tr>
+ * <tr><td>{@code Object} (which implements [[Call]])</td>
+ *     <td>""function""</td></tr>
+ * </table>
+ * @param type the type to restrict
+ * @param value A value known to be equal or not equal to the result of the
+ *        {@code typeof} operation
+ * @param resultEqualsValue {@code true} if the {@code typeOf} result is known
+ *        to equal {@code value}; {@code false} if it is known <em>not</em> to
+ *        equal {@code value}
+ * @return the restricted type or null if no version of the type matches the
+ *         restriction
+ */"
+"@Override
+public String getReferenceName() {
+    return null;
+}","public void test4343() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.NO_RESOLVED_TYPE;
+    JSType jSType0 = closureReverseAbstractInterpreter0.getNativeType(jSTypeNative0);
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Unknown class name"", (Node) null, jSType0);
+    EnumElementType enumElementType0 = enumType0.getElementsType();
+    NoType noType0 = (NoType) closureReverseAbstractInterpreter0.getRestrictedByTypeOfResult(enumElementType0, ""Not declared as a constructor"", true);
+    assertNull(noType0.getReferenceName());
+}",""
+"public boolean hasCachedValues() {
+    return !unknown;
+}","public void test4444() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.CHECKED_UNKNOWN_TYPE;
+    JSType jSType0 = closureReverseAbstractInterpreter0.getNativeType(jSTypeNative0);
+    UnknownType unknownType0 = (UnknownType) closureReverseAbstractInterpreter0.getRestrictedByTypeOfResult(jSType0, ""Not declared as a constructor"", false);
+    assertFalse(unknownType0.hasCachedValues());
+}","/**
+ * Returns true if any cached values have been set for this type.  If true,
+ * then the prototype chain should not be changed, as it might invalidate the
+ * cached values.
+ */"
+"JSType getRestrictedByTypeOfResult(JSType type, String value, boolean resultEqualsValue) {
+    if (type == null) {
+        if (resultEqualsValue) {
+            JSType result = getNativeTypeForTypeOf(value);
+            return result == null ? getNativeType(CHECKED_UNKNOWN_TYPE) : result;
+        } else {
+            return null;
+        }
+    }
+    return type.visit(new RestrictByOneTypeOfResultVisitor(value, resultEqualsValue));
+}","public void test4545() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.NO_OBJECT_TYPE;
+    JSType jSType0 = closureReverseAbstractInterpreter0.getNativeType(jSTypeNative0);
+    JSType jSType1 = closureReverseAbstractInterpreter0.getRestrictedByTypeOfResult(jSType0, ""function"", false);
+    assertNull(jSType1);
+}","/**
+ * Returns a version of {@code type} that is restricted by some knowledge
+ * about the result of the {@code typeof} operation.
+ * <p>
+ * The behavior of the {@code typeof} operator can be summarized by the
+ * following table:
+ * <table>
+ * <tr><th>type</th><th>result</th></tr>
+ * <tr><td>{@code undefined}</td><td>""undefined""</td></tr>
+ * <tr><td>{@code null}</td><td>""object""</td></tr>
+ * <tr><td>{@code boolean}</td><td>""boolean""</td></tr>
+ * <tr><td>{@code number}</td><td>""number""</td></tr>
+ * <tr><td>{@code string}</td><td>""string""</td></tr>
+ * <tr><td>{@code Object} (which doesn't implement [[Call]])</td>
+ *     <td>""object""</td></tr>
+ * <tr><td>{@code Object} (which implements [[Call]])</td>
+ *     <td>""function""</td></tr>
+ * </table>
+ * @param type the type to restrict
+ * @param value A value known to be equal or not equal to the result of the
+ *        {@code typeof} operation
+ * @param resultEqualsValue {@code true} if the {@code typeOf} result is known
+ *        to equal {@code value}; {@code false} if it is known <em>not</em> to
+ *        equal {@code value}
+ * @return the restricted type or null if no version of the type matches the
+ *         restriction
+ */"
+"JSType getRestrictedByTypeOfResult(JSType type, String value, boolean resultEqualsValue) {
+    if (type == null) {
+        if (resultEqualsValue) {
+            JSType result = getNativeTypeForTypeOf(value);
+            return result == null ? getNativeType(CHECKED_UNKNOWN_TYPE) : result;
+        } else {
+            return null;
+        }
+    }
+    return type.visit(new RestrictByOneTypeOfResultVisitor(value, resultEqualsValue));
+}","public void test4646() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.NO_OBJECT_TYPE;
+    JSType jSType0 = jSTypeRegistry0.getNativeType(jSTypeNative0);
+    JSType jSType1 = closureReverseAbstractInterpreter0.getRestrictedByTypeOfResult(jSType0, ""Not declared as a constructor"", true);
+    assertNull(jSType1);
+}","/**
+ * Returns a version of {@code type} that is restricted by some knowledge
+ * about the result of the {@code typeof} operation.
+ * <p>
+ * The behavior of the {@code typeof} operator can be summarized by the
+ * following table:
+ * <table>
+ * <tr><th>type</th><th>result</th></tr>
+ * <tr><td>{@code undefined}</td><td>""undefined""</td></tr>
+ * <tr><td>{@code null}</td><td>""object""</td></tr>
+ * <tr><td>{@code boolean}</td><td>""boolean""</td></tr>
+ * <tr><td>{@code number}</td><td>""number""</td></tr>
+ * <tr><td>{@code string}</td><td>""string""</td></tr>
+ * <tr><td>{@code Object} (which doesn't implement [[Call]])</td>
+ *     <td>""object""</td></tr>
+ * <tr><td>{@code Object} (which implements [[Call]])</td>
+ *     <td>""function""</td></tr>
+ * </table>
+ * @param type the type to restrict
+ * @param value A value known to be equal or not equal to the result of the
+ *        {@code typeof} operation
+ * @param resultEqualsValue {@code true} if the {@code typeOf} result is known
+ *        to equal {@code value}; {@code false} if it is known <em>not</em> to
+ *        equal {@code value}
+ * @return the restricted type or null if no version of the type matches the
+ *         restriction
+ */"
+"public boolean isStringValueType() {
+    return false;
+}","public void test4747() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.NO_OBJECT_TYPE;
+    JSType jSType0 = jSTypeRegistry0.getNativeType(jSTypeNative0);
+    JSType jSType1 = closureReverseAbstractInterpreter0.getRestrictedByTypeOfResult(jSType0, ""Not declared as a type name"", false);
+    assertFalse(jSType1.isStringValueType());
+}",""
+"JSType getRestrictedByTypeOfResult(JSType type, String value, boolean resultEqualsValue) {
+    if (type == null) {
+        if (resultEqualsValue) {
+            JSType result = getNativeTypeForTypeOf(value);
+            return result == null ? getNativeType(CHECKED_UNKNOWN_TYPE) : result;
+        } else {
+            return null;
+        }
+    }
+    return type.visit(new RestrictByOneTypeOfResultVisitor(value, resultEqualsValue));
+}","public void test4848() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseBooleanType();
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSType jSType1 = semanticReverseAbstractInterpreter0.getRestrictedByTypeOfResult(jSType0, ""Not declared as a type name"", true);
+    assertNull(jSType1);
+}","/**
+ * Returns a version of {@code type} that is restricted by some knowledge
+ * about the result of the {@code typeof} operation.
+ * <p>
+ * The behavior of the {@code typeof} operator can be summarized by the
+ * following table:
+ * <table>
+ * <tr><th>type</th><th>result</th></tr>
+ * <tr><td>{@code undefined}</td><td>""undefined""</td></tr>
+ * <tr><td>{@code null}</td><td>""object""</td></tr>
+ * <tr><td>{@code boolean}</td><td>""boolean""</td></tr>
+ * <tr><td>{@code number}</td><td>""number""</td></tr>
+ * <tr><td>{@code string}</td><td>""string""</td></tr>
+ * <tr><td>{@code Object} (which doesn't implement [[Call]])</td>
+ *     <td>""object""</td></tr>
+ * <tr><td>{@code Object} (which implements [[Call]])</td>
+ *     <td>""function""</td></tr>
+ * </table>
+ * @param type the type to restrict
+ * @param value A value known to be equal or not equal to the result of the
+ *        {@code typeof} operation
+ * @param resultEqualsValue {@code true} if the {@code typeOf} result is known
+ *        to equal {@code value}; {@code false} if it is known <em>not</em> to
+ *        equal {@code value}
+ * @return the restricted type or null if no version of the type matches the
+ *         restriction
+ */"
+"JSType getRestrictedByTypeOfResult(JSType type, String value, boolean resultEqualsValue) {
+    if (type == null) {
+        if (resultEqualsValue) {
+            JSType result = getNativeTypeForTypeOf(value);
+            return result == null ? getNativeType(CHECKED_UNKNOWN_TYPE) : result;
+        } else {
+            return null;
+        }
+    }
+    return type.visit(new RestrictByOneTypeOfResultVisitor(value, resultEqualsValue));
+}","public void test4949() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.URI_ERROR_FUNCTION_TYPE;
+    JSType jSType0 = closureReverseAbstractInterpreter0.getNativeType(jSTypeNative0);
+    JSType jSType1 = closureReverseAbstractInterpreter0.getRestrictedByTypeOfResult(jSType0, ""Not declared as a type name"", false);
+    assertNull(jSType1);
+}","/**
+ * Returns a version of {@code type} that is restricted by some knowledge
+ * about the result of the {@code typeof} operation.
+ * <p>
+ * The behavior of the {@code typeof} operator can be summarized by the
+ * following table:
+ * <table>
+ * <tr><th>type</th><th>result</th></tr>
+ * <tr><td>{@code undefined}</td><td>""undefined""</td></tr>
+ * <tr><td>{@code null}</td><td>""object""</td></tr>
+ * <tr><td>{@code boolean}</td><td>""boolean""</td></tr>
+ * <tr><td>{@code number}</td><td>""number""</td></tr>
+ * <tr><td>{@code string}</td><td>""string""</td></tr>
+ * <tr><td>{@code Object} (which doesn't implement [[Call]])</td>
+ *     <td>""object""</td></tr>
+ * <tr><td>{@code Object} (which implements [[Call]])</td>
+ *     <td>""function""</td></tr>
+ * </table>
+ * @param type the type to restrict
+ * @param value A value known to be equal or not equal to the result of the
+ *        {@code typeof} operation
+ * @param resultEqualsValue {@code true} if the {@code typeOf} result is known
+ *        to equal {@code value}; {@code false} if it is known <em>not</em> to
+ *        equal {@code value}
+ * @return the restricted type or null if no version of the type matches the
+ *         restriction
+ */"
+"public boolean hasCachedValues() {
+    return !unknown;
+}","public void test5050() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    closureReverseAbstractInterpreter0.getRestrictedByTypeOfResult(objectType0, ""function"", false);
+    assertFalse(objectType0.hasCachedValues());
+}","/**
+ * Returns true if any cached values have been set for this type.  If true,
+ * then the prototype chain should not be changed, as it might invalidate the
+ * cached values.
+ */"
+"public boolean hasCachedValues() {
+    return !unknown;
+}","public void test5151() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    closureReverseAbstractInterpreter0.getRestrictedByTypeOfResult(objectType0, ""function"", true);
+    assertTrue(objectType0.hasCachedValues());
+}","/**
+ * Returns true if any cached values have been set for this type.  If true,
+ * then the prototype chain should not be changed, as it might invalidate the
+ * cached values.
+ */"
+"protected final JSType getRestrictedWithoutUndefined(JSType type) {
+    return type == null ? null : type.visit(restrictUndefinedVisitor);
+}","public void test5252() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSType jSType0 = semanticReverseAbstractInterpreter0.getRestrictedWithoutUndefined((JSType) null);
+    assertNull(jSType0);
+}","/**
+ * Returns a version of type where undefined is not present.
+ */"
+"protected final JSType getRestrictedWithoutNull(JSType type) {
+    return type == null ? null : type.visit(restrictNullVisitor);
+}","public void test5353() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSType jSType0 = closureReverseAbstractInterpreter0.getRestrictedWithoutNull((JSType) null);
+    assertNull(jSType0);
+}","/**
+ * Returns a version of type where null is not present.
+ */"
+"JSType getRestrictedByTypeOfResult(JSType type, String value, boolean resultEqualsValue) {
+    if (type == null) {
+        if (resultEqualsValue) {
+            JSType result = getNativeTypeForTypeOf(value);
+            return result == null ? getNativeType(CHECKED_UNKNOWN_TYPE) : result;
+        } else {
+            return null;
+        }
+    }
+    return type.visit(new RestrictByOneTypeOfResultVisitor(value, resultEqualsValue));
+}","public void test5454() throws Throwable {
+    GoogleCodingConvention googleCodingConvention0 = new GoogleCodingConvention();
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(googleCodingConvention0, (JSTypeRegistry) null);
+    // Undeclared exception!
+    try {
+        closureReverseAbstractInterpreter0.getRestrictedByTypeOfResult((JSType) null, ""function"", true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.type.ChainableReverseAbstractInterpreter"", e);
+    }
+}","/**
+ * Returns a version of {@code type} that is restricted by some knowledge
+ * about the result of the {@code typeof} operation.
+ * <p>
+ * The behavior of the {@code typeof} operator can be summarized by the
+ * following table:
+ * <table>
+ * <tr><th>type</th><th>result</th></tr>
+ * <tr><td>{@code undefined}</td><td>""undefined""</td></tr>
+ * <tr><td>{@code null}</td><td>""object""</td></tr>
+ * <tr><td>{@code boolean}</td><td>""boolean""</td></tr>
+ * <tr><td>{@code number}</td><td>""number""</td></tr>
+ * <tr><td>{@code string}</td><td>""string""</td></tr>
+ * <tr><td>{@code Object} (which doesn't implement [[Call]])</td>
+ *     <td>""object""</td></tr>
+ * <tr><td>{@code Object} (which implements [[Call]])</td>
+ *     <td>""function""</td></tr>
+ * </table>
+ * @param type the type to restrict
+ * @param value A value known to be equal or not equal to the result of the
+ *        {@code typeof} operation
+ * @param resultEqualsValue {@code true} if the {@code typeOf} result is known
+ *        to equal {@code value}; {@code false} if it is known <em>not</em> to
+ *        equal {@code value}
+ * @return the restricted type or null if no version of the type matches the
+ *         restriction
+ */"
+"JSType getRestrictedByTypeOfResult(JSType type, String value, boolean resultEqualsValue) {
+    if (type == null) {
+        if (resultEqualsValue) {
+            JSType result = getNativeTypeForTypeOf(value);
+            return result == null ? getNativeType(CHECKED_UNKNOWN_TYPE) : result;
+        } else {
+            return null;
+        }
+    }
+    return type.visit(new RestrictByOneTypeOfResultVisitor(value, resultEqualsValue));
+}","public void test5555() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(jqueryCodingConvention0, (JSTypeRegistry) null);
+    JSType jSType0 = closureReverseAbstractInterpreter0.getRestrictedByTypeOfResult((JSType) null, ""com.google.javascript.jscomp.type.ChainableReverseAbstractInterpreter$RestrictByTypeOfResultVisitor"", false);
+    assertNull(jSType0);
+}","/**
+ * Returns a version of {@code type} that is restricted by some knowledge
+ * about the result of the {@code typeof} operation.
+ * <p>
+ * The behavior of the {@code typeof} operator can be summarized by the
+ * following table:
+ * <table>
+ * <tr><th>type</th><th>result</th></tr>
+ * <tr><td>{@code undefined}</td><td>""undefined""</td></tr>
+ * <tr><td>{@code null}</td><td>""object""</td></tr>
+ * <tr><td>{@code boolean}</td><td>""boolean""</td></tr>
+ * <tr><td>{@code number}</td><td>""number""</td></tr>
+ * <tr><td>{@code string}</td><td>""string""</td></tr>
+ * <tr><td>{@code Object} (which doesn't implement [[Call]])</td>
+ *     <td>""object""</td></tr>
+ * <tr><td>{@code Object} (which implements [[Call]])</td>
+ *     <td>""function""</td></tr>
+ * </table>
+ * @param type the type to restrict
+ * @param value A value known to be equal or not equal to the result of the
+ *        {@code typeof} operation
+ * @param resultEqualsValue {@code true} if the {@code typeOf} result is known
+ *        to equal {@code value}; {@code false} if it is known <em>not</em> to
+ *        equal {@code value}
+ * @return the restricted type or null if no version of the type matches the
+ *         restriction
+ */"
+"JSType getRestrictedByTypeOfResult(JSType type, String value, boolean resultEqualsValue) {
+    if (type == null) {
+        if (resultEqualsValue) {
+            JSType result = getNativeTypeForTypeOf(value);
+            return result == null ? getNativeType(CHECKED_UNKNOWN_TYPE) : result;
+        } else {
+            return null;
+        }
+    }
+    return type.visit(new RestrictByOneTypeOfResultVisitor(value, resultEqualsValue));
+}","public void test5656() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    JSType jSType0 = closureReverseAbstractInterpreter0.getRestrictedByTypeOfResult((JSType) null, ""boolean"", true);
+    assertEquals(0, JSType.NOT_ENUMDECL);
+}","/**
+ * Returns a version of {@code type} that is restricted by some knowledge
+ * about the result of the {@code typeof} operation.
+ * <p>
+ * The behavior of the {@code typeof} operator can be summarized by the
+ * following table:
+ * <table>
+ * <tr><th>type</th><th>result</th></tr>
+ * <tr><td>{@code undefined}</td><td>""undefined""</td></tr>
+ * <tr><td>{@code null}</td><td>""object""</td></tr>
+ * <tr><td>{@code boolean}</td><td>""boolean""</td></tr>
+ * <tr><td>{@code number}</td><td>""number""</td></tr>
+ * <tr><td>{@code string}</td><td>""string""</td></tr>
+ * <tr><td>{@code Object} (which doesn't implement [[Call]])</td>
+ *     <td>""object""</td></tr>
+ * <tr><td>{@code Object} (which implements [[Call]])</td>
+ *     <td>""function""</td></tr>
+ * </table>
+ * @param type the type to restrict
+ * @param value A value known to be equal or not equal to the result of the
+ *        {@code typeof} operation
+ * @param resultEqualsValue {@code true} if the {@code typeOf} result is known
+ *        to equal {@code value}; {@code false} if it is known <em>not</em> to
+ *        equal {@code value}
+ * @return the restricted type or null if no version of the type matches the
+ *         restriction
+ */"
+"JSType getRestrictedByTypeOfResult(JSType type, String value, boolean resultEqualsValue) {
+    if (type == null) {
+        if (resultEqualsValue) {
+            JSType result = getNativeTypeForTypeOf(value);
+            return result == null ? getNativeType(CHECKED_UNKNOWN_TYPE) : result;
+        } else {
+            return null;
+        }
+    }
+    return type.visit(new RestrictByOneTypeOfResultVisitor(value, resultEqualsValue));
+}","public void test5757() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(jqueryCodingConvention0, (JSTypeRegistry) null);
+    // Undeclared exception!
+    try {
+        closureReverseAbstractInterpreter0.getRestrictedByTypeOfResult((JSType) null, ""43"", true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.type.ChainableReverseAbstractInterpreter"", e);
+    }
+}","/**
+ * Returns a version of {@code type} that is restricted by some knowledge
+ * about the result of the {@code typeof} operation.
+ * <p>
+ * The behavior of the {@code typeof} operator can be summarized by the
+ * following table:
+ * <table>
+ * <tr><th>type</th><th>result</th></tr>
+ * <tr><td>{@code undefined}</td><td>""undefined""</td></tr>
+ * <tr><td>{@code null}</td><td>""object""</td></tr>
+ * <tr><td>{@code boolean}</td><td>""boolean""</td></tr>
+ * <tr><td>{@code number}</td><td>""number""</td></tr>
+ * <tr><td>{@code string}</td><td>""string""</td></tr>
+ * <tr><td>{@code Object} (which doesn't implement [[Call]])</td>
+ *     <td>""object""</td></tr>
+ * <tr><td>{@code Object} (which implements [[Call]])</td>
+ *     <td>""function""</td></tr>
+ * </table>
+ * @param type the type to restrict
+ * @param value A value known to be equal or not equal to the result of the
+ *        {@code typeof} operation
+ * @param resultEqualsValue {@code true} if the {@code typeOf} result is known
+ *        to equal {@code value}; {@code false} if it is known <em>not</em> to
+ *        equal {@code value}
+ * @return the restricted type or null if no version of the type matches the
+ *         restriction
+ */"
+"public final boolean isUnionType() {
+    return toMaybeUnionType() != null;
+}","public void test5858() throws Throwable {
+    GoogleCodingConvention googleCodingConvention0 = new GoogleCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(googleCodingConvention0, jSTypeRegistry0);
+    JSType jSType0 = closureReverseAbstractInterpreter0.getRestrictedByTypeOfResult((JSType) null, ""number"", true);
+    assertFalse(jSType0.isUnionType());
+}",""
+"JSType getRestrictedByTypeOfResult(JSType type, String value, boolean resultEqualsValue) {
+    if (type == null) {
+        if (resultEqualsValue) {
+            JSType result = getNativeTypeForTypeOf(value);
+            return result == null ? getNativeType(CHECKED_UNKNOWN_TYPE) : result;
+        } else {
+            return null;
+        }
+    }
+    return type.visit(new RestrictByOneTypeOfResultVisitor(value, resultEqualsValue));
+}","public void test5959() throws Throwable {
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(jqueryCodingConvention0, (JSTypeRegistry) null);
+    // Undeclared exception!
+    try {
+        closureReverseAbstractInterpreter0.getRestrictedByTypeOfResult((JSType) null, ""string"", true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.type.ChainableReverseAbstractInterpreter"", e);
+    }
+}","/**
+ * Returns a version of {@code type} that is restricted by some knowledge
+ * about the result of the {@code typeof} operation.
+ * <p>
+ * The behavior of the {@code typeof} operator can be summarized by the
+ * following table:
+ * <table>
+ * <tr><th>type</th><th>result</th></tr>
+ * <tr><td>{@code undefined}</td><td>""undefined""</td></tr>
+ * <tr><td>{@code null}</td><td>""object""</td></tr>
+ * <tr><td>{@code boolean}</td><td>""boolean""</td></tr>
+ * <tr><td>{@code number}</td><td>""number""</td></tr>
+ * <tr><td>{@code string}</td><td>""string""</td></tr>
+ * <tr><td>{@code Object} (which doesn't implement [[Call]])</td>
+ *     <td>""object""</td></tr>
+ * <tr><td>{@code Object} (which implements [[Call]])</td>
+ *     <td>""function""</td></tr>
+ * </table>
+ * @param type the type to restrict
+ * @param value A value known to be equal or not equal to the result of the
+ *        {@code typeof} operation
+ * @param resultEqualsValue {@code true} if the {@code typeOf} result is known
+ *        to equal {@code value}; {@code false} if it is known <em>not</em> to
+ *        equal {@code value}
+ * @return the restricted type or null if no version of the type matches the
+ *         restriction
+ */"

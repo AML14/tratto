@@ -1,0 +1,3591 @@
+focal_method,test_prefix,docstring
+"public Element insertChildren(int index, Node... children) {
+    Validate.notNull(children, ""Children collection to be inserted must not be null."");
+    int currentSize = childNodeSize();
+    // roll around
+    if (index < 0)
+        index += currentSize + 1;
+    Validate.isTrue(index >= 0 && index <= currentSize, ""Insert position out of bounds."");
+    addChildren(index, children);
+    return this;
+}","public void test0000() throws Throwable {
+    Document document0 = new Document(""Mm`"");
+    document0.normalise();
+    Node[] nodeArray0 = new Node[1];
+    // Undeclared exception!
+    try {
+        document0.insertChildren((-1), nodeArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Array must not contain any null objects
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Inserts the given child nodes into this element at the specified index. Current nodes will be shifted to the
+ * right. The inserted nodes will be moved from their current parent. To prevent moving, copy the nodes first.
+ *
+ * @param index 0-based index to insert children at. Specify {@code 0} to insert at the start, {@code -1} at the
+ * end
+ * @param children child nodes to insert
+ * @return this element, for chaining.
+ */"
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test0011() throws Throwable {
+    Document document0 = Document.createShell(""hL}"");
+    LinkedList<TextNode> linkedList0 = new LinkedList<TextNode>();
+    Element element0 = document0.insertChildren(0, (Collection<? extends Node>) linkedList0);
+    assertEquals(""hL}"", element0.baseUri());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test0022() throws Throwable {
+    Document document0 = new Document(""$mQCi.="");
+    document0.nodelistChanged();
+    assertEquals(""$mQCi.="", document0.baseUri());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test0033() throws Throwable {
+    Document document0 = Document.createShell(""option[selected]"");
+    document0.ensureChildNodes();
+    assertEquals(""option[selected]"", document0.baseUri());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test0044() throws Throwable {
+    ParseSettings parseSettings0 = ParseSettings.htmlDefault;
+    Tag tag0 = Tag.valueOf(""textarea"", parseSettings0);
+    Attributes attributes0 = new Attributes();
+    Element element0 = new Element(tag0, ""textarea"", attributes0);
+    element0.doSetBaseUri("":K"");
+    assertEquals("":K"", element0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test0055() throws Throwable {
+    Document document0 = Document.createShell(""E{"");
+    Element element0 = document0.body();
+    element0.html(""html"");
+    element0.wrap(""id"");
+    assertEquals(1, element0.childNodeSize());
+}",""
+"@Override
+public String nodeName() {
+    return tag.getName();
+}","public void test0066() throws Throwable {
+    Document document0 = Document.createShell("""");
+    Element element0 = document0.val(""[CDATA["");
+    assertEquals(""#document"", element0.nodeName());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test0077() throws Throwable {
+    Document document0 = Document.createShell(""d2<)"");
+    Element element0 = document0.head();
+    Element element1 = element0.toggleClass(""d2<)"");
+    assertEquals(""d2<)"", element1.baseUri());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test0088() throws Throwable {
+    Document document0 = Document.createShell(""#"");
+    Element element0 = document0.createElement(""#"");
+    Element element1 = element0.toggleClass("""");
+    assertEquals(""#"", element1.baseUri());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test0099() throws Throwable {
+    Document document0 = new Document(""head"");
+    document0.toString();
+    assertEquals(""head"", document0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test01010() throws Throwable {
+    Document document0 = Document.createShell(""head"");
+    document0.append(""head"");
+    document0.text();
+    assertEquals(2, document0.childNodeSize());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test01111() throws Throwable {
+    Document document0 = Document.createShell("""");
+    Element element0 = document0.tagName(""class"");
+    assertEquals(1, element0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test01212() throws Throwable {
+    Document document0 = Document.createShell(""br"");
+    Element element0 = document0.head();
+    element0.tag();
+    assertEquals(""br"", element0.baseUri());
+}",""
+"public Element selectFirst(String cssQuery) {
+    return Selector.selectFirst(cssQuery, this);
+}","public void test01313() throws Throwable {
+    Document document0 = Document.createShell("""");
+    Element element0 = document0.selectFirst(""meta[charset]"");
+    assertNull(element0);
+}","/**
+ * Find the first Element that matches the {@link Selector} CSS query, with this element as the starting context.
+ * <p>This is effectively the same as calling {@code element.select(query).first()}, but is more efficient as query
+ * execution stops on the first hit.</p>
+ * @param cssQuery cssQuery a {@link Selector} CSS-like query
+ * @return the first matching element, or <b>{@code null}</b> if there is no match.
+ */"
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test01414() throws Throwable {
+    Document document0 = Document.createShell(""`"");
+    document0.select(""BeforeDoctypeSystemIdentifier"");
+    assertEquals(""`"", document0.baseUri());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test01515() throws Throwable {
+    Document document0 = Document.createShell(""R\""'!U|t>ly1&l"");
+    Element element0 = document0.body();
+    Element element1 = element0.removeClass(""missing semicolon"");
+    assertEquals(""R\""'!U|t>ly1&l"", element1.baseUri());
+}",""
+"public String tagName() {
+    return tag.getName();
+}","public void test01616() throws Throwable {
+    Document document0 = Document.createShell("""");
+    Element element0 = document0.removeClass("""");
+    assertEquals(""#root"", element0.tagName());
+}","/**
+ * Get the name of the tag for this element. E.g. {@code div}
+ *
+ * @return the tag name
+ */"
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test01717() throws Throwable {
+    Document document0 = Document.createShell(""}X"");
+    document0.siblingIndex = 32;
+    Element element0 = document0.prependText(""ScriptDataEscapeStartDash"");
+    assertEquals(""}X"", element0.baseUri());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test01818() throws Throwable {
+    Document document0 = Document.createShell(""pGlJ?V;Y>]b"");
+    Element element0 = document0.prependElement(""3gKWnzqyt'RR~#dx."");
+    assertEquals(""pGlJ?V;Y>]b"", element0.baseUri());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test01919() throws Throwable {
+    Document document0 = Document.createShell(""ti{"");
+    document0.appendTo(document0);
+    TextNode textNode0 = TextNode.createFromEncoded(""B_zS"");
+    Element element0 = document0.prependChild(textNode0);
+    assertEquals(""ti{"", element0.baseUri());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test02020() throws Throwable {
+    Document document0 = Document.createShell(""Split offset must be not be negative"");
+    Element element0 = document0.head();
+    Element element1 = element0.prependChild(document0);
+    assertEquals(""Split offset must be not be negative"", element1.baseUri());
+}",""
+"@Override
+public String nodeName() {
+    return tag.getName();
+}","public void test02121() throws Throwable {
+    Element element0 = new Element("" wjTv/A*$la5L>]M"");
+    XmlDeclaration xmlDeclaration0 = new XmlDeclaration("" wjTv/A*$la5L>]M"", true);
+    Element element1 = element0.prependChild(xmlDeclaration0);
+    assertEquals(""wjTv/A*$la5L>]M"", element1.nodeName());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test02222() throws Throwable {
+    Document document0 = Document.createShell(""org.jsoup.nodes.Element"");
+    Element element0 = document0.body();
+    element0.prepend(""org.jsoup.nodes.Element"");
+    assertEquals(1, element0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test02324() throws Throwable {
+    Document document0 = Document.createShell(""."");
+    Element element0 = document0.body();
+    Elements elements0 = element0.parents();
+    assertEquals(""."", element0.baseUri());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test02425() throws Throwable {
+    Document document0 = Document.createShell(""ti{"");
+    document0.appendTo(document0);
+    Element element0 = document0.lastElementSibling();
+    assertEquals(""ti{"", element0.baseUri());
+}",""
+"public int siblingIndex() {
+    return siblingIndex;
+}","public void test02526() throws Throwable {
+    Document document0 = Document.createShell(""E{"");
+    Element element0 = document0.body();
+    Element element1 = element0.wrap(""id"");
+    assertEquals(0, element0.siblingIndex());
+}","/**
+ * Get the list index of this node in its node sibling list. I.e. if this is the first node
+ * sibling, returns 0.
+ * @return position in node sibling list
+ * @see org.jsoup.nodes.Element#elementSiblingIndex()
+ */"
+"public Element lastElementSibling() {
+    List<Element> siblings = parent().childElementsList();
+    return siblings.size() > 1 ? siblings.get(siblings.size() - 1) : null;
+}","public void test02527() throws Throwable {
+    Document document0 = Document.createShell(""E{"");
+    Element element0 = document0.body();
+    Element element1 = element0.wrap(""id"");
+    Element element2 = element1.lastElementSibling();
+    assertNotSame(element0, element2);
+}","/**
+ * Gets the last element sibling of this element
+ * @return the last sibling that is an element (aka the parent's last element child)
+ */"
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test02628() throws Throwable {
+    Document document0 = Document.createShell(""%<)"");
+    Element element0 = document0.head();
+    element0.isBlock();
+    assertEquals(""%<)"", element0.baseUri());
+}",""
+"public int siblingIndex() {
+    return siblingIndex;
+}","public void test02629() throws Throwable {
+    Document document0 = Document.createShell(""%<)"");
+    Element element0 = document0.head();
+    element0.isBlock();
+    assertEquals(0, element0.siblingIndex());
+}","/**
+ * Get the list index of this node in its node sibling list. I.e. if this is the first node
+ * sibling, returns 0.
+ * @return position in node sibling list
+ * @see org.jsoup.nodes.Element#elementSiblingIndex()
+ */"
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test02730() throws Throwable {
+    Document document0 = new Document(""4S9!svdS"");
+    Document document1 = document0.normalise();
+    Element element0 = document1.body();
+    Element element1 = element0.tagName(""4S9!svdS"");
+    Evaluator.IsLastOfType evaluator_IsLastOfType0 = new Evaluator.IsLastOfType();
+    boolean boolean0 = element1.is((Evaluator) evaluator_IsLastOfType0);
+    assertEquals(1, document0.childNodeSize());
+}",""
+"public boolean is(Evaluator evaluator) {
+    return evaluator.matches((Element) this.root(), this);
+}","public void test02731() throws Throwable {
+    Document document0 = new Document(""4S9!svdS"");
+    Document document1 = document0.normalise();
+    Element element0 = document1.body();
+    Element element1 = element0.tagName(""4S9!svdS"");
+    Evaluator.IsLastOfType evaluator_IsLastOfType0 = new Evaluator.IsLastOfType();
+    boolean boolean0 = element1.is((Evaluator) evaluator_IsLastOfType0);
+    assertTrue(boolean0);
+}","/**
+ * Check if this element matches the given evaluator.
+ * @param evaluator an element evaluator
+ * @return if this element matches
+ */"
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test02832() throws Throwable {
+    Document document0 = Document.createShell(""br"");
+    document0.is(""xmp"");
+    assertEquals(""br"", document0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test02833() throws Throwable {
+    Document document0 = Document.createShell(""br"");
+    document0.is(""xmp"");
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test02934() throws Throwable {
+    Document document0 = new Document(""Mm`"");
+    Node[] nodeArray0 = new Node[1];
+    TextNode textNode0 = new TextNode(""N03|+4fzcm~2`"", "":#4]"");
+    nodeArray0[0] = (Node) textNode0;
+    Element element0 = document0.insertChildren((-1), nodeArray0);
+    assertEquals(""Mm`"", element0.baseUri());
+}",""
+"public Element html(String html) {
+    empty();
+    append(html);
+    return this;
+}","public void test03035() throws Throwable {
+    Element element0 = new Element(""%z<=L)(/"");
+    Element element1 = element0.html("""");
+    assertSame(element0, element1);
+}","/**
+ * Set this element's inner HTML. Clears the existing HTML first.
+ * @param html HTML to parse and set into this element
+ * @return this element
+ * @see #append(String)
+ */"
+"public int siblingIndex() {
+    return siblingIndex;
+}","public void test03136() throws Throwable {
+    Document document0 = Document.createShell(""E{"");
+    Element element0 = document0.body();
+    element0.html();
+    assertEquals(1, element0.siblingIndex());
+}","/**
+ * Get the list index of this node in its node sibling list. I.e. if this is the first node
+ * sibling, returns 0.
+ * @return position in node sibling list
+ * @see org.jsoup.nodes.Element#elementSiblingIndex()
+ */"
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test03137() throws Throwable {
+    Document document0 = Document.createShell(""E{"");
+    Element element0 = document0.body();
+    element0.html();
+    assertEquals(""E{"", element0.baseUri());
+}",""
+"@Override
+protected boolean hasAttributes() {
+    return attributes != null;
+}","public void test03238() throws Throwable {
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    Tag tag0 = Tag.valueOf(""org.jsoup.nodes.Element"", parseSettings0);
+    Attributes attributes0 = new Attributes();
+    Element element0 = new Element(tag0, ""org.jsoup.nodes.Element"", attributes0);
+    boolean boolean0 = element0.hasAttributes();
+    assertTrue(boolean0);
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test03239() throws Throwable {
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    Tag tag0 = Tag.valueOf(""org.jsoup.nodes.Element"", parseSettings0);
+    Attributes attributes0 = new Attributes();
+    Element element0 = new Element(tag0, ""org.jsoup.nodes.Element"", attributes0);
+    boolean boolean0 = element0.hasAttributes();
+    assertEquals(""org.jsoup.nodes.Element"", element0.baseUri());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test03340() throws Throwable {
+    Document document0 = new Document(""head"");
+    document0.hasAttributes();
+    assertEquals(""head"", document0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test03441() throws Throwable {
+    Document document0 = Document.createShell(""."");
+    Pattern pattern0 = Pattern.compile(""."", 4171);
+    document0.getElementsMatchingText(pattern0);
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test03442() throws Throwable {
+    Document document0 = Document.createShell(""."");
+    Pattern pattern0 = Pattern.compile(""."", 4171);
+    document0.getElementsMatchingText(pattern0);
+    assertEquals(""."", document0.baseUri());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test03644() throws Throwable {
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    Tag tag0 = Tag.valueOf(""0r>"", parseSettings0);
+    Element element0 = new Element(tag0, ""0r>"");
+    Pattern pattern0 = Pattern.compile("":lt(%d)"", 58);
+    element0.getElementsMatchingOwnText(pattern0);
+    assertEquals(""0r>"", element0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test03745() throws Throwable {
+    Pattern pattern0 = Pattern.compile("""");
+    Document document0 = Document.createShell(""class"");
+    document0.getElementsMatchingOwnText(pattern0);
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test03746() throws Throwable {
+    Pattern pattern0 = Pattern.compile("""");
+    Document document0 = Document.createShell(""class"");
+    document0.getElementsMatchingOwnText(pattern0);
+    assertEquals(""class"", document0.baseUri());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test03847() throws Throwable {
+    Document document0 = new Document(""I7dK|bYjqyiQg6*"");
+    Elements elements0 = document0.getElementsMatchingOwnText(""head"");
+    assertEquals(""I7dK|bYjqyiQg6*"", document0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test03949() throws Throwable {
+    Document document0 = Document.createShell(""d2<)"");
+    document0.getElementsContainingText("""");
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test03950() throws Throwable {
+    Document document0 = Document.createShell(""d2<)"");
+    document0.getElementsContainingText("""");
+    assertEquals(""d2<)"", document0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test04051() throws Throwable {
+    Document document0 = Document.createShell("""");
+    document0.getElementsContainingOwnText("""");
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test04152() throws Throwable {
+    Document document0 = new Document("" "");
+    document0.getElementsByIndexLessThan(0);
+    assertEquals("" "", document0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test04253() throws Throwable {
+    Document document0 = Document.createShell(""{z>@Ha{CVQ}"");
+    Elements elements0 = document0.getElementsByIndexGreaterThan((-42));
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test04254() throws Throwable {
+    Document document0 = Document.createShell(""{z>@Ha{CVQ}"");
+    Elements elements0 = document0.getElementsByIndexGreaterThan((-42));
+    assertEquals(""{z>@Ha{CVQ}"", document0.baseUri());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test04356() throws Throwable {
+    ParseSettings parseSettings0 = new ParseSettings(false, false);
+    Tag tag0 = Tag.valueOf(""checkbox"", parseSettings0);
+    Comment comment0 = new Comment(""details"", ""Vyk~L~(LGcJ#7J4"");
+    Attributes attributes0 = comment0.attributes();
+    FormElement formElement0 = new FormElement(tag0, ""checkbox"", attributes0);
+    formElement0.getElementsByAttributeValueContaining(""Vyk~L~(LGcJ#7J4"", ""checkbox"");
+    assertEquals(""checkbox"", formElement0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test04457() throws Throwable {
+    Document document0 = Document.createShell(""}X"");
+    document0.getElementsByAttribute(""#root"");
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test04458() throws Throwable {
+    Document document0 = Document.createShell(""}X"");
+    document0.getElementsByAttribute(""#root"");
+    assertEquals(""}X"", document0.baseUri());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test04559() throws Throwable {
+    ParseSettings parseSettings0 = ParseSettings.htmlDefault;
+    Tag tag0 = Tag.valueOf(""th"", parseSettings0);
+    Attributes attributes0 = new Attributes();
+    FormElement formElement0 = new FormElement(tag0, ""th"", attributes0);
+    Element element0 = formElement0.empty();
+    assertEquals(""th"", element0.baseUri());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test04660() throws Throwable {
+    Document document0 = Document.createShell(""head"");
+    Element element0 = document0.head();
+    Element element1 = element0.doClone(document0);
+    assertEquals(""head"", element1.baseUri());
+}",""
+"public int siblingIndex() {
+    return siblingIndex;
+}","public void test04661() throws Throwable {
+    Document document0 = Document.createShell(""head"");
+    Element element0 = document0.head();
+    Element element1 = element0.doClone(document0);
+    assertEquals(0, element1.siblingIndex());
+}","/**
+ * Get the list index of this node in its node sibling list. I.e. if this is the first node
+ * sibling, returns 0.
+ * @return position in node sibling list
+ * @see org.jsoup.nodes.Element#elementSiblingIndex()
+ */"
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test04762() throws Throwable {
+    Document document0 = Document.createShell(""}X"");
+    Element element0 = document0.clone();
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test04763() throws Throwable {
+    Document document0 = Document.createShell(""}X"");
+    Element element0 = document0.clone();
+    assertEquals(""}X"", element0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test04864() throws Throwable {
+    Document document0 = Document.createShell(""option[selected]"");
+    Element element0 = document0.doClone(document0);
+    Set<String> set0 = document0.classNames();
+    Element element1 = element0.classNames(set0);
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test04865() throws Throwable {
+    Document document0 = Document.createShell(""option[selected]"");
+    Element element0 = document0.doClone(document0);
+    Set<String> set0 = document0.classNames();
+    Element element1 = element0.classNames(set0);
+    assertEquals(""option[selected]"", element1.baseUri());
+}",""
+"public Element classNames(Set<String> classNames) {
+    Validate.notNull(classNames);
+    attributes().put(""class"", StringUtil.join(classNames, "" ""));
+    return this;
+}","public void test04966() throws Throwable {
+    Element element0 = new Element(""s+"");
+    Locale locale0 = Locale.FRENCH;
+    Set<String> set0 = locale0.getUnicodeLocaleKeys();
+    Element element1 = element0.classNames(set0);
+    assertSame(element0, element1);
+}","/**
+ *     Set the element's {@code class} attribute to the supplied class names.
+ *     @param classNames set of classes
+ *     @return this element, for chaining
+ */"
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test05067() throws Throwable {
+    Document document0 = new Document(""vgv.`hU"");
+    document0.children();
+    assertEquals(""vgv.`hU"", document0.baseUri());
+}",""
+"public int siblingIndex() {
+    return siblingIndex;
+}","public void test05168() throws Throwable {
+    Document document0 = Document.createShell(""body"");
+    Element element0 = document0.body();
+    element0.childNodeSize();
+    assertEquals(1, element0.siblingIndex());
+}","/**
+ * Get the list index of this node in its node sibling list. I.e. if this is the first node
+ * sibling, returns 0.
+ * @return position in node sibling list
+ * @see org.jsoup.nodes.Element#elementSiblingIndex()
+ */"
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test05169() throws Throwable {
+    Document document0 = Document.createShell(""body"");
+    Element element0 = document0.body();
+    element0.childNodeSize();
+    assertEquals(""body"", element0.baseUri());
+}",""
+"public boolean hasParent() {
+    return parentNode != null;
+}","public void test05270() throws Throwable {
+    Document document0 = Document.createShell(""1ic]jlJA=lE3QK2sB_"");
+    Element element0 = document0.body();
+    element0.before((Node) document0);
+    assertTrue(document0.hasParent());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test05271() throws Throwable {
+    Document document0 = Document.createShell(""1ic]jlJA=lE3QK2sB_"");
+    Element element0 = document0.body();
+    element0.before((Node) document0);
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test05372() throws Throwable {
+    Document document0 = new Document(""option[selected]"");
+    Element element0 = document0.doClone(document0);
+    Element element1 = element0.before((Node) document0);
+    assertEquals(""option[selected]"", element1.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test05473() throws Throwable {
+    Document document0 = Document.createShell(""option[selected]"");
+    Element element0 = document0.doClone(document0);
+    element0.before((Node) document0);
+    assertEquals(2, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test05474() throws Throwable {
+    Document document0 = Document.createShell(""option[selected]"");
+    Element element0 = document0.doClone(document0);
+    element0.before((Node) document0);
+    assertEquals(""option[selected]"", element0.baseUri());
+}",""
+"public int siblingIndex() {
+    return siblingIndex;
+}","public void test05575() throws Throwable {
+    Document document0 = Document.createShell(""E{"");
+    Element element0 = document0.body();
+    element0.before("""");
+    assertEquals(3, element0.siblingIndex());
+}","/**
+ * Get the list index of this node in its node sibling list. I.e. if this is the first node
+ * sibling, returns 0.
+ * @return position in node sibling list
+ * @see org.jsoup.nodes.Element#elementSiblingIndex()
+ */"
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test05676() throws Throwable {
+    Document document0 = new Document(""H6yWYJaH8bHP={"");
+    document0.normalise();
+    Element element0 = document0.body();
+    element0.attr(""html"", false);
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test05677() throws Throwable {
+    Document document0 = new Document(""H6yWYJaH8bHP={"");
+    document0.normalise();
+    Element element0 = document0.body();
+    element0.attr(""html"", false);
+    assertEquals(""H6yWYJaH8bHP={"", document0.baseUri());
+}",""
+"public int siblingIndex() {
+    return siblingIndex;
+}","public void test05778() throws Throwable {
+    Document document0 = Document.createShell(""E{"");
+    Element element0 = document0.body();
+    Element element1 = element0.attr("""", ""E{"");
+    assertEquals(1, element1.siblingIndex());
+}","/**
+ * Get the list index of this node in its node sibling list. I.e. if this is the first node
+ * sibling, returns 0.
+ * @return position in node sibling list
+ * @see org.jsoup.nodes.Element#elementSiblingIndex()
+ */"
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test05779() throws Throwable {
+    Document document0 = Document.createShell(""E{"");
+    Element element0 = document0.body();
+    Element element1 = element0.attr("""", ""E{"");
+    assertEquals(""E{"", element1.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test05880() throws Throwable {
+    Document document0 = Document.createShell(""E{"");
+    Element element0 = document0.body();
+    Element element1 = element0.lastElementSibling();
+    element1.appendText(""E{"");
+    assertEquals(1, element0.childNodeSize());
+}",""
+"public Element appendText(String text) {
+    Validate.notNull(text);
+    TextNode node = new TextNode(text);
+    appendChild(node);
+    return this;
+}","public void test05881() throws Throwable {
+    Document document0 = Document.createShell(""E{"");
+    Element element0 = document0.body();
+    Element element1 = element0.lastElementSibling();
+    element1.appendText(""E{"");
+    assertSame(element0, element1);
+}","/**
+ * Create and append a new TextNode to this element.
+ *
+ * @param text the unencoded text to add
+ * @return this element
+ */"
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test05982() throws Throwable {
+    Document document0 = new Document(""zmHb.(TH<x,#XSO"");
+    Element element0 = document0.appendElement(""zmHb.(TH<x,#XSO"");
+    element0.prependText(""zmHb.(TH<x,#XSO"");
+    assertEquals(1, document0.childNodeSize());
+}",""
+"public int siblingIndex() {
+    return siblingIndex;
+}","public void test06083() throws Throwable {
+    Document document0 = Document.createShell(""Split offset must be not be negative"");
+    Element element0 = document0.head();
+    Element element1 = element0.appendChild(document0);
+    assertEquals(0, element1.siblingIndex());
+}","/**
+ * Get the list index of this node in its node sibling list. I.e. if this is the first node
+ * sibling, returns 0.
+ * @return position in node sibling list
+ * @see org.jsoup.nodes.Element#elementSiblingIndex()
+ */"
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test06084() throws Throwable {
+    Document document0 = Document.createShell(""Split offset must be not be negative"");
+    Element element0 = document0.head();
+    Element element1 = element0.appendChild(document0);
+    assertEquals(""Split offset must be not be negative"", element1.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test06185() throws Throwable {
+    Document document0 = Document.createShell(""embed"");
+    Element element0 = document0.body();
+    element0.append(""-o?`SH&&a,F8$Wqb^l"");
+    assertEquals(1, element0.childNodeSize());
+}",""
+"public Element append(String html) {
+    Validate.notNull(html);
+    List<Node> nodes = Parser.parseFragment(html, this, baseUri());
+    addChildren(nodes.toArray(new Node[nodes.size()]));
+    return this;
+}","public void test06286() throws Throwable {
+    Element element0 = new Element(""x<_}SSz)&g_9.80"");
+    Element element1 = element0.append("""");
+    assertSame(element0, element1);
+}","/**
+ * Add inner HTML to this element. The supplied HTML will be parsed, and each node appended to the end of the children.
+ * @param html HTML to add inside this element, after the existing HTML
+ * @return this element
+ * @see #html(String)
+ */"
+"public int siblingIndex() {
+    return siblingIndex;
+}","public void test06387() throws Throwable {
+    Document document0 = Document.createShell(""bk|?b3ZEQ Xe@tC}&N"");
+    Element element0 = document0.body();
+    Element element1 = element0.after(""bk|?b3ZEQ Xe@tC}&N"");
+    assertEquals(1, element1.siblingIndex());
+}","/**
+ * Get the list index of this node in its node sibling list. I.e. if this is the first node
+ * sibling, returns 0.
+ * @return position in node sibling list
+ * @see org.jsoup.nodes.Element#elementSiblingIndex()
+ */"
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test06388() throws Throwable {
+    Document document0 = Document.createShell(""bk|?b3ZEQ Xe@tC}&N"");
+    Element element0 = document0.body();
+    Element element1 = element0.after(""bk|?b3ZEQ Xe@tC}&N"");
+    assertEquals(""bk|?b3ZEQ Xe@tC}&N"", element1.baseUri());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test06489() throws Throwable {
+    Document document0 = new Document(""head"");
+    Element element0 = document0.addClass(""head"");
+    assertEquals(""head"", element0.baseUri());
+}",""
+"@Override
+public Element wrap(String html) {
+    return (Element) super.wrap(html);
+}","public void test06590() throws Throwable {
+    Document document0 = Document.createShell(""6=qvYdFRavA:H2FY!"");
+    // Undeclared exception!
+    try {
+        document0.wrap("""");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Wrap the supplied HTML around this element.
+ *
+ * @param html HTML to wrap around this element, e.g. {@code <div class=""head""></div>}. Can be arbitrarily deep.
+ * @return this element, for chaining.
+ */"
+"public String toString() {
+    return outerHtml();
+}","public void test06691() throws Throwable {
+    Document document0 = Document.createShell(""Split offset must be not be negative"");
+    document0.appendChild(document0);
+    // Undeclared exception!
+    document0.toString();
+}",""
+"@Override
+public Element text(String text) {
+    // overridden to not nuke doc structure
+    body().text(text);
+    return this;
+}","public void test06792() throws Throwable {
+    Document document0 = Document.createShell(""hOs4xsE"");
+    document0.html(""hOs4xsE"");
+    // Undeclared exception!
+    try {
+        document0.text(""hOs4xsE"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Document"", e);
+    }
+}","/**
+ *     Set the text of the {@code body} of this document. Any existing nodes within the body will be cleared.
+ *     @param text unencoded text
+ *     @return this document
+ */"
+"public Element selectFirst(String cssQuery) {
+    return Selector.selectFirst(cssQuery, this);
+}","public void test06893() throws Throwable {
+    Document document0 = Document.createShell(""d2<)"");
+    // Undeclared exception!
+    try {
+        document0.selectFirst(""X@?#@6"");
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Could not parse query 'X@?#@6': unexpected token at '@?#@6'
+        //
+        verifyException(""org.jsoup.select.QueryParser"", e);
+    }
+}","/**
+ * Find the first Element that matches the {@link Selector} CSS query, with this element as the starting context.
+ * <p>This is effectively the same as calling {@code element.select(query).first()}, but is more efficient as query
+ * execution stops on the first hit.</p>
+ * @param cssQuery cssQuery a {@link Selector} CSS-like query
+ * @return the first matching element, or <b>{@code null}</b> if there is no match.
+ */"
+"public Elements select(String cssQuery) {
+    return Selector.select(cssQuery, this);
+}","public void test06994() throws Throwable {
+    Document document0 = new Document(""&$!xy{_}"");
+    // Undeclared exception!
+    try {
+        document0.select((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Find elements that match the {@link Selector} CSS query, with this element as the starting context. Matched elements
+ * may include this element, or any of its children.
+ * <p>
+ * This method is generally more powerful to use than the DOM-type {@code getElementBy*} methods, because
+ * multiple filters can be combined, e.g.:
+ * </p>
+ * <ul>
+ * <li>{@code el.select(""a[href]"")} - finds links ({@code a} tags with {@code href} attributes)
+ * <li>{@code el.select(""a[href*=example.com]"")} - finds links pointing to example.com (loosely)
+ * </ul>
+ * <p>
+ * See the query syntax documentation in {@link org.jsoup.select.Selector}.
+ * </p>
+ *
+ * @param cssQuery a {@link Selector} CSS-like query
+ * @return elements that match the query (empty if none match)
+ * @see org.jsoup.select.Selector
+ * @throws Selector.SelectorParseException (unchecked) on an invalid CSS query.
+ */"
+"public Element prependChild(Node child) {
+    Validate.notNull(child);
+    addChildren(0, child);
+    return this;
+}","public void test07095() throws Throwable {
+    Document document0 = Document.createShell(""X-`4!O"");
+    // Undeclared exception!
+    try {
+        document0.prependChild((Node) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Add a node to the start of this element's children.
+ *
+ * @param child node to add.
+ * @return this element, so that you can add more child nodes or elements.
+ */"
+"public Element prepend(String html) {
+    Validate.notNull(html);
+    List<Node> nodes = Parser.parseFragment(html, this, baseUri());
+    addChildren(0, nodes.toArray(new Node[nodes.size()]));
+    return this;
+}","public void test07196() throws Throwable {
+    Document document0 = Document.createShell(""Tag name must not be empty."");
+    // Undeclared exception!
+    try {
+        document0.prepend((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Add inner HTML into this element. The supplied HTML will be parsed, and each node prepended to the start of the element's children.
+ * @param html HTML to add inside this element, before the existing HTML
+ * @return this element
+ * @see #html(String)
+ */"
+"void outerHtmlTail(Appendable accum, int depth, Document.OutputSettings out) throws IOException {
+    if (!(childNodes.isEmpty() && tag.isSelfClosing())) {
+        if (out.prettyPrint() && (!childNodes.isEmpty() && (tag.formatAsBlock() || (out.outline() && (childNodes.size() > 1 || (childNodes.size() == 1 && !(childNodes.get(0) instanceof TextNode)))))))
+            indent(accum, depth, out);
+        accum.append(""</"").append(tagName()).append('>');
+    }
+}","public void test07297() throws Throwable {
+    Document document0 = new Document("""");
+    // Undeclared exception!
+    try {
+        document0.outerHtmlTail((Appendable) null, 60, (Document.OutputSettings) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"void outerHtmlTail(Appendable accum, int depth, Document.OutputSettings out) throws IOException {
+    if (!(childNodes.isEmpty() && tag.isSelfClosing())) {
+        if (out.prettyPrint() && (!childNodes.isEmpty() && (tag.formatAsBlock() || (out.outline() && (childNodes.size() > 1 || (childNodes.size() == 1 && !(childNodes.get(0) instanceof TextNode)))))))
+            indent(accum, depth, out);
+        accum.append(""</"").append(tagName()).append('>');
+    }
+}","public void test07398() throws Throwable {
+    Document document0 = Document.createShell(""."");
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    StringBuilder stringBuilder0 = new StringBuilder();
+    // Undeclared exception!
+    try {
+        document0.outerHtmlTail(stringBuilder0, (-2843), document_OutputSettings0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // width must be > 0
+        //
+        verifyException(""org.jsoup.helper.StringUtil"", e);
+    }
+}",""
+"void outerHtmlTail(Appendable accum, int depth, Document.OutputSettings out) throws IOException {
+    if (!(childNodes.isEmpty() && tag.isSelfClosing())) {
+        if (out.prettyPrint() && (!childNodes.isEmpty() && (tag.formatAsBlock() || (out.outline() && (childNodes.size() > 1 || (childNodes.size() == 1 && !(childNodes.get(0) instanceof TextNode)))))))
+            indent(accum, depth, out);
+        accum.append(""</"").append(tagName()).append('>');
+    }
+}","public void test07499() throws Throwable {
+    PipedWriter pipedWriter0 = new PipedWriter();
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    Document document0 = Document.createShell(""K<]M?(}m<kiQx}^7"");
+    try {
+        document0.outerHtmlTail(pipedWriter0, 1975, document_OutputSettings0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Pipe not connected
+        //
+        verifyException(""java.io.PipedWriter"", e);
+    }
+}",""
+"public Element lastElementSibling() {
+    List<Element> siblings = parent().childElementsList();
+    return siblings.size() > 1 ? siblings.get(siblings.size() - 1) : null;
+}","public void test075100() throws Throwable {
+    Document document0 = Document.createShell("""");
+    // Undeclared exception!
+    try {
+        document0.lastElementSibling();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Element"", e);
+    }
+}","/**
+ * Gets the last element sibling of this element
+ * @return the last sibling that is an element (aka the parent's last element child)
+ */"
+"public boolean is(Evaluator evaluator) {
+    return evaluator.matches((Element) this.root(), this);
+}","public void test076101() throws Throwable {
+    Document document0 = Document.createShell(""."");
+    // Undeclared exception!
+    try {
+        document0.is((Evaluator) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Element"", e);
+    }
+}","/**
+ * Check if this element matches the given evaluator.
+ * @param evaluator an element evaluator
+ * @return if this element matches
+ */"
+"public Element insertChildren(int index, Node... children) {
+    Validate.notNull(children, ""Children collection to be inserted must not be null."");
+    int currentSize = childNodeSize();
+    // roll around
+    if (index < 0)
+        index += currentSize + 1;
+    Validate.isTrue(index >= 0 && index <= currentSize, ""Insert position out of bounds."");
+    addChildren(index, children);
+    return this;
+}","public void test077102() throws Throwable {
+    Document document0 = Document.createShell(""(.s>>e"");
+    Node[] nodeArray0 = new Node[9];
+    nodeArray0[0] = (Node) document0;
+    nodeArray0[1] = (Node) document0;
+    nodeArray0[2] = (Node) document0;
+    nodeArray0[3] = (Node) document0;
+    nodeArray0[4] = (Node) document0;
+    nodeArray0[5] = (Node) document0;
+    nodeArray0[6] = (Node) document0;
+    nodeArray0[7] = (Node) document0;
+    nodeArray0[8] = (Node) document0;
+    // Undeclared exception!
+    try {
+        document0.insertChildren(0, nodeArray0);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 0, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}","/**
+ * Inserts the given child nodes into this element at the specified index. Current nodes will be shifted to the
+ * right. The inserted nodes will be moved from their current parent. To prevent moving, copy the nodes first.
+ *
+ * @param index 0-based index to insert children at. Specify {@code 0} to insert at the start, {@code -1} at the
+ * end
+ * @param children child nodes to insert
+ * @return this element, for chaining.
+ */"
+"public Element html(String html) {
+    empty();
+    append(html);
+    return this;
+}","public void test078103() throws Throwable {
+    Document document0 = Document.createShell(""#"");
+    document0.appendTo(document0);
+    // Undeclared exception!
+    document0.html(""Dy[y;O}lr(mi,:i79o"");
+}","/**
+ * Set this element's inner HTML. Clears the existing HTML first.
+ * @param html HTML to parse and set into this element
+ * @return this element
+ * @see #append(String)
+ */"
+"public Element html(String html) {
+    empty();
+    append(html);
+    return this;
+}","public void test079104() throws Throwable {
+    Document document0 = Document.createShell(""SY+-if^R7`1C{-*}+{"");
+    // Undeclared exception!
+    try {
+        document0.html((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Set this element's inner HTML. Clears the existing HTML first.
+ * @param html HTML to parse and set into this element
+ * @return this element
+ * @see #append(String)
+ */"
+"@Override
+public <T extends Appendable> T html(T appendable) {
+    for (Node node : childNodes) node.outerHtml(appendable);
+    return appendable;
+}","public void test080105() throws Throwable {
+    Document document0 = Document.createShell(""ti{"");
+    document0.appendTo(document0);
+    PipedWriter pipedWriter0 = new PipedWriter();
+    // Undeclared exception!
+    document0.html(pipedWriter0);
+}","/**
+ * {@inheritDoc}
+ */"
+"public String html() {
+    StringBuilder accum = StringUtil.stringBuilder();
+    html(accum);
+    return getOutputSettings().prettyPrint() ? accum.toString().trim() : accum.toString();
+}","public void test081106() throws Throwable {
+    Tag tag0 = Tag.valueOf(""wD#s79l%11w"");
+    Comment comment0 = new Comment(""wD#s79l%11w"");
+    Attributes attributes0 = comment0.attributes();
+    Element element0 = new Element(tag0, """", attributes0);
+    element0.prependChild(element0);
+    // Undeclared exception!
+    element0.html();
+}","/**
+ * Retrieves the element's inner HTML. E.g. on a {@code <div>} with one empty {@code <p>}, would return
+ * {@code <p></p>}. (Whereas {@link #outerHtml()} would return {@code <div><p></p></div>}.)
+ *
+ * @return String of HTML.
+ * @see #outerHtml()
+ */"
+"// performance sensitive
+public boolean hasClass(String className) {
+    final String classAttr = attributes().getIgnoreCase(""class"");
+    final int len = classAttr.length();
+    final int wantLen = className.length();
+    if (len == 0 || len < wantLen) {
+        return false;
+    }
+    // if both lengths are equal, only need compare the className with the attribute
+    if (len == wantLen) {
+        return className.equalsIgnoreCase(classAttr);
+    }
+    // otherwise, scan for whitespace and compare regions (with no string or arraylist allocations)
+    boolean inClass = false;
+    int start = 0;
+    for (int i = 0; i < len; i++) {
+        if (Character.isWhitespace(classAttr.charAt(i))) {
+            if (inClass) {
+                // white space ends a class name, compare it with the requested one, ignore case
+                if (i - start == wantLen && classAttr.regionMatches(true, start, className, 0, wantLen)) {
+                    return true;
+                }
+                inClass = false;
+            }
+        } else {
+            if (!inClass) {
+                // we're in a class name : keep the start of the substring
+                inClass = true;
+                start = i;
+            }
+        }
+    }
+    // check the last entry
+    if (inClass && len - start == wantLen) {
+        return classAttr.regionMatches(true, start, className, 0, wantLen);
+    }
+    return false;
+}","public void test082107() throws Throwable {
+    Document document0 = Document.createShell("" "");
+    // Undeclared exception!
+    try {
+        document0.hasClass((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Element"", e);
+    }
+}","/**
+ * Tests if this element has a class. Case insensitive.
+ * @param className name of class to check for
+ * @return true if it does, false if not
+ */"
+"public Elements getElementsMatchingText(String regex) {
+    Pattern pattern;
+    try {
+        pattern = Pattern.compile(regex);
+    } catch (PatternSyntaxException e) {
+        throw new IllegalArgumentException(""Pattern syntax error: "" + regex, e);
+    }
+    return getElementsMatchingText(pattern);
+}","public void test083108() throws Throwable {
+    Document document0 = Document.createShell(""ti{"");
+    // Undeclared exception!
+    try {
+        document0.getElementsMatchingText(""fI3?H~2wGr~\""[9VZ"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Pattern syntax error: fI3?H~2wGr~\""[9VZ
+        //
+        verifyException(""org.jsoup.nodes.Element"", e);
+    }
+}","/**
+ * Find elements whose text matches the supplied regular expression.
+ * @param regex regular expression to match text against. You can use <a href=""http://java.sun.com/docs/books/tutorial/essential/regex/pattern.html#embedded"">embedded flags</a> (such as (?i) and (?m) to control regex options.
+ * @return elements matching the supplied regular expression.
+ * @see Element#text()
+ */"
+"public Elements getElementsMatchingOwnText(String regex) {
+    Pattern pattern;
+    try {
+        pattern = Pattern.compile(regex);
+    } catch (PatternSyntaxException e) {
+        throw new IllegalArgumentException(""Pattern syntax error: "" + regex, e);
+    }
+    return getElementsMatchingOwnText(pattern);
+}","public void test084109() throws Throwable {
+    Document document0 = new Document(""]O'jtn[(,"");
+    // Undeclared exception!
+    try {
+        document0.getElementsMatchingOwnText(""]O'jtn[(,"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Pattern syntax error: ]O'jtn[(,
+        //
+        verifyException(""org.jsoup.nodes.Element"", e);
+    }
+}","/**
+ * Find elements whose text matches the supplied regular expression.
+ * @param regex regular expression to match text against. You can use <a href=""http://java.sun.com/docs/books/tutorial/essential/regex/pattern.html#embedded"">embedded flags</a> (such as (?i) and (?m) to control regex options.
+ * @return elements matching the supplied regular expression.
+ * @see Element#ownText()
+ */"
+"// DOM type methods
+/**
+ * Finds elements, including and recursively under this element, with the specified tag name.
+ * @param tagName The tag name to search for (case insensitively).
+ * @return a matching unmodifiable list of elements. Will be empty if this element and none of its children match.
+ */
+public Elements getElementsByTag(String tagName) {
+    Validate.notEmpty(tagName);
+    tagName = normalize(tagName);
+    return Collector.collect(new Evaluator.Tag(tagName), this);
+}","public void test085110() throws Throwable {
+    Element element0 = new Element("">uzkf+qpgno/ R"");
+    TextNode textNode0 = new TextNode("">uzkf+qpgno/ R"");
+    element0.parentNode = (Node) textNode0;
+    // Undeclared exception!
+    try {
+        element0.getElementsByTag("">uzkf+qpgno/ R"");
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // Leaf Nodes do not have child nodes.
+        //
+        verifyException(""org.jsoup.nodes.LeafNode"", e);
+    }
+}",""
+"public Elements getElementsByClass(String className) {
+    Validate.notEmpty(className);
+    return Collector.collect(new Evaluator.Class(className), this);
+}","public void test086111() throws Throwable {
+    Document document0 = Document.createShell(""%<)"");
+    // Undeclared exception!
+    try {
+        document0.getElementsByClass("""");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Find elements that have this class, including or under this element. Case insensitive.
+ * <p>
+ * Elements can have multiple classes (e.g. {@code <div class=""header round first"">}. This method
+ * checks each class, so you can find the above with {@code el.getElementsByClass(""header"");}.
+ *
+ * @param className the name of the class to search for.
+ * @return elements with the supplied class name, empty if none
+ * @see #hasClass(String)
+ * @see #classNames()
+ */"
+"public Elements getElementsByAttributeValueStarting(String key, String valuePrefix) {
+    return Collector.collect(new Evaluator.AttributeWithValueStarting(key, valuePrefix), this);
+}","public void test087112() throws Throwable {
+    Document document0 = Document.createShell("""");
+    // Undeclared exception!
+    try {
+        document0.getElementsByAttributeValueStarting("""", """");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Find elements that have attributes that start with the value prefix. Case insensitive.
+ *
+ * @param key name of the attribute
+ * @param valuePrefix start of attribute value
+ * @return elements that have attributes that start with the value prefix
+ */"
+"public Elements getElementsByAttributeValueNot(String key, String value) {
+    return Collector.collect(new Evaluator.AttributeWithValueNot(key, value), this);
+}","public void test088113() throws Throwable {
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    Tag tag0 = Tag.valueOf(""org.jsoup.nodes.Element"", parseSettings0);
+    Attributes attributes0 = new Attributes();
+    Element element0 = new Element(tag0, ""org.jsoup.nodes.Element"", attributes0);
+    // Undeclared exception!
+    try {
+        element0.getElementsByAttributeValueNot(""),/#9M"", """");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Find elements that either do not have this attribute, or have it with a different value. Case insensitive.
+ *
+ * @param key name of the attribute
+ * @param value value of the attribute
+ * @return elements that do not have a matching attribute
+ */"
+"public Elements getElementsByAttributeValueMatching(String key, Pattern pattern) {
+    return Collector.collect(new Evaluator.AttributeWithValueMatching(key, pattern), this);
+}","public void test089114() throws Throwable {
+    Document document0 = Document.createShell(""%<)"");
+    Element element0 = document0.head();
+    element0.setSiblingIndex((-643));
+    Pattern pattern0 = Pattern.compile("" w2NZ"");
+    // Undeclared exception!
+    try {
+        document0.getElementsByAttributeValueMatching(""n,`f@rErBc"", pattern0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * Find elements that have attributes whose values match the supplied regular expression.
+ * @param key name of the attribute
+ * @param pattern compiled regular expression to match against attribute values
+ * @return elements that have attributes matching this regular expression
+ */"
+"public Elements getElementsByAttributeValueMatching(String key, String regex) {
+    Pattern pattern;
+    try {
+        pattern = Pattern.compile(regex);
+    } catch (PatternSyntaxException e) {
+        throw new IllegalArgumentException(""Pattern syntax error: "" + regex, e);
+    }
+    return getElementsByAttributeValueMatching(key, pattern);
+}","public void test090115() throws Throwable {
+    Document document0 = Document.createShell(""#root"");
+    // Undeclared exception!
+    try {
+        document0.getElementsByAttributeValueMatching((String) null, ""3.JM[>[Y-Y,zRQ"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Pattern syntax error: 3.JM[>[Y-Y,zRQ
+        //
+        verifyException(""org.jsoup.nodes.Element"", e);
+    }
+}","/**
+ * Find elements that have attributes whose values match the supplied regular expression.
+ * @param key name of the attribute
+ * @param regex regular expression to match against attribute values. You can use <a href=""http://java.sun.com/docs/books/tutorial/essential/regex/pattern.html#embedded"">embedded flags</a> (such as (?i) and (?m) to control regex options.
+ * @return elements that have attributes matching this regular expression
+ */"
+"public Elements getElementsByAttributeValueEnding(String key, String valueSuffix) {
+    return Collector.collect(new Evaluator.AttributeWithValueEnding(key, valueSuffix), this);
+}","public void test091116() throws Throwable {
+    Document document0 = new Document("""");
+    // Undeclared exception!
+    try {
+        document0.getElementsByAttributeValueEnding("""", """");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Find elements that have attributes that end with the value suffix. Case insensitive.
+ *
+ * @param key name of the attribute
+ * @param valueSuffix end of the attribute value
+ * @return elements that have attributes that end with the value suffix
+ */"
+"public Elements getElementsByAttributeValue(String key, String value) {
+    return Collector.collect(new Evaluator.AttributeWithValue(key, value), this);
+}","public void test092117() throws Throwable {
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    Tag tag0 = Tag.valueOf(""q,"", parseSettings0);
+    FormElement formElement0 = new FormElement(tag0, ""q,"", (Attributes) null);
+    // Undeclared exception!
+    try {
+        formElement0.getElementsByAttributeValue(""bdi"", (String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Find elements that have an attribute with the specific value. Case insensitive.
+ *
+ * @param key name of the attribute
+ * @param value value of the attribute
+ * @return elements that have this attribute with this value, empty if none
+ */"
+"public Elements getElementsByAttributeStarting(String keyPrefix) {
+    Validate.notEmpty(keyPrefix);
+    keyPrefix = keyPrefix.trim();
+    return Collector.collect(new Evaluator.AttributeStarting(keyPrefix), this);
+}","public void test093118() throws Throwable {
+    Document document0 = new Document("""");
+    // Undeclared exception!
+    try {
+        document0.getElementsByAttributeStarting("""");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Find elements that have an attribute name starting with the supplied prefix. Use {@code data-} to find elements
+ * that have HTML5 datasets.
+ * @param keyPrefix name prefix of the attribute e.g. {@code data-}
+ * @return elements that have attribute names that start with with the prefix, empty if none.
+ */"
+"public Element getElementById(String id) {
+    Validate.notEmpty(id);
+    Elements elements = Collector.collect(new Evaluator.Id(id), this);
+    if (elements.size() > 0)
+        return elements.get(0);
+    else
+        return null;
+}","public void test094119() throws Throwable {
+    Document document0 = new Document(""-P"");
+    // Undeclared exception!
+    try {
+        document0.getElementById((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Find an element by ID, including or under this element.
+ * <p>
+ * Note that this finds the first matching ID, starting with this element. If you search down from a different
+ * starting point, it is possible to find a different element by ID. For unique element by ID within a Document,
+ * use {@link Document#getElementById(String)}
+ * @param id The ID to search for.
+ * @return The first matching element by ID, starting with this element, or null if none found.
+ */"
+"public Element firstElementSibling() {
+    // todo: should firstSibling() exclude this?
+    List<Element> siblings = parent().childElementsList();
+    return siblings.size() > 1 ? siblings.get(0) : null;
+}","public void test095120() throws Throwable {
+    Document document0 = Document.createShell(""P <uG4Nu.p`D"");
+    // Undeclared exception!
+    try {
+        document0.firstElementSibling();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Element"", e);
+    }
+}","/**
+ * Gets the first element sibling of this element.
+ * @return the first sibling that is an element (aka the parent's first element child)
+ */"
+"public Element child(int index) {
+    return childElementsList().get(index);
+}","public void test096121() throws Throwable {
+    Document document0 = Document.createShell(""br"");
+    // Undeclared exception!
+    try {
+        document0.child(62);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 62, Size: 1
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}","/**
+ * Get a child element of this element, by its 0-based index number.
+ * <p>
+ * Note that an element can have both mixed Nodes and Elements as children. This method inspects
+ * a filtered list of children that are elements, and the index is based on that filtered list.
+ * </p>
+ *
+ * @param index the index number of the element to retrieve
+ * @return the child element, if it exists, otherwise throws an {@code IndexOutOfBoundsException}
+ * @see #childNode(int)
+ */"
+"public Element attr(String attributeKey, boolean attributeValue) {
+    attributes().put(attributeKey, attributeValue);
+    return this;
+}","public void test097122() throws Throwable {
+    Document document0 = Document.createShell("""");
+    // Undeclared exception!
+    try {
+        document0.attr((String) null, true);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Set a boolean attribute value on this element. Setting to <code>true</code> sets the attribute value to """" and
+ * marks the attribute as boolean so no value is written out. Setting to <code>false</code> removes the attribute
+ * with the same key if it exists.
+ *
+ * @param attributeKey the attribute key
+ * @param attributeValue the attribute value
+ *
+ * @return this element
+ */"
+"public Element attr(String attributeKey, String attributeValue) {
+    super.attr(attributeKey, attributeValue);
+    return this;
+}","public void test098123() throws Throwable {
+    Document document0 = Document.createShell(""}X"");
+    // Undeclared exception!
+    try {
+        document0.attr((String) null, ""1;GQkEF<1*Y*c1hH|"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Set an attribute value on this element. If this element already has an attribute with the
+ * key, its value is updated; otherwise, a new attribute is added.
+ *
+ * @return this element
+ */"
+"public Element appendTo(Element parent) {
+    Validate.notNull(parent);
+    parent.appendChild(this);
+    return this;
+}","public void test099124() throws Throwable {
+    Tag tag0 = Tag.valueOf(""i`,\""_g27o"");
+    FormElement formElement0 = new FormElement(tag0, ""i`,\""_g27o"", (Attributes) null);
+    // Undeclared exception!
+    try {
+        formElement0.appendTo((Element) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Add this element to the supplied parent element, as its next child.
+ *
+ * @param parent element to which this element will be appended
+ * @return this element, so that you can continue modifying the element
+ */"
+"public Element appendElement(String tagName) {
+    Element child = new Element(Tag.valueOf(tagName), baseUri());
+    appendChild(child);
+    return child;
+}","public void test100125() throws Throwable {
+    Document document0 = new Document(""6-apl%[&-sXh"");
+    // Undeclared exception!
+    try {
+        document0.appendElement("""");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Create a new element by tag name, and add it as the last child.
+ *
+ * @param tagName the name of the tag (e.g. {@code div}).
+ * @return the new element, to allow you to add content to it, e.g.:
+ *  {@code parent.appendElement(""h1"").attr(""id"", ""header"").text(""Welcome"");}
+ */"
+"public Element append(String html) {
+    Validate.notNull(html);
+    List<Node> nodes = Parser.parseFragment(html, this, baseUri());
+    addChildren(nodes.toArray(new Node[nodes.size()]));
+    return this;
+}","public void test101126() throws Throwable {
+    Document document0 = Document.createShell(""ti{"");
+    document0.appendTo(document0);
+    // Undeclared exception!
+    document0.append(""3.JM[>[Y-Y,zRQ"");
+}","/**
+ * Add inner HTML to this element. The supplied HTML will be parsed, and each node appended to the end of the children.
+ * @param html HTML to add inside this element, after the existing HTML
+ * @return this element
+ * @see #html(String)
+ */"
+"public Element addClass(String className) {
+    Validate.notNull(className);
+    Set<String> classes = classNames();
+    classes.add(className);
+    classNames(classes);
+    return this;
+}","public void test102127() throws Throwable {
+    Document document0 = Document.createShell(""L/ FL>gcC1q\""}"");
+    // Undeclared exception!
+    try {
+        document0.addClass((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ *     Add a class name to this element's {@code class} attribute.
+ *     @param className class name to add
+ *     @return this element
+ */"
+"public Element(Tag tag, String baseUri) {
+    this(tag, baseUri, null);
+}","public void test103128() throws Throwable {
+    Element element0 = null;
+    try {
+        element0 = new Element((Tag) null, ""/D8k&k#p6sZ]"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Create a new Element from a tag and a base URI.
+ *
+ * @param tag element tag
+ * @param baseUri the base URI of this element. It is acceptable for the base URI to be an empty
+ *            string, but not null.
+ * @see Tag#valueOf(String, ParseSettings)
+ */"
+"public Element(String tag) {
+    this(Tag.valueOf(tag), """", new Attributes());
+}","public void test104129() throws Throwable {
+    Element element0 = null;
+    try {
+        element0 = new Element("""");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Create a new, standalone element.
+ * @param tag tag name
+ */"
+"public String html() {
+    StringBuilder accum = StringUtil.stringBuilder();
+    html(accum);
+    return getOutputSettings().prettyPrint() ? accum.toString().trim() : accum.toString();
+}","public void test105130() throws Throwable {
+    Document document0 = Document.createShell(""E{"");
+    String string0 = document0.html();
+    assertEquals(""<html>\n <head></head>\n <body></body>\n</html>"", string0);
+}","/**
+ * Retrieves the element's inner HTML. E.g. on a {@code <div>} with one empty {@code <p>}, would return
+ * {@code <p></p>}. (Whereas {@link #outerHtml()} would return {@code <div><p></p></div>}.)
+ *
+ * @return String of HTML.
+ * @see #outerHtml()
+ */"
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test105131() throws Throwable {
+    Document document0 = Document.createShell(""E{"");
+    String string0 = document0.html();
+    assertEquals(""E{"", document0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test106132() throws Throwable {
+    Document document0 = Document.createShell(""."");
+    boolean boolean0 = document0.hasClass("""");
+    assertEquals(1, document0.childNodeSize());
+}",""
+"// performance sensitive
+public boolean hasClass(String className) {
+    final String classAttr = attributes().getIgnoreCase(""class"");
+    final int len = classAttr.length();
+    final int wantLen = className.length();
+    if (len == 0 || len < wantLen) {
+        return false;
+    }
+    // if both lengths are equal, only need compare the className with the attribute
+    if (len == wantLen) {
+        return className.equalsIgnoreCase(classAttr);
+    }
+    // otherwise, scan for whitespace and compare regions (with no string or arraylist allocations)
+    boolean inClass = false;
+    int start = 0;
+    for (int i = 0; i < len; i++) {
+        if (Character.isWhitespace(classAttr.charAt(i))) {
+            if (inClass) {
+                // white space ends a class name, compare it with the requested one, ignore case
+                if (i - start == wantLen && classAttr.regionMatches(true, start, className, 0, wantLen)) {
+                    return true;
+                }
+                inClass = false;
+            }
+        } else {
+            if (!inClass) {
+                // we're in a class name : keep the start of the substring
+                inClass = true;
+                start = i;
+            }
+        }
+    }
+    // check the last entry
+    if (inClass && len - start == wantLen) {
+        return classAttr.regionMatches(true, start, className, 0, wantLen);
+    }
+    return false;
+}","public void test106133() throws Throwable {
+    Document document0 = Document.createShell(""."");
+    boolean boolean0 = document0.hasClass("""");
+    assertFalse(boolean0);
+}","/**
+ * Tests if this element has a class. Case insensitive.
+ * @param className name of class to check for
+ * @return true if it does, false if not
+ */"
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test106134() throws Throwable {
+    Document document0 = Document.createShell(""."");
+    boolean boolean0 = document0.hasClass("""");
+    assertEquals(""."", document0.baseUri());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test107135() throws Throwable {
+    Document document0 = Document.createShell(""bk|?b3ZEQ Xe@tC}&N"");
+    Element element0 = document0.body();
+    int int0 = element0.elementSiblingIndex();
+    assertEquals(""bk|?b3ZEQ Xe@tC}&N"", element0.baseUri());
+}",""
+"public int elementSiblingIndex() {
+    if (parent() == null)
+        return 0;
+    return indexInList(this, parent().childElementsList());
+}","public void test107136() throws Throwable {
+    Document document0 = Document.createShell(""bk|?b3ZEQ Xe@tC}&N"");
+    Element element0 = document0.body();
+    int int0 = element0.elementSiblingIndex();
+    assertEquals(1, int0);
+}","/**
+ * Get the list index of this element in its element sibling list. I.e. if this is the first element
+ * sibling, returns 0.
+ * @return position in element sibling list
+ */"
+"public int elementSiblingIndex() {
+    if (parent() == null)
+        return 0;
+    return indexInList(this, parent().childElementsList());
+}","public void test108137() throws Throwable {
+    Document document0 = new Document(""org.jsoup.examples.HtmlToPlainText$FormattingVisitor"");
+    int int0 = document0.elementSiblingIndex();
+    assertEquals(0, int0);
+}","/**
+ * Get the list index of this element in its element sibling list. I.e. if this is the first element
+ * sibling, returns 0.
+ * @return position in element sibling list
+ */"
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test108138() throws Throwable {
+    Document document0 = new Document(""org.jsoup.examples.HtmlToPlainText$FormattingVisitor"");
+    int int0 = document0.elementSiblingIndex();
+    assertEquals(""org.jsoup.examples.HtmlToPlainText$FormattingVisitor"", document0.baseUri());
+}",""
+"public int siblingIndex() {
+    return siblingIndex;
+}","public void test109139() throws Throwable {
+    Document document0 = Document.createShell(""E{"");
+    Element element0 = document0.body();
+    element0.wrap(""id"");
+    element0.before("""");
+    assertEquals(0, element0.siblingIndex());
+}","/**
+ * Get the list index of this node in its node sibling list. I.e. if this is the first node
+ * sibling, returns 0.
+ * @return position in node sibling list
+ * @see org.jsoup.nodes.Element#elementSiblingIndex()
+ */"
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test110140() throws Throwable {
+    Document document0 = Document.createShell(""org.jsoup.nodes.Element"");
+    document0.attributes();
+    assertEquals(""org.jsoup.nodes.Element"", document0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test110141() throws Throwable {
+    Document document0 = Document.createShell(""org.jsoup.nodes.Element"");
+    document0.attributes();
+    assertEquals(1, document0.childNodeSize());
+}",""
+"public int size() {
+    return size;
+}","public void test111142() throws Throwable {
+    Document document0 = Document.createShell("""");
+    document0.attr("""", ""d*:QeJT.wQQ@)wJ3"");
+    Attributes attributes0 = document0.attributes();
+    assertEquals(1, attributes0.size());
+}","/**
+ *     Get the number of attributes in this set.
+ *     @return size
+ */"
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test111143() throws Throwable {
+    Document document0 = Document.createShell("""");
+    document0.attr("""", ""d*:QeJT.wQQ@)wJ3"");
+    Attributes attributes0 = document0.attributes();
+    assertEquals(1, document0.childNodeSize());
+}",""
+"public Element classNames(Set<String> classNames) {
+    Validate.notNull(classNames);
+    attributes().put(""class"", StringUtil.join(classNames, "" ""));
+    return this;
+}","public void test113145() throws Throwable {
+    Document document0 = Document.createShell(""d2<)"");
+    // Undeclared exception!
+    try {
+        document0.classNames((Set<String>) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ *     Set the element's {@code class} attribute to the supplied class names.
+ *     @param classNames set of classes
+ *     @return this element, for chaining
+ */"
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test114146() throws Throwable {
+    ParseSettings parseSettings0 = ParseSettings.htmlDefault;
+    Tag tag0 = Tag.valueOf(""textarea"", parseSettings0);
+    Attributes attributes0 = new Attributes();
+    Element element0 = new Element(tag0, ""textarea"", attributes0);
+    element0.className();
+    assertEquals(""textarea"", element0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test115147() throws Throwable {
+    Document document0 = Document.createShell("""");
+    document0.parent();
+    assertEquals(1, document0.childNodeSize());
+}",""
+"public Elements getElementsMatchingOwnText(Pattern pattern) {
+    return Collector.collect(new Evaluator.MatchesOwn(pattern), this);
+}","public void test116148() throws Throwable {
+    Element element0 = new Element(""br"");
+    // Undeclared exception!
+    try {
+        element0.getElementsMatchingOwnText((Pattern) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * Find elements whose own text matches the supplied regular expression.
+ * @param pattern regular expression to match text against
+ * @return elements matching the supplied regular expression.
+ * @see Element#ownText()
+ */"
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test117149() throws Throwable {
+    Document document0 = Document.createShell(""%<)"");
+    document0.ownText();
+    assertEquals(""%<)"", document0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test117150() throws Throwable {
+    Document document0 = Document.createShell(""%<)"");
+    document0.ownText();
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test118151() throws Throwable {
+    Document document0 = Document.createShell(""}X"");
+    document0.parents();
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test118152() throws Throwable {
+    Document document0 = Document.createShell(""}X"");
+    document0.parents();
+    assertEquals(""}X"", document0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test119153() throws Throwable {
+    Document document0 = Document.createShell(""E{"");
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test119154() throws Throwable {
+    Document document0 = Document.createShell(""E{"");
+    document0.empty();
+    assertEquals(""E{"", document0.baseUri());
+}",""
+"public Element prependElement(String tagName) {
+    Element child = new Element(Tag.valueOf(tagName), baseUri());
+    prependChild(child);
+    return child;
+}","public void test120155() throws Throwable {
+    Document document0 = Document.createShell("""");
+    // Undeclared exception!
+    try {
+        document0.prependElement("""");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Create a new element by tag name, and add it as the first child.
+ *
+ * @param tagName the name of the tag (e.g. {@code div}).
+ * @return the new element, to allow you to add content to it, e.g.:
+ *  {@code parent.prependElement(""h1"").attr(""id"", ""header"").text(""Welcome"");}
+ */"
+"public Element(Tag tag, String baseUri, Attributes attributes) {
+    Validate.notNull(tag);
+    Validate.notNull(baseUri);
+    childNodes = EMPTY_NODES;
+    this.baseUri = baseUri;
+    this.attributes = attributes;
+    this.tag = tag;
+}","public void test121156() throws Throwable {
+    Attributes attributes0 = new Attributes();
+    Element element0 = null;
+    try {
+        element0 = new Element((Tag) null, ""-pCbPee$@"", attributes0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Create a new, standalone Element. (Standalone in that is has no parent.)
+ *
+ * @param tag tag of this element
+ * @param baseUri the base URI
+ * @param attributes initial attributes
+ * @see #appendChild(Node)
+ * @see #appendElement(String)
+ */"
+"public int siblingIndex() {
+    return siblingIndex;
+}","public void test122157() throws Throwable {
+    Document document0 = Document.createShell("",`c=WEV"");
+    XmlDeclaration xmlDeclaration0 = new XmlDeclaration("",`c=WEV"", ""org.jsoup.nodes.TextNode"", false);
+    document0.appendChild(xmlDeclaration0);
+    assertEquals(1, xmlDeclaration0.siblingIndex());
+}","/**
+ * Get the list index of this node in its node sibling list. I.e. if this is the first node
+ * sibling, returns 0.
+ * @return position in node sibling list
+ * @see org.jsoup.nodes.Element#elementSiblingIndex()
+ */"
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test122158() throws Throwable {
+    Document document0 = Document.createShell("",`c=WEV"");
+    XmlDeclaration xmlDeclaration0 = new XmlDeclaration("",`c=WEV"", ""org.jsoup.nodes.TextNode"", false);
+    document0.appendChild(xmlDeclaration0);
+    assertEquals("",`c=WEV"", document0.baseUri());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test123159() throws Throwable {
+    Document document0 = Document.createShell(""body"");
+    int int0 = document0.childNodeSize();
+    assertEquals(""body"", document0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test123160() throws Throwable {
+    Document document0 = Document.createShell(""body"");
+    int int0 = document0.childNodeSize();
+    assertEquals(1, int0);
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test124161() throws Throwable {
+    Document document0 = Document.createShell(""3"");
+    String string0 = document0.baseUri();
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test124162() throws Throwable {
+    Document document0 = Document.createShell(""3"");
+    String string0 = document0.baseUri();
+    assertEquals(""3"", string0);
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test125163() throws Throwable {
+    Document document0 = Document.createShell("""");
+    document0.tagName();
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test126164() throws Throwable {
+    Document document0 = Document.createShell("""");
+    Pattern pattern0 = Pattern.compile("""", 4171);
+    document0.getElementsMatchingText(pattern0);
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test127165() throws Throwable {
+    Tag tag0 = Tag.valueOf(""eKJiRuHS"");
+    Attributes attributes0 = new Attributes();
+    FormElement formElement0 = new FormElement(tag0, ""eKJiRuHS"", attributes0);
+    formElement0.nodeName();
+    assertEquals(""eKJiRuHS"", formElement0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test128166() throws Throwable {
+    Document document0 = Document.createShell("""");
+    Pattern pattern0 = Pattern.compile("""", 4171);
+    document0.getElementsByAttributeValueMatching(""body"", pattern0);
+    assertEquals(1, document0.childNodeSize());
+}",""
+"public Element append(String html) {
+    Validate.notNull(html);
+    List<Node> nodes = Parser.parseFragment(html, this, baseUri());
+    addChildren(nodes.toArray(new Node[nodes.size()]));
+    return this;
+}","public void test129167() throws Throwable {
+    Document document0 = Document.createShell("",`c=WEV"");
+    // Undeclared exception!
+    try {
+        document0.append((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Add inner HTML to this element. The supplied HTML will be parsed, and each node appended to the end of the children.
+ * @param html HTML to add inside this element, after the existing HTML
+ * @return this element
+ * @see #html(String)
+ */"
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test130168() throws Throwable {
+    Document document0 = Document.createShell(""Vh|w2kb2{.\""W9"");
+    document0.appendElement(""org.jsoup.select.Evaluator$AttributeWithValueNot"");
+    assertEquals(2, document0.childNodeSize());
+}",""
+"public Elements select(String cssQuery) {
+    return Selector.select(cssQuery, this);
+}","public void test131169() throws Throwable {
+    Document document0 = Document.createShell(""{z>@Ha{CVQ}"");
+    // Undeclared exception!
+    try {
+        document0.select(""{z>@Ha{CVQ}"");
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Could not parse query '{z>@Ha{CVQ}': unexpected token at '{z>@Ha{CVQ}'
+        //
+        verifyException(""org.jsoup.select.QueryParser"", e);
+    }
+}","/**
+ * Find elements that match the {@link Selector} CSS query, with this element as the starting context. Matched elements
+ * may include this element, or any of its children.
+ * <p>
+ * This method is generally more powerful to use than the DOM-type {@code getElementBy*} methods, because
+ * multiple filters can be combined, e.g.:
+ * </p>
+ * <ul>
+ * <li>{@code el.select(""a[href]"")} - finds links ({@code a} tags with {@code href} attributes)
+ * <li>{@code el.select(""a[href*=example.com]"")} - finds links pointing to example.com (loosely)
+ * </ul>
+ * <p>
+ * See the query syntax documentation in {@link org.jsoup.select.Selector}.
+ * </p>
+ *
+ * @param cssQuery a {@link Selector} CSS-like query
+ * @return elements that match the query (empty if none match)
+ * @see org.jsoup.select.Selector
+ * @throws Selector.SelectorParseException (unchecked) on an invalid CSS query.
+ */"
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test132170() throws Throwable {
+    Document document0 = Document.createShell("""");
+    document0.tag();
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test133171() throws Throwable {
+    Document document0 = Document.createShell(""head"");
+    Element element0 = document0.head();
+    Element element1 = element0.clone();
+    assertEquals(""head"", element1.baseUri());
+}",""
+"public boolean hasParent() {
+    return parentNode != null;
+}","public void test133172() throws Throwable {
+    Document document0 = Document.createShell(""head"");
+    Element element0 = document0.head();
+    Element element1 = element0.clone();
+    assertFalse(element1.hasParent());
+}",""
+"public int siblingIndex() {
+    return siblingIndex;
+}","public void test133173() throws Throwable {
+    Document document0 = Document.createShell(""head"");
+    Element element0 = document0.head();
+    Element element1 = element0.clone();
+    assertEquals(0, element0.siblingIndex());
+}","/**
+ * Get the list index of this node in its node sibling list. I.e. if this is the first node
+ * sibling, returns 0.
+ * @return position in node sibling list
+ * @see org.jsoup.nodes.Element#elementSiblingIndex()
+ */"
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test134174() throws Throwable {
+    Document document0 = Document.createShell(""option[selected]"");
+    document0.id();
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test134175() throws Throwable {
+    Document document0 = Document.createShell(""option[selected]"");
+    document0.id();
+    assertEquals(""option[selected]"", document0.baseUri());
+}",""
+"public String cssSelector() {
+    if (id().length() > 0)
+        return ""#"" + id();
+    // Translate HTML namespace ns:tag to CSS namespace syntax ns|tag
+    String tagName = tagName().replace(':', '|');
+    StringBuilder selector = new StringBuilder(tagName);
+    String classes = StringUtil.join(classNames(), ""."");
+    if (classes.length() > 0)
+        selector.append('.').append(classes);
+    if (// don't add Document to selector, as will always have a html node
+    parent() == null || parent() instanceof Document)
+        return selector.toString();
+    selector.insert(0, "" > "");
+    if (parent().select(selector.toString()).size() > 1)
+        selector.append(String.format("":nth-child(%d)"", elementSiblingIndex() + 1));
+    return parent().cssSelector() + selector.toString();
+}","public void test135176() throws Throwable {
+    Document document0 = Document.createShell(""}X"");
+    String string0 = document0.cssSelector();
+    assertEquals(""#root"", string0);
+}","/**
+ * Get a CSS selector that will uniquely select this element.
+ * <p>
+ * If the element has an ID, returns #id;
+ * otherwise returns the parent (if any) CSS selector, followed by {@literal '>'},
+ * followed by a unique selector for the element (tag.class.class:nth-child(n)).
+ * </p>
+ *
+ * @return the CSS Path that can be used to retrieve the element in a selector.
+ */"
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test135177() throws Throwable {
+    Document document0 = Document.createShell(""}X"");
+    String string0 = document0.cssSelector();
+    Element element0 = document0.doClone((Node) null);
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test135178() throws Throwable {
+    Document document0 = Document.createShell(""}X"");
+    String string0 = document0.cssSelector();
+    Element element0 = document0.doClone((Node) null);
+    assertEquals(""}X"", element0.baseUri());
+}",""
+"@Override
+protected Element doClone(Node parent) {
+    Element clone = (Element) super.doClone(parent);
+    clone.attributes = attributes != null ? attributes.clone() : null;
+    clone.baseUri = baseUri;
+    clone.childNodes = new NodeList(childNodes.size());
+    clone.childNodes.addAll(childNodes);
+    return clone;
+}","public void test135179() throws Throwable {
+    Document document0 = Document.createShell(""}X"");
+    String string0 = document0.cssSelector();
+    Element element0 = document0.doClone((Node) null);
+    assertNotSame(element0, document0);
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test137181() throws Throwable {
+    Document document0 = Document.createShell(""3"");
+    MockPrintWriter mockPrintWriter0 = new MockPrintWriter(""3\n<html>\n <head></head>\n <body></body>\n</html>"");
+    BufferedWriter bufferedWriter0 = new BufferedWriter(mockPrintWriter0);
+    document0.html(bufferedWriter0);
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test137182() throws Throwable {
+    Document document0 = Document.createShell(""3"");
+    MockPrintWriter mockPrintWriter0 = new MockPrintWriter(""3\n<html>\n <head></head>\n <body></body>\n</html>"");
+    BufferedWriter bufferedWriter0 = new BufferedWriter(mockPrintWriter0);
+    document0.html(bufferedWriter0);
+    assertEquals(""3"", document0.baseUri());
+}",""
+"public String toString() {
+    return outerHtml();
+}","public void test138183() throws Throwable {
+    ParseSettings parseSettings0 = ParseSettings.htmlDefault;
+    Tag tag0 = Tag.valueOf(""th"", parseSettings0);
+    Attributes attributes0 = new Attributes();
+    FormElement formElement0 = new FormElement(tag0, ""th"", attributes0);
+    String string0 = formElement0.toString();
+    assertEquals(""<th></th>"", string0);
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test138184() throws Throwable {
+    ParseSettings parseSettings0 = ParseSettings.htmlDefault;
+    Tag tag0 = Tag.valueOf(""th"", parseSettings0);
+    Attributes attributes0 = new Attributes();
+    FormElement formElement0 = new FormElement(tag0, ""th"", attributes0);
+    String string0 = formElement0.toString();
+    assertEquals(""th"", formElement0.baseUri());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test139185() throws Throwable {
+    Document document0 = new Document(""head"");
+    Element element0 = document0.val(""head"");
+    assertEquals(""head"", element0.baseUri());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test140186() throws Throwable {
+    Document document0 = Document.createShell(""#"");
+    document0.val();
+    assertEquals(""#"", document0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test140187() throws Throwable {
+    Document document0 = Document.createShell(""#"");
+    document0.val();
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test141188() throws Throwable {
+    Document document0 = Document.createShell(""E{"");
+    Element element0 = document0.toggleClass("""");
+    assertEquals(1, element0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test141189() throws Throwable {
+    Document document0 = Document.createShell(""E{"");
+    Element element0 = document0.toggleClass("""");
+    assertEquals(""E{"", element0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test142190() throws Throwable {
+    Document document0 = Document.createShell(""%<)"");
+    document0.data();
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test142191() throws Throwable {
+    Document document0 = Document.createShell(""%<)"");
+    document0.data();
+    assertEquals(""%<)"", document0.baseUri());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test143192() throws Throwable {
+    Document document0 = Document.createShell(""E{"");
+    document0.html(""html"");
+    boolean boolean0 = document0.hasText();
+    assertEquals(""E{"", document0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test143193() throws Throwable {
+    Document document0 = Document.createShell(""E{"");
+    document0.html(""html"");
+    boolean boolean0 = document0.hasText();
+    assertEquals(1, document0.childNodeSize());
+}",""
+"public boolean hasText() {
+    for (Node child : childNodes) {
+        if (child instanceof TextNode) {
+            TextNode textNode = (TextNode) child;
+            if (!textNode.isBlank())
+                return true;
+        } else if (child instanceof Element) {
+            Element el = (Element) child;
+            if (el.hasText())
+                return true;
+        }
+    }
+    return false;
+}","public void test143194() throws Throwable {
+    Document document0 = Document.createShell(""E{"");
+    document0.html(""html"");
+    boolean boolean0 = document0.hasText();
+    assertTrue(boolean0);
+}","/**
+ *     Test if this element has any text content (that is not just whitespace).
+ *     @return true if element has non-blank text content.
+ */"
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test144195() throws Throwable {
+    Document document0 = Document.createShell(""head"");
+    boolean boolean0 = document0.hasText();
+    assertEquals(1, document0.childNodeSize());
+}",""
+"public boolean hasText() {
+    for (Node child : childNodes) {
+        if (child instanceof TextNode) {
+            TextNode textNode = (TextNode) child;
+            if (!textNode.isBlank())
+                return true;
+        } else if (child instanceof Element) {
+            Element el = (Element) child;
+            if (el.hasText())
+                return true;
+        }
+    }
+    return false;
+}","public void test144196() throws Throwable {
+    Document document0 = Document.createShell(""head"");
+    boolean boolean0 = document0.hasText();
+    assertFalse(boolean0);
+}","/**
+ *     Test if this element has any text content (that is not just whitespace).
+ *     @return true if element has non-blank text content.
+ */"
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test144197() throws Throwable {
+    Document document0 = Document.createShell(""head"");
+    boolean boolean0 = document0.hasText();
+    assertEquals(""head"", document0.baseUri());
+}",""
+"static boolean preserveWhitespace(Node node) {
+    // looks only at this element and one level up, to prevent recursion & needless stack searches
+    if (node != null && node instanceof Element) {
+        Element element = (Element) node;
+        return element.tag.preserveWhitespace() || element.parent() != null && element.parent().tag.preserveWhitespace();
+    }
+    return false;
+}","public void test145198() throws Throwable {
+    TextNode textNode0 = new TextNode(""hL}"", ""hL}"");
+    boolean boolean0 = Element.preserveWhitespace(textNode0);
+    assertFalse(boolean0);
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test146199() throws Throwable {
+    Tag tag0 = Tag.valueOf(""[8fn`^J*Q$E}<"");
+    Attributes attributes0 = new Attributes();
+    FormElement formElement0 = new FormElement(tag0, ""[8fn`^J*Q$E}<"", attributes0);
+    formElement0.text("""");
+    Elements elements0 = formElement0.getElementsContainingOwnText(""Z0a"");
+    assertEquals(""[8fn`^J*Q$E}<"", formElement0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test147201() throws Throwable {
+    Document document0 = Document.createShell("" "");
+    Element element0 = document0.prependText("" "");
+    element0.text();
+    assertEquals(2, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test147202() throws Throwable {
+    Document document0 = Document.createShell("" "");
+    Element element0 = document0.prependText("" "");
+    element0.text();
+    assertEquals("" "", document0.baseUri());
+}",""
+"public Element getElementById(String id) {
+    Validate.notEmpty(id);
+    Elements elements = Collector.collect(new Evaluator.Id(id), this);
+    if (elements.size() > 0)
+        return elements.get(0);
+    else
+        return null;
+}","public void test148203() throws Throwable {
+    Document document0 = Document.createShell(""3"");
+    Element element0 = document0.getElementById(""3"");
+    assertNull(element0);
+}","/**
+ * Find an element by ID, including or under this element.
+ * <p>
+ * Note that this finds the first matching ID, starting with this element. If you search down from a different
+ * starting point, it is possible to find a different element by ID. For unique element by ID within a Document,
+ * use {@link Document#getElementById(String)}
+ * @param id The ID to search for.
+ * @return The first matching element by ID, starting with this element, or null if none found.
+ */"
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test148204() throws Throwable {
+    Document document0 = Document.createShell(""3"");
+    Element element0 = document0.getElementById(""3"");
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test148205() throws Throwable {
+    Document document0 = Document.createShell(""3"");
+    Element element0 = document0.getElementById(""3"");
+    assertEquals(""3"", document0.baseUri());
+}",""
+"public int siblingIndex() {
+    return siblingIndex;
+}","public void test149206() throws Throwable {
+    ParseSettings parseSettings0 = new ParseSettings(true, false);
+    Tag tag0 = Tag.valueOf(""`"", parseSettings0);
+    Element element0 = new Element(tag0, ""`"");
+    Document document0 = Document.createShell(""`"");
+    element0.appendTo(document0);
+    element0.firstElementSibling();
+    assertEquals(1, element0.siblingIndex());
+}","/**
+ * Get the list index of this node in its node sibling list. I.e. if this is the first node
+ * sibling, returns 0.
+ * @return position in node sibling list
+ * @see org.jsoup.nodes.Element#elementSiblingIndex()
+ */"
+"public Element firstElementSibling() {
+    // todo: should firstSibling() exclude this?
+    List<Element> siblings = parent().childElementsList();
+    return siblings.size() > 1 ? siblings.get(0) : null;
+}","public void test150207() throws Throwable {
+    Document document0 = new Document("""");
+    Node[] nodeArray0 = new Node[5];
+    nodeArray0[0] = (Node) document0;
+    nodeArray0[1] = (Node) document0;
+    nodeArray0[2] = (Node) document0;
+    nodeArray0[3] = (Node) document0;
+    nodeArray0[4] = (Node) document0;
+    document0.addChildren(nodeArray0);
+    Element element0 = document0.firstElementSibling();
+    assertNull(element0);
+}","/**
+ * Gets the first element sibling of this element.
+ * @return the first sibling that is an element (aka the parent's first element child)
+ */"
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test151208() throws Throwable {
+    Document document0 = Document.createShell(""."");
+    document0.previousElementSibling();
+    assertEquals(""."", document0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test151209() throws Throwable {
+    Document document0 = Document.createShell(""."");
+    document0.previousElementSibling();
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test152210() throws Throwable {
+    Document document0 = new Document(""link"");
+    document0.nextElementSibling();
+    assertEquals(""link"", document0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test153211() throws Throwable {
+    Document document0 = new Document(""-pCbPee$@"");
+    Document document1 = document0.normalise();
+    Element element0 = document1.head();
+    Element element1 = element0.nextElementSibling();
+    assertEquals(1, document0.childNodeSize());
+}",""
+"public Element nextElementSibling() {
+    if (parentNode == null)
+        return null;
+    List<Element> siblings = parent().childElementsList();
+    Integer index = indexInList(this, siblings);
+    Validate.notNull(index);
+    if (siblings.size() > index + 1)
+        return siblings.get(index + 1);
+    else
+        return null;
+}","public void test153212() throws Throwable {
+    Document document0 = new Document(""-pCbPee$@"");
+    Document document1 = document0.normalise();
+    Element element0 = document1.head();
+    Element element1 = element0.nextElementSibling();
+    assertNotSame(element0, element1);
+}","/**
+ * Gets the next sibling element of this element. E.g., if a {@code div} contains two {@code p}s,
+ * the {@code nextElementSibling} of the first {@code p} is the second {@code p}.
+ * <p>
+ * This is similar to {@link #nextSibling()}, but specifically finds only Elements
+ * </p>
+ * @return the next element, or null if there is no next element
+ * @see #previousElementSibling()
+ */"
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test154214() throws Throwable {
+    Document document0 = Document.createShell(""kD:[0gtHkC6OCW"");
+    Element element0 = document0.head();
+    Elements elements0 = element0.siblingElements();
+    assertEquals(""kD:[0gtHkC6OCW"", element0.baseUri());
+}",""
+"public String cssSelector() {
+    if (id().length() > 0)
+        return ""#"" + id();
+    // Translate HTML namespace ns:tag to CSS namespace syntax ns|tag
+    String tagName = tagName().replace(':', '|');
+    StringBuilder selector = new StringBuilder(tagName);
+    String classes = StringUtil.join(classNames(), ""."");
+    if (classes.length() > 0)
+        selector.append('.').append(classes);
+    if (// don't add Document to selector, as will always have a html node
+    parent() == null || parent() instanceof Document)
+        return selector.toString();
+    selector.insert(0, "" > "");
+    if (parent().select(selector.toString()).size() > 1)
+        selector.append(String.format("":nth-child(%d)"", elementSiblingIndex() + 1));
+    return parent().cssSelector() + selector.toString();
+}","public void test155215() throws Throwable {
+    Document document0 = new Document(""$mQCi.="");
+    Element element0 = document0.appendTo(document0);
+    String string0 = element0.cssSelector();
+    assertEquals(""#root"", string0);
+}","/**
+ * Get a CSS selector that will uniquely select this element.
+ * <p>
+ * If the element has an ID, returns #id;
+ * otherwise returns the parent (if any) CSS selector, followed by {@literal '>'},
+ * followed by a unique selector for the element (tag.class.class:nth-child(n)).
+ * </p>
+ *
+ * @return the CSS Path that can be used to retrieve the element in a selector.
+ */"
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test155216() throws Throwable {
+    Document document0 = new Document(""$mQCi.="");
+    Element element0 = document0.appendTo(document0);
+    String string0 = element0.cssSelector();
+    assertEquals(""$mQCi.="", element0.baseUri());
+}",""
+"public Element insertChildren(int index, Node... children) {
+    Validate.notNull(children, ""Children collection to be inserted must not be null."");
+    int currentSize = childNodeSize();
+    // roll around
+    if (index < 0)
+        index += currentSize + 1;
+    Validate.isTrue(index >= 0 && index <= currentSize, ""Insert position out of bounds."");
+    addChildren(index, children);
+    return this;
+}","public void test156217() throws Throwable {
+    Document document0 = Document.createShell(""}X"");
+    Node[] nodeArray0 = new Node[4];
+    // Undeclared exception!
+    try {
+        document0.insertChildren((-1433506051), nodeArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Insert position out of bounds.
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Inserts the given child nodes into this element at the specified index. Current nodes will be shifted to the
+ * right. The inserted nodes will be moved from their current parent. To prevent moving, copy the nodes first.
+ *
+ * @param index 0-based index to insert children at. Specify {@code 0} to insert at the start, {@code -1} at the
+ * end
+ * @param children child nodes to insert
+ * @return this element, for chaining.
+ */"
+"public Element insertChildren(int index, Node... children) {
+    Validate.notNull(children, ""Children collection to be inserted must not be null."");
+    int currentSize = childNodeSize();
+    // roll around
+    if (index < 0)
+        index += currentSize + 1;
+    Validate.isTrue(index >= 0 && index <= currentSize, ""Insert position out of bounds."");
+    addChildren(index, children);
+    return this;
+}","public void test157218() throws Throwable {
+    Document document0 = Document.createShell(""5NPZ_v"");
+    Node[] nodeArray0 = new Node[8];
+    // Undeclared exception!
+    try {
+        document0.insertChildren(26, nodeArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Insert position out of bounds.
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Inserts the given child nodes into this element at the specified index. Current nodes will be shifted to the
+ * right. The inserted nodes will be moved from their current parent. To prevent moving, copy the nodes first.
+ *
+ * @param index 0-based index to insert children at. Specify {@code 0} to insert at the start, {@code -1} at the
+ * end
+ * @param children child nodes to insert
+ * @return this element, for chaining.
+ */"
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test158219() throws Throwable {
+    Document document0 = Document.createShell(""}X"");
+    Elements elements0 = document0.siblingElements();
+    Element element0 = document0.insertChildren(1, (Collection<? extends Node>) elements0);
+    assertEquals(""}X"", element0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test158220() throws Throwable {
+    Document document0 = Document.createShell(""}X"");
+    Elements elements0 = document0.siblingElements();
+    Element element0 = document0.insertChildren(1, (Collection<? extends Node>) elements0);
+    assertEquals(1, element0.childNodeSize());
+}",""
+"public Element insertChildren(int index, Collection<? extends Node> children) {
+    Validate.notNull(children, ""Children collection to be inserted must not be null."");
+    int currentSize = childNodeSize();
+    // roll around
+    if (index < 0)
+        index += currentSize + 1;
+    Validate.isTrue(index >= 0 && index <= currentSize, ""Insert position out of bounds."");
+    ArrayList<Node> nodes = new ArrayList<>(children);
+    Node[] nodeArray = nodes.toArray(new Node[nodes.size()]);
+    addChildren(index, nodeArray);
+    return this;
+}","public void test159221() throws Throwable {
+    Document document0 = Document.createShell(""org.jsoup.nodes.Element"");
+    LinkedHashSet<Document> linkedHashSet0 = new LinkedHashSet<Document>();
+    // Undeclared exception!
+    try {
+        document0.insertChildren((-329), (Collection<? extends Node>) linkedHashSet0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Insert position out of bounds.
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Inserts the given child nodes into this element at the specified index. Current nodes will be shifted to the
+ * right. The inserted nodes will be moved from their current parent. To prevent moving, copy the nodes first.
+ *
+ * @param index 0-based index to insert children at. Specify {@code 0} to insert at the start, {@code -1} at the
+ * end
+ * @param children child nodes to insert
+ * @return this element, for chaining.
+ */"
+"public Element insertChildren(int index, Collection<? extends Node> children) {
+    Validate.notNull(children, ""Children collection to be inserted must not be null."");
+    int currentSize = childNodeSize();
+    // roll around
+    if (index < 0)
+        index += currentSize + 1;
+    Validate.isTrue(index >= 0 && index <= currentSize, ""Insert position out of bounds."");
+    ArrayList<Node> nodes = new ArrayList<>(children);
+    Node[] nodeArray = nodes.toArray(new Node[nodes.size()]);
+    addChildren(index, nodeArray);
+    return this;
+}","public void test160222() throws Throwable {
+    Document document0 = Document.createShell("""");
+    LinkedList<Document> linkedList0 = new LinkedList<Document>();
+    // Undeclared exception!
+    try {
+        document0.insertChildren(1881, (Collection<? extends Node>) linkedList0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Insert position out of bounds.
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Inserts the given child nodes into this element at the specified index. Current nodes will be shifted to the
+ * right. The inserted nodes will be moved from their current parent. To prevent moving, copy the nodes first.
+ *
+ * @param index 0-based index to insert children at. Specify {@code 0} to insert at the start, {@code -1} at the
+ * end
+ * @param children child nodes to insert
+ * @return this element, for chaining.
+ */"
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test161223() throws Throwable {
+    Document document0 = Document.createShell(""E{"");
+    List<DataNode> list0 = document0.dataNodes();
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test161224() throws Throwable {
+    Document document0 = Document.createShell(""E{"");
+    List<DataNode> list0 = document0.dataNodes();
+    assertEquals(""E{"", document0.baseUri());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test162227() throws Throwable {
+    Document document0 = Document.createShell(""."");
+    List<TextNode> list0 = document0.textNodes();
+    assertEquals(""."", document0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test162228() throws Throwable {
+    Document document0 = Document.createShell(""."");
+    List<TextNode> list0 = document0.textNodes();
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test163229() throws Throwable {
+    Document document0 = Document.createShell(""}X"");
+    document0.prependText(""ScriptDataEscapeStartDash"");
+    document0.getElementsByIndexLessThan(14);
+    assertEquals(2, document0.childNodeSize());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test164230() throws Throwable {
+    Document document0 = Document.createShell(""E{"");
+    Element element0 = document0.body();
+    Element element1 = element0.lastElementSibling();
+    element1.html(""html"");
+    assertEquals(1, element0.childNodeSize());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test164231() throws Throwable {
+    Document document0 = Document.createShell(""E{"");
+    Element element0 = document0.body();
+    Element element1 = element0.lastElementSibling();
+    element1.html(""html"");
+    document0.getElementsMatchingText(""id"");
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test165233() throws Throwable {
+    Document document0 = Document.createShell("""");
+    Elements elements0 = document0.getElementsByIndexGreaterThan(1510);
+    assertEquals(1, document0.childNodeSize());
+}",""
+"public Element selectFirst(String cssQuery) {
+    return Selector.selectFirst(cssQuery, this);
+}","public void test166234() throws Throwable {
+    Document document0 = Document.createShell(""}X"");
+    // Undeclared exception!
+    try {
+        document0.selectFirst((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Find the first Element that matches the {@link Selector} CSS query, with this element as the starting context.
+ * <p>This is effectively the same as calling {@code element.select(query).first()}, but is more efficient as query
+ * execution stops on the first hit.</p>
+ * @param cssQuery cssQuery a {@link Selector} CSS-like query
+ * @return the first matching element, or <b>{@code null}</b> if there is no match.
+ */"
+"public boolean is(String cssQuery) {
+    return is(QueryParser.parse(cssQuery));
+}","public void test167235() throws Throwable {
+    Document document0 = new Document(""$mQCi.="");
+    // Undeclared exception!
+    try {
+        document0.is(""$mQCi.="");
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Could not parse query '$mQCi.=': unexpected token at '$mQCi.='
+        //
+        verifyException(""org.jsoup.select.QueryParser"", e);
+    }
+}","/**
+ * Check if this element matches the given {@link Selector} CSS query.
+ * @param cssQuery a {@link Selector} CSS query
+ * @return if this element matches the query
+ */"
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test168236() throws Throwable {
+    Document document0 = Document.createShell(""."");
+    Elements elements0 = document0.getAllElements();
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test168238() throws Throwable {
+    Document document0 = Document.createShell(""."");
+    Elements elements0 = document0.getAllElements();
+    assertEquals(""."", document0.baseUri());
+}",""
+"@Override
+public Element before(String html) {
+    return (Element) super.before(html);
+}","public void test169239() throws Throwable {
+    Document document0 = Document.createShell("""");
+    // Undeclared exception!
+    try {
+        document0.before("""");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Insert the specified HTML into the DOM before this element (as a preceding sibling).
+ *
+ * @param html HTML to add before this element
+ * @return this element, for chaining
+ * @see #after(String)
+ */"
+"public Elements getElementsByAttribute(String key) {
+    Validate.notEmpty(key);
+    key = key.trim();
+    return Collector.collect(new Evaluator.Attribute(key), this);
+}","public void test170240() throws Throwable {
+    Document document0 = Document.createShell("""");
+    // Undeclared exception!
+    try {
+        document0.getElementsByAttribute("""");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Find elements that have a named attribute set. Case insensitive.
+ *
+ * @param key name of the attribute, e.g. {@code href}
+ * @return elements that have this attribute, empty if none
+ */"
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test171242() throws Throwable {
+    Document document0 = Document.createShell(""Tag name must not be empty."");
+    Elements elements0 = document0.getElementsByAttributeValueNot(""AfterDoctypeSystemIdentifier"", ""AfterDoctypeSystemIdentifier"");
+    assertEquals(""Tag name must not be empty."", document0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test171243() throws Throwable {
+    Document document0 = Document.createShell(""Tag name must not be empty."");
+    Elements elements0 = document0.getElementsByAttributeValueNot(""AfterDoctypeSystemIdentifier"", ""AfterDoctypeSystemIdentifier"");
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public Element after(Node node) {
+    return (Element) super.after(node);
+}","public void test172244() throws Throwable {
+    Document document0 = new Document(""40<[X;q6OiP(sh*2"");
+    Element element0 = document0.appendTo(document0);
+    // Undeclared exception!
+    try {
+        document0.after((Node) element0);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 1, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}","/**
+ * Insert the specified node into the DOM after this node (as a following sibling).
+ * @param node to add after this element
+ * @return this element, for chaining
+ * @see #before(Node)
+ */"
+"@Override
+public Element after(Node node) {
+    return (Element) super.after(node);
+}","public void test173245() throws Throwable {
+    Document document0 = new Document(""40<[X;q6OiP(sh*2"");
+    // Undeclared exception!
+    try {
+        document0.after((Node) document0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Insert the specified node into the DOM after this node (as a following sibling).
+ * @param node to add after this element
+ * @return this element, for chaining
+ * @see #before(Node)
+ */"
+"public Elements getElementsByAttributeValueContaining(String key, String match) {
+    return Collector.collect(new Evaluator.AttributeWithValueContaining(key, match), this);
+}","public void test174246() throws Throwable {
+    ParseSettings parseSettings0 = ParseSettings.htmlDefault;
+    Tag tag0 = Tag.valueOf(""-"", parseSettings0);
+    Attributes attributes0 = new Attributes();
+    FormElement formElement0 = new FormElement(tag0, "">"", attributes0);
+    // Undeclared exception!
+    try {
+        formElement0.getElementsByAttributeValueContaining("""", """");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Find elements that have attributes whose value contains the match string. Case insensitive.
+ *
+ * @param key name of the attribute
+ * @param match substring of value to search for
+ * @return elements that have attributes containing this text
+ */"
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test175247() throws Throwable {
+    Document document0 = new Document(""html"");
+    Elements elements0 = document0.getElementsContainingText(""8(cTKZ"");
+    assertEquals(""html"", document0.baseUri());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test176250() throws Throwable {
+    Document document0 = Document.createShell(""E{"");
+    Elements elements0 = document0.getElementsByClass(""E{"");
+    assertEquals(""E{"", document0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test176251() throws Throwable {
+    Document document0 = Document.createShell(""E{"");
+    Elements elements0 = document0.getElementsByClass(""E{"");
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test177252() throws Throwable {
+    Document document0 = Document.createShell(""."");
+    document0.getElementsByAttributeValueEnding(""br"", ""org.jsoup.nodes.Element$1"");
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test177253() throws Throwable {
+    Document document0 = Document.createShell(""."");
+    document0.getElementsByAttributeValueEnding(""br"", ""org.jsoup.nodes.Element$1"");
+    assertEquals(""."", document0.baseUri());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test178254() throws Throwable {
+    Document document0 = Document.createShell(""E{"");
+    Evaluator.AttributeStarting evaluator_AttributeStarting0 = new Evaluator.AttributeStarting(""<Y]A!z5}=3u"");
+    document0.is((Evaluator) evaluator_AttributeStarting0);
+    assertEquals(""E{"", document0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test178255() throws Throwable {
+    Document document0 = Document.createShell(""E{"");
+    Evaluator.AttributeStarting evaluator_AttributeStarting0 = new Evaluator.AttributeStarting(""<Y]A!z5}=3u"");
+    document0.is((Evaluator) evaluator_AttributeStarting0);
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test179256() throws Throwable {
+    Document document0 = Document.createShell("""");
+    document0.getElementsByAttributeValueMatching("""", ""Z<$2^*d"");
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public Element wrap(String html) {
+    return (Element) super.wrap(html);
+}","public void test180257() throws Throwable {
+    Document document0 = Document.createShell(""E{"");
+    // Undeclared exception!
+    try {
+        document0.wrap(""id"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Node"", e);
+    }
+}","/**
+ * Wrap the supplied HTML around this element.
+ *
+ * @param html HTML to wrap around this element, e.g. {@code <div class=""head""></div>}. Can be arbitrarily deep.
+ * @return this element, for chaining.
+ */"
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test181258() throws Throwable {
+    Document document0 = Document.createShell(""."");
+    Elements elements0 = document0.getElementsByIndexEquals(1532);
+    assertEquals(""."", document0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test181259() throws Throwable {
+    Document document0 = Document.createShell(""."");
+    Elements elements0 = document0.getElementsByIndexEquals(1532);
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test182261() throws Throwable {
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    Tag tag0 = Tag.valueOf(""0r>"", parseSettings0);
+    Element element0 = new Element(tag0, ""0r>"");
+    element0.getElementsByAttributeStarting(""0r>"");
+    assertEquals(""0r>"", element0.baseUri());
+}",""
+"@Override
+public Element after(String html) {
+    return (Element) super.after(html);
+}","public void test183262() throws Throwable {
+    Document document0 = Document.createShell(""3"");
+    // Undeclared exception!
+    try {
+        document0.after(""org.jsoup.select.Evaluator$AttributeWithValueContaining"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Insert the specified HTML into the DOM after this element (as a following sibling).
+ *
+ * @param html HTML to add after this element
+ * @return this element, for chaining
+ * @see #before(String)
+ */"
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test184264() throws Throwable {
+    Document document0 = Document.createShell(""}X"");
+    Elements elements0 = document0.getElementsMatchingOwnText("""");
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test184265() throws Throwable {
+    Document document0 = Document.createShell(""}X"");
+    Elements elements0 = document0.getElementsMatchingOwnText("""");
+    assertEquals(""}X"", document0.baseUri());
+}",""
+"public boolean hasParent() {
+    return parentNode != null;
+}","public void test185266() throws Throwable {
+    Document document0 = Document.createShell("""");
+    assertFalse(document0.hasParent());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test185267() throws Throwable {
+    Document document0 = Document.createShell("""");
+    Element element0 = document0.prepend("""");
+    assertEquals(1, element0.childNodeSize());
+}",""
+"public String cssSelector() {
+    if (id().length() > 0)
+        return ""#"" + id();
+    // Translate HTML namespace ns:tag to CSS namespace syntax ns|tag
+    String tagName = tagName().replace(':', '|');
+    StringBuilder selector = new StringBuilder(tagName);
+    String classes = StringUtil.join(classNames(), ""."");
+    if (classes.length() > 0)
+        selector.append('.').append(classes);
+    if (// don't add Document to selector, as will always have a html node
+    parent() == null || parent() instanceof Document)
+        return selector.toString();
+    selector.insert(0, "" > "");
+    if (parent().select(selector.toString()).size() > 1)
+        selector.append(String.format("":nth-child(%d)"", elementSiblingIndex() + 1));
+    return parent().cssSelector() + selector.toString();
+}","public void test186268() throws Throwable {
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    Tag tag0 = Tag.valueOf(""0r>"", parseSettings0);
+    Element element0 = new Element(tag0, ""0r>"");
+    element0.prependChild(element0);
+    // Undeclared exception!
+    try {
+        element0.cssSelector();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Could not parse query '': unexpected token at ''
+        //
+        verifyException(""org.jsoup.select.QueryParser"", e);
+    }
+}","/**
+ * Get a CSS selector that will uniquely select this element.
+ * <p>
+ * If the element has an ID, returns #id;
+ * otherwise returns the parent (if any) CSS selector, followed by {@literal '>'},
+ * followed by a unique selector for the element (tag.class.class:nth-child(n)).
+ * </p>
+ *
+ * @return the CSS Path that can be used to retrieve the element in a selector.
+ */"
+"public boolean hasParent() {
+    return parentNode != null;
+}","public void test187269() throws Throwable {
+    Document document0 = Document.createShell(""bk|?b3ZEQ Xe@tC}&N"");
+    assertFalse(document0.hasParent());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test187270() throws Throwable {
+    Document document0 = Document.createShell(""bk|?b3ZEQ Xe@tC}&N"");
+    document0.getElementsByAttributeValueStarting(""DoctypeSystemIdentifier_singleQuoted"", ""L"");
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test187271() throws Throwable {
+    Document document0 = Document.createShell(""bk|?b3ZEQ Xe@tC}&N"");
+    document0.getElementsByAttributeValueStarting(""DoctypeSystemIdentifier_singleQuoted"", ""L"");
+    assertEquals(""bk|?b3ZEQ Xe@tC}&N"", document0.baseUri());
+}",""
+"public boolean hasParent() {
+    return parentNode != null;
+}","public void test189273() throws Throwable {
+    Document document0 = Document.createShell(""#"");
+    Element element0 = document0.attr(""#"", true);
+    assertFalse(element0.hasParent());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test189274() throws Throwable {
+    Document document0 = Document.createShell(""#"");
+    Element element0 = document0.attr(""#"", true);
+    assertEquals(""#"", element0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test189275() throws Throwable {
+    Document document0 = Document.createShell(""#"");
+    Element element0 = document0.attr(""#"", true);
+    assertEquals(1, element0.childNodeSize());
+}",""
+"@Override
+public Element before(Node node) {
+    return (Element) super.before(node);
+}","public void test190276() throws Throwable {
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    Tag tag0 = Tag.valueOf(""0r>"", parseSettings0);
+    Element element0 = new Element(tag0, ""0r>"");
+    // Undeclared exception!
+    try {
+        element0.before((Node) element0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Insert the specified node into the DOM before this node (as a preceding sibling).
+ * @param node to add before this element
+ * @return this Element, for chaining
+ * @see #after(Node)
+ */"
+"public boolean hasParent() {
+    return parentNode != null;
+}","public void test191277() throws Throwable {
+    Document document0 = Document.createShell(""}X"");
+    Element element0 = document0.addClass(""1/B"");
+    assertFalse(element0.hasParent());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test191278() throws Throwable {
+    Document document0 = Document.createShell(""}X"");
+    Element element0 = document0.addClass(""1/B"");
+    assertEquals(""}X"", element0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test191279() throws Throwable {
+    Document document0 = Document.createShell(""}X"");
+    Element element0 = document0.addClass(""1/B"");
+    assertEquals(1, element0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test192280() throws Throwable {
+    Document document0 = new Document(""html"");
+    document0.dataset();
+    assertEquals(""html"", document0.baseUri());
+}",""
+"public Element tagName(String tagName) {
+    Validate.notEmpty(tagName, ""Tag name must not be empty."");
+    // preserve the requested tag case
+    tag = Tag.valueOf(tagName, ParseSettings.preserveCase);
+    return this;
+}","public void test193281() throws Throwable {
+    Document document0 = Document.createShell(""}X"");
+    // Undeclared exception!
+    try {
+        document0.tagName((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Tag name must not be empty.
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Change the tag of this element. For example, convert a {@code <span>} to a {@code <div>} with
+ * {@code el.tagName(""div"");}.
+ *
+ * @param tagName new tag name for this element
+ * @return this element, for chaining
+ */"
+"public Element child(int index) {
+    return childElementsList().get(index);
+}","public void test194282() throws Throwable {
+    Element element0 = new Element(""s+"");
+    // Undeclared exception!
+    try {
+        element0.child((-3587));
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * Get a child element of this element, by its 0-based index number.
+ * <p>
+ * Note that an element can have both mixed Nodes and Elements as children. This method inspects
+ * a filtered list of children that are elements, and the index is based on that filtered list.
+ * </p>
+ *
+ * @param index the index number of the element to retrieve
+ * @return the child element, if it exists, otherwise throws an {@code IndexOutOfBoundsException}
+ * @see #childNode(int)
+ */"
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test195283() throws Throwable {
+    Document document0 = Document.createShell(""%<)"");
+    document0.isBlock();
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test195284() throws Throwable {
+    Document document0 = Document.createShell(""%<)"");
+    document0.isBlock();
+    assertEquals(""%<)"", document0.baseUri());
+}",""
+"public boolean hasParent() {
+    return parentNode != null;
+}","public void test195285() throws Throwable {
+    Document document0 = Document.createShell(""%<)"");
+    document0.isBlock();
+    assertFalse(document0.hasParent());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test196286() throws Throwable {
+    Document document0 = Document.createShell("""");
+    document0.appendText(""ismap"");
+    assertEquals(2, document0.childNodeSize());
+}",""
+"public boolean hasParent() {
+    return parentNode != null;
+}","public void test197287() throws Throwable {
+    Document document0 = Document.createShell(""3"");
+    Elements elements0 = document0.children();
+    assertFalse(document0.hasParent());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test197288() throws Throwable {
+    Document document0 = Document.createShell(""3"");
+    Elements elements0 = document0.children();
+    assertEquals(""3"", document0.baseUri());
+}",""

@@ -1,0 +1,43 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test00,"public void test00() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""vZ0bc$RRC"");
+    PrepareAst prepareAst0 = new PrepareAst(compiler0, true);
+    prepareAst0.process(node0, node0);
+    assertFalse(node0.isWhile());
+}",0,
+project,0,test11,"public void test11() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    PrepareAst prepareAst0 = new PrepareAst(compiler0);
+    prepareAst0.process((Node) null, (Node) null);
+}",0,
+project,0,test22,"public void test22() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newString(108, ""i)=mbX|RwV1q:"", 108, 108);
+    PrepareAst prepareAst0 = new PrepareAst(compiler0, true);
+    Node node1 = new Node(108, node0);
+    prepareAst0.process(node0, node1);
+    assertFalse(node1.isDelProp());
+}",0,assertTrue(node1.isDelProp())
+project,0,test33,"public void test33() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    compiler0.parseTestCode(""vZ0bc$RRC"");
+    // Undeclared exception!
+    try {
+        compiler0.ensureLibraryInjected(""vZ0bc$RRC"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.Compiler"", e);
+    }
+}",0,
+project,0,test44,"public void test44() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""A function call cannot be of the form: new Object.call()"");
+    PrepareAst prepareAst0 = new PrepareAst(compiler0);
+    Node node1 = new Node(37, node0, node0, 0, 52);
+    prepareAst0.process(node1, node1);
+    assertFalse(node1.hasMoreThanOneChild());
+}",0,assertFalse(node1.hasMoreThanOneChild())

@@ -1,0 +1,41 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test00,"public void test00() throws Throwable {
+    // Undeclared exception!
+    try {
+        TarArchiveInputStream.matches((byte[]) null, 6854);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.utils.ArchiveUtils"", e);
+    }
+}",0,
+project,0,test11,"public void test11() throws Throwable {
+    PipedInputStream pipedInputStream0 = new PipedInputStream();
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(pipedInputStream0, ""Gx"");
+    tarArchiveInputStream0.getCurrentEntry();
+    assertEquals(512, tarArchiveInputStream0.getRecordSize());
+}",0,"assertEquals(0, tarArchiveInputStream0.getRecordSize())"
+project,0,test22,"public void test22() throws Throwable {
+    PipedInputStream pipedInputStream0 = new PipedInputStream();
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(pipedInputStream0, ""Gx"");
+    MockFile mockFile0 = new MockFile("";(G3~{dE,6nC?1<"", "",`mr"");
+    TarArchiveEntry tarArchiveEntry0 = new TarArchiveEntry(mockFile0);
+    tarArchiveInputStream0.setCurrentEntry(tarArchiveEntry0);
+    tarArchiveInputStream0.getCurrentEntry();
+    assertEquals(512, tarArchiveInputStream0.getRecordSize());
+}",0,"assertEquals(1, tarArchiveInputStream0.getRecordSize())"
+project,0,test33,"public void test33() throws Throwable {
+    PipedInputStream pipedInputStream0 = new PipedInputStream();
+    TarArchiveInputStream tarArchiveInputStream0 = null;
+    try {
+        tarArchiveInputStream0 = new TarArchiveInputStream(pipedInputStream0, (-1501), 10240, ""]V2X(Mp)"");
+        fail(""Expecting exception: IllegalCharsetNameException"");
+    } catch (IllegalCharsetNameException e) {
+        //
+        // ]V2X(Mp)
+        //
+        verifyException(""java.nio.charset.Charset"", e);
+    }
+}",0,

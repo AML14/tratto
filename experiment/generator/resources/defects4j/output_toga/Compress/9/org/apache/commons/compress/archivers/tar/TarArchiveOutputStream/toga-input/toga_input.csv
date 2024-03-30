@@ -1,0 +1,937 @@
+focal_method,test_prefix,docstring
+"public long getBytesWritten() {
+    return bytesWritten;
+}","public void test000() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(byteArrayOutputStream0);
+    byteArrayOutputStream0.writeTo(tarArchiveOutputStream0);
+    assertEquals(0L, tarArchiveOutputStream0.getBytesWritten());
+}","/**
+ * Returns the current number of bytes written to this stream.
+ * @return the number of written bytes
+ * @since Apache Commons Compress 1.1
+ */"
+"public String getUserName() {
+    return userName.toString();
+}","public void test011() throws Throwable {
+    URI uRI0 = MockURI.aFileURI;
+    MockFile mockFile0 = new MockFile(uRI0);
+    MockPrintStream mockPrintStream0 = new MockPrintStream(mockFile0);
+    PrintStream printStream0 = mockPrintStream0.append('W');
+    DataOutputStream dataOutputStream0 = new DataOutputStream(printStream0);
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(dataOutputStream0);
+    TarArchiveEntry tarArchiveEntry0 = (TarArchiveEntry) tarArchiveOutputStream0.createArchiveEntry(mockFile0, """");
+    assertEquals(""elliottzackrone"", tarArchiveEntry0.getUserName());
+}","/**
+ * Get this entry's user name.
+ *
+ * @return This entry's user name.
+ */"
+"@Override
+public void putArchiveEntry(ArchiveEntry archiveEntry) throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    TarArchiveEntry entry = (TarArchiveEntry) archiveEntry;
+    if (entry.getName().length() >= TarConstants.NAMELEN) {
+        if (longFileMode == LONGFILE_GNU) {
+            // create a TarEntry for the LongLink, the contents
+            // of which are the entry's name
+            TarArchiveEntry longLinkEntry = new TarArchiveEntry(TarConstants.GNU_LONGLINK, TarConstants.LF_GNUTYPE_LONGNAME);
+            final byte[] nameBytes = ArchiveUtils.toAsciiBytes(entry.getName());
+            // +1 for NUL
+            longLinkEntry.setSize(nameBytes.length + 1);
+            putArchiveEntry(longLinkEntry);
+            write(nameBytes);
+            // NUL terminator
+            write(0);
+            closeArchiveEntry();
+        } else if (longFileMode != LONGFILE_TRUNCATE) {
+            throw new RuntimeException(""file name '"" + entry.getName() + ""' is too long ( > "" + TarConstants.NAMELEN + "" bytes)"");
+        }
+    }
+    entry.writeEntryHeader(recordBuf);
+    buffer.writeRecord(recordBuf);
+    currBytes = 0;
+    if (entry.isDirectory()) {
+        currSize = 0;
+    } else {
+        currSize = entry.getSize();
+    }
+    currName = entry.getName();
+    haveUnclosedEntry = true;
+}","public void test022() throws Throwable {
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream("" bytes)"", false);
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(mockFileOutputStream0);
+    ArArchiveEntry arArchiveEntry0 = new ArArchiveEntry("""", 63L);
+    // Undeclared exception!
+    try {
+        tarArchiveOutputStream0.putArchiveEntry(arArchiveEntry0);
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // org.apache.commons.compress.archivers.ar.ArArchiveEntry cannot be cast to org.apache.commons.compress.archivers.tar.TarArchiveEntry
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarArchiveOutputStream"", e);
+    }
+}","/**
+ * Put an entry on the output stream. This writes the entry's
+ * header record and positions the output stream for writing
+ * the contents of the entry. Once this method is called, the
+ * stream is ready for calls to write() to write the entry's
+ * contents. Once the contents are written, closeArchiveEntry()
+ * <B>MUST</B> be called to ensure that all buffered data
+ * is completely written to the output stream.
+ *
+ * @param archiveEntry The TarEntry to be written to the archive.
+ * @throws IOException on error
+ * @throws ClassCastException if archiveEntry is not an instance of TarArchiveEntry
+ */"
+"@Override
+public void putArchiveEntry(ArchiveEntry archiveEntry) throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    TarArchiveEntry entry = (TarArchiveEntry) archiveEntry;
+    if (entry.getName().length() >= TarConstants.NAMELEN) {
+        if (longFileMode == LONGFILE_GNU) {
+            // create a TarEntry for the LongLink, the contents
+            // of which are the entry's name
+            TarArchiveEntry longLinkEntry = new TarArchiveEntry(TarConstants.GNU_LONGLINK, TarConstants.LF_GNUTYPE_LONGNAME);
+            final byte[] nameBytes = ArchiveUtils.toAsciiBytes(entry.getName());
+            // +1 for NUL
+            longLinkEntry.setSize(nameBytes.length + 1);
+            putArchiveEntry(longLinkEntry);
+            write(nameBytes);
+            // NUL terminator
+            write(0);
+            closeArchiveEntry();
+        } else if (longFileMode != LONGFILE_TRUNCATE) {
+            throw new RuntimeException(""file name '"" + entry.getName() + ""' is too long ( > "" + TarConstants.NAMELEN + "" bytes)"");
+        }
+    }
+    entry.writeEntryHeader(recordBuf);
+    buffer.writeRecord(recordBuf);
+    currBytes = 0;
+    if (entry.isDirectory()) {
+        currSize = 0;
+    } else {
+        currSize = entry.getSize();
+    }
+    currName = entry.getName();
+    haveUnclosedEntry = true;
+}","public void test033() throws Throwable {
+    MockFile mockFile0 = new MockFile(""'@"", ""D(i:WAj-XQ83E8"");
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(mockFile0);
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(mockFileOutputStream0, 54);
+    ArchiveEntry archiveEntry0 = tarArchiveOutputStream0.createArchiveEntry(mockFile0, """");
+    // Undeclared exception!
+    try {
+        tarArchiveOutputStream0.putArchiveEntry(archiveEntry0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}","/**
+ * Put an entry on the output stream. This writes the entry's
+ * header record and positions the output stream for writing
+ * the contents of the entry. Once this method is called, the
+ * stream is ready for calls to write() to write the entry's
+ * contents. Once the contents are written, closeArchiveEntry()
+ * <B>MUST</B> be called to ensure that all buffered data
+ * is completely written to the output stream.
+ *
+ * @param archiveEntry The TarEntry to be written to the archive.
+ * @throws IOException on error
+ * @throws ClassCastException if archiveEntry is not an instance of TarArchiveEntry
+ */"
+"@Override
+public void flush() throws IOException {
+    out.flush();
+}","public void test044() throws Throwable {
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream((OutputStream) null);
+    // Undeclared exception!
+    try {
+        tarArchiveOutputStream0.flush();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.io.FilterOutputStream"", e);
+    }
+}",""
+"@Override
+public void finish() throws IOException {
+    if (finished) {
+        throw new IOException(""This archive has already been finished"");
+    }
+    if (haveUnclosedEntry) {
+        throw new IOException(""This archives contains unclosed entries."");
+    }
+    writeEOFRecord();
+    writeEOFRecord();
+    buffer.flushBlock();
+    finished = true;
+}","public void test055() throws Throwable {
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream((OutputStream) null);
+    // Undeclared exception!
+    try {
+        tarArchiveOutputStream0.finish();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.utils.CountingOutputStream"", e);
+    }
+}","/**
+ * Ends the TAR archive without closing the underlying OutputStream.
+ *
+ * An archive consists of a series of file entries terminated by an
+ * end-of-archive entry, which consists of two 512 blocks of zero bytes.
+ * POSIX.1 requires two EOF records, like some other implementations.
+ *
+ * @throws IOException on error
+ */"
+"@Override
+public void finish() throws IOException {
+    if (finished) {
+        throw new IOException(""This archive has already been finished"");
+    }
+    if (haveUnclosedEntry) {
+        throw new IOException(""This archives contains unclosed entries."");
+    }
+    writeEOFRecord();
+    writeEOFRecord();
+    buffer.flushBlock();
+    finished = true;
+}","public void test066() throws Throwable {
+    MockFile mockFile0 = new MockFile(""G?Gx"", ""G?Gx"");
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(mockFile0);
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(mockFileOutputStream0);
+    MockPrintStream mockPrintStream0 = new MockPrintStream(tarArchiveOutputStream0, false);
+    TarArchiveOutputStream tarArchiveOutputStream1 = new TarArchiveOutputStream(mockPrintStream0, 2);
+    // Undeclared exception!
+    try {
+        tarArchiveOutputStream1.finish();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}","/**
+ * Ends the TAR archive without closing the underlying OutputStream.
+ *
+ * An archive consists of a series of file entries terminated by an
+ * end-of-archive entry, which consists of two 512 blocks of zero bytes.
+ * POSIX.1 requires two EOF records, like some other implementations.
+ *
+ * @throws IOException on error
+ */"
+"@Override
+public ArchiveEntry createArchiveEntry(File inputFile, String entryName) throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    return new TarArchiveEntry(inputFile, entryName);
+}","public void test077() throws Throwable {
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""P7"");
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(mockFileOutputStream0);
+    // Undeclared exception!
+    try {
+        tarArchiveOutputStream0.createArchiveEntry((File) null, """");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarArchiveEntry"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"@Override
+public void close() throws IOException {
+    if (!finished) {
+        finish();
+    }
+    if (!closed) {
+        buffer.close();
+        out.close();
+        closed = true;
+    }
+}","public void test088() throws Throwable {
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(pipedOutputStream0, 10240, 10240);
+    // Undeclared exception!
+    tarArchiveOutputStream0.close();
+}","/**
+ * Closes the underlying OutputStream.
+ * @throws IOException on error
+ */"
+"@Override
+public void close() throws IOException {
+    if (!finished) {
+        finish();
+    }
+    if (!closed) {
+        buffer.close();
+        out.close();
+        closed = true;
+    }
+}","public void test099() throws Throwable {
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream((OutputStream) null, 0, 1);
+    // Undeclared exception!
+    try {
+        tarArchiveOutputStream0.close();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.utils.CountingOutputStream"", e);
+    }
+}","/**
+ * Closes the underlying OutputStream.
+ * @throws IOException on error
+ */"
+"@Override
+public void close() throws IOException {
+    if (!finished) {
+        finish();
+    }
+    if (!closed) {
+        buffer.close();
+        out.close();
+        closed = true;
+    }
+}","public void test1010() throws Throwable {
+    File file0 = MockFile.createTempFile(""Z6N!L8e6!=J?(JzYNZQ"", ""Z6N!L8e6!=J?(JzYNZQ"");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(file0);
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(mockPrintStream0, 55, 5567);
+    // Undeclared exception!
+    try {
+        tarArchiveOutputStream0.close();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}","/**
+ * Closes the underlying OutputStream.
+ * @throws IOException on error
+ */"
+"@Override
+public void close() throws IOException {
+    if (!finished) {
+        finish();
+    }
+    if (!closed) {
+        buffer.close();
+        out.close();
+        closed = true;
+    }
+}","public void test1111() throws Throwable {
+    MockFile mockFile0 = new MockFile("","", "","");
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(mockFile0);
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(mockFileOutputStream0, 4665, 4665);
+    FileSystemHandling.shouldAllThrowIOExceptions();
+    try {
+        tarArchiveOutputStream0.close();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Simulated IOException
+        //
+        verifyException(""org.evosuite.runtime.vfs.VirtualFileSystem"", e);
+    }
+}","/**
+ * Closes the underlying OutputStream.
+ * @throws IOException on error
+ */"
+"public TarArchiveOutputStream(OutputStream os, int blockSize, int recordSize) {
+    out = new CountingOutputStream(os);
+    this.buffer = new TarBuffer(out, blockSize, recordSize);
+    this.assemLen = 0;
+    this.assemBuf = new byte[recordSize];
+    this.recordBuf = new byte[recordSize];
+}","public void test1212() throws Throwable {
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""' bytes for entry '"");
+    TarArchiveOutputStream tarArchiveOutputStream0 = null;
+    try {
+        tarArchiveOutputStream0 = new TarArchiveOutputStream(mockFileOutputStream0, (-4869), (-1));
+        fail(""Expecting exception: NegativeArraySizeException"");
+    } catch (NegativeArraySizeException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarBuffer"", e);
+    }
+}","/**
+ * Constructor for TarInputStream.
+ * @param os the output stream to use
+ * @param blockSize the block size to use
+ * @param recordSize the record size to use
+ */"
+"public TarArchiveOutputStream(OutputStream os, int blockSize, int recordSize) {
+    out = new CountingOutputStream(os);
+    this.buffer = new TarBuffer(out, blockSize, recordSize);
+    this.assemLen = 0;
+    this.assemBuf = new byte[recordSize];
+    this.recordBuf = new byte[recordSize];
+}","public void test1313() throws Throwable {
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""Unknown header type"");
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(mockPrintStream0);
+    TarArchiveOutputStream tarArchiveOutputStream1 = null;
+    try {
+        tarArchiveOutputStream1 = new TarArchiveOutputStream(tarArchiveOutputStream0, 512, 0);
+        fail(""Expecting exception: ArithmeticException"");
+    } catch (ArithmeticException e) {
+        //
+        // / by zero
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarBuffer"", e);
+    }
+}","/**
+ * Constructor for TarInputStream.
+ * @param os the output stream to use
+ * @param blockSize the block size to use
+ * @param recordSize the record size to use
+ */"
+"public TarArchiveOutputStream(OutputStream os, int blockSize) {
+    this(os, blockSize, TarBuffer.DEFAULT_RCDSIZE);
+}","public void test1414() throws Throwable {
+    TarArchiveOutputStream tarArchiveOutputStream0 = null;
+    try {
+        tarArchiveOutputStream0 = new TarArchiveOutputStream((OutputStream) null, (-374));
+        fail(""Expecting exception: NegativeArraySizeException"");
+    } catch (NegativeArraySizeException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarBuffer"", e);
+    }
+}","/**
+ * Constructor for TarInputStream.
+ * @param os the output stream to use
+ * @param blockSize the block size to use
+ */"
+"@Override
+public ArchiveEntry createArchiveEntry(File inputFile, String entryName) throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    return new TarArchiveEntry(inputFile, entryName);
+}","public void test1515() throws Throwable {
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""xfe!*`l@X1"");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(mockFileOutputStream0, false);
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(mockPrintStream0);
+    tarArchiveOutputStream0.close();
+    MockFile mockFile0 = new MockFile(""' bytes specified in the header were written"", ""iuKQ=,{jc2|fvlSo_j"");
+    try {
+        tarArchiveOutputStream0.createArchiveEntry(mockFile0, """");
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream has already been finished
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarArchiveOutputStream"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"@Override
+public void write(byte[] wBuf, int wOffset, int numToWrite) throws IOException {
+    if ((currBytes + numToWrite) > currSize) {
+        throw new IOException(""request to write '"" + numToWrite + ""' bytes exceeds size in header of '"" + currSize + ""' bytes for entry '"" + currName + ""'"");
+        //
+        // We have to deal with assembly!!!
+        // The programmer can be writing little 32 byte chunks for all
+        // we know, and we must assemble complete records for writing.
+        // REVIEW Maybe this should be in TarBuffer? Could that help to
+        // eliminate some of the buffer copying.
+        //
+    }
+    if (assemLen > 0) {
+        if ((assemLen + numToWrite) >= recordBuf.length) {
+            int aLen = recordBuf.length - assemLen;
+            System.arraycopy(assemBuf, 0, recordBuf, 0, assemLen);
+            System.arraycopy(wBuf, wOffset, recordBuf, assemLen, aLen);
+            buffer.writeRecord(recordBuf);
+            currBytes += recordBuf.length;
+            wOffset += aLen;
+            numToWrite -= aLen;
+            assemLen = 0;
+        } else {
+            System.arraycopy(wBuf, wOffset, assemBuf, assemLen, numToWrite);
+            wOffset += numToWrite;
+            assemLen += numToWrite;
+            numToWrite = 0;
+        }
+    }
+    //
+    // When we get here we have EITHER:
+    // o An empty ""assemble"" buffer.
+    // o No bytes to write (numToWrite == 0)
+    //
+    while (numToWrite > 0) {
+        if (numToWrite < recordBuf.length) {
+            System.arraycopy(wBuf, wOffset, assemBuf, assemLen, numToWrite);
+            assemLen += numToWrite;
+            break;
+        }
+        buffer.writeRecord(wBuf, wOffset);
+        int num = recordBuf.length;
+        currBytes += num;
+        numToWrite -= num;
+        wOffset += num;
+    }
+    count(numToWrite);
+}","public void test1616() throws Throwable {
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream("" bytes)"", false);
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(mockFileOutputStream0);
+    byte[] byteArray0 = new byte[2];
+    try {
+        tarArchiveOutputStream0.write(byteArray0, (int) (byte) (-39), (int) (byte) 100);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // request to write '100' bytes exceeds size in header of '0' bytes for entry 'null'
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarArchiveOutputStream"", e);
+    }
+}","/**
+ * Writes bytes to the current tar archive entry. This method
+ * is aware of the current entry and will throw an exception if
+ * you attempt to write bytes past the length specified for the
+ * current entry. The method is also (painfully) aware of the
+ * record buffering required by TarBuffer, and manages buffers
+ * that are not a multiple of recordsize in length, including
+ * assembling records from small buffers.
+ *
+ * @param wBuf The buffer to write to the archive.
+ * @param wOffset The offset in the buffer from which to get bytes.
+ * @param numToWrite The number of bytes to write.
+ * @throws IOException on error
+ */"
+"public long getBytesWritten() {
+    return bytesWritten;
+}","public void test1717() throws Throwable {
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream("" bytes)"", false);
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(mockFileOutputStream0);
+    byte[] byteArray0 = new byte[2];
+    tarArchiveOutputStream0.write(byteArray0, (int) (byte) (-39), (int) (byte) (-124));
+    assertEquals((-124L), tarArchiveOutputStream0.getBytesWritten());
+}","/**
+ * Returns the current number of bytes written to this stream.
+ * @return the number of written bytes
+ * @since Apache Commons Compress 1.1
+ */"
+"@Override
+public void closeArchiveEntry() throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    if (!haveUnclosedEntry) {
+        throw new IOException(""No current entry to close"");
+    }
+    if (assemLen > 0) {
+        for (int i = assemLen; i < assemBuf.length; ++i) {
+            assemBuf[i] = 0;
+        }
+        buffer.writeRecord(assemBuf);
+        currBytes += assemLen;
+        assemLen = 0;
+    }
+    if (currBytes < currSize) {
+        throw new IOException(""entry '"" + currName + ""' closed at '"" + currBytes + ""' before the '"" + currSize + ""' bytes specified in the header were written"");
+    }
+    haveUnclosedEntry = false;
+}","public void test1818() throws Throwable {
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    PipedInputStream pipedInputStream0 = new PipedInputStream(10240);
+    pipedOutputStream0.connect(pipedInputStream0);
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(pipedOutputStream0);
+    tarArchiveOutputStream0.close();
+    try {
+        tarArchiveOutputStream0.closeArchiveEntry();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream has already been finished
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarArchiveOutputStream"", e);
+    }
+}","/**
+ * Close an entry. This method MUST be called for all file
+ * entries that contain data. The reason is that we must
+ * buffer data written to the stream in order to satisfy
+ * the buffer's record based writes. Thus, there may be
+ * data fragments still being assembled that must be written
+ * to the output stream before this entry is closed and the
+ * next entry written.
+ * @throws IOException on error
+ */"
+"@Override
+public void closeArchiveEntry() throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    if (!haveUnclosedEntry) {
+        throw new IOException(""No current entry to close"");
+    }
+    if (assemLen > 0) {
+        for (int i = assemLen; i < assemBuf.length; ++i) {
+            assemBuf[i] = 0;
+        }
+        buffer.writeRecord(assemBuf);
+        currBytes += assemLen;
+        assemLen = 0;
+    }
+    if (currBytes < currSize) {
+        throw new IOException(""entry '"" + currName + ""' closed at '"" + currBytes + ""' before the '"" + currSize + ""' bytes specified in the header were written"");
+    }
+    haveUnclosedEntry = false;
+}","public void test1919() throws Throwable {
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream("" bytes)"", false);
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(mockFileOutputStream0);
+    try {
+        tarArchiveOutputStream0.closeArchiveEntry();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // No current entry to close
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarArchiveOutputStream"", e);
+    }
+}","/**
+ * Close an entry. This method MUST be called for all file
+ * entries that contain data. The reason is that we must
+ * buffer data written to the stream in order to satisfy
+ * the buffer's record based writes. Thus, there may be
+ * data fragments still being assembled that must be written
+ * to the output stream before this entry is closed and the
+ * next entry written.
+ * @throws IOException on error
+ */"
+"@Deprecated
+public int getCount() {
+    return (int) bytesWritten;
+}","public void test2020() throws Throwable {
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream("" bytes)"", false);
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(mockFileOutputStream0);
+    MockFile mockFile0 = new MockFile("" bytes)"", ""S"");
+    ArchiveEntry archiveEntry0 = tarArchiveOutputStream0.createArchiveEntry(mockFile0, ""~X\""GRO_L&04gj6OR|G"");
+    tarArchiveOutputStream0.putArchiveEntry(archiveEntry0);
+    tarArchiveOutputStream0.closeArchiveEntry();
+    assertEquals(0, tarArchiveOutputStream0.getCount());
+}","/**
+ * Returns the current number of bytes written to this stream.
+ * @return the number of written bytes
+ * @deprecated this method may yield wrong results for large
+ * archives, use #getBytesWritten instead
+ */"
+"@Override
+public void putArchiveEntry(ArchiveEntry archiveEntry) throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    TarArchiveEntry entry = (TarArchiveEntry) archiveEntry;
+    if (entry.getName().length() >= TarConstants.NAMELEN) {
+        if (longFileMode == LONGFILE_GNU) {
+            // create a TarEntry for the LongLink, the contents
+            // of which are the entry's name
+            TarArchiveEntry longLinkEntry = new TarArchiveEntry(TarConstants.GNU_LONGLINK, TarConstants.LF_GNUTYPE_LONGNAME);
+            final byte[] nameBytes = ArchiveUtils.toAsciiBytes(entry.getName());
+            // +1 for NUL
+            longLinkEntry.setSize(nameBytes.length + 1);
+            putArchiveEntry(longLinkEntry);
+            write(nameBytes);
+            // NUL terminator
+            write(0);
+            closeArchiveEntry();
+        } else if (longFileMode != LONGFILE_TRUNCATE) {
+            throw new RuntimeException(""file name '"" + entry.getName() + ""' is too long ( > "" + TarConstants.NAMELEN + "" bytes)"");
+        }
+    }
+    entry.writeEntryHeader(recordBuf);
+    buffer.writeRecord(recordBuf);
+    currBytes = 0;
+    if (entry.isDirectory()) {
+        currSize = 0;
+    } else {
+        currSize = entry.getSize();
+    }
+    currName = entry.getName();
+    haveUnclosedEntry = true;
+}","public void test2121() throws Throwable {
+    MockFile mockFile0 = new MockFile(""b&WezVn38K"");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(mockFile0);
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(mockPrintStream0, 553);
+    tarArchiveOutputStream0.finish();
+    TarArchiveEntry tarArchiveEntry0 = new TarArchiveEntry(""GZb,`{Y\rtz&,y"", (byte) (-53));
+    try {
+        tarArchiveOutputStream0.putArchiveEntry(tarArchiveEntry0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream has already been finished
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarArchiveOutputStream"", e);
+    }
+}","/**
+ * Put an entry on the output stream. This writes the entry's
+ * header record and positions the output stream for writing
+ * the contents of the entry. Once this method is called, the
+ * stream is ready for calls to write() to write the entry's
+ * contents. Once the contents are written, closeArchiveEntry()
+ * <B>MUST</B> be called to ensure that all buffered data
+ * is completely written to the output stream.
+ *
+ * @param archiveEntry The TarEntry to be written to the archive.
+ * @throws IOException on error
+ * @throws ClassCastException if archiveEntry is not an instance of TarArchiveEntry
+ */"
+"@Override
+public void close() throws IOException {
+    if (!finished) {
+        finish();
+    }
+    if (!closed) {
+        buffer.close();
+        out.close();
+        closed = true;
+    }
+}","public void test2222() throws Throwable {
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""xfe!*`l@X1"");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(mockFileOutputStream0, false);
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(mockPrintStream0);
+    tarArchiveOutputStream0.close();
+    tarArchiveOutputStream0.close();
+    assertEquals(0, TarArchiveOutputStream.LONGFILE_ERROR);
+}","/**
+ * Closes the underlying OutputStream.
+ * @throws IOException on error
+ */"
+"@Override
+public void finish() throws IOException {
+    if (finished) {
+        throw new IOException(""This archive has already been finished"");
+    }
+    if (haveUnclosedEntry) {
+        throw new IOException(""This archives contains unclosed entries."");
+    }
+    writeEOFRecord();
+    writeEOFRecord();
+    buffer.flushBlock();
+    finished = true;
+}","public void test2323() throws Throwable {
+    DataOutputStream dataOutputStream0 = new DataOutputStream((OutputStream) null);
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(dataOutputStream0, 10240);
+    MockFile mockFile0 = new MockFile("""");
+    ArchiveEntry archiveEntry0 = tarArchiveOutputStream0.createArchiveEntry(mockFile0, """");
+    tarArchiveOutputStream0.putArchiveEntry(archiveEntry0);
+    try {
+        tarArchiveOutputStream0.finish();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // This archives contains unclosed entries.
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarArchiveOutputStream"", e);
+    }
+}","/**
+ * Ends the TAR archive without closing the underlying OutputStream.
+ *
+ * An archive consists of a series of file entries terminated by an
+ * end-of-archive entry, which consists of two 512 blocks of zero bytes.
+ * POSIX.1 requires two EOF records, like some other implementations.
+ *
+ * @throws IOException on error
+ */"
+"@Override
+public void finish() throws IOException {
+    if (finished) {
+        throw new IOException(""This archive has already been finished"");
+    }
+    if (haveUnclosedEntry) {
+        throw new IOException(""This archives contains unclosed entries."");
+    }
+    writeEOFRecord();
+    writeEOFRecord();
+    buffer.flushBlock();
+    finished = true;
+}","public void test2424() throws Throwable {
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream("" but is "");
+    DataOutputStream dataOutputStream0 = new DataOutputStream(mockFileOutputStream0);
+    MockPrintStream mockPrintStream0 = new MockPrintStream(dataOutputStream0, false);
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(mockPrintStream0);
+    tarArchiveOutputStream0.close();
+    try {
+        tarArchiveOutputStream0.finish();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // This archive has already been finished
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarArchiveOutputStream"", e);
+    }
+}","/**
+ * Ends the TAR archive without closing the underlying OutputStream.
+ *
+ * An archive consists of a series of file entries terminated by an
+ * end-of-archive entry, which consists of two 512 blocks of zero bytes.
+ * POSIX.1 requires two EOF records, like some other implementations.
+ *
+ * @throws IOException on error
+ */"
+"public void setLongFileMode(int longFileMode) {
+    this.longFileMode = longFileMode;
+}","public void test2525() throws Throwable {
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""xfe!*`l@X1"");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(mockFileOutputStream0, false);
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(mockPrintStream0);
+    tarArchiveOutputStream0.setLongFileMode((-653));
+    assertEquals(2, TarArchiveOutputStream.LONGFILE_GNU);
+}","/**
+ * Set the long file mode.
+ * This can be LONGFILE_ERROR(0), LONGFILE_TRUNCATE(1) or LONGFILE_GNU(2).
+ * This specifies the treatment of long file names (names >= TarConstants.NAMELEN).
+ * Default is LONGFILE_ERROR.
+ * @param longFileMode the mode to use
+ */"
+"public int getRecordSize() {
+    return buffer.getRecordSize();
+}","public void test2626() throws Throwable {
+    MockFile mockFile0 = new MockFile(""'@"", ""D(i:WAj-XQ83E8"");
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(mockFile0);
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(mockFileOutputStream0, 54);
+    int int0 = tarArchiveOutputStream0.getRecordSize();
+    assertEquals(512, int0);
+}","/**
+ * Get the record size being used by this stream's TarBuffer.
+ *
+ * @return The TarBuffer record size.
+ */"
+"@Deprecated
+public int getCount() {
+    return (int) bytesWritten;
+}","public void test2727() throws Throwable {
+    MockFile mockFile0 = new MockFile(""!"", ""!"");
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(mockFile0);
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(mockFileOutputStream0);
+    tarArchiveOutputStream0.flush();
+    assertEquals(0, tarArchiveOutputStream0.getCount());
+}","/**
+ * Returns the current number of bytes written to this stream.
+ * @return the number of written bytes
+ * @deprecated this method may yield wrong results for large
+ * archives, use #getBytesWritten instead
+ */"
+"@Override
+public void putArchiveEntry(ArchiveEntry archiveEntry) throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    TarArchiveEntry entry = (TarArchiveEntry) archiveEntry;
+    if (entry.getName().length() >= TarConstants.NAMELEN) {
+        if (longFileMode == LONGFILE_GNU) {
+            // create a TarEntry for the LongLink, the contents
+            // of which are the entry's name
+            TarArchiveEntry longLinkEntry = new TarArchiveEntry(TarConstants.GNU_LONGLINK, TarConstants.LF_GNUTYPE_LONGNAME);
+            final byte[] nameBytes = ArchiveUtils.toAsciiBytes(entry.getName());
+            // +1 for NUL
+            longLinkEntry.setSize(nameBytes.length + 1);
+            putArchiveEntry(longLinkEntry);
+            write(nameBytes);
+            // NUL terminator
+            write(0);
+            closeArchiveEntry();
+        } else if (longFileMode != LONGFILE_TRUNCATE) {
+            throw new RuntimeException(""file name '"" + entry.getName() + ""' is too long ( > "" + TarConstants.NAMELEN + "" bytes)"");
+        }
+    }
+    entry.writeEntryHeader(recordBuf);
+    buffer.writeRecord(recordBuf);
+    currBytes = 0;
+    if (entry.isDirectory()) {
+        currSize = 0;
+    } else {
+        currSize = entry.getSize();
+    }
+    currName = entry.getName();
+    haveUnclosedEntry = true;
+}","public void test2828() throws Throwable {
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(pipedOutputStream0);
+    // Undeclared exception!
+    try {
+        tarArchiveOutputStream0.putArchiveEntry((ArchiveEntry) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarArchiveOutputStream"", e);
+    }
+}","/**
+ * Put an entry on the output stream. This writes the entry's
+ * header record and positions the output stream for writing
+ * the contents of the entry. Once this method is called, the
+ * stream is ready for calls to write() to write the entry's
+ * contents. Once the contents are written, closeArchiveEntry()
+ * <B>MUST</B> be called to ensure that all buffered data
+ * is completely written to the output stream.
+ *
+ * @param archiveEntry The TarEntry to be written to the archive.
+ * @throws IOException on error
+ * @throws ClassCastException if archiveEntry is not an instance of TarArchiveEntry
+ */"
+"@Override
+public void putArchiveEntry(ArchiveEntry archiveEntry) throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    TarArchiveEntry entry = (TarArchiveEntry) archiveEntry;
+    if (entry.getName().length() >= TarConstants.NAMELEN) {
+        if (longFileMode == LONGFILE_GNU) {
+            // create a TarEntry for the LongLink, the contents
+            // of which are the entry's name
+            TarArchiveEntry longLinkEntry = new TarArchiveEntry(TarConstants.GNU_LONGLINK, TarConstants.LF_GNUTYPE_LONGNAME);
+            final byte[] nameBytes = ArchiveUtils.toAsciiBytes(entry.getName());
+            // +1 for NUL
+            longLinkEntry.setSize(nameBytes.length + 1);
+            putArchiveEntry(longLinkEntry);
+            write(nameBytes);
+            // NUL terminator
+            write(0);
+            closeArchiveEntry();
+        } else if (longFileMode != LONGFILE_TRUNCATE) {
+            throw new RuntimeException(""file name '"" + entry.getName() + ""' is too long ( > "" + TarConstants.NAMELEN + "" bytes)"");
+        }
+    }
+    entry.writeEntryHeader(recordBuf);
+    buffer.writeRecord(recordBuf);
+    currBytes = 0;
+    if (entry.isDirectory()) {
+        currSize = 0;
+    } else {
+        currSize = entry.getSize();
+    }
+    currName = entry.getName();
+    haveUnclosedEntry = true;
+}","public void test2929() throws Throwable {
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream((OutputStream) null, 10240, 10240);
+    MockFile mockFile0 = new MockFile("""");
+    ArchiveEntry archiveEntry0 = tarArchiveOutputStream0.createArchiveEntry(mockFile0, """");
+    // Undeclared exception!
+    tarArchiveOutputStream0.putArchiveEntry(archiveEntry0);
+}","/**
+ * Put an entry on the output stream. This writes the entry's
+ * header record and positions the output stream for writing
+ * the contents of the entry. Once this method is called, the
+ * stream is ready for calls to write() to write the entry's
+ * contents. Once the contents are written, closeArchiveEntry()
+ * <B>MUST</B> be called to ensure that all buffered data
+ * is completely written to the output stream.
+ *
+ * @param archiveEntry The TarEntry to be written to the archive.
+ * @throws IOException on error
+ * @throws ClassCastException if archiveEntry is not an instance of TarArchiveEntry
+ */"

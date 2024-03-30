@@ -1,0 +1,1247 @@
+focal_method,test_prefix,docstring
+"public void removeRow(Comparable rowKey) {
+    removeRow(getRowIndex(rowKey));
+}","public void test000() throws Throwable {
+    DefaultKeyedValues2D defaultKeyedValues2D0 = new DefaultKeyedValues2D();
+    // Undeclared exception!
+    try {
+        defaultKeyedValues2D0.removeRow((Comparable) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'key' argument.
+        //
+        verifyException(""org.jfree.data.DefaultKeyedValues2D"", e);
+    }
+}","/**
+ * Removes a row.
+ *
+ * @param rowKey  the row key (<code>null</code> not permitted).
+ *
+ * @see #removeRow(int)
+ * @see #removeColumn(Comparable)
+ */"
+"public void removeColumn(int columnIndex) {
+    Comparable columnKey = getColumnKey(columnIndex);
+    removeColumn(columnKey);
+}","public void test011() throws Throwable {
+    DefaultKeyedValues2D defaultKeyedValues2D0 = new DefaultKeyedValues2D();
+    // Undeclared exception!
+    try {
+        defaultKeyedValues2D0.removeColumn(0);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 0, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}","/**
+ * Removes a column.
+ *
+ * @param columnIndex  the column index.
+ *
+ * @see #removeColumn(Comparable)
+ * @see #removeRow(int)
+ */"
+"public void removeRow(int rowIndex) {
+    this.rowKeys.remove(rowIndex);
+    this.rows.remove(rowIndex);
+}","public void test022() throws Throwable {
+    DefaultKeyedValues2D defaultKeyedValues2D0 = new DefaultKeyedValues2D();
+    // Undeclared exception!
+    try {
+        defaultKeyedValues2D0.removeRow((-139));
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * Removes a row.
+ *
+ * @param rowIndex  the row index.
+ *
+ * @see #removeRow(Comparable)
+ * @see #removeColumn(int)
+ */"
+"public int getColumnCount() {
+    return this.columnKeys.size();
+}","public void test033() throws Throwable {
+    DefaultKeyedValues2D defaultKeyedValues2D0 = new DefaultKeyedValues2D();
+    defaultKeyedValues2D0.clear();
+    assertEquals(0, defaultKeyedValues2D0.getColumnCount());
+}","/**
+ * Returns the column count.
+ *
+ * @return The column count.
+ *
+ * @see #getRowCount()
+ */"
+"public Comparable getRowKey(int row) {
+    return (Comparable) this.rowKeys.get(row);
+}","public void test044() throws Throwable {
+    DefaultKeyedValues2D defaultKeyedValues2D0 = new DefaultKeyedValues2D();
+    // Undeclared exception!
+    try {
+        defaultKeyedValues2D0.getRowKey((-1136));
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * Returns the key for a given row.
+ *
+ * @param row  the row index (in the range 0 to {@link #getRowCount()} - 1).
+ *
+ * @return The row key.
+ *
+ * @see #getRowIndex(Comparable)
+ * @see #getColumnKey(int)
+ */"
+"public int hashCode() {
+    int result;
+    result = this.rowKeys.hashCode();
+    result = 29 * result + this.columnKeys.hashCode();
+    result = 29 * result + this.rows.hashCode();
+    return result;
+}","public void test055() throws Throwable {
+    DefaultKeyedValues2D defaultKeyedValues2D0 = new DefaultKeyedValues2D();
+    defaultKeyedValues2D0.hashCode();
+}","/**
+ * Returns a hash code.
+ *
+ * @return A hash code.
+ */"
+"public int getColumnCount() {
+    return this.columnKeys.size();
+}","public void test066() throws Throwable {
+    DefaultKeyedValues2D defaultKeyedValues2D0 = new DefaultKeyedValues2D();
+    Double double0 = new Double((-1.0F));
+    defaultKeyedValues2D0.setValue(double0, double0, double0);
+    Float float0 = new Float((-1.0F));
+    defaultKeyedValues2D0.setValue(float0, float0, float0);
+    Object object0 = defaultKeyedValues2D0.clone();
+    boolean boolean0 = defaultKeyedValues2D0.equals(object0);
+    assertEquals(2, defaultKeyedValues2D0.getColumnCount());
+}","/**
+ * Returns the column count.
+ *
+ * @return The column count.
+ *
+ * @see #getRowCount()
+ */"
+"public boolean equals(Object o) {
+    if (o == null) {
+        return false;
+    }
+    if (o == this) {
+        return true;
+    }
+    if (!(o instanceof KeyedValues2D)) {
+        return false;
+    }
+    KeyedValues2D kv2D = (KeyedValues2D) o;
+    if (!getRowKeys().equals(kv2D.getRowKeys())) {
+        return false;
+    }
+    if (!getColumnKeys().equals(kv2D.getColumnKeys())) {
+        return false;
+    }
+    int rowCount = getRowCount();
+    if (rowCount != kv2D.getRowCount()) {
+        return false;
+    }
+    int colCount = getColumnCount();
+    if (colCount != kv2D.getColumnCount()) {
+        return false;
+    }
+    for (int r = 0; r < rowCount; r++) {
+        for (int c = 0; c < colCount; c++) {
+            Number v1 = getValue(r, c);
+            Number v2 = kv2D.getValue(r, c);
+            if (v1 == null) {
+                if (v2 != null) {
+                    return false;
+                }
+            } else {
+                if (!v1.equals(v2)) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}","public void test067() throws Throwable {
+    DefaultKeyedValues2D defaultKeyedValues2D0 = new DefaultKeyedValues2D();
+    Double double0 = new Double((-1.0F));
+    defaultKeyedValues2D0.setValue(double0, double0, double0);
+    Float float0 = new Float((-1.0F));
+    defaultKeyedValues2D0.setValue(float0, float0, float0);
+    Object object0 = defaultKeyedValues2D0.clone();
+    boolean boolean0 = defaultKeyedValues2D0.equals(object0);
+    assertTrue(boolean0);
+}","/**
+ * Tests if this object is equal to another.
+ *
+ * @param o  the other object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public int getColumnCount() {
+    return this.columnKeys.size();
+}","public void test078() throws Throwable {
+    Float float0 = new Float(0.0F);
+    DefaultKeyedValues2D defaultKeyedValues2D0 = new DefaultKeyedValues2D(true);
+    defaultKeyedValues2D0.setValue(float0, float0, float0);
+    assertEquals(1, defaultKeyedValues2D0.getColumnCount());
+}","/**
+ * Returns the column count.
+ *
+ * @return The column count.
+ *
+ * @see #getRowCount()
+ */"
+"public int getColumnIndex(Comparable key) {
+    if (key == null) {
+        throw new IllegalArgumentException(""Null 'key' argument."");
+    }
+    return this.columnKeys.indexOf(key);
+}","public void test089() throws Throwable {
+    DefaultKeyedValues2D defaultKeyedValues2D0 = new DefaultKeyedValues2D();
+    Float float0 = new Float(0.0F);
+    int int0 = defaultKeyedValues2D0.getColumnIndex(float0);
+    assertEquals((-1), int0);
+}","/**
+ * Returns the column index for a given key.
+ *
+ * @param key  the key (<code>null</code> not permitted).
+ *
+ * @return The column index.
+ *
+ * @see #getColumnKey(int)
+ * @see #getRowIndex(Comparable)
+ */"
+"public int getColumnIndex(Comparable key) {
+    if (key == null) {
+        throw new IllegalArgumentException(""Null 'key' argument."");
+    }
+    return this.columnKeys.indexOf(key);
+}","public void test0910() throws Throwable {
+    DefaultKeyedValues2D defaultKeyedValues2D0 = new DefaultKeyedValues2D();
+    // Undeclared exception!
+    try {
+        defaultKeyedValues2D0.getColumnIndex((Comparable) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'key' argument.
+        //
+        verifyException(""org.jfree.data.DefaultKeyedValues2D"", e);
+    }
+}","/**
+ * Returns the column index for a given key.
+ *
+ * @param key  the key (<code>null</code> not permitted).
+ *
+ * @return The column index.
+ *
+ * @see #getColumnKey(int)
+ * @see #getRowIndex(Comparable)
+ */"
+"public Number getValue(Comparable rowKey, Comparable columnKey) {
+    if (rowKey == null) {
+        throw new IllegalArgumentException(""Null 'rowKey' argument."");
+    }
+    if (columnKey == null) {
+        throw new IllegalArgumentException(""Null 'columnKey' argument."");
+    }
+    // check that the column key is defined in the 2D structure
+    if (!(this.columnKeys.contains(columnKey))) {
+        throw new UnknownKeyException(""Unrecognised columnKey: "" + columnKey);
+    }
+    // now fetch the row data - need to bear in mind that the row
+    // structure may not have an entry for the column key, but that we
+    // have already checked that the key is valid for the 2D structure
+    int row = getRowIndex(rowKey);
+    if (row >= 0) {
+        DefaultKeyedValues rowData = (DefaultKeyedValues) this.rows.get(row);
+        int col = rowData.getIndex(columnKey);
+        return (col >= 0 ? rowData.getValue(col) : null);
+    } else {
+        throw new UnknownKeyException(""Unrecognised rowKey: "" + rowKey);
+    }
+}","public void test1011() throws Throwable {
+    DefaultKeyedValues2D defaultKeyedValues2D0 = new DefaultKeyedValues2D();
+    Double double0 = new Double((-1.0F));
+    Float float0 = new Float((-1.0F));
+    // Undeclared exception!
+    try {
+        defaultKeyedValues2D0.getValue((Comparable) float0, (Comparable) double0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unrecognised columnKey: -1.0
+        //
+        verifyException(""org.jfree.data.DefaultKeyedValues2D"", e);
+    }
+}","/**
+ * Returns the value for the given row and column keys.  This method will
+ * throw an {@link UnknownKeyException} if either key is not defined in the
+ * data structure.
+ *
+ * @param rowKey  the row key (<code>null</code> not permitted).
+ * @param columnKey  the column key (<code>null</code> not permitted).
+ *
+ * @return The value (possibly <code>null</code>).
+ *
+ * @see #addValue(Number, Comparable, Comparable)
+ * @see #removeValue(Comparable, Comparable)
+ */"
+"public Number getValue(Comparable rowKey, Comparable columnKey) {
+    if (rowKey == null) {
+        throw new IllegalArgumentException(""Null 'rowKey' argument."");
+    }
+    if (columnKey == null) {
+        throw new IllegalArgumentException(""Null 'columnKey' argument."");
+    }
+    // check that the column key is defined in the 2D structure
+    if (!(this.columnKeys.contains(columnKey))) {
+        throw new UnknownKeyException(""Unrecognised columnKey: "" + columnKey);
+    }
+    // now fetch the row data - need to bear in mind that the row
+    // structure may not have an entry for the column key, but that we
+    // have already checked that the key is valid for the 2D structure
+    int row = getRowIndex(rowKey);
+    if (row >= 0) {
+        DefaultKeyedValues rowData = (DefaultKeyedValues) this.rows.get(row);
+        int col = rowData.getIndex(columnKey);
+        return (col >= 0 ? rowData.getValue(col) : null);
+    } else {
+        throw new UnknownKeyException(""Unrecognised rowKey: "" + rowKey);
+    }
+}","public void test1112() throws Throwable {
+    DefaultKeyedValues2D defaultKeyedValues2D0 = new DefaultKeyedValues2D();
+    // Undeclared exception!
+    try {
+        defaultKeyedValues2D0.getValue((Comparable) null, (Comparable) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'rowKey' argument.
+        //
+        verifyException(""org.jfree.data.DefaultKeyedValues2D"", e);
+    }
+}","/**
+ * Returns the value for the given row and column keys.  This method will
+ * throw an {@link UnknownKeyException} if either key is not defined in the
+ * data structure.
+ *
+ * @param rowKey  the row key (<code>null</code> not permitted).
+ * @param columnKey  the column key (<code>null</code> not permitted).
+ *
+ * @return The value (possibly <code>null</code>).
+ *
+ * @see #addValue(Number, Comparable, Comparable)
+ * @see #removeValue(Comparable, Comparable)
+ */"
+"public Number getValue(Comparable rowKey, Comparable columnKey) {
+    if (rowKey == null) {
+        throw new IllegalArgumentException(""Null 'rowKey' argument."");
+    }
+    if (columnKey == null) {
+        throw new IllegalArgumentException(""Null 'columnKey' argument."");
+    }
+    // check that the column key is defined in the 2D structure
+    if (!(this.columnKeys.contains(columnKey))) {
+        throw new UnknownKeyException(""Unrecognised columnKey: "" + columnKey);
+    }
+    // now fetch the row data - need to bear in mind that the row
+    // structure may not have an entry for the column key, but that we
+    // have already checked that the key is valid for the 2D structure
+    int row = getRowIndex(rowKey);
+    if (row >= 0) {
+        DefaultKeyedValues rowData = (DefaultKeyedValues) this.rows.get(row);
+        int col = rowData.getIndex(columnKey);
+        return (col >= 0 ? rowData.getValue(col) : null);
+    } else {
+        throw new UnknownKeyException(""Unrecognised rowKey: "" + rowKey);
+    }
+}","public void test1213() throws Throwable {
+    DefaultKeyedValues2D defaultKeyedValues2D0 = new DefaultKeyedValues2D();
+    // Undeclared exception!
+    try {
+        defaultKeyedValues2D0.getValue((Comparable) 871, (Comparable) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'columnKey' argument.
+        //
+        verifyException(""org.jfree.data.DefaultKeyedValues2D"", e);
+    }
+}","/**
+ * Returns the value for the given row and column keys.  This method will
+ * throw an {@link UnknownKeyException} if either key is not defined in the
+ * data structure.
+ *
+ * @param rowKey  the row key (<code>null</code> not permitted).
+ * @param columnKey  the column key (<code>null</code> not permitted).
+ *
+ * @return The value (possibly <code>null</code>).
+ *
+ * @see #addValue(Number, Comparable, Comparable)
+ * @see #removeValue(Comparable, Comparable)
+ */"
+"public Number getValue(Comparable rowKey, Comparable columnKey) {
+    if (rowKey == null) {
+        throw new IllegalArgumentException(""Null 'rowKey' argument."");
+    }
+    if (columnKey == null) {
+        throw new IllegalArgumentException(""Null 'columnKey' argument."");
+    }
+    // check that the column key is defined in the 2D structure
+    if (!(this.columnKeys.contains(columnKey))) {
+        throw new UnknownKeyException(""Unrecognised columnKey: "" + columnKey);
+    }
+    // now fetch the row data - need to bear in mind that the row
+    // structure may not have an entry for the column key, but that we
+    // have already checked that the key is valid for the 2D structure
+    int row = getRowIndex(rowKey);
+    if (row >= 0) {
+        DefaultKeyedValues rowData = (DefaultKeyedValues) this.rows.get(row);
+        int col = rowData.getIndex(columnKey);
+        return (col >= 0 ? rowData.getValue(col) : null);
+    } else {
+        throw new UnknownKeyException(""Unrecognised rowKey: "" + rowKey);
+    }
+}","public void test1314() throws Throwable {
+    DefaultKeyedValues2D defaultKeyedValues2D0 = new DefaultKeyedValues2D();
+    Double double0 = new Double((-1.0F));
+    defaultKeyedValues2D0.setValue(double0, double0, double0);
+    Float float0 = new Float((-1.0F));
+    // Undeclared exception!
+    try {
+        defaultKeyedValues2D0.getValue((Comparable) float0, (Comparable) double0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unrecognised rowKey: -1.0
+        //
+        verifyException(""org.jfree.data.DefaultKeyedValues2D"", e);
+    }
+}","/**
+ * Returns the value for the given row and column keys.  This method will
+ * throw an {@link UnknownKeyException} if either key is not defined in the
+ * data structure.
+ *
+ * @param rowKey  the row key (<code>null</code> not permitted).
+ * @param columnKey  the column key (<code>null</code> not permitted).
+ *
+ * @return The value (possibly <code>null</code>).
+ *
+ * @see #addValue(Number, Comparable, Comparable)
+ * @see #removeValue(Comparable, Comparable)
+ */"
+"public Number getValue(Comparable rowKey, Comparable columnKey) {
+    if (rowKey == null) {
+        throw new IllegalArgumentException(""Null 'rowKey' argument."");
+    }
+    if (columnKey == null) {
+        throw new IllegalArgumentException(""Null 'columnKey' argument."");
+    }
+    // check that the column key is defined in the 2D structure
+    if (!(this.columnKeys.contains(columnKey))) {
+        throw new UnknownKeyException(""Unrecognised columnKey: "" + columnKey);
+    }
+    // now fetch the row data - need to bear in mind that the row
+    // structure may not have an entry for the column key, but that we
+    // have already checked that the key is valid for the 2D structure
+    int row = getRowIndex(rowKey);
+    if (row >= 0) {
+        DefaultKeyedValues rowData = (DefaultKeyedValues) this.rows.get(row);
+        int col = rowData.getIndex(columnKey);
+        return (col >= 0 ? rowData.getValue(col) : null);
+    } else {
+        throw new UnknownKeyException(""Unrecognised rowKey: "" + rowKey);
+    }
+}","public void test1415() throws Throwable {
+    DefaultKeyedValues2D defaultKeyedValues2D0 = new DefaultKeyedValues2D();
+    Double double0 = new Double((-1.0F));
+    defaultKeyedValues2D0.setValue(double0, double0, double0);
+    Float float0 = new Float((-1.0F));
+    defaultKeyedValues2D0.setValue(float0, float0, float0);
+    Number number0 = defaultKeyedValues2D0.getValue((Comparable) float0, (Comparable) double0);
+    assertNull(number0);
+}","/**
+ * Returns the value for the given row and column keys.  This method will
+ * throw an {@link UnknownKeyException} if either key is not defined in the
+ * data structure.
+ *
+ * @param rowKey  the row key (<code>null</code> not permitted).
+ * @param columnKey  the column key (<code>null</code> not permitted).
+ *
+ * @return The value (possibly <code>null</code>).
+ *
+ * @see #addValue(Number, Comparable, Comparable)
+ * @see #removeValue(Comparable, Comparable)
+ */"
+"public Number getValue(Comparable rowKey, Comparable columnKey) {
+    if (rowKey == null) {
+        throw new IllegalArgumentException(""Null 'rowKey' argument."");
+    }
+    if (columnKey == null) {
+        throw new IllegalArgumentException(""Null 'columnKey' argument."");
+    }
+    // check that the column key is defined in the 2D structure
+    if (!(this.columnKeys.contains(columnKey))) {
+        throw new UnknownKeyException(""Unrecognised columnKey: "" + columnKey);
+    }
+    // now fetch the row data - need to bear in mind that the row
+    // structure may not have an entry for the column key, but that we
+    // have already checked that the key is valid for the 2D structure
+    int row = getRowIndex(rowKey);
+    if (row >= 0) {
+        DefaultKeyedValues rowData = (DefaultKeyedValues) this.rows.get(row);
+        int col = rowData.getIndex(columnKey);
+        return (col >= 0 ? rowData.getValue(col) : null);
+    } else {
+        throw new UnknownKeyException(""Unrecognised rowKey: "" + rowKey);
+    }
+}","public void test1516() throws Throwable {
+    DefaultKeyedValues2D defaultKeyedValues2D0 = new DefaultKeyedValues2D();
+    Float float0 = new Float(0.0F);
+    defaultKeyedValues2D0.setValue(float0, float0, float0);
+    Number number0 = defaultKeyedValues2D0.getValue((Comparable) float0, (Comparable) float0);
+    assertEquals(0.0F, number0);
+}","/**
+ * Returns the value for the given row and column keys.  This method will
+ * throw an {@link UnknownKeyException} if either key is not defined in the
+ * data structure.
+ *
+ * @param rowKey  the row key (<code>null</code> not permitted).
+ * @param columnKey  the column key (<code>null</code> not permitted).
+ *
+ * @return The value (possibly <code>null</code>).
+ *
+ * @see #addValue(Number, Comparable, Comparable)
+ * @see #removeValue(Comparable, Comparable)
+ */"
+"public int getColumnCount() {
+    return this.columnKeys.size();
+}","public void test1617() throws Throwable {
+    DefaultKeyedValues2D defaultKeyedValues2D0 = new DefaultKeyedValues2D();
+    Long long0 = new Long((-2546L));
+    defaultKeyedValues2D0.setValue(long0, long0, long0);
+    Float float0 = new Float((float) (-2546L));
+    defaultKeyedValues2D0.removeValue(long0, float0);
+    assertEquals(1, defaultKeyedValues2D0.getColumnCount());
+}","/**
+ * Returns the column count.
+ *
+ * @return The column count.
+ *
+ * @see #getRowCount()
+ */"
+"public int getColumnCount() {
+    return this.columnKeys.size();
+}","public void test1718() throws Throwable {
+    DefaultKeyedValues2D defaultKeyedValues2D0 = new DefaultKeyedValues2D();
+    Float float0 = new Float(2915.86213);
+    defaultKeyedValues2D0.setValue(float0, float0, float0);
+    Float float1 = Float.valueOf((-2643.3962F));
+    defaultKeyedValues2D0.removeValue(float1, float1);
+    assertEquals(1, defaultKeyedValues2D0.getColumnCount());
+}","/**
+ * Returns the column count.
+ *
+ * @return The column count.
+ *
+ * @see #getRowCount()
+ */"
+"public int getRowCount() {
+    return this.rowKeys.size();
+}","public void test1819() throws Throwable {
+    DefaultKeyedValues2D defaultKeyedValues2D0 = new DefaultKeyedValues2D();
+    Float float0 = new Float(8.42F);
+    defaultKeyedValues2D0.setValue(float0, float0, float0);
+    defaultKeyedValues2D0.removeValue(1, float0);
+    assertEquals(1, defaultKeyedValues2D0.getRowCount());
+}","/**
+ * Returns the row count.
+ *
+ * @return The row count.
+ *
+ * @see #getColumnCount()
+ */"
+"public boolean equals(Object o) {
+    if (o == null) {
+        return false;
+    }
+    if (o == this) {
+        return true;
+    }
+    if (!(o instanceof KeyedValues2D)) {
+        return false;
+    }
+    KeyedValues2D kv2D = (KeyedValues2D) o;
+    if (!getRowKeys().equals(kv2D.getRowKeys())) {
+        return false;
+    }
+    if (!getColumnKeys().equals(kv2D.getColumnKeys())) {
+        return false;
+    }
+    int rowCount = getRowCount();
+    if (rowCount != kv2D.getRowCount()) {
+        return false;
+    }
+    int colCount = getColumnCount();
+    if (colCount != kv2D.getColumnCount()) {
+        return false;
+    }
+    for (int r = 0; r < rowCount; r++) {
+        for (int c = 0; c < colCount; c++) {
+            Number v1 = getValue(r, c);
+            Number v2 = kv2D.getValue(r, c);
+            if (v1 == null) {
+                if (v2 != null) {
+                    return false;
+                }
+            } else {
+                if (!v1.equals(v2)) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}","public void test1920() throws Throwable {
+    DefaultKeyedValues2D defaultKeyedValues2D0 = new DefaultKeyedValues2D();
+    boolean boolean0 = defaultKeyedValues2D0.equals((Object) null);
+    assertFalse(boolean0);
+}","/**
+ * Tests if this object is equal to another.
+ *
+ * @param o  the other object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public boolean equals(Object o) {
+    if (o == null) {
+        return false;
+    }
+    if (o == this) {
+        return true;
+    }
+    if (!(o instanceof KeyedValues2D)) {
+        return false;
+    }
+    KeyedValues2D kv2D = (KeyedValues2D) o;
+    if (!getRowKeys().equals(kv2D.getRowKeys())) {
+        return false;
+    }
+    if (!getColumnKeys().equals(kv2D.getColumnKeys())) {
+        return false;
+    }
+    int rowCount = getRowCount();
+    if (rowCount != kv2D.getRowCount()) {
+        return false;
+    }
+    int colCount = getColumnCount();
+    if (colCount != kv2D.getColumnCount()) {
+        return false;
+    }
+    for (int r = 0; r < rowCount; r++) {
+        for (int c = 0; c < colCount; c++) {
+            Number v1 = getValue(r, c);
+            Number v2 = kv2D.getValue(r, c);
+            if (v1 == null) {
+                if (v2 != null) {
+                    return false;
+                }
+            } else {
+                if (!v1.equals(v2)) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}","public void test2021() throws Throwable {
+    DefaultKeyedValues2D defaultKeyedValues2D0 = new DefaultKeyedValues2D();
+    boolean boolean0 = defaultKeyedValues2D0.equals(defaultKeyedValues2D0);
+    assertTrue(boolean0);
+}","/**
+ * Tests if this object is equal to another.
+ *
+ * @param o  the other object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public boolean equals(Object o) {
+    if (o == null) {
+        return false;
+    }
+    if (o == this) {
+        return true;
+    }
+    if (!(o instanceof KeyedValues2D)) {
+        return false;
+    }
+    KeyedValues2D kv2D = (KeyedValues2D) o;
+    if (!getRowKeys().equals(kv2D.getRowKeys())) {
+        return false;
+    }
+    if (!getColumnKeys().equals(kv2D.getColumnKeys())) {
+        return false;
+    }
+    int rowCount = getRowCount();
+    if (rowCount != kv2D.getRowCount()) {
+        return false;
+    }
+    int colCount = getColumnCount();
+    if (colCount != kv2D.getColumnCount()) {
+        return false;
+    }
+    for (int r = 0; r < rowCount; r++) {
+        for (int c = 0; c < colCount; c++) {
+            Number v1 = getValue(r, c);
+            Number v2 = kv2D.getValue(r, c);
+            if (v1 == null) {
+                if (v2 != null) {
+                    return false;
+                }
+            } else {
+                if (!v1.equals(v2)) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}","public void test2122() throws Throwable {
+    DefaultKeyedValues2D defaultKeyedValues2D0 = new DefaultKeyedValues2D();
+    boolean boolean0 = defaultKeyedValues2D0.equals(""YW*-M"");
+    assertFalse(boolean0);
+}","/**
+ * Tests if this object is equal to another.
+ *
+ * @param o  the other object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public boolean equals(Object o) {
+    if (o == null) {
+        return false;
+    }
+    if (o == this) {
+        return true;
+    }
+    if (!(o instanceof KeyedValues2D)) {
+        return false;
+    }
+    KeyedValues2D kv2D = (KeyedValues2D) o;
+    if (!getRowKeys().equals(kv2D.getRowKeys())) {
+        return false;
+    }
+    if (!getColumnKeys().equals(kv2D.getColumnKeys())) {
+        return false;
+    }
+    int rowCount = getRowCount();
+    if (rowCount != kv2D.getRowCount()) {
+        return false;
+    }
+    int colCount = getColumnCount();
+    if (colCount != kv2D.getColumnCount()) {
+        return false;
+    }
+    for (int r = 0; r < rowCount; r++) {
+        for (int c = 0; c < colCount; c++) {
+            Number v1 = getValue(r, c);
+            Number v2 = kv2D.getValue(r, c);
+            if (v1 == null) {
+                if (v2 != null) {
+                    return false;
+                }
+            } else {
+                if (!v1.equals(v2)) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}","public void test2223() throws Throwable {
+    DefaultKeyedValues2D defaultKeyedValues2D0 = new DefaultKeyedValues2D();
+    DefaultKeyedValues2D defaultKeyedValues2D1 = (DefaultKeyedValues2D) defaultKeyedValues2D0.clone();
+    assertTrue(defaultKeyedValues2D1.equals((Object) defaultKeyedValues2D0));
+}","/**
+ * Tests if this object is equal to another.
+ *
+ * @param o  the other object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public boolean equals(Object o) {
+    if (o == null) {
+        return false;
+    }
+    if (o == this) {
+        return true;
+    }
+    if (!(o instanceof KeyedValues2D)) {
+        return false;
+    }
+    KeyedValues2D kv2D = (KeyedValues2D) o;
+    if (!getRowKeys().equals(kv2D.getRowKeys())) {
+        return false;
+    }
+    if (!getColumnKeys().equals(kv2D.getColumnKeys())) {
+        return false;
+    }
+    int rowCount = getRowCount();
+    if (rowCount != kv2D.getRowCount()) {
+        return false;
+    }
+    int colCount = getColumnCount();
+    if (colCount != kv2D.getColumnCount()) {
+        return false;
+    }
+    for (int r = 0; r < rowCount; r++) {
+        for (int c = 0; c < colCount; c++) {
+            Number v1 = getValue(r, c);
+            Number v2 = kv2D.getValue(r, c);
+            if (v1 == null) {
+                if (v2 != null) {
+                    return false;
+                }
+            } else {
+                if (!v1.equals(v2)) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}","public void test2224() throws Throwable {
+    DefaultKeyedValues2D defaultKeyedValues2D0 = new DefaultKeyedValues2D();
+    DefaultKeyedValues2D defaultKeyedValues2D1 = (DefaultKeyedValues2D) defaultKeyedValues2D0.clone();
+    Short short0 = new Short((short) 2440);
+    defaultKeyedValues2D1.addValue(short0, short0, short0);
+    boolean boolean0 = defaultKeyedValues2D1.equals(defaultKeyedValues2D0);
+    assertFalse(defaultKeyedValues2D1.equals((Object) defaultKeyedValues2D0));
+}","/**
+ * Tests if this object is equal to another.
+ *
+ * @param o  the other object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public boolean equals(Object o) {
+    if (o == null) {
+        return false;
+    }
+    if (o == this) {
+        return true;
+    }
+    if (!(o instanceof KeyedValues2D)) {
+        return false;
+    }
+    KeyedValues2D kv2D = (KeyedValues2D) o;
+    if (!getRowKeys().equals(kv2D.getRowKeys())) {
+        return false;
+    }
+    if (!getColumnKeys().equals(kv2D.getColumnKeys())) {
+        return false;
+    }
+    int rowCount = getRowCount();
+    if (rowCount != kv2D.getRowCount()) {
+        return false;
+    }
+    int colCount = getColumnCount();
+    if (colCount != kv2D.getColumnCount()) {
+        return false;
+    }
+    for (int r = 0; r < rowCount; r++) {
+        for (int c = 0; c < colCount; c++) {
+            Number v1 = getValue(r, c);
+            Number v2 = kv2D.getValue(r, c);
+            if (v1 == null) {
+                if (v2 != null) {
+                    return false;
+                }
+            } else {
+                if (!v1.equals(v2)) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}","public void test2225() throws Throwable {
+    DefaultKeyedValues2D defaultKeyedValues2D0 = new DefaultKeyedValues2D();
+    DefaultKeyedValues2D defaultKeyedValues2D1 = (DefaultKeyedValues2D) defaultKeyedValues2D0.clone();
+    Short short0 = new Short((short) 2440);
+    defaultKeyedValues2D1.addValue(short0, short0, short0);
+    boolean boolean0 = defaultKeyedValues2D1.equals(defaultKeyedValues2D0);
+    assertFalse(boolean0);
+}","/**
+ * Tests if this object is equal to another.
+ *
+ * @param o  the other object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public int getColumnCount() {
+    return this.columnKeys.size();
+}","public void test2326() throws Throwable {
+    DefaultKeyedValues2D defaultKeyedValues2D0 = new DefaultKeyedValues2D();
+    Float float0 = new Float((-51.948048F));
+    defaultKeyedValues2D0.setValue(float0, float0, float0);
+    DefaultKeyedValues2D defaultKeyedValues2D1 = (DefaultKeyedValues2D) defaultKeyedValues2D0.clone();
+    defaultKeyedValues2D1.removeColumn((Comparable) float0);
+    boolean boolean0 = defaultKeyedValues2D0.equals(defaultKeyedValues2D1);
+    assertEquals(1, defaultKeyedValues2D0.getColumnCount());
+}","/**
+ * Returns the column count.
+ *
+ * @return The column count.
+ *
+ * @see #getRowCount()
+ */"
+"public boolean equals(Object o) {
+    if (o == null) {
+        return false;
+    }
+    if (o == this) {
+        return true;
+    }
+    if (!(o instanceof KeyedValues2D)) {
+        return false;
+    }
+    KeyedValues2D kv2D = (KeyedValues2D) o;
+    if (!getRowKeys().equals(kv2D.getRowKeys())) {
+        return false;
+    }
+    if (!getColumnKeys().equals(kv2D.getColumnKeys())) {
+        return false;
+    }
+    int rowCount = getRowCount();
+    if (rowCount != kv2D.getRowCount()) {
+        return false;
+    }
+    int colCount = getColumnCount();
+    if (colCount != kv2D.getColumnCount()) {
+        return false;
+    }
+    for (int r = 0; r < rowCount; r++) {
+        for (int c = 0; c < colCount; c++) {
+            Number v1 = getValue(r, c);
+            Number v2 = kv2D.getValue(r, c);
+            if (v1 == null) {
+                if (v2 != null) {
+                    return false;
+                }
+            } else {
+                if (!v1.equals(v2)) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}","public void test2327() throws Throwable {
+    DefaultKeyedValues2D defaultKeyedValues2D0 = new DefaultKeyedValues2D();
+    Float float0 = new Float((-51.948048F));
+    defaultKeyedValues2D0.setValue(float0, float0, float0);
+    DefaultKeyedValues2D defaultKeyedValues2D1 = (DefaultKeyedValues2D) defaultKeyedValues2D0.clone();
+    defaultKeyedValues2D1.removeColumn((Comparable) float0);
+    boolean boolean0 = defaultKeyedValues2D0.equals(defaultKeyedValues2D1);
+    assertFalse(boolean0);
+}","/**
+ * Tests if this object is equal to another.
+ *
+ * @param o  the other object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public boolean equals(Object o) {
+    if (o == null) {
+        return false;
+    }
+    if (o == this) {
+        return true;
+    }
+    if (!(o instanceof KeyedValues2D)) {
+        return false;
+    }
+    KeyedValues2D kv2D = (KeyedValues2D) o;
+    if (!getRowKeys().equals(kv2D.getRowKeys())) {
+        return false;
+    }
+    if (!getColumnKeys().equals(kv2D.getColumnKeys())) {
+        return false;
+    }
+    int rowCount = getRowCount();
+    if (rowCount != kv2D.getRowCount()) {
+        return false;
+    }
+    int colCount = getColumnCount();
+    if (colCount != kv2D.getColumnCount()) {
+        return false;
+    }
+    for (int r = 0; r < rowCount; r++) {
+        for (int c = 0; c < colCount; c++) {
+            Number v1 = getValue(r, c);
+            Number v2 = kv2D.getValue(r, c);
+            if (v1 == null) {
+                if (v2 != null) {
+                    return false;
+                }
+            } else {
+                if (!v1.equals(v2)) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}","public void test2428() throws Throwable {
+    DefaultKeyedValues2D defaultKeyedValues2D0 = new DefaultKeyedValues2D();
+    Float float0 = new Float(0.0F);
+    defaultKeyedValues2D0.setValue(float0, float0, float0);
+    DefaultKeyedValues2D defaultKeyedValues2D1 = (DefaultKeyedValues2D) defaultKeyedValues2D0.clone();
+    assertTrue(defaultKeyedValues2D1.equals((Object) defaultKeyedValues2D0));
+}","/**
+ * Tests if this object is equal to another.
+ *
+ * @param o  the other object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public boolean equals(Object o) {
+    if (o == null) {
+        return false;
+    }
+    if (o == this) {
+        return true;
+    }
+    if (!(o instanceof KeyedValues2D)) {
+        return false;
+    }
+    KeyedValues2D kv2D = (KeyedValues2D) o;
+    if (!getRowKeys().equals(kv2D.getRowKeys())) {
+        return false;
+    }
+    if (!getColumnKeys().equals(kv2D.getColumnKeys())) {
+        return false;
+    }
+    int rowCount = getRowCount();
+    if (rowCount != kv2D.getRowCount()) {
+        return false;
+    }
+    int colCount = getColumnCount();
+    if (colCount != kv2D.getColumnCount()) {
+        return false;
+    }
+    for (int r = 0; r < rowCount; r++) {
+        for (int c = 0; c < colCount; c++) {
+            Number v1 = getValue(r, c);
+            Number v2 = kv2D.getValue(r, c);
+            if (v1 == null) {
+                if (v2 != null) {
+                    return false;
+                }
+            } else {
+                if (!v1.equals(v2)) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}","public void test2429() throws Throwable {
+    DefaultKeyedValues2D defaultKeyedValues2D0 = new DefaultKeyedValues2D();
+    Float float0 = new Float(0.0F);
+    defaultKeyedValues2D0.setValue(float0, float0, float0);
+    DefaultKeyedValues2D defaultKeyedValues2D1 = (DefaultKeyedValues2D) defaultKeyedValues2D0.clone();
+    defaultKeyedValues2D1.addValue((Number) null, float0, float0);
+    boolean boolean0 = defaultKeyedValues2D1.equals(defaultKeyedValues2D0);
+    assertFalse(defaultKeyedValues2D1.equals((Object) defaultKeyedValues2D0));
+}","/**
+ * Tests if this object is equal to another.
+ *
+ * @param o  the other object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public boolean equals(Object o) {
+    if (o == null) {
+        return false;
+    }
+    if (o == this) {
+        return true;
+    }
+    if (!(o instanceof KeyedValues2D)) {
+        return false;
+    }
+    KeyedValues2D kv2D = (KeyedValues2D) o;
+    if (!getRowKeys().equals(kv2D.getRowKeys())) {
+        return false;
+    }
+    if (!getColumnKeys().equals(kv2D.getColumnKeys())) {
+        return false;
+    }
+    int rowCount = getRowCount();
+    if (rowCount != kv2D.getRowCount()) {
+        return false;
+    }
+    int colCount = getColumnCount();
+    if (colCount != kv2D.getColumnCount()) {
+        return false;
+    }
+    for (int r = 0; r < rowCount; r++) {
+        for (int c = 0; c < colCount; c++) {
+            Number v1 = getValue(r, c);
+            Number v2 = kv2D.getValue(r, c);
+            if (v1 == null) {
+                if (v2 != null) {
+                    return false;
+                }
+            } else {
+                if (!v1.equals(v2)) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}","public void test2430() throws Throwable {
+    DefaultKeyedValues2D defaultKeyedValues2D0 = new DefaultKeyedValues2D();
+    Float float0 = new Float(0.0F);
+    defaultKeyedValues2D0.setValue(float0, float0, float0);
+    DefaultKeyedValues2D defaultKeyedValues2D1 = (DefaultKeyedValues2D) defaultKeyedValues2D0.clone();
+    defaultKeyedValues2D1.addValue((Number) null, float0, float0);
+    boolean boolean0 = defaultKeyedValues2D1.equals(defaultKeyedValues2D0);
+    assertFalse(boolean0);
+}","/**
+ * Tests if this object is equal to another.
+ *
+ * @param o  the other object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public boolean equals(Object o) {
+    if (o == null) {
+        return false;
+    }
+    if (o == this) {
+        return true;
+    }
+    if (!(o instanceof KeyedValues2D)) {
+        return false;
+    }
+    KeyedValues2D kv2D = (KeyedValues2D) o;
+    if (!getRowKeys().equals(kv2D.getRowKeys())) {
+        return false;
+    }
+    if (!getColumnKeys().equals(kv2D.getColumnKeys())) {
+        return false;
+    }
+    int rowCount = getRowCount();
+    if (rowCount != kv2D.getRowCount()) {
+        return false;
+    }
+    int colCount = getColumnCount();
+    if (colCount != kv2D.getColumnCount()) {
+        return false;
+    }
+    for (int r = 0; r < rowCount; r++) {
+        for (int c = 0; c < colCount; c++) {
+            Number v1 = getValue(r, c);
+            Number v2 = kv2D.getValue(r, c);
+            if (v1 == null) {
+                if (v2 != null) {
+                    return false;
+                }
+            } else {
+                if (!v1.equals(v2)) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}","public void test2532() throws Throwable {
+    DefaultKeyedValues2D defaultKeyedValues2D0 = new DefaultKeyedValues2D();
+    Float float0 = new Float(0.0F);
+    defaultKeyedValues2D0.setValue(float0, float0, float0);
+    DefaultKeyedValues2D defaultKeyedValues2D1 = (DefaultKeyedValues2D) defaultKeyedValues2D0.clone();
+    defaultKeyedValues2D1.addValue((Number) null, float0, float0);
+    boolean boolean0 = defaultKeyedValues2D0.equals(defaultKeyedValues2D1);
+    assertFalse(boolean0);
+}","/**
+ * Tests if this object is equal to another.
+ *
+ * @param o  the other object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public boolean equals(Object o) {
+    if (o == null) {
+        return false;
+    }
+    if (o == this) {
+        return true;
+    }
+    if (!(o instanceof KeyedValues2D)) {
+        return false;
+    }
+    KeyedValues2D kv2D = (KeyedValues2D) o;
+    if (!getRowKeys().equals(kv2D.getRowKeys())) {
+        return false;
+    }
+    if (!getColumnKeys().equals(kv2D.getColumnKeys())) {
+        return false;
+    }
+    int rowCount = getRowCount();
+    if (rowCount != kv2D.getRowCount()) {
+        return false;
+    }
+    int colCount = getColumnCount();
+    if (colCount != kv2D.getColumnCount()) {
+        return false;
+    }
+    for (int r = 0; r < rowCount; r++) {
+        for (int c = 0; c < colCount; c++) {
+            Number v1 = getValue(r, c);
+            Number v2 = kv2D.getValue(r, c);
+            if (v1 == null) {
+                if (v2 != null) {
+                    return false;
+                }
+            } else {
+                if (!v1.equals(v2)) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}","public void test2533() throws Throwable {
+    DefaultKeyedValues2D defaultKeyedValues2D0 = new DefaultKeyedValues2D();
+    Float float0 = new Float(0.0F);
+    defaultKeyedValues2D0.setValue(float0, float0, float0);
+    DefaultKeyedValues2D defaultKeyedValues2D1 = (DefaultKeyedValues2D) defaultKeyedValues2D0.clone();
+    defaultKeyedValues2D1.addValue((Number) null, float0, float0);
+    boolean boolean0 = defaultKeyedValues2D0.equals(defaultKeyedValues2D1);
+    assertFalse(defaultKeyedValues2D1.equals((Object) defaultKeyedValues2D0));
+}","/**
+ * Tests if this object is equal to another.
+ *
+ * @param o  the other object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"

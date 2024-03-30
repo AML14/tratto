@@ -1,0 +1,303 @@
+{
+  "test1113" : {
+    "methodSignature" : "public final int getJacobianEvaluations()",
+    "methodName" : "getJacobianEvaluations",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1113() throws Throwable {\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    SimpleEstimationProblem simpleEstimationProblem0 = new SimpleEstimationProblem();\n    WeightedMeasurement weightedMeasurement0 = mock(WeightedMeasurement.class, new ViolatedAssumptionAnswer());\n    doReturn(0.0).when(weightedMeasurement0).getResidual();\n    doReturn(0.0, 0.0, 0.0).when(weightedMeasurement0).getWeight();\n    simpleEstimationProblem0.addMeasurement(weightedMeasurement0);\n    WeightedMeasurement weightedMeasurement1 = mock(WeightedMeasurement.class, new ViolatedAssumptionAnswer());\n    doReturn(0.0).when(weightedMeasurement1).getResidual();\n    doReturn(0.0, 0.0, 0.0).when(weightedMeasurement1).getWeight();\n    simpleEstimationProblem0.addMeasurement(weightedMeasurement1);\n    levenbergMarquardtEstimator0.estimate(simpleEstimationProblem0);\n    levenbergMarquardtEstimator0.getJacobianEvaluations();\n}",
+    "testName" : "test1113"
+  },
+  "test2225" : {
+    "methodSignature" : "protected void updateJacobian()",
+    "methodName" : "updateJacobian",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test2225() throws Throwable {\n    GaussNewtonEstimator gaussNewtonEstimator0 = new GaussNewtonEstimator(0, 4984.32166029148, (-1721.36667));\n    gaussNewtonEstimator0.updateJacobian();\n}",
+    "testName" : "test2225"
+  },
+  "test3336" : {
+    "methodSignature" : "public double[] guessParametersErrors(EstimationProblem problem) throws EstimationException",
+    "methodName" : "guessParametersErrors",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test3336() throws Throwable {\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    SimpleEstimationProblem simpleEstimationProblem0 = new SimpleEstimationProblem();\n    WeightedMeasurement weightedMeasurement0 = mock(WeightedMeasurement.class, new ViolatedAssumptionAnswer());\n    doReturn(0.0).when(weightedMeasurement0).getResidual();\n    doReturn(0.0).when(weightedMeasurement0).getWeight();\n    EstimatedParameter estimatedParameter0 = new EstimatedParameter(\"LU decomposition requires that the matrix be square.\", 1.0);\n    simpleEstimationProblem0.addParameter(estimatedParameter0);\n    simpleEstimationProblem0.addMeasurement(weightedMeasurement0);\n    WeightedMeasurement weightedMeasurement1 = mock(WeightedMeasurement.class, new ViolatedAssumptionAnswer());\n    doReturn(0.0).when(weightedMeasurement1).getResidual();\n    doReturn(0.0).when(weightedMeasurement1).getWeight();\n    simpleEstimationProblem0.addMeasurement(weightedMeasurement1);\n    double[] doubleArray0 = new double[8];\n    levenbergMarquardtEstimator0.jacobian = doubleArray0;\n    levenbergMarquardtEstimator0.guessParametersErrors(simpleEstimationProblem0);\n}",
+    "testName" : "test3336"
+  },
+  "test1214" : {
+    "methodSignature" : "public double[] guessParametersErrors(EstimationProblem problem) throws EstimationException",
+    "methodName" : "guessParametersErrors",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1214() throws Throwable {\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    SimpleEstimationProblem simpleEstimationProblem0 = new SimpleEstimationProblem();\n    WeightedMeasurement weightedMeasurement0 = mock(WeightedMeasurement.class, new ViolatedAssumptionAnswer());\n    doReturn(0.0).when(weightedMeasurement0).getResidual();\n    doReturn(0.0).when(weightedMeasurement0).getWeight();\n    simpleEstimationProblem0.addMeasurement(weightedMeasurement0);\n    levenbergMarquardtEstimator0.initializeEstimate(simpleEstimationProblem0);\n    levenbergMarquardtEstimator0.rows = (-1);\n    levenbergMarquardtEstimator0.guessParametersErrors(simpleEstimationProblem0);\n}",
+    "testName" : "test1214"
+  },
+  "test2326" : {
+    "methodSignature" : "protected void initializeEstimate(EstimationProblem problem)",
+    "methodName" : "initializeEstimate",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test2326() throws Throwable {\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    levenbergMarquardtEstimator0.initializeEstimate((EstimationProblem) null);\n}",
+    "testName" : "test2326"
+  },
+  "test3437" : {
+    "methodSignature" : "public double[] guessParametersErrors(EstimationProblem problem) throws EstimationException",
+    "methodName" : "guessParametersErrors",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test3437() throws Throwable {\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    SimpleEstimationProblem simpleEstimationProblem0 = new SimpleEstimationProblem();\n    WeightedMeasurement weightedMeasurement0 = mock(WeightedMeasurement.class, new ViolatedAssumptionAnswer());\n    doReturn(0.0, 0.0).when(weightedMeasurement0).getPartial(any(org.apache.commons.math.estimation.EstimatedParameter.class));\n    doReturn(0.0, 0.0).when(weightedMeasurement0).getResidual();\n    doReturn(0.0, 0.0, 0.0, 0.0, 0.0).when(weightedMeasurement0).getWeight();\n    EstimatedParameter estimatedParameter0 = new EstimatedParameter(\"LU decomposition requires that the matrix be square.\", 1.0);\n    simpleEstimationProblem0.addParameter(estimatedParameter0);\n    simpleEstimationProblem0.addMeasurement(weightedMeasurement0);\n    levenbergMarquardtEstimator0.estimate(simpleEstimationProblem0);\n    WeightedMeasurement weightedMeasurement1 = mock(WeightedMeasurement.class, new ViolatedAssumptionAnswer());\n    doReturn(0.0).when(weightedMeasurement1).getResidual();\n    doReturn(0.0).when(weightedMeasurement1).getWeight();\n    simpleEstimationProblem0.addMeasurement(weightedMeasurement1);\n    levenbergMarquardtEstimator0.guessParametersErrors(simpleEstimationProblem0);\n}",
+    "testName" : "test3437"
+  },
+  "test2023" : {
+    "methodSignature" : "protected void updateResidualsAndCost() throws EstimationException",
+    "methodName" : "updateResidualsAndCost",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test2023() throws Throwable {\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    levenbergMarquardtEstimator0.rows = 1278;\n    levenbergMarquardtEstimator0.updateResidualsAndCost();\n}",
+    "testName" : "test2023"
+  },
+  "test3134" : {
+    "methodSignature" : "public void estimate(EstimationProblem problem) throws EstimationException",
+    "methodName" : "estimate",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test3134() throws Throwable {\n    GaussNewtonEstimator gaussNewtonEstimator0 = new GaussNewtonEstimator(0, 0, 0);\n    gaussNewtonEstimator0.estimate((EstimationProblem) null);\n}",
+    "testName" : "test3134"
+  },
+  "test1012" : {
+    "methodSignature" : "public double[] guessParametersErrors(EstimationProblem problem) throws EstimationException",
+    "methodName" : "guessParametersErrors",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1012() throws Throwable {\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    SimpleEstimationProblem simpleEstimationProblem0 = new SimpleEstimationProblem();\n    WeightedMeasurement weightedMeasurement0 = mock(WeightedMeasurement.class, new ViolatedAssumptionAnswer());\n    doReturn(0.001, Double.POSITIVE_INFINITY).when(weightedMeasurement0).getResidual();\n    doReturn(0.0, 0.001, 0.001, 0.001, 0.0).when(weightedMeasurement0).getWeight();\n    simpleEstimationProblem0.addMeasurement(weightedMeasurement0);\n    levenbergMarquardtEstimator0.estimate(simpleEstimationProblem0);\n    levenbergMarquardtEstimator0.cols = (-3648);\n    levenbergMarquardtEstimator0.guessParametersErrors(simpleEstimationProblem0);\n}",
+    "testName" : "test1012"
+  },
+  "test2124" : {
+    "methodSignature" : "protected void updateResidualsAndCost() throws EstimationException",
+    "methodName" : "updateResidualsAndCost",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test2124() throws Throwable {\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    SimpleEstimationProblem simpleEstimationProblem0 = new SimpleEstimationProblem();\n    levenbergMarquardtEstimator0.initializeEstimate(simpleEstimationProblem0);\n    levenbergMarquardtEstimator0.rows = 2786;\n    levenbergMarquardtEstimator0.updateResidualsAndCost();\n}",
+    "testName" : "test2124"
+  },
+  "test3235" : {
+    "methodSignature" : "public void estimate(EstimationProblem problem) throws EstimationException",
+    "methodName" : "estimate",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test3235() throws Throwable {\n    GaussNewtonEstimator gaussNewtonEstimator0 = new GaussNewtonEstimator((-584), (-584), (-584));\n    SimpleEstimationProblem simpleEstimationProblem0 = new SimpleEstimationProblem();\n    gaussNewtonEstimator0.estimate(simpleEstimationProblem0);\n}",
+    "testName" : "test3235"
+  },
+  "test011" : {
+    "methodSignature" : "public double[] guessParametersErrors(EstimationProblem problem) throws EstimationException",
+    "methodName" : "guessParametersErrors",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test011() throws Throwable {\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    SimpleEstimationProblem simpleEstimationProblem0 = new SimpleEstimationProblem();\n    EstimatedParameter estimatedParameter0 = new EstimatedParameter(\"unable to compute covariances: singular problem\", 0.0, true);\n    estimatedParameter0.setBound(false);\n    simpleEstimationProblem0.addParameter(estimatedParameter0);\n    levenbergMarquardtEstimator0.initializeEstimate(simpleEstimationProblem0);\n    levenbergMarquardtEstimator0.guessParametersErrors(simpleEstimationProblem0);\n}",
+    "testName" : "test011"
+  },
+  "test033" : {
+    "methodSignature" : "public double[] guessParametersErrors(EstimationProblem problem) throws EstimationException",
+    "methodName" : "guessParametersErrors",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test033() throws Throwable {\n    GaussNewtonEstimator gaussNewtonEstimator0 = new GaussNewtonEstimator((-2672), (-2672), (-2672));\n    SimpleEstimationProblem simpleEstimationProblem0 = new SimpleEstimationProblem();\n    simpleEstimationProblem0.addParameter((EstimatedParameter) null);\n    gaussNewtonEstimator0.guessParametersErrors(simpleEstimationProblem0);\n}",
+    "testName" : "test033"
+  },
+  "test055" : {
+    "methodSignature" : "public double getRMS(EstimationProblem problem)",
+    "methodName" : "getRMS",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test055() throws Throwable {\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    SimpleEstimationProblem simpleEstimationProblem0 = new SimpleEstimationProblem();\n    WeightedMeasurement weightedMeasurement0 = mock(WeightedMeasurement.class, new ViolatedAssumptionAnswer());\n    doReturn(Double.NEGATIVE_INFINITY).when(weightedMeasurement0).getResidual();\n    doReturn(0.0).when(weightedMeasurement0).getWeight();\n    simpleEstimationProblem0.addMeasurement(weightedMeasurement0);\n    double double0 = levenbergMarquardtEstimator0.getRMS(simpleEstimationProblem0);\n}",
+    "testName" : "test055"
+  },
+  "test2629" : {
+    "methodSignature" : "public double[][] getCovariances(EstimationProblem problem) throws EstimationException",
+    "methodName" : "getCovariances",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test2629() throws Throwable {\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    SimpleEstimationProblem simpleEstimationProblem0 = new SimpleEstimationProblem();\n    levenbergMarquardtEstimator0.getCovariances(simpleEstimationProblem0);\n}",
+    "testName" : "test2629"
+  },
+  "test1518" : {
+    "methodSignature" : "public final int getJacobianEvaluations()",
+    "methodName" : "getJacobianEvaluations",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1518() throws Throwable {\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    levenbergMarquardtEstimator0.incrementJacobianEvaluationsCounter();\n    int int0 = levenbergMarquardtEstimator0.getJacobianEvaluations();\n}",
+    "testName" : "test1518"
+  },
+  "test1619" : {
+    "methodSignature" : "public final int getJacobianEvaluations()",
+    "methodName" : "getJacobianEvaluations",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1619() throws Throwable {\n    SimpleEstimationProblem simpleEstimationProblem0 = new SimpleEstimationProblem();\n    EstimatedParameter estimatedParameter0 = new EstimatedParameter(\"LU decomposition requires that the matrix be square.\", 1.0);\n    simpleEstimationProblem0.addParameter(estimatedParameter0);\n    WeightedMeasurement weightedMeasurement0 = mock(WeightedMeasurement.class, new ViolatedAssumptionAnswer());\n    doReturn((-1502.78691445)).when(weightedMeasurement0).getPartial(any(org.apache.commons.math.estimation.EstimatedParameter.class));\n    doReturn((-1.0)).when(weightedMeasurement0).getWeight();\n    simpleEstimationProblem0.addMeasurement(weightedMeasurement0);\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    levenbergMarquardtEstimator0.initializeEstimate(simpleEstimationProblem0);\n    levenbergMarquardtEstimator0.getCovariances(simpleEstimationProblem0);\n    levenbergMarquardtEstimator0.getJacobianEvaluations();\n}",
+    "testName" : "test1619"
+  },
+  "test1315" : {
+    "methodSignature" : "public final int getJacobianEvaluations()",
+    "methodName" : "getJacobianEvaluations",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1315() throws Throwable {\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    SimpleEstimationProblem simpleEstimationProblem0 = new SimpleEstimationProblem();\n    levenbergMarquardtEstimator0.estimate(simpleEstimationProblem0);\n    levenbergMarquardtEstimator0.getJacobianEvaluations();\n}",
+    "testName" : "test1315"
+  },
+  "test2427" : {
+    "methodSignature" : "public double[] guessParametersErrors(EstimationProblem problem) throws EstimationException",
+    "methodName" : "guessParametersErrors",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test2427() throws Throwable {\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    SimpleEstimationProblem simpleEstimationProblem0 = new SimpleEstimationProblem();\n    WeightedMeasurement weightedMeasurement0 = mock(WeightedMeasurement.class, new ViolatedAssumptionAnswer());\n    doReturn(0.0).when(weightedMeasurement0).getResidual();\n    doReturn(0.0).when(weightedMeasurement0).getWeight();\n    simpleEstimationProblem0.addMeasurement(weightedMeasurement0);\n    levenbergMarquardtEstimator0.guessParametersErrors(simpleEstimationProblem0);\n}",
+    "testName" : "test2427"
+  },
+  "test3538" : {
+    "methodSignature" : "public double getChiSquare(EstimationProblem problem)",
+    "methodName" : "getChiSquare",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test3538() throws Throwable {\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    SimpleEstimationProblem simpleEstimationProblem0 = new SimpleEstimationProblem();\n    double double0 = levenbergMarquardtEstimator0.getChiSquare(simpleEstimationProblem0);\n}",
+    "testName" : "test3538"
+  },
+  "test1416" : {
+    "methodSignature" : "public final int getCostEvaluations()",
+    "methodName" : "getCostEvaluations",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1416() throws Throwable {\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    SimpleEstimationProblem simpleEstimationProblem0 = new SimpleEstimationProblem();\n    WeightedMeasurement weightedMeasurement0 = mock(WeightedMeasurement.class, new ViolatedAssumptionAnswer());\n    doReturn(0.0, 480.34893).when(weightedMeasurement0).getResidual();\n    doReturn(0.0, 0.0, 0.0, 1.0E-11).when(weightedMeasurement0).getWeight();\n    simpleEstimationProblem0.addMeasurement(weightedMeasurement0);\n    levenbergMarquardtEstimator0.estimate(simpleEstimationProblem0);\n    double double0 = levenbergMarquardtEstimator0.getRMS(simpleEstimationProblem0);\n    levenbergMarquardtEstimator0.getCostEvaluations();\n}",
+    "testName" : "test1416"
+  },
+  "test2528" : {
+    "methodSignature" : "public double getRMS(EstimationProblem problem)",
+    "methodName" : "getRMS",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test2528() throws Throwable {\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    SimpleEstimationProblem simpleEstimationProblem0 = new SimpleEstimationProblem();\n    simpleEstimationProblem0.addMeasurement((WeightedMeasurement) null);\n    levenbergMarquardtEstimator0.getRMS(simpleEstimationProblem0);\n}",
+    "testName" : "test2528"
+  },
+  "test3639" : {
+    "methodSignature" : "protected void updateResidualsAndCost() throws EstimationException",
+    "methodName" : "updateResidualsAndCost",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test3639() throws Throwable {\n    GaussNewtonEstimator gaussNewtonEstimator0 = new GaussNewtonEstimator((-817), (-817), (-817));\n    gaussNewtonEstimator0.updateResidualsAndCost();\n}",
+    "testName" : "test3639"
+  },
+  "test1417" : {
+    "methodSignature" : "public double getRMS(EstimationProblem problem)",
+    "methodName" : "getRMS",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1417() throws Throwable {\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    SimpleEstimationProblem simpleEstimationProblem0 = new SimpleEstimationProblem();\n    WeightedMeasurement weightedMeasurement0 = mock(WeightedMeasurement.class, new ViolatedAssumptionAnswer());\n    doReturn(0.0, 480.34893).when(weightedMeasurement0).getResidual();\n    doReturn(0.0, 0.0, 0.0, 1.0E-11).when(weightedMeasurement0).getWeight();\n    simpleEstimationProblem0.addMeasurement(weightedMeasurement0);\n    levenbergMarquardtEstimator0.estimate(simpleEstimationProblem0);\n    double double0 = levenbergMarquardtEstimator0.getRMS(simpleEstimationProblem0);\n}",
+    "testName" : "test1417"
+  },
+  "test068" : {
+    "methodSignature" : "public final int getJacobianEvaluations()",
+    "methodName" : "getJacobianEvaluations",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test068() throws Throwable {\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    SimpleEstimationProblem simpleEstimationProblem0 = new SimpleEstimationProblem();\n    WeightedMeasurement weightedMeasurement0 = mock(WeightedMeasurement.class, new ViolatedAssumptionAnswer());\n    doReturn(0.0).when(weightedMeasurement0).getResidual();\n    doReturn(0.0).when(weightedMeasurement0).getWeight();\n    simpleEstimationProblem0.addMeasurement(weightedMeasurement0);\n    levenbergMarquardtEstimator0.initializeEstimate(simpleEstimationProblem0);\n    double double0 = levenbergMarquardtEstimator0.getRMS(simpleEstimationProblem0);\n    levenbergMarquardtEstimator0.getJacobianEvaluations();\n}",
+    "testName" : "test068"
+  },
+  "test3033" : {
+    "methodSignature" : "public void estimate(EstimationProblem problem) throws EstimationException",
+    "methodName" : "estimate",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test3033() throws Throwable {\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    SimpleEstimationProblem simpleEstimationProblem0 = new SimpleEstimationProblem();\n    EstimatedParameter estimatedParameter0 = new EstimatedParameter(\"-$C#:Xv%H9/d\", (-2025.2));\n    simpleEstimationProblem0.addParameter(estimatedParameter0);\n    WeightedMeasurement weightedMeasurement0 = mock(WeightedMeasurement.class, new ViolatedAssumptionAnswer());\n    doReturn(0.0).when(weightedMeasurement0).getPartial(any(org.apache.commons.math.estimation.EstimatedParameter.class));\n    doReturn(Double.POSITIVE_INFINITY).when(weightedMeasurement0).getResidual();\n    doReturn(Double.POSITIVE_INFINITY, (-2025.2), (-2025.2)).when(weightedMeasurement0).getWeight();\n    simpleEstimationProblem0.addMeasurement(weightedMeasurement0);\n    levenbergMarquardtEstimator0.estimate(simpleEstimationProblem0);\n}",
+    "testName" : "test3033"
+  },
+  "test2730" : {
+    "methodSignature" : "public double[][] getCovariances(EstimationProblem problem) throws EstimationException",
+    "methodName" : "getCovariances",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test2730() throws Throwable {\n    GaussNewtonEstimator gaussNewtonEstimator0 = new GaussNewtonEstimator(938, 938, 938);\n    SimpleEstimationProblem simpleEstimationProblem0 = new SimpleEstimationProblem();\n    gaussNewtonEstimator0.initializeEstimate(simpleEstimationProblem0);\n    gaussNewtonEstimator0.getCovariances(simpleEstimationProblem0);\n}",
+    "testName" : "test2730"
+  },
+  "test3841" : {
+    "methodSignature" : "public final int getJacobianEvaluations()",
+    "methodName" : "getJacobianEvaluations",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test3841() throws Throwable {\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    int int0 = levenbergMarquardtEstimator0.getJacobianEvaluations();\n}",
+    "testName" : "test3841"
+  },
+  "test1720" : {
+    "methodSignature" : "public final int getCostEvaluations()",
+    "methodName" : "getCostEvaluations",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1720() throws Throwable {\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    levenbergMarquardtEstimator0.updateResidualsAndCost();\n    int int0 = levenbergMarquardtEstimator0.getCostEvaluations();\n}",
+    "testName" : "test1720"
+  },
+  "test2831" : {
+    "methodSignature" : "public double[][] getCovariances(EstimationProblem problem) throws EstimationException",
+    "methodName" : "getCovariances",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test2831() throws Throwable {\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    SimpleEstimationProblem simpleEstimationProblem0 = new SimpleEstimationProblem();\n    levenbergMarquardtEstimator0.initializeEstimate(simpleEstimationProblem0);\n    EstimatedParameter estimatedParameter0 = new EstimatedParameter(\"Caused by: \", 285.0);\n    simpleEstimationProblem0.addParameter(estimatedParameter0);\n    simpleEstimationProblem0.addMeasurement((WeightedMeasurement) null);\n    levenbergMarquardtEstimator0.getCovariances(simpleEstimationProblem0);\n}",
+    "testName" : "test2831"
+  },
+  "test3942" : {
+    "methodSignature" : "public final int getCostEvaluations()",
+    "methodName" : "getCostEvaluations",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test3942() throws Throwable {\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    int int0 = levenbergMarquardtEstimator0.getCostEvaluations();\n}",
+    "testName" : "test3942"
+  },
+  "test3740" : {
+    "methodSignature" : "public final int getJacobianEvaluations()",
+    "methodName" : "getJacobianEvaluations",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test3740() throws Throwable {\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    SimpleEstimationProblem simpleEstimationProblem0 = new SimpleEstimationProblem();\n    levenbergMarquardtEstimator0.estimate(simpleEstimationProblem0);\n    levenbergMarquardtEstimator0.updateJacobian();\n    levenbergMarquardtEstimator0.getJacobianEvaluations();\n}",
+    "testName" : "test3740"
+  },
+  "test000" : {
+    "methodSignature" : "public final int getJacobianEvaluations()",
+    "methodName" : "getJacobianEvaluations",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test000() throws Throwable {\n    SimpleEstimationProblem simpleEstimationProblem0 = new SimpleEstimationProblem();\n    WeightedMeasurement weightedMeasurement0 = mock(WeightedMeasurement.class, new ViolatedAssumptionAnswer());\n    doReturn(0.0).when(weightedMeasurement0).getPartial(any(org.apache.commons.math.estimation.EstimatedParameter.class));\n    doReturn(0.0).when(weightedMeasurement0).getResidual();\n    doReturn(0.0, (-1.0)).when(weightedMeasurement0).getWeight();\n    EstimatedParameter estimatedParameter0 = new EstimatedParameter(\"LU decomposition requires that the matrix be square.\", 1.0);\n    simpleEstimationProblem0.addParameter(estimatedParameter0);\n    simpleEstimationProblem0.addMeasurement(weightedMeasurement0);\n    WeightedMeasurement weightedMeasurement1 = mock(WeightedMeasurement.class, new ViolatedAssumptionAnswer());\n    doReturn(0.0).when(weightedMeasurement1).getPartial(any(org.apache.commons.math.estimation.EstimatedParameter.class));\n    doReturn(0.0).when(weightedMeasurement1).getResidual();\n    doReturn(1590.261196097777, Double.POSITIVE_INFINITY).when(weightedMeasurement1).getWeight();\n    simpleEstimationProblem0.addMeasurement(weightedMeasurement1);\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    levenbergMarquardtEstimator0.initializeEstimate(simpleEstimationProblem0);\n    levenbergMarquardtEstimator0.guessParametersErrors(simpleEstimationProblem0);\n    levenbergMarquardtEstimator0.getJacobianEvaluations();\n}",
+    "testName" : "test000"
+  },
+  "test022" : {
+    "methodSignature" : "public double[] guessParametersErrors(EstimationProblem problem) throws EstimationException",
+    "methodName" : "guessParametersErrors",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test022() throws Throwable {\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    SimpleEstimationProblem simpleEstimationProblem0 = new SimpleEstimationProblem();\n    levenbergMarquardtEstimator0.rows = (-108);\n    levenbergMarquardtEstimator0.guessParametersErrors(simpleEstimationProblem0);\n}",
+    "testName" : "test022"
+  },
+  "test044" : {
+    "methodSignature" : "public double[][] getCovariances(EstimationProblem problem) throws EstimationException",
+    "methodName" : "getCovariances",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test044() throws Throwable {\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    SimpleEstimationProblem simpleEstimationProblem0 = new SimpleEstimationProblem();\n    WeightedMeasurement weightedMeasurement0 = mock(WeightedMeasurement.class, new ViolatedAssumptionAnswer());\n    doReturn(0.0, 0.0, 0.0, 0.0).when(weightedMeasurement0).getPartial(any(org.apache.commons.math.estimation.EstimatedParameter.class));\n    doReturn(0.0).when(weightedMeasurement0).getResidual();\n    doReturn(0.0, 0.0, 0.0, 0.0).when(weightedMeasurement0).getWeight();\n    simpleEstimationProblem0.addMeasurement(weightedMeasurement0);\n    EstimatedParameter estimatedParameter0 = new EstimatedParameter(\"vX~uBD,J#n/L2^QZ8z\", (-2246.12086661453));\n    simpleEstimationProblem0.addParameter(estimatedParameter0);\n    simpleEstimationProblem0.addParameter(estimatedParameter0);\n    levenbergMarquardtEstimator0.estimate(simpleEstimationProblem0);\n    levenbergMarquardtEstimator0.getCovariances(simpleEstimationProblem0);\n}",
+    "testName" : "test044"
+  },
+  "test066" : {
+    "methodSignature" : "public final int getCostEvaluations()",
+    "methodName" : "getCostEvaluations",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test066() throws Throwable {\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    SimpleEstimationProblem simpleEstimationProblem0 = new SimpleEstimationProblem();\n    WeightedMeasurement weightedMeasurement0 = mock(WeightedMeasurement.class, new ViolatedAssumptionAnswer());\n    doReturn(0.0).when(weightedMeasurement0).getResidual();\n    doReturn(0.0).when(weightedMeasurement0).getWeight();\n    simpleEstimationProblem0.addMeasurement(weightedMeasurement0);\n    levenbergMarquardtEstimator0.initializeEstimate(simpleEstimationProblem0);\n    double double0 = levenbergMarquardtEstimator0.getRMS(simpleEstimationProblem0);\n    levenbergMarquardtEstimator0.getCostEvaluations();\n}",
+    "testName" : "test066"
+  },
+  "test067" : {
+    "methodSignature" : "public double getRMS(EstimationProblem problem)",
+    "methodName" : "getRMS",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test067() throws Throwable {\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    SimpleEstimationProblem simpleEstimationProblem0 = new SimpleEstimationProblem();\n    WeightedMeasurement weightedMeasurement0 = mock(WeightedMeasurement.class, new ViolatedAssumptionAnswer());\n    doReturn(0.0).when(weightedMeasurement0).getResidual();\n    doReturn(0.0).when(weightedMeasurement0).getWeight();\n    simpleEstimationProblem0.addMeasurement(weightedMeasurement0);\n    levenbergMarquardtEstimator0.initializeEstimate(simpleEstimationProblem0);\n    double double0 = levenbergMarquardtEstimator0.getRMS(simpleEstimationProblem0);\n}",
+    "testName" : "test067"
+  },
+  "test1821" : {
+    "methodSignature" : "public double getChiSquare(EstimationProblem problem)",
+    "methodName" : "getChiSquare",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1821() throws Throwable {\n    GaussNewtonEstimator gaussNewtonEstimator0 = new GaussNewtonEstimator(0, 584.6735773400344, 0);\n    SimpleEstimationProblem simpleEstimationProblem0 = new SimpleEstimationProblem();\n    WeightedMeasurement weightedMeasurement0 = mock(WeightedMeasurement.class, new ViolatedAssumptionAnswer());\n    doReturn((-1250.2)).when(weightedMeasurement0).getResidual();\n    doReturn(584.6735773400344).when(weightedMeasurement0).getWeight();\n    simpleEstimationProblem0.addMeasurement(weightedMeasurement0);\n    double double0 = gaussNewtonEstimator0.getChiSquare(simpleEstimationProblem0);\n}",
+    "testName" : "test1821"
+  },
+  "test0810" : {
+    "methodSignature" : "public final int getCostEvaluations()",
+    "methodName" : "getCostEvaluations",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0810() throws Throwable {\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    levenbergMarquardtEstimator0.rows = (-2563);\n    levenbergMarquardtEstimator0.updateResidualsAndCost();\n    levenbergMarquardtEstimator0.getCostEvaluations();\n}",
+    "testName" : "test0810"
+  },
+  "test2932" : {
+    "methodSignature" : "public double getChiSquare(EstimationProblem problem)",
+    "methodName" : "getChiSquare",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test2932() throws Throwable {\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    levenbergMarquardtEstimator0.getChiSquare((EstimationProblem) null);\n}",
+    "testName" : "test2932"
+  },
+  "test1922" : {
+    "methodSignature" : "public double getChiSquare(EstimationProblem problem)",
+    "methodName" : "getChiSquare",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1922() throws Throwable {\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    SimpleEstimationProblem simpleEstimationProblem0 = new SimpleEstimationProblem();\n    WeightedMeasurement weightedMeasurement0 = mock(WeightedMeasurement.class, new ViolatedAssumptionAnswer());\n    doReturn(2.2204E-16, 2.2204E-16).when(weightedMeasurement0).getResidual();\n    doReturn(2.2204E-16, (-2334.9), (-532.18208538391), 0.0).when(weightedMeasurement0).getWeight();\n    simpleEstimationProblem0.addMeasurement(weightedMeasurement0);\n    levenbergMarquardtEstimator0.estimate(simpleEstimationProblem0);\n    double double0 = levenbergMarquardtEstimator0.getChiSquare(simpleEstimationProblem0);\n    //  // Unstable assertion: assertEquals(1, levenbergMarquardtEstimator0.getJacobianEvaluations());\n    //  // Unstable assertion: assertEquals((-2.1115149085613945E-35), double0, 0.01);\n}",
+    "testName" : "test1922"
+  },
+  "test0911" : {
+    "methodSignature" : "public final int getCostEvaluations()",
+    "methodName" : "getCostEvaluations",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0911() throws Throwable {\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    levenbergMarquardtEstimator0.setMaxCostEval(1);\n    levenbergMarquardtEstimator0.updateResidualsAndCost();\n    levenbergMarquardtEstimator0.getCostEvaluations();\n}",
+    "testName" : "test0911"
+  },
+  "test079" : {
+    "methodSignature" : "public double getRMS(EstimationProblem problem)",
+    "methodName" : "getRMS",
+    "className" : "org.apache.commons.math.estimation.AbstractEstimator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test079() throws Throwable {\n    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();\n    SimpleEstimationProblem simpleEstimationProblem0 = new SimpleEstimationProblem();\n    WeightedMeasurement weightedMeasurement0 = mock(WeightedMeasurement.class, new ViolatedAssumptionAnswer());\n    doReturn(0.0).when(weightedMeasurement0).getResidual();\n    doReturn(0.0).when(weightedMeasurement0).getWeight();\n    simpleEstimationProblem0.addMeasurement(weightedMeasurement0);\n    WeightedMeasurement weightedMeasurement1 = mock(WeightedMeasurement.class, new ViolatedAssumptionAnswer());\n    doReturn(0.0).when(weightedMeasurement1).getResidual();\n    doReturn(0.0).when(weightedMeasurement1).getWeight();\n    simpleEstimationProblem0.addMeasurement(weightedMeasurement1);\n    double double0 = levenbergMarquardtEstimator0.getRMS(simpleEstimationProblem0);\n}",
+    "testName" : "test079"
+  }
+}

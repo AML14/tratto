@@ -1,0 +1,927 @@
+focal_method,test_prefix,docstring
+"public JsonWriter beginArray() throws IOException {
+    writeDeferredName();
+    return open(EMPTY_ARRAY, ""["");
+}","public void test000() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    JsonWriter jsonWriter1 = jsonWriter0.beginArray();
+    JsonWriter jsonWriter2 = jsonWriter1.name(""Xvw&Uz};,bZFt!42"");
+    // Undeclared exception!
+    try {
+        jsonWriter2.beginArray();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Nesting problem.
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}","/**
+ * Begins encoding a new array. Each call to this method must be paired with
+ * a call to {@link #endArray}.
+ *
+ * @return this writer.
+ */"
+"public JsonWriter endObject() throws IOException {
+    return close(EMPTY_OBJECT, NONEMPTY_OBJECT, ""}"");
+}","public void test011() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.beginArray();
+    // Undeclared exception!
+    try {
+        jsonWriter0.endObject();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Nesting problem.
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}","/**
+ * Ends encoding the current object.
+ *
+ * @return this writer.
+ */"
+"public final boolean isHtmlSafe() {
+    return htmlSafe;
+}","public void test044() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.setHtmlSafe(true);
+    jsonWriter0.value(true);
+    assertTrue(jsonWriter0.isHtmlSafe());
+}","/**
+ * Returns true if this writer writes JSON that's safe for inclusion in HTML
+ * and XML documents.
+ */"
+"public final boolean isHtmlSafe() {
+    return htmlSafe;
+}","public void test077() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    Double double0 = new Double((-2415.298894));
+    jsonWriter0.setHtmlSafe(true);
+    jsonWriter0.value((Number) double0);
+    assertTrue(jsonWriter0.isHtmlSafe());
+}","/**
+ * Returns true if this writer writes JSON that's safe for inclusion in HTML
+ * and XML documents.
+ */"
+"public final boolean isHtmlSafe() {
+    return htmlSafe;
+}","public void test088() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    Double double0 = new Double((-2415.298894));
+    jsonWriter0.setSerializeNulls(false);
+    JsonWriter jsonWriter1 = jsonWriter0.value((Number) double0);
+    assertFalse(jsonWriter1.isHtmlSafe());
+}","/**
+ * Returns true if this writer writes JSON that's safe for inclusion in HTML
+ * and XML documents.
+ */"
+"public final boolean isHtmlSafe() {
+    return htmlSafe;
+}","public void test1010() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    Boolean boolean0 = Boolean.FALSE;
+    jsonWriter0.setHtmlSafe(true);
+    jsonWriter0.value(boolean0);
+    assertTrue(jsonWriter0.isHtmlSafe());
+}","/**
+ * Returns true if this writer writes JSON that's safe for inclusion in HTML
+ * and XML documents.
+ */"
+"public final boolean getSerializeNulls() {
+    return serializeNulls;
+}","public void test1212() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.setLenient(true);
+    JsonWriter jsonWriter1 = jsonWriter0.value((long) 0);
+    assertTrue(jsonWriter1.getSerializeNulls());
+}","/**
+ * Returns true if object members are serialized when their value is null.
+ * This has no impact on array elements. The default is true.
+ */"
+"public final boolean isHtmlSafe() {
+    return htmlSafe;
+}","public void test1313() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.setHtmlSafe(true);
+    jsonWriter0.value((long) 'p');
+    assertTrue(jsonWriter0.isHtmlSafe());
+}","/**
+ * Returns true if this writer writes JSON that's safe for inclusion in HTML
+ * and XML documents.
+ */"
+"public final boolean isHtmlSafe() {
+    return htmlSafe;
+}","public void test1515() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.setLenient(true);
+    jsonWriter0.setHtmlSafe(true);
+    jsonWriter0.beginObject();
+    jsonWriter0.endObject();
+    jsonWriter0.value(0.0);
+    assertTrue(jsonWriter0.isHtmlSafe());
+}","/**
+ * Returns true if this writer writes JSON that's safe for inclusion in HTML
+ * and XML documents.
+ */"
+"public final boolean getSerializeNulls() {
+    return serializeNulls;
+}","public void test1718() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.setLenient(true);
+    jsonWriter0.nullValue();
+    assertTrue(jsonWriter0.getSerializeNulls());
+}","/**
+ * Returns true if object members are serialized when their value is null.
+ * This has no impact on array elements. The default is true.
+ */"
+"public final boolean isHtmlSafe() {
+    return htmlSafe;
+}","public void test1820() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.setHtmlSafe(true);
+    jsonWriter0.nullValue();
+    assertTrue(jsonWriter0.isHtmlSafe());
+}","/**
+ * Returns true if this writer writes JSON that's safe for inclusion in HTML
+ * and XML documents.
+ */"
+"public final boolean getSerializeNulls() {
+    return serializeNulls;
+}","public void test1921() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.setLenient(true);
+    JsonWriter jsonWriter1 = jsonWriter0.name(""&"");
+    assertTrue(jsonWriter1.getSerializeNulls());
+}","/**
+ * Returns true if object members are serialized when their value is null.
+ * This has no impact on array elements. The default is true.
+ */"
+"public final boolean isHtmlSafe() {
+    return htmlSafe;
+}","public void test2022() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.setHtmlSafe(true);
+    jsonWriter0.name(""&"");
+    assertTrue(jsonWriter0.isHtmlSafe());
+}","/**
+ * Returns true if this writer writes JSON that's safe for inclusion in HTML
+ * and XML documents.
+ */"
+"public final boolean getSerializeNulls() {
+    return serializeNulls;
+}","public void test2123() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.setSerializeNulls(false);
+    JsonWriter jsonWriter1 = jsonWriter0.name("""");
+    assertFalse(jsonWriter1.getSerializeNulls());
+}","/**
+ * Returns true if object members are serialized when their value is null.
+ * This has no impact on array elements. The default is true.
+ */"
+"public final boolean isHtmlSafe() {
+    return htmlSafe;
+}","public void test2326() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.setHtmlSafe(true);
+    jsonWriter0.jsonValue(""=1A5/g7.E^"");
+    assertTrue(jsonWriter0.isHtmlSafe());
+}","/**
+ * Returns true if this writer writes JSON that's safe for inclusion in HTML
+ * and XML documents.
+ */"
+"public final boolean getSerializeNulls() {
+    return serializeNulls;
+}","public void test2528() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.setLenient(true);
+    jsonWriter0.isLenient();
+    assertTrue(jsonWriter0.getSerializeNulls());
+}","/**
+ * Returns true if object members are serialized when their value is null.
+ * This has no impact on array elements. The default is true.
+ */"
+"public final boolean isHtmlSafe() {
+    return htmlSafe;
+}","public void test2629() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.setHtmlSafe(true);
+    boolean boolean0 = jsonWriter0.isHtmlSafe();
+    assertTrue(boolean0);
+}","/**
+ * Returns true if this writer writes JSON that's safe for inclusion in HTML
+ * and XML documents.
+ */"
+"public final boolean getSerializeNulls() {
+    return serializeNulls;
+}","public void test2730() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(1348);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.setSerializeNulls(false);
+    boolean boolean0 = jsonWriter0.getSerializeNulls();
+    assertFalse(boolean0);
+}","/**
+ * Returns true if object members are serialized when their value is null.
+ * This has no impact on array elements. The default is true.
+ */"
+"public final boolean isHtmlSafe() {
+    return htmlSafe;
+}","public void test2932() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    JsonWriter jsonWriter1 = jsonWriter0.beginObject();
+    jsonWriter1.setHtmlSafe(true);
+    jsonWriter0.endObject();
+    assertTrue(jsonWriter0.isHtmlSafe());
+}","/**
+ * Returns true if this writer writes JSON that's safe for inclusion in HTML
+ * and XML documents.
+ */"
+"public JsonWriter value(boolean value) throws IOException {
+    writeDeferredName();
+    beforeValue();
+    out.write(value ? ""true"" : ""false"");
+    return this;
+}","public void test3336() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.beginObject();
+    // Undeclared exception!
+    try {
+        jsonWriter0.value(true);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Nesting problem.
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}","/**
+ * Encodes {@code value}.
+ *
+ * @return this writer.
+ */"
+"public JsonWriter value(Boolean value) throws IOException {
+    if (value == null) {
+        return nullValue();
+    }
+    writeDeferredName();
+    beforeValue();
+    out.write(value ? ""true"" : ""false"");
+    return this;
+}","public void test3437() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(1);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    JsonWriter jsonWriter1 = jsonWriter0.value(false);
+    Boolean boolean0 = Boolean.valueOf(false);
+    // Undeclared exception!
+    try {
+        jsonWriter1.value(boolean0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // JSON must have only one top-level value.
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}","/**
+ * Encodes {@code value}.
+ *
+ * @return this writer.
+ */"
+"public JsonWriter value(long value) throws IOException {
+    writeDeferredName();
+    beforeValue();
+    out.write(Long.toString(value));
+    return this;
+}","public void test3538() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    Byte byte0 = new Byte((byte) (-27));
+    JsonWriter jsonWriter1 = jsonWriter0.value((Number) byte0);
+    // Undeclared exception!
+    try {
+        jsonWriter1.value((-1L));
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // JSON must have only one top-level value.
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}","/**
+ * Encodes {@code value}.
+ *
+ * @return this writer.
+ */"
+"public JsonWriter value(double value) throws IOException {
+    writeDeferredName();
+    if (Double.isNaN(value) || Double.isInfinite(value)) {
+        throw new IllegalArgumentException(""Numeric values must be finite, but was "" + value);
+    }
+    beforeValue();
+    out.append(Double.toString(value));
+    return this;
+}","public void test3639() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.beginArray();
+    JsonWriter jsonWriter1 = jsonWriter0.endArray();
+    // Undeclared exception!
+    try {
+        jsonWriter1.value((-1.0));
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // JSON must have only one top-level value.
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}","/**
+ * Encodes {@code value}.
+ *
+ * @param value a finite value. May not be {@link Double#isNaN() NaNs} or
+ *     {@link Double#isInfinite() infinities}.
+ * @return this writer.
+ */"
+"public final void setIndent(String indent) {
+    if (indent.length() == 0) {
+        this.indent = null;
+        this.separator = "":"";
+    } else {
+        this.indent = indent;
+        this.separator = "": "";
+    }
+}","public void test3740() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(1348);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    // Undeclared exception!
+    try {
+        jsonWriter0.setIndent((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}","/**
+ * Sets the indentation string to be repeated for each level of indentation
+ * in the encoded document. If {@code indent.isEmpty()} the encoded document
+ * will be compact. Otherwise the encoded document will be more
+ * human-readable.
+ *
+ * @param indent a string containing only whitespace.
+ */"
+"public JsonWriter value(Number value) throws IOException {
+    if (value == null) {
+        return nullValue();
+    }
+    writeDeferredName();
+    String string = value.toString();
+    if (!lenient && (string.equals(""-Infinity"") || string.equals(""Infinity"") || string.equals(""NaN""))) {
+        throw new IllegalArgumentException(""Numeric values must be finite, but was "" + value);
+    }
+    beforeValue();
+    out.append(string);
+    return this;
+}","public void test3942() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    JsonWriter jsonWriter1 = jsonWriter0.beginObject();
+    jsonWriter0.name("""");
+    Short short0 = new Short((short) 10);
+    jsonWriter1.value((Number) short0);
+    Float float0 = new Float((float) 0);
+    // Undeclared exception!
+    try {
+        jsonWriter1.value((Number) float0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Nesting problem.
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}","/**
+ * Encodes {@code value}.
+ *
+ * @param value a finite value. May not be {@link Double#isNaN() NaNs} or
+ *     {@link Double#isInfinite() infinities}.
+ * @return this writer.
+ */"
+"public JsonWriter jsonValue(String value) throws IOException {
+    if (value == null) {
+        return nullValue();
+    }
+    writeDeferredName();
+    beforeValue();
+    out.append(value);
+    return this;
+}","public void test4043() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(1348);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.beginObject();
+    // Undeclared exception!
+    try {
+        jsonWriter0.jsonValue(""=1A5/g7.E^"");
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Nesting problem.
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}","/**
+ * Writes {@code value} directly to the writer without quoting or
+ * escaping.
+ *
+ * @param value the literal string value, or null to encode a null literal.
+ * @return this writer.
+ */"
+"public final boolean getSerializeNulls() {
+    return serializeNulls;
+}","public void test4145() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(1348);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    JsonWriter jsonWriter1 = jsonWriter0.beginArray();
+    jsonWriter1.jsonValue("":V"");
+    Double double0 = new Double((-2415.298894));
+    jsonWriter1.value((Number) double0);
+    assertTrue(jsonWriter0.getSerializeNulls());
+}","/**
+ * Returns true if object members are serialized when their value is null.
+ * This has no impact on array elements. The default is true.
+ */"
+"public void close() throws IOException {
+    out.close();
+    int size = stackSize;
+    if (size > 1 || size == 1 && stack[size - 1] != NONEMPTY_DOCUMENT) {
+        throw new IOException(""Incomplete document"");
+    }
+    stackSize = 0;
+}","public void test4448() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    try {
+        jsonWriter0.close();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Incomplete document
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}","/**
+ * Flushes and closes this writer and the underlying {@link Writer}.
+ *
+ * @throws IOException if the JSON document is incomplete.
+ */"
+"public void close() throws IOException {
+    out.close();
+    int size = stackSize;
+    if (size > 1 || size == 1 && stack[size - 1] != NONEMPTY_DOCUMENT) {
+        throw new IOException(""Incomplete document"");
+    }
+    stackSize = 0;
+}","public void test4549() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.beginArray();
+    try {
+        jsonWriter0.close();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Incomplete document
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}","/**
+ * Flushes and closes this writer and the underlying {@link Writer}.
+ *
+ * @throws IOException if the JSON document is incomplete.
+ */"
+"public void flush() throws IOException {
+    if (stackSize == 0) {
+        throw new IllegalStateException(""JsonWriter is closed."");
+    }
+    out.flush();
+}","public void test4650() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(38);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    JsonWriter jsonWriter1 = jsonWriter0.value(0L);
+    jsonWriter1.close();
+    // Undeclared exception!
+    try {
+        jsonWriter0.flush();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // JsonWriter is closed.
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}","/**
+ * Ensures all buffered data is written to the underlying {@link Writer}
+ * and flushes that writer.
+ */"
+"public final boolean getSerializeNulls() {
+    return serializeNulls;
+}","public void test4751() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(1348);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.flush();
+    assertTrue(jsonWriter0.getSerializeNulls());
+}","/**
+ * Returns true if object members are serialized when their value is null.
+ * This has no impact on array elements. The default is true.
+ */"
+"public boolean isLenient() {
+    return lenient;
+}","public void test4852() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    Double double0 = new Double((-2415.298894));
+    jsonWriter0.setLenient(true);
+    jsonWriter0.value((Number) double0);
+    assertTrue(jsonWriter0.isLenient());
+}","/**
+ * Returns true if this writer has relaxed syntax rules.
+ */"
+"public JsonWriter beginObject() throws IOException {
+    writeDeferredName();
+    return open(EMPTY_OBJECT, ""{"");
+}","public void test4953() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    JsonWriter jsonWriter1 = jsonWriter0.value((Number) null);
+    // Undeclared exception!
+    try {
+        jsonWriter1.beginObject();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // JSON must have only one top-level value.
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}","/**
+ * Begins encoding a new object. Each call to this method must be paired
+ * with a call to {@link #endObject}.
+ *
+ * @return this writer.
+ */"
+"public JsonWriter value(String value) throws IOException {
+    if (value == null) {
+        return nullValue();
+    }
+    writeDeferredName();
+    beforeValue();
+    string(value);
+    return this;
+}","public void test5054() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    JsonWriter jsonWriter1 = jsonWriter0.value((-1.0));
+    // Undeclared exception!
+    try {
+        jsonWriter1.value("""");
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // JSON must have only one top-level value.
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}","/**
+ * Encodes {@code value}.
+ *
+ * @param value the literal string value, or null to encode a null literal.
+ * @return this writer.
+ */"
+"public final boolean getSerializeNulls() {
+    return serializeNulls;
+}","public void test5256() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    JsonWriter jsonWriter1 = jsonWriter0.name(""w"");
+    assertTrue(jsonWriter1.getSerializeNulls());
+}","/**
+ * Returns true if object members are serialized when their value is null.
+ * This has no impact on array elements. The default is true.
+ */"
+"public final boolean getSerializeNulls() {
+    return serializeNulls;
+}","public void test5257() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    JsonWriter jsonWriter1 = jsonWriter0.name(""w"");
+    jsonWriter1.setSerializeNulls(false);
+    assertFalse(jsonWriter0.getSerializeNulls());
+}","/**
+ * Returns true if object members are serialized when their value is null.
+ * This has no impact on array elements. The default is true.
+ */"
+"public JsonWriter nullValue() throws IOException {
+    if (deferredName != null) {
+        if (serializeNulls) {
+            writeDeferredName();
+        } else {
+            deferredName = null;
+            // skip the name and the value
+            return this;
+        }
+    }
+    beforeValue();
+    out.write(""null"");
+    return this;
+}","public void test5359() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.name(""w"");
+    // Undeclared exception!
+    try {
+        jsonWriter0.nullValue();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Nesting problem.
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}","/**
+ * Encodes {@code null}.
+ *
+ * @return this writer.
+ */"
+"public final boolean getSerializeNulls() {
+    return serializeNulls;
+}","public void test5562() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(1);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.value((String) null);
+    assertTrue(jsonWriter0.getSerializeNulls());
+}","/**
+ * Returns true if object members are serialized when their value is null.
+ * This has no impact on array elements. The default is true.
+ */"
+"public JsonWriter name(String name) throws IOException {
+    if (name == null) {
+        throw new NullPointerException(""name == null"");
+    }
+    if (deferredName != null) {
+        throw new IllegalStateException();
+    }
+    if (stackSize == 0) {
+        throw new IllegalStateException(""JsonWriter is closed."");
+    }
+    deferredName = name;
+    return this;
+}","public void test5663() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.jsonValue("""");
+    jsonWriter0.close();
+    // Undeclared exception!
+    try {
+        jsonWriter0.name(""YhZIkLSDJ /X7,}r"");
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // JsonWriter is closed.
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}","/**
+ * Encodes the property name.
+ *
+ * @param name the name of the forthcoming value. May not be null.
+ * @return this writer.
+ */"
+"public JsonWriter name(String name) throws IOException {
+    if (name == null) {
+        throw new NullPointerException(""name == null"");
+    }
+    if (deferredName != null) {
+        throw new IllegalStateException();
+    }
+    if (stackSize == 0) {
+        throw new IllegalStateException(""JsonWriter is closed."");
+    }
+    deferredName = name;
+    return this;
+}","public void test5764() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    JsonWriter jsonWriter1 = jsonWriter0.name(""YhZIkLSDJ /X7,}r"");
+    // Undeclared exception!
+    try {
+        jsonWriter1.name(""YhZIkLSDJ /X7,}r"");
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}","/**
+ * Encodes the property name.
+ *
+ * @param name the name of the forthcoming value. May not be null.
+ * @return this writer.
+ */"
+"public JsonWriter name(String name) throws IOException {
+    if (name == null) {
+        throw new NullPointerException(""name == null"");
+    }
+    if (deferredName != null) {
+        throw new IllegalStateException();
+    }
+    if (stackSize == 0) {
+        throw new IllegalStateException(""JsonWriter is closed."");
+    }
+    deferredName = name;
+    return this;
+}","public void test5865() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    // Undeclared exception!
+    try {
+        jsonWriter0.name((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // name == null
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}","/**
+ * Encodes the property name.
+ *
+ * @param name the name of the forthcoming value. May not be null.
+ * @return this writer.
+ */"
+"public JsonWriter endArray() throws IOException {
+    return close(EMPTY_ARRAY, NONEMPTY_ARRAY, ""]"");
+}","public void test5966() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(38);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    JsonWriter jsonWriter1 = jsonWriter0.value(0L);
+    jsonWriter1.close();
+    // Undeclared exception!
+    try {
+        jsonWriter1.endArray();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // JsonWriter is closed.
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}","/**
+ * Ends encoding the current array.
+ *
+ * @return this writer.
+ */"
+"public final boolean getSerializeNulls() {
+    return serializeNulls;
+}","public void test6067() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.setIndent("""");
+    assertTrue(jsonWriter0.getSerializeNulls());
+}","/**
+ * Returns true if object members are serialized when their value is null.
+ * This has no impact on array elements. The default is true.
+ */"
+"public JsonWriter(Writer out) {
+    if (out == null) {
+        throw new NullPointerException(""out == null"");
+    }
+    this.out = out;
+}","public void test6168() throws Throwable {
+    JsonWriter jsonWriter0 = null;
+    try {
+        jsonWriter0 = new JsonWriter((Writer) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // out == null
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}","/**
+ * Creates a new instance that writes a JSON-encoded stream to {@code out}.
+ * For best performance, ensure {@link Writer} is buffered; wrapping in
+ * {@link java.io.BufferedWriter BufferedWriter} if necessary.
+ */"
+"public JsonWriter endArray() throws IOException {
+    return close(EMPTY_ARRAY, NONEMPTY_ARRAY, ""]"");
+}","public void test6269() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    JsonWriter jsonWriter1 = jsonWriter0.beginObject();
+    JsonWriter jsonWriter2 = jsonWriter1.name("""");
+    JsonWriter jsonWriter3 = jsonWriter0.beginArray();
+    jsonWriter3.name("">V{+[ex"");
+    // Undeclared exception!
+    try {
+        jsonWriter2.endArray();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Dangling name: >V{+[ex
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}","/**
+ * Ends encoding the current array.
+ *
+ * @return this writer.
+ */"
+"public JsonWriter endObject() throws IOException {
+    return close(EMPTY_OBJECT, NONEMPTY_OBJECT, ""}"");
+}","public void test6370() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    // Undeclared exception!
+    try {
+        jsonWriter0.endObject();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Nesting problem.
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}","/**
+ * Ends encoding the current object.
+ *
+ * @return this writer.
+ */"
+"public final boolean getSerializeNulls() {
+    return serializeNulls;
+}","public void test6471() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(1348);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    boolean boolean0 = jsonWriter0.getSerializeNulls();
+    assertTrue(boolean0);
+}","/**
+ * Returns true if object members are serialized when their value is null.
+ * This has no impact on array elements. The default is true.
+ */"
+"public final boolean getSerializeNulls() {
+    return serializeNulls;
+}","public void test6572() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.isLenient();
+    assertTrue(jsonWriter0.getSerializeNulls());
+}","/**
+ * Returns true if object members are serialized when their value is null.
+ * This has no impact on array elements. The default is true.
+ */"
+"public final boolean getSerializeNulls() {
+    return serializeNulls;
+}","public void test6674() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    JsonWriter jsonWriter1 = jsonWriter0.beginArray();
+    Double double0 = new Double((-2415.298894));
+    jsonWriter1.value((Number) double0);
+    jsonWriter1.jsonValue(""=1A5/g7.E^"");
+    assertTrue(jsonWriter0.getSerializeNulls());
+}","/**
+ * Returns true if object members are serialized when their value is null.
+ * This has no impact on array elements. The default is true.
+ */"
+"public final boolean getSerializeNulls() {
+    return serializeNulls;
+}","public void test6775() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.isHtmlSafe();
+    assertTrue(jsonWriter0.getSerializeNulls());
+}","/**
+ * Returns true if object members are serialized when their value is null.
+ * This has no impact on array elements. The default is true.
+ */"

@@ -1,0 +1,2681 @@
+focal_method,test_prefix,docstring
+"public static Iterator iterator(Object focus, int rangeStyle) {
+    if (focus == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    if (focus instanceof Date) {
+        return iterator((Date) focus, rangeStyle);
+    } else if (focus instanceof Calendar) {
+        return iterator((Calendar) focus, rangeStyle);
+    } else {
+        throw new ClassCastException(""Could not iterate based on "" + focus);
+    }
+}","public void test000() throws Throwable {
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar((-584), (-584), 982, (-1138), (-584), 982);
+    // Undeclared exception!
+    try {
+        DateUtils.iterator((Object) mockGregorianCalendar0, 982);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The range style 982 is not valid.
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}","/**
+ * <p>This constructs an <code>Iterator</code> over each day in a date
+ * range defined by a focus date and range style.</p>
+ *
+ * <p>For instance, passing Thursday, July 4, 2002 and a
+ * <code>RANGE_MONTH_SUNDAY</code> will return an <code>Iterator</code>
+ * that starts with Sunday, June 30, 2002 and ends with Saturday, August 3,
+ * 2002, returning a Calendar instance for each intermediate day.</p>
+ *
+ * @param focus  the date to work with, either
+ *  <code>Date</code> or <code>Calendar</code>
+ * @param rangeStyle  the style constant to use. Must be one of the range
+ * styles listed for the {@link #iterator(Calendar, int)} method.
+ * @return the date iterator
+ * @throws IllegalArgumentException if the date
+ *  is <code>null</code>
+ * @throws ClassCastException if the object type is
+ *  not a <code>Date</code> or <code>Calendar</code>
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * <p>Checks if two calendar objects represent the same local time.</p>
+ *
+ * <p>This method compares the values of the fields of the two objects.
+ * In addition, both calendars must be the same of the same type.</p>
+ *
+ * @param cal1  the first calendar, not altered, not null
+ * @param cal2  the second calendar, not altered, not null
+ * @return true if they represent the same millisecond instant
+ * @throws IllegalArgumentException if either date is <code>null</code>
+ * @since 2.1
+ */
+public static boolean isSameLocalTime(Calendar cal1, Calendar cal2) {
+    if (cal1 == null || cal2 == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    return (cal1.get(Calendar.MILLISECOND) == cal2.get(Calendar.MILLISECOND) && cal1.get(Calendar.SECOND) == cal2.get(Calendar.SECOND) && cal1.get(Calendar.MINUTE) == cal2.get(Calendar.MINUTE) && cal1.get(Calendar.HOUR) == cal2.get(Calendar.HOUR) && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) && cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA) && cal1.getClass() == cal2.getClass());
+}","public void test011() throws Throwable {
+    Locale locale0 = Locale.KOREA;
+    Calendar calendar0 = MockCalendar.getInstance(locale0);
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar(locale0);
+    boolean boolean0 = DateUtils.isSameLocalTime(calendar0, mockGregorianCalendar0);
+    assertTrue(boolean0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>Checks if two calendar objects represent the same local time.</p>
+ *
+ * <p>This method compares the values of the fields of the two objects.
+ * In addition, both calendars must be the same of the same type.</p>
+ *
+ * @param cal1  the first calendar, not altered, not null
+ * @param cal2  the second calendar, not altered, not null
+ * @return true if they represent the same millisecond instant
+ * @throws IllegalArgumentException if either date is <code>null</code>
+ * @since 2.1
+ */
+public static boolean isSameLocalTime(Calendar cal1, Calendar cal2) {
+    if (cal1 == null || cal2 == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    return (cal1.get(Calendar.MILLISECOND) == cal2.get(Calendar.MILLISECOND) && cal1.get(Calendar.SECOND) == cal2.get(Calendar.SECOND) && cal1.get(Calendar.MINUTE) == cal2.get(Calendar.MINUTE) && cal1.get(Calendar.HOUR) == cal2.get(Calendar.HOUR) && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) && cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA) && cal1.getClass() == cal2.getClass());
+}","public void test023() throws Throwable {
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar();
+    Calendar calendar0 = DateUtils.truncate((Calendar) mockGregorianCalendar0, 1);
+    boolean boolean0 = DateUtils.isSameLocalTime(calendar0, mockGregorianCalendar0);
+    assertFalse(boolean0);
+}",""
+"public static boolean isSameInstant(Calendar cal1, Calendar cal2) {
+    if (cal1 == null || cal2 == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    return cal1.getTime().getTime() == cal2.getTime().getTime();
+}","public void test034() throws Throwable {
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar(7, 0, 7, (-432), (-432), (-432));
+    ZoneInfo zoneInfo0 = (ZoneInfo) DateUtils.UTC_TIME_ZONE;
+    MockGregorianCalendar mockGregorianCalendar1 = new MockGregorianCalendar(zoneInfo0);
+    boolean boolean0 = DateUtils.isSameInstant((Calendar) mockGregorianCalendar0, (Calendar) mockGregorianCalendar1);
+    assertFalse(boolean0);
+}","/**
+ * <p>Checks if two calendar objects represent the same instant in time.</p>
+ *
+ * <p>This method compares the long millisecond time of the two objects.</p>
+ *
+ * @param cal1  the first calendar, not altered, not null
+ * @param cal2  the second calendar, not altered, not null
+ * @return true if they represent the same millisecond instant
+ * @throws IllegalArgumentException if either date is <code>null</code>
+ * @since 2.1
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * <p>Checks if two date objects represent the same instant in time.</p>
+ *
+ * <p>This method compares the long millisecond time of the two objects.</p>
+ *
+ * @param date1  the first date, not altered, not null
+ * @param date2  the second date, not altered, not null
+ * @return true if they represent the same millisecond instant
+ * @throws IllegalArgumentException if either date is <code>null</code>
+ * @since 2.1
+ */
+public static boolean isSameInstant(Date date1, Date date2) {
+    if (date1 == null || date2 == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    return date1.getTime() == date2.getTime();
+}","public void test045() throws Throwable {
+    MockDate mockDate0 = new MockDate();
+    MockDate mockDate1 = new MockDate((-2355), (-2355), (-2355));
+    boolean boolean0 = DateUtils.isSameInstant((Date) mockDate0, (Date) mockDate1);
+    assertFalse(boolean0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>Checks if two date objects are on the same day ignoring time.</p>
+ *
+ * <p>28 Mar 2002 13:45 and 28 Mar 2002 06:01 would return true.
+ * 28 Mar 2002 13:45 and 12 Mar 2002 13:45 would return false.
+ * </p>
+ *
+ * @param date1  the first date, not altered, not null
+ * @param date2  the second date, not altered, not null
+ * @return true if they represent the same day
+ * @throws IllegalArgumentException if either date is <code>null</code>
+ * @since 2.1
+ */
+public static boolean isSameDay(Date date1, Date date2) {
+    if (date1 == null || date2 == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    Calendar cal1 = Calendar.getInstance();
+    cal1.setTime(date1);
+    Calendar cal2 = Calendar.getInstance();
+    cal2.setTime(date2);
+    return isSameDay(cal1, cal2);
+}","public void test056() throws Throwable {
+    MockDate mockDate0 = new MockDate();
+    Date date0 = DateUtils.addHours(mockDate0, 1001);
+    boolean boolean0 = DateUtils.isSameDay((Date) mockDate0, date0);
+    assertFalse(boolean0);
+}",""
+"public static boolean isSameDay(Calendar cal1, Calendar cal2) {
+    if (cal1 == null || cal2 == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    return (cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA) && cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR));
+}","public void test069() throws Throwable {
+    Locale locale0 = Locale.KOREAN;
+    Calendar calendar0 = MockCalendar.getInstance(locale0);
+    Calendar calendar1 = DateUtils.truncate(calendar0, 0);
+    boolean boolean0 = DateUtils.isSameDay(calendar0, calendar1);
+    assertFalse(boolean0);
+}","/**
+ * <p>Checks if two calendar objects are on the same day ignoring time.</p>
+ *
+ * <p>28 Mar 2002 13:45 and 28 Mar 2002 06:01 would return true.
+ * 28 Mar 2002 13:45 and 12 Mar 2002 13:45 would return false.
+ * </p>
+ *
+ * @param cal1  the first calendar, not altered, not null
+ * @param cal2  the second calendar, not altered, not null
+ * @return true if they represent the same day
+ * @throws IllegalArgumentException if either calendar is <code>null</code>
+ * @since 2.1
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * <p>Checks if two date objects are on the same day ignoring time.</p>
+ *
+ * <p>28 Mar 2002 13:45 and 28 Mar 2002 06:01 would return true.
+ * 28 Mar 2002 13:45 and 12 Mar 2002 13:45 would return false.
+ * </p>
+ *
+ * @param date1  the first date, not altered, not null
+ * @param date2  the second date, not altered, not null
+ * @return true if they represent the same day
+ * @throws IllegalArgumentException if either date is <code>null</code>
+ * @since 2.1
+ */
+public static boolean isSameDay(Date date1, Date date2) {
+    if (date1 == null || date2 == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    Calendar cal1 = Calendar.getInstance();
+    cal1.setTime(date1);
+    Calendar cal2 = Calendar.getInstance();
+    cal2.setTime(date2);
+    return isSameDay(cal1, cal2);
+}","public void test0811() throws Throwable {
+    MockDate mockDate0 = new MockDate((-2355), (-2355), (-2355), (-2355), (-2355));
+    Date date0 = DateUtils.addMinutes(mockDate0, (-2355));
+    boolean boolean0 = DateUtils.isSameDay((Date) mockDate0, date0);
+    assertFalse(boolean0);
+}",""
+"public static Date truncate(Object date, int field) {
+    if (date == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    if (date instanceof Date) {
+        return truncate((Date) date, field);
+    } else if (date instanceof Calendar) {
+        return truncate((Calendar) date, field).getTime();
+    } else {
+        throw new ClassCastException(""Could not truncate "" + date);
+    }
+}","public void test1014() throws Throwable {
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar();
+    mockGregorianCalendar0.setTimeZone((TimeZone) null);
+    // Undeclared exception!
+    try {
+        DateUtils.truncate((Object) mockGregorianCalendar0, 421);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * <p>Truncate this date, leaving the field specified as the most
+ * significant field.</p>
+ *
+ * <p>For example, if you had the datetime of 28 Mar 2002
+ * 13:45:01.231, if you passed with HOUR, it would return 28 Mar
+ * 2002 13:00:00.000.  If this was passed with MONTH, it would
+ * return 1 Mar 2002 0:00:00.000.</p>
+ *
+ * @param date  the date to work with, either <code>Date</code>
+ *  or <code>Calendar</code>
+ * @param field  the field from <code>Calendar</code>
+ *  or <code>SEMI_MONTH</code>
+ * @return the rounded date
+ * @throws IllegalArgumentException if the date
+ *  is <code>null</code>
+ * @throws ClassCastException if the object type is not a
+ *  <code>Date</code> or <code>Calendar</code>
+ * @throws ArithmeticException if the year is over 280 million
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * <p>Round this date, leaving the field specified as the most
+ * significant field.</p>
+ *
+ * <p>For example, if you had the datetime of 28 Mar 2002
+ * 13:45:01.231, if this was passed with HOUR, it would return
+ * 28 Mar 2002 14:00:00.000. If this was passed with MONTH, it
+ * would return 1 April 2002 0:00:00.000.</p>
+ *
+ * <p>For a date in a timezone that handles the change to daylight
+ * saving time, rounding to Calendar.HOUR_OF_DAY will behave as follows.
+ * Suppose daylight saving time begins at 02:00 on March 30. Rounding a
+ * date that crosses this time would produce the following values:
+ * <ul>
+ * <li>March 30, 2003 01:10 rounds to March 30, 2003 01:00</li>
+ * <li>March 30, 2003 01:40 rounds to March 30, 2003 03:00</li>
+ * <li>March 30, 2003 02:10 rounds to March 30, 2003 03:00</li>
+ * <li>March 30, 2003 02:40 rounds to March 30, 2003 04:00</li>
+ * </ul>
+ * </p>
+ *
+ * @param date  the date to work with
+ * @param field  the field from <code>Calendar</code>
+ *  or <code>SEMI_MONTH</code>
+ * @return the rounded date
+ * @throws IllegalArgumentException if the date is <code>null</code>
+ * @throws ArithmeticException if the year is over 280 million
+ */
+public static Date round(Date date, int field) {
+    if (date == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    Calendar gval = Calendar.getInstance();
+    gval.setTime(date);
+    modify(gval, field, true);
+    return gval.getTime();
+}","public void test1115() throws Throwable {
+    MockDate mockDate0 = new MockDate(280000000, (-1), (-1), 0, 280000000, 689);
+    // Undeclared exception!
+    try {
+        DateUtils.round((Date) mockDate0, 280000000);
+        fail(""Expecting exception: ArithmeticException"");
+    } catch (ArithmeticException e) {
+        //
+        // Calendar value too large for accurate calculations
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}",""
+"public static Calendar round(Calendar date, int field) {
+    if (date == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    Calendar rounded = (Calendar) date.clone();
+    modify(rounded, field, true);
+    return rounded;
+}","public void test1216() throws Throwable {
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar();
+    mockGregorianCalendar0.setTimeZone((TimeZone) null);
+    // Undeclared exception!
+    try {
+        DateUtils.round((Calendar) mockGregorianCalendar0, 0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * <p>Round this date, leaving the field specified as the most
+ * significant field.</p>
+ *
+ * <p>For example, if you had the datetime of 28 Mar 2002
+ * 13:45:01.231, if this was passed with HOUR, it would return
+ * 28 Mar 2002 14:00:00.000. If this was passed with MONTH, it
+ * would return 1 April 2002 0:00:00.000.</p>
+ *
+ * <p>For a date in a timezone that handles the change to daylight
+ * saving time, rounding to Calendar.HOUR_OF_DAY will behave as follows.
+ * Suppose daylight saving time begins at 02:00 on March 30. Rounding a
+ * date that crosses this time would produce the following values:
+ * <ul>
+ * <li>March 30, 2003 01:10 rounds to March 30, 2003 01:00</li>
+ * <li>March 30, 2003 01:40 rounds to March 30, 2003 03:00</li>
+ * <li>March 30, 2003 02:10 rounds to March 30, 2003 03:00</li>
+ * <li>March 30, 2003 02:40 rounds to March 30, 2003 04:00</li>
+ * </ul>
+ * </p>
+ *
+ * @param date  the date to work with
+ * @param field  the field from <code>Calendar</code>
+ *  or <code>SEMI_MONTH</code>
+ * @return the rounded date (a different object)
+ * @throws IllegalArgumentException if the date is <code>null</code>
+ * @throws ArithmeticException if the year is over 280 million
+ */"
+"public static Calendar round(Calendar date, int field) {
+    if (date == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    Calendar rounded = (Calendar) date.clone();
+    modify(rounded, field, true);
+    return rounded;
+}","public void test1317() throws Throwable {
+    SimpleTimeZone simpleTimeZone0 = new SimpleTimeZone((-196), ""gQ{\""z"");
+    Locale locale0 = Locale.FRANCE;
+    Calendar calendar0 = MockCalendar.getInstance((TimeZone) simpleTimeZone0, locale0);
+    calendar0.set(0, (-432));
+    // Undeclared exception!
+    try {
+        DateUtils.round(calendar0, (-196));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid era
+        //
+        verifyException(""java.util.GregorianCalendar"", e);
+    }
+}","/**
+ * <p>Round this date, leaving the field specified as the most
+ * significant field.</p>
+ *
+ * <p>For example, if you had the datetime of 28 Mar 2002
+ * 13:45:01.231, if this was passed with HOUR, it would return
+ * 28 Mar 2002 14:00:00.000. If this was passed with MONTH, it
+ * would return 1 April 2002 0:00:00.000.</p>
+ *
+ * <p>For a date in a timezone that handles the change to daylight
+ * saving time, rounding to Calendar.HOUR_OF_DAY will behave as follows.
+ * Suppose daylight saving time begins at 02:00 on March 30. Rounding a
+ * date that crosses this time would produce the following values:
+ * <ul>
+ * <li>March 30, 2003 01:10 rounds to March 30, 2003 01:00</li>
+ * <li>March 30, 2003 01:40 rounds to March 30, 2003 03:00</li>
+ * <li>March 30, 2003 02:10 rounds to March 30, 2003 03:00</li>
+ * <li>March 30, 2003 02:40 rounds to March 30, 2003 04:00</li>
+ * </ul>
+ * </p>
+ *
+ * @param date  the date to work with
+ * @param field  the field from <code>Calendar</code>
+ *  or <code>SEMI_MONTH</code>
+ * @return the rounded date (a different object)
+ * @throws IllegalArgumentException if the date is <code>null</code>
+ * @throws ArithmeticException if the year is over 280 million
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * <p>Parses a string representing a date by trying a variety of different parsers.</p>
+ *
+ * <p>The parse will try each parse pattern in turn.
+ * A parse is only deemed sucessful if it parses the whole of the input string.
+ * If no parse patterns match, a ParseException is thrown.</p>
+ *
+ * @param str  the date to parse, not null
+ * @param parsePatterns  the date format patterns to use, see SimpleDateFormat, not null
+ * @return the parsed date
+ * @throws IllegalArgumentException if the date string or pattern array is null
+ * @throws ParseException if none of the date patterns were suitable
+ */
+public static Date parseDate(String str, String[] parsePatterns) throws ParseException {
+    if (str == null || parsePatterns == null) {
+        throw new IllegalArgumentException(""Date and Patterns must not be null"");
+    }
+    SimpleDateFormat parser = null;
+    ParsePosition pos = new ParsePosition(0);
+    for (int i = 0; i < parsePatterns.length; i++) {
+        if (i == 0) {
+            parser = new SimpleDateFormat(parsePatterns[0]);
+        } else {
+            parser.applyPattern(parsePatterns[i]);
+        }
+        pos.setIndex(0);
+        Date date = parser.parse(str, pos);
+        if (date != null && pos.getIndex() == str.length()) {
+            return date;
+        }
+    }
+    throw new ParseException(""Unable to parse the date: "" + str, -1);
+}","public void test1418() throws Throwable {
+    String[] stringArray0 = new String[6];
+    stringArray0[0] = ""GMT"";
+    // Undeclared exception!
+    try {
+        DateUtils.parseDate(""GMT"", stringArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Illegal pattern character 'T'
+        //
+        verifyException(""java.text.SimpleDateFormat"", e);
+    }
+}",""
+"public static boolean isSameDay(Calendar cal1, Calendar cal2) {
+    if (cal1 == null || cal2 == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    return (cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA) && cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR));
+}","public void test1519() throws Throwable {
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar();
+    mockGregorianCalendar0.setTimeZone((TimeZone) null);
+    // Undeclared exception!
+    try {
+        DateUtils.isSameDay((Calendar) mockGregorianCalendar0, (Calendar) mockGregorianCalendar0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * <p>Checks if two calendar objects are on the same day ignoring time.</p>
+ *
+ * <p>28 Mar 2002 13:45 and 28 Mar 2002 06:01 would return true.
+ * 28 Mar 2002 13:45 and 12 Mar 2002 13:45 would return false.
+ * </p>
+ *
+ * @param cal1  the first calendar, not altered, not null
+ * @param cal2  the second calendar, not altered, not null
+ * @return true if they represent the same day
+ * @throws IllegalArgumentException if either calendar is <code>null</code>
+ * @since 2.1
+ */"
+"public static boolean isSameDay(Calendar cal1, Calendar cal2) {
+    if (cal1 == null || cal2 == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    return (cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA) && cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR));
+}","public void test1620() throws Throwable {
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar((-145), 4868, 869);
+    mockGregorianCalendar0.setLenient(false);
+    // Undeclared exception!
+    try {
+        DateUtils.isSameDay((Calendar) mockGregorianCalendar0, (Calendar) mockGregorianCalendar0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // YEAR
+        //
+        verifyException(""java.util.GregorianCalendar"", e);
+    }
+}","/**
+ * <p>Checks if two calendar objects are on the same day ignoring time.</p>
+ *
+ * <p>28 Mar 2002 13:45 and 28 Mar 2002 06:01 would return true.
+ * 28 Mar 2002 13:45 and 12 Mar 2002 13:45 would return false.
+ * </p>
+ *
+ * @param cal1  the first calendar, not altered, not null
+ * @param cal2  the second calendar, not altered, not null
+ * @return true if they represent the same day
+ * @throws IllegalArgumentException if either calendar is <code>null</code>
+ * @since 2.1
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Adds a number of years to a date returning a new object.
+ * The original date object is unchanged.
+ *
+ * @param date  the date, not null
+ * @param amount  the amount to add, may be negative
+ * @return the new date object with the amount added
+ * @throws IllegalArgumentException if the date is null
+ */
+public static Date addYears(Date date, int amount) {
+    return add(date, Calendar.YEAR, amount);
+}","public void test1721() throws Throwable {
+    // Undeclared exception!
+    try {
+        DateUtils.addYears((Date) null, 0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The date must not be null
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Adds a number of weeks to a date returning a new object.
+ * The original date object is unchanged.
+ *
+ * @param date  the date, not null
+ * @param amount  the amount to add, may be negative
+ * @return the new date object with the amount added
+ * @throws IllegalArgumentException if the date is null
+ */
+public static Date addWeeks(Date date, int amount) {
+    return add(date, Calendar.WEEK_OF_YEAR, amount);
+}","public void test1822() throws Throwable {
+    // Undeclared exception!
+    try {
+        DateUtils.addWeeks((Date) null, 149);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The date must not be null
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Adds a number of seconds to a date returning a new object.
+ * The original date object is unchanged.
+ *
+ * @param date  the date, not null
+ * @param amount  the amount to add, may be negative
+ * @return the new date object with the amount added
+ * @throws IllegalArgumentException if the date is null
+ */
+public static Date addSeconds(Date date, int amount) {
+    return add(date, Calendar.SECOND, amount);
+}","public void test1923() throws Throwable {
+    // Undeclared exception!
+    try {
+        DateUtils.addSeconds((Date) null, (-15));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The date must not be null
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Adds a number of months to a date returning a new object.
+ * The original date object is unchanged.
+ *
+ * @param date  the date, not null
+ * @param amount  the amount to add, may be negative
+ * @return the new date object with the amount added
+ * @throws IllegalArgumentException if the date is null
+ */
+public static Date addMonths(Date date, int amount) {
+    return add(date, Calendar.MONTH, amount);
+}","public void test2024() throws Throwable {
+    // Undeclared exception!
+    try {
+        DateUtils.addMonths((Date) null, 0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The date must not be null
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Adds a number of milliseconds to a date returning a new object.
+ * The original date object is unchanged.
+ *
+ * @param date  the date, not null
+ * @param amount  the amount to add, may be negative
+ * @return the new date object with the amount added
+ * @throws IllegalArgumentException if the date is null
+ */
+public static Date addMilliseconds(Date date, int amount) {
+    return add(date, Calendar.MILLISECOND, amount);
+}","public void test2125() throws Throwable {
+    // Undeclared exception!
+    try {
+        DateUtils.addMilliseconds((Date) null, 1000);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The date must not be null
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Adds a number of hours to a date returning a new object.
+ * The original date object is unchanged.
+ *
+ * @param date  the date, not null
+ * @param amount  the amount to add, may be negative
+ * @return the new date object with the amount added
+ * @throws IllegalArgumentException if the date is null
+ */
+public static Date addHours(Date date, int amount) {
+    return add(date, Calendar.HOUR_OF_DAY, amount);
+}","public void test2226() throws Throwable {
+    // Undeclared exception!
+    try {
+        DateUtils.addHours((Date) null, 0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The date must not be null
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Adds a number of days to a date returning a new object.
+ * The original date object is unchanged.
+ *
+ * @param date  the date, not null
+ * @param amount  the amount to add, may be negative
+ * @return the new date object with the amount added
+ * @throws IllegalArgumentException if the date is null
+ */
+public static Date addDays(Date date, int amount) {
+    return add(date, Calendar.DAY_OF_MONTH, amount);
+}","public void test2327() throws Throwable {
+    // Undeclared exception!
+    try {
+        DateUtils.addDays((Date) null, 2028);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The date must not be null
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}",""
+"public static Iterator iterator(Calendar focus, int rangeStyle) {
+    if (focus == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    Calendar start = null;
+    Calendar end = null;
+    int startCutoff = Calendar.SUNDAY;
+    int endCutoff = Calendar.SATURDAY;
+    switch(rangeStyle) {
+        case RANGE_MONTH_SUNDAY:
+        case RANGE_MONTH_MONDAY:
+            //Set start to the first of the month
+            start = truncate(focus, Calendar.MONTH);
+            //Set end to the last of the month
+            end = (Calendar) start.clone();
+            end.add(Calendar.MONTH, 1);
+            end.add(Calendar.DATE, -1);
+            //Loop start back to the previous sunday or monday
+            if (rangeStyle == RANGE_MONTH_MONDAY) {
+                startCutoff = Calendar.MONDAY;
+                endCutoff = Calendar.SUNDAY;
+            }
+            break;
+        case RANGE_WEEK_SUNDAY:
+        case RANGE_WEEK_MONDAY:
+        case RANGE_WEEK_RELATIVE:
+        case RANGE_WEEK_CENTER:
+            //Set start and end to the current date
+            start = truncate(focus, Calendar.DATE);
+            end = truncate(focus, Calendar.DATE);
+            switch(rangeStyle) {
+                case RANGE_WEEK_SUNDAY:
+                    //already set by default
+                    break;
+                case RANGE_WEEK_MONDAY:
+                    startCutoff = Calendar.MONDAY;
+                    endCutoff = Calendar.SUNDAY;
+                    break;
+                case RANGE_WEEK_RELATIVE:
+                    startCutoff = focus.get(Calendar.DAY_OF_WEEK);
+                    endCutoff = startCutoff - 1;
+                    break;
+                case RANGE_WEEK_CENTER:
+                    startCutoff = focus.get(Calendar.DAY_OF_WEEK) - 3;
+                    endCutoff = focus.get(Calendar.DAY_OF_WEEK) + 3;
+                    break;
+            }
+            break;
+        default:
+            throw new IllegalArgumentException(""The range style "" + rangeStyle + "" is not valid."");
+    }
+    if (startCutoff < Calendar.SUNDAY) {
+        startCutoff += 7;
+    }
+    if (startCutoff > Calendar.SATURDAY) {
+        startCutoff -= 7;
+    }
+    if (endCutoff < Calendar.SUNDAY) {
+        endCutoff += 7;
+    }
+    if (endCutoff > Calendar.SATURDAY) {
+        endCutoff -= 7;
+    }
+    while (start.get(Calendar.DAY_OF_WEEK) != startCutoff) {
+        start.add(Calendar.DATE, -1);
+    }
+    while (end.get(Calendar.DAY_OF_WEEK) != endCutoff) {
+        end.add(Calendar.DATE, 1);
+    }
+    return new DateIterator(start, end);
+}","public void test2428() throws Throwable {
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar();
+    // Undeclared exception!
+    try {
+        DateUtils.iterator((Calendar) mockGregorianCalendar0, 1055);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The range style 1055 is not valid.
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}","/**
+ * <p>This constructs an <code>Iterator</code> over each day in a date
+ * range defined by a focus date and range style.</p>
+ *
+ * <p>For instance, passing Thursday, July 4, 2002 and a
+ * <code>RANGE_MONTH_SUNDAY</code> will return an <code>Iterator</code>
+ * that starts with Sunday, June 30, 2002 and ends with Saturday, August 3,
+ * 2002, returning a Calendar instance for each intermediate day.</p>
+ *
+ * <p>This method provides an iterator that returns Calendar objects.
+ * The days are progressed using {@link Calendar#add(int, int)}.</p>
+ *
+ * @param focus  the date to work with
+ * @param rangeStyle  the style constant to use. Must be one of
+ * {@link DateUtils#RANGE_MONTH_SUNDAY},
+ * {@link DateUtils#RANGE_MONTH_MONDAY},
+ * {@link DateUtils#RANGE_WEEK_SUNDAY},
+ * {@link DateUtils#RANGE_WEEK_MONDAY},
+ * {@link DateUtils#RANGE_WEEK_RELATIVE},
+ * {@link DateUtils#RANGE_WEEK_CENTER}
+ * @return the date iterator
+ * @throws IllegalArgumentException if the date is <code>null</code>
+ * @throws IllegalArgumentException if the rangeStyle is invalid
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Adds to a date returning a new object.
+ * The original date object is unchanged.
+ *
+ * @param date  the date, not null
+ * @param calendarField  the calendar field to add to
+ * @param amount  the amount to add, may be negative
+ * @return the new date object with the amount added
+ * @throws IllegalArgumentException if the date is null
+ */
+public static Date add(Date date, int calendarField, int amount) {
+    if (date == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    Calendar c = Calendar.getInstance();
+    c.setTime(date);
+    c.add(calendarField, amount);
+    return c.getTime();
+}","public void test2630() throws Throwable {
+    // Undeclared exception!
+    try {
+        DateUtils.add((Date) null, 2091, 2091);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The date must not be null
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Adds to a date returning a new object.
+ * The original date object is unchanged.
+ *
+ * @param date  the date, not null
+ * @param calendarField  the calendar field to add to
+ * @param amount  the amount to add, may be negative
+ * @return the new date object with the amount added
+ * @throws IllegalArgumentException if the date is null
+ */
+public static Date add(Date date, int calendarField, int amount) {
+    if (date == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    Calendar c = Calendar.getInstance();
+    c.setTime(date);
+    c.add(calendarField, amount);
+    return c.getTime();
+}","public void test2731() throws Throwable {
+    MockDate mockDate0 = new MockDate((-1081), (-1081), 6, (-745), 5226, 6);
+    // Undeclared exception!
+    try {
+        DateUtils.add(mockDate0, (-348), (-348));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.GregorianCalendar"", e);
+    }
+}",""
+"public static boolean isSameDay(Calendar cal1, Calendar cal2) {
+    if (cal1 == null || cal2 == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    return (cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA) && cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR));
+}","public void test2832() throws Throwable {
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar((-145), 4868, 869);
+    boolean boolean0 = DateUtils.isSameDay((Calendar) mockGregorianCalendar0, (Calendar) mockGregorianCalendar0);
+    assertTrue(boolean0);
+}","/**
+ * <p>Checks if two calendar objects are on the same day ignoring time.</p>
+ *
+ * <p>28 Mar 2002 13:45 and 28 Mar 2002 06:01 would return true.
+ * 28 Mar 2002 13:45 and 12 Mar 2002 13:45 would return false.
+ * </p>
+ *
+ * @param cal1  the first calendar, not altered, not null
+ * @param cal2  the second calendar, not altered, not null
+ * @return true if they represent the same day
+ * @throws IllegalArgumentException if either calendar is <code>null</code>
+ * @since 2.1
+ */"
+"public static Iterator iterator(Object focus, int rangeStyle) {
+    if (focus == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    if (focus instanceof Date) {
+        return iterator((Date) focus, rangeStyle);
+    } else if (focus instanceof Calendar) {
+        return iterator((Calendar) focus, rangeStyle);
+    } else {
+        throw new ClassCastException(""Could not iterate based on "" + focus);
+    }
+}","public void test3135() throws Throwable {
+    // Undeclared exception!
+    try {
+        DateUtils.iterator((Object) ""Unable to parse the date: "", 7);
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // Could not iterate based on Unable to parse the date:
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}","/**
+ * <p>This constructs an <code>Iterator</code> over each day in a date
+ * range defined by a focus date and range style.</p>
+ *
+ * <p>For instance, passing Thursday, July 4, 2002 and a
+ * <code>RANGE_MONTH_SUNDAY</code> will return an <code>Iterator</code>
+ * that starts with Sunday, June 30, 2002 and ends with Saturday, August 3,
+ * 2002, returning a Calendar instance for each intermediate day.</p>
+ *
+ * @param focus  the date to work with, either
+ *  <code>Date</code> or <code>Calendar</code>
+ * @param rangeStyle  the style constant to use. Must be one of the range
+ * styles listed for the {@link #iterator(Calendar, int)} method.
+ * @return the date iterator
+ * @throws IllegalArgumentException if the date
+ *  is <code>null</code>
+ * @throws ClassCastException if the object type is
+ *  not a <code>Date</code> or <code>Calendar</code>
+ */"
+"public static Iterator iterator(Object focus, int rangeStyle) {
+    if (focus == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    if (focus instanceof Date) {
+        return iterator((Date) focus, rangeStyle);
+    } else if (focus instanceof Calendar) {
+        return iterator((Calendar) focus, rangeStyle);
+    } else {
+        throw new ClassCastException(""Could not iterate based on "" + focus);
+    }
+}","public void test3236() throws Throwable {
+    MockDate mockDate0 = new MockDate((-2355), (-2355), (-2355), (-2355), (-2355));
+    // Undeclared exception!
+    try {
+        DateUtils.iterator((Object) mockDate0, (-2355));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The range style -2355 is not valid.
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}","/**
+ * <p>This constructs an <code>Iterator</code> over each day in a date
+ * range defined by a focus date and range style.</p>
+ *
+ * <p>For instance, passing Thursday, July 4, 2002 and a
+ * <code>RANGE_MONTH_SUNDAY</code> will return an <code>Iterator</code>
+ * that starts with Sunday, June 30, 2002 and ends with Saturday, August 3,
+ * 2002, returning a Calendar instance for each intermediate day.</p>
+ *
+ * @param focus  the date to work with, either
+ *  <code>Date</code> or <code>Calendar</code>
+ * @param rangeStyle  the style constant to use. Must be one of the range
+ * styles listed for the {@link #iterator(Calendar, int)} method.
+ * @return the date iterator
+ * @throws IllegalArgumentException if the date
+ *  is <code>null</code>
+ * @throws ClassCastException if the object type is
+ *  not a <code>Date</code> or <code>Calendar</code>
+ */"
+"public static Iterator iterator(Object focus, int rangeStyle) {
+    if (focus == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    if (focus instanceof Date) {
+        return iterator((Date) focus, rangeStyle);
+    } else if (focus instanceof Calendar) {
+        return iterator((Calendar) focus, rangeStyle);
+    } else {
+        throw new ClassCastException(""Could not iterate based on "" + focus);
+    }
+}","public void test3337() throws Throwable {
+    // Undeclared exception!
+    try {
+        DateUtils.iterator((Object) null, 0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The date must not be null
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}","/**
+ * <p>This constructs an <code>Iterator</code> over each day in a date
+ * range defined by a focus date and range style.</p>
+ *
+ * <p>For instance, passing Thursday, July 4, 2002 and a
+ * <code>RANGE_MONTH_SUNDAY</code> will return an <code>Iterator</code>
+ * that starts with Sunday, June 30, 2002 and ends with Saturday, August 3,
+ * 2002, returning a Calendar instance for each intermediate day.</p>
+ *
+ * @param focus  the date to work with, either
+ *  <code>Date</code> or <code>Calendar</code>
+ * @param rangeStyle  the style constant to use. Must be one of the range
+ * styles listed for the {@link #iterator(Calendar, int)} method.
+ * @return the date iterator
+ * @throws IllegalArgumentException if the date
+ *  is <code>null</code>
+ * @throws ClassCastException if the object type is
+ *  not a <code>Date</code> or <code>Calendar</code>
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * <p>This constructs an <code>Iterator</code> over each day in a date
+ * range defined by a focus date and range style.</p>
+ *
+ * <p>For instance, passing Thursday, July 4, 2002 and a
+ * <code>RANGE_MONTH_SUNDAY</code> will return an <code>Iterator</code>
+ * that starts with Sunday, June 30, 2002 and ends with Saturday, August 3,
+ * 2002, returning a Calendar instance for each intermediate day.</p>
+ *
+ * <p>This method provides an iterator that returns Calendar objects.
+ * The days are progressed using {@link Calendar#add(int, int)}.</p>
+ *
+ * @param focus  the date to work with, not null
+ * @param rangeStyle  the style constant to use. Must be one of
+ * {@link DateUtils#RANGE_MONTH_SUNDAY},
+ * {@link DateUtils#RANGE_MONTH_MONDAY},
+ * {@link DateUtils#RANGE_WEEK_SUNDAY},
+ * {@link DateUtils#RANGE_WEEK_MONDAY},
+ * {@link DateUtils#RANGE_WEEK_RELATIVE},
+ * {@link DateUtils#RANGE_WEEK_CENTER}
+ * @return the date iterator, which always returns Calendar instances
+ * @throws IllegalArgumentException if the date is <code>null</code>
+ * @throws IllegalArgumentException if the rangeStyle is invalid
+ */
+public static Iterator iterator(Date focus, int rangeStyle) {
+    if (focus == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    Calendar gval = Calendar.getInstance();
+    gval.setTime(focus);
+    return iterator(gval, rangeStyle);
+}","public void test3438() throws Throwable {
+    MockDate mockDate0 = new MockDate();
+    Iterator iterator0 = DateUtils.iterator((Date) mockDate0, 4);
+    assertNotNull(iterator0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>This constructs an <code>Iterator</code> over each day in a date
+ * range defined by a focus date and range style.</p>
+ *
+ * <p>For instance, passing Thursday, July 4, 2002 and a
+ * <code>RANGE_MONTH_SUNDAY</code> will return an <code>Iterator</code>
+ * that starts with Sunday, June 30, 2002 and ends with Saturday, August 3,
+ * 2002, returning a Calendar instance for each intermediate day.</p>
+ *
+ * <p>This method provides an iterator that returns Calendar objects.
+ * The days are progressed using {@link Calendar#add(int, int)}.</p>
+ *
+ * @param focus  the date to work with, not null
+ * @param rangeStyle  the style constant to use. Must be one of
+ * {@link DateUtils#RANGE_MONTH_SUNDAY},
+ * {@link DateUtils#RANGE_MONTH_MONDAY},
+ * {@link DateUtils#RANGE_WEEK_SUNDAY},
+ * {@link DateUtils#RANGE_WEEK_MONDAY},
+ * {@link DateUtils#RANGE_WEEK_RELATIVE},
+ * {@link DateUtils#RANGE_WEEK_CENTER}
+ * @return the date iterator, which always returns Calendar instances
+ * @throws IllegalArgumentException if the date is <code>null</code>
+ * @throws IllegalArgumentException if the rangeStyle is invalid
+ */
+public static Iterator iterator(Date focus, int rangeStyle) {
+    if (focus == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    Calendar gval = Calendar.getInstance();
+    gval.setTime(focus);
+    return iterator(gval, rangeStyle);
+}","public void test3539() throws Throwable {
+    MockDate mockDate0 = new MockDate((-2355), (-2355), (-2355), (-2355), (-2355));
+    Iterator iterator0 = DateUtils.iterator((Date) mockDate0, 6);
+    assertNotNull(iterator0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>This constructs an <code>Iterator</code> over each day in a date
+ * range defined by a focus date and range style.</p>
+ *
+ * <p>For instance, passing Thursday, July 4, 2002 and a
+ * <code>RANGE_MONTH_SUNDAY</code> will return an <code>Iterator</code>
+ * that starts with Sunday, June 30, 2002 and ends with Saturday, August 3,
+ * 2002, returning a Calendar instance for each intermediate day.</p>
+ *
+ * <p>This method provides an iterator that returns Calendar objects.
+ * The days are progressed using {@link Calendar#add(int, int)}.</p>
+ *
+ * @param focus  the date to work with, not null
+ * @param rangeStyle  the style constant to use. Must be one of
+ * {@link DateUtils#RANGE_MONTH_SUNDAY},
+ * {@link DateUtils#RANGE_MONTH_MONDAY},
+ * {@link DateUtils#RANGE_WEEK_SUNDAY},
+ * {@link DateUtils#RANGE_WEEK_MONDAY},
+ * {@link DateUtils#RANGE_WEEK_RELATIVE},
+ * {@link DateUtils#RANGE_WEEK_CENTER}
+ * @return the date iterator, which always returns Calendar instances
+ * @throws IllegalArgumentException if the date is <code>null</code>
+ * @throws IllegalArgumentException if the rangeStyle is invalid
+ */
+public static Iterator iterator(Date focus, int rangeStyle) {
+    if (focus == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    Calendar gval = Calendar.getInstance();
+    gval.setTime(focus);
+    return iterator(gval, rangeStyle);
+}","public void test3842() throws Throwable {
+    MockDate mockDate0 = new MockDate((-5236), 1027, 0, (-400), 1027);
+    // Undeclared exception!
+    try {
+        DateUtils.iterator((Date) mockDate0, 146134526);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The range style 146134526 is not valid.
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}",""
+"public static Iterator iterator(Calendar focus, int rangeStyle) {
+    if (focus == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    Calendar start = null;
+    Calendar end = null;
+    int startCutoff = Calendar.SUNDAY;
+    int endCutoff = Calendar.SATURDAY;
+    switch(rangeStyle) {
+        case RANGE_MONTH_SUNDAY:
+        case RANGE_MONTH_MONDAY:
+            //Set start to the first of the month
+            start = truncate(focus, Calendar.MONTH);
+            //Set end to the last of the month
+            end = (Calendar) start.clone();
+            end.add(Calendar.MONTH, 1);
+            end.add(Calendar.DATE, -1);
+            //Loop start back to the previous sunday or monday
+            if (rangeStyle == RANGE_MONTH_MONDAY) {
+                startCutoff = Calendar.MONDAY;
+                endCutoff = Calendar.SUNDAY;
+            }
+            break;
+        case RANGE_WEEK_SUNDAY:
+        case RANGE_WEEK_MONDAY:
+        case RANGE_WEEK_RELATIVE:
+        case RANGE_WEEK_CENTER:
+            //Set start and end to the current date
+            start = truncate(focus, Calendar.DATE);
+            end = truncate(focus, Calendar.DATE);
+            switch(rangeStyle) {
+                case RANGE_WEEK_SUNDAY:
+                    //already set by default
+                    break;
+                case RANGE_WEEK_MONDAY:
+                    startCutoff = Calendar.MONDAY;
+                    endCutoff = Calendar.SUNDAY;
+                    break;
+                case RANGE_WEEK_RELATIVE:
+                    startCutoff = focus.get(Calendar.DAY_OF_WEEK);
+                    endCutoff = startCutoff - 1;
+                    break;
+                case RANGE_WEEK_CENTER:
+                    startCutoff = focus.get(Calendar.DAY_OF_WEEK) - 3;
+                    endCutoff = focus.get(Calendar.DAY_OF_WEEK) + 3;
+                    break;
+            }
+            break;
+        default:
+            throw new IllegalArgumentException(""The range style "" + rangeStyle + "" is not valid."");
+    }
+    if (startCutoff < Calendar.SUNDAY) {
+        startCutoff += 7;
+    }
+    if (startCutoff > Calendar.SATURDAY) {
+        startCutoff -= 7;
+    }
+    if (endCutoff < Calendar.SUNDAY) {
+        endCutoff += 7;
+    }
+    if (endCutoff > Calendar.SATURDAY) {
+        endCutoff -= 7;
+    }
+    while (start.get(Calendar.DAY_OF_WEEK) != startCutoff) {
+        start.add(Calendar.DATE, -1);
+    }
+    while (end.get(Calendar.DAY_OF_WEEK) != endCutoff) {
+        end.add(Calendar.DATE, 1);
+    }
+    return new DateIterator(start, end);
+}","public void test3943() throws Throwable {
+    // Undeclared exception!
+    try {
+        DateUtils.iterator((Calendar) null, 1860);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The date must not be null
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}","/**
+ * <p>This constructs an <code>Iterator</code> over each day in a date
+ * range defined by a focus date and range style.</p>
+ *
+ * <p>For instance, passing Thursday, July 4, 2002 and a
+ * <code>RANGE_MONTH_SUNDAY</code> will return an <code>Iterator</code>
+ * that starts with Sunday, June 30, 2002 and ends with Saturday, August 3,
+ * 2002, returning a Calendar instance for each intermediate day.</p>
+ *
+ * <p>This method provides an iterator that returns Calendar objects.
+ * The days are progressed using {@link Calendar#add(int, int)}.</p>
+ *
+ * @param focus  the date to work with
+ * @param rangeStyle  the style constant to use. Must be one of
+ * {@link DateUtils#RANGE_MONTH_SUNDAY},
+ * {@link DateUtils#RANGE_MONTH_MONDAY},
+ * {@link DateUtils#RANGE_WEEK_SUNDAY},
+ * {@link DateUtils#RANGE_WEEK_MONDAY},
+ * {@link DateUtils#RANGE_WEEK_RELATIVE},
+ * {@link DateUtils#RANGE_WEEK_CENTER}
+ * @return the date iterator
+ * @throws IllegalArgumentException if the date is <code>null</code>
+ * @throws IllegalArgumentException if the rangeStyle is invalid
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * <p>This constructs an <code>Iterator</code> over each day in a date
+ * range defined by a focus date and range style.</p>
+ *
+ * <p>For instance, passing Thursday, July 4, 2002 and a
+ * <code>RANGE_MONTH_SUNDAY</code> will return an <code>Iterator</code>
+ * that starts with Sunday, June 30, 2002 and ends with Saturday, August 3,
+ * 2002, returning a Calendar instance for each intermediate day.</p>
+ *
+ * <p>This method provides an iterator that returns Calendar objects.
+ * The days are progressed using {@link Calendar#add(int, int)}.</p>
+ *
+ * @param focus  the date to work with, not null
+ * @param rangeStyle  the style constant to use. Must be one of
+ * {@link DateUtils#RANGE_MONTH_SUNDAY},
+ * {@link DateUtils#RANGE_MONTH_MONDAY},
+ * {@link DateUtils#RANGE_WEEK_SUNDAY},
+ * {@link DateUtils#RANGE_WEEK_MONDAY},
+ * {@link DateUtils#RANGE_WEEK_RELATIVE},
+ * {@link DateUtils#RANGE_WEEK_CENTER}
+ * @return the date iterator, which always returns Calendar instances
+ * @throws IllegalArgumentException if the date is <code>null</code>
+ * @throws IllegalArgumentException if the rangeStyle is invalid
+ */
+public static Iterator iterator(Date focus, int rangeStyle) {
+    if (focus == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    Calendar gval = Calendar.getInstance();
+    gval.setTime(focus);
+    return iterator(gval, rangeStyle);
+}","public void test4044() throws Throwable {
+    // Undeclared exception!
+    try {
+        DateUtils.iterator((Date) null, 948);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The date must not be null
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>This constructs an <code>Iterator</code> over each day in a date
+ * range defined by a focus date and range style.</p>
+ *
+ * <p>For instance, passing Thursday, July 4, 2002 and a
+ * <code>RANGE_MONTH_SUNDAY</code> will return an <code>Iterator</code>
+ * that starts with Sunday, June 30, 2002 and ends with Saturday, August 3,
+ * 2002, returning a Calendar instance for each intermediate day.</p>
+ *
+ * <p>This method provides an iterator that returns Calendar objects.
+ * The days are progressed using {@link Calendar#add(int, int)}.</p>
+ *
+ * @param focus  the date to work with, not null
+ * @param rangeStyle  the style constant to use. Must be one of
+ * {@link DateUtils#RANGE_MONTH_SUNDAY},
+ * {@link DateUtils#RANGE_MONTH_MONDAY},
+ * {@link DateUtils#RANGE_WEEK_SUNDAY},
+ * {@link DateUtils#RANGE_WEEK_MONDAY},
+ * {@link DateUtils#RANGE_WEEK_RELATIVE},
+ * {@link DateUtils#RANGE_WEEK_CENTER}
+ * @return the date iterator, which always returns Calendar instances
+ * @throws IllegalArgumentException if the date is <code>null</code>
+ * @throws IllegalArgumentException if the rangeStyle is invalid
+ */
+public static Iterator iterator(Date focus, int rangeStyle) {
+    if (focus == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    Calendar gval = Calendar.getInstance();
+    gval.setTime(focus);
+    return iterator(gval, rangeStyle);
+}","public void test4145() throws Throwable {
+    MockDate mockDate0 = new MockDate((-1), 629, 629, 629, 2036, 2036);
+    Iterator iterator0 = DateUtils.iterator((Date) mockDate0, 1);
+    assertNotNull(iterator0);
+}",""
+"public static Date round(Object date, int field) {
+    if (date == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    if (date instanceof Date) {
+        return round((Date) date, field);
+    } else if (date instanceof Calendar) {
+        return round((Calendar) date, field).getTime();
+    } else {
+        throw new ClassCastException(""Could not round "" + date);
+    }
+}","public void test4751() throws Throwable {
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar(2147482605, 0, 0, 2147482605, 2147482605);
+    // Undeclared exception!
+    try {
+        DateUtils.round((Object) mockGregorianCalendar0, 2147482605);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The field 2147482605 is not supported
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}","/**
+ * <p>Round this date, leaving the field specified as the most
+ * significant field.</p>
+ *
+ * <p>For example, if you had the datetime of 28 Mar 2002
+ * 13:45:01.231, if this was passed with HOUR, it would return
+ * 28 Mar 2002 14:00:00.000. If this was passed with MONTH, it
+ * would return 1 April 2002 0:00:00.000.</p>
+ *
+ * <p>For a date in a timezone that handles the change to daylight
+ * saving time, rounding to Calendar.HOUR_OF_DAY will behave as follows.
+ * Suppose daylight saving time begins at 02:00 on March 30. Rounding a
+ * date that crosses this time would produce the following values:
+ * <ul>
+ * <li>March 30, 2003 01:10 rounds to March 30, 2003 01:00</li>
+ * <li>March 30, 2003 01:40 rounds to March 30, 2003 03:00</li>
+ * <li>March 30, 2003 02:10 rounds to March 30, 2003 03:00</li>
+ * <li>March 30, 2003 02:40 rounds to March 30, 2003 04:00</li>
+ * </ul>
+ * </p>
+ *
+ * @param date  the date to work with, either Date or Calendar
+ * @param field  the field from <code>Calendar</code>
+ *  or <code>SEMI_MONTH</code>
+ * @return the rounded date
+ * @throws IllegalArgumentException if the date is <code>null</code>
+ * @throws ClassCastException if the object type is not a <code>Date</code>
+ *  or <code>Calendar</code>
+ * @throws ArithmeticException if the year is over 280 million
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * <p>Truncate this date, leaving the field specified as the most
+ * significant field.</p>
+ *
+ * <p>For example, if you had the datetime of 28 Mar 2002
+ * 13:45:01.231, if you passed with HOUR, it would return 28 Mar
+ * 2002 13:00:00.000.  If this was passed with MONTH, it would
+ * return 1 Mar 2002 0:00:00.000.</p>
+ *
+ * @param date  the date to work with
+ * @param field  the field from <code>Calendar</code>
+ *  or <code>SEMI_MONTH</code>
+ * @return the rounded date
+ * @throws IllegalArgumentException if the date is <code>null</code>
+ * @throws ArithmeticException if the year is over 280 million
+ */
+public static Date truncate(Date date, int field) {
+    if (date == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    Calendar gval = Calendar.getInstance();
+    gval.setTime(date);
+    modify(gval, field, false);
+    return gval.getTime();
+}","public void test4953() throws Throwable {
+    MockDate mockDate0 = new MockDate(280000000, (-1), (-1), 0, 280000000, 689);
+    // Undeclared exception!
+    try {
+        DateUtils.truncate((Date) mockDate0, (-1448));
+        fail(""Expecting exception: ArithmeticException"");
+    } catch (ArithmeticException e) {
+        //
+        // Calendar value too large for accurate calculations
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}",""
+"public static Date truncate(Object date, int field) {
+    if (date == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    if (date instanceof Date) {
+        return truncate((Date) date, field);
+    } else if (date instanceof Calendar) {
+        return truncate((Calendar) date, field).getTime();
+    } else {
+        throw new ClassCastException(""Could not truncate "" + date);
+    }
+}","public void test5054() throws Throwable {
+    MockDate mockDate0 = new MockDate((-1), 2147481971, (-3416), (-1), 2147481971, 1489);
+    // Undeclared exception!
+    try {
+        DateUtils.truncate((Object) mockDate0, 1489);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The field 1489 is not supported
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}","/**
+ * <p>Truncate this date, leaving the field specified as the most
+ * significant field.</p>
+ *
+ * <p>For example, if you had the datetime of 28 Mar 2002
+ * 13:45:01.231, if you passed with HOUR, it would return 28 Mar
+ * 2002 13:00:00.000.  If this was passed with MONTH, it would
+ * return 1 Mar 2002 0:00:00.000.</p>
+ *
+ * @param date  the date to work with, either <code>Date</code>
+ *  or <code>Calendar</code>
+ * @param field  the field from <code>Calendar</code>
+ *  or <code>SEMI_MONTH</code>
+ * @return the rounded date
+ * @throws IllegalArgumentException if the date
+ *  is <code>null</code>
+ * @throws ClassCastException if the object type is not a
+ *  <code>Date</code> or <code>Calendar</code>
+ * @throws ArithmeticException if the year is over 280 million
+ */"
+"public static Date truncate(Object date, int field) {
+    if (date == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    if (date instanceof Date) {
+        return truncate((Date) date, field);
+    } else if (date instanceof Calendar) {
+        return truncate((Calendar) date, field).getTime();
+    } else {
+        throw new ClassCastException(""Could not truncate "" + date);
+    }
+}","public void test5155() throws Throwable {
+    // Undeclared exception!
+    try {
+        DateUtils.truncate((Object) null, 887);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The date must not be null
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}","/**
+ * <p>Truncate this date, leaving the field specified as the most
+ * significant field.</p>
+ *
+ * <p>For example, if you had the datetime of 28 Mar 2002
+ * 13:45:01.231, if you passed with HOUR, it would return 28 Mar
+ * 2002 13:00:00.000.  If this was passed with MONTH, it would
+ * return 1 Mar 2002 0:00:00.000.</p>
+ *
+ * @param date  the date to work with, either <code>Date</code>
+ *  or <code>Calendar</code>
+ * @param field  the field from <code>Calendar</code>
+ *  or <code>SEMI_MONTH</code>
+ * @return the rounded date
+ * @throws IllegalArgumentException if the date
+ *  is <code>null</code>
+ * @throws ClassCastException if the object type is not a
+ *  <code>Date</code> or <code>Calendar</code>
+ * @throws ArithmeticException if the year is over 280 million
+ */"
+"public static Date truncate(Object date, int field) {
+    if (date == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    if (date instanceof Date) {
+        return truncate((Date) date, field);
+    } else if (date instanceof Calendar) {
+        return truncate((Calendar) date, field).getTime();
+    } else {
+        throw new ClassCastException(""Could not truncate "" + date);
+    }
+}","public void test5256() throws Throwable {
+    TimeZone timeZone0 = TimeZone.getTimeZone("""");
+    // Undeclared exception!
+    try {
+        DateUtils.truncate((Object) timeZone0, 0);
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // Could not truncate sun.util.calendar.ZoneInfo[id=\""GMT\"",offset=0,dstSavings=0,useDaylight=false,transitions=0,lastRule=null]
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}","/**
+ * <p>Truncate this date, leaving the field specified as the most
+ * significant field.</p>
+ *
+ * <p>For example, if you had the datetime of 28 Mar 2002
+ * 13:45:01.231, if you passed with HOUR, it would return 28 Mar
+ * 2002 13:00:00.000.  If this was passed with MONTH, it would
+ * return 1 Mar 2002 0:00:00.000.</p>
+ *
+ * @param date  the date to work with, either <code>Date</code>
+ *  or <code>Calendar</code>
+ * @param field  the field from <code>Calendar</code>
+ *  or <code>SEMI_MONTH</code>
+ * @return the rounded date
+ * @throws IllegalArgumentException if the date
+ *  is <code>null</code>
+ * @throws ClassCastException if the object type is not a
+ *  <code>Date</code> or <code>Calendar</code>
+ * @throws ArithmeticException if the year is over 280 million
+ */"
+"public static Calendar truncate(Calendar date, int field) {
+    if (date == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    Calendar truncated = (Calendar) date.clone();
+    modify(truncated, field, false);
+    return truncated;
+}","public void test5357() throws Throwable {
+    // Undeclared exception!
+    try {
+        DateUtils.truncate((Calendar) null, 1524);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The date must not be null
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}","/**
+ * <p>Truncate this date, leaving the field specified as the most
+ * significant field.</p>
+ *
+ * <p>For example, if you had the datetime of 28 Mar 2002
+ * 13:45:01.231, if you passed with HOUR, it would return 28 Mar
+ * 2002 13:00:00.000.  If this was passed with MONTH, it would
+ * return 1 Mar 2002 0:00:00.000.</p>
+ *
+ * @param date  the date to work with
+ * @param field  the field from <code>Calendar</code>
+ *  or <code>SEMI_MONTH</code>
+ * @return the rounded date (a different object)
+ * @throws IllegalArgumentException if the date is <code>null</code>
+ * @throws ArithmeticException if the year is over 280 million
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * <p>Truncate this date, leaving the field specified as the most
+ * significant field.</p>
+ *
+ * <p>For example, if you had the datetime of 28 Mar 2002
+ * 13:45:01.231, if you passed with HOUR, it would return 28 Mar
+ * 2002 13:00:00.000.  If this was passed with MONTH, it would
+ * return 1 Mar 2002 0:00:00.000.</p>
+ *
+ * @param date  the date to work with
+ * @param field  the field from <code>Calendar</code>
+ *  or <code>SEMI_MONTH</code>
+ * @return the rounded date
+ * @throws IllegalArgumentException if the date is <code>null</code>
+ * @throws ArithmeticException if the year is over 280 million
+ */
+public static Date truncate(Date date, int field) {
+    if (date == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    Calendar gval = Calendar.getInstance();
+    gval.setTime(date);
+    modify(gval, field, false);
+    return gval.getTime();
+}","public void test5458() throws Throwable {
+    // Undeclared exception!
+    try {
+        DateUtils.truncate((Date) null, 1205);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The date must not be null
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}",""
+"public static Date round(Object date, int field) {
+    if (date == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    if (date instanceof Date) {
+        return round((Date) date, field);
+    } else if (date instanceof Calendar) {
+        return round((Calendar) date, field).getTime();
+    } else {
+        throw new ClassCastException(""Could not round "" + date);
+    }
+}","public void test5559() throws Throwable {
+    // Undeclared exception!
+    try {
+        DateUtils.round((Object) ""<i"", (-718));
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // Could not round <i
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}","/**
+ * <p>Round this date, leaving the field specified as the most
+ * significant field.</p>
+ *
+ * <p>For example, if you had the datetime of 28 Mar 2002
+ * 13:45:01.231, if this was passed with HOUR, it would return
+ * 28 Mar 2002 14:00:00.000. If this was passed with MONTH, it
+ * would return 1 April 2002 0:00:00.000.</p>
+ *
+ * <p>For a date in a timezone that handles the change to daylight
+ * saving time, rounding to Calendar.HOUR_OF_DAY will behave as follows.
+ * Suppose daylight saving time begins at 02:00 on March 30. Rounding a
+ * date that crosses this time would produce the following values:
+ * <ul>
+ * <li>March 30, 2003 01:10 rounds to March 30, 2003 01:00</li>
+ * <li>March 30, 2003 01:40 rounds to March 30, 2003 03:00</li>
+ * <li>March 30, 2003 02:10 rounds to March 30, 2003 03:00</li>
+ * <li>March 30, 2003 02:40 rounds to March 30, 2003 04:00</li>
+ * </ul>
+ * </p>
+ *
+ * @param date  the date to work with, either Date or Calendar
+ * @param field  the field from <code>Calendar</code>
+ *  or <code>SEMI_MONTH</code>
+ * @return the rounded date
+ * @throws IllegalArgumentException if the date is <code>null</code>
+ * @throws ClassCastException if the object type is not a <code>Date</code>
+ *  or <code>Calendar</code>
+ * @throws ArithmeticException if the year is over 280 million
+ */"
+"public static Date round(Object date, int field) {
+    if (date == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    if (date instanceof Date) {
+        return round((Date) date, field);
+    } else if (date instanceof Calendar) {
+        return round((Calendar) date, field).getTime();
+    } else {
+        throw new ClassCastException(""Could not round "" + date);
+    }
+}","public void test5660() throws Throwable {
+    // Undeclared exception!
+    try {
+        DateUtils.round((Object) null, (-1078));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The date must not be null
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}","/**
+ * <p>Round this date, leaving the field specified as the most
+ * significant field.</p>
+ *
+ * <p>For example, if you had the datetime of 28 Mar 2002
+ * 13:45:01.231, if this was passed with HOUR, it would return
+ * 28 Mar 2002 14:00:00.000. If this was passed with MONTH, it
+ * would return 1 April 2002 0:00:00.000.</p>
+ *
+ * <p>For a date in a timezone that handles the change to daylight
+ * saving time, rounding to Calendar.HOUR_OF_DAY will behave as follows.
+ * Suppose daylight saving time begins at 02:00 on March 30. Rounding a
+ * date that crosses this time would produce the following values:
+ * <ul>
+ * <li>March 30, 2003 01:10 rounds to March 30, 2003 01:00</li>
+ * <li>March 30, 2003 01:40 rounds to March 30, 2003 03:00</li>
+ * <li>March 30, 2003 02:10 rounds to March 30, 2003 03:00</li>
+ * <li>March 30, 2003 02:40 rounds to March 30, 2003 04:00</li>
+ * </ul>
+ * </p>
+ *
+ * @param date  the date to work with, either Date or Calendar
+ * @param field  the field from <code>Calendar</code>
+ *  or <code>SEMI_MONTH</code>
+ * @return the rounded date
+ * @throws IllegalArgumentException if the date is <code>null</code>
+ * @throws ClassCastException if the object type is not a <code>Date</code>
+ *  or <code>Calendar</code>
+ * @throws ArithmeticException if the year is over 280 million
+ */"
+"public static Calendar round(Calendar date, int field) {
+    if (date == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    Calendar rounded = (Calendar) date.clone();
+    modify(rounded, field, true);
+    return rounded;
+}","public void test5761() throws Throwable {
+    // Undeclared exception!
+    try {
+        DateUtils.round((Calendar) null, 0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The date must not be null
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}","/**
+ * <p>Round this date, leaving the field specified as the most
+ * significant field.</p>
+ *
+ * <p>For example, if you had the datetime of 28 Mar 2002
+ * 13:45:01.231, if this was passed with HOUR, it would return
+ * 28 Mar 2002 14:00:00.000. If this was passed with MONTH, it
+ * would return 1 April 2002 0:00:00.000.</p>
+ *
+ * <p>For a date in a timezone that handles the change to daylight
+ * saving time, rounding to Calendar.HOUR_OF_DAY will behave as follows.
+ * Suppose daylight saving time begins at 02:00 on March 30. Rounding a
+ * date that crosses this time would produce the following values:
+ * <ul>
+ * <li>March 30, 2003 01:10 rounds to March 30, 2003 01:00</li>
+ * <li>March 30, 2003 01:40 rounds to March 30, 2003 03:00</li>
+ * <li>March 30, 2003 02:10 rounds to March 30, 2003 03:00</li>
+ * <li>March 30, 2003 02:40 rounds to March 30, 2003 04:00</li>
+ * </ul>
+ * </p>
+ *
+ * @param date  the date to work with
+ * @param field  the field from <code>Calendar</code>
+ *  or <code>SEMI_MONTH</code>
+ * @return the rounded date (a different object)
+ * @throws IllegalArgumentException if the date is <code>null</code>
+ * @throws ArithmeticException if the year is over 280 million
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * <p>Round this date, leaving the field specified as the most
+ * significant field.</p>
+ *
+ * <p>For example, if you had the datetime of 28 Mar 2002
+ * 13:45:01.231, if this was passed with HOUR, it would return
+ * 28 Mar 2002 14:00:00.000. If this was passed with MONTH, it
+ * would return 1 April 2002 0:00:00.000.</p>
+ *
+ * <p>For a date in a timezone that handles the change to daylight
+ * saving time, rounding to Calendar.HOUR_OF_DAY will behave as follows.
+ * Suppose daylight saving time begins at 02:00 on March 30. Rounding a
+ * date that crosses this time would produce the following values:
+ * <ul>
+ * <li>March 30, 2003 01:10 rounds to March 30, 2003 01:00</li>
+ * <li>March 30, 2003 01:40 rounds to March 30, 2003 03:00</li>
+ * <li>March 30, 2003 02:10 rounds to March 30, 2003 03:00</li>
+ * <li>March 30, 2003 02:40 rounds to March 30, 2003 04:00</li>
+ * </ul>
+ * </p>
+ *
+ * @param date  the date to work with
+ * @param field  the field from <code>Calendar</code>
+ *  or <code>SEMI_MONTH</code>
+ * @return the rounded date
+ * @throws IllegalArgumentException if the date is <code>null</code>
+ * @throws ArithmeticException if the year is over 280 million
+ */
+public static Date round(Date date, int field) {
+    if (date == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    Calendar gval = Calendar.getInstance();
+    gval.setTime(date);
+    modify(gval, field, true);
+    return gval.getTime();
+}","public void test5862() throws Throwable {
+    // Undeclared exception!
+    try {
+        DateUtils.round((Date) null, 1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The date must not be null
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>Parses a string representing a date by trying a variety of different parsers.</p>
+ *
+ * <p>The parse will try each parse pattern in turn.
+ * A parse is only deemed sucessful if it parses the whole of the input string.
+ * If no parse patterns match, a ParseException is thrown.</p>
+ *
+ * @param str  the date to parse, not null
+ * @param parsePatterns  the date format patterns to use, see SimpleDateFormat, not null
+ * @return the parsed date
+ * @throws IllegalArgumentException if the date string or pattern array is null
+ * @throws ParseException if none of the date patterns were suitable
+ */
+public static Date parseDate(String str, String[] parsePatterns) throws ParseException {
+    if (str == null || parsePatterns == null) {
+        throw new IllegalArgumentException(""Date and Patterns must not be null"");
+    }
+    SimpleDateFormat parser = null;
+    ParsePosition pos = new ParsePosition(0);
+    for (int i = 0; i < parsePatterns.length; i++) {
+        if (i == 0) {
+            parser = new SimpleDateFormat(parsePatterns[0]);
+        } else {
+            parser.applyPattern(parsePatterns[i]);
+        }
+        pos.setIndex(0);
+        Date date = parser.parse(str, pos);
+        if (date != null && pos.getIndex() == str.length()) {
+            return date;
+        }
+    }
+    throw new ParseException(""Unable to parse the date: "" + str, -1);
+}","public void test6064() throws Throwable {
+    String[] stringArray0 = new String[6];
+    stringArray0[0] = """";
+    // Undeclared exception!
+    try {
+        DateUtils.parseDate(""^+GjO-b( Y"", stringArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>Parses a string representing a date by trying a variety of different parsers.</p>
+ *
+ * <p>The parse will try each parse pattern in turn.
+ * A parse is only deemed sucessful if it parses the whole of the input string.
+ * If no parse patterns match, a ParseException is thrown.</p>
+ *
+ * @param str  the date to parse, not null
+ * @param parsePatterns  the date format patterns to use, see SimpleDateFormat, not null
+ * @return the parsed date
+ * @throws IllegalArgumentException if the date string or pattern array is null
+ * @throws ParseException if none of the date patterns were suitable
+ */
+public static Date parseDate(String str, String[] parsePatterns) throws ParseException {
+    if (str == null || parsePatterns == null) {
+        throw new IllegalArgumentException(""Date and Patterns must not be null"");
+    }
+    SimpleDateFormat parser = null;
+    ParsePosition pos = new ParsePosition(0);
+    for (int i = 0; i < parsePatterns.length; i++) {
+        if (i == 0) {
+            parser = new SimpleDateFormat(parsePatterns[0]);
+        } else {
+            parser.applyPattern(parsePatterns[i]);
+        }
+        pos.setIndex(0);
+        Date date = parser.parse(str, pos);
+        if (date != null && pos.getIndex() == str.length()) {
+            return date;
+        }
+    }
+    throw new ParseException(""Unable to parse the date: "" + str, -1);
+}","public void test6165() throws Throwable {
+    String[] stringArray0 = new String[3];
+    stringArray0[0] = ""y6:%K HE$`~]w"";
+    stringArray0[1] = ""y6:%K HE$`~]w"";
+    stringArray0[2] = ""y6:%K HE$`~]w"";
+    try {
+        DateUtils.parseDate(""y6:%K HE$`~]w"", stringArray0);
+        fail(""Expecting exception: ParseException"");
+    } catch (ParseException e) {
+        //
+        // Unable to parse the date: y6:%K HE$`~]w
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>Parses a string representing a date by trying a variety of different parsers.</p>
+ *
+ * <p>The parse will try each parse pattern in turn.
+ * A parse is only deemed sucessful if it parses the whole of the input string.
+ * If no parse patterns match, a ParseException is thrown.</p>
+ *
+ * @param str  the date to parse, not null
+ * @param parsePatterns  the date format patterns to use, see SimpleDateFormat, not null
+ * @return the parsed date
+ * @throws IllegalArgumentException if the date string or pattern array is null
+ * @throws ParseException if none of the date patterns were suitable
+ */
+public static Date parseDate(String str, String[] parsePatterns) throws ParseException {
+    if (str == null || parsePatterns == null) {
+        throw new IllegalArgumentException(""Date and Patterns must not be null"");
+    }
+    SimpleDateFormat parser = null;
+    ParsePosition pos = new ParsePosition(0);
+    for (int i = 0; i < parsePatterns.length; i++) {
+        if (i == 0) {
+            parser = new SimpleDateFormat(parsePatterns[0]);
+        } else {
+            parser.applyPattern(parsePatterns[i]);
+        }
+        pos.setIndex(0);
+        Date date = parser.parse(str, pos);
+        if (date != null && pos.getIndex() == str.length()) {
+            return date;
+        }
+    }
+    throw new ParseException(""Unable to parse the date: "" + str, -1);
+}","public void test6266() throws Throwable {
+    // Undeclared exception!
+    try {
+        DateUtils.parseDate("""", (String[]) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Date and Patterns must not be null
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>Parses a string representing a date by trying a variety of different parsers.</p>
+ *
+ * <p>The parse will try each parse pattern in turn.
+ * A parse is only deemed sucessful if it parses the whole of the input string.
+ * If no parse patterns match, a ParseException is thrown.</p>
+ *
+ * @param str  the date to parse, not null
+ * @param parsePatterns  the date format patterns to use, see SimpleDateFormat, not null
+ * @return the parsed date
+ * @throws IllegalArgumentException if the date string or pattern array is null
+ * @throws ParseException if none of the date patterns were suitable
+ */
+public static Date parseDate(String str, String[] parsePatterns) throws ParseException {
+    if (str == null || parsePatterns == null) {
+        throw new IllegalArgumentException(""Date and Patterns must not be null"");
+    }
+    SimpleDateFormat parser = null;
+    ParsePosition pos = new ParsePosition(0);
+    for (int i = 0; i < parsePatterns.length; i++) {
+        if (i == 0) {
+            parser = new SimpleDateFormat(parsePatterns[0]);
+        } else {
+            parser.applyPattern(parsePatterns[i]);
+        }
+        pos.setIndex(0);
+        Date date = parser.parse(str, pos);
+        if (date != null && pos.getIndex() == str.length()) {
+            return date;
+        }
+    }
+    throw new ParseException(""Unable to parse the date: "" + str, -1);
+}","public void test6367() throws Throwable {
+    String[] stringArray0 = new String[4];
+    // Undeclared exception!
+    try {
+        DateUtils.parseDate((String) null, stringArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Date and Patterns must not be null
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>Checks if two calendar objects represent the same local time.</p>
+ *
+ * <p>This method compares the values of the fields of the two objects.
+ * In addition, both calendars must be the same of the same type.</p>
+ *
+ * @param cal1  the first calendar, not altered, not null
+ * @param cal2  the second calendar, not altered, not null
+ * @return true if they represent the same millisecond instant
+ * @throws IllegalArgumentException if either date is <code>null</code>
+ * @since 2.1
+ */
+public static boolean isSameLocalTime(Calendar cal1, Calendar cal2) {
+    if (cal1 == null || cal2 == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    return (cal1.get(Calendar.MILLISECOND) == cal2.get(Calendar.MILLISECOND) && cal1.get(Calendar.SECOND) == cal2.get(Calendar.SECOND) && cal1.get(Calendar.MINUTE) == cal2.get(Calendar.MINUTE) && cal1.get(Calendar.HOUR) == cal2.get(Calendar.HOUR) && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) && cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA) && cal1.getClass() == cal2.getClass());
+}","public void test6469() throws Throwable {
+    Calendar calendar0 = MockCalendar.getInstance();
+    Calendar calendar1 = MockCalendar.getInstance();
+    DateUtils.DateIterator dateUtils_DateIterator0 = new DateUtils.DateIterator(calendar0, calendar0);
+    boolean boolean0 = DateUtils.isSameLocalTime(calendar1, calendar0);
+    assertFalse(boolean0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>Checks if two calendar objects represent the same local time.</p>
+ *
+ * <p>This method compares the values of the fields of the two objects.
+ * In addition, both calendars must be the same of the same type.</p>
+ *
+ * @param cal1  the first calendar, not altered, not null
+ * @param cal2  the second calendar, not altered, not null
+ * @return true if they represent the same millisecond instant
+ * @throws IllegalArgumentException if either date is <code>null</code>
+ * @since 2.1
+ */
+public static boolean isSameLocalTime(Calendar cal1, Calendar cal2) {
+    if (cal1 == null || cal2 == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    return (cal1.get(Calendar.MILLISECOND) == cal2.get(Calendar.MILLISECOND) && cal1.get(Calendar.SECOND) == cal2.get(Calendar.SECOND) && cal1.get(Calendar.MINUTE) == cal2.get(Calendar.MINUTE) && cal1.get(Calendar.HOUR) == cal2.get(Calendar.HOUR) && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) && cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA) && cal1.getClass() == cal2.getClass());
+}","public void test6672() throws Throwable {
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar();
+    Calendar calendar0 = DateUtils.truncate((Calendar) mockGregorianCalendar0, 1);
+    MockGregorianCalendar mockGregorianCalendar1 = new MockGregorianCalendar(3519, 9, 3519, 576, 1, (-1));
+    boolean boolean0 = DateUtils.isSameLocalTime(mockGregorianCalendar1, calendar0);
+    assertFalse(boolean0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>Checks if two calendar objects represent the same local time.</p>
+ *
+ * <p>This method compares the values of the fields of the two objects.
+ * In addition, both calendars must be the same of the same type.</p>
+ *
+ * @param cal1  the first calendar, not altered, not null
+ * @param cal2  the second calendar, not altered, not null
+ * @return true if they represent the same millisecond instant
+ * @throws IllegalArgumentException if either date is <code>null</code>
+ * @since 2.1
+ */
+public static boolean isSameLocalTime(Calendar cal1, Calendar cal2) {
+    if (cal1 == null || cal2 == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    return (cal1.get(Calendar.MILLISECOND) == cal2.get(Calendar.MILLISECOND) && cal1.get(Calendar.SECOND) == cal2.get(Calendar.SECOND) && cal1.get(Calendar.MINUTE) == cal2.get(Calendar.MINUTE) && cal1.get(Calendar.HOUR) == cal2.get(Calendar.HOUR) && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) && cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA) && cal1.getClass() == cal2.getClass());
+}","public void test6773() throws Throwable {
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar((-145), 4868, 869);
+    Locale locale0 = Locale.forLanguageTag(""^rqI1d` Z\""])yE3\""#~"");
+    MockGregorianCalendar mockGregorianCalendar1 = new MockGregorianCalendar(locale0);
+    boolean boolean0 = DateUtils.isSameLocalTime(mockGregorianCalendar1, mockGregorianCalendar0);
+    assertFalse(boolean0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>Checks if two calendar objects represent the same local time.</p>
+ *
+ * <p>This method compares the values of the fields of the two objects.
+ * In addition, both calendars must be the same of the same type.</p>
+ *
+ * @param cal1  the first calendar, not altered, not null
+ * @param cal2  the second calendar, not altered, not null
+ * @return true if they represent the same millisecond instant
+ * @throws IllegalArgumentException if either date is <code>null</code>
+ * @since 2.1
+ */
+public static boolean isSameLocalTime(Calendar cal1, Calendar cal2) {
+    if (cal1 == null || cal2 == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    return (cal1.get(Calendar.MILLISECOND) == cal2.get(Calendar.MILLISECOND) && cal1.get(Calendar.SECOND) == cal2.get(Calendar.SECOND) && cal1.get(Calendar.MINUTE) == cal2.get(Calendar.MINUTE) && cal1.get(Calendar.HOUR) == cal2.get(Calendar.HOUR) && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) && cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA) && cal1.getClass() == cal2.getClass());
+}","public void test6874() throws Throwable {
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar();
+    // Undeclared exception!
+    try {
+        DateUtils.isSameLocalTime(mockGregorianCalendar0, (Calendar) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The date must not be null
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>Checks if two calendar objects represent the same local time.</p>
+ *
+ * <p>This method compares the values of the fields of the two objects.
+ * In addition, both calendars must be the same of the same type.</p>
+ *
+ * @param cal1  the first calendar, not altered, not null
+ * @param cal2  the second calendar, not altered, not null
+ * @return true if they represent the same millisecond instant
+ * @throws IllegalArgumentException if either date is <code>null</code>
+ * @since 2.1
+ */
+public static boolean isSameLocalTime(Calendar cal1, Calendar cal2) {
+    if (cal1 == null || cal2 == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    return (cal1.get(Calendar.MILLISECOND) == cal2.get(Calendar.MILLISECOND) && cal1.get(Calendar.SECOND) == cal2.get(Calendar.SECOND) && cal1.get(Calendar.MINUTE) == cal2.get(Calendar.MINUTE) && cal1.get(Calendar.HOUR) == cal2.get(Calendar.HOUR) && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) && cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA) && cal1.getClass() == cal2.getClass());
+}","public void test6975() throws Throwable {
+    // Undeclared exception!
+    try {
+        DateUtils.isSameLocalTime((Calendar) null, (Calendar) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The date must not be null
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}",""
+"public static boolean isSameInstant(Calendar cal1, Calendar cal2) {
+    if (cal1 == null || cal2 == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    return cal1.getTime().getTime() == cal2.getTime().getTime();
+}","public void test7076() throws Throwable {
+    Locale locale0 = Locale.TRADITIONAL_CHINESE;
+    Calendar calendar0 = MockCalendar.getInstance(locale0);
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar(1, 1, 1, 1, 1);
+    boolean boolean0 = DateUtils.isSameInstant(calendar0, (Calendar) mockGregorianCalendar0);
+    assertFalse(boolean0);
+}","/**
+ * <p>Checks if two calendar objects represent the same instant in time.</p>
+ *
+ * <p>This method compares the long millisecond time of the two objects.</p>
+ *
+ * @param cal1  the first calendar, not altered, not null
+ * @param cal2  the second calendar, not altered, not null
+ * @return true if they represent the same millisecond instant
+ * @throws IllegalArgumentException if either date is <code>null</code>
+ * @since 2.1
+ */"
+"public static boolean isSameInstant(Calendar cal1, Calendar cal2) {
+    if (cal1 == null || cal2 == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    return cal1.getTime().getTime() == cal2.getTime().getTime();
+}","public void test7177() throws Throwable {
+    Calendar calendar0 = MockCalendar.getInstance();
+    // Undeclared exception!
+    try {
+        DateUtils.isSameInstant(calendar0, (Calendar) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The date must not be null
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}","/**
+ * <p>Checks if two calendar objects represent the same instant in time.</p>
+ *
+ * <p>This method compares the long millisecond time of the two objects.</p>
+ *
+ * @param cal1  the first calendar, not altered, not null
+ * @param cal2  the second calendar, not altered, not null
+ * @return true if they represent the same millisecond instant
+ * @throws IllegalArgumentException if either date is <code>null</code>
+ * @since 2.1
+ */"
+"public static boolean isSameInstant(Calendar cal1, Calendar cal2) {
+    if (cal1 == null || cal2 == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    return cal1.getTime().getTime() == cal2.getTime().getTime();
+}","public void test7278() throws Throwable {
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar((-1138), 956, 956, 956, (-572), 956);
+    boolean boolean0 = DateUtils.isSameInstant((Calendar) mockGregorianCalendar0, (Calendar) mockGregorianCalendar0);
+    assertTrue(boolean0);
+}","/**
+ * <p>Checks if two calendar objects represent the same instant in time.</p>
+ *
+ * <p>This method compares the long millisecond time of the two objects.</p>
+ *
+ * @param cal1  the first calendar, not altered, not null
+ * @param cal2  the second calendar, not altered, not null
+ * @return true if they represent the same millisecond instant
+ * @throws IllegalArgumentException if either date is <code>null</code>
+ * @since 2.1
+ */"
+"public static boolean isSameInstant(Calendar cal1, Calendar cal2) {
+    if (cal1 == null || cal2 == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    return cal1.getTime().getTime() == cal2.getTime().getTime();
+}","public void test7379() throws Throwable {
+    // Undeclared exception!
+    try {
+        DateUtils.isSameInstant((Calendar) null, (Calendar) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The date must not be null
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}","/**
+ * <p>Checks if two calendar objects represent the same instant in time.</p>
+ *
+ * <p>This method compares the long millisecond time of the two objects.</p>
+ *
+ * @param cal1  the first calendar, not altered, not null
+ * @param cal2  the second calendar, not altered, not null
+ * @return true if they represent the same millisecond instant
+ * @throws IllegalArgumentException if either date is <code>null</code>
+ * @since 2.1
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * <p>Checks if two date objects represent the same instant in time.</p>
+ *
+ * <p>This method compares the long millisecond time of the two objects.</p>
+ *
+ * @param date1  the first date, not altered, not null
+ * @param date2  the second date, not altered, not null
+ * @return true if they represent the same millisecond instant
+ * @throws IllegalArgumentException if either date is <code>null</code>
+ * @since 2.1
+ */
+public static boolean isSameInstant(Date date1, Date date2) {
+    if (date1 == null || date2 == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    return date1.getTime() == date2.getTime();
+}","public void test7480() throws Throwable {
+    MockDate mockDate0 = new MockDate((-2355), (-2355), (-2355), (-2355), (-2355));
+    MockDate mockDate1 = new MockDate((-2355), (-2355), (-2355));
+    boolean boolean0 = DateUtils.isSameInstant((Date) mockDate0, (Date) mockDate1);
+    assertFalse(boolean0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>Checks if two date objects represent the same instant in time.</p>
+ *
+ * <p>This method compares the long millisecond time of the two objects.</p>
+ *
+ * @param date1  the first date, not altered, not null
+ * @param date2  the second date, not altered, not null
+ * @return true if they represent the same millisecond instant
+ * @throws IllegalArgumentException if either date is <code>null</code>
+ * @since 2.1
+ */
+public static boolean isSameInstant(Date date1, Date date2) {
+    if (date1 == null || date2 == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    return date1.getTime() == date2.getTime();
+}","public void test7581() throws Throwable {
+    MockDate mockDate0 = new MockDate();
+    boolean boolean0 = DateUtils.isSameInstant((Date) mockDate0, (Date) mockDate0);
+    assertTrue(boolean0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>Checks if two date objects represent the same instant in time.</p>
+ *
+ * <p>This method compares the long millisecond time of the two objects.</p>
+ *
+ * @param date1  the first date, not altered, not null
+ * @param date2  the second date, not altered, not null
+ * @return true if they represent the same millisecond instant
+ * @throws IllegalArgumentException if either date is <code>null</code>
+ * @since 2.1
+ */
+public static boolean isSameInstant(Date date1, Date date2) {
+    if (date1 == null || date2 == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    return date1.getTime() == date2.getTime();
+}","public void test7682() throws Throwable {
+    MockDate mockDate0 = new MockDate();
+    // Undeclared exception!
+    try {
+        DateUtils.isSameInstant((Date) mockDate0, (Date) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The date must not be null
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>Checks if two date objects represent the same instant in time.</p>
+ *
+ * <p>This method compares the long millisecond time of the two objects.</p>
+ *
+ * @param date1  the first date, not altered, not null
+ * @param date2  the second date, not altered, not null
+ * @return true if they represent the same millisecond instant
+ * @throws IllegalArgumentException if either date is <code>null</code>
+ * @since 2.1
+ */
+public static boolean isSameInstant(Date date1, Date date2) {
+    if (date1 == null || date2 == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    return date1.getTime() == date2.getTime();
+}","public void test7783() throws Throwable {
+    // Undeclared exception!
+    try {
+        DateUtils.isSameInstant((Date) null, (Date) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The date must not be null
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}",""
+"public static boolean isSameDay(Calendar cal1, Calendar cal2) {
+    if (cal1 == null || cal2 == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    return (cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA) && cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR));
+}","public void test7885() throws Throwable {
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar();
+    Calendar calendar0 = DateUtils.truncate((Calendar) mockGregorianCalendar0, 1);
+    boolean boolean0 = DateUtils.isSameDay((Calendar) mockGregorianCalendar0, calendar0);
+    assertFalse(boolean0);
+}","/**
+ * <p>Checks if two calendar objects are on the same day ignoring time.</p>
+ *
+ * <p>28 Mar 2002 13:45 and 28 Mar 2002 06:01 would return true.
+ * 28 Mar 2002 13:45 and 12 Mar 2002 13:45 would return false.
+ * </p>
+ *
+ * @param cal1  the first calendar, not altered, not null
+ * @param cal2  the second calendar, not altered, not null
+ * @return true if they represent the same day
+ * @throws IllegalArgumentException if either calendar is <code>null</code>
+ * @since 2.1
+ */"
+"public static boolean isSameDay(Calendar cal1, Calendar cal2) {
+    if (cal1 == null || cal2 == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    return (cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA) && cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR));
+}","public void test7986() throws Throwable {
+    ZonedDateTime zonedDateTime0 = MockZonedDateTime.now();
+    GregorianCalendar gregorianCalendar0 = MockGregorianCalendar.from(zonedDateTime0);
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar(15, 1205, 146139496);
+    boolean boolean0 = DateUtils.isSameDay((Calendar) gregorianCalendar0, (Calendar) mockGregorianCalendar0);
+    assertFalse(boolean0);
+}","/**
+ * <p>Checks if two calendar objects are on the same day ignoring time.</p>
+ *
+ * <p>28 Mar 2002 13:45 and 28 Mar 2002 06:01 would return true.
+ * 28 Mar 2002 13:45 and 12 Mar 2002 13:45 would return false.
+ * </p>
+ *
+ * @param cal1  the first calendar, not altered, not null
+ * @param cal2  the second calendar, not altered, not null
+ * @return true if they represent the same day
+ * @throws IllegalArgumentException if either calendar is <code>null</code>
+ * @since 2.1
+ */"
+"public static boolean isSameDay(Calendar cal1, Calendar cal2) {
+    if (cal1 == null || cal2 == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    return (cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA) && cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR));
+}","public void test8087() throws Throwable {
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar((-1138), 956, 956, 956, (-572), 956);
+    MockGregorianCalendar mockGregorianCalendar1 = new MockGregorianCalendar();
+    boolean boolean0 = DateUtils.isSameDay((Calendar) mockGregorianCalendar0, (Calendar) mockGregorianCalendar1);
+    assertFalse(boolean0);
+}","/**
+ * <p>Checks if two calendar objects are on the same day ignoring time.</p>
+ *
+ * <p>28 Mar 2002 13:45 and 28 Mar 2002 06:01 would return true.
+ * 28 Mar 2002 13:45 and 12 Mar 2002 13:45 would return false.
+ * </p>
+ *
+ * @param cal1  the first calendar, not altered, not null
+ * @param cal2  the second calendar, not altered, not null
+ * @return true if they represent the same day
+ * @throws IllegalArgumentException if either calendar is <code>null</code>
+ * @since 2.1
+ */"
+"public static boolean isSameDay(Calendar cal1, Calendar cal2) {
+    if (cal1 == null || cal2 == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    return (cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA) && cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR));
+}","public void test8188() throws Throwable {
+    TimeZone timeZone0 = TimeZone.getDefault();
+    Locale locale0 = Locale.UK;
+    Calendar calendar0 = MockCalendar.getInstance(timeZone0, locale0);
+    // Undeclared exception!
+    try {
+        DateUtils.isSameDay(calendar0, (Calendar) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The date must not be null
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}","/**
+ * <p>Checks if two calendar objects are on the same day ignoring time.</p>
+ *
+ * <p>28 Mar 2002 13:45 and 28 Mar 2002 06:01 would return true.
+ * 28 Mar 2002 13:45 and 12 Mar 2002 13:45 would return false.
+ * </p>
+ *
+ * @param cal1  the first calendar, not altered, not null
+ * @param cal2  the second calendar, not altered, not null
+ * @return true if they represent the same day
+ * @throws IllegalArgumentException if either calendar is <code>null</code>
+ * @since 2.1
+ */"
+"public static boolean isSameDay(Calendar cal1, Calendar cal2) {
+    if (cal1 == null || cal2 == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    return (cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA) && cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR));
+}","public void test8289() throws Throwable {
+    // Undeclared exception!
+    try {
+        DateUtils.isSameDay((Calendar) null, (Calendar) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The date must not be null
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}","/**
+ * <p>Checks if two calendar objects are on the same day ignoring time.</p>
+ *
+ * <p>28 Mar 2002 13:45 and 28 Mar 2002 06:01 would return true.
+ * 28 Mar 2002 13:45 and 12 Mar 2002 13:45 would return false.
+ * </p>
+ *
+ * @param cal1  the first calendar, not altered, not null
+ * @param cal2  the second calendar, not altered, not null
+ * @return true if they represent the same day
+ * @throws IllegalArgumentException if either calendar is <code>null</code>
+ * @since 2.1
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * <p>Checks if two date objects are on the same day ignoring time.</p>
+ *
+ * <p>28 Mar 2002 13:45 and 28 Mar 2002 06:01 would return true.
+ * 28 Mar 2002 13:45 and 12 Mar 2002 13:45 would return false.
+ * </p>
+ *
+ * @param date1  the first date, not altered, not null
+ * @param date2  the second date, not altered, not null
+ * @return true if they represent the same day
+ * @throws IllegalArgumentException if either date is <code>null</code>
+ * @since 2.1
+ */
+public static boolean isSameDay(Date date1, Date date2) {
+    if (date1 == null || date2 == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    Calendar cal1 = Calendar.getInstance();
+    cal1.setTime(date1);
+    Calendar cal2 = Calendar.getInstance();
+    cal2.setTime(date2);
+    return isSameDay(cal1, cal2);
+}","public void test8390() throws Throwable {
+    MockDate mockDate0 = new MockDate((-5236), 1027, 0, (-400), 1027);
+    boolean boolean0 = DateUtils.isSameDay((Date) mockDate0, (Date) mockDate0);
+    assertTrue(boolean0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>Checks if two date objects are on the same day ignoring time.</p>
+ *
+ * <p>28 Mar 2002 13:45 and 28 Mar 2002 06:01 would return true.
+ * 28 Mar 2002 13:45 and 12 Mar 2002 13:45 would return false.
+ * </p>
+ *
+ * @param date1  the first date, not altered, not null
+ * @param date2  the second date, not altered, not null
+ * @return true if they represent the same day
+ * @throws IllegalArgumentException if either date is <code>null</code>
+ * @since 2.1
+ */
+public static boolean isSameDay(Date date1, Date date2) {
+    if (date1 == null || date2 == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    Calendar cal1 = Calendar.getInstance();
+    cal1.setTime(date1);
+    Calendar cal2 = Calendar.getInstance();
+    cal2.setTime(date2);
+    return isSameDay(cal1, cal2);
+}","public void test8491() throws Throwable {
+    MockDate mockDate0 = new MockDate(1001, 1001, 1001, 4194, 1001, 45);
+    // Undeclared exception!
+    try {
+        DateUtils.isSameDay((Date) mockDate0, (Date) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The date must not be null
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>Checks if two date objects are on the same day ignoring time.</p>
+ *
+ * <p>28 Mar 2002 13:45 and 28 Mar 2002 06:01 would return true.
+ * 28 Mar 2002 13:45 and 12 Mar 2002 13:45 would return false.
+ * </p>
+ *
+ * @param date1  the first date, not altered, not null
+ * @param date2  the second date, not altered, not null
+ * @return true if they represent the same day
+ * @throws IllegalArgumentException if either date is <code>null</code>
+ * @since 2.1
+ */
+public static boolean isSameDay(Date date1, Date date2) {
+    if (date1 == null || date2 == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    Calendar cal1 = Calendar.getInstance();
+    cal1.setTime(date1);
+    Calendar cal2 = Calendar.getInstance();
+    cal2.setTime(date2);
+    return isSameDay(cal1, cal2);
+}","public void test8592() throws Throwable {
+    // Undeclared exception!
+    try {
+        DateUtils.isSameDay((Date) null, (Date) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The date must not be null
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}",""
+"public static Iterator iterator(Calendar focus, int rangeStyle) {
+    if (focus == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    Calendar start = null;
+    Calendar end = null;
+    int startCutoff = Calendar.SUNDAY;
+    int endCutoff = Calendar.SATURDAY;
+    switch(rangeStyle) {
+        case RANGE_MONTH_SUNDAY:
+        case RANGE_MONTH_MONDAY:
+            //Set start to the first of the month
+            start = truncate(focus, Calendar.MONTH);
+            //Set end to the last of the month
+            end = (Calendar) start.clone();
+            end.add(Calendar.MONTH, 1);
+            end.add(Calendar.DATE, -1);
+            //Loop start back to the previous sunday or monday
+            if (rangeStyle == RANGE_MONTH_MONDAY) {
+                startCutoff = Calendar.MONDAY;
+                endCutoff = Calendar.SUNDAY;
+            }
+            break;
+        case RANGE_WEEK_SUNDAY:
+        case RANGE_WEEK_MONDAY:
+        case RANGE_WEEK_RELATIVE:
+        case RANGE_WEEK_CENTER:
+            //Set start and end to the current date
+            start = truncate(focus, Calendar.DATE);
+            end = truncate(focus, Calendar.DATE);
+            switch(rangeStyle) {
+                case RANGE_WEEK_SUNDAY:
+                    //already set by default
+                    break;
+                case RANGE_WEEK_MONDAY:
+                    startCutoff = Calendar.MONDAY;
+                    endCutoff = Calendar.SUNDAY;
+                    break;
+                case RANGE_WEEK_RELATIVE:
+                    startCutoff = focus.get(Calendar.DAY_OF_WEEK);
+                    endCutoff = startCutoff - 1;
+                    break;
+                case RANGE_WEEK_CENTER:
+                    startCutoff = focus.get(Calendar.DAY_OF_WEEK) - 3;
+                    endCutoff = focus.get(Calendar.DAY_OF_WEEK) + 3;
+                    break;
+            }
+            break;
+        default:
+            throw new IllegalArgumentException(""The range style "" + rangeStyle + "" is not valid."");
+    }
+    if (startCutoff < Calendar.SUNDAY) {
+        startCutoff += 7;
+    }
+    if (startCutoff > Calendar.SATURDAY) {
+        startCutoff -= 7;
+    }
+    if (endCutoff < Calendar.SUNDAY) {
+        endCutoff += 7;
+    }
+    if (endCutoff > Calendar.SATURDAY) {
+        endCutoff -= 7;
+    }
+    while (start.get(Calendar.DAY_OF_WEEK) != startCutoff) {
+        start.add(Calendar.DATE, -1);
+    }
+    while (end.get(Calendar.DAY_OF_WEEK) != endCutoff) {
+        end.add(Calendar.DATE, 1);
+    }
+    return new DateIterator(start, end);
+}","public void test8895() throws Throwable {
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar(320, 320, (-2971), 320, 1231);
+    Iterator iterator0 = DateUtils.iterator((Calendar) mockGregorianCalendar0, 1);
+    assertNotNull(iterator0);
+}","/**
+ * <p>This constructs an <code>Iterator</code> over each day in a date
+ * range defined by a focus date and range style.</p>
+ *
+ * <p>For instance, passing Thursday, July 4, 2002 and a
+ * <code>RANGE_MONTH_SUNDAY</code> will return an <code>Iterator</code>
+ * that starts with Sunday, June 30, 2002 and ends with Saturday, August 3,
+ * 2002, returning a Calendar instance for each intermediate day.</p>
+ *
+ * <p>This method provides an iterator that returns Calendar objects.
+ * The days are progressed using {@link Calendar#add(int, int)}.</p>
+ *
+ * @param focus  the date to work with
+ * @param rangeStyle  the style constant to use. Must be one of
+ * {@link DateUtils#RANGE_MONTH_SUNDAY},
+ * {@link DateUtils#RANGE_MONTH_MONDAY},
+ * {@link DateUtils#RANGE_WEEK_SUNDAY},
+ * {@link DateUtils#RANGE_WEEK_MONDAY},
+ * {@link DateUtils#RANGE_WEEK_RELATIVE},
+ * {@link DateUtils#RANGE_WEEK_CENTER}
+ * @return the date iterator
+ * @throws IllegalArgumentException if the date is <code>null</code>
+ * @throws IllegalArgumentException if the rangeStyle is invalid
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Adds a number of minutes to a date returning a new object.
+ * The original date object is unchanged.
+ *
+ * @param date  the date, not null
+ * @param amount  the amount to add, may be negative
+ * @return the new date object with the amount added
+ * @throws IllegalArgumentException if the date is null
+ */
+public static Date addMinutes(Date date, int amount) {
+    return add(date, Calendar.MINUTE, amount);
+}","public void test95102() throws Throwable {
+    // Undeclared exception!
+    try {
+        DateUtils.addMinutes((Date) null, 0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The date must not be null
+        //
+        verifyException(""org.apache.commons.lang.time.DateUtils"", e);
+    }
+}",""
+"public DateUtils() {
+    super();
+}","public void test96103() throws Throwable {
+    DateUtils dateUtils0 = new DateUtils();
+    assertEquals(2, DateUtils.RANGE_WEEK_MONDAY);
+}","/**
+ * <p><code>DateUtils</code> instances should NOT be constructed in
+ * standard programming. Instead, the class should be used as
+ * <code>DateUtils.parse(str);</code>.</p>
+ *
+ * <p>This constructor is public to permit tools that require a JavaBean
+ * instance to operate.</p>
+ */"

@@ -1,0 +1,3431 @@
+focal_method,test_prefix,docstring
+"@Override
+public long getSize() {
+    return size;
+}","public void test000() throws Throwable {
+    MockFile mockFile0 = new MockFile(""02`RCo%"", ""02`RCo%"");
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry(mockFile0, ""02`RCo%"");
+    int int0 = zipArchiveEntry0.getVersionRequired();
+    assertEquals(0L, zipArchiveEntry0.getSize());
+}","/**
+ * Gets the uncompressed size of the entry data.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} may create
+ * entries that return {@link #SIZE_UNKNOWN SIZE_UNKNOWN} as long
+ * as the entry hasn't been read completely.</p>
+ *
+ * @return the entry size
+ */"
+"public int getInternalAttributes() {
+    return internalAttributes;
+}","public void test001() throws Throwable {
+    MockFile mockFile0 = new MockFile(""02`RCo%"", ""02`RCo%"");
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry(mockFile0, ""02`RCo%"");
+    int int0 = zipArchiveEntry0.getVersionRequired();
+    assertEquals(0, zipArchiveEntry0.getInternalAttributes());
+}","/**
+ * Retrieves the internal file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the internal file attributes
+ */"
+"public long getExternalAttributes() {
+    return externalAttributes;
+}","public void test002() throws Throwable {
+    MockFile mockFile0 = new MockFile(""02`RCo%"", ""02`RCo%"");
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry(mockFile0, ""02`RCo%"");
+    int int0 = zipArchiveEntry0.getVersionRequired();
+    assertEquals(0L, zipArchiveEntry0.getExternalAttributes());
+}","/**
+ * Retrieves the external file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the external file attributes
+ */"
+"@Override
+public int getMethod() {
+    return method;
+}","public void test003() throws Throwable {
+    MockFile mockFile0 = new MockFile(""02`RCo%"", ""02`RCo%"");
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry(mockFile0, ""02`RCo%"");
+    int int0 = zipArchiveEntry0.getVersionRequired();
+    assertEquals((-1), zipArchiveEntry0.getMethod());
+}","/**
+ * Returns the compression method of this entry, or -1 if the
+ * compression method has not been specified.
+ *
+ * @return compression method
+ *
+ * @since 1.1
+ */"
+"public int getVersionRequired() {
+    return versionRequired;
+}","public void test004() throws Throwable {
+    MockFile mockFile0 = new MockFile(""02`RCo%"", ""02`RCo%"");
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry(mockFile0, ""02`RCo%"");
+    int int0 = zipArchiveEntry0.getVersionRequired();
+    assertEquals(0, int0);
+}","/**
+ * The ""version required to expand"" field.
+ * @return ""version required to expand"" field
+ * @since 1.11
+ */"
+"public int getPlatform() {
+    return platform;
+}","public void test005() throws Throwable {
+    MockFile mockFile0 = new MockFile(""02`RCo%"", ""02`RCo%"");
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry(mockFile0, ""02`RCo%"");
+    int int0 = zipArchiveEntry0.getVersionRequired();
+    assertEquals(0, zipArchiveEntry0.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"public ZipArchiveEntry(final ZipArchiveEntry entry) throws ZipException {
+    this((java.util.zip.ZipEntry) entry);
+    setInternalAttributes(entry.getInternalAttributes());
+    setExternalAttributes(entry.getExternalAttributes());
+    setExtraFields(getAllExtraFieldsNoCopy());
+    setPlatform(entry.getPlatform());
+    final GeneralPurposeBit other = entry.getGeneralPurposeBit();
+    setGeneralPurposeBit(other == null ? null : (GeneralPurposeBit) other.clone());
+}","public void test016() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    ZipArchiveEntry zipArchiveEntry1 = (ZipArchiveEntry) zipArchiveEntry0.clone();
+    ZipArchiveEntry zipArchiveEntry2 = null;
+    try {
+        zipArchiveEntry2 = new ZipArchiveEntry(zipArchiveEntry1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // ZIP compression method can not be negative: -1
+        //
+        verifyException(""org.apache.commons.compress.archivers.zip.ZipArchiveEntry"", e);
+    }
+}","/**
+ * Creates a new zip entry with fields taken from the specified zip entry.
+ *
+ * <p>Assumes the entry represents a directory if and only if the
+ * name ends with a forward slash ""/"".</p>
+ *
+ * @param entry the entry to get fields from
+ * @throws ZipException on error
+ */"
+"@Override
+public int getMethod() {
+    return method;
+}","public void test027() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setGeneralPurposeBit((GeneralPurposeBit) null);
+    zipArchiveEntry0.setMethod(3);
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry(zipArchiveEntry0);
+    assertEquals(3, zipArchiveEntry0.getMethod());
+}","/**
+ * Returns the compression method of this entry, or -1 if the
+ * compression method has not been specified.
+ *
+ * @return compression method
+ *
+ * @since 1.1
+ */"
+"public int getInternalAttributes() {
+    return internalAttributes;
+}","public void test028() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setGeneralPurposeBit((GeneralPurposeBit) null);
+    zipArchiveEntry0.setMethod(3);
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry(zipArchiveEntry0);
+    assertEquals(0, zipArchiveEntry1.getInternalAttributes());
+}","/**
+ * Retrieves the internal file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the internal file attributes
+ */"
+"@Override
+public int getMethod() {
+    return method;
+}","public void test039() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.getLastModifiedDate();
+    assertEquals((-1), zipArchiveEntry0.getMethod());
+}","/**
+ * Returns the compression method of this entry, or -1 if the
+ * compression method has not been specified.
+ *
+ * @return compression method
+ *
+ * @since 1.1
+ */"
+"public long getExternalAttributes() {
+    return externalAttributes;
+}","public void test0310() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.getLastModifiedDate();
+    assertEquals(0L, zipArchiveEntry0.getExternalAttributes());
+}","/**
+ * Retrieves the external file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the external file attributes
+ */"
+"public int getInternalAttributes() {
+    return internalAttributes;
+}","public void test0311() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.getLastModifiedDate();
+    assertEquals(0, zipArchiveEntry0.getInternalAttributes());
+}","/**
+ * Retrieves the internal file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the internal file attributes
+ */"
+"public int getPlatform() {
+    return platform;
+}","public void test0312() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.getLastModifiedDate();
+    assertEquals(0, zipArchiveEntry0.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"@Override
+public long getSize() {
+    return size;
+}","public void test0313() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.getLastModifiedDate();
+    assertEquals((-1L), zipArchiveEntry0.getSize());
+}","/**
+ * Gets the uncompressed size of the entry data.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} may create
+ * entries that return {@link #SIZE_UNKNOWN SIZE_UNKNOWN} as long
+ * as the entry hasn't been read completely.</p>
+ *
+ * @return the entry size
+ */"
+"public ZipExtraField[] getExtraFields() {
+    return getParseableExtraFields();
+}","public void test0414() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    byte[] byteArray0 = new byte[13];
+    zipArchiveEntry0.setExtra(byteArray0);
+    ZipExtraField[] zipExtraFieldArray0 = zipArchiveEntry0.getExtraFields();
+    assertEquals(3, zipExtraFieldArray0.length);
+}","/**
+ * Retrieves all extra fields that have been parsed successfully.
+ *
+ * <p><b>Note</b>: The set of extra fields may be incomplete when
+ * {@link ZipArchiveInputStream} has been used as some extra
+ * fields use the central directory to store additional
+ * information.</p>
+ *
+ * @return an array of the extra fields
+ */"
+"@Override
+public long getSize() {
+    return size;
+}","public void test0415() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    byte[] byteArray0 = new byte[13];
+    zipArchiveEntry0.setExtra(byteArray0);
+    ZipExtraField[] zipExtraFieldArray0 = zipArchiveEntry0.getExtraFields();
+    assertEquals((-1L), zipArchiveEntry0.getSize());
+}","/**
+ * Gets the uncompressed size of the entry data.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} may create
+ * entries that return {@link #SIZE_UNKNOWN SIZE_UNKNOWN} as long
+ * as the entry hasn't been read completely.</p>
+ *
+ * @return the entry size
+ */"
+"public int getInternalAttributes() {
+    return internalAttributes;
+}","public void test0416() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    byte[] byteArray0 = new byte[13];
+    zipArchiveEntry0.setExtra(byteArray0);
+    ZipExtraField[] zipExtraFieldArray0 = zipArchiveEntry0.getExtraFields();
+    assertEquals(0, zipArchiveEntry0.getInternalAttributes());
+}","/**
+ * Retrieves the internal file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the internal file attributes
+ */"
+"public int getPlatform() {
+    return platform;
+}","public void test0417() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    byte[] byteArray0 = new byte[13];
+    zipArchiveEntry0.setExtra(byteArray0);
+    ZipExtraField[] zipExtraFieldArray0 = zipArchiveEntry0.getExtraFields();
+    assertEquals(0, zipArchiveEntry0.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"public long getExternalAttributes() {
+    return externalAttributes;
+}","public void test0418() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    byte[] byteArray0 = new byte[13];
+    zipArchiveEntry0.setExtra(byteArray0);
+    ZipExtraField[] zipExtraFieldArray0 = zipArchiveEntry0.getExtraFields();
+    assertEquals(0L, zipArchiveEntry0.getExternalAttributes());
+}","/**
+ * Retrieves the external file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the external file attributes
+ */"
+"@Override
+public long getSize() {
+    return size;
+}","public void test0519() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.hashCode();
+    assertEquals((-1L), zipArchiveEntry0.getSize());
+}","/**
+ * Gets the uncompressed size of the entry data.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} may create
+ * entries that return {@link #SIZE_UNKNOWN SIZE_UNKNOWN} as long
+ * as the entry hasn't been read completely.</p>
+ *
+ * @return the entry size
+ */"
+"public long getExternalAttributes() {
+    return externalAttributes;
+}","public void test0520() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.hashCode();
+    assertEquals(0L, zipArchiveEntry0.getExternalAttributes());
+}","/**
+ * Retrieves the external file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the external file attributes
+ */"
+"@Override
+public int getMethod() {
+    return method;
+}","public void test0521() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.hashCode();
+    assertEquals((-1), zipArchiveEntry0.getMethod());
+}","/**
+ * Returns the compression method of this entry, or -1 if the
+ * compression method has not been specified.
+ *
+ * @return compression method
+ *
+ * @since 1.1
+ */"
+"public int getPlatform() {
+    return platform;
+}","public void test0522() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.hashCode();
+    assertEquals(0, zipArchiveEntry0.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"public int getInternalAttributes() {
+    return internalAttributes;
+}","public void test0523() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.hashCode();
+    assertEquals(0, zipArchiveEntry0.getInternalAttributes());
+}","/**
+ * Retrieves the internal file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the internal file attributes
+ */"
+"@Override
+public long getSize() {
+    return size;
+}","public void test0624() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.getUnparseableExtraFieldData();
+    assertEquals((-1L), zipArchiveEntry0.getSize());
+}","/**
+ * Gets the uncompressed size of the entry data.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} may create
+ * entries that return {@link #SIZE_UNKNOWN SIZE_UNKNOWN} as long
+ * as the entry hasn't been read completely.</p>
+ *
+ * @return the entry size
+ */"
+"public int getPlatform() {
+    return platform;
+}","public void test0625() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.getUnparseableExtraFieldData();
+    assertEquals(0, zipArchiveEntry0.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"public int getInternalAttributes() {
+    return internalAttributes;
+}","public void test0626() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.getUnparseableExtraFieldData();
+    assertEquals(0, zipArchiveEntry0.getInternalAttributes());
+}","/**
+ * Retrieves the internal file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the internal file attributes
+ */"
+"@Override
+public int getMethod() {
+    return method;
+}","public void test0627() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.getUnparseableExtraFieldData();
+    assertEquals((-1), zipArchiveEntry0.getMethod());
+}","/**
+ * Returns the compression method of this entry, or -1 if the
+ * compression method has not been specified.
+ *
+ * @return compression method
+ *
+ * @since 1.1
+ */"
+"public long getExternalAttributes() {
+    return externalAttributes;
+}","public void test0628() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.getUnparseableExtraFieldData();
+    assertEquals(0L, zipArchiveEntry0.getExternalAttributes());
+}","/**
+ * Retrieves the external file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the external file attributes
+ */"
+"public long getExternalAttributes() {
+    return externalAttributes;
+}","public void test0729() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setRawFlag(0);
+    assertEquals(0L, zipArchiveEntry0.getExternalAttributes());
+}","/**
+ * Retrieves the external file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the external file attributes
+ */"
+"@Override
+public long getSize() {
+    return size;
+}","public void test0730() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setRawFlag(0);
+    assertEquals((-1L), zipArchiveEntry0.getSize());
+}","/**
+ * Gets the uncompressed size of the entry data.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} may create
+ * entries that return {@link #SIZE_UNKNOWN SIZE_UNKNOWN} as long
+ * as the entry hasn't been read completely.</p>
+ *
+ * @return the entry size
+ */"
+"public int getPlatform() {
+    return platform;
+}","public void test0731() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setRawFlag(0);
+    assertEquals(0, zipArchiveEntry0.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"public int getRawFlag() {
+    return rawFlag;
+}","public void test0732() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setRawFlag(0);
+    assertEquals(0, zipArchiveEntry0.getRawFlag());
+}","/**
+ * The content of the flags field.
+ * @return content of the flags field
+ * @since 1.11
+ */"
+"@Override
+public int getMethod() {
+    return method;
+}","public void test0733() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setRawFlag(0);
+    assertEquals((-1), zipArchiveEntry0.getMethod());
+}","/**
+ * Returns the compression method of this entry, or -1 if the
+ * compression method has not been specified.
+ *
+ * @return compression method
+ *
+ * @since 1.1
+ */"
+"public int getVersionMadeBy() {
+    return versionMadeBy;
+}","public void test0834() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setVersionMadeBy((-1));
+    assertEquals((-1), zipArchiveEntry0.getVersionMadeBy());
+}","/**
+ * The ""version made by"" field.
+ * @return ""version made by"" field
+ * @since 1.11
+ */"
+"public int getPlatform() {
+    return platform;
+}","public void test0936() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry(""6{k+a[>g]"");
+    int int0 = zipArchiveEntry0.getVersionMadeBy();
+    assertEquals(0, zipArchiveEntry0.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"@Override
+public long getSize() {
+    return size;
+}","public void test0937() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry(""6{k+a[>g]"");
+    int int0 = zipArchiveEntry0.getVersionMadeBy();
+    assertEquals((-1L), zipArchiveEntry0.getSize());
+}","/**
+ * Gets the uncompressed size of the entry data.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} may create
+ * entries that return {@link #SIZE_UNKNOWN SIZE_UNKNOWN} as long
+ * as the entry hasn't been read completely.</p>
+ *
+ * @return the entry size
+ */"
+"public int getVersionMadeBy() {
+    return versionMadeBy;
+}","public void test0938() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry(""6{k+a[>g]"");
+    int int0 = zipArchiveEntry0.getVersionMadeBy();
+    assertEquals(0, int0);
+}","/**
+ * The ""version made by"" field.
+ * @return ""version made by"" field
+ * @since 1.11
+ */"
+"public int getInternalAttributes() {
+    return internalAttributes;
+}","public void test0939() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry(""6{k+a[>g]"");
+    int int0 = zipArchiveEntry0.getVersionMadeBy();
+    assertEquals(0, zipArchiveEntry0.getInternalAttributes());
+}","/**
+ * Retrieves the internal file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the internal file attributes
+ */"
+"public long getExternalAttributes() {
+    return externalAttributes;
+}","public void test0940() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry(""6{k+a[>g]"");
+    int int0 = zipArchiveEntry0.getVersionMadeBy();
+    assertEquals(0L, zipArchiveEntry0.getExternalAttributes());
+}","/**
+ * Retrieves the external file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the external file attributes
+ */"
+"@Override
+public int getMethod() {
+    return method;
+}","public void test0941() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry(""6{k+a[>g]"");
+    int int0 = zipArchiveEntry0.getVersionMadeBy();
+    assertEquals((-1), zipArchiveEntry0.getMethod());
+}","/**
+ * Returns the compression method of this entry, or -1 if the
+ * compression method has not been specified.
+ *
+ * @return compression method
+ *
+ * @since 1.1
+ */"
+"@Override
+public int getMethod() {
+    return method;
+}","public void test1042() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setMethod(3);
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry(zipArchiveEntry0);
+    assertEquals(3, zipArchiveEntry0.getMethod());
+}","/**
+ * Returns the compression method of this entry, or -1 if the
+ * compression method has not been specified.
+ *
+ * @return compression method
+ *
+ * @since 1.1
+ */"
+"/* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+@Override
+public boolean equals(final Object obj) {
+    if (this == obj) {
+        return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+        return false;
+    }
+    final ZipArchiveEntry other = (ZipArchiveEntry) obj;
+    final String myName = getName();
+    final String otherName = other.getName();
+    if (myName == null) {
+        if (otherName != null) {
+            return false;
+        }
+    } else if (!myName.equals(otherName)) {
+        return false;
+    }
+    String myComment = getComment();
+    String otherComment = other.getComment();
+    if (myComment == null) {
+        myComment = """";
+    }
+    if (otherComment == null) {
+        otherComment = """";
+    }
+    return getTime() == other.getTime() && myComment.equals(otherComment) && getInternalAttributes() == other.getInternalAttributes() && getPlatform() == other.getPlatform() && getExternalAttributes() == other.getExternalAttributes() && getMethod() == other.getMethod() && getSize() == other.getSize() && getCrc() == other.getCrc() && getCompressedSize() == other.getCompressedSize() && Arrays.equals(getCentralDirectoryExtra(), other.getCentralDirectoryExtra()) && Arrays.equals(getLocalFileDataExtra(), other.getLocalFileDataExtra()) && gpb.equals(other.gpb);
+}","public void test1043() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setMethod(3);
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry(zipArchiveEntry0);
+    assertTrue(zipArchiveEntry1.equals((Object) zipArchiveEntry0));
+}",""
+"public int getInternalAttributes() {
+    return internalAttributes;
+}","public void test1144() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    UnparseableExtraFieldData unparseableExtraFieldData0 = new UnparseableExtraFieldData();
+    zipArchiveEntry0.addExtraField(unparseableExtraFieldData0);
+    ZipArchiveEntry zipArchiveEntry1 = (ZipArchiveEntry) zipArchiveEntry0.clone();
+    assertEquals(0, zipArchiveEntry1.getInternalAttributes());
+}","/**
+ * Retrieves the internal file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the internal file attributes
+ */"
+"public long getExternalAttributes() {
+    return externalAttributes;
+}","public void test1145() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    UnparseableExtraFieldData unparseableExtraFieldData0 = new UnparseableExtraFieldData();
+    zipArchiveEntry0.addExtraField(unparseableExtraFieldData0);
+    ZipArchiveEntry zipArchiveEntry1 = (ZipArchiveEntry) zipArchiveEntry0.clone();
+    assertEquals(0L, zipArchiveEntry1.getExternalAttributes());
+}","/**
+ * Retrieves the external file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the external file attributes
+ */"
+"@Override
+public int getMethod() {
+    return method;
+}","public void test1146() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    UnparseableExtraFieldData unparseableExtraFieldData0 = new UnparseableExtraFieldData();
+    zipArchiveEntry0.addExtraField(unparseableExtraFieldData0);
+    ZipArchiveEntry zipArchiveEntry1 = (ZipArchiveEntry) zipArchiveEntry0.clone();
+    assertEquals((-1), zipArchiveEntry1.getMethod());
+}","/**
+ * Returns the compression method of this entry, or -1 if the
+ * compression method has not been specified.
+ *
+ * @return compression method
+ *
+ * @since 1.1
+ */"
+"public int getPlatform() {
+    return platform;
+}","public void test1147() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    UnparseableExtraFieldData unparseableExtraFieldData0 = new UnparseableExtraFieldData();
+    zipArchiveEntry0.addExtraField(unparseableExtraFieldData0);
+    ZipArchiveEntry zipArchiveEntry1 = (ZipArchiveEntry) zipArchiveEntry0.clone();
+    assertEquals(0, zipArchiveEntry1.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"@Override
+public long getSize() {
+    return size;
+}","public void test1148() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    UnparseableExtraFieldData unparseableExtraFieldData0 = new UnparseableExtraFieldData();
+    zipArchiveEntry0.addExtraField(unparseableExtraFieldData0);
+    ZipArchiveEntry zipArchiveEntry1 = (ZipArchiveEntry) zipArchiveEntry0.clone();
+    assertEquals((-1L), zipArchiveEntry1.getSize());
+}","/**
+ * Gets the uncompressed size of the entry data.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} may create
+ * entries that return {@link #SIZE_UNKNOWN SIZE_UNKNOWN} as long
+ * as the entry hasn't been read completely.</p>
+ *
+ * @return the entry size
+ */"
+"@Override
+public int getMethod() {
+    return method;
+}","public void test1249() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setVersionRequired(0);
+    assertEquals((-1), zipArchiveEntry0.getMethod());
+}","/**
+ * Returns the compression method of this entry, or -1 if the
+ * compression method has not been specified.
+ *
+ * @return compression method
+ *
+ * @since 1.1
+ */"
+"public int getVersionRequired() {
+    return versionRequired;
+}","public void test1250() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setVersionRequired(0);
+    assertEquals(0, zipArchiveEntry0.getVersionRequired());
+}","/**
+ * The ""version required to expand"" field.
+ * @return ""version required to expand"" field
+ * @since 1.11
+ */"
+"public int getInternalAttributes() {
+    return internalAttributes;
+}","public void test1251() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setVersionRequired(0);
+    assertEquals(0, zipArchiveEntry0.getInternalAttributes());
+}","/**
+ * Retrieves the internal file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the internal file attributes
+ */"
+"public long getExternalAttributes() {
+    return externalAttributes;
+}","public void test1252() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setVersionRequired(0);
+    assertEquals(0L, zipArchiveEntry0.getExternalAttributes());
+}","/**
+ * Retrieves the external file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the external file attributes
+ */"
+"public int getPlatform() {
+    return platform;
+}","public void test1253() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setVersionRequired(0);
+    assertEquals(0, zipArchiveEntry0.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"@Override
+public long getSize() {
+    return size;
+}","public void test1254() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setVersionRequired(0);
+    assertEquals((-1L), zipArchiveEntry0.getSize());
+}","/**
+ * Gets the uncompressed size of the entry data.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} may create
+ * entries that return {@link #SIZE_UNKNOWN SIZE_UNKNOWN} as long
+ * as the entry hasn't been read completely.</p>
+ *
+ * @return the entry size
+ */"
+"public int getInternalAttributes() {
+    return internalAttributes;
+}","public void test1355() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    int int0 = zipArchiveEntry0.getRawFlag();
+    assertEquals(0, zipArchiveEntry0.getInternalAttributes());
+}","/**
+ * Retrieves the internal file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the internal file attributes
+ */"
+"public int getPlatform() {
+    return platform;
+}","public void test1356() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    int int0 = zipArchiveEntry0.getRawFlag();
+    assertEquals(0, zipArchiveEntry0.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"public int getRawFlag() {
+    return rawFlag;
+}","public void test1357() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    int int0 = zipArchiveEntry0.getRawFlag();
+    assertEquals(0, int0);
+}","/**
+ * The content of the flags field.
+ * @return content of the flags field
+ * @since 1.11
+ */"
+"@Override
+public int getMethod() {
+    return method;
+}","public void test1358() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    int int0 = zipArchiveEntry0.getRawFlag();
+    assertEquals((-1), zipArchiveEntry0.getMethod());
+}","/**
+ * Returns the compression method of this entry, or -1 if the
+ * compression method has not been specified.
+ *
+ * @return compression method
+ *
+ * @since 1.1
+ */"
+"public long getExternalAttributes() {
+    return externalAttributes;
+}","public void test1359() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    int int0 = zipArchiveEntry0.getRawFlag();
+    assertEquals(0L, zipArchiveEntry0.getExternalAttributes());
+}","/**
+ * Retrieves the external file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the external file attributes
+ */"
+"@Override
+public long getSize() {
+    return size;
+}","public void test1360() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    int int0 = zipArchiveEntry0.getRawFlag();
+    assertEquals((-1L), zipArchiveEntry0.getSize());
+}","/**
+ * Gets the uncompressed size of the entry data.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} may create
+ * entries that return {@link #SIZE_UNKNOWN SIZE_UNKNOWN} as long
+ * as the entry hasn't been read completely.</p>
+ *
+ * @return the entry size
+ */"
+"public long getExternalAttributes() {
+    return externalAttributes;
+}","public void test1461() throws Throwable {
+    MockFile mockFile0 = new MockFile(""/"");
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry(mockFile0, ""/"");
+    assertEquals(0L, zipArchiveEntry0.getExternalAttributes());
+}","/**
+ * Retrieves the external file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the external file attributes
+ */"
+"@Override
+public int getMethod() {
+    return method;
+}","public void test1462() throws Throwable {
+    MockFile mockFile0 = new MockFile(""/"");
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry(mockFile0, ""/"");
+    assertEquals((-1), zipArchiveEntry0.getMethod());
+}","/**
+ * Returns the compression method of this entry, or -1 if the
+ * compression method has not been specified.
+ *
+ * @return compression method
+ *
+ * @since 1.1
+ */"
+"public int getInternalAttributes() {
+    return internalAttributes;
+}","public void test1463() throws Throwable {
+    MockFile mockFile0 = new MockFile(""/"");
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry(mockFile0, ""/"");
+    assertEquals(0, zipArchiveEntry0.getInternalAttributes());
+}","/**
+ * Retrieves the internal file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the internal file attributes
+ */"
+"public int getPlatform() {
+    return platform;
+}","public void test1464() throws Throwable {
+    MockFile mockFile0 = new MockFile(""/"");
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry(mockFile0, ""/"");
+    assertEquals(0, zipArchiveEntry0.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"@Override
+public long getSize() {
+    return size;
+}","public void test1465() throws Throwable {
+    MockFile mockFile0 = new MockFile(""/"");
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry(mockFile0, ""/"");
+    assertEquals((-1L), zipArchiveEntry0.getSize());
+}","/**
+ * Gets the uncompressed size of the entry data.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} may create
+ * entries that return {@link #SIZE_UNKNOWN SIZE_UNKNOWN} as long
+ * as the entry hasn't been read completely.</p>
+ *
+ * @return the entry size
+ */"
+"public long getExternalAttributes() {
+    return externalAttributes;
+}","public void test1566() throws Throwable {
+    MockFile mockFile0 = new MockFile("""");
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry(mockFile0, """");
+    assertEquals(0L, zipArchiveEntry0.getExternalAttributes());
+}","/**
+ * Retrieves the external file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the external file attributes
+ */"
+"public int getInternalAttributes() {
+    return internalAttributes;
+}","public void test1567() throws Throwable {
+    MockFile mockFile0 = new MockFile("""");
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry(mockFile0, """");
+    assertEquals(0, zipArchiveEntry0.getInternalAttributes());
+}","/**
+ * Retrieves the internal file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the internal file attributes
+ */"
+"@Override
+public int getMethod() {
+    return method;
+}","public void test1568() throws Throwable {
+    MockFile mockFile0 = new MockFile("""");
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry(mockFile0, """");
+    assertEquals((-1), zipArchiveEntry0.getMethod());
+}","/**
+ * Returns the compression method of this entry, or -1 if the
+ * compression method has not been specified.
+ *
+ * @return compression method
+ *
+ * @since 1.1
+ */"
+"public int getPlatform() {
+    return platform;
+}","public void test1569() throws Throwable {
+    MockFile mockFile0 = new MockFile("""");
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry(mockFile0, """");
+    assertEquals(0, zipArchiveEntry0.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"@Override
+public long getSize() {
+    return size;
+}","public void test1570() throws Throwable {
+    MockFile mockFile0 = new MockFile("""");
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry(mockFile0, """");
+    assertEquals((-1L), zipArchiveEntry0.getSize());
+}","/**
+ * Gets the uncompressed size of the entry data.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} may create
+ * entries that return {@link #SIZE_UNKNOWN SIZE_UNKNOWN} as long
+ * as the entry hasn't been read completely.</p>
+ *
+ * @return the entry size
+ */"
+"public boolean isUnixSymlink() {
+    return (getUnixMode() & UnixStat.LINK_FLAG) == UnixStat.LINK_FLAG;
+}","public void test1671() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry(""9/"");
+    zipArchiveEntry0.setUnixMode((-1));
+    assertTrue(zipArchiveEntry0.isUnixSymlink());
+}","/**
+ * Returns true if this entry represents a unix symlink,
+ * in which case the entry's content contains the target path
+ * for the symlink.
+ *
+ * @since 1.5
+ * @return true if the entry represents a unix symlink, false otherwise.
+ */"
+"public long getExternalAttributes() {
+    return externalAttributes;
+}","public void test1772() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setUnixMode((-1));
+    boolean boolean0 = zipArchiveEntry0.isUnixSymlink();
+    assertEquals((-65536L), zipArchiveEntry0.getExternalAttributes());
+}","/**
+ * Retrieves the external file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the external file attributes
+ */"
+"public boolean isUnixSymlink() {
+    return (getUnixMode() & UnixStat.LINK_FLAG) == UnixStat.LINK_FLAG;
+}","public void test1773() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setUnixMode((-1));
+    boolean boolean0 = zipArchiveEntry0.isUnixSymlink();
+    assertTrue(boolean0);
+}","/**
+ * Returns true if this entry represents a unix symlink,
+ * in which case the entry's content contains the target path
+ * for the symlink.
+ *
+ * @since 1.5
+ * @return true if the entry represents a unix symlink, false otherwise.
+ */"
+"@Override
+public long getSize() {
+    return size;
+}","public void test1874() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry0.isUnixSymlink();
+    assertEquals((-1L), zipArchiveEntry0.getSize());
+}","/**
+ * Gets the uncompressed size of the entry data.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} may create
+ * entries that return {@link #SIZE_UNKNOWN SIZE_UNKNOWN} as long
+ * as the entry hasn't been read completely.</p>
+ *
+ * @return the entry size
+ */"
+"public boolean isUnixSymlink() {
+    return (getUnixMode() & UnixStat.LINK_FLAG) == UnixStat.LINK_FLAG;
+}","public void test1875() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry0.isUnixSymlink();
+    assertFalse(boolean0);
+}","/**
+ * Returns true if this entry represents a unix symlink,
+ * in which case the entry's content contains the target path
+ * for the symlink.
+ *
+ * @since 1.5
+ * @return true if the entry represents a unix symlink, false otherwise.
+ */"
+"public long getExternalAttributes() {
+    return externalAttributes;
+}","public void test1876() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry0.isUnixSymlink();
+    assertEquals(0L, zipArchiveEntry0.getExternalAttributes());
+}","/**
+ * Retrieves the external file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the external file attributes
+ */"
+"public int getUnixMode() {
+    return platform != PLATFORM_UNIX ? 0 : (int) ((getExternalAttributes() >> SHORT_SHIFT) & SHORT_MASK);
+}","public void test1877() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry0.isUnixSymlink();
+    assertEquals(0, zipArchiveEntry0.getUnixMode());
+}","/**
+ * Unix permission.
+ * @return the unix permissions
+ */"
+"public int getInternalAttributes() {
+    return internalAttributes;
+}","public void test1878() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry0.isUnixSymlink();
+    assertEquals(0, zipArchiveEntry0.getInternalAttributes());
+}","/**
+ * Retrieves the internal file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the internal file attributes
+ */"
+"@Override
+public int getMethod() {
+    return method;
+}","public void test1879() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry0.isUnixSymlink();
+    assertEquals((-1), zipArchiveEntry0.getMethod());
+}","/**
+ * Returns the compression method of this entry, or -1 if the
+ * compression method has not been specified.
+ *
+ * @return compression method
+ *
+ * @since 1.1
+ */"
+"public int getPlatform() {
+    return platform;
+}","public void test1880() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry0.isUnixSymlink();
+    assertEquals(0, zipArchiveEntry0.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"@Override
+public int getMethod() {
+    return method;
+}","public void test1981() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.getExtraFields(false);
+    assertEquals((-1), zipArchiveEntry0.getMethod());
+}","/**
+ * Returns the compression method of this entry, or -1 if the
+ * compression method has not been specified.
+ *
+ * @return compression method
+ *
+ * @since 1.1
+ */"
+"public int getPlatform() {
+    return platform;
+}","public void test1982() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.getExtraFields(false);
+    assertEquals(0, zipArchiveEntry0.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"@Override
+public long getSize() {
+    return size;
+}","public void test1983() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.getExtraFields(false);
+    assertEquals((-1L), zipArchiveEntry0.getSize());
+}","/**
+ * Gets the uncompressed size of the entry data.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} may create
+ * entries that return {@link #SIZE_UNKNOWN SIZE_UNKNOWN} as long
+ * as the entry hasn't been read completely.</p>
+ *
+ * @return the entry size
+ */"
+"public int getInternalAttributes() {
+    return internalAttributes;
+}","public void test1984() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.getExtraFields(false);
+    assertEquals(0, zipArchiveEntry0.getInternalAttributes());
+}","/**
+ * Retrieves the internal file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the internal file attributes
+ */"
+"public long getExternalAttributes() {
+    return externalAttributes;
+}","public void test1985() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.getExtraFields(false);
+    assertEquals(0L, zipArchiveEntry0.getExternalAttributes());
+}","/**
+ * Retrieves the external file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the external file attributes
+ */"
+"public int getPlatform() {
+    return platform;
+}","public void test2086() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.getExtraFields(true);
+    assertEquals(0, zipArchiveEntry0.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"@Override
+public long getSize() {
+    return size;
+}","public void test2087() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.getExtraFields(true);
+    assertEquals((-1L), zipArchiveEntry0.getSize());
+}","/**
+ * Gets the uncompressed size of the entry data.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} may create
+ * entries that return {@link #SIZE_UNKNOWN SIZE_UNKNOWN} as long
+ * as the entry hasn't been read completely.</p>
+ *
+ * @return the entry size
+ */"
+"public long getExternalAttributes() {
+    return externalAttributes;
+}","public void test2088() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.getExtraFields(true);
+    assertEquals(0L, zipArchiveEntry0.getExternalAttributes());
+}","/**
+ * Retrieves the external file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the external file attributes
+ */"
+"@Override
+public int getMethod() {
+    return method;
+}","public void test2089() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.getExtraFields(true);
+    assertEquals((-1), zipArchiveEntry0.getMethod());
+}","/**
+ * Returns the compression method of this entry, or -1 if the
+ * compression method has not been specified.
+ *
+ * @return compression method
+ *
+ * @since 1.1
+ */"
+"public int getInternalAttributes() {
+    return internalAttributes;
+}","public void test2090() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.getExtraFields(true);
+    assertEquals(0, zipArchiveEntry0.getInternalAttributes());
+}","/**
+ * Retrieves the internal file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the internal file attributes
+ */"
+"public ZipExtraField[] getExtraFields(final boolean includeUnparseable) {
+    return includeUnparseable ? getAllExtraFields() : getParseableExtraFields();
+}","public void test2191() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    X000A_NTFS x000A_NTFS0 = new X000A_NTFS();
+    zipArchiveEntry0.addExtraField(x000A_NTFS0);
+    ZipExtraField[] zipExtraFieldArray0 = zipArchiveEntry0.getExtraFields(true);
+    assertEquals(1, zipExtraFieldArray0.length);
+}","/**
+ * Retrieves extra fields.
+ * @param includeUnparseable whether to also return unparseable
+ * extra fields as {@link UnparseableExtraFieldData} if such data
+ * exists.
+ * @return an array of the extra fields
+ *
+ * @since 1.1
+ */"
+"@Override
+public long getSize() {
+    return size;
+}","public void test2192() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    X000A_NTFS x000A_NTFS0 = new X000A_NTFS();
+    zipArchiveEntry0.addExtraField(x000A_NTFS0);
+    ZipExtraField[] zipExtraFieldArray0 = zipArchiveEntry0.getExtraFields(true);
+    assertEquals((-1L), zipArchiveEntry0.getSize());
+}","/**
+ * Gets the uncompressed size of the entry data.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} may create
+ * entries that return {@link #SIZE_UNKNOWN SIZE_UNKNOWN} as long
+ * as the entry hasn't been read completely.</p>
+ *
+ * @return the entry size
+ */"
+"public int getPlatform() {
+    return platform;
+}","public void test2193() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    X000A_NTFS x000A_NTFS0 = new X000A_NTFS();
+    zipArchiveEntry0.addExtraField(x000A_NTFS0);
+    ZipExtraField[] zipExtraFieldArray0 = zipArchiveEntry0.getExtraFields(true);
+    assertEquals(0, zipArchiveEntry0.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"public int getInternalAttributes() {
+    return internalAttributes;
+}","public void test2194() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    X000A_NTFS x000A_NTFS0 = new X000A_NTFS();
+    zipArchiveEntry0.addExtraField(x000A_NTFS0);
+    ZipExtraField[] zipExtraFieldArray0 = zipArchiveEntry0.getExtraFields(true);
+    assertEquals(0, zipArchiveEntry0.getInternalAttributes());
+}","/**
+ * Retrieves the internal file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the internal file attributes
+ */"
+"@Override
+public int getMethod() {
+    return method;
+}","public void test2195() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    X000A_NTFS x000A_NTFS0 = new X000A_NTFS();
+    zipArchiveEntry0.addExtraField(x000A_NTFS0);
+    ZipExtraField[] zipExtraFieldArray0 = zipArchiveEntry0.getExtraFields(true);
+    assertEquals((-1), zipArchiveEntry0.getMethod());
+}","/**
+ * Returns the compression method of this entry, or -1 if the
+ * compression method has not been specified.
+ *
+ * @return compression method
+ *
+ * @since 1.1
+ */"
+"public long getExternalAttributes() {
+    return externalAttributes;
+}","public void test2196() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    X000A_NTFS x000A_NTFS0 = new X000A_NTFS();
+    zipArchiveEntry0.addExtraField(x000A_NTFS0);
+    ZipExtraField[] zipExtraFieldArray0 = zipArchiveEntry0.getExtraFields(true);
+    assertEquals(0L, zipArchiveEntry0.getExternalAttributes());
+}","/**
+ * Retrieves the external file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the external file attributes
+ */"
+"public int getPlatform() {
+    return platform;
+}","public void test2297() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    X000A_NTFS x000A_NTFS0 = new X000A_NTFS();
+    byte[] byteArray0 = new byte[13];
+    zipArchiveEntry0.addExtraField(x000A_NTFS0);
+    zipArchiveEntry0.setExtra(byteArray0);
+    assertEquals(0, zipArchiveEntry0.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"@Override
+public long getSize() {
+    return size;
+}","public void test2298() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    X000A_NTFS x000A_NTFS0 = new X000A_NTFS();
+    byte[] byteArray0 = new byte[13];
+    zipArchiveEntry0.addExtraField(x000A_NTFS0);
+    zipArchiveEntry0.setExtra(byteArray0);
+    assertEquals((-1L), zipArchiveEntry0.getSize());
+}","/**
+ * Gets the uncompressed size of the entry data.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} may create
+ * entries that return {@link #SIZE_UNKNOWN SIZE_UNKNOWN} as long
+ * as the entry hasn't been read completely.</p>
+ *
+ * @return the entry size
+ */"
+"public int getInternalAttributes() {
+    return internalAttributes;
+}","public void test2399() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    X000A_NTFS x000A_NTFS0 = new X000A_NTFS();
+    zipArchiveEntry0.addAsFirstExtraField(x000A_NTFS0);
+    zipArchiveEntry0.addExtraField(x000A_NTFS0);
+    assertEquals(0, zipArchiveEntry0.getInternalAttributes());
+}","/**
+ * Retrieves the internal file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the internal file attributes
+ */"
+"public int getPlatform() {
+    return platform;
+}","public void test23100() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    X000A_NTFS x000A_NTFS0 = new X000A_NTFS();
+    zipArchiveEntry0.addAsFirstExtraField(x000A_NTFS0);
+    zipArchiveEntry0.addExtraField(x000A_NTFS0);
+    assertEquals(0, zipArchiveEntry0.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"@Override
+public long getSize() {
+    return size;
+}","public void test23101() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    X000A_NTFS x000A_NTFS0 = new X000A_NTFS();
+    zipArchiveEntry0.addAsFirstExtraField(x000A_NTFS0);
+    zipArchiveEntry0.addExtraField(x000A_NTFS0);
+    assertEquals((-1L), zipArchiveEntry0.getSize());
+}","/**
+ * Gets the uncompressed size of the entry data.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} may create
+ * entries that return {@link #SIZE_UNKNOWN SIZE_UNKNOWN} as long
+ * as the entry hasn't been read completely.</p>
+ *
+ * @return the entry size
+ */"
+"public long getExternalAttributes() {
+    return externalAttributes;
+}","public void test24102() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    UnparseableExtraFieldData unparseableExtraFieldData0 = new UnparseableExtraFieldData();
+    zipArchiveEntry0.addAsFirstExtraField(unparseableExtraFieldData0);
+    zipArchiveEntry0.removeUnparseableExtraFieldData();
+    assertEquals(0L, zipArchiveEntry0.getExternalAttributes());
+}","/**
+ * Retrieves the external file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the external file attributes
+ */"
+"@Override
+public int getMethod() {
+    return method;
+}","public void test24103() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    UnparseableExtraFieldData unparseableExtraFieldData0 = new UnparseableExtraFieldData();
+    zipArchiveEntry0.addAsFirstExtraField(unparseableExtraFieldData0);
+    zipArchiveEntry0.removeUnparseableExtraFieldData();
+    assertEquals((-1), zipArchiveEntry0.getMethod());
+}","/**
+ * Returns the compression method of this entry, or -1 if the
+ * compression method has not been specified.
+ *
+ * @return compression method
+ *
+ * @since 1.1
+ */"
+"public int getInternalAttributes() {
+    return internalAttributes;
+}","public void test24104() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    UnparseableExtraFieldData unparseableExtraFieldData0 = new UnparseableExtraFieldData();
+    zipArchiveEntry0.addAsFirstExtraField(unparseableExtraFieldData0);
+    zipArchiveEntry0.removeUnparseableExtraFieldData();
+    assertEquals(0, zipArchiveEntry0.getInternalAttributes());
+}","/**
+ * Retrieves the internal file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the internal file attributes
+ */"
+"public int getPlatform() {
+    return platform;
+}","public void test24105() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    UnparseableExtraFieldData unparseableExtraFieldData0 = new UnparseableExtraFieldData();
+    zipArchiveEntry0.addAsFirstExtraField(unparseableExtraFieldData0);
+    zipArchiveEntry0.removeUnparseableExtraFieldData();
+    assertEquals(0, zipArchiveEntry0.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"@Override
+public long getSize() {
+    return size;
+}","public void test24106() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    UnparseableExtraFieldData unparseableExtraFieldData0 = new UnparseableExtraFieldData();
+    zipArchiveEntry0.addAsFirstExtraField(unparseableExtraFieldData0);
+    zipArchiveEntry0.removeUnparseableExtraFieldData();
+    assertEquals((-1L), zipArchiveEntry0.getSize());
+}","/**
+ * Gets the uncompressed size of the entry data.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} may create
+ * entries that return {@link #SIZE_UNKNOWN SIZE_UNKNOWN} as long
+ * as the entry hasn't been read completely.</p>
+ *
+ * @return the entry size
+ */"
+"public int getPlatform() {
+    return platform;
+}","public void test25107() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    X000A_NTFS x000A_NTFS0 = new X000A_NTFS();
+    ZipEightByteInteger zipEightByteInteger0 = x000A_NTFS0.getModifyTime();
+    Zip64ExtendedInformationExtraField zip64ExtendedInformationExtraField0 = new Zip64ExtendedInformationExtraField(zipEightByteInteger0, zipEightByteInteger0);
+    zipArchiveEntry0.addAsFirstExtraField(zip64ExtendedInformationExtraField0);
+    zipArchiveEntry0.addAsFirstExtraField(zip64ExtendedInformationExtraField0);
+    assertEquals(0, zipArchiveEntry0.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"public int getInternalAttributes() {
+    return internalAttributes;
+}","public void test25108() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    X000A_NTFS x000A_NTFS0 = new X000A_NTFS();
+    ZipEightByteInteger zipEightByteInteger0 = x000A_NTFS0.getModifyTime();
+    Zip64ExtendedInformationExtraField zip64ExtendedInformationExtraField0 = new Zip64ExtendedInformationExtraField(zipEightByteInteger0, zipEightByteInteger0);
+    zipArchiveEntry0.addAsFirstExtraField(zip64ExtendedInformationExtraField0);
+    zipArchiveEntry0.addAsFirstExtraField(zip64ExtendedInformationExtraField0);
+    assertEquals(0, zipArchiveEntry0.getInternalAttributes());
+}","/**
+ * Retrieves the internal file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the internal file attributes
+ */"
+"@Override
+public int getMethod() {
+    return method;
+}","public void test25109() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    X000A_NTFS x000A_NTFS0 = new X000A_NTFS();
+    ZipEightByteInteger zipEightByteInteger0 = x000A_NTFS0.getModifyTime();
+    Zip64ExtendedInformationExtraField zip64ExtendedInformationExtraField0 = new Zip64ExtendedInformationExtraField(zipEightByteInteger0, zipEightByteInteger0);
+    zipArchiveEntry0.addAsFirstExtraField(zip64ExtendedInformationExtraField0);
+    zipArchiveEntry0.addAsFirstExtraField(zip64ExtendedInformationExtraField0);
+    assertEquals((-1), zipArchiveEntry0.getMethod());
+}","/**
+ * Returns the compression method of this entry, or -1 if the
+ * compression method has not been specified.
+ *
+ * @return compression method
+ *
+ * @since 1.1
+ */"
+"public void removeExtraField(final ZipShort type) {
+    if (extraFields == null) {
+        throw new java.util.NoSuchElementException();
+    }
+    final List<ZipExtraField> newResult = new ArrayList<>();
+    for (final ZipExtraField extraField : extraFields) {
+        if (!type.equals(extraField.getHeaderId())) {
+            newResult.add(extraField);
+        }
+    }
+    if (extraFields.length == newResult.size()) {
+        throw new java.util.NoSuchElementException();
+    }
+    extraFields = newResult.toArray(new ZipExtraField[newResult.size()]);
+    setExtra();
+}","public void test26110() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    ZipShort zipShort0 = UnicodePathExtraField.UPATH_ID;
+    // Undeclared exception!
+    try {
+        zipArchiveEntry0.removeExtraField(zipShort0);
+        fail(""Expecting exception: NoSuchElementException"");
+    } catch (NoSuchElementException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.zip.ZipArchiveEntry"", e);
+    }
+}","/**
+ * Remove an extra field.
+ * @param type the type of extra field to remove
+ */"
+"public void removeExtraField(final ZipShort type) {
+    if (extraFields == null) {
+        throw new java.util.NoSuchElementException();
+    }
+    final List<ZipExtraField> newResult = new ArrayList<>();
+    for (final ZipExtraField extraField : extraFields) {
+        if (!type.equals(extraField.getHeaderId())) {
+            newResult.add(extraField);
+        }
+    }
+    if (extraFields.length == newResult.size()) {
+        throw new java.util.NoSuchElementException();
+    }
+    extraFields = newResult.toArray(new ZipExtraField[newResult.size()]);
+    setExtra();
+}","public void test27111() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    JarMarker jarMarker0 = JarMarker.getInstance();
+    ZipShort zipShort0 = jarMarker0.getCentralDirectoryLength();
+    zipArchiveEntry0.addAsFirstExtraField(jarMarker0);
+    // Undeclared exception!
+    try {
+        zipArchiveEntry0.removeExtraField(zipShort0);
+        fail(""Expecting exception: NoSuchElementException"");
+    } catch (NoSuchElementException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.zip.ZipArchiveEntry"", e);
+    }
+}","/**
+ * Remove an extra field.
+ * @param type the type of extra field to remove
+ */"
+"public void removeUnparseableExtraFieldData() {
+    if (unparseableExtra == null) {
+        throw new java.util.NoSuchElementException();
+    }
+    unparseableExtra = null;
+    setExtra();
+}","public void test28112() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    // Undeclared exception!
+    try {
+        zipArchiveEntry0.removeUnparseableExtraFieldData();
+        fail(""Expecting exception: NoSuchElementException"");
+    } catch (NoSuchElementException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.zip.ZipArchiveEntry"", e);
+    }
+}","/**
+ * Removes unparseable extra field data.
+ *
+ * @since 1.1
+ */"
+"public ZipArchiveEntry(final ZipArchiveEntry entry) throws ZipException {
+    this((java.util.zip.ZipEntry) entry);
+    setInternalAttributes(entry.getInternalAttributes());
+    setExternalAttributes(entry.getExternalAttributes());
+    setExtraFields(getAllExtraFieldsNoCopy());
+    setPlatform(entry.getPlatform());
+    final GeneralPurposeBit other = entry.getGeneralPurposeBit();
+    setGeneralPurposeBit(other == null ? null : (GeneralPurposeBit) other.clone());
+}","public void test29113() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setName((String) null);
+    ZipArchiveEntry zipArchiveEntry1 = null;
+    try {
+        zipArchiveEntry1 = new ZipArchiveEntry(zipArchiveEntry0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // ZIP compression method can not be negative: -1
+        //
+        verifyException(""org.apache.commons.compress.archivers.zip.ZipArchiveEntry"", e);
+    }
+}","/**
+ * Creates a new zip entry with fields taken from the specified zip entry.
+ *
+ * <p>Assumes the entry represents a directory if and only if the
+ * name ends with a forward slash ""/"".</p>
+ *
+ * @param entry the entry to get fields from
+ * @throws ZipException on error
+ */"
+"public int getPlatform() {
+    return platform;
+}","public void test30114() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    assertEquals(0, zipArchiveEntry0.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"public int getPlatform() {
+    return platform;
+}","public void test30115() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setPlatform(3);
+    zipArchiveEntry0.setName(""n|Ea6ZtYw/"");
+    assertEquals(3, zipArchiveEntry0.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"@Override
+public void setSize(final long size) {
+    if (size < 0) {
+        throw new IllegalArgumentException(""invalid entry size"");
+    }
+    this.size = size;
+}","public void test31116() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    // Undeclared exception!
+    try {
+        zipArchiveEntry0.setSize((-1));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // invalid entry size
+        //
+        verifyException(""org.apache.commons.compress.archivers.zip.ZipArchiveEntry"", e);
+    }
+}","/**
+ * Sets the uncompressed size of the entry data.
+ * @param size the uncompressed size in bytes
+ * @throws IllegalArgumentException if the specified size is less
+ *            than 0
+ */"
+"public long getExternalAttributes() {
+    return externalAttributes;
+}","public void test32117() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.getRawName();
+    assertEquals(0L, zipArchiveEntry0.getExternalAttributes());
+}","/**
+ * Retrieves the external file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the external file attributes
+ */"
+"@Override
+public long getSize() {
+    return size;
+}","public void test32118() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.getRawName();
+    assertEquals((-1L), zipArchiveEntry0.getSize());
+}","/**
+ * Gets the uncompressed size of the entry data.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} may create
+ * entries that return {@link #SIZE_UNKNOWN SIZE_UNKNOWN} as long
+ * as the entry hasn't been read completely.</p>
+ *
+ * @return the entry size
+ */"
+"public int getPlatform() {
+    return platform;
+}","public void test32119() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.getRawName();
+    assertEquals(0, zipArchiveEntry0.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"@Override
+public int getMethod() {
+    return method;
+}","public void test32120() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.getRawName();
+    assertEquals((-1), zipArchiveEntry0.getMethod());
+}","/**
+ * Returns the compression method of this entry, or -1 if the
+ * compression method has not been specified.
+ *
+ * @return compression method
+ *
+ * @since 1.1
+ */"
+"public int getInternalAttributes() {
+    return internalAttributes;
+}","public void test32121() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.getRawName();
+    assertEquals(0, zipArchiveEntry0.getInternalAttributes());
+}","/**
+ * Retrieves the internal file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the internal file attributes
+ */"
+"public int getInternalAttributes() {
+    return internalAttributes;
+}","public void test33122() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    byte[] byteArray0 = new byte[8];
+    zipArchiveEntry0.setName("">Iq\""e"", byteArray0);
+    zipArchiveEntry0.getRawName();
+    assertEquals(0, zipArchiveEntry0.getInternalAttributes());
+}","/**
+ * Retrieves the internal file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the internal file attributes
+ */"
+"public int getPlatform() {
+    return platform;
+}","public void test33123() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    byte[] byteArray0 = new byte[8];
+    zipArchiveEntry0.setName("">Iq\""e"", byteArray0);
+    zipArchiveEntry0.getRawName();
+    assertEquals(0, zipArchiveEntry0.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"@Override
+public long getSize() {
+    return size;
+}","public void test33124() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    byte[] byteArray0 = new byte[8];
+    zipArchiveEntry0.setName("">Iq\""e"", byteArray0);
+    zipArchiveEntry0.getRawName();
+    assertEquals((-1L), zipArchiveEntry0.getSize());
+}","/**
+ * Gets the uncompressed size of the entry data.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} may create
+ * entries that return {@link #SIZE_UNKNOWN SIZE_UNKNOWN} as long
+ * as the entry hasn't been read completely.</p>
+ *
+ * @return the entry size
+ */"
+"@Override
+public int getMethod() {
+    return method;
+}","public void test33125() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    byte[] byteArray0 = new byte[8];
+    zipArchiveEntry0.setName("">Iq\""e"", byteArray0);
+    zipArchiveEntry0.getRawName();
+    assertEquals((-1), zipArchiveEntry0.getMethod());
+}","/**
+ * Returns the compression method of this entry, or -1 if the
+ * compression method has not been specified.
+ *
+ * @return compression method
+ *
+ * @since 1.1
+ */"
+"public long getExternalAttributes() {
+    return externalAttributes;
+}","public void test33126() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    byte[] byteArray0 = new byte[8];
+    zipArchiveEntry0.setName("">Iq\""e"", byteArray0);
+    zipArchiveEntry0.getRawName();
+    assertEquals(0L, zipArchiveEntry0.getExternalAttributes());
+}","/**
+ * Retrieves the external file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the external file attributes
+ */"
+"/* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+@Override
+public boolean equals(final Object obj) {
+    if (this == obj) {
+        return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+        return false;
+    }
+    final ZipArchiveEntry other = (ZipArchiveEntry) obj;
+    final String myName = getName();
+    final String otherName = other.getName();
+    if (myName == null) {
+        if (otherName != null) {
+            return false;
+        }
+    } else if (!myName.equals(otherName)) {
+        return false;
+    }
+    String myComment = getComment();
+    String otherComment = other.getComment();
+    if (myComment == null) {
+        myComment = """";
+    }
+    if (otherComment == null) {
+        otherComment = """";
+    }
+    return getTime() == other.getTime() && myComment.equals(otherComment) && getInternalAttributes() == other.getInternalAttributes() && getPlatform() == other.getPlatform() && getExternalAttributes() == other.getExternalAttributes() && getMethod() == other.getMethod() && getSize() == other.getSize() && getCrc() == other.getCrc() && getCompressedSize() == other.getCompressedSize() && Arrays.equals(getCentralDirectoryExtra(), other.getCentralDirectoryExtra()) && Arrays.equals(getLocalFileDataExtra(), other.getLocalFileDataExtra()) && gpb.equals(other.gpb);
+}","public void test34127() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    ZipArchiveEntry zipArchiveEntry1 = (ZipArchiveEntry) zipArchiveEntry0.clone();
+    assertTrue(zipArchiveEntry1.equals((Object) zipArchiveEntry0));
+}",""
+"/* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+@Override
+public boolean equals(final Object obj) {
+    if (this == obj) {
+        return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+        return false;
+    }
+    final ZipArchiveEntry other = (ZipArchiveEntry) obj;
+    final String myName = getName();
+    final String otherName = other.getName();
+    if (myName == null) {
+        if (otherName != null) {
+            return false;
+        }
+    } else if (!myName.equals(otherName)) {
+        return false;
+    }
+    String myComment = getComment();
+    String otherComment = other.getComment();
+    if (myComment == null) {
+        myComment = """";
+    }
+    if (otherComment == null) {
+        otherComment = """";
+    }
+    return getTime() == other.getTime() && myComment.equals(otherComment) && getInternalAttributes() == other.getInternalAttributes() && getPlatform() == other.getPlatform() && getExternalAttributes() == other.getExternalAttributes() && getMethod() == other.getMethod() && getSize() == other.getSize() && getCrc() == other.getCrc() && getCompressedSize() == other.getCompressedSize() && Arrays.equals(getCentralDirectoryExtra(), other.getCentralDirectoryExtra()) && Arrays.equals(getLocalFileDataExtra(), other.getLocalFileDataExtra()) && gpb.equals(other.gpb);
+}","public void test34128() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    ZipArchiveEntry zipArchiveEntry1 = (ZipArchiveEntry) zipArchiveEntry0.clone();
+    byte[] byteArray0 = new byte[4];
+    byteArray0[2] = (byte) 3;
+    zipArchiveEntry1.setCentralDirectoryExtra(byteArray0);
+    assertFalse(zipArchiveEntry1.equals((Object) zipArchiveEntry0));
+}",""
+"public void setCentralDirectoryExtra(final byte[] b) {
+    try {
+        final ZipExtraField[] central = ExtraFieldUtils.parse(b, false, ExtraFieldUtils.UnparseableExtraField.READ);
+        mergeExtraFields(central, false);
+    } catch (final ZipException e) {
+        //NOSONAR
+        throw new RuntimeException(e.getMessage(), e);
+    }
+}","public void test34129() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    ZipArchiveEntry zipArchiveEntry1 = (ZipArchiveEntry) zipArchiveEntry0.clone();
+    byte[] byteArray0 = new byte[4];
+    byteArray0[2] = (byte) 3;
+    zipArchiveEntry1.setCentralDirectoryExtra(byteArray0);
+    assertNotSame(zipArchiveEntry1, zipArchiveEntry0);
+}","/**
+ * Sets the central directory part of extra fields.
+ * @param b an array of bytes to be parsed into extra fields
+ */"
+"public int getPlatform() {
+    return platform;
+}","public void test35130() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    byte[] byteArray0 = new byte[13];
+    zipArchiveEntry0.setExtra(byteArray0);
+    zipArchiveEntry0.setCentralDirectoryExtra(byteArray0);
+    assertEquals(0, zipArchiveEntry0.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"public int getInternalAttributes() {
+    return internalAttributes;
+}","public void test35131() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    byte[] byteArray0 = new byte[13];
+    zipArchiveEntry0.setExtra(byteArray0);
+    zipArchiveEntry0.setCentralDirectoryExtra(byteArray0);
+    assertEquals(0, zipArchiveEntry0.getInternalAttributes());
+}","/**
+ * Retrieves the internal file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the internal file attributes
+ */"
+"/* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+@Override
+public boolean equals(final Object obj) {
+    if (this == obj) {
+        return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+        return false;
+    }
+    final ZipArchiveEntry other = (ZipArchiveEntry) obj;
+    final String myName = getName();
+    final String otherName = other.getName();
+    if (myName == null) {
+        if (otherName != null) {
+            return false;
+        }
+    } else if (!myName.equals(otherName)) {
+        return false;
+    }
+    String myComment = getComment();
+    String otherComment = other.getComment();
+    if (myComment == null) {
+        myComment = """";
+    }
+    if (otherComment == null) {
+        otherComment = """";
+    }
+    return getTime() == other.getTime() && myComment.equals(otherComment) && getInternalAttributes() == other.getInternalAttributes() && getPlatform() == other.getPlatform() && getExternalAttributes() == other.getExternalAttributes() && getMethod() == other.getMethod() && getSize() == other.getSize() && getCrc() == other.getCrc() && getCompressedSize() == other.getCompressedSize() && Arrays.equals(getCentralDirectoryExtra(), other.getCentralDirectoryExtra()) && Arrays.equals(getLocalFileDataExtra(), other.getLocalFileDataExtra()) && gpb.equals(other.gpb);
+}","public void test36132() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry0.equals(zipArchiveEntry0);
+    assertTrue(boolean0);
+}",""
+"@Override
+public int getMethod() {
+    return method;
+}","public void test36133() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry0.equals(zipArchiveEntry0);
+    assertEquals((-1), zipArchiveEntry0.getMethod());
+}","/**
+ * Returns the compression method of this entry, or -1 if the
+ * compression method has not been specified.
+ *
+ * @return compression method
+ *
+ * @since 1.1
+ */"
+"public long getExternalAttributes() {
+    return externalAttributes;
+}","public void test36134() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry0.equals(zipArchiveEntry0);
+    assertEquals(0L, zipArchiveEntry0.getExternalAttributes());
+}","/**
+ * Retrieves the external file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the external file attributes
+ */"
+"public int getInternalAttributes() {
+    return internalAttributes;
+}","public void test36135() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry0.equals(zipArchiveEntry0);
+    assertEquals(0, zipArchiveEntry0.getInternalAttributes());
+}","/**
+ * Retrieves the internal file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the internal file attributes
+ */"
+"public int getPlatform() {
+    return platform;
+}","public void test36136() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry0.equals(zipArchiveEntry0);
+    assertEquals(0, zipArchiveEntry0.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"@Override
+public long getSize() {
+    return size;
+}","public void test36137() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry0.equals(zipArchiveEntry0);
+    assertEquals((-1L), zipArchiveEntry0.getSize());
+}","/**
+ * Gets the uncompressed size of the entry data.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} may create
+ * entries that return {@link #SIZE_UNKNOWN SIZE_UNKNOWN} as long
+ * as the entry hasn't been read completely.</p>
+ *
+ * @return the entry size
+ */"
+"/* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+@Override
+public boolean equals(final Object obj) {
+    if (this == obj) {
+        return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+        return false;
+    }
+    final ZipArchiveEntry other = (ZipArchiveEntry) obj;
+    final String myName = getName();
+    final String otherName = other.getName();
+    if (myName == null) {
+        if (otherName != null) {
+            return false;
+        }
+    } else if (!myName.equals(otherName)) {
+        return false;
+    }
+    String myComment = getComment();
+    String otherComment = other.getComment();
+    if (myComment == null) {
+        myComment = """";
+    }
+    if (otherComment == null) {
+        otherComment = """";
+    }
+    return getTime() == other.getTime() && myComment.equals(otherComment) && getInternalAttributes() == other.getInternalAttributes() && getPlatform() == other.getPlatform() && getExternalAttributes() == other.getExternalAttributes() && getMethod() == other.getMethod() && getSize() == other.getSize() && getCrc() == other.getCrc() && getCompressedSize() == other.getCompressedSize() && Arrays.equals(getCentralDirectoryExtra(), other.getCentralDirectoryExtra()) && Arrays.equals(getLocalFileDataExtra(), other.getLocalFileDataExtra()) && gpb.equals(other.gpb);
+}","public void test37138() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry0.equals((Object) null);
+    assertFalse(boolean0);
+}",""
+"public int getPlatform() {
+    return platform;
+}","public void test37139() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry0.equals((Object) null);
+    assertEquals(0, zipArchiveEntry0.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"@Override
+public long getSize() {
+    return size;
+}","public void test37140() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry0.equals((Object) null);
+    assertEquals((-1L), zipArchiveEntry0.getSize());
+}","/**
+ * Gets the uncompressed size of the entry data.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} may create
+ * entries that return {@link #SIZE_UNKNOWN SIZE_UNKNOWN} as long
+ * as the entry hasn't been read completely.</p>
+ *
+ * @return the entry size
+ */"
+"@Override
+public int getMethod() {
+    return method;
+}","public void test37141() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry0.equals((Object) null);
+    assertEquals((-1), zipArchiveEntry0.getMethod());
+}","/**
+ * Returns the compression method of this entry, or -1 if the
+ * compression method has not been specified.
+ *
+ * @return compression method
+ *
+ * @since 1.1
+ */"
+"public long getExternalAttributes() {
+    return externalAttributes;
+}","public void test37142() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry0.equals((Object) null);
+    assertEquals(0L, zipArchiveEntry0.getExternalAttributes());
+}","/**
+ * Retrieves the external file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the external file attributes
+ */"
+"public int getInternalAttributes() {
+    return internalAttributes;
+}","public void test37143() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry0.equals((Object) null);
+    assertEquals(0, zipArchiveEntry0.getInternalAttributes());
+}","/**
+ * Retrieves the internal file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the internal file attributes
+ */"
+"public int getPlatform() {
+    return platform;
+}","public void test38144() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry0.equals(""gz;BR:f0i"");
+    assertEquals(0, zipArchiveEntry0.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"@Override
+public long getSize() {
+    return size;
+}","public void test38145() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry0.equals(""gz;BR:f0i"");
+    assertEquals((-1L), zipArchiveEntry0.getSize());
+}","/**
+ * Gets the uncompressed size of the entry data.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} may create
+ * entries that return {@link #SIZE_UNKNOWN SIZE_UNKNOWN} as long
+ * as the entry hasn't been read completely.</p>
+ *
+ * @return the entry size
+ */"
+"/* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+@Override
+public boolean equals(final Object obj) {
+    if (this == obj) {
+        return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+        return false;
+    }
+    final ZipArchiveEntry other = (ZipArchiveEntry) obj;
+    final String myName = getName();
+    final String otherName = other.getName();
+    if (myName == null) {
+        if (otherName != null) {
+            return false;
+        }
+    } else if (!myName.equals(otherName)) {
+        return false;
+    }
+    String myComment = getComment();
+    String otherComment = other.getComment();
+    if (myComment == null) {
+        myComment = """";
+    }
+    if (otherComment == null) {
+        otherComment = """";
+    }
+    return getTime() == other.getTime() && myComment.equals(otherComment) && getInternalAttributes() == other.getInternalAttributes() && getPlatform() == other.getPlatform() && getExternalAttributes() == other.getExternalAttributes() && getMethod() == other.getMethod() && getSize() == other.getSize() && getCrc() == other.getCrc() && getCompressedSize() == other.getCompressedSize() && Arrays.equals(getCentralDirectoryExtra(), other.getCentralDirectoryExtra()) && Arrays.equals(getLocalFileDataExtra(), other.getLocalFileDataExtra()) && gpb.equals(other.gpb);
+}","public void test38146() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry0.equals(""gz;BR:f0i"");
+    assertFalse(boolean0);
+}",""
+"public long getExternalAttributes() {
+    return externalAttributes;
+}","public void test38147() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry0.equals(""gz;BR:f0i"");
+    assertEquals(0L, zipArchiveEntry0.getExternalAttributes());
+}","/**
+ * Retrieves the external file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the external file attributes
+ */"
+"@Override
+public int getMethod() {
+    return method;
+}","public void test38148() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry0.equals(""gz;BR:f0i"");
+    assertEquals((-1), zipArchiveEntry0.getMethod());
+}","/**
+ * Returns the compression method of this entry, or -1 if the
+ * compression method has not been specified.
+ *
+ * @return compression method
+ *
+ * @since 1.1
+ */"
+"public int getInternalAttributes() {
+    return internalAttributes;
+}","public void test38149() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry0.equals(""gz;BR:f0i"");
+    assertEquals(0, zipArchiveEntry0.getInternalAttributes());
+}","/**
+ * Retrieves the internal file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the internal file attributes
+ */"
+"@Override
+public int getMethod() {
+    return method;
+}","public void test39150() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry(""WV._0Q-"");
+    boolean boolean0 = zipArchiveEntry1.equals(zipArchiveEntry0);
+    assertEquals((-1), zipArchiveEntry1.getMethod());
+}","/**
+ * Returns the compression method of this entry, or -1 if the
+ * compression method has not been specified.
+ *
+ * @return compression method
+ *
+ * @since 1.1
+ */"
+"public long getExternalAttributes() {
+    return externalAttributes;
+}","public void test39151() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry(""WV._0Q-"");
+    boolean boolean0 = zipArchiveEntry1.equals(zipArchiveEntry0);
+    assertEquals(0L, zipArchiveEntry1.getExternalAttributes());
+}","/**
+ * Retrieves the external file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the external file attributes
+ */"
+"public int getInternalAttributes() {
+    return internalAttributes;
+}","public void test39152() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry(""WV._0Q-"");
+    boolean boolean0 = zipArchiveEntry1.equals(zipArchiveEntry0);
+    assertEquals(0, zipArchiveEntry1.getInternalAttributes());
+}","/**
+ * Retrieves the internal file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the internal file attributes
+ */"
+"@Override
+public long getSize() {
+    return size;
+}","public void test39153() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry(""WV._0Q-"");
+    boolean boolean0 = zipArchiveEntry1.equals(zipArchiveEntry0);
+    assertEquals((-1L), zipArchiveEntry1.getSize());
+}","/**
+ * Gets the uncompressed size of the entry data.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} may create
+ * entries that return {@link #SIZE_UNKNOWN SIZE_UNKNOWN} as long
+ * as the entry hasn't been read completely.</p>
+ *
+ * @return the entry size
+ */"
+"/* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+@Override
+public boolean equals(final Object obj) {
+    if (this == obj) {
+        return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+        return false;
+    }
+    final ZipArchiveEntry other = (ZipArchiveEntry) obj;
+    final String myName = getName();
+    final String otherName = other.getName();
+    if (myName == null) {
+        if (otherName != null) {
+            return false;
+        }
+    } else if (!myName.equals(otherName)) {
+        return false;
+    }
+    String myComment = getComment();
+    String otherComment = other.getComment();
+    if (myComment == null) {
+        myComment = """";
+    }
+    if (otherComment == null) {
+        otherComment = """";
+    }
+    return getTime() == other.getTime() && myComment.equals(otherComment) && getInternalAttributes() == other.getInternalAttributes() && getPlatform() == other.getPlatform() && getExternalAttributes() == other.getExternalAttributes() && getMethod() == other.getMethod() && getSize() == other.getSize() && getCrc() == other.getCrc() && getCompressedSize() == other.getCompressedSize() && Arrays.equals(getCentralDirectoryExtra(), other.getCentralDirectoryExtra()) && Arrays.equals(getLocalFileDataExtra(), other.getLocalFileDataExtra()) && gpb.equals(other.gpb);
+}","public void test39154() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry(""WV._0Q-"");
+    boolean boolean0 = zipArchiveEntry1.equals(zipArchiveEntry0);
+    assertFalse(boolean0);
+}",""
+"public int getPlatform() {
+    return platform;
+}","public void test39155() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry(""WV._0Q-"");
+    boolean boolean0 = zipArchiveEntry1.equals(zipArchiveEntry0);
+    assertEquals(0, zipArchiveEntry1.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"public long getExternalAttributes() {
+    return externalAttributes;
+}","public void test40156() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setComment(""org.apache.commons.compress.archivers.zip.X0016_CertificateIdForCentralDirectory/"");
+    ZipArchiveEntry zipArchiveEntry1 = (ZipArchiveEntry) zipArchiveEntry0.clone();
+    boolean boolean0 = zipArchiveEntry0.equals(zipArchiveEntry1);
+    assertEquals(0L, zipArchiveEntry1.getExternalAttributes());
+}","/**
+ * Retrieves the external file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the external file attributes
+ */"
+"@Override
+public int getMethod() {
+    return method;
+}","public void test40157() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setComment(""org.apache.commons.compress.archivers.zip.X0016_CertificateIdForCentralDirectory/"");
+    ZipArchiveEntry zipArchiveEntry1 = (ZipArchiveEntry) zipArchiveEntry0.clone();
+    boolean boolean0 = zipArchiveEntry0.equals(zipArchiveEntry1);
+    assertEquals((-1), zipArchiveEntry1.getMethod());
+}","/**
+ * Returns the compression method of this entry, or -1 if the
+ * compression method has not been specified.
+ *
+ * @return compression method
+ *
+ * @since 1.1
+ */"
+"/* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+@Override
+public boolean equals(final Object obj) {
+    if (this == obj) {
+        return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+        return false;
+    }
+    final ZipArchiveEntry other = (ZipArchiveEntry) obj;
+    final String myName = getName();
+    final String otherName = other.getName();
+    if (myName == null) {
+        if (otherName != null) {
+            return false;
+        }
+    } else if (!myName.equals(otherName)) {
+        return false;
+    }
+    String myComment = getComment();
+    String otherComment = other.getComment();
+    if (myComment == null) {
+        myComment = """";
+    }
+    if (otherComment == null) {
+        otherComment = """";
+    }
+    return getTime() == other.getTime() && myComment.equals(otherComment) && getInternalAttributes() == other.getInternalAttributes() && getPlatform() == other.getPlatform() && getExternalAttributes() == other.getExternalAttributes() && getMethod() == other.getMethod() && getSize() == other.getSize() && getCrc() == other.getCrc() && getCompressedSize() == other.getCompressedSize() && Arrays.equals(getCentralDirectoryExtra(), other.getCentralDirectoryExtra()) && Arrays.equals(getLocalFileDataExtra(), other.getLocalFileDataExtra()) && gpb.equals(other.gpb);
+}","public void test40158() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setComment(""org.apache.commons.compress.archivers.zip.X0016_CertificateIdForCentralDirectory/"");
+    ZipArchiveEntry zipArchiveEntry1 = (ZipArchiveEntry) zipArchiveEntry0.clone();
+    boolean boolean0 = zipArchiveEntry0.equals(zipArchiveEntry1);
+    assertTrue(boolean0);
+}",""
+"public int getInternalAttributes() {
+    return internalAttributes;
+}","public void test40159() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setComment(""org.apache.commons.compress.archivers.zip.X0016_CertificateIdForCentralDirectory/"");
+    ZipArchiveEntry zipArchiveEntry1 = (ZipArchiveEntry) zipArchiveEntry0.clone();
+    boolean boolean0 = zipArchiveEntry0.equals(zipArchiveEntry1);
+    assertEquals(0, zipArchiveEntry1.getInternalAttributes());
+}","/**
+ * Retrieves the internal file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the internal file attributes
+ */"
+"public int getPlatform() {
+    return platform;
+}","public void test40160() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setComment(""org.apache.commons.compress.archivers.zip.X0016_CertificateIdForCentralDirectory/"");
+    ZipArchiveEntry zipArchiveEntry1 = (ZipArchiveEntry) zipArchiveEntry0.clone();
+    boolean boolean0 = zipArchiveEntry0.equals(zipArchiveEntry1);
+    assertEquals(0, zipArchiveEntry1.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"@Override
+public long getSize() {
+    return size;
+}","public void test40161() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setComment(""org.apache.commons.compress.archivers.zip.X0016_CertificateIdForCentralDirectory/"");
+    ZipArchiveEntry zipArchiveEntry1 = (ZipArchiveEntry) zipArchiveEntry0.clone();
+    boolean boolean0 = zipArchiveEntry0.equals(zipArchiveEntry1);
+    assertEquals((-1L), zipArchiveEntry1.getSize());
+}","/**
+ * Gets the uncompressed size of the entry data.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} may create
+ * entries that return {@link #SIZE_UNKNOWN SIZE_UNKNOWN} as long
+ * as the entry hasn't been read completely.</p>
+ *
+ * @return the entry size
+ */"
+"/* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+@Override
+public boolean equals(final Object obj) {
+    if (this == obj) {
+        return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+        return false;
+    }
+    final ZipArchiveEntry other = (ZipArchiveEntry) obj;
+    final String myName = getName();
+    final String otherName = other.getName();
+    if (myName == null) {
+        if (otherName != null) {
+            return false;
+        }
+    } else if (!myName.equals(otherName)) {
+        return false;
+    }
+    String myComment = getComment();
+    String otherComment = other.getComment();
+    if (myComment == null) {
+        myComment = """";
+    }
+    if (otherComment == null) {
+        otherComment = """";
+    }
+    return getTime() == other.getTime() && myComment.equals(otherComment) && getInternalAttributes() == other.getInternalAttributes() && getPlatform() == other.getPlatform() && getExternalAttributes() == other.getExternalAttributes() && getMethod() == other.getMethod() && getSize() == other.getSize() && getCrc() == other.getCrc() && getCompressedSize() == other.getCompressedSize() && Arrays.equals(getCentralDirectoryExtra(), other.getCentralDirectoryExtra()) && Arrays.equals(getLocalFileDataExtra(), other.getLocalFileDataExtra()) && gpb.equals(other.gpb);
+}","public void test41162() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry();
+    assertTrue(zipArchiveEntry1.equals((Object) zipArchiveEntry0));
+}",""
+"/* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+@Override
+public boolean equals(final Object obj) {
+    if (this == obj) {
+        return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+        return false;
+    }
+    final ZipArchiveEntry other = (ZipArchiveEntry) obj;
+    final String myName = getName();
+    final String otherName = other.getName();
+    if (myName == null) {
+        if (otherName != null) {
+            return false;
+        }
+    } else if (!myName.equals(otherName)) {
+        return false;
+    }
+    String myComment = getComment();
+    String otherComment = other.getComment();
+    if (myComment == null) {
+        myComment = """";
+    }
+    if (otherComment == null) {
+        otherComment = """";
+    }
+    return getTime() == other.getTime() && myComment.equals(otherComment) && getInternalAttributes() == other.getInternalAttributes() && getPlatform() == other.getPlatform() && getExternalAttributes() == other.getExternalAttributes() && getMethod() == other.getMethod() && getSize() == other.getSize() && getCrc() == other.getCrc() && getCompressedSize() == other.getCompressedSize() && Arrays.equals(getCentralDirectoryExtra(), other.getCentralDirectoryExtra()) && Arrays.equals(getLocalFileDataExtra(), other.getLocalFileDataExtra()) && gpb.equals(other.gpb);
+}","public void test41163() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry();
+    zipArchiveEntry1.setTime(3);
+    boolean boolean0 = zipArchiveEntry0.equals(zipArchiveEntry1);
+    assertFalse(zipArchiveEntry1.equals((Object) zipArchiveEntry0));
+}",""
+"/* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+@Override
+public boolean equals(final Object obj) {
+    if (this == obj) {
+        return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+        return false;
+    }
+    final ZipArchiveEntry other = (ZipArchiveEntry) obj;
+    final String myName = getName();
+    final String otherName = other.getName();
+    if (myName == null) {
+        if (otherName != null) {
+            return false;
+        }
+    } else if (!myName.equals(otherName)) {
+        return false;
+    }
+    String myComment = getComment();
+    String otherComment = other.getComment();
+    if (myComment == null) {
+        myComment = """";
+    }
+    if (otherComment == null) {
+        otherComment = """";
+    }
+    return getTime() == other.getTime() && myComment.equals(otherComment) && getInternalAttributes() == other.getInternalAttributes() && getPlatform() == other.getPlatform() && getExternalAttributes() == other.getExternalAttributes() && getMethod() == other.getMethod() && getSize() == other.getSize() && getCrc() == other.getCrc() && getCompressedSize() == other.getCompressedSize() && Arrays.equals(getCentralDirectoryExtra(), other.getCentralDirectoryExtra()) && Arrays.equals(getLocalFileDataExtra(), other.getLocalFileDataExtra()) && gpb.equals(other.gpb);
+}","public void test41164() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry();
+    zipArchiveEntry1.setTime(3);
+    boolean boolean0 = zipArchiveEntry0.equals(zipArchiveEntry1);
+    assertFalse(boolean0);
+}",""
+"@Override
+public int getMethod() {
+    return method;
+}","public void test42165() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setComment("" but is "");
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry1.equals(zipArchiveEntry0);
+    assertEquals((-1), zipArchiveEntry1.getMethod());
+}","/**
+ * Returns the compression method of this entry, or -1 if the
+ * compression method has not been specified.
+ *
+ * @return compression method
+ *
+ * @since 1.1
+ */"
+"public int getPlatform() {
+    return platform;
+}","public void test42166() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setComment("" but is "");
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry1.equals(zipArchiveEntry0);
+    assertEquals(0, zipArchiveEntry1.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"@Override
+public long getSize() {
+    return size;
+}","public void test42167() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setComment("" but is "");
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry1.equals(zipArchiveEntry0);
+    assertEquals((-1L), zipArchiveEntry1.getSize());
+}","/**
+ * Gets the uncompressed size of the entry data.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} may create
+ * entries that return {@link #SIZE_UNKNOWN SIZE_UNKNOWN} as long
+ * as the entry hasn't been read completely.</p>
+ *
+ * @return the entry size
+ */"
+"/* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+@Override
+public boolean equals(final Object obj) {
+    if (this == obj) {
+        return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+        return false;
+    }
+    final ZipArchiveEntry other = (ZipArchiveEntry) obj;
+    final String myName = getName();
+    final String otherName = other.getName();
+    if (myName == null) {
+        if (otherName != null) {
+            return false;
+        }
+    } else if (!myName.equals(otherName)) {
+        return false;
+    }
+    String myComment = getComment();
+    String otherComment = other.getComment();
+    if (myComment == null) {
+        myComment = """";
+    }
+    if (otherComment == null) {
+        otherComment = """";
+    }
+    return getTime() == other.getTime() && myComment.equals(otherComment) && getInternalAttributes() == other.getInternalAttributes() && getPlatform() == other.getPlatform() && getExternalAttributes() == other.getExternalAttributes() && getMethod() == other.getMethod() && getSize() == other.getSize() && getCrc() == other.getCrc() && getCompressedSize() == other.getCompressedSize() && Arrays.equals(getCentralDirectoryExtra(), other.getCentralDirectoryExtra()) && Arrays.equals(getLocalFileDataExtra(), other.getLocalFileDataExtra()) && gpb.equals(other.gpb);
+}","public void test42168() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setComment("" but is "");
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry1.equals(zipArchiveEntry0);
+    assertFalse(zipArchiveEntry0.equals((Object) zipArchiveEntry1));
+}",""
+"public long getExternalAttributes() {
+    return externalAttributes;
+}","public void test42169() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setComment("" but is "");
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry1.equals(zipArchiveEntry0);
+    assertEquals(0L, zipArchiveEntry1.getExternalAttributes());
+}","/**
+ * Retrieves the external file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the external file attributes
+ */"
+"/* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+@Override
+public boolean equals(final Object obj) {
+    if (this == obj) {
+        return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+        return false;
+    }
+    final ZipArchiveEntry other = (ZipArchiveEntry) obj;
+    final String myName = getName();
+    final String otherName = other.getName();
+    if (myName == null) {
+        if (otherName != null) {
+            return false;
+        }
+    } else if (!myName.equals(otherName)) {
+        return false;
+    }
+    String myComment = getComment();
+    String otherComment = other.getComment();
+    if (myComment == null) {
+        myComment = """";
+    }
+    if (otherComment == null) {
+        otherComment = """";
+    }
+    return getTime() == other.getTime() && myComment.equals(otherComment) && getInternalAttributes() == other.getInternalAttributes() && getPlatform() == other.getPlatform() && getExternalAttributes() == other.getExternalAttributes() && getMethod() == other.getMethod() && getSize() == other.getSize() && getCrc() == other.getCrc() && getCompressedSize() == other.getCompressedSize() && Arrays.equals(getCentralDirectoryExtra(), other.getCentralDirectoryExtra()) && Arrays.equals(getLocalFileDataExtra(), other.getLocalFileDataExtra()) && gpb.equals(other.gpb);
+}","public void test42170() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setComment("" but is "");
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry1.equals(zipArchiveEntry0);
+    assertFalse(boolean0);
+}",""
+"public int getInternalAttributes() {
+    return internalAttributes;
+}","public void test42171() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setComment("" but is "");
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry1.equals(zipArchiveEntry0);
+    assertEquals(0, zipArchiveEntry1.getInternalAttributes());
+}","/**
+ * Retrieves the internal file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the internal file attributes
+ */"
+"public int getInternalAttributes() {
+    return internalAttributes;
+}","public void test43172() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry();
+    zipArchiveEntry1.setInternalAttributes((-1));
+    boolean boolean0 = zipArchiveEntry1.equals(zipArchiveEntry0);
+    assertEquals((-1), zipArchiveEntry1.getInternalAttributes());
+}","/**
+ * Retrieves the internal file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the internal file attributes
+ */"
+"/* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+@Override
+public boolean equals(final Object obj) {
+    if (this == obj) {
+        return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+        return false;
+    }
+    final ZipArchiveEntry other = (ZipArchiveEntry) obj;
+    final String myName = getName();
+    final String otherName = other.getName();
+    if (myName == null) {
+        if (otherName != null) {
+            return false;
+        }
+    } else if (!myName.equals(otherName)) {
+        return false;
+    }
+    String myComment = getComment();
+    String otherComment = other.getComment();
+    if (myComment == null) {
+        myComment = """";
+    }
+    if (otherComment == null) {
+        otherComment = """";
+    }
+    return getTime() == other.getTime() && myComment.equals(otherComment) && getInternalAttributes() == other.getInternalAttributes() && getPlatform() == other.getPlatform() && getExternalAttributes() == other.getExternalAttributes() && getMethod() == other.getMethod() && getSize() == other.getSize() && getCrc() == other.getCrc() && getCompressedSize() == other.getCompressedSize() && Arrays.equals(getCentralDirectoryExtra(), other.getCentralDirectoryExtra()) && Arrays.equals(getLocalFileDataExtra(), other.getLocalFileDataExtra()) && gpb.equals(other.gpb);
+}","public void test43173() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry();
+    zipArchiveEntry1.setInternalAttributes((-1));
+    boolean boolean0 = zipArchiveEntry1.equals(zipArchiveEntry0);
+    assertFalse(boolean0);
+}",""
+"public int getPlatform() {
+    return platform;
+}","public void test44174() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry();
+    zipArchiveEntry1.setUnixMode(0);
+    zipArchiveEntry1.equals(zipArchiveEntry0);
+    assertEquals(3, zipArchiveEntry1.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"public long getExternalAttributes() {
+    return externalAttributes;
+}","public void test45175() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry();
+    assertEquals(0L, zipArchiveEntry1.getExternalAttributes());
+}","/**
+ * Retrieves the external file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the external file attributes
+ */"
+"/* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+@Override
+public boolean equals(final Object obj) {
+    if (this == obj) {
+        return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+        return false;
+    }
+    final ZipArchiveEntry other = (ZipArchiveEntry) obj;
+    final String myName = getName();
+    final String otherName = other.getName();
+    if (myName == null) {
+        if (otherName != null) {
+            return false;
+        }
+    } else if (!myName.equals(otherName)) {
+        return false;
+    }
+    String myComment = getComment();
+    String otherComment = other.getComment();
+    if (myComment == null) {
+        myComment = """";
+    }
+    if (otherComment == null) {
+        otherComment = """";
+    }
+    return getTime() == other.getTime() && myComment.equals(otherComment) && getInternalAttributes() == other.getInternalAttributes() && getPlatform() == other.getPlatform() && getExternalAttributes() == other.getExternalAttributes() && getMethod() == other.getMethod() && getSize() == other.getSize() && getCrc() == other.getCrc() && getCompressedSize() == other.getCompressedSize() && Arrays.equals(getCentralDirectoryExtra(), other.getCentralDirectoryExtra()) && Arrays.equals(getLocalFileDataExtra(), other.getLocalFileDataExtra()) && gpb.equals(other.gpb);
+}","public void test45176() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry();
+    zipArchiveEntry1.setExternalAttributes((-1));
+    boolean boolean0 = zipArchiveEntry1.equals(zipArchiveEntry0);
+    assertFalse(boolean0);
+}",""
+"@Override
+public int getMethod() {
+    return method;
+}","public void test46177() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry();
+    zipArchiveEntry1.setMethod(0);
+    boolean boolean0 = zipArchiveEntry0.equals(zipArchiveEntry1);
+    assertEquals(0, zipArchiveEntry1.getMethod());
+}","/**
+ * Returns the compression method of this entry, or -1 if the
+ * compression method has not been specified.
+ *
+ * @return compression method
+ *
+ * @since 1.1
+ */"
+"/* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+@Override
+public boolean equals(final Object obj) {
+    if (this == obj) {
+        return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+        return false;
+    }
+    final ZipArchiveEntry other = (ZipArchiveEntry) obj;
+    final String myName = getName();
+    final String otherName = other.getName();
+    if (myName == null) {
+        if (otherName != null) {
+            return false;
+        }
+    } else if (!myName.equals(otherName)) {
+        return false;
+    }
+    String myComment = getComment();
+    String otherComment = other.getComment();
+    if (myComment == null) {
+        myComment = """";
+    }
+    if (otherComment == null) {
+        otherComment = """";
+    }
+    return getTime() == other.getTime() && myComment.equals(otherComment) && getInternalAttributes() == other.getInternalAttributes() && getPlatform() == other.getPlatform() && getExternalAttributes() == other.getExternalAttributes() && getMethod() == other.getMethod() && getSize() == other.getSize() && getCrc() == other.getCrc() && getCompressedSize() == other.getCompressedSize() && Arrays.equals(getCentralDirectoryExtra(), other.getCentralDirectoryExtra()) && Arrays.equals(getLocalFileDataExtra(), other.getLocalFileDataExtra()) && gpb.equals(other.gpb);
+}","public void test46178() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry();
+    zipArchiveEntry1.setMethod(0);
+    boolean boolean0 = zipArchiveEntry0.equals(zipArchiveEntry1);
+    assertFalse(boolean0);
+}",""
+"@Override
+public long getSize() {
+    return size;
+}","public void test47179() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry();
+    zipArchiveEntry1.setSize(3);
+    boolean boolean0 = zipArchiveEntry1.equals(zipArchiveEntry0);
+    assertEquals(3L, zipArchiveEntry1.getSize());
+}","/**
+ * Gets the uncompressed size of the entry data.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} may create
+ * entries that return {@link #SIZE_UNKNOWN SIZE_UNKNOWN} as long
+ * as the entry hasn't been read completely.</p>
+ *
+ * @return the entry size
+ */"
+"/* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+@Override
+public boolean equals(final Object obj) {
+    if (this == obj) {
+        return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+        return false;
+    }
+    final ZipArchiveEntry other = (ZipArchiveEntry) obj;
+    final String myName = getName();
+    final String otherName = other.getName();
+    if (myName == null) {
+        if (otherName != null) {
+            return false;
+        }
+    } else if (!myName.equals(otherName)) {
+        return false;
+    }
+    String myComment = getComment();
+    String otherComment = other.getComment();
+    if (myComment == null) {
+        myComment = """";
+    }
+    if (otherComment == null) {
+        otherComment = """";
+    }
+    return getTime() == other.getTime() && myComment.equals(otherComment) && getInternalAttributes() == other.getInternalAttributes() && getPlatform() == other.getPlatform() && getExternalAttributes() == other.getExternalAttributes() && getMethod() == other.getMethod() && getSize() == other.getSize() && getCrc() == other.getCrc() && getCompressedSize() == other.getCompressedSize() && Arrays.equals(getCentralDirectoryExtra(), other.getCentralDirectoryExtra()) && Arrays.equals(getLocalFileDataExtra(), other.getLocalFileDataExtra()) && gpb.equals(other.gpb);
+}","public void test47180() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry();
+    zipArchiveEntry1.setSize(3);
+    boolean boolean0 = zipArchiveEntry1.equals(zipArchiveEntry0);
+    assertFalse(boolean0);
+}",""
+"public int getPlatform() {
+    return platform;
+}","public void test48182() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry();
+    zipArchiveEntry1.setCrc(3);
+    zipArchiveEntry1.equals(zipArchiveEntry0);
+    assertEquals(0, zipArchiveEntry0.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"public int getPlatform() {
+    return platform;
+}","public void test49184() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry();
+    zipArchiveEntry1.setCompressedSize(0);
+    zipArchiveEntry0.equals(zipArchiveEntry1);
+    assertEquals(0, zipArchiveEntry0.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"public int getPlatform() {
+    return platform;
+}","public void test50185() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    UnicodePathExtraField unicodePathExtraField0 = new UnicodePathExtraField();
+    zipArchiveEntry0.addExtraField(unicodePathExtraField0);
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry();
+    zipArchiveEntry1.equals(zipArchiveEntry0);
+    assertEquals(0, zipArchiveEntry1.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"public int getInternalAttributes() {
+    return internalAttributes;
+}","public void test50186() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    UnicodePathExtraField unicodePathExtraField0 = new UnicodePathExtraField();
+    zipArchiveEntry0.addExtraField(unicodePathExtraField0);
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry();
+    zipArchiveEntry1.equals(zipArchiveEntry0);
+    assertEquals(0, zipArchiveEntry1.getInternalAttributes());
+}","/**
+ * Retrieves the internal file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the internal file attributes
+ */"
+"public long getExternalAttributes() {
+    return externalAttributes;
+}","public void test50187() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    UnicodePathExtraField unicodePathExtraField0 = new UnicodePathExtraField();
+    zipArchiveEntry0.addExtraField(unicodePathExtraField0);
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry();
+    zipArchiveEntry1.equals(zipArchiveEntry0);
+    assertEquals(0L, zipArchiveEntry1.getExternalAttributes());
+}","/**
+ * Retrieves the external file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the external file attributes
+ */"
+"@Override
+public int getMethod() {
+    return method;
+}","public void test50188() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    UnicodePathExtraField unicodePathExtraField0 = new UnicodePathExtraField();
+    zipArchiveEntry0.addExtraField(unicodePathExtraField0);
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry();
+    zipArchiveEntry1.equals(zipArchiveEntry0);
+    assertEquals((-1), zipArchiveEntry1.getMethod());
+}","/**
+ * Returns the compression method of this entry, or -1 if the
+ * compression method has not been specified.
+ *
+ * @return compression method
+ *
+ * @since 1.1
+ */"
+"@Override
+public long getSize() {
+    return size;
+}","public void test51189() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setGeneralPurposeBit((GeneralPurposeBit) null);
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry1.equals(zipArchiveEntry0);
+    assertEquals((-1L), zipArchiveEntry1.getSize());
+}","/**
+ * Gets the uncompressed size of the entry data.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} may create
+ * entries that return {@link #SIZE_UNKNOWN SIZE_UNKNOWN} as long
+ * as the entry hasn't been read completely.</p>
+ *
+ * @return the entry size
+ */"
+"public int getInternalAttributes() {
+    return internalAttributes;
+}","public void test51190() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setGeneralPurposeBit((GeneralPurposeBit) null);
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry1.equals(zipArchiveEntry0);
+    assertEquals(0, zipArchiveEntry1.getInternalAttributes());
+}","/**
+ * Retrieves the internal file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the internal file attributes
+ */"
+"@Override
+public int getMethod() {
+    return method;
+}","public void test51191() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setGeneralPurposeBit((GeneralPurposeBit) null);
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry1.equals(zipArchiveEntry0);
+    assertEquals((-1), zipArchiveEntry1.getMethod());
+}","/**
+ * Returns the compression method of this entry, or -1 if the
+ * compression method has not been specified.
+ *
+ * @return compression method
+ *
+ * @since 1.1
+ */"
+"/* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+@Override
+public boolean equals(final Object obj) {
+    if (this == obj) {
+        return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+        return false;
+    }
+    final ZipArchiveEntry other = (ZipArchiveEntry) obj;
+    final String myName = getName();
+    final String otherName = other.getName();
+    if (myName == null) {
+        if (otherName != null) {
+            return false;
+        }
+    } else if (!myName.equals(otherName)) {
+        return false;
+    }
+    String myComment = getComment();
+    String otherComment = other.getComment();
+    if (myComment == null) {
+        myComment = """";
+    }
+    if (otherComment == null) {
+        otherComment = """";
+    }
+    return getTime() == other.getTime() && myComment.equals(otherComment) && getInternalAttributes() == other.getInternalAttributes() && getPlatform() == other.getPlatform() && getExternalAttributes() == other.getExternalAttributes() && getMethod() == other.getMethod() && getSize() == other.getSize() && getCrc() == other.getCrc() && getCompressedSize() == other.getCompressedSize() && Arrays.equals(getCentralDirectoryExtra(), other.getCentralDirectoryExtra()) && Arrays.equals(getLocalFileDataExtra(), other.getLocalFileDataExtra()) && gpb.equals(other.gpb);
+}","public void test51192() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setGeneralPurposeBit((GeneralPurposeBit) null);
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry1.equals(zipArchiveEntry0);
+    assertFalse(boolean0);
+}",""
+"public int getPlatform() {
+    return platform;
+}","public void test51193() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setGeneralPurposeBit((GeneralPurposeBit) null);
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry1.equals(zipArchiveEntry0);
+    assertEquals(0, zipArchiveEntry1.getPlatform());
+}","/**
+ * Platform specification to put into the &quot;version made
+ * by&quot; part of the central file header.
+ *
+ * @return PLATFORM_FAT unless {@link #setUnixMode setUnixMode}
+ * has been called, in which case PLATFORM_UNIX will be returned.
+ */"
+"public long getExternalAttributes() {
+    return externalAttributes;
+}","public void test51194() throws Throwable {
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry();
+    zipArchiveEntry0.setGeneralPurposeBit((GeneralPurposeBit) null);
+    ZipArchiveEntry zipArchiveEntry1 = new ZipArchiveEntry();
+    boolean boolean0 = zipArchiveEntry1.equals(zipArchiveEntry0);
+    assertEquals(0L, zipArchiveEntry1.getExternalAttributes());
+}","/**
+ * Retrieves the external file attributes.
+ *
+ * <p><b>Note</b>: {@link ZipArchiveInputStream} is unable to fill
+ * this field, you must use {@link ZipFile} if you want to read
+ * entries using this attribute.</p>
+ *
+ * @return the external file attributes
+ */"

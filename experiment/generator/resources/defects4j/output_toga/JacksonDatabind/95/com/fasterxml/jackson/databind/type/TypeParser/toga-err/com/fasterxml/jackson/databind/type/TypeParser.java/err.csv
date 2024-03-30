@@ -1,0 +1,23 @@
+com.fasterxml.jackson.databind.type.TypeParser,@Test(timeout = 4000)
+public void test022() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    ClassLoader classLoader0 = ClassLoader.getSystemClassLoader();
+    TypeFactory typeFactory1 = typeFactory0.withClassLoader(classLoader0);
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.fasterxml.jackson.databind.type.TypeParser,@Test(timeout = 4000)
+public void test044() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    TypeParser typeParser0 = new TypeParser(typeFactory0);
+    JavaType javaType0 = typeParser0.parse(""com.fasterxml.jackson.databind.type.TypeParser"");
+    javaType0.isConcrete();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.fasterxml.jackson.databind.type.TypeParser,@Test(timeout = 4000)
+public void test088() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    TypeParser.MyTokenizer typeParser_MyTokenizer0 = new TypeParser.MyTokenizer("">"");
+    typeParser_MyTokenizer0._pushbackToken = "">"";
+    typeParser_MyTokenizer0._pushbackToken = ""com.fasterxml.jackson.databind.type.TypeParser"";
+    TypeParser typeParser0 = new TypeParser(typeFactory0);
+    typeParser0.parseTypes(typeParser_MyTokenizer0);
+    typeParser_MyTokenizer0.getRemainingInput();
+},ERROR,java.nio.file.NoSuchFileException,/home/star_usit_group/tratto/experiment/generator/resources/defects4j/temp/JacksonDatabind_95b/src/main/java/com/fasterxml/jackson/databind/type/TypeParser/MyTokenizer.java

@@ -1,0 +1,382 @@
+focal_method,test_prefix,docstring
+"void createTempBuffer() {
+    Token.reset(dataBuffer);
+}","public void test000() throws Throwable {
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Tokeniser tokeniser0 = new Tokeniser((CharacterReader) null, parseErrorList0);
+    tokeniser0.createTempBuffer();
+}",""
+"void emitDoctypePending() {
+    emit(doctypePending);
+}","public void test011() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""kVab&Ox"");
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Tokeniser tokeniser0 = new Tokeniser(characterReader0, parseErrorList0);
+    tokeniser0.emitDoctypePending();
+}",""
+"void acknowledgeSelfClosingFlag() {
+    selfClosingFlagAcknowledged = true;
+}","public void test022() throws Throwable {
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Tokeniser tokeniser0 = new Tokeniser((CharacterReader) null, parseErrorList0);
+    tokeniser0.acknowledgeSelfClosingFlag();
+}",""
+"void createCommentPending() {
+    commentPending.reset();
+}","public void test033() throws Throwable {
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    CharacterReader characterReader0 = new CharacterReader(""numeric reference with no numerals"");
+    Tokeniser tokeniser0 = new Tokeniser(characterReader0, parseErrorList0);
+    tokeniser0.createCommentPending();
+}",""
+"public int pos() {
+    return readerPos + bufPos;
+}","public void test044() throws Throwable {
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    CharacterReader characterReader0 = new CharacterReader(""W<PM!,iwmAb;P>/2${["");
+    Tokeniser tokeniser0 = new Tokeniser(characterReader0, parseErrorList0);
+    Token token0 = tokeniser0.read();
+    assertEquals(14, characterReader0.pos());
+}","/**
+ * Gets the current cursor position in the content.
+ * @return current position
+ */"
+"Token read() {
+    if (!selfClosingFlagAcknowledged) {
+        error(""Self closing flag not acknowledged"");
+        selfClosingFlagAcknowledged = true;
+    }
+    while (!isEmitPending) state.read(this, reader);
+    // if emit is pending, a non-character token was found: return any chars in buffer, and leave token for next read:
+    if (charsBuilder.length() > 0) {
+        String str = charsBuilder.toString();
+        charsBuilder.delete(0, charsBuilder.length());
+        charsString = null;
+        return charPending.data(str);
+    } else if (charsString != null) {
+        Token token = charPending.data(charsString);
+        charsString = null;
+        return token;
+    } else {
+        isEmitPending = false;
+        return emitPending;
+    }
+}","public void test056() throws Throwable {
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    CharacterReader characterReader0 = new CharacterReader(""#hrB&;CEfG91dq-"");
+    Tokeniser tokeniser0 = new Tokeniser(characterReader0, parseErrorList0);
+    tokeniser0.read();
+}",""
+"void emitCommentPending() {
+    emit(commentPending);
+}","public void test067() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""kVab&Ox"");
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Tokeniser tokeniser0 = new Tokeniser(characterReader0, parseErrorList0);
+    tokeniser0.emitCommentPending();
+}",""
+"boolean currentNodeInHtmlNS() {
+    // todo: implement namespaces correctly
+    return true;
+    // Element currentNode = currentNode();
+    // return currentNode != null && currentNode.namespace().equals(""HTML"");
+}","public void test078() throws Throwable {
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Tokeniser tokeniser0 = new Tokeniser((CharacterReader) null, parseErrorList0);
+    boolean boolean0 = tokeniser0.currentNodeInHtmlNS();
+    assertTrue(boolean0);
+}",""
+"void createDoctypePending() {
+    doctypePending.reset();
+}","public void test089() throws Throwable {
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Tokeniser tokeniser0 = new Tokeniser((CharacterReader) null, parseErrorList0);
+    tokeniser0.createDoctypePending();
+}",""
+"TokeniserState getState() {
+    return state;
+}","public void test0910() throws Throwable {
+    StringReader stringReader0 = new StringReader(""kVab&Ox"");
+    CharacterReader characterReader0 = new CharacterReader(stringReader0);
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Tokeniser tokeniser0 = new Tokeniser(characterReader0, parseErrorList0);
+    tokeniser0.getState();
+}",""
+"void emit(char[] chars) {
+    emit(String.valueOf(chars));
+}","public void test1011() throws Throwable {
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    CharacterReader characterReader0 = new CharacterReader(""KD`%\""&#579gRO"");
+    Tokeniser tokeniser0 = new Tokeniser(characterReader0, parseErrorList0);
+    char[] charArray0 = new char[0];
+    tokeniser0.emit(charArray0);
+    assertArrayEquals(new char[] {}, charArray0);
+}",""
+"Token read() {
+    if (!selfClosingFlagAcknowledged) {
+        error(""Self closing flag not acknowledged"");
+        selfClosingFlagAcknowledged = true;
+    }
+    while (!isEmitPending) state.read(this, reader);
+    // if emit is pending, a non-character token was found: return any chars in buffer, and leave token for next read:
+    if (charsBuilder.length() > 0) {
+        String str = charsBuilder.toString();
+        charsBuilder.delete(0, charsBuilder.length());
+        charsString = null;
+        return charPending.data(str);
+    } else if (charsString != null) {
+        Token token = charPending.data(charsString);
+        charsString = null;
+        return token;
+    } else {
+        isEmitPending = false;
+        return emitPending;
+    }
+}","public void test1520() throws Throwable {
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    CharacterReader characterReader0 = new CharacterReader(""[&gg;"");
+    Tokeniser tokeniser0 = new Tokeniser(characterReader0, parseErrorList0);
+    TokeniserState tokeniserState0 = TokeniserState.AttributeValue_unquoted;
+    tokeniser0.advanceTransition(tokeniserState0);
+    // Undeclared exception!
+    try {
+        tokeniser0.read();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.TokeniserState$40"", e);
+    }
+}",""
+"int[] consumeCharacterReference(Character additionalAllowedCharacter, boolean inAttribute) {
+    if (reader.isEmpty())
+        return null;
+    if (additionalAllowedCharacter != null && additionalAllowedCharacter == reader.current())
+        return null;
+    if (reader.matchesAnySorted(notCharRefCharsSorted))
+        return null;
+    final int[] codeRef = codepointHolder;
+    reader.mark();
+    if (reader.matchConsume(""#"")) {
+        // numbered
+        boolean isHexMode = reader.matchConsumeIgnoreCase(""X"");
+        String numRef = isHexMode ? reader.consumeHexSequence() : reader.consumeDigitSequence();
+        if (numRef.length() == 0) {
+            // didn't match anything
+            characterReferenceError(""numeric reference with no numerals"");
+            reader.rewindToMark();
+            return null;
+        }
+        if (!reader.matchConsume("";""))
+            // missing semi
+            characterReferenceError(""missing semicolon"");
+        int charval = -1;
+        try {
+            int base = isHexMode ? 16 : 10;
+            charval = Integer.valueOf(numRef, base);
+        } catch (NumberFormatException ignored) {
+        }
+        // skip
+        if (charval == -1 || (charval >= 0xD800 && charval <= 0xDFFF) || charval > 0x10FFFF) {
+            characterReferenceError(""character outside of valid range"");
+            codeRef[0] = replacementChar;
+            return codeRef;
+        } else {
+            // todo: implement number replacement table
+            // todo: check for extra illegal unicode points as parse errors
+            codeRef[0] = charval;
+            return codeRef;
+        }
+    } else {
+        // named
+        // get as many letters as possible, and look for matching entities.
+        String nameRef = reader.consumeLetterThenDigitSequence();
+        boolean looksLegit = reader.matches(';');
+        // found if a base named entity without a ;, or an extended entity with the ;.
+        boolean found = (Entities.isBaseNamedEntity(nameRef) || (Entities.isNamedEntity(nameRef) && looksLegit));
+        if (!found) {
+            reader.rewindToMark();
+            if (// named with semicolon
+            looksLegit)
+                characterReferenceError(String.format(""invalid named referenece '%s'"", nameRef));
+            return null;
+        }
+        if (inAttribute && (reader.matchesLetter() || reader.matchesDigit() || reader.matchesAny('=', '-', '_'))) {
+            // don't want that to match
+            reader.rewindToMark();
+            return null;
+        }
+        if (!reader.matchConsume("";""))
+            // missing semi
+            characterReferenceError(""missing semicolon"");
+        int numChars = Entities.codepointsForName(nameRef, multipointHolder);
+        if (numChars == 1) {
+            codeRef[0] = multipointHolder[0];
+            return codeRef;
+        } else if (numChars == 2) {
+            return multipointHolder;
+        } else {
+            Validate.fail(""Unexpected characters returned for "" + nameRef);
+            return multipointHolder;
+        }
+    }
+}","public void test1621() throws Throwable {
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    CharacterReader characterReader0 = new CharacterReader(""K\""&#3MgPFO"");
+    Tokeniser tokeniser0 = new Tokeniser(characterReader0, parseErrorList0);
+    Character character0 = new Character('K');
+    int[] intArray0 = tokeniser0.consumeCharacterReference(character0, false);
+    assertNull(intArray0);
+}",""
+"public boolean isEmpty() {
+    return bufPos >= bufLength;
+}","public void test2129() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""Ny,&gt-"");
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Tokeniser tokeniser0 = new Tokeniser(characterReader0, parseErrorList0);
+    String string0 = tokeniser0.unescapeEntities(true);
+    assertTrue(characterReader0.isEmpty());
+}","/**
+ * Tests if all the content has been read.
+ * @return true if nothing left to read.
+ */"
+"String unescapeEntities(boolean inAttribute) {
+    StringBuilder builder = new StringBuilder();
+    while (!reader.isEmpty()) {
+        builder.append(reader.consumeTo('&'));
+        if (reader.matches('&')) {
+            reader.consume();
+            int[] c = consumeCharacterReference(null, inAttribute);
+            if (c == null || c.length == 0)
+                builder.append('&');
+            else {
+                builder.appendCodePoint(c[0]);
+                if (c.length == 2)
+                    builder.appendCodePoint(c[1]);
+            }
+        }
+    }
+    return builder.toString();
+}","public void test2130() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""Ny,&gt-"");
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Tokeniser tokeniser0 = new Tokeniser(characterReader0, parseErrorList0);
+    String string0 = tokeniser0.unescapeEntities(true);
+    assertEquals(""Ny,&gt-"", string0);
+}","/**
+ * Utility method to consume reader and unescape entities found within.
+ * @param inAttribute
+ * @return unescaped string from reader
+ */"
+"Token.Tag createTagPending(boolean start) {
+    tagPending = start ? startPending.reset() : endPending.reset();
+    return tagPending;
+}","public void test2535() throws Throwable {
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Tokeniser tokeniser0 = new Tokeniser((CharacterReader) null, parseErrorList0);
+    Token.Tag token_Tag0 = tokeniser0.createTagPending(false);
+    assertNotNull(token_Tag0);
+}",""
+"boolean isAppropriateEndTagToken() {
+    return lastStartTag != null && tagPending.name().equalsIgnoreCase(lastStartTag);
+}","public void test2636() throws Throwable {
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Tokeniser tokeniser0 = new Tokeniser((CharacterReader) null, parseErrorList0);
+    boolean boolean0 = tokeniser0.isAppropriateEndTagToken();
+    assertFalse(boolean0);
+}",""
+"boolean isAppropriateEndTagToken() {
+    return lastStartTag != null && tagPending.name().equalsIgnoreCase(lastStartTag);
+}","public void test2737() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""kVab&Ox"");
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Tokeniser tokeniser0 = new Tokeniser(characterReader0, parseErrorList0);
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    Attributes attributes0 = new Attributes();
+    tokeniser0.tagPending = (Token.Tag) token_StartTag0;
+    token_StartTag0.nameAttr(""kVab&Ox"", attributes0);
+    tokeniser0.emit(token_StartTag0);
+    token_StartTag0.appendTagName(""kVab&Ox"");
+    boolean boolean0 = tokeniser0.isAppropriateEndTagToken();
+    assertFalse(boolean0);
+}",""
+"boolean isAppropriateEndTagToken() {
+    return lastStartTag != null && tagPending.name().equalsIgnoreCase(lastStartTag);
+}","public void test2838() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""kVab&Ox"");
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Tokeniser tokeniser0 = new Tokeniser(characterReader0, parseErrorList0);
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    Attributes attributes0 = new Attributes();
+    tokeniser0.tagPending = (Token.Tag) token_StartTag0;
+    token_StartTag0.nameAttr(""kVab&Ox"", attributes0);
+    tokeniser0.emit(token_StartTag0);
+    boolean boolean0 = tokeniser0.isAppropriateEndTagToken();
+    assertTrue(boolean0);
+}",""
+"String appropriateEndTagName() {
+    if (lastStartTag == null)
+        return null;
+    return lastStartTag;
+}","public void test2939() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""kVab&Ox"");
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    Tokeniser tokeniser0 = new Tokeniser(characterReader0, parseErrorList0);
+    Token.StartTag token_StartTag0 = tokeniser0.startPending;
+    Attributes attributes0 = new Attributes();
+    token_StartTag0.nameAttr(""kVab&Ox"", attributes0);
+    tokeniser0.emit(token_StartTag0);
+    String string0 = tokeniser0.appropriateEndTagName();
+    assertEquals(""kVab&Ox"", string0);
+}",""
+"String appropriateEndTagName() {
+    if (lastStartTag == null)
+        return null;
+    return lastStartTag;
+}","public void test3040() throws Throwable {
+    ParseErrorList parseErrorList0 = ParseErrorList.tracking(5);
+    Tokeniser tokeniser0 = new Tokeniser((CharacterReader) null, parseErrorList0);
+    String string0 = tokeniser0.appropriateEndTagName();
+    assertNull(string0);
+}",""
+"public boolean isEmpty() {
+    return bufPos >= bufLength;
+}","public void test3651() throws Throwable {
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    CharacterReader characterReader0 = new CharacterReader(""&gt;"");
+    Tokeniser tokeniser0 = new Tokeniser(characterReader0, parseErrorList0);
+    String string0 = tokeniser0.unescapeEntities(true);
+    assertTrue(characterReader0.isEmpty());
+}","/**
+ * Tests if all the content has been read.
+ * @return true if nothing left to read.
+ */"
+"String unescapeEntities(boolean inAttribute) {
+    StringBuilder builder = new StringBuilder();
+    while (!reader.isEmpty()) {
+        builder.append(reader.consumeTo('&'));
+        if (reader.matches('&')) {
+            reader.consume();
+            int[] c = consumeCharacterReference(null, inAttribute);
+            if (c == null || c.length == 0)
+                builder.append('&');
+            else {
+                builder.appendCodePoint(c[0]);
+                if (c.length == 2)
+                    builder.appendCodePoint(c[1]);
+            }
+        }
+    }
+    return builder.toString();
+}","public void test3652() throws Throwable {
+    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();
+    CharacterReader characterReader0 = new CharacterReader(""&gt;"");
+    Tokeniser tokeniser0 = new Tokeniser(characterReader0, parseErrorList0);
+    String string0 = tokeniser0.unescapeEntities(true);
+    assertEquals("">"", string0);
+}","/**
+ * Utility method to consume reader and unescape entities found within.
+ * @param inAttribute
+ * @return unescaped string from reader
+ */"

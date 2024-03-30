@@ -1,0 +1,66 @@
+com.google.javascript.jscomp.FunctionTypeBuilder,@Test(timeout = 4000)
+public void test011() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode("""");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder((String) null, compiler0, node0, """", (Scope) null);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    JSType jSType0 = jSTypeRegistry0.createNamedType(""// Input %num%"", (String) null, 8, 23);
+    JSType[] jSTypeArray0 = new JSType[1];
+    jSTypeArray0[0] = jSType0;
+    Node node1 = jSTypeRegistry0.createOptionalParameters(jSTypeArray0);
+    functionTypeBuilder0.inferParameterTypes(node1, (JSDocInfo) null);
+    compiler0.getWarningCount();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.google.javascript.jscomp.FunctionTypeBuilder,@Test(timeout = 4000)
+public void test033() throws Throwable {
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""a! ;C/!o"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""a! ;C/!o"", compiler0, node0, ""a! ;C/!o"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferParameterTypes(node0, jSDocInfo0);
+    FunctionType functionType0 = functionTypeBuilder1.buildAndRegister();
+    functionTypeBuilder1.inferFromOverriddenFunction(functionType0, (Node) null);
+    functionType0.hasCachedValues();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.google.javascript.jscomp.FunctionTypeBuilder,@Test(timeout = 4000)
+public void test088() throws Throwable {
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""+T`LhD"");
+    Scope scope0 = new Scope(node0, compiler0);
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""+T`LhD"", compiler0, node0, ""+T`LhD"", scope0);
+    functionTypeBuilder0.inferInheritance(jSDocInfo0);
+    compiler0.getWarningCount();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.google.javascript.jscomp.FunctionTypeBuilder,@Test(timeout = 4000)
+public void test1010() throws Throwable {
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""6! ;C/!o"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""6! ;C/!o"", compiler0, node0, ""6! ;C/!o"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferParameterTypes(node0, jSDocInfo0);
+    FunctionType functionType0 = functionTypeBuilder0.buildAndRegister();
+    functionTypeBuilder1.inferThisType(jSDocInfo0, functionType0);
+    functionType0.hasCachedValues();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.google.javascript.jscomp.FunctionTypeBuilder,@Test(timeout = 4000)
+public void test1111() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode("" j C"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder("" j C"", compiler0, node0, "" j C"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferParameterTypes(node0, (JSDocInfo) null);
+    FunctionType functionType0 = functionTypeBuilder0.buildAndRegister();
+    functionTypeBuilder1.inferThisType((JSDocInfo) null, functionType0);
+    functionType0.hasCachedValues();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.google.javascript.jscomp.FunctionTypeBuilder,@Test(timeout = 4000)
+public void test1717() throws Throwable {
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode("""", """");
+    Node node1 = Node.newString(42, """", 33, 14);
+    node0.addChildToFront(node1);
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder("""", compiler0, node1, """", (Scope) null);
+    functionTypeBuilder0.inferParameterTypes(node0, jSDocInfo0);
+    compiler0.getWarningCount();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.

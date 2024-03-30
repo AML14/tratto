@@ -1,0 +1,437 @@
+focal_method,test_prefix,docstring
+"@Override
+public int translate(CharSequence input, int index, Writer out) throws IOException {
+    int max = longest;
+    if (index + longest > input.length()) {
+        max = input.length() - index;
+    }
+    // descend so as to get a greedy algorithm
+    for (int i = max; i >= shortest; i--) {
+        CharSequence subSeq = input.subSequence(index, index + i);
+        CharSequence result = lookupMap.get(subSeq);
+        if (result != null) {
+            out.write(result.toString());
+            return i;
+        }
+    }
+    return 0;
+}","public void test000() throws Throwable {
+    CharSequence[][] charSequenceArray0 = new CharSequence[0][3];
+    LookupTranslator lookupTranslator0 = new LookupTranslator(charSequenceArray0);
+    CharBuffer charBuffer0 = CharBuffer.allocate(0);
+    StringWriter stringWriter0 = new StringWriter();
+    int int0 = lookupTranslator0.translate((CharSequence) charBuffer0, (-999), (Writer) stringWriter0);
+    assertEquals(0, int0);
+}","/**
+ * {@inheritDoc}
+ */"
+"public final String translate(CharSequence input) {
+    if (input == null) {
+        return null;
+    }
+    try {
+        StringWriter writer = new StringWriter(input.length() * 2);
+        translate(input, writer);
+        return writer.toString();
+    } catch (IOException ioe) {
+        // this should never ever happen while writing to a StringWriter
+        throw new RuntimeException(ioe);
+    }
+}","public void test022() throws Throwable {
+    NumericEntityEscaper numericEntityEscaper0 = NumericEntityEscaper.outsideOf((-1886), (-1057));
+    char[] charArray0 = new char[2];
+    CharBuffer charBuffer0 = CharBuffer.wrap(charArray0);
+    CharBuffer charBuffer1 = CharBuffer.allocate(2915);
+    charBuffer0.read(charBuffer1);
+    String string0 = numericEntityEscaper0.translate((CharSequence) charBuffer0);
+    assertEquals("""", string0);
+}","/**
+ * Helper for non-Writer usage.
+ * @param input CharSequence to be translated
+ * @return String output of translation
+ */"
+"public final CharSequenceTranslator with(CharSequenceTranslator... translators) {
+    CharSequenceTranslator[] newArray = new CharSequenceTranslator[translators.length + 1];
+    newArray[0] = this;
+    System.arraycopy(translators, 0, newArray, 1, translators.length);
+    return new AggregateTranslator(newArray);
+}","public void test033() throws Throwable {
+    OctalUnescaper octalUnescaper0 = new OctalUnescaper();
+    // Undeclared exception!
+    try {
+        octalUnescaper0.with((CharSequenceTranslator[]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang3.text.translate.CharSequenceTranslator"", e);
+    }
+}","/**
+ * Helper method to create a merger of this translator with another set of
+ * translators. Useful in customizing the standard functionality.
+ *
+ * @param translators CharSequenceTranslator array of translators to merge with this one
+ * @return CharSequenceTranslator merging this translator with the others
+ */"
+"public final void translate(CharSequence input, Writer out) throws IOException {
+    if (out == null) {
+        throw new IllegalArgumentException(""The Writer must not be null"");
+    }
+    if (input == null) {
+        return;
+    }
+    int pos = 0;
+    int len = Character.codePointCount(input, 0, input.length());
+    while (pos < len) {
+        int consumed = translate(input, pos, out);
+        if (consumed == 0) {
+            char[] c = Character.toChars(Character.codePointAt(input, pos));
+            out.write(c);
+        } else {
+            //          // contract with translators is that they have to understand codepoints
+            //          // and they just took care of a surrogate pair
+            for (int pt = 0; pt < consumed; pt++) {
+                if (pos < len - 2) {
+                    pos += Character.charCount(Character.codePointAt(input, pos));
+                } else {
+                    pos++;
+                }
+            }
+            pos--;
+        }
+        pos++;
+    }
+}","public void test044() throws Throwable {
+    NumericEntityEscaper numericEntityEscaper0 = NumericEntityEscaper.outsideOf(1, 1);
+    CharBuffer charBuffer0 = CharBuffer.allocate(1530);
+    String string0 = numericEntityEscaper0.translate((CharSequence) charBuffer0);
+    StringWriter stringWriter0 = new StringWriter(42);
+    // Undeclared exception!
+    numericEntityEscaper0.translate((CharSequence) string0, (Writer) stringWriter0);
+}","/**
+ * Translate an input onto a Writer. This is intentionally final as its algorithm is
+ * tightly coupled with the abstract method of this class.
+ *
+ * @param input CharSequence that is being translated
+ * @param out Writer to translate the text to
+ * @throws IOException if and only if the Writer produces an IOException
+ */"
+"public final void translate(CharSequence input, Writer out) throws IOException {
+    if (out == null) {
+        throw new IllegalArgumentException(""The Writer must not be null"");
+    }
+    if (input == null) {
+        return;
+    }
+    int pos = 0;
+    int len = Character.codePointCount(input, 0, input.length());
+    while (pos < len) {
+        int consumed = translate(input, pos, out);
+        if (consumed == 0) {
+            char[] c = Character.toChars(Character.codePointAt(input, pos));
+            out.write(c);
+        } else {
+            //          // contract with translators is that they have to understand codepoints
+            //          // and they just took care of a surrogate pair
+            for (int pt = 0; pt < consumed; pt++) {
+                if (pos < len - 2) {
+                    pos += Character.charCount(Character.codePointAt(input, pos));
+                } else {
+                    pos++;
+                }
+            }
+            pos--;
+        }
+        pos++;
+    }
+}","public void test055() throws Throwable {
+    CharSequenceTranslator[] charSequenceTranslatorArray0 = new CharSequenceTranslator[3];
+    AggregateTranslator aggregateTranslator0 = new AggregateTranslator(charSequenceTranslatorArray0);
+    StringWriter stringWriter0 = new StringWriter(43);
+    // Undeclared exception!
+    try {
+        aggregateTranslator0.translate((CharSequence) ""2B"", (Writer) stringWriter0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * Translate an input onto a Writer. This is intentionally final as its algorithm is
+ * tightly coupled with the abstract method of this class.
+ *
+ * @param input CharSequence that is being translated
+ * @param out Writer to translate the text to
+ * @throws IOException if and only if the Writer produces an IOException
+ */"
+"public final void translate(CharSequence input, Writer out) throws IOException {
+    if (out == null) {
+        throw new IllegalArgumentException(""The Writer must not be null"");
+    }
+    if (input == null) {
+        return;
+    }
+    int pos = 0;
+    int len = Character.codePointCount(input, 0, input.length());
+    while (pos < len) {
+        int consumed = translate(input, pos, out);
+        if (consumed == 0) {
+            char[] c = Character.toChars(Character.codePointAt(input, pos));
+            out.write(c);
+        } else {
+            //          // contract with translators is that they have to understand codepoints
+            //          // and they just took care of a surrogate pair
+            for (int pt = 0; pt < consumed; pt++) {
+                if (pos < len - 2) {
+                    pos += Character.charCount(Character.codePointAt(input, pos));
+                } else {
+                    pos++;
+                }
+            }
+            pos--;
+        }
+        pos++;
+    }
+}","public void test066() throws Throwable {
+    NumericEntityEscaper numericEntityEscaper0 = NumericEntityEscaper.outsideOf((-478), (-478));
+    CharBuffer charBuffer0 = CharBuffer.allocate(65);
+    CharBuffer charBuffer1 = CharBuffer.wrap((CharSequence) charBuffer0);
+    charBuffer0.compact();
+    CharSequenceTranslator[] charSequenceTranslatorArray0 = new CharSequenceTranslator[6];
+    CharSequenceTranslator charSequenceTranslator0 = numericEntityEscaper0.with(charSequenceTranslatorArray0);
+    StringWriter stringWriter0 = new StringWriter();
+    // Undeclared exception!
+    try {
+        charSequenceTranslator0.translate((CharSequence) charBuffer1, (Writer) stringWriter0);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.nio.Buffer"", e);
+    }
+}","/**
+ * Translate an input onto a Writer. This is intentionally final as its algorithm is
+ * tightly coupled with the abstract method of this class.
+ *
+ * @param input CharSequence that is being translated
+ * @param out Writer to translate the text to
+ * @throws IOException if and only if the Writer produces an IOException
+ */"
+"public abstract int translate(CharSequence input, int index, Writer out) throws IOException;","public void test077() throws Throwable {
+    CharSequenceTranslator[] charSequenceTranslatorArray0 = new CharSequenceTranslator[3];
+    NumericEntityEscaper numericEntityEscaper0 = NumericEntityEscaper.above(43);
+    charSequenceTranslatorArray0[2] = (CharSequenceTranslator) numericEntityEscaper0;
+    StringWriter stringWriter0 = new StringWriter(43);
+    // Undeclared exception!
+    try {
+        charSequenceTranslatorArray0[2].translate((CharSequence) ""2B"", 43, (Writer) stringWriter0);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}","/**
+ * Translate a set of codepoints, represented by an int index into a CharSequence,
+ * into another set of codepoints. The number of codepoints consumed must be returned,
+ * and the only IOExceptions thrown must be from interacting with the Writer so that
+ * the top level API may reliable ignore StringWriter IOExceptions.
+ *
+ * @param input CharSequence that is being translated
+ * @param index int representing the current point of translation
+ * @param out Writer to translate the text to
+ * @return int count of codepoints consumed
+ * @throws IOException if and only if the Writer produces an IOException
+ */"
+"@Override
+public final int translate(CharSequence input, int index, Writer out) throws IOException {
+    int codepoint = Character.codePointAt(input, index);
+    boolean consumed = translate(codepoint, out);
+    if (consumed) {
+        return 1;
+    } else {
+        return 0;
+    }
+}","public void test088() throws Throwable {
+    NumericEntityEscaper numericEntityEscaper0 = NumericEntityEscaper.above(428);
+    // Undeclared exception!
+    try {
+        numericEntityEscaper0.translate((CharSequence) null, 0, (Writer) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.lang.Character"", e);
+    }
+}","/**
+ * Implementation of translate that maps onto the abstract translate(int, Writer) method.
+ * {@inheritDoc}
+ */"
+"@Override
+public final int translate(CharSequence input, int index, Writer out) throws IOException {
+    int codepoint = Character.codePointAt(input, index);
+    boolean consumed = translate(codepoint, out);
+    if (consumed) {
+        return 1;
+    } else {
+        return 0;
+    }
+}","public void test099() throws Throwable {
+    UnicodeEscaper unicodeEscaper0 = UnicodeEscaper.between(0, 0);
+    char[] charArray0 = new char[3];
+    CharBuffer charBuffer0 = CharBuffer.wrap(charArray0, 0, 0);
+    // Undeclared exception!
+    try {
+        unicodeEscaper0.translate((CharSequence) charBuffer0, 0, (Writer) null);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.nio.Buffer"", e);
+    }
+}","/**
+ * Implementation of translate that maps onto the abstract translate(int, Writer) method.
+ * {@inheritDoc}
+ */"
+"public final String translate(CharSequence input) {
+    if (input == null) {
+        return null;
+    }
+    try {
+        StringWriter writer = new StringWriter(input.length() * 2);
+        translate(input, writer);
+        return writer.toString();
+    } catch (IOException ioe) {
+        // this should never ever happen while writing to a StringWriter
+        throw new RuntimeException(ioe);
+    }
+}","public void test1010() throws Throwable {
+    AggregateTranslator aggregateTranslator0 = new AggregateTranslator((CharSequenceTranslator[]) null);
+    CharBuffer charBuffer0 = CharBuffer.allocate(852);
+    // Undeclared exception!
+    try {
+        aggregateTranslator0.translate((CharSequence) charBuffer0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * Helper for non-Writer usage.
+ * @param input CharSequence to be translated
+ * @return String output of translation
+ */"
+"public final String translate(CharSequence input) {
+    if (input == null) {
+        return null;
+    }
+    try {
+        StringWriter writer = new StringWriter(input.length() * 2);
+        translate(input, writer);
+        return writer.toString();
+    } catch (IOException ioe) {
+        // this should never ever happen while writing to a StringWriter
+        throw new RuntimeException(ioe);
+    }
+}","public void test1212() throws Throwable {
+    UnicodeEscaper unicodeEscaper0 = UnicodeEscaper.outsideOf(3457, 3457);
+    CharSequenceTranslator[] charSequenceTranslatorArray0 = new CharSequenceTranslator[1];
+    CharSequenceTranslator charSequenceTranslator0 = unicodeEscaper0.with(charSequenceTranslatorArray0);
+    CharBuffer charBuffer0 = CharBuffer.allocate(3457);
+    StringWriter stringWriter0 = new StringWriter(3457);
+    charSequenceTranslator0.translate((CharSequence) charBuffer0, (Writer) stringWriter0);
+    NumericEntityUnescaper.OPTION[] numericEntityUnescaper_OPTIONArray0 = new NumericEntityUnescaper.OPTION[0];
+    NumericEntityUnescaper numericEntityUnescaper0 = new NumericEntityUnescaper(numericEntityUnescaper_OPTIONArray0);
+    String string0 = numericEntityUnescaper0.translate((CharSequence) charBuffer0);
+    assertNotNull(string0);
+}","/**
+ * Helper for non-Writer usage.
+ * @param input CharSequence to be translated
+ * @return String output of translation
+ */"
+"public final String translate(CharSequence input) {
+    if (input == null) {
+        return null;
+    }
+    try {
+        StringWriter writer = new StringWriter(input.length() * 2);
+        translate(input, writer);
+        return writer.toString();
+    } catch (IOException ioe) {
+        // this should never ever happen while writing to a StringWriter
+        throw new RuntimeException(ioe);
+    }
+}","public void test1414() throws Throwable {
+    OctalUnescaper octalUnescaper0 = new OctalUnescaper();
+    String string0 = octalUnescaper0.translate((CharSequence) null);
+    assertNull(string0);
+}","/**
+ * Helper for non-Writer usage.
+ * @param input CharSequence to be translated
+ * @return String output of translation
+ */"
+"public final void translate(CharSequence input, Writer out) throws IOException {
+    if (out == null) {
+        throw new IllegalArgumentException(""The Writer must not be null"");
+    }
+    if (input == null) {
+        return;
+    }
+    int pos = 0;
+    int len = Character.codePointCount(input, 0, input.length());
+    while (pos < len) {
+        int consumed = translate(input, pos, out);
+        if (consumed == 0) {
+            char[] c = Character.toChars(Character.codePointAt(input, pos));
+            out.write(c);
+        } else {
+            //          // contract with translators is that they have to understand codepoints
+            //          // and they just took care of a surrogate pair
+            for (int pt = 0; pt < consumed; pt++) {
+                if (pos < len - 2) {
+                    pos += Character.charCount(Character.codePointAt(input, pos));
+                } else {
+                    pos++;
+                }
+            }
+            pos--;
+        }
+        pos++;
+    }
+}","public void test1515() throws Throwable {
+    OctalUnescaper octalUnescaper0 = new OctalUnescaper();
+    CharSequenceTranslator[] charSequenceTranslatorArray0 = new CharSequenceTranslator[1];
+    CharSequenceTranslator charSequenceTranslator0 = octalUnescaper0.with(charSequenceTranslatorArray0);
+    // Undeclared exception!
+    try {
+        charSequenceTranslator0.translate((CharSequence) ""FFFFFF5B"", (Writer) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The Writer must not be null
+        //
+        verifyException(""org.apache.commons.lang3.text.translate.CharSequenceTranslator"", e);
+    }
+}","/**
+ * Translate an input onto a Writer. This is intentionally final as its algorithm is
+ * tightly coupled with the abstract method of this class.
+ *
+ * @param input CharSequence that is being translated
+ * @param out Writer to translate the text to
+ * @throws IOException if and only if the Writer produces an IOException
+ */"
+"public static String hex(int codepoint) {
+    return Integer.toHexString(codepoint).toUpperCase(Locale.ENGLISH);
+}","public void test1616() throws Throwable {
+    String string0 = CharSequenceTranslator.hex(1157);
+    assertEquals(""485"", string0);
+}","/**
+ * <p>Returns an upper case hexadecimal <code>String</code> for the given
+ * character.</p>
+ *
+ * @param codepoint The codepoint to convert.
+ * @return An upper case hexadecimal <code>String</code>
+ */"

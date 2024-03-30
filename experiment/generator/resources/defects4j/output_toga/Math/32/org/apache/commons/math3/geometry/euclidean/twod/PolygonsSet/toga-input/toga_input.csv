@@ -1,0 +1,2114 @@
+focal_method,test_prefix,docstring
+"@Override
+protected void computeGeometricalProperties() {
+    final Vector2D[][] v = getVertices();
+    if (v.length == 0) {
+        final BSPTree<Euclidean2D> tree = getTree(false);
+        if ((Boolean) tree.getAttribute()) {
+            // the instance covers the whole space
+            setSize(Double.POSITIVE_INFINITY);
+            setBarycenter(Vector2D.NaN);
+        } else {
+            setSize(0);
+            setBarycenter(new Vector2D(0, 0));
+        }
+    } else if (v[0][0] == null) {
+        // there is at least one open-loop: the polygon is infinite
+        setSize(Double.POSITIVE_INFINITY);
+        setBarycenter(Vector2D.NaN);
+    } else {
+        // all loops are closed, we compute some integrals around the shape
+        double sum = 0;
+        double sumX = 0;
+        double sumY = 0;
+        for (Vector2D[] loop : v) {
+            double x1 = loop[loop.length - 1].getX();
+            double y1 = loop[loop.length - 1].getY();
+            for (final Vector2D point : loop) {
+                final double x0 = x1;
+                final double y0 = y1;
+                x1 = point.getX();
+                y1 = point.getY();
+                final double factor = x0 * y1 - y0 * x1;
+                sum += factor;
+                sumX += factor * (x0 + x1);
+                sumY += factor * (y0 + y1);
+            }
+        }
+        if (sum < 0) {
+            // the polygon as a finite outside surrounded by an infinite inside
+            setSize(Double.POSITIVE_INFINITY);
+            setBarycenter(Vector2D.NaN);
+        } else {
+            setSize(sum / 2);
+            setBarycenter(new Vector2D(sumX / (3 * sum), sumY / (3 * sum)));
+        }
+    }
+}","public void test000() throws Throwable {
+    PolygonsSet polygonsSet0 = new PolygonsSet((-1592.0913632712961), (-2.243523898209535), (-1592.0913632712961), 3.4028234663852886E38);
+    polygonsSet0.computeGeometricalProperties();
+}","/**
+ * {@inheritDoc}
+ */"
+"@Override
+public PolygonsSet buildNew(final BSPTree<Euclidean2D> tree) {
+    return new PolygonsSet(tree);
+}","public void test011() throws Throwable {
+    PolygonsSet polygonsSet0 = new PolygonsSet();
+    polygonsSet0.computeGeometricalProperties();
+    polygonsSet0.getVertices();
+    polygonsSet0.buildNew((BSPTree<Euclidean2D>) null);
+}","/**
+ * {@inheritDoc}
+ */"
+"@Override
+protected void computeGeometricalProperties() {
+    final Vector2D[][] v = getVertices();
+    if (v.length == 0) {
+        final BSPTree<Euclidean2D> tree = getTree(false);
+        if ((Boolean) tree.getAttribute()) {
+            // the instance covers the whole space
+            setSize(Double.POSITIVE_INFINITY);
+            setBarycenter(Vector2D.NaN);
+        } else {
+            setSize(0);
+            setBarycenter(new Vector2D(0, 0));
+        }
+    } else if (v[0][0] == null) {
+        // there is at least one open-loop: the polygon is infinite
+        setSize(Double.POSITIVE_INFINITY);
+        setBarycenter(Vector2D.NaN);
+    } else {
+        // all loops are closed, we compute some integrals around the shape
+        double sum = 0;
+        double sumX = 0;
+        double sumY = 0;
+        for (Vector2D[] loop : v) {
+            double x1 = loop[loop.length - 1].getX();
+            double y1 = loop[loop.length - 1].getY();
+            for (final Vector2D point : loop) {
+                final double x0 = x1;
+                final double y0 = y1;
+                x1 = point.getX();
+                y1 = point.getY();
+                final double factor = x0 * y1 - y0 * x1;
+                sum += factor;
+                sumX += factor * (x0 + x1);
+                sumY += factor * (y0 + y1);
+            }
+        }
+        if (sum < 0) {
+            // the polygon as a finite outside surrounded by an infinite inside
+            setSize(Double.POSITIVE_INFINITY);
+            setBarycenter(Vector2D.NaN);
+        } else {
+            setSize(sum / 2);
+            setBarycenter(new Vector2D(sumX / (3 * sum), sumY / (3 * sum)));
+        }
+    }
+}","public void test022() throws Throwable {
+    LinkedList<SubHyperplane<Euclidean2D>> linkedList0 = new LinkedList<SubHyperplane<Euclidean2D>>();
+    Vector3D vector3D0 = Vector3D.NaN;
+    Plane plane0 = new Plane(vector3D0, vector3D0, vector3D0);
+    Vector2D vector2D0 = plane0.toSubSpace(vector3D0);
+    SubLine subLine0 = new SubLine(vector2D0, vector2D0);
+    linkedList0.add((SubHyperplane<Euclidean2D>) subLine0);
+    plane0.toSpace(vector2D0);
+    PolygonsSet polygonsSet0 = new PolygonsSet(linkedList0);
+    polygonsSet0.computeGeometricalProperties();
+}","/**
+ * {@inheritDoc}
+ */"
+"public Vector2D[][] getVertices() {
+    if (vertices == null) {
+        if (getTree(false).getCut() == null) {
+            vertices = new Vector2D[0][];
+        } else {
+            // sort the segments according to their start point
+            final SegmentsBuilder visitor = new SegmentsBuilder();
+            getTree(true).visit(visitor);
+            final AVLTree<ComparableSegment> sorted = visitor.getSorted();
+            // identify the loops, starting from the open ones
+            // (their start segments are naturally at the sorted set beginning)
+            final ArrayList<List<ComparableSegment>> loops = new ArrayList<List<ComparableSegment>>();
+            while (!sorted.isEmpty()) {
+                final AVLTree<ComparableSegment>.Node node = sorted.getSmallest();
+                final List<ComparableSegment> loop = followLoop(node, sorted);
+                if (loop != null) {
+                    loops.add(loop);
+                }
+            }
+            // tranform the loops in an array of arrays of points
+            vertices = new Vector2D[loops.size()][];
+            int i = 0;
+            for (final List<ComparableSegment> loop : loops) {
+                if (loop.size() < 2) {
+                    // single infinite line
+                    final Line line = loop.get(0).getLine();
+                    vertices[i++] = new Vector2D[] { null, line.toSpace(new Vector1D(-Float.MAX_VALUE)), line.toSpace(new Vector1D(+Float.MAX_VALUE)) };
+                } else if (loop.get(0).getStart() == null) {
+                    // open loop with at least one real point
+                    final Vector2D[] array = new Vector2D[loop.size() + 2];
+                    int j = 0;
+                    for (Segment segment : loop) {
+                        if (j == 0) {
+                            // null point and first dummy point
+                            double x = segment.getLine().toSubSpace(segment.getEnd()).getX();
+                            x -= FastMath.max(1.0, FastMath.abs(x / 2));
+                            array[j++] = null;
+                            array[j++] = segment.getLine().toSpace(new Vector1D(x));
+                        }
+                        if (j < (array.length - 1)) {
+                            // current point
+                            array[j++] = segment.getEnd();
+                        }
+                        if (j == (array.length - 1)) {
+                            // last dummy point
+                            double x = segment.getLine().toSubSpace(segment.getStart()).getX();
+                            x += FastMath.max(1.0, FastMath.abs(x / 2));
+                            array[j++] = segment.getLine().toSpace(new Vector1D(x));
+                        }
+                    }
+                    vertices[i++] = array;
+                } else {
+                    final Vector2D[] array = new Vector2D[loop.size()];
+                    int j = 0;
+                    for (Segment segment : loop) {
+                        array[j++] = segment.getStart();
+                    }
+                    vertices[i++] = array;
+                }
+            }
+        }
+    }
+    return vertices.clone();
+}","public void test033() throws Throwable {
+    PolygonsSet polygonsSet0 = new PolygonsSet(3.4028234663852886E38, (-1.0E-10), 836.8253214027037, (-1.0E-10));
+    polygonsSet0.getVertices();
+}","/**
+ * Get the vertices of the polygon.
+ * <p>The polygon boundary can be represented as an array of loops,
+ * each loop being itself an array of vertices.</p>
+ * <p>In order to identify open loops which start and end by
+ * infinite edges, the open loops arrays start with a null point. In
+ * this case, the first non null point and the last point of the
+ * array do not represent real vertices, they are dummy points
+ * intended only to get the direction of the first and last edge. An
+ * open loop consisting of a single infinite line will therefore be
+ * represented by a three elements array with one null point
+ * followed by two dummy points. The open loops are always the first
+ * ones in the loops array.</p>
+ * <p>If the polygon has no boundary at all, a zero length loop
+ * array will be returned.</p>
+ * <p>All line segments in the various loops have the inside of the
+ * region on their left side and the outside on their right side
+ * when moving in the underlying line direction. This means that
+ * closed loops surrounding finite areas obey the direct
+ * trigonometric orientation.</p>
+ * @return vertices of the polygon, organized as oriented boundary
+ * loops with the open loops first (the returned value is guaranteed
+ * to be non-null)
+ */"
+"@Override
+protected void computeGeometricalProperties() {
+    final Vector2D[][] v = getVertices();
+    if (v.length == 0) {
+        final BSPTree<Euclidean2D> tree = getTree(false);
+        if ((Boolean) tree.getAttribute()) {
+            // the instance covers the whole space
+            setSize(Double.POSITIVE_INFINITY);
+            setBarycenter(Vector2D.NaN);
+        } else {
+            setSize(0);
+            setBarycenter(new Vector2D(0, 0));
+        }
+    } else if (v[0][0] == null) {
+        // there is at least one open-loop: the polygon is infinite
+        setSize(Double.POSITIVE_INFINITY);
+        setBarycenter(Vector2D.NaN);
+    } else {
+        // all loops are closed, we compute some integrals around the shape
+        double sum = 0;
+        double sumX = 0;
+        double sumY = 0;
+        for (Vector2D[] loop : v) {
+            double x1 = loop[loop.length - 1].getX();
+            double y1 = loop[loop.length - 1].getY();
+            for (final Vector2D point : loop) {
+                final double x0 = x1;
+                final double y0 = y1;
+                x1 = point.getX();
+                y1 = point.getY();
+                final double factor = x0 * y1 - y0 * x1;
+                sum += factor;
+                sumX += factor * (x0 + x1);
+                sumY += factor * (y0 + y1);
+            }
+        }
+        if (sum < 0) {
+            // the polygon as a finite outside surrounded by an infinite inside
+            setSize(Double.POSITIVE_INFINITY);
+            setBarycenter(Vector2D.NaN);
+        } else {
+            setSize(sum / 2);
+            setBarycenter(new Vector2D(sumX / (3 * sum), sumY / (3 * sum)));
+        }
+    }
+}","public void test044() throws Throwable {
+    PolygonsSet polygonsSet0 = new PolygonsSet(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
+    polygonsSet0.computeGeometricalProperties();
+}","/**
+ * {@inheritDoc}
+ */"
+"public double getSize() {
+    if (barycenter == null) {
+        computeGeometricalProperties();
+    }
+    return size;
+}","public void test055() throws Throwable {
+    PolygonsSet polygonsSet0 = new PolygonsSet((-1.0E-10), 1.0E-10, (-1.0E-10), 1.0E-10);
+    polygonsSet0.getSize();
+}","/**
+ * {@inheritDoc}
+ */"
+"public Vector2D[][] getVertices() {
+    if (vertices == null) {
+        if (getTree(false).getCut() == null) {
+            vertices = new Vector2D[0][];
+        } else {
+            // sort the segments according to their start point
+            final SegmentsBuilder visitor = new SegmentsBuilder();
+            getTree(true).visit(visitor);
+            final AVLTree<ComparableSegment> sorted = visitor.getSorted();
+            // identify the loops, starting from the open ones
+            // (their start segments are naturally at the sorted set beginning)
+            final ArrayList<List<ComparableSegment>> loops = new ArrayList<List<ComparableSegment>>();
+            while (!sorted.isEmpty()) {
+                final AVLTree<ComparableSegment>.Node node = sorted.getSmallest();
+                final List<ComparableSegment> loop = followLoop(node, sorted);
+                if (loop != null) {
+                    loops.add(loop);
+                }
+            }
+            // tranform the loops in an array of arrays of points
+            vertices = new Vector2D[loops.size()][];
+            int i = 0;
+            for (final List<ComparableSegment> loop : loops) {
+                if (loop.size() < 2) {
+                    // single infinite line
+                    final Line line = loop.get(0).getLine();
+                    vertices[i++] = new Vector2D[] { null, line.toSpace(new Vector1D(-Float.MAX_VALUE)), line.toSpace(new Vector1D(+Float.MAX_VALUE)) };
+                } else if (loop.get(0).getStart() == null) {
+                    // open loop with at least one real point
+                    final Vector2D[] array = new Vector2D[loop.size() + 2];
+                    int j = 0;
+                    for (Segment segment : loop) {
+                        if (j == 0) {
+                            // null point and first dummy point
+                            double x = segment.getLine().toSubSpace(segment.getEnd()).getX();
+                            x -= FastMath.max(1.0, FastMath.abs(x / 2));
+                            array[j++] = null;
+                            array[j++] = segment.getLine().toSpace(new Vector1D(x));
+                        }
+                        if (j < (array.length - 1)) {
+                            // current point
+                            array[j++] = segment.getEnd();
+                        }
+                        if (j == (array.length - 1)) {
+                            // last dummy point
+                            double x = segment.getLine().toSubSpace(segment.getStart()).getX();
+                            x += FastMath.max(1.0, FastMath.abs(x / 2));
+                            array[j++] = segment.getLine().toSpace(new Vector1D(x));
+                        }
+                    }
+                    vertices[i++] = array;
+                } else {
+                    final Vector2D[] array = new Vector2D[loop.size()];
+                    int j = 0;
+                    for (Segment segment : loop) {
+                        array[j++] = segment.getStart();
+                    }
+                    vertices[i++] = array;
+                }
+            }
+        }
+    }
+    return vertices.clone();
+}","public void test066() throws Throwable {
+    PolygonsSet polygonsSet0 = new PolygonsSet(1.5038586206539933E7, (-20.0), 3866.154084346884, (-20.0));
+    BSPTree<Euclidean2D> bSPTree0 = polygonsSet0.getTree(true);
+    BSPTree<Euclidean2D> bSPTree1 = bSPTree0.getPlus();
+    polygonsSet0.getBarycenter();
+    PolygonsSet polygonsSet1 = polygonsSet0.buildNew(bSPTree1);
+    polygonsSet1.computeGeometricalProperties();
+    polygonsSet0.getVertices();
+}","/**
+ * Get the vertices of the polygon.
+ * <p>The polygon boundary can be represented as an array of loops,
+ * each loop being itself an array of vertices.</p>
+ * <p>In order to identify open loops which start and end by
+ * infinite edges, the open loops arrays start with a null point. In
+ * this case, the first non null point and the last point of the
+ * array do not represent real vertices, they are dummy points
+ * intended only to get the direction of the first and last edge. An
+ * open loop consisting of a single infinite line will therefore be
+ * represented by a three elements array with one null point
+ * followed by two dummy points. The open loops are always the first
+ * ones in the loops array.</p>
+ * <p>If the polygon has no boundary at all, a zero length loop
+ * array will be returned.</p>
+ * <p>All line segments in the various loops have the inside of the
+ * region on their left side and the outside on their right side
+ * when moving in the underlying line direction. This means that
+ * closed loops surrounding finite areas obey the direct
+ * trigonometric orientation.</p>
+ * @return vertices of the polygon, organized as oriented boundary
+ * loops with the open loops first (the returned value is guaranteed
+ * to be non-null)
+ */"
+"@Override
+protected void computeGeometricalProperties() {
+    final Vector2D[][] v = getVertices();
+    if (v.length == 0) {
+        final BSPTree<Euclidean2D> tree = getTree(false);
+        if ((Boolean) tree.getAttribute()) {
+            // the instance covers the whole space
+            setSize(Double.POSITIVE_INFINITY);
+            setBarycenter(Vector2D.NaN);
+        } else {
+            setSize(0);
+            setBarycenter(new Vector2D(0, 0));
+        }
+    } else if (v[0][0] == null) {
+        // there is at least one open-loop: the polygon is infinite
+        setSize(Double.POSITIVE_INFINITY);
+        setBarycenter(Vector2D.NaN);
+    } else {
+        // all loops are closed, we compute some integrals around the shape
+        double sum = 0;
+        double sumX = 0;
+        double sumY = 0;
+        for (Vector2D[] loop : v) {
+            double x1 = loop[loop.length - 1].getX();
+            double y1 = loop[loop.length - 1].getY();
+            for (final Vector2D point : loop) {
+                final double x0 = x1;
+                final double y0 = y1;
+                x1 = point.getX();
+                y1 = point.getY();
+                final double factor = x0 * y1 - y0 * x1;
+                sum += factor;
+                sumX += factor * (x0 + x1);
+                sumY += factor * (y0 + y1);
+            }
+        }
+        if (sum < 0) {
+            // the polygon as a finite outside surrounded by an infinite inside
+            setSize(Double.POSITIVE_INFINITY);
+            setBarycenter(Vector2D.NaN);
+        } else {
+            setSize(sum / 2);
+            setBarycenter(new Vector2D(sumX / (3 * sum), sumY / (3 * sum)));
+        }
+    }
+}","public void test077() throws Throwable {
+    PolygonsSet polygonsSet0 = new PolygonsSet(3.4028234663852886E38, 0.0, 0.0, (-1669.7));
+    polygonsSet0.computeGeometricalProperties();
+}","/**
+ * {@inheritDoc}
+ */"
+"public Vector2D[][] getVertices() {
+    if (vertices == null) {
+        if (getTree(false).getCut() == null) {
+            vertices = new Vector2D[0][];
+        } else {
+            // sort the segments according to their start point
+            final SegmentsBuilder visitor = new SegmentsBuilder();
+            getTree(true).visit(visitor);
+            final AVLTree<ComparableSegment> sorted = visitor.getSorted();
+            // identify the loops, starting from the open ones
+            // (their start segments are naturally at the sorted set beginning)
+            final ArrayList<List<ComparableSegment>> loops = new ArrayList<List<ComparableSegment>>();
+            while (!sorted.isEmpty()) {
+                final AVLTree<ComparableSegment>.Node node = sorted.getSmallest();
+                final List<ComparableSegment> loop = followLoop(node, sorted);
+                if (loop != null) {
+                    loops.add(loop);
+                }
+            }
+            // tranform the loops in an array of arrays of points
+            vertices = new Vector2D[loops.size()][];
+            int i = 0;
+            for (final List<ComparableSegment> loop : loops) {
+                if (loop.size() < 2) {
+                    // single infinite line
+                    final Line line = loop.get(0).getLine();
+                    vertices[i++] = new Vector2D[] { null, line.toSpace(new Vector1D(-Float.MAX_VALUE)), line.toSpace(new Vector1D(+Float.MAX_VALUE)) };
+                } else if (loop.get(0).getStart() == null) {
+                    // open loop with at least one real point
+                    final Vector2D[] array = new Vector2D[loop.size() + 2];
+                    int j = 0;
+                    for (Segment segment : loop) {
+                        if (j == 0) {
+                            // null point and first dummy point
+                            double x = segment.getLine().toSubSpace(segment.getEnd()).getX();
+                            x -= FastMath.max(1.0, FastMath.abs(x / 2));
+                            array[j++] = null;
+                            array[j++] = segment.getLine().toSpace(new Vector1D(x));
+                        }
+                        if (j < (array.length - 1)) {
+                            // current point
+                            array[j++] = segment.getEnd();
+                        }
+                        if (j == (array.length - 1)) {
+                            // last dummy point
+                            double x = segment.getLine().toSubSpace(segment.getStart()).getX();
+                            x += FastMath.max(1.0, FastMath.abs(x / 2));
+                            array[j++] = segment.getLine().toSpace(new Vector1D(x));
+                        }
+                    }
+                    vertices[i++] = array;
+                } else {
+                    final Vector2D[] array = new Vector2D[loop.size()];
+                    int j = 0;
+                    for (Segment segment : loop) {
+                        array[j++] = segment.getStart();
+                    }
+                    vertices[i++] = array;
+                }
+            }
+        }
+    }
+    return vertices.clone();
+}","public void test088() throws Throwable {
+    PolygonsSet polygonsSet0 = new PolygonsSet(3.4028234663852886E38, 0.0, 0.0, (-1669.7));
+    polygonsSet0.getVertices();
+}","/**
+ * Get the vertices of the polygon.
+ * <p>The polygon boundary can be represented as an array of loops,
+ * each loop being itself an array of vertices.</p>
+ * <p>In order to identify open loops which start and end by
+ * infinite edges, the open loops arrays start with a null point. In
+ * this case, the first non null point and the last point of the
+ * array do not represent real vertices, they are dummy points
+ * intended only to get the direction of the first and last edge. An
+ * open loop consisting of a single infinite line will therefore be
+ * represented by a three elements array with one null point
+ * followed by two dummy points. The open loops are always the first
+ * ones in the loops array.</p>
+ * <p>If the polygon has no boundary at all, a zero length loop
+ * array will be returned.</p>
+ * <p>All line segments in the various loops have the inside of the
+ * region on their left side and the outside on their right side
+ * when moving in the underlying line direction. This means that
+ * closed loops surrounding finite areas obey the direct
+ * trigonometric orientation.</p>
+ * @return vertices of the polygon, organized as oriented boundary
+ * loops with the open loops first (the returned value is guaranteed
+ * to be non-null)
+ */"
+"@Override
+protected void computeGeometricalProperties() {
+    final Vector2D[][] v = getVertices();
+    if (v.length == 0) {
+        final BSPTree<Euclidean2D> tree = getTree(false);
+        if ((Boolean) tree.getAttribute()) {
+            // the instance covers the whole space
+            setSize(Double.POSITIVE_INFINITY);
+            setBarycenter(Vector2D.NaN);
+        } else {
+            setSize(0);
+            setBarycenter(new Vector2D(0, 0));
+        }
+    } else if (v[0][0] == null) {
+        // there is at least one open-loop: the polygon is infinite
+        setSize(Double.POSITIVE_INFINITY);
+        setBarycenter(Vector2D.NaN);
+    } else {
+        // all loops are closed, we compute some integrals around the shape
+        double sum = 0;
+        double sumX = 0;
+        double sumY = 0;
+        for (Vector2D[] loop : v) {
+            double x1 = loop[loop.length - 1].getX();
+            double y1 = loop[loop.length - 1].getY();
+            for (final Vector2D point : loop) {
+                final double x0 = x1;
+                final double y0 = y1;
+                x1 = point.getX();
+                y1 = point.getY();
+                final double factor = x0 * y1 - y0 * x1;
+                sum += factor;
+                sumX += factor * (x0 + x1);
+                sumY += factor * (y0 + y1);
+            }
+        }
+        if (sum < 0) {
+            // the polygon as a finite outside surrounded by an infinite inside
+            setSize(Double.POSITIVE_INFINITY);
+            setBarycenter(Vector2D.NaN);
+        } else {
+            setSize(sum / 2);
+            setBarycenter(new Vector2D(sumX / (3 * sum), sumY / (3 * sum)));
+        }
+    }
+}","public void test099() throws Throwable {
+    PolygonsSet polygonsSet0 = new PolygonsSet(2652.69214209, 0.0, 0.0, (-2833.8567));
+    polygonsSet0.computeGeometricalProperties();
+}","/**
+ * {@inheritDoc}
+ */"
+"public PolygonsSet(final BSPTree<Euclidean2D> tree) {
+    super(tree);
+}","public void test1010() throws Throwable {
+    PolygonsSet polygonsSet0 = new PolygonsSet(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, (-2342.849338), 1419.1162628977);
+    polygonsSet0.computeGeometricalProperties();
+    BSPTree<Euclidean2D> bSPTree0 = new BSPTree<Euclidean2D>();
+    polygonsSet0.buildNew(bSPTree0);
+    PolygonsSet polygonsSet1 = null;
+    try {
+        polygonsSet1 = new PolygonsSet(bSPTree0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // illegal state: internal error, please fill a bug report at https://issues.apache.org/jira/browse/MATH
+        //
+        verifyException(""org.apache.commons.math3.geometry.euclidean.twod.PolygonsSet"", e);
+    }
+}","/**
+ * Build a polygons set from a BSP tree.
+ * <p>The leaf nodes of the BSP tree <em>must</em> have a
+ * {@code Boolean} attribute representing the inside status of
+ * the corresponding cell (true for inside cells, false for outside
+ * cells). In order to avoid building too many small objects, it is
+ * recommended to use the predefined constants
+ * {@code Boolean.TRUE} and {@code Boolean.FALSE}</p>
+ * @param tree inside/outside BSP tree representing the region
+ */"
+"@Override
+public PolygonsSet buildNew(final BSPTree<Euclidean2D> tree) {
+    return new PolygonsSet(tree);
+}","public void test1111() throws Throwable {
+    PolygonsSet polygonsSet0 = new PolygonsSet();
+    BSPTree<Euclidean2D> bSPTree0 = new BSPTree<Euclidean2D>();
+    polygonsSet0.buildNew(bSPTree0);
+}","/**
+ * {@inheritDoc}
+ */"
+"public Vector2D[][] getVertices() {
+    if (vertices == null) {
+        if (getTree(false).getCut() == null) {
+            vertices = new Vector2D[0][];
+        } else {
+            // sort the segments according to their start point
+            final SegmentsBuilder visitor = new SegmentsBuilder();
+            getTree(true).visit(visitor);
+            final AVLTree<ComparableSegment> sorted = visitor.getSorted();
+            // identify the loops, starting from the open ones
+            // (their start segments are naturally at the sorted set beginning)
+            final ArrayList<List<ComparableSegment>> loops = new ArrayList<List<ComparableSegment>>();
+            while (!sorted.isEmpty()) {
+                final AVLTree<ComparableSegment>.Node node = sorted.getSmallest();
+                final List<ComparableSegment> loop = followLoop(node, sorted);
+                if (loop != null) {
+                    loops.add(loop);
+                }
+            }
+            // tranform the loops in an array of arrays of points
+            vertices = new Vector2D[loops.size()][];
+            int i = 0;
+            for (final List<ComparableSegment> loop : loops) {
+                if (loop.size() < 2) {
+                    // single infinite line
+                    final Line line = loop.get(0).getLine();
+                    vertices[i++] = new Vector2D[] { null, line.toSpace(new Vector1D(-Float.MAX_VALUE)), line.toSpace(new Vector1D(+Float.MAX_VALUE)) };
+                } else if (loop.get(0).getStart() == null) {
+                    // open loop with at least one real point
+                    final Vector2D[] array = new Vector2D[loop.size() + 2];
+                    int j = 0;
+                    for (Segment segment : loop) {
+                        if (j == 0) {
+                            // null point and first dummy point
+                            double x = segment.getLine().toSubSpace(segment.getEnd()).getX();
+                            x -= FastMath.max(1.0, FastMath.abs(x / 2));
+                            array[j++] = null;
+                            array[j++] = segment.getLine().toSpace(new Vector1D(x));
+                        }
+                        if (j < (array.length - 1)) {
+                            // current point
+                            array[j++] = segment.getEnd();
+                        }
+                        if (j == (array.length - 1)) {
+                            // last dummy point
+                            double x = segment.getLine().toSubSpace(segment.getStart()).getX();
+                            x += FastMath.max(1.0, FastMath.abs(x / 2));
+                            array[j++] = segment.getLine().toSpace(new Vector1D(x));
+                        }
+                    }
+                    vertices[i++] = array;
+                } else {
+                    final Vector2D[] array = new Vector2D[loop.size()];
+                    int j = 0;
+                    for (Segment segment : loop) {
+                        array[j++] = segment.getStart();
+                    }
+                    vertices[i++] = array;
+                }
+            }
+        }
+    }
+    return vertices.clone();
+}","public void test1313() throws Throwable {
+    PolygonsSet polygonsSet0 = new PolygonsSet();
+    BSPTree<Euclidean2D> bSPTree0 = polygonsSet0.getTree(true);
+    PolygonsSet polygonsSet1 = polygonsSet0.buildNew(bSPTree0);
+    polygonsSet1.getVertices();
+}","/**
+ * Get the vertices of the polygon.
+ * <p>The polygon boundary can be represented as an array of loops,
+ * each loop being itself an array of vertices.</p>
+ * <p>In order to identify open loops which start and end by
+ * infinite edges, the open loops arrays start with a null point. In
+ * this case, the first non null point and the last point of the
+ * array do not represent real vertices, they are dummy points
+ * intended only to get the direction of the first and last edge. An
+ * open loop consisting of a single infinite line will therefore be
+ * represented by a three elements array with one null point
+ * followed by two dummy points. The open loops are always the first
+ * ones in the loops array.</p>
+ * <p>If the polygon has no boundary at all, a zero length loop
+ * array will be returned.</p>
+ * <p>All line segments in the various loops have the inside of the
+ * region on their left side and the outside on their right side
+ * when moving in the underlying line direction. This means that
+ * closed loops surrounding finite areas obey the direct
+ * trigonometric orientation.</p>
+ * @return vertices of the polygon, organized as oriented boundary
+ * loops with the open loops first (the returned value is guaranteed
+ * to be non-null)
+ */"
+"public PolygonsSet(final Collection<SubHyperplane<Euclidean2D>> boundary) {
+    super(boundary);
+}","public void test1414() throws Throwable {
+    LinkedList<SubHyperplane<Euclidean2D>> linkedList0 = new LinkedList<SubHyperplane<Euclidean2D>>();
+    PolygonsSet polygonsSet0 = new PolygonsSet(linkedList0);
+}","/**
+ * Build a polygons set from a Boundary REPresentation (B-rep).
+ * <p>The boundary is provided as a collection of {@link
+ * SubHyperplane sub-hyperplanes}. Each sub-hyperplane has the
+ * interior part of the region on its minus side and the exterior on
+ * its plus side.</p>
+ * <p>The boundary elements can be in any order, and can form
+ * several non-connected sets (like for example polygons with holes
+ * or a set of disjoint polyhedrons considered as a whole). In
+ * fact, the elements do not even need to be connected together
+ * (their topological connections are not used here). However, if the
+ * boundary does not really separate an inside open from an outside
+ * open (open having here its topological meaning), then subsequent
+ * calls to the {@link
+ * org.apache.commons.math3.geometry.partitioning.Region#checkPoint(org.apache.commons.math3.geometry.Vector)
+ * checkPoint} method will not be meaningful anymore.</p>
+ * <p>If the boundary is empty, the region will represent the whole
+ * space.</p>
+ * @param boundary collection of boundary elements, as a
+ * collection of {@link SubHyperplane SubHyperplane} objects
+ */"
+"public Vector2D[][] getVertices() {
+    if (vertices == null) {
+        if (getTree(false).getCut() == null) {
+            vertices = new Vector2D[0][];
+        } else {
+            // sort the segments according to their start point
+            final SegmentsBuilder visitor = new SegmentsBuilder();
+            getTree(true).visit(visitor);
+            final AVLTree<ComparableSegment> sorted = visitor.getSorted();
+            // identify the loops, starting from the open ones
+            // (their start segments are naturally at the sorted set beginning)
+            final ArrayList<List<ComparableSegment>> loops = new ArrayList<List<ComparableSegment>>();
+            while (!sorted.isEmpty()) {
+                final AVLTree<ComparableSegment>.Node node = sorted.getSmallest();
+                final List<ComparableSegment> loop = followLoop(node, sorted);
+                if (loop != null) {
+                    loops.add(loop);
+                }
+            }
+            // tranform the loops in an array of arrays of points
+            vertices = new Vector2D[loops.size()][];
+            int i = 0;
+            for (final List<ComparableSegment> loop : loops) {
+                if (loop.size() < 2) {
+                    // single infinite line
+                    final Line line = loop.get(0).getLine();
+                    vertices[i++] = new Vector2D[] { null, line.toSpace(new Vector1D(-Float.MAX_VALUE)), line.toSpace(new Vector1D(+Float.MAX_VALUE)) };
+                } else if (loop.get(0).getStart() == null) {
+                    // open loop with at least one real point
+                    final Vector2D[] array = new Vector2D[loop.size() + 2];
+                    int j = 0;
+                    for (Segment segment : loop) {
+                        if (j == 0) {
+                            // null point and first dummy point
+                            double x = segment.getLine().toSubSpace(segment.getEnd()).getX();
+                            x -= FastMath.max(1.0, FastMath.abs(x / 2));
+                            array[j++] = null;
+                            array[j++] = segment.getLine().toSpace(new Vector1D(x));
+                        }
+                        if (j < (array.length - 1)) {
+                            // current point
+                            array[j++] = segment.getEnd();
+                        }
+                        if (j == (array.length - 1)) {
+                            // last dummy point
+                            double x = segment.getLine().toSubSpace(segment.getStart()).getX();
+                            x += FastMath.max(1.0, FastMath.abs(x / 2));
+                            array[j++] = segment.getLine().toSpace(new Vector1D(x));
+                        }
+                    }
+                    vertices[i++] = array;
+                } else {
+                    final Vector2D[] array = new Vector2D[loop.size()];
+                    int j = 0;
+                    for (Segment segment : loop) {
+                        array[j++] = segment.getStart();
+                    }
+                    vertices[i++] = array;
+                }
+            }
+        }
+    }
+    return vertices.clone();
+}","public void test1515() throws Throwable {
+    PolygonsSet polygonsSet0 = new PolygonsSet();
+    polygonsSet0.computeGeometricalProperties();
+    polygonsSet0.computeGeometricalProperties();
+    polygonsSet0.getVertices();
+    Vector2D vector2D0 = Vector2D.NaN;
+    Line line0 = new Line(vector2D0, (-399.4336413617017));
+    Segment segment0 = new Segment(vector2D0, vector2D0, line0);
+    SubLine subLine0 = new SubLine(segment0);
+    BSPTree<Euclidean2D> bSPTree0 = new BSPTree<Euclidean2D>();
+    SubLine subLine1 = new SubLine(segment0);
+    AffineTransform affineTransform0 = AffineTransform.getRotateInstance((-3356.39928), 0.0, 0.0, (-3356.39928));
+    AffineTransform affineTransform1 = new AffineTransform(affineTransform0);
+    Transform<Euclidean2D, Euclidean1D> transform0 = Line.getTransform(affineTransform1);
+    subLine1.applyTransform(transform0);
+    bSPTree0.getCell(vector2D0);
+    Vector<Euclidean2D> vector0 = polygonsSet0.getBarycenter();
+    subLine1.reunite(subLine0);
+    vector2D0.distanceInf(vector0);
+    subLine0.reunite(subLine1);
+    BSPTree<Euclidean2D> bSPTree1 = new BSPTree<Euclidean2D>(subLine0, bSPTree0, bSPTree0, vector2D0);
+    BSPTree<Euclidean2D> bSPTree2 = bSPTree1.getPlus();
+    BSPTree<Euclidean2D> bSPTree3 = bSPTree2.getCell(vector2D0);
+    PolygonsSet polygonsSet1 = polygonsSet0.buildNew(bSPTree3);
+    polygonsSet0.computeGeometricalProperties();
+    polygonsSet1.getVertices();
+    PolygonsSet polygonsSet2 = polygonsSet0.buildNew(bSPTree2);
+    polygonsSet2.computeGeometricalProperties();
+    polygonsSet2.computeGeometricalProperties();
+    polygonsSet0.buildNew(bSPTree0);
+    polygonsSet1.buildNew(bSPTree0);
+    // Undeclared exception!
+    try {
+        polygonsSet1.getVertices();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math3.geometry.euclidean.twod.PolygonsSet"", e);
+    }
+}","/**
+ * Get the vertices of the polygon.
+ * <p>The polygon boundary can be represented as an array of loops,
+ * each loop being itself an array of vertices.</p>
+ * <p>In order to identify open loops which start and end by
+ * infinite edges, the open loops arrays start with a null point. In
+ * this case, the first non null point and the last point of the
+ * array do not represent real vertices, they are dummy points
+ * intended only to get the direction of the first and last edge. An
+ * open loop consisting of a single infinite line will therefore be
+ * represented by a three elements array with one null point
+ * followed by two dummy points. The open loops are always the first
+ * ones in the loops array.</p>
+ * <p>If the polygon has no boundary at all, a zero length loop
+ * array will be returned.</p>
+ * <p>All line segments in the various loops have the inside of the
+ * region on their left side and the outside on their right side
+ * when moving in the underlying line direction. This means that
+ * closed loops surrounding finite areas obey the direct
+ * trigonometric orientation.</p>
+ * @return vertices of the polygon, organized as oriented boundary
+ * loops with the open loops first (the returned value is guaranteed
+ * to be non-null)
+ */"
+"public Vector2D[][] getVertices() {
+    if (vertices == null) {
+        if (getTree(false).getCut() == null) {
+            vertices = new Vector2D[0][];
+        } else {
+            // sort the segments according to their start point
+            final SegmentsBuilder visitor = new SegmentsBuilder();
+            getTree(true).visit(visitor);
+            final AVLTree<ComparableSegment> sorted = visitor.getSorted();
+            // identify the loops, starting from the open ones
+            // (their start segments are naturally at the sorted set beginning)
+            final ArrayList<List<ComparableSegment>> loops = new ArrayList<List<ComparableSegment>>();
+            while (!sorted.isEmpty()) {
+                final AVLTree<ComparableSegment>.Node node = sorted.getSmallest();
+                final List<ComparableSegment> loop = followLoop(node, sorted);
+                if (loop != null) {
+                    loops.add(loop);
+                }
+            }
+            // tranform the loops in an array of arrays of points
+            vertices = new Vector2D[loops.size()][];
+            int i = 0;
+            for (final List<ComparableSegment> loop : loops) {
+                if (loop.size() < 2) {
+                    // single infinite line
+                    final Line line = loop.get(0).getLine();
+                    vertices[i++] = new Vector2D[] { null, line.toSpace(new Vector1D(-Float.MAX_VALUE)), line.toSpace(new Vector1D(+Float.MAX_VALUE)) };
+                } else if (loop.get(0).getStart() == null) {
+                    // open loop with at least one real point
+                    final Vector2D[] array = new Vector2D[loop.size() + 2];
+                    int j = 0;
+                    for (Segment segment : loop) {
+                        if (j == 0) {
+                            // null point and first dummy point
+                            double x = segment.getLine().toSubSpace(segment.getEnd()).getX();
+                            x -= FastMath.max(1.0, FastMath.abs(x / 2));
+                            array[j++] = null;
+                            array[j++] = segment.getLine().toSpace(new Vector1D(x));
+                        }
+                        if (j < (array.length - 1)) {
+                            // current point
+                            array[j++] = segment.getEnd();
+                        }
+                        if (j == (array.length - 1)) {
+                            // last dummy point
+                            double x = segment.getLine().toSubSpace(segment.getStart()).getX();
+                            x += FastMath.max(1.0, FastMath.abs(x / 2));
+                            array[j++] = segment.getLine().toSpace(new Vector1D(x));
+                        }
+                    }
+                    vertices[i++] = array;
+                } else {
+                    final Vector2D[] array = new Vector2D[loop.size()];
+                    int j = 0;
+                    for (Segment segment : loop) {
+                        array[j++] = segment.getStart();
+                    }
+                    vertices[i++] = array;
+                }
+            }
+        }
+    }
+    return vertices.clone();
+}","public void test1616() throws Throwable {
+    LinkedList<SubHyperplane<Euclidean2D>> linkedList0 = new LinkedList<SubHyperplane<Euclidean2D>>();
+    linkedList0.iterator();
+    PolygonsSet polygonsSet0 = new PolygonsSet(linkedList0);
+    BSPTree<Euclidean2D> bSPTree0 = null;
+    Vector3D vector3D0 = Vector3D.PLUS_J;
+    Plane plane0 = new Plane(vector3D0, vector3D0);
+    Vector2D vector2D0 = plane0.toSubSpace(vector3D0);
+    LinkedList<Euclidean1D> linkedList1 = new LinkedList<Euclidean1D>();
+    linkedList0.containsAll(linkedList1);
+    Vector2D vector2D1 = new Vector2D((-1634.333308), vector2D0, 0.0, vector2D0, (-1634.333308), vector2D0);
+    vector2D1.add((Vector<Euclidean2D>) vector2D0);
+    vector2D0.distance1(vector2D1);
+    SubLine subLine0 = new SubLine(vector2D0, vector2D0);
+    linkedList0.add((SubHyperplane<Euclidean2D>) subLine0);
+    PolygonsSet polygonsSet1 = polygonsSet0.buildNew((BSPTree<Euclidean2D>) null);
+    polygonsSet1.getVertices();
+    polygonsSet1.getSize();
+    // Undeclared exception!
+    try {
+        polygonsSet0.getVertices();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math3.geometry.euclidean.twod.PolygonsSet"", e);
+    }
+}","/**
+ * Get the vertices of the polygon.
+ * <p>The polygon boundary can be represented as an array of loops,
+ * each loop being itself an array of vertices.</p>
+ * <p>In order to identify open loops which start and end by
+ * infinite edges, the open loops arrays start with a null point. In
+ * this case, the first non null point and the last point of the
+ * array do not represent real vertices, they are dummy points
+ * intended only to get the direction of the first and last edge. An
+ * open loop consisting of a single infinite line will therefore be
+ * represented by a three elements array with one null point
+ * followed by two dummy points. The open loops are always the first
+ * ones in the loops array.</p>
+ * <p>If the polygon has no boundary at all, a zero length loop
+ * array will be returned.</p>
+ * <p>All line segments in the various loops have the inside of the
+ * region on their left side and the outside on their right side
+ * when moving in the underlying line direction. This means that
+ * closed loops surrounding finite areas obey the direct
+ * trigonometric orientation.</p>
+ * @return vertices of the polygon, organized as oriented boundary
+ * loops with the open loops first (the returned value is guaranteed
+ * to be non-null)
+ */"
+"public PolygonsSet(final BSPTree<Euclidean2D> tree) {
+    super(tree);
+}","public void test1717() throws Throwable {
+    Euclidean2D euclidean2D0 = Euclidean2D.getInstance();
+    Euclidean1D euclidean1D0 = euclidean2D0.getSubSpace();
+    BSPTree<Euclidean2D> bSPTree0 = new BSPTree<Euclidean2D>(euclidean1D0);
+    PolygonsSet polygonsSet0 = new PolygonsSet(bSPTree0);
+}","/**
+ * Build a polygons set from a BSP tree.
+ * <p>The leaf nodes of the BSP tree <em>must</em> have a
+ * {@code Boolean} attribute representing the inside status of
+ * the corresponding cell (true for inside cells, false for outside
+ * cells). In order to avoid building too many small objects, it is
+ * recommended to use the predefined constants
+ * {@code Boolean.TRUE} and {@code Boolean.FALSE}</p>
+ * @param tree inside/outside BSP tree representing the region
+ */"
+"public Vector2D[][] getVertices() {
+    if (vertices == null) {
+        if (getTree(false).getCut() == null) {
+            vertices = new Vector2D[0][];
+        } else {
+            // sort the segments according to their start point
+            final SegmentsBuilder visitor = new SegmentsBuilder();
+            getTree(true).visit(visitor);
+            final AVLTree<ComparableSegment> sorted = visitor.getSorted();
+            // identify the loops, starting from the open ones
+            // (their start segments are naturally at the sorted set beginning)
+            final ArrayList<List<ComparableSegment>> loops = new ArrayList<List<ComparableSegment>>();
+            while (!sorted.isEmpty()) {
+                final AVLTree<ComparableSegment>.Node node = sorted.getSmallest();
+                final List<ComparableSegment> loop = followLoop(node, sorted);
+                if (loop != null) {
+                    loops.add(loop);
+                }
+            }
+            // tranform the loops in an array of arrays of points
+            vertices = new Vector2D[loops.size()][];
+            int i = 0;
+            for (final List<ComparableSegment> loop : loops) {
+                if (loop.size() < 2) {
+                    // single infinite line
+                    final Line line = loop.get(0).getLine();
+                    vertices[i++] = new Vector2D[] { null, line.toSpace(new Vector1D(-Float.MAX_VALUE)), line.toSpace(new Vector1D(+Float.MAX_VALUE)) };
+                } else if (loop.get(0).getStart() == null) {
+                    // open loop with at least one real point
+                    final Vector2D[] array = new Vector2D[loop.size() + 2];
+                    int j = 0;
+                    for (Segment segment : loop) {
+                        if (j == 0) {
+                            // null point and first dummy point
+                            double x = segment.getLine().toSubSpace(segment.getEnd()).getX();
+                            x -= FastMath.max(1.0, FastMath.abs(x / 2));
+                            array[j++] = null;
+                            array[j++] = segment.getLine().toSpace(new Vector1D(x));
+                        }
+                        if (j < (array.length - 1)) {
+                            // current point
+                            array[j++] = segment.getEnd();
+                        }
+                        if (j == (array.length - 1)) {
+                            // last dummy point
+                            double x = segment.getLine().toSubSpace(segment.getStart()).getX();
+                            x += FastMath.max(1.0, FastMath.abs(x / 2));
+                            array[j++] = segment.getLine().toSpace(new Vector1D(x));
+                        }
+                    }
+                    vertices[i++] = array;
+                } else {
+                    final Vector2D[] array = new Vector2D[loop.size()];
+                    int j = 0;
+                    for (Segment segment : loop) {
+                        array[j++] = segment.getStart();
+                    }
+                    vertices[i++] = array;
+                }
+            }
+        }
+    }
+    return vertices.clone();
+}","public void test1818() throws Throwable {
+    Vector2D vector2D0 = Vector2D.NEGATIVE_INFINITY;
+    Vector2D vector2D1 = new Vector2D((-0.999999999999998), vector2D0);
+    Line line0 = new Line(vector2D1, 3166.5879);
+    PolygonsSet polygonsSet0 = line0.wholeSpace();
+    polygonsSet0.getVertices();
+    line0.toSubSpace(vector2D1);
+    BSPTree<Euclidean2D> bSPTree0 = new BSPTree<Euclidean2D>(polygonsSet0);
+    bSPTree0.insertCut(line0);
+    BSPTree<Euclidean2D> bSPTree1 = bSPTree0.copySelf();
+    BSPTree.LeafMerger<Euclidean2D> bSPTree_LeafMerger0 = (BSPTree.LeafMerger<Euclidean2D>) mock(BSPTree.LeafMerger.class, new ViolatedAssumptionAnswer());
+    doReturn((BSPTree) null, (BSPTree) null).when(bSPTree_LeafMerger0).merge(nullable(org.apache.commons.math3.geometry.partitioning.BSPTree.class), nullable(org.apache.commons.math3.geometry.partitioning.BSPTree.class), nullable(org.apache.commons.math3.geometry.partitioning.BSPTree.class), anyBoolean(), anyBoolean());
+    bSPTree0.merge(bSPTree1, bSPTree_LeafMerger0);
+    Euclidean2D euclidean2D0 = Euclidean2D.getInstance();
+    euclidean2D0.getSubSpace();
+    bSPTree0.insertInTree(bSPTree1, true);
+    bSPTree1.setAttribute(euclidean2D0);
+    PolygonsSet polygonsSet1 = polygonsSet0.buildNew(bSPTree1);
+    polygonsSet0.computeGeometricalProperties();
+    polygonsSet1.getVertices();
+    polygonsSet1.computeGeometricalProperties();
+    // Undeclared exception!
+    try {
+        polygonsSet0.getVertices();
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // org.apache.commons.math3.geometry.euclidean.twod.Euclidean2D cannot be cast to org.apache.commons.math3.geometry.partitioning.BoundaryAttribute
+        //
+        verifyException(""org.apache.commons.math3.geometry.euclidean.twod.PolygonsSet$SegmentsBuilder"", e);
+    }
+}","/**
+ * Get the vertices of the polygon.
+ * <p>The polygon boundary can be represented as an array of loops,
+ * each loop being itself an array of vertices.</p>
+ * <p>In order to identify open loops which start and end by
+ * infinite edges, the open loops arrays start with a null point. In
+ * this case, the first non null point and the last point of the
+ * array do not represent real vertices, they are dummy points
+ * intended only to get the direction of the first and last edge. An
+ * open loop consisting of a single infinite line will therefore be
+ * represented by a three elements array with one null point
+ * followed by two dummy points. The open loops are always the first
+ * ones in the loops array.</p>
+ * <p>If the polygon has no boundary at all, a zero length loop
+ * array will be returned.</p>
+ * <p>All line segments in the various loops have the inside of the
+ * region on their left side and the outside on their right side
+ * when moving in the underlying line direction. This means that
+ * closed loops surrounding finite areas obey the direct
+ * trigonometric orientation.</p>
+ * @return vertices of the polygon, organized as oriented boundary
+ * loops with the open loops first (the returned value is guaranteed
+ * to be non-null)
+ */"
+"@Override
+protected void computeGeometricalProperties() {
+    final Vector2D[][] v = getVertices();
+    if (v.length == 0) {
+        final BSPTree<Euclidean2D> tree = getTree(false);
+        if ((Boolean) tree.getAttribute()) {
+            // the instance covers the whole space
+            setSize(Double.POSITIVE_INFINITY);
+            setBarycenter(Vector2D.NaN);
+        } else {
+            setSize(0);
+            setBarycenter(new Vector2D(0, 0));
+        }
+    } else if (v[0][0] == null) {
+        // there is at least one open-loop: the polygon is infinite
+        setSize(Double.POSITIVE_INFINITY);
+        setBarycenter(Vector2D.NaN);
+    } else {
+        // all loops are closed, we compute some integrals around the shape
+        double sum = 0;
+        double sumX = 0;
+        double sumY = 0;
+        for (Vector2D[] loop : v) {
+            double x1 = loop[loop.length - 1].getX();
+            double y1 = loop[loop.length - 1].getY();
+            for (final Vector2D point : loop) {
+                final double x0 = x1;
+                final double y0 = y1;
+                x1 = point.getX();
+                y1 = point.getY();
+                final double factor = x0 * y1 - y0 * x1;
+                sum += factor;
+                sumX += factor * (x0 + x1);
+                sumY += factor * (y0 + y1);
+            }
+        }
+        if (sum < 0) {
+            // the polygon as a finite outside surrounded by an infinite inside
+            setSize(Double.POSITIVE_INFINITY);
+            setBarycenter(Vector2D.NaN);
+        } else {
+            setSize(sum / 2);
+            setBarycenter(new Vector2D(sumX / (3 * sum), sumY / (3 * sum)));
+        }
+    }
+}","public void test2121() throws Throwable {
+    LinkedList<SubHyperplane<Euclidean2D>> linkedList0 = new LinkedList<SubHyperplane<Euclidean2D>>();
+    Vector2D vector2D0 = new Vector2D(0.0, 0.0);
+    Vector2D vector2D1 = new Vector2D(Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY);
+    vector2D1.getNormInf();
+    vector2D0.subtract((Vector<Euclidean2D>) vector2D1);
+    SubLine subLine0 = new SubLine(vector2D0, vector2D0);
+    subLine0.getSegments();
+    linkedList0.push(subLine0);
+    PolygonsSet polygonsSet0 = new PolygonsSet(linkedList0);
+    PolygonsSet polygonsSet1 = new PolygonsSet();
+    polygonsSet0.contains(polygonsSet1);
+    polygonsSet0.computeGeometricalProperties();
+    polygonsSet0.computeGeometricalProperties();
+}","/**
+ * {@inheritDoc}
+ */"
+"public BSPTree<S> getParent() {
+    return parent;
+}","public void test2222() throws Throwable {
+    Vector1D vector1D0 = Vector1D.POSITIVE_INFINITY;
+    Vector1D vector1D1 = new Vector1D(4.0, vector1D0, 4.0, vector1D0);
+    boolean boolean0 = true;
+    OrientedPoint orientedPoint0 = new OrientedPoint(vector1D1, true);
+    Vector1D vector1D2 = new Vector1D((-1170.0), vector1D1, (-1170.0), vector1D0);
+    vector1D2.getNorm1();
+    Vector1D.distanceInf(vector1D1, vector1D2);
+    orientedPoint0.wholeHyperplane();
+    Region<Euclidean1D> region0 = null;
+    vector1D0.getNormInf();
+    SubOrientedPoint subOrientedPoint0 = new SubOrientedPoint(orientedPoint0, (Region<Euclidean1D>) null);
+    vector1D1.distance((Vector<Euclidean1D>) vector1D0);
+    BSPTree<Euclidean2D> bSPTree0 = new BSPTree<Euclidean2D>(subOrientedPoint0);
+    orientedPoint0.wholeHyperplane();
+    PolygonsSet polygonsSet0 = new PolygonsSet(bSPTree0);
+    polygonsSet0.getVertices();
+    polygonsSet0.computeGeometricalProperties();
+    polygonsSet0.computeGeometricalProperties();
+    // Undeclared exception!
+    try {
+        bSPTree0.getParent();
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // org.apache.commons.math3.geometry.euclidean.oned.SubOrientedPoint cannot be cast to java.lang.Boolean
+        //
+        verifyException(""org.apache.commons.math3.geometry.euclidean.twod.PolygonsSet"", e);
+    }
+}","/**
+ * Get the parent node.
+ * @return parent node, null if the node has no parents
+ */"
+"public Vector<S> getBarycenter() {
+    if (barycenter == null) {
+        computeGeometricalProperties();
+    }
+    return barycenter;
+}","public void test2323() throws Throwable {
+    double double0 = (-1591.66662191364);
+    PolygonsSet polygonsSet0 = new PolygonsSet((-1591.66662191364), 0.0, (-1591.66662191364), 3.4028234663852886E38);
+    polygonsSet0.computeGeometricalProperties();
+    polygonsSet0.getVertices();
+    // Undeclared exception!
+    try {
+        polygonsSet0.getBarycenter();
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // org.apache.commons.math3.geometry.partitioning.BoundaryAttribute cannot be cast to java.lang.Boolean
+        //
+        verifyException(""org.apache.commons.math3.geometry.euclidean.twod.PolygonsSet"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"public double getNorm() {
+    return FastMath.sqrt(x * x + y * y);
+}","public void test2424() throws Throwable {
+    LinkedList<SubHyperplane<Euclidean2D>> linkedList0 = new LinkedList<SubHyperplane<Euclidean2D>>();
+    Vector2D vector2D0 = Vector2D.ZERO;
+    Line line0 = new Line(vector2D0, (-119.352107946));
+    line0.reset(vector2D0, 2461.7259619);
+    Vector2D vector2D1 = Vector2D.NEGATIVE_INFINITY;
+    vector2D0.distance1(vector2D1);
+    SubLine subLine0 = line0.wholeHyperplane();
+    linkedList0.add((SubHyperplane<Euclidean2D>) subLine0);
+    SubLine subLine1 = line0.wholeHyperplane();
+    PolygonsSet polygonsSet0 = new PolygonsSet(linkedList0);
+    polygonsSet0.getVertices();
+    polygonsSet0.computeGeometricalProperties();
+    BSPTree<Euclidean2D> bSPTree0 = new BSPTree<Euclidean2D>(linkedList0);
+    BSPTree<Euclidean2D> bSPTree1 = new BSPTree<Euclidean2D>(subLine0, bSPTree0, bSPTree0, polygonsSet0);
+    subLine0.intersection(subLine1, true);
+    polygonsSet0.getBarycenter();
+    // Undeclared exception!
+    try {
+        vector2D1.getNorm();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math3.geometry.euclidean.twod.Line"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"@Override
+protected void computeGeometricalProperties() {
+    final Vector2D[][] v = getVertices();
+    if (v.length == 0) {
+        final BSPTree<Euclidean2D> tree = getTree(false);
+        if ((Boolean) tree.getAttribute()) {
+            // the instance covers the whole space
+            setSize(Double.POSITIVE_INFINITY);
+            setBarycenter(Vector2D.NaN);
+        } else {
+            setSize(0);
+            setBarycenter(new Vector2D(0, 0));
+        }
+    } else if (v[0][0] == null) {
+        // there is at least one open-loop: the polygon is infinite
+        setSize(Double.POSITIVE_INFINITY);
+        setBarycenter(Vector2D.NaN);
+    } else {
+        // all loops are closed, we compute some integrals around the shape
+        double sum = 0;
+        double sumX = 0;
+        double sumY = 0;
+        for (Vector2D[] loop : v) {
+            double x1 = loop[loop.length - 1].getX();
+            double y1 = loop[loop.length - 1].getY();
+            for (final Vector2D point : loop) {
+                final double x0 = x1;
+                final double y0 = y1;
+                x1 = point.getX();
+                y1 = point.getY();
+                final double factor = x0 * y1 - y0 * x1;
+                sum += factor;
+                sumX += factor * (x0 + x1);
+                sumY += factor * (y0 + y1);
+            }
+        }
+        if (sum < 0) {
+            // the polygon as a finite outside surrounded by an infinite inside
+            setSize(Double.POSITIVE_INFINITY);
+            setBarycenter(Vector2D.NaN);
+        } else {
+            setSize(sum / 2);
+            setBarycenter(new Vector2D(sumX / (3 * sum), sumY / (3 * sum)));
+        }
+    }
+}","public void test2525() throws Throwable {
+    PolygonsSet polygonsSet0 = new PolygonsSet(2652.69214209, 0.0, 0.0, (-2833.8567));
+    polygonsSet0.getVertices();
+    polygonsSet0.computeGeometricalProperties();
+    polygonsSet0.getVertices();
+    polygonsSet0.computeGeometricalProperties();
+}","/**
+ * {@inheritDoc}
+ */"
+"public Vector2D[][] getVertices() {
+    if (vertices == null) {
+        if (getTree(false).getCut() == null) {
+            vertices = new Vector2D[0][];
+        } else {
+            // sort the segments according to their start point
+            final SegmentsBuilder visitor = new SegmentsBuilder();
+            getTree(true).visit(visitor);
+            final AVLTree<ComparableSegment> sorted = visitor.getSorted();
+            // identify the loops, starting from the open ones
+            // (their start segments are naturally at the sorted set beginning)
+            final ArrayList<List<ComparableSegment>> loops = new ArrayList<List<ComparableSegment>>();
+            while (!sorted.isEmpty()) {
+                final AVLTree<ComparableSegment>.Node node = sorted.getSmallest();
+                final List<ComparableSegment> loop = followLoop(node, sorted);
+                if (loop != null) {
+                    loops.add(loop);
+                }
+            }
+            // tranform the loops in an array of arrays of points
+            vertices = new Vector2D[loops.size()][];
+            int i = 0;
+            for (final List<ComparableSegment> loop : loops) {
+                if (loop.size() < 2) {
+                    // single infinite line
+                    final Line line = loop.get(0).getLine();
+                    vertices[i++] = new Vector2D[] { null, line.toSpace(new Vector1D(-Float.MAX_VALUE)), line.toSpace(new Vector1D(+Float.MAX_VALUE)) };
+                } else if (loop.get(0).getStart() == null) {
+                    // open loop with at least one real point
+                    final Vector2D[] array = new Vector2D[loop.size() + 2];
+                    int j = 0;
+                    for (Segment segment : loop) {
+                        if (j == 0) {
+                            // null point and first dummy point
+                            double x = segment.getLine().toSubSpace(segment.getEnd()).getX();
+                            x -= FastMath.max(1.0, FastMath.abs(x / 2));
+                            array[j++] = null;
+                            array[j++] = segment.getLine().toSpace(new Vector1D(x));
+                        }
+                        if (j < (array.length - 1)) {
+                            // current point
+                            array[j++] = segment.getEnd();
+                        }
+                        if (j == (array.length - 1)) {
+                            // last dummy point
+                            double x = segment.getLine().toSubSpace(segment.getStart()).getX();
+                            x += FastMath.max(1.0, FastMath.abs(x / 2));
+                            array[j++] = segment.getLine().toSpace(new Vector1D(x));
+                        }
+                    }
+                    vertices[i++] = array;
+                } else {
+                    final Vector2D[] array = new Vector2D[loop.size()];
+                    int j = 0;
+                    for (Segment segment : loop) {
+                        array[j++] = segment.getStart();
+                    }
+                    vertices[i++] = array;
+                }
+            }
+        }
+    }
+    return vertices.clone();
+}","public void test2727() throws Throwable {
+    double double0 = (-1591.66662191364);
+    PolygonsSet polygonsSet0 = new PolygonsSet((-1591.66662191364), 0.0, (-1591.66662191364), 3.4028234663852886E38);
+    Vector2D vector2D0 = Vector2D.ZERO;
+    polygonsSet0.getVertices();
+    Line line0 = new Line(vector2D0, 3.4028234663852886E38);
+    SubLine subLine0 = line0.wholeHyperplane();
+    BSPTree<Euclidean2D> bSPTree0 = polygonsSet0.getTree(true);
+    bSPTree0.getParent();
+    SubOrientedPoint subOrientedPoint0 = new SubOrientedPoint((Hyperplane<Euclidean1D>) null, (Region<Euclidean1D>) null);
+    BSPTree<Euclidean2D> bSPTree1 = new BSPTree<Euclidean2D>(subLine0, (BSPTree<Euclidean2D>) null, bSPTree0, subOrientedPoint0);
+    polygonsSet0.buildNew(bSPTree1);
+    polygonsSet0.getSize();
+    polygonsSet0.getVertices();
+    polygonsSet0.getBarycenter();
+    // Undeclared exception!
+    try {
+        polygonsSet0.getVertices();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math3.geometry.partitioning.BSPTree"", e);
+    }
+}","/**
+ * Get the vertices of the polygon.
+ * <p>The polygon boundary can be represented as an array of loops,
+ * each loop being itself an array of vertices.</p>
+ * <p>In order to identify open loops which start and end by
+ * infinite edges, the open loops arrays start with a null point. In
+ * this case, the first non null point and the last point of the
+ * array do not represent real vertices, they are dummy points
+ * intended only to get the direction of the first and last edge. An
+ * open loop consisting of a single infinite line will therefore be
+ * represented by a three elements array with one null point
+ * followed by two dummy points. The open loops are always the first
+ * ones in the loops array.</p>
+ * <p>If the polygon has no boundary at all, a zero length loop
+ * array will be returned.</p>
+ * <p>All line segments in the various loops have the inside of the
+ * region on their left side and the outside on their right side
+ * when moving in the underlying line direction. This means that
+ * closed loops surrounding finite areas obey the direct
+ * trigonometric orientation.</p>
+ * @return vertices of the polygon, organized as oriented boundary
+ * loops with the open loops first (the returned value is guaranteed
+ * to be non-null)
+ */"
+"public Vector2D[][] getVertices() {
+    if (vertices == null) {
+        if (getTree(false).getCut() == null) {
+            vertices = new Vector2D[0][];
+        } else {
+            // sort the segments according to their start point
+            final SegmentsBuilder visitor = new SegmentsBuilder();
+            getTree(true).visit(visitor);
+            final AVLTree<ComparableSegment> sorted = visitor.getSorted();
+            // identify the loops, starting from the open ones
+            // (their start segments are naturally at the sorted set beginning)
+            final ArrayList<List<ComparableSegment>> loops = new ArrayList<List<ComparableSegment>>();
+            while (!sorted.isEmpty()) {
+                final AVLTree<ComparableSegment>.Node node = sorted.getSmallest();
+                final List<ComparableSegment> loop = followLoop(node, sorted);
+                if (loop != null) {
+                    loops.add(loop);
+                }
+            }
+            // tranform the loops in an array of arrays of points
+            vertices = new Vector2D[loops.size()][];
+            int i = 0;
+            for (final List<ComparableSegment> loop : loops) {
+                if (loop.size() < 2) {
+                    // single infinite line
+                    final Line line = loop.get(0).getLine();
+                    vertices[i++] = new Vector2D[] { null, line.toSpace(new Vector1D(-Float.MAX_VALUE)), line.toSpace(new Vector1D(+Float.MAX_VALUE)) };
+                } else if (loop.get(0).getStart() == null) {
+                    // open loop with at least one real point
+                    final Vector2D[] array = new Vector2D[loop.size() + 2];
+                    int j = 0;
+                    for (Segment segment : loop) {
+                        if (j == 0) {
+                            // null point and first dummy point
+                            double x = segment.getLine().toSubSpace(segment.getEnd()).getX();
+                            x -= FastMath.max(1.0, FastMath.abs(x / 2));
+                            array[j++] = null;
+                            array[j++] = segment.getLine().toSpace(new Vector1D(x));
+                        }
+                        if (j < (array.length - 1)) {
+                            // current point
+                            array[j++] = segment.getEnd();
+                        }
+                        if (j == (array.length - 1)) {
+                            // last dummy point
+                            double x = segment.getLine().toSubSpace(segment.getStart()).getX();
+                            x += FastMath.max(1.0, FastMath.abs(x / 2));
+                            array[j++] = segment.getLine().toSpace(new Vector1D(x));
+                        }
+                    }
+                    vertices[i++] = array;
+                } else {
+                    final Vector2D[] array = new Vector2D[loop.size()];
+                    int j = 0;
+                    for (Segment segment : loop) {
+                        array[j++] = segment.getStart();
+                    }
+                    vertices[i++] = array;
+                }
+            }
+        }
+    }
+    return vertices.clone();
+}","public void test2828() throws Throwable {
+    double double0 = (-1591.66662191364);
+    PolygonsSet polygonsSet0 = new PolygonsSet((-1591.66662191364), 0.0, (-1591.66662191364), 2609.623610342003);
+    polygonsSet0.computeGeometricalProperties();
+    Vector2D vector2D0 = Vector2D.ZERO;
+    Line line0 = new Line(vector2D0, 2609.623610342003);
+    SubLine subLine0 = line0.wholeHyperplane();
+    BSPTree<Euclidean2D> bSPTree0 = polygonsSet0.getTree(true);
+    bSPTree0.getParent();
+    SubOrientedPoint subOrientedPoint0 = new SubOrientedPoint((Hyperplane<Euclidean1D>) null, (Region<Euclidean1D>) null);
+    BSPTree<Euclidean2D> bSPTree1 = new BSPTree<Euclidean2D>(subLine0, (BSPTree<Euclidean2D>) null, bSPTree0, subOrientedPoint0);
+    polygonsSet0.buildNew(bSPTree1);
+    polygonsSet0.getSize();
+    polygonsSet0.getVertices();
+    polygonsSet0.getBarycenter();
+    // Undeclared exception!
+    try {
+        polygonsSet0.getVertices();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * Get the vertices of the polygon.
+ * <p>The polygon boundary can be represented as an array of loops,
+ * each loop being itself an array of vertices.</p>
+ * <p>In order to identify open loops which start and end by
+ * infinite edges, the open loops arrays start with a null point. In
+ * this case, the first non null point and the last point of the
+ * array do not represent real vertices, they are dummy points
+ * intended only to get the direction of the first and last edge. An
+ * open loop consisting of a single infinite line will therefore be
+ * represented by a three elements array with one null point
+ * followed by two dummy points. The open loops are always the first
+ * ones in the loops array.</p>
+ * <p>If the polygon has no boundary at all, a zero length loop
+ * array will be returned.</p>
+ * <p>All line segments in the various loops have the inside of the
+ * region on their left side and the outside on their right side
+ * when moving in the underlying line direction. This means that
+ * closed loops surrounding finite areas obey the direct
+ * trigonometric orientation.</p>
+ * @return vertices of the polygon, organized as oriented boundary
+ * loops with the open loops first (the returned value is guaranteed
+ * to be non-null)
+ */"
+"public Vector2D[][] getVertices() {
+    if (vertices == null) {
+        if (getTree(false).getCut() == null) {
+            vertices = new Vector2D[0][];
+        } else {
+            // sort the segments according to their start point
+            final SegmentsBuilder visitor = new SegmentsBuilder();
+            getTree(true).visit(visitor);
+            final AVLTree<ComparableSegment> sorted = visitor.getSorted();
+            // identify the loops, starting from the open ones
+            // (their start segments are naturally at the sorted set beginning)
+            final ArrayList<List<ComparableSegment>> loops = new ArrayList<List<ComparableSegment>>();
+            while (!sorted.isEmpty()) {
+                final AVLTree<ComparableSegment>.Node node = sorted.getSmallest();
+                final List<ComparableSegment> loop = followLoop(node, sorted);
+                if (loop != null) {
+                    loops.add(loop);
+                }
+            }
+            // tranform the loops in an array of arrays of points
+            vertices = new Vector2D[loops.size()][];
+            int i = 0;
+            for (final List<ComparableSegment> loop : loops) {
+                if (loop.size() < 2) {
+                    // single infinite line
+                    final Line line = loop.get(0).getLine();
+                    vertices[i++] = new Vector2D[] { null, line.toSpace(new Vector1D(-Float.MAX_VALUE)), line.toSpace(new Vector1D(+Float.MAX_VALUE)) };
+                } else if (loop.get(0).getStart() == null) {
+                    // open loop with at least one real point
+                    final Vector2D[] array = new Vector2D[loop.size() + 2];
+                    int j = 0;
+                    for (Segment segment : loop) {
+                        if (j == 0) {
+                            // null point and first dummy point
+                            double x = segment.getLine().toSubSpace(segment.getEnd()).getX();
+                            x -= FastMath.max(1.0, FastMath.abs(x / 2));
+                            array[j++] = null;
+                            array[j++] = segment.getLine().toSpace(new Vector1D(x));
+                        }
+                        if (j < (array.length - 1)) {
+                            // current point
+                            array[j++] = segment.getEnd();
+                        }
+                        if (j == (array.length - 1)) {
+                            // last dummy point
+                            double x = segment.getLine().toSubSpace(segment.getStart()).getX();
+                            x += FastMath.max(1.0, FastMath.abs(x / 2));
+                            array[j++] = segment.getLine().toSpace(new Vector1D(x));
+                        }
+                    }
+                    vertices[i++] = array;
+                } else {
+                    final Vector2D[] array = new Vector2D[loop.size()];
+                    int j = 0;
+                    for (Segment segment : loop) {
+                        array[j++] = segment.getStart();
+                    }
+                    vertices[i++] = array;
+                }
+            }
+        }
+    }
+    return vertices.clone();
+}","public void test2929() throws Throwable {
+    double[] doubleArray0 = new double[1];
+    BSPTree<Euclidean2D> bSPTree0 = new BSPTree<Euclidean2D>();
+    PolygonsSet polygonsSet0 = new PolygonsSet(3.4028234663852886E38, (-1.0E-10), 834.34864486553, (-1669.7));
+    polygonsSet0.getVertices();
+}","/**
+ * Get the vertices of the polygon.
+ * <p>The polygon boundary can be represented as an array of loops,
+ * each loop being itself an array of vertices.</p>
+ * <p>In order to identify open loops which start and end by
+ * infinite edges, the open loops arrays start with a null point. In
+ * this case, the first non null point and the last point of the
+ * array do not represent real vertices, they are dummy points
+ * intended only to get the direction of the first and last edge. An
+ * open loop consisting of a single infinite line will therefore be
+ * represented by a three elements array with one null point
+ * followed by two dummy points. The open loops are always the first
+ * ones in the loops array.</p>
+ * <p>If the polygon has no boundary at all, a zero length loop
+ * array will be returned.</p>
+ * <p>All line segments in the various loops have the inside of the
+ * region on their left side and the outside on their right side
+ * when moving in the underlying line direction. This means that
+ * closed loops surrounding finite areas obey the direct
+ * trigonometric orientation.</p>
+ * @return vertices of the polygon, organized as oriented boundary
+ * loops with the open loops first (the returned value is guaranteed
+ * to be non-null)
+ */"
+"public Vector2D[][] getVertices() {
+    if (vertices == null) {
+        if (getTree(false).getCut() == null) {
+            vertices = new Vector2D[0][];
+        } else {
+            // sort the segments according to their start point
+            final SegmentsBuilder visitor = new SegmentsBuilder();
+            getTree(true).visit(visitor);
+            final AVLTree<ComparableSegment> sorted = visitor.getSorted();
+            // identify the loops, starting from the open ones
+            // (their start segments are naturally at the sorted set beginning)
+            final ArrayList<List<ComparableSegment>> loops = new ArrayList<List<ComparableSegment>>();
+            while (!sorted.isEmpty()) {
+                final AVLTree<ComparableSegment>.Node node = sorted.getSmallest();
+                final List<ComparableSegment> loop = followLoop(node, sorted);
+                if (loop != null) {
+                    loops.add(loop);
+                }
+            }
+            // tranform the loops in an array of arrays of points
+            vertices = new Vector2D[loops.size()][];
+            int i = 0;
+            for (final List<ComparableSegment> loop : loops) {
+                if (loop.size() < 2) {
+                    // single infinite line
+                    final Line line = loop.get(0).getLine();
+                    vertices[i++] = new Vector2D[] { null, line.toSpace(new Vector1D(-Float.MAX_VALUE)), line.toSpace(new Vector1D(+Float.MAX_VALUE)) };
+                } else if (loop.get(0).getStart() == null) {
+                    // open loop with at least one real point
+                    final Vector2D[] array = new Vector2D[loop.size() + 2];
+                    int j = 0;
+                    for (Segment segment : loop) {
+                        if (j == 0) {
+                            // null point and first dummy point
+                            double x = segment.getLine().toSubSpace(segment.getEnd()).getX();
+                            x -= FastMath.max(1.0, FastMath.abs(x / 2));
+                            array[j++] = null;
+                            array[j++] = segment.getLine().toSpace(new Vector1D(x));
+                        }
+                        if (j < (array.length - 1)) {
+                            // current point
+                            array[j++] = segment.getEnd();
+                        }
+                        if (j == (array.length - 1)) {
+                            // last dummy point
+                            double x = segment.getLine().toSubSpace(segment.getStart()).getX();
+                            x += FastMath.max(1.0, FastMath.abs(x / 2));
+                            array[j++] = segment.getLine().toSpace(new Vector1D(x));
+                        }
+                    }
+                    vertices[i++] = array;
+                } else {
+                    final Vector2D[] array = new Vector2D[loop.size()];
+                    int j = 0;
+                    for (Segment segment : loop) {
+                        array[j++] = segment.getStart();
+                    }
+                    vertices[i++] = array;
+                }
+            }
+        }
+    }
+    return vertices.clone();
+}","public void test3030() throws Throwable {
+    PolygonsSet polygonsSet0 = new PolygonsSet(1.5038586206539933E7, (-20.0), 3866.154084346884, (-20.0));
+    BSPTree<Euclidean2D> bSPTree0 = polygonsSet0.getTree(true);
+    BSPTree<Euclidean2D> bSPTree1 = bSPTree0.getMinus();
+    BSPTree<Euclidean2D> bSPTree2 = bSPTree1.getPlus();
+    Vector<Euclidean2D> vector0 = polygonsSet0.getBarycenter();
+    BSPTree<Euclidean2D> bSPTree3 = bSPTree2.getCell(vector0);
+    PolygonsSet polygonsSet1 = polygonsSet0.buildNew(bSPTree3);
+    polygonsSet1.computeGeometricalProperties();
+    polygonsSet0.computeGeometricalProperties();
+    Vector2D vector2D0 = Vector2D.ZERO;
+    SubLine subLine0 = new SubLine(vector2D0, vector2D0);
+    bSPTree2.split(subLine0);
+    polygonsSet0.getVertices();
+    BSPTreeVisitor<Euclidean2D> bSPTreeVisitor0 = (BSPTreeVisitor<Euclidean2D>) mock(BSPTreeVisitor.class, new ViolatedAssumptionAnswer());
+    doReturn((BSPTreeVisitor.Order) null).when(bSPTreeVisitor0).visitOrder(nullable(org.apache.commons.math3.geometry.partitioning.BSPTree.class));
+    bSPTree0.visit(bSPTreeVisitor0);
+    polygonsSet1.getVertices();
+    polygonsSet1.getVertices();
+    polygonsSet1.getVertices();
+}","/**
+ * Get the vertices of the polygon.
+ * <p>The polygon boundary can be represented as an array of loops,
+ * each loop being itself an array of vertices.</p>
+ * <p>In order to identify open loops which start and end by
+ * infinite edges, the open loops arrays start with a null point. In
+ * this case, the first non null point and the last point of the
+ * array do not represent real vertices, they are dummy points
+ * intended only to get the direction of the first and last edge. An
+ * open loop consisting of a single infinite line will therefore be
+ * represented by a three elements array with one null point
+ * followed by two dummy points. The open loops are always the first
+ * ones in the loops array.</p>
+ * <p>If the polygon has no boundary at all, a zero length loop
+ * array will be returned.</p>
+ * <p>All line segments in the various loops have the inside of the
+ * region on their left side and the outside on their right side
+ * when moving in the underlying line direction. This means that
+ * closed loops surrounding finite areas obey the direct
+ * trigonometric orientation.</p>
+ * @return vertices of the polygon, organized as oriented boundary
+ * loops with the open loops first (the returned value is guaranteed
+ * to be non-null)
+ */"
+"public Vector2D[][] getVertices() {
+    if (vertices == null) {
+        if (getTree(false).getCut() == null) {
+            vertices = new Vector2D[0][];
+        } else {
+            // sort the segments according to their start point
+            final SegmentsBuilder visitor = new SegmentsBuilder();
+            getTree(true).visit(visitor);
+            final AVLTree<ComparableSegment> sorted = visitor.getSorted();
+            // identify the loops, starting from the open ones
+            // (their start segments are naturally at the sorted set beginning)
+            final ArrayList<List<ComparableSegment>> loops = new ArrayList<List<ComparableSegment>>();
+            while (!sorted.isEmpty()) {
+                final AVLTree<ComparableSegment>.Node node = sorted.getSmallest();
+                final List<ComparableSegment> loop = followLoop(node, sorted);
+                if (loop != null) {
+                    loops.add(loop);
+                }
+            }
+            // tranform the loops in an array of arrays of points
+            vertices = new Vector2D[loops.size()][];
+            int i = 0;
+            for (final List<ComparableSegment> loop : loops) {
+                if (loop.size() < 2) {
+                    // single infinite line
+                    final Line line = loop.get(0).getLine();
+                    vertices[i++] = new Vector2D[] { null, line.toSpace(new Vector1D(-Float.MAX_VALUE)), line.toSpace(new Vector1D(+Float.MAX_VALUE)) };
+                } else if (loop.get(0).getStart() == null) {
+                    // open loop with at least one real point
+                    final Vector2D[] array = new Vector2D[loop.size() + 2];
+                    int j = 0;
+                    for (Segment segment : loop) {
+                        if (j == 0) {
+                            // null point and first dummy point
+                            double x = segment.getLine().toSubSpace(segment.getEnd()).getX();
+                            x -= FastMath.max(1.0, FastMath.abs(x / 2));
+                            array[j++] = null;
+                            array[j++] = segment.getLine().toSpace(new Vector1D(x));
+                        }
+                        if (j < (array.length - 1)) {
+                            // current point
+                            array[j++] = segment.getEnd();
+                        }
+                        if (j == (array.length - 1)) {
+                            // last dummy point
+                            double x = segment.getLine().toSubSpace(segment.getStart()).getX();
+                            x += FastMath.max(1.0, FastMath.abs(x / 2));
+                            array[j++] = segment.getLine().toSpace(new Vector1D(x));
+                        }
+                    }
+                    vertices[i++] = array;
+                } else {
+                    final Vector2D[] array = new Vector2D[loop.size()];
+                    int j = 0;
+                    for (Segment segment : loop) {
+                        array[j++] = segment.getStart();
+                    }
+                    vertices[i++] = array;
+                }
+            }
+        }
+    }
+    return vertices.clone();
+}","public void test3131() throws Throwable {
+    PolygonsSet polygonsSet0 = new PolygonsSet((-1.0E-10), 4.503599627370496E15, (-1.0E-10), 4.503599627370496E15);
+    AffineTransform affineTransform0 = AffineTransform.getRotateInstance(0.5000000000042687, 4.503599627370496E15, (-1.0E-10), 911.0);
+    Transform<Euclidean2D, Euclidean1D> transform0 = Line.getTransform(affineTransform0);
+    polygonsSet0.applyTransform(transform0);
+    polygonsSet0.getVertices();
+}","/**
+ * Get the vertices of the polygon.
+ * <p>The polygon boundary can be represented as an array of loops,
+ * each loop being itself an array of vertices.</p>
+ * <p>In order to identify open loops which start and end by
+ * infinite edges, the open loops arrays start with a null point. In
+ * this case, the first non null point and the last point of the
+ * array do not represent real vertices, they are dummy points
+ * intended only to get the direction of the first and last edge. An
+ * open loop consisting of a single infinite line will therefore be
+ * represented by a three elements array with one null point
+ * followed by two dummy points. The open loops are always the first
+ * ones in the loops array.</p>
+ * <p>If the polygon has no boundary at all, a zero length loop
+ * array will be returned.</p>
+ * <p>All line segments in the various loops have the inside of the
+ * region on their left side and the outside on their right side
+ * when moving in the underlying line direction. This means that
+ * closed loops surrounding finite areas obey the direct
+ * trigonometric orientation.</p>
+ * @return vertices of the polygon, organized as oriented boundary
+ * loops with the open loops first (the returned value is guaranteed
+ * to be non-null)
+ */"
+"public BSPTree<S> split(final SubHyperplane<S> sub) {
+    if (cut == null) {
+        return new BSPTree<S>(sub, copySelf(), new BSPTree<S>(attribute), null);
+    }
+    final Hyperplane<S> cHyperplane = cut.getHyperplane();
+    final Hyperplane<S> sHyperplane = sub.getHyperplane();
+    switch(sub.side(cHyperplane)) {
+        case PLUS:
+            {
+                // the partitioning sub-hyperplane is entirely in the plus sub-tree
+                final BSPTree<S> split = plus.split(sub);
+                if (cut.side(sHyperplane) == Side.PLUS) {
+                    split.plus = new BSPTree<S>(cut.copySelf(), split.plus, minus.copySelf(), attribute);
+                    split.plus.condense();
+                    split.plus.parent = split;
+                } else {
+                    split.minus = new BSPTree<S>(cut.copySelf(), split.minus, minus.copySelf(), attribute);
+                    split.minus.condense();
+                    split.minus.parent = split;
+                }
+                return split;
+            }
+        case MINUS:
+            {
+                // the partitioning sub-hyperplane is entirely in the minus sub-tree
+                final BSPTree<S> split = minus.split(sub);
+                if (cut.side(sHyperplane) == Side.PLUS) {
+                    split.plus = new BSPTree<S>(cut.copySelf(), plus.copySelf(), split.plus, attribute);
+                    split.plus.condense();
+                    split.plus.parent = split;
+                } else {
+                    split.minus = new BSPTree<S>(cut.copySelf(), plus.copySelf(), split.minus, attribute);
+                    split.minus.condense();
+                    split.minus.parent = split;
+                }
+                return split;
+            }
+        case BOTH:
+            {
+                final SubHyperplane.SplitSubHyperplane<S> cutParts = cut.split(sHyperplane);
+                final SubHyperplane.SplitSubHyperplane<S> subParts = sub.split(cHyperplane);
+                final BSPTree<S> split = new BSPTree<S>(sub, plus.split(subParts.getPlus()), minus.split(subParts.getMinus()), null);
+                split.plus.cut = cutParts.getPlus();
+                split.minus.cut = cutParts.getMinus();
+                final BSPTree<S> tmp = split.plus.minus;
+                split.plus.minus = split.minus.plus;
+                split.plus.minus.parent = split.plus;
+                split.minus.plus = tmp;
+                split.minus.plus.parent = split.minus;
+                split.plus.condense();
+                split.minus.condense();
+                return split;
+            }
+        default:
+            return cHyperplane.sameOrientationAs(sHyperplane) ? new BSPTree<S>(sub, plus.copySelf(), minus.copySelf(), attribute) : new BSPTree<S>(sub, minus.copySelf(), plus.copySelf(), attribute);
+    }
+}","public void test3232() throws Throwable {
+    PolygonsSet polygonsSet0 = new PolygonsSet(1.5038586206539933E7, (-20.0), 3866.154084346884, (-20.0));
+    BSPTree<Euclidean2D> bSPTree0 = polygonsSet0.getTree(true);
+    BSPTree<Euclidean2D> bSPTree1 = bSPTree0.getMinus();
+    BSPTree<Euclidean2D> bSPTree2 = bSPTree1.getPlus();
+    polygonsSet0.getBarycenter();
+    BSPTree<Euclidean2D> bSPTree3 = polygonsSet0.getTree(true);
+    PolygonsSet polygonsSet1 = polygonsSet0.buildNew(bSPTree3);
+    polygonsSet1.computeGeometricalProperties();
+    polygonsSet0.computeGeometricalProperties();
+    Vector2D vector2D0 = Vector2D.ZERO;
+    SubLine subLine0 = new SubLine(vector2D0, vector2D0);
+    // Undeclared exception!
+    bSPTree2.split(subLine0);
+}","/**
+ * Split a BSP tree by an external sub-hyperplane.
+ * <p>Split a tree in two halves, on each side of the
+ * sub-hyperplane. The instance is not modified.</p>
+ * <p>The tree returned is not upward-consistent: despite all of its
+ * sub-trees cut sub-hyperplanes (including its own cut
+ * sub-hyperplane) are bounded to the current cell, it is <em>not</em>
+ * attached to any parent tree yet. This tree is intended to be
+ * later inserted into an higher level tree.</p>
+ * <p>The algorithm used here is the one given in Naylor, Amanatides
+ * and Thibault paper (section III, Binary Partitioning of a BSP
+ * Tree).</p>
+ * @param sub partitioning sub-hyperplane, must be already clipped
+ * to the convex region represented by the instance, will be used as
+ * the cut sub-hyperplane of the returned tree
+ * @return a tree having the specified sub-hyperplane as its cut
+ * sub-hyperplane, the two parts of the split instance as its two
+ * sub-trees and a null parent
+ */"
+"@Override
+public PolygonsSet buildNew(final BSPTree<Euclidean2D> tree) {
+    return new PolygonsSet(tree);
+}","public void test3333() throws Throwable {
+    BSPTree<Euclidean2D> bSPTree0 = new BSPTree<Euclidean2D>();
+    PolygonsSet polygonsSet0 = new PolygonsSet(3.4028234663852886E38, 0.0, 0.0, (-1669.7));
+    Vector2D vector2D0 = new Vector2D(0.0, (-1184.552711359));
+    SubLine subLine0 = new SubLine(vector2D0, vector2D0);
+    polygonsSet0.intersection(subLine0);
+    polygonsSet0.getVertices();
+    polygonsSet0.buildNew(bSPTree0);
+}","/**
+ * {@inheritDoc}
+ */"
+"public Vector2D[][] getVertices() {
+    if (vertices == null) {
+        if (getTree(false).getCut() == null) {
+            vertices = new Vector2D[0][];
+        } else {
+            // sort the segments according to their start point
+            final SegmentsBuilder visitor = new SegmentsBuilder();
+            getTree(true).visit(visitor);
+            final AVLTree<ComparableSegment> sorted = visitor.getSorted();
+            // identify the loops, starting from the open ones
+            // (their start segments are naturally at the sorted set beginning)
+            final ArrayList<List<ComparableSegment>> loops = new ArrayList<List<ComparableSegment>>();
+            while (!sorted.isEmpty()) {
+                final AVLTree<ComparableSegment>.Node node = sorted.getSmallest();
+                final List<ComparableSegment> loop = followLoop(node, sorted);
+                if (loop != null) {
+                    loops.add(loop);
+                }
+            }
+            // tranform the loops in an array of arrays of points
+            vertices = new Vector2D[loops.size()][];
+            int i = 0;
+            for (final List<ComparableSegment> loop : loops) {
+                if (loop.size() < 2) {
+                    // single infinite line
+                    final Line line = loop.get(0).getLine();
+                    vertices[i++] = new Vector2D[] { null, line.toSpace(new Vector1D(-Float.MAX_VALUE)), line.toSpace(new Vector1D(+Float.MAX_VALUE)) };
+                } else if (loop.get(0).getStart() == null) {
+                    // open loop with at least one real point
+                    final Vector2D[] array = new Vector2D[loop.size() + 2];
+                    int j = 0;
+                    for (Segment segment : loop) {
+                        if (j == 0) {
+                            // null point and first dummy point
+                            double x = segment.getLine().toSubSpace(segment.getEnd()).getX();
+                            x -= FastMath.max(1.0, FastMath.abs(x / 2));
+                            array[j++] = null;
+                            array[j++] = segment.getLine().toSpace(new Vector1D(x));
+                        }
+                        if (j < (array.length - 1)) {
+                            // current point
+                            array[j++] = segment.getEnd();
+                        }
+                        if (j == (array.length - 1)) {
+                            // last dummy point
+                            double x = segment.getLine().toSubSpace(segment.getStart()).getX();
+                            x += FastMath.max(1.0, FastMath.abs(x / 2));
+                            array[j++] = segment.getLine().toSpace(new Vector1D(x));
+                        }
+                    }
+                    vertices[i++] = array;
+                } else {
+                    final Vector2D[] array = new Vector2D[loop.size()];
+                    int j = 0;
+                    for (Segment segment : loop) {
+                        array[j++] = segment.getStart();
+                    }
+                    vertices[i++] = array;
+                }
+            }
+        }
+    }
+    return vertices.clone();
+}","public void test3434() throws Throwable {
+    LinkedList<SubHyperplane<Euclidean2D>> linkedList0 = new LinkedList<SubHyperplane<Euclidean2D>>();
+    Vector2D vector2D0 = new Vector2D(1582.4253903932238, 1.5038605126792697E7);
+    Vector2D vector2D1 = new Vector2D(1589.18882882929, vector2D0, 2570.66, vector2D0, 1.5038605126792697E7, vector2D0, 85.706, vector2D0);
+    Line line0 = new Line(vector2D0, vector2D1);
+    Segment segment0 = new Segment(vector2D0, vector2D0, line0);
+    SubLine subLine0 = new SubLine(segment0);
+    Line line1 = new Line(vector2D0, (-5283.7447));
+    IntervalsSet intervalsSet0 = new IntervalsSet((-425.2445), (-5283.7447));
+    BSPTree<Euclidean1D> bSPTree0 = new BSPTree<Euclidean1D>(linkedList0);
+    IntervalsSet intervalsSet1 = intervalsSet0.buildNew(bSPTree0);
+    AbstractSubHyperplane<Euclidean2D, Euclidean1D> abstractSubHyperplane0 = subLine0.buildNew(line1, intervalsSet1);
+    linkedList0.add((SubHyperplane<Euclidean2D>) abstractSubHyperplane0);
+    PolygonsSet polygonsSet0 = new PolygonsSet(linkedList0);
+    polygonsSet0.getVertices();
+}","/**
+ * Get the vertices of the polygon.
+ * <p>The polygon boundary can be represented as an array of loops,
+ * each loop being itself an array of vertices.</p>
+ * <p>In order to identify open loops which start and end by
+ * infinite edges, the open loops arrays start with a null point. In
+ * this case, the first non null point and the last point of the
+ * array do not represent real vertices, they are dummy points
+ * intended only to get the direction of the first and last edge. An
+ * open loop consisting of a single infinite line will therefore be
+ * represented by a three elements array with one null point
+ * followed by two dummy points. The open loops are always the first
+ * ones in the loops array.</p>
+ * <p>If the polygon has no boundary at all, a zero length loop
+ * array will be returned.</p>
+ * <p>All line segments in the various loops have the inside of the
+ * region on their left side and the outside on their right side
+ * when moving in the underlying line direction. This means that
+ * closed loops surrounding finite areas obey the direct
+ * trigonometric orientation.</p>
+ * @return vertices of the polygon, organized as oriented boundary
+ * loops with the open loops first (the returned value is guaranteed
+ * to be non-null)
+ */"
+"public Vector2D[][] getVertices() {
+    if (vertices == null) {
+        if (getTree(false).getCut() == null) {
+            vertices = new Vector2D[0][];
+        } else {
+            // sort the segments according to their start point
+            final SegmentsBuilder visitor = new SegmentsBuilder();
+            getTree(true).visit(visitor);
+            final AVLTree<ComparableSegment> sorted = visitor.getSorted();
+            // identify the loops, starting from the open ones
+            // (their start segments are naturally at the sorted set beginning)
+            final ArrayList<List<ComparableSegment>> loops = new ArrayList<List<ComparableSegment>>();
+            while (!sorted.isEmpty()) {
+                final AVLTree<ComparableSegment>.Node node = sorted.getSmallest();
+                final List<ComparableSegment> loop = followLoop(node, sorted);
+                if (loop != null) {
+                    loops.add(loop);
+                }
+            }
+            // tranform the loops in an array of arrays of points
+            vertices = new Vector2D[loops.size()][];
+            int i = 0;
+            for (final List<ComparableSegment> loop : loops) {
+                if (loop.size() < 2) {
+                    // single infinite line
+                    final Line line = loop.get(0).getLine();
+                    vertices[i++] = new Vector2D[] { null, line.toSpace(new Vector1D(-Float.MAX_VALUE)), line.toSpace(new Vector1D(+Float.MAX_VALUE)) };
+                } else if (loop.get(0).getStart() == null) {
+                    // open loop with at least one real point
+                    final Vector2D[] array = new Vector2D[loop.size() + 2];
+                    int j = 0;
+                    for (Segment segment : loop) {
+                        if (j == 0) {
+                            // null point and first dummy point
+                            double x = segment.getLine().toSubSpace(segment.getEnd()).getX();
+                            x -= FastMath.max(1.0, FastMath.abs(x / 2));
+                            array[j++] = null;
+                            array[j++] = segment.getLine().toSpace(new Vector1D(x));
+                        }
+                        if (j < (array.length - 1)) {
+                            // current point
+                            array[j++] = segment.getEnd();
+                        }
+                        if (j == (array.length - 1)) {
+                            // last dummy point
+                            double x = segment.getLine().toSubSpace(segment.getStart()).getX();
+                            x += FastMath.max(1.0, FastMath.abs(x / 2));
+                            array[j++] = segment.getLine().toSpace(new Vector1D(x));
+                        }
+                    }
+                    vertices[i++] = array;
+                } else {
+                    final Vector2D[] array = new Vector2D[loop.size()];
+                    int j = 0;
+                    for (Segment segment : loop) {
+                        array[j++] = segment.getStart();
+                    }
+                    vertices[i++] = array;
+                }
+            }
+        }
+    }
+    return vertices.clone();
+}","public void test3535() throws Throwable {
+    PolygonsSet polygonsSet0 = new PolygonsSet(1.5038586206539933E7, (-20.0), 3866.154084346884, (-20.0));
+    BSPTree<Euclidean2D> bSPTree0 = polygonsSet0.getTree(true);
+    bSPTree0.getPlus();
+    polygonsSet0.getBarycenter();
+    polygonsSet0.computeGeometricalProperties();
+    PolygonsSet polygonsSet1 = polygonsSet0.buildNew(bSPTree0);
+    polygonsSet1.getVertices();
+}","/**
+ * Get the vertices of the polygon.
+ * <p>The polygon boundary can be represented as an array of loops,
+ * each loop being itself an array of vertices.</p>
+ * <p>In order to identify open loops which start and end by
+ * infinite edges, the open loops arrays start with a null point. In
+ * this case, the first non null point and the last point of the
+ * array do not represent real vertices, they are dummy points
+ * intended only to get the direction of the first and last edge. An
+ * open loop consisting of a single infinite line will therefore be
+ * represented by a three elements array with one null point
+ * followed by two dummy points. The open loops are always the first
+ * ones in the loops array.</p>
+ * <p>If the polygon has no boundary at all, a zero length loop
+ * array will be returned.</p>
+ * <p>All line segments in the various loops have the inside of the
+ * region on their left side and the outside on their right side
+ * when moving in the underlying line direction. This means that
+ * closed loops surrounding finite areas obey the direct
+ * trigonometric orientation.</p>
+ * @return vertices of the polygon, organized as oriented boundary
+ * loops with the open loops first (the returned value is guaranteed
+ * to be non-null)
+ */"

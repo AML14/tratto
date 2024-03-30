@@ -1,0 +1,1264 @@
+focal_method,test_prefix,docstring
+"int processResults(Result result, JSModule[] modules, B options) throws FlagUsageException, IOException {
+    if (config.computePhaseOrdering) {
+        return 0;
+    }
+    if (config.printPassGraph) {
+        if (compiler.getRoot() == null) {
+            return 1;
+        } else {
+            out.append(DotFormatter.toDot(compiler.getPassConfig().getPassGraph()));
+            out.println();
+            return 0;
+        }
+    }
+    if (config.printAst) {
+        if (compiler.getRoot() == null) {
+            return 1;
+        } else {
+            ControlFlowGraph<Node> cfg = compiler.computeCFG();
+            DotFormatter.appendDot(compiler.getRoot(), cfg, out);
+            out.println();
+            return 0;
+        }
+    }
+    if (config.printTree) {
+        if (compiler.getRoot() == null) {
+            out.println(""Code contains errors; no tree was generated."");
+            return 1;
+        } else {
+            compiler.getRoot().appendStringTree(out);
+            out.println("""");
+            return 0;
+        }
+    }
+    if (result.success) {
+        if (modules == null) {
+            writeOutput(out, compiler, compiler.toSource(), config.outputWrapper, config.outputWrapperMarker);
+            // Output the source map if requested.
+            outputSourceMap(options, options.jsOutputFile);
+        } else {
+            String moduleFilePrefix = config.moduleOutputPathPrefix;
+            maybeCreateDirsForPath(moduleFilePrefix);
+            Map<String, String> moduleWrappers = parseModuleWrappers(config.moduleWrapper, modules);
+            // If the source map path is in fact a pattern for each
+            // module, create a stream per-module. Otherwise, create
+            // a single source map.
+            PrintStream mapOut = null;
+            if (!shouldGenerateMapPerModule(options)) {
+                mapOut = openSourceMapStream(options, moduleFilePrefix);
+            }
+            for (JSModule m : modules) {
+                if (shouldGenerateMapPerModule(options)) {
+                    mapOut = openSourceMapStream(options, moduleFilePrefix + m.getName() + "".js"");
+                }
+                PrintStream ps = new PrintStream(new FileOutputStream(moduleFilePrefix + m.getName() + "".js""));
+                if (options.sourceMapOutputPath != null) {
+                    compiler.getSourceMap().reset();
+                }
+                writeOutput(ps, compiler, compiler.toSource(m), moduleWrappers.get(m.getName()), ""%s"");
+                if (options.sourceMapOutputPath != null) {
+                    compiler.getSourceMap().appendTo(mapOut, m.getName());
+                }
+                ps.close();
+                if (shouldGenerateMapPerModule(options) && mapOut != null) {
+                    mapOut.close();
+                    mapOut = null;
+                }
+            }
+            if (mapOut != null) {
+                mapOut.close();
+            }
+        }
+        // Output the externs if required.
+        if (options.externExportsPath != null) {
+            PrintStream eeOut = openExternExportsStream(options, options.jsOutputFile);
+            eeOut.append(result.externExport);
+            eeOut.close();
+        }
+        // Output the variable and property name maps if requested.
+        outputNameMaps(options);
+    }
+    // return 0 if no errors, the error count otherwise
+    return Math.min(result.errors.length, 0x7f);
+}","public void test000() throws Throwable {
+    String[] stringArray0 = new String[0];
+    CommandLineRunner commandLineRunner0 = new CommandLineRunner(stringArray0);
+    Compiler compiler0 = commandLineRunner0.createCompiler();
+    JSSourceFile jSSourceFile0 = JSSourceFile.fromCode("""", """");
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    Result result0 = compiler0.compile(jSSourceFile0, jSSourceFile0, compilerOptions0);
+    JSModule[] jSModuleArray0 = new JSModule[0];
+    Result result1 = new Result(result0.warnings, result0.warnings, (String) null, (VariableMap) null, (VariableMap) null, (VariableMap) null, (FunctionInformationMap) null, (SourceMap) null, (String) null, (Map<String, Integer>) null);
+    int int0 = commandLineRunner0.processResults(result1, jSModuleArray0, compilerOptions0);
+    assertEquals(0, int0);
+}","/**
+ * Processes the results of the compile job, and returns an error code.
+ */"
+"final protected void setRunOptions(B options) throws IOException, FlagUsageException {
+    if (config.jsOutputFile.length() > 0) {
+        options.jsOutputFile = config.jsOutputFile;
+    }
+    if (config.createSourceMap.length() > 0) {
+        options.sourceMapOutputPath = config.createSourceMap;
+    }
+    if (!config.variableMapInputFile.equals("""")) {
+        options.inputVariableMapSerialized = VariableMap.load(config.variableMapInputFile).toBytes();
+    }
+    if (!config.propertyMapInputFile.equals("""")) {
+        options.inputPropertyMapSerialized = VariableMap.load(config.propertyMapInputFile).toBytes();
+    }
+    options.setCodingConvention(config.codingConvention);
+    options.setSummaryDetailLevel(config.summaryDetailLevel);
+    inputCharset = getInputCharset();
+}","public void test011() throws Throwable {
+    String[] stringArray0 = new String[0];
+    CommandLineRunner commandLineRunner0 = new CommandLineRunner(stringArray0);
+    CompilerOptions compilerOptions0 = commandLineRunner0.createOptions();
+    commandLineRunner0.setRunOptions(compilerOptions0);
+    assertFalse(compilerOptions0.exportTestFunctions);
+}",""
+"final protected A getCompiler() {
+    return compiler;
+}","public void test022() throws Throwable {
+    String[] stringArray0 = new String[0];
+    CommandLineRunner commandLineRunner0 = new CommandLineRunner(stringArray0);
+    Compiler compiler0 = commandLineRunner0.getCompiler();
+    assertNull(compiler0);
+}",""
+"public static void main(String[] args) {
+    try {
+        (new CommandLineRunner(args)).run();
+    } catch (CmdLineException e) {
+        System.exit(-1);
+    }
+}","public void test033() throws Throwable {
+    String[] stringArray0 = new String[0];
+    // Undeclared exception!
+    try {
+        CommandLineRunner.main(stringArray0);
+        fail(""Expecting exception: System.SystemExitException"");
+    } catch (System.SystemExitException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.System"", e);
+    }
+}","/**
+ * Runs the Compiler. Exits cleanly in the event of an error.
+ */"
+"static JSModule[] createJsModules(List<String> specs, List<String> jsFiles) throws FlagUsageException, IOException {
+    Preconditions.checkState(specs != null);
+    Preconditions.checkState(!specs.isEmpty());
+    Preconditions.checkState(jsFiles != null);
+    final int totalNumJsFiles = jsFiles.size();
+    int nextJsFileIndex = 0;
+    Map<String, JSModule> modulesByName = Maps.newLinkedHashMap();
+    for (String spec : specs) {
+        // Format is ""<name>:<num-js-files>[:[<dep>,...][:]]"".
+        String[] parts = spec.split("":"");
+        if (parts.length < 2 || parts.length > 4) {
+            throw new FlagUsageException(""Expected 2-4 colon-delimited parts in "" + ""module spec: "" + spec);
+        }
+        // Parse module name.
+        String name = parts[0];
+        if (!TokenStream.isJSIdentifier(name)) {
+            throw new FlagUsageException(""Invalid module name: '"" + name + ""'"");
+        }
+        if (modulesByName.containsKey(name)) {
+            throw new FlagUsageException(""Duplicate module name: "" + name);
+        }
+        JSModule module = new JSModule(name);
+        // Parse module inputs.
+        int numJsFiles = -1;
+        try {
+            numJsFiles = Integer.parseInt(parts[1]);
+        } catch (NumberFormatException ignored) {
+            numJsFiles = -1;
+        }
+        // We will allow modules of zero input.
+        if (numJsFiles < 0) {
+            throw new FlagUsageException(""Invalid js file count '"" + parts[1] + ""' for module: "" + name);
+        }
+        if (nextJsFileIndex + numJsFiles > totalNumJsFiles) {
+            throw new FlagUsageException(""Not enough js files specified. Expected "" + (nextJsFileIndex + numJsFiles - totalNumJsFiles) + "" more in module:"" + name);
+        }
+        List<String> moduleJsFiles = jsFiles.subList(nextJsFileIndex, nextJsFileIndex + numJsFiles);
+        for (JSSourceFile input : createInputs(moduleJsFiles, false)) {
+            module.add(input);
+        }
+        nextJsFileIndex += numJsFiles;
+        if (parts.length > 2) {
+            // Parse module dependencies.
+            String depList = parts[2];
+            if (depList.length() > 0) {
+                String[] deps = depList.split("","");
+                for (String dep : deps) {
+                    JSModule other = modulesByName.get(dep);
+                    if (other == null) {
+                        throw new FlagUsageException(""Module '"" + name + ""' depends on unknown module '"" + dep + ""'. Be sure to list modules in dependency order."");
+                    }
+                    module.addDependency(other);
+                }
+            }
+        }
+        modulesByName.put(name, module);
+    }
+    if (nextJsFileIndex < totalNumJsFiles) {
+        throw new FlagUsageException(""Too many js files specified. Expected "" + nextJsFileIndex + "" but found "" + totalNumJsFiles);
+    }
+    return modulesByName.values().toArray(new JSModule[modulesByName.size()]);
+}","public void test044() throws Throwable {
+    List<String> list0 = PhaseOptimizer.OPTIMAL_ORDER;
+    try {
+        AbstractCommandLineRunner.createJsModules(list0, list0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Expected 2-4 colon-delimited parts in module spec: removeUnreachableCode
+        //
+        verifyException(""com.google.javascript.jscomp.AbstractCommandLineRunner"", e);
+    }
+}","/**
+ * Creates module objects from a list of module specifications.
+ *
+ * @param specs A list of module specifications, not null or empty. The spec
+ *        format is: <code>name:num-js-files[:[dep,...][:]]</code>. Module
+ *        names must not contain the ':' character.
+ * @param jsFiles A list of js file paths, not null
+ * @return An array of module objects
+ */"
+"static JSModule[] createJsModules(List<String> specs, List<String> jsFiles) throws FlagUsageException, IOException {
+    Preconditions.checkState(specs != null);
+    Preconditions.checkState(!specs.isEmpty());
+    Preconditions.checkState(jsFiles != null);
+    final int totalNumJsFiles = jsFiles.size();
+    int nextJsFileIndex = 0;
+    Map<String, JSModule> modulesByName = Maps.newLinkedHashMap();
+    for (String spec : specs) {
+        // Format is ""<name>:<num-js-files>[:[<dep>,...][:]]"".
+        String[] parts = spec.split("":"");
+        if (parts.length < 2 || parts.length > 4) {
+            throw new FlagUsageException(""Expected 2-4 colon-delimited parts in "" + ""module spec: "" + spec);
+        }
+        // Parse module name.
+        String name = parts[0];
+        if (!TokenStream.isJSIdentifier(name)) {
+            throw new FlagUsageException(""Invalid module name: '"" + name + ""'"");
+        }
+        if (modulesByName.containsKey(name)) {
+            throw new FlagUsageException(""Duplicate module name: "" + name);
+        }
+        JSModule module = new JSModule(name);
+        // Parse module inputs.
+        int numJsFiles = -1;
+        try {
+            numJsFiles = Integer.parseInt(parts[1]);
+        } catch (NumberFormatException ignored) {
+            numJsFiles = -1;
+        }
+        // We will allow modules of zero input.
+        if (numJsFiles < 0) {
+            throw new FlagUsageException(""Invalid js file count '"" + parts[1] + ""' for module: "" + name);
+        }
+        if (nextJsFileIndex + numJsFiles > totalNumJsFiles) {
+            throw new FlagUsageException(""Not enough js files specified. Expected "" + (nextJsFileIndex + numJsFiles - totalNumJsFiles) + "" more in module:"" + name);
+        }
+        List<String> moduleJsFiles = jsFiles.subList(nextJsFileIndex, nextJsFileIndex + numJsFiles);
+        for (JSSourceFile input : createInputs(moduleJsFiles, false)) {
+            module.add(input);
+        }
+        nextJsFileIndex += numJsFiles;
+        if (parts.length > 2) {
+            // Parse module dependencies.
+            String depList = parts[2];
+            if (depList.length() > 0) {
+                String[] deps = depList.split("","");
+                for (String dep : deps) {
+                    JSModule other = modulesByName.get(dep);
+                    if (other == null) {
+                        throw new FlagUsageException(""Module '"" + name + ""' depends on unknown module '"" + dep + ""'. Be sure to list modules in dependency order."");
+                    }
+                    module.addDependency(other);
+                }
+            }
+        }
+        modulesByName.put(name, module);
+    }
+    if (nextJsFileIndex < totalNumJsFiles) {
+        throw new FlagUsageException(""Too many js files specified. Expected "" + nextJsFileIndex + "" but found "" + totalNumJsFiles);
+    }
+    return modulesByName.values().toArray(new JSModule[modulesByName.size()]);
+}","public void test055() throws Throwable {
+    // Undeclared exception!
+    try {
+        AbstractCommandLineRunner.createJsModules((List<String>) null, (List<String>) null);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * Creates module objects from a list of module specifications.
+ *
+ * @param specs A list of module specifications, not null or empty. The spec
+ *        format is: <code>name:num-js-files[:[dep,...][:]]</code>. Module
+ *        names must not contain the ':' character.
+ * @param jsFiles A list of js file paths, not null
+ * @return An array of module objects
+ */"
+"static JSModule[] createJsModules(List<String> specs, List<String> jsFiles) throws FlagUsageException, IOException {
+    Preconditions.checkState(specs != null);
+    Preconditions.checkState(!specs.isEmpty());
+    Preconditions.checkState(jsFiles != null);
+    final int totalNumJsFiles = jsFiles.size();
+    int nextJsFileIndex = 0;
+    Map<String, JSModule> modulesByName = Maps.newLinkedHashMap();
+    for (String spec : specs) {
+        // Format is ""<name>:<num-js-files>[:[<dep>,...][:]]"".
+        String[] parts = spec.split("":"");
+        if (parts.length < 2 || parts.length > 4) {
+            throw new FlagUsageException(""Expected 2-4 colon-delimited parts in "" + ""module spec: "" + spec);
+        }
+        // Parse module name.
+        String name = parts[0];
+        if (!TokenStream.isJSIdentifier(name)) {
+            throw new FlagUsageException(""Invalid module name: '"" + name + ""'"");
+        }
+        if (modulesByName.containsKey(name)) {
+            throw new FlagUsageException(""Duplicate module name: "" + name);
+        }
+        JSModule module = new JSModule(name);
+        // Parse module inputs.
+        int numJsFiles = -1;
+        try {
+            numJsFiles = Integer.parseInt(parts[1]);
+        } catch (NumberFormatException ignored) {
+            numJsFiles = -1;
+        }
+        // We will allow modules of zero input.
+        if (numJsFiles < 0) {
+            throw new FlagUsageException(""Invalid js file count '"" + parts[1] + ""' for module: "" + name);
+        }
+        if (nextJsFileIndex + numJsFiles > totalNumJsFiles) {
+            throw new FlagUsageException(""Not enough js files specified. Expected "" + (nextJsFileIndex + numJsFiles - totalNumJsFiles) + "" more in module:"" + name);
+        }
+        List<String> moduleJsFiles = jsFiles.subList(nextJsFileIndex, nextJsFileIndex + numJsFiles);
+        for (JSSourceFile input : createInputs(moduleJsFiles, false)) {
+            module.add(input);
+        }
+        nextJsFileIndex += numJsFiles;
+        if (parts.length > 2) {
+            // Parse module dependencies.
+            String depList = parts[2];
+            if (depList.length() > 0) {
+                String[] deps = depList.split("","");
+                for (String dep : deps) {
+                    JSModule other = modulesByName.get(dep);
+                    if (other == null) {
+                        throw new FlagUsageException(""Module '"" + name + ""' depends on unknown module '"" + dep + ""'. Be sure to list modules in dependency order."");
+                    }
+                    module.addDependency(other);
+                }
+            }
+        }
+        modulesByName.put(name, module);
+    }
+    if (nextJsFileIndex < totalNumJsFiles) {
+        throw new FlagUsageException(""Too many js files specified. Expected "" + nextJsFileIndex + "" but found "" + totalNumJsFiles);
+    }
+    return modulesByName.values().toArray(new JSModule[modulesByName.size()]);
+}","public void test066() throws Throwable {
+    Stack<String> stack0 = new Stack<String>();
+    // Undeclared exception!
+    try {
+        AbstractCommandLineRunner.createJsModules(stack0, stack0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * Creates module objects from a list of module specifications.
+ *
+ * @param specs A list of module specifications, not null or empty. The spec
+ *        format is: <code>name:num-js-files[:[dep,...][:]]</code>. Module
+ *        names must not contain the ':' character.
+ * @param jsFiles A list of js file paths, not null
+ * @return An array of module objects
+ */"
+"static JSModule[] createJsModules(List<String> specs, List<String> jsFiles) throws FlagUsageException, IOException {
+    Preconditions.checkState(specs != null);
+    Preconditions.checkState(!specs.isEmpty());
+    Preconditions.checkState(jsFiles != null);
+    final int totalNumJsFiles = jsFiles.size();
+    int nextJsFileIndex = 0;
+    Map<String, JSModule> modulesByName = Maps.newLinkedHashMap();
+    for (String spec : specs) {
+        // Format is ""<name>:<num-js-files>[:[<dep>,...][:]]"".
+        String[] parts = spec.split("":"");
+        if (parts.length < 2 || parts.length > 4) {
+            throw new FlagUsageException(""Expected 2-4 colon-delimited parts in "" + ""module spec: "" + spec);
+        }
+        // Parse module name.
+        String name = parts[0];
+        if (!TokenStream.isJSIdentifier(name)) {
+            throw new FlagUsageException(""Invalid module name: '"" + name + ""'"");
+        }
+        if (modulesByName.containsKey(name)) {
+            throw new FlagUsageException(""Duplicate module name: "" + name);
+        }
+        JSModule module = new JSModule(name);
+        // Parse module inputs.
+        int numJsFiles = -1;
+        try {
+            numJsFiles = Integer.parseInt(parts[1]);
+        } catch (NumberFormatException ignored) {
+            numJsFiles = -1;
+        }
+        // We will allow modules of zero input.
+        if (numJsFiles < 0) {
+            throw new FlagUsageException(""Invalid js file count '"" + parts[1] + ""' for module: "" + name);
+        }
+        if (nextJsFileIndex + numJsFiles > totalNumJsFiles) {
+            throw new FlagUsageException(""Not enough js files specified. Expected "" + (nextJsFileIndex + numJsFiles - totalNumJsFiles) + "" more in module:"" + name);
+        }
+        List<String> moduleJsFiles = jsFiles.subList(nextJsFileIndex, nextJsFileIndex + numJsFiles);
+        for (JSSourceFile input : createInputs(moduleJsFiles, false)) {
+            module.add(input);
+        }
+        nextJsFileIndex += numJsFiles;
+        if (parts.length > 2) {
+            // Parse module dependencies.
+            String depList = parts[2];
+            if (depList.length() > 0) {
+                String[] deps = depList.split("","");
+                for (String dep : deps) {
+                    JSModule other = modulesByName.get(dep);
+                    if (other == null) {
+                        throw new FlagUsageException(""Module '"" + name + ""' depends on unknown module '"" + dep + ""'. Be sure to list modules in dependency order."");
+                    }
+                    module.addDependency(other);
+                }
+            }
+        }
+        modulesByName.put(name, module);
+    }
+    if (nextJsFileIndex < totalNumJsFiles) {
+        throw new FlagUsageException(""Too many js files specified. Expected "" + nextJsFileIndex + "" but found "" + totalNumJsFiles);
+    }
+    return modulesByName.values().toArray(new JSModule[modulesByName.size()]);
+}","public void test077() throws Throwable {
+    List<String> list0 = ResourceBundle.Control.FORMAT_DEFAULT;
+    // Undeclared exception!
+    try {
+        AbstractCommandLineRunner.createJsModules(list0, (List<String>) null);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * Creates module objects from a list of module specifications.
+ *
+ * @param specs A list of module specifications, not null or empty. The spec
+ *        format is: <code>name:num-js-files[:[dep,...][:]]</code>. Module
+ *        names must not contain the ':' character.
+ * @param jsFiles A list of js file paths, not null
+ * @return An array of module objects
+ */"
+"static JSModule[] createJsModules(List<String> specs, List<String> jsFiles) throws FlagUsageException, IOException {
+    Preconditions.checkState(specs != null);
+    Preconditions.checkState(!specs.isEmpty());
+    Preconditions.checkState(jsFiles != null);
+    final int totalNumJsFiles = jsFiles.size();
+    int nextJsFileIndex = 0;
+    Map<String, JSModule> modulesByName = Maps.newLinkedHashMap();
+    for (String spec : specs) {
+        // Format is ""<name>:<num-js-files>[:[<dep>,...][:]]"".
+        String[] parts = spec.split("":"");
+        if (parts.length < 2 || parts.length > 4) {
+            throw new FlagUsageException(""Expected 2-4 colon-delimited parts in "" + ""module spec: "" + spec);
+        }
+        // Parse module name.
+        String name = parts[0];
+        if (!TokenStream.isJSIdentifier(name)) {
+            throw new FlagUsageException(""Invalid module name: '"" + name + ""'"");
+        }
+        if (modulesByName.containsKey(name)) {
+            throw new FlagUsageException(""Duplicate module name: "" + name);
+        }
+        JSModule module = new JSModule(name);
+        // Parse module inputs.
+        int numJsFiles = -1;
+        try {
+            numJsFiles = Integer.parseInt(parts[1]);
+        } catch (NumberFormatException ignored) {
+            numJsFiles = -1;
+        }
+        // We will allow modules of zero input.
+        if (numJsFiles < 0) {
+            throw new FlagUsageException(""Invalid js file count '"" + parts[1] + ""' for module: "" + name);
+        }
+        if (nextJsFileIndex + numJsFiles > totalNumJsFiles) {
+            throw new FlagUsageException(""Not enough js files specified. Expected "" + (nextJsFileIndex + numJsFiles - totalNumJsFiles) + "" more in module:"" + name);
+        }
+        List<String> moduleJsFiles = jsFiles.subList(nextJsFileIndex, nextJsFileIndex + numJsFiles);
+        for (JSSourceFile input : createInputs(moduleJsFiles, false)) {
+            module.add(input);
+        }
+        nextJsFileIndex += numJsFiles;
+        if (parts.length > 2) {
+            // Parse module dependencies.
+            String depList = parts[2];
+            if (depList.length() > 0) {
+                String[] deps = depList.split("","");
+                for (String dep : deps) {
+                    JSModule other = modulesByName.get(dep);
+                    if (other == null) {
+                        throw new FlagUsageException(""Module '"" + name + ""' depends on unknown module '"" + dep + ""'. Be sure to list modules in dependency order."");
+                    }
+                    module.addDependency(other);
+                }
+            }
+        }
+        modulesByName.put(name, module);
+    }
+    if (nextJsFileIndex < totalNumJsFiles) {
+        throw new FlagUsageException(""Too many js files specified. Expected "" + nextJsFileIndex + "" but found "" + totalNumJsFiles);
+    }
+    return modulesByName.values().toArray(new JSModule[modulesByName.size()]);
+}","public void test088() throws Throwable {
+    Stack<String> stack0 = new Stack<String>();
+    stack0.add(""--deine flag syntax invalid: "");
+    try {
+        AbstractCommandLineRunner.createJsModules(stack0, stack0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Invalid module name: '--deine flag syntax invalid'
+        //
+        verifyException(""com.google.javascript.jscomp.AbstractCommandLineRunner"", e);
+    }
+}","/**
+ * Creates module objects from a list of module specifications.
+ *
+ * @param specs A list of module specifications, not null or empty. The spec
+ *        format is: <code>name:num-js-files[:[dep,...][:]]</code>. Module
+ *        names must not contain the ':' character.
+ * @param jsFiles A list of js file paths, not null
+ * @return An array of module objects
+ */"
+"static JSModule[] createJsModules(List<String> specs, List<String> jsFiles) throws FlagUsageException, IOException {
+    Preconditions.checkState(specs != null);
+    Preconditions.checkState(!specs.isEmpty());
+    Preconditions.checkState(jsFiles != null);
+    final int totalNumJsFiles = jsFiles.size();
+    int nextJsFileIndex = 0;
+    Map<String, JSModule> modulesByName = Maps.newLinkedHashMap();
+    for (String spec : specs) {
+        // Format is ""<name>:<num-js-files>[:[<dep>,...][:]]"".
+        String[] parts = spec.split("":"");
+        if (parts.length < 2 || parts.length > 4) {
+            throw new FlagUsageException(""Expected 2-4 colon-delimited parts in "" + ""module spec: "" + spec);
+        }
+        // Parse module name.
+        String name = parts[0];
+        if (!TokenStream.isJSIdentifier(name)) {
+            throw new FlagUsageException(""Invalid module name: '"" + name + ""'"");
+        }
+        if (modulesByName.containsKey(name)) {
+            throw new FlagUsageException(""Duplicate module name: "" + name);
+        }
+        JSModule module = new JSModule(name);
+        // Parse module inputs.
+        int numJsFiles = -1;
+        try {
+            numJsFiles = Integer.parseInt(parts[1]);
+        } catch (NumberFormatException ignored) {
+            numJsFiles = -1;
+        }
+        // We will allow modules of zero input.
+        if (numJsFiles < 0) {
+            throw new FlagUsageException(""Invalid js file count '"" + parts[1] + ""' for module: "" + name);
+        }
+        if (nextJsFileIndex + numJsFiles > totalNumJsFiles) {
+            throw new FlagUsageException(""Not enough js files specified. Expected "" + (nextJsFileIndex + numJsFiles - totalNumJsFiles) + "" more in module:"" + name);
+        }
+        List<String> moduleJsFiles = jsFiles.subList(nextJsFileIndex, nextJsFileIndex + numJsFiles);
+        for (JSSourceFile input : createInputs(moduleJsFiles, false)) {
+            module.add(input);
+        }
+        nextJsFileIndex += numJsFiles;
+        if (parts.length > 2) {
+            // Parse module dependencies.
+            String depList = parts[2];
+            if (depList.length() > 0) {
+                String[] deps = depList.split("","");
+                for (String dep : deps) {
+                    JSModule other = modulesByName.get(dep);
+                    if (other == null) {
+                        throw new FlagUsageException(""Module '"" + name + ""' depends on unknown module '"" + dep + ""'. Be sure to list modules in dependency order."");
+                    }
+                    module.addDependency(other);
+                }
+            }
+        }
+        modulesByName.put(name, module);
+    }
+    if (nextJsFileIndex < totalNumJsFiles) {
+        throw new FlagUsageException(""Too many js files specified. Expected "" + nextJsFileIndex + "" but found "" + totalNumJsFiles);
+    }
+    return modulesByName.values().toArray(new JSModule[modulesByName.size()]);
+}","public void test099() throws Throwable {
+    Vector<String> vector0 = new Vector<String>();
+    vector0.add(""Bax:otR^F'J"");
+    try {
+        AbstractCommandLineRunner.createJsModules(vector0, vector0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Invalid js file count 'otR^F'J' for module: Bax
+        //
+        verifyException(""com.google.javascript.jscomp.AbstractCommandLineRunner"", e);
+    }
+}","/**
+ * Creates module objects from a list of module specifications.
+ *
+ * @param specs A list of module specifications, not null or empty. The spec
+ *        format is: <code>name:num-js-files[:[dep,...][:]]</code>. Module
+ *        names must not contain the ':' character.
+ * @param jsFiles A list of js file paths, not null
+ * @return An array of module objects
+ */"
+"static Map<String, String> parseModuleWrappers(List<String> specs, JSModule[] modules) throws FlagUsageException {
+    Preconditions.checkState(specs != null);
+    Map<String, String> wrappers = Maps.newHashMapWithExpectedSize(modules.length);
+    // Prepopulate the map with module names.
+    for (JSModule m : modules) {
+        wrappers.put(m.getName(), """");
+    }
+    for (String spec : specs) {
+        // Format is ""<name>:<wrapper>"".
+        int pos = spec.indexOf(':');
+        if (pos == -1) {
+            throw new FlagUsageException(""Expected module wrapper to have "" + ""<name>:<wrapper> format: "" + spec);
+        }
+        // Parse module name.
+        String name = spec.substring(0, pos);
+        if (!wrappers.containsKey(name)) {
+            throw new FlagUsageException(""Unknown module: '"" + name + ""'"");
+        }
+        String wrapper = spec.substring(pos + 1);
+        if (!wrapper.contains(""%s"")) {
+            throw new FlagUsageException(""No %s placeholder in module wrapper: '"" + wrapper + ""'"");
+        }
+        wrappers.put(name, wrapper);
+    }
+    return wrappers;
+}","public void test1010() throws Throwable {
+    // Undeclared exception!
+    try {
+        AbstractCommandLineRunner.parseModuleWrappers((List<String>) null, (JSModule[]) null);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * Parses module wrapper specifications.
+ *
+ * @param specs A list of module wrapper specifications, not null. The spec
+ *        format is: <code>name:wrapper</code>. Wrappers.
+ * @param modules The JS modules whose wrappers are specified
+ * @return A map from module name to module wrapper. Modules with no wrapper
+ *         will have the empty string as their value in this map.
+ */"
+"static Map<String, String> parseModuleWrappers(List<String> specs, JSModule[] modules) throws FlagUsageException {
+    Preconditions.checkState(specs != null);
+    Map<String, String> wrappers = Maps.newHashMapWithExpectedSize(modules.length);
+    // Prepopulate the map with module names.
+    for (JSModule m : modules) {
+        wrappers.put(m.getName(), """");
+    }
+    for (String spec : specs) {
+        // Format is ""<name>:<wrapper>"".
+        int pos = spec.indexOf(':');
+        if (pos == -1) {
+            throw new FlagUsageException(""Expected module wrapper to have "" + ""<name>:<wrapper> format: "" + spec);
+        }
+        // Parse module name.
+        String name = spec.substring(0, pos);
+        if (!wrappers.containsKey(name)) {
+            throw new FlagUsageException(""Unknown module: '"" + name + ""'"");
+        }
+        String wrapper = spec.substring(pos + 1);
+        if (!wrapper.contains(""%s"")) {
+            throw new FlagUsageException(""No %s placeholder in module wrapper: '"" + wrapper + ""'"");
+        }
+        wrappers.put(name, wrapper);
+    }
+    return wrappers;
+}","public void test1111() throws Throwable {
+    Stack<String> stack0 = new Stack<String>();
+    JSModule[] jSModuleArray0 = new JSModule[10];
+    // Undeclared exception!
+    try {
+        AbstractCommandLineRunner.parseModuleWrappers(stack0, jSModuleArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.AbstractCommandLineRunner"", e);
+    }
+}","/**
+ * Parses module wrapper specifications.
+ *
+ * @param specs A list of module wrapper specifications, not null. The spec
+ *        format is: <code>name:wrapper</code>. Wrappers.
+ * @param modules The JS modules whose wrappers are specified
+ * @return A map from module name to module wrapper. Modules with no wrapper
+ *         will have the empty string as their value in this map.
+ */"
+"static Map<String, String> parseModuleWrappers(List<String> specs, JSModule[] modules) throws FlagUsageException {
+    Preconditions.checkState(specs != null);
+    Map<String, String> wrappers = Maps.newHashMapWithExpectedSize(modules.length);
+    // Prepopulate the map with module names.
+    for (JSModule m : modules) {
+        wrappers.put(m.getName(), """");
+    }
+    for (String spec : specs) {
+        // Format is ""<name>:<wrapper>"".
+        int pos = spec.indexOf(':');
+        if (pos == -1) {
+            throw new FlagUsageException(""Expected module wrapper to have "" + ""<name>:<wrapper> format: "" + spec);
+        }
+        // Parse module name.
+        String name = spec.substring(0, pos);
+        if (!wrappers.containsKey(name)) {
+            throw new FlagUsageException(""Unknown module: '"" + name + ""'"");
+        }
+        String wrapper = spec.substring(pos + 1);
+        if (!wrapper.contains(""%s"")) {
+            throw new FlagUsageException(""No %s placeholder in module wrapper: '"" + wrapper + ""'"");
+        }
+        wrappers.put(name, wrapper);
+    }
+    return wrappers;
+}","public void test1212() throws Throwable {
+    List<String> list0 = PhaseOptimizer.OPTIMAL_ORDER;
+    JSModule[] jSModuleArray0 = new JSModule[0];
+    try {
+        AbstractCommandLineRunner.parseModuleWrappers(list0, jSModuleArray0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Expected module wrapper to have <name>:<wrapper> format: removeUnreachableCode
+        //
+        verifyException(""com.google.javascript.jscomp.AbstractCommandLineRunner"", e);
+    }
+}","/**
+ * Parses module wrapper specifications.
+ *
+ * @param specs A list of module wrapper specifications, not null. The spec
+ *        format is: <code>name:wrapper</code>. Wrappers.
+ * @param modules The JS modules whose wrappers are specified
+ * @return A map from module name to module wrapper. Modules with no wrapper
+ *         will have the empty string as their value in this map.
+ */"
+"static Map<String, String> parseModuleWrappers(List<String> specs, JSModule[] modules) throws FlagUsageException {
+    Preconditions.checkState(specs != null);
+    Map<String, String> wrappers = Maps.newHashMapWithExpectedSize(modules.length);
+    // Prepopulate the map with module names.
+    for (JSModule m : modules) {
+        wrappers.put(m.getName(), """");
+    }
+    for (String spec : specs) {
+        // Format is ""<name>:<wrapper>"".
+        int pos = spec.indexOf(':');
+        if (pos == -1) {
+            throw new FlagUsageException(""Expected module wrapper to have "" + ""<name>:<wrapper> format: "" + spec);
+        }
+        // Parse module name.
+        String name = spec.substring(0, pos);
+        if (!wrappers.containsKey(name)) {
+            throw new FlagUsageException(""Unknown module: '"" + name + ""'"");
+        }
+        String wrapper = spec.substring(pos + 1);
+        if (!wrapper.contains(""%s"")) {
+            throw new FlagUsageException(""No %s placeholder in module wrapper: '"" + wrapper + ""'"");
+        }
+        wrappers.put(name, wrapper);
+    }
+    return wrappers;
+}","public void test1313() throws Throwable {
+    Stack<String> stack0 = new Stack<String>();
+    stack0.add(""ugQ:a|:XP<"");
+    JSModule[] jSModuleArray0 = new JSModule[0];
+    try {
+        AbstractCommandLineRunner.parseModuleWrappers(stack0, jSModuleArray0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Unknown module: 'ugQ'
+        //
+        verifyException(""com.google.javascript.jscomp.AbstractCommandLineRunner"", e);
+    }
+}","/**
+ * Parses module wrapper specifications.
+ *
+ * @param specs A list of module wrapper specifications, not null. The spec
+ *        format is: <code>name:wrapper</code>. Wrappers.
+ * @param modules The JS modules whose wrappers are specified
+ * @return A map from module name to module wrapper. Modules with no wrapper
+ *         will have the empty string as their value in this map.
+ */"
+"static void writeOutput(PrintStream out, Compiler compiler, String code, String wrapper, String codePlaceholder) {
+    int pos = wrapper.indexOf(codePlaceholder);
+    if (pos != -1) {
+        String prefix = """";
+        if (pos > 0) {
+            prefix = wrapper.substring(0, pos);
+            out.print(prefix);
+        }
+        out.print(code);
+        int suffixStart = pos + codePlaceholder.length();
+        if (suffixStart == wrapper.length()) {
+            // Nothing after placeholder?
+            // Make sure we always end output with a line feed.
+            out.println();
+        } else {
+            out.println(wrapper.substring(suffixStart));
+        }
+        // If we have a source map, adjust its offsets to match
+        // the code WITHIN the wrapper.
+        if (compiler != null && compiler.getSourceMap() != null) {
+            compiler.getSourceMap().setWrapperPrefix(prefix);
+        }
+    } else {
+        out.println(code);
+    }
+}","public void test1414() throws Throwable {
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""W;)sq!`2Ob[\"""");
+    Compiler compiler0 = new Compiler();
+    AbstractCommandLineRunner.writeOutput(mockPrintStream0, compiler0, ""W;)sq!`2Ob[\"""", ""W;)sq!`2Ob[\"""", ""3R}\""#GIfQ."");
+}","/**
+ * Writes code to an output stream, optionally wrapping it in an arbitrary
+ * wrapper that contains a placeholder where the code should be inserted.
+ */"
+"static void writeOutput(PrintStream out, Compiler compiler, String code, String wrapper, String codePlaceholder) {
+    int pos = wrapper.indexOf(codePlaceholder);
+    if (pos != -1) {
+        String prefix = """";
+        if (pos > 0) {
+            prefix = wrapper.substring(0, pos);
+            out.print(prefix);
+        }
+        out.print(code);
+        int suffixStart = pos + codePlaceholder.length();
+        if (suffixStart == wrapper.length()) {
+            // Nothing after placeholder?
+            // Make sure we always end output with a line feed.
+            out.println();
+        } else {
+            out.println(wrapper.substring(suffixStart));
+        }
+        // If we have a source map, adjust its offsets to match
+        // the code WITHIN the wrapper.
+        if (compiler != null && compiler.getSourceMap() != null) {
+            compiler.getSourceMap().setWrapperPrefix(prefix);
+        }
+    } else {
+        out.println(code);
+    }
+}","public void test1515() throws Throwable {
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""u;"");
+    Compiler compiler0 = new Compiler();
+    AbstractCommandLineRunner.writeOutput(mockPrintStream0, compiler0, ""u;"", ""Bad --externs flag. "", ""."");
+}","/**
+ * Writes code to an output stream, optionally wrapping it in an arbitrary
+ * wrapper that contains a placeholder where the code should be inserted.
+ */"
+"static void writeOutput(PrintStream out, Compiler compiler, String code, String wrapper, String codePlaceholder) {
+    int pos = wrapper.indexOf(codePlaceholder);
+    if (pos != -1) {
+        String prefix = """";
+        if (pos > 0) {
+            prefix = wrapper.substring(0, pos);
+            out.print(prefix);
+        }
+        out.print(code);
+        int suffixStart = pos + codePlaceholder.length();
+        if (suffixStart == wrapper.length()) {
+            // Nothing after placeholder?
+            // Make sure we always end output with a line feed.
+            out.println();
+        } else {
+            out.println(wrapper.substring(suffixStart));
+        }
+        // If we have a source map, adjust its offsets to match
+        // the code WITHIN the wrapper.
+        if (compiler != null && compiler.getSourceMap() != null) {
+            compiler.getSourceMap().setWrapperPrefix(prefix);
+        }
+    } else {
+        out.println(code);
+    }
+}","public void test1616() throws Throwable {
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""{"");
+    Compiler compiler0 = new Compiler();
+    AbstractCommandLineRunner.writeOutput(mockPrintStream0, compiler0, ""{"", ""{"", ""{"");
+}","/**
+ * Writes code to an output stream, optionally wrapping it in an arbitrary
+ * wrapper that contains a placeholder where the code should be inserted.
+ */"
+"static void writeOutput(PrintStream out, Compiler compiler, String code, String wrapper, String codePlaceholder) {
+    int pos = wrapper.indexOf(codePlaceholder);
+    if (pos != -1) {
+        String prefix = """";
+        if (pos > 0) {
+            prefix = wrapper.substring(0, pos);
+            out.print(prefix);
+        }
+        out.print(code);
+        int suffixStart = pos + codePlaceholder.length();
+        if (suffixStart == wrapper.length()) {
+            // Nothing after placeholder?
+            // Make sure we always end output with a line feed.
+            out.println();
+        } else {
+            out.println(wrapper.substring(suffixStart));
+        }
+        // If we have a source map, adjust its offsets to match
+        // the code WITHIN the wrapper.
+        if (compiler != null && compiler.getSourceMap() != null) {
+            compiler.getSourceMap().setWrapperPrefix(prefix);
+        }
+    } else {
+        out.println(code);
+    }
+}","public void test1717() throws Throwable {
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""TYPE_BOOL"");
+    AbstractCommandLineRunner.writeOutput(mockPrintStream0, (Compiler) null, ""TYPE_BOOL"", ""TYPE_BOOL"", ""TYPE_BOOL"");
+}","/**
+ * Writes code to an output stream, optionally wrapping it in an arbitrary
+ * wrapper that contains a placeholder where the code should be inserted.
+ */"
+"int processResults(Result result, JSModule[] modules, B options) throws FlagUsageException, IOException {
+    if (config.computePhaseOrdering) {
+        return 0;
+    }
+    if (config.printPassGraph) {
+        if (compiler.getRoot() == null) {
+            return 1;
+        } else {
+            out.append(DotFormatter.toDot(compiler.getPassConfig().getPassGraph()));
+            out.println();
+            return 0;
+        }
+    }
+    if (config.printAst) {
+        if (compiler.getRoot() == null) {
+            return 1;
+        } else {
+            ControlFlowGraph<Node> cfg = compiler.computeCFG();
+            DotFormatter.appendDot(compiler.getRoot(), cfg, out);
+            out.println();
+            return 0;
+        }
+    }
+    if (config.printTree) {
+        if (compiler.getRoot() == null) {
+            out.println(""Code contains errors; no tree was generated."");
+            return 1;
+        } else {
+            compiler.getRoot().appendStringTree(out);
+            out.println("""");
+            return 0;
+        }
+    }
+    if (result.success) {
+        if (modules == null) {
+            writeOutput(out, compiler, compiler.toSource(), config.outputWrapper, config.outputWrapperMarker);
+            // Output the source map if requested.
+            outputSourceMap(options, options.jsOutputFile);
+        } else {
+            String moduleFilePrefix = config.moduleOutputPathPrefix;
+            maybeCreateDirsForPath(moduleFilePrefix);
+            Map<String, String> moduleWrappers = parseModuleWrappers(config.moduleWrapper, modules);
+            // If the source map path is in fact a pattern for each
+            // module, create a stream per-module. Otherwise, create
+            // a single source map.
+            PrintStream mapOut = null;
+            if (!shouldGenerateMapPerModule(options)) {
+                mapOut = openSourceMapStream(options, moduleFilePrefix);
+            }
+            for (JSModule m : modules) {
+                if (shouldGenerateMapPerModule(options)) {
+                    mapOut = openSourceMapStream(options, moduleFilePrefix + m.getName() + "".js"");
+                }
+                PrintStream ps = new PrintStream(new FileOutputStream(moduleFilePrefix + m.getName() + "".js""));
+                if (options.sourceMapOutputPath != null) {
+                    compiler.getSourceMap().reset();
+                }
+                writeOutput(ps, compiler, compiler.toSource(m), moduleWrappers.get(m.getName()), ""%s"");
+                if (options.sourceMapOutputPath != null) {
+                    compiler.getSourceMap().appendTo(mapOut, m.getName());
+                }
+                ps.close();
+                if (shouldGenerateMapPerModule(options) && mapOut != null) {
+                    mapOut.close();
+                    mapOut = null;
+                }
+            }
+            if (mapOut != null) {
+                mapOut.close();
+            }
+        }
+        // Output the externs if required.
+        if (options.externExportsPath != null) {
+            PrintStream eeOut = openExternExportsStream(options, options.jsOutputFile);
+            eeOut.append(result.externExport);
+            eeOut.close();
+        }
+        // Output the variable and property name maps if requested.
+        outputNameMaps(options);
+    }
+    // return 0 if no errors, the error count otherwise
+    return Math.min(result.errors.length, 0x7f);
+}","public void test1818() throws Throwable {
+    String[] stringArray0 = new String[0];
+    CommandLineRunner commandLineRunner0 = new CommandLineRunner(stringArray0);
+    Compiler compiler0 = new Compiler();
+    JSSourceFile jSSourceFile0 = JSSourceFile.fromCode("""", """");
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    Result result0 = compiler0.compile(jSSourceFile0, jSSourceFile0, compilerOptions0);
+    JSModule[] jSModuleArray0 = new JSModule[0];
+    int int0 = commandLineRunner0.processResults(result0, jSModuleArray0, compilerOptions0);
+    assertEquals(1, int0);
+}","/**
+ * Processes the results of the compile job, and returns an error code.
+ */"
+"int processResults(Result result, JSModule[] modules, B options) throws FlagUsageException, IOException {
+    if (config.computePhaseOrdering) {
+        return 0;
+    }
+    if (config.printPassGraph) {
+        if (compiler.getRoot() == null) {
+            return 1;
+        } else {
+            out.append(DotFormatter.toDot(compiler.getPassConfig().getPassGraph()));
+            out.println();
+            return 0;
+        }
+    }
+    if (config.printAst) {
+        if (compiler.getRoot() == null) {
+            return 1;
+        } else {
+            ControlFlowGraph<Node> cfg = compiler.computeCFG();
+            DotFormatter.appendDot(compiler.getRoot(), cfg, out);
+            out.println();
+            return 0;
+        }
+    }
+    if (config.printTree) {
+        if (compiler.getRoot() == null) {
+            out.println(""Code contains errors; no tree was generated."");
+            return 1;
+        } else {
+            compiler.getRoot().appendStringTree(out);
+            out.println("""");
+            return 0;
+        }
+    }
+    if (result.success) {
+        if (modules == null) {
+            writeOutput(out, compiler, compiler.toSource(), config.outputWrapper, config.outputWrapperMarker);
+            // Output the source map if requested.
+            outputSourceMap(options, options.jsOutputFile);
+        } else {
+            String moduleFilePrefix = config.moduleOutputPathPrefix;
+            maybeCreateDirsForPath(moduleFilePrefix);
+            Map<String, String> moduleWrappers = parseModuleWrappers(config.moduleWrapper, modules);
+            // If the source map path is in fact a pattern for each
+            // module, create a stream per-module. Otherwise, create
+            // a single source map.
+            PrintStream mapOut = null;
+            if (!shouldGenerateMapPerModule(options)) {
+                mapOut = openSourceMapStream(options, moduleFilePrefix);
+            }
+            for (JSModule m : modules) {
+                if (shouldGenerateMapPerModule(options)) {
+                    mapOut = openSourceMapStream(options, moduleFilePrefix + m.getName() + "".js"");
+                }
+                PrintStream ps = new PrintStream(new FileOutputStream(moduleFilePrefix + m.getName() + "".js""));
+                if (options.sourceMapOutputPath != null) {
+                    compiler.getSourceMap().reset();
+                }
+                writeOutput(ps, compiler, compiler.toSource(m), moduleWrappers.get(m.getName()), ""%s"");
+                if (options.sourceMapOutputPath != null) {
+                    compiler.getSourceMap().appendTo(mapOut, m.getName());
+                }
+                ps.close();
+                if (shouldGenerateMapPerModule(options) && mapOut != null) {
+                    mapOut.close();
+                    mapOut = null;
+                }
+            }
+            if (mapOut != null) {
+                mapOut.close();
+            }
+        }
+        // Output the externs if required.
+        if (options.externExportsPath != null) {
+            PrintStream eeOut = openExternExportsStream(options, options.jsOutputFile);
+            eeOut.append(result.externExport);
+            eeOut.close();
+        }
+        // Output the variable and property name maps if requested.
+        outputNameMaps(options);
+    }
+    // return 0 if no errors, the error count otherwise
+    return Math.min(result.errors.length, 0x7f);
+}","public void test1919() throws Throwable {
+    String[] stringArray0 = new String[0];
+    CommandLineRunner commandLineRunner0 = new CommandLineRunner(stringArray0);
+    Compiler compiler0 = new Compiler();
+    JSSourceFile jSSourceFile0 = JSSourceFile.fromCode(""p"", ""p"");
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    Result result0 = compiler0.compile(jSSourceFile0, jSSourceFile0, compilerOptions0);
+    Result result1 = new Result(result0.warnings, result0.errors, (String) null, (VariableMap) null, (VariableMap) null, (VariableMap) null, (FunctionInformationMap) null, (SourceMap) null, """", (Map<String, Integer>) null);
+    // Undeclared exception!
+    try {
+        commandLineRunner0.processResults(result1, (JSModule[]) null, compilerOptions0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.AbstractCommandLineRunner"", e);
+    }
+}","/**
+ * Processes the results of the compile job, and returns an error code.
+ */"
+"@VisibleForTesting
+static void createDefineReplacements(List<String> definitions, CompilerOptions options) {
+    // Parse the definitions
+    for (String override : definitions) {
+        String[] assignment = override.split(""="", 2);
+        String defName = assignment[0];
+        if (defName.length() > 0) {
+            if (assignment.length == 1) {
+                options.setDefineToBooleanLiteral(defName, true);
+                continue;
+            } else {
+                String defValue = assignment[1];
+                if (defValue.equals(""true"")) {
+                    options.setDefineToBooleanLiteral(defName, true);
+                    continue;
+                } else if (defValue.equals(""false"")) {
+                    options.setDefineToBooleanLiteral(defName, false);
+                    continue;
+                } else if (defValue.length() > 1 && ((defValue.charAt(0) == '\'' && defValue.charAt(defValue.length() - 1) == '\''))) {
+                    // If the value starts and ends with a single quote,
+                    // we assume that it's a string.
+                    String maybeStringVal = defValue.substring(1, defValue.length() - 1);
+                    if (maybeStringVal.indexOf(defValue.charAt(0)) == -1) {
+                        options.setDefineToStringLiteral(defName, maybeStringVal);
+                        continue;
+                    }
+                } else {
+                    try {
+                        options.setDefineToDoubleLiteral(defName, Double.parseDouble(defValue));
+                        continue;
+                    } catch (NumberFormatException e) {
+                        // do nothing, it will be caught at the end
+                    }
+                }
+            }
+        }
+        throw new RuntimeException(""--define flag syntax invalid: "" + override);
+    }
+}","public void test2020() throws Throwable {
+    Vector<String> vector0 = new Vector<String>();
+    vector0.add("""");
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    // Undeclared exception!
+    try {
+        AbstractCommandLineRunner.createDefineReplacements(vector0, compilerOptions0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // --define flag syntax invalid:
+        //
+        verifyException(""com.google.javascript.jscomp.AbstractCommandLineRunner"", e);
+    }
+}","/**
+ * Create a map of constant names to constant values from a textual
+ * description of the map.
+ *
+ * @param definitions A list of overriding definitions for defines in
+ *     the form <name>[=<val>], where <val> is a number, boolean, or
+ *     single-quoted string without single quotes.
+ */"
+"@VisibleForTesting
+static void createDefineReplacements(List<String> definitions, CompilerOptions options) {
+    // Parse the definitions
+    for (String override : definitions) {
+        String[] assignment = override.split(""="", 2);
+        String defName = assignment[0];
+        if (defName.length() > 0) {
+            if (assignment.length == 1) {
+                options.setDefineToBooleanLiteral(defName, true);
+                continue;
+            } else {
+                String defValue = assignment[1];
+                if (defValue.equals(""true"")) {
+                    options.setDefineToBooleanLiteral(defName, true);
+                    continue;
+                } else if (defValue.equals(""false"")) {
+                    options.setDefineToBooleanLiteral(defName, false);
+                    continue;
+                } else if (defValue.length() > 1 && ((defValue.charAt(0) == '\'' && defValue.charAt(defValue.length() - 1) == '\''))) {
+                    // If the value starts and ends with a single quote,
+                    // we assume that it's a string.
+                    String maybeStringVal = defValue.substring(1, defValue.length() - 1);
+                    if (maybeStringVal.indexOf(defValue.charAt(0)) == -1) {
+                        options.setDefineToStringLiteral(defName, maybeStringVal);
+                        continue;
+                    }
+                } else {
+                    try {
+                        options.setDefineToDoubleLiteral(defName, Double.parseDouble(defValue));
+                        continue;
+                    } catch (NumberFormatException e) {
+                        // do nothing, it will be caught at the end
+                    }
+                }
+            }
+        }
+        throw new RuntimeException(""--define flag syntax invalid: "" + override);
+    }
+}","public void test2121() throws Throwable {
+    List<String> list0 = ResourceBundle.Control.FORMAT_CLASS;
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    AbstractCommandLineRunner.createDefineReplacements(list0, compilerOptions0);
+    assertFalse(compilerOptions0.inlineLocalVariables);
+}","/**
+ * Create a map of constant names to constant values from a textual
+ * description of the map.
+ *
+ * @param definitions A list of overriding definitions for defines in
+ *     the form <name>[=<val>], where <val> is a number, boolean, or
+ *     single-quoted string without single quotes.
+ */"

@@ -1,0 +1,426 @@
+focal_method,test_prefix,docstring
+"public boolean hasErrors() {
+    return hasHaltingErrors();
+}","public void test000() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""goog.base"");
+    CheckLevel checkLevel0 = CheckLevel.ERROR;
+    ProcessClosurePrimitives processClosurePrimitives0 = new ProcessClosurePrimitives(compiler0, checkLevel0, true);
+    processClosurePrimitives0.process(node0, node0);
+    assertTrue(compiler0.hasErrors());
+}","/**
+ * Consults the {@link ErrorManager} to see if we've encountered errors
+ * that should halt compilation. <p>
+ *
+ * If {@link CompilerOptions#ideMode} is {@code true}, this function
+ * always returns {@code false} without consulting the error manager. The
+ * error manager will continue to be told about new errors and warnings, but
+ * the compiler will complete compilation of all inputs.<p>
+ */"
+"public int getErrorCount() {
+    return errorManager.getErrorCount();
+}","public void test001() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""goog.base"");
+    CheckLevel checkLevel0 = CheckLevel.ERROR;
+    ProcessClosurePrimitives processClosurePrimitives0 = new ProcessClosurePrimitives(compiler0, checkLevel0, true);
+    processClosurePrimitives0.process(node0, node0);
+    assertEquals(1, compiler0.getErrorCount());
+}","/**
+ * Gets the number of errors.
+ */"
+"@Override
+public void process(Node externs, Node root) {
+    new NodeTraversal(compiler, this).traverse(root);
+    for (ProvidedName pn : providedNames.values()) {
+        pn.replace();
+    }
+    if (requiresLevel.isOn()) {
+        for (UnrecognizedRequire r : unrecognizedRequires) {
+            DiagnosticType error;
+            ProvidedName expectedName = providedNames.get(r.namespace);
+            if (expectedName != null && expectedName.firstNode != null) {
+                // The namespace ended up getting provided after it was required.
+                error = LATE_PROVIDE_ERROR;
+            } else {
+                error = MISSING_PROVIDE_ERROR;
+            }
+            compiler.report(JSError.make(r.inputName, r.requireNode, requiresLevel, error, r.namespace));
+        }
+    }
+}","public void test023() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = new Node(30);
+    CheckLevel checkLevel0 = CheckLevel.OFF;
+    ProcessClosurePrimitives processClosurePrimitives0 = new ProcessClosurePrimitives(compiler0, checkLevel0, false);
+    processClosurePrimitives0.process(node0, node0);
+    assertEquals(0, Node.SIDE_EFFECTS_ALL);
+}",""
+"@Override
+public void process(Node externs, Node root) {
+    new NodeTraversal(compiler, this).traverse(root);
+    for (ProvidedName pn : providedNames.values()) {
+        pn.replace();
+    }
+    if (requiresLevel.isOn()) {
+        for (UnrecognizedRequire r : unrecognizedRequires) {
+            DiagnosticType error;
+            ProvidedName expectedName = providedNames.get(r.namespace);
+            if (expectedName != null && expectedName.firstNode != null) {
+                // The namespace ended up getting provided after it was required.
+                error = LATE_PROVIDE_ERROR;
+            } else {
+                error = MISSING_PROVIDE_ERROR;
+            }
+            compiler.report(JSError.make(r.inputName, r.requireNode, requiresLevel, error, r.namespace));
+        }
+    }
+}","public void test034() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""msgno.brac=et"");
+    CheckLevel checkLevel0 = CheckLevel.WARNING;
+    Node node1 = new Node(37, node0, node0, 1, 0);
+    ProcessClosurePrimitives processClosurePrimitives0 = new ProcessClosurePrimitives(compiler0, checkLevel0, true);
+    // Undeclared exception!
+    try {
+        processClosurePrimitives0.process((Node) null, node1);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",""
+"@Override
+public void visit(NodeTraversal t, Node n, Node parent) {
+    switch(n.getType()) {
+        case Token.CALL:
+            boolean isExpr = parent.getType() == Token.EXPR_RESULT;
+            Node left = n.getFirstChild();
+            if (left.getType() == Token.GETPROP) {
+                Node name = left.getFirstChild();
+                if (name.getType() == Token.NAME && GOOG.equals(name.getString())) {
+                    // For the sake of simplicity, we report code changes
+                    // when we see a provides/requires, and don't worry about
+                    // reporting the change when we actually do the replacement.
+                    String methodName = name.getNext().getString();
+                    if (""base"".equals(methodName)) {
+                        processBaseClassCall(t, n);
+                    } else if (!isExpr) {
+                        // All other methods must be called in an EXPR.
+                        break;
+                    } else if (""require"".equals(methodName)) {
+                        processRequireCall(t, n, parent);
+                    } else if (""provide"".equals(methodName)) {
+                        processProvideCall(t, n, parent);
+                    } else if (""exportSymbol"".equals(methodName)) {
+                        Node arg = left.getNext();
+                        if (arg.getType() == Token.STRING) {
+                            int dot = arg.getString().indexOf('.');
+                            if (dot == -1) {
+                                exportedVariables.add(arg.getString());
+                            } else {
+                                exportedVariables.add(arg.getString().substring(0, dot));
+                            }
+                        }
+                    } else if (""addDependency"".equals(methodName)) {
+                        CodingConvention convention = compiler.getCodingConvention();
+                        List<String> typeDecls = convention.identifyTypeDeclarationCall(n);
+                        if (typeDecls != null) {
+                            for (String typeDecl : typeDecls) {
+                                compiler.getTypeRegistry().forwardDeclareType(typeDecl);
+                            }
+                        }
+                        // We can't modify parent, so just create a node that will
+                        // get compiled out.
+                        parent.replaceChild(n, Node.newNumber(0));
+                        compiler.reportCodeChange();
+                    } else if (""setCssNameMapping"".equals(methodName)) {
+                        processSetCssNameMapping(t, n, parent);
+                    }
+                }
+            }
+            break;
+        case Token.ASSIGN:
+        case Token.NAME:
+            // If this is an assignment to a provided name, remove the provided
+            // object.
+            handleCandidateProvideDefinition(t, n, parent);
+            break;
+        case Token.FUNCTION:
+            // If this is a declaration of a provided named function, this is an
+            // error. Hosited functions will explode if the're provided.
+            if (t.inGlobalScope() && !NodeUtil.isFunctionExpression(n)) {
+                String name = n.getFirstChild().getString();
+                ProvidedName pn = providedNames.get(name);
+                if (pn != null) {
+                    compiler.report(t.makeError(n, FUNCTION_NAMESPACE_ERROR, name));
+                }
+            }
+            break;
+        case Token.NEW:
+            trySimplifyNewDate(t, n, parent);
+            break;
+        case Token.GETPROP:
+            if (n.getFirstChild().getType() == Token.NAME && parent.getType() != Token.CALL && parent.getType() != Token.ASSIGN && ""goog.base"".equals(n.getQualifiedName())) {
+                reportBadBaseClassUse(t, n, ""May only be called directly."");
+            }
+            break;
+    }
+}","public void test045() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = new Node(37, 37, 37);
+    node0.addChildToBack(node0);
+    CheckLevel checkLevel0 = CheckLevel.OFF;
+    ProcessClosurePrimitives processClosurePrimitives0 = new ProcessClosurePrimitives(compiler0, checkLevel0, true);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, processClosurePrimitives0);
+    processClosurePrimitives0.visit(nodeTraversal0, node0, node0);
+    assertEquals(2, Node.POST_FLAG);
+}",""
+"public boolean isSyntheticBlock() {
+    return getBooleanProp(SYNTHETIC_BLOCK_PROP);
+}","public void test056() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = new Node(37);
+    Node node1 = new Node(34, node0, node0, node0, node0);
+    node0.addChildToBack(node1);
+    CheckLevel checkLevel0 = CheckLevel.ERROR;
+    node1.setType(33);
+    ProcessClosurePrimitives processClosurePrimitives0 = new ProcessClosurePrimitives(compiler0, checkLevel0, true);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, processClosurePrimitives0);
+    processClosurePrimitives0.visit(nodeTraversal0, node0, node1);
+    assertFalse(node1.isSyntheticBlock());
+}","/**
+ * Returns whether this is a synthetic block that should not be considered
+ * a real source block.
+ */"
+"@Override
+public void visit(NodeTraversal t, Node n, Node parent) {
+    switch(n.getType()) {
+        case Token.CALL:
+            boolean isExpr = parent.getType() == Token.EXPR_RESULT;
+            Node left = n.getFirstChild();
+            if (left.getType() == Token.GETPROP) {
+                Node name = left.getFirstChild();
+                if (name.getType() == Token.NAME && GOOG.equals(name.getString())) {
+                    // For the sake of simplicity, we report code changes
+                    // when we see a provides/requires, and don't worry about
+                    // reporting the change when we actually do the replacement.
+                    String methodName = name.getNext().getString();
+                    if (""base"".equals(methodName)) {
+                        processBaseClassCall(t, n);
+                    } else if (!isExpr) {
+                        // All other methods must be called in an EXPR.
+                        break;
+                    } else if (""require"".equals(methodName)) {
+                        processRequireCall(t, n, parent);
+                    } else if (""provide"".equals(methodName)) {
+                        processProvideCall(t, n, parent);
+                    } else if (""exportSymbol"".equals(methodName)) {
+                        Node arg = left.getNext();
+                        if (arg.getType() == Token.STRING) {
+                            int dot = arg.getString().indexOf('.');
+                            if (dot == -1) {
+                                exportedVariables.add(arg.getString());
+                            } else {
+                                exportedVariables.add(arg.getString().substring(0, dot));
+                            }
+                        }
+                    } else if (""addDependency"".equals(methodName)) {
+                        CodingConvention convention = compiler.getCodingConvention();
+                        List<String> typeDecls = convention.identifyTypeDeclarationCall(n);
+                        if (typeDecls != null) {
+                            for (String typeDecl : typeDecls) {
+                                compiler.getTypeRegistry().forwardDeclareType(typeDecl);
+                            }
+                        }
+                        // We can't modify parent, so just create a node that will
+                        // get compiled out.
+                        parent.replaceChild(n, Node.newNumber(0));
+                        compiler.reportCodeChange();
+                    } else if (""setCssNameMapping"".equals(methodName)) {
+                        processSetCssNameMapping(t, n, parent);
+                    }
+                }
+            }
+            break;
+        case Token.ASSIGN:
+        case Token.NAME:
+            // If this is an assignment to a provided name, remove the provided
+            // object.
+            handleCandidateProvideDefinition(t, n, parent);
+            break;
+        case Token.FUNCTION:
+            // If this is a declaration of a provided named function, this is an
+            // error. Hosited functions will explode if the're provided.
+            if (t.inGlobalScope() && !NodeUtil.isFunctionExpression(n)) {
+                String name = n.getFirstChild().getString();
+                ProvidedName pn = providedNames.get(name);
+                if (pn != null) {
+                    compiler.report(t.makeError(n, FUNCTION_NAMESPACE_ERROR, name));
+                }
+            }
+            break;
+        case Token.NEW:
+            trySimplifyNewDate(t, n, parent);
+            break;
+        case Token.GETPROP:
+            if (n.getFirstChild().getType() == Token.NAME && parent.getType() != Token.CALL && parent.getType() != Token.ASSIGN && ""goog.base"".equals(n.getQualifiedName())) {
+                reportBadBaseClassUse(t, n, ""May only be called directly."");
+            }
+            break;
+    }
+}","public void test067() throws Throwable {
+    Node node0 = new Node(105);
+    Compiler compiler0 = new Compiler();
+    CheckLevel checkLevel0 = CheckLevel.ERROR;
+    ProcessClosurePrimitives processClosurePrimitives0 = new ProcessClosurePrimitives(compiler0, checkLevel0, false);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, processClosurePrimitives0);
+    Node node1 = new Node(15, node0, node0, node0, 18, 13);
+    processClosurePrimitives0.visit(nodeTraversal0, node0, node1);
+    assertEquals(4095, Node.COLUMN_MASK);
+}",""
+"@Override
+public void visit(NodeTraversal t, Node n, Node parent) {
+    switch(n.getType()) {
+        case Token.CALL:
+            boolean isExpr = parent.getType() == Token.EXPR_RESULT;
+            Node left = n.getFirstChild();
+            if (left.getType() == Token.GETPROP) {
+                Node name = left.getFirstChild();
+                if (name.getType() == Token.NAME && GOOG.equals(name.getString())) {
+                    // For the sake of simplicity, we report code changes
+                    // when we see a provides/requires, and don't worry about
+                    // reporting the change when we actually do the replacement.
+                    String methodName = name.getNext().getString();
+                    if (""base"".equals(methodName)) {
+                        processBaseClassCall(t, n);
+                    } else if (!isExpr) {
+                        // All other methods must be called in an EXPR.
+                        break;
+                    } else if (""require"".equals(methodName)) {
+                        processRequireCall(t, n, parent);
+                    } else if (""provide"".equals(methodName)) {
+                        processProvideCall(t, n, parent);
+                    } else if (""exportSymbol"".equals(methodName)) {
+                        Node arg = left.getNext();
+                        if (arg.getType() == Token.STRING) {
+                            int dot = arg.getString().indexOf('.');
+                            if (dot == -1) {
+                                exportedVariables.add(arg.getString());
+                            } else {
+                                exportedVariables.add(arg.getString().substring(0, dot));
+                            }
+                        }
+                    } else if (""addDependency"".equals(methodName)) {
+                        CodingConvention convention = compiler.getCodingConvention();
+                        List<String> typeDecls = convention.identifyTypeDeclarationCall(n);
+                        if (typeDecls != null) {
+                            for (String typeDecl : typeDecls) {
+                                compiler.getTypeRegistry().forwardDeclareType(typeDecl);
+                            }
+                        }
+                        // We can't modify parent, so just create a node that will
+                        // get compiled out.
+                        parent.replaceChild(n, Node.newNumber(0));
+                        compiler.reportCodeChange();
+                    } else if (""setCssNameMapping"".equals(methodName)) {
+                        processSetCssNameMapping(t, n, parent);
+                    }
+                }
+            }
+            break;
+        case Token.ASSIGN:
+        case Token.NAME:
+            // If this is an assignment to a provided name, remove the provided
+            // object.
+            handleCandidateProvideDefinition(t, n, parent);
+            break;
+        case Token.FUNCTION:
+            // If this is a declaration of a provided named function, this is an
+            // error. Hosited functions will explode if the're provided.
+            if (t.inGlobalScope() && !NodeUtil.isFunctionExpression(n)) {
+                String name = n.getFirstChild().getString();
+                ProvidedName pn = providedNames.get(name);
+                if (pn != null) {
+                    compiler.report(t.makeError(n, FUNCTION_NAMESPACE_ERROR, name));
+                }
+            }
+            break;
+        case Token.NEW:
+            trySimplifyNewDate(t, n, parent);
+            break;
+        case Token.GETPROP:
+            if (n.getFirstChild().getType() == Token.NAME && parent.getType() != Token.CALL && parent.getType() != Token.ASSIGN && ""goog.base"".equals(n.getQualifiedName())) {
+                reportBadBaseClassUse(t, n, ""May only be called directly."");
+            }
+            break;
+    }
+}","public void test078() throws Throwable {
+    Node node0 = new Node(105, 105, 105);
+    Node node1 = Node.newString(6, ""JSC_TOO_MANY_ARGUMENTS_ERROR"");
+    node0.addChildrenToFront(node1);
+    Compiler compiler0 = new Compiler();
+    StrictModeCheck strictModeCheck0 = new StrictModeCheck(compiler0, true, true);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, strictModeCheck0);
+    CheckLevel checkLevel0 = CheckLevel.OFF;
+    ProcessClosurePrimitives processClosurePrimitives0 = new ProcessClosurePrimitives(compiler0, checkLevel0, true);
+    Node node2 = new Node(125, node0, node0, 38, 43);
+    processClosurePrimitives0.visit(nodeTraversal0, node0, node2);
+    assertEquals(10, Node.VARS_PROP);
+}",""
+"@Override
+public void process(Node externs, Node root) {
+    new NodeTraversal(compiler, this).traverse(root);
+    for (ProvidedName pn : providedNames.values()) {
+        pn.replace();
+    }
+    if (requiresLevel.isOn()) {
+        for (UnrecognizedRequire r : unrecognizedRequires) {
+            DiagnosticType error;
+            ProvidedName expectedName = providedNames.get(r.namespace);
+            if (expectedName != null && expectedName.firstNode != null) {
+                // The namespace ended up getting provided after it was required.
+                error = LATE_PROVIDE_ERROR;
+            } else {
+                error = MISSING_PROVIDE_ERROR;
+            }
+            compiler.report(JSError.make(r.inputName, r.requireNode, requiresLevel, error, r.namespace));
+        }
+    }
+}","public void test089() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""msg.cant.convert"");
+    CheckLevel checkLevel0 = CheckLevel.ERROR;
+    ProcessClosurePrimitives processClosurePrimitives0 = new ProcessClosurePrimitives(compiler0, checkLevel0, false);
+    processClosurePrimitives0.process(node0, node0);
+    assertEquals(33, Node.NAME_PROP);
+}",""
+"public boolean isLocalResultCall() {
+    return areBitFlagsSet(getSideEffectFlags(), FLAG_LOCAL_RESULTS);
+}","public void test0910() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = new Node(86);
+    Node node1 = new Node(46, node0, node0);
+    CheckLevel checkLevel0 = CheckLevel.OFF;
+    ProcessClosurePrimitives processClosurePrimitives0 = new ProcessClosurePrimitives(compiler0, checkLevel0, false);
+    processClosurePrimitives0.process(node1, node1);
+    assertFalse(node1.isLocalResultCall());
+}","/**
+ * Returns true if this node is a function or constructor call that
+ * returns a primitive or a local object (an object that has no other
+ * references).
+ */"
+"public boolean hasMoreThanOneChild() {
+    return first != null && first != last;
+}","public void test1011() throws Throwable {
+    Node node0 = new Node(89, 89, 89);
+    Compiler compiler0 = new Compiler();
+    CheckLevel checkLevel0 = CheckLevel.ERROR;
+    Node node1 = new Node(30, node0, node0, 12, 0);
+    ProcessClosurePrimitives processClosurePrimitives0 = new ProcessClosurePrimitives(compiler0, checkLevel0, true);
+    processClosurePrimitives0.process(node0, node1);
+    assertFalse(node1.hasMoreThanOneChild());
+}","/**
+ * Check for more than one child more efficiently than by iterating over all
+ * the children as is done with Node.getChildCount().
+ *
+ * @return Whether the node more than one child.
+ */"

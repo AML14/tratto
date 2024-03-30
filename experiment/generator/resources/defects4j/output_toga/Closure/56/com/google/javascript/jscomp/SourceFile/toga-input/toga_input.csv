@@ -1,0 +1,780 @@
+focal_method,test_prefix,docstring
+"@Override
+public boolean isExtern() {
+    return isExternFile;
+}","public void test000() throws Throwable {
+    SourceFile.Generator sourceFile_Generator0 = mock(SourceFile.Generator.class, new ViolatedAssumptionAnswer());
+    SourceFile.Generated sourceFile_Generated0 = new SourceFile.Generated(""com.google.javascript.jscomp.SourceFile$OnDisk"", sourceFile_Generator0);
+    sourceFile_Generated0.getCodeNoCache();
+    assertFalse(sourceFile_Generated0.isExtern());
+}","/**
+ * Returns whether this is an extern.
+ */"
+"@Override
+public boolean isExtern() {
+    return isExternFile;
+}","public void test011() throws Throwable {
+    SourceFile.Generated sourceFile_Generated0 = new SourceFile.Generated(""com.google.javascript.jscomp.SourceFile$Preloaded"", (SourceFile.Generator) null);
+    sourceFile_Generated0.clearCachedSource();
+    assertFalse(sourceFile_Generated0.isExtern());
+}","/**
+ * Returns whether this is an extern.
+ */"
+"@Override
+public boolean isExtern() {
+    return isExternFile;
+}","public void test022() throws Throwable {
+    MockFile mockFile0 = new MockFile("""", """");
+    SourceFile.OnDisk sourceFile_OnDisk0 = new SourceFile.OnDisk(mockFile0);
+    sourceFile_OnDisk0.clearCachedSource();
+    assertFalse(sourceFile_OnDisk0.isExtern());
+}","/**
+ * Returns whether this is an extern.
+ */"
+"public static SourceFile fromGenerator(String fileName, Generator generator) {
+    return new Generated(fileName, generator);
+}","public void test033() throws Throwable {
+    // Undeclared exception!
+    try {
+        SourceFile.fromGenerator((String) null, (SourceFile.Generator) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // a source must have a name
+        //
+        verifyException(""com.google.javascript.jscomp.SourceFile"", e);
+    }
+}",""
+"@Override
+public boolean isExtern() {
+    return isExternFile;
+}","public void test044() throws Throwable {
+    SourceFile sourceFile0 = SourceFile.fromFile(""com.google.javascript.jscomp.SourceFile"", (Charset) null);
+    assertFalse(sourceFile0.isExtern());
+}","/**
+ * Returns whether this is an extern.
+ */"
+"@Override
+public boolean isExtern() {
+    return isExternFile;
+}","public void test055() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = (SourceFile.Preloaded) SourceFile.fromCode(""com.google.common.io.Files"", """", ""\nActual: "");
+    int int0 = sourceFile_Preloaded0.getNumLines();
+    assertFalse(sourceFile_Preloaded0.isExtern());
+}","/**
+ * Returns whether this is an extern.
+ */"
+"@Override
+public String toString() {
+    return fileName;
+}","public void test056() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = (SourceFile.Preloaded) SourceFile.fromCode(""com.google.common.io.Files"", """", ""\nActual: "");
+    int int0 = sourceFile_Preloaded0.getNumLines();
+    assertEquals(""com.google.common.io.Files"", sourceFile_Preloaded0.toString());
+}",""
+"int getNumLines() {
+    if (lineOffsets == null) {
+        findLineOffsets();
+    }
+    return lineOffsets.length;
+}","public void test057() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = (SourceFile.Preloaded) SourceFile.fromCode(""com.google.common.io.Files"", """", ""\nActual: "");
+    int int0 = sourceFile_Preloaded0.getNumLines();
+    assertEquals(2, int0);
+}","/**
+ * @return The number of lines in this source file.
+ */"
+"public String getOriginalPath() {
+    return originalPath != null ? originalPath : fileName;
+}","public void test058() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = (SourceFile.Preloaded) SourceFile.fromCode(""com.google.common.io.Files"", """", ""\nActual: "");
+    int int0 = sourceFile_Preloaded0.getNumLines();
+    assertEquals("""", sourceFile_Preloaded0.getOriginalPath());
+}",""
+"public static SourceFile fromReader(String fileName, Reader r) throws IOException {
+    return fromCode(fileName, CharStreams.toString(r));
+}","public void test069() throws Throwable {
+    File file0 = MockFile.createTempFile(""\""x5BI7V"", """");
+    SourceFile.OnDisk sourceFile_OnDisk0 = new SourceFile.OnDisk(file0);
+    Reader reader0 = sourceFile_OnDisk0.getCodeReader();
+    // Undeclared exception!
+    try {
+        SourceFile.fromReader("""", reader0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // a source must have a name
+        //
+        verifyException(""com.google.javascript.jscomp.SourceFile"", e);
+    }
+}",""
+"public Region getRegion(int lineNumber) {
+    String js = """";
+    try {
+        js = getCode();
+    } catch (IOException e) {
+        return null;
+    }
+    int pos = 0;
+    int startLine = Math.max(1, lineNumber - (SOURCE_EXCERPT_REGION_LENGTH + 1) / 2 + 1);
+    for (int n = 1; n < startLine; n++) {
+        int nextpos = js.indexOf('\n', pos);
+        if (nextpos == -1) {
+            break;
+        }
+        pos = nextpos + 1;
+    }
+    int end = pos;
+    int endLine = startLine;
+    for (int n = 0; n < SOURCE_EXCERPT_REGION_LENGTH; n++, endLine++) {
+        end = js.indexOf('\n', end);
+        if (end == -1) {
+            break;
+        }
+        end++;
+    }
+    if (lineNumber >= endLine) {
+        return null;
+    }
+    if (end == -1) {
+        int last = js.length() - 1;
+        if (js.charAt(last) == '\n') {
+            return new SimpleRegion(startLine, endLine, js.substring(pos, last));
+        } else {
+            return new SimpleRegion(startLine, endLine, js.substring(pos));
+        }
+    } else {
+        return new SimpleRegion(startLine, endLine, js.substring(pos, end));
+    }
+}","public void test0710() throws Throwable {
+    File file0 = MockFile.createTempFile(""\""x5BI7V"", """");
+    SourceFile.OnDisk sourceFile_OnDisk0 = new SourceFile.OnDisk(file0);
+    Region region0 = sourceFile_OnDisk0.getRegion(1181);
+    assertNull(region0);
+}","/**
+ * Get a region around the indicated line number. The exact definition of a
+ * region is implementation specific, but it must contain the line indicated
+ * by the line number. A region must not start or end by a carriage return.
+ *
+ * @param lineNumber the line number, 1 being the first line of the file.
+ * @return The line indicated. Returns {@code null} if it does not exist,
+ *     or if there was an IO exception.
+ */"
+"@Override
+public boolean isExtern() {
+    return isExternFile;
+}","public void test0711() throws Throwable {
+    File file0 = MockFile.createTempFile(""\""x5BI7V"", """");
+    SourceFile.OnDisk sourceFile_OnDisk0 = new SourceFile.OnDisk(file0);
+    Region region0 = sourceFile_OnDisk0.getRegion(1181);
+    sourceFile_OnDisk0.getCodeReader();
+    assertFalse(sourceFile_OnDisk0.isExtern());
+}","/**
+ * Returns whether this is an extern.
+ */"
+"@Override
+public boolean isExtern() {
+    return isExternFile;
+}","public void test0812() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""\n"", ""\n"");
+    sourceFile_Preloaded0.clearCachedSource();
+    assertFalse(sourceFile_Preloaded0.isExtern());
+}","/**
+ * Returns whether this is an extern.
+ */"
+"@Override
+public boolean isExtern() {
+    return isExternFile;
+}","public void test0913() throws Throwable {
+    SourceFile sourceFile0 = SourceFile.fromCode(""<5f-.U>^"", ""com.google.javascript.jscomp.SourceFile$OnDisk"", ""com.google.javascript.jscomp.SourceFile$OnDisk"");
+    String string0 = sourceFile0.getName();
+    assertFalse(sourceFile0.isExtern());
+}","/**
+ * Returns whether this is an extern.
+ */"
+"public String getOriginalPath() {
+    return originalPath != null ? originalPath : fileName;
+}","public void test0914() throws Throwable {
+    SourceFile sourceFile0 = SourceFile.fromCode(""<5f-.U>^"", ""com.google.javascript.jscomp.SourceFile$OnDisk"", ""com.google.javascript.jscomp.SourceFile$OnDisk"");
+    String string0 = sourceFile0.getName();
+    assertEquals(""com.google.javascript.jscomp.SourceFile$OnDisk"", sourceFile0.getOriginalPath());
+}",""
+"@Override
+public String getName() {
+    return fileName;
+}","public void test0915() throws Throwable {
+    SourceFile sourceFile0 = SourceFile.fromCode(""<5f-.U>^"", ""com.google.javascript.jscomp.SourceFile$OnDisk"", ""com.google.javascript.jscomp.SourceFile$OnDisk"");
+    String string0 = sourceFile0.getName();
+    assertEquals(""<5f-.U>^"", string0);
+}","/**
+ * Returns a unique name for the source file.
+ */"
+"@Override
+public boolean isExtern() {
+    return isExternFile;
+}","public void test1016() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""\n"", ""\n"");
+    assertFalse(sourceFile_Preloaded0.isExtern());
+}","/**
+ * Returns whether this is an extern.
+ */"
+"@Override
+public boolean isExtern() {
+    return isExternFile;
+}","public void test1017() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""\n"", ""\n"");
+    sourceFile_Preloaded0.setIsExtern(true);
+    assertTrue(sourceFile_Preloaded0.isExtern());
+}","/**
+ * Returns whether this is an extern.
+ */"
+"@Override
+public boolean isExtern() {
+    return isExternFile;
+}","public void test1118() throws Throwable {
+    SourceFile sourceFile0 = SourceFile.fromFile(""[!Xro._$kM"");
+    sourceFile0.toString();
+    assertFalse(sourceFile0.isExtern());
+}","/**
+ * Returns whether this is an extern.
+ */"
+"public static SourceFile fromInputStream(String fileName, String originalPath, InputStream s) throws IOException {
+    return fromCode(fileName, originalPath, CharStreams.toString(new InputStreamReader(s, Charsets.UTF_8)));
+}","public void test1219() throws Throwable {
+    // Undeclared exception!
+    try {
+        SourceFile.fromInputStream(""|g3@%8]M2"", ""|g3@%8]M2"", (InputStream) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.io.Reader"", e);
+    }
+}",""
+"public static SourceFile fromInputStream(String fileName, InputStream s) throws IOException {
+    return fromCode(fileName, CharStreams.toString(new InputStreamReader(s, Charsets.UTF_8)));
+}","public void test1320() throws Throwable {
+    // Undeclared exception!
+    try {
+        SourceFile.fromInputStream(""|g3@%8]M2"", (InputStream) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.io.Reader"", e);
+    }
+}",""
+"@Override
+public boolean isExtern() {
+    return isExternFile;
+}","public void test1421() throws Throwable {
+    StringReader stringReader0 = new StringReader(""F?Y9)jj5&$|$SewjSdp"");
+    SourceFile sourceFile0 = SourceFile.fromReader(""UTF-16LE"", stringReader0);
+    boolean boolean0 = sourceFile0.isExtern();
+    assertFalse(boolean0);
+}","/**
+ * Returns whether this is an extern.
+ */"
+"public String getOriginalPath() {
+    return originalPath != null ? originalPath : fileName;
+}","public void test1422() throws Throwable {
+    StringReader stringReader0 = new StringReader(""F?Y9)jj5&$|$SewjSdp"");
+    SourceFile sourceFile0 = SourceFile.fromReader(""UTF-16LE"", stringReader0);
+    boolean boolean0 = sourceFile0.isExtern();
+    assertEquals(""UTF-16LE"", sourceFile0.getOriginalPath());
+}",""
+"@Override
+public int getLineOffset(int lineno) {
+    if (lineOffsets == null) {
+        findLineOffsets();
+    }
+    if (lineno < 1 || lineno > lineOffsets.length) {
+        throw new IllegalArgumentException(""Expected line number between 1 and "" + lineOffsets.length + ""\nActual: "" + lineno);
+    }
+    return lineOffsets[lineno - 1];
+}","public void test1523() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""\n"", ""\n"");
+    sourceFile_Preloaded0.getNumLines();
+    // Undeclared exception!
+    try {
+        sourceFile_Preloaded0.getLineOffset(1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Expected line number between 1 and 0
+        // Actual: 1
+        //
+        verifyException(""com.google.javascript.jscomp.SourceFile"", e);
+    }
+}",""
+"@Override
+public boolean isExtern() {
+    return isExternFile;
+}","public void test1624() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""\n"", ""com.google.common.io.PatternFilenameFilter"");
+    sourceFile_Preloaded0.getLineOffset(1);
+    assertFalse(sourceFile_Preloaded0.isExtern());
+}","/**
+ * Returns whether this is an extern.
+ */"
+"public String getOriginalPath() {
+    return originalPath != null ? originalPath : fileName;
+}","public void test1625() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""\n"", ""com.google.common.io.PatternFilenameFilter"");
+    sourceFile_Preloaded0.getLineOffset(1);
+    assertEquals(""\n"", sourceFile_Preloaded0.getOriginalPath());
+}",""
+"@Override
+public int getLineOffset(int lineno) {
+    if (lineOffsets == null) {
+        findLineOffsets();
+    }
+    if (lineno < 1 || lineno > lineOffsets.length) {
+        throw new IllegalArgumentException(""Expected line number between 1 and "" + lineOffsets.length + ""\nActual: "" + lineno);
+    }
+    return lineOffsets[lineno - 1];
+}","public void test1726() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""*$P"", ""*$P"");
+    // Undeclared exception!
+    try {
+        sourceFile_Preloaded0.getLineOffset((-5));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Expected line number between 1 and 1
+        // Actual: -5
+        //
+        verifyException(""com.google.javascript.jscomp.SourceFile"", e);
+    }
+}",""
+"@Override
+public boolean isExtern() {
+    return isExternFile;
+}","public void test1827() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""\n"", ""\n"", ""\n"");
+    sourceFile_Preloaded0.getNumLines();
+    int int0 = sourceFile_Preloaded0.getNumLines();
+    assertFalse(sourceFile_Preloaded0.isExtern());
+}","/**
+ * Returns whether this is an extern.
+ */"
+"int getNumLines() {
+    if (lineOffsets == null) {
+        findLineOffsets();
+    }
+    return lineOffsets.length;
+}","public void test1828() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""\n"", ""\n"", ""\n"");
+    sourceFile_Preloaded0.getNumLines();
+    int int0 = sourceFile_Preloaded0.getNumLines();
+    assertEquals(0, int0);
+}","/**
+ * @return The number of lines in this source file.
+ */"
+"public String getOriginalPath() {
+    return originalPath != null ? originalPath : fileName;
+}","public void test1929() throws Throwable {
+    SourceFile.Generator sourceFile_Generator0 = mock(SourceFile.Generator.class, new ViolatedAssumptionAnswer());
+    SourceFile sourceFile0 = SourceFile.fromGenerator("")&5AMT~.rI"", sourceFile_Generator0);
+    String string0 = sourceFile0.getOriginalPath();
+    assertNotNull(string0);
+}",""
+"@Override
+public boolean isExtern() {
+    return isExternFile;
+}","public void test1930() throws Throwable {
+    SourceFile.Generator sourceFile_Generator0 = mock(SourceFile.Generator.class, new ViolatedAssumptionAnswer());
+    SourceFile sourceFile0 = SourceFile.fromGenerator("")&5AMT~.rI"", sourceFile_Generator0);
+    String string0 = sourceFile0.getOriginalPath();
+    assertFalse(sourceFile0.isExtern());
+}","/**
+ * Returns whether this is an extern.
+ */"
+"@Override
+public boolean isExtern() {
+    return isExternFile;
+}","public void test2031() throws Throwable {
+    SourceFile sourceFile0 = SourceFile.fromCode(""KDf<fn1Z[L54"", ""KDf<fn1Z[L54"", ""KDf<fn1Z[L54"");
+    sourceFile0.getOriginalPath();
+    assertFalse(sourceFile0.isExtern());
+}","/**
+ * Returns whether this is an extern.
+ */"
+"@Override
+public boolean isExtern() {
+    return isExternFile;
+}","public void test2132() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""W6I7!xGh}qw{}5'hF"", ""W6I7!xGh}qw{}5'hF"");
+    sourceFile_Preloaded0.getLine((-2487));
+    assertFalse(sourceFile_Preloaded0.isExtern());
+}","/**
+ * Returns whether this is an extern.
+ */"
+"public String getLine(int lineNumber) {
+    String js = """";
+    try {
+        // NOTE(nicksantos): Right now, this is optimized for few warnings.
+        // This is probably the right trade-off, but will be slow if there
+        // are lots of warnings in one file.
+        js = getCode();
+    } catch (IOException e) {
+        return null;
+    }
+    int pos = 0;
+    int startLine = 1;
+    // If we've saved a previous offset and it's for a line less than the
+    // one we're searching for, then start at that point.
+    if (lineNumber >= lastLine) {
+        pos = lastOffset;
+        startLine = lastLine;
+    }
+    for (int n = startLine; n < lineNumber; n++) {
+        int nextpos = js.indexOf('\n', pos);
+        if (nextpos == -1) {
+            return null;
+        }
+        pos = nextpos + 1;
+    }
+    // Remember this offset for the next search we do.
+    lastOffset = pos;
+    lastLine = lineNumber;
+    if (js.indexOf('\n', pos) == -1) {
+        // If next new line cannot be found, there are two cases
+        // 1. pos already reaches the end of file, then null should be returned
+        // 2. otherwise, return the contents between pos and the end of file.
+        return null;
+    } else {
+        return js.substring(pos, js.indexOf('\n', pos));
+    }
+}","public void test2233() throws Throwable {
+    File file0 = MockFile.createTempFile(""\nActual: "", ""\nActual: "");
+    EvoSuiteFile evoSuiteFile0 = new EvoSuiteFile(""/var/folders/vv/c7q6vm8920vc7d5p_87011w40000gn/T/\nActual: 0\nActual: "");
+    FileSystemHandling.appendLineToFile(evoSuiteFile0, ""\nActual: "");
+    Charset charset0 = Charset.defaultCharset();
+    SourceFile.OnDisk sourceFile_OnDisk0 = new SourceFile.OnDisk(file0, charset0);
+    String string0 = sourceFile_OnDisk0.getLine(2);
+    assertEquals(""Actual: "", string0);
+}","/**
+ * Gets the source line for the indicated line number.
+ *
+ * @param lineNumber the line number, 1 being the first line of the file.
+ * @return The line indicated. Does not include the newline at the end
+ *     of the file. Returns {@code null} if it does not exist,
+ *     or if there was an IO exception.
+ */"
+"public Region getRegion(int lineNumber) {
+    String js = """";
+    try {
+        js = getCode();
+    } catch (IOException e) {
+        return null;
+    }
+    int pos = 0;
+    int startLine = Math.max(1, lineNumber - (SOURCE_EXCERPT_REGION_LENGTH + 1) / 2 + 1);
+    for (int n = 1; n < startLine; n++) {
+        int nextpos = js.indexOf('\n', pos);
+        if (nextpos == -1) {
+            break;
+        }
+        pos = nextpos + 1;
+    }
+    int end = pos;
+    int endLine = startLine;
+    for (int n = 0; n < SOURCE_EXCERPT_REGION_LENGTH; n++, endLine++) {
+        end = js.indexOf('\n', end);
+        if (end == -1) {
+            break;
+        }
+        end++;
+    }
+    if (lineNumber >= endLine) {
+        return null;
+    }
+    if (end == -1) {
+        int last = js.length() - 1;
+        if (js.charAt(last) == '\n') {
+            return new SimpleRegion(startLine, endLine, js.substring(pos, last));
+        } else {
+            return new SimpleRegion(startLine, endLine, js.substring(pos));
+        }
+    } else {
+        return new SimpleRegion(startLine, endLine, js.substring(pos, end));
+    }
+}","public void test2335() throws Throwable {
+    File file0 = MockFile.createTempFile(""\nActual: "", ""\nActual: "");
+    EvoSuiteFile evoSuiteFile0 = new EvoSuiteFile(""/var/folders/vv/c7q6vm8920vc7d5p_87011w40000gn/T/\nActual: 0\nActual: "");
+    FileSystemHandling.appendLineToFile(evoSuiteFile0, ""\nActual: "");
+    Charset charset0 = Charset.defaultCharset();
+    SourceFile.OnDisk sourceFile_OnDisk0 = new SourceFile.OnDisk(file0, charset0);
+    Region region0 = sourceFile_OnDisk0.getRegion(380);
+    assertNull(region0);
+}","/**
+ * Get a region around the indicated line number. The exact definition of a
+ * region is implementation specific, but it must contain the line indicated
+ * by the line number. A region must not start or end by a carriage return.
+ *
+ * @param lineNumber the line number, 1 being the first line of the file.
+ * @return The line indicated. Returns {@code null} if it does not exist,
+ *     or if there was an IO exception.
+ */"
+"@Override
+public boolean isExtern() {
+    return isExternFile;
+}","public void test2436() throws Throwable {
+    File file0 = MockFile.createTempFile(""\nActual: "", ""\nActual: "");
+    EvoSuiteFile evoSuiteFile0 = new EvoSuiteFile(""/var/folders/vv/c7q6vm8920vc7d5p_87011w40000gn/T/\nActual: 0\nActual: "");
+    FileSystemHandling.appendLineToFile(evoSuiteFile0, ""\nActual: "");
+    Charset charset0 = Charset.defaultCharset();
+    SourceFile.OnDisk sourceFile_OnDisk0 = new SourceFile.OnDisk(file0, charset0);
+    FileSystemHandling.appendLineToFile(evoSuiteFile0, ""\nActual: "");
+    FileSystemHandling.appendLineToFile(evoSuiteFile0, ""\nActual: "");
+    Region region0 = sourceFile_OnDisk0.getRegion(1);
+    assertFalse(sourceFile_OnDisk0.isExtern());
+}","/**
+ * Returns whether this is an extern.
+ */"
+"public Region getRegion(int lineNumber) {
+    String js = """";
+    try {
+        js = getCode();
+    } catch (IOException e) {
+        return null;
+    }
+    int pos = 0;
+    int startLine = Math.max(1, lineNumber - (SOURCE_EXCERPT_REGION_LENGTH + 1) / 2 + 1);
+    for (int n = 1; n < startLine; n++) {
+        int nextpos = js.indexOf('\n', pos);
+        if (nextpos == -1) {
+            break;
+        }
+        pos = nextpos + 1;
+    }
+    int end = pos;
+    int endLine = startLine;
+    for (int n = 0; n < SOURCE_EXCERPT_REGION_LENGTH; n++, endLine++) {
+        end = js.indexOf('\n', end);
+        if (end == -1) {
+            break;
+        }
+        end++;
+    }
+    if (lineNumber >= endLine) {
+        return null;
+    }
+    if (end == -1) {
+        int last = js.length() - 1;
+        if (js.charAt(last) == '\n') {
+            return new SimpleRegion(startLine, endLine, js.substring(pos, last));
+        } else {
+            return new SimpleRegion(startLine, endLine, js.substring(pos));
+        }
+    } else {
+        return new SimpleRegion(startLine, endLine, js.substring(pos, end));
+    }
+}","public void test2437() throws Throwable {
+    File file0 = MockFile.createTempFile(""\nActual: "", ""\nActual: "");
+    EvoSuiteFile evoSuiteFile0 = new EvoSuiteFile(""/var/folders/vv/c7q6vm8920vc7d5p_87011w40000gn/T/\nActual: 0\nActual: "");
+    FileSystemHandling.appendLineToFile(evoSuiteFile0, ""\nActual: "");
+    Charset charset0 = Charset.defaultCharset();
+    SourceFile.OnDisk sourceFile_OnDisk0 = new SourceFile.OnDisk(file0, charset0);
+    FileSystemHandling.appendLineToFile(evoSuiteFile0, ""\nActual: "");
+    FileSystemHandling.appendLineToFile(evoSuiteFile0, ""\nActual: "");
+    Region region0 = sourceFile_OnDisk0.getRegion(1);
+    assertNotNull(region0);
+}","/**
+ * Get a region around the indicated line number. The exact definition of a
+ * region is implementation specific, but it must contain the line indicated
+ * by the line number. A region must not start or end by a carriage return.
+ *
+ * @param lineNumber the line number, 1 being the first line of the file.
+ * @return The line indicated. Returns {@code null} if it does not exist,
+ *     or if there was an IO exception.
+ */"
+"String getSourceExcerpt();","public void test2438() throws Throwable {
+    File file0 = MockFile.createTempFile(""\nActual: "", ""\nActual: "");
+    EvoSuiteFile evoSuiteFile0 = new EvoSuiteFile(""/var/folders/vv/c7q6vm8920vc7d5p_87011w40000gn/T/\nActual: 0\nActual: "");
+    FileSystemHandling.appendLineToFile(evoSuiteFile0, ""\nActual: "");
+    Charset charset0 = Charset.defaultCharset();
+    SourceFile.OnDisk sourceFile_OnDisk0 = new SourceFile.OnDisk(file0, charset0);
+    FileSystemHandling.appendLineToFile(evoSuiteFile0, ""\nActual: "");
+    FileSystemHandling.appendLineToFile(evoSuiteFile0, ""\nActual: "");
+    Region region0 = sourceFile_OnDisk0.getRegion(1);
+    assertEquals(""\nActual: \n\nActual: \n\n"", region0.getSourceExcerpt());
+}","/**
+ * Get the source region.
+ */"
+"int getEndingLineNumber();","public void test2439() throws Throwable {
+    File file0 = MockFile.createTempFile(""\nActual: "", ""\nActual: "");
+    EvoSuiteFile evoSuiteFile0 = new EvoSuiteFile(""/var/folders/vv/c7q6vm8920vc7d5p_87011w40000gn/T/\nActual: 0\nActual: "");
+    FileSystemHandling.appendLineToFile(evoSuiteFile0, ""\nActual: "");
+    Charset charset0 = Charset.defaultCharset();
+    SourceFile.OnDisk sourceFile_OnDisk0 = new SourceFile.OnDisk(file0, charset0);
+    FileSystemHandling.appendLineToFile(evoSuiteFile0, ""\nActual: "");
+    FileSystemHandling.appendLineToFile(evoSuiteFile0, ""\nActual: "");
+    Region region0 = sourceFile_OnDisk0.getRegion(1);
+    assertEquals(6, region0.getEndingLineNumber());
+}","/**
+ * Get the ending line number.
+ */"
+"String getSourceExcerpt();","public void test2540() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""\n"", ""com.google.common.io.PatternFilenameFilter"");
+    Region region0 = sourceFile_Preloaded0.getRegion(0);
+    assertEquals(""com.google.common.io.PatternFilenameFilter"", region0.getSourceExcerpt());
+}","/**
+ * Get the source region.
+ */"
+"int getEndingLineNumber();","public void test2541() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""\n"", ""com.google.common.io.PatternFilenameFilter"");
+    Region region0 = sourceFile_Preloaded0.getRegion(0);
+    assertEquals(1, region0.getEndingLineNumber());
+}","/**
+ * Get the ending line number.
+ */"
+"public Region getRegion(int lineNumber) {
+    String js = """";
+    try {
+        js = getCode();
+    } catch (IOException e) {
+        return null;
+    }
+    int pos = 0;
+    int startLine = Math.max(1, lineNumber - (SOURCE_EXCERPT_REGION_LENGTH + 1) / 2 + 1);
+    for (int n = 1; n < startLine; n++) {
+        int nextpos = js.indexOf('\n', pos);
+        if (nextpos == -1) {
+            break;
+        }
+        pos = nextpos + 1;
+    }
+    int end = pos;
+    int endLine = startLine;
+    for (int n = 0; n < SOURCE_EXCERPT_REGION_LENGTH; n++, endLine++) {
+        end = js.indexOf('\n', end);
+        if (end == -1) {
+            break;
+        }
+        end++;
+    }
+    if (lineNumber >= endLine) {
+        return null;
+    }
+    if (end == -1) {
+        int last = js.length() - 1;
+        if (js.charAt(last) == '\n') {
+            return new SimpleRegion(startLine, endLine, js.substring(pos, last));
+        } else {
+            return new SimpleRegion(startLine, endLine, js.substring(pos));
+        }
+    } else {
+        return new SimpleRegion(startLine, endLine, js.substring(pos, end));
+    }
+}","public void test2542() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""\n"", ""com.google.common.io.PatternFilenameFilter"");
+    Region region0 = sourceFile_Preloaded0.getRegion(0);
+    assertNotNull(region0);
+}","/**
+ * Get a region around the indicated line number. The exact definition of a
+ * region is implementation specific, but it must contain the line indicated
+ * by the line number. A region must not start or end by a carriage return.
+ *
+ * @param lineNumber the line number, 1 being the first line of the file.
+ * @return The line indicated. Returns {@code null} if it does not exist,
+ *     or if there was an IO exception.
+ */"
+"@Override
+public boolean isExtern() {
+    return isExternFile;
+}","public void test2543() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""\n"", ""com.google.common.io.PatternFilenameFilter"");
+    Region region0 = sourceFile_Preloaded0.getRegion(0);
+    assertFalse(sourceFile_Preloaded0.isExtern());
+}","/**
+ * Returns whether this is an extern.
+ */"
+"public String getOriginalPath() {
+    return originalPath != null ? originalPath : fileName;
+}","public void test2544() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""\n"", ""com.google.common.io.PatternFilenameFilter"");
+    Region region0 = sourceFile_Preloaded0.getRegion(0);
+    assertEquals(""\n"", sourceFile_Preloaded0.getOriginalPath());
+}",""
+"int getEndingLineNumber();","public void test2645() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""\n"", ""\n"", ""\n"");
+    Region region0 = sourceFile_Preloaded0.getRegion(0);
+    assertEquals(2, region0.getEndingLineNumber());
+}","/**
+ * Get the ending line number.
+ */"
+"int getBeginningLineNumber();","public void test2646() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""\n"", ""\n"", ""\n"");
+    Region region0 = sourceFile_Preloaded0.getRegion(0);
+    assertEquals(1, region0.getBeginningLineNumber());
+}","/**
+ * Get the beginning line number.
+ */"
+"public Region getRegion(int lineNumber) {
+    String js = """";
+    try {
+        js = getCode();
+    } catch (IOException e) {
+        return null;
+    }
+    int pos = 0;
+    int startLine = Math.max(1, lineNumber - (SOURCE_EXCERPT_REGION_LENGTH + 1) / 2 + 1);
+    for (int n = 1; n < startLine; n++) {
+        int nextpos = js.indexOf('\n', pos);
+        if (nextpos == -1) {
+            break;
+        }
+        pos = nextpos + 1;
+    }
+    int end = pos;
+    int endLine = startLine;
+    for (int n = 0; n < SOURCE_EXCERPT_REGION_LENGTH; n++, endLine++) {
+        end = js.indexOf('\n', end);
+        if (end == -1) {
+            break;
+        }
+        end++;
+    }
+    if (lineNumber >= endLine) {
+        return null;
+    }
+    if (end == -1) {
+        int last = js.length() - 1;
+        if (js.charAt(last) == '\n') {
+            return new SimpleRegion(startLine, endLine, js.substring(pos, last));
+        } else {
+            return new SimpleRegion(startLine, endLine, js.substring(pos));
+        }
+    } else {
+        return new SimpleRegion(startLine, endLine, js.substring(pos, end));
+    }
+}","public void test2647() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""\n"", ""\n"", ""\n"");
+    Region region0 = sourceFile_Preloaded0.getRegion(0);
+    assertNotNull(region0);
+}","/**
+ * Get a region around the indicated line number. The exact definition of a
+ * region is implementation specific, but it must contain the line indicated
+ * by the line number. A region must not start or end by a carriage return.
+ *
+ * @param lineNumber the line number, 1 being the first line of the file.
+ * @return The line indicated. Returns {@code null} if it does not exist,
+ *     or if there was an IO exception.
+ */"
+"@Override
+public boolean isExtern() {
+    return isExternFile;
+}","public void test2748() throws Throwable {
+    SourceFile.Generator sourceFile_Generator0 = mock(SourceFile.Generator.class, new ViolatedAssumptionAnswer());
+    doReturn(""com.google.javascript.jscomp.SourceFile$OnDisk"").when(sourceFile_Generator0).getCode();
+    SourceFile.Generated sourceFile_Generated0 = new SourceFile.Generated(""com.google.javascript.jscomp.SourceFile$OnDisk"", sourceFile_Generator0);
+    sourceFile_Generated0.getLine(1842);
+    sourceFile_Generated0.getRegion(1842);
+    assertFalse(sourceFile_Generated0.isExtern());
+}","/**
+ * Returns whether this is an extern.
+ */"

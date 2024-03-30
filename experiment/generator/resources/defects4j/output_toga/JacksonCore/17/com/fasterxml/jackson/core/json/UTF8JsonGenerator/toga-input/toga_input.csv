@@ -1,0 +1,2171 @@
+focal_method,test_prefix,docstring
+"public final void writeBinaryField(String fieldName, byte[] data) throws IOException {
+    writeFieldName(fieldName);
+    writeBinary(data);
+}","public void test000() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 2, (ObjectCodec) null, (OutputStream) null);
+    byte[] byteArray0 = new byte[7];
+    byteArray0[2] = (byte) (-110);
+    uTF8JsonGenerator0.writeBinaryField(""t"", byteArray0);
+}","/**
+ *  Convenience method for outputting a field entry (""member"")
+ *  that contains specified data in base64-encoded form.
+ *  Equivalent to:
+ * <pre>
+ *   writeFieldName(fieldName);
+ *   writeBinary(value);
+ * </pre>
+ */"
+"public void writeBinary(byte[] data, int offset, int len) throws IOException {
+    writeBinary(Base64Variants.getDefaultVariant(), data, offset, len);
+}","public void test011() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, ""TGLGp,{$mug!SI"", true);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, (-183), (ObjectCodec) null, (OutputStream) null);
+    byte[] byteArray0 = new byte[2];
+    byteArray0[0] = (byte) (-7);
+    // Undeclared exception!
+    try {
+        uTF8JsonGenerator0.writeBinary(byteArray0, 0, 89);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 2
+        //
+        verifyException(""com.fasterxml.jackson.core.json.UTF8JsonGenerator"", e);
+    }
+}","/**
+ * Similar to {@link #writeBinary(Base64Variant,byte[],int,int)},
+ * but default to using the Jackson default Base64 variant
+ * (which is {@link Base64Variants#MIME_NO_LINEFEEDS}).
+ */"
+"@Override
+public void writeUTF8String(byte[] text, int offset, int len) throws IOException {
+    _verifyValueWrite(WRITE_STRING);
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+    // One or multiple segments?
+    if (len <= _outputMaxContiguous) {
+        _writeUTF8Segment(text, offset, len);
+    } else {
+        _writeUTF8Segments(text, offset, len);
+    }
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+}","public void test022() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""ECzWuWEu~l"", true);
+    byte[] byteArray0 = new byte[20];
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 2, (ObjectCodec) null, mockFileOutputStream0, byteArray0, 13, false);
+    // Undeclared exception!
+    try {
+        uTF8JsonGenerator0.writeUTF8String(byteArray0, (byte) 94, 0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}",""
+"protected final void _flushBuffer() throws IOException {
+    int len = _outputTail;
+    if (len > 0) {
+        _outputTail = 0;
+        _outputStream.write(_outputBuffer, 0, len);
+    }
+}","public void test033() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, (Object) null, false);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 0, (ObjectCodec) null, (OutputStream) null);
+    uTF8JsonGenerator0._flushBuffer();
+}",""
+"/*
+    /**********************************************************
+    /* Implementations for other methods
+    /**********************************************************
+     */
+@Override
+protected final void _verifyValueWrite(String typeMsg) throws IOException {
+    int status = _writeContext.writeValue();
+    if (status == JsonWriteContext.STATUS_EXPECT_NAME) {
+        _reportError(""Can not "" + typeMsg + "", expecting field name"");
+    }
+    if (_cfgPrettyPrinter == null) {
+        byte b;
+        switch(status) {
+            case JsonWriteContext.STATUS_OK_AFTER_COMMA:
+                b = BYTE_COMMA;
+                break;
+            case JsonWriteContext.STATUS_OK_AFTER_COLON:
+                b = BYTE_COLON;
+                break;
+            case // root-value separator
+            JsonWriteContext.STATUS_OK_AFTER_SPACE:
+                if (_rootValueSeparator != null) {
+                    byte[] raw = _rootValueSeparator.asUnquotedUTF8();
+                    if (raw.length > 0) {
+                        _writeBytes(raw);
+                    }
+                }
+                return;
+            case JsonWriteContext.STATUS_OK_AS_IS:
+            default:
+                return;
+        }
+        if (_outputTail >= _outputEnd) {
+            _flushBuffer();
+        }
+        _outputBuffer[_outputTail] = b;
+        ++_outputTail;
+        return;
+    }
+    // Otherwise, pretty printer knows what to do...
+    _verifyPrettyValueWrite(typeMsg, status);
+}","public void test044() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ByteArrayBuilder byteArrayBuilder0 = new ByteArrayBuilder(bufferRecycler0);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 0, (ObjectCodec) null, byteArrayBuilder0);
+    uTF8JsonGenerator0._verifyValueWrite("">CRnB(3fP^4NS.#r^_j"");
+}",""
+"@Override
+public void writeNumber(int i) throws IOException {
+    _verifyValueWrite(WRITE_NUMBER);
+    // up to 10 digits and possible minus sign
+    if ((_outputTail + 11) >= _outputEnd) {
+        _flushBuffer();
+    }
+    if (_cfgNumbersAsStrings) {
+        _writeQuotedInt(i);
+        return;
+    }
+    _outputTail = NumberOutput.outputInt(i, _outputBuffer, _outputTail);
+}","public void test066() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 2, (ObjectCodec) null, (OutputStream) null);
+    uTF8JsonGenerator0.writeNumber(1926);
+}",""
+"@Override
+public int getOutputBuffered() {
+    // Assuming tail is always valid, set to 0 on close
+    return _outputTail;
+}","public void test077() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    PipedInputStream pipedInputStream0 = new PipedInputStream(pipedOutputStream0, 2);
+    BufferedInputStream bufferedInputStream0 = new BufferedInputStream(pipedInputStream0, 2);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferedInputStream0, true);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 3, (ObjectCodec) null, (OutputStream) null);
+    uTF8JsonGenerator0.writeString(""~$N!z}q\""Q"");
+    uTF8JsonGenerator0.getOutputBuffered();
+}",""
+"@Override
+public void writeUTF8String(byte[] text, int offset, int len) throws IOException {
+    _verifyValueWrite(WRITE_STRING);
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+    // One or multiple segments?
+    if (len <= _outputMaxContiguous) {
+        _writeUTF8Segment(text, offset, len);
+    } else {
+        _writeUTF8Segments(text, offset, len);
+    }
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+}","public void test088() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""ECzWuWEu~l"", true);
+    byte[] byteArray0 = new byte[6];
+    mockFileOutputStream0.close();
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 2, (ObjectCodec) null, mockFileOutputStream0, byteArray0, 13, false);
+    try {
+        uTF8JsonGenerator0.writeUTF8String(byteArray0, (byte) 94, 0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.mock.java.io.MockFileOutputStream"", e);
+    }
+}",""
+"@Override
+public void writeString(char[] text, int offset, int len) throws IOException {
+    _verifyValueWrite(WRITE_STRING);
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+    // One or multiple segments?
+    if (len <= _outputMaxContiguous) {
+        if ((_outputTail + len) > _outputEnd) {
+            // caller must ensure enough space
+            _flushBuffer();
+        }
+        _writeStringSegment(text, offset, len);
+    } else {
+        _writeStringSegments(text, offset, len);
+    }
+    // And finally, closing quotes
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+}","public void test099() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    byte[] byteArray0 = iOContext0.allocReadIOBuffer(0);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, (byte) 104, (ObjectCodec) null, (OutputStream) null, byteArray0, (byte) (-14), true);
+    char[] charArray0 = new char[2];
+    // Undeclared exception!
+    try {
+        uTF8JsonGenerator0.writeString(charArray0, (int) (byte) (-115), 762);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -14
+        //
+        verifyException(""com.fasterxml.jackson.core.json.UTF8JsonGenerator"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Output method implementations, textual
+    /**********************************************************
+     */
+@Override
+public void writeString(String text) throws IOException {
+    _verifyValueWrite(WRITE_STRING);
+    if (text == null) {
+        _writeNull();
+        return;
+    }
+    // First: if we can't guarantee it all fits, quoted, within output, offline
+    final int len = text.length();
+    if (len > _outputMaxContiguous) {
+        // nope: off-line handling
+        _writeStringSegments(text, true);
+        return;
+    }
+    if ((_outputTail + len) >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+    // we checked space already above
+    _writeStringSegment(text, 0, len);
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+}","public void test1010() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""n)E"", false);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 1000, (ObjectCodec) null, mockFileOutputStream0);
+    uTF8JsonGenerator0.writeStartObject();
+    try {
+        uTF8JsonGenerator0.writeString(""n)E"");
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Can not write a string, expecting field name
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonGenerator"", e);
+    }
+}",""
+"@Override
+public final void writeStartObject() throws IOException {
+    _verifyValueWrite(""start an object"");
+    _writeContext = _writeContext.createChildObjectContext();
+    if (_cfgPrettyPrinter != null) {
+        _cfgPrettyPrinter.writeStartObject(this);
+    } else {
+        if (_outputTail >= _outputEnd) {
+            _flushBuffer();
+        }
+        _outputBuffer[_outputTail++] = BYTE_LCURLY;
+    }
+}","public void test1111() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    MockFile mockFile0 = new MockFile("">vnr|Tq33:"");
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(mockFile0, false);
+    byte[] byteArray0 = new byte[1];
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 2, (ObjectCodec) null, mockFileOutputStream0, byteArray0, (-788), true);
+    // Undeclared exception!
+    try {
+        uTF8JsonGenerator0.writeStartObject();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -788
+        //
+        verifyException(""com.fasterxml.jackson.core.json.UTF8JsonGenerator"", e);
+    }
+}",""
+"// since 2.5
+@Override
+public void writeRawValue(SerializableString text) throws IOException {
+    _verifyValueWrite(WRITE_RAW);
+    byte[] raw = text.asUnquotedUTF8();
+    if (raw.length > 0) {
+        _writeBytes(raw);
+    }
+}","public void test1212() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    PipedInputStream pipedInputStream0 = new PipedInputStream(pipedOutputStream0, 2);
+    BufferedInputStream bufferedInputStream0 = new BufferedInputStream(pipedInputStream0, 2);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferedInputStream0, true);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 41, (ObjectCodec) null, (OutputStream) null);
+    // Undeclared exception!
+    try {
+        uTF8JsonGenerator0.writeRawValue((SerializableString) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.json.UTF8JsonGenerator"", e);
+    }
+}",""
+"@Override
+public void writeRaw(String text, int offset, int len) throws IOException {
+    final char[] buf = _charBuffer;
+    // minor optimization: see if we can just get and copy
+    // If not, need segmented approach. For speed, let's also use input buffer
+    // size that is guaranteed to fit in output buffer; each char can expand to
+    // at most 3 bytes, so at most 1/3 of buffer size.
+    while (len > 0) {
+        int len2 = Math.min(buf.length, len);
+        text.getChars(offset, offset + len2, buf, 0);
+        writeRaw(buf, 0, len2);
+        // If this is NOT the last segment and if the last character looks like
+        // split surrogate second half, drop it
+        offset += len2;
+        len -= len2;
+    }
+}","public void test1313() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""Unrecognized token '"");
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 115, (ObjectCodec) null, mockFileOutputStream0);
+    // Undeclared exception!
+    try {
+        uTF8JsonGenerator0.writeRaw("""", 2, (int) (byte) 101);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",""
+"@Override
+public void writeNumber(BigInteger value) throws IOException {
+    _verifyValueWrite(WRITE_NUMBER);
+    if (value == null) {
+        _writeNull();
+    } else if (_cfgNumbersAsStrings) {
+        _writeQuotedRaw(value.toString());
+    } else {
+        writeRaw(value.toString());
+    }
+}","public void test1414() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    BigInteger bigInteger0 = BigInteger.ZERO;
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 33, (ObjectCodec) null, (OutputStream) null);
+    uTF8JsonGenerator0.close();
+    // Undeclared exception!
+    try {
+        uTF8JsonGenerator0.writeNumber(bigInteger0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.json.UTF8JsonGenerator"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Low-level output handling
+    /**********************************************************
+     */
+@Override
+public void flush() throws IOException {
+    _flushBuffer();
+    if (_outputStream != null) {
+        if (isEnabled(Feature.FLUSH_PASSED_TO_STREAM)) {
+            _outputStream.flush();
+        }
+    }
+}","public void test1717() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    byte[] byteArray0 = new byte[3];
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 0, (ObjectCodec) null, (OutputStream) null, byteArray0, 0, true);
+    BigInteger bigInteger0 = BigInteger.ZERO;
+    BigDecimal bigDecimal0 = new BigDecimal(bigInteger0);
+    uTF8JsonGenerator0.writeNumber(bigDecimal0);
+    // Undeclared exception!
+    try {
+        uTF8JsonGenerator0.flush();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.json.UTF8JsonGenerator"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Low-level output handling
+    /**********************************************************
+     */
+@Override
+public void flush() throws IOException {
+    _flushBuffer();
+    if (_outputStream != null) {
+        if (isEnabled(Feature.FLUSH_PASSED_TO_STREAM)) {
+            _outputStream.flush();
+        }
+    }
+}","public void test1818() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""Unrecognized token '"");
+    mockFileOutputStream0.close();
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 115, (ObjectCodec) null, mockFileOutputStream0);
+    SerializedString serializedString0 = (SerializedString) uTF8JsonGenerator0._rootValueSeparator;
+    uTF8JsonGenerator0.writeFieldName((SerializableString) serializedString0);
+    try {
+        uTF8JsonGenerator0.flush();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.mock.java.io.MockFileOutputStream"", e);
+    }
+}",""
+"@Override
+public void close() throws IOException {
+    super.close();
+    /* 05-Dec-2008, tatu: To add [JACKSON-27], need to close open
+         *   scopes.
+         */
+    // First: let's see that we still have buffers...
+    if ((_outputBuffer != null) && isEnabled(Feature.AUTO_CLOSE_JSON_CONTENT)) {
+        while (true) {
+            JsonStreamContext ctxt = getOutputContext();
+            if (ctxt.inArray()) {
+                writeEndArray();
+            } else if (ctxt.inObject()) {
+                writeEndObject();
+            } else {
+                break;
+            }
+        }
+    }
+    _flushBuffer();
+    // just to ensure we don't think there's anything buffered
+    _outputTail = 0;
+    /* 25-Nov-2008, tatus: As per [JACKSON-16] we are not to call close()
+         *   on the underlying Reader, unless we ""own"" it, or auto-closing
+         *   feature is enabled.
+         *   One downside: when using UTF8Writer, underlying buffer(s)
+         *   may not be properly recycled if we don't close the writer.
+         */
+    if (_outputStream != null) {
+        if (_ioContext.isResourceManaged() || isEnabled(Feature.AUTO_CLOSE_TARGET)) {
+            _outputStream.close();
+        } else if (isEnabled(Feature.FLUSH_PASSED_TO_STREAM)) {
+            // If we can't close it, we should at least flush
+            _outputStream.flush();
+        }
+    }
+    // Internal buffer(s) generator has can now be released as well
+    _releaseBuffers();
+}","public void test1919() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""Unrecognized token '"");
+    mockFileOutputStream0.close();
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 115, (ObjectCodec) null, mockFileOutputStream0);
+    SerializedString serializedString0 = (SerializedString) uTF8JsonGenerator0._rootValueSeparator;
+    uTF8JsonGenerator0.writeFieldName((SerializableString) serializedString0);
+    try {
+        uTF8JsonGenerator0.close();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.mock.java.io.MockFileOutputStream"", e);
+    }
+}",""
+"protected final void _outputSurrogates(int surr1, int surr2) throws IOException {
+    int c = _decodeSurrogate(surr1, surr2);
+    if ((_outputTail + 4) > _outputEnd) {
+        _flushBuffer();
+    }
+    final byte[] bbuf = _outputBuffer;
+    bbuf[_outputTail++] = (byte) (0xf0 | (c >> 18));
+    bbuf[_outputTail++] = (byte) (0x80 | ((c >> 12) & 0x3f));
+    bbuf[_outputTail++] = (byte) (0x80 | ((c >> 6) & 0x3f));
+    bbuf[_outputTail++] = (byte) (0x80 | (c & 0x3f));
+}","public void test2020() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    PipedInputStream pipedInputStream0 = new PipedInputStream(pipedOutputStream0, 2);
+    BufferedInputStream bufferedInputStream0 = new BufferedInputStream(pipedInputStream0, 2);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferedInputStream0, true);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 41, (ObjectCodec) null, (OutputStream) null);
+    try {
+        uTF8JsonGenerator0._outputSurrogates(91, 33);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Incomplete surrogate pair: first char 0x5b, second 0x21
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonGenerator"", e);
+    }
+}",""
+"protected final void _flushBuffer() throws IOException {
+    int len = _outputTail;
+    if (len > 0) {
+        _outputTail = 0;
+        _outputStream.write(_outputBuffer, 0, len);
+    }
+}","public void test2121() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ByteArrayBuilder byteArrayBuilder0 = new ByteArrayBuilder(7);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 2, (ObjectCodec) null, byteArrayBuilder0, byteArrayBuilder0.NO_BYTES, 1000, true);
+    // Undeclared exception!
+    try {
+        uTF8JsonGenerator0._flushBuffer();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Output method implementations, primitive
+    /**********************************************************
+     */
+@Override
+public void writeNumber(short s) throws IOException {
+    _verifyValueWrite(WRITE_NUMBER);
+    // up to 5 digits and possible minus sign
+    if ((_outputTail + 6) >= _outputEnd) {
+        _flushBuffer();
+    }
+    if (_cfgNumbersAsStrings) {
+        _writeQuotedShort(s);
+        return;
+    }
+    _outputTail = NumberOutput.outputInt(s, _outputBuffer, _outputTail);
+}","public void test2626() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    PipedInputStream pipedInputStream0 = new PipedInputStream(pipedOutputStream0, 2);
+    BufferedInputStream bufferedInputStream0 = new BufferedInputStream(pipedInputStream0, 2);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferedInputStream0, true);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 41, (ObjectCodec) null, (OutputStream) null);
+    uTF8JsonGenerator0.writeString(""~$N!z}q\""Q"");
+    uTF8JsonGenerator0.writeNumber((short) 0);
+}",""
+"@Override
+public void writeBoolean(boolean state) throws IOException {
+    _verifyValueWrite(WRITE_BOOLEAN);
+    if ((_outputTail + 5) >= _outputEnd) {
+        _flushBuffer();
+    }
+    byte[] keyword = state ? TRUE_BYTES : FALSE_BYTES;
+    int len = keyword.length;
+    System.arraycopy(keyword, 0, _outputBuffer, _outputTail, len);
+    _outputTail += len;
+}","public void test2727() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    MockFile mockFile0 = new MockFile(""}q"");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(mockFile0);
+    BufferedOutputStream bufferedOutputStream0 = new BufferedOutputStream(mockPrintStream0);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 2, (ObjectCodec) null, bufferedOutputStream0);
+    uTF8JsonGenerator0.writeBoolean(false);
+}",""
+"@Override
+public void writeRaw(String text, int offset, int len) throws IOException {
+    final char[] buf = _charBuffer;
+    // minor optimization: see if we can just get and copy
+    // If not, need segmented approach. For speed, let's also use input buffer
+    // size that is guaranteed to fit in output buffer; each char can expand to
+    // at most 3 bytes, so at most 1/3 of buffer size.
+    while (len > 0) {
+        int len2 = Math.min(buf.length, len);
+        text.getChars(offset, offset + len2, buf, 0);
+        writeRaw(buf, 0, len2);
+        // If this is NOT the last segment and if the last character looks like
+        // split surrogate second half, drop it
+        offset += len2;
+        len -= len2;
+    }
+}","public void test2828() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ByteArrayBuilder byteArrayBuilder0 = new ByteArrayBuilder(2070);
+    MockPrintStream mockPrintStream0 = new MockPrintStream(byteArrayBuilder0, true);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 48, (ObjectCodec) null, mockPrintStream0);
+    uTF8JsonGenerator0.writeRaw(""write a boolean value"", 2, 3);
+}",""
+"/*
+    /**********************************************************
+    /* Overridden methods
+    /**********************************************************
+     */
+@Override
+public void writeFieldName(String name) throws IOException {
+    if (_cfgPrettyPrinter != null) {
+        _writePPFieldName(name);
+        return;
+    }
+    final int status = _writeContext.writeFieldName(name);
+    if (status == JsonWriteContext.STATUS_EXPECT_VALUE) {
+        _reportError(""Can not write a field name, expecting a value"");
+    }
+    if (status == JsonWriteContext.STATUS_OK_AFTER_COMMA) {
+        // need comma
+        if (_outputTail >= _outputEnd) {
+            _flushBuffer();
+        }
+        _outputBuffer[_outputTail++] = BYTE_COMMA;
+    }
+    /* To support [JACKSON-46], we'll do this:
+         * (Question: should quoting of spaces (etc) still be enabled?)
+         */
+    if (_cfgUnqNames) {
+        _writeStringSegments(name, false);
+        return;
+    }
+    final int len = name.length();
+    // Does it fit in buffer?
+    if (len > _charBufferLength) {
+        // no, offline
+        _writeStringSegments(name, true);
+        return;
+    }
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+    // But as one segment, or multiple?
+    if (len <= _outputMaxContiguous) {
+        if ((_outputTail + len) > _outputEnd) {
+            // caller must ensure enough space
+            _flushBuffer();
+        }
+        _writeStringSegment(name, 0, len);
+    } else {
+        _writeStringSegments(name, 0, len);
+    }
+    // and closing quotes; need room for one more char:
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+}","public void test2929() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ByteArrayBuilder byteArrayBuilder0 = new ByteArrayBuilder(0);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, (-1133), (ObjectCodec) null, byteArrayBuilder0, byteArrayBuilder0.NO_BYTES, (-55), false);
+    // Undeclared exception!
+    uTF8JsonGenerator0.writeFieldName(""com.fasterxml.jackson.core.type.ResolvedType"");
+}",""
+"/*
+    /**********************************************************
+    /* Output method implementations, unprocessed (""raw"")
+    /**********************************************************
+     */
+@Override
+public void writeRaw(String text) throws IOException {
+    writeRaw(text, 0, text.length());
+}","public void test3030() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""Unrecognized token '"");
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 115, (ObjectCodec) null, mockFileOutputStream0);
+    uTF8JsonGenerator0.writeRaw("""");
+}",""
+"@Override
+protected void _releaseBuffers() {
+    byte[] buf = _outputBuffer;
+    if (buf != null && _bufferRecyclable) {
+        _outputBuffer = null;
+        _ioContext.releaseWriteEncodingBuffer(buf);
+    }
+    char[] cbuf = _charBuffer;
+    if (cbuf != null) {
+        _charBuffer = null;
+        _ioContext.releaseConcatBuffer(cbuf);
+    }
+}","public void test3131() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    byte[] byteArray0 = new byte[8];
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, (-236), (ObjectCodec) null, (OutputStream) null, byteArray0, 1, false);
+    uTF8JsonGenerator0._releaseBuffers();
+}",""
+"@Override
+public void close() throws IOException {
+    super.close();
+    /* 05-Dec-2008, tatu: To add [JACKSON-27], need to close open
+         *   scopes.
+         */
+    // First: let's see that we still have buffers...
+    if ((_outputBuffer != null) && isEnabled(Feature.AUTO_CLOSE_JSON_CONTENT)) {
+        while (true) {
+            JsonStreamContext ctxt = getOutputContext();
+            if (ctxt.inArray()) {
+                writeEndArray();
+            } else if (ctxt.inObject()) {
+                writeEndObject();
+            } else {
+                break;
+            }
+        }
+    }
+    _flushBuffer();
+    // just to ensure we don't think there's anything buffered
+    _outputTail = 0;
+    /* 25-Nov-2008, tatus: As per [JACKSON-16] we are not to call close()
+         *   on the underlying Reader, unless we ""own"" it, or auto-closing
+         *   feature is enabled.
+         *   One downside: when using UTF8Writer, underlying buffer(s)
+         *   may not be properly recycled if we don't close the writer.
+         */
+    if (_outputStream != null) {
+        if (_ioContext.isResourceManaged() || isEnabled(Feature.AUTO_CLOSE_TARGET)) {
+            _outputStream.close();
+        } else if (isEnabled(Feature.FLUSH_PASSED_TO_STREAM)) {
+            // If we can't close it, we should at least flush
+            _outputStream.flush();
+        }
+    }
+    // Internal buffer(s) generator has can now be released as well
+    _releaseBuffers();
+}","public void test3232() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""Unrecognized token '"");
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 115, (ObjectCodec) null, mockFileOutputStream0);
+    uTF8JsonGenerator0.close();
+}",""
+"/*
+    /**********************************************************
+    /* Low-level output handling
+    /**********************************************************
+     */
+@Override
+public void flush() throws IOException {
+    _flushBuffer();
+    if (_outputStream != null) {
+        if (isEnabled(Feature.FLUSH_PASSED_TO_STREAM)) {
+            _outputStream.flush();
+        }
+    }
+}","public void test3333() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""n)E"");
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 982, (ObjectCodec) null, mockFileOutputStream0);
+    uTF8JsonGenerator0.flush();
+}",""
+"/*
+    /**********************************************************
+    /* Low-level output handling
+    /**********************************************************
+     */
+@Override
+public void flush() throws IOException {
+    _flushBuffer();
+    if (_outputStream != null) {
+        if (isEnabled(Feature.FLUSH_PASSED_TO_STREAM)) {
+            _outputStream.flush();
+        }
+    }
+}","public void test3434() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ByteArrayBuilder byteArrayBuilder0 = new ByteArrayBuilder(2070);
+    MockPrintStream mockPrintStream0 = new MockPrintStream(byteArrayBuilder0, true);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 48, (ObjectCodec) null, mockPrintStream0);
+    uTF8JsonGenerator0.flush();
+}",""
+"/*
+    /**********************************************************
+    /* Low-level output handling
+    /**********************************************************
+     */
+@Override
+public void flush() throws IOException {
+    _flushBuffer();
+    if (_outputStream != null) {
+        if (isEnabled(Feature.FLUSH_PASSED_TO_STREAM)) {
+            _outputStream.flush();
+        }
+    }
+}","public void test3535() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    byte[] byteArray0 = new byte[3];
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 170, (ObjectCodec) null, (OutputStream) null, byteArray0, (-1385), false);
+    uTF8JsonGenerator0.flush();
+}",""
+"public final void writeBooleanField(String fieldName, boolean value) throws IOException {
+    writeFieldName(fieldName);
+    writeBoolean(value);
+}","public void test3737() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""n)E"", false);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 1000, (ObjectCodec) null, mockFileOutputStream0);
+    uTF8JsonGenerator0.writeStartObject();
+    uTF8JsonGenerator0.writeBooleanField(""n)E"", false);
+}","/**
+ *  Convenience method for outputting a field entry (""member"")
+ *  that has a boolean value. Equivalent to:
+ * <pre>
+ *   writeFieldName(fieldName);
+ *   writeBoolean(value);
+ * </pre>
+ */"
+"@Override
+public void writeNumber(BigInteger value) throws IOException {
+    _verifyValueWrite(WRITE_NUMBER);
+    if (value == null) {
+        _writeNull();
+    } else if (_cfgNumbersAsStrings) {
+        _writeQuotedRaw(value.toString());
+    } else {
+        writeRaw(value.toString());
+    }
+}","public void test3838() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 2, (ObjectCodec) null, (OutputStream) null);
+    byte[] byteArray0 = new byte[24];
+    uTF8JsonGenerator0.writeBinaryField(""t"", byteArray0);
+    BigInteger bigInteger0 = BigInteger.TEN;
+    uTF8JsonGenerator0.writeNumber(bigInteger0);
+}",""
+"@Override
+public void writeBoolean(boolean state) throws IOException {
+    _verifyValueWrite(WRITE_BOOLEAN);
+    if ((_outputTail + 5) >= _outputEnd) {
+        _flushBuffer();
+    }
+    byte[] keyword = state ? TRUE_BYTES : FALSE_BYTES;
+    int len = keyword.length;
+    System.arraycopy(keyword, 0, _outputBuffer, _outputTail, len);
+    _outputTail += len;
+}","public void test3939() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""Unrecognized token '"");
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 115, (ObjectCodec) null, mockFileOutputStream0);
+    uTF8JsonGenerator0.writeBoolean(true);
+}",""
+"@Override
+public void writeBoolean(boolean state) throws IOException {
+    _verifyValueWrite(WRITE_BOOLEAN);
+    if ((_outputTail + 5) >= _outputEnd) {
+        _flushBuffer();
+    }
+    byte[] keyword = state ? TRUE_BYTES : FALSE_BYTES;
+    int len = keyword.length;
+    System.arraycopy(keyword, 0, _outputBuffer, _outputTail, len);
+    _outputTail += len;
+}","public void test4040() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    byte[] byteArray0 = new byte[7];
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 2, (ObjectCodec) null, (OutputStream) null, byteArray0, 3, false);
+    // Undeclared exception!
+    try {
+        uTF8JsonGenerator0.writeBoolean(false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.json.UTF8JsonGenerator"", e);
+    }
+}",""
+"@Override
+public void writeNumber(String encodedValue) throws IOException {
+    _verifyValueWrite(WRITE_NUMBER);
+    if (_cfgNumbersAsStrings) {
+        _writeQuotedRaw(encodedValue);
+    } else {
+        writeRaw(encodedValue);
+    }
+}","public void test4141() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    PipedInputStream pipedInputStream0 = new PipedInputStream(pipedOutputStream0);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, pipedInputStream0, true);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 2, (ObjectCodec) null, pipedOutputStream0);
+    uTF8JsonGenerator0.writeNumber(""ROOT"");
+}",""
+"@Override
+public void writeNumber(BigDecimal value) throws IOException {
+    // Don't really know max length for big decimal, no point checking
+    _verifyValueWrite(WRITE_NUMBER);
+    if (value == null) {
+        _writeNull();
+    } else if (_cfgNumbersAsStrings) {
+        String raw = Feature.WRITE_BIGDECIMAL_AS_PLAIN.enabledIn(_features) ? value.toPlainString() : value.toString();
+        _writeQuotedRaw(raw);
+    } else if (Feature.WRITE_BIGDECIMAL_AS_PLAIN.enabledIn(_features)) {
+        writeRaw(value.toPlainString());
+    } else {
+        writeRaw(value.toString());
+    }
+}","public void test4242() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    PipedInputStream pipedInputStream0 = new PipedInputStream(pipedOutputStream0, 2);
+    BufferedInputStream bufferedInputStream0 = new BufferedInputStream(pipedInputStream0, 2);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferedInputStream0, true);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 41, (ObjectCodec) null, (OutputStream) null);
+    BigDecimal bigDecimal0 = new BigDecimal(0.0);
+    uTF8JsonGenerator0.writeNumber(bigDecimal0);
+}",""
+"@Override
+public void writeNumber(BigDecimal value) throws IOException {
+    // Don't really know max length for big decimal, no point checking
+    _verifyValueWrite(WRITE_NUMBER);
+    if (value == null) {
+        _writeNull();
+    } else if (_cfgNumbersAsStrings) {
+        String raw = Feature.WRITE_BIGDECIMAL_AS_PLAIN.enabledIn(_features) ? value.toPlainString() : value.toString();
+        _writeQuotedRaw(raw);
+    } else if (Feature.WRITE_BIGDECIMAL_AS_PLAIN.enabledIn(_features)) {
+        writeRaw(value.toPlainString());
+    } else {
+        writeRaw(value.toString());
+    }
+}","public void test4343() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    PipedInputStream pipedInputStream0 = new PipedInputStream(pipedOutputStream0);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, pipedInputStream0, true);
+    byte[] byteArray0 = new byte[2];
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 135, (ObjectCodec) null, pipedOutputStream0, byteArray0, 1, true);
+    // Undeclared exception!
+    try {
+        uTF8JsonGenerator0.writeNumber((BigDecimal) null);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}",""
+"@Override
+public void writeNumber(double d) throws IOException {
+    if (_cfgNumbersAsStrings || (((Double.isNaN(d) || Double.isInfinite(d)) && Feature.QUOTE_NON_NUMERIC_NUMBERS.enabledIn(_features)))) {
+        writeString(String.valueOf(d));
+        return;
+    }
+    // What is the max length for doubles? 40 chars?
+    _verifyValueWrite(WRITE_NUMBER);
+    writeRaw(String.valueOf(d));
+}","public void test4444() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, (Object) null, true);
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream(0);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 0, (ObjectCodec) null, byteArrayOutputStream0);
+    uTF8JsonGenerator0.writeNumber((double) 3);
+}",""
+"@Override
+public void writeNumber(double d) throws IOException {
+    if (_cfgNumbersAsStrings || (((Double.isNaN(d) || Double.isInfinite(d)) && Feature.QUOTE_NON_NUMERIC_NUMBERS.enabledIn(_features)))) {
+        writeString(String.valueOf(d));
+        return;
+    }
+    // What is the max length for doubles? 40 chars?
+    _verifyValueWrite(WRITE_NUMBER);
+    writeRaw(String.valueOf(d));
+}","public void test4545() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    PipedInputStream pipedInputStream0 = new PipedInputStream(pipedOutputStream0, 2);
+    BufferedInputStream bufferedInputStream0 = new BufferedInputStream(pipedInputStream0, 2);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferedInputStream0, true);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 41, (ObjectCodec) null, (OutputStream) null);
+    uTF8JsonGenerator0.writeNumber(0.0);
+}",""
+"@Override
+public void writeNumber(BigInteger value) throws IOException {
+    _verifyValueWrite(WRITE_NUMBER);
+    if (value == null) {
+        _writeNull();
+    } else if (_cfgNumbersAsStrings) {
+        _writeQuotedRaw(value.toString());
+    } else {
+        writeRaw(value.toString());
+    }
+}","public void test4646() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 2, (ObjectCodec) null, (OutputStream) null);
+    uTF8JsonGenerator0.writeNumber((BigInteger) null);
+}",""
+"@Override
+public void writeNumber(long l) throws IOException {
+    _verifyValueWrite(WRITE_NUMBER);
+    if (_cfgNumbersAsStrings) {
+        _writeQuotedLong(l);
+        return;
+    }
+    if ((_outputTail + 21) >= _outputEnd) {
+        // up to 20 digits, minus sign
+        _flushBuffer();
+    }
+    _outputTail = NumberOutput.outputLong(l, _outputBuffer, _outputTail);
+}","public void test4747() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""Unrecognized token '"");
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 115, (ObjectCodec) null, mockFileOutputStream0);
+    uTF8JsonGenerator0.writeNumber((long) 1);
+}",""
+"@Override
+public void writeNumber(long l) throws IOException {
+    _verifyValueWrite(WRITE_NUMBER);
+    if (_cfgNumbersAsStrings) {
+        _writeQuotedLong(l);
+        return;
+    }
+    if ((_outputTail + 21) >= _outputEnd) {
+        // up to 20 digits, minus sign
+        _flushBuffer();
+    }
+    _outputTail = NumberOutput.outputLong(l, _outputBuffer, _outputTail);
+}","public void test4848() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, (Object) null, true);
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream(0);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 0, (ObjectCodec) null, byteArrayOutputStream0);
+    uTF8JsonGenerator0.writeNumber((long) 0);
+}",""
+"@Override
+public void writeNumber(int i) throws IOException {
+    _verifyValueWrite(WRITE_NUMBER);
+    // up to 10 digits and possible minus sign
+    if ((_outputTail + 11) >= _outputEnd) {
+        _flushBuffer();
+    }
+    if (_cfgNumbersAsStrings) {
+        _writeQuotedInt(i);
+        return;
+    }
+    _outputTail = NumberOutput.outputInt(i, _outputBuffer, _outputTail);
+}","public void test4949() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 34, (ObjectCodec) null, (OutputStream) null);
+    uTF8JsonGenerator0.writeNumber(46);
+}",""
+"@Override
+public void writeNumber(int i) throws IOException {
+    _verifyValueWrite(WRITE_NUMBER);
+    // up to 10 digits and possible minus sign
+    if ((_outputTail + 11) >= _outputEnd) {
+        _flushBuffer();
+    }
+    if (_cfgNumbersAsStrings) {
+        _writeQuotedInt(i);
+        return;
+    }
+    _outputTail = NumberOutput.outputInt(i, _outputBuffer, _outputTail);
+}","public void test5050() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    BufferedOutputStream bufferedOutputStream0 = new BufferedOutputStream(byteArrayOutputStream0, 1);
+    byte[] byteArray0 = new byte[5];
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 1, (ObjectCodec) null, bufferedOutputStream0, byteArray0, (byte) (-118), false);
+    // Undeclared exception!
+    try {
+        uTF8JsonGenerator0.writeNumber((int) (byte) 109);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -118
+        //
+        verifyException(""com.fasterxml.jackson.core.io.NumberOutput"", e);
+    }
+}",""
+"@Override
+public int writeBinary(Base64Variant b64variant, InputStream data, int dataLength) throws IOException, JsonGenerationException {
+    _verifyValueWrite(WRITE_BINARY);
+    // Starting quotes
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+    byte[] encodingBuffer = _ioContext.allocBase64Buffer();
+    int bytes;
+    try {
+        if (dataLength < 0) {
+            // length unknown
+            bytes = _writeBinary(b64variant, data, encodingBuffer);
+        } else {
+            int missing = _writeBinary(b64variant, data, encodingBuffer, dataLength);
+            if (missing > 0) {
+                _reportError(""Too few bytes available: missing "" + missing + "" bytes (out of "" + dataLength + "")"");
+            }
+            bytes = dataLength;
+        }
+    } finally {
+        _ioContext.releaseBase64Buffer(encodingBuffer);
+    }
+    // and closing quotes
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+    return bytes;
+}","public void test5151() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""ECzWuWEu~l"", true);
+    byte[] byteArray0 = new byte[6];
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 48, (ObjectCodec) null, mockFileOutputStream0, byteArray0, (byte) (-35), false);
+    MockFileInputStream mockFileInputStream0 = new MockFileInputStream(""ECzWuWEu~l"");
+    // Undeclared exception!
+    try {
+        uTF8JsonGenerator0.writeBinary((Base64Variant) null, (InputStream) mockFileInputStream0, 101);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -35
+        //
+        verifyException(""com.fasterxml.jackson.core.json.UTF8JsonGenerator"", e);
+    }
+}",""
+"@Override
+public void writeNumber(float f) throws IOException {
+    if (_cfgNumbersAsStrings || // [JACKSON-139]
+    (((Float.isNaN(f) || Float.isInfinite(f)) && Feature.QUOTE_NON_NUMERIC_NUMBERS.enabledIn(_features)))) {
+        writeString(String.valueOf(f));
+        return;
+    }
+    // What is the max length for floats?
+    _verifyValueWrite(WRITE_NUMBER);
+    writeRaw(String.valueOf(f));
+}","public void test5252() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""ECzWuWEu~l"", true);
+    byte[] byteArray0 = new byte[6];
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 2, (ObjectCodec) null, mockFileOutputStream0, byteArray0, 13, false);
+    uTF8JsonGenerator0.writeNumber(82.04442F);
+}",""
+"@Override
+public void writeRaw(char ch) throws IOException {
+    if ((_outputTail + 3) >= _outputEnd) {
+        _flushBuffer();
+    }
+    final byte[] bbuf = _outputBuffer;
+    if (ch <= 0x7F) {
+        bbuf[_outputTail++] = (byte) ch;
+    } else if (ch < 0x800) {
+        // 2-byte?
+        bbuf[_outputTail++] = (byte) (0xc0 | (ch >> 6));
+        bbuf[_outputTail++] = (byte) (0x80 | (ch & 0x3f));
+    } else {
+        /*offset =*/
+        _outputRawMultiByteChar(ch, null, 0, 0);
+    }
+}","public void test5353() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    byte[] byteArray0 = new byte[5];
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 1, (ObjectCodec) null, (OutputStream) null, byteArray0, 2, true);
+    // Undeclared exception!
+    try {
+        uTF8JsonGenerator0.writeRaw('S');
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.json.UTF8JsonGenerator"", e);
+    }
+}",""
+"@Override
+public void writeRaw(char ch) throws IOException {
+    if ((_outputTail + 3) >= _outputEnd) {
+        _flushBuffer();
+    }
+    final byte[] bbuf = _outputBuffer;
+    if (ch <= 0x7F) {
+        bbuf[_outputTail++] = (byte) ch;
+    } else if (ch < 0x800) {
+        // 2-byte?
+        bbuf[_outputTail++] = (byte) (0xc0 | (ch >> 6));
+        bbuf[_outputTail++] = (byte) (0x80 | (ch & 0x3f));
+    } else {
+        /*offset =*/
+        _outputRawMultiByteChar(ch, null, 0, 0);
+    }
+}","public void test5454() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""n)E"", false);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 1000, (ObjectCodec) null, mockFileOutputStream0);
+    uTF8JsonGenerator0.writeRaw('k');
+}",""
+"// @TODO: rewrite for speed...
+@Override
+public final void writeRaw(char[] cbuf, int offset, int len) throws IOException {
+    // First: if we have 3 x charCount spaces, we know it'll fit just fine
+    {
+        int len3 = len + len + len;
+        if ((_outputTail + len3) > _outputEnd) {
+            // maybe we could flush?
+            if (_outputEnd < len3) {
+                // wouldn't be enough...
+                _writeSegmentedRaw(cbuf, offset, len);
+                return;
+            }
+            // yes, flushing brings enough space
+            _flushBuffer();
+        }
+    }
+    // now marks the end
+    len += offset;
+    // Note: here we know there is enough room, hence no output boundary checks
+    main_loop: while (offset < len) {
+        inner_loop: while (true) {
+            int ch = (int) cbuf[offset];
+            if (ch > 0x7F) {
+                break inner_loop;
+            }
+            _outputBuffer[_outputTail++] = (byte) ch;
+            if (++offset >= len) {
+                break main_loop;
+            }
+        }
+        char ch = cbuf[offset++];
+        if (ch < 0x800) {
+            // 2-byte?
+            _outputBuffer[_outputTail++] = (byte) (0xc0 | (ch >> 6));
+            _outputBuffer[_outputTail++] = (byte) (0x80 | (ch & 0x3f));
+        } else {
+            offset = _outputRawMultiByteChar(ch, cbuf, offset, len);
+        }
+    }
+}","public void test5555() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ByteArrayBuilder byteArrayBuilder0 = new ByteArrayBuilder(0);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, (-1133), (ObjectCodec) null, byteArrayBuilder0, byteArrayBuilder0.NO_BYTES, (-55), false);
+    char[] charArray0 = new char[3];
+    uTF8JsonGenerator0.writeRaw(charArray0, 0, (-2433));
+}",""
+"// @TODO: rewrite for speed...
+@Override
+public final void writeRaw(char[] cbuf, int offset, int len) throws IOException {
+    // First: if we have 3 x charCount spaces, we know it'll fit just fine
+    {
+        int len3 = len + len + len;
+        if ((_outputTail + len3) > _outputEnd) {
+            // maybe we could flush?
+            if (_outputEnd < len3) {
+                // wouldn't be enough...
+                _writeSegmentedRaw(cbuf, offset, len);
+                return;
+            }
+            // yes, flushing brings enough space
+            _flushBuffer();
+        }
+    }
+    // now marks the end
+    len += offset;
+    // Note: here we know there is enough room, hence no output boundary checks
+    main_loop: while (offset < len) {
+        inner_loop: while (true) {
+            int ch = (int) cbuf[offset];
+            if (ch > 0x7F) {
+                break inner_loop;
+            }
+            _outputBuffer[_outputTail++] = (byte) ch;
+            if (++offset >= len) {
+                break main_loop;
+            }
+        }
+        char ch = cbuf[offset++];
+        if (ch < 0x800) {
+            // 2-byte?
+            _outputBuffer[_outputTail++] = (byte) (0xc0 | (ch >> 6));
+            _outputBuffer[_outputTail++] = (byte) (0x80 | (ch & 0x3f));
+        } else {
+            offset = _outputRawMultiByteChar(ch, cbuf, offset, len);
+        }
+    }
+}","public void test5656() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""ECzWuWEu~l"", true);
+    byte[] byteArray0 = new byte[6];
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 2, (ObjectCodec) null, mockFileOutputStream0, byteArray0, 13, false);
+    char[] charArray0 = new char[1];
+    // Undeclared exception!
+    try {
+        uTF8JsonGenerator0.writeRaw(charArray0, (int) (byte) 94, 2);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 94
+        //
+        verifyException(""com.fasterxml.jackson.core.json.UTF8JsonGenerator"", e);
+    }
+}",""
+"@Override
+public void writeNumber(BigInteger value) throws IOException {
+    _verifyValueWrite(WRITE_NUMBER);
+    if (value == null) {
+        _writeNull();
+    } else if (_cfgNumbersAsStrings) {
+        _writeQuotedRaw(value.toString());
+    } else {
+        writeRaw(value.toString());
+    }
+}","public void test5757() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ByteArrayBuilder byteArrayBuilder0 = new ByteArrayBuilder(bufferRecycler0);
+    ObjectOutputStream objectOutputStream0 = new ObjectOutputStream(byteArrayBuilder0);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, (-2171), (ObjectCodec) null, objectOutputStream0, byteArrayBuilder0.NO_BYTES, 14, true);
+    BigInteger bigInteger0 = BigInteger.ONE;
+    // Undeclared exception!
+    try {
+        uTF8JsonGenerator0.writeNumber(bigInteger0);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.io.ObjectOutputStream"", e);
+    }
+}",""
+"// since 2.5
+@Override
+public void writeRawValue(SerializableString text) throws IOException {
+    _verifyValueWrite(WRITE_RAW);
+    byte[] raw = text.asUnquotedUTF8();
+    if (raw.length > 0) {
+        _writeBytes(raw);
+    }
+}","public void test5858() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""Unrecognized token '"");
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 115, (ObjectCodec) null, mockFileOutputStream0);
+    SerializedString serializedString0 = (SerializedString) uTF8JsonGenerator0._rootValueSeparator;
+    uTF8JsonGenerator0.writeRawValue((SerializableString) serializedString0);
+}",""
+"@Override
+public void writeUTF8String(byte[] text, int offset, int len) throws IOException {
+    _verifyValueWrite(WRITE_STRING);
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+    // One or multiple segments?
+    if (len <= _outputMaxContiguous) {
+        _writeUTF8Segment(text, offset, len);
+    } else {
+        _writeUTF8Segments(text, offset, len);
+    }
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+}","public void test6060() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""ECzWuWEu~l"", true);
+    byte[] byteArray0 = new byte[6];
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 2, (ObjectCodec) null, mockFileOutputStream0, byteArray0, 13, false);
+    uTF8JsonGenerator0.writeUTF8String(byteArray0, (byte) 0, 0);
+}",""
+"@Override
+public void writeUTF8String(byte[] text, int offset, int len) throws IOException {
+    _verifyValueWrite(WRITE_STRING);
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+    // One or multiple segments?
+    if (len <= _outputMaxContiguous) {
+        _writeUTF8Segment(text, offset, len);
+    } else {
+        _writeUTF8Segments(text, offset, len);
+    }
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+}","public void test6161() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, """", true);
+    StringReader stringReader0 = new StringReader("""");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 42, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    ByteArrayBuilder byteArrayBuilder0 = readerBasedJsonParser0._getByteArrayBuilder();
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 3, (ObjectCodec) null, byteArrayBuilder0);
+    // Undeclared exception!
+    try {
+        uTF8JsonGenerator0.writeUTF8String(byteArrayBuilder0.NO_BYTES, 0, 1781);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 0
+        //
+        verifyException(""com.fasterxml.jackson.core.json.UTF8JsonGenerator"", e);
+    }
+}",""
+"@Override
+public void writeRawUTF8String(byte[] text, int offset, int length) throws IOException {
+    _verifyValueWrite(WRITE_STRING);
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+    _writeBytes(text, offset, length);
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+}","public void test6262() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    PipedInputStream pipedInputStream0 = new PipedInputStream(2);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, pipedInputStream0, false);
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, (-181), (ObjectCodec) null, pipedOutputStream0);
+    byte[] byteArray0 = new byte[4];
+    // Undeclared exception!
+    try {
+        uTF8JsonGenerator0.writeRawUTF8String(byteArray0, 0, 482);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}",""
+"@Override
+public void writeString(char[] text, int offset, int len) throws IOException {
+    _verifyValueWrite(WRITE_STRING);
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+    // One or multiple segments?
+    if (len <= _outputMaxContiguous) {
+        if ((_outputTail + len) > _outputEnd) {
+            // caller must ensure enough space
+            _flushBuffer();
+        }
+        _writeStringSegment(text, offset, len);
+    } else {
+        _writeStringSegments(text, offset, len);
+    }
+    // And finally, closing quotes
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+}","public void test6565() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ByteArrayBuilder byteArrayBuilder0 = new ByteArrayBuilder(2070);
+    MockPrintStream mockPrintStream0 = new MockPrintStream(byteArrayBuilder0, true);
+    char[] charArray0 = iOContext0.allocTokenBuffer((-1431));
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 48, (ObjectCodec) null, mockPrintStream0);
+    uTF8JsonGenerator0.writeString(charArray0, 49, 48);
+}",""
+"@Override
+public void writeString(char[] text, int offset, int len) throws IOException {
+    _verifyValueWrite(WRITE_STRING);
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+    // One or multiple segments?
+    if (len <= _outputMaxContiguous) {
+        if ((_outputTail + len) > _outputEnd) {
+            // caller must ensure enough space
+            _flushBuffer();
+        }
+        _writeStringSegment(text, offset, len);
+    } else {
+        _writeStringSegments(text, offset, len);
+    }
+    // And finally, closing quotes
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+}","public void test6666() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""ECzWuWEu~l"", true);
+    byte[] byteArray0 = new byte[6];
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 2, (ObjectCodec) null, mockFileOutputStream0, byteArray0, 13, false);
+    char[] charArray0 = new char[0];
+    // Undeclared exception!
+    uTF8JsonGenerator0.writeString(charArray0, 255, 1);
+}",""
+"@Override
+public void writeString(char[] text, int offset, int len) throws IOException {
+    _verifyValueWrite(WRITE_STRING);
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+    // One or multiple segments?
+    if (len <= _outputMaxContiguous) {
+        if ((_outputTail + len) > _outputEnd) {
+            // caller must ensure enough space
+            _flushBuffer();
+        }
+        _writeStringSegment(text, offset, len);
+    } else {
+        _writeStringSegments(text, offset, len);
+    }
+    // And finally, closing quotes
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+}","public void test6767() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""Unrecognized token '"");
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 115, (ObjectCodec) null, mockFileOutputStream0);
+    // Undeclared exception!
+    try {
+        uTF8JsonGenerator0.writeString((char[]) null, 86, 6);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.json.UTF8JsonGenerator"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Output method implementations, textual
+    /**********************************************************
+     */
+@Override
+public void writeString(String text) throws IOException {
+    _verifyValueWrite(WRITE_STRING);
+    if (text == null) {
+        _writeNull();
+        return;
+    }
+    // First: if we can't guarantee it all fits, quoted, within output, offline
+    final int len = text.length();
+    if (len > _outputMaxContiguous) {
+        // nope: off-line handling
+        _writeStringSegments(text, true);
+        return;
+    }
+    if ((_outputTail + len) >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+    // we checked space already above
+    _writeStringSegment(text, 0, len);
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+}","public void test6868() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ByteArrayBuilder byteArrayBuilder0 = new ByteArrayBuilder(bufferRecycler0);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 3, (ObjectCodec) null, byteArrayBuilder0, byteArrayBuilder0.NO_BYTES, 2, true);
+    // Undeclared exception!
+    try {
+        uTF8JsonGenerator0.writeString(""start an array"");
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}",""
+"protected final void _writePPFieldName(String name) throws IOException {
+    int status = _writeContext.writeFieldName(name);
+    if (status == JsonWriteContext.STATUS_EXPECT_VALUE) {
+        _reportError(""Can not write a field name, expecting a value"");
+    }
+    if ((status == JsonWriteContext.STATUS_OK_AFTER_COMMA)) {
+        _cfgPrettyPrinter.writeObjectEntrySeparator(this);
+    } else {
+        _cfgPrettyPrinter.beforeObjectEntries(this);
+    }
+    if (_cfgUnqNames) {
+        _writeStringSegments(name, false);
+        return;
+    }
+    final int len = name.length();
+    if (len > _charBufferLength) {
+        _writeStringSegments(name, true);
+        return;
+    }
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+    name.getChars(0, len, _charBuffer, 0);
+    // But as one segment, or multiple?
+    if (len <= _outputMaxContiguous) {
+        if ((_outputTail + len) > _outputEnd) {
+            // caller must ensure enough space
+            _flushBuffer();
+        }
+        _writeStringSegment(_charBuffer, 0, len);
+    } else {
+        _writeStringSegments(_charBuffer, 0, len);
+    }
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+}","public void test6969() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, (Object) null, false);
+    byte[] byteArray0 = new byte[9];
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 1, (ObjectCodec) null, (OutputStream) null, byteArray0, 719, false);
+    SerializedString serializedString0 = (SerializedString) uTF8JsonGenerator0._rootValueSeparator;
+    // Undeclared exception!
+    try {
+        uTF8JsonGenerator0._writePPFieldName(serializedString0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.json.UTF8JsonGenerator"", e);
+    }
+}","/**
+ * Specialized version of <code>_writeFieldName</code>, off-lined
+ * to keep the ""fast path"" as simple (and hopefully fast) as possible.
+ */"
+"protected final void _writePPFieldName(String name) throws IOException {
+    int status = _writeContext.writeFieldName(name);
+    if (status == JsonWriteContext.STATUS_EXPECT_VALUE) {
+        _reportError(""Can not write a field name, expecting a value"");
+    }
+    if ((status == JsonWriteContext.STATUS_OK_AFTER_COMMA)) {
+        _cfgPrettyPrinter.writeObjectEntrySeparator(this);
+    } else {
+        _cfgPrettyPrinter.beforeObjectEntries(this);
+    }
+    if (_cfgUnqNames) {
+        _writeStringSegments(name, false);
+        return;
+    }
+    final int len = name.length();
+    if (len > _charBufferLength) {
+        _writeStringSegments(name, true);
+        return;
+    }
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+    name.getChars(0, len, _charBuffer, 0);
+    // But as one segment, or multiple?
+    if (len <= _outputMaxContiguous) {
+        if ((_outputTail + len) > _outputEnd) {
+            // caller must ensure enough space
+            _flushBuffer();
+        }
+        _writeStringSegment(_charBuffer, 0, len);
+    } else {
+        _writeStringSegments(_charBuffer, 0, len);
+    }
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+}","public void test7070() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    MockFile mockFile0 = new MockFile(""ROOT"", """");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(mockFile0);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 2, (ObjectCodec) null, mockPrintStream0);
+    // Undeclared exception!
+    try {
+        uTF8JsonGenerator0._writePPFieldName("""");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.json.UTF8JsonGenerator"", e);
+    }
+}","/**
+ * Specialized version of <code>_writeFieldName</code>, off-lined
+ * to keep the ""fast path"" as simple (and hopefully fast) as possible.
+ */"
+"@Override
+public final void writeEndObject() throws IOException {
+    if (!_writeContext.inObject()) {
+        _reportError(""Current context not an object but "" + _writeContext.getTypeDesc());
+    }
+    if (_cfgPrettyPrinter != null) {
+        _cfgPrettyPrinter.writeEndObject(this, _writeContext.getEntryCount());
+    } else {
+        if (_outputTail >= _outputEnd) {
+            _flushBuffer();
+        }
+        _outputBuffer[_outputTail++] = BYTE_RCURLY;
+    }
+    _writeContext = _writeContext.clearAndGetParent();
+}","public void test7171() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    PipedInputStream pipedInputStream0 = new PipedInputStream(pipedOutputStream0, 2048);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, pipedInputStream0, true);
+    byte[] byteArray0 = new byte[9];
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 2, (ObjectCodec) null, pipedOutputStream0, byteArray0, 0, true);
+    try {
+        uTF8JsonGenerator0.writeEndObject();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Current context not an object but ROOT
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonGenerator"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Output method implementations, primitive
+    /**********************************************************
+     */
+@Override
+public void writeNumber(short s) throws IOException {
+    _verifyValueWrite(WRITE_NUMBER);
+    // up to 5 digits and possible minus sign
+    if ((_outputTail + 6) >= _outputEnd) {
+        _flushBuffer();
+    }
+    if (_cfgNumbersAsStrings) {
+        _writeQuotedShort(s);
+        return;
+    }
+    _outputTail = NumberOutput.outputInt(s, _outputBuffer, _outputTail);
+}","public void test7272() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""n)E"", false);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 1000, (ObjectCodec) null, mockFileOutputStream0);
+    uTF8JsonGenerator0.writeStartObject();
+    try {
+        uTF8JsonGenerator0.writeNumber((short) 49);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Can not write a number, expecting field name
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonGenerator"", e);
+    }
+}",""
+"@Override
+public final void writeEndArray() throws IOException {
+    if (!_writeContext.inArray()) {
+        _reportError(""Current context not an ARRAY but "" + _writeContext.getTypeDesc());
+    }
+    if (_cfgPrettyPrinter != null) {
+        _cfgPrettyPrinter.writeEndArray(this, _writeContext.getEntryCount());
+    } else {
+        if (_outputTail >= _outputEnd) {
+            _flushBuffer();
+        }
+        _outputBuffer[_outputTail++] = BYTE_RBRACKET;
+    }
+    _writeContext = _writeContext.clearAndGetParent();
+}","public void test7373() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 2, (ObjectCodec) null, (OutputStream) null);
+    try {
+        uTF8JsonGenerator0.writeEndArray();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Current context not an ARRAY but ROOT
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonGenerator"", e);
+    }
+}",""
+"protected final void _writePPFieldName(String name) throws IOException {
+    int status = _writeContext.writeFieldName(name);
+    if (status == JsonWriteContext.STATUS_EXPECT_VALUE) {
+        _reportError(""Can not write a field name, expecting a value"");
+    }
+    if ((status == JsonWriteContext.STATUS_OK_AFTER_COMMA)) {
+        _cfgPrettyPrinter.writeObjectEntrySeparator(this);
+    } else {
+        _cfgPrettyPrinter.beforeObjectEntries(this);
+    }
+    if (_cfgUnqNames) {
+        _writeStringSegments(name, false);
+        return;
+    }
+    final int len = name.length();
+    if (len > _charBufferLength) {
+        _writeStringSegments(name, true);
+        return;
+    }
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+    name.getChars(0, len, _charBuffer, 0);
+    // But as one segment, or multiple?
+    if (len <= _outputMaxContiguous) {
+        if ((_outputTail + len) > _outputEnd) {
+            // caller must ensure enough space
+            _flushBuffer();
+        }
+        _writeStringSegment(_charBuffer, 0, len);
+    } else {
+        _writeStringSegments(_charBuffer, 0, len);
+    }
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+}","public void test7474() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    MockFile mockFile0 = new MockFile(""ROOT"", """");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(mockFile0);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 2, (ObjectCodec) null, mockPrintStream0);
+    int[] intArray0 = new int[6];
+    uTF8JsonGenerator0.writeArray(intArray0, 948, 0);
+    // Undeclared exception!
+    try {
+        uTF8JsonGenerator0._writePPFieldName("""");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.json.UTF8JsonGenerator"", e);
+    }
+}","/**
+ * Specialized version of <code>_writeFieldName</code>, off-lined
+ * to keep the ""fast path"" as simple (and hopefully fast) as possible.
+ */"
+"/*
+    /**********************************************************
+    /* Output method implementations, base64-encoded binary
+    /**********************************************************
+     */
+@Override
+public void writeBinary(Base64Variant b64variant, byte[] data, int offset, int len) throws IOException, JsonGenerationException {
+    _verifyValueWrite(WRITE_BINARY);
+    // Starting quotes
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+    _writeBinary(b64variant, data, offset, offset + len);
+    // and closing quotes
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+}","public void test7575() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, (Object) null, true);
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream(0);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 0, (ObjectCodec) null, byteArrayOutputStream0);
+    uTF8JsonGenerator0.writeStartArray();
+    byte[] byteArray0 = new byte[5];
+    uTF8JsonGenerator0.writeBooleanField(""eTG^V"", true);
+    // Undeclared exception!
+    try {
+        uTF8JsonGenerator0.writeBinary((Base64Variant) null, byteArray0, 0, 0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.json.UTF8JsonGenerator"", e);
+    }
+}","/**
+ * Helper method that is called for segmented write of raw content
+ * when explicitly outputting a segment of longer thing.
+ * Caller has to take care of ensuring there's no split surrogate
+ * pair at the end (that is, last char can not be first part of a
+ * surrogate char pair).
+ *
+ * @since 2.8.2
+ */"
+"@Override
+public int getOutputBuffered() {
+    // Assuming tail is always valid, set to 0 on close
+    return _outputTail;
+}","public void test7676() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    PipedInputStream pipedInputStream0 = new PipedInputStream(pipedOutputStream0, 2);
+    BufferedInputStream bufferedInputStream0 = new BufferedInputStream(pipedInputStream0, 2);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferedInputStream0, true);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 41, (ObjectCodec) null, (OutputStream) null);
+    uTF8JsonGenerator0.writeString(""~$N!z}q\""Q"");
+    SerializedString serializedString0 = (SerializedString) uTF8JsonGenerator0._rootValueSeparator;
+    uTF8JsonGenerator0.writeFieldName((SerializableString) serializedString0);
+    assertEquals(16, uTF8JsonGenerator0.getOutputBuffered());
+}",""
+"protected final void _writePPFieldName(String name) throws IOException {
+    int status = _writeContext.writeFieldName(name);
+    if (status == JsonWriteContext.STATUS_EXPECT_VALUE) {
+        _reportError(""Can not write a field name, expecting a value"");
+    }
+    if ((status == JsonWriteContext.STATUS_OK_AFTER_COMMA)) {
+        _cfgPrettyPrinter.writeObjectEntrySeparator(this);
+    } else {
+        _cfgPrettyPrinter.beforeObjectEntries(this);
+    }
+    if (_cfgUnqNames) {
+        _writeStringSegments(name, false);
+        return;
+    }
+    final int len = name.length();
+    if (len > _charBufferLength) {
+        _writeStringSegments(name, true);
+        return;
+    }
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+    name.getChars(0, len, _charBuffer, 0);
+    // But as one segment, or multiple?
+    if (len <= _outputMaxContiguous) {
+        if ((_outputTail + len) > _outputEnd) {
+            // caller must ensure enough space
+            _flushBuffer();
+        }
+        _writeStringSegment(_charBuffer, 0, len);
+    } else {
+        _writeStringSegments(_charBuffer, 0, len);
+    }
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+}","public void test7878() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""Unrecognized token '"");
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 115, (ObjectCodec) null, mockFileOutputStream0);
+    SerializedString serializedString0 = (SerializedString) uTF8JsonGenerator0._rootValueSeparator;
+    uTF8JsonGenerator0.writeFieldName((SerializableString) serializedString0);
+    try {
+        uTF8JsonGenerator0._writePPFieldName(serializedString0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Can not write a field name, expecting a value
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonGenerator"", e);
+    }
+}","/**
+ * Specialized version of <code>_writeFieldName</code>, off-lined
+ * to keep the ""fast path"" as simple (and hopefully fast) as possible.
+ */"
+"/*
+    /**********************************************************
+    /* Overridden methods
+    /**********************************************************
+     */
+@Override
+public void writeFieldName(String name) throws IOException {
+    if (_cfgPrettyPrinter != null) {
+        _writePPFieldName(name);
+        return;
+    }
+    final int status = _writeContext.writeFieldName(name);
+    if (status == JsonWriteContext.STATUS_EXPECT_VALUE) {
+        _reportError(""Can not write a field name, expecting a value"");
+    }
+    if (status == JsonWriteContext.STATUS_OK_AFTER_COMMA) {
+        // need comma
+        if (_outputTail >= _outputEnd) {
+            _flushBuffer();
+        }
+        _outputBuffer[_outputTail++] = BYTE_COMMA;
+    }
+    /* To support [JACKSON-46], we'll do this:
+         * (Question: should quoting of spaces (etc) still be enabled?)
+         */
+    if (_cfgUnqNames) {
+        _writeStringSegments(name, false);
+        return;
+    }
+    final int len = name.length();
+    // Does it fit in buffer?
+    if (len > _charBufferLength) {
+        // no, offline
+        _writeStringSegments(name, true);
+        return;
+    }
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+    // But as one segment, or multiple?
+    if (len <= _outputMaxContiguous) {
+        if ((_outputTail + len) > _outputEnd) {
+            // caller must ensure enough space
+            _flushBuffer();
+        }
+        _writeStringSegment(name, 0, len);
+    } else {
+        _writeStringSegments(name, 0, len);
+    }
+    // and closing quotes; need room for one more char:
+    if (_outputTail >= _outputEnd) {
+        _flushBuffer();
+    }
+    _outputBuffer[_outputTail++] = BYTE_QUOTE;
+}","public void test7979() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, """", false);
+    StringReader stringReader0 = new StringReader("""");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    char[] charArray0 = new char[1];
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 0, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0, charArray0, 0, 3, false);
+    ByteArrayBuilder byteArrayBuilder0 = readerBasedJsonParser0._getByteArrayBuilder();
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, (-771), (ObjectCodec) null, byteArrayBuilder0, byteArrayBuilder0.NO_BYTES, 2, false);
+    // Undeclared exception!
+    try {
+        uTF8JsonGenerator0.writeFieldName("""");
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Overridden configuration methods
+    /**********************************************************
+     */
+@Override
+public Object getOutputTarget() {
+    return _outputStream;
+}","public void test8080() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    char[] charArray0 = new char[0];
+    IOContext iOContext0 = mock(IOContext.class, new ViolatedAssumptionAnswer());
+    doReturn(charArray0).when(iOContext0).allocConcatBuffer();
+    ByteArrayBuilder byteArrayBuilder0 = new ByteArrayBuilder(bufferRecycler0);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 1, (ObjectCodec) null, byteArrayBuilder0, byteArrayBuilder0.NO_BYTES, 2, true);
+    Object object0 = uTF8JsonGenerator0.getOutputTarget();
+    assertNotNull(object0);
+}",""
+"@Override
+public int getOutputBuffered() {
+    // Assuming tail is always valid, set to 0 on close
+    return _outputTail;
+}","public void test8081() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    char[] charArray0 = new char[0];
+    IOContext iOContext0 = mock(IOContext.class, new ViolatedAssumptionAnswer());
+    doReturn(charArray0).when(iOContext0).allocConcatBuffer();
+    ByteArrayBuilder byteArrayBuilder0 = new ByteArrayBuilder(bufferRecycler0);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 1, (ObjectCodec) null, byteArrayBuilder0, byteArrayBuilder0.NO_BYTES, 2, true);
+    Object object0 = uTF8JsonGenerator0.getOutputTarget();
+    assertEquals(2, uTF8JsonGenerator0.getOutputBuffered());
+}",""
+"@Override
+public int getOutputBuffered() {
+    // Assuming tail is always valid, set to 0 on close
+    return _outputTail;
+}","public void test8182() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 2, (ObjectCodec) null, (OutputStream) null);
+    uTF8JsonGenerator0.writeNull();
+    assertEquals(4, uTF8JsonGenerator0.getOutputBuffered());
+}",""
+"@Override
+public void writeNumber(float f) throws IOException {
+    if (_cfgNumbersAsStrings || // [JACKSON-139]
+    (((Float.isNaN(f) || Float.isInfinite(f)) && Feature.QUOTE_NON_NUMERIC_NUMBERS.enabledIn(_features)))) {
+        writeString(String.valueOf(f));
+        return;
+    }
+    // What is the max length for floats?
+    _verifyValueWrite(WRITE_NUMBER);
+    writeRaw(String.valueOf(f));
+}","public void test8283() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    byte[] byteArray0 = new byte[3];
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 0, (ObjectCodec) null, (OutputStream) null, byteArray0, (-3840), true);
+    // Undeclared exception!
+    try {
+        uTF8JsonGenerator0.writeNumber(0.0F);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -3840
+        //
+        verifyException(""com.fasterxml.jackson.core.json.UTF8JsonGenerator"", e);
+    }
+}",""
+"@Override
+public int getHighestEscapedChar() {
+    return _maximumNonEscapedChar;
+}","public void test8384() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    PipedInputStream pipedInputStream0 = new PipedInputStream(pipedOutputStream0, 2);
+    BufferedInputStream bufferedInputStream0 = new BufferedInputStream(pipedInputStream0, 2);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferedInputStream0, true);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 41, (ObjectCodec) null, (OutputStream) null);
+    int int0 = uTF8JsonGenerator0.getOutputBuffered();
+    assertEquals(0, uTF8JsonGenerator0.getHighestEscapedChar());
+}",""
+"@Override
+public int getOutputBuffered() {
+    // Assuming tail is always valid, set to 0 on close
+    return _outputTail;
+}","public void test8385() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    PipedInputStream pipedInputStream0 = new PipedInputStream(pipedOutputStream0, 2);
+    BufferedInputStream bufferedInputStream0 = new BufferedInputStream(pipedInputStream0, 2);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferedInputStream0, true);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 41, (ObjectCodec) null, (OutputStream) null);
+    int int0 = uTF8JsonGenerator0.getOutputBuffered();
+    assertEquals(0, int0);
+}",""

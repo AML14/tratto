@@ -1,0 +1,3185 @@
+focal_method,test_prefix,docstring
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test0000() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newString(""iBGf/9l"");
+    Node node1 = new Node(26, node0, node0, node0);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",""
+"public int getSideEffectFlags() {
+    return getIntProp(SIDE_EFFECT_FLAGS);
+}","public void test0011() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((-1.0));
+    Node node1 = peepholeFoldConstants0.optimizeSubtree(node0);
+    assertEquals(0, node1.getSideEffectFlags());
+}","/**
+ * Returns the side effects flags for this node.
+ */"
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test0022() throws Throwable {
+    Node node0 = new Node(123);
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node1 = new Node(27, node0, node0, node0, node0, 40, 20);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertNotNull(node2);
+}",""
+"public int getLineno() {
+    return extractLineno(sourcePosition);
+}","public void test0023() throws Throwable {
+    Node node0 = new Node(123);
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node1 = new Node(27, node0, node0, node0, node0, 40, 20);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(40, node2.getLineno());
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test0034() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((double) (-458), (-458), (-458));
+    Node node1 = new Node(28, node0, node0, node0, node0, 21, 32);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test0045() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((double) 65141, 65141, 65141);
+    Node node1 = new Node(29, node0, node0, node0, 52, 1);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",""
+"public int getType() {
+    return type;
+}","public void test0056() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(2077, 2077, 2077);
+    Node node1 = new Node(32, node0, node0, node0, node0, 1, 30);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(32, node2.getType());
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test0067() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((-1.0));
+    Node node1 = Node.newString(""i%a#'"", 2, 48);
+    Node node2 = new Node(15, node0, node0, node0, node1, 4, 1);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(42, Node.SIDE_EFFECT_FLAGS);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test0078() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(18, 18, 18);
+    Node node1 = new Node((-3));
+    Node node2 = new Node(9, node1, node0, node0, node0, 31, 0);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertNotNull(node3);
+}",""
+"public int getCharno() {
+    return extractCharno(sourcePosition);
+}","public void test0079() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(18, 18, 18);
+    Node node1 = new Node((-3));
+    Node node2 = new Node(9, node1, node0, node0, node0, 31, 0);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(0, node3.getCharno());
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test00810() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((double) 2752, 2752, 2752);
+    Node node1 = new Node((-1805));
+    Node node2 = new Node(10, node1, node1, node0, 48, 7);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertNotNull(node3);
+}",""
+"public int getType() {
+    return type;
+}","public void test00811() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((double) 2752, 2752, 2752);
+    Node node1 = new Node((-1805));
+    Node node2 = new Node(10, node1, node1, node0, 48, 7);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(10, node3.getType());
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test00912() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((double) 1778, 1778, 1778);
+    Node node1 = Node.newNumber(2693.0, 124, 43);
+    Node node2 = new Node(11, node1, node1, node0, node0, 1, 2);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node2);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",""
+"public int getChildCount() {
+    int c = 0;
+    for (Node n = first; n != null; n = n.next) c++;
+    return c;
+}","public void test01013() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node((-581), (-581), (-581));
+    Node node1 = new Node(21);
+    Node node2 = new Node(12, node1, node0, node0, node0, 19, 1);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(2, node3.getChildCount());
+}",""
+"public boolean hasChildren() {
+    return first != null;
+}","public void test01114() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node((-526));
+    Node node1 = new Node(21);
+    Node node2 = new Node(13, node0, node0, node0, node1, 28, 3);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertTrue(node3.hasChildren());
+}",""
+"public int getChildCount() {
+    int c = 0;
+    for (Node n = first; n != null; n = n.next) c++;
+    return c;
+}","public void test01215() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(2064);
+    Node node1 = new Node(34, 2, 1071);
+    Node node2 = new Node(17, node0, node1, node0, node1, 55, 96);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(2, node3.getChildCount());
+}",""
+"public int getType() {
+    return type;
+}","public void test01316() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(2095);
+    Node node1 = new Node((-1));
+    Node node2 = new Node(18, node0, node1, node0, node1, 4, 19);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(18, node3.getType());
+}",""
+"public int getChildCount() {
+    int c = 0;
+    for (Node n = first; n != null; n = n.next) c++;
+    return c;
+}","public void test01417() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(74);
+    Node node1 = new Node(34, 2, 32);
+    Node node2 = new Node(19, node1, node1, node0, node0, 20, 44);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(2, node3.getChildCount());
+}",""
+"public int getType() {
+    return type;
+}","public void test01518() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((double) 2077, 2077, 2077);
+    Node node1 = new Node(35);
+    Node node2 = new Node(20, node0, node1, node1, node1, 50, 17);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(20, node3.getType());
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test01619() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((double) 2043, 2043, 2043);
+    Node node1 = Node.newString(23, ""bT"");
+    Node node2 = new Node(21, node0, node1, node0, node1, 2, 48);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertNotNull(node3);
+}",""
+"public int getSourceOffset() {
+    StaticSourceFile file = getStaticSourceFile();
+    int lineOffset = file == null ? Integer.MIN_VALUE : file.getLineOffset(getLineno());
+    return lineOffset + getCharno();
+}","public void test01620() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((double) 2043, 2043, 2043);
+    Node node1 = Node.newString(23, ""bT"");
+    Node node2 = new Node(21, node0, node1, node0, node1, 2, 48);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals((-2147483600), node3.getSourceOffset());
+}",""
+"public boolean hasMoreThanOneChild() {
+    return first != null && first != last;
+}","public void test01721() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(117);
+    Node node1 = new Node(2);
+    Node node2 = new Node(22, node0, node1, node1);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertTrue(node3.hasMoreThanOneChild());
+}","/**
+ * Check for more than one child more efficiently than by iterating over all
+ * the children as is done with Node.getChildCount().
+ *
+ * @return Whether the node more than one child.
+ */"
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test01722() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(117);
+    Node node1 = new Node(2);
+    Node node2 = new Node(22, node0, node1, node1);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertNotNull(node3);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test01823() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((double) 65136, 65136, 65136);
+    Node node1 = Node.newString(52, ""enum"");
+    Node node2 = new Node(23, node1, node0, node0, node0, 45, 16);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertNotNull(node3);
+}",""
+"public boolean hasMoreThanOneChild() {
+    return first != null && first != last;
+}","public void test01824() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((double) 65136, 65136, 65136);
+    Node node1 = Node.newString(52, ""enum"");
+    Node node2 = new Node(23, node1, node0, node0, node0, 45, 16);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertTrue(node3.hasMoreThanOneChild());
+}","/**
+ * Check for more than one child more efficiently than by iterating over all
+ * the children as is done with Node.getChildCount().
+ *
+ * @return Whether the node more than one child.
+ */"
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test01925() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(2040);
+    Node node1 = new Node((-1));
+    Node node2 = new Node(24, node1, node1, node0);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertNotNull(node3);
+}",""
+"public int getType() {
+    return type;
+}","public void test01926() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(2040);
+    Node node1 = new Node((-1));
+    Node node2 = new Node(24, node1, node1, node0);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(24, node3.getType());
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test02027() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(2064, 2064, 2064);
+    Node node1 = new Node(37, 17, 12);
+    Node node2 = new Node(25, node0, node1, node1, node1, 32, 1);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertNotNull(node3);
+}",""
+"public boolean hasChildren() {
+    return first != null;
+}","public void test02028() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(2064, 2064, 2064);
+    Node node1 = new Node(37, 17, 12);
+    Node node2 = new Node(25, node0, node1, node1, node1, 32, 1);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertTrue(node3.hasChildren());
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test02129() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(12);
+    Node node1 = Node.newString((-2), ""L!%r&VbY(\""k^j@."");
+    Node node2 = new Node(31, node0, node0, node0, node1, 10, 31);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(10, Node.VARS_PROP);
+}",""
+"public boolean hasMoreThanOneChild() {
+    return first != null && first != last;
+}","public void test02230() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(47, 47, 47);
+    Node node1 = Node.newString(""iBGf/9l"");
+    Node node2 = new Node(33, node0, node0, node0, node1, 21, 8);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertTrue(node3.hasMoreThanOneChild());
+}","/**
+ * Check for more than one child more efficiently than by iterating over all
+ * the children as is done with Node.getChildCount().
+ *
+ * @return Whether the node more than one child.
+ */"
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test02331() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(2064, 2064, 2064);
+    Node node1 = Node.newString(20, ""5"");
+    Node node2 = new Node(34, node1, node0, node0, node0, 52, 8);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(2, Node.ATTRIBUTE_FLAG);
+}",""
+"public int getLineno() {
+    return extractLineno(sourcePosition);
+}","public void test02432() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node((-581), (-581), (-581));
+    Node node1 = new Node(21);
+    Node node2 = new Node(35, node0, node0, node0, node1, 28, 3);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(28, node3.getLineno());
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test02533() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((double) 55, 55, 55);
+    Node node1 = new Node(5, 19, 49);
+    Node node2 = new Node(36, node0, node1, node1, node1, (-274), 33);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals((-3), Node.LOCAL_BLOCK_PROP);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test02634() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node((-428));
+    Node node1 = Node.newString(20, ""nO,Z?Vl2$VP"");
+    Node node2 = new Node(37, node0, node1, node0, node1, 7, 5);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(11, Node.USES_PROP);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test02735() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(2064, 2064, 2064);
+    Node node1 = new Node(0, 2064, 50);
+    Node node2 = new Node(38, node1, node1, node1, node0);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(35, Node.PARENTHESIZED_PROP);
+}",""
+"public boolean wasEmptyNode() {
+    return getBooleanProp(EMPTY_BLOCK);
+}","public void test02836() throws Throwable {
+    Node node0 = new Node(100);
+    Node node1 = new Node(2);
+    Node node2 = new Node(39, node0, node0, node0, node1, 32, 2);
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertFalse(node3.wasEmptyNode());
+}","/**
+ * Returns whether this is a synthetic block that should not be considered
+ * a real source block.
+ */"
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test02937() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(2064);
+    Node node1 = new Node(34, 2, 32);
+    Node node2 = new Node(40, node1, node1, node1, node0);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(52, Node.LAST_PROP);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test03038() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(2095);
+    Node node1 = new Node((-1));
+    Node node2 = new Node(41, node0, node1, node0, node1, 4, 19);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(26, Node.DIRECTCALL_PROP);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test03139() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(93);
+    Node node1 = new Node(34, 2, 32);
+    Node node2 = new Node(42, node1, node1, node0);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(0, Node.NON_SPECIALCALL);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test03240() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node((-526));
+    Node node1 = new Node(21);
+    Node node2 = new Node(43, node0, node0, node0, node1, 28, 3);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(11, Node.USES_PROP);
+}",""
+"public boolean hasChildren() {
+    return first != null;
+}","public void test03341() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((double) 55, 55, 55);
+    Node node1 = new Node(2);
+    Node node2 = new Node(44, node1, node0);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertTrue(node3.hasChildren());
+}",""
+"public int getType() {
+    return type;
+}","public void test03442() throws Throwable {
+    Node node0 = new Node(93);
+    Node node1 = new Node(34, 2, 32);
+    Node node2 = new Node(45, node1, node1, node1, node0, 1, 31);
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(45, node3.getType());
+}",""
+"public boolean hasMoreThanOneChild() {
+    return first != null && first != last;
+}","public void test03543() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(2050, 2050, 2050);
+    Node node1 = new Node(45, 4, 36);
+    Node node2 = new Node(46, node1, node0);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertTrue(node3.hasMoreThanOneChild());
+}","/**
+ * Check for more than one child more efficiently than by iterating over all
+ * the children as is done with Node.getChildCount().
+ *
+ * @return Whether the node more than one child.
+ */"
+"public boolean isOnlyModifiesThisCall() {
+    return areBitFlagsSet(getSideEffectFlags() & Node.NO_SIDE_EFFECTS, Node.FLAG_GLOBAL_STATE_UNMODIFIED | Node.FLAG_ARGUMENTS_UNMODIFIED | Node.FLAG_NO_THROWS);
+}","public void test03644() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(12);
+    Node node1 = Node.newString((-2), ""L!%r&VbY(\""k^j@."");
+    Node node2 = new Node(47, node0, node0, node1, node1);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertFalse(node3.isOnlyModifiesThisCall());
+}","/**
+ * @return Whether the only side-effect is ""modifies this""
+ */"
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test03745() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(12);
+    Node node1 = Node.newString(4095, "" H^By}Dh# &"");
+    Node node2 = new Node(48, node1, node1, node1, node0, 52, 4095);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(2, Node.BREAK_PROP);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test03846() throws Throwable {
+    Node node0 = new Node(60, 60, 60);
+    Node node1 = Node.newString(""rAu"");
+    Node node2 = new Node(49, node1, node0, node1, node0, 17, 18);
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(2, Node.RIGHT);
+}",""
+"public int getSideEffectFlags() {
+    return getIntProp(SIDE_EFFECT_FLAGS);
+}","public void test03947() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node((-526), (-526), (-526));
+    Node node1 = new Node(21);
+    Node node2 = new Node(50, node0, node0, node0, node1, 28, 3);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(0, node3.getSideEffectFlags());
+}","/**
+ * Returns the side effects flags for this node.
+ */"
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test04048() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((double) 65136, 574, 65136);
+    Node node1 = Node.newString(36, ""V~\""YycW@QHUDspM4#!c"");
+    Node node2 = new Node(51, node1, node0, node1, node0, 4, 2);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(51, Node.STATIC_SOURCE_FILE);
+}",""
+"public boolean hasMoreThanOneChild() {
+    return first != null && first != last;
+}","public void test04149() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(2064, 2064, 2064);
+    Node node1 = new Node(0, 2064, 50);
+    Node node2 = new Node(52, node0, node0, node1, node1, 40, 17);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertTrue(node3.hasMoreThanOneChild());
+}","/**
+ * Check for more than one child more efficiently than by iterating over all
+ * the children as is done with Node.getChildCount().
+ *
+ * @return Whether the node more than one child.
+ */"
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test04250() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(2064, 2064, 2064);
+    Node node1 = Node.newString(20, ""5"");
+    Node node2 = new Node(53, node1, node0, node0, node0, 4, 8);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(1, Node.SPECIALCALL_EVAL);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test04351() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(217);
+    Node node1 = new Node(34);
+    Node node2 = new Node(54, node0, node1, node0, node1, 122, 437);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(33, Node.MEMBER_TYPE_PROP);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test04452() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node((-526), (-526), (-526));
+    Node node1 = new Node(21);
+    Node node2 = new Node(55, node0, node0, node0, node1, 28, 3);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(16, Node.FLAG_LOCAL_RESULTS);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test04553() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node((-35), (-35), (-35));
+    Node node1 = new Node(88, 40, 17);
+    Node node2 = new Node(56, node1, node0, node1, node0, 2, 52);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(46, Node.IS_NAMESPACE);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test04654() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node((-526));
+    Node node1 = new Node(21);
+    Node node2 = new Node(57, node0, node0, node0, node1, 28, 3);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(1, Node.TARGET_PROP);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test04856() throws Throwable {
+    Node node0 = new Node((-428), (-428), (-428));
+    Node node1 = Node.newString(42, ""1n:"");
+    Node node2 = new Node(59, node1, node1, node0, node0, 1209, 0);
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(10, Node.VARS_PROP);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test04957() throws Throwable {
+    Node node0 = new Node(19);
+    Node node1 = Node.newString(44, ""(_Iyv>kwK~I!kp"", 21, 36);
+    Node node2 = new Node(60, node0, node1, node1, node1, (-1242), 15);
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(15, Node.CASEARRAY_PROP);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test05058() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(62, 66, 62);
+    Node node1 = Node.newString(""G/9l"");
+    Node node2 = new Node(61, node0, node1, node0, node1, 2467, 52);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(0, Node.SIDE_EFFECTS_ALL);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test05159() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node((-526), (-526), (-526));
+    Node node1 = new Node(21);
+    Node node2 = new Node(62, node0, node0, node0, node1, 28, 3);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(2, Node.POST_FLAG);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test05260() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(745);
+    Node node1 = Node.newString(46, """");
+    Node node2 = new Node(63, node0, node1, node0, node1, 8, 41);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertNotSame(node0, node3);
+}",""
+"public boolean isUnscopedQualifiedName() {
+    switch(getType()) {
+        case Token.NAME:
+            return true;
+        case Token.GETPROP:
+            return getFirstChild().isUnscopedQualifiedName();
+        default:
+            return false;
+    }
+}","public void test05361() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node((-1387));
+    Node node1 = new Node(31);
+    Node node2 = new Node(64, node1, node1, node0, node0, 9, (-25));
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertFalse(node3.isUnscopedQualifiedName());
+}","/**
+ * Returns whether a node corresponds to a simple or a qualified name without
+ * a ""this"" reference, such as <code>a.b.c</code>, but not <code>this.a</code>
+ * .
+ */"
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test05462() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(2072);
+    Node node1 = new Node(11);
+    Node node2 = new Node(65, node1, node1, node0, node0, 1, 82);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(20, Node.FINALLY_PROP);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test05563() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node((-526));
+    Node node1 = new Node((-2019));
+    Node node2 = new Node(66, node0, node1, node1, 58, 15);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals((-2), Node.OBJECT_IDS_PROP);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test05664() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(95);
+    Node node1 = new Node(49, 1, 13);
+    Node node2 = new Node(67, node0, node0, node0, node1, 4, 51);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(43, Node.IS_CONSTANT_NAME);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test05765() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node((-428), (-428), (-428));
+    Node node1 = Node.newString(83, ""4W"");
+    Node node2 = new Node(68, node0, node1, node0, node1, (-3), 1017);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(8, Node.FLAG_NO_THROWS);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test05866() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node((-526));
+    Node node1 = new Node(21);
+    Node node2 = new Node(69, node0, node0, node0, node1, 28, 3);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(20, Node.FINALLY_PROP);
+}",""
+"public boolean hasChildren() {
+    return first != null;
+}","public void test05967() throws Throwable {
+    Node node0 = new Node(123, 123, 123);
+    Node node1 = new Node(820, 1, 2);
+    Node node2 = new Node(70, node0, node1, node1, node1);
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertTrue(node3.hasChildren());
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test06068() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node((-526));
+    Node node1 = new Node((-1196));
+    Node node2 = new Node(71, node0, node0, node1);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(47, Node.IS_DISPATCHER);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test06169() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node((-526));
+    Node node1 = new Node(21);
+    Node node2 = new Node(72, node0, node0, node0, node1, 28, 3);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(4095, Node.MAX_COLUMN_NUMBER);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test06270() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node((-526));
+    Node node1 = Node.newString((-2894), ""Unexpected variable "");
+    PeepholeCollectPropertyAssignments peepholeCollectPropertyAssignments0 = new PeepholeCollectPropertyAssignments();
+    Node node2 = peepholeCollectPropertyAssignments0.optimizeSubtree(node1);
+    Node node3 = new Node(73, node2, node2, node0, node0, 8, 49);
+    Node node4 = peepholeFoldConstants0.optimizeSubtree(node3);
+    assertEquals(41, Node.BRACELESS_TYPE);
+}",""
+"public int getSourcePosition() {
+    return sourcePosition;
+}","public void test06371() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node((-526));
+    Node node1 = new Node((-2019));
+    Node node2 = new Node(74, node0, node1, node1);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals((-1), node3.getSourcePosition());
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test06472() throws Throwable {
+    Node node0 = new Node((-428), (-428), (-428));
+    Node node1 = Node.newString(51, ""Obj"");
+    Node node2 = new Node(75, node1, node1, node0, node0, 72, 5);
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(18, Node.SPECIAL_PROP_PROP);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test06573() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node((-526));
+    Node node1 = new Node((-2019));
+    Node node2 = new Node(76, node0, node0, node1);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(15, Node.CASEARRAY_PROP);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test06674() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(38);
+    Node node1 = new Node(94, 1441, 31);
+    Node node2 = new Node(77, node0, node0, node1);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(4095, Node.MAX_COLUMN_NUMBER);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test06775() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(2095);
+    Node node1 = new Node(2, 11, 0);
+    Node node2 = new Node(78, node0, node1, node0, node1, 4, 19);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(44, Node.IS_OPTIONAL_PARAM);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test06876() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node((-526));
+    Node node1 = new Node(21);
+    Node node2 = new Node(79, node0, node0, node0, node1, 28, 3);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(34, Node.NAME_PROP);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test06977() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node((-1923));
+    Node node1 = new Node(43);
+    Node node2 = new Node(80, node1, node1, node0, node0, (-5), 627);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(22, Node.TARGETBLOCK_PROP);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test07078() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(2067);
+    Node node1 = new Node(2, 11, 0);
+    Node node2 = new Node(81, node0, node1, node0, node1, 4, 19);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(4, Node.FLAG_ARGUMENTS_UNMODIFIED);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test07179() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(745);
+    Node node1 = new Node(4249);
+    Node node2 = new Node(82, node0, node0, node0, node1, 0, 4);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(39, Node.EMPTY_BLOCK);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test07280() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node((-526));
+    Node node1 = new Node(21);
+    Node node2 = new Node(83, node0, node0, node0, node1, 28, 3);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(0, Node.LABEL_ID_PROP);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test07381() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(2098);
+    Node node1 = new Node(62);
+    Node node2 = new Node(84, node0, node0, node0, node1, 40, 19);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(1, Node.LEFT);
+}",""
+"public boolean hasMoreThanOneChild() {
+    return first != null && first != last;
+}","public void test07482() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node((-1952), (-1952), (-1952));
+    Node node1 = new Node((-3), 1, 32);
+    Node node2 = new Node(85, node1, node0, node0, node0, 25, 23);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertTrue(node3.hasMoreThanOneChild());
+}","/**
+ * Check for more than one child more efficiently than by iterating over all
+ * the children as is done with Node.getChildCount().
+ *
+ * @return Whether the node more than one child.
+ */"
+"public int getType() {
+    return type;
+}","public void test07583() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(2072);
+    Node node1 = new Node((-1));
+    Node node2 = new Node(86, node0, node1, node0, node1, 4, 19);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(86, node3.getType());
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test07684() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(2072);
+    Node node1 = new Node(34, 2, 36);
+    Node node2 = new Node(87, node0, node1, node0, node1, 4, 154);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(37, Node.OPT_ARG_NAME);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test07785() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(2079, 2079, 2079);
+    Node node1 = new Node(2, 11, 0);
+    Node node2 = new Node(88, node0, node1, node0, node1, 4, 19);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(1, Node.LEFT);
+}",""
+"public int getLineno() {
+    return extractLineno(sourcePosition);
+}","public void test07886() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(2072);
+    Node node1 = new Node((-1));
+    Node node2 = new Node(89, node0, node1, node0, node1, 4, 19);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(4, node3.getLineno());
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test07987() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(2095, 2095, 2095);
+    Node node1 = new Node((-1));
+    Node node2 = new Node(90, node0, node1, node0, node1, 4, 19);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(37, Node.OPT_ARG_NAME);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test08088() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node((-526));
+    Node node1 = new Node((-2019));
+    Node node2 = new Node(91, node0, node1, node1);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(50, Node.FREE_CALL);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test08189() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((double) 2077, 2077, 2077);
+    Node node1 = new Node(35);
+    Node node2 = new Node(92, node1, node0, node1, node0, 100, 36);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(17, Node.TYPE_PROP);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test08290() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(363);
+    Node node1 = new Node((-745), 4095, 50);
+    Node node2 = new Node(93, node1, node1, node0);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(15, Node.CASEARRAY_PROP);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test08391() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((double) 2752, 2752, 2752);
+    Node node1 = new Node(4192, (-36), 90);
+    Node node2 = new Node(94, node0, node0, node1);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(22, Node.TARGETBLOCK_PROP);
+}",""
+"public int getSideEffectFlags() {
+    return getIntProp(SIDE_EFFECT_FLAGS);
+}","public void test08492() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node((-526));
+    Node node1 = new Node(21);
+    Node node2 = new Node(95, node0, node0, node0, node1, 28, 3);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(0, node3.getSideEffectFlags());
+}","/**
+ * Returns the side effects flags for this node.
+ */"
+"public int getSourcePosition() {
+    return sourcePosition;
+}","public void test08593() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(13, 13, 13);
+    Node node1 = new Node((-3));
+    Node node2 = new Node(96, node1, node0, node0, node0, 31, 0);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(126976, node3.getSourcePosition());
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test08694() throws Throwable {
+    Node node0 = new Node(20, 20, 20);
+    Node node1 = new Node(74, (-767), 47);
+    Node node2 = new Node(97, node1, node1, node0, node0, 38, 24);
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(24, Node.LASTUSE_PROP);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test08795() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(2078, 2078, 2078);
+    Node node1 = new Node(2, 11, 0);
+    Node node2 = new Node(98, node0, node1, node0, node1, 4, 19);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(12, Node.REGEXP_PROP);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test08896() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(2079);
+    Node node1 = new Node(2, 11, 0);
+    Node node2 = new Node(99, node0, node1, node0, node1, 4, 19);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(52, Node.LAST_PROP);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test08997() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((double) (-7), (-7), (-7));
+    Node node1 = new Node(35, 38, 11);
+    Node node2 = new Node(100, node0, node0, node1, node1, 8, 9);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node2);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test09098() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(79, 79, 79);
+    Node node1 = new Node(79);
+    Node node2 = new Node(2, node0, node1, node1, node1, 20, 4);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(1, Node.PROPERTY_FLAG);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test09199() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((double) 20, 20, 20);
+    Node node1 = new Node(122, node0, node0, node0);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.AbstractPeepholeOptimization"", e);
+    }
+}",""
+"public int getType() {
+    return type;
+}","public void test092100() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(119, 119, 119);
+    Compiler compiler0 = new Compiler();
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    Predicate<Scope.Var> predicate0 = (Predicate<Scope.Var>) mock(Predicate.class, new ViolatedAssumptionAnswer());
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0, predicate0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0);
+    peepholeFoldConstants0.beginTraversal(nodeTraversal0);
+    Node node1 = new Node(122, node0, node0, node0, node0, 9, 4);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(122, node2.getType());
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test093101() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(2041);
+    Node node1 = new Node(21, node0, node0, node0, node0, 26, 8);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertNotNull(node2);
+}",""
+"public boolean hasChildren() {
+    return first != null;
+}","public void test093102() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(2041);
+    Node node1 = new Node(21, node0, node0, node0, node0, 26, 8);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertTrue(node2.hasChildren());
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test094103() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((double) 2043, 2043, 2043);
+    Node node1 = Node.newString(""bT"");
+    Node node2 = new Node(21, node0, node1, node0, node1, 2, 48);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node2);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test095104() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(85, (-63), 85);
+    Node node1 = new Node(24, node0, node0, node0, node0, (-1434), 46);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test096105() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(98, 98, 98);
+    Node node1 = new Node(10, node0);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.rhino.Node"", e);
+    }
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test097106() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(100, 100, 100);
+    Node node1 = new Node(10, node0);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test098107() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(101);
+    Node node1 = new Node(10, node0);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test099108() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newString("""");
+    Node node1 = new Node(28, node0, node0, node0, node0, 7, 52);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test100109() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newString(""string"");
+    Node node1 = new Node(27, node0);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test101110() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((double) 2043, 184, 3485);
+    Node node1 = Node.newString(""Infinity"");
+    Node node2 = new Node(28, node1, node1, node0, node0, (-3), 1);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node2);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",""
+"public boolean isOnlyModifiesThisCall() {
+    return areBitFlagsSet(getSideEffectFlags() & Node.NO_SIDE_EFFECTS, Node.FLAG_GLOBAL_STATE_UNMODIFIED | Node.FLAG_ARGUMENTS_UNMODIFIED | Node.FLAG_NO_THROWS);
+}","public void test102111() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(32);
+    Node node1 = peepholeFoldConstants0.optimizeSubtree(node0);
+    assertFalse(node1.isOnlyModifiesThisCall());
+}","/**
+ * @return Whether the only side-effect is ""modifies this""
+ */"
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test103112() throws Throwable {
+    Node node0 = Node.newString("""");
+    Node node1 = new Node(32, node0, node0, node0);
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test104113() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((double) 2077, 2077, 2077);
+    Node node1 = new Node(32, node0, node0, node0, node0, 1, 30);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test105114() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber(2693.8053857329355);
+    Node node1 = new Node(27, node0, node0, node0, node0, 0, 12);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.AbstractPeepholeOptimization"", e);
+    }
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test106115() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((double) (-396), (-396), (-396));
+    Node node1 = new Node(26, node0);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test107116() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber(0.0);
+    Node node1 = new Node(26, node0, node0, node0, node0, (-4383), 13);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertNotNull(node2);
+}",""
+"public int getChildCount() {
+    int c = 0;
+    for (Node n = first; n != null; n = n.next) c++;
+    return c;
+}","public void test107117() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber(0.0);
+    Node node1 = new Node(26, node0, node0, node0, node0, (-4383), 13);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(1, node2.getChildCount());
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test108118() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((double) 1, 1, 1);
+    Node node1 = new Node(26, node0);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertNotNull(node2);
+}",""
+"public boolean hasChildren() {
+    return first != null;
+}","public void test108119() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((double) 1, 1, 1);
+    Node node1 = new Node(26, node0);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertTrue(node2.hasChildren());
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test109120() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber(2694.0);
+    Node node1 = new Node(27, node0, node0, node0, node0, 0, 12);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test110121() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((double) 3009, 3009, 3009);
+    Node node1 = Node.newString(49, ""U!x; b+K"");
+    Node node2 = new Node(52, node0, node0, node1, node1, 32, 2);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node2);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.AbstractPeepholeOptimization"", e);
+    }
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test111122() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(2072);
+    Node node1 = new Node((-1));
+    Node node2 = new Node(101, node0, node1, node0, node1, 4, 2);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertNotNull(node3);
+}",""
+"public boolean hasMoreThanOneChild() {
+    return first != null && first != last;
+}","public void test111123() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(2072);
+    Node node1 = new Node((-1));
+    Node node2 = new Node(101, node0, node1, node0, node1, 4, 2);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertTrue(node3.hasMoreThanOneChild());
+}","/**
+ * Check for more than one child more efficiently than by iterating over all
+ * the children as is done with Node.getChildCount().
+ *
+ * @return Whether the node more than one child.
+ */"
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test112124() throws Throwable {
+    Node node0 = new Node(30);
+    Node node1 = Node.newString(""P12W$t]e&+@R;M6n"");
+    Node node2 = new Node(101, node1, node1, node0, node0, 21, 16);
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Compiler compiler0 = new Compiler((PrintStream) null);
+    StrictModeCheck strictModeCheck0 = new StrictModeCheck(compiler0, true, true);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, strictModeCheck0);
+    peepholeFoldConstants0.beginTraversal(nodeTraversal0);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node2);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",""
+"public int getCharno() {
+    return extractCharno(sourcePosition);
+}","public void test113125() throws Throwable {
+    Node node0 = new Node(25, 25, 25);
+    Node node1 = Node.newString("".(X_Iyv>wZK~I!kp"", 3, 4);
+    Node node2 = new Node(21, node1, node0, node0, node0, 0, 33);
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(33, node3.getCharno());
+}",""
+"public int getSourceOffset() {
+    StaticSourceFile file = getStaticSourceFile();
+    int lineOffset = file == null ? Integer.MIN_VALUE : file.getLineOffset(getLineno());
+    return lineOffset + getCharno();
+}","public void test114126() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(2043);
+    Node node1 = Node.newString(""Gf/9l"");
+    Node node2 = new Node(21, node0, node1, node0, node1, 2, 48);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals((-2147483600), node3.getSourceOffset());
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test115127() throws Throwable {
+    Node node0 = new Node(21);
+    Node node1 = Node.newString("".(X_Iyv>wZK~I!kp"", 3, 4);
+    Node node2 = new Node(21, node1, node0, node0, node0, 0, 33);
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node2);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test116128() throws Throwable {
+    Node node0 = new Node(25, 25, 25);
+    Node node1 = Node.newString("".(X_Iyv>wZK~I!kp"", 16, 51);
+    Node node2 = Node.newString("".(X_Iyv>wZK~I!kp"", 3, 4);
+    Node node3 = new Node(21, node2, node1, node1, node0, 0, 33);
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node3);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",""
+"public boolean isFromExterns() {
+    StaticSourceFile file = getStaticSourceFile();
+    return file == null ? false : file.isExtern();
+}","public void test117129() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(2095);
+    Node node1 = new Node(41, 20, 51);
+    Node node2 = new Node(14, node1, node1, node0);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertFalse(node3.isFromExterns());
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test118130() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(47, 47, 47);
+    Node node1 = new Node(4095, 2, 4);
+    Node node2 = new Node(16, node0, node1, node1);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(15, Node.CASEARRAY_PROP);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test119131() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber(0.0);
+    Node node1 = Node.newString(""Gf/O9l"", 51, 50);
+    Node node2 = new Node(15, node1, node1, node1, node0, 4, 28);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(21, Node.LOCALCOUNT_PROP);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test120132() throws Throwable {
+    Node node0 = new Node(79, 79, 79);
+    Node node1 = new Node(30);
+    Node node2 = new Node(1, node1, node1, node0, node1, 4095, 28);
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(44, Node.IS_OPTIONAL_PARAM);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test121133() throws Throwable {
+    Node node0 = new Node(30);
+    Node node1 = new Node(35, node0, node0, node0, node0, 4095, 27);
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",""
+"public int getSourcePosition() {
+    return sourcePosition;
+}","public void test122134() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node((-581), (-581), (-581));
+    Node node1 = new Node(21);
+    Node node2 = new Node(33, node0, node0, node0, node1, 28, 3);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(114691, node3.getSourcePosition());
+}",""
+"public boolean hasMoreThanOneChild() {
+    return first != null && first != last;
+}","public void test123135() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(53, 53, 53);
+    Node node1 = Node.newString(""length"");
+    Node node2 = new Node(33, node0, node0, node0, node1, 21, 8);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertTrue(node3.hasMoreThanOneChild());
+}","/**
+ * Check for more than one child more efficiently than by iterating over all
+ * the children as is done with Node.getChildCount().
+ *
+ * @return Whether the node more than one child.
+ */"
+"@Override
+Node optimizeSubtree(Node subtree) {
+    switch(subtree.getType()) {
+        case Token.NEW:
+            return tryFoldCtorCall(subtree);
+        case Token.TYPEOF:
+            return tryFoldTypeof(subtree);
+        case Token.NOT:
+        case Token.POS:
+        case Token.NEG:
+        case Token.BITNOT:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldUnaryOperator(subtree);
+        case Token.VOID:
+            return tryReduceVoid(subtree);
+        default:
+            tryReduceOperandsForOp(subtree);
+            return tryFoldBinaryOperator(subtree);
+    }
+}","public void test124136() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(63, 63, 63);
+    Node node1 = Node.newString(""length"");
+    Node node2 = new Node(33, node0, node0, node0, node1, 21, 8);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node2);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.AbstractPeepholeOptimization"", e);
+    }
+}",""

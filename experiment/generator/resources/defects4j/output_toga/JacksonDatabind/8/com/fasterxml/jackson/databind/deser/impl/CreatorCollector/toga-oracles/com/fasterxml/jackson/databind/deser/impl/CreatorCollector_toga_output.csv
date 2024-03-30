@@ -1,0 +1,220 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    CreatorCollector creatorCollector0 = new CreatorCollector((BeanDescription) null, false);
+    creatorCollector0.addLongCreator((AnnotatedWithParams) null, false);
+    assertFalse(creatorCollector0.hasDefaultCreator());
+}",0,
+project,0,test011,"public void test011() throws Throwable {
+    CreatorCollector creatorCollector0 = new CreatorCollector((BeanDescription) null, true);
+    creatorCollector0.addLongCreator((AnnotatedWithParams) null);
+    assertFalse(creatorCollector0.hasDefaultCreator());
+}",0,
+project,0,test022,"public void test022() throws Throwable {
+    CreatorCollector creatorCollector0 = new CreatorCollector((BeanDescription) null, true);
+    // Undeclared exception!
+    try {
+        creatorCollector0.verifyNonDup((AnnotatedWithParams) null, 2724);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 2724
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.impl.CreatorCollector"", e);
+    }
+}",1,
+project,0,test033,"public void test033() throws Throwable {
+    CreatorCollector creatorCollector0 = new CreatorCollector((BeanDescription) null, false);
+    creatorCollector0.addIntCreator((AnnotatedWithParams) null);
+    assertFalse(creatorCollector0.hasDefaultCreator());
+}",0,assertFalse(creatorCollector0.hasDefaultCreator())
+project,0,test044,"public void test044() throws Throwable {
+    CreatorCollector creatorCollector0 = new CreatorCollector((BeanDescription) null, true);
+    CreatorProperty[] creatorPropertyArray0 = new CreatorProperty[0];
+    creatorCollector0.addDelegatingCreator((AnnotatedWithParams) null, creatorPropertyArray0);
+    assertFalse(creatorCollector0.hasDefaultCreator());
+}",0,assertTrue(creatorCollector0.hasDefaultCreator())
+project,0,test055,"public void test055() throws Throwable {
+    CreatorCollector creatorCollector0 = new CreatorCollector((BeanDescription) null, false);
+    creatorCollector0.addBooleanCreator((AnnotatedWithParams) null);
+    assertFalse(creatorCollector0.hasDefaultCreator());
+}",0,
+project,0,test066,"public void test066() throws Throwable {
+    CreatorCollector creatorCollector0 = new CreatorCollector((BeanDescription) null, true);
+    // Undeclared exception!
+    try {
+        creatorCollector0.addPropertyCreator((AnnotatedWithParams) null, (CreatorProperty[]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.impl.CreatorCollector"", e);
+    }
+}",0,
+project,0,test077,"public void test077() throws Throwable {
+    CreatorCollector creatorCollector0 = new CreatorCollector((BeanDescription) null, true);
+    creatorCollector0.addDoubleCreator((AnnotatedWithParams) null);
+    assertFalse(creatorCollector0.hasDefaultCreator());
+}",0,
+project,0,test088,"public void test088() throws Throwable {
+    CreatorCollector creatorCollector0 = new CreatorCollector((BeanDescription) null, false);
+    creatorCollector0.addStringCreator((AnnotatedWithParams) null);
+    assertFalse(creatorCollector0.hasDefaultCreator());
+}",0,
+project,0,test099,"public void test099() throws Throwable {
+    CreatorCollector creatorCollector0 = new CreatorCollector((BeanDescription) null, false);
+    creatorCollector0.addDoubleCreator((AnnotatedWithParams) null, false);
+    assertFalse(creatorCollector0.hasDefaultCreator());
+}",0,
+project,0,test1010,"public void test1010() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    MapperFeature[] mapperFeatureArray0 = new MapperFeature[6];
+    MapperFeature mapperFeature0 = MapperFeature.USE_STD_BEAN_NAMING;
+    mapperFeatureArray0[0] = mapperFeature0;
+    mapperFeatureArray0[1] = mapperFeature0;
+    mapperFeatureArray0[2] = mapperFeatureArray0[1];
+    mapperFeatureArray0[3] = mapperFeature0;
+    MapperFeature mapperFeature1 = MapperFeature.AUTO_DETECT_CREATORS;
+    mapperFeatureArray0[4] = mapperFeature1;
+    mapperFeatureArray0[5] = mapperFeature0;
+    objectMapper0.disable(mapperFeatureArray0);
+    Object object0 = new Object();
+    ObjectReader objectReader0 = objectMapper0.readerForUpdating(object0);
+    assertNotNull(objectReader0);
+}",0,assertNotNull(objectReader0)
+project,0,test1212,"public void test1212() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<Field> class0 = Field.class;
+    ObjectReader objectReader0 = objectMapper0.reader((Class<?>) class0);
+    assertNotNull(objectReader0);
+}",0,assertNotNull(objectReader0)
+project,0,test1313,"public void test1313() throws Throwable {
+    CreatorCollector creatorCollector0 = new CreatorCollector((BeanDescription) null, false);
+    CreatorProperty[] creatorPropertyArray0 = new CreatorProperty[0];
+    creatorCollector0.addPropertyCreator((AnnotatedWithParams) null, false, creatorPropertyArray0);
+    assertEquals(0, creatorPropertyArray0.length);
+}",1,
+project,0,test1414,"public void test1414() throws Throwable {
+    POJOPropertiesCollector pOJOPropertiesCollector0 = mock(POJOPropertiesCollector.class, new ViolatedAssumptionAnswer());
+    doReturn((AnnotatedMember) null).when(pOJOPropertiesCollector0).getAnyGetter();
+    doReturn((AnnotatedClass) null).when(pOJOPropertiesCollector0).getClassDef();
+    doReturn((MapperConfig) null).when(pOJOPropertiesCollector0).getConfig();
+    doReturn((AnnotatedMethod) null).when(pOJOPropertiesCollector0).getJsonValueMethod();
+    doReturn((ObjectIdInfo) null).when(pOJOPropertiesCollector0).getObjectIdInfo();
+    doReturn((List) null).when(pOJOPropertiesCollector0).getProperties();
+    doReturn((JavaType) null).when(pOJOPropertiesCollector0).getType();
+    BasicBeanDescription basicBeanDescription0 = BasicBeanDescription.forSerialization(pOJOPropertiesCollector0);
+    CreatorCollector creatorCollector0 = new CreatorCollector(basicBeanDescription0, true);
+    PropertyName propertyName0 = new PropertyName("""");
+    AnnotationIntrospector annotationIntrospector0 = AnnotationIntrospector.nopInstance();
+    Class<AnnotatedConstructor> class0 = AnnotatedConstructor.class;
+    AnnotatedClass annotatedClass0 = AnnotatedClass.constructWithoutSuperTypes(class0, annotationIntrospector0, (ClassIntrospector.MixInResolver) null);
+    CreatorProperty[] creatorPropertyArray0 = new CreatorProperty[2];
+    JavaType javaType0 = TypeFactory.unknownType();
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    ClassNameIdResolver classNameIdResolver0 = new ClassNameIdResolver(javaType0, typeFactory0);
+    AsExternalTypeDeserializer asExternalTypeDeserializer0 = new AsExternalTypeDeserializer(javaType0, classNameIdResolver0, """", false, class0);
+    AnnotationMap annotationMap0 = new AnnotationMap();
+    AnnotatedParameter annotatedParameter0 = new AnnotatedParameter((AnnotatedWithParams) null, javaType0, annotationMap0, 4);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_REQUIRED_OR_OPTIONAL;
+    CreatorProperty creatorProperty0 = new CreatorProperty(propertyName0, javaType0, propertyName0, asExternalTypeDeserializer0, annotationMap0, annotatedParameter0, 4, annotatedClass0, propertyMetadata0);
+    creatorPropertyArray0[0] = creatorProperty0;
+    creatorPropertyArray0[1] = creatorProperty0;
+    creatorCollector0.addPropertyCreator((AnnotatedWithParams) null, true, creatorPropertyArray0);
+    assertFalse(creatorCollector0.hasDefaultCreator());
+}",0,assertFalse(creatorCollector0.hasDefaultCreator())
+project,0,test1515,"public void test1515() throws Throwable {
+    POJOPropertiesCollector pOJOPropertiesCollector0 = mock(POJOPropertiesCollector.class, new ViolatedAssumptionAnswer());
+    doReturn((AnnotatedMember) null).when(pOJOPropertiesCollector0).getAnyGetter();
+    doReturn((AnnotatedClass) null).when(pOJOPropertiesCollector0).getClassDef();
+    doReturn((MapperConfig) null).when(pOJOPropertiesCollector0).getConfig();
+    doReturn((AnnotatedMethod) null).when(pOJOPropertiesCollector0).getJsonValueMethod();
+    doReturn((ObjectIdInfo) null).when(pOJOPropertiesCollector0).getObjectIdInfo();
+    doReturn((List) null).when(pOJOPropertiesCollector0).getProperties();
+    doReturn((JavaType) null).when(pOJOPropertiesCollector0).getType();
+    BasicBeanDescription basicBeanDescription0 = BasicBeanDescription.forSerialization(pOJOPropertiesCollector0);
+    CreatorCollector creatorCollector0 = new CreatorCollector(basicBeanDescription0, true);
+    PropertyName propertyName0 = PropertyName.construct("""", """");
+    Class<AnnotatedConstructor> class0 = AnnotatedConstructor.class;
+    CreatorProperty[] creatorPropertyArray0 = new CreatorProperty[2];
+    JavaType javaType0 = TypeFactory.unknownType();
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    ClassNameIdResolver classNameIdResolver0 = new ClassNameIdResolver(javaType0, typeFactory0);
+    AsExternalTypeDeserializer asExternalTypeDeserializer0 = new AsExternalTypeDeserializer(javaType0, classNameIdResolver0, """", true, class0);
+    AnnotationMap annotationMap0 = new AnnotationMap();
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_REQUIRED_OR_OPTIONAL;
+    CreatorProperty creatorProperty0 = new CreatorProperty(propertyName0, javaType0, propertyName0, asExternalTypeDeserializer0, annotationMap0, (AnnotatedParameter) null, 4, (Object) null, propertyMetadata0);
+    creatorPropertyArray0[0] = creatorProperty0;
+    // Undeclared exception!
+    try {
+        creatorCollector0.addPropertyCreator((AnnotatedWithParams) null, true, creatorPropertyArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.impl.CreatorCollector"", e);
+    }
+}",1,
+project,0,test1616,"public void test1616() throws Throwable {
+    Class<LongNode> class0 = LongNode.class;
+    SimpleType simpleType0 = (SimpleType) TypeBindings.UNBOUND;
+    Class<AnnotatedMethod> class1 = AnnotatedMethod.class;
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    ClassNameIdResolver classNameIdResolver0 = new ClassNameIdResolver(simpleType0, typeFactory0);
+    JsonTypeInfo.As jsonTypeInfo_As0 = JsonTypeInfo.As.PROPERTY;
+    AsPropertyTypeDeserializer asPropertyTypeDeserializer0 = new AsPropertyTypeDeserializer(simpleType0, classNameIdResolver0, "" returned null for 'getContentDeserializer()'"", true, class1, jsonTypeInfo_As0);
+    AnnotationMap annotationMap0 = new AnnotationMap();
+    AnnotatedParameter annotatedParameter0 = new AnnotatedParameter((AnnotatedWithParams) null, class0, annotationMap0, 20);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_REQUIRED;
+    PropertyName propertyName0 = PropertyName.construct("" returned null for 'getContentDeserializer()'"", "" returned null for 'getContentDeserializer()'"");
+    CreatorProperty creatorProperty0 = new CreatorProperty(propertyName0, simpleType0, propertyName0, asPropertyTypeDeserializer0, annotationMap0, annotatedParameter0, (-2419), typeFactory0, propertyMetadata0);
+    CreatorCollector creatorCollector0 = new CreatorCollector((BeanDescription) null, true);
+    CreatorProperty[] creatorPropertyArray0 = new CreatorProperty[2];
+    creatorPropertyArray0[0] = creatorProperty0;
+    creatorPropertyArray0[1] = creatorProperty0;
+    // Undeclared exception!
+    try {
+        creatorCollector0.addPropertyCreator((AnnotatedWithParams) null, true, creatorPropertyArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Duplicate creator property \"" returned null for 'getContentDeserializer()'\"" (index 0 vs 1)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.impl.CreatorCollector"", e);
+    }
+}",1,
+project,0,test1717,"public void test1717() throws Throwable {
+    POJOPropertiesCollector pOJOPropertiesCollector0 = mock(POJOPropertiesCollector.class, new ViolatedAssumptionAnswer());
+    doReturn((AnnotatedMember) null).when(pOJOPropertiesCollector0).getAnyGetter();
+    doReturn((AnnotatedClass) null).when(pOJOPropertiesCollector0).getClassDef();
+    doReturn((MapperConfig) null).when(pOJOPropertiesCollector0).getConfig();
+    doReturn((AnnotatedMethod) null).when(pOJOPropertiesCollector0).getJsonValueMethod();
+    doReturn((ObjectIdInfo) null).when(pOJOPropertiesCollector0).getObjectIdInfo();
+    doReturn((List) null).when(pOJOPropertiesCollector0).getProperties();
+    doReturn((JavaType) null).when(pOJOPropertiesCollector0).getType();
+    BasicBeanDescription basicBeanDescription0 = BasicBeanDescription.forSerialization(pOJOPropertiesCollector0);
+    CreatorCollector creatorCollector0 = new CreatorCollector(basicBeanDescription0, true);
+    JavaType javaType0 = TypeFactory.unknownType();
+    AnnotationMap annotationMap0 = new AnnotationMap();
+    AnnotatedParameter annotatedParameter0 = new AnnotatedParameter((AnnotatedWithParams) null, javaType0, annotationMap0, 4);
+    creatorCollector0.addIncompeteParameter(annotatedParameter0);
+    creatorCollector0.addIncompeteParameter(annotatedParameter0);
+    assertEquals("""", annotatedParameter0.getName());
+}",0,assertNotNull(annotatedParameter0.getName())
+project,0,test1818,"public void test1818() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    MapperFeature[] mapperFeatureArray0 = new MapperFeature[6];
+    MapperFeature mapperFeature0 = MapperFeature.USE_STD_BEAN_NAMING;
+    mapperFeatureArray0[0] = mapperFeature0;
+    MapperFeature mapperFeature1 = MapperFeature.CAN_OVERRIDE_ACCESS_MODIFIERS;
+    mapperFeatureArray0[1] = mapperFeature1;
+    mapperFeatureArray0[2] = mapperFeatureArray0[0];
+    mapperFeatureArray0[3] = mapperFeatureArray0[0];
+    mapperFeatureArray0[4] = mapperFeatureArray0[1];
+    mapperFeatureArray0[5] = mapperFeature0;
+    objectMapper0.disable(mapperFeatureArray0);
+    Object object0 = new Object();
+    ObjectReader objectReader0 = objectMapper0.readerForUpdating(object0);
+    assertNotNull(objectReader0);
+}",0,assertNotNull(objectReader0)

@@ -1,0 +1,856 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    DefaultCategoryItemRenderer defaultCategoryItemRenderer0 = new DefaultCategoryItemRenderer();
+    CategoryAxis categoryAxis0 = new CategoryAxis();
+    CombinedDomainXYPlot combinedDomainXYPlot0 = new CombinedDomainXYPlot();
+    RectangleEdge rectangleEdge0 = combinedDomainXYPlot0.getDomainAxisEdge((-3422));
+    // Undeclared exception!
+    try {
+        defaultCategoryItemRenderer0.getItemMiddle(0.2, 8.0, (CategoryDataset) null, categoryAxis0, (Rectangle2D) null, rectangleEdge0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.chart.renderer.category.AbstractCategoryItemRenderer"", e);
+    }
+}",0,
+project,0,test011,"public void test011() throws Throwable {
+    StackedBarRenderer stackedBarRenderer0 = new StackedBarRenderer(false);
+    stackedBarRenderer0.setSeriesToolTipGenerator(0, (CategoryToolTipGenerator) null);
+    assertEquals(1.0, stackedBarRenderer0.getMaximumBarWidth(), 0.01);
+}",0,
+project,0,test022,"public void test022() throws Throwable {
+    LevelRenderer levelRenderer0 = new LevelRenderer();
+    WaferMapPlot waferMapPlot0 = new WaferMapPlot();
+    JFreeChart jFreeChart0 = new JFreeChart(""3(<"", waferMapPlot0);
+    ChartRenderingInfo chartRenderingInfo0 = new ChartRenderingInfo();
+    BufferedImage bufferedImage0 = jFreeChart0.createBufferedImage(10, 10, chartRenderingInfo0);
+    BufferedImageRenderingSource bufferedImageRenderingSource0 = new BufferedImageRenderingSource(bufferedImage0);
+    SunGraphics2D sunGraphics2D0 = (SunGraphics2D) bufferedImageRenderingSource0.createGraphics2D();
+    NumberAxis3D numberAxis3D0 = new NumberAxis3D();
+    CombinedRangeCategoryPlot combinedRangeCategoryPlot0 = new CombinedRangeCategoryPlot(numberAxis3D0);
+    Point2D.Double point2D_Double0 = new Point2D.Double();
+    Line2D.Float line2D_Float0 = new Line2D.Float(point2D_Double0, point2D_Double0);
+    Rectangle2D.Float rectangle2D_Float0 = (Rectangle2D.Float) line2D_Float0.getBounds2D();
+    Rectangle2D.Double rectangle2D_Double0 = (Rectangle2D.Double) numberAxis3D0.DEFAULT_AXIS_LABEL_INSETS.createOutsetRectangle((Rectangle2D) rectangle2D_Float0, true, false);
+    levelRenderer0.drawRangeLine(sunGraphics2D0, combinedRangeCategoryPlot0, numberAxis3D0, rectangle2D_Double0, 0.5F, waferMapPlot0.DEFAULT_OUTLINE_PAINT, waferMapPlot0.DEFAULT_GRIDLINE_STROKE);
+    assertEquals((-8355712), sunGraphics2D0.eargb);
+}",0,
+project,0,test023,"public void test023() throws Throwable {
+    LevelRenderer levelRenderer0 = new LevelRenderer();
+    WaferMapPlot waferMapPlot0 = new WaferMapPlot();
+    JFreeChart jFreeChart0 = new JFreeChart(""3(<"", waferMapPlot0);
+    ChartRenderingInfo chartRenderingInfo0 = new ChartRenderingInfo();
+    BufferedImage bufferedImage0 = jFreeChart0.createBufferedImage(10, 10, chartRenderingInfo0);
+    BufferedImageRenderingSource bufferedImageRenderingSource0 = new BufferedImageRenderingSource(bufferedImage0);
+    SunGraphics2D sunGraphics2D0 = (SunGraphics2D) bufferedImageRenderingSource0.createGraphics2D();
+    NumberAxis3D numberAxis3D0 = new NumberAxis3D();
+    CombinedRangeCategoryPlot combinedRangeCategoryPlot0 = new CombinedRangeCategoryPlot(numberAxis3D0);
+    Point2D.Double point2D_Double0 = new Point2D.Double();
+    Line2D.Float line2D_Float0 = new Line2D.Float(point2D_Double0, point2D_Double0);
+    Rectangle2D.Float rectangle2D_Float0 = (Rectangle2D.Float) line2D_Float0.getBounds2D();
+    Rectangle2D.Double rectangle2D_Double0 = (Rectangle2D.Double) numberAxis3D0.DEFAULT_AXIS_LABEL_INSETS.createOutsetRectangle((Rectangle2D) rectangle2D_Float0, true, false);
+    levelRenderer0.drawRangeLine(sunGraphics2D0, combinedRangeCategoryPlot0, numberAxis3D0, rectangle2D_Double0, 0.5F, waferMapPlot0.DEFAULT_OUTLINE_PAINT, waferMapPlot0.DEFAULT_GRIDLINE_STROKE);
+    assertEquals(1, sunGraphics2D0.strokeState);
+}",0,
+project,0,test034,"public void test034() throws Throwable {
+    GanttRenderer ganttRenderer0 = new GanttRenderer();
+    CategoryURLGenerator categoryURLGenerator0 = ganttRenderer0.getSeriesURLGenerator(0);
+    assertNull(categoryURLGenerator0);
+}",0,assertNotNull(categoryURLGenerator0)
+project,0,test045,"public void test045() throws Throwable {
+    MinMaxCategoryRenderer minMaxCategoryRenderer0 = new MinMaxCategoryRenderer();
+    CategoryToolTipGenerator categoryToolTipGenerator0 = minMaxCategoryRenderer0.getSeriesToolTipGenerator(29);
+    assertNull(categoryToolTipGenerator0);
+}",0,assertNotNull(categoryToolTipGenerator0)
+project,0,test056,"public void test056() throws Throwable {
+    MinMaxCategoryRenderer minMaxCategoryRenderer0 = new MinMaxCategoryRenderer();
+    Color color0 = Color.red;
+    WaterfallBarRenderer waterfallBarRenderer0 = new WaterfallBarRenderer(minMaxCategoryRenderer0.DEFAULT_OUTLINE_PAINT, color0, minMaxCategoryRenderer0.DEFAULT_VALUE_LABEL_PAINT, minMaxCategoryRenderer0.DEFAULT_VALUE_LABEL_PAINT);
+    CategoryAxis categoryAxis0 = new CategoryAxis(""\""5\"""");
+    CombinedDomainCategoryPlot combinedDomainCategoryPlot0 = new CombinedDomainCategoryPlot(categoryAxis0);
+    ValueAxis valueAxis0 = waterfallBarRenderer0.getRangeAxis(combinedDomainCategoryPlot0, 0);
+    assertNull(valueAxis0);
+}",0,
+project,0,test067,"public void test067() throws Throwable {
+    StackedAreaRenderer stackedAreaRenderer0 = new StackedAreaRenderer(true);
+    CategorySeriesLabelGenerator categorySeriesLabelGenerator0 = stackedAreaRenderer0.getLegendItemToolTipGenerator();
+    assertNull(categorySeriesLabelGenerator0);
+}",0,assertNotNull(categorySeriesLabelGenerator0)
+project,0,test078,"public void test078() throws Throwable {
+    BoxAndWhiskerRenderer boxAndWhiskerRenderer0 = new BoxAndWhiskerRenderer();
+    LegendItem legendItem0 = boxAndWhiskerRenderer0.getLegendItem(2591, 2084);
+    assertNull(legendItem0);
+}",0,
+project,0,test089,"public void test089() throws Throwable {
+    StackedBarRenderer3D stackedBarRenderer3D0 = new StackedBarRenderer3D();
+    CategoryItemLabelGenerator categoryItemLabelGenerator0 = stackedBarRenderer3D0.getItemLabelGenerator((-1), (-1), true);
+    assertNull(categoryItemLabelGenerator0);
+}",0,assertNotNull(categoryItemLabelGenerator0)
+project,0,test0910,"public void test0910() throws Throwable {
+    StackedBarRenderer3D stackedBarRenderer3D0 = new StackedBarRenderer3D();
+    StandardCategoryItemLabelGenerator standardCategoryItemLabelGenerator0 = new StandardCategoryItemLabelGenerator();
+    stackedBarRenderer3D0.setBaseItemLabelGenerator((CategoryItemLabelGenerator) standardCategoryItemLabelGenerator0);
+    StandardCategoryItemLabelGenerator standardCategoryItemLabelGenerator1 = (StandardCategoryItemLabelGenerator) stackedBarRenderer3D0.getItemLabelGenerator((-1), (-1), true);
+    assertEquals(""{2}"", standardCategoryItemLabelGenerator1.getLabelFormat());
+}",0,assertNotNull(standardCategoryItemLabelGenerator1.getLabelFormat())
+project,0,test1011,"public void test1011() throws Throwable {
+    StatisticalBarRenderer statisticalBarRenderer0 = new StatisticalBarRenderer();
+    CombinedRangeCategoryPlot combinedRangeCategoryPlot0 = new CombinedRangeCategoryPlot();
+    CategoryAxis categoryAxis0 = statisticalBarRenderer0.getDomainAxis(combinedRangeCategoryPlot0, (CategoryDataset) null);
+    assertNull(categoryAxis0);
+}",0,assertNotNull(categoryAxis0)
+project,0,test1112,"public void test1112() throws Throwable {
+    LevelRenderer levelRenderer0 = new LevelRenderer();
+    CombinedDomainCategoryPlot combinedDomainCategoryPlot0 = new CombinedDomainCategoryPlot();
+    CategoryAxis categoryAxis0 = levelRenderer0.getDomainAxis(combinedDomainCategoryPlot0, (CategoryDataset) null);
+    assertTrue(categoryAxis0.isAxisLineVisible());
+}",0,assertFalse(categoryAxis0.isAxisLineVisible())
+project,0,test1213,"public void test1213() throws Throwable {
+    LayeredBarRenderer layeredBarRenderer0 = new LayeredBarRenderer();
+    LevelRenderer levelRenderer0 = new LevelRenderer();
+    boolean boolean0 = layeredBarRenderer0.equals(levelRenderer0);
+    assertFalse(boolean0);
+}",0,
+project,0,test1314,"public void test1314() throws Throwable {
+    LineRenderer3D lineRenderer3D0 = new LineRenderer3D();
+    CategoryItemRendererState categoryItemRendererState0 = lineRenderer3D0.createState((PlotRenderingInfo) null);
+    assertEquals(0.0, categoryItemRendererState0.getSeriesRunningTotal(), 0.01);
+}",0,
+project,0,test1415,"public void test1415() throws Throwable {
+    BarRenderer barRenderer0 = new BarRenderer();
+    // Undeclared exception!
+    try {
+        barRenderer0.setSeriesURLGenerator((-683), (CategoryURLGenerator) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Requires index >= 0.
+        //
+        verifyException(""org.jfree.chart.util.AbstractObjectList"", e);
+    }
+}",0,
+project,0,test1516,"public void test1516() throws Throwable {
+    MinMaxCategoryRenderer minMaxCategoryRenderer0 = new MinMaxCategoryRenderer();
+    // Undeclared exception!
+    try {
+        minMaxCategoryRenderer0.setSeriesToolTipGenerator((-3479), (CategoryToolTipGenerator) null, true);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Requires index >= 0.
+        //
+        verifyException(""org.jfree.chart.util.AbstractObjectList"", e);
+    }
+}",0,
+project,0,test1617,"public void test1617() throws Throwable {
+    BarRenderer3D barRenderer3D0 = new BarRenderer3D();
+    IntervalCategoryItemLabelGenerator intervalCategoryItemLabelGenerator0 = new IntervalCategoryItemLabelGenerator();
+    // Undeclared exception!
+    try {
+        barRenderer3D0.setSeriesItemLabelGenerator((-248), (CategoryItemLabelGenerator) intervalCategoryItemLabelGenerator0, true);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Requires index >= 0.
+        //
+        verifyException(""org.jfree.chart.util.AbstractObjectList"", e);
+    }
+}",0,
+project,0,test1718,"public void test1718() throws Throwable {
+    StackedBarRenderer3D stackedBarRenderer3D0 = new StackedBarRenderer3D();
+    IntervalCategoryItemLabelGenerator intervalCategoryItemLabelGenerator0 = new IntervalCategoryItemLabelGenerator();
+    // Undeclared exception!
+    try {
+        stackedBarRenderer3D0.setSeriesItemLabelGenerator((-263), (CategoryItemLabelGenerator) intervalCategoryItemLabelGenerator0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Requires index >= 0.
+        //
+        verifyException(""org.jfree.chart.util.AbstractObjectList"", e);
+    }
+}",0,
+project,0,test1819,"public void test1819() throws Throwable {
+    StatisticalBarRenderer statisticalBarRenderer0 = new StatisticalBarRenderer();
+    DefaultStatisticalCategoryDataset defaultStatisticalCategoryDataset0 = new DefaultStatisticalCategoryDataset();
+    StandardEntityCollection standardEntityCollection0 = new StandardEntityCollection();
+    ChartRenderingInfo chartRenderingInfo0 = new ChartRenderingInfo(standardEntityCollection0);
+    PlotRenderingInfo plotRenderingInfo0 = new PlotRenderingInfo(chartRenderingInfo0);
+    // Undeclared exception!
+    try {
+        statisticalBarRenderer0.initialise((Graphics2D) null, (Rectangle2D) null, (CategoryPlot) null, defaultStatisticalCategoryDataset0, plotRenderingInfo0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'plot' argument.
+        //
+        verifyException(""org.jfree.chart.renderer.category.AbstractCategoryItemRenderer"", e);
+    }
+}",0,
+project,0,test1920,"public void test1920() throws Throwable {
+    LineRenderer3D lineRenderer3D0 = new LineRenderer3D();
+    // Undeclared exception!
+    try {
+        lineRenderer3D0.getRangeAxis((CategoryPlot) null, 2009);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.chart.renderer.category.AbstractCategoryItemRenderer"", e);
+    }
+}",0,
+project,0,test2021,"public void test2021() throws Throwable {
+    LayeredBarRenderer layeredBarRenderer0 = new LayeredBarRenderer();
+    // Undeclared exception!
+    try {
+        layeredBarRenderer0.getDomainAxis((CategoryPlot) null, (CategoryDataset) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.chart.renderer.category.AbstractCategoryItemRenderer"", e);
+    }
+}",0,
+project,0,test2122,"public void test2122() throws Throwable {
+    BoxAndWhiskerRenderer boxAndWhiskerRenderer0 = new BoxAndWhiskerRenderer();
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset((Comparable[]) null, (Comparable[]) null, (Number[][]) null, (Number[][]) null);
+    // Undeclared exception!
+    try {
+        boxAndWhiskerRenderer0.findRangeBounds((CategoryDataset) defaultIntervalCategoryDataset0, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",0,
+project,0,test2223,"public void test2223() throws Throwable {
+    BarRenderer3D barRenderer3D0 = new BarRenderer3D(759.363, 0.0);
+    Number[][] numberArray0 = new Number[9][1];
+    Number[] numberArray1 = new Number[4];
+    numberArray0[0] = numberArray1;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        barRenderer3D0.findRangeBounds(defaultIntervalCategoryDataset0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 1
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",0,
+project,0,test2324,"public void test2324() throws Throwable {
+    GroupedStackedBarRenderer groupedStackedBarRenderer0 = new GroupedStackedBarRenderer();
+    ExtendedCategoryAxis extendedCategoryAxis0 = new ExtendedCategoryAxis(""VMzuSU"");
+    CombinedDomainCategoryPlot combinedDomainCategoryPlot0 = new CombinedDomainCategoryPlot(extendedCategoryAxis0);
+    JFreeChart jFreeChart0 = new JFreeChart(""VMzuSU"", combinedDomainCategoryPlot0);
+    StandardEntityCollection standardEntityCollection0 = new StandardEntityCollection();
+    ChartRenderingInfo chartRenderingInfo0 = new ChartRenderingInfo(standardEntityCollection0);
+    BufferedImage bufferedImage0 = jFreeChart0.createBufferedImage(10, 1, 1, chartRenderingInfo0);
+    Graphics2D graphics2D0 = bufferedImage0.createGraphics();
+    CategoryMarker categoryMarker0 = new CategoryMarker(false, extendedCategoryAxis0.DEFAULT_AXIS_LABEL_PAINT, extendedCategoryAxis0.DEFAULT_TICK_MARK_STROKE);
+    // Undeclared exception!
+    try {
+        groupedStackedBarRenderer0.drawDomainMarker(graphics2D0, combinedDomainCategoryPlot0, extendedCategoryAxis0, categoryMarker0, (Rectangle2D) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.chart.renderer.category.AbstractCategoryItemRenderer"", e);
+    }
+}",0,
+project,0,test2425,"public void test2425() throws Throwable {
+    LayeredBarRenderer layeredBarRenderer0 = new LayeredBarRenderer();
+    StandardEntityCollection standardEntityCollection0 = new StandardEntityCollection();
+    CandlestickRenderer candlestickRenderer0 = new CandlestickRenderer(3.0);
+    Shape shape0 = candlestickRenderer0.getItemShape(2153, (-1030), false);
+    double[][] doubleArray0 = new double[7][2];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    // Undeclared exception!
+    try {
+        layeredBarRenderer0.addEntity(standardEntityCollection0, shape0, defaultIntervalCategoryDataset0, 3739, 2, false, (-2620.74785), (-4799.05081782642));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The 'row' argument is out of bounds.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}",0,
+project,0,test2526,"public void test2526() throws Throwable {
+    LineAndShapeRenderer lineAndShapeRenderer0 = new LineAndShapeRenderer();
+    DefaultStatisticalCategoryDataset defaultStatisticalCategoryDataset0 = new DefaultStatisticalCategoryDataset();
+    SlidingCategoryDataset slidingCategoryDataset0 = new SlidingCategoryDataset(defaultStatisticalCategoryDataset0, 0, (-581));
+    StandardEntityCollection standardEntityCollection0 = new StandardEntityCollection();
+    DefaultPolarItemRenderer defaultPolarItemRenderer0 = new DefaultPolarItemRenderer();
+    Shape shape0 = defaultPolarItemRenderer0.getItemShape(0, 0, true);
+    // Undeclared exception!
+    try {
+        lineAndShapeRenderer0.addEntity(standardEntityCollection0, shape0, slidingCategoryDataset0, (-581), 2517, true, 1000000.0, 0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test2627,"public void test2627() throws Throwable {
+    StackedAreaRenderer stackedAreaRenderer0 = new StackedAreaRenderer();
+    StandardEntityCollection standardEntityCollection0 = new StandardEntityCollection();
+    // Undeclared exception!
+    try {
+        stackedAreaRenderer0.addEntity(standardEntityCollection0, stackedAreaRenderer0.DEFAULT_SHAPE, (CategoryDataset) null, (-1417), 6, false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.chart.renderer.category.AbstractCategoryItemRenderer"", e);
+    }
+}",0,
+project,0,test2728,"public void test2728() throws Throwable {
+    IntervalBarRenderer intervalBarRenderer0 = new IntervalBarRenderer();
+    IntervalBarRenderer intervalBarRenderer1 = (IntervalBarRenderer) intervalBarRenderer0.clone();
+    assertEquals(0, intervalBarRenderer1.getColumnCount());
+}",0,"assertEquals(0, intervalBarRenderer1.getColumnCount())"
+project,0,test2829,"public void test2829() throws Throwable {
+    LineRenderer3D lineRenderer3D0 = new LineRenderer3D();
+    DrawingSupplier drawingSupplier0 = lineRenderer3D0.getDrawingSupplier();
+    assertNull(drawingSupplier0);
+}",0,assertNotNull(drawingSupplier0)
+project,0,test2930,"public void test2930() throws Throwable {
+    BoxAndWhiskerRenderer boxAndWhiskerRenderer0 = new BoxAndWhiskerRenderer();
+    TaskSeriesCollection taskSeriesCollection0 = new TaskSeriesCollection();
+    SlidingGanttCategoryDataset slidingGanttCategoryDataset0 = new SlidingGanttCategoryDataset(taskSeriesCollection0, 1022, 1022);
+    Range range0 = boxAndWhiskerRenderer0.findRangeBounds((CategoryDataset) slidingGanttCategoryDataset0, false);
+    assertNull(range0);
+}",0,
+project,0,test3031,"public void test3031() throws Throwable {
+    BarRenderer3D barRenderer3D0 = new BarRenderer3D();
+    CategoryTextAnnotation categoryTextAnnotation0 = new CategoryTextAnnotation(""tI"", 12.0, 3.0);
+    Layer layer0 = Layer.FOREGROUND;
+    barRenderer3D0.addAnnotation((CategoryAnnotation) categoryTextAnnotation0, layer0);
+    assertTrue(barRenderer3D0.getShadowsVisible());
+}",0,assertTrue(barRenderer3D0.getShadowsVisible())
+project,0,test3132,"public void test3132() throws Throwable {
+    ScatterRenderer scatterRenderer0 = new ScatterRenderer();
+    CategoryURLGenerator categoryURLGenerator0 = scatterRenderer0.getURLGenerator(3, 0, false);
+    assertNull(categoryURLGenerator0);
+}",0,assertNotNull(categoryURLGenerator0)
+project,0,test3233,"public void test3233() throws Throwable {
+    ScatterRenderer scatterRenderer0 = new ScatterRenderer();
+    StackedBarRenderer3D stackedBarRenderer3D0 = new StackedBarRenderer3D((double) scatterRenderer0.ZERO, (double) scatterRenderer0.ZERO);
+    stackedBarRenderer3D0.setBaseToolTipGenerator((CategoryToolTipGenerator) null, true);
+    assertFalse(stackedBarRenderer3D0.isDrawBarOutline());
+}",0,assertTrue(stackedBarRenderer3D0.isDrawBarOutline())
+project,0,test3334,"public void test3334() throws Throwable {
+    DefaultCategoryItemRenderer defaultCategoryItemRenderer0 = new DefaultCategoryItemRenderer();
+    CategoryToolTipGenerator categoryToolTipGenerator0 = defaultCategoryItemRenderer0.getToolTipGenerator(8, 15, true);
+    assertNull(categoryToolTipGenerator0);
+}",0,assertNotNull(categoryToolTipGenerator0)
+project,0,test3435,"public void test3435() throws Throwable {
+    StackedBarRenderer3D stackedBarRenderer3D0 = new StackedBarRenderer3D(0.0, 0.0);
+    StandardCategoryItemLabelGenerator standardCategoryItemLabelGenerator0 = new StandardCategoryItemLabelGenerator();
+    stackedBarRenderer3D0.setBaseItemLabelGenerator((CategoryItemLabelGenerator) standardCategoryItemLabelGenerator0, true);
+    assertEquals(2.0, stackedBarRenderer3D0.getItemLabelAnchorOffset(), 0.01);
+}",0,
+project,0,test3536,"public void test3536() throws Throwable {
+    WaterfallBarRenderer waterfallBarRenderer0 = new WaterfallBarRenderer();
+    StandardCategoryItemLabelGenerator standardCategoryItemLabelGenerator0 = new StandardCategoryItemLabelGenerator();
+    waterfallBarRenderer0.setSeriesItemLabelGenerator(2669, (CategoryItemLabelGenerator) standardCategoryItemLabelGenerator0, true);
+    assertTrue(waterfallBarRenderer0.getAutoPopulateSeriesPaint());
+}",0,assertTrue(waterfallBarRenderer0.getAutoPopulateSeriesPaint())
+project,0,test3637,"public void test3637() throws Throwable {
+    GanttRenderer ganttRenderer0 = new GanttRenderer();
+    CombinedDomainCategoryPlot combinedDomainCategoryPlot0 = new CombinedDomainCategoryPlot();
+    ganttRenderer0.setPlot(combinedDomainCategoryPlot0);
+    assertFalse(ganttRenderer0.getAutoPopulateSeriesOutlinePaint());
+}",0,assertTrue(ganttRenderer0.getAutoPopulateSeriesOutlinePaint())
+project,0,test3738,"public void test3738() throws Throwable {
+    LayeredBarRenderer layeredBarRenderer0 = new LayeredBarRenderer();
+    CategoryPlot categoryPlot0 = layeredBarRenderer0.getPlot();
+    assertNull(categoryPlot0);
+}",0,
+project,0,test3839,"public void test3839() throws Throwable {
+    StatisticalLineAndShapeRenderer statisticalLineAndShapeRenderer0 = new StatisticalLineAndShapeRenderer(false, false);
+    SlidingCategoryDataset slidingCategoryDataset0 = new SlidingCategoryDataset((CategoryDataset) null, 2638, 0);
+    // Undeclared exception!
+    try {
+        statisticalLineAndShapeRenderer0.addEntity((EntityCollection) null, (Shape) null, slidingCategoryDataset0, 2638, 489, false, 0.0, 0.0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.chart.renderer.category.AbstractCategoryItemRenderer"", e);
+    }
+}",0,
+project,0,test3940,"public void test3940() throws Throwable {
+    LineAndShapeRenderer lineAndShapeRenderer0 = new LineAndShapeRenderer(true, true);
+    LegendItemCollection legendItemCollection0 = lineAndShapeRenderer0.getLegendItems();
+    assertEquals(0, legendItemCollection0.getItemCount());
+}",0,"assertEquals(1, legendItemCollection0.getItemCount())"
+project,0,test4041,"public void test4041() throws Throwable {
+    StackedAreaRenderer stackedAreaRenderer0 = new StackedAreaRenderer();
+    CustomCategoryURLGenerator customCategoryURLGenerator0 = new CustomCategoryURLGenerator();
+    stackedAreaRenderer0.setBaseURLGenerator((CategoryURLGenerator) customCategoryURLGenerator0, true);
+    Object object0 = stackedAreaRenderer0.clone();
+    assertNotSame(object0, stackedAreaRenderer0);
+}",0,
+project,0,test4142,"public void test4142() throws Throwable {
+    BoxAndWhiskerRenderer boxAndWhiskerRenderer0 = new BoxAndWhiskerRenderer();
+    DefaultValueDataset defaultValueDataset0 = new DefaultValueDataset();
+    CompassPlot compassPlot0 = new CompassPlot(defaultValueDataset0);
+    JFreeChart jFreeChart0 = new JFreeChart("""", compassPlot0);
+    StandardEntityCollection standardEntityCollection0 = new StandardEntityCollection();
+    ChartRenderingInfo chartRenderingInfo0 = new ChartRenderingInfo(standardEntityCollection0);
+    BufferedImage bufferedImage0 = jFreeChart0.createBufferedImage(3212, 276, 7, chartRenderingInfo0);
+    BufferedImageRenderingSource bufferedImageRenderingSource0 = new BufferedImageRenderingSource(bufferedImage0);
+    Graphics2D graphics2D0 = bufferedImageRenderingSource0.createGraphics2D();
+    Line2D.Double line2D_Double0 = new Line2D.Double();
+    Rectangle2D rectangle2D0 = line2D_Double0.getBounds2D();
+    CategoryAxis categoryAxis0 = new CategoryAxis();
+    CyclicNumberAxis cyclicNumberAxis0 = new CyclicNumberAxis(0, 0.5F);
+    Layer layer0 = Layer.BACKGROUND;
+    boxAndWhiskerRenderer0.drawAnnotations(graphics2D0, rectangle2D0, categoryAxis0, cyclicNumberAxis0, layer0, (PlotRenderingInfo) null);
+    assertTrue(NumberAxis.DEFAULT_AUTO_RANGE_INCLUDES_ZERO);
+}",0,
+project,0,test4243,"public void test4243() throws Throwable {
+    LevelRenderer levelRenderer0 = new LevelRenderer();
+    DefaultBoxAndWhiskerCategoryDataset defaultBoxAndWhiskerCategoryDataset0 = new DefaultBoxAndWhiskerCategoryDataset();
+    levelRenderer0.drawItemLabel((Graphics2D) null, (PlotOrientation) null, defaultBoxAndWhiskerCategoryDataset0, 1, 1, false, 1, (-23.947), true);
+    assertEquals(1, levelRenderer0.getPassCount());
+}",0,
+project,0,test4344,"public void test4344() throws Throwable {
+    LineRenderer3D lineRenderer3D0 = new LineRenderer3D();
+    CombinedRangeCategoryPlot combinedRangeCategoryPlot0 = new CombinedRangeCategoryPlot();
+    ValueAxis valueAxis0 = lineRenderer3D0.getRangeAxis(combinedRangeCategoryPlot0, 2025);
+    Week week0 = new Week(10, 500);
+    Millisecond millisecond0 = new Millisecond();
+    float[][] floatArray0 = new float[7][9];
+    CyclicNumberAxis cyclicNumberAxis0 = new CyclicNumberAxis(0.0F, ""bH>\""<)k'"");
+    FastScatterPlot fastScatterPlot0 = new FastScatterPlot(floatArray0, valueAxis0, cyclicNumberAxis0);
+    PlotOrientation plotOrientation0 = fastScatterPlot0.getOrientation();
+    lineRenderer3D0.updateCrosshairValues((CategoryCrosshairState) null, week0, millisecond0, 0.0F, 2025, 1.0, 72.0, plotOrientation0);
+    assertFalse(lineRenderer3D0.getUseSeriesOffset());
+}",0,assertTrue(lineRenderer3D0.getUseSeriesOffset())
+project,0,test4445,"public void test4445() throws Throwable {
+    StatisticalBarRenderer statisticalBarRenderer0 = new StatisticalBarRenderer();
+    StatisticalBarRenderer statisticalBarRenderer1 = new StatisticalBarRenderer();
+    boolean boolean0 = statisticalBarRenderer0.equals(statisticalBarRenderer1);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4546,"public void test4546() throws Throwable {
+    MinMaxCategoryRenderer minMaxCategoryRenderer0 = new MinMaxCategoryRenderer();
+    DefaultValueDataset defaultValueDataset0 = new DefaultValueDataset();
+    ThermometerPlot thermometerPlot0 = new ThermometerPlot(defaultValueDataset0);
+    PlotOrientation plotOrientation0 = thermometerPlot0.getOrientation();
+    LengthAdjustmentType lengthAdjustmentType0 = LengthAdjustmentType.CONTRACT;
+    RectangleAnchor rectangleAnchor0 = RectangleAnchor.RIGHT;
+    // Undeclared exception!
+    try {
+        minMaxCategoryRenderer0.calculateRangeMarkerTextAnchorPoint((Graphics2D) null, plotOrientation0, (Rectangle2D) null, (Rectangle2D) null, thermometerPlot0.DEFAULT_INSETS, lengthAdjustmentType0, rectangleAnchor0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'base' argument.
+        //
+        verifyException(""org.jfree.chart.util.RectangleInsets"", e);
+    }
+}",0,
+project,0,test4647,"public void test4647() throws Throwable {
+    LayeredBarRenderer layeredBarRenderer0 = new LayeredBarRenderer();
+    Rectangle2D.Double rectangle2D_Double0 = (Rectangle2D.Double) layeredBarRenderer0.lookupLegendShape(0);
+    StatisticalBarRenderer statisticalBarRenderer0 = new StatisticalBarRenderer();
+    LineRenderer3D lineRenderer3D0 = new LineRenderer3D();
+    PeriodAxis periodAxis0 = new PeriodAxis(""OQA(9KM7&U5H`)k"");
+    ValueMarker valueMarker0 = new ValueMarker(2.0F, lineRenderer3D0.DEFAULT_PAINT, statisticalBarRenderer0.DEFAULT_OUTLINE_STROKE);
+    statisticalBarRenderer0.drawRangeMarker((Graphics2D) null, (CategoryPlot) null, periodAxis0, valueMarker0, rectangle2D_Double0);
+    assertFalse(statisticalBarRenderer0.getAutoPopulateSeriesOutlineStroke());
+}",0,assertTrue(statisticalBarRenderer0.getAutoPopulateSeriesOutlineStroke())
+project,0,test4748,"public void test4748() throws Throwable {
+    DefaultCategoryItemRenderer defaultCategoryItemRenderer0 = new DefaultCategoryItemRenderer();
+    CombinedDomainCategoryPlot combinedDomainCategoryPlot0 = new CombinedDomainCategoryPlot();
+    TimeZone timeZone0 = TimeZone.getTimeZone("""");
+    Locale locale0 = new Locale(""j"", ""lL{^w0e9u_@s+no\u0007P"");
+    DateAxis dateAxis0 = new DateAxis("""", timeZone0, locale0);
+    defaultCategoryItemRenderer0.drawRangeLine((Graphics2D) null, combinedDomainCategoryPlot0, dateAxis0, (Rectangle2D) null, 1.7976931348623157E308, dateAxis0.DEFAULT_TICK_LABEL_PAINT, combinedDomainCategoryPlot0.DEFAULT_CROSSHAIR_STROKE);
+    assertEquals(0.0, defaultCategoryItemRenderer0.getItemMargin(), 0.01);
+}",0,
+project,0,test4849,"public void test4849() throws Throwable {
+    StackedBarRenderer stackedBarRenderer0 = new StackedBarRenderer(true);
+    StatisticalBarRenderer statisticalBarRenderer0 = new StatisticalBarRenderer();
+    Rectangle2D.Double rectangle2D_Double0 = (Rectangle2D.Double) statisticalBarRenderer0.lookupSeriesShape(2669);
+    WaterfallBarRenderer waterfallBarRenderer0 = new WaterfallBarRenderer();
+    DefaultBoxAndWhiskerCategoryDataset defaultBoxAndWhiskerCategoryDataset0 = new DefaultBoxAndWhiskerCategoryDataset();
+    SubCategoryAxis subCategoryAxis0 = new SubCategoryAxis("":D4(bZgN@QU"");
+    NumberAxis3D numberAxis3D0 = new NumberAxis3D("":D4(bZgN@QU"");
+    CategoryPlot categoryPlot0 = new CategoryPlot(defaultBoxAndWhiskerCategoryDataset0, subCategoryAxis0, numberAxis3D0, statisticalBarRenderer0);
+    // Undeclared exception!
+    try {
+        waterfallBarRenderer0.drawDomainLine((Graphics2D) null, categoryPlot0, rectangle2D_Double0, 1136.7620977163, stackedBarRenderer0.DEFAULT_VALUE_LABEL_PAINT, stackedBarRenderer0.DEFAULT_OUTLINE_STROKE);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.chart.renderer.category.AbstractCategoryItemRenderer"", e);
+    }
+}",0,
+project,0,test4950,"public void test4950() throws Throwable {
+    StatisticalLineAndShapeRenderer statisticalLineAndShapeRenderer0 = new StatisticalLineAndShapeRenderer(false, false);
+    Range range0 = statisticalLineAndShapeRenderer0.findRangeBounds((CategoryDataset) null, false);
+    assertNull(range0);
+}",0,
+project,0,test5051,"public void test5051() throws Throwable {
+    CombinedDomainCategoryPlot combinedDomainCategoryPlot0 = new CombinedDomainCategoryPlot();
+    StatisticalBarRenderer statisticalBarRenderer0 = new StatisticalBarRenderer();
+    Polygon polygon0 = new Polygon();
+    Rectangle rectangle0 = polygon0.getBounds();
+    ChartRenderingInfo chartRenderingInfo0 = new ChartRenderingInfo();
+    PlotRenderingInfo plotRenderingInfo0 = chartRenderingInfo0.getPlotInfo();
+    // Undeclared exception!
+    try {
+        statisticalBarRenderer0.initialise((Graphics2D) null, rectangle0, combinedDomainCategoryPlot0, (CategoryDataset) null, plotRenderingInfo0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.chart.renderer.category.AbstractCategoryItemRenderer"", e);
+    }
+}",0,
+project,0,test5152,"public void test5152() throws Throwable {
+    StatisticalBarRenderer statisticalBarRenderer0 = new StatisticalBarRenderer();
+    Line2D.Float line2D_Float0 = new Line2D.Float();
+    Rectangle2D rectangle2D0 = line2D_Float0.getBounds2D();
+    ExtendedCategoryAxis extendedCategoryAxis0 = new ExtendedCategoryAxis("""");
+    CombinedDomainCategoryPlot combinedDomainCategoryPlot0 = new CombinedDomainCategoryPlot(extendedCategoryAxis0);
+    Connection connection0 = mock(Connection.class, new ViolatedAssumptionAnswer());
+    JDBCCategoryDataset jDBCCategoryDataset0 = new JDBCCategoryDataset(connection0);
+    PlotRenderingInfo plotRenderingInfo0 = new PlotRenderingInfo((ChartRenderingInfo) null);
+    // Undeclared exception!
+    try {
+        statisticalBarRenderer0.initialise((Graphics2D) null, rectangle2D0, combinedDomainCategoryPlot0, jDBCCategoryDataset0, plotRenderingInfo0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Negative 'index'.
+        //
+        verifyException(""org.jfree.chart.plot.CategoryPlot"", e);
+    }
+}",0,
+project,0,test5253,"public void test5253() throws Throwable {
+    BarRenderer barRenderer0 = new BarRenderer();
+    // Undeclared exception!
+    try {
+        barRenderer0.setLegendItemLabelGenerator((CategorySeriesLabelGenerator) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'generator' argument.
+        //
+        verifyException(""org.jfree.chart.renderer.category.AbstractCategoryItemRenderer"", e);
+    }
+}",1,
+project,0,test5354,"public void test5354() throws Throwable {
+    BarRenderer3D barRenderer3D0 = new BarRenderer3D();
+    StatisticalBarRenderer statisticalBarRenderer0 = new StatisticalBarRenderer();
+    CategorySeriesLabelGenerator categorySeriesLabelGenerator0 = statisticalBarRenderer0.getLegendItemLabelGenerator();
+    barRenderer3D0.setLegendItemLabelGenerator(categorySeriesLabelGenerator0);
+    assertEquals(8.0, barRenderer3D0.getYOffset(), 0.01);
+}",0,
+project,0,test5455,"public void test5455() throws Throwable {
+    StackedBarRenderer3D stackedBarRenderer3D0 = new StackedBarRenderer3D();
+    CategoryPointerAnnotation categoryPointerAnnotation0 = new CategoryPointerAnnotation("""", """", 1380.0, (-2439.614));
+    Layer layer0 = Layer.BACKGROUND;
+    stackedBarRenderer3D0.addAnnotation((CategoryAnnotation) categoryPointerAnnotation0, layer0);
+    boolean boolean0 = stackedBarRenderer3D0.removeAnnotation(categoryPointerAnnotation0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test5556,"public void test5556() throws Throwable {
+    StatisticalBarRenderer statisticalBarRenderer0 = new StatisticalBarRenderer();
+    Layer layer0 = Layer.FOREGROUND;
+    // Undeclared exception!
+    try {
+        statisticalBarRenderer0.addAnnotation((CategoryAnnotation) null, layer0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'annotation' argument.
+        //
+        verifyException(""org.jfree.chart.renderer.category.AbstractCategoryItemRenderer"", e);
+    }
+}",1,
+project,0,test5657,"public void test5657() throws Throwable {
+    LineAndShapeRenderer lineAndShapeRenderer0 = new LineAndShapeRenderer();
+    lineAndShapeRenderer0.setBaseURLGenerator((CategoryURLGenerator) null, false);
+    assertFalse(lineAndShapeRenderer0.getAutoPopulateSeriesFillPaint());
+}",0,assertFalse(lineAndShapeRenderer0.getAutoPopulateSeriesFillPaint())
+project,0,test5758,"public void test5758() throws Throwable {
+    StackedAreaRenderer stackedAreaRenderer0 = new StackedAreaRenderer();
+    StandardCategoryURLGenerator standardCategoryURLGenerator0 = new StandardCategoryURLGenerator(""E||1811{DU:V0q"", ""E||1811{DU:V0q"", """");
+    stackedAreaRenderer0.setSeriesURLGenerator(652, (CategoryURLGenerator) standardCategoryURLGenerator0, false);
+    CategoryURLGenerator categoryURLGenerator0 = stackedAreaRenderer0.getURLGenerator(652, 2, true);
+    assertSame(categoryURLGenerator0, standardCategoryURLGenerator0);
+}",0,
+project,0,test5859,"public void test5859() throws Throwable {
+    DefaultCategoryItemRenderer defaultCategoryItemRenderer0 = new DefaultCategoryItemRenderer();
+    BoxAndWhiskerToolTipGenerator boxAndWhiskerToolTipGenerator0 = new BoxAndWhiskerToolTipGenerator();
+    defaultCategoryItemRenderer0.setBaseToolTipGenerator((CategoryToolTipGenerator) boxAndWhiskerToolTipGenerator0, false);
+    BoxAndWhiskerToolTipGenerator boxAndWhiskerToolTipGenerator1 = (BoxAndWhiskerToolTipGenerator) defaultCategoryItemRenderer0.getToolTipGenerator(8, 15, true);
+    assertEquals(""X: {1} Mean: {2} Median: {3} Min: {4} Max: {5} Q1: {6} Q3: {7} "", boxAndWhiskerToolTipGenerator1.getLabelFormat());
+}",0,assertNotNull(boxAndWhiskerToolTipGenerator1.getLabelFormat())
+project,0,test5960,"public void test5960() throws Throwable {
+    StackedAreaRenderer stackedAreaRenderer0 = new StackedAreaRenderer(true);
+    stackedAreaRenderer0.setSeriesToolTipGenerator(1562, (CategoryToolTipGenerator) null, true);
+    assertTrue(stackedAreaRenderer0.getBaseCreateEntities());
+}",0,assertTrue(stackedAreaRenderer0.getBaseCreateEntities())
+project,0,test6061,"public void test6061() throws Throwable {
+    GanttRenderer ganttRenderer0 = new GanttRenderer();
+    IntervalCategoryToolTipGenerator intervalCategoryToolTipGenerator0 = new IntervalCategoryToolTipGenerator();
+    ganttRenderer0.setSeriesToolTipGenerator(10, (CategoryToolTipGenerator) intervalCategoryToolTipGenerator0, false);
+    assertTrue(ganttRenderer0.getBaseCreateEntities());
+}",0,assertTrue(ganttRenderer0.getBaseCreateEntities())
+project,0,test6162,"public void test6162() throws Throwable {
+    StackedBarRenderer stackedBarRenderer0 = new StackedBarRenderer(true);
+    MinMaxCategoryRenderer minMaxCategoryRenderer0 = new MinMaxCategoryRenderer();
+    StandardEntityCollection standardEntityCollection0 = new StandardEntityCollection();
+    TaskSeriesCollection taskSeriesCollection0 = new TaskSeriesCollection();
+    SlidingGanttCategoryDataset slidingGanttCategoryDataset0 = new SlidingGanttCategoryDataset(taskSeriesCollection0, 2669, 2669);
+    // Undeclared exception!
+    try {
+        minMaxCategoryRenderer0.addEntity(standardEntityCollection0, stackedBarRenderer0.DEFAULT_SHAPE, slidingGanttCategoryDataset0, 0, 1729, true);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 0, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}",0,
+project,0,test6263,"public void test6263() throws Throwable {
+    CategoryStepRenderer categoryStepRenderer0 = new CategoryStepRenderer(true);
+    categoryStepRenderer0.setBaseItemLabelGenerator((CategoryItemLabelGenerator) null, false);
+    assertTrue(categoryStepRenderer0.getAutoPopulateSeriesShape());
+}",0,assertTrue(categoryStepRenderer0.getAutoPopulateSeriesShape())
+project,0,test6364,"public void test6364() throws Throwable {
+    StatisticalBarRenderer statisticalBarRenderer0 = new StatisticalBarRenderer();
+    statisticalBarRenderer0.setSeriesItemLabelGenerator(1066, (CategoryItemLabelGenerator) null, false);
+    assertEquals(1, statisticalBarRenderer0.getPassCount());
+}",0,
+project,0,test6465,"public void test6465() throws Throwable {
+    StatisticalBarRenderer statisticalBarRenderer0 = new StatisticalBarRenderer();
+    CategoryItemLabelGenerator categoryItemLabelGenerator0 = statisticalBarRenderer0.getItemLabelGenerator((-6), 249, true);
+    assertNull(categoryItemLabelGenerator0);
+}",0,assertNotNull(categoryItemLabelGenerator0)
+project,0,test6566,"public void test6566() throws Throwable {
+    StackedBarRenderer3D stackedBarRenderer3D0 = new StackedBarRenderer3D(0.0, 0.0);
+    // Undeclared exception!
+    try {
+        stackedBarRenderer3D0.setPlot((CategoryPlot) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'plot' argument.
+        //
+        verifyException(""org.jfree.chart.renderer.category.AbstractCategoryItemRenderer"", e);
+    }
+}",1,
+project,0,test6667,"public void test6667() throws Throwable {
+    DefaultValueDataset defaultValueDataset0 = new DefaultValueDataset();
+    CompassPlot compassPlot0 = new CompassPlot(defaultValueDataset0);
+    JFreeChart jFreeChart0 = new JFreeChart("""", compassPlot0);
+    StandardEntityCollection standardEntityCollection0 = new StandardEntityCollection();
+    ChartRenderingInfo chartRenderingInfo0 = new ChartRenderingInfo(standardEntityCollection0);
+    BufferedImage bufferedImage0 = jFreeChart0.createBufferedImage(3212, 276, 7, chartRenderingInfo0);
+    BufferedImageRenderingSource bufferedImageRenderingSource0 = new BufferedImageRenderingSource(bufferedImage0);
+    Graphics2D graphics2D0 = bufferedImageRenderingSource0.createGraphics2D();
+    Line2D.Double line2D_Double0 = new Line2D.Double();
+    Rectangle2D rectangle2D0 = line2D_Double0.getBounds2D();
+    LevelRenderer levelRenderer0 = new LevelRenderer();
+    CategoryPlot categoryPlot0 = new CategoryPlot();
+    CategoryItemRendererState categoryItemRendererState0 = levelRenderer0.initialise(graphics2D0, rectangle2D0, categoryPlot0, (CategoryDataset) null, (PlotRenderingInfo) null);
+    assertEquals(0, categoryItemRendererState0.getVisibleSeriesCount());
+}",0,"assertEquals(0, categoryItemRendererState0.getVisibleSeriesCount())"
+project,0,test6668,"public void test6668() throws Throwable {
+    DefaultValueDataset defaultValueDataset0 = new DefaultValueDataset();
+    CompassPlot compassPlot0 = new CompassPlot(defaultValueDataset0);
+    JFreeChart jFreeChart0 = new JFreeChart("""", compassPlot0);
+    StandardEntityCollection standardEntityCollection0 = new StandardEntityCollection();
+    ChartRenderingInfo chartRenderingInfo0 = new ChartRenderingInfo(standardEntityCollection0);
+    BufferedImage bufferedImage0 = jFreeChart0.createBufferedImage(3212, 276, 7, chartRenderingInfo0);
+    BufferedImageRenderingSource bufferedImageRenderingSource0 = new BufferedImageRenderingSource(bufferedImage0);
+    Graphics2D graphics2D0 = bufferedImageRenderingSource0.createGraphics2D();
+    Line2D.Double line2D_Double0 = new Line2D.Double();
+    Rectangle2D rectangle2D0 = line2D_Double0.getBounds2D();
+    LevelRenderer levelRenderer0 = new LevelRenderer();
+    CategoryPlot categoryPlot0 = new CategoryPlot();
+    CategoryItemRendererState categoryItemRendererState0 = levelRenderer0.initialise(graphics2D0, rectangle2D0, categoryPlot0, (CategoryDataset) null, (PlotRenderingInfo) null);
+    assertEquals(0, levelRenderer0.getColumnCount());
+}",0,"assertEquals(0, levelRenderer0.getColumnCount())"
+project,0,test6769,"public void test6769() throws Throwable {
+    StackedAreaRenderer stackedAreaRenderer0 = new StackedAreaRenderer();
+    stackedAreaRenderer0.setSeriesURLGenerator(1022, (CategoryURLGenerator) null);
+    assertFalse(stackedAreaRenderer0.getAutoPopulateSeriesOutlinePaint());
+}",0,assertTrue(stackedAreaRenderer0.getAutoPopulateSeriesOutlinePaint())
+project,0,test6870,"public void test6870() throws Throwable {
+    WaterfallBarRenderer waterfallBarRenderer0 = new WaterfallBarRenderer();
+    CategoryItemLabelGenerator categoryItemLabelGenerator0 = waterfallBarRenderer0.getBaseItemLabelGenerator();
+    assertNull(categoryItemLabelGenerator0);
+}",0,assertNotNull(categoryItemLabelGenerator0)
+project,0,test6971,"public void test6971() throws Throwable {
+    StatisticalLineAndShapeRenderer statisticalLineAndShapeRenderer0 = new StatisticalLineAndShapeRenderer(true, true);
+    StackedBarRenderer3D stackedBarRenderer3D0 = new StackedBarRenderer3D((-1213.962634562), 4672.8062);
+    CategorySeriesLabelGenerator categorySeriesLabelGenerator0 = stackedBarRenderer3D0.getLegendItemLabelGenerator();
+    statisticalLineAndShapeRenderer0.setLegendItemToolTipGenerator(categorySeriesLabelGenerator0);
+    assertTrue(statisticalLineAndShapeRenderer0.getBaseSeriesVisibleInLegend());
+}",0,
+project,0,test7072,"public void test7072() throws Throwable {
+    StackedAreaRenderer stackedAreaRenderer0 = new StackedAreaRenderer(true);
+    int int0 = stackedAreaRenderer0.getRowCount();
+    assertEquals(0, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test7173,"public void test7173() throws Throwable {
+    StackedAreaRenderer stackedAreaRenderer0 = new StackedAreaRenderer();
+    // Undeclared exception!
+    try {
+        stackedAreaRenderer0.setSeriesToolTipGenerator((-4315), (CategoryToolTipGenerator) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Requires index >= 0.
+        //
+        verifyException(""org.jfree.chart.util.AbstractObjectList"", e);
+    }
+}",0,
+project,0,test7274,"public void test7274() throws Throwable {
+    LevelRenderer levelRenderer0 = new LevelRenderer();
+    levelRenderer0.setBaseToolTipGenerator((CategoryToolTipGenerator) null);
+    assertEquals(1, levelRenderer0.getPassCount());
+}",0,
+project,0,test7375,"public void test7375() throws Throwable {
+    BoxAndWhiskerRenderer boxAndWhiskerRenderer0 = new BoxAndWhiskerRenderer();
+    DefaultValueDataset defaultValueDataset0 = new DefaultValueDataset();
+    CompassPlot compassPlot0 = new CompassPlot(defaultValueDataset0);
+    JFreeChart jFreeChart0 = new JFreeChart("""", compassPlot0);
+    StandardEntityCollection standardEntityCollection0 = new StandardEntityCollection();
+    ChartRenderingInfo chartRenderingInfo0 = new ChartRenderingInfo(standardEntityCollection0);
+    BufferedImage bufferedImage0 = jFreeChart0.createBufferedImage(3212, 276, 7, chartRenderingInfo0);
+    BufferedImageRenderingSource bufferedImageRenderingSource0 = new BufferedImageRenderingSource(bufferedImage0);
+    Graphics2D graphics2D0 = bufferedImageRenderingSource0.createGraphics2D();
+    Line2D.Double line2D_Double0 = new Line2D.Double();
+    Rectangle2D rectangle2D0 = line2D_Double0.getBounds2D();
+    // Undeclared exception!
+    try {
+        boxAndWhiskerRenderer0.drawBackground(graphics2D0, (CategoryPlot) null, rectangle2D0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.chart.renderer.category.AbstractCategoryItemRenderer"", e);
+    }
+}",0,
+project,0,test7476,"public void test7476() throws Throwable {
+    LayeredBarRenderer layeredBarRenderer0 = new LayeredBarRenderer();
+    CategoryItemLabelGenerator categoryItemLabelGenerator0 = layeredBarRenderer0.getSeriesItemLabelGenerator(844);
+    assertNull(categoryItemLabelGenerator0);
+}",0,assertNotNull(categoryItemLabelGenerator0)
+project,0,test7577,"public void test7577() throws Throwable {
+    BarRenderer barRenderer0 = new BarRenderer();
+    CategorySeriesLabelGenerator categorySeriesLabelGenerator0 = barRenderer0.getLegendItemURLGenerator();
+    assertNull(categorySeriesLabelGenerator0);
+}",0,assertNotNull(categorySeriesLabelGenerator0)
+project,0,test7678,"public void test7678() throws Throwable {
+    BarRenderer barRenderer0 = new BarRenderer();
+    barRenderer0.removeAnnotations();
+    assertEquals(0.2, BarRenderer.DEFAULT_ITEM_MARGIN, 0.01);
+}",0,
+project,0,test7779,"public void test7779() throws Throwable {
+    StackedBarRenderer stackedBarRenderer0 = new StackedBarRenderer(true);
+    stackedBarRenderer0.setBaseURLGenerator((CategoryURLGenerator) null);
+    assertFalse(stackedBarRenderer0.getAutoPopulateSeriesFillPaint());
+}",0,assertTrue(stackedBarRenderer0.getAutoPopulateSeriesFillPaint())
+project,0,test7880,"public void test7880() throws Throwable {
+    LayeredBarRenderer layeredBarRenderer0 = new LayeredBarRenderer();
+    CategoryURLGenerator categoryURLGenerator0 = layeredBarRenderer0.getBaseURLGenerator();
+    assertNull(categoryURLGenerator0);
+}",0,assertNotNull(categoryURLGenerator0)
+project,0,test7981,"public void test7981() throws Throwable {
+    StatisticalBarRenderer statisticalBarRenderer0 = new StatisticalBarRenderer();
+    // Undeclared exception!
+    try {
+        statisticalBarRenderer0.drawOutline((Graphics2D) null, (CategoryPlot) null, (Rectangle2D) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.chart.renderer.category.AbstractCategoryItemRenderer"", e);
+    }
+}",0,
+project,0,test8182,"public void test8182() throws Throwable {
+    BarRenderer barRenderer0 = new BarRenderer();
+    int int0 = barRenderer0.getPassCount();
+    assertEquals(1, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test8283,"public void test8283() throws Throwable {
+    GroupedStackedBarRenderer groupedStackedBarRenderer0 = new GroupedStackedBarRenderer();
+    int int0 = groupedStackedBarRenderer0.getColumnCount();
+    assertEquals(0, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test8384,"public void test8384() throws Throwable {
+    BoxAndWhiskerRenderer boxAndWhiskerRenderer0 = new BoxAndWhiskerRenderer();
+    boxAndWhiskerRenderer0.setLegendItemURLGenerator((CategorySeriesLabelGenerator) null);
+    assertEquals(1.0, boxAndWhiskerRenderer0.getMaximumBarWidth(), 0.01);
+}",0,
+project,0,test8485,"public void test8485() throws Throwable {
+    BarRenderer3D barRenderer3D0 = new BarRenderer3D(759.363, 0.0);
+    Number[][] numberArray0 = new Number[9][1];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Range range0 = barRenderer3D0.findRangeBounds(defaultIntervalCategoryDataset0);
+    assertNull(range0);
+}",0,
+project,0,test8586,"public void test8586() throws Throwable {
+    CategoryStepRenderer categoryStepRenderer0 = new CategoryStepRenderer();
+    DateAxis dateAxis0 = new DateAxis();
+    CombinedRangeCategoryPlot combinedRangeCategoryPlot0 = new CombinedRangeCategoryPlot(dateAxis0);
+    double[][] doubleArray0 = new double[1][3];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    // Undeclared exception!
+    try {
+        categoryStepRenderer0.getDomainAxis(combinedRangeCategoryPlot0, defaultIntervalCategoryDataset0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Negative 'index'.
+        //
+        verifyException(""org.jfree.chart.plot.CategoryPlot"", e);
+    }
+}",0,
+project,0,test8687,"public void test8687() throws Throwable {
+    LineAndShapeRenderer lineAndShapeRenderer0 = new LineAndShapeRenderer();
+    CategoryPointerAnnotation categoryPointerAnnotation0 = new CategoryPointerAnnotation(""1R_-?.w~e'"", lineAndShapeRenderer0.ZERO, (-1149.0), (double) lineAndShapeRenderer0.ZERO);
+    lineAndShapeRenderer0.addAnnotation((CategoryAnnotation) categoryPointerAnnotation0);
+    assertEquals(30.0, categoryPointerAnnotation0.getBaseRadius(), 0.01);
+}",0,
+project,0,test8788,"public void test8788() throws Throwable {
+    ScatterRenderer scatterRenderer0 = new ScatterRenderer();
+    CategoryToolTipGenerator categoryToolTipGenerator0 = scatterRenderer0.getBaseToolTipGenerator();
+    assertNull(categoryToolTipGenerator0);
+}",0,assertNotNull(categoryToolTipGenerator0)
+project,0,test8889,"public void test8889() throws Throwable {
+    StackedBarRenderer3D stackedBarRenderer3D0 = new StackedBarRenderer3D();
+    IntervalCategoryItemLabelGenerator intervalCategoryItemLabelGenerator0 = new IntervalCategoryItemLabelGenerator();
+    stackedBarRenderer3D0.setSeriesItemLabelGenerator(3, (CategoryItemLabelGenerator) intervalCategoryItemLabelGenerator0);
+    assertTrue(stackedBarRenderer3D0.getAutoPopulateSeriesShape());
+}",0,assertFalse(stackedBarRenderer3D0.getAutoPopulateSeriesShape())

@@ -1,0 +1,770 @@
+focal_method,test_prefix,docstring
+"public boolean isCachable() {
+    return false;
+}","public void test000() throws Throwable {
+    UntypedObjectDeserializer untypedObjectDeserializer0 = new UntypedObjectDeserializer();
+    JsonDeserializer<String> jsonDeserializer0 = (JsonDeserializer<String>) mock(JsonDeserializer.class, new ViolatedAssumptionAnswer());
+    JsonDeserializer<?> jsonDeserializer1 = untypedObjectDeserializer0.instance._withResolved(jsonDeserializer0, jsonDeserializer0, jsonDeserializer0, jsonDeserializer0);
+    assertTrue(jsonDeserializer1.isCachable());
+}","/**
+ *  Method called to see if deserializer instance is cachable and
+ *  usable for other properties of same type (type for which instance
+ *  was created).
+ * <p>
+ *  Note that cached instances are still resolved on per-property basis,
+ *  if instance implements {@link com.fasterxml.jackson.databind.deser.ResolvableDeserializer}:
+ *  cached instance is just as the base. This means that in most cases it is safe to
+ *  cache instances; however, it only makes sense to cache instances
+ *  if instantiation is expensive, or if instances are heavy-weight.
+ * <p>
+ *  Default implementation returns false, to indicate that no caching
+ *  is done.
+ */"
+"protected JsonDeserializer<Object> _clearIfStdImpl(JsonDeserializer<Object> deser) {
+    return ClassUtil.isJacksonStdImpl(deser) ? null : deser;
+}","public void test022() throws Throwable {
+    UntypedObjectDeserializer untypedObjectDeserializer0 = new UntypedObjectDeserializer();
+    JsonDeserializer<Object> jsonDeserializer0 = untypedObjectDeserializer0._clearIfStdImpl((JsonDeserializer<Object>) null);
+    assertNull(jsonDeserializer0);
+}",""
+"public boolean isCachable() {
+    return false;
+}","public void test033() throws Throwable {
+    UntypedObjectDeserializer untypedObjectDeserializer0 = UntypedObjectDeserializer.instance;
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    JsonDeserializer<?> jsonDeserializer0 = untypedObjectDeserializer0.createContextual(defaultDeserializationContext_Impl0, (BeanProperty) null);
+    assertFalse(jsonDeserializer0.isCachable());
+}","/**
+ *  Method called to see if deserializer instance is cachable and
+ *  usable for other properties of same type (type for which instance
+ *  was created).
+ * <p>
+ *  Note that cached instances are still resolved on per-property basis,
+ *  if instance implements {@link com.fasterxml.jackson.databind.deser.ResolvableDeserializer}:
+ *  cached instance is just as the base. This means that in most cases it is safe to
+ *  cache instances; however, it only makes sense to cache instances
+ *  if instantiation is expensive, or if instances are heavy-weight.
+ * <p>
+ *  Default implementation returns false, to indicate that no caching
+ *  is done.
+ */"
+"/*
+    /**********************************************************
+    /* Internal methods
+    /**********************************************************
+     */
+/**
+ * Method called to map a JSON Array into a Java value.
+ */
+protected Object mapArray(JsonParser jp, DeserializationContext ctxt) throws IOException {
+    // Minor optimization to handle small lists (default size for ArrayList is 10)
+    if (jp.nextToken() == JsonToken.END_ARRAY) {
+        return new ArrayList<Object>(2);
+    }
+    Object value = deserialize(jp, ctxt);
+    if (jp.nextToken() == JsonToken.END_ARRAY) {
+        ArrayList<Object> l = new ArrayList<Object>(2);
+        l.add(value);
+        return l;
+    }
+    Object value2 = deserialize(jp, ctxt);
+    if (jp.nextToken() == JsonToken.END_ARRAY) {
+        ArrayList<Object> l = new ArrayList<Object>(2);
+        l.add(value);
+        l.add(value2);
+        return l;
+    }
+    ObjectBuffer buffer = ctxt.leaseObjectBuffer();
+    Object[] values = buffer.resetAndStart();
+    int ptr = 0;
+    values[ptr++] = value;
+    values[ptr++] = value2;
+    int totalSize = ptr;
+    do {
+        value = deserialize(jp, ctxt);
+        ++totalSize;
+        if (ptr >= values.length) {
+            values = buffer.appendCompletedChunk(values);
+            ptr = 0;
+        }
+        values[ptr++] = value;
+    } while (jp.nextToken() != JsonToken.END_ARRAY);
+    // let's create full array then
+    ArrayList<Object> result = new ArrayList<Object>(totalSize);
+    buffer.completeAndClearBuffer(values, ptr, result);
+    return result;
+}","public void test044() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectNode objectNode0 = objectMapper0.createObjectNode();
+    objectNode0.put((String) null, ""JSON"");
+    ObjectNode objectNode1 = objectNode0.put(""JSON"", ""JSON"");
+    JsonParser jsonParser0 = objectMapper0.treeAsTokens(objectNode1);
+    UntypedObjectDeserializer untypedObjectDeserializer0 = UntypedObjectDeserializer.instance;
+    // Undeclared exception!
+    try {
+        untypedObjectDeserializer0.mapArray(jsonParser0, defaultDeserializationContext_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationContext"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Internal methods
+    /**********************************************************
+     */
+/**
+ * Method called to map a JSON Array into a Java value.
+ */
+protected Object mapArray(JsonParser jp, DeserializationContext ctxt) throws IOException {
+    // Minor optimization to handle small lists (default size for ArrayList is 10)
+    if (jp.nextToken() == JsonToken.END_ARRAY) {
+        return new ArrayList<Object>(2);
+    }
+    Object value = deserialize(jp, ctxt);
+    if (jp.nextToken() == JsonToken.END_ARRAY) {
+        ArrayList<Object> l = new ArrayList<Object>(2);
+        l.add(value);
+        return l;
+    }
+    Object value2 = deserialize(jp, ctxt);
+    if (jp.nextToken() == JsonToken.END_ARRAY) {
+        ArrayList<Object> l = new ArrayList<Object>(2);
+        l.add(value);
+        l.add(value2);
+        return l;
+    }
+    ObjectBuffer buffer = ctxt.leaseObjectBuffer();
+    Object[] values = buffer.resetAndStart();
+    int ptr = 0;
+    values[ptr++] = value;
+    values[ptr++] = value2;
+    int totalSize = ptr;
+    do {
+        value = deserialize(jp, ctxt);
+        ++totalSize;
+        if (ptr >= values.length) {
+            values = buffer.appendCompletedChunk(values);
+            ptr = 0;
+        }
+        values[ptr++] = value;
+    } while (jp.nextToken() != JsonToken.END_ARRAY);
+    // let's create full array then
+    ArrayList<Object> result = new ArrayList<Object>(totalSize);
+    buffer.completeAndClearBuffer(values, ptr, result);
+    return result;
+}","public void test055() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DoubleNode doubleNode0 = DoubleNode.valueOf(0.0);
+    JsonParser jsonParser0 = objectMapper0.treeAsTokens(doubleNode0);
+    UntypedObjectDeserializer untypedObjectDeserializer0 = UntypedObjectDeserializer.instance;
+    // Undeclared exception!
+    try {
+        untypedObjectDeserializer0.mapArray(jsonParser0, defaultDeserializationContext_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationContext"", e);
+    }
+}",""
+"protected Object[] mapArrayToArray(JsonParser jp, DeserializationContext ctxt) throws IOException {
+    // Minor optimization to handle small lists (default size for ArrayList is 10)
+    if (jp.nextToken() == JsonToken.END_ARRAY) {
+        return NO_OBJECTS;
+    }
+    ObjectBuffer buffer = ctxt.leaseObjectBuffer();
+    Object[] values = buffer.resetAndStart();
+    int ptr = 0;
+    do {
+        Object value = deserialize(jp, ctxt);
+        if (ptr >= values.length) {
+            values = buffer.appendCompletedChunk(values);
+            ptr = 0;
+        }
+        values[ptr++] = value;
+    } while (jp.nextToken() != JsonToken.END_ARRAY);
+    return buffer.completeAndClearBuffer(values, ptr);
+}","public void test066() throws Throwable {
+    UntypedObjectDeserializer untypedObjectDeserializer0 = new UntypedObjectDeserializer();
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    JsonNodeFactory jsonNodeFactory0 = new JsonNodeFactory(false);
+    ObjectNode objectNode0 = new ObjectNode(jsonNodeFactory0);
+    objectNode0.put(""&O^]mkA1%%b;TN"", false);
+    JsonParser jsonParser0 = objectMapper0.treeAsTokens(objectNode0);
+    // Undeclared exception!
+    try {
+        untypedObjectDeserializer0.mapArrayToArray(jsonParser0, defaultDeserializationContext_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationContext"", e);
+    }
+}","/**
+ * Method called to map a JSON Array into a Java Object array (Object[]).
+ */"
+"/*
+    /**********************************************************
+    /* Internal methods
+    /**********************************************************
+     */
+/**
+ * Method called to map a JSON Array into a Java value.
+ */
+protected Object mapArray(JsonParser jp, DeserializationContext ctxt) throws IOException {
+    // Minor optimization to handle small lists (default size for ArrayList is 10)
+    if (jp.nextToken() == JsonToken.END_ARRAY) {
+        return new ArrayList<Object>(2);
+    }
+    Object value = deserialize(jp, ctxt);
+    if (jp.nextToken() == JsonToken.END_ARRAY) {
+        ArrayList<Object> l = new ArrayList<Object>(2);
+        l.add(value);
+        return l;
+    }
+    Object value2 = deserialize(jp, ctxt);
+    if (jp.nextToken() == JsonToken.END_ARRAY) {
+        ArrayList<Object> l = new ArrayList<Object>(2);
+        l.add(value);
+        l.add(value2);
+        return l;
+    }
+    ObjectBuffer buffer = ctxt.leaseObjectBuffer();
+    Object[] values = buffer.resetAndStart();
+    int ptr = 0;
+    values[ptr++] = value;
+    values[ptr++] = value2;
+    int totalSize = ptr;
+    do {
+        value = deserialize(jp, ctxt);
+        ++totalSize;
+        if (ptr >= values.length) {
+            values = buffer.appendCompletedChunk(values);
+            ptr = 0;
+        }
+        values[ptr++] = value;
+    } while (jp.nextToken() != JsonToken.END_ARRAY);
+    // let's create full array then
+    ArrayList<Object> result = new ArrayList<Object>(totalSize);
+    buffer.completeAndClearBuffer(values, ptr, result);
+    return result;
+}","public void test077() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectNode objectNode0 = objectMapper0.createObjectNode();
+    objectNode0.put((String) null, (String) null);
+    JsonParser jsonParser0 = objectMapper0.treeAsTokens(objectNode0);
+    UntypedObjectDeserializer untypedObjectDeserializer0 = UntypedObjectDeserializer.instance;
+    // Undeclared exception!
+    try {
+        untypedObjectDeserializer0.mapArray(jsonParser0, defaultDeserializationContext_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationContext"", e);
+    }
+}",""
+"protected Object[] mapArrayToArray(JsonParser jp, DeserializationContext ctxt) throws IOException {
+    // Minor optimization to handle small lists (default size for ArrayList is 10)
+    if (jp.nextToken() == JsonToken.END_ARRAY) {
+        return NO_OBJECTS;
+    }
+    ObjectBuffer buffer = ctxt.leaseObjectBuffer();
+    Object[] values = buffer.resetAndStart();
+    int ptr = 0;
+    do {
+        Object value = deserialize(jp, ctxt);
+        if (ptr >= values.length) {
+            values = buffer.appendCompletedChunk(values);
+            ptr = 0;
+        }
+        values[ptr++] = value;
+    } while (jp.nextToken() != JsonToken.END_ARRAY);
+    return buffer.completeAndClearBuffer(values, ptr);
+}","public void test088() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = new BeanDeserializerFactory((DeserializerFactoryConfig) null);
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    SimpleFilterProvider simpleFilterProvider0 = new SimpleFilterProvider();
+    POJONode pOJONode0 = new POJONode(simpleFilterProvider0);
+    JsonParser jsonParser0 = objectMapper0.treeAsTokens(pOJONode0);
+    UntypedObjectDeserializer untypedObjectDeserializer0 = UntypedObjectDeserializer.instance;
+    // Undeclared exception!
+    try {
+        untypedObjectDeserializer0.mapArrayToArray(jsonParser0, defaultDeserializationContext_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationContext"", e);
+    }
+}","/**
+ * Method called to map a JSON Array into a Java Object array (Object[]).
+ */"
+"/*
+    /**********************************************************
+    /* Internal methods
+    /**********************************************************
+     */
+/**
+ * Method called to map a JSON Array into a Java value.
+ */
+protected Object mapArray(JsonParser jp, DeserializationContext ctxt) throws IOException {
+    // Minor optimization to handle small lists (default size for ArrayList is 10)
+    if (jp.nextToken() == JsonToken.END_ARRAY) {
+        return new ArrayList<Object>(2);
+    }
+    Object value = deserialize(jp, ctxt);
+    if (jp.nextToken() == JsonToken.END_ARRAY) {
+        ArrayList<Object> l = new ArrayList<Object>(2);
+        l.add(value);
+        return l;
+    }
+    Object value2 = deserialize(jp, ctxt);
+    if (jp.nextToken() == JsonToken.END_ARRAY) {
+        ArrayList<Object> l = new ArrayList<Object>(2);
+        l.add(value);
+        l.add(value2);
+        return l;
+    }
+    ObjectBuffer buffer = ctxt.leaseObjectBuffer();
+    Object[] values = buffer.resetAndStart();
+    int ptr = 0;
+    values[ptr++] = value;
+    values[ptr++] = value2;
+    int totalSize = ptr;
+    do {
+        value = deserialize(jp, ctxt);
+        ++totalSize;
+        if (ptr >= values.length) {
+            values = buffer.appendCompletedChunk(values);
+            ptr = 0;
+        }
+        values[ptr++] = value;
+    } while (jp.nextToken() != JsonToken.END_ARRAY);
+    // let's create full array then
+    ArrayList<Object> result = new ArrayList<Object>(totalSize);
+    buffer.completeAndClearBuffer(values, ptr, result);
+    return result;
+}","public void test099() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectNode objectNode0 = objectMapper0.createObjectNode();
+    ObjectNode objectNode1 = objectNode0.put(""JSON"", ""JSON"");
+    JsonParser jsonParser0 = objectMapper0.treeAsTokens(objectNode1);
+    UntypedObjectDeserializer untypedObjectDeserializer0 = UntypedObjectDeserializer.instance;
+    // Undeclared exception!
+    try {
+        untypedObjectDeserializer0.mapArray(jsonParser0, defaultDeserializationContext_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationContext"", e);
+    }
+}",""
+"protected Object[] mapArrayToArray(JsonParser jp, DeserializationContext ctxt) throws IOException {
+    // Minor optimization to handle small lists (default size for ArrayList is 10)
+    if (jp.nextToken() == JsonToken.END_ARRAY) {
+        return NO_OBJECTS;
+    }
+    ObjectBuffer buffer = ctxt.leaseObjectBuffer();
+    Object[] values = buffer.resetAndStart();
+    int ptr = 0;
+    do {
+        Object value = deserialize(jp, ctxt);
+        if (ptr >= values.length) {
+            values = buffer.appendCompletedChunk(values);
+            ptr = 0;
+        }
+        values[ptr++] = value;
+    } while (jp.nextToken() != JsonToken.END_ARRAY);
+    return buffer.completeAndClearBuffer(values, ptr);
+}","public void test1010() throws Throwable {
+    UntypedObjectDeserializer untypedObjectDeserializer0 = UntypedObjectDeserializer.instance;
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    IntNode intNode0 = new IntNode(10);
+    JsonParser jsonParser0 = objectMapper0.treeAsTokens(intNode0);
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    // Undeclared exception!
+    try {
+        untypedObjectDeserializer0.mapArrayToArray(jsonParser0, defaultDeserializationContext_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationContext"", e);
+    }
+}","/**
+ * Method called to map a JSON Array into a Java Object array (Object[]).
+ */"
+"@Override
+public Object deserializeWithType(JsonParser p, DeserializationContext ctxt, TypeDeserializer typeDeserializer) throws IOException {
+    switch(p.getCurrentTokenId()) {
+        // First: does it look like we had type id wrapping of some kind?
+        case JsonTokenId.ID_START_ARRAY:
+        case JsonTokenId.ID_START_OBJECT:
+        case JsonTokenId.ID_FIELD_NAME:
+            /* Output can be as JSON Object, Array or scalar: no way to know
+             * a this point:
+             */
+            return typeDeserializer.deserializeTypedFromAny(p, ctxt);
+        case JsonTokenId.ID_EMBEDDED_OBJECT:
+            return p.getEmbeddedObject();
+        /* Otherwise we probably got a ""native"" type (ones that map
+         * naturally and thus do not need or use type ids)
+         */
+        case JsonTokenId.ID_STRING:
+            if (_stringDeserializer != null) {
+                return _stringDeserializer.deserialize(p, ctxt);
+            }
+            return p.getText();
+        case JsonTokenId.ID_NUMBER_INT:
+            if (_numberDeserializer != null) {
+                return _numberDeserializer.deserialize(p, ctxt);
+            }
+            // May need coercion to ""bigger"" types:
+            if (ctxt.hasSomeOfFeatures(F_MASK_INT_COERCIONS)) {
+                return _coerceIntegral(p, ctxt);
+            }
+            // should be optimal, whatever it is
+            return p.getNumberValue();
+        case JsonTokenId.ID_NUMBER_FLOAT:
+            if (_numberDeserializer != null) {
+                return _numberDeserializer.deserialize(p, ctxt);
+            }
+            if (ctxt.isEnabled(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS)) {
+                return p.getDecimalValue();
+            }
+            return Double.valueOf(p.getDoubleValue());
+        case JsonTokenId.ID_TRUE:
+            return Boolean.TRUE;
+        case JsonTokenId.ID_FALSE:
+            return Boolean.FALSE;
+        case // should not get this far really but...
+        JsonTokenId.ID_NULL:
+            return null;
+        default:
+    }
+    throw ctxt.mappingException(Object.class);
+}","public void test1111() throws Throwable {
+    UntypedObjectDeserializer untypedObjectDeserializer0 = UntypedObjectDeserializer.instance;
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ArrayNode arrayNode0 = objectMapper0.createArrayNode();
+    JsonParser jsonParser0 = arrayNode0.traverse();
+    // Undeclared exception!
+    try {
+        untypedObjectDeserializer0.deserializeWithType(jsonParser0, (DeserializationContext) null, (TypeDeserializer) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.UntypedObjectDeserializer"", e);
+    }
+}",""
+"protected Object[] mapArrayToArray(JsonParser jp, DeserializationContext ctxt) throws IOException {
+    // Minor optimization to handle small lists (default size for ArrayList is 10)
+    if (jp.nextToken() == JsonToken.END_ARRAY) {
+        return NO_OBJECTS;
+    }
+    ObjectBuffer buffer = ctxt.leaseObjectBuffer();
+    Object[] values = buffer.resetAndStart();
+    int ptr = 0;
+    do {
+        Object value = deserialize(jp, ctxt);
+        if (ptr >= values.length) {
+            values = buffer.appendCompletedChunk(values);
+            ptr = 0;
+        }
+        values[ptr++] = value;
+    } while (jp.nextToken() != JsonToken.END_ARRAY);
+    return buffer.completeAndClearBuffer(values, ptr);
+}","public void test1212() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    JsonNodeFactory jsonNodeFactory0 = new JsonNodeFactory(true);
+    ArrayNode arrayNode0 = jsonNodeFactory0.arrayNode();
+    arrayNode0.addObject();
+    JsonParser jsonParser0 = objectMapper0.treeAsTokens(arrayNode0);
+    UntypedObjectDeserializer untypedObjectDeserializer0 = new UntypedObjectDeserializer();
+    // Undeclared exception!
+    try {
+        untypedObjectDeserializer0.mapArrayToArray(jsonParser0, defaultDeserializationContext_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationContext"", e);
+    }
+}","/**
+ * Method called to map a JSON Array into a Java Object array (Object[]).
+ */"
+"protected Object mapObject(JsonParser p, DeserializationContext ctxt) throws IOException {
+    String key1;
+    JsonToken t = p.getCurrentToken();
+    if (t == JsonToken.START_OBJECT) {
+        key1 = p.nextFieldName();
+    } else if (t == JsonToken.FIELD_NAME) {
+        key1 = p.getCurrentName();
+    } else {
+        if (t != JsonToken.END_OBJECT) {
+            throw ctxt.mappingException(handledType(), p.getCurrentToken());
+        }
+        key1 = null;
+    }
+    if (key1 == null) {
+        // empty map might work; but caller may want to modify... so better just give small modifiable
+        return new LinkedHashMap<String, Object>(2);
+    }
+    // minor optimization; let's handle 1 and 2 entry cases separately
+    // 24-Mar-2015, tatu: Ideally, could use one of 'nextXxx()' methods, but for
+    //   that we'd need new method(s) in JsonDeserializer. So not quite yet.
+    p.nextToken();
+    Object value1 = deserialize(p, ctxt);
+    String key2 = p.nextFieldName();
+    if (key2 == null) {
+        // has to be END_OBJECT, then
+        // single entry; but we want modifiable
+        LinkedHashMap<String, Object> result = new LinkedHashMap<String, Object>(2);
+        result.put(key1, value1);
+        return result;
+    }
+    p.nextToken();
+    Object value2 = deserialize(p, ctxt);
+    String key = p.nextFieldName();
+    if (key == null) {
+        LinkedHashMap<String, Object> result = new LinkedHashMap<String, Object>(4);
+        result.put(key1, value1);
+        result.put(key2, value2);
+        return result;
+    }
+    // And then the general case; default map size is 16
+    LinkedHashMap<String, Object> result = new LinkedHashMap<String, Object>();
+    result.put(key1, value1);
+    result.put(key2, value2);
+    do {
+        p.nextToken();
+        result.put(key, deserialize(p, ctxt));
+    } while ((key = p.nextFieldName()) != null);
+    return result;
+}","public void test1313() throws Throwable {
+    UntypedObjectDeserializer untypedObjectDeserializer0 = new UntypedObjectDeserializer();
+    JsonFactory jsonFactory0 = new JsonFactory();
+    JsonParser jsonParser0 = jsonFactory0.createParser((InputStream) null);
+    // Undeclared exception!
+    try {
+        untypedObjectDeserializer0.mapObject(jsonParser0, (DeserializationContext) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * Method called to map a JSON Object into a Java value.
+ */"
+"protected Object[] mapArrayToArray(JsonParser jp, DeserializationContext ctxt) throws IOException {
+    // Minor optimization to handle small lists (default size for ArrayList is 10)
+    if (jp.nextToken() == JsonToken.END_ARRAY) {
+        return NO_OBJECTS;
+    }
+    ObjectBuffer buffer = ctxt.leaseObjectBuffer();
+    Object[] values = buffer.resetAndStart();
+    int ptr = 0;
+    do {
+        Object value = deserialize(jp, ctxt);
+        if (ptr >= values.length) {
+            values = buffer.appendCompletedChunk(values);
+            ptr = 0;
+        }
+        values[ptr++] = value;
+    } while (jp.nextToken() != JsonToken.END_ARRAY);
+    return buffer.completeAndClearBuffer(values, ptr);
+}","public void test1414() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectNode objectNode0 = objectMapper0.createObjectNode();
+    objectNode0.putNull(""float"");
+    objectNode0.put(""0>?h4BI*q,PS"", (-2916L));
+    JsonParser jsonParser0 = objectMapper0.treeAsTokens(objectNode0);
+    UntypedObjectDeserializer untypedObjectDeserializer0 = new UntypedObjectDeserializer();
+    // Undeclared exception!
+    try {
+        untypedObjectDeserializer0.mapArrayToArray(jsonParser0, defaultDeserializationContext_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationContext"", e);
+    }
+}","/**
+ * Method called to map a JSON Array into a Java Object array (Object[]).
+ */"
+"protected Object[] mapArrayToArray(JsonParser jp, DeserializationContext ctxt) throws IOException {
+    // Minor optimization to handle small lists (default size for ArrayList is 10)
+    if (jp.nextToken() == JsonToken.END_ARRAY) {
+        return NO_OBJECTS;
+    }
+    ObjectBuffer buffer = ctxt.leaseObjectBuffer();
+    Object[] values = buffer.resetAndStart();
+    int ptr = 0;
+    do {
+        Object value = deserialize(jp, ctxt);
+        if (ptr >= values.length) {
+            values = buffer.appendCompletedChunk(values);
+            ptr = 0;
+        }
+        values[ptr++] = value;
+    } while (jp.nextToken() != JsonToken.END_ARRAY);
+    return buffer.completeAndClearBuffer(values, ptr);
+}","public void test1515() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectNode objectNode0 = objectMapper0.createObjectNode();
+    objectNode0.putNull(""float"");
+    ObjectNode objectNode1 = objectNode0.put(""0>?h4BI*q,PS"", (-2916L));
+    objectNode1.put("""", true);
+    JsonParser jsonParser0 = objectMapper0.treeAsTokens(objectNode0);
+    UntypedObjectDeserializer untypedObjectDeserializer0 = new UntypedObjectDeserializer();
+    // Undeclared exception!
+    try {
+        untypedObjectDeserializer0.mapArrayToArray(jsonParser0, defaultDeserializationContext_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationContext"", e);
+    }
+}","/**
+ * Method called to map a JSON Array into a Java Object array (Object[]).
+ */"
+"/*
+    /**********************************************************
+    /* Internal methods
+    /**********************************************************
+     */
+/**
+ * Method called to map a JSON Array into a Java value.
+ */
+protected Object mapArray(JsonParser jp, DeserializationContext ctxt) throws IOException {
+    // Minor optimization to handle small lists (default size for ArrayList is 10)
+    if (jp.nextToken() == JsonToken.END_ARRAY) {
+        return new ArrayList<Object>(2);
+    }
+    Object value = deserialize(jp, ctxt);
+    if (jp.nextToken() == JsonToken.END_ARRAY) {
+        ArrayList<Object> l = new ArrayList<Object>(2);
+        l.add(value);
+        return l;
+    }
+    Object value2 = deserialize(jp, ctxt);
+    if (jp.nextToken() == JsonToken.END_ARRAY) {
+        ArrayList<Object> l = new ArrayList<Object>(2);
+        l.add(value);
+        l.add(value2);
+        return l;
+    }
+    ObjectBuffer buffer = ctxt.leaseObjectBuffer();
+    Object[] values = buffer.resetAndStart();
+    int ptr = 0;
+    values[ptr++] = value;
+    values[ptr++] = value2;
+    int totalSize = ptr;
+    do {
+        value = deserialize(jp, ctxt);
+        ++totalSize;
+        if (ptr >= values.length) {
+            values = buffer.appendCompletedChunk(values);
+            ptr = 0;
+        }
+        values[ptr++] = value;
+    } while (jp.nextToken() != JsonToken.END_ARRAY);
+    // let's create full array then
+    ArrayList<Object> result = new ArrayList<Object>(totalSize);
+    buffer.completeAndClearBuffer(values, ptr, result);
+    return result;
+}","public void test1616() throws Throwable {
+    UntypedObjectDeserializer untypedObjectDeserializer0 = new UntypedObjectDeserializer();
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    ObjectNode objectNode0 = objectMapper0.createObjectNode();
+    objectNode0.put(""JSON"", ""JSON"");
+    objectNode0.put(""]fX{6Y(o"", "",V`f)l-YTN*"");
+    ObjectNode objectNode1 = objectNode0.putNull(""Q"");
+    objectNode1.putNull("",V`f)l-YTN*"");
+    JsonParser jsonParser0 = objectMapper0.treeAsTokens(objectNode1);
+    // Undeclared exception!
+    try {
+        untypedObjectDeserializer0.mapArray(jsonParser0, defaultDeserializationContext_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationContext"", e);
+    }
+}",""
+"protected Object[] mapArrayToArray(JsonParser jp, DeserializationContext ctxt) throws IOException {
+    // Minor optimization to handle small lists (default size for ArrayList is 10)
+    if (jp.nextToken() == JsonToken.END_ARRAY) {
+        return NO_OBJECTS;
+    }
+    ObjectBuffer buffer = ctxt.leaseObjectBuffer();
+    Object[] values = buffer.resetAndStart();
+    int ptr = 0;
+    do {
+        Object value = deserialize(jp, ctxt);
+        if (ptr >= values.length) {
+            values = buffer.appendCompletedChunk(values);
+            ptr = 0;
+        }
+        values[ptr++] = value;
+    } while (jp.nextToken() != JsonToken.END_ARRAY);
+    return buffer.completeAndClearBuffer(values, ptr);
+}","public void test1717() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    JsonNodeFactory jsonNodeFactory0 = JsonNodeFactory.withExactBigDecimals(true);
+    HashMap<String, JsonNode> hashMap0 = new HashMap<String, JsonNode>();
+    ObjectNode objectNode0 = new ObjectNode(jsonNodeFactory0, hashMap0);
+    objectNode0.replace((String) null, objectNode0);
+    JsonParser jsonParser0 = objectMapper0.treeAsTokens(objectNode0);
+    UntypedObjectDeserializer untypedObjectDeserializer0 = UntypedObjectDeserializer.instance;
+    // Undeclared exception!
+    untypedObjectDeserializer0.mapArrayToArray(jsonParser0, defaultDeserializationContext_Impl0);
+}","/**
+ * Method called to map a JSON Array into a Java Object array (Object[]).
+ */"

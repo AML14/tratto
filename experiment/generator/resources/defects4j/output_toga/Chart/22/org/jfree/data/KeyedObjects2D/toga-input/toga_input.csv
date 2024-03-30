@@ -1,0 +1,1691 @@
+focal_method,test_prefix,docstring
+"public int hashCode() {
+    int result;
+    result = this.rowKeys.hashCode();
+    result = 29 * result + this.columnKeys.hashCode();
+    result = 29 * result + this.rows.hashCode();
+    return result;
+}","public void test000() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Integer integer0 = new Integer(1311);
+    keyedObjects2D0.addObject(integer0, integer0, integer0);
+    keyedObjects2D0.hashCode();
+}","/**
+ * Returns a hashcode for this object.
+ *
+ * @return A hashcode.
+ */"
+"public int getRowCount() {
+    return this.rowKeys.size();
+}","public void test011() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Comparable<Object> comparable0 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    keyedObjects2D0.removeObject(comparable0, ""'position' out of bounds."");
+    Comparable<Object> comparable1 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    doReturn(""'position' out of bounds."", """", ""gU?UC&dXNpi~WAOH!T"", ""'position' out of bounds."").when(comparable1).toString();
+    keyedObjects2D0.setObject((Object) null, comparable1, comparable1);
+    Object object0 = keyedObjects2D0.clone();
+    boolean boolean0 = keyedObjects2D0.equals(object0);
+    assertEquals(1, keyedObjects2D0.getRowCount());
+}","/**
+ * Returns the row count.
+ *
+ * @return The row count.
+ *
+ * @see #getColumnCount()
+ */"
+"public boolean equals(Object obj) {
+    if (obj == this) {
+        return true;
+    }
+    if (!(obj instanceof KeyedObjects2D)) {
+        return false;
+    }
+    KeyedObjects2D that = (KeyedObjects2D) obj;
+    if (!getRowKeys().equals(that.getRowKeys())) {
+        return false;
+    }
+    if (!getColumnKeys().equals(that.getColumnKeys())) {
+        return false;
+    }
+    int rowCount = getRowCount();
+    if (rowCount != that.getRowCount()) {
+        return false;
+    }
+    int colCount = getColumnCount();
+    if (colCount != that.getColumnCount()) {
+        return false;
+    }
+    for (int r = 0; r < rowCount; r++) {
+        for (int c = 0; c < colCount; c++) {
+            Object v1 = getObject(r, c);
+            Object v2 = that.getObject(r, c);
+            if (v1 == null) {
+                if (v2 != null) {
+                    return false;
+                }
+            } else {
+                if (!v1.equals(v2)) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}","public void test012() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Comparable<Object> comparable0 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    keyedObjects2D0.removeObject(comparable0, ""'position' out of bounds."");
+    Comparable<Object> comparable1 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    doReturn(""'position' out of bounds."", """", ""gU?UC&dXNpi~WAOH!T"", ""'position' out of bounds."").when(comparable1).toString();
+    keyedObjects2D0.setObject((Object) null, comparable1, comparable1);
+    Object object0 = keyedObjects2D0.clone();
+    boolean boolean0 = keyedObjects2D0.equals(object0);
+    assertTrue(boolean0);
+}","/**
+ * Tests this object for equality with an arbitrary object.
+ *
+ * @param obj  the object to test (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public int getRowCount() {
+    return this.rowKeys.size();
+}","public void test023() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Comparable<KeyedObjects> comparable0 = (Comparable<KeyedObjects>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    Comparable<String> comparable1 = (Comparable<String>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    keyedObjects2D0.setObject(keyedObjects2D0, comparable1, comparable1);
+    Comparable<KeyedObjects> comparable2 = (Comparable<KeyedObjects>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    keyedObjects2D0.removeObject(comparable0, comparable2);
+    assertEquals(1, keyedObjects2D0.getRowCount());
+}","/**
+ * Returns the row count.
+ *
+ * @return The row count.
+ *
+ * @see #getColumnCount()
+ */"
+"public int getRowCount() {
+    return this.rowKeys.size();
+}","public void test034() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    KeyedObjects keyedObjects0 = new KeyedObjects();
+    Comparable<Object> comparable0 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    keyedObjects2D0.addObject(keyedObjects0, comparable0, comparable0);
+    keyedObjects2D0.addObject(keyedObjects2D0, ""-JSH\""n"", ""-JSH\""n"");
+    keyedObjects2D0.setObject(keyedObjects2D0, ""-JSH\""n"", ""-JSH\""n"");
+    assertEquals(2, keyedObjects2D0.getRowCount());
+}","/**
+ * Returns the row count.
+ *
+ * @return The row count.
+ *
+ * @see #getColumnCount()
+ */"
+"public Object getObject(Comparable rowKey, Comparable columnKey) {
+    if (rowKey == null) {
+        throw new IllegalArgumentException(""Null 'rowKey' argument."");
+    }
+    if (columnKey == null) {
+        throw new IllegalArgumentException(""Null 'columnKey' argument."");
+    }
+    int row = this.rowKeys.indexOf(rowKey);
+    if (row < 0) {
+        throw new UnknownKeyException(""Row key ("" + rowKey + "") not recognised."");
+    }
+    int column = this.columnKeys.indexOf(columnKey);
+    if (column < 0) {
+        throw new UnknownKeyException(""Column key ("" + columnKey + "") not recognised."");
+    }
+    if (row >= 0) {
+        KeyedObjects rowData = (KeyedObjects) this.rows.get(row);
+        return rowData.getObject(columnKey);
+    } else {
+        return null;
+    }
+}","public void test045() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Integer integer0 = Integer.getInteger("""", 0);
+    keyedObjects2D0.setObject(keyedObjects2D0, integer0, """");
+    keyedObjects2D0.setObject(""M|F8@("", ""M|F8@("", ""M|F8@("");
+    Comparable comparable0 = keyedObjects2D0.getRowKey(0);
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.getObject((Comparable) comparable0, (Comparable) ""M|F8@("");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The key (M|F8@() is not recognised.
+        //
+        verifyException(""org.jfree.data.KeyedObjects"", e);
+    }
+}","/**
+ * Returns the object for the given row and column keys.
+ *
+ * @param rowKey  the row key (<code>null</code> not permitted).
+ * @param columnKey  the column key (<code>null</code> not permitted).
+ *
+ * @return The object (possibly <code>null</code>).
+ *
+ * @throws IllegalArgumentException if <code>rowKey<code> or
+ *         <code>columnKey</code> is <code>null</code>.
+ * @throws UnknownKeyException if <code>rowKey</code> or
+ *         <code>columnKey</code> is not recognised.
+ */"
+"public Object getObject(Comparable rowKey, Comparable columnKey) {
+    if (rowKey == null) {
+        throw new IllegalArgumentException(""Null 'rowKey' argument."");
+    }
+    if (columnKey == null) {
+        throw new IllegalArgumentException(""Null 'columnKey' argument."");
+    }
+    int row = this.rowKeys.indexOf(rowKey);
+    if (row < 0) {
+        throw new UnknownKeyException(""Row key ("" + rowKey + "") not recognised."");
+    }
+    int column = this.columnKeys.indexOf(columnKey);
+    if (column < 0) {
+        throw new UnknownKeyException(""Column key ("" + columnKey + "") not recognised."");
+    }
+    if (row >= 0) {
+        KeyedObjects rowData = (KeyedObjects) this.rows.get(row);
+        return rowData.getObject(columnKey);
+    } else {
+        return null;
+    }
+}","public void test056() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Comparable<String> comparable0 = (Comparable<String>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    doReturn((String) null).when(comparable0).toString();
+    Comparable<Object> comparable1 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.getObject(comparable0, comparable1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Row key (null) not recognised.
+        //
+        verifyException(""org.jfree.data.KeyedObjects2D"", e);
+    }
+}","/**
+ * Returns the object for the given row and column keys.
+ *
+ * @param rowKey  the row key (<code>null</code> not permitted).
+ * @param columnKey  the column key (<code>null</code> not permitted).
+ *
+ * @return The object (possibly <code>null</code>).
+ *
+ * @throws IllegalArgumentException if <code>rowKey<code> or
+ *         <code>columnKey</code> is <code>null</code>.
+ * @throws UnknownKeyException if <code>rowKey</code> or
+ *         <code>columnKey</code> is not recognised.
+ */"
+"public Object getObject(Comparable rowKey, Comparable columnKey) {
+    if (rowKey == null) {
+        throw new IllegalArgumentException(""Null 'rowKey' argument."");
+    }
+    if (columnKey == null) {
+        throw new IllegalArgumentException(""Null 'columnKey' argument."");
+    }
+    int row = this.rowKeys.indexOf(rowKey);
+    if (row < 0) {
+        throw new UnknownKeyException(""Row key ("" + rowKey + "") not recognised."");
+    }
+    int column = this.columnKeys.indexOf(columnKey);
+    if (column < 0) {
+        throw new UnknownKeyException(""Column key ("" + columnKey + "") not recognised."");
+    }
+    if (row >= 0) {
+        KeyedObjects rowData = (KeyedObjects) this.rows.get(row);
+        return rowData.getObject(columnKey);
+    } else {
+        return null;
+    }
+}","public void test067() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    KeyedObjects keyedObjects0 = new KeyedObjects();
+    Comparable<String> comparable0 = (Comparable<String>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    Comparable<Object> comparable1 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    keyedObjects2D0.setObject(keyedObjects0, comparable0, comparable1);
+    keyedObjects2D0.addObject("""", """", """");
+    Object object0 = keyedObjects2D0.getObject((Comparable) """", (Comparable) """");
+    assertEquals("""", object0);
+}","/**
+ * Returns the object for the given row and column keys.
+ *
+ * @param rowKey  the row key (<code>null</code> not permitted).
+ * @param columnKey  the column key (<code>null</code> not permitted).
+ *
+ * @return The object (possibly <code>null</code>).
+ *
+ * @throws IllegalArgumentException if <code>rowKey<code> or
+ *         <code>columnKey</code> is <code>null</code>.
+ * @throws UnknownKeyException if <code>rowKey</code> or
+ *         <code>columnKey</code> is not recognised.
+ */"
+"public int getRowCount() {
+    return this.rowKeys.size();
+}","public void test078() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Integer integer0 = new Integer(0);
+    keyedObjects2D0.addObject(integer0, integer0, integer0);
+    keyedObjects2D0.removeRow(0);
+    assertEquals(0, keyedObjects2D0.getRowCount());
+}","/**
+ * Returns the row count.
+ *
+ * @return The row count.
+ *
+ * @see #getColumnCount()
+ */"
+"public int getRowCount() {
+    return this.rowKeys.size();
+}","public void test089() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    keyedObjects2D0.addObject("""", """", """");
+    keyedObjects2D0.removeColumn(0);
+    assertEquals(1, keyedObjects2D0.getRowCount());
+}","/**
+ * Returns the row count.
+ *
+ * @return The row count.
+ *
+ * @see #getColumnCount()
+ */"
+"public int getRowIndex(Comparable key) {
+    return this.rowKeys.indexOf(key);
+}","public void test0910() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Integer integer0 = new Integer(1311);
+    keyedObjects2D0.addObject(integer0, integer0, integer0);
+    int int0 = keyedObjects2D0.getRowIndex(integer0);
+    assertEquals(0, int0);
+}","/**
+ * Returns the row index for a given key.
+ *
+ * @param key  the key.
+ *
+ * @return The row index.
+ *
+ * @see #getRowKey(int)
+ */"
+"public int getRowCount() {
+    return this.rowKeys.size();
+}","public void test1011() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Comparable<String> comparable0 = (Comparable<String>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    keyedObjects2D0.addObject(keyedObjects2D0, comparable0, comparable0);
+    int int0 = keyedObjects2D0.getRowCount();
+    assertEquals(1, int0);
+}","/**
+ * Returns the row count.
+ *
+ * @return The row count.
+ *
+ * @see #getColumnCount()
+ */"
+"public Object getObject(Comparable rowKey, Comparable columnKey) {
+    if (rowKey == null) {
+        throw new IllegalArgumentException(""Null 'rowKey' argument."");
+    }
+    if (columnKey == null) {
+        throw new IllegalArgumentException(""Null 'columnKey' argument."");
+    }
+    int row = this.rowKeys.indexOf(rowKey);
+    if (row < 0) {
+        throw new UnknownKeyException(""Row key ("" + rowKey + "") not recognised."");
+    }
+    int column = this.columnKeys.indexOf(columnKey);
+    if (column < 0) {
+        throw new UnknownKeyException(""Column key ("" + columnKey + "") not recognised."");
+    }
+    if (row >= 0) {
+        KeyedObjects rowData = (KeyedObjects) this.rows.get(row);
+        return rowData.getObject(columnKey);
+    } else {
+        return null;
+    }
+}","public void test1112() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    keyedObjects2D0.setObject((Object) null, ""M|F8@("", ""M|F8@("");
+    Comparable comparable0 = keyedObjects2D0.getRowKey(0);
+    Object object0 = keyedObjects2D0.getObject((Comparable) comparable0, (Comparable) ""M|F8@("");
+    assertNull(object0);
+}","/**
+ * Returns the object for the given row and column keys.
+ *
+ * @param rowKey  the row key (<code>null</code> not permitted).
+ * @param columnKey  the column key (<code>null</code> not permitted).
+ *
+ * @return The object (possibly <code>null</code>).
+ *
+ * @throws IllegalArgumentException if <code>rowKey<code> or
+ *         <code>columnKey</code> is <code>null</code>.
+ * @throws UnknownKeyException if <code>rowKey</code> or
+ *         <code>columnKey</code> is not recognised.
+ */"
+"public Comparable getColumnKey(int column) {
+    return (Comparable) this.columnKeys.get(column);
+}","public void test1213() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    keyedObjects2D0.setObject("""", """", """");
+    Integer integer0 = new Integer(0);
+    Comparable comparable0 = keyedObjects2D0.getColumnKey((int) integer0);
+    assertEquals("""", comparable0);
+}","/**
+ * Returns the key for a given column.
+ *
+ * @param column  the column.
+ *
+ * @return The key.
+ *
+ * @see #getColumnIndex(Comparable)
+ */"
+"public int getColumnIndex(Comparable key) {
+    return this.columnKeys.indexOf(key);
+}","public void test1314() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Integer integer0 = new Integer((-1007));
+    keyedObjects2D0.setObject("""", """", integer0);
+    int int0 = keyedObjects2D0.getColumnIndex(integer0);
+    assertEquals(0, int0);
+}","/**
+ * Returns the column index for a given key.
+ *
+ * @param key  the key.
+ *
+ * @return The column index.
+ *
+ * @see #getColumnKey(int)
+ */"
+"public int getRowCount() {
+    return this.rowKeys.size();
+}","public void test1415() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Comparable<Object> comparable0 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    keyedObjects2D0.removeObject(comparable0, comparable0);
+    Comparable<Object> comparable1 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    keyedObjects2D0.removeObject(comparable1, """");
+    int int0 = keyedObjects2D0.getColumnIndex("""");
+    assertEquals(0, keyedObjects2D0.getRowCount());
+}","/**
+ * Returns the row count.
+ *
+ * @return The row count.
+ *
+ * @see #getColumnCount()
+ */"
+"public int getColumnIndex(Comparable key) {
+    return this.columnKeys.indexOf(key);
+}","public void test1416() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Comparable<Object> comparable0 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    keyedObjects2D0.removeObject(comparable0, comparable0);
+    Comparable<Object> comparable1 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    keyedObjects2D0.removeObject(comparable1, """");
+    int int0 = keyedObjects2D0.getColumnIndex("""");
+    assertEquals(1, int0);
+}","/**
+ * Returns the column index for a given key.
+ *
+ * @param key  the key.
+ *
+ * @return The column index.
+ *
+ * @see #getColumnKey(int)
+ */"
+"public int getColumnCount() {
+    return this.columnKeys.size();
+}","public void test1517() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    keyedObjects2D0.setObject("""", """", """");
+    int int0 = keyedObjects2D0.getColumnCount();
+    assertEquals(1, int0);
+}","/**
+ * Returns the column count.
+ *
+ * @return The column count.
+ *
+ * @see #getRowCount()
+ */"
+"public void removeRow(int rowIndex) {
+    this.rowKeys.remove(rowIndex);
+    this.rows.remove(rowIndex);
+}","public void test1618() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.removeRow((-36));
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * Removes an entire row from the table.
+ *
+ * @param rowIndex  the row index.
+ *
+ * @see #removeColumn(int)
+ */"
+"public void removeObject(Comparable rowKey, Comparable columnKey) {
+    setObject(null, rowKey, columnKey);
+    // 1. check whether the row is now empty.
+    boolean allNull = true;
+    int rowIndex = getRowIndex(rowKey);
+    KeyedObjects row = (KeyedObjects) this.rows.get(rowIndex);
+    for (int item = 0, itemCount = row.getItemCount(); item < itemCount; item++) {
+        if (row.getObject(item) != null) {
+            allNull = false;
+            break;
+        }
+    }
+    if (allNull) {
+        this.rowKeys.remove(rowIndex);
+        this.rows.remove(rowIndex);
+    }
+    // 2. check whether the column is now empty.
+}","public void test1719() throws Throwable {
+    Comparable<String> comparable0 = (Comparable<String>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.removeObject((Comparable) null, comparable0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'rowKey' argument.
+        //
+        verifyException(""org.jfree.data.KeyedObjects2D"", e);
+    }
+}","/**
+ * Removes an object from the table by setting it to <code>null</code>.  If
+ * all the objects in the specified row and/or column are now
+ * <code>null</code>, the row and/or column is removed from the table.
+ *
+ * @param rowKey  the row key (<code>null</code> not permitted).
+ * @param columnKey  the column key (<code>null</code> not permitted).
+ *
+ * @see #addObject(Object, Comparable, Comparable)
+ */"
+"public void removeColumn(int columnIndex) {
+    Comparable columnKey = getColumnKey(columnIndex);
+    removeColumn(columnKey);
+}","public void test1820() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.removeColumn((-1289));
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * Removes an entire column from the table.
+ *
+ * @param columnIndex  the column index.
+ *
+ * @see #removeRow(int)
+ */"
+"public Comparable getRowKey(int row) {
+    return (Comparable) this.rowKeys.get(row);
+}","public void test1921() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.getRowKey((-319));
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * Returns the key for a given row.
+ *
+ * @param row  the row index (zero based).
+ *
+ * @return The row index.
+ *
+ * @see #getRowIndex(Comparable)
+ */"
+"public Object getObject(int row, int column) {
+    Object result = null;
+    KeyedObjects rowData = (KeyedObjects) this.rows.get(row);
+    if (rowData != null) {
+        Comparable columnKey = (Comparable) this.columnKeys.get(column);
+        if (columnKey != null) {
+            int index = rowData.getIndex(columnKey);
+            if (index >= 0) {
+                result = rowData.getObject(columnKey);
+            }
+        }
+    }
+    return result;
+}","public void test2022() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.getObject(1, 1);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 1, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}","/**
+ * Returns the object for a given row and column.
+ *
+ * @param row  the row index (in the range 0 to getRowCount() - 1).
+ * @param column  the column index (in the range 0 to getColumnCount() - 1).
+ *
+ * @return The object (possibly <code>null</code>).
+ *
+ * @see #getObject(Comparable, Comparable)
+ */"
+"public Object getObject(int row, int column) {
+    Object result = null;
+    KeyedObjects rowData = (KeyedObjects) this.rows.get(row);
+    if (rowData != null) {
+        Comparable columnKey = (Comparable) this.columnKeys.get(column);
+        if (columnKey != null) {
+            int index = rowData.getIndex(columnKey);
+            if (index >= 0) {
+                result = rowData.getObject(columnKey);
+            }
+        }
+    }
+    return result;
+}","public void test2123() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.getObject((-2815), (-2815));
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * Returns the object for a given row and column.
+ *
+ * @param row  the row index (in the range 0 to getRowCount() - 1).
+ * @param column  the column index (in the range 0 to getColumnCount() - 1).
+ *
+ * @return The object (possibly <code>null</code>).
+ *
+ * @see #getObject(Comparable, Comparable)
+ */"
+"public Comparable getColumnKey(int column) {
+    return (Comparable) this.columnKeys.get(column);
+}","public void test2224() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.getColumnKey((-507));
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * Returns the key for a given column.
+ *
+ * @param column  the column.
+ *
+ * @return The key.
+ *
+ * @see #getColumnIndex(Comparable)
+ */"
+"public int getRowCount() {
+    return this.rowKeys.size();
+}","public void test2325() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Integer integer0 = new Integer(518);
+    keyedObjects2D0.setObject(integer0, integer0, integer0);
+    Object object0 = new Object();
+    keyedObjects2D0.setObject(object0, integer0, integer0);
+    assertEquals(1, keyedObjects2D0.getRowCount());
+}","/**
+ * Returns the row count.
+ *
+ * @return The row count.
+ *
+ * @see #getColumnCount()
+ */"
+"public void setObject(Object object, Comparable rowKey, Comparable columnKey) {
+    if (rowKey == null) {
+        throw new IllegalArgumentException(""Null 'rowKey' argument."");
+    }
+    if (columnKey == null) {
+        throw new IllegalArgumentException(""Null 'columnKey' argument."");
+    }
+    KeyedObjects row;
+    int rowIndex = this.rowKeys.indexOf(rowKey);
+    if (rowIndex >= 0) {
+        row = (KeyedObjects) this.rows.get(rowIndex);
+    } else {
+        this.rowKeys.add(rowKey);
+        row = new KeyedObjects();
+        this.rows.add(row);
+    }
+    row.setObject(columnKey, object);
+    int columnIndex = this.columnKeys.indexOf(columnKey);
+    if (columnIndex < 0) {
+        this.columnKeys.add(columnKey);
+    }
+}","public void test2426() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.setObject((Object) null, (Comparable) null, (Comparable) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'rowKey' argument.
+        //
+        verifyException(""org.jfree.data.KeyedObjects2D"", e);
+    }
+}","/**
+ * Adds or updates an object.
+ *
+ * @param object  the object.
+ * @param rowKey  the row key (<code>null</code> not permitted).
+ * @param columnKey  the column key (<code>null</code> not permitted).
+ */"
+"public int getRowCount() {
+    return this.rowKeys.size();
+}","public void test2527() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Comparable<Object> comparable0 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    keyedObjects2D0.removeObject(comparable0, comparable0);
+    Object object0 = new Object();
+    Comparable<Object> comparable1 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    Comparable<Object> comparable2 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    keyedObjects2D0.addObject(object0, comparable1, comparable2);
+    keyedObjects2D0.getObject(0, 0);
+    assertEquals(1, keyedObjects2D0.getRowCount());
+}","/**
+ * Returns the row count.
+ *
+ * @return The row count.
+ *
+ * @see #getColumnCount()
+ */"
+"public Object getObject(int row, int column) {
+    Object result = null;
+    KeyedObjects rowData = (KeyedObjects) this.rows.get(row);
+    if (rowData != null) {
+        Comparable columnKey = (Comparable) this.columnKeys.get(column);
+        if (columnKey != null) {
+            int index = rowData.getIndex(columnKey);
+            if (index >= 0) {
+                result = rowData.getObject(columnKey);
+            }
+        }
+    }
+    return result;
+}","public void test2628() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    keyedObjects2D0.setObject("""", """", """");
+    Integer integer0 = new Integer(0);
+    Object object0 = keyedObjects2D0.getObject((int) integer0, (int) integer0);
+    assertEquals("""", object0);
+}","/**
+ * Returns the object for a given row and column.
+ *
+ * @param row  the row index (in the range 0 to getRowCount() - 1).
+ * @param column  the column index (in the range 0 to getColumnCount() - 1).
+ *
+ * @return The object (possibly <code>null</code>).
+ *
+ * @see #getObject(Comparable, Comparable)
+ */"
+"public void removeRow(int rowIndex) {
+    this.rowKeys.remove(rowIndex);
+    this.rows.remove(rowIndex);
+}","public void test2729() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.removeRow(0);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 0, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}","/**
+ * Removes an entire row from the table.
+ *
+ * @param rowIndex  the row index.
+ *
+ * @see #removeColumn(int)
+ */"
+"public int getRowIndex(Comparable key) {
+    return this.rowKeys.indexOf(key);
+}","public void test2830() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Comparable<KeyedObjects2D> comparable0 = (Comparable<KeyedObjects2D>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    int int0 = keyedObjects2D0.getRowIndex(comparable0);
+    assertEquals((-1), int0);
+}","/**
+ * Returns the row index for a given key.
+ *
+ * @param key  the key.
+ *
+ * @return The row index.
+ *
+ * @see #getRowKey(int)
+ */"
+"public Comparable getColumnKey(int column) {
+    return (Comparable) this.columnKeys.get(column);
+}","public void test2931() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Integer integer0 = new Integer(0);
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.getColumnKey((int) integer0);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 0, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}","/**
+ * Returns the key for a given column.
+ *
+ * @param column  the column.
+ *
+ * @return The key.
+ *
+ * @see #getColumnIndex(Comparable)
+ */"
+"public boolean equals(Object obj) {
+    if (obj == this) {
+        return true;
+    }
+    if (!(obj instanceof KeyedObjects2D)) {
+        return false;
+    }
+    KeyedObjects2D that = (KeyedObjects2D) obj;
+    if (!getRowKeys().equals(that.getRowKeys())) {
+        return false;
+    }
+    if (!getColumnKeys().equals(that.getColumnKeys())) {
+        return false;
+    }
+    int rowCount = getRowCount();
+    if (rowCount != that.getRowCount()) {
+        return false;
+    }
+    int colCount = getColumnCount();
+    if (colCount != that.getColumnCount()) {
+        return false;
+    }
+    for (int r = 0; r < rowCount; r++) {
+        for (int c = 0; c < colCount; c++) {
+            Object v1 = getObject(r, c);
+            Object v2 = that.getObject(r, c);
+            if (v1 == null) {
+                if (v2 != null) {
+                    return false;
+                }
+            } else {
+                if (!v1.equals(v2)) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}","public void test3032() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    keyedObjects2D0.addObject("""", """", """");
+    KeyedObjects2D keyedObjects2D1 = new KeyedObjects2D();
+    keyedObjects2D1.addObject(keyedObjects2D0, """", """");
+    boolean boolean0 = keyedObjects2D0.equals(keyedObjects2D1);
+    assertFalse(boolean0);
+}","/**
+ * Tests this object for equality with an arbitrary object.
+ *
+ * @param obj  the object to test (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public boolean equals(Object obj) {
+    if (obj == this) {
+        return true;
+    }
+    if (!(obj instanceof KeyedObjects2D)) {
+        return false;
+    }
+    KeyedObjects2D that = (KeyedObjects2D) obj;
+    if (!getRowKeys().equals(that.getRowKeys())) {
+        return false;
+    }
+    if (!getColumnKeys().equals(that.getColumnKeys())) {
+        return false;
+    }
+    int rowCount = getRowCount();
+    if (rowCount != that.getRowCount()) {
+        return false;
+    }
+    int colCount = getColumnCount();
+    if (colCount != that.getColumnCount()) {
+        return false;
+    }
+    for (int r = 0; r < rowCount; r++) {
+        for (int c = 0; c < colCount; c++) {
+            Object v1 = getObject(r, c);
+            Object v2 = that.getObject(r, c);
+            if (v1 == null) {
+                if (v2 != null) {
+                    return false;
+                }
+            } else {
+                if (!v1.equals(v2)) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}","public void test3133() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    KeyedObjects2D keyedObjects2D1 = new KeyedObjects2D();
+    assertTrue(keyedObjects2D1.equals((Object) keyedObjects2D0));
+}","/**
+ * Tests this object for equality with an arbitrary object.
+ *
+ * @param obj  the object to test (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public boolean equals(Object obj) {
+    if (obj == this) {
+        return true;
+    }
+    if (!(obj instanceof KeyedObjects2D)) {
+        return false;
+    }
+    KeyedObjects2D that = (KeyedObjects2D) obj;
+    if (!getRowKeys().equals(that.getRowKeys())) {
+        return false;
+    }
+    if (!getColumnKeys().equals(that.getColumnKeys())) {
+        return false;
+    }
+    int rowCount = getRowCount();
+    if (rowCount != that.getRowCount()) {
+        return false;
+    }
+    int colCount = getColumnCount();
+    if (colCount != that.getColumnCount()) {
+        return false;
+    }
+    for (int r = 0; r < rowCount; r++) {
+        for (int c = 0; c < colCount; c++) {
+            Object v1 = getObject(r, c);
+            Object v2 = that.getObject(r, c);
+            if (v1 == null) {
+                if (v2 != null) {
+                    return false;
+                }
+            } else {
+                if (!v1.equals(v2)) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}","public void test3134() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    KeyedObjects2D keyedObjects2D1 = new KeyedObjects2D();
+    Comparable<String> comparable0 = (Comparable<String>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    doReturn(""^m\""E/ J"").when(comparable0).toString();
+    keyedObjects2D1.removeObject(comparable0, comparable0);
+    boolean boolean0 = keyedObjects2D0.equals(keyedObjects2D1);
+    assertFalse(keyedObjects2D1.equals((Object) keyedObjects2D0));
+}","/**
+ * Tests this object for equality with an arbitrary object.
+ *
+ * @param obj  the object to test (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public boolean equals(Object obj) {
+    if (obj == this) {
+        return true;
+    }
+    if (!(obj instanceof KeyedObjects2D)) {
+        return false;
+    }
+    KeyedObjects2D that = (KeyedObjects2D) obj;
+    if (!getRowKeys().equals(that.getRowKeys())) {
+        return false;
+    }
+    if (!getColumnKeys().equals(that.getColumnKeys())) {
+        return false;
+    }
+    int rowCount = getRowCount();
+    if (rowCount != that.getRowCount()) {
+        return false;
+    }
+    int colCount = getColumnCount();
+    if (colCount != that.getColumnCount()) {
+        return false;
+    }
+    for (int r = 0; r < rowCount; r++) {
+        for (int c = 0; c < colCount; c++) {
+            Object v1 = getObject(r, c);
+            Object v2 = that.getObject(r, c);
+            if (v1 == null) {
+                if (v2 != null) {
+                    return false;
+                }
+            } else {
+                if (!v1.equals(v2)) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}","public void test3135() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    KeyedObjects2D keyedObjects2D1 = new KeyedObjects2D();
+    Comparable<String> comparable0 = (Comparable<String>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    doReturn(""^m\""E/ J"").when(comparable0).toString();
+    keyedObjects2D1.removeObject(comparable0, comparable0);
+    boolean boolean0 = keyedObjects2D0.equals(keyedObjects2D1);
+    assertFalse(boolean0);
+}","/**
+ * Tests this object for equality with an arbitrary object.
+ *
+ * @param obj  the object to test (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public boolean equals(Object obj) {
+    if (obj == this) {
+        return true;
+    }
+    if (!(obj instanceof KeyedObjects2D)) {
+        return false;
+    }
+    KeyedObjects2D that = (KeyedObjects2D) obj;
+    if (!getRowKeys().equals(that.getRowKeys())) {
+        return false;
+    }
+    if (!getColumnKeys().equals(that.getColumnKeys())) {
+        return false;
+    }
+    int rowCount = getRowCount();
+    if (rowCount != that.getRowCount()) {
+        return false;
+    }
+    int colCount = getColumnCount();
+    if (colCount != that.getColumnCount()) {
+        return false;
+    }
+    for (int r = 0; r < rowCount; r++) {
+        for (int c = 0; c < colCount; c++) {
+            Object v1 = getObject(r, c);
+            Object v2 = that.getObject(r, c);
+            if (v1 == null) {
+                if (v2 != null) {
+                    return false;
+                }
+            } else {
+                if (!v1.equals(v2)) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}","public void test3237() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    KeyedObjects2D keyedObjects2D1 = new KeyedObjects2D();
+    Comparable<String> comparable0 = (Comparable<String>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    doReturn((String) null).when(comparable0).toString();
+    keyedObjects2D0.addObject(keyedObjects2D1, comparable0, comparable0);
+    boolean boolean0 = keyedObjects2D0.equals(keyedObjects2D1);
+    assertFalse(keyedObjects2D1.equals((Object) keyedObjects2D0));
+}","/**
+ * Tests this object for equality with an arbitrary object.
+ *
+ * @param obj  the object to test (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public boolean equals(Object obj) {
+    if (obj == this) {
+        return true;
+    }
+    if (!(obj instanceof KeyedObjects2D)) {
+        return false;
+    }
+    KeyedObjects2D that = (KeyedObjects2D) obj;
+    if (!getRowKeys().equals(that.getRowKeys())) {
+        return false;
+    }
+    if (!getColumnKeys().equals(that.getColumnKeys())) {
+        return false;
+    }
+    int rowCount = getRowCount();
+    if (rowCount != that.getRowCount()) {
+        return false;
+    }
+    int colCount = getColumnCount();
+    if (colCount != that.getColumnCount()) {
+        return false;
+    }
+    for (int r = 0; r < rowCount; r++) {
+        for (int c = 0; c < colCount; c++) {
+            Object v1 = getObject(r, c);
+            Object v2 = that.getObject(r, c);
+            if (v1 == null) {
+                if (v2 != null) {
+                    return false;
+                }
+            } else {
+                if (!v1.equals(v2)) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}","public void test3238() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    KeyedObjects2D keyedObjects2D1 = new KeyedObjects2D();
+    Comparable<String> comparable0 = (Comparable<String>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    doReturn((String) null).when(comparable0).toString();
+    keyedObjects2D0.addObject(keyedObjects2D1, comparable0, comparable0);
+    boolean boolean0 = keyedObjects2D0.equals(keyedObjects2D1);
+    assertFalse(boolean0);
+}","/**
+ * Tests this object for equality with an arbitrary object.
+ *
+ * @param obj  the object to test (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public void removeColumn(Comparable columnKey) {
+    int index = getColumnIndex(columnKey);
+    if (index < 0) {
+        throw new UnknownKeyException(""Column key ("" + columnKey + "") not recognised."");
+    }
+    Iterator iterator = this.rows.iterator();
+    while (iterator.hasNext()) {
+        KeyedObjects rowData = (KeyedObjects) iterator.next();
+        rowData.removeValue(columnKey);
+    }
+    this.columnKeys.remove(columnKey);
+}","public void test3339() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    keyedObjects2D0.setObject("""", """", """");
+    Comparable comparable0 = keyedObjects2D0.getRowKey(0);
+    keyedObjects2D0.removeColumn(comparable0);
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.removeColumn(comparable0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Column key () not recognised.
+        //
+        verifyException(""org.jfree.data.KeyedObjects2D"", e);
+    }
+}","/**
+ * Removes an entire column from the table.
+ *
+ * @param columnKey  the column key (<code>null</code> not permitted).
+ *
+ * @throws UnknownKeyException if <code>rowKey</code> is not recognised.
+ *
+ * @see #removeRow(Comparable)
+ */"
+"public int getRowCount() {
+    return this.rowKeys.size();
+}","public void test3440() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    keyedObjects2D0.addObject("""", """", """");
+    Comparable<Object> comparable0 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    keyedObjects2D0.removeObject("""", comparable0);
+    keyedObjects2D0.getObject(0, 1);
+    assertEquals(1, keyedObjects2D0.getRowCount());
+}","/**
+ * Returns the row count.
+ *
+ * @return The row count.
+ *
+ * @see #getColumnCount()
+ */"
+"public void setObject(Object object, Comparable rowKey, Comparable columnKey) {
+    if (rowKey == null) {
+        throw new IllegalArgumentException(""Null 'rowKey' argument."");
+    }
+    if (columnKey == null) {
+        throw new IllegalArgumentException(""Null 'columnKey' argument."");
+    }
+    KeyedObjects row;
+    int rowIndex = this.rowKeys.indexOf(rowKey);
+    if (rowIndex >= 0) {
+        row = (KeyedObjects) this.rows.get(rowIndex);
+    } else {
+        this.rowKeys.add(rowKey);
+        row = new KeyedObjects();
+        this.rows.add(row);
+    }
+    row.setObject(columnKey, object);
+    int columnIndex = this.columnKeys.indexOf(columnKey);
+    if (columnIndex < 0) {
+        this.columnKeys.add(columnKey);
+    }
+}","public void test3541() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.setObject(""M|F8@("", ""M|F8@("", (Comparable) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'columnKey' argument.
+        //
+        verifyException(""org.jfree.data.KeyedObjects2D"", e);
+    }
+}","/**
+ * Adds or updates an object.
+ *
+ * @param object  the object.
+ * @param rowKey  the row key (<code>null</code> not permitted).
+ * @param columnKey  the column key (<code>null</code> not permitted).
+ */"
+"public void addObject(Object object, Comparable rowKey, Comparable columnKey) {
+    setObject(object, rowKey, columnKey);
+}","public void test3642() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.addObject((Object) null, (Comparable) null, (Comparable) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'rowKey' argument.
+        //
+        verifyException(""org.jfree.data.KeyedObjects2D"", e);
+    }
+}","/**
+ * Adds an object to the table.  Performs the same function as setObject().
+ *
+ * @param object  the object.
+ * @param rowKey  the row key (<code>null</code> not permitted).
+ * @param columnKey  the column key (<code>null</code> not permitted).
+ */"
+"public Object getObject(Comparable rowKey, Comparable columnKey) {
+    if (rowKey == null) {
+        throw new IllegalArgumentException(""Null 'rowKey' argument."");
+    }
+    if (columnKey == null) {
+        throw new IllegalArgumentException(""Null 'columnKey' argument."");
+    }
+    int row = this.rowKeys.indexOf(rowKey);
+    if (row < 0) {
+        throw new UnknownKeyException(""Row key ("" + rowKey + "") not recognised."");
+    }
+    int column = this.columnKeys.indexOf(columnKey);
+    if (column < 0) {
+        throw new UnknownKeyException(""Column key ("" + columnKey + "") not recognised."");
+    }
+    if (row >= 0) {
+        KeyedObjects rowData = (KeyedObjects) this.rows.get(row);
+        return rowData.getObject(columnKey);
+    } else {
+        return null;
+    }
+}","public void test3743() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Integer integer0 = new Integer((-1007));
+    keyedObjects2D0.setObject("""", """", integer0);
+    Comparable<Object> comparable0 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    doReturn("""").when(comparable0).toString();
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.getObject((Comparable) """", (Comparable) comparable0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Column key () not recognised.
+        //
+        verifyException(""org.jfree.data.KeyedObjects2D"", e);
+    }
+}","/**
+ * Returns the object for the given row and column keys.
+ *
+ * @param rowKey  the row key (<code>null</code> not permitted).
+ * @param columnKey  the column key (<code>null</code> not permitted).
+ *
+ * @return The object (possibly <code>null</code>).
+ *
+ * @throws IllegalArgumentException if <code>rowKey<code> or
+ *         <code>columnKey</code> is <code>null</code>.
+ * @throws UnknownKeyException if <code>rowKey</code> or
+ *         <code>columnKey</code> is not recognised.
+ */"
+"public Object getObject(Comparable rowKey, Comparable columnKey) {
+    if (rowKey == null) {
+        throw new IllegalArgumentException(""Null 'rowKey' argument."");
+    }
+    if (columnKey == null) {
+        throw new IllegalArgumentException(""Null 'columnKey' argument."");
+    }
+    int row = this.rowKeys.indexOf(rowKey);
+    if (row < 0) {
+        throw new UnknownKeyException(""Row key ("" + rowKey + "") not recognised."");
+    }
+    int column = this.columnKeys.indexOf(columnKey);
+    if (column < 0) {
+        throw new UnknownKeyException(""Column key ("" + columnKey + "") not recognised."");
+    }
+    if (row >= 0) {
+        KeyedObjects rowData = (KeyedObjects) this.rows.get(row);
+        return rowData.getObject(columnKey);
+    } else {
+        return null;
+    }
+}","public void test3844() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    keyedObjects2D0.addObject("""", """", """");
+    keyedObjects2D0.removeRow((Comparable) """");
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.getObject((Comparable) """", (Comparable) """");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Row key () not recognised.
+        //
+        verifyException(""org.jfree.data.KeyedObjects2D"", e);
+    }
+}","/**
+ * Returns the object for the given row and column keys.
+ *
+ * @param rowKey  the row key (<code>null</code> not permitted).
+ * @param columnKey  the column key (<code>null</code> not permitted).
+ *
+ * @return The object (possibly <code>null</code>).
+ *
+ * @throws IllegalArgumentException if <code>rowKey<code> or
+ *         <code>columnKey</code> is <code>null</code>.
+ * @throws UnknownKeyException if <code>rowKey</code> or
+ *         <code>columnKey</code> is not recognised.
+ */"
+"public Object getObject(Comparable rowKey, Comparable columnKey) {
+    if (rowKey == null) {
+        throw new IllegalArgumentException(""Null 'rowKey' argument."");
+    }
+    if (columnKey == null) {
+        throw new IllegalArgumentException(""Null 'columnKey' argument."");
+    }
+    int row = this.rowKeys.indexOf(rowKey);
+    if (row < 0) {
+        throw new UnknownKeyException(""Row key ("" + rowKey + "") not recognised."");
+    }
+    int column = this.columnKeys.indexOf(columnKey);
+    if (column < 0) {
+        throw new UnknownKeyException(""Column key ("" + columnKey + "") not recognised."");
+    }
+    if (row >= 0) {
+        KeyedObjects rowData = (KeyedObjects) this.rows.get(row);
+        return rowData.getObject(columnKey);
+    } else {
+        return null;
+    }
+}","public void test3945() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    keyedObjects2D0.setObject(""Null'columney argumen"", ""Null'columney argumen"", ""Null'columney argumen"");
+    Comparable comparable0 = keyedObjects2D0.getRowKey(0);
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.getObject((Comparable) comparable0, (Comparable) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'columnKey' argument.
+        //
+        verifyException(""org.jfree.data.KeyedObjects2D"", e);
+    }
+}","/**
+ * Returns the object for the given row and column keys.
+ *
+ * @param rowKey  the row key (<code>null</code> not permitted).
+ * @param columnKey  the column key (<code>null</code> not permitted).
+ *
+ * @return The object (possibly <code>null</code>).
+ *
+ * @throws IllegalArgumentException if <code>rowKey<code> or
+ *         <code>columnKey</code> is <code>null</code>.
+ * @throws UnknownKeyException if <code>rowKey</code> or
+ *         <code>columnKey</code> is not recognised.
+ */"
+"public Object getObject(Comparable rowKey, Comparable columnKey) {
+    if (rowKey == null) {
+        throw new IllegalArgumentException(""Null 'rowKey' argument."");
+    }
+    if (columnKey == null) {
+        throw new IllegalArgumentException(""Null 'columnKey' argument."");
+    }
+    int row = this.rowKeys.indexOf(rowKey);
+    if (row < 0) {
+        throw new UnknownKeyException(""Row key ("" + rowKey + "") not recognised."");
+    }
+    int column = this.columnKeys.indexOf(columnKey);
+    if (column < 0) {
+        throw new UnknownKeyException(""Column key ("" + columnKey + "") not recognised."");
+    }
+    if (row >= 0) {
+        KeyedObjects rowData = (KeyedObjects) this.rows.get(row);
+        return rowData.getObject(columnKey);
+    } else {
+        return null;
+    }
+}","public void test4046() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Comparable<String> comparable0 = (Comparable<String>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.getObject((Comparable) null, comparable0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'rowKey' argument.
+        //
+        verifyException(""org.jfree.data.KeyedObjects2D"", e);
+    }
+}","/**
+ * Returns the object for the given row and column keys.
+ *
+ * @param rowKey  the row key (<code>null</code> not permitted).
+ * @param columnKey  the column key (<code>null</code> not permitted).
+ *
+ * @return The object (possibly <code>null</code>).
+ *
+ * @throws IllegalArgumentException if <code>rowKey<code> or
+ *         <code>columnKey</code> is <code>null</code>.
+ * @throws UnknownKeyException if <code>rowKey</code> or
+ *         <code>columnKey</code> is not recognised.
+ */"
+"public int getColumnCount() {
+    return this.columnKeys.size();
+}","public void test4147() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Comparable<String> comparable0 = (Comparable<String>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    doReturn("") is not recognised."", "") is not recognised."", "") is not recognised."", "") is not recognised."").when(comparable0).toString();
+    Comparable<Object> comparable1 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    doReturn("") is not recognised."", "") is not recognised."", "") is not recognised."", "") is not recognised."").when(comparable1).toString();
+    keyedObjects2D0.setObject("") is not recognised."", comparable1, comparable1);
+    keyedObjects2D0.addObject(keyedObjects2D0, comparable0, comparable0);
+    Object object0 = keyedObjects2D0.clone();
+    boolean boolean0 = keyedObjects2D0.equals(object0);
+    assertEquals(2, keyedObjects2D0.getColumnCount());
+}","/**
+ * Returns the column count.
+ *
+ * @return The column count.
+ *
+ * @see #getRowCount()
+ */"
+"public boolean equals(Object obj) {
+    if (obj == this) {
+        return true;
+    }
+    if (!(obj instanceof KeyedObjects2D)) {
+        return false;
+    }
+    KeyedObjects2D that = (KeyedObjects2D) obj;
+    if (!getRowKeys().equals(that.getRowKeys())) {
+        return false;
+    }
+    if (!getColumnKeys().equals(that.getColumnKeys())) {
+        return false;
+    }
+    int rowCount = getRowCount();
+    if (rowCount != that.getRowCount()) {
+        return false;
+    }
+    int colCount = getColumnCount();
+    if (colCount != that.getColumnCount()) {
+        return false;
+    }
+    for (int r = 0; r < rowCount; r++) {
+        for (int c = 0; c < colCount; c++) {
+            Object v1 = getObject(r, c);
+            Object v2 = that.getObject(r, c);
+            if (v1 == null) {
+                if (v2 != null) {
+                    return false;
+                }
+            } else {
+                if (!v1.equals(v2)) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}","public void test4148() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Comparable<String> comparable0 = (Comparable<String>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    doReturn("") is not recognised."", "") is not recognised."", "") is not recognised."", "") is not recognised."").when(comparable0).toString();
+    Comparable<Object> comparable1 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    doReturn("") is not recognised."", "") is not recognised."", "") is not recognised."", "") is not recognised."").when(comparable1).toString();
+    keyedObjects2D0.setObject("") is not recognised."", comparable1, comparable1);
+    keyedObjects2D0.addObject(keyedObjects2D0, comparable0, comparable0);
+    Object object0 = keyedObjects2D0.clone();
+    boolean boolean0 = keyedObjects2D0.equals(object0);
+    assertTrue(boolean0);
+}","/**
+ * Tests this object for equality with an arbitrary object.
+ *
+ * @param obj  the object to test (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public int getRowCount() {
+    return this.rowKeys.size();
+}","public void test4249() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    int int0 = keyedObjects2D0.getRowCount();
+    assertEquals(0, int0);
+}","/**
+ * Returns the row count.
+ *
+ * @return The row count.
+ *
+ * @see #getColumnCount()
+ */"
+"public void removeRow(Comparable rowKey) {
+    int index = getRowIndex(rowKey);
+    removeRow(index);
+}","public void test4451() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.removeRow((Comparable) """");
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * Removes an entire row from the table.
+ *
+ * @param rowKey  the row key (<code>null</code> not permitted).
+ *
+ * @throws UnknownKeyException if <code>rowKey</code> is not recognised.
+ *
+ * @see #removeColumn(Comparable)
+ */"
+"public void removeColumn(int columnIndex) {
+    Comparable columnKey = getColumnKey(columnIndex);
+    removeColumn(columnKey);
+}","public void test4552() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Comparable<String> comparable0 = (Comparable<String>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    keyedObjects2D0.addObject(keyedObjects2D0, comparable0, comparable0);
+    keyedObjects2D0.addObject("""", """", """");
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.removeColumn(1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The key (java.lang.String@0000000006) is not recognised.
+        //
+        verifyException(""org.jfree.data.KeyedObjects"", e);
+    }
+}","/**
+ * Removes an entire column from the table.
+ *
+ * @param columnIndex  the column index.
+ *
+ * @see #removeRow(int)
+ */"
+"public int getColumnCount() {
+    return this.columnKeys.size();
+}","public void test4653() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    int int0 = keyedObjects2D0.getColumnCount();
+    assertEquals(0, int0);
+}","/**
+ * Returns the column count.
+ *
+ * @return The column count.
+ *
+ * @see #getRowCount()
+ */"
+"public void removeColumn(int columnIndex) {
+    Comparable columnKey = getColumnKey(columnIndex);
+    removeColumn(columnKey);
+}","public void test4754() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.removeColumn(1);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 1, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}","/**
+ * Removes an entire column from the table.
+ *
+ * @param columnIndex  the column index.
+ *
+ * @see #removeRow(int)
+ */"
+"public int getColumnIndex(Comparable key) {
+    return this.columnKeys.indexOf(key);
+}","public void test4855() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    int int0 = keyedObjects2D0.getColumnIndex("""");
+    assertEquals((-1), int0);
+}","/**
+ * Returns the column index for a given key.
+ *
+ * @param key  the key.
+ *
+ * @return The column index.
+ *
+ * @see #getColumnKey(int)
+ */"
+"public Comparable getRowKey(int row) {
+    return (Comparable) this.rowKeys.get(row);
+}","public void test4956() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.getRowKey(1027);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 1027, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}","/**
+ * Returns the key for a given row.
+ *
+ * @param row  the row index (zero based).
+ *
+ * @return The row index.
+ *
+ * @see #getRowIndex(Comparable)
+ */"
+"public boolean equals(Object obj) {
+    if (obj == this) {
+        return true;
+    }
+    if (!(obj instanceof KeyedObjects2D)) {
+        return false;
+    }
+    KeyedObjects2D that = (KeyedObjects2D) obj;
+    if (!getRowKeys().equals(that.getRowKeys())) {
+        return false;
+    }
+    if (!getColumnKeys().equals(that.getColumnKeys())) {
+        return false;
+    }
+    int rowCount = getRowCount();
+    if (rowCount != that.getRowCount()) {
+        return false;
+    }
+    int colCount = getColumnCount();
+    if (colCount != that.getColumnCount()) {
+        return false;
+    }
+    for (int r = 0; r < rowCount; r++) {
+        for (int c = 0; c < colCount; c++) {
+            Object v1 = getObject(r, c);
+            Object v2 = that.getObject(r, c);
+            if (v1 == null) {
+                if (v2 != null) {
+                    return false;
+                }
+            } else {
+                if (!v1.equals(v2)) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}","public void test5057() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    List list0 = keyedObjects2D0.getRowKeys();
+    boolean boolean0 = keyedObjects2D0.equals(list0);
+    assertFalse(boolean0);
+}","/**
+ * Tests this object for equality with an arbitrary object.
+ *
+ * @param obj  the object to test (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"

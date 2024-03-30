@@ -1,0 +1,409 @@
+focal_method,test_prefix,docstring
+"@Override
+protected PointValuePair doOptimize() {
+    checkParameters();
+    final GoalType goal = getGoalType();
+    final double[] guess = getStartPoint();
+    final int n = guess.length;
+    final double[][] direc = new double[n][n];
+    for (int i = 0; i < n; i++) {
+        direc[i][i] = 1;
+    }
+    final ConvergenceChecker<PointValuePair> checker = getConvergenceChecker();
+    double[] x = guess;
+    double fVal = computeObjectiveValue(x);
+    double[] x1 = x.clone();
+    int iter = 0;
+    while (true) {
+        ++iter;
+        double fX = fVal;
+        double fX2 = 0;
+        double delta = 0;
+        int bigInd = 0;
+        double alphaMin = 0;
+        for (int i = 0; i < n; i++) {
+            final double[] d = MathArrays.copyOf(direc[i]);
+            fX2 = fVal;
+            final UnivariatePointValuePair optimum = line.search(x, d);
+            fVal = optimum.getValue();
+            alphaMin = optimum.getPoint();
+            final double[][] result = newPointAndDirection(x, d, alphaMin);
+            x = result[0];
+            if ((fX2 - fVal) > delta) {
+                delta = fX2 - fVal;
+                bigInd = i;
+            }
+        }
+        // Default convergence check.
+        boolean stop = 2 * (fX - fVal) <= (relativeThreshold * (FastMath.abs(fX) + FastMath.abs(fVal)) + absoluteThreshold);
+        final PointValuePair previous = new PointValuePair(x1, fX);
+        final PointValuePair current = new PointValuePair(x, fVal);
+        if (!stop) {
+            // User-defined stopping criteria.
+            if (checker != null) {
+                stop = checker.converged(iter, previous, current);
+            }
+        }
+        if (stop) {
+            if (goal == GoalType.MINIMIZE) {
+                return (fVal < fX) ? current : previous;
+            } else {
+                return (fVal > fX) ? current : previous;
+            }
+        }
+        final double[] d = new double[n];
+        final double[] x2 = new double[n];
+        for (int i = 0; i < n; i++) {
+            d[i] = x[i] - x1[i];
+            x2[i] = 2 * x[i] - x1[i];
+        }
+        x1 = x.clone();
+        fX2 = computeObjectiveValue(x2);
+        if (fX > fX2) {
+            double t = 2 * (fX + fX2 - 2 * fVal);
+            double temp = fX - fVal - delta;
+            t *= temp * temp;
+            temp = fX - fX2;
+            t -= delta * temp * temp;
+            if (t < 0.0) {
+                final UnivariatePointValuePair optimum = line.search(x, d);
+                fVal = optimum.getValue();
+                alphaMin = optimum.getPoint();
+                final double[][] result = newPointAndDirection(x, d, alphaMin);
+                x = result[0];
+                final int lastInd = n - 1;
+                direc[bigInd] = direc[lastInd];
+                direc[lastInd] = result[1];
+            }
+        }
+    }
+}","public void test00() throws Throwable {
+    PowellOptimizer powellOptimizer0 = new PowellOptimizer(1.0E-15, 1.0E-15, 1.0E-15, 1.0E-15);
+    powellOptimizer0.doOptimize();
+}","/**
+ * {@inheritDoc}
+ */"
+"public PowellOptimizer(double rel, double abs) {
+    this(rel, abs, null);
+}","public void test11() throws Throwable {
+    PowellOptimizer powellOptimizer0 = new PowellOptimizer((-193.6399867), (-193.6399867));
+}","/**
+ * The parameters control the default convergence checking procedure.
+ * <br/>
+ * The internal line search tolerances are set to the square-root of their
+ * corresponding value in the multivariate optimizer.
+ *
+ * @param rel Relative threshold.
+ * @param abs Absolute threshold.
+ * @throws NotStrictlyPositiveException if {@code abs <= 0}.
+ * @throws NumberIsTooSmallException if {@code rel < 2 * Math.ulp(1d)}.
+ */"
+"@Override
+protected PointValuePair doOptimize() {
+    checkParameters();
+    final GoalType goal = getGoalType();
+    final double[] guess = getStartPoint();
+    final int n = guess.length;
+    final double[][] direc = new double[n][n];
+    for (int i = 0; i < n; i++) {
+        direc[i][i] = 1;
+    }
+    final ConvergenceChecker<PointValuePair> checker = getConvergenceChecker();
+    double[] x = guess;
+    double fVal = computeObjectiveValue(x);
+    double[] x1 = x.clone();
+    int iter = 0;
+    while (true) {
+        ++iter;
+        double fX = fVal;
+        double fX2 = 0;
+        double delta = 0;
+        int bigInd = 0;
+        double alphaMin = 0;
+        for (int i = 0; i < n; i++) {
+            final double[] d = MathArrays.copyOf(direc[i]);
+            fX2 = fVal;
+            final UnivariatePointValuePair optimum = line.search(x, d);
+            fVal = optimum.getValue();
+            alphaMin = optimum.getPoint();
+            final double[][] result = newPointAndDirection(x, d, alphaMin);
+            x = result[0];
+            if ((fX2 - fVal) > delta) {
+                delta = fX2 - fVal;
+                bigInd = i;
+            }
+        }
+        // Default convergence check.
+        boolean stop = 2 * (fX - fVal) <= (relativeThreshold * (FastMath.abs(fX) + FastMath.abs(fVal)) + absoluteThreshold);
+        final PointValuePair previous = new PointValuePair(x1, fX);
+        final PointValuePair current = new PointValuePair(x, fVal);
+        if (!stop) {
+            // User-defined stopping criteria.
+            if (checker != null) {
+                stop = checker.converged(iter, previous, current);
+            }
+        }
+        if (stop) {
+            if (goal == GoalType.MINIMIZE) {
+                return (fVal < fX) ? current : previous;
+            } else {
+                return (fVal > fX) ? current : previous;
+            }
+        }
+        final double[] d = new double[n];
+        final double[] x2 = new double[n];
+        for (int i = 0; i < n; i++) {
+            d[i] = x[i] - x1[i];
+            x2[i] = 2 * x[i] - x1[i];
+        }
+        x1 = x.clone();
+        fX2 = computeObjectiveValue(x2);
+        if (fX > fX2) {
+            double t = 2 * (fX + fX2 - 2 * fVal);
+            double temp = fX - fVal - delta;
+            t *= temp * temp;
+            temp = fX - fX2;
+            t -= delta * temp * temp;
+            if (t < 0.0) {
+                final UnivariatePointValuePair optimum = line.search(x, d);
+                fVal = optimum.getValue();
+                alphaMin = optimum.getPoint();
+                final double[][] result = newPointAndDirection(x, d, alphaMin);
+                x = result[0];
+                final int lastInd = n - 1;
+                direc[bigInd] = direc[lastInd];
+                direc[lastInd] = result[1];
+            }
+        }
+    }
+}","public void test22() throws Throwable {
+    PowellOptimizer powellOptimizer0 = new PowellOptimizer(1.0E-15, 1.0E-15);
+    powellOptimizer0.getIterations();
+    OptimizationData[] optimizationDataArray0 = new OptimizationData[2];
+    SimpleBounds simpleBounds0 = SimpleBounds.unbounded(0);
+    optimizationDataArray0[1] = (OptimizationData) simpleBounds0;
+    powellOptimizer0.optimize(optimizationDataArray0);
+    // Undeclared exception!
+    try {
+        powellOptimizer0.doOptimize();
+        fail(""Expecting exception: MathUnsupportedOperationException"");
+    } catch (MathUnsupportedOperationException e) {
+        //
+        // constraint
+        //
+        verifyException(""org.apache.commons.math3.optim.nonlinear.scalar.noderiv.PowellOptimizer"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"public PowellOptimizer(double rel, double abs) {
+    this(rel, abs, null);
+}","public void test33() throws Throwable {
+    PowellOptimizer powellOptimizer0 = new PowellOptimizer(1.0E-15, (-2620.5297696579287));
+}","/**
+ * The parameters control the default convergence checking procedure.
+ * <br/>
+ * The internal line search tolerances are set to the square-root of their
+ * corresponding value in the multivariate optimizer.
+ *
+ * @param rel Relative threshold.
+ * @param abs Absolute threshold.
+ * @throws NotStrictlyPositiveException if {@code abs <= 0}.
+ * @throws NumberIsTooSmallException if {@code rel < 2 * Math.ulp(1d)}.
+ */"
+"@Override
+protected PointValuePair doOptimize() {
+    checkParameters();
+    final GoalType goal = getGoalType();
+    final double[] guess = getStartPoint();
+    final int n = guess.length;
+    final double[][] direc = new double[n][n];
+    for (int i = 0; i < n; i++) {
+        direc[i][i] = 1;
+    }
+    final ConvergenceChecker<PointValuePair> checker = getConvergenceChecker();
+    double[] x = guess;
+    double fVal = computeObjectiveValue(x);
+    double[] x1 = x.clone();
+    int iter = 0;
+    while (true) {
+        ++iter;
+        double fX = fVal;
+        double fX2 = 0;
+        double delta = 0;
+        int bigInd = 0;
+        double alphaMin = 0;
+        for (int i = 0; i < n; i++) {
+            final double[] d = MathArrays.copyOf(direc[i]);
+            fX2 = fVal;
+            final UnivariatePointValuePair optimum = line.search(x, d);
+            fVal = optimum.getValue();
+            alphaMin = optimum.getPoint();
+            final double[][] result = newPointAndDirection(x, d, alphaMin);
+            x = result[0];
+            if ((fX2 - fVal) > delta) {
+                delta = fX2 - fVal;
+                bigInd = i;
+            }
+        }
+        // Default convergence check.
+        boolean stop = 2 * (fX - fVal) <= (relativeThreshold * (FastMath.abs(fX) + FastMath.abs(fVal)) + absoluteThreshold);
+        final PointValuePair previous = new PointValuePair(x1, fX);
+        final PointValuePair current = new PointValuePair(x, fVal);
+        if (!stop) {
+            // User-defined stopping criteria.
+            if (checker != null) {
+                stop = checker.converged(iter, previous, current);
+            }
+        }
+        if (stop) {
+            if (goal == GoalType.MINIMIZE) {
+                return (fVal < fX) ? current : previous;
+            } else {
+                return (fVal > fX) ? current : previous;
+            }
+        }
+        final double[] d = new double[n];
+        final double[] x2 = new double[n];
+        for (int i = 0; i < n; i++) {
+            d[i] = x[i] - x1[i];
+            x2[i] = 2 * x[i] - x1[i];
+        }
+        x1 = x.clone();
+        fX2 = computeObjectiveValue(x2);
+        if (fX > fX2) {
+            double t = 2 * (fX + fX2 - 2 * fVal);
+            double temp = fX - fVal - delta;
+            t *= temp * temp;
+            temp = fX - fX2;
+            t -= delta * temp * temp;
+            if (t < 0.0) {
+                final UnivariatePointValuePair optimum = line.search(x, d);
+                fVal = optimum.getValue();
+                alphaMin = optimum.getPoint();
+                final double[][] result = newPointAndDirection(x, d, alphaMin);
+                x = result[0];
+                final int lastInd = n - 1;
+                direc[bigInd] = direc[lastInd];
+                direc[lastInd] = result[1];
+            }
+        }
+    }
+}","public void test44() throws Throwable {
+    OptimizationData[] optimizationDataArray0 = new OptimizationData[8];
+    double[] doubleArray0 = new double[1];
+    InitialGuess initialGuess0 = new InitialGuess(doubleArray0);
+    optimizationDataArray0[0] = (OptimizationData) initialGuess0;
+    PowellOptimizer powellOptimizer0 = new PowellOptimizer(1377.0, 1377.0);
+    powellOptimizer0.optimize(optimizationDataArray0);
+    // Undeclared exception!
+    try {
+        powellOptimizer0.doOptimize();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // illegal state: maximal count (0) exceeded: evaluations
+        //
+        verifyException(""org.apache.commons.math3.optim.BaseOptimizer$MaxEvalCallback"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"@Override
+protected PointValuePair doOptimize() {
+    checkParameters();
+    final GoalType goal = getGoalType();
+    final double[] guess = getStartPoint();
+    final int n = guess.length;
+    final double[][] direc = new double[n][n];
+    for (int i = 0; i < n; i++) {
+        direc[i][i] = 1;
+    }
+    final ConvergenceChecker<PointValuePair> checker = getConvergenceChecker();
+    double[] x = guess;
+    double fVal = computeObjectiveValue(x);
+    double[] x1 = x.clone();
+    int iter = 0;
+    while (true) {
+        ++iter;
+        double fX = fVal;
+        double fX2 = 0;
+        double delta = 0;
+        int bigInd = 0;
+        double alphaMin = 0;
+        for (int i = 0; i < n; i++) {
+            final double[] d = MathArrays.copyOf(direc[i]);
+            fX2 = fVal;
+            final UnivariatePointValuePair optimum = line.search(x, d);
+            fVal = optimum.getValue();
+            alphaMin = optimum.getPoint();
+            final double[][] result = newPointAndDirection(x, d, alphaMin);
+            x = result[0];
+            if ((fX2 - fVal) > delta) {
+                delta = fX2 - fVal;
+                bigInd = i;
+            }
+        }
+        // Default convergence check.
+        boolean stop = 2 * (fX - fVal) <= (relativeThreshold * (FastMath.abs(fX) + FastMath.abs(fVal)) + absoluteThreshold);
+        final PointValuePair previous = new PointValuePair(x1, fX);
+        final PointValuePair current = new PointValuePair(x, fVal);
+        if (!stop) {
+            // User-defined stopping criteria.
+            if (checker != null) {
+                stop = checker.converged(iter, previous, current);
+            }
+        }
+        if (stop) {
+            if (goal == GoalType.MINIMIZE) {
+                return (fVal < fX) ? current : previous;
+            } else {
+                return (fVal > fX) ? current : previous;
+            }
+        }
+        final double[] d = new double[n];
+        final double[] x2 = new double[n];
+        for (int i = 0; i < n; i++) {
+            d[i] = x[i] - x1[i];
+            x2[i] = 2 * x[i] - x1[i];
+        }
+        x1 = x.clone();
+        fX2 = computeObjectiveValue(x2);
+        if (fX > fX2) {
+            double t = 2 * (fX + fX2 - 2 * fVal);
+            double temp = fX - fVal - delta;
+            t *= temp * temp;
+            temp = fX - fX2;
+            t -= delta * temp * temp;
+            if (t < 0.0) {
+                final UnivariatePointValuePair optimum = line.search(x, d);
+                fVal = optimum.getValue();
+                alphaMin = optimum.getPoint();
+                final double[][] result = newPointAndDirection(x, d, alphaMin);
+                x = result[0];
+                final int lastInd = n - 1;
+                direc[bigInd] = direc[lastInd];
+                direc[lastInd] = result[1];
+            }
+        }
+    }
+}","public void test55() throws Throwable {
+    OptimizationData[] optimizationDataArray0 = new OptimizationData[1];
+    double[] doubleArray0 = new double[0];
+    InitialGuess initialGuess0 = new InitialGuess(doubleArray0);
+    optimizationDataArray0[0] = (OptimizationData) initialGuess0;
+    PowellOptimizer powellOptimizer0 = new PowellOptimizer(1377.0, 1377.0);
+    powellOptimizer0.optimize(optimizationDataArray0);
+    // Undeclared exception!
+    try {
+        powellOptimizer0.doOptimize();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // illegal state: maximal count (0) exceeded: evaluations
+        //
+        verifyException(""org.apache.commons.math3.optim.BaseOptimizer$MaxEvalCallback"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"

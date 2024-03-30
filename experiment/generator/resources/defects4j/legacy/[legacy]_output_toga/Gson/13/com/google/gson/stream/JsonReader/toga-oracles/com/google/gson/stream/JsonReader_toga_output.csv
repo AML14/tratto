@@ -1,0 +1,1222 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test020,"public void test020() throws Throwable {
+    StringReader stringReader0 = new StringReader(""{Z^"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    // Undeclared exception!
+    try {
+        jsonReader0.nextNull();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Expected null but was BEGIN_OBJECT at line 1 column 2 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test031,"public void test031() throws Throwable {
+    StringReader stringReader0 = new StringReader(""7"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    // Undeclared exception!
+    try {
+        jsonReader0.nextName();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Expected a name but was NUMBER at line 1 column 2 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test042,"public void test042() throws Throwable {
+    StringReader stringReader0 = new StringReader(""em]g?`Y9?9l`N"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    assertFalse(jsonReader0.isLenient());
+}",0,assertFalse(jsonReader0.isLenient())
+project,0,test043,"public void test043() throws Throwable {
+    StringReader stringReader0 = new StringReader(""em]g?`Y9?9l`N"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.setLenient(true);
+    boolean boolean0 = jsonReader0.isLenient();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test054,"public void test054() throws Throwable {
+    StringReader stringReader0 = new StringReader(""1>g`M*dk?MI8i"");
+    stringReader0.close();
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.skipValue();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream closed
+        //
+        verifyException(""java.io.StringReader"", e);
+    }
+}",1,
+project,0,test065,"public void test065() throws Throwable {
+    StringReader stringReader0 = new StringReader("""");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.skipValue();
+        fail(""Expecting exception: EOFException"");
+    } catch (EOFException e) {
+        //
+        // End of input at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test076,"public void test076() throws Throwable {
+    StringReader stringReader0 = new StringReader("""");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.peek();
+        fail(""Expecting exception: EOFException"");
+    } catch (EOFException e) {
+        //
+        // End of input at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test087,"public void test087() throws Throwable {
+    StringReader stringReader0 = new StringReader(""u"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.peeked = (-1035);
+    // Undeclared exception!
+    try {
+        jsonReader0.nextString();
+        fail(""Expecting exception: AssertionError"");
+    } catch (AssertionError e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test098,"public void test098() throws Throwable {
+    StringReader stringReader0 = new StringReader(""u"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    stringReader0.close();
+    try {
+        jsonReader0.nextString();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream closed
+        //
+        verifyException(""java.io.StringReader"", e);
+    }
+}",1,
+project,0,test109,"public void test109() throws Throwable {
+    StringReader stringReader0 = new StringReader("""");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.nextString();
+        fail(""Expecting exception: EOFException"");
+    } catch (EOFException e) {
+        //
+        // End of input at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test1110,"public void test1110() throws Throwable {
+    StringReader stringReader0 = new StringReader("""");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.peeked = 1896;
+    // Undeclared exception!
+    try {
+        jsonReader0.nextNull();
+        fail(""Expecting exception: AssertionError"");
+    } catch (AssertionError e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test1211,"public void test1211() throws Throwable {
+    StringReader stringReader0 = new StringReader(""'V"");
+    char[] charArray0 = new char[3];
+    stringReader0.read(charArray0);
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.nextNull();
+        fail(""Expecting exception: EOFException"");
+    } catch (EOFException e) {
+        //
+        // End of input at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test1312,"public void test1312() throws Throwable {
+    StringReader stringReader0 = new StringReader(""L/ FL>gcC1q\""}"");
+    stringReader0.close();
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.nextName();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream closed
+        //
+        verifyException(""java.io.StringReader"", e);
+    }
+}",1,
+project,0,test1413,"public void test1413() throws Throwable {
+    StringReader stringReader0 = new StringReader("""");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.nextName();
+        fail(""Expecting exception: EOFException"");
+    } catch (EOFException e) {
+        //
+        // End of input at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test1514,"public void test1514() throws Throwable {
+    StringReader stringReader0 = new StringReader("""");
+    stringReader0.close();
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.nextLong();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream closed
+        //
+        verifyException(""java.io.StringReader"", e);
+    }
+}",1,
+project,0,test1615,"public void test1615() throws Throwable {
+    StringReader stringReader0 = new StringReader("""");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.nextLong();
+        fail(""Expecting exception: EOFException"");
+    } catch (EOFException e) {
+        //
+        // End of input at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test1716,"public void test1716() throws Throwable {
+    StringReader stringReader0 = new StringReader(""true"");
+    stringReader0.close();
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.nextInt();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream closed
+        //
+        verifyException(""java.io.StringReader"", e);
+    }
+}",1,
+project,0,test1817,"public void test1817() throws Throwable {
+    StringReader stringReader0 = new StringReader("""");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.nextInt();
+        fail(""Expecting exception: EOFException"");
+    } catch (EOFException e) {
+        //
+        // End of input at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test1918,"public void test1918() throws Throwable {
+    StringReader stringReader0 = new StringReader(""Expected a double but was "");
+    stringReader0.close();
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.nextDouble();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream closed
+        //
+        verifyException(""java.io.StringReader"", e);
+    }
+}",1,
+project,0,test2019,"public void test2019() throws Throwable {
+    StringReader stringReader0 = new StringReader("""");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.nextDouble();
+        fail(""Expecting exception: EOFException"");
+    } catch (EOFException e) {
+        //
+        // End of input at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test2120,"public void test2120() throws Throwable {
+    StringReader stringReader0 = new StringReader("""");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    stringReader0.close();
+    try {
+        jsonReader0.nextBoolean();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream closed
+        //
+        verifyException(""java.io.StringReader"", e);
+    }
+}",1,
+project,0,test2221,"public void test2221() throws Throwable {
+    StringReader stringReader0 = new StringReader("""");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.nextBoolean();
+        fail(""Expecting exception: EOFException"");
+    } catch (EOFException e) {
+        //
+        // End of input at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test2322,"public void test2322() throws Throwable {
+    StringReader stringReader0 = new StringReader(""@[z{Cr8jIr6;V*jG$w"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.close();
+    // Undeclared exception!
+    try {
+        jsonReader0.hasNext();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // JsonReader is closed
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test2423,"public void test2423() throws Throwable {
+    StringReader stringReader0 = new StringReader("""");
+    stringReader0.close();
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.hasNext();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream closed
+        //
+        verifyException(""java.io.StringReader"", e);
+    }
+}",1,
+project,0,test2524,"public void test2524() throws Throwable {
+    StringReader stringReader0 = new StringReader("""");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.hasNext();
+        fail(""Expecting exception: EOFException"");
+    } catch (EOFException e) {
+        //
+        // End of input at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test2625,"public void test2625() throws Throwable {
+    StringReader stringReader0 = new StringReader(""td{lj"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.endObject();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test2726,"public void test2726() throws Throwable {
+    StringReader stringReader0 = new StringReader(""()+@sNqw6Jl"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    stringReader0.close();
+    try {
+        jsonReader0.endObject();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream closed
+        //
+        verifyException(""java.io.StringReader"", e);
+    }
+}",1,
+project,0,test2827,"public void test2827() throws Throwable {
+    StringReader stringReader0 = new StringReader(""com.google.gson.stream.MalformedJsonException"");
+    stringReader0.close();
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.endArray();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream closed
+        //
+        verifyException(""java.io.StringReader"", e);
+    }
+}",1,
+project,0,test2928,"public void test2928() throws Throwable {
+    StringReader stringReader0 = new StringReader("""");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.endArray();
+        fail(""Expecting exception: EOFException"");
+    } catch (EOFException e) {
+        //
+        // End of input at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test3029,"public void test3029() throws Throwable {
+    StringReader stringReader0 = new StringReader(""z &oj}, MU:J-!7%}R"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.close();
+    // Undeclared exception!
+    try {
+        jsonReader0.doPeek();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // JsonReader is closed
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test3130,"public void test3130() throws Throwable {
+    StringReader stringReader0 = new StringReader("""");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.doPeek();
+        fail(""Expecting exception: EOFException"");
+    } catch (EOFException e) {
+        //
+        // End of input at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test3231,"public void test3231() throws Throwable {
+    StringReader stringReader0 = new StringReader(""]+9v=*Y#rtSs76MPq+"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.beginObject();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected value at line 1 column 2 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test3332,"public void test3332() throws Throwable {
+    StringReader stringReader0 = new StringReader("":M|nQ^XMJ;~^m"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    stringReader0.close();
+    try {
+        jsonReader0.beginObject();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream closed
+        //
+        verifyException(""java.io.StringReader"", e);
+    }
+}",1,
+project,0,test3433,"public void test3433() throws Throwable {
+    StringReader stringReader0 = new StringReader("""");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.beginObject();
+        fail(""Expecting exception: EOFException"");
+    } catch (EOFException e) {
+        //
+        // End of input at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test3534,"public void test3534() throws Throwable {
+    StringReader stringReader0 = new StringReader(""o2;$}Pr6#<"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.peeked = 574;
+    // Undeclared exception!
+    try {
+        jsonReader0.beginArray();
+        fail(""Expecting exception: AssertionError"");
+    } catch (AssertionError e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test3635,"public void test3635() throws Throwable {
+    StringReader stringReader0 = new StringReader("""");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.beginArray();
+        fail(""Expecting exception: EOFException"");
+    } catch (EOFException e) {
+        //
+        // End of input at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test3736,"public void test3736() throws Throwable {
+    StringReader stringReader0 = new StringReader(""u"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.setLenient(true);
+    String string0 = jsonReader0.nextString();
+    assertEquals(""u"", string0);
+}",1,
+project,0,test3737,"public void test3737() throws Throwable {
+    StringReader stringReader0 = new StringReader(""u"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.setLenient(true);
+    String string0 = jsonReader0.nextString();
+    String string1 = jsonReader0.getPath();
+    assertEquals(""$"", string1);
+}",0,assertNotNull(string1)
+project,0,test3838,"public void test3838() throws Throwable {
+    StringReader stringReader0 = new StringReader("""");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    String string0 = jsonReader0.getPath();
+    assertEquals(""$"", string0);
+}",0,assertNotNull(string0)
+project,0,test3839,"public void test3839() throws Throwable {
+    StringReader stringReader0 = new StringReader("""");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    String string0 = jsonReader0.getPath();
+    assertFalse(jsonReader0.isLenient());
+}",0,assertFalse(jsonReader0.isLenient())
+project,0,test3940,"public void test3940() throws Throwable {
+    StringReader stringReader0 = new StringReader(""kG(0#*t9p~$"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.nextString();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test4041,"public void test4041() throws Throwable {
+    StringReader stringReader0 = new StringReader(""/mx%0rHm4DIDC."");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.nextName();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 2 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test4142,"public void test4142() throws Throwable {
+    StringReader stringReader0 = new StringReader(""kG(>#*t9p~$"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.setLenient(true);
+    jsonReader0.nextString();
+    stringReader0.reset();
+    jsonReader0.skipValue();
+    assertTrue(jsonReader0.isLenient());
+}",0,assertFalse(jsonReader0.isLenient())
+project,0,test4243,"public void test4243() throws Throwable {
+    StringReader stringReader0 = new StringReader(""{US9bLmP+"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.peek();
+    try {
+        jsonReader0.skipValue();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 3 path $.
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test4344,"public void test4344() throws Throwable {
+    StringReader stringReader0 = new StringReader(""\""`/koumn~)Gr1DC\"""");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    // Undeclared exception!
+    try {
+        jsonReader0.nextInt();
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+    }
+}",1,
+project,0,test4445,"public void test4445() throws Throwable {
+    StringReader stringReader0 = new StringReader(""kG(0#*t9p~$"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.setLenient(true);
+    jsonReader0.skipValue();
+    assertTrue(jsonReader0.isLenient());
+}",0,assertTrue(jsonReader0.isLenient())
+project,0,test4546,"public void test4546() throws Throwable {
+    StringReader stringReader0 = new StringReader(""\""`/koumn~)Gr1DC\"""");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.skipValue();
+    assertFalse(jsonReader0.isLenient());
+}",0,assertTrue(jsonReader0.isLenient())
+project,0,test4647,"public void test4647() throws Throwable {
+    StringReader stringReader0 = new StringReader(""em]g?`Y9?9l`N"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.setLenient(true);
+    // Undeclared exception!
+    try {
+        jsonReader0.nextInt();
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+    }
+}",1,
+project,0,test4748,"public void test4748() throws Throwable {
+    StringReader stringReader0 = new StringReader(""End of input"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.setLenient(true);
+    // Undeclared exception!
+    try {
+        jsonReader0.nextDouble();
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+    }
+}",1,
+project,0,test4849,"public void test4849() throws Throwable {
+    StringReader stringReader0 = new StringReader(""u"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.setLenient(true);
+    // Undeclared exception!
+    try {
+        jsonReader0.nextLong();
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+    }
+}",1,
+project,0,test4950,"public void test4950() throws Throwable {
+    StringReader stringReader0 = new StringReader(""\""A@-'4bX>&;eBL"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.nextLong();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unterminated string at line 1 column 15 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test5051,"public void test5051() throws Throwable {
+    StringReader stringReader0 = new StringReader(""u"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.setLenient(true);
+    jsonReader0.nextString();
+    // Undeclared exception!
+    try {
+        jsonReader0.nextDouble();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Expected a double but was END_DOCUMENT at line 1 column 2 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test5152,"public void test5152() throws Throwable {
+    StringReader stringReader0 = new StringReader(""u"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.setLenient(true);
+    jsonReader0.hasNext();
+    // Undeclared exception!
+    try {
+        jsonReader0.nextDouble();
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+    }
+}",1,
+project,0,test5253,"public void test5253() throws Throwable {
+    StringReader stringReader0 = new StringReader(""Expected BEGIN_ARRAY but was "");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.nextNull();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test5354,"public void test5354() throws Throwable {
+    StringReader stringReader0 = new StringReader(""em]g?`Y9?9l`N"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.setLenient(true);
+    jsonReader0.doPeek();
+    // Undeclared exception!
+    try {
+        jsonReader0.nextBoolean();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Expected a boolean but was STRING at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test5455,"public void test5455() throws Throwable {
+    StringReader stringReader0 = new StringReader(""\""`/koumn~)Gr1DC\"""");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    String string0 = jsonReader0.nextString();
+    assertEquals(""`/koumn~)Gr1DC"", string0);
+}",1,
+project,0,test5556,"public void test5556() throws Throwable {
+    StringReader stringReader0 = new StringReader(""kG(0-*t9p~$"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.setLenient(true);
+    jsonReader0.nextString();
+    // Undeclared exception!
+    try {
+        jsonReader0.nextString();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Expected a string but was END_DOCUMENT at line 1 column 12 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test5657,"public void test5657() throws Throwable {
+    StringReader stringReader0 = new StringReader(""kG(0-*t9p~$"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.setLenient(true);
+    boolean boolean0 = jsonReader0.hasNext();
+    assertTrue(boolean0);
+}",1,
+project,0,test5658,"public void test5658() throws Throwable {
+    StringReader stringReader0 = new StringReader(""kG(0-*t9p~$"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.setLenient(true);
+    boolean boolean0 = jsonReader0.hasNext();
+    String string0 = jsonReader0.nextString();
+    assertNotNull(string0);
+}",1,
+project,0,test5659,"public void test5659() throws Throwable {
+    StringReader stringReader0 = new StringReader(""kG(0-*t9p~$"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.setLenient(true);
+    boolean boolean0 = jsonReader0.hasNext();
+    String string0 = jsonReader0.nextString();
+    assertEquals(""kG(0-*t9p~$"", string0);
+}",1,
+project,0,test5760,"public void test5760() throws Throwable {
+    StringReader stringReader0 = new StringReader(""em]g?`Y9?9l`N"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.setLenient(true);
+    jsonReader0.doPeek();
+    // Undeclared exception!
+    try {
+        jsonReader0.nextName();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Expected a name but was STRING at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test5861,"public void test5861() throws Throwable {
+    StringReader stringReader0 = new StringReader(""=uUL[*a%+vs;|b8[W"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.doPeek();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test5962,"public void test5962() throws Throwable {
+    StringReader stringReader0 = new StringReader(""kG(0*t9t/p~$"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.setLenient(true);
+    jsonReader0.nextString();
+    try {
+        jsonReader0.hasNext();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Expected value at line 1 column 9 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test6063,"public void test6063() throws Throwable {
+    StringReader stringReader0 = new StringReader(""418K{Eu?>*GR?7iA"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.nextBoolean();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test6164,"public void test6164() throws Throwable {
+    StringReader stringReader0 = new StringReader("".&JI%p+:G'].9sHP|U"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.skipValue();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test6265,"public void test6265() throws Throwable {
+    StringReader stringReader0 = new StringReader(""+q[sjs81~o"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.nextBoolean();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test6366,"public void test6366() throws Throwable {
+    StringReader stringReader0 = new StringReader(""8"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    int int0 = jsonReader0.nextInt();
+    assertEquals(8, int0);
+}",1,
+project,0,test6467,"public void test6467() throws Throwable {
+    StringReader stringReader0 = new StringReader(""NUMBER"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.nextDouble();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test6568,"public void test6568() throws Throwable {
+    StringReader stringReader0 = new StringReader(""f"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.nextName();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test6669,"public void test6669() throws Throwable {
+    StringReader stringReader0 = new StringReader(""em]g?`Y9?9l`N"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.setLenient(true);
+    jsonReader0.skipValue();
+    try {
+        jsonReader0.doPeek();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected value at line 1 column 4 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",0,
+project,0,test6770,"public void test6770() throws Throwable {
+    StringReader stringReader0 = new StringReader("";h>F7|[qk1MTKR"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.hasNext();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected value at line 1 column 2 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test6871,"public void test6871() throws Throwable {
+    StringReader stringReader0 = new StringReader("",A"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.nextName();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected value at line 1 column 2 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test6972,"public void test6972() throws Throwable {
+    StringReader stringReader0 = new StringReader(""r'vF56YZ0]v"");
+    stringReader0.read();
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.nextInt();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 2 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test7073,"public void test7073() throws Throwable {
+    StringReader stringReader0 = new StringReader(""kG(0-*t9p~$"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.setLenient(true);
+    jsonReader0.nextString();
+    stringReader0.reset();
+    jsonReader0.skipValue();
+    assertTrue(jsonReader0.isLenient());
+}",0,assertTrue(jsonReader0.isLenient())
+project,0,test7174,"public void test7174() throws Throwable {
+    StringReader stringReader0 = new StringReader(""NAME"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.close();
+    // Undeclared exception!
+    try {
+        jsonReader0.peek();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // JsonReader is closed
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test7275,"public void test7275() throws Throwable {
+    StringReader stringReader0 = new StringReader(""{US9bLmP+"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.skipValue();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 3 path $.
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test7376,"public void test7376() throws Throwable {
+    StringReader stringReader0 = new StringReader(""\""`/koumn~)Gr1DC\"""");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.peeked = 282;
+    // Undeclared exception!
+    try {
+        jsonReader0.nextInt();
+        fail(""Expecting exception: AssertionError"");
+    } catch (AssertionError e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test7477,"public void test7477() throws Throwable {
+    StringReader stringReader0 = new StringReader(""kG(0#*t9p~$"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.setLenient(true);
+    jsonReader0.nextString();
+    // Undeclared exception!
+    try {
+        jsonReader0.endArray();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Expected END_ARRAY but was END_DOCUMENT at line 1 column 12 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test7578,"public void test7578() throws Throwable {
+    StringReader stringReader0 = new StringReader(""\""]`52)3|-_7y"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.peek();
+    // Undeclared exception!
+    try {
+        jsonReader0.nextNull();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Expected null but was STRING at line 1 column 2 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test7679,"public void test7679() throws Throwable {
+    StringReader stringReader0 = new StringReader(""null"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    // Undeclared exception!
+    try {
+        jsonReader0.beginObject();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Expected BEGIN_OBJECT but was NULL at line 1 column 5 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test7780,"public void test7780() throws Throwable {
+    StringReader stringReader0 = new StringReader(""true"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    // Undeclared exception!
+    try {
+        jsonReader0.nextInt();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Expected an int but was BOOLEAN at line 1 column 5 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test7881,"public void test7881() throws Throwable {
+    StringReader stringReader0 = new StringReader(""VEL=[?5WP%2P 2wF/"");
+    char[] charArray0 = new char[4];
+    stringReader0.read(charArray0);
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    // Undeclared exception!
+    try {
+        jsonReader0.nextBoolean();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Expected a boolean but was BEGIN_ARRAY at line 1 column 2 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test7982,"public void test7982() throws Throwable {
+    StringReader stringReader0 = new StringReader(""{US9bLmP+"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.peek();
+    // Undeclared exception!
+    try {
+        jsonReader0.nextLong();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Expected a long but was BEGIN_OBJECT at line 1 column 2 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test8083,"public void test8083() throws Throwable {
+    StringReader stringReader0 = new StringReader("" $PL)RQB3Gt"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.peek();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 2 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test8184,"public void test8184() throws Throwable {
+    StringReader stringReader0 = new StringReader(""8vhJc,4\"" "");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.peeked = 2063;
+    boolean boolean0 = jsonReader0.hasNext();
+    assertFalse(jsonReader0.isLenient());
+}",0,assertTrue(jsonReader0.isLenient())
+project,0,test8185,"public void test8185() throws Throwable {
+    StringReader stringReader0 = new StringReader(""8vhJc,4\"" "");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.peeked = 2063;
+    boolean boolean0 = jsonReader0.hasNext();
+    assertTrue(boolean0);
+}",1,
+project,0,test8286,"public void test8286() throws Throwable {
+    StringReader stringReader0 = new StringReader("""");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.endObject();
+        fail(""Expecting exception: EOFException"");
+    } catch (EOFException e) {
+        //
+        // End of input at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test8387,"public void test8387() throws Throwable {
+    StringReader stringReader0 = new StringReader(""_fZ+9+%"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.setLenient(true);
+    jsonReader0.doPeek();
+    // Undeclared exception!
+    try {
+        jsonReader0.endObject();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Expected END_OBJECT but was STRING at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test8488,"public void test8488() throws Throwable {
+    StringReader stringReader0 = new StringReader(""em]g?`Y9?9l`N"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.setLenient(true);
+    jsonReader0.doPeek();
+    // Undeclared exception!
+    try {
+        jsonReader0.beginObject();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test8589,"public void test8589() throws Throwable {
+    StringReader stringReader0 = new StringReader("":nGU 5s[N{k8"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.endArray();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Expected value at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test8690,"public void test8690() throws Throwable {
+    StringReader stringReader0 = new StringReader(""kG(0#*t9p~$"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.setLenient(true);
+    jsonReader0.hasNext();
+    // Undeclared exception!
+    try {
+        jsonReader0.endArray();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Expected END_ARRAY but was STRING at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test8791,"public void test8791() throws Throwable {
+    StringReader stringReader0 = new StringReader(""Expected BEGIN_OBJECT but was "");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.beginArray();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test8892,"public void test8892() throws Throwable {
+    StringReader stringReader0 = new StringReader(""Expected null but was "");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    jsonReader0.setLenient(true);
+    jsonReader0.doPeek();
+    // Undeclared exception!
+    try {
+        jsonReader0.beginArray();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Expected BEGIN_ARRAY but was STRING at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test8993,"public void test8993() throws Throwable {
+    JsonReader jsonReader0 = null;
+    try {
+        jsonReader0 = new JsonReader((Reader) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // in == null
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test9094,"public void test9094() throws Throwable {
+    StringReader stringReader0 = new StringReader(""TK;]"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        jsonReader0.nextName();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,
+project,0,test9195,"public void test9195() throws Throwable {
+    StringReader stringReader0 = new StringReader(""\""`/koumn~)Gr1DC\"""");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    String string0 = jsonReader0.toString();
+    assertEquals(""JsonReader at line 1 column 1 path $"", string0);
+}",0,assertNotNull(string0)
+project,0,test9196,"public void test9196() throws Throwable {
+    StringReader stringReader0 = new StringReader(""\""`/koumn~)Gr1DC\"""");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    String string0 = jsonReader0.toString();
+    assertFalse(jsonReader0.isLenient());
+}",0,assertTrue(jsonReader0.isLenient())
+project,0,test9297,"public void test9297() throws Throwable {
+    StringReader stringReader0 = new StringReader(""@LNr`+O6Q$"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    boolean boolean0 = jsonReader0.isLenient();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test9398,"public void test9398() throws Throwable {
+    StringReader stringReader0 = new StringReader(""-1{6%A)/R-%F6T~Q"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    // Undeclared exception!
+    try {
+        jsonReader0.beginObject();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Expected BEGIN_OBJECT but was NUMBER at line 1 column 3 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",1,

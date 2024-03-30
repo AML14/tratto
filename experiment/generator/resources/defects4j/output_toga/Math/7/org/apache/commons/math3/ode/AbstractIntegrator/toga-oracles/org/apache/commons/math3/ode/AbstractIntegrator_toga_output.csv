@@ -1,0 +1,422 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    double[] doubleArray0 = new double[3];
+    double[] doubleArray1 = new double[1];
+    HighamHall54Integrator highamHall54Integrator0 = new HighamHall54Integrator(0.0, 0.0, doubleArray0, doubleArray1);
+    SecondOrderDifferentialEquations secondOrderDifferentialEquations0 = mock(SecondOrderDifferentialEquations.class, new ViolatedAssumptionAnswer());
+    doReturn(0).when(secondOrderDifferentialEquations0).getDimension();
+    FirstOrderConverter firstOrderConverter0 = new FirstOrderConverter(secondOrderDifferentialEquations0);
+    try {
+        highamHall54Integrator0.integrate((FirstOrderDifferentialEquations) firstOrderConverter0, 0.0, doubleArray1, 0.0, doubleArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // 1 != 0
+        //
+        verifyException(""org.apache.commons.math3.ode.AbstractIntegrator"", e);
+    }
+}",1,
+project,0,test011,"public void test011() throws Throwable {
+    double[] doubleArray0 = new double[8];
+    HighamHall54Integrator highamHall54Integrator0 = new HighamHall54Integrator(0.0, 0.0, doubleArray0, doubleArray0);
+    SecondOrderDifferentialEquations secondOrderDifferentialEquations0 = mock(SecondOrderDifferentialEquations.class, new ViolatedAssumptionAnswer());
+    doReturn(5).when(secondOrderDifferentialEquations0).getDimension();
+    FirstOrderConverter firstOrderConverter0 = new FirstOrderConverter(secondOrderDifferentialEquations0);
+    try {
+        highamHall54Integrator0.integrate((FirstOrderDifferentialEquations) firstOrderConverter0, 0.0, doubleArray0, 3219.24015011664, doubleArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // 8 != 10
+        //
+        verifyException(""org.apache.commons.math3.ode.AbstractIntegrator"", e);
+    }
+}",1,
+project,0,test022,"public void test022() throws Throwable {
+    GillIntegrator gillIntegrator0 = new GillIntegrator(570.4101323738074);
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn(0.0, 0.0, 0.0, 0.0, 0.0).when(eventHandler0).g(anyDouble(), any(double[].class));
+    gillIntegrator0.addEventHandler(eventHandler0, 570.4101323738074, 570.4101323738074, 1017);
+    SecondOrderDifferentialEquations secondOrderDifferentialEquations0 = mock(SecondOrderDifferentialEquations.class, new ViolatedAssumptionAnswer());
+    doReturn(0).when(secondOrderDifferentialEquations0).getDimension();
+    FirstOrderConverter firstOrderConverter0 = new FirstOrderConverter(secondOrderDifferentialEquations0);
+    ExpandableStatefulODE expandableStatefulODE0 = new ExpandableStatefulODE(firstOrderConverter0);
+    // Undeclared exception!
+    gillIntegrator0.integrate(expandableStatefulODE0, 570.4101323738074);
+}",1,
+project,0,test033,"public void test033() throws Throwable {
+    double[] doubleArray0 = new double[0];
+    DormandPrince54Integrator dormandPrince54Integrator0 = new DormandPrince54Integrator((-220.8858634), (-220.8858634), doubleArray0, doubleArray0);
+    SecondOrderDifferentialEquations secondOrderDifferentialEquations0 = mock(SecondOrderDifferentialEquations.class, new ViolatedAssumptionAnswer());
+    doReturn(0).when(secondOrderDifferentialEquations0).getDimension();
+    FirstOrderConverter firstOrderConverter0 = new FirstOrderConverter(secondOrderDifferentialEquations0);
+    double double0 = dormandPrince54Integrator0.integrate((FirstOrderDifferentialEquations) firstOrderConverter0, (-220.8858634), doubleArray0, 0.0, doubleArray0);
+    assertEquals(0.0, double0, 0.01);
+}",1,
+project,0,test044,"public void test044() throws Throwable {
+    GraggBulirschStoerIntegrator graggBulirschStoerIntegrator0 = new GraggBulirschStoerIntegrator(1203.928542009299, 1203.928542009299, 1203.928542009299, Double.NaN);
+    graggBulirschStoerIntegrator0.setMaxEvaluations(0);
+    int int0 = graggBulirschStoerIntegrator0.getMaxEvaluations();
+    assertEquals(0, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test055,"public void test055() throws Throwable {
+    double[] doubleArray0 = new double[6];
+    DormandPrince54Integrator dormandPrince54Integrator0 = new DormandPrince54Integrator(0.0, 0.0, doubleArray0, doubleArray0);
+    double double0 = dormandPrince54Integrator0.getCurrentSignedStepsize();
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test066,"public void test066() throws Throwable {
+    MidpointIntegrator midpointIntegrator0 = new MidpointIntegrator((-1062.793099660106));
+    midpointIntegrator0.setMaxEvaluations(0);
+    SecondOrderDifferentialEquations secondOrderDifferentialEquations0 = mock(SecondOrderDifferentialEquations.class, new ViolatedAssumptionAnswer());
+    doReturn(0).when(secondOrderDifferentialEquations0).getDimension();
+    FirstOrderConverter firstOrderConverter0 = new FirstOrderConverter(secondOrderDifferentialEquations0);
+    double[] doubleArray0 = new double[0];
+    try {
+        midpointIntegrator0.integrate((FirstOrderDifferentialEquations) firstOrderConverter0, (-2884.68803), doubleArray0, 0.0, doubleArray0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // illegal state: maximal count (0) exceeded
+        //
+        verifyException(""org.apache.commons.math3.util.Incrementor$1"", e);
+    }
+}",1,
+project,0,test077,"public void test077() throws Throwable {
+    HighamHall54Integrator highamHall54Integrator0 = new HighamHall54Integrator(2596.669037036749, 2596.669037036749, 0.78125, 0.0);
+    SecondOrderDifferentialEquations secondOrderDifferentialEquations0 = mock(SecondOrderDifferentialEquations.class, new ViolatedAssumptionAnswer());
+    doReturn(0).when(secondOrderDifferentialEquations0).getDimension();
+    FirstOrderConverter firstOrderConverter0 = new FirstOrderConverter(secondOrderDifferentialEquations0);
+    // Undeclared exception!
+    try {
+        highamHall54Integrator0.integrate((FirstOrderDifferentialEquations) firstOrderConverter0, 0.0, (double[]) null, 0.0, (double[]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math3.ode.AbstractIntegrator"", e);
+    }
+}",1,
+project,0,test088,"public void test088() throws Throwable {
+    double[] doubleArray0 = new double[0];
+    GraggBulirschStoerIntegrator graggBulirschStoerIntegrator0 = new GraggBulirschStoerIntegrator(2.384185791015625E-4, (-421.461515), doubleArray0, doubleArray0);
+    SecondOrderDifferentialEquations secondOrderDifferentialEquations0 = mock(SecondOrderDifferentialEquations.class, new ViolatedAssumptionAnswer());
+    doReturn(0).when(secondOrderDifferentialEquations0).getDimension();
+    FirstOrderConverter firstOrderConverter0 = new FirstOrderConverter(secondOrderDifferentialEquations0);
+    // Undeclared exception!
+    try {
+        graggBulirschStoerIntegrator0.integrate((FirstOrderDifferentialEquations) firstOrderConverter0, (-421.461515), doubleArray0, (-1943.57583495), doubleArray0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 0
+        //
+        verifyException(""org.apache.commons.math3.ode.nonstiff.GraggBulirschStoerIntegrator"", e);
+    }
+}",1,
+project,0,test099,"public void test099() throws Throwable {
+    double[] doubleArray0 = new double[4];
+    DormandPrince853Integrator dormandPrince853Integrator0 = new DormandPrince853Integrator(0.0, (-1.0), doubleArray0, doubleArray0);
+    SecondOrderDifferentialEquations secondOrderDifferentialEquations0 = mock(SecondOrderDifferentialEquations.class, new ViolatedAssumptionAnswer());
+    doReturn(0).when(secondOrderDifferentialEquations0).getDimension();
+    FirstOrderConverter firstOrderConverter0 = new FirstOrderConverter(secondOrderDifferentialEquations0);
+    ExpandableStatefulODE expandableStatefulODE0 = new ExpandableStatefulODE(firstOrderConverter0);
+    try {
+        dormandPrince853Integrator0.integrate(expandableStatefulODE0, (-2848.829017));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // 0 != 4
+        //
+        verifyException(""org.apache.commons.math3.ode.nonstiff.AdaptiveStepsizeIntegrator"", e);
+    }
+}",0,
+project,0,test1010,"public void test1010() throws Throwable {
+    HighamHall54Integrator highamHall54Integrator0 = new HighamHall54Integrator(2481.1941896976573, 2481.1941896976573, 2481.1941896976573, 1.0);
+    // Undeclared exception!
+    try {
+        highamHall54Integrator0.integrate((ExpandableStatefulODE) null, 2481.1941896976573);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math3.ode.AbstractIntegrator"", e);
+    }
+}",1,
+project,0,test1111,"public void test1111() throws Throwable {
+    double[] doubleArray0 = new double[0];
+    GraggBulirschStoerIntegrator graggBulirschStoerIntegrator0 = new GraggBulirschStoerIntegrator(0.0, 0.0, doubleArray0, doubleArray0);
+    SecondOrderDifferentialEquations secondOrderDifferentialEquations0 = mock(SecondOrderDifferentialEquations.class, new ViolatedAssumptionAnswer());
+    doReturn(0).when(secondOrderDifferentialEquations0).getDimension();
+    FirstOrderConverter firstOrderConverter0 = new FirstOrderConverter(secondOrderDifferentialEquations0);
+    ExpandableStatefulODE expandableStatefulODE0 = new ExpandableStatefulODE(firstOrderConverter0);
+    // Undeclared exception!
+    try {
+        graggBulirschStoerIntegrator0.integrate(expandableStatefulODE0, 0.0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 0
+        //
+        verifyException(""org.apache.commons.math3.ode.nonstiff.GraggBulirschStoerIntegrator"", e);
+    }
+}",0,
+project,0,test1212,"public void test1212() throws Throwable {
+    GillIntegrator gillIntegrator0 = new GillIntegrator((-450.374));
+    gillIntegrator0.setMaxEvaluations(0);
+    double[] doubleArray0 = new double[0];
+    try {
+        gillIntegrator0.computeDerivatives(0, doubleArray0, doubleArray0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // illegal state: maximal count (0) exceeded
+        //
+        verifyException(""org.apache.commons.math3.util.Incrementor$1"", e);
+    }
+}",0,
+project,0,test1313,"public void test1313() throws Throwable {
+    AdamsBashforthIntegrator adamsBashforthIntegrator0 = new AdamsBashforthIntegrator(3, 2632.11502318578, 3, 3, 2632.11502318578);
+    SecondOrderDifferentialEquations secondOrderDifferentialEquations0 = mock(SecondOrderDifferentialEquations.class, new ViolatedAssumptionAnswer());
+    doReturn(0).when(secondOrderDifferentialEquations0).getDimension();
+    FirstOrderConverter firstOrderConverter0 = new FirstOrderConverter(secondOrderDifferentialEquations0);
+    ExpandableStatefulODE expandableStatefulODE0 = new ExpandableStatefulODE(firstOrderConverter0);
+    // Undeclared exception!
+    try {
+        adamsBashforthIntegrator0.integrate(expandableStatefulODE0, 2632.11502318578);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // matrix must have at least one column
+        //
+        verifyException(""org.apache.commons.math3.linear.Array2DRowRealMatrix"", e);
+    }
+}",0,
+project,0,test1414,"public void test1414() throws Throwable {
+    GraggBulirschStoerIntegrator graggBulirschStoerIntegrator0 = new GraggBulirschStoerIntegrator(5, 0, 505.29965, 4.450312892752409);
+    graggBulirschStoerIntegrator0.addStepHandler((StepHandler) null);
+    SecondOrderDifferentialEquations secondOrderDifferentialEquations0 = mock(SecondOrderDifferentialEquations.class, new ViolatedAssumptionAnswer());
+    doReturn(0).when(secondOrderDifferentialEquations0).getDimension();
+    FirstOrderConverter firstOrderConverter0 = new FirstOrderConverter(secondOrderDifferentialEquations0);
+    ExpandableStatefulODE expandableStatefulODE0 = new ExpandableStatefulODE(firstOrderConverter0);
+    // Undeclared exception!
+    try {
+        graggBulirschStoerIntegrator0.integrate(expandableStatefulODE0, (double) (-1211));
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math3.ode.AbstractIntegrator"", e);
+    }
+}",1,
+project,0,test1515,"public void test1515() throws Throwable {
+    GraggBulirschStoerIntegrator graggBulirschStoerIntegrator0 = new GraggBulirschStoerIntegrator(5, 0, 505.29965, 4.450312892752409);
+    graggBulirschStoerIntegrator0.setMaxEvaluations((-1211));
+    assertEquals(5.0, graggBulirschStoerIntegrator0.getMinStep(), 0.01);
+}",0,
+project,0,test1616,"public void test1616() throws Throwable {
+    double[] doubleArray0 = new double[1];
+    HighamHall54Integrator highamHall54Integrator0 = new HighamHall54Integrator((-3730.0862259082087), 0.0, doubleArray0, doubleArray0);
+    FixedStepHandler fixedStepHandler0 = mock(FixedStepHandler.class, new ViolatedAssumptionAnswer());
+    StepNormalizer stepNormalizer0 = new StepNormalizer(0.0, fixedStepHandler0);
+    highamHall54Integrator0.addStepHandler(stepNormalizer0);
+    assertEquals(""Higham-Hall 5(4)"", highamHall54Integrator0.getName());
+}",0,assertNotNull(highamHall54Integrator0.getName())
+project,0,test1717,"public void test1717() throws Throwable {
+    GillIntegrator gillIntegrator0 = new GillIntegrator((-450.374));
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    gillIntegrator0.addEventHandler(eventHandler0, 0.0, (-450.374), 0, (UnivariateSolver) null);
+    assertEquals(Double.NaN, gillIntegrator0.getCurrentStepStart(), 0.01);
+}",0,
+project,0,test1718,"public void test1718() throws Throwable {
+    GillIntegrator gillIntegrator0 = new GillIntegrator((-450.374));
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    gillIntegrator0.addEventHandler(eventHandler0, 0.0, (-450.374), 0, (UnivariateSolver) null);
+    assertEquals(Double.NaN, gillIntegrator0.getCurrentSignedStepsize(), 0.01);
+}",0,
+project,0,test1819,"public void test1819() throws Throwable {
+    ClassicalRungeKuttaIntegrator classicalRungeKuttaIntegrator0 = new ClassicalRungeKuttaIntegrator((-1.1270175653862835));
+    classicalRungeKuttaIntegrator0.clearEventHandlers();
+    assertEquals(Double.NaN, classicalRungeKuttaIntegrator0.getCurrentStepStart(), 0.01);
+}",0,
+project,0,test1820,"public void test1820() throws Throwable {
+    ClassicalRungeKuttaIntegrator classicalRungeKuttaIntegrator0 = new ClassicalRungeKuttaIntegrator((-1.1270175653862835));
+    classicalRungeKuttaIntegrator0.clearEventHandlers();
+    assertEquals(Double.NaN, classicalRungeKuttaIntegrator0.getCurrentSignedStepsize(), 0.01);
+}",0,
+project,0,test1921,"public void test1921() throws Throwable {
+    GillIntegrator gillIntegrator0 = new GillIntegrator((-450.374));
+    double[] doubleArray0 = new double[0];
+    // Undeclared exception!
+    try {
+        gillIntegrator0.computeDerivatives(0, doubleArray0, doubleArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test2022,"public void test2022() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    GraggBulirschStoerIntegrator graggBulirschStoerIntegrator0 = new GraggBulirschStoerIntegrator(1523.4801996885988, 1523.4801996885988, doubleArray0, doubleArray0);
+    SecondOrderDifferentialEquations secondOrderDifferentialEquations0 = mock(SecondOrderDifferentialEquations.class, new ViolatedAssumptionAnswer());
+    doReturn(1).when(secondOrderDifferentialEquations0).getDimension();
+    FirstOrderConverter firstOrderConverter0 = new FirstOrderConverter(secondOrderDifferentialEquations0);
+    try {
+        graggBulirschStoerIntegrator0.integrate((FirstOrderDifferentialEquations) firstOrderConverter0, 1523.4801996885988, doubleArray0, 1523.4801996885988, doubleArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // too small integration interval: length = 0
+        //
+        verifyException(""org.apache.commons.math3.ode.AbstractIntegrator"", e);
+    }
+}",1,
+project,0,test2123,"public void test2123() throws Throwable {
+    double[] doubleArray0 = new double[0];
+    DormandPrince54Integrator dormandPrince54Integrator0 = new DormandPrince54Integrator(0.0, 2260.9539330813764, doubleArray0, doubleArray0);
+    SecondOrderDifferentialEquations secondOrderDifferentialEquations0 = mock(SecondOrderDifferentialEquations.class, new ViolatedAssumptionAnswer());
+    doReturn(0).when(secondOrderDifferentialEquations0).getDimension();
+    FirstOrderConverter firstOrderConverter0 = new FirstOrderConverter(secondOrderDifferentialEquations0);
+    // Undeclared exception!
+    dormandPrince54Integrator0.integrate((FirstOrderDifferentialEquations) firstOrderConverter0, (-220.8858634), doubleArray0, 0.0, doubleArray0);
+}",1,
+project,0,test2224,"public void test2224() throws Throwable {
+    ThreeEighthesIntegrator threeEighthesIntegrator0 = new ThreeEighthesIntegrator(0.0);
+    SecondOrderDifferentialEquations secondOrderDifferentialEquations0 = mock(SecondOrderDifferentialEquations.class, new ViolatedAssumptionAnswer());
+    doReturn(0).when(secondOrderDifferentialEquations0).getDimension();
+    FirstOrderConverter firstOrderConverter0 = new FirstOrderConverter(secondOrderDifferentialEquations0);
+    double[] doubleArray0 = new double[0];
+    double[] doubleArray1 = new double[6];
+    try {
+        threeEighthesIntegrator0.integrate((FirstOrderDifferentialEquations) firstOrderConverter0, 474.0, doubleArray0, 110.2558, doubleArray1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // 6 != 0
+        //
+        verifyException(""org.apache.commons.math3.ode.AbstractIntegrator"", e);
+    }
+}",1,
+project,0,test2325,"public void test2325() throws Throwable {
+    GillIntegrator gillIntegrator0 = new GillIntegrator(570.4101323738074);
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn(570.4101323738074, 570.4101323738074, 570.4101323738074, 570.4101323738074, (-1829.963)).when(eventHandler0).g(anyDouble(), any(double[].class));
+    gillIntegrator0.addEventHandler(eventHandler0, 570.4101323738074, 570.4101323738074, 1017);
+    assertEquals(Double.NaN, gillIntegrator0.getCurrentSignedStepsize(), 0.01);
+}",0,
+project,0,test2326,"public void test2326() throws Throwable {
+    GillIntegrator gillIntegrator0 = new GillIntegrator(570.4101323738074);
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn(570.4101323738074, 570.4101323738074, 570.4101323738074, 570.4101323738074, (-1829.963)).when(eventHandler0).g(anyDouble(), any(double[].class));
+    gillIntegrator0.addEventHandler(eventHandler0, 570.4101323738074, 570.4101323738074, 1017);
+    assertEquals(Double.NaN, gillIntegrator0.getCurrentStepStart(), 0.01);
+}",0,
+project,0,test2327,"public void test2327() throws Throwable {
+    GillIntegrator gillIntegrator0 = new GillIntegrator(570.4101323738074);
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn(570.4101323738074, 570.4101323738074, 570.4101323738074, 570.4101323738074, (-1829.963)).when(eventHandler0).g(anyDouble(), any(double[].class));
+    gillIntegrator0.addEventHandler(eventHandler0, 570.4101323738074, 570.4101323738074, 1017);
+    SecondOrderDifferentialEquations secondOrderDifferentialEquations0 = mock(SecondOrderDifferentialEquations.class, new ViolatedAssumptionAnswer());
+    doReturn(0).when(secondOrderDifferentialEquations0).getDimension();
+    FirstOrderConverter firstOrderConverter0 = new FirstOrderConverter(secondOrderDifferentialEquations0);
+    double[] doubleArray0 = new double[0];
+    double double0 = gillIntegrator0.integrate((FirstOrderDifferentialEquations) firstOrderConverter0, (double) 1017, doubleArray0, (-1623.58756927), doubleArray0);
+    assertEquals((-1623.58756927), double0, 0.01);
+}",0,
+project,0,test2428,"public void test2428() throws Throwable {
+    double[] doubleArray0 = new double[7];
+    GraggBulirschStoerIntegrator graggBulirschStoerIntegrator0 = new GraggBulirschStoerIntegrator(0.0, (-193.6399867), doubleArray0, doubleArray0);
+    graggBulirschStoerIntegrator0.setMaxEvaluations(58);
+    assertEquals(Double.NaN, graggBulirschStoerIntegrator0.getCurrentStepStart(), 0.01);
+}",0,
+project,0,test2530,"public void test2530() throws Throwable {
+    EulerIntegrator eulerIntegrator0 = new EulerIntegrator(0.075);
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn(""5e~bUB;g"").when(eventHandler0).toString();
+    eulerIntegrator0.addEventHandler(eventHandler0, 0.0, 0.075, (-7));
+    Collection<EventHandler> collection0 = eulerIntegrator0.getEventHandlers();
+    assertEquals(Double.NaN, eulerIntegrator0.getCurrentSignedStepsize(), 0.01);
+}",0,
+project,0,test2531,"public void test2531() throws Throwable {
+    EulerIntegrator eulerIntegrator0 = new EulerIntegrator(0.075);
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn(""5e~bUB;g"").when(eventHandler0).toString();
+    eulerIntegrator0.addEventHandler(eventHandler0, 0.0, 0.075, (-7));
+    Collection<EventHandler> collection0 = eulerIntegrator0.getEventHandlers();
+    assertEquals(Double.NaN, eulerIntegrator0.getCurrentStepStart(), 0.01);
+}",0,
+project,0,test2632,"public void test2632() throws Throwable {
+    GillIntegrator gillIntegrator0 = new GillIntegrator((-450.374));
+    gillIntegrator0.getName();
+    assertEquals(Double.NaN, gillIntegrator0.getCurrentStepStart(), 0.01);
+}",0,
+project,0,test2633,"public void test2633() throws Throwable {
+    GillIntegrator gillIntegrator0 = new GillIntegrator((-450.374));
+    gillIntegrator0.getName();
+    assertEquals(Double.NaN, gillIntegrator0.getCurrentSignedStepsize(), 0.01);
+}",0,
+project,0,test2734,"public void test2734() throws Throwable {
+    GillIntegrator gillIntegrator0 = new GillIntegrator((-450.374));
+    gillIntegrator0.getStepHandlers();
+    assertEquals(Double.NaN, gillIntegrator0.getCurrentSignedStepsize(), 0.01);
+}",0,
+project,0,test2735,"public void test2735() throws Throwable {
+    GillIntegrator gillIntegrator0 = new GillIntegrator((-450.374));
+    gillIntegrator0.getStepHandlers();
+    assertEquals(Double.NaN, gillIntegrator0.getCurrentStepStart(), 0.01);
+}",0,
+project,0,test2836,"public void test2836() throws Throwable {
+    GillIntegrator gillIntegrator0 = new GillIntegrator(570.4101323738074);
+    double double0 = gillIntegrator0.getCurrentStepStart();
+    assertEquals(Double.NaN, gillIntegrator0.getCurrentSignedStepsize(), 0.01);
+}",0,
+project,0,test2837,"public void test2837() throws Throwable {
+    GillIntegrator gillIntegrator0 = new GillIntegrator(570.4101323738074);
+    double double0 = gillIntegrator0.getCurrentStepStart();
+    assertEquals(Double.NaN, double0, 0.01);
+}",0,
+project,0,test2938,"public void test2938() throws Throwable {
+    GillIntegrator gillIntegrator0 = new GillIntegrator(570.4101323738074);
+    int int0 = gillIntegrator0.getMaxEvaluations();
+    assertEquals(Integer.MAX_VALUE, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test2939,"public void test2939() throws Throwable {
+    GillIntegrator gillIntegrator0 = new GillIntegrator(570.4101323738074);
+    int int0 = gillIntegrator0.getMaxEvaluations();
+    assertEquals(Double.NaN, gillIntegrator0.getCurrentSignedStepsize(), 0.01);
+}",0,
+project,0,test2940,"public void test2940() throws Throwable {
+    GillIntegrator gillIntegrator0 = new GillIntegrator(570.4101323738074);
+    int int0 = gillIntegrator0.getMaxEvaluations();
+    assertEquals(Double.NaN, gillIntegrator0.getCurrentStepStart(), 0.01);
+}",0,
+project,0,test3041,"public void test3041() throws Throwable {
+    GillIntegrator gillIntegrator0 = new GillIntegrator((-450.374));
+    gillIntegrator0.getEvaluations();
+    assertEquals(Double.NaN, gillIntegrator0.getCurrentSignedStepsize(), 0.01);
+}",0,
+project,0,test3042,"public void test3042() throws Throwable {
+    GillIntegrator gillIntegrator0 = new GillIntegrator((-450.374));
+    gillIntegrator0.getEvaluations();
+    assertEquals(Double.NaN, gillIntegrator0.getCurrentStepStart(), 0.01);
+}",0,
+project,0,test3143,"public void test3143() throws Throwable {
+    DormandPrince54Integrator dormandPrince54Integrator0 = new DormandPrince54Integrator((-9.147934308113573), (-9.147934308113573), (-3005.0), (-3005.0));
+    double double0 = dormandPrince54Integrator0.getCurrentSignedStepsize();
+    assertEquals(9.147934308113573, double0, 0.01);
+}",0,
+project,0,test3244,"public void test3244() throws Throwable {
+    MidpointIntegrator midpointIntegrator0 = new MidpointIntegrator((-1062.793099660106));
+    midpointIntegrator0.clearStepHandlers();
+    assertEquals(Double.NaN, midpointIntegrator0.getCurrentSignedStepsize(), 0.01);
+}",0,
+project,0,test3245,"public void test3245() throws Throwable {
+    MidpointIntegrator midpointIntegrator0 = new MidpointIntegrator((-1062.793099660106));
+    midpointIntegrator0.clearStepHandlers();
+    assertEquals(Double.NaN, midpointIntegrator0.getCurrentStepStart(), 0.01);
+}",0,

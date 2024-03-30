@@ -1,0 +1,117 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    TypeParser typeParser0 = new TypeParser(typeFactory0);
+    try {
+        typeParser0.parse(""[I<t1+;pA/U!{"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Failed to parse type '[I<t1+;pA/U!{' (remaining: ''): Can not locate class 't1+;pA/U!{', problem: t1+;pA/U!{
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeParser"", e);
+    }
+}",1,
+project,0,test011,"public void test011() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    TypeParser.MyTokenizer typeParser_MyTokenizer0 = new TypeParser.MyTokenizer(""com.fasterxml.jackson.databind.type.TypeParser"");
+    typeParser_MyTokenizer0._pushbackToken = ""com.fasterxml.jackson.databind.type.TypeParser"";
+    TypeParser typeParser0 = new TypeParser(typeFactory0);
+    try {
+        typeParser0.parseTypes(typeParser_MyTokenizer0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Failed to parse type 'com.fasterxml.jackson.databind.type.TypeParser' (remaining: ''): Unexpected token 'com.fasterxml.jackson.databind.type.TypeParser', expected ',' or '>')
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeParser"", e);
+    }
+}",0,
+project,0,test022,"public void test022() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    ClassLoader classLoader0 = ClassLoader.getSystemClassLoader();
+    TypeFactory typeFactory1 = typeFactory0.withClassLoader(classLoader0);
+    assertNotSame(typeFactory0, typeFactory1);
+}",0,
+project,0,test033,"public void test033() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    TypeParser typeParser0 = new TypeParser(typeFactory0);
+    TypeParser typeParser1 = typeParser0.withFactory(typeFactory0);
+    assertSame(typeParser1, typeParser0);
+}",0,
+project,0,test044,"public void test044() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    TypeParser typeParser0 = new TypeParser(typeFactory0);
+    JavaType javaType0 = typeParser0.parse(""com.fasterxml.jackson.databind.type.TypeParser"");
+    assertTrue(javaType0.isConcrete());
+}",0,assertFalse(javaType0.isConcrete())
+project,0,test055,"public void test055() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    TypeParser typeParser0 = new TypeParser(typeFactory0);
+    try {
+        typeParser0.parse("""");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Failed to parse type '' (remaining: ''): Unexpected end-of-string
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeParser"", e);
+    }
+}",1,
+project,0,test066,"public void test066() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    TypeParser typeParser0 = new TypeParser(typeFactory0);
+    TypeParser.MyTokenizer typeParser_MyTokenizer0 = new TypeParser.MyTokenizer(""aZ'RU"");
+    typeParser_MyTokenizer0.nextElement();
+    try {
+        typeParser0.parseTypes(typeParser_MyTokenizer0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Failed to parse type 'aZ'RU' (remaining: ''): Unexpected end-of-string
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeParser"", e);
+    }
+}",0,
+project,0,test077,"public void test077() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    TypeParser typeParser0 = new TypeParser(typeFactory0);
+    TypeParser.MyTokenizer typeParser_MyTokenizer0 = new TypeParser.MyTokenizer(""com.fasterxml.jackson.databind.type.TypeParser"");
+    try {
+        typeParser0.parseTypes(typeParser_MyTokenizer0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Failed to parse type 'com.fasterxml.jackson.databind.type.TypeParser' (remaining: ''): Unexpected end-of-string
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeParser"", e);
+    }
+}",0,
+project,0,test099,"public void test099() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    TypeParser.MyTokenizer typeParser_MyTokenizer0 = new TypeParser.MyTokenizer("", setter: "");
+    typeParser_MyTokenizer0._pushbackToken = ""byte"";
+    TypeParser typeParser0 = new TypeParser(typeFactory0);
+    try {
+        typeParser0.parseTypes(typeParser_MyTokenizer0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Failed to parse type ', setter: ' (remaining: ''): Can not locate class 'setter:', problem: Class 'setter:.class' should be in target project, but could not be found!
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeParser"", e);
+    }
+}",0,
+project,0,test1010,"public void test1010() throws Throwable {
+    TypeParser typeParser0 = new TypeParser((TypeFactory) null);
+    // Undeclared exception!
+    try {
+        typeParser0.parse(""U"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeParser"", e);
+    }
+}",1,

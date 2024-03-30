@@ -1,0 +1,324 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    HashMap<String, FormatFactory> hashMap0 = new HashMap<String, FormatFactory>();
+    ExtendedMessageFormat extendedMessageFormat0 = null;
+    try {
+        extendedMessageFormat0 = new ExtendedMessageFormat(""b6;C^v*{0 "", hashMap0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid format argument index at position 8: 
+        //
+        verifyException(""org.apache.commons.lang3.text.ExtendedMessageFormat"", e);
+    }
+}",1,
+project,0,test011,"public void test011() throws Throwable {
+    HashMap<String, FormatFactory> hashMap0 = new HashMap<String, FormatFactory>();
+    ExtendedMessageFormat extendedMessageFormat0 = null;
+    try {
+        extendedMessageFormat0 = new ExtendedMessageFormat(""79'nT<U(1uE7{+]["", hashMap0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid format argument index at position 13: +
+        //
+        verifyException(""org.apache.commons.lang3.text.ExtendedMessageFormat"", e);
+    }
+}",1,
+project,0,test022,"public void test022() throws Throwable {
+    ExtendedMessageFormat extendedMessageFormat0 = new ExtendedMessageFormat(""/"");
+    String string0 = extendedMessageFormat0.toPattern();
+    assertEquals(""/"", string0);
+}",0,
+project,0,test033,"public void test033() throws Throwable {
+    HashMap<String, FormatFactory> hashMap0 = new HashMap<String, FormatFactory>();
+    ExtendedMessageFormat extendedMessageFormat0 = new ExtendedMessageFormat(""-!(v"", hashMap0);
+    // Undeclared exception!
+    try {
+        extendedMessageFormat0.applyPattern((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test044,"public void test044() throws Throwable {
+    ExtendedMessageFormat extendedMessageFormat0 = new ExtendedMessageFormat(""Z&x+C.H}Pqj}}5E"");
+    // Undeclared exception!
+    try {
+        extendedMessageFormat0.applyPattern("">T5Q{`F`&<mi5"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unmatched braces in the pattern.
+        //
+        verifyException(""java.text.MessageFormat"", e);
+    }
+}",0,
+project,0,test055,"public void test055() throws Throwable {
+    ExtendedMessageFormat extendedMessageFormat0 = null;
+    try {
+        extendedMessageFormat0 = new ExtendedMessageFormat((String) null, (Map<String, ? extends FormatFactory>) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test066,"public void test066() throws Throwable {
+    ExtendedMessageFormat extendedMessageFormat0 = null;
+    try {
+        extendedMessageFormat0 = new ExtendedMessageFormat(""mZ{gPq"", (Map<String, ? extends FormatFactory>) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unmatched braces in the pattern.
+        //
+        verifyException(""java.text.MessageFormat"", e);
+    }
+}",1,
+project,0,test077,"public void test077() throws Throwable {
+    HashMap<String, FormatFactory> hashMap0 = new HashMap<String, FormatFactory>();
+    ExtendedMessageFormat extendedMessageFormat0 = null;
+    try {
+        extendedMessageFormat0 = new ExtendedMessageFormat(""`P2:,BT%)r TUIkegA{"", hashMap0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test088,"public void test088() throws Throwable {
+    Locale locale0 = Locale.ITALY;
+    ExtendedMessageFormat extendedMessageFormat0 = null;
+    try {
+        extendedMessageFormat0 = new ExtendedMessageFormat((String) null, locale0, (Map<String, ? extends FormatFactory>) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test099,"public void test099() throws Throwable {
+    Locale locale0 = Locale.FRANCE;
+    ExtendedMessageFormat extendedMessageFormat0 = null;
+    try {
+        extendedMessageFormat0 = new ExtendedMessageFormat(""kH{,-}\""jpGIED/"", locale0, (Map<String, ? extends FormatFactory>) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // can't parse argument number:
+        //
+        verifyException(""java.text.MessageFormat"", e);
+    }
+}",0,
+project,0,test1010,"public void test1010() throws Throwable {
+    HashMap<String, FormatFactory> hashMap0 = new HashMap<String, FormatFactory>();
+    Locale locale0 = Locale.GERMANY;
+    ExtendedMessageFormat extendedMessageFormat0 = null;
+    try {
+        extendedMessageFormat0 = new ExtendedMessageFormat(""W^>#&s9LcA_-#0){"", locale0, hashMap0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test1111,"public void test1111() throws Throwable {
+    Locale locale0 = Locale.PRC;
+    ExtendedMessageFormat extendedMessageFormat0 = null;
+    try {
+        extendedMessageFormat0 = new ExtendedMessageFormat((String) null, locale0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test1212,"public void test1212() throws Throwable {
+    ExtendedMessageFormat extendedMessageFormat0 = null;
+    try {
+        extendedMessageFormat0 = new ExtendedMessageFormat(""rQ]69>0KK$J{YU2%"", (Locale) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unmatched braces in the pattern.
+        //
+        verifyException(""java.text.MessageFormat"", e);
+    }
+}",0,
+project,0,test1313,"public void test1313() throws Throwable {
+    ExtendedMessageFormat extendedMessageFormat0 = null;
+    try {
+        extendedMessageFormat0 = new ExtendedMessageFormat((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test1414,"public void test1414() throws Throwable {
+    ExtendedMessageFormat extendedMessageFormat0 = null;
+    try {
+        extendedMessageFormat0 = new ExtendedMessageFormat(""1:{`^"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unmatched braces in the pattern.
+        //
+        verifyException(""java.text.MessageFormat"", e);
+    }
+}",0,
+project,0,test1515,"public void test1515() throws Throwable {
+    HashMap<String, FormatFactory> hashMap0 = new HashMap<String, FormatFactory>();
+    ExtendedMessageFormat extendedMessageFormat0 = null;
+    try {
+        extendedMessageFormat0 = new ExtendedMessageFormat(""b6;C^v*{0 "", hashMap0);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",1,
+project,0,test1616,"public void test1616() throws Throwable {
+    HashMap<String, FormatFactory> hashMap0 = new HashMap<String, FormatFactory>();
+    ExtendedMessageFormat extendedMessageFormat0 = new ExtendedMessageFormat(""n!+;^v(A{00}"", hashMap0);
+    extendedMessageFormat0.applyPattern(""n!+;^v(A{00}"");
+    assertEquals(""n!+;^v(A{0}"", extendedMessageFormat0.toPattern());
+}",0,assertNotNull(extendedMessageFormat0.toPattern())
+project,0,test1717,"public void test1717() throws Throwable {
+    HashMap<String, FormatFactory> hashMap0 = new HashMap<String, FormatFactory>();
+    ExtendedMessageFormat extendedMessageFormat0 = new ExtendedMessageFormat(""VRplBWKp#D"", hashMap0);
+    // Undeclared exception!
+    try {
+        extendedMessageFormat0.applyPattern(""iD'K?bn'aYdH3!{"");
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test1818,"public void test1818() throws Throwable {
+    Locale locale0 = Locale.CHINESE;
+    ExtendedMessageFormat extendedMessageFormat0 = new ExtendedMessageFormat(""09(#(_5$50![#K.lmr7"", locale0);
+    extendedMessageFormat0.applyPattern(""!|6e#1J"");
+    assertEquals(""!|6e#1J"", extendedMessageFormat0.toPattern());
+}",0,assertNotNull(extendedMessageFormat0.toPattern())
+project,0,test1919,"public void test1919() throws Throwable {
+    Locale locale0 = Locale.FRANCE;
+    HashMap<String, FormatFactory> hashMap0 = new HashMap<String, FormatFactory>();
+    ExtendedMessageFormat extendedMessageFormat0 = null;
+    try {
+        extendedMessageFormat0 = new ExtendedMessageFormat(""ks{,-}\""jpGIED/"", locale0, hashMap0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid format argument index at position 3: ,
+        //
+        verifyException(""org.apache.commons.lang3.text.ExtendedMessageFormat"", e);
+    }
+}",0,
+project,0,test2020,"public void test2020() throws Throwable {
+    Locale locale0 = Locale.FRENCH;
+    HashMap<String, FormatFactory> hashMap0 = new HashMap<String, FormatFactory>();
+    ExtendedMessageFormat extendedMessageFormat0 = null;
+    try {
+        extendedMessageFormat0 = new ExtendedMessageFormat(""b6;C^v*{0 "", locale0, hashMap0);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",0,
+project,0,test2121,"public void test2121() throws Throwable {
+    HashMap<String, FormatFactory> hashMap0 = new HashMap<String, FormatFactory>();
+    ExtendedMessageFormat extendedMessageFormat0 = null;
+    try {
+        extendedMessageFormat0 = new ExtendedMessageFormat(""nb6;C^v*{00"", hashMap0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unterminated format element at position 9
+        //
+        verifyException(""org.apache.commons.lang3.text.ExtendedMessageFormat"", e);
+    }
+}",0,
+project,0,test2222,"public void test2222() throws Throwable {
+    HashMap<String, FormatFactory> hashMap0 = new HashMap<String, FormatFactory>();
+    ExtendedMessageFormat extendedMessageFormat0 = new ExtendedMessageFormat(""org.apache.commons.lang3.text.ExtendedMessageFormat"", hashMap0);
+    // Undeclared exception!
+    try {
+        extendedMessageFormat0.applyPattern(""jG<*#~<!+2DYQ*g/{O"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid format argument index at position 17: O
+        //
+        verifyException(""org.apache.commons.lang3.text.ExtendedMessageFormat"", e);
+    }
+}",0,
+project,0,test2323,"public void test2323() throws Throwable {
+    ExtendedMessageFormat extendedMessageFormat0 = new ExtendedMessageFormat("""");
+    // Undeclared exception!
+    try {
+        extendedMessageFormat0.setFormatByArgumentIndex((-1710), extendedMessageFormat0);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang3.text.ExtendedMessageFormat"", e);
+    }
+}",1,
+project,0,test2424,"public void test2424() throws Throwable {
+    Locale locale0 = Locale.TAIWAN;
+    HashMap<String, FormatFactory> hashMap0 = new HashMap<String, FormatFactory>();
+    ExtendedMessageFormat extendedMessageFormat0 = new ExtendedMessageFormat(""''"", locale0, hashMap0);
+    // Undeclared exception!
+    try {
+        extendedMessageFormat0.setFormats((Format[]) null);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang3.text.ExtendedMessageFormat"", e);
+    }
+}",1,
+project,0,test2525,"public void test2525() throws Throwable {
+    ExtendedMessageFormat extendedMessageFormat0 = new ExtendedMessageFormat("")dfmbSqvb9b:dxf"");
+    Format[] formatArray0 = new Format[2];
+    // Undeclared exception!
+    try {
+        extendedMessageFormat0.setFormatsByArgumentIndex(formatArray0);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang3.text.ExtendedMessageFormat"", e);
+    }
+}",1,
+project,0,test2626,"public void test2626() throws Throwable {
+    HashMap<String, FormatFactory> hashMap0 = new HashMap<String, FormatFactory>();
+    ExtendedMessageFormat extendedMessageFormat0 = new ExtendedMessageFormat(""n!+l^vA{ 0}"", hashMap0);
+    // Undeclared exception!
+    try {
+        extendedMessageFormat0.setFormat(3062, extendedMessageFormat0);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang3.text.ExtendedMessageFormat"", e);
+    }
+}",1,
+project,0,test2727,"public void test2727() throws Throwable {
+    ExtendedMessageFormat extendedMessageFormat0 = new ExtendedMessageFormat("""");
+    String string0 = extendedMessageFormat0.toPattern();
+    assertEquals("""", string0);
+}",0,assertNotNull(string0)

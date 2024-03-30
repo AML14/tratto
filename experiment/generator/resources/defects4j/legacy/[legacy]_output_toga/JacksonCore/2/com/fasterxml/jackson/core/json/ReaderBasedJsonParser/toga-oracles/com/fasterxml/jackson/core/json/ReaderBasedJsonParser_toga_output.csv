@@ -1,0 +1,1500 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    StringReader stringReader0 = new StringReader(""Illegal character (code 0x"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 73, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0._handleOddValue(73);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unrecognized token 'IIllegal': was expecting
+        //  at [Source: com.fasterxml.jackson.core.util.BufferRecycler@0000000007; line: 1, column: 8]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",0,
+project,0,test011,"public void test011() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    StringReader stringReader0 = new StringReader(""': was expecting "");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0._skipString();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected end-of-input: was expecting closing quote for a string value
+        //  at [Source: com.fasterxml.jackson.core.util.BufferRecycler@0000000008; line: 1, column: 35]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",0,
+project,0,test022,"public void test022() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, ""VR(-V!p`-L^+z4`+}#v"", false);
+    StringReader stringReader0 = new StringReader(""VR(-V!p`-L^+z4`+}#v"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0._handleApos();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected end-of-input: was expecting closing quote for a string value
+        //  at [Source: java.lang.String@0000000009; line: 1, column: 39]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",0,
+project,0,test033,"public void test033() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, ""M%>[y:*%H"", false);
+    StringReader stringReader0 = new StringReader(""M%>[y:*%H"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0._parseAposName();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected end-of-input: was expecting closing ''' for name
+        //  at [Source: java.lang.String@0000000010; line: 1, column: 19]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",0,
+project,0,test044,"public void test044() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, "":Uhxdjbv"", true);
+    StringReader stringReader0 = new StringReader("":Uhxdjbv"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    stringReader0.read();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    char[] charArray0 = new char[7];
+    stringReader0.read(charArray0);
+    try {
+        readerBasedJsonParser0.nextLongValue(777L);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected character ((CTRL-CHAR, code 127)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+        //  at [Source: java.lang.String@0000000011; line: 1, column: 2]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",0,
+project,0,test055,"public void test055() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""OBJECT"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    readerBasedJsonParser0._closeInput();
+    assertNull(readerBasedJsonParser0.getCurrentName());
+}",0,assertNotNull(readerBasedJsonParser0.getCurrentName())
+project,0,test066,"public void test066() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""Failed to decode VALUE_STRING as bas,64 ("");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ByteBuffer byteBuffer0 = ByteBuffer.allocateDirect(2000);
+    CharBuffer charBuffer0 = byteBuffer0.asCharBuffer();
+    stringReader0.read(charBuffer0);
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, (-2848), stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    readerBasedJsonParser0.nextLongValue(0L);
+    assertTrue(readerBasedJsonParser0.isClosed());
+}",0,assertTrue(readerBasedJsonParser0.isClosed())
+project,0,test077,"public void test077() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 1104, (Reader) null, objectCodec0, charsToNameCanonicalizer0);
+    boolean boolean0 = readerBasedJsonParser0.loadMore();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test088,"public void test088() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    StringReader stringReader0 = new StringReader(""l9"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    String string0 = readerBasedJsonParser0.getValueAsString((String) null);
+    assertNull(string0);
+}",0,assertNotNull(string0)
+project,0,test099,"public void test099() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader("""");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    String string0 = readerBasedJsonParser0.getValueAsString("""");
+    assertEquals("""", string0);
+}",0,assertNotNull(string0)
+project,0,test1010,"public void test1010() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader("" zZBACc*"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, (-2600), stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    char char0 = readerBasedJsonParser0.getNextChar("" zZBACc*"");
+    assertEquals(' ', char0);
+}",0,assertNotNull(char0)
+project,0,test1111,"public void test1111() throws Throwable {
+    StringReader stringReader0 = new StringReader(""0ew#"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, objectCodec0, true);
+    ObjectCodec objectCodec1 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 58, stringReader0, objectCodec1, charsToNameCanonicalizer0);
+    char char0 = readerBasedJsonParser0.getNextChar(""0ew#"");
+    assertEquals('0', char0);
+}",0,assertNotNull(char0)
+project,0,test1212,"public void test1212() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, """", false);
+    StringReader stringReader0 = new StringReader("""");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2125, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    readerBasedJsonParser0.nextTextValue();
+    readerBasedJsonParser0.getInputSource();
+    assertTrue(readerBasedJsonParser0.isClosed());
+}",0,assertTrue(readerBasedJsonParser0.isClosed())
+project,0,test1313,"public void test1313() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, ""VR(-V!p`-L^+z4`+}#v"", false);
+    StringReader stringReader0 = new StringReader(""VR(-V!p`-L^+z4`+}#v"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    readerBasedJsonParser0.getNextChar(""uUW7Cq]lCp-"");
+    JsonToken jsonToken0 = readerBasedJsonParser0._parseNumber(33);
+    assertTrue(jsonToken0.isNumeric());
+}",1,
+project,0,test1414,"public void test1414() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""Non-standard token 'NaN': enable JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS to allow"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 126, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    String string0 = readerBasedJsonParser0._parseAposName();
+    assertEquals(""Non-standard token "", string0);
+}",0,
+project,0,test1515,"public void test1515() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""^4?cg'r[S.j2Nq"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    readerBasedJsonParser0._decodeEscaped();
+    char char0 = readerBasedJsonParser0._decodeEscaped();
+    assertEquals('4', char0);
+}",0,
+project,0,test1616,"public void test1616() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, ""NaN"", true);
+    StringReader stringReader0 = new StringReader(""4Z6yB)PM{?>1Dj:"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    readerBasedJsonParser0._releaseBuffers();
+    // Undeclared exception!
+    try {
+        readerBasedJsonParser0.nextToken();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test1717,"public void test1717() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    StringReader stringReader0 = new StringReader(""': was expecting "");
+    stringReader0.close();
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0.nextLongValue(33);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream closed
+        //
+        verifyException(""java.io.StringReader"", e);
+    }
+}",0,
+project,0,test1818,"public void test1818() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    StringReader stringReader0 = new StringReader(""com.fasterxml.jackson.core.TreeCodec"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    readerBasedJsonParser0._releaseBuffers();
+    // Undeclared exception!
+    try {
+        readerBasedJsonParser0.nextIntValue((-1659));
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test1919,"public void test1919() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    StringReader stringReader0 = new StringReader(""g(nZ&kh(h0-QI="");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0.nextIntValue(9);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unrecognized token 'g': was expecting
+        //  at [Source: com.fasterxml.jackson.core.util.BufferRecycler@0000000012; line: 1, column: 2]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",0,
+project,0,test2020,"public void test2020() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 1104, (Reader) null, objectCodec0, charsToNameCanonicalizer0);
+    // Undeclared exception!
+    try {
+        readerBasedJsonParser0.nextBooleanValue();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.json.ReaderBasedJsonParser"", e);
+    }
+}",0,
+project,0,test2121,"public void test2121() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, "":Uhxdjbv"", false);
+    StringReader stringReader0 = new StringReader("":Uhxdjbv"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    readerBasedJsonParser0._releaseBuffers();
+    // Undeclared exception!
+    try {
+        readerBasedJsonParser0.loadMore();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test2222,"public void test2222() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""m/Fby#QZC/nFa.Hvj_"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    stringReader0.close();
+    try {
+        readerBasedJsonParser0.loadMore();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream closed
+        //
+        verifyException(""java.io.StringReader"", e);
+    }
+}",0,
+project,0,test2323,"public void test2323() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""i8z2/__"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 296, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    readerBasedJsonParser0._releaseBuffers();
+    // Undeclared exception!
+    try {
+        readerBasedJsonParser0.getNextChar(""i8z2/__"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test2424,"public void test2424() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, ""VR(-V!p`-L^+z4`+}#v"", false);
+    StringReader stringReader0 = new StringReader(""VR(-V!p`-L^+z4`+}#v"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    stringReader0.close();
+    try {
+        readerBasedJsonParser0.getNextChar(""uUW7Cq]lCp-"");
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream closed
+        //
+        verifyException(""java.io.StringReader"", e);
+    }
+}",0,
+project,0,test2525,"public void test2525() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""i8z2/__"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 296, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    readerBasedJsonParser0._releaseBuffers();
+    // Undeclared exception!
+    try {
+        readerBasedJsonParser0._skipString();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test2626,"public void test2626() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, ""rt?jlWqx_x_~"", true);
+    StringReader stringReader0 = new StringReader(""rt?jlWqx_x_~"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    // Undeclared exception!
+    try {
+        readerBasedJsonParser0._reportInvalidToken((String) null, ""rt?jlWqx_x_~"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test2727,"public void test2727() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, (Object) null, true);
+    StringReader stringReader0 = new StringReader(""$h$"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 102, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0._reportInvalidToken(""_Idvf k"", ""$h$"");
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unrecognized token '_Idvf k$h$': was expecting
+        //  at [Source: UNKNOWN; line: 1, column: 7]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",1,
+project,0,test2828,"public void test2828() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, """", false);
+    StringReader stringReader0 = new StringReader("""");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 0, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    readerBasedJsonParser0.nextIntValue(593);
+    // Undeclared exception!
+    try {
+        readerBasedJsonParser0._parseNumber(660);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.json.ReaderBasedJsonParser"", e);
+    }
+}",0,
+project,0,test2929,"public void test2929() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, (Object) null, false);
+    StringReader stringReader0 = new StringReader(""maybe a (non-standard) comment? (not recognized as one since Feature 'ALLOW_COMMENTS' not enabled for parser)"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, (-2105), stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0._parseName(2000);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected character ('\u07D0' (code 2000 / 0x7d0)): was expecting double-quote to start field name
+        //  at [Source: UNKNOWN; line: 1, column: 1]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",1,
+project,0,test3030,"public void test3030() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, """", false);
+    StringReader stringReader0 = new StringReader(""+brY,WVp0pa,'b"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2125, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    readerBasedJsonParser0._releaseBuffers();
+    // Undeclared exception!
+    try {
+        readerBasedJsonParser0._parseAposName();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test3131,"public void test3131() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""Infinity"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    // Undeclared exception!
+    try {
+        readerBasedJsonParser0._matchToken((String) null, 2000);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.json.ReaderBasedJsonParser"", e);
+    }
+}",1,
+project,0,test3232,"public void test3232() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""5F+:E_0INvqf81dB;"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, (-2099), stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    // Undeclared exception!
+    try {
+        readerBasedJsonParser0._handleOddName((-2099));
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -2099
+        //
+        verifyException(""com.fasterxml.jackson.core.json.ReaderBasedJsonParser"", e);
+    }
+}",1,
+project,0,test3333,"public void test3333() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""5F+:E_0INvqf81dB;"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    stringReader0.close();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 127, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0._handleOddName(127);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream closed
+        //
+        verifyException(""java.io.StringReader"", e);
+    }
+}",1,
+project,0,test3434,"public void test3434() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, ""FLOAT"", false);
+    StringReader stringReader0 = new StringReader(""{EuF,"");
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 0, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0._handleInvalidNumberStart(43, true);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected character ('+' (code 43)) in numeric value: expected digit (0-9) to follow minus sign, for valid numeric value
+        //  at [Source: java.lang.String@0000000013; line: 1, column: 1]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",1,
+project,0,test3535,"public void test3535() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, ""VR(-V!p`-L^+z4`+}#v"", false);
+    StringReader stringReader0 = new StringReader(""VR(-V!p`-L^+z4`+}#v"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0._finishString2();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected end-of-input: was expecting closing quote for a string value
+        //  at [Source: java.lang.String@0000000014; line: 1, column: 39]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",0,
+project,0,test3636,"public void test3636() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""^4?cg'r[S.j2Nq"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    readerBasedJsonParser0._releaseBuffers();
+    // Undeclared exception!
+    try {
+        readerBasedJsonParser0._decodeEscaped();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test3737,"public void test3737() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    StringReader stringReader0 = new StringReader(""BPH+jQOno],+t:3"");
+    stringReader0.close();
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0._decodeEscaped();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream closed
+        //
+        verifyException(""java.io.StringReader"", e);
+    }
+}",0,
+project,0,test4040,"public void test4040() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, Integer.MAX_VALUE, (Reader) null, objectCodec0, charsToNameCanonicalizer0);
+    readerBasedJsonParser0.nextToken();
+    assertTrue(readerBasedJsonParser0.isClosed());
+}",0,assertTrue(readerBasedJsonParser0.isClosed())
+project,0,test4141,"public void test4141() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""Non-standard token 'NaN': enable JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS to allow"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    doReturn((String) null).when(objectCodec0).toString();
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 126, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    ObjectCodec objectCodec1 = readerBasedJsonParser0.getCodec();
+    assertSame(objectCodec1, objectCodec0);
+}",0,
+project,0,test4242,"public void test4242() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    Object object0 = new Object();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, object0, false);
+    StringReader stringReader0 = new StringReader(""WRITE_CONCAT_BUFFER"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    readerBasedJsonParser0.close();
+    assertFalse(readerBasedJsonParser0.hasCurrentToken());
+}",0,assertFalse(readerBasedJsonParser0.hasCurrentToken())
+project,0,test4343,"public void test4343() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    StringReader stringReader0 = new StringReader(""O"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 0, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0._reportInvalidToken("""");
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unrecognized token 'O': was expecting
+        //  at [Source: com.fasterxml.jackson.core.util.BufferRecycler@0000000015; line: 1, column: 3]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",0,
+project,0,test4444,"public void test4444() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""=Bo9qZ`J}ywF"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 73, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    // Undeclared exception!
+    try {
+        readerBasedJsonParser0._decodeBase64((Base64Variant) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.json.ReaderBasedJsonParser"", e);
+    }
+}",0,
+project,0,test4545,"public void test4545() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, "": was expecting closing '"", false);
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, (-140), (Reader) null, objectCodec0, charsToNameCanonicalizer0);
+    // Undeclared exception!
+    try {
+        readerBasedJsonParser0._matchToken(""vu"", 10);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",1,
+project,0,test4646,"public void test4646() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    Object object0 = new Object();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, object0, true);
+    StringReader stringReader0 = new StringReader(""km,-HymY7xiqJagA7"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 774, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0._matchToken(""km,-HymY7xiqJagA7"", 11);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unrecognized token 'km,-HymY7xkm': was expecting
+        //  at [Source: java.lang.Object@0000000016; line: 1, column: 4]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",0,
+project,0,test4747,"public void test4747() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader("""");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 0, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0._decodeEscaped();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected end-of-input in character escape sequence
+        //  at [Source: com.fasterxml.jackson.core.util.BufferRecycler@0000000017; line: 1, column: 1]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",0,
+project,0,test4848,"public void test4848() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    BufferRecycler.CharBufferType bufferRecycler_CharBufferType0 = BufferRecycler.CharBufferType.CONCAT_BUFFER;
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler_CharBufferType0, false);
+    StringReader stringReader0 = new StringReader(""/"");
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2122, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0.nextLongValue((-1408L));
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected end-of-input in a comment
+        //  at [Source: com.fasterxml.jackson.core.util.BufferRecycler$CharBufferType@0000000018; line: 1, column: 3]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",1,
+project,0,test4949,"public void test4949() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    StringReader stringReader0 = new StringReader("" #L[{"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 1, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0.nextTextValue();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected character ('#' (code 35)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+        //  at [Source: com.fasterxml.jackson.core.util.BufferRecycler@0000000019; line: 1, column: 3]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",0,
+project,0,test5050,"public void test5050() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    StringReader stringReader0 = new StringReader(""/"");
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 33, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0.nextTextValue();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected character ('/' (code 47)): maybe a (non-standard) comment? (not recognized as one since Feature 'ALLOW_COMMENTS' not enabled for parser)
+        //  at [Source: com.fasterxml.jackson.core.util.BufferRecycler@0000000020; line: 1, column: 2]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",0,
+project,0,test5151,"public void test5151() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, (Reader) null, (ObjectCodec) null, charsToNameCanonicalizer0);
+    readerBasedJsonParser0._skipCR();
+    assertEquals(0L, readerBasedJsonParser0.getTokenCharacterOffset());
+}",0,"assertEquals(0, readerBasedJsonParser0.getTokenCharacterOffset())"
+project,0,test5252,"public void test5252() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    Object object0 = new Object();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, object0, true);
+    StringReader stringReader0 = new StringReader(""com.fasterxml.jackson.core.util.BufferRecycler$ByteBufferType"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    readerBasedJsonParser0._skipCR();
+    char char0 = readerBasedJsonParser0._decodeEscaped();
+    assertEquals('c', char0);
+}",0,
+project,0,test5353,"public void test5353() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, ""VR(-V!p`-L^+z4`+}#v"", false);
+    StringReader stringReader0 = new StringReader(""VR(-V!p`-L^+z4`+}#v"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0._skipString();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected end-of-input: was expecting closing quote for a string value
+        //  at [Source: java.lang.String@0000000021; line: 1, column: 39]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",1,
+project,0,test5454,"public void test5454() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, (Object) null, false);
+    StringReader stringReader0 = new StringReader(""maybe a (non-standard) comment? (not recognized as one since Feature 'A\""LOW_COMMENTS' not enabled for parser)"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, (-2105), stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    readerBasedJsonParser0._finishString();
+    assertEquals(0L, readerBasedJsonParser0.getTokenCharacterOffset());
+}",0,"assertEquals(0, readerBasedJsonParser0.getTokenCharacterOffset())"
+project,0,test5555,"public void test5555() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""i8z2/__"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 296, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0._finishString();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected end-of-input: was expecting closing quote for a string value
+        //  at [Source: com.fasterxml.jackson.core.util.BufferRecycler@0000000022; line: 1, column: 15]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",0,
+project,0,test5656,"public void test5656() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""^4?cg'r[S.j2Nq"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    readerBasedJsonParser0._decodeEscaped();
+    try {
+        readerBasedJsonParser0._finishString();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected end-of-input: was expecting closing quote for a string value
+        //  at [Source: com.fasterxml.jackson.core.util.BufferRecycler@0000000023; line: 1, column: 29]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",0,
+project,0,test5757,"public void test5757() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""HE"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 127, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    String string0 = readerBasedJsonParser0._handleOddName(127);
+    assertEquals(1, charsToNameCanonicalizer0.size());
+}",0,
+project,0,test5758,"public void test5758() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""HE"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 127, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    String string0 = readerBasedJsonParser0._handleOddName(127);
+    assertEquals(""HE"", string0);
+}",1,
+project,0,test5859,"public void test5859() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""^4?cg'r[S.j2Nq"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    JsonToken jsonToken0 = readerBasedJsonParser0._handleApos();
+    assertEquals(JsonToken.VALUE_STRING, jsonToken0);
+}",0,
+project,0,test5960,"public void test5960() throws Throwable {
+    FileSystemHandling fileSystemHandling0 = new FileSystemHandling();
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, fileSystemHandling0, false);
+    StringReader stringReader0 = new StringReader(""FgC\u0005Av:t|iJJRE*~@"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 8, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0._handleApos();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Illegal unquoted character ((CTRL-CHAR, code 5)): has to be escaped using backslash to be included in string value
+        //  at [Source: org.evosuite.runtime.testdata.FileSystemHandling@0000000024; line: 1, column: 5]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",0,
+project,0,test6061,"public void test6061() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, "":Uhxdjbv"", true);
+    StringReader stringReader0 = new StringReader("":Uhxdjbv"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    stringReader0.read();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0.nextBooleanValue();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unrecognized token 'Uhxdjbv': was expecting
+        //  at [Source: java.lang.String@0000000025; line: 1, column: 17]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",0,
+project,0,test6162,"public void test6162() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""N|%O"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0.nextToken();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unrecognized token 'N': was expecting
+        //  at [Source: com.fasterxml.jackson.core.util.BufferRecycler@0000000026; line: 1, column: 2]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",0,
+project,0,test6263,"public void test6263() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""Invalid input: JSON Pointer expression must start with '/': \"""");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 300, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0.nextBooleanValue();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unrecognized token 'Invalid': was expecting
+        //  at [Source: com.fasterxml.jackson.core.util.BufferRecycler@0000000027; line: 1, column: 8]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",0,
+project,0,test6364,"public void test6364() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    StringReader stringReader0 = new StringReader(""': was expecting "");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0.nextLongValue(33);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected end-of-input: was expecting closing quote for a string value
+        //  at [Source: com.fasterxml.jackson.core.util.BufferRecycler@0000000028; line: 1, column: 35]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",0,
+project,0,test6465,"public void test6465() throws Throwable {
+    FileSystemHandling fileSystemHandling0 = new FileSystemHandling();
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, fileSystemHandling0, false);
+    StringReader stringReader0 = new StringReader(""FgC\u0005Av:t|iJJRE*~@"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 8, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0._handleOddName(50);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected character ('2' (code 50)): was expecting either valid name character (for unquoted name) or double-quote (for quoted) to start field name
+        //  at [Source: org.evosuite.runtime.testdata.FileSystemHandling@0000000029; line: 1, column: 1]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",0,
+project,0,test6566,"public void test6566() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""5F+:E_0INvqf81dB;"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 127, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    String string0 = readerBasedJsonParser0._handleOddName(127);
+    assertTrue(charsToNameCanonicalizer0.maybeDirty());
+}",0,assertTrue(charsToNameCanonicalizer0.maybeDirty())
+project,0,test6567,"public void test6567() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""5F+:E_0INvqf81dB;"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 127, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    String string0 = readerBasedJsonParser0._handleOddName(127);
+    assertEquals(""5F+"", string0);
+}",1,
+project,0,test6668,"public void test6668() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    StringReader stringReader0 = new StringReader(""): only regular white space (\r, \n, \t) is allowed between tokens"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, (Object) null, true);
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, (-918), stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0._handleOddName(4);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected character ((CTRL-CHAR, code 4)): was expecting either valid name character (for unquoted name) or double-quote (for quoted) to start field name
+        //  at [Source: UNKNOWN; line: 1, column: 1]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",1,
+project,0,test6769,"public void test6769() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader("") not VALUE_STRING or VALUE_EMBEDDED_OBJECT, can not access as binary"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 126, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    String string0 = readerBasedJsonParser0._handleOddName(2000);
+    assertEquals("""", string0);
+}",1,
+project,0,test6870,"public void test6870() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader("""");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 85, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0._handleOddName(39);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected end-of-input: was expecting closing ''' for name
+        //  at [Source: com.fasterxml.jackson.core.util.BufferRecycler@0000000030; line: 1, column: 1]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",0,
+project,0,test6971,"public void test6971() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""5F+:E_0INvqf81dB;"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 39, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0._handleOddName(39);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected character (''' (code 39)): was expecting double-quote to start field name
+        //  at [Source: com.fasterxml.jackson.core.util.BufferRecycler@0000000031; line: 1, column: 1]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",1,
+project,0,test7072,"public void test7072() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    StringReader stringReader0 = new StringReader(""'~-9&2qjj)vGY"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 126, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    String string0 = readerBasedJsonParser0._parseAposName();
+    assertEquals("""", string0);
+}",0,
+project,0,test7173,"public void test7173() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""5F+:E_0INvqf81dB;"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 127, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    // Undeclared exception!
+    try {
+        readerBasedJsonParser0._parseName((-2411));
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -2411
+        //
+        verifyException(""com.fasterxml.jackson.core.json.ReaderBasedJsonParser"", e);
+    }
+}",1,
+project,0,test7274,"public void test7274() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, """", false);
+    StringReader stringReader0 = new StringReader(""+WbrY,WVp0pa,'b"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2125, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0.nextTextValue();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected character ('W' (code 87)) in numeric value: expected digit (0-9) to follow minus sign, for valid numeric value
+        //  at [Source: java.lang.String@0000000032; line: 1, column: 3]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",0,
+project,0,test7375,"public void test7375() throws Throwable {
+    StringReader stringReader0 = new StringReader(""0ew#"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, objectCodec0, true);
+    ObjectCodec objectCodec1 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 58, stringReader0, objectCodec1, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0.nextTextValue();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected character ('w' (code 119)) in numeric value: Exponent indicator not followed by a digit
+        //  at [Source: com.fasterxml.jackson.core.ObjectCodec$MockitoMock$1469363432@0000000033; line: 1, column: 4]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",0,
+project,0,test7476,"public void test7476() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, """", false);
+    StringReader stringReader0 = new StringReader("""");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 0, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    // Undeclared exception!
+    try {
+        readerBasedJsonParser0._parseNumber(660);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -1
+        //
+        verifyException(""com.fasterxml.jackson.core.json.ReaderBasedJsonParser"", e);
+    }
+}",0,
+project,0,test7577,"public void test7577() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader("""");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    long long0 = readerBasedJsonParser0.nextLongValue(33);
+    assertTrue(readerBasedJsonParser0.isClosed());
+}",0,assertTrue(readerBasedJsonParser0.isClosed())
+project,0,test7578,"public void test7578() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader("""");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    long long0 = readerBasedJsonParser0.nextLongValue(33);
+    assertEquals(33L, long0);
+}",0,
+project,0,test7679,"public void test7679() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, ""|"", false);
+    StringReader stringReader0 = new StringReader(""nz>U&"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 1884, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0.nextToken();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unrecognized token 'nz': was expecting
+        //  at [Source: java.lang.String@0000000034; line: 1, column: 3]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",0,
+project,0,test7780,"public void test7780() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""^4?cg'r[S.j2Nq"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    readerBasedJsonParser0._decodeEscaped();
+    readerBasedJsonParser0.nextBooleanValue();
+    assertEquals(2, readerBasedJsonParser0.getTokenColumnNr());
+}",0,"assertEquals(0, readerBasedJsonParser0.getTokenColumnNr())"
+project,0,test7881,"public void test7881() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""1Gu@F/3z&}v"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    int int0 = readerBasedJsonParser0.nextIntValue(8);
+    assertTrue(readerBasedJsonParser0.hasCurrentToken());
+}",0,assertTrue(readerBasedJsonParser0.hasCurrentToken())
+project,0,test7882,"public void test7882() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""1Gu@F/3z&}v"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    int int0 = readerBasedJsonParser0.nextIntValue(8);
+    assertEquals(1, int0);
+}",0,
+project,0,test7983,"public void test7983() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, ""i"", false);
+    StringReader stringReader0 = new StringReader(""](-`)=,c{yd!"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 841, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0.nextTextValue();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected close marker ']': expected '}' (for ROOT starting at [Source: java.lang.String@0000000008; line: 1, column: 0])
+        //  at [Source: java.lang.String@0000000035; line: 1, column: 2]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",0,
+project,0,test8084,"public void test8084() throws Throwable {
+    StringReader stringReader0 = new StringReader(""0e"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, objectCodec0, true);
+    ObjectCodec objectCodec1 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 58, stringReader0, objectCodec1, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0.nextTextValue();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected end-of-inputexpected a digit for number exponent
+        //  at [Source: com.fasterxml.jackson.core.ObjectCodec$MockitoMock$1469363432@0000000036; line: 1, column: 5]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",0,
+project,0,test8185,"public void test8185() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, (Object) null, false);
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, (Reader) null, objectCodec0, charsToNameCanonicalizer0);
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""g0*hk7HSCqb"");
+    try {
+        readerBasedJsonParser0.readBinaryValue((Base64Variant) null, (OutputStream) mockFileOutputStream0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Current token (null) not VALUE_STRING or VALUE_EMBEDDED_OBJECT, can not access as binary
+        //  at [Source: UNKNOWN; line: 1, column: 1]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",0,
+project,0,test8286,"public void test8286() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, "":Uhxdjbv"", false);
+    StringReader stringReader0 = new StringReader("":Uhxdjbv"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    int int0 = readerBasedJsonParser0.getTextOffset();
+    assertEquals(0, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test8387,"public void test8387() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0.DEFAULT_WRITE_CONCAT_BUFFER_LEN, true);
+    StringReader stringReader0 = new StringReader("""");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 134, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    int int0 = readerBasedJsonParser0.getTextLength();
+    assertEquals(0, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test8488,"public void test8488() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    StringReader stringReader0 = new StringReader(""BPH+jQOno],+t:3"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    char[] charArray0 = readerBasedJsonParser0.getTextCharacters();
+    assertNull(charArray0);
+}",0,
+project,0,test8589,"public void test8589() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0.DEFAULT_WRITE_CONCAT_BUFFER_LEN, true);
+    StringReader stringReader0 = new StringReader("""");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 134, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    JsonToken jsonToken0 = JsonToken.VALUE_NUMBER_FLOAT;
+    String string0 = readerBasedJsonParser0._getText2(jsonToken0);
+    assertEquals("""", string0);
+}",0,
+project,0,test8690,"public void test8690() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, """", false);
+    StringReader stringReader0 = new StringReader("""");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    JsonToken jsonToken0 = JsonToken.VALUE_STRING;
+    String string0 = readerBasedJsonParser0._getText2(jsonToken0);
+    assertEquals("""", string0);
+}",0,
+project,0,test8791,"public void test8791() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0.DEFAULT_WRITE_CONCAT_BUFFER_LEN, true);
+    StringReader stringReader0 = new StringReader(""*c;zq<Fj8JUO)"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    JsonToken jsonToken0 = JsonToken.FIELD_NAME;
+    String string0 = readerBasedJsonParser0._getText2(jsonToken0);
+    assertNull(string0);
+}",0,
+project,0,test8892,"public void test8892() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    StringReader stringReader0 = new StringReader(""l9"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    JsonToken jsonToken0 = JsonToken.START_ARRAY;
+    String string0 = readerBasedJsonParser0._getText2(jsonToken0);
+    assertEquals(""["", string0);
+}",0,
+project,0,test8993,"public void test8993() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""5F+:E_0INvqf81dB;"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 127, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    String string0 = readerBasedJsonParser0.getValueAsString(""5F+:E_0INvqf81dB;"");
+    assertEquals(""5F+:E_0INvqf81dB;"", string0);
+}",0,assertNotNull(string0)
+project,0,test9094,"public void test9094() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, """", false);
+    StringReader stringReader0 = new StringReader(""+brY,WVp0pa,'b"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2125, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    String string0 = readerBasedJsonParser0.getValueAsString();
+    assertNull(string0);
+}",0,assertNotNull(string0)
+project,0,test9195,"public void test9195() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, ""VR(-V!p`-L^+z4`+}#v"", false);
+    StringReader stringReader0 = new StringReader(""VR(-V!p`-L^+z4`+}#v"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    String string0 = readerBasedJsonParser0.getText();
+    assertNull(string0);
+}",0,assertNotNull(string0)
+project,0,test9296,"public void test9296() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    StringReader stringReader0 = new StringReader("""");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, (-967), stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0.getNextChar(""TLK .xCO$m"");
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected end-of-inputTLK .xCO$m
+        //  at [Source: com.fasterxml.jackson.core.util.BufferRecycler@0000000037; line: 1, column: 1]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",0,
+project,0,test9397,"public void test9397() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, ""VR(-V!p`-L^+z4`+}#v"", false);
+    StringReader stringReader0 = new StringReader(""VR(-V!p`-L^+z4`+}#v"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    readerBasedJsonParser0.getNextChar(""uUW7Cq]lCp-"");
+    readerBasedJsonParser0._skipCR();
+    assertFalse(readerBasedJsonParser0.hasTextCharacters());
+}",0,assertTrue(readerBasedJsonParser0.hasTextCharacters())
+project,0,test9498,"public void test9498() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, (Object) null, false);
+    StringReader stringReader0 = new StringReader(""TU<]{!@.9<s7G"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    boolean boolean0 = readerBasedJsonParser0.loadMore();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test9499,"public void test9499() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, (Object) null, false);
+    StringReader stringReader0 = new StringReader(""TU<]{!@.9<s7G"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    boolean boolean0 = readerBasedJsonParser0.loadMore();
+    char char0 = readerBasedJsonParser0.getNextChar(""j^6[mJ*#^:MF/I*<Irb"");
+    assertEquals('T', char0);
+}",0,assertNotNull(char0)
+project,0,test95100,"public void test95100() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    Object object0 = new Object();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, object0, false);
+    StringReader stringReader0 = new StringReader("""");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    StringWriter stringWriter0 = new StringWriter(2000);
+    int int0 = readerBasedJsonParser0.releaseBuffered((Writer) stringWriter0);
+    assertEquals(0, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test96102,"public void test96102() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""^4?cg'r[S.j2Nq"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2000, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    readerBasedJsonParser0._decodeEscaped();
+    StringWriter stringWriter0 = new StringWriter((byte) 92);
+    int int0 = readerBasedJsonParser0.releaseBuffered((Writer) stringWriter0);
+    assertEquals(13, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test97103,"public void test97103() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""i8z2/__"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 296, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    ObjectCodec objectCodec1 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    readerBasedJsonParser0.setCodec(objectCodec1);
+    assertFalse(readerBasedJsonParser0.hasCurrentToken());
+}",0,
+project,0,test98104,"public void test98104() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""i8z2/__"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 296, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    Object object0 = readerBasedJsonParser0.getInputSource();
+    assertSame(stringReader0, object0);
+}",0,
+project,0,test99105,"public void test99105() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""N|%O"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 33, stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    // Undeclared exception!
+    try {
+        readerBasedJsonParser0._reportInvalidToken((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,

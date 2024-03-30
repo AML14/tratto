@@ -1,0 +1,1935 @@
+focal_method,test_prefix,docstring
+"public int getIterationCount() {
+    return iterationCount;
+}","public void test000() throws Throwable {
+    double[] doubleArray0 = new double[4];
+    doubleArray0[1] = 1419.4666928059294;
+    doubleArray0[2] = (-1776.17128565465);
+    doubleArray0[3] = (-4983.0756048);
+    PolynomialFunctionLagrangeForm polynomialFunctionLagrangeForm0 = new PolynomialFunctionLagrangeForm(doubleArray0, doubleArray0);
+    BrentSolver brentSolver0 = new BrentSolver(polynomialFunctionLagrangeForm0);
+    brentSolver0.setFunctionValueAccuracy(0.0);
+    double double0 = brentSolver0.solve((UnivariateRealFunction) polynomialFunctionLagrangeForm0, (-4983.0756048), 1419.4666928059294, (-1776.17128565465));
+    assertEquals(1, brentSolver0.getIterationCount());
+}","/**
+ * {@inheritDoc}
+ */"
+"public double solve(final UnivariateRealFunction f, final double min, final double max, final double initial) throws MaxIterationsExceededException, FunctionEvaluationException {
+    clearResult();
+    verifySequence(min, initial, max);
+    // return the initial guess if it is good enough
+    double yInitial = f.value(initial);
+    if (Math.abs(yInitial) <= functionValueAccuracy) {
+        setResult(initial, 0);
+        return result;
+    }
+    // return the first endpoint if it is good enough
+    double yMin = f.value(min);
+    if (Math.abs(yMin) <= functionValueAccuracy) {
+        setResult(yMin, 0);
+        return result;
+    }
+    // reduce interval if min and initial bracket the root
+    if (yInitial * yMin < 0) {
+        return solve(f, min, yMin, initial, yInitial, min, yMin);
+    }
+    // return the second endpoint if it is good enough
+    double yMax = f.value(max);
+    if (Math.abs(yMax) <= functionValueAccuracy) {
+        setResult(yMax, 0);
+        return result;
+    }
+    // reduce interval if initial and max bracket the root
+    if (yInitial * yMax < 0) {
+        return solve(f, initial, yInitial, max, yMax, initial, yInitial);
+    }
+    if (yMin * yMax > 0) {
+        throw MathRuntimeException.createIllegalArgumentException(NON_BRACKETING_MESSAGE, min, max, yMin, yMax);
+    }
+    // full Brent algorithm starting with provided initial guess
+    return solve(f, min, yMin, max, yMax, initial, yInitial);
+}","public void test001() throws Throwable {
+    double[] doubleArray0 = new double[4];
+    doubleArray0[1] = 1419.4666928059294;
+    doubleArray0[2] = (-1776.17128565465);
+    doubleArray0[3] = (-4983.0756048);
+    PolynomialFunctionLagrangeForm polynomialFunctionLagrangeForm0 = new PolynomialFunctionLagrangeForm(doubleArray0, doubleArray0);
+    BrentSolver brentSolver0 = new BrentSolver(polynomialFunctionLagrangeForm0);
+    brentSolver0.setFunctionValueAccuracy(0.0);
+    double double0 = brentSolver0.solve((UnivariateRealFunction) polynomialFunctionLagrangeForm0, (-4983.0756048), 1419.4666928059294, (-1776.17128565465));
+    assertEquals(0.0, double0, 0.01);
+}","/**
+ * Find a zero in the given interval with an initial guess.
+ * <p>Throws <code>IllegalArgumentException</code> if the values of the
+ * function at the three points have the same sign (note that it is
+ * allowed to have endpoints with the same sign if the initial point has
+ * opposite sign function-wise).</p>
+ *
+ * @param f function to solve.
+ * @param min the lower bound for the interval.
+ * @param max the upper bound for the interval.
+ * @param initial the start value to use (must be set to min if no
+ * initial point is known).
+ * @return the value where the function is zero
+ * @throws MaxIterationsExceededException the maximum iteration count
+ * is exceeded
+ * @throws FunctionEvaluationException if an error occurs evaluating
+ *  the function
+ * @throws IllegalArgumentException if initial is not between min and max
+ * (even if it <em>is</em> a root)
+ */"
+"@Deprecated
+public double solve(double min, double max) throws MaxIterationsExceededException, FunctionEvaluationException {
+    return solve(f, min, max);
+}","public void test012() throws Throwable {
+    double[] doubleArray0 = new double[3];
+    doubleArray0[0] = (-1896.7903696425149);
+    doubleArray0[1] = (-170.24);
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    BrentSolver brentSolver0 = new BrentSolver(polynomialFunction0);
+    // Undeclared exception!
+    try {
+        brentSolver0.solve((-1.0), 26.3059117);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // function values at endpoints do not have different signs.  Endpoints: [-1, 26.306], Values: [-1,726.55, -6,375.109]
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"public int getIterationCount() {
+    return iterationCount;
+}","public void test023() throws Throwable {
+    BrentSolver brentSolver0 = new BrentSolver();
+    double[] doubleArray0 = new double[5];
+    doubleArray0[3] = Double.POSITIVE_INFINITY;
+    brentSolver0.setFunctionValueAccuracy(Double.POSITIVE_INFINITY);
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    double double0 = brentSolver0.solve((UnivariateRealFunction) polynomialFunction0, 12.087001769246022, Double.POSITIVE_INFINITY);
+    assertEquals(0, brentSolver0.getIterationCount());
+}","/**
+ * {@inheritDoc}
+ */"
+"public double solve(final UnivariateRealFunction f, final double min, final double max) throws MaxIterationsExceededException, FunctionEvaluationException {
+    clearResult();
+    verifyInterval(min, max);
+    double ret = Double.NaN;
+    double yMin = f.value(min);
+    double yMax = f.value(max);
+    // Verify bracketing
+    double sign = yMin * yMax;
+    if (sign > 0) {
+        // check if either value is close to a zero
+        if (Math.abs(yMin) <= functionValueAccuracy) {
+            setResult(min, 0);
+            ret = min;
+        } else if (Math.abs(yMax) <= functionValueAccuracy) {
+            setResult(max, 0);
+            ret = max;
+        } else {
+            // neither value is close to zero and min and max do not bracket root.
+            throw MathRuntimeException.createIllegalArgumentException(NON_BRACKETING_MESSAGE, min, max, yMin, yMax);
+        }
+    } else if (sign < 0) {
+        // solve using only the first endpoint as initial guess
+        ret = solve(f, min, yMin, max, yMax, min, yMin);
+    } else {
+        // either min or max is a root
+        if (yMin == 0.0) {
+            ret = min;
+        } else {
+            ret = max;
+        }
+    }
+    return ret;
+}","public void test024() throws Throwable {
+    BrentSolver brentSolver0 = new BrentSolver();
+    double[] doubleArray0 = new double[5];
+    doubleArray0[3] = Double.POSITIVE_INFINITY;
+    brentSolver0.setFunctionValueAccuracy(Double.POSITIVE_INFINITY);
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    double double0 = brentSolver0.solve((UnivariateRealFunction) polynomialFunction0, 12.087001769246022, Double.POSITIVE_INFINITY);
+    assertEquals(12.087001769246022, double0, 0.01);
+}","/**
+ * Find a zero in the given interval.
+ * <p>
+ * Requires that the values of the function at the endpoints have opposite
+ * signs. An <code>IllegalArgumentException</code> is thrown if this is not
+ * the case.</p>
+ *
+ * @param f the function to solve
+ * @param min the lower bound for the interval.
+ * @param max the upper bound for the interval.
+ * @return the value where the function is zero
+ * @throws MaxIterationsExceededException if the maximum iteration count is exceeded
+ * @throws FunctionEvaluationException if an error occurs evaluating the
+ * function
+ * @throws IllegalArgumentException if min is not less than max or the
+ * signs of the values of the function at the endpoints are not opposites
+ */"
+"@Deprecated
+public double solve(double min, double max, double initial) throws MaxIterationsExceededException, FunctionEvaluationException {
+    return solve(f, min, max, initial);
+}","public void test035() throws Throwable {
+    double[] doubleArray0 = new double[4];
+    doubleArray0[1] = 1419.4666928059294;
+    doubleArray0[2] = (-1776.17128565465);
+    doubleArray0[3] = (-4983.0756048);
+    PolynomialFunctionLagrangeForm polynomialFunctionLagrangeForm0 = new PolynomialFunctionLagrangeForm(doubleArray0, doubleArray0);
+    BrentSolver brentSolver0 = new BrentSolver(polynomialFunctionLagrangeForm0);
+    brentSolver0.setFunctionValueAccuracy(0.0);
+    double double0 = brentSolver0.solve((-4983.0756048), 0.0, (-383.43450018));
+    assertEquals(0.0, double0, 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public int getIterationCount() {
+    return iterationCount;
+}","public void test036() throws Throwable {
+    double[] doubleArray0 = new double[4];
+    doubleArray0[1] = 1419.4666928059294;
+    doubleArray0[2] = (-1776.17128565465);
+    doubleArray0[3] = (-4983.0756048);
+    PolynomialFunctionLagrangeForm polynomialFunctionLagrangeForm0 = new PolynomialFunctionLagrangeForm(doubleArray0, doubleArray0);
+    BrentSolver brentSolver0 = new BrentSolver(polynomialFunctionLagrangeForm0);
+    brentSolver0.setFunctionValueAccuracy(0.0);
+    double double0 = brentSolver0.solve((-4983.0756048), 0.0, (-383.43450018));
+    assertEquals(0, brentSolver0.getIterationCount());
+}","/**
+ * {@inheritDoc}
+ */"
+"public int getIterationCount() {
+    return iterationCount;
+}","public void test047() throws Throwable {
+    double[] doubleArray0 = new double[4];
+    doubleArray0[1] = 1419.4666928059294;
+    doubleArray0[2] = (-1776.17128565465);
+    doubleArray0[3] = (-4983.0756048);
+    PolynomialFunctionLagrangeForm polynomialFunctionLagrangeForm0 = new PolynomialFunctionLagrangeForm(doubleArray0, doubleArray0);
+    BrentSolver brentSolver0 = new BrentSolver(polynomialFunctionLagrangeForm0);
+    brentSolver0.functionValueAccuracy = (-4983.0756048);
+    double double0 = brentSolver0.solve((-27.3), 1.0E-6, 0.0);
+    assertEquals(0, brentSolver0.getIterationCount());
+}","/**
+ * {@inheritDoc}
+ */"
+"@Deprecated
+public double solve(double min, double max, double initial) throws MaxIterationsExceededException, FunctionEvaluationException {
+    return solve(f, min, max, initial);
+}","public void test048() throws Throwable {
+    double[] doubleArray0 = new double[4];
+    doubleArray0[1] = 1419.4666928059294;
+    doubleArray0[2] = (-1776.17128565465);
+    doubleArray0[3] = (-4983.0756048);
+    PolynomialFunctionLagrangeForm polynomialFunctionLagrangeForm0 = new PolynomialFunctionLagrangeForm(doubleArray0, doubleArray0);
+    BrentSolver brentSolver0 = new BrentSolver(polynomialFunctionLagrangeForm0);
+    brentSolver0.functionValueAccuracy = (-4983.0756048);
+    double double0 = brentSolver0.solve((-27.3), 1.0E-6, 0.0);
+    assertEquals(0.0, double0, 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public int getIterationCount() {
+    return iterationCount;
+}","public void test059() throws Throwable {
+    double[] doubleArray0 = new double[6];
+    doubleArray0[0] = 0.02345304505532445;
+    doubleArray0[2] = (-542.5170680645357);
+    doubleArray0[3] = 53.552053770836466;
+    doubleArray0[4] = (-855.7896);
+    doubleArray0[5] = (-1291.83660043);
+    PolynomialFunctionLagrangeForm polynomialFunctionLagrangeForm0 = new PolynomialFunctionLagrangeForm(doubleArray0, doubleArray0);
+    BrentSolver brentSolver0 = new BrentSolver(polynomialFunctionLagrangeForm0);
+    double double0 = brentSolver0.solve((UnivariateRealFunction) polynomialFunctionLagrangeForm0, 1.0E-15, 749.0, 10.497525920877363);
+    assertEquals(0, brentSolver0.getIterationCount());
+}","/**
+ * {@inheritDoc}
+ */"
+"public double solve(final UnivariateRealFunction f, final double min, final double max, final double initial) throws MaxIterationsExceededException, FunctionEvaluationException {
+    clearResult();
+    verifySequence(min, initial, max);
+    // return the initial guess if it is good enough
+    double yInitial = f.value(initial);
+    if (Math.abs(yInitial) <= functionValueAccuracy) {
+        setResult(initial, 0);
+        return result;
+    }
+    // return the first endpoint if it is good enough
+    double yMin = f.value(min);
+    if (Math.abs(yMin) <= functionValueAccuracy) {
+        setResult(yMin, 0);
+        return result;
+    }
+    // reduce interval if min and initial bracket the root
+    if (yInitial * yMin < 0) {
+        return solve(f, min, yMin, initial, yInitial, min, yMin);
+    }
+    // return the second endpoint if it is good enough
+    double yMax = f.value(max);
+    if (Math.abs(yMax) <= functionValueAccuracy) {
+        setResult(yMax, 0);
+        return result;
+    }
+    // reduce interval if initial and max bracket the root
+    if (yInitial * yMax < 0) {
+        return solve(f, initial, yInitial, max, yMax, initial, yInitial);
+    }
+    if (yMin * yMax > 0) {
+        throw MathRuntimeException.createIllegalArgumentException(NON_BRACKETING_MESSAGE, min, max, yMin, yMax);
+    }
+    // full Brent algorithm starting with provided initial guess
+    return solve(f, min, yMin, max, yMax, initial, yInitial);
+}","public void test0510() throws Throwable {
+    double[] doubleArray0 = new double[6];
+    doubleArray0[0] = 0.02345304505532445;
+    doubleArray0[2] = (-542.5170680645357);
+    doubleArray0[3] = 53.552053770836466;
+    doubleArray0[4] = (-855.7896);
+    doubleArray0[5] = (-1291.83660043);
+    PolynomialFunctionLagrangeForm polynomialFunctionLagrangeForm0 = new PolynomialFunctionLagrangeForm(doubleArray0, doubleArray0);
+    BrentSolver brentSolver0 = new BrentSolver(polynomialFunctionLagrangeForm0);
+    double double0 = brentSolver0.solve((UnivariateRealFunction) polynomialFunctionLagrangeForm0, 1.0E-15, 749.0, 10.497525920877363);
+    assertEquals(1.0E-15, double0, 0.01);
+}","/**
+ * Find a zero in the given interval with an initial guess.
+ * <p>Throws <code>IllegalArgumentException</code> if the values of the
+ * function at the three points have the same sign (note that it is
+ * allowed to have endpoints with the same sign if the initial point has
+ * opposite sign function-wise).</p>
+ *
+ * @param f function to solve.
+ * @param min the lower bound for the interval.
+ * @param max the upper bound for the interval.
+ * @param initial the start value to use (must be set to min if no
+ * initial point is known).
+ * @return the value where the function is zero
+ * @throws MaxIterationsExceededException the maximum iteration count
+ * is exceeded
+ * @throws FunctionEvaluationException if an error occurs evaluating
+ *  the function
+ * @throws IllegalArgumentException if initial is not between min and max
+ * (even if it <em>is</em> a root)
+ */"
+"public double solve(final UnivariateRealFunction f, final double min, final double max, final double initial) throws MaxIterationsExceededException, FunctionEvaluationException {
+    clearResult();
+    verifySequence(min, initial, max);
+    // return the initial guess if it is good enough
+    double yInitial = f.value(initial);
+    if (Math.abs(yInitial) <= functionValueAccuracy) {
+        setResult(initial, 0);
+        return result;
+    }
+    // return the first endpoint if it is good enough
+    double yMin = f.value(min);
+    if (Math.abs(yMin) <= functionValueAccuracy) {
+        setResult(yMin, 0);
+        return result;
+    }
+    // reduce interval if min and initial bracket the root
+    if (yInitial * yMin < 0) {
+        return solve(f, min, yMin, initial, yInitial, min, yMin);
+    }
+    // return the second endpoint if it is good enough
+    double yMax = f.value(max);
+    if (Math.abs(yMax) <= functionValueAccuracy) {
+        setResult(yMax, 0);
+        return result;
+    }
+    // reduce interval if initial and max bracket the root
+    if (yInitial * yMax < 0) {
+        return solve(f, initial, yInitial, max, yMax, initial, yInitial);
+    }
+    if (yMin * yMax > 0) {
+        throw MathRuntimeException.createIllegalArgumentException(NON_BRACKETING_MESSAGE, min, max, yMin, yMax);
+    }
+    // full Brent algorithm starting with provided initial guess
+    return solve(f, min, yMin, max, yMax, initial, yInitial);
+}","public void test0611() throws Throwable {
+    BrentSolver brentSolver0 = new BrentSolver();
+    double[] doubleArray0 = new double[6];
+    doubleArray0[1] = 13.709875087451534;
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    brentSolver0.functionValueAccuracy = 3570.0680944;
+    double double0 = brentSolver0.solve((UnivariateRealFunction) polynomialFunction0, 4.999999987376214E-7, 1486.3511402677, 1048.27);
+    assertEquals(6.854937526418714E-6, double0, 0.01);
+}","/**
+ * Find a zero in the given interval with an initial guess.
+ * <p>Throws <code>IllegalArgumentException</code> if the values of the
+ * function at the three points have the same sign (note that it is
+ * allowed to have endpoints with the same sign if the initial point has
+ * opposite sign function-wise).</p>
+ *
+ * @param f function to solve.
+ * @param min the lower bound for the interval.
+ * @param max the upper bound for the interval.
+ * @param initial the start value to use (must be set to min if no
+ * initial point is known).
+ * @return the value where the function is zero
+ * @throws MaxIterationsExceededException the maximum iteration count
+ * is exceeded
+ * @throws FunctionEvaluationException if an error occurs evaluating
+ *  the function
+ * @throws IllegalArgumentException if initial is not between min and max
+ * (even if it <em>is</em> a root)
+ */"
+"public int getIterationCount() {
+    return iterationCount;
+}","public void test0612() throws Throwable {
+    BrentSolver brentSolver0 = new BrentSolver();
+    double[] doubleArray0 = new double[6];
+    doubleArray0[1] = 13.709875087451534;
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    brentSolver0.functionValueAccuracy = 3570.0680944;
+    double double0 = brentSolver0.solve((UnivariateRealFunction) polynomialFunction0, 4.999999987376214E-7, 1486.3511402677, 1048.27);
+    assertEquals(0, brentSolver0.getIterationCount());
+}","/**
+ * {@inheritDoc}
+ */"
+"public double solve(final UnivariateRealFunction f, final double min, final double max, final double initial) throws MaxIterationsExceededException, FunctionEvaluationException {
+    clearResult();
+    verifySequence(min, initial, max);
+    // return the initial guess if it is good enough
+    double yInitial = f.value(initial);
+    if (Math.abs(yInitial) <= functionValueAccuracy) {
+        setResult(initial, 0);
+        return result;
+    }
+    // return the first endpoint if it is good enough
+    double yMin = f.value(min);
+    if (Math.abs(yMin) <= functionValueAccuracy) {
+        setResult(yMin, 0);
+        return result;
+    }
+    // reduce interval if min and initial bracket the root
+    if (yInitial * yMin < 0) {
+        return solve(f, min, yMin, initial, yInitial, min, yMin);
+    }
+    // return the second endpoint if it is good enough
+    double yMax = f.value(max);
+    if (Math.abs(yMax) <= functionValueAccuracy) {
+        setResult(yMax, 0);
+        return result;
+    }
+    // reduce interval if initial and max bracket the root
+    if (yInitial * yMax < 0) {
+        return solve(f, initial, yInitial, max, yMax, initial, yInitial);
+    }
+    if (yMin * yMax > 0) {
+        throw MathRuntimeException.createIllegalArgumentException(NON_BRACKETING_MESSAGE, min, max, yMin, yMax);
+    }
+    // full Brent algorithm starting with provided initial guess
+    return solve(f, min, yMin, max, yMax, initial, yInitial);
+}","public void test0713() throws Throwable {
+    BrentSolver brentSolver0 = new BrentSolver();
+    double[] doubleArray0 = new double[5];
+    doubleArray0[3] = Double.POSITIVE_INFINITY;
+    brentSolver0.setFunctionValueAccuracy(Double.POSITIVE_INFINITY);
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    double double0 = brentSolver0.solve((UnivariateRealFunction) polynomialFunction0, 0.0, Double.POSITIVE_INFINITY, 2.0);
+    assertEquals(2.0, double0, 0.01);
+}","/**
+ * Find a zero in the given interval with an initial guess.
+ * <p>Throws <code>IllegalArgumentException</code> if the values of the
+ * function at the three points have the same sign (note that it is
+ * allowed to have endpoints with the same sign if the initial point has
+ * opposite sign function-wise).</p>
+ *
+ * @param f function to solve.
+ * @param min the lower bound for the interval.
+ * @param max the upper bound for the interval.
+ * @param initial the start value to use (must be set to min if no
+ * initial point is known).
+ * @return the value where the function is zero
+ * @throws MaxIterationsExceededException the maximum iteration count
+ * is exceeded
+ * @throws FunctionEvaluationException if an error occurs evaluating
+ *  the function
+ * @throws IllegalArgumentException if initial is not between min and max
+ * (even if it <em>is</em> a root)
+ */"
+"public int getIterationCount() {
+    return iterationCount;
+}","public void test0714() throws Throwable {
+    BrentSolver brentSolver0 = new BrentSolver();
+    double[] doubleArray0 = new double[5];
+    doubleArray0[3] = Double.POSITIVE_INFINITY;
+    brentSolver0.setFunctionValueAccuracy(Double.POSITIVE_INFINITY);
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    double double0 = brentSolver0.solve((UnivariateRealFunction) polynomialFunction0, 0.0, Double.POSITIVE_INFINITY, 2.0);
+    assertEquals(0, brentSolver0.getIterationCount());
+}","/**
+ * {@inheritDoc}
+ */"
+"public double solve(final UnivariateRealFunction f, final double min, final double max) throws MaxIterationsExceededException, FunctionEvaluationException {
+    clearResult();
+    verifyInterval(min, max);
+    double ret = Double.NaN;
+    double yMin = f.value(min);
+    double yMax = f.value(max);
+    // Verify bracketing
+    double sign = yMin * yMax;
+    if (sign > 0) {
+        // check if either value is close to a zero
+        if (Math.abs(yMin) <= functionValueAccuracy) {
+            setResult(min, 0);
+            ret = min;
+        } else if (Math.abs(yMax) <= functionValueAccuracy) {
+            setResult(max, 0);
+            ret = max;
+        } else {
+            // neither value is close to zero and min and max do not bracket root.
+            throw MathRuntimeException.createIllegalArgumentException(NON_BRACKETING_MESSAGE, min, max, yMin, yMax);
+        }
+    } else if (sign < 0) {
+        // solve using only the first endpoint as initial guess
+        ret = solve(f, min, yMin, max, yMax, min, yMin);
+    } else {
+        // either min or max is a root
+        if (yMin == 0.0) {
+            ret = min;
+        } else {
+            ret = max;
+        }
+    }
+    return ret;
+}","public void test0815() throws Throwable {
+    BrentSolver brentSolver0 = new BrentSolver();
+    double[] doubleArray0 = new double[6];
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    double double0 = brentSolver0.solve((UnivariateRealFunction) polynomialFunction0, (-542.2543455515), 2010.2915);
+    assertEquals((-542.2543455515), double0, 0.01);
+}","/**
+ * Find a zero in the given interval.
+ * <p>
+ * Requires that the values of the function at the endpoints have opposite
+ * signs. An <code>IllegalArgumentException</code> is thrown if this is not
+ * the case.</p>
+ *
+ * @param f the function to solve
+ * @param min the lower bound for the interval.
+ * @param max the upper bound for the interval.
+ * @return the value where the function is zero
+ * @throws MaxIterationsExceededException if the maximum iteration count is exceeded
+ * @throws FunctionEvaluationException if an error occurs evaluating the
+ * function
+ * @throws IllegalArgumentException if min is not less than max or the
+ * signs of the values of the function at the endpoints are not opposites
+ */"
+"public int getIterationCount() {
+    return iterationCount;
+}","public void test0916() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    BrentSolver brentSolver0 = new BrentSolver(polynomialFunction0);
+    double double0 = brentSolver0.solve((-2372.54135), 2527.0343077284, 1164.63524);
+    assertEquals(0, brentSolver0.getIterationCount());
+}","/**
+ * {@inheritDoc}
+ */"
+"@Deprecated
+public double solve(double min, double max, double initial) throws MaxIterationsExceededException, FunctionEvaluationException {
+    return solve(f, min, max, initial);
+}","public void test0917() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    BrentSolver brentSolver0 = new BrentSolver(polynomialFunction0);
+    double double0 = brentSolver0.solve((-2372.54135), 2527.0343077284, 1164.63524);
+    assertEquals(1164.63524, double0, 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"@Deprecated
+public double solve(double min, double max, double initial) throws MaxIterationsExceededException, FunctionEvaluationException {
+    return solve(f, min, max, initial);
+}","public void test1018() throws Throwable {
+    double[] doubleArray0 = new double[4];
+    doubleArray0[1] = 1447.70931;
+    doubleArray0[2] = (-1776.17128565465);
+    doubleArray0[3] = (-4983.0756048);
+    PolynomialFunctionLagrangeForm polynomialFunctionLagrangeForm0 = new PolynomialFunctionLagrangeForm(doubleArray0, doubleArray0);
+    BrentSolver brentSolver0 = new BrentSolver(polynomialFunctionLagrangeForm0);
+    brentSolver0.setFunctionValueAccuracy(810.940511306);
+    double double0 = brentSolver0.solve((-4983.0756048), 1.0E-15, (-383.43450018));
+    assertEquals((-383.43450018), double0, 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public int getIterationCount() {
+    return iterationCount;
+}","public void test1019() throws Throwable {
+    double[] doubleArray0 = new double[4];
+    doubleArray0[1] = 1447.70931;
+    doubleArray0[2] = (-1776.17128565465);
+    doubleArray0[3] = (-4983.0756048);
+    PolynomialFunctionLagrangeForm polynomialFunctionLagrangeForm0 = new PolynomialFunctionLagrangeForm(doubleArray0, doubleArray0);
+    BrentSolver brentSolver0 = new BrentSolver(polynomialFunctionLagrangeForm0);
+    brentSolver0.setFunctionValueAccuracy(810.940511306);
+    double double0 = brentSolver0.solve((-4983.0756048), 1.0E-15, (-383.43450018));
+    assertEquals(0, brentSolver0.getIterationCount());
+}","/**
+ * {@inheritDoc}
+ */"
+"public int getIterationCount() {
+    return iterationCount;
+}","public void test1120() throws Throwable {
+    double[] doubleArray0 = new double[4];
+    doubleArray0[1] = 1419.4666928059294;
+    doubleArray0[2] = (-1776.17128565465);
+    doubleArray0[3] = (-4983.0756048);
+    PolynomialFunctionLagrangeForm polynomialFunctionLagrangeForm0 = new PolynomialFunctionLagrangeForm(doubleArray0, doubleArray0);
+    BrentSolver brentSolver0 = new BrentSolver(polynomialFunctionLagrangeForm0);
+    double double0 = brentSolver0.solve((-1776.17128565465), 6280.561371);
+    assertEquals(2, brentSolver0.getIterationCount());
+}","/**
+ * {@inheritDoc}
+ */"
+"@Deprecated
+public double solve(double min, double max) throws MaxIterationsExceededException, FunctionEvaluationException {
+    return solve(f, min, max);
+}","public void test1121() throws Throwable {
+    double[] doubleArray0 = new double[4];
+    doubleArray0[1] = 1419.4666928059294;
+    doubleArray0[2] = (-1776.17128565465);
+    doubleArray0[3] = (-4983.0756048);
+    PolynomialFunctionLagrangeForm polynomialFunctionLagrangeForm0 = new PolynomialFunctionLagrangeForm(doubleArray0, doubleArray0);
+    BrentSolver brentSolver0 = new BrentSolver(polynomialFunctionLagrangeForm0);
+    double double0 = brentSolver0.solve((-1776.17128565465), 6280.561371);
+    assertEquals((-2.2737367544323206E-13), double0, 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public double solve(final UnivariateRealFunction f, final double min, final double max, final double initial) throws MaxIterationsExceededException, FunctionEvaluationException {
+    clearResult();
+    verifySequence(min, initial, max);
+    // return the initial guess if it is good enough
+    double yInitial = f.value(initial);
+    if (Math.abs(yInitial) <= functionValueAccuracy) {
+        setResult(initial, 0);
+        return result;
+    }
+    // return the first endpoint if it is good enough
+    double yMin = f.value(min);
+    if (Math.abs(yMin) <= functionValueAccuracy) {
+        setResult(yMin, 0);
+        return result;
+    }
+    // reduce interval if min and initial bracket the root
+    if (yInitial * yMin < 0) {
+        return solve(f, min, yMin, initial, yInitial, min, yMin);
+    }
+    // return the second endpoint if it is good enough
+    double yMax = f.value(max);
+    if (Math.abs(yMax) <= functionValueAccuracy) {
+        setResult(yMax, 0);
+        return result;
+    }
+    // reduce interval if initial and max bracket the root
+    if (yInitial * yMax < 0) {
+        return solve(f, initial, yInitial, max, yMax, initial, yInitial);
+    }
+    if (yMin * yMax > 0) {
+        throw MathRuntimeException.createIllegalArgumentException(NON_BRACKETING_MESSAGE, min, max, yMin, yMax);
+    }
+    // full Brent algorithm starting with provided initial guess
+    return solve(f, min, yMin, max, yMax, initial, yInitial);
+}","public void test1222() throws Throwable {
+    double[] doubleArray0 = new double[5];
+    PolynomialFunctionLagrangeForm polynomialFunctionLagrangeForm0 = new PolynomialFunctionLagrangeForm(doubleArray0, doubleArray0);
+    BrentSolver brentSolver0 = new BrentSolver(polynomialFunctionLagrangeForm0);
+    try {
+        brentSolver0.solve((UnivariateRealFunction) polynomialFunctionLagrangeForm0, (-1291.83660043), 3.842871556224534E12, 0.5);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Abscissa 0 is duplicated at both indices 1 and 1
+        //
+        verifyException(""org.apache.commons.math.analysis.polynomials.PolynomialFunctionLagrangeForm"", e);
+    }
+}","/**
+ * Find a zero in the given interval with an initial guess.
+ * <p>Throws <code>IllegalArgumentException</code> if the values of the
+ * function at the three points have the same sign (note that it is
+ * allowed to have endpoints with the same sign if the initial point has
+ * opposite sign function-wise).</p>
+ *
+ * @param f function to solve.
+ * @param min the lower bound for the interval.
+ * @param max the upper bound for the interval.
+ * @param initial the start value to use (must be set to min if no
+ * initial point is known).
+ * @return the value where the function is zero
+ * @throws MaxIterationsExceededException the maximum iteration count
+ * is exceeded
+ * @throws FunctionEvaluationException if an error occurs evaluating
+ *  the function
+ * @throws IllegalArgumentException if initial is not between min and max
+ * (even if it <em>is</em> a root)
+ */"
+"public double solve(final UnivariateRealFunction f, final double min, final double max, final double initial) throws MaxIterationsExceededException, FunctionEvaluationException {
+    clearResult();
+    verifySequence(min, initial, max);
+    // return the initial guess if it is good enough
+    double yInitial = f.value(initial);
+    if (Math.abs(yInitial) <= functionValueAccuracy) {
+        setResult(initial, 0);
+        return result;
+    }
+    // return the first endpoint if it is good enough
+    double yMin = f.value(min);
+    if (Math.abs(yMin) <= functionValueAccuracy) {
+        setResult(yMin, 0);
+        return result;
+    }
+    // reduce interval if min and initial bracket the root
+    if (yInitial * yMin < 0) {
+        return solve(f, min, yMin, initial, yInitial, min, yMin);
+    }
+    // return the second endpoint if it is good enough
+    double yMax = f.value(max);
+    if (Math.abs(yMax) <= functionValueAccuracy) {
+        setResult(yMax, 0);
+        return result;
+    }
+    // reduce interval if initial and max bracket the root
+    if (yInitial * yMax < 0) {
+        return solve(f, initial, yInitial, max, yMax, initial, yInitial);
+    }
+    if (yMin * yMax > 0) {
+        throw MathRuntimeException.createIllegalArgumentException(NON_BRACKETING_MESSAGE, min, max, yMin, yMax);
+    }
+    // full Brent algorithm starting with provided initial guess
+    return solve(f, min, yMin, max, yMax, initial, yInitial);
+}","public void test1323() throws Throwable {
+    BrentSolver brentSolver0 = new BrentSolver();
+    // Undeclared exception!
+    try {
+        brentSolver0.solve((UnivariateRealFunction) null, (-1707.30751578913), Double.POSITIVE_INFINITY, (-851.19614489238));
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.analysis.solvers.BrentSolver"", e);
+    }
+}","/**
+ * Find a zero in the given interval with an initial guess.
+ * <p>Throws <code>IllegalArgumentException</code> if the values of the
+ * function at the three points have the same sign (note that it is
+ * allowed to have endpoints with the same sign if the initial point has
+ * opposite sign function-wise).</p>
+ *
+ * @param f function to solve.
+ * @param min the lower bound for the interval.
+ * @param max the upper bound for the interval.
+ * @param initial the start value to use (must be set to min if no
+ * initial point is known).
+ * @return the value where the function is zero
+ * @throws MaxIterationsExceededException the maximum iteration count
+ * is exceeded
+ * @throws FunctionEvaluationException if an error occurs evaluating
+ *  the function
+ * @throws IllegalArgumentException if initial is not between min and max
+ * (even if it <em>is</em> a root)
+ */"
+"public double solve(final UnivariateRealFunction f, final double min, final double max) throws MaxIterationsExceededException, FunctionEvaluationException {
+    clearResult();
+    verifyInterval(min, max);
+    double ret = Double.NaN;
+    double yMin = f.value(min);
+    double yMax = f.value(max);
+    // Verify bracketing
+    double sign = yMin * yMax;
+    if (sign > 0) {
+        // check if either value is close to a zero
+        if (Math.abs(yMin) <= functionValueAccuracy) {
+            setResult(min, 0);
+            ret = min;
+        } else if (Math.abs(yMax) <= functionValueAccuracy) {
+            setResult(max, 0);
+            ret = max;
+        } else {
+            // neither value is close to zero and min and max do not bracket root.
+            throw MathRuntimeException.createIllegalArgumentException(NON_BRACKETING_MESSAGE, min, max, yMin, yMax);
+        }
+    } else if (sign < 0) {
+        // solve using only the first endpoint as initial guess
+        ret = solve(f, min, yMin, max, yMax, min, yMin);
+    } else {
+        // either min or max is a root
+        if (yMin == 0.0) {
+            ret = min;
+        } else {
+            ret = max;
+        }
+    }
+    return ret;
+}","public void test1424() throws Throwable {
+    double[] doubleArray0 = new double[8];
+    PolynomialFunctionLagrangeForm polynomialFunctionLagrangeForm0 = new PolynomialFunctionLagrangeForm(doubleArray0, doubleArray0);
+    BrentSolver brentSolver0 = new BrentSolver(polynomialFunctionLagrangeForm0);
+    try {
+        brentSolver0.solve((UnivariateRealFunction) polynomialFunctionLagrangeForm0, 0.0, 1.0E-6);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Abscissa 0 is duplicated at both indices 1 and 1
+        //
+        verifyException(""org.apache.commons.math.analysis.polynomials.PolynomialFunctionLagrangeForm"", e);
+    }
+}","/**
+ * Find a zero in the given interval.
+ * <p>
+ * Requires that the values of the function at the endpoints have opposite
+ * signs. An <code>IllegalArgumentException</code> is thrown if this is not
+ * the case.</p>
+ *
+ * @param f the function to solve
+ * @param min the lower bound for the interval.
+ * @param max the upper bound for the interval.
+ * @return the value where the function is zero
+ * @throws MaxIterationsExceededException if the maximum iteration count is exceeded
+ * @throws FunctionEvaluationException if an error occurs evaluating the
+ * function
+ * @throws IllegalArgumentException if min is not less than max or the
+ * signs of the values of the function at the endpoints are not opposites
+ */"
+"public double solve(final UnivariateRealFunction f, final double min, final double max) throws MaxIterationsExceededException, FunctionEvaluationException {
+    clearResult();
+    verifyInterval(min, max);
+    double ret = Double.NaN;
+    double yMin = f.value(min);
+    double yMax = f.value(max);
+    // Verify bracketing
+    double sign = yMin * yMax;
+    if (sign > 0) {
+        // check if either value is close to a zero
+        if (Math.abs(yMin) <= functionValueAccuracy) {
+            setResult(min, 0);
+            ret = min;
+        } else if (Math.abs(yMax) <= functionValueAccuracy) {
+            setResult(max, 0);
+            ret = max;
+        } else {
+            // neither value is close to zero and min and max do not bracket root.
+            throw MathRuntimeException.createIllegalArgumentException(NON_BRACKETING_MESSAGE, min, max, yMin, yMax);
+        }
+    } else if (sign < 0) {
+        // solve using only the first endpoint as initial guess
+        ret = solve(f, min, yMin, max, yMax, min, yMin);
+    } else {
+        // either min or max is a root
+        if (yMin == 0.0) {
+            ret = min;
+        } else {
+            ret = max;
+        }
+    }
+    return ret;
+}","public void test1525() throws Throwable {
+    BrentSolver brentSolver0 = new BrentSolver();
+    double[] doubleArray0 = new double[2];
+    doubleArray0[0] = (-2461.1649217198);
+    PolynomialFunction[] polynomialFunctionArray0 = new PolynomialFunction[1];
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    polynomialFunctionArray0[0] = polynomialFunction0;
+    PolynomialSplineFunction polynomialSplineFunction0 = new PolynomialSplineFunction(doubleArray0, polynomialFunctionArray0);
+    try {
+        brentSolver0.solve((UnivariateRealFunction) polynomialSplineFunction0, (-402.74446603), 416.752904);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Argument 416.753 outside domain [-2,461.165 ; 0]
+        //
+        verifyException(""org.apache.commons.math.analysis.polynomials.PolynomialSplineFunction"", e);
+    }
+}","/**
+ * Find a zero in the given interval.
+ * <p>
+ * Requires that the values of the function at the endpoints have opposite
+ * signs. An <code>IllegalArgumentException</code> is thrown if this is not
+ * the case.</p>
+ *
+ * @param f the function to solve
+ * @param min the lower bound for the interval.
+ * @param max the upper bound for the interval.
+ * @return the value where the function is zero
+ * @throws MaxIterationsExceededException if the maximum iteration count is exceeded
+ * @throws FunctionEvaluationException if an error occurs evaluating the
+ * function
+ * @throws IllegalArgumentException if min is not less than max or the
+ * signs of the values of the function at the endpoints are not opposites
+ */"
+"public double solve(final UnivariateRealFunction f, final double min, final double max) throws MaxIterationsExceededException, FunctionEvaluationException {
+    clearResult();
+    verifyInterval(min, max);
+    double ret = Double.NaN;
+    double yMin = f.value(min);
+    double yMax = f.value(max);
+    // Verify bracketing
+    double sign = yMin * yMax;
+    if (sign > 0) {
+        // check if either value is close to a zero
+        if (Math.abs(yMin) <= functionValueAccuracy) {
+            setResult(min, 0);
+            ret = min;
+        } else if (Math.abs(yMax) <= functionValueAccuracy) {
+            setResult(max, 0);
+            ret = max;
+        } else {
+            // neither value is close to zero and min and max do not bracket root.
+            throw MathRuntimeException.createIllegalArgumentException(NON_BRACKETING_MESSAGE, min, max, yMin, yMax);
+        }
+    } else if (sign < 0) {
+        // solve using only the first endpoint as initial guess
+        ret = solve(f, min, yMin, max, yMax, min, yMin);
+    } else {
+        // either min or max is a root
+        if (yMin == 0.0) {
+            ret = min;
+        } else {
+            ret = max;
+        }
+    }
+    return ret;
+}","public void test1626() throws Throwable {
+    double[] doubleArray0 = new double[6];
+    doubleArray0[3] = (-11.137241497247);
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    BrentSolver brentSolver0 = new BrentSolver();
+    try {
+        brentSolver0.solve((UnivariateRealFunction) polynomialFunction0, (-0.013944534278288807), Double.POSITIVE_INFINITY);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Maximal number of iterations (100) exceeded
+        //
+        verifyException(""org.apache.commons.math.analysis.solvers.BrentSolver"", e);
+    }
+}","/**
+ * Find a zero in the given interval.
+ * <p>
+ * Requires that the values of the function at the endpoints have opposite
+ * signs. An <code>IllegalArgumentException</code> is thrown if this is not
+ * the case.</p>
+ *
+ * @param f the function to solve
+ * @param min the lower bound for the interval.
+ * @param max the upper bound for the interval.
+ * @return the value where the function is zero
+ * @throws MaxIterationsExceededException if the maximum iteration count is exceeded
+ * @throws FunctionEvaluationException if an error occurs evaluating the
+ * function
+ * @throws IllegalArgumentException if min is not less than max or the
+ * signs of the values of the function at the endpoints are not opposites
+ */"
+"public double solve(final UnivariateRealFunction f, final double min, final double max) throws MaxIterationsExceededException, FunctionEvaluationException {
+    clearResult();
+    verifyInterval(min, max);
+    double ret = Double.NaN;
+    double yMin = f.value(min);
+    double yMax = f.value(max);
+    // Verify bracketing
+    double sign = yMin * yMax;
+    if (sign > 0) {
+        // check if either value is close to a zero
+        if (Math.abs(yMin) <= functionValueAccuracy) {
+            setResult(min, 0);
+            ret = min;
+        } else if (Math.abs(yMax) <= functionValueAccuracy) {
+            setResult(max, 0);
+            ret = max;
+        } else {
+            // neither value is close to zero and min and max do not bracket root.
+            throw MathRuntimeException.createIllegalArgumentException(NON_BRACKETING_MESSAGE, min, max, yMin, yMax);
+        }
+    } else if (sign < 0) {
+        // solve using only the first endpoint as initial guess
+        ret = solve(f, min, yMin, max, yMax, min, yMin);
+    } else {
+        // either min or max is a root
+        if (yMin == 0.0) {
+            ret = min;
+        } else {
+            ret = max;
+        }
+    }
+    return ret;
+}","public void test1727() throws Throwable {
+    BrentSolver brentSolver0 = new BrentSolver();
+    // Undeclared exception!
+    try {
+        brentSolver0.solve((UnivariateRealFunction) null, 1.0E-15, 1738.1128364);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.analysis.solvers.BrentSolver"", e);
+    }
+}","/**
+ * Find a zero in the given interval.
+ * <p>
+ * Requires that the values of the function at the endpoints have opposite
+ * signs. An <code>IllegalArgumentException</code> is thrown if this is not
+ * the case.</p>
+ *
+ * @param f the function to solve
+ * @param min the lower bound for the interval.
+ * @param max the upper bound for the interval.
+ * @return the value where the function is zero
+ * @throws MaxIterationsExceededException if the maximum iteration count is exceeded
+ * @throws FunctionEvaluationException if an error occurs evaluating the
+ * function
+ * @throws IllegalArgumentException if min is not less than max or the
+ * signs of the values of the function at the endpoints are not opposites
+ */"
+"@Deprecated
+public double solve(double min, double max, double initial) throws MaxIterationsExceededException, FunctionEvaluationException {
+    return solve(f, min, max, initial);
+}","public void test1828() throws Throwable {
+    BrentSolver brentSolver0 = new BrentSolver();
+    // Undeclared exception!
+    try {
+        brentSolver0.solve(10.2, 0.007940250202253404, (-7.616697984080614));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // invalid interval, initial value parameters:  lower=10.2, initial=-7.617, upper=0.008
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"@Deprecated
+public double solve(double min, double max, double initial) throws MaxIterationsExceededException, FunctionEvaluationException {
+    return solve(f, min, max, initial);
+}","public void test1929() throws Throwable {
+    double[] doubleArray0 = new double[4];
+    PolynomialFunctionLagrangeForm polynomialFunctionLagrangeForm0 = new PolynomialFunctionLagrangeForm(doubleArray0, doubleArray0);
+    BrentSolver brentSolver0 = new BrentSolver(polynomialFunctionLagrangeForm0);
+    try {
+        brentSolver0.solve((-4983.678658193221), 0.0, (-383.1121823635733));
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Abscissa 0 is duplicated at both indices 1 and 1
+        //
+        verifyException(""org.apache.commons.math.analysis.polynomials.PolynomialFunctionLagrangeForm"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"@Deprecated
+public double solve(double min, double max, double initial) throws MaxIterationsExceededException, FunctionEvaluationException {
+    return solve(f, min, max, initial);
+}","public void test2030() throws Throwable {
+    BrentSolver brentSolver0 = new BrentSolver();
+    // Undeclared exception!
+    try {
+        brentSolver0.solve((-2969.5739674942), 2671.25822396, 1.0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.analysis.solvers.BrentSolver"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"@Deprecated
+public double solve(double min, double max) throws MaxIterationsExceededException, FunctionEvaluationException {
+    return solve(f, min, max);
+}","public void test2131() throws Throwable {
+    double[] doubleArray0 = new double[7];
+    PolynomialFunctionLagrangeForm polynomialFunctionLagrangeForm0 = new PolynomialFunctionLagrangeForm(doubleArray0, doubleArray0);
+    BrentSolver brentSolver0 = new BrentSolver(polynomialFunctionLagrangeForm0);
+    try {
+        brentSolver0.solve((-817.9897647781), 0.0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Abscissa 0 is duplicated at both indices 1 and 1
+        //
+        verifyException(""org.apache.commons.math.analysis.polynomials.PolynomialFunctionLagrangeForm"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"@Deprecated
+public double solve(double min, double max) throws MaxIterationsExceededException, FunctionEvaluationException {
+    return solve(f, min, max);
+}","public void test2232() throws Throwable {
+    double[] doubleArray0 = new double[6];
+    doubleArray0[0] = (-807.6822);
+    doubleArray0[4] = 0.2809785917486991;
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    BrentSolver brentSolver0 = new BrentSolver(polynomialFunction0);
+    brentSolver0.setMaximalIterationCount((-423950648));
+    try {
+        brentSolver0.solve(0.0, 776.6959017385);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Maximal number of iterations (-423,950,648) exceeded
+        //
+        verifyException(""org.apache.commons.math.analysis.solvers.BrentSolver"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"public double solve(final UnivariateRealFunction f, final double min, final double max) throws MaxIterationsExceededException, FunctionEvaluationException {
+    clearResult();
+    verifyInterval(min, max);
+    double ret = Double.NaN;
+    double yMin = f.value(min);
+    double yMax = f.value(max);
+    // Verify bracketing
+    double sign = yMin * yMax;
+    if (sign > 0) {
+        // check if either value is close to a zero
+        if (Math.abs(yMin) <= functionValueAccuracy) {
+            setResult(min, 0);
+            ret = min;
+        } else if (Math.abs(yMax) <= functionValueAccuracy) {
+            setResult(max, 0);
+            ret = max;
+        } else {
+            // neither value is close to zero and min and max do not bracket root.
+            throw MathRuntimeException.createIllegalArgumentException(NON_BRACKETING_MESSAGE, min, max, yMin, yMax);
+        }
+    } else if (sign < 0) {
+        // solve using only the first endpoint as initial guess
+        ret = solve(f, min, yMin, max, yMax, min, yMin);
+    } else {
+        // either min or max is a root
+        if (yMin == 0.0) {
+            ret = min;
+        } else {
+            ret = max;
+        }
+    }
+    return ret;
+}","public void test2333() throws Throwable {
+    double[] doubleArray0 = new double[4];
+    doubleArray0[1] = 1447.70931;
+    doubleArray0[2] = (-1776.17128565465);
+    doubleArray0[3] = (-4983.0756048);
+    PolynomialFunctionLagrangeForm polynomialFunctionLagrangeForm0 = new PolynomialFunctionLagrangeForm(doubleArray0, doubleArray0);
+    BrentSolver brentSolver0 = new BrentSolver();
+    double double0 = brentSolver0.solve((UnivariateRealFunction) polynomialFunctionLagrangeForm0, 0.0, 1.0);
+    assertEquals(0.0, double0, 0.01);
+}","/**
+ * Find a zero in the given interval.
+ * <p>
+ * Requires that the values of the function at the endpoints have opposite
+ * signs. An <code>IllegalArgumentException</code> is thrown if this is not
+ * the case.</p>
+ *
+ * @param f the function to solve
+ * @param min the lower bound for the interval.
+ * @param max the upper bound for the interval.
+ * @return the value where the function is zero
+ * @throws MaxIterationsExceededException if the maximum iteration count is exceeded
+ * @throws FunctionEvaluationException if an error occurs evaluating the
+ * function
+ * @throws IllegalArgumentException if min is not less than max or the
+ * signs of the values of the function at the endpoints are not opposites
+ */"
+"public double solve(final UnivariateRealFunction f, final double min, final double max) throws MaxIterationsExceededException, FunctionEvaluationException {
+    clearResult();
+    verifyInterval(min, max);
+    double ret = Double.NaN;
+    double yMin = f.value(min);
+    double yMax = f.value(max);
+    // Verify bracketing
+    double sign = yMin * yMax;
+    if (sign > 0) {
+        // check if either value is close to a zero
+        if (Math.abs(yMin) <= functionValueAccuracy) {
+            setResult(min, 0);
+            ret = min;
+        } else if (Math.abs(yMax) <= functionValueAccuracy) {
+            setResult(max, 0);
+            ret = max;
+        } else {
+            // neither value is close to zero and min and max do not bracket root.
+            throw MathRuntimeException.createIllegalArgumentException(NON_BRACKETING_MESSAGE, min, max, yMin, yMax);
+        }
+    } else if (sign < 0) {
+        // solve using only the first endpoint as initial guess
+        ret = solve(f, min, yMin, max, yMax, min, yMin);
+    } else {
+        // either min or max is a root
+        if (yMin == 0.0) {
+            ret = min;
+        } else {
+            ret = max;
+        }
+    }
+    return ret;
+}","public void test2434() throws Throwable {
+    BrentSolver brentSolver0 = new BrentSolver();
+    double[] doubleArray0 = new double[6];
+    doubleArray0[4] = 1486.3511402677;
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    double double0 = brentSolver0.solve((UnivariateRealFunction) polynomialFunction0, (-588.2), 4.999999987376214E-7);
+    assertEquals(4.999999987376214E-7, double0, 0.01);
+}","/**
+ * Find a zero in the given interval.
+ * <p>
+ * Requires that the values of the function at the endpoints have opposite
+ * signs. An <code>IllegalArgumentException</code> is thrown if this is not
+ * the case.</p>
+ *
+ * @param f the function to solve
+ * @param min the lower bound for the interval.
+ * @param max the upper bound for the interval.
+ * @return the value where the function is zero
+ * @throws MaxIterationsExceededException if the maximum iteration count is exceeded
+ * @throws FunctionEvaluationException if an error occurs evaluating the
+ * function
+ * @throws IllegalArgumentException if min is not less than max or the
+ * signs of the values of the function at the endpoints are not opposites
+ */"
+"public int getIterationCount() {
+    return iterationCount;
+}","public void test2435() throws Throwable {
+    BrentSolver brentSolver0 = new BrentSolver();
+    double[] doubleArray0 = new double[6];
+    doubleArray0[4] = 1486.3511402677;
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    double double0 = brentSolver0.solve((UnivariateRealFunction) polynomialFunction0, (-588.2), 4.999999987376214E-7);
+    assertEquals(0, brentSolver0.getIterationCount());
+}","/**
+ * {@inheritDoc}
+ */"
+"public double solve(final UnivariateRealFunction f, final double min, final double max) throws MaxIterationsExceededException, FunctionEvaluationException {
+    clearResult();
+    verifyInterval(min, max);
+    double ret = Double.NaN;
+    double yMin = f.value(min);
+    double yMax = f.value(max);
+    // Verify bracketing
+    double sign = yMin * yMax;
+    if (sign > 0) {
+        // check if either value is close to a zero
+        if (Math.abs(yMin) <= functionValueAccuracy) {
+            setResult(min, 0);
+            ret = min;
+        } else if (Math.abs(yMax) <= functionValueAccuracy) {
+            setResult(max, 0);
+            ret = max;
+        } else {
+            // neither value is close to zero and min and max do not bracket root.
+            throw MathRuntimeException.createIllegalArgumentException(NON_BRACKETING_MESSAGE, min, max, yMin, yMax);
+        }
+    } else if (sign < 0) {
+        // solve using only the first endpoint as initial guess
+        ret = solve(f, min, yMin, max, yMax, min, yMin);
+    } else {
+        // either min or max is a root
+        if (yMin == 0.0) {
+            ret = min;
+        } else {
+            ret = max;
+        }
+    }
+    return ret;
+}","public void test2536() throws Throwable {
+    BrentSolver brentSolver0 = new BrentSolver();
+    double[] doubleArray0 = new double[6];
+    doubleArray0[0] = 4.999999987376214E-7;
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    // Undeclared exception!
+    try {
+        brentSolver0.solve((UnivariateRealFunction) polynomialFunction0, (-588.2), 4.999999987376214E-7);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // function values at endpoints do not have different signs.  Endpoints: [-588.2, 0], Values: [0, 0]
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}","/**
+ * Find a zero in the given interval.
+ * <p>
+ * Requires that the values of the function at the endpoints have opposite
+ * signs. An <code>IllegalArgumentException</code> is thrown if this is not
+ * the case.</p>
+ *
+ * @param f the function to solve
+ * @param min the lower bound for the interval.
+ * @param max the upper bound for the interval.
+ * @return the value where the function is zero
+ * @throws MaxIterationsExceededException if the maximum iteration count is exceeded
+ * @throws FunctionEvaluationException if an error occurs evaluating the
+ * function
+ * @throws IllegalArgumentException if min is not less than max or the
+ * signs of the values of the function at the endpoints are not opposites
+ */"
+"public double solve(final UnivariateRealFunction f, final double min, final double max, final double initial) throws MaxIterationsExceededException, FunctionEvaluationException {
+    clearResult();
+    verifySequence(min, initial, max);
+    // return the initial guess if it is good enough
+    double yInitial = f.value(initial);
+    if (Math.abs(yInitial) <= functionValueAccuracy) {
+        setResult(initial, 0);
+        return result;
+    }
+    // return the first endpoint if it is good enough
+    double yMin = f.value(min);
+    if (Math.abs(yMin) <= functionValueAccuracy) {
+        setResult(yMin, 0);
+        return result;
+    }
+    // reduce interval if min and initial bracket the root
+    if (yInitial * yMin < 0) {
+        return solve(f, min, yMin, initial, yInitial, min, yMin);
+    }
+    // return the second endpoint if it is good enough
+    double yMax = f.value(max);
+    if (Math.abs(yMax) <= functionValueAccuracy) {
+        setResult(yMax, 0);
+        return result;
+    }
+    // reduce interval if initial and max bracket the root
+    if (yInitial * yMax < 0) {
+        return solve(f, initial, yInitial, max, yMax, initial, yInitial);
+    }
+    if (yMin * yMax > 0) {
+        throw MathRuntimeException.createIllegalArgumentException(NON_BRACKETING_MESSAGE, min, max, yMin, yMax);
+    }
+    // full Brent algorithm starting with provided initial guess
+    return solve(f, min, yMin, max, yMax, initial, yInitial);
+}","public void test2637() throws Throwable {
+    BrentSolver brentSolver0 = new BrentSolver();
+    double[] doubleArray0 = new double[6];
+    doubleArray0[4] = 1486.3511402677;
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    double double0 = brentSolver0.solve((UnivariateRealFunction) polynomialFunction0, (-1861.77), 4.999999987376214E-7, (-1.0));
+    assertEquals(9.289694532856227E-23, double0, 0.01);
+}","/**
+ * Find a zero in the given interval with an initial guess.
+ * <p>Throws <code>IllegalArgumentException</code> if the values of the
+ * function at the three points have the same sign (note that it is
+ * allowed to have endpoints with the same sign if the initial point has
+ * opposite sign function-wise).</p>
+ *
+ * @param f function to solve.
+ * @param min the lower bound for the interval.
+ * @param max the upper bound for the interval.
+ * @param initial the start value to use (must be set to min if no
+ * initial point is known).
+ * @return the value where the function is zero
+ * @throws MaxIterationsExceededException the maximum iteration count
+ * is exceeded
+ * @throws FunctionEvaluationException if an error occurs evaluating
+ *  the function
+ * @throws IllegalArgumentException if initial is not between min and max
+ * (even if it <em>is</em> a root)
+ */"
+"public int getIterationCount() {
+    return iterationCount;
+}","public void test2738() throws Throwable {
+    double[] doubleArray0 = new double[4];
+    doubleArray0[1] = 1447.70931;
+    doubleArray0[2] = (-1776.17128565465);
+    doubleArray0[3] = (-4983.0756048);
+    PolynomialFunctionLagrangeForm polynomialFunctionLagrangeForm0 = new PolynomialFunctionLagrangeForm(doubleArray0, doubleArray0);
+    BrentSolver brentSolver0 = new BrentSolver(polynomialFunctionLagrangeForm0);
+    brentSolver0.setFunctionValueAccuracy(Double.POSITIVE_INFINITY);
+    double double0 = brentSolver0.solve((UnivariateRealFunction) polynomialFunctionLagrangeForm0, (-4983.0756048), 1447.70931, (-1776.17128565465));
+    assertEquals(0, brentSolver0.getIterationCount());
+}","/**
+ * {@inheritDoc}
+ */"
+"public double solve(final UnivariateRealFunction f, final double min, final double max, final double initial) throws MaxIterationsExceededException, FunctionEvaluationException {
+    clearResult();
+    verifySequence(min, initial, max);
+    // return the initial guess if it is good enough
+    double yInitial = f.value(initial);
+    if (Math.abs(yInitial) <= functionValueAccuracy) {
+        setResult(initial, 0);
+        return result;
+    }
+    // return the first endpoint if it is good enough
+    double yMin = f.value(min);
+    if (Math.abs(yMin) <= functionValueAccuracy) {
+        setResult(yMin, 0);
+        return result;
+    }
+    // reduce interval if min and initial bracket the root
+    if (yInitial * yMin < 0) {
+        return solve(f, min, yMin, initial, yInitial, min, yMin);
+    }
+    // return the second endpoint if it is good enough
+    double yMax = f.value(max);
+    if (Math.abs(yMax) <= functionValueAccuracy) {
+        setResult(yMax, 0);
+        return result;
+    }
+    // reduce interval if initial and max bracket the root
+    if (yInitial * yMax < 0) {
+        return solve(f, initial, yInitial, max, yMax, initial, yInitial);
+    }
+    if (yMin * yMax > 0) {
+        throw MathRuntimeException.createIllegalArgumentException(NON_BRACKETING_MESSAGE, min, max, yMin, yMax);
+    }
+    // full Brent algorithm starting with provided initial guess
+    return solve(f, min, yMin, max, yMax, initial, yInitial);
+}","public void test2739() throws Throwable {
+    double[] doubleArray0 = new double[4];
+    doubleArray0[1] = 1447.70931;
+    doubleArray0[2] = (-1776.17128565465);
+    doubleArray0[3] = (-4983.0756048);
+    PolynomialFunctionLagrangeForm polynomialFunctionLagrangeForm0 = new PolynomialFunctionLagrangeForm(doubleArray0, doubleArray0);
+    BrentSolver brentSolver0 = new BrentSolver(polynomialFunctionLagrangeForm0);
+    brentSolver0.setFunctionValueAccuracy(Double.POSITIVE_INFINITY);
+    double double0 = brentSolver0.solve((UnivariateRealFunction) polynomialFunctionLagrangeForm0, (-4983.0756048), 1447.70931, (-1776.17128565465));
+    assertEquals((-1776.17128565465), double0, 0.01);
+}","/**
+ * Find a zero in the given interval with an initial guess.
+ * <p>Throws <code>IllegalArgumentException</code> if the values of the
+ * function at the three points have the same sign (note that it is
+ * allowed to have endpoints with the same sign if the initial point has
+ * opposite sign function-wise).</p>
+ *
+ * @param f function to solve.
+ * @param min the lower bound for the interval.
+ * @param max the upper bound for the interval.
+ * @param initial the start value to use (must be set to min if no
+ * initial point is known).
+ * @return the value where the function is zero
+ * @throws MaxIterationsExceededException the maximum iteration count
+ * is exceeded
+ * @throws FunctionEvaluationException if an error occurs evaluating
+ *  the function
+ * @throws IllegalArgumentException if initial is not between min and max
+ * (even if it <em>is</em> a root)
+ */"
+"public int getIterationCount() {
+    return iterationCount;
+}","public void test2840() throws Throwable {
+    double[] doubleArray0 = new double[6];
+    doubleArray0[3] = 1.0;
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    BrentSolver brentSolver0 = new BrentSolver();
+    double double0 = brentSolver0.solve((UnivariateRealFunction) polynomialFunction0, (-2608.314155202569), 1.0);
+    assertEquals(78, brentSolver0.getIterationCount());
+}","/**
+ * {@inheritDoc}
+ */"
+"public double solve(final UnivariateRealFunction f, final double min, final double max) throws MaxIterationsExceededException, FunctionEvaluationException {
+    clearResult();
+    verifyInterval(min, max);
+    double ret = Double.NaN;
+    double yMin = f.value(min);
+    double yMax = f.value(max);
+    // Verify bracketing
+    double sign = yMin * yMax;
+    if (sign > 0) {
+        // check if either value is close to a zero
+        if (Math.abs(yMin) <= functionValueAccuracy) {
+            setResult(min, 0);
+            ret = min;
+        } else if (Math.abs(yMax) <= functionValueAccuracy) {
+            setResult(max, 0);
+            ret = max;
+        } else {
+            // neither value is close to zero and min and max do not bracket root.
+            throw MathRuntimeException.createIllegalArgumentException(NON_BRACKETING_MESSAGE, min, max, yMin, yMax);
+        }
+    } else if (sign < 0) {
+        // solve using only the first endpoint as initial guess
+        ret = solve(f, min, yMin, max, yMax, min, yMin);
+    } else {
+        // either min or max is a root
+        if (yMin == 0.0) {
+            ret = min;
+        } else {
+            ret = max;
+        }
+    }
+    return ret;
+}","public void test2841() throws Throwable {
+    double[] doubleArray0 = new double[6];
+    doubleArray0[3] = 1.0;
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    BrentSolver brentSolver0 = new BrentSolver();
+    double double0 = brentSolver0.solve((UnivariateRealFunction) polynomialFunction0, (-2608.314155202569), 1.0);
+    assertEquals(7.577567588629288E-6, double0, 0.01);
+}","/**
+ * Find a zero in the given interval.
+ * <p>
+ * Requires that the values of the function at the endpoints have opposite
+ * signs. An <code>IllegalArgumentException</code> is thrown if this is not
+ * the case.</p>
+ *
+ * @param f the function to solve
+ * @param min the lower bound for the interval.
+ * @param max the upper bound for the interval.
+ * @return the value where the function is zero
+ * @throws MaxIterationsExceededException if the maximum iteration count is exceeded
+ * @throws FunctionEvaluationException if an error occurs evaluating the
+ * function
+ * @throws IllegalArgumentException if min is not less than max or the
+ * signs of the values of the function at the endpoints are not opposites
+ */"
+"public double solve(final UnivariateRealFunction f, final double min, final double max, final double initial) throws MaxIterationsExceededException, FunctionEvaluationException {
+    clearResult();
+    verifySequence(min, initial, max);
+    // return the initial guess if it is good enough
+    double yInitial = f.value(initial);
+    if (Math.abs(yInitial) <= functionValueAccuracy) {
+        setResult(initial, 0);
+        return result;
+    }
+    // return the first endpoint if it is good enough
+    double yMin = f.value(min);
+    if (Math.abs(yMin) <= functionValueAccuracy) {
+        setResult(yMin, 0);
+        return result;
+    }
+    // reduce interval if min and initial bracket the root
+    if (yInitial * yMin < 0) {
+        return solve(f, min, yMin, initial, yInitial, min, yMin);
+    }
+    // return the second endpoint if it is good enough
+    double yMax = f.value(max);
+    if (Math.abs(yMax) <= functionValueAccuracy) {
+        setResult(yMax, 0);
+        return result;
+    }
+    // reduce interval if initial and max bracket the root
+    if (yInitial * yMax < 0) {
+        return solve(f, initial, yInitial, max, yMax, initial, yInitial);
+    }
+    if (yMin * yMax > 0) {
+        throw MathRuntimeException.createIllegalArgumentException(NON_BRACKETING_MESSAGE, min, max, yMin, yMax);
+    }
+    // full Brent algorithm starting with provided initial guess
+    return solve(f, min, yMin, max, yMax, initial, yInitial);
+}","public void test2942() throws Throwable {
+    BrentSolver brentSolver0 = new BrentSolver();
+    double[] doubleArray0 = new double[5];
+    brentSolver0.setRelativeAccuracy(0.0);
+    doubleArray0[3] = Double.POSITIVE_INFINITY;
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    try {
+        brentSolver0.solve((UnivariateRealFunction) polynomialFunction0, 0.0, Double.POSITIVE_INFINITY, 2.0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Maximal number of iterations (100) exceeded
+        //
+        verifyException(""org.apache.commons.math.analysis.solvers.BrentSolver"", e);
+    }
+}","/**
+ * Find a zero in the given interval with an initial guess.
+ * <p>Throws <code>IllegalArgumentException</code> if the values of the
+ * function at the three points have the same sign (note that it is
+ * allowed to have endpoints with the same sign if the initial point has
+ * opposite sign function-wise).</p>
+ *
+ * @param f function to solve.
+ * @param min the lower bound for the interval.
+ * @param max the upper bound for the interval.
+ * @param initial the start value to use (must be set to min if no
+ * initial point is known).
+ * @return the value where the function is zero
+ * @throws MaxIterationsExceededException the maximum iteration count
+ * is exceeded
+ * @throws FunctionEvaluationException if an error occurs evaluating
+ *  the function
+ * @throws IllegalArgumentException if initial is not between min and max
+ * (even if it <em>is</em> a root)
+ */"
+"public double solve(final UnivariateRealFunction f, final double min, final double max) throws MaxIterationsExceededException, FunctionEvaluationException {
+    clearResult();
+    verifyInterval(min, max);
+    double ret = Double.NaN;
+    double yMin = f.value(min);
+    double yMax = f.value(max);
+    // Verify bracketing
+    double sign = yMin * yMax;
+    if (sign > 0) {
+        // check if either value is close to a zero
+        if (Math.abs(yMin) <= functionValueAccuracy) {
+            setResult(min, 0);
+            ret = min;
+        } else if (Math.abs(yMax) <= functionValueAccuracy) {
+            setResult(max, 0);
+            ret = max;
+        } else {
+            // neither value is close to zero and min and max do not bracket root.
+            throw MathRuntimeException.createIllegalArgumentException(NON_BRACKETING_MESSAGE, min, max, yMin, yMax);
+        }
+    } else if (sign < 0) {
+        // solve using only the first endpoint as initial guess
+        ret = solve(f, min, yMin, max, yMax, min, yMin);
+    } else {
+        // either min or max is a root
+        if (yMin == 0.0) {
+            ret = min;
+        } else {
+            ret = max;
+        }
+    }
+    return ret;
+}","public void test3043() throws Throwable {
+    BrentSolver brentSolver0 = new BrentSolver();
+    double[] doubleArray0 = new double[5];
+    doubleArray0[1] = (-628.5740418022539);
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    double double0 = brentSolver0.solve((UnivariateRealFunction) polynomialFunction0, 2.2909552562, Double.NaN);
+    assertEquals(Double.NaN, double0, 0.01);
+}","/**
+ * Find a zero in the given interval.
+ * <p>
+ * Requires that the values of the function at the endpoints have opposite
+ * signs. An <code>IllegalArgumentException</code> is thrown if this is not
+ * the case.</p>
+ *
+ * @param f the function to solve
+ * @param min the lower bound for the interval.
+ * @param max the upper bound for the interval.
+ * @return the value where the function is zero
+ * @throws MaxIterationsExceededException if the maximum iteration count is exceeded
+ * @throws FunctionEvaluationException if an error occurs evaluating the
+ * function
+ * @throws IllegalArgumentException if min is not less than max or the
+ * signs of the values of the function at the endpoints are not opposites
+ */"
+"public int getIterationCount() {
+    return iterationCount;
+}","public void test3144() throws Throwable {
+    double[] doubleArray0 = new double[4];
+    doubleArray0[1] = 1447.70931;
+    doubleArray0[2] = (-1776.17128565465);
+    doubleArray0[3] = (-4983.0756048);
+    PolynomialFunctionLagrangeForm polynomialFunctionLagrangeForm0 = new PolynomialFunctionLagrangeForm(doubleArray0, doubleArray0);
+    BrentSolver brentSolver0 = new BrentSolver(polynomialFunctionLagrangeForm0);
+    double double0 = brentSolver0.solve((-1776.17128565465), 6280.561371054391);
+    assertEquals(2, brentSolver0.getIterationCount());
+}","/**
+ * {@inheritDoc}
+ */"
+"@Deprecated
+public double solve(double min, double max) throws MaxIterationsExceededException, FunctionEvaluationException {
+    return solve(f, min, max);
+}","public void test3145() throws Throwable {
+    double[] doubleArray0 = new double[4];
+    doubleArray0[1] = 1447.70931;
+    doubleArray0[2] = (-1776.17128565465);
+    doubleArray0[3] = (-4983.0756048);
+    PolynomialFunctionLagrangeForm polynomialFunctionLagrangeForm0 = new PolynomialFunctionLagrangeForm(doubleArray0, doubleArray0);
+    BrentSolver brentSolver0 = new BrentSolver(polynomialFunctionLagrangeForm0);
+    double double0 = brentSolver0.solve((-1776.17128565465), 6280.561371054391);
+    assertEquals(2.2737367544323206E-13, double0, 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public int getIterationCount() {
+    return iterationCount;
+}","public void test3246() throws Throwable {
+    double[] doubleArray0 = new double[6];
+    doubleArray0[0] = (-807.6822);
+    doubleArray0[1] = 0.0034965959591759478;
+    doubleArray0[2] = 1.0;
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    BrentSolver brentSolver0 = new BrentSolver(polynomialFunction0);
+    brentSolver0.setFunctionValueAccuracy(0.0034965959591759478);
+    double double0 = brentSolver0.solve(0.0, 28.41797642366119);
+    assertEquals(0, brentSolver0.getIterationCount());
+}","/**
+ * {@inheritDoc}
+ */"
+"@Deprecated
+public double solve(double min, double max) throws MaxIterationsExceededException, FunctionEvaluationException {
+    return solve(f, min, max);
+}","public void test3247() throws Throwable {
+    double[] doubleArray0 = new double[6];
+    doubleArray0[0] = (-807.6822);
+    doubleArray0[1] = 0.0034965959591759478;
+    doubleArray0[2] = 1.0;
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    BrentSolver brentSolver0 = new BrentSolver(polynomialFunction0);
+    brentSolver0.setFunctionValueAccuracy(0.0034965959591759478);
+    double double0 = brentSolver0.solve(0.0, 28.41797642366119);
+    assertEquals(28.41797642366119, double0, 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public int getIterationCount() {
+    return iterationCount;
+}","public void test3348() throws Throwable {
+    double[] doubleArray0 = new double[6];
+    doubleArray0[3] = 1.0;
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    BrentSolver brentSolver0 = new BrentSolver();
+    double double0 = brentSolver0.solve((UnivariateRealFunction) polynomialFunction0, 1.0E-15, Double.POSITIVE_INFINITY);
+    assertEquals(0, brentSolver0.getIterationCount());
+}","/**
+ * {@inheritDoc}
+ */"
+"public double solve(final UnivariateRealFunction f, final double min, final double max) throws MaxIterationsExceededException, FunctionEvaluationException {
+    clearResult();
+    verifyInterval(min, max);
+    double ret = Double.NaN;
+    double yMin = f.value(min);
+    double yMax = f.value(max);
+    // Verify bracketing
+    double sign = yMin * yMax;
+    if (sign > 0) {
+        // check if either value is close to a zero
+        if (Math.abs(yMin) <= functionValueAccuracy) {
+            setResult(min, 0);
+            ret = min;
+        } else if (Math.abs(yMax) <= functionValueAccuracy) {
+            setResult(max, 0);
+            ret = max;
+        } else {
+            // neither value is close to zero and min and max do not bracket root.
+            throw MathRuntimeException.createIllegalArgumentException(NON_BRACKETING_MESSAGE, min, max, yMin, yMax);
+        }
+    } else if (sign < 0) {
+        // solve using only the first endpoint as initial guess
+        ret = solve(f, min, yMin, max, yMax, min, yMin);
+    } else {
+        // either min or max is a root
+        if (yMin == 0.0) {
+            ret = min;
+        } else {
+            ret = max;
+        }
+    }
+    return ret;
+}","public void test3349() throws Throwable {
+    double[] doubleArray0 = new double[6];
+    doubleArray0[3] = 1.0;
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    BrentSolver brentSolver0 = new BrentSolver();
+    double double0 = brentSolver0.solve((UnivariateRealFunction) polynomialFunction0, 1.0E-15, Double.POSITIVE_INFINITY);
+    assertEquals(1.0E-15, double0, 0.01);
+}","/**
+ * Find a zero in the given interval.
+ * <p>
+ * Requires that the values of the function at the endpoints have opposite
+ * signs. An <code>IllegalArgumentException</code> is thrown if this is not
+ * the case.</p>
+ *
+ * @param f the function to solve
+ * @param min the lower bound for the interval.
+ * @param max the upper bound for the interval.
+ * @return the value where the function is zero
+ * @throws MaxIterationsExceededException if the maximum iteration count is exceeded
+ * @throws FunctionEvaluationException if an error occurs evaluating the
+ * function
+ * @throws IllegalArgumentException if min is not less than max or the
+ * signs of the values of the function at the endpoints are not opposites
+ */"
+"@Deprecated
+public double solve(double min, double max) throws MaxIterationsExceededException, FunctionEvaluationException {
+    return solve(f, min, max);
+}","public void test3450() throws Throwable {
+    double[] doubleArray0 = new double[6];
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    BrentSolver brentSolver0 = new BrentSolver(polynomialFunction0);
+    double double0 = brentSolver0.solve(0.0, 776.6959017385);
+    assertEquals(0.0, double0, 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public double solve(final UnivariateRealFunction f, final double min, final double max, final double initial) throws MaxIterationsExceededException, FunctionEvaluationException {
+    clearResult();
+    verifySequence(min, initial, max);
+    // return the initial guess if it is good enough
+    double yInitial = f.value(initial);
+    if (Math.abs(yInitial) <= functionValueAccuracy) {
+        setResult(initial, 0);
+        return result;
+    }
+    // return the first endpoint if it is good enough
+    double yMin = f.value(min);
+    if (Math.abs(yMin) <= functionValueAccuracy) {
+        setResult(yMin, 0);
+        return result;
+    }
+    // reduce interval if min and initial bracket the root
+    if (yInitial * yMin < 0) {
+        return solve(f, min, yMin, initial, yInitial, min, yMin);
+    }
+    // return the second endpoint if it is good enough
+    double yMax = f.value(max);
+    if (Math.abs(yMax) <= functionValueAccuracy) {
+        setResult(yMax, 0);
+        return result;
+    }
+    // reduce interval if initial and max bracket the root
+    if (yInitial * yMax < 0) {
+        return solve(f, initial, yInitial, max, yMax, initial, yInitial);
+    }
+    if (yMin * yMax > 0) {
+        throw MathRuntimeException.createIllegalArgumentException(NON_BRACKETING_MESSAGE, min, max, yMin, yMax);
+    }
+    // full Brent algorithm starting with provided initial guess
+    return solve(f, min, yMin, max, yMax, initial, yInitial);
+}","public void test3551() throws Throwable {
+    BrentSolver brentSolver0 = new BrentSolver();
+    double[] doubleArray0 = new double[5];
+    doubleArray0[1] = Double.POSITIVE_INFINITY;
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    UnivariateRealFunction univariateRealFunction0 = polynomialFunction0.derivative();
+    // Undeclared exception!
+    try {
+        brentSolver0.solve(univariateRealFunction0, (-11.339119596985), 0.0, (-1.0));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // function values at endpoints do not have different signs.  Endpoints: [-11.339, 0], Values: [\u221E, \u221E]
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}","/**
+ * Find a zero in the given interval with an initial guess.
+ * <p>Throws <code>IllegalArgumentException</code> if the values of the
+ * function at the three points have the same sign (note that it is
+ * allowed to have endpoints with the same sign if the initial point has
+ * opposite sign function-wise).</p>
+ *
+ * @param f function to solve.
+ * @param min the lower bound for the interval.
+ * @param max the upper bound for the interval.
+ * @param initial the start value to use (must be set to min if no
+ * initial point is known).
+ * @return the value where the function is zero
+ * @throws MaxIterationsExceededException the maximum iteration count
+ * is exceeded
+ * @throws FunctionEvaluationException if an error occurs evaluating
+ *  the function
+ * @throws IllegalArgumentException if initial is not between min and max
+ * (even if it <em>is</em> a root)
+ */"
+"public int getIterationCount() {
+    return iterationCount;
+}","public void test3652() throws Throwable {
+    BrentSolver brentSolver0 = new BrentSolver();
+    double[] doubleArray0 = new double[6];
+    doubleArray0[1] = 13.709875087451534;
+    doubleArray0[4] = 13.709875087451534;
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    UnivariateRealFunction univariateRealFunction0 = polynomialFunction0.derivative();
+    double double0 = brentSolver0.solve(univariateRealFunction0, (-1861.77), 1.0, 4.999999987376214E-7);
+    assertEquals(29, brentSolver0.getIterationCount());
+}","/**
+ * {@inheritDoc}
+ */"
+"public double solve(final UnivariateRealFunction f, final double min, final double max, final double initial) throws MaxIterationsExceededException, FunctionEvaluationException {
+    clearResult();
+    verifySequence(min, initial, max);
+    // return the initial guess if it is good enough
+    double yInitial = f.value(initial);
+    if (Math.abs(yInitial) <= functionValueAccuracy) {
+        setResult(initial, 0);
+        return result;
+    }
+    // return the first endpoint if it is good enough
+    double yMin = f.value(min);
+    if (Math.abs(yMin) <= functionValueAccuracy) {
+        setResult(yMin, 0);
+        return result;
+    }
+    // reduce interval if min and initial bracket the root
+    if (yInitial * yMin < 0) {
+        return solve(f, min, yMin, initial, yInitial, min, yMin);
+    }
+    // return the second endpoint if it is good enough
+    double yMax = f.value(max);
+    if (Math.abs(yMax) <= functionValueAccuracy) {
+        setResult(yMax, 0);
+        return result;
+    }
+    // reduce interval if initial and max bracket the root
+    if (yInitial * yMax < 0) {
+        return solve(f, initial, yInitial, max, yMax, initial, yInitial);
+    }
+    if (yMin * yMax > 0) {
+        throw MathRuntimeException.createIllegalArgumentException(NON_BRACKETING_MESSAGE, min, max, yMin, yMax);
+    }
+    // full Brent algorithm starting with provided initial guess
+    return solve(f, min, yMin, max, yMax, initial, yInitial);
+}","public void test3653() throws Throwable {
+    BrentSolver brentSolver0 = new BrentSolver();
+    double[] doubleArray0 = new double[6];
+    doubleArray0[1] = 13.709875087451534;
+    doubleArray0[4] = 13.709875087451534;
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    UnivariateRealFunction univariateRealFunction0 = polynomialFunction0.derivative();
+    double double0 = brentSolver0.solve(univariateRealFunction0, (-1861.77), 1.0, 4.999999987376214E-7);
+    assertEquals((-0.6299606294230332), double0, 0.01);
+}","/**
+ * Find a zero in the given interval with an initial guess.
+ * <p>Throws <code>IllegalArgumentException</code> if the values of the
+ * function at the three points have the same sign (note that it is
+ * allowed to have endpoints with the same sign if the initial point has
+ * opposite sign function-wise).</p>
+ *
+ * @param f function to solve.
+ * @param min the lower bound for the interval.
+ * @param max the upper bound for the interval.
+ * @param initial the start value to use (must be set to min if no
+ * initial point is known).
+ * @return the value where the function is zero
+ * @throws MaxIterationsExceededException the maximum iteration count
+ * is exceeded
+ * @throws FunctionEvaluationException if an error occurs evaluating
+ *  the function
+ * @throws IllegalArgumentException if initial is not between min and max
+ * (even if it <em>is</em> a root)
+ */"
+"@Deprecated
+public double solve(double min, double max) throws MaxIterationsExceededException, FunctionEvaluationException {
+    return solve(f, min, max);
+}","public void test3754() throws Throwable {
+    BrentSolver brentSolver0 = new BrentSolver();
+    // Undeclared exception!
+    try {
+        brentSolver0.solve((-1.0), 1.0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.analysis.solvers.BrentSolver"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"@Deprecated
+public BrentSolver(UnivariateRealFunction f) {
+    super(f, 100, 1E-6);
+}","public void test3855() throws Throwable {
+    BrentSolver brentSolver0 = null;
+    try {
+        brentSolver0 = new BrentSolver((UnivariateRealFunction) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // function to solve cannot be null
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}","/**
+ * Construct a solver for the given function.
+ *
+ * @param f function to solve.
+ * @deprecated as of 2.0 the function to solve is passed as an argument
+ * to the {@link #solve(UnivariateRealFunction, double, double)} or
+ * {@link UnivariateRealSolverImpl#solve(UnivariateRealFunction, double, double, double)}
+ * method.
+ */"

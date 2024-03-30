@@ -1,0 +1,1083 @@
+focal_method,test_prefix,docstring
+"@Deprecated
+public JavaType constructSimpleType(Class<?> rawType, Class<?> parameterTarget, JavaType[] parameterTypes) {
+    return constructSimpleType(rawType, parameterTypes);
+}","public void test000() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<DeserializationFeature> class0 = DeserializationFeature.class;
+    JavaType[] javaTypeArray0 = new JavaType[0];
+    JavaType javaType0 = typeFactory0.constructSimpleType(class0, class0, javaTypeArray0);
+    assertNotNull(javaType0);
+}","/**
+ * Method for constructing a type instance with specified parameterization.
+ *
+ * @since 2.6
+ *
+ * @deprecated Since 2.7
+ */"
+"@Override
+public final boolean isEnumType() {
+    return _class.isEnum();
+}","public void test001() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<DeserializationFeature> class0 = DeserializationFeature.class;
+    JavaType[] javaTypeArray0 = new JavaType[0];
+    JavaType javaType0 = typeFactory0.constructSimpleType(class0, class0, javaTypeArray0);
+    assertTrue(javaType0.isEnumType());
+}",""
+"@SuppressWarnings(""unchecked"")
+public <T> T convertValue(Object fromValue, JavaType toValueType) throws IllegalArgumentException {
+    // sanity check for null first:
+    if (fromValue == null)
+        return null;
+    return (T) _convert(fromValue, toValueType);
+}","public void test012() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<SimpleType> class0 = SimpleType.class;
+    TypeBindings typeBindings0 = TypeFactory.EMPTY_BINDINGS;
+    SimpleType simpleType0 = SimpleType.constructUnsafe(class0);
+    JavaType[] javaTypeArray0 = new JavaType[1];
+    CollectionLikeType collectionLikeType0 = CollectionLikeType.upgradeFrom(simpleType0, simpleType0);
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, typeBindings0);
+    CollectionType collectionType0 = CollectionType.construct((Class<?>) class0, typeBindings0, (JavaType) collectionLikeType0, javaTypeArray0, (JavaType) resolvedRecursiveType0);
+    try {
+        objectMapper0.convertValue((Object) typeBindings0, (JavaType) collectionType0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Can not find a Value deserializer for type [collection type; class com.fasterxml.jackson.databind.type.SimpleType, contains [recursive type; UNRESOLVED]
+        //  at [Source: java.lang.String@0000000284; line: -1, column: -1]
+        //
+        verifyException(""com.fasterxml.jackson.databind.ObjectMapper"", e);
+    }
+}","/**
+ * See {@link #convertValue(Object, Class)}
+ */"
+"public final boolean isJavaLangObject() {
+    return _class == Object.class;
+}","public void test023() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<PlaceholderForType> class0 = PlaceholderForType.class;
+    Class<ObjectMapper.DefaultTyping>[] classArray0 = (Class<ObjectMapper.DefaultTyping>[]) Array.newInstance(Class.class, 0);
+    JavaType javaType0 = typeFactory0.constructParametricType(class0, classArray0);
+    assertFalse(javaType0.isJavaLangObject());
+}","/**
+ *  Convenience method, short-hand for
+ * <code>
+ *    getRawClass() == Object.class
+ * </code>
+ *  and used to figure if we basically have ""untyped"" type object.
+ *
+ *  @since 2.5
+ */"
+"@Override
+public final boolean isFinal() {
+    return Modifier.isFinal(_class.getModifiers());
+}","public void test024() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<PlaceholderForType> class0 = PlaceholderForType.class;
+    Class<ObjectMapper.DefaultTyping>[] classArray0 = (Class<ObjectMapper.DefaultTyping>[]) Array.newInstance(Class.class, 0);
+    JavaType javaType0 = typeFactory0.constructParametricType(class0, classArray0);
+    assertFalse(javaType0.isFinal());
+}",""
+"// since 2.8
+@Deprecated
+public JavaType uncheckedSimpleType(Class<?> cls) {
+    // 18-Oct-2015, tatu: Not sure how much problem missing super-type info is here
+    return _constructSimple(cls, EMPTY_BINDINGS, null, null);
+}","public void test047() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<MapperFeature> class0 = MapperFeature.class;
+    JavaType javaType0 = typeFactory0.uncheckedSimpleType(class0);
+    assertNotNull(javaType0);
+}","/**
+ *  Method that use by core Databind functionality, and that should NOT be called
+ *  by application code outside databind package.
+ * <p>
+ *  Unchecked here not only means that no checks are made as to whether given class
+ *  might be non-simple type (like {@link CollectionType}) but also that most of supertype
+ *  information is not gathered. This means that unless called on primitive types or
+ *  {@link java.lang.String}, results are probably not what you want to use.
+ *
+ *  @deprecated Since 2.8, to indicate users should never call this method.
+ */"
+"@Override
+public final boolean isEnumType() {
+    return _class.isEnum();
+}","public void test048() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<MapperFeature> class0 = MapperFeature.class;
+    JavaType javaType0 = typeFactory0.uncheckedSimpleType(class0);
+    assertTrue(javaType0.isEnumType());
+}",""
+"@Override
+public boolean isConcrete() {
+    int mod = _class.getModifiers();
+    if ((mod & (Modifier.INTERFACE | Modifier.ABSTRACT)) == 0) {
+        return true;
+    }
+    /* 19-Feb-2010, tatus: Holy mackarel; primitive types
+         *    have 'abstract' flag set...
+         */
+    return _class.isPrimitive();
+}","public void test059() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<IntNode> class0 = IntNode.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructMapLikeType(class0, class0, class0);
+    JavaType javaType0 = typeFactory0.constructType((Type) mapLikeType0, (Class<?>) class0);
+    assertTrue(javaType0.isConcrete());
+}","/**
+ * Convenience method for checking whether underlying Java type
+ * is a concrete class or not: abstract classes and interfaces
+ * are not.
+ */"
+"@Override
+public final boolean isEnumType() {
+    return _class.isEnum();
+}","public void test0610() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<SerializationFeature> class0 = SerializationFeature.class;
+    Class<AnnotationIntrospector.ReferenceProperty.Type> class1 = AnnotationIntrospector.ReferenceProperty.Type.class;
+    JavaType[] javaTypeArray0 = new JavaType[0];
+    JavaType javaType0 = typeFactory0.constructParametrizedType(class0, class1, javaTypeArray0);
+    assertTrue(javaType0.isEnumType());
+}",""
+"@Override
+public final boolean isFinal() {
+    return Modifier.isFinal(_class.getModifiers());
+}","public void test0611() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<SerializationFeature> class0 = SerializationFeature.class;
+    Class<AnnotationIntrospector.ReferenceProperty.Type> class1 = AnnotationIntrospector.ReferenceProperty.Type.class;
+    JavaType[] javaTypeArray0 = new JavaType[0];
+    JavaType javaType0 = typeFactory0.constructParametrizedType(class0, class1, javaTypeArray0);
+    assertTrue(javaType0.isFinal());
+}",""
+"public void clearCache() {
+    _typeCache.clear();
+}","public void test0914() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    typeFactory0.clearCache();
+}","/**
+ * Method that will clear up any cached type definitions that may
+ * be cached by this {@link TypeFactory} instance.
+ * This method should not be commonly used, that is, only use it
+ * if you know there is a problem with retention of type definitions;
+ * the most likely (and currently only known) problem is retention
+ * of {@link Class} instances via {@link JavaType} reference.
+ *
+ * @since 2.4.1
+ */"
+"public final boolean isJavaLangObject() {
+    return _class == Object.class;
+}","public void test1015() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<String> class0 = String.class;
+    CollectionLikeType collectionLikeType0 = typeFactory0.constructRawCollectionLikeType(class0);
+    assertFalse(collectionLikeType0.isJavaLangObject());
+}","/**
+ *  Convenience method, short-hand for
+ * <code>
+ *    getRawClass() == Object.class
+ * </code>
+ *  and used to figure if we basically have ""untyped"" type object.
+ *
+ *  @since 2.5
+ */"
+"@Override
+public boolean isAbstract() {
+    return Modifier.isAbstract(_class.getModifiers());
+}","public void test1016() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<String> class0 = String.class;
+    CollectionLikeType collectionLikeType0 = typeFactory0.constructRawCollectionLikeType(class0);
+    assertFalse(collectionLikeType0.isAbstract());
+}",""
+"@Override
+public abstract int containedTypeCount();","public void test1117() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<LinkedList> class0 = LinkedList.class;
+    CollectionType collectionType0 = typeFactory0.constructCollectionType(class0, class0);
+    JavaType javaType0 = typeFactory0.constructSpecializedType(collectionType0, class0);
+    assertEquals(1, javaType0.containedTypeCount());
+}",""
+"@Override
+public int containedTypeCount() {
+    return _bindings.size();
+}","public void test1218() throws Throwable {
+    Class<LinkedList> class0 = LinkedList.class;
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<SimpleType> class1 = SimpleType.class;
+    CollectionLikeType collectionLikeType0 = typeFactory0.constructCollectionLikeType(class0, class1);
+    assertEquals(1, collectionLikeType0.containedTypeCount());
+}",""
+"public JavaType constructType(TypeReference<?> typeRef) {
+    // 19-Oct-2015, tatu: Simpler variant like so should work
+    return _fromAny(null, typeRef.getType(), EMPTY_BINDINGS);
+    // but if not, due to funky sub-classing, type variables, what follows
+    // is a more complete processing a la Java ClassMate.
+    /*
+        final Class<?> refdRawType = typeRef.getClass();
+        JavaType type = _fromClass(null, refdRawType, EMPTY_BINDINGS);
+        JavaType genType = type.findSuperType(TypeReference.class);
+        if (genType == null) { // sanity check; shouldn't occur
+            throw new IllegalArgumentException(""Unparameterized GenericType instance (""+refdRawType.getName()+"")"");
+        }
+        TypeBindings b = genType.getBindings();
+        JavaType[] params = b.typeParameterArray();
+        if (params.length == 0) {
+            throw new IllegalArgumentException(""Unparameterized GenericType instance (""+refdRawType.getName()+"")"");
+        }
+        return params[0];
+        */
+}","public void test1319() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    // Undeclared exception!
+    try {
+        typeFactory0.constructType((TypeReference<?>) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeFactory"", e);
+    }
+}",""
+"public MapType constructRawMapType(Class<? extends Map> mapClass) {
+    return constructMapType(mapClass, unknownType(), unknownType());
+}","public void test1420() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<Properties> class0 = Properties.class;
+    // Undeclared exception!
+    try {
+        typeFactory0.constructRawMapType(class0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Can not create TypeBindings for class java.util.Properties with 2 type parameters: class expects 0
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeBindings"", e);
+    }
+}","/**
+ *  Method that can be used to construct ""raw"" Map type; meaning that its
+ *  parameterization is unknown.
+ *  This is similar to using <code>Object.class</code> parameterization,
+ *  and is equivalent to calling:
+ * <pre>
+ *   typeFactory.constructMapType(collectionClass, typeFactory.unknownType(), typeFactory.unknownType());
+ * </pre>
+ * <p>
+ *  This method should only be used if parameterization is completely unavailable.
+ */"
+"public boolean hasContentType() {
+    return true;
+}","public void test1521() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<Properties> class0 = Properties.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructRawMapLikeType(class0);
+    assertTrue(mapLikeType0.hasContentType());
+}","/**
+ * Accessor that allows determining whether {@link #getContentType()} should
+ * return a non-null value (that is, there is a ""content type"") or not.
+ * True if {@link #isContainerType()} or {@link #isReferenceType()} return true.
+ *
+ * @since 2.8
+ */"
+"@Override
+public final boolean isPrimitive() {
+    return _class.isPrimitive();
+}","public void test1622() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    JavaType javaType0 = typeFactory0.constructFromCanonical(""long"");
+    assertTrue(javaType0.isPrimitive());
+}",""
+"/*
+    /**********************************************************
+    /* Low-level helper methods
+    /**********************************************************
+     */
+/**
+ * Low-level lookup method moved from {@link com.fasterxml.jackson.databind.util.ClassUtil},
+ * to allow for overriding of lookup functionality in environments like OSGi.
+ *
+ * @since 2.6
+ */
+public Class<?> findClass(String className) throws ClassNotFoundException {
+    if (className.indexOf('.') < 0) {
+        Class<?> prim = _findPrimitive(className);
+        if (prim != null) {
+            return prim;
+        }
+    }
+    // Two-phase lookup: first using context ClassLoader; then default
+    Throwable prob = null;
+    ClassLoader loader = this.getClassLoader();
+    if (loader == null) {
+        loader = Thread.currentThread().getContextClassLoader();
+    }
+    if (loader != null) {
+        try {
+            return classForName(className, true, loader);
+        } catch (Exception e) {
+            prob = ClassUtil.getRootCause(e);
+        }
+    }
+    try {
+        return classForName(className);
+    } catch (Exception e) {
+        if (prob == null) {
+            prob = ClassUtil.getRootCause(e);
+        }
+    }
+    if (prob instanceof RuntimeException) {
+        throw (RuntimeException) prob;
+    }
+    throw new ClassNotFoundException(prob.getMessage(), prob);
+}","public void test1723() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    ClassLoader classLoader0 = ClassLoader.getSystemClassLoader();
+    TypeFactory typeFactory1 = typeFactory0.withClassLoader(classLoader0);
+    try {
+        typeFactory1.findClass("""");
+        fail(""Expecting exception: ClassNotFoundException"");
+    } catch (ClassNotFoundException e) {
+        //
+        //
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeFactory"", e);
+    }
+}",""
+"// since 2.7
+@Deprecated
+public JavaType[] findTypeParameters(Class<?> clz, Class<?> expType, TypeBindings bindings) {
+    return findTypeParameters(constructType(clz, bindings), expType);
+}","public void test1824() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<CollectionLikeType> class0 = CollectionLikeType.class;
+    JavaType[] javaTypeArray0 = typeFactory0.findTypeParameters(class0, class0, (TypeBindings) null);
+    assertEquals(0, javaTypeArray0.length);
+}","/**
+ * @deprecated Since 2.7 resolve raw type first, then find type parameters
+ */"
+"public JavaType constructReferenceType(Class<?> rawType, JavaType referredType) {
+    return // no bindings
+    ReferenceType.// no bindings
+    construct(// no bindings
+    rawType, // no bindings
+    null, // or super-class, interfaces?
+    null, // or super-class, interfaces?
+    null, referredType);
+}","public void test1925() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<SettableBeanProperty> class0 = SettableBeanProperty.class;
+    // Undeclared exception!
+    try {
+        typeFactory0.constructReferenceType(class0, (JavaType) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.ReferenceType"", e);
+    }
+}","/**
+ * @since 2.6
+ */"
+"public final boolean isJavaLangObject() {
+    return _class == Object.class;
+}","public void test2127() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    JavaType javaType0 = TypeFactory.unknownType();
+    typeFactory0.constructArrayType(javaType0);
+    assertTrue(javaType0.isJavaLangObject());
+}","/**
+ *  Convenience method, short-hand for
+ * <code>
+ *    getRawClass() == Object.class
+ * </code>
+ *  and used to figure if we basically have ""untyped"" type object.
+ *
+ *  @since 2.5
+ */"
+"@Override
+public final boolean isInterface() {
+    return _class.isInterface();
+}","public void test2128() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    JavaType javaType0 = TypeFactory.unknownType();
+    typeFactory0.constructArrayType(javaType0);
+    assertFalse(javaType0.isInterface());
+}",""
+"public TypeFactory withModifier(TypeModifier mod) {
+    LRUMap<Object, JavaType> typeCache = _typeCache;
+    TypeModifier[] mods;
+    if (mod == null) {
+        // mostly for unit tests
+        mods = null;
+        // 30-Jun-2016, tatu: for some reason expected semantics are to clear cache
+        //    in this case; can't recall why, but keeping the same
+        typeCache = null;
+    } else if (_modifiers == null) {
+        mods = new TypeModifier[] { mod };
+    } else {
+        mods = ArrayBuilders.insertInListNoDup(_modifiers, mod);
+    }
+    return new TypeFactory(typeCache, _parser, mods, _classLoader);
+}","public void test2330() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    TypeModifier typeModifier0 = mock(TypeModifier.class, new ViolatedAssumptionAnswer());
+    TypeFactory typeFactory1 = typeFactory0.withModifier(typeModifier0);
+    TypeModifier typeModifier1 = mock(TypeModifier.class, new ViolatedAssumptionAnswer());
+    TypeFactory typeFactory2 = typeFactory1.withModifier(typeModifier1);
+    assertNotSame(typeFactory0, typeFactory2);
+}",""
+"public TypeFactory withModifier(TypeModifier mod) {
+    LRUMap<Object, JavaType> typeCache = _typeCache;
+    TypeModifier[] mods;
+    if (mod == null) {
+        // mostly for unit tests
+        mods = null;
+        // 30-Jun-2016, tatu: for some reason expected semantics are to clear cache
+        //    in this case; can't recall why, but keeping the same
+        typeCache = null;
+    } else if (_modifiers == null) {
+        mods = new TypeModifier[] { mod };
+    } else {
+        mods = ArrayBuilders.insertInListNoDup(_modifiers, mod);
+    }
+    return new TypeFactory(typeCache, _parser, mods, _classLoader);
+}","public void test2431() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    TypeFactory typeFactory1 = typeFactory0.withModifier((TypeModifier) null);
+    assertNotSame(typeFactory0, typeFactory1);
+}",""
+"/*
+    /**********************************************************
+    /* Low-level helper methods
+    /**********************************************************
+     */
+/**
+ * Low-level lookup method moved from {@link com.fasterxml.jackson.databind.util.ClassUtil},
+ * to allow for overriding of lookup functionality in environments like OSGi.
+ *
+ * @since 2.6
+ */
+public Class<?> findClass(String className) throws ClassNotFoundException {
+    if (className.indexOf('.') < 0) {
+        Class<?> prim = _findPrimitive(className);
+        if (prim != null) {
+            return prim;
+        }
+    }
+    // Two-phase lookup: first using context ClassLoader; then default
+    Throwable prob = null;
+    ClassLoader loader = this.getClassLoader();
+    if (loader == null) {
+        loader = Thread.currentThread().getContextClassLoader();
+    }
+    if (loader != null) {
+        try {
+            return classForName(className, true, loader);
+        } catch (Exception e) {
+            prob = ClassUtil.getRootCause(e);
+        }
+    }
+    try {
+        return classForName(className);
+    } catch (Exception e) {
+        if (prob == null) {
+            prob = ClassUtil.getRootCause(e);
+        }
+    }
+    if (prob instanceof RuntimeException) {
+        throw (RuntimeException) prob;
+    }
+    throw new ClassNotFoundException(prob.getMessage(), prob);
+}","public void test2734() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    try {
+        typeFactory0.findClass(""[nF.L`2EoWM;f"");
+        fail(""Expecting exception: ClassNotFoundException"");
+    } catch (ClassNotFoundException e) {
+        //
+        // [nF/L`2EoWM;f
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeFactory"", e);
+    }
+}",""
+"@Override
+public boolean isAbstract() {
+    return Modifier.isAbstract(_class.getModifiers());
+}","public void test3340() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    JavaType javaType0 = typeFactory0.constructFromCanonical(""char"");
+    assertTrue(javaType0.isAbstract());
+}",""
+"public final boolean isJavaLangObject() {
+    return _class == Object.class;
+}","public void test3643() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<Double> class0 = Double.TYPE;
+    JavaType javaType0 = TypeFactory.unknownType();
+    assertTrue(javaType0.isJavaLangObject());
+}","/**
+ *  Convenience method, short-hand for
+ * <code>
+ *    getRawClass() == Object.class
+ * </code>
+ *  and used to figure if we basically have ""untyped"" type object.
+ *
+ *  @since 2.5
+ */"
+"@Override
+public final boolean isFinal() {
+    return Modifier.isFinal(_class.getModifiers());
+}","public void test3644() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<Double> class0 = Double.TYPE;
+    JavaType javaType0 = TypeFactory.unknownType();
+    JavaType javaType1 = typeFactory0.constructSpecializedType(javaType0, class0);
+    assertTrue(javaType1.isFinal());
+}",""
+"/*
+    /**********************************************************
+    /* Type conversion, parameterization resolution methods
+    /**********************************************************
+     */
+/**
+ * Factory method for creating a subtype of given base type, as defined
+ * by specified subclass; but retaining generic type information if any.
+ * Can be used, for example, to get equivalent of ""HashMap&lt;String,Integer&gt;""
+ * from ""Map&lt;String,Integer&gt;"" by giving <code>HashMap.class</code>
+ * as subclass.
+ */
+public JavaType constructSpecializedType(JavaType baseType, Class<?> subclass) {
+    // simple optimization to avoid costly introspection if type-erased type does NOT differ
+    final Class<?> rawBase = baseType.getRawClass();
+    if (rawBase == subclass) {
+        return baseType;
+    }
+    JavaType newType;
+    // also: if we start from untyped, not much to save
+    do {
+        // bogus loop to be able to break
+        if (rawBase == Object.class) {
+            newType = _fromClass(null, subclass, TypeBindings.emptyBindings());
+            break;
+        }
+        if (!rawBase.isAssignableFrom(subclass)) {
+            throw new IllegalArgumentException(String.format(""Class %s not subtype of %s"", subclass.getName(), baseType));
+        }
+        // A few special cases where we can simplify handling:
+        // (1) Original target type has no generics -- just resolve subtype
+        if (baseType.getBindings().isEmpty()) {
+            newType = _fromClass(null, subclass, TypeBindings.emptyBindings());
+            break;
+        }
+        // (2) A small set of ""well-known"" List/Map subtypes where can take a short-cut
+        if (baseType.isContainerType()) {
+            if (baseType.isMapLikeType()) {
+                if ((subclass == HashMap.class) || (subclass == LinkedHashMap.class) || (subclass == EnumMap.class) || (subclass == TreeMap.class)) {
+                    newType = _fromClass(null, subclass, TypeBindings.create(subclass, baseType.getKeyType(), baseType.getContentType()));
+                    break;
+                }
+            } else if (baseType.isCollectionLikeType()) {
+                if ((subclass == ArrayList.class) || (subclass == LinkedList.class) || (subclass == HashSet.class) || (subclass == TreeSet.class)) {
+                    newType = _fromClass(null, subclass, TypeBindings.create(subclass, baseType.getContentType()));
+                    break;
+                }
+                // 29-Oct-2015, tatu: One further shortcut: there are variants of `EnumSet`,
+                //    but they are impl details and we basically do not care...
+                if (rawBase == EnumSet.class) {
+                    return baseType;
+                }
+            }
+        }
+        // (3) Sub-class does not take type parameters -- just resolve subtype
+        int typeParamCount = subclass.getTypeParameters().length;
+        if (typeParamCount == 0) {
+            newType = _fromClass(null, subclass, TypeBindings.emptyBindings());
+            break;
+        }
+        // (4) If all else fails, do the full traversal using placeholders
+        TypeBindings tb = _bindingsForSubtype(baseType, typeParamCount, subclass);
+        newType = _fromClass(null, subclass, tb);
+    } while (false);
+    // 25-Sep-2016, tatu: As per [databind#1384] also need to ensure handlers get
+    //   copied as well
+    newType = newType.withHandlersFrom(baseType);
+    return newType;
+}","public void test3745() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_BOOL;
+    Class<CollectionLikeType> class0 = CollectionLikeType.class;
+    // Undeclared exception!
+    try {
+        typeFactory0.constructSpecializedType(simpleType0, class0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Class com.fasterxml.jackson.databind.type.CollectionLikeType not subtype of [simple type, class boolean]
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeFactory"", e);
+    }
+}",""
+"@Override
+public final boolean isEnumType() {
+    return _class.isEnum();
+}","public void test3846() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_ENUM;
+    Class<AnnotationIntrospector.ReferenceProperty.Type> class0 = AnnotationIntrospector.ReferenceProperty.Type.class;
+    JavaType javaType0 = typeFactory0.constructSpecializedType(simpleType0, class0);
+    assertTrue(javaType0.isEnumType());
+}",""
+"@Override
+public int containedTypeCount() {
+    return _bindings.size();
+}","public void test3947() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<LinkedList> class0 = LinkedList.class;
+    CollectionType collectionType0 = typeFactory0.constructCollectionType(class0, class0);
+    Class<Object> class1 = Object.class;
+    typeFactory0.constructGeneralizedType(collectionType0, class1);
+    assertEquals(1, collectionType0.containedTypeCount());
+}",""
+"@Override
+public abstract int containedTypeCount();","public void test4048() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<LinkedList> class0 = LinkedList.class;
+    CollectionType collectionType0 = typeFactory0.constructCollectionType(class0, class0);
+    JavaType javaType0 = typeFactory0.constructGeneralizedType(collectionType0, class0);
+    assertEquals(1, javaType0.containedTypeCount());
+}",""
+"public JavaType constructGeneralizedType(JavaType baseType, Class<?> superClass) {
+    // simple optimization to avoid costly introspection if type-erased type does NOT differ
+    final Class<?> rawBase = baseType.getRawClass();
+    if (rawBase == superClass) {
+        return baseType;
+    }
+    JavaType superType = baseType.findSuperType(superClass);
+    if (superType == null) {
+        // Most likely, caller did not verify sub/super-type relationship
+        if (!superClass.isAssignableFrom(rawBase)) {
+            throw new IllegalArgumentException(String.format(""Class %s not a super-type of %s"", superClass.getName(), baseType));
+        }
+        // 01-Nov-2015, tatu: Should never happen, but ch
+        throw new IllegalArgumentException(String.format(""Internal error: class %s not included as super-type for %s"", superClass.getName(), baseType));
+    }
+    return superType;
+}","public void test4149() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_ENUM;
+    Class<Object> class0 = Object.class;
+    // Undeclared exception!
+    try {
+        typeFactory0.constructGeneralizedType(simpleType0, class0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Internal error: class java.lang.Object not included as super-type for [simple type, class java.lang.Enum]
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeFactory"", e);
+    }
+}","/**
+ * Method similar to {@link #constructSpecializedType}, but that creates a
+ * less-specific type of given type. Usually this is as simple as simply
+ * finding super-type with type erasure of <code>superClass</code>, but
+ * there may be need for some additional work-arounds.
+ *
+ * @param superClass
+ *
+ * @since 2.7
+ */"
+"public JavaType constructGeneralizedType(JavaType baseType, Class<?> superClass) {
+    // simple optimization to avoid costly introspection if type-erased type does NOT differ
+    final Class<?> rawBase = baseType.getRawClass();
+    if (rawBase == superClass) {
+        return baseType;
+    }
+    JavaType superType = baseType.findSuperType(superClass);
+    if (superType == null) {
+        // Most likely, caller did not verify sub/super-type relationship
+        if (!superClass.isAssignableFrom(rawBase)) {
+            throw new IllegalArgumentException(String.format(""Class %s not a super-type of %s"", superClass.getName(), baseType));
+        }
+        // 01-Nov-2015, tatu: Should never happen, but ch
+        throw new IllegalArgumentException(String.format(""Internal error: class %s not included as super-type for %s"", superClass.getName(), baseType));
+    }
+    return superType;
+}","public void test4250() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_ENUM;
+    Class<ArrayType> class0 = ArrayType.class;
+    // Undeclared exception!
+    try {
+        typeFactory0.constructGeneralizedType(simpleType0, class0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Class com.fasterxml.jackson.databind.type.ArrayType not a super-type of [simple type, class java.lang.Enum]
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeFactory"", e);
+    }
+}","/**
+ * Method similar to {@link #constructSpecializedType}, but that creates a
+ * less-specific type of given type. Usually this is as simple as simply
+ * finding super-type with type erasure of <code>superClass</code>, but
+ * there may be need for some additional work-arounds.
+ *
+ * @param superClass
+ *
+ * @since 2.7
+ */"
+"public final boolean isJavaLangObject() {
+    return _class == Object.class;
+}","public void test4452() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<JsonDeserializer> class0 = JsonDeserializer.class;
+    ClassStack classStack0 = new ClassStack(class0);
+    PlaceholderForType placeholderForType0 = new PlaceholderForType((-465));
+    TypeBindings typeBindings0 = placeholderForType0.getBindings();
+    JavaType javaType0 = typeFactory0._fromClass(classStack0, class0, typeBindings0);
+    JavaType javaType1 = typeFactory0.moreSpecificType(javaType0, placeholderForType0);
+    assertFalse(javaType1.isJavaLangObject());
+}","/**
+ *  Convenience method, short-hand for
+ * <code>
+ *    getRawClass() == Object.class
+ * </code>
+ *  and used to figure if we basically have ""untyped"" type object.
+ *
+ *  @since 2.5
+ */"
+"public JavaType moreSpecificType(JavaType type1, JavaType type2) {
+    if (type1 == null) {
+        return type2;
+    }
+    if (type2 == null) {
+        return type1;
+    }
+    Class<?> raw1 = type1.getRawClass();
+    Class<?> raw2 = type2.getRawClass();
+    if (raw1 == raw2) {
+        return type1;
+    }
+    // TODO: maybe try sub-classing, to retain generic types?
+    if (raw1.isAssignableFrom(raw2)) {
+        return type2;
+    }
+    return type1;
+}","public void test4553() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    JavaType javaType0 = typeFactory0.moreSpecificType((JavaType) null, (JavaType) null);
+    assertNull(javaType0);
+}","/**
+ * Method that can be called to figure out more specific of two
+ * types (if they are related; that is, one implements or extends the
+ * other); or if not related, return the primary type.
+ *
+ * @param type1 Primary type to consider
+ * @param type2 Secondary type to consider
+ *
+ * @since 2.2
+ */"
+"public JavaType moreSpecificType(JavaType type1, JavaType type2) {
+    if (type1 == null) {
+        return type2;
+    }
+    if (type2 == null) {
+        return type1;
+    }
+    Class<?> raw1 = type1.getRawClass();
+    Class<?> raw2 = type2.getRawClass();
+    if (raw1 == raw2) {
+        return type1;
+    }
+    // TODO: maybe try sub-classing, to retain generic types?
+    if (raw1.isAssignableFrom(raw2)) {
+        return type2;
+    }
+    return type1;
+}","public void test4654() throws Throwable {
+    LRUMap<Object, JavaType> lRUMap0 = new LRUMap<Object, JavaType>(1757, 200);
+    TypeFactory typeFactory0 = new TypeFactory(lRUMap0);
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_CLASS;
+    JavaType javaType0 = typeFactory0.moreSpecificType(simpleType0, (JavaType) null);
+    assertSame(javaType0, simpleType0);
+}","/**
+ * Method that can be called to figure out more specific of two
+ * types (if they are related; that is, one implements or extends the
+ * other); or if not related, return the primary type.
+ *
+ * @param type1 Primary type to consider
+ * @param type2 Secondary type to consider
+ *
+ * @since 2.2
+ */"
+"@Override
+public final boolean isPrimitive() {
+    return _class.isPrimitive();
+}","public void test4755() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<ChronoLocalDate> class0 = ChronoLocalDate.class;
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, (TypeBindings) null);
+    JavaType javaType0 = typeFactory0.moreSpecificType(resolvedRecursiveType0, resolvedRecursiveType0);
+    assertFalse(javaType0.isPrimitive());
+}",""
+"@Override
+public final boolean isFinal() {
+    return Modifier.isFinal(_class.getModifiers());
+}","public void test4856() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_CLASS;
+    JavaType javaType0 = typeFactory0._unknownType();
+    JavaType javaType1 = typeFactory0.moreSpecificType(javaType0, simpleType0);
+    assertTrue(javaType1.isFinal());
+}",""
+"@Override
+public abstract boolean isContainerType();","public void test4957() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<Properties> class0 = Properties.class;
+    JavaType javaType0 = typeFactory0.constructType((Type) class0, (Class<?>) class0);
+    assertTrue(javaType0.isContainerType());
+}","/**
+ * @return True if type represented is a container type; this includes
+ *    array, Map and Collection types.
+ */"
+"@Deprecated
+public JavaType constructType(Type type, Class<?> contextClass) {
+    JavaType contextType = (contextClass == null) ? null : constructType(contextClass);
+    return constructType(type, contextType);
+}","public void test5058() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    // Undeclared exception!
+    try {
+        typeFactory0.constructType((Type) null, (Class<?>) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unrecognized Type: [null]
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeFactory"", e);
+    }
+}","/**
+ * @deprecated Since 2.7 (accidentally removed in 2.7.0; added back in 2.7.1)
+ */"
+"@Override
+public abstract int containedTypeCount();","public void test5159() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<LinkedList> class0 = LinkedList.class;
+    CollectionType collectionType0 = typeFactory0.constructCollectionType(class0, class0);
+    JavaType javaType0 = typeFactory0.constructType((Type) collectionType0, (Class<?>) class0);
+    assertEquals(1, javaType0.containedTypeCount());
+}",""
+"public MapType constructMapType(Class<? extends Map> mapClass, Class<?> keyClass, Class<?> valueClass) {
+    JavaType kt, vt;
+    if (mapClass == Properties.class) {
+        kt = vt = CORE_TYPE_STRING;
+    } else {
+        kt = _fromClass(null, keyClass, EMPTY_BINDINGS);
+        vt = _fromClass(null, valueClass, EMPTY_BINDINGS);
+    }
+    return constructMapType(mapClass, kt, vt);
+}","public void test5260() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<IntNode> class0 = IntNode.class;
+    // Undeclared exception!
+    try {
+        typeFactory0.constructMapType((Class<? extends Map>) null, class0, (Class<?>) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeFactory"", e);
+    }
+}","/**
+ *  Method for constructing a {@link MapType} instance
+ * <p>
+ *  NOTE: type modifiers are NOT called on constructed type itself; but are called
+ *  for contained types.
+ */"
+"@SuppressWarnings(""unchecked"")
+public <T> T convertValue(Object fromValue, JavaType toValueType) throws IllegalArgumentException {
+    // sanity check for null first:
+    if (fromValue == null)
+        return null;
+    return (T) _convert(fromValue, toValueType);
+}","public void test5563() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    objectMapper0.setTypeFactory(typeFactory0);
+    Integer integer0 = new Integer(2449);
+    AtomicReference<Integer> atomicReference0 = new AtomicReference<Integer>(integer0);
+    Class<CollectionType> class0 = CollectionType.class;
+    ArrayType arrayType0 = typeFactory0.constructArrayType(class0);
+    CollectionType collectionType0 = new CollectionType(arrayType0, arrayType0);
+    try {
+        objectMapper0.convertValue((Object) atomicReference0, (JavaType) collectionType0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Can not find a Value deserializer for abstract type [collection type; class [Lcom.fasterxml.jackson.databind.type.CollectionType;, contains [array type, component type: [simple type, class com.fasterxml.jackson.databind.type.CollectionType]]]
+        //  at [Source: java.lang.String@0000000375; line: -1, column: -1]
+        //
+        verifyException(""com.fasterxml.jackson.databind.ObjectMapper"", e);
+    }
+}","/**
+ * See {@link #convertValue(Object, Class)}
+ */"
+"@Override
+public abstract int containedTypeCount();","public void test5664() throws Throwable {
+    LRUMap<Object, JavaType> lRUMap0 = new LRUMap<Object, JavaType>(1023, (-17));
+    TypeFactory typeFactory0 = new TypeFactory(lRUMap0);
+    Class<DeserializationFeature> class0 = DeserializationFeature.class;
+    Class<LinkedList> class1 = LinkedList.class;
+    CollectionType collectionType0 = typeFactory0.constructRawCollectionType(class1);
+    TypeBindings typeBindings0 = TypeBindings.create((Class<?>) class1, (JavaType) collectionType0);
+    JavaType[] javaTypeArray0 = new JavaType[0];
+    JavaType javaType0 = typeFactory0._constructSimple(class0, typeBindings0, collectionType0, javaTypeArray0);
+    assertEquals(1, javaType0.containedTypeCount());
+}",""
+"// since 2.8
+@Deprecated
+public JavaType uncheckedSimpleType(Class<?> cls) {
+    // 18-Oct-2015, tatu: Not sure how much problem missing super-type info is here
+    return _constructSimple(cls, EMPTY_BINDINGS, null, null);
+}","public void test5765() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<Object> class0 = Object.class;
+    JavaType javaType0 = typeFactory0.uncheckedSimpleType(class0);
+    assertNotNull(javaType0);
+}","/**
+ *  Method that use by core Databind functionality, and that should NOT be called
+ *  by application code outside databind package.
+ * <p>
+ *  Unchecked here not only means that no checks are made as to whether given class
+ *  might be non-simple type (like {@link CollectionType}) but also that most of supertype
+ *  information is not gathered. This means that unless called on primitive types or
+ *  {@link java.lang.String}, results are probably not what you want to use.
+ *
+ *  @deprecated Since 2.8, to indicate users should never call this method.
+ */"
+"public final boolean isJavaLangObject() {
+    return _class == Object.class;
+}","public void test5766() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<Object> class0 = Object.class;
+    JavaType javaType0 = typeFactory0.uncheckedSimpleType(class0);
+    assertTrue(javaType0.isJavaLangObject());
+}","/**
+ *  Convenience method, short-hand for
+ * <code>
+ *    getRawClass() == Object.class
+ * </code>
+ *  and used to figure if we basically have ""untyped"" type object.
+ *
+ *  @since 2.5
+ */"
+"@Override
+public final boolean isEnumType() {
+    return _class.isEnum();
+}","public void test5867() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_LONG;
+    TypeModifier typeModifier0 = mock(TypeModifier.class, new ViolatedAssumptionAnswer());
+    doReturn(simpleType0, simpleType0).when(typeModifier0).modifyType(any(com.fasterxml.jackson.databind.JavaType.class), any(java.lang.reflect.Type.class), any(com.fasterxml.jackson.databind.type.TypeBindings.class), any(com.fasterxml.jackson.databind.type.TypeFactory.class));
+    TypeFactory typeFactory1 = typeFactory0.withModifier(typeModifier0);
+    Class<MapperFeature> class0 = MapperFeature.class;
+    MapLikeType mapLikeType0 = typeFactory1.constructRawMapLikeType(class0);
+    assertTrue(mapLikeType0.isEnumType());
+}",""
+"public MapLikeType constructRawMapLikeType(Class<?> mapClass) {
+    return constructMapLikeType(mapClass, unknownType(), unknownType());
+}","public void test5968() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    TypeModifier typeModifier0 = mock(TypeModifier.class, new ViolatedAssumptionAnswer());
+    doReturn((JavaType) null).when(typeModifier0).modifyType(any(com.fasterxml.jackson.databind.JavaType.class), any(java.lang.reflect.Type.class), any(com.fasterxml.jackson.databind.type.TypeBindings.class), any(com.fasterxml.jackson.databind.type.TypeFactory.class));
+    doReturn((String) null).when(typeModifier0).toString();
+    TypeFactory typeFactory1 = typeFactory0.withModifier(typeModifier0);
+    Class<IntNode> class0 = IntNode.class;
+    // Undeclared exception!
+    try {
+        typeFactory1.constructRawMapLikeType(class0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // TypeModifier Mock for TypeModifier, hashCode: 1624497119 (of type com.fasterxml.jackson.databind.type.TypeModifier$MockitoMock$458767912) return null for type [simple type, class java.lang.Object]
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeFactory"", e);
+    }
+}","/**
+ *  Method that can be used to construct ""raw"" Map-like type; meaning that its
+ *  parameterization is unknown.
+ *  This is similar to using <code>Object.class</code> parameterization,
+ *  and is equivalent to calling:
+ * <pre>
+ *   typeFactory.constructMapLikeType(collectionClass, typeFactory.unknownType(), typeFactory.unknownType());
+ * </pre>
+ * <p>
+ *  This method should only be used if parameterization is completely unavailable.
+ */"
+"@Override
+public int containedTypeCount() {
+    return _bindings.size();
+}","public void test6069() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<EnumSet> class0 = EnumSet.class;
+    Class<Object> class1 = Object.class;
+    SimpleType simpleType0 = new SimpleType(class1);
+    CollectionType collectionType0 = typeFactory0.constructCollectionType((Class<? extends Collection>) class0, (JavaType) simpleType0);
+    assertEquals(1, collectionType0.containedTypeCount());
+}",""
+"protected JavaType _fromParamType(ClassStack context, ParameterizedType ptype, TypeBindings parentBindings) {
+    // Assumption here is we'll always get Class, not one of other Types
+    Class<?> rawType = (Class<?>) ptype.getRawType();
+    // 29-Oct-2015, tatu: For performance reasons, let's streamline handling of
+    //   couple of not-so-useful parametric types
+    if (rawType == CLS_ENUM) {
+        return CORE_TYPE_ENUM;
+    }
+    if (rawType == CLS_COMPARABLE) {
+        return CORE_TYPE_COMPARABLE;
+    }
+    if (rawType == CLS_CLASS) {
+        return CORE_TYPE_CLASS;
+    }
+    // First: what is the actual base type? One odd thing is that 'getRawType'
+    // returns Type, not Class<?> as one might expect. But let's assume it is
+    // always of type Class: if not, need to add more code to resolve it to Class.
+    Type[] args = ptype.getActualTypeArguments();
+    int paramCount = (args == null) ? 0 : args.length;
+    TypeBindings newBindings;
+    if (paramCount == 0) {
+        newBindings = EMPTY_BINDINGS;
+    } else {
+        JavaType[] pt = new JavaType[paramCount];
+        for (int i = 0; i < paramCount; ++i) {
+            pt[i] = _fromAny(context, args[i], parentBindings);
+        }
+        newBindings = TypeBindings.create(rawType, pt);
+    }
+    return _fromClass(context, rawType, newBindings);
+}","public void test6170() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    ParameterizedType parameterizedType0 = mock(ParameterizedType.class, new ViolatedAssumptionAnswer());
+    doReturn((Type[]) null).when(parameterizedType0).getActualTypeArguments();
+    doReturn((Type) null).when(parameterizedType0).getRawType();
+    // Undeclared exception!
+    try {
+        typeFactory0._fromParamType((ClassStack) null, parameterizedType0, (TypeBindings) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeFactory"", e);
+    }
+}","/**
+ * This method deals with parameterized types, that is,
+ * first class generic classes.
+ */"

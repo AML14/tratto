@@ -1,0 +1,1607 @@
+focal_method,test_prefix,docstring
+"public long getN() {
+    return n;
+}","public void test000() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[8][9];
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getIntercept();
+    assertEquals(8L, simpleRegression0.getN());
+}","/**
+ * Returns the number of observations that have been added to the model.
+ *
+ * @return n number of observations that have been added.
+ */"
+"public double getIntercept() {
+    return getIntercept(getSlope());
+}","public void test001() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[8][9];
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getIntercept();
+    assertEquals(Double.NaN, double0, 0.01);
+}","/**
+ * Returns the intercept of the estimated regression line.
+ * <p>
+ * The least squares estimate of the intercept is computed using the
+ * <a href=""http://www.xycoon.com/estimation4.htm"">normal equations</a>.
+ * The intercept is sometimes denoted b0.
+ * <p>
+ * <strong>Preconditions</strong>: <ul>
+ * <li>At least two observations (with at least two different x values)
+ * must have been added before invoking this method. If this method is
+ * invoked before a model can be estimated, <code>Double,NaN</code> is
+ * returned.
+ * </li></ul>
+ *
+ * @return the intercept of the regression line
+ */"
+"public double getSlopeConfidenceInterval(double alpha) throws MathException {
+    if (alpha >= 1 || alpha <= 0) {
+        throw new IllegalArgumentException();
+    }
+    return getSlopeStdErr() * getTDistribution().inverseCumulativeProbability(1d - alpha / 2d);
+}","public void test012() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    // Undeclared exception!
+    try {
+        simpleRegression0.getSlopeConfidenceInterval((-332.6275957666524));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.stat.regression.SimpleRegression"", e);
+    }
+}","/**
+ * Returns the half-width of a (100-100*alpha)% confidence interval for
+ * the slope estimate.
+ * <p>
+ * The (100-100*alpha)% confidence interval is
+ * <p>
+ * <code>(getSlope() - getSlopeConfidenceInterval(),
+ * getSlope() + getSlopeConfidenceInterval())</code>
+ * <p>
+ * To request, for example, a 99% confidence interval, use
+ * <code>alpha = .01</code>
+ * <p>
+ * <strong>Usage Note</strong>:<br>
+ * The validity of this statistic depends on the assumption that the
+ * observations included in the model are drawn from a
+ * <a href=""http://mathworld.wolfram.com/BivariateNormalDistribution.html"">
+ * Bivariate Normal Distribution</a>.
+ * <p>
+ * <strong> Preconditions:</strong><ul>
+ * <li>If there are fewer that <strong>three</strong> observations in the
+ * model, or if there is no variation in x, this returns
+ * <code>Double.NaN</code>.
+ * </li>
+ * <li><code>(0 < alpha < 1)</code>; otherwise an
+ * <code>IllegalArgumentException</code> is thrown.
+ * </li></ul>
+ *
+ * @param alpha the desired significance level
+ * @return half-width of 95% confidence interval for the slope estimate
+ * @throws MathException if the confidence interval can not be computed.
+ */"
+"public double getSumSquaredErrors() {
+    return sumYY - sumXY * sumXY / sumXX;
+}","public void test023() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    simpleRegression0.predict(2856.9300351024867);
+    assertEquals(Double.NaN, simpleRegression0.getSumSquaredErrors(), 0.01);
+}","/**
+ * Returns the <a href=""http://www.xycoon.com/SumOfSquares.htm"">
+ * sum of squared errors</a> (SSE) associated with the regression
+ * model.
+ * <p>
+ * The sum is computed using the computational formula
+ * <p>
+ * <code>SSE = SYY - (SXY * SXY / SXX)</code>
+ * <p>
+ * where <code>SYY</code> is the sum of the squared deviations of the y
+ * values about their mean, <code>SXX</code> is similarly defined and
+ * <code>SXY</code> is the sum of the products of x and y mean deviations.
+ * <p>
+ * The sums are accumulated using the updating algorithm referenced in
+ * {@link #addData}.
+ * <p>
+ * The return value is constrained to be non-negative - i.e., if due to
+ * rounding errors the computational formula returns a negative result,
+ * 0 is returned.
+ * <p>
+ * <strong>Preconditions</strong>: <ul>
+ * <li>At least two observations (with at least two different x values)
+ * must have been added before invoking this method. If this method is
+ * invoked before a model can be estimated, <code>Double,NaN</code> is
+ * returned.
+ * </li></ul>
+ *
+ * @return sum of squared errors associated with the regression model
+ */"
+"public long getN() {
+    return n;
+}","public void test024() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    simpleRegression0.predict(2856.9300351024867);
+    assertEquals(0L, simpleRegression0.getN());
+}","/**
+ * Returns the number of observations that have been added to the model.
+ *
+ * @return n number of observations that have been added.
+ */"
+"public double getRegressionSumSquares() {
+    return getRegressionSumSquares(getSlope());
+}","public void test025() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    simpleRegression0.predict(2856.9300351024867);
+    assertEquals(Double.NaN, simpleRegression0.getRegressionSumSquares(), 0.01);
+}","/**
+ * Returns the sum of squared deviations of the predicted y values about
+ * their mean (which equals the mean of y).
+ * <p>
+ * This is usually abbreviated SSR or SSM.  It is defined as SSM
+ * <a href=""http://www.xycoon.com/SumOfSquares.htm"">here</a>
+ * <p>
+ * <strong>Preconditions</strong>: <ul>
+ * <li>At least two observations (with at least two different x values)
+ * must have been added before invoking this method. If this method is
+ * invoked before a model can be estimated, <code>Double.NaN</code> is
+ * returned.
+ * </li></ul>
+ *
+ * @return sum of squared deviations of predicted y values
+ */"
+"public long getN() {
+    return n;
+}","public void test036() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[8][1];
+    double[] doubleArray1 = new double[3];
+    doubleArray1[1] = (-664.5058);
+    doubleArray0[0] = doubleArray1;
+    double[] doubleArray2 = new double[3];
+    doubleArray0[1] = doubleArray2;
+    doubleArray0[2] = doubleArray1;
+    doubleArray0[3] = doubleArray0[2];
+    doubleArray0[4] = doubleArray2;
+    doubleArray0[5] = doubleArray0[3];
+    doubleArray0[6] = doubleArray0[0];
+    doubleArray0[7] = doubleArray0[1];
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getTotalSumSquares();
+    assertEquals(8L, simpleRegression0.getN());
+}","/**
+ * Returns the number of observations that have been added to the model.
+ *
+ * @return n number of observations that have been added.
+ */"
+"public double getTotalSumSquares() {
+    if (n < 2) {
+        return Double.NaN;
+    }
+    return sumYY;
+}","public void test037() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[8][1];
+    double[] doubleArray1 = new double[3];
+    doubleArray1[1] = (-664.5058);
+    doubleArray0[0] = doubleArray1;
+    double[] doubleArray2 = new double[3];
+    doubleArray0[1] = doubleArray2;
+    doubleArray0[2] = doubleArray1;
+    doubleArray0[3] = doubleArray0[2];
+    doubleArray0[4] = doubleArray2;
+    doubleArray0[5] = doubleArray0[3];
+    doubleArray0[6] = doubleArray0[0];
+    doubleArray0[7] = doubleArray0[1];
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getTotalSumSquares();
+    assertEquals(827939.9216880751, double0, 0.01);
+}","/**
+ * Returns the sum of squared deviations of the y values about their mean.
+ * <p>
+ * This is defined as SSTO
+ * <a href=""http://www.xycoon.com/SumOfSquares.htm"">here</a>.
+ * <p>
+ * If <code>n < 2</code>, this returns <code>Double.NaN</code>.
+ *
+ * @return sum of squared deviations of y values
+ */"
+"public double getRegressionSumSquares() {
+    return getRegressionSumSquares(getSlope());
+}","public void test048() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[8][3];
+    double[] doubleArray1 = new double[6];
+    doubleArray1[1] = (-1699.8032292);
+    doubleArray0[0] = doubleArray1;
+    double[] doubleArray2 = new double[3];
+    doubleArray2[0] = 608.60225;
+    doubleArray0[2] = doubleArray2;
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getSlopeConfidenceInterval();
+    assertEquals(51595.19674997763, simpleRegression0.getRegressionSumSquares(), 0.01);
+}","/**
+ * Returns the sum of squared deviations of the predicted y values about
+ * their mean (which equals the mean of y).
+ * <p>
+ * This is usually abbreviated SSR or SSM.  It is defined as SSM
+ * <a href=""http://www.xycoon.com/SumOfSquares.htm"">here</a>
+ * <p>
+ * <strong>Preconditions</strong>: <ul>
+ * <li>At least two observations (with at least two different x values)
+ * must have been added before invoking this method. If this method is
+ * invoked before a model can be estimated, <code>Double.NaN</code> is
+ * returned.
+ * </li></ul>
+ *
+ * @return sum of squared deviations of predicted y values
+ */"
+"public double getSlopeConfidenceInterval() throws MathException {
+    return getSlopeConfidenceInterval(0.05d);
+}","public void test049() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[8][3];
+    double[] doubleArray1 = new double[6];
+    doubleArray1[1] = (-1699.8032292);
+    doubleArray0[0] = doubleArray1;
+    double[] doubleArray2 = new double[3];
+    doubleArray2[0] = 608.60225;
+    doubleArray0[2] = doubleArray2;
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getSlopeConfidenceInterval();
+    assertEquals(2.761406698728713, double0, 0.01);
+}","/**
+ * Returns the half-width of a 95% confidence interval for the slope
+ * estimate.
+ * <p>
+ * The 95% confidence interval is
+ * <p>
+ * <code>(getSlope() - getSlopeConfidenceInterval(),
+ * getSlope() + getSlopeConfidenceInterval())</code>
+ * <p>
+ * If there are fewer that <strong>three</strong> observations in the
+ * model, or if there is no variation in x, this returns
+ * <code>Double.NaN</code>.
+ * <p>
+ * <strong>Usage Note</strong>:<br>
+ * The validity of this statistic depends on the assumption that the
+ * observations included in the model are drawn from a
+ * <a href=""http://mathworld.wolfram.com/BivariateNormalDistribution.html"">
+ * Bivariate Normal Distribution</a>.
+ *
+ * @return half-width of 95% confidence interval for the slope estimate
+ *
+ * @throws MathException if the confidence interval can not be computed.
+ */"
+"public long getN() {
+    return n;
+}","public void test0510() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[6][3];
+    double[] doubleArray1 = new double[5];
+    doubleArray1[0] = 350.1744551119643;
+    doubleArray0[0] = doubleArray1;
+    double[] doubleArray2 = new double[8];
+    doubleArray2[1] = (-2509.484689958194);
+    doubleArray0[2] = doubleArray2;
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getSignificance();
+    assertEquals(6L, simpleRegression0.getN());
+}","/**
+ * Returns the number of observations that have been added to the model.
+ *
+ * @return n number of observations that have been added.
+ */"
+"public double getSignificance() throws MathException {
+    return 2d * (1.0 - getTDistribution().cumulativeProbability(Math.abs(getSlope()) / getSlopeStdErr()));
+}","public void test0511() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[6][3];
+    double[] doubleArray1 = new double[5];
+    doubleArray1[0] = 350.1744551119643;
+    doubleArray0[0] = doubleArray1;
+    double[] doubleArray2 = new double[8];
+    doubleArray2[1] = (-2509.484689958194);
+    doubleArray0[2] = doubleArray2;
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getSignificance();
+    assertEquals(0.7039999999999997, double0, 0.01);
+}","/**
+ * Returns the significance level of the slope (equiv) correlation.
+ * <p>
+ * Specifically, the returned value is the smallest <code>alpha</code>
+ * such that the slope confidence interval with significance level
+ * equal to <code>alpha</code> does not include <code>0</code>.
+ * On regression output, this is often denoted <code>Prob(|t| > 0)</code>
+ * <p>
+ * <strong>Usage Note</strong>:<br>
+ * The validity of this statistic depends on the assumption that the
+ * observations included in the model are drawn from a
+ * <a href=""http://mathworld.wolfram.com/BivariateNormalDistribution.html"">
+ * Bivariate Normal Distribution</a>.
+ * <p>
+ * If there are fewer that <strong>three</strong> observations in the
+ * model, or if there is no variation in x, this returns
+ * <code>Double.NaN</code>.
+ *
+ * @return significance level for slope/correlation
+ * @throws MathException if the significance level can not be computed.
+ */"
+"public long getN() {
+    return n;
+}","public void test0612() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[8][3];
+    double[] doubleArray1 = new double[6];
+    doubleArray1[0] = 608.60225;
+    doubleArray1[1] = (-1699.8032292);
+    doubleArray0[0] = doubleArray1;
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getRegressionSumSquares();
+    assertEquals(8L, simpleRegression0.getN());
+}","/**
+ * Returns the number of observations that have been added to the model.
+ *
+ * @return n number of observations that have been added.
+ */"
+"public double getRegressionSumSquares() {
+    return getRegressionSumSquares(getSlope());
+}","public void test0613() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[8][3];
+    double[] doubleArray1 = new double[6];
+    doubleArray1[0] = 608.60225;
+    doubleArray1[1] = (-1699.8032292);
+    doubleArray0[0] = doubleArray1;
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getRegressionSumSquares();
+    assertEquals(2528164.6407489046, double0, 0.01);
+}","/**
+ * Returns the sum of squared deviations of the predicted y values about
+ * their mean (which equals the mean of y).
+ * <p>
+ * This is usually abbreviated SSR or SSM.  It is defined as SSM
+ * <a href=""http://www.xycoon.com/SumOfSquares.htm"">here</a>
+ * <p>
+ * <strong>Preconditions</strong>: <ul>
+ * <li>At least two observations (with at least two different x values)
+ * must have been added before invoking this method. If this method is
+ * invoked before a model can be estimated, <code>Double.NaN</code> is
+ * returned.
+ * </li></ul>
+ *
+ * @return sum of squared deviations of predicted y values
+ */"
+"public long getN() {
+    return n;
+}","public void test0714() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[6][3];
+    double[] doubleArray1 = new double[5];
+    doubleArray1[0] = 350.1744551119643;
+    doubleArray0[0] = doubleArray1;
+    double[] doubleArray2 = new double[8];
+    doubleArray2[1] = (-2509.484689958194);
+    doubleArray0[2] = doubleArray2;
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getRSquare();
+    assertEquals(6L, simpleRegression0.getN());
+}","/**
+ * Returns the number of observations that have been added to the model.
+ *
+ * @return n number of observations that have been added.
+ */"
+"public double getRSquare() {
+    double ssto = getTotalSumSquares();
+    return (ssto - getSumSquaredErrors()) / ssto;
+}","public void test0715() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[6][3];
+    double[] doubleArray1 = new double[5];
+    doubleArray1[0] = 350.1744551119643;
+    doubleArray0[0] = doubleArray1;
+    double[] doubleArray2 = new double[8];
+    doubleArray2[1] = (-2509.484689958194);
+    doubleArray0[2] = doubleArray2;
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getRSquare();
+    assertEquals(0.03999999999999997, double0, 0.01);
+}","/**
+ * Returns the <a href=""http://www.xycoon.com/coefficient1.htm"">
+ * coefficient of determination</a>,
+ * usually denoted r-square.
+ * <p>
+ * <strong>Preconditions</strong>: <ul>
+ * <li>At least two observations (with at least two different x values)
+ * must have been added before invoking this method. If this method is
+ * invoked before a model can be estimated, <code>Double,NaN</code> is
+ * returned.
+ * </li></ul>
+ *
+ * @return r-square
+ */"
+"public long getN() {
+    return n;
+}","public void test0816() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[2][2];
+    simpleRegression0.addData(doubleArray0);
+    long long0 = simpleRegression0.getN();
+    assertEquals(2L, long0);
+}","/**
+ * Returns the number of observations that have been added to the model.
+ *
+ * @return n number of observations that have been added.
+ */"
+"public long getN() {
+    return n;
+}","public void test0917() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[6][8];
+    double[] doubleArray1 = new double[5];
+    doubleArray1[0] = 1811.9723634207528;
+    doubleArray1[1] = (-1.0);
+    doubleArray0[0] = doubleArray1;
+    doubleArray0[1] = doubleArray0[0];
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getMeanSquareError();
+    assertEquals(6L, simpleRegression0.getN());
+}","/**
+ * Returns the number of observations that have been added to the model.
+ *
+ * @return n number of observations that have been added.
+ */"
+"public double getMeanSquareError() {
+    if (n < 3) {
+        return Double.NaN;
+    }
+    return getSumSquaredErrors() / (double) (n - 2);
+}","public void test0918() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[6][8];
+    double[] doubleArray1 = new double[5];
+    doubleArray1[0] = 1811.9723634207528;
+    doubleArray1[1] = (-1.0);
+    doubleArray0[0] = doubleArray1;
+    doubleArray0[1] = doubleArray0[0];
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getMeanSquareError();
+    assertEquals(5.551115123125783E-17, double0, 0.01);
+}","/**
+ * Returns the sum of squared errors divided by the degrees of freedom,
+ * usually abbreviated MSE.
+ * <p>
+ * If there are fewer than <strong>three</strong> data pairs in the model,
+ * or if there is no variation in <code>x</code>, this returns
+ * <code>Double.NaN</code>.
+ *
+ * @return sum of squared deviations of y values
+ */"
+"public long getN() {
+    return n;
+}","public void test1019() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[8][3];
+    double[] doubleArray1 = new double[6];
+    doubleArray1[1] = (-1699.8032292);
+    doubleArray0[0] = doubleArray1;
+    double[] doubleArray2 = new double[3];
+    doubleArray2[0] = 608.60225;
+    doubleArray0[2] = doubleArray2;
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getInterceptStdErr();
+    assertEquals(8L, simpleRegression0.getN());
+}","/**
+ * Returns the number of observations that have been added to the model.
+ *
+ * @return n number of observations that have been added.
+ */"
+"public double getInterceptStdErr() {
+    return Math.sqrt(getMeanSquareError() * ((1d / (double) n) + (xbar * xbar) / sumXX));
+}","public void test1020() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[8][3];
+    double[] doubleArray1 = new double[6];
+    doubleArray1[1] = (-1699.8032292);
+    doubleArray0[0] = doubleArray1;
+    double[] doubleArray2 = new double[3];
+    doubleArray2[0] = 608.60225;
+    doubleArray0[2] = doubleArray2;
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getInterceptStdErr();
+    assertEquals(242.82903274285715, double0, 0.01);
+}","/**
+ * Returns the <a href=""http://www.xycoon.com/standarderrorb0.htm"">
+ * standard error of the intercept estimate</a>,
+ * usually denoted s(b0).
+ * <p>
+ * If there are fewer that <strong>three</strong> observations in the
+ * model, or if there is no variation in x, this returns
+ * <code>Double.NaN</code>.
+ *
+ * @return standard error associated with intercept estimate
+ */"
+"public void addData(double[][] data) {
+    for (int i = 0; i < data.length; i++) {
+        addData(data[i][0], data[i][1]);
+    }
+}","public void test1121() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    // Undeclared exception!
+    try {
+        simpleRegression0.addData((double[][]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.stat.regression.SimpleRegression"", e);
+    }
+}","/**
+ * Adds the observations represented by the elements in
+ * <code>data</code>.
+ * <p>
+ * <code>(data[0][0],data[0][1])</code> will be the first observation, then
+ * <code>(data[1][0],data[1][1])</code>, etc.
+ * <p>
+ * This method does not replace data that has already been added.  The
+ * observations represented by <code>data</code> are added to the existing
+ * dataset.
+ * <p>
+ * To replace all data, use <code>clear()</code> before adding the new
+ * data.
+ *
+ * @param data array of observations to be added
+ */"
+"public void addData(double[][] data) {
+    for (int i = 0; i < data.length; i++) {
+        addData(data[i][0], data[i][1]);
+    }
+}","public void test1222() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[6][9];
+    double[] doubleArray1 = new double[1];
+    doubleArray0[4] = doubleArray1;
+    // Undeclared exception!
+    try {
+        simpleRegression0.addData(doubleArray0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 1
+        //
+        verifyException(""org.apache.commons.math.stat.regression.SimpleRegression"", e);
+    }
+}","/**
+ * Adds the observations represented by the elements in
+ * <code>data</code>.
+ * <p>
+ * <code>(data[0][0],data[0][1])</code> will be the first observation, then
+ * <code>(data[1][0],data[1][1])</code>, etc.
+ * <p>
+ * This method does not replace data that has already been added.  The
+ * observations represented by <code>data</code> are added to the existing
+ * dataset.
+ * <p>
+ * To replace all data, use <code>clear()</code> before adding the new
+ * data.
+ *
+ * @param data array of observations to be added
+ */"
+"public double getSlopeConfidenceInterval(double alpha) throws MathException {
+    if (alpha >= 1 || alpha <= 0) {
+        throw new IllegalArgumentException();
+    }
+    return getSlopeStdErr() * getTDistribution().inverseCumulativeProbability(1d - alpha / 2d);
+}","public void test1323() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    // Undeclared exception!
+    try {
+        simpleRegression0.getSlopeConfidenceInterval(0.05);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // degrees of freedom must be positive.
+        //
+        verifyException(""org.apache.commons.math.distribution.TDistributionImpl"", e);
+    }
+}","/**
+ * Returns the half-width of a (100-100*alpha)% confidence interval for
+ * the slope estimate.
+ * <p>
+ * The (100-100*alpha)% confidence interval is
+ * <p>
+ * <code>(getSlope() - getSlopeConfidenceInterval(),
+ * getSlope() + getSlopeConfidenceInterval())</code>
+ * <p>
+ * To request, for example, a 99% confidence interval, use
+ * <code>alpha = .01</code>
+ * <p>
+ * <strong>Usage Note</strong>:<br>
+ * The validity of this statistic depends on the assumption that the
+ * observations included in the model are drawn from a
+ * <a href=""http://mathworld.wolfram.com/BivariateNormalDistribution.html"">
+ * Bivariate Normal Distribution</a>.
+ * <p>
+ * <strong> Preconditions:</strong><ul>
+ * <li>If there are fewer that <strong>three</strong> observations in the
+ * model, or if there is no variation in x, this returns
+ * <code>Double.NaN</code>.
+ * </li>
+ * <li><code>(0 < alpha < 1)</code>; otherwise an
+ * <code>IllegalArgumentException</code> is thrown.
+ * </li></ul>
+ *
+ * @param alpha the desired significance level
+ * @return half-width of 95% confidence interval for the slope estimate
+ * @throws MathException if the confidence interval can not be computed.
+ */"
+"public double getMeanSquareError() {
+    if (n < 3) {
+        return Double.NaN;
+    }
+    return getSumSquaredErrors() / (double) (n - 2);
+}","public void test1424() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double double0 = simpleRegression0.getMeanSquareError();
+    assertEquals(Double.NaN, double0, 0.01);
+}","/**
+ * Returns the sum of squared errors divided by the degrees of freedom,
+ * usually abbreviated MSE.
+ * <p>
+ * If there are fewer than <strong>three</strong> data pairs in the model,
+ * or if there is no variation in <code>x</code>, this returns
+ * <code>Double.NaN</code>.
+ *
+ * @return sum of squared deviations of y values
+ */"
+"public long getN() {
+    return n;
+}","public void test1425() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double double0 = simpleRegression0.getMeanSquareError();
+    assertEquals(0L, simpleRegression0.getN());
+}","/**
+ * Returns the number of observations that have been added to the model.
+ *
+ * @return n number of observations that have been added.
+ */"
+"public double getSumSquaredErrors() {
+    return sumYY - sumXY * sumXY / sumXX;
+}","public void test1426() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double double0 = simpleRegression0.getMeanSquareError();
+    assertEquals(Double.NaN, simpleRegression0.getSumSquaredErrors(), 0.01);
+}","/**
+ * Returns the <a href=""http://www.xycoon.com/SumOfSquares.htm"">
+ * sum of squared errors</a> (SSE) associated with the regression
+ * model.
+ * <p>
+ * The sum is computed using the computational formula
+ * <p>
+ * <code>SSE = SYY - (SXY * SXY / SXX)</code>
+ * <p>
+ * where <code>SYY</code> is the sum of the squared deviations of the y
+ * values about their mean, <code>SXX</code> is similarly defined and
+ * <code>SXY</code> is the sum of the products of x and y mean deviations.
+ * <p>
+ * The sums are accumulated using the updating algorithm referenced in
+ * {@link #addData}.
+ * <p>
+ * The return value is constrained to be non-negative - i.e., if due to
+ * rounding errors the computational formula returns a negative result,
+ * 0 is returned.
+ * <p>
+ * <strong>Preconditions</strong>: <ul>
+ * <li>At least two observations (with at least two different x values)
+ * must have been added before invoking this method. If this method is
+ * invoked before a model can be estimated, <code>Double,NaN</code> is
+ * returned.
+ * </li></ul>
+ *
+ * @return sum of squared errors associated with the regression model
+ */"
+"public double getTotalSumSquares() {
+    if (n < 2) {
+        return Double.NaN;
+    }
+    return sumYY;
+}","public void test1527() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double double0 = simpleRegression0.getTotalSumSquares();
+    assertEquals(Double.NaN, double0, 0.01);
+}","/**
+ * Returns the sum of squared deviations of the y values about their mean.
+ * <p>
+ * This is defined as SSTO
+ * <a href=""http://www.xycoon.com/SumOfSquares.htm"">here</a>.
+ * <p>
+ * If <code>n < 2</code>, this returns <code>Double.NaN</code>.
+ *
+ * @return sum of squared deviations of y values
+ */"
+"public long getN() {
+    return n;
+}","public void test1528() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double double0 = simpleRegression0.getTotalSumSquares();
+    assertEquals(0L, simpleRegression0.getN());
+}","/**
+ * Returns the number of observations that have been added to the model.
+ *
+ * @return n number of observations that have been added.
+ */"
+"public double getSumSquaredErrors() {
+    return sumYY - sumXY * sumXY / sumXX;
+}","public void test1529() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double double0 = simpleRegression0.getTotalSumSquares();
+    assertEquals(Double.NaN, simpleRegression0.getSumSquaredErrors(), 0.01);
+}","/**
+ * Returns the <a href=""http://www.xycoon.com/SumOfSquares.htm"">
+ * sum of squared errors</a> (SSE) associated with the regression
+ * model.
+ * <p>
+ * The sum is computed using the computational formula
+ * <p>
+ * <code>SSE = SYY - (SXY * SXY / SXX)</code>
+ * <p>
+ * where <code>SYY</code> is the sum of the squared deviations of the y
+ * values about their mean, <code>SXX</code> is similarly defined and
+ * <code>SXY</code> is the sum of the products of x and y mean deviations.
+ * <p>
+ * The sums are accumulated using the updating algorithm referenced in
+ * {@link #addData}.
+ * <p>
+ * The return value is constrained to be non-negative - i.e., if due to
+ * rounding errors the computational formula returns a negative result,
+ * 0 is returned.
+ * <p>
+ * <strong>Preconditions</strong>: <ul>
+ * <li>At least two observations (with at least two different x values)
+ * must have been added before invoking this method. If this method is
+ * invoked before a model can be estimated, <code>Double,NaN</code> is
+ * returned.
+ * </li></ul>
+ *
+ * @return sum of squared errors associated with the regression model
+ */"
+"public long getN() {
+    return n;
+}","public void test1630() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[8][1];
+    double[] doubleArray1 = new double[3];
+    doubleArray0[0] = doubleArray1;
+    doubleArray0[1] = doubleArray0[0];
+    doubleArray0[2] = doubleArray0[1];
+    doubleArray0[3] = doubleArray0[1];
+    doubleArray0[4] = doubleArray0[3];
+    doubleArray0[5] = doubleArray1;
+    doubleArray0[6] = doubleArray0[1];
+    doubleArray0[7] = doubleArray0[1];
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getTotalSumSquares();
+    assertEquals(8L, simpleRegression0.getN());
+}","/**
+ * Returns the number of observations that have been added to the model.
+ *
+ * @return n number of observations that have been added.
+ */"
+"public double getTotalSumSquares() {
+    if (n < 2) {
+        return Double.NaN;
+    }
+    return sumYY;
+}","public void test1631() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[8][1];
+    double[] doubleArray1 = new double[3];
+    doubleArray0[0] = doubleArray1;
+    doubleArray0[1] = doubleArray0[0];
+    doubleArray0[2] = doubleArray0[1];
+    doubleArray0[3] = doubleArray0[1];
+    doubleArray0[4] = doubleArray0[3];
+    doubleArray0[5] = doubleArray1;
+    doubleArray0[6] = doubleArray0[1];
+    doubleArray0[7] = doubleArray0[1];
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getTotalSumSquares();
+    assertEquals(0.0, double0, 0.01);
+}","/**
+ * Returns the sum of squared deviations of the y values about their mean.
+ * <p>
+ * This is defined as SSTO
+ * <a href=""http://www.xycoon.com/SumOfSquares.htm"">here</a>.
+ * <p>
+ * If <code>n < 2</code>, this returns <code>Double.NaN</code>.
+ *
+ * @return sum of squared deviations of y values
+ */"
+"public long getN() {
+    return n;
+}","public void test1732() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[7][1];
+    double[] doubleArray1 = new double[3];
+    doubleArray1[0] = Double.NaN;
+    doubleArray0[0] = doubleArray1;
+    doubleArray0[1] = doubleArray0[0];
+    doubleArray0[2] = doubleArray1;
+    doubleArray0[3] = doubleArray1;
+    doubleArray0[4] = doubleArray0[3];
+    doubleArray0[5] = doubleArray1;
+    doubleArray0[6] = doubleArray1;
+    simpleRegression0.addData(doubleArray0);
+    simpleRegression0.getSlope();
+    assertEquals(7L, simpleRegression0.getN());
+}","/**
+ * Returns the number of observations that have been added to the model.
+ *
+ * @return n number of observations that have been added.
+ */"
+"public long getN() {
+    return n;
+}","public void test1833() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[7][1];
+    double[] doubleArray1 = new double[3];
+    doubleArray0[0] = doubleArray1;
+    doubleArray0[1] = doubleArray1;
+    doubleArray0[2] = doubleArray0[0];
+    doubleArray0[3] = doubleArray1;
+    doubleArray0[4] = doubleArray0[2];
+    doubleArray0[5] = doubleArray0[1];
+    doubleArray0[6] = doubleArray0[0];
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getSlope();
+    assertEquals(7L, simpleRegression0.getN());
+}","/**
+ * Returns the number of observations that have been added to the model.
+ *
+ * @return n number of observations that have been added.
+ */"
+"public double getSlope() {
+    if (n < 2) {
+        //not enough data
+        return Double.NaN;
+    }
+    if (Math.abs(sumXX) < 10 * Double.MIN_VALUE) {
+        //not enough variation in x
+        return Double.NaN;
+    }
+    return sumXY / sumXX;
+}","public void test1834() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[7][1];
+    double[] doubleArray1 = new double[3];
+    doubleArray0[0] = doubleArray1;
+    doubleArray0[1] = doubleArray1;
+    doubleArray0[2] = doubleArray0[0];
+    doubleArray0[3] = doubleArray1;
+    doubleArray0[4] = doubleArray0[2];
+    doubleArray0[5] = doubleArray0[1];
+    doubleArray0[6] = doubleArray0[0];
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getSlope();
+    assertEquals(Double.NaN, double0, 0.01);
+}","/**
+ * Returns the slope of the estimated regression line.
+ * <p>
+ * The least squares estimate of the slope is computed using the
+ * <a href=""http://www.xycoon.com/estimation4.htm"">normal equations</a>.
+ * The slope is sometimes denoted b1.
+ * <p>
+ * <strong>Preconditions</strong>: <ul>
+ * <li>At least two observations (with at least two different x values)
+ * must have been added before invoking this method. If this method is
+ * invoked before a model can be estimated, <code>Double.NaN</code> is
+ * returned.
+ * </li></ul>
+ *
+ * @return the slope of the regression line
+ */"
+"public double getSumSquaredErrors() {
+    return sumYY - sumXY * sumXY / sumXX;
+}","public void test1935() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double double0 = simpleRegression0.getSlope();
+    assertEquals(Double.NaN, simpleRegression0.getSumSquaredErrors(), 0.01);
+}","/**
+ * Returns the <a href=""http://www.xycoon.com/SumOfSquares.htm"">
+ * sum of squared errors</a> (SSE) associated with the regression
+ * model.
+ * <p>
+ * The sum is computed using the computational formula
+ * <p>
+ * <code>SSE = SYY - (SXY * SXY / SXX)</code>
+ * <p>
+ * where <code>SYY</code> is the sum of the squared deviations of the y
+ * values about their mean, <code>SXX</code> is similarly defined and
+ * <code>SXY</code> is the sum of the products of x and y mean deviations.
+ * <p>
+ * The sums are accumulated using the updating algorithm referenced in
+ * {@link #addData}.
+ * <p>
+ * The return value is constrained to be non-negative - i.e., if due to
+ * rounding errors the computational formula returns a negative result,
+ * 0 is returned.
+ * <p>
+ * <strong>Preconditions</strong>: <ul>
+ * <li>At least two observations (with at least two different x values)
+ * must have been added before invoking this method. If this method is
+ * invoked before a model can be estimated, <code>Double,NaN</code> is
+ * returned.
+ * </li></ul>
+ *
+ * @return sum of squared errors associated with the regression model
+ */"
+"public double getSlope() {
+    if (n < 2) {
+        //not enough data
+        return Double.NaN;
+    }
+    if (Math.abs(sumXX) < 10 * Double.MIN_VALUE) {
+        //not enough variation in x
+        return Double.NaN;
+    }
+    return sumXY / sumXX;
+}","public void test1936() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double double0 = simpleRegression0.getSlope();
+    assertEquals(Double.NaN, double0, 0.01);
+}","/**
+ * Returns the slope of the estimated regression line.
+ * <p>
+ * The least squares estimate of the slope is computed using the
+ * <a href=""http://www.xycoon.com/estimation4.htm"">normal equations</a>.
+ * The slope is sometimes denoted b1.
+ * <p>
+ * <strong>Preconditions</strong>: <ul>
+ * <li>At least two observations (with at least two different x values)
+ * must have been added before invoking this method. If this method is
+ * invoked before a model can be estimated, <code>Double.NaN</code> is
+ * returned.
+ * </li></ul>
+ *
+ * @return the slope of the regression line
+ */"
+"public long getN() {
+    return n;
+}","public void test1937() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double double0 = simpleRegression0.getSlope();
+    assertEquals(0L, simpleRegression0.getN());
+}","/**
+ * Returns the number of observations that have been added to the model.
+ *
+ * @return n number of observations that have been added.
+ */"
+"public double getTotalSumSquares() {
+    if (n < 2) {
+        return Double.NaN;
+    }
+    return sumYY;
+}","public void test2038() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[8][1];
+    double[] doubleArray1 = new double[3];
+    doubleArray0[0] = doubleArray1;
+    doubleArray0[1] = doubleArray1;
+    doubleArray0[2] = doubleArray1;
+    doubleArray0[3] = doubleArray1;
+    doubleArray0[4] = doubleArray0[0];
+    doubleArray0[5] = doubleArray1;
+    doubleArray0[6] = doubleArray0[2];
+    doubleArray0[7] = doubleArray0[3];
+    simpleRegression0.addData(doubleArray0);
+    simpleRegression0.addData((-968.4603129835), (-968.4603129835));
+    assertEquals(833702.5580658657, simpleRegression0.getTotalSumSquares(), 0.01);
+}","/**
+ * Returns the sum of squared deviations of the y values about their mean.
+ * <p>
+ * This is defined as SSTO
+ * <a href=""http://www.xycoon.com/SumOfSquares.htm"">here</a>.
+ * <p>
+ * If <code>n < 2</code>, this returns <code>Double.NaN</code>.
+ *
+ * @return sum of squared deviations of y values
+ */"
+"public long getN() {
+    return n;
+}","public void test2139() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double double0 = simpleRegression0.getSlopeStdErr();
+    assertEquals(0L, simpleRegression0.getN());
+}","/**
+ * Returns the number of observations that have been added to the model.
+ *
+ * @return n number of observations that have been added.
+ */"
+"public double getMeanSquareError() {
+    if (n < 3) {
+        return Double.NaN;
+    }
+    return getSumSquaredErrors() / (double) (n - 2);
+}","public void test2140() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double double0 = simpleRegression0.getSlopeStdErr();
+    assertEquals(Double.NaN, simpleRegression0.getMeanSquareError(), 0.01);
+}","/**
+ * Returns the sum of squared errors divided by the degrees of freedom,
+ * usually abbreviated MSE.
+ * <p>
+ * If there are fewer than <strong>three</strong> data pairs in the model,
+ * or if there is no variation in <code>x</code>, this returns
+ * <code>Double.NaN</code>.
+ *
+ * @return sum of squared deviations of y values
+ */"
+"public double getSumSquaredErrors() {
+    return sumYY - sumXY * sumXY / sumXX;
+}","public void test2141() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double double0 = simpleRegression0.getSlopeStdErr();
+    assertEquals(Double.NaN, simpleRegression0.getSumSquaredErrors(), 0.01);
+}","/**
+ * Returns the <a href=""http://www.xycoon.com/SumOfSquares.htm"">
+ * sum of squared errors</a> (SSE) associated with the regression
+ * model.
+ * <p>
+ * The sum is computed using the computational formula
+ * <p>
+ * <code>SSE = SYY - (SXY * SXY / SXX)</code>
+ * <p>
+ * where <code>SYY</code> is the sum of the squared deviations of the y
+ * values about their mean, <code>SXX</code> is similarly defined and
+ * <code>SXY</code> is the sum of the products of x and y mean deviations.
+ * <p>
+ * The sums are accumulated using the updating algorithm referenced in
+ * {@link #addData}.
+ * <p>
+ * The return value is constrained to be non-negative - i.e., if due to
+ * rounding errors the computational formula returns a negative result,
+ * 0 is returned.
+ * <p>
+ * <strong>Preconditions</strong>: <ul>
+ * <li>At least two observations (with at least two different x values)
+ * must have been added before invoking this method. If this method is
+ * invoked before a model can be estimated, <code>Double,NaN</code> is
+ * returned.
+ * </li></ul>
+ *
+ * @return sum of squared errors associated with the regression model
+ */"
+"public double getSlopeStdErr() {
+    return Math.sqrt(getMeanSquareError() / sumXX);
+}","public void test2142() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double double0 = simpleRegression0.getSlopeStdErr();
+    assertEquals(Double.NaN, double0, 0.01);
+}","/**
+ * Returns the <a href=""http://www.xycoon.com/standerrorb(1).htm"">standard
+ * error of the slope estimate</a>,
+ * usually denoted s(b1).
+ * <p>
+ * If there are fewer that <strong>three</strong> data pairs in the model,
+ * or if there is no variation in x, this returns <code>Double.NaN</code>.
+ *
+ * @return standard error associated with slope estimate
+ */"
+"public long getN() {
+    return n;
+}","public void test2243() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double double0 = simpleRegression0.getSumSquaredErrors();
+    assertEquals(0L, simpleRegression0.getN());
+}","/**
+ * Returns the number of observations that have been added to the model.
+ *
+ * @return n number of observations that have been added.
+ */"
+"public double getSumSquaredErrors() {
+    return sumYY - sumXY * sumXY / sumXX;
+}","public void test2244() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double double0 = simpleRegression0.getSumSquaredErrors();
+    assertEquals(Double.NaN, double0, 0.01);
+}","/**
+ * Returns the <a href=""http://www.xycoon.com/SumOfSquares.htm"">
+ * sum of squared errors</a> (SSE) associated with the regression
+ * model.
+ * <p>
+ * The sum is computed using the computational formula
+ * <p>
+ * <code>SSE = SYY - (SXY * SXY / SXX)</code>
+ * <p>
+ * where <code>SYY</code> is the sum of the squared deviations of the y
+ * values about their mean, <code>SXX</code> is similarly defined and
+ * <code>SXY</code> is the sum of the products of x and y mean deviations.
+ * <p>
+ * The sums are accumulated using the updating algorithm referenced in
+ * {@link #addData}.
+ * <p>
+ * The return value is constrained to be non-negative - i.e., if due to
+ * rounding errors the computational formula returns a negative result,
+ * 0 is returned.
+ * <p>
+ * <strong>Preconditions</strong>: <ul>
+ * <li>At least two observations (with at least two different x values)
+ * must have been added before invoking this method. If this method is
+ * invoked before a model can be estimated, <code>Double,NaN</code> is
+ * returned.
+ * </li></ul>
+ *
+ * @return sum of squared errors associated with the regression model
+ */"
+"public double getSlopeConfidenceInterval(double alpha) throws MathException {
+    if (alpha >= 1 || alpha <= 0) {
+        throw new IllegalArgumentException();
+    }
+    return getSlopeStdErr() * getTDistribution().inverseCumulativeProbability(1d - alpha / 2d);
+}","public void test2345() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    // Undeclared exception!
+    try {
+        simpleRegression0.getSlopeConfidenceInterval(0.0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.stat.regression.SimpleRegression"", e);
+    }
+}","/**
+ * Returns the half-width of a (100-100*alpha)% confidence interval for
+ * the slope estimate.
+ * <p>
+ * The (100-100*alpha)% confidence interval is
+ * <p>
+ * <code>(getSlope() - getSlopeConfidenceInterval(),
+ * getSlope() + getSlopeConfidenceInterval())</code>
+ * <p>
+ * To request, for example, a 99% confidence interval, use
+ * <code>alpha = .01</code>
+ * <p>
+ * <strong>Usage Note</strong>:<br>
+ * The validity of this statistic depends on the assumption that the
+ * observations included in the model are drawn from a
+ * <a href=""http://mathworld.wolfram.com/BivariateNormalDistribution.html"">
+ * Bivariate Normal Distribution</a>.
+ * <p>
+ * <strong> Preconditions:</strong><ul>
+ * <li>If there are fewer that <strong>three</strong> observations in the
+ * model, or if there is no variation in x, this returns
+ * <code>Double.NaN</code>.
+ * </li>
+ * <li><code>(0 < alpha < 1)</code>; otherwise an
+ * <code>IllegalArgumentException</code> is thrown.
+ * </li></ul>
+ *
+ * @param alpha the desired significance level
+ * @return half-width of 95% confidence interval for the slope estimate
+ * @throws MathException if the confidence interval can not be computed.
+ */"
+"public double getSlopeConfidenceInterval(double alpha) throws MathException {
+    if (alpha >= 1 || alpha <= 0) {
+        throw new IllegalArgumentException();
+    }
+    return getSlopeStdErr() * getTDistribution().inverseCumulativeProbability(1d - alpha / 2d);
+}","public void test2446() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    // Undeclared exception!
+    try {
+        simpleRegression0.getSlopeConfidenceInterval(909.40891273);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.stat.regression.SimpleRegression"", e);
+    }
+}","/**
+ * Returns the half-width of a (100-100*alpha)% confidence interval for
+ * the slope estimate.
+ * <p>
+ * The (100-100*alpha)% confidence interval is
+ * <p>
+ * <code>(getSlope() - getSlopeConfidenceInterval(),
+ * getSlope() + getSlopeConfidenceInterval())</code>
+ * <p>
+ * To request, for example, a 99% confidence interval, use
+ * <code>alpha = .01</code>
+ * <p>
+ * <strong>Usage Note</strong>:<br>
+ * The validity of this statistic depends on the assumption that the
+ * observations included in the model are drawn from a
+ * <a href=""http://mathworld.wolfram.com/BivariateNormalDistribution.html"">
+ * Bivariate Normal Distribution</a>.
+ * <p>
+ * <strong> Preconditions:</strong><ul>
+ * <li>If there are fewer that <strong>three</strong> observations in the
+ * model, or if there is no variation in x, this returns
+ * <code>Double.NaN</code>.
+ * </li>
+ * <li><code>(0 < alpha < 1)</code>; otherwise an
+ * <code>IllegalArgumentException</code> is thrown.
+ * </li></ul>
+ *
+ * @param alpha the desired significance level
+ * @return half-width of 95% confidence interval for the slope estimate
+ * @throws MathException if the confidence interval can not be computed.
+ */"
+"public double getRSquare() {
+    double ssto = getTotalSumSquares();
+    return (ssto - getSumSquaredErrors()) / ssto;
+}","public void test2547() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[1][0];
+    double[] doubleArray1 = new double[8];
+    doubleArray1[1] = 663.000092736518;
+    simpleRegression0.addData(128.80567165176635, 0.0);
+    doubleArray0[0] = doubleArray1;
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getR();
+    assertEquals(1.0000000000000002, simpleRegression0.getRSquare(), 0.01);
+}","/**
+ * Returns the <a href=""http://www.xycoon.com/coefficient1.htm"">
+ * coefficient of determination</a>,
+ * usually denoted r-square.
+ * <p>
+ * <strong>Preconditions</strong>: <ul>
+ * <li>At least two observations (with at least two different x values)
+ * must have been added before invoking this method. If this method is
+ * invoked before a model can be estimated, <code>Double,NaN</code> is
+ * returned.
+ * </li></ul>
+ *
+ * @return r-square
+ */"
+"public double getR() {
+    double b1 = getSlope();
+    double result = Math.sqrt(getRSquare());
+    if (b1 < 0) {
+        result = -result;
+    }
+    return result;
+}","public void test2548() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[1][0];
+    double[] doubleArray1 = new double[8];
+    doubleArray1[1] = 663.000092736518;
+    simpleRegression0.addData(128.80567165176635, 0.0);
+    doubleArray0[0] = doubleArray1;
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getR();
+    assertEquals((-1.0), double0, 0.01);
+}","/**
+ * Returns <a href=""http://mathworld.wolfram.com/CorrelationCoefficient.html"">
+ * Pearson's product moment correlation coefficient</a>,
+ * usually denoted r.
+ * <p>
+ * <strong>Preconditions</strong>: <ul>
+ * <li>At least two observations (with at least two different x values)
+ * must have been added before invoking this method. If this method is
+ * invoked before a model can be estimated, <code>Double,NaN</code> is
+ * returned.
+ * </li></ul>
+ *
+ * @return Pearson's r
+ */"
+"public double getRegressionSumSquares() {
+    return getRegressionSumSquares(getSlope());
+}","public void test2649() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    simpleRegression0.getR();
+    assertEquals(Double.NaN, simpleRegression0.getRegressionSumSquares(), 0.01);
+}","/**
+ * Returns the sum of squared deviations of the predicted y values about
+ * their mean (which equals the mean of y).
+ * <p>
+ * This is usually abbreviated SSR or SSM.  It is defined as SSM
+ * <a href=""http://www.xycoon.com/SumOfSquares.htm"">here</a>
+ * <p>
+ * <strong>Preconditions</strong>: <ul>
+ * <li>At least two observations (with at least two different x values)
+ * must have been added before invoking this method. If this method is
+ * invoked before a model can be estimated, <code>Double.NaN</code> is
+ * returned.
+ * </li></ul>
+ *
+ * @return sum of squared deviations of predicted y values
+ */"
+"public long getN() {
+    return n;
+}","public void test2650() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    simpleRegression0.getR();
+    assertEquals(0L, simpleRegression0.getN());
+}","/**
+ * Returns the number of observations that have been added to the model.
+ *
+ * @return n number of observations that have been added.
+ */"
+"public double getSumSquaredErrors() {
+    return sumYY - sumXY * sumXY / sumXX;
+}","public void test2651() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    simpleRegression0.getR();
+    assertEquals(Double.NaN, simpleRegression0.getSumSquaredErrors(), 0.01);
+}","/**
+ * Returns the <a href=""http://www.xycoon.com/SumOfSquares.htm"">
+ * sum of squared errors</a> (SSE) associated with the regression
+ * model.
+ * <p>
+ * The sum is computed using the computational formula
+ * <p>
+ * <code>SSE = SYY - (SXY * SXY / SXX)</code>
+ * <p>
+ * where <code>SYY</code> is the sum of the squared deviations of the y
+ * values about their mean, <code>SXX</code> is similarly defined and
+ * <code>SXY</code> is the sum of the products of x and y mean deviations.
+ * <p>
+ * The sums are accumulated using the updating algorithm referenced in
+ * {@link #addData}.
+ * <p>
+ * The return value is constrained to be non-negative - i.e., if due to
+ * rounding errors the computational formula returns a negative result,
+ * 0 is returned.
+ * <p>
+ * <strong>Preconditions</strong>: <ul>
+ * <li>At least two observations (with at least two different x values)
+ * must have been added before invoking this method. If this method is
+ * invoked before a model can be estimated, <code>Double,NaN</code> is
+ * returned.
+ * </li></ul>
+ *
+ * @return sum of squared errors associated with the regression model
+ */"
+"public double getTotalSumSquares() {
+    if (n < 2) {
+        return Double.NaN;
+    }
+    return sumYY;
+}","public void test2652() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    simpleRegression0.getR();
+    assertEquals(Double.NaN, simpleRegression0.getTotalSumSquares(), 0.01);
+}","/**
+ * Returns the sum of squared deviations of the y values about their mean.
+ * <p>
+ * This is defined as SSTO
+ * <a href=""http://www.xycoon.com/SumOfSquares.htm"">here</a>.
+ * <p>
+ * If <code>n < 2</code>, this returns <code>Double.NaN</code>.
+ *
+ * @return sum of squared deviations of y values
+ */"
+"public long getN() {
+    return n;
+}","public void test2753() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[8][9];
+    double[] doubleArray1 = new double[6];
+    doubleArray1[0] = 3052.94544;
+    doubleArray0[1] = doubleArray1;
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getIntercept();
+    assertEquals(8L, simpleRegression0.getN());
+}","/**
+ * Returns the number of observations that have been added to the model.
+ *
+ * @return n number of observations that have been added.
+ */"
+"public double getIntercept() {
+    return getIntercept(getSlope());
+}","public void test2754() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[8][9];
+    double[] doubleArray1 = new double[6];
+    doubleArray1[0] = 3052.94544;
+    doubleArray0[1] = doubleArray1;
+    simpleRegression0.addData(doubleArray0);
+    double double0 = simpleRegression0.getIntercept();
+    assertEquals(0.0, double0, 0.01);
+}","/**
+ * Returns the intercept of the estimated regression line.
+ * <p>
+ * The least squares estimate of the intercept is computed using the
+ * <a href=""http://www.xycoon.com/estimation4.htm"">normal equations</a>.
+ * The intercept is sometimes denoted b0.
+ * <p>
+ * <strong>Preconditions</strong>: <ul>
+ * <li>At least two observations (with at least two different x values)
+ * must have been added before invoking this method. If this method is
+ * invoked before a model can be estimated, <code>Double,NaN</code> is
+ * returned.
+ * </li></ul>
+ *
+ * @return the intercept of the regression line
+ */"
+"public double getSlopeConfidenceInterval() throws MathException {
+    return getSlopeConfidenceInterval(0.05d);
+}","public void test2855() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    // Undeclared exception!
+    try {
+        simpleRegression0.getSlopeConfidenceInterval();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // degrees of freedom must be positive.
+        //
+        verifyException(""org.apache.commons.math.distribution.TDistributionImpl"", e);
+    }
+}","/**
+ * Returns the half-width of a 95% confidence interval for the slope
+ * estimate.
+ * <p>
+ * The 95% confidence interval is
+ * <p>
+ * <code>(getSlope() - getSlopeConfidenceInterval(),
+ * getSlope() + getSlopeConfidenceInterval())</code>
+ * <p>
+ * If there are fewer that <strong>three</strong> observations in the
+ * model, or if there is no variation in x, this returns
+ * <code>Double.NaN</code>.
+ * <p>
+ * <strong>Usage Note</strong>:<br>
+ * The validity of this statistic depends on the assumption that the
+ * observations included in the model are drawn from a
+ * <a href=""http://mathworld.wolfram.com/BivariateNormalDistribution.html"">
+ * Bivariate Normal Distribution</a>.
+ *
+ * @return half-width of 95% confidence interval for the slope estimate
+ *
+ * @throws MathException if the confidence interval can not be computed.
+ */"
+"public double getTotalSumSquares() {
+    if (n < 2) {
+        return Double.NaN;
+    }
+    return sumYY;
+}","public void test2956() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    double[][] doubleArray0 = new double[8][9];
+    simpleRegression0.addData(doubleArray0);
+    simpleRegression0.getSignificance();
+    assertEquals(0.0, simpleRegression0.getTotalSumSquares(), 0.01);
+}","/**
+ * Returns the sum of squared deviations of the y values about their mean.
+ * <p>
+ * This is defined as SSTO
+ * <a href=""http://www.xycoon.com/SumOfSquares.htm"">here</a>.
+ * <p>
+ * If <code>n < 2</code>, this returns <code>Double.NaN</code>.
+ *
+ * @return sum of squared deviations of y values
+ */"
+"public double getSumSquaredErrors() {
+    return sumYY - sumXY * sumXY / sumXX;
+}","public void test3057() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    long long0 = simpleRegression0.getN();
+    assertEquals(Double.NaN, simpleRegression0.getSumSquaredErrors(), 0.01);
+}","/**
+ * Returns the <a href=""http://www.xycoon.com/SumOfSquares.htm"">
+ * sum of squared errors</a> (SSE) associated with the regression
+ * model.
+ * <p>
+ * The sum is computed using the computational formula
+ * <p>
+ * <code>SSE = SYY - (SXY * SXY / SXX)</code>
+ * <p>
+ * where <code>SYY</code> is the sum of the squared deviations of the y
+ * values about their mean, <code>SXX</code> is similarly defined and
+ * <code>SXY</code> is the sum of the products of x and y mean deviations.
+ * <p>
+ * The sums are accumulated using the updating algorithm referenced in
+ * {@link #addData}.
+ * <p>
+ * The return value is constrained to be non-negative - i.e., if due to
+ * rounding errors the computational formula returns a negative result,
+ * 0 is returned.
+ * <p>
+ * <strong>Preconditions</strong>: <ul>
+ * <li>At least two observations (with at least two different x values)
+ * must have been added before invoking this method. If this method is
+ * invoked before a model can be estimated, <code>Double,NaN</code> is
+ * returned.
+ * </li></ul>
+ *
+ * @return sum of squared errors associated with the regression model
+ */"
+"public long getN() {
+    return n;
+}","public void test3058() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    long long0 = simpleRegression0.getN();
+    assertEquals(0L, long0);
+}","/**
+ * Returns the number of observations that have been added to the model.
+ *
+ * @return n number of observations that have been added.
+ */"
+"public double getSumSquaredErrors() {
+    return sumYY - sumXY * sumXY / sumXX;
+}","public void test3159() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    simpleRegression0.clear();
+    assertEquals(Double.NaN, simpleRegression0.getSumSquaredErrors(), 0.01);
+}","/**
+ * Returns the <a href=""http://www.xycoon.com/SumOfSquares.htm"">
+ * sum of squared errors</a> (SSE) associated with the regression
+ * model.
+ * <p>
+ * The sum is computed using the computational formula
+ * <p>
+ * <code>SSE = SYY - (SXY * SXY / SXX)</code>
+ * <p>
+ * where <code>SYY</code> is the sum of the squared deviations of the y
+ * values about their mean, <code>SXX</code> is similarly defined and
+ * <code>SXY</code> is the sum of the products of x and y mean deviations.
+ * <p>
+ * The sums are accumulated using the updating algorithm referenced in
+ * {@link #addData}.
+ * <p>
+ * The return value is constrained to be non-negative - i.e., if due to
+ * rounding errors the computational formula returns a negative result,
+ * 0 is returned.
+ * <p>
+ * <strong>Preconditions</strong>: <ul>
+ * <li>At least two observations (with at least two different x values)
+ * must have been added before invoking this method. If this method is
+ * invoked before a model can be estimated, <code>Double,NaN</code> is
+ * returned.
+ * </li></ul>
+ *
+ * @return sum of squared errors associated with the regression model
+ */"
+"public long getN() {
+    return n;
+}","public void test3160() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    simpleRegression0.clear();
+    assertEquals(0L, simpleRegression0.getN());
+}","/**
+ * Returns the number of observations that have been added to the model.
+ *
+ * @return n number of observations that have been added.
+ */"
+"public double getSignificance() throws MathException {
+    return 2d * (1.0 - getTDistribution().cumulativeProbability(Math.abs(getSlope()) / getSlopeStdErr()));
+}","public void test3261() throws Throwable {
+    SimpleRegression simpleRegression0 = new SimpleRegression();
+    // Undeclared exception!
+    try {
+        simpleRegression0.getSignificance();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // degrees of freedom must be positive.
+        //
+        verifyException(""org.apache.commons.math.distribution.TDistributionImpl"", e);
+    }
+}","/**
+ * Returns the significance level of the slope (equiv) correlation.
+ * <p>
+ * Specifically, the returned value is the smallest <code>alpha</code>
+ * such that the slope confidence interval with significance level
+ * equal to <code>alpha</code> does not include <code>0</code>.
+ * On regression output, this is often denoted <code>Prob(|t| > 0)</code>
+ * <p>
+ * <strong>Usage Note</strong>:<br>
+ * The validity of this statistic depends on the assumption that the
+ * observations included in the model are drawn from a
+ * <a href=""http://mathworld.wolfram.com/BivariateNormalDistribution.html"">
+ * Bivariate Normal Distribution</a>.
+ * <p>
+ * If there are fewer that <strong>three</strong> observations in the
+ * model, or if there is no variation in x, this returns
+ * <code>Double.NaN</code>.
+ *
+ * @return significance level for slope/correlation
+ * @throws MathException if the significance level can not be computed.
+ */"

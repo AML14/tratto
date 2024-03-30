@@ -1,0 +1,335 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    SourceFile.Generator sourceFile_Generator0 = mock(SourceFile.Generator.class, new ViolatedAssumptionAnswer());
+    SourceFile.Generated sourceFile_Generated0 = new SourceFile.Generated(""com.google.javascript.jscomp.SourceFile$OnDisk"", sourceFile_Generator0);
+    sourceFile_Generated0.getCodeNoCache();
+    assertFalse(sourceFile_Generated0.isExtern());
+}",0,assertTrue(sourceFile_Generated0.isExtern())
+project,0,test011,"public void test011() throws Throwable {
+    SourceFile.Generated sourceFile_Generated0 = new SourceFile.Generated(""com.google.javascript.jscomp.SourceFile$Preloaded"", (SourceFile.Generator) null);
+    sourceFile_Generated0.clearCachedSource();
+    assertFalse(sourceFile_Generated0.isExtern());
+}",0,assertFalse(sourceFile_Generated0.isExtern())
+project,0,test022,"public void test022() throws Throwable {
+    MockFile mockFile0 = new MockFile("""", """");
+    SourceFile.OnDisk sourceFile_OnDisk0 = new SourceFile.OnDisk(mockFile0);
+    sourceFile_OnDisk0.clearCachedSource();
+    assertFalse(sourceFile_OnDisk0.isExtern());
+}",0,assertFalse(sourceFile_OnDisk0.isExtern())
+project,0,test033,"public void test033() throws Throwable {
+    // Undeclared exception!
+    try {
+        SourceFile.fromGenerator((String) null, (SourceFile.Generator) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // a source must have a name
+        //
+        verifyException(""com.google.javascript.jscomp.SourceFile"", e);
+    }
+}",0,
+project,0,test044,"public void test044() throws Throwable {
+    SourceFile sourceFile0 = SourceFile.fromFile(""com.google.javascript.jscomp.SourceFile"", (Charset) null);
+    assertFalse(sourceFile0.isExtern());
+}",0,assertFalse(sourceFile0.isExtern())
+project,0,test055,"public void test055() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = (SourceFile.Preloaded) SourceFile.fromCode(""com.google.common.io.Files"", """", ""\nActual: "");
+    int int0 = sourceFile_Preloaded0.getNumLines();
+    assertFalse(sourceFile_Preloaded0.isExtern());
+}",0,assertTrue(sourceFile_Preloaded0.isExtern())
+project,0,test056,"public void test056() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = (SourceFile.Preloaded) SourceFile.fromCode(""com.google.common.io.Files"", """", ""\nActual: "");
+    int int0 = sourceFile_Preloaded0.getNumLines();
+    assertEquals(""com.google.common.io.Files"", sourceFile_Preloaded0.toString());
+}",0,
+project,0,test057,"public void test057() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = (SourceFile.Preloaded) SourceFile.fromCode(""com.google.common.io.Files"", """", ""\nActual: "");
+    int int0 = sourceFile_Preloaded0.getNumLines();
+    assertEquals(2, int0);
+}",0,
+project,0,test058,"public void test058() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = (SourceFile.Preloaded) SourceFile.fromCode(""com.google.common.io.Files"", """", ""\nActual: "");
+    int int0 = sourceFile_Preloaded0.getNumLines();
+    assertEquals("""", sourceFile_Preloaded0.getOriginalPath());
+}",0,assertNotNull(sourceFile_Preloaded0.getOriginalPath())
+project,0,test069,"public void test069() throws Throwable {
+    File file0 = MockFile.createTempFile(""\""x5BI7V"", """");
+    SourceFile.OnDisk sourceFile_OnDisk0 = new SourceFile.OnDisk(file0);
+    Reader reader0 = sourceFile_OnDisk0.getCodeReader();
+    // Undeclared exception!
+    try {
+        SourceFile.fromReader("""", reader0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // a source must have a name
+        //
+        verifyException(""com.google.javascript.jscomp.SourceFile"", e);
+    }
+}",0,
+project,0,test0710,"public void test0710() throws Throwable {
+    File file0 = MockFile.createTempFile(""\""x5BI7V"", """");
+    SourceFile.OnDisk sourceFile_OnDisk0 = new SourceFile.OnDisk(file0);
+    Region region0 = sourceFile_OnDisk0.getRegion(1181);
+    assertNull(region0);
+}",0,
+project,0,test0711,"public void test0711() throws Throwable {
+    File file0 = MockFile.createTempFile(""\""x5BI7V"", """");
+    SourceFile.OnDisk sourceFile_OnDisk0 = new SourceFile.OnDisk(file0);
+    Region region0 = sourceFile_OnDisk0.getRegion(1181);
+    sourceFile_OnDisk0.getCodeReader();
+    assertFalse(sourceFile_OnDisk0.isExtern());
+}",0,assertTrue(sourceFile_OnDisk0.isExtern())
+project,0,test0812,"public void test0812() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""\n"", ""\n"");
+    sourceFile_Preloaded0.clearCachedSource();
+    assertFalse(sourceFile_Preloaded0.isExtern());
+}",0,assertTrue(sourceFile_Preloaded0.isExtern())
+project,0,test0913,"public void test0913() throws Throwable {
+    SourceFile sourceFile0 = SourceFile.fromCode(""<5f-.U>^"", ""com.google.javascript.jscomp.SourceFile$OnDisk"", ""com.google.javascript.jscomp.SourceFile$OnDisk"");
+    String string0 = sourceFile0.getName();
+    assertFalse(sourceFile0.isExtern());
+}",0,assertTrue(sourceFile0.isExtern())
+project,0,test0914,"public void test0914() throws Throwable {
+    SourceFile sourceFile0 = SourceFile.fromCode(""<5f-.U>^"", ""com.google.javascript.jscomp.SourceFile$OnDisk"", ""com.google.javascript.jscomp.SourceFile$OnDisk"");
+    String string0 = sourceFile0.getName();
+    assertEquals(""com.google.javascript.jscomp.SourceFile$OnDisk"", sourceFile0.getOriginalPath());
+}",0,
+project,0,test0915,"public void test0915() throws Throwable {
+    SourceFile sourceFile0 = SourceFile.fromCode(""<5f-.U>^"", ""com.google.javascript.jscomp.SourceFile$OnDisk"", ""com.google.javascript.jscomp.SourceFile$OnDisk"");
+    String string0 = sourceFile0.getName();
+    assertEquals(""<5f-.U>^"", string0);
+}",0,
+project,0,test1016,"public void test1016() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""\n"", ""\n"");
+    assertFalse(sourceFile_Preloaded0.isExtern());
+}",0,
+project,0,test1017,"public void test1017() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""\n"", ""\n"");
+    sourceFile_Preloaded0.setIsExtern(true);
+    assertTrue(sourceFile_Preloaded0.isExtern());
+}",0,assertTrue(sourceFile_Preloaded0.isExtern())
+project,0,test1118,"public void test1118() throws Throwable {
+    SourceFile sourceFile0 = SourceFile.fromFile(""[!Xro._$kM"");
+    sourceFile0.toString();
+    assertFalse(sourceFile0.isExtern());
+}",0,
+project,0,test1219,"public void test1219() throws Throwable {
+    // Undeclared exception!
+    try {
+        SourceFile.fromInputStream(""|g3@%8]M2"", ""|g3@%8]M2"", (InputStream) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.io.Reader"", e);
+    }
+}",1,
+project,0,test1320,"public void test1320() throws Throwable {
+    // Undeclared exception!
+    try {
+        SourceFile.fromInputStream(""|g3@%8]M2"", (InputStream) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.io.Reader"", e);
+    }
+}",0,
+project,0,test1421,"public void test1421() throws Throwable {
+    StringReader stringReader0 = new StringReader(""F?Y9)jj5&$|$SewjSdp"");
+    SourceFile sourceFile0 = SourceFile.fromReader(""UTF-16LE"", stringReader0);
+    boolean boolean0 = sourceFile0.isExtern();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test1422,"public void test1422() throws Throwable {
+    StringReader stringReader0 = new StringReader(""F?Y9)jj5&$|$SewjSdp"");
+    SourceFile sourceFile0 = SourceFile.fromReader(""UTF-16LE"", stringReader0);
+    boolean boolean0 = sourceFile0.isExtern();
+    assertEquals(""UTF-16LE"", sourceFile0.getOriginalPath());
+}",0,assertNotNull(sourceFile0.getOriginalPath())
+project,0,test1523,"public void test1523() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""\n"", ""\n"");
+    sourceFile_Preloaded0.getNumLines();
+    // Undeclared exception!
+    try {
+        sourceFile_Preloaded0.getLineOffset(1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Expected line number between 1 and 0
+        // Actual: 1
+        //
+        verifyException(""com.google.javascript.jscomp.SourceFile"", e);
+    }
+}",0,
+project,0,test1624,"public void test1624() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""\n"", ""com.google.common.io.PatternFilenameFilter"");
+    sourceFile_Preloaded0.getLineOffset(1);
+    assertFalse(sourceFile_Preloaded0.isExtern());
+}",0,assertTrue(sourceFile_Preloaded0.isExtern())
+project,0,test1625,"public void test1625() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""\n"", ""com.google.common.io.PatternFilenameFilter"");
+    sourceFile_Preloaded0.getLineOffset(1);
+    assertEquals(""\n"", sourceFile_Preloaded0.getOriginalPath());
+}",0,assertNotNull(sourceFile_Preloaded0.getOriginalPath())
+project,0,test1726,"public void test1726() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""*$P"", ""*$P"");
+    // Undeclared exception!
+    try {
+        sourceFile_Preloaded0.getLineOffset((-5));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Expected line number between 1 and 1
+        // Actual: -5
+        //
+        verifyException(""com.google.javascript.jscomp.SourceFile"", e);
+    }
+}",1,
+project,0,test1827,"public void test1827() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""\n"", ""\n"", ""\n"");
+    sourceFile_Preloaded0.getNumLines();
+    int int0 = sourceFile_Preloaded0.getNumLines();
+    assertFalse(sourceFile_Preloaded0.isExtern());
+}",0,assertTrue(sourceFile_Preloaded0.isExtern())
+project,0,test1828,"public void test1828() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""\n"", ""\n"", ""\n"");
+    sourceFile_Preloaded0.getNumLines();
+    int int0 = sourceFile_Preloaded0.getNumLines();
+    assertEquals(0, int0);
+}",0,
+project,0,test1929,"public void test1929() throws Throwable {
+    SourceFile.Generator sourceFile_Generator0 = mock(SourceFile.Generator.class, new ViolatedAssumptionAnswer());
+    SourceFile sourceFile0 = SourceFile.fromGenerator("")&5AMT~.rI"", sourceFile_Generator0);
+    String string0 = sourceFile0.getOriginalPath();
+    assertNotNull(string0);
+}",0,
+project,0,test1930,"public void test1930() throws Throwable {
+    SourceFile.Generator sourceFile_Generator0 = mock(SourceFile.Generator.class, new ViolatedAssumptionAnswer());
+    SourceFile sourceFile0 = SourceFile.fromGenerator("")&5AMT~.rI"", sourceFile_Generator0);
+    String string0 = sourceFile0.getOriginalPath();
+    assertFalse(sourceFile0.isExtern());
+}",0,
+project,0,test2031,"public void test2031() throws Throwable {
+    SourceFile sourceFile0 = SourceFile.fromCode(""KDf<fn1Z[L54"", ""KDf<fn1Z[L54"", ""KDf<fn1Z[L54"");
+    sourceFile0.getOriginalPath();
+    assertFalse(sourceFile0.isExtern());
+}",0,assertTrue(sourceFile0.isExtern())
+project,0,test2132,"public void test2132() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""W6I7!xGh}qw{}5'hF"", ""W6I7!xGh}qw{}5'hF"");
+    sourceFile_Preloaded0.getLine((-2487));
+    assertFalse(sourceFile_Preloaded0.isExtern());
+}",0,assertTrue(sourceFile_Preloaded0.isExtern())
+project,0,test2233,"public void test2233() throws Throwable {
+    File file0 = MockFile.createTempFile(""\nActual: "", ""\nActual: "");
+    EvoSuiteFile evoSuiteFile0 = new EvoSuiteFile(""/var/folders/vv/c7q6vm8920vc7d5p_87011w40000gn/T/\nActual: 0\nActual: "");
+    FileSystemHandling.appendLineToFile(evoSuiteFile0, ""\nActual: "");
+    Charset charset0 = Charset.defaultCharset();
+    SourceFile.OnDisk sourceFile_OnDisk0 = new SourceFile.OnDisk(file0, charset0);
+    String string0 = sourceFile_OnDisk0.getLine(2);
+    assertEquals(""Actual: "", string0);
+}",0,
+project,0,test2335,"public void test2335() throws Throwable {
+    File file0 = MockFile.createTempFile(""\nActual: "", ""\nActual: "");
+    EvoSuiteFile evoSuiteFile0 = new EvoSuiteFile(""/var/folders/vv/c7q6vm8920vc7d5p_87011w40000gn/T/\nActual: 0\nActual: "");
+    FileSystemHandling.appendLineToFile(evoSuiteFile0, ""\nActual: "");
+    Charset charset0 = Charset.defaultCharset();
+    SourceFile.OnDisk sourceFile_OnDisk0 = new SourceFile.OnDisk(file0, charset0);
+    Region region0 = sourceFile_OnDisk0.getRegion(380);
+    assertNull(region0);
+}",0,
+project,0,test2436,"public void test2436() throws Throwable {
+    File file0 = MockFile.createTempFile(""\nActual: "", ""\nActual: "");
+    EvoSuiteFile evoSuiteFile0 = new EvoSuiteFile(""/var/folders/vv/c7q6vm8920vc7d5p_87011w40000gn/T/\nActual: 0\nActual: "");
+    FileSystemHandling.appendLineToFile(evoSuiteFile0, ""\nActual: "");
+    Charset charset0 = Charset.defaultCharset();
+    SourceFile.OnDisk sourceFile_OnDisk0 = new SourceFile.OnDisk(file0, charset0);
+    FileSystemHandling.appendLineToFile(evoSuiteFile0, ""\nActual: "");
+    FileSystemHandling.appendLineToFile(evoSuiteFile0, ""\nActual: "");
+    Region region0 = sourceFile_OnDisk0.getRegion(1);
+    assertFalse(sourceFile_OnDisk0.isExtern());
+}",0,assertTrue(sourceFile_OnDisk0.isExtern())
+project,0,test2437,"public void test2437() throws Throwable {
+    File file0 = MockFile.createTempFile(""\nActual: "", ""\nActual: "");
+    EvoSuiteFile evoSuiteFile0 = new EvoSuiteFile(""/var/folders/vv/c7q6vm8920vc7d5p_87011w40000gn/T/\nActual: 0\nActual: "");
+    FileSystemHandling.appendLineToFile(evoSuiteFile0, ""\nActual: "");
+    Charset charset0 = Charset.defaultCharset();
+    SourceFile.OnDisk sourceFile_OnDisk0 = new SourceFile.OnDisk(file0, charset0);
+    FileSystemHandling.appendLineToFile(evoSuiteFile0, ""\nActual: "");
+    FileSystemHandling.appendLineToFile(evoSuiteFile0, ""\nActual: "");
+    Region region0 = sourceFile_OnDisk0.getRegion(1);
+    assertNotNull(region0);
+}",0,
+project,0,test2438,"public void test2438() throws Throwable {
+    File file0 = MockFile.createTempFile(""\nActual: "", ""\nActual: "");
+    EvoSuiteFile evoSuiteFile0 = new EvoSuiteFile(""/var/folders/vv/c7q6vm8920vc7d5p_87011w40000gn/T/\nActual: 0\nActual: "");
+    FileSystemHandling.appendLineToFile(evoSuiteFile0, ""\nActual: "");
+    Charset charset0 = Charset.defaultCharset();
+    SourceFile.OnDisk sourceFile_OnDisk0 = new SourceFile.OnDisk(file0, charset0);
+    FileSystemHandling.appendLineToFile(evoSuiteFile0, ""\nActual: "");
+    FileSystemHandling.appendLineToFile(evoSuiteFile0, ""\nActual: "");
+    Region region0 = sourceFile_OnDisk0.getRegion(1);
+    assertEquals(""\nActual: \n\nActual: \n\n"", region0.getSourceExcerpt());
+}",0,assertNotNull(region0.getSourceExcerpt())
+project,0,test2439,"public void test2439() throws Throwable {
+    File file0 = MockFile.createTempFile(""\nActual: "", ""\nActual: "");
+    EvoSuiteFile evoSuiteFile0 = new EvoSuiteFile(""/var/folders/vv/c7q6vm8920vc7d5p_87011w40000gn/T/\nActual: 0\nActual: "");
+    FileSystemHandling.appendLineToFile(evoSuiteFile0, ""\nActual: "");
+    Charset charset0 = Charset.defaultCharset();
+    SourceFile.OnDisk sourceFile_OnDisk0 = new SourceFile.OnDisk(file0, charset0);
+    FileSystemHandling.appendLineToFile(evoSuiteFile0, ""\nActual: "");
+    FileSystemHandling.appendLineToFile(evoSuiteFile0, ""\nActual: "");
+    Region region0 = sourceFile_OnDisk0.getRegion(1);
+    assertEquals(6, region0.getEndingLineNumber());
+}",0,"assertEquals(0, region0.getEndingLineNumber())"
+project,0,test2540,"public void test2540() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""\n"", ""com.google.common.io.PatternFilenameFilter"");
+    Region region0 = sourceFile_Preloaded0.getRegion(0);
+    assertEquals(""com.google.common.io.PatternFilenameFilter"", region0.getSourceExcerpt());
+}",0,assertNotNull(region0.getSourceExcerpt())
+project,0,test2541,"public void test2541() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""\n"", ""com.google.common.io.PatternFilenameFilter"");
+    Region region0 = sourceFile_Preloaded0.getRegion(0);
+    assertEquals(1, region0.getEndingLineNumber());
+}",0,"assertEquals(0, region0.getEndingLineNumber())"
+project,0,test2542,"public void test2542() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""\n"", ""com.google.common.io.PatternFilenameFilter"");
+    Region region0 = sourceFile_Preloaded0.getRegion(0);
+    assertNotNull(region0);
+}",0,
+project,0,test2543,"public void test2543() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""\n"", ""com.google.common.io.PatternFilenameFilter"");
+    Region region0 = sourceFile_Preloaded0.getRegion(0);
+    assertFalse(sourceFile_Preloaded0.isExtern());
+}",0,assertTrue(sourceFile_Preloaded0.isExtern())
+project,0,test2544,"public void test2544() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""\n"", ""com.google.common.io.PatternFilenameFilter"");
+    Region region0 = sourceFile_Preloaded0.getRegion(0);
+    assertEquals(""\n"", sourceFile_Preloaded0.getOriginalPath());
+}",0,assertNotNull(sourceFile_Preloaded0.getOriginalPath())
+project,0,test2645,"public void test2645() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""\n"", ""\n"", ""\n"");
+    Region region0 = sourceFile_Preloaded0.getRegion(0);
+    assertEquals(2, region0.getEndingLineNumber());
+}",0,"assertEquals(0, region0.getEndingLineNumber())"
+project,0,test2646,"public void test2646() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""\n"", ""\n"", ""\n"");
+    Region region0 = sourceFile_Preloaded0.getRegion(0);
+    assertEquals(1, region0.getBeginningLineNumber());
+}",0,"assertEquals(0, region0.getBeginningLineNumber())"
+project,0,test2647,"public void test2647() throws Throwable {
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded(""\n"", ""\n"", ""\n"");
+    Region region0 = sourceFile_Preloaded0.getRegion(0);
+    assertNotNull(region0);
+}",0,
+project,0,test2748,"public void test2748() throws Throwable {
+    SourceFile.Generator sourceFile_Generator0 = mock(SourceFile.Generator.class, new ViolatedAssumptionAnswer());
+    doReturn(""com.google.javascript.jscomp.SourceFile$OnDisk"").when(sourceFile_Generator0).getCode();
+    SourceFile.Generated sourceFile_Generated0 = new SourceFile.Generated(""com.google.javascript.jscomp.SourceFile$OnDisk"", sourceFile_Generator0);
+    sourceFile_Generated0.getLine(1842);
+    sourceFile_Generated0.getRegion(1842);
+    assertFalse(sourceFile_Generated0.isExtern());
+}",0,

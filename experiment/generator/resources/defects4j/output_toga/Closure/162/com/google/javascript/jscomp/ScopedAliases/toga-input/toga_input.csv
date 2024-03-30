@@ -1,0 +1,104 @@
+focal_method,test_prefix,docstring
+"@Override
+public void hotSwapScript(Node root, Node originalRoot) {
+    Traversal traversal = new Traversal();
+    NodeTraversal.traverse(compiler, root, traversal);
+    if (!traversal.hasErrors()) {
+        // Apply the aliases.
+        for (AliasUsage aliasUsage : traversal.getAliasUsages()) {
+            aliasUsage.applyAlias();
+        }
+        // Remove the alias definitions.
+        for (Node aliasDefinition : traversal.getAliasDefinitionsInOrder()) {
+            if (aliasDefinition.getParent().getType() == Token.VAR && aliasDefinition.getParent().hasOneChild()) {
+                aliasDefinition.getParent().detachFromParent();
+            } else {
+                aliasDefinition.detachFromParent();
+            }
+        }
+        // Collapse the scopes.
+        for (Node scopeCall : traversal.getScopeCalls()) {
+            Node expressionWithScopeCall = scopeCall.getParent();
+            Node scopeClosureBlock = scopeCall.getLastChild().getLastChild();
+            scopeClosureBlock.detachFromParent();
+            expressionWithScopeCall.getParent().replaceChild(expressionWithScopeCall, scopeClosureBlock);
+            NodeUtil.tryMergeBlock(scopeClosureBlock);
+        }
+        if (traversal.getAliasUsages().size() > 0 || traversal.getAliasDefinitionsInOrder().size() > 0 || traversal.getScopeCalls().size() > 0) {
+            compiler.reportCodeChange();
+        }
+    }
+}","public void test00() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = new Node(105, 105, 105);
+    PreprocessorSymbolTable preprocessorSymbolTable0 = new PreprocessorSymbolTable(node0);
+    CompilerOptions.AliasTransformationHandler compilerOptions_AliasTransformationHandler0 = CompilerOptions.NULL_ALIAS_TRANSFORMATION_HANDLER;
+    ScopedAliases scopedAliases0 = new ScopedAliases(compiler0, preprocessorSymbolTable0, compilerOptions_AliasTransformationHandler0);
+    scopedAliases0.hotSwapScript(node0, node0);
+    assertEquals(1, Node.DECR_FLAG);
+}",""
+"@Override
+public void process(Node externs, Node root) {
+    hotSwapScript(root, null);
+}","public void test11() throws Throwable {
+    Node node0 = Node.newNumber(9.007199254740992E15);
+    Compiler compiler0 = new Compiler();
+    PreprocessorSymbolTable preprocessorSymbolTable0 = new PreprocessorSymbolTable(node0);
+    CompilerOptions.AliasTransformationHandler compilerOptions_AliasTransformationHandler0 = CompilerOptions.NULL_ALIAS_TRANSFORMATION_HANDLER;
+    ScopedAliases scopedAliases0 = new ScopedAliases(compiler0, preprocessorSymbolTable0, compilerOptions_AliasTransformationHandler0);
+    scopedAliases0.process(node0, node0);
+    assertEquals(51, Node.STATIC_SOURCE_FILE);
+}",""
+"public int getChildCount() {
+    int c = 0;
+    for (Node n = first; n != null; n = n.next) c++;
+    return c;
+}","public void test22() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = new Node(132, 132, 132);
+    PreprocessorSymbolTable preprocessorSymbolTable0 = new PreprocessorSymbolTable(node0);
+    CompilerOptions.AliasTransformationHandler compilerOptions_AliasTransformationHandler0 = CompilerOptions.NULL_ALIAS_TRANSFORMATION_HANDLER;
+    Node node1 = new Node(37, node0, node0, node0, node0, 16, 39);
+    ScopedAliases scopedAliases0 = new ScopedAliases(compiler0, preprocessorSymbolTable0, compilerOptions_AliasTransformationHandler0);
+    scopedAliases0.hotSwapScript(node0, node1);
+    assertEquals(1, node1.getChildCount());
+}",""
+"@Override
+public void hotSwapScript(Node root, Node originalRoot) {
+    Traversal traversal = new Traversal();
+    NodeTraversal.traverse(compiler, root, traversal);
+    if (!traversal.hasErrors()) {
+        // Apply the aliases.
+        for (AliasUsage aliasUsage : traversal.getAliasUsages()) {
+            aliasUsage.applyAlias();
+        }
+        // Remove the alias definitions.
+        for (Node aliasDefinition : traversal.getAliasDefinitionsInOrder()) {
+            if (aliasDefinition.getParent().getType() == Token.VAR && aliasDefinition.getParent().hasOneChild()) {
+                aliasDefinition.getParent().detachFromParent();
+            } else {
+                aliasDefinition.detachFromParent();
+            }
+        }
+        // Collapse the scopes.
+        for (Node scopeCall : traversal.getScopeCalls()) {
+            Node expressionWithScopeCall = scopeCall.getParent();
+            Node scopeClosureBlock = scopeCall.getLastChild().getLastChild();
+            scopeClosureBlock.detachFromParent();
+            expressionWithScopeCall.getParent().replaceChild(expressionWithScopeCall, scopeClosureBlock);
+            NodeUtil.tryMergeBlock(scopeClosureBlock);
+        }
+        if (traversal.getAliasUsages().size() > 0 || traversal.getAliasDefinitionsInOrder().size() > 0 || traversal.getScopeCalls().size() > 0) {
+            compiler.reportCodeChange();
+        }
+    }
+}","public void test33() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = new Node(105, 105, 105);
+    PreprocessorSymbolTable preprocessorSymbolTable0 = new PreprocessorSymbolTable(node0);
+    CompilerOptions.AliasTransformationHandler compilerOptions_AliasTransformationHandler0 = CompilerOptions.NULL_ALIAS_TRANSFORMATION_HANDLER;
+    ScopedAliases scopedAliases0 = new ScopedAliases(compiler0, preprocessorSymbolTable0, compilerOptions_AliasTransformationHandler0);
+    Node node1 = new Node(42, node0, node0, node0, node0, 22, 2);
+    scopedAliases0.hotSwapScript(node1, node0);
+    assertEquals(50, Node.FREE_CALL);
+}",""

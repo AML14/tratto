@@ -1,0 +1,107 @@
+{
+  "test1212" : {
+    "methodSignature" : "public CommandLine parse(Options options, String[] arguments, Properties properties, boolean stopAtNonOption) throws ParseException",
+    "methodName" : "parse",
+    "className" : "org.apache.commons.cli.Parser",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1212() throws Throwable {\n    Options options0 = new Options();\n    Properties properties0 = new Properties();\n    GnuParser gnuParser0 = new GnuParser();\n    OptionGroup optionGroup0 = new OptionGroup();\n    Option option0 = new Option(\"yes\", \"-yes\", false, \"--\");\n    OptionGroup optionGroup1 = optionGroup0.addOption(option0);\n    options0.addOptionGroup(optionGroup1);\n    String[] stringArray0 = new String[9];\n    option0.setRequired(true);\n    stringArray0[0] = \"-yes\";\n    stringArray0[1] = \"--\";\n    CommandLine commandLine0 = gnuParser0.parse(options0, stringArray0, properties0, true);\n}",
+    "testName" : "test1212"
+  },
+  "test1313" : {
+    "methodSignature" : "public CommandLine parse(Options options, String[] arguments, Properties properties, boolean stopAtNonOption) throws ParseException",
+    "methodName" : "parse",
+    "className" : "org.apache.commons.cli.Parser",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1313() throws Throwable {\n    Options options0 = new Options();\n    Properties properties0 = new Properties();\n    GnuParser gnuParser0 = new GnuParser();\n    Option option0 = new Option(\"yes\", \"-yes\", false, \"-G-\");\n    options0.addOption(option0);\n    String[] stringArray0 = new String[9];\n    stringArray0[0] = \"-yes\";\n    stringArray0[1] = \"-G-\";\n    CommandLine commandLine0 = gnuParser0.parse(options0, stringArray0, properties0, true);\n}",
+    "testName" : "test1313"
+  },
+  "test1010" : {
+    "methodSignature" : "public boolean hasArg()",
+    "methodName" : "hasArg",
+    "className" : "org.apache.commons.cli.Parser",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1010() throws Throwable {\n    ListIterator<Object> listIterator0 = (ListIterator<Object>) mock(ListIterator.class, new ViolatedAssumptionAnswer());\n    doReturn(false).when(listIterator0).hasNext();\n    Option option0 = new Option(\"\", \"yes\", false, \"yes\");\n    option0.setOptionalArg(true);\n    BasicParser basicParser0 = new BasicParser();\n    basicParser0.processArgs(option0, listIterator0);\n    option0.hasArg();\n}",
+    "testName" : "test1010"
+  },
+  "test1111" : {
+    "methodSignature" : "public CommandLine parse(Options options, String[] arguments) throws ParseException",
+    "methodName" : "parse",
+    "className" : "org.apache.commons.cli.Parser",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1111() throws Throwable {\n    Options options0 = new Options();\n    BasicParser basicParser0 = new BasicParser();\n    String[] stringArray0 = new String[2];\n    stringArray0[0] = \"-N\";\n    basicParser0.parse(options0, stringArray0);\n}",
+    "testName" : "test1111"
+  },
+  "test011" : {
+    "methodSignature" : "public CommandLine parse(Options options, String[] arguments) throws ParseException",
+    "methodName" : "parse",
+    "className" : "org.apache.commons.cli.Parser",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test011() throws Throwable {\n    Options options0 = new Options();\n    String[] stringArray0 = new String[6];\n    stringArray0[0] = \"-\";\n    BasicParser basicParser0 = new BasicParser();\n    basicParser0.parse(options0, stringArray0);\n}",
+    "testName" : "test011"
+  },
+  "test033" : {
+    "methodSignature" : "public CommandLine parse(Options options, String[] arguments) throws ParseException",
+    "methodName" : "parse",
+    "className" : "org.apache.commons.cli.Parser",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test033() throws Throwable {\n    Options options0 = new Options();\n    BasicParser basicParser0 = new BasicParser();\n    String[] stringArray0 = new String[2];\n    stringArray0[0] = \"5|?wbcbg.8.%^VH$\";\n    basicParser0.parse(options0, stringArray0);\n}",
+    "testName" : "test033"
+  },
+  "test055" : {
+    "methodSignature" : "public CommandLine parse(Options options, String[] arguments, Properties properties) throws ParseException",
+    "methodName" : "parse",
+    "className" : "org.apache.commons.cli.Parser",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test055() throws Throwable {\n    Options options0 = new Options();\n    Properties properties0 = new Properties();\n    properties0.put(\"\", \"\");\n    GnuParser gnuParser0 = new GnuParser();\n    gnuParser0.parse(options0, (String[]) null, properties0);\n}",
+    "testName" : "test055"
+  },
+  "test077" : {
+    "methodSignature" : "public CommandLine parse(Options options, String[] arguments, Properties properties) throws ParseException",
+    "methodName" : "parse",
+    "className" : "org.apache.commons.cli.Parser",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test077() throws Throwable {\n    Options options0 = new Options();\n    Properties properties0 = new Properties();\n    OptionGroup optionGroup0 = new OptionGroup();\n    Option option0 = new Option(\"yes\", \"-G-\", true, \"-yes\");\n    OptionGroup optionGroup1 = optionGroup0.addOption(option0);\n    Options options1 = options0.addOptionGroup(optionGroup1);\n    GnuParser gnuParser0 = new GnuParser();\n    String[] stringArray0 = new String[3];\n    stringArray0[0] = \"-yes\";\n    stringArray0[1] = \"yes\";\n    stringArray0[2] = \"-yes\";\n    CommandLine commandLine0 = gnuParser0.parse(options1, stringArray0, properties0);\n}",
+    "testName" : "test077"
+  },
+  "test099" : {
+    "methodSignature" : "public CommandLine parse(Options options, String[] arguments, Properties properties) throws ParseException",
+    "methodName" : "parse",
+    "className" : "org.apache.commons.cli.Parser",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test099() throws Throwable {\n    Options options0 = new Options();\n    Properties properties0 = new Properties();\n    GnuParser gnuParser0 = new GnuParser();\n    OptionGroup optionGroup0 = new OptionGroup();\n    Option option0 = new Option(\"yes\", \"-G-\", true, \":jfO.Us~s\");\n    optionGroup0.addOption(option0);\n    Options options1 = options0.addOptionGroup(optionGroup0);\n    String[] stringArray0 = new String[1];\n    stringArray0[0] = \"-yes\";\n    gnuParser0.parse(options1, stringArray0, properties0);\n}",
+    "testName" : "test099"
+  },
+  "test1414" : {
+    "methodSignature" : "public CommandLine parse(Options options, String[] arguments, Properties properties, boolean stopAtNonOption) throws ParseException",
+    "methodName" : "parse",
+    "className" : "org.apache.commons.cli.Parser",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1414() throws Throwable {\n    Options options0 = new Options();\n    Properties properties0 = new Properties();\n    GnuParser gnuParser0 = new GnuParser();\n    OptionGroup optionGroup0 = new OptionGroup();\n    Option option0 = new Option(\"yes\", \"-yes\", false, \"--\");\n    OptionGroup optionGroup1 = optionGroup0.addOption(option0);\n    Options options1 = options0.addOptionGroup(optionGroup1);\n    String[] stringArray0 = new String[9];\n    optionGroup1.setRequired(true);\n    stringArray0[0] = \"-yes\";\n    stringArray0[1] = \"--\";\n    CommandLine commandLine0 = gnuParser0.parse(options1, stringArray0, properties0, false);\n}",
+    "testName" : "test1414"
+  },
+  "test000" : {
+    "methodSignature" : "public CommandLine parse(Options options, String[] arguments, Properties properties, boolean stopAtNonOption) throws ParseException",
+    "methodName" : "parse",
+    "className" : "org.apache.commons.cli.Parser",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test000() throws Throwable {\n    Options options0 = new Options();\n    BasicParser basicParser0 = new BasicParser();\n    String[] stringArray0 = new String[2];\n    stringArray0[0] = \"-\";\n    CommandLine commandLine0 = basicParser0.parse(options0, stringArray0, (Properties) null, true);\n}",
+    "testName" : "test000"
+  },
+  "test022" : {
+    "methodSignature" : "public CommandLine parse(Options options, String[] arguments, Properties properties, boolean stopAtNonOption) throws ParseException",
+    "methodName" : "parse",
+    "className" : "org.apache.commons.cli.Parser",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test022() throws Throwable {\n    Options options0 = new Options();\n    Properties properties0 = new Properties();\n    BasicParser basicParser0 = new BasicParser();\n    String[] stringArray0 = new String[1];\n    stringArray0[0] = \"\";\n    CommandLine commandLine0 = basicParser0.parse(options0, stringArray0, properties0, true);\n}",
+    "testName" : "test022"
+  },
+  "test044" : {
+    "methodSignature" : "public CommandLine parse(Options options, String[] arguments, Properties properties, boolean stopAtNonOption) throws ParseException",
+    "methodName" : "parse",
+    "className" : "org.apache.commons.cli.Parser",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test044() throws Throwable {\n    Options options0 = new Options();\n    String[] stringArray0 = new String[1];\n    stringArray0[0] = \"-org.apache.commons.cli.UnrecognizedOptio7Exception\";\n    PosixParser posixParser0 = new PosixParser();\n    Properties properties0 = new Properties();\n    CommandLine commandLine0 = posixParser0.parse(options0, stringArray0, properties0, true);\n}",
+    "testName" : "test044"
+  },
+  "test066" : {
+    "methodSignature" : "public CommandLine parse(Options options, String[] arguments, Properties properties, boolean stopAtNonOption) throws ParseException",
+    "methodName" : "parse",
+    "className" : "org.apache.commons.cli.Parser",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test066() throws Throwable {\n    Options options0 = new Options();\n    Properties properties0 = new Properties();\n    GnuParser gnuParser0 = new GnuParser();\n    OptionGroup optionGroup0 = new OptionGroup();\n    optionGroup0.setRequired(true);\n    String[] stringArray0 = new String[8];\n    stringArray0[0] = \"-yes\";\n    options0.addOptionGroup(optionGroup0);\n    gnuParser0.parse(options0, stringArray0, properties0, true);\n}",
+    "testName" : "test066"
+  },
+  "test088" : {
+    "methodSignature" : "public boolean hasArgs()",
+    "methodName" : "hasArgs",
+    "className" : "org.apache.commons.cli.Parser",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test088() throws Throwable {\n    GnuParser gnuParser0 = new GnuParser();\n    Option option0 = new Option(\"yes\", \"--\", true, \"--\");\n    LinkedList<String> linkedList0 = new LinkedList<String>();\n    linkedList0.add(\"(axm6:=G)CZzKbg\");\n    Options options0 = new Options();\n    gnuParser0.parse(options0, (String[]) null, true);\n    ListIterator<String> listIterator0 = linkedList0.listIterator(0);\n    gnuParser0.processArgs(option0, listIterator0);\n    option0.hasArgs();\n}",
+    "testName" : "test088"
+  }
+}

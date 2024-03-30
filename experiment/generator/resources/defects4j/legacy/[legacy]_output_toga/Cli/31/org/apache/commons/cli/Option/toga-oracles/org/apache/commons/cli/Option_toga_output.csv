@@ -1,0 +1,709 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    Option option0 = new Option("""", """");
+    option0.setType("""");
+    String string0 = option0.toString();
+    assertTrue(option0.hasArgName());
+}",0,
+project,0,test001,"public void test001() throws Throwable {
+    Option option0 = new Option("""", """");
+    option0.setType("""");
+    String string0 = option0.toString();
+    assertEquals(""[ option:   ::  ::  ]"", string0);
+}",0,
+project,0,test002,"public void test002() throws Throwable {
+    Option option0 = new Option("""", """");
+    option0.setType("""");
+    String string0 = option0.toString();
+    assertEquals((-1), option0.getArgs());
+}",0,
+project,0,test013,"public void test013() throws Throwable {
+    Option option0 = new Option((String) null, true, ""<5f-.U>^"");
+    option0.setValueSeparator('s');
+    option0.addValueForProcessing(""org.apache.commons.cli.Optinalidator"");
+    assertEquals('s', option0.getValueSeparator());
+}",0,
+project,0,test024,"public void test024() throws Throwable {
+    Option option0 = new Option(""m"", ""m"", false, ""m"");
+    option0.getDescription();
+    assertEquals((-1), option0.getArgs());
+}",0,
+project,0,test025,"public void test025() throws Throwable {
+    Option option0 = new Option(""m"", ""m"", false, ""m"");
+    option0.getDescription();
+    assertEquals(""arg"", option0.getArgName());
+}",0,assertNotNull(option0.getArgName())
+project,0,test036,"public void test036() throws Throwable {
+    Option option0 = new Option(""W"", false, ""W"");
+    String string0 = option0.getArgName();
+    assertEquals((-1), option0.getArgs());
+}",0,"assertEquals(0, option0.getArgs())"
+project,0,test037,"public void test037() throws Throwable {
+    Option option0 = new Option(""W"", false, ""W"");
+    String string0 = option0.getArgName();
+    assertEquals(""arg"", string0);
+}",0,assertNotNull(string0)
+project,0,test038,"public void test038() throws Throwable {
+    Option option0 = new Option(""W"", false, ""W"");
+    String string0 = option0.getArgName();
+    assertFalse(option0.hasLongOpt());
+}",0,assertFalse(option0.hasLongOpt())
+project,0,test049,"public void test049() throws Throwable {
+    Option option0 = new Option(""Bd"", ""Bd"");
+    option0.setOptionalArg(true);
+    boolean boolean0 = option0.acceptsArg();
+    assertTrue(option0.hasOptionalArg());
+}",0,assertTrue(option0.hasOptionalArg())
+project,0,test0410,"public void test0410() throws Throwable {
+    Option option0 = new Option(""Bd"", ""Bd"");
+    option0.setOptionalArg(true);
+    boolean boolean0 = option0.acceptsArg();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test0511,"public void test0511() throws Throwable {
+    Option option0 = new Option("""", """");
+    option0.setRequired(false);
+    assertEquals((-1), option0.getArgs());
+}",0,"assertEquals(0, option0.getArgs())"
+project,0,test0512,"public void test0512() throws Throwable {
+    Option option0 = new Option("""", """");
+    option0.setRequired(false);
+    assertFalse(option0.hasLongOpt());
+}",0,assertFalse(option0.hasLongOpt())
+project,0,test0513,"public void test0513() throws Throwable {
+    Option option0 = new Option("""", """");
+    option0.setRequired(false);
+    assertFalse(option0.isRequired());
+}",0,
+project,0,test0514,"public void test0514() throws Throwable {
+    Option option0 = new Option("""", """");
+    option0.setRequired(false);
+    assertTrue(option0.hasArgName());
+}",0,
+project,0,test0615,"public void test0615() throws Throwable {
+    Option option0 = new Option((String) null, (String) null);
+    option0.isRequired();
+    assertEquals((-1), option0.getArgs());
+}",0,"assertEquals(0, option0.getArgs())"
+project,0,test0616,"public void test0616() throws Throwable {
+    Option option0 = new Option((String) null, (String) null);
+    option0.isRequired();
+    assertEquals(""arg"", option0.getArgName());
+}",0,assertNotNull(option0.getArgName())
+project,0,test0717,"public void test0717() throws Throwable {
+    Option option0 = new Option("""", """", false, """");
+    option0.getValuesList();
+    assertTrue(option0.hasArgName());
+}",0,assertTrue(option0.hasArgName())
+project,0,test0718,"public void test0718() throws Throwable {
+    Option option0 = new Option("""", """", false, """");
+    option0.getValuesList();
+    assertEquals((-1), option0.getArgs());
+}",0,"assertEquals(0, option0.getArgs())"
+project,0,test0819,"public void test0819() throws Throwable {
+    Option option0 = new Option(""W"", ""W"");
+    String string0 = option0.getLongOpt();
+    assertNull(string0);
+}",0,assertNotNull(string0)
+project,0,test0820,"public void test0820() throws Throwable {
+    Option option0 = new Option(""W"", ""W"");
+    String string0 = option0.getLongOpt();
+    assertEquals((-1), option0.getArgs());
+}",0,"assertEquals(0, option0.getArgs())"
+project,0,test0821,"public void test0821() throws Throwable {
+    Option option0 = new Option(""W"", ""W"");
+    String string0 = option0.getLongOpt();
+    assertEquals(""arg"", option0.getArgName());
+}",0,assertNotNull(option0.getArgName())
+project,0,test0922,"public void test0922() throws Throwable {
+    Option option0 = new Option("""", """");
+    // Undeclared exception!
+    try {
+        option0.getId();
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",1,
+project,0,test1023,"public void test1023() throws Throwable {
+    Option option0 = new Option(""4"", ""4"");
+    // Undeclared exception!
+    try {
+        option0.addValue(""4"");
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // The addValue method is not intended for client use. Subclasses should use the addValueForProcessing method instead.
+        //
+        verifyException(""org.apache.commons.cli.Option"", e);
+    }
+}",1,
+project,0,test1124,"public void test1124() throws Throwable {
+    Option option0 = new Option("""", """");
+    option0.getType();
+    assertFalse(option0.hasLongOpt());
+}",0,assertTrue(option0.hasLongOpt())
+project,0,test1125,"public void test1125() throws Throwable {
+    Option option0 = new Option("""", """");
+    option0.getType();
+    assertEquals((-1), option0.getArgs());
+}",0,
+project,0,test1126,"public void test1126() throws Throwable {
+    Option option0 = new Option("""", """");
+    option0.getType();
+    assertEquals(""arg"", option0.getArgName());
+}",0,assertNotNull(option0.getArgName())
+project,0,test1227,"public void test1227() throws Throwable {
+    Option option0 = new Option("""", """");
+    option0.setDescription("""");
+    assertFalse(option0.hasLongOpt());
+}",0,assertTrue(option0.hasLongOpt())
+project,0,test1228,"public void test1228() throws Throwable {
+    Option option0 = new Option("""", """");
+    option0.setDescription("""");
+    assertEquals((-1), option0.getArgs());
+}",0,"assertEquals(0, option0.getArgs())"
+project,0,test1229,"public void test1229() throws Throwable {
+    Option option0 = new Option("""", """");
+    option0.setDescription("""");
+    assertEquals(""arg"", option0.getArgName());
+}",0,assertNotNull(option0.getArgName())
+project,0,test1330,"public void test1330() throws Throwable {
+    Option option0 = new Option("""", """");
+    assertEquals(""arg"", option0.getArgName());
+}",0,assertNotNull(option0.getArgName())
+project,0,test1331,"public void test1331() throws Throwable {
+    Option option0 = new Option("""", """");
+    option0.setArgName("""");
+    boolean boolean0 = option0.hasArgName();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test1432,"public void test1432() throws Throwable {
+    Option option0 = new Option(""m"", ""m"", false, ""m"");
+    option0.getOpt();
+    assertTrue(option0.hasArgName());
+}",0,
+project,0,test1433,"public void test1433() throws Throwable {
+    Option option0 = new Option(""m"", ""m"", false, ""m"");
+    option0.getOpt();
+    assertEquals((-1), option0.getArgs());
+}",0,"assertEquals(0, option0.getArgs())"
+project,0,test1534,"public void test1534() throws Throwable {
+    Option option0 = new Option("""", """", true, """");
+    int int0 = option0.getArgs();
+    assertTrue(option0.hasArgName());
+}",0,
+project,0,test1535,"public void test1535() throws Throwable {
+    Option option0 = new Option("""", """", true, """");
+    int int0 = option0.getArgs();
+    assertEquals(1, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test1636,"public void test1636() throws Throwable {
+    Option option0 = new Option("""", """");
+    option0.clearValues();
+    assertFalse(option0.hasLongOpt());
+}",0,assertTrue(option0.hasLongOpt())
+project,0,test1637,"public void test1637() throws Throwable {
+    Option option0 = new Option("""", """");
+    option0.clearValues();
+    assertEquals((-1), option0.getArgs());
+}",0,"assertEquals(1, option0.getArgs())"
+project,0,test1638,"public void test1638() throws Throwable {
+    Option option0 = new Option("""", """");
+    option0.clearValues();
+    assertEquals(""arg"", option0.getArgName());
+}",0,assertNotNull(option0.getArgName())
+project,0,test1739,"public void test1739() throws Throwable {
+    Option option0 = new Option((String) null, true, (String) null);
+    option0.getKey();
+    assertEquals(""arg"", option0.getArgName());
+}",0,assertNotNull(option0.getArgName())
+project,0,test1840,"public void test1840() throws Throwable {
+    Option option0 = new Option("""", """");
+    boolean boolean0 = option0.hasLongOpt();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test1841,"public void test1841() throws Throwable {
+    Option option0 = new Option("""", """");
+    boolean boolean0 = option0.hasLongOpt();
+    assertEquals((-1), option0.getArgs());
+}",0,"assertEquals(0, option0.getArgs())"
+project,0,test1842,"public void test1842() throws Throwable {
+    Option option0 = new Option("""", """");
+    boolean boolean0 = option0.hasLongOpt();
+    assertTrue(option0.hasArgName());
+}",0,
+project,0,test1943,"public void test1943() throws Throwable {
+    Option option0 = new Option("""", """");
+    assertFalse(option0.hasLongOpt());
+}",0,assertTrue(option0.hasLongOpt())
+project,0,test1944,"public void test1944() throws Throwable {
+    Option option0 = new Option("""", """");
+    option0.setLongOpt("""");
+    boolean boolean0 = option0.hasLongOpt();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2045,"public void test2045() throws Throwable {
+    Option option0 = new Option("""", """", true, """");
+    assertTrue(option0.hasArgName());
+}",0,assertTrue(option0.hasArgName())
+project,0,test2046,"public void test2046() throws Throwable {
+    Option option0 = new Option("""", """", true, """");
+    option0.setArgName((String) null);
+    boolean boolean0 = option0.hasArgName();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2147,"public void test2147() throws Throwable {
+    Option option0 = new Option("""", """");
+    boolean boolean0 = option0.hasArgName();
+    assertEquals((-1), option0.getArgs());
+}",0,"assertEquals(0, option0.getArgs())"
+project,0,test2148,"public void test2148() throws Throwable {
+    Option option0 = new Option("""", """");
+    boolean boolean0 = option0.hasArgName();
+    assertFalse(option0.hasLongOpt());
+}",0,assertFalse(option0.hasLongOpt())
+project,0,test2149,"public void test2149() throws Throwable {
+    Option option0 = new Option("""", """");
+    boolean boolean0 = option0.hasArgName();
+    assertTrue(boolean0);
+}",0,
+project,0,test2250,"public void test2250() throws Throwable {
+    Option option0 = new Option("""", """");
+    option0.setArgs(424);
+    option0.toString();
+    assertEquals(424, option0.getArgs());
+}",0,"assertEquals(0, option0.getArgs())"
+project,0,test2351,"public void test2351() throws Throwable {
+    Option option0 = new Option("""", """");
+    assertFalse(option0.hasArg());
+}",0,assertTrue(option0.hasArg())
+project,0,test2352,"public void test2352() throws Throwable {
+    Option option0 = new Option("""", """");
+    option0.setArgs((-2));
+    option0.toString();
+    assertEquals((-2), option0.getArgs());
+}",0,"assertEquals(0, option0.getArgs())"
+project,0,test2453,"public void test2453() throws Throwable {
+    Option option0 = new Option(""I"", ""I"");
+    assertFalse(option0.hasArgs());
+}",0,assertTrue(option0.hasArgs())
+project,0,test2454,"public void test2454() throws Throwable {
+    Option option0 = new Option(""I"", ""I"");
+    option0.setArgs((-2));
+    option0.addValueForProcessing(""I"");
+    option0.getValues();
+    assertEquals((-2), option0.getArgs());
+}",0,"assertEquals(1, option0.getArgs())"
+project,0,test2555,"public void test2555() throws Throwable {
+    Option option0 = new Option("""", """");
+    // Undeclared exception!
+    try {
+        option0.addValueForProcessing("""");
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // NO_ARGS_ALLOWED
+        //
+        verifyException(""org.apache.commons.cli.Option"", e);
+    }
+}",1,
+project,0,test2656,"public void test2656() throws Throwable {
+    Option option0 = new Option((String) null, true, ""<5f-.U>^"");
+    option0.setValueSeparator('s');
+    option0.setArgs((-2));
+    option0.addValueForProcessing(""org.apache.commons.cli.Optinalidator"");
+    assertEquals((-2), option0.getArgs());
+}",0,"assertEquals(0, option0.getArgs())"
+project,0,test2757,"public void test2757() throws Throwable {
+    Option option0 = new Option("""", """");
+    option0.setArgs((-2098));
+    // Undeclared exception!
+    try {
+        option0.addValueForProcessing("""");
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Cannot add value, list full.
+        //
+        verifyException(""org.apache.commons.cli.Option"", e);
+    }
+}",1,
+project,0,test2858,"public void test2858() throws Throwable {
+    Option option0 = new Option("""", """", true, """");
+    option0.addValueForProcessing("""");
+    option0.getValue("""");
+    assertFalse(option0.hasValueSeparator());
+}",0,assertTrue(option0.hasValueSeparator())
+project,0,test2859,"public void test2859() throws Throwable {
+    Option option0 = new Option("""", """", true, """");
+    option0.addValueForProcessing("""");
+    option0.getValue("""");
+    assertEquals(""arg"", option0.getArgName());
+}",0,
+project,0,test2960,"public void test2960() throws Throwable {
+    Option option0 = new Option("""", """");
+    String string0 = option0.getValue("""");
+    assertFalse(option0.hasLongOpt());
+}",0,assertTrue(option0.hasLongOpt())
+project,0,test2961,"public void test2961() throws Throwable {
+    Option option0 = new Option("""", """");
+    String string0 = option0.getValue("""");
+    assertTrue(option0.hasArgName());
+}",0,assertTrue(option0.hasArgName())
+project,0,test2962,"public void test2962() throws Throwable {
+    Option option0 = new Option("""", """");
+    String string0 = option0.getValue("""");
+    assertEquals((-1), option0.getArgs());
+}",0,"assertEquals(1, option0.getArgs())"
+project,0,test2963,"public void test2963() throws Throwable {
+    Option option0 = new Option("""", """");
+    String string0 = option0.getValue("""");
+    assertNotNull(string0);
+}",0,
+project,0,test3064,"public void test3064() throws Throwable {
+    Option option0 = new Option("""", """", true, """");
+    option0.addValueForProcessing("""");
+    try {
+        option0.getValue((-2));
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test3165,"public void test3165() throws Throwable {
+    Option option0 = new Option("""", """", true, """");
+    option0.getValue((-1));
+    assertEquals(""arg"", option0.getArgName());
+}",0,assertNotNull(option0.getArgName())
+project,0,test3266,"public void test3266() throws Throwable {
+    Option option0 = new Option("""", """");
+    String[] stringArray0 = option0.getValues();
+    assertEquals((-1), option0.getArgs());
+}",0,"assertEquals(0, option0.getArgs())"
+project,0,test3267,"public void test3267() throws Throwable {
+    Option option0 = new Option("""", """");
+    String[] stringArray0 = option0.getValues();
+    assertFalse(option0.hasLongOpt());
+}",0,assertTrue(option0.hasLongOpt())
+project,0,test3268,"public void test3268() throws Throwable {
+    Option option0 = new Option("""", """");
+    String[] stringArray0 = option0.getValues();
+    assertEquals(""arg"", option0.getArgName());
+}",0,assertNotNull(option0.getArgName())
+project,0,test3269,"public void test3269() throws Throwable {
+    Option option0 = new Option("""", """");
+    String[] stringArray0 = option0.getValues();
+    assertNull(stringArray0);
+}",0,assertNotNull(stringArray0)
+project,0,test3370,"public void test3370() throws Throwable {
+    Option option0 = new Option(""W"", ""W"", false, ""W"");
+    String string0 = option0.toString();
+    assertEquals((-1), option0.getArgs());
+}",0,
+project,0,test3371,"public void test3371() throws Throwable {
+    Option option0 = new Option(""W"", ""W"", false, ""W"");
+    String string0 = option0.toString();
+    assertEquals(""arg"", option0.getArgName());
+}",0,
+project,0,test3372,"public void test3372() throws Throwable {
+    Option option0 = new Option(""W"", ""W"", false, ""W"");
+    String string0 = option0.toString();
+    assertEquals(""[ option: W W  :: W ]"", string0);
+}",0,
+project,0,test3473,"public void test3473() throws Throwable {
+    Option option0 = new Option(""W"", ""W"", true, ""W"");
+    String string0 = option0.toString();
+    assertEquals(""[ option: W W  [ARG] :: W ]"", string0);
+}",0,
+project,0,test3474,"public void test3474() throws Throwable {
+    Option option0 = new Option(""W"", ""W"", true, ""W"");
+    String string0 = option0.toString();
+    assertTrue(option0.hasArgName());
+}",0,assertTrue(option0.hasArgName())
+project,0,test3575,"public void test3575() throws Throwable {
+    Option option0 = new Option(""Bd"", ""Bd"");
+    boolean boolean0 = option0.equals(option0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test3576,"public void test3576() throws Throwable {
+    Option option0 = new Option(""Bd"", ""Bd"");
+    boolean boolean0 = option0.equals(option0);
+    assertFalse(option0.hasLongOpt());
+}",0,assertTrue(option0.hasLongOpt())
+project,0,test3577,"public void test3577() throws Throwable {
+    Option option0 = new Option(""Bd"", ""Bd"");
+    boolean boolean0 = option0.equals(option0);
+    assertEquals((-1), option0.getArgs());
+}",0,"assertEquals(0, option0.getArgs())"
+project,0,test3578,"public void test3578() throws Throwable {
+    Option option0 = new Option(""Bd"", ""Bd"");
+    boolean boolean0 = option0.equals(option0);
+    assertEquals(""arg"", option0.getArgName());
+}",0,
+project,0,test3679,"public void test3679() throws Throwable {
+    Option option0 = new Option(""Bd"", ""Bd"");
+    boolean boolean0 = option0.equals((Object) null);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test3680,"public void test3680() throws Throwable {
+    Option option0 = new Option(""Bd"", ""Bd"");
+    boolean boolean0 = option0.equals((Object) null);
+    assertFalse(option0.hasLongOpt());
+}",0,assertTrue(option0.hasLongOpt())
+project,0,test3681,"public void test3681() throws Throwable {
+    Option option0 = new Option(""Bd"", ""Bd"");
+    boolean boolean0 = option0.equals((Object) null);
+    assertEquals((-1), option0.getArgs());
+}",0,
+project,0,test3682,"public void test3682() throws Throwable {
+    Option option0 = new Option(""Bd"", ""Bd"");
+    boolean boolean0 = option0.equals((Object) null);
+    assertTrue(option0.hasArgName());
+}",0,assertTrue(option0.hasArgName())
+project,0,test3783,"public void test3783() throws Throwable {
+    Option option0 = new Option("""", false, """");
+    boolean boolean0 = option0.equals("""");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test3784,"public void test3784() throws Throwable {
+    Option option0 = new Option("""", false, """");
+    boolean boolean0 = option0.equals("""");
+    assertEquals((-1), option0.getArgs());
+}",0,"assertEquals(0, option0.getArgs())"
+project,0,test3785,"public void test3785() throws Throwable {
+    Option option0 = new Option("""", false, """");
+    boolean boolean0 = option0.equals("""");
+    assertFalse(option0.hasLongOpt());
+}",0,assertTrue(option0.hasLongOpt())
+project,0,test3786,"public void test3786() throws Throwable {
+    Option option0 = new Option("""", false, """");
+    boolean boolean0 = option0.equals("""");
+    assertEquals(""arg"", option0.getArgName());
+}",0,
+project,0,test3887,"public void test3887() throws Throwable {
+    Option option0 = new Option(""Zmm_"", ""Zmm_"");
+    Option option1 = new Option((String) null, (String) null, true, ""Zmm_"");
+    boolean boolean0 = option1.equals(option0);
+    assertEquals((-1), option0.getArgs());
+}",0,
+project,0,test3888,"public void test3888() throws Throwable {
+    Option option0 = new Option(""Zmm_"", ""Zmm_"");
+    Option option1 = new Option((String) null, (String) null, true, ""Zmm_"");
+    boolean boolean0 = option1.equals(option0);
+    assertFalse(option0.hasLongOpt());
+}",0,assertTrue(option0.hasLongOpt())
+project,0,test3889,"public void test3889() throws Throwable {
+    Option option0 = new Option(""Zmm_"", ""Zmm_"");
+    Option option1 = new Option((String) null, (String) null, true, ""Zmm_"");
+    boolean boolean0 = option1.equals(option0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test3890,"public void test3890() throws Throwable {
+    Option option0 = new Option(""Zmm_"", ""Zmm_"");
+    Option option1 = new Option((String) null, (String) null, true, ""Zmm_"");
+    boolean boolean0 = option1.equals(option0);
+    assertTrue(option1.hasArgName());
+}",0,
+project,0,test3991,"public void test3991() throws Throwable {
+    Option option0 = new Option(""Zmm_"", ""Zmm_"");
+    Option option1 = new Option("""", ""Zmm_"", true, ""Zmm_"");
+    boolean boolean0 = option1.equals(option0);
+    assertEquals("""", option1.getOpt());
+}",0,assertNotNull(option1.getOpt())
+project,0,test3992,"public void test3992() throws Throwable {
+    Option option0 = new Option(""Zmm_"", ""Zmm_"");
+    Option option1 = new Option("""", ""Zmm_"", true, ""Zmm_"");
+    boolean boolean0 = option1.equals(option0);
+    assertEquals((-1), option0.getArgs());
+}",0,"assertEquals(0, option0.getArgs())"
+project,0,test3993,"public void test3993() throws Throwable {
+    Option option0 = new Option(""Zmm_"", ""Zmm_"");
+    Option option1 = new Option("""", ""Zmm_"", true, ""Zmm_"");
+    boolean boolean0 = option1.equals(option0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test3994,"public void test3994() throws Throwable {
+    Option option0 = new Option(""Zmm_"", ""Zmm_"");
+    Option option1 = new Option("""", ""Zmm_"", true, ""Zmm_"");
+    boolean boolean0 = option1.equals(option0);
+    assertFalse(option0.hasLongOpt());
+}",0,
+project,0,test3995,"public void test3995() throws Throwable {
+    Option option0 = new Option(""Zmm_"", ""Zmm_"");
+    Option option1 = new Option("""", ""Zmm_"", true, ""Zmm_"");
+    boolean boolean0 = option1.equals(option0);
+    assertEquals(""Zmm_"", option1.getDescription());
+}",0,assertNotNull(option1.getDescription())
+project,0,test3996,"public void test3996() throws Throwable {
+    Option option0 = new Option(""Zmm_"", ""Zmm_"");
+    Option option1 = new Option("""", ""Zmm_"", true, ""Zmm_"");
+    boolean boolean0 = option1.equals(option0);
+    assertEquals(""arg"", option1.getArgName());
+}",0,assertNotNull(option1.getArgName())
+project,0,test4097,"public void test4097() throws Throwable {
+    Option option0 = new Option((String) null, true, (String) null);
+    Option option1 = new Option((String) null, true, (String) null);
+    boolean boolean0 = option1.equals(option0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4098,"public void test4098() throws Throwable {
+    Option option0 = new Option((String) null, true, (String) null);
+    Option option1 = new Option((String) null, true, (String) null);
+    boolean boolean0 = option1.equals(option0);
+    assertTrue(option1.hasArgName());
+}",0,assertFalse(option1.hasArgName())
+project,0,test4199,"public void test4199() throws Throwable {
+    Option option0 = new Option(""Zm"", ""Zm"");
+    Option option1 = new Option(""Zm"", ""Zm"", true, ""Zm"");
+    boolean boolean0 = option1.equals(option0);
+    assertEquals((-1), option0.getArgs());
+}",0,"assertEquals(0, option0.getArgs())"
+project,0,test41100,"public void test41100() throws Throwable {
+    Option option0 = new Option(""Zm"", ""Zm"");
+    Option option1 = new Option(""Zm"", ""Zm"", true, ""Zm"");
+    boolean boolean0 = option1.equals(option0);
+    assertTrue(option1.hasArgName());
+}",0,assertFalse(option1.hasArgName())
+project,0,test41101,"public void test41101() throws Throwable {
+    Option option0 = new Option(""Zm"", ""Zm"");
+    Option option1 = new Option(""Zm"", ""Zm"", true, ""Zm"");
+    boolean boolean0 = option1.equals(option0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test42102,"public void test42102() throws Throwable {
+    Option option0 = new Option(""_"", ""_"", false, ""_"");
+    Option option1 = (Option) option0.clone();
+    boolean boolean0 = option0.equals(option1);
+    assertNotSame(option1, option0);
+}",0,
+project,0,test42103,"public void test42103() throws Throwable {
+    Option option0 = new Option(""_"", ""_"", false, ""_"");
+    Option option1 = (Option) option0.clone();
+    boolean boolean0 = option0.equals(option1);
+    assertEquals((-1), option1.getArgs());
+}",0,
+project,0,test42104,"public void test42104() throws Throwable {
+    Option option0 = new Option(""_"", ""_"", false, ""_"");
+    Option option1 = (Option) option0.clone();
+    boolean boolean0 = option0.equals(option1);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test42105,"public void test42105() throws Throwable {
+    Option option0 = new Option(""_"", ""_"", false, ""_"");
+    Option option1 = (Option) option0.clone();
+    boolean boolean0 = option0.equals(option1);
+    assertTrue(option1.hasArgName());
+}",0,assertTrue(option1.hasArgName())
+project,0,test43106,"public void test43106() throws Throwable {
+    Option option0 = new Option(""Bd"", ""Bd"");
+    Option option1 = (Option) option0.clone();
+    assertFalse(option1.hasLongOpt());
+}",0,assertFalse(option1.hasLongOpt())
+project,0,test43107,"public void test43107() throws Throwable {
+    Option option0 = new Option(""Bd"", ""Bd"");
+    Option option1 = (Option) option0.clone();
+    option1.setLongOpt(""Bd"");
+    boolean boolean0 = option0.equals(option1);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test44108,"public void test44108() throws Throwable {
+    Option option0 = new Option((String) null, (String) null, false, (String) null);
+    option0.hashCode();
+    assertEquals(""arg"", option0.getArgName());
+}",0,assertNotNull(option0.getArgName())
+project,0,test44109,"public void test44109() throws Throwable {
+    Option option0 = new Option((String) null, (String) null, false, (String) null);
+    option0.hashCode();
+    assertEquals((-1), option0.getArgs());
+}",0,"assertEquals(0, option0.getArgs())"
+project,0,test45110,"public void test45110() throws Throwable {
+    Option option0 = new Option("""", """");
+    option0.hashCode();
+    assertEquals(""arg"", option0.getArgName());
+}",0,assertNotNull(option0.getArgName())
+project,0,test45111,"public void test45111() throws Throwable {
+    Option option0 = new Option("""", """");
+    option0.hashCode();
+    assertFalse(option0.hasLongOpt());
+}",0,assertTrue(option0.hasLongOpt())
+project,0,test45112,"public void test45112() throws Throwable {
+    Option option0 = new Option("""", """");
+    option0.hashCode();
+    assertEquals((-1), option0.getArgs());
+}",0,"assertEquals(0, option0.getArgs())"
+project,0,test46113,"public void test46113() throws Throwable {
+    Option option0 = new Option("""", """");
+    assertFalse(option0.hasLongOpt());
+}",0,assertTrue(option0.hasLongOpt())
+project,0,test46114,"public void test46114() throws Throwable {
+    Option option0 = new Option("""", """");
+    option0.setLongOpt("""");
+    option0.hashCode();
+    assertEquals((-1), option0.getArgs());
+}",0,"assertEquals(0, option0.getArgs())"
+project,0,test47115,"public void test47115() throws Throwable {
+    Option option0 = new Option((String) null, true, (String) null);
+    assertFalse(option0.hasValueSeparator());
+}",0,assertTrue(option0.hasValueSeparator())
+project,0,test47116,"public void test47116() throws Throwable {
+    Option option0 = new Option((String) null, true, (String) null);
+    option0.addValueForProcessing((String) null);
+    boolean boolean0 = option0.acceptsArg();
+    assertTrue(option0.hasArgName());
+}",0,
+project,0,test47117,"public void test47117() throws Throwable {
+    Option option0 = new Option((String) null, true, (String) null);
+    option0.addValueForProcessing((String) null);
+    boolean boolean0 = option0.acceptsArg();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test48118,"public void test48118() throws Throwable {
+    Option option0 = new Option(""W"", ""W"", false, ""W"");
+    boolean boolean0 = option0.requiresArg();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test48119,"public void test48119() throws Throwable {
+    Option option0 = new Option(""W"", ""W"", false, ""W"");
+    boolean boolean0 = option0.requiresArg();
+    assertEquals(""arg"", option0.getArgName());
+}",0,assertNotNull(option0.getArgName())
+project,0,test48120,"public void test48120() throws Throwable {
+    Option option0 = new Option(""W"", ""W"", false, ""W"");
+    boolean boolean0 = option0.requiresArg();
+    assertEquals((-1), option0.getArgs());
+}",0,"assertEquals(0, option0.getArgs())"
+project,0,test49121,"public void test49121() throws Throwable {
+    Option option0 = new Option("""", """");
+    option0.setOptionalArg(true);
+    boolean boolean0 = option0.requiresArg();
+    assertTrue(option0.hasOptionalArg());
+}",0,assertTrue(option0.hasOptionalArg())
+project,0,test49122,"public void test49122() throws Throwable {
+    Option option0 = new Option("""", """");
+    option0.setOptionalArg(true);
+    boolean boolean0 = option0.requiresArg();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test50123,"public void test50123() throws Throwable {
+    Option option0 = new Option(""W"", ""W"", false, ""W"");
+    assertFalse(option0.hasArgs());
+}",0,assertTrue(option0.hasArgs())
+project,0,test50124,"public void test50124() throws Throwable {
+    Option option0 = new Option(""W"", ""W"", false, ""W"");
+    option0.setArgs((-2));
+    boolean boolean0 = option0.requiresArg();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test51125,"public void test51125() throws Throwable {
+    Option option0 = new Option(""W"", ""W"", false, ""W"");
+    assertEquals((-1), option0.getArgs());
+}",0,"assertEquals(0, option0.getArgs())"
+project,0,test51126,"public void test51126() throws Throwable {
+    Option option0 = new Option(""W"", ""W"", false, ""W"");
+    option0.setArgs((-2));
+    option0.addValueForProcessing(""W"");
+    boolean boolean0 = option0.requiresArg();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)

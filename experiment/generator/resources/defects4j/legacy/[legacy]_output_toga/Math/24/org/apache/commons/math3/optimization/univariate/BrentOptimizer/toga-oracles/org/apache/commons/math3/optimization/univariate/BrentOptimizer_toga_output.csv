@@ -1,0 +1,85 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    BrentOptimizer brentOptimizer0 = null;
+    try {
+        brentOptimizer0 = new BrentOptimizer((-3.356118100840571E-7), (-3.356118100840571E-7));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // -0 is smaller than the minimum (0)
+        //
+        verifyException(""org.apache.commons.math3.optimization.univariate.BrentOptimizer"", e);
+    }
+}",0,
+project,0,test011,"public void test011() throws Throwable {
+    BrentOptimizer brentOptimizer0 = null;
+    try {
+        brentOptimizer0 = new BrentOptimizer(1034.718748, (-1728.0852664));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // -1,728.085 is smaller than, or equal to, the minimum (0)
+        //
+        verifyException(""org.apache.commons.math3.optimization.univariate.BrentOptimizer"", e);
+    }
+}",0,
+project,0,test022,"public void test022() throws Throwable {
+    BrentOptimizer brentOptimizer0 = new BrentOptimizer(721.4313229246643, 721.4313229246643);
+    Asin asin0 = new Asin();
+    GoalType goalType0 = GoalType.MINIMIZE;
+    UnivariatePointValuePair univariatePointValuePair0 = brentOptimizer0.optimize(334, (UnivariateFunction) asin0, goalType0, 1445.23141598, 1445.23141598, 1.12996721591364E-202);
+    assertEquals(721.4313229246643, univariatePointValuePair0.getPoint(), 0.01);
+}",0,
+project,0,test033,"public void test033() throws Throwable {
+    BrentOptimizer brentOptimizer0 = new BrentOptimizer(721.4313229246643, 721.4313229246643);
+    Asin asin0 = new Asin();
+    GoalType goalType0 = GoalType.MAXIMIZE;
+    UnivariatePointValuePair univariatePointValuePair0 = brentOptimizer0.optimize(4687, (UnivariateFunction) asin0, goalType0, 3.0, (double) 334);
+    assertEquals(Double.NaN, univariatePointValuePair0.getValue(), 0.01);
+}",0,
+project,0,test034,"public void test034() throws Throwable {
+    BrentOptimizer brentOptimizer0 = new BrentOptimizer(721.4313229246643, 721.4313229246643);
+    Asin asin0 = new Asin();
+    GoalType goalType0 = GoalType.MAXIMIZE;
+    UnivariatePointValuePair univariatePointValuePair0 = brentOptimizer0.optimize(4687, (UnivariateFunction) asin0, goalType0, 3.0, (double) 334);
+    assertEquals(168.5, univariatePointValuePair0.getPoint(), 0.01);
+}",0,
+project,0,test075,"public void test075() throws Throwable {
+    ConvergenceChecker<UnivariatePointValuePair> convergenceChecker0 = (ConvergenceChecker<UnivariatePointValuePair>) mock(ConvergenceChecker.class, new ViolatedAssumptionAnswer());
+    BrentOptimizer brentOptimizer0 = null;
+    try {
+        brentOptimizer0 = new BrentOptimizer((-34.0), (-34.0), convergenceChecker0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // -34 is smaller than the minimum (0)
+        //
+        verifyException(""org.apache.commons.math3.optimization.univariate.BrentOptimizer"", e);
+    }
+}",0,
+project,0,test096,"public void test096() throws Throwable {
+    ConvergenceChecker<UnivariatePointValuePair> convergenceChecker0 = (ConvergenceChecker<UnivariatePointValuePair>) mock(ConvergenceChecker.class, new ViolatedAssumptionAnswer());
+    BrentOptimizer brentOptimizer0 = null;
+    try {
+        brentOptimizer0 = new BrentOptimizer(805.80288612552, (-1661.1974), convergenceChecker0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // -1,661.197 is smaller than, or equal to, the minimum (0)
+        //
+        verifyException(""org.apache.commons.math3.optimization.univariate.BrentOptimizer"", e);
+    }
+}",0,
+project,0,test107,"public void test107() throws Throwable {
+    BrentOptimizer brentOptimizer0 = new BrentOptimizer(1.0, 1.0);
+    // Undeclared exception!
+    try {
+        brentOptimizer0.doOptimize();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // illegal state: maximal count (0) exceeded: evaluations
+        //
+        verifyException(""org.apache.commons.math3.optimization.univariate.BaseAbstractUnivariateOptimizer"", e);
+    }
+}",0,

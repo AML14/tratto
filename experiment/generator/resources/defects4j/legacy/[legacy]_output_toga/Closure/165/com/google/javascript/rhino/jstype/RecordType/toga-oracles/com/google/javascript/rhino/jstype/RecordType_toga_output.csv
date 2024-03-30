@@ -1,0 +1,279 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    hashMap0.putIfAbsent((String) null, (RecordTypeBuilder.RecordProperty) null);
+    // Undeclared exception!
+    try {
+        jSTypeRegistry0.createRecordType(hashMap0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // RecordProperty associated with a property should not be null!
+        //
+        verifyException(""com.google.javascript.rhino.jstype.RecordType"", e);
+    }
+}",0,
+project,0,test011,"public void test011() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = new RecordType(jSTypeRegistry0, hashMap0);
+    Node node0 = Node.newString(""Unknown class name"", 1, 0);
+    RecordTypeBuilder.RecordProperty recordTypeBuilder_RecordProperty0 = new RecordTypeBuilder.RecordProperty(recordType0, node0);
+    hashMap0.put(""Not declared as a constructor"", recordTypeBuilder_RecordProperty0);
+    RecordType recordType1 = jSTypeRegistry0.createRecordType(hashMap0);
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Unknown class name"", node0, recordType1);
+    enumType0.defineDeclaredProperty(""Not declared as a constructor"", recordType0, node0);
+    recordType1.getGreatestSubtypeHelper(enumType0);
+    assertTrue(recordType1.hasCachedValues());
+}",0,assertFalse(recordType1.hasCachedValues())
+project,0,test022,"public void test022() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = new RecordType(jSTypeRegistry0, hashMap0);
+    Node node0 = Node.newString(""Not declared as a type name"", 1, 0);
+    RecordTypeBuilder.RecordProperty recordTypeBuilder_RecordProperty0 = new RecordTypeBuilder.RecordProperty(recordType0, node0);
+    hashMap0.put(""Not declared as a constructor"", recordTypeBuilder_RecordProperty0);
+    RecordType recordType1 = jSTypeRegistry0.createRecordType(hashMap0);
+    RecordTypeBuilder.RecordProperty recordTypeBuilder_RecordProperty1 = new RecordTypeBuilder.RecordProperty(recordType1, node0);
+    hashMap0.put(""Not declared as a constructor"", recordTypeBuilder_RecordProperty1);
+    RecordType recordType2 = jSTypeRegistry0.createRecordType(hashMap0);
+    recordType2.getGreatestSubtypeHelper(recordType1);
+    assertFalse(recordType2.equals((Object) recordType1));
+}",0,
+project,0,test033,"public void test033() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = jSTypeRegistry0.createRecordType(hashMap0);
+    Node node0 = Node.newString(""Unknown class name"");
+    boolean boolean0 = recordType0.defineProperty(""Named type with empty name component"", recordType0, true, node0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test044,"public void test044() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = new RecordType(jSTypeRegistry0, hashMap0);
+    Node node0 = Node.newString(""Not declared as a type name"", 1, 0);
+    RecordTypeBuilder.RecordProperty recordTypeBuilder_RecordProperty0 = new RecordTypeBuilder.RecordProperty(recordType0, node0);
+    hashMap0.put(""Not declared as a constructor"", recordTypeBuilder_RecordProperty0);
+    RecordType recordType1 = jSTypeRegistry0.createRecordType(hashMap0);
+    recordType1.getGreatestSubtypeHelper(recordType1);
+    assertTrue(recordType1.hasCachedValues());
+}",0,assertFalse(recordType1.hasCachedValues())
+project,0,test055,"public void test055() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = new RecordType(jSTypeRegistry0, hashMap0);
+    Node node0 = Node.newString(0, ""Not declared as a type name"");
+    RecordTypeBuilder.RecordProperty recordTypeBuilder_RecordProperty0 = new RecordTypeBuilder.RecordProperty(recordType0, node0);
+    hashMap0.put(""Unknown class name"", recordTypeBuilder_RecordProperty0);
+    RecordType recordType1 = jSTypeRegistry0.createRecordType(hashMap0);
+    recordType1.getGreatestSubtypeHelper(recordType0);
+    assertTrue(recordType0.hasCachedValues());
+}",0,assertFalse(recordType0.hasCachedValues())
+project,0,test056,"public void test056() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = new RecordType(jSTypeRegistry0, hashMap0);
+    Node node0 = Node.newString(0, ""Not declared as a type name"");
+    RecordTypeBuilder.RecordProperty recordTypeBuilder_RecordProperty0 = new RecordTypeBuilder.RecordProperty(recordType0, node0);
+    hashMap0.put(""Unknown class name"", recordTypeBuilder_RecordProperty0);
+    RecordType recordType1 = jSTypeRegistry0.createRecordType(hashMap0);
+    recordType1.getGreatestSubtypeHelper(recordType0);
+    assertFalse(recordType0.equals((Object) recordType1));
+}",0,
+project,0,test067,"public void test067() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = new RecordType(jSTypeRegistry0, hashMap0);
+    NoObjectType noObjectType0 = new NoObjectType(jSTypeRegistry0);
+    JSType jSType0 = recordType0.getGreatestSubtypeHelper(noObjectType0);
+    assertFalse(jSType0.isNoResolvedType());
+}",0,assertTrue(jSType0.isNoResolvedType())
+project,0,test078,"public void test078() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = new RecordType(jSTypeRegistry0, hashMap0);
+    Node node0 = new Node(0, 1, 1);
+    RecordTypeBuilder.RecordProperty recordTypeBuilder_RecordProperty0 = new RecordTypeBuilder.RecordProperty(recordType0, node0);
+    hashMap0.put(""Not declared as a constructor"", recordTypeBuilder_RecordProperty0);
+    RecordType recordType1 = jSTypeRegistry0.createRecordType(hashMap0);
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Unknown class name"", node0, recordType1);
+    enumType0.defineDeclaredProperty(""Not declared as a constructor"", recordType1, node0);
+    recordType1.getGreatestSubtypeHelper(enumType0);
+    assertTrue(recordType1.hasCachedValues());
+}",0,assertFalse(recordType1.hasCachedValues())
+project,0,test089,"public void test089() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = new RecordType(jSTypeRegistry0, hashMap0);
+    Node node0 = new Node(0);
+    RecordTypeBuilder.RecordProperty recordTypeBuilder_RecordProperty0 = new RecordTypeBuilder.RecordProperty(recordType0, node0);
+    hashMap0.put(""Not declared as a constructor"", recordTypeBuilder_RecordProperty0);
+    RecordType recordType1 = jSTypeRegistry0.createRecordType(hashMap0);
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Unknown class name"", node0, recordType1);
+    enumType0.defineDeclaredProperty(""Not declared as a constructor"", (JSType) null, node0);
+    recordType1.getGreatestSubtypeHelper(enumType0);
+    assertTrue(recordType1.hasCachedValues());
+}",0,assertFalse(recordType1.hasCachedValues())
+project,0,test0910,"public void test0910() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = new RecordType(jSTypeRegistry0, hashMap0);
+    Node node0 = new Node(0);
+    RecordTypeBuilder.RecordProperty recordTypeBuilder_RecordProperty0 = new RecordTypeBuilder.RecordProperty(recordType0, node0);
+    hashMap0.put(""Not declared as a constructor"", recordTypeBuilder_RecordProperty0);
+    RecordType recordType1 = jSTypeRegistry0.createRecordType(hashMap0);
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Unknown class name"", node0, recordType1);
+    enumType0.defineDeclaredProperty(""Not declared as a constructor"", recordType0, node0);
+    EnumType enumType1 = jSTypeRegistry0.createEnumType(""Unknown class name"", node0, recordType1);
+    recordType1.getGreatestSubtypeHelper(enumType1);
+    assertTrue(recordType1.hasCachedValues());
+}",0,
+project,0,test1011,"public void test1011() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = new RecordType(jSTypeRegistry0, hashMap0);
+    Node node0 = Node.newString(""Not declared as a type name"", 1, 0);
+    RecordTypeBuilder.RecordProperty recordTypeBuilder_RecordProperty0 = new RecordTypeBuilder.RecordProperty(recordType0, node0);
+    hashMap0.put(""Not declared as a constructor"", recordTypeBuilder_RecordProperty0);
+    RecordType recordType1 = jSTypeRegistry0.createRecordType(hashMap0);
+    JSType jSType0 = jSTypeRegistry0.getType((StaticScope<JSType>) recordType0, ""w^HP\""AExK"", ""w^HP\""AExK"", 54, 51);
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Named type with empty name component"", node0, jSType0);
+    enumType0.defineDeclaredProperty(""Not declared as a constructor"", jSType0, node0);
+    recordType1.getGreatestSubtypeHelper(enumType0);
+    assertTrue(recordType1.hasCachedValues());
+}",0,assertFalse(recordType1.hasCachedValues())
+project,0,test1112,"public void test1112() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = new RecordType(jSTypeRegistry0, hashMap0);
+    Node node0 = Node.newString(""Not declared as a type name"", 1, 0);
+    RecordTypeBuilder.RecordProperty recordTypeBuilder_RecordProperty0 = new RecordTypeBuilder.RecordProperty(recordType0, node0);
+    hashMap0.put(""Not declared as a constructor"", recordTypeBuilder_RecordProperty0);
+    RecordType recordType1 = jSTypeRegistry0.createRecordType(hashMap0);
+    recordType1.getLeastSupertype(recordType0);
+    assertTrue(recordType1.hasCachedValues());
+}",0,assertFalse(recordType1.hasCachedValues())
+project,0,test1213,"public void test1213() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = new RecordType(jSTypeRegistry0, hashMap0);
+    RecordTypeBuilder.RecordProperty recordTypeBuilder_RecordProperty0 = new RecordTypeBuilder.RecordProperty(recordType0, (Node) null);
+    hashMap0.put(""Not declared as a constructor"", recordTypeBuilder_RecordProperty0);
+    RecordType recordType1 = jSTypeRegistry0.createRecordType(hashMap0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    boolean boolean0 = RecordType.isSubtype((ObjectType) noResolvedType0, recordType1);
+    assertFalse(recordType1.equals((Object) recordType0));
+}",0,
+project,0,test1214,"public void test1214() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = new RecordType(jSTypeRegistry0, hashMap0);
+    RecordTypeBuilder.RecordProperty recordTypeBuilder_RecordProperty0 = new RecordTypeBuilder.RecordProperty(recordType0, (Node) null);
+    hashMap0.put(""Not declared as a constructor"", recordTypeBuilder_RecordProperty0);
+    RecordType recordType1 = jSTypeRegistry0.createRecordType(hashMap0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    boolean boolean0 = RecordType.isSubtype((ObjectType) noResolvedType0, recordType1);
+    assertTrue(boolean0);
+}",0,
+project,0,test1315,"public void test1315() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    Node node0 = Node.newString(8287, """");
+    UnresolvedTypeExpression unresolvedTypeExpression0 = new UnresolvedTypeExpression(jSTypeRegistry0, node0, """");
+    RecordTypeBuilder.RecordProperty recordTypeBuilder_RecordProperty0 = new RecordTypeBuilder.RecordProperty(unresolvedTypeExpression0, node0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    hashMap0.put(""Named type with empty name component"", recordTypeBuilder_RecordProperty0);
+    RecordType recordType0 = jSTypeRegistry0.createRecordType(hashMap0);
+    NoType noType0 = new NoType(jSTypeRegistry0);
+    boolean boolean0 = RecordType.isSubtype((ObjectType) noType0, recordType0);
+    assertTrue(boolean0);
+}",0,
+project,0,test1416,"public void test1416() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = new RecordType(jSTypeRegistry0, hashMap0);
+    RecordTypeBuilder.RecordProperty recordTypeBuilder_RecordProperty0 = new RecordTypeBuilder.RecordProperty(recordType0, (Node) null);
+    hashMap0.put(""Not declared as a constructor"", recordTypeBuilder_RecordProperty0);
+    RecordType recordType1 = jSTypeRegistry0.createRecordType(hashMap0);
+    NoType noType0 = new NoType(jSTypeRegistry0);
+    boolean boolean0 = RecordType.isSubtype((ObjectType) noType0, recordType1);
+    assertTrue(boolean0);
+}",0,
+project,0,test1417,"public void test1417() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = new RecordType(jSTypeRegistry0, hashMap0);
+    RecordTypeBuilder.RecordProperty recordTypeBuilder_RecordProperty0 = new RecordTypeBuilder.RecordProperty(recordType0, (Node) null);
+    hashMap0.put(""Not declared as a constructor"", recordTypeBuilder_RecordProperty0);
+    RecordType recordType1 = jSTypeRegistry0.createRecordType(hashMap0);
+    NoType noType0 = new NoType(jSTypeRegistry0);
+    boolean boolean0 = RecordType.isSubtype((ObjectType) noType0, recordType1);
+    assertFalse(recordType1.equals((Object) recordType0));
+}",0,
+project,0,test1518,"public void test1518() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = new RecordType(jSTypeRegistry0, hashMap0);
+    Node node0 = Node.newString(""Named type with empty name component"");
+    RecordTypeBuilder.RecordProperty recordTypeBuilder_RecordProperty0 = new RecordTypeBuilder.RecordProperty(recordType0, node0);
+    hashMap0.put(""Named type with empty name component"", recordTypeBuilder_RecordProperty0);
+    hashMap0.put(""Not declared as a type name"", recordTypeBuilder_RecordProperty0);
+    RecordType recordType1 = jSTypeRegistry0.createRecordType(hashMap0);
+    recordType0.getGreatestSubtypeHelper(recordType1);
+    assertTrue(recordType0.hasCachedValues());
+}",0,assertTrue(recordType0.hasCachedValues())
+project,0,test1619,"public void test1619() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    Node node0 = Node.newString(""-D>SQ"", 1, 1);
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    UnresolvedTypeExpression unresolvedTypeExpression0 = new UnresolvedTypeExpression(jSTypeRegistry0, node0, ""-D>SQ"");
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordTypeBuilder.RecordProperty recordTypeBuilder_RecordProperty0 = new RecordTypeBuilder.RecordProperty(unresolvedTypeExpression0, node0);
+    hashMap0.put(""Named type with empty name component"", recordTypeBuilder_RecordProperty0);
+    RecordType recordType0 = jSTypeRegistry0.createRecordType(hashMap0);
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""-D>SQ"", node0, recordType0);
+    JSType jSType0 = recordType0.resolveInternal(simpleErrorReporter0, enumType0);
+    assertFalse(jSType0.isNoType());
+}",0,assertTrue(jSType0.isNoType())
+project,0,test1720,"public void test1720() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = new RecordType(jSTypeRegistry0, hashMap0);
+    RecordTypeBuilder.RecordProperty recordTypeBuilder_RecordProperty0 = new RecordTypeBuilder.RecordProperty(recordType0, (Node) null);
+    hashMap0.put(""Not declared as a constructor"", recordTypeBuilder_RecordProperty0);
+    RecordType recordType1 = jSTypeRegistry0.createRecordType(hashMap0);
+    recordType1.resolveInternal(simpleErrorReporter0, recordType0);
+    assertTrue(recordType0.isResolved());
+}",0,assertTrue(recordType0.isResolved())
+project,0,test1721,"public void test1721() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    HashMap<String, RecordTypeBuilder.RecordProperty> hashMap0 = new HashMap<String, RecordTypeBuilder.RecordProperty>();
+    RecordType recordType0 = new RecordType(jSTypeRegistry0, hashMap0);
+    RecordTypeBuilder.RecordProperty recordTypeBuilder_RecordProperty0 = new RecordTypeBuilder.RecordProperty(recordType0, (Node) null);
+    hashMap0.put(""Not declared as a constructor"", recordTypeBuilder_RecordProperty0);
+    RecordType recordType1 = jSTypeRegistry0.createRecordType(hashMap0);
+    recordType1.resolveInternal(simpleErrorReporter0, recordType0);
+    assertFalse(recordType0.equals((Object) recordType1));
+}",0,

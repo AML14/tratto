@@ -1,0 +1,91 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test00,"public void test00() throws Throwable {
+    SqlDateSerializer sqlDateSerializer0 = new SqlDateSerializer();
+    JsonFormatVisitorWrapper.Base jsonFormatVisitorWrapper_Base0 = new JsonFormatVisitorWrapper.Base();
+    // Undeclared exception!
+    try {
+        sqlDateSerializer0.acceptJsonFormatVisitor(jsonFormatVisitorWrapper_Base0, (JavaType) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null SerializerProvider passed for java.sql.Date
+        //
+        verifyException(""com.fasterxml.jackson.databind.ser.std.DateTimeSerializerBase"", e);
+    }
+}",0,
+project,0,test11,"public void test11() throws Throwable {
+    SqlDateSerializer sqlDateSerializer0 = new SqlDateSerializer();
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    BeanProperty.Bogus beanProperty_Bogus0 = new BeanProperty.Bogus();
+    JsonSerializer<?> jsonSerializer0 = sqlDateSerializer0.createContextual(defaultSerializerProvider_Impl0, beanProperty_Bogus0);
+    assertSame(sqlDateSerializer0, jsonSerializer0);
+}",0,
+project,0,test22,"public void test22() throws Throwable {
+    SqlDateSerializer sqlDateSerializer0 = new SqlDateSerializer();
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    JsonSerializer<?> jsonSerializer0 = sqlDateSerializer0.createContextual(defaultSerializerProvider_Impl0, (BeanProperty) null);
+    assertSame(sqlDateSerializer0, jsonSerializer0);
+}",0,
+project,0,test33,"public void test33() throws Throwable {
+    Boolean boolean0 = Boolean.FALSE;
+    DateFormat dateFormat0 = DateFormat.getDateTimeInstance();
+    SqlDateSerializer sqlDateSerializer0 = new SqlDateSerializer(boolean0, dateFormat0);
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<HashMap> class0 = HashMap.class;
+    MapType mapType0 = typeFactory0.constructMapType(class0, class0, class0);
+    JsonNode jsonNode0 = sqlDateSerializer0.getSchema((SerializerProvider) defaultSerializerProvider_Impl0, (Type) mapType0, true);
+    assertEquals(1, jsonNode0.size());
+}",0,
+project,0,test44,"public void test44() throws Throwable {
+    Boolean boolean0 = Boolean.valueOf(true);
+    DateFormat dateFormat0 = DateFormat.getDateTimeInstance();
+    SqlDateSerializer sqlDateSerializer0 = new SqlDateSerializer(boolean0, dateFormat0);
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<HashMap> class0 = HashMap.class;
+    MapType mapType0 = typeFactory0.constructMapType(class0, class0, class0);
+    JsonNode jsonNode0 = sqlDateSerializer0.getSchema((SerializerProvider) defaultSerializerProvider_Impl0, (Type) mapType0, true);
+    assertEquals(1, jsonNode0.size());
+}",0,
+project,0,test55,"public void test55() throws Throwable {
+    SqlDateSerializer sqlDateSerializer0 = new SqlDateSerializer();
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    // Undeclared exception!
+    try {
+        sqlDateSerializer0._asTimestamp(defaultSerializerProvider_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.SerializerProvider"", e);
+    }
+}",0,
+project,0,test66,"public void test66() throws Throwable {
+    SqlDateSerializer sqlDateSerializer0 = new SqlDateSerializer();
+    JsonFormatVisitorWrapper.Base jsonFormatVisitorWrapper_Base0 = new JsonFormatVisitorWrapper.Base();
+    sqlDateSerializer0._acceptJsonFormatVisitor(jsonFormatVisitorWrapper_Base0, (JavaType) null, false);
+    assertFalse(sqlDateSerializer0.isUnwrappingSerializer());
+}",0,
+project,0,test77,"public void test77() throws Throwable {
+    SqlDateSerializer sqlDateSerializer0 = new SqlDateSerializer();
+    JsonFormatVisitorWrapper.Base jsonFormatVisitorWrapper_Base0 = new JsonFormatVisitorWrapper.Base();
+    sqlDateSerializer0._acceptJsonFormatVisitor(jsonFormatVisitorWrapper_Base0, (JavaType) null, true);
+    assertFalse(sqlDateSerializer0.isUnwrappingSerializer());
+}",0,assertFalse(sqlDateSerializer0.isUnwrappingSerializer())
+project,0,test88,"public void test88() throws Throwable {
+    SqlDateSerializer sqlDateSerializer0 = new SqlDateSerializer();
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    MockDate mockDate0 = new MockDate(779, 779, 779);
+    // Undeclared exception!
+    try {
+        sqlDateSerializer0._serializeAsString(mockDate0, (JsonGenerator) null, defaultSerializerProvider_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.SerializerProvider"", e);
+    }
+}",0,

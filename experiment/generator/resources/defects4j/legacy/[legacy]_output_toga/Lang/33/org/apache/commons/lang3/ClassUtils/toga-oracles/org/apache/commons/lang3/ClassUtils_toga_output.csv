@@ -1,0 +1,535 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test0000,"public void test0000() throws Throwable {
+    try {
+        ClassUtils.getClass(""Object[]"", true);
+        fail(""Expecting exception: ClassNotFoundException"");
+    } catch (ClassNotFoundException e) {
+    }
+}",1,
+project,0,test0011,"public void test0011() throws Throwable {
+    String string0 = ClassUtils.getShortClassName(""[:*|3>z24"");
+    assertEquals("":*|3>z24[]"", string0);
+}",0,
+project,0,test0022,"public void test0022() throws Throwable {
+    Class<Integer> class0 = Integer.class;
+    List<Class<?>> list0 = ClassUtils.getAllInterfaces(class0);
+    List<String> list1 = ClassUtils.convertClassesToClassNames(list0);
+    List<Class<?>> list2 = ClassUtils.convertClassNamesToClasses(list1);
+    assertNotNull(list2);
+}",1,
+project,0,test0035,"public void test0035() throws Throwable {
+    Class<ClassUtils> class0 = ClassUtils.class;
+    Class<?> class1 = ClassUtils.wrapperToPrimitive(class0);
+    assertNull(class1);
+}",0,"assertEquals(class0, class1)"
+project,0,test0046,"public void test0046() throws Throwable {
+    Class<String>[] classArray0 = (Class<String>[]) Array.newInstance(Class.class, 9);
+    Class<String> class0 = String.class;
+    classArray0[0] = class0;
+    classArray0[1] = classArray0[0];
+    classArray0[2] = classArray0[0];
+    classArray0[3] = classArray0[1];
+    classArray0[4] = classArray0[0];
+    classArray0[5] = class0;
+    classArray0[6] = class0;
+    classArray0[7] = classArray0[4];
+    classArray0[8] = classArray0[1];
+    boolean boolean0 = ClassUtils.isAssignable(classArray0, classArray0);
+    assertTrue(boolean0);
+}",0,
+project,0,test0057,"public void test0057() throws Throwable {
+    String string0 = ClassUtils.getShortClassName((Object) null, (String) null);
+    assertNull(string0);
+}",0,
+project,0,test0068,"public void test0068() throws Throwable {
+    String string0 = ClassUtils.getShortClassName((Object) null, """");
+    assertEquals("""", string0);
+}",0,assertNotNull(string0)
+project,0,test0079,"public void test0079() throws Throwable {
+    String string0 = ClassUtils.getShortCanonicalName((Object) null, (String) null);
+    assertNull(string0);
+}",0,assertNotNull(string0)
+project,0,test00810,"public void test00810() throws Throwable {
+    String string0 = ClassUtils.getShortCanonicalName((Object) null, """");
+    assertEquals("""", string0);
+}",0,assertNotNull(string0)
+project,0,test00911,"public void test00911() throws Throwable {
+    String string0 = ClassUtils.getPackageName((Object) null, (String) null);
+    assertNull(string0);
+}",0,
+project,0,test01012,"public void test01012() throws Throwable {
+    String string0 = ClassUtils.getPackageName((Object) null, """");
+    assertEquals("""", string0);
+}",0,
+project,0,test01113,"public void test01113() throws Throwable {
+    Class<Boolean> class0 = Boolean.class;
+    String string0 = ClassUtils.getPackageName(class0);
+    assertEquals(""java.lang"", string0);
+}",0,
+project,0,test01214,"public void test01214() throws Throwable {
+    String string0 = ClassUtils.getPackageCanonicalName(""'; the SystemUtils property value will default to null."");
+    assertEquals(""';theSystemUtilspropertyvaluewilldefaulttonull"", string0);
+}",0,
+project,0,test01315,"public void test01315() throws Throwable {
+    Class<Object> class0 = Object.class;
+    String string0 = ClassUtils.getPackageCanonicalName(class0);
+    assertEquals(""java.lang"", string0);
+}",0,
+project,0,test02426,"public void test02426() throws Throwable {
+    Object[] objectArray0 = new Object[6];
+    // Undeclared exception!
+    try {
+        ClassUtils.toClass(objectArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang3.ClassUtils"", e);
+    }
+}",0,
+project,0,test02527,"public void test02527() throws Throwable {
+    // Undeclared exception!
+    try {
+        ClassUtils.getShortClassName(""["");
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",0,
+project,0,test02628,"public void test02628() throws Throwable {
+    Class<Double>[] classArray0 = (Class<Double>[]) Array.newInstance(Class.class, 5);
+    Class<Object> class0 = Object.class;
+    // Undeclared exception!
+    try {
+        ClassUtils.getPublicMethod(class0, (String) null, classArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test02729,"public void test02729() throws Throwable {
+    Class<Character>[] classArray0 = (Class<Character>[]) Array.newInstance(Class.class, 5);
+    Class<ClassUtils> class0 = ClassUtils.class;
+    try {
+        ClassUtils.getPublicMethod(class0, ""*6m?M%s)uy{"", classArray0);
+        fail(""Expecting exception: NoSuchMethodException"");
+    } catch (NoSuchMethodException e) {
+    }
+}",0,
+project,0,test02830,"public void test02830() throws Throwable {
+    // Undeclared exception!
+    try {
+        ClassUtils.getPackageName(""[["");
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",0,
+project,0,test02931,"public void test02931() throws Throwable {
+    // Undeclared exception!
+    try {
+        ClassUtils.getPackageCanonicalName(""[java.lang"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+    }
+}",0,
+project,0,test03032,"public void test03032() throws Throwable {
+    // Undeclared exception!
+    try {
+        ClassUtils.getClass((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // className must not be null.
+        //
+        verifyException(""org.apache.commons.lang3.ClassUtils"", e);
+    }
+}",1,
+project,0,test03133,"public void test03133() throws Throwable {
+    try {
+        ClassUtils.getClass(""The stripAccents(String) method is not supported until Java 1.6"");
+        fail(""Expecting exception: ClassNotFoundException"");
+    } catch (ClassNotFoundException e) {
+    }
+}",1,
+project,0,test03234,"public void test03234() throws Throwable {
+    ClassLoader classLoader0 = ClassLoader.getSystemClassLoader();
+    // Undeclared exception!
+    try {
+        ClassUtils.getClass(classLoader0, (String) null, false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // className must not be null.
+        //
+        verifyException(""org.apache.commons.lang3.ClassUtils"", e);
+    }
+}",1,
+project,0,test03335,"public void test03335() throws Throwable {
+    ClassLoader classLoader0 = ClassLoader.getSystemClassLoader();
+    // Undeclared exception!
+    try {
+        ClassUtils.getClass(classLoader0, (String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // className must not be null.
+        //
+        verifyException(""org.apache.commons.lang3.ClassUtils"", e);
+    }
+}",1,
+project,0,test03537,"public void test03537() throws Throwable {
+    Class<?> class0 = ClassUtils.primitiveToWrapper((Class<?>) null);
+    assertNull(class0);
+}",0,
+project,0,test03739,"public void test03739() throws Throwable {
+    Class<Byte> class0 = Byte.TYPE;
+    Class<Integer> class1 = Integer.class;
+    boolean boolean0 = ClassUtils.isAssignable(class1, class0, true);
+    assertFalse(boolean0);
+}",0,
+project,0,test03840,"public void test03840() throws Throwable {
+    Class<Integer> class0 = Integer.TYPE;
+    boolean boolean0 = ClassUtils.isAssignable(class0, class0, true);
+    assertTrue(boolean0);
+}",0,
+project,0,test03941,"public void test03941() throws Throwable {
+    Class<Integer> class0 = Integer.TYPE;
+    Class<String> class1 = String.class;
+    boolean boolean0 = ClassUtils.isAssignable(class0, class1, true);
+    assertFalse(boolean0);
+}",0,
+project,0,test04042,"public void test04042() throws Throwable {
+    Class<Double>[] classArray0 = (Class<Double>[]) Array.newInstance(Class.class, 5);
+    Class<Double> class0 = Double.class;
+    boolean boolean0 = ClassUtils.isAssignable(classArray0[1], class0, true);
+    assertTrue(boolean0);
+}",0,
+project,0,test04143,"public void test04143() throws Throwable {
+    Class<Short>[] classArray0 = (Class<Short>[]) Array.newInstance(Class.class, 2);
+    Class<Integer> class0 = Integer.class;
+    boolean boolean0 = ClassUtils.isAssignable(class0, classArray0[0], false);
+    assertFalse(boolean0);
+}",0,
+project,0,test04244,"public void test04244() throws Throwable {
+    Class<Double>[] classArray0 = (Class<Double>[]) Array.newInstance(Class.class, 5);
+    boolean boolean0 = ClassUtils.isAssignable(classArray0, classArray0, true);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test04345,"public void test04345() throws Throwable {
+    Class<Object>[] classArray0 = (Class<Object>[]) Array.newInstance(Class.class, 9);
+    boolean boolean0 = ClassUtils.isAssignable((Class<?>[]) null, classArray0, false);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test04446,"public void test04446() throws Throwable {
+    String string0 = ClassUtils.getPackageName(""[[L"");
+    assertEquals("""", string0);
+}",0,
+project,0,test04547,"public void test04547() throws Throwable {
+    String string0 = ClassUtils.getPackageName(""L;"");
+    assertEquals("""", string0);
+}",0,
+project,0,test04648,"public void test04648() throws Throwable {
+    String string0 = ClassUtils.getShortClassName(""org.apache.commons.lang3.builder.ToStringStyle$ShortPrefixToStringStyle"");
+    assertEquals(""ToStringStyle.ShortPrefixToStringStyle"", string0);
+}",0,
+project,0,test04749,"public void test04749() throws Throwable {
+    Class<Byte> class0 = Byte.class;
+    String string0 = ClassUtils.getShortClassName(class0);
+    assertEquals(""Byte"", string0);
+}",0,
+project,0,test04850,"public void test04850() throws Throwable {
+    String string0 = ClassUtils.getShortCanonicalName(""["");
+    assertEquals(""][]"", string0);
+}",0,
+project,0,test04951,"public void test04951() throws Throwable {
+    String string0 = ClassUtils.getPackageCanonicalName(""[L"");
+    assertEquals("""", string0);
+}",0,assertNotNull(string0)
+project,0,test05052,"public void test05052() throws Throwable {
+    // Undeclared exception!
+    try {
+        ClassUtils.getShortCanonicalName(""[]"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+    }
+}",0,
+project,0,test05153,"public void test05153() throws Throwable {
+    String string0 = ClassUtils.getShortCanonicalName((String) null);
+    assertEquals("""", string0);
+}",0,
+project,0,test05254,"public void test05254() throws Throwable {
+    Class<String>[] classArray0 = (Class<String>[]) Array.newInstance(Class.class, 7);
+    String string0 = ClassUtils.getPackageCanonicalName(classArray0[2]);
+    assertEquals("""", string0);
+}",0,assertNotNull(string0)
+project,0,test05355,"public void test05355() throws Throwable {
+    String string0 = ClassUtils.getPackageCanonicalName((Object) null, ""PreferencesFactory"");
+    assertEquals(""PreferencesFactory"", string0);
+}",0,
+project,0,test05456,"public void test05456() throws Throwable {
+    String string0 = ClassUtils.getPackageCanonicalName((Object) "":*|3>z24"", ""52)3"");
+    assertEquals(""java.lang"", string0);
+}",0,assertNotNull(string0)
+project,0,test05557,"public void test05557() throws Throwable {
+    String string0 = ClassUtils.getShortCanonicalName((Class<?>) null);
+    assertEquals("""", string0);
+}",0,
+project,0,test05658,"public void test05658() throws Throwable {
+    Class<?> class0 = ClassUtils.getClass(""boolean"");
+    String string0 = ClassUtils.getShortCanonicalName(class0);
+    assertEquals(""boolean"", string0);
+}",0,
+project,0,test05759,"public void test05759() throws Throwable {
+    String string0 = ClassUtils.getShortCanonicalName((Object) null, ""S4"");
+    assertEquals(""S4"", string0);
+}",0,assertNotNull(string0)
+project,0,test05860,"public void test05860() throws Throwable {
+    Class<Double>[] classArray0 = (Class<Double>[]) Array.newInstance(Class.class, 5);
+    Class<Double> class0 = Double.class;
+    classArray0[0] = class0;
+    classArray0[2] = classArray0[0];
+    String string0 = ClassUtils.getShortCanonicalName((Object) classArray0[2], """");
+    assertEquals(""Class"", string0);
+}",0,assertNotNull(string0)
+project,0,test05961,"public void test05961() throws Throwable {
+    Class<Short>[] classArray0 = (Class<Short>[]) Array.newInstance(Class.class, 0);
+    Class<?>[] classArray1 = ClassUtils.toClass(classArray0);
+    assertEquals(0, classArray1.length);
+}",0,
+project,0,test06062,"public void test06062() throws Throwable {
+    Class<?>[] classArray0 = ClassUtils.toClass((Object[]) null);
+    assertNull(classArray0);
+}",0,
+project,0,test06163,"public void test06163() throws Throwable {
+    ClassLoader classLoader0 = ClassLoader.getSystemClassLoader();
+    try {
+        ClassUtils.getClass(classLoader0, ""[]"", true);
+        fail(""Expecting exception: ClassNotFoundException"");
+    } catch (ClassNotFoundException e) {
+    }
+}",1,
+project,0,test06264,"public void test06264() throws Throwable {
+    // Undeclared exception!
+    try {
+        ClassUtils.getClass((String) null, false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // className must not be null.
+        //
+        verifyException(""org.apache.commons.lang3.ClassUtils"", e);
+    }
+}",1,
+project,0,test06365,"public void test06365() throws Throwable {
+    boolean boolean0 = ClassUtils.isInnerClass((Class<?>) null);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test06466,"public void test06466() throws Throwable {
+    Class<String> class0 = String.class;
+    boolean boolean0 = ClassUtils.isInnerClass(class0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test06567,"public void test06567() throws Throwable {
+    Class<ClassUtils>[] classArray0 = (Class<ClassUtils>[]) Array.newInstance(Class.class, 0);
+    Class<?>[] classArray1 = ClassUtils.wrappersToPrimitives(classArray0);
+    assertEquals(0, classArray1.length);
+}",0,
+project,0,test06668,"public void test06668() throws Throwable {
+    Class<?>[] classArray0 = ClassUtils.wrappersToPrimitives((Class<?>[]) null);
+    assertNull(classArray0);
+}",0,
+project,0,test06769,"public void test06769() throws Throwable {
+    Class<Short>[] classArray0 = (Class<Short>[]) Array.newInstance(Class.class, 0);
+    Class<?>[] classArray1 = ClassUtils.primitivesToWrappers(classArray0);
+    assertEquals(0, classArray1.length);
+}",0,
+project,0,test06870,"public void test06870() throws Throwable {
+    Class<?>[] classArray0 = ClassUtils.primitivesToWrappers((Class<?>[]) null);
+    assertNull(classArray0);
+}",0,
+project,0,test07072,"public void test07072() throws Throwable {
+    Class<Double>[] classArray0 = (Class<Double>[]) Array.newInstance(Class.class, 5);
+    Class<?>[] classArray1 = ClassUtils.primitivesToWrappers(classArray0);
+    assertEquals(5, classArray1.length);
+}",0,
+project,0,test07173,"public void test07173() throws Throwable {
+    Class<Double> class0 = Double.TYPE;
+    Class<Long> class1 = Long.TYPE;
+    boolean boolean0 = ClassUtils.isAssignable(class0, class1, false);
+    assertFalse(boolean0);
+}",0,
+project,0,test07274,"public void test07274() throws Throwable {
+    Class<Integer> class0 = Integer.TYPE;
+    Class<Byte> class1 = Byte.TYPE;
+    boolean boolean0 = ClassUtils.isAssignable(class0, class1);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test07375,"public void test07375() throws Throwable {
+    Class<Double> class0 = Double.TYPE;
+    Class<Long> class1 = Long.class;
+    boolean boolean0 = ClassUtils.isAssignable(class0, class1, false);
+    assertFalse(boolean0);
+}",0,
+project,0,test07476,"public void test07476() throws Throwable {
+    Class<Byte> class0 = Byte.TYPE;
+    Class<Float> class1 = Float.class;
+    boolean boolean0 = ClassUtils.isAssignable(class1, class0, true);
+    assertFalse(boolean0);
+}",0,
+project,0,test07577,"public void test07577() throws Throwable {
+    Class<Integer> class0 = Integer.class;
+    Class<?> class1 = ClassUtils.wrapperToPrimitive(class0);
+    boolean boolean0 = ClassUtils.isAssignable(class1, class0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test07678,"public void test07678() throws Throwable {
+    Class<Integer> class0 = Integer.TYPE;
+    boolean boolean0 = ClassUtils.isAssignable((Class<?>) null, class0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test07779,"public void test07779() throws Throwable {
+    Class<Object> class0 = Object.class;
+    Object[] objectArray0 = new Object[6];
+    objectArray0[0] = (Object) ""Object"";
+    objectArray0[1] = (Object) ""\"":d*gb"";
+    objectArray0[2] = (Object) class0;
+    objectArray0[3] = (Object) ""Object"";
+    objectArray0[4] = (Object) ""\"":d*gb"";
+    objectArray0[5] = objectArray0[0];
+    Class<?>[] classArray0 = ClassUtils.toClass(objectArray0);
+    Class<?>[] classArray1 = ClassUtils.wrappersToPrimitives(classArray0);
+    assertNotNull(classArray1);
+}",0,
+project,0,test07780,"public void test07780() throws Throwable {
+    Class<Object> class0 = Object.class;
+    Object[] objectArray0 = new Object[6];
+    objectArray0[0] = (Object) ""Object"";
+    objectArray0[1] = (Object) ""\"":d*gb"";
+    objectArray0[2] = (Object) class0;
+    objectArray0[3] = (Object) ""Object"";
+    objectArray0[4] = (Object) ""\"":d*gb"";
+    objectArray0[5] = objectArray0[0];
+    Class<?>[] classArray0 = ClassUtils.toClass(objectArray0);
+    Class<?>[] classArray1 = ClassUtils.wrappersToPrimitives(classArray0);
+    boolean boolean0 = ClassUtils.isAssignable(classArray1, classArray0, false);
+    assertNotSame(classArray1, classArray0);
+}",0,
+project,0,test07781,"public void test07781() throws Throwable {
+    Class<Object> class0 = Object.class;
+    Object[] objectArray0 = new Object[6];
+    objectArray0[0] = (Object) ""Object"";
+    objectArray0[1] = (Object) ""\"":d*gb"";
+    objectArray0[2] = (Object) class0;
+    objectArray0[3] = (Object) ""Object"";
+    objectArray0[4] = (Object) ""\"":d*gb"";
+    objectArray0[5] = objectArray0[0];
+    Class<?>[] classArray0 = ClassUtils.toClass(objectArray0);
+    Class<?>[] classArray1 = ClassUtils.wrappersToPrimitives(classArray0);
+    boolean boolean0 = ClassUtils.isAssignable(classArray1, classArray0, false);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test07882,"public void test07882() throws Throwable {
+    boolean boolean0 = ClassUtils.isAssignable((Class<?>[]) null, (Class<?>[]) null, false);
+    assertTrue(boolean0);
+}",0,assertFalse(boolean0)
+project,0,test07983,"public void test07983() throws Throwable {
+    Class<String>[] classArray0 = (Class<String>[]) Array.newInstance(Class.class, 5);
+    Class<Boolean>[] classArray1 = (Class<Boolean>[]) Array.newInstance(Class.class, 2);
+    boolean boolean0 = ClassUtils.isAssignable(classArray0, classArray1);
+    assertFalse(boolean0);
+}",0,
+project,0,test08185,"public void test08185() throws Throwable {
+    List<String> list0 = ClassUtils.convertClassesToClassNames((List<Class<?>>) null);
+    assertNull(list0);
+}",0,
+project,0,test08286,"public void test08286() throws Throwable {
+    List<Class<?>> list0 = ClassUtils.convertClassNamesToClasses((List<String>) null);
+    assertNull(list0);
+}",0,
+project,0,test08488,"public void test08488() throws Throwable {
+    List<Class<?>> list0 = ClassUtils.getAllInterfaces((Class<?>) null);
+    assertNull(list0);
+}",0,
+project,0,test08589,"public void test08589() throws Throwable {
+    List<Class<?>> list0 = ClassUtils.getAllSuperclasses((Class<?>) null);
+    assertNull(list0);
+}",0,assertNotNull(list0)
+project,0,test08691,"public void test08691() throws Throwable {
+    Class<Byte> class0 = Byte.class;
+    List<Class<?>> list0 = ClassUtils.getAllSuperclasses(class0);
+    assertNotNull(list0);
+}",0,
+project,0,test08792,"public void test08792() throws Throwable {
+    String string0 = ClassUtils.getPackageName(""[java.lang.Long"");
+    assertEquals(""java.lang"", string0);
+}",0,
+project,0,test08893,"public void test08893() throws Throwable {
+    String string0 = ClassUtils.getPackageName("""");
+    assertEquals("""", string0);
+}",0,
+project,0,test08994,"public void test08994() throws Throwable {
+    String string0 = ClassUtils.getPackageName((String) null);
+    assertEquals("""", string0);
+}",0,
+project,0,test09095,"public void test09095() throws Throwable {
+    String string0 = ClassUtils.getPackageName((Class<?>) null);
+    assertEquals("""", string0);
+}",0,assertNotNull(string0)
+project,0,test09196,"public void test09196() throws Throwable {
+    String string0 = ClassUtils.getPackageName((Object) null, ""("");
+    assertEquals(""("", string0);
+}",0,
+project,0,test09297,"public void test09297() throws Throwable {
+    Class<Integer> class0 = Integer.TYPE;
+    String string0 = ClassUtils.getPackageName((Object) class0, "","");
+    assertEquals(""java.lang"", string0);
+}",0,
+project,0,test09398,"public void test09398() throws Throwable {
+    String string0 = ClassUtils.getShortClassName(""D"");
+    assertEquals(""double"", string0);
+}",0,
+project,0,test09499,"public void test09499() throws Throwable {
+    String string0 = ClassUtils.getShortClassName(""[L"");
+    assertEquals(""L[]"", string0);
+}",0,
+project,0,test095100,"public void test095100() throws Throwable {
+    String string0 = ClassUtils.getShortClassName("""");
+    assertEquals("""", string0);
+}",0,
+project,0,test096101,"public void test096101() throws Throwable {
+    String string0 = ClassUtils.getShortClassName((String) null);
+    assertEquals("""", string0);
+}",0,
+project,0,test097102,"public void test097102() throws Throwable {
+    String string0 = ClassUtils.getShortClassName((Class<?>) null);
+    assertEquals("""", string0);
+}",0,
+project,0,test098103,"public void test098103() throws Throwable {
+    String string0 = ClassUtils.getShortClassName((Object) null, ""[java.lang.Long"");
+    assertEquals(""[java.lang.Long"", string0);
+}",0,assertNotNull(string0)
+project,0,test099104,"public void test099104() throws Throwable {
+    Object object0 = new Object();
+    String string0 = ClassUtils.getShortClassName(object0, """");
+    assertEquals(""Object"", string0);
+}",0,assertNotNull(string0)
+project,0,test100105,"public void test100105() throws Throwable {
+    ClassLoader classLoader0 = ClassLoader.getSystemClassLoader();
+    try {
+        ClassUtils.getClass(classLoader0, ""$"");
+        fail(""Expecting exception: ClassNotFoundException"");
+    } catch (ClassNotFoundException e) {
+    }
+}",1,
+project,0,test101106,"public void test101106() throws Throwable {
+    ClassUtils classUtils0 = new ClassUtils();
+    assertEquals('.', ClassUtils.PACKAGE_SEPARATOR_CHAR);
+}",0,
+project,0,test102107,"public void test102107() throws Throwable {
+    Class<Long> class0 = Long.TYPE;
+    Class<Object> class1 = Object.class;
+    boolean boolean0 = ClassUtils.isAssignable(class1, class0, true);
+    assertFalse(boolean0);
+}",0,

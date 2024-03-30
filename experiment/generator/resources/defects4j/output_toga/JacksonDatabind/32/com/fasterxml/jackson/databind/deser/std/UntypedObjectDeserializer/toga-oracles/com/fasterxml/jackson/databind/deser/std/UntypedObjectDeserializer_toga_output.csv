@@ -1,0 +1,281 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    UntypedObjectDeserializer untypedObjectDeserializer0 = new UntypedObjectDeserializer();
+    JsonDeserializer<String> jsonDeserializer0 = (JsonDeserializer<String>) mock(JsonDeserializer.class, new ViolatedAssumptionAnswer());
+    JsonDeserializer<?> jsonDeserializer1 = untypedObjectDeserializer0.instance._withResolved(jsonDeserializer0, jsonDeserializer0, jsonDeserializer0, jsonDeserializer0);
+    assertTrue(jsonDeserializer1.isCachable());
+}",0,assertTrue(jsonDeserializer1.isCachable())
+project,0,test022,"public void test022() throws Throwable {
+    UntypedObjectDeserializer untypedObjectDeserializer0 = new UntypedObjectDeserializer();
+    JsonDeserializer<Object> jsonDeserializer0 = untypedObjectDeserializer0._clearIfStdImpl((JsonDeserializer<Object>) null);
+    assertNull(jsonDeserializer0);
+}",0,
+project,0,test033,"public void test033() throws Throwable {
+    UntypedObjectDeserializer untypedObjectDeserializer0 = UntypedObjectDeserializer.instance;
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    JsonDeserializer<?> jsonDeserializer0 = untypedObjectDeserializer0.createContextual(defaultDeserializationContext_Impl0, (BeanProperty) null);
+    assertFalse(jsonDeserializer0.isCachable());
+}",0,assertFalse(jsonDeserializer0.isCachable())
+project,0,test044,"public void test044() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectNode objectNode0 = objectMapper0.createObjectNode();
+    objectNode0.put((String) null, ""JSON"");
+    ObjectNode objectNode1 = objectNode0.put(""JSON"", ""JSON"");
+    JsonParser jsonParser0 = objectMapper0.treeAsTokens(objectNode1);
+    UntypedObjectDeserializer untypedObjectDeserializer0 = UntypedObjectDeserializer.instance;
+    // Undeclared exception!
+    try {
+        untypedObjectDeserializer0.mapArray(jsonParser0, defaultDeserializationContext_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationContext"", e);
+    }
+}",0,
+project,0,test055,"public void test055() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DoubleNode doubleNode0 = DoubleNode.valueOf(0.0);
+    JsonParser jsonParser0 = objectMapper0.treeAsTokens(doubleNode0);
+    UntypedObjectDeserializer untypedObjectDeserializer0 = UntypedObjectDeserializer.instance;
+    // Undeclared exception!
+    try {
+        untypedObjectDeserializer0.mapArray(jsonParser0, defaultDeserializationContext_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationContext"", e);
+    }
+}",0,
+project,0,test066,"public void test066() throws Throwable {
+    UntypedObjectDeserializer untypedObjectDeserializer0 = new UntypedObjectDeserializer();
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    JsonNodeFactory jsonNodeFactory0 = new JsonNodeFactory(false);
+    ObjectNode objectNode0 = new ObjectNode(jsonNodeFactory0);
+    objectNode0.put(""&O^]mkA1%%b;TN"", false);
+    JsonParser jsonParser0 = objectMapper0.treeAsTokens(objectNode0);
+    // Undeclared exception!
+    try {
+        untypedObjectDeserializer0.mapArrayToArray(jsonParser0, defaultDeserializationContext_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationContext"", e);
+    }
+}",0,
+project,0,test077,"public void test077() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectNode objectNode0 = objectMapper0.createObjectNode();
+    objectNode0.put((String) null, (String) null);
+    JsonParser jsonParser0 = objectMapper0.treeAsTokens(objectNode0);
+    UntypedObjectDeserializer untypedObjectDeserializer0 = UntypedObjectDeserializer.instance;
+    // Undeclared exception!
+    try {
+        untypedObjectDeserializer0.mapArray(jsonParser0, defaultDeserializationContext_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationContext"", e);
+    }
+}",0,
+project,0,test088,"public void test088() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = new BeanDeserializerFactory((DeserializerFactoryConfig) null);
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    SimpleFilterProvider simpleFilterProvider0 = new SimpleFilterProvider();
+    POJONode pOJONode0 = new POJONode(simpleFilterProvider0);
+    JsonParser jsonParser0 = objectMapper0.treeAsTokens(pOJONode0);
+    UntypedObjectDeserializer untypedObjectDeserializer0 = UntypedObjectDeserializer.instance;
+    // Undeclared exception!
+    try {
+        untypedObjectDeserializer0.mapArrayToArray(jsonParser0, defaultDeserializationContext_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationContext"", e);
+    }
+}",0,
+project,0,test099,"public void test099() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectNode objectNode0 = objectMapper0.createObjectNode();
+    ObjectNode objectNode1 = objectNode0.put(""JSON"", ""JSON"");
+    JsonParser jsonParser0 = objectMapper0.treeAsTokens(objectNode1);
+    UntypedObjectDeserializer untypedObjectDeserializer0 = UntypedObjectDeserializer.instance;
+    // Undeclared exception!
+    try {
+        untypedObjectDeserializer0.mapArray(jsonParser0, defaultDeserializationContext_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationContext"", e);
+    }
+}",0,
+project,0,test1010,"public void test1010() throws Throwable {
+    UntypedObjectDeserializer untypedObjectDeserializer0 = UntypedObjectDeserializer.instance;
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    IntNode intNode0 = new IntNode(10);
+    JsonParser jsonParser0 = objectMapper0.treeAsTokens(intNode0);
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    // Undeclared exception!
+    try {
+        untypedObjectDeserializer0.mapArrayToArray(jsonParser0, defaultDeserializationContext_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationContext"", e);
+    }
+}",0,
+project,0,test1111,"public void test1111() throws Throwable {
+    UntypedObjectDeserializer untypedObjectDeserializer0 = UntypedObjectDeserializer.instance;
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ArrayNode arrayNode0 = objectMapper0.createArrayNode();
+    JsonParser jsonParser0 = arrayNode0.traverse();
+    // Undeclared exception!
+    try {
+        untypedObjectDeserializer0.deserializeWithType(jsonParser0, (DeserializationContext) null, (TypeDeserializer) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.UntypedObjectDeserializer"", e);
+    }
+}",0,
+project,0,test1212,"public void test1212() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    JsonNodeFactory jsonNodeFactory0 = new JsonNodeFactory(true);
+    ArrayNode arrayNode0 = jsonNodeFactory0.arrayNode();
+    arrayNode0.addObject();
+    JsonParser jsonParser0 = objectMapper0.treeAsTokens(arrayNode0);
+    UntypedObjectDeserializer untypedObjectDeserializer0 = new UntypedObjectDeserializer();
+    // Undeclared exception!
+    try {
+        untypedObjectDeserializer0.mapArrayToArray(jsonParser0, defaultDeserializationContext_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationContext"", e);
+    }
+}",0,
+project,0,test1313,"public void test1313() throws Throwable {
+    UntypedObjectDeserializer untypedObjectDeserializer0 = new UntypedObjectDeserializer();
+    JsonFactory jsonFactory0 = new JsonFactory();
+    JsonParser jsonParser0 = jsonFactory0.createParser((InputStream) null);
+    // Undeclared exception!
+    try {
+        untypedObjectDeserializer0.mapObject(jsonParser0, (DeserializationContext) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test1414,"public void test1414() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectNode objectNode0 = objectMapper0.createObjectNode();
+    objectNode0.putNull(""float"");
+    objectNode0.put(""0>?h4BI*q,PS"", (-2916L));
+    JsonParser jsonParser0 = objectMapper0.treeAsTokens(objectNode0);
+    UntypedObjectDeserializer untypedObjectDeserializer0 = new UntypedObjectDeserializer();
+    // Undeclared exception!
+    try {
+        untypedObjectDeserializer0.mapArrayToArray(jsonParser0, defaultDeserializationContext_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationContext"", e);
+    }
+}",0,
+project,0,test1515,"public void test1515() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectNode objectNode0 = objectMapper0.createObjectNode();
+    objectNode0.putNull(""float"");
+    ObjectNode objectNode1 = objectNode0.put(""0>?h4BI*q,PS"", (-2916L));
+    objectNode1.put("""", true);
+    JsonParser jsonParser0 = objectMapper0.treeAsTokens(objectNode0);
+    UntypedObjectDeserializer untypedObjectDeserializer0 = new UntypedObjectDeserializer();
+    // Undeclared exception!
+    try {
+        untypedObjectDeserializer0.mapArrayToArray(jsonParser0, defaultDeserializationContext_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationContext"", e);
+    }
+}",0,
+project,0,test1616,"public void test1616() throws Throwable {
+    UntypedObjectDeserializer untypedObjectDeserializer0 = new UntypedObjectDeserializer();
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    ObjectNode objectNode0 = objectMapper0.createObjectNode();
+    objectNode0.put(""JSON"", ""JSON"");
+    objectNode0.put(""]fX{6Y(o"", "",V`f)l-YTN*"");
+    ObjectNode objectNode1 = objectNode0.putNull(""Q"");
+    objectNode1.putNull("",V`f)l-YTN*"");
+    JsonParser jsonParser0 = objectMapper0.treeAsTokens(objectNode1);
+    // Undeclared exception!
+    try {
+        untypedObjectDeserializer0.mapArray(jsonParser0, defaultDeserializationContext_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationContext"", e);
+    }
+}",0,
+project,0,test1717,"public void test1717() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    JsonNodeFactory jsonNodeFactory0 = JsonNodeFactory.withExactBigDecimals(true);
+    HashMap<String, JsonNode> hashMap0 = new HashMap<String, JsonNode>();
+    ObjectNode objectNode0 = new ObjectNode(jsonNodeFactory0, hashMap0);
+    objectNode0.replace((String) null, objectNode0);
+    JsonParser jsonParser0 = objectMapper0.treeAsTokens(objectNode0);
+    UntypedObjectDeserializer untypedObjectDeserializer0 = UntypedObjectDeserializer.instance;
+    // Undeclared exception!
+    untypedObjectDeserializer0.mapArrayToArray(jsonParser0, defaultDeserializationContext_Impl0);
+}",0,

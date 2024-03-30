@@ -1,0 +1,749 @@
+focal_method,test_prefix,docstring
+"static ByteBuffer readToByteBuffer(InputStream inStream) throws IOException {
+    byte[] buffer = new byte[bufferSize];
+    ByteArrayOutputStream outStream = new ByteArrayOutputStream(bufferSize);
+    int read;
+    while (true) {
+        read = inStream.read(buffer);
+        if (read == -1)
+            break;
+        outStream.write(buffer, 0, read);
+    }
+    ByteBuffer byteData = ByteBuffer.wrap(outStream.toByteArray());
+    return byteData;
+}","public void test011() throws Throwable {
+    // Undeclared exception!
+    try {
+        DataUtil.readToByteBuffer((InputStream) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.helper.DataUtil"", e);
+    }
+}",""
+"static ByteBuffer readToByteBuffer(InputStream inStream) throws IOException {
+    byte[] buffer = new byte[bufferSize];
+    ByteArrayOutputStream outStream = new ByteArrayOutputStream(bufferSize);
+    int read;
+    while (true) {
+        read = inStream.read(buffer);
+        if (read == -1)
+            break;
+        outStream.write(buffer, 0, read);
+    }
+    ByteBuffer byteData = ByteBuffer.wrap(outStream.toByteArray());
+    return byteData;
+}","public void test022() throws Throwable {
+    FileDescriptor fileDescriptor0 = new FileDescriptor();
+    MockFileInputStream mockFileInputStream0 = new MockFileInputStream(fileDescriptor0);
+    try {
+        DataUtil.readToByteBuffer(mockFileInputStream0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.mock.java.io.NativeMockedIO"", e);
+    }
+}",""
+"// reads bytes first into a buffer, then decodes with the appropriate charset. done this way to support
+// switching the chartset midstream when a meta http-equiv tag defines the charset.
+static Document parseByteData(ByteBuffer byteData, String charsetName, String baseUri, Parser parser) {
+    String docData;
+    Document doc = null;
+    if (charsetName == null) {
+        // determine from meta. safe parse as UTF-8
+        // look for <meta http-equiv=""Content-Type"" content=""text/html;charset=gb2312""> or HTML5 <meta charset=""gb2312"">
+        docData = Charset.forName(defaultCharset).decode(byteData).toString();
+        doc = parser.parseInput(docData, baseUri);
+        Element meta = doc.select(""meta[http-equiv=content-type], meta[charset]"").first();
+        if (meta != null) {
+            // if not found, will keep utf-8 as best attempt
+            String foundCharset = meta.hasAttr(""http-equiv"") ? getCharsetFromContentType(meta.attr(""content"")) : meta.attr(""charset"");
+            if (foundCharset != null && foundCharset.length() != 0 && !foundCharset.equals(defaultCharset)) {
+                // need to re-decode
+                charsetName = foundCharset;
+                byteData.rewind();
+                docData = Charset.forName(foundCharset).decode(byteData).toString();
+                doc = null;
+            }
+        }
+    } else {
+        // specified by content type header (or by user on file load)
+        Validate.notEmpty(charsetName, ""Must set charset arg to character set of file to parse. Set to null to attempt to detect from HTML"");
+        docData = Charset.forName(charsetName).decode(byteData).toString();
+    }
+    if (doc == null) {
+        // there are times where there is a spurious byte-order-mark at the start of the text. Shouldn't be present
+        // in utf-8. If after decoding, there is a BOM, strip it; otherwise will cause the parser to go straight
+        // into head mode
+        if (docData.charAt(0) == 65279)
+            docData = docData.substring(1);
+        doc = parser.parseInput(docData, baseUri);
+        doc.outputSettings().charset(charsetName);
+    }
+    return doc;
+}","public void test033() throws Throwable {
+    byte[] byteArray0 = new byte[9];
+    ByteBuffer byteBuffer0 = ByteBuffer.wrap(byteArray0);
+    Parser parser0 = Parser.xmlParser();
+    // Undeclared exception!
+    try {
+        DataUtil.parseByteData(byteBuffer0, ""charset"", (String) null, parser0);
+        fail(""Expecting exception: UnsupportedCharsetException"");
+    } catch (UnsupportedCharsetException e) {
+        //
+        // charset
+        //
+        verifyException(""java.nio.charset.Charset"", e);
+    }
+}",""
+"// reads bytes first into a buffer, then decodes with the appropriate charset. done this way to support
+// switching the chartset midstream when a meta http-equiv tag defines the charset.
+static Document parseByteData(ByteBuffer byteData, String charsetName, String baseUri, Parser parser) {
+    String docData;
+    Document doc = null;
+    if (charsetName == null) {
+        // determine from meta. safe parse as UTF-8
+        // look for <meta http-equiv=""Content-Type"" content=""text/html;charset=gb2312""> or HTML5 <meta charset=""gb2312"">
+        docData = Charset.forName(defaultCharset).decode(byteData).toString();
+        doc = parser.parseInput(docData, baseUri);
+        Element meta = doc.select(""meta[http-equiv=content-type], meta[charset]"").first();
+        if (meta != null) {
+            // if not found, will keep utf-8 as best attempt
+            String foundCharset = meta.hasAttr(""http-equiv"") ? getCharsetFromContentType(meta.attr(""content"")) : meta.attr(""charset"");
+            if (foundCharset != null && foundCharset.length() != 0 && !foundCharset.equals(defaultCharset)) {
+                // need to re-decode
+                charsetName = foundCharset;
+                byteData.rewind();
+                docData = Charset.forName(foundCharset).decode(byteData).toString();
+                doc = null;
+            }
+        }
+    } else {
+        // specified by content type header (or by user on file load)
+        Validate.notEmpty(charsetName, ""Must set charset arg to character set of file to parse. Set to null to attempt to detect from HTML"");
+        docData = Charset.forName(charsetName).decode(byteData).toString();
+    }
+    if (doc == null) {
+        // there are times where there is a spurious byte-order-mark at the start of the text. Shouldn't be present
+        // in utf-8. If after decoding, there is a BOM, strip it; otherwise will cause the parser to go straight
+        // into head mode
+        if (docData.charAt(0) == 65279)
+            docData = docData.substring(1);
+        doc = parser.parseInput(docData, baseUri);
+        doc.outputSettings().charset(charsetName);
+    }
+    return doc;
+}","public void test044() throws Throwable {
+    Charset charset0 = Charset.defaultCharset();
+    ByteBuffer byteBuffer0 = charset0.encode(""org.jsoup.helper.DataUtil"");
+    Parser parser0 = Parser.xmlParser();
+    // Undeclared exception!
+    try {
+        DataUtil.parseByteData(byteBuffer0, ""rQ]69>0KK$J{YU2%"", ""rQ]69>0KK$J{YU2%"", parser0);
+        fail(""Expecting exception: IllegalCharsetNameException"");
+    } catch (IllegalCharsetNameException e) {
+        //
+        // rQ]69>0KK$J{YU2%
+        //
+        verifyException(""java.nio.charset.Charset"", e);
+    }
+}",""
+"// reads bytes first into a buffer, then decodes with the appropriate charset. done this way to support
+// switching the chartset midstream when a meta http-equiv tag defines the charset.
+static Document parseByteData(ByteBuffer byteData, String charsetName, String baseUri, Parser parser) {
+    String docData;
+    Document doc = null;
+    if (charsetName == null) {
+        // determine from meta. safe parse as UTF-8
+        // look for <meta http-equiv=""Content-Type"" content=""text/html;charset=gb2312""> or HTML5 <meta charset=""gb2312"">
+        docData = Charset.forName(defaultCharset).decode(byteData).toString();
+        doc = parser.parseInput(docData, baseUri);
+        Element meta = doc.select(""meta[http-equiv=content-type], meta[charset]"").first();
+        if (meta != null) {
+            // if not found, will keep utf-8 as best attempt
+            String foundCharset = meta.hasAttr(""http-equiv"") ? getCharsetFromContentType(meta.attr(""content"")) : meta.attr(""charset"");
+            if (foundCharset != null && foundCharset.length() != 0 && !foundCharset.equals(defaultCharset)) {
+                // need to re-decode
+                charsetName = foundCharset;
+                byteData.rewind();
+                docData = Charset.forName(foundCharset).decode(byteData).toString();
+                doc = null;
+            }
+        }
+    } else {
+        // specified by content type header (or by user on file load)
+        Validate.notEmpty(charsetName, ""Must set charset arg to character set of file to parse. Set to null to attempt to detect from HTML"");
+        docData = Charset.forName(charsetName).decode(byteData).toString();
+    }
+    if (doc == null) {
+        // there are times where there is a spurious byte-order-mark at the start of the text. Shouldn't be present
+        // in utf-8. If after decoding, there is a BOM, strip it; otherwise will cause the parser to go straight
+        // into head mode
+        if (docData.charAt(0) == 65279)
+            docData = docData.substring(1);
+        doc = parser.parseInput(docData, baseUri);
+        doc.outputSettings().charset(charsetName);
+    }
+    return doc;
+}","public void test055() throws Throwable {
+    // Undeclared exception!
+    try {
+        DataUtil.parseByteData((ByteBuffer) null, (String) null, (String) null, (Parser) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.nio.charset.CharsetDecoder"", e);
+    }
+}",""
+"// reads bytes first into a buffer, then decodes with the appropriate charset. done this way to support
+// switching the chartset midstream when a meta http-equiv tag defines the charset.
+static Document parseByteData(ByteBuffer byteData, String charsetName, String baseUri, Parser parser) {
+    String docData;
+    Document doc = null;
+    if (charsetName == null) {
+        // determine from meta. safe parse as UTF-8
+        // look for <meta http-equiv=""Content-Type"" content=""text/html;charset=gb2312""> or HTML5 <meta charset=""gb2312"">
+        docData = Charset.forName(defaultCharset).decode(byteData).toString();
+        doc = parser.parseInput(docData, baseUri);
+        Element meta = doc.select(""meta[http-equiv=content-type], meta[charset]"").first();
+        if (meta != null) {
+            // if not found, will keep utf-8 as best attempt
+            String foundCharset = meta.hasAttr(""http-equiv"") ? getCharsetFromContentType(meta.attr(""content"")) : meta.attr(""charset"");
+            if (foundCharset != null && foundCharset.length() != 0 && !foundCharset.equals(defaultCharset)) {
+                // need to re-decode
+                charsetName = foundCharset;
+                byteData.rewind();
+                docData = Charset.forName(foundCharset).decode(byteData).toString();
+                doc = null;
+            }
+        }
+    } else {
+        // specified by content type header (or by user on file load)
+        Validate.notEmpty(charsetName, ""Must set charset arg to character set of file to parse. Set to null to attempt to detect from HTML"");
+        docData = Charset.forName(charsetName).decode(byteData).toString();
+    }
+    if (doc == null) {
+        // there are times where there is a spurious byte-order-mark at the start of the text. Shouldn't be present
+        // in utf-8. If after decoding, there is a BOM, strip it; otherwise will cause the parser to go straight
+        // into head mode
+        if (docData.charAt(0) == 65279)
+            docData = docData.substring(1);
+        doc = parser.parseInput(docData, baseUri);
+        doc.outputSettings().charset(charsetName);
+    }
+    return doc;
+}","public void test066() throws Throwable {
+    Charset charset0 = Charset.defaultCharset();
+    ByteBuffer byteBuffer0 = charset0.encode("""");
+    Parser parser0 = Parser.htmlParser();
+    // Undeclared exception!
+    try {
+        DataUtil.parseByteData(byteBuffer0, """", """", parser0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Must set charset arg to character set of file to parse. Set to null to attempt to detect from HTML
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",""
+"public static Document load(InputStream in, String charsetName, String baseUri, Parser parser) throws IOException {
+    ByteBuffer byteData = readToByteBuffer(in);
+    return parseByteData(byteData, charsetName, baseUri, parser);
+}","public void test077() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) 12, 65279);
+    BufferedInputStream bufferedInputStream0 = new BufferedInputStream(byteArrayInputStream0, (byte) 12);
+    // Undeclared exception!
+    try {
+        DataUtil.load((InputStream) bufferedInputStream0, ""m"", ""m"", (Parser) null);
+        fail(""Expecting exception: UnsupportedCharsetException"");
+    } catch (UnsupportedCharsetException e) {
+        //
+        // m
+        //
+        verifyException(""java.nio.charset.Charset"", e);
+    }
+}","/**
+ * Parses a Document from an input steam, using the provided Parser.
+ * @param in input stream to parse. You will need to close it.
+ * @param charsetName character set of input
+ * @param baseUri base URI of document, to resolve relative links against
+ * @param parser alternate {@link Parser#xmlParser() parser} to use.
+ * @return Document
+ * @throws IOException on IO error
+ */"
+"public static Document load(InputStream in, String charsetName, String baseUri, Parser parser) throws IOException {
+    ByteBuffer byteData = readToByteBuffer(in);
+    return parseByteData(byteData, charsetName, baseUri, parser);
+}","public void test088() throws Throwable {
+    MockFile mockFile0 = new MockFile("""", ""|2|"");
+    File file0 = MockFile.createTempFile(""|2|"", ""|2|"", (File) mockFile0);
+    MockFileInputStream mockFileInputStream0 = new MockFileInputStream(file0);
+    Parser parser0 = Parser.xmlParser();
+    // Undeclared exception!
+    try {
+        DataUtil.load((InputStream) mockFileInputStream0, ""|2|"", """", parser0);
+        fail(""Expecting exception: IllegalCharsetNameException"");
+    } catch (IllegalCharsetNameException e) {
+        //
+        // |2|
+        //
+        verifyException(""java.nio.charset.Charset"", e);
+    }
+}","/**
+ * Parses a Document from an input steam, using the provided Parser.
+ * @param in input stream to parse. You will need to close it.
+ * @param charsetName character set of input
+ * @param baseUri base URI of document, to resolve relative links against
+ * @param parser alternate {@link Parser#xmlParser() parser} to use.
+ * @return Document
+ * @throws IOException on IO error
+ */"
+"public static Document load(InputStream in, String charsetName, String baseUri, Parser parser) throws IOException {
+    ByteBuffer byteData = readToByteBuffer(in);
+    return parseByteData(byteData, charsetName, baseUri, parser);
+}","public void test099() throws Throwable {
+    Parser parser0 = Parser.xmlParser();
+    // Undeclared exception!
+    try {
+        DataUtil.load((InputStream) null, """", """", parser0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.helper.DataUtil"", e);
+    }
+}","/**
+ * Parses a Document from an input steam, using the provided Parser.
+ * @param in input stream to parse. You will need to close it.
+ * @param charsetName character set of input
+ * @param baseUri base URI of document, to resolve relative links against
+ * @param parser alternate {@link Parser#xmlParser() parser} to use.
+ * @return Document
+ * @throws IOException on IO error
+ */"
+"public static Document load(InputStream in, String charsetName, String baseUri, Parser parser) throws IOException {
+    ByteBuffer byteData = readToByteBuffer(in);
+    return parseByteData(byteData, charsetName, baseUri, parser);
+}","public void test1010() throws Throwable {
+    PipedInputStream pipedInputStream0 = new PipedInputStream(3);
+    Parser parser0 = Parser.htmlParser();
+    try {
+        DataUtil.load((InputStream) pipedInputStream0, (String) null, (String) null, parser0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Pipe not connected
+        //
+        verifyException(""java.io.PipedInputStream"", e);
+    }
+}","/**
+ * Parses a Document from an input steam, using the provided Parser.
+ * @param in input stream to parse. You will need to close it.
+ * @param charsetName character set of input
+ * @param baseUri base URI of document, to resolve relative links against
+ * @param parser alternate {@link Parser#xmlParser() parser} to use.
+ * @return Document
+ * @throws IOException on IO error
+ */"
+"public static Document load(InputStream in, String charsetName, String baseUri) throws IOException {
+    ByteBuffer byteData = readToByteBuffer(in);
+    return parseByteData(byteData, charsetName, baseUri, Parser.htmlParser());
+}","public void test1111() throws Throwable {
+    byte[] byteArray0 = new byte[3];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) (-1), 0);
+    // Undeclared exception!
+    try {
+        DataUtil.load((InputStream) byteArrayInputStream0, ""http-equiv"", ""bPee$@q"");
+        fail(""Expecting exception: UnsupportedCharsetException"");
+    } catch (UnsupportedCharsetException e) {
+        //
+        // http-equiv
+        //
+        verifyException(""java.nio.charset.Charset"", e);
+    }
+}","/**
+ * Parses a Document from an input steam.
+ * @param in input stream to parse. You will need to close it.
+ * @param charsetName character set of input
+ * @param baseUri base URI of document, to resolve relative links against
+ * @return Document
+ * @throws IOException on IO error
+ */"
+"public static Document load(InputStream in, String charsetName, String baseUri) throws IOException {
+    ByteBuffer byteData = readToByteBuffer(in);
+    return parseByteData(byteData, charsetName, baseUri, Parser.htmlParser());
+}","public void test1212() throws Throwable {
+    byte[] byteArray0 = new byte[7];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, 2309, (byte) (-40));
+    // Undeclared exception!
+    try {
+        DataUtil.load((InputStream) byteArrayInputStream0, ""J\""k!#N $O!CJ]g)K"", ""J\""k!#N $O!CJ]g)K"");
+        fail(""Expecting exception: IllegalCharsetNameException"");
+    } catch (IllegalCharsetNameException e) {
+        //
+        // J\""k!#N $O!CJ]g)K
+        //
+        verifyException(""java.nio.charset.Charset"", e);
+    }
+}","/**
+ * Parses a Document from an input steam.
+ * @param in input stream to parse. You will need to close it.
+ * @param charsetName character set of input
+ * @param baseUri base URI of document, to resolve relative links against
+ * @return Document
+ * @throws IOException on IO error
+ */"
+"public static Document load(InputStream in, String charsetName, String baseUri) throws IOException {
+    ByteBuffer byteData = readToByteBuffer(in);
+    return parseByteData(byteData, charsetName, baseUri, Parser.htmlParser());
+}","public void test1313() throws Throwable {
+    byte[] byteArray0 = new byte[5];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) 0, 375);
+    // Undeclared exception!
+    try {
+        DataUtil.load((InputStream) byteArrayInputStream0, """", ""charset"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Must set charset arg to character set of file to parse. Set to null to attempt to detect from HTML
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Parses a Document from an input steam.
+ * @param in input stream to parse. You will need to close it.
+ * @param charsetName character set of input
+ * @param baseUri base URI of document, to resolve relative links against
+ * @return Document
+ * @throws IOException on IO error
+ */"
+"public static Document load(InputStream in, String charsetName, String baseUri) throws IOException {
+    ByteBuffer byteData = readToByteBuffer(in);
+    return parseByteData(byteData, charsetName, baseUri, Parser.htmlParser());
+}","public void test1414() throws Throwable {
+    byte[] byteArray0 = new byte[6];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) (-73), 1);
+    // Undeclared exception!
+    try {
+        DataUtil.load((InputStream) byteArrayInputStream0, ""J"", ""J"");
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.io.ByteArrayInputStream"", e);
+    }
+}","/**
+ * Parses a Document from an input steam.
+ * @param in input stream to parse. You will need to close it.
+ * @param charsetName character set of input
+ * @param baseUri base URI of document, to resolve relative links against
+ * @return Document
+ * @throws IOException on IO error
+ */"
+"public static Document load(InputStream in, String charsetName, String baseUri) throws IOException {
+    ByteBuffer byteData = readToByteBuffer(in);
+    return parseByteData(byteData, charsetName, baseUri, Parser.htmlParser());
+}","public void test1515() throws Throwable {
+    FileDescriptor fileDescriptor0 = new FileDescriptor();
+    MockFileInputStream mockFileInputStream0 = new MockFileInputStream(fileDescriptor0);
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(mockFileInputStream0, mockFileInputStream0);
+    try {
+        DataUtil.load((InputStream) sequenceInputStream0, ""1lk7KQ@~ "", ""Must set charset arg to character set of file to parse. Set to null to attempt to detect from HTML"");
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.mock.java.io.NativeMockedIO"", e);
+    }
+}","/**
+ * Parses a Document from an input steam.
+ * @param in input stream to parse. You will need to close it.
+ * @param charsetName character set of input
+ * @param baseUri base URI of document, to resolve relative links against
+ * @return Document
+ * @throws IOException on IO error
+ */"
+"public static Document load(File in, String charsetName, String baseUri) throws IOException {
+    FileInputStream inStream = null;
+    try {
+        inStream = new FileInputStream(in);
+        ByteBuffer byteData = readToByteBuffer(inStream);
+        return parseByteData(byteData, charsetName, baseUri, Parser.htmlParser());
+    } finally {
+        if (inStream != null)
+            inStream.close();
+    }
+}","public void test1616() throws Throwable {
+    File file0 = MockFile.createTempFile(""}I^BQbZ>9E]lM"", ""1h{x"");
+    // Undeclared exception!
+    try {
+        DataUtil.load(file0, ""1h{x"", ""}I^BQbZ>9E]lM"");
+        fail(""Expecting exception: IllegalCharsetNameException"");
+    } catch (IllegalCharsetNameException e) {
+        //
+        // 1h{x
+        //
+        verifyException(""java.nio.charset.Charset"", e);
+    }
+}","/**
+ * Loads a file to a Document.
+ * @param in file to load
+ * @param charsetName character set of input
+ * @param baseUri base URI of document, to resolve relative links against
+ * @return Document
+ * @throws IOException on IO error
+ */"
+"public static Document load(File in, String charsetName, String baseUri) throws IOException {
+    FileInputStream inStream = null;
+    try {
+        inStream = new FileInputStream(in);
+        ByteBuffer byteData = readToByteBuffer(inStream);
+        return parseByteData(byteData, charsetName, baseUri, Parser.htmlParser());
+    } finally {
+        if (inStream != null)
+            inStream.close();
+    }
+}","public void test1717() throws Throwable {
+    MockFile mockFile0 = new MockFile(""%i#IWVpcB''hy7"");
+    File file0 = MockFile.createTempFile(""%i#IWVpcB''hy7"", ""%i#IWVpcB''hy7"", (File) mockFile0);
+    // Undeclared exception!
+    try {
+        DataUtil.load(file0, """", ""%i#IWVpcB''hy7"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Must set charset arg to character set of file to parse. Set to null to attempt to detect from HTML
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Loads a file to a Document.
+ * @param in file to load
+ * @param charsetName character set of input
+ * @param baseUri base URI of document, to resolve relative links against
+ * @return Document
+ * @throws IOException on IO error
+ */"
+"public static Document load(File in, String charsetName, String baseUri) throws IOException {
+    FileInputStream inStream = null;
+    try {
+        inStream = new FileInputStream(in);
+        ByteBuffer byteData = readToByteBuffer(inStream);
+        return parseByteData(byteData, charsetName, baseUri, Parser.htmlParser());
+    } finally {
+        if (inStream != null)
+            inStream.close();
+    }
+}","public void test1818() throws Throwable {
+    MockFile mockFile0 = new MockFile(""org.jsoup.nodes.Attribute"");
+    try {
+        DataUtil.load((File) mockFile0, ""vB*2=go T"", ""[P#W6*\""H"");
+        fail(""Expecting exception: FileNotFoundException"");
+    } catch (FileNotFoundException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.mock.java.io.MockFileInputStream"", e);
+    }
+}","/**
+ * Loads a file to a Document.
+ * @param in file to load
+ * @param charsetName character set of input
+ * @param baseUri base URI of document, to resolve relative links against
+ * @return Document
+ * @throws IOException on IO error
+ */"
+"static String getCharsetFromContentType(String contentType) {
+    if (contentType == null)
+        return null;
+    Matcher m = charsetPattern.matcher(contentType);
+    if (m.find()) {
+        String charset = m.group(1).trim();
+        charset = charset.toUpperCase(Locale.ENGLISH);
+        return charset;
+    }
+    return null;
+}","public void test1919() throws Throwable {
+    String string0 = DataUtil.getCharsetFromContentType((String) null);
+    assertNull(string0);
+}","/**
+ * Parse out a charset from a content type header. If the charset is not supported, returns null (so the default
+ * will kick in.)
+ * @param contentType e.g. ""text/html; charset=EUC-JP""
+ * @return ""EUC-JP"", or null if not found. Charset is trimmed and uppercased.
+ */"
+"static String getCharsetFromContentType(String contentType) {
+    if (contentType == null)
+        return null;
+    Matcher m = charsetPattern.matcher(contentType);
+    if (m.find()) {
+        String charset = m.group(1).trim();
+        charset = charset.toUpperCase(Locale.ENGLISH);
+        return charset;
+    }
+    return null;
+}","public void test2020() throws Throwable {
+    String string0 = DataUtil.getCharsetFromContentType("""");
+    assertNull(string0);
+}","/**
+ * Parse out a charset from a content type header. If the charset is not supported, returns null (so the default
+ * will kick in.)
+ * @param contentType e.g. ""text/html; charset=EUC-JP""
+ * @return ""EUC-JP"", or null if not found. Charset is trimmed and uppercased.
+ */"
+"public String baseUri() {
+    return baseUri;
+}","public void test2121() throws Throwable {
+    byte[] byteArray0 = new byte[5];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    DataInputStream dataInputStream0 = new DataInputStream(byteArrayInputStream0);
+    PushbackInputStream pushbackInputStream0 = new PushbackInputStream(dataInputStream0);
+    Document document0 = DataUtil.load((InputStream) pushbackInputStream0, (String) null, """");
+    assertEquals("""", document0.baseUri());
+}","/**
+ *     Get the base URI of this node.
+ *     @return base URI
+ */"
+"public boolean isBlock() {
+    return tag.isBlock();
+}","public void test2222() throws Throwable {
+    ByteBuffer byteBuffer0 = ByteBuffer.allocateDirect(20);
+    Parser parser0 = Parser.htmlParser();
+    Document document0 = DataUtil.parseByteData(byteBuffer0, ""UTF-8"", ""-5s'(s"", parser0);
+    assertFalse(document0.isBlock());
+}","/**
+ * Test if this element is a block-level element. (E.g. {@code <div> == true} or an inline element
+ * {@code <p> == false}).
+ *
+ * @return true if block, false if not (and thus inline)
+ */"
+"public static Document load(File in, String charsetName, String baseUri) throws IOException {
+    FileInputStream inStream = null;
+    try {
+        inStream = new FileInputStream(in);
+        ByteBuffer byteData = readToByteBuffer(inStream);
+        return parseByteData(byteData, charsetName, baseUri, Parser.htmlParser());
+    } finally {
+        if (inStream != null)
+            inStream.close();
+    }
+}","public void test2323() throws Throwable {
+    MockFile mockFile0 = new MockFile(""eMOm7:77|eeBPQG1J4"");
+    File file0 = MockFile.createTempFile(""eMOm7:77|eeBPQG1J4"", ""B|J).FQ"", (File) mockFile0);
+    // Undeclared exception!
+    try {
+        DataUtil.load(file0, ""f"", ""AyhlOB%Rm_a"");
+        fail(""Expecting exception: UnsupportedCharsetException"");
+    } catch (UnsupportedCharsetException e) {
+        //
+        // f
+        //
+        verifyException(""java.nio.charset.Charset"", e);
+    }
+}","/**
+ * Loads a file to a Document.
+ * @param in file to load
+ * @param charsetName character set of input
+ * @param baseUri base URI of document, to resolve relative links against
+ * @return Document
+ * @throws IOException on IO error
+ */"
+"public static Document load(File in, String charsetName, String baseUri) throws IOException {
+    FileInputStream inStream = null;
+    try {
+        inStream = new FileInputStream(in);
+        ByteBuffer byteData = readToByteBuffer(inStream);
+        return parseByteData(byteData, charsetName, baseUri, Parser.htmlParser());
+    } finally {
+        if (inStream != null)
+            inStream.close();
+    }
+}","public void test2424() throws Throwable {
+    // Undeclared exception!
+    try {
+        DataUtil.load((File) null, """", """");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.mock.java.io.MockFileInputStream"", e);
+    }
+}","/**
+ * Loads a file to a Document.
+ * @param in file to load
+ * @param charsetName character set of input
+ * @param baseUri base URI of document, to resolve relative links against
+ * @return Document
+ * @throws IOException on IO error
+ */"
+"public String baseUri() {
+    return baseUri;
+}","public void test2525() throws Throwable {
+    File file0 = MockFile.createTempFile(""4(0VrUXQ*zG_q"", (String) null);
+    Document document0 = DataUtil.load(file0, (String) null, ""4(0VrUXQ*zG_q"");
+    assertEquals(""4(0VrUXQ*zG_q"", document0.baseUri());
+}","/**
+ *     Get the base URI of this node.
+ *     @return base URI
+ */"
+"public static Document load(InputStream in, String charsetName, String baseUri, Parser parser) throws IOException {
+    ByteBuffer byteData = readToByteBuffer(in);
+    return parseByteData(byteData, charsetName, baseUri, parser);
+}","public void test2626() throws Throwable {
+    Enumeration<InputStream> enumeration0 = (Enumeration<InputStream>) mock(Enumeration.class, new ViolatedAssumptionAnswer());
+    doReturn(false).when(enumeration0).hasMoreElements();
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(enumeration0);
+    Parser parser0 = Parser.htmlParser();
+    // Undeclared exception!
+    try {
+        DataUtil.load((InputStream) sequenceInputStream0, """", """", parser0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Must set charset arg to character set of file to parse. Set to null to attempt to detect from HTML
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Parses a Document from an input steam, using the provided Parser.
+ * @param in input stream to parse. You will need to close it.
+ * @param charsetName character set of input
+ * @param baseUri base URI of document, to resolve relative links against
+ * @param parser alternate {@link Parser#xmlParser() parser} to use.
+ * @return Document
+ * @throws IOException on IO error
+ */"
+"public static Document load(InputStream in, String charsetName, String baseUri) throws IOException {
+    ByteBuffer byteData = readToByteBuffer(in);
+    return parseByteData(byteData, charsetName, baseUri, Parser.htmlParser());
+}","public void test2727() throws Throwable {
+    // Undeclared exception!
+    try {
+        DataUtil.load((InputStream) null, ""|"", ""|"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.helper.DataUtil"", e);
+    }
+}","/**
+ * Parses a Document from an input steam.
+ * @param in input stream to parse. You will need to close it.
+ * @param charsetName character set of input
+ * @param baseUri base URI of document, to resolve relative links against
+ * @return Document
+ * @throws IOException on IO error
+ */"

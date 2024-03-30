@@ -1,0 +1,135 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    CpioArchiveInputStream cpioArchiveInputStream0 = new CpioArchiveInputStream((InputStream) null);
+    // Undeclared exception!
+    try {
+        cpioArchiveInputStream0.getNextCPIOEntry();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveInputStream"", e);
+    }
+}",0,
+project,0,test011,"public void test011() throws Throwable {
+    Enumeration<InputStream> enumeration0 = (Enumeration<InputStream>) mock(Enumeration.class, new ViolatedAssumptionAnswer());
+    doReturn(false).when(enumeration0).hasMoreElements();
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(enumeration0);
+    CpioArchiveInputStream cpioArchiveInputStream0 = new CpioArchiveInputStream(sequenceInputStream0, 1680);
+    int int0 = cpioArchiveInputStream0.available();
+    assertEquals(1, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test022,"public void test022() throws Throwable {
+    Enumeration<InputStream> enumeration0 = (Enumeration<InputStream>) mock(Enumeration.class, new ViolatedAssumptionAnswer());
+    doReturn(false, false).when(enumeration0).hasMoreElements();
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(enumeration0);
+    CpioArchiveInputStream cpioArchiveInputStream0 = new CpioArchiveInputStream(sequenceInputStream0, 1680);
+    cpioArchiveInputStream0.close();
+    try {
+        cpioArchiveInputStream0.available();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream closed
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveInputStream"", e);
+    }
+}",0,
+project,0,test033,"public void test033() throws Throwable {
+    byte[] byteArray0 = new byte[9];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    PushbackInputStream pushbackInputStream0 = new PushbackInputStream(byteArrayInputStream0, 1489);
+    CpioArchiveInputStream cpioArchiveInputStream0 = new CpioArchiveInputStream(pushbackInputStream0);
+    try {
+        cpioArchiveInputStream0.getNextCPIOEntry();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unknown magic [\u0000\u0000\u0000\u0000\u0000\u0000]. Occured at byte: 6
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveInputStream"", e);
+    }
+}",0,
+project,0,test044,"public void test044() throws Throwable {
+    byte[] byteArray0 = new byte[6];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) (-108), (byte) 0);
+    CpioArchiveInputStream cpioArchiveInputStream0 = new CpioArchiveInputStream(byteArrayInputStream0);
+    // Undeclared exception!
+    try {
+        cpioArchiveInputStream0.read(byteArray0, (int) (byte) (-128), 0);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveInputStream"", e);
+    }
+}",1,
+project,0,test066,"public void test066() throws Throwable {
+    FileDescriptor fileDescriptor0 = new FileDescriptor();
+    MockFileInputStream mockFileInputStream0 = new MockFileInputStream(fileDescriptor0);
+    CpioArchiveInputStream cpioArchiveInputStream0 = new CpioArchiveInputStream(mockFileInputStream0, 1429);
+    byte[] byteArray0 = new byte[7];
+    // Undeclared exception!
+    try {
+        cpioArchiveInputStream0.read(byteArray0, (int) (byte) 80, (-457));
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveInputStream"", e);
+    }
+}",1,
+project,0,test077,"public void test077() throws Throwable {
+    CpioArchiveInputStream cpioArchiveInputStream0 = new CpioArchiveInputStream((InputStream) null);
+    cpioArchiveInputStream0.skip(0L);
+}",1,
+project,0,test088,"public void test088() throws Throwable {
+    CpioArchiveInputStream cpioArchiveInputStream0 = new CpioArchiveInputStream((InputStream) null);
+    // Undeclared exception!
+    try {
+        cpioArchiveInputStream0.skip((-163L));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // negative skip length
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveInputStream"", e);
+    }
+}",1,
+project,0,test099,"public void test099() throws Throwable {
+    PipedInputStream pipedInputStream0 = new PipedInputStream();
+    CpioArchiveInputStream cpioArchiveInputStream0 = new CpioArchiveInputStream(pipedInputStream0);
+    cpioArchiveInputStream0.skip((byte) 34);
+}",0,
+project,0,test1010,"public void test1010() throws Throwable {
+    byte[] byteArray0 = new byte[7];
+    CpioArchiveInputStream.matches(byteArray0, (byte) 43);
+}",0,
+project,0,test1111,"public void test1111() throws Throwable {
+    byte[] byteArray0 = new byte[2];
+    CpioArchiveInputStream.matches(byteArray0, (byte) (-39));
+}",0,
+project,0,test1212,"public void test1212() throws Throwable {
+    CpioArchiveInputStream cpioArchiveInputStream0 = new CpioArchiveInputStream((InputStream) null);
+    byte[] byteArray0 = new byte[7];
+    cpioArchiveInputStream0.read(byteArray0, 1, (int) (byte) 1);
+}",1,
+project,0,test1313,"public void test1313() throws Throwable {
+    byte[] byteArray0 = new byte[9];
+    byteArray0[0] = (byte) (-20);
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    PushbackInputStream pushbackInputStream0 = new PushbackInputStream(byteArrayInputStream0, 1489);
+    CpioArchiveInputStream cpioArchiveInputStream0 = new CpioArchiveInputStream(pushbackInputStream0);
+    try {
+        cpioArchiveInputStream0.getNextCPIOEntry();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unknown magic [\uFFFD\u0000\u0000\u0000\u0000\u0000]. Occured at byte: 6
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveInputStream"", e);
+    }
+}",0,

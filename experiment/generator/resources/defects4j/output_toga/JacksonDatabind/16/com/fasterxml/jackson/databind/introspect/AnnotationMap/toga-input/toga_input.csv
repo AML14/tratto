@@ -1,0 +1,130 @@
+focal_method,test_prefix,docstring
+"public boolean add(Annotation ann) {
+    return _add(ann);
+}","public void test000() throws Throwable {
+    AnnotationMap annotationMap0 = new AnnotationMap();
+    // Undeclared exception!
+    try {
+        annotationMap0.add((Annotation) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.introspect.AnnotationMap"", e);
+    }
+}","/**
+ * Method called to add specified annotation in the Map.
+ *
+ * @return True if the addition changed the contents, that is, this map did not
+ *   already have specified annotation
+ */"
+"@SuppressWarnings(""unchecked"")
+@Override
+public <A extends Annotation> A get(Class<A> cls) {
+    if (_annotations == null) {
+        return null;
+    }
+    return (A) _annotations.get(cls);
+}","public void test022() throws Throwable {
+    AnnotationMap annotationMap0 = new AnnotationMap();
+    Class<Annotation> class0 = Annotation.class;
+    Annotation annotation0 = annotationMap0.get(class0);
+    assertNull(annotation0);
+}",""
+"public Iterable<Annotation> annotations() {
+    if (_annotations == null || _annotations.size() == 0) {
+        return Collections.emptyList();
+    }
+    return _annotations.values();
+}","public void test033() throws Throwable {
+    AnnotationMap annotationMap0 = new AnnotationMap();
+    Iterable<Annotation> iterable0 = annotationMap0.annotations();
+    assertNotNull(iterable0);
+}","/**
+ * @since 2.3
+ */"
+"public static AnnotationMap merge(AnnotationMap primary, AnnotationMap secondary) {
+    if (primary == null || primary._annotations == null || primary._annotations.isEmpty()) {
+        return secondary;
+    }
+    if (secondary == null || secondary._annotations == null || secondary._annotations.isEmpty()) {
+        return primary;
+    }
+    HashMap<Class<? extends Annotation>, Annotation> annotations = new HashMap<Class<? extends Annotation>, Annotation>();
+    // add secondary ones first
+    for (Annotation ann : secondary._annotations.values()) {
+        annotations.put(ann.annotationType(), ann);
+    }
+    // to be overridden by primary ones
+    for (Annotation ann : primary._annotations.values()) {
+        annotations.put(ann.annotationType(), ann);
+    }
+    return new AnnotationMap(annotations);
+}","public void test066() throws Throwable {
+    AnnotationMap annotationMap0 = AnnotationMap.merge((AnnotationMap) null, (AnnotationMap) null);
+    assertNull(annotationMap0);
+}",""
+"public static AnnotationMap merge(AnnotationMap primary, AnnotationMap secondary) {
+    if (primary == null || primary._annotations == null || primary._annotations.isEmpty()) {
+        return secondary;
+    }
+    if (secondary == null || secondary._annotations == null || secondary._annotations.isEmpty()) {
+        return primary;
+    }
+    HashMap<Class<? extends Annotation>, Annotation> annotations = new HashMap<Class<? extends Annotation>, Annotation>();
+    // add secondary ones first
+    for (Annotation ann : secondary._annotations.values()) {
+        annotations.put(ann.annotationType(), ann);
+    }
+    // to be overridden by primary ones
+    for (Annotation ann : primary._annotations.values()) {
+        annotations.put(ann.annotationType(), ann);
+    }
+    return new AnnotationMap(annotations);
+}","public void test077() throws Throwable {
+    AnnotationMap annotationMap0 = new AnnotationMap();
+    AnnotationMap annotationMap1 = AnnotationMap.merge(annotationMap0, (AnnotationMap) null);
+    assertNull(annotationMap1);
+}",""
+"@Override
+public int size() {
+    return (_annotations == null) ? 0 : _annotations.size();
+}","public void test1414() throws Throwable {
+    AnnotationMap annotationMap0 = new AnnotationMap();
+    int int0 = annotationMap0.size();
+    assertEquals(0, int0);
+}",""
+"public boolean addIfNotPresent(Annotation ann) {
+    if (_annotations == null || !_annotations.containsKey(ann.annotationType())) {
+        _add(ann);
+        return true;
+    }
+    return false;
+}","public void test1515() throws Throwable {
+    AnnotationMap annotationMap0 = new AnnotationMap();
+    // Undeclared exception!
+    try {
+        annotationMap0.addIfNotPresent((Annotation) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.introspect.AnnotationMap"", e);
+    }
+}","/**
+ * Method called to add specified annotation in the Map, but
+ * only if it didn't yet exist.
+ */"
+"@Override
+public String toString() {
+    if (_annotations == null) {
+        return ""[null]"";
+    }
+    return _annotations.toString();
+}","public void test1818() throws Throwable {
+    AnnotationMap annotationMap0 = new AnnotationMap();
+    String string0 = annotationMap0.toString();
+    assertEquals(""[null]"", string0);
+}",""

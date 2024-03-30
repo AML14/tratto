@@ -1,0 +1,25 @@
+focal_method,test_prefix,docstring
+"@Override
+public void process(Node externs, Node root) {
+    RemoveConstantRValuesCallback cb = new RemoveConstantRValuesCallback();
+    NodeTraversal.traverse(null, root, cb);
+    cb.getResult().notifyCompiler(compiler);
+}","public void test00() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    RemoveConstantExpressions removeConstantExpressions0 = new RemoveConstantExpressions(compiler0);
+    Node node0 = compiler0.parseSyntheticCode(""p-a)OI]}da"", ""[3=Z"");
+    removeConstantExpressions0.process(node0, node0);
+    assertEquals(0, Node.LABEL_ID_PROP);
+}",""
+"@Override
+public void process(Node externs, Node root) {
+    RemoveConstantRValuesCallback cb = new RemoveConstantRValuesCallback();
+    NodeTraversal.traverse(null, root, cb);
+    cb.getResult().notifyCompiler(compiler);
+}","public void test11() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    RemoveConstantExpressions removeConstantExpressions0 = new RemoveConstantExpressions(compiler0);
+    Node node0 = compiler0.parseSyntheticCode(""com.google.javascript.jscomp.RemoveConstantExpress=ons$RemoveConstantRValuesCallback"", ""com.google.javascript.jscomp.RemoveConstantExpress=ons$RemoveConstantRValuesCallback"");
+    removeConstantExpressions0.process(node0, node0);
+    assertEquals(13, Node.CASES_PROP);
+}",""

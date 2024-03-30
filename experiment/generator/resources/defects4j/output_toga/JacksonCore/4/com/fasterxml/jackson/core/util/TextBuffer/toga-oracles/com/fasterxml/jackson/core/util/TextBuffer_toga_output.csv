@@ -1,0 +1,955 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    char[] charArray1 = textBuffer0.expandCurrentSegment(1000);
+    assertSame(charArray1, charArray0);
+}",0,
+project,0,test002,"public void test002() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    char[] charArray1 = textBuffer0.expandCurrentSegment(1000);
+    assertEquals(0, textBuffer0.getCurrentSegmentSize());
+}",0,"assertEquals(0, textBuffer0.getCurrentSegmentSize())"
+project,0,test013,"public void test013() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler(3302, 3302);
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.emptyAndGetCurrentSegment();
+    textBuffer0.finishCurrentSegment();
+    textBuffer0.setCurrentLength(1500);
+    textBuffer0.expandCurrentSegment();
+    textBuffer0.append(""com.fasterxml.jackson.core.util.TextBuffer"", 1, 1);
+    assertEquals(1701, textBuffer0.size());
+}",0,"assertEquals(0, textBuffer0.size())"
+project,0,test024,"public void test024() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    // Undeclared exception!
+    try {
+        textBuffer0.append(""H"", (-314), 985);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",0,
+project,0,test035,"public void test035() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler(2000, 2000);
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.contentsAsArray();
+    textBuffer0.resetWithShared(charArray0, 1283, 3);
+    // Undeclared exception!
+    try {
+        textBuffer0.append("""", 2, 1);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}",0,
+project,0,test046,"public void test046() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    textBuffer0.setCurrentLength(200);
+    // Undeclared exception!
+    try {
+        textBuffer0.append(charArray0, 0, 1542);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}",0,
+project,0,test057,"public void test057() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler(4000, 4000);
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    textBuffer0.resetWithShared(charArray0, 2201, (-788));
+    // Undeclared exception!
+    try {
+        textBuffer0.append(charArray0, 1, 5846);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}",0,
+project,0,test068,"public void test068() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    char[] charArray0 = new char[6];
+    textBuffer0.resetWithShared(charArray0, 2, 2);
+    textBuffer0.append('k');
+    assertEquals(3, textBuffer0.size());
+}",0,"assertEquals(0, textBuffer0.size())"
+project,0,test079,"public void test079() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    textBuffer0.resetWithShared(charArray0, 2, (-1539));
+    textBuffer0.ensureNotShared();
+    assertEquals(0, textBuffer0.getTextOffset());
+}",0,"assertEquals(0, textBuffer0.getTextOffset())"
+project,0,test0810,"public void test0810() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    char[] charArray0 = textBuffer0.contentsAsArray();
+    textBuffer0.resetWithShared(charArray0, 200, (-270));
+    textBuffer0.getCurrentSegment();
+    // Undeclared exception!
+    try {
+        textBuffer0.contentsAsString();
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",0,
+project,0,test0911,"public void test0911() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = new char[5];
+    textBuffer0.resetWithShared(charArray0, 1532, 4000);
+    textBuffer0.getTextBuffer();
+    assertEquals(1532, textBuffer0.getTextOffset());
+}",0,"assertEquals(0, textBuffer0.getTextOffset())"
+project,0,test1012,"public void test1012() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler(4000, 4000);
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    textBuffer0.resetWithShared(charArray0, 2201, (-788));
+    boolean boolean0 = textBuffer0.hasTextAsCharacters();
+    assertEquals(2201, textBuffer0.getTextOffset());
+}",0,"assertEquals(0, textBuffer0.getTextOffset())"
+project,0,test1013,"public void test1013() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler(4000, 4000);
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    textBuffer0.resetWithShared(charArray0, 2201, (-788));
+    boolean boolean0 = textBuffer0.hasTextAsCharacters();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test1114,"public void test1114() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.emptyAndGetCurrentSegment();
+    char[] charArray0 = textBuffer0.expandCurrentSegment();
+    textBuffer0.resetWithShared(charArray0, 262144, (-501));
+    int int0 = textBuffer0.size();
+    assertEquals((-501), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test1215,"public void test1215() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler(4, 4);
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    textBuffer0.resetWithShared(charArray0, 3, 1301);
+    int int0 = textBuffer0.getTextOffset();
+    assertEquals(3, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test1316,"public void test1316() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.append(""km1b7"", 1, 3);
+    int int0 = textBuffer0.getCurrentSegmentSize();
+    assertEquals(3, textBuffer0.size());
+}",0,"assertEquals(0, textBuffer0.size())"
+project,0,test1317,"public void test1317() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.append(""km1b7"", 1, 3);
+    int int0 = textBuffer0.getCurrentSegmentSize();
+    assertEquals(3, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test1418,"public void test1418() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler(4, 4);
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.setCurrentLength((-3592));
+    int int0 = textBuffer0.getCurrentSegmentSize();
+    assertEquals((-3592), int0);
+}",0,"assertEquals(1, int0)"
+project,0,test1519,"public void test1519() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.append('9');
+    assertEquals(1, textBuffer0.getCurrentSegmentSize());
+}",0,"assertEquals(0, textBuffer0.getCurrentSegmentSize())"
+project,0,test1621,"public void test1621() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    // Undeclared exception!
+    try {
+        textBuffer0.resetWithCopy((char[]) null, (-3747), 999);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+    }
+}",0,
+project,0,test1722,"public void test1722() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = new char[7];
+    // Undeclared exception!
+    try {
+        textBuffer0.resetWithCopy(charArray0, 2474, 2);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}",0,
+project,0,test1823,"public void test1823() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler(3302, 3302);
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.getCurrentSegment();
+    textBuffer0.finishCurrentSegment();
+    textBuffer0.setCurrentLength(1500);
+    // Undeclared exception!
+    try {
+        textBuffer0.getTextBuffer();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}",0,
+project,0,test1924,"public void test1924() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    // Undeclared exception!
+    try {
+        textBuffer0.finishCurrentSegment();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.util.TextBuffer"", e);
+    }
+}",0,
+project,0,test2025,"public void test2025() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    // Undeclared exception!
+    try {
+        textBuffer0.expandCurrentSegment(3);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.util.TextBuffer"", e);
+    }
+}",0,
+project,0,test2126,"public void test2126() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    // Undeclared exception!
+    try {
+        textBuffer0.expandCurrentSegment();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.util.TextBuffer"", e);
+    }
+}",0,
+project,0,test2227,"public void test2227() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler(0, 0);
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    // Undeclared exception!
+    try {
+        textBuffer0.ensureNotShared();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 2
+        //
+        verifyException(""com.fasterxml.jackson.core.util.BufferRecycler"", e);
+    }
+}",0,
+project,0,test2328,"public void test2328() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler(0, 0);
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    // Undeclared exception!
+    try {
+        textBuffer0.emptyAndGetCurrentSegment();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 2
+        //
+        verifyException(""com.fasterxml.jackson.core.util.BufferRecycler"", e);
+    }
+}",0,
+project,0,test2429,"public void test2429() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.resetWithEmpty();
+    textBuffer0.setCurrentLength(3);
+    // Undeclared exception!
+    try {
+        textBuffer0.contentsAsString();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test2530,"public void test2530() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler(3302, 3302);
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.emptyAndGetCurrentSegment();
+    textBuffer0.finishCurrentSegment();
+    textBuffer0.setCurrentLength(1500);
+    // Undeclared exception!
+    try {
+        textBuffer0.contentsAsDouble();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.lang.AbstractStringBuilder"", e);
+    }
+}",0,
+project,0,test2631,"public void test2631() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler(4, 4);
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.resetWithShared((char[]) null, 6, 1301);
+    // Undeclared exception!
+    try {
+        textBuffer0.contentsAsArray();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test2732,"public void test2732() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    char[] charArray0 = new char[1];
+    textBuffer0.resetWithShared(charArray0, 43, 1001);
+    // Undeclared exception!
+    try {
+        textBuffer0.contentsAsArray();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.Arrays"", e);
+    }
+}",0,
+project,0,test2833,"public void test2833() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler(0, 949);
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    // Undeclared exception!
+    try {
+        textBuffer0.append((char[]) null, 0, 3714);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+    }
+}",0,
+project,0,test2934,"public void test2934() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    // Undeclared exception!
+    try {
+        textBuffer0.append((String) null, 1, 2);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.util.TextBuffer"", e);
+    }
+}",0,
+project,0,test3035,"public void test3035() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.getCurrentSegment();
+    textBuffer0.releaseBuffers();
+    // Undeclared exception!
+    try {
+        textBuffer0.append('t');
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.util.TextBuffer"", e);
+    }
+}",0,
+project,0,test3136,"public void test3136() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler(2923, 0);
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    // Undeclared exception!
+    try {
+        textBuffer0.append('q');
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 2
+        //
+        verifyException(""com.fasterxml.jackson.core.util.BufferRecycler"", e);
+    }
+}",0,
+project,0,test3237,"public void test3237() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.append('#');
+    textBuffer0.contentsAsString();
+    assertFalse(textBuffer0.hasTextAsCharacters());
+}",0,assertTrue(textBuffer0.hasTextAsCharacters())
+project,0,test3338,"public void test3338() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    char[] charArray0 = new char[1];
+    textBuffer0.resetWithShared(charArray0, 43, 1001);
+    // Undeclared exception!
+    try {
+        textBuffer0.contentsAsString();
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",0,
+project,0,test3439,"public void test3439() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.contentsAsString();
+    String string0 = textBuffer0.contentsAsString();
+    assertEquals("""", string0);
+}",0,
+project,0,test3540,"public void test3540() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler(4, 4);
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    textBuffer0.resetWithShared(charArray0, 1, 1301);
+    textBuffer0.contentsAsArray();
+    assertEquals(1, textBuffer0.getTextOffset());
+}",0,"assertEquals(0, textBuffer0.getTextOffset())"
+project,0,test3641,"public void test3641() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    textBuffer0.resetWithShared(charArray0, 0, 2);
+    textBuffer0.contentsAsArray();
+    assertEquals(2, textBuffer0.size());
+}",0,
+project,0,test3742,"public void test3742() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler(3302, 3302);
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.getCurrentSegment();
+    textBuffer0.finishCurrentSegment();
+    textBuffer0.setCurrentLength(1500);
+    textBuffer0.append(""com.fasterxml.jackson.core.util.TextBuffer"", 1, 1);
+    assertEquals(1, textBuffer0.getCurrentSegmentSize());
+}",0,"assertEquals(0, textBuffer0.getCurrentSegmentSize())"
+project,0,test3843,"public void test3843() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler(4, 4);
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    textBuffer0.resetWithShared(charArray0, 3, 1301);
+    // Undeclared exception!
+    try {
+        textBuffer0.getCurrentSegment();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}",0,
+project,0,test3944,"public void test3944() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    char[] charArray1 = textBuffer0.expandCurrentSegment((int) '6');
+    assertEquals(200, charArray1.length);
+}",0,
+project,0,test3946,"public void test3946() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    char[] charArray1 = textBuffer0.expandCurrentSegment((int) '6');
+    assertEquals(0, textBuffer0.size());
+}",0,"assertEquals(0, textBuffer0.size())"
+project,0,test4047,"public void test4047() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler(3302, 3302);
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.emptyAndGetCurrentSegment();
+    assertEquals(200, charArray0.length);
+}",0,
+project,0,test4048,"public void test4048() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler(3302, 3302);
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.emptyAndGetCurrentSegment();
+    char[] charArray1 = textBuffer0.expandCurrentSegment(3302);
+    assertEquals(3302, charArray1.length);
+}",0,
+project,0,test4049,"public void test4049() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler(3302, 3302);
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.emptyAndGetCurrentSegment();
+    char[] charArray1 = textBuffer0.expandCurrentSegment(3302);
+    assertEquals(0, textBuffer0.getTextOffset());
+}",0,"assertEquals(0, textBuffer0.getTextOffset())"
+project,0,test4050,"public void test4050() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler(3302, 3302);
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.emptyAndGetCurrentSegment();
+    char[] charArray1 = textBuffer0.expandCurrentSegment(3302);
+    assertEquals(0, textBuffer0.size());
+}",0,"assertEquals(0, textBuffer0.size())"
+project,0,test4151,"public void test4151() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    textBuffer0.getCurrentSegment();
+    textBuffer0.finishCurrentSegment();
+    textBuffer0.finishCurrentSegment();
+    assertEquals(2500, textBuffer0.size());
+}",0,"assertEquals(0, textBuffer0.size())"
+project,0,test4252,"public void test4252() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    char[] charArray0 = new char[7];
+    textBuffer0.resetWithCopy(charArray0, 1, 1);
+    textBuffer0.setCurrentLength(1023);
+    textBuffer0.getCurrentSegment();
+    assertEquals(1000, textBuffer0.size());
+}",0,
+project,0,test4353,"public void test4353() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    textBuffer0.getCurrentSegment();
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    assertEquals(1000, charArray0.length);
+}",0,
+project,0,test4354,"public void test4354() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    textBuffer0.getCurrentSegment();
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    assertEquals(0, textBuffer0.size());
+}",0,"assertEquals(0, textBuffer0.size())"
+project,0,test4455,"public void test4455() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    textBuffer0.resetWithEmpty();
+    assertEquals(0, textBuffer0.getTextOffset());
+}",0,"assertEquals(0, textBuffer0.getTextOffset())"
+project,0,test4456,"public void test4456() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    textBuffer0.resetWithEmpty();
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    assertEquals(1000, charArray0.length);
+}",0,
+project,0,test4457,"public void test4457() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    textBuffer0.resetWithEmpty();
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    assertEquals(0, textBuffer0.getCurrentSegmentSize());
+}",0,"assertEquals(0, textBuffer0.getCurrentSegmentSize())"
+project,0,test4558,"public void test4558() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler(3335, 3335);
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.emptyAndGetCurrentSegment();
+    // Undeclared exception!
+    try {
+        textBuffer0.append(""com.fasterxml.jackson.core.util.TextBuffer"", 1442, 1442);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",0,
+project,0,test4659,"public void test4659() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    // Undeclared exception!
+    try {
+        textBuffer0.append(charArray0, 0, 1542);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}",0,
+project,0,test4760,"public void test4760() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = new char[7];
+    textBuffer0.append(charArray0, 2, 3);
+    textBuffer0.setCurrentLength(1051);
+    // Undeclared exception!
+    try {
+        textBuffer0.toString();
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",0,
+project,0,test4861,"public void test4861() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    char[] charArray0 = new char[7];
+    textBuffer0.resetWithCopy(charArray0, 1, 1);
+    textBuffer0.setCurrentLength(1021);
+    textBuffer0.append('\u0000');
+    assertEquals(1, textBuffer0.getCurrentSegmentSize());
+}",0,"assertEquals(0, textBuffer0.getCurrentSegmentSize())"
+project,0,test4963,"public void test4963() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    textBuffer0.resetWithEmpty();
+    textBuffer0.ensureNotShared();
+    assertEquals(0, textBuffer0.size());
+}",0,"assertEquals(0, textBuffer0.size())"
+project,0,test5064,"public void test5064() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.emptyAndGetCurrentSegment();
+    textBuffer0.finishCurrentSegment();
+    try {
+        textBuffer0.contentsAsDecimal();
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // Value \""\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\"" can not be represented as BigDecimal
+        //
+        verifyException(""com.fasterxml.jackson.core.io.NumberInput"", e);
+    }
+}",1,
+project,0,test5165,"public void test5165() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    textBuffer0.resetWithShared(charArray0, 5226, 0);
+    // Undeclared exception!
+    try {
+        textBuffer0.contentsAsDecimal();
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",0,
+project,0,test5266,"public void test5266() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    textBuffer0.resetWithEmpty();
+    textBuffer0.toString();
+    textBuffer0.getTextBuffer();
+    try {
+        textBuffer0.contentsAsDecimal();
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // Value \""\"" can not be represented as BigDecimal
+        //
+        verifyException(""com.fasterxml.jackson.core.io.NumberInput"", e);
+    }
+}",1,
+project,0,test5367,"public void test5367() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    try {
+        textBuffer0.contentsAsDecimal();
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // Value \""\"" can not be represented as BigDecimal
+        //
+        verifyException(""com.fasterxml.jackson.core.io.NumberInput"", e);
+    }
+}",0,
+project,0,test5468,"public void test5468() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.contentsAsArray();
+    char[] charArray0 = textBuffer0.contentsAsArray();
+    assertArrayEquals(new char[] {}, charArray0);
+}",0,
+project,0,test5569,"public void test5569() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.getCurrentSegment();
+    textBuffer0.finishCurrentSegment();
+    textBuffer0.contentsAsString();
+    assertFalse(textBuffer0.hasTextAsCharacters());
+}",0,assertTrue(textBuffer0.hasTextAsCharacters())
+project,0,test5670,"public void test5670() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.emptyAndGetCurrentSegment();
+    char[] charArray0 = textBuffer0.expandCurrentSegment();
+    textBuffer0.resetWithShared(charArray0, 262144, 43);
+    // Undeclared exception!
+    try {
+        textBuffer0.contentsAsDouble();
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",0,
+project,0,test5771,"public void test5771() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.contentsAsArray();
+    String string0 = textBuffer0.contentsAsString();
+    assertEquals("""", string0);
+}",0,
+project,0,test5872,"public void test5872() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.append('6');
+    textBuffer0.contentsAsDouble();
+    textBuffer0.toString();
+    assertEquals(1, textBuffer0.getCurrentSegmentSize());
+}",0,"assertEquals(0, textBuffer0.getCurrentSegmentSize())"
+project,0,test5973,"public void test5973() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler(654, 654);
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    char[] charArray1 = textBuffer0.getTextBuffer();
+    assertSame(charArray1, charArray0);
+}",0,
+project,0,test5974,"public void test5974() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler(654, 654);
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    char[] charArray1 = textBuffer0.getTextBuffer();
+    assertEquals(0, textBuffer0.size());
+}",0,"assertEquals(0, textBuffer0.size())"
+project,0,test6077,"public void test6077() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    assertEquals(200, charArray0.length);
+}",0,
+project,0,test6078,"public void test6078() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    textBuffer0.contentsAsArray();
+    char[] charArray1 = textBuffer0.getTextBuffer();
+    assertEquals(0, charArray1.length);
+}",0,
+project,0,test6080,"public void test6080() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    textBuffer0.contentsAsArray();
+    char[] charArray1 = textBuffer0.getTextBuffer();
+    assertEquals(0, textBuffer0.size());
+}",0,"assertEquals(0, textBuffer0.size())"
+project,0,test6181,"public void test6181() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.getTextBuffer();
+    assertNull(charArray0);
+}",0,assertNotNull(charArray0)
+project,0,test6282,"public void test6282() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler(654, 654);
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.resetWithString("""");
+    assertFalse(textBuffer0.hasTextAsCharacters());
+}",0,assertTrue(textBuffer0.hasTextAsCharacters())
+project,0,test6283,"public void test6283() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler(654, 654);
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.resetWithString("""");
+    textBuffer0.getTextBuffer();
+    assertEquals(0, textBuffer0.getTextOffset());
+}",0,"assertEquals(0, textBuffer0.getTextOffset())"
+project,0,test6384,"public void test6384() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler(654, 654);
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.resetWithString("""");
+    boolean boolean0 = textBuffer0.hasTextAsCharacters();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test6486,"public void test6486() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    char[] charArray1 = textBuffer0.contentsAsArray();
+    assertNotNull(charArray1);
+}",0,
+project,0,test6487,"public void test6487() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    char[] charArray1 = textBuffer0.contentsAsArray();
+    boolean boolean0 = textBuffer0.hasTextAsCharacters();
+    assertEquals(0, textBuffer0.size());
+}",0,"assertEquals(0, textBuffer0.size())"
+project,0,test6488,"public void test6488() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    char[] charArray1 = textBuffer0.contentsAsArray();
+    boolean boolean0 = textBuffer0.hasTextAsCharacters();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test6589,"public void test6589() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.emptyAndGetCurrentSegment();
+    assertEquals(200, charArray0.length);
+}",0,
+project,0,test6590,"public void test6590() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.emptyAndGetCurrentSegment();
+    boolean boolean0 = textBuffer0.hasTextAsCharacters();
+    assertEquals(0, textBuffer0.getTextOffset());
+}",0,"assertEquals(0, textBuffer0.getTextOffset())"
+project,0,test6591,"public void test6591() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.emptyAndGetCurrentSegment();
+    boolean boolean0 = textBuffer0.hasTextAsCharacters();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test6592,"public void test6592() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.emptyAndGetCurrentSegment();
+    boolean boolean0 = textBuffer0.hasTextAsCharacters();
+    assertEquals(0, textBuffer0.size());
+}",0,"assertEquals(0, textBuffer0.size())"
+project,0,test6693,"public void test6693() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    boolean boolean0 = textBuffer0.hasTextAsCharacters();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test6794,"public void test6794() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    int int0 = textBuffer0.getTextOffset();
+    assertEquals(0, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test6896,"public void test6896() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    int int0 = textBuffer0.getTextOffset();
+    assertEquals(0, int0);
+}",0,
+project,0,test6897,"public void test6897() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    int int0 = textBuffer0.getTextOffset();
+    assertEquals(0, textBuffer0.size());
+}",0,"assertEquals(0, textBuffer0.size())"
+project,0,test6998,"public void test6998() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.getCurrentSegment();
+    textBuffer0.contentsAsString();
+    int int0 = textBuffer0.size();
+    assertFalse(textBuffer0.hasTextAsCharacters());
+}",0,assertTrue(textBuffer0.hasTextAsCharacters())
+project,0,test6999,"public void test6999() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.getCurrentSegment();
+    textBuffer0.contentsAsString();
+    int int0 = textBuffer0.size();
+    assertEquals(0, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test70100,"public void test70100() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.append('\\');
+    textBuffer0.contentsAsArray();
+    int int0 = textBuffer0.size();
+    assertEquals(1, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test71101,"public void test71101() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    int int0 = textBuffer0.size();
+    assertEquals(0, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test72103,"public void test72103() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    int int0 = textBuffer0.size();
+    assertEquals(0, textBuffer0.getTextOffset());
+}",0,"assertEquals(0, textBuffer0.getTextOffset())"
+project,0,test72104,"public void test72104() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    int int0 = textBuffer0.size();
+    assertEquals(0, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test73105,"public void test73105() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.emptyAndGetCurrentSegment();
+    textBuffer0.finishCurrentSegment();
+    textBuffer0.resetWithString(""3mZ!-QI }(rk"");
+    assertFalse(textBuffer0.hasTextAsCharacters());
+}",0,assertTrue(textBuffer0.hasTextAsCharacters())
+project,0,test74106,"public void test74106() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler(4, 4);
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    textBuffer0.resetWithCopy(charArray0, 0, 3);
+    assertEquals(3, textBuffer0.size());
+}",0,"assertEquals(0, textBuffer0.size())"
+project,0,test75107,"public void test75107() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler(4, 4);
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    textBuffer0.finishCurrentSegment();
+    textBuffer0.resetWithCopy(charArray0, 0, 3);
+    assertEquals(3, textBuffer0.size());
+}",0,"assertEquals(0, textBuffer0.size())"
+project,0,test76108,"public void test76108() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    textBuffer0.finishCurrentSegment();
+    textBuffer0.resetWithShared(charArray0, 5226, 0);
+    assertEquals(5226, textBuffer0.getTextOffset());
+}",0,"assertEquals(0, textBuffer0.getTextOffset())"
+project,0,test77109,"public void test77109() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler(3, 3);
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.emptyAndGetCurrentSegment();
+    textBuffer0.finishCurrentSegment();
+    assertEquals(200, textBuffer0.size());
+}",0,
+project,0,test77110,"public void test77110() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler(3, 3);
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.emptyAndGetCurrentSegment();
+    textBuffer0.finishCurrentSegment();
+    textBuffer0.resetWithEmpty();
+    assertEquals(0, textBuffer0.getTextOffset());
+}",0,"assertEquals(0, textBuffer0.getTextOffset())"
+project,0,test78111,"public void test78111() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    textBuffer0.releaseBuffers();
+    assertEquals(0, textBuffer0.getTextOffset());
+}",0,"assertEquals(0, textBuffer0.getTextOffset())"
+project,0,test78112,"public void test78112() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    textBuffer0.releaseBuffers();
+    assertEquals(0, textBuffer0.getCurrentSegmentSize());
+}",0,"assertEquals(0, textBuffer0.getCurrentSegmentSize())"
+project,0,test79113,"public void test79113() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.releaseBuffers();
+    assertEquals(0, textBuffer0.size());
+}",0,"assertEquals(0, textBuffer0.size())"
+project,0,test80114,"public void test80114() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    int int0 = textBuffer0.getCurrentSegmentSize();
+    assertEquals(0, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test81115,"public void test81115() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    char[] charArray0 = new char[7];
+    textBuffer0.resetWithCopy(charArray0, 1, 1);
+    textBuffer0.setCurrentLength(1023);
+    textBuffer0.append(charArray0, 3, 3);
+    assertEquals(3, textBuffer0.getCurrentSegmentSize());
+}",0,
+project,0,test81116,"public void test81116() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    char[] charArray0 = new char[7];
+    textBuffer0.resetWithCopy(charArray0, 1, 1);
+    textBuffer0.setCurrentLength(1023);
+    textBuffer0.append(charArray0, 3, 3);
+    char[] charArray1 = textBuffer0.emptyAndGetCurrentSegment();
+    assertEquals(1500, charArray1.length);
+}",0,
+project,0,test82117,"public void test82117() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    try {
+        textBuffer0.contentsAsDouble();
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+    }
+}",0,
+project,0,test83118,"public void test83118() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    textBuffer0.toString();
+    char[] charArray0 = textBuffer0.contentsAsArray();
+    assertEquals(0, charArray0.length);
+}",0,

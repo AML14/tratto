@@ -1,0 +1,918 @@
+[
+  {
+    "signature": "org.apache.commons.math.optimization.linear.SimplexTableau(org.apache.commons.math.optimization.linear.LinearObjectiveFunction f, java.util.Collection<org.apache.commons.math.optimization.linear.LinearConstraint> constraints, org.apache.commons.math.optimization.GoalType goalType, boolean restrictToNonNegative, double epsilon)",
+    "name": "org.apache.commons.math.optimization.linear.SimplexTableau",
+    "containingClass": {
+      "qualifiedName": "org.apache.commons.math.optimization.linear.SimplexTableau",
+      "name": "SimplexTableau",
+      "isArray": false
+    },
+    "targetClass": "org.apache.commons.math.optimization.linear.SimplexTableau",
+    "isVarArgs": false,
+    "parameters": [
+      {
+        "type": {
+          "qualifiedName": "org.apache.commons.math.optimization.linear.LinearObjectiveFunction",
+          "name": "LinearObjectiveFunction",
+          "isArray": false
+        },
+        "name": "f"
+      },
+      {
+        "type": {
+          "qualifiedName": "java.util.Collection",
+          "name": "Collection",
+          "isArray": false
+        },
+        "name": "constraints"
+      },
+      {
+        "type": {
+          "qualifiedName": "org.apache.commons.math.optimization.GoalType",
+          "name": "GoalType",
+          "isArray": false
+        },
+        "name": "goalType"
+      },
+      {
+        "type": {
+          "qualifiedName": "boolean",
+          "name": "boolean",
+          "isArray": false
+        },
+        "name": "restrictToNonNegative"
+      },
+      {
+        "type": {
+          "qualifiedName": "double",
+          "name": "double",
+          "isArray": false
+        },
+        "name": "epsilon"
+      }
+    ],
+    "paramTags": [
+      {
+        "parameter": {
+          "type": {
+            "qualifiedName": "org.apache.commons.math.optimization.linear.LinearObjectiveFunction",
+            "name": "LinearObjectiveFunction",
+            "isArray": false
+          },
+          "name": "f"
+        },
+        "comment": "f is linear. linear objective function.",
+        "kind": "PARAM",
+        "condition": ""
+      },
+      {
+        "parameter": {
+          "type": {
+            "qualifiedName": "java.util.Collection",
+            "name": "Collection",
+            "isArray": false
+          },
+          "name": "constraints"
+        },
+        "comment": "constraints is linear. linear constraints.",
+        "kind": "PARAM",
+        "condition": ""
+      },
+      {
+        "parameter": {
+          "type": {
+            "qualifiedName": "org.apache.commons.math.optimization.GoalType",
+            "name": "GoalType",
+            "isArray": false
+          },
+          "name": "goalType"
+        },
+        "comment": "type of optimization goal: either GoalType#MAXIMIZE or GoalType#MINIMIZE.",
+        "kind": "PARAM",
+        "condition": ""
+      },
+      {
+        "parameter": {
+          "type": {
+            "qualifiedName": "boolean",
+            "name": "boolean",
+            "isArray": false
+          },
+          "name": "restrictToNonNegative"
+        },
+        "comment": "whether to restrict the variables to non-negative values.",
+        "kind": "PARAM",
+        "condition": ""
+      },
+      {
+        "parameter": {
+          "type": {
+            "qualifiedName": "double",
+            "name": "double",
+            "isArray": false
+          },
+          "name": "epsilon"
+        },
+        "comment": "amount of error to accept in floating point comparisons.",
+        "kind": "PARAM",
+        "condition": ""
+      }
+    ],
+    "throwsTags": []
+  },
+  {
+    "signature": "createTableau(boolean maximize)",
+    "name": "createTableau",
+    "containingClass": {
+      "qualifiedName": "org.apache.commons.math.optimization.linear.SimplexTableau",
+      "name": "SimplexTableau",
+      "isArray": false
+    },
+    "targetClass": "org.apache.commons.math.optimization.linear.SimplexTableau",
+    "isVarArgs": false,
+    "returnType": {
+      "qualifiedName": "double[][]",
+      "name": "double[][]",
+      "isArray": true
+    },
+    "parameters": [
+      {
+        "type": {
+          "qualifiedName": "boolean",
+          "name": "boolean",
+          "isArray": false
+        },
+        "name": "maximize"
+      }
+    ],
+    "paramTags": [
+      {
+        "parameter": {
+          "type": {
+            "qualifiedName": "boolean",
+            "name": "boolean",
+            "isArray": false
+          },
+          "name": "maximize"
+        },
+        "comment": "if true. maximize is goal is to maximize the objective function.",
+        "kind": "PARAM",
+        "condition": ""
+      }
+    ],
+    "returnTag": {
+      "comment": "created tableau.",
+      "kind": "RETURN",
+      "condition": ""
+    },
+    "throwsTags": []
+  },
+  {
+    "signature": "getNumVariables()",
+    "name": "getNumVariables",
+    "containingClass": {
+      "qualifiedName": "org.apache.commons.math.optimization.linear.SimplexTableau",
+      "name": "SimplexTableau",
+      "isArray": false
+    },
+    "targetClass": "org.apache.commons.math.optimization.linear.SimplexTableau",
+    "isVarArgs": false,
+    "returnType": {
+      "qualifiedName": "int",
+      "name": "int",
+      "isArray": false
+    },
+    "parameters": [],
+    "paramTags": [],
+    "returnTag": {
+      "comment": "number of variables.",
+      "kind": "RETURN",
+      "condition": ""
+    },
+    "throwsTags": []
+  },
+  {
+    "signature": "getNormalizedConstraints()",
+    "name": "getNormalizedConstraints",
+    "containingClass": {
+      "qualifiedName": "org.apache.commons.math.optimization.linear.SimplexTableau",
+      "name": "SimplexTableau",
+      "isArray": false
+    },
+    "targetClass": "org.apache.commons.math.optimization.linear.SimplexTableau",
+    "isVarArgs": false,
+    "returnType": {
+      "qualifiedName": "java.util.List<org.apache.commons.math.optimization.linear.LinearConstraint>",
+      "name": "java.util.List<org.apache.commons.math.optimization.linear.LinearConstraint>",
+      "isArray": false
+    },
+    "parameters": [],
+    "paramTags": [],
+    "returnTag": {
+      "comment": "new versions of the constraints.",
+      "kind": "RETURN",
+      "condition": ""
+    },
+    "throwsTags": []
+  },
+  {
+    "signature": "getNumObjectiveFunctions()",
+    "name": "getNumObjectiveFunctions",
+    "containingClass": {
+      "qualifiedName": "org.apache.commons.math.optimization.linear.SimplexTableau",
+      "name": "SimplexTableau",
+      "isArray": false
+    },
+    "targetClass": "org.apache.commons.math.optimization.linear.SimplexTableau",
+    "isVarArgs": false,
+    "returnType": {
+      "qualifiedName": "int",
+      "name": "int",
+      "isArray": false
+    },
+    "parameters": [],
+    "paramTags": [],
+    "returnTag": {
+      "comment": "2 for Phase 1. 1 for Phase 2.",
+      "kind": "RETURN",
+      "condition": ""
+    },
+    "throwsTags": []
+  },
+  {
+    "signature": "getInvertedCoeffiecientSum(org.apache.commons.math.linear.RealVector coefficients)",
+    "name": "getInvertedCoeffiecientSum",
+    "containingClass": {
+      "qualifiedName": "org.apache.commons.math.optimization.linear.SimplexTableau",
+      "name": "SimplexTableau",
+      "isArray": false
+    },
+    "targetClass": "org.apache.commons.math.optimization.linear.SimplexTableau",
+    "isVarArgs": false,
+    "returnType": {
+      "qualifiedName": "double",
+      "name": "double",
+      "isArray": false
+    },
+    "parameters": [
+      {
+        "type": {
+          "qualifiedName": "org.apache.commons.math.linear.RealVector",
+          "name": "RealVector",
+          "isArray": false
+        },
+        "name": "coefficients"
+      }
+    ],
+    "paramTags": [
+      {
+        "parameter": {
+          "type": {
+            "qualifiedName": "org.apache.commons.math.linear.RealVector",
+            "name": "RealVector",
+            "isArray": false
+          },
+          "name": "coefficients"
+        },
+        "comment": "coefficients to sum.",
+        "kind": "PARAM",
+        "condition": ""
+      }
+    ],
+    "returnTag": {
+      "comment": "the -1 times the sum of all coefficients in the given array.",
+      "kind": "RETURN",
+      "condition": ""
+    },
+    "throwsTags": []
+  },
+  {
+    "signature": "discardArtificialVariables()",
+    "name": "discardArtificialVariables",
+    "containingClass": {
+      "qualifiedName": "org.apache.commons.math.optimization.linear.SimplexTableau",
+      "name": "SimplexTableau",
+      "isArray": false
+    },
+    "targetClass": "org.apache.commons.math.optimization.linear.SimplexTableau",
+    "isVarArgs": false,
+    "returnType": {
+      "qualifiedName": "void",
+      "name": "void",
+      "isArray": false
+    },
+    "parameters": [],
+    "paramTags": [],
+    "throwsTags": []
+  },
+  {
+    "signature": "getSolution()",
+    "name": "getSolution",
+    "containingClass": {
+      "qualifiedName": "org.apache.commons.math.optimization.linear.SimplexTableau",
+      "name": "SimplexTableau",
+      "isArray": false
+    },
+    "targetClass": "org.apache.commons.math.optimization.linear.SimplexTableau",
+    "isVarArgs": false,
+    "returnType": {
+      "qualifiedName": "org.apache.commons.math.optimization.RealPointValuePair",
+      "name": "org.apache.commons.math.optimization.RealPointValuePair",
+      "isArray": false
+    },
+    "parameters": [],
+    "paramTags": [],
+    "returnTag": {
+      "comment": "current solution.",
+      "kind": "RETURN",
+      "condition": ""
+    },
+    "throwsTags": []
+  },
+  {
+    "signature": "divideRow(int dividendRow, double divisor)",
+    "name": "divideRow",
+    "containingClass": {
+      "qualifiedName": "org.apache.commons.math.optimization.linear.SimplexTableau",
+      "name": "SimplexTableau",
+      "isArray": false
+    },
+    "targetClass": "org.apache.commons.math.optimization.linear.SimplexTableau",
+    "isVarArgs": false,
+    "returnType": {
+      "qualifiedName": "void",
+      "name": "void",
+      "isArray": false
+    },
+    "parameters": [
+      {
+        "type": {
+          "qualifiedName": "int",
+          "name": "int",
+          "isArray": false
+        },
+        "name": "dividendRow"
+      },
+      {
+        "type": {
+          "qualifiedName": "double",
+          "name": "double",
+          "isArray": false
+        },
+        "name": "divisor"
+      }
+    ],
+    "paramTags": [
+      {
+        "parameter": {
+          "type": {
+            "qualifiedName": "int",
+            "name": "int",
+            "isArray": false
+          },
+          "name": "dividendRow"
+        },
+        "comment": "index of the row.",
+        "kind": "PARAM",
+        "condition": ""
+      },
+      {
+        "parameter": {
+          "type": {
+            "qualifiedName": "double",
+            "name": "double",
+            "isArray": false
+          },
+          "name": "divisor"
+        },
+        "comment": "value of the divisor.",
+        "kind": "PARAM",
+        "condition": ""
+      }
+    ],
+    "throwsTags": []
+  },
+  {
+    "signature": "subtractRow(int minuendRow, int subtrahendRow, double multiple)",
+    "name": "subtractRow",
+    "containingClass": {
+      "qualifiedName": "org.apache.commons.math.optimization.linear.SimplexTableau",
+      "name": "SimplexTableau",
+      "isArray": false
+    },
+    "targetClass": "org.apache.commons.math.optimization.linear.SimplexTableau",
+    "isVarArgs": false,
+    "returnType": {
+      "qualifiedName": "void",
+      "name": "void",
+      "isArray": false
+    },
+    "parameters": [
+      {
+        "type": {
+          "qualifiedName": "int",
+          "name": "int",
+          "isArray": false
+        },
+        "name": "minuendRow"
+      },
+      {
+        "type": {
+          "qualifiedName": "int",
+          "name": "int",
+          "isArray": false
+        },
+        "name": "subtrahendRow"
+      },
+      {
+        "type": {
+          "qualifiedName": "double",
+          "name": "double",
+          "isArray": false
+        },
+        "name": "multiple"
+      }
+    ],
+    "paramTags": [
+      {
+        "parameter": {
+          "type": {
+            "qualifiedName": "int",
+            "name": "int",
+            "isArray": false
+          },
+          "name": "minuendRow"
+        },
+        "comment": "row index.",
+        "kind": "PARAM",
+        "condition": ""
+      },
+      {
+        "parameter": {
+          "type": {
+            "qualifiedName": "int",
+            "name": "int",
+            "isArray": false
+          },
+          "name": "subtrahendRow"
+        },
+        "comment": "row index.",
+        "kind": "PARAM",
+        "condition": ""
+      },
+      {
+        "parameter": {
+          "type": {
+            "qualifiedName": "double",
+            "name": "double",
+            "isArray": false
+          },
+          "name": "multiple"
+        },
+        "comment": "multiplication factor.",
+        "kind": "PARAM",
+        "condition": ""
+      }
+    ],
+    "throwsTags": []
+  },
+  {
+    "signature": "getWidth()",
+    "name": "getWidth",
+    "containingClass": {
+      "qualifiedName": "org.apache.commons.math.optimization.linear.SimplexTableau",
+      "name": "SimplexTableau",
+      "isArray": false
+    },
+    "targetClass": "org.apache.commons.math.optimization.linear.SimplexTableau",
+    "isVarArgs": false,
+    "returnType": {
+      "qualifiedName": "int",
+      "name": "int",
+      "isArray": false
+    },
+    "parameters": [],
+    "paramTags": [],
+    "returnTag": {
+      "comment": "width of the tableau.",
+      "kind": "RETURN",
+      "condition": ""
+    },
+    "throwsTags": []
+  },
+  {
+    "signature": "getHeight()",
+    "name": "getHeight",
+    "containingClass": {
+      "qualifiedName": "org.apache.commons.math.optimization.linear.SimplexTableau",
+      "name": "SimplexTableau",
+      "isArray": false
+    },
+    "targetClass": "org.apache.commons.math.optimization.linear.SimplexTableau",
+    "isVarArgs": false,
+    "returnType": {
+      "qualifiedName": "int",
+      "name": "int",
+      "isArray": false
+    },
+    "parameters": [],
+    "paramTags": [],
+    "returnTag": {
+      "comment": "height of the tableau.",
+      "kind": "RETURN",
+      "condition": ""
+    },
+    "throwsTags": []
+  },
+  {
+    "signature": "getEntry(int row, int column)",
+    "name": "getEntry",
+    "containingClass": {
+      "qualifiedName": "org.apache.commons.math.optimization.linear.SimplexTableau",
+      "name": "SimplexTableau",
+      "isArray": false
+    },
+    "targetClass": "org.apache.commons.math.optimization.linear.SimplexTableau",
+    "isVarArgs": false,
+    "returnType": {
+      "qualifiedName": "double",
+      "name": "double",
+      "isArray": false
+    },
+    "parameters": [
+      {
+        "type": {
+          "qualifiedName": "int",
+          "name": "int",
+          "isArray": false
+        },
+        "name": "row"
+      },
+      {
+        "type": {
+          "qualifiedName": "int",
+          "name": "int",
+          "isArray": false
+        },
+        "name": "column"
+      }
+    ],
+    "paramTags": [
+      {
+        "parameter": {
+          "type": {
+            "qualifiedName": "int",
+            "name": "int",
+            "isArray": false
+          },
+          "name": "row"
+        },
+        "comment": "row index.",
+        "kind": "PARAM",
+        "condition": ""
+      },
+      {
+        "parameter": {
+          "type": {
+            "qualifiedName": "int",
+            "name": "int",
+            "isArray": false
+          },
+          "name": "column"
+        },
+        "comment": "column index.",
+        "kind": "PARAM",
+        "condition": ""
+      }
+    ],
+    "returnTag": {
+      "comment": "entry at (row, column).",
+      "kind": "RETURN",
+      "condition": ""
+    },
+    "throwsTags": []
+  },
+  {
+    "signature": "setEntry(int row, int column, double value)",
+    "name": "setEntry",
+    "containingClass": {
+      "qualifiedName": "org.apache.commons.math.optimization.linear.SimplexTableau",
+      "name": "SimplexTableau",
+      "isArray": false
+    },
+    "targetClass": "org.apache.commons.math.optimization.linear.SimplexTableau",
+    "isVarArgs": false,
+    "returnType": {
+      "qualifiedName": "void",
+      "name": "void",
+      "isArray": false
+    },
+    "parameters": [
+      {
+        "type": {
+          "qualifiedName": "int",
+          "name": "int",
+          "isArray": false
+        },
+        "name": "row"
+      },
+      {
+        "type": {
+          "qualifiedName": "int",
+          "name": "int",
+          "isArray": false
+        },
+        "name": "column"
+      },
+      {
+        "type": {
+          "qualifiedName": "double",
+          "name": "double",
+          "isArray": false
+        },
+        "name": "value"
+      }
+    ],
+    "paramTags": [
+      {
+        "parameter": {
+          "type": {
+            "qualifiedName": "int",
+            "name": "int",
+            "isArray": false
+          },
+          "name": "row"
+        },
+        "comment": "row index.",
+        "kind": "PARAM",
+        "condition": ""
+      },
+      {
+        "parameter": {
+          "type": {
+            "qualifiedName": "int",
+            "name": "int",
+            "isArray": false
+          },
+          "name": "column"
+        },
+        "comment": "column index.",
+        "kind": "PARAM",
+        "condition": ""
+      },
+      {
+        "parameter": {
+          "type": {
+            "qualifiedName": "double",
+            "name": "double",
+            "isArray": false
+          },
+          "name": "value"
+        },
+        "comment": "for the entry.",
+        "kind": "PARAM",
+        "condition": ""
+      }
+    ],
+    "throwsTags": []
+  },
+  {
+    "signature": "getSlackVariableOffset()",
+    "name": "getSlackVariableOffset",
+    "containingClass": {
+      "qualifiedName": "org.apache.commons.math.optimization.linear.SimplexTableau",
+      "name": "SimplexTableau",
+      "isArray": false
+    },
+    "targetClass": "org.apache.commons.math.optimization.linear.SimplexTableau",
+    "isVarArgs": false,
+    "returnType": {
+      "qualifiedName": "int",
+      "name": "int",
+      "isArray": false
+    },
+    "parameters": [],
+    "paramTags": [],
+    "returnTag": {
+      "comment": "offset of the first slack variable.",
+      "kind": "RETURN",
+      "condition": ""
+    },
+    "throwsTags": []
+  },
+  {
+    "signature": "getArtificialVariableOffset()",
+    "name": "getArtificialVariableOffset",
+    "containingClass": {
+      "qualifiedName": "org.apache.commons.math.optimization.linear.SimplexTableau",
+      "name": "SimplexTableau",
+      "isArray": false
+    },
+    "targetClass": "org.apache.commons.math.optimization.linear.SimplexTableau",
+    "isVarArgs": false,
+    "returnType": {
+      "qualifiedName": "int",
+      "name": "int",
+      "isArray": false
+    },
+    "parameters": [],
+    "paramTags": [],
+    "returnTag": {
+      "comment": "offset of the first artificial variable.",
+      "kind": "RETURN",
+      "condition": ""
+    },
+    "throwsTags": []
+  },
+  {
+    "signature": "getRhsOffset()",
+    "name": "getRhsOffset",
+    "containingClass": {
+      "qualifiedName": "org.apache.commons.math.optimization.linear.SimplexTableau",
+      "name": "SimplexTableau",
+      "isArray": false
+    },
+    "targetClass": "org.apache.commons.math.optimization.linear.SimplexTableau",
+    "isVarArgs": false,
+    "returnType": {
+      "qualifiedName": "int",
+      "name": "int",
+      "isArray": false
+    },
+    "parameters": [],
+    "paramTags": [],
+    "returnTag": {
+      "comment": "offset of the right hand side.",
+      "kind": "RETURN",
+      "condition": ""
+    },
+    "throwsTags": []
+  },
+  {
+    "signature": "getNumDecisionVariables()",
+    "name": "getNumDecisionVariables",
+    "containingClass": {
+      "qualifiedName": "org.apache.commons.math.optimization.linear.SimplexTableau",
+      "name": "SimplexTableau",
+      "isArray": false
+    },
+    "targetClass": "org.apache.commons.math.optimization.linear.SimplexTableau",
+    "isVarArgs": false,
+    "returnType": {
+      "qualifiedName": "int",
+      "name": "int",
+      "isArray": false
+    },
+    "parameters": [],
+    "paramTags": [],
+    "returnTag": {
+      "comment": "number of decision variables.",
+      "kind": "RETURN",
+      "condition": ""
+    },
+    "throwsTags": []
+  },
+  {
+    "signature": "getOriginalNumDecisionVariables()",
+    "name": "getOriginalNumDecisionVariables",
+    "containingClass": {
+      "qualifiedName": "org.apache.commons.math.optimization.linear.SimplexTableau",
+      "name": "SimplexTableau",
+      "isArray": false
+    },
+    "targetClass": "org.apache.commons.math.optimization.linear.SimplexTableau",
+    "isVarArgs": false,
+    "returnType": {
+      "qualifiedName": "int",
+      "name": "int",
+      "isArray": false
+    },
+    "parameters": [],
+    "paramTags": [],
+    "returnTag": {
+      "comment": "original number of decision variables.",
+      "kind": "RETURN",
+      "condition": ""
+    },
+    "throwsTags": []
+  },
+  {
+    "signature": "getNumSlackVariables()",
+    "name": "getNumSlackVariables",
+    "containingClass": {
+      "qualifiedName": "org.apache.commons.math.optimization.linear.SimplexTableau",
+      "name": "SimplexTableau",
+      "isArray": false
+    },
+    "targetClass": "org.apache.commons.math.optimization.linear.SimplexTableau",
+    "isVarArgs": false,
+    "returnType": {
+      "qualifiedName": "int",
+      "name": "int",
+      "isArray": false
+    },
+    "parameters": [],
+    "paramTags": [],
+    "returnTag": {
+      "comment": "number of slack variables.",
+      "kind": "RETURN",
+      "condition": ""
+    },
+    "throwsTags": []
+  },
+  {
+    "signature": "getNumArtificialVariables()",
+    "name": "getNumArtificialVariables",
+    "containingClass": {
+      "qualifiedName": "org.apache.commons.math.optimization.linear.SimplexTableau",
+      "name": "SimplexTableau",
+      "isArray": false
+    },
+    "targetClass": "org.apache.commons.math.optimization.linear.SimplexTableau",
+    "isVarArgs": false,
+    "returnType": {
+      "qualifiedName": "int",
+      "name": "int",
+      "isArray": false
+    },
+    "parameters": [],
+    "paramTags": [],
+    "returnTag": {
+      "comment": "number of artificial variables.",
+      "kind": "RETURN",
+      "condition": ""
+    },
+    "throwsTags": []
+  },
+  {
+    "signature": "getData()",
+    "name": "getData",
+    "containingClass": {
+      "qualifiedName": "org.apache.commons.math.optimization.linear.SimplexTableau",
+      "name": "SimplexTableau",
+      "isArray": false
+    },
+    "targetClass": "org.apache.commons.math.optimization.linear.SimplexTableau",
+    "isVarArgs": false,
+    "returnType": {
+      "qualifiedName": "double[][]",
+      "name": "double[][]",
+      "isArray": true
+    },
+    "parameters": [],
+    "paramTags": [],
+    "returnTag": {
+      "comment": "tableau data.",
+      "kind": "RETURN",
+      "condition": ""
+    },
+    "throwsTags": []
+  },
+  {
+    "signature": "equals(java.lang.Object other)",
+    "name": "equals",
+    "containingClass": {
+      "qualifiedName": "org.apache.commons.math.optimization.linear.SimplexTableau",
+      "name": "SimplexTableau",
+      "isArray": false
+    },
+    "targetClass": "org.apache.commons.math.optimization.linear.SimplexTableau",
+    "isVarArgs": false,
+    "returnType": {
+      "qualifiedName": "boolean",
+      "name": "boolean",
+      "isArray": false
+    },
+    "parameters": [
+      {
+        "type": {
+          "qualifiedName": "java.lang.Object",
+          "name": "Object",
+          "isArray": false
+        },
+        "name": "other"
+      }
+    ],
+    "paramTags": [],
+    "throwsTags": []
+  },
+  {
+    "signature": "hashCode()",
+    "name": "hashCode",
+    "containingClass": {
+      "qualifiedName": "org.apache.commons.math.optimization.linear.SimplexTableau",
+      "name": "SimplexTableau",
+      "isArray": false
+    },
+    "targetClass": "org.apache.commons.math.optimization.linear.SimplexTableau",
+    "isVarArgs": false,
+    "returnType": {
+      "qualifiedName": "int",
+      "name": "int",
+      "isArray": false
+    },
+    "parameters": [],
+    "paramTags": [],
+    "throwsTags": []
+  }
+]

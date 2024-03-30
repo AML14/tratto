@@ -1,0 +1,24 @@
+org.apache.commons.math.estimation.AbstractEstimator,@Test(timeout = 4000)
+public void test3033() throws Throwable {
+    LevenbergMarquardtEstimator levenbergMarquardtEstimator0 = new LevenbergMarquardtEstimator();
+    SimpleEstimationProblem simpleEstimationProblem0 = new SimpleEstimationProblem();
+    EstimatedParameter estimatedParameter0 = new EstimatedParameter(""-$C#:Xv%H9/d"", (-2025.2));
+    simpleEstimationProblem0.addParameter(estimatedParameter0);
+    WeightedMeasurement weightedMeasurement0 = mock(WeightedMeasurement.class, new ViolatedAssumptionAnswer());
+    doReturn(0.0).when(weightedMeasurement0).getPartial(any(org.apache.commons.math.estimation.EstimatedParameter.class));
+    doReturn(Double.POSITIVE_INFINITY).when(weightedMeasurement0).getResidual();
+    doReturn(Double.POSITIVE_INFINITY, (-2025.2), (-2025.2)).when(weightedMeasurement0).getWeight();
+    simpleEstimationProblem0.addMeasurement(weightedMeasurement0);
+    levenbergMarquardtEstimator0.estimate(simpleEstimationProblem0);
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+org.apache.commons.math.estimation.AbstractEstimator,@Test(timeout = 4000)
+public void test3134() throws Throwable {
+    GaussNewtonEstimator gaussNewtonEstimator0 = new GaussNewtonEstimator(0, 0, 0);
+    gaussNewtonEstimator0.estimate((EstimationProblem) null);
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+org.apache.commons.math.estimation.AbstractEstimator,@Test(timeout = 4000)
+public void test3235() throws Throwable {
+    GaussNewtonEstimator gaussNewtonEstimator0 = new GaussNewtonEstimator((-584), (-584), (-584));
+    SimpleEstimationProblem simpleEstimationProblem0 = new SimpleEstimationProblem();
+    gaussNewtonEstimator0.estimate(simpleEstimationProblem0);
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.

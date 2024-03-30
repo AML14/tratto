@@ -1,0 +1,133 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test022,"public void test022() throws Throwable {
+    Token.StartTag token_StartTag0 = new Token.StartTag();
+    String string0 = token_StartTag0.tokenType();
+    assertEquals(""StartTag"", string0);
+}",0,
+project,0,test033,"public void test033() throws Throwable {
+    Token.EndTag token_EndTag0 = new Token.EndTag();
+    Token.EndTag token_EndTag1 = token_EndTag0.asEndTag();
+    assertSame(token_EndTag1, token_EndTag0);
+}",0,
+project,0,test044,"public void test044() throws Throwable {
+    Token.StartTag token_StartTag0 = new Token.StartTag();
+    // Undeclared exception!
+    try {
+        token_StartTag0.asCharacter();
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // org.jsoup.parser.Token$StartTag cannot be cast to org.jsoup.parser.Token$Character
+        //
+        verifyException(""org.jsoup.parser.Token"", e);
+    }
+}",0,
+project,0,test055,"public void test055() throws Throwable {
+    Token.Character token_Character0 = new Token.Character();
+    // Undeclared exception!
+    try {
+        token_Character0.asStartTag();
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // org.jsoup.parser.Token$Character cannot be cast to org.jsoup.parser.Token$StartTag
+        //
+        verifyException(""org.jsoup.parser.Token"", e);
+    }
+}",0,
+project,0,test066,"public void test066() throws Throwable {
+    Token.Character token_Character0 = new Token.Character();
+    // Undeclared exception!
+    try {
+        token_Character0.asDoctype();
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // org.jsoup.parser.Token$Character cannot be cast to org.jsoup.parser.Token$Doctype
+        //
+        verifyException(""org.jsoup.parser.Token"", e);
+    }
+}",0,
+project,0,test077,"public void test077() throws Throwable {
+    Token.EOF token_EOF0 = new Token.EOF();
+    // Undeclared exception!
+    try {
+        token_EOF0.asComment();
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // org.jsoup.parser.Token$EOF cannot be cast to org.jsoup.parser.Token$Comment
+        //
+        verifyException(""org.jsoup.parser.Token"", e);
+    }
+}",0,
+project,0,test2424,"public void test2424() throws Throwable {
+    Token.Character token_Character0 = new Token.Character();
+    Token token0 = token_Character0.reset();
+    Token.TokenType token_TokenType0 = Token.TokenType.Doctype;
+    token0.type = token_TokenType0;
+    boolean boolean0 = token_Character0.isDoctype();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2626,"public void test2626() throws Throwable {
+    Token.reset((StringBuilder) null);
+}",0,
+project,0,test3939,"public void test3939() throws Throwable {
+    Token.Character token_Character0 = new Token.Character();
+    boolean boolean0 = token_Character0.isDoctype();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4040,"public void test4040() throws Throwable {
+    Token.EndTag token_EndTag0 = new Token.EndTag();
+    boolean boolean0 = token_EndTag0.isStartTag();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4141,"public void test4141() throws Throwable {
+    Token.StartTag token_StartTag0 = new Token.StartTag();
+    boolean boolean0 = token_StartTag0.isStartTag();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4242,"public void test4242() throws Throwable {
+    Token.Character token_Character0 = new Token.Character();
+    boolean boolean0 = token_Character0.isEndTag();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4343,"public void test4343() throws Throwable {
+    Token.EndTag token_EndTag0 = new Token.EndTag();
+    boolean boolean0 = token_EndTag0.isEndTag();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4444,"public void test4444() throws Throwable {
+    Token.Character token_Character0 = new Token.Character();
+    boolean boolean0 = token_Character0.isComment();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4545,"public void test4545() throws Throwable {
+    Token.Comment token_Comment0 = new Token.Comment();
+    boolean boolean0 = token_Comment0.isComment();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4646,"public void test4646() throws Throwable {
+    Token.EndTag token_EndTag0 = new Token.EndTag();
+    boolean boolean0 = token_EndTag0.isCharacter();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4747,"public void test4747() throws Throwable {
+    Token.EndTag token_EndTag0 = new Token.EndTag();
+    Token.TokenType token_TokenType0 = Token.TokenType.Character;
+    token_EndTag0.type = token_TokenType0;
+    boolean boolean0 = token_EndTag0.isCharacter();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4848,"public void test4848() throws Throwable {
+    Token.Comment token_Comment0 = new Token.Comment();
+    boolean boolean0 = token_Comment0.isEOF();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4949,"public void test4949() throws Throwable {
+    Token.Comment token_Comment0 = new Token.Comment();
+    Token.TokenType token_TokenType0 = Token.TokenType.EOF;
+    token_Comment0.type = token_TokenType0;
+    boolean boolean0 = token_Comment0.isEOF();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)

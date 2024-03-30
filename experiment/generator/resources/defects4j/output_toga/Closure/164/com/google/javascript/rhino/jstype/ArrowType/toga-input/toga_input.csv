@@ -1,0 +1,961 @@
+focal_method,test_prefix,docstring
+"public boolean isReturnTypeInferred() {
+    return call.returnTypeInferred;
+}","public void test000() throws Throwable {
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null, true);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""ASSIGN_URSH"");
+    ArrowType arrowType0 = errorFunctionType0.getInternalArrowType();
+    arrowType0.returnType = null;
+    boolean boolean0 = arrowType0.hasUnknownParamsOrReturn();
+    assertFalse(errorFunctionType0.isReturnTypeInferred());
+}",""
+"boolean hasUnknownParamsOrReturn() {
+    if (parameters != null) {
+        for (Node paramNode = parameters.getFirstChild(); paramNode != null; paramNode = paramNode.getNext()) {
+            JSType type = paramNode.getJSType();
+            if (type == null || type.isUnknownType()) {
+                return true;
+            }
+        }
+    }
+    return returnType == null || returnType.isUnknownType();
+}","public void test001() throws Throwable {
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null, true);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""ASSIGN_URSH"");
+    ArrowType arrowType0 = errorFunctionType0.getInternalArrowType();
+    arrowType0.returnType = null;
+    boolean boolean0 = arrowType0.hasUnknownParamsOrReturn();
+    assertTrue(boolean0);
+}",""
+"@Override
+public TernaryValue testForEquality(JSType that) {
+    throw new UnsupportedOperationException();
+}","public void test012() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""9?:g:zS~,yOWV<_"");
+    ArrowType arrowType0 = errorFunctionType0.getInternalArrowType();
+    // Undeclared exception!
+    try {
+        arrowType0.testForEquality(errorFunctionType0);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.rhino.jstype.ArrowType"", e);
+    }
+}",""
+"public TypePair getTypesUnderShallowEquality(JSType that) {
+    JSType commonType = getGreatestSubtype(that);
+    return new TypePair(commonType, commonType);
+}","public void test023() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, """");
+    ArrowType arrowType0 = errorFunctionType0.getInternalArrowType();
+    // Undeclared exception!
+    try {
+        arrowType0.getTypesUnderShallowEquality(errorFunctionType0);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.rhino.jstype.ArrowType"", e);
+    }
+}","/**
+ * Computes the subset of {@code this} and {@code that} types under shallow
+ * equality.
+ *
+ * @return a pair containing the restricted type of {@code this} as the first
+ *         component and the restricted type of {@code that} as the second
+ *         element. The returned pair is never {@code null} even though its
+ *         components may be {@code null}.
+ */"
+"@Override
+public JSType getLeastSupertype(JSType that) {
+    throw new UnsupportedOperationException();
+}","public void test034() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""GG:s`"");
+    ArrowType arrowType0 = errorFunctionType0.getInternalArrowType();
+    // Undeclared exception!
+    try {
+        arrowType0.getLeastSupertype(errorFunctionType0);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.rhino.jstype.ArrowType"", e);
+    }
+}",""
+"@Override
+public String toString() {
+    return toStringHelper(false);
+}","public void test045() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ArrowType arrowType0 = jSTypeRegistry0.createArrowType((Node) null);
+    // Undeclared exception!
+    try {
+        arrowType0.toString();
+        fail(""Expecting exception: StackOverflowError"");
+    } catch (StackOverflowError e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * A string representation of this type, suitable for printing
+ * in warnings.
+ */"
+"@Override
+public <T> T visit(Visitor<T> visitor) {
+    throw new UnsupportedOperationException();
+}","public void test056() throws Throwable {
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);
+    ArrowType arrowType0 = jSTypeRegistry0.createArrowType((Node) null);
+    // Undeclared exception!
+    try {
+        arrowType0.visit((Visitor<IndexedType>) null);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.rhino.jstype.ArrowType"", e);
+    }
+}",""
+"public boolean isReturnTypeInferred() {
+    return call.returnTypeInferred;
+}","public void test067() throws Throwable {
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);
+    ArrowType arrowType0 = jSTypeRegistry0.createArrowType((Node) null);
+    NoType noType0 = (NoType) arrowType0.getRestrictedTypeGivenToBooleanOutcome(false);
+    assertFalse(noType0.isReturnTypeInferred());
+}",""
+"@Override
+public boolean isSubtype(JSType other) {
+    if (!(other instanceof ArrowType)) {
+        return false;
+    }
+    ArrowType that = (ArrowType) other;
+    // This is described in Draft 2 of the ES4 spec,
+    // Section 3.4.7: Subtyping Function Types.
+    // this.returnType <: that.returnType (covariant)
+    if (!this.returnType.isSubtype(that.returnType)) {
+        return false;
+    }
+    // that.paramType[i] <: this.paramType[i] (contravariant)
+    //
+    // If this.paramType[i] is required,
+    // then that.paramType[i] is required.
+    //
+    // In theory, the ""required-ness"" should work in the other direction as
+    // well. In other words, if we have
+    //
+    // function f(number, number) {}
+    // function g(number) {}
+    //
+    // Then f *should* not be a subtype of g, and g *should* not be
+    // a subtype of f. But in practice, we do not implement it this way.
+    // We want to support the use case where you can pass g where f is
+    // expected, and pretend that g ignores the second argument.
+    // That way, you can have a single ""no-op"" function, and you don't have
+    // to create a new no-op function for every possible type signature.
+    //
+    // So, in this case, g < f, but f !< g
+    Node thisParam = parameters.getFirstChild();
+    Node thatParam = that.parameters.getFirstChild();
+    while (thisParam != null && thatParam != null) {
+        JSType thisParamType = thisParam.getJSType();
+        JSType thatParamType = thatParam.getJSType();
+        if (thisParamType != null) {
+            if (thatParamType == null || !thatParamType.isSubtype(thisParamType)) {
+                return false;
+            }
+        }
+        boolean thisIsVarArgs = thisParam.isVarArgs();
+        boolean thatIsVarArgs = thatParam.isVarArgs();
+        // ""that"" can't be a supertype, because it's missing a required argument.
+        // NOTE(nicksantos): In our type system, we use {function(...?)} and
+        // {function(...NoType)} to to indicate that arity should not be
+        // checked. Strictly speaking, this is not a correct formulation,
+        // because now a sub-function can required arguments that are var_args
+        // in the super-function. So we special-case this.
+        // don't advance if we have variable arguments
+        if (!thisIsVarArgs) {
+            thisParam = thisParam.getNext();
+        }
+        if (!thatIsVarArgs) {
+            thatParam = thatParam.getNext();
+        }
+        // both var_args indicates the end
+        if (thisIsVarArgs && thatIsVarArgs) {
+            thisParam = null;
+            thatParam = null;
+        }
+    }
+    // ""that"" can't be a supertype, because it's missing a required arguement.
+    return true;
+}","public void test078() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JSType[] jSTypeArray0 = new JSType[1];
+    Node node0 = jSTypeRegistry0.createParameters(jSTypeArray0);
+    ArrowType arrowType0 = jSTypeRegistry0.createArrowType(node0);
+    boolean boolean0 = arrowType0.isSubtype(arrowType0);
+    assertTrue(boolean0);
+}",""
+"@Override
+public boolean isSubtype(JSType other) {
+    if (!(other instanceof ArrowType)) {
+        return false;
+    }
+    ArrowType that = (ArrowType) other;
+    // This is described in Draft 2 of the ES4 spec,
+    // Section 3.4.7: Subtyping Function Types.
+    // this.returnType <: that.returnType (covariant)
+    if (!this.returnType.isSubtype(that.returnType)) {
+        return false;
+    }
+    // that.paramType[i] <: this.paramType[i] (contravariant)
+    //
+    // If this.paramType[i] is required,
+    // then that.paramType[i] is required.
+    //
+    // In theory, the ""required-ness"" should work in the other direction as
+    // well. In other words, if we have
+    //
+    // function f(number, number) {}
+    // function g(number) {}
+    //
+    // Then f *should* not be a subtype of g, and g *should* not be
+    // a subtype of f. But in practice, we do not implement it this way.
+    // We want to support the use case where you can pass g where f is
+    // expected, and pretend that g ignores the second argument.
+    // That way, you can have a single ""no-op"" function, and you don't have
+    // to create a new no-op function for every possible type signature.
+    //
+    // So, in this case, g < f, but f !< g
+    Node thisParam = parameters.getFirstChild();
+    Node thatParam = that.parameters.getFirstChild();
+    while (thisParam != null && thatParam != null) {
+        JSType thisParamType = thisParam.getJSType();
+        JSType thatParamType = thatParam.getJSType();
+        if (thisParamType != null) {
+            if (thatParamType == null || !thatParamType.isSubtype(thisParamType)) {
+                return false;
+            }
+        }
+        boolean thisIsVarArgs = thisParam.isVarArgs();
+        boolean thatIsVarArgs = thatParam.isVarArgs();
+        // ""that"" can't be a supertype, because it's missing a required argument.
+        // NOTE(nicksantos): In our type system, we use {function(...?)} and
+        // {function(...NoType)} to to indicate that arity should not be
+        // checked. Strictly speaking, this is not a correct formulation,
+        // because now a sub-function can required arguments that are var_args
+        // in the super-function. So we special-case this.
+        // don't advance if we have variable arguments
+        if (!thisIsVarArgs) {
+            thisParam = thisParam.getNext();
+        }
+        if (!thatIsVarArgs) {
+            thatParam = thatParam.getNext();
+        }
+        // both var_args indicates the end
+        if (thisIsVarArgs && thatIsVarArgs) {
+            thisParam = null;
+            thatParam = null;
+        }
+    }
+    // ""that"" can't be a supertype, because it's missing a required arguement.
+    return true;
+}","public void test089() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ArrowType arrowType0 = jSTypeRegistry0.createArrowType((Node) null);
+    ArrowType arrowType1 = new ArrowType(jSTypeRegistry0, (Node) null, arrowType0);
+    boolean boolean0 = arrowType1.isSubtype(arrowType0);
+    assertFalse(boolean0);
+}",""
+"public boolean isReturnTypeInferred() {
+    return call.returnTypeInferred;
+}","public void test0910() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ArrowType arrowType0 = jSTypeRegistry0.createArrowType((Node) null);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""Not declared as a constructor"");
+    ArrowType arrowType1 = errorFunctionType0.getInternalArrowType();
+    JSType jSType0 = JSType.getLeastSupertype((JSType) arrowType1, (JSType) arrowType0);
+    assertFalse(errorFunctionType0.isReturnTypeInferred());
+}",""
+"@Override
+public boolean equals(Object jsType) {
+    return (jsType instanceof JSType) ? isEquivalentTo((JSType) jsType) : false;
+}","public void test0911() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ArrowType arrowType0 = jSTypeRegistry0.createArrowType((Node) null);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""Not declared as a constructor"");
+    ArrowType arrowType1 = errorFunctionType0.getInternalArrowType();
+    JSType jSType0 = JSType.getLeastSupertype((JSType) arrowType1, (JSType) arrowType0);
+    assertFalse(jSType0.equals((Object) arrowType0));
+}",""
+"static JSType getLeastSupertype(JSType thisType, JSType thatType) {
+    boolean areEquivalent = thisType.isEquivalentTo(thatType);
+    return areEquivalent ? thisType : filterNoResolvedType(thisType.registry.createUnionType(thisType, thatType));
+}","public void test0912() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ArrowType arrowType0 = jSTypeRegistry0.createArrowType((Node) null);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""Not declared as a constructor"");
+    ArrowType arrowType1 = errorFunctionType0.getInternalArrowType();
+    JSType jSType0 = JSType.getLeastSupertype((JSType) arrowType1, (JSType) arrowType0);
+    assertSame(jSType0, arrowType1);
+}","/**
+ * A generic implementation meant to be used as a helper for common
+ * getLeastSupertype implementations.
+ */"
+"@Override
+public boolean isSubtype(JSType other) {
+    if (!(other instanceof ArrowType)) {
+        return false;
+    }
+    ArrowType that = (ArrowType) other;
+    // This is described in Draft 2 of the ES4 spec,
+    // Section 3.4.7: Subtyping Function Types.
+    // this.returnType <: that.returnType (covariant)
+    if (!this.returnType.isSubtype(that.returnType)) {
+        return false;
+    }
+    // that.paramType[i] <: this.paramType[i] (contravariant)
+    //
+    // If this.paramType[i] is required,
+    // then that.paramType[i] is required.
+    //
+    // In theory, the ""required-ness"" should work in the other direction as
+    // well. In other words, if we have
+    //
+    // function f(number, number) {}
+    // function g(number) {}
+    //
+    // Then f *should* not be a subtype of g, and g *should* not be
+    // a subtype of f. But in practice, we do not implement it this way.
+    // We want to support the use case where you can pass g where f is
+    // expected, and pretend that g ignores the second argument.
+    // That way, you can have a single ""no-op"" function, and you don't have
+    // to create a new no-op function for every possible type signature.
+    //
+    // So, in this case, g < f, but f !< g
+    Node thisParam = parameters.getFirstChild();
+    Node thatParam = that.parameters.getFirstChild();
+    while (thisParam != null && thatParam != null) {
+        JSType thisParamType = thisParam.getJSType();
+        JSType thatParamType = thatParam.getJSType();
+        if (thisParamType != null) {
+            if (thatParamType == null || !thatParamType.isSubtype(thisParamType)) {
+                return false;
+            }
+        }
+        boolean thisIsVarArgs = thisParam.isVarArgs();
+        boolean thatIsVarArgs = thatParam.isVarArgs();
+        // ""that"" can't be a supertype, because it's missing a required argument.
+        // NOTE(nicksantos): In our type system, we use {function(...?)} and
+        // {function(...NoType)} to to indicate that arity should not be
+        // checked. Strictly speaking, this is not a correct formulation,
+        // because now a sub-function can required arguments that are var_args
+        // in the super-function. So we special-case this.
+        // don't advance if we have variable arguments
+        if (!thisIsVarArgs) {
+            thisParam = thisParam.getNext();
+        }
+        if (!thatIsVarArgs) {
+            thatParam = thatParam.getNext();
+        }
+        // both var_args indicates the end
+        if (thisIsVarArgs && thatIsVarArgs) {
+            thisParam = null;
+            thatParam = null;
+        }
+    }
+    // ""that"" can't be a supertype, because it's missing a required arguement.
+    return true;
+}","public void test1013() throws Throwable {
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""already specified useForNull"");
+    ArrowType arrowType0 = errorFunctionType0.getInternalArrowType();
+    Node node0 = Node.newString(1, ""Unknown class name"");
+    Node node1 = new Node(1, node0, node0, node0, node0);
+    ArrowType arrowType1 = jSTypeRegistry0.createArrowType(node1);
+    boolean boolean0 = arrowType0.isSubtype(arrowType1);
+    assertFalse(boolean0);
+}",""
+"@Override
+public boolean hasCachedValues() {
+    return prototypeSlot != null || super.hasCachedValues();
+}","public void test1014() throws Throwable {
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""already specified useForNull"");
+    ArrowType arrowType0 = errorFunctionType0.getInternalArrowType();
+    Node node0 = Node.newString(1, ""Unknown class name"");
+    Node node1 = new Node(1, node0, node0, node0, node0);
+    ArrowType arrowType1 = jSTypeRegistry0.createArrowType(node1);
+    boolean boolean0 = arrowType0.isSubtype(arrowType1);
+    assertFalse(errorFunctionType0.hasCachedValues());
+}",""
+"public boolean isReturnTypeInferred() {
+    return call.returnTypeInferred;
+}","public void test1015() throws Throwable {
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""already specified useForNull"");
+    ArrowType arrowType0 = errorFunctionType0.getInternalArrowType();
+    Node node0 = Node.newString(1, ""Unknown class name"");
+    Node node1 = new Node(1, node0, node0, node0, node0);
+    ArrowType arrowType1 = jSTypeRegistry0.createArrowType(node1);
+    boolean boolean0 = arrowType0.isSubtype(arrowType1);
+    assertFalse(errorFunctionType0.isReturnTypeInferred());
+}",""
+"@Override
+public boolean hasCachedValues() {
+    return prototypeSlot != null || super.hasCachedValues();
+}","public void test1116() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""W2JoTp4|YTwH"");
+    JSType[] jSTypeArray0 = new JSType[1];
+    jSTypeArray0[0] = (JSType) errorFunctionType0;
+    Node node0 = jSTypeRegistry0.createParameters(jSTypeArray0);
+    ArrowType arrowType0 = jSTypeRegistry0.createArrowType(node0);
+    ArrowType arrowType1 = errorFunctionType0.getInternalArrowType();
+    boolean boolean0 = arrowType0.isSubtype(arrowType1);
+    assertTrue(errorFunctionType0.hasCachedValues());
+}",""
+"@Override
+public boolean isSubtype(JSType other) {
+    if (!(other instanceof ArrowType)) {
+        return false;
+    }
+    ArrowType that = (ArrowType) other;
+    // This is described in Draft 2 of the ES4 spec,
+    // Section 3.4.7: Subtyping Function Types.
+    // this.returnType <: that.returnType (covariant)
+    if (!this.returnType.isSubtype(that.returnType)) {
+        return false;
+    }
+    // that.paramType[i] <: this.paramType[i] (contravariant)
+    //
+    // If this.paramType[i] is required,
+    // then that.paramType[i] is required.
+    //
+    // In theory, the ""required-ness"" should work in the other direction as
+    // well. In other words, if we have
+    //
+    // function f(number, number) {}
+    // function g(number) {}
+    //
+    // Then f *should* not be a subtype of g, and g *should* not be
+    // a subtype of f. But in practice, we do not implement it this way.
+    // We want to support the use case where you can pass g where f is
+    // expected, and pretend that g ignores the second argument.
+    // That way, you can have a single ""no-op"" function, and you don't have
+    // to create a new no-op function for every possible type signature.
+    //
+    // So, in this case, g < f, but f !< g
+    Node thisParam = parameters.getFirstChild();
+    Node thatParam = that.parameters.getFirstChild();
+    while (thisParam != null && thatParam != null) {
+        JSType thisParamType = thisParam.getJSType();
+        JSType thatParamType = thatParam.getJSType();
+        if (thisParamType != null) {
+            if (thatParamType == null || !thatParamType.isSubtype(thisParamType)) {
+                return false;
+            }
+        }
+        boolean thisIsVarArgs = thisParam.isVarArgs();
+        boolean thatIsVarArgs = thatParam.isVarArgs();
+        // ""that"" can't be a supertype, because it's missing a required argument.
+        // NOTE(nicksantos): In our type system, we use {function(...?)} and
+        // {function(...NoType)} to to indicate that arity should not be
+        // checked. Strictly speaking, this is not a correct formulation,
+        // because now a sub-function can required arguments that are var_args
+        // in the super-function. So we special-case this.
+        // don't advance if we have variable arguments
+        if (!thisIsVarArgs) {
+            thisParam = thisParam.getNext();
+        }
+        if (!thatIsVarArgs) {
+            thatParam = thatParam.getNext();
+        }
+        // both var_args indicates the end
+        if (thisIsVarArgs && thatIsVarArgs) {
+            thisParam = null;
+            thatParam = null;
+        }
+    }
+    // ""that"" can't be a supertype, because it's missing a required arguement.
+    return true;
+}","public void test1117() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""W2JoTp4|YTwH"");
+    JSType[] jSTypeArray0 = new JSType[1];
+    jSTypeArray0[0] = (JSType) errorFunctionType0;
+    Node node0 = jSTypeRegistry0.createParameters(jSTypeArray0);
+    ArrowType arrowType0 = jSTypeRegistry0.createArrowType(node0);
+    ArrowType arrowType1 = errorFunctionType0.getInternalArrowType();
+    boolean boolean0 = arrowType0.isSubtype(arrowType1);
+    assertFalse(boolean0);
+}",""
+"@Override
+public boolean isSubtype(JSType other) {
+    if (!(other instanceof ArrowType)) {
+        return false;
+    }
+    ArrowType that = (ArrowType) other;
+    // This is described in Draft 2 of the ES4 spec,
+    // Section 3.4.7: Subtyping Function Types.
+    // this.returnType <: that.returnType (covariant)
+    if (!this.returnType.isSubtype(that.returnType)) {
+        return false;
+    }
+    // that.paramType[i] <: this.paramType[i] (contravariant)
+    //
+    // If this.paramType[i] is required,
+    // then that.paramType[i] is required.
+    //
+    // In theory, the ""required-ness"" should work in the other direction as
+    // well. In other words, if we have
+    //
+    // function f(number, number) {}
+    // function g(number) {}
+    //
+    // Then f *should* not be a subtype of g, and g *should* not be
+    // a subtype of f. But in practice, we do not implement it this way.
+    // We want to support the use case where you can pass g where f is
+    // expected, and pretend that g ignores the second argument.
+    // That way, you can have a single ""no-op"" function, and you don't have
+    // to create a new no-op function for every possible type signature.
+    //
+    // So, in this case, g < f, but f !< g
+    Node thisParam = parameters.getFirstChild();
+    Node thatParam = that.parameters.getFirstChild();
+    while (thisParam != null && thatParam != null) {
+        JSType thisParamType = thisParam.getJSType();
+        JSType thatParamType = thatParam.getJSType();
+        if (thisParamType != null) {
+            if (thatParamType == null || !thatParamType.isSubtype(thisParamType)) {
+                return false;
+            }
+        }
+        boolean thisIsVarArgs = thisParam.isVarArgs();
+        boolean thatIsVarArgs = thatParam.isVarArgs();
+        // ""that"" can't be a supertype, because it's missing a required argument.
+        // NOTE(nicksantos): In our type system, we use {function(...?)} and
+        // {function(...NoType)} to to indicate that arity should not be
+        // checked. Strictly speaking, this is not a correct formulation,
+        // because now a sub-function can required arguments that are var_args
+        // in the super-function. So we special-case this.
+        // don't advance if we have variable arguments
+        if (!thisIsVarArgs) {
+            thisParam = thisParam.getNext();
+        }
+        if (!thatIsVarArgs) {
+            thatParam = thatParam.getNext();
+        }
+        // both var_args indicates the end
+        if (thisIsVarArgs && thatIsVarArgs) {
+            thisParam = null;
+            thatParam = null;
+        }
+    }
+    // ""that"" can't be a supertype, because it's missing a required arguement.
+    return true;
+}","public void test1218() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ArrowType arrowType0 = jSTypeRegistry0.createArrowType((Node) null);
+    boolean boolean0 = arrowType0.isSubtype(arrowType0);
+    assertTrue(boolean0);
+}",""
+"public boolean isNoType() {
+    return false;
+}","public void test1319() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ArrowType arrowType0 = jSTypeRegistry0.createArrowType((Node) null);
+    JSType jSType0 = JSType.getLeastSupertype((JSType) arrowType0, (JSType) arrowType0);
+    assertFalse(jSType0.isNoType());
+}",""
+"public boolean isReturnTypeInferred() {
+    return call.returnTypeInferred;
+}","public void test1420() throws Throwable {
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    Node node0 = Node.newString(""Not declared as a constructor"", 0, 1);
+    Node node1 = new Node(0, node0);
+    ArrowType arrowType0 = jSTypeRegistry0.createArrowType(node1, noResolvedType0);
+    boolean boolean0 = arrowType0.hasEqualParameters(arrowType0);
+    assertFalse(noResolvedType0.isReturnTypeInferred());
+}",""
+"boolean hasEqualParameters(ArrowType that) {
+    Node thisParam = parameters.getFirstChild();
+    Node otherParam = that.parameters.getFirstChild();
+    while (thisParam != null && otherParam != null) {
+        JSType thisParamType = thisParam.getJSType();
+        JSType otherParamType = otherParam.getJSType();
+        if (thisParamType != null) {
+            // Both parameter lists give a type for this param, it should be equal
+            if (otherParamType != null && !thisParamType.isEquivalentTo(otherParamType)) {
+                return false;
+            }
+        } else {
+            if (otherParamType != null) {
+                return false;
+            }
+        }
+        thisParam = thisParam.getNext();
+        otherParam = otherParam.getNext();
+    }
+    // One of the parameters is null, so the types are only equal if both
+    // parameter lists are null (they are equal).
+    return thisParam == otherParam;
+}","public void test1421() throws Throwable {
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    Node node0 = Node.newString(""Not declared as a constructor"", 0, 1);
+    Node node1 = new Node(0, node0);
+    ArrowType arrowType0 = jSTypeRegistry0.createArrowType(node1, noResolvedType0);
+    boolean boolean0 = arrowType0.hasEqualParameters(arrowType0);
+    assertTrue(boolean0);
+}","/**
+ * @return True if our parameter spec is equal to {@code that}'s parameter
+ *     spec.
+ */"
+"boolean hasEqualParameters(ArrowType that) {
+    Node thisParam = parameters.getFirstChild();
+    Node otherParam = that.parameters.getFirstChild();
+    while (thisParam != null && otherParam != null) {
+        JSType thisParamType = thisParam.getJSType();
+        JSType otherParamType = otherParam.getJSType();
+        if (thisParamType != null) {
+            // Both parameter lists give a type for this param, it should be equal
+            if (otherParamType != null && !thisParamType.isEquivalentTo(otherParamType)) {
+                return false;
+            }
+        } else {
+            if (otherParamType != null) {
+                return false;
+            }
+        }
+        thisParam = thisParam.getNext();
+        otherParam = otherParam.getNext();
+    }
+    // One of the parameters is null, so the types are only equal if both
+    // parameter lists are null (they are equal).
+    return thisParam == otherParam;
+}","public void test1522() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""S#AI-o'u91%9~:"");
+    ArrowType arrowType0 = errorFunctionType0.getInternalArrowType();
+    Node node0 = Node.newString(""Unknown class name"", 0, 1);
+    Node node1 = new Node(0, node0, node0, node0, node0, 4095, 50);
+    ArrowType arrowType1 = jSTypeRegistry0.createArrowType(node1);
+    boolean boolean0 = arrowType0.hasEqualParameters(arrowType1);
+    assertFalse(boolean0);
+}","/**
+ * @return True if our parameter spec is equal to {@code that}'s parameter
+ *     spec.
+ */"
+"public boolean isReturnTypeInferred() {
+    return call.returnTypeInferred;
+}","public void test1523() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""S#AI-o'u91%9~:"");
+    ArrowType arrowType0 = errorFunctionType0.getInternalArrowType();
+    Node node0 = Node.newString(""Unknown class name"", 0, 1);
+    Node node1 = new Node(0, node0, node0, node0, node0, 4095, 50);
+    ArrowType arrowType1 = jSTypeRegistry0.createArrowType(node1);
+    boolean boolean0 = arrowType0.hasEqualParameters(arrowType1);
+    assertFalse(errorFunctionType0.isReturnTypeInferred());
+}",""
+"boolean hasEqualParameters(ArrowType that) {
+    Node thisParam = parameters.getFirstChild();
+    Node otherParam = that.parameters.getFirstChild();
+    while (thisParam != null && otherParam != null) {
+        JSType thisParamType = thisParam.getJSType();
+        JSType otherParamType = otherParam.getJSType();
+        if (thisParamType != null) {
+            // Both parameter lists give a type for this param, it should be equal
+            if (otherParamType != null && !thisParamType.isEquivalentTo(otherParamType)) {
+                return false;
+            }
+        } else {
+            if (otherParamType != null) {
+                return false;
+            }
+        }
+        thisParam = thisParam.getNext();
+        otherParam = otherParam.getNext();
+    }
+    // One of the parameters is null, so the types are only equal if both
+    // parameter lists are null (they are equal).
+    return thisParam == otherParam;
+}","public void test1624() throws Throwable {
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);
+    ArrowType arrowType0 = jSTypeRegistry0.createArrowType((Node) null);
+    JSTypeRegistry jSTypeRegistry1 = new JSTypeRegistry((ErrorReporter) null, true);
+    ArrowType arrowType1 = jSTypeRegistry1.createArrowType((Node) null);
+    boolean boolean0 = arrowType0.hasEqualParameters(arrowType1);
+    assertFalse(boolean0);
+}","/**
+ * @return True if our parameter spec is equal to {@code that}'s parameter
+ *     spec.
+ */"
+"boolean hasEqualParameters(ArrowType that) {
+    Node thisParam = parameters.getFirstChild();
+    Node otherParam = that.parameters.getFirstChild();
+    while (thisParam != null && otherParam != null) {
+        JSType thisParamType = thisParam.getJSType();
+        JSType otherParamType = otherParam.getJSType();
+        if (thisParamType != null) {
+            // Both parameter lists give a type for this param, it should be equal
+            if (otherParamType != null && !thisParamType.isEquivalentTo(otherParamType)) {
+                return false;
+            }
+        } else {
+            if (otherParamType != null) {
+                return false;
+            }
+        }
+        thisParam = thisParam.getNext();
+        otherParam = otherParam.getNext();
+    }
+    // One of the parameters is null, so the types are only equal if both
+    // parameter lists are null (they are equal).
+    return thisParam == otherParam;
+}","public void test1725() throws Throwable {
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    Node node0 = Node.newString(""Not declared as a constructor"", 0, 1);
+    Node node1 = new Node(0, node0);
+    ArrowType arrowType0 = jSTypeRegistry0.createArrowType(node1, noResolvedType0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""Not declared as a type name"");
+    ArrowType arrowType1 = errorFunctionType0.getInternalArrowType();
+    boolean boolean0 = arrowType0.hasEqualParameters(arrowType1);
+    assertFalse(boolean0);
+}","/**
+ * @return True if our parameter spec is equal to {@code that}'s parameter
+ *     spec.
+ */"
+"public boolean isReturnTypeInferred() {
+    return call.returnTypeInferred;
+}","public void test1726() throws Throwable {
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    Node node0 = Node.newString(""Not declared as a constructor"", 0, 1);
+    Node node1 = new Node(0, node0);
+    ArrowType arrowType0 = jSTypeRegistry0.createArrowType(node1, noResolvedType0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""Not declared as a type name"");
+    ArrowType arrowType1 = errorFunctionType0.getInternalArrowType();
+    boolean boolean0 = arrowType0.hasEqualParameters(arrowType1);
+    assertFalse(errorFunctionType0.isReturnTypeInferred());
+}",""
+"@Override
+public boolean equals(Object jsType) {
+    return (jsType instanceof JSType) ? isEquivalentTo((JSType) jsType) : false;
+}","public void test1827() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ArrowType arrowType0 = jSTypeRegistry0.createArrowType((Node) null);
+    ArrowType arrowType1 = new ArrowType(jSTypeRegistry0, (Node) null, arrowType0);
+    boolean boolean0 = arrowType1.equals(arrowType0);
+    assertFalse(boolean0);
+}",""
+"@Override
+public int hashCode() {
+    int hashCode = 0;
+    if (returnType != null) {
+        hashCode += returnType.hashCode();
+    }
+    if (returnTypeInferred) {
+        hashCode += 1;
+    }
+    if (parameters != null) {
+        Node param = parameters.getFirstChild();
+        while (param != null) {
+            JSType paramType = param.getJSType();
+            if (paramType != null) {
+                hashCode += paramType.hashCode();
+            }
+            param = param.getNext();
+        }
+    }
+    return hashCode;
+}","public void test1928() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ArrowType arrowType0 = jSTypeRegistry0.createArrowType((Node) null);
+    arrowType0.returnType = null;
+    arrowType0.hashCode();
+}",""
+"@Override
+public boolean equals(Object jsType) {
+    return (jsType instanceof JSType) ? isEquivalentTo((JSType) jsType) : false;
+}","public void test2029() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ArrowType arrowType0 = jSTypeRegistry0.createArrowType((Node) null);
+    ArrowType arrowType1 = new ArrowType(jSTypeRegistry0, (Node) null, arrowType0, true);
+    arrowType1.hashCode();
+    assertFalse(arrowType1.equals((Object) arrowType0));
+}",""
+"public boolean isReturnTypeInferred() {
+    return call.returnTypeInferred;
+}","public void test2130() throws Throwable {
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    Node node0 = Node.newString(""Not declared as a constructor"", 0, 1);
+    Node node1 = new Node(0, node0);
+    ArrowType arrowType0 = jSTypeRegistry0.createArrowType(node1, noResolvedType0);
+    arrowType0.hashCode();
+    assertFalse(noResolvedType0.isReturnTypeInferred());
+}",""
+"public final boolean isResolved() {
+    return resolved;
+}","public void test2231() throws Throwable {
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    Node node0 = Node.newString(""Not declared as a constructor"", 0, 1);
+    ArrowType arrowType0 = jSTypeRegistry0.createArrowType(node0, noResolvedType0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""Not declared as a type name"");
+    arrowType0.resolveInternal((ErrorReporter) null, errorFunctionType0);
+    assertTrue(noResolvedType0.isResolved());
+}","/**
+ * Whether the type has been resolved.
+ */"
+"@Override
+JSType resolveInternal(ErrorReporter t, StaticScope<JSType> scope) {
+    returnType = safeResolve(returnType, t, scope);
+    if (parameters != null) {
+        for (Node paramNode = parameters.getFirstChild(); paramNode != null; paramNode = paramNode.getNext()) {
+            paramNode.setJSType(paramNode.getJSType().resolve(t, scope));
+        }
+    }
+    return this;
+}","public void test2332() throws Throwable {
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    Node node0 = Node.newString(""Not declared as a constructor"", 0, 1);
+    Node node1 = new Node(0, node0);
+    ArrowType arrowType0 = jSTypeRegistry0.createArrowType(node1, noResolvedType0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""Not declared as a type name"");
+    // Undeclared exception!
+    try {
+        arrowType0.resolveInternal((ErrorReporter) null, errorFunctionType0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.rhino.jstype.ArrowType"", e);
+    }
+}",""
+"boolean hasUnknownParamsOrReturn() {
+    if (parameters != null) {
+        for (Node paramNode = parameters.getFirstChild(); paramNode != null; paramNode = paramNode.getNext()) {
+            JSType type = paramNode.getJSType();
+            if (type == null || type.isUnknownType()) {
+                return true;
+            }
+        }
+    }
+    return returnType == null || returnType.isUnknownType();
+}","public void test2433() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JSType[] jSTypeArray0 = new JSType[1];
+    Node node0 = jSTypeRegistry0.createParameters(jSTypeArray0);
+    ArrowType arrowType0 = jSTypeRegistry0.createArrowType(node0);
+    boolean boolean0 = arrowType0.hasUnknownParamsOrReturn();
+    assertTrue(boolean0);
+}",""
+"public boolean isReturnTypeInferred() {
+    return call.returnTypeInferred;
+}","public void test2534() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""W2JoTp4|YTwH"");
+    assertFalse(errorFunctionType0.isReturnTypeInferred());
+}",""
+"boolean hasUnknownParamsOrReturn() {
+    if (parameters != null) {
+        for (Node paramNode = parameters.getFirstChild(); paramNode != null; paramNode = paramNode.getNext()) {
+            JSType type = paramNode.getJSType();
+            if (type == null || type.isUnknownType()) {
+                return true;
+            }
+        }
+    }
+    return returnType == null || returnType.isUnknownType();
+}","public void test2535() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""W2JoTp4|YTwH"");
+    JSType[] jSTypeArray0 = new JSType[1];
+    jSTypeArray0[0] = (JSType) errorFunctionType0;
+    Node node0 = jSTypeRegistry0.createParameters(jSTypeArray0);
+    ArrowType arrowType0 = jSTypeRegistry0.createArrowType(node0);
+    boolean boolean0 = arrowType0.hasUnknownParamsOrReturn();
+    assertTrue(boolean0);
+}",""
+"boolean hasUnknownParamsOrReturn() {
+    if (parameters != null) {
+        for (Node paramNode = parameters.getFirstChild(); paramNode != null; paramNode = paramNode.getNext()) {
+            JSType type = paramNode.getJSType();
+            if (type == null || type.isUnknownType()) {
+                return true;
+            }
+        }
+    }
+    return returnType == null || returnType.isUnknownType();
+}","public void test2636() throws Throwable {
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);
+    ArrowType arrowType0 = jSTypeRegistry0.createArrowType((Node) null);
+    boolean boolean0 = arrowType0.hasUnknownParamsOrReturn();
+    assertTrue(boolean0);
+}",""
+"@Override
+public boolean hasCachedValues() {
+    return prototypeSlot != null || super.hasCachedValues();
+}","public void test2737() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""W2JoTp4|YTwH"");
+    ArrowType arrowType0 = errorFunctionType0.getInternalArrowType();
+    boolean boolean0 = arrowType0.hasUnknownParamsOrReturn();
+    assertTrue(errorFunctionType0.hasCachedValues());
+}",""
+"boolean hasUnknownParamsOrReturn() {
+    if (parameters != null) {
+        for (Node paramNode = parameters.getFirstChild(); paramNode != null; paramNode = paramNode.getNext()) {
+            JSType type = paramNode.getJSType();
+            if (type == null || type.isUnknownType()) {
+                return true;
+            }
+        }
+    }
+    return returnType == null || returnType.isUnknownType();
+}","public void test2738() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""W2JoTp4|YTwH"");
+    ArrowType arrowType0 = errorFunctionType0.getInternalArrowType();
+    boolean boolean0 = arrowType0.hasUnknownParamsOrReturn();
+    assertFalse(boolean0);
+}",""

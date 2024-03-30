@@ -1,0 +1,563 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    JSType jSType0 = jSTypeRegistry0.createOptionalType(noResolvedType0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    ParameterizedType parameterizedType0 = jSTypeRegistry0.createParameterizedType(noResolvedType0, jSType0);
+    JSType jSType1 = modificationVisitor0.caseParameterizedType(parameterizedType0);
+    assertFalse(jSType1.isEnumElementType());
+}",0,
+project,0,test011,"public void test011() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoObjectType noObjectType0 = new NoObjectType(jSTypeRegistry0);
+    JSType jSType0 = jSTypeRegistry0.createOptionalType(noObjectType0);
+    ImmutableList<JSType> immutableList0 = ImmutableList.of((JSType) noObjectType0, (JSType) noObjectType0, jSType0, (JSType) noObjectType0, (JSType) noObjectType0, (JSType) noObjectType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, immutableList0);
+    JSType jSType1 = unionType0.collapseUnion();
+    JSType.TypePair jSType_TypePair0 = unionType0.getTypesUnderInequality(jSType1);
+    assertNotNull(jSType_TypePair0);
+}",0,assertNotNull(jSType_TypePair0)
+project,0,test033,"public void test033() throws Throwable {
+    ArrayDeque<JSType> arrayDeque0 = new ArrayDeque<JSType>();
+    AllType allType0 = new AllType((JSTypeRegistry) null);
+    arrayDeque0.add(allType0);
+    UnionType unionType0 = new UnionType((JSTypeRegistry) null, arrayDeque0);
+    boolean boolean0 = unionType0.matchesNumberContext();
+    assertFalse(boolean0);
+}",0,
+project,0,test044,"public void test044() throws Throwable {
+    StringType stringType0 = new StringType((JSTypeRegistry) null);
+    ImmutableList<JSType> immutableList0 = ImmutableList.of((JSType) stringType0, (JSType) stringType0, (JSType) stringType0);
+    UnionType unionType0 = new UnionType((JSTypeRegistry) null, immutableList0);
+    boolean boolean0 = unionType0.matchesInt32Context();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test055,"public void test055() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    ArrayDeque<JSType> arrayDeque0 = new ArrayDeque<JSType>();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, arrayDeque0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    ImmutableList<JSType> immutableList0 = ImmutableList.of((JSType) unionType0, (JSType) noResolvedType0, (JSType) noResolvedType0, (JSType) noResolvedType0, (JSType) unionType0, (JSType) noResolvedType0, (JSType) noResolvedType0);
+    UnionType unionType1 = new UnionType(jSTypeRegistry0, immutableList0);
+    boolean boolean0 = unionType1.matchesStringContext();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test066,"public void test066() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    VoidType voidType0 = new VoidType(jSTypeRegistry0);
+    ImmutableList<VoidType> immutableList0 = ImmutableList.of(voidType0, voidType0, voidType0, voidType0, voidType0, voidType0, voidType0, voidType0, voidType0, voidType0, voidType0);
+    ImmutableList<JSType> immutableList1 = ImmutableList.copyOf((Collection<? extends JSType>) immutableList0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, immutableList1);
+    boolean boolean0 = unionType0.matchesObjectContext();
+    assertFalse(boolean0);
+}",0,
+project,0,test077,"public void test077() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoObjectType noObjectType0 = new NoObjectType(jSTypeRegistry0);
+    JSType jSType0 = jSTypeRegistry0.createOptionalType(noObjectType0);
+    boolean boolean0 = jSType0.matchesObjectContext();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test088,"public void test088() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    NullType nullType0 = new NullType(jSTypeRegistry0);
+    ImmutableList<JSType> immutableList0 = ImmutableList.of((JSType) nullType0, (JSType) nullType0, (JSType) nullType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, immutableList0);
+    JSType jSType0 = unionType0.findPropertyType(""Not declared as a type name"");
+    assertNull(jSType0);
+}",0,
+project,0,test099,"public void test099() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    JSType jSType0 = jSTypeRegistry0.createOptionalType(noResolvedType0);
+    JSType jSType1 = jSType0.findPropertyType(""Not declared as a type name"");
+    assertFalse(jSType1.isConstructor());
+}",0,assertFalse(jSType1.isConstructor())
+project,0,test1010,"public void test1010() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ArrayDeque<JSType> arrayDeque0 = new ArrayDeque<JSType>();
+    StringType stringType0 = new StringType(jSTypeRegistry0);
+    arrayDeque0.add(stringType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, arrayDeque0);
+    JSType jSType0 = unionType0.findPropertyType(""Named type with empty name component"");
+    assertNull(jSType0);
+}",0,
+project,0,test1111,"public void test1111() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    TemplateType templateType0 = new TemplateType(jSTypeRegistry0, ""eM&"");
+    ImmutableList<JSType> immutableList0 = ImmutableList.of((JSType) templateType0, (JSType) templateType0, (JSType) templateType0, (JSType) templateType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, immutableList0);
+    JSType jSType0 = unionType0.findPropertyType(""Not declared as a constructor"");
+    assertFalse(jSType0.isParameterizedType());
+}",0,assertFalse(jSType0.isParameterizedType())
+project,0,test1212,"public void test1212() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    VoidType voidType0 = new VoidType(jSTypeRegistry0);
+    ImmutableList<VoidType> immutableList0 = ImmutableList.of(voidType0, voidType0, voidType0, voidType0, voidType0, voidType0, voidType0, voidType0, voidType0, voidType0, voidType0);
+    ImmutableList<JSType> immutableList1 = ImmutableList.copyOf((Collection<? extends JSType>) immutableList0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, immutableList1);
+    NoType noType0 = (NoType) unionType0.getRestrictedTypeGivenToBooleanOutcome(true);
+    boolean boolean0 = unionType0.canAssignTo(noType0);
+    assertTrue(noType0.hasCachedValues());
+}",0,
+project,0,test1213,"public void test1213() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    VoidType voidType0 = new VoidType(jSTypeRegistry0);
+    ImmutableList<VoidType> immutableList0 = ImmutableList.of(voidType0, voidType0, voidType0, voidType0, voidType0, voidType0, voidType0, voidType0, voidType0, voidType0, voidType0);
+    ImmutableList<JSType> immutableList1 = ImmutableList.copyOf((Collection<? extends JSType>) immutableList0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, immutableList1);
+    NoType noType0 = (NoType) unionType0.getRestrictedTypeGivenToBooleanOutcome(true);
+    boolean boolean0 = unionType0.canAssignTo(noType0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test1314,"public void test1314() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    TemplateType templateType0 = new TemplateType(jSTypeRegistry0, ""eM&"");
+    ImmutableList<JSType> immutableList0 = ImmutableList.of((JSType) templateType0, (JSType) templateType0, (JSType) templateType0, (JSType) templateType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, immutableList0);
+    boolean boolean0 = unionType0.canAssignTo(templateType0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test1415,"public void test1415() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ArrayDeque<JSType> arrayDeque0 = new ArrayDeque<JSType>();
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, arrayDeque0);
+    boolean boolean0 = unionType0.canBeCalled();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test1516,"public void test1516() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    JSType jSType0 = jSTypeRegistry0.createOptionalType(noResolvedType0);
+    boolean boolean0 = jSType0.canBeCalled();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test1617,"public void test1617() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    JSType jSType0 = jSTypeRegistry0.createOptionalType(noResolvedType0);
+    JSType jSType1 = jSType0.restrictByNotNullOrUndefined();
+    assertFalse(jSType1.isParameterizedType());
+}",0,assertFalse(jSType1.isParameterizedType())
+project,0,test1918,"public void test1918() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);
+    NoObjectType noObjectType0 = new NoObjectType(jSTypeRegistry0);
+    JSType jSType0 = jSTypeRegistry0.createOptionalType(noObjectType0);
+    boolean boolean0 = jSType0.isNullable();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2019,"public void test2019() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    JSType jSType0 = jSTypeRegistry0.createOptionalType(noResolvedType0);
+    boolean boolean0 = jSType0.isNullable();
+    assertTrue(boolean0);
+}",0,
+project,0,test2120,"public void test2120() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    TemplateType templateType0 = new TemplateType(jSTypeRegistry0, ""eM&"");
+    ImmutableList<JSType> immutableList0 = ImmutableList.of((JSType) templateType0, (JSType) templateType0, (JSType) templateType0, (JSType) templateType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, immutableList0);
+    JSType jSType0 = unionType0.getLeastSupertype(templateType0);
+    assertFalse(jSType0.isNullType());
+}",0,assertFalse(jSType0.isNullType())
+project,0,test2221,"public void test2221() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    VoidType voidType0 = new VoidType(jSTypeRegistry0);
+    ImmutableList<VoidType> immutableList0 = ImmutableList.of(voidType0, voidType0, voidType0, voidType0, voidType0, voidType0, voidType0, voidType0, voidType0, voidType0, voidType0);
+    ImmutableList<JSType> immutableList1 = ImmutableList.copyOf((Collection<? extends JSType>) immutableList0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, immutableList1);
+    boolean boolean0 = unionType0.isStruct();
+    assertFalse(boolean0);
+}",0,
+project,0,test2322,"public void test2322() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoObjectType noObjectType0 = new NoObjectType(jSTypeRegistry0);
+    JSType jSType0 = jSTypeRegistry0.createOptionalType(noObjectType0);
+    boolean boolean0 = jSType0.isDict();
+    assertFalse(boolean0);
+}",0,
+project,0,test2423,"public void test2423() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);
+    Stack<JSType> stack0 = new Stack<JSType>();
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, stack0);
+    JSType jSType0 = unionType0.getLeastSupertype(unionType0);
+    assertFalse(jSType0.isStringValueType());
+}",0,
+project,0,test2524,"public void test2524() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);
+    NoObjectType noObjectType0 = new NoObjectType(jSTypeRegistry0);
+    JSType jSType0 = jSTypeRegistry0.createOptionalType(noObjectType0);
+    JSType jSType1 = jSType0.collapseUnion();
+    JSType jSType2 = jSType0.getLeastSupertype(jSType1);
+    assertEquals(0, JSType.NOT_ENUMDECL);
+}",0,
+project,0,test2625,"public void test2625() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    TemplateType templateType0 = new TemplateType(jSTypeRegistry0, "","");
+    VoidType voidType0 = new VoidType(jSTypeRegistry0);
+    ImmutableList<JSType> immutableList0 = ImmutableList.of((JSType) templateType0, (JSType) voidType0, (JSType) voidType0, (JSType) voidType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, immutableList0);
+    JSType.TypePair jSType_TypePair0 = unionType0.getTypesUnderInequality(voidType0);
+    JSType jSType0 = unionType0.getLeastSupertype(jSType_TypePair0.typeB);
+    assertSame(jSType0, unionType0);
+}",0,
+project,0,test2726,"public void test2726() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ArrayDeque<JSType> arrayDeque0 = new ArrayDeque<JSType>();
+    StringType stringType0 = new StringType(jSTypeRegistry0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, arrayDeque0);
+    JSType jSType0 = unionType0.meet(stringType0);
+    assertFalse(jSType0.isFunctionType());
+}",0,
+project,0,test2827,"public void test2827() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    UnionType unionType0 = (UnionType) jSTypeRegistry0.createOptionalType(noResolvedType0);
+    NoResolvedType noResolvedType1 = (NoResolvedType) unionType0.meet(noResolvedType0);
+    assertEquals(Integer.MAX_VALUE, noResolvedType1.getPropertiesCount());
+}",0,"assertEquals(0, noResolvedType1.getPropertiesCount())"
+project,0,test2928,"public void test2928() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    NoObjectType noObjectType0 = new NoObjectType(jSTypeRegistry0);
+    UnionType unionType0 = (UnionType) jSTypeRegistry0.createOptionalType(noObjectType0);
+    NumberType numberType0 = new NumberType(jSTypeRegistry0);
+    ImmutableList<JSType> immutableList0 = ImmutableList.of((JSType) numberType0, (JSType) numberType0, (JSType) unionType0, (JSType) unionType0, (JSType) unionType0, (JSType) numberType0, (JSType) noObjectType0);
+    UnionType unionType1 = new UnionType(jSTypeRegistry0, immutableList0);
+    UnionType unionType2 = (UnionType) unionType0.meet(unionType1);
+    assertTrue(unionType2.equals((Object) unionType0));
+}",0,
+project,0,test3029,"public void test3029() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ArrayDeque<JSType> arrayDeque0 = new ArrayDeque<JSType>();
+    StringType stringType0 = new StringType(jSTypeRegistry0);
+    arrayDeque0.add(stringType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, arrayDeque0);
+    JSType jSType0 = unionType0.autobox();
+    NoType noType0 = (NoType) unionType0.meet(jSType0);
+    assertFalse(noType0.hasCachedValues());
+}",0,assertTrue(noType0.hasCachedValues())
+project,0,test3130,"public void test3130() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    ArrayDeque<JSType> arrayDeque0 = new ArrayDeque<JSType>();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, arrayDeque0);
+    JSType jSType0 = unionType0.meet(unionType0);
+    assertTrue(jSType0.canBeCalled());
+}",1,
+project,0,test3531,"public void test3531() throws Throwable {
+    StringType stringType0 = new StringType((JSTypeRegistry) null);
+    ImmutableList<JSType> immutableList0 = ImmutableList.of((JSType) stringType0, (JSType) stringType0, (JSType) stringType0);
+    UnionType unionType0 = new UnionType((JSTypeRegistry) null, immutableList0);
+    boolean boolean0 = unionType0.hasProperty(""Not declared as a type name"");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test3632,"public void test3632() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    JSType jSType0 = jSTypeRegistry0.createOptionalType(noResolvedType0);
+    boolean boolean0 = jSType0.hasProperty(""Named type with empty name component"");
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test3733,"public void test3733() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    JSType jSType0 = jSTypeRegistry0.createOptionalType(noResolvedType0);
+    boolean boolean0 = jSType0.isObject();
+    assertFalse(boolean0);
+}",0,
+project,0,test3834,"public void test3834() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    UnionType unionType0 = (UnionType) jSTypeRegistry0.createOptionalType(noResolvedType0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""Not declared as a type name"");
+    boolean boolean0 = unionType0.contains(errorFunctionType0);
+    assertTrue(errorFunctionType0.hasCachedValues());
+}",0,assertTrue(errorFunctionType0.hasCachedValues())
+project,0,test3835,"public void test3835() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    UnionType unionType0 = (UnionType) jSTypeRegistry0.createOptionalType(noResolvedType0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""Not declared as a type name"");
+    boolean boolean0 = unionType0.contains(errorFunctionType0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test3936,"public void test3936() throws Throwable {
+    StringType stringType0 = new StringType((JSTypeRegistry) null);
+    ImmutableList<JSType> immutableList0 = ImmutableList.of((JSType) stringType0, (JSType) stringType0, (JSType) stringType0);
+    UnionType unionType0 = new UnionType((JSTypeRegistry) null, immutableList0);
+    boolean boolean0 = unionType0.contains(stringType0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4037,"public void test4037() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    UnionType unionType0 = (UnionType) jSTypeRegistry0.createOptionalType(noResolvedType0);
+    VoidType voidType0 = (VoidType) unionType0.getRestrictedUnion(noResolvedType0);
+    assertTrue(voidType0.matchesStringContext());
+}",0,assertTrue(voidType0.matchesStringContext())
+project,0,test4138,"public void test4138() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    TemplateType templateType0 = new TemplateType(jSTypeRegistry0, ""eM&"");
+    ImmutableList<JSType> immutableList0 = ImmutableList.of((JSType) templateType0, (JSType) templateType0, (JSType) templateType0, (JSType) templateType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, immutableList0);
+    JSType jSType0 = unionType0.getRestrictedUnion(templateType0);
+    assertTrue(jSType0.isTemplateType());
+}",0,assertTrue(jSType0.isTemplateType())
+project,0,test4239,"public void test4239() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    JSType jSType0 = jSTypeRegistry0.createOptionalType(noResolvedType0);
+    String string0 = jSType0.toAnnotationString();
+    assertEquals(""(?|undefined)"", string0);
+}",0,
+project,0,test4340,"public void test4340() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    TemplateType templateType0 = new TemplateType(jSTypeRegistry0, (String) null);
+    ImmutableList<JSType> immutableList0 = ImmutableList.of((JSType) templateType0, (JSType) templateType0, (JSType) templateType0, (JSType) templateType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, immutableList0);
+    boolean boolean0 = unionType0.isSubtype(templateType0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4441,"public void test4441() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    JSType jSType0 = jSTypeRegistry0.createOptionalType(noResolvedType0);
+    AllType allType0 = new AllType(jSTypeRegistry0);
+    JSType jSType1 = allType0.getGreatestSubtype(jSType0);
+    assertFalse(jSType1.isInterface());
+}",0,assertFalse(jSType1.isInterface())
+project,0,test4542,"public void test4542() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    NoObjectType noObjectType0 = new NoObjectType(jSTypeRegistry0);
+    JSType jSType0 = jSTypeRegistry0.createOptionalType(noObjectType0);
+    boolean boolean0 = jSType0.isNumber();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4643,"public void test4643() throws Throwable {
+    StringType stringType0 = new StringType((JSTypeRegistry) null);
+    ImmutableList<JSType> immutableList0 = ImmutableList.of((JSType) stringType0, (JSType) stringType0, (JSType) stringType0);
+    UnionType unionType0 = new UnionType((JSTypeRegistry) null, immutableList0);
+    BooleanLiteralSet booleanLiteralSet0 = unionType0.getPossibleToBooleanOutcomes();
+    assertEquals(BooleanLiteralSet.BOTH, booleanLiteralSet0);
+}",0,
+project,0,test4744,"public void test4744() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    JSType jSType0 = jSTypeRegistry0.createOptionalType(noResolvedType0);
+    BooleanLiteralSet booleanLiteralSet0 = jSType0.getPossibleToBooleanOutcomes();
+    assertEquals(BooleanLiteralSet.FALSE, booleanLiteralSet0);
+}",0,assertNotNull(booleanLiteralSet0)
+project,0,test4845,"public void test4845() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    StringType stringType0 = new StringType(jSTypeRegistry0);
+    ArrayDeque<JSType> arrayDeque0 = new ArrayDeque<JSType>();
+    arrayDeque0.add(stringType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, arrayDeque0);
+    JSType.TypePair jSType_TypePair0 = unionType0.getTypesUnderEquality(stringType0);
+    assertNotNull(jSType_TypePair0);
+}",0,assertNotNull(jSType_TypePair0)
+project,0,test4946,"public void test4946() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    JSType jSType0 = jSTypeRegistry0.createOptionalType(noResolvedType0);
+    JSType.TypePair jSType_TypePair0 = jSType0.getTypesUnderEquality(noResolvedType0);
+    assertNotNull(jSType_TypePair0);
+}",0,assertNotNull(jSType_TypePair0)
+project,0,test5047,"public void test5047() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    JSType jSType0 = jSTypeRegistry0.createOptionalType(noResolvedType0);
+    JSType.TypePair jSType_TypePair0 = jSType0.getTypesUnderShallowInequality(jSType0);
+    assertNotNull(jSType_TypePair0);
+}",0,assertNotNull(jSType_TypePair0)
+project,0,test5148,"public void test5148() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, ""Unknown class name"", ""Not declared as a constructor"", 1, 0);
+    ImmutableList<JSType> immutableList0 = ImmutableList.of((JSType) noResolvedType0, (JSType) noResolvedType0, (JSType) namedType0, (JSType) namedType0, (JSType) namedType0, (JSType) namedType0, (JSType) namedType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, immutableList0);
+    unionType0.resolveInternal(simpleErrorReporter0, noResolvedType0);
+    assertTrue(namedType0.isResolved());
+}",0,assertTrue(namedType0.isResolved())
+project,0,test5149,"public void test5149() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, ""Unknown class name"", ""Not declared as a constructor"", 1, 0);
+    ImmutableList<JSType> immutableList0 = ImmutableList.of((JSType) noResolvedType0, (JSType) noResolvedType0, (JSType) namedType0, (JSType) namedType0, (JSType) namedType0, (JSType) namedType0, (JSType) namedType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, immutableList0);
+    unionType0.resolveInternal(simpleErrorReporter0, noResolvedType0);
+    assertTrue(noResolvedType0.isResolved());
+}",0,assertFalse(noResolvedType0.isResolved())
+project,0,test5250,"public void test5250() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    UnionType unionType0 = (UnionType) jSTypeRegistry0.createOptionalType(noResolvedType0);
+    unionType0.resolveInternal(simpleErrorReporter0, noResolvedType0);
+    assertTrue(noResolvedType0.isResolved());
+}",0,assertTrue(noResolvedType0.isResolved())
+project,0,test5351,"public void test5351() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ArrayDeque<JSType> arrayDeque0 = new ArrayDeque<JSType>();
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, arrayDeque0);
+    JSType[] jSTypeArray0 = new JSType[1];
+    jSTypeArray0[0] = (JSType) unionType0;
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionType((JSType) null, jSTypeArray0);
+    ParameterizedType parameterizedType0 = new ParameterizedType(jSTypeRegistry0, functionType0, unionType0);
+    arrayDeque0.add(parameterizedType0);
+    UnionType unionType1 = new UnionType(jSTypeRegistry0, arrayDeque0);
+    // Undeclared exception!
+    try {
+        unionType1.resolveInternal(simpleErrorReporter0, (StaticScope<JSType>) null);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",0,
+project,0,test5452,"public void test5452() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    JSType jSType0 = jSTypeRegistry0.createOptionalType(noResolvedType0);
+    String string0 = jSType0.toDebugHashCodeString();
+    assertEquals(""{(function (this:me, {10}): me,{12})}"", string0);
+}",0,
+project,0,test5553,"public void test5553() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    ArrayDeque<JSType> arrayDeque0 = new ArrayDeque<JSType>();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, arrayDeque0);
+    boolean boolean0 = unionType0.setValidator((Predicate<JSType>) null);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test5654,"public void test5654() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    JSType jSType0 = jSTypeRegistry0.createOptionalType(noResolvedType0);
+    // Undeclared exception!
+    try {
+        jSType0.setValidator((Predicate<JSType>) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.rhino.jstype.JSType"", e);
+    }
+}",0,
+project,0,test5755,"public void test5755() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    ArrayDeque<JSType> arrayDeque0 = new ArrayDeque<JSType>();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, arrayDeque0);
+    JSType jSType0 = unionType0.collapseUnion();
+    assertNull(jSType0);
+}",0,
+project,0,test5856,"public void test5856() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    TemplateType templateType0 = new TemplateType(jSTypeRegistry0, ""eM&"");
+    ImmutableList<JSType> immutableList0 = ImmutableList.of((JSType) templateType0, (JSType) templateType0, (JSType) templateType0, (JSType) templateType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, immutableList0);
+    JSType jSType0 = unionType0.collapseUnion();
+    assertFalse(jSType0.isFunctionType());
+}",0,
+project,0,test5957,"public void test5957() throws Throwable {
+    StringType stringType0 = new StringType((JSTypeRegistry) null);
+    ImmutableList<JSType> immutableList0 = ImmutableList.of((JSType) stringType0, (JSType) stringType0, (JSType) stringType0);
+    UnionType unionType0 = new UnionType((JSTypeRegistry) null, immutableList0);
+    // Undeclared exception!
+    try {
+        unionType0.collapseUnion();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.rhino.jstype.JSType"", e);
+    }
+}",0,
+project,0,test6058,"public void test6058() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoObjectType noObjectType0 = new NoObjectType(jSTypeRegistry0);
+    JSType jSType0 = jSTypeRegistry0.createOptionalType(noObjectType0);
+    ImmutableList<JSType> immutableList0 = ImmutableList.of(jSType0, (JSType) noObjectType0, jSType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, immutableList0);
+    JSType jSType1 = unionType0.collapseUnion();
+    assertFalse(jSType1.isConstructor());
+}",0,assertFalse(jSType1.isConstructor())
+project,0,test6159,"public void test6159() throws Throwable {
+    StringType stringType0 = new StringType((JSTypeRegistry) null);
+    ImmutableList<JSType> immutableList0 = ImmutableList.of((JSType) stringType0, (JSType) stringType0, (JSType) stringType0);
+    UnionType unionType0 = new UnionType((JSTypeRegistry) null, immutableList0);
+    unionType0.matchConstraint(stringType0);
+    assertFalse(unionType0.isConstructor());
+}",0,assertFalse(unionType0.isConstructor())
+project,0,test6260,"public void test6260() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    NoObjectType noObjectType0 = new NoObjectType(jSTypeRegistry0);
+    UnionType unionType0 = (UnionType) jSTypeRegistry0.createOptionalType(noObjectType0);
+    boolean boolean0 = unionType0.hasAnyTemplateInternal();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test6361,"public void test6361() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    TemplateType templateType0 = new TemplateType(jSTypeRegistry0, (String) null);
+    ImmutableList<JSType> immutableList0 = ImmutableList.of((JSType) templateType0, (JSType) templateType0, (JSType) templateType0, (JSType) templateType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, immutableList0);
+    boolean boolean0 = unionType0.hasAnyTemplateInternal();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)

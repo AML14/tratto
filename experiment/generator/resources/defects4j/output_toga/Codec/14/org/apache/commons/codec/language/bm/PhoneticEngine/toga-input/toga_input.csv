@@ -1,0 +1,51 @@
+focal_method,test_prefix,docstring
+"public PhoneticEngine(final NameType nameType, final RuleType ruleType, final boolean concat) {
+    this(nameType, ruleType, concat, DEFAULT_MAX_PHONEMES);
+}","public void test11() throws Throwable {
+    NameType nameType0 = NameType.ASHKENAZI;
+    RuleType ruleType0 = RuleType.APPROX;
+    PhoneticEngine phoneticEngine0 = null;
+    try {
+        phoneticEngine0 = new PhoneticEngine(nameType0, ruleType0, true);
+        fail(""Expecting exception: NoClassDefFoundError"");
+    } catch (NoClassDefFoundError e) {
+        //
+        // Could not initialize class org.apache.commons.codec.language.bm.Lang
+        //
+        verifyException(""org.apache.commons.codec.language.bm.PhoneticEngine"", e);
+    }
+}","/**
+ * Generates a new, fully-configured phonetic engine.
+ *
+ * @param nameType
+ *            the type of names it will use
+ * @param ruleType
+ *            the type of rules it will apply
+ * @param concat
+ *            if it will concatenate multiple encodings
+ */"
+"public PhoneticEngine(final NameType nameType, final RuleType ruleType, final boolean concat) {
+    this(nameType, ruleType, concat, DEFAULT_MAX_PHONEMES);
+}","public void test66() throws Throwable {
+    NameType nameType0 = NameType.ASHKENAZI;
+    RuleType ruleType0 = RuleType.RULES;
+    PhoneticEngine phoneticEngine0 = null;
+    try {
+        phoneticEngine0 = new PhoneticEngine(nameType0, ruleType0, true);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // ruleType must not be RULES
+        //
+        verifyException(""org.apache.commons.codec.language.bm.PhoneticEngine"", e);
+    }
+}","/**
+ * Generates a new, fully-configured phonetic engine.
+ *
+ * @param nameType
+ *            the type of names it will use
+ * @param ruleType
+ *            the type of rules it will apply
+ * @param concat
+ *            if it will concatenate multiple encodings
+ */"

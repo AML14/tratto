@@ -1,0 +1,326 @@
+focal_method,test_prefix,docstring
+"public final boolean useStaticType() {
+    return _asStatic;
+}","public void test00() throws Throwable {
+    Class<Object> class0 = Object.class;
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_ENUM;
+    CollectionType collectionType0 = CollectionType.construct((Class<?>) class0, (JavaType) simpleType0);
+    String string0 = collectionType0.toString();
+    assertFalse(collectionType0.useStaticType());
+}","/**
+ * Accessor for checking whether handlers for dealing with values of
+ * this type should use static typing (as opposed to dynamic typing).
+ * Note that while value of 'true' does mean that static typing is to
+ * be used, value of 'false' may still be overridden by other settings.
+ *
+ * @since 2.2
+ */"
+"/*
+    /**********************************************************
+    /* Standard methods
+    /**********************************************************
+     */
+@Override
+public String toString() {
+    return ""[collection type; class "" + _class.getName() + "", contains "" + _elementType + ""]"";
+}","public void test01() throws Throwable {
+    Class<Object> class0 = Object.class;
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_ENUM;
+    CollectionType collectionType0 = CollectionType.construct((Class<?>) class0, (JavaType) simpleType0);
+    String string0 = collectionType0.toString();
+    assertEquals(""[collection type; class java.lang.Object, contains [simple type, class java.lang.Enum]]"", string0);
+}",""
+"public final boolean useStaticType() {
+    return _asStatic;
+}","public void test12() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<HashSet> class0 = HashSet.class;
+    CollectionType collectionType0 = typeFactory0.constructRawCollectionType(class0);
+    Class<Object> class1 = Object.class;
+    JavaType javaType0 = collectionType0._narrow(class1);
+    assertFalse(javaType0.useStaticType());
+}","/**
+ * Accessor for checking whether handlers for dealing with values of
+ * this type should use static typing (as opposed to dynamic typing).
+ * Note that while value of 'true' does mean that static typing is to
+ * be used, value of 'false' may still be overridden by other settings.
+ *
+ * @since 2.2
+ */"
+"public final boolean useStaticType() {
+    return _asStatic;
+}","public void test23() throws Throwable {
+    Class<Object> class0 = Object.class;
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_ENUM;
+    CollectionType collectionType0 = CollectionType.construct((Class<?>) class0, (JavaType) simpleType0);
+    CollectionType collectionType1 = collectionType0.withValueHandler(class0);
+    assertFalse(collectionType1.useStaticType());
+}","/**
+ * Accessor for checking whether handlers for dealing with values of
+ * this type should use static typing (as opposed to dynamic typing).
+ * Note that while value of 'true' does mean that static typing is to
+ * be used, value of 'false' may still be overridden by other settings.
+ *
+ * @since 2.2
+ */"
+"/*
+    /**********************************************************
+    /* Standard methods
+    /**********************************************************
+     */
+@Override
+public boolean equals(Object o) {
+    if (o == this)
+        return true;
+    if (o == null)
+        return false;
+    if (o.getClass() != getClass())
+        return false;
+    CollectionLikeType other = (CollectionLikeType) o;
+    return (_class == other._class) && _elementType.equals(other._elementType);
+}","public void test34() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<HashSet> class0 = HashSet.class;
+    CollectionType collectionType0 = typeFactory0.constructRawCollectionType(class0);
+    CollectionType collectionType1 = collectionType0.withContentValueHandler(typeFactory0);
+    assertTrue(collectionType1.equals((Object) collectionType0));
+}",""
+"public final boolean useStaticType() {
+    return _asStatic;
+}","public void test35() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<HashSet> class0 = HashSet.class;
+    CollectionType collectionType0 = typeFactory0.constructRawCollectionType(class0);
+    CollectionType collectionType1 = collectionType0.withContentValueHandler(typeFactory0);
+    assertFalse(collectionType1.useStaticType());
+}","/**
+ * Accessor for checking whether handlers for dealing with values of
+ * this type should use static typing (as opposed to dynamic typing).
+ * Note that while value of 'true' does mean that static typing is to
+ * be used, value of 'false' may still be overridden by other settings.
+ *
+ * @since 2.2
+ */"
+"@Override
+public CollectionType withStaticTyping() {
+    if (_asStatic) {
+        return this;
+    }
+    return new CollectionType(_class, _bindings, _superClass, _superInterfaces, _elementType.withStaticTyping(), _valueHandler, _typeHandler, true);
+}","public void test46() throws Throwable {
+    Class<String> class0 = String.class;
+    TypeBindings typeBindings0 = TypeFactory.EMPTY_BINDINGS;
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_ENUM;
+    CollectionLikeType collectionLikeType0 = CollectionLikeType.upgradeFrom(simpleType0, simpleType0);
+    JavaType[] javaTypeArray0 = new JavaType[0];
+    ReferenceType referenceType0 = new ReferenceType(class0, typeBindings0, collectionLikeType0, javaTypeArray0, simpleType0, "";B#Cz"", "";B#Cz"", true);
+    CollectionType collectionType0 = new CollectionType(referenceType0, referenceType0);
+    CollectionType collectionType1 = collectionType0.withStaticTyping();
+    assertSame(collectionType1, collectionType0);
+}",""
+"/*
+    /**********************************************************
+    /* Standard methods
+    /**********************************************************
+     */
+@Override
+public boolean equals(Object o) {
+    if (o == this)
+        return true;
+    if (o == null)
+        return false;
+    if (o.getClass() != getClass())
+        return false;
+    CollectionLikeType other = (CollectionLikeType) o;
+    return (_class == other._class) && _elementType.equals(other._elementType);
+}","public void test57() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<HashSet> class0 = HashSet.class;
+    Class<String> class1 = String.class;
+    CollectionType collectionType0 = typeFactory0.constructCollectionType(class0, class1);
+    Integer integer0 = new Integer(1);
+    CollectionType collectionType1 = collectionType0.withTypeHandler(integer0);
+    assertTrue(collectionType1.equals((Object) collectionType0));
+}",""
+"public final boolean useStaticType() {
+    return _asStatic;
+}","public void test58() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<HashSet> class0 = HashSet.class;
+    Class<String> class1 = String.class;
+    CollectionType collectionType0 = typeFactory0.constructCollectionType(class0, class1);
+    Integer integer0 = new Integer(1);
+    CollectionType collectionType1 = collectionType0.withTypeHandler(integer0);
+    assertFalse(collectionType1.useStaticType());
+}","/**
+ * Accessor for checking whether handlers for dealing with values of
+ * this type should use static typing (as opposed to dynamic typing).
+ * Note that while value of 'true' does mean that static typing is to
+ * be used, value of 'false' may still be overridden by other settings.
+ *
+ * @since 2.2
+ */"
+"/*
+    /**********************************************************
+    /* Standard methods
+    /**********************************************************
+     */
+@Override
+public boolean equals(Object o) {
+    if (o == this)
+        return true;
+    if (o == null)
+        return false;
+    if (o.getClass() != getClass())
+        return false;
+    CollectionLikeType other = (CollectionLikeType) o;
+    return (_class == other._class) && _elementType.equals(other._elementType);
+}","public void test69() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<HashSet> class0 = HashSet.class;
+    CollectionType collectionType0 = typeFactory0.constructRawCollectionType(class0);
+    CollectionType collectionType1 = collectionType0.withContentTypeHandler((Object) null);
+    assertTrue(collectionType1.equals((Object) collectionType0));
+}",""
+"public final boolean useStaticType() {
+    return _asStatic;
+}","public void test610() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<HashSet> class0 = HashSet.class;
+    CollectionType collectionType0 = typeFactory0.constructRawCollectionType(class0);
+    CollectionType collectionType1 = collectionType0.withContentTypeHandler((Object) null);
+    assertFalse(collectionType1.useStaticType());
+}","/**
+ * Accessor for checking whether handlers for dealing with values of
+ * this type should use static typing (as opposed to dynamic typing).
+ * Note that while value of 'true' does mean that static typing is to
+ * be used, value of 'false' may still be overridden by other settings.
+ *
+ * @since 2.2
+ */"
+"@Override
+public JavaType withContentType(JavaType contentType) {
+    if (_elementType == contentType) {
+        return this;
+    }
+    return new CollectionType(_class, _bindings, _superClass, _superInterfaces, contentType, _valueHandler, _typeHandler, _asStatic);
+}","public void test711() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<HashSet> class0 = HashSet.class;
+    CollectionType collectionType0 = typeFactory0.constructRawCollectionType(class0);
+    JavaType javaType0 = collectionType0.withContentType(collectionType0);
+    assertNotSame(javaType0, collectionType0);
+}",""
+"@Override
+public abstract boolean equals(Object o);","public void test712() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<HashSet> class0 = HashSet.class;
+    CollectionType collectionType0 = typeFactory0.constructRawCollectionType(class0);
+    JavaType javaType0 = collectionType0.withContentType(collectionType0);
+    assertFalse(javaType0.equals((Object) collectionType0));
+}",""
+"public final boolean useStaticType() {
+    return _asStatic;
+}","public void test713() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<HashSet> class0 = HashSet.class;
+    CollectionType collectionType0 = typeFactory0.constructRawCollectionType(class0);
+    JavaType javaType0 = collectionType0.withContentType(collectionType0);
+    assertFalse(javaType0.useStaticType());
+}","/**
+ * Accessor for checking whether handlers for dealing with values of
+ * this type should use static typing (as opposed to dynamic typing).
+ * Note that while value of 'true' does mean that static typing is to
+ * be used, value of 'false' may still be overridden by other settings.
+ *
+ * @since 2.2
+ */"
+"@Override
+public JavaType withContentType(JavaType contentType) {
+    if (_elementType == contentType) {
+        return this;
+    }
+    return new CollectionType(_class, _bindings, _superClass, _superInterfaces, contentType, _valueHandler, _typeHandler, _asStatic);
+}","public void test814() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<HashSet> class0 = HashSet.class;
+    SimpleType simpleType0 = SimpleType.constructUnsafe(class0);
+    MapType mapType0 = new MapType(simpleType0, simpleType0, simpleType0);
+    ReferenceType referenceType0 = ReferenceType.upgradeFrom(mapType0, mapType0);
+    CollectionType collectionType0 = typeFactory0.constructCollectionType((Class<? extends Collection>) class0, (JavaType) referenceType0);
+    JavaType javaType0 = collectionType0.withContentType(referenceType0);
+    assertSame(javaType0, collectionType0);
+}",""
+"public final boolean useStaticType() {
+    return _asStatic;
+}","public void test815() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<HashSet> class0 = HashSet.class;
+    SimpleType simpleType0 = SimpleType.constructUnsafe(class0);
+    MapType mapType0 = new MapType(simpleType0, simpleType0, simpleType0);
+    ReferenceType referenceType0 = ReferenceType.upgradeFrom(mapType0, mapType0);
+    CollectionType collectionType0 = typeFactory0.constructCollectionType((Class<? extends Collection>) class0, (JavaType) referenceType0);
+    JavaType javaType0 = collectionType0.withContentType(referenceType0);
+    assertFalse(javaType0.useStaticType());
+}","/**
+ * Accessor for checking whether handlers for dealing with values of
+ * this type should use static typing (as opposed to dynamic typing).
+ * Note that while value of 'true' does mean that static typing is to
+ * be used, value of 'false' may still be overridden by other settings.
+ *
+ * @since 2.2
+ */"
+"public final boolean useStaticType() {
+    return _asStatic;
+}","public void test916() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<HashSet> class0 = HashSet.class;
+    CollectionType collectionType0 = typeFactory0.constructRawCollectionType(class0);
+    CollectionType collectionType1 = collectionType0.withStaticTyping();
+    assertFalse(collectionType0.useStaticType());
+}","/**
+ * Accessor for checking whether handlers for dealing with values of
+ * this type should use static typing (as opposed to dynamic typing).
+ * Note that while value of 'true' does mean that static typing is to
+ * be used, value of 'false' may still be overridden by other settings.
+ *
+ * @since 2.2
+ */"
+"public final boolean useStaticType() {
+    return _asStatic;
+}","public void test917() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<HashSet> class0 = HashSet.class;
+    CollectionType collectionType0 = typeFactory0.constructRawCollectionType(class0);
+    CollectionType collectionType1 = collectionType0.withStaticTyping();
+    assertTrue(collectionType1.useStaticType());
+}","/**
+ * Accessor for checking whether handlers for dealing with values of
+ * this type should use static typing (as opposed to dynamic typing).
+ * Note that while value of 'true' does mean that static typing is to
+ * be used, value of 'false' may still be overridden by other settings.
+ *
+ * @since 2.2
+ */"
+"/*
+    /**********************************************************
+    /* Standard methods
+    /**********************************************************
+     */
+@Override
+public boolean equals(Object o) {
+    if (o == this)
+        return true;
+    if (o == null)
+        return false;
+    if (o.getClass() != getClass())
+        return false;
+    CollectionLikeType other = (CollectionLikeType) o;
+    return (_class == other._class) && _elementType.equals(other._elementType);
+}","public void test918() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<HashSet> class0 = HashSet.class;
+    CollectionType collectionType0 = typeFactory0.constructRawCollectionType(class0);
+    CollectionType collectionType1 = collectionType0.withStaticTyping();
+    assertTrue(collectionType1.equals((Object) collectionType0));
+}",""

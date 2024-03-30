@@ -1,0 +1,286 @@
+focal_method,test_prefix,docstring
+"public FormElement addElement(Element element) {
+    elements.add(element);
+    return this;
+}","public void test011() throws Throwable {
+    Tag tag0 = Tag.valueOf(""U#Zw`MA6,h6;,6f:`"");
+    Attributes attributes0 = new Attributes();
+    FormElement formElement0 = new FormElement(tag0, ""U#Zw`MA6,h6;,6f:`"", attributes0);
+    Document document0 = Document.createShell(""PANxl2s/a;}Z|{sl$x"");
+    formElement0.siblingIndex = 57;
+    FormElement formElement1 = formElement0.addElement(document0);
+    assertSame(formElement1, formElement0);
+}","/**
+ * Add a form control element to this form.
+ * @param element form control to add
+ * @return this form element, for chaining
+ */"
+"@Override
+public String nodeName() {
+    return tag.getName();
+}","public void test022() throws Throwable {
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    Tag tag0 = Tag.valueOf(""; filename=\"""", parseSettings0);
+    Attributes attributes0 = new Attributes();
+    FormElement formElement0 = new FormElement(tag0, ""MULDZOY}GV}R&V?48B"", attributes0);
+    Document document0 = new Document("";#\""-jQ4Pyd`"");
+    FormElement formElement1 = formElement0.addElement(document0);
+    formElement1.siblingIndex = (-1);
+    FormElement formElement2 = formElement0.addElement(document0);
+    assertEquals(""; filename=\"""", formElement2.nodeName());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test033() throws Throwable {
+    Tag tag0 = Tag.valueOf(""h3"");
+    Attributes attributes0 = new Attributes();
+    FormElement formElement0 = new FormElement(tag0, ""link"", attributes0);
+    FormElement formElement1 = formElement0.addElement(formElement0);
+    assertEquals(""link"", formElement1.baseUri());
+}",""
+"public boolean hasParent() {
+    return parentNode != null;
+}","public void test044() throws Throwable {
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    Tag tag0 = Tag.valueOf(""keygen"", parseSettings0);
+    Comment comment0 = new Comment(""keygen"");
+    Attributes attributes0 = comment0.attributes();
+    FormElement formElement0 = new FormElement(tag0, "";1L@YWx"", attributes0);
+    Document document0 = new Document("";1L@YWx"");
+    formElement0.reparentChild(formElement0);
+    FormElement formElement1 = formElement0.addElement(document0);
+    assertTrue(formElement1.hasParent());
+}",""
+"public FormElement addElement(Element element) {
+    elements.add(element);
+    return this;
+}","public void test055() throws Throwable {
+    Tag tag0 = Tag.valueOf(""Q"");
+    FormElement formElement0 = new FormElement(tag0, ""Q"", (Attributes) null);
+    formElement0.prependElement(""Q"");
+    Document document0 = Document.createShell("""");
+    FormElement formElement1 = formElement0.addElement(document0);
+    assertSame(formElement0, formElement1);
+}","/**
+ * Add a form control element to this form.
+ * @param element form control to add
+ * @return this form element, for chaining
+ */"
+"public Connection submit() {
+    String action = hasAttr(""action"") ? absUrl(""action"") : baseUri();
+    Validate.notEmpty(action, ""Could not determine a form action URL for submit. Ensure you set a base URI when parsing."");
+    Connection.Method method = attr(""method"").toUpperCase().equals(""POST"") ? Connection.Method.POST : Connection.Method.GET;
+    return Jsoup.connect(action).data(formData()).method(method);
+}","public void test066() throws Throwable {
+    Tag tag0 = Tag.valueOf(""rrUWn"");
+    Attributes attributes0 = new Attributes();
+    Attributes attributes1 = attributes0.put(""checked"", ""checked"");
+    FormElement formElement0 = new FormElement(tag0, ""rrUWn"", attributes1);
+    attributes1.keys = null;
+    // Undeclared exception!
+    try {
+        formElement0.submit();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Attributes"", e);
+    }
+}","/**
+ * Prepare to submit this form. A Connection object is created with the request set up from the form values. You
+ * can then set up other options (like user-agent, timeout, cookies), then execute it.
+ * @return a connection prepared from the values of this form.
+ * @throws IllegalArgumentException if the form's absolute action URL cannot be determined. Make sure you pass the
+ * document's base URI when parsing.
+ */"
+"public Connection submit() {
+    String action = hasAttr(""action"") ? absUrl(""action"") : baseUri();
+    Validate.notEmpty(action, ""Could not determine a form action URL for submit. Ensure you set a base URI when parsing."");
+    Connection.Method method = attr(""method"").toUpperCase().equals(""POST"") ? Connection.Method.POST : Connection.Method.GET;
+    return Jsoup.connect(action).data(formData()).method(method);
+}","public void test077() throws Throwable {
+    Tag tag0 = Tag.valueOf(""U#Zw`MA6,h6;,6f:`"");
+    Attributes attributes0 = new Attributes();
+    Attributes attributes1 = attributes0.put(""PANxl2s/a;}Z|{sl$x"", true);
+    Attributes attributes2 = attributes1.clone();
+    FormElement formElement0 = new FormElement(tag0, ""U#Zw`MA6,h6;,6f:`"", attributes2);
+    String[] stringArray0 = new String[0];
+    attributes2.keys = stringArray0;
+    // Undeclared exception!
+    try {
+        formElement0.submit();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 0
+        //
+        verifyException(""org.jsoup.nodes.Attributes"", e);
+    }
+}","/**
+ * Prepare to submit this form. A Connection object is created with the request set up from the form values. You
+ * can then set up other options (like user-agent, timeout, cookies), then execute it.
+ * @return a connection prepared from the values of this form.
+ * @throws IllegalArgumentException if the form's absolute action URL cannot be determined. Make sure you pass the
+ * document's base URI when parsing.
+ */"
+"public List<Connection.KeyVal> formData() {
+    ArrayList<Connection.KeyVal> data = new ArrayList<>();
+    // iterate the form control elements and accumulate their values
+    for (Element el : elements) {
+        // contents are form listable, superset of submitable
+        if (!el.tag().isFormSubmittable())
+            continue;
+        // skip disabled form inputs
+        if (el.hasAttr(""disabled""))
+            continue;
+        String name = el.attr(""name"");
+        if (name.length() == 0)
+            continue;
+        String type = el.attr(""type"");
+        if (""select"".equals(el.tagName())) {
+            Elements options = el.select(""option[selected]"");
+            boolean set = false;
+            for (Element option : options) {
+                data.add(HttpConnection.KeyVal.create(name, option.val()));
+                set = true;
+            }
+            if (!set) {
+                Element option = el.select(""option"").first();
+                if (option != null)
+                    data.add(HttpConnection.KeyVal.create(name, option.val()));
+            }
+        } else if (""checkbox"".equalsIgnoreCase(type) || ""radio"".equalsIgnoreCase(type)) {
+            // only add checkbox or radio if they have the checked attribute
+            if (el.hasAttr(""checked"")) {
+                final String val = el.val().length() > 0 ? el.val() : ""on"";
+                data.add(HttpConnection.KeyVal.create(name, val));
+            }
+        } else {
+            data.add(HttpConnection.KeyVal.create(name, el.val()));
+        }
+    }
+    return data;
+}","public void test088() throws Throwable {
+    Tag tag0 = Tag.valueOf(""TPJ><bl[d^LLv.`"");
+    Attributes attributes0 = new Attributes();
+    FormElement formElement0 = new FormElement(tag0, ""TPJ><bl[d^LLv.`"", attributes0);
+    FormElement formElement1 = formElement0.addElement((Element) null);
+    // Undeclared exception!
+    try {
+        formElement1.formData();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.FormElement"", e);
+    }
+}","/**
+ * Get the data that this form submits. The returned list is a copy of the data, and changes to the contents of the
+ * list will not be reflected in the DOM.
+ * @return a list of key vals
+ */"
+"public Connection submit() {
+    String action = hasAttr(""action"") ? absUrl(""action"") : baseUri();
+    Validate.notEmpty(action, ""Could not determine a form action URL for submit. Ensure you set a base URI when parsing."");
+    Connection.Method method = attr(""method"").toUpperCase().equals(""POST"") ? Connection.Method.POST : Connection.Method.GET;
+    return Jsoup.connect(action).data(formData()).method(method);
+}","public void test1111() throws Throwable {
+    Tag tag0 = Tag.valueOf(""POST"");
+    Attributes attributes0 = new Attributes();
+    Attributes attributes1 = attributes0.put(""method"", ""POST"");
+    FormElement formElement0 = new FormElement(tag0, ""POST"", attributes1);
+    // Undeclared exception!
+    try {
+        formElement0.submit();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Malformed URL: POST
+        //
+        verifyException(""org.jsoup.helper.HttpConnection"", e);
+    }
+}","/**
+ * Prepare to submit this form. A Connection object is created with the request set up from the form values. You
+ * can then set up other options (like user-agent, timeout, cookies), then execute it.
+ * @return a connection prepared from the values of this form.
+ * @throws IllegalArgumentException if the form's absolute action URL cannot be determined. Make sure you pass the
+ * document's base URI when parsing.
+ */"
+"public Connection submit() {
+    String action = hasAttr(""action"") ? absUrl(""action"") : baseUri();
+    Validate.notEmpty(action, ""Could not determine a form action URL for submit. Ensure you set a base URI when parsing."");
+    Connection.Method method = attr(""method"").toUpperCase().equals(""POST"") ? Connection.Method.POST : Connection.Method.GET;
+    return Jsoup.connect(action).data(formData()).method(method);
+}","public void test1212() throws Throwable {
+    Tag tag0 = Tag.valueOf(""lYT"");
+    Attributes attributes0 = new Attributes();
+    attributes0.put(""action"", ""action"");
+    FormElement formElement0 = new FormElement(tag0, ""action"", attributes0);
+    // Undeclared exception!
+    try {
+        formElement0.submit();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Could not determine a form action URL for submit. Ensure you set a base URI when parsing.
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Prepare to submit this form. A Connection object is created with the request set up from the form values. You
+ * can then set up other options (like user-agent, timeout, cookies), then execute it.
+ * @return a connection prepared from the values of this form.
+ * @throws IllegalArgumentException if the form's absolute action URL cannot be determined. Make sure you pass the
+ * document's base URI when parsing.
+ */"
+"public Connection submit() {
+    String action = hasAttr(""action"") ? absUrl(""action"") : baseUri();
+    Validate.notEmpty(action, ""Could not determine a form action URL for submit. Ensure you set a base URI when parsing."");
+    Connection.Method method = attr(""method"").toUpperCase().equals(""POST"") ? Connection.Method.POST : Connection.Method.GET;
+    return Jsoup.connect(action).data(formData()).method(method);
+}","public void test1313() throws Throwable {
+    Tag tag0 = Tag.valueOf(""PORT"");
+    Attributes attributes0 = new Attributes();
+    FormElement formElement0 = new FormElement(tag0, ""PORT"", attributes0);
+    // Undeclared exception!
+    try {
+        formElement0.submit();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Malformed URL: PORT
+        //
+        verifyException(""org.jsoup.helper.HttpConnection"", e);
+    }
+}","/**
+ * Prepare to submit this form. A Connection object is created with the request set up from the form values. You
+ * can then set up other options (like user-agent, timeout, cookies), then execute it.
+ * @return a connection prepared from the values of this form.
+ * @throws IllegalArgumentException if the form's absolute action URL cannot be determined. Make sure you pass the
+ * document's base URI when parsing.
+ */"
+"public FormElement(Tag tag, String baseUri, Attributes attributes) {
+    super(tag, baseUri, attributes);
+}","public void test1515() throws Throwable {
+    Comment comment0 = new Comment(""Could not determine a form action URL for submit. Ensure you set a base URI when parsing."", ""nQ^XMJ;~^mGo"");
+    Attributes attributes0 = comment0.attributes();
+    FormElement formElement0 = null;
+    try {
+        formElement0 = new FormElement((Tag) null, ""_e5_`>{1@n4d;"", attributes0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Create a new, standalone form element.
+ *
+ * @param tag        tag of this element
+ * @param baseUri    the base URI
+ * @param attributes initial attributes
+ */"

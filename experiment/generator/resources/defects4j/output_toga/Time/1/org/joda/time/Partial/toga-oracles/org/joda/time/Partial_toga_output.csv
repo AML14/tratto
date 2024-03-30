@@ -1,0 +1,499 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    DateTimeFieldType[] dateTimeFieldTypeArray0 = new DateTimeFieldType[1];
+    int[] intArray0 = new int[1];
+    Partial partial0 = null;
+    try {
+        partial0 = new Partial(dateTimeFieldTypeArray0, intArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Types array must not contain null: index 0
+        //
+        verifyException(""org.joda.time.Partial"", e);
+    }
+}",0,
+project,0,test011,"public void test011() throws Throwable {
+    Partial partial0 = new Partial();
+    assertEquals(0, partial0.size());
+}",0,"assertEquals(0, partial0.size())"
+project,0,test012,"public void test012() throws Throwable {
+    Partial partial0 = new Partial();
+    Minutes minutes0 = Minutes.minutes(20);
+    Weeks weeks0 = minutes0.toStandardWeeks();
+    Partial partial1 = partial0.plus(weeks0);
+    assertNotSame(partial1, partial0);
+}",0,
+project,0,test013,"public void test013() throws Throwable {
+    Partial partial0 = new Partial();
+    Minutes minutes0 = Minutes.minutes(20);
+    Weeks weeks0 = minutes0.toStandardWeeks();
+    Partial partial1 = partial0.plus(weeks0);
+    assertTrue(partial1.equals((Object) partial0));
+}",0,
+project,0,test024,"public void test024() throws Throwable {
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.yearOfCentury();
+    Partial partial0 = new Partial(dateTimeFieldType0, 23);
+    Partial partial1 = partial0.without(dateTimeFieldType0);
+    assertEquals(0, partial1.size());
+}",0,
+project,0,test035,"public void test035() throws Throwable {
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.yearOfCentury();
+    Partial partial0 = new Partial(dateTimeFieldType0, 0);
+    Partial partial1 = partial0.withField(dateTimeFieldType0, 0);
+    assertSame(partial1, partial0);
+}",0,
+project,0,test046,"public void test046() throws Throwable {
+    Partial partial0 = new Partial();
+    Partial partial1 = partial0.minus((ReadablePeriod) null);
+    assertSame(partial0, partial1);
+}",1,
+project,0,test057,"public void test057() throws Throwable {
+    Partial partial0 = new Partial();
+    DateTimeFieldType[] dateTimeFieldTypeArray0 = partial0.getFieldTypes();
+    assertEquals(0, dateTimeFieldTypeArray0.length);
+}",0,
+project,0,test1315,"public void test1315() throws Throwable {
+    Partial partial0 = null;
+    try {
+        partial0 = new Partial((DateTimeFieldType) null, (-101));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The field type must not be null
+        //
+        verifyException(""org.joda.time.Partial"", e);
+    }
+}",1,
+project,0,test1416,"public void test1416() throws Throwable {
+    int[] intArray0 = new int[0];
+    Partial partial0 = null;
+    try {
+        partial0 = new Partial((DateTimeFieldType[]) null, intArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Types array must not be null
+        //
+        verifyException(""org.joda.time.Partial"", e);
+    }
+}",0,
+project,0,test1517,"public void test1517() throws Throwable {
+    DateTimeFieldType[] dateTimeFieldTypeArray0 = new DateTimeFieldType[1];
+    JulianChronology julianChronology0 = JulianChronology.getInstanceUTC();
+    LenientChronology lenientChronology0 = LenientChronology.getInstance(julianChronology0);
+    Partial partial0 = null;
+    try {
+        partial0 = new Partial(dateTimeFieldTypeArray0, (int[]) null, lenientChronology0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Values array must not be null
+        //
+        verifyException(""org.joda.time.Partial"", e);
+    }
+}",0,
+project,0,test1618,"public void test1618() throws Throwable {
+    DateTimeFieldType[] dateTimeFieldTypeArray0 = new DateTimeFieldType[1];
+    int[] intArray0 = new int[0];
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis(35);
+    EthiopicChronology ethiopicChronology0 = EthiopicChronology.getInstance(dateTimeZone0);
+    Partial partial0 = null;
+    try {
+        partial0 = new Partial(dateTimeFieldTypeArray0, intArray0, ethiopicChronology0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Values array must be the same length as the types array
+        //
+        verifyException(""org.joda.time.Partial"", e);
+    }
+}",0,
+project,0,test1719,"public void test1719() throws Throwable {
+    ISOChronology iSOChronology0 = ISOChronology.getInstance();
+    DateTimeFieldType[] dateTimeFieldTypeArray0 = new DateTimeFieldType[0];
+    int[] intArray0 = new int[0];
+    Partial partial0 = new Partial(dateTimeFieldTypeArray0, intArray0, iSOChronology0);
+    assertEquals(0, partial0.size());
+}",0,"assertEquals(0, partial0.size())"
+project,0,test1820,"public void test1820() throws Throwable {
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.yearOfCentury();
+    Partial partial0 = new Partial(dateTimeFieldType0, 23);
+    DateTimeFieldType dateTimeFieldType1 = DateTimeFieldType.weekyearOfCentury();
+    // Undeclared exception!
+    try {
+        partial0.with(dateTimeFieldType1, 23);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Types array must not contain duplicate: yearOfCentury and weekyearOfCentury
+        //
+        verifyException(""org.joda.time.Partial"", e);
+    }
+}",0,
+project,0,test1921,"public void test1921() throws Throwable {
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.yearOfCentury();
+    Partial partial0 = new Partial(dateTimeFieldType0, 23);
+    DateTimeFieldType dateTimeFieldType1 = DateTimeFieldType.yearOfEra();
+    Partial partial1 = partial0.with(dateTimeFieldType1, 23);
+    assertEquals(2, partial1.size());
+}",0,
+project,0,test2022,"public void test2022() throws Throwable {
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.year();
+    DateTimeFieldType[] dateTimeFieldTypeArray0 = new DateTimeFieldType[5];
+    DateTimeFieldType dateTimeFieldType1 = DateTimeFieldType.dayOfWeek();
+    dateTimeFieldTypeArray0[0] = dateTimeFieldType1;
+    dateTimeFieldTypeArray0[1] = dateTimeFieldType0;
+    dateTimeFieldTypeArray0[2] = dateTimeFieldType0;
+    dateTimeFieldTypeArray0[3] = dateTimeFieldType0;
+    dateTimeFieldTypeArray0[4] = dateTimeFieldType0;
+    int[] intArray0 = new int[5];
+    CopticChronology copticChronology0 = CopticChronology.getInstance();
+    Partial partial0 = null;
+    try {
+        partial0 = new Partial(dateTimeFieldTypeArray0, intArray0, copticChronology0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Types array must be in order largest-smallest: dayOfWeek < year
+        //
+        verifyException(""org.joda.time.Partial"", e);
+    }
+}",0,
+project,0,test2123,"public void test2123() throws Throwable {
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.yearOfCentury();
+    DateTimeFieldType dateTimeFieldType1 = DateTimeFieldType.weekyear();
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstanceUTC();
+    DateTimeFieldType[] dateTimeFieldTypeArray0 = new DateTimeFieldType[3];
+    dateTimeFieldTypeArray0[0] = dateTimeFieldType1;
+    dateTimeFieldTypeArray0[1] = dateTimeFieldType0;
+    dateTimeFieldTypeArray0[2] = dateTimeFieldType1;
+    int[] intArray0 = new int[4];
+    Partial partial0 = new Partial(buddhistChronology0, dateTimeFieldTypeArray0, intArray0);
+    DateTimeFieldType dateTimeFieldType2 = DateTimeFieldType.halfdayOfDay();
+    // Undeclared exception!
+    try {
+        partial0.with(dateTimeFieldType2, 1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Types array must be in order largest-smallest: yearOfCentury < weekyear
+        //
+        verifyException(""org.joda.time.Partial"", e);
+    }
+}",0,
+project,0,test2224,"public void test2224() throws Throwable {
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.weekyear();
+    Partial partial0 = new Partial(dateTimeFieldType0, 0);
+    DateTimeFieldType dateTimeFieldType1 = DateTimeFieldType.year();
+    // Undeclared exception!
+    try {
+        partial0.with(dateTimeFieldType1, 255);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Types array must not contain duplicate: year and weekyear
+        //
+        verifyException(""org.joda.time.Partial"", e);
+    }
+}",0,
+project,0,test2325,"public void test2325() throws Throwable {
+    DateTimeFieldType[] dateTimeFieldTypeArray0 = new DateTimeFieldType[8];
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.dayOfMonth();
+    dateTimeFieldTypeArray0[0] = dateTimeFieldType0;
+    DateTimeFieldType dateTimeFieldType1 = DateTimeFieldType.dayOfYear();
+    dateTimeFieldTypeArray0[1] = dateTimeFieldType1;
+    dateTimeFieldTypeArray0[2] = dateTimeFieldTypeArray0[0];
+    dateTimeFieldTypeArray0[3] = dateTimeFieldType0;
+    dateTimeFieldTypeArray0[4] = dateTimeFieldTypeArray0[2];
+    dateTimeFieldTypeArray0[5] = dateTimeFieldTypeArray0[2];
+    dateTimeFieldTypeArray0[6] = dateTimeFieldType0;
+    dateTimeFieldTypeArray0[7] = dateTimeFieldTypeArray0[4];
+    int[] intArray0 = new int[8];
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    IslamicChronology.LeapYearPatternType islamicChronology_LeapYearPatternType0 = IslamicChronology.LEAP_YEAR_INDIAN;
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstance((DateTimeZone) fixedDateTimeZone0, islamicChronology_LeapYearPatternType0);
+    Partial partial0 = null;
+    try {
+        partial0 = new Partial(dateTimeFieldTypeArray0, intArray0, islamicChronology0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Types array must be in order largest-smallest: dayOfMonth < dayOfYear
+        //
+        verifyException(""org.joda.time.Partial"", e);
+    }
+}",0,
+project,0,test2426,"public void test2426() throws Throwable {
+    Partial partial0 = null;
+    try {
+        partial0 = new Partial((ReadablePartial) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The partial must not be null
+        //
+        verifyException(""org.joda.time.Partial"", e);
+    }
+}",0,
+project,0,test2527,"public void test2527() throws Throwable {
+    Partial partial0 = new Partial();
+    GJChronology gJChronology0 = GJChronology.getInstance();
+    Partial partial1 = partial0.withChronologyRetainFields(gJChronology0);
+    assertNotSame(partial1, partial0);
+}",0,
+project,0,test2628,"public void test2628() throws Throwable {
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.yearOfCentury();
+    Partial partial0 = new Partial(dateTimeFieldType0, 0);
+    ISOChronology iSOChronology0 = ISOChronology.getInstance();
+    Partial partial1 = partial0.withChronologyRetainFields(iSOChronology0);
+    assertSame(partial1, partial0);
+}",0,
+project,0,test2729,"public void test2729() throws Throwable {
+    Partial partial0 = new Partial();
+    // Undeclared exception!
+    try {
+        partial0.with((DateTimeFieldType) null, 256);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The field type must not be null
+        //
+        verifyException(""org.joda.time.Partial"", e);
+    }
+}",0,
+project,0,test2830,"public void test2830() throws Throwable {
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.yearOfCentury();
+    Partial partial0 = new Partial(dateTimeFieldType0, 0);
+    Partial partial1 = partial0.with(dateTimeFieldType0, 0);
+    assertSame(partial0, partial1);
+}",0,
+project,0,test2931,"public void test2931() throws Throwable {
+    Partial partial0 = new Partial();
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.era();
+    // Undeclared exception!
+    try {
+        partial0.with(dateTimeFieldType0, 1375);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 1375 for era must not be larger than 1
+        //
+        verifyException(""org.joda.time.chrono.BaseChronology"", e);
+    }
+}",0,
+project,0,test3032,"public void test3032() throws Throwable {
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.era();
+    DateTimeFieldType dateTimeFieldType1 = DateTimeFieldType.dayOfMonth();
+    GJChronology gJChronology0 = GJChronology.getInstance((DateTimeZone) null, (-1L), 2);
+    DateTimeFieldType[] dateTimeFieldTypeArray0 = new DateTimeFieldType[4];
+    dateTimeFieldTypeArray0[0] = dateTimeFieldType0;
+    int[] intArray0 = new int[2];
+    Partial partial0 = new Partial(gJChronology0, dateTimeFieldTypeArray0, intArray0);
+    // Undeclared exception!
+    try {
+        partial0.with(dateTimeFieldType1, (-460));
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.Partial"", e);
+    }
+}",0,
+project,0,test3133,"public void test3133() throws Throwable {
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.minuteOfHour();
+    Partial partial0 = new Partial(dateTimeFieldType0, 8);
+    DateTimeFieldType dateTimeFieldType1 = DateTimeFieldType.year();
+    Partial partial1 = partial0.with(dateTimeFieldType1, 8);
+    assertEquals(2, partial1.size());
+}",0,
+project,0,test3234,"public void test3234() throws Throwable {
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.yearOfCentury();
+    Partial partial0 = new Partial(dateTimeFieldType0, 0);
+    Partial partial1 = partial0.with(dateTimeFieldType0, 37);
+    assertEquals(1, partial1.size());
+}",0,"assertEquals(0, partial1.size())"
+project,0,test3335,"public void test3335() throws Throwable {
+    Partial partial0 = new Partial();
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.clockhourOfHalfday();
+    Partial partial1 = partial0.without(dateTimeFieldType0);
+    assertSame(partial0, partial1);
+}",0,
+project,0,test3436,"public void test3436() throws Throwable {
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.yearOfCentury();
+    Partial partial0 = new Partial(dateTimeFieldType0, 0);
+    // Undeclared exception!
+    try {
+        partial0.withField(dateTimeFieldType0, (-3596));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value -3596 for yearOfCentury must be in the range [0,99]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",0,
+project,0,test3537,"public void test3537() throws Throwable {
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.era();
+    DateTimeFieldType[] dateTimeFieldTypeArray0 = new DateTimeFieldType[5];
+    dateTimeFieldTypeArray0[0] = dateTimeFieldType0;
+    int[] intArray0 = new int[0];
+    Partial partial0 = new Partial((Chronology) null, dateTimeFieldTypeArray0, intArray0);
+    DurationFieldType durationFieldType0 = dateTimeFieldType0.getDurationType();
+    // Undeclared exception!
+    try {
+        partial0.withFieldAdded(durationFieldType0, 333);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 0
+        //
+        verifyException(""org.joda.time.field.BaseDateTimeField"", e);
+    }
+}",0,
+project,0,test3638,"public void test3638() throws Throwable {
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.yearOfCentury();
+    Partial partial0 = new Partial(dateTimeFieldType0, 0);
+    DurationFieldType durationFieldType0 = dateTimeFieldType0.getDurationType();
+    Partial partial1 = partial0.withFieldAdded(durationFieldType0, 0);
+    assertSame(partial1, partial0);
+}",0,
+project,0,test3739,"public void test3739() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(0);
+    JulianChronology julianChronology0 = JulianChronology.getInstance(dateTimeZone0);
+    DateTimeFieldType[] dateTimeFieldTypeArray0 = new DateTimeFieldType[2];
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.clockhourOfDay();
+    dateTimeFieldTypeArray0[0] = dateTimeFieldType0;
+    DateTimeFieldType dateTimeFieldType1 = DateTimeFieldType.minuteOfHour();
+    int[] intArray0 = new int[9];
+    DurationFieldType durationFieldType0 = dateTimeFieldType1.getRangeDurationType();
+    Partial partial0 = new Partial(julianChronology0, dateTimeFieldTypeArray0, intArray0);
+    Partial partial1 = partial0.withFieldAddWrapped(durationFieldType0, 0);
+    assertSame(partial1, partial0);
+}",0,
+project,0,test3840,"public void test3840() throws Throwable {
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.yearOfCentury();
+    Hours hours0 = Hours.FIVE;
+    Partial partial0 = new Partial(dateTimeFieldType0, 0);
+    Partial partial1 = partial0.withPeriodAdded(hours0, 0);
+    assertSame(partial1, partial0);
+}",0,
+project,0,test3941,"public void test3941() throws Throwable {
+    EthiopicChronology ethiopicChronology0 = EthiopicChronology.getInstance();
+    LocalDateTime localDateTime0 = new LocalDateTime((Chronology) ethiopicChronology0);
+    Partial partial0 = new Partial(localDateTime0);
+    Days days0 = Days.SEVEN;
+    Partial partial1 = partial0.withPeriodAdded(days0, 1);
+    assertFalse(partial1.equals((Object) partial0));
+}",0,
+project,0,test3942,"public void test3942() throws Throwable {
+    EthiopicChronology ethiopicChronology0 = EthiopicChronology.getInstance();
+    LocalDateTime localDateTime0 = new LocalDateTime((Chronology) ethiopicChronology0);
+    Partial partial0 = new Partial(localDateTime0);
+    Days days0 = Days.SEVEN;
+    Partial partial1 = partial0.withPeriodAdded(days0, 1);
+    assertNotSame(partial1, partial0);
+}",0,
+project,0,test4043,"public void test4043() throws Throwable {
+    Instant instant0 = new Instant();
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.hourOfHalfday();
+    Partial partial0 = new Partial(dateTimeFieldType0, 8, (Chronology) null);
+    boolean boolean0 = partial0.isMatch((ReadableInstant) instant0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4144,"public void test4144() throws Throwable {
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.yearOfCentury();
+    Partial partial0 = new Partial(dateTimeFieldType0, 8);
+    Instant instant0 = new Instant();
+    boolean boolean0 = partial0.isMatch((ReadableInstant) instant0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4245,"public void test4245() throws Throwable {
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.yearOfCentury();
+    Partial partial0 = new Partial(dateTimeFieldType0, 15);
+    boolean boolean0 = partial0.isMatch((ReadablePartial) partial0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4346,"public void test4346() throws Throwable {
+    Partial partial0 = new Partial();
+    // Undeclared exception!
+    try {
+        partial0.isMatch((ReadablePartial) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The partial must not be null
+        //
+        verifyException(""org.joda.time.Partial"", e);
+    }
+}",0,
+project,0,test4447,"public void test4447() throws Throwable {
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.centuryOfEra();
+    Partial partial0 = new Partial(dateTimeFieldType0, 91);
+    LocalDate localDate0 = new LocalDate();
+    boolean boolean0 = partial0.isMatch((ReadablePartial) localDate0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4548,"public void test4548() throws Throwable {
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.yearOfCentury();
+    Partial partial0 = new Partial(dateTimeFieldType0, 0);
+    Locale locale0 = Locale.CANADA_FRENCH;
+    partial0.toString((String) null, locale0);
+    DateTimeFormatter dateTimeFormatter0 = partial0.getFormatter();
+    assertNull(dateTimeFormatter0);
+}",0,
+project,0,test4649,"public void test4649() throws Throwable {
+    Partial partial0 = new Partial();
+    String string0 = partial0.toString((String) null);
+    assertEquals(""[]"", string0);
+}",0,
+project,0,test4750,"public void test4750() throws Throwable {
+    EthiopicChronology ethiopicChronology0 = EthiopicChronology.getInstance();
+    LocalDateTime localDateTime0 = new LocalDateTime((Chronology) ethiopicChronology0);
+    Partial partial0 = new Partial(localDateTime0);
+    Locale locale0 = Locale.CANADA_FRENCH;
+    String string0 = partial0.toString((String) null, locale0);
+    assertEquals(""[year=2006, monthOfYear=6, dayOfMonth=7, millisOfDay=44481320]"", string0);
+}",0,
+project,0,test4851,"public void test4851() throws Throwable {
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.year();
+    Partial partial0 = new Partial(dateTimeFieldType0, 1647);
+    String string0 = partial0.toString();
+    assertEquals(""1647"", string0);
+}",0,
+project,0,test4952,"public void test4952() throws Throwable {
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.yearOfCentury();
+    Partial partial0 = new Partial(dateTimeFieldType0, 0);
+    Locale locale0 = Locale.UK;
+    partial0.toString((String) null, locale0);
+    String string0 = partial0.toString();
+    assertEquals(""[yearOfCentury=0]"", string0);
+}",0,assertNotNull(string0)
+project,0,test5053,"public void test5053() throws Throwable {
+    Partial partial0 = new Partial();
+    // Undeclared exception!
+    try {
+        partial0.toString(""Vh|w2kb2{.\""W9"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Illegal pattern component: V
+        //
+        verifyException(""org.joda.time.format.DateTimeFormat"", e);
+    }
+}",0,
+project,0,test5154,"public void test5154() throws Throwable {
+    Partial partial0 = new Partial();
+    Locale locale0 = Locale.CANADA_FRENCH;
+    // Undeclared exception!
+    try {
+        partial0.toString(""A0P"", locale0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Illegal pattern component: A
+        //
+        verifyException(""org.joda.time.format.DateTimeFormat"", e);
+    }
+}",0,

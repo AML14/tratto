@@ -1,0 +1,213 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    CodeGenerator codeGenerator0 = CodeGenerator.forCostEstimation((CodeConsumer) null);
+    Charset charset0 = Charset.forName(""default"");
+    CharsetEncoder charsetEncoder0 = charset0.newEncoder();
+    String string0 = codeGenerator0.regexpEscape(""\u0001X\u00A0\u0000\u0000\u0000\u0000\u0000\u0000\t\n\u000B\f\rL\u0000\u2028\u2029\u0000\u0000\u0000\u0000\u0000\u202F\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000 \u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u3000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0085\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u0000E\u0000\u0000\u0000\u1680\u0000\u180E\u0000\u0000\u0000"", charsetEncoder0);
+    assertEquals(""/\u0001X\\u00a0\\x00\\x00\\x00\\x00\\x00\\x00\\t\\n\\x0B\\f\\rL\\x00\\u2028\\u2029\\x00\\x00\\x00\\x00\\x00\\u202f\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00 \\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\u3000\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\u0085\\u2000\\u2001\\u2002\\u2003\\u2004\\u2005\\u2006\\u2007\\u2008\\u2009\\u200a\\x00E\\x00\\x00\\x00\\u1680\\x00\\u180e\\x00\\x00\\x00/"", string0);
+}",0,assertNotNull(string0)
+project,0,test011,"public void test011() throws Throwable {
+    CodeGenerator codeGenerator0 = CodeGenerator.forCostEstimation((CodeConsumer) null);
+    // Undeclared exception!
+    try {
+        codeGenerator0.tagAsStrict();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.CodeGenerator"", e);
+    }
+}",0,
+project,0,test022,"public void test022() throws Throwable {
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    CodeGenerator codeGenerator0 = new CodeGenerator((CodeConsumer) null, compilerOptions0);
+    String string0 = codeGenerator0.escapeToDoubleQuotedJsString(""ZHMOsmN?Tc<cSM&"");
+    assertEquals(""\""ZHMOsmN?Tc\\x3ccSM\\x26\"""", string0);
+}",0,assertNotNull(string0)
+project,0,test033,"public void test033() throws Throwable {
+    CodeGenerator codeGenerator0 = CodeGenerator.forCostEstimation((CodeConsumer) null);
+    // Undeclared exception!
+    try {
+        codeGenerator0.addCaseBody((Node) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.CodeGenerator"", e);
+    }
+}",0,
+project,0,test044,"public void test044() throws Throwable {
+    CodeGenerator codeGenerator0 = CodeGenerator.forCostEstimation((CodeConsumer) null);
+    String string0 = codeGenerator0.regexpEscape(""\u0001\u0000\u00A0\u0000\u0000\u0000\u0000\u0000\u0000\t\n\u000B\f\r\u0000\u0000\u2028\u2029\u0000\u0000\u0000\u0000\u0000\u202F\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000 \u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u3000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0085\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u0000\u0000\u0000\u0000\u0000\u205F\u1680\u0000\u0000\u180E\u0000\u0000\u0000"");
+    assertEquals(""/\\u0001\\x00\\u00a0\\x00\\x00\\x00\\x00\\x00\\x00\\t\\n\\x0B\\f\\r\\x00\\x00\\u2028\\u2029\\x00\\x00\\x00\\x00\\x00\\u202f\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00 \\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\u3000\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\u0085\\u2000\\u2001\\u2002\\u2003\\u2004\\u2005\\u2006\\u2007\\u2008\\u2009\\u200a\\x00\\x00\\x00\\x00\\x00\\u205f\\u1680\\x00\\x00\\u180e\\x00\\x00\\x00/"", string0);
+}",0,
+project,0,test055,"public void test055() throws Throwable {
+    Node node0 = Node.newNumber((-1777.076));
+    CodeGenerator codeGenerator0 = CodeGenerator.forCostEstimation((CodeConsumer) null);
+    // Undeclared exception!
+    try {
+        codeGenerator0.addList(node0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.CodeGenerator"", e);
+    }
+}",0,
+project,0,test076,"public void test076() throws Throwable {
+    double double0 = CodeGenerator.getSimpleNumber(""02"");
+    assertEquals(Double.NaN, double0, 0.01);
+}",0,
+project,0,test087,"public void test087() throws Throwable {
+    double double0 = CodeGenerator.getSimpleNumber("""");
+    assertEquals(Double.NaN, double0, 0.01);
+}",0,
+project,0,test098,"public void test098() throws Throwable {
+    double double0 = CodeGenerator.getSimpleNumber(""(0,"");
+    assertEquals(Double.NaN, double0, 0.01);
+}",0,
+project,0,test109,"public void test109() throws Throwable {
+    double double0 = CodeGenerator.getSimpleNumber(""vo/\u0005"");
+    assertEquals(Double.NaN, double0, 0.01);
+}",0,
+project,0,test1110,"public void test1110() throws Throwable {
+    double double0 = CodeGenerator.getSimpleNumber(""4"");
+    assertEquals(4.0, double0, 0.01);
+}",0,
+project,0,test1211,"public void test1211() throws Throwable {
+    boolean boolean0 = CodeGenerator.isSimpleNumber(""22"");
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test1312,"public void test1312() throws Throwable {
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    CodeGenerator codeGenerator0 = new CodeGenerator((CodeConsumer) null, compilerOptions0);
+    Node node0 = new Node(85);
+    // Undeclared exception!
+    try {
+        codeGenerator0.addArrayList(node0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.CodeGenerator"", e);
+    }
+}",0,
+project,0,test1413,"public void test1413() throws Throwable {
+    Node node0 = Node.newNumber(0.0);
+    CodeGenerator codeGenerator0 = CodeGenerator.forCostEstimation((CodeConsumer) null);
+    CodeGenerator.Context codeGenerator_Context0 = CodeGenerator.Context.IN_FOR_INIT_CLAUSE;
+    // Undeclared exception!
+    try {
+        codeGenerator0.addList(node0, false, codeGenerator_Context0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.CodeGenerator"", e);
+    }
+}",0,
+project,0,test1514,"public void test1514() throws Throwable {
+    Node node0 = new Node(51);
+    CodeGenerator codeGenerator0 = CodeGenerator.forCostEstimation((CodeConsumer) null);
+    CodeGenerator.Context codeGenerator_Context0 = CodeGenerator.Context.IN_FOR_INIT_CLAUSE;
+    // Undeclared exception!
+    try {
+        codeGenerator0.addList(node0, false, codeGenerator_Context0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.CodeGenerator"", e);
+    }
+}",0,
+project,0,test1815,"public void test1815() throws Throwable {
+    Node node0 = Node.newNumber(1528.42799161106);
+    CodeGenerator codeGenerator0 = CodeGenerator.forCostEstimation((CodeConsumer) null);
+    // Undeclared exception!
+    try {
+        codeGenerator0.addAllSiblings(node0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.CodeGenerator"", e);
+    }
+}",0,
+project,0,test1916,"public void test1916() throws Throwable {
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    CodeGenerator codeGenerator0 = new CodeGenerator((CodeConsumer) null, compilerOptions0);
+    String string0 = codeGenerator0.regexpEscape(""\""eEeu<r"");
+    assertEquals(""/\""eEeu<r/"", string0);
+}",0,
+project,0,test2017,"public void test2017() throws Throwable {
+    CodeGenerator codeGenerator0 = CodeGenerator.forCostEstimation((CodeConsumer) null);
+    Charset charset0 = Charset.defaultCharset();
+    CharsetEncoder charsetEncoder0 = charset0.newEncoder();
+    String string0 = codeGenerator0.regexpEscape(""S>W&7Y-+j483x4`!Iu'"", charsetEncoder0);
+    assertEquals(""/S>W&7Y-+j483x4`!Iu'/"", string0);
+}",0,assertNotNull(string0)
+project,0,test2118,"public void test2118() throws Throwable {
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    CodeGenerator codeGenerator0 = new CodeGenerator((CodeConsumer) null, compilerOptions0);
+    String string0 = codeGenerator0.escapeToDoubleQuotedJsString(""f0xL(zSRxZs=e"");
+    assertEquals(""\""f0xL(zSRxZs\\x3de\"""", string0);
+}",0,
+project,0,test2219,"public void test2219() throws Throwable {
+    CodeGenerator codeGenerator0 = CodeGenerator.forCostEstimation((CodeConsumer) null);
+    String string0 = codeGenerator0.regexpEscape(""\""$=v5</scripty8<an"");
+    assertEquals(""/\""$=v5\\x3c/scripty8<an/"", string0);
+}",0,
+project,0,test2320,"public void test2320() throws Throwable {
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    CodeGenerator codeGenerator0 = new CodeGenerator((CodeConsumer) null, compilerOptions0);
+    String string0 = codeGenerator0.regexpEscape(""1c?r`u0QS])_=EZQ"");
+    assertEquals(""/1c?r`u0QS])_=EZQ/"", string0);
+}",0,assertNotNull(string0)
+project,0,test2421,"public void test2421() throws Throwable {
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    CodeGenerator codeGenerator0 = new CodeGenerator((CodeConsumer) null, compilerOptions0);
+    String string0 = codeGenerator0.regexpEscape("":dP-j}AN 6ugj|&UKn]"");
+    assertEquals(""/:dP-j}AN 6ugj|&UKn]/"", string0);
+}",0,assertNotNull(string0)
+project,0,test2522,"public void test2522() throws Throwable {
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    CodeGenerator codeGenerator0 = new CodeGenerator((CodeConsumer) null, compilerOptions0);
+    String string0 = codeGenerator0.regexpEscape(""Vzn>xOw#PpUe?Ak"");
+    assertEquals(""/Vzn>xOw#PpUe?Ak/"", string0);
+}",0,assertNotNull(string0)
+project,0,test2623,"public void test2623() throws Throwable {
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    CodeGenerator codeGenerator0 = new CodeGenerator((CodeConsumer) null, compilerOptions0);
+    String string0 = codeGenerator0.escapeToDoubleQuotedJsString(""Z.eC>*$M!?a9OLW"");
+    assertEquals(""\""Z.eC\\x3e*\\u007f$M!?a9OLW\"""", string0);
+}",0,assertNotNull(string0)
+project,0,test2724,"public void test2724() throws Throwable {
+    CodeGenerator codeGenerator0 = CodeGenerator.forCostEstimation((CodeConsumer) null);
+    String string0 = codeGenerator0.regexpEscape(""<!->t@|o{}W0T)Pd"");
+    assertEquals(""/<!->t@|o{}W0T)Pd/"", string0);
+}",0,assertNotNull(string0)
+project,0,test2825,"public void test2825() throws Throwable {
+    CodeGenerator codeGenerator0 = CodeGenerator.forCostEstimation((CodeConsumer) null);
+    String string0 = codeGenerator0.regexpEscape(""<!-->s@|o{}W0T)P@"");
+    assertEquals(""/\\x3c!--\\x3es@|o{}W0T)P@/"", string0);
+}",0,assertNotNull(string0)
+project,0,test2926,"public void test2926() throws Throwable {
+    CodeGenerator codeGenerator0 = CodeGenerator.forCostEstimation((CodeConsumer) null);
+    String string0 = codeGenerator0.regexpEscape(""J72%]>6Vn0"");
+    assertEquals(""/J72%]>6Vn0/"", string0);
+}",0,
+project,0,test3027,"public void test3027() throws Throwable {
+    String string0 = CodeGenerator.identifierEscape(""\u0001X\u00A0\u0000\u0000\u0000\u0000\u0000\u0000\t\n\u000B\f\r\u0000\u0000\u2028\u2029\u0000\u0000\u0000\u0000\u0000\u202F\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000 \u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u3000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0085\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u0000\u0000\u0000\u0000\u0000\u1680\u0000\u180E\u0000\u0000\u0000"");
+    assertEquals(""\\u0001X\\u00a0\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0009\\u000a\\u000b\\u000c\\u000d\\u0000\\u0000\\u2028\\u2029\\u0000\\u0000\\u0000\\u0000\\u0000\\u202f\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000 \\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u3000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0085\\u2000\\u2001\\u2002\\u2003\\u2004\\u2005\\u2006\\u2007\\u2008\\u2009\\u200a\\u0000\\u0000\\u0000\\u0000\\u0000\\u1680\\u0000\\u180e\\u0000\\u0000\\u0000"", string0);
+}",0,
+project,0,test3128,"public void test3128() throws Throwable {
+    String string0 = CodeGenerator.identifierEscape("""");
+    assertEquals("""", string0);
+}",0,assertNotNull(string0)

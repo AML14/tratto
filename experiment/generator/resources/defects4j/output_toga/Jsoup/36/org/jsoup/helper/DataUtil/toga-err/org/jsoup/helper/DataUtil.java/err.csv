@@ -1,0 +1,30 @@
+org.jsoup.helper.DataUtil,@Test(timeout = 4000)
+public void test000() throws Throwable {
+    byte[] byteArray0 = new byte[7];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(byteArrayInputStream0, byteArrayInputStream0);
+    ByteBuffer byteBuffer0 = DataUtil.readToByteBuffer(sequenceInputStream0);
+    byteBuffer0.limit();
+},ERROR,java.nio.file.NoSuchFileException,/home/star_usit_group/tratto/experiment/generator/resources/defects4j/temp/Jsoup_36b/src/main/java/java/nio/Buffer.java
+org.jsoup.helper.DataUtil,@Test(timeout = 4000)
+public void test011() throws Throwable {
+    byte[] byteArray0 = new byte[4];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) (-67), (byte) (-67));
+    ByteBuffer byteBuffer0 = DataUtil.readToByteBuffer(byteArrayInputStream0, 0);
+    Parser parser0 = Parser.htmlParser();
+    Document document0 = DataUtil.parseByteData(byteBuffer0, (String) null, "", state="", parser0);
+    document0.baseUri();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+org.jsoup.helper.DataUtil,@Test(timeout = 4000)
+public void test2323() throws Throwable {
+    byte[] byteArray0 = new byte[7];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    Document document0 = DataUtil.load((InputStream) byteArrayInputStream0, (String) null, ""width must be > 0"");
+    document0.baseUri();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+org.jsoup.helper.DataUtil,@Test(timeout = 4000)
+public void test2727() throws Throwable {
+    File file0 = MockFile.createTempFile(""charset"", ""charset"");
+    Document document0 = DataUtil.load(file0, (String) null, ""!"");
+    document0.baseUri();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.

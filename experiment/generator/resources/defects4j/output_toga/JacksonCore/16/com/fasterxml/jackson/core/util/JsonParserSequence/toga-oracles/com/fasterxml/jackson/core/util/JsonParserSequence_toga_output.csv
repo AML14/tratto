@@ -1,0 +1,523 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    byte[] byteArray0 = new byte[8];
+    byteArray0[0] = (byte) 63;
+    byteArray0[1] = (byte) (-103);
+    byteArray0[2] = (byte) 111;
+    byteArray0[3] = (byte) 116;
+    byteArray0[4] = (byte) (-88);
+    byteArray0[5] = (byte) 0;
+    byteArray0[6] = (byte) 69;
+    byteArray0[7] = (byte) 118;
+    FileSystemHandling.appendDataToFile((EvoSuiteFile) null, byteArray0);
+    System.setCurrentTimeMillis((-980L));
+    System.setCurrentTimeMillis((-980L));
+    System.setCurrentTimeMillis(25L);
+    System.setCurrentTimeMillis((byte) (-88));
+    System.setCurrentTimeMillis(1L);
+    System.setCurrentTimeMillis((byte) 118);
+    JsonParser[] jsonParserArray0 = new JsonParser[6];
+    BufferRecycler bufferRecycler0 = new BufferRecycler((byte) 0, 46);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    JsonEncoding jsonEncoding0 = JsonEncoding.UTF16_LE;
+    IOContext iOContext1 = iOContext0.withEncoding(jsonEncoding0);
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (-2232), 3);
+    DataInputStream dataInputStream0 = new DataInputStream(byteArrayInputStream0);
+    StringReader stringReader0 = new StringReader(""j0~<eDz"");
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, (byte) (-88), stringReader0, objectCodec0, charsToNameCanonicalizer0);
+    JsonParserSequence jsonParserSequence0 = JsonParserSequence.createFlattened(readerBasedJsonParser0, readerBasedJsonParser0);
+    ObjectCodec objectCodec1 = jsonParserSequence0.getCodec();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    UTF8DataInputJsonParser uTF8DataInputJsonParser0 = new UTF8DataInputJsonParser(iOContext1, (byte) (-88), dataInputStream0, objectCodec1, byteQuadsCanonicalizer0, 224);
+    jsonParserArray0[0] = (JsonParser) uTF8DataInputJsonParser0;
+    JsonParser.Feature jsonParser_Feature0 = JsonParser.Feature.ALLOW_MISSING_VALUES;
+    JsonParser jsonParser0 = jsonParserSequence0.configure(jsonParser_Feature0, false);
+    jsonParserArray0[1] = jsonParser0;
+    JsonParser jsonParser1 = jsonParserSequence0.overrideStdFeatures((byte) 69, 4096);
+    jsonParserArray0[2] = jsonParser1;
+    JsonParser jsonParser2 = readerBasedJsonParser0.skipChildren();
+    jsonParserArray0[3] = jsonParser2;
+    JsonParser jsonParser3 = jsonParserSequence0.enable(jsonParser_Feature0);
+    jsonParserArray0[4] = jsonParser3;
+    DataInputStream dataInputStream1 = new DataInputStream(dataInputStream0);
+    UTF8DataInputJsonParser uTF8DataInputJsonParser1 = new UTF8DataInputJsonParser(iOContext0, (byte) 118, dataInputStream1, objectCodec1, byteQuadsCanonicalizer0, 1);
+    jsonParserArray0[5] = (JsonParser) uTF8DataInputJsonParser1;
+    JsonParserSequence jsonParserSequence1 = new JsonParserSequence(jsonParserArray0);
+    // Undeclared exception!
+    try {
+        jsonParserSequence1.nextToken();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -2232
+        //
+        verifyException(""java.io.ByteArrayInputStream"", e);
+    }
+}",0,
+project,0,test011,"public void test011() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    StringReader stringReader0 = new StringReader(""/"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    char[] charArray0 = new char[1];
+    charArray0[0] = '3';
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 3, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0, charArray0, 3, 3, true);
+    JsonParser.Feature jsonParser_Feature0 = JsonParser.Feature.STRICT_DUPLICATE_DETECTION;
+    JsonParser jsonParser0 = readerBasedJsonParser0.enable(jsonParser_Feature0);
+    JsonParserDelegate jsonParserDelegate0 = new JsonParserDelegate(jsonParser0);
+    JsonParserSequence jsonParserSequence0 = JsonParserSequence.createFlattened(jsonParserDelegate0, readerBasedJsonParser0);
+    try {
+        jsonParserSequence0.nextToken();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected end-of-input in a comment
+        //  at [Source: com.fasterxml.jackson.core.util.BufferRecycler@0000000012; line: 1, column: 6]
+        //
+        verifyException(""com.fasterxml.jackson.core.base.ParserMinimalBase"", e);
+    }
+}",0,
+project,0,test022,"public void test022() throws Throwable {
+    JsonParser[] jsonParserArray0 = new JsonParser[1];
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, (Object) null, false);
+    StringReader stringReader0 = new StringReader(""Qm_^`doOo"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 0, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    JsonParserSequence jsonParserSequence0 = JsonParserSequence.createFlattened(readerBasedJsonParser0, readerBasedJsonParser0);
+    JsonParserSequence jsonParserSequence1 = JsonParserSequence.createFlattened(jsonParserSequence0, jsonParserSequence0);
+    jsonParserSequence1._nextParser = (-1559);
+    jsonParserArray0[0] = (JsonParser) jsonParserSequence1;
+    JsonParserSequence jsonParserSequence2 = new JsonParserSequence(jsonParserArray0);
+    // Undeclared exception!
+    try {
+        jsonParserSequence2.close();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -1559
+        //
+        verifyException(""com.fasterxml.jackson.core.util.JsonParserSequence"", e);
+    }
+}",0,
+project,0,test033,"public void test033() throws Throwable {
+    JsonParser[] jsonParserArray0 = new JsonParser[1];
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, (Object) null, false);
+    StringReader stringReader0 = new StringReader(""Qm_^`doOo"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 0, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    JsonParserSequence jsonParserSequence0 = JsonParserSequence.createFlattened(readerBasedJsonParser0, readerBasedJsonParser0);
+    JsonParserSequence jsonParserSequence1 = JsonParserSequence.createFlattened(jsonParserSequence0, jsonParserSequence0);
+    jsonParserArray0[0] = (JsonParser) jsonParserSequence1;
+    stringReader0.reset();
+    jsonParserSequence1._nextParser = 81;
+    JsonParserSequence jsonParserSequence2 = new JsonParserSequence(jsonParserArray0);
+    jsonParserSequence2.close();
+    jsonParserSequence0.nextToken();
+    // Undeclared exception!
+    try {
+        JsonParserSequence.createFlattened(jsonParserSequence2, jsonParserArray0[0]);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 0
+        //
+        verifyException(""com.fasterxml.jackson.core.util.JsonParserSequence"", e);
+    }
+}",0,
+project,0,test044,"public void test044() throws Throwable {
+    byte[] byteArray0 = new byte[7];
+    byteArray0[0] = (byte) (-86);
+    byteArray0[1] = (byte) 1;
+    byteArray0[2] = (byte) 75;
+    byteArray0[3] = (byte) 25;
+    byteArray0[4] = (byte) 50;
+    byteArray0[5] = (byte) (-1);
+    byteArray0[6] = (byte) (-122);
+    FileSystemHandling.appendDataToFile((EvoSuiteFile) null, byteArray0);
+    JsonParser[] jsonParserArray0 = new JsonParser[1];
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, (Object) null, false);
+    StringReader stringReader0 = new StringReader(""Qm_^`doOo"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 0, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    JsonParserSequence jsonParserSequence0 = JsonParserSequence.createFlattened(readerBasedJsonParser0, readerBasedJsonParser0);
+    JsonParserSequence jsonParserSequence1 = (JsonParserSequence) jsonParserSequence0.skipChildren();
+    jsonParserSequence1._nextParser = (-2023);
+    jsonParserArray0[0] = (JsonParser) jsonParserSequence1;
+    // Undeclared exception!
+    try {
+        JsonParserSequence.createFlattened(jsonParserSequence0, jsonParserArray0[0]);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test055,"public void test055() throws Throwable {
+    System.setCurrentTimeMillis((-2288L));
+    TokenFilter tokenFilter0 = TokenFilter.INCLUDE_ALL;
+    FilteringParserDelegate filteringParserDelegate0 = new FilteringParserDelegate((JsonParser) null, tokenFilter0, false, false);
+    JsonParserSequence jsonParserSequence0 = JsonParserSequence.createFlattened(filteringParserDelegate0, (JsonParser) null);
+    jsonParserSequence0._nextParser = 4710;
+    JsonParserSequence jsonParserSequence1 = JsonParserSequence.createFlattened(jsonParserSequence0, filteringParserDelegate0);
+    JsonParserSequence jsonParserSequence2 = JsonParserSequence.createFlattened(filteringParserDelegate0, jsonParserSequence1);
+    assertEquals(1, jsonParserSequence1.containedParsersCount());
+}",0,
+project,0,test056,"public void test056() throws Throwable {
+    System.setCurrentTimeMillis((-2288L));
+    TokenFilter tokenFilter0 = TokenFilter.INCLUDE_ALL;
+    FilteringParserDelegate filteringParserDelegate0 = new FilteringParserDelegate((JsonParser) null, tokenFilter0, false, false);
+    JsonParserSequence jsonParserSequence0 = JsonParserSequence.createFlattened(filteringParserDelegate0, (JsonParser) null);
+    jsonParserSequence0._nextParser = 4710;
+    JsonParserSequence jsonParserSequence1 = JsonParserSequence.createFlattened(jsonParserSequence0, filteringParserDelegate0);
+    JsonParserSequence jsonParserSequence2 = JsonParserSequence.createFlattened(filteringParserDelegate0, jsonParserSequence1);
+    assertEquals(2, jsonParserSequence2.containedParsersCount());
+}",0,
+project,0,test067,"public void test067() throws Throwable {
+    JsonParser[] jsonParserArray0 = new JsonParser[1];
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, (Object) null, false);
+    StringReader stringReader0 = new StringReader(""Qm_^`doOo"");
+    stringReader0.reset();
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 0, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    JsonParserSequence jsonParserSequence0 = JsonParserSequence.createFlattened(readerBasedJsonParser0, readerBasedJsonParser0);
+    JsonParser jsonParser0 = jsonParserSequence0.skipChildren();
+    jsonParserArray0[0] = jsonParser0;
+    JsonParserSequence jsonParserSequence1 = JsonParserSequence.createFlattened(jsonParserSequence0, jsonParserArray0[0]);
+    jsonParserSequence1.close();
+    jsonParserSequence0.nextToken();
+    JsonParserSequence jsonParserSequence2 = JsonParserSequence.createFlattened(jsonParserSequence0, jsonParserSequence1);
+    assertEquals(4, jsonParserSequence1.containedParsersCount());
+}",0,
+project,0,test068,"public void test068() throws Throwable {
+    JsonParser[] jsonParserArray0 = new JsonParser[1];
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, (Object) null, false);
+    StringReader stringReader0 = new StringReader(""Qm_^`doOo"");
+    stringReader0.reset();
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 0, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    JsonParserSequence jsonParserSequence0 = JsonParserSequence.createFlattened(readerBasedJsonParser0, readerBasedJsonParser0);
+    JsonParser jsonParser0 = jsonParserSequence0.skipChildren();
+    jsonParserArray0[0] = jsonParser0;
+    JsonParserSequence jsonParserSequence1 = JsonParserSequence.createFlattened(jsonParserSequence0, jsonParserArray0[0]);
+    jsonParserSequence1.close();
+    jsonParserSequence0.nextToken();
+    JsonParserSequence jsonParserSequence2 = JsonParserSequence.createFlattened(jsonParserSequence0, jsonParserSequence1);
+    assertEquals(2, jsonParserSequence2.containedParsersCount());
+}",0,
+project,0,test079,"public void test079() throws Throwable {
+    JsonParser[] jsonParserArray0 = new JsonParser[1];
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, (Object) null, false);
+    StringReader stringReader0 = new StringReader(""Qm_^`doOo"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 0, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    JsonParserSequence jsonParserSequence0 = JsonParserSequence.createFlattened(readerBasedJsonParser0, readerBasedJsonParser0);
+    JsonParser jsonParser0 = jsonParserSequence0.skipChildren();
+    jsonParserArray0[0] = jsonParser0;
+    JsonParserSequence jsonParserSequence1 = new JsonParserSequence(jsonParserArray0);
+    jsonParserSequence1.close();
+    assertEquals(0, jsonParserSequence1.getFormatFeatures());
+}",0,"assertEquals(0, jsonParserSequence1.getFormatFeatures())"
+project,0,test0810,"public void test0810() throws Throwable {
+    TokenFilter tokenFilter0 = TokenFilter.INCLUDE_ALL;
+    TokenFilter tokenFilter1 = tokenFilter0.filterStartArray();
+    FilteringParserDelegate filteringParserDelegate0 = new FilteringParserDelegate((JsonParser) null, tokenFilter1, false, false);
+    JsonParserSequence jsonParserSequence0 = JsonParserSequence.createFlattened(filteringParserDelegate0, filteringParserDelegate0);
+    boolean boolean0 = jsonParserSequence0.switchToNext();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test0811,"public void test0811() throws Throwable {
+    TokenFilter tokenFilter0 = TokenFilter.INCLUDE_ALL;
+    TokenFilter tokenFilter1 = tokenFilter0.filterStartArray();
+    FilteringParserDelegate filteringParserDelegate0 = new FilteringParserDelegate((JsonParser) null, tokenFilter1, false, false);
+    JsonParserSequence jsonParserSequence0 = JsonParserSequence.createFlattened(filteringParserDelegate0, filteringParserDelegate0);
+    boolean boolean0 = jsonParserSequence0.switchToNext();
+    boolean boolean1 = jsonParserSequence0.switchToNext();
+    assertFalse(boolean1 == boolean0);
+}",0,
+project,0,test0912,"public void test0912() throws Throwable {
+    LinkedList<JsonParser> linkedList0 = new LinkedList<JsonParser>();
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, (Object) null, false);
+    StringReader stringReader0 = new StringReader(""k-T<%"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    CharsToNameCanonicalizer charsToNameCanonicalizer1 = charsToNameCanonicalizer0.makeChild(20);
+    char[] charArray0 = new char[0];
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, (-1658), stringReader0, (ObjectCodec) null, charsToNameCanonicalizer1, charArray0, 1, 1, false);
+    JsonParserSequence jsonParserSequence0 = JsonParserSequence.createFlattened(readerBasedJsonParser0, (JsonParser) null);
+    try {
+        jsonParserSequence0.nextToken();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Reader returned 0 characters when trying to read 1
+        //
+        verifyException(""com.fasterxml.jackson.core.json.ReaderBasedJsonParser"", e);
+    }
+}",0,
+project,0,test1013,"public void test1013() throws Throwable {
+    System.setCurrentTimeMillis(1663L);
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    Enumeration<InputStream> enumeration0 = (Enumeration<InputStream>) mock(Enumeration.class, new ViolatedAssumptionAnswer());
+    doReturn(false, false).when(enumeration0).hasMoreElements();
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(enumeration0);
+    BufferedInputStream bufferedInputStream0 = new BufferedInputStream(sequenceInputStream0);
+    byte[] byteArray0 = new byte[4];
+    byteArray0[0] = (byte) (-1);
+    byteArray0[1] = (byte) 80;
+    byteArray0[2] = (byte) 1;
+    byteArray0[3] = (byte) 25;
+    bufferedInputStream0.read(byteArray0);
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    byte[] byteArray1 = new byte[0];
+    UTF8StreamJsonParser uTF8StreamJsonParser0 = new UTF8StreamJsonParser(iOContext0, (-791), bufferedInputStream0, (ObjectCodec) null, byteQuadsCanonicalizer0, byteArray1, 0, 2, true);
+    JsonParserSequence jsonParserSequence0 = JsonParserSequence.createFlattened(uTF8StreamJsonParser0, uTF8StreamJsonParser0);
+    jsonParserSequence0.switchToNext();
+    jsonParserSequence0.containedParsersCount();
+    jsonParserSequence0.containedParsersCount();
+    jsonParserSequence0.getCurrentToken();
+    LinkedList<JsonParser> linkedList0 = new LinkedList<JsonParser>();
+    linkedList0.offer(jsonParserSequence0);
+    linkedList0.add((JsonParser) uTF8StreamJsonParser0);
+    jsonParserSequence0.addFlattenedActiveParsers(linkedList0);
+    jsonParserSequence0.containedParsersCount();
+    System.setCurrentTimeMillis(2);
+    // Undeclared exception!
+    try {
+        jsonParserSequence0.close();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}",0,
+project,0,test1114,"public void test1114() throws Throwable {
+    OutputStream outputStream0 = null;
+    JsonParser[] jsonParserArray0 = new JsonParser[4];
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, (Object) null, false);
+    StringReader stringReader0 = new StringReader(""com.fasterxml.jackson.core.util.JsonParserSequence"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    char[] charArray0 = new char[8];
+    charArray0[0] = '}';
+    charArray0[1] = '9';
+    charArray0[2] = 'T';
+    charArray0[3] = 'i';
+    charArray0[4] = '3';
+    charArray0[5] = '+';
+    charArray0[6] = '';
+    charArray0[7] = 'R';
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 0, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0, charArray0, 1, 1, false);
+    JsonParser.Feature jsonParser_Feature0 = JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS;
+    JsonParser jsonParser0 = readerBasedJsonParser0.enable(jsonParser_Feature0);
+    jsonParserArray0[0] = jsonParser0;
+    TokenFilter tokenFilter0 = TokenFilter.INCLUDE_ALL;
+    TokenFilter tokenFilter1 = tokenFilter0.filterStartObject();
+    TokenFilter tokenFilter2 = tokenFilter1.includeRootValue(0);
+    FilteringParserDelegate filteringParserDelegate0 = new FilteringParserDelegate(jsonParser0, tokenFilter2, false, false);
+    jsonParserArray0[1] = (JsonParser) filteringParserDelegate0;
+    JsonParser.Feature jsonParser_Feature1 = JsonParser.Feature.AUTO_CLOSE_SOURCE;
+    JsonParser jsonParser1 = readerBasedJsonParser0.disable(jsonParser_Feature1);
+    jsonParserArray0[2] = jsonParser1;
+    JsonParser jsonParser2 = readerBasedJsonParser0.overrideStdFeatures((-2326), 50);
+    jsonParserArray0[3] = jsonParser2;
+    JsonParserSequence jsonParserSequence0 = new JsonParserSequence(jsonParserArray0);
+    try {
+        jsonParserSequence0.nextToken();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unrecognized token 'com': was expecting ('true', 'false' or 'null')
+        //  at [Source: UNKNOWN; line: 1, column: 5]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",0,
+project,0,test1215,"public void test1215() throws Throwable {
+    JsonParser[] jsonParserArray0 = new JsonParser[1];
+    JsonParserSequence jsonParserSequence0 = new JsonParserSequence(jsonParserArray0);
+    LinkedList<JsonParser> linkedList0 = new LinkedList<JsonParser>();
+    // Undeclared exception!
+    try {
+        jsonParserSequence0.nextToken();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.util.JsonParserSequence"", e);
+    }
+}",0,
+project,0,test1316,"public void test1316() throws Throwable {
+    JsonParserSequence jsonParserSequence0 = JsonParserSequence.createFlattened((JsonParser) null, (JsonParser) null);
+    Class<ReaderBasedJsonParser> class0 = ReaderBasedJsonParser.class;
+    RequestPayload requestPayload0 = null;
+    // Undeclared exception!
+    try {
+        jsonParserSequence0.nextIntValue((-1134));
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.util.JsonParserSequence"", e);
+    }
+}",0,
+project,0,test1417,"public void test1417() throws Throwable {
+    JsonParser jsonParser0 = null;
+    JsonParserSequence jsonParserSequence0 = JsonParserSequence.createFlattened((JsonParser) null, (JsonParser) null);
+    Class<FilteringParserDelegate> class0 = FilteringParserDelegate.class;
+    // Undeclared exception!
+    try {
+        jsonParserSequence0.addFlattenedActiveParsers((List<JsonParser>) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test1518,"public void test1518() throws Throwable {
+    JsonParser jsonParser0 = null;
+    JsonParserSequence jsonParserSequence0 = JsonParserSequence.createFlattened((JsonParser) null, (JsonParser) null);
+    // Undeclared exception!
+    try {
+        jsonParserSequence0.close();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test1821,"public void test1821() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    StringReader stringReader0 = new StringReader(""Js#"");
+    JsonParser[] jsonParserArray0 = new JsonParser[3];
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    CharsToNameCanonicalizer charsToNameCanonicalizer1 = charsToNameCanonicalizer0.makeChild(0);
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, (-1391), stringReader0, objectCodec0, charsToNameCanonicalizer1, (char[]) null, 33, 53, true);
+    TokenFilter tokenFilter0 = TokenFilter.INCLUDE_ALL;
+    TokenFilter tokenFilter1 = tokenFilter0.filterStartArray();
+    FilteringParserDelegate filteringParserDelegate0 = new FilteringParserDelegate(readerBasedJsonParser0, tokenFilter1, true, true);
+    jsonParserArray0[0] = (JsonParser) filteringParserDelegate0;
+    ObjectCodec objectCodec1 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    ReaderBasedJsonParser readerBasedJsonParser1 = new ReaderBasedJsonParser(iOContext0, 3, stringReader0, objectCodec1, charsToNameCanonicalizer0, (char[]) null, 45, 53, true);
+    jsonParserArray0[1] = (JsonParser) readerBasedJsonParser1;
+    byte[] byteArray0 = new byte[3];
+    byteArray0[0] = (byte) 45;
+    byteArray0[1] = (byte) 0;
+    byteArray0[2] = (byte) 0;
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    DataInputStream dataInputStream0 = new DataInputStream(byteArrayInputStream0);
+    ObjectCodec objectCodec2 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(1);
+    UTF8DataInputJsonParser uTF8DataInputJsonParser0 = new UTF8DataInputJsonParser(iOContext0, 0, dataInputStream0, objectCodec2, byteQuadsCanonicalizer1, 3);
+    jsonParserArray0[2] = (JsonParser) uTF8DataInputJsonParser0;
+    JsonParserSequence jsonParserSequence0 = new JsonParserSequence(jsonParserArray0);
+    ObjectCodec objectCodec3 = jsonParserSequence0.getCodec();
+    CharsToNameCanonicalizer charsToNameCanonicalizer2 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser2 = new ReaderBasedJsonParser(iOContext0, (-2810), stringReader0, objectCodec3, charsToNameCanonicalizer2);
+    JsonParser.Feature jsonParser_Feature0 = JsonParser.Feature.ALLOW_YAML_COMMENTS;
+    JsonParser jsonParser0 = readerBasedJsonParser2.disable(jsonParser_Feature0);
+    JsonParserSequence jsonParserSequence1 = JsonParserSequence.createFlattened(jsonParser0, readerBasedJsonParser0);
+    JsonParserSequence jsonParserSequence2 = JsonParserSequence.createFlattened(jsonParserSequence1, readerBasedJsonParser1);
+    assertEquals((-2814), jsonParserSequence1.getFeatureMask());
+}",0,
+project,0,test1822,"public void test1822() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    StringReader stringReader0 = new StringReader(""Js#"");
+    JsonParser[] jsonParserArray0 = new JsonParser[3];
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    CharsToNameCanonicalizer charsToNameCanonicalizer1 = charsToNameCanonicalizer0.makeChild(0);
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, (-1391), stringReader0, objectCodec0, charsToNameCanonicalizer1, (char[]) null, 33, 53, true);
+    TokenFilter tokenFilter0 = TokenFilter.INCLUDE_ALL;
+    TokenFilter tokenFilter1 = tokenFilter0.filterStartArray();
+    FilteringParserDelegate filteringParserDelegate0 = new FilteringParserDelegate(readerBasedJsonParser0, tokenFilter1, true, true);
+    jsonParserArray0[0] = (JsonParser) filteringParserDelegate0;
+    ObjectCodec objectCodec1 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    ReaderBasedJsonParser readerBasedJsonParser1 = new ReaderBasedJsonParser(iOContext0, 3, stringReader0, objectCodec1, charsToNameCanonicalizer0, (char[]) null, 45, 53, true);
+    jsonParserArray0[1] = (JsonParser) readerBasedJsonParser1;
+    byte[] byteArray0 = new byte[3];
+    byteArray0[0] = (byte) 45;
+    byteArray0[1] = (byte) 0;
+    byteArray0[2] = (byte) 0;
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    DataInputStream dataInputStream0 = new DataInputStream(byteArrayInputStream0);
+    ObjectCodec objectCodec2 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer1 = byteQuadsCanonicalizer0.makeChild(1);
+    UTF8DataInputJsonParser uTF8DataInputJsonParser0 = new UTF8DataInputJsonParser(iOContext0, 0, dataInputStream0, objectCodec2, byteQuadsCanonicalizer1, 3);
+    jsonParserArray0[2] = (JsonParser) uTF8DataInputJsonParser0;
+    JsonParserSequence jsonParserSequence0 = new JsonParserSequence(jsonParserArray0);
+    ObjectCodec objectCodec3 = jsonParserSequence0.getCodec();
+    CharsToNameCanonicalizer charsToNameCanonicalizer2 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser2 = new ReaderBasedJsonParser(iOContext0, (-2810), stringReader0, objectCodec3, charsToNameCanonicalizer2);
+    JsonParser.Feature jsonParser_Feature0 = JsonParser.Feature.ALLOW_YAML_COMMENTS;
+    JsonParser jsonParser0 = readerBasedJsonParser2.disable(jsonParser_Feature0);
+    JsonParserSequence jsonParserSequence1 = JsonParserSequence.createFlattened(jsonParser0, readerBasedJsonParser0);
+    JsonParserSequence jsonParserSequence2 = JsonParserSequence.createFlattened(jsonParserSequence1, readerBasedJsonParser1);
+    assertEquals(3, jsonParserSequence2.containedParsersCount());
+}",0,
+project,0,test1923,"public void test1923() throws Throwable {
+    JsonParser[] jsonParserArray0 = new JsonParser[5];
+    int int0 = 0;
+    BufferRecycler bufferRecycler0 = new BufferRecycler(0, 0);
+    boolean boolean0 = true;
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    JsonEncoding jsonEncoding0 = JsonEncoding.UTF16_BE;
+    iOContext0.withEncoding(jsonEncoding0);
+    Reader reader0 = null;
+    JsonParserSequence jsonParserSequence0 = new JsonParserSequence(jsonParserArray0);
+    JsonParserSequence jsonParserSequence1 = JsonParserSequence.createFlattened(jsonParserSequence0, jsonParserSequence0);
+    // Undeclared exception!
+    try {
+        jsonParserSequence1.getCodec();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.util.JsonParserDelegate"", e);
+    }
+}",1,
+project,0,test2327,"public void test2327() throws Throwable {
+    JsonParserSequence jsonParserSequence0 = JsonParserSequence.createFlattened((JsonParser) null, (JsonParser) null);
+    int int0 = jsonParserSequence0.containedParsersCount();
+    assertEquals(2, int0);
+}",0,
+project,0,test2428,"public void test2428() throws Throwable {
+    JsonParser[] jsonParserArray0 = new JsonParser[1];
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, (Object) null, false);
+    StringReader stringReader0 = new StringReader(""Qm_^`doOo"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 9, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    JsonParserSequence jsonParserSequence0 = JsonParserSequence.createFlattened(readerBasedJsonParser0, readerBasedJsonParser0);
+    JsonParserSequence jsonParserSequence1 = JsonParserSequence.createFlattened(jsonParserSequence0, jsonParserSequence0);
+    jsonParserArray0[0] = (JsonParser) jsonParserSequence0;
+    JsonParserSequence jsonParserSequence2 = new JsonParserSequence(jsonParserArray0);
+    jsonParserSequence2.close();
+    jsonParserSequence0.nextToken();
+    JsonParserSequence.createFlattened(jsonParserSequence2, readerBasedJsonParser0);
+    JsonParserSequence jsonParserSequence3 = JsonParserSequence.createFlattened(readerBasedJsonParser0, jsonParserSequence1);
+    jsonParserSequence3.nextToken();
+    int int0 = jsonParserSequence2.containedParsersCount();
+    assertEquals(1, int0);
+}",0,

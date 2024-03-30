@@ -1,0 +1,119 @@
+focal_method,test_prefix,docstring
+"public InvocationMatcher(Invocation invocation) {
+    this(invocation, Collections.<Matcher>emptyList());
+}","public void test00() throws Throwable {
+    Object[] objectArray0 = new Object[10];
+    Invocation invocation0 = mock(Invocation.class, new ViolatedAssumptionAnswer());
+    doReturn((Object[]) null).when(invocation0).getArguments();
+    InvocationMatcher invocationMatcher0 = null;
+    try {
+        invocationMatcher0 = new InvocationMatcher(invocation0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.mockito.internal.invocation.ArgumentsProcessor"", e);
+    }
+}",""
+"public InvocationMatcher(Invocation invocation) {
+    this(invocation, Collections.<Matcher>emptyList());
+}","public void test11() throws Throwable {
+    Object[] objectArray0 = new Object[2];
+    Invocation invocation0 = mock(Invocation.class, new ViolatedAssumptionAnswer());
+    doReturn((Object[]) null).when(invocation0).getArguments();
+    InvocationMatcher invocationMatcher0 = null;
+    try {
+        invocationMatcher0 = new InvocationMatcher(invocation0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.mockito.internal.invocation.ArgumentsProcessor"", e);
+    }
+}",""
+"public InvocationMatcher(Invocation invocation) {
+    this(invocation, Collections.<Matcher>emptyList());
+}","public void test22() throws Throwable {
+    Object[] objectArray0 = new Object[3];
+    Invocation invocation0 = mock(Invocation.class, new ViolatedAssumptionAnswer());
+    doReturn((Object[]) null).when(invocation0).getArguments();
+    InvocationMatcher invocationMatcher0 = null;
+    try {
+        invocationMatcher0 = new InvocationMatcher(invocation0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.mockito.internal.invocation.ArgumentsProcessor"", e);
+    }
+}",""
+"public String toString() {
+    return new PrintSettings().print(matchers, invocation);
+}","public void test33() throws Throwable {
+    Object[] objectArray0 = new Object[10];
+    Invocation invocation0 = mock(Invocation.class, new ViolatedAssumptionAnswer());
+    doReturn(objectArray0).when(invocation0).getArguments();
+    doReturn((Object) null).when(invocation0).getMock();
+    InvocationMatcher invocationMatcher0 = new InvocationMatcher(invocation0);
+    // Undeclared exception!
+    try {
+        invocationMatcher0.toString();
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",""
+"public boolean matches(Invocation actual) {
+    return invocation.getMock().equals(actual.getMock()) && hasSameMethod(actual) && new ArgumentsComparator().argumentsMatch(this, actual);
+}","public void test44() throws Throwable {
+    Object[] objectArray0 = new Object[1];
+    StringContains stringContains0 = new StringContains("""");
+    Invocation invocation0 = mock(Invocation.class, new ViolatedAssumptionAnswer());
+    doReturn((String) null).when(invocation0).toString();
+    doReturn(objectArray0).when(invocation0).getArguments();
+    doReturn(stringContains0, """").when(invocation0).getMock();
+    InvocationMatcher invocationMatcher0 = new InvocationMatcher(invocation0);
+    Invocation invocation1 = invocationMatcher0.getInvocation();
+    boolean boolean0 = invocationMatcher0.matches(invocation1);
+    assertFalse(boolean0);
+}",""
+"public InvocationMatcher(Invocation invocation) {
+    this(invocation, Collections.<Matcher>emptyList());
+}","public void test55() throws Throwable {
+    Stack<Invocation> stack0 = new Stack<Invocation>();
+    Object[] objectArray0 = new Object[1];
+    Invocation invocation0 = mock(Invocation.class, new ViolatedAssumptionAnswer());
+    doReturn((Object[]) null).when(invocation0).getArguments();
+    InvocationMatcher invocationMatcher0 = null;
+    try {
+        invocationMatcher0 = new InvocationMatcher(invocation0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.mockito.internal.invocation.ArgumentsProcessor"", e);
+    }
+}",""
+"public static List<InvocationMatcher> createFrom(List<Invocation> invocations) {
+    LinkedList<InvocationMatcher> out = new LinkedList<InvocationMatcher>();
+    for (Invocation i : invocations) {
+        out.add(new InvocationMatcher(i));
+    }
+    return out;
+}","public void test77() throws Throwable {
+    ArrayList<Invocation> arrayList0 = new ArrayList<Invocation>();
+    arrayList0.add((Invocation) null);
+    // Undeclared exception!
+    try {
+        InvocationMatcher.createFrom(arrayList0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.mockito.internal.invocation.InvocationMatcher"", e);
+    }
+}",""

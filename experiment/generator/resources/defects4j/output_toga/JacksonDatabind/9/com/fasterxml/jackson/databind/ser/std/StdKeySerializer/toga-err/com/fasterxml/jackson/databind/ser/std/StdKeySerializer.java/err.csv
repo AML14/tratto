@@ -1,0 +1,34 @@
+com.fasterxml.jackson.databind.ser.std.StdKeySerializer,@Test(timeout = 4000)
+public void test00() throws Throwable {
+    StdKeySerializer stdKeySerializer0 = new StdKeySerializer();
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<HashMap> class0 = HashMap.class;
+    MapType mapType0 = typeFactory0.constructRawMapType(class0);
+    Class<?> class1 = mapType0.getParameterSource();
+    JsonNode jsonNode0 = stdKeySerializer0.getSchema((SerializerProvider) defaultSerializerProvider_Impl0, (Type) class1);
+    jsonNode0.getNodeType();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.fasterxml.jackson.databind.ser.std.StdKeySerializer,@Test(timeout = 4000)
+public void test11() throws Throwable {
+    StdKeySerializer stdKeySerializer0 = new StdKeySerializer();
+    JsonFormatVisitorWrapper jsonFormatVisitorWrapper0 = mock(JsonFormatVisitorWrapper.class, new ViolatedAssumptionAnswer());
+    doReturn((JsonStringFormatVisitor) null).when(jsonFormatVisitorWrapper0).expectStringFormat(any(com.fasterxml.jackson.databind.JavaType.class));
+    stdKeySerializer0.acceptJsonFormatVisitor(jsonFormatVisitorWrapper0, (JavaType) null);
+    stdKeySerializer0.usesObjectId();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.fasterxml.jackson.databind.ser.std.StdKeySerializer,@Test(timeout = 4000)
+public void test22() throws Throwable {
+    StdKeySerializer stdKeySerializer0 = new StdKeySerializer();
+    Integer integer0 = new Integer(0);
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, integer0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream(1);
+    BufferedOutputStream bufferedOutputStream0 = new BufferedOutputStream(byteArrayOutputStream0, 3);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, (-3693), objectMapper0, bufferedOutputStream0);
+    JsonGeneratorDelegate jsonGeneratorDelegate0 = new JsonGeneratorDelegate(uTF8JsonGenerator0, false);
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    stdKeySerializer0.serialize(integer0, jsonGeneratorDelegate0, defaultSerializerProvider_Impl0);
+    stdKeySerializer0.usesObjectId();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.

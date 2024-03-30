@@ -1,0 +1,86 @@
+{
+  "test1010" : {
+    "methodSignature" : "protected JsonSerializer<?> _createSerializer2(SerializerProvider prov, JavaType type, BeanDescription beanDesc, boolean staticTyping) throws JsonMappingException",
+    "methodName" : "_createSerializer2",
+    "className" : "com.fasterxml.jackson.databind.ser.BeanSerializerFactory",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1010() throws Throwable {\n    SerializerFactoryConfig serializerFactoryConfig0 = new SerializerFactoryConfig();\n    POJOPropertiesCollector pOJOPropertiesCollector0 = mock(POJOPropertiesCollector.class, new ViolatedAssumptionAnswer());\n    doReturn((AnnotatedMethod) null).when(pOJOPropertiesCollector0).getAnySetterMethod();\n    doReturn((AnnotatedClass) null).when(pOJOPropertiesCollector0).getClassDef();\n    doReturn((MapperConfig) null).when(pOJOPropertiesCollector0).getConfig();\n    doReturn((Set) null).when(pOJOPropertiesCollector0).getIgnoredPropertyNames();\n    doReturn((Map) null).when(pOJOPropertiesCollector0).getInjectables();\n    doReturn((AnnotatedMethod) null).when(pOJOPropertiesCollector0).getJsonValueMethod();\n    doReturn((ObjectIdInfo) null).when(pOJOPropertiesCollector0).getObjectIdInfo();\n    doReturn((List) null).when(pOJOPropertiesCollector0).getProperties();\n    doReturn((JavaType) null).when(pOJOPropertiesCollector0).getType();\n    BasicBeanDescription basicBeanDescription0 = BasicBeanDescription.forDeserialization(pOJOPropertiesCollector0);\n    BeanSerializerModifier beanSerializerModifier0 = mock(BeanSerializerModifier.class, new ViolatedAssumptionAnswer());\n    doReturn((JsonSerializer) null).when(beanSerializerModifier0).modifySerializer(any(com.fasterxml.jackson.databind.SerializationConfig.class), any(com.fasterxml.jackson.databind.BeanDescription.class), any(com.fasterxml.jackson.databind.JsonSerializer.class));\n    SerializerFactoryConfig serializerFactoryConfig1 = serializerFactoryConfig0.withSerializerModifier(beanSerializerModifier0);\n    BeanSerializerFactory beanSerializerFactory0 = new BeanSerializerFactory(serializerFactoryConfig1);\n    ObjectMapper objectMapper0 = new ObjectMapper();\n    SerializerProvider serializerProvider0 = objectMapper0.getSerializerProvider();\n    Class<String> class0 = String.class;\n    SimpleType simpleType0 = SimpleType.construct(class0);\n    JsonSerializer<?> jsonSerializer0 = beanSerializerFactory0._createSerializer2(serializerProvider0, simpleType0, basicBeanDescription0, true);\n}",
+    "testName" : "test1010"
+  },
+  "test1111" : {
+    "methodSignature" : "protected boolean isPotentialBeanType(Class<?> type)",
+    "methodName" : "isPotentialBeanType",
+    "className" : "com.fasterxml.jackson.databind.ser.BeanSerializerFactory",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1111() throws Throwable {\n    BeanSerializerFactory beanSerializerFactory0 = BeanSerializerFactory.instance;\n    Class<MatchStrength> class0 = MatchStrength.class;\n    boolean boolean0 = beanSerializerFactory0.isPotentialBeanType(class0);\n}",
+    "testName" : "test1111"
+  },
+  "test011" : {
+    "methodSignature" : "public byte[] writeValueAsBytes(Object value) throws JsonProcessingException",
+    "methodName" : "writeValueAsBytes",
+    "className" : "com.fasterxml.jackson.databind.ser.BeanSerializerFactory",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test011() throws Throwable {\n    ObjectMapper objectMapper0 = new ObjectMapper();\n    objectMapper0.writeValueAsBytes(objectMapper0);\n}",
+    "testName" : "test011"
+  },
+  "test033" : {
+    "methodSignature" : "public SerializerFactory withConfig(SerializerFactoryConfig config)",
+    "methodName" : "withConfig",
+    "className" : "com.fasterxml.jackson.databind.ser.BeanSerializerFactory",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test033() throws Throwable {\n    SerializerFactoryConfig serializerFactoryConfig0 = new SerializerFactoryConfig();\n    BeanSerializerFactory beanSerializerFactory0 = new BeanSerializerFactory(serializerFactoryConfig0);\n    SerializerFactory serializerFactory0 = beanSerializerFactory0.withConfig(serializerFactoryConfig0);\n}",
+    "testName" : "test033"
+  },
+  "test055" : {
+    "methodSignature" : "protected JsonSerializer<?> _createSerializer2(SerializerProvider prov, JavaType type, BeanDescription beanDesc, boolean staticTyping) throws JsonMappingException",
+    "methodName" : "_createSerializer2",
+    "className" : "com.fasterxml.jackson.databind.ser.BeanSerializerFactory",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test055() throws Throwable {\n    BeanSerializerFactory beanSerializerFactory0 = BeanSerializerFactory.instance;\n    TypeFactory typeFactory0 = TypeFactory.defaultInstance();\n    Class<HashMap> class0 = HashMap.class;\n    MapType mapType0 = typeFactory0.constructRawMapType(class0);\n    POJOPropertiesCollector pOJOPropertiesCollector0 = mock(POJOPropertiesCollector.class, new ViolatedAssumptionAnswer());\n    doReturn((AnnotatedMethod) null).when(pOJOPropertiesCollector0).getAnySetterMethod();\n    doReturn((AnnotatedClass) null).when(pOJOPropertiesCollector0).getClassDef();\n    doReturn((MapperConfig) null).when(pOJOPropertiesCollector0).getConfig();\n    doReturn((Set) null).when(pOJOPropertiesCollector0).getIgnoredPropertyNames();\n    doReturn((Map) null).when(pOJOPropertiesCollector0).getInjectables();\n    doReturn((AnnotatedMethod) null).when(pOJOPropertiesCollector0).getJsonValueMethod();\n    doReturn((ObjectIdInfo) null).when(pOJOPropertiesCollector0).getObjectIdInfo();\n    doReturn((List) null).when(pOJOPropertiesCollector0).getProperties();\n    doReturn((JavaType) null).when(pOJOPropertiesCollector0).getType();\n    BasicBeanDescription basicBeanDescription0 = BasicBeanDescription.forDeserialization(pOJOPropertiesCollector0);\n    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();\n    beanSerializerFactory0._createSerializer2(defaultSerializerProvider_Impl0, mapType0, basicBeanDescription0, false);\n}",
+    "testName" : "test055"
+  },
+  "test077" : {
+    "methodSignature" : "public boolean usesObjectId()",
+    "methodName" : "usesObjectId",
+    "className" : "com.fasterxml.jackson.databind.ser.BeanSerializerFactory",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test077() throws Throwable {\n    Class<String> class0 = String.class;\n    SimpleType simpleType0 = SimpleType.construct(class0);\n    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();\n    POJOPropertiesCollector pOJOPropertiesCollector0 = mock(POJOPropertiesCollector.class, new ViolatedAssumptionAnswer());\n    doReturn((AnnotatedMethod) null).when(pOJOPropertiesCollector0).getAnySetterMethod();\n    doReturn((AnnotatedClass) null).when(pOJOPropertiesCollector0).getClassDef();\n    doReturn((MapperConfig) null).when(pOJOPropertiesCollector0).getConfig();\n    doReturn((Set) null).when(pOJOPropertiesCollector0).getIgnoredPropertyNames();\n    doReturn((Map) null).when(pOJOPropertiesCollector0).getInjectables();\n    doReturn((AnnotatedMethod) null).when(pOJOPropertiesCollector0).getJsonValueMethod();\n    doReturn((ObjectIdInfo) null).when(pOJOPropertiesCollector0).getObjectIdInfo();\n    doReturn((List) null).when(pOJOPropertiesCollector0).getProperties();\n    doReturn((JavaType) null).when(pOJOPropertiesCollector0).getType();\n    BasicBeanDescription basicBeanDescription0 = BasicBeanDescription.forDeserialization(pOJOPropertiesCollector0);\n    SerializerFactoryConfig serializerFactoryConfig0 = new SerializerFactoryConfig();\n    SimpleSerializers simpleSerializers0 = new SimpleSerializers();\n    SerializerFactoryConfig serializerFactoryConfig1 = serializerFactoryConfig0.withAdditionalSerializers(simpleSerializers0);\n    BeanSerializerFactory beanSerializerFactory0 = new BeanSerializerFactory(serializerFactoryConfig1);\n    JsonSerializer<?> jsonSerializer0 = beanSerializerFactory0._createSerializer2(defaultSerializerProvider_Impl0, simpleType0, basicBeanDescription0, true);\n    jsonSerializer0.usesObjectId();\n}",
+    "testName" : "test077"
+  },
+  "test099" : {
+    "methodSignature" : "public byte[] writeValueAsBytes(Object value) throws JsonProcessingException",
+    "methodName" : "writeValueAsBytes",
+    "className" : "com.fasterxml.jackson.databind.ser.BeanSerializerFactory",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test099() throws Throwable {\n    SerializerFactoryConfig serializerFactoryConfig0 = new SerializerFactoryConfig();\n    Iterable<Serializers> iterable0 = serializerFactoryConfig0.keySerializers();\n    ObjectMapper objectMapper0 = new ObjectMapper();\n    byte[] byteArray0 = objectMapper0.writeValueAsBytes(iterable0);\n}",
+    "testName" : "test099"
+  },
+  "test000" : {
+    "methodSignature" : "public SerializerFactory withConfig(SerializerFactoryConfig config)",
+    "methodName" : "withConfig",
+    "className" : "com.fasterxml.jackson.databind.ser.BeanSerializerFactory",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test000() throws Throwable {\n    BeanSerializerFactory beanSerializerFactory0 = BeanSerializerFactory.instance;\n    SerializerFactory serializerFactory0 = beanSerializerFactory0.withConfig((SerializerFactoryConfig) null);\n}",
+    "testName" : "test000"
+  },
+  "test022" : {
+    "methodSignature" : "protected BeanPropertyWriter constructFilteredBeanWriter(BeanPropertyWriter writer, Class<?>[] inViews)",
+    "methodName" : "constructFilteredBeanWriter",
+    "className" : "com.fasterxml.jackson.databind.ser.BeanSerializerFactory",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test022() throws Throwable {\n    BeanSerializerFactory beanSerializerFactory0 = BeanSerializerFactory.instance;\n    Class<BeanSerializerFactory>[] classArray0 = (Class<BeanSerializerFactory>[]) Array.newInstance(Class.class, 0);\n    beanSerializerFactory0.instance.constructFilteredBeanWriter((BeanPropertyWriter) null, classArray0);\n}",
+    "testName" : "test022"
+  },
+  "test044" : {
+    "methodSignature" : "public byte[] writeValueAsBytes(Object value) throws JsonProcessingException",
+    "methodName" : "writeValueAsBytes",
+    "className" : "com.fasterxml.jackson.databind.ser.BeanSerializerFactory",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test044() throws Throwable {\n    Class<String> class0 = String.class;\n    SimpleType simpleType0 = SimpleType.construct(class0);\n    ObjectMapper objectMapper0 = new ObjectMapper();\n    byte[] byteArray0 = objectMapper0.writeValueAsBytes(simpleType0);\n}",
+    "testName" : "test044"
+  },
+  "test066" : {
+    "methodSignature" : "protected JsonSerializer<?> _createSerializer2(SerializerProvider prov, JavaType type, BeanDescription beanDesc, boolean staticTyping) throws JsonMappingException",
+    "methodName" : "_createSerializer2",
+    "className" : "com.fasterxml.jackson.databind.ser.BeanSerializerFactory",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test066() throws Throwable {\n    BeanSerializerFactory beanSerializerFactory0 = BeanSerializerFactory.instance;\n    TypeFactory typeFactory0 = TypeFactory.defaultInstance();\n    Class<HashMap> class0 = HashMap.class;\n    MapType mapType0 = typeFactory0.constructRawMapType(class0);\n    POJOPropertiesCollector pOJOPropertiesCollector0 = mock(POJOPropertiesCollector.class, new ViolatedAssumptionAnswer());\n    doReturn((AnnotatedMethod) null).when(pOJOPropertiesCollector0).getAnySetterMethod();\n    doReturn((AnnotatedClass) null).when(pOJOPropertiesCollector0).getClassDef();\n    doReturn((MapperConfig) null).when(pOJOPropertiesCollector0).getConfig();\n    doReturn((Set) null).when(pOJOPropertiesCollector0).getIgnoredPropertyNames();\n    doReturn((Map) null).when(pOJOPropertiesCollector0).getInjectables();\n    doReturn((AnnotatedMethod) null).when(pOJOPropertiesCollector0).getJsonValueMethod();\n    doReturn((ObjectIdInfo) null).when(pOJOPropertiesCollector0).getObjectIdInfo();\n    doReturn((List) null).when(pOJOPropertiesCollector0).getProperties();\n    doReturn((JavaType) null).when(pOJOPropertiesCollector0).getType();\n    BasicBeanDescription basicBeanDescription0 = BasicBeanDescription.forDeserialization(pOJOPropertiesCollector0);\n    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();\n    beanSerializerFactory0._createSerializer2(defaultSerializerProvider_Impl0, mapType0, basicBeanDescription0, true);\n}",
+    "testName" : "test066"
+  },
+  "test088" : {
+    "methodSignature" : "public byte[] writeValueAsBytes(Object value) throws JsonProcessingException",
+    "methodName" : "writeValueAsBytes",
+    "className" : "com.fasterxml.jackson.databind.ser.BeanSerializerFactory",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test088() throws Throwable {\n    ObjectMapper objectMapper0 = new ObjectMapper();\n    SerializationFeature serializationFeature0 = SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS;\n    byte[] byteArray0 = objectMapper0.writeValueAsBytes(serializationFeature0);\n}",
+    "testName" : "test088"
+  }
+}

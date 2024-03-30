@@ -1,0 +1,877 @@
+focal_method,test_prefix,docstring
+"public Document normalise() {
+    Element htmlEl = findFirstElementByTagName(""html"", this);
+    if (htmlEl == null)
+        htmlEl = appendElement(""html"");
+    if (head() == null)
+        htmlEl.prependElement(""head"");
+    if (body() == null)
+        htmlEl.appendElement(""body"");
+    // pull text nodes out of root, html, and head els, and push into body. non-text nodes are already taken care
+    // of. do in inverse order to maintain text order.
+    normaliseTextNodes(head());
+    normaliseTextNodes(htmlEl);
+    normaliseTextNodes(this);
+    normaliseStructure(""head"", htmlEl);
+    normaliseStructure(""body"", htmlEl);
+    return this;
+}","public void test011() throws Throwable {
+    Document document0 = new Document("""");
+    // Undeclared exception!
+    try {
+        document0.normalise();
+        //  fail(""Expecting exception: NoSuchElementException"");
+        // Unstable assertion
+    } catch (NoSuchElementException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.LinkedList"", e);
+    }
+}","/**
+ *     Normalise the document. This happens after the parse phase so generally does not need to be called.
+ *     Moves any text content that is not in the body element into the body.
+ *     @return this document after normalisation
+ */"
+"public String toString() {
+    return outerHtml();
+}","public void test022() throws Throwable {
+    Document document0 = new Document(""hr"");
+    String string0 = document0.toString();
+    assertEquals("""", string0);
+}",""
+"public boolean isKnownTag() {
+    return tags.containsKey(tagName);
+}","public void test033() throws Throwable {
+    Tag tag0 = Tag.valueOf(""SPa"");
+    Element element0 = new Element(tag0, ""tcaron"");
+    Tag tag1 = element0.tag();
+    assertFalse(tag1.isKnownTag());
+}","/**
+ * Get if this is a pre-defined tag, or was auto created on parsing.
+ *
+ * @return if a known tag
+ */"
+"public String ownText() {
+    StringBuilder sb = new StringBuilder();
+    ownText(sb);
+    return sb.toString().trim();
+}","public void test044() throws Throwable {
+    Tag tag0 = Tag.valueOf(""QBne%]Q1w/%wI"");
+    TextNode textNode0 = new TextNode(""QBne%]Q1w/%wI"", ""org.jsoup.nodes.Element"");
+    Attributes attributes0 = textNode0.attributes();
+    Element element0 = new Element(tag0, ""easter"", attributes0);
+    Element element1 = element0.prependText(""QBne%]Q1w/%wI"");
+    String string0 = element1.ownText();
+    assertEquals(""QBne%]Q1w/%wI"", string0);
+}","/**
+ * Gets the text owned by this element only; does not get the combined text of all children.
+ * <p>
+ * For example, given HTML {@code <p>Hello <b>there</b> now!</p>}, {@code p.ownText()} returns {@code ""Hello now!""},
+ * whereas {@code p.text()} returns {@code ""Hello there now!""}.
+ * Note that the text within the {@code b} element is not returned, as it is not a direct child of the {@code p} element.
+ *
+ * @return unencoded text, or empty string if none.
+ * @see #text()
+ * @see #textNodes()
+ */"
+"@Override
+public String nodeName() {
+    return ""#document"";
+}","public void test055() throws Throwable {
+    Document document0 = new Document("""");
+    String string0 = document0.nodeName();
+    assertEquals(""#document"", string0);
+}",""
+"public boolean isEmpty() {
+    return contents.isEmpty();
+}","public void test066() throws Throwable {
+    Tag tag0 = Tag.valueOf(""trie"");
+    Attributes attributes0 = new Attributes();
+    Element element0 = new Element(tag0, """", attributes0);
+    Pattern pattern0 = Pattern.compile(""-MNp3|VL]w<4^Fa"");
+    Elements elements0 = element0.getElementsMatchingText(pattern0);
+    assertTrue(elements0.isEmpty());
+}",""
+"// implements List<Element> delegates:
+public int size() {
+    return contents.size();
+}","public void test077() throws Throwable {
+    Tag tag0 = Tag.valueOf(""iukcy"");
+    Element element0 = new Element(tag0, ""iukcy"");
+    Elements elements0 = element0.getElementsByTag(""iukcy"");
+    assertEquals(1, elements0.size());
+}",""
+"public boolean isEmpty() {
+    return contents.isEmpty();
+}","public void test088() throws Throwable {
+    Tag tag0 = Tag.valueOf(""SPa"");
+    Element element0 = new Element(tag0, ""tcaron"");
+    Elements elements0 = element0.getElementsByAttributeValueMatching(""m(@Tjv9`O/D'X?W*2"", ""id"");
+    assertTrue(elements0.isEmpty());
+}",""
+"public boolean isEmpty() {
+    return contents.isEmpty();
+}","public void test099() throws Throwable {
+    Document document0 = new Document(""RightUpDownVector"");
+    Elements elements0 = document0.getElementsByAttributeValueContaining(""3m"", ""RightUpDownVector"");
+    assertTrue(elements0.isEmpty());
+}",""
+"public Element getElementById(String id) {
+    Validate.notEmpty(id);
+    Elements elements = Collector.collect(new Evaluator.Id(id), this);
+    if (elements.size() > 0)
+        return elements.get(0);
+    else
+        return null;
+}","public void test1010() throws Throwable {
+    Document document0 = new Document(""|aZ`V;I`3"");
+    Element element0 = document0.getElementById(""|aZ`V;I`3"");
+    assertNull(element0);
+}","/**
+ * Find an element by ID, including or under this element.
+ * <p>
+ * Note that this finds the first matching ID, starting with this element. If you search down from a different
+ * starting point, it is possible to find a different element by ID. For unique element by ID within a Document,
+ * use {@link Document#getElementById(String)}
+ * @param id The ID to search for.
+ * @return The first matching element by ID, starting with this element, or null if none found.
+ */"
+"// implements List<Element> delegates:
+public int size() {
+    return contents.size();
+}","public void test1111() throws Throwable {
+    Document document0 = new Document(""acJyiG+${/"");
+    Elements elements0 = document0.children();
+    assertEquals(0, elements0.size());
+}",""
+"public String tagName() {
+    return tag.getName();
+}","public void test1212() throws Throwable {
+    Document document0 = new Document(""HkC6OCWU"");
+    Element element0 = document0.appendElement(""%>FX"");
+    Element element1 = element0.before((Node) document0);
+    assertEquals(""%>fx"", element1.tagName());
+}","/**
+ * Get the name of the tag for this element. E.g. {@code div}
+ *
+ * @return the tag name
+ */"
+"@Override
+public String nodeName() {
+    return tag.getName();
+}","public void test1313() throws Throwable {
+    Tag tag0 = Tag.valueOf(""8gl1S!s?i"");
+    Element element0 = new Element(tag0, ""Z^Y`Y1goLE"");
+    Element element1 = element0.addClass(""`!R66H]E90u[CgnQa"");
+    assertEquals(""8gl1s!s?i"", element1.nodeName());
+}",""
+"@Override
+public Element text(String text) {
+    // overridden to not nuke doc structure
+    body().text(text);
+    return this;
+}","public void test1414() throws Throwable {
+    Document document0 = new Document("",\u0000Twq9"");
+    // Undeclared exception!
+    try {
+        document0.text(""org.jsoup.nodes.Element"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Document"", e);
+    }
+}","/**
+ *     Set the text of the {@code body} of this document. Any existing nodes within the body will be cleared.
+ *     @param text unencoded text
+ *     @return this document
+ */"
+"public Element tagName(String tagName) {
+    Validate.notEmpty(tagName, ""Tag name must not be empty."");
+    tag = Tag.valueOf(tagName);
+    return this;
+}","public void test1515() throws Throwable {
+    Document document0 = new Document("""");
+    // Undeclared exception!
+    try {
+        document0.tagName((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Tag name must not be empty.
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Change the tag of this element. For example, convert a {@code <span>} to a {@code <div>} with
+ * {@code el.tagName(""div"");}.
+ *
+ * @param tagName new tag name for this element
+ * @return this element, for chaining
+ */"
+"public Element removeClass(String className) {
+    Validate.notNull(className);
+    Set<String> classes = classNames();
+    classes.remove(className);
+    classNames(classes);
+    return this;
+}","public void test1616() throws Throwable {
+    Tag tag0 = Tag.valueOf(""DEWkIMR"");
+    Element element0 = new Element(tag0, ""DEWkIMR"");
+    // Undeclared exception!
+    try {
+        element0.removeClass((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ *     Remove a class name from this element's {@code class} attribute.
+ *     @param className class name to remove
+ *     @return this element
+ */"
+"public Element nextElementSibling() {
+    List<Element> siblings = parent().children();
+    Integer index = indexInList(this, siblings);
+    Validate.notNull(index);
+    if (siblings.size() > index + 1)
+        return siblings.get(index + 1);
+    else
+        return null;
+}","public void test1717() throws Throwable {
+    Document document0 = new Document(""hr"");
+    // Undeclared exception!
+    try {
+        document0.nextElementSibling();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Element"", e);
+    }
+}","/**
+ * Gets the next sibling element of this element. E.g., if a {@code div} contains two {@code p}s,
+ * the {@code nextElementSibling} of the first {@code p} is the second {@code p}.
+ * <p/>
+ * This is similar to {@link #nextSibling()}, but specifically finds only Elements
+ * @return the next element, or null if there is no next element
+ * @see #previousElementSibling()
+ */"
+"public Element lastElementSibling() {
+    List<Element> siblings = parent().children();
+    return siblings.size() > 1 ? siblings.get(siblings.size() - 1) : null;
+}","public void test1818() throws Throwable {
+    Tag tag0 = Tag.valueOf(""8gl1S!s?i"");
+    Element element0 = new Element(tag0, ""Z^Y`Y1goLE"");
+    // Undeclared exception!
+    try {
+        element0.lastElementSibling();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Element"", e);
+    }
+}","/**
+ * Gets the last element sibling of this element
+ * @return the last sibling that is an element (aka the parent's last element child)
+ */"
+"public Elements getElementsMatchingText(String regex) {
+    Pattern pattern;
+    try {
+        pattern = Pattern.compile(regex);
+    } catch (PatternSyntaxException e) {
+        throw new IllegalArgumentException(""Pattern syntax error: "" + regex, e);
+    }
+    return getElementsMatchingText(pattern);
+}","public void test1919() throws Throwable {
+    Document document0 = new Document(""[%s=%s]"");
+    // Undeclared exception!
+    try {
+        document0.getElementsMatchingText(""{P0ES?W,BkbuJ"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Pattern syntax error: {P0ES?W,BkbuJ
+        //
+        verifyException(""org.jsoup.nodes.Element"", e);
+    }
+}","/**
+ * Find elements whose text matches the supplied regular expression.
+ * @param regex regular expression to match text against. You can use <a href=""http://java.sun.com/docs/books/tutorial/essential/regex/pattern.html#embedded"">embedded flags</a> (such as (?i) and (?m) to control regex options.
+ * @return elements matching the supplied regular expression.
+ * @see Element#text()
+ */"
+"public Elements getElementsByAttribute(String key) {
+    Validate.notEmpty(key);
+    key = key.trim().toLowerCase();
+    return Collector.collect(new Evaluator.Attribute(key), this);
+}","public void test2020() throws Throwable {
+    Document document0 = new Document(""+j'&di~O|dH4_/)"");
+    // Undeclared exception!
+    try {
+        document0.getElementsByAttribute("""");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Find elements that have a named attribute set. Case insensitive.
+ *
+ * @param key name of the attribute, e.g. {@code href}
+ * @return elements that have this attribute, empty if none
+ */"
+"public Element getElementById(String id) {
+    Validate.notEmpty(id);
+    Elements elements = Collector.collect(new Evaluator.Id(id), this);
+    if (elements.size() > 0)
+        return elements.get(0);
+    else
+        return null;
+}","public void test2121() throws Throwable {
+    Document document0 = new Document("""");
+    // Undeclared exception!
+    try {
+        document0.getElementById("""");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Find an element by ID, including or under this element.
+ * <p>
+ * Note that this finds the first matching ID, starting with this element. If you search down from a different
+ * starting point, it is possible to find a different element by ID. For unique element by ID within a Document,
+ * use {@link Document#getElementById(String)}
+ * @param id The ID to search for.
+ * @return The first matching element by ID, starting with this element, or null if none found.
+ */"
+"public Element classNames(Set<String> classNames) {
+    Validate.notNull(classNames);
+    attributes.put(""class"", StringUtil.join(classNames, "" ""));
+    return this;
+}","public void test2222() throws Throwable {
+    Document document0 = new Document(""%5VgL$X(0`T=riA"");
+    // Undeclared exception!
+    try {
+        document0.classNames((Set<String>) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ *     Set the element's {@code class} attribute to the supplied class names.
+ *     @param classNames set of classes
+ *     @return this element, for chaining
+ */"
+"@Override
+public Element before(String html) {
+    return (Element) super.before(html);
+}","public void test2323() throws Throwable {
+    Tag tag0 = Tag.valueOf(""\""tMl%(\""jTc:_pQX^"");
+    Element element0 = new Element(tag0, ""\""tMl%(\""jTc:_pQX^"");
+    // Undeclared exception!
+    try {
+        element0.before(""\""tMl%(\""jTc:_pQX^"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Insert the specified HTML into the DOM before this element (i.e. as a preceeding sibling).
+ *
+ * @param html HTML to add before this element
+ * @return this element, for chaining
+ * @see #after(String)
+ */"
+"public Element appendChild(Node child) {
+    Validate.notNull(child);
+    addChildren(child);
+    return this;
+}","public void test2424() throws Throwable {
+    Document document0 = new Document(""imagpart"");
+    // Undeclared exception!
+    try {
+        document0.appendChild((Node) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Add a node child node to this element.
+ *
+ * @param child node to add. Must not already have a parent.
+ * @return this element, so that you can add more child nodes or elements.
+ */"
+"@Override
+public Element after(Node node) {
+    return (Element) super.after(node);
+}","public void test2525() throws Throwable {
+    Document document0 = new Document(""COPY"");
+    document0.appendChild(document0);
+    // Undeclared exception!
+    try {
+        document0.after((Node) document0);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 1, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}","/**
+ * Insert the specified node into the DOM after this node (i.e. as a following sibling).
+ * @param node to add after this element
+ * @return this element, for chaining
+ * @see #before(Node)
+ */"
+"@Override
+public Element after(Node node) {
+    return (Element) super.after(node);
+}","public void test2626() throws Throwable {
+    Document document0 = new Document(""KbT{e>Uq\""Zzv4T*tb"");
+    Comment comment0 = new Comment(""#+/t~.lg\r_d"", ""ve Or/]@"");
+    // Undeclared exception!
+    try {
+        document0.after((Node) comment0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Insert the specified node into the DOM after this node (i.e. as a following sibling).
+ * @param node to add after this element
+ * @return this element, for chaining
+ * @see #before(Node)
+ */"
+"public Element(Tag tag, String baseUri, Attributes attributes) {
+    super(baseUri, attributes);
+    Validate.notNull(tag);
+    this.tag = tag;
+}","public void test2727() throws Throwable {
+    Attributes attributes0 = new Attributes();
+    Element element0 = null;
+    try {
+        element0 = new Element((Tag) null, "")QPdA'"", attributes0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Create a new, standalone Element. (Standalone in that is has no parent.)
+ *
+ * @param tag tag of this element
+ * @param baseUri the base URI
+ * @param attributes initial attributes
+ * @see #appendChild(Node)
+ * @see #appendElement(String)
+ */"
+"public Element(Tag tag, String baseUri) {
+    this(tag, baseUri, new Attributes());
+}","public void test2828() throws Throwable {
+    Element element0 = null;
+    try {
+        element0 = new Element((Tag) null, ""NotLeftTriangleEqual"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Create a new Element from a tag and a base URI.
+ *
+ * @param tag element tag
+ * @param baseUri the base URI of this element. It is acceptable for the base URI to be an empty
+ *            string, but not null.
+ * @see Tag#valueOf(String)
+ */"
+"public boolean isBlock() {
+    return tag.isBlock();
+}","public void test2929() throws Throwable {
+    Document document0 = new Document("""");
+    Element element0 = document0.val(""#document"");
+    assertFalse(element0.isBlock());
+}","/**
+ * Test if this element is a block-level element. (E.g. {@code <div> == true} or an inline element
+ * {@code <p> == false}).
+ *
+ * @return true if block, false if not (and thus inline)
+ */"
+"public String baseUri() {
+    return baseUri;
+}","public void test3030() throws Throwable {
+    Document document0 = new Document("""");
+    Element element0 = document0.toggleClass(""\"",>tv)7"");
+    assertEquals("""", element0.baseUri());
+}","/**
+ *     Get the base URI of this node.
+ *     @return base URI
+ */"
+"public boolean hasClass(String className) {
+    Set<String> classNames = classNames();
+    for (String name : classNames) {
+        if (className.equalsIgnoreCase(name))
+            return true;
+    }
+    return false;
+}","public void test3131() throws Throwable {
+    Document document0 = new Document("""");
+    boolean boolean0 = document0.hasClass("""");
+    assertTrue(boolean0);
+}","/**
+ * Tests if this element has a class. Case insensitive.
+ * @param className name of class to check for
+ * @return true if it does, false if not
+ */"
+"public String data() {
+    StringBuilder sb = new StringBuilder();
+    for (Node childNode : childNodes) {
+        if (childNode instanceof DataNode) {
+            DataNode data = (DataNode) childNode;
+            sb.append(data.getWholeData());
+        } else if (childNode instanceof Element) {
+            Element element = (Element) childNode;
+            String elementData = element.data();
+            sb.append(elementData);
+        }
+    }
+    return sb.toString();
+}","public void test3232() throws Throwable {
+    Document document0 = new Document(""RightUpDownVector"");
+    Element element0 = document0.prependText(""DiacriticalAcute"");
+    String string0 = element0.data();
+    assertEquals("""", string0);
+}","/**
+ * Get the combined data of this element. Data is e.g. the inside of a {@code script} tag.
+ * @return the data, or empty string if none
+ *
+ * @see #dataNodes()
+ */"
+"public boolean isEmpty() {
+    return contents.isEmpty();
+}","public void test3535() throws Throwable {
+    Document document0 = new Document(""KbT{e>Uq\""Zzv4T*tb"");
+    Elements elements0 = document0.getElementsByAttribute(""KbT{e>Uq\""Zzv4T*tb"");
+    assertTrue(elements0.isEmpty());
+}",""
+"public int siblingIndex() {
+    return siblingIndex;
+}","public void test3636() throws Throwable {
+    Document document0 = new Document("""");
+    Element element0 = document0.empty();
+    assertEquals(0, element0.siblingIndex());
+}","/**
+ * Get the list index of this node in its node sibling list. I.e. if this is the first node
+ * sibling, returns 0.
+ * @return position in node sibling list
+ * @see org.jsoup.nodes.Element#elementSiblingIndex()
+ */"
+"public boolean isEmpty() {
+    return contents.isEmpty();
+}","public void test3737() throws Throwable {
+    Document document0 = new Document(""G3"");
+    Elements elements0 = document0.getElementsByIndexGreaterThan(1);
+    assertTrue(elements0.isEmpty());
+}",""
+"// implements List<Element> delegates:
+public int size() {
+    return contents.size();
+}","public void test3838() throws Throwable {
+    Document document0 = new Document(""RightUpDownVector"");
+    Elements elements0 = document0.getElementsByTag(""mlxp(z"");
+    assertEquals(0, elements0.size());
+}",""
+"public boolean isBlock() {
+    return tag.isBlock();
+}","public void test3939() throws Throwable {
+    Document document0 = new Document("""");
+    Element element0 = document0.prependElement(""ac"");
+    assertFalse(element0.isBlock());
+}","/**
+ * Test if this element is a block-level element. (E.g. {@code <div> == true} or an inline element
+ * {@code <p> == false}).
+ *
+ * @return true if block, false if not (and thus inline)
+ */"
+"public boolean isBlock() {
+    return tag.isBlock();
+}","public void test4040() throws Throwable {
+    Document document0 = new Document("""");
+    Set<String> set0 = document0.classNames();
+    Element element0 = document0.classNames(set0);
+    assertFalse(element0.isBlock());
+}","/**
+ * Test if this element is a block-level element. (E.g. {@code <div> == true} or an inline element
+ * {@code <p> == false}).
+ *
+ * @return true if block, false if not (and thus inline)
+ */"
+"public int siblingIndex() {
+    return siblingIndex;
+}","public void test4141() throws Throwable {
+    Document document0 = new Document("""");
+    Element element0 = document0.removeClass("""");
+    assertEquals(0, element0.siblingIndex());
+}","/**
+ * Get the list index of this node in its node sibling list. I.e. if this is the first node
+ * sibling, returns 0.
+ * @return position in node sibling list
+ * @see org.jsoup.nodes.Element#elementSiblingIndex()
+ */"
+"public String className() {
+    return attr(""class"");
+}","public void test4242() throws Throwable {
+    Document document0 = new Document(""RightUpDownVector"");
+    String string0 = document0.className();
+    assertEquals("""", string0);
+}","/**
+ * Gets the literal value of this element's ""class"" attribute, which may include multiple class names, space
+ * separated. (E.g. on <code>&lt;div class=""header gray""></code> returns, ""<code>header gray</code>"")
+ * @return The literal class attribute, or <b>empty string</b> if no class attribute set.
+ */"
+"// implements List<Element> delegates:
+public int size() {
+    return contents.size();
+}","public void test4343() throws Throwable {
+    Document document0 = new Document(""RightUpDownVector"");
+    Elements elements0 = document0.getElementsContainingOwnText(""input"");
+    assertEquals(0, elements0.size());
+}",""
+"// implements List<Element> delegates:
+public int size() {
+    return contents.size();
+}","public void test4444() throws Throwable {
+    Document document0 = new Document("""");
+    Pattern pattern0 = Pattern.compile(""#document"", (-2900));
+    Elements elements0 = document0.getElementsByAttributeValueMatching("""", pattern0);
+    assertEquals(0, elements0.size());
+}",""
+"public boolean isEmpty() {
+    return contents.isEmpty();
+}","public void test4545() throws Throwable {
+    Document document0 = new Document(""HkC6OCWU"");
+    Elements elements0 = document0.getElementsMatchingText(""%>FX"");
+    assertTrue(elements0.isEmpty());
+}",""
+"@Override
+public Element clone() {
+    Element clone = (Element) super.clone();
+    // creates linked set of class names from class attribute
+    clone.classNames();
+    return clone;
+}","public void test4646() throws Throwable {
+    Document document0 = new Document(""RightUpDownVector"");
+    Element element0 = document0.createElement(""iLhVU"");
+    Element element1 = element0.clone();
+    assertNotSame(element1, element0);
+}",""
+"public boolean isEmpty() {
+    return contents.isEmpty();
+}","public void test4747() throws Throwable {
+    Document document0 = new Document("""");
+    Elements elements0 = document0.getElementsByAttributeValueStarting(""XfQvW;Fyaqx/i"", ""xH7\""*fp{k4YO)#"");
+    assertTrue(elements0.isEmpty());
+}",""
+"public boolean isBlock() {
+    return tag.isBlock();
+}","public void test4848() throws Throwable {
+    Document document0 = new Document(""+j'&di~O|dH4_/)"");
+    boolean boolean0 = document0.isBlock();
+    assertFalse(boolean0);
+}","/**
+ * Test if this element is a block-level element. (E.g. {@code <div> == true} or an inline element
+ * {@code <p> == false}).
+ *
+ * @return true if block, false if not (and thus inline)
+ */"
+"public boolean isEmpty() {
+    return contents.isEmpty();
+}","public void test4949() throws Throwable {
+    Document document0 = new Document("""");
+    Elements elements0 = document0.getElementsByAttributeValueNot(""tI9"", ""textarea"");
+    assertFalse(elements0.isEmpty());
+}",""
+"// implements List<Element> delegates:
+public int size() {
+    return contents.size();
+}","public void test5050() throws Throwable {
+    Document document0 = new Document("""");
+    Elements elements0 = document0.getElementsByIndexLessThan(834);
+    assertEquals(1, elements0.size());
+}",""
+"@Override
+public Element after(String html) {
+    return (Element) super.after(html);
+}","public void test5151() throws Throwable {
+    Tag tag0 = Tag.valueOf(""q|07W5"");
+    Attributes attributes0 = new Attributes();
+    Element element0 = new Element(tag0, ""q"", attributes0);
+    // Undeclared exception!
+    try {
+        element0.after(""hmE01+LQDQlWRGp"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Insert the specified HTML into the DOM after this element (i.e. as a following sibling).
+ *
+ * @param html HTML to add after this element
+ * @return this element, for chaining
+ * @see #before(String)
+ */"
+"public boolean hasClass(String className) {
+    Set<String> classNames = classNames();
+    for (String name : classNames) {
+        if (className.equalsIgnoreCase(name))
+            return true;
+    }
+    return false;
+}","public void test5353() throws Throwable {
+    Tag tag0 = Tag.valueOf(""s+"");
+    Element element0 = new Element(tag0, ""DBGVp~r^g"");
+    boolean boolean0 = element0.hasClass(""DBGVp~r^g"");
+    assertFalse(boolean0);
+}","/**
+ * Tests if this element has a class. Case insensitive.
+ * @param className name of class to check for
+ * @return true if it does, false if not
+ */"
+"@Override
+public Element wrap(String html) {
+    return (Element) super.wrap(html);
+}","public void test5454() throws Throwable {
+    Tag tag0 = Tag.valueOf(""vr}Hm%r0rXZ8h.m7{"");
+    Element element0 = new Element(tag0, ""vr}Hm%r0rXZ8h.m7{"");
+    // Undeclared exception!
+    try {
+        element0.wrap(""n[K<x<t(FQREdV%aa$l"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}","/**
+ * Wrap the supplied HTML around this element.
+ *
+ * @param html HTML to wrap around this element, e.g. {@code <div class=""head""></div>}. Can be arbitrarily deep.
+ * @return this element, for chaining.
+ */"
+"public boolean isBlock() {
+    return tag.isBlock();
+}","public void test5555() throws Throwable {
+    Document document0 = new Document(""G3"");
+    Element element0 = document0.prepend("""");
+    assertFalse(element0.isBlock());
+}","/**
+ * Test if this element is a block-level element. (E.g. {@code <div> == true} or an inline element
+ * {@code <p> == false}).
+ *
+ * @return true if block, false if not (and thus inline)
+ */"
+"public Element addClass(String className) {
+    Validate.notNull(className);
+    Set<String> classes = classNames();
+    classes.add(className);
+    classNames(classes);
+    return this;
+}","public void test5656() throws Throwable {
+    Document document0 = new Document(""G3"");
+    // Undeclared exception!
+    try {
+        document0.addClass((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ *     Add a class name to this element's {@code class} attribute.
+ *     @param className class name to add
+ *     @return this element
+ */"
+"public Element child(int index) {
+    return children().get(index);
+}","public void test5757() throws Throwable {
+    Document document0 = new Document("""");
+    // Undeclared exception!
+    try {
+        document0.child(0);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 0, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}","/**
+ * Get a child element of this element, by its 0-based index number.
+ * <p/>
+ * Note that an element can have both mixed Nodes and Elements as children. This method inspects
+ * a filtered list of children that are elements, and the index is based on that filtered list.
+ *
+ * @param index the index number of the element to retrieve
+ * @return the child element, if it exists, or {@code null} if absent.
+ * @see #childNode(int)
+ */"
+"static public Document createShell(String baseUri) {
+    Validate.notNull(baseUri);
+    Document doc = new Document(baseUri);
+    Element html = doc.appendElement(""html"");
+    html.appendElement(""head"");
+    html.appendElement(""body"");
+    return doc;
+}","public void test5858() throws Throwable {
+    // Undeclared exception!
+    try {
+        Document.createShell("""");
+        //  fail(""Expecting exception: NoSuchElementException"");
+        // Unstable assertion
+    } catch (NoSuchElementException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.LinkedList"", e);
+    }
+}","/**
+ *     Create a valid, empty shell of a document, suitable for adding more elements to.
+ *     @param baseUri baseUri of document
+ *     @return document with html, head, and body elements.
+ */"

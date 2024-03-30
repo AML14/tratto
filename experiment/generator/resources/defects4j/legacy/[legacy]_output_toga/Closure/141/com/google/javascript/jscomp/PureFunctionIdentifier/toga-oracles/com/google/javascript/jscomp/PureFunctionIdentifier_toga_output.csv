@@ -1,0 +1,144 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test00,"public void test00() throws Throwable {
+    SimpleDefinitionFinder simpleDefinitionFinder0 = new SimpleDefinitionFinder((AbstractCompiler) null);
+    PureFunctionIdentifier pureFunctionIdentifier0 = new PureFunctionIdentifier((AbstractCompiler) null, simpleDefinitionFinder0);
+    Node node0 = Node.newString(""Qs/\""ZoU8K$<<"");
+    pureFunctionIdentifier0.process(node0, node0);
+    // Undeclared exception!
+    try {
+        pureFunctionIdentifier0.process(node0, node0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // It is illegal to call PureFunctionIdentifier.process twice the same instance.  Please use a new PureFunctionIdentifier instance each time.
+        //
+        verifyException(""com.google.javascript.jscomp.PureFunctionIdentifier"", e);
+    }
+}",0,
+project,0,test11,"public void test11() throws Throwable {
+    SimpleDefinitionFinder simpleDefinitionFinder0 = new SimpleDefinitionFinder((AbstractCompiler) null);
+    PureFunctionIdentifier pureFunctionIdentifier0 = new PureFunctionIdentifier((AbstractCompiler) null, simpleDefinitionFinder0);
+    Node node0 = Node.newString(""`"");
+    pureFunctionIdentifier0.process(node0, node0);
+    String string0 = pureFunctionIdentifier0.getDebugReport();
+    assertEquals(""Pure functions:\n\n"", string0);
+}",0,
+project,0,test22,"public void test22() throws Throwable {
+    SimpleDefinitionFinder simpleDefinitionFinder0 = new SimpleDefinitionFinder((AbstractCompiler) null);
+    PureFunctionIdentifier pureFunctionIdentifier0 = new PureFunctionIdentifier((AbstractCompiler) null, simpleDefinitionFinder0);
+    Node node0 = new Node(37);
+    Node node1 = new Node(33);
+    node0.addChildToFront(node1);
+    // Undeclared exception!
+    try {
+        pureFunctionIdentifier0.process(node1, node0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.SimpleDefinitionFinder"", e);
+    }
+}",0,
+project,0,test33,"public void test33() throws Throwable {
+    SimpleDefinitionFinder simpleDefinitionFinder0 = new SimpleDefinitionFinder((AbstractCompiler) null);
+    PureFunctionIdentifier pureFunctionIdentifier0 = new PureFunctionIdentifier((AbstractCompiler) null, simpleDefinitionFinder0);
+    Node node0 = new Node(37, 37, 37);
+    Node node1 = new Node(0);
+    node0.addChildToFront(node1);
+    pureFunctionIdentifier0.process(node0, node0);
+    assertEquals(42, Node.NO_SIDE_EFFECTS_CALL);
+}",0,
+project,0,test44,"public void test44() throws Throwable {
+    SimpleDefinitionFinder simpleDefinitionFinder0 = new SimpleDefinitionFinder((AbstractCompiler) null);
+    PureFunctionIdentifier pureFunctionIdentifier0 = new PureFunctionIdentifier((AbstractCompiler) null, simpleDefinitionFinder0);
+    Node node0 = new Node(37);
+    Node node1 = new Node(0);
+    node1.setType(38);
+    node0.addChildToFront(node1);
+    // Undeclared exception!
+    try {
+        pureFunctionIdentifier0.process(node0, node0);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // NAME is not a string node
+        //
+        verifyException(""com.google.javascript.rhino.Node"", e);
+    }
+}",0,
+project,0,test55,"public void test55() throws Throwable {
+    SimpleDefinitionFinder simpleDefinitionFinder0 = new SimpleDefinitionFinder((AbstractCompiler) null);
+    PureFunctionIdentifier pureFunctionIdentifier0 = new PureFunctionIdentifier((AbstractCompiler) null, simpleDefinitionFinder0);
+    Node node0 = new Node(30);
+    // Undeclared exception!
+    try {
+        pureFunctionIdentifier0.process(node0, node0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.NodeUtil"", e);
+    }
+}",0,
+project,0,test66,"public void test66() throws Throwable {
+    SimpleDefinitionFinder simpleDefinitionFinder0 = new SimpleDefinitionFinder((AbstractCompiler) null);
+    PureFunctionIdentifier pureFunctionIdentifier0 = new PureFunctionIdentifier((AbstractCompiler) null, simpleDefinitionFinder0);
+    Node node0 = new Node(103, 103, 103);
+    pureFunctionIdentifier0.process(node0, node0);
+    assertEquals(2, Node.ATTRIBUTE_FLAG);
+}",0,
+project,0,test77,"public void test77() throws Throwable {
+    SimpleDefinitionFinder simpleDefinitionFinder0 = new SimpleDefinitionFinder((AbstractCompiler) null);
+    Node node0 = new Node(105);
+    Node node1 = new Node(38, node0, node0, node0);
+    node0.addChildToFront(node1);
+    PureFunctionIdentifier pureFunctionIdentifier0 = new PureFunctionIdentifier((AbstractCompiler) null, simpleDefinitionFinder0);
+    Node node2 = Node.newNumber((double) 13);
+    // Undeclared exception!
+    try {
+        pureFunctionIdentifier0.process(node2, node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.NodeTraversal"", e);
+    }
+}",0,
+project,0,test88,"public void test88() throws Throwable {
+    SimpleDefinitionFinder simpleDefinitionFinder0 = new SimpleDefinitionFinder((AbstractCompiler) null);
+    Node node0 = new Node(105);
+    Node node1 = new Node(13, node0, node0, node0);
+    PureFunctionIdentifier pureFunctionIdentifier0 = new PureFunctionIdentifier((AbstractCompiler) null, simpleDefinitionFinder0);
+    // Undeclared exception!
+    try {
+        pureFunctionIdentifier0.process(node1, node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.NodeTraversal"", e);
+    }
+}",0,
+project,0,test99,"public void test99() throws Throwable {
+    SimpleDefinitionFinder simpleDefinitionFinder0 = new SimpleDefinitionFinder((AbstractCompiler) null);
+    PureFunctionIdentifier pureFunctionIdentifier0 = new PureFunctionIdentifier((AbstractCompiler) null, simpleDefinitionFinder0);
+    Node node0 = new Node(105);
+    Node node1 = new Node(38, node0, node0, node0);
+    Node node2 = Node.newString(29, """");
+    node0.addChildToFront(node2);
+    node0.addChildToFront(node1);
+    // Undeclared exception!
+    try {
+        pureFunctionIdentifier0.process(node1, node0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.NodeTraversal"", e);
+    }
+}",0,

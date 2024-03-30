@@ -1,0 +1,131 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = new BeanDeserializerFactory((DeserializerFactoryConfig) null);
+    beanDeserializerFactory0.withConfig((DeserializerFactoryConfig) null);
+}",0,
+project,0,test011,"public void test011() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DeserializerFactoryConfig deserializerFactoryConfig0 = new DeserializerFactoryConfig();
+    beanDeserializerFactory0.withConfig(deserializerFactoryConfig0);
+}",0,
+project,0,test033,"public void test033() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    Class<Throwable> class0 = Throwable.class;
+    beanDeserializerFactory0.isPotentialBeanType(class0);
+}",0,
+project,0,test044,"public void test044() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    Class<ObjectIdGenerators.IntSequenceGenerator> class0 = ObjectIdGenerators.IntSequenceGenerator.class;
+    beanDeserializerFactory0.isPotentialBeanType(class0);
+    BeanDeserializerModifier beanDeserializerModifier0 = mock(BeanDeserializerModifier.class, new ViolatedAssumptionAnswer());
+    Deserializers.Base deserializers_Base0 = new Deserializers.Base();
+    BeanDeserializerModifier beanDeserializerModifier1 = mock(BeanDeserializerModifier.class, new ViolatedAssumptionAnswer());
+    BeanDeserializerModifier beanDeserializerModifier2 = mock(BeanDeserializerModifier.class, new ViolatedAssumptionAnswer());
+    DeserializationContext deserializationContext0 = null;
+    JavaType javaType0 = null;
+    BeanDescription beanDescription0 = null;
+    beanDeserializerFactory0.createBuilderBasedDeserializer((DeserializationContext) null, (JavaType) null, (BeanDescription) null, class0);
+    // Undeclared exception!
+    try {
+        beanDeserializerFactory0.materializeAbstractType(deserializationContext0, javaType0, beanDescription0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.BeanDeserializerFactory"", e);
+    }
+}",0,
+project,0,test055,"public void test055() throws Throwable {
+    POJOPropertiesCollector pOJOPropertiesCollector0 = mock(POJOPropertiesCollector.class, new ViolatedAssumptionAnswer());
+    doReturn((AnnotatedClass) null).when(pOJOPropertiesCollector0).getClassDef();
+    doReturn((MapperConfig) null).when(pOJOPropertiesCollector0).getConfig();
+    doReturn((Map) null).when(pOJOPropertiesCollector0).getInjectables();
+    doReturn((ObjectIdInfo) null).when(pOJOPropertiesCollector0).getObjectIdInfo();
+    doReturn((JavaType) null).when(pOJOPropertiesCollector0).getType();
+    BasicBeanDescription basicBeanDescription0 = BasicBeanDescription.forDeserialization(pOJOPropertiesCollector0);
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    beanDeserializerFactory0.addInjectables(defaultDeserializationContext_Impl0, basicBeanDescription0, (BeanDeserializerBuilder) null);
+}",0,
+project,0,test066,"public void test066() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    JavaType javaType0 = TypeFactory.unknownType();
+    beanDeserializerFactory0.materializeAbstractType((DeserializationContext) null, javaType0, (BeanDescription) null);
+}",1,
+project,0,test088,"public void test088() throws Throwable {
+    DeserializerFactoryConfig deserializerFactoryConfig0 = new DeserializerFactoryConfig();
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    Class<Month> class0 = Month.class;
+    beanDeserializerFactory0.isPotentialBeanType(class0);
+}",0,
+project,0,test099,"public void test099() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    SimpleAbstractTypeResolver simpleAbstractTypeResolver0 = new SimpleAbstractTypeResolver();
+    BeanDeserializerFactory beanDeserializerFactory1 = (BeanDeserializerFactory) beanDeserializerFactory0.withAbstractTypeResolver(simpleAbstractTypeResolver0);
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory1);
+    SimpleType simpleType0 = (SimpleType) TypeFactory.unknownType();
+    beanDeserializerFactory1.materializeAbstractType(defaultDeserializationContext_Impl0, simpleType0, (BeanDescription) null);
+}",0,
+project,0,test1010,"public void test1010() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    Class<BeanDeserializer> class0 = BeanDeserializer.class;
+    objectReader0.forType(class0);
+    beanDeserializerFactory0.isPotentialBeanType(class0);
+}",0,
+project,0,test1111,"public void test1111() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    JsonNodeFactory jsonNodeFactory0 = JsonNodeFactory.withExactBigDecimals(false);
+    JsonFactory jsonFactory0 = new JsonFactory();
+    JsonParser.Feature jsonParser_Feature0 = JsonParser.Feature.ALLOW_NUMERIC_LEADING_ZEROS;
+    JsonFactory jsonFactory1 = jsonFactory0.enable(jsonParser_Feature0);
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory1);
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    DefaultSerializerProvider defaultSerializerProvider0 = defaultSerializerProvider_Impl0.copy();
+    ObjectMapper objectMapper1 = objectMapper0.setSerializerProvider(defaultSerializerProvider0);
+    ObjectMapper.DefaultTyping objectMapper_DefaultTyping0 = ObjectMapper.DefaultTyping.NON_FINAL;
+    ObjectMapper objectMapper2 = objectMapper1.enableDefaultTypingAsProperty(objectMapper_DefaultTyping0, ""com.fasterxml.jackson.databind.deser.std.EnumMapDeserializer"");
+    ObjectReader objectReader0 = objectMapper2.reader(jsonNodeFactory0);
+    Locale locale0 = Locale.CHINA;
+    ObjectReader objectReader1 = objectReader0.with(locale0);
+    objectReader0.getTypeFactory();
+    Class<CreatorProperty> class0 = CreatorProperty.class;
+    objectReader1.forType(class0);
+    BeanDescription beanDescription0 = null;
+    BeanDeserializerBuilder beanDeserializerBuilder0 = beanDeserializerFactory0.constructBeanDeserializerBuilder(defaultDeserializationContext_Impl0, (BeanDescription) null);
+    beanDeserializerFactory0.addBeanProps(defaultDeserializationContext_Impl0, beanDescription0, beanDeserializerBuilder0);
+}",0,
+project,0,test1212,"public void test1212() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<Throwable> class0 = Throwable.class;
+    ObjectReader objectReader0 = objectMapper0.reader();
+    Class<Integer> class1 = Integer.TYPE;
+    objectReader0.forType(class1);
+    beanDeserializerFactory0.isPotentialBeanType(class0);
+}",0,
+project,0,test1313,"public void test1313() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    MapperFeature[] mapperFeatureArray0 = new MapperFeature[5];
+    MapperFeature mapperFeature0 = MapperFeature.REQUIRE_SETTERS_FOR_GETTERS;
+    mapperFeatureArray0[0] = mapperFeature0;
+    MapperFeature mapperFeature1 = MapperFeature.IGNORE_DUPLICATE_MODULE_REGISTRATIONS;
+    mapperFeatureArray0[1] = mapperFeature1;
+    MapperFeature mapperFeature2 = MapperFeature.AUTO_DETECT_IS_GETTERS;
+    mapperFeatureArray0[2] = mapperFeature2;
+    MapperFeature mapperFeature3 = MapperFeature.DEFAULT_VIEW_INCLUSION;
+    mapperFeatureArray0[3] = mapperFeature3;
+    MapperFeature mapperFeature4 = MapperFeature.DEFAULT_VIEW_INCLUSION;
+    mapperFeatureArray0[4] = mapperFeature4;
+    objectMapper0.disable(mapperFeatureArray0);
+    Class<Throwable> class0 = Throwable.class;
+    ObjectReader objectReader0 = objectMapper0.reader();
+    JsonPointer jsonPointer0 = JsonPointer.compile((String) null);
+    objectReader0.at(jsonPointer0);
+    objectReader0.forType(class0);
+    beanDeserializerFactory0.isPotentialBeanType(class0);
+}",0,

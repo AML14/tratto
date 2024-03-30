@@ -1,0 +1,27 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test00,"public void test00() throws Throwable {
+    Dfp dfp0 = null;
+    Dfp dfp1 = null;
+    try {
+        dfp1 = new Dfp((Dfp) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.dfp.Dfp"", e);
+    }
+}",0,
+project,0,test11,"public void test11() throws Throwable {
+    byte byte0 = (byte) (-36);
+    Dfp dfp0 = null;
+    try {
+        dfp0 = new Dfp((DfpField) null, (byte) (-36), (byte) (-36));
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.dfp.Dfp"", e);
+    }
+}",0,

@@ -1,0 +1,307 @@
+focal_method,test_prefix,docstring
+"public int getChildCount() {
+    int c = 0;
+    for (Node n = first; n != null; n = n.next) c++;
+    return c;
+}","public void test000() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""?d5D0v8e{B-SYmd"", ""?d5D0v8e{B-SYmd"");
+    Node node1 = new Node(114);
+    node1.addChildToFront(node0);
+    Node node2 = new Node(117);
+    node0.addChildToFront(node2);
+    UnreachableCodeElimination unreachableCodeElimination0 = new UnreachableCodeElimination(compiler0, false);
+    unreachableCodeElimination0.process(node2, node0);
+    assertEquals(0, node0.getChildCount());
+}",""
+"public boolean hasChildren() {
+    return first != null;
+}","public void test001() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""?d5D0v8e{B-SYmd"", ""?d5D0v8e{B-SYmd"");
+    Node node1 = new Node(114);
+    node1.addChildToFront(node0);
+    Node node2 = new Node(117);
+    node0.addChildToFront(node2);
+    UnreachableCodeElimination unreachableCodeElimination0 = new UnreachableCodeElimination(compiler0, false);
+    unreachableCodeElimination0.process(node2, node0);
+    assertFalse(node0.hasChildren());
+}",""
+"@Override
+public void visit(NodeTraversal t, Node n, Node parent) {
+    if (parent == null) {
+        return;
+    }
+    if (n.getType() == Token.FUNCTION || n.getType() == Token.SCRIPT) {
+        return;
+    }
+    DiGraphNode<Node, Branch> gNode = curCfg.getDirectedGraphNode(n);
+    if (gNode == null) {
+        // Not in CFG.
+        return;
+    }
+    if (gNode.getAnnotation() != GraphReachability.REACHABLE || (removeNoOpStatements && !NodeUtil.mayHaveSideEffects(n))) {
+        removeDeadExprStatementSafely(n);
+        return;
+    }
+    tryRemoveUnconditionalBranching(n);
+}","public void test012() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    UnreachableCodeElimination unreachableCodeElimination0 = new UnreachableCodeElimination(compiler0, true);
+    Node node0 = new Node(105, 938, 103);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, unreachableCodeElimination0, (ScopeCreator) null);
+    unreachableCodeElimination0.visit(nodeTraversal0, node0, node0);
+    assertEquals(0, Node.BOTH);
+}",""
+"public boolean hasChildren() {
+    return first != null;
+}","public void test023() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    UnreachableCodeElimination unreachableCodeElimination0 = new UnreachableCodeElimination(compiler0, true);
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""G:P"", ""G:P"");
+    Node node1 = new Node(35, node0, node0, node0);
+    unreachableCodeElimination0.process(node0, node1);
+    assertTrue(node0.hasChildren());
+}",""
+"public int getChildCount() {
+    int c = 0;
+    for (Node n = first; n != null; n = n.next) c++;
+    return c;
+}","public void test024() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    UnreachableCodeElimination unreachableCodeElimination0 = new UnreachableCodeElimination(compiler0, true);
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""G:P"", ""G:P"");
+    Node node1 = new Node(35, node0, node0, node0);
+    unreachableCodeElimination0.process(node0, node1);
+    assertEquals(1, node0.getChildCount());
+}",""
+"public int getChildCount() {
+    int c = 0;
+    for (Node n = first; n != null; n = n.next) c++;
+    return c;
+}","public void test035() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""KL'>V}f7fN9zwE.I}"");
+    Node node1 = new Node(4);
+    node0.addChildToFront(node1);
+    UnreachableCodeElimination unreachableCodeElimination0 = new UnreachableCodeElimination(compiler0, true);
+    unreachableCodeElimination0.process(node0, node0);
+    assertEquals(0, node0.getChildCount());
+}",""
+"public boolean hasChildren() {
+    return first != null;
+}","public void test036() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""KL'>V}f7fN9zwE.I}"");
+    Node node1 = new Node(4);
+    node0.addChildToFront(node1);
+    UnreachableCodeElimination unreachableCodeElimination0 = new UnreachableCodeElimination(compiler0, true);
+    unreachableCodeElimination0.process(node0, node0);
+    assertFalse(node0.hasChildren());
+}",""
+"public int getChildCount() {
+    int c = 0;
+    for (Node n = first; n != null; n = n.next) c++;
+    return c;
+}","public void test047() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""?d5D0v8e{B-md"", ""?d5D0v8e{B-md"");
+    Node node1 = new Node(114);
+    node1.addChildToFront(node0);
+    Node node2 = new Node(116);
+    node0.addChildToFront(node2);
+    UnreachableCodeElimination unreachableCodeElimination0 = new UnreachableCodeElimination(compiler0, false);
+    unreachableCodeElimination0.process(node1, node0);
+    assertEquals(1, node0.getChildCount());
+}",""
+"public boolean hasOneChild() {
+    return first != null && first == last;
+}","public void test048() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""?d5D0v8e{B-md"", ""?d5D0v8e{B-md"");
+    Node node1 = new Node(114);
+    node1.addChildToFront(node0);
+    Node node2 = new Node(116);
+    node0.addChildToFront(node2);
+    UnreachableCodeElimination unreachableCodeElimination0 = new UnreachableCodeElimination(compiler0, false);
+    unreachableCodeElimination0.process(node1, node0);
+    assertTrue(node0.hasOneChild());
+}","/**
+ * Check for one child more efficiently than by iterating over all the
+ * children as is done with Node.getChildCount().
+ *
+ * @return Whether the node has exactly one child.
+ */"
+"@Override
+public void process(Node externs, Node root) {
+    NodeTraversal.traverse(compiler, root, this);
+}","public void test059() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""3M"");
+    Node node1 = compiler0.parseSyntheticCode(""3M"", ""3M"");
+    node0.addChildToFront(node1);
+    UnreachableCodeElimination unreachableCodeElimination0 = new UnreachableCodeElimination(compiler0, false);
+    unreachableCodeElimination0.process(node1, node0);
+    assertEquals(1, Node.TARGET_PROP);
+}",""
+"@Override
+public void process(Node externs, Node root) {
+    NodeTraversal.traverse(compiler, root, this);
+}","public void test0610() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    UnreachableCodeElimination unreachableCodeElimination0 = new UnreachableCodeElimination(compiler0, false);
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""G:P"", ""G:P"");
+    unreachableCodeElimination0.process(node0, node0);
+    assertEquals(31, Node.INCRDECR_PROP);
+}",""
+"public int getChildCount() {
+    int c = 0;
+    for (Node n = first; n != null; n = n.next) c++;
+    return c;
+}","public void test0711() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode("";I"");
+    Node node1 = new Node(4);
+    Node node2 = Node.newString(""Removing "");
+    node1.addChildToFront(node2);
+    node0.addChildToFront(node1);
+    UnreachableCodeElimination unreachableCodeElimination0 = new UnreachableCodeElimination(compiler0, false);
+    unreachableCodeElimination0.process(node1, node0);
+    assertEquals(2, node0.getChildCount());
+}",""
+"public boolean hasOneChild() {
+    return first != null && first == last;
+}","public void test0712() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode("";I"");
+    Node node1 = new Node(4);
+    Node node2 = Node.newString(""Removing "");
+    node1.addChildToFront(node2);
+    node0.addChildToFront(node1);
+    UnreachableCodeElimination unreachableCodeElimination0 = new UnreachableCodeElimination(compiler0, false);
+    unreachableCodeElimination0.process(node1, node0);
+    assertFalse(node0.hasOneChild());
+}","/**
+ * Check for one child more efficiently than by iterating over all the
+ * children as is done with Node.getChildCount().
+ *
+ * @return Whether the node has exactly one child.
+ */"
+"public int getChildCount() {
+    int c = 0;
+    for (Node n = first; n != null; n = n.next) c++;
+    return c;
+}","public void test0813() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode("";I"");
+    Node node1 = new Node(4);
+    node0.addChildToFront(node1);
+    UnreachableCodeElimination unreachableCodeElimination0 = new UnreachableCodeElimination(compiler0, false);
+    unreachableCodeElimination0.process(node1, node0);
+    assertEquals(2, node0.getChildCount());
+}",""
+"public boolean hasOneChild() {
+    return first != null && first == last;
+}","public void test0814() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode("";I"");
+    Node node1 = new Node(4);
+    node0.addChildToFront(node1);
+    UnreachableCodeElimination unreachableCodeElimination0 = new UnreachableCodeElimination(compiler0, false);
+    unreachableCodeElimination0.process(node1, node0);
+    assertFalse(node0.hasOneChild());
+}","/**
+ * Check for one child more efficiently than by iterating over all the
+ * children as is done with Node.getChildCount().
+ *
+ * @return Whether the node has exactly one child.
+ */"
+"public int getChildCount() {
+    int c = 0;
+    for (Node n = first; n != null; n = n.next) c++;
+    return c;
+}","public void test0915() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""<5D0ve{B-ZSYmd"");
+    Node node1 = compiler0.parseTestCode(""<5D0ve{B-ZSYmd"");
+    node0.addChildToFront(node1);
+    UnreachableCodeElimination unreachableCodeElimination0 = new UnreachableCodeElimination(compiler0, true);
+    Node node2 = new Node(77, node0, node0);
+    unreachableCodeElimination0.process(node1, node2);
+    assertEquals(0, node0.getChildCount());
+}",""
+"public boolean hasOneChild() {
+    return first != null && first == last;
+}","public void test0916() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""<5D0ve{B-ZSYmd"");
+    Node node1 = compiler0.parseTestCode(""<5D0ve{B-ZSYmd"");
+    node0.addChildToFront(node1);
+    UnreachableCodeElimination unreachableCodeElimination0 = new UnreachableCodeElimination(compiler0, true);
+    Node node2 = new Node(77, node0, node0);
+    unreachableCodeElimination0.process(node1, node2);
+    assertFalse(node0.hasOneChild());
+}","/**
+ * Check for one child more efficiently than by iterating over all the
+ * children as is done with Node.getChildCount().
+ *
+ * @return Whether the node has exactly one child.
+ */"
+"@Override
+public void process(Node externs, Node root) {
+    NodeTraversal.traverse(compiler, root, this);
+}","public void test1017() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""pxnI{){K'II #m!WO"");
+    Node node1 = new Node(114);
+    node1.addChildToFront(node0);
+    Node node2 = new Node(23, node1, node1);
+    UnreachableCodeElimination unreachableCodeElimination0 = new UnreachableCodeElimination(compiler0, false);
+    unreachableCodeElimination0.process(node0, node2);
+    assertEquals(27, Node.SPECIALCALL_PROP);
+}",""
+"@Override
+public void process(Node externs, Node root) {
+    NodeTraversal.traverse(compiler, root, this);
+}","public void test1118() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    compiler0.parseSyntheticCode(""F#Ve\""Xe0"", ""F#Ve\""Xe0"");
+    Node node0 = new Node(120);
+    UnreachableCodeElimination unreachableCodeElimination0 = new UnreachableCodeElimination(compiler0, false);
+    Node node1 = new Node(44, node0, node0);
+    // Undeclared exception!
+    try {
+        unreachableCodeElimination0.process(node1, node1);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",""
+"public boolean hasOneChild() {
+    return first != null && first == last;
+}","public void test1219() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""F#Ve\""Xe0"");
+    Node node1 = compiler0.parseTestCode(""F#Ve\""Xe0"");
+    node1.addChildToFront(node0);
+    UnreachableCodeElimination unreachableCodeElimination0 = new UnreachableCodeElimination(compiler0, false);
+    Node node2 = new Node(1, node1, node1);
+    unreachableCodeElimination0.process(node0, node2);
+    assertFalse(node1.hasOneChild());
+}","/**
+ * Check for one child more efficiently than by iterating over all the
+ * children as is done with Node.getChildCount().
+ *
+ * @return Whether the node has exactly one child.
+ */"
+"public boolean hasChildren() {
+    return first != null;
+}","public void test1220() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""F#Ve\""Xe0"");
+    Node node1 = compiler0.parseTestCode(""F#Ve\""Xe0"");
+    node1.addChildToFront(node0);
+    UnreachableCodeElimination unreachableCodeElimination0 = new UnreachableCodeElimination(compiler0, false);
+    Node node2 = new Node(1, node1, node1);
+    unreachableCodeElimination0.process(node0, node2);
+    assertFalse(node1.hasChildren());
+}",""

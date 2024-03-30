@@ -1,0 +1,33 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test011,"public void test011() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""com.google.javascript.jscomp.mozilla.rhino.xml.XMLObject"", ""com.google.javascript.jscomp.mozilla.rhino.xml.XMLObject"");
+    GlobalNamespace globalNamespace0 = new GlobalNamespace(compiler0, node0);
+    ImmutableSortedSet<Node> immutableSortedSet0 = ImmutableSortedSet.of();
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    Scope scope0 = typedScopeCreator0.createInitialScope(node0);
+    globalNamespace0.scanNewNodes(scope0, immutableSortedSet0);
+    assertTrue(scope0.isGlobal());
+}",0,assertFalse(scope0.isGlobal())
+project,0,test088,"public void test088() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = new Node(38, (-354), 40);
+    GlobalNamespace globalNamespace0 = new GlobalNamespace(compiler0, node0);
+    // Undeclared exception!
+    try {
+        globalNamespace0.getNameForest();
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",0,
+project,0,test099,"public void test099() throws Throwable {
+    Node node0 = new Node(33, 33, 33);
+    Compiler compiler0 = new Compiler();
+    GlobalNamespace globalNamespace0 = new GlobalNamespace(compiler0, node0);
+    // Undeclared exception!
+    try {
+        globalNamespace0.getNameIndex();
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",0,

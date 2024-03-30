@@ -1,0 +1,236 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    Document document0 = new Document(""S2#%*>BG"");
+    document0.appendText(""M[#[["");
+    document0.appendText(""M[#[["");
+    Document document1 = document0.normalise();
+    assertEquals(""#document"", document1.nodeName());
+}",0,assertNotNull(document1.nodeName())
+project,0,test0611,"public void test0611() throws Throwable {
+    Document document0 = new Document(""7;~eiyx`f"");
+    document0.normalise();
+    Element element0 = document0.text("""");
+    assertEquals(""#document"", element0.nodeName());
+}",0,assertNotNull(element0.nodeName())
+project,0,test0918,"public void test0918() throws Throwable {
+    Document document0 = new Document("""");
+    String string0 = document0.outerHtml();
+    assertEquals("""", string0);
+}",0,assertNotNull(string0)
+project,0,test1019,"public void test1019() throws Throwable {
+    Document document0 = new Document(""Kopf"");
+    Document document1 = document0.normalise();
+    document1.head();
+    assertEquals(""#document"", document1.nodeName());
+}",0,assertNotNull(document1.nodeName())
+project,0,test1120,"public void test1120() throws Throwable {
+    Document document0 = Document.createShell(""CFrcn=wm`]6U?7!oF~J"");
+    Element element0 = document0.createElement(""head"");
+    assertEquals(""head"", element0.nodeName());
+}",0,assertNotNull(element0.nodeName())
+project,0,test1221,"public void test1221() throws Throwable {
+    Document document0 = new Document(""Kopf"");
+    Document document1 = document0.normalise();
+    Element element0 = document1.body();
+    assertEquals(""#document"", document1.nodeName());
+}",0,assertNotNull(document1.nodeName())
+project,0,test1222,"public void test1222() throws Throwable {
+    Document document0 = new Document(""Kopf"");
+    Document document1 = document0.normalise();
+    Element element0 = document1.body();
+    assertNotNull(element0);
+}",0,
+project,0,test1423,"public void test1423() throws Throwable {
+    Document document0 = new Document("""");
+    // Undeclared exception!
+    try {
+        document0.title("""");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Document"", e);
+    }
+}",0,
+project,0,test1524,"public void test1524() throws Throwable {
+    Document document0 = Document.createShell(""tBz6;U"");
+    // Undeclared exception!
+    try {
+        document0.title((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test1725,"public void test1725() throws Throwable {
+    Document document0 = new Document(""harr"");
+    // Undeclared exception!
+    try {
+        document0.text(""harr"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Document"", e);
+    }
+}",0,
+project,0,test1926,"public void test1926() throws Throwable {
+    Document document0 = new Document("""");
+    document0.childNodes = null;
+    // Undeclared exception!
+    try {
+        document0.normalise();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test2027,"public void test2027() throws Throwable {
+    // Undeclared exception!
+    try {
+        Document.createShell((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test2128,"public void test2128() throws Throwable {
+    Document document0 = Document.createShell(""html"");
+    // Undeclared exception!
+    try {
+        document0.createElement("""");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test2229,"public void test2229() throws Throwable {
+    Document document0 = null;
+    try {
+        document0 = new Document((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test2330,"public void test2330() throws Throwable {
+    Document document0 = new Document(""Kopf"");
+    Element element0 = document0.createElement("",V^6EmI&E"");
+    document0.prependChild(element0);
+    assertEquals("",v^6emi&e"", element0.tagName());
+}",0,
+project,0,test2331,"public void test2331() throws Throwable {
+    Document document0 = new Document(""Kopf"");
+    Element element0 = document0.createElement("",V^6EmI&E"");
+    document0.prependChild(element0);
+    Element element1 = document0.head();
+    assertEquals(""#document"", document0.nodeName());
+}",0,assertNotNull(document0.nodeName())
+project,0,test2332,"public void test2332() throws Throwable {
+    Document document0 = new Document(""Kopf"");
+    Element element0 = document0.createElement("",V^6EmI&E"");
+    document0.prependChild(element0);
+    Element element1 = document0.head();
+    assertNull(element1);
+}",0,
+project,0,test2433,"public void test2433() throws Throwable {
+    Document document0 = Document.createShell(""Eta"");
+    document0.prependText(""ziL8N5Xye})SGoac"");
+    Document document1 = document0.normalise();
+    assertEquals(""#document"", document1.nodeName());
+}",0,assertNotNull(document1.nodeName())
+project,0,test2534,"public void test2534() throws Throwable {
+    Document document0 = new Document(""Kopf"");
+    Element element0 = document0.body();
+    assertEquals(""#document"", document0.nodeName());
+}",0,
+project,0,test2535,"public void test2535() throws Throwable {
+    Document document0 = new Document(""Kopf"");
+    Element element0 = document0.body();
+    assertNull(element0);
+}",0,
+project,0,test2636,"public void test2636() throws Throwable {
+    Document document0 = new Document(""Kopf"");
+    String string0 = document0.nodeName();
+    assertEquals(""#document"", string0);
+}",0,
+project,0,test2939,"public void test2939() throws Throwable {
+    Document document0 = Document.createShell(""C"");
+    document0.appendText((String) null);
+    Document document1 = document0.normalise();
+    assertEquals(""#document"", document1.nodeName());
+}",0,assertNotNull(document1.nodeName())
+project,0,test3040,"public void test3040() throws Throwable {
+    Document document0 = Document.createShell(""pWRv[&yJyv!x"");
+    document0.title(""pWRv[&yJyv!x"");
+    document0.title(""pWRv[&yJyv!x"");
+    assertEquals(""#document"", document0.nodeName());
+}",0,assertNotNull(document0.nodeName())
+project,0,test3141,"public void test3141() throws Throwable {
+    Document document0 = Document.createShell(""pWRv[&yJyv!x"");
+    document0.title(""pWRv[&yJyv!x"");
+    document0.title();
+    assertEquals(""#document"", document0.nodeName());
+}",0,assertNotNull(document0.nodeName())
+project,0,test3242,"public void test3242() throws Throwable {
+    Document document0 = Document.createShell(""8K{Eu?>*GR?7"");
+    String string0 = document0.title();
+    assertEquals("""", string0);
+}",0,assertNotNull(string0)
+project,0,test3343,"public void test3343() throws Throwable {
+    Document document0 = Document.createShell(""@qM3"");
+    // Undeclared exception!
+    try {
+        document0.text((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test3546,"public void test3546() throws Throwable {
+    Document document0 = Document.createShell(""l;694tx2:4Q3.eB"");
+    Document.OutputSettings document_OutputSettings0 = document0.outputSettings();
+    document_OutputSettings0.escapeMode((Entities.EscapeMode) null);
+    document0.title("":68pG[y9?Q{4;Q/PR^"");
+    // Undeclared exception!
+    try {
+        document0.outerHtml();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Entities"", e);
+    }
+}",0,
+project,0,test3749,"public void test3749() throws Throwable {
+    Document document0 = Document.createShell(""l;694tx2:4Q3.eB"");
+    document0.title(""l;694tx2:4Q3.eB"");
+    String string0 = document0.outerHtml();
+    assertEquals(""#document"", document0.nodeName());
+}",0,assertNotNull(document0.nodeName())
+project,0,test3750,"public void test3750() throws Throwable {
+    Document document0 = Document.createShell(""l;694tx2:4Q3.eB"");
+    document0.title(""l;694tx2:4Q3.eB"");
+    String string0 = document0.outerHtml();
+    assertEquals(""<html>\n <head>\n  <title>l;694tx2:4Q3.eB</title>\n </head>\n <body></body>\n</html>"", string0);
+}",0,assertNotNull(string0)

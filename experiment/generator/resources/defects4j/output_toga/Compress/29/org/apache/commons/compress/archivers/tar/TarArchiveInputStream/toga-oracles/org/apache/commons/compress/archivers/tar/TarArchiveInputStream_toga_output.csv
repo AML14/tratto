@@ -1,0 +1,261 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    byte[] byteArray0 = new byte[8];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(byteArrayInputStream0);
+    tarArchiveInputStream0.close();
+    assertEquals(512, tarArchiveInputStream0.getRecordSize());
+}",0,"assertEquals(0, tarArchiveInputStream0.getRecordSize())"
+project,0,test011,"public void test011() throws Throwable {
+    byte[] byteArray0 = new byte[6];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) 10, (byte) 10);
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(byteArrayInputStream0, (byte) 10, (byte) 0);
+    byte[] byteArray1 = tarArchiveInputStream0.getLongNameData();
+    assertEquals(0, tarArchiveInputStream0.getRecordSize());
+}",0,"assertEquals(0, tarArchiveInputStream0.getRecordSize())"
+project,0,test012,"public void test012() throws Throwable {
+    byte[] byteArray0 = new byte[6];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) 10, (byte) 10);
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(byteArrayInputStream0, (byte) 10, (byte) 0);
+    byte[] byteArray1 = tarArchiveInputStream0.getLongNameData();
+    assertEquals(0L, tarArchiveInputStream0.getBytesRead());
+}",0,"assertEquals(0, tarArchiveInputStream0.getBytesRead())"
+project,0,test013,"public void test013() throws Throwable {
+    byte[] byteArray0 = new byte[6];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) 10, (byte) 10);
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(byteArrayInputStream0, (byte) 10, (byte) 0);
+    byte[] byteArray1 = tarArchiveInputStream0.getLongNameData();
+    assertNull(byteArray1);
+}",0,
+project,0,test024,"public void test024() throws Throwable {
+    byte[] byteArray0 = new byte[6];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(byteArrayInputStream0);
+    tarArchiveInputStream0.setAtEOF(true);
+    assertEquals(512, tarArchiveInputStream0.getRecordSize());
+}",0,"assertEquals(0, tarArchiveInputStream0.getRecordSize())"
+project,0,test035,"public void test035() throws Throwable {
+    byte[] byteArray0 = new byte[0];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(byteArrayInputStream0);
+    boolean boolean0 = tarArchiveInputStream0.isAtEOF();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test036,"public void test036() throws Throwable {
+    byte[] byteArray0 = new byte[0];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(byteArrayInputStream0);
+    boolean boolean0 = tarArchiveInputStream0.isAtEOF();
+    assertEquals(512, tarArchiveInputStream0.getRecordSize());
+}",0,"assertEquals(0, tarArchiveInputStream0.getRecordSize())"
+project,0,test047,"public void test047() throws Throwable {
+    byte[] byteArray0 = new byte[6];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) 10, (byte) 0);
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(byteArrayInputStream0, 524, (String) null);
+    tarArchiveInputStream0.reset();
+    assertEquals(512, tarArchiveInputStream0.getRecordSize());
+}",0,
+project,0,test058,"public void test058() throws Throwable {
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream((InputStream) null, (-1104));
+    int int0 = tarArchiveInputStream0.getRecordSize();
+    assertEquals(512, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test069,"public void test069() throws Throwable {
+    TarArchiveEntry tarArchiveEntry0 = new TarArchiveEntry(""CP437"");
+    PipedInputStream pipedInputStream0 = new PipedInputStream();
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(pipedInputStream0, 16877);
+    tarArchiveInputStream0.setCurrentEntry(tarArchiveEntry0);
+    try {
+        tarArchiveInputStream0.getLongNameData();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Pipe not connected
+        //
+        verifyException(""java.io.PipedInputStream"", e);
+    }
+}",0,
+project,0,test0710,"public void test0710() throws Throwable {
+    byte[] byteArray0 = new byte[0];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(byteArrayInputStream0, ""WORLD_READ"");
+    assertEquals(512, tarArchiveInputStream0.getRecordSize());
+}",0,"assertEquals(0, tarArchiveInputStream0.getRecordSize())"
+project,0,test0811,"public void test0811() throws Throwable {
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream((InputStream) null, (-1104));
+    tarArchiveInputStream0.getCurrentEntry();
+    assertEquals(512, tarArchiveInputStream0.getRecordSize());
+}",0,
+project,0,test0912,"public void test0912() throws Throwable {
+    byte[] byteArray0 = new byte[6];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) 10, (byte) 10);
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(byteArrayInputStream0, (byte) 0, (String) null);
+    TarArchiveInputStream tarArchiveInputStream1 = new TarArchiveInputStream(tarArchiveInputStream0, (byte) 0, (byte) 0);
+    // Undeclared exception!
+    try {
+        tarArchiveInputStream1.getLongNameData();
+        fail(""Expecting exception: ArithmeticException"");
+    } catch (ArithmeticException e) {
+        //
+        // / by zero
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarArchiveInputStream"", e);
+    }
+}",0,
+project,0,test1013,"public void test1013() throws Throwable {
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream((InputStream) null, (-1108));
+    tarArchiveInputStream0.mark(3483);
+    assertEquals(512, tarArchiveInputStream0.getRecordSize());
+}",0,"assertEquals(1, tarArchiveInputStream0.getRecordSize())"
+project,0,test1114,"public void test1114() throws Throwable {
+    byte[] byteArray0 = new byte[0];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(byteArrayInputStream0);
+    int int0 = tarArchiveInputStream0.available();
+    assertEquals(512, tarArchiveInputStream0.getRecordSize());
+}",0,"assertEquals(1, tarArchiveInputStream0.getRecordSize())"
+project,0,test1115,"public void test1115() throws Throwable {
+    byte[] byteArray0 = new byte[0];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(byteArrayInputStream0);
+    int int0 = tarArchiveInputStream0.available();
+    assertEquals(0, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test1216,"public void test1216() throws Throwable {
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream((InputStream) null, (-1104));
+    long long0 = tarArchiveInputStream0.skip((-1104));
+    assertEquals(512, tarArchiveInputStream0.getRecordSize());
+}",0,"assertEquals(0, tarArchiveInputStream0.getRecordSize())"
+project,0,test1217,"public void test1217() throws Throwable {
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream((InputStream) null, (-1104));
+    long long0 = tarArchiveInputStream0.skip((-1104));
+    assertEquals(0L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test1318,"public void test1318() throws Throwable {
+    byte[] byteArray0 = new byte[0];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(byteArrayInputStream0);
+    byte[] byteArray1 = tarArchiveInputStream0.getLongNameData();
+    assertNull(byteArray1);
+}",0,
+project,0,test1319,"public void test1319() throws Throwable {
+    byte[] byteArray0 = new byte[0];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(byteArrayInputStream0);
+    byte[] byteArray1 = tarArchiveInputStream0.getLongNameData();
+    tarArchiveInputStream0.getNextTarEntry();
+    assertEquals(512, tarArchiveInputStream0.getRecordSize());
+}",0,"assertEquals(1, tarArchiveInputStream0.getRecordSize())"
+project,0,test1320,"public void test1320() throws Throwable {
+    byte[] byteArray0 = new byte[0];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(byteArrayInputStream0);
+    byte[] byteArray1 = tarArchiveInputStream0.getLongNameData();
+    tarArchiveInputStream0.getNextTarEntry();
+    assertEquals(0, tarArchiveInputStream0.getCount());
+}",0,"assertEquals(1, tarArchiveInputStream0.getCount())"
+project,0,test1421,"public void test1421() throws Throwable {
+    byte[] byteArray0 = new byte[6];
+    byteArray0[0] = (byte) 10;
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) 10, (byte) 10);
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(byteArrayInputStream0, (byte) 0, (String) null);
+    boolean boolean0 = tarArchiveInputStream0.isEOFRecord(byteArray0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test1422,"public void test1422() throws Throwable {
+    byte[] byteArray0 = new byte[6];
+    byteArray0[0] = (byte) 10;
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) 10, (byte) 10);
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(byteArrayInputStream0, (byte) 0, (String) null);
+    boolean boolean0 = tarArchiveInputStream0.isEOFRecord(byteArray0);
+    assertEquals(512, tarArchiveInputStream0.getRecordSize());
+}",0,"assertEquals(1, tarArchiveInputStream0.getRecordSize())"
+project,0,test1523,"public void test1523() throws Throwable {
+    byte[] byteArray0 = new byte[6];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(byteArrayInputStream0);
+    tarArchiveInputStream0.parsePaxHeaders(byteArrayInputStream0);
+    assertEquals(512, tarArchiveInputStream0.getRecordSize());
+}",0,"assertEquals(0, tarArchiveInputStream0.getRecordSize())"
+project,0,test1625,"public void test1625() throws Throwable {
+    byte[] byteArray0 = new byte[0];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(byteArrayInputStream0);
+    byte[] byteArray1 = tarArchiveInputStream0.getLongNameData();
+    int int0 = tarArchiveInputStream0.read(byteArray0, (-1), (-1));
+    assertEquals(512, tarArchiveInputStream0.getRecordSize());
+}",0,"assertEquals(1, tarArchiveInputStream0.getRecordSize())"
+project,0,test1626,"public void test1626() throws Throwable {
+    byte[] byteArray0 = new byte[0];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(byteArrayInputStream0);
+    byte[] byteArray1 = tarArchiveInputStream0.getLongNameData();
+    int int0 = tarArchiveInputStream0.read(byteArray0, (-1), (-1));
+    assertEquals(0, tarArchiveInputStream0.getCount());
+}",0,"assertEquals(1, tarArchiveInputStream0.getCount())"
+project,0,test1627,"public void test1627() throws Throwable {
+    byte[] byteArray0 = new byte[0];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(byteArrayInputStream0);
+    byte[] byteArray1 = tarArchiveInputStream0.getLongNameData();
+    int int0 = tarArchiveInputStream0.read(byteArray0, (-1), (-1));
+    assertEquals((-1), int0);
+}",0,"assertEquals(1, int0)"
+project,0,test1728,"public void test1728() throws Throwable {
+    byte[] byteArray0 = new byte[5];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, 1439, 512);
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(byteArrayInputStream0, 1439, 1439);
+    tarArchiveInputStream0.skip(4013L);
+    // Undeclared exception!
+    try {
+        tarArchiveInputStream0.read(byteArray0, 1556, 1439);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // No current tar entry
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarArchiveInputStream"", e);
+    }
+}",0,
+project,0,test1829,"public void test1829() throws Throwable {
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream((InputStream) null);
+    boolean boolean0 = tarArchiveInputStream0.canReadEntryData((ArchiveEntry) null);
+    assertEquals(512, tarArchiveInputStream0.getRecordSize());
+}",0,"assertEquals(0, tarArchiveInputStream0.getRecordSize())"
+project,0,test1830,"public void test1830() throws Throwable {
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream((InputStream) null);
+    boolean boolean0 = tarArchiveInputStream0.canReadEntryData((ArchiveEntry) null);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test1931,"public void test1931() throws Throwable {
+    TarArchiveEntry tarArchiveEntry0 = new TarArchiveEntry(""CP437"");
+    PipedInputStream pipedInputStream0 = new PipedInputStream();
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(pipedInputStream0, 16877);
+    boolean boolean0 = tarArchiveInputStream0.canReadEntryData(tarArchiveEntry0);
+    assertEquals(512, tarArchiveInputStream0.getRecordSize());
+}",0,"assertEquals(0, tarArchiveInputStream0.getRecordSize())"
+project,0,test1932,"public void test1932() throws Throwable {
+    TarArchiveEntry tarArchiveEntry0 = new TarArchiveEntry(""CP437"");
+    PipedInputStream pipedInputStream0 = new PipedInputStream();
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(pipedInputStream0, 16877);
+    boolean boolean0 = tarArchiveInputStream0.canReadEntryData(tarArchiveEntry0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2033,"public void test2033() throws Throwable {
+    byte[] byteArray0 = new byte[13];
+    // Undeclared exception!
+    try {
+        TarArchiveInputStream.matches(byteArray0, 1329);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 257
+        //
+        verifyException(""org.apache.commons.compress.utils.ArchiveUtils"", e);
+    }
+}",0,
+project,0,test2134,"public void test2134() throws Throwable {
+    byte[] byteArray0 = new byte[6];
+    boolean boolean0 = TarArchiveInputStream.matches(byteArray0, (byte) 10);
+    assertFalse(boolean0);
+}",0,

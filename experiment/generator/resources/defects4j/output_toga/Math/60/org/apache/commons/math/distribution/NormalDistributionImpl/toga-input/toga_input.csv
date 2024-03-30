@@ -1,0 +1,1028 @@
+focal_method,test_prefix,docstring
+"public double getStandardDeviation() {
+    return standardDeviation;
+}","public void test000() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
+    double double0 = normalDistributionImpl0.getInitialDomain(Double.NaN);
+    assertEquals(Double.POSITIVE_INFINITY, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"@Override
+protected double getInitialDomain(double p) {
+    double ret;
+    if (p < 0.5) {
+        ret = mean - standardDeviation;
+    } else if (p > 0.5) {
+        ret = mean + standardDeviation;
+    } else {
+        ret = mean;
+    }
+    return ret;
+}","public void test001() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
+    double double0 = normalDistributionImpl0.getInitialDomain(Double.NaN);
+    assertEquals(Double.POSITIVE_INFINITY, double0, 0.01);
+}","/**
+ * Access the initial domain value, based on {@code p}, used to
+ * bracket a CDF root.  This method is used by
+ * {@link #inverseCumulativeProbability(double)} to find critical values.
+ *
+ * @param p Desired probability for the critical value.
+ * @return the initial domain value.
+ */"
+"public double getStandardDeviation() {
+    return standardDeviation;
+}","public void test012() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.getDomainLowerBound(0.5);
+    assertEquals(1.0, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"@Override
+protected double getDomainLowerBound(double p) {
+    double ret;
+    if (p < 0.5) {
+        ret = -Double.MAX_VALUE;
+    } else {
+        ret = mean;
+    }
+    return ret;
+}","public void test013() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.getDomainLowerBound(0.5);
+    assertEquals(0.0, double0, 0.01);
+}","/**
+ * Access the domain value lower bound, based on {@code p}, used to
+ * bracket a CDF root.  This method is used by
+ * {@link #inverseCumulativeProbability(double)} to find critical values.
+ *
+ * @param p Desired probability for the critical value.
+ * @return the domain value lower bound, i.e. {@code P(X < 'lower bound') < p}.
+ */"
+"@Override
+public double inverseCumulativeProbability(final double p) throws MathException {
+    if (p == 0) {
+        return Double.NEGATIVE_INFINITY;
+    }
+    if (p == 1) {
+        return Double.POSITIVE_INFINITY;
+    }
+    return super.inverseCumulativeProbability(p);
+}","public void test024() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    // Undeclared exception!
+    try {
+        normalDistributionImpl0.inverseCumulativeProbability(901.9696468329073);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // 901.97 out of [0, 1] range
+        //
+        verifyException(""org.apache.commons.math.distribution.AbstractContinuousDistribution"", e);
+    }
+}","/**
+ * For this distribution, X, this method returns the critical point
+ * {@code x}, such that {@code P(X < x) = p}.
+ * It will return {@code Double.NEGATIVE_INFINITY} when p = 0 and
+ * {@code Double.POSITIVE_INFINITY} for p = 1.
+ *
+ * @param p Desired probability.
+ * @return {@code x}, such that {@code P(X < x) = p}.
+ * @throws MathException if the inverse cumulative probability cannot be
+ * computed due to convergence or other numerical errors.
+ * @throws org.apache.commons.math.exception.OutOfRangeException if
+ * {@code p} is not a valid probability.
+ */"
+"public double getStandardDeviation() {
+    return standardDeviation;
+}","public void test035() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.sample();
+    assertEquals(1.0, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"@Override
+public double sample() throws MathException {
+    return randomData.nextGaussian(mean, standardDeviation);
+}","public void test036() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.sample();
+    assertEquals(0.0, double0, 0.01);
+}","/**
+ * Generate a random value sampled from this distribution.
+ *
+ * @return a random value.
+ * @since 2.2
+ * @throws MathException if an error occurs generating the random value.
+ */"
+"public double getMean() {
+    return mean;
+}","public void test037() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.sample();
+    assertEquals(0.0, normalDistributionImpl0.getMean(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"@Override
+public double sample() throws MathException {
+    return randomData.nextGaussian(mean, standardDeviation);
+}","public void test048() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1273.944844), 6.283185307179586, (-2317.66173462341));
+    double double0 = normalDistributionImpl0.sample();
+    assertEquals((-1273.944844), double0, 0.01);
+}","/**
+ * Generate a random value sampled from this distribution.
+ *
+ * @return a random value.
+ * @since 2.2
+ * @throws MathException if an error occurs generating the random value.
+ */"
+"public double getStandardDeviation() {
+    return standardDeviation;
+}","public void test049() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1273.944844), 6.283185307179586, (-2317.66173462341));
+    double double0 = normalDistributionImpl0.sample();
+    assertEquals(6.283185307179586, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"@Override
+public double inverseCumulativeProbability(final double p) throws MathException {
+    if (p == 0) {
+        return Double.NEGATIVE_INFINITY;
+    }
+    if (p == 1) {
+        return Double.POSITIVE_INFINITY;
+    }
+    return super.inverseCumulativeProbability(p);
+}","public void test0510() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.inverseCumulativeProbability(0.5000000000042687);
+    assertEquals(0.0, double0, 0.01);
+}","/**
+ * For this distribution, X, this method returns the critical point
+ * {@code x}, such that {@code P(X < x) = p}.
+ * It will return {@code Double.NEGATIVE_INFINITY} when p = 0 and
+ * {@code Double.POSITIVE_INFINITY} for p = 1.
+ *
+ * @param p Desired probability.
+ * @return {@code x}, such that {@code P(X < x) = p}.
+ * @throws MathException if the inverse cumulative probability cannot be
+ * computed due to convergence or other numerical errors.
+ * @throws org.apache.commons.math.exception.OutOfRangeException if
+ * {@code p} is not a valid probability.
+ */"
+"public double getStandardDeviation() {
+    return standardDeviation;
+}","public void test0511() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.inverseCumulativeProbability(0.5000000000042687);
+    assertEquals(1.0, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public double getStandardDeviation() {
+    return standardDeviation;
+}","public void test0612() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1914.57745749), 782.268, 0.0);
+    double double0 = normalDistributionImpl0.getSolverAbsoluteAccuracy();
+    assertEquals(782.268, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"@Override
+protected double getSolverAbsoluteAccuracy() {
+    return solverAbsoluteAccuracy;
+}","public void test0613() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1914.57745749), 782.268, 0.0);
+    double double0 = normalDistributionImpl0.getSolverAbsoluteAccuracy();
+    assertEquals(0.0, double0, 0.01);
+}","/**
+ * Return the absolute accuracy setting of the solver used to estimate
+ * inverse cumulative probabilities.
+ *
+ * @return the solver absolute accuracy.
+ * @since 2.1
+ */"
+"public double getMean() {
+    return mean;
+}","public void test0614() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1914.57745749), 782.268, 0.0);
+    double double0 = normalDistributionImpl0.getSolverAbsoluteAccuracy();
+    assertEquals((-1914.57745749), normalDistributionImpl0.getMean(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"@Override
+protected double getSolverAbsoluteAccuracy() {
+    return solverAbsoluteAccuracy;
+}","public void test0715() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-2186.7531), 1.0E-9);
+    double double0 = normalDistributionImpl0.getSolverAbsoluteAccuracy();
+    assertEquals(1.0E-9, double0, 0.01);
+}","/**
+ * Return the absolute accuracy setting of the solver used to estimate
+ * inverse cumulative probabilities.
+ *
+ * @return the solver absolute accuracy.
+ * @since 2.1
+ */"
+"public double getMean() {
+    return mean;
+}","public void test0716() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-2186.7531), 1.0E-9);
+    double double0 = normalDistributionImpl0.getSolverAbsoluteAccuracy();
+    assertEquals((-2186.7531), normalDistributionImpl0.getMean(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"@Override
+protected double getSolverAbsoluteAccuracy() {
+    return solverAbsoluteAccuracy;
+}","public void test0817() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-2.0), Double.POSITIVE_INFINITY, (-1.7976931348623157E308));
+    double double0 = normalDistributionImpl0.getSolverAbsoluteAccuracy();
+    assertEquals((-1.7976931348623157E308), double0, 0.01);
+}","/**
+ * Return the absolute accuracy setting of the solver used to estimate
+ * inverse cumulative probabilities.
+ *
+ * @return the solver absolute accuracy.
+ * @since 2.1
+ */"
+"public double getStandardDeviation() {
+    return standardDeviation;
+}","public void test0818() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-2.0), Double.POSITIVE_INFINITY, (-1.7976931348623157E308));
+    double double0 = normalDistributionImpl0.getSolverAbsoluteAccuracy();
+    assertEquals(Double.POSITIVE_INFINITY, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public double getMean() {
+    return mean;
+}","public void test0819() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-2.0), Double.POSITIVE_INFINITY, (-1.7976931348623157E308));
+    double double0 = normalDistributionImpl0.getSolverAbsoluteAccuracy();
+    assertEquals((-2.0), normalDistributionImpl0.getMean(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public double getStandardDeviation() {
+    return standardDeviation;
+}","public void test0920() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl(2776.689, 2776.689, 1.2393345855018391E-8);
+    double double0 = normalDistributionImpl0.getMean();
+    assertEquals(2776.689, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public double getMean() {
+    return mean;
+}","public void test0921() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl(2776.689, 2776.689, 1.2393345855018391E-8);
+    double double0 = normalDistributionImpl0.getMean();
+    assertEquals(2776.689, double0, 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public double getMean() {
+    return mean;
+}","public void test1022() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1914.57745749), 782.268, 0.0);
+    double double0 = normalDistributionImpl0.getMean();
+    assertEquals((-1914.57745749), double0, 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public double getStandardDeviation() {
+    return standardDeviation;
+}","public void test1023() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1914.57745749), 782.268, 0.0);
+    double double0 = normalDistributionImpl0.getMean();
+    assertEquals(782.268, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"@Override
+protected double getInitialDomain(double p) {
+    double ret;
+    if (p < 0.5) {
+        ret = mean - standardDeviation;
+    } else if (p > 0.5) {
+        ret = mean + standardDeviation;
+    } else {
+        ret = mean;
+    }
+    return ret;
+}","public void test1124() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1914.57745749), 782.268, 0.0);
+    double double0 = normalDistributionImpl0.getInitialDomain(0.0);
+    assertEquals((-2696.8454574899997), double0, 0.01);
+}","/**
+ * Access the initial domain value, based on {@code p}, used to
+ * bracket a CDF root.  This method is used by
+ * {@link #inverseCumulativeProbability(double)} to find critical values.
+ *
+ * @param p Desired probability for the critical value.
+ * @return the initial domain value.
+ */"
+"@Override
+protected double getDomainUpperBound(double p) {
+    double ret;
+    if (p < 0.5) {
+        ret = mean;
+    } else {
+        ret = Double.MAX_VALUE;
+    }
+    return ret;
+}","public void test1225() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.getDomainUpperBound(0.0);
+    assertEquals(0.0, double0, 0.01);
+}","/**
+ * Access the domain value upper bound, based on {@code p}, used to
+ * bracket a CDF root.  This method is used by
+ * {@link #inverseCumulativeProbability(double)} to find critical values.
+ *
+ * @param p Desired probability for the critical value.
+ * @return the domain value upper bound, i.e. {@code P(X < 'upper bound') > p}.
+ */"
+"public double getStandardDeviation() {
+    return standardDeviation;
+}","public void test1226() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.getDomainUpperBound(0.0);
+    assertEquals(1.0, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public double getMean() {
+    return mean;
+}","public void test1327() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl(0.75, 0.5, 0.75);
+    double double0 = normalDistributionImpl0.getDomainUpperBound(0.5);
+    assertEquals(0.75, normalDistributionImpl0.getMean(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public double getStandardDeviation() {
+    return standardDeviation;
+}","public void test1328() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl(0.75, 0.5, 0.75);
+    double double0 = normalDistributionImpl0.getDomainUpperBound(0.5);
+    assertEquals(0.5, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"@Override
+protected double getDomainUpperBound(double p) {
+    double ret;
+    if (p < 0.5) {
+        ret = mean;
+    } else {
+        ret = Double.MAX_VALUE;
+    }
+    return ret;
+}","public void test1329() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl(0.75, 0.5, 0.75);
+    double double0 = normalDistributionImpl0.getDomainUpperBound(0.5);
+    assertEquals(1.7976931348623157E308, double0, 0.01);
+}","/**
+ * Access the domain value upper bound, based on {@code p}, used to
+ * bracket a CDF root.  This method is used by
+ * {@link #inverseCumulativeProbability(double)} to find critical values.
+ *
+ * @param p Desired probability for the critical value.
+ * @return the domain value upper bound, i.e. {@code P(X < 'upper bound') > p}.
+ */"
+"@Override
+protected double getDomainUpperBound(double p) {
+    double ret;
+    if (p < 0.5) {
+        ret = mean;
+    } else {
+        ret = Double.MAX_VALUE;
+    }
+    return ret;
+}","public void test1430() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-2186.7531), 1.0E-9);
+    double double0 = normalDistributionImpl0.getDomainUpperBound((-7736.567));
+    assertEquals((-2186.7531), double0, 0.01);
+}","/**
+ * Access the domain value upper bound, based on {@code p}, used to
+ * bracket a CDF root.  This method is used by
+ * {@link #inverseCumulativeProbability(double)} to find critical values.
+ *
+ * @param p Desired probability for the critical value.
+ * @return the domain value upper bound, i.e. {@code P(X < 'upper bound') > p}.
+ */"
+"@Override
+protected double getDomainLowerBound(double p) {
+    double ret;
+    if (p < 0.5) {
+        ret = -Double.MAX_VALUE;
+    } else {
+        ret = mean;
+    }
+    return ret;
+}","public void test1531() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl(4.7421875, 4.7421875);
+    double double0 = normalDistributionImpl0.getDomainLowerBound(2.0);
+    assertEquals(4.7421875, double0, 0.01);
+}","/**
+ * Access the domain value lower bound, based on {@code p}, used to
+ * bracket a CDF root.  This method is used by
+ * {@link #inverseCumulativeProbability(double)} to find critical values.
+ *
+ * @param p Desired probability for the critical value.
+ * @return the domain value lower bound, i.e. {@code P(X < 'lower bound') < p}.
+ */"
+"public double getStandardDeviation() {
+    return standardDeviation;
+}","public void test1532() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl(4.7421875, 4.7421875);
+    double double0 = normalDistributionImpl0.getDomainLowerBound(2.0);
+    assertEquals(4.7421875, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public double getMean() {
+    return mean;
+}","public void test1633() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1.7976931348623157E308), 209.088917880791, 209.088917880791);
+    normalDistributionImpl0.getDomainLowerBound((-1.7976931348623157E308));
+    assertEquals((-1.7976931348623157E308), normalDistributionImpl0.getMean(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public double getStandardDeviation() {
+    return standardDeviation;
+}","public void test1634() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1.7976931348623157E308), 209.088917880791, 209.088917880791);
+    normalDistributionImpl0.getDomainLowerBound((-1.7976931348623157E308));
+    assertEquals(209.088917880791, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public double getMean() {
+    return mean;
+}","public void test1735() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-2186.7531), 1.0E-9);
+    double double0 = normalDistributionImpl0.density((-1484.7644277));
+    assertEquals((-2186.7531), normalDistributionImpl0.getMean(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"@Override
+public double density(double x) {
+    final double x0 = x - mean;
+    final double x1 = x0 / standardDeviation;
+    return FastMath.exp(-0.5 * x1 * x1) / (standardDeviation * SQRT2PI);
+}","public void test1736() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-2186.7531), 1.0E-9);
+    double double0 = normalDistributionImpl0.density((-1484.7644277));
+    assertEquals(0.0, double0, 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public double getMean() {
+    return mean;
+}","public void test1837() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.cumulativeProbability((-1806.763993368636));
+    assertEquals(0.0, normalDistributionImpl0.getMean(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public double getStandardDeviation() {
+    return standardDeviation;
+}","public void test1838() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.cumulativeProbability((-1806.763993368636));
+    assertEquals(1.0, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public double cumulativeProbability(double x) throws MathException {
+    final double dev = x - mean;
+    try {
+        return 0.5 * (1.0 + Erf.erf((dev) / (standardDeviation * FastMath.sqrt(2.0))));
+    } catch (MaxIterationsExceededException ex) {
+        if (x < (mean - 20 * standardDeviation)) {
+            // JDK 1.5 blows at 38
+            return 0;
+        } else if (x > (mean + 20 * standardDeviation)) {
+            return 1;
+        } else {
+            throw ex;
+        }
+    }
+}","public void test1839() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.cumulativeProbability((-1806.763993368636));
+    assertEquals(0.0, double0, 0.01);
+}","/**
+ * For this distribution, {@code X}, this method returns {@code P(X < x)}.
+ * If {@code x}is more than 40 standard deviations from the mean, 0 or 1 is returned,
+ * as in these cases the actual value is within {@code Double.MIN_VALUE} of 0 or 1.
+ *
+ * @param x Value at which the CDF is evaluated.
+ * @return CDF evaluated at {@code x}.
+ * @throws MathException if the algorithm fails to converge
+ */"
+"public double getStandardDeviation() {
+    return standardDeviation;
+}","public void test1940() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1273.944844), 6.283185307179586, (-2317.66173462341));
+    double double0 = normalDistributionImpl0.cumulativeProbability(0.0);
+    assertEquals(6.283185307179586, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public double getMean() {
+    return mean;
+}","public void test1941() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1273.944844), 6.283185307179586, (-2317.66173462341));
+    double double0 = normalDistributionImpl0.cumulativeProbability(0.0);
+    assertEquals((-1273.944844), normalDistributionImpl0.getMean(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public double cumulativeProbability(double x) throws MathException {
+    final double dev = x - mean;
+    try {
+        return 0.5 * (1.0 + Erf.erf((dev) / (standardDeviation * FastMath.sqrt(2.0))));
+    } catch (MaxIterationsExceededException ex) {
+        if (x < (mean - 20 * standardDeviation)) {
+            // JDK 1.5 blows at 38
+            return 0;
+        } else if (x > (mean + 20 * standardDeviation)) {
+            return 1;
+        } else {
+            throw ex;
+        }
+    }
+}","public void test1942() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1273.944844), 6.283185307179586, (-2317.66173462341));
+    double double0 = normalDistributionImpl0.cumulativeProbability(0.0);
+    assertEquals(1.0, double0, 0.01);
+}","/**
+ * For this distribution, {@code X}, this method returns {@code P(X < x)}.
+ * If {@code x}is more than 40 standard deviations from the mean, 0 or 1 is returned,
+ * as in these cases the actual value is within {@code Double.MIN_VALUE} of 0 or 1.
+ *
+ * @param x Value at which the CDF is evaluated.
+ * @return CDF evaluated at {@code x}.
+ * @throws MathException if the algorithm fails to converge
+ */"
+"@Override
+public double inverseCumulativeProbability(final double p) throws MathException {
+    if (p == 0) {
+        return Double.NEGATIVE_INFINITY;
+    }
+    if (p == 1) {
+        return Double.POSITIVE_INFINITY;
+    }
+    return super.inverseCumulativeProbability(p);
+}","public void test2043() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-2606.330267894), 1.4456468917292502E-16);
+    // Undeclared exception!
+    try {
+        normalDistributionImpl0.inverseCumulativeProbability(1.0E-9);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Continued fraction diverged to NaN for value \u221E
+        //
+        verifyException(""org.apache.commons.math.distribution.AbstractContinuousDistribution$1"", e);
+    }
+}","/**
+ * For this distribution, X, this method returns the critical point
+ * {@code x}, such that {@code P(X < x) = p}.
+ * It will return {@code Double.NEGATIVE_INFINITY} when p = 0 and
+ * {@code Double.POSITIVE_INFINITY} for p = 1.
+ *
+ * @param p Desired probability.
+ * @return {@code x}, such that {@code P(X < x) = p}.
+ * @throws MathException if the inverse cumulative probability cannot be
+ * computed due to convergence or other numerical errors.
+ * @throws org.apache.commons.math.exception.OutOfRangeException if
+ * {@code p} is not a valid probability.
+ */"
+"@Override
+public double inverseCumulativeProbability(final double p) throws MathException {
+    if (p == 0) {
+        return Double.NEGATIVE_INFINITY;
+    }
+    if (p == 1) {
+        return Double.POSITIVE_INFINITY;
+    }
+    return super.inverseCumulativeProbability(p);
+}","public void test2144() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl(468.56833404566, 468.56833404566);
+    // Undeclared exception!
+    normalDistributionImpl0.inverseCumulativeProbability(1.0E-9);
+}","/**
+ * For this distribution, X, this method returns the critical point
+ * {@code x}, such that {@code P(X < x) = p}.
+ * It will return {@code Double.NEGATIVE_INFINITY} when p = 0 and
+ * {@code Double.POSITIVE_INFINITY} for p = 1.
+ *
+ * @param p Desired probability.
+ * @return {@code x}, such that {@code P(X < x) = p}.
+ * @throws MathException if the inverse cumulative probability cannot be
+ * computed due to convergence or other numerical errors.
+ * @throws org.apache.commons.math.exception.OutOfRangeException if
+ * {@code p} is not a valid probability.
+ */"
+"@Override
+public double inverseCumulativeProbability(final double p) throws MathException {
+    if (p == 0) {
+        return Double.NEGATIVE_INFINITY;
+    }
+    if (p == 1) {
+        return Double.POSITIVE_INFINITY;
+    }
+    return super.inverseCumulativeProbability(p);
+}","public void test2245() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1914.57745749), 782.268, 0.0);
+    // Undeclared exception!
+    try {
+        normalDistributionImpl0.inverseCumulativeProbability((-1914.57745749));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // -1,914.577 out of [0, 1] range
+        //
+        verifyException(""org.apache.commons.math.distribution.AbstractContinuousDistribution"", e);
+    }
+}","/**
+ * For this distribution, X, this method returns the critical point
+ * {@code x}, such that {@code P(X < x) = p}.
+ * It will return {@code Double.NEGATIVE_INFINITY} when p = 0 and
+ * {@code Double.POSITIVE_INFINITY} for p = 1.
+ *
+ * @param p Desired probability.
+ * @return {@code x}, such that {@code P(X < x) = p}.
+ * @throws MathException if the inverse cumulative probability cannot be
+ * computed due to convergence or other numerical errors.
+ * @throws org.apache.commons.math.exception.OutOfRangeException if
+ * {@code p} is not a valid probability.
+ */"
+"public double cumulativeProbability(double x) throws MathException {
+    final double dev = x - mean;
+    try {
+        return 0.5 * (1.0 + Erf.erf((dev) / (standardDeviation * FastMath.sqrt(2.0))));
+    } catch (MaxIterationsExceededException ex) {
+        if (x < (mean - 20 * standardDeviation)) {
+            // JDK 1.5 blows at 38
+            return 0;
+        } else if (x > (mean + 20 * standardDeviation)) {
+            return 1;
+        } else {
+            throw ex;
+        }
+    }
+}","public void test2346() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1.7976931348623157E308), 209.088917880791, 209.088917880791);
+    try {
+        normalDistributionImpl0.cumulativeProbability(0.0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Continued fraction diverged to NaN for value \u221E
+        //
+        verifyException(""org.apache.commons.math.util.ContinuedFraction"", e);
+    }
+}","/**
+ * For this distribution, {@code X}, this method returns {@code P(X < x)}.
+ * If {@code x}is more than 40 standard deviations from the mean, 0 or 1 is returned,
+ * as in these cases the actual value is within {@code Double.MIN_VALUE} of 0 or 1.
+ *
+ * @param x Value at which the CDF is evaluated.
+ * @return CDF evaluated at {@code x}.
+ * @throws MathException if the algorithm fails to converge
+ */"
+"public NormalDistributionImpl(double mean, double sd) {
+    this(mean, sd, DEFAULT_INVERSE_ABSOLUTE_ACCURACY);
+}","public void test2447() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = null;
+    try {
+        normalDistributionImpl0 = new NormalDistributionImpl((-2289.0505632029985), (-36.04));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // -36.04 is smaller than, or equal to, the minimum (0): standard deviation (-36.04)
+        //
+        verifyException(""org.apache.commons.math.distribution.NormalDistributionImpl"", e);
+    }
+}","/**
+ * Create a normal distribution using the given mean and standard deviation.
+ *
+ * @param mean Mean for this distribution.
+ * @param sd Standard deviation for this distribution.
+ */"
+"@Override
+protected double getInitialDomain(double p) {
+    double ret;
+    if (p < 0.5) {
+        ret = mean - standardDeviation;
+    } else if (p > 0.5) {
+        ret = mean + standardDeviation;
+    } else {
+        ret = mean;
+    }
+    return ret;
+}","public void test2548() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.getInitialDomain(0.5);
+    assertEquals(0.0, double0, 0.01);
+}","/**
+ * Access the initial domain value, based on {@code p}, used to
+ * bracket a CDF root.  This method is used by
+ * {@link #inverseCumulativeProbability(double)} to find critical values.
+ *
+ * @param p Desired probability for the critical value.
+ * @return the initial domain value.
+ */"
+"public double getStandardDeviation() {
+    return standardDeviation;
+}","public void test2549() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.getInitialDomain(0.5);
+    assertEquals(1.0, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"@Override
+public double inverseCumulativeProbability(final double p) throws MathException {
+    if (p == 0) {
+        return Double.NEGATIVE_INFINITY;
+    }
+    if (p == 1) {
+        return Double.POSITIVE_INFINITY;
+    }
+    return super.inverseCumulativeProbability(p);
+}","public void test2650() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.inverseCumulativeProbability(1.0E-9);
+    assertEquals((-5.997807014826545), double0, 0.01);
+}","/**
+ * For this distribution, X, this method returns the critical point
+ * {@code x}, such that {@code P(X < x) = p}.
+ * It will return {@code Double.NEGATIVE_INFINITY} when p = 0 and
+ * {@code Double.POSITIVE_INFINITY} for p = 1.
+ *
+ * @param p Desired probability.
+ * @return {@code x}, such that {@code P(X < x) = p}.
+ * @throws MathException if the inverse cumulative probability cannot be
+ * computed due to convergence or other numerical errors.
+ * @throws org.apache.commons.math.exception.OutOfRangeException if
+ * {@code p} is not a valid probability.
+ */"
+"public double getStandardDeviation() {
+    return standardDeviation;
+}","public void test2751() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl(0.0, 0.008333333333333333);
+    double double0 = normalDistributionImpl0.inverseCumulativeProbability(1.0);
+    assertEquals(0.008333333333333333, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public double getMean() {
+    return mean;
+}","public void test2752() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl(0.0, 0.008333333333333333);
+    double double0 = normalDistributionImpl0.inverseCumulativeProbability(1.0);
+    assertEquals(0.0, normalDistributionImpl0.getMean(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"@Override
+public double inverseCumulativeProbability(final double p) throws MathException {
+    if (p == 0) {
+        return Double.NEGATIVE_INFINITY;
+    }
+    if (p == 1) {
+        return Double.POSITIVE_INFINITY;
+    }
+    return super.inverseCumulativeProbability(p);
+}","public void test2753() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl(0.0, 0.008333333333333333);
+    double double0 = normalDistributionImpl0.inverseCumulativeProbability(1.0);
+    assertEquals(Double.POSITIVE_INFINITY, double0, 0.01);
+}","/**
+ * For this distribution, X, this method returns the critical point
+ * {@code x}, such that {@code P(X < x) = p}.
+ * It will return {@code Double.NEGATIVE_INFINITY} when p = 0 and
+ * {@code Double.POSITIVE_INFINITY} for p = 1.
+ *
+ * @param p Desired probability.
+ * @return {@code x}, such that {@code P(X < x) = p}.
+ * @throws MathException if the inverse cumulative probability cannot be
+ * computed due to convergence or other numerical errors.
+ * @throws org.apache.commons.math.exception.OutOfRangeException if
+ * {@code p} is not a valid probability.
+ */"
+"@Override
+public double inverseCumulativeProbability(final double p) throws MathException {
+    if (p == 0) {
+        return Double.NEGATIVE_INFINITY;
+    }
+    if (p == 1) {
+        return Double.POSITIVE_INFINITY;
+    }
+    return super.inverseCumulativeProbability(p);
+}","public void test2854() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1914.57745749), 782.268, 0.0);
+    double double0 = normalDistributionImpl0.inverseCumulativeProbability(0.0);
+    assertEquals(Double.NEGATIVE_INFINITY, double0, 0.01);
+}","/**
+ * For this distribution, X, this method returns the critical point
+ * {@code x}, such that {@code P(X < x) = p}.
+ * It will return {@code Double.NEGATIVE_INFINITY} when p = 0 and
+ * {@code Double.POSITIVE_INFINITY} for p = 1.
+ *
+ * @param p Desired probability.
+ * @return {@code x}, such that {@code P(X < x) = p}.
+ * @throws MathException if the inverse cumulative probability cannot be
+ * computed due to convergence or other numerical errors.
+ * @throws org.apache.commons.math.exception.OutOfRangeException if
+ * {@code p} is not a valid probability.
+ */"
+"public double getMean() {
+    return mean;
+}","public void test2855() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1914.57745749), 782.268, 0.0);
+    double double0 = normalDistributionImpl0.inverseCumulativeProbability(0.0);
+    assertEquals((-1914.57745749), normalDistributionImpl0.getMean(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public double getStandardDeviation() {
+    return standardDeviation;
+}","public void test2856() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-1914.57745749), 782.268, 0.0);
+    double double0 = normalDistributionImpl0.inverseCumulativeProbability(0.0);
+    assertEquals(782.268, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public NormalDistributionImpl(double mean, double sd, double inverseCumAccuracy) {
+    if (sd <= 0) {
+        throw new NotStrictlyPositiveException(LocalizedFormats.STANDARD_DEVIATION, sd);
+    }
+    this.mean = mean;
+    standardDeviation = sd;
+    solverAbsoluteAccuracy = inverseCumAccuracy;
+}","public void test2957() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = null;
+    try {
+        normalDistributionImpl0 = new NormalDistributionImpl((-1507.8600820797808), (-1507.8600820797808), (-1507.8600820797808));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // -1,507.86 is smaller than, or equal to, the minimum (0): standard deviation (-1,507.86)
+        //
+        verifyException(""org.apache.commons.math.distribution.NormalDistributionImpl"", e);
+    }
+}","/**
+ * Create a normal distribution using the given mean, standard deviation and
+ * inverse cumulative distribution accuracy.
+ *
+ * @param mean Mean for this distribution.
+ * @param sd Standard deviation for this distribution.
+ * @param inverseCumAccuracy Inverse cumulative probability accuracy.
+ * @throws NotStrictlyPositiveException if {@code sd <= 0}.
+ * @since 2.1
+ */"
+"@Override
+public double inverseCumulativeProbability(final double p) throws MathException {
+    if (p == 0) {
+        return Double.NEGATIVE_INFINITY;
+    }
+    if (p == 1) {
+        return Double.POSITIVE_INFINITY;
+    }
+    return super.inverseCumulativeProbability(p);
+}","public void test3058() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-3298.3076802071), Double.POSITIVE_INFINITY);
+    try {
+        normalDistributionImpl0.inverseCumulativeProbability(0.9999997615814209);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // \u221E is larger than, or equal to, the maximum (179,769,313,486,231,570,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000): endpoints do not specify an interval: [\u221E, 179,769,313,486,231,570,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000]
+        //
+        verifyException(""org.apache.commons.math.distribution.AbstractContinuousDistribution"", e);
+    }
+}","/**
+ * For this distribution, X, this method returns the critical point
+ * {@code x}, such that {@code P(X < x) = p}.
+ * It will return {@code Double.NEGATIVE_INFINITY} when p = 0 and
+ * {@code Double.POSITIVE_INFINITY} for p = 1.
+ *
+ * @param p Desired probability.
+ * @return {@code x}, such that {@code P(X < x) = p}.
+ * @throws MathException if the inverse cumulative probability cannot be
+ * computed due to convergence or other numerical errors.
+ * @throws org.apache.commons.math.exception.OutOfRangeException if
+ * {@code p} is not a valid probability.
+ */"
+"public double getMean() {
+    return mean;
+}","public void test3159() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.getStandardDeviation();
+    assertEquals(0.0, normalDistributionImpl0.getMean(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public double getStandardDeviation() {
+    return standardDeviation;
+}","public void test3160() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.getStandardDeviation();
+    assertEquals(1.0, double0, 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public double getMean() {
+    return mean;
+}","public void test3261() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-3298.3076802071), Double.POSITIVE_INFINITY);
+    normalDistributionImpl0.sample();
+    double double0 = normalDistributionImpl0.sample();
+    assertEquals((-3298.3076802071), normalDistributionImpl0.getMean(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public double getStandardDeviation() {
+    return standardDeviation;
+}","public void test3262() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-3298.3076802071), Double.POSITIVE_INFINITY);
+    normalDistributionImpl0.sample();
+    double double0 = normalDistributionImpl0.sample();
+    assertEquals(Double.POSITIVE_INFINITY, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"@Override
+public double sample() throws MathException {
+    return randomData.nextGaussian(mean, standardDeviation);
+}","public void test3263() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl((-3298.3076802071), Double.POSITIVE_INFINITY);
+    normalDistributionImpl0.sample();
+    double double0 = normalDistributionImpl0.sample();
+    assertEquals(Double.POSITIVE_INFINITY, double0, 0.01);
+}","/**
+ * Generate a random value sampled from this distribution.
+ *
+ * @return a random value.
+ * @since 2.2
+ * @throws MathException if an error occurs generating the random value.
+ */"
+"public double getMean() {
+    return mean;
+}","public void test3364() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.density(0.5000000003989423);
+    assertEquals(0.0, normalDistributionImpl0.getMean(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"@Override
+public double density(double x) {
+    final double x0 = x - mean;
+    final double x1 = x0 / standardDeviation;
+    return FastMath.exp(-0.5 * x1 * x1) / (standardDeviation * SQRT2PI);
+}","public void test3365() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.density(0.5000000003989423);
+    assertEquals(0.35206532669407264, double0, 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public double getMean() {
+    return mean;
+}","public void test3466() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.getMean();
+    assertEquals(0.0, double0, 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public double getStandardDeviation() {
+    return standardDeviation;
+}","public void test3467() throws Throwable {
+    NormalDistributionImpl normalDistributionImpl0 = new NormalDistributionImpl();
+    double double0 = normalDistributionImpl0.getMean();
+    assertEquals(1.0, normalDistributionImpl0.getStandardDeviation(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"

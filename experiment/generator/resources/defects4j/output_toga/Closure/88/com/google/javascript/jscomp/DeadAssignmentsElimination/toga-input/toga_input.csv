@@ -1,0 +1,13 @@
+focal_method,test_prefix,docstring
+"@Override
+public void process(Node externs, Node root) {
+    Preconditions.checkNotNull(externs);
+    Preconditions.checkNotNull(root);
+    NodeTraversal.traverse(compiler, root, this);
+}","public void test00() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    DeadAssignmentsElimination deadAssignmentsElimination0 = new DeadAssignmentsElimination(compiler0);
+    Node node0 = compiler0.parseSyntheticCode("""", """");
+    deadAssignmentsElimination0.process(node0, node0);
+    assertEquals(10, Node.VARS_PROP);
+}",""

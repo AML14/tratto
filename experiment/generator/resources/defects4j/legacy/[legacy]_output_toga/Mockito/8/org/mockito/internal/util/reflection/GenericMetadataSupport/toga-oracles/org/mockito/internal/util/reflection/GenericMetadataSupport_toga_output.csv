@@ -1,0 +1,47 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test011,"public void test011() throws Throwable {
+    Type[] typeArray0 = new Type[9];
+    TypeVariable<Method> typeVariable0 = (TypeVariable<Method>) mock(TypeVariable.class, new ViolatedAssumptionAnswer());
+    doReturn((Object) typeArray0, (Object) null).when(typeVariable0).getBounds();
+    GenericMetadataSupport.TypeVarBoundedType genericMetadataSupport_TypeVarBoundedType0 = new GenericMetadataSupport.TypeVarBoundedType(typeVariable0);
+    // Undeclared exception!
+    try {
+        GenericMetadataSupport.inferFrom(genericMetadataSupport_TypeVarBoundedType0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.mockito.internal.util.reflection.GenericMetadataSupport$TypeVarBoundedType"", e);
+    }
+}",1,
+project,0,test088,"public void test088() throws Throwable {
+    Type[] typeArray0 = new Type[0];
+    WildcardType wildcardType0 = mock(WildcardType.class, new ViolatedAssumptionAnswer());
+    doReturn(typeArray0).when(wildcardType0).getLowerBounds();
+    doReturn(typeArray0).when(wildcardType0).getUpperBounds();
+    GenericMetadataSupport.WildCardBoundedType genericMetadataSupport_WildCardBoundedType0 = new GenericMetadataSupport.WildCardBoundedType(wildcardType0);
+    // Undeclared exception!
+    try {
+        GenericMetadataSupport.inferFrom(genericMetadataSupport_WildCardBoundedType0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 0
+        //
+        verifyException(""org.mockito.internal.util.reflection.GenericMetadataSupport$WildCardBoundedType"", e);
+    }
+}",1,
+project,0,test099,"public void test099() throws Throwable {
+    Type[] typeArray0 = new Type[1];
+    WildcardType wildcardType0 = mock(WildcardType.class, new ViolatedAssumptionAnswer());
+    doReturn(typeArray0).when(wildcardType0).getLowerBounds();
+    doReturn(typeArray0).when(wildcardType0).getUpperBounds();
+    GenericMetadataSupport.WildCardBoundedType genericMetadataSupport_WildCardBoundedType0 = new GenericMetadataSupport.WildCardBoundedType(wildcardType0);
+    // Undeclared exception!
+    try {
+        GenericMetadataSupport.inferFrom(genericMetadataSupport_WildCardBoundedType0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",1,

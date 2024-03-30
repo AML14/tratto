@@ -1,0 +1,86 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test00,"public void test00() throws Throwable {
+    Whitelist whitelist0 = Whitelist.basicWithImages();
+    Cleaner cleaner0 = new Cleaner(whitelist0);
+    Document document0 = new Document("""");
+    // Undeclared exception!
+    try {
+        cleaner0.isValid(document0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.safety.Cleaner"", e);
+    }
+}",0,
+project,0,test11,"public void test11() throws Throwable {
+    Whitelist whitelist0 = Whitelist.basic();
+    Cleaner cleaner0 = new Cleaner(whitelist0);
+    // Undeclared exception!
+    try {
+        cleaner0.isValid((Document) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test22,"public void test22() throws Throwable {
+    Whitelist whitelist0 = Whitelist.relaxed();
+    Cleaner cleaner0 = new Cleaner(whitelist0);
+    Document document0 = new Document(""lf.>\"""");
+    // Undeclared exception!
+    try {
+        cleaner0.clean(document0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.safety.Cleaner"", e);
+    }
+}",0,
+project,0,test33,"public void test33() throws Throwable {
+    Whitelist whitelist0 = new Whitelist();
+    Cleaner cleaner0 = new Cleaner(whitelist0);
+    // Undeclared exception!
+    try {
+        cleaner0.clean((Document) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test44,"public void test44() throws Throwable {
+    Whitelist whitelist0 = Whitelist.basic();
+    Cleaner cleaner0 = new Cleaner(whitelist0);
+    Document document0 = Document.createShell(""hT"");
+    document0.text(""hT"");
+    boolean boolean0 = cleaner0.isValid(document0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test55,"public void test55() throws Throwable {
+    Whitelist whitelist0 = Whitelist.basic();
+    Cleaner cleaner0 = new Cleaner(whitelist0);
+    Document document0 = Document.createShell(""F~+?x1bgjG2'0"");
+    Document document1 = cleaner0.clean(document0);
+    assertNotSame(document1, document0);
+}",0,
+project,0,test66,"public void test66() throws Throwable {
+    Cleaner cleaner0 = null;
+    try {
+        cleaner0 = new Cleaner((Whitelist) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,

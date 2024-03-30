@@ -1,0 +1,14 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test00,"public void test00() throws Throwable {
+    StreamReaderDelegate streamReaderDelegate0 = new StreamReaderDelegate();
+    FromXmlParser fromXmlParser0 = null;
+    try {
+        fromXmlParser0 = new FromXmlParser((IOContext) null, 0, 0, (ObjectCodec) null, streamReaderDelegate0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser"", e);
+    }
+}",0,

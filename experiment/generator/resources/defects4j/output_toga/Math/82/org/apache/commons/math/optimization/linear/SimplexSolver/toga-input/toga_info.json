@@ -1,0 +1,149 @@
+{
+  "test1212" : {
+    "methodSignature" : "public boolean isOptimal(final SimplexTableau tableau)",
+    "methodName" : "isOptimal",
+    "className" : "org.apache.commons.math.optimization.linear.SimplexSolver",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1212() throws Throwable {\n    SimplexSolver simplexSolver0 = new SimplexSolver();\n    simplexSolver0.isOptimal((SimplexTableau) null);\n}",
+    "testName" : "test1212"
+  },
+  "test1313" : {
+    "methodSignature" : "public RealPointValuePair doOptimize() throws OptimizationException",
+    "methodName" : "doOptimize",
+    "className" : "org.apache.commons.math.optimization.linear.SimplexSolver",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1313() throws Throwable {\n    SimplexSolver simplexSolver0 = new SimplexSolver();\n    simplexSolver0.doOptimize();\n}",
+    "testName" : "test1313"
+  },
+  "test1010" : {
+    "methodSignature" : "protected void solvePhase1(final SimplexTableau tableau) throws OptimizationException",
+    "methodName" : "solvePhase1",
+    "className" : "org.apache.commons.math.optimization.linear.SimplexSolver",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1010() throws Throwable {\n    double[] doubleArray0 = new double[9];\n    doubleArray0[3] = (-5.25704103262477);\n    LinearObjectiveFunction linearObjectiveFunction0 = new LinearObjectiveFunction(doubleArray0, (-3901.748128813988));\n    LinkedList<LinearConstraint> linkedList0 = new LinkedList<LinearConstraint>();\n    GoalType goalType0 = GoalType.MINIMIZE;\n    SimplexTableau simplexTableau0 = new SimplexTableau(linearObjectiveFunction0, linkedList0, goalType0, false, (-1330.0));\n    simplexTableau0.numArtificialVariables = (-1);\n    SimplexSolver simplexSolver0 = new SimplexSolver();\n    simplexSolver0.setMaxIterations((-1));\n    simplexSolver0.solvePhase1(simplexTableau0);\n}",
+    "testName" : "test1010"
+  },
+  "test2121" : {
+    "methodSignature" : "public RealPointValuePair optimize(final LinearObjectiveFunction f, final Collection<LinearConstraint> constraints, final GoalType goalType, final boolean restrictToNonNegative) throws OptimizationException",
+    "methodName" : "optimize",
+    "className" : "org.apache.commons.math.optimization.linear.SimplexSolver",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test2121() throws Throwable {\n    SimplexSolver simplexSolver0 = new SimplexSolver();\n    Double[] doubleArray0 = new Double[2];\n    Double double0 = new Double(100);\n    doubleArray0[1] = double0;\n    ArrayRealVector arrayRealVector0 = new ArrayRealVector(100, (double) doubleArray0[1]);\n    ArrayRealVector arrayRealVector1 = new ArrayRealVector(arrayRealVector0, arrayRealVector0);\n    LinearObjectiveFunction linearObjectiveFunction0 = new LinearObjectiveFunction(arrayRealVector1, 100);\n    LinkedList<LinearConstraint> linkedList0 = new LinkedList<LinearConstraint>();\n    Relationship relationship0 = Relationship.GEQ;\n    LinearConstraint linearConstraint0 = mock(LinearConstraint.class, new ViolatedAssumptionAnswer());\n    doReturn(arrayRealVector0).when(linearConstraint0).getCoefficients();\n    doReturn(relationship0, relationship0, relationship0, relationship0, relationship0).when(linearConstraint0).getRelationship();\n    doReturn(1.0E-6, (double) 100).when(linearConstraint0).getValue();\n    linkedList0.add(linearConstraint0);\n    GoalType goalType0 = GoalType.MAXIMIZE;\n    simplexSolver0.optimize(linearObjectiveFunction0, linkedList0, goalType0, true);\n}",
+    "testName" : "test2121"
+  },
+  "test1111" : {
+    "methodSignature" : "protected void solvePhase1(final SimplexTableau tableau) throws OptimizationException",
+    "methodName" : "solvePhase1",
+    "className" : "org.apache.commons.math.optimization.linear.SimplexSolver",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1111() throws Throwable {\n    SimplexSolver simplexSolver0 = new SimplexSolver();\n    simplexSolver0.solvePhase1((SimplexTableau) null);\n}",
+    "testName" : "test1111"
+  },
+  "test011" : {
+    "methodSignature" : "public boolean isOptimal(final SimplexTableau tableau)",
+    "methodName" : "isOptimal",
+    "className" : "org.apache.commons.math.optimization.linear.SimplexSolver",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test011() throws Throwable {\n    double[] doubleArray0 = new double[9];\n    LinearObjectiveFunction linearObjectiveFunction0 = new LinearObjectiveFunction(doubleArray0, 0.0);\n    LinkedList<LinearConstraint> linkedList0 = new LinkedList<LinearConstraint>();\n    GoalType goalType0 = GoalType.MINIMIZE;\n    SimplexTableau simplexTableau0 = new SimplexTableau(linearObjectiveFunction0, linkedList0, goalType0, false, (-1330.0));\n    simplexTableau0.numArtificialVariables = (-1);\n    SimplexSolver simplexSolver0 = new SimplexSolver();\n    boolean boolean0 = simplexSolver0.isOptimal(simplexTableau0);\n}",
+    "testName" : "test011"
+  },
+  "test033" : {
+    "methodSignature" : "protected void doIteration(final SimplexTableau tableau) throws OptimizationException",
+    "methodName" : "doIteration",
+    "className" : "org.apache.commons.math.optimization.linear.SimplexSolver",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test033() throws Throwable {\n    SimplexSolver simplexSolver0 = new SimplexSolver(1.0);\n    double[] doubleArray0 = new double[9];\n    doubleArray0[2] = (double) 100;\n    LinearObjectiveFunction linearObjectiveFunction0 = new LinearObjectiveFunction(doubleArray0, 0.0);\n    LinkedList<LinearConstraint> linkedList0 = new LinkedList<LinearConstraint>();\n    GoalType goalType0 = GoalType.MINIMIZE;\n    SimplexTableau simplexTableau0 = new SimplexTableau(linearObjectiveFunction0, linkedList0, goalType0, false, (-1330.0));\n    simplexTableau0.numArtificialVariables = 100;\n    simplexSolver0.doIteration(simplexTableau0);\n}",
+    "testName" : "test033"
+  },
+  "test055" : {
+    "methodSignature" : "protected void solvePhase1(final SimplexTableau tableau) throws OptimizationException",
+    "methodName" : "solvePhase1",
+    "className" : "org.apache.commons.math.optimization.linear.SimplexSolver",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test055() throws Throwable {\n    SimplexSolver simplexSolver0 = new SimplexSolver();\n    double[] doubleArray0 = new double[7];\n    LinearObjectiveFunction linearObjectiveFunction0 = new LinearObjectiveFunction(doubleArray0, (-472.86906330773));\n    LinkedList<LinearConstraint> linkedList0 = new LinkedList<LinearConstraint>();\n    GoalType goalType0 = GoalType.MINIMIZE;\n    SimplexTableau simplexTableau0 = new SimplexTableau(linearObjectiveFunction0, linkedList0, goalType0, true, 100.0);\n    simplexSolver0.solvePhase1(simplexTableau0);\n}",
+    "testName" : "test055"
+  },
+  "test077" : {
+    "methodSignature" : "public RealPointValuePair doOptimize() throws OptimizationException",
+    "methodName" : "doOptimize",
+    "className" : "org.apache.commons.math.optimization.linear.SimplexSolver",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test077() throws Throwable {\n    SimplexSolver simplexSolver0 = new SimplexSolver(1.0E-6);\n    Double[] doubleArray0 = new Double[2];\n    Double double0 = new Double(294.67815414933716);\n    doubleArray0[1] = double0;\n    ArrayRealVector arrayRealVector0 = new ArrayRealVector(100, (double) doubleArray0[1]);\n    LinearObjectiveFunction linearObjectiveFunction0 = new LinearObjectiveFunction(arrayRealVector0, (-1.0));\n    LinkedList<LinearConstraint> linkedList0 = new LinkedList<LinearConstraint>();\n    Relationship relationship0 = Relationship.EQ;\n    LinearConstraint linearConstraint0 = mock(LinearConstraint.class, new ViolatedAssumptionAnswer());\n    doReturn(arrayRealVector0, (RealVector) null).when(linearConstraint0).getCoefficients();\n    doReturn(relationship0, relationship0, relationship0, relationship0, relationship0).when(linearConstraint0).getRelationship();\n    doReturn(1.0E-6, (double) 100, 0.0, 0.0).when(linearConstraint0).getValue();\n    linkedList0.add(linearConstraint0);\n    GoalType goalType0 = GoalType.MINIMIZE;\n    simplexSolver0.optimize(linearObjectiveFunction0, linkedList0, goalType0, true);\n    simplexSolver0.doOptimize();\n}",
+    "testName" : "test077"
+  },
+  "test099" : {
+    "methodSignature" : "protected void solvePhase1(final SimplexTableau tableau) throws OptimizationException",
+    "methodName" : "solvePhase1",
+    "className" : "org.apache.commons.math.optimization.linear.SimplexSolver",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test099() throws Throwable {\n    SimplexSolver simplexSolver0 = new SimplexSolver((-15.181877774949651));\n    double[] doubleArray0 = new double[0];\n    ArrayRealVector arrayRealVector0 = new ArrayRealVector(doubleArray0);\n    LinearObjectiveFunction linearObjectiveFunction0 = new LinearObjectiveFunction(arrayRealVector0, (-15.181877774949651));\n    LinkedList<LinearConstraint> linkedList0 = new LinkedList<LinearConstraint>();\n    GoalType goalType0 = GoalType.MINIMIZE;\n    SimplexTableau simplexTableau0 = new SimplexTableau(linearObjectiveFunction0, linkedList0, goalType0, false, 100);\n    simplexTableau0.numArtificialVariables = 2407;\n    simplexSolver0.solvePhase1(simplexTableau0);\n}",
+    "testName" : "test099"
+  },
+  "test1616" : {
+    "methodSignature" : "protected void doIteration(final SimplexTableau tableau) throws OptimizationException",
+    "methodName" : "doIteration",
+    "className" : "org.apache.commons.math.optimization.linear.SimplexSolver",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1616() throws Throwable {\n    SimplexSolver simplexSolver0 = new SimplexSolver((-3.6972655904500518));\n    double[] doubleArray0 = new double[0];\n    ArrayRealVector arrayRealVector0 = new ArrayRealVector(100);\n    LinearObjectiveFunction linearObjectiveFunction0 = new LinearObjectiveFunction(arrayRealVector0, (-3.6972655904500518));\n    LinkedList<LinearConstraint> linkedList0 = new LinkedList<LinearConstraint>();\n    GoalType goalType0 = GoalType.MINIMIZE;\n    SimplexTableau simplexTableau0 = new SimplexTableau(linearObjectiveFunction0, linkedList0, goalType0, false, 100);\n    Array2DRowRealMatrix array2DRowRealMatrix0 = new Array2DRowRealMatrix(doubleArray0);\n    simplexTableau0.tableau = (RealMatrix) array2DRowRealMatrix0;\n    simplexSolver0.doIteration(simplexTableau0);\n}",
+    "testName" : "test1616"
+  },
+  "test1414" : {
+    "methodSignature" : "public RealPointValuePair doOptimize() throws OptimizationException",
+    "methodName" : "doOptimize",
+    "className" : "org.apache.commons.math.optimization.linear.SimplexSolver",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1414() throws Throwable {\n    SimplexSolver simplexSolver0 = new SimplexSolver(1.0E-6);\n    Double[] doubleArray0 = new Double[2];\n    Double double0 = new Double((-5609.2087724));\n    doubleArray0[0] = double0;\n    Double double1 = new Double(294.67815414933716);\n    doubleArray0[1] = double1;\n    ArrayRealVector arrayRealVector0 = new ArrayRealVector(100, (double) doubleArray0[1]);\n    LinearObjectiveFunction linearObjectiveFunction0 = new LinearObjectiveFunction(arrayRealVector0, (-1.0));\n    LinkedList<LinearConstraint> linkedList0 = new LinkedList<LinearConstraint>();\n    Relationship relationship0 = Relationship.EQ;\n    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector((-1734), (-1789.0));\n    LinearConstraint linearConstraint0 = mock(LinearConstraint.class, new ViolatedAssumptionAnswer());\n    doReturn(arrayRealVector0, (RealVector) null).when(linearConstraint0).getCoefficients();\n    doReturn(relationship0, relationship0, relationship0, relationship0, relationship0).when(linearConstraint0).getRelationship();\n    doReturn(1.0E-6, (double) 100, 0.0, 0.0).when(linearConstraint0).getValue();\n    linkedList0.add(linearConstraint0);\n    GoalType goalType0 = GoalType.MINIMIZE;\n    simplexSolver0.optimize(linearObjectiveFunction0, linkedList0, goalType0, true);\n    simplexSolver0.doOptimize();\n}",
+    "testName" : "test1414"
+  },
+  "test1515" : {
+    "methodSignature" : "protected void doIteration(final SimplexTableau tableau) throws OptimizationException",
+    "methodName" : "doIteration",
+    "className" : "org.apache.commons.math.optimization.linear.SimplexSolver",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1515() throws Throwable {\n    SimplexSolver simplexSolver0 = new SimplexSolver((-5572.24971804817));\n    simplexSolver0.setMaxIterations((-2073));\n    simplexSolver0.doIteration((SimplexTableau) null);\n}",
+    "testName" : "test1515"
+  },
+  "test2020" : {
+    "methodSignature" : "public boolean isOptimal(final SimplexTableau tableau)",
+    "methodName" : "isOptimal",
+    "className" : "org.apache.commons.math.optimization.linear.SimplexSolver",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test2020() throws Throwable {\n    SimplexSolver simplexSolver0 = new SimplexSolver((-3.6972655904500518));\n    ArrayRealVector arrayRealVector0 = new ArrayRealVector(100);\n    LinearObjectiveFunction linearObjectiveFunction0 = new LinearObjectiveFunction(arrayRealVector0, (-3.6972655904500518));\n    LinkedList<LinearConstraint> linkedList0 = new LinkedList<LinearConstraint>();\n    GoalType goalType0 = GoalType.MINIMIZE;\n    SimplexTableau simplexTableau0 = new SimplexTableau(linearObjectiveFunction0, linkedList0, goalType0, true, 100);\n    simplexTableau0.numArtificialVariables = 100;\n    boolean boolean0 = simplexSolver0.isOptimal(simplexTableau0);\n}",
+    "testName" : "test2020"
+  },
+  "test000" : {
+    "methodSignature" : "public boolean isOptimal(final SimplexTableau tableau)",
+    "methodName" : "isOptimal",
+    "className" : "org.apache.commons.math.optimization.linear.SimplexSolver",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test000() throws Throwable {\n    SimplexSolver simplexSolver0 = new SimplexSolver(1.0);\n    double[] doubleArray0 = new double[9];\n    LinearObjectiveFunction linearObjectiveFunction0 = new LinearObjectiveFunction(doubleArray0, 0.0);\n    LinkedList<LinearConstraint> linkedList0 = new LinkedList<LinearConstraint>();\n    GoalType goalType0 = GoalType.MINIMIZE;\n    SimplexTableau simplexTableau0 = new SimplexTableau(linearObjectiveFunction0, linkedList0, goalType0, false, (-1330.0));\n    BlockRealMatrix blockRealMatrix0 = new BlockRealMatrix(1, 1);\n    simplexTableau0.tableau = (RealMatrix) blockRealMatrix0;\n    boolean boolean0 = simplexSolver0.isOptimal(simplexTableau0);\n}",
+    "testName" : "test000"
+  },
+  "test022" : {
+    "methodSignature" : "protected void solvePhase1(final SimplexTableau tableau) throws OptimizationException",
+    "methodName" : "solvePhase1",
+    "className" : "org.apache.commons.math.optimization.linear.SimplexSolver",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test022() throws Throwable {\n    SimplexSolver simplexSolver0 = new SimplexSolver(0.0);\n    double[] doubleArray0 = new double[0];\n    ArrayRealVector arrayRealVector0 = new ArrayRealVector(doubleArray0);\n    LinearObjectiveFunction linearObjectiveFunction0 = new LinearObjectiveFunction(arrayRealVector0, 0.0);\n    LinkedList<LinearConstraint> linkedList0 = new LinkedList<LinearConstraint>();\n    GoalType goalType0 = GoalType.MINIMIZE;\n    SimplexTableau simplexTableau0 = new SimplexTableau(linearObjectiveFunction0, linkedList0, goalType0, true, 100);\n    simplexTableau0.numArtificialVariables = 2407;\n    simplexSolver0.solvePhase1(simplexTableau0);\n}",
+    "testName" : "test022"
+  },
+  "test044" : {
+    "methodSignature" : "protected void doIteration(final SimplexTableau tableau) throws OptimizationException",
+    "methodName" : "doIteration",
+    "className" : "org.apache.commons.math.optimization.linear.SimplexSolver",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test044() throws Throwable {\n    SimplexSolver simplexSolver0 = new SimplexSolver(1.0);\n    double[] doubleArray0 = new double[9];\n    LinearObjectiveFunction linearObjectiveFunction0 = new LinearObjectiveFunction(doubleArray0, 0.0);\n    LinkedList<LinearConstraint> linkedList0 = new LinkedList<LinearConstraint>();\n    GoalType goalType0 = GoalType.MINIMIZE;\n    SimplexTableau simplexTableau0 = new SimplexTableau(linearObjectiveFunction0, linkedList0, goalType0, false, (-1330.0));\n    BlockRealMatrix blockRealMatrix0 = new BlockRealMatrix(1, 1);\n    simplexTableau0.tableau = (RealMatrix) blockRealMatrix0;\n    simplexSolver0.doIteration(simplexTableau0);\n}",
+    "testName" : "test044"
+  },
+  "test066" : {
+    "methodSignature" : "public int getNumVariables()",
+    "methodName" : "getNumVariables",
+    "className" : "org.apache.commons.math.optimization.linear.SimplexSolver",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test066() throws Throwable {\n    SimplexSolver simplexSolver0 = new SimplexSolver(1.0E-6);\n    Double[] doubleArray0 = new Double[2];\n    Double double0 = new Double((-5609.2087724));\n    doubleArray0[1] = double0;\n    ArrayRealVector arrayRealVector0 = new ArrayRealVector(100, (double) doubleArray0[1]);\n    LinearObjectiveFunction linearObjectiveFunction0 = new LinearObjectiveFunction(arrayRealVector0, (-1.0));\n    LinkedList<LinearConstraint> linkedList0 = new LinkedList<LinearConstraint>();\n    Relationship relationship0 = Relationship.EQ;\n    LinearConstraint linearConstraint0 = mock(LinearConstraint.class, new ViolatedAssumptionAnswer());\n    doReturn(arrayRealVector0).when(linearConstraint0).getCoefficients();\n    doReturn(relationship0, relationship0, relationship0, relationship0, relationship0).when(linearConstraint0).getRelationship();\n    doReturn(1.0E-6, (double) 100).when(linearConstraint0).getValue();\n    linkedList0.add(linearConstraint0);\n    GoalType goalType0 = GoalType.MINIMIZE;\n    SimplexTableau simplexTableau0 = new SimplexTableau(linearObjectiveFunction0, linkedList0, goalType0, false, 562.7235872);\n    simplexSolver0.doIteration(simplexTableau0);\n    simplexTableau0.getNumVariables();\n}",
+    "testName" : "test066"
+  },
+  "test088" : {
+    "methodSignature" : "public double getValue()",
+    "methodName" : "getValue",
+    "className" : "org.apache.commons.math.optimization.linear.SimplexSolver",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test088() throws Throwable {\n    SimplexSolver simplexSolver0 = new SimplexSolver(1.0E-6);\n    Double[] doubleArray0 = new Double[21];\n    Double double0 = new Double(100);\n    doubleArray0[0] = double0;\n    doubleArray0[1] = doubleArray0[0];\n    ArrayRealVector arrayRealVector0 = new ArrayRealVector(100, (double) doubleArray0[1]);\n    LinearObjectiveFunction linearObjectiveFunction0 = new LinearObjectiveFunction(arrayRealVector0, 1413.958);\n    LinkedList<LinearConstraint> linkedList0 = new LinkedList<LinearConstraint>();\n    GoalType goalType0 = GoalType.MINIMIZE;\n    simplexSolver0.optimize(linearObjectiveFunction0, linkedList0, goalType0, true);\n    RealPointValuePair realPointValuePair0 = simplexSolver0.doOptimize();\n    realPointValuePair0.getValue();\n}",
+    "testName" : "test088"
+  },
+  "test1818" : {
+    "methodSignature" : "public boolean isOptimal(final SimplexTableau tableau)",
+    "methodName" : "isOptimal",
+    "className" : "org.apache.commons.math.optimization.linear.SimplexSolver",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1818() throws Throwable {\n    SimplexSolver simplexSolver0 = new SimplexSolver();\n    double[] doubleArray0 = new double[4];\n    doubleArray0[1] = (double) (-2781);\n    LinearObjectiveFunction linearObjectiveFunction0 = new LinearObjectiveFunction(doubleArray0, 1068.46547325);\n    LinkedList<LinearConstraint> linkedList0 = new LinkedList<LinearConstraint>();\n    GoalType goalType0 = GoalType.MINIMIZE;\n    SimplexTableau simplexTableau0 = new SimplexTableau(linearObjectiveFunction0, linkedList0, goalType0, true, (-2781.0));\n    boolean boolean0 = simplexSolver0.isOptimal(simplexTableau0);\n}",
+    "testName" : "test1818"
+  },
+  "test1919" : {
+    "methodSignature" : "public RealPointValuePair doOptimize() throws OptimizationException",
+    "methodName" : "doOptimize",
+    "className" : "org.apache.commons.math.optimization.linear.SimplexSolver",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1919() throws Throwable {\n    SimplexSolver simplexSolver0 = new SimplexSolver(1.0E-6);\n    Double[] doubleArray0 = new Double[2];\n    Double double0 = new Double(100);\n    doubleArray0[1] = double0;\n    ArrayRealVector arrayRealVector0 = new ArrayRealVector(100, (double) doubleArray0[1]);\n    LinearObjectiveFunction linearObjectiveFunction0 = new LinearObjectiveFunction(arrayRealVector0, 1.0E-6);\n    LinkedList<LinearConstraint> linkedList0 = new LinkedList<LinearConstraint>();\n    Relationship relationship0 = Relationship.LEQ;\n    LinearConstraint linearConstraint0 = mock(LinearConstraint.class, new ViolatedAssumptionAnswer());\n    doReturn(arrayRealVector0, (RealVector) null).when(linearConstraint0).getCoefficients();\n    doReturn(relationship0, relationship0, relationship0, relationship0, relationship0).when(linearConstraint0).getRelationship();\n    doReturn(1.0E-6, (double) 100, 0.0, 0.0).when(linearConstraint0).getValue();\n    linkedList0.add(linearConstraint0);\n    GoalType goalType0 = GoalType.MAXIMIZE;\n    simplexSolver0.optimize(linearObjectiveFunction0, linkedList0, goalType0, true);\n    simplexSolver0.doOptimize();\n}",
+    "testName" : "test1919"
+  }
+}

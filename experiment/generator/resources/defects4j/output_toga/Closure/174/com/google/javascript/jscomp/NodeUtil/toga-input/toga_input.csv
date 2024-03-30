@@ -1,0 +1,2267 @@
+focal_method,test_prefix,docstring
+"public static Node newNumber(double number) {
+    return new NumberNode(number);
+}","public void test0011() throws Throwable {
+    NodeUtil.getStringNumberValue(""?@{%;&56t6i"");
+    NodeUtil.MatchDeclaration nodeUtil_MatchDeclaration0 = new NodeUtil.MatchDeclaration();
+    Integer integer0 = new Integer(1799);
+    nodeUtil_MatchDeclaration0.equals(integer0);
+    Node.newNumber(Double.NEGATIVE_INFINITY);
+}",""
+"static boolean isStatement(Node n) {
+    return isStatementParent(n.getParent());
+}","public void test0022() throws Throwable {
+    Node node0 = Node.newString(1318, ""[#K.lmr7["", 1318, 0);
+    Node node1 = node0.cloneTree();
+    NodeUtil.isStatementParent(node1);
+    Node node2 = NodeUtil.newQualifiedNameNode((CodingConvention) null, ""[#K.lmr7["", node0, ""[#K.lmr7["");
+    NodeUtil.getFunctionBody(node1);
+    String string0 = null;
+    SourceMap.DetailLevel.valueOf(string0);
+    // Undeclared exception!
+    try {
+        NodeUtil.isStatement(node2);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.NodeUtil"", e);
+    }
+}","/**
+ * @return Whether the node is used as a statement.
+ */"
+"static boolean isStatement(Node n) {
+    return isStatementParent(n.getParent());
+}","public void test0033() throws Throwable {
+    GoogleCodingConvention googleCodingConvention0 = new GoogleCodingConvention();
+    Node node0 = Node.newNumber((-794.181), 0, (-454));
+    Node node1 = NodeUtil.newQualifiedNameNode((CodingConvention) googleCodingConvention0, ""G@H!&{`(r6rw"", node0, """");
+    NodeUtil.isStatement(node1);
+}","/**
+ * @return Whether the node is used as a statement.
+ */"
+"static boolean functionCallHasSideEffects(Node callNode) {
+    return functionCallHasSideEffects(callNode, null);
+}","public void test0044() throws Throwable {
+    Node node0 = null;
+    // Undeclared exception!
+    try {
+        NodeUtil.functionCallHasSideEffects((Node) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.NodeUtil"", e);
+    }
+}","/**
+ * Returns true if calls to this function have side effects.
+ *
+ * @param callNode - function call node
+ */"
+"/*
+   *  0 comma ,
+   *  1 assignment = += -= *= /= %= <<= >>= >>>= &= ^= |=
+   *  2 conditional ?:
+   *  3 logical-or ||
+   *  4 logical-and &&
+   *  5 bitwise-or |
+   *  6 bitwise-xor ^
+   *  7 bitwise-and &
+   *  8 equality == !=
+   *  9 relational < <= > >=
+   * 10 bitwise shift << >> >>>
+   * 11 addition/subtraction + -
+   * 12 multiply/divide * / %
+   * 13 negation/increment ! ~ - ++ --
+   * 14 call, member () [] .
+   */
+static int precedence(int type) {
+    int precedence = precedenceWithDefault(type);
+    if (precedence != -1) {
+        return precedence;
+    }
+    throw new Error(""Unknown precedence for "" + Token.name(type) + "" (type "" + type + "")"");
+}","public void test0055() throws Throwable {
+    NodeUtil.precedence(12);
+}",""
+"static boolean isValidSimpleName(String name) {
+    return TokenStream.isJSIdentifier(name) && !TokenStream.isKeyword(name) && // no Unicode escaped characters - some browsers are less tolerant
+    // of Unicode characters that might be valid according to the
+    // language spec.
+    // Note that by this point, Unicode escapes have been converted
+    // to UTF-16 characters, so we're only searching for character
+    // values, not escapes.
+    isLatin(name);
+}","public void test0077() throws Throwable {
+    NodeUtil.precedence(14);
+    FileSystemHandling.createFolder((EvoSuiteFile) null);
+    NodeUtil.isValidSimpleName(""Ljava/lang/Object;D"");
+}","/**
+ * Determines whether the given name is a valid variable name.
+ */"
+"static boolean mayEffectMutableState(Node n, AbstractCompiler compiler) {
+    return checkForStateChangeHelper(n, true, compiler);
+}","public void test0099() throws Throwable {
+    NodeUtil.MatchDeclaration nodeUtil_MatchDeclaration0 = new NodeUtil.MatchDeclaration();
+    Integer integer0 = new Integer(1801);
+    nodeUtil_MatchDeclaration0.equals(integer0);
+    Node node0 = Node.newNumber(Double.NEGATIVE_INFINITY);
+    node0.setDouble(Double.NEGATIVE_INFINITY);
+    NodeUtil.has(node0, nodeUtil_MatchDeclaration0, nodeUtil_MatchDeclaration0);
+    Compiler compiler0 = new Compiler();
+    NodeUtil.mayEffectMutableState(node0, compiler0);
+}",""
+"public static String getSourceName(Node n) {
+    String sourceName = null;
+    while (sourceName == null && n != null) {
+        sourceName = n.getSourceFileName();
+        n = n.getParent();
+    }
+    return sourceName;
+}","public void test01010() throws Throwable {
+    NodeUtil.MatchShallowStatement nodeUtil_MatchShallowStatement0 = new NodeUtil.MatchShallowStatement();
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeSyntheticCode(compiler0, ""6^2aU(8*wN9L|W@"", ""6^2aU(8*wN9L|W@"");
+    // Undeclared exception!
+    try {
+        NodeUtil.getSourceName(node0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.Compiler"", e);
+    }
+}","/**
+ * @param n The node.
+ * @return The source name property on the node or its ancestors.
+ */"
+"VerboseMessageFormatter(SourceExcerptProvider source) {
+    super(source);
+}","public void test01111() throws Throwable {
+    NodeUtil.MatchShallowStatement nodeUtil_MatchShallowStatement0 = new NodeUtil.MatchShallowStatement();
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants(false);
+    Node node0 = new Node(32);
+    Node node1 = peepholeFoldConstants0.optimizeSubtree(node0);
+    NodeUtil.isPrototypeProperty(node1);
+    peepholeFoldConstants0.mayHaveSideEffects(node1);
+    MockPrintStream mockPrintStream0 = new MockPrintStream((File) null);
+    Compiler compiler0 = new Compiler(mockPrintStream0);
+    node0.checkTreeEquals(node1);
+    VerboseMessageFormatter verboseMessageFormatter0 = null;
+    try {
+        verboseMessageFormatter0 = new VerboseMessageFormatter(compiler0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.io.File"", e);
+    }
+}",""
+"static boolean mayEffectMutableState(Node n, AbstractCompiler compiler) {
+    return checkForStateChangeHelper(n, true, compiler);
+}","public void test01212() throws Throwable {
+    Node node0 = NodeUtil.booleanNode(true);
+    Node node1 = new Node(43, node0, node0, node0, node0);
+    NodeUtil.isPrototypeProperty(node0);
+    Compiler compiler0 = new Compiler();
+    NodeUtil.nodeTypeMayHaveSideEffects(node1, compiler0);
+    NodeUtil.NumbericResultPredicate nodeUtil_NumbericResultPredicate0 = new NodeUtil.NumbericResultPredicate();
+    nodeUtil_NumbericResultPredicate0.apply(node1);
+    NodeUtil.MatchShallowStatement nodeUtil_MatchShallowStatement0 = new NodeUtil.MatchShallowStatement();
+    NodeUtil.MatchNodeType nodeUtil_MatchNodeType0 = new NodeUtil.MatchNodeType((-3832));
+    NodeUtil.has(node1, nodeUtil_NumbericResultPredicate0, nodeUtil_MatchShallowStatement0);
+    NodeUtil.mayEffectMutableState(node1, compiler0);
+}",""
+"public static String getNearestFunctionName(Node n) {
+    if (!n.isFunction()) {
+        return null;
+    }
+    String name = getFunctionName(n);
+    if (name != null) {
+        return name;
+    }
+    // Check for the form { 'x' : function() { } }
+    Node parent = n.getParent();
+    switch(parent.getType()) {
+        case Token.SETTER_DEF:
+        case Token.GETTER_DEF:
+        case Token.STRING_KEY:
+            // Return the name of the literal's key.
+            return parent.getString();
+        case Token.NUMBER:
+            return getStringValue(parent);
+    }
+    return null;
+}","public void test01313() throws Throwable {
+    FileSystemHandling.shouldAllThrowIOExceptions();
+    Node node0 = NodeUtil.booleanNode(true);
+    Node.newNumber(1257.8548, 2, 12);
+    NodeUtil.MatchShallowStatement nodeUtil_MatchShallowStatement0 = new NodeUtil.MatchShallowStatement();
+    PipedInputStream pipedInputStream0 = new PipedInputStream();
+    FileSystemHandling.createFolder((EvoSuiteFile) null);
+    NodeUtil.isValidSimpleName(""Ljava/lang/Object;D"");
+    NodeUtil.evaluatesToLocalValue(node0, nodeUtil_MatchShallowStatement0);
+    NodeUtil.getNearestFunctionName(node0);
+}","/**
+ * Gets the function's name. This method recognizes the forms:
+ * <ul>
+ * <li>{@code &#123;'name': function() ...&#125;}</li>
+ * <li>{@code &#123;name: function() ...&#125;}</li>
+ * <li>{@code function name() ...}</li>
+ * <li>{@code var name = function() ...}</li>
+ * <li>{@code qualified.name = function() ...}</li>
+ * <li>{@code var name2 = function name1() ...}</li>
+ * <li>{@code qualified.name2 = function name1() ...}</li>
+ * </ul>
+ *
+ * @param n a node whose type is {@link Token#FUNCTION}
+ * @return the function's name, or {@code null} if it has no name
+ */"
+"static boolean hasCatchHandler(Node n) {
+    Preconditions.checkArgument(n.isBlock());
+    return n.hasChildren() && n.getFirstChild().isCatch();
+}","public void test01414() throws Throwable {
+    Node node0 = NodeUtil.booleanNode(true);
+    Node node1 = new Node(43, node0, node0, node0, node0);
+    NodeUtil.isPrototypeProperty(node0);
+    Compiler compiler0 = new Compiler();
+    NodeUtil.nodeTypeMayHaveSideEffects(node1, compiler0);
+    NodeUtil.precedence(42);
+    NodeUtil.hasCatchHandler(node0);
+}","/**
+ * @return Whether BLOCK (from a TRY node) contains a CATCH.
+ * @see NodeUtil#getCatchBlock
+ */"
+"static boolean mayHaveSideEffects(Node n) {
+    return mayHaveSideEffects(n, null);
+}","public void test01515() throws Throwable {
+    FileSystemHandling.shouldAllThrowIOExceptions();
+    Node node0 = NodeUtil.booleanNode(true);
+    Node node1 = Node.newNumber(1257.8548, 2, 12);
+    NodeUtil.MatchShallowStatement nodeUtil_MatchShallowStatement0 = new NodeUtil.MatchShallowStatement();
+    PipedInputStream pipedInputStream0 = new PipedInputStream();
+    FileSystemHandling.createFolder((EvoSuiteFile) null);
+    NodeUtil.isValidSimpleName(""Ljava/lang/Object;D"");
+    NodeUtil.evaluatesToLocalValue(node0, nodeUtil_MatchShallowStatement0);
+    NodeUtil.mayHaveSideEffects(node1);
+}","/**
+ * Returns true if the node which may have side effects when executed.
+ */"
+"public JqueryCodingConvention() {
+    this(CodingConventions.getDefault());
+}","public void test01616() throws Throwable {
+    Node node0 = null;
+    NodeUtil.getSourceName((Node) null);
+    NodeUtil.mayBeString((Node) null, false);
+    JqueryCodingConvention jqueryCodingConvention0 = null;
+    try {
+        jqueryCodingConvention0 = new JqueryCodingConvention();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.NodeUtil"", e);
+    }
+}",""
+"static boolean isSwitchCase(Node n) {
+    return n.isCase() || n.isDefaultCase();
+}","public void test01717() throws Throwable {
+    NodeUtil.getSourceName((Node) null);
+    NodeUtil.isSwitchCase((Node) null);
+}","/**
+ * Whether the node is part of a switch statement.
+ */"
+"static boolean isRelationalOperation(Node n) {
+    switch(n.getType()) {
+        // equal
+        case Token.GT:
+        // not equal
+        case Token.GE:
+        // exactly equal
+        case Token.LT:
+        case // exactly not equal
+        Token.LE:
+            return true;
+    }
+    return false;
+}","public void test01818() throws Throwable {
+    NodeUtil.MayBeStringResultPredicate nodeUtil_MayBeStringResultPredicate0 = new NodeUtil.MayBeStringResultPredicate();
+    Node node0 = null;
+    // Undeclared exception!
+    try {
+        NodeUtil.isRelationalOperation((Node) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.NodeUtil"", e);
+    }
+}","/**
+ * Returns true if the operator on this node is relational.
+ * the returned set does not include the equalities.
+ */"
+"static boolean isBleedingFunctionName(Node n) {
+    return n.isName() && !n.getString().isEmpty() && isFunctionExpression(n.getParent());
+}","public void test01919() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    Node node0 = NodeUtil.newQualifiedNameNode(closureCodingConvention0, ""3bL7)9C|)EX9==:"");
+    PeepholeRemoveDeadCode peepholeRemoveDeadCode0 = new PeepholeRemoveDeadCode();
+    NodeUtil.getLoopCodeBlock(node0);
+    NodeUtil.isBleedingFunctionName((Node) null);
+}","/**
+ * Returns whether this is a bleeding function (an anonymous named function
+ * that bleeds into the inner scope).
+ */"
+"public StatementFusion(boolean favorsCommaOverSemiColon) {
+    this.favorsCommaOverSemiColon = favorsCommaOverSemiColon;
+}","public void test02020() throws Throwable {
+    Node node0 = new Node(17);
+    boolean boolean0 = NodeUtil.isCallOrNewTarget(node0);
+    NodeUtil.opToStrNoFail(4);
+    StatementFusion statementFusion0 = null;
+    try {
+        statementFusion0 = new StatementFusion(boolean0);
+        fail(""Expecting exception: Error"");
+    } catch (Error e) {
+        //
+        // Unknown op 4: RETURN
+        //
+        verifyException(""com.google.javascript.jscomp.NodeUtil"", e);
+    }
+}",""
+"static boolean isControlStructureCodeBlock(Node parent, Node n) {
+    switch(parent.getType()) {
+        case Token.FOR:
+        case Token.WHILE:
+        case Token.LABEL:
+        case Token.WITH:
+            return parent.getLastChild() == n;
+        case Token.DO:
+            return parent.getFirstChild() == n;
+        case Token.IF:
+            return parent.getFirstChild() != n;
+        case Token.TRY:
+            return parent.getFirstChild() == n || parent.getLastChild() == n;
+        case Token.CATCH:
+            return parent.getLastChild() == n;
+        case Token.SWITCH:
+        case Token.CASE:
+            return parent.getFirstChild() != n;
+        case Token.DEFAULT_CASE:
+            return true;
+        default:
+            Preconditions.checkState(isControlStructure(parent));
+            return false;
+    }
+}","public void test02121() throws Throwable {
+    Node node0 = Node.newString(""cRm.google.javascript.jscomp.Compiler"");
+    node0.isQuotedString();
+    NodeUtil.isControlStructureCodeBlock(node0, node0);
+}","/**
+ * Determines whether the given node is code node for FOR, DO,
+ * WHILE, WITH, or IF node.
+ */"
+"static int getNodeTypeReferenceCount(Node node, int type, Predicate<Node> traverseChildrenPred) {
+    return getCount(node, new MatchNodeType(type), traverseChildrenPred);
+}","public void test02222() throws Throwable {
+    Node node0 = new Node(107);
+    NodeUtil.isCallOrNewTarget(node0);
+    NodeUtil.getSourceName(node0);
+    StatementFusion statementFusion0 = new StatementFusion(false);
+    NodeUtil.MatchNodeType nodeUtil_MatchNodeType0 = new NodeUtil.MatchNodeType(1);
+    NodeUtil.getNodeTypeReferenceCount(node0, 12, nodeUtil_MatchNodeType0);
+}","/**
+ * Finds the number of times a type is referenced within the node tree.
+ */"
+"public boolean isQuotedString() {
+    return false;
+}","public void test02424() throws Throwable {
+    int int0 = 12;
+    NodeUtil.precedence(12);
+    Node node0 = Node.newNumber(0.0, (-9), 40);
+    node0.getDouble();
+    Node node1 = NodeUtil.numberNode(0.0, node0);
+    Node node2 = ControlFlowAnalysis.getExceptionHandler(node1);
+    int int1 = 190;
+    Node node3 = new Node(int0, node2, node1, node0, node1, int1, node2.FLAG_ARGUMENTS_UNMODIFIED);
+    // Undeclared exception!
+    try {
+        node3.isQuotedString();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.ControlFlowAnalysis"", e);
+    }
+}","/**
+ * This should only be called for STRING nodes children of OBJECTLIT.
+ */"
+"public void addChildrenToBack(Node children) {
+    addChildrenAfter(children, getLastChild());
+}","public void test02525() throws Throwable {
+    double double0 = (-1197.0);
+    Node node0 = null;
+    Node node1 = NodeUtil.numberNode((-1197.0), (Node) null);
+    // Undeclared exception!
+    try {
+        node1.addChildrenToBack((Node) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.rhino.Node"", e);
+    }
+}",""
+"static boolean hasCatchHandler(Node n) {
+    Preconditions.checkArgument(n.isBlock());
+    return n.hasChildren() && n.getFirstChild().isCatch();
+}","public void test02626() throws Throwable {
+    Node node0 = NodeUtil.booleanNode(true);
+    Compiler compiler0 = new Compiler();
+    NodeUtil.nodeTypeMayHaveSideEffects(node0, compiler0);
+    NodeUtil.precedence(42);
+    NodeUtil.hasCatchHandler(node0);
+}","/**
+ * @return Whether BLOCK (from a TRY node) contains a CATCH.
+ * @see NodeUtil#getCatchBlock
+ */"
+"static Node newName(CodingConvention convention, String name, Node srcref) {
+    return newName(convention, name).srcref(srcref);
+}","public void test02929() throws Throwable {
+    Node node0 = Node.newString(1318, ""[#K.lmr7["", 1318, 1318);
+    Node node1 = node0.cloneTree();
+    NodeUtil.mayBeString(node1, true);
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    NodeUtil.newName(jqueryCodingConvention0, ""RKS'7na6KJ"", node0);
+}","/**
+ * Creates a new node representing an *existing* name, copying over the source
+ * location information from the basis node.
+ *
+ * @param name The name for the new NAME node.
+ * @param srcref The node that represents the name as currently found in
+ *     the AST.
+ *
+ * @return The node created.
+ */"
+"public String toStringTree() {
+    return toStringTreeImpl();
+}","public void test03030() throws Throwable {
+    Node node0 = Node.newString((-2753), """", (-2753), (-2753));
+    NodeUtil.getStringValue(node0);
+    node0.setChangeTime(18);
+    node0.removeProp((-2753));
+    Node node1 = NodeUtil.getRValueOfLValue(node0);
+    node1.copyInformationFromForTree(node0);
+    node0.getString();
+    // Undeclared exception!
+    try {
+        node0.toStringTree();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.NodeUtil"", e);
+    }
+}",""
+"static boolean mayHaveSideEffects(Node n) {
+    return mayHaveSideEffects(n, null);
+}","public void test03131() throws Throwable {
+    Node node0 = Node.newString(113, """");
+    NodeUtil.newExpr(node0);
+    Node node1 = null;
+    // Undeclared exception!
+    try {
+        NodeUtil.mayHaveSideEffects(node1);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * Returns true if the node which may have side effects when executed.
+ */"
+"static boolean isSimpleOperatorType(int type) {
+    switch(type) {
+        case Token.ADD:
+        case Token.BITAND:
+        case Token.BITNOT:
+        case Token.BITOR:
+        case Token.BITXOR:
+        case Token.COMMA:
+        case Token.DIV:
+        case Token.EQ:
+        case Token.GE:
+        case Token.GETELEM:
+        case Token.GETPROP:
+        case Token.GT:
+        case Token.INSTANCEOF:
+        case Token.LE:
+        case Token.LSH:
+        case Token.LT:
+        case Token.MOD:
+        case Token.MUL:
+        case Token.NE:
+        case Token.NOT:
+        case Token.RSH:
+        case Token.SHEQ:
+        case Token.SHNE:
+        case Token.SUB:
+        case Token.TYPEOF:
+        case Token.VOID:
+        case Token.POS:
+        case Token.NEG:
+        case Token.URSH:
+            return true;
+        default:
+            return false;
+    }
+}","public void test03232() throws Throwable {
+    Node node0 = Node.newNumber((-2540.3154012789), 5, 5);
+    Node node1 = new Node(107, node0, node0, 107, 1116);
+    node1.isVarArgs();
+    node0.addChildToBack(node1);
+    NodeUtil.isExprCall(node1);
+    NodeUtil.allArgsUnescapedLocal(node0);
+    NodeUtil.getArrayElementStringValue(node1);
+    NodeUtil.isObjectCallMethod(node1, "" vj2m]0\""#[1w"");
+    NodeUtil.Visitor nodeUtil_Visitor0 = null;
+    SourceMap.DetailLevel sourceMap_DetailLevel0 = SourceMap.DetailLevel.valueOf("" vj2m]0\""#[1w"");
+    Object object0 = new Object();
+    sourceMap_DetailLevel0.equals(object0);
+    NodeUtil.visitPreOrder(node0, nodeUtil_Visitor0, sourceMap_DetailLevel0);
+    NodeUtil.isObjectLitKey(node1);
+    // Undeclared exception!
+    try {
+        NodeUtil.isSimpleOperatorType(node0.SIDE_EFFECT_FLAGS);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // No enum constant com.google.javascript.jscomp.SourceMap.DetailLevel. vj2m]0\""#[1w
+        //
+        verifyException(""java.lang.Enum"", e);
+    }
+}","/**
+ * A ""simple"" operator is one whose children are expressions,
+ * has no direct side-effects (unlike '+='), and has no
+ * conditional aspects (unlike '||').
+ */"
+"static boolean mayBeString(Node n, boolean recurse) {
+    if (recurse) {
+        return anyResultsMatch(n, MAY_BE_STRING_PREDICATE);
+    } else {
+        return mayBeStringHelper(n);
+    }
+}","public void test03333() throws Throwable {
+    Node node0 = Node.newString(1318, ""Mbj"", 1318, 1318);
+    Node node1 = node0.cloneTree();
+    NodeUtil.mayBeString(node1, true);
+}",""
+"public String toStringTree() {
+    return toStringTreeImpl();
+}","public void test03535() throws Throwable {
+    Node node0 = new Node(107);
+    NodeUtil.isForIn(node0);
+    FileSystemHandling.shouldThrowIOException((EvoSuiteFile) null);
+    NodeUtil.isForIn(node0);
+    NodeUtil.getSourceFile(node0);
+    NodeUtil.isExprCall(node0);
+    NodeUtil.getNumberValue(node0);
+    Node node1 = new Node(107);
+    Node node2 = NodeUtil.getBestLValue(node1);
+    String string0 = "" Calls: "";
+    // Undeclared exception!
+    try {
+        node2.toStringTree();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.NodeUtil"", e);
+    }
+}",""
+"public static String getSourceName(Node n) {
+    String sourceName = null;
+    while (sourceName == null && n != null) {
+        sourceName = n.getSourceFileName();
+        n = n.getParent();
+    }
+    return sourceName;
+}","public void test03636() throws Throwable {
+    Node node0 = new Node(107);
+    NodeUtil.isCallOrNewTarget(node0);
+    NodeUtil.getSourceName(node0);
+    PeepholeRemoveDeadCode peepholeRemoveDeadCode0 = new PeepholeRemoveDeadCode();
+    NodeUtil.NumbericResultPredicate nodeUtil_NumbericResultPredicate0 = new NodeUtil.NumbericResultPredicate();
+    nodeUtil_NumbericResultPredicate0.apply(node0);
+    NodeUtil.isCommutative(29);
+    byte[] byteArray0 = new byte[0];
+    FileSystemHandling.appendDataToFile((EvoSuiteFile) null, byteArray0);
+    NodeUtil.isLatin((String) null);
+    NodeUtil.isEmptyBlock(node0);
+    // Undeclared exception!
+    try {
+        NodeUtil.getSourceName(node0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.NodeUtil"", e);
+    }
+}","/**
+ * @param n The node.
+ * @return The source name property on the node or its ancestors.
+ */"
+"static boolean hasCatchHandler(Node n) {
+    Preconditions.checkArgument(n.isBlock());
+    return n.hasChildren() && n.getFirstChild().isCatch();
+}","public void test03939() throws Throwable {
+    Node node0 = NodeUtil.booleanNode(false);
+    Node node1 = new Node((-360), node0, node0, node0, node0);
+    NodeUtil.isPrototypeProperty(node1);
+    Compiler compiler0 = new Compiler();
+    NodeUtil.nodeTypeMayHaveSideEffects(node1, compiler0);
+    NodeUtil.precedence(1073741823);
+    NodeUtil.hasCatchHandler(node1);
+}","/**
+ * @return Whether BLOCK (from a TRY node) contains a CATCH.
+ * @see NodeUtil#getCatchBlock
+ */"
+"public static TernaryValue isStrWhiteSpaceChar(int c) {
+    switch(c) {
+        case // <VT>
+        '\u000B':
+            // IE says ""no"", ECMAScript says ""yes""
+            return TernaryValue.UNKNOWN;
+        // <SP>
+        case ' ':
+        // <LF>
+        case '\n':
+        // <CR>
+        case '\r':
+        // <TAB>
+        case '\t':
+        // <NBSP>
+        case '\u00A0':
+        // <FF>
+        case '\u000C':
+        // <LS>
+        case '\u2028':
+        // <PS>
+        case '\u2029':
+        case // <BOM>
+        '\uFEFF':
+            return TernaryValue.TRUE;
+        default:
+            return (Character.getType(c) == Character.SPACE_SEPARATOR) ? TernaryValue.TRUE : TernaryValue.FALSE;
+    }
+}","public void test04040() throws Throwable {
+    NodeUtil.getStringNumberValue(""yO!"");
+    Compiler compiler0 = new Compiler();
+    compiler0.getRoot();
+    NodeUtil.newUndefinedNode((Node) null);
+    Node node0 = compiler0.externAndJsRoot;
+    NodeUtil.NumbericResultPredicate nodeUtil_NumbericResultPredicate0 = new NodeUtil.NumbericResultPredicate();
+    Object object0 = new Object();
+    Node.newString(141, ""6~,MtbYhd"");
+    NodeUtil.isStrWhiteSpaceChar(43);
+}","/**
+ * Copied from Rhino's ScriptRuntime
+ */"
+"public Node(int nodeType) {
+    type = nodeType;
+    parent = null;
+    sourcePosition = -1;
+}","public void test04141() throws Throwable {
+    Double double0 = NodeUtil.getStringNumberValue(""u"");
+    NodeUtil.MatchDeclaration nodeUtil_MatchDeclaration0 = new NodeUtil.MatchDeclaration();
+    Integer integer0 = new Integer(21);
+    nodeUtil_MatchDeclaration0.equals(double0);
+    Node node0 = new Node(21);
+}",""
+"static boolean containsType(Node node, int type) {
+    return containsType(node, type, Predicates.<Node>alwaysTrue());
+}","public void test04242() throws Throwable {
+    Node node0 = Node.newString(313, """");
+    NodeUtil.getLoopCodeBlock(node0);
+    Node node1 = NodeUtil.getRootOfQualifiedName(node0);
+    NodeUtil.isGetOrSetKey(node0);
+    // Undeclared exception!
+    try {
+        NodeUtil.containsType(node1, node1.IS_DISPATCHER);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * @return true if n or any of its children are of the specified type
+ */"
+"VariableMap getPropertyMap() {
+    return getPassConfig().getIntermediateState().propertyMap;
+}","public void test04343() throws Throwable {
+    FileSystemHandling.createFolder((EvoSuiteFile) null);
+    NodeUtil.getStringNumberValue(""6^2aU(8*wN9L|W@"");
+    Compiler compiler0 = new Compiler();
+    Scope.Var scope_Var0 = null;
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    Node node0 = null;
+    String string0 = ""y9&eGH/n:"";
+    Node node1 = Node.newString(1091, ""y9&eGH/n:"", 1091, 1630);
+    referenceCollectingCallback0.hotSwapScript((Node) null, node1);
+    ReferenceCollectingCallback.ReferenceCollection referenceCollectingCallback_ReferenceCollection0 = referenceCollectingCallback0.getReferences(scope_Var0);
+    ImmutableMap<Scope.Var, ReferenceCollectingCallback.ReferenceCollection> immutableMap0 = ImmutableMap.of(scope_Var0, referenceCollectingCallback_ReferenceCollection0);
+    compiler0.updateGlobalVarReferences(immutableMap0, node1);
+    // Undeclared exception!
+    try {
+        compiler0.getPropertyMap();
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // null
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",""
+"public ClosureCodingConvention() {
+    this(CodingConventions.getDefault());
+}","public void test04545() throws Throwable {
+    Node node0 = NodeUtil.booleanNode(false);
+    NodeUtil.getBestLValueName(node0);
+    NodeUtil.getPrototypeClassName(node0);
+    NodeUtil.constructorCallHasSideEffects(node0);
+    ClosureCodingConvention closureCodingConvention0 = null;
+    try {
+        closureCodingConvention0 = new ClosureCodingConvention();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Expected NEW node, got FALSE
+        //
+        verifyException(""com.google.javascript.jscomp.NodeUtil"", e);
+    }
+}",""
+"/*
+   *  0 comma ,
+   *  1 assignment = += -= *= /= %= <<= >>= >>>= &= ^= |=
+   *  2 conditional ?:
+   *  3 logical-or ||
+   *  4 logical-and &&
+   *  5 bitwise-or |
+   *  6 bitwise-xor ^
+   *  7 bitwise-and &
+   *  8 equality == !=
+   *  9 relational < <= > >=
+   * 10 bitwise shift << >> >>>
+   * 11 addition/subtraction + -
+   * 12 multiply/divide * / %
+   * 13 negation/increment ! ~ - ++ --
+   * 14 call, member () [] .
+   */
+static int precedence(int type) {
+    int precedence = precedenceWithDefault(type);
+    if (precedence != -1) {
+        return precedence;
+    }
+    throw new Error(""Unknown precedence for "" + Token.name(type) + "" (type "" + type + "")"");
+}","public void test04747() throws Throwable {
+    Node node0 = new Node(107);
+    NodeUtil.isCallOrNewTarget(node0);
+    NodeUtil.getSourceName(node0);
+    PeepholeRemoveDeadCode peepholeRemoveDeadCode0 = new PeepholeRemoveDeadCode();
+    NodeUtil.precedence(107);
+}",""
+"static boolean isBooleanResult(Node n) {
+    return allResultsMatch(n, BOOLEAN_RESULT_PREDICATE);
+}","public void test04848() throws Throwable {
+    Node node0 = Node.newString(1318, ""[#K.lmr7["", 1318, 0);
+    node0.cloneTree();
+    String string0 = NodeUtil.JSC_PROPERTY_NAME_FN;
+    Node node1 = NodeUtil.getBestLValue(node0);
+    NodeUtil.isStatementBlock(node1);
+    NodeUtil.mayEffectMutableState(node1);
+    NodeUtil.isBooleanResult(node1);
+}","/**
+ * @return Whether the result of node evaluation is always a boolean
+ */"
+"static boolean isSwitchCase(Node n) {
+    return n.isCase() || n.isDefaultCase();
+}","public void test04949() throws Throwable {
+    Node node0 = new Node(104, (-1082), 21);
+    NodeUtil.getSourceName(node0);
+    NodeUtil.isSwitchCase(node0);
+}","/**
+ * Whether the node is part of a switch statement.
+ */"
+"static boolean isImmutableResult(Node n) {
+    return allResultsMatch(n, IMMUTABLE_PREDICATE);
+}","public void test05050() throws Throwable {
+    NodeUtil.MayBeStringResultPredicate nodeUtil_MayBeStringResultPredicate0 = new NodeUtil.MayBeStringResultPredicate();
+    Node node0 = null;
+    // Undeclared exception!
+    try {
+        NodeUtil.isImmutableResult((Node) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.NodeUtil"", e);
+    }
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    if (!subtree.isScript() && !subtree.isBlock()) {
+        return subtree;
+    }
+    boolean codeChanged = false;
+    // Look for variable declarations or simple assignments
+    // and start processing there.
+    for (Node child = subtree.getFirstChild(); child != null; child = child.getNext()) {
+        if (!child.isVar() && !NodeUtil.isExprAssign(child)) {
+            continue;
+        }
+        if (!isPropertyAssignmentToName(child.getNext())) {
+            // Quick check to see if there's anything to collapse.
+            continue;
+        }
+        Preconditions.checkState(child.hasOneChild());
+        Node name = getName(child);
+        if (!name.isName()) {
+            // The assignment target is not a simple name.
+            continue;
+        }
+        Node value = getValue(child);
+        if (value == null || !isInterestingValue(value)) {
+            // No initializer or not an Object or Array literal.
+            continue;
+        }
+        Node propertyCandidate;
+        while ((propertyCandidate = child.getNext()) != null) {
+            // This does not infinitely loop because collectProperty always
+            // removes propertyCandidate from its parent when it returns true.
+            if (!collectProperty(propertyCandidate, name.getString(), value)) {
+                break;
+            }
+            codeChanged = true;
+        }
+    }
+    if (codeChanged) {
+        reportCodeChange();
+    }
+    return subtree;
+}","public void test05151() throws Throwable {
+    FileSystemHandling.shouldAllThrowIOExceptions();
+    Node node0 = NodeUtil.booleanNode(true);
+    Node node1 = Node.newNumber(1257.8548, 2, 12);
+    NodeUtil.MatchShallowStatement nodeUtil_MatchShallowStatement0 = new NodeUtil.MatchShallowStatement();
+    NodeUtil.isEmptyBlock(node1);
+    NodeUtil.isForIn(node1);
+    PeepholeRemoveDeadCode peepholeRemoveDeadCode0 = new PeepholeRemoveDeadCode();
+    NodeUtil.getLoopCodeBlock(node0);
+    peepholeRemoveDeadCode0.tryFoldWhile((Node) null);
+    PeepholeCollectPropertyAssignments peepholeCollectPropertyAssignments0 = new PeepholeCollectPropertyAssignments();
+    // Undeclared exception!
+    try {
+        peepholeCollectPropertyAssignments0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeRemoveDeadCode"", e);
+    }
+}",""
+"static boolean isSwitchCase(Node n) {
+    return n.isCase() || n.isDefaultCase();
+}","public void test05252() throws Throwable {
+    Node node0 = new Node(107);
+    NodeUtil.isCallOrNewTarget(node0);
+    NodeUtil.getSourceName(node0);
+    StatementFusion statementFusion0 = new StatementFusion(true);
+    Node node1 = statementFusion0.optimizeSubtree(node0);
+    NodeUtil.isSwitchCase(node1);
+}","/**
+ * Whether the node is part of a switch statement.
+ */"
+"static Node getCatchHandlerForBlock(Node block) {
+    if (block.isBlock() && block.getParent().isTry() && block.getParent().getFirstChild() == block) {
+        for (Node s = block.getNext(); s != null; s = s.getNext()) {
+            if (NodeUtil.hasCatchHandler(s)) {
+                return s.getFirstChild();
+            }
+        }
+    }
+    return null;
+}","public void test05353() throws Throwable {
+    Node node0 = Node.newString(10, ""_fZ+9+%"");
+    PeepholeFoldConstants.evaluateComparison((-1044), node0, node0);
+    String string0 = ""?@{%;&56t6i"";
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""?@{%;&56t6i"", ""?@{%;&56t6i"");
+    Compiler compiler0 = new Compiler(mockPrintStream0);
+    Normalize.parseAndNormalizeTestCode(compiler0, string0);
+    // Undeclared exception!
+    try {
+        ControlFlowAnalysis.getCatchHandlerForBlock(node0);
+        fail(""Expecting exception: UnsupportedEncodingException"");
+    } catch (Throwable e) {
+        //
+        // ?@{%;&56t6i
+        //
+        verifyException(""java.io.PrintStream"", e);
+    }
+}","/**
+ * Locate the catch BLOCK given the first block in a TRY.
+ * @return The CATCH node or null there is no catch handler.
+ */"
+"public Node(int nodeType) {
+    type = nodeType;
+    parent = null;
+    sourcePosition = -1;
+}","public void test05555() throws Throwable {
+    NodeUtil.getStringNumberValue(""+infinity"");
+    NodeUtil.MatchDeclaration nodeUtil_MatchDeclaration0 = new NodeUtil.MatchDeclaration();
+    Integer integer0 = new Integer((-6));
+    nodeUtil_MatchDeclaration0.equals(integer0);
+    Node node0 = new Node((-6));
+}",""
+"public void setType(int type) {
+    this.type = type;
+}","public void test05656() throws Throwable {
+    NodeUtil.opToStrNoFail(21);
+    NodeUtil.MatchDeclaration nodeUtil_MatchDeclaration0 = new NodeUtil.MatchDeclaration();
+    Node.newString(5731, ""+"");
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""+"");
+    int int0 = (-521);
+    // Undeclared exception!
+    try {
+        node0.setType(int0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // duplicate key: desc
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",""
+"static int getNameReferenceCount(Node node, String name) {
+    return getCount(node, new MatchNameNode(name), Predicates.<Node>alwaysTrue());
+}","public void test05757() throws Throwable {
+    FileSystemHandling.shouldAllThrowIOExceptions();
+    Node node0 = NodeUtil.booleanNode(true);
+    NodeUtil.opToStr(32);
+    NodeUtil.isEmptyBlock(node0);
+    NodeUtil.isForIn(node0);
+    PeepholeRemoveDeadCode peepholeRemoveDeadCode0 = new PeepholeRemoveDeadCode();
+    NodeUtil.mayBeString(node0, false);
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    Node node1 = new Node(1466, node0);
+    Node node2 = NodeUtil.newName(jqueryCodingConvention0, ""Infinity"", node1);
+    NodeUtil.getBestJSDocInfo(node2);
+    NodeUtil.getNameReferenceCount(node2, ""typeof"");
+}","/**
+ * Finds the number of times a simple name is referenced within the node tree.
+ */"
+"/*
+   *  0 comma ,
+   *  1 assignment = += -= *= /= %= <<= >>= >>>= &= ^= |=
+   *  2 conditional ?:
+   *  3 logical-or ||
+   *  4 logical-and &&
+   *  5 bitwise-or |
+   *  6 bitwise-xor ^
+   *  7 bitwise-and &
+   *  8 equality == !=
+   *  9 relational < <= > >=
+   * 10 bitwise shift << >> >>>
+   * 11 addition/subtraction + -
+   * 12 multiply/divide * / %
+   * 13 negation/increment ! ~ - ++ --
+   * 14 call, member () [] .
+   */
+static int precedence(int type) {
+    int precedence = precedenceWithDefault(type);
+    if (precedence != -1) {
+        return precedence;
+    }
+    throw new Error(""Unknown precedence for "" + Token.name(type) + "" (type "" + type + "")"");
+}","public void test05858() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    PeepholeRemoveDeadCode peepholeRemoveDeadCode0 = new PeepholeRemoveDeadCode();
+    NodeUtil.precedence(38);
+}",""
+"static boolean isStatement(Node n) {
+    return isStatementParent(n.getParent());
+}","public void test05959() throws Throwable {
+    String string0 = ""3I{%;&56t6i"";
+    NodeUtil.MatchDeclaration nodeUtil_MatchDeclaration0 = new NodeUtil.MatchDeclaration();
+    Node node0 = Node.newNumber(Double.NEGATIVE_INFINITY);
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    NodeUtil.newQualifiedNameNode((CodingConvention) jqueryCodingConvention0, ""DEGENERATE"", node0, ""3I{%;&56t6i"");
+    NodeUtil.getFunctionBody(node0);
+    SourceMap.DetailLevel.valueOf(string0);
+    // Undeclared exception!
+    try {
+        NodeUtil.isStatement(node0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * @return Whether the node is used as a statement.
+ */"
+"static Node getBestLValueOwner(@Nullable Node lValue) {
+    if (lValue == null || lValue.getParent() == null) {
+        return null;
+    }
+    if (isObjectLitKey(lValue)) {
+        return getBestLValue(lValue.getParent());
+    } else if (isGet(lValue)) {
+        return lValue.getFirstChild();
+    }
+    return null;
+}","public void test06060() throws Throwable {
+    Node node0 = Node.newString(1318, ""[#K.lmr7["", 1318, 1318);
+    Node node1 = node0.cloneTree();
+    NodeUtil.mayBeString(node1, true);
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    node1.removeProp(48);
+    NodeUtil.NumbericResultPredicate nodeUtil_NumbericResultPredicate0 = new NodeUtil.NumbericResultPredicate();
+    NodeUtil.mapMainToClone(node0, node0);
+    NodeUtil.getBestLValueOwner(node1);
+}","/**
+ * Get the owner of the given l-value node.
+ */"
+"static JSDocInfo getBestJSDocInfo(Node n) {
+    JSDocInfo info = n.getJSDocInfo();
+    if (info == null) {
+        Node parent = n.getParent();
+        if (parent == null) {
+            return null;
+        }
+        if (parent.isName()) {
+            return getBestJSDocInfo(parent);
+        } else if (parent.isAssign()) {
+            return getBestJSDocInfo(parent);
+        } else if (isObjectLitKey(parent)) {
+            return parent.getJSDocInfo();
+        } else if (parent.isFunction()) {
+            return parent.getJSDocInfo();
+        } else if (parent.isVar() && parent.hasOneChild()) {
+            return parent.getJSDocInfo();
+        } else if ((parent.isHook() && parent.getFirstChild() != n) || parent.isOr() || parent.isAnd() || (parent.isComma() && parent.getFirstChild() != n)) {
+            return getBestJSDocInfo(parent);
+        } else if (parent.isCast()) {
+            return parent.getJSDocInfo();
+        }
+    }
+    return info;
+}","public void test06161() throws Throwable {
+    Node node0 = Node.newString(313, """");
+    Compiler compiler0 = new Compiler();
+    Node node1 = compiler0.parseTestCode("""");
+    int int0 = (-1003);
+    node0.setType(int0);
+    node0.replaceChildAfter(node1, node1);
+    Node node2 = NodeUtil.getLoopCodeBlock(node0);
+    // Undeclared exception!
+    try {
+        NodeUtil.getBestJSDocInfo(node2);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // prev is not a child of this node.
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * Find the best JSDoc for the given node.
+ */"
+"static Node getCatchBlock(Node n) {
+    Preconditions.checkArgument(n.isTry());
+    return n.getFirstChild().getNext();
+}","public void test06262() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JSType[] jSTypeArray0 = new JSType[0];
+    Node node0 = jSTypeRegistry0.createParametersWithVarArgs(jSTypeArray0);
+    node0.wasEmptyNode();
+    // Undeclared exception!
+    try {
+        NodeUtil.getCatchBlock(node0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * @return The BLOCK node containing the CATCH node (if any)
+ * of a TRY.
+ */"
+"static boolean isPrototypeProperty(Node n) {
+    String lhsString = n.getQualifiedName();
+    return lhsString != null && lhsString.contains("".prototype."");
+}","public void test06363() throws Throwable {
+    Node node0 = NodeUtil.booleanNode(true);
+    Node node1 = NodeUtil.getConditionExpression(node0);
+    // Undeclared exception!
+    try {
+        NodeUtil.isPrototypeProperty(node1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // TRUE does not have a condition.
+        //
+        verifyException(""com.google.javascript.jscomp.NodeUtil"", e);
+    }
+}","/**
+ * @return Whether the node represents a qualified prototype property.
+ */"
+"static boolean isImmutableValue(Node n) {
+    switch(n.getType()) {
+        case Token.STRING:
+        case Token.NUMBER:
+        case Token.NULL:
+        case Token.TRUE:
+        case Token.FALSE:
+            return true;
+        case Token.CAST:
+        case Token.NOT:
+            return isImmutableValue(n.getFirstChild());
+        case Token.VOID:
+        case Token.NEG:
+            return isImmutableValue(n.getFirstChild());
+        case Token.NAME:
+            String name = n.getString();
+            // We assume here that programs don't change the value of the keyword
+            // undefined to something other than the value undefined.
+            return ""undefined"".equals(name) || ""Infinity"".equals(name) || ""NaN"".equals(name);
+    }
+    return false;
+}","public void test06464() throws Throwable {
+    FileSystemHandling.appendLineToFile((EvoSuiteFile) null, (String) null);
+    NodeUtil.MatchDeclaration nodeUtil_MatchDeclaration0 = new NodeUtil.MatchDeclaration();
+    Integer integer0 = new Integer(1799);
+    nodeUtil_MatchDeclaration0.equals(integer0);
+    Node node0 = Node.newNumber(Double.NEGATIVE_INFINITY);
+    node0.getDouble();
+    node0.setDouble(Double.NEGATIVE_INFINITY);
+    NodeUtil.isStrWhiteSpaceChar(15);
+    NodeUtil.isImmutableValue(node0);
+}","/**
+ * Returns true if this is an immutable value.
+ */"
+"static boolean hasCatchHandler(Node n) {
+    Preconditions.checkArgument(n.isBlock());
+    return n.hasChildren() && n.getFirstChild().isCatch();
+}","public void test06565() throws Throwable {
+    Node node0 = Node.newString(10, "".ZF"");
+    Node node1 = new Node(15, node0, node0, node0, 15, 16);
+    NodeUtil.numberNode(4095, node1);
+    ExploitAssigns exploitAssigns0 = new ExploitAssigns();
+    NodeUtil.isGetOrSetKey(node1);
+    NodeUtil.NumbericResultPredicate nodeUtil_NumbericResultPredicate0 = new NodeUtil.NumbericResultPredicate();
+    Object object0 = new Object();
+    PeepholeRemoveDeadCode peepholeRemoveDeadCode0 = new PeepholeRemoveDeadCode();
+    Node node2 = peepholeRemoveDeadCode0.optimizeSubtree(node1);
+    node2.toString(false, false, false);
+    NodeUtil.isLiteralValue(node2, true);
+    NodeUtil.canBeSideEffected(node0);
+    NodeUtil.hasCatchHandler(node1);
+}","/**
+ * @return Whether BLOCK (from a TRY node) contains a CATCH.
+ * @see NodeUtil#getCatchBlock
+ */"
+"/*
+   *  0 comma ,
+   *  1 assignment = += -= *= /= %= <<= >>= >>>= &= ^= |=
+   *  2 conditional ?:
+   *  3 logical-or ||
+   *  4 logical-and &&
+   *  5 bitwise-or |
+   *  6 bitwise-xor ^
+   *  7 bitwise-and &
+   *  8 equality == !=
+   *  9 relational < <= > >=
+   * 10 bitwise shift << >> >>>
+   * 11 addition/subtraction + -
+   * 12 multiply/divide * / %
+   * 13 negation/increment ! ~ - ++ --
+   * 14 call, member () [] .
+   */
+static int precedence(int type) {
+    int precedence = precedenceWithDefault(type);
+    if (precedence != -1) {
+        return precedence;
+    }
+    throw new Error(""Unknown precedence for "" + Token.name(type) + "" (type "" + type + "")"");
+}","public void test06666() throws Throwable {
+    Node node0 = Node.newString(1318, ""[#K.lmr7["", 1318, 1318);
+    Node node1 = node0.cloneTree();
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    NodeUtil.newName(jqueryCodingConvention0, ""RKS'7na6KJ"", node0);
+    Node node2 = NodeUtil.getArgumentForCallOrNew(node1, 1747);
+    NodeUtil.isVarDeclaration(node2);
+    int int0 = 404;
+    NodeUtil.precedence(int0);
+}",""
+"static boolean mayEffectMutableState(Node n, AbstractCompiler compiler) {
+    return checkForStateChangeHelper(n, true, compiler);
+}","public void test06767() throws Throwable {
+    Node[] nodeArray0 = new Node[5];
+    Node node0 = Node.newString(10, ""_fZ+9+%"");
+    Node node1 = new Node(232, node0, node0, node0, 98, 110);
+    Node node2 = NodeUtil.numberNode((-750.88699464128), node1);
+    nodeArray0[0] = node2;
+    ExploitAssigns exploitAssigns0 = new ExploitAssigns();
+    NodeUtil.isGetOrSetKey(node0);
+    NodeUtil.NumbericResultPredicate nodeUtil_NumbericResultPredicate0 = new NodeUtil.NumbericResultPredicate();
+    Object object0 = new Object();
+    PeepholeRemoveDeadCode peepholeRemoveDeadCode0 = new PeepholeRemoveDeadCode();
+    Node node3 = peepholeRemoveDeadCode0.optimizeSubtree(node1);
+    nodeUtil_NumbericResultPredicate0.equals(node3);
+    NodeUtil.MatchNodeType nodeUtil_MatchNodeType0 = new NodeUtil.MatchNodeType((-453));
+    NodeUtil.has(node0, nodeUtil_NumbericResultPredicate0, nodeUtil_MatchNodeType0);
+    Compiler compiler0 = new Compiler();
+    NodeUtil.mayEffectMutableState((Node) null, compiler0);
+}",""
+"public static String getSourceName(Node n) {
+    String sourceName = null;
+    while (sourceName == null && n != null) {
+        sourceName = n.getSourceFileName();
+        n = n.getParent();
+    }
+    return sourceName;
+}","public void test06868() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    Node node0 = NodeUtil.newQualifiedNameNode(closureCodingConvention0, ""3bL7)9C|)EX9==:"");
+    NodeUtil.isCallOrNewTarget(node0);
+    Node node1 = NodeUtil.newQualifiedNameNode((CodingConvention) closureCodingConvention0, ""fX"", node0, ""fX"");
+    NodeUtil.getSourceName(node1);
+    PeepholeRemoveDeadCode peepholeRemoveDeadCode0 = new PeepholeRemoveDeadCode();
+    NodeUtil.NumbericResultPredicate nodeUtil_NumbericResultPredicate0 = new NodeUtil.NumbericResultPredicate();
+    nodeUtil_NumbericResultPredicate0.apply(node1);
+    NodeUtil.isCommutative(5);
+    byte[] byteArray0 = new byte[0];
+    FileSystemHandling.appendDataToFile((EvoSuiteFile) null, byteArray0);
+    NodeUtil.isLatin("".'PFYaOwYg3'qp~Rj"");
+    NodeUtil.isEmptyBlock(node1);
+    NodeUtil.getSourceName(node0);
+}","/**
+ * @param n The node.
+ * @return The source name property on the node or its ancestors.
+ */"
+"static boolean mayEffectMutableState(Node n, AbstractCompiler compiler) {
+    return checkForStateChangeHelper(n, true, compiler);
+}","public void test06969() throws Throwable {
+    Node node0 = NodeUtil.booleanNode(false);
+    Node node1 = NodeUtil.newUndefinedNode(node0);
+    Node node2 = new Node(133, node0, node0, node1, node0);
+    NodeUtil.isPrototypeProperty(node1);
+    Compiler compiler0 = new Compiler();
+    Logger logger0 = Tracer.logger;
+    LoggerErrorManager loggerErrorManager0 = new LoggerErrorManager(logger0);
+    Compiler compiler1 = new Compiler(loggerErrorManager0);
+    NodeUtil.nodeTypeMayHaveSideEffects(node2, compiler1);
+    NodeUtil.NumbericResultPredicate nodeUtil_NumbericResultPredicate0 = new NodeUtil.NumbericResultPredicate();
+    nodeUtil_NumbericResultPredicate0.apply(node2);
+    NodeUtil.MatchShallowStatement nodeUtil_MatchShallowStatement0 = new NodeUtil.MatchShallowStatement();
+    NodeUtil.MatchNodeType nodeUtil_MatchNodeType0 = new NodeUtil.MatchNodeType(147);
+    NodeUtil.has(node2, nodeUtil_MatchShallowStatement0, nodeUtil_MatchNodeType0);
+    NodeUtil.mayEffectMutableState(node1, compiler1);
+}",""
+"public static TernaryValue isStrWhiteSpaceChar(int c) {
+    switch(c) {
+        case // <VT>
+        '\u000B':
+            // IE says ""no"", ECMAScript says ""yes""
+            return TernaryValue.UNKNOWN;
+        // <SP>
+        case ' ':
+        // <LF>
+        case '\n':
+        // <CR>
+        case '\r':
+        // <TAB>
+        case '\t':
+        // <NBSP>
+        case '\u00A0':
+        // <FF>
+        case '\u000C':
+        // <LS>
+        case '\u2028':
+        // <PS>
+        case '\u2029':
+        case // <BOM>
+        '\uFEFF':
+            return TernaryValue.TRUE;
+        default:
+            return (Character.getType(c) == Character.SPACE_SEPARATOR) ? TernaryValue.TRUE : TernaryValue.FALSE;
+    }
+}","public void test07070() throws Throwable {
+    NodeUtil.getStringNumberValue("""");
+    NodeUtil.MatchDeclaration nodeUtil_MatchDeclaration0 = new NodeUtil.MatchDeclaration();
+    Integer integer0 = new Integer(1799);
+    Object object0 = new Object();
+    nodeUtil_MatchDeclaration0.equals(object0);
+    Node node0 = Node.newNumber(0.0);
+    node0.setDouble(0.0);
+    NodeUtil.isStrWhiteSpaceChar(109);
+}","/**
+ * Copied from Rhino's ScriptRuntime
+ */"
+"static boolean mayEffectMutableState(Node n) {
+    return mayEffectMutableState(n, null);
+}","public void test07171() throws Throwable {
+    Node node0 = new Node(107);
+    NodeUtil.isCallOrNewTarget(node0);
+    NodeUtil.getBestLValueName(node0);
+    node0.setChangeTime(18);
+    node0.removeProp((-1527));
+    Node node1 = new Node(22, node0, node0, node0);
+    node1.getChangeTime();
+    NodeUtil.getSourceName(node0);
+    StatementFusion statementFusion0 = new StatementFusion(true);
+    statementFusion0.optimizeSubtree(node1);
+    NodeUtil.mayEffectMutableState(node0);
+}","/**
+ * Returns true if the node may create new mutable state, or change existing
+ * state.
+ *
+ * @see <a href=""http://www.xkcd.org/326/"">XKCD Cartoon</a>
+ */"
+"static boolean isBooleanResult(Node n) {
+    return allResultsMatch(n, BOOLEAN_RESULT_PREDICATE);
+}","public void test07272() throws Throwable {
+    FileSystemHandling.shouldAllThrowIOExceptions();
+    Node node0 = NodeUtil.booleanNode(true);
+    Node node1 = Node.newNumber(1257.8548, 2, 12);
+    NodeUtil.MatchShallowStatement nodeUtil_MatchShallowStatement0 = new NodeUtil.MatchShallowStatement();
+    PipedInputStream pipedInputStream0 = new PipedInputStream();
+    NodeUtil.isObjectCallMethod(node1, ""y:3bctW"");
+    StatementFusion statementFusion0 = new StatementFusion(true);
+    Node node2 = statementFusion0.tryFuseStatementsAggressively(node0);
+    NodeUtil.mayEffectMutableState(node2);
+    NodeUtil.isBooleanResult(node0);
+}","/**
+ * @return Whether the result of node evaluation is always a boolean
+ */"
+"static Node getAssignedValue(Node n) {
+    Preconditions.checkState(n.isName());
+    Node parent = n.getParent();
+    if (parent.isVar()) {
+        return n.getFirstChild();
+    } else if (parent.isAssign() && parent.getFirstChild() == n) {
+        return n.getNext();
+    } else {
+        return null;
+    }
+}","public void test07373() throws Throwable {
+    Node node0 = NodeUtil.booleanNode(true);
+    node0.wasEmptyNode();
+    Compiler compiler0 = new Compiler();
+    NodeUtil.nodeTypeMayHaveSideEffects(node0, compiler0);
+    NodeUtil.precedence(42);
+    NodeUtil.getStringNumberValue("" does not have a condition."");
+    Node node1 = compiler0.externsRoot;
+    Node node2 = NodeUtil.getAssignedValue((Node) null);
+    NodeUtil.getAssignedValue(node2);
+}","/**
+ * For an assignment or variable declaration get the assigned value.
+ * @return The value node representing the new value.
+ */"
+"static boolean isExprCall(Node n) {
+    return n.isExprResult() && n.getFirstChild().isCall();
+}","public void test07474() throws Throwable {
+    GoogleCodingConvention googleCodingConvention0 = new GoogleCodingConvention();
+    ExploitAssigns exploitAssigns0 = new ExploitAssigns();
+    Node node0 = Node.newString(""G@H!&{`(r6rw"", 1799, 119);
+    NodeUtil.mayHaveSideEffects(node0);
+    PeepholeFoldConstants.evaluateComparison(536870912, node0, node0);
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""$a"", ""$a"");
+    Compiler compiler0 = new Compiler(mockPrintStream0);
+    String string0 = ""com.google.javascript.jscomp.DefaultPassConfig$31"";
+    Normalize.parseAndNormalizeTestCode(compiler0, string0);
+    ControlFlowAnalysis.getCatchHandlerForBlock(node0);
+    // Undeclared exception!
+    try {
+        NodeUtil.isExprCall(node0);
+        fail(""Expecting exception: UnsupportedEncodingException"");
+    } catch (Throwable e) {
+        //
+        // $a
+        //
+        verifyException(""java.io.PrintStream"", e);
+    }
+}","/**
+ * Is this node a call expression statement?
+ *
+ * @param n The node
+ * @return True if {@code n} is EXPR_RESULT and {@code n}'s
+ *     first child is CALL
+ */"
+"static boolean isNaN(Node n) {
+    if ((n.isName() && n.getString().equals(""NaN"")) || (n.getType() == Token.DIV && n.getFirstChild().isNumber() && n.getFirstChild().getDouble() == 0 && n.getLastChild().isNumber() && n.getLastChild().getDouble() == 0)) {
+        return true;
+    }
+    return false;
+}","public void test07575() throws Throwable {
+    Node node0 = NodeUtil.booleanNode(true);
+    Compiler compiler0 = new Compiler();
+    NodeUtil.nodeTypeMayHaveSideEffects(node0, compiler0);
+    NodeUtil.precedence(42);
+    NodeUtil.isNaN(node0);
+}",""
+"static boolean isGetOrSetKey(Node node) {
+    switch(node.getType()) {
+        case Token.GETTER_DEF:
+        case Token.SETTER_DEF:
+            return true;
+    }
+    return false;
+}","public void test07676() throws Throwable {
+    FileSystemHandling.shouldAllThrowIOExceptions();
+    Node node0 = NodeUtil.booleanNode(true);
+    Node node1 = Node.newString(23, ""Mz,"", (-2006), 1868);
+    Node node2 = node1.cloneTree();
+    Node node3 = new Node(2, node1, node1, 56, 115);
+    NodeUtil.isGetOrSetKey(node0);
+    NodeUtil.NumbericResultPredicate nodeUtil_NumbericResultPredicate0 = new NodeUtil.NumbericResultPredicate();
+    Object object0 = new Object();
+    nodeUtil_NumbericResultPredicate0.apply(node2);
+    PeepholeRemoveDeadCode peepholeRemoveDeadCode0 = new PeepholeRemoveDeadCode();
+    Node node4 = peepholeRemoveDeadCode0.optimizeSubtree(node0);
+    nodeUtil_NumbericResultPredicate0.equals(node4);
+    Node node5 = NodeUtil.getBestLValueOwner(node2);
+    nodeUtil_NumbericResultPredicate0.apply((Node) null);
+    nodeUtil_NumbericResultPredicate0.apply(node5);
+    int int0 = 9;
+    NodeUtil.isCommutative(int0);
+    NodeUtil.isGetOrSetKey(node2);
+}","/**
+ * Determines whether a node represents an object literal get or set key
+ * (e.g. key1 in {get key1() {}, set key2(a){}).
+ *
+ * @param node A node
+ */"
+"/*
+   *  0 comma ,
+   *  1 assignment = += -= *= /= %= <<= >>= >>>= &= ^= |=
+   *  2 conditional ?:
+   *  3 logical-or ||
+   *  4 logical-and &&
+   *  5 bitwise-or |
+   *  6 bitwise-xor ^
+   *  7 bitwise-and &
+   *  8 equality == !=
+   *  9 relational < <= > >=
+   * 10 bitwise shift << >> >>>
+   * 11 addition/subtraction + -
+   * 12 multiply/divide * / %
+   * 13 negation/increment ! ~ - ++ --
+   * 14 call, member () [] .
+   */
+static int precedence(int type) {
+    int precedence = precedenceWithDefault(type);
+    if (precedence != -1) {
+        return precedence;
+    }
+    throw new Error(""Unknown precedence for "" + Token.name(type) + "" (type "" + type + "")"");
+}","public void test07777() throws Throwable {
+    PeepholeRemoveDeadCode peepholeRemoveDeadCode0 = new PeepholeRemoveDeadCode();
+    NodeUtil.precedence(1318);
+}",""
+"static TernaryValue getPureBooleanValue(Node n) {
+    switch(n.getType()) {
+        case Token.STRING:
+            return TernaryValue.forBoolean(n.getString().length() > 0);
+        case Token.NUMBER:
+            return TernaryValue.forBoolean(n.getDouble() != 0);
+        case Token.NOT:
+            return getPureBooleanValue(n.getLastChild()).not();
+        case Token.NULL:
+        case Token.FALSE:
+            return TernaryValue.FALSE;
+        case Token.VOID:
+            if (!mayHaveSideEffects(n.getFirstChild())) {
+                return TernaryValue.FALSE;
+            }
+            break;
+        case Token.NAME:
+            String name = n.getString();
+            if (""undefined"".equals(name) || ""NaN"".equals(name)) {
+                // We assume here that programs don't change the value of the keyword
+                // undefined to something other than the value undefined.
+                return TernaryValue.FALSE;
+            } else if (""Infinity"".equals(name)) {
+                return TernaryValue.TRUE;
+            }
+            break;
+        case Token.TRUE:
+        case Token.REGEXP:
+            return TernaryValue.TRUE;
+        case Token.ARRAYLIT:
+        case Token.OBJECTLIT:
+            if (!mayHaveSideEffects(n)) {
+                return TernaryValue.TRUE;
+            }
+            break;
+    }
+    return TernaryValue.UNKNOWN;
+}","public void test07878() throws Throwable {
+    Node node0 = Node.newString(10, ""_fZ+9+%"");
+    Node node1 = new Node(232, node0, node0, node0, 98, 110);
+    PeepholeRemoveDeadCode peepholeRemoveDeadCode0 = new PeepholeRemoveDeadCode();
+    NodeUtil.getLoopCodeBlock(node0);
+    NodeUtil.isBleedingFunctionName(node1);
+    NodeUtil.getPureBooleanValue(node0);
+}","/**
+ * Gets the boolean value of a node that represents a literal. This method
+ * effectively emulates the <code>Boolean()</code> JavaScript cast function
+ * except it return UNKNOWN for known values with side-effects, use
+ * getImpureBooleanValue if you don't care about side-effects.
+ */"
+"static int getNameReferenceCount(Node node, String name) {
+    return getCount(node, new MatchNameNode(name), Predicates.<Node>alwaysTrue());
+}","public void test07979() throws Throwable {
+    FileSystemHandling.shouldAllThrowIOExceptions();
+    Node node0 = NodeUtil.booleanNode(true);
+    NodeUtil.isForIn(node0);
+    PeepholeRemoveDeadCode peepholeRemoveDeadCode0 = new PeepholeRemoveDeadCode();
+    NodeUtil.mayBeString(node0, true);
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    Node node1 = new Node((-248), node0);
+    NodeUtil.newName(jqueryCodingConvention0, ""=="", node0);
+    NodeUtil.getBestJSDocInfo(node1);
+    NodeUtil.getNameReferenceCount(node1, ""parseInt"");
+}","/**
+ * Finds the number of times a simple name is referenced within the node tree.
+ */"
+"CodingConvention getCodingConvention() {
+    // Note: this assumes a thread safe coding convention object.
+    return compiler.getCodingConvention();
+}","public void test08080() throws Throwable {
+    NodeUtil.MatchShallowStatement nodeUtil_MatchShallowStatement0 = new NodeUtil.MatchShallowStatement();
+    double double0 = (-473.0);
+    NodeUtil.getStringValue((-473.0));
+    ExploitAssigns exploitAssigns0 = new ExploitAssigns();
+    // Undeclared exception!
+    try {
+        exploitAssigns0.getCodingConvention();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.AbstractPeepholeOptimization"", e);
+    }
+}","/**
+ * @return the current coding convention.
+ */"
+"static int getNameReferenceCount(Node node, String name) {
+    return getCount(node, new MatchNameNode(name), Predicates.<Node>alwaysTrue());
+}","public void test08181() throws Throwable {
+    NodeUtil.MatchDeclaration nodeUtil_MatchDeclaration0 = new NodeUtil.MatchDeclaration();
+    Integer integer0 = new Integer(1799);
+    FileSystemHandling.shouldAllThrowIOExceptions();
+    Node node0 = Node.newNumber(Double.NEGATIVE_INFINITY);
+    node0.addSuppression(""gRt!+V"");
+    node0.setDouble(Double.NEGATIVE_INFINITY);
+    NodeUtil.getNameReferenceCount(node0, ""RegExp"");
+}","/**
+ * Finds the number of times a simple name is referenced within the node tree.
+ */"
+"static boolean hasCatchHandler(Node n) {
+    Preconditions.checkArgument(n.isBlock());
+    return n.hasChildren() && n.getFirstChild().isCatch();
+}","public void test08484() throws Throwable {
+    Node[] nodeArray0 = new Node[5];
+    Node node0 = Node.newString(10, ""_fZ+9+%"");
+    Node node1 = new Node(232, node0, node0, node0, 98, 110);
+    Node node2 = NodeUtil.numberNode((-750.88699464128), node1);
+    nodeArray0[0] = node2;
+    Compiler compiler0 = new Compiler();
+    NodeUtil.nodeTypeMayHaveSideEffects(node2, compiler0);
+    NodeUtil.precedence(55);
+    NodeUtil.hasCatchHandler(node2);
+}","/**
+ * @return Whether BLOCK (from a TRY node) contains a CATCH.
+ * @see NodeUtil#getCatchBlock
+ */"
+"/*
+   *  0 comma ,
+   *  1 assignment = += -= *= /= %= <<= >>= >>>= &= ^= |=
+   *  2 conditional ?:
+   *  3 logical-or ||
+   *  4 logical-and &&
+   *  5 bitwise-or |
+   *  6 bitwise-xor ^
+   *  7 bitwise-and &
+   *  8 equality == !=
+   *  9 relational < <= > >=
+   * 10 bitwise shift << >> >>>
+   * 11 addition/subtraction + -
+   * 12 multiply/divide * / %
+   * 13 negation/increment ! ~ - ++ --
+   * 14 call, member () [] .
+   */
+static int precedence(int type) {
+    int precedence = precedenceWithDefault(type);
+    if (precedence != -1) {
+        return precedence;
+    }
+    throw new Error(""Unknown precedence for "" + Token.name(type) + "" (type "" + type + "")"");
+}","public void test08585() throws Throwable {
+    Node.newString(10, ""_fZ+9+%"");
+    NodeUtil.precedence(37);
+}",""
+"static boolean isGetOrSetKey(Node node) {
+    switch(node.getType()) {
+        case Token.GETTER_DEF:
+        case Token.SETTER_DEF:
+            return true;
+    }
+    return false;
+}","public void test08686() throws Throwable {
+    Node node0 = Node.newString(1269, """", 1431655764, (-2516));
+    PeepholeFoldWithTypes peepholeFoldWithTypes0 = new PeepholeFoldWithTypes();
+    Node node1 = peepholeFoldWithTypes0.optimizeSubtree(node0);
+    Node node2 = node1.cloneTree();
+    Node node3 = new Node(57, node2, node0, 15, 1066);
+    NodeUtil.isGetOrSetKey(node0);
+    NodeUtil.NumbericResultPredicate nodeUtil_NumbericResultPredicate0 = new NodeUtil.NumbericResultPredicate();
+    Object object0 = new Object();
+    NodeUtil.NumbericResultPredicate nodeUtil_NumbericResultPredicate1 = NodeUtil.NUMBERIC_RESULT_PREDICATE;
+    nodeUtil_NumbericResultPredicate1.apply(node3);
+    PeepholeRemoveDeadCode peepholeRemoveDeadCode0 = new PeepholeRemoveDeadCode();
+    peepholeRemoveDeadCode0.optimizeSubtree(node3);
+    nodeUtil_NumbericResultPredicate1.equals("""");
+    NodeUtil.getBestLValueOwner(node0);
+    nodeUtil_NumbericResultPredicate1.apply(node2);
+    nodeUtil_NumbericResultPredicate0.apply(node3);
+    NodeUtil.isCommutative(201);
+    NodeUtil.isGetOrSetKey(node1);
+}","/**
+ * Determines whether a node represents an object literal get or set key
+ * (e.g. key1 in {get key1() {}, set key2(a){}).
+ *
+ * @param node A node
+ */"
+"static TernaryValue getPureBooleanValue(Node n) {
+    switch(n.getType()) {
+        case Token.STRING:
+            return TernaryValue.forBoolean(n.getString().length() > 0);
+        case Token.NUMBER:
+            return TernaryValue.forBoolean(n.getDouble() != 0);
+        case Token.NOT:
+            return getPureBooleanValue(n.getLastChild()).not();
+        case Token.NULL:
+        case Token.FALSE:
+            return TernaryValue.FALSE;
+        case Token.VOID:
+            if (!mayHaveSideEffects(n.getFirstChild())) {
+                return TernaryValue.FALSE;
+            }
+            break;
+        case Token.NAME:
+            String name = n.getString();
+            if (""undefined"".equals(name) || ""NaN"".equals(name)) {
+                // We assume here that programs don't change the value of the keyword
+                // undefined to something other than the value undefined.
+                return TernaryValue.FALSE;
+            } else if (""Infinity"".equals(name)) {
+                return TernaryValue.TRUE;
+            }
+            break;
+        case Token.TRUE:
+        case Token.REGEXP:
+            return TernaryValue.TRUE;
+        case Token.ARRAYLIT:
+        case Token.OBJECTLIT:
+            if (!mayHaveSideEffects(n)) {
+                return TernaryValue.TRUE;
+            }
+            break;
+    }
+    return TernaryValue.UNKNOWN;
+}","public void test08787() throws Throwable {
+    FileSystemHandling.shouldAllThrowIOExceptions();
+    Node node0 = Node.newString(461845907, ""_fZ+9+%"");
+    Node node1 = new Node(32, node0, node0, node0, 461845907, (-1082));
+    PeepholeRemoveDeadCode peepholeRemoveDeadCode0 = new PeepholeRemoveDeadCode();
+    NodeUtil.getLoopCodeBlock(node0);
+    NodeUtil.isGet(node1);
+    NodeUtil.getPureBooleanValue((Node) null);
+}","/**
+ * Gets the boolean value of a node that represents a literal. This method
+ * effectively emulates the <code>Boolean()</code> JavaScript cast function
+ * except it return UNKNOWN for known values with side-effects, use
+ * getImpureBooleanValue if you don't care about side-effects.
+ */"
+"static String getFunctionName(Node n) {
+    Preconditions.checkState(n.isFunction());
+    Node parent = n.getParent();
+    switch(parent.getType()) {
+        case Token.NAME:
+            // var name = function() ...
+            // var name2 = function name1() ...
+            return parent.getQualifiedName();
+        case Token.ASSIGN:
+            // qualified.name = function() ...
+            // qualified.name2 = function name1() ...
+            return parent.getFirstChild().getQualifiedName();
+        default:
+            // function name() ...
+            String name = n.getFirstChild().getQualifiedName();
+            return name;
+    }
+}","public void test08888() throws Throwable {
+    Node node0 = NodeUtil.booleanNode(true);
+    Node node1 = new Node(43, node0, node0, node0, node0);
+    NodeUtil.isPrototypeProperty(node0);
+    Compiler compiler0 = new Compiler();
+    NodeUtil.nodeTypeMayHaveSideEffects(node1, compiler0);
+    NodeUtil.NumbericResultPredicate nodeUtil_NumbericResultPredicate0 = new NodeUtil.NumbericResultPredicate();
+    nodeUtil_NumbericResultPredicate0.apply(node1);
+    node1.removeProp(132);
+    NodeUtil.NumbericResultPredicate nodeUtil_NumbericResultPredicate1 = NodeUtil.NUMBERIC_RESULT_PREDICATE;
+    NodeUtil.NumbericResultPredicate nodeUtil_NumbericResultPredicate2 = new NodeUtil.NumbericResultPredicate();
+    NodeUtil.evaluatesToLocalValue(node1, nodeUtil_NumbericResultPredicate2);
+    NodeUtil.getFunctionName(node1);
+}","/**
+ * Gets the function's name. This method recognizes five forms:
+ * <ul>
+ * <li>{@code function name() ...}</li>
+ * <li>{@code var name = function() ...}</li>
+ * <li>{@code qualified.name = function() ...}</li>
+ * <li>{@code var name2 = function name1() ...}</li>
+ * <li>{@code qualified.name2 = function name1() ...}</li>
+ * </ul>
+ * In two last cases with named function expressions, the second name is
+ * returned (the variable of qualified name).
+ *
+ * @param n a node whose type is {@link Token#FUNCTION}
+ * @return the function's name, or {@code null} if it has no name
+ */"
+"static boolean hasCatchHandler(Node n) {
+    Preconditions.checkArgument(n.isBlock());
+    return n.hasChildren() && n.getFirstChild().isCatch();
+}","public void test08989() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    Node node0 = NodeUtil.newQualifiedNameNode(closureCodingConvention0, ""3bL7)9C|)EX9==:"");
+    NodeUtil.numberNode(30, node0);
+    ExploitAssigns exploitAssigns0 = new ExploitAssigns();
+    NodeUtil.isGetOrSetKey(node0);
+    NodeUtil.NumbericResultPredicate nodeUtil_NumbericResultPredicate0 = new NodeUtil.NumbericResultPredicate();
+    Object object0 = new Object();
+    PeepholeRemoveDeadCode peepholeRemoveDeadCode0 = new PeepholeRemoveDeadCode();
+    Node node1 = peepholeRemoveDeadCode0.optimizeSubtree(node0);
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""3bL7)9C|)EX9==:"");
+    Compiler compiler0 = new Compiler(mockPrintStream0);
+    Object object1 = new Object();
+    PeepholeRemoveDeadCode peepholeRemoveDeadCode1 = new PeepholeRemoveDeadCode();
+    peepholeRemoveDeadCode0.optimizeSubtree(node0);
+    node1.toString(true, true, true);
+    NodeUtil.isLiteralValue(node1, true);
+    NodeUtil.canBeSideEffected(node1);
+    NodeUtil.hasCatchHandler(node0);
+}","/**
+ * @return Whether BLOCK (from a TRY node) contains a CATCH.
+ * @see NodeUtil#getCatchBlock
+ */"
+"static boolean isNameReferenced(Node node, String name) {
+    return isNameReferenced(node, name, Predicates.<Node>alwaysTrue());
+}","public void test09090() throws Throwable {
+    Node node0 = new Node(107);
+    NodeUtil.isCallOrNewTarget(node0);
+    NodeUtil.getSourceFile(node0);
+    NodeUtil.NumbericResultPredicate nodeUtil_NumbericResultPredicate0 = new NodeUtil.NumbericResultPredicate();
+    Integer integer0 = new Integer(37);
+    NodeUtil.MatchDeclaration nodeUtil_MatchDeclaration0 = new NodeUtil.MatchDeclaration();
+    nodeUtil_MatchDeclaration0.apply(node0);
+    FileSystemHandling.appendStringToFile((EvoSuiteFile) null, ""u"");
+    nodeUtil_MatchDeclaration0.equals(integer0);
+    NodeUtil.MatchNodeType nodeUtil_MatchNodeType0 = new NodeUtil.MatchNodeType((-171));
+    NodeUtil.has(node0, nodeUtil_NumbericResultPredicate0, nodeUtil_NumbericResultPredicate0);
+    Compiler compiler0 = new Compiler();
+    NodeUtil.mayEffectMutableState(node0, compiler0);
+    NodeUtil.isNameReferenced(node0, ""XML"");
+}","/**
+ * Whether a simple name is referenced within the node tree.
+ */"
+"/*
+   *  0 comma ,
+   *  1 assignment = += -= *= /= %= <<= >>= >>>= &= ^= |=
+   *  2 conditional ?:
+   *  3 logical-or ||
+   *  4 logical-and &&
+   *  5 bitwise-or |
+   *  6 bitwise-xor ^
+   *  7 bitwise-and &
+   *  8 equality == !=
+   *  9 relational < <= > >=
+   * 10 bitwise shift << >> >>>
+   * 11 addition/subtraction + -
+   * 12 multiply/divide * / %
+   * 13 negation/increment ! ~ - ++ --
+   * 14 call, member () [] .
+   */
+static int precedence(int type) {
+    int precedence = precedenceWithDefault(type);
+    if (precedence != -1) {
+        return precedence;
+    }
+    throw new Error(""Unknown precedence for "" + Token.name(type) + "" (type "" + type + "")"");
+}","public void test09191() throws Throwable {
+    Node node0 = new Node(107);
+    NodeUtil.isCallOrNewTarget(node0);
+    NodeUtil.getNearestFunctionName(node0);
+    node0.setChangeTime(18);
+    node0.removeProp((-1527));
+    Node node1 = new Node(8, node0, node0, node0);
+    int int0 = new Integer(38);
+    NodeUtil.getSourceName(node0);
+    NodeUtil.precedence(100);
+}",""
+"static boolean isEmptyBlock(Node block) {
+    if (!block.isBlock()) {
+        return false;
+    }
+    for (Node n = block.getFirstChild(); n != null; n = n.getNext()) {
+        if (!n.isEmpty()) {
+            return false;
+        }
+    }
+    return true;
+}","public void test09292() throws Throwable {
+    NodeUtil.precedence(44);
+    FileSystemHandling.createFolder((EvoSuiteFile) null);
+    Node node0 = Node.newString(""B\""gJGS8A;"", 15, 5);
+    Node node1 = NodeUtil.getAssignedValue(node0);
+    node0.clonePropsFrom(node1);
+    node1.setDouble(node0.FREE_CALL);
+    NodeUtil.isStrWhiteSpaceChar(node1.IS_DISPATCHER);
+    NodeUtil.isEmptyBlock(node0);
+}","/**
+ * Returns whether this a BLOCK node with no children.
+ *
+ * @param block The node.
+ */"
+"static Node getCatchBlock(Node n) {
+    Preconditions.checkArgument(n.isTry());
+    return n.getFirstChild().getNext();
+}","public void test09393() throws Throwable {
+    Node node0 = null;
+    Node node1 = NodeUtil.getArgumentForFunction((Node) null, (-1609));
+    // Undeclared exception!
+    try {
+        NodeUtil.getCatchBlock(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.NodeUtil"", e);
+    }
+}","/**
+ * @return The BLOCK node containing the CATCH node (if any)
+ * of a TRY.
+ */"
+"static JSType getObjectLitKeyTypeFromValueType(Node key, JSType valueType) {
+    if (valueType != null) {
+        switch(key.getType()) {
+            case Token.GETTER_DEF:
+                // GET must always return a function type.
+                if (valueType.isFunctionType()) {
+                    FunctionType fntype = valueType.toMaybeFunctionType();
+                    valueType = fntype.getReturnType();
+                } else {
+                    return null;
+                }
+                break;
+            case Token.SETTER_DEF:
+                if (valueType.isFunctionType()) {
+                    // SET must always return a function type.
+                    FunctionType fntype = valueType.toMaybeFunctionType();
+                    Node param = fntype.getParametersNode().getFirstChild();
+                    // SET function must always have one parameter.
+                    valueType = param.getJSType();
+                } else {
+                    return null;
+                }
+                break;
+        }
+    }
+    return valueType;
+}","public void test09595() throws Throwable {
+    NodeUtil.getStringNumberValue(""yO!"");
+    Compiler compiler0 = new Compiler();
+    compiler0.getRoot();
+    NodeUtil.newUndefinedNode((Node) null);
+    Node node0 = compiler0.externAndJsRoot;
+    NodeUtil.NumbericResultPredicate nodeUtil_NumbericResultPredicate0 = new NodeUtil.NumbericResultPredicate();
+    Object object0 = new Object();
+    Node.newString(141, ""6~,MtbYhd"");
+    NodeUtil.getObjectLitKeyTypeFromValueType((Node) null, (JSType) null);
+}","/**
+ * @param key A OBJECTLIT key node.
+ * @return The type expected when using the key.
+ */"
+"/*
+   *  0 comma ,
+   *  1 assignment = += -= *= /= %= <<= >>= >>>= &= ^= |=
+   *  2 conditional ?:
+   *  3 logical-or ||
+   *  4 logical-and &&
+   *  5 bitwise-or |
+   *  6 bitwise-xor ^
+   *  7 bitwise-and &
+   *  8 equality == !=
+   *  9 relational < <= > >=
+   * 10 bitwise shift << >> >>>
+   * 11 addition/subtraction + -
+   * 12 multiply/divide * / %
+   * 13 negation/increment ! ~ - ++ --
+   * 14 call, member () [] .
+   */
+static int precedence(int type) {
+    int precedence = precedenceWithDefault(type);
+    if (precedence != -1) {
+        return precedence;
+    }
+    throw new Error(""Unknown precedence for "" + Token.name(type) + "" (type "" + type + "")"");
+}","public void test09797() throws Throwable {
+    FileSystemHandling.setPermissions((EvoSuiteFile) null, true, true, true);
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    PeepholeRemoveDeadCode peepholeRemoveDeadCode0 = new PeepholeRemoveDeadCode();
+    NodeUtil.precedence(51);
+}",""
+"static boolean tryMergeBlock(Node block) {
+    Preconditions.checkState(block.isBlock());
+    Node parent = block.getParent();
+    // Try to remove the block if its parent is a block/script or if its
+    // parent is label and it has exactly one child.
+    if (isStatementBlock(parent)) {
+        Node previous = block;
+        while (block.hasChildren()) {
+            Node child = block.removeFirstChild();
+            parent.addChildAfter(child, previous);
+            previous = child;
+        }
+        parent.removeChild(block);
+        return true;
+    } else {
+        return false;
+    }
+}","public void test09898() throws Throwable {
+    Integer integer0 = new Integer((-638));
+    FileSystemHandling.shouldAllThrowIOExceptions();
+    Node node0 = new Node((-1217), (-1217), (-638));
+    Node node1 = NodeUtil.newVarNode(""Infinity"", node0);
+    node0.isEquivalentToTyped(node1);
+    node0.getJSDocInfo();
+    NodeUtil.tryMergeBlock(node0);
+}","/**
+ * Merge a block with its parent block.
+ * @return Whether the block was removed.
+ */"
+"/*
+   *  0 comma ,
+   *  1 assignment = += -= *= /= %= <<= >>= >>>= &= ^= |=
+   *  2 conditional ?:
+   *  3 logical-or ||
+   *  4 logical-and &&
+   *  5 bitwise-or |
+   *  6 bitwise-xor ^
+   *  7 bitwise-and &
+   *  8 equality == !=
+   *  9 relational < <= > >=
+   * 10 bitwise shift << >> >>>
+   * 11 addition/subtraction + -
+   * 12 multiply/divide * / %
+   * 13 negation/increment ! ~ - ++ --
+   * 14 call, member () [] .
+   */
+static int precedence(int type) {
+    int precedence = precedenceWithDefault(type);
+    if (precedence != -1) {
+        return precedence;
+    }
+    throw new Error(""Unknown precedence for "" + Token.name(type) + "" (type "" + type + "")"");
+}","public void test09999() throws Throwable {
+    Node[] nodeArray0 = new Node[5];
+    Node node0 = Node.newString(10, ""_fZ+9+%"");
+    Node node1 = new Node(232, node0, node0, node0, 98, 110);
+    Node node2 = NodeUtil.numberNode((-750.88699464128), node1);
+    nodeArray0[0] = node2;
+    ExploitAssigns exploitAssigns0 = new ExploitAssigns();
+    NodeUtil.isGetOrSetKey(node0);
+    NodeUtil.NumbericResultPredicate nodeUtil_NumbericResultPredicate0 = new NodeUtil.NumbericResultPredicate();
+    Object object0 = new Object();
+    PeepholeRemoveDeadCode peepholeRemoveDeadCode0 = new PeepholeRemoveDeadCode();
+    Compiler compiler0 = new Compiler((PrintStream) null);
+    peepholeRemoveDeadCode0.endTraversal(compiler0);
+    Node node3 = peepholeRemoveDeadCode0.optimizeSubtree(node1);
+    nodeUtil_NumbericResultPredicate0.equals(node3);
+    nodeUtil_NumbericResultPredicate0.apply(node3);
+    NodeUtil.precedence(32);
+}",""
+"static String getFunctionName(Node n) {
+    Preconditions.checkState(n.isFunction());
+    Node parent = n.getParent();
+    switch(parent.getType()) {
+        case Token.NAME:
+            // var name = function() ...
+            // var name2 = function name1() ...
+            return parent.getQualifiedName();
+        case Token.ASSIGN:
+            // qualified.name = function() ...
+            // qualified.name2 = function name1() ...
+            return parent.getFirstChild().getQualifiedName();
+        default:
+            // function name() ...
+            String name = n.getFirstChild().getQualifiedName();
+            return name;
+    }
+}","public void test100100() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    Node node0 = NodeUtil.newQualifiedNameNode(closureCodingConvention0, ""3bL7)9C|)EX9==:"");
+    Node node1 = new Node(51, node0, node0, node0, node0);
+    NodeUtil.isPrototypeProperty(node1);
+    Compiler compiler0 = new Compiler();
+    NodeUtil.nodeTypeMayHaveSideEffects(node0, compiler0);
+    NodeUtil.NumbericResultPredicate nodeUtil_NumbericResultPredicate0 = new NodeUtil.NumbericResultPredicate();
+    nodeUtil_NumbericResultPredicate0.apply(node1);
+    node1.removeProp(38);
+    NodeUtil.NumbericResultPredicate nodeUtil_NumbericResultPredicate1 = NodeUtil.NUMBERIC_RESULT_PREDICATE;
+    NodeUtil.NumbericResultPredicate nodeUtil_NumbericResultPredicate2 = new NodeUtil.NumbericResultPredicate();
+    NodeUtil.evaluatesToLocalValue(node1, nodeUtil_NumbericResultPredicate1);
+    NodeUtil.getFunctionName(node1);
+}","/**
+ * Gets the function's name. This method recognizes five forms:
+ * <ul>
+ * <li>{@code function name() ...}</li>
+ * <li>{@code var name = function() ...}</li>
+ * <li>{@code qualified.name = function() ...}</li>
+ * <li>{@code var name2 = function name1() ...}</li>
+ * <li>{@code qualified.name2 = function name1() ...}</li>
+ * </ul>
+ * In two last cases with named function expressions, the second name is
+ * returned (the variable of qualified name).
+ *
+ * @param n a node whose type is {@link Token#FUNCTION}
+ * @return the function's name, or {@code null} if it has no name
+ */"
+"static boolean isCommutative(int type) {
+    switch(type) {
+        case Token.MUL:
+        case Token.BITOR:
+        case Token.BITXOR:
+        case Token.BITAND:
+            return true;
+        default:
+            return false;
+    }
+}","public void test101101() throws Throwable {
+    NodeUtil.MatchShallowStatement nodeUtil_MatchShallowStatement0 = new NodeUtil.MatchShallowStatement();
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants(false);
+    Node node0 = new Node(116);
+    Node node1 = peepholeFoldConstants0.optimizeSubtree(node0);
+    NodeUtil.isPrototypeProperty(node1);
+    peepholeFoldConstants0.mayHaveSideEffects(node1);
+    NodeUtil.NumbericResultPredicate nodeUtil_NumbericResultPredicate0 = new NodeUtil.NumbericResultPredicate();
+    Object object0 = new Object();
+    PeepholeRemoveDeadCode peepholeRemoveDeadCode0 = new PeepholeRemoveDeadCode();
+    Node node2 = peepholeRemoveDeadCode0.optimizeSubtree(node0);
+    NodeUtil.NumbericResultPredicate nodeUtil_NumbericResultPredicate1 = new NodeUtil.NumbericResultPredicate();
+    Object object1 = new Object();
+    nodeUtil_NumbericResultPredicate1.equals(object1);
+    NodeUtil.NumbericResultPredicate nodeUtil_NumbericResultPredicate2 = NodeUtil.NUMBERIC_RESULT_PREDICATE;
+    nodeUtil_NumbericResultPredicate2.apply(node2);
+    NodeUtil.isCommutative(15);
+}","/**
+ * Returns true if the operator is commutative.
+ * e.g. (a * b) * c = c * (b * a)
+ * Note 1: ""+"" is not commutative because it is also the concatenation
+ * for strings. e.g. ""a"" + (1 + 2) is not ""a"" + 1 + 2
+ * Note 2: only operations on literals and pure functions are commutative.
+ */"
+"/*
+   *  0 comma ,
+   *  1 assignment = += -= *= /= %= <<= >>= >>>= &= ^= |=
+   *  2 conditional ?:
+   *  3 logical-or ||
+   *  4 logical-and &&
+   *  5 bitwise-or |
+   *  6 bitwise-xor ^
+   *  7 bitwise-and &
+   *  8 equality == !=
+   *  9 relational < <= > >=
+   * 10 bitwise shift << >> >>>
+   * 11 addition/subtraction + -
+   * 12 multiply/divide * / %
+   * 13 negation/increment ! ~ - ++ --
+   * 14 call, member () [] .
+   */
+static int precedence(int type) {
+    int precedence = precedenceWithDefault(type);
+    if (precedence != -1) {
+        return precedence;
+    }
+    throw new Error(""Unknown precedence for "" + Token.name(type) + "" (type "" + type + "")"");
+}","public void test102102() throws Throwable {
+    FileSystemHandling.setPermissions((EvoSuiteFile) null, true, true, true);
+    Node node0 = NodeUtil.booleanNode(true);
+    NodeUtil.getSourceName(node0);
+    PeepholeRemoveDeadCode peepholeRemoveDeadCode0 = new PeepholeRemoveDeadCode();
+    NodeUtil.precedence(15);
+}",""
+"/*
+   *  0 comma ,
+   *  1 assignment = += -= *= /= %= <<= >>= >>>= &= ^= |=
+   *  2 conditional ?:
+   *  3 logical-or ||
+   *  4 logical-and &&
+   *  5 bitwise-or |
+   *  6 bitwise-xor ^
+   *  7 bitwise-and &
+   *  8 equality == !=
+   *  9 relational < <= > >=
+   * 10 bitwise shift << >> >>>
+   * 11 addition/subtraction + -
+   * 12 multiply/divide * / %
+   * 13 negation/increment ! ~ - ++ --
+   * 14 call, member () [] .
+   */
+static int precedence(int type) {
+    int precedence = precedenceWithDefault(type);
+    if (precedence != -1) {
+        return precedence;
+    }
+    throw new Error(""Unknown precedence for "" + Token.name(type) + "" (type "" + type + "")"");
+}","public void test103103() throws Throwable {
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    Node node0 = NodeUtil.newQualifiedNameNode(closureCodingConvention0, ""3bL7)9C|)EX9==:"");
+    Node node1 = NodeUtil.numberNode(30, node0);
+    node0.checkTreeEquals(node1);
+    ExploitAssigns exploitAssigns0 = new ExploitAssigns();
+    NodeUtil.isGetOrSetKey(node0);
+    NodeUtil.NumbericResultPredicate nodeUtil_NumbericResultPredicate0 = new NodeUtil.NumbericResultPredicate();
+    Object object0 = new Object();
+    PeepholeRemoveDeadCode peepholeRemoveDeadCode0 = new PeepholeRemoveDeadCode();
+    peepholeRemoveDeadCode0.optimizeSubtree(node0);
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""3bL7)9C|)EX9==:"");
+    Compiler compiler0 = new Compiler(mockPrintStream0);
+    Object object1 = new Object();
+    PeepholeRemoveDeadCode peepholeRemoveDeadCode1 = new PeepholeRemoveDeadCode();
+    Compiler compiler1 = new Compiler((PrintStream) null);
+    peepholeRemoveDeadCode1.endTraversal(compiler0);
+    Node node2 = peepholeRemoveDeadCode0.optimizeSubtree(node1);
+    MockFile mockFile0 = new MockFile(""this"", ""3bL7)9C|)EX9==:"");
+    File file0 = MockFile.createTempFile(""this"", ""Ye^E"", (File) mockFile0);
+    SourceFile sourceFile0 = SourceFile.fromFile(file0);
+    nodeUtil_NumbericResultPredicate0.equals(sourceFile0);
+    nodeUtil_NumbericResultPredicate0.apply(node2);
+    NodeUtil.precedence(15);
+}",""
+"public static boolean isLValue(Node n) {
+    Preconditions.checkArgument(n.isName() || n.isGetProp() || n.isGetElem());
+    Node parent = n.getParent();
+    if (parent == null) {
+        return false;
+    }
+    return (NodeUtil.isAssignmentOp(parent) && parent.getFirstChild() == n) || (NodeUtil.isForIn(parent) && parent.getFirstChild() == n) || parent.isVar() || (parent.isFunction() && parent.getFirstChild() == n) || parent.isDec() || parent.isInc() || parent.isParamList() || parent.isCatch();
+}","public void test104104() throws Throwable {
+    Node node0 = Node.newString((-514), ""_fZ+9+%"");
+    Node node1 = new Node((-863), node0, node0, node0, (-4426), 47);
+    NodeUtil.numberNode(56, node1);
+    ExploitAssigns exploitAssigns0 = new ExploitAssigns();
+    Node node2 = Node.newNumber((-473.4953857));
+    node2.setDouble(55);
+    NodeUtil.isStrWhiteSpaceChar(50);
+    NodeUtil.isLValue(node0);
+}","/**
+ * Determines whether this node is used as an L-value. Notice that sometimes
+ * names are used as both L-values and R-values.
+ *
+ * We treat ""var x;"" as a pseudo-L-value, which kind of makes sense if you
+ * treat it as ""assignment to 'undefined' at the top of the scope"". But if
+ * we're honest with ourselves, it doesn't make sense, and we only do this
+ * because it makes sense to treat this as syntactically similar to
+ * ""var x = 0;"".
+ *
+ * @param n The node
+ * @return True if n is an L-value.
+ */"
+"static boolean isNaN(Node n) {
+    if ((n.isName() && n.getString().equals(""NaN"")) || (n.getType() == Token.DIV && n.getFirstChild().isNumber() && n.getFirstChild().getDouble() == 0 && n.getLastChild().isNumber() && n.getLastChild().getDouble() == 0)) {
+        return true;
+    }
+    return false;
+}","public void test105105() throws Throwable {
+    NodeUtil.MatchDeclaration nodeUtil_MatchDeclaration0 = new NodeUtil.MatchDeclaration();
+    FileSystemHandling.createFolder((EvoSuiteFile) null);
+    Integer integer0 = new Integer(1799);
+    nodeUtil_MatchDeclaration0.equals(integer0);
+    Node node0 = Node.newNumber(Double.NEGATIVE_INFINITY);
+    NodeUtil.precedence(17);
+    NodeUtil.isNaN(node0);
+    NodeUtil.isStrWhiteSpaceChar(115);
+    NodeUtil.isNaN(node0);
+}",""
+"static Node getPrototypeClassName(Node qName) {
+    Node cur = qName;
+    while (cur.isGetProp()) {
+        if (cur.getLastChild().getString().equals(""prototype"")) {
+            return cur.getFirstChild();
+        } else {
+            cur = cur.getFirstChild();
+        }
+    }
+    return null;
+}","public void test106106() throws Throwable {
+    PeepholeMinimizeConditions peepholeMinimizeConditions0 = new PeepholeMinimizeConditions(false);
+    int int0 = (-522);
+    Node[] nodeArray0 = new Node[1];
+    Compiler compiler0 = new Compiler();
+    TightenTypes tightenTypes0 = new TightenTypes(compiler0);
+    tightenTypes0.getTopScope();
+    TightenTypes.ConcreteScope tightenTypes_ConcreteScope0 = tightenTypes0.new ConcreteScope((TightenTypes.ConcreteScope) null);
+    tightenTypes_ConcreteScope0.getRootNode();
+    Node node0 = NodeUtil.getFunctionParameters((Node) null);
+    // Undeclared exception!
+    try {
+        NodeUtil.getPrototypeClassName(node0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.NodeUtil"", e);
+    }
+}","/**
+ * @return The class name part of a qualified prototype name.
+ */"

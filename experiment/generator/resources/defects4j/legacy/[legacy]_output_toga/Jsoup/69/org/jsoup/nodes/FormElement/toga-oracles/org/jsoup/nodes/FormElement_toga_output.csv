@@ -1,0 +1,160 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test011,"public void test011() throws Throwable {
+    Tag tag0 = Tag.valueOf(""U#Zw`MA6,h6;,6f:`"");
+    Attributes attributes0 = new Attributes();
+    FormElement formElement0 = new FormElement(tag0, ""U#Zw`MA6,h6;,6f:`"", attributes0);
+    Document document0 = Document.createShell(""PANxl2s/a;}Z|{sl$x"");
+    formElement0.siblingIndex = 57;
+    FormElement formElement1 = formElement0.addElement(document0);
+    assertSame(formElement1, formElement0);
+}",0,
+project,0,test022,"public void test022() throws Throwable {
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    Tag tag0 = Tag.valueOf(""; filename=\"""", parseSettings0);
+    Attributes attributes0 = new Attributes();
+    FormElement formElement0 = new FormElement(tag0, ""MULDZOY}GV}R&V?48B"", attributes0);
+    Document document0 = new Document("";#\""-jQ4Pyd`"");
+    FormElement formElement1 = formElement0.addElement(document0);
+    formElement1.siblingIndex = (-1);
+    FormElement formElement2 = formElement0.addElement(document0);
+    assertEquals(""; filename=\"""", formElement2.nodeName());
+}",0,assertNotNull(formElement2.nodeName())
+project,0,test033,"public void test033() throws Throwable {
+    Tag tag0 = Tag.valueOf(""h3"");
+    Attributes attributes0 = new Attributes();
+    FormElement formElement0 = new FormElement(tag0, ""link"", attributes0);
+    FormElement formElement1 = formElement0.addElement(formElement0);
+    assertEquals(""link"", formElement1.baseUri());
+}",0,assertNotNull(formElement1.baseUri())
+project,0,test044,"public void test044() throws Throwable {
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    Tag tag0 = Tag.valueOf(""keygen"", parseSettings0);
+    Comment comment0 = new Comment(""keygen"");
+    Attributes attributes0 = comment0.attributes();
+    FormElement formElement0 = new FormElement(tag0, "";1L@YWx"", attributes0);
+    Document document0 = new Document("";1L@YWx"");
+    formElement0.reparentChild(formElement0);
+    FormElement formElement1 = formElement0.addElement(document0);
+    assertTrue(formElement1.hasParent());
+}",0,assertFalse(formElement1.hasParent())
+project,0,test055,"public void test055() throws Throwable {
+    Tag tag0 = Tag.valueOf(""Q"");
+    FormElement formElement0 = new FormElement(tag0, ""Q"", (Attributes) null);
+    formElement0.prependElement(""Q"");
+    Document document0 = Document.createShell("""");
+    FormElement formElement1 = formElement0.addElement(document0);
+    assertSame(formElement0, formElement1);
+}",0,
+project,0,test066,"public void test066() throws Throwable {
+    Tag tag0 = Tag.valueOf(""rrUWn"");
+    Attributes attributes0 = new Attributes();
+    Attributes attributes1 = attributes0.put(""checked"", ""checked"");
+    FormElement formElement0 = new FormElement(tag0, ""rrUWn"", attributes1);
+    attributes1.keys = null;
+    // Undeclared exception!
+    try {
+        formElement0.submit();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Attributes"", e);
+    }
+}",0,
+project,0,test077,"public void test077() throws Throwable {
+    Tag tag0 = Tag.valueOf(""U#Zw`MA6,h6;,6f:`"");
+    Attributes attributes0 = new Attributes();
+    Attributes attributes1 = attributes0.put(""PANxl2s/a;}Z|{sl$x"", true);
+    Attributes attributes2 = attributes1.clone();
+    FormElement formElement0 = new FormElement(tag0, ""U#Zw`MA6,h6;,6f:`"", attributes2);
+    String[] stringArray0 = new String[0];
+    attributes2.keys = stringArray0;
+    // Undeclared exception!
+    try {
+        formElement0.submit();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 0
+        //
+        verifyException(""org.jsoup.nodes.Attributes"", e);
+    }
+}",0,
+project,0,test088,"public void test088() throws Throwable {
+    Tag tag0 = Tag.valueOf(""TPJ><bl[d^LLv.`"");
+    Attributes attributes0 = new Attributes();
+    FormElement formElement0 = new FormElement(tag0, ""TPJ><bl[d^LLv.`"", attributes0);
+    FormElement formElement1 = formElement0.addElement((Element) null);
+    // Undeclared exception!
+    try {
+        formElement1.formData();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.FormElement"", e);
+    }
+}",0,
+project,0,test1111,"public void test1111() throws Throwable {
+    Tag tag0 = Tag.valueOf(""POST"");
+    Attributes attributes0 = new Attributes();
+    Attributes attributes1 = attributes0.put(""method"", ""POST"");
+    FormElement formElement0 = new FormElement(tag0, ""POST"", attributes1);
+    // Undeclared exception!
+    try {
+        formElement0.submit();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Malformed URL: POST
+        //
+        verifyException(""org.jsoup.helper.HttpConnection"", e);
+    }
+}",0,
+project,0,test1212,"public void test1212() throws Throwable {
+    Tag tag0 = Tag.valueOf(""lYT"");
+    Attributes attributes0 = new Attributes();
+    attributes0.put(""action"", ""action"");
+    FormElement formElement0 = new FormElement(tag0, ""action"", attributes0);
+    // Undeclared exception!
+    try {
+        formElement0.submit();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Could not determine a form action URL for submit. Ensure you set a base URI when parsing.
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test1313,"public void test1313() throws Throwable {
+    Tag tag0 = Tag.valueOf(""PORT"");
+    Attributes attributes0 = new Attributes();
+    FormElement formElement0 = new FormElement(tag0, ""PORT"", attributes0);
+    // Undeclared exception!
+    try {
+        formElement0.submit();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Malformed URL: PORT
+        //
+        verifyException(""org.jsoup.helper.HttpConnection"", e);
+    }
+}",0,
+project,0,test1515,"public void test1515() throws Throwable {
+    Comment comment0 = new Comment(""Could not determine a form action URL for submit. Ensure you set a base URI when parsing."", ""nQ^XMJ;~^mGo"");
+    Attributes attributes0 = comment0.attributes();
+    FormElement formElement0 = null;
+    try {
+        formElement0 = new FormElement((Tag) null, ""_e5_`>{1@n4d;"", attributes0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,

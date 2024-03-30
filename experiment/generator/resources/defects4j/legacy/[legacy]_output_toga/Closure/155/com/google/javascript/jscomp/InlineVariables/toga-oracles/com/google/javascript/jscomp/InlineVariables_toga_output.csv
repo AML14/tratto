@@ -1,0 +1,57 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test00,"public void test00() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    InlineVariables.Mode inlineVariables_Mode0 = InlineVariables.Mode.ALL;
+    InlineVariables inlineVariables0 = new InlineVariables(compiler0, inlineVariables_Mode0, true);
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""function JSCompiler_get(JSCompiler_get_name) {  return function() {return this[JSCompiler_get_name]}}"", ""function JSCompiler_get(JSCompiler_get_name) {  return function() {return this[JSCompiler_get_name]}}"");
+    inlineVariables0.process(node0, node0);
+    assertEquals(40, Node.BRACELESS_TYPE);
+}",0,
+project,0,test11,"public void test11() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    InlineVariables.Mode inlineVariables_Mode0 = InlineVariables.Mode.LOCALS_ONLY;
+    InlineVariables inlineVariables0 = new InlineVariables(compiler0, inlineVariables_Mode0, false);
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""function JSCompiler_get(JSCompiler_get_name) {  return function() {return this[JSCompiler_get_name]}}"", ""function JSCompiler_get(JSCompiler_get_name) {  return function() {return this[JSCompiler_get_name]}}"");
+    inlineVariables0.process(node0, node0);
+    assertFalse(node0.isOnlyModifiesThisCall());
+}",0,
+project,0,test22,"public void test22() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    InlineVariables.Mode inlineVariables_Mode0 = InlineVariables.Mode.CONSTANTS_ONLY;
+    InlineVariables inlineVariables0 = new InlineVariables(compiler0, inlineVariables_Mode0, false);
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""7~ZP"", ""7~ZP"");
+    inlineVariables0.process(node0, node0);
+    assertEquals(22, Node.TARGETBLOCK_PROP);
+}",0,
+project,0,test33,"public void test33() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    InlineVariables.Mode inlineVariables_Mode0 = InlineVariables.Mode.ALL;
+    InlineVariables inlineVariables0 = new InlineVariables(compiler0, inlineVariables_Mode0, true);
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""function JSCompiler_get(JSCompiler_get_name) {  return function() {return this[JSCompiler_get_name]}}"", ""function JSCompiler_get(JSCompiler_get_name) {  return function() {return this[JSCompiler_get_name]}}"");
+    Node node1 = Normalize.parseAndNormalizeSyntheticCode(compiler0, ""function JSCompiler_get(JSCompiler_get_name) {  return function() {return this[JSCompiler_get_name]}}"", ""function JSCompiler_get(JSCompiler_get_name) {  return function() {return this[JSCompiler_get_name]}}"");
+    node1.addChildToBack(node0);
+    inlineVariables0.process(node1, node1);
+    assertEquals((-3), Node.LOCAL_BLOCK_PROP);
+}",0,
+project,0,test44,"public void test44() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    InlineVariables.Mode inlineVariables_Mode0 = InlineVariables.Mode.ALL;
+    InlineVariables inlineVariables0 = new InlineVariables(compiler0, inlineVariables_Mode0, true);
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""function JSCompiler_get(JSCompiler_get_name) {  return function() {return this[JSCompiler_get_name]}}"", ""function JSCompiler_get(JSCompiler_get_name) {  return function() {return this[JSCompiler_get_name]}}"");
+    Node node1 = Normalize.parseAndNormalizeSyntheticCode(compiler0, ""function JSCompiler_get(JSCompiler_get_name) {  return function() {return this[JSCompiler_get_name]}}"", ""function JSCompiler_get(JSCompiler_get_name) {  return function() {return this[JSCompiler_get_name]}}"");
+    node1.addChildToBack(node0);
+    node0.checkTreeEquals(node1);
+    inlineVariables0.process(node0, node1);
+    assertEquals(49, Node.LAST_PROP);
+}",0,
+project,0,test55,"public void test55() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    InlineVariables.Mode inlineVariables_Mode0 = InlineVariables.Mode.ALL;
+    InlineVariables inlineVariables0 = new InlineVariables(compiler0, inlineVariables_Mode0, true);
+    Node node0 = compiler0.parseSyntheticCode(""function JSompile_get(JSCompiler_get_name) {  return function() {return this[JSCompilerget_name]}}"", ""function JSompile_get(JSCompiler_get_name) {  return function() {return this[JSCompilerget_name]}}"");
+    Node node1 = compiler0.parseTestCode(""function JSompile_get(JSCompiler_get_name) {  return function() {return this[JSCompilerget_name]}}"");
+    Node node2 = Normalize.parseAndNormalizeSyntheticCode(compiler0, ""JSompile_get"", ""function JSompile_get(JSCompiler_get_name) {  return function() {return this[JSCompilerget_name]}}"");
+    node2.addChildToBack(node1);
+    inlineVariables0.process(node0, node2);
+    assertEquals(1, Node.DECR_FLAG);
+}",0,

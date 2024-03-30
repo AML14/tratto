@@ -1,0 +1,431 @@
+focal_method,test_prefix,docstring
+"protected void doIteration(final SimplexTableau tableau) throws MaxCountExceededException, UnboundedSolutionException {
+    incrementIterationsCounter();
+    Integer pivotCol = getPivotColumn(tableau);
+    Integer pivotRow = getPivotRow(tableau, pivotCol);
+    if (pivotRow == null) {
+        throw new UnboundedSolutionException();
+    }
+    // set the pivot element to 1
+    double pivotVal = tableau.getEntry(pivotRow, pivotCol);
+    tableau.divideRow(pivotRow, pivotVal);
+    // set the rest of the pivot column to 0
+    for (int i = 0; i < tableau.getHeight(); i++) {
+        if (i != pivotRow) {
+            final double multiplier = tableau.getEntry(i, pivotCol);
+            tableau.subtractRow(i, pivotRow, multiplier);
+        }
+    }
+}","public void test000() throws Throwable {
+    SimplexSolver simplexSolver0 = new SimplexSolver();
+    double[] doubleArray0 = new double[1];
+    doubleArray0[0] = (double) 100;
+    LinearObjectiveFunction linearObjectiveFunction0 = new LinearObjectiveFunction(doubleArray0, 100.0);
+    LinkedList<LinearConstraint> linkedList0 = new LinkedList<LinearConstraint>();
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector();
+    Relationship relationship0 = Relationship.GEQ;
+    LinearConstraint linearConstraint0 = mock(LinearConstraint.class, new ViolatedAssumptionAnswer());
+    doReturn(openMapRealVector0).when(linearConstraint0).getCoefficients();
+    doReturn(relationship0).when(linearConstraint0).getRelationship();
+    doReturn((-1092.386), (-1092.386)).when(linearConstraint0).getValue();
+    linkedList0.add(linearConstraint0);
+    GoalType goalType0 = GoalType.MAXIMIZE;
+    SimplexTableau simplexTableau0 = new SimplexTableau(linearObjectiveFunction0, linkedList0, goalType0, false, 100.0, 100);
+    try {
+        simplexSolver0.doIteration(simplexTableau0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // unbounded solution
+        //
+        verifyException(""org.apache.commons.math3.optimization.linear.SimplexSolver"", e);
+    }
+}","/**
+ * Runs one iteration of the Simplex method on the given model.
+ * @param tableau simple tableau for the problem
+ * @throws MaxCountExceededException if the maximal iteration count has been exceeded
+ * @throws UnboundedSolutionException if the model is found not to have a bounded solution
+ */"
+"protected void solvePhase1(final SimplexTableau tableau) throws MaxCountExceededException, UnboundedSolutionException, NoFeasibleSolutionException {
+    // make sure we're in Phase 1
+    if (tableau.getNumArtificialVariables() == 0) {
+        return;
+    }
+    while (!tableau.isOptimal()) {
+        doIteration(tableau);
+    }
+    // if W is not zero then we have no feasible solution
+    if (!Precision.equals(tableau.getEntry(0, tableau.getRhsOffset()), 0d, epsilon)) {
+        throw new NoFeasibleSolutionException();
+    }
+}","public void test011() throws Throwable {
+    SimplexSolver simplexSolver0 = new SimplexSolver();
+    // Undeclared exception!
+    try {
+        simplexSolver0.solvePhase1((SimplexTableau) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math3.optimization.linear.SimplexSolver"", e);
+    }
+}","/**
+ * Solves Phase 1 of the Simplex method.
+ * @param tableau simple tableau for the problem
+ * @throws MaxCountExceededException if the maximal iteration count has been exceeded
+ * @throws UnboundedSolutionException if the model is found not to have a bounded solution
+ * @throws NoFeasibleSolutionException if there is no feasible solution
+ */"
+"@Override
+public PointValuePair doOptimize() throws MaxCountExceededException, UnboundedSolutionException, NoFeasibleSolutionException {
+    final SimplexTableau tableau = new SimplexTableau(getFunction(), getConstraints(), getGoalType(), restrictToNonNegative(), epsilon, maxUlps);
+    solvePhase1(tableau);
+    tableau.dropPhase1Objective();
+    while (!tableau.isOptimal()) {
+        doIteration(tableau);
+    }
+    return tableau.getSolution();
+}","public void test022() throws Throwable {
+    SimplexSolver simplexSolver0 = new SimplexSolver();
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(1328);
+    LinearObjectiveFunction linearObjectiveFunction0 = new LinearObjectiveFunction(openMapRealVector0, 100);
+    LinkedList<LinearConstraint> linkedList0 = new LinkedList<LinearConstraint>();
+    GoalType goalType0 = GoalType.MAXIMIZE;
+    simplexSolver0.optimize(linearObjectiveFunction0, linkedList0, goalType0, true);
+    // Undeclared exception!
+    simplexSolver0.doOptimize();
+}","/**
+ * {@inheritDoc}
+ */"
+"@Override
+public PointValuePair doOptimize() throws MaxCountExceededException, UnboundedSolutionException, NoFeasibleSolutionException {
+    final SimplexTableau tableau = new SimplexTableau(getFunction(), getConstraints(), getGoalType(), restrictToNonNegative(), epsilon, maxUlps);
+    solvePhase1(tableau);
+    tableau.dropPhase1Objective();
+    while (!tableau.isOptimal()) {
+        doIteration(tableau);
+    }
+    return tableau.getSolution();
+}","public void test033() throws Throwable {
+    SimplexSolver simplexSolver0 = new SimplexSolver();
+    // Undeclared exception!
+    try {
+        simplexSolver0.doOptimize();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.Collections$UnmodifiableCollection"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"@Override
+public PointValuePair doOptimize() throws MaxCountExceededException, UnboundedSolutionException, NoFeasibleSolutionException {
+    final SimplexTableau tableau = new SimplexTableau(getFunction(), getConstraints(), getGoalType(), restrictToNonNegative(), epsilon, maxUlps);
+    solvePhase1(tableau);
+    tableau.dropPhase1Objective();
+    while (!tableau.isOptimal()) {
+        doIteration(tableau);
+    }
+    return tableau.getSolution();
+}","public void test044() throws Throwable {
+    SimplexSolver simplexSolver0 = new SimplexSolver();
+    double[] doubleArray0 = new double[1];
+    LinearObjectiveFunction linearObjectiveFunction0 = new LinearObjectiveFunction(doubleArray0, 100.0);
+    LinkedList<LinearConstraint> linkedList0 = new LinkedList<LinearConstraint>();
+    Double[] doubleArray1 = new Double[2];
+    doubleArray1[0] = (Double) 100.0;
+    doubleArray1[1] = (Double) 100.0;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray1);
+    Relationship relationship0 = Relationship.LEQ;
+    GoalType goalType0 = GoalType.MAXIMIZE;
+    simplexSolver0.optimize(linearObjectiveFunction0, linkedList0, goalType0, true);
+    OpenMapRealVector openMapRealVector1 = new OpenMapRealVector(100, 100);
+    LinearConstraint linearConstraint0 = mock(LinearConstraint.class, new ViolatedAssumptionAnswer());
+    doReturn(openMapRealVector0, openMapRealVector1).when(linearConstraint0).getCoefficients();
+    doReturn(relationship0, relationship0).when(linearConstraint0).getRelationship();
+    doReturn(100.0, doubleArray1[1], 1.0E-6, (-1234.0)).when(linearConstraint0).getValue();
+    linkedList0.offerLast(linearConstraint0);
+    SimplexTableau simplexTableau0 = new SimplexTableau(linearObjectiveFunction0, linkedList0, goalType0, true, 0.0, 100);
+    // Undeclared exception!
+    try {
+        simplexSolver0.doOptimize();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"protected void doIteration(final SimplexTableau tableau) throws MaxCountExceededException, UnboundedSolutionException {
+    incrementIterationsCounter();
+    Integer pivotCol = getPivotColumn(tableau);
+    Integer pivotRow = getPivotRow(tableau, pivotCol);
+    if (pivotRow == null) {
+        throw new UnboundedSolutionException();
+    }
+    // set the pivot element to 1
+    double pivotVal = tableau.getEntry(pivotRow, pivotCol);
+    tableau.divideRow(pivotRow, pivotVal);
+    // set the rest of the pivot column to 0
+    for (int i = 0; i < tableau.getHeight(); i++) {
+        if (i != pivotRow) {
+            final double multiplier = tableau.getEntry(i, pivotCol);
+            tableau.subtractRow(i, pivotRow, multiplier);
+        }
+    }
+}","public void test055() throws Throwable {
+    SimplexSolver simplexSolver0 = new SimplexSolver();
+    LinkedList<LinearConstraint> linkedList0 = new LinkedList<LinearConstraint>();
+    GoalType goalType0 = GoalType.MINIMIZE;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(5183);
+    LinearObjectiveFunction linearObjectiveFunction0 = new LinearObjectiveFunction(openMapRealVector0, 1.0E-12);
+    SimplexTableau simplexTableau0 = new SimplexTableau(linearObjectiveFunction0, linkedList0, goalType0, false, 100);
+    // Undeclared exception!
+    simplexSolver0.doIteration(simplexTableau0);
+}","/**
+ * Runs one iteration of the Simplex method on the given model.
+ * @param tableau simple tableau for the problem
+ * @throws MaxCountExceededException if the maximal iteration count has been exceeded
+ * @throws UnboundedSolutionException if the model is found not to have a bounded solution
+ */"
+"public int getIterations() {
+    return iterations;
+}","public void test066() throws Throwable {
+    SimplexSolver simplexSolver0 = new SimplexSolver();
+    double[] doubleArray0 = new double[1];
+    doubleArray0[0] = (double) 100;
+    LinearObjectiveFunction linearObjectiveFunction0 = new LinearObjectiveFunction(doubleArray0, 100.0);
+    LinkedList<LinearConstraint> linkedList0 = new LinkedList<LinearConstraint>();
+    Double[] doubleArray1 = new Double[2];
+    doubleArray1[0] = (Double) 100.0;
+    doubleArray1[1] = (Double) 100.0;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray1);
+    Relationship relationship0 = Relationship.LEQ;
+    LinearConstraint linearConstraint0 = mock(LinearConstraint.class, new ViolatedAssumptionAnswer());
+    doReturn(openMapRealVector0, openMapRealVector0).when(linearConstraint0).getCoefficients();
+    doReturn(relationship0, relationship0).when(linearConstraint0).getRelationship();
+    doReturn(100.0, 100.0, 100.0, (double) 100).when(linearConstraint0).getValue();
+    linkedList0.add(linearConstraint0);
+    GoalType goalType0 = GoalType.MAXIMIZE;
+    simplexSolver0.optimize(linearObjectiveFunction0, linkedList0, goalType0, true);
+    simplexSolver0.doOptimize();
+    assertEquals(2, simplexSolver0.getIterations());
+}","/**
+ * {@inheritDoc}
+ */"
+"public SimplexSolver(final double epsilon, final int maxUlps) {
+    this.epsilon = epsilon;
+    this.maxUlps = maxUlps;
+}","public void test077() throws Throwable {
+    SimplexSolver simplexSolver0 = new SimplexSolver(1594.949, (-599));
+    assertEquals(100, AbstractLinearOptimizer.DEFAULT_MAX_ITERATIONS);
+}","/**
+ * Build a simplex solver with a specified accepted amount of error
+ * @param epsilon the amount of error to accept for algorithm convergence
+ * @param maxUlps amount of error to accept in floating point comparisons
+ */"
+"protected void solvePhase1(final SimplexTableau tableau) throws MaxCountExceededException, UnboundedSolutionException, NoFeasibleSolutionException {
+    // make sure we're in Phase 1
+    if (tableau.getNumArtificialVariables() == 0) {
+        return;
+    }
+    while (!tableau.isOptimal()) {
+        doIteration(tableau);
+    }
+    // if W is not zero then we have no feasible solution
+    if (!Precision.equals(tableau.getEntry(0, tableau.getRhsOffset()), 0d, epsilon)) {
+        throw new NoFeasibleSolutionException();
+    }
+}","public void test088() throws Throwable {
+    SimplexSolver simplexSolver0 = new SimplexSolver();
+    double[] doubleArray0 = new double[1];
+    LinearObjectiveFunction linearObjectiveFunction0 = new LinearObjectiveFunction(doubleArray0, 100.0);
+    LinkedList<LinearConstraint> linkedList0 = new LinkedList<LinearConstraint>();
+    Double[] doubleArray1 = new Double[2];
+    doubleArray1[0] = (Double) 100.0;
+    doubleArray1[1] = (Double) 100.0;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray1);
+    Relationship relationship0 = Relationship.LEQ;
+    LinearConstraint linearConstraint0 = mock(LinearConstraint.class, new ViolatedAssumptionAnswer());
+    doReturn(openMapRealVector0, openMapRealVector0, openMapRealVector0).when(linearConstraint0).getCoefficients();
+    doReturn(relationship0, relationship0, relationship0).when(linearConstraint0).getRelationship();
+    doReturn(100.0, 100.0, 100.0, (double) 100, 1.0E-12).when(linearConstraint0).getValue();
+    linkedList0.add(linearConstraint0);
+    GoalType goalType0 = GoalType.MAXIMIZE;
+    SimplexTableau simplexTableau0 = new SimplexTableau(linearObjectiveFunction0, linkedList0, goalType0, true, 100.0, 100);
+    simplexSolver0.optimize(linearObjectiveFunction0, linkedList0, goalType0, true);
+    Relationship relationship1 = Relationship.EQ;
+    LinearConstraint linearConstraint1 = mock(LinearConstraint.class, new ViolatedAssumptionAnswer());
+    doReturn(openMapRealVector0).when(linearConstraint1).getCoefficients();
+    doReturn(relationship1).when(linearConstraint1).getRelationship();
+    doReturn(100.0, doubleArray1[1]).when(linearConstraint1).getValue();
+    linkedList0.offerLast(linearConstraint1);
+    SimplexTableau simplexTableau1 = new SimplexTableau(linearObjectiveFunction0, linkedList0, goalType0, true, 0.0, 100);
+    try {
+        simplexSolver0.solvePhase1(simplexTableau1);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no feasible solution
+        //
+        verifyException(""org.apache.commons.math3.optimization.linear.SimplexSolver"", e);
+    }
+}","/**
+ * Solves Phase 1 of the Simplex method.
+ * @param tableau simple tableau for the problem
+ * @throws MaxCountExceededException if the maximal iteration count has been exceeded
+ * @throws UnboundedSolutionException if the model is found not to have a bounded solution
+ * @throws NoFeasibleSolutionException if there is no feasible solution
+ */"
+"public int getIterations() {
+    return iterations;
+}","public void test099() throws Throwable {
+    SimplexSolver simplexSolver0 = new SimplexSolver();
+    double[] doubleArray0 = new double[1];
+    LinearObjectiveFunction linearObjectiveFunction0 = new LinearObjectiveFunction(doubleArray0, 100.0);
+    LinkedList<LinearConstraint> linkedList0 = new LinkedList<LinearConstraint>();
+    Double[] doubleArray1 = new Double[2];
+    doubleArray1[0] = (Double) 100.0;
+    doubleArray1[1] = (Double) 100.0;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray1);
+    Relationship relationship0 = Relationship.LEQ;
+    Relationship relationship1 = Relationship.EQ;
+    LinearConstraint linearConstraint0 = mock(LinearConstraint.class, new ViolatedAssumptionAnswer());
+    doReturn(openMapRealVector0, openMapRealVector0, openMapRealVector0).when(linearConstraint0).getCoefficients();
+    doReturn(relationship0, relationship0, relationship1).when(linearConstraint0).getRelationship();
+    doReturn(100.0, 100.0, 100.0, (double) 100, doubleArray1[0]).when(linearConstraint0).getValue();
+    linkedList0.add(linearConstraint0);
+    GoalType goalType0 = GoalType.MAXIMIZE;
+    SimplexTableau simplexTableau0 = new SimplexTableau(linearObjectiveFunction0, linkedList0, goalType0, true, 100.0, 100);
+    LinearConstraint linearConstraint1 = mock(LinearConstraint.class, new ViolatedAssumptionAnswer());
+    doReturn(openMapRealVector0, openMapRealVector0).when(linearConstraint1).getCoefficients();
+    doReturn(relationship1, relationship1).when(linearConstraint1).getRelationship();
+    doReturn(100.0, doubleArray1[1], 1.0E-12, (double) 100).when(linearConstraint1).getValue();
+    linkedList0.offerLast(linearConstraint1);
+    SimplexTableau simplexTableau1 = new SimplexTableau(linearObjectiveFunction0, linkedList0, goalType0, true, 100.0, 100);
+    SimplexTableau simplexTableau2 = new SimplexTableau(linearObjectiveFunction0, linkedList0, goalType0, true, (double) doubleArray1[0], 100);
+    simplexSolver0.solvePhase1(simplexTableau2);
+    assertEquals(1, simplexSolver0.getIterations());
+}","/**
+ * {@inheritDoc}
+ */"
+"protected void doIteration(final SimplexTableau tableau) throws MaxCountExceededException, UnboundedSolutionException {
+    incrementIterationsCounter();
+    Integer pivotCol = getPivotColumn(tableau);
+    Integer pivotRow = getPivotRow(tableau, pivotCol);
+    if (pivotRow == null) {
+        throw new UnboundedSolutionException();
+    }
+    // set the pivot element to 1
+    double pivotVal = tableau.getEntry(pivotRow, pivotCol);
+    tableau.divideRow(pivotRow, pivotVal);
+    // set the rest of the pivot column to 0
+    for (int i = 0; i < tableau.getHeight(); i++) {
+        if (i != pivotRow) {
+            final double multiplier = tableau.getEntry(i, pivotCol);
+            tableau.subtractRow(i, pivotRow, multiplier);
+        }
+    }
+}","public void test1010() throws Throwable {
+    SimplexSolver simplexSolver0 = new SimplexSolver();
+    double[] doubleArray0 = new double[14];
+    doubleArray0[0] = (double) 100;
+    LinearObjectiveFunction linearObjectiveFunction0 = new LinearObjectiveFunction(doubleArray0, 100.0);
+    LinkedList<LinearConstraint> linkedList0 = new LinkedList<LinearConstraint>();
+    Double[] doubleArray1 = new Double[2];
+    doubleArray1[0] = (Double) 100.0;
+    doubleArray1[1] = (Double) 100.0;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray1);
+    Relationship relationship0 = Relationship.LEQ;
+    LinearConstraint linearConstraint0 = mock(LinearConstraint.class, new ViolatedAssumptionAnswer());
+    doReturn(openMapRealVector0).when(linearConstraint0).getCoefficients();
+    doReturn(relationship0).when(linearConstraint0).getRelationship();
+    doReturn(100.0, 100.0).when(linearConstraint0).getValue();
+    linkedList0.add(linearConstraint0);
+    GoalType goalType0 = GoalType.MAXIMIZE;
+    LinearConstraint linearConstraint1 = mock(LinearConstraint.class, new ViolatedAssumptionAnswer());
+    doReturn(openMapRealVector0).when(linearConstraint1).getCoefficients();
+    doReturn(relationship0).when(linearConstraint1).getRelationship();
+    doReturn(100.0, doubleArray1[1]).when(linearConstraint1).getValue();
+    linkedList0.offerLast(linearConstraint1);
+    SimplexTableau simplexTableau0 = new SimplexTableau(linearObjectiveFunction0, linkedList0, goalType0, true, 1.0E-12, 100);
+    simplexSolver0.doIteration(simplexTableau0);
+    assertEquals(100, AbstractLinearOptimizer.DEFAULT_MAX_ITERATIONS);
+}","/**
+ * Runs one iteration of the Simplex method on the given model.
+ * @param tableau simple tableau for the problem
+ * @throws MaxCountExceededException if the maximal iteration count has been exceeded
+ * @throws UnboundedSolutionException if the model is found not to have a bounded solution
+ */"
+"public int getIterations() {
+    return iterations;
+}","public void test1111() throws Throwable {
+    SimplexSolver simplexSolver0 = new SimplexSolver();
+    double[] doubleArray0 = new double[3];
+    LinearObjectiveFunction linearObjectiveFunction0 = new LinearObjectiveFunction(doubleArray0, 100.0);
+    LinkedList<LinearConstraint> linkedList0 = new LinkedList<LinearConstraint>();
+    Double[] doubleArray1 = new Double[2];
+    doubleArray1[0] = (Double) 100.0;
+    doubleArray1[1] = (Double) 100.0;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray1);
+    Relationship relationship0 = Relationship.GEQ;
+    LinearConstraint linearConstraint0 = mock(LinearConstraint.class, new ViolatedAssumptionAnswer());
+    doReturn(openMapRealVector0).when(linearConstraint0).getCoefficients();
+    doReturn(relationship0).when(linearConstraint0).getRelationship();
+    doReturn(100.0, 100.0).when(linearConstraint0).getValue();
+    linkedList0.add(linearConstraint0);
+    GoalType goalType0 = GoalType.MAXIMIZE;
+    LinearConstraint linearConstraint1 = mock(LinearConstraint.class, new ViolatedAssumptionAnswer());
+    doReturn(openMapRealVector0).when(linearConstraint1).getCoefficients();
+    doReturn(relationship0).when(linearConstraint1).getRelationship();
+    doReturn(100.0, doubleArray1[1]).when(linearConstraint1).getValue();
+    linkedList0.offerLast(linearConstraint1);
+    SimplexTableau simplexTableau0 = new SimplexTableau(linearObjectiveFunction0, linkedList0, goalType0, true, 0.0, 100);
+    simplexSolver0.solvePhase1(simplexTableau0);
+    assertEquals(2, simplexSolver0.getIterations());
+}","/**
+ * {@inheritDoc}
+ */"
+"protected void doIteration(final SimplexTableau tableau) throws MaxCountExceededException, UnboundedSolutionException {
+    incrementIterationsCounter();
+    Integer pivotCol = getPivotColumn(tableau);
+    Integer pivotRow = getPivotRow(tableau, pivotCol);
+    if (pivotRow == null) {
+        throw new UnboundedSolutionException();
+    }
+    // set the pivot element to 1
+    double pivotVal = tableau.getEntry(pivotRow, pivotCol);
+    tableau.divideRow(pivotRow, pivotVal);
+    // set the rest of the pivot column to 0
+    for (int i = 0; i < tableau.getHeight(); i++) {
+        if (i != pivotRow) {
+            final double multiplier = tableau.getEntry(i, pivotCol);
+            tableau.subtractRow(i, pivotRow, multiplier);
+        }
+    }
+}","public void test1212() throws Throwable {
+    SimplexSolver simplexSolver0 = new SimplexSolver();
+    double[] doubleArray0 = new double[14];
+    LinearObjectiveFunction linearObjectiveFunction0 = new LinearObjectiveFunction(doubleArray0, 100.0);
+    LinkedList<LinearConstraint> linkedList0 = new LinkedList<LinearConstraint>();
+    GoalType goalType0 = GoalType.MAXIMIZE;
+    SimplexTableau simplexTableau0 = new SimplexTableau(linearObjectiveFunction0, linkedList0, goalType0, true, 1.0E-12, 100);
+    // Undeclared exception!
+    try {
+        simplexSolver0.doIteration(simplexTableau0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math3.optimization.linear.SimplexSolver"", e);
+    }
+}","/**
+ * Runs one iteration of the Simplex method on the given model.
+ * @param tableau simple tableau for the problem
+ * @throws MaxCountExceededException if the maximal iteration count has been exceeded
+ * @throws UnboundedSolutionException if the model is found not to have a bounded solution
+ */"

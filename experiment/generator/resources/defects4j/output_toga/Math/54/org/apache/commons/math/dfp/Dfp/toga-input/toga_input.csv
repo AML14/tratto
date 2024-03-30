@@ -1,0 +1,93 @@
+focal_method,test_prefix,docstring
+"public Dfp(final Dfp d) {
+    mant = d.mant.clone();
+    sign = d.sign;
+    exp = d.exp;
+    nans = d.nans;
+    field = d.field;
+}","public void test00() throws Throwable {
+    Dfp dfp0 = null;
+    Dfp dfp1 = null;
+    try {
+        dfp1 = new Dfp((Dfp) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.dfp.Dfp"", e);
+    }
+}","/**
+ * Copy constructor.
+ * @param d instance to copy
+ */"
+"protected Dfp(final DfpField field, final byte sign, final byte nans) {
+    this.field = field;
+    this.mant = new int[field.getRadixDigits()];
+    this.sign = sign;
+    this.exp = 0;
+    this.nans = nans;
+}","public void test11() throws Throwable {
+    byte byte0 = (byte) (-36);
+    Dfp dfp0 = null;
+    try {
+        dfp0 = new Dfp((DfpField) null, (byte) (-36), (byte) (-36));
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.dfp.Dfp"", e);
+    }
+}","/**
+ * Creates an instance with a non-finite value.
+ * @param field field to which this instance belongs
+ * @param sign sign of the Dfp to create
+ * @param nans code of the value, must be one of {@link #INFINITE},
+ * {@link #SNAN},  {@link #QNAN}
+ */"
+"public DfpField(final int decimalDigits) {
+    this(decimalDigits, true);
+}","public void test22() throws Throwable {
+    int int0 = 531;
+    DfpField dfpField0 = new DfpField(531);
+}","/**
+ * Create a factory for the specified number of radix digits.
+ * <p>
+ * Note that since the {@link Dfp} class uses 10000 as its radix, each radix
+ * digit is equivalent to 4 decimal digits. This implies that asking for
+ * 13, 14, 15 or 16 decimal digits will really lead to a 4 radix 10000 digits in
+ * all cases.
+ * </p>
+ * @param decimalDigits minimal number of decimal digits.
+ */"
+"public DfpField(final int decimalDigits) {
+    this(decimalDigits, true);
+}","public void test33() throws Throwable {
+    int int0 = 0;
+    DfpField dfpField0 = new DfpField(0);
+}","/**
+ * Create a factory for the specified number of radix digits.
+ * <p>
+ * Note that since the {@link Dfp} class uses 10000 as its radix, each radix
+ * digit is equivalent to 4 decimal digits. This implies that asking for
+ * 13, 14, 15 or 16 decimal digits will really lead to a 4 radix 10000 digits in
+ * all cases.
+ * </p>
+ * @param decimalDigits minimal number of decimal digits.
+ */"
+"public DfpField(final int decimalDigits) {
+    this(decimalDigits, true);
+}","public void test44() throws Throwable {
+    int int0 = (-985);
+    DfpField dfpField0 = new DfpField((-985));
+}","/**
+ * Create a factory for the specified number of radix digits.
+ * <p>
+ * Note that since the {@link Dfp} class uses 10000 as its radix, each radix
+ * digit is equivalent to 4 decimal digits. This implies that asking for
+ * 13, 14, 15 or 16 decimal digits will really lead to a 4 radix 10000 digits in
+ * all cases.
+ * </p>
+ * @param decimalDigits minimal number of decimal digits.
+ */"

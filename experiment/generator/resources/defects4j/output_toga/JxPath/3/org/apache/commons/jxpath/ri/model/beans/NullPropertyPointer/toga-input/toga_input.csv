@@ -1,0 +1,1277 @@
+focal_method,test_prefix,docstring
+"public NodePointer createPath(JXPathContext context, Object value) {
+    NodePointer newParent = parent.createPath(context);
+    if (isAttribute()) {
+        NodePointer pointer = newParent.createAttribute(context, getName());
+        pointer.setValue(value);
+        return pointer;
+    } else {
+        if (newParent instanceof PropertyOwnerPointer) {
+            PropertyOwnerPointer pop = (PropertyOwnerPointer) newParent;
+            newParent = pop.getPropertyPointer();
+        }
+        return newParent.createChild(context, getName(), index, value);
+    }
+}","public void test000() throws Throwable {
+    BasicVariables basicVariables0 = new BasicVariables();
+    QName qName0 = new QName(""Hc+g{@d?-~EB"", ""Hc+g{@d?-~EB"");
+    VariablePointer variablePointer0 = new VariablePointer(basicVariables0, qName0);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(variablePointer0);
+    Locale locale0 = Locale.GERMAN;
+    nullPropertyPointer0.setIndex(62);
+    // Undeclared exception!
+    try {
+        nullPropertyPointer0.createPath((JXPathContext) null, (Object) locale0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // No such variable: 'Hc+g{@d?-~EB:Hc+g{@d?-~EB'
+        //
+        verifyException(""org.apache.commons.jxpath.BasicVariables"", e);
+    }
+}",""
+"public String getPropertyName() {
+    return propertyName;
+}","public void test011() throws Throwable {
+    Locale locale0 = Locale.CANADA;
+    NullPointer nullPointer0 = new NullPointer(locale0, (String) null);
+    NullPropertyPointer nullPropertyPointer0 = (NullPropertyPointer) nullPointer0.getPropertyPointer();
+    nullPropertyPointer0.setNameAttributeValue((String) null);
+    String string0 = nullPropertyPointer0.getPropertyName();
+    assertNull(string0);
+}",""
+"public String getPropertyName() {
+    return propertyName;
+}","public void test022() throws Throwable {
+    QName qName0 = new QName("""", """");
+    Locale locale0 = Locale.FRANCE;
+    NullPointer nullPointer0 = new NullPointer(qName0, locale0);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(nullPointer0);
+    assertEquals(""*"", nullPropertyPointer0.getPropertyName());
+}",""
+"public String getPropertyName() {
+    return propertyName;
+}","public void test023() throws Throwable {
+    QName qName0 = new QName("""", """");
+    Locale locale0 = Locale.FRANCE;
+    NullPointer nullPointer0 = new NullPointer(qName0, locale0);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(nullPointer0);
+    nullPropertyPointer0.setNameAttributeValue("""");
+    String string0 = nullPropertyPointer0.getPropertyName();
+    assertEquals("""", string0);
+}",""
+"public String getPropertyName() {
+    return propertyName;
+}","public void test034() throws Throwable {
+    BasicVariables basicVariables0 = new BasicVariables();
+    QName qName0 = new QName(""Hc+g{@d?-~EB"", ""Hc+g{@d?-~EB"");
+    VariablePointer variablePointer0 = new VariablePointer(basicVariables0, qName0);
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) ""<<unknown namespace>>"");
+    Locale locale0 = Locale.UK;
+    Class<String> class0 = String.class;
+    JXPathBasicBeanInfo jXPathBasicBeanInfo0 = new JXPathBasicBeanInfo(class0, false);
+    BeanPointer beanPointer0 = new BeanPointer(variablePointer0, qName0, locale0, jXPathBasicBeanInfo0);
+    variablePointer0.createPath(jXPathContext0, (Object) beanPointer0);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(variablePointer0);
+    nullPropertyPointer0.createPath(jXPathContext0, (Object) locale0);
+    assertEquals(""*"", nullPropertyPointer0.getPropertyName());
+}",""
+"public String getPropertyName() {
+    return propertyName;
+}","public void test045() throws Throwable {
+    QName qName0 = new QName(""key"", ""key"");
+    VariablePointer variablePointer0 = new VariablePointer(qName0);
+    LinkedList<Locale.LanguageRange> linkedList0 = new LinkedList<Locale.LanguageRange>();
+    Locale.FilteringMode locale_FilteringMode0 = Locale.FilteringMode.IGNORE_EXTENDED_RANGES;
+    List<String> list0 = Locale.filterTags((List<Locale.LanguageRange>) linkedList0, (Collection<String>) null, locale_FilteringMode0);
+    NodePointer nodePointer0 = NodePointer.newChildNodePointer(variablePointer0, qName0, list0);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(nodePointer0);
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) null);
+    nullPropertyPointer0.createPath(jXPathContext0);
+    assertEquals(""*"", nullPropertyPointer0.getPropertyName());
+}",""
+"public String getPropertyName() {
+    return propertyName;
+}","public void test056() throws Throwable {
+    QName qName0 = new QName("",x\""81.k Vy6B,"");
+    LinkedList<String> linkedList0 = new LinkedList<String>();
+    Locale locale0 = Locale.forLanguageTag("",x\""81.k Vy6B,"");
+    NodePointer nodePointer0 = NodePointer.newNodePointer(qName0, linkedList0, locale0);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(nodePointer0);
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) locale0);
+    nullPropertyPointer0.createPath(jXPathContext0);
+    assertEquals(""*"", nullPropertyPointer0.getPropertyName());
+}",""
+"public String getPropertyName() {
+    return propertyName;
+}","public void test067() throws Throwable {
+    BasicVariables basicVariables0 = new BasicVariables();
+    QName qName0 = new QName(""Cannot set property "");
+    VariablePointer variablePointer0 = new VariablePointer(basicVariables0, qName0);
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) variablePointer0);
+    Class<Object> class0 = Object.class;
+    JXPathBasicBeanInfo jXPathBasicBeanInfo0 = new JXPathBasicBeanInfo(class0, false);
+    BeanPointer beanPointer0 = new BeanPointer(variablePointer0, qName0, variablePointer0, jXPathBasicBeanInfo0);
+    variablePointer0.setValue(beanPointer0);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(variablePointer0);
+    variablePointer0.setAttribute(true);
+    nullPropertyPointer0.createPath(jXPathContext0);
+    assertEquals(""*"", nullPropertyPointer0.getPropertyName());
+}",""
+"public String getPropertyName() {
+    return propertyName;
+}","public void test078() throws Throwable {
+    QName qName0 = new QName(""' for pach: "", ""' for pach: "");
+    Locale locale0 = new Locale(""' for pach: "", ""1]])jgJQK%L4_W>Q"");
+    NullPointer nullPointer0 = new NullPointer(locale0, ""1]])jgJQK%L4_W>Q"");
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) nullPointer0);
+    Variables variables0 = jXPathContext0.getVariables();
+    VariablePointer variablePointer0 = new VariablePointer(variables0, qName0);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(variablePointer0);
+    Class<Integer> class0 = Integer.class;
+    JXPathBasicBeanInfo jXPathBasicBeanInfo0 = new JXPathBasicBeanInfo(class0, true);
+    BeanPointer beanPointer0 = new BeanPointer(qName0, (Object) null, jXPathBasicBeanInfo0, locale0);
+    variablePointer0.setValue(beanPointer0);
+    nullPropertyPointer0.createChild(jXPathContext0, qName0, Integer.MIN_VALUE, (Object) beanPointer0);
+    assertEquals(""*"", nullPropertyPointer0.getPropertyName());
+}",""
+"public String getPropertyName() {
+    return propertyName;
+}","public void test089() throws Throwable {
+    BasicVariables basicVariables0 = new BasicVariables();
+    QName qName0 = new QName(""namespace::"", ""\""<=\"""");
+    VariablePointer variablePointer0 = new VariablePointer(basicVariables0, qName0);
+    LinkedList<Locale.LanguageRange> linkedList0 = new LinkedList<Locale.LanguageRange>();
+    Locale locale0 = Locale.ROOT;
+    Set<String> set0 = locale0.getUnicodeLocaleKeys();
+    List<String> list0 = Locale.filterTags((List<Locale.LanguageRange>) linkedList0, (Collection<String>) set0);
+    NodePointer nodePointer0 = NodePointer.newChildNodePointer(variablePointer0, qName0, list0);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(nodePointer0);
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) nullPropertyPointer0);
+    NodePointer nodePointer1 = nullPropertyPointer0.createChild(jXPathContext0, qName0, 0);
+    assertEquals(""*"", nullPropertyPointer0.getPropertyName());
+}",""
+"public boolean isContainer() {
+    return false;
+}","public void test0810() throws Throwable {
+    BasicVariables basicVariables0 = new BasicVariables();
+    QName qName0 = new QName(""namespace::"", ""\""<=\"""");
+    VariablePointer variablePointer0 = new VariablePointer(basicVariables0, qName0);
+    LinkedList<Locale.LanguageRange> linkedList0 = new LinkedList<Locale.LanguageRange>();
+    Locale locale0 = Locale.ROOT;
+    Set<String> set0 = locale0.getUnicodeLocaleKeys();
+    List<String> list0 = Locale.filterTags((List<Locale.LanguageRange>) linkedList0, (Collection<String>) set0);
+    NodePointer nodePointer0 = NodePointer.newChildNodePointer(variablePointer0, qName0, list0);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(nodePointer0);
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) nullPropertyPointer0);
+    NodePointer nodePointer1 = nullPropertyPointer0.createChild(jXPathContext0, qName0, 0);
+    assertTrue(nodePointer1.isContainer());
+}","/**
+ * If true, this node is axiliary and can only be used as an intermediate in
+ * the chain of pointers.
+ */"
+"public String getPropertyName() {
+    return propertyName;
+}","public void test0911() throws Throwable {
+    QName qName0 = new QName(""' for pach: "", ""' for pach: "");
+    Locale locale0 = new Locale(""' for pach: "", ""1]])jgJQK%L4_W>Q"");
+    NullPointer nullPointer0 = new NullPointer(locale0, ""1]])jgJQK%L4_W>Q"");
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) nullPointer0);
+    Variables variables0 = jXPathContext0.getVariables();
+    VariablePointer variablePointer0 = new VariablePointer(variables0, qName0);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(variablePointer0);
+    Class<Integer> class0 = Integer.class;
+    JXPathBasicBeanInfo jXPathBasicBeanInfo0 = new JXPathBasicBeanInfo(class0, true);
+    BeanPointer beanPointer0 = new BeanPointer(qName0, (Object) null, jXPathBasicBeanInfo0, locale0);
+    variablePointer0.setValue(beanPointer0);
+    nullPropertyPointer0.createChild(jXPathContext0, qName0, Integer.MIN_VALUE);
+    assertEquals(""*"", nullPropertyPointer0.getPropertyName());
+}",""
+"public void setValue(Object value) {
+    if (parent == null || parent.isContainer()) {
+        throw new JXPathInvalidAccessException(""Cannot set property "" + asPath() + "", the target object is null"");
+    } else if (parent instanceof PropertyOwnerPointer && ((PropertyOwnerPointer) parent).isDynamicPropertyDeclarationSupported()) {
+        // If the parent property owner can create
+        // a property automatically - let it do so
+        PropertyPointer propertyPointer = ((PropertyOwnerPointer) parent).getPropertyPointer();
+        propertyPointer.setPropertyName(propertyName);
+        propertyPointer.setValue(value);
+    } else {
+        throw new JXPathInvalidAccessException(""Cannot set property "" + asPath() + "", path does not match a changeable location"");
+    }
+}","public void test1012() throws Throwable {
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer((NodePointer) null);
+    nullPropertyPointer0.setNameAttributeValue("", path does not match a changeable location"");
+    // Undeclared exception!
+    try {
+        nullPropertyPointer0.setValue((Object) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.beans.NullPropertyPointer"", e);
+    }
+}",""
+"public void setValue(Object value) {
+    if (parent == null || parent.isContainer()) {
+        throw new JXPathInvalidAccessException(""Cannot set property "" + asPath() + "", the target object is null"");
+    } else if (parent instanceof PropertyOwnerPointer && ((PropertyOwnerPointer) parent).isDynamicPropertyDeclarationSupported()) {
+        // If the parent property owner can create
+        // a property automatically - let it do so
+        PropertyPointer propertyPointer = ((PropertyOwnerPointer) parent).getPropertyPointer();
+        propertyPointer.setPropertyName(propertyName);
+        propertyPointer.setValue(value);
+    } else {
+        throw new JXPathInvalidAccessException(""Cannot set property "" + asPath() + "", path does not match a changeable location"");
+    }
+}","public void test1113() throws Throwable {
+    BasicVariables basicVariables0 = new BasicVariables();
+    QName qName0 = new QName("":)9Fsh1-#qOXattc"", ""#O~Ht,ic2+0~x.pW"");
+    VariablePointer variablePointer0 = new VariablePointer(basicVariables0, qName0);
+    NodePointer nodePointer0 = NodePointer.newChildNodePointer(variablePointer0, qName0, "":)9Fsh1-#qOXattc"");
+    NullPointer nullPointer0 = new NullPointer(nodePointer0, qName0);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(nullPointer0);
+    LinkedList<Locale.LanguageRange> linkedList0 = new LinkedList<Locale.LanguageRange>();
+    Locale locale0 = Locale.ITALY;
+    variablePointer0.setIndex((-2576));
+    Set<String> set0 = locale0.getUnicodeLocaleKeys();
+    Locale.FilteringMode locale_FilteringMode0 = Locale.FilteringMode.MAP_EXTENDED_RANGES;
+    List<String> list0 = Locale.filterTags((List<Locale.LanguageRange>) linkedList0, (Collection<String>) set0, locale_FilteringMode0);
+    // Undeclared exception!
+    try {
+        nullPropertyPointer0.setValue(list0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // No such variable: ':)9Fsh1-#qOXattc:#O~Ht,ic2+0~x.pW'
+        //
+        verifyException(""org.apache.commons.jxpath.BasicVariables"", e);
+    }
+}",""
+"public NodePointer createPath(JXPathContext context, Object value) {
+    NodePointer newParent = parent.createPath(context);
+    if (isAttribute()) {
+        NodePointer pointer = newParent.createAttribute(context, getName());
+        pointer.setValue(value);
+        return pointer;
+    } else {
+        if (newParent instanceof PropertyOwnerPointer) {
+            PropertyOwnerPointer pop = (PropertyOwnerPointer) newParent;
+            newParent = pop.getPropertyPointer();
+        }
+        return newParent.createChild(context, getName(), index, value);
+    }
+}","public void test1214() throws Throwable {
+    Locale locale0 = Locale.ITALY;
+    NullPointer nullPointer0 = new NullPointer(locale0, ""!0:6qMH"");
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(nullPointer0);
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) null);
+    QName qName0 = new QName(""&apos;"", ""<<unknown namespace>>"");
+    Class<BeanPointer> class0 = BeanPointer.class;
+    Class<Object> class1 = Object.class;
+    JXPathBasicBeanInfo jXPathBasicBeanInfo0 = new JXPathBasicBeanInfo(class0, class1);
+    BeanPointer beanPointer0 = new BeanPointer(qName0, nullPointer0, jXPathBasicBeanInfo0, locale0);
+    // Undeclared exception!
+    try {
+        nullPropertyPointer0.createPath(jXPathContext0, (Object) beanPointer0);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // Cannot create the root object: id(!0:6qMH)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.beans.NullPointer"", e);
+    }
+}",""
+"public NodePointer createPath(JXPathContext context, Object value) {
+    NodePointer newParent = parent.createPath(context);
+    if (isAttribute()) {
+        NodePointer pointer = newParent.createAttribute(context, getName());
+        pointer.setValue(value);
+        return pointer;
+    } else {
+        if (newParent instanceof PropertyOwnerPointer) {
+            PropertyOwnerPointer pop = (PropertyOwnerPointer) newParent;
+            newParent = pop.getPropertyPointer();
+        }
+        return newParent.createChild(context, getName(), index, value);
+    }
+}","public void test1315() throws Throwable {
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer((NodePointer) null);
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) null);
+    // Undeclared exception!
+    try {
+        nullPropertyPointer0.createPath(jXPathContext0, (Object) jXPathContext0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.beans.NullPropertyPointer"", e);
+    }
+}",""
+"public NodePointer createPath(JXPathContext context) {
+    NodePointer newParent = parent.createPath(context);
+    if (isAttribute()) {
+        return newParent.createAttribute(context, getName());
+    } else {
+        // Consider these two use cases:
+        // 1. The parent pointer of NullPropertyPointer is
+        //    a PropertyOwnerPointer other than NullPointer. When we call
+        //    createPath on it, it most likely returns itself. We then
+        //    take a PropertyPointer from it and get the PropertyPointer
+        //    to expand the collection for the corresponding property.
+        //
+        // 2. The parent pointer of NullPropertyPointer is a NullPointer.
+        //    When we call createPath, it may return a PropertyOwnerPointer
+        //    or it may return anything else, like a DOMNodePointer.
+        //    In the former case we need to do exactly what we did in use
+        //    case 1.  In the latter case, we simply request that the
+        //    non-property pointer expand the collection by itself.
+        if (newParent instanceof PropertyOwnerPointer) {
+            PropertyOwnerPointer pop = (PropertyOwnerPointer) newParent;
+            newParent = pop.getPropertyPointer();
+        }
+        return newParent.createChild(context, getName(), getIndex());
+    }
+}","public void test1416() throws Throwable {
+    BasicVariables basicVariables0 = new BasicVariables();
+    QName qName0 = new QName("""");
+    VariablePointer variablePointer0 = new VariablePointer(basicVariables0, qName0);
+    Locale locale0 = Locale.forLanguageTag(""<<unknown namespace>>"");
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) locale0);
+    basicVariables0.declareVariable("""", (Object) null);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(variablePointer0);
+    // Undeclared exception!
+    try {
+        nullPropertyPointer0.createPath(jXPathContext0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Factory did not assign a collection to variable '' for path: $
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.VariablePointer"", e);
+    }
+}",""
+"public NodePointer createPath(JXPathContext context) {
+    NodePointer newParent = parent.createPath(context);
+    if (isAttribute()) {
+        return newParent.createAttribute(context, getName());
+    } else {
+        // Consider these two use cases:
+        // 1. The parent pointer of NullPropertyPointer is
+        //    a PropertyOwnerPointer other than NullPointer. When we call
+        //    createPath on it, it most likely returns itself. We then
+        //    take a PropertyPointer from it and get the PropertyPointer
+        //    to expand the collection for the corresponding property.
+        //
+        // 2. The parent pointer of NullPropertyPointer is a NullPointer.
+        //    When we call createPath, it may return a PropertyOwnerPointer
+        //    or it may return anything else, like a DOMNodePointer.
+        //    In the former case we need to do exactly what we did in use
+        //    case 1.  In the latter case, we simply request that the
+        //    non-property pointer expand the collection by itself.
+        if (newParent instanceof PropertyOwnerPointer) {
+            PropertyOwnerPointer pop = (PropertyOwnerPointer) newParent;
+            newParent = pop.getPropertyPointer();
+        }
+        return newParent.createChild(context, getName(), getIndex());
+    }
+}","public void test1517() throws Throwable {
+    Locale locale0 = Locale.CANADA;
+    NullPointer nullPointer0 = new NullPointer(locale0, "":Xv"");
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(nullPointer0);
+    // Undeclared exception!
+    try {
+        nullPropertyPointer0.createPath((JXPathContext) null);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // Cannot create the root object: id(:Xv)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.beans.NullPointer"", e);
+    }
+}",""
+"public NodePointer createPath(JXPathContext context) {
+    NodePointer newParent = parent.createPath(context);
+    if (isAttribute()) {
+        return newParent.createAttribute(context, getName());
+    } else {
+        // Consider these two use cases:
+        // 1. The parent pointer of NullPropertyPointer is
+        //    a PropertyOwnerPointer other than NullPointer. When we call
+        //    createPath on it, it most likely returns itself. We then
+        //    take a PropertyPointer from it and get the PropertyPointer
+        //    to expand the collection for the corresponding property.
+        //
+        // 2. The parent pointer of NullPropertyPointer is a NullPointer.
+        //    When we call createPath, it may return a PropertyOwnerPointer
+        //    or it may return anything else, like a DOMNodePointer.
+        //    In the former case we need to do exactly what we did in use
+        //    case 1.  In the latter case, we simply request that the
+        //    non-property pointer expand the collection by itself.
+        if (newParent instanceof PropertyOwnerPointer) {
+            PropertyOwnerPointer pop = (PropertyOwnerPointer) newParent;
+            newParent = pop.getPropertyPointer();
+        }
+        return newParent.createChild(context, getName(), getIndex());
+    }
+}","public void test1618() throws Throwable {
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer((NodePointer) null);
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) null);
+    // Undeclared exception!
+    try {
+        nullPropertyPointer0.createPath(jXPathContext0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.beans.NullPropertyPointer"", e);
+    }
+}",""
+"public NodePointer createChild(JXPathContext context, QName name, int index, Object value) {
+    return createPath(context).createChild(context, name, index, value);
+}","public void test1719() throws Throwable {
+    QName qName0 = new QName(""' for path: "", """");
+    Locale locale0 = new Locale("""", ""1]])jgJQK%L4_W>Q"");
+    NullPointer nullPointer0 = new NullPointer(qName0, locale0);
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) nullPointer0);
+    Variables variables0 = jXPathContext0.getVariables();
+    VariablePointer variablePointer0 = new VariablePointer(variables0, qName0);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(variablePointer0);
+    Class<Integer> class0 = Integer.class;
+    JXPathBasicBeanInfo jXPathBasicBeanInfo0 = new JXPathBasicBeanInfo(class0, false);
+    BeanPointer beanPointer0 = new BeanPointer(qName0, (Object) null, jXPathBasicBeanInfo0, locale0);
+    variablePointer0.setValue(beanPointer0);
+    // Undeclared exception!
+    try {
+        nullPropertyPointer0.createChild(jXPathContext0, qName0, 91, (Object) nullPointer0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Cannot turn org.apache.commons.jxpath.ri.model.beans.BeanPointer into a collection of size 92
+        //
+        verifyException(""org.apache.commons.jxpath.util.ValueUtils"", e);
+    }
+}",""
+"public NodePointer createChild(JXPathContext context, QName name, int index, Object value) {
+    return createPath(context).createChild(context, name, index, value);
+}","public void test1820() throws Throwable {
+    QName qName0 = new QName(""' for pach: "", ""' for pach: "");
+    Locale locale0 = new Locale(""' for pach: "", ""1]])jgJQK%L4_W>Q"");
+    NullPointer nullPointer0 = new NullPointer(locale0, ""1]])jgJQK%L4_W>Q"");
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) nullPointer0);
+    Variables variables0 = jXPathContext0.getVariables();
+    VariablePointer variablePointer0 = new VariablePointer(variables0, qName0);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(variablePointer0);
+    Class<Integer> class0 = Integer.class;
+    JXPathBasicBeanInfo jXPathBasicBeanInfo0 = new JXPathBasicBeanInfo(class0, true);
+    BeanPointer beanPointer0 = new BeanPointer(qName0, (Object) null, jXPathBasicBeanInfo0, locale0);
+    variablePointer0.setValue(beanPointer0);
+    // Undeclared exception!
+    try {
+        nullPropertyPointer0.createChild(jXPathContext0, qName0, (-889), (Object) null);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Index is less than 1: $' for pach: :' for pach:
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.VariablePointer"", e);
+    }
+}",""
+"public NodePointer createChild(JXPathContext context, QName name, int index, Object value) {
+    return createPath(context).createChild(context, name, index, value);
+}","public void test1921() throws Throwable {
+    NullPointer nullPointer0 = new NullPointer((Locale) null, ""org.apache.commons.jxpath.JXPathInvalidAccessException"");
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(nullPointer0);
+    QName qName0 = new QName("""");
+    // Undeclared exception!
+    try {
+        nullPropertyPointer0.createChild((JXPathContext) null, qName0, Integer.MIN_VALUE, (Object) ""org.apache.commons.jxpath.JXPathInvalidAccessException"");
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // Cannot create the root object: id(org.apache.commons.jxpath.JXPathInvalidAccessException)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.beans.NullPointer"", e);
+    }
+}",""
+"public NodePointer createChild(JXPathContext context, QName name, int index, Object value) {
+    return createPath(context).createChild(context, name, index, value);
+}","public void test2022() throws Throwable {
+    QName qName0 = new QName(""$"");
+    VariablePointer variablePointer0 = new VariablePointer(qName0);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer((NodePointer) null);
+    NullPointer nullPointer0 = new NullPointer(variablePointer0, qName0);
+    Class<Integer> class0 = Integer.class;
+    JXPathBasicBeanInfo jXPathBasicBeanInfo0 = new JXPathBasicBeanInfo(class0);
+    Locale locale0 = Locale.CHINA;
+    BeanPointer beanPointer0 = new BeanPointer(qName0, nullPointer0, jXPathBasicBeanInfo0, locale0);
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) beanPointer0);
+    // Undeclared exception!
+    try {
+        nullPropertyPointer0.createChild(jXPathContext0, qName0, 71, (Object) nullPointer0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.beans.NullPropertyPointer"", e);
+    }
+}",""
+"public NodePointer createChild(JXPathContext context, QName name, int index) {
+    return createPath(context).createChild(context, name, index);
+}","public void test2123() throws Throwable {
+    QName qName0 = new QName(""' for pach: "", ""' for pach: "");
+    Locale locale0 = new Locale(""' for pach: "", ""1]])jgJQK%L4_W>Q"");
+    NullPointer nullPointer0 = new NullPointer(qName0, locale0);
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) nullPointer0);
+    Variables variables0 = jXPathContext0.getVariables();
+    VariablePointer variablePointer0 = new VariablePointer(variables0, qName0);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(variablePointer0);
+    Class<Integer> class0 = Integer.class;
+    JXPathBasicBeanInfo jXPathBasicBeanInfo0 = new JXPathBasicBeanInfo(class0, false);
+    BeanPointer beanPointer0 = new BeanPointer(qName0, (Object) null, jXPathBasicBeanInfo0, locale0);
+    variablePointer0.setValue(beanPointer0);
+    // Undeclared exception!
+    try {
+        nullPropertyPointer0.createChild(jXPathContext0, qName0, (-31));
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Index is less than 1: $' for pach: :' for pach:
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.VariablePointer"", e);
+    }
+}",""
+"public NodePointer createChild(JXPathContext context, QName name, int index) {
+    PropertyPointer prop = (PropertyPointer) clone();
+    if (name != null) {
+        prop.setPropertyName(name.toString());
+    }
+    prop.setIndex(index);
+    return prop.createPath(context);
+}","public void test2224() throws Throwable {
+    QName qName0 = new QName(""MhFw]fUdY$V{;"", ""MhFw]fUdY$V{;"");
+    Locale locale0 = Locale.GERMAN;
+    NullPointer nullPointer0 = new NullPointer(qName0, locale0);
+    PropertyPointer propertyPointer0 = nullPointer0.getPropertyPointer();
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) nullPointer0);
+    // Undeclared exception!
+    try {
+        propertyPointer0.createChild(jXPathContext0, (QName) null, Integer.MIN_VALUE);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // Cannot create the root object: null()
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.beans.NullPointer"", e);
+    }
+}",""
+"public NodePointer createChild(JXPathContext context, QName name, int index) {
+    return createPath(context).createChild(context, name, index);
+}","public void test2325() throws Throwable {
+    QName qName0 = new QName(""Factory could not create object path: "");
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer((NodePointer) null);
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) "":X^%K\""LVYQV^VRp"");
+    // Undeclared exception!
+    try {
+        nullPropertyPointer0.createChild(jXPathContext0, qName0, (-971));
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.beans.NullPropertyPointer"", e);
+    }
+}",""
+"public String getPropertyName() {
+    return propertyName;
+}","public void test2426() throws Throwable {
+    Locale locale0 = Locale.CANADA;
+    NullPointer nullPointer0 = new NullPointer(locale0, "":Xv"");
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(nullPointer0);
+    assertEquals(""*"", nullPropertyPointer0.getPropertyName());
+}",""
+"public String asPath() {
+    if (!byNameAttribute) {
+        return super.asPath();
+    } else {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(getImmediateParentPointer().asPath());
+        buffer.append(""[@name='"");
+        buffer.append(escape(getPropertyName()));
+        buffer.append(""']"");
+        if (index != WHOLE_COLLECTION) {
+            buffer.append('[').append(index + 1).append(']');
+        }
+        return buffer.toString();
+    }
+}","public void test2427() throws Throwable {
+    Locale locale0 = Locale.CANADA;
+    NullPointer nullPointer0 = new NullPointer(locale0, "":Xv"");
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(nullPointer0);
+    nullPropertyPointer0.setNameAttributeValue(""<<unknown namespace>>"");
+    String string0 = nullPropertyPointer0.asPath();
+    assertEquals(""id(:Xv)[@name='<<unknown namespace>>']"", string0);
+}",""
+"public String getPropertyName() {
+    return propertyName;
+}","public void test2528() throws Throwable {
+    BasicVariables basicVariables0 = new BasicVariables();
+    QName qName0 = new QName("""");
+    VariablePointer variablePointer0 = new VariablePointer(basicVariables0, qName0);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(variablePointer0);
+    String string0 = nullPropertyPointer0.asPath();
+    assertEquals(""*"", nullPropertyPointer0.getPropertyName());
+}",""
+"public String asPath() {
+    if (!byNameAttribute) {
+        return super.asPath();
+    } else {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(getImmediateParentPointer().asPath());
+        buffer.append(""[@name='"");
+        buffer.append(escape(getPropertyName()));
+        buffer.append(""']"");
+        if (index != WHOLE_COLLECTION) {
+            buffer.append('[').append(index + 1).append(']');
+        }
+        return buffer.toString();
+    }
+}","public void test2529() throws Throwable {
+    BasicVariables basicVariables0 = new BasicVariables();
+    QName qName0 = new QName("""");
+    VariablePointer variablePointer0 = new VariablePointer(basicVariables0, qName0);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(variablePointer0);
+    String string0 = nullPropertyPointer0.asPath();
+    assertEquals(""$"", string0);
+}",""
+"public NodePointer createPath(JXPathContext context) {
+    NodePointer newParent = parent.createPath(context);
+    if (isAttribute()) {
+        return newParent.createAttribute(context, getName());
+    } else {
+        // Consider these two use cases:
+        // 1. The parent pointer of NullPropertyPointer is
+        //    a PropertyOwnerPointer other than NullPointer. When we call
+        //    createPath on it, it most likely returns itself. We then
+        //    take a PropertyPointer from it and get the PropertyPointer
+        //    to expand the collection for the corresponding property.
+        //
+        // 2. The parent pointer of NullPropertyPointer is a NullPointer.
+        //    When we call createPath, it may return a PropertyOwnerPointer
+        //    or it may return anything else, like a DOMNodePointer.
+        //    In the former case we need to do exactly what we did in use
+        //    case 1.  In the latter case, we simply request that the
+        //    non-property pointer expand the collection by itself.
+        if (newParent instanceof PropertyOwnerPointer) {
+            PropertyOwnerPointer pop = (PropertyOwnerPointer) newParent;
+            newParent = pop.getPropertyPointer();
+        }
+        return newParent.createChild(context, getName(), getIndex());
+    }
+}","public void test2630() throws Throwable {
+    QName qName0 = new QName("""", """");
+    VariablePointer variablePointer0 = new VariablePointer(qName0);
+    Class<NullPointer> class0 = NullPointer.class;
+    JXPathBasicBeanInfo jXPathBasicBeanInfo0 = new JXPathBasicBeanInfo(class0, true);
+    BeanPointer beanPointer0 = new BeanPointer((NodePointer) null, qName0, (Object) null, jXPathBasicBeanInfo0);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(beanPointer0);
+    JXPathContext jXPathContext0 = JXPathContext.newContext((JXPathContext) null, (Object) variablePointer0);
+    // Undeclared exception!
+    try {
+        nullPropertyPointer0.createPath(jXPathContext0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Factory is not set on the JXPathContext - cannot create path: null()/*
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.beans.PropertyPointer"", e);
+    }
+}",""
+"public NodePointer createPath(JXPathContext context) {
+    NodePointer newParent = parent.createPath(context);
+    if (isAttribute()) {
+        return newParent.createAttribute(context, getName());
+    } else {
+        // Consider these two use cases:
+        // 1. The parent pointer of NullPropertyPointer is
+        //    a PropertyOwnerPointer other than NullPointer. When we call
+        //    createPath on it, it most likely returns itself. We then
+        //    take a PropertyPointer from it and get the PropertyPointer
+        //    to expand the collection for the corresponding property.
+        //
+        // 2. The parent pointer of NullPropertyPointer is a NullPointer.
+        //    When we call createPath, it may return a PropertyOwnerPointer
+        //    or it may return anything else, like a DOMNodePointer.
+        //    In the former case we need to do exactly what we did in use
+        //    case 1.  In the latter case, we simply request that the
+        //    non-property pointer expand the collection by itself.
+        if (newParent instanceof PropertyOwnerPointer) {
+            PropertyOwnerPointer pop = (PropertyOwnerPointer) newParent;
+            newParent = pop.getPropertyPointer();
+        }
+        return newParent.createChild(context, getName(), getIndex());
+    }
+}","public void test2731() throws Throwable {
+    BasicVariables basicVariables0 = new BasicVariables();
+    QName qName0 = new QName("""");
+    VariablePointer variablePointer0 = new VariablePointer(basicVariables0, qName0);
+    Locale locale0 = Locale.forLanguageTag(""<<unknown namespace>>"");
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) locale0);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(variablePointer0);
+    // Undeclared exception!
+    try {
+        nullPropertyPointer0.createPath(jXPathContext0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // No such variable: ''
+        //
+        verifyException(""org.apache.commons.jxpath.BasicVariables"", e);
+    }
+}",""
+"public abstract String getPropertyName();","public void test2832() throws Throwable {
+    Locale locale0 = Locale.CANADA;
+    NullPointer nullPointer0 = new NullPointer(locale0, (String) null);
+    PropertyPointer propertyPointer0 = nullPointer0.getPropertyPointer();
+    ((NullPropertyPointer) propertyPointer0).getValuePointer();
+    assertEquals(""*"", propertyPointer0.getPropertyName());
+}",""
+"public String getName() {
+    return name;
+}","public void test2933() throws Throwable {
+    QName qName0 = new QName("""", """");
+    Locale locale0 = Locale.FRANCE;
+    NullPointer nullPointer0 = new NullPointer(qName0, locale0);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(nullPointer0);
+    QName qName1 = nullPropertyPointer0.getName();
+    assertEquals(""*"", qName1.getName());
+}",""
+"public String getPropertyName() {
+    return propertyName;
+}","public void test3034() throws Throwable {
+    QName qName0 = new QName("""", """");
+    Locale locale0 = Locale.FRANCE;
+    NullPointer nullPointer0 = new NullPointer(qName0, locale0);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(nullPointer0);
+    String string0 = nullPropertyPointer0.getPropertyName();
+    assertEquals(""*"", string0);
+}",""
+"public void setValue(Object value) {
+    if (parent == null || parent.isContainer()) {
+        throw new JXPathInvalidAccessException(""Cannot set property "" + asPath() + "", the target object is null"");
+    } else if (parent instanceof PropertyOwnerPointer && ((PropertyOwnerPointer) parent).isDynamicPropertyDeclarationSupported()) {
+        // If the parent property owner can create
+        // a property automatically - let it do so
+        PropertyPointer propertyPointer = ((PropertyOwnerPointer) parent).getPropertyPointer();
+        propertyPointer.setPropertyName(propertyName);
+        propertyPointer.setValue(value);
+    } else {
+        throw new JXPathInvalidAccessException(""Cannot set property "" + asPath() + "", path does not match a changeable location"");
+    }
+}","public void test3135() throws Throwable {
+    QName qName0 = new QName(""&apos;"", ""&apos;"");
+    Locale locale0 = Locale.FRANCE;
+    NullPointer nullPointer0 = new NullPointer(qName0, locale0);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(nullPointer0);
+    nullPropertyPointer0.setNameAttributeValue(""V'm"");
+    // Undeclared exception!
+    try {
+        nullPropertyPointer0.setValue(""&apos;"");
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Cannot set property null()[@name='V&apos;m'], path does not match a changeable location
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.beans.NullPropertyPointer"", e);
+    }
+}",""
+"public String getPropertyName() {
+    return propertyName;
+}","public void test3236() throws Throwable {
+    Locale locale0 = Locale.CANADA;
+    NullPointer nullPointer0 = new NullPointer(locale0, "":Xv"");
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(nullPointer0);
+    nullPropertyPointer0.setIndex(0);
+    assertEquals(""*"", nullPropertyPointer0.getPropertyName());
+}",""
+"public String asPath() {
+    if (!byNameAttribute) {
+        return super.asPath();
+    } else {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(getImmediateParentPointer().asPath());
+        buffer.append(""[@name='"");
+        buffer.append(escape(getPropertyName()));
+        buffer.append(""']"");
+        if (index != WHOLE_COLLECTION) {
+            buffer.append('[').append(index + 1).append(']');
+        }
+        return buffer.toString();
+    }
+}","public void test3237() throws Throwable {
+    Locale locale0 = Locale.CANADA;
+    NullPointer nullPointer0 = new NullPointer(locale0, "":Xv"");
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(nullPointer0);
+    nullPropertyPointer0.setIndex(0);
+    nullPropertyPointer0.setNameAttributeValue(""<<unknown namespace>>"");
+    String string0 = nullPropertyPointer0.asPath();
+    assertEquals(""id(:Xv)[@name='<<unknown namespace>>'][1]"", string0);
+}",""
+"public void setValue(Object value) {
+    if (parent == null || parent.isContainer()) {
+        throw new JXPathInvalidAccessException(""Cannot set property "" + asPath() + "", the target object is null"");
+    } else if (parent instanceof PropertyOwnerPointer && ((PropertyOwnerPointer) parent).isDynamicPropertyDeclarationSupported()) {
+        // If the parent property owner can create
+        // a property automatically - let it do so
+        PropertyPointer propertyPointer = ((PropertyOwnerPointer) parent).getPropertyPointer();
+        propertyPointer.setPropertyName(propertyName);
+        propertyPointer.setValue(value);
+    } else {
+        throw new JXPathInvalidAccessException(""Cannot set property "" + asPath() + "", path does not match a changeable location"");
+    }
+}","public void test3338() throws Throwable {
+    QName qName0 = new QName("""");
+    Locale locale0 = Locale.FRANCE;
+    NullPointer nullPointer0 = new NullPointer(qName0, locale0);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(nullPointer0);
+    nullPropertyPointer0.setNameAttributeValue(""\"".\"""");
+    // Undeclared exception!
+    try {
+        nullPropertyPointer0.setValue("""");
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Cannot set property null()[@name='&quot;.&quot;'], path does not match a changeable location
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.beans.NullPropertyPointer"", e);
+    }
+}",""
+"public boolean isCollection() {
+    return getIndex() != WHOLE_COLLECTION;
+}","public void test3439() throws Throwable {
+    Locale locale0 = Locale.CANADA;
+    NullPointer nullPointer0 = new NullPointer(locale0, ""pV1:*J"");
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(nullPointer0);
+    assertFalse(nullPropertyPointer0.isCollection());
+}",""
+"public boolean isCollection() {
+    return getIndex() != WHOLE_COLLECTION;
+}","public void test3440() throws Throwable {
+    Locale locale0 = Locale.CANADA;
+    NullPointer nullPointer0 = new NullPointer(locale0, ""pV1:*J"");
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(nullPointer0);
+    nullPropertyPointer0.setIndex(0);
+    boolean boolean0 = nullPropertyPointer0.isCollection();
+    assertTrue(boolean0);
+}",""
+"public String getPropertyName() {
+    return propertyName;
+}","public void test3541() throws Throwable {
+    Locale locale0 = Locale.CANADA;
+    NullPointer nullPointer0 = new NullPointer(locale0, "":Xv"");
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(nullPointer0);
+    boolean boolean0 = nullPropertyPointer0.isCollection();
+    assertEquals(""*"", nullPropertyPointer0.getPropertyName());
+}",""
+"public boolean isCollection() {
+    return getIndex() != WHOLE_COLLECTION;
+}","public void test3542() throws Throwable {
+    Locale locale0 = Locale.CANADA;
+    NullPointer nullPointer0 = new NullPointer(locale0, "":Xv"");
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(nullPointer0);
+    boolean boolean0 = nullPropertyPointer0.isCollection();
+    assertFalse(boolean0);
+}",""
+"public NodePointer createPath(JXPathContext context, Object value) {
+    NodePointer newParent = parent.createPath(context);
+    if (isAttribute()) {
+        NodePointer pointer = newParent.createAttribute(context, getName());
+        pointer.setValue(value);
+        return pointer;
+    } else {
+        if (newParent instanceof PropertyOwnerPointer) {
+            PropertyOwnerPointer pop = (PropertyOwnerPointer) newParent;
+            newParent = pop.getPropertyPointer();
+        }
+        return newParent.createChild(context, getName(), index, value);
+    }
+}","public void test3643() throws Throwable {
+    BasicVariables basicVariables0 = new BasicVariables();
+    QName qName0 = new QName("".s+EL;tg^"");
+    VariablePointer variablePointer0 = new VariablePointer(basicVariables0, qName0);
+    NodePointer nodePointer0 = variablePointer0.createPath((JXPathContext) null, (Object) "".s+EL;tg^"");
+    NullPointer nullPointer0 = new NullPointer(nodePointer0, qName0);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(nullPointer0);
+    // Undeclared exception!
+    try {
+        nullPropertyPointer0.createPath((JXPathContext) null, (Object) "".s+EL;tg^"");
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Cannot set property: $.s+EL;tg^/* - no such property
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.beans.BeanPropertyPointer"", e);
+    }
+}",""
+"public NodePointer createPath(JXPathContext context, Object value) {
+    NodePointer newParent = parent.createPath(context);
+    if (isAttribute()) {
+        NodePointer pointer = newParent.createAttribute(context, getName());
+        pointer.setValue(value);
+        return pointer;
+    } else {
+        if (newParent instanceof PropertyOwnerPointer) {
+            PropertyOwnerPointer pop = (PropertyOwnerPointer) newParent;
+            newParent = pop.getPropertyPointer();
+        }
+        return newParent.createChild(context, getName(), index, value);
+    }
+}","public void test3744() throws Throwable {
+    BasicVariables basicVariables0 = new BasicVariables();
+    QName qName0 = new QName(""Hc+g{@d?-~EB"", ""Hc+g{@d?-~EB"");
+    VariablePointer variablePointer0 = new VariablePointer(basicVariables0, qName0);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(variablePointer0);
+    Locale locale0 = Locale.GERMAN;
+    nullPropertyPointer0.setAttribute(true);
+    NullPointer nullPointer0 = new NullPointer(locale0, ""<<unknown namespace>>"");
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) nullPointer0);
+    // Undeclared exception!
+    try {
+        nullPropertyPointer0.createPath(jXPathContext0, (Object) locale0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Cannot create an attribute for path $Hc+g{@d?-~EB:Hc+g{@d?-~EB/@*, operation is not allowed for this type of node
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.NodePointer"", e);
+    }
+}",""
+"public NodePointer createChild(JXPathContext context, QName name, int index) {
+    return createPath(context).createChild(context, name, index);
+}","public void test3845() throws Throwable {
+    Locale locale0 = Locale.ROOT;
+    Class<NullPointer> class0 = NullPointer.class;
+    JXPathBasicBeanInfo jXPathBasicBeanInfo0 = new JXPathBasicBeanInfo(class0, class0);
+    BeanPointer beanPointer0 = new BeanPointer((NodePointer) null, (QName) null, locale0, jXPathBasicBeanInfo0);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(beanPointer0);
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) null);
+    // Undeclared exception!
+    try {
+        nullPropertyPointer0.createChild(jXPathContext0, (QName) null, Integer.MIN_VALUE);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Factory is not set on the JXPathContext - cannot create path: /*
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.beans.PropertyPointer"", e);
+    }
+}",""
+"public NodePointer createPath(JXPathContext context) {
+    NodePointer newParent = parent.createPath(context);
+    if (isAttribute()) {
+        return newParent.createAttribute(context, getName());
+    } else {
+        // Consider these two use cases:
+        // 1. The parent pointer of NullPropertyPointer is
+        //    a PropertyOwnerPointer other than NullPointer. When we call
+        //    createPath on it, it most likely returns itself. We then
+        //    take a PropertyPointer from it and get the PropertyPointer
+        //    to expand the collection for the corresponding property.
+        //
+        // 2. The parent pointer of NullPropertyPointer is a NullPointer.
+        //    When we call createPath, it may return a PropertyOwnerPointer
+        //    or it may return anything else, like a DOMNodePointer.
+        //    In the former case we need to do exactly what we did in use
+        //    case 1.  In the latter case, we simply request that the
+        //    non-property pointer expand the collection by itself.
+        if (newParent instanceof PropertyOwnerPointer) {
+            PropertyOwnerPointer pop = (PropertyOwnerPointer) newParent;
+            newParent = pop.getPropertyPointer();
+        }
+        return newParent.createChild(context, getName(), getIndex());
+    }
+}","public void test3946() throws Throwable {
+    QName qName0 = new QName(""zhFN>#O<r25n <Jd_"");
+    Class<Object> class0 = Object.class;
+    Class<String> class1 = String.class;
+    JXPathBasicBeanInfo jXPathBasicBeanInfo0 = new JXPathBasicBeanInfo(class0, class1);
+    Locale locale0 = Locale.ITALY;
+    BeanPointer beanPointer0 = new BeanPointer(qName0, qName0, jXPathBasicBeanInfo0, locale0);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(beanPointer0);
+    nullPropertyPointer0.setAttribute(true);
+    // Undeclared exception!
+    try {
+        nullPropertyPointer0.createPath((JXPathContext) null);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Cannot create an attribute for path //@*, operation is not allowed for this type of node
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.NodePointer"", e);
+    }
+}",""
+"public void setValue(Object value) {
+    if (parent == null || parent.isContainer()) {
+        throw new JXPathInvalidAccessException(""Cannot set property "" + asPath() + "", the target object is null"");
+    } else if (parent instanceof PropertyOwnerPointer && ((PropertyOwnerPointer) parent).isDynamicPropertyDeclarationSupported()) {
+        // If the parent property owner can create
+        // a property automatically - let it do so
+        PropertyPointer propertyPointer = ((PropertyOwnerPointer) parent).getPropertyPointer();
+        propertyPointer.setPropertyName(propertyName);
+        propertyPointer.setValue(value);
+    } else {
+        throw new JXPathInvalidAccessException(""Cannot set property "" + asPath() + "", path does not match a changeable location"");
+    }
+}","public void test4047() throws Throwable {
+    Locale locale0 = Locale.UK;
+    NullPointer nullPointer0 = new NullPointer(locale0, ""u{vZ\""jVhPW"");
+    PropertyPointer propertyPointer0 = nullPointer0.getPropertyPointer();
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(propertyPointer0);
+    // Undeclared exception!
+    try {
+        nullPropertyPointer0.setValue((Object) null);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Cannot set property id(u{vZ\""jVhPW)/*, the target object is null
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.beans.NullPropertyPointer"", e);
+    }
+}",""
+"protected boolean isActualProperty() {
+    return false;
+}","public void test4148() throws Throwable {
+    Locale locale0 = Locale.CANADA;
+    NullPointer nullPointer0 = new NullPointer(locale0, "":Xv"");
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(nullPointer0);
+    boolean boolean0 = nullPropertyPointer0.isActualProperty();
+    assertFalse(boolean0);
+}",""
+"public String getPropertyName() {
+    return propertyName;
+}","public void test4149() throws Throwable {
+    Locale locale0 = Locale.CANADA;
+    NullPointer nullPointer0 = new NullPointer(locale0, "":Xv"");
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(nullPointer0);
+    boolean boolean0 = nullPropertyPointer0.isActualProperty();
+    assertEquals(""*"", nullPropertyPointer0.getPropertyName());
+}",""
+"public String getPropertyName() {
+    return propertyName;
+}","public void test4250() throws Throwable {
+    Locale locale0 = Locale.CANADA;
+    NullPointer nullPointer0 = new NullPointer(locale0, "":Xv"");
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(nullPointer0);
+    int int0 = nullPropertyPointer0.getPropertyCount();
+    assertEquals(""*"", nullPropertyPointer0.getPropertyName());
+}",""
+"public int getPropertyCount() {
+    return 0;
+}","public void test4251() throws Throwable {
+    Locale locale0 = Locale.CANADA;
+    NullPointer nullPointer0 = new NullPointer(locale0, "":Xv"");
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(nullPointer0);
+    int int0 = nullPropertyPointer0.getPropertyCount();
+    assertEquals(0, int0);
+}",""
+"public String getPropertyName() {
+    return propertyName;
+}","public void test4352() throws Throwable {
+    BasicVariables basicVariables0 = new BasicVariables();
+    QName qName0 = new QName(""*8$rjbJ"", ""0Upf-4=\""dp'Plkb0."");
+    VariablePointer variablePointer0 = new VariablePointer(basicVariables0, qName0);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(variablePointer0);
+    int int0 = nullPropertyPointer0.getLength();
+    assertEquals(""*"", nullPropertyPointer0.getPropertyName());
+}",""
+"public int getLength() {
+    return 0;
+}","public void test4353() throws Throwable {
+    BasicVariables basicVariables0 = new BasicVariables();
+    QName qName0 = new QName(""*8$rjbJ"", ""0Upf-4=\""dp'Plkb0."");
+    VariablePointer variablePointer0 = new VariablePointer(basicVariables0, qName0);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(variablePointer0);
+    int int0 = nullPropertyPointer0.getLength();
+    assertEquals(0, int0);
+}",""
+"public String getPropertyName() {
+    return propertyName;
+}","public void test4454() throws Throwable {
+    BasicVariables basicVariables0 = new BasicVariables();
+    QName qName0 = new QName(""Cannot set property "");
+    VariablePointer variablePointer0 = new VariablePointer(basicVariables0, qName0);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(variablePointer0);
+    nullPropertyPointer0.setPropertyIndex(Integer.MIN_VALUE);
+    assertEquals(""*"", nullPropertyPointer0.getPropertyName());
+}",""
+"public String getPropertyName() {
+    return propertyName;
+}","public void test4555() throws Throwable {
+    Locale locale0 = Locale.CANADA;
+    NullPointer nullPointer0 = new NullPointer(locale0, "":Xv"");
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(nullPointer0);
+    boolean boolean0 = nullPropertyPointer0.isActual();
+    assertEquals(""*"", nullPropertyPointer0.getPropertyName());
+}",""
+"public boolean isActual() {
+    return false;
+}","public void test4556() throws Throwable {
+    Locale locale0 = Locale.CANADA;
+    NullPointer nullPointer0 = new NullPointer(locale0, "":Xv"");
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(nullPointer0);
+    boolean boolean0 = nullPropertyPointer0.isActual();
+    assertFalse(boolean0);
+}",""
+"public NodePointer createChild(JXPathContext context, QName name, int index) {
+    return createPath(context).createChild(context, name, index);
+}","public void test4657() throws Throwable {
+    QName qName0 = new QName(""' for pach: "", ""' for pach: "");
+    Locale locale0 = new Locale(""' for pach: "", ""1]])jgJQK%L4_W>Q"");
+    NullPointer nullPointer0 = new NullPointer(qName0, locale0);
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) nullPointer0);
+    Variables variables0 = jXPathContext0.getVariables();
+    VariablePointer variablePointer0 = new VariablePointer(variables0, qName0);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(variablePointer0);
+    // Undeclared exception!
+    try {
+        nullPropertyPointer0.createChild(jXPathContext0, qName0, (-31));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // No such variable: '' for pach: :' for pach: '
+        //
+        verifyException(""org.apache.commons.jxpath.BasicVariables"", e);
+    }
+}",""
+"public String getPropertyName() {
+    return propertyName;
+}","public void test4758() throws Throwable {
+    QName qName0 = new QName(""' for pach: "", ""' for pach: "");
+    Locale locale0 = new Locale(""' for pach: "", ""1]])jgJQK%L4_W>Q"");
+    NullPointer nullPointer0 = new NullPointer(qName0, locale0);
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) nullPointer0);
+    Variables variables0 = jXPathContext0.getVariables();
+    VariablePointer variablePointer0 = new VariablePointer(variables0, qName0);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(variablePointer0);
+    nullPropertyPointer0.getBaseValue();
+    assertEquals(""*"", nullPropertyPointer0.getPropertyName());
+}",""
+"public abstract String getPropertyName();","public void test4859() throws Throwable {
+    QName qName0 = new QName(""Ii|nk8rVVhr"");
+    Locale locale0 = Locale.GERMANY;
+    NullPointer nullPointer0 = new NullPointer(qName0, locale0);
+    PropertyPointer propertyPointer0 = nullPointer0.getPropertyPointer();
+    propertyPointer0.getImmediateNode();
+    assertEquals(""*"", propertyPointer0.getPropertyName());
+}",""
+"public String[] getPropertyNames() {
+    return new String[0];
+}","public void test4960() throws Throwable {
+    Locale locale0 = Locale.CANADA;
+    NullPointer nullPointer0 = new NullPointer(locale0, "":Xv"");
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(nullPointer0);
+    String[] stringArray0 = nullPropertyPointer0.getPropertyNames();
+    assertEquals(0, stringArray0.length);
+}",""
+"public String getPropertyName() {
+    return propertyName;
+}","public void test4961() throws Throwable {
+    Locale locale0 = Locale.CANADA;
+    NullPointer nullPointer0 = new NullPointer(locale0, "":Xv"");
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(nullPointer0);
+    String[] stringArray0 = nullPropertyPointer0.getPropertyNames();
+    assertEquals(""*"", nullPropertyPointer0.getPropertyName());
+}",""
+"public int getIndex() {
+    return index;
+}","public void test5062() throws Throwable {
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer((NodePointer) null);
+    nullPropertyPointer0.setPropertyName(""<<unknown namespace>>"");
+    assertEquals(Integer.MIN_VALUE, nullPropertyPointer0.getIndex());
+}","/**
+ * If the pointer represents a collection, the index identifies
+ * an element of that collection.  The default value of <code>index</code>
+ * is <code>WHOLE_COLLECTION</code>, which just means that the pointer
+ * is not indexed at all.
+ * Note: the index on NodePointer starts with 0, not 1.
+ */"
+"public String asPath() {
+    if (!byNameAttribute) {
+        return super.asPath();
+    } else {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(getImmediateParentPointer().asPath());
+        buffer.append(""[@name='"");
+        buffer.append(escape(getPropertyName()));
+        buffer.append(""']"");
+        if (index != WHOLE_COLLECTION) {
+            buffer.append('[').append(index + 1).append(']');
+        }
+        return buffer.toString();
+    }
+}","public void test5163() throws Throwable {
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer((NodePointer) null);
+    nullPropertyPointer0.setNameAttributeValue(""<<unknown namespace>>"");
+    // Undeclared exception!
+    try {
+        nullPropertyPointer0.asPath();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.beans.NullPropertyPointer"", e);
+    }
+}",""
+"public boolean isLeaf() {
+    return true;
+}","public void test5264() throws Throwable {
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer((NodePointer) null);
+    boolean boolean0 = nullPropertyPointer0.isLeaf();
+    assertTrue(boolean0);
+}",""
+"public String getPropertyName() {
+    return propertyName;
+}","public void test5265() throws Throwable {
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer((NodePointer) null);
+    boolean boolean0 = nullPropertyPointer0.isLeaf();
+    assertEquals(""*"", nullPropertyPointer0.getPropertyName());
+}",""
+"public NodePointer createChild(JXPathContext context, QName name, int index, Object value) {
+    return createPath(context).createChild(context, name, index, value);
+}","public void test5366() throws Throwable {
+    Object object0 = new Object();
+    JXPathContext jXPathContext0 = JXPathContext.newContext(object0);
+    Variables variables0 = jXPathContext0.getVariables();
+    QName qName0 = new QName(""[@name='"", ""[@name='"");
+    VariablePointer variablePointer0 = new VariablePointer(variables0, qName0);
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer(variablePointer0);
+    // Undeclared exception!
+    try {
+        nullPropertyPointer0.createChild(jXPathContext0, qName0, (-1380), (Object) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // No such variable: '[@name=':[@name=''
+        //
+        verifyException(""org.apache.commons.jxpath.BasicVariables"", e);
+    }
+}",""
+"public String getPropertyName() {
+    return propertyName;
+}","public void test5467() throws Throwable {
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer((NodePointer) null);
+    boolean boolean0 = nullPropertyPointer0.isContainer();
+    assertEquals(""*"", nullPropertyPointer0.getPropertyName());
+}",""
+"public boolean isContainer() {
+    return true;
+}","public void test5468() throws Throwable {
+    NullPropertyPointer nullPropertyPointer0 = new NullPropertyPointer((NodePointer) null);
+    boolean boolean0 = nullPropertyPointer0.isContainer();
+    assertTrue(boolean0);
+}",""

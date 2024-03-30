@@ -1,0 +1,579 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test010,"public void test010() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Comparable<Object> comparable0 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    keyedObjects2D0.removeObject(comparable0, ""'position' out of bounds."");
+    Comparable<Object> comparable1 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    doReturn(""'position' out of bounds."", """", ""gU?UC&dXNpi~WAOH!T"", ""'position' out of bounds."").when(comparable1).toString();
+    keyedObjects2D0.setObject((Object) null, comparable1, comparable1);
+    Object object0 = keyedObjects2D0.clone();
+    boolean boolean0 = keyedObjects2D0.equals(object0);
+    assertEquals(1, keyedObjects2D0.getRowCount());
+}",0,"assertEquals(0, keyedObjects2D0.getRowCount())"
+project,0,test011,"public void test011() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Comparable<Object> comparable0 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    keyedObjects2D0.removeObject(comparable0, ""'position' out of bounds."");
+    Comparable<Object> comparable1 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    doReturn(""'position' out of bounds."", """", ""gU?UC&dXNpi~WAOH!T"", ""'position' out of bounds."").when(comparable1).toString();
+    keyedObjects2D0.setObject((Object) null, comparable1, comparable1);
+    Object object0 = keyedObjects2D0.clone();
+    boolean boolean0 = keyedObjects2D0.equals(object0);
+    assertTrue(boolean0);
+}",0,
+project,0,test022,"public void test022() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Comparable<KeyedObjects> comparable0 = (Comparable<KeyedObjects>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    Comparable<String> comparable1 = (Comparable<String>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    keyedObjects2D0.setObject(keyedObjects2D0, comparable1, comparable1);
+    Comparable<KeyedObjects> comparable2 = (Comparable<KeyedObjects>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    keyedObjects2D0.removeObject(comparable0, comparable2);
+    assertEquals(1, keyedObjects2D0.getRowCount());
+}",0,"assertEquals(1, keyedObjects2D0.getRowCount())"
+project,0,test033,"public void test033() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    KeyedObjects keyedObjects0 = new KeyedObjects();
+    Comparable<Object> comparable0 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    keyedObjects2D0.addObject(keyedObjects0, comparable0, comparable0);
+    keyedObjects2D0.addObject(keyedObjects2D0, ""-JSH\""n"", ""-JSH\""n"");
+    keyedObjects2D0.setObject(keyedObjects2D0, ""-JSH\""n"", ""-JSH\""n"");
+    assertEquals(2, keyedObjects2D0.getRowCount());
+}",0,
+project,0,test044,"public void test044() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Integer integer0 = Integer.getInteger("""", 0);
+    keyedObjects2D0.setObject(keyedObjects2D0, integer0, """");
+    keyedObjects2D0.setObject(""M|F8@("", ""M|F8@("", ""M|F8@("");
+    Comparable comparable0 = keyedObjects2D0.getRowKey(0);
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.getObject((Comparable) comparable0, (Comparable) ""M|F8@("");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The key (M|F8@() is not recognised.
+        //
+        verifyException(""org.jfree.data.KeyedObjects"", e);
+    }
+}",0,
+project,0,test055,"public void test055() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Comparable<String> comparable0 = (Comparable<String>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    doReturn((String) null).when(comparable0).toString();
+    Comparable<Object> comparable1 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.getObject(comparable0, comparable1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Row key (null) not recognised.
+        //
+        verifyException(""org.jfree.data.KeyedObjects2D"", e);
+    }
+}",1,
+project,0,test066,"public void test066() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    KeyedObjects keyedObjects0 = new KeyedObjects();
+    Comparable<String> comparable0 = (Comparable<String>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    Comparable<Object> comparable1 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    keyedObjects2D0.setObject(keyedObjects0, comparable0, comparable1);
+    keyedObjects2D0.addObject("""", """", """");
+    Object object0 = keyedObjects2D0.getObject((Comparable) """", (Comparable) """");
+    assertEquals("""", object0);
+}",0,
+project,0,test077,"public void test077() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Integer integer0 = new Integer(0);
+    keyedObjects2D0.addObject(integer0, integer0, integer0);
+    keyedObjects2D0.removeRow(0);
+    assertEquals(0, keyedObjects2D0.getRowCount());
+}",0,
+project,0,test088,"public void test088() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    keyedObjects2D0.addObject("""", """", """");
+    keyedObjects2D0.removeColumn(0);
+    assertEquals(1, keyedObjects2D0.getRowCount());
+}",0,"assertEquals(1, keyedObjects2D0.getRowCount())"
+project,0,test099,"public void test099() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Integer integer0 = new Integer(1311);
+    keyedObjects2D0.addObject(integer0, integer0, integer0);
+    int int0 = keyedObjects2D0.getRowIndex(integer0);
+    assertEquals(0, int0);
+}",1,
+project,0,test1010,"public void test1010() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Comparable<String> comparable0 = (Comparable<String>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    keyedObjects2D0.addObject(keyedObjects2D0, comparable0, comparable0);
+    int int0 = keyedObjects2D0.getRowCount();
+    assertEquals(1, int0);
+}",0,
+project,0,test1111,"public void test1111() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    keyedObjects2D0.setObject((Object) null, ""M|F8@("", ""M|F8@("");
+    Comparable comparable0 = keyedObjects2D0.getRowKey(0);
+    Object object0 = keyedObjects2D0.getObject((Comparable) comparable0, (Comparable) ""M|F8@("");
+    assertNull(object0);
+}",0,
+project,0,test1212,"public void test1212() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    keyedObjects2D0.setObject("""", """", """");
+    Integer integer0 = new Integer(0);
+    Comparable comparable0 = keyedObjects2D0.getColumnKey((int) integer0);
+    assertEquals("""", comparable0);
+}",0,assertNotNull(comparable0)
+project,0,test1313,"public void test1313() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Integer integer0 = new Integer((-1007));
+    keyedObjects2D0.setObject("""", """", integer0);
+    int int0 = keyedObjects2D0.getColumnIndex(integer0);
+    assertEquals(0, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test1414,"public void test1414() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Comparable<Object> comparable0 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    keyedObjects2D0.removeObject(comparable0, comparable0);
+    Comparable<Object> comparable1 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    keyedObjects2D0.removeObject(comparable1, """");
+    int int0 = keyedObjects2D0.getColumnIndex("""");
+    assertEquals(0, keyedObjects2D0.getRowCount());
+}",0,"assertEquals(1, keyedObjects2D0.getRowCount())"
+project,0,test1415,"public void test1415() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Comparable<Object> comparable0 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    keyedObjects2D0.removeObject(comparable0, comparable0);
+    Comparable<Object> comparable1 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    keyedObjects2D0.removeObject(comparable1, """");
+    int int0 = keyedObjects2D0.getColumnIndex("""");
+    assertEquals(1, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test1516,"public void test1516() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    keyedObjects2D0.setObject("""", """", """");
+    int int0 = keyedObjects2D0.getColumnCount();
+    assertEquals(1, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test1617,"public void test1617() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.removeRow((-36));
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test1718,"public void test1718() throws Throwable {
+    Comparable<String> comparable0 = (Comparable<String>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.removeObject((Comparable) null, comparable0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'rowKey' argument.
+        //
+        verifyException(""org.jfree.data.KeyedObjects2D"", e);
+    }
+}",1,
+project,0,test1819,"public void test1819() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.removeColumn((-1289));
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test1920,"public void test1920() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.getRowKey((-319));
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test2021,"public void test2021() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.getObject(1, 1);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 1, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}",1,
+project,0,test2122,"public void test2122() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.getObject((-2815), (-2815));
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test2223,"public void test2223() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.getColumnKey((-507));
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test2324,"public void test2324() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Integer integer0 = new Integer(518);
+    keyedObjects2D0.setObject(integer0, integer0, integer0);
+    Object object0 = new Object();
+    keyedObjects2D0.setObject(object0, integer0, integer0);
+    assertEquals(1, keyedObjects2D0.getRowCount());
+}",0,"assertEquals(1, keyedObjects2D0.getRowCount())"
+project,0,test2425,"public void test2425() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.setObject((Object) null, (Comparable) null, (Comparable) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'rowKey' argument.
+        //
+        verifyException(""org.jfree.data.KeyedObjects2D"", e);
+    }
+}",1,
+project,0,test2526,"public void test2526() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Comparable<Object> comparable0 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    keyedObjects2D0.removeObject(comparable0, comparable0);
+    Object object0 = new Object();
+    Comparable<Object> comparable1 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    Comparable<Object> comparable2 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    keyedObjects2D0.addObject(object0, comparable1, comparable2);
+    keyedObjects2D0.getObject(0, 0);
+    assertEquals(1, keyedObjects2D0.getRowCount());
+}",0,"assertEquals(0, keyedObjects2D0.getRowCount())"
+project,0,test2627,"public void test2627() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    keyedObjects2D0.setObject("""", """", """");
+    Integer integer0 = new Integer(0);
+    Object object0 = keyedObjects2D0.getObject((int) integer0, (int) integer0);
+    assertEquals("""", object0);
+}",1,
+project,0,test2728,"public void test2728() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.removeRow(0);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 0, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}",1,
+project,0,test2829,"public void test2829() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Comparable<KeyedObjects2D> comparable0 = (Comparable<KeyedObjects2D>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    int int0 = keyedObjects2D0.getRowIndex(comparable0);
+    assertEquals((-1), int0);
+}",1,
+project,0,test2930,"public void test2930() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Integer integer0 = new Integer(0);
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.getColumnKey((int) integer0);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 0, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}",0,
+project,0,test3031,"public void test3031() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    keyedObjects2D0.addObject("""", """", """");
+    KeyedObjects2D keyedObjects2D1 = new KeyedObjects2D();
+    keyedObjects2D1.addObject(keyedObjects2D0, """", """");
+    boolean boolean0 = keyedObjects2D0.equals(keyedObjects2D1);
+    assertFalse(boolean0);
+}",0,
+project,0,test3132,"public void test3132() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    KeyedObjects2D keyedObjects2D1 = new KeyedObjects2D();
+    assertTrue(keyedObjects2D1.equals((Object) keyedObjects2D0));
+}",0,
+project,0,test3133,"public void test3133() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    KeyedObjects2D keyedObjects2D1 = new KeyedObjects2D();
+    Comparable<String> comparable0 = (Comparable<String>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    doReturn(""^m\""E/ J"").when(comparable0).toString();
+    keyedObjects2D1.removeObject(comparable0, comparable0);
+    boolean boolean0 = keyedObjects2D0.equals(keyedObjects2D1);
+    assertFalse(keyedObjects2D1.equals((Object) keyedObjects2D0));
+}",0,
+project,0,test3134,"public void test3134() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    KeyedObjects2D keyedObjects2D1 = new KeyedObjects2D();
+    Comparable<String> comparable0 = (Comparable<String>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    doReturn(""^m\""E/ J"").when(comparable0).toString();
+    keyedObjects2D1.removeObject(comparable0, comparable0);
+    boolean boolean0 = keyedObjects2D0.equals(keyedObjects2D1);
+    assertFalse(boolean0);
+}",0,
+project,0,test3235,"public void test3235() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    KeyedObjects2D keyedObjects2D1 = new KeyedObjects2D();
+    assertTrue(keyedObjects2D1.equals((Object) keyedObjects2D0));
+}",0,
+project,0,test3236,"public void test3236() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    KeyedObjects2D keyedObjects2D1 = new KeyedObjects2D();
+    Comparable<String> comparable0 = (Comparable<String>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    doReturn((String) null).when(comparable0).toString();
+    keyedObjects2D0.addObject(keyedObjects2D1, comparable0, comparable0);
+    boolean boolean0 = keyedObjects2D0.equals(keyedObjects2D1);
+    assertFalse(keyedObjects2D1.equals((Object) keyedObjects2D0));
+}",0,
+project,0,test3237,"public void test3237() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    KeyedObjects2D keyedObjects2D1 = new KeyedObjects2D();
+    Comparable<String> comparable0 = (Comparable<String>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    doReturn((String) null).when(comparable0).toString();
+    keyedObjects2D0.addObject(keyedObjects2D1, comparable0, comparable0);
+    boolean boolean0 = keyedObjects2D0.equals(keyedObjects2D1);
+    assertFalse(boolean0);
+}",0,
+project,0,test3338,"public void test3338() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    keyedObjects2D0.setObject("""", """", """");
+    Comparable comparable0 = keyedObjects2D0.getRowKey(0);
+    keyedObjects2D0.removeColumn(comparable0);
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.removeColumn(comparable0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Column key () not recognised.
+        //
+        verifyException(""org.jfree.data.KeyedObjects2D"", e);
+    }
+}",1,
+project,0,test3439,"public void test3439() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    keyedObjects2D0.addObject("""", """", """");
+    Comparable<Object> comparable0 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    keyedObjects2D0.removeObject("""", comparable0);
+    keyedObjects2D0.getObject(0, 1);
+    assertEquals(1, keyedObjects2D0.getRowCount());
+}",0,
+project,0,test3540,"public void test3540() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.setObject(""M|F8@("", ""M|F8@("", (Comparable) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'columnKey' argument.
+        //
+        verifyException(""org.jfree.data.KeyedObjects2D"", e);
+    }
+}",1,
+project,0,test3641,"public void test3641() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.addObject((Object) null, (Comparable) null, (Comparable) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'rowKey' argument.
+        //
+        verifyException(""org.jfree.data.KeyedObjects2D"", e);
+    }
+}",0,
+project,0,test3742,"public void test3742() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Integer integer0 = new Integer((-1007));
+    keyedObjects2D0.setObject("""", """", integer0);
+    Comparable<Object> comparable0 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    doReturn("""").when(comparable0).toString();
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.getObject((Comparable) """", (Comparable) comparable0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Column key () not recognised.
+        //
+        verifyException(""org.jfree.data.KeyedObjects2D"", e);
+    }
+}",0,
+project,0,test3843,"public void test3843() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    keyedObjects2D0.addObject("""", """", """");
+    keyedObjects2D0.removeRow((Comparable) """");
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.getObject((Comparable) """", (Comparable) """");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Row key () not recognised.
+        //
+        verifyException(""org.jfree.data.KeyedObjects2D"", e);
+    }
+}",0,
+project,0,test3944,"public void test3944() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    keyedObjects2D0.setObject(""Null'columney argumen"", ""Null'columney argumen"", ""Null'columney argumen"");
+    Comparable comparable0 = keyedObjects2D0.getRowKey(0);
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.getObject((Comparable) comparable0, (Comparable) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'columnKey' argument.
+        //
+        verifyException(""org.jfree.data.KeyedObjects2D"", e);
+    }
+}",0,
+project,0,test4045,"public void test4045() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Comparable<String> comparable0 = (Comparable<String>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.getObject((Comparable) null, comparable0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'rowKey' argument.
+        //
+        verifyException(""org.jfree.data.KeyedObjects2D"", e);
+    }
+}",1,
+project,0,test4146,"public void test4146() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Comparable<String> comparable0 = (Comparable<String>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    doReturn("") is not recognised."", "") is not recognised."", "") is not recognised."", "") is not recognised."").when(comparable0).toString();
+    Comparable<Object> comparable1 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    doReturn("") is not recognised."", "") is not recognised."", "") is not recognised."", "") is not recognised."").when(comparable1).toString();
+    keyedObjects2D0.setObject("") is not recognised."", comparable1, comparable1);
+    keyedObjects2D0.addObject(keyedObjects2D0, comparable0, comparable0);
+    Object object0 = keyedObjects2D0.clone();
+    boolean boolean0 = keyedObjects2D0.equals(object0);
+    assertEquals(2, keyedObjects2D0.getColumnCount());
+}",0,
+project,0,test4147,"public void test4147() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Comparable<String> comparable0 = (Comparable<String>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    doReturn("") is not recognised."", "") is not recognised."", "") is not recognised."", "") is not recognised."").when(comparable0).toString();
+    Comparable<Object> comparable1 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    doReturn("") is not recognised."", "") is not recognised."", "") is not recognised."", "") is not recognised."").when(comparable1).toString();
+    keyedObjects2D0.setObject("") is not recognised."", comparable1, comparable1);
+    keyedObjects2D0.addObject(keyedObjects2D0, comparable0, comparable0);
+    Object object0 = keyedObjects2D0.clone();
+    boolean boolean0 = keyedObjects2D0.equals(object0);
+    assertTrue(boolean0);
+}",0,
+project,0,test4248,"public void test4248() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    int int0 = keyedObjects2D0.getRowCount();
+    assertEquals(0, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test4450,"public void test4450() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.removeRow((Comparable) """");
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test4551,"public void test4551() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    Comparable<String> comparable0 = (Comparable<String>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    keyedObjects2D0.addObject(keyedObjects2D0, comparable0, comparable0);
+    keyedObjects2D0.addObject("""", """", """");
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.removeColumn(1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The key (java.lang.String@0000000006) is not recognised.
+        //
+        verifyException(""org.jfree.data.KeyedObjects"", e);
+    }
+}",1,
+project,0,test4652,"public void test4652() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    int int0 = keyedObjects2D0.getColumnCount();
+    assertEquals(0, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test4753,"public void test4753() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.removeColumn(1);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 1, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}",1,
+project,0,test4854,"public void test4854() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    int int0 = keyedObjects2D0.getColumnIndex("""");
+    assertEquals((-1), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test4955,"public void test4955() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    // Undeclared exception!
+    try {
+        keyedObjects2D0.getRowKey(1027);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 1027, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}",0,
+project,0,test5056,"public void test5056() throws Throwable {
+    KeyedObjects2D keyedObjects2D0 = new KeyedObjects2D();
+    List list0 = keyedObjects2D0.getRowKeys();
+    boolean boolean0 = keyedObjects2D0.equals(list0);
+    assertFalse(boolean0);
+}",0,

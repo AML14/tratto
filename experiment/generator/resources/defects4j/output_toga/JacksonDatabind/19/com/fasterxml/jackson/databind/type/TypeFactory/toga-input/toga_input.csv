@@ -1,0 +1,996 @@
+focal_method,test_prefix,docstring
+"@SuppressWarnings({ ""unchecked"", ""resource"" })
+public <T extends JsonNode> T valueToTree(Object fromValue) throws IllegalArgumentException {
+    if (fromValue == null)
+        return null;
+    TokenBuffer buf = new TokenBuffer(this, false);
+    JsonNode result;
+    try {
+        writeValue(buf, fromValue);
+        JsonParser jp = buf.asParser();
+        result = readTree(jp);
+        jp.close();
+    } catch (IOException e) {
+        // should not occur, no real i/o...
+        throw new IllegalArgumentException(e.getMessage(), e);
+    }
+    return (T) result;
+}","public void test011() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    BasicClassIntrospector basicClassIntrospector0 = new BasicClassIntrospector();
+    Class<String> class0 = String.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructRawMapLikeType(class0);
+    BasicBeanDescription basicBeanDescription0 = basicClassIntrospector0.forCreation((DeserializationConfig) null, mapLikeType0, (ClassIntrospector.MixInResolver) null);
+    try {
+        objectMapper0.valueToTree((Object) basicBeanDescription0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Loop has been executed more times than the allowed 10000 (through reference chain: com.fasterxml.jackson.databind.introspect.BasicBeanDescription[\""classInfo\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""contextClass\""]->com.fasterxml.jackson.databind.introspect.AnnotatedClass[\""defaultConstructor\""]->com.fasterxml.jackson.databind.introspect.AnnotatedConstructor[\""member\""]->java.lang.reflect.Constructor[\""accessible\""])
+        //
+        verifyException(""com.fasterxml.jackson.databind.ObjectMapper"", e);
+    }
+}","/**
+ *  Reverse of {@link #treeToValue}; given a value (usually bean), will
+ *  construct equivalent JSON Tree representation. Functionally similar
+ *  to serializing value into JSON and parsing JSON as tree, but
+ *  more efficient.
+ * <p>
+ *  NOTE: while results are usually identical to that of serialization followed
+ *  by deserialization, this is not always the case. In some cases serialization
+ *  into intermediate representation will retain encapsulation of things like
+ *  raw value ({@link com.fasterxml.jackson.databind.util.RawValue}) or basic
+ *  node identity ({@link JsonNode}). If so, result is a valid tree, but values
+ *  are not re-constructed through actual JSON representation. So if transformation
+ *  requires actual materialization of JSON (or other data format that this mapper
+ *  produces), it will be necessary to do actual serialization.
+ *
+ *  @param <T> Actual node type; usually either basic {@link JsonNode} or
+ *   {@link com.fasterxml.jackson.databind.node.ObjectNode}
+ *  @param fromValue Bean value to convert
+ *  @return Root node of the resulting JSON tree
+ */"
+"@Override
+public final boolean isPrimitive() {
+    return _class.isPrimitive();
+}","public void test022() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<Object> class0 = Object.class;
+    JavaType javaType0 = typeFactory0.uncheckedSimpleType(class0);
+    assertFalse(javaType0.isPrimitive());
+}",""
+"@Override
+public boolean isAbstract() {
+    return Modifier.isAbstract(_class.getModifiers());
+}","public void test033() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<HashMap> class0 = HashMap.class;
+    MapType mapType0 = typeFactory0.constructMapType(class0, class0, class0);
+    assertFalse(mapType0.isAbstract());
+}",""
+"public void clearCache() {
+    _typeCache.clear();
+}","public void test055() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    typeFactory0.clearCache();
+}","/**
+ * Method that will clear up any cached type definitions that may
+ * be cached by this {@link TypeFactory} instance.
+ * This method should not be commonly used, that is, only use it
+ * if you know there is a problem with retention of type definitions;
+ * the most likely (and currently only known) problem is retention
+ * of {@link Class} instances via {@link JavaType} reference.
+ *
+ * @since 2.4.1
+ */"
+"public final boolean isJavaLangObject() {
+    return _class == Object.class;
+}","public void test077() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<LinkedList> class0 = LinkedList.class;
+    CollectionType collectionType0 = typeFactory0.constructCollectionType(class0, class0);
+    assertFalse(collectionType0.isJavaLangObject());
+}","/**
+ *  Convenience method, short-hand for
+ * <code>
+ *    getRawClass() == Object.class
+ * </code>
+ *  and used to figure if we basically have ""untyped"" type object.
+ *
+ *  @since 2.5
+ */"
+"@Override
+public final boolean isPrimitive() {
+    return _class.isPrimitive();
+}","public void test088() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<ArrayList> class0 = ArrayList.class;
+    CollectionLikeType collectionLikeType0 = typeFactory0.constructCollectionLikeType(class0, class0);
+    assertFalse(collectionLikeType0.isPrimitive());
+}",""
+"public JavaType constructType(TypeReference<?> typeRef) {
+    return _constructType(typeRef.getType(), null);
+}","public void test1010() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    // Undeclared exception!
+    try {
+        typeFactory0.constructType((TypeReference<?>) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeFactory"", e);
+    }
+}",""
+"@Override
+public abstract boolean equals(Object o);","public void test1111() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<HashMap> class0 = HashMap.class;
+    MapType mapType0 = typeFactory0.constructRawMapType(class0);
+    Vector<JavaType> vector0 = new Vector<JavaType>();
+    Class<ArrayList> class1 = ArrayList.class;
+    CollectionType collectionType0 = typeFactory0.constructCollectionType((Class<? extends Collection>) class1, (JavaType) mapType0);
+    vector0.add((JavaType) collectionType0);
+    vector0.add((JavaType) collectionType0);
+    JavaType javaType0 = typeFactory0._fromParameterizedClass(class0, vector0);
+    assertFalse(javaType0.equals((Object) mapType0));
+}",""
+"public CollectionLikeType constructCollectionLikeType(Class<?> collectionClass, JavaType elementType) {
+    return CollectionLikeType.construct(collectionClass, elementType);
+}","public void test1212() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<CollectionType> class0 = CollectionType.class;
+    // Undeclared exception!
+    try {
+        typeFactory0.constructCollectionLikeType(class0, (JavaType) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.CollectionLikeType"", e);
+    }
+}","/**
+ *  Method for constructing a {@link CollectionLikeType}.
+ * <p>
+ *  NOTE: type modifiers are NOT called on constructed type itself; but are called
+ *  for contained types.
+ */"
+"public JavaType constructFromCanonical(String canonical) throws IllegalArgumentException {
+    return _parser.parse(canonical);
+}","public void test1313() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    try {
+        typeFactory0.constructFromCanonical(""P'6ja,2_z2kLhc"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Failed to parse type 'P'6ja,2_z2kLhc' (remaining: ',2_z2kLhc'): Can not locate class 'P'6ja', problem: Class 'P'6ja.class' should be in target project, but could not be found!
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeParser"", e);
+    }
+}","/**
+ * Factory method for constructing a {@link JavaType} out of its canonical
+ * representation (see {@link JavaType#toCanonical()}).
+ *
+ * @param canonical Canonical string representation of a type
+ *
+ * @throws IllegalArgumentException If canonical representation is malformed,
+ *   or class that type represents (including its generic parameters) is
+ *   not found
+ */"
+"public final boolean useStaticType() {
+    return _asStatic;
+}","public void test1414() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<ArrayType> class0 = ArrayType.class;
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_INT;
+    MapLikeType mapLikeType0 = typeFactory0.constructMapLikeType((Class<?>) class0, (JavaType) simpleType0, (JavaType) simpleType0);
+    assertFalse(mapLikeType0.useStaticType());
+}","/**
+ * Accessor for checking whether handlers for dealing with values of
+ * this type should use static typing (as opposed to dynamic typing).
+ * Note that while value of 'true' does mean that static typing is to
+ * be used, value of 'false' may still be overridden by other settings.
+ *
+ * @since 2.2
+ */"
+"@Override
+public final boolean isPrimitive() {
+    return _class.isPrimitive();
+}","public void test1515() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    SimpleType simpleType0 = (SimpleType) TypeBindings.UNBOUND;
+    ArrayType arrayType0 = typeFactory0.constructArrayType((JavaType) simpleType0);
+    assertFalse(arrayType0.isPrimitive());
+}",""
+"public TypeFactory withModifier(TypeModifier mod) {
+    if (mod == null) {
+        // mostly for unit tests
+        return new TypeFactory(_parser, _modifiers);
+    }
+    if (_modifiers == null) {
+        return new TypeFactory(_parser, new TypeModifier[] { mod });
+    }
+    return new TypeFactory(_parser, ArrayBuilders.insertInListNoDup(_modifiers, mod));
+}","public void test1616() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    TypeModifier typeModifier0 = mock(TypeModifier.class, new ViolatedAssumptionAnswer());
+    TypeFactory typeFactory1 = typeFactory0.withModifier(typeModifier0);
+    assertNotSame(typeFactory0, typeFactory1);
+}",""
+"public TypeFactory withModifier(TypeModifier mod) {
+    if (mod == null) {
+        // mostly for unit tests
+        return new TypeFactory(_parser, _modifiers);
+    }
+    if (_modifiers == null) {
+        return new TypeFactory(_parser, new TypeModifier[] { mod });
+    }
+    return new TypeFactory(_parser, ArrayBuilders.insertInListNoDup(_modifiers, mod));
+}","public void test1818() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    TypeParser typeParser0 = new TypeParser(typeFactory0);
+    TypeModifier[] typeModifierArray0 = new TypeModifier[0];
+    TypeFactory typeFactory1 = new TypeFactory(typeParser0, typeModifierArray0);
+    TypeModifier typeModifier0 = mock(TypeModifier.class, new ViolatedAssumptionAnswer());
+    TypeFactory typeFactory2 = typeFactory1.withModifier(typeModifier0);
+    assertNotSame(typeFactory0, typeFactory2);
+}",""
+"public final boolean isJavaLangObject() {
+    return _class == Object.class;
+}","public void test2020() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<ArrayList> class0 = ArrayList.class;
+    JavaType javaType0 = typeFactory0.constructType((Type) class0, (Class<?>) class0);
+    JavaType javaType1 = typeFactory0.constructSpecializedType(javaType0, class0);
+    assertFalse(javaType1.isJavaLangObject());
+}","/**
+ *  Convenience method, short-hand for
+ * <code>
+ *    getRawClass() == Object.class
+ * </code>
+ *  and used to figure if we basically have ""untyped"" type object.
+ *
+ *  @since 2.5
+ */"
+"@Override
+public final boolean isPrimitive() {
+    return _class.isPrimitive();
+}","public void test2121() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<ArrayList> class0 = ArrayList.class;
+    JavaType javaType0 = typeFactory0._unknownType();
+    JavaType javaType1 = typeFactory0.constructSpecializedType(javaType0, class0);
+    assertFalse(javaType1.isPrimitive());
+}",""
+"/*
+    /**********************************************************
+    /* Type conversion, parameterization resolution methods
+    /**********************************************************
+     */
+/**
+ * Factory method for creating a subtype of given base type, as defined
+ * by specified subclass; but retaining generic type information if any.
+ * Can be used, for example, to get equivalent of ""HashMap&lt;String,Integer>""
+ * from ""Map&ltString,Integer>"" by giving <code>HashMap.class</code>
+ * as subclass.
+ */
+public JavaType constructSpecializedType(JavaType baseType, Class<?> subclass) {
+    // simple optimization to avoid costly introspection if type-erased type does NOT differ
+    if (baseType.getRawClass() == subclass) {
+        return baseType;
+    }
+    // Currently only SimpleType instances can become something else
+    if (baseType instanceof SimpleType) {
+        // and only if subclass is an array, Collection or Map
+        if (subclass.isArray() || Map.class.isAssignableFrom(subclass) || Collection.class.isAssignableFrom(subclass)) {
+            // need to assert type compatibility...
+            if (!baseType.getRawClass().isAssignableFrom(subclass)) {
+                throw new IllegalArgumentException(""Class "" + subclass.getClass().getName() + "" not subtype of "" + baseType);
+            }
+            // this _should_ work, right?
+            JavaType subtype = _fromClass(subclass, new TypeBindings(this, baseType.getRawClass()));
+            // one more thing: handlers to copy?
+            Object h = baseType.getValueHandler();
+            if (h != null) {
+                subtype = subtype.withValueHandler(h);
+            }
+            h = baseType.getTypeHandler();
+            if (h != null) {
+                subtype = subtype.withTypeHandler(h);
+            }
+            return subtype;
+        }
+    }
+    // otherwise regular narrowing should work just fine
+    return baseType.narrowBy(subclass);
+}","public void test2222() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_LONG;
+    Class<ArrayType> class0 = ArrayType.class;
+    // Undeclared exception!
+    try {
+        typeFactory0.constructSpecializedType(simpleType0, class0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Class com.fasterxml.jackson.databind.type.ArrayType is not assignable to long
+        //
+        verifyException(""com.fasterxml.jackson.databind.JavaType"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Type conversion, parameterization resolution methods
+    /**********************************************************
+     */
+/**
+ * Factory method for creating a subtype of given base type, as defined
+ * by specified subclass; but retaining generic type information if any.
+ * Can be used, for example, to get equivalent of ""HashMap&lt;String,Integer>""
+ * from ""Map&ltString,Integer>"" by giving <code>HashMap.class</code>
+ * as subclass.
+ */
+public JavaType constructSpecializedType(JavaType baseType, Class<?> subclass) {
+    // simple optimization to avoid costly introspection if type-erased type does NOT differ
+    if (baseType.getRawClass() == subclass) {
+        return baseType;
+    }
+    // Currently only SimpleType instances can become something else
+    if (baseType instanceof SimpleType) {
+        // and only if subclass is an array, Collection or Map
+        if (subclass.isArray() || Map.class.isAssignableFrom(subclass) || Collection.class.isAssignableFrom(subclass)) {
+            // need to assert type compatibility...
+            if (!baseType.getRawClass().isAssignableFrom(subclass)) {
+                throw new IllegalArgumentException(""Class "" + subclass.getClass().getName() + "" not subtype of "" + baseType);
+            }
+            // this _should_ work, right?
+            JavaType subtype = _fromClass(subclass, new TypeBindings(this, baseType.getRawClass()));
+            // one more thing: handlers to copy?
+            Object h = baseType.getValueHandler();
+            if (h != null) {
+                subtype = subtype.withValueHandler(h);
+            }
+            h = baseType.getTypeHandler();
+            if (h != null) {
+                subtype = subtype.withTypeHandler(h);
+            }
+            return subtype;
+        }
+    }
+    // otherwise regular narrowing should work just fine
+    return baseType.narrowBy(subclass);
+}","public void test2323() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<HashMap> class0 = HashMap.class;
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_STRING;
+    // Undeclared exception!
+    try {
+        typeFactory0.constructSpecializedType(simpleType0, class0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Class java.lang.Class not subtype of [simple type, class java.lang.String]
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeFactory"", e);
+    }
+}",""
+"public final boolean useStaticType() {
+    return _asStatic;
+}","public void test2424() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    JavaType[] javaTypeArray0 = new JavaType[0];
+    Class<CollectionLikeType> class0 = CollectionLikeType.class;
+    JavaType javaType0 = typeFactory0.constructParametricType(class0, javaTypeArray0);
+    JavaType[] javaTypeArray1 = typeFactory0.findTypeParameters(javaType0, class0);
+    assertFalse(javaType0.useStaticType());
+}","/**
+ * Accessor for checking whether handlers for dealing with values of
+ * this type should use static typing (as opposed to dynamic typing).
+ * Note that while value of 'true' does mean that static typing is to
+ * be used, value of 'false' may still be overridden by other settings.
+ *
+ * @since 2.2
+ */"
+"public JavaType[] findTypeParameters(JavaType type, Class<?> expType) {
+    /* Tricky part here is that some JavaType instances have been constructed
+         * from generic type (usually via TypeReference); and in those case
+         * types have been resolved. Alternative is that the leaf type is type-erased
+         * class, in which case this has not been done.
+         * For now simplest way to handle this is to split processing in two: latter
+         * case actually fully works; and former mostly works. In future may need to
+         * rewrite former part, which requires changes to JavaType as well.
+         */
+    if (expType == type.getParameterSource()) {
+        // Direct type info; good since we can return it as is
+        int count = type.containedTypeCount();
+        if (count == 0)
+            return null;
+        JavaType[] result = new JavaType[count];
+        for (int i = 0; i < count; ++i) {
+            result[i] = type.containedType(i);
+        }
+        return result;
+    }
+    /* Otherwise need to go through type-erased class. This may miss cases where
+         * we get generic type; ideally JavaType/SimpleType would retain information
+         * about generic declaration at main level... but let's worry about that
+         * if/when there are problems; current handling is an improvement over earlier
+         * code.
+         */
+    Class<?> raw = type.getRawClass();
+    return findTypeParameters(raw, expType, new TypeBindings(this, type));
+}","public void test2425() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    JavaType[] javaTypeArray0 = new JavaType[0];
+    Class<CollectionLikeType> class0 = CollectionLikeType.class;
+    JavaType javaType0 = typeFactory0.constructParametricType(class0, javaTypeArray0);
+    JavaType[] javaTypeArray1 = typeFactory0.findTypeParameters(javaType0, class0);
+    assertNull(javaTypeArray1);
+}","/**
+ * Method that is to figure out actual type parameters that given
+ * class binds to generic types defined by given (generic)
+ * interface or class.
+ * This could mean, for example, trying to figure out
+ * key and value types for Map implementations.
+ *
+ * @param type Sub-type (leaf type) that implements <code>expType</code>
+ */"
+"public JavaType[] findTypeParameters(JavaType type, Class<?> expType) {
+    /* Tricky part here is that some JavaType instances have been constructed
+         * from generic type (usually via TypeReference); and in those case
+         * types have been resolved. Alternative is that the leaf type is type-erased
+         * class, in which case this has not been done.
+         * For now simplest way to handle this is to split processing in two: latter
+         * case actually fully works; and former mostly works. In future may need to
+         * rewrite former part, which requires changes to JavaType as well.
+         */
+    if (expType == type.getParameterSource()) {
+        // Direct type info; good since we can return it as is
+        int count = type.containedTypeCount();
+        if (count == 0)
+            return null;
+        JavaType[] result = new JavaType[count];
+        for (int i = 0; i < count; ++i) {
+            result[i] = type.containedType(i);
+        }
+        return result;
+    }
+    /* Otherwise need to go through type-erased class. This may miss cases where
+         * we get generic type; ideally JavaType/SimpleType would retain information
+         * about generic declaration at main level... but let's worry about that
+         * if/when there are problems; current handling is an improvement over earlier
+         * code.
+         */
+    Class<?> raw = type.getRawClass();
+    return findTypeParameters(raw, expType, new TypeBindings(this, type));
+}","public void test2526() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<String> class0 = String.class;
+    Class<SimpleType> class1 = SimpleType.class;
+    JavaType javaType0 = typeFactory0.constructType((Type) class0, (Class<?>) class1);
+    // Undeclared exception!
+    try {
+        typeFactory0.findTypeParameters(javaType0, class1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Class java.lang.String is not a subtype of com.fasterxml.jackson.databind.type.SimpleType
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeFactory"", e);
+    }
+}","/**
+ * Method that is to figure out actual type parameters that given
+ * class binds to generic types defined by given (generic)
+ * interface or class.
+ * This could mean, for example, trying to figure out
+ * key and value types for Map implementations.
+ *
+ * @param type Sub-type (leaf type) that implements <code>expType</code>
+ */"
+"public final boolean isJavaLangObject() {
+    return _class == Object.class;
+}","public void test2728() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<HashMap> class0 = HashMap.class;
+    Vector<JavaType> vector0 = new Vector<JavaType>();
+    JavaType javaType0 = typeFactory0._fromParameterizedClass(class0, vector0);
+    Class<MapLikeType> class1 = MapLikeType.class;
+    TypeBindings typeBindings0 = new TypeBindings(typeFactory0, class1);
+    JavaType javaType1 = typeFactory0.moreSpecificType(typeBindings0.UNBOUND, javaType0);
+    assertFalse(javaType1.isJavaLangObject());
+}","/**
+ *  Convenience method, short-hand for
+ * <code>
+ *    getRawClass() == Object.class
+ * </code>
+ *  and used to figure if we basically have ""untyped"" type object.
+ *
+ *  @since 2.5
+ */"
+"public JavaType moreSpecificType(JavaType type1, JavaType type2) {
+    if (type1 == null) {
+        return type2;
+    }
+    if (type2 == null) {
+        return type1;
+    }
+    Class<?> raw1 = type1.getRawClass();
+    Class<?> raw2 = type2.getRawClass();
+    if (raw1 == raw2) {
+        return type1;
+    }
+    // TODO: maybe try sub-classing, to retain generic types?
+    if (raw1.isAssignableFrom(raw2)) {
+        return type2;
+    }
+    return type1;
+}","public void test2829() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    JavaType javaType0 = typeFactory0.moreSpecificType((JavaType) null, (JavaType) null);
+    assertNull(javaType0);
+}","/**
+ * Method that can be called to figure out more specific of two
+ * types (if they are related; that is, one implements or extends the
+ * other); or if not related, return the primary type.
+ *
+ * @param type1 Primary type to consider
+ * @param type2 Secondary type to consider
+ *
+ * @since 2.2
+ */"
+"@Override
+public boolean isMapLikeType() {
+    return false;
+}","public void test2930() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_LONG;
+    JavaType javaType0 = typeFactory0.moreSpecificType(simpleType0, (JavaType) null);
+    assertFalse(javaType0.isMapLikeType());
+}","/**
+ * @return True if type is either true {@link java.util.Map} type,
+ *    or something similar (meaning it has at least two type parameter;
+ *    first one describing key type, second value type)
+ */"
+"public JavaType moreSpecificType(JavaType type1, JavaType type2) {
+    if (type1 == null) {
+        return type2;
+    }
+    if (type2 == null) {
+        return type1;
+    }
+    Class<?> raw1 = type1.getRawClass();
+    Class<?> raw2 = type2.getRawClass();
+    if (raw1 == raw2) {
+        return type1;
+    }
+    // TODO: maybe try sub-classing, to retain generic types?
+    if (raw1.isAssignableFrom(raw2)) {
+        return type2;
+    }
+    return type1;
+}","public void test3031() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_LONG;
+    JavaType javaType0 = typeFactory0.moreSpecificType(simpleType0, simpleType0);
+    assertSame(simpleType0, javaType0);
+}","/**
+ * Method that can be called to figure out more specific of two
+ * types (if they are related; that is, one implements or extends the
+ * other); or if not related, return the primary type.
+ *
+ * @param type1 Primary type to consider
+ * @param type2 Secondary type to consider
+ *
+ * @since 2.2
+ */"
+"@Override
+public final boolean isPrimitive() {
+    return _class.isPrimitive();
+}","public void test3132() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_LONG;
+    Class<HashMap> class0 = HashMap.class;
+    MapType mapType0 = typeFactory0.constructRawMapType(class0);
+    JavaType javaType0 = typeFactory0.moreSpecificType(mapType0, simpleType0);
+    assertFalse(javaType0.isPrimitive());
+}",""
+"@Override
+public boolean isMapLikeType() {
+    return false;
+}","public void test3233() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<HashMap> class0 = HashMap.class;
+    JavaType javaType0 = typeFactory0.constructType((Type) class0, (Class<?>) null);
+    assertTrue(javaType0.isMapLikeType());
+}","/**
+ * @return True if type is either true {@link java.util.Map} type,
+ *    or something similar (meaning it has at least two type parameter;
+ *    first one describing key type, second value type)
+ */"
+"@Override
+public boolean isCollectionLikeType() {
+    return false;
+}","public void test3334() throws Throwable {
+    Class<HashMap> class0 = HashMap.class;
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_LONG;
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    JavaType javaType0 = typeFactory0.constructType((Type) class0, (JavaType) simpleType0);
+    assertFalse(javaType0.isCollectionLikeType());
+}","/**
+ * @return True if type is either true {@link java.util.Collection} type,
+ *    or something similar (meaning it has at least one type parameter,
+ *    which describes type of contents)
+ */"
+"@Override
+public boolean isConcrete() {
+    int mod = _class.getModifiers();
+    if ((mod & (Modifier.INTERFACE | Modifier.ABSTRACT)) == 0) {
+        return true;
+    }
+    /* 19-Feb-2010, tatus: Holy mackarel; primitive types
+         *    have 'abstract' flag set...
+         */
+    return _class.isPrimitive();
+}","public void test3435() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<LinkedList> class0 = LinkedList.class;
+    JavaType javaType0 = typeFactory0.constructType((Type) class0, (JavaType) null);
+    assertTrue(javaType0.isConcrete());
+}","/**
+ * Convenience method for checking whether underlying Java type
+ * is a concrete class or not: abstract classes and interfaces
+ * are not.
+ */"
+"public static Class<?> rawClass(Type t) {
+    if (t instanceof Class<?>) {
+        return (Class<?>) t;
+    }
+    // Shouldbe able to optimize bit more in future...
+    return defaultInstance().constructType(t).getRawClass();
+}","public void test3536() throws Throwable {
+    // Undeclared exception!
+    try {
+        TypeFactory.rawClass((Type) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unrecognized Type: [null]
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeFactory"", e);
+    }
+}","/**
+ * Static helper method that can be called to figure out type-erased
+ * call for given JDK type. It can be called statically since type resolution
+ * process can never change actual type-erased class; thereby static
+ * default instance is used for determination.
+ */"
+"@Override
+public boolean isCollectionLikeType() {
+    return false;
+}","public void test3637() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<ArrayList> class0 = ArrayList.class;
+    TypeParser typeParser0 = new TypeParser(typeFactory0);
+    TypeModifier[] typeModifierArray0 = new TypeModifier[0];
+    TypeFactory typeFactory1 = new TypeFactory(typeParser0, typeModifierArray0);
+    JavaType javaType0 = typeFactory1.constructType((Type) class0);
+    assertTrue(javaType0.isCollectionLikeType());
+}","/**
+ * @return True if type is either true {@link java.util.Collection} type,
+ *    or something similar (meaning it has at least one type parameter,
+ *    which describes type of contents)
+ */"
+"public JavaType constructType(Type type, Class<?> context) {
+    TypeBindings b = (context == null) ? null : new TypeBindings(this, context);
+    return _constructType(type, b);
+}","public void test3738() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<Object> class0 = Object.class;
+    TypeParser typeParser0 = new TypeParser(typeFactory0);
+    TypeModifier[] typeModifierArray0 = new TypeModifier[4];
+    TypeFactory typeFactory1 = new TypeFactory(typeParser0, typeModifierArray0);
+    // Undeclared exception!
+    try {
+        typeFactory1.constructType((Type) class0, (Class<?>) class0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeFactory"", e);
+    }
+}",""
+"@Override
+public final boolean isPrimitive() {
+    return _class.isPrimitive();
+}","public void test4344() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<Long> class0 = Long.TYPE;
+    JavaType javaType0 = typeFactory0.constructType((Type) class0, (Class<?>) class0);
+    assertTrue(javaType0.isPrimitive());
+}",""
+"public ObjectReader readerForUpdating(Object valueToUpdate) {
+    JavaType t = _typeFactory.constructType(valueToUpdate.getClass());
+    return _newReader(getDeserializationConfig(), t, valueToUpdate, null, _injectableValues);
+}","public void test4445() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    PropertyAccessor propertyAccessor0 = PropertyAccessor.FIELD;
+    JsonAutoDetect.Visibility jsonAutoDetect_Visibility0 = JsonAutoDetect.Visibility.ANY;
+    objectMapper0.setVisibility(propertyAccessor0, jsonAutoDetect_Visibility0);
+    SimpleModule simpleModule0 = new SimpleModule();
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_LONG;
+    ObjectReader objectReader0 = objectMapper0.readerForUpdating(simpleType0);
+    assertNotNull(objectReader0);
+}","/**
+ * Factory method for constructing {@link ObjectReader} that will
+ * update given Object (usually Bean, but can be a Collection or Map
+ * as well, but NOT an array) with JSON data. Deserialization occurs
+ * normally except that the root-level value in JSON is not used for
+ * instantiating a new object; instead give updateable object is used
+ * as root.
+ * Runtime type of value object is used for locating deserializer,
+ * unless overridden by other factory methods of {@link ObjectReader}
+ */"
+"/*
+    /**********************************************************
+    /* Public API, type parameter access; pass-through
+    /**********************************************************
+     */
+@Override
+public boolean hasGenericTypes() {
+    return containedTypeCount() > 0;
+}","public void test4546() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<ObjectMapper.DefaultTyping> class0 = ObjectMapper.DefaultTyping.class;
+    JavaType javaType0 = typeFactory0.constructType((Type) class0, (Class<?>) class0);
+    assertFalse(javaType0.hasGenericTypes());
+}",""
+"public final boolean useStaticType() {
+    return _asStatic;
+}","public void test4647() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<ObjectMapper.DefaultTyping> class0 = ObjectMapper.DefaultTyping.class;
+    ArrayList<JavaType> arrayList0 = new ArrayList<JavaType>();
+    JavaType javaType0 = typeFactory0._fromParameterizedClass(class0, arrayList0);
+    assertFalse(javaType0.useStaticType());
+}","/**
+ * Accessor for checking whether handlers for dealing with values of
+ * this type should use static typing (as opposed to dynamic typing).
+ * Note that while value of 'true' does mean that static typing is to
+ * be used, value of 'false' may still be overridden by other settings.
+ *
+ * @since 2.2
+ */"
+"/*
+    /**********************************************************
+    /* Public API, type parameter access; pass-through
+    /**********************************************************
+     */
+@Override
+public boolean hasGenericTypes() {
+    return containedTypeCount() > 0;
+}","public void test4748() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<ArrayList> class0 = ArrayList.class;
+    Vector<JavaType> vector0 = new Vector<JavaType>();
+    JavaType javaType0 = typeFactory0._fromParameterizedClass(class0, vector0);
+    assertTrue(javaType0.hasGenericTypes());
+}",""
+"@Override
+public abstract boolean equals(Object o);","public void test4849() throws Throwable {
+    Class<HashMap> class0 = HashMap.class;
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    JavaType javaType0 = typeFactory0.constructType((Type) class0);
+    Stack<JavaType> stack0 = new Stack<JavaType>();
+    stack0.add(javaType0);
+    JavaType javaType1 = typeFactory0._fromParameterizedClass(class0, stack0);
+    assertFalse(javaType1.equals((Object) javaType0));
+}",""
+"@Override
+public boolean isCollectionLikeType() {
+    return false;
+}","public void test4950() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<Object> class0 = Object.class;
+    ArrayList<JavaType> arrayList0 = new ArrayList<JavaType>();
+    JavaType javaType0 = typeFactory0._fromParameterizedClass(class0, arrayList0);
+    assertFalse(javaType0.isCollectionLikeType());
+}","/**
+ * @return True if type is either true {@link java.util.Collection} type,
+ *    or something similar (meaning it has at least one type parameter,
+ *    which describes type of contents)
+ */"
+"protected JavaType _fromParameterizedClass(Class<?> clz, List<JavaType> paramTypes) {
+    if (clz.isArray()) {
+        // ignore generics (should never have any)
+        return ArrayType.construct(_constructType(clz.getComponentType(), null), null, null);
+    }
+    if (clz.isEnum()) {
+        // ditto for enums
+        return new SimpleType(clz);
+    }
+    if (Map.class.isAssignableFrom(clz)) {
+        // First: if we do have param types, use them
+        JavaType keyType, contentType;
+        if (paramTypes.size() > 0) {
+            keyType = paramTypes.get(0);
+            contentType = (paramTypes.size() >= 2) ? paramTypes.get(1) : _unknownType();
+            return MapType.construct(clz, keyType, contentType);
+        }
+        return _mapType(clz);
+    }
+    if (Collection.class.isAssignableFrom(clz)) {
+        if (paramTypes.size() >= 1) {
+            return CollectionType.construct(clz, paramTypes.get(0));
+        }
+        return _collectionType(clz);
+    }
+    if (paramTypes.size() == 0) {
+        return new SimpleType(clz);
+    }
+    // Hmmh. Does this actually occur?
+    JavaType[] pt = paramTypes.toArray(new JavaType[paramTypes.size()]);
+    return constructSimpleType(clz, clz, pt);
+}","public void test5051() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Vector<JavaType> vector0 = new Vector<JavaType>();
+    vector0.add((JavaType) null);
+    Class<LinkedList> class0 = LinkedList.class;
+    // Undeclared exception!
+    try {
+        typeFactory0._fromParameterizedClass(class0, vector0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.CollectionLikeType"", e);
+    }
+}","/**
+ * Method used by {@link TypeParser} when generics-aware version
+ * is constructed.
+ */"
+"protected JavaType _fromParameterizedClass(Class<?> clz, List<JavaType> paramTypes) {
+    if (clz.isArray()) {
+        // ignore generics (should never have any)
+        return ArrayType.construct(_constructType(clz.getComponentType(), null), null, null);
+    }
+    if (clz.isEnum()) {
+        // ditto for enums
+        return new SimpleType(clz);
+    }
+    if (Map.class.isAssignableFrom(clz)) {
+        // First: if we do have param types, use them
+        JavaType keyType, contentType;
+        if (paramTypes.size() > 0) {
+            keyType = paramTypes.get(0);
+            contentType = (paramTypes.size() >= 2) ? paramTypes.get(1) : _unknownType();
+            return MapType.construct(clz, keyType, contentType);
+        }
+        return _mapType(clz);
+    }
+    if (Collection.class.isAssignableFrom(clz)) {
+        if (paramTypes.size() >= 1) {
+            return CollectionType.construct(clz, paramTypes.get(0));
+        }
+        return _collectionType(clz);
+    }
+    if (paramTypes.size() == 0) {
+        return new SimpleType(clz);
+    }
+    // Hmmh. Does this actually occur?
+    JavaType[] pt = paramTypes.toArray(new JavaType[paramTypes.size()]);
+    return constructSimpleType(clz, clz, pt);
+}","public void test5152() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    JavaType javaType0 = TypeFactory.unknownType();
+    Class<Object> class0 = Object.class;
+    ArrayList<JavaType> arrayList0 = new ArrayList<JavaType>();
+    arrayList0.add(javaType0);
+    // Undeclared exception!
+    try {
+        typeFactory0._fromParameterizedClass(class0, arrayList0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Parameter type mismatch for java.lang.Object (and target java.lang.Object): expected 0 parameters, was given 1
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeFactory"", e);
+    }
+}","/**
+ * Method used by {@link TypeParser} when generics-aware version
+ * is constructed.
+ */"
+"public ObjectReader readerForUpdating(Object valueToUpdate) {
+    JavaType t = _typeFactory.constructType(valueToUpdate.getClass());
+    return _newReader(getDeserializationConfig(), t, valueToUpdate, null, _injectableValues);
+}","public void test5253() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    PropertyAccessor propertyAccessor0 = PropertyAccessor.ALL;
+    JsonAutoDetect.Visibility jsonAutoDetect_Visibility0 = JsonAutoDetect.Visibility.NON_PRIVATE;
+    objectMapper0.setVisibility(propertyAccessor0, jsonAutoDetect_Visibility0);
+    SimpleModule simpleModule0 = new SimpleModule();
+    ObjectReader objectReader0 = objectMapper0.readerForUpdating(simpleModule0);
+    assertNotNull(objectReader0);
+}","/**
+ * Factory method for constructing {@link ObjectReader} that will
+ * update given Object (usually Bean, but can be a Collection or Map
+ * as well, but NOT an array) with JSON data. Deserialization occurs
+ * normally except that the root-level value in JSON is not used for
+ * instantiating a new object; instead give updateable object is used
+ * as root.
+ * Runtime type of value object is used for locating deserializer,
+ * unless overridden by other factory methods of {@link ObjectReader}
+ */"
+"@Override
+public final boolean isPrimitive() {
+    return _class.isPrimitive();
+}","public void test5354() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    JavaType javaType0 = typeFactory0._resolveVariableViaSubTypes((HierarchicType) null, ""+:"", (TypeBindings) null);
+    assertFalse(javaType0.isPrimitive());
+}",""
+"protected HierarchicType _findSuperInterfaceChain(Type currentType, Class<?> target) {
+    HierarchicType current = new HierarchicType(currentType);
+    Class<?> raw = current.getRawClass();
+    if (raw == target) {
+        return new HierarchicType(currentType);
+    }
+    // Otherwise, keep on going down the rat hole; first implemented interfaces
+    /* 16-Aug-2011, tatu: Minor optimization based on profiled hot spot; let's
+         *   try caching certain commonly needed cases
+         */
+    if (raw == HashMap.class) {
+        if (target == Map.class) {
+            return _hashMapSuperInterfaceChain(current);
+        }
+    }
+    if (raw == ArrayList.class) {
+        if (target == List.class) {
+            return _arrayListSuperInterfaceChain(current);
+        }
+    }
+    return _doFindSuperInterfaceChain(current, target);
+}","public void test5455() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<HashMap> class0 = HashMap.class;
+    Class<ArrayType> class1 = ArrayType.class;
+    HierarchicType hierarchicType0 = typeFactory0._findSuperInterfaceChain(class0, class1);
+    assertNull(hierarchicType0);
+}",""
+"public final boolean isGeneric() {
+    return _genericType != null;
+}","public void test5556() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<CollectionType> class0 = CollectionType.class;
+    Class<Object> class1 = Object.class;
+    HierarchicType hierarchicType0 = typeFactory0._findSuperInterfaceChain(class0, class1);
+    assertFalse(hierarchicType0.isGeneric());
+}",""
+"protected synchronized HierarchicType _arrayListSuperInterfaceChain(HierarchicType current) {
+    if (_cachedArrayListType == null) {
+        HierarchicType base = current.deepCloneWithoutSubtype();
+        _doFindSuperInterfaceChain(base, List.class);
+        _cachedArrayListType = base.getSuperType();
+    }
+    HierarchicType t = _cachedArrayListType.deepCloneWithoutSubtype();
+    current.setSuperType(t);
+    t.setSubType(current);
+    return current;
+}","public void test5657() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    // Undeclared exception!
+    try {
+        typeFactory0._arrayListSuperInterfaceChain((HierarchicType) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeFactory"", e);
+    }
+}",""

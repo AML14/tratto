@@ -1,0 +1,374 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    DeserializerFactoryConfig deserializerFactoryConfig0 = new DeserializerFactoryConfig();
+    BeanDeserializerFactory beanDeserializerFactory0 = new BeanDeserializerFactory(deserializerFactoryConfig0);
+    // Undeclared exception!
+    try {
+        beanDeserializerFactory0.withAdditionalDeserializers((Deserializers) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Can not pass null Deserializers
+        //
+        verifyException(""com.fasterxml.jackson.databind.cfg.DeserializerFactoryConfig"", e);
+    }
+}",1,
+project,0,test011,"public void test011() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    // Undeclared exception!
+    try {
+        beanDeserializerFactory0.withDeserializerModifier((BeanDeserializerModifier) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Can not pass null modifier
+        //
+        verifyException(""com.fasterxml.jackson.databind.cfg.DeserializerFactoryConfig"", e);
+    }
+}",0,
+project,0,test033,"public void test033() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DeserializerFactoryConfig deserializerFactoryConfig0 = beanDeserializerFactory0.getFactoryConfig();
+    assertFalse(deserializerFactoryConfig0.hasDeserializerModifiers());
+}",0,assertTrue(deserializerFactoryConfig0.hasDeserializerModifiers())
+project,0,test044,"public void test044() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    ValueInstantiators.Base valueInstantiators_Base0 = new ValueInstantiators.Base();
+    DeserializerFactory deserializerFactory0 = beanDeserializerFactory0.withValueInstantiators(valueInstantiators_Base0);
+    assertNotSame(beanDeserializerFactory0, deserializerFactory0);
+}",0,
+project,0,test066,"public void test066() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    SimpleAbstractTypeResolver simpleAbstractTypeResolver0 = new SimpleAbstractTypeResolver();
+    DeserializerFactory deserializerFactory0 = beanDeserializerFactory0.withAbstractTypeResolver(simpleAbstractTypeResolver0);
+    assertNotSame(beanDeserializerFactory0, deserializerFactory0);
+}",0,
+project,0,test077,"public void test077() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    Class<SQLNonTransientConnectionException> class0 = SQLNonTransientConnectionException.class;
+    // Undeclared exception!
+    try {
+        beanDeserializerFactory0._valueInstantiatorInstance((DeserializationConfig) null, (Annotated) null, class0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // AnnotationIntrospector returned Class java.sql.SQLNonTransientConnectionException; expected Class<ValueInstantiator>
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.BasicDeserializerFactory"", e);
+    }
+}",0,
+project,0,test088,"public void test088() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    ValueInstantiator valueInstantiator0 = beanDeserializerFactory0._valueInstantiatorInstance((DeserializationConfig) null, (Annotated) null, (Object) null);
+    assertNull(valueInstantiator0);
+}",0,
+project,0,test099,"public void test099() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    ValueInstantiator valueInstantiator0 = beanDeserializerFactory0._valueInstantiatorInstance((DeserializationConfig) null, (Annotated) null, jsonLocationInstantiator0);
+    assertFalse(valueInstantiator0.canCreateFromBoolean());
+}",0,assertTrue(valueInstantiator0.canCreateFromBoolean())
+project,0,test1010,"public void test1010() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    // Undeclared exception!
+    try {
+        beanDeserializerFactory0._valueInstantiatorInstance((DeserializationConfig) null, (Annotated) null, beanDeserializerFactory0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // AnnotationIntrospector returned key deserializer definition of type com.fasterxml.jackson.databind.deser.BeanDeserializerFactory; expected type KeyDeserializer or Class<KeyDeserializer> instead
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.BasicDeserializerFactory"", e);
+    }
+}",0,
+project,0,test1111,"public void test1111() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    Class<SQLNonTransientConnectionException> class0 = SQLNonTransientConnectionException.class;
+    AnnotationIntrospector annotationIntrospector0 = AnnotationIntrospector.nopInstance();
+    AnnotatedClass annotatedClass0 = AnnotatedClass.constructWithoutSuperTypes(class0, annotationIntrospector0, (ClassIntrospector.MixInResolver) null);
+    AnnotatedConstructor annotatedConstructor0 = annotatedClass0.getDefaultConstructor();
+    PropertyName propertyName0 = BeanDeserializerBase.TEMP_PROPERTY_NAME;
+    POJOPropertyBuilder pOJOPropertyBuilder0 = new POJOPropertyBuilder(propertyName0, annotationIntrospector0, false);
+    boolean boolean0 = beanDeserializerFactory0._checkIfCreatorPropertyBased(annotationIntrospector0, annotatedConstructor0, pOJOPropertyBuilder0);
+    assertFalse(boolean0);
+}",0,
+project,0,test1212,"public void test1212() throws Throwable {
+    Class<SQLNonTransientConnectionException> class0 = SQLNonTransientConnectionException.class;
+    AnnotationIntrospector annotationIntrospector0 = AnnotationIntrospector.nopInstance();
+    AnnotatedClass annotatedClass0 = AnnotatedClass.constructWithoutSuperTypes(class0, annotationIntrospector0, (ClassIntrospector.MixInResolver) null);
+    AnnotatedConstructor annotatedConstructor0 = annotatedClass0.getDefaultConstructor();
+    POJOPropertyBuilder pOJOPropertyBuilder0 = new POJOPropertyBuilder((PropertyName) null, annotationIntrospector0, true);
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    boolean boolean0 = beanDeserializerFactory0._checkIfCreatorPropertyBased(annotationIntrospector0, annotatedConstructor0, pOJOPropertyBuilder0);
+    assertFalse(boolean0);
+}",0,
+project,0,test1313,"public void test1313() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    Class<SQLNonTransientConnectionException> class0 = SQLNonTransientConnectionException.class;
+    AnnotationIntrospector annotationIntrospector0 = AnnotationIntrospector.nopInstance();
+    AnnotatedClass annotatedClass0 = AnnotatedClass.constructWithoutSuperTypes(class0, annotationIntrospector0, (ClassIntrospector.MixInResolver) null);
+    AnnotatedConstructor annotatedConstructor0 = annotatedClass0.getDefaultConstructor();
+    PropertyName propertyName0 = PropertyName.NO_NAME;
+    POJOPropertyBuilder pOJOPropertyBuilder0 = new POJOPropertyBuilder(propertyName0, annotationIntrospector0, false);
+    boolean boolean0 = beanDeserializerFactory0._checkIfCreatorPropertyBased(annotationIntrospector0, annotatedConstructor0, pOJOPropertyBuilder0);
+    assertFalse(boolean0);
+}",0,
+project,0,test1515,"public void test1515() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    JsonNodeFactory jsonNodeFactory0 = JsonNodeFactory.instance;
+    ObjectReader objectReader0 = objectMapper0.readerForUpdating(jsonNodeFactory0);
+    assertNotNull(objectReader0);
+}",0,assertNotNull(objectReader0)
+project,0,test1616,"public void test1616() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    PropertyName propertyName0 = beanDeserializerFactory0._findParamName((AnnotatedParameter) null, (AnnotationIntrospector) null);
+    assertNull(propertyName0);
+}",0,
+project,0,test1717,"public void test1717() throws Throwable {
+    DeserializerFactoryConfig deserializerFactoryConfig0 = new DeserializerFactoryConfig();
+    BeanDeserializerFactory beanDeserializerFactory0 = new BeanDeserializerFactory(deserializerFactoryConfig0);
+    Class<BinaryNode> class0 = BinaryNode.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    SQLTransientConnectionException sQLTransientConnectionException0 = new SQLTransientConnectionException();
+    ReferenceType referenceType0 = ReferenceType.construct((Class<?>) class0, (JavaType) simpleType0, (Object) sQLTransientConnectionException0, (Object) null);
+    CollectionType collectionType0 = CollectionType.construct(class0, referenceType0);
+    AnnotationMap annotationMap0 = new AnnotationMap();
+    AnnotatedParameter annotatedParameter0 = new AnnotatedParameter((AnnotatedWithParams) null, collectionType0, annotationMap0, 309);
+    PropertyName propertyName0 = beanDeserializerFactory0._findParamName(annotatedParameter0, (AnnotationIntrospector) null);
+    assertNull(propertyName0);
+}",0,
+project,0,test1818,"public void test1818() throws Throwable {
+    DeserializerFactoryConfig deserializerFactoryConfig0 = new DeserializerFactoryConfig();
+    BeanDeserializerFactory beanDeserializerFactory0 = new BeanDeserializerFactory(deserializerFactoryConfig0);
+    AnnotationIntrospector annotationIntrospector0 = AnnotationIntrospector.nopInstance();
+    PropertyName propertyName0 = beanDeserializerFactory0._findImplicitParamName((AnnotatedParameter) null, annotationIntrospector0);
+    assertNull(propertyName0);
+}",0,
+project,0,test1919,"public void test1919() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    AnnotationIntrospector annotationIntrospector0 = AnnotationIntrospector.nopInstance();
+    PropertyName propertyName0 = beanDeserializerFactory0._findExplicitParamName((AnnotatedParameter) null, annotationIntrospector0);
+    assertNull(propertyName0);
+}",0,
+project,0,test2020,"public void test2020() throws Throwable {
+    DeserializerFactoryConfig deserializerFactoryConfig0 = new DeserializerFactoryConfig();
+    BeanDeserializerFactory beanDeserializerFactory0 = new BeanDeserializerFactory(deserializerFactoryConfig0);
+    AnnotationMap annotationMap0 = new AnnotationMap();
+    AnnotatedParameter annotatedParameter0 = new AnnotatedParameter((AnnotatedWithParams) null, (Type) null, annotationMap0, (-2));
+    PropertyName propertyName0 = beanDeserializerFactory0._findExplicitParamName(annotatedParameter0, (AnnotationIntrospector) null);
+    assertNull(propertyName0);
+}",0,
+project,0,test2121,"public void test2121() throws Throwable {
+    DeserializerFactoryConfig deserializerFactoryConfig0 = new DeserializerFactoryConfig();
+    BeanDeserializerFactory beanDeserializerFactory0 = new BeanDeserializerFactory(deserializerFactoryConfig0);
+    AnnotationIntrospector annotationIntrospector0 = AnnotationIntrospector.nopInstance();
+    AnnotationMap annotationMap0 = new AnnotationMap();
+    AnnotatedParameter annotatedParameter0 = new AnnotatedParameter((AnnotatedWithParams) null, (Type) null, annotationMap0, (-3712));
+    PropertyName propertyName0 = beanDeserializerFactory0._findExplicitParamName(annotatedParameter0, annotationIntrospector0);
+    assertNull(propertyName0);
+}",0,
+project,0,test2222,"public void test2222() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    AnnotationIntrospector annotationIntrospector0 = AnnotationIntrospector.nopInstance();
+    boolean boolean0 = beanDeserializerFactory0._hasExplicitParamName((AnnotatedParameter) null, annotationIntrospector0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2323,"public void test2323() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    AnnotationIntrospector annotationIntrospector0 = AnnotationIntrospector.nopInstance();
+    AnnotationMap annotationMap0 = new AnnotationMap();
+    AnnotatedParameter annotatedParameter0 = new AnnotatedParameter((AnnotatedWithParams) null, (Type) null, annotationMap0, (-3702));
+    boolean boolean0 = beanDeserializerFactory0._hasExplicitParamName(annotatedParameter0, annotationIntrospector0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2424,"public void test2424() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    AnnotationMap annotationMap0 = new AnnotationMap();
+    AnnotatedParameter annotatedParameter0 = new AnnotatedParameter((AnnotatedWithParams) null, (Type) null, annotationMap0, (-2594));
+    boolean boolean0 = beanDeserializerFactory0._hasExplicitParamName(annotatedParameter0, (AnnotationIntrospector) null);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2525,"public void test2525() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    MockIOException mockIOException0 = new MockIOException();
+    SQLSyntaxErrorException sQLSyntaxErrorException0 = new SQLSyntaxErrorException(""java.com.fasterxml.jackson.databind.node.BooleanNode"", mockIOException0);
+    SQLWarning sQLWarning0 = new SQLWarning(""JSON"", sQLSyntaxErrorException0);
+    BatchUpdateException batchUpdateException0 = new BatchUpdateException(sQLWarning0);
+    ObjectReader objectReader0 = objectMapper0.readerForUpdating(batchUpdateException0);
+    assertNotNull(objectReader0);
+}",0,assertNotNull(objectReader0)
+project,0,test2626,"public void test2626() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    JavaType javaType0 = TypeFactory.unknownType();
+    CollectionType collectionType0 = beanDeserializerFactory0._mapAbstractCollectionType(javaType0, (DeserializationConfig) null);
+    assertNull(collectionType0);
+}",0,
+project,0,test2727,"public void test2727() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<ArrayList> class0 = ArrayList.class;
+    CollectionType collectionType0 = typeFactory0.constructRawCollectionType(class0);
+    // Undeclared exception!
+    try {
+        beanDeserializerFactory0.createCollectionLikeDeserializer(defaultDeserializationContext_Impl0, collectionType0, (BeanDescription) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.BasicDeserializerFactory"", e);
+    }
+}",0,
+project,0,test2929,"public void test2929() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    ObjectMapper.DefaultTyping objectMapper_DefaultTyping0 = ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT;
+    ObjectReader objectReader0 = objectMapper0.readerForUpdating(objectMapper_DefaultTyping0);
+    assertNotNull(objectReader0);
+}",0,assertNotNull(objectReader0)
+project,0,test3030,"public void test3030() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    ObjectMapper.DefaultTyping objectMapper_DefaultTyping0 = ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT;
+    objectMapper0.enableDefaultTypingAsProperty(objectMapper_DefaultTyping0, ""JSON"");
+    ConcurrentHashMap<POJONode, TokenBuffer> concurrentHashMap0 = new ConcurrentHashMap<POJONode, TokenBuffer>();
+    ObjectReader objectReader0 = objectMapper0.readerForUpdating(concurrentHashMap0);
+    assertNotNull(objectReader0);
+}",0,assertNotNull(objectReader0)
+project,0,test3131,"public void test3131() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    ObjectMapper.DefaultTyping objectMapper_DefaultTyping0 = ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT;
+    ObjectMapper objectMapper1 = objectMapper0.enableDefaultTyping(objectMapper_DefaultTyping0);
+    ObjectReader objectReader0 = objectMapper1.readerForUpdating(jsonFactory0);
+    assertNotNull(objectReader0);
+}",0,assertNotNull(objectReader0)
+project,0,test3232,"public void test3232() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.readerForUpdating(beanDeserializerFactory0);
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<ConcurrentHashMap> class0 = ConcurrentHashMap.class;
+    Class<ConcurrentSkipListMap> class1 = ConcurrentSkipListMap.class;
+    MapType mapType0 = typeFactory0.constructMapType(class1, class0, class0);
+    ObjectReader objectReader1 = objectReader0.forType((JavaType) mapType0);
+    assertNotSame(objectReader0, objectReader1);
+}",0,
+project,0,test3333,"public void test3333() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    JavaType javaType0 = TypeFactory.unknownType();
+    DeserializerFactoryConfig deserializerFactoryConfig0 = new DeserializerFactoryConfig();
+    SimpleAbstractTypeResolver simpleAbstractTypeResolver0 = new SimpleAbstractTypeResolver();
+    DeserializerFactoryConfig deserializerFactoryConfig1 = deserializerFactoryConfig0.withAbstractTypeResolver(simpleAbstractTypeResolver0);
+    BeanDeserializerFactory beanDeserializerFactory1 = new BeanDeserializerFactory(deserializerFactoryConfig1);
+    // Undeclared exception!
+    try {
+        beanDeserializerFactory1.createBeanDeserializer(defaultDeserializationContext_Impl0, javaType0, (BeanDescription) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.BasicDeserializerFactory"", e);
+    }
+}",0,
+project,0,test3434,"public void test3434() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    AtomicReference<NamedType> atomicReference0 = new AtomicReference<NamedType>((NamedType) null);
+    ObjectReader objectReader0 = objectMapper0.readerForUpdating(atomicReference0);
+    assertNotNull(objectReader0);
+}",0,assertNotNull(objectReader0)
+project,0,test3535,"public void test3535() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    JavaType javaType0 = TypeFactory.unknownType();
+    Class<TokenBuffer> class0 = TokenBuffer.class;
+    ReferenceType referenceType0 = ReferenceType.construct((Class<?>) class0, javaType0, (Object) beanDeserializerFactory0, (Object) beanDeserializerFactory0);
+    JsonDeserializer<Object> jsonDeserializer0 = beanDeserializerFactory0.createBeanDeserializer(defaultDeserializationContext_Impl0, referenceType0, (BeanDescription) null);
+    assertFalse(jsonDeserializer0.isCachable());
+}",0,assertTrue(jsonDeserializer0.isCachable())
+project,0,test3636,"public void test3636() throws Throwable {
+    SimpleType simpleType0 = (SimpleType) TypeBindings.UNBOUND;
+    DeserializerFactoryConfig deserializerFactoryConfig0 = new DeserializerFactoryConfig();
+    Deserializers.Base deserializers_Base0 = new Deserializers.Base();
+    DeserializerFactoryConfig deserializerFactoryConfig1 = deserializerFactoryConfig0.withAdditionalDeserializers(deserializers_Base0);
+    BeanDeserializerFactory beanDeserializerFactory0 = new BeanDeserializerFactory(deserializerFactoryConfig1);
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    JsonDeserializer<Object> jsonDeserializer0 = beanDeserializerFactory0.createBeanDeserializer(defaultDeserializationContext_Impl0, simpleType0, (BeanDescription) null);
+    assertTrue(jsonDeserializer0.isCachable());
+}",0,
+project,0,test3737,"public void test3737() throws Throwable {
+    SimpleType simpleType0 = (SimpleType) TypeBindings.UNBOUND;
+    DeserializerFactoryConfig deserializerFactoryConfig0 = new DeserializerFactoryConfig();
+    Deserializers.Base deserializers_Base0 = new Deserializers.Base();
+    DeserializerFactoryConfig deserializerFactoryConfig1 = deserializerFactoryConfig0.withAdditionalDeserializers(deserializers_Base0);
+    BeanDeserializerFactory beanDeserializerFactory0 = new BeanDeserializerFactory(deserializerFactoryConfig1);
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    // Undeclared exception!
+    try {
+        beanDeserializerFactory0.createEnumDeserializer(defaultDeserializationContext_Impl0, simpleType0, (BeanDescription) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.BasicDeserializerFactory"", e);
+    }
+}",0,
+project,0,test3838,"public void test3838() throws Throwable {
+    SimpleType simpleType0 = (SimpleType) TypeBindings.UNBOUND;
+    DeserializerFactoryConfig deserializerFactoryConfig0 = new DeserializerFactoryConfig();
+    Deserializers.Base deserializers_Base0 = new Deserializers.Base();
+    DeserializerFactoryConfig deserializerFactoryConfig1 = deserializerFactoryConfig0.withAdditionalDeserializers(deserializers_Base0);
+    BeanDeserializerFactory beanDeserializerFactory0 = new BeanDeserializerFactory(deserializerFactoryConfig1);
+    JsonDeserializer<?> jsonDeserializer0 = beanDeserializerFactory0.createTreeDeserializer((DeserializationConfig) null, simpleType0, (BeanDescription) null);
+    assertTrue(jsonDeserializer0.isCachable());
+}",0,assertFalse(jsonDeserializer0.isCachable())
+project,0,test4040,"public void test4040() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    Class<AnnotatedParameter> class0 = AnnotatedParameter.class;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    POJOPropertiesCollector pOJOPropertiesCollector0 = mock(POJOPropertiesCollector.class, new ViolatedAssumptionAnswer());
+    doReturn((AnnotatedClass) null).when(pOJOPropertiesCollector0).getClassDef();
+    doReturn((MapperConfig) null).when(pOJOPropertiesCollector0).getConfig();
+    doReturn((ObjectIdInfo) null).when(pOJOPropertiesCollector0).getObjectIdInfo();
+    doReturn((JavaType) null).when(pOJOPropertiesCollector0).getType();
+    BasicBeanDescription basicBeanDescription0 = BasicBeanDescription.forDeserialization(pOJOPropertiesCollector0);
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    // Undeclared exception!
+    try {
+        beanDeserializerFactory0.resolveType(defaultDeserializationContext_Impl0, basicBeanDescription0, simpleType0, (AnnotatedMember) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.BasicDeserializerFactory"", e);
+    }
+}",0,
+project,0,test4141,"public void test4141() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<LongNode> class0 = LongNode.class;
+    JavaType javaType0 = typeFactory0.uncheckedSimpleType(class0);
+    // Undeclared exception!
+    try {
+        beanDeserializerFactory0._findJsonValueFor((DeserializationConfig) null, javaType0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.BasicDeserializerFactory"", e);
+    }
+}",0,
+project,0,test4242,"public void test4242() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    AnnotatedMethod annotatedMethod0 = beanDeserializerFactory0._findJsonValueFor((DeserializationConfig) null, (JavaType) null);
+    assertNull(annotatedMethod0);
+}",0,assertNotNull(annotatedMethod0)

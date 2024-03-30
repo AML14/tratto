@@ -1,0 +1,292 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    ReferenceType referenceType0 = ReferenceType.upgradeFrom(javaType0, javaType0);
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, referenceType0);
+    stdValueInstantiator0.getDelegateType((DeserializationConfig) null);
+    assertEquals(""[reference type, class java.lang.Object<java.lang.Object<[simple type, class java.lang.Object]>]"", stdValueInstantiator0.getValueTypeDesc());
+}",0,
+project,0,test011,"public void test011() throws Throwable {
+    Class<ObjectMapper.DefaultTypeResolverBuilder> class0 = ObjectMapper.DefaultTypeResolverBuilder.class;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    assertFalse(stdValueInstantiator0.canCreateUsingArrayDelegate());
+}",0,assertFalse(stdValueInstantiator0.canCreateUsingArrayDelegate())
+project,0,test012,"public void test012() throws Throwable {
+    Class<ObjectMapper.DefaultTypeResolverBuilder> class0 = ObjectMapper.DefaultTypeResolverBuilder.class;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    objectMapper0.readerForUpdating(stdValueInstantiator0);
+    assertEquals(""com.fasterxml.jackson.databind.ObjectMapper$DefaultTypeResolverBuilder"", stdValueInstantiator0.getValueTypeDesc());
+}",0,assertNotNull(stdValueInstantiator0.getValueTypeDesc())
+project,0,test024,"public void test024() throws Throwable {
+    Class<String> class0 = String.class;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    // Undeclared exception!
+    try {
+        stdValueInstantiator0.createUsingArrayDelegate((DeserializationContext) null, (Object) null);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // No delegate constructor for java.lang.String
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdValueInstantiator"", e);
+    }
+}",0,
+project,0,test035,"public void test035() throws Throwable {
+    Class<Module> class0 = Module.class;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    stdValueInstantiator0.getDelegateCreator();
+    assertEquals(""com.fasterxml.jackson.databind.Module"", stdValueInstantiator0.getValueTypeDesc());
+}",0,assertNotNull(stdValueInstantiator0.getValueTypeDesc())
+project,0,test046,"public void test046() throws Throwable {
+    Class<Integer> class0 = Integer.TYPE;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    stdValueInstantiator0.getArrayDelegateCreator();
+    assertEquals(""int"", stdValueInstantiator0.getValueTypeDesc());
+}",0,assertNotNull(stdValueInstantiator0.getValueTypeDesc())
+project,0,test057,"public void test057() throws Throwable {
+    Class<MinimalClassNameIdResolver> class0 = MinimalClassNameIdResolver.class;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    // Undeclared exception!
+    try {
+        stdValueInstantiator0.createUsingDefault((DeserializationContext) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.ValueInstantiator"", e);
+    }
+}",0,
+project,0,test079,"public void test079() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    ReferenceType referenceType0 = ReferenceType.upgradeFrom(javaType0, javaType0);
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, referenceType0);
+    stdValueInstantiator0.getArrayDelegateType((DeserializationConfig) null);
+    assertEquals(""[reference type, class java.lang.Object<java.lang.Object<[simple type, class java.lang.Object]>]"", stdValueInstantiator0.getValueTypeDesc());
+}",0,
+project,0,test0810,"public void test0810() throws Throwable {
+    Class<JsonDeserializer> class0 = JsonDeserializer.class;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    stdValueInstantiator0.getDefaultCreator();
+    assertEquals(""com.fasterxml.jackson.databind.JsonDeserializer"", stdValueInstantiator0.getValueTypeDesc());
+}",0,assertNotNull(stdValueInstantiator0.getValueTypeDesc())
+project,0,test0911,"public void test0911() throws Throwable {
+    Class<Module> class0 = Module.class;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    stdValueInstantiator0.getWithArgsCreator();
+    assertEquals(""com.fasterxml.jackson.databind.Module"", stdValueInstantiator0.getValueTypeDesc());
+}",0,assertNotNull(stdValueInstantiator0.getValueTypeDesc())
+project,0,test1012,"public void test1012() throws Throwable {
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, (Class<?>) null);
+    assertEquals(""UNKNOWN TYPE"", stdValueInstantiator0.getValueTypeDesc());
+}",0,assertNotNull(stdValueInstantiator0.getValueTypeDesc())
+project,0,test1113,"public void test1113() throws Throwable {
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, (JavaType) null);
+    assertEquals(""UNKNOWN TYPE"", stdValueInstantiator0.getValueTypeDesc());
+}",0,assertNotNull(stdValueInstantiator0.getValueTypeDesc())
+project,0,test1214,"public void test1214() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.readerFor(javaType0);
+    assertNotNull(objectReader0);
+}",0,assertNotNull(objectReader0)
+project,0,test1315,"public void test1315() throws Throwable {
+    Class<ClientInfoStatus> class0 = ClientInfoStatus.class;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<HashSet> class1 = HashSet.class;
+    CollectionType collectionType0 = typeFactory0.constructRawCollectionType(class1);
+    stdValueInstantiator0._delegateType = (JavaType) collectionType0;
+    boolean boolean0 = stdValueInstantiator0.canInstantiate();
+    assertTrue(stdValueInstantiator0.canCreateUsingDelegate());
+}",0,assertTrue(stdValueInstantiator0.canCreateUsingDelegate())
+project,0,test1417,"public void test1417() throws Throwable {
+    Class<JsonMappingException> class0 = JsonMappingException.class;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<HashMap> class1 = HashMap.class;
+    MapType mapType0 = typeFactory0.constructMapType(class1, class0, class0);
+    stdValueInstantiator0._arrayDelegateType = (JavaType) mapType0;
+    boolean boolean0 = stdValueInstantiator0.canCreateUsingArrayDelegate();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test1518,"public void test1518() throws Throwable {
+    Class<Integer> class0 = Integer.TYPE;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    // Undeclared exception!
+    try {
+        stdValueInstantiator0.createFromObjectWith((DeserializationContext) null, (Object[]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.ValueInstantiator"", e);
+    }
+}",0,
+project,0,test1619,"public void test1619() throws Throwable {
+    Class<Integer> class0 = Integer.TYPE;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    // Undeclared exception!
+    try {
+        stdValueInstantiator0.createUsingDelegate((DeserializationContext) null, class0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // No delegate constructor for int
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdValueInstantiator"", e);
+    }
+}",0,
+project,0,test1720,"public void test1720() throws Throwable {
+    Class<Integer> class0 = Integer.TYPE;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    // Undeclared exception!
+    try {
+        stdValueInstantiator0.createFromString((DeserializationContext) null, ""49?9O$u;qv@%"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.ValueInstantiator"", e);
+    }
+}",0,
+project,0,test1821,"public void test1821() throws Throwable {
+    Class<Integer> class0 = Integer.TYPE;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    // Undeclared exception!
+    try {
+        stdValueInstantiator0.createFromInt((DeserializationContext) null, (-941));
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.ValueInstantiator"", e);
+    }
+}",0,
+project,0,test1922,"public void test1922() throws Throwable {
+    Class<Integer> class0 = Integer.TYPE;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    // Undeclared exception!
+    try {
+        stdValueInstantiator0.createFromLong((DeserializationContext) null, 0L);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.ValueInstantiator"", e);
+    }
+}",0,
+project,0,test2023,"public void test2023() throws Throwable {
+    Class<Integer> class0 = Integer.TYPE;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    // Undeclared exception!
+    try {
+        stdValueInstantiator0.createFromDouble((DeserializationContext) null, (-504.571942));
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.ValueInstantiator"", e);
+    }
+}",0,
+project,0,test2124,"public void test2124() throws Throwable {
+    Class<Integer> class0 = Integer.TYPE;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    // Undeclared exception!
+    try {
+        stdValueInstantiator0.createFromBoolean((DeserializationContext) null, false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.ValueInstantiator"", e);
+    }
+}",0,
+project,0,test2225,"public void test2225() throws Throwable {
+    Class<MinimalClassNameIdResolver> class0 = MinimalClassNameIdResolver.class;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    SQLTimeoutException sQLTimeoutException0 = new SQLTimeoutException(""@[Ct@:3V85X?&oEQ"", """");
+    JsonMappingException jsonMappingException0 = stdValueInstantiator0.wrapException(sQLTimeoutException0);
+    stdValueInstantiator0.unwrapAndWrapException((DeserializationContext) null, jsonMappingException0);
+    assertEquals(""com.fasterxml.jackson.databind.jsontype.impl.MinimalClassNameIdResolver"", stdValueInstantiator0.getValueTypeDesc());
+}",0,assertNotNull(stdValueInstantiator0.getValueTypeDesc())
+project,0,test2326,"public void test2326() throws Throwable {
+    Class<Integer> class0 = Integer.TYPE;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    SQLFeatureNotSupportedException sQLFeatureNotSupportedException0 = new SQLFeatureNotSupportedException("""");
+    JsonMappingException.Reference jsonMappingException_Reference0 = new JsonMappingException.Reference(stdValueInstantiator0, """");
+    JsonMappingException jsonMappingException0 = JsonMappingException.wrapWithPath((Throwable) sQLFeatureNotSupportedException0, jsonMappingException_Reference0);
+    JsonMappingException jsonMappingException1 = stdValueInstantiator0.wrapException(jsonMappingException0);
+    assertEquals(""int"", stdValueInstantiator0.getValueTypeDesc());
+}",0,assertNotNull(stdValueInstantiator0.getValueTypeDesc())
+project,0,test2327,"public void test2327() throws Throwable {
+    Class<Integer> class0 = Integer.TYPE;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    SQLFeatureNotSupportedException sQLFeatureNotSupportedException0 = new SQLFeatureNotSupportedException("""");
+    JsonMappingException.Reference jsonMappingException_Reference0 = new JsonMappingException.Reference(stdValueInstantiator0, """");
+    JsonMappingException jsonMappingException0 = JsonMappingException.wrapWithPath((Throwable) sQLFeatureNotSupportedException0, jsonMappingException_Reference0);
+    JsonMappingException jsonMappingException1 = stdValueInstantiator0.wrapException(jsonMappingException0);
+    assertSame(jsonMappingException1, jsonMappingException0);
+}",0,
+project,0,test2428,"public void test2428() throws Throwable {
+    Class<JsonMappingException> class0 = JsonMappingException.class;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    SQLTransactionRollbackException sQLTransactionRollbackException0 = new SQLTransactionRollbackException();
+    // Undeclared exception!
+    try {
+        stdValueInstantiator0.unwrapAndWrapException((DeserializationContext) null, sQLTransactionRollbackException0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdValueInstantiator"", e);
+    }
+}",0,
+project,0,test2529,"public void test2529() throws Throwable {
+    Class<NamedType> class0 = NamedType.class;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    SQLNonTransientConnectionException sQLNonTransientConnectionException0 = new SQLNonTransientConnectionException(""b><EK^rFo^BKLB-P"", ""b><EK^rFo^BKLB-P"");
+    InvocationTargetException invocationTargetException0 = new InvocationTargetException(sQLNonTransientConnectionException0);
+    // Undeclared exception!
+    try {
+        stdValueInstantiator0.rewrapCtorProblem((DeserializationContext) null, invocationTargetException0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdValueInstantiator"", e);
+    }
+}",0,
+project,0,test2630,"public void test2630() throws Throwable {
+    Class<BasicBeanDescription> class0 = BasicBeanDescription.class;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    SQLTransactionRollbackException sQLTransactionRollbackException0 = new SQLTransactionRollbackException();
+    JsonMappingException.Reference jsonMappingException_Reference0 = new JsonMappingException.Reference(stdValueInstantiator0, 2901);
+    JsonMappingException jsonMappingException0 = JsonMappingException.wrapWithPath((Throwable) sQLTransactionRollbackException0, jsonMappingException_Reference0);
+    stdValueInstantiator0.rewrapCtorProblem((DeserializationContext) null, jsonMappingException0);
+    assertEquals(""com.fasterxml.jackson.databind.introspect.BasicBeanDescription"", stdValueInstantiator0.getValueTypeDesc());
+}",0,assertNotNull(stdValueInstantiator0.getValueTypeDesc())
+project,0,test2731,"public void test2731() throws Throwable {
+    Class<Module> class0 = Module.class;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    ExceptionInInitializerError exceptionInInitializerError0 = new ExceptionInInitializerError();
+    // Undeclared exception!
+    try {
+        stdValueInstantiator0.rewrapCtorProblem((DeserializationContext) null, exceptionInInitializerError0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdValueInstantiator"", e);
+    }
+}",0,

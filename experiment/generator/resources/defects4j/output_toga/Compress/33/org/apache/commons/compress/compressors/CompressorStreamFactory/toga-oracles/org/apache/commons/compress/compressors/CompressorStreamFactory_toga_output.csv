@@ -1,0 +1,268 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    CompressorStreamFactory compressorStreamFactory0 = new CompressorStreamFactory();
+    boolean boolean0 = compressorStreamFactory0.getDecompressConcatenated();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test011,"public void test011() throws Throwable {
+    CompressorStreamFactory compressorStreamFactory0 = new CompressorStreamFactory();
+    compressorStreamFactory0.setDecompressConcatenated(true);
+}",1,
+project,0,test022,"public void test022() throws Throwable {
+    CompressorStreamFactory compressorStreamFactory0 = new CompressorStreamFactory(true);
+    // Undeclared exception!
+    try {
+        compressorStreamFactory0.setDecompressConcatenated(true);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Cannot override the setting defined by the constructor
+        //
+        verifyException(""org.apache.commons.compress.compressors.CompressorStreamFactory"", e);
+    }
+}",1,
+project,0,test033,"public void test033() throws Throwable {
+    CompressorStreamFactory compressorStreamFactory0 = new CompressorStreamFactory();
+    byte[] byteArray0 = new byte[3];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    try {
+        compressorStreamFactory0.createCompressorInputStream((InputStream) byteArrayInputStream0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // No Compressor found for the stream signature.
+        //
+        verifyException(""org.apache.commons.compress.compressors.CompressorStreamFactory"", e);
+    }
+}",1,
+project,0,test044,"public void test044() throws Throwable {
+    CompressorStreamFactory compressorStreamFactory0 = new CompressorStreamFactory();
+    // Undeclared exception!
+    try {
+        compressorStreamFactory0.createCompressorInputStream((InputStream) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Stream must not be null.
+        //
+        verifyException(""org.apache.commons.compress.compressors.CompressorStreamFactory"", e);
+    }
+}",1,
+project,0,test055,"public void test055() throws Throwable {
+    CompressorStreamFactory compressorStreamFactory0 = new CompressorStreamFactory();
+    PipedInputStream pipedInputStream0 = new PipedInputStream();
+    // Undeclared exception!
+    try {
+        compressorStreamFactory0.createCompressorInputStream((InputStream) pipedInputStream0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Mark is not supported.
+        //
+        verifyException(""org.apache.commons.compress.compressors.CompressorStreamFactory"", e);
+    }
+}",1,
+project,0,test066,"public void test066() throws Throwable {
+    CompressorStreamFactory compressorStreamFactory0 = new CompressorStreamFactory();
+    // Undeclared exception!
+    try {
+        compressorStreamFactory0.createCompressorInputStream((String) null, (InputStream) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Compressor name and stream must not be null.
+        //
+        verifyException(""org.apache.commons.compress.compressors.CompressorStreamFactory"", e);
+    }
+}",1,
+project,0,test077,"public void test077() throws Throwable {
+    byte[] byteArray0 = new byte[10];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    CompressorStreamFactory compressorStreamFactory0 = new CompressorStreamFactory();
+    SnappyCompressorInputStream snappyCompressorInputStream0 = (SnappyCompressorInputStream) compressorStreamFactory0.createCompressorInputStream(""snappy-raw"", (InputStream) byteArrayInputStream0);
+    assertEquals(0, snappyCompressorInputStream0.getSize());
+}",0,"assertEquals(0, snappyCompressorInputStream0.getSize())"
+project,0,test088,"public void test088() throws Throwable {
+    CompressorStreamFactory compressorStreamFactory0 = new CompressorStreamFactory();
+    // Undeclared exception!
+    try {
+        compressorStreamFactory0.createCompressorInputStream(""pack200"", (InputStream) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Compressor name and stream must not be null.
+        //
+        verifyException(""org.apache.commons.compress.compressors.CompressorStreamFactory"", e);
+    }
+}",1,
+project,0,test099,"public void test099() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    CompressorStreamFactory compressorStreamFactory0 = new CompressorStreamFactory();
+    try {
+        compressorStreamFactory0.createCompressorInputStream(""gz"", (InputStream) byteArrayInputStream0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Could not create CompressorInputStream.
+        //
+        verifyException(""org.apache.commons.compress.compressors.CompressorStreamFactory"", e);
+    }
+}",1,
+project,0,test1010,"public void test1010() throws Throwable {
+    CompressorStreamFactory compressorStreamFactory0 = new CompressorStreamFactory();
+    byte[] byteArray0 = new byte[0];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    try {
+        compressorStreamFactory0.createCompressorInputStream(""bzip2"", (InputStream) byteArrayInputStream0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Could not create CompressorInputStream.
+        //
+        verifyException(""org.apache.commons.compress.compressors.CompressorStreamFactory"", e);
+    }
+}",1,
+project,0,test1111,"public void test1111() throws Throwable {
+    CompressorStreamFactory compressorStreamFactory0 = new CompressorStreamFactory();
+    PipedInputStream pipedInputStream0 = new PipedInputStream();
+    try {
+        compressorStreamFactory0.createCompressorInputStream(""xz"", (InputStream) pipedInputStream0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Could not create CompressorInputStream.
+        //
+        verifyException(""org.apache.commons.compress.compressors.CompressorStreamFactory"", e);
+    }
+}",1,
+project,0,test1212,"public void test1212() throws Throwable {
+    CompressorStreamFactory compressorStreamFactory0 = new CompressorStreamFactory();
+    PipedInputStream pipedInputStream0 = new PipedInputStream();
+    try {
+        compressorStreamFactory0.createCompressorInputStream(""lzma"", (InputStream) pipedInputStream0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Could not create CompressorInputStream.
+        //
+        verifyException(""org.apache.commons.compress.compressors.CompressorStreamFactory"", e);
+    }
+}",1,
+project,0,test1313,"public void test1313() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    CompressorStreamFactory compressorStreamFactory0 = new CompressorStreamFactory();
+    try {
+        compressorStreamFactory0.createCompressorInputStream(""pack200"", (InputStream) byteArrayInputStream0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Could not create CompressorInputStream.
+        //
+        verifyException(""org.apache.commons.compress.compressors.CompressorStreamFactory"", e);
+    }
+}",1,
+project,0,test1515,"public void test1515() throws Throwable {
+    CompressorStreamFactory compressorStreamFactory0 = new CompressorStreamFactory();
+    PipedInputStream pipedInputStream0 = new PipedInputStream();
+    try {
+        compressorStreamFactory0.createCompressorInputStream(""snappy-framed"", (InputStream) pipedInputStream0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Could not create CompressorInputStream.
+        //
+        verifyException(""org.apache.commons.compress.compressors.CompressorStreamFactory"", e);
+    }
+}",1,
+project,0,test1616,"public void test1616() throws Throwable {
+    CompressorStreamFactory compressorStreamFactory0 = new CompressorStreamFactory();
+    PipedInputStream pipedInputStream0 = new PipedInputStream();
+    try {
+        compressorStreamFactory0.createCompressorInputStream(""z"", (InputStream) pipedInputStream0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Could not create CompressorInputStream.
+        //
+        verifyException(""org.apache.commons.compress.compressors.CompressorStreamFactory"", e);
+    }
+}",1,
+project,0,test1717,"public void test1717() throws Throwable {
+    CompressorStreamFactory compressorStreamFactory0 = new CompressorStreamFactory();
+    PipedInputStream pipedInputStream0 = new PipedInputStream();
+    try {
+        compressorStreamFactory0.createCompressorInputStream(""n2#_qxif8|"", (InputStream) pipedInputStream0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Compressor: n2#_qxif8| not found.
+        //
+        verifyException(""org.apache.commons.compress.compressors.CompressorStreamFactory"", e);
+    }
+}",1,
+project,0,test1818,"public void test1818() throws Throwable {
+    CompressorStreamFactory compressorStreamFactory0 = new CompressorStreamFactory();
+    // Undeclared exception!
+    try {
+        compressorStreamFactory0.createCompressorOutputStream((String) null, (OutputStream) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Compressor name and stream must not be null.
+        //
+        verifyException(""org.apache.commons.compress.compressors.CompressorStreamFactory"", e);
+    }
+}",1,
+project,0,test1919,"public void test1919() throws Throwable {
+    CompressorStreamFactory compressorStreamFactory0 = new CompressorStreamFactory(true);
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    try {
+        compressorStreamFactory0.createCompressorOutputStream(""lzma"", pipedOutputStream0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Compressor: lzma not found.
+        //
+        verifyException(""org.apache.commons.compress.compressors.CompressorStreamFactory"", e);
+    }
+}",1,
+project,0,test2020,"public void test2020() throws Throwable {
+    CompressorStreamFactory compressorStreamFactory0 = new CompressorStreamFactory();
+    // Undeclared exception!
+    try {
+        compressorStreamFactory0.createCompressorOutputStream(""xz"", (OutputStream) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Compressor name and stream must not be null.
+        //
+        verifyException(""org.apache.commons.compress.compressors.CompressorStreamFactory"", e);
+    }
+}",1,
+project,0,test2121,"public void test2121() throws Throwable {
+    CompressorStreamFactory compressorStreamFactory0 = new CompressorStreamFactory();
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    try {
+        compressorStreamFactory0.createCompressorOutputStream(""gz"", pipedOutputStream0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Could not create CompressorOutputStream
+        //
+        verifyException(""org.apache.commons.compress.compressors.CompressorStreamFactory"", e);
+    }
+}",1,
+project,0,test2426,"public void test2426() throws Throwable {
+    CompressorStreamFactory compressorStreamFactory0 = new CompressorStreamFactory();
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    CompressorOutputStream compressorOutputStream0 = compressorStreamFactory0.createCompressorOutputStream(""pack200"", pipedOutputStream0);
+    assertNotNull(compressorOutputStream0);
+}",1,
+project,0,test2527,"public void test2527() throws Throwable {
+    CompressorStreamFactory compressorStreamFactory0 = new CompressorStreamFactory();
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CompressorOutputStream compressorOutputStream0 = compressorStreamFactory0.createCompressorOutputStream(""deflate"", byteArrayOutputStream0);
+    assertNotNull(compressorOutputStream0);
+}",1,

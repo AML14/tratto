@@ -1,0 +1,1136 @@
+{
+  "test08099" : {
+    "methodSignature" : "Element insert(Token.StartTag startTag)",
+    "methodName" : "insert",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test08099() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Token.StartTag token_StartTag0 = new Token.StartTag();\n    htmlTreeBuilder0.insert(token_StartTag0);\n}",
+    "testName" : "test08099"
+  },
+  "test140172" : {
+    "methodSignature" : "Element pop()",
+    "methodName" : "pop",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test140172() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.pop();\n}",
+    "testName" : "test140172"
+  },
+  "test088107" : {
+    "methodSignature" : "boolean inScope(String targetName, String[] extras)",
+    "methodName" : "inScope",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test088107() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    StringReader stringReader0 = new StringReader(\"ybS4X_Yz-!d\");\n    ParseErrorList parseErrorList0 = new ParseErrorList(2062, 2062);\n    htmlTreeBuilder0.initialiseParse(stringReader0, \"base\", parseErrorList0, (ParseSettings) null);\n    String[] stringArray0 = new String[8];\n    htmlTreeBuilder0.inScope(\"form\", stringArray0);\n}",
+    "testName" : "test088107"
+  },
+  "test0000" : {
+    "methodSignature" : "Element getActiveFormattingElement(String nodeName)",
+    "methodName" : "getActiveFormattingElement",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0000() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;\n    Token.StartTag token_StartTag0 = tokeniser0.startPending;\n    Token.Tag token_Tag0 = token_StartTag0.name(\"b\");\n    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;\n    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);\n    htmlTreeBuilder0.process(token_StartTag0, htmlTreeBuilderState0);\n    Element element0 = htmlTreeBuilder0.getActiveFormattingElement(\".snBr2DXG0\");\n}",
+    "testName" : "test0000"
+  },
+  "test0089" : {
+    "methodSignature" : "void error(HtmlTreeBuilderState state)",
+    "methodName" : "error",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0089() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);\n    ParseSettings parseSettings0 = new ParseSettings(false, false);\n    htmlTreeBuilder0.parseFragment(\"InTableText\", (Element) null, \"noresize\", parseErrorList0, parseSettings0);\n    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.BeforeHead;\n    htmlTreeBuilder0.error(htmlTreeBuilderState0);\n}",
+    "testName" : "test0089"
+  },
+  "test123154" : {
+    "methodSignature" : "boolean isInActiveFormattingElements(Element el)",
+    "methodName" : "isInActiveFormattingElements",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test123154() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    List<Node> list0 = htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    boolean boolean0 = htmlTreeBuilder0.isInActiveFormattingElements(document0);\n}",
+    "testName" : "test123154"
+  },
+  "test101121" : {
+    "methodSignature" : "Element removeLastFormattingElement()",
+    "methodName" : "removeLastFormattingElement",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test101121() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    Element element0 = htmlTreeBuilder0.removeLastFormattingElement();\n}",
+    "testName" : "test101121"
+  },
+  "test03240" : {
+    "methodSignature" : "public boolean isBlock()",
+    "methodName" : "isBlock",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test03240() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    Token.StartTag token_StartTag0 = new Token.StartTag();\n    TextNode textNode0 = new TextNode(\"S&,0\", \"html\");\n    Attributes attributes0 = textNode0.attributes();\n    Token.StartTag token_StartTag1 = token_StartTag0.nameAttr(\"plaintext\", attributes0);\n    FormElement formElement0 = htmlTreeBuilder0.insertForm(token_StartTag1, false);\n    formElement0.isBlock();\n}",
+    "testName" : "test03240"
+  },
+  "test04054" : {
+    "methodSignature" : "boolean inListItemScope(String targetName)",
+    "methodName" : "inListItemScope",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test04054() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    boolean boolean0 = htmlTreeBuilder0.inListItemScope(\"plaintext\");\n}",
+    "testName" : "test04054"
+  },
+  "test06079" : {
+    "methodSignature" : "boolean process(Token token, HtmlTreeBuilderState state)",
+    "methodName" : "process",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test06079() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;\n    Token.StartTag token_StartTag0 = tokeniser0.startPending;\n    Token.Tag token_Tag0 = token_StartTag0.name(\"\");\n    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;\n    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);\n}",
+    "testName" : "test06079"
+  },
+  "test154186" : {
+    "methodSignature" : "void setFormElement(FormElement formElement)",
+    "methodName" : "setFormElement",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test154186() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.setFormElement((FormElement) null);\n}",
+    "testName" : "test154186"
+  },
+  "test04968" : {
+    "methodSignature" : "String getBaseUri()",
+    "methodName" : "getBaseUri",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test04968() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    String string0 = htmlTreeBuilder0.getBaseUri();\n}",
+    "testName" : "test04968"
+  },
+  "test01213" : {
+    "methodSignature" : "void push(Element element)",
+    "methodName" : "push",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test01213() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    StringReader stringReader0 = new StringReader(\"$?K5X-n2\");\n    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();\n    ParseSettings parseSettings0 = new ParseSettings(false, false);\n    htmlTreeBuilder0.parse(stringReader0, \"$?K5X-n2\", parseErrorList0, parseSettings0);\n    htmlTreeBuilder0.push((Element) null);\n}",
+    "testName" : "test01213"
+  },
+  "test06988" : {
+    "methodSignature" : "void maybeSetBaseUri(Element base)",
+    "methodName" : "maybeSetBaseUri",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test06988() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.maybeSetBaseUri((Element) null);\n}",
+    "testName" : "test06988"
+  },
+  "test02428" : {
+    "methodSignature" : "public String baseUri()",
+    "methodName" : "baseUri",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test02428() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;\n    Token.StartTag token_StartTag0 = tokeniser0.startPending;\n    Token.Tag token_Tag0 = token_StartTag0.name(\"b\");\n    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;\n    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);\n    Element element0 = htmlTreeBuilder0.lastFormattingElement();\n    element0.baseUri();\n}",
+    "testName" : "test02428"
+  },
+  "test137169" : {
+    "methodSignature" : "List<String> getPendingTableCharacters()",
+    "methodName" : "getPendingTableCharacters",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test137169() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    List<String> list0 = htmlTreeBuilder0.getPendingTableCharacters();\n}",
+    "testName" : "test137169"
+  },
+  "test01617" : {
+    "methodSignature" : "public String toString()",
+    "methodName" : "toString",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test01617() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    String string0 = htmlTreeBuilder0.toString();\n}",
+    "testName" : "test01617"
+  },
+  "test094113" : {
+    "methodSignature" : "Element getActiveFormattingElement(String nodeName)",
+    "methodName" : "getActiveFormattingElement",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test094113() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    htmlTreeBuilder0.insertMarkerToFormattingElements();\n    Element element0 = htmlTreeBuilder0.getActiveFormattingElement(\"aside\");\n}",
+    "testName" : "test094113"
+  },
+  "test128160" : {
+    "methodSignature" : "HtmlTreeBuilderState originalState()",
+    "methodName" : "originalState",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test128160() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.originalState();\n}",
+    "testName" : "test128160"
+  },
+  "test05372" : {
+    "methodSignature" : "void replaceOnStack(Element out, Element in)",
+    "methodName" : "replaceOnStack",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test05372() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    htmlTreeBuilder0.replaceOnStack(document0, document0);\n}",
+    "testName" : "test05372"
+  },
+  "test143175" : {
+    "methodSignature" : "boolean inScope(String[] targetNames)",
+    "methodName" : "inScope",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test143175() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    String[] stringArray0 = new String[3];\n    htmlTreeBuilder0.inScope(stringArray0);\n}",
+    "testName" : "test143175"
+  },
+  "test06180" : {
+    "methodSignature" : "boolean process(Token token, HtmlTreeBuilderState state)",
+    "methodName" : "process",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test06180() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;\n    Token.StartTag token_StartTag0 = tokeniser0.startPending;\n    Token.TokenType token_TokenType0 = Token.TokenType.Comment;\n    token_StartTag0.type = token_TokenType0;\n    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;\n    htmlTreeBuilder0.process(token_StartTag0, htmlTreeBuilderState0);\n}",
+    "testName" : "test06180"
+  },
+  "test07392" : {
+    "methodSignature" : "void insertInFosterParent(Node in)",
+    "methodName" : "insertInFosterParent",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test07392() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.insertInFosterParent((Node) null);\n}",
+    "testName" : "test07392"
+  },
+  "test0012" : {
+    "methodSignature" : "boolean inSelectScope(String targetName)",
+    "methodName" : "inSelectScope",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0012() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    List<Node> list0 = htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;\n    Token.StartTag token_StartTag0 = tokeniser0.startPending;\n    Token.Tag token_Tag0 = token_StartTag0.name(\"b\");\n    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;\n    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);\n    boolean boolean0 = htmlTreeBuilder0.inSelectScope(\"39|<Y\");\n}",
+    "testName" : "test0012"
+  },
+  "test117145" : {
+    "methodSignature" : "boolean inScope(String targetName)",
+    "methodName" : "inScope",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test117145() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    htmlTreeBuilder0.popStackToBefore(\"noscript\");\n    htmlTreeBuilder0.inScope(\"html\");\n}",
+    "testName" : "test117145"
+  },
+  "test04563" : {
+    "methodSignature" : "public String baseUri()",
+    "methodName" : "baseUri",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test04563() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);\n    ParseSettings parseSettings0 = new ParseSettings(false, false);\n    htmlTreeBuilder0.parseFragment(\"InTableText\", (Element) null, \"noresize\", parseErrorList0, parseSettings0);\n    Element element0 = htmlTreeBuilder0.getHeadElement();\n    element0.baseUri();\n}",
+    "testName" : "test04563"
+  },
+  "test104126" : {
+    "methodSignature" : "boolean inSelectScope(String targetName)",
+    "methodName" : "inSelectScope",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test104126() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    List<Node> list0 = htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    boolean boolean0 = htmlTreeBuilder0.inSelectScope(\"dl\");\n}",
+    "testName" : "test104126"
+  },
+  "test05776" : {
+    "methodSignature" : "void reconstructFormattingElements()",
+    "methodName" : "reconstructFormattingElements",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test05776() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.reconstructFormattingElements();\n}",
+    "testName" : "test05776"
+  },
+  "test06584" : {
+    "methodSignature" : "void popStackToBefore(String elName)",
+    "methodName" : "popStackToBefore",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test06584() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.popStackToBefore(\"@'p(7k{iZw(8\");\n}",
+    "testName" : "test06584"
+  },
+  "test083102" : {
+    "methodSignature" : "void insert(Element el)",
+    "methodName" : "insert",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test083102() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.insert((Element) null);\n}",
+    "testName" : "test083102"
+  },
+  "test07796" : {
+    "methodSignature" : "Element insertEmpty(Token.StartTag startTag)",
+    "methodName" : "insertEmpty",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test07796() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.insertEmpty((Token.StartTag) null);\n}",
+    "testName" : "test07796"
+  },
+  "test04561" : {
+    "methodSignature" : "public final int childNodeSize()",
+    "methodName" : "childNodeSize",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test04561() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);\n    ParseSettings parseSettings0 = new ParseSettings(false, false);\n    htmlTreeBuilder0.parseFragment(\"InTableText\", (Element) null, \"noresize\", parseErrorList0, parseSettings0);\n    Element element0 = htmlTreeBuilder0.getHeadElement();\n    element0.childNodeSize();\n}",
+    "testName" : "test04561"
+  },
+  "test02022" : {
+    "methodSignature" : "boolean process(Token token, HtmlTreeBuilderState state)",
+    "methodName" : "process",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test02022() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;\n    Token.StartTag token_StartTag0 = tokeniser0.startPending;\n    Token.Tag token_Tag0 = token_StartTag0.name(\"w&b\");\n    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.InSelectInTable;\n    boolean boolean0 = htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);\n}",
+    "testName" : "test02022"
+  },
+  "test04562" : {
+    "methodSignature" : "public int siblingIndex()",
+    "methodName" : "siblingIndex",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test04562() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);\n    ParseSettings parseSettings0 = new ParseSettings(false, false);\n    htmlTreeBuilder0.parseFragment(\"InTableText\", (Element) null, \"noresize\", parseErrorList0, parseSettings0);\n    Element element0 = htmlTreeBuilder0.getHeadElement();\n    element0.siblingIndex();\n}",
+    "testName" : "test04562"
+  },
+  "test151183" : {
+    "methodSignature" : "public String toString()",
+    "methodName" : "toString",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test151183() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.toString();\n}",
+    "testName" : "test151183"
+  },
+  "test03748" : {
+    "methodSignature" : "boolean inScope(String targetName)",
+    "methodName" : "inScope",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test03748() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    boolean boolean0 = htmlTreeBuilder0.inScope(\"html\");\n}",
+    "testName" : "test03748"
+  },
+  "test148180" : {
+    "methodSignature" : "void insertMarkerToFormattingElements()",
+    "methodName" : "insertMarkerToFormattingElements",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test148180() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.insertMarkerToFormattingElements();\n}",
+    "testName" : "test148180"
+  },
+  "test00910" : {
+    "methodSignature" : "void transition(HtmlTreeBuilderState state)",
+    "methodName" : "transition",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test00910() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.InFrameset;\n    htmlTreeBuilder0.transition(htmlTreeBuilderState0);\n}",
+    "testName" : "test00910"
+  },
+  "test132164" : {
+    "methodSignature" : "void setFosterInserts(boolean fosterInserts)",
+    "methodName" : "setFosterInserts",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test132164() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.setFosterInserts(true);\n}",
+    "testName" : "test132164"
+  },
+  "test109134" : {
+    "methodSignature" : "void resetInsertionMode()",
+    "methodName" : "resetInsertionMode",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test109134() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;\n    Token.StartTag token_StartTag0 = tokeniser0.startPending;\n    Token.Tag token_Tag0 = token_StartTag0.name(\"b\");\n    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;\n    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);\n    htmlTreeBuilder0.resetInsertionMode();\n}",
+    "testName" : "test109134"
+  },
+  "test091110" : {
+    "methodSignature" : "Element getActiveFormattingElement(String nodeName)",
+    "methodName" : "getActiveFormattingElement",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test091110() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.getActiveFormattingElement(\"dl\");\n}",
+    "testName" : "test091110"
+  },
+  "test02936" : {
+    "methodSignature" : "public int siblingIndex()",
+    "methodName" : "siblingIndex",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test02936() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    List<Node> list0 = htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;\n    Token.StartTag token_StartTag0 = tokeniser0.startPending;\n    Token.Tag token_Tag0 = token_StartTag0.name(\"b\");\n    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;\n    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);\n    Element element0 = htmlTreeBuilder0.insertStartTag(\";/\");\n    element0.siblingIndex();\n}",
+    "testName" : "test02936"
+  },
+  "test099119" : {
+    "methodSignature" : "protected boolean process(Token token)",
+    "methodName" : "process",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test099119() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;\n    Token.StartTag token_StartTag0 = tokeniser0.startPending;\n    Token.Tag token_Tag0 = token_StartTag0.name(\"b\");\n    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;\n    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);\n    htmlTreeBuilder0.process(token_StartTag0, htmlTreeBuilderState0);\n    htmlTreeBuilder0.popStackToClose(\"html\");\n    boolean boolean0 = htmlTreeBuilder0.process(token_StartTag0);\n}",
+    "testName" : "test099119"
+  },
+  "test112137" : {
+    "methodSignature" : "Element aboveOnStack(Element el)",
+    "methodName" : "aboveOnStack",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test112137() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    htmlTreeBuilder0.aboveOnStack((Element) null);\n}",
+    "testName" : "test112137"
+  },
+  "test142174" : {
+    "methodSignature" : "void setPendingTableCharacters(List<String> pendingTableCharacters)",
+    "methodName" : "setPendingTableCharacters",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test142174() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.setPendingTableCharacters((List<String>) null);\n}",
+    "testName" : "test142174"
+  },
+  "test118146" : {
+    "methodSignature" : "void popStackToClose(String... elNames)",
+    "methodName" : "popStackToClose",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test118146() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    String[] stringArray0 = new String[4];\n    stringArray0[0] = \"html\";\n    htmlTreeBuilder0.popStackToClose(stringArray0);\n}",
+    "testName" : "test118146"
+  },
+  "test0023" : {
+    "methodSignature" : "void replaceActiveFormattingElement(Element out, Element in)",
+    "methodName" : "replaceActiveFormattingElement",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0023() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"6<v;\\\"na3/E/)sX^\");\n    htmlTreeBuilder0.replaceActiveFormattingElement(document0, (Element) null);\n}",
+    "testName" : "test0023"
+  },
+  "test03342" : {
+    "methodSignature" : "public int siblingIndex()",
+    "methodName" : "siblingIndex",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test03342() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    List<Node> list0 = htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;\n    Token.StartTag token_StartTag0 = tokeniser0.startPending;\n    Token.StartTag token_StartTag1 = (Token.StartTag) token_StartTag0.name(\"b\");\n    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;\n    htmlTreeBuilder0.process(token_StartTag1, htmlTreeBuilderState0);\n    Element element0 = htmlTreeBuilder0.insertEmpty(token_StartTag1);\n    element0.siblingIndex();\n}",
+    "testName" : "test03342"
+  },
+  "test04156" : {
+    "methodSignature" : "boolean inButtonScope(String targetName)",
+    "methodName" : "inButtonScope",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test04156() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);\n    ParseSettings parseSettings0 = new ParseSettings(false, false);\n    List<Node> list0 = htmlTreeBuilder0.parseFragment(\"InTableText\", (Element) null, \"noresize\", parseErrorList0, parseSettings0);\n    boolean boolean0 = htmlTreeBuilder0.inButtonScope(\"$g|Q@\");\n}",
+    "testName" : "test04156"
+  },
+  "test082101" : {
+    "methodSignature" : "void insert(Token.Character characterToken)",
+    "methodName" : "insert",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test082101() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Token.Character token_Character0 = new Token.Character();\n    htmlTreeBuilder0.insert(token_Character0);\n}",
+    "testName" : "test082101"
+  },
+  "test01314" : {
+    "methodSignature" : "public int siblingIndex()",
+    "methodName" : "siblingIndex",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test01314() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    htmlTreeBuilder0.insertInFosterParent(document0);\n    document0.siblingIndex();\n}",
+    "testName" : "test01314"
+  },
+  "test156188" : {
+    "methodSignature" : "void replaceOnStack(Element out, Element in)",
+    "methodName" : "replaceOnStack",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test156188() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.replaceOnStack((Element) null, (Element) null);\n}",
+    "testName" : "test156188"
+  },
+  "test05877" : {
+    "methodSignature" : "void pushActiveFormattingElements(Element in)",
+    "methodName" : "pushActiveFormattingElements",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test05877() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = Document.createShell(\"\");\n    htmlTreeBuilder0.pushActiveFormattingElements(document0);\n}",
+    "testName" : "test05877"
+  },
+  "test131163" : {
+    "methodSignature" : "void push(Element element)",
+    "methodName" : "push",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test131163() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"V'DgO6![}VK]5#a-w:\");\n    htmlTreeBuilder0.push(document0);\n}",
+    "testName" : "test131163"
+  },
+  "test01718" : {
+    "methodSignature" : "HtmlTreeBuilderState state()",
+    "methodName" : "state",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test01718() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking((-2511));\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    htmlTreeBuilder0.state();\n}",
+    "testName" : "test01718"
+  },
+  "test121150" : {
+    "methodSignature" : "boolean removeFromStack(Element el)",
+    "methodName" : "removeFromStack",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test121150() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);\n    ParseSettings parseSettings0 = new ParseSettings(false, false);\n    List<Node> list0 = htmlTreeBuilder0.parseFragment(\"InTableText\", (Element) null, \"noresize\", parseErrorList0, parseSettings0);\n    boolean boolean0 = htmlTreeBuilder0.removeFromStack((Element) null);\n}",
+    "testName" : "test121150"
+  },
+  "test02529" : {
+    "methodSignature" : "boolean isSpecial(Element el)",
+    "methodName" : "isSpecial",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test02529() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Element element0 = new Element(\"param\");\n    boolean boolean0 = htmlTreeBuilder0.isSpecial(element0);\n}",
+    "testName" : "test02529"
+  },
+  "test096115" : {
+    "methodSignature" : "void clearFormattingElementsToLastMarker()",
+    "methodName" : "clearFormattingElementsToLastMarker",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test096115() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    htmlTreeBuilder0.insertMarkerToFormattingElements();\n    htmlTreeBuilder0.clearFormattingElementsToLastMarker();\n}",
+    "testName" : "test096115"
+  },
+  "test113138" : {
+    "methodSignature" : "public final int childNodeSize()",
+    "methodName" : "childNodeSize",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test113138() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    CharacterReader characterReader0 = new CharacterReader(\"html\");\n    Tokeniser tokeniser0 = new Tokeniser(characterReader0, parseErrorList0);\n    Token.StartTag token_StartTag0 = tokeniser0.startPending;\n    Attributes attributes0 = new Attributes();\n    Token.StartTag token_StartTag1 = token_StartTag0.nameAttr(\":/xHSZS$2uxdyI\", attributes0);\n    Element element0 = htmlTreeBuilder0.insert(token_StartTag1);\n    Element element1 = htmlTreeBuilder0.aboveOnStack(element0);\n    element1.childNodeSize();\n}",
+    "testName" : "test113138"
+  },
+  "test07493" : {
+    "methodSignature" : "void insertInFosterParent(Node in)",
+    "methodName" : "insertInFosterParent",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test07493() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    htmlTreeBuilder0.pop();\n    htmlTreeBuilder0.insertInFosterParent((Node) null);\n}",
+    "testName" : "test07493"
+  },
+  "test139171" : {
+    "methodSignature" : "boolean inScope(String targetName)",
+    "methodName" : "inScope",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test139171() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.inScope(\"html\");\n}",
+    "testName" : "test139171"
+  },
+  "test115143" : {
+    "methodSignature" : "void clearStackToTableContext()",
+    "methodName" : "clearStackToTableContext",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test115143() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Element element0 = new Element(\"noresize\");\n    Pattern pattern0 = Pattern.compile(\"noresize\", 501);\n    Elements elements0 = element0.getElementsMatchingOwnText(pattern0);\n    htmlTreeBuilder0.stack = (ArrayList<Element>) elements0;\n    htmlTreeBuilder0.clearStackToTableContext();\n}",
+    "testName" : "test115143"
+  },
+  "test145177" : {
+    "methodSignature" : "void clearStackToTableRowContext()",
+    "methodName" : "clearStackToTableRowContext",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test145177() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.clearStackToTableRowContext();\n}",
+    "testName" : "test145177"
+  },
+  "test158190" : {
+    "methodSignature" : "boolean isInActiveFormattingElements(Element el)",
+    "methodName" : "isInActiveFormattingElements",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test158190() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;\n    Token.StartTag token_StartTag0 = tokeniser0.startPending;\n    Token.Tag token_Tag0 = token_StartTag0.name(\"b\");\n    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;\n    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);\n    htmlTreeBuilder0.isInActiveFormattingElements(document0);\n}",
+    "testName" : "test158190"
+  },
+  "test06281" : {
+    "methodSignature" : "protected boolean process(Token token)",
+    "methodName" : "process",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test06281() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Token.StartTag token_StartTag0 = new Token.StartTag();\n    htmlTreeBuilder0.process(token_StartTag0);\n}",
+    "testName" : "test06281"
+  },
+  "test0034" : {
+    "methodSignature" : "void insertOnStackAfter(Element after, Element in)",
+    "methodName" : "insertOnStackAfter",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0034() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"\");\n    Document document1 = document0.clone();\n    htmlTreeBuilder0.insertOnStackAfter(document0, document1);\n}",
+    "testName" : "test0034"
+  },
+  "test03850" : {
+    "methodSignature" : "boolean inScope(String targetName)",
+    "methodName" : "inScope",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test03850() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);\n    ParseSettings parseSettings0 = new ParseSettings(false, false);\n    List<Node> list0 = htmlTreeBuilder0.parseFragment(\"InTableText\", (Element) null, \"noresize\", parseErrorList0, parseSettings0);\n    boolean boolean0 = htmlTreeBuilder0.inScope(\"TreeBuilder{currentToken=org.jsoup.parser.Token$EOF@14, state=InBody, currentElement=<html>\\n <head></head>\\n <body>\\n  InTableText\\n </body>\\n</html>}\");\n}",
+    "testName" : "test03850"
+  },
+  "test04664" : {
+    "methodSignature" : "Element getFromStack(String elName)",
+    "methodName" : "getFromStack",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test04664() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    Element element0 = htmlTreeBuilder0.getFromStack(\"mfmnMK\");\n}",
+    "testName" : "test04664"
+  },
+  "test102122" : {
+    "methodSignature" : "void generateImpliedEndTags(String excludeTag)",
+    "methodName" : "generateImpliedEndTags",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test102122() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);\n    ParseSettings parseSettings0 = new ParseSettings(false, false);\n    htmlTreeBuilder0.parseFragment(\"InTableText\", (Element) null, \"noresize\", parseErrorList0, parseSettings0);\n    htmlTreeBuilder0.generateImpliedEndTags(\"intabletext\");\n}",
+    "testName" : "test102122"
+  },
+  "test07897" : {
+    "methodSignature" : "Element insertEmpty(Token.StartTag startTag)",
+    "methodName" : "insertEmpty",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test07897() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Token.StartTag token_StartTag0 = new Token.StartTag();\n    htmlTreeBuilder0.insertEmpty(token_StartTag0);\n}",
+    "testName" : "test07897"
+  },
+  "test05473" : {
+    "methodSignature" : "Element removeLastFormattingElement()",
+    "methodName" : "removeLastFormattingElement",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test05473() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.removeLastFormattingElement();\n}",
+    "testName" : "test05473"
+  },
+  "test02123" : {
+    "methodSignature" : "boolean onStack(Element el)",
+    "methodName" : "onStack",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test02123() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    boolean boolean0 = htmlTreeBuilder0.onStack(document0);\n}",
+    "testName" : "test02123"
+  },
+  "test085104" : {
+    "methodSignature" : "protected void initialiseParse(Reader input, String baseUri, ParseErrorList errors, ParseSettings settings)",
+    "methodName" : "initialiseParse",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test085104() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.initialiseParse((Reader) null, \"dKJ\", parseErrorList0, parseSettings0);\n}",
+    "testName" : "test085104"
+  },
+  "test06685" : {
+    "methodSignature" : "Element pop()",
+    "methodName" : "pop",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test06685() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    htmlTreeBuilder0.popStackToBefore(\"noscript\");\n    htmlTreeBuilder0.pop();\n}",
+    "testName" : "test06685"
+  },
+  "test01820" : {
+    "methodSignature" : "public int siblingIndex()",
+    "methodName" : "siblingIndex",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test01820() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;\n    Token.StartTag token_StartTag0 = tokeniser0.startPending;\n    Token.Tag token_Tag0 = token_StartTag0.name(\"b\");\n    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;\n    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);\n    htmlTreeBuilder0.process(token_StartTag0, htmlTreeBuilderState0);\n    Element element0 = htmlTreeBuilder0.removeLastFormattingElement();\n    element0.siblingIndex();\n}",
+    "testName" : "test01820"
+  },
+  "test153185" : {
+    "methodSignature" : "void clearStackToTableBodyContext()",
+    "methodName" : "clearStackToTableBodyContext",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test153185() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.clearStackToTableBodyContext();\n}",
+    "testName" : "test153185"
+  },
+  "test110135" : {
+    "methodSignature" : "void replaceActiveFormattingElement(Element out, Element in)",
+    "methodName" : "replaceActiveFormattingElement",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test110135() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);\n    ParseSettings parseSettings0 = new ParseSettings(false, true);\n    htmlTreeBuilder0.parseFragment(\"InTableText\", (Element) null, \"noresize\", parseErrorList0, parseSettings0);\n    htmlTreeBuilder0.replaceActiveFormattingElement((Element) null, (Element) null);\n}",
+    "testName" : "test110135"
+  },
+  "test134166" : {
+    "methodSignature" : "void insert(Token.Comment commentToken)",
+    "methodName" : "insert",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test134166() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);\n    ParseSettings parseSettings0 = new ParseSettings(false, false);\n    htmlTreeBuilder0.parseFragment(\"InTableText\", (Element) null, \"noresize\", parseErrorList0, parseSettings0);\n    Token.Comment token_Comment0 = new Token.Comment();\n    htmlTreeBuilder0.insert(token_Comment0);\n}",
+    "testName" : "test134166"
+  },
+  "test107132" : {
+    "methodSignature" : "boolean inScope(String[] targetNames)",
+    "methodName" : "inScope",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test107132() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    List<Node> list0 = htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    String[] stringArray0 = new String[3];\n    stringArray0[0] = \"&$hnD:P1Za)*co/=d\";\n    stringArray0[1] = \"plaitex\";\n    stringArray0[2] = \"html\";\n    boolean boolean0 = htmlTreeBuilder0.inScope(stringArray0);\n}",
+    "testName" : "test107132"
+  },
+  "test093112" : {
+    "methodSignature" : "void clearFormattingElementsToLastMarker()",
+    "methodName" : "clearFormattingElementsToLastMarker",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test093112() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.clearFormattingElementsToLastMarker();\n}",
+    "testName" : "test093112"
+  },
+  "test138170" : {
+    "methodSignature" : "String getBaseUri()",
+    "methodName" : "getBaseUri",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test138170() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    String string0 = htmlTreeBuilder0.getBaseUri();\n}",
+    "testName" : "test138170"
+  },
+  "test144176" : {
+    "methodSignature" : "HtmlTreeBuilderState state()",
+    "methodName" : "state",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test144176() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.state();\n}",
+    "testName" : "test144176"
+  },
+  "test090109" : {
+    "methodSignature" : "Element getFromStack(String elName)",
+    "methodName" : "getFromStack",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test090109() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.getFromStack(\"8jfmDD\");\n}",
+    "testName" : "test090109"
+  },
+  "test0045" : {
+    "methodSignature" : "void insertInFosterParent(Node in)",
+    "methodName" : "insertInFosterParent",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0045() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", (Element) null, \"dl\", parseErrorList0, parseSettings0);\n    htmlTreeBuilder0.insertInFosterParent((Node) null);\n}",
+    "testName" : "test0045"
+  },
+  "test116144" : {
+    "methodSignature" : "void popStackToBefore(String elName)",
+    "methodName" : "popStackToBefore",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test116144() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"|!3\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = htmlTreeBuilder0.defaultSettings();\n    htmlTreeBuilder0.parseFragment(\"|!3\", document0, \"|!3\", parseErrorList0, parseSettings0);\n    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;\n    Token.StartTag token_StartTag0 = tokeniser0.startPending;\n    Token.Tag token_Tag0 = token_StartTag0.name(\"b\");\n    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;\n    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);\n    htmlTreeBuilder0.popStackToBefore(\"b\");\n}",
+    "testName" : "test116144"
+  },
+  "test05069" : {
+    "methodSignature" : "boolean framesetOk()",
+    "methodName" : "framesetOk",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test05069() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;\n    Token.StartTag token_StartTag0 = tokeniser0.startPending;\n    Token.Tag token_Tag0 = token_StartTag0.name(\"b\");\n    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;\n    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);\n    boolean boolean0 = htmlTreeBuilder0.framesetOk();\n}",
+    "testName" : "test05069"
+  },
+  "test105127" : {
+    "methodSignature" : "boolean inSelectScope(String targetName)",
+    "methodName" : "inSelectScope",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test105127() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    htmlTreeBuilder0.popStackToClose(\"`irYhVQv;\");\n    htmlTreeBuilder0.inSelectScope(\"dl\");\n}",
+    "testName" : "test105127"
+  },
+  "test127159" : {
+    "methodSignature" : "void clearStackToTableContext()",
+    "methodName" : "clearStackToTableContext",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test127159() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.clearStackToTableContext();\n}",
+    "testName" : "test127159"
+  },
+  "test03443" : {
+    "methodSignature" : "public final int childNodeSize()",
+    "methodName" : "childNodeSize",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test03443() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;\n    Token.StartTag token_StartTag0 = tokeniser0.startPending;\n    token_StartTag0.name(\"dl\");\n    Element element0 = htmlTreeBuilder0.insertEmpty(token_StartTag0);\n    element0.childNodeSize();\n}",
+    "testName" : "test03443"
+  },
+  "test04257" : {
+    "methodSignature" : "ArrayList<Element> getStack()",
+    "methodName" : "getStack",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test04257() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    ArrayList<Element> arrayList0 = htmlTreeBuilder0.getStack();\n}",
+    "testName" : "test04257"
+  },
+  "test02630" : {
+    "methodSignature" : "boolean isSpecial(Element el)",
+    "methodName" : "isSpecial",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test02630() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = Document.createShell(\"pre\");\n    boolean boolean0 = htmlTreeBuilder0.isSpecial(document0);\n}",
+    "testName" : "test02630"
+  },
+  "test07089" : {
+    "methodSignature" : "Element lastFormattingElement()",
+    "methodName" : "lastFormattingElement",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test07089() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.lastFormattingElement();\n}",
+    "testName" : "test07089"
+  },
+  "test084103" : {
+    "methodSignature" : "protected void initialiseParse(Reader input, String baseUri, ParseErrorList errors, ParseSettings settings)",
+    "methodName" : "initialiseParse",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test084103() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    StringReader stringReader0 = new StringReader(\"ybS4X_Yz-!d\");\n    ParseErrorList parseErrorList0 = new ParseErrorList(2062, 2062);\n    stringReader0.close();\n    htmlTreeBuilder0.initialiseParse(stringReader0, \"base\", parseErrorList0, (ParseSettings) null);\n}",
+    "testName" : "test084103"
+  },
+  "test02224" : {
+    "methodSignature" : "Element lastFormattingElement()",
+    "methodName" : "lastFormattingElement",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test02224() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    Element element0 = htmlTreeBuilder0.lastFormattingElement();\n}",
+    "testName" : "test02224"
+  },
+  "test149181" : {
+    "methodSignature" : "void generateImpliedEndTags()",
+    "methodName" : "generateImpliedEndTags",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test149181() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.generateImpliedEndTags();\n}",
+    "testName" : "test149181"
+  },
+  "test03038" : {
+    "methodSignature" : "public int siblingIndex()",
+    "methodName" : "siblingIndex",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test03038() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);\n    ParseSettings parseSettings0 = new ParseSettings(false, false);\n    htmlTreeBuilder0.parseFragment(\"InTableText\", (Element) null, \"noresize\", parseErrorList0, parseSettings0);\n    Element element0 = htmlTreeBuilder0.insertStartTag(\"frameset\");\n    element0.siblingIndex();\n}",
+    "testName" : "test03038"
+  },
+  "test04765" : {
+    "methodSignature" : "public String nodeName()",
+    "methodName" : "nodeName",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test04765() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    StringReader stringReader0 = new StringReader(\"ybS4X_Yz-!d\");\n    ParseErrorList parseErrorList0 = new ParseErrorList(2054, 2054);\n    htmlTreeBuilder0.initialiseParse(stringReader0, \"base\", parseErrorList0, (ParseSettings) null);\n    Document document0 = htmlTreeBuilder0.getDocument();\n    document0.nodeName();\n}",
+    "testName" : "test04765"
+  },
+  "test133165" : {
+    "methodSignature" : "boolean isFragmentParsing()",
+    "methodName" : "isFragmentParsing",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test133165() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    boolean boolean0 = htmlTreeBuilder0.isFragmentParsing();\n}",
+    "testName" : "test133165"
+  },
+  "test03952" : {
+    "methodSignature" : "boolean inListItemScope(String targetName)",
+    "methodName" : "inListItemScope",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test03952() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    List<Node> list0 = htmlTreeBuilder0.parseFragment(\"dl\", (Element) null, \"dl\", parseErrorList0, parseSettings0);\n    boolean boolean0 = htmlTreeBuilder0.inListItemScope(\"html\");\n}",
+    "testName" : "test03952"
+  },
+  "test01415" : {
+    "methodSignature" : "void clearStackToTableRowContext()",
+    "methodName" : "clearStackToTableRowContext",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test01415() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);\n    ParseSettings parseSettings0 = new ParseSettings(false, false);\n    htmlTreeBuilder0.parseFragment(\"InTableText\", (Element) null, \"noresize\", parseErrorList0, parseSettings0);\n    htmlTreeBuilder0.clearStackToTableRowContext();\n}",
+    "testName" : "test01415"
+  },
+  "test05978" : {
+    "methodSignature" : "boolean process(Token token, HtmlTreeBuilderState state)",
+    "methodName" : "process",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test05978() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Token.StartTag token_StartTag0 = new Token.StartTag();\n    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.Initial;\n    htmlTreeBuilder0.process(token_StartTag0, htmlTreeBuilderState0);\n}",
+    "testName" : "test05978"
+  },
+  "test098117" : {
+    "methodSignature" : "protected boolean process(Token token)",
+    "methodName" : "process",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test098117() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;\n    Token.StartTag token_StartTag0 = tokeniser0.startPending;\n    Token.Tag token_Tag0 = token_StartTag0.name(\"b\");\n    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;\n    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);\n    htmlTreeBuilder0.popStackToClose(\"html\");\n    boolean boolean0 = htmlTreeBuilder0.process(token_StartTag0);\n}",
+    "testName" : "test098117"
+  },
+  "test111136" : {
+    "methodSignature" : "void insertOnStackAfter(Element after, Element in)",
+    "methodName" : "insertOnStackAfter",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test111136() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    htmlTreeBuilder0.insertOnStackAfter(document0, document0);\n}",
+    "testName" : "test111136"
+  },
+  "test01819" : {
+    "methodSignature" : "Element removeLastFormattingElement()",
+    "methodName" : "removeLastFormattingElement",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test01819() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;\n    Token.StartTag token_StartTag0 = tokeniser0.startPending;\n    Token.Tag token_Tag0 = token_StartTag0.name(\"b\");\n    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;\n    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);\n    htmlTreeBuilder0.process(token_StartTag0, htmlTreeBuilderState0);\n    Element element0 = htmlTreeBuilder0.removeLastFormattingElement();\n}",
+    "testName" : "test01819"
+  },
+  "test06382" : {
+    "methodSignature" : "void popStackToClose(String... elNames)",
+    "methodName" : "popStackToClose",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test06382() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.popStackToClose((String[]) null);\n}",
+    "testName" : "test06382"
+  },
+  "test07594" : {
+    "methodSignature" : "FormElement insertForm(Token.StartTag startTag, boolean onStack)",
+    "methodName" : "insertForm",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test07594() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.insertForm((Token.StartTag) null, false);\n}",
+    "testName" : "test07594"
+  },
+  "test087106" : {
+    "methodSignature" : "boolean inScope(String targetName, String[] extras)",
+    "methodName" : "inScope",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test087106() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    String[] stringArray0 = new String[8];\n    htmlTreeBuilder0.inScope(\"param\", stringArray0);\n}",
+    "testName" : "test087106"
+  },
+  "test113140" : {
+    "methodSignature" : "public int siblingIndex()",
+    "methodName" : "siblingIndex",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test113140() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    CharacterReader characterReader0 = new CharacterReader(\"html\");\n    Tokeniser tokeniser0 = new Tokeniser(characterReader0, parseErrorList0);\n    Token.StartTag token_StartTag0 = tokeniser0.startPending;\n    Attributes attributes0 = new Attributes();\n    Token.StartTag token_StartTag1 = token_StartTag0.nameAttr(\":/xHSZS$2uxdyI\", attributes0);\n    Element element0 = htmlTreeBuilder0.insert(token_StartTag1);\n    Element element1 = htmlTreeBuilder0.aboveOnStack(element0);\n    element1.siblingIndex();\n}",
+    "testName" : "test113140"
+  },
+  "test147179" : {
+    "methodSignature" : "void newPendingTableCharacters()",
+    "methodName" : "newPendingTableCharacters",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test147179() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.newPendingTableCharacters();\n}",
+    "testName" : "test147179"
+  },
+  "test113141" : {
+    "methodSignature" : "Element aboveOnStack(Element el)",
+    "methodName" : "aboveOnStack",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test113141() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    CharacterReader characterReader0 = new CharacterReader(\"html\");\n    Tokeniser tokeniser0 = new Tokeniser(characterReader0, parseErrorList0);\n    Token.StartTag token_StartTag0 = tokeniser0.startPending;\n    Attributes attributes0 = new Attributes();\n    Token.StartTag token_StartTag1 = token_StartTag0.nameAttr(\":/xHSZS$2uxdyI\", attributes0);\n    Element element0 = htmlTreeBuilder0.insert(token_StartTag1);\n    Element element1 = htmlTreeBuilder0.aboveOnStack(element0);\n}",
+    "testName" : "test113141"
+  },
+  "test05170" : {
+    "methodSignature" : "boolean framesetOk()",
+    "methodName" : "framesetOk",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test05170() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    boolean boolean0 = htmlTreeBuilder0.framesetOk();\n}",
+    "testName" : "test05170"
+  },
+  "test0056" : {
+    "methodSignature" : "public boolean updateMetaCharsetElement()",
+    "methodName" : "updateMetaCharsetElement",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0056() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    htmlTreeBuilder0.pushActiveFormattingElements(document0);\n    document0.updateMetaCharsetElement();\n}",
+    "testName" : "test0056"
+  },
+  "test124155" : {
+    "methodSignature" : "public final int childNodeSize()",
+    "methodName" : "childNodeSize",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test124155() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;\n    Token.StartTag token_StartTag0 = tokeniser0.startPending;\n    Token.StartTag token_StartTag1 = (Token.StartTag) token_StartTag0.name(\"b\");\n    FormElement formElement0 = htmlTreeBuilder0.insertForm(token_StartTag1, true);\n    formElement0.childNodeSize();\n}",
+    "testName" : "test124155"
+  },
+  "test06786" : {
+    "methodSignature" : "List<Node> parseFragment(String inputFragment, Element context, String baseUri, ParseErrorList errors, ParseSettings settings)",
+    "methodName" : "parseFragment",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test06786() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);\n    htmlTreeBuilder0.parseFragment(\"InTableText\", (Element) null, \"noresize\", parseErrorList0, (ParseSettings) null);\n}",
+    "testName" : "test06786"
+  },
+  "test07998" : {
+    "methodSignature" : "Element insert(Token.StartTag startTag)",
+    "methodName" : "insert",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test07998() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    CharacterReader characterReader0 = new CharacterReader(\"org.jsoup.select.Evaluator$AttributeWithValueMatching\");\n    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();\n    Tokeniser tokeniser0 = new Tokeniser(characterReader0, parseErrorList0);\n    Token.StartTag token_StartTag0 = tokeniser0.startPending;\n    Attributes attributes0 = new Attributes();\n    Token.StartTag token_StartTag1 = token_StartTag0.nameAttr(\"org.jsoup.select.Evaluator$AttributeWithValueMatching\", attributes0);\n    htmlTreeBuilder0.insert(token_StartTag1);\n}",
+    "testName" : "test07998"
+  },
+  "test100120" : {
+    "methodSignature" : "Element removeLastFormattingElement()",
+    "methodName" : "removeLastFormattingElement",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test100120() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    htmlTreeBuilder0.insertMarkerToFormattingElements();\n    Element element0 = htmlTreeBuilder0.removeLastFormattingElement();\n}",
+    "testName" : "test100120"
+  },
+  "test03037" : {
+    "methodSignature" : "public String baseUri()",
+    "methodName" : "baseUri",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test03037() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);\n    ParseSettings parseSettings0 = new ParseSettings(false, false);\n    htmlTreeBuilder0.parseFragment(\"InTableText\", (Element) null, \"noresize\", parseErrorList0, parseSettings0);\n    Element element0 = htmlTreeBuilder0.insertStartTag(\"frameset\");\n    element0.baseUri();\n}",
+    "testName" : "test03037"
+  },
+  "test01011" : {
+    "methodSignature" : "public String location()",
+    "methodName" : "location",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test01011() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = Document.createShell(\"marquee\");\n    htmlTreeBuilder0.setHeadElement(document0);\n    document0.location();\n}",
+    "testName" : "test01011"
+  },
+  "test05574" : {
+    "methodSignature" : "boolean removeFromStack(Element el)",
+    "methodName" : "removeFromStack",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test05574() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.removeFromStack((Element) null);\n}",
+    "testName" : "test05574"
+  },
+  "test150182" : {
+    "methodSignature" : "void markInsertionMode()",
+    "methodName" : "markInsertionMode",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test150182() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.markInsertionMode();\n}",
+    "testName" : "test150182"
+  },
+  "test02733" : {
+    "methodSignature" : "boolean isFragmentParsing()",
+    "methodName" : "isFragmentParsing",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test02733() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    List<Node> list0 = htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    boolean boolean0 = htmlTreeBuilder0.isFragmentParsing();\n}",
+    "testName" : "test02733"
+  },
+  "test155187" : {
+    "methodSignature" : "Element getHeadElement()",
+    "methodName" : "getHeadElement",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test155187() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Element element0 = htmlTreeBuilder0.getHeadElement();\n}",
+    "testName" : "test155187"
+  },
+  "test03544" : {
+    "methodSignature" : "boolean inScope(String[] targetNames)",
+    "methodName" : "inScope",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test03544() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = Document.createShell(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    String[] stringArray0 = new String[2];\n    stringArray0[0] = \"dl\";\n    stringArray0[1] = \"dl\";\n    boolean boolean0 = htmlTreeBuilder0.inScope(stringArray0);\n}",
+    "testName" : "test03544"
+  },
+  "test01921" : {
+    "methodSignature" : "public boolean isBlock()",
+    "methodName" : "isBlock",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test01921() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;\n    Token.StartTag token_StartTag0 = tokeniser0.startPending;\n    Token.Tag token_Tag0 = token_StartTag0.name(\"b\");\n    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;\n    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);\n    Element element0 = htmlTreeBuilder0.removeLastFormattingElement();\n    element0.isBlock();\n}",
+    "testName" : "test01921"
+  },
+  "test136168" : {
+    "methodSignature" : "Element aboveOnStack(Element el)",
+    "methodName" : "aboveOnStack",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test136168() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.aboveOnStack((Element) null);\n}",
+    "testName" : "test136168"
+  },
+  "test07190" : {
+    "methodSignature" : "boolean isSpecial(Element el)",
+    "methodName" : "isSpecial",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test07190() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.isSpecial((Element) null);\n}",
+    "testName" : "test07190"
+  },
+  "test095114" : {
+    "methodSignature" : "void removeFromActiveFormattingElements(Element el)",
+    "methodName" : "removeFromActiveFormattingElements",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test095114() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);\n    ParseSettings parseSettings0 = new ParseSettings(false, false);\n    htmlTreeBuilder0.parseFragment(\"InTableText\", (Element) null, \"noresize\", parseErrorList0, parseSettings0);\n    htmlTreeBuilder0.removeFromActiveFormattingElements((Element) null);\n}",
+    "testName" : "test095114"
+  },
+  "test129161" : {
+    "methodSignature" : "boolean inTableScope(String targetName)",
+    "methodName" : "inTableScope",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test129161() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.inTableScope(\"dl\");\n}",
+    "testName" : "test129161"
+  },
+  "test086105" : {
+    "methodSignature" : "boolean inSelectScope(String targetName)",
+    "methodName" : "inSelectScope",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test086105() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.inSelectScope(\"h!0\");\n}",
+    "testName" : "test086105"
+  },
+  "test114142" : {
+    "methodSignature" : "void clearStackToTableContext()",
+    "methodName" : "clearStackToTableContext",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test114142() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);\n    ParseSettings parseSettings0 = new ParseSettings(false, false);\n    htmlTreeBuilder0.parseFragment(\"InTableText\", (Element) null, \"noresize\", parseErrorList0, parseSettings0);\n    htmlTreeBuilder0.clearStackToTableContext();\n}",
+    "testName" : "test114142"
+  },
+  "test146178" : {
+    "methodSignature" : "FormElement getFormElement()",
+    "methodName" : "getFormElement",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test146178() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    FormElement formElement0 = htmlTreeBuilder0.getFormElement();\n}",
+    "testName" : "test146178"
+  },
+  "test125156" : {
+    "methodSignature" : "public QuirksMode quirksMode()",
+    "methodName" : "quirksMode",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test125156() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    htmlTreeBuilder0.maybeSetBaseUri(document0);\n    document0.quirksMode();\n}",
+    "testName" : "test125156"
+  },
+  "test103123" : {
+    "methodSignature" : "void generateImpliedEndTags(String excludeTag)",
+    "methodName" : "generateImpliedEndTags",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test103123() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.generateImpliedEndTags(\"intabletext\");\n}",
+    "testName" : "test103123"
+  },
+  "test120148" : {
+    "methodSignature" : "void resetInsertionMode()",
+    "methodName" : "resetInsertionMode",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test120148() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    htmlTreeBuilder0.popStackToClose(\"html\");\n    htmlTreeBuilder0.resetInsertionMode();\n}",
+    "testName" : "test120148"
+  },
+  "test02326" : {
+    "methodSignature" : "Element lastFormattingElement()",
+    "methodName" : "lastFormattingElement",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test02326() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;\n    Token.StartTag token_StartTag0 = tokeniser0.startPending;\n    Token.Tag token_Tag0 = token_StartTag0.name(\"b\");\n    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;\n    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);\n    htmlTreeBuilder0.process(token_StartTag0, htmlTreeBuilderState0);\n    Element element0 = htmlTreeBuilder0.lastFormattingElement();\n}",
+    "testName" : "test02326"
+  },
+  "test152184" : {
+    "methodSignature" : "boolean inListItemScope(String targetName)",
+    "methodName" : "inListItemScope",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test152184() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.inListItemScope(\"plaitex\");\n}",
+    "testName" : "test152184"
+  },
+  "test01516" : {
+    "methodSignature" : "void clearStackToTableBodyContext()",
+    "methodName" : "clearStackToTableBodyContext",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test01516() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);\n    ParseSettings parseSettings0 = new ParseSettings(false, false);\n    htmlTreeBuilder0.parseFragment(\"InTableText\", (Element) null, \"noresize\", parseErrorList0, parseSettings0);\n    htmlTreeBuilder0.clearStackToTableBodyContext();\n}",
+    "testName" : "test01516"
+  },
+  "test03139" : {
+    "methodSignature" : "public int siblingIndex()",
+    "methodName" : "siblingIndex",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test03139() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;\n    Token.StartTag token_StartTag0 = tokeniser0.startPending;\n    Token.Tag token_Tag0 = token_StartTag0.name(\"b\");\n    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;\n    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);\n    FormElement formElement0 = htmlTreeBuilder0.insertForm(token_StartTag0, false);\n    formElement0.siblingIndex();\n}",
+    "testName" : "test03139"
+  },
+  "test02327" : {
+    "methodSignature" : "public int siblingIndex()",
+    "methodName" : "siblingIndex",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test02327() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;\n    Token.StartTag token_StartTag0 = tokeniser0.startPending;\n    Token.Tag token_Tag0 = token_StartTag0.name(\"b\");\n    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;\n    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);\n    htmlTreeBuilder0.process(token_StartTag0, htmlTreeBuilderState0);\n    Element element0 = htmlTreeBuilder0.lastFormattingElement();\n    element0.siblingIndex();\n}",
+    "testName" : "test02327"
+  },
+  "test04867" : {
+    "methodSignature" : "public String location()",
+    "methodName" : "location",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test04867() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = Document.createShell(\"'c=RMmMJP+I^L7)\");\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    List<Node> list0 = htmlTreeBuilder0.parseFragment(\"'c=RMmMJP+I^L7)\", document0, \"script\", (ParseErrorList) null, parseSettings0);\n    Document document1 = htmlTreeBuilder0.getDocument();\n    document1.location();\n}",
+    "testName" : "test04867"
+  },
+  "test108133" : {
+    "methodSignature" : "protected boolean process(Token token)",
+    "methodName" : "process",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test108133() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;\n    Token.StartTag token_StartTag0 = tokeniser0.startPending;\n    token_StartTag0.name(\"dl\");\n    htmlTreeBuilder0.popStackToClose(\"html\");\n    htmlTreeBuilder0.process(token_StartTag0);\n}",
+    "testName" : "test108133"
+  },
+  "test135167" : {
+    "methodSignature" : "boolean isInActiveFormattingElements(Element el)",
+    "methodName" : "isInActiveFormattingElements",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test135167() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    htmlTreeBuilder0.isInActiveFormattingElements(document0);\n}",
+    "testName" : "test135167"
+  },
+  "test092111" : {
+    "methodSignature" : "void error(HtmlTreeBuilderState state)",
+    "methodName" : "error",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test092111() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.InTableText;\n    htmlTreeBuilder0.error(htmlTreeBuilderState0);\n}",
+    "testName" : "test092111"
+  },
+  "test05271" : {
+    "methodSignature" : "void resetInsertionMode()",
+    "methodName" : "resetInsertionMode",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test05271() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.resetInsertionMode();\n}",
+    "testName" : "test05271"
+  },
+  "test06483" : {
+    "methodSignature" : "void popStackToClose(String elName)",
+    "methodName" : "popStackToClose",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test06483() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.popStackToClose(\".K0\");\n}",
+    "testName" : "test06483"
+  },
+  "test089108" : {
+    "methodSignature" : "boolean inButtonScope(String targetName)",
+    "methodName" : "inButtonScope",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test089108() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.inButtonScope(\"DAC-ekb8WG,FA+}o]]\");\n}",
+    "testName" : "test089108"
+  },
+  "test141173" : {
+    "methodSignature" : "Document getDocument()",
+    "methodName" : "getDocument",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test141173() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = htmlTreeBuilder0.getDocument();\n}",
+    "testName" : "test141173"
+  },
+  "test07291" : {
+    "methodSignature" : "Element insertStartTag(String startTagName)",
+    "methodName" : "insertStartTag",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test07291() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.insertStartTag(\":0.=2x}*\");\n}",
+    "testName" : "test07291"
+  },
+  "test119147" : {
+    "methodSignature" : "void popStackToClose(String... elNames)",
+    "methodName" : "popStackToClose",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test119147() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", (Element) null, \"dl\", parseErrorList0, parseSettings0);\n    String[] stringArray0 = new String[6];\n    stringArray0[0] = \"dl\";\n    stringArray0[1] = \"dl\";\n    stringArray0[2] = \"dl\";\n    stringArray0[3] = \"dl\";\n    stringArray0[4] = \"dl\";\n    stringArray0[5] = \"dl\";\n    htmlTreeBuilder0.popStackToClose(stringArray0);\n}",
+    "testName" : "test119147"
+  },
+  "test0078" : {
+    "methodSignature" : "public int siblingIndex()",
+    "methodName" : "siblingIndex",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0078() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    StringReader stringReader0 = new StringReader(\"iframe\");\n    ParseErrorList parseErrorList0 = ParseErrorList.noTracking();\n    ParseSettings parseSettings0 = new ParseSettings(true, true);\n    Document document0 = htmlTreeBuilder0.parse(stringReader0, \"\", parseErrorList0, parseSettings0);\n    htmlTreeBuilder0.insert(document0);\n    document0.siblingIndex();\n}",
+    "testName" : "test0078"
+  },
+  "test05675" : {
+    "methodSignature" : "void removeFromActiveFormattingElements(Element el)",
+    "methodName" : "removeFromActiveFormattingElements",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test05675() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = Document.createShell(\"P _r,Ji8EW^9@/\");\n    htmlTreeBuilder0.removeFromActiveFormattingElements(document0);\n}",
+    "testName" : "test05675"
+  },
+  "test06887" : {
+    "methodSignature" : "boolean onStack(Element el)",
+    "methodName" : "onStack",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test06887() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = Document.createShell(\"\");\n    htmlTreeBuilder0.onStack(document0);\n}",
+    "testName" : "test06887"
+  },
+  "test01112" : {
+    "methodSignature" : "void framesetOk(boolean framesetOk)",
+    "methodName" : "framesetOk",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test01112() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.framesetOk(false);\n}",
+    "testName" : "test01112"
+  },
+  "test07695" : {
+    "methodSignature" : "FormElement insertForm(Token.StartTag startTag, boolean onStack)",
+    "methodName" : "insertForm",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test07695() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    CharacterReader characterReader0 = new CharacterReader(\"AfterDoctypePublicIdentifier\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(0);\n    Tokeniser tokeniser0 = new Tokeniser(characterReader0, parseErrorList0);\n    Token.StartTag token_StartTag0 = tokeniser0.startPending;\n    htmlTreeBuilder0.insertForm(token_StartTag0, true);\n}",
+    "testName" : "test07695"
+  },
+  "test081100" : {
+    "methodSignature" : "void insert(Token.Comment commentToken)",
+    "methodName" : "insert",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test081100() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.insert((Token.Comment) null);\n}",
+    "testName" : "test081100"
+  },
+  "test106129" : {
+    "methodSignature" : "boolean inTableScope(String targetName)",
+    "methodName" : "inTableScope",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test106129() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;\n    Token.StartTag token_StartTag0 = tokeniser0.startPending;\n    token_StartTag0.appendTagName(\"header\");\n    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;\n    htmlTreeBuilder0.process(token_StartTag0, htmlTreeBuilderState0);\n    boolean boolean0 = htmlTreeBuilder0.inTableScope(\"head\");\n}",
+    "testName" : "test106129"
+  },
+  "test130162" : {
+    "methodSignature" : "void insert(Token.Comment commentToken)",
+    "methodName" : "insert",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test130162() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Token.Comment token_Comment0 = new Token.Comment();\n    htmlTreeBuilder0.insert(token_Comment0);\n}",
+    "testName" : "test130162"
+  },
+  "test157189" : {
+    "methodSignature" : "Element insertStartTag(String startTagName)",
+    "methodName" : "insertStartTag",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test157189() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    htmlTreeBuilder0.insertStartTag(\"b\");\n}",
+    "testName" : "test157189"
+  },
+  "test02834" : {
+    "methodSignature" : "boolean isFosterInserts()",
+    "methodName" : "isFosterInserts",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test02834() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    boolean boolean0 = htmlTreeBuilder0.isFosterInserts();\n}",
+    "testName" : "test02834"
+  },
+  "test03646" : {
+    "methodSignature" : "boolean inScope(String targetName, String[] extras)",
+    "methodName" : "inScope",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test03646() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    ParseErrorList parseErrorList0 = new ParseErrorList(3512, 501);\n    ParseSettings parseSettings0 = new ParseSettings(false, false);\n    List<Node> list0 = htmlTreeBuilder0.parseFragment(\"InTableText\", (Element) null, \"noresize\", parseErrorList0, parseSettings0);\n    boolean boolean0 = htmlTreeBuilder0.inScope(\"InTableText\", (String[]) null);\n}",
+    "testName" : "test03646"
+  },
+  "test122151" : {
+    "methodSignature" : "void reconstructFormattingElements()",
+    "methodName" : "reconstructFormattingElements",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test122151() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;\n    Token.StartTag token_StartTag0 = tokeniser0.startPending;\n    Token.Tag token_Tag0 = token_StartTag0.name(\"b\");\n    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;\n    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);\n    htmlTreeBuilder0.reconstructFormattingElements();\n}",
+    "testName" : "test122151"
+  },
+  "test097116" : {
+    "methodSignature" : "void clearFormattingElementsToLastMarker()",
+    "methodName" : "clearFormattingElementsToLastMarker",
+    "className" : "org.jsoup.parser.HtmlTreeBuilder",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test097116() throws Throwable {\n    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();\n    Document document0 = new Document(\"dl\");\n    ParseErrorList parseErrorList0 = ParseErrorList.tracking(30);\n    ParseSettings parseSettings0 = ParseSettings.preserveCase;\n    htmlTreeBuilder0.parseFragment(\"dl\", document0, \"dl\", parseErrorList0, parseSettings0);\n    Tokeniser tokeniser0 = htmlTreeBuilder0.tokeniser;\n    Token.StartTag token_StartTag0 = tokeniser0.startPending;\n    Token.Tag token_Tag0 = token_StartTag0.name(\"b\");\n    HtmlTreeBuilderState htmlTreeBuilderState0 = HtmlTreeBuilderState.AfterHead;\n    htmlTreeBuilder0.process(token_Tag0, htmlTreeBuilderState0);\n    htmlTreeBuilder0.clearFormattingElementsToLastMarker();\n}",
+    "testName" : "test097116"
+  }
+}

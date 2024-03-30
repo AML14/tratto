@@ -1,0 +1,16 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test00,"public void test00() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    StreamReaderDelegate streamReaderDelegate0 = new StreamReaderDelegate();
+    FromXmlParser fromXmlParser0 = null;
+    try {
+        fromXmlParser0 = new FromXmlParser(iOContext0, 1, 0, (ObjectCodec) null, streamReaderDelegate0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""javax.xml.stream.util.StreamReaderDelegate"", e);
+    }
+}",0,

@@ -1,0 +1,14 @@
+org.apache.commons.cli.Parser,@Test(timeout = 4000)
+public void test1414() throws Throwable {
+    Options options0 = new Options();
+    Option option0 = new Option(""CJJU"", ""CJJU"");
+    PosixParser posixParser0 = new PosixParser();
+    option0.setOptionalArg(true);
+    posixParser0.parse(options0, (String[]) null);
+    ListIterator<String> listIterator0 = (ListIterator<String>) mock(ListIterator.class, new ViolatedAssumptionAnswer());
+    doReturn(true).when(listIterator0).hasNext();
+    doReturn(""CJJU"").when(listIterator0).next();
+    doReturn(""CJJU"").when(listIterator0).previous();
+    posixParser0.processArgs(option0, listIterator0);
+    option0.hasArgName();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.

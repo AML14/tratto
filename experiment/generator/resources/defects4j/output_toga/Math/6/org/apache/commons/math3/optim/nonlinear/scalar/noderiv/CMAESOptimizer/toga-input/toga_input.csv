@@ -1,0 +1,829 @@
+focal_method,test_prefix,docstring
+"public CMAESOptimizer(int maxIterations, double stopFitness, boolean isActiveCMA, int diagonalOnly, int checkFeasableCount, RandomGenerator random, boolean generateStatistics, ConvergenceChecker<PointValuePair> checker) {
+    super(checker);
+    this.maxIterations = maxIterations;
+    this.stopFitness = stopFitness;
+    this.isActiveCMA = isActiveCMA;
+    this.diagonalOnly = diagonalOnly;
+    this.checkFeasableCount = checkFeasableCount;
+    this.random = random;
+    this.generateStatistics = generateStatistics;
+}","public void test000() throws Throwable {
+    SimpleValueChecker simpleValueChecker0 = new SimpleValueChecker((-2680), (-2680));
+    CMAESOptimizer cMAESOptimizer0 = new CMAESOptimizer((-2680), (-2680), false, (-2680), (-2680), (RandomGenerator) null, false, simpleValueChecker0);
+}","/**
+ * @param maxIterations Maximal number of iterations.
+ * @param stopFitness Whether to stop if objective function value is smaller than
+ * {@code stopFitness}.
+ * @param isActiveCMA Chooses the covariance matrix update method.
+ * @param diagonalOnly Number of initial iterations, where the covariance matrix
+ * remains diagonal.
+ * @param checkFeasableCount Determines how often new random objective variables are
+ * generated in case they are out of bounds.
+ * @param random Random generator.
+ * @param generateStatistics Whether statistic data is collected.
+ * @param checker Convergence checker.
+ *
+ * @since 3.1
+ */"
+"@Override
+protected void parseOptimizationData(OptimizationData... optData) {
+    // Allow base class to register its own data.
+    super.parseOptimizationData(optData);
+    // The existing values (as set by the previous call) are reused if
+    // not provided in the argument list.
+    for (OptimizationData data : optData) {
+        if (data instanceof Sigma) {
+            inputSigma = ((Sigma) data).getSigma();
+            continue;
+        }
+        if (data instanceof PopulationSize) {
+            lambda = ((PopulationSize) data).getPopulationSize();
+            continue;
+        }
+    }
+    checkParameters();
+}","public void test033() throws Throwable {
+    SimpleValueChecker simpleValueChecker0 = new SimpleValueChecker((-2680), (-2680));
+    CMAESOptimizer cMAESOptimizer0 = new CMAESOptimizer((-2680), (-2680), true, (-2680), (-2680), (RandomGenerator) null, true, simpleValueChecker0);
+    OptimizationData[] optimizationDataArray0 = new OptimizationData[0];
+    cMAESOptimizer0.parseOptimizationData(optimizationDataArray0);
+}","/**
+ * Scans the list of (required and optional) optimization data that
+ * characterize the problem.
+ *
+ * @param optData Optimization data. The following data will be looked for:
+ * <ul>
+ *  <li>{@link Sigma}</li>
+ *  <li>{@link PopulationSize}</li>
+ * </ul>
+ */"
+"@Override
+protected PointValuePair doOptimize() {
+    // -------------------- Initialization --------------------------------
+    isMinimize = getGoalType().equals(GoalType.MINIMIZE);
+    final FitnessFunction fitfun = new FitnessFunction();
+    final double[] guess = getStartPoint();
+    // number of objective variables/problem dimension
+    dimension = guess.length;
+    initializeCMA(guess);
+    iterations = 0;
+    double bestValue = fitfun.value(guess);
+    push(fitnessHistory, bestValue);
+    PointValuePair optimum = new PointValuePair(getStartPoint(), isMinimize ? bestValue : -bestValue);
+    PointValuePair lastResult = null;
+    // -------------------- Generation Loop --------------------------------
+    generationLoop: for (iterations = 1; iterations <= maxIterations; iterations++) {
+        // Generate and evaluate lambda offspring
+        final RealMatrix arz = randn1(dimension, lambda);
+        final RealMatrix arx = zeros(dimension, lambda);
+        final double[] fitness = new double[lambda];
+        // generate random offspring
+        for (int k = 0; k < lambda; k++) {
+            RealMatrix arxk = null;
+            for (int i = 0; i < checkFeasableCount + 1; i++) {
+                if (diagonalOnly <= 0) {
+                    arxk = xmean.add(BD.multiply(arz.getColumnMatrix(k)).scalarMultiply(// m + sig * Normal(0,C)
+                    sigma));
+                } else {
+                    arxk = xmean.add(times(diagD, arz.getColumnMatrix(k)).scalarMultiply(sigma));
+                }
+                if (i >= checkFeasableCount || fitfun.isFeasible(arxk.getColumn(0))) {
+                    break;
+                }
+                // regenerate random arguments for row
+                arz.setColumn(k, randn(dimension));
+            }
+            copyColumn(arxk, 0, arx, k);
+            try {
+                // compute fitness
+                fitness[k] = fitfun.value(arx.getColumn(k));
+            } catch (TooManyEvaluationsException e) {
+                break generationLoop;
+            }
+        }
+        // Sort by fitness and compute weighted mean into xmean
+        final int[] arindex = sortedIndices(fitness);
+        // Calculate new xmean, this is selection and recombination
+        // for speed up of Eq. (2) and (3)
+        final RealMatrix xold = xmean;
+        final RealMatrix bestArx = selectColumns(arx, MathArrays.copyOf(arindex, mu));
+        xmean = bestArx.multiply(weights);
+        final RealMatrix bestArz = selectColumns(arz, MathArrays.copyOf(arindex, mu));
+        final RealMatrix zmean = bestArz.multiply(weights);
+        final boolean hsig = updateEvolutionPaths(zmean, xold);
+        if (diagonalOnly <= 0) {
+            updateCovariance(hsig, bestArx, arz, arindex, xold);
+        } else {
+            updateCovarianceDiagonalOnly(hsig, bestArz);
+        }
+        // Adapt step size sigma - Eq. (5)
+        sigma *= Math.exp(Math.min(1, (normps / chiN - 1) * cs / damps));
+        final double bestFitness = fitness[arindex[0]];
+        final double worstFitness = fitness[arindex[arindex.length - 1]];
+        if (bestValue > bestFitness) {
+            bestValue = bestFitness;
+            lastResult = optimum;
+            optimum = new PointValuePair(fitfun.repair(bestArx.getColumn(0)), isMinimize ? bestFitness : -bestFitness);
+            if (getConvergenceChecker() != null && lastResult != null) {
+                if (getConvergenceChecker().converged(iterations, optimum, lastResult)) {
+                    break generationLoop;
+                }
+            }
+        }
+        // handle termination criteria
+        // Break, if fitness is good enough
+        if (stopFitness != 0) {
+            // only if stopFitness is defined
+            if (bestFitness < (isMinimize ? stopFitness : -stopFitness)) {
+                break generationLoop;
+            }
+        }
+        final double[] sqrtDiagC = sqrt(diagC).getColumn(0);
+        final double[] pcCol = pc.getColumn(0);
+        for (int i = 0; i < dimension; i++) {
+            if (sigma * Math.max(Math.abs(pcCol[i]), sqrtDiagC[i]) > stopTolX) {
+                break;
+            }
+            if (i >= dimension - 1) {
+                break generationLoop;
+            }
+        }
+        for (int i = 0; i < dimension; i++) {
+            if (sigma * sqrtDiagC[i] > stopTolUpX) {
+                break generationLoop;
+            }
+        }
+        final double historyBest = min(fitnessHistory);
+        final double historyWorst = max(fitnessHistory);
+        if (iterations > 2 && Math.max(historyWorst, worstFitness) - Math.min(historyBest, bestFitness) < stopTolFun) {
+            break generationLoop;
+        }
+        if (iterations > fitnessHistory.length && historyWorst - historyBest < stopTolHistFun) {
+            break generationLoop;
+        }
+        // condition number of the covariance matrix exceeds 1e14
+        if (max(diagD) / min(diagD) > 1e7) {
+            break generationLoop;
+        }
+        // user defined termination
+        if (getConvergenceChecker() != null) {
+            final PointValuePair current = new PointValuePair(bestArx.getColumn(0), isMinimize ? bestFitness : -bestFitness);
+            if (lastResult != null && getConvergenceChecker().converged(iterations, current, lastResult)) {
+                break generationLoop;
+            }
+            lastResult = current;
+        }
+        // Adjust step size in case of equal function values (flat fitness)
+        if (bestValue == fitness[arindex[(int) (0.1 + lambda / 4.)]]) {
+            sigma = sigma * Math.exp(0.2 + cs / damps);
+        }
+        if (iterations > 2 && Math.max(historyWorst, bestFitness) - Math.min(historyBest, bestFitness) == 0) {
+            sigma = sigma * Math.exp(0.2 + cs / damps);
+        }
+        // store best in history
+        push(fitnessHistory, bestFitness);
+        fitfun.setValueRange(worstFitness - bestFitness);
+        if (generateStatistics) {
+            statisticsSigmaHistory.add(sigma);
+            statisticsFitnessHistory.add(bestFitness);
+            statisticsMeanHistory.add(xmean.transpose());
+            statisticsDHistory.add(diagD.transpose().scalarMultiply(1E5));
+        }
+    }
+    return optimum;
+}","public void test044() throws Throwable {
+    double[] doubleArray0 = new double[7];
+    CMAESOptimizer.Sigma cMAESOptimizer_Sigma0 = new CMAESOptimizer.Sigma(doubleArray0);
+    ISAACRandom iSAACRandom0 = new ISAACRandom();
+    CMAESOptimizer cMAESOptimizer0 = new CMAESOptimizer(3856, 3856, true, 3856, 3856, iSAACRandom0, true, (ConvergenceChecker<PointValuePair>) null);
+    OptimizationData[] optimizationDataArray0 = new OptimizationData[3];
+    optimizationDataArray0[0] = (OptimizationData) cMAESOptimizer_Sigma0;
+    cMAESOptimizer0.optimize(optimizationDataArray0);
+    cMAESOptimizer0.doOptimize();
+}","/**
+ * {@inheritDoc}
+ */"
+"@Override
+protected void parseOptimizationData(OptimizationData... optData) {
+    // Allow base class to register its own data.
+    super.parseOptimizationData(optData);
+    // The existing values (as set by the previous call) are reused if
+    // not provided in the argument list.
+    for (OptimizationData data : optData) {
+        if (data instanceof Sigma) {
+            inputSigma = ((Sigma) data).getSigma();
+            continue;
+        }
+        if (data instanceof PopulationSize) {
+            lambda = ((PopulationSize) data).getPopulationSize();
+            continue;
+        }
+    }
+    checkParameters();
+}","public void test055() throws Throwable {
+    SimpleValueChecker simpleValueChecker0 = new SimpleValueChecker(419, 419);
+    CMAESOptimizer cMAESOptimizer0 = new CMAESOptimizer(419, 419, true, 419, 419, (RandomGenerator) null, true, simpleValueChecker0);
+    OptimizationData[] optimizationDataArray0 = new OptimizationData[1];
+    cMAESOptimizer0.parseOptimizationData(optimizationDataArray0);
+}","/**
+ * Scans the list of (required and optional) optimization data that
+ * characterize the problem.
+ *
+ * @param optData Optimization data. The following data will be looked for:
+ * <ul>
+ *  <li>{@link Sigma}</li>
+ *  <li>{@link PopulationSize}</li>
+ * </ul>
+ */"
+"@Override
+protected void parseOptimizationData(OptimizationData... optData) {
+    // Allow base class to register its own data.
+    super.parseOptimizationData(optData);
+    // The existing values (as set by the previous call) are reused if
+    // not provided in the argument list.
+    for (OptimizationData data : optData) {
+        if (data instanceof Sigma) {
+            inputSigma = ((Sigma) data).getSigma();
+            continue;
+        }
+        if (data instanceof PopulationSize) {
+            lambda = ((PopulationSize) data).getPopulationSize();
+            continue;
+        }
+    }
+    checkParameters();
+}","public void test066() throws Throwable {
+    SimpleValueChecker simpleValueChecker0 = new SimpleValueChecker(393, 393);
+    CMAESOptimizer cMAESOptimizer0 = new CMAESOptimizer(393, 393, false, 393, 393, (RandomGenerator) null, false, simpleValueChecker0);
+    OptimizationData[] optimizationDataArray0 = new OptimizationData[1];
+    CMAESOptimizer.PopulationSize cMAESOptimizer_PopulationSize0 = new CMAESOptimizer.PopulationSize(393);
+    optimizationDataArray0[0] = (OptimizationData) cMAESOptimizer_PopulationSize0;
+    cMAESOptimizer0.parseOptimizationData(optimizationDataArray0);
+}","/**
+ * Scans the list of (required and optional) optimization data that
+ * characterize the problem.
+ *
+ * @param optData Optimization data. The following data will be looked for:
+ * <ul>
+ *  <li>{@link Sigma}</li>
+ *  <li>{@link PopulationSize}</li>
+ * </ul>
+ */"
+"public List<Double> getStatisticsFitnessHistory() {
+    return statisticsFitnessHistory;
+}","public void test077() throws Throwable {
+    Well44497a well44497a0 = new Well44497a(2019);
+    SimplePointChecker<PointValuePair> simplePointChecker0 = new SimplePointChecker<PointValuePair>(2019, 2019, 2019);
+    CMAESOptimizer cMAESOptimizer0 = new CMAESOptimizer(2019, 2019, true, 2019, 2019, well44497a0, true, simplePointChecker0);
+    cMAESOptimizer0.getStatisticsFitnessHistory();
+}","/**
+ * @return History of fitness values.
+ */"
+"public List<RealMatrix> getStatisticsDHistory() {
+    return statisticsDHistory;
+}","public void test1010() throws Throwable {
+    Well44497a well44497a0 = new Well44497a(2019);
+    SimplePointChecker<PointValuePair> simplePointChecker0 = new SimplePointChecker<PointValuePair>(2019, 2019, 2019);
+    CMAESOptimizer cMAESOptimizer0 = new CMAESOptimizer(2019, 2019, true, 2019, 2019, well44497a0, true, simplePointChecker0);
+    cMAESOptimizer0.getStatisticsDHistory();
+}","/**
+ * @return History of D matrix.
+ */"
+"public List<RealMatrix> getStatisticsMeanHistory() {
+    return statisticsMeanHistory;
+}","public void test1111() throws Throwable {
+    Well44497a well44497a0 = new Well44497a();
+    SimplePointChecker<PointValuePair> simplePointChecker0 = new SimplePointChecker<PointValuePair>(2019, 2019, 2019);
+    CMAESOptimizer cMAESOptimizer0 = new CMAESOptimizer(2019, 2019, true, 2019, 2019, well44497a0, true, simplePointChecker0);
+    cMAESOptimizer0.getStatisticsMeanHistory();
+}","/**
+ * @return History of mean matrix.
+ */"
+"@Override
+protected void parseOptimizationData(OptimizationData... optData) {
+    // Allow base class to register its own data.
+    super.parseOptimizationData(optData);
+    // The existing values (as set by the previous call) are reused if
+    // not provided in the argument list.
+    for (OptimizationData data : optData) {
+        if (data instanceof Sigma) {
+            inputSigma = ((Sigma) data).getSigma();
+            continue;
+        }
+        if (data instanceof PopulationSize) {
+            lambda = ((PopulationSize) data).getPopulationSize();
+            continue;
+        }
+    }
+    checkParameters();
+}","public void test1212() throws Throwable {
+    double[] doubleArray0 = new double[0];
+    CMAESOptimizer.Sigma cMAESOptimizer_Sigma0 = new CMAESOptimizer.Sigma(doubleArray0);
+    ISAACRandom iSAACRandom0 = new ISAACRandom(2021);
+    CMAESOptimizer cMAESOptimizer0 = new CMAESOptimizer(2021, 2021, true, 2021, 2021, iSAACRandom0, true, (ConvergenceChecker<PointValuePair>) null);
+    InitialGuess initialGuess0 = new InitialGuess(doubleArray0);
+    OptimizationData[] optimizationDataArray0 = new OptimizationData[8];
+    optimizationDataArray0[1] = (OptimizationData) cMAESOptimizer_Sigma0;
+    optimizationDataArray0[2] = (OptimizationData) initialGuess0;
+    cMAESOptimizer0.parseOptimizationData(optimizationDataArray0);
+}","/**
+ * Scans the list of (required and optional) optimization data that
+ * characterize the problem.
+ *
+ * @param optData Optimization data. The following data will be looked for:
+ * <ul>
+ *  <li>{@link Sigma}</li>
+ *  <li>{@link PopulationSize}</li>
+ * </ul>
+ */"
+"@Override
+protected void parseOptimizationData(OptimizationData... optData) {
+    // Allow base class to register its own data.
+    super.parseOptimizationData(optData);
+    // The existing values (as set by the previous call) are reused if
+    // not provided in the argument list.
+    for (OptimizationData data : optData) {
+        if (data instanceof Sigma) {
+            inputSigma = ((Sigma) data).getSigma();
+            continue;
+        }
+        if (data instanceof PopulationSize) {
+            lambda = ((PopulationSize) data).getPopulationSize();
+            continue;
+        }
+    }
+    checkParameters();
+}","public void test1313() throws Throwable {
+    double[] doubleArray0 = new double[1];
+    CMAESOptimizer.Sigma cMAESOptimizer_Sigma0 = new CMAESOptimizer.Sigma(doubleArray0);
+    ISAACRandom iSAACRandom0 = new ISAACRandom(2021);
+    CMAESOptimizer cMAESOptimizer0 = new CMAESOptimizer(2021, 2021, true, 2021, 2021, iSAACRandom0, true, (ConvergenceChecker<PointValuePair>) null);
+    InitialGuess initialGuess0 = new InitialGuess(doubleArray0);
+    OptimizationData[] optimizationDataArray0 = new OptimizationData[8];
+    optimizationDataArray0[1] = (OptimizationData) cMAESOptimizer_Sigma0;
+    optimizationDataArray0[2] = (OptimizationData) initialGuess0;
+    cMAESOptimizer0.parseOptimizationData(optimizationDataArray0);
+}","/**
+ * Scans the list of (required and optional) optimization data that
+ * characterize the problem.
+ *
+ * @param optData Optimization data. The following data will be looked for:
+ * <ul>
+ *  <li>{@link Sigma}</li>
+ *  <li>{@link PopulationSize}</li>
+ * </ul>
+ */"
+"@Override
+protected PointValuePair doOptimize() {
+    // -------------------- Initialization --------------------------------
+    isMinimize = getGoalType().equals(GoalType.MINIMIZE);
+    final FitnessFunction fitfun = new FitnessFunction();
+    final double[] guess = getStartPoint();
+    // number of objective variables/problem dimension
+    dimension = guess.length;
+    initializeCMA(guess);
+    iterations = 0;
+    double bestValue = fitfun.value(guess);
+    push(fitnessHistory, bestValue);
+    PointValuePair optimum = new PointValuePair(getStartPoint(), isMinimize ? bestValue : -bestValue);
+    PointValuePair lastResult = null;
+    // -------------------- Generation Loop --------------------------------
+    generationLoop: for (iterations = 1; iterations <= maxIterations; iterations++) {
+        // Generate and evaluate lambda offspring
+        final RealMatrix arz = randn1(dimension, lambda);
+        final RealMatrix arx = zeros(dimension, lambda);
+        final double[] fitness = new double[lambda];
+        // generate random offspring
+        for (int k = 0; k < lambda; k++) {
+            RealMatrix arxk = null;
+            for (int i = 0; i < checkFeasableCount + 1; i++) {
+                if (diagonalOnly <= 0) {
+                    arxk = xmean.add(BD.multiply(arz.getColumnMatrix(k)).scalarMultiply(// m + sig * Normal(0,C)
+                    sigma));
+                } else {
+                    arxk = xmean.add(times(diagD, arz.getColumnMatrix(k)).scalarMultiply(sigma));
+                }
+                if (i >= checkFeasableCount || fitfun.isFeasible(arxk.getColumn(0))) {
+                    break;
+                }
+                // regenerate random arguments for row
+                arz.setColumn(k, randn(dimension));
+            }
+            copyColumn(arxk, 0, arx, k);
+            try {
+                // compute fitness
+                fitness[k] = fitfun.value(arx.getColumn(k));
+            } catch (TooManyEvaluationsException e) {
+                break generationLoop;
+            }
+        }
+        // Sort by fitness and compute weighted mean into xmean
+        final int[] arindex = sortedIndices(fitness);
+        // Calculate new xmean, this is selection and recombination
+        // for speed up of Eq. (2) and (3)
+        final RealMatrix xold = xmean;
+        final RealMatrix bestArx = selectColumns(arx, MathArrays.copyOf(arindex, mu));
+        xmean = bestArx.multiply(weights);
+        final RealMatrix bestArz = selectColumns(arz, MathArrays.copyOf(arindex, mu));
+        final RealMatrix zmean = bestArz.multiply(weights);
+        final boolean hsig = updateEvolutionPaths(zmean, xold);
+        if (diagonalOnly <= 0) {
+            updateCovariance(hsig, bestArx, arz, arindex, xold);
+        } else {
+            updateCovarianceDiagonalOnly(hsig, bestArz);
+        }
+        // Adapt step size sigma - Eq. (5)
+        sigma *= Math.exp(Math.min(1, (normps / chiN - 1) * cs / damps));
+        final double bestFitness = fitness[arindex[0]];
+        final double worstFitness = fitness[arindex[arindex.length - 1]];
+        if (bestValue > bestFitness) {
+            bestValue = bestFitness;
+            lastResult = optimum;
+            optimum = new PointValuePair(fitfun.repair(bestArx.getColumn(0)), isMinimize ? bestFitness : -bestFitness);
+            if (getConvergenceChecker() != null && lastResult != null) {
+                if (getConvergenceChecker().converged(iterations, optimum, lastResult)) {
+                    break generationLoop;
+                }
+            }
+        }
+        // handle termination criteria
+        // Break, if fitness is good enough
+        if (stopFitness != 0) {
+            // only if stopFitness is defined
+            if (bestFitness < (isMinimize ? stopFitness : -stopFitness)) {
+                break generationLoop;
+            }
+        }
+        final double[] sqrtDiagC = sqrt(diagC).getColumn(0);
+        final double[] pcCol = pc.getColumn(0);
+        for (int i = 0; i < dimension; i++) {
+            if (sigma * Math.max(Math.abs(pcCol[i]), sqrtDiagC[i]) > stopTolX) {
+                break;
+            }
+            if (i >= dimension - 1) {
+                break generationLoop;
+            }
+        }
+        for (int i = 0; i < dimension; i++) {
+            if (sigma * sqrtDiagC[i] > stopTolUpX) {
+                break generationLoop;
+            }
+        }
+        final double historyBest = min(fitnessHistory);
+        final double historyWorst = max(fitnessHistory);
+        if (iterations > 2 && Math.max(historyWorst, worstFitness) - Math.min(historyBest, bestFitness) < stopTolFun) {
+            break generationLoop;
+        }
+        if (iterations > fitnessHistory.length && historyWorst - historyBest < stopTolHistFun) {
+            break generationLoop;
+        }
+        // condition number of the covariance matrix exceeds 1e14
+        if (max(diagD) / min(diagD) > 1e7) {
+            break generationLoop;
+        }
+        // user defined termination
+        if (getConvergenceChecker() != null) {
+            final PointValuePair current = new PointValuePair(bestArx.getColumn(0), isMinimize ? bestFitness : -bestFitness);
+            if (lastResult != null && getConvergenceChecker().converged(iterations, current, lastResult)) {
+                break generationLoop;
+            }
+            lastResult = current;
+        }
+        // Adjust step size in case of equal function values (flat fitness)
+        if (bestValue == fitness[arindex[(int) (0.1 + lambda / 4.)]]) {
+            sigma = sigma * Math.exp(0.2 + cs / damps);
+        }
+        if (iterations > 2 && Math.max(historyWorst, bestFitness) - Math.min(historyBest, bestFitness) == 0) {
+            sigma = sigma * Math.exp(0.2 + cs / damps);
+        }
+        // store best in history
+        push(fitnessHistory, bestFitness);
+        fitfun.setValueRange(worstFitness - bestFitness);
+        if (generateStatistics) {
+            statisticsSigmaHistory.add(sigma);
+            statisticsFitnessHistory.add(bestFitness);
+            statisticsMeanHistory.add(xmean.transpose());
+            statisticsDHistory.add(diagD.transpose().scalarMultiply(1E5));
+        }
+    }
+    return optimum;
+}","public void test1414() throws Throwable {
+    SimpleValueChecker simpleValueChecker0 = new SimpleValueChecker((-2700), (-2700));
+    CMAESOptimizer cMAESOptimizer0 = new CMAESOptimizer((-2700), (-2700), true, (-2700), (-2700), (RandomGenerator) null, true, simpleValueChecker0);
+    OptimizationData[] optimizationDataArray0 = new OptimizationData[0];
+    cMAESOptimizer0.optimize(optimizationDataArray0);
+    cMAESOptimizer0.doOptimize();
+}","/**
+ * {@inheritDoc}
+ */"
+"public List<Double> getStatisticsSigmaHistory() {
+    return statisticsSigmaHistory;
+}","public void test1515() throws Throwable {
+    Well44497a well44497a0 = new Well44497a();
+    SimplePointChecker<PointValuePair> simplePointChecker0 = new SimplePointChecker<PointValuePair>(2019, 2019, 2019);
+    CMAESOptimizer cMAESOptimizer0 = new CMAESOptimizer(2019, 2019, true, 2019, 2019, well44497a0, true, simplePointChecker0);
+    cMAESOptimizer0.getStatisticsSigmaHistory();
+}","/**
+ * @return History of sigma values.
+ */"
+"@Override
+protected PointValuePair doOptimize() {
+    // -------------------- Initialization --------------------------------
+    isMinimize = getGoalType().equals(GoalType.MINIMIZE);
+    final FitnessFunction fitfun = new FitnessFunction();
+    final double[] guess = getStartPoint();
+    // number of objective variables/problem dimension
+    dimension = guess.length;
+    initializeCMA(guess);
+    iterations = 0;
+    double bestValue = fitfun.value(guess);
+    push(fitnessHistory, bestValue);
+    PointValuePair optimum = new PointValuePair(getStartPoint(), isMinimize ? bestValue : -bestValue);
+    PointValuePair lastResult = null;
+    // -------------------- Generation Loop --------------------------------
+    generationLoop: for (iterations = 1; iterations <= maxIterations; iterations++) {
+        // Generate and evaluate lambda offspring
+        final RealMatrix arz = randn1(dimension, lambda);
+        final RealMatrix arx = zeros(dimension, lambda);
+        final double[] fitness = new double[lambda];
+        // generate random offspring
+        for (int k = 0; k < lambda; k++) {
+            RealMatrix arxk = null;
+            for (int i = 0; i < checkFeasableCount + 1; i++) {
+                if (diagonalOnly <= 0) {
+                    arxk = xmean.add(BD.multiply(arz.getColumnMatrix(k)).scalarMultiply(// m + sig * Normal(0,C)
+                    sigma));
+                } else {
+                    arxk = xmean.add(times(diagD, arz.getColumnMatrix(k)).scalarMultiply(sigma));
+                }
+                if (i >= checkFeasableCount || fitfun.isFeasible(arxk.getColumn(0))) {
+                    break;
+                }
+                // regenerate random arguments for row
+                arz.setColumn(k, randn(dimension));
+            }
+            copyColumn(arxk, 0, arx, k);
+            try {
+                // compute fitness
+                fitness[k] = fitfun.value(arx.getColumn(k));
+            } catch (TooManyEvaluationsException e) {
+                break generationLoop;
+            }
+        }
+        // Sort by fitness and compute weighted mean into xmean
+        final int[] arindex = sortedIndices(fitness);
+        // Calculate new xmean, this is selection and recombination
+        // for speed up of Eq. (2) and (3)
+        final RealMatrix xold = xmean;
+        final RealMatrix bestArx = selectColumns(arx, MathArrays.copyOf(arindex, mu));
+        xmean = bestArx.multiply(weights);
+        final RealMatrix bestArz = selectColumns(arz, MathArrays.copyOf(arindex, mu));
+        final RealMatrix zmean = bestArz.multiply(weights);
+        final boolean hsig = updateEvolutionPaths(zmean, xold);
+        if (diagonalOnly <= 0) {
+            updateCovariance(hsig, bestArx, arz, arindex, xold);
+        } else {
+            updateCovarianceDiagonalOnly(hsig, bestArz);
+        }
+        // Adapt step size sigma - Eq. (5)
+        sigma *= Math.exp(Math.min(1, (normps / chiN - 1) * cs / damps));
+        final double bestFitness = fitness[arindex[0]];
+        final double worstFitness = fitness[arindex[arindex.length - 1]];
+        if (bestValue > bestFitness) {
+            bestValue = bestFitness;
+            lastResult = optimum;
+            optimum = new PointValuePair(fitfun.repair(bestArx.getColumn(0)), isMinimize ? bestFitness : -bestFitness);
+            if (getConvergenceChecker() != null && lastResult != null) {
+                if (getConvergenceChecker().converged(iterations, optimum, lastResult)) {
+                    break generationLoop;
+                }
+            }
+        }
+        // handle termination criteria
+        // Break, if fitness is good enough
+        if (stopFitness != 0) {
+            // only if stopFitness is defined
+            if (bestFitness < (isMinimize ? stopFitness : -stopFitness)) {
+                break generationLoop;
+            }
+        }
+        final double[] sqrtDiagC = sqrt(diagC).getColumn(0);
+        final double[] pcCol = pc.getColumn(0);
+        for (int i = 0; i < dimension; i++) {
+            if (sigma * Math.max(Math.abs(pcCol[i]), sqrtDiagC[i]) > stopTolX) {
+                break;
+            }
+            if (i >= dimension - 1) {
+                break generationLoop;
+            }
+        }
+        for (int i = 0; i < dimension; i++) {
+            if (sigma * sqrtDiagC[i] > stopTolUpX) {
+                break generationLoop;
+            }
+        }
+        final double historyBest = min(fitnessHistory);
+        final double historyWorst = max(fitnessHistory);
+        if (iterations > 2 && Math.max(historyWorst, worstFitness) - Math.min(historyBest, bestFitness) < stopTolFun) {
+            break generationLoop;
+        }
+        if (iterations > fitnessHistory.length && historyWorst - historyBest < stopTolHistFun) {
+            break generationLoop;
+        }
+        // condition number of the covariance matrix exceeds 1e14
+        if (max(diagD) / min(diagD) > 1e7) {
+            break generationLoop;
+        }
+        // user defined termination
+        if (getConvergenceChecker() != null) {
+            final PointValuePair current = new PointValuePair(bestArx.getColumn(0), isMinimize ? bestFitness : -bestFitness);
+            if (lastResult != null && getConvergenceChecker().converged(iterations, current, lastResult)) {
+                break generationLoop;
+            }
+            lastResult = current;
+        }
+        // Adjust step size in case of equal function values (flat fitness)
+        if (bestValue == fitness[arindex[(int) (0.1 + lambda / 4.)]]) {
+            sigma = sigma * Math.exp(0.2 + cs / damps);
+        }
+        if (iterations > 2 && Math.max(historyWorst, bestFitness) - Math.min(historyBest, bestFitness) == 0) {
+            sigma = sigma * Math.exp(0.2 + cs / damps);
+        }
+        // store best in history
+        push(fitnessHistory, bestFitness);
+        fitfun.setValueRange(worstFitness - bestFitness);
+        if (generateStatistics) {
+            statisticsSigmaHistory.add(sigma);
+            statisticsFitnessHistory.add(bestFitness);
+            statisticsMeanHistory.add(xmean.transpose());
+            statisticsDHistory.add(diagD.transpose().scalarMultiply(1E5));
+        }
+    }
+    return optimum;
+}","public void test1616() throws Throwable {
+    SimpleValueChecker simpleValueChecker0 = new SimpleValueChecker(2, 2);
+    CMAESOptimizer cMAESOptimizer0 = new CMAESOptimizer(2, 2, true, 2, 2, (RandomGenerator) null, true, simpleValueChecker0);
+    OptimizationData[] optimizationDataArray0 = new OptimizationData[4];
+    double[] doubleArray0 = new double[7];
+    doubleArray0[1] = (double) 2;
+    InitialGuess initialGuess0 = new InitialGuess(doubleArray0);
+    optimizationDataArray0[0] = (OptimizationData) initialGuess0;
+    SimpleBounds simpleBounds0 = new SimpleBounds(doubleArray0, doubleArray0);
+    optimizationDataArray0[2] = (OptimizationData) simpleBounds0;
+    CMAESOptimizer.Sigma cMAESOptimizer_Sigma0 = new CMAESOptimizer.Sigma(doubleArray0);
+    optimizationDataArray0[3] = (OptimizationData) cMAESOptimizer_Sigma0;
+    cMAESOptimizer0.parseOptimizationData(optimizationDataArray0);
+    cMAESOptimizer0.doOptimize();
+}","/**
+ * {@inheritDoc}
+ */"
+"@Override
+protected PointValuePair doOptimize() {
+    // -------------------- Initialization --------------------------------
+    isMinimize = getGoalType().equals(GoalType.MINIMIZE);
+    final FitnessFunction fitfun = new FitnessFunction();
+    final double[] guess = getStartPoint();
+    // number of objective variables/problem dimension
+    dimension = guess.length;
+    initializeCMA(guess);
+    iterations = 0;
+    double bestValue = fitfun.value(guess);
+    push(fitnessHistory, bestValue);
+    PointValuePair optimum = new PointValuePair(getStartPoint(), isMinimize ? bestValue : -bestValue);
+    PointValuePair lastResult = null;
+    // -------------------- Generation Loop --------------------------------
+    generationLoop: for (iterations = 1; iterations <= maxIterations; iterations++) {
+        // Generate and evaluate lambda offspring
+        final RealMatrix arz = randn1(dimension, lambda);
+        final RealMatrix arx = zeros(dimension, lambda);
+        final double[] fitness = new double[lambda];
+        // generate random offspring
+        for (int k = 0; k < lambda; k++) {
+            RealMatrix arxk = null;
+            for (int i = 0; i < checkFeasableCount + 1; i++) {
+                if (diagonalOnly <= 0) {
+                    arxk = xmean.add(BD.multiply(arz.getColumnMatrix(k)).scalarMultiply(// m + sig * Normal(0,C)
+                    sigma));
+                } else {
+                    arxk = xmean.add(times(diagD, arz.getColumnMatrix(k)).scalarMultiply(sigma));
+                }
+                if (i >= checkFeasableCount || fitfun.isFeasible(arxk.getColumn(0))) {
+                    break;
+                }
+                // regenerate random arguments for row
+                arz.setColumn(k, randn(dimension));
+            }
+            copyColumn(arxk, 0, arx, k);
+            try {
+                // compute fitness
+                fitness[k] = fitfun.value(arx.getColumn(k));
+            } catch (TooManyEvaluationsException e) {
+                break generationLoop;
+            }
+        }
+        // Sort by fitness and compute weighted mean into xmean
+        final int[] arindex = sortedIndices(fitness);
+        // Calculate new xmean, this is selection and recombination
+        // for speed up of Eq. (2) and (3)
+        final RealMatrix xold = xmean;
+        final RealMatrix bestArx = selectColumns(arx, MathArrays.copyOf(arindex, mu));
+        xmean = bestArx.multiply(weights);
+        final RealMatrix bestArz = selectColumns(arz, MathArrays.copyOf(arindex, mu));
+        final RealMatrix zmean = bestArz.multiply(weights);
+        final boolean hsig = updateEvolutionPaths(zmean, xold);
+        if (diagonalOnly <= 0) {
+            updateCovariance(hsig, bestArx, arz, arindex, xold);
+        } else {
+            updateCovarianceDiagonalOnly(hsig, bestArz);
+        }
+        // Adapt step size sigma - Eq. (5)
+        sigma *= Math.exp(Math.min(1, (normps / chiN - 1) * cs / damps));
+        final double bestFitness = fitness[arindex[0]];
+        final double worstFitness = fitness[arindex[arindex.length - 1]];
+        if (bestValue > bestFitness) {
+            bestValue = bestFitness;
+            lastResult = optimum;
+            optimum = new PointValuePair(fitfun.repair(bestArx.getColumn(0)), isMinimize ? bestFitness : -bestFitness);
+            if (getConvergenceChecker() != null && lastResult != null) {
+                if (getConvergenceChecker().converged(iterations, optimum, lastResult)) {
+                    break generationLoop;
+                }
+            }
+        }
+        // handle termination criteria
+        // Break, if fitness is good enough
+        if (stopFitness != 0) {
+            // only if stopFitness is defined
+            if (bestFitness < (isMinimize ? stopFitness : -stopFitness)) {
+                break generationLoop;
+            }
+        }
+        final double[] sqrtDiagC = sqrt(diagC).getColumn(0);
+        final double[] pcCol = pc.getColumn(0);
+        for (int i = 0; i < dimension; i++) {
+            if (sigma * Math.max(Math.abs(pcCol[i]), sqrtDiagC[i]) > stopTolX) {
+                break;
+            }
+            if (i >= dimension - 1) {
+                break generationLoop;
+            }
+        }
+        for (int i = 0; i < dimension; i++) {
+            if (sigma * sqrtDiagC[i] > stopTolUpX) {
+                break generationLoop;
+            }
+        }
+        final double historyBest = min(fitnessHistory);
+        final double historyWorst = max(fitnessHistory);
+        if (iterations > 2 && Math.max(historyWorst, worstFitness) - Math.min(historyBest, bestFitness) < stopTolFun) {
+            break generationLoop;
+        }
+        if (iterations > fitnessHistory.length && historyWorst - historyBest < stopTolHistFun) {
+            break generationLoop;
+        }
+        // condition number of the covariance matrix exceeds 1e14
+        if (max(diagD) / min(diagD) > 1e7) {
+            break generationLoop;
+        }
+        // user defined termination
+        if (getConvergenceChecker() != null) {
+            final PointValuePair current = new PointValuePair(bestArx.getColumn(0), isMinimize ? bestFitness : -bestFitness);
+            if (lastResult != null && getConvergenceChecker().converged(iterations, current, lastResult)) {
+                break generationLoop;
+            }
+            lastResult = current;
+        }
+        // Adjust step size in case of equal function values (flat fitness)
+        if (bestValue == fitness[arindex[(int) (0.1 + lambda / 4.)]]) {
+            sigma = sigma * Math.exp(0.2 + cs / damps);
+        }
+        if (iterations > 2 && Math.max(historyWorst, bestFitness) - Math.min(historyBest, bestFitness) == 0) {
+            sigma = sigma * Math.exp(0.2 + cs / damps);
+        }
+        // store best in history
+        push(fitnessHistory, bestFitness);
+        fitfun.setValueRange(worstFitness - bestFitness);
+        if (generateStatistics) {
+            statisticsSigmaHistory.add(sigma);
+            statisticsFitnessHistory.add(bestFitness);
+            statisticsMeanHistory.add(xmean.transpose());
+            statisticsDHistory.add(diagD.transpose().scalarMultiply(1E5));
+        }
+    }
+    return optimum;
+}","public void test1717() throws Throwable {
+    double[] doubleArray0 = new double[7];
+    CMAESOptimizer.Sigma cMAESOptimizer_Sigma0 = new CMAESOptimizer.Sigma(doubleArray0);
+    ISAACRandom iSAACRandom0 = new ISAACRandom();
+    CMAESOptimizer cMAESOptimizer0 = new CMAESOptimizer(3913, 3913, false, 3913, 3913, iSAACRandom0, false, (ConvergenceChecker<PointValuePair>) null);
+    double[] doubleArray1 = new double[3];
+    InitialGuess initialGuess0 = new InitialGuess(doubleArray1);
+    OptimizationData[] optimizationDataArray0 = new OptimizationData[9];
+    optimizationDataArray0[3] = (OptimizationData) cMAESOptimizer_Sigma0;
+    optimizationDataArray0[0] = (OptimizationData) initialGuess0;
+    cMAESOptimizer0.optimize(optimizationDataArray0);
+    cMAESOptimizer0.doOptimize();
+}","/**
+ * {@inheritDoc}
+ */"

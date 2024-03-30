@@ -1,0 +1,419 @@
+focal_method,test_prefix,docstring
+"void addList(Node firstInList, boolean isArrayOrFunctionArgument, Context lhsContext) {
+    for (Node n = firstInList; n != null; n = n.getNext()) {
+        boolean isFirst = n == firstInList;
+        if (isFirst) {
+            addLeftExpr(n, isArrayOrFunctionArgument ? 1 : 0, lhsContext);
+        } else {
+            cc.listSeparator();
+            addExpr(n, isArrayOrFunctionArgument ? 1 : 0);
+        }
+    }
+}","public void test000() throws Throwable {
+    Node node0 = new Node(51);
+    CodeGenerator codeGenerator0 = new CodeGenerator((CodeConsumer) null);
+    CodeGenerator.Context codeGenerator_Context0 = CodeGenerator.Context.IN_FOR_INIT_CLAUSE;
+    // Undeclared exception!
+    try {
+        codeGenerator0.addList(node0, false, codeGenerator_Context0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.CodeGenerator"", e);
+    }
+}",""
+"void addArrayList(Node firstInList) {
+    boolean lastWasEmpty = false;
+    for (Node n = firstInList; n != null; n = n.getNext()) {
+        if (n != firstInList) {
+            cc.listSeparator();
+        }
+        addExpr(n, 1);
+        lastWasEmpty = n.getType() == Token.EMPTY;
+    }
+    if (lastWasEmpty) {
+        cc.listSeparator();
+    }
+}","public void test011() throws Throwable {
+    Node node0 = Node.newNumber((-1.0));
+    CodeGenerator codeGenerator0 = new CodeGenerator((CodeConsumer) null);
+    // Undeclared exception!
+    try {
+        codeGenerator0.addArrayList(node0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.CodeGenerator"", e);
+    }
+}","/**
+ * This function adds a comma-separated list as is specified by an ARRAYLIT
+ * node with the associated skipIndexes array.  This is a space optimization
+ * since we avoid creating a whole Node object for each empty array literal
+ * slot.
+ * @param firstInList The first in the node list (chained through the next
+ * property).
+ */"
+"/* If the user doesn't want to specify an output charset encoder, assume
+     they want Latin/ASCII characters only.
+   */
+static String regexpEscape(String s) {
+    return regexpEscape(s, null);
+}","public void test022() throws Throwable {
+    String string0 = CodeGenerator.regexpEscape(""6M4<!-->]%+"");
+    assertEquals(""/6M4<\\!--\\>]%+/"", string0);
+}",""
+"static String escapeToDoubleQuotedJsString(String s) {
+    return strEscape(s, '""', ""\\\"""", ""\'"", ""\\\\"", null);
+}","public void test033() throws Throwable {
+    String string0 = CodeGenerator.escapeToDoubleQuotedJsString(""onRange\u00120\n\u0007options\u0018\u0007 \u0001(\u000B2\u001F.google.protobuf.MessageOptions\u001A,\n\u000EExtensionRange\u0012\r\n\u0005start\u0018\u0001 \u0001(\u0005\u0012\u000B\n\u0003end\u0018\u0002 \u0001(\u0005\""\u0094\u0005\n\u0014FieldDescriptorProto\u0012\f\n\u0004name\u0018\u0001 \u0001(\t\u0012\u000E\n\u0006number\u0018\u0003 \u0001(\u0005\u0012:\n\u0005label\u0018\u0004 \u0001(\u000E2+.google.protobuf.FieldDescriptorProto.Label\u00128\n\u0004type\u0018\u0005 \u0001(\u000E2*.google.protobuf.FieldDescriptorProto.Type\u0012\u0011\n\ttype_name\u0018\u0006 \u0001(\t\u0012\u0010\n\bextendee\u0018\u0002 \u0001(\t\u0012\u0015\n\rdefault_value\u0018\u0007 \u0001(\t\u0012.\n\u0007options\u0018\b \u0001(\u000B2\u001D.google.protobuf.FieldOptions\""\u00B6\u0002\n\u0004Type\u0012\u000F\n\u000BTYP"");
+    assertEquals(""\""onRange\\u00120\\n\\u0007options\\u0018\\u0007 \\u0001(\\u000b2\\u001f.google.protobuf.MessageOptions\\u001a,\\n\\u000eExtensionRange\\u0012\\r\\n\\u0005start\\u0018\\u0001 \\u0001(\\u0005\\u0012\\u000b\\n\\u0003end\\u0018\\u0002 \\u0001(\\u0005\\\""\\u0094\\u0005\\n\\u0014FieldDescriptorProto\\u0012\\u000c\\n\\u0004name\\u0018\\u0001 \\u0001(\\t\\u0012\\u000e\\n\\u0006number\\u0018\\u0003 \\u0001(\\u0005\\u0012:\\n\\u0005label\\u0018\\u0004 \\u0001(\\u000e2+.google.protobuf.FieldDescriptorProto.Label\\u00128\\n\\u0004type\\u0018\\u0005 \\u0001(\\u000e2*.google.protobuf.FieldDescriptorProto.Type\\u0012\\u0011\\n\\ttype_name\\u0018\\u0006 \\u0001(\\t\\u0012\\u0010\\n\\u0008extendee\\u0018\\u0002 \\u0001(\\t\\u0012\\u0015\\n\\rdefault_value\\u0018\\u0007 \\u0001(\\t\\u0012.\\n\\u0007options\\u0018\\u0008 \\u0001(\\u000b2\\u001d.google.protobuf.FieldOptions\\\""\\u00b6\\u0002\\n\\u0004Type\\u0012\\u000f\\n\\u000bTYP\"""", string0);
+}","/**
+ * Escapes the given string to a double quoted ("") JavaScript/JSON string
+ */"
+"public void tagAsStrict() {
+    add(""'use strict';"");
+}","public void test044() throws Throwable {
+    CodeGenerator codeGenerator0 = new CodeGenerator((CodeConsumer) null);
+    // Undeclared exception!
+    try {
+        codeGenerator0.tagAsStrict();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.CodeGenerator"", e);
+    }
+}","/**
+ * Insert a ECMASCRIPT 5 strict annotation.
+ */"
+"void addCaseBody(Node caseBody) {
+    cc.beginCaseBody();
+    add(caseBody);
+    cc.endCaseBody();
+}","public void test055() throws Throwable {
+    CodeGenerator codeGenerator0 = new CodeGenerator((CodeConsumer) null);
+    // Undeclared exception!
+    try {
+        codeGenerator0.addCaseBody((Node) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.CodeGenerator"", e);
+    }
+}",""
+"void addAllSiblings(Node n) {
+    for (Node c = n; c != null; c = c.getNext()) {
+        add(c);
+    }
+}","public void test066() throws Throwable {
+    Node node0 = new Node((-3311));
+    CodeGenerator codeGenerator0 = new CodeGenerator((CodeConsumer) null);
+    // Undeclared exception!
+    try {
+        codeGenerator0.addAllSiblings(node0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.CodeGenerator"", e);
+    }
+}",""
+"void addList(Node firstInList, boolean isArrayOrFunctionArgument) {
+    addList(firstInList, isArrayOrFunctionArgument, Context.OTHER);
+}","public void test077() throws Throwable {
+    Node node0 = Node.newNumber(2.0);
+    CodeGenerator codeGenerator0 = new CodeGenerator((CodeConsumer) null);
+    // Undeclared exception!
+    try {
+        codeGenerator0.addList(node0, false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.CodeGenerator"", e);
+    }
+}",""
+"CodeGenerator(CodeConsumer consumer, Charset outputCharset) {
+    cc = consumer;
+    if (outputCharset == null || outputCharset == Charsets.US_ASCII) {
+        // If we want our default (pretending to be UTF-8, but escaping anything
+        // outside of straight ASCII), then don't use the encoder, but
+        // just special-case the code.  This keeps the normal path through
+        // the code identical to how it's been for years.
+        this.outputCharsetEncoder = null;
+    } else {
+        this.outputCharsetEncoder = outputCharset.newEncoder();
+    }
+}","public void test088() throws Throwable {
+    Charset charset0 = Charset.forName(""default"");
+    CodeGenerator codeGenerator0 = new CodeGenerator((CodeConsumer) null, charset0);
+}",""
+"CodeGenerator(CodeConsumer consumer, Charset outputCharset) {
+    cc = consumer;
+    if (outputCharset == null || outputCharset == Charsets.US_ASCII) {
+        // If we want our default (pretending to be UTF-8, but escaping anything
+        // outside of straight ASCII), then don't use the encoder, but
+        // just special-case the code.  This keeps the normal path through
+        // the code identical to how it's been for years.
+        this.outputCharsetEncoder = null;
+    } else {
+        this.outputCharsetEncoder = outputCharset.newEncoder();
+    }
+}","public void test099() throws Throwable {
+    Charset charset0 = Charset.defaultCharset();
+    CodeGenerator codeGenerator0 = new CodeGenerator((CodeConsumer) null, charset0);
+}",""
+"void addList(Node firstInList) {
+    addList(firstInList, true, Context.OTHER);
+}","public void test1010() throws Throwable {
+    Node node0 = new Node(85);
+    CodeGenerator codeGenerator0 = new CodeGenerator((CodeConsumer) null);
+    // Undeclared exception!
+    try {
+        codeGenerator0.addList(node0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.CodeGenerator"", e);
+    }
+}",""
+"void addLeftExpr(Node n, int minPrecedence, Context context) {
+    addExpr(n, minPrecedence, context);
+}","public void test1111() throws Throwable {
+    Node node0 = Node.newNumber((-1193.2049));
+    CodeGenerator codeGenerator0 = new CodeGenerator((CodeConsumer) null);
+    CodeGenerator.Context codeGenerator_Context0 = CodeGenerator.Context.IN_FOR_INIT_CLAUSE;
+    // Undeclared exception!
+    try {
+        codeGenerator0.addLeftExpr(node0, 9, codeGenerator_Context0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.CodeGenerator"", e);
+    }
+}","/**
+ * Adds a node at the left-hand side of an expression. Unlike
+ * {@link #addExpr(Node,int)}, this preserves information about the context.
+ *
+ * The left side of an expression is special because in the JavaScript
+ * grammar, certain tokens may be parsed differently when they are at
+ * the beginning of a statement. For example, ""{}"" is parsed as a block,
+ * but ""{'x': 'y'}"" is parsed as an object literal.
+ */"
+"void addList(Node firstInList) {
+    addList(firstInList, true, Context.OTHER);
+}","public void test1212() throws Throwable {
+    CodeGenerator codeGenerator0 = new CodeGenerator((CodeConsumer) null);
+    codeGenerator0.addList((Node) null);
+}",""
+"void addArrayList(Node firstInList) {
+    boolean lastWasEmpty = false;
+    for (Node n = firstInList; n != null; n = n.getNext()) {
+        if (n != firstInList) {
+            cc.listSeparator();
+        }
+        addExpr(n, 1);
+        lastWasEmpty = n.getType() == Token.EMPTY;
+    }
+    if (lastWasEmpty) {
+        cc.listSeparator();
+    }
+}","public void test1313() throws Throwable {
+    CodeGenerator codeGenerator0 = new CodeGenerator((CodeConsumer) null);
+    codeGenerator0.addArrayList((Node) null);
+}","/**
+ * This function adds a comma-separated list as is specified by an ARRAYLIT
+ * node with the associated skipIndexes array.  This is a space optimization
+ * since we avoid creating a whole Node object for each empty array literal
+ * slot.
+ * @param firstInList The first in the node list (chained through the next
+ * property).
+ */"
+"void addAllSiblings(Node n) {
+    for (Node c = n; c != null; c = c.getNext()) {
+        add(c);
+    }
+}","public void test1414() throws Throwable {
+    CodeGenerator codeGenerator0 = new CodeGenerator((CodeConsumer) null);
+    codeGenerator0.addAllSiblings((Node) null);
+}",""
+"static String jsString(String s, CharsetEncoder outputCharsetEncoder) {
+    int singleq = 0, doubleq = 0;
+    // could count the quotes and pick the optimal quote character
+    for (int i = 0; i < s.length(); i++) {
+        switch(s.charAt(i)) {
+            case '""':
+                doubleq++;
+                break;
+            case '\'':
+                singleq++;
+                break;
+        }
+    }
+    String doublequote, singlequote;
+    char quote;
+    if (singleq < doubleq) {
+        // more double quotes so escape the single quotes
+        quote = '\'';
+        doublequote = ""\"""";
+        singlequote = ""\\\'"";
+    } else {
+        // more single quotes so escape the doubles
+        quote = '\""';
+        doublequote = ""\\\"""";
+        singlequote = ""\'"";
+    }
+    return strEscape(s, quote, doublequote, singlequote, ""\\\\"", outputCharsetEncoder);
+}","public void test1515() throws Throwable {
+    Charset charset0 = Charset.forName(""default"");
+    CharsetEncoder charsetEncoder0 = charset0.newEncoder();
+    String string0 = CodeGenerator.jsString(""onRange\u00120\n\u0007optons\u0018\u0007 \u0001(\u000B2\u001F.google.protobuf.MessageOptions\u001A,\n\u000EExtensio_Range\u0012\r\n\u0005start\u0018\u0001 \u0001(\u0005\u0012\u000B\n>end\u0018\u0002 \u0001(y\""\u0094\u0005\n\u0014FieldDescmiptor~roto\u0012\f\n\u0004name\u0018\u0001\u0001(\t\u0012\u000E\n\u0006number\u0018 \u0001\u0005\u0012:\n\u0005label\u0018\u0004 \u0001(\u000E2+.go'gle.protobuf.FieldDescrSptorProto.Label\u00128\n\u0004type\u0018H \u0001(\u000E2*.google.protobufBFieldDMscriptorProto.Type\u0012\u0011\ttyZe_name\u0018\u0006 \u0001(\t\u0012\u0010\nHextendee\u0018\u0002 \u0001(\t\u0015\n\rdefault_value\u0018\u0007 \u0001(\t\u0012\n\u0007options\u0018\b 6\u000B2\u001D.google.protobuf.FieldBptions\""\u00B6\u0002\n\u0004TypE\u0012\u000F\n\u000BTYP"", charsetEncoder0);
+    assertEquals(""'onRange\u00120\\n\u0007optons\u0018\u0007 \u0001(\u000B2\u001F.google.protobuf.MessageOptions\u001A,\\n\u000EExtensio_Range\u0012\\r\\n\u0005start\u0018\u0001 \u0001(\u0005\u0012\u000B\\n>end\u0018\u0002 \u0001(y\""\\u0094\u0005\\n\u0014FieldDescmiptor~roto\u0012\f\\n\u0004name\u0018\u0001\u0001(\\t\u0012\u000E\\n\u0006number\u0018 \u0001\u0005\u0012:\\n\u0005label\u0018\u0004 \u0001(\u000E2+.go\\'gle.protobuf.FieldDescrSptorProto.Label\u00128\\n\u0004type\u0018H \u0001(\u000E2*.google.protobufBFieldDMscriptorProto.Type\u0012\u0011\\ttyZe_name\u0018\u0006 \u0001(\\t\u0012\u0010\\nHextendee\u0018\u0002 \u0001(\\t\u0015\\n\\rdefault_value\u0018\u0007 \u0001(\\t\u0012\\n\u0007options\u0018\b 6\u000B2\u001D.google.protobuf.FieldBptions\""\\u00b6\u0002\\n\u0004TypE\u0012\u000F\\n\u000BTYP'"", string0);
+}","/**
+ * Outputs a js string, using the optimal (single/double) quote character
+ */"
+"static String jsString(String s, CharsetEncoder outputCharsetEncoder) {
+    int singleq = 0, doubleq = 0;
+    // could count the quotes and pick the optimal quote character
+    for (int i = 0; i < s.length(); i++) {
+        switch(s.charAt(i)) {
+            case '""':
+                doubleq++;
+                break;
+            case '\'':
+                singleq++;
+                break;
+        }
+    }
+    String doublequote, singlequote;
+    char quote;
+    if (singleq < doubleq) {
+        // more double quotes so escape the single quotes
+        quote = '\'';
+        doublequote = ""\"""";
+        singlequote = ""\\\'"";
+    } else {
+        // more single quotes so escape the doubles
+        quote = '\""';
+        doublequote = ""\\\"""";
+        singlequote = ""\'"";
+    }
+    return strEscape(s, quote, doublequote, singlequote, ""\\\\"", outputCharsetEncoder);
+}","public void test1616() throws Throwable {
+    Charset charset0 = Charset.defaultCharset();
+    CharsetEncoder charsetEncoder0 = charset0.newEncoder();
+    String string0 = CodeGenerator.jsString(""iam GU*+0'Zh\""F=TLR"", charsetEncoder0);
+    assertEquals(""\""iam GU*+0'Zh\\\""F=TLR\"""", string0);
+}","/**
+ * Outputs a js string, using the optimal (single/double) quote character
+ */"
+"static String escapeToDoubleQuotedJsString(String s) {
+    return strEscape(s, '""', ""\\\"""", ""\'"", ""\\\\"", null);
+}","public void test1717() throws Throwable {
+    String string0 = CodeGenerator.escapeToDoubleQuotedJsString(""~>sM`;26gClq@:"");
+    assertEquals(""\""~>sM`;26gClq@:\"""", string0);
+}","/**
+ * Escapes the given string to a double quoted ("") JavaScript/JSON string
+ */"
+"static String escapeToDoubleQuotedJsString(String s) {
+    return strEscape(s, '""', ""\\\"""", ""\'"", ""\\\\"", null);
+}","public void test1818() throws Throwable {
+    String string0 = CodeGenerator.escapeToDoubleQuotedJsString(""LJjc->}.+(s'\""\""["");
+    assertEquals(""\""LJjc->}.+(s'\\\""\\\""[\"""", string0);
+}","/**
+ * Escapes the given string to a double quoted ("") JavaScript/JSON string
+ */"
+"static String escapeToDoubleQuotedJsString(String s) {
+    return strEscape(s, '""', ""\\\"""", ""\'"", ""\\\\"", null);
+}","public void test1919() throws Throwable {
+    String string0 = CodeGenerator.escapeToDoubleQuotedJsString(""K^^T&TY]]>eP*S"");
+    assertEquals(""\""K^^T&TY]]\\>eP*S\"""", string0);
+}","/**
+ * Escapes the given string to a double quoted ("") JavaScript/JSON string
+ */"
+"/* If the user doesn't want to specify an output charset encoder, assume
+     they want Latin/ASCII characters only.
+   */
+static String regexpEscape(String s) {
+    return regexpEscape(s, null);
+}","public void test2020() throws Throwable {
+    String string0 = CodeGenerator.regexpEscape(""@$qpaU:3&u]>,-yOuKv"");
+    assertEquals(""/@$qpaU:3&u]>,-yOuKv/"", string0);
+}",""
+"/* If the user doesn't want to specify an output charset encoder, assume
+     they want Latin/ASCII characters only.
+   */
+static String regexpEscape(String s) {
+    return regexpEscape(s, null);
+}","public void test2121() throws Throwable {
+    String string0 = CodeGenerator.regexpEscape(""</script-t^1:{`^lt"");
+    assertEquals(""/<\\/script-t^1:{`^lt/"", string0);
+}",""
+"/* If the user doesn't want to specify an output charset encoder, assume
+     they want Latin/ASCII characters only.
+   */
+static String regexpEscape(String s) {
+    return regexpEscape(s, null);
+}","public void test2222() throws Throwable {
+    String string0 = CodeGenerator.regexpEscape(""OPN'p(xBa,fMyp\""/7`<"");
+    assertEquals(""/OPN'p(xBa,fMyp\""/7`</"", string0);
+}",""
+"static String identifierEscape(String s) {
+    // First check if escaping is needed at all -- in most cases it isn't.
+    if (NodeUtil.isLatin(s)) {
+        return s;
+    }
+    // Now going through the string to escape non-latin characters if needed.
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < s.length(); i++) {
+        char c = s.charAt(i);
+        // Identifiers should always go to Latin1/ ASCII characters because
+        // different browser's rules for valid identifier characters are
+        // crazy.
+        if (c > 0x1F && c < 0x7F) {
+            sb.append(c);
+        } else {
+            appendHexJavaScriptRepresentation(sb, c);
+        }
+    }
+    return sb.toString();
+}","public void test2323() throws Throwable {
+    String string0 = CodeGenerator.identifierEscape(""onRange\u00120\n\u0007options\u0018\u0007 \u0001(\u000B2\u001F.google.protobuf.MessageOptions\u001A,\n\u000EExtensionRange\u0012\r\n\u0005start\u0018\u0001 \u0001(\u0005\u0012\u000B\n\u0003end\u0018\u0002 \u0001(\u0005\""\u0094\u0005\n\u0014FieldDescriptorProto\u0012\f\n\u0004name\u0018\u0001 \u0001(\t\u0012\u000E\n\u0006number\u0018\u0003 \u0001(\u0005\u0012:\n\u0005label\u0018\u0004 \u0001(\u000E2+.google.protobuf.FieldDescriptorProto.Label\u00128\n\u0004type\u0018\u0005 \u0001(\u000E2*.google.protobuf.FieldDescriptorProto.Type\u0012\u0011\n\ttype_name\u0018\u0006 \u0001(\t\u0012\u0010\n\bextendee\u0018\u0002 \u0001(\t\u0012\u0015\n\rdefault_value\u0018\u0007 \u0001(\t\u0012.\n\u0007options\u0018\b \u0001(\u000B2\u001D.google.protobuf.FieldOptions\""\u00B6\u0002\n\u0004Type\u0012\u000F\n\u000BTYP"");
+    assertEquals(""onRange\\u00120\\u000a\\u0007options\\u0018\\u0007 \\u0001(\\u000b2\\u001f.google.protobuf.MessageOptions\\u001a,\\u000a\\u000eExtensionRange\\u0012\\u000d\\u000a\\u0005start\\u0018\\u0001 \\u0001(\\u0005\\u0012\\u000b\\u000a\\u0003end\\u0018\\u0002 \\u0001(\\u0005\""\\u0094\\u0005\\u000a\\u0014FieldDescriptorProto\\u0012\\u000c\\u000a\\u0004name\\u0018\\u0001 \\u0001(\\u0009\\u0012\\u000e\\u000a\\u0006number\\u0018\\u0003 \\u0001(\\u0005\\u0012:\\u000a\\u0005label\\u0018\\u0004 \\u0001(\\u000e2+.google.protobuf.FieldDescriptorProto.Label\\u00128\\u000a\\u0004type\\u0018\\u0005 \\u0001(\\u000e2*.google.protobuf.FieldDescriptorProto.Type\\u0012\\u0011\\u000a\\u0009type_name\\u0018\\u0006 \\u0001(\\u0009\\u0012\\u0010\\u000a\\u0008extendee\\u0018\\u0002 \\u0001(\\u0009\\u0012\\u0015\\u000a\\u000ddefault_value\\u0018\\u0007 \\u0001(\\u0009\\u0012.\\u000a\\u0007options\\u0018\\u0008 \\u0001(\\u000b2\\u001d.google.protobuf.FieldOptions\""\\u00b6\\u0002\\u000a\\u0004Type\\u0012\\u000f\\u000a\\u000bTYP"", string0);
+}",""
+"static String identifierEscape(String s) {
+    // First check if escaping is needed at all -- in most cases it isn't.
+    if (NodeUtil.isLatin(s)) {
+        return s;
+    }
+    // Now going through the string to escape non-latin characters if needed.
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < s.length(); i++) {
+        char c = s.charAt(i);
+        // Identifiers should always go to Latin1/ ASCII characters because
+        // different browser's rules for valid identifier characters are
+        // crazy.
+        if (c > 0x1F && c < 0x7F) {
+            sb.append(c);
+        } else {
+            appendHexJavaScriptRepresentation(sb, c);
+        }
+    }
+    return sb.toString();
+}","public void test2424() throws Throwable {
+    String string0 = CodeGenerator.identifierEscape(""some"");
+    assertEquals(""some"", string0);
+}",""

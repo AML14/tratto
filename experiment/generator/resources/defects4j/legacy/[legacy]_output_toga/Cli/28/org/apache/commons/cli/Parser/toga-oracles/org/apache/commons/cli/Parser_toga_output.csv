@@ -1,0 +1,223 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    Options options0 = new Options();
+    GnuParser gnuParser0 = new GnuParser();
+    CommandLine commandLine0 = gnuParser0.parse(options0, (String[]) null);
+    assertNotNull(commandLine0);
+}",1,
+project,0,test011,"public void test011() throws Throwable {
+    GnuParser gnuParser0 = new GnuParser();
+    Options options0 = new Options();
+    Properties properties0 = new Properties();
+    CommandLine commandLine0 = gnuParser0.parse(options0, (String[]) null, properties0);
+    assertNotNull(commandLine0);
+}",0,assertNotNull(commandLine0)
+project,0,test022,"public void test022() throws Throwable {
+    Option option0 = new Option(""4"", ""4"", true, ""4"");
+    GnuParser gnuParser0 = new GnuParser();
+    Options options0 = new Options();
+    OptionGroup optionGroup0 = new OptionGroup();
+    OptionGroup optionGroup1 = optionGroup0.addOption(option0);
+    options0.addOptionGroup(optionGroup1);
+    gnuParser0.parse(options0, (String[]) null, true);
+    ListIterator<OptionGroup> listIterator0 = (ListIterator<OptionGroup>) mock(ListIterator.class, new ViolatedAssumptionAnswer());
+    doReturn(false).when(listIterator0).hasNext();
+    try {
+        gnuParser0.processOption(""4"", listIterator0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Missing argument for option: 4
+        //
+        verifyException(""org.apache.commons.cli.Parser"", e);
+    }
+}",1,
+project,0,test033,"public void test033() throws Throwable {
+    Options options0 = new Options();
+    Properties properties0 = new Properties();
+    GnuParser gnuParser0 = new GnuParser();
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = ""-"";
+    stringArray0[1] = ""-"";
+    CommandLine commandLine0 = gnuParser0.parse(options0, stringArray0, properties0, true);
+    assertNotNull(commandLine0);
+}",0,
+project,0,test044,"public void test044() throws Throwable {
+    Options options0 = new Options();
+    GnuParser gnuParser0 = new GnuParser();
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = ""--"";
+    CommandLine commandLine0 = gnuParser0.parse(options0, stringArray0, false);
+    assertNotNull(commandLine0);
+}",0,
+project,0,test055,"public void test055() throws Throwable {
+    Options options0 = new Options();
+    Properties properties0 = new Properties();
+    GnuParser gnuParser0 = new GnuParser();
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = ""-"";
+    stringArray0[1] = ""-"";
+    CommandLine commandLine0 = gnuParser0.parse(options0, stringArray0, properties0, false);
+    assertNotNull(commandLine0);
+}",0,
+project,0,test066,"public void test066() throws Throwable {
+    GnuParser gnuParser0 = new GnuParser();
+    Options options0 = new Options();
+    Properties properties0 = new Properties();
+    String[] stringArray0 = new String[7];
+    stringArray0[0] = ""1"";
+    stringArray0[1] = ""*"";
+    stringArray0[2] = """";
+    stringArray0[3] = ""--1"";
+    stringArray0[4] = """";
+    stringArray0[5] = """";
+    stringArray0[6] = """";
+    try {
+        gnuParser0.parse(options0, stringArray0, properties0, false);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Unrecognized option: --1
+        //
+        verifyException(""org.apache.commons.cli.Parser"", e);
+    }
+}",0,
+project,0,test077,"public void test077() throws Throwable {
+    GnuParser gnuParser0 = new GnuParser();
+    Options options0 = new Options();
+    Properties properties0 = new Properties();
+    String[] stringArray0 = new String[1];
+    stringArray0[0] = ""--1"";
+    CommandLine commandLine0 = gnuParser0.parse(options0, stringArray0, properties0, true);
+    assertNotNull(commandLine0);
+}",0,
+project,0,test088,"public void test088() throws Throwable {
+    GnuParser gnuParser0 = new GnuParser();
+    Options options0 = new Options();
+    options0.addOption(""1"", true, ""1"");
+    Properties properties0 = new Properties();
+    String[] stringArray0 = new String[1];
+    stringArray0[0] = ""--1"";
+    try {
+        gnuParser0.parse(options0, stringArray0, properties0, true);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Missing argument for option: 1
+        //
+        verifyException(""org.apache.commons.cli.Parser"", e);
+    }
+}",0,
+project,0,test099,"public void test099() throws Throwable {
+    Options options0 = new Options();
+    Properties properties0 = new Properties();
+    properties0.put(""0:Ki)V)*E`Gj;P %iG"", options0);
+    GnuParser gnuParser0 = new GnuParser();
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = ""0:Ki)V)*E`Gj;P %iG"";
+    stringArray0[1] = ""--"";
+    // Undeclared exception!
+    try {
+        gnuParser0.parse(options0, stringArray0, properties0, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.cli.Parser"", e);
+    }
+}",0,
+project,0,test1010,"public void test1010() throws Throwable {
+    Option option0 = new Option(""4"", true, ""4"");
+    GnuParser gnuParser0 = new GnuParser();
+    Options options0 = new Options();
+    option0.setRequired(true);
+    options0.addOption(option0);
+    try {
+        gnuParser0.parse(options0, (String[]) null, true);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Missing required option: 4
+        //
+        verifyException(""org.apache.commons.cli.Parser"", e);
+    }
+}",0,
+project,0,test1111,"public void test1111() throws Throwable {
+    GnuParser gnuParser0 = new GnuParser();
+    Options options0 = new Options();
+    options0.addOption(""1"", true, ""1"");
+    Properties properties0 = new Properties();
+    String[] stringArray0 = new String[7];
+    stringArray0[0] = ""1"";
+    stringArray0[1] = ""*"";
+    stringArray0[2] = """";
+    stringArray0[3] = ""--1"";
+    stringArray0[4] = """";
+    stringArray0[5] = """";
+    stringArray0[6] = """";
+    CommandLine commandLine0 = gnuParser0.parse(options0, stringArray0, properties0, false);
+    assertNotNull(commandLine0);
+}",0,
+project,0,test1212,"public void test1212() throws Throwable {
+    Option option0 = new Option("""", """", true, """");
+    GnuParser gnuParser0 = new GnuParser();
+    Options options0 = new Options();
+    Options options1 = options0.addOption(option0);
+    options0.addOption(""1"", true, ""1"");
+    Properties properties0 = new Properties();
+    String[] stringArray0 = new String[7];
+    stringArray0[0] = ""1"";
+    stringArray0[1] = ""*"";
+    stringArray0[2] = """";
+    stringArray0[3] = ""--1"";
+    stringArray0[4] = """";
+    stringArray0[5] = """";
+    stringArray0[6] = """";
+    CommandLine commandLine0 = gnuParser0.parse(options1, stringArray0, properties0, false);
+    assertNotNull(commandLine0);
+}",0,
+project,0,test1313,"public void test1313() throws Throwable {
+    GnuParser gnuParser0 = new GnuParser();
+    Options options0 = new Options();
+    options0.addOption(""1"", true, ""1"");
+    Properties properties0 = new Properties();
+    String[] stringArray0 = new String[5];
+    stringArray0[0] = ""*"";
+    stringArray0[1] = ""1"";
+    stringArray0[2] = ""--1"";
+    stringArray0[3] = ""--1"";
+    stringArray0[4] = ""--1"";
+    try {
+        gnuParser0.parse(options0, stringArray0, properties0, false);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Missing argument for option: 1
+        //
+        verifyException(""org.apache.commons.cli.Parser"", e);
+    }
+}",0,
+project,0,test1615,"public void test1615() throws Throwable {
+    Option option0 = new Option(""4"", ""4"", true, ""4"");
+    GnuParser gnuParser0 = new GnuParser();
+    Options options0 = new Options();
+    OptionGroup optionGroup0 = new OptionGroup();
+    OptionGroup optionGroup1 = optionGroup0.addOption(option0);
+    options0.addOptionGroup(optionGroup1);
+    optionGroup1.setRequired(true);
+    gnuParser0.parse(options0, (String[]) null, true);
+    ListIterator<OptionGroup> listIterator0 = (ListIterator<OptionGroup>) mock(ListIterator.class, new ViolatedAssumptionAnswer());
+    doReturn(true).when(listIterator0).hasNext();
+    doReturn(optionGroup1).when(listIterator0).next();
+    // Undeclared exception!
+    try {
+        gnuParser0.processOption(""4"", listIterator0);
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // org.apache.commons.cli.OptionGroup cannot be cast to java.lang.String
+        //
+        verifyException(""org.apache.commons.cli.Parser"", e);
+    }
+}",1,

@@ -1,0 +1,196 @@
+focal_method,test_prefix,docstring
+"@Override
+public PointValuePair optimize(OptimizationData... optData) throws TooManyIterationsException {
+    // Set up base class and perform computation.
+    return super.optimize(optData);
+}","public void test00() throws Throwable {
+    SimplexSolver simplexSolver0 = new SimplexSolver(4.903687986212687E-49, 22, 22);
+    OptimizationData[] optimizationDataArray0 = new OptimizationData[8];
+    double[] doubleArray0 = new double[0];
+    InitialGuess initialGuess0 = new InitialGuess(doubleArray0);
+    optimizationDataArray0[3] = (OptimizationData) initialGuess0;
+    SimpleBounds simpleBounds0 = SimpleBounds.unbounded(3965);
+    optimizationDataArray0[7] = (OptimizationData) simpleBounds0;
+    // Undeclared exception!
+    try {
+        simplexSolver0.optimize(optimizationDataArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // 3,965 != 0
+        //
+        verifyException(""org.apache.commons.math3.optim.BaseMultivariateOptimizer"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ *
+ * @param optData Optimization data. In addition to those documented in
+ * {@link MultivariateOptimizer#parseOptimizationData(OptimizationData[])
+ * MultivariateOptimizer}, this method will register the following data:
+ * <ul>
+ *  <li>{@link LinearObjectiveFunction}</li>
+ *  <li>{@link LinearConstraintSet}</li>
+ *  <li>{@link NonNegativeConstraint}</li>
+ * </ul>
+ * @return {@inheritDoc}
+ * @throws TooManyIterationsException if the maximal number of
+ * iterations is exceeded.
+ */"
+"@Override
+public PointValuePair optimize(OptimizationData... optData) throws TooManyIterationsException {
+    // Set up base class and perform computation.
+    return super.optimize(optData);
+}","public void test11() throws Throwable {
+    SimplexSolver simplexSolver0 = new SimplexSolver(1223.833820786675, (-633066204));
+    OptimizationData[] optimizationDataArray0 = new OptimizationData[4];
+    // Undeclared exception!
+    try {
+        simplexSolver0.optimize(optimizationDataArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.Collections$UnmodifiableCollection"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ *
+ * @param optData Optimization data. In addition to those documented in
+ * {@link MultivariateOptimizer#parseOptimizationData(OptimizationData[])
+ * MultivariateOptimizer}, this method will register the following data:
+ * <ul>
+ *  <li>{@link LinearObjectiveFunction}</li>
+ *  <li>{@link LinearConstraintSet}</li>
+ *  <li>{@link NonNegativeConstraint}</li>
+ * </ul>
+ * @return {@inheritDoc}
+ * @throws TooManyIterationsException if the maximal number of
+ * iterations is exceeded.
+ */"
+"public ConvergenceChecker<PAIR> getConvergenceChecker() {
+    return checker;
+}","public void test22() throws Throwable {
+    SimplexSolver simplexSolver0 = new SimplexSolver(18.43408335013158);
+    ConvergenceChecker<PointValuePair> convergenceChecker0 = simplexSolver0.getConvergenceChecker();
+    assertNull(convergenceChecker0);
+}","/**
+ * Gets the convergence checker.
+ *
+ * @return the object used to check for convergence.
+ */"
+"public UnivariatePointValuePair optimize(OptimizationData... optData) throws TooManyEvaluationsException {
+    // Perform computation.
+    return super.optimize(optData);
+}","public void test33() throws Throwable {
+    BrentOptimizer brentOptimizer0 = new BrentOptimizer(2330.5611073367345, 2330.5611073367345);
+    OptimizationData[] optimizationDataArray0 = new OptimizationData[23];
+    MaxIter maxIter0 = MaxIter.unlimited();
+    optimizationDataArray0[16] = (OptimizationData) maxIter0;
+    try {
+        brentOptimizer0.optimize(optimizationDataArray0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // illegal state: maximal count (0) exceeded: evaluations
+        //
+        verifyException(""org.apache.commons.math3.optim.BaseOptimizer$MaxEvalCallback"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ *
+ * @param optData Optimization data. In addition to those documented in
+ * {@link BaseOptimizer#parseOptimizationData(OptimizationData[])
+ * BaseOptimizer}, this method will register the following data:
+ * <ul>
+ *  <li>{@link GoalType}</li>
+ *  <li>{@link SearchInterval}</li>
+ *  <li>{@link UnivariateObjectiveFunction}</li>
+ * </ul>
+ * @return {@inheritDoc}
+ * @throws TooManyEvaluationsException if the maximal number of
+ * evaluations is exceeded.
+ */"
+"public UnivariatePointValuePair optimize(OptimizationData... optData) throws TooManyEvaluationsException {
+    // Perform computation.
+    return super.optimize(optData);
+}","public void test44() throws Throwable {
+    BrentOptimizer brentOptimizer0 = new BrentOptimizer(2330.5611073367345, 2330.5611073367345);
+    OptimizationData[] optimizationDataArray0 = new OptimizationData[23];
+    MaxEval maxEval0 = MaxEval.unlimited();
+    optimizationDataArray0[7] = (OptimizationData) maxEval0;
+    // Undeclared exception!
+    try {
+        brentOptimizer0.optimize(optimizationDataArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math3.optim.univariate.UnivariateOptimizer"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ *
+ * @param optData Optimization data. In addition to those documented in
+ * {@link BaseOptimizer#parseOptimizationData(OptimizationData[])
+ * BaseOptimizer}, this method will register the following data:
+ * <ul>
+ *  <li>{@link GoalType}</li>
+ *  <li>{@link SearchInterval}</li>
+ *  <li>{@link UnivariateObjectiveFunction}</li>
+ * </ul>
+ * @return {@inheritDoc}
+ * @throws TooManyEvaluationsException if the maximal number of
+ * evaluations is exceeded.
+ */"
+"public int getMaxEvaluations() {
+    return evaluations.getMaximalCount();
+}","public void test55() throws Throwable {
+    BrentOptimizer brentOptimizer0 = new BrentOptimizer(2776.7344283859998, 2776.7344283859998);
+    int int0 = brentOptimizer0.getMaxEvaluations();
+    assertEquals(0, int0);
+}","/**
+ * Gets the maximal number of function evaluations.
+ *
+ * @return the maximal number of function evaluations.
+ */"
+"public int getMaxIterations() {
+    return iterations.getMaximalCount();
+}","public void test66() throws Throwable {
+    BrentOptimizer brentOptimizer0 = new BrentOptimizer(2776.7344283859998, 2776.7344283859998);
+    int int0 = brentOptimizer0.getMaxIterations();
+    assertEquals(0, int0);
+}","/**
+ * Gets the maximal number of iterations.
+ *
+ * @return the maximal number of iterations.
+ */"
+"public int getEvaluations() {
+    return evaluations.getCount();
+}","public void test77() throws Throwable {
+    BrentOptimizer brentOptimizer0 = new BrentOptimizer(2776.7344283859998, 2776.7344283859998);
+    int int0 = brentOptimizer0.getEvaluations();
+    assertEquals(0, int0);
+}","/**
+ * Gets the number of evaluations of the objective function.
+ * The number of evaluations corresponds to the last call to the
+ * {@code optimize} method. It is 0 if the method has not been
+ * called yet.
+ *
+ * @return the number of evaluations of the objective function.
+ */"
+"public int getIterations() {
+    return iterations.getCount();
+}","public void test88() throws Throwable {
+    BrentOptimizer brentOptimizer0 = new BrentOptimizer(2776.7344283859998, 2776.7344283859998);
+    int int0 = brentOptimizer0.getIterations();
+    assertEquals(0, int0);
+}","/**
+ * Gets the number of iterations performed by the algorithm.
+ * The number iterations corresponds to the last call to the
+ * {@code optimize} method. It is 0 if the method has not been
+ * called yet.
+ *
+ * @return the number of evaluations of the objective function.
+ */"

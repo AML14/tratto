@@ -1,0 +1,1261 @@
+focal_method,test_prefix,docstring
+"public boolean isData() {
+    return !canContainInline && !isEmpty();
+}","public void test000() throws Throwable {
+    Tag tag0 = Tag.valueOf(""source"");
+    boolean boolean0 = tag0.isData();
+    assertFalse(boolean0);
+}","/**
+ * Gets if this tag is a data only tag.
+ *
+ * @return if this tag is a data only tag
+ */"
+"public boolean preserveWhitespace() {
+    return preserveWhitespace;
+}","public void test011() throws Throwable {
+    Tag tag0 = Tag.valueOf(""source"");
+    boolean boolean0 = tag0.preserveWhitespace();
+    assertFalse(boolean0);
+}","/**
+ * Get if this tag should preserve whitespace within child text nodes.
+ *
+ * @return if preserve whitespace
+ */"
+"public boolean formatAsBlock() {
+    return formatAsBlock;
+}","public void test022() throws Throwable {
+    Tag tag0 = Tag.valueOf(""script"");
+    boolean boolean0 = tag0.formatAsBlock();
+    assertFalse(boolean0);
+}","/**
+ * Gets if this tag should be formatted as a block (or as inline)
+ *
+ * @return if should be formatted as block or inline
+ */"
+"public static Tag valueOf(String tagName) {
+    return valueOf(tagName, ParseSettings.preserveCase);
+}","public void test033() throws Throwable {
+    Tag tag0 = Tag.valueOf(""FR,"");
+    assertNotNull(tag0);
+}","/**
+ * Get a Tag by name. If not previously defined (unknown), returns a new generic tag, that can do anything.
+ * <p>
+ * Pre-defined tags (P, DIV etc) will be ==, but unknown tags are not registered and will only .equals().
+ * </p>
+ *
+ * @param tagName Name of tag, e.g. ""p"". <b>Case sensitive</b>.
+ * @return The tag, either defined or new generic.
+ */"
+"public boolean preserveWhitespace() {
+    return preserveWhitespace;
+}","public void test034() throws Throwable {
+    Tag tag0 = Tag.valueOf(""FR,"");
+    tag0.getName();
+    assertFalse(tag0.preserveWhitespace());
+}","/**
+ * Get if this tag should preserve whitespace within child text nodes.
+ *
+ * @return if preserve whitespace
+ */"
+"public boolean isSelfClosing() {
+    return empty || selfClosing;
+}","public void test035() throws Throwable {
+    Tag tag0 = Tag.valueOf(""FR,"");
+    tag0.getName();
+    assertFalse(tag0.isSelfClosing());
+}","/**
+ * Get if this tag is self closing.
+ *
+ * @return if this tag should be output as self closing.
+ */"
+"public boolean isFormSubmittable() {
+    return formSubmit;
+}","public void test036() throws Throwable {
+    Tag tag0 = Tag.valueOf(""FR,"");
+    tag0.getName();
+    assertFalse(tag0.isFormSubmittable());
+}","/**
+ * Get if this tag represents an element that should be submitted with a form. E.g. input, option
+ * @return if submittable with a form
+ */"
+"public boolean isBlock() {
+    return isBlock;
+}","public void test037() throws Throwable {
+    Tag tag0 = Tag.valueOf(""FR,"");
+    tag0.getName();
+    assertFalse(tag0.isBlock());
+}","/**
+ * Gets if this is a block tag.
+ *
+ * @return if block tag
+ */"
+"public boolean formatAsBlock() {
+    return formatAsBlock;
+}","public void test038() throws Throwable {
+    Tag tag0 = Tag.valueOf(""FR,"");
+    tag0.getName();
+    assertTrue(tag0.formatAsBlock());
+}","/**
+ * Gets if this tag should be formatted as a block (or as inline)
+ *
+ * @return if should be formatted as block or inline
+ */"
+"public boolean isData() {
+    return !canContainInline && !isEmpty();
+}","public void test039() throws Throwable {
+    Tag tag0 = Tag.valueOf(""FR,"");
+    tag0.getName();
+    assertFalse(tag0.isData());
+}","/**
+ * Gets if this tag is a data only tag.
+ *
+ * @return if this tag is a data only tag
+ */"
+"public boolean isFormListed() {
+    return formList;
+}","public void test0310() throws Throwable {
+    Tag tag0 = Tag.valueOf(""FR,"");
+    tag0.getName();
+    assertFalse(tag0.isFormListed());
+}","/**
+ * Get if this tag represents a control associated with a form. E.g. input, textarea, output
+ * @return if associated with a form
+ */"
+"public boolean preserveWhitespace() {
+    return preserveWhitespace;
+}","public void test0411() throws Throwable {
+    Tag tag0 = Tag.valueOf(""FR,"");
+    tag0.toString();
+    assertFalse(tag0.preserveWhitespace());
+}","/**
+ * Get if this tag should preserve whitespace within child text nodes.
+ *
+ * @return if preserve whitespace
+ */"
+"public boolean isData() {
+    return !canContainInline && !isEmpty();
+}","public void test0412() throws Throwable {
+    Tag tag0 = Tag.valueOf(""FR,"");
+    tag0.toString();
+    assertFalse(tag0.isData());
+}","/**
+ * Gets if this tag is a data only tag.
+ *
+ * @return if this tag is a data only tag
+ */"
+"public boolean isFormSubmittable() {
+    return formSubmit;
+}","public void test0413() throws Throwable {
+    Tag tag0 = Tag.valueOf(""FR,"");
+    tag0.toString();
+    assertFalse(tag0.isFormSubmittable());
+}","/**
+ * Get if this tag represents an element that should be submitted with a form. E.g. input, option
+ * @return if submittable with a form
+ */"
+"public boolean isFormListed() {
+    return formList;
+}","public void test0414() throws Throwable {
+    Tag tag0 = Tag.valueOf(""FR,"");
+    tag0.toString();
+    assertFalse(tag0.isFormListed());
+}","/**
+ * Get if this tag represents a control associated with a form. E.g. input, textarea, output
+ * @return if associated with a form
+ */"
+"public boolean isSelfClosing() {
+    return empty || selfClosing;
+}","public void test0415() throws Throwable {
+    Tag tag0 = Tag.valueOf(""FR,"");
+    tag0.toString();
+    assertFalse(tag0.isSelfClosing());
+}","/**
+ * Get if this tag is self closing.
+ *
+ * @return if this tag should be output as self closing.
+ */"
+"public boolean formatAsBlock() {
+    return formatAsBlock;
+}","public void test0416() throws Throwable {
+    Tag tag0 = Tag.valueOf(""FR,"");
+    tag0.toString();
+    assertTrue(tag0.formatAsBlock());
+}","/**
+ * Gets if this tag should be formatted as a block (or as inline)
+ *
+ * @return if should be formatted as block or inline
+ */"
+"public boolean isBlock() {
+    return isBlock;
+}","public void test0417() throws Throwable {
+    Tag tag0 = Tag.valueOf(""FR,"");
+    tag0.toString();
+    assertFalse(tag0.isBlock());
+}","/**
+ * Gets if this is a block tag.
+ *
+ * @return if block tag
+ */"
+"public boolean isFormListed() {
+    return formList;
+}","public void test0518() throws Throwable {
+    Tag tag0 = Tag.valueOf(""source"");
+    boolean boolean0 = tag0.isFormListed();
+    assertFalse(boolean0);
+}","/**
+ * Get if this tag represents a control associated with a form. E.g. input, textarea, output
+ * @return if associated with a form
+ */"
+"public boolean isBlock() {
+    return isBlock;
+}","public void test0619() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    boolean boolean0 = tag0.isBlock();
+    assertFalse(boolean0);
+}","/**
+ * Gets if this is a block tag.
+ *
+ * @return if block tag
+ */"
+"public boolean isSelfClosing() {
+    return empty || selfClosing;
+}","public void test0620() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    boolean boolean0 = tag0.isBlock();
+    assertFalse(tag0.isSelfClosing());
+}","/**
+ * Get if this tag is self closing.
+ *
+ * @return if this tag should be output as self closing.
+ */"
+"public boolean preserveWhitespace() {
+    return preserveWhitespace;
+}","public void test0621() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    boolean boolean0 = tag0.isBlock();
+    assertFalse(tag0.preserveWhitespace());
+}","/**
+ * Get if this tag should preserve whitespace within child text nodes.
+ *
+ * @return if preserve whitespace
+ */"
+"public boolean isFormSubmittable() {
+    return formSubmit;
+}","public void test0622() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    boolean boolean0 = tag0.isBlock();
+    assertFalse(tag0.isFormSubmittable());
+}","/**
+ * Get if this tag represents an element that should be submitted with a form. E.g. input, option
+ * @return if submittable with a form
+ */"
+"public boolean formatAsBlock() {
+    return formatAsBlock;
+}","public void test0623() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    boolean boolean0 = tag0.isBlock();
+    assertTrue(tag0.formatAsBlock());
+}","/**
+ * Gets if this tag should be formatted as a block (or as inline)
+ *
+ * @return if should be formatted as block or inline
+ */"
+"public boolean isFormListed() {
+    return formList;
+}","public void test0624() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    boolean boolean0 = tag0.isBlock();
+    assertFalse(tag0.isFormListed());
+}","/**
+ * Get if this tag represents a control associated with a form. E.g. input, textarea, output
+ * @return if associated with a form
+ */"
+"public boolean isData() {
+    return !canContainInline && !isEmpty();
+}","public void test0625() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    boolean boolean0 = tag0.isBlock();
+    assertFalse(tag0.isData());
+}","/**
+ * Gets if this tag is a data only tag.
+ *
+ * @return if this tag is a data only tag
+ */"
+"public boolean canContainBlock() {
+    return isBlock;
+}","public void test0726() throws Throwable {
+    Tag tag0 = Tag.valueOf(""source"");
+    boolean boolean0 = tag0.canContainBlock();
+    assertFalse(boolean0);
+}","/**
+ * Gets if this tag can contain block tags.
+ *
+ * @return if tag can contain block tags
+ * @deprecated No longer used, and no different result than {{@link #isBlock()}}
+ */"
+"public boolean isFormSubmittable() {
+    return formSubmit;
+}","public void test0827() throws Throwable {
+    Tag tag0 = Tag.valueOf(""source"");
+    boolean boolean0 = tag0.isFormSubmittable();
+    assertFalse(boolean0);
+}","/**
+ * Get if this tag represents an element that should be submitted with a form. E.g. input, option
+ * @return if submittable with a form
+ */"
+"public boolean formatAsBlock() {
+    return formatAsBlock;
+}","public void test0928() throws Throwable {
+    ParseSettings parseSettings0 = ParseSettings.htmlDefault;
+    Tag tag0 = Tag.valueOf(""I"", parseSettings0);
+    assertFalse(tag0.formatAsBlock());
+}","/**
+ * Gets if this tag should be formatted as a block (or as inline)
+ *
+ * @return if should be formatted as block or inline
+ */"
+"public boolean isInline() {
+    return !isBlock;
+}","public void test1029() throws Throwable {
+    Tag tag0 = Tag.valueOf(""hr"");
+    boolean boolean0 = tag0.isInline();
+    assertFalse(boolean0);
+}","/**
+ * Gets if this tag is an inline tag.
+ *
+ * @return if this tag is an inline tag.
+ */"
+"public boolean isFormSubmittable() {
+    return formSubmit;
+}","public void test1130() throws Throwable {
+    Tag tag0 = Tag.valueOf(""V^'tpoQnM6>SKe%Xd"");
+    boolean boolean0 = tag0.isInline();
+    assertFalse(tag0.isFormSubmittable());
+}","/**
+ * Get if this tag represents an element that should be submitted with a form. E.g. input, option
+ * @return if submittable with a form
+ */"
+"public boolean formatAsBlock() {
+    return formatAsBlock;
+}","public void test1131() throws Throwable {
+    Tag tag0 = Tag.valueOf(""V^'tpoQnM6>SKe%Xd"");
+    boolean boolean0 = tag0.isInline();
+    assertTrue(tag0.formatAsBlock());
+}","/**
+ * Gets if this tag should be formatted as a block (or as inline)
+ *
+ * @return if should be formatted as block or inline
+ */"
+"public boolean isData() {
+    return !canContainInline && !isEmpty();
+}","public void test1132() throws Throwable {
+    Tag tag0 = Tag.valueOf(""V^'tpoQnM6>SKe%Xd"");
+    boolean boolean0 = tag0.isInline();
+    assertFalse(tag0.isData());
+}","/**
+ * Gets if this tag is a data only tag.
+ *
+ * @return if this tag is a data only tag
+ */"
+"public boolean isFormListed() {
+    return formList;
+}","public void test1133() throws Throwable {
+    Tag tag0 = Tag.valueOf(""V^'tpoQnM6>SKe%Xd"");
+    boolean boolean0 = tag0.isInline();
+    assertFalse(tag0.isFormListed());
+}","/**
+ * Get if this tag represents a control associated with a form. E.g. input, textarea, output
+ * @return if associated with a form
+ */"
+"public boolean isInline() {
+    return !isBlock;
+}","public void test1134() throws Throwable {
+    Tag tag0 = Tag.valueOf(""V^'tpoQnM6>SKe%Xd"");
+    boolean boolean0 = tag0.isInline();
+    assertTrue(boolean0);
+}","/**
+ * Gets if this tag is an inline tag.
+ *
+ * @return if this tag is an inline tag.
+ */"
+"public boolean isSelfClosing() {
+    return empty || selfClosing;
+}","public void test1135() throws Throwable {
+    Tag tag0 = Tag.valueOf(""V^'tpoQnM6>SKe%Xd"");
+    boolean boolean0 = tag0.isInline();
+    assertFalse(tag0.isSelfClosing());
+}","/**
+ * Get if this tag is self closing.
+ *
+ * @return if this tag should be output as self closing.
+ */"
+"public boolean preserveWhitespace() {
+    return preserveWhitespace;
+}","public void test1136() throws Throwable {
+    Tag tag0 = Tag.valueOf(""V^'tpoQnM6>SKe%Xd"");
+    boolean boolean0 = tag0.isInline();
+    assertFalse(tag0.preserveWhitespace());
+}","/**
+ * Get if this tag should preserve whitespace within child text nodes.
+ *
+ * @return if preserve whitespace
+ */"
+"public boolean preserveWhitespace() {
+    return preserveWhitespace;
+}","public void test1237() throws Throwable {
+    Tag tag0 = Tag.valueOf(""Wab[/HN_\""`^[Qo#o"");
+    boolean boolean0 = tag0.isData();
+    assertFalse(tag0.preserveWhitespace());
+}","/**
+ * Get if this tag should preserve whitespace within child text nodes.
+ *
+ * @return if preserve whitespace
+ */"
+"public boolean formatAsBlock() {
+    return formatAsBlock;
+}","public void test1238() throws Throwable {
+    Tag tag0 = Tag.valueOf(""Wab[/HN_\""`^[Qo#o"");
+    boolean boolean0 = tag0.isData();
+    assertTrue(tag0.formatAsBlock());
+}","/**
+ * Gets if this tag should be formatted as a block (or as inline)
+ *
+ * @return if should be formatted as block or inline
+ */"
+"public boolean isData() {
+    return !canContainInline && !isEmpty();
+}","public void test1239() throws Throwable {
+    Tag tag0 = Tag.valueOf(""Wab[/HN_\""`^[Qo#o"");
+    boolean boolean0 = tag0.isData();
+    assertFalse(boolean0);
+}","/**
+ * Gets if this tag is a data only tag.
+ *
+ * @return if this tag is a data only tag
+ */"
+"public boolean isSelfClosing() {
+    return empty || selfClosing;
+}","public void test1240() throws Throwable {
+    Tag tag0 = Tag.valueOf(""Wab[/HN_\""`^[Qo#o"");
+    boolean boolean0 = tag0.isData();
+    assertFalse(tag0.isSelfClosing());
+}","/**
+ * Get if this tag is self closing.
+ *
+ * @return if this tag should be output as self closing.
+ */"
+"public boolean isFormListed() {
+    return formList;
+}","public void test1241() throws Throwable {
+    Tag tag0 = Tag.valueOf(""Wab[/HN_\""`^[Qo#o"");
+    boolean boolean0 = tag0.isData();
+    assertFalse(tag0.isFormListed());
+}","/**
+ * Get if this tag represents a control associated with a form. E.g. input, textarea, output
+ * @return if associated with a form
+ */"
+"public boolean isFormSubmittable() {
+    return formSubmit;
+}","public void test1242() throws Throwable {
+    Tag tag0 = Tag.valueOf(""Wab[/HN_\""`^[Qo#o"");
+    boolean boolean0 = tag0.isData();
+    assertFalse(tag0.isFormSubmittable());
+}","/**
+ * Get if this tag represents an element that should be submitted with a form. E.g. input, option
+ * @return if submittable with a form
+ */"
+"public boolean canContainBlock() {
+    return isBlock;
+}","public void test1243() throws Throwable {
+    Tag tag0 = Tag.valueOf(""Wab[/HN_\""`^[Qo#o"");
+    boolean boolean0 = tag0.isData();
+    assertFalse(tag0.canContainBlock());
+}","/**
+ * Gets if this tag can contain block tags.
+ *
+ * @return if tag can contain block tags
+ * @deprecated No longer used, and no different result than {{@link #isBlock()}}
+ */"
+"public boolean isSelfClosing() {
+    return empty || selfClosing;
+}","public void test1344() throws Throwable {
+    Tag tag0 = Tag.valueOf(""source"");
+    boolean boolean0 = tag0.isSelfClosing();
+    assertTrue(boolean0);
+}","/**
+ * Get if this tag is self closing.
+ *
+ * @return if this tag should be output as self closing.
+ */"
+"public boolean isSelfClosing() {
+    return empty || selfClosing;
+}","public void test1445() throws Throwable {
+    Tag tag0 = Tag.valueOf(""noscript"");
+    boolean boolean0 = tag0.isSelfClosing();
+    assertFalse(boolean0);
+}","/**
+ * Get if this tag is self closing.
+ *
+ * @return if this tag should be output as self closing.
+ */"
+"public boolean formatAsBlock() {
+    return formatAsBlock;
+}","public void test1546() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    boolean boolean0 = tag0.isSelfClosing();
+    assertTrue(tag0.formatAsBlock());
+}","/**
+ * Gets if this tag should be formatted as a block (or as inline)
+ *
+ * @return if should be formatted as block or inline
+ */"
+"public boolean isFormListed() {
+    return formList;
+}","public void test1547() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    boolean boolean0 = tag0.isSelfClosing();
+    assertFalse(tag0.isFormListed());
+}","/**
+ * Get if this tag represents a control associated with a form. E.g. input, textarea, output
+ * @return if associated with a form
+ */"
+"public boolean isSelfClosing() {
+    return empty || selfClosing;
+}","public void test1548() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    boolean boolean0 = tag0.isSelfClosing();
+    assertFalse(boolean0);
+}","/**
+ * Get if this tag is self closing.
+ *
+ * @return if this tag should be output as self closing.
+ */"
+"public boolean isData() {
+    return !canContainInline && !isEmpty();
+}","public void test1549() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    boolean boolean0 = tag0.isSelfClosing();
+    assertFalse(tag0.isData());
+}","/**
+ * Gets if this tag is a data only tag.
+ *
+ * @return if this tag is a data only tag
+ */"
+"public boolean canContainBlock() {
+    return isBlock;
+}","public void test1550() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    boolean boolean0 = tag0.isSelfClosing();
+    assertFalse(tag0.canContainBlock());
+}","/**
+ * Gets if this tag can contain block tags.
+ *
+ * @return if tag can contain block tags
+ * @deprecated No longer used, and no different result than {{@link #isBlock()}}
+ */"
+"public boolean isFormSubmittable() {
+    return formSubmit;
+}","public void test1551() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    boolean boolean0 = tag0.isSelfClosing();
+    assertFalse(tag0.isFormSubmittable());
+}","/**
+ * Get if this tag represents an element that should be submitted with a form. E.g. input, option
+ * @return if submittable with a form
+ */"
+"public boolean preserveWhitespace() {
+    return preserveWhitespace;
+}","public void test1552() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    boolean boolean0 = tag0.isSelfClosing();
+    assertFalse(tag0.preserveWhitespace());
+}","/**
+ * Get if this tag should preserve whitespace within child text nodes.
+ *
+ * @return if preserve whitespace
+ */"
+"public boolean formatAsBlock() {
+    return formatAsBlock;
+}","public void test1653() throws Throwable {
+    Tag tag0 = Tag.valueOf(""K -QrY-rMgKCl"");
+    boolean boolean0 = tag0.isKnownTag();
+    assertTrue(tag0.formatAsBlock());
+}","/**
+ * Gets if this tag should be formatted as a block (or as inline)
+ *
+ * @return if should be formatted as block or inline
+ */"
+"public boolean isData() {
+    return !canContainInline && !isEmpty();
+}","public void test1654() throws Throwable {
+    Tag tag0 = Tag.valueOf(""K -QrY-rMgKCl"");
+    boolean boolean0 = tag0.isKnownTag();
+    assertFalse(tag0.isData());
+}","/**
+ * Gets if this tag is a data only tag.
+ *
+ * @return if this tag is a data only tag
+ */"
+"public boolean isFormListed() {
+    return formList;
+}","public void test1655() throws Throwable {
+    Tag tag0 = Tag.valueOf(""K -QrY-rMgKCl"");
+    boolean boolean0 = tag0.isKnownTag();
+    assertFalse(tag0.isFormListed());
+}","/**
+ * Get if this tag represents a control associated with a form. E.g. input, textarea, output
+ * @return if associated with a form
+ */"
+"public boolean isKnownTag() {
+    return tags.containsKey(tagName);
+}","public void test1656() throws Throwable {
+    Tag tag0 = Tag.valueOf(""K -QrY-rMgKCl"");
+    boolean boolean0 = tag0.isKnownTag();
+    assertFalse(boolean0);
+}","/**
+ * Get if this is a pre-defined tag, or was auto created on parsing.
+ *
+ * @return if a known tag
+ */"
+"public boolean isFormSubmittable() {
+    return formSubmit;
+}","public void test1657() throws Throwable {
+    Tag tag0 = Tag.valueOf(""K -QrY-rMgKCl"");
+    boolean boolean0 = tag0.isKnownTag();
+    assertFalse(tag0.isFormSubmittable());
+}","/**
+ * Get if this tag represents an element that should be submitted with a form. E.g. input, option
+ * @return if submittable with a form
+ */"
+"public boolean isSelfClosing() {
+    return empty || selfClosing;
+}","public void test1658() throws Throwable {
+    Tag tag0 = Tag.valueOf(""K -QrY-rMgKCl"");
+    boolean boolean0 = tag0.isKnownTag();
+    assertFalse(tag0.isSelfClosing());
+}","/**
+ * Get if this tag is self closing.
+ *
+ * @return if this tag should be output as self closing.
+ */"
+"public boolean isInline() {
+    return !isBlock;
+}","public void test1659() throws Throwable {
+    Tag tag0 = Tag.valueOf(""K -QrY-rMgKCl"");
+    boolean boolean0 = tag0.isKnownTag();
+    assertTrue(tag0.isInline());
+}","/**
+ * Gets if this tag is an inline tag.
+ *
+ * @return if this tag is an inline tag.
+ */"
+"public boolean preserveWhitespace() {
+    return preserveWhitespace;
+}","public void test1660() throws Throwable {
+    Tag tag0 = Tag.valueOf(""K -QrY-rMgKCl"");
+    boolean boolean0 = tag0.isKnownTag();
+    assertFalse(tag0.preserveWhitespace());
+}","/**
+ * Get if this tag should preserve whitespace within child text nodes.
+ *
+ * @return if preserve whitespace
+ */"
+"public boolean isKnownTag() {
+    return tags.containsKey(tagName);
+}","public void test1761() throws Throwable {
+    Tag tag0 = Tag.valueOf(""source"");
+    boolean boolean0 = tag0.isKnownTag();
+    assertTrue(boolean0);
+}","/**
+ * Get if this is a pre-defined tag, or was auto created on parsing.
+ *
+ * @return if a known tag
+ */"
+"public static boolean isKnownTag(String tagName) {
+    return tags.containsKey(tagName);
+}","public void test1862() throws Throwable {
+    boolean boolean0 = Tag.isKnownTag(""character outside of valid range"");
+    assertFalse(boolean0);
+}","/**
+ * Check if this tagname is a known tag.
+ *
+ * @param tagName name of tag
+ * @return if known HTML tag
+ */"
+"public static boolean isKnownTag(String tagName) {
+    return tags.containsKey(tagName);
+}","public void test1963() throws Throwable {
+    boolean boolean0 = Tag.isKnownTag(""s"");
+    assertTrue(boolean0);
+}","/**
+ * Check if this tagname is a known tag.
+ *
+ * @param tagName name of tag
+ * @return if known HTML tag
+ */"
+"public boolean isSelfClosing() {
+    return empty || selfClosing;
+}","public void test2064() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    Tag tag1 = Tag.valueOf(""!W21O"");
+    boolean boolean0 = tag0.equals(tag1);
+    assertFalse(tag1.isSelfClosing());
+}","/**
+ * Get if this tag is self closing.
+ *
+ * @return if this tag should be output as self closing.
+ */"
+"public boolean isFormListed() {
+    return formList;
+}","public void test2065() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    Tag tag1 = Tag.valueOf(""!W21O"");
+    boolean boolean0 = tag0.equals(tag1);
+    assertFalse(tag1.isFormListed());
+}","/**
+ * Get if this tag represents a control associated with a form. E.g. input, textarea, output
+ * @return if associated with a form
+ */"
+"@Override
+public boolean equals(Object o) {
+    if (this == o)
+        return true;
+    if (!(o instanceof Tag))
+        return false;
+    Tag tag = (Tag) o;
+    if (!tagName.equals(tag.tagName))
+        return false;
+    if (canContainInline != tag.canContainInline)
+        return false;
+    if (empty != tag.empty)
+        return false;
+    if (formatAsBlock != tag.formatAsBlock)
+        return false;
+    if (isBlock != tag.isBlock)
+        return false;
+    if (preserveWhitespace != tag.preserveWhitespace)
+        return false;
+    if (selfClosing != tag.selfClosing)
+        return false;
+    if (formList != tag.formList)
+        return false;
+    return formSubmit == tag.formSubmit;
+}","public void test2066() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    Tag tag1 = Tag.valueOf(""!W21O"");
+    boolean boolean0 = tag0.equals(tag1);
+    assertTrue(boolean0);
+}",""
+"public boolean isData() {
+    return !canContainInline && !isEmpty();
+}","public void test2067() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    Tag tag1 = Tag.valueOf(""!W21O"");
+    boolean boolean0 = tag0.equals(tag1);
+    assertFalse(tag1.isData());
+}","/**
+ * Gets if this tag is a data only tag.
+ *
+ * @return if this tag is a data only tag
+ */"
+"public boolean preserveWhitespace() {
+    return preserveWhitespace;
+}","public void test2068() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    Tag tag1 = Tag.valueOf(""!W21O"");
+    boolean boolean0 = tag0.equals(tag1);
+    assertFalse(tag1.preserveWhitespace());
+}","/**
+ * Get if this tag should preserve whitespace within child text nodes.
+ *
+ * @return if preserve whitespace
+ */"
+"public boolean formatAsBlock() {
+    return formatAsBlock;
+}","public void test2069() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    Tag tag1 = Tag.valueOf(""!W21O"");
+    boolean boolean0 = tag0.equals(tag1);
+    assertTrue(tag1.formatAsBlock());
+}","/**
+ * Gets if this tag should be formatted as a block (or as inline)
+ *
+ * @return if should be formatted as block or inline
+ */"
+"public boolean canContainBlock() {
+    return isBlock;
+}","public void test2070() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    Tag tag1 = Tag.valueOf(""!W21O"");
+    boolean boolean0 = tag0.equals(tag1);
+    assertFalse(tag1.canContainBlock());
+}","/**
+ * Gets if this tag can contain block tags.
+ *
+ * @return if tag can contain block tags
+ * @deprecated No longer used, and no different result than {{@link #isBlock()}}
+ */"
+"public boolean isFormSubmittable() {
+    return formSubmit;
+}","public void test2071() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    Tag tag1 = Tag.valueOf(""!W21O"");
+    boolean boolean0 = tag0.equals(tag1);
+    assertFalse(tag1.isFormSubmittable());
+}","/**
+ * Get if this tag represents an element that should be submitted with a form. E.g. input, option
+ * @return if submittable with a form
+ */"
+"public boolean isSelfClosing() {
+    return empty || selfClosing;
+}","public void test2172() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    boolean boolean0 = tag0.equals(tag0);
+    assertFalse(tag0.isSelfClosing());
+}","/**
+ * Get if this tag is self closing.
+ *
+ * @return if this tag should be output as self closing.
+ */"
+"public boolean isFormListed() {
+    return formList;
+}","public void test2173() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    boolean boolean0 = tag0.equals(tag0);
+    assertFalse(tag0.isFormListed());
+}","/**
+ * Get if this tag represents a control associated with a form. E.g. input, textarea, output
+ * @return if associated with a form
+ */"
+"@Override
+public boolean equals(Object o) {
+    if (this == o)
+        return true;
+    if (!(o instanceof Tag))
+        return false;
+    Tag tag = (Tag) o;
+    if (!tagName.equals(tag.tagName))
+        return false;
+    if (canContainInline != tag.canContainInline)
+        return false;
+    if (empty != tag.empty)
+        return false;
+    if (formatAsBlock != tag.formatAsBlock)
+        return false;
+    if (isBlock != tag.isBlock)
+        return false;
+    if (preserveWhitespace != tag.preserveWhitespace)
+        return false;
+    if (selfClosing != tag.selfClosing)
+        return false;
+    if (formList != tag.formList)
+        return false;
+    return formSubmit == tag.formSubmit;
+}","public void test2174() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    boolean boolean0 = tag0.equals(tag0);
+    assertTrue(boolean0);
+}",""
+"public boolean isInline() {
+    return !isBlock;
+}","public void test2175() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    boolean boolean0 = tag0.equals(tag0);
+    assertTrue(tag0.isInline());
+}","/**
+ * Gets if this tag is an inline tag.
+ *
+ * @return if this tag is an inline tag.
+ */"
+"public boolean preserveWhitespace() {
+    return preserveWhitespace;
+}","public void test2176() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    boolean boolean0 = tag0.equals(tag0);
+    assertFalse(tag0.preserveWhitespace());
+}","/**
+ * Get if this tag should preserve whitespace within child text nodes.
+ *
+ * @return if preserve whitespace
+ */"
+"public boolean isData() {
+    return !canContainInline && !isEmpty();
+}","public void test2177() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    boolean boolean0 = tag0.equals(tag0);
+    assertFalse(tag0.isData());
+}","/**
+ * Gets if this tag is a data only tag.
+ *
+ * @return if this tag is a data only tag
+ */"
+"public boolean isFormSubmittable() {
+    return formSubmit;
+}","public void test2178() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    boolean boolean0 = tag0.equals(tag0);
+    assertFalse(tag0.isFormSubmittable());
+}","/**
+ * Get if this tag represents an element that should be submitted with a form. E.g. input, option
+ * @return if submittable with a form
+ */"
+"public boolean formatAsBlock() {
+    return formatAsBlock;
+}","public void test2179() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    boolean boolean0 = tag0.equals(tag0);
+    assertTrue(tag0.formatAsBlock());
+}","/**
+ * Gets if this tag should be formatted as a block (or as inline)
+ *
+ * @return if should be formatted as block or inline
+ */"
+"public boolean isSelfClosing() {
+    return empty || selfClosing;
+}","public void test2280() throws Throwable {
+    Tag tag0 = Tag.valueOf(""qR+ekI`;2cG.K0!"");
+    boolean boolean0 = tag0.equals(""qR+ekI`;2cG.K0!"");
+    assertFalse(tag0.isSelfClosing());
+}","/**
+ * Get if this tag is self closing.
+ *
+ * @return if this tag should be output as self closing.
+ */"
+"public boolean isFormListed() {
+    return formList;
+}","public void test2281() throws Throwable {
+    Tag tag0 = Tag.valueOf(""qR+ekI`;2cG.K0!"");
+    boolean boolean0 = tag0.equals(""qR+ekI`;2cG.K0!"");
+    assertFalse(tag0.isFormListed());
+}","/**
+ * Get if this tag represents a control associated with a form. E.g. input, textarea, output
+ * @return if associated with a form
+ */"
+"public boolean formatAsBlock() {
+    return formatAsBlock;
+}","public void test2282() throws Throwable {
+    Tag tag0 = Tag.valueOf(""qR+ekI`;2cG.K0!"");
+    boolean boolean0 = tag0.equals(""qR+ekI`;2cG.K0!"");
+    assertTrue(tag0.formatAsBlock());
+}","/**
+ * Gets if this tag should be formatted as a block (or as inline)
+ *
+ * @return if should be formatted as block or inline
+ */"
+"public boolean isFormSubmittable() {
+    return formSubmit;
+}","public void test2283() throws Throwable {
+    Tag tag0 = Tag.valueOf(""qR+ekI`;2cG.K0!"");
+    boolean boolean0 = tag0.equals(""qR+ekI`;2cG.K0!"");
+    assertFalse(tag0.isFormSubmittable());
+}","/**
+ * Get if this tag represents an element that should be submitted with a form. E.g. input, option
+ * @return if submittable with a form
+ */"
+"public boolean isData() {
+    return !canContainInline && !isEmpty();
+}","public void test2284() throws Throwable {
+    Tag tag0 = Tag.valueOf(""qR+ekI`;2cG.K0!"");
+    boolean boolean0 = tag0.equals(""qR+ekI`;2cG.K0!"");
+    assertFalse(tag0.isData());
+}","/**
+ * Gets if this tag is a data only tag.
+ *
+ * @return if this tag is a data only tag
+ */"
+"public boolean preserveWhitespace() {
+    return preserveWhitespace;
+}","public void test2285() throws Throwable {
+    Tag tag0 = Tag.valueOf(""qR+ekI`;2cG.K0!"");
+    boolean boolean0 = tag0.equals(""qR+ekI`;2cG.K0!"");
+    assertFalse(tag0.preserveWhitespace());
+}","/**
+ * Get if this tag should preserve whitespace within child text nodes.
+ *
+ * @return if preserve whitespace
+ */"
+"@Override
+public boolean equals(Object o) {
+    if (this == o)
+        return true;
+    if (!(o instanceof Tag))
+        return false;
+    Tag tag = (Tag) o;
+    if (!tagName.equals(tag.tagName))
+        return false;
+    if (canContainInline != tag.canContainInline)
+        return false;
+    if (empty != tag.empty)
+        return false;
+    if (formatAsBlock != tag.formatAsBlock)
+        return false;
+    if (isBlock != tag.isBlock)
+        return false;
+    if (preserveWhitespace != tag.preserveWhitespace)
+        return false;
+    if (selfClosing != tag.selfClosing)
+        return false;
+    if (formList != tag.formList)
+        return false;
+    return formSubmit == tag.formSubmit;
+}","public void test2286() throws Throwable {
+    Tag tag0 = Tag.valueOf(""qR+ekI`;2cG.K0!"");
+    boolean boolean0 = tag0.equals(""qR+ekI`;2cG.K0!"");
+    assertFalse(boolean0);
+}",""
+"public boolean isBlock() {
+    return isBlock;
+}","public void test2287() throws Throwable {
+    Tag tag0 = Tag.valueOf(""qR+ekI`;2cG.K0!"");
+    boolean boolean0 = tag0.equals(""qR+ekI`;2cG.K0!"");
+    assertFalse(tag0.isBlock());
+}","/**
+ * Gets if this is a block tag.
+ *
+ * @return if block tag
+ */"
+"public boolean isFormSubmittable() {
+    return formSubmit;
+}","public void test2388() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    Tag tag1 = Tag.valueOf(""rb^hyaAzX<R+;"");
+    boolean boolean0 = tag0.equals(tag1);
+    assertFalse(tag1.isFormSubmittable());
+}","/**
+ * Get if this tag represents an element that should be submitted with a form. E.g. input, option
+ * @return if submittable with a form
+ */"
+"public boolean preserveWhitespace() {
+    return preserveWhitespace;
+}","public void test2389() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    Tag tag1 = Tag.valueOf(""rb^hyaAzX<R+;"");
+    boolean boolean0 = tag0.equals(tag1);
+    assertFalse(tag1.preserveWhitespace());
+}","/**
+ * Get if this tag should preserve whitespace within child text nodes.
+ *
+ * @return if preserve whitespace
+ */"
+"public boolean isSelfClosing() {
+    return empty || selfClosing;
+}","public void test2390() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    Tag tag1 = Tag.valueOf(""rb^hyaAzX<R+;"");
+    boolean boolean0 = tag0.equals(tag1);
+    assertFalse(tag1.isSelfClosing());
+}","/**
+ * Get if this tag is self closing.
+ *
+ * @return if this tag should be output as self closing.
+ */"
+"public boolean formatAsBlock() {
+    return formatAsBlock;
+}","public void test2391() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    Tag tag1 = Tag.valueOf(""rb^hyaAzX<R+;"");
+    boolean boolean0 = tag0.equals(tag1);
+    assertTrue(tag1.formatAsBlock());
+}","/**
+ * Gets if this tag should be formatted as a block (or as inline)
+ *
+ * @return if should be formatted as block or inline
+ */"
+"public boolean isData() {
+    return !canContainInline && !isEmpty();
+}","public void test2392() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    Tag tag1 = Tag.valueOf(""rb^hyaAzX<R+;"");
+    boolean boolean0 = tag0.equals(tag1);
+    assertFalse(tag1.isData());
+}","/**
+ * Gets if this tag is a data only tag.
+ *
+ * @return if this tag is a data only tag
+ */"
+"public boolean isFormListed() {
+    return formList;
+}","public void test2393() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    Tag tag1 = Tag.valueOf(""rb^hyaAzX<R+;"");
+    boolean boolean0 = tag0.equals(tag1);
+    assertFalse(tag1.isFormListed());
+}","/**
+ * Get if this tag represents a control associated with a form. E.g. input, textarea, output
+ * @return if associated with a form
+ */"
+"public boolean isBlock() {
+    return isBlock;
+}","public void test2394() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    Tag tag1 = Tag.valueOf(""rb^hyaAzX<R+;"");
+    boolean boolean0 = tag0.equals(tag1);
+    assertFalse(tag1.isBlock());
+}","/**
+ * Gets if this is a block tag.
+ *
+ * @return if block tag
+ */"
+"@Override
+public boolean equals(Object o) {
+    if (this == o)
+        return true;
+    if (!(o instanceof Tag))
+        return false;
+    Tag tag = (Tag) o;
+    if (!tagName.equals(tag.tagName))
+        return false;
+    if (canContainInline != tag.canContainInline)
+        return false;
+    if (empty != tag.empty)
+        return false;
+    if (formatAsBlock != tag.formatAsBlock)
+        return false;
+    if (isBlock != tag.isBlock)
+        return false;
+    if (preserveWhitespace != tag.preserveWhitespace)
+        return false;
+    if (selfClosing != tag.selfClosing)
+        return false;
+    if (formList != tag.formList)
+        return false;
+    return formSubmit == tag.formSubmit;
+}","public void test2395() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    Tag tag1 = Tag.valueOf(""rb^hyaAzX<R+;"");
+    boolean boolean0 = tag0.equals(tag1);
+    assertFalse(boolean0);
+}",""
+"public boolean isSelfClosing() {
+    return empty || selfClosing;
+}","public void test2496() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    Tag tag1 = Tag.valueOf(""!W21O"");
+    assertFalse(tag1.isSelfClosing());
+}","/**
+ * Get if this tag is self closing.
+ *
+ * @return if this tag should be output as self closing.
+ */"
+"@Override
+public boolean equals(Object o) {
+    if (this == o)
+        return true;
+    if (!(o instanceof Tag))
+        return false;
+    Tag tag = (Tag) o;
+    if (!tagName.equals(tag.tagName))
+        return false;
+    if (canContainInline != tag.canContainInline)
+        return false;
+    if (empty != tag.empty)
+        return false;
+    if (formatAsBlock != tag.formatAsBlock)
+        return false;
+    if (isBlock != tag.isBlock)
+        return false;
+    if (preserveWhitespace != tag.preserveWhitespace)
+        return false;
+    if (selfClosing != tag.selfClosing)
+        return false;
+    if (formList != tag.formList)
+        return false;
+    return formSubmit == tag.formSubmit;
+}","public void test2497() throws Throwable {
+    Tag tag0 = Tag.valueOf(""!W21O"");
+    Tag tag1 = Tag.valueOf(""!W21O"");
+    tag1.setSelfClosing();
+    boolean boolean0 = tag0.equals(tag1);
+    assertFalse(boolean0);
+}",""
+"public boolean isData() {
+    return !canContainInline && !isEmpty();
+}","public void test2598() throws Throwable {
+    Tag tag0 = Tag.valueOf(""Wab[/HN_\""`^[Qo#o"");
+    tag0.hashCode();
+    assertFalse(tag0.isData());
+}","/**
+ * Gets if this tag is a data only tag.
+ *
+ * @return if this tag is a data only tag
+ */"
+"public boolean isFormListed() {
+    return formList;
+}","public void test2599() throws Throwable {
+    Tag tag0 = Tag.valueOf(""Wab[/HN_\""`^[Qo#o"");
+    tag0.hashCode();
+    assertFalse(tag0.isFormListed());
+}","/**
+ * Get if this tag represents a control associated with a form. E.g. input, textarea, output
+ * @return if associated with a form
+ */"
+"public boolean isSelfClosing() {
+    return empty || selfClosing;
+}","public void test25100() throws Throwable {
+    Tag tag0 = Tag.valueOf(""Wab[/HN_\""`^[Qo#o"");
+    tag0.hashCode();
+    assertFalse(tag0.isSelfClosing());
+}","/**
+ * Get if this tag is self closing.
+ *
+ * @return if this tag should be output as self closing.
+ */"
+"public boolean preserveWhitespace() {
+    return preserveWhitespace;
+}","public void test25101() throws Throwable {
+    Tag tag0 = Tag.valueOf(""Wab[/HN_\""`^[Qo#o"");
+    tag0.hashCode();
+    assertFalse(tag0.preserveWhitespace());
+}","/**
+ * Get if this tag should preserve whitespace within child text nodes.
+ *
+ * @return if preserve whitespace
+ */"
+"@Override
+public int hashCode() {
+    int result = tagName.hashCode();
+    result = 31 * result + (isBlock ? 1 : 0);
+    result = 31 * result + (formatAsBlock ? 1 : 0);
+    result = 31 * result + (canContainInline ? 1 : 0);
+    result = 31 * result + (empty ? 1 : 0);
+    result = 31 * result + (selfClosing ? 1 : 0);
+    result = 31 * result + (preserveWhitespace ? 1 : 0);
+    result = 31 * result + (formList ? 1 : 0);
+    result = 31 * result + (formSubmit ? 1 : 0);
+    return result;
+}","public void test26102() throws Throwable {
+    Tag tag0 = Tag.valueOf(""menu"");
+    tag0.hashCode();
+}",""
+"@Override
+public int hashCode() {
+    int result = tagName.hashCode();
+    result = 31 * result + (isBlock ? 1 : 0);
+    result = 31 * result + (formatAsBlock ? 1 : 0);
+    result = 31 * result + (canContainInline ? 1 : 0);
+    result = 31 * result + (empty ? 1 : 0);
+    result = 31 * result + (selfClosing ? 1 : 0);
+    result = 31 * result + (preserveWhitespace ? 1 : 0);
+    result = 31 * result + (formList ? 1 : 0);
+    result = 31 * result + (formSubmit ? 1 : 0);
+    return result;
+}","public void test27103() throws Throwable {
+    Tag tag0 = Tag.valueOf(""textarea"");
+    tag0.hashCode();
+}",""
+"@Override
+public int hashCode() {
+    int result = tagName.hashCode();
+    result = 31 * result + (isBlock ? 1 : 0);
+    result = 31 * result + (formatAsBlock ? 1 : 0);
+    result = 31 * result + (canContainInline ? 1 : 0);
+    result = 31 * result + (empty ? 1 : 0);
+    result = 31 * result + (selfClosing ? 1 : 0);
+    result = 31 * result + (preserveWhitespace ? 1 : 0);
+    result = 31 * result + (formList ? 1 : 0);
+    result = 31 * result + (formSubmit ? 1 : 0);
+    return result;
+}","public void test28104() throws Throwable {
+    Tag tag0 = Tag.valueOf(""source"");
+    tag0.hashCode();
+}",""

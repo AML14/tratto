@@ -1,0 +1,817 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.US;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    dOMNodePointer0.getNamespaceURI(""http://www.w3.org/XML/1998/namespace"");
+    DocumentTypeImpl documentTypeImpl0 = new DocumentTypeImpl(hTMLDocumentImpl0, ""http://www.w3.org/XML/1998/namespace"");
+    WMLDocumentImpl wMLDocumentImpl0 = new WMLDocumentImpl(documentTypeImpl0);
+    WMLWmlElementImpl wMLWmlElementImpl0 = new WMLWmlElementImpl(wMLDocumentImpl0, ""http://www.w3.org/XML/1998/namespace"");
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) wMLWmlElementImpl0);
+    DOMNodePointer dOMNodePointer1 = (DOMNodePointer) dOMNodePointer0.getPointerByID(jXPathContext0, """");
+    assertEquals(Integer.MIN_VALUE, dOMNodePointer1.getIndex());
+}",0,
+project,0,test011,"public void test011() throws Throwable {
+    Locale locale0 = Locale.UK;
+    AttrNSImpl attrNSImpl0 = new AttrNSImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(attrNSImpl0, locale0);
+    int int0 = dOMNodePointer0.compareChildNodePointers(dOMNodePointer0, dOMNodePointer0);
+    assertEquals(0, int0);
+}",0,
+project,0,test022,"public void test022() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.ENGLISH;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    boolean boolean0 = dOMNodePointer0.isLanguage(""http://www.w3.org/2000/xmlns/"");
+    assertFalse(boolean0);
+}",0,
+project,0,test033,"public void test033() throws Throwable {
+    DeferredDocumentImpl deferredDocumentImpl0 = new DeferredDocumentImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(deferredDocumentImpl0, (Locale) null);
+    boolean boolean0 = dOMNodePointer0.isCollection();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test044,"public void test044() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.FRENCH;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    HTMLElement hTMLElement0 = hTMLDocumentImpl0.getBody();
+    DOMNodePointer dOMNodePointer1 = new DOMNodePointer(dOMNodePointer0, hTMLElement0);
+    String string0 = dOMNodePointer1.asPath();
+    assertEquals(""/BODY[1]"", string0);
+}",0,
+project,0,test055,"public void test055() throws Throwable {
+    DocumentImpl documentImpl0 = new DocumentImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(documentImpl0, (Locale) null);
+    QName qName0 = dOMNodePointer0.getName();
+    // Undeclared exception!
+    try {
+        dOMNodePointer0.createChild((JXPathContext) null, qName0, Integer.MIN_VALUE, (Object) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.dom.DOMNodePointer"", e);
+    }
+}",0,
+project,0,test066,"public void test066() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.CHINA;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    NodePointer nodePointer0 = dOMNodePointer0.namespacePointer(""http://www.w3.org/XML/1998/namespace"");
+    assertTrue(nodePointer0.isNode());
+}",0,assertTrue(nodePointer0.isNode())
+project,0,test077,"public void test077() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.FRENCH;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    int int0 = dOMNodePointer0.getLength();
+    assertEquals(1, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test098,"public void test098() throws Throwable {
+    Locale locale0 = Locale.GERMANY;
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    AttrNSImpl attrNSImpl0 = new AttrNSImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(attrNSImpl0, locale0);
+    QName qName0 = new QName(""http://www.w3.org/2000/xmlns/"", ""http://www.w3.org/2000/xmlns/"");
+    PSVIAttrNSImpl pSVIAttrNSImpl0 = new PSVIAttrNSImpl(hTMLDocumentImpl0, ""http://www.w3.org/2000/xmlns/"", ""<<unknown namespace>>"", ""<<unknown namespace>>"");
+    NodePointer nodePointer0 = NodePointer.newChildNodePointer(dOMNodePointer0, qName0, pSVIAttrNSImpl0);
+    // Undeclared exception!
+    try {
+        dOMNodePointer0.compareChildNodePointers(dOMNodePointer0, nodePointer0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.dom.DOMNodePointer"", e);
+    }
+}",0,
+project,0,test109,"public void test109() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.ENGLISH;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    boolean boolean0 = dOMNodePointer0.isActual();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test1110,"public void test1110() throws Throwable {
+    TextImpl textImpl0 = new TextImpl();
+    Locale locale0 = Locale.KOREA;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(textImpl0, locale0);
+    boolean boolean0 = dOMNodePointer0.testNode((NodeTest) null);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test1211,"public void test1211() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.GERMAN;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    NodeIterator nodeIterator0 = dOMNodePointer0.namespaceIterator();
+    assertEquals(0, nodeIterator0.getPosition());
+}",0,"assertEquals(1, nodeIterator0.getPosition())"
+project,0,test1312,"public void test1312() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    HTMLAppletElementImpl hTMLAppletElementImpl0 = new HTMLAppletElementImpl(hTMLDocumentImpl0, ""xmlns"");
+    Locale locale0 = Locale.ITALIAN;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLAppletElementImpl0, locale0, ""^"");
+    QName qName0 = new QName(""xmlns"", ""xmlns"");
+    // Undeclared exception!
+    try {
+        dOMNodePointer0.createAttribute((JXPathContext) null, qName0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.dom.DOMAttributeIterator"", e);
+    }
+}",0,
+project,0,test1413,"public void test1413() throws Throwable {
+    Locale locale0 = Locale.GERMANY;
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    ProcessingInstructionTest processingInstructionTest0 = new ProcessingInstructionTest(""http://www.w3.org/XML/1998/namespace"");
+    NodeIterator nodeIterator0 = dOMNodePointer0.childIterator(processingInstructionTest0, true, dOMNodePointer0);
+    assertEquals(0, nodeIterator0.getPosition());
+}",0,"assertEquals(0, nodeIterator0.getPosition())"
+project,0,test1514,"public void test1514() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    HTMLInputElementImpl hTMLInputElementImpl0 = new HTMLInputElementImpl(hTMLDocumentImpl0, "")&"");
+    QName qName0 = new QName(""K7]QMt_tN+|K9:*"");
+    NodeNameTest nodeNameTest0 = new NodeNameTest(qName0, "")&"");
+    boolean boolean0 = DOMNodePointer.testNode((Node) hTMLInputElementImpl0, (NodeTest) nodeNameTest0);
+    assertFalse(boolean0);
+}",0,
+project,0,test1615,"public void test1615() throws Throwable {
+    NodeTypeTest nodeTypeTest0 = new NodeTypeTest(4);
+    DeferredDocumentImpl deferredDocumentImpl0 = new DeferredDocumentImpl();
+    ProcessingInstructionImpl processingInstructionImpl0 = new ProcessingInstructionImpl(deferredDocumentImpl0, ""_~3%EWzz#hPodH-w+"", ""c=xd"");
+    boolean boolean0 = DOMNodePointer.testNode((Node) processingInstructionImpl0, (NodeTest) nodeTypeTest0);
+    assertTrue(boolean0);
+}",0,
+project,0,test1716,"public void test1716() throws Throwable {
+    TextImpl textImpl0 = new TextImpl();
+    NodeNameTest nodeNameTest0 = new NodeNameTest((QName) null);
+    boolean boolean0 = DOMNodePointer.testNode((Node) textImpl0, (NodeTest) nodeNameTest0);
+    assertFalse(boolean0);
+}",0,
+project,0,test1817,"public void test1817() throws Throwable {
+    QName qName0 = new QName(""Cannot create a relative context for a n0n-exBstent node: "");
+    PSVIDocumentImpl pSVIDocumentImpl0 = new PSVIDocumentImpl();
+    PSVIElementNSImpl pSVIElementNSImpl0 = new PSVIElementNSImpl(pSVIDocumentImpl0, ""Cannot create a relative context for a n0n-exBstent node: "", ""Cannot create a relative context for a n0n-exBstent node: "", ""<<unknown namespace>>"");
+    NodeNameTest nodeNameTest0 = new NodeNameTest(qName0);
+    boolean boolean0 = DOMNodePointer.testNode((Node) pSVIElementNSImpl0, (NodeTest) nodeNameTest0);
+    assertFalse(boolean0);
+}",0,
+project,0,test1918,"public void test1918() throws Throwable {
+    QName qName0 = new QName(""j_mjC<X},X[zu^@"");
+    PSVIDocumentImpl pSVIDocumentImpl0 = new PSVIDocumentImpl();
+    PSVIElementNSImpl pSVIElementNSImpl0 = new PSVIElementNSImpl(pSVIDocumentImpl0, ""j_mjC<X},X[zu^@"", ""j_mjC<X},X[zu^@"", (String) null);
+    NodeNameTest nodeNameTest0 = new NodeNameTest(qName0);
+    boolean boolean0 = DOMNodePointer.testNode((Node) pSVIElementNSImpl0, (NodeTest) nodeNameTest0);
+    assertFalse(boolean0);
+}",0,
+project,0,test2019,"public void test2019() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    HTMLInputElementImpl hTMLInputElementImpl0 = new HTMLInputElementImpl(hTMLDocumentImpl0, ""%"");
+    QName qName0 = new QName(""%"");
+    NodeNameTest nodeNameTest0 = new NodeNameTest(qName0);
+    boolean boolean0 = DOMNodePointer.testNode((Node) hTMLInputElementImpl0, (NodeTest) nodeNameTest0);
+    assertTrue(boolean0);
+}",0,
+project,0,test2120,"public void test2120() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    HTMLInputElementImpl hTMLInputElementImpl0 = new HTMLInputElementImpl(hTMLDocumentImpl0, "":"");
+    QName qName0 = new QName("":"");
+    NodeNameTest nodeNameTest0 = new NodeNameTest(qName0, "":"");
+    boolean boolean0 = DOMNodePointer.testNode((Node) hTMLInputElementImpl0, (NodeTest) nodeNameTest0);
+    assertTrue(boolean0);
+}",0,
+project,0,test2221,"public void test2221() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    ProcessingInstructionImpl processingInstructionImpl0 = new ProcessingInstructionImpl(hTMLDocumentImpl0, ""el]{JH"", ""el]{JH"");
+    ProcessingInstructionTest processingInstructionTest0 = new ProcessingInstructionTest(""el]{JH"");
+    boolean boolean0 = DOMNodePointer.testNode((Node) processingInstructionImpl0, (NodeTest) processingInstructionTest0);
+    assertTrue(boolean0);
+}",0,
+project,0,test2322,"public void test2322() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    CDATASection cDATASection0 = hTMLDocumentImpl0.createCDATASection(""el]{JH"");
+    NodeTypeTest nodeTypeTest0 = new NodeTypeTest(1);
+    boolean boolean0 = DOMNodePointer.testNode((Node) cDATASection0, (NodeTest) nodeTypeTest0);
+    assertFalse(boolean0);
+}",0,
+project,0,test2423,"public void test2423() throws Throwable {
+    TextImpl textImpl0 = new TextImpl();
+    NodeTypeTest nodeTypeTest0 = new NodeTypeTest(2);
+    boolean boolean0 = DOMNodePointer.testNode((Node) textImpl0, (NodeTest) nodeTypeTest0);
+    assertTrue(boolean0);
+}",0,
+project,0,test2524,"public void test2524() throws Throwable {
+    NodeTypeTest nodeTypeTest0 = new NodeTypeTest(3);
+    DocumentTypeImpl documentTypeImpl0 = new DocumentTypeImpl((CoreDocumentImpl) null, ""xmlns"", ""xmlns"", ""xmlns"");
+    CoreDocumentImpl coreDocumentImpl0 = new CoreDocumentImpl(documentTypeImpl0, true);
+    Comment comment0 = coreDocumentImpl0.createComment(""xmlns"");
+    boolean boolean0 = DOMNodePointer.testNode((Node) comment0, (NodeTest) nodeTypeTest0);
+    assertTrue(boolean0);
+}",0,
+project,0,test2625,"public void test2625() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    NodeTypeTest nodeTypeTest0 = new NodeTypeTest(24);
+    boolean boolean0 = DOMNodePointer.testNode((Node) hTMLDocumentImpl0, (NodeTest) nodeTypeTest0);
+    assertFalse(boolean0);
+}",0,
+project,0,test2726,"public void test2726() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    HTMLInputElementImpl hTMLInputElementImpl0 = new HTMLInputElementImpl(hTMLDocumentImpl0, ""Cannot c7eate a relative context for5a non-existent node: "");
+    NodeTypeTest nodeTypeTest0 = new NodeTypeTest(1);
+    boolean boolean0 = DOMNodePointer.testNode((Node) hTMLInputElementImpl0, (NodeTest) nodeTypeTest0);
+    assertTrue(boolean0);
+}",0,
+project,0,test2827,"public void test2827() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    NodeTypeTest nodeTypeTest0 = new NodeTypeTest(1);
+    boolean boolean0 = DOMNodePointer.testNode((Node) hTMLDocumentImpl0, (NodeTest) nodeTypeTest0);
+    assertTrue(boolean0);
+}",0,
+project,0,test2928,"public void test2928() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    CDATASection cDATASection0 = hTMLDocumentImpl0.createCDATASection(""&quot;"");
+    NodeTypeTest nodeTypeTest0 = new NodeTypeTest(2);
+    boolean boolean0 = DOMNodePointer.testNode((Node) cDATASection0, (NodeTest) nodeTypeTest0);
+    assertTrue(boolean0);
+}",0,
+project,0,test3029,"public void test3029() throws Throwable {
+    PSVIDocumentImpl pSVIDocumentImpl0 = new PSVIDocumentImpl();
+    NodeTypeTest nodeTypeTest0 = new NodeTypeTest(2);
+    boolean boolean0 = DOMNodePointer.testNode((Node) pSVIDocumentImpl0, (NodeTest) nodeTypeTest0);
+    assertFalse(boolean0);
+}",0,
+project,0,test3130,"public void test3130() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    NodeTypeTest nodeTypeTest0 = new NodeTypeTest(3);
+    boolean boolean0 = DOMNodePointer.testNode((Node) hTMLDocumentImpl0, (NodeTest) nodeTypeTest0);
+    assertFalse(boolean0);
+}",0,
+project,0,test3231,"public void test3231() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    NodeTypeTest nodeTypeTest0 = new NodeTypeTest(4);
+    boolean boolean0 = DOMNodePointer.testNode((Node) hTMLDocumentImpl0, (NodeTest) nodeTypeTest0);
+    assertFalse(boolean0);
+}",0,
+project,0,test3332,"public void test3332() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    ProcessingInstructionTest processingInstructionTest0 = new ProcessingInstructionTest(""\""/KJU"");
+    boolean boolean0 = DOMNodePointer.testNode((Node) hTMLDocumentImpl0, (NodeTest) processingInstructionTest0);
+    assertFalse(boolean0);
+}",0,
+project,0,test3433,"public void test3433() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    ProcessingInstructionImpl processingInstructionImpl0 = new ProcessingInstructionImpl(hTMLDocumentImpl0, ""http://www.w3.org/2000/xmlns/"", ""http://www.w3.org/2000/xmlns/"");
+    Locale locale0 = Locale.GERMANY;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(processingInstructionImpl0, locale0);
+    QName qName0 = dOMNodePointer0.getName();
+    assertEquals(""http://www.w3.org/2000/xmlns/"", qName0.toString());
+}",0,assertNotNull(qName0.toString())
+project,0,test3434,"public void test3434() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    ProcessingInstructionImpl processingInstructionImpl0 = new ProcessingInstructionImpl(hTMLDocumentImpl0, ""http://www.w3.org/2000/xmlns/"", ""http://www.w3.org/2000/xmlns/"");
+    Locale locale0 = Locale.GERMANY;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(processingInstructionImpl0, locale0);
+    QName qName0 = dOMNodePointer0.getName();
+    assertEquals(""http://www.w3.org/2000/xmlns/"", qName0.getName());
+}",0,assertNotNull(qName0.getName())
+project,0,test3535,"public void test3535() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, (Locale) null);
+    String string0 = dOMNodePointer0.getNamespaceURI("""");
+    assertNull(string0);
+}",0,
+project,0,test3636,"public void test3636() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.PRC;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    String string0 = dOMNodePointer0.getNamespaceURI(""xml"");
+    assertEquals(""http://www.w3.org/XML/1998/namespace"", string0);
+}",0,
+project,0,test3637,"public void test3637() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.PRC;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    String string0 = dOMNodePointer0.getNamespaceURI(""xml"");
+    assertNotNull(string0);
+}",0,
+project,0,test3738,"public void test3738() throws Throwable {
+    Locale locale0 = Locale.CANADA;
+    TextImpl textImpl0 = new TextImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(textImpl0, locale0);
+    dOMNodePointer0.getNamespaceURI(""<<unknown namespace>>"");
+    String string0 = dOMNodePointer0.getNamespaceURI(""<<unknown namespace>>"");
+    assertNull(string0);
+}",0,
+project,0,test3839,"public void test3839() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.PRC;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    dOMNodePointer0.getDefaultNamespaceURI();
+    String string0 = dOMNodePointer0.getNamespaceURI((String) null);
+    assertNull(string0);
+}",0,
+project,0,test3940,"public void test3940() throws Throwable {
+    Locale locale0 = Locale.UK;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer((Node) null, locale0);
+    String string0 = dOMNodePointer0.getDefaultNamespaceURI();
+    assertNull(string0);
+}",0,
+project,0,test4041,"public void test4041() throws Throwable {
+    Locale locale0 = Locale.TAIWAN;
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    hTMLDocumentImpl0.getBody();
+    boolean boolean0 = dOMNodePointer0.isLeaf();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4142,"public void test4142() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.ENGLISH;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    boolean boolean0 = dOMNodePointer0.isLeaf();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4243,"public void test4243() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.US;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    dOMNodePointer0.getNamespaceURI(""http://www.w3.org/XML/1998/namespace"");
+    Object object0 = dOMNodePointer0.getValue();
+    assertEquals("""", object0);
+}",0,assertNotNull(object0)
+project,0,test4344,"public void test4344() throws Throwable {
+    Locale locale0 = Locale.JAPANESE;
+    TextImpl textImpl0 = new TextImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(textImpl0, locale0);
+    // Undeclared exception!
+    try {
+        dOMNodePointer0.setValue(locale0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.xerces.dom.CharacterDataImpl"", e);
+    }
+}",0,
+project,0,test4445,"public void test4445() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.ROOT;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    dOMNodePointer0.setValue(dOMNodePointer0);
+    assertFalse(dOMNodePointer0.isAttribute());
+}",0,assertTrue(dOMNodePointer0.isAttribute())
+project,0,test4546,"public void test4546() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    CDATASection cDATASection0 = hTMLDocumentImpl0.createCDATASection(""http://www.w3.org/XML/1998/namespace"");
+    Locale locale0 = Locale.FRENCH;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(cDATASection0, locale0);
+    // Undeclared exception!
+    try {
+        dOMNodePointer0.setValue("""");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.dom.DOMNodePointer"", e);
+    }
+}",0,
+project,0,test4647,"public void test4647() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    CDATASection cDATASection0 = hTMLDocumentImpl0.createCDATASection(""?^@{HBqi"");
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(cDATASection0, (Locale) null, ""?^@{HBqi"");
+    // Undeclared exception!
+    try {
+        dOMNodePointer0.setValue((Object) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.dom.DOMNodePointer"", e);
+    }
+}",0,
+project,0,test4849,"public void test4849() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, (Locale) null);
+    HTMLImageElementImpl hTMLImageElementImpl0 = new HTMLImageElementImpl(hTMLDocumentImpl0, ""<<unknown namespace>>"");
+    dOMNodePointer0.setValue(hTMLImageElementImpl0);
+    assertTrue(dOMNodePointer0.isNode());
+}",0,assertTrue(dOMNodePointer0.isNode())
+project,0,test4950,"public void test4950() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    ProcessingInstructionImpl processingInstructionImpl0 = new ProcessingInstructionImpl(hTMLDocumentImpl0, ""@v&y}^,`l+x}F"", ""@v&y}^,`l+x}F"");
+    Locale locale0 = Locale.US;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(processingInstructionImpl0, locale0);
+    // Undeclared exception!
+    try {
+        dOMNodePointer0.setValue(processingInstructionImpl0);
+        fail(""Expecting exception: DOMException"");
+    } catch (DOMException e) {
+        //
+        // HIERARCHY_REQUEST_ERR: An attempt was made to insert a node where it is not permitted.
+        //
+        verifyException(""org.apache.xerces.dom.NodeImpl"", e);
+    }
+}",0,
+project,0,test5051,"public void test5051() throws Throwable {
+    Locale locale0 = Locale.TRADITIONAL_CHINESE;
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    AttrNSImpl attrNSImpl0 = new AttrNSImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(attrNSImpl0, locale0);
+    hTMLDocumentImpl0.getDocumentElement();
+    // Undeclared exception!
+    try {
+        dOMNodePointer0.setValue(hTMLDocumentImpl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.xerces.dom.AttrImpl"", e);
+    }
+}",0,
+project,0,test5152,"public void test5152() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, (Locale) null, (String) null);
+    dOMNodePointer0.setValue((Object) null);
+    assertEquals(1, dOMNodePointer0.getLength());
+}",0,"assertEquals(1, dOMNodePointer0.getLength())"
+project,0,test5253,"public void test5253() throws Throwable {
+    CoreDocumentImpl coreDocumentImpl0 = new CoreDocumentImpl();
+    Locale locale0 = Locale.CANADA;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(coreDocumentImpl0, locale0);
+    // Undeclared exception!
+    try {
+        dOMNodePointer0.setValue(locale0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.dom.DOMNodePointer"", e);
+    }
+}",0,
+project,0,test5354,"public void test5354() throws Throwable {
+    CoreDocumentImpl coreDocumentImpl0 = new CoreDocumentImpl();
+    Locale locale0 = Locale.CANADA;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(coreDocumentImpl0, locale0);
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) locale0);
+    QName qName0 = dOMNodePointer0.getName();
+    // Undeclared exception!
+    try {
+        dOMNodePointer0.createChild(jXPathContext0, qName0, (-656));
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Factory is not set on the JXPathContext - cannot create path:
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.dom.DOMNodePointer"", e);
+    }
+}",0,
+project,0,test5455,"public void test5455() throws Throwable {
+    Locale locale0 = Locale.CHINA;
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) dOMNodePointer0);
+    QName qName0 = dOMNodePointer0.getName();
+    // Undeclared exception!
+    try {
+        dOMNodePointer0.createAttribute(jXPathContext0, qName0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Cannot create an attribute for path /@null, operation is not allowed for this type of node
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.NodePointer"", e);
+    }
+}",0,
+project,0,test5556,"public void test5556() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Element element0 = hTMLDocumentImpl0.getDocumentElement();
+    Locale locale0 = Locale.CHINA;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(element0, locale0);
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) hTMLDocumentImpl0);
+    QName qName0 = dOMNodePointer0.getName();
+    dOMNodePointer0.createAttribute(jXPathContext0, qName0);
+    assertEquals(""HTML"", qName0.toString());
+}",0,
+project,0,test5657,"public void test5657() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    HTMLAppletElementImpl hTMLAppletElementImpl0 = new HTMLAppletElementImpl(hTMLDocumentImpl0, ""[Jd'U?Tdjz' .]6F<W"");
+    Locale locale0 = Locale.forLanguageTag(""[Jd'U?Tdjz' .]6F<W"");
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLAppletElementImpl0, locale0, ""[Jd'U?Tdjz' .]6F<W"");
+    QName qName0 = new QName(""<<unknown namespace>>"", ""http://www.w3.org/2000/xmlns/"");
+    // Undeclared exception!
+    try {
+        dOMNodePointer0.createAttribute((JXPathContext) null, qName0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Unknown namespace prefix: <<unknown namespace>>
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.dom.DOMNodePointer"", e);
+    }
+}",0,
+project,0,test5758,"public void test5758() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    DocumentTypeImpl documentTypeImpl0 = new DocumentTypeImpl(hTMLDocumentImpl0, ""true()"", ""true()"", ""FRAMESET"");
+    WMLDocumentImpl wMLDocumentImpl0 = new WMLDocumentImpl(documentTypeImpl0);
+    WMLTimerElementImpl wMLTimerElementImpl0 = new WMLTimerElementImpl(wMLDocumentImpl0, ""FRAMESET"");
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) wMLTimerElementImpl0);
+    Locale locale0 = jXPathContext0.getLocale();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(wMLTimerElementImpl0, locale0);
+    QName qName0 = new QName(""M9M"");
+    dOMNodePointer0.createAttribute(jXPathContext0, qName0);
+    NodePointer nodePointer0 = dOMNodePointer0.createAttribute(jXPathContext0, qName0);
+    assertEquals(Integer.MIN_VALUE, NodePointer.WHOLE_COLLECTION);
+}",0,
+project,0,test5859,"public void test5859() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Element element0 = hTMLDocumentImpl0.getDocumentElement();
+    Locale locale0 = Locale.CHINA;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(element0, locale0);
+    dOMNodePointer0.remove();
+    assertEquals(Integer.MIN_VALUE, dOMNodePointer0.getIndex());
+}",0,"assertEquals(1, dOMNodePointer0.getIndex())"
+project,0,test5960,"public void test5960() throws Throwable {
+    DocumentImpl documentImpl0 = new DocumentImpl();
+    Locale locale0 = Locale.TRADITIONAL_CHINESE;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(documentImpl0, locale0);
+    // Undeclared exception!
+    try {
+        dOMNodePointer0.remove();
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Cannot remove root DOM node
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.dom.DOMNodePointer"", e);
+    }
+}",1,
+project,0,test6061,"public void test6061() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.CHINA;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0, ""M'e1MqNI'<emq^R*h)"");
+    String string0 = dOMNodePointer0.asPath();
+    assertEquals(""id('M&apos;e1MqNI&apos;<emq^R*h)')"", string0);
+}",0,
+project,0,test6162,"public void test6162() throws Throwable {
+    Locale locale0 = Locale.TRADITIONAL_CHINESE;
+    AttrNSImpl attrNSImpl0 = new AttrNSImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(attrNSImpl0, locale0);
+    String string0 = dOMNodePointer0.asPath();
+    assertEquals("""", string0);
+}",0,
+project,0,test6263,"public void test6263() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    CDATASection cDATASection0 = hTMLDocumentImpl0.createCDATASection(""http://www.w3.org/XML/1998/namespace"");
+    Locale locale0 = Locale.FRENCH;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(cDATASection0, locale0);
+    String string0 = dOMNodePointer0.asPath();
+    assertEquals(""/text()[1]"", string0);
+}",0,
+project,0,test6364,"public void test6364() throws Throwable {
+    Locale locale0 = Locale.ENGLISH;
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    EntityReference entityReference0 = hTMLDocumentImpl0.createEntityReference(""US"");
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(entityReference0, locale0);
+    String string0 = dOMNodePointer0.asPath();
+    assertEquals("""", string0);
+}",0,
+project,0,test6465,"public void test6465() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Entity entity0 = hTMLDocumentImpl0.createEntity(""xml"");
+    Locale locale0 = Locale.TRADITIONAL_CHINESE;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(entity0, locale0);
+    String string0 = dOMNodePointer0.asPath();
+    assertEquals("""", string0);
+}",0,
+project,0,test6566,"public void test6566() throws Throwable {
+    Locale locale0 = Locale.GERMANY;
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    ProcessingInstructionImpl processingInstructionImpl0 = new ProcessingInstructionImpl(hTMLDocumentImpl0, ""]}%W"", ""]}%W"");
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(processingInstructionImpl0, locale0);
+    String string0 = dOMNodePointer0.asPath();
+    assertEquals(""/processing-instruction(']}%W')[1]"", string0);
+}",0,
+project,0,test6667,"public void test6667() throws Throwable {
+    Locale locale0 = Locale.JAPAN;
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Comment comment0 = hTMLDocumentImpl0.createComment(""F_B4{kFdir"");
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(comment0, locale0);
+    String string0 = dOMNodePointer0.asPath();
+    assertEquals("""", string0);
+}",0,
+project,0,test6768,"public void test6768() throws Throwable {
+    DocumentFragmentImpl documentFragmentImpl0 = new DocumentFragmentImpl();
+    Locale locale0 = Locale.GERMANY;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(documentFragmentImpl0, locale0);
+    String string0 = dOMNodePointer0.asPath();
+    assertEquals("""", string0);
+}",0,
+project,0,test6869,"public void test6869() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    HTMLInputElementImpl hTMLInputElementImpl0 = new HTMLInputElementImpl(hTMLDocumentImpl0, ""~5`1xS"");
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) hTMLInputElementImpl0);
+    QName qName0 = new QName(""~5`1xS"", ""~5`1xS"");
+    Locale locale0 = new Locale(""~5`1xS"", ""~5`1xS"");
+    NodePointer nodePointer0 = NodePointer.newNodePointer(qName0, qName0, locale0);
+    NodePointer nodePointer1 = NodePointer.newChildNodePointer(nodePointer0, qName0, hTMLInputElementImpl0);
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(nodePointer1, hTMLInputElementImpl0);
+    // Undeclared exception!
+    try {
+        dOMNodePointer0.createChild(jXPathContext0, qName0, Integer.MIN_VALUE);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Factory is not set on the JXPathContext - cannot create path: /~5`1XS[1]
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.dom.DOMNodePointer"", e);
+    }
+}",0,
+project,0,test6970,"public void test6970() throws Throwable {
+    QName qName0 = new QName(""Cannot create a relative context for a non-existent node: "", ""Cannot create a relative context for a non-existent node: "");
+    VariablePointer variablePointer0 = new VariablePointer(qName0);
+    PSVIDocumentImpl pSVIDocumentImpl0 = new PSVIDocumentImpl();
+    PSVIElementNSImpl pSVIElementNSImpl0 = new PSVIElementNSImpl(pSVIDocumentImpl0, ""Cannot create a relative context for a non-existent node: "", ""Cannot create a relative context for a non-existent node: "", ""<<unknown namespace>>"");
+    NodePointer nodePointer0 = NodePointer.newChildNodePointer(variablePointer0, qName0, pSVIElementNSImpl0);
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(nodePointer0, pSVIElementNSImpl0);
+    // Undeclared exception!
+    try {
+        dOMNodePointer0.asPath();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.dom.DOMNodePointer"", e);
+    }
+}",0,
+project,0,test7071,"public void test7071() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.ITALY;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0, ""Cannot ;reaE a reativU conte\""t for a n9n-ee8stent node: "");
+    String string0 = dOMNodePointer0.asPath();
+    assertEquals(""id('Cannot ;reaE a reativU conte&quot;t for a n9n-ee8stent node: ')"", string0);
+}",0,
+project,0,test7172,"public void test7172() throws Throwable {
+    Locale locale0 = Locale.GERMANY;
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    boolean boolean0 = dOMNodePointer0.equals(dOMNodePointer0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test7273,"public void test7273() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, (Locale) null);
+    HTMLImageElementImpl hTMLImageElementImpl0 = new HTMLImageElementImpl(hTMLDocumentImpl0, ""<<unknown namespace>>"");
+    boolean boolean0 = dOMNodePointer0.equals(hTMLImageElementImpl0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test7374,"public void test7374() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.ENGLISH;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    DOMNodePointer dOMNodePointer1 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    boolean boolean0 = dOMNodePointer0.equals(dOMNodePointer1);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test7475,"public void test7475() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.ENGLISH;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    HTMLDocumentImpl hTMLDocumentImpl1 = new HTMLDocumentImpl();
+    DOMNodePointer dOMNodePointer1 = new DOMNodePointer(hTMLDocumentImpl1, locale0);
+    boolean boolean0 = dOMNodePointer0.equals(dOMNodePointer1);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test7576,"public void test7576() throws Throwable {
+    PSVIDocumentImpl pSVIDocumentImpl0 = new PSVIDocumentImpl();
+    PSVIElementNSImpl pSVIElementNSImpl0 = new PSVIElementNSImpl(pSVIDocumentImpl0, ""Cannot create a relative context for a non-existent node: "", ""Cannot create a relative context for a non-existent node: "", ""<<unknown namespace>>"");
+    String string0 = DOMNodePointer.getPrefix(pSVIElementNSImpl0);
+    assertEquals(""Cannot create a relative context for a non-existent node"", string0);
+}",0,
+project,0,test7677,"public void test7677() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, (Locale) null);
+    String string0 = dOMNodePointer0.getNamespaceURI();
+    assertNull(string0);
+}",0,
+project,0,test7778,"public void test7778() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Comment comment0 = hTMLDocumentImpl0.createComment(""+M,e}MY3.6Qn,g"");
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(comment0, (Locale) null);
+    Object object0 = dOMNodePointer0.getValue();
+    assertEquals(""+M,e}MY3.6Qn,g"", object0);
+}",0,
+project,0,test7879,"public void test7879() throws Throwable {
+    Locale locale0 = Locale.PRC;
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Comment comment0 = hTMLDocumentImpl0.createComment((String) null);
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(comment0, locale0);
+    Object object0 = dOMNodePointer0.getValue();
+    assertEquals("""", object0);
+}",0,
+project,0,test7980,"public void test7980() throws Throwable {
+    TextImpl textImpl0 = new TextImpl();
+    Locale locale0 = Locale.US;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(textImpl0, locale0);
+    Object object0 = dOMNodePointer0.getValue();
+    assertEquals("""", object0);
+}",0,
+project,0,test8081,"public void test8081() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.CHINESE;
+    CDATASection cDATASection0 = hTMLDocumentImpl0.createCDATASection(""HTMLTableCellElementImpl"");
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(cDATASection0, locale0, ""HTMLTableCellElementImpl"");
+    Object object0 = dOMNodePointer0.getValue();
+    assertEquals(""HTMLTableCellElementImpl"", object0);
+}",0,assertNotNull(object0)
+project,0,test8182,"public void test8182() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.TAIWAN;
+    ProcessingInstructionImpl processingInstructionImpl0 = new ProcessingInstructionImpl(hTMLDocumentImpl0, (String) null, (String) null);
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(processingInstructionImpl0, locale0);
+    Object object0 = dOMNodePointer0.getValue();
+    assertEquals("""", object0);
+}",0,assertNotNull(object0)
+project,0,test8283,"public void test8283() throws Throwable {
+    Locale locale0 = Locale.GERMANY;
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    ProcessingInstructionImpl processingInstructionImpl0 = new ProcessingInstructionImpl(hTMLDocumentImpl0, ""xml:lang"", ""xml:lang"");
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(processingInstructionImpl0, locale0);
+    Object object0 = dOMNodePointer0.getValue();
+    assertEquals(""xml:lang"", object0);
+}",0,assertNotNull(object0)
+project,0,test8384,"public void test8384() throws Throwable {
+    TextImpl textImpl0 = new TextImpl();
+    Locale locale0 = Locale.US;
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) textImpl0);
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(textImpl0, locale0, ""node()"");
+    // Undeclared exception!
+    try {
+        dOMNodePointer0.getPointerByID(jXPathContext0, ""node()"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.dom.DOMNodePointer"", e);
+    }
+}",0,
+project,0,test8485,"public void test8485() throws Throwable {
+    Locale locale0 = Locale.CHINA;
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) dOMNodePointer0);
+    NullPointer nullPointer0 = (NullPointer) dOMNodePointer0.getPointerByID(jXPathContext0, ""<<unknown namespace>>"");
+    assertFalse(nullPointer0.isContainer());
+}",0,
+project,0,test8586,"public void test8586() throws Throwable {
+    Locale locale0 = Locale.UK;
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    AttrNSImpl attrNSImpl0 = new AttrNSImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(attrNSImpl0, locale0);
+    DOMNodePointer dOMNodePointer1 = new DOMNodePointer(dOMNodePointer0, hTMLDocumentImpl0);
+    int int0 = dOMNodePointer0.compareChildNodePointers(dOMNodePointer1, dOMNodePointer0);
+    assertEquals(1, int0);
+}",0,
+project,0,test8687,"public void test8687() throws Throwable {
+    Locale locale0 = Locale.FRENCH;
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    AttrNSImpl attrNSImpl0 = new AttrNSImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(attrNSImpl0, locale0);
+    HTMLElement hTMLElement0 = hTMLDocumentImpl0.getBody();
+    DOMNodePointer dOMNodePointer1 = new DOMNodePointer(dOMNodePointer0, hTMLElement0);
+    int int0 = dOMNodePointer0.compareChildNodePointers(dOMNodePointer0, dOMNodePointer1);
+    assertEquals((-1), int0);
+}",0,
+project,0,test8788,"public void test8788() throws Throwable {
+    Locale locale0 = Locale.TAIWAN;
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    HTMLElement hTMLElement0 = hTMLDocumentImpl0.getBody();
+    DOMNodePointer dOMNodePointer1 = new DOMNodePointer(dOMNodePointer0, hTMLElement0);
+    int int0 = dOMNodePointer0.compareChildNodePointers(dOMNodePointer1, dOMNodePointer0);
+    assertEquals(0, int0);
+}",0,
+project,0,test8889,"public void test8889() throws Throwable {
+    DeferredDocumentImpl deferredDocumentImpl0 = new DeferredDocumentImpl(true, true);
+    DocumentTypeImpl documentTypeImpl0 = new DocumentTypeImpl(deferredDocumentImpl0, ""-fuH]"");
+    DocumentImpl documentImpl0 = new DocumentImpl(documentTypeImpl0);
+    Locale locale0 = new Locale(""-fuH]"", ""-fuH]"");
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(documentImpl0, locale0, ""-fuH]"");
+    DOMNodePointer dOMNodePointer1 = new DOMNodePointer(documentTypeImpl0, locale0, ""http://www.w3.org/XML/1998/namespace"");
+    DOMNodePointer dOMNodePointer2 = new DOMNodePointer(deferredDocumentImpl0, locale0);
+    int int0 = dOMNodePointer0.compareChildNodePointers(dOMNodePointer1, dOMNodePointer2);
+    assertEquals((-1), int0);
+}",0,

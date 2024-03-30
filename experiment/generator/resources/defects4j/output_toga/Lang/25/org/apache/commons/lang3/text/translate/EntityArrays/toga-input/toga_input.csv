@@ -1,0 +1,135 @@
+focal_method,test_prefix,docstring
+"public static String[][] invert(String[][] array) {
+    String[][] newarray = new String[array.length][2];
+    for (int i = 0; i < array.length; i++) {
+        newarray[i][0] = array[i][1];
+        newarray[i][1] = array[i][0];
+    }
+    return newarray;
+}","public void test000() throws Throwable {
+    String[][] stringArray0 = new String[0][0];
+    String[][] stringArray1 = EntityArrays.invert(stringArray0);
+    assertNotSame(stringArray1, stringArray0);
+}","/**
+ * Used to invert an escape array into an unescape array
+ * @param array String[][] to be inverted
+ * @return String[][] inverted array
+ */"
+"public static String[][] invert(String[][] array) {
+    String[][] newarray = new String[array.length][2];
+    for (int i = 0; i < array.length; i++) {
+        newarray[i][0] = array[i][1];
+        newarray[i][1] = array[i][0];
+    }
+    return newarray;
+}","public void test011() throws Throwable {
+    // Undeclared exception!
+    try {
+        EntityArrays.invert((String[][]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang3.text.translate.EntityArrays"", e);
+    }
+}","/**
+ * Used to invert an escape array into an unescape array
+ * @param array String[][] to be inverted
+ * @return String[][] inverted array
+ */"
+"public static String[][] invert(String[][] array) {
+    String[][] newarray = new String[array.length][2];
+    for (int i = 0; i < array.length; i++) {
+        newarray[i][0] = array[i][1];
+        newarray[i][1] = array[i][0];
+    }
+    return newarray;
+}","public void test022() throws Throwable {
+    String[][] stringArray0 = new String[8][1];
+    // Undeclared exception!
+    try {
+        EntityArrays.invert(stringArray0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 1
+        //
+        verifyException(""org.apache.commons.lang3.text.translate.EntityArrays"", e);
+    }
+}","/**
+ * Used to invert an escape array into an unescape array
+ * @param array String[][] to be inverted
+ * @return String[][] inverted array
+ */"
+"public static String[][] JAVA_CTRL_CHARS_UNESCAPE() {
+    return JAVA_CTRL_CHARS_UNESCAPE.clone();
+}","public void test033() throws Throwable {
+    String[][] stringArray0 = EntityArrays.JAVA_CTRL_CHARS_UNESCAPE();
+    assertEquals(5, stringArray0.length);
+}",""
+"// http://www.w3.org/TR/REC-html40/sgml/entities.html
+public static String[][] HTML40_EXTENDED_ESCAPE() {
+    return HTML40_EXTENDED_ESCAPE.clone();
+}","public void test044() throws Throwable {
+    String[][] stringArray0 = EntityArrays.HTML40_EXTENDED_ESCAPE();
+    assertEquals(151, stringArray0.length);
+}",""
+"public static String[][] ISO8859_1_UNESCAPE() {
+    return ISO8859_1_UNESCAPE.clone();
+}","public void test055() throws Throwable {
+    String[][] stringArray0 = EntityArrays.ISO8859_1_UNESCAPE();
+    assertEquals(96, stringArray0.length);
+}",""
+"public static String[][] APOS_ESCAPE() {
+    return APOS_ESCAPE.clone();
+}","public void test066() throws Throwable {
+    String[][] stringArray0 = EntityArrays.APOS_ESCAPE();
+    assertEquals(1, stringArray0.length);
+}",""
+"public static String[][] invert(String[][] array) {
+    String[][] newarray = new String[array.length][2];
+    for (int i = 0; i < array.length; i++) {
+        newarray[i][0] = array[i][1];
+        newarray[i][1] = array[i][0];
+    }
+    return newarray;
+}","public void test088() throws Throwable {
+    String[][] stringArray0 = EntityArrays.HTML40_EXTENDED_UNESCAPE();
+    String[][] stringArray1 = EntityArrays.invert(stringArray0);
+    assertNotSame(stringArray1, stringArray0);
+}","/**
+ * Used to invert an escape array into an unescape array
+ * @param array String[][] to be inverted
+ * @return String[][] inverted array
+ */"
+"public static String[][] ISO8859_1_ESCAPE() {
+    return ISO8859_1_ESCAPE.clone();
+}","public void test099() throws Throwable {
+    String[][] stringArray0 = EntityArrays.ISO8859_1_ESCAPE();
+    assertEquals(96, stringArray0.length);
+}",""
+"public static String[][] APOS_UNESCAPE() {
+    return APOS_UNESCAPE.clone();
+}","public void test1010() throws Throwable {
+    String[][] stringArray0 = EntityArrays.APOS_UNESCAPE();
+    assertEquals(1, stringArray0.length);
+}",""
+"public static String[][] BASIC_UNESCAPE() {
+    return BASIC_UNESCAPE.clone();
+}","public void test1111() throws Throwable {
+    String[][] stringArray0 = EntityArrays.BASIC_UNESCAPE();
+    assertEquals(4, stringArray0.length);
+}",""
+"public static String[][] JAVA_CTRL_CHARS_ESCAPE() {
+    return JAVA_CTRL_CHARS_ESCAPE.clone();
+}","public void test1212() throws Throwable {
+    String[][] stringArray0 = EntityArrays.JAVA_CTRL_CHARS_ESCAPE();
+    assertEquals(5, stringArray0.length);
+}",""
+"public static String[][] BASIC_ESCAPE() {
+    return BASIC_ESCAPE.clone();
+}","public void test1313() throws Throwable {
+    String[][] stringArray0 = EntityArrays.BASIC_ESCAPE();
+    assertEquals(4, stringArray0.length);
+}",""

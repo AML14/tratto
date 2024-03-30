@@ -1,0 +1,1081 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.RANGE_ERROR_TYPE;
+    ObjectType objectType0 = jSTypeRegistry0.getNativeObjectType(jSTypeNative0);
+    IndexedType indexedType0 = new IndexedType(jSTypeRegistry0, objectType0, objectType0);
+    FunctionType functionType0 = indexedType0.getConstructor();
+    // Undeclared exception!
+    try {
+        functionType0.visit((Visitor<EnumType>) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.rhino.jstype.FunctionType"", e);
+    }
+}",0,
+project,0,test011,"public void test011() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithNewThisType(noResolvedType0, noResolvedType0);
+    functionType0.toString();
+    assertTrue(noResolvedType0.hasCachedValues());
+}",0,
+project,0,test012,"public void test012() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithNewThisType(noResolvedType0, noResolvedType0);
+    functionType0.toString();
+    assertFalse(noResolvedType0.isInterface());
+}",0,assertTrue(noResolvedType0.isInterface())
+project,0,test023,"public void test023() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    VoidType voidType0 = new VoidType(jSTypeRegistry0);
+    NoType noType0 = (NoType) voidType0.restrictByNotNullOrUndefined();
+    // Undeclared exception!
+    try {
+        noType0.hasEqualCallType((FunctionType) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.rhino.jstype.FunctionType"", e);
+    }
+}",0,
+project,0,test034,"public void test034() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoType noType0 = new NoType(jSTypeRegistry0);
+    noType0.isReturnTypeInferred();
+    assertFalse(noType0.isInterface());
+}",0,
+project,0,test045,"public void test045() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    noResolvedType0.isInstanceType();
+    assertFalse(noResolvedType0.isInterface());
+}",0,assertTrue(noResolvedType0.isInterface())
+project,0,test056,"public void test056() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoType noType0 = new NoType(jSTypeRegistry0);
+    boolean boolean0 = noType0.canBeCalled();
+    assertFalse(noType0.isInterface());
+}",0,assertFalse(noType0.isInterface())
+project,0,test057,"public void test057() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoType noType0 = new NoType(jSTypeRegistry0);
+    boolean boolean0 = noType0.canBeCalled();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test068,"public void test068() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    FunctionType functionType0 = jSTypeRegistry0.createInterfaceType(""u8LcDMI'F"", (Node) null);
+    LinkedList<JSType> linkedList0 = new LinkedList<JSType>();
+    FunctionType functionType1 = jSTypeRegistry0.createFunctionType((JSType) functionType0, (List<JSType>) linkedList0);
+    assertTrue(functionType0.hasCachedValues());
+}",0,assertFalse(functionType0.hasCachedValues())
+project,0,test069,"public void test069() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    FunctionType functionType0 = jSTypeRegistry0.createInterfaceType(""u8LcDMI'F"", (Node) null);
+    LinkedList<JSType> linkedList0 = new LinkedList<JSType>();
+    FunctionType functionType1 = jSTypeRegistry0.createFunctionType((JSType) functionType0, (List<JSType>) linkedList0);
+    boolean boolean0 = functionType1.isSubtype(functionType0);
+    assertFalse(functionType1.hasInstanceType());
+}",0,assertFalse(functionType1.hasInstanceType())
+project,0,test0610,"public void test0610() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    FunctionType functionType0 = jSTypeRegistry0.createInterfaceType(""u8LcDMI'F"", (Node) null);
+    LinkedList<JSType> linkedList0 = new LinkedList<JSType>();
+    FunctionType functionType1 = jSTypeRegistry0.createFunctionType((JSType) functionType0, (List<JSType>) linkedList0);
+    boolean boolean0 = functionType1.isSubtype(functionType0);
+    assertFalse(functionType1.equals((Object) functionType0));
+}",0,
+project,0,test0611,"public void test0611() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    FunctionType functionType0 = jSTypeRegistry0.createInterfaceType(""u8LcDMI'F"", (Node) null);
+    LinkedList<JSType> linkedList0 = new LinkedList<JSType>();
+    FunctionType functionType1 = jSTypeRegistry0.createFunctionType((JSType) functionType0, (List<JSType>) linkedList0);
+    boolean boolean0 = functionType1.isSubtype(functionType0);
+    assertTrue(boolean0);
+}",0,
+project,0,test0612,"public void test0612() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    FunctionType functionType0 = jSTypeRegistry0.createInterfaceType(""u8LcDMI'F"", (Node) null);
+    LinkedList<JSType> linkedList0 = new LinkedList<JSType>();
+    FunctionType functionType1 = jSTypeRegistry0.createFunctionType((JSType) functionType0, (List<JSType>) linkedList0);
+    boolean boolean0 = functionType1.isSubtype(functionType0);
+    assertTrue(functionType0.isInterface());
+}",0,assertTrue(functionType0.isInterface())
+project,0,test0713,"public void test0713() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    noResolvedType0.getExtendedInterfacesCount();
+    assertFalse(noResolvedType0.isInterface());
+}",0,
+project,0,test0814,"public void test0814() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    Node node0 = Node.newNumber((double) 0);
+    noResolvedType0.setSource(node0);
+    assertFalse(noResolvedType0.isInterface());
+}",0,assertFalse(noResolvedType0.isInterface())
+project,0,test0915,"public void test0915() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    VoidType voidType0 = new VoidType(jSTypeRegistry0);
+    JSType[] jSTypeArray0 = new JSType[0];
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) voidType0, jSTypeArray0);
+    functionType0.getLeastSupertype(functionType0);
+    assertFalse(functionType0.hasCachedValues());
+}",0,assertTrue(functionType0.hasCachedValues())
+project,0,test0916,"public void test0916() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    VoidType voidType0 = new VoidType(jSTypeRegistry0);
+    JSType[] jSTypeArray0 = new JSType[0];
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) voidType0, jSTypeArray0);
+    functionType0.getLeastSupertype(functionType0);
+    assertFalse(functionType0.hasInstanceType());
+}",0,assertTrue(functionType0.hasInstanceType())
+project,0,test1017,"public void test1017() throws Throwable {
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null, false);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    List<FunctionType> list0 = noResolvedType0.getSubTypes();
+    assertNull(list0);
+}",0,assertNotNull(list0)
+project,0,test1118,"public void test1118() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    Node node0 = Node.newString(105, ""E $ToxbTxzb 1OZiEZ{"");
+    FunctionType functionType0 = jSTypeRegistry0.createConstructorType(""Not declared as a type name"", node0, node0, (JSType) noResolvedType0);
+    assertFalse(functionType0.isOrdinaryFunction());
+}",0,assertTrue(functionType0.isOrdinaryFunction())
+project,0,test1219,"public void test1219() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    LinkedList<JSType> linkedList0 = new LinkedList<JSType>();
+    Node node0 = jSTypeRegistry0.createParametersWithVarArgs((List<JSType>) linkedList0);
+    // Undeclared exception!
+    try {
+        jSTypeRegistry0.createConstructorType(""Not declared as a constructor"", node0, node0, (JSType) noResolvedType0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",0,
+project,0,test1320,"public void test1320() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    Node node0 = new Node(105);
+    // Undeclared exception!
+    try {
+        jSTypeRegistry0.createInterfaceType((String) null, node0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",0,
+project,0,test1421,"public void test1421() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    Node node0 = Node.newString(""Unknown class name"");
+    // Undeclared exception!
+    try {
+        FunctionType.forInterface(jSTypeRegistry0, ""Not declared as a type name"", node0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",0,
+project,0,test1522,"public void test1522() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    FunctionType functionType0 = jSTypeRegistry0.createInterfaceType(""Unknown class name"", (Node) null);
+    assertTrue(functionType0.hasCachedValues());
+}",0,assertTrue(functionType0.hasCachedValues())
+project,0,test1523,"public void test1523() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    FunctionType functionType0 = jSTypeRegistry0.createInterfaceType(""Unknown class name"", (Node) null);
+    JSType jSType0 = jSTypeRegistry0.createNullableType(functionType0);
+    JSType jSType1 = functionType0.getLeastSupertype(jSType0);
+    assertSame(jSType1, jSType0);
+}",0,
+project,0,test1524,"public void test1524() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    FunctionType functionType0 = jSTypeRegistry0.createInterfaceType(""Unknown class name"", (Node) null);
+    JSType jSType0 = jSTypeRegistry0.createNullableType(functionType0);
+    JSType jSType1 = functionType0.getLeastSupertype(jSType0);
+    assertTrue(functionType0.hasInstanceType());
+}",0,
+project,0,test1525,"public void test1525() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    FunctionType functionType0 = jSTypeRegistry0.createInterfaceType(""Unknown class name"", (Node) null);
+    JSType jSType0 = jSTypeRegistry0.createNullableType(functionType0);
+    JSType jSType1 = functionType0.getLeastSupertype(jSType0);
+    assertFalse(functionType0.isConstructor());
+}",0,assertTrue(functionType0.isConstructor())
+project,0,test1626,"public void test1626() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JSType[] jSTypeArray0 = new JSType[0];
+    JSTypeNative jSTypeNative0 = JSTypeNative.U2U_CONSTRUCTOR_TYPE;
+    ObjectType objectType0 = jSTypeRegistry0.getNativeObjectType(jSTypeNative0);
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) objectType0, jSTypeArray0);
+    FunctionType functionType1 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) functionType0, jSTypeArray0);
+    JSType jSType0 = functionType0.getLeastSupertype(functionType1);
+    assertTrue(functionType1.hasCachedValues());
+}",0,assertTrue(functionType1.hasCachedValues())
+project,0,test1627,"public void test1627() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JSType[] jSTypeArray0 = new JSType[0];
+    JSTypeNative jSTypeNative0 = JSTypeNative.U2U_CONSTRUCTOR_TYPE;
+    ObjectType objectType0 = jSTypeRegistry0.getNativeObjectType(jSTypeNative0);
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) objectType0, jSTypeArray0);
+    FunctionType functionType1 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) functionType0, jSTypeArray0);
+    JSType jSType0 = functionType0.getLeastSupertype(functionType1);
+    assertTrue(jSType0.equals((Object) functionType0));
+}",0,
+project,0,test1728,"public void test1728() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    LinkedList<ObjectType> linkedList0 = new LinkedList<ObjectType>();
+    linkedList0.add((ObjectType) noResolvedType0);
+    noResolvedType0.setImplementedInterfaces(linkedList0);
+    boolean boolean0 = noResolvedType0.hasImplementedInterfaces();
+    assertFalse(noResolvedType0.hasCachedValues());
+}",0,
+project,0,test1729,"public void test1729() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    LinkedList<ObjectType> linkedList0 = new LinkedList<ObjectType>();
+    linkedList0.add((ObjectType) noResolvedType0);
+    noResolvedType0.setImplementedInterfaces(linkedList0);
+    boolean boolean0 = noResolvedType0.hasImplementedInterfaces();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test1830,"public void test1830() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    FunctionType functionType0 = FunctionType.forInterface(jSTypeRegistry0, ""com.google.common.base.Predicates$CompositionPredicate"", (Node) null);
+    boolean boolean0 = functionType0.hasImplementedInterfaces();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test1831,"public void test1831() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    FunctionType functionType0 = FunctionType.forInterface(jSTypeRegistry0, ""com.google.common.base.Predicates$CompositionPredicate"", (Node) null);
+    boolean boolean0 = functionType0.hasImplementedInterfaces();
+    assertFalse(functionType0.isConstructor());
+}",0,assertTrue(functionType0.isConstructor())
+project,0,test1932,"public void test1932() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""Not declared as a type name"");
+    int int0 = errorFunctionType0.getMinArguments();
+    assertEquals(0, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test2033,"public void test2033() throws Throwable {
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    int int0 = noResolvedType0.getMinArguments();
+    assertEquals(0, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test2134,"public void test2134() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    JSType[] jSTypeArray0 = new JSType[2];
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionType((JSType) unionType0, false, jSTypeArray0);
+    int int0 = functionType0.getMinArguments();
+    assertEquals(2, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test2135,"public void test2135() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    JSType[] jSTypeArray0 = new JSType[2];
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionType((JSType) unionType0, false, jSTypeArray0);
+    int int0 = functionType0.getMinArguments();
+    assertTrue(functionType0.isOrdinaryFunction());
+}",0,
+project,0,test2236,"public void test2236() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, "":c"");
+    int int0 = errorFunctionType0.getMaxArguments();
+    assertEquals(3, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test2337,"public void test2337() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    LinkedList<JSType> linkedList0 = new LinkedList<JSType>();
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionType((JSType) null, (List<JSType>) linkedList0);
+    int int0 = functionType0.getMaxArguments();
+    assertFalse(functionType0.hasInstanceType());
+}",0,
+project,0,test2338,"public void test2338() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    LinkedList<JSType> linkedList0 = new LinkedList<JSType>();
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionType((JSType) null, (List<JSType>) linkedList0);
+    int int0 = functionType0.getMaxArguments();
+    assertEquals(0, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test2439,"public void test2439() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    int int0 = noResolvedType0.getMaxArguments();
+    assertEquals(Integer.MAX_VALUE, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test2540,"public void test2540() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, "":c"");
+    Node node0 = new Node(0, 0, 0);
+    ArrowType arrowType0 = new ArrowType(jSTypeRegistry0, node0, errorFunctionType0);
+    boolean boolean0 = errorFunctionType0.defineInferredProperty(""prototype"", arrowType0, node0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2641,"public void test2641() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    noResolvedType0.hasImplementedInterfaces();
+    noResolvedType0.getOwnPropertyNames();
+    assertTrue(noResolvedType0.hasCachedValues());
+}",0,
+project,0,test2843,"public void test2843() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    TemplateType templateType0 = new TemplateType(jSTypeRegistry0, ""Named type with empty name component"");
+    noResolvedType0.setPrototypeBasedOn(templateType0);
+    ObjectType objectType0 = noResolvedType0.getTopMostDefiningType(""Not declared as a type name"");
+    assertFalse(objectType0.isNoType());
+}",0,assertTrue(objectType0.isNoType())
+project,0,test2944,"public void test2944() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    FunctionType functionType0 = jSTypeRegistry0.createInterfaceType(""Unknown class name"", (Node) null);
+    functionType0.setPrototypeBasedOn(noResolvedType0);
+    assertTrue(noResolvedType0.isFunctionPrototypeType());
+}",0,assertTrue(noResolvedType0.isFunctionPrototypeType())
+project,0,test2945,"public void test2945() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    FunctionType functionType0 = jSTypeRegistry0.createInterfaceType(""Unknown class name"", (Node) null);
+    functionType0.setPrototypeBasedOn(noResolvedType0);
+    functionType0.getTopMostDefiningType(""Not declared as a constructor"");
+    assertFalse(functionType0.isConstructor());
+}",0,assertTrue(functionType0.isConstructor())
+project,0,test3046,"public void test3046() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    IndexedType indexedType0 = new IndexedType(jSTypeRegistry0, noResolvedType0, noResolvedType0);
+    FunctionType functionType0 = jSTypeRegistry0.createInterfaceType(""Named type with empty name component"", (Node) null);
+    functionType0.setPrototypeBasedOn(indexedType0);
+    assertFalse(functionType0.isConstructor());
+}",0,assertTrue(functionType0.isConstructor())
+project,0,test3147,"public void test3147() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoObjectType noObjectType0 = new NoObjectType(jSTypeRegistry0);
+    boolean boolean0 = noObjectType0.setPrototype((PrototypeObjectType) null);
+    assertFalse(boolean0);
+}",0,
+project,0,test3248,"public void test3248() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    boolean boolean0 = noResolvedType0.setPrototype(noResolvedType0);
+    assertFalse(boolean0);
+}",0,
+project,0,test3349,"public void test3349() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.GREATEST_FUNCTION_TYPE;
+    FunctionType functionType0 = (FunctionType) jSTypeRegistry0.getNativeObjectType(jSTypeNative0);
+    functionType0.getAllImplementedInterfaces();
+    assertFalse(functionType0.isConstructor());
+}",0,assertTrue(functionType0.isConstructor())
+project,0,test3450,"public void test3450() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    LinkedList<ObjectType> linkedList0 = new LinkedList<ObjectType>();
+    linkedList0.add((ObjectType) noResolvedType0);
+    noResolvedType0.setImplementedInterfaces(linkedList0);
+    Iterable<ObjectType> iterable0 = noResolvedType0.getAllImplementedInterfaces();
+    assertNotNull(iterable0);
+}",0,
+project,0,test3551,"public void test3551() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    Iterable<ObjectType> iterable0 = noResolvedType0.getAllExtendedInterfaces();
+    assertNotNull(iterable0);
+}",0,
+project,0,test3652,"public void test3652() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    LinkedList<ObjectType> linkedList0 = new LinkedList<ObjectType>();
+    try {
+        noResolvedType0.setExtendedInterfaces(linkedList0);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.rhino.jstype.FunctionType"", e);
+    }
+}",1,
+project,0,test3753,"public void test3753() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    FunctionType functionType0 = jSTypeRegistry0.createInterfaceType(""Unknown class name"", (Node) null);
+    LinkedList<ObjectType> linkedList0 = new LinkedList<ObjectType>();
+    functionType0.setExtendedInterfaces(linkedList0);
+    assertFalse(functionType0.isNoResolvedType());
+}",0,assertTrue(functionType0.isNoResolvedType())
+project,0,test3854,"public void test3854() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""call"");
+    errorFunctionType0.getPropertyType(""call"");
+    errorFunctionType0.getPropertyType(""call"");
+    assertTrue(errorFunctionType0.hasCachedValues());
+}",0,assertTrue(errorFunctionType0.hasCachedValues())
+project,0,test3955,"public void test3955() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""0"");
+    errorFunctionType0.getPropertyType(""apply"");
+    assertTrue(errorFunctionType0.hasCachedValues());
+}",0,assertTrue(errorFunctionType0.hasCachedValues())
+project,0,test4056,"public void test4056() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""Not declared as a type name"");
+    Node node0 = Node.newString(0, ""Not declared as a type name"", 1, 0);
+    boolean boolean0 = errorFunctionType0.defineProperty(""prototype"", noResolvedType0, false, node0);
+    assertTrue(errorFunctionType0.hasCachedValues());
+}",0,assertFalse(errorFunctionType0.hasCachedValues())
+project,0,test4057,"public void test4057() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""Not declared as a type name"");
+    Node node0 = Node.newString(0, ""Not declared as a type name"", 1, 0);
+    boolean boolean0 = errorFunctionType0.defineProperty(""prototype"", noResolvedType0, false, node0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4158,"public void test4158() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""Not declared as a type name"");
+    errorFunctionType0.setPrototype(noResolvedType0);
+    Node node0 = Node.newString(""prototype"", 0, 0);
+    boolean boolean0 = errorFunctionType0.defineProperty(""prototype"", noResolvedType0, true, node0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4259,"public void test4259() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    NoResolvedType noResolvedType1 = (NoResolvedType) noResolvedType0.getLeastSupertype(noResolvedType0);
+    assertFalse(noResolvedType1.hasCachedValues());
+}",0,assertTrue(noResolvedType1.hasCachedValues())
+project,0,test4360,"public void test4360() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""@Q%JOg76D=8}"");
+    JSType[] jSTypeArray0 = new JSType[0];
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) errorFunctionType0, jSTypeArray0);
+    JSType jSType0 = functionType0.getLeastSupertype(errorFunctionType0);
+    jSType0.getTypesUnderShallowEquality(functionType0);
+    assertTrue(errorFunctionType0.hasCachedValues());
+}",0,assertTrue(errorFunctionType0.hasCachedValues())
+project,0,test4361,"public void test4361() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""@Q%JOg76D=8}"");
+    JSType[] jSTypeArray0 = new JSType[0];
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) errorFunctionType0, jSTypeArray0);
+    JSType jSType0 = functionType0.getLeastSupertype(errorFunctionType0);
+    jSType0.getTypesUnderShallowEquality(functionType0);
+    assertFalse(errorFunctionType0.isOrdinaryFunction());
+}",0,assertTrue(errorFunctionType0.isOrdinaryFunction())
+project,0,test4462,"public void test4462() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    TemplateType templateType0 = new TemplateType(jSTypeRegistry0, ""Unknown class name"");
+    JSType[] jSTypeArray0 = new JSType[1];
+    jSTypeArray0[0] = (JSType) templateType0;
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) templateType0, jSTypeArray0);
+    FunctionType functionType1 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) noResolvedType0, jSTypeArray0);
+    functionType1.getLeastSupertype(functionType0);
+    assertFalse(functionType1.isConstructor());
+}",0,assertFalse(functionType1.isConstructor())
+project,0,test4463,"public void test4463() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    TemplateType templateType0 = new TemplateType(jSTypeRegistry0, ""Unknown class name"");
+    JSType[] jSTypeArray0 = new JSType[1];
+    jSTypeArray0[0] = (JSType) templateType0;
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) templateType0, jSTypeArray0);
+    FunctionType functionType1 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) noResolvedType0, jSTypeArray0);
+    functionType1.getLeastSupertype(functionType0);
+    assertFalse(functionType1.hasCachedValues());
+}",0,assertTrue(functionType1.hasCachedValues())
+project,0,test4464,"public void test4464() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    TemplateType templateType0 = new TemplateType(jSTypeRegistry0, ""Unknown class name"");
+    JSType[] jSTypeArray0 = new JSType[1];
+    jSTypeArray0[0] = (JSType) templateType0;
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) templateType0, jSTypeArray0);
+    FunctionType functionType1 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) noResolvedType0, jSTypeArray0);
+    functionType1.getLeastSupertype(functionType0);
+    assertFalse(functionType1.equals((Object) functionType0));
+}",0,
+project,0,test4465,"public void test4465() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    TemplateType templateType0 = new TemplateType(jSTypeRegistry0, ""Unknown class name"");
+    JSType[] jSTypeArray0 = new JSType[1];
+    jSTypeArray0[0] = (JSType) templateType0;
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) templateType0, jSTypeArray0);
+    FunctionType functionType1 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) noResolvedType0, jSTypeArray0);
+    functionType1.getLeastSupertype(functionType0);
+    assertTrue(functionType1.isOrdinaryFunction());
+}",0,assertTrue(functionType1.isOrdinaryFunction())
+project,0,test4566,"public void test4566() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    JSType[] jSTypeArray0 = new JSType[1];
+    jSTypeArray0[0] = (JSType) noResolvedType0;
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) noResolvedType0, jSTypeArray0);
+    FunctionType functionType1 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) null, jSTypeArray0);
+    functionType0.getLeastSupertype(functionType1);
+    assertTrue(noResolvedType0.hasCachedValues());
+}",0,assertFalse(noResolvedType0.hasCachedValues())
+project,0,test4667,"public void test4667() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JSType[] jSTypeArray0 = new JSType[0];
+    JSTypeNative jSTypeNative0 = JSTypeNative.GREATEST_FUNCTION_TYPE;
+    ObjectType objectType0 = jSTypeRegistry0.getNativeObjectType(jSTypeNative0);
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) objectType0, jSTypeArray0);
+    functionType0.getGreatestSubtype(objectType0);
+    assertTrue(functionType0.hasCachedValues());
+}",0,assertFalse(functionType0.hasCachedValues())
+project,0,test4768,"public void test4768() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    JSType[] jSTypeArray0 = new JSType[0];
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) noResolvedType0, jSTypeArray0);
+    FunctionType functionType1 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) functionType0, jSTypeArray0);
+    functionType0.getLeastSupertype(functionType1);
+    assertTrue(noResolvedType0.hasCachedValues());
+}",0,assertTrue(noResolvedType0.hasCachedValues())
+project,0,test4769,"public void test4769() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    JSType[] jSTypeArray0 = new JSType[0];
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) noResolvedType0, jSTypeArray0);
+    FunctionType functionType1 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) functionType0, jSTypeArray0);
+    functionType0.getLeastSupertype(functionType1);
+    assertFalse(functionType1.equals((Object) functionType0));
+}",0,
+project,0,test4870,"public void test4870() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    JSType[] jSTypeArray0 = new JSType[0];
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) noResolvedType0, jSTypeArray0);
+    FunctionType functionType1 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) functionType0, jSTypeArray0);
+    functionType1.getGreatestSubtype(functionType0);
+    assertTrue(functionType1.hasCachedValues());
+}",0,assertTrue(functionType1.hasCachedValues())
+project,0,test4971,"public void test4971() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    JSType[] jSTypeArray0 = new JSType[0];
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) noResolvedType0, jSTypeArray0);
+    FunctionType functionType1 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) functionType0, jSTypeArray0);
+    functionType1.getLeastSupertype(functionType0);
+    assertTrue(functionType1.hasCachedValues());
+}",0,assertTrue(functionType1.hasCachedValues())
+project,0,test5072,"public void test5072() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    VoidType voidType0 = new VoidType(jSTypeRegistry0);
+    JSTypeRegistry jSTypeRegistry1 = new JSTypeRegistry(simpleErrorReporter0);
+    JSType[] jSTypeArray0 = new JSType[1];
+    jSTypeArray0[0] = (JSType) voidType0;
+    FunctionType functionType0 = jSTypeRegistry1.createFunctionTypeWithVarArgs((JSType) voidType0, jSTypeArray0);
+    FunctionType functionType1 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) functionType0, jSTypeArray0);
+    functionType1.getLeastSupertype(functionType0);
+    assertTrue(functionType1.hasCachedValues());
+}",0,assertFalse(functionType1.hasCachedValues())
+project,0,test5173,"public void test5173() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""0sFaob88Vlyu="");
+    ErrorFunctionType errorFunctionType1 = new ErrorFunctionType(jSTypeRegistry0, ""Not declared as a constructor"");
+    JSType jSType0 = errorFunctionType1.getLeastSupertype(errorFunctionType0);
+    errorFunctionType1.getTypesUnderShallowEquality(jSType0);
+    assertTrue(errorFunctionType1.hasCachedValues());
+}",0,assertFalse(errorFunctionType1.hasCachedValues())
+project,0,test5274,"public void test5274() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.FUNCTION_INSTANCE_TYPE;
+    JSType jSType0 = jSTypeRegistry0.getNativeType(jSTypeNative0);
+    JSType[] jSTypeArray0 = new JSType[0];
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithVarArgs(jSType0, jSTypeArray0);
+    functionType0.getLeastSupertype(jSType0);
+    assertTrue(functionType0.isOrdinaryFunction());
+}",0,assertTrue(functionType0.isOrdinaryFunction())
+project,0,test5275,"public void test5275() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.FUNCTION_INSTANCE_TYPE;
+    JSType jSType0 = jSTypeRegistry0.getNativeType(jSTypeNative0);
+    JSType[] jSTypeArray0 = new JSType[0];
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithVarArgs(jSType0, jSTypeArray0);
+    functionType0.getLeastSupertype(jSType0);
+    assertFalse(functionType0.hasCachedValues());
+}",0,assertTrue(functionType0.hasCachedValues())
+project,0,test5276,"public void test5276() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.FUNCTION_INSTANCE_TYPE;
+    JSType jSType0 = jSTypeRegistry0.getNativeType(jSTypeNative0);
+    JSType[] jSTypeArray0 = new JSType[0];
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithVarArgs(jSType0, jSTypeArray0);
+    functionType0.getLeastSupertype(jSType0);
+    assertFalse(functionType0.hasInstanceType());
+}",0,
+project,0,test5377,"public void test5377() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""call"");
+    JSType jSType0 = errorFunctionType0.getPropertyType(""call"");
+    assertTrue(errorFunctionType0.hasCachedValues());
+}",0,assertFalse(errorFunctionType0.hasCachedValues())
+project,0,test5378,"public void test5378() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""call"");
+    JSType jSType0 = errorFunctionType0.getPropertyType(""call"");
+    JSType jSType1 = jSType0.getGreatestSubtype(errorFunctionType0);
+    assertNotSame(jSType0, jSType1);
+}",0,
+project,0,test5479,"public void test5479() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    VoidType voidType0 = new VoidType(jSTypeRegistry0);
+    JSTypeRegistry jSTypeRegistry1 = new JSTypeRegistry(simpleErrorReporter0);
+    JSType[] jSTypeArray0 = new JSType[0];
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) voidType0, jSTypeArray0);
+    FunctionType functionType1 = jSTypeRegistry1.createFunctionTypeWithVarArgs((JSType) functionType0, jSTypeArray0);
+    functionType1.getTypesUnderShallowEquality(functionType0);
+    assertTrue(functionType1.hasCachedValues());
+}",0,
+project,0,test5580,"public void test5580() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    VoidType voidType0 = new VoidType(jSTypeRegistry0);
+    JSTypeRegistry jSTypeRegistry1 = new JSTypeRegistry(simpleErrorReporter0);
+    JSType[] jSTypeArray0 = new JSType[0];
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) voidType0, jSTypeArray0);
+    FunctionType functionType1 = jSTypeRegistry1.createFunctionTypeWithVarArgs((JSType) functionType0, jSTypeArray0);
+    functionType1.getLeastSupertype(functionType0);
+    assertTrue(functionType0.hasCachedValues());
+}",0,
+project,0,test5581,"public void test5581() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    VoidType voidType0 = new VoidType(jSTypeRegistry0);
+    JSTypeRegistry jSTypeRegistry1 = new JSTypeRegistry(simpleErrorReporter0);
+    JSType[] jSTypeArray0 = new JSType[0];
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) voidType0, jSTypeArray0);
+    FunctionType functionType1 = jSTypeRegistry1.createFunctionTypeWithVarArgs((JSType) functionType0, jSTypeArray0);
+    functionType1.getLeastSupertype(functionType0);
+    assertTrue(functionType1.hasCachedValues());
+}",0,assertTrue(functionType1.hasCachedValues())
+project,0,test5682,"public void test5682() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""call"");
+    FunctionType functionType0 = (FunctionType) errorFunctionType0.getPropertyType(""call"");
+    // Undeclared exception!
+    try {
+        functionType0.getSuperClassConstructor();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",0,
+project,0,test5783,"public void test5783() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    NoResolvedType noResolvedType1 = (NoResolvedType) FunctionType.getTopDefiningInterface(noResolvedType0, ""`KoSXS|b%n@0["");
+    assertTrue(noResolvedType1.hasInstanceType());
+}",0,assertFalse(noResolvedType1.hasInstanceType())
+project,0,test5884,"public void test5884() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    // Undeclared exception!
+    try {
+        noResolvedType0.getTopMostDefiningType(""Not declared as a type name"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",0,
+project,0,test5985,"public void test5985() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoType noType0 = new NoType(jSTypeRegistry0);
+    JSType[] jSTypeArray0 = new JSType[0];
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) noType0, jSTypeArray0);
+    // Undeclared exception!
+    try {
+        functionType0.getTopMostDefiningType(""Unknown class name"");
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",0,
+project,0,test6086,"public void test6086() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""g"");
+    IndexedType indexedType0 = new IndexedType(jSTypeRegistry0, errorFunctionType0, errorFunctionType0);
+    FunctionType functionType0 = jSTypeRegistry0.createInterfaceType(""g"", (Node) null);
+    boolean boolean0 = functionType0.isSubtype(indexedType0);
+    assertFalse(boolean0);
+}",0,
+project,0,test6087,"public void test6087() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""g"");
+    IndexedType indexedType0 = new IndexedType(jSTypeRegistry0, errorFunctionType0, errorFunctionType0);
+    FunctionType functionType0 = jSTypeRegistry0.createInterfaceType(""g"", (Node) null);
+    boolean boolean0 = functionType0.isSubtype(indexedType0);
+    assertFalse(functionType0.isConstructor());
+}",0,assertTrue(functionType0.isConstructor())
+project,0,test6188,"public void test6188() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoType noType0 = new NoType(jSTypeRegistry0);
+    FunctionType functionType0 = jSTypeRegistry0.createInterfaceType(""Not declared as a constructor"", (Node) null);
+    LinkedList<JSType> linkedList0 = new LinkedList<JSType>();
+    FunctionType functionType1 = jSTypeRegistry0.createFunctionType((JSType) noType0, (List<JSType>) linkedList0);
+    functionType1.getLeastSupertype(functionType0);
+    assertFalse(functionType1.hasCachedValues());
+}",0,
+project,0,test6189,"public void test6189() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoType noType0 = new NoType(jSTypeRegistry0);
+    FunctionType functionType0 = jSTypeRegistry0.createInterfaceType(""Not declared as a constructor"", (Node) null);
+    LinkedList<JSType> linkedList0 = new LinkedList<JSType>();
+    FunctionType functionType1 = jSTypeRegistry0.createFunctionType((JSType) noType0, (List<JSType>) linkedList0);
+    functionType1.getLeastSupertype(functionType0);
+    assertTrue(functionType1.isOrdinaryFunction());
+}",0,assertTrue(functionType1.isOrdinaryFunction())
+project,0,test6190,"public void test6190() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoType noType0 = new NoType(jSTypeRegistry0);
+    FunctionType functionType0 = jSTypeRegistry0.createInterfaceType(""Not declared as a constructor"", (Node) null);
+    LinkedList<JSType> linkedList0 = new LinkedList<JSType>();
+    FunctionType functionType1 = jSTypeRegistry0.createFunctionType((JSType) noType0, (List<JSType>) linkedList0);
+    functionType1.getLeastSupertype(functionType0);
+    assertFalse(functionType1.equals((Object) functionType0));
+}",0,
+project,0,test6191,"public void test6191() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoType noType0 = new NoType(jSTypeRegistry0);
+    FunctionType functionType0 = jSTypeRegistry0.createInterfaceType(""Not declared as a constructor"", (Node) null);
+    LinkedList<JSType> linkedList0 = new LinkedList<JSType>();
+    FunctionType functionType1 = jSTypeRegistry0.createFunctionType((JSType) noType0, (List<JSType>) linkedList0);
+    functionType1.getLeastSupertype(functionType0);
+    assertFalse(noType0.hasCachedValues());
+}",0,
+project,0,test6192,"public void test6192() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoType noType0 = new NoType(jSTypeRegistry0);
+    FunctionType functionType0 = jSTypeRegistry0.createInterfaceType(""Not declared as a constructor"", (Node) null);
+    LinkedList<JSType> linkedList0 = new LinkedList<JSType>();
+    FunctionType functionType1 = jSTypeRegistry0.createFunctionType((JSType) noType0, (List<JSType>) linkedList0);
+    functionType1.getLeastSupertype(functionType0);
+    assertFalse(functionType1.isConstructor());
+}",0,assertTrue(functionType1.isConstructor())
+project,0,test6193,"public void test6193() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoType noType0 = new NoType(jSTypeRegistry0);
+    FunctionType functionType0 = jSTypeRegistry0.createInterfaceType(""Not declared as a constructor"", (Node) null);
+    LinkedList<JSType> linkedList0 = new LinkedList<JSType>();
+    FunctionType functionType1 = jSTypeRegistry0.createFunctionType((JSType) noType0, (List<JSType>) linkedList0);
+    functionType1.getLeastSupertype(functionType0);
+    assertFalse(functionType0.isOrdinaryFunction());
+}",0,assertTrue(functionType0.isOrdinaryFunction())
+project,0,test6294,"public void test6294() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    VoidType voidType0 = new VoidType(jSTypeRegistry0);
+    LinkedList<ObjectType> linkedList0 = new LinkedList<ObjectType>();
+    LinkedList<JSType> linkedList1 = new LinkedList<JSType>();
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionType((JSType) voidType0, (List<JSType>) linkedList1);
+    linkedList0.add((ObjectType) functionType0);
+    functionType0.setImplementedInterfaces(linkedList0);
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Named type with empty name component"", voidType0);
+    FunctionType functionType1 = (FunctionType) functionType0.resolveInternal(simpleErrorReporter0, enumType0);
+    assertFalse(functionType1.hasCachedValues());
+}",0,assertTrue(functionType1.hasCachedValues())
+project,0,test6395,"public void test6395() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    FunctionType functionType0 = jSTypeRegistry0.createInterfaceType(""Unknown class name"", (Node) null);
+    functionType0.hashCode();
+}",0,
+project,0,test6496,"public void test6496() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.FUNCTION_INSTANCE_TYPE;
+    FunctionType functionType0 = jSTypeRegistry0.getNativeFunctionType(jSTypeNative0);
+    String string0 = functionType0.toString();
+    assertEquals(""Function"", string0);
+}",0,
+project,0,test6597,"public void test6597() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, "":c"");
+    errorFunctionType0.toString();
+    assertTrue(errorFunctionType0.hasCachedValues());
+}",0,
+project,0,test6698,"public void test6698() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    FunctionType functionType0 = FunctionType.forInterface(jSTypeRegistry0, ""Not declared as a constructor"", (Node) null);
+    functionType0.toString();
+    assertFalse(functionType0.isConstructor());
+}",0,assertFalse(functionType0.isConstructor())
+project,0,test6699,"public void test6699() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    FunctionType functionType0 = FunctionType.forInterface(jSTypeRegistry0, ""Not declared as a constructor"", (Node) null);
+    functionType0.toString();
+    assertTrue(functionType0.hasCachedValues());
+}",0,
+project,0,test67100,"public void test67100() throws Throwable {
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);
+    VoidType voidType0 = new VoidType(jSTypeRegistry0);
+    JSType[] jSTypeArray0 = new JSType[1];
+    jSTypeArray0[0] = (JSType) voidType0;
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) voidType0, jSTypeArray0);
+    functionType0.toString();
+    assertFalse(functionType0.hasCachedValues());
+}",0,assertTrue(functionType0.hasCachedValues())
+project,0,test68101,"public void test68101() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    VoidType voidType0 = new VoidType(jSTypeRegistry0);
+    JSType[] jSTypeArray0 = new JSType[2];
+    jSTypeArray0[0] = (JSType) voidType0;
+    jSTypeArray0[1] = (JSType) voidType0;
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) voidType0, jSTypeArray0);
+    functionType0.toString();
+    assertFalse(functionType0.hasCachedValues());
+}",0,assertTrue(functionType0.hasCachedValues())
+project,0,test69102,"public void test69102() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.U2U_CONSTRUCTOR_TYPE;
+    FunctionType functionType0 = jSTypeRegistry0.getNativeFunctionType(jSTypeNative0);
+    FunctionType functionType1 = jSTypeRegistry0.createFunctionTypeWithNewThisType(functionType0, functionType0);
+    assertFalse(functionType1.isNullType());
+}",0,assertTrue(functionType1.isNullType())
+project,0,test70103,"public void test70103() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.RANGE_ERROR_TYPE;
+    ObjectType objectType0 = jSTypeRegistry0.getNativeObjectType(jSTypeNative0);
+    IndexedType indexedType0 = new IndexedType(jSTypeRegistry0, objectType0, objectType0);
+    indexedType0.isPropertyInExterns(""Function"");
+    assertTrue(indexedType0.isNativeObjectType());
+}",0,assertFalse(indexedType0.isNativeObjectType())
+project,0,test71104,"public void test71104() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    JSType[] jSTypeArray0 = new JSType[0];
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) noResolvedType0, jSTypeArray0);
+    FunctionType functionType1 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) functionType0, jSTypeArray0);
+    functionType0.setPrototypeBasedOn(functionType1);
+    assertFalse(functionType1.hasInstanceType());
+}",0,
+project,0,test71105,"public void test71105() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    JSType[] jSTypeArray0 = new JSType[0];
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) noResolvedType0, jSTypeArray0);
+    FunctionType functionType1 = jSTypeRegistry0.createFunctionTypeWithVarArgs((JSType) functionType0, jSTypeArray0);
+    functionType0.setPrototypeBasedOn(functionType1);
+    assertFalse(functionType1.hasCachedValues());
+}",0,assertTrue(functionType1.hasCachedValues())
+project,0,test72106,"public void test72106() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.STRING_OBJECT_FUNCTION_TYPE;
+    FunctionType functionType0 = jSTypeRegistry0.getNativeFunctionType(jSTypeNative0);
+    boolean boolean0 = jSTypeRegistry0.resetImplicitPrototype(functionType0, functionType0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test73107,"public void test73107() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoObjectType noObjectType0 = new NoObjectType(jSTypeRegistry0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""Not declared as a constructor"");
+    JSType jSType0 = JSType.getGreatestSubtype((JSType) errorFunctionType0, (JSType) noObjectType0);
+    boolean boolean0 = jSTypeRegistry0.resetImplicitPrototype(jSType0, errorFunctionType0);
+    assertTrue(errorFunctionType0.hasCachedValues());
+}",0,assertTrue(errorFunctionType0.hasCachedValues())
+project,0,test73108,"public void test73108() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoObjectType noObjectType0 = new NoObjectType(jSTypeRegistry0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""Not declared as a constructor"");
+    JSType jSType0 = JSType.getGreatestSubtype((JSType) errorFunctionType0, (JSType) noObjectType0);
+    boolean boolean0 = jSTypeRegistry0.resetImplicitPrototype(jSType0, errorFunctionType0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test74109,"public void test74109() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, ""new:"", ""aGD"", (-1389), 2);
+    JSType jSType0 = namedType0.getReferencedType();
+    LinkedList<JSType> linkedList0 = new LinkedList<JSType>();
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithVarArgs(jSType0, (List<JSType>) linkedList0);
+    LinkedList<ObjectType> linkedList1 = new LinkedList<ObjectType>();
+    linkedList1.add((ObjectType) namedType0);
+    functionType0.setImplementedInterfaces(linkedList1);
+    FunctionType functionType1 = (FunctionType) functionType0.forceResolve(simpleErrorReporter0, namedType0);
+    assertFalse(functionType1.hasCachedValues());
+}",0,assertTrue(functionType1.hasCachedValues())
+project,0,test75110,"public void test75110() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);
+    JSTypeNative jSTypeNative0 = JSTypeNative.OBJECT_FUNCTION_TYPE;
+    FunctionType functionType0 = jSTypeRegistry0.getNativeFunctionType(jSTypeNative0);
+    NoObjectType noObjectType0 = new NoObjectType(jSTypeRegistry0);
+    JSType jSType0 = functionType0.resolveInternal(simpleErrorReporter0, noObjectType0);
+    assertFalse(jSType0.isNoResolvedType());
+}",0,assertTrue(jSType0.isNoResolvedType())
+project,0,test76111,"public void test76111() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    JSTypeNative jSTypeNative0 = JSTypeNative.FUNCTION_FUNCTION_TYPE;
+    FunctionType functionType0 = jSTypeRegistry0.getNativeFunctionType(jSTypeNative0);
+    String string0 = functionType0.toDebugHashCodeString();
+    assertEquals(""function (this:{18}, {12}): {9}"", string0);
+}",0,
+project,0,test77112,"public void test77112() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""call"");
+    JSType jSType0 = errorFunctionType0.getPropertyType(""call"");
+    String string0 = jSType0.toDebugHashCodeString();
+    assertTrue(errorFunctionType0.hasCachedValues());
+}",0,assertTrue(errorFunctionType0.hasCachedValues())
+project,0,test77113,"public void test77113() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""call"");
+    JSType jSType0 = errorFunctionType0.getPropertyType(""call"");
+    String string0 = jSType0.toDebugHashCodeString();
+    assertEquals(""function ({({3045982},{11},{6})}, {12}, {12}, {12}): {3045982}"", string0);
+}",0,
+project,0,test78114,"public void test78114() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    FunctionType functionType0 = jSTypeRegistry0.createInterfaceType(""Unknown class name"", (Node) null);
+    String string0 = functionType0.toDebugHashCodeString();
+    assertEquals(""function (this:{1977786857}): {9}"", string0);
+}",0,
+project,0,test79115,"public void test79115() throws Throwable {
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    noResolvedType0.toDebugHashCodeString();
+    assertTrue(noResolvedType0.hasCachedValues());
+}",0,assertTrue(noResolvedType0.hasCachedValues())

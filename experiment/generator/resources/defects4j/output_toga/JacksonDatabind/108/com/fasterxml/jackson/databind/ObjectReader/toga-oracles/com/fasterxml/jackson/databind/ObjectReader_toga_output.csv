@@ -1,0 +1,896 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.FAIL_ON_MISSING_EXTERNAL_TYPE_ID_PROPERTY;
+    ObjectReader objectReader0 = objectMapper0.reader(deserializationFeature0);
+    MapperFeature mapperFeature0 = MapperFeature.USE_GETTERS_AS_SETTERS;
+    boolean boolean0 = objectReader0.isEnabled(mapperFeature0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test011,"public void test011() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    DeserializationConfig deserializationConfig0 = objectReader0.getConfig();
+    assertNull(deserializationConfig0.getRootName());
+}",0,assertNotNull(deserializationConfig0.getRootName())
+project,0,test022,"public void test022() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT;
+    DeserializationFeature[] deserializationFeatureArray0 = new DeserializationFeature[5];
+    deserializationFeatureArray0[0] = deserializationFeature0;
+    deserializationFeatureArray0[1] = deserializationFeature0;
+    deserializationFeatureArray0[2] = deserializationFeature0;
+    deserializationFeatureArray0[3] = deserializationFeature0;
+    deserializationFeatureArray0[4] = deserializationFeature0;
+    ObjectReader objectReader0 = objectMapper0.reader(deserializationFeature0, deserializationFeatureArray0);
+    JsonFactory jsonFactory0 = new JsonFactory();
+    JsonEncoding jsonEncoding0 = JsonEncoding.UTF32_LE;
+    JsonGenerator jsonGenerator0 = jsonFactory0.createGenerator((DataOutput) null, jsonEncoding0);
+    JsonNodeFactory jsonNodeFactory0 = new JsonNodeFactory(false);
+    HashMap<String, JsonNode> hashMap0 = new HashMap<String, JsonNode>();
+    ObjectNode objectNode0 = new ObjectNode(jsonNodeFactory0, hashMap0);
+    ArrayNode arrayNode0 = objectNode0.withArray(""JSON"");
+    TextNode textNode0 = arrayNode0.textNode(""Strange Reference type "");
+    // Undeclared exception!
+    try {
+        objectReader0.writeTree(jsonGenerator0, textNode0);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.ObjectReader"", e);
+    }
+}",1,
+project,0,test044,"public void test044() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS;
+    DeserializationFeature[] deserializationFeatureArray0 = new DeserializationFeature[5];
+    deserializationFeatureArray0[0] = deserializationFeature0;
+    deserializationFeatureArray0[1] = deserializationFeature0;
+    deserializationFeatureArray0[2] = deserializationFeature0;
+    deserializationFeatureArray0[3] = deserializationFeature0;
+    deserializationFeatureArray0[4] = deserializationFeature0;
+    ObjectReader objectReader0 = objectMapper0.reader(deserializationFeature0, deserializationFeatureArray0);
+    JsonFactory jsonFactory0 = new JsonFactory();
+    File file0 = MockFile.createTempFile(""Root name '%s' does not match expected ('%s') for type %s"", ""JSON"");
+    JsonParser jsonParser0 = jsonFactory0.createParser(file0);
+    TokenFilter tokenFilter0 = TokenFilter.INCLUDE_ALL;
+    FilteringParserDelegate filteringParserDelegate0 = new FilteringParserDelegate(jsonParser0, tokenFilter0, false, true);
+    try {
+        objectReader0.readValues((JsonParser) filteringParserDelegate0, (ResolvedType) null);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // No value type configured for ObjectReader
+        //  at [Source: (org.evosuite.runtime.mock.java.io.MockFile); line: 1, column: 0]
+        //
+        verifyException(""com.fasterxml.jackson.databind.exc.InvalidDefinitionException"", e);
+    }
+}",1,
+project,0,test055,"public void test055() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.readerForUpdating(objectMapper0);
+    JsonFactory jsonFactory0 = new JsonFactory(objectReader0);
+    ObjectReader objectReader1 = objectReader0.with(jsonFactory0);
+    assertNotSame(objectReader1, objectReader0);
+}",0,
+project,0,test066,"public void test066() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    Class<SimpleType> class0 = SimpleType.class;
+    ObjectReader objectReader1 = objectReader0.withView(class0);
+    assertNotSame(objectReader1, objectReader0);
+}",0,
+project,0,test077,"public void test077() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    ConcurrentHashMap<CollectionType, Module> concurrentHashMap0 = new ConcurrentHashMap<CollectionType, Module>();
+    ObjectReader objectReader1 = objectReader0.withAttributes(concurrentHashMap0);
+    assertNotSame(objectReader1, objectReader0);
+}",0,
+project,0,test088,"public void test088() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    byte[] byteArray0 = new byte[16];
+    try {
+        objectReader0.readValues(byteArray0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Illegal character ((CTRL-CHAR, code 0)): only regular white space (\\r, \\n, \\t) is allowed between tokens
+        //  at [Source: (byte[])\""\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\""; line: 1, column: 2]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",1,
+project,0,test099,"public void test099() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<BigIntegerNode> class0 = BigIntegerNode.class;
+    ObjectReader objectReader0 = objectMapper0.readerFor(class0);
+    MappingIterator<MapLikeType> mappingIterator0 = objectReader0.readValues("""");
+    assertNotNull(mappingIterator0);
+}",0,
+project,0,test1010,"public void test1010() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.readerForUpdating(objectMapper0);
+    // Undeclared exception!
+    try {
+        objectMapper0.writeValueAsBytes(objectReader0);
+        fail(""Expecting exception: NoClassDefFoundError"");
+    } catch (NoClassDefFoundError e) {
+        //
+        // com/fasterxml/jackson/databind/JsonMappingException$Reference
+        //
+        verifyException(""com.fasterxml.jackson.databind.ser.std.BeanSerializerBase"", e);
+    }
+}",0,
+project,0,test1111,"public void test1111() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    TokenFilter tokenFilter0 = TokenFilter.INCLUDE_ALL;
+    ObjectReader objectReader1 = new ObjectReader(objectReader0, tokenFilter0);
+    JsonNode jsonNode0 = objectReader1.readTree((InputStream) null);
+    assertFalse(jsonNode0.isShort());
+}",0,assertTrue(jsonNode0.isShort())
+project,0,test1212,"public void test1212() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    // Undeclared exception!
+    try {
+        objectReader0._reportUndetectableSource((Object) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.ObjectReader"", e);
+    }
+}",0,
+project,0,test1313,"public void test1313() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.readerForUpdating(objectMapper0);
+    JsonParser.Feature jsonParser_Feature0 = JsonParser.Feature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER;
+    ObjectReader objectReader1 = objectReader0.with(jsonParser_Feature0);
+    assertNotSame(objectReader1, objectReader0);
+}",1,
+project,0,test1414,"public void test1414() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    JsonParser.Feature jsonParser_Feature0 = JsonParser.Feature.ALLOW_SINGLE_QUOTES;
+    ObjectReader objectReader1 = objectReader0.without(jsonParser_Feature0);
+    assertNotSame(objectReader1, objectReader0);
+}",0,
+project,0,test1616,"public void test1616() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    JsonReadFeature jsonReadFeature0 = JsonReadFeature.ALLOW_JAVA_COMMENTS;
+    ObjectReader objectReader1 = objectReader0.with((FormatFeature) jsonReadFeature0);
+    assertNotSame(objectReader1, objectReader0);
+}",0,
+project,0,test1717,"public void test1717() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    ObjectReader objectReader1 = objectReader0.withoutRootName();
+    assertNotSame(objectReader1, objectReader0);
+}",0,
+project,0,test1818,"public void test1818() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES;
+    ObjectReader objectReader1 = objectReader0.with(deserializationFeature0);
+    assertNotSame(objectReader1, objectReader0);
+}",0,
+project,0,test1919,"public void test1919() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    LinkedList<ObjectReader> linkedList0 = new LinkedList<ObjectReader>();
+    DataFormatReaders dataFormatReaders0 = new DataFormatReaders(linkedList0);
+    DataFormatReaders.Match dataFormatReaders_Match0 = dataFormatReaders0.findFormat((byte[]) null, 1, (-794));
+    // Undeclared exception!
+    try {
+        objectReader0._detectBindAndClose(dataFormatReaders_Match0, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.ObjectReader"", e);
+    }
+}",0,
+project,0,test2121,"public void test2121() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    PropertyName propertyName0 = PropertyName.USE_DEFAULT;
+    ObjectReader objectReader1 = objectReader0.withRootName(propertyName0);
+    assertNotSame(objectReader1, objectReader0);
+}",0,
+project,0,test2222,"public void test2222() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    ObjectReader objectReader1 = objectReader0.withRootName(""=KX)S"");
+    assertNotSame(objectReader1, objectReader0);
+}",0,
+project,0,test2323,"public void test2323() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.FAIL_ON_MISSING_EXTERNAL_TYPE_ID_PROPERTY;
+    ObjectReader objectReader0 = objectMapper0.reader(deserializationFeature0);
+    DeserializationProblemHandler deserializationProblemHandler0 = mock(DeserializationProblemHandler.class, new ViolatedAssumptionAnswer());
+    ObjectReader objectReader1 = objectReader0.withHandler(deserializationProblemHandler0);
+    assertNotSame(objectReader1, objectReader0);
+}",0,
+project,0,test2424,"public void test2424() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    DeserializerFactoryConfig deserializerFactoryConfig0 = new DeserializerFactoryConfig();
+    BeanDeserializerFactory beanDeserializerFactory0 = new BeanDeserializerFactory(deserializerFactoryConfig0);
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    ObjectMapper objectMapper0 = new ObjectMapper((JsonFactory) null, defaultSerializerProvider_Impl0, defaultDeserializationContext_Impl0);
+    ContextAttributes contextAttributes0 = ContextAttributes.Impl.getEmpty();
+    ObjectReader objectReader0 = objectMapper0.reader(contextAttributes0);
+    TypeFactory typeFactory0 = objectReader0.getTypeFactory();
+    Class<HashMap> class0 = HashMap.class;
+    Class<TypeIdResolver> class1 = TypeIdResolver.class;
+    MapType mapType0 = typeFactory0.constructMapType(class0, class0, class1);
+    // Undeclared exception!
+    try {
+        objectReader0.readValue((JsonParser) null, (ResolvedType) mapType0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.ObjectReader"", e);
+    }
+}",0,
+project,0,test2525,"public void test2525() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    // Undeclared exception!
+    try {
+        objectReader0.readTree((JsonParser) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.ObjectReader"", e);
+    }
+}",0,
+project,0,test2626,"public void test2626() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.readerFor((JavaType) null);
+    ObjectReader objectReader1 = objectReader0.withType((JavaType) null);
+    assertNotSame(objectReader1, objectReader0);
+}",0,
+project,0,test2727,"public void test2727() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    Locale locale0 = Locale.ENGLISH;
+    ObjectReader objectReader1 = objectReader0.with(locale0);
+    assertSame(objectReader1, objectReader0);
+}",0,
+project,0,test2828,"public void test2828() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    StringReader stringReader0 = new StringReader(""5"");
+    JsonNode jsonNode0 = objectReader0.readTree((Reader) stringReader0);
+    try {
+        objectReader0.readValue(jsonNode0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // No value type configured for ObjectReader
+        //  at [Source: UNKNOWN; line: -1, column: -1]
+        //
+        verifyException(""com.fasterxml.jackson.databind.exc.InvalidDefinitionException"", e);
+    }
+}",0,
+project,0,test3232,"public void test3232() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    JsonNode jsonNode0 = objectReader0.createObjectNode();
+    assertFalse(jsonNode0.isIntegralNumber());
+}",0,
+project,0,test3333,"public void test3333() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    // Undeclared exception!
+    try {
+        objectReader0.with((DeserializationConfig) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.ObjectReader"", e);
+    }
+}",0,
+project,0,test3434,"public void test3434() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.readerForUpdating(objectMapper0);
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.FAIL_ON_INVALID_SUBTYPE;
+    boolean boolean0 = objectReader0.isEnabled(deserializationFeature0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test3535,"public void test3535() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<SimpleType> class0 = SimpleType.class;
+    ObjectReader objectReader0 = objectMapper0.readerWithView(class0);
+    ContextAttributes contextAttributes0 = ContextAttributes.getEmpty();
+    ObjectReader objectReader1 = objectReader0.with(contextAttributes0);
+    assertSame(objectReader1, objectReader0);
+}",0,
+project,0,test3636,"public void test3636() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.USE_LONG_FOR_INTS;
+    DeserializationFeature[] deserializationFeatureArray0 = new DeserializationFeature[2];
+    // Undeclared exception!
+    try {
+        objectReader0.without(deserializationFeature0, deserializationFeatureArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationConfig"", e);
+    }
+}",0,
+project,0,test4141,"public void test4141() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    // Undeclared exception!
+    try {
+        objectReader0._inputStream((URL) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.mock.java.net.MockURL"", e);
+    }
+}",0,
+project,0,test4242,"public void test4242() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    // Undeclared exception!
+    try {
+        objectReader0.at(""lx_[e"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid input: JSON Pointer expression must start with '/': \""lx_[e\""
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonPointer"", e);
+    }
+}",0,
+project,0,test4444,"public void test4444() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    ObjectReader objectReader0 = objectMapper0.reader();
+    InjectableValues injectableValues0 = objectReader0.getInjectableValues();
+    assertNull(injectableValues0);
+}",0,
+project,0,test4646,"public void test4646() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper((JsonFactory) null);
+    ObjectReader objectReader0 = objectMapper0.reader((FormatSchema) null);
+    JsonParser.Feature jsonParser_Feature0 = JsonParser.Feature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER;
+    boolean boolean0 = objectReader0.isEnabled(jsonParser_Feature0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4747,"public void test4747() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.readerForUpdating(objectMapper0);
+    JsonNodeFactory jsonNodeFactory0 = JsonNodeFactory.instance;
+    ArrayNode arrayNode0 = new ArrayNode(jsonNodeFactory0, 2);
+    BooleanNode booleanNode0 = arrayNode0.booleanNode(false);
+    Class<String> class0 = String.class;
+    String string0 = objectReader0.treeToValue((TreeNode) booleanNode0, class0);
+    assertEquals(""false"", string0);
+}",0,
+project,0,test4848,"public void test4848() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.readerForUpdating(objectMapper0);
+    ObjectReader objectReader1 = objectReader0.with((Base64Variant) null);
+    assertNotSame(objectReader1, objectReader0);
+}",0,
+project,0,test4949,"public void test4949() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.USE_LONG_FOR_INTS;
+    ObjectReader objectReader1 = objectReader0.without(deserializationFeature0);
+    assertSame(objectReader1, objectReader0);
+}",0,
+project,0,test5050,"public void test5050() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    ObjectReader objectReader1 = objectReader0.withAttribute((Object) null, (Object) null);
+    assertNotSame(objectReader1, objectReader0);
+}",0,
+project,0,test5151,"public void test5151() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    Class<FilteringParserDelegate> class0 = FilteringParserDelegate.class;
+    ObjectReader objectReader1 = objectReader0.withType((Type) class0);
+    assertNotSame(objectReader1, objectReader0);
+}",0,
+project,0,test5252,"public void test5252() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    ObjectReader objectReader1 = objectReader0.withoutAttribute(objectMapper0);
+    assertSame(objectReader1, objectReader0);
+}",0,
+project,0,test5353,"public void test5353() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    JsonNodeFactory jsonNodeFactory0 = new JsonNodeFactory(true);
+    ObjectReader objectReader0 = objectMapper0.reader(jsonNodeFactory0);
+    TimeZone timeZone0 = TimeZone.getDefault();
+    ObjectReader objectReader1 = objectReader0.with(timeZone0);
+    assertNotSame(objectReader1, objectReader0);
+}",0,
+project,0,test5454,"public void test5454() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT;
+    DeserializationFeature[] deserializationFeatureArray0 = new DeserializationFeature[1];
+    // Undeclared exception!
+    try {
+        objectReader0.with(deserializationFeature0, deserializationFeatureArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationConfig"", e);
+    }
+}",0,
+project,0,test5757,"public void test5757() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    ObjectReader objectReader0 = objectMapper0.reader();
+    JsonReadFeature jsonReadFeature0 = JsonReadFeature.ALLOW_UNQUOTED_FIELD_NAMES;
+    ObjectReader objectReader1 = objectReader0.without((FormatFeature) jsonReadFeature0);
+    assertNotSame(objectReader1, objectReader0);
+}",0,
+project,0,test5858,"public void test5858() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory((ObjectCodec) null);
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
+    DeserializationFeature[] deserializationFeatureArray0 = new DeserializationFeature[7];
+    deserializationFeatureArray0[0] = deserializationFeature0;
+    deserializationFeatureArray0[1] = deserializationFeature0;
+    deserializationFeatureArray0[2] = deserializationFeature0;
+    deserializationFeatureArray0[3] = deserializationFeature0;
+    deserializationFeatureArray0[4] = deserializationFeature0;
+    deserializationFeatureArray0[5] = deserializationFeature0;
+    deserializationFeatureArray0[6] = deserializationFeature0;
+    ObjectReader objectReader0 = objectMapper0.reader(deserializationFeature0, deserializationFeatureArray0);
+    ContextAttributes contextAttributes0 = objectReader0.getAttributes();
+    assertNotNull(contextAttributes0);
+}",0,assertNotNull(contextAttributes0)
+project,0,test5959,"public void test5959() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    JsonPointer jsonPointer0 = JsonPointer.forPath((JsonStreamContext) null, false);
+    ObjectReader objectReader1 = objectReader0.at(jsonPointer0);
+    assertNotSame(objectReader0, objectReader1);
+}",0,
+project,0,test6060,"public void test6060() throws Throwable {
+    JsonGenerator.Feature jsonGenerator_Feature0 = JsonGenerator.Feature.WRITE_NUMBERS_AS_STRINGS;
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ContextAttributes contextAttributes0 = ContextAttributes.Impl.getEmpty();
+    LongNode longNode0 = LongNode.valueOf((-1));
+    ObjectReader objectReader0 = objectMapper0.reader(contextAttributes0);
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, longNode0, false);
+    ByteArrayBuilder byteArrayBuilder0 = new ByteArrayBuilder(bufferRecycler0, 3);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, (-5358), objectMapper0, byteArrayBuilder0, byteArrayBuilder0.NO_BYTES, 934, false);
+    JsonGeneratorDelegate jsonGeneratorDelegate0 = new JsonGeneratorDelegate(uTF8JsonGenerator0);
+    // Undeclared exception!
+    try {
+        objectReader0.writeValue(jsonGeneratorDelegate0, jsonGenerator_Feature0);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // Not implemented for ObjectReader
+        //
+        verifyException(""com.fasterxml.jackson.databind.ObjectReader"", e);
+    }
+}",1,
+project,0,test6161,"public void test6161() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.readerForUpdating(objectMapper0);
+    try {
+        objectReader0.readValue("""");
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // No content to map due to end-of-input
+        //  at [Source: (String)\""\""; line: 1, column: 0]
+        //
+        verifyException(""com.fasterxml.jackson.databind.exc.MismatchedInputException"", e);
+    }
+}",1,
+project,0,test6262,"public void test6262() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    InjectableValues.Std injectableValues_Std0 = new InjectableValues.Std();
+    ObjectReader objectReader1 = objectReader0.with((InjectableValues) injectableValues_Std0);
+    assertNotSame(objectReader1, objectReader0);
+}",0,
+project,0,test6363,"public void test6363() throws Throwable {
+    JsonFactoryBuilder jsonFactoryBuilder0 = new JsonFactoryBuilder();
+    JsonFactory jsonFactory0 = new JsonFactory(jsonFactoryBuilder0);
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    ObjectReader objectReader0 = objectMapper0.reader();
+    ObjectReader objectReader1 = objectReader0.with(jsonFactory0);
+    assertSame(objectReader1, objectReader0);
+}",0,
+project,0,test6464,"public void test6464() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.readerForUpdating(objectMapper0);
+    JsonFactory jsonFactory0 = new JsonFactory(objectReader0);
+    JsonFactoryBuilder jsonFactoryBuilder0 = new JsonFactoryBuilder(jsonFactory0);
+    JsonFactory jsonFactory1 = new JsonFactory(jsonFactoryBuilder0);
+    ObjectReader objectReader1 = objectReader0.with(jsonFactory1);
+    assertNotSame(objectReader1, objectReader0);
+}",0,
+project,0,test6565,"public void test6565() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS;
+    DeserializationFeature[] deserializationFeatureArray0 = new DeserializationFeature[5];
+    deserializationFeatureArray0[0] = deserializationFeature0;
+    deserializationFeatureArray0[1] = deserializationFeature0;
+    deserializationFeatureArray0[2] = deserializationFeature0;
+    deserializationFeatureArray0[3] = deserializationFeature0;
+    deserializationFeatureArray0[4] = deserializationFeature0;
+    ObjectReader objectReader0 = objectMapper0.reader(deserializationFeature0, deserializationFeatureArray0);
+    ObjectReader objectReader1 = objectReader0.with((FormatSchema) null);
+    assertSame(objectReader1, objectReader0);
+}",1,
+project,0,test6666,"public void test6666() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<FilteringParserDelegate> class0 = FilteringParserDelegate.class;
+    ObjectReader objectReader0 = objectMapper0.readerFor(class0);
+    ObjectReader objectReader1 = objectReader0.withType((Type) class0);
+    assertSame(objectReader1, objectReader0);
+}",0,
+project,0,test6767,"public void test6767() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    ObjectReader objectReader1 = objectReader0.withValueToUpdate(objectMapper0);
+    assertNotSame(objectReader1, objectReader0);
+}",0,
+project,0,test6868,"public void test6868() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.readerForUpdating(objectMapper0);
+    BigInteger bigInteger0 = BigInteger.TEN;
+    BigIntegerNode bigIntegerNode0 = BigIntegerNode.valueOf(bigInteger0);
+    ObjectReader objectReader1 = objectReader0.withValueToUpdate(bigIntegerNode0);
+    assertNotSame(objectReader1, objectReader0);
+}",0,
+project,0,test6969,"public void test6969() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    try {
+        objectReader0.readValue((InputStream) null);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // No content to map due to end-of-input
+        //  at [Source: UNKNOWN; line: 1, column: 0]
+        //
+        verifyException(""com.fasterxml.jackson.databind.exc.MismatchedInputException"", e);
+    }
+}",0,
+project,0,test7070,"public void test7070() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    StringReader stringReader0 = new StringReader(""5"");
+    try {
+        objectReader0.readValue((Reader) stringReader0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // No value type configured for ObjectReader
+        //  at [Source: (StringReader); line: 1, column: 1]
+        //
+        verifyException(""com.fasterxml.jackson.databind.exc.InvalidDefinitionException"", e);
+    }
+}",0,
+project,0,test7171,"public void test7171() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper((JsonFactory) null);
+    ObjectReader objectReader0 = objectMapper0.reader((FormatSchema) null);
+    byte[] byteArray0 = new byte[6];
+    try {
+        objectReader0.readValue(byteArray0, 1, 1);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Illegal character ((CTRL-CHAR, code 0)): only regular white space (\\r, \\n, \\t) is allowed between tokens
+        //  at [Source: (byte[])\""\u0000\u0000\u0000\u0000\u0000\u0000\""; line: 1, column: 2]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",0,
+project,0,test7272,"public void test7272() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    MockFile mockFile0 = new MockFile("" withfrmat auto-detection: must be byte- not char-based"");
+    try {
+        objectReader0.readValue((File) mockFile0);
+        fail(""Expecting exception: FileNotFoundException"");
+    } catch (FileNotFoundException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.mock.java.io.MockFileInputStream"", e);
+    }
+}",0,
+project,0,test7373,"public void test7373() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    URL uRL0 = MockURL.getFileExample();
+    // Undeclared exception!
+    try {
+        objectReader0.readValue(uRL0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.net.URL"", e);
+    }
+}",0,
+project,0,test7474,"public void test7474() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    // Undeclared exception!
+    try {
+        objectReader0.readValue((DataInput) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.json.ByteSourceJsonBootstrapper"", e);
+    }
+}",1,
+project,0,test7575,"public void test7575() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    JsonNode jsonNode0 = objectReader0.readTree((InputStream) null);
+    assertFalse(jsonNode0.isIntegralNumber());
+}",0,
+project,0,test7676,"public void test7676() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    try {
+        objectReader0.readTree(""{'<}fu"");
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected character (''' (code 39)): was expecting double-quote to start field name
+        //  at [Source: (String)\""{'<}fu\""; line: 1, column: 3]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",0,
+project,0,test7777,"public void test7777() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    byte[] byteArray0 = new byte[0];
+    JsonNode jsonNode0 = objectReader0.readTree(byteArray0);
+    assertFalse(jsonNode0.isFloat());
+}",0,assertFalse(jsonNode0.isFloat())
+project,0,test7878,"public void test7878() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS;
+    DeserializationFeature[] deserializationFeatureArray0 = new DeserializationFeature[5];
+    deserializationFeatureArray0[0] = deserializationFeature0;
+    deserializationFeatureArray0[1] = deserializationFeature0;
+    deserializationFeatureArray0[2] = deserializationFeature0;
+    deserializationFeatureArray0[3] = deserializationFeature0;
+    deserializationFeatureArray0[4] = deserializationFeature0;
+    ObjectReader objectReader0 = objectMapper0.reader(deserializationFeature0, deserializationFeatureArray0);
+    byte[] byteArray0 = new byte[5];
+    JsonNode jsonNode0 = objectReader0.readTree(byteArray0, (int) (byte) (-113), (-5059));
+    assertNull(jsonNode0.textValue());
+}",0,assertNotNull(jsonNode0.textValue())
+project,0,test7979,"public void test7979() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.readerForUpdating(objectMapper0);
+    // Undeclared exception!
+    try {
+        objectReader0.readTree((DataInput) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.json.ByteSourceJsonBootstrapper"", e);
+    }
+}",0,
+project,0,test8080,"public void test8080() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    try {
+        objectReader0.readValues((InputStream) null);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // No value type configured for ObjectReader
+        //  at [Source: UNKNOWN; line: 1, column: 0]
+        //
+        verifyException(""com.fasterxml.jackson.databind.exc.InvalidDefinitionException"", e);
+    }
+}",0,
+project,0,test8181,"public void test8181() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    try {
+        objectReader0.readValues((Reader) null);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // No value type configured for ObjectReader
+        //  at [Source: UNKNOWN; line: 1, column: 0]
+        //
+        verifyException(""com.fasterxml.jackson.databind.exc.InvalidDefinitionException"", e);
+    }
+}",0,
+project,0,test8282,"public void test8282() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    MockFile mockFile0 = new MockFile(""Root name '%s' does not match expected ('%s') for type %s"");
+    try {
+        objectReader0.readValues((File) mockFile0);
+        fail(""Expecting exception: FileNotFoundException"");
+    } catch (FileNotFoundException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.mock.java.io.MockFileInputStream"", e);
+    }
+}",0,
+project,0,test8383,"public void test8383() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    URL uRL0 = MockURL.getFileExample();
+    // Undeclared exception!
+    try {
+        objectReader0.readValues(uRL0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.net.URL"", e);
+    }
+}",0,
+project,0,test8484,"public void test8484() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    // Undeclared exception!
+    try {
+        objectReader0.readValues((DataInput) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.json.ByteSourceJsonBootstrapper"", e);
+    }
+}",0,
+project,0,test8585,"public void test8585() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    JavaType javaType0 = TypeFactory.unknownType();
+    ObjectReader objectReader0 = objectMapper0.readerFor(javaType0);
+    NullNode nullNode0 = NullNode.instance;
+    FloatNode floatNode0 = objectReader0.readValue((JsonNode) nullNode0);
+    assertNull(floatNode0);
+}",0,
+project,0,test8686,"public void test8686() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    JavaType javaType0 = TypeFactory.unknownType();
+    ObjectReader objectReader0 = objectMapper0.readerFor(javaType0);
+    byte[] byteArray0 = new byte[6];
+    byteArray0[0] = (byte) 34;
+    try {
+        objectReader0.readValue(byteArray0);
+        fail(""Expecting exception: CharConversionException"");
+    } catch (CharConversionException e) {
+        //
+        // Unexpected EOF in the middle of a 4-byte UTF-32 char: got 2, needed 4, at char #1, byte #6)
+        //
+        verifyException(""com.fasterxml.jackson.core.io.UTF32Reader"", e);
+    }
+}",0,
+project,0,test8787,"public void test8787() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    // Undeclared exception!
+    try {
+        objectReader0._bindAndClose((JsonParser) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.ObjectReader"", e);
+    }
+}",0,
+project,0,test8888,"public void test8888() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<ShortNode> class0 = ShortNode.class;
+    ObjectReader objectReader0 = objectMapper0.readerFor(class0);
+    // Undeclared exception!
+    try {
+        objectReader0._bindAndCloseAsTree((JsonParser) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.ObjectReader"", e);
+    }
+}",0,
+project,0,test8989,"public void test8989() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    ArrayNode arrayNode0 = objectMapper0.createArrayNode();
+    JsonParser jsonParser0 = arrayNode0.traverse((ObjectCodec) objectReader0);
+    // Undeclared exception!
+    try {
+        objectReader0._verifyNoTrailingTokens(jsonParser0, (DeserializationContext) null, (JavaType) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.ObjectReader"", e);
+    }
+}",1,
+project,0,test9090,"public void test9090() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    ObjectReader[] objectReaderArray0 = new ObjectReader[0];
+    DataFormatReaders dataFormatReaders0 = new DataFormatReaders(objectReaderArray0);
+    DataFormatReaders.Match dataFormatReaders_Match0 = dataFormatReaders0.findFormat((InputStream) null);
+    // Undeclared exception!
+    try {
+        objectReader0._detectBindAndReadValues(dataFormatReaders_Match0, false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.ObjectReader"", e);
+    }
+}",0,
+project,0,test9191,"public void test9191() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    objectReader0._verifySchemaType((FormatSchema) null);
+}",1,
+project,0,test9292,"public void test9292() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.readerForUpdating(objectMapper0);
+    try {
+        objectReader0.readValues((Reader) null);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Conflicting setter definitions for property \""config\"": com.fasterxml.jackson.databind.ObjectMapper#setConfig(1 params) vs com.fasterxml.jackson.databind.ObjectMapper#setConfig(1 params)
+        //  at [Source: UNKNOWN; line: 1, column: 0]
+        //
+        verifyException(""com.fasterxml.jackson.databind.JsonMappingException"", e);
+    }
+}",0,
+project,0,test9393,"public void test9393() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    JavaType javaType0 = TypeFactory.unknownType();
+    ObjectReader objectReader0 = objectMapper0.readerFor(javaType0);
+    JsonDeserializer<Object> jsonDeserializer0 = objectReader0._prefetchRootDeserializer(javaType0);
+    assertEquals(AccessPattern.DYNAMIC, jsonDeserializer0.getEmptyAccessPattern());
+}",0,assertNotNull(jsonDeserializer0.getEmptyAccessPattern())

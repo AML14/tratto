@@ -1,0 +1,27 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test077,"public void test077() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectNode objectNode0 = objectMapper0.createObjectNode();
+    JsonParser jsonParser0 = objectMapper0.treeAsTokens(objectNode0);
+    Class<SimpleModule> class0 = SimpleModule.class;
+    SimpleModule simpleModule0 = objectMapper0.readValue(jsonParser0, class0);
+    assertEquals(""SimpleModule-1174"", simpleModule0.getModuleName());
+}",0,assertNotNull(simpleModule0.getModuleName())
+project,0,test099,"public void test099() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<PropertyName> class0 = PropertyName.class;
+    PropertyName propertyName0 = objectMapper0.convertValue((Object) ""go["", class0);
+    assertTrue(propertyName0.hasSimpleName());
+}",0,assertTrue(propertyName0.hasSimpleName())
+project,0,test2121,"public void test2121() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectNode objectNode0 = objectMapper0.createObjectNode();
+    JsonParser jsonParser0 = objectMapper0.treeAsTokens(objectNode0);
+    MapperFeature[] mapperFeatureArray0 = new MapperFeature[1];
+    MapperFeature mapperFeature0 = MapperFeature.DEFAULT_VIEW_INCLUSION;
+    mapperFeatureArray0[0] = mapperFeature0;
+    objectMapper0.disable(mapperFeatureArray0);
+    Class<SimpleModule> class0 = SimpleModule.class;
+    SimpleModule simpleModule0 = objectMapper0.readValue(jsonParser0, class0);
+    assertEquals(""SimpleModule-1177"", simpleModule0.getModuleName());
+}",0,assertNotNull(simpleModule0.getModuleName())

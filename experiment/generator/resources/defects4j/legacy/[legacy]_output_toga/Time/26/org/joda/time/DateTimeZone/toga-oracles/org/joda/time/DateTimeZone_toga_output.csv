@@ -1,0 +1,41 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test390,"public void test390() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forID(""-[C!,</~4gjti"");
+    // Undeclared exception!
+    try {
+        DateTimeZone.setDefault(dateTimeZone0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid format: \""-[C!,</~4gjti\"" is malformed at \""[C!,</~4gjti\""
+        //
+        verifyException(""org.joda.time.format.DateTimeFormatter"", e);
+    }
+}",0,
+project,0,test411,"public void test411() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forID(""+Ri"");
+    // Undeclared exception!
+    try {
+        DateTimeZone.setDefault(dateTimeZone0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid format: \""+Ri\"" is malformed at \""Ri\""
+        //
+        verifyException(""org.joda.time.format.DateTimeFormatter"", e);
+    }
+}",0,
+project,0,test492,"public void test492() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    dateTimeZone0.isLocalDateTimeGap((LocalDateTime) null);
+    // Undeclared exception!
+    try {
+        DateTimeZone.setDefault(dateTimeZone0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.DateTimeZone"", e);
+    }
+}",0,

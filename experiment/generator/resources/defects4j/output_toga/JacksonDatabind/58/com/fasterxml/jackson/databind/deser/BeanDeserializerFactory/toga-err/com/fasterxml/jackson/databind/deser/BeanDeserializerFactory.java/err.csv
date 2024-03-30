@@ -1,0 +1,60 @@
+com.fasterxml.jackson.databind.deser.BeanDeserializerFactory,@Test(timeout = 4000)
+public void test022() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<Throwable> class0 = Throwable.class;
+    ObjectReader objectReader0 = objectMapper0.reader();
+    objectReader0.forType(class0);
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.fasterxml.jackson.databind.deser.BeanDeserializerFactory,@Test(timeout = 4000)
+public void test022() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<Throwable> class0 = Throwable.class;
+    ObjectReader objectReader0 = objectMapper0.reader();
+    objectReader0.forType(class0);
+},ERROR,java.util.NoSuchElementException,[ERROR] - Multiple candidate methods/constructors found. Impossible to discern the focal method.
+com.fasterxml.jackson.databind.deser.BeanDeserializerFactory,@Test(timeout = 4000)
+public void test077() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    Class<CreatorProperty> class0 = CreatorProperty.class;
+    objectReader0.forType(class0);
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.fasterxml.jackson.databind.deser.BeanDeserializerFactory,@Test(timeout = 4000)
+public void test077() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    Class<CreatorProperty> class0 = CreatorProperty.class;
+    objectReader0.forType(class0);
+},ERROR,java.util.NoSuchElementException,[ERROR] - Multiple candidate methods/constructors found. Impossible to discern the focal method.
+com.fasterxml.jackson.databind.deser.BeanDeserializerFactory,@Test(timeout = 4000)
+public void test1414() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    MapperFeature[] mapperFeatureArray0 = new MapperFeature[7];
+    MapperFeature mapperFeature0 = MapperFeature.USE_ANNOTATIONS;
+    mapperFeatureArray0[0] = mapperFeature0;
+    MapperFeature mapperFeature1 = MapperFeature.USE_GETTERS_AS_SETTERS;
+    mapperFeatureArray0[1] = mapperFeature1;
+    mapperFeatureArray0[2] = mapperFeature0;
+    MapperFeature mapperFeature2 = MapperFeature.USE_WRAPPER_NAME_AS_PROPERTY_NAME;
+    mapperFeatureArray0[3] = mapperFeature2;
+    mapperFeatureArray0[4] = mapperFeature2;
+    MapperFeature mapperFeature3 = MapperFeature.REQUIRE_SETTERS_FOR_GETTERS;
+    mapperFeatureArray0[5] = mapperFeature3;
+    MapperFeature mapperFeature4 = MapperFeature.IGNORE_DUPLICATE_MODULE_REGISTRATIONS;
+    mapperFeatureArray0[6] = mapperFeature4;
+    ObjectMapper objectMapper1 = objectMapper0.disable(mapperFeatureArray0);
+    ObjectMapper objectMapper2 = objectMapper1.setFilterProvider((FilterProvider) null);
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES;
+    ObjectMapper objectMapper3 = objectMapper2.configure(deserializationFeature0, false);
+    BeanSerializerFactory beanSerializerFactory0 = BeanSerializerFactory.instance;
+    SerializerFactory serializerFactory0 = beanSerializerFactory0.withConfig((SerializerFactoryConfig) null);
+    ObjectMapper objectMapper4 = objectMapper3.setSerializerFactory(serializerFactory0);
+    ObjectReader objectReader0 = objectMapper4.reader();
+    Class<BeanDeserializer> class0 = BeanDeserializer.class;
+    objectReader0.forType(class0);
+    DeserializerFactoryConfig deserializerFactoryConfig0 = new DeserializerFactoryConfig();
+    BeanDeserializerFactory beanDeserializerFactory1 = new BeanDeserializerFactory(deserializerFactoryConfig0);
+},ERROR,java.lang.ClassCastException,class com.github.javaparser.ast.expr.VariableDeclarationExpr cannot be cast to class com.github.javaparser.ast.expr.MethodCallExpr (com.github.javaparser.ast.expr.VariableDeclarationExpr and com.github.javaparser.ast.expr.MethodCallExpr are in unnamed module of loader 'app')

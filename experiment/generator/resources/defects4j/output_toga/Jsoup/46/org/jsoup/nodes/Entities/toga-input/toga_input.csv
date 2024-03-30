@@ -1,0 +1,269 @@
+focal_method,test_prefix,docstring
+"static String unescape(String string, boolean strict) {
+    return Parser.unescapeEntities(string, strict);
+}","public void test000() throws Throwable {
+    String string0 = Entities.unescape("""", true);
+    assertEquals("""", string0);
+}","/**
+ * Unescape the input string.
+ * @param string to un-HTML-escape
+ * @param strict if ""strict"" (that is, requires trailing ';' char, otherwise that's optional)
+ * @return unescaped string
+ */"
+"static String unescape(String string) {
+    return unescape(string, false);
+}","public void test011() throws Throwable {
+    String string0 = Entities.unescape("""");
+    assertEquals("""", string0);
+}",""
+"public static Character getCharacterByName(String name) {
+    return full.get(name);
+}","public void test022() throws Throwable {
+    Character character0 = Entities.getCharacterByName(""&gt;"");
+    assertNull(character0);
+}","/**
+ * Get the Character value of the named entity
+ * @param name named entity (e.g. ""lt"" or ""amp"")
+ * @return the Character value of the named entity (e.g. '{@literal <}' or '{@literal &}')
+ */"
+"static String escape(String string, Document.OutputSettings out) {
+    StringBuilder accum = new StringBuilder(string.length() * 2);
+    escape(accum, string, out, false, false, false);
+    return accum.toString();
+}","public void test033() throws Throwable {
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    String string0 = Entities.escape("""", document_OutputSettings0);
+    assertEquals("""", string0);
+}",""
+"static String unescape(String string, boolean strict) {
+    return Parser.unescapeEntities(string, strict);
+}","public void test044() throws Throwable {
+    // Undeclared exception!
+    try {
+        Entities.unescape((String) null, false);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Unescape the input string.
+ * @param string to un-HTML-escape
+ * @param strict if ""strict"" (that is, requires trailing ';' char, otherwise that's optional)
+ * @return unescaped string
+ */"
+"static String unescape(String string) {
+    return unescape(string, false);
+}","public void test055() throws Throwable {
+    // Undeclared exception!
+    try {
+        Entities.unescape((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",""
+"// this method is ugly, and does a lot. but other breakups cause rescanning and stringbuilder generations
+static void escape(StringBuilder accum, String string, Document.OutputSettings out, boolean inAttribute, boolean normaliseWhite, boolean stripLeadingWhite) {
+    boolean lastWasWhite = false;
+    boolean reachedNonWhite = false;
+    final EscapeMode escapeMode = out.escapeMode();
+    final CharsetEncoder encoder = out.encoder();
+    final CoreCharset coreCharset = CoreCharset.byName(encoder.charset().name());
+    final Map<Character, String> map = escapeMode.getMap();
+    final int length = string.length();
+    int codePoint;
+    for (int offset = 0; offset < length; offset += Character.charCount(codePoint)) {
+        codePoint = string.codePointAt(offset);
+        if (normaliseWhite) {
+            if (StringUtil.isWhitespace(codePoint)) {
+                if ((stripLeadingWhite && !reachedNonWhite) || lastWasWhite)
+                    continue;
+                accum.append(' ');
+                lastWasWhite = true;
+                continue;
+            } else {
+                lastWasWhite = false;
+                reachedNonWhite = true;
+            }
+        }
+        // surrogate pairs, split implementation for efficiency on single char common case (saves creating strings, char[]):
+        if (codePoint < Character.MIN_SUPPLEMENTARY_CODE_POINT) {
+            final char c = (char) codePoint;
+            // html specific and required escapes:
+            switch(c) {
+                case '&':
+                    accum.append(""&amp;"");
+                    break;
+                case 0xA0:
+                    if (escapeMode != EscapeMode.xhtml)
+                        accum.append(""&nbsp;"");
+                    else
+                        accum.append(c);
+                    break;
+                case '<':
+                    if (!inAttribute)
+                        accum.append(""&lt;"");
+                    else
+                        accum.append(c);
+                    break;
+                case '>':
+                    if (!inAttribute)
+                        accum.append(""&gt;"");
+                    else
+                        accum.append(c);
+                    break;
+                case '""':
+                    if (inAttribute)
+                        accum.append(""&quot;"");
+                    else
+                        accum.append(c);
+                    break;
+                default:
+                    if (canEncode(coreCharset, c, encoder))
+                        accum.append(c);
+                    else if (map.containsKey(c))
+                        accum.append('&').append(map.get(c)).append(';');
+                    else
+                        accum.append(""&#x"").append(Integer.toHexString(codePoint)).append(';');
+            }
+        } else {
+            final String c = new String(Character.toChars(codePoint));
+            if (// uses fallback encoder for simplicity
+            encoder.canEncode(c))
+                accum.append(c);
+            else
+                accum.append(""&#x"").append(Integer.toHexString(codePoint)).append(';');
+        }
+    }
+}","public void test066() throws Throwable {
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    // Undeclared exception!
+    try {
+        Entities.escape((StringBuilder) null, ""BTO%lw'+K6'9oo"", document_OutputSettings0, false, true, false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Entities"", e);
+    }
+}",""
+"static String escape(String string, Document.OutputSettings out) {
+    StringBuilder accum = new StringBuilder(string.length() * 2);
+    escape(accum, string, out, false, false, false);
+    return accum.toString();
+}","public void test077() throws Throwable {
+    // Undeclared exception!
+    try {
+        Entities.escape(""gt"", (Document.OutputSettings) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Entities"", e);
+    }
+}",""
+"public static boolean isBaseNamedEntity(String name) {
+    return base.containsKey(name);
+}","public void test088() throws Throwable {
+    boolean boolean0 = Entities.isBaseNamedEntity(""7{T]rRi/&/k."");
+    assertFalse(boolean0);
+}","/**
+ * Check if the input is a known named entity in the base entity set.
+ * @param name the possible entity name (e.g. ""lt"" or ""amp"")
+ * @return true if a known named entity in the base set
+ * @see #isNamedEntity(String)
+ */"
+"public static boolean isBaseNamedEntity(String name) {
+    return base.containsKey(name);
+}","public void test099() throws Throwable {
+    boolean boolean0 = Entities.isBaseNamedEntity(""quot"");
+    assertTrue(boolean0);
+}","/**
+ * Check if the input is a known named entity in the base entity set.
+ * @param name the possible entity name (e.g. ""lt"" or ""amp"")
+ * @return true if a known named entity in the base set
+ * @see #isNamedEntity(String)
+ */"
+"public static boolean isNamedEntity(String name) {
+    return full.containsKey(name);
+}","public void test1010() throws Throwable {
+    boolean boolean0 = Entities.isNamedEntity(""8o|:W{sm?j"");
+    assertFalse(boolean0);
+}","/**
+ * Check if the input is a known named entity
+ * @param name the possible entity name (e.g. ""lt"" or ""amp"")
+ * @return true if a known named entity
+ */"
+"public static Character getCharacterByName(String name) {
+    return full.get(name);
+}","public void test1111() throws Throwable {
+    Character character0 = Entities.getCharacterByName(""ShortDownArrow"");
+    assertEquals('\u2193', (char) character0);
+}","/**
+ * Get the Character value of the named entity
+ * @param name named entity (e.g. ""lt"" or ""amp"")
+ * @return the Character value of the named entity (e.g. '{@literal <}' or '{@literal &}')
+ */"
+"static String escape(String string, Document.OutputSettings out) {
+    StringBuilder accum = new StringBuilder(string.length() * 2);
+    escape(accum, string, out, false, false, false);
+    return accum.toString();
+}","public void test1313() throws Throwable {
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    Document.OutputSettings document_OutputSettings1 = document_OutputSettings0.charset(""US-ASCII"");
+    String string0 = Entities.escape(""!}&Wt\""2qcQggF"", document_OutputSettings1);
+    assertEquals(""!}&amp;Wt\""2qcQggF"", string0);
+}",""
+"static String escape(String string, Document.OutputSettings out) {
+    StringBuilder accum = new StringBuilder(string.length() * 2);
+    escape(accum, string, out, false, false, false);
+    return accum.toString();
+}","public void test1414() throws Throwable {
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    String string0 = Entities.escape(""~{K<p?"", document_OutputSettings0);
+    assertEquals(""~{K&lt;p?"", string0);
+}",""
+"public static boolean isNamedEntity(String name) {
+    return full.containsKey(name);
+}","public void test1919() throws Throwable {
+    boolean boolean0 = Entities.isNamedEntity(""vDash"");
+    assertTrue(boolean0);
+}","/**
+ * Check if the input is a known named entity
+ * @param name the possible entity name (e.g. ""lt"" or ""amp"")
+ * @return true if a known named entity
+ */"
+"static String unescape(String string, boolean strict) {
+    return Parser.unescapeEntities(string, strict);
+}","public void test2020() throws Throwable {
+    String string0 = Entities.unescape(""!42yPF|&l}0MX!y)"", false);
+    assertEquals(""!42yPF|&l}0MX!y)"", string0);
+}","/**
+ * Unescape the input string.
+ * @param string to un-HTML-escape
+ * @param strict if ""strict"" (that is, requires trailing ';' char, otherwise that's optional)
+ * @return unescaped string
+ */"
+"static String escape(String string, Document.OutputSettings out) {
+    StringBuilder accum = new StringBuilder(string.length() * 2);
+    escape(accum, string, out, false, false, false);
+    return accum.toString();
+}","public void test2121() throws Throwable {
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    String string0 = Entities.escape(""( YX>o"", document_OutputSettings0);
+    assertEquals(""( YX&gt;o"", string0);
+}",""
+"static String unescape(String string) {
+    return unescape(string, false);
+}","public void test2222() throws Throwable {
+    String string0 = Entities.unescape(""( YX&gt;o"");
+    assertEquals(""( YX>o"", string0);
+}",""

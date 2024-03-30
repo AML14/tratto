@@ -1,0 +1,29 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test10,"public void test10() throws Throwable {
+    String string0 = Util.stripLeadingHyphens(""-"");
+    assertNotNull(string0);
+}",0,
+project,0,test11,"public void test11() throws Throwable {
+    String string0 = Util.stripLeadingHyphens(""-"");
+    assertEquals("""", string0);
+}",0,
+project,0,test22,"public void test22() throws Throwable {
+    String string0 = Util.stripLeadingHyphens((String) null);
+    assertNull(string0);
+}",0,
+project,0,test33,"public void test33() throws Throwable {
+    String string0 = Util.stripLeadingHyphens(""--"");
+    assertEquals("""", string0);
+}",0,
+project,0,test44,"public void test44() throws Throwable {
+    String string0 = Util.stripLeadingHyphens(""b*h{p} jzFE"");
+    assertEquals(""b*h{p} jzFE"", string0);
+}",0,assertNotNull(string0)
+project,0,test55,"public void test55() throws Throwable {
+    String string0 = Util.stripLeadingAndTrailingQuotes(""\""ED.Cahr"");
+    assertEquals(""ED.Cahr"", string0);
+}",0,assertNotNull(string0)
+project,0,test66,"public void test66() throws Throwable {
+    String string0 = Util.stripLeadingAndTrailingQuotes(""~ejLg;=`mCF'-$5=e\"""");
+    assertEquals(""~ejLg;=`mCF'-$5=e"", string0);
+}",0,

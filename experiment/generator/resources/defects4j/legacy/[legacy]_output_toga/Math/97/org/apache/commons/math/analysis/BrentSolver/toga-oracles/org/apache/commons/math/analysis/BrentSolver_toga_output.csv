@@ -1,0 +1,57 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test020,"public void test020() throws Throwable {
+    double[] doubleArray0 = new double[0];
+    PolynomialFunction[] polynomialFunctionArray0 = new PolynomialFunction[2];
+    PolynomialFunction polynomialFunction0 = null;
+    try {
+        polynomialFunction0 = new PolynomialFunction(doubleArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Polynomial coefficient array must have postive length.
+        //
+        verifyException(""org.apache.commons.math.analysis.PolynomialFunction"", e);
+    }
+}",0,
+project,0,test031,"public void test031() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    PolynomialFunction[] polynomialFunctionArray0 = new PolynomialFunction[0];
+    PolynomialSplineFunction polynomialSplineFunction0 = new PolynomialSplineFunction(doubleArray0, polynomialFunctionArray0);
+    PolynomialSplineFunction polynomialSplineFunction1 = polynomialSplineFunction0.polynomialSplineDerivative();
+    BrentSolver brentSolver0 = null;
+    try {
+        brentSolver0 = new BrentSolver(polynomialSplineFunction1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Number of polynomial interpolants must match the number of segments.
+        //
+        verifyException(""org.apache.commons.math.analysis.PolynomialSplineFunction"", e);
+    }
+}",0,
+project,0,test212,"public void test212() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    double double0 = 1.5;
+    doubleArray0[0] = 1.5;
+    double double1 = 0.0;
+    doubleArray0[1] = 1.5;
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    PolynomialFunction polynomialFunction1 = polynomialFunction0.polynomialDerivative();
+    BrentSolver brentSolver0 = new BrentSolver(polynomialFunction1);
+    brentSolver0.setRelativeAccuracy(1.5);
+    brentSolver0.solve(1.5, 0.0, 0.0);
+    double double2 = 1.0E-6;
+    brentSolver0.solve(0.0, (-1886.83536996), 1.0E-6);
+    double double3 = 4.3764418752698397E-7;
+    brentSolver0.solve(doubleArray0[1], double3);
+    // Undeclared exception!
+    try {
+        brentSolver0.solve(double2, doubleArray0[0], double0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Initial guess is not in search interval.  Initial: 1.0E-6  Endpoints: [0.0,-1886.83536996]
+        //
+        verifyException(""org.apache.commons.math.analysis.BrentSolver"", e);
+    }
+}",1,

@@ -1,0 +1,1993 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test0000,"public void test0000() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber(100.0);
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    NodeTraversal.traverse((AbstractCompiler) compiler0, node0, (NodeTraversal.Callback) typeCheck0);
+    typeCheck0.getTypedPercent();
+}",0,
+project,0,test0011,"public void test0011() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3796.095944977192));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(35, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    typeCheck0.visit(nodeTraversal0, node1, node0);
+    assertEquals(30, Node.VAR_ARGS_NAME);
+}",0,
+project,0,test0022,"public void test0022() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    Compiler compiler0 = new Compiler();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    CheckLevel checkLevel0 = CheckLevel.OFF;
+    TypeCheck typeCheck0 = null;
+    try {
+        typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0, checkLevel0, checkLevel0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test0033,"public void test0033() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3822.821875544676));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(37, node0, node0);
+    typeCheck0.processForTesting(node0, node0);
+    // Undeclared exception!
+    try {
+        typeCheck0.process(node0, node1);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",0,
+project,0,test0044,"public void test0044() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3822.821875544676));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(37, node0, node0);
+    typeCheck0.processForTesting(node0, node0);
+    // Undeclared exception!
+    try {
+        typeCheck0.process(node1, node0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",0,
+project,0,test0055,"public void test0055() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3797.397032153444));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(42, node0, node0);
+    typeCheck0.processForTesting(node0, node0);
+    // Undeclared exception!
+    try {
+        typeCheck0.processForTesting(node1, node0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",1,
+project,0,test0066,"public void test0066() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    GoogleCodingConvention googleCodingConvention0 = new GoogleCodingConvention();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(googleCodingConvention0, jSTypeRegistry0);
+    Node node0 = compiler0.parseTestCode(""(Fissing)"");
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    JSTypeNative jSTypeNative0 = JSTypeNative.URI_ERROR_FUNCTION_TYPE;
+    FunctionType functionType0 = jSTypeRegistry0.getNativeFunctionType(jSTypeNative0);
+    Scope scope0 = new Scope(node0, functionType0);
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, closureReverseAbstractInterpreter0, jSTypeRegistry0, scope0, (ScopeCreator) null, compilerOptions0.checkGlobalNamesLevel, compilerOptions0.checkGlobalNamesLevel);
+    // Undeclared exception!
+    try {
+        typeCheck0.processForTesting(node0, node0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",1,
+project,0,test0077,"public void test0077() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    Compiler compiler0 = new Compiler();
+    compiler0.initCompilerOptionsIfTesting();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node0 = new Node((-611));
+    // Undeclared exception!
+    try {
+        typeCheck0.processForTesting(node0, node0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",1,
+project,0,test0088,"public void test0088() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3845.997638529466));
+    compiler0.toSource(node0);
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    CleanupPasses cleanupPasses0 = new CleanupPasses(compilerOptions0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, (NodeTraversal.Callback) null, (ScopeCreator) null);
+    TypeCheck typeCheck0 = cleanupPasses0.makeTypeCheck(compiler0);
+    Node[] nodeArray0 = new Node[1];
+    nodeArray0[0] = node0;
+    Node node1 = new Node(86, nodeArray0);
+    typeCheck0.visit(nodeTraversal0, node1, node0);
+    assertEquals(16, Node.SOURCENAME_PROP);
+}",0,
+project,0,test0099,"public void test0099() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3799.2415238348367));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(105, node0, node0);
+    // Undeclared exception!
+    try {
+        NodeTraversal.traverse((AbstractCompiler) compiler0, node1, (NodeTraversal.Callback) typeCheck0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",0,
+project,0,test01010,"public void test01010() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3797.397032153444));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ClosureCodingConvention closureCodingConvention0 = (ClosureCodingConvention) compiler0.defaultCodingConvention;
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, closureReverseAbstractInterpreter0, jSTypeRegistry0);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0, syntacticScopeCreator0);
+    Node node1 = new Node(125, node0, node0);
+    typeCheck0.visit(nodeTraversal0, node1, node0);
+    assertEquals("""", nodeTraversal0.getSourceName());
+}",0,assertNotNull(nodeTraversal0.getSourceName())
+project,0,test01111,"public void test01111() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3822.821875544676));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(37, node0, node0);
+    typeCheck0.processForTesting(node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    typeCheck0.visit(nodeTraversal0, node1, node0);
+    assertEquals(1, compiler0.getWarningCount());
+}",0,"assertEquals(0, compiler0.getWarningCount())"
+project,0,test01212,"public void test01212() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3845.997638529466));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(4, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.TypeCheck"", e);
+    }
+}",0,
+project,0,test01313,"public void test01313() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3796.392558868223));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(5, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 5
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test01414,"public void test01414() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-1256.818033));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(6, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 6
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test01515,"public void test01515() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber(2796.94971040167);
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(7, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node1);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 7
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test01616,"public void test01616() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3796.095944977192));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(8, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node1);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 8
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test01717,"public void test01717() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber(100.0);
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0, syntacticScopeCreator0);
+    Node node1 = Node.newString(9, ""100"", 42, 50);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.TypeCheck"", e);
+    }
+}",0,
+project,0,test01818,"public void test01818() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-0.5912830825981322));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(10, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, (NodeTraversal.Callback) null);
+    typeCheck0.visit(nodeTraversal0, node1, node0);
+    assertEquals(0, compiler0.getWarningCount());
+}",0,
+project,0,test01819,"public void test01819() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-0.5912830825981322));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(10, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, (NodeTraversal.Callback) null);
+    typeCheck0.visit(nodeTraversal0, node1, node0);
+    assertFalse(compiler0.hasErrors());
+}",1,
+project,0,test01920,"public void test01920() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3796.361670421556));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(11, node0, node0);
+    typeCheck0.visit((NodeTraversal) null, node1, node0);
+    assertFalse(node0.isGetProp());
+}",0,assertTrue(node0.isGetProp())
+project,0,test02021,"public void test02021() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3845.997638529466));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0, syntacticScopeCreator0);
+    Node node1 = new Node(12, node0, node0);
+    typeCheck0.visit(nodeTraversal0, node1, node1);
+    assertFalse(node1.isTry());
+}",0,assertTrue(node1.isTry())
+project,0,test02122,"public void test02122() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber(0.0);
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0, syntacticScopeCreator0);
+    Node node1 = new Node(13, node0, node0);
+    typeCheck0.visit(nodeTraversal0, node1, node0);
+    assertEquals(0, nodeTraversal0.getLineNumber());
+}",0,"assertEquals(0, nodeTraversal0.getLineNumber())"
+project,0,test02223,"public void test02223() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3848.777093703922));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(15, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    typeCheck0.visit(nodeTraversal0, node1, node0);
+    assertFalse(node1.isWhile());
+}",0,
+project,0,test02324,"public void test02324() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3845.997638529466));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(16, 4095, 52);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.TypeCheck"", e);
+    }
+}",0,
+project,0,test02425,"public void test02425() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-0.5912830825981322));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(19, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    typeCheck0.visit(nodeTraversal0, node1, node1);
+    assertEquals(0, compiler0.getWarningCount());
+}",0,
+project,0,test02526,"public void test02526() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3845.997638529466));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention(closureCodingConvention0);
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, closureReverseAbstractInterpreter0, jSTypeRegistry0);
+    Node node1 = new Node(21, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    typeCheck0.visit(nodeTraversal0, node1, node0);
+    assertFalse(node0.isGetElem());
+}",0,assertTrue(node0.isGetElem())
+project,0,test02627,"public void test02627() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3796.095944977192));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(23, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal((AbstractCompiler) null, typeCheck0);
+    typeCheck0.visit(nodeTraversal0, node1, node1);
+    assertEquals(49, Node.DIRECT_EVAL);
+}",0,
+project,0,test02728,"public void test02728() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3796.095944977192));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(24, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    typeCheck0.visit(nodeTraversal0, node1, node1);
+    assertEquals(16, Node.SOURCENAME_PROP);
+}",0,
+project,0,test02829,"public void test02829() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3799.2415238348367));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(25, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    typeCheck0.visit(nodeTraversal0, node1, node0);
+    assertEquals(47, Node.IS_DISPATCHER);
+}",0,
+project,0,test02930,"public void test02930() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3798.9136336228316));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(26, node0, node0);
+    Normalize.NormalizeStatements normalize_NormalizeStatements0 = new Normalize.NormalizeStatements(compiler0, true);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, normalize_NormalizeStatements0);
+    typeCheck0.visit(nodeTraversal0, node1, node1);
+    assertEquals((-1), node1.getLineno());
+}",0,
+project,0,test03031,"public void test03031() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-0.5912830825981322));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(27, node0, node0);
+    NodeTraversal.traverse((AbstractCompiler) compiler0, node1, (NodeTraversal.Callback) typeCheck0);
+    assertEquals(41, Node.BRACELESS_TYPE);
+}",0,
+project,0,test03132,"public void test03132() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3797.397032153444));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(28, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    typeCheck0.visit(nodeTraversal0, node1, node1);
+    assertEquals(40, Node.ORIGINALNAME_PROP);
+}",0,
+project,0,test03233,"public void test03233() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3797.3970322));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = Node.newString(29, ""-3797.3970322"", (-1309), 2);
+    // Undeclared exception!
+    try {
+        NodeTraversal.traverse((AbstractCompiler) compiler0, node1, (NodeTraversal.Callback) typeCheck0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",0,
+project,0,test03334,"public void test03334() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-1256.818033));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(30, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    typeCheck0.visit(nodeTraversal0, node1, node0);
+    assertEquals(0, compiler0.getWarningCount());
+}",0,
+project,0,test03435,"public void test03435() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3798.9136336228316));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0, syntacticScopeCreator0);
+    Node node1 = Node.newString(31, ""module.exports"", 32, 29);
+    typeCheck0.visit(nodeTraversal0, node1, node1);
+    assertFalse(node1.hasChildren());
+}",0,assertFalse(node1.hasChildren())
+project,0,test03536,"public void test03536() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3822.821875544676));
+    compiler0.toSource(node0);
+    Node node1 = new Node(32, node0, node0);
+    CompilerOptions compilerOptions0 = compiler0.options;
+    CleanupPasses cleanupPasses0 = new CleanupPasses(compilerOptions0);
+    TypeCheck typeCheck0 = cleanupPasses0.makeTypeCheck(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    typeCheck0.visit(nodeTraversal0, node1, node1);
+    assertFalse(node1.isInc());
+}",0,assertTrue(node1.isInc())
+project,0,test03637,"public void test03637() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber(0.0);
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(33, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node1);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // NUMBER 0.0 is not a string node
+        //
+        verifyException(""com.google.javascript.rhino.Node"", e);
+    }
+}",0,
+project,0,test03738,"public void test03738() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3799.2415238348367));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(36, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node1);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 36
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test03839,"public void test03839() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber(0.0);
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = Node.newString(""0"", 2, 45);
+    NodeTraversal.traverse((AbstractCompiler) compiler0, node1, (NodeTraversal.Callback) typeCheck0);
+    assertFalse(node1.isDo());
+}",0,assertFalse(node1.isDo())
+project,0,test03940,"public void test03940() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber(0.0);
+    compiler0.toSource(node0);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    CleanupPasses cleanupPasses0 = new CleanupPasses(compilerOptions0);
+    TypeCheck typeCheck0 = cleanupPasses0.makeTypeCheck(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0, syntacticScopeCreator0);
+    Node node1 = new Node(41, node0, node0);
+    typeCheck0.visit(nodeTraversal0, node1, node0);
+    assertEquals(1, Node.DECR_FLAG);
+}",0,
+project,0,test04041,"public void test04041() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3845.997638529466));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(42, node0, node0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit((NodeTraversal) null, node1, node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.TypeCheck"", e);
+    }
+}",0,
+project,0,test04142,"public void test04142() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber(0.0);
+    compiler0.toSource(node0);
+    CompilerOptions compilerOptions0 = compiler0.options;
+    CleanupPasses cleanupPasses0 = new CleanupPasses(compilerOptions0);
+    TypeCheck typeCheck0 = cleanupPasses0.makeTypeCheck(compiler0);
+    Node node1 = new Node(43, node0, node0);
+    typeCheck0.visit((NodeTraversal) null, node1, node0);
+    assertFalse(node0.isAdd());
+}",0,assertFalse(node0.isAdd())
+project,0,test04243,"public void test04243() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3798.9136336228316));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(44, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal((AbstractCompiler) null, typeCheck0);
+    typeCheck0.visit(nodeTraversal0, node1, node1);
+    assertEquals(43, Node.IS_CONSTANT_NAME);
+}",0,
+project,0,test04344,"public void test04344() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber(0.0);
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(45, node0, node0);
+    typeCheck0.visit((NodeTraversal) null, node1, node0);
+    assertFalse(node0.hasChildren());
+}",0,assertTrue(node0.hasChildren())
+project,0,test04445,"public void test04445() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3798.9136336228316));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(46, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    typeCheck0.visit(nodeTraversal0, node1, node1);
+    assertEquals(1, Node.FLAG_GLOBAL_STATE_UNMODIFIED);
+}",0,
+project,0,test04546,"public void test04546() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-0.5912830825981322));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(47, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    typeCheck0.visit(nodeTraversal0, node1, node1);
+    assertFalse(node1.isInc());
+}",0,assertTrue(node1.isInc())
+project,0,test04647,"public void test04647() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber(100.0);
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0, syntacticScopeCreator0);
+    Node node1 = new Node(48, node0, node0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 48
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test04748,"public void test04748() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3848.777093703922));
+    compiler0.toSource(node0);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    CleanupPasses cleanupPasses0 = new CleanupPasses(compilerOptions0);
+    TypeCheck typeCheck0 = cleanupPasses0.makeTypeCheck(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0, syntacticScopeCreator0);
+    Node node1 = new Node(49, node0, node0, node0, 12, 30);
+    typeCheck0.visit(nodeTraversal0, node1, node1);
+    assertEquals(46, Node.IS_NAMESPACE);
+}",0,
+project,0,test04849,"public void test04849() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-0.5912830825981322));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = Node.newString(50, ""-0.5912830825981322"");
+    Node node2 = new Node(27, node1, node1);
+    // Undeclared exception!
+    try {
+        NodeTraversal.traverse((AbstractCompiler) compiler0, node2, (NodeTraversal.Callback) typeCheck0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // 50
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test04950,"public void test04950() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-0.5912830825981322));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(51, node0, node0);
+    NodeTraversal.traverse((AbstractCompiler) compiler0, node1, (NodeTraversal.Callback) typeCheck0);
+    assertEquals(0.0, compiler0.getProgress(), 0.01);
+}",0,
+project,0,test05051,"public void test05051() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-1256.818033));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = Node.newString(52, ""pa=clE4"", 32, 139);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit((NodeTraversal) null, node1, node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.TypeCheck"", e);
+    }
+}",0,
+project,0,test05152,"public void test05152() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber(0.0);
+    compiler0.toSource(node0);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    CompilerOptions compilerOptions0 = compiler0.newCompilerOptions();
+    CleanupPasses cleanupPasses0 = new CleanupPasses(compilerOptions0);
+    TypeCheck typeCheck0 = cleanupPasses0.makeTypeCheck(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0, syntacticScopeCreator0);
+    Node node1 = new Node(53, node0, node0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node1);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 53
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test05253,"public void test05253() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    Compiler compiler0 = new Compiler();
+    compiler0.initCompilerOptionsIfTesting();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node0 = Node.newString(""left operand"", 158, 158);
+    Node node1 = new Node(54, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node1);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 54
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test05354,"public void test05354() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3848.777093703922));
+    compiler0.toSource(node0);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    CleanupPasses cleanupPasses0 = new CleanupPasses(compilerOptions0);
+    TypeCheck typeCheck0 = cleanupPasses0.makeTypeCheck(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0, syntacticScopeCreator0);
+    Node node1 = new Node(55, node0, node0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node1);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 55
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test05455,"public void test05455() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3797.3970322));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(58, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 58
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test05556,"public void test05556() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    compiler0.parseTestCode(""s{^d|&[+'"");
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    CleanupPasses cleanupPasses0 = new CleanupPasses(compilerOptions0);
+    ExternExportsPass externExportsPass0 = new ExternExportsPass(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, externExportsPass0, (ScopeCreator) null);
+    TypeCheck typeCheck0 = cleanupPasses0.makeTypeCheck(compiler0);
+    Node[] nodeArray0 = new Node[0];
+    Node node0 = new Node(60, nodeArray0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node0, node0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 60
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test05657,"public void test05657() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3798.9136336228316));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(61, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node1);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 61
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test05758,"public void test05758() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""(Fissing)"");
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    CleanupPasses cleanupPasses0 = new CleanupPasses(compilerOptions0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, (NodeTraversal.Callback) null, (ScopeCreator) null);
+    TypeCheck typeCheck0 = cleanupPasses0.makeTypeCheck(compiler0);
+    Node[] nodeArray0 = new Node[1];
+    nodeArray0[0] = node0;
+    Node node1 = new Node(65, nodeArray0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node1);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 65
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test05859,"public void test05859() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3845.997638529466));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, (NodeTraversal.Callback) null, typedScopeCreator0);
+    Node node1 = new Node(67, node0, node0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node1);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 67
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test05960,"public void test05960() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3796.392558868223));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(71, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node1);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 71
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test06061,"public void test06061() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-0.5912830825981322));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = Node.newString(78, ""6"", 0, 1163);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit((NodeTraversal) null, node1, node1);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 78
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test06162,"public void test06162() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber(0.0);
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = Node.newString(79, ""0"", 0, 55);
+    // Undeclared exception!
+    try {
+        NodeTraversal.traverse((AbstractCompiler) compiler0, node1, (NodeTraversal.Callback) typeCheck0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // 79
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test06364,"public void test06364() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3796.095944977192));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(84, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node1);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 84
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test06465,"public void test06465() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3799.2415238348367));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(87, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    typeCheck0.visit(nodeTraversal0, node1, node0);
+    assertFalse(compiler0.hasErrors());
+}",1,
+project,0,test06466,"public void test06466() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3799.2415238348367));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(87, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    typeCheck0.visit(nodeTraversal0, node1, node0);
+    assertEquals(0, compiler0.getErrorCount());
+}",0,"assertEquals(0, compiler0.getErrorCount())"
+project,0,test06567,"public void test06567() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber(0.0);
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = Node.newString(95, ""0"", 0, 55);
+    // Undeclared exception!
+    try {
+        NodeTraversal.traverse((AbstractCompiler) compiler0, node1, (NodeTraversal.Callback) typeCheck0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",0,
+project,0,test06668,"public void test06668() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber(2796.94971040167);
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(97, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    typeCheck0.visit(nodeTraversal0, node1, node1);
+    assertEquals(15, Node.NO_SIDE_EFFECTS);
+}",0,
+project,0,test06769,"public void test06769() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3797.39703215344));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, closureReverseAbstractInterpreter0, jSTypeRegistry0);
+    Node node1 = new Node(98, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    typeCheck0.visit(nodeTraversal0, node1, node0);
+    assertFalse(node0.isGetProp());
+}",0,assertTrue(node0.isGetProp())
+project,0,test06870,"public void test06870() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""(Fissing)"");
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    CleanupPasses cleanupPasses0 = new CleanupPasses(compilerOptions0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, (NodeTraversal.Callback) null, (ScopeCreator) null);
+    TypeCheck typeCheck0 = cleanupPasses0.makeTypeCheck(compiler0);
+    Node[] nodeArray0 = new Node[1];
+    nodeArray0[0] = node0;
+    Node node1 = new Node(101, nodeArray0);
+    typeCheck0.visit(nodeTraversal0, node1, node0);
+    assertEquals(4095, Node.MAX_COLUMN_NUMBER);
+}",0,
+project,0,test06971,"public void test06971() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3798.103125621546));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ReverseAbstractInterpreter reverseAbstractInterpreter0 = compiler0.getReverseAbstractInterpreter();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, reverseAbstractInterpreter0, jSTypeRegistry0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    Node node1 = new Node(103, node0);
+    typeCheck0.visit(nodeTraversal0, node1, (Node) null);
+    assertFalse(node1.isTry());
+}",0,assertTrue(node1.isTry())
+project,0,test07072,"public void test07072() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber(2796.94971040167);
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(105, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node1);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // NUMBER 2796.94971040167 is not a string node
+        //
+        verifyException(""com.google.javascript.rhino.Node"", e);
+    }
+}",0,
+project,0,test07173,"public void test07173() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3796.833598160275));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0, syntacticScopeCreator0);
+    Node[] nodeArray0 = new Node[1];
+    nodeArray0[0] = node0;
+    Node node1 = new Node(106, nodeArray0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 106
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test07274,"public void test07274() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber(2796.94971040167);
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(107, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 107
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test07375,"public void test07375() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3798.103125621546));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0, syntacticScopeCreator0);
+    Node[] nodeArray0 = new Node[0];
+    Node node1 = new Node(108, nodeArray0);
+    typeCheck0.visit(nodeTraversal0, node1, node0);
+    assertFalse(node1.isWith());
+}",0,assertTrue(node1.isWith())
+project,0,test07476,"public void test07476() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3797.39703215344));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(110, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    typeCheck0.visit(nodeTraversal0, node1, node1);
+    assertFalse(node1.isBlock());
+}",0,
+project,0,test07577,"public void test07577() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3796.392558868223));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(111, node0, node0);
+    // Undeclared exception!
+    try {
+        NodeTraversal.traverse((AbstractCompiler) compiler0, node1, (NodeTraversal.Callback) typeCheck0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",0,
+project,0,test07678,"public void test07678() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3797.397032153444));
+    compiler0.toSource(node0);
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, (JSTypeRegistry) null);
+    Node node1 = new Node(112, node0, node0, node0);
+    typeCheck0.visit((NodeTraversal) null, node1, node1);
+    assertFalse(node1.isAssignAdd());
+}",0,assertTrue(node1.isAssignAdd())
+project,0,test07779,"public void test07779() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-0.5912830825981322));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = Node.newString(113, ""M)=y<b"", 36, 904);
+    typeCheck0.visit((NodeTraversal) null, node1, (Node) null);
+    assertEquals(45, Node.IS_VAR_ARGS_PARAM);
+}",0,
+project,0,test07880,"public void test07880() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    Node node0 = Node.newNumber(0.0);
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(114, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal((AbstractCompiler) null, typeCheck0);
+    typeCheck0.visit(nodeTraversal0, node1, node1);
+    assertEquals(51, Node.STATIC_SOURCE_FILE);
+}",0,
+project,0,test07981,"public void test07981() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    Node node0 = Node.newNumber(0.0);
+    Compiler compiler0 = new Compiler();
+    CheckLevel checkLevel0 = CheckLevel.OFF;
+    CheckSideEffects checkSideEffects0 = new CheckSideEffects(compiler0, checkLevel0, true);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, checkSideEffects0);
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention(jqueryCodingConvention0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(closureCodingConvention0, jSTypeRegistry0);
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, semanticReverseAbstractInterpreter0, jSTypeRegistry0);
+    Node node1 = new Node(115, node0, node0);
+    typeCheck0.visit(nodeTraversal0, node1, node1);
+    assertFalse(node1.isInstanceOf());
+}",0,
+project,0,test08082,"public void test08082() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3845.997638529466));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(116, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    typeCheck0.visit(nodeTraversal0, node1, node0);
+    assertFalse(node1.isInstanceOf());
+}",0,assertTrue(node1.isInstanceOf())
+project,0,test08183,"public void test08183() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3796.095944977192));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = Node.newString(117, ""could not determine the type of this expression"", 4095, 51);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    typeCheck0.visit(nodeTraversal0, node1, node0);
+    assertEquals(16, Node.FLAG_LOCAL_RESULTS);
+}",0,
+project,0,test08284,"public void test08284() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3797.39703215344));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(119, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    typeCheck0.visit(nodeTraversal0, node1, node1);
+    assertEquals(119, node1.getType());
+}",0,"assertEquals(0, node1.getType())"
+project,0,test08385,"public void test08385() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-337.2963172611317));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(120, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    typeCheck0.visit(nodeTraversal0, node1, node0);
+    assertFalse(node0.isThrow());
+}",1,
+project,0,test08486,"public void test08486() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3845.997638529466));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(121, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 121
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test08587,"public void test08587() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3796.095944977192));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0, syntacticScopeCreator0);
+    Node node1 = new Node(122, node0, node0);
+    typeCheck0.visit(nodeTraversal0, node1, node0);
+    assertFalse(node0.isGetElem());
+}",0,assertTrue(node0.isGetElem())
+project,0,test08688,"public void test08688() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3796.392558868223));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(123, 2279, 46);
+    // Undeclared exception!
+    try {
+        NodeTraversal.traverse((AbstractCompiler) compiler0, node1, (NodeTraversal.Callback) typeCheck0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // 123
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test08789,"public void test08789() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3796.392558868223));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0, syntacticScopeCreator0);
+    Node node1 = new Node(124, node0, node0);
+    typeCheck0.visit(nodeTraversal0, node1, node0);
+    assertEquals(37, Node.OPT_ARG_NAME);
+}",0,
+project,0,test08890,"public void test08890() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber(0.0);
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(126, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    typeCheck0.visit(nodeTraversal0, node1, node0);
+    assertEquals(36, Node.QUOTED_PROP);
+}",0,
+project,0,test08991,"public void test08991() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3797.39703215344));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(127, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 127
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test09092,"public void test09092() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3799.2415238348367));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0, syntacticScopeCreator0);
+    Node node1 = new Node(128, node0, node0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node1);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 128
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test09193,"public void test09193() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    Node node0 = Node.newNumber(0.0);
+    Compiler compiler0 = new Compiler();
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = Node.newString(129, ""2P-e3_m9p.z&pzf"", 110, 16);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit((NodeTraversal) null, node1, node0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 129
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test09294,"public void test09294() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3797.397032153444));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(131, node0, node0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit((NodeTraversal) null, node1, node0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 131
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test09395,"public void test09395() throws Throwable {
+    Node node0 = Node.newNumber((-1302.779));
+    Compiler compiler0 = new Compiler();
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(133, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node1);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 133
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test09496,"public void test09496() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber(555.79856696);
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0, typedScopeCreator0);
+    Node node1 = new Node(134, node0, node0, node0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 134
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test09597,"public void test09597() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-1812.2566530474));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(135, node0, node0);
+    // Undeclared exception!
+    try {
+        NodeTraversal.traverse((AbstractCompiler) compiler0, node1, (NodeTraversal.Callback) typeCheck0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // 135
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test09698,"public void test09698() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3796.095944977192));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(136, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0, (ScopeCreator) null);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node1);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 136
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test09799,"public void test09799() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3796.361670421556));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = Node.newString(137, """", 4095, 484);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit((NodeTraversal) null, node1, node1);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 137
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test098100,"public void test098100() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3845.997638529466));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    Node node1 = Node.newString(138, ""-3845.997638529466"", (-38), 53);
+    GroupVariableDeclarations groupVariableDeclarations0 = new GroupVariableDeclarations(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, groupVariableDeclarations0);
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 138
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test099101,"public void test099101() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3797.397032153444));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(139, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node1);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 139
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test100102,"public void test100102() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3798.103125621546));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(140, node0, node0);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0, syntacticScopeCreator0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node1);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 140
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test101103,"public void test101103() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3796.095944977192));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0, syntacticScopeCreator0);
+    Node node1 = new Node(141, node0, node0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 141
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test102104,"public void test102104() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    Compiler compiler0 = new Compiler();
+    compiler0.initCompilerOptionsIfTesting();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    JSType[] jSTypeArray0 = new JSType[0];
+    Node node0 = jSTypeRegistry0.createOptionalParameters(jSTypeArray0);
+    Node node1 = new Node(142, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 142
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test103105,"public void test103105() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-1256.818033));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = Node.newString(143, ""-1256.818033"", (-4317), (-1024));
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0, typedScopeCreator0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node1);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 143
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test104106,"public void test104106() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3845.997638529466));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(144, node0, node0);
+    // Undeclared exception!
+    try {
+        NodeTraversal.traverse((AbstractCompiler) compiler0, node1, (NodeTraversal.Callback) typeCheck0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // 144
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test105107,"public void test105107() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3797.3970322));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(145, node0, node0);
+    // Undeclared exception!
+    try {
+        NodeTraversal.traverse((AbstractCompiler) compiler0, node1, (NodeTraversal.Callback) typeCheck0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // 145
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test106108,"public void test106108() throws Throwable {
+    Node node0 = Node.newNumber(0.0);
+    Compiler compiler0 = new Compiler();
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ReverseAbstractInterpreter reverseAbstractInterpreter0 = compiler0.getReverseAbstractInterpreter();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, reverseAbstractInterpreter0, jSTypeRegistry0);
+    Node node1 = new Node(146, node0, node0);
+    // Undeclared exception!
+    try {
+        NodeTraversal.traverse((AbstractCompiler) compiler0, node1, (NodeTraversal.Callback) typeCheck0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // 146
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test107109,"public void test107109() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3797.397032153444));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(147, node0, node0, node0);
+    typeCheck0.visit((NodeTraversal) null, node1, node1);
+    assertFalse(node1.isNE());
+}",0,assertTrue(node1.isNE())
+project,0,test109111,"public void test109111() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-6276.1144453));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(149, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    typeCheck0.visit(nodeTraversal0, node1, node0);
+    assertTrue(compiler0.hasErrors());
+}",0,assertTrue(compiler0.hasErrors())
+project,0,test109112,"public void test109112() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-6276.1144453));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(149, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    typeCheck0.visit(nodeTraversal0, node1, node0);
+    assertEquals(1, compiler0.getErrorCount());
+}",0,
+project,0,test110113,"public void test110113() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3796.392558868223));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0, syntacticScopeCreator0);
+    Node node1 = new Node(150, node0, node0);
+    // Undeclared exception!
+    try {
+        typeCheck0.visit(nodeTraversal0, node1, node1);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // 150
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test111114,"public void test111114() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3796.392558868223));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0, syntacticScopeCreator0);
+    Node node1 = new Node(152, node0, node0);
+    typeCheck0.visit(nodeTraversal0, node1, node0);
+    assertEquals(55, Node.LAST_PROP);
+}",0,
+project,0,test112115,"public void test112115() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3798.9136336228316));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    GoogleCodingConvention googleCodingConvention0 = new GoogleCodingConvention();
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention(googleCodingConvention0);
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0, jqueryCodingConvention0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0, typedScopeCreator0);
+    Node node1 = new Node(153, node0, node0);
+    typeCheck0.visit(nodeTraversal0, node1, node0);
+    assertFalse(node0.hasOneChild());
+}",0,assertFalse(node0.hasOneChild())
+project,0,test113116,"public void test113116() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber(53.0);
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    GoogleCodingConvention googleCodingConvention0 = new GoogleCodingConvention();
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention(googleCodingConvention0);
+    SemanticReverseAbstractInterpreter semanticReverseAbstractInterpreter0 = new SemanticReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, semanticReverseAbstractInterpreter0, jSTypeRegistry0);
+    Node node1 = new Node(154, node0, node0);
+    NodeTraversal.traverse((AbstractCompiler) compiler0, node1, (NodeTraversal.Callback) typeCheck0);
+    assertEquals(8, Node.FLAG_NO_THROWS);
+}",0,
+project,0,test114117,"public void test114117() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber(0.0);
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = Node.newString(1, ""0"", 0, 55);
+    // Undeclared exception!
+    try {
+        NodeTraversal.traverse((AbstractCompiler) compiler0, node1, (NodeTraversal.Callback) typeCheck0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // 1
+        //
+        verifyException(""com.google.javascript.rhino.Token"", e);
+    }
+}",0,
+project,0,test115118,"public void test115118() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber(2796.94971040167);
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(100, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    typeCheck0.visit(nodeTraversal0, node1, node0);
+    typeCheck0.visit(nodeTraversal0, node1, node0);
+    assertEquals(46, Node.IS_NAMESPACE);
+}",0,
+project,0,test116119,"public void test116119() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    Compiler compiler0 = new Compiler();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    Node node0 = compiler0.parseTestCode(""(Fissing)"");
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    CheckLevel checkLevel0 = CheckLevel.ERROR;
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, closureReverseAbstractInterpreter0, jSTypeRegistry0, (Scope) null, (ScopeCreator) null, compilerOptions0.checkMissingGetCssNameLevel, checkLevel0);
+    NodeTraversal.traverse((AbstractCompiler) compiler0, node0, (NodeTraversal.Callback) typeCheck0);
+    assertEquals(1, compiler0.getErrorCount());
+}",0,"assertEquals(0, compiler0.getErrorCount())"
+project,0,test116120,"public void test116120() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    Compiler compiler0 = new Compiler();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(jqueryCodingConvention0, jSTypeRegistry0);
+    Node node0 = compiler0.parseTestCode(""(Fissing)"");
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    CheckLevel checkLevel0 = CheckLevel.ERROR;
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, closureReverseAbstractInterpreter0, jSTypeRegistry0, (Scope) null, (ScopeCreator) null, compilerOptions0.checkMissingGetCssNameLevel, checkLevel0);
+    NodeTraversal.traverse((AbstractCompiler) compiler0, node0, (NodeTraversal.Callback) typeCheck0);
+    assertTrue(compiler0.hasErrors());
+}",1,
+project,0,test117121,"public void test117121() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber(2523.33497);
+    compiler0.toSource(node0);
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0, syntacticScopeCreator0);
+    Node node1 = new Node(105, node0, node0);
+    boolean boolean0 = typeCheck0.visitName(nodeTraversal0, node0, node1);
+    assertFalse(boolean0);
+}",0,
+project,0,test118122,"public void test118122() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-337.2963172611317));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(120, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0, (ScopeCreator) null);
+    boolean boolean0 = typeCheck0.visitName(nodeTraversal0, node1, node1);
+    assertFalse(boolean0);
+}",0,
+project,0,test119123,"public void test119123() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    Compiler compiler0 = new Compiler();
+    compiler0.initCompilerOptionsIfTesting();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0, typedScopeCreator0);
+    JSType[] jSTypeArray0 = new JSType[0];
+    Node node0 = jSTypeRegistry0.createOptionalParameters(jSTypeArray0);
+    boolean boolean0 = typeCheck0.visitName(nodeTraversal0, node0, node0);
+    assertFalse(boolean0);
+}",0,
+project,0,test120124,"public void test120124() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3799.2415238348367));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = Node.newString(118, ""-3799.2415238348367"", 123, 36);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    boolean boolean0 = typeCheck0.visitName(nodeTraversal0, node1, node1);
+    assertFalse(boolean0);
+}",0,
+project,0,test121125,"public void test121125() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber(2796.94971040167);
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    typeCheck0.visit(nodeTraversal0, node0, node0);
+    boolean boolean0 = typeCheck0.visitName(nodeTraversal0, node0, node0);
+    assertTrue(boolean0);
+}",0,
+project,0,test122126,"public void test122126() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-1256.818033));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(30, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    NodeTraversal.traverse((AbstractCompiler) compiler0, node0, (NodeTraversal.Callback) typeCheck0);
+    typeCheck0.visit(nodeTraversal0, node1, node0);
+    assertEquals(1, compiler0.getWarningCount());
+}",0,
+project,0,test122127,"public void test122127() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-1256.818033));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    Node node1 = new Node(30, node0, node0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    NodeTraversal.traverse((AbstractCompiler) compiler0, node0, (NodeTraversal.Callback) typeCheck0);
+    typeCheck0.visit(nodeTraversal0, node1, node0);
+    assertFalse(compiler0.hasErrors());
+}",1,
+project,0,test123128,"public void test123128() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3822.821875544676));
+    compiler0.toSource(node0);
+    Node node1 = new Node(37, node0, node0);
+    CompilerOptions compilerOptions0 = compiler0.options;
+    CleanupPasses cleanupPasses0 = new CleanupPasses(compilerOptions0);
+    TypeCheck typeCheck0 = cleanupPasses0.makeTypeCheck(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0);
+    typeCheck0.visit(nodeTraversal0, node1, node1);
+    assertEquals(0, compiler0.getWarningCount());
+}",0,
+project,0,test124129,"public void test124129() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber(120.23565214940986);
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0, syntacticScopeCreator0);
+    Node node1 = Node.newString(18, ""120.23565214940986"", 42, 50);
+    node1.addChildrenToFront(node0);
+    typeCheck0.visit(nodeTraversal0, node1, node0);
+    assertEquals(0, compiler0.getWarningCount());
+}",0,
+project,0,test124130,"public void test124130() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber(120.23565214940986);
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0, syntacticScopeCreator0);
+    Node node1 = Node.newString(18, ""120.23565214940986"", 42, 50);
+    node1.addChildrenToFront(node0);
+    typeCheck0.visit(nodeTraversal0, node1, node0);
+    assertEquals(0, compiler0.getErrorCount());
+}",0,
+project,0,test124131,"public void test124131() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber(120.23565214940986);
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, typeCheck0, syntacticScopeCreator0);
+    Node node1 = Node.newString(18, ""120.23565214940986"", 42, 50);
+    node1.addChildrenToFront(node0);
+    typeCheck0.visit(nodeTraversal0, node1, node0);
+    assertFalse(compiler0.hasErrors());
+}",1,
+project,0,test125132,"public void test125132() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-3822.821875544676));
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    node0.addSuppression(""-3822.821875544676"");
+    Node node1 = new Node(37, node0, node0);
+    typeCheck0.processForTesting(node0, node0);
+    assertEquals(0, compiler0.getWarningCount());
+}",0,
+project,0,test126133,"public void test126133() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber(2796.94971040167);
+    compiler0.toSource(node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    TypeCheck typeCheck0 = new TypeCheck(compiler0, (ReverseAbstractInterpreter) null, jSTypeRegistry0);
+    double double0 = typeCheck0.getTypedPercent();
+    assertEquals(0.0, double0, 0.01);
+}",0,

@@ -1,0 +1,781 @@
+focal_method,test_prefix,docstring
+"public int getWarningCount() {
+    return errorManager.getWarningCount();
+}","public void test000() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""com.google.javascript.jscomp.FunctionTypeBuilder$ImplementedTypeVXlidator"", ""com.google.javascript.jscomp.FunctionTypeBuilder$ImplementedTypeVXlidator"");
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""com.google.javascript.jscomp.FunctionTypeBuilder$ImplementedTypeVXlidator"", compiler0, node0, ""com.google.javascript.jscomp.FunctionTypeBuilder$ImplementedTypeVXlidator"", (Scope) null);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    JSType[] jSTypeArray0 = new JSType[7];
+    JSTypeNative jSTypeNative0 = JSTypeNative.REFERENCE_ERROR_FUNCTION_TYPE;
+    FunctionType functionType0 = jSTypeRegistry0.getNativeFunctionType(jSTypeNative0);
+    functionTypeBuilder0.inferFromOverriddenFunction(functionType0, node0);
+    Node node1 = jSTypeRegistry0.createParameters(jSTypeArray0);
+    functionTypeBuilder0.inferParameterTypes(node1, jSDocInfo0);
+    assertEquals(1, compiler0.getWarningCount());
+}","/**
+ * Gets the number of warnings.
+ */"
+"FunctionType buildAndRegister() {
+    if (returnType == null && !contents.mayHaveNonEmptyReturns() && !contents.mayBeFromExterns()) {
+        returnType = typeRegistry.getNativeType(VOID_TYPE);
+        returnTypeInferred = true;
+    }
+    if (returnType == null) {
+        returnType = typeRegistry.getNativeType(UNKNOWN_TYPE);
+    }
+    if (parametersNode == null) {
+        throw new IllegalStateException(""All Function types must have params and a return type"");
+    }
+    FunctionType fnType;
+    if (isConstructor) {
+        fnType = getOrCreateConstructor();
+    } else if (isInterface) {
+        fnType = typeRegistry.createInterfaceType(fnName, contents.getSourceNode());
+        if (getScopeDeclaredIn().isGlobal() && !fnName.isEmpty()) {
+            typeRegistry.declareType(fnName, fnType.getInstanceType());
+        }
+        maybeSetBaseType(fnType);
+    } else {
+        fnType = new FunctionBuilder(typeRegistry).withName(fnName).withSourceNode(contents.getSourceNode()).withParamsNode(parametersNode).withReturnType(returnType, returnTypeInferred).withTypeOfThis(thisType).withTemplateName(templateTypeName).build();
+        maybeSetBaseType(fnType);
+    }
+    if (implementedInterfaces != null) {
+        fnType.setImplementedInterfaces(implementedInterfaces);
+    }
+    if (extendedInterfaces != null) {
+        fnType.setExtendedInterfaces(extendedInterfaces);
+    }
+    typeRegistry.clearTemplateTypeName();
+    return fnType;
+}","public void test011() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""JSC_OPTIONAL>ARG_AT_END"", ""JSC_OPTIONAL>ARG_AT_END"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""JSC_OPTIONAL>ARG_AT_END"", compiler0, node0, ""JSC_OPTIONAL>ARG_AT_END"", (Scope) null);
+    FunctionTypeBuilder.AstFunctionContents functionTypeBuilder_AstFunctionContents0 = new FunctionTypeBuilder.AstFunctionContents(node0);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.setContents(functionTypeBuilder_AstFunctionContents0);
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    functionTypeBuilder1.inferParameterTypes(jSDocInfo0);
+    // Undeclared exception!
+    try {
+        functionTypeBuilder1.buildAndRegister();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * Builds the function type, and puts it in the registry.
+ */"
+"public int getWarningCount() {
+    return errorManager.getWarningCount();
+}","public void test056() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""d"", ""d"");
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""d"", compiler0, node0, ""d"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferParameterTypes(jSDocInfo0);
+    FunctionType functionType0 = functionTypeBuilder1.buildAndRegister();
+    functionTypeBuilder0.inferFromOverriddenFunction(functionType0, node0);
+    assertEquals(0, compiler0.getWarningCount());
+}","/**
+ * Gets the number of warnings.
+ */"
+"public boolean isReturnTypeInferred() {
+    return call.returnTypeInferred;
+}","public void test057() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""d"", ""d"");
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""d"", compiler0, node0, ""d"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferParameterTypes(jSDocInfo0);
+    FunctionType functionType0 = functionTypeBuilder1.buildAndRegister();
+    functionTypeBuilder0.inferFromOverriddenFunction(functionType0, node0);
+    assertFalse(functionType0.isReturnTypeInferred());
+}",""
+"FunctionTypeBuilder(String fnName, AbstractCompiler compiler, Node errorRoot, String sourceName, Scope scope) {
+    Preconditions.checkNotNull(errorRoot);
+    this.fnName = fnName == null ? """" : fnName;
+    this.codingConvention = compiler.getCodingConvention();
+    this.typeRegistry = compiler.getTypeRegistry();
+    this.errorRoot = errorRoot;
+    this.sourceName = sourceName;
+    this.compiler = compiler;
+    this.scope = scope;
+}","public void test068() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""ARRAY_FUNCTION_TYPE"", ""ARRAY_FUNCTION_TYPE"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder((String) null, compiler0, node0, ""ARRAY_FUNCTION_TYPE"", (Scope) null);
+}","/**
+ * @param fnName The function name.
+ * @param compiler The compiler.
+ * @param errorRoot The node to associate with any warning generated by
+ *     this builder.
+ * @param sourceName A source name for associating any warnings that
+ *     we have to emit.
+ * @param scope The syntactic scope.
+ */"
+"FunctionTypeBuilder setContents(@Nullable FunctionContents contents) {
+    if (contents != null) {
+        this.contents = contents;
+    }
+    return this;
+}","public void test079() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""q3\""5}\"""", ""q3\""5}\"""");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""q3\""5}\"""", compiler0, node0, ""q3\""5}\"""", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.setContents((FunctionTypeBuilder.FunctionContents) null);
+    assertSame(functionTypeBuilder1, functionTypeBuilder0);
+}","/**
+ * Sets the contents of this function.
+ */"
+"FunctionTypeBuilder inferFromOverriddenFunction(@Nullable FunctionType oldType, @Nullable Node paramsParent) {
+    if (oldType == null) {
+        return this;
+    }
+    returnType = oldType.getReturnType();
+    returnTypeInferred = oldType.isReturnTypeInferred();
+    if (paramsParent == null) {
+        // Not a function literal.
+        parametersNode = oldType.getParametersNode();
+        if (parametersNode == null) {
+            parametersNode = new FunctionParamBuilder(typeRegistry).build();
+        }
+    } else {
+        // We're overriding with a function literal. Apply type information
+        // to each parameter of the literal.
+        FunctionParamBuilder paramBuilder = new FunctionParamBuilder(typeRegistry);
+        Iterator<Node> oldParams = oldType.getParameters().iterator();
+        boolean warnedAboutArgList = false;
+        boolean oldParamsListHitOptArgs = false;
+        for (Node currentParam = paramsParent.getFirstChild(); currentParam != null; currentParam = currentParam.getNext()) {
+            if (oldParams.hasNext()) {
+                Node oldParam = oldParams.next();
+                Node newParam = paramBuilder.newParameterFromNode(oldParam);
+                oldParamsListHitOptArgs = oldParamsListHitOptArgs || oldParam.isVarArgs() || oldParam.isOptionalArg();
+                // The subclass method might write its var_args as individual
+                // arguments.
+                if (currentParam.getNext() != null && newParam.isVarArgs()) {
+                    newParam.setVarArgs(false);
+                    newParam.setOptionalArg(true);
+                }
+            } else {
+                warnedAboutArgList |= addParameter(paramBuilder, typeRegistry.getNativeType(UNKNOWN_TYPE), warnedAboutArgList, codingConvention.isOptionalParameter(currentParam) || oldParamsListHitOptArgs, codingConvention.isVarArgsParameter(currentParam));
+            }
+        }
+        // Clone any remaining params that aren't in the function literal.
+        parametersNode = paramBuilder.build();
+    }
+    return this;
+}","public void test0810() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""@implemeots used without const:uctor or @intIrfce 4or `0}"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""@implemeots used without const:uctor or @intIrfce 4or `0}"", compiler0, node0, ""@implemeots used without const:uctor or @intIrfce 4or `0}"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferFromOverriddenFunction((FunctionType) null, node0);
+    assertSame(functionTypeBuilder0, functionTypeBuilder1);
+}","/**
+ * Infer the parameter and return types of a function from
+ * the parameter and return types of the function it is overriding.
+ *
+ * @param oldType The function being overridden. Does nothing if this is null.
+ * @param paramsParent The LP node of the function that we're assigning to.
+ *     If null, that just means we're not initializing this to a function
+ *     literal.
+ */"
+"FunctionTypeBuilder inferFromOverriddenFunction(@Nullable FunctionType oldType, @Nullable Node paramsParent) {
+    if (oldType == null) {
+        return this;
+    }
+    returnType = oldType.getReturnType();
+    returnTypeInferred = oldType.isReturnTypeInferred();
+    if (paramsParent == null) {
+        // Not a function literal.
+        parametersNode = oldType.getParametersNode();
+        if (parametersNode == null) {
+            parametersNode = new FunctionParamBuilder(typeRegistry).build();
+        }
+    } else {
+        // We're overriding with a function literal. Apply type information
+        // to each parameter of the literal.
+        FunctionParamBuilder paramBuilder = new FunctionParamBuilder(typeRegistry);
+        Iterator<Node> oldParams = oldType.getParameters().iterator();
+        boolean warnedAboutArgList = false;
+        boolean oldParamsListHitOptArgs = false;
+        for (Node currentParam = paramsParent.getFirstChild(); currentParam != null; currentParam = currentParam.getNext()) {
+            if (oldParams.hasNext()) {
+                Node oldParam = oldParams.next();
+                Node newParam = paramBuilder.newParameterFromNode(oldParam);
+                oldParamsListHitOptArgs = oldParamsListHitOptArgs || oldParam.isVarArgs() || oldParam.isOptionalArg();
+                // The subclass method might write its var_args as individual
+                // arguments.
+                if (currentParam.getNext() != null && newParam.isVarArgs()) {
+                    newParam.setVarArgs(false);
+                    newParam.setOptionalArg(true);
+                }
+            } else {
+                warnedAboutArgList |= addParameter(paramBuilder, typeRegistry.getNativeType(UNKNOWN_TYPE), warnedAboutArgList, codingConvention.isOptionalParameter(currentParam) || oldParamsListHitOptArgs, codingConvention.isVarArgsParameter(currentParam));
+            }
+        }
+        // Clone any remaining params that aren't in the function literal.
+        parametersNode = paramBuilder.build();
+    }
+    return this;
+}","public void test0911() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""J;Cs9PINAjoARGYdEN_"", ""J;Cs9PINAjoARGYdEN_"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""J;Cs9PINAjoARGYdEN_"", compiler0, node0, ""J;Cs9PINAjoARGYdEN_"", (Scope) null);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    FunctionType functionType0 = jSTypeRegistry0.createInterfaceType(""J;Cs9PINAjoARGYdEN_"", (Node) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferFromOverriddenFunction(functionType0, (Node) null);
+    assertSame(functionTypeBuilder0, functionTypeBuilder1);
+}","/**
+ * Infer the parameter and return types of a function from
+ * the parameter and return types of the function it is overriding.
+ *
+ * @param oldType The function being overridden. Does nothing if this is null.
+ * @param paramsParent The LP node of the function that we're assigning to.
+ *     If null, that just means we're not initializing this to a function
+ *     literal.
+ */"
+"FunctionTypeBuilder inferFromOverriddenFunction(@Nullable FunctionType oldType, @Nullable Node paramsParent) {
+    if (oldType == null) {
+        return this;
+    }
+    returnType = oldType.getReturnType();
+    returnTypeInferred = oldType.isReturnTypeInferred();
+    if (paramsParent == null) {
+        // Not a function literal.
+        parametersNode = oldType.getParametersNode();
+        if (parametersNode == null) {
+            parametersNode = new FunctionParamBuilder(typeRegistry).build();
+        }
+    } else {
+        // We're overriding with a function literal. Apply type information
+        // to each parameter of the literal.
+        FunctionParamBuilder paramBuilder = new FunctionParamBuilder(typeRegistry);
+        Iterator<Node> oldParams = oldType.getParameters().iterator();
+        boolean warnedAboutArgList = false;
+        boolean oldParamsListHitOptArgs = false;
+        for (Node currentParam = paramsParent.getFirstChild(); currentParam != null; currentParam = currentParam.getNext()) {
+            if (oldParams.hasNext()) {
+                Node oldParam = oldParams.next();
+                Node newParam = paramBuilder.newParameterFromNode(oldParam);
+                oldParamsListHitOptArgs = oldParamsListHitOptArgs || oldParam.isVarArgs() || oldParam.isOptionalArg();
+                // The subclass method might write its var_args as individual
+                // arguments.
+                if (currentParam.getNext() != null && newParam.isVarArgs()) {
+                    newParam.setVarArgs(false);
+                    newParam.setOptionalArg(true);
+                }
+            } else {
+                warnedAboutArgList |= addParameter(paramBuilder, typeRegistry.getNativeType(UNKNOWN_TYPE), warnedAboutArgList, codingConvention.isOptionalParameter(currentParam) || oldParamsListHitOptArgs, codingConvention.isVarArgsParameter(currentParam));
+            }
+        }
+        // Clone any remaining params that aren't in the function literal.
+        parametersNode = paramBuilder.build();
+    }
+    return this;
+}","public void test1012() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""J;C_OPTIONAL_ARG_ATEND"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""J;C_OPTIONAL_ARG_ATEND"", compiler0, node0, ""J;C_OPTIONAL_ARG_ATEND"", (Scope) null);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    JSTypeNative jSTypeNative0 = JSTypeNative.REGEXP_FUNCTION_TYPE;
+    FunctionType functionType0 = jSTypeRegistry0.getNativeFunctionType(jSTypeNative0);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferFromOverriddenFunction(functionType0, node0);
+    assertSame(functionTypeBuilder1, functionTypeBuilder0);
+}","/**
+ * Infer the parameter and return types of a function from
+ * the parameter and return types of the function it is overriding.
+ *
+ * @param oldType The function being overridden. Does nothing if this is null.
+ * @param paramsParent The LP node of the function that we're assigning to.
+ *     If null, that just means we're not initializing this to a function
+ *     literal.
+ */"
+"public int getWarningCount() {
+    return errorManager.getWarningCount();
+}","public void test1113() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""com.google.javascript.jscomp.FunctinTypeBuilder$ImplementedTypeVXlidator"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""com.google.javascript.jscomp.FunctinTypeBuilder$ImplementedTypeVXlidator"", compiler0, node0, ""com.google.javascript.jscomp.FunctinTypeBuilder$ImplementedTypeVXlidator"", (Scope) null);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    JSTypeNative jSTypeNative0 = JSTypeNative.FUNCTION_FUNCTION_TYPE;
+    FunctionType functionType0 = jSTypeRegistry0.getNativeFunctionType(jSTypeNative0);
+    functionTypeBuilder0.inferFromOverriddenFunction(functionType0, node0);
+    JSType[] jSTypeArray0 = new JSType[9];
+    Node node1 = jSTypeRegistry0.createParameters(jSTypeArray0);
+    functionTypeBuilder0.inferParameterTypes(node1, (JSDocInfo) null);
+    assertEquals(1, compiler0.getWarningCount());
+}","/**
+ * Gets the number of warnings.
+ */"
+"FunctionTypeBuilder inferFromOverriddenFunction(@Nullable FunctionType oldType, @Nullable Node paramsParent) {
+    if (oldType == null) {
+        return this;
+    }
+    returnType = oldType.getReturnType();
+    returnTypeInferred = oldType.isReturnTypeInferred();
+    if (paramsParent == null) {
+        // Not a function literal.
+        parametersNode = oldType.getParametersNode();
+        if (parametersNode == null) {
+            parametersNode = new FunctionParamBuilder(typeRegistry).build();
+        }
+    } else {
+        // We're overriding with a function literal. Apply type information
+        // to each parameter of the literal.
+        FunctionParamBuilder paramBuilder = new FunctionParamBuilder(typeRegistry);
+        Iterator<Node> oldParams = oldType.getParameters().iterator();
+        boolean warnedAboutArgList = false;
+        boolean oldParamsListHitOptArgs = false;
+        for (Node currentParam = paramsParent.getFirstChild(); currentParam != null; currentParam = currentParam.getNext()) {
+            if (oldParams.hasNext()) {
+                Node oldParam = oldParams.next();
+                Node newParam = paramBuilder.newParameterFromNode(oldParam);
+                oldParamsListHitOptArgs = oldParamsListHitOptArgs || oldParam.isVarArgs() || oldParam.isOptionalArg();
+                // The subclass method might write its var_args as individual
+                // arguments.
+                if (currentParam.getNext() != null && newParam.isVarArgs()) {
+                    newParam.setVarArgs(false);
+                    newParam.setOptionalArg(true);
+                }
+            } else {
+                warnedAboutArgList |= addParameter(paramBuilder, typeRegistry.getNativeType(UNKNOWN_TYPE), warnedAboutArgList, codingConvention.isOptionalParameter(currentParam) || oldParamsListHitOptArgs, codingConvention.isVarArgsParameter(currentParam));
+            }
+        }
+        // Clone any remaining params that aren't in the function literal.
+        parametersNode = paramBuilder.build();
+    }
+    return this;
+}","public void test1214() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""J;C_OPTINAL_ARG_ATEND"", ""J;C_OPTINAL_ARG_ATEND"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""J;C_OPTINAL_ARG_ATEND"", compiler0, node0, ""J;C_OPTINAL_ARG_ATEND"", (Scope) null);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionType((JSType) null, node0);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferFromOverriddenFunction(functionType0, node0);
+    assertSame(functionTypeBuilder0, functionTypeBuilder1);
+}","/**
+ * Infer the parameter and return types of a function from
+ * the parameter and return types of the function it is overriding.
+ *
+ * @param oldType The function being overridden. Does nothing if this is null.
+ * @param paramsParent The LP node of the function that we're assigning to.
+ *     If null, that just means we're not initializing this to a function
+ *     literal.
+ */"
+"public int getWarningCount() {
+    return errorManager.getWarningCount();
+}","public void test1315() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""J;C_OPTIONAL_ARG_ATEND"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""J;C_OPTIONAL_ARG_ATEND"", compiler0, node0, ""J;C_OPTIONAL_ARG_ATEND"", (Scope) null);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    JSTypeNative jSTypeNative0 = JSTypeNative.NO_RESOLVED_TYPE;
+    FunctionType functionType0 = jSTypeRegistry0.getNativeFunctionType(jSTypeNative0);
+    functionTypeBuilder0.inferFromOverriddenFunction(functionType0, node0);
+    assertEquals(0, compiler0.getWarningCount());
+}","/**
+ * Gets the number of warnings.
+ */"
+"FunctionTypeBuilder inferReturnType(@Nullable JSDocInfo info) {
+    if (info != null && info.hasReturnType()) {
+        returnType = info.getReturnType().evaluate(scope, typeRegistry);
+        returnTypeInferred = false;
+    }
+    if (templateTypeName != null && returnType != null && returnType.restrictByNotNullOrUndefined().isTemplateType()) {
+        reportError(TEMPLATE_TYPE_EXPECTED, fnName);
+    }
+    return this;
+}","public void test1416() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""SHRFu2Ur+qWU*w.9.~G"", ""SHRFu2Ur+qWU*w.9.~G"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""SHRFu2Ur+qWU*w.9.~G"", compiler0, node0, ""SHRFu2Ur+qWU*w.9.~G"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferReturnType((JSDocInfo) null);
+    assertSame(functionTypeBuilder1, functionTypeBuilder0);
+}","/**
+ * Infer the return type from JSDocInfo.
+ */"
+"FunctionTypeBuilder inferReturnType(@Nullable JSDocInfo info) {
+    if (info != null && info.hasReturnType()) {
+        returnType = info.getReturnType().evaluate(scope, typeRegistry);
+        returnTypeInferred = false;
+    }
+    if (templateTypeName != null && returnType != null && returnType.restrictByNotNullOrUndefined().isTemplateType()) {
+        reportError(TEMPLATE_TYPE_EXPECTED, fnName);
+    }
+    return this;
+}","public void test1517() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""SHRFu2Ur+qWU*w.9.~G"", ""SHRFu2Ur+qWU*w.9.~G"");
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""SHRFu2Ur+qWU*w.9.~G"", compiler0, node0, ""SHRFu2Ur+qWU*w.9.~G"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferReturnType(jSDocInfo0);
+    assertSame(functionTypeBuilder1, functionTypeBuilder0);
+}","/**
+ * Infer the return type from JSDocInfo.
+ */"
+"FunctionTypeBuilder inferInheritance(@Nullable JSDocInfo info) {
+    if (info != null) {
+        isConstructor = info.isConstructor();
+        isInterface = info.isInterface();
+        // base type
+        if (info.hasBaseType()) {
+            if (isConstructor) {
+                JSType maybeBaseType = info.getBaseType().evaluate(scope, typeRegistry);
+                if (maybeBaseType != null && maybeBaseType.setValidator(new ExtendedTypeValidator())) {
+                    baseType = (ObjectType) maybeBaseType;
+                }
+            } else {
+                reportWarning(EXTENDS_WITHOUT_TYPEDEF, fnName);
+            }
+        }
+        // implemented interfaces
+        if (isConstructor || isInterface) {
+            implementedInterfaces = Lists.newArrayList();
+            for (JSTypeExpression t : info.getImplementedInterfaces()) {
+                JSType maybeInterType = t.evaluate(scope, typeRegistry);
+                if (maybeInterType != null && maybeInterType.setValidator(new ImplementedTypeValidator())) {
+                    implementedInterfaces.add((ObjectType) maybeInterType);
+                }
+            }
+        } else if (info.getImplementedInterfaceCount() > 0) {
+            reportWarning(IMPLEMENTS_WITHOUT_CONSTRUCTOR, fnName);
+        }
+        // extended interfaces (for interface only)
+        if (isInterface) {
+            extendedInterfaces = Lists.newArrayList();
+            for (JSTypeExpression t : info.getExtendedInterfaces()) {
+                JSType maybeInterfaceType = t.evaluate(scope, typeRegistry);
+                if (maybeInterfaceType != null && maybeInterfaceType.setValidator(new ExtendedTypeValidator())) {
+                    extendedInterfaces.add((ObjectType) maybeInterfaceType);
+                }
+            }
+        }
+    }
+    return this;
+}","public void test1618() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, """", """");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder("""", compiler0, node0, """", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferInheritance((JSDocInfo) null);
+    assertSame(functionTypeBuilder1, functionTypeBuilder0);
+}","/**
+ * Infer the role of the function (whether it's a constructor or interface)
+ * and what it inherits from in JSDocInfo.
+ */"
+"public int getWarningCount() {
+    return errorManager.getWarningCount();
+}","public void test1719() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""d"", ""d"");
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""d"", compiler0, node0, ""d"", (Scope) null);
+    functionTypeBuilder0.inferInheritance(jSDocInfo0);
+    assertEquals(0, compiler0.getWarningCount());
+}","/**
+ * Gets the number of warnings.
+ */"
+"public boolean isReturnTypeInferred() {
+    return call.returnTypeInferred;
+}","public void test1820() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""JSC_OPTIONAL_ARG_AT_END"");
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""JSC_OPTIONAL_ARG_AT_END"", compiler0, node0, ""JSC_OPTIONAL_ARG_AT_END"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferParameterTypes(jSDocInfo0);
+    FunctionType functionType0 = functionTypeBuilder0.buildAndRegister();
+    functionTypeBuilder1.inferThisType(jSDocInfo0, functionType0);
+    functionTypeBuilder1.inferThisType(jSDocInfo0, functionType0);
+    assertFalse(functionType0.isReturnTypeInferred());
+}",""
+"FunctionTypeBuilder inferThisType(JSDocInfo info, JSType type) {
+    // Look at the @this annotation first.
+    inferThisType(info);
+    if (thisType == null) {
+        ObjectType objType = ObjectType.cast(type);
+        if (objType != null && (info == null || !info.hasType())) {
+            thisType = objType;
+        }
+    }
+    return this;
+}","public void test1921() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""SHRFu2Ur+qWU*w.9.~G"", ""SHRFu2Ur+qWU*w.9.~G"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""SHRFu2Ur+qWU*w.9.~G"", compiler0, node0, ""SHRFu2Ur+qWU*w.9.~G"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferThisType((JSDocInfo) null, (JSType) null);
+    assertSame(functionTypeBuilder1, functionTypeBuilder0);
+}","/**
+ * Infers the type of {@code this}.
+ * @param type The type of this if the info is missing.
+ */"
+"FunctionTypeBuilder inferThisType(JSDocInfo info, JSType type) {
+    // Look at the @this annotation first.
+    inferThisType(info);
+    if (thisType == null) {
+        ObjectType objType = ObjectType.cast(type);
+        if (objType != null && (info == null || !info.hasType())) {
+            thisType = objType;
+        }
+    }
+    return this;
+}","public void test2022() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""J;C_OPTINAL_ARG_AdEND"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""J;C_OPTINAL_ARG_AdEND"", compiler0, node0, ""J;C_OPTINAL_ARG_AdEND"", (Scope) null);
+    GlobalNamespace globalNamespace0 = new GlobalNamespace(compiler0, node0, node0);
+    JSType jSType0 = globalNamespace0.getTypeOfThis();
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferThisType((JSDocInfo) null, jSType0);
+    assertSame(functionTypeBuilder1, functionTypeBuilder0);
+}","/**
+ * Infers the type of {@code this}.
+ * @param type The type of this if the info is missing.
+ */"
+"FunctionTypeBuilder inferParameterTypes(@Nullable Node argsParent, @Nullable JSDocInfo info) {
+    if (argsParent == null) {
+        if (info == null) {
+            return this;
+        } else {
+            return inferParameterTypes(info);
+        }
+    }
+    // arguments
+    Node oldParameterType = null;
+    if (parametersNode != null) {
+        oldParameterType = parametersNode.getFirstChild();
+    }
+    FunctionParamBuilder builder = new FunctionParamBuilder(typeRegistry);
+    boolean warnedAboutArgList = false;
+    Set<String> allJsDocParams = (info == null) ? Sets.<String>newHashSet() : Sets.newHashSet(info.getParameterNames());
+    boolean foundTemplateType = false;
+    boolean isVarArgs = false;
+    for (Node arg : argsParent.children()) {
+        String argumentName = arg.getString();
+        allJsDocParams.remove(argumentName);
+        // type from JSDocInfo
+        JSType parameterType = null;
+        boolean isOptionalParam = isOptionalParameter(arg, info);
+        isVarArgs = isVarArgsParameter(arg, info);
+        if (info != null && info.hasParameterType(argumentName)) {
+            parameterType = info.getParameterType(argumentName).evaluate(scope, typeRegistry);
+        } else if (oldParameterType != null && oldParameterType.getJSType() != null) {
+            parameterType = oldParameterType.getJSType();
+            isOptionalParam = oldParameterType.isOptionalArg();
+            isVarArgs = oldParameterType.isVarArgs();
+        } else {
+            parameterType = typeRegistry.getNativeType(UNKNOWN_TYPE);
+        }
+        if (templateTypeName != null && parameterType.restrictByNotNullOrUndefined().isTemplateType()) {
+            if (foundTemplateType) {
+                reportError(TEMPLATE_TYPE_DUPLICATED, fnName);
+            }
+            foundTemplateType = true;
+        }
+        warnedAboutArgList |= addParameter(builder, parameterType, warnedAboutArgList, isOptionalParam, isVarArgs);
+        if (oldParameterType != null) {
+            oldParameterType = oldParameterType.getNext();
+        }
+    }
+    // Copy over any old parameters that aren't in the param list.
+    if (templateTypeName != null && !foundTemplateType) {
+        reportError(TEMPLATE_TYPE_EXPECTED, fnName);
+    }
+    for (String inexistentName : allJsDocParams) {
+        reportWarning(INEXISTANT_PARAM, inexistentName, fnName);
+    }
+    parametersNode = builder.build();
+    return this;
+}","public void test2123() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""JSC_OPTIONAL_ARG_AT_END"", ""JSC_OPTIONAL_ARG_AT_END"");
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""JSC_OPTIONAL_ARG_AT_END"", compiler0, node0, ""JSC_OPTIONAL_ARG_AT_END"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferParameterTypes((Node) null, jSDocInfo0);
+    assertSame(functionTypeBuilder0, functionTypeBuilder1);
+}","/**
+ * Infer the parameter types from the list of argument names and
+ * the doc info.
+ */"
+"FunctionTypeBuilder inferParameterTypes(@Nullable Node argsParent, @Nullable JSDocInfo info) {
+    if (argsParent == null) {
+        if (info == null) {
+            return this;
+        } else {
+            return inferParameterTypes(info);
+        }
+    }
+    // arguments
+    Node oldParameterType = null;
+    if (parametersNode != null) {
+        oldParameterType = parametersNode.getFirstChild();
+    }
+    FunctionParamBuilder builder = new FunctionParamBuilder(typeRegistry);
+    boolean warnedAboutArgList = false;
+    Set<String> allJsDocParams = (info == null) ? Sets.<String>newHashSet() : Sets.newHashSet(info.getParameterNames());
+    boolean foundTemplateType = false;
+    boolean isVarArgs = false;
+    for (Node arg : argsParent.children()) {
+        String argumentName = arg.getString();
+        allJsDocParams.remove(argumentName);
+        // type from JSDocInfo
+        JSType parameterType = null;
+        boolean isOptionalParam = isOptionalParameter(arg, info);
+        isVarArgs = isVarArgsParameter(arg, info);
+        if (info != null && info.hasParameterType(argumentName)) {
+            parameterType = info.getParameterType(argumentName).evaluate(scope, typeRegistry);
+        } else if (oldParameterType != null && oldParameterType.getJSType() != null) {
+            parameterType = oldParameterType.getJSType();
+            isOptionalParam = oldParameterType.isOptionalArg();
+            isVarArgs = oldParameterType.isVarArgs();
+        } else {
+            parameterType = typeRegistry.getNativeType(UNKNOWN_TYPE);
+        }
+        if (templateTypeName != null && parameterType.restrictByNotNullOrUndefined().isTemplateType()) {
+            if (foundTemplateType) {
+                reportError(TEMPLATE_TYPE_DUPLICATED, fnName);
+            }
+            foundTemplateType = true;
+        }
+        warnedAboutArgList |= addParameter(builder, parameterType, warnedAboutArgList, isOptionalParam, isVarArgs);
+        if (oldParameterType != null) {
+            oldParameterType = oldParameterType.getNext();
+        }
+    }
+    // Copy over any old parameters that aren't in the param list.
+    if (templateTypeName != null && !foundTemplateType) {
+        reportError(TEMPLATE_TYPE_EXPECTED, fnName);
+    }
+    for (String inexistentName : allJsDocParams) {
+        reportWarning(INEXISTANT_PARAM, inexistentName, fnName);
+    }
+    parametersNode = builder.build();
+    return this;
+}","public void test2224() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""JSC_OPTIONAL_ARG_AT_END"", ""JSC_OPTIONAL_ARG_AT_END"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""JSC_OPTIONAL_ARG_AT_END"", compiler0, node0, ""JSC_OPTIONAL_ARG_AT_END"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferParameterTypes((Node) null, (JSDocInfo) null);
+    assertSame(functionTypeBuilder0, functionTypeBuilder1);
+}","/**
+ * Infer the parameter types from the list of argument names and
+ * the doc info.
+ */"
+"public int getWarningCount() {
+    return errorManager.getWarningCount();
+}","public void test2325() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""com.google.javascript.jscomp.FunctinTypeBuilder$ImplementedTypeVXlidator"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""com.google.javascript.jscomp.FunctinTypeBuilder$ImplementedTypeVXlidator"", compiler0, node0, ""com.google.javascript.jscomp.FunctinTypeBuilder$ImplementedTypeVXlidator"", (Scope) null);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    JSType[] jSTypeArray0 = new JSType[9];
+    Node node1 = jSTypeRegistry0.createParameters(jSTypeArray0);
+    functionTypeBuilder0.inferParameterTypes(node1, (JSDocInfo) null);
+    assertEquals(0, compiler0.getWarningCount());
+}","/**
+ * Gets the number of warnings.
+ */"
+"FunctionTypeBuilder inferTemplateTypeName(@Nullable JSDocInfo info) {
+    if (info != null) {
+        templateTypeName = info.getTemplateTypeName();
+        typeRegistry.setTemplateTypeName(templateTypeName);
+    }
+    return this;
+}","public void test2426() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""JSC_OPTIONAL>ARG_AT_END"", ""JSC_OPTIONAL>ARG_AT_END"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""JSC_OPTIONAL>ARG_AT_END"", compiler0, node0, ""JSC_OPTIONAL>ARG_AT_END"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferTemplateTypeName((JSDocInfo) null);
+    assertSame(functionTypeBuilder0, functionTypeBuilder1);
+}","/**
+ * Infer the template type from the doc info.
+ */"
+"FunctionTypeBuilder inferTemplateTypeName(@Nullable JSDocInfo info) {
+    if (info != null) {
+        templateTypeName = info.getTemplateTypeName();
+        typeRegistry.setTemplateTypeName(templateTypeName);
+    }
+    return this;
+}","public void test2527() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, """", """");
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder("""", compiler0, node0, """", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferTemplateTypeName(jSDocInfo0);
+    assertSame(functionTypeBuilder0, functionTypeBuilder1);
+}","/**
+ * Infer the template type from the doc info.
+ */"
+"public boolean isReturnTypeInferred() {
+    return call.returnTypeInferred;
+}","public void test2628() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""JSC_OPTIONjL_ARG_AT_END"", ""JSC_OPTIONjL_ARG_AT_END"");
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""JSC_OPTIONjL_ARG_AT_END"", compiler0, node0, ""JSC_OPTIONjL_ARG_AT_END"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferParameterTypes(jSDocInfo0);
+    functionTypeBuilder1.buildAndRegister();
+    FunctionType functionType0 = functionTypeBuilder1.buildAndRegister();
+    assertFalse(functionType0.isReturnTypeInferred());
+}",""
+"FunctionType buildAndRegister() {
+    if (returnType == null && !contents.mayHaveNonEmptyReturns() && !contents.mayBeFromExterns()) {
+        returnType = typeRegistry.getNativeType(VOID_TYPE);
+        returnTypeInferred = true;
+    }
+    if (returnType == null) {
+        returnType = typeRegistry.getNativeType(UNKNOWN_TYPE);
+    }
+    if (parametersNode == null) {
+        throw new IllegalStateException(""All Function types must have params and a return type"");
+    }
+    FunctionType fnType;
+    if (isConstructor) {
+        fnType = getOrCreateConstructor();
+    } else if (isInterface) {
+        fnType = typeRegistry.createInterfaceType(fnName, contents.getSourceNode());
+        if (getScopeDeclaredIn().isGlobal() && !fnName.isEmpty()) {
+            typeRegistry.declareType(fnName, fnType.getInstanceType());
+        }
+        maybeSetBaseType(fnType);
+    } else {
+        fnType = new FunctionBuilder(typeRegistry).withName(fnName).withSourceNode(contents.getSourceNode()).withParamsNode(parametersNode).withReturnType(returnType, returnTypeInferred).withTypeOfThis(thisType).withTemplateName(templateTypeName).build();
+        maybeSetBaseType(fnType);
+    }
+    if (implementedInterfaces != null) {
+        fnType.setImplementedInterfaces(implementedInterfaces);
+    }
+    if (extendedInterfaces != null) {
+        fnType.setExtendedInterfaces(extendedInterfaces);
+    }
+    typeRegistry.clearTemplateTypeName();
+    return fnType;
+}","public void test2729() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""q3\""5}\"""", ""q3\""5}\"""");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""q3\""5}\"""", compiler0, node0, ""q3\""5}\"""", (Scope) null);
+    // Undeclared exception!
+    try {
+        functionTypeBuilder0.buildAndRegister();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // All Function types must have params and a return type
+        //
+        verifyException(""com.google.javascript.jscomp.FunctionTypeBuilder"", e);
+    }
+}","/**
+ * Builds the function type, and puts it in the registry.
+ */"
+"static boolean isFunctionTypeDeclaration(JSDocInfo info) {
+    return info.getParameterCount() > 0 || info.hasReturnType() || info.hasThisType() || info.isConstructor() || info.isInterface();
+}","public void test2830() throws Throwable {
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    boolean boolean0 = FunctionTypeBuilder.isFunctionTypeDeclaration(jSDocInfo0);
+    assertFalse(boolean0);
+}","/**
+ * Determines whether the given jsdoc info declares a function type.
+ */"

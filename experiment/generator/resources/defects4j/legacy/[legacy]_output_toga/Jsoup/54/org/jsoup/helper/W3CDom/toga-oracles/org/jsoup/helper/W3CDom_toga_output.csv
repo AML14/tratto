@@ -1,0 +1,116 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test032,"public void test032() throws Throwable {
+    W3CDom w3CDom0 = new W3CDom();
+    Document document0 = new Document(""xmlns:class"");
+    document0.appendElement(""xmlns:class"");
+    // Undeclared exception!
+    try {
+        w3CDom0.fromJsoup(document0);
+        fail(""Expecting exception: DOMException"");
+    } catch (DOMException e) {
+    }
+}",0,
+project,0,test043,"public void test043() throws Throwable {
+    W3CDom w3CDom0 = new W3CDom();
+    Document document0 = new Document(""org.jsoup.select.Evaluator$IndexEvaluator"");
+    w3CDom0.factory = null;
+    // Undeclared exception!
+    try {
+        w3CDom0.fromJsoup(document0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.helper.W3CDom"", e);
+    }
+}",0,
+project,0,test054,"public void test054() throws Throwable {
+    W3CDom w3CDom0 = new W3CDom();
+    Document document0 = new Document("""");
+    // Undeclared exception!
+    try {
+        w3CDom0.fromJsoup(document0);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 0, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}",0,
+project,0,test065,"public void test065() throws Throwable {
+    W3CDom w3CDom0 = new W3CDom();
+    // Undeclared exception!
+    try {
+        w3CDom0.fromJsoup((Document) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test076,"public void test076() throws Throwable {
+    W3CDom w3CDom0 = new W3CDom();
+    // Undeclared exception!
+    try {
+        w3CDom0.convert((Document) null, (org.w3c.dom.Document) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.helper.W3CDom"", e);
+    }
+}",0,
+project,0,test087,"public void test087() throws Throwable {
+    W3CDom w3CDom0 = new W3CDom();
+    Document document0 = Document.createShell("""");
+    Charset charset0 = Charset.defaultCharset();
+    document0.charset(charset0);
+    org.w3c.dom.Document document1 = w3CDom0.fromJsoup(document0);
+    assertNotNull(document1);
+}",0,
+project,0,test098,"public void test098() throws Throwable {
+    W3CDom w3CDom0 = new W3CDom();
+    Document document0 = Document.createShell("""");
+    org.w3c.dom.Document document1 = w3CDom0.fromJsoup(document0);
+    // Undeclared exception!
+    try {
+        w3CDom0.convert(document0, document1);
+        fail(""Expecting exception: DOMException"");
+    } catch (DOMException e) {
+    }
+}",0,
+project,0,test1413,"public void test1413() throws Throwable {
+    Document document0 = Document.createShell(""U=Eo(Gz'NrC%:"");
+    W3CDom w3CDom0 = new W3CDom();
+    document0.title(""U=Eo(Gz'NrC%:"");
+    org.w3c.dom.Document document1 = w3CDom0.fromJsoup(document0);
+    assertNotNull(document1);
+}",0,
+project,0,test1614,"public void test1614() throws Throwable {
+    W3CDom w3CDom0 = new W3CDom();
+    Document document0 = Document.createShell("""");
+    org.w3c.dom.Document document1 = w3CDom0.fromJsoup(document0);
+    Document document2 = new Document(""org.jsoup.select.Evaluator$Attribute"");
+    // Undeclared exception!
+    try {
+        w3CDom0.convert(document2, document1);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 0, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}",0,
+project,0,test1715,"public void test1715() throws Throwable {
+    W3CDom w3CDom0 = new W3CDom();
+    Document document0 = Document.createShell("":"");
+    org.w3c.dom.Document document1 = w3CDom0.fromJsoup(document0);
+    String string0 = w3CDom0.asString(document1);
+    assertEquals(""<html>\n<head>\n<META http-equiv=\""Content-Type\"" content=\""text/html; charset=UTF-8\"">\n</head>\n<body></body>\n</html>\n"", string0);
+}",0,assertNotNull(string0)

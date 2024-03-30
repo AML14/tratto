@@ -1,0 +1,171 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test011,"public void test011() throws Throwable {
+    PropertyName propertyName0 = new PropertyName("""");
+    Class<JsonFactory.Feature> class0 = JsonFactory.Feature.class;
+    TypeBindings typeBindings0 = TypeBindings.emptyBindings();
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, typeBindings0);
+    AnnotationCollector.TwoAnnotations annotationCollector_TwoAnnotations0 = new AnnotationCollector.TwoAnnotations(class0, (Annotation) null, class0, (Annotation) null);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_REQUIRED;
+    CreatorProperty creatorProperty0 = new CreatorProperty(propertyName0, resolvedRecursiveType0, propertyName0, (TypeDeserializer) null, annotationCollector_TwoAnnotations0, (AnnotatedParameter) null, 1, (Object) null, propertyMetadata0);
+    ObjectIdInfo objectIdInfo0 = ObjectIdInfo.empty();
+    ObjectIdReferenceProperty objectIdReferenceProperty0 = new ObjectIdReferenceProperty(creatorProperty0, objectIdInfo0);
+    AnnotatedMember annotatedMember0 = objectIdReferenceProperty0.getMember();
+    assertNull(annotatedMember0);
+}",0,
+project,0,test022,"public void test022() throws Throwable {
+    PropertyName propertyName0 = PropertyName.NO_NAME;
+    Class<JsonFactory.Feature> class0 = JsonFactory.Feature.class;
+    TypeBindings typeBindings0 = TypeBindings.emptyBindings();
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, typeBindings0);
+    AnnotationCollector.TwoAnnotations annotationCollector_TwoAnnotations0 = new AnnotationCollector.TwoAnnotations(class0, (Annotation) null, class0, (Annotation) null);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_OPTIONAL;
+    CreatorProperty creatorProperty0 = new CreatorProperty(propertyName0, resolvedRecursiveType0, propertyName0, (TypeDeserializer) null, annotationCollector_TwoAnnotations0, (AnnotatedParameter) null, 60, (Object) null, propertyMetadata0);
+    ObjectIdInfo objectIdInfo0 = ObjectIdInfo.empty();
+    ObjectIdReferenceProperty objectIdReferenceProperty0 = new ObjectIdReferenceProperty(creatorProperty0, objectIdInfo0);
+    // Undeclared exception!
+    try {
+        objectIdReferenceProperty0.deserializeAndSet((JsonParser) null, (DeserializationContext) null, (Object) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.SettableBeanProperty"", e);
+    }
+}",0,
+project,0,test033,"public void test033() throws Throwable {
+    PropertyName propertyName0 = PropertyName.USE_DEFAULT;
+    Class<JsonFactory.Feature> class0 = JsonFactory.Feature.class;
+    TypeBindings typeBindings0 = TypeBindings.emptyBindings();
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, typeBindings0);
+    AnnotationCollector.TwoAnnotations annotationCollector_TwoAnnotations0 = new AnnotationCollector.TwoAnnotations(class0, (Annotation) null, class0, (Annotation) null);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_OPTIONAL;
+    CreatorProperty creatorProperty0 = new CreatorProperty(propertyName0, resolvedRecursiveType0, propertyName0, (TypeDeserializer) null, annotationCollector_TwoAnnotations0, (AnnotatedParameter) null, 0, (Object) null, propertyMetadata0);
+    ObjectIdInfo objectIdInfo0 = ObjectIdInfo.empty();
+    ObjectIdReferenceProperty objectIdReferenceProperty0 = new ObjectIdReferenceProperty(creatorProperty0, objectIdInfo0);
+    SettableBeanProperty settableBeanProperty0 = objectIdReferenceProperty0.withSimpleName(""3h]"");
+    assertFalse(settableBeanProperty0.hasViews());
+}",0,assertFalse(settableBeanProperty0.hasViews())
+project,0,test044,"public void test044() throws Throwable {
+    PropertyName propertyName0 = PropertyName.USE_DEFAULT;
+    Class<JsonFactory.Feature> class0 = JsonFactory.Feature.class;
+    TypeBindings typeBindings0 = TypeBindings.emptyBindings();
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, typeBindings0);
+    AnnotationCollector.TwoAnnotations annotationCollector_TwoAnnotations0 = new AnnotationCollector.TwoAnnotations(class0, (Annotation) null, class0, (Annotation) null);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_OPTIONAL;
+    CreatorProperty creatorProperty0 = new CreatorProperty(propertyName0, resolvedRecursiveType0, propertyName0, (TypeDeserializer) null, annotationCollector_TwoAnnotations0, (AnnotatedParameter) null, 0, (Object) null, propertyMetadata0);
+    ObjectIdInfo objectIdInfo0 = ObjectIdInfo.empty();
+    ObjectIdReferenceProperty objectIdReferenceProperty0 = new ObjectIdReferenceProperty(creatorProperty0, objectIdInfo0);
+    int int0 = objectIdReferenceProperty0.getCreatorIndex();
+    assertEquals(0, int0);
+}",0,
+project,0,test055,"public void test055() throws Throwable {
+    PropertyName propertyName0 = PropertyName.USE_DEFAULT;
+    Class<JsonFactory.Feature> class0 = JsonFactory.Feature.class;
+    TypeBindings typeBindings0 = TypeBindings.emptyBindings();
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, typeBindings0);
+    AnnotationCollector.TwoAnnotations annotationCollector_TwoAnnotations0 = new AnnotationCollector.TwoAnnotations(class0, (Annotation) null, class0, (Annotation) null);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_OPTIONAL;
+    CreatorProperty creatorProperty0 = new CreatorProperty(propertyName0, resolvedRecursiveType0, propertyName0, (TypeDeserializer) null, annotationCollector_TwoAnnotations0, (AnnotatedParameter) null, 1187, typeBindings0, propertyMetadata0);
+    ObjectIdInfo objectIdInfo0 = ObjectIdInfo.empty();
+    ObjectIdReferenceProperty objectIdReferenceProperty0 = new ObjectIdReferenceProperty(creatorProperty0, objectIdInfo0);
+    SettableBeanProperty settableBeanProperty0 = objectIdReferenceProperty0.withNullProvider((NullValueProvider) null);
+    assertFalse(settableBeanProperty0.isIgnorable());
+}",0,assertTrue(settableBeanProperty0.isIgnorable())
+project,0,test066,"public void test066() throws Throwable {
+    PropertyName propertyName0 = PropertyName.NO_NAME;
+    Class<JsonFactory.Feature> class0 = JsonFactory.Feature.class;
+    TypeBindings typeBindings0 = TypeBindings.emptyBindings();
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, typeBindings0);
+    AnnotationCollector.TwoAnnotations annotationCollector_TwoAnnotations0 = new AnnotationCollector.TwoAnnotations(class0, (Annotation) null, class0, (Annotation) null);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_REQUIRED;
+    CreatorProperty creatorProperty0 = new CreatorProperty(propertyName0, resolvedRecursiveType0, propertyName0, (TypeDeserializer) null, annotationCollector_TwoAnnotations0, (AnnotatedParameter) null, 1, (Object) null, propertyMetadata0);
+    ObjectIdReferenceProperty objectIdReferenceProperty0 = new ObjectIdReferenceProperty(creatorProperty0, (ObjectIdInfo) null);
+    try {
+        objectIdReferenceProperty0.set((Object) null, (Object) null);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // No fallback setter/field defined for creator property ''
+        //
+        verifyException(""com.fasterxml.jackson.databind.exc.InvalidDefinitionException"", e);
+    }
+}",0,
+project,0,test077,"public void test077() throws Throwable {
+    PropertyName propertyName0 = PropertyName.NO_NAME;
+    Class<JsonFactory.Feature> class0 = JsonFactory.Feature.class;
+    TypeBindings typeBindings0 = TypeBindings.emptyBindings();
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, typeBindings0);
+    AnnotationCollector.TwoAnnotations annotationCollector_TwoAnnotations0 = new AnnotationCollector.TwoAnnotations(class0, (Annotation) null, class0, (Annotation) null);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_REQUIRED;
+    CreatorProperty creatorProperty0 = new CreatorProperty(propertyName0, resolvedRecursiveType0, propertyName0, (TypeDeserializer) null, annotationCollector_TwoAnnotations0, (AnnotatedParameter) null, 31, (Object) null, propertyMetadata0);
+    ObjectIdInfo objectIdInfo0 = ObjectIdInfo.empty();
+    ObjectIdReferenceProperty objectIdReferenceProperty0 = new ObjectIdReferenceProperty(creatorProperty0, objectIdInfo0);
+    try {
+        objectIdReferenceProperty0.setAndReturn(propertyMetadata0, propertyName0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // No fallback setter/field defined for creator property ''
+        //
+        verifyException(""com.fasterxml.jackson.databind.exc.InvalidDefinitionException"", e);
+    }
+}",0,
+project,0,test088,"public void test088() throws Throwable {
+    PropertyName propertyName0 = PropertyName.NO_NAME;
+    Class<JsonFactory.Feature> class0 = JsonFactory.Feature.class;
+    TypeBindings typeBindings0 = TypeBindings.emptyBindings();
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, typeBindings0);
+    AnnotationCollector.TwoAnnotations annotationCollector_TwoAnnotations0 = new AnnotationCollector.TwoAnnotations(class0, (Annotation) null, class0, (Annotation) null);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_OPTIONAL;
+    CreatorProperty creatorProperty0 = new CreatorProperty(propertyName0, resolvedRecursiveType0, propertyName0, (TypeDeserializer) null, annotationCollector_TwoAnnotations0, (AnnotatedParameter) null, 23, (Object) null, propertyMetadata0);
+    ObjectIdInfo objectIdInfo0 = ObjectIdInfo.empty();
+    ObjectIdReferenceProperty objectIdReferenceProperty0 = new ObjectIdReferenceProperty(creatorProperty0, objectIdInfo0);
+    Class<Annotation> class1 = Annotation.class;
+    Annotation annotation0 = objectIdReferenceProperty0.getAnnotation(class1);
+    assertNull(annotation0);
+}",0,assertNotNull(annotation0)
+project,0,test099,"public void test099() throws Throwable {
+    PropertyName propertyName0 = new PropertyName(""~qO'.0"");
+    Class<JsonFactory.Feature> class0 = JsonFactory.Feature.class;
+    TypeBindings typeBindings0 = TypeBindings.emptyBindings();
+    Class<ObjectIdGenerators.StringIdGenerator> class1 = ObjectIdGenerators.StringIdGenerator.class;
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class1, typeBindings0);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_OPTIONAL;
+    AnnotationMap annotationMap0 = new AnnotationMap();
+    CoreXMLDeserializers.Std coreXMLDeserializers_Std0 = new CoreXMLDeserializers.Std(class0, 1);
+    CreatorProperty creatorProperty0 = new CreatorProperty(propertyName0, resolvedRecursiveType0, propertyName0, (TypeDeserializer) null, annotationMap0, (AnnotatedParameter) null, 1, resolvedRecursiveType0, propertyMetadata0);
+    ObjectIdInfo objectIdInfo0 = ObjectIdInfo.empty();
+    ObjectIdReferenceProperty objectIdReferenceProperty0 = new ObjectIdReferenceProperty(creatorProperty0, objectIdInfo0);
+    SettableBeanProperty settableBeanProperty0 = objectIdReferenceProperty0.withValueDeserializer(coreXMLDeserializers_Std0);
+    assertTrue(settableBeanProperty0.hasValueDeserializer());
+}",0,assertFalse(settableBeanProperty0.hasValueDeserializer())
+project,0,test1010,"public void test1010() throws Throwable {
+    PropertyName propertyName0 = new PropertyName(""~qO'.0"");
+    Class<JsonFactory.Feature> class0 = JsonFactory.Feature.class;
+    TypeBindings typeBindings0 = TypeBindings.emptyBindings();
+    Class<ObjectIdGenerators.StringIdGenerator> class1 = ObjectIdGenerators.StringIdGenerator.class;
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class1, typeBindings0);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_REQUIRED_OR_OPTIONAL;
+    AnnotationMap annotationMap0 = new AnnotationMap();
+    CoreXMLDeserializers.Std coreXMLDeserializers_Std0 = new CoreXMLDeserializers.Std(class0, 1);
+    CreatorProperty creatorProperty0 = new CreatorProperty(propertyName0, resolvedRecursiveType0, propertyName0, (TypeDeserializer) null, annotationMap0, (AnnotatedParameter) null, 1, resolvedRecursiveType0, propertyMetadata0);
+    ObjectIdInfo objectIdInfo0 = ObjectIdInfo.empty();
+    ObjectIdReferenceProperty objectIdReferenceProperty0 = new ObjectIdReferenceProperty(creatorProperty0, objectIdInfo0);
+    ObjectIdReferenceProperty objectIdReferenceProperty1 = new ObjectIdReferenceProperty(objectIdReferenceProperty0, coreXMLDeserializers_Std0, coreXMLDeserializers_Std0);
+    SettableBeanProperty settableBeanProperty0 = objectIdReferenceProperty1.withValueDeserializer(coreXMLDeserializers_Std0);
+    assertSame(settableBeanProperty0, objectIdReferenceProperty1);
+}",0,
+project,0,test1111,"public void test1111() throws Throwable {
+    PropertyName propertyName0 = PropertyName.USE_DEFAULT;
+    Class<JsonFactory.Feature> class0 = JsonFactory.Feature.class;
+    TypeBindings typeBindings0 = TypeBindings.emptyBindings();
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, typeBindings0);
+    AnnotationCollector.TwoAnnotations annotationCollector_TwoAnnotations0 = new AnnotationCollector.TwoAnnotations(class0, (Annotation) null, class0, (Annotation) null);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_REQUIRED;
+    CreatorProperty creatorProperty0 = new CreatorProperty(propertyName0, resolvedRecursiveType0, propertyName0, (TypeDeserializer) null, annotationCollector_TwoAnnotations0, (AnnotatedParameter) null, 31, (Object) null, propertyMetadata0);
+    ObjectIdInfo objectIdInfo0 = ObjectIdInfo.empty();
+    ObjectIdReferenceProperty objectIdReferenceProperty0 = new ObjectIdReferenceProperty(creatorProperty0, objectIdInfo0);
+    objectIdReferenceProperty0.fixAccess((DeserializationConfig) null);
+    assertFalse(objectIdReferenceProperty0.hasValueTypeDeserializer());
+}",0,assertFalse(objectIdReferenceProperty0.hasValueTypeDeserializer())

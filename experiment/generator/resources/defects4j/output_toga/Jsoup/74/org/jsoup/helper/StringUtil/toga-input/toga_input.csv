@@ -1,0 +1,785 @@
+focal_method,test_prefix,docstring
+"public static URL resolve(URL base, String relUrl) throws MalformedURLException {
+    // workaround: java resolves '//path/file + ?foo' to '//path/?foo', not '//path/file?foo' as desired
+    if (relUrl.startsWith(""?""))
+        relUrl = base.getPath() + relUrl;
+    // workaround: //example.com + ./foo = //example.com/./foo, not //example.com/foo
+    if (relUrl.indexOf('.') == 0 && base.getFile().indexOf('/') != 0) {
+        base = new URL(base.getProtocol(), base.getHost(), base.getPort(), ""/"" + base.getFile());
+    }
+    return new URL(base, relUrl);
+}","public void test000() throws Throwable {
+    URL uRL0 = MockURL.getHttpExample();
+    URL uRL1 = StringUtil.resolve(uRL0, ""java.lang.String@0000000001BBBBB BBB          "");
+    assertNotSame(uRL1, uRL0);
+}","/**
+ * Create a new absolute URL, from a provided existing absolute URL and a relative URL component.
+ * @param base the existing absolute base URL
+ * @param relUrl the relative URL to resolve. (If it's already absolute, it will be returned)
+ * @return the resolved absolute URL
+ * @throws MalformedURLException if an error occurred generating the URL
+ */"
+"public static boolean inSorted(String needle, String[] haystack) {
+    return Arrays.binarySearch(haystack, needle) >= 0;
+}","public void test011() throws Throwable {
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = ""?java.lang.String@0000000001CY-8_CY-8_"";
+    boolean boolean0 = StringUtil.inSorted(""?java.lang.String@0000000001CY-8_CY-8_"", stringArray0);
+    assertTrue(boolean0);
+}",""
+"public static boolean isActuallyWhitespace(int c) {
+    return c == ' ' || c == '\t' || c == '\n' || c == '\f' || c == '\r' || c == 160;
+    // 160 is &nbsp; (non-breaking space). Not in the spec but expected.
+}","public void test022() throws Throwable {
+    boolean boolean0 = StringUtil.isActuallyWhitespace(3677);
+    assertFalse(boolean0);
+}","/**
+ * Tests if a code point is ""whitespace"" as defined by what it looks like. Used for Element.text etc.
+ * @param c code point to test
+ * @return true if code point is whitespace, false otherwise
+ */"
+"public static boolean isWhitespace(int c) {
+    return c == ' ' || c == '\t' || c == '\n' || c == '\f' || c == '\r';
+}","public void test033() throws Throwable {
+    boolean boolean0 = StringUtil.isWhitespace((-2173));
+    assertFalse(boolean0);
+}","/**
+ * Tests if a code point is ""whitespace"" as defined in the HTML spec. Used for output HTML.
+ * @param c code point to test
+ * @return true if code point is whitespace, false otherwise
+ * @see #isActuallyWhitespace(int)
+ */"
+"public static String padding(int width) {
+    if (width < 0)
+        throw new IllegalArgumentException(""width must be > 0"");
+    if (width < padding.length)
+        return padding[width];
+    char[] out = new char[width];
+    for (int i = 0; i < width; i++) out[i] = ' ';
+    return String.valueOf(out);
+}","public void test044() throws Throwable {
+    String string0 = StringUtil.padding(21);
+    assertEquals(""                     "", string0);
+}","/**
+ * Returns space padding
+ * @param width amount of padding desired
+ * @return string of spaces * width
+ */"
+"// zero width sp, zw non join, zw join, soft hyphen
+/**
+ * Normalise the whitespace within this string; multiple spaces collapse to a single, and all whitespace characters
+ * (e.g. newline, tab) convert to a simple space
+ * @param string content to normalise
+ * @return normalised string
+ */
+public static String normaliseWhitespace(String string) {
+    StringBuilder sb = StringUtil.stringBuilder();
+    appendNormalisedWhitespace(sb, string, false);
+    return sb.toString();
+}","public void test055() throws Throwable {
+    String string0 = StringUtil.normaliseWhitespace("""");
+    assertEquals("""", string0);
+}",""
+"public static String join(String[] strings, String sep) {
+    return join(Arrays.asList(strings), sep);
+}","public void test066() throws Throwable {
+    String[] stringArray0 = new String[0];
+    String string0 = StringUtil.join(stringArray0, ""Xh:}zqM!gLSS"");
+    assertEquals("""", string0);
+}","/**
+ * Join an array of strings by a separator
+ * @param strings collection of string objects
+ * @param sep string to place between strings
+ * @return joined string
+ */"
+"public static String join(Collection strings, String sep) {
+    return join(strings.iterator(), sep);
+}","public void test077() throws Throwable {
+    LinkedList<Object> linkedList0 = new LinkedList<Object>();
+    Integer integer0 = new Integer((-2855));
+    linkedList0.addFirst(integer0);
+    String string0 = StringUtil.join((Collection) linkedList0, ""Rz ]NV8}^0vO&41"");
+    assertNotNull(string0);
+}","/**
+ * Join a collection of strings by a separator
+ * @param strings collection of string objects
+ * @param sep string to place between strings
+ * @return joined string
+ */"
+"public static URL resolve(URL base, String relUrl) throws MalformedURLException {
+    // workaround: java resolves '//path/file + ?foo' to '//path/?foo', not '//path/file?foo' as desired
+    if (relUrl.startsWith(""?""))
+        relUrl = base.getPath() + relUrl;
+    // workaround: //example.com + ./foo = //example.com/./foo, not //example.com/foo
+    if (relUrl.indexOf('.') == 0 && base.getFile().indexOf('/') != 0) {
+        base = new URL(base.getProtocol(), base.getHost(), base.getPort(), ""/"" + base.getFile());
+    }
+    return new URL(base, relUrl);
+}","public void test088() throws Throwable {
+    URLStreamHandler uRLStreamHandler0 = mock(URLStreamHandler.class, new ViolatedAssumptionAnswer());
+    URL uRL0 = MockURL.URL("""", """", 0, ""s"", uRLStreamHandler0);
+    try {
+        StringUtil.resolve(uRL0, """");
+        fail(""Expecting exception: MalformedURLException"");
+    } catch (MalformedURLException e) {
+        //
+        // unknown protocol:
+        //
+        verifyException(""org.evosuite.runtime.mock.java.net.MockURL"", e);
+    }
+}","/**
+ * Create a new absolute URL, from a provided existing absolute URL and a relative URL component.
+ * @param base the existing absolute base URL
+ * @param relUrl the relative URL to resolve. (If it's already absolute, it will be returned)
+ * @return the resolved absolute URL
+ * @throws MalformedURLException if an error occurred generating the URL
+ */"
+"public static URL resolve(URL base, String relUrl) throws MalformedURLException {
+    // workaround: java resolves '//path/file + ?foo' to '//path/?foo', not '//path/file?foo' as desired
+    if (relUrl.startsWith(""?""))
+        relUrl = base.getPath() + relUrl;
+    // workaround: //example.com + ./foo = //example.com/./foo, not //example.com/foo
+    if (relUrl.indexOf('.') == 0 && base.getFile().indexOf('/') != 0) {
+        base = new URL(base.getProtocol(), base.getHost(), base.getPort(), ""/"" + base.getFile());
+    }
+    return new URL(base, relUrl);
+}","public void test099() throws Throwable {
+    String[] stringArray0 = new String[7];
+    URL uRL0 = MockURL.getHttpExample();
+    // Undeclared exception!
+    try {
+        StringUtil.resolve(uRL0, stringArray0[3]);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+    }
+}","/**
+ * Create a new absolute URL, from a provided existing absolute URL and a relative URL component.
+ * @param base the existing absolute base URL
+ * @param relUrl the relative URL to resolve. (If it's already absolute, it will be returned)
+ * @return the resolved absolute URL
+ * @throws MalformedURLException if an error occurred generating the URL
+ */"
+"public static String padding(int width) {
+    if (width < 0)
+        throw new IllegalArgumentException(""width must be > 0"");
+    if (width < padding.length)
+        return padding[width];
+    char[] out = new char[width];
+    for (int i = 0; i < width; i++) out[i] = ' ';
+    return String.valueOf(out);
+}","public void test1010() throws Throwable {
+    StringUtil.padding(5263);
+    // Undeclared exception!
+    StringUtil.padding(5263);
+}","/**
+ * Returns space padding
+ * @param width amount of padding desired
+ * @return string of spaces * width
+ */"
+"// zero width sp, zw non join, zw join, soft hyphen
+/**
+ * Normalise the whitespace within this string; multiple spaces collapse to a single, and all whitespace characters
+ * (e.g. newline, tab) convert to a simple space
+ * @param string content to normalise
+ * @return normalised string
+ */
+public static String normaliseWhitespace(String string) {
+    StringBuilder sb = StringUtil.stringBuilder();
+    appendNormalisedWhitespace(sb, string, false);
+    return sb.toString();
+}","public void test1111() throws Throwable {
+    // Undeclared exception!
+    try {
+        StringUtil.normaliseWhitespace((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.helper.StringUtil"", e);
+    }
+}",""
+"public static String join(Iterator strings, String sep) {
+    if (!strings.hasNext())
+        return """";
+    String start = strings.next().toString();
+    if (// only one, avoid builder
+    !strings.hasNext())
+        return start;
+    StringBuilder sb = new StringBuilder(64).append(start);
+    while (strings.hasNext()) {
+        sb.append(sep);
+        sb.append(strings.next());
+    }
+    return sb.toString();
+}","public void test1212() throws Throwable {
+    StringBuilder stringBuilder0 = StringUtil.stringBuilder();
+    LinkedList<StringBuilder> linkedList0 = new LinkedList<StringBuilder>();
+    Iterator<StringBuilder> iterator0 = linkedList0.iterator();
+    linkedList0.add(stringBuilder0);
+    // Undeclared exception!
+    try {
+        StringUtil.join(iterator0, ""2"");
+        fail(""Expecting exception: ConcurrentModificationException"");
+    } catch (ConcurrentModificationException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.LinkedList$ListItr"", e);
+    }
+}","/**
+ * Join a collection of strings by a separator
+ * @param strings iterator of string objects
+ * @param sep string to place between strings
+ * @return joined string
+ */"
+"public static String join(Iterator strings, String sep) {
+    if (!strings.hasNext())
+        return """";
+    String start = strings.next().toString();
+    if (// only one, avoid builder
+    !strings.hasNext())
+        return start;
+    StringBuilder sb = new StringBuilder(64).append(start);
+    while (strings.hasNext()) {
+        sb.append(sep);
+        sb.append(strings.next());
+    }
+    return sb.toString();
+}","public void test1313() throws Throwable {
+    // Undeclared exception!
+    try {
+        StringUtil.join((Iterator) null, """");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.helper.StringUtil"", e);
+    }
+}","/**
+ * Join a collection of strings by a separator
+ * @param strings iterator of string objects
+ * @param sep string to place between strings
+ * @return joined string
+ */"
+"public static String join(Collection strings, String sep) {
+    return join(strings.iterator(), sep);
+}","public void test1414() throws Throwable {
+    LinkedList<Object> linkedList0 = new LinkedList<Object>();
+    linkedList0.add((Object) null);
+    // Undeclared exception!
+    try {
+        StringUtil.join((Collection) linkedList0, """");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.System"", e);
+    }
+}","/**
+ * Join a collection of strings by a separator
+ * @param strings collection of string objects
+ * @param sep string to place between strings
+ * @return joined string
+ */"
+"public static boolean inSorted(String needle, String[] haystack) {
+    return Arrays.binarySearch(haystack, needle) >= 0;
+}","public void test1515() throws Throwable {
+    // Undeclared exception!
+    try {
+        StringUtil.inSorted("""", (String[]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.Arrays"", e);
+    }
+}",""
+"public static void appendNormalisedWhitespace(StringBuilder accum, String string, boolean stripLeading) {
+    boolean lastWasWhite = false;
+    boolean reachedNonWhite = false;
+    int len = string.length();
+    int c;
+    for (int i = 0; i < len; i += Character.charCount(c)) {
+        c = string.codePointAt(i);
+        if (isActuallyWhitespace(c)) {
+            if ((stripLeading && !reachedNonWhite) || lastWasWhite)
+                continue;
+            accum.append(' ');
+            lastWasWhite = true;
+        } else {
+            accum.appendCodePoint(c);
+            lastWasWhite = false;
+            reachedNonWhite = true;
+        }
+    }
+}","public void test1616() throws Throwable {
+    // Undeclared exception!
+    try {
+        StringUtil.appendNormalisedWhitespace((StringBuilder) null, (String) null, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.helper.StringUtil"", e);
+    }
+}","/**
+ * After normalizing the whitespace within a string, appends it to a string builder.
+ * @param accum builder to append to
+ * @param string string to normalize whitespace within
+ * @param stripLeading set to true if you wish to remove any leading whitespace
+ */"
+"public static boolean isActuallyWhitespace(int c) {
+    return c == ' ' || c == '\t' || c == '\n' || c == '\f' || c == '\r' || c == 160;
+    // 160 is &nbsp; (non-breaking space). Not in the spec but expected.
+}","public void test1818() throws Throwable {
+    boolean boolean0 = StringUtil.isActuallyWhitespace(32);
+    assertTrue(boolean0);
+}","/**
+ * Tests if a code point is ""whitespace"" as defined by what it looks like. Used for Element.text etc.
+ * @param c code point to test
+ * @return true if code point is whitespace, false otherwise
+ */"
+"public static boolean isWhitespace(int c) {
+    return c == ' ' || c == '\t' || c == '\n' || c == '\f' || c == '\r';
+}","public void test1919() throws Throwable {
+    boolean boolean0 = StringUtil.isWhitespace(32);
+    assertTrue(boolean0);
+}","/**
+ * Tests if a code point is ""whitespace"" as defined in the HTML spec. Used for output HTML.
+ * @param c code point to test
+ * @return true if code point is whitespace, false otherwise
+ * @see #isActuallyWhitespace(int)
+ */"
+"public static boolean isWhitespace(int c) {
+    return c == ' ' || c == '\t' || c == '\n' || c == '\f' || c == '\r';
+}","public void test2020() throws Throwable {
+    boolean boolean0 = StringUtil.isWhitespace(1800);
+    assertFalse(boolean0);
+}","/**
+ * Tests if a code point is ""whitespace"" as defined in the HTML spec. Used for output HTML.
+ * @param c code point to test
+ * @return true if code point is whitespace, false otherwise
+ * @see #isActuallyWhitespace(int)
+ */"
+"public static String join(Iterator strings, String sep) {
+    if (!strings.hasNext())
+        return """";
+    String start = strings.next().toString();
+    if (// only one, avoid builder
+    !strings.hasNext())
+        return start;
+    StringBuilder sb = new StringBuilder(64).append(start);
+    while (strings.hasNext()) {
+        sb.append(sep);
+        sb.append(strings.next());
+    }
+    return sb.toString();
+}","public void test2121() throws Throwable {
+    StringBuilder stringBuilder0 = StringUtil.stringBuilder();
+    LinkedList<Object> linkedList0 = new LinkedList<Object>();
+    linkedList0.add((Object) stringBuilder0);
+    Object object0 = new Object();
+    linkedList0.add(object0);
+    Iterator<Object> iterator0 = linkedList0.descendingIterator();
+    String string0 = StringUtil.join(iterator0, ""_-)a)H%?xJ'"");
+    assertNotNull(string0);
+}","/**
+ * Join a collection of strings by a separator
+ * @param strings iterator of string objects
+ * @param sep string to place between strings
+ * @return joined string
+ */"
+"public static String join(Iterator strings, String sep) {
+    if (!strings.hasNext())
+        return """";
+    String start = strings.next().toString();
+    if (// only one, avoid builder
+    !strings.hasNext())
+        return start;
+    StringBuilder sb = new StringBuilder(64).append(start);
+    while (strings.hasNext()) {
+        sb.append(sep);
+        sb.append(strings.next());
+    }
+    return sb.toString();
+}","public void test2323() throws Throwable {
+    Iterator<Integer> iterator0 = (Iterator<Integer>) mock(Iterator.class, new ViolatedAssumptionAnswer());
+    doReturn(false).when(iterator0).hasNext();
+    String string0 = StringUtil.join(iterator0, ""B"");
+    assertEquals("""", string0);
+}","/**
+ * Join a collection of strings by a separator
+ * @param strings iterator of string objects
+ * @param sep string to place between strings
+ * @return joined string
+ */"
+"public static boolean inSorted(String needle, String[] haystack) {
+    return Arrays.binarySearch(haystack, needle) >= 0;
+}","public void test2525() throws Throwable {
+    String[] stringArray0 = new String[3];
+    stringArray0[1] = """";
+    boolean boolean0 = StringUtil.inSorted("""", stringArray0);
+    assertTrue(boolean0);
+}",""
+"public static boolean inSorted(String needle, String[] haystack) {
+    return Arrays.binarySearch(haystack, needle) >= 0;
+}","public void test2626() throws Throwable {
+    String[] stringArray0 = new String[3];
+    stringArray0[1] = """";
+    stringArray0[2] = """";
+    boolean boolean0 = StringUtil.inSorted(""G`"", stringArray0);
+    assertFalse(boolean0);
+}",""
+"public static boolean in(final String needle, final String... haystack) {
+    final int len = haystack.length;
+    for (int i = 0; i < len; i++) {
+        if (haystack[i].equals(needle))
+            return true;
+    }
+    return false;
+}","public void test2727() throws Throwable {
+    String[] stringArray0 = new String[4];
+    stringArray0[0] = ""7rDC]G>BIEe"";
+    stringArray0[1] = """";
+    boolean boolean0 = StringUtil.in("""", stringArray0);
+    assertTrue(boolean0);
+}",""
+"public static boolean in(final String needle, final String... haystack) {
+    final int len = haystack.length;
+    for (int i = 0; i < len; i++) {
+        if (haystack[i].equals(needle))
+            return true;
+    }
+    return false;
+}","public void test2828() throws Throwable {
+    String string0 = StringUtil.normaliseWhitespace(""E"");
+    String[] stringArray0 = new String[7];
+    stringArray0[0] = string0;
+    // Undeclared exception!
+    try {
+        StringUtil.in(""Yc7{1LL["", stringArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+    }
+}",""
+"public static boolean in(final String needle, final String... haystack) {
+    final int len = haystack.length;
+    for (int i = 0; i < len; i++) {
+        if (haystack[i].equals(needle))
+            return true;
+    }
+    return false;
+}","public void test2929() throws Throwable {
+    String[] stringArray0 = new String[0];
+    boolean boolean0 = StringUtil.in("""", stringArray0);
+    assertFalse(boolean0);
+}",""
+"public static boolean isActuallyWhitespace(int c) {
+    return c == ' ' || c == '\t' || c == '\n' || c == '\f' || c == '\r' || c == 160;
+    // 160 is &nbsp; (non-breaking space). Not in the spec but expected.
+}","public void test3131() throws Throwable {
+    boolean boolean0 = StringUtil.isActuallyWhitespace(160);
+    assertTrue(boolean0);
+}","/**
+ * Tests if a code point is ""whitespace"" as defined by what it looks like. Used for Element.text etc.
+ * @param c code point to test
+ * @return true if code point is whitespace, false otherwise
+ */"
+"public static boolean isActuallyWhitespace(int c) {
+    return c == ' ' || c == '\t' || c == '\n' || c == '\f' || c == '\r' || c == 160;
+    // 160 is &nbsp; (non-breaking space). Not in the spec but expected.
+}","public void test3232() throws Throwable {
+    boolean boolean0 = StringUtil.isActuallyWhitespace(13);
+    assertTrue(boolean0);
+}","/**
+ * Tests if a code point is ""whitespace"" as defined by what it looks like. Used for Element.text etc.
+ * @param c code point to test
+ * @return true if code point is whitespace, false otherwise
+ */"
+"public static boolean isActuallyWhitespace(int c) {
+    return c == ' ' || c == '\t' || c == '\n' || c == '\f' || c == '\r' || c == 160;
+    // 160 is &nbsp; (non-breaking space). Not in the spec but expected.
+}","public void test3333() throws Throwable {
+    boolean boolean0 = StringUtil.isActuallyWhitespace(12);
+    assertTrue(boolean0);
+}","/**
+ * Tests if a code point is ""whitespace"" as defined by what it looks like. Used for Element.text etc.
+ * @param c code point to test
+ * @return true if code point is whitespace, false otherwise
+ */"
+"public static boolean isActuallyWhitespace(int c) {
+    return c == ' ' || c == '\t' || c == '\n' || c == '\f' || c == '\r' || c == 160;
+    // 160 is &nbsp; (non-breaking space). Not in the spec but expected.
+}","public void test3434() throws Throwable {
+    boolean boolean0 = StringUtil.isActuallyWhitespace(10);
+    assertTrue(boolean0);
+}","/**
+ * Tests if a code point is ""whitespace"" as defined by what it looks like. Used for Element.text etc.
+ * @param c code point to test
+ * @return true if code point is whitespace, false otherwise
+ */"
+"public static boolean isActuallyWhitespace(int c) {
+    return c == ' ' || c == '\t' || c == '\n' || c == '\f' || c == '\r' || c == 160;
+    // 160 is &nbsp; (non-breaking space). Not in the spec but expected.
+}","public void test3535() throws Throwable {
+    boolean boolean0 = StringUtil.isActuallyWhitespace(9);
+    assertTrue(boolean0);
+}","/**
+ * Tests if a code point is ""whitespace"" as defined by what it looks like. Used for Element.text etc.
+ * @param c code point to test
+ * @return true if code point is whitespace, false otherwise
+ */"
+"public static boolean isActuallyWhitespace(int c) {
+    return c == ' ' || c == '\t' || c == '\n' || c == '\f' || c == '\r' || c == 160;
+    // 160 is &nbsp; (non-breaking space). Not in the spec but expected.
+}","public void test3636() throws Throwable {
+    boolean boolean0 = StringUtil.isActuallyWhitespace(8);
+    assertFalse(boolean0);
+}","/**
+ * Tests if a code point is ""whitespace"" as defined by what it looks like. Used for Element.text etc.
+ * @param c code point to test
+ * @return true if code point is whitespace, false otherwise
+ */"
+"public static boolean isWhitespace(int c) {
+    return c == ' ' || c == '\t' || c == '\n' || c == '\f' || c == '\r';
+}","public void test3737() throws Throwable {
+    boolean boolean0 = StringUtil.isWhitespace(13);
+    assertTrue(boolean0);
+}","/**
+ * Tests if a code point is ""whitespace"" as defined in the HTML spec. Used for output HTML.
+ * @param c code point to test
+ * @return true if code point is whitespace, false otherwise
+ * @see #isActuallyWhitespace(int)
+ */"
+"public static boolean isWhitespace(int c) {
+    return c == ' ' || c == '\t' || c == '\n' || c == '\f' || c == '\r';
+}","public void test3838() throws Throwable {
+    boolean boolean0 = StringUtil.isWhitespace(12);
+    assertTrue(boolean0);
+}","/**
+ * Tests if a code point is ""whitespace"" as defined in the HTML spec. Used for output HTML.
+ * @param c code point to test
+ * @return true if code point is whitespace, false otherwise
+ * @see #isActuallyWhitespace(int)
+ */"
+"public static boolean isWhitespace(int c) {
+    return c == ' ' || c == '\t' || c == '\n' || c == '\f' || c == '\r';
+}","public void test3939() throws Throwable {
+    boolean boolean0 = StringUtil.isWhitespace(10);
+    assertTrue(boolean0);
+}","/**
+ * Tests if a code point is ""whitespace"" as defined in the HTML spec. Used for output HTML.
+ * @param c code point to test
+ * @return true if code point is whitespace, false otherwise
+ * @see #isActuallyWhitespace(int)
+ */"
+"public static boolean isWhitespace(int c) {
+    return c == ' ' || c == '\t' || c == '\n' || c == '\f' || c == '\r';
+}","public void test4040() throws Throwable {
+    boolean boolean0 = StringUtil.isWhitespace(9);
+    assertTrue(boolean0);
+}","/**
+ * Tests if a code point is ""whitespace"" as defined in the HTML spec. Used for output HTML.
+ * @param c code point to test
+ * @return true if code point is whitespace, false otherwise
+ * @see #isActuallyWhitespace(int)
+ */"
+"public static boolean isNumeric(String string) {
+    if (string == null || string.length() == 0)
+        return false;
+    int l = string.length();
+    for (int i = 0; i < l; i++) {
+        if (!Character.isDigit(string.codePointAt(i)))
+            return false;
+    }
+    return true;
+}","public void test4141() throws Throwable {
+    boolean boolean0 = StringUtil.isNumeric(""2"");
+    assertTrue(boolean0);
+}","/**
+ * Tests if a string is numeric, i.e. contains only digit characters
+ * @param string string to test
+ * @return true if only digit chars, false if empty or null or contains non-digit chars
+ */"
+"public static boolean isNumeric(String string) {
+    if (string == null || string.length() == 0)
+        return false;
+    int l = string.length();
+    for (int i = 0; i < l; i++) {
+        if (!Character.isDigit(string.codePointAt(i)))
+            return false;
+    }
+    return true;
+}","public void test4242() throws Throwable {
+    boolean boolean0 = StringUtil.isNumeric(""           "");
+    assertFalse(boolean0);
+}","/**
+ * Tests if a string is numeric, i.e. contains only digit characters
+ * @param string string to test
+ * @return true if only digit chars, false if empty or null or contains non-digit chars
+ */"
+"public static boolean isNumeric(String string) {
+    if (string == null || string.length() == 0)
+        return false;
+    int l = string.length();
+    for (int i = 0; i < l; i++) {
+        if (!Character.isDigit(string.codePointAt(i)))
+            return false;
+    }
+    return true;
+}","public void test4343() throws Throwable {
+    boolean boolean0 = StringUtil.isNumeric((String) null);
+    assertFalse(boolean0);
+}","/**
+ * Tests if a string is numeric, i.e. contains only digit characters
+ * @param string string to test
+ * @return true if only digit chars, false if empty or null or contains non-digit chars
+ */"
+"public static boolean isBlank(String string) {
+    if (string == null || string.length() == 0)
+        return true;
+    int l = string.length();
+    for (int i = 0; i < l; i++) {
+        if (!StringUtil.isWhitespace(string.codePointAt(i)))
+            return false;
+    }
+    return true;
+}","public void test4444() throws Throwable {
+    boolean boolean0 = StringUtil.isBlank(""java.lang.String@0000000001$"");
+    assertFalse(boolean0);
+}","/**
+ * Tests if a string is blank: null, empty, or only whitespace ("" "", \r\n, \t, etc)
+ * @param string string to test
+ * @return if string is blank
+ */"
+"public static boolean isBlank(String string) {
+    if (string == null || string.length() == 0)
+        return true;
+    int l = string.length();
+    for (int i = 0; i < l; i++) {
+        if (!StringUtil.isWhitespace(string.codePointAt(i)))
+            return false;
+    }
+    return true;
+}","public void test4545() throws Throwable {
+    boolean boolean0 = StringUtil.isBlank("""");
+    assertTrue(boolean0);
+}","/**
+ * Tests if a string is blank: null, empty, or only whitespace ("" "", \r\n, \t, etc)
+ * @param string string to test
+ * @return if string is blank
+ */"
+"public static boolean isBlank(String string) {
+    if (string == null || string.length() == 0)
+        return true;
+    int l = string.length();
+    for (int i = 0; i < l; i++) {
+        if (!StringUtil.isWhitespace(string.codePointAt(i)))
+            return false;
+    }
+    return true;
+}","public void test4646() throws Throwable {
+    boolean boolean0 = StringUtil.isBlank((String) null);
+    assertTrue(boolean0);
+}","/**
+ * Tests if a string is blank: null, empty, or only whitespace ("" "", \r\n, \t, etc)
+ * @param string string to test
+ * @return if string is blank
+ */"
+"public static String padding(int width) {
+    if (width < 0)
+        throw new IllegalArgumentException(""width must be > 0"");
+    if (width < padding.length)
+        return padding[width];
+    char[] out = new char[width];
+    for (int i = 0; i < width; i++) out[i] = ' ';
+    return String.valueOf(out);
+}","public void test4747() throws Throwable {
+    // Undeclared exception!
+    try {
+        StringUtil.padding((-578));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // width must be > 0
+        //
+        verifyException(""org.jsoup.helper.StringUtil"", e);
+    }
+}","/**
+ * Returns space padding
+ * @param width amount of padding desired
+ * @return string of spaces * width
+ */"
+"public static String join(String[] strings, String sep) {
+    return join(Arrays.asList(strings), sep);
+}","public void test4848() throws Throwable {
+    String[] stringArray0 = new String[1];
+    stringArray0[0] = """";
+    String string0 = StringUtil.join(stringArray0, """");
+    assertNotNull(string0);
+}","/**
+ * Join an array of strings by a separator
+ * @param strings collection of string objects
+ * @param sep string to place between strings
+ * @return joined string
+ */"
+"public static String join(Collection strings, String sep) {
+    return join(strings.iterator(), sep);
+}","public void test4949() throws Throwable {
+    LinkedList<Object> linkedList0 = new LinkedList<Object>();
+    String string0 = StringUtil.join((Collection) linkedList0, ""tQl3}"");
+    assertEquals("""", string0);
+}","/**
+ * Join a collection of strings by a separator
+ * @param strings collection of string objects
+ * @param sep string to place between strings
+ * @return joined string
+ */"
+"public static String resolve(final String baseUrl, final String relUrl) {
+    URL base;
+    try {
+        try {
+            base = new URL(baseUrl);
+        } catch (MalformedURLException e) {
+            // the base is unsuitable, but the attribute/rel may be abs on its own, so try that
+            URL abs = new URL(relUrl);
+            return abs.toExternalForm();
+        }
+        return resolve(base, relUrl).toExternalForm();
+    } catch (MalformedURLException e) {
+        return """";
+    }
+}","public void test5050() throws Throwable {
+    String string0 = StringUtil.resolve("""", "" "");
+    assertEquals("""", string0);
+}","/**
+ * Create a new absolute URL, from a provided existing absolute URL and a relative URL component.
+ * @param baseUrl the existing absolute base URL
+ * @param relUrl the relative URL to resolve. (If it's already absolute, it will be returned)
+ * @return an absolute URL if one was able to be generated, or the empty string if not
+ */"
+"public static String join(String[] strings, String sep) {
+    return join(Arrays.asList(strings), sep);
+}","public void test5252() throws Throwable {
+    String[] stringArray0 = new String[7];
+    // Undeclared exception!
+    try {
+        StringUtil.join(stringArray0, ""B"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.System"", e);
+    }
+}","/**
+ * Join an array of strings by a separator
+ * @param strings collection of string objects
+ * @param sep string to place between strings
+ * @return joined string
+ */"

@@ -1,0 +1,872 @@
+focal_method,test_prefix,docstring
+"@Override
+public JsonToken nextValue() throws IOException {
+    // Implementation should be as trivial as follows; only needs to change if
+    // we are to skip other tokens (for example, if comments were exposed as tokens)
+    JsonToken t = nextToken();
+    if (t == JsonToken.FIELD_NAME) {
+        t = nextToken();
+    }
+    return t;
+}","public void test000() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    StringReader stringReader0 = new StringReader(""-03b|_l5qb"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 33, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0.nextValue();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Invalid numeric value: Leading zeroes not allowed
+        //  at [Source: UNKNOWN; line: 1, column: 3]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",""
+"@Override
+public JsonToken nextValue() throws IOException {
+    // Implementation should be as trivial as follows; only needs to change if
+    // we are to skip other tokens (for example, if comments were exposed as tokens)
+    JsonToken t = nextToken();
+    if (t == JsonToken.FIELD_NAME) {
+        t = nextToken();
+    }
+    return t;
+}","public void test011() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    StringReader stringReader0 = new StringReader(""3noDLD3NO`::Yb.nOd"");
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 1, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0.nextValue();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected character ('n' (code 110)): Expected space separating root-level values
+        //  at [Source: UNKNOWN; line: 1, column: 3]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",""
+"@Override
+public JsonToken getLastClearedToken() {
+    return _lastClearedToken;
+}","public void test022() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    StringReader stringReader0 = new StringReader("""");
+    char[] charArray0 = new char[0];
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 1, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0, charArray0, 3399, (-2678), false);
+    readerBasedJsonParser0.getLastClearedToken();
+}",""
+"/*
+    /**********************************************************
+    /* Public API, access to token information, other
+    /**********************************************************
+     */
+/**
+ *  Convenience accessor that can be called when the current
+ *  token is {@link JsonToken#VALUE_TRUE} or
+ *  {@link JsonToken#VALUE_FALSE}.
+ * <p>
+ *  Note: if the token is not of above-mentioned boolean types,
+ *  an integer, but its value falls
+ *  outside of range of Java long, a {@link JsonParseException}
+ *  may be thrown to indicate numeric overflow/underflow.
+ */
+public boolean getBooleanValue() throws IOException {
+    JsonToken t = currentToken();
+    if (t == JsonToken.VALUE_TRUE)
+        return true;
+    if (t == JsonToken.VALUE_FALSE)
+        return false;
+    throw new JsonParseException(this, String.format(""Current token (%s) not of boolean type"", t)).withRequestPayload(_requestPayload);
+}","public void test033() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    StringReader stringReader0 = new StringReader(""u3|2|"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 0, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0.getBooleanValue();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Current token (null) not of boolean type
+        //  at [Source: UNKNOWN; line: 1, column: 1]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",""
+"@Override
+public String nextFieldName() throws IOException {
+    // // // Note: this is almost a verbatim copy of nextToken()
+    _numTypesValid = NR_UNKNOWN;
+    if (_currToken == JsonToken.FIELD_NAME) {
+        _nextAfterName();
+        return null;
+    }
+    if (_tokenIncomplete) {
+        _skipString();
+    }
+    int i = _skipWSOrEnd();
+    if (i < 0) {
+        close();
+        _currToken = null;
+        return null;
+    }
+    _binaryValue = null;
+    if (i == INT_RBRACKET) {
+        _closeArrayScope();
+        _currToken = JsonToken.END_ARRAY;
+        return null;
+    }
+    if (i == INT_RCURLY) {
+        _closeObjectScope();
+        _currToken = JsonToken.END_OBJECT;
+        return null;
+    }
+    // Nope: do we then expect a comma?
+    if (_parsingContext.expectComma()) {
+        if (i != INT_COMMA) {
+            _reportUnexpectedChar(i, ""was expecting comma to separate "" + _parsingContext.typeDesc() + "" entries"");
+        }
+        i = _skipWS();
+        // Was that a trailing comma?
+        if ((_features & FEAT_MASK_TRAILING_COMMA) != 0) {
+            if ((i == INT_RBRACKET) || (i == INT_RCURLY)) {
+                _closeScope(i);
+                return null;
+            }
+        }
+    }
+    if (!_parsingContext.inObject()) {
+        _updateLocation();
+        _nextTokenNotInObject(i);
+        return null;
+    }
+    _updateNameLocation();
+    final String nameStr = _parseName(i);
+    _parsingContext.setCurrentName(nameStr);
+    _currToken = JsonToken.FIELD_NAME;
+    i = _skipColon();
+    _updateLocation();
+    if (i == INT_QUOTE) {
+        _tokenIncomplete = true;
+        _nextToken = JsonToken.VALUE_STRING;
+        return nameStr;
+    }
+    JsonToken t;
+    switch(i) {
+        case '-':
+            t = _parseNegNumber();
+            break;
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+            t = _parsePosNumber(i);
+            break;
+        case 'f':
+            _matchFalse();
+            t = JsonToken.VALUE_FALSE;
+            break;
+        case 'n':
+            _matchNull();
+            t = JsonToken.VALUE_NULL;
+            break;
+        case 't':
+            _matchTrue();
+            t = JsonToken.VALUE_TRUE;
+            break;
+        case '[':
+            t = JsonToken.START_ARRAY;
+            break;
+        case '{':
+            t = JsonToken.START_OBJECT;
+            break;
+        default:
+            t = _handleUnexpectedValue(i);
+    }
+    _nextToken = t;
+    return nameStr;
+}","public void test044() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    byte[] byteArray0 = iOContext0.allocReadIOBuffer();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    UTF8StreamJsonParser uTF8StreamJsonParser0 = new UTF8StreamJsonParser(iOContext0, 0, (InputStream) null, (ObjectCodec) null, byteQuadsCanonicalizer0, byteArray0, 15, 3930, true);
+    try {
+        uTF8StreamJsonParser0.nextFieldName();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Illegal character ((CTRL-CHAR, code 0)): only regular white space (\\r, \\n, \\t) is allowed between tokens
+        //  at [Source: UNKNOWN; line: 1, column: 2]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",""
+"@Override
+public JsonToken nextValue() throws IOException {
+    // Implementation should be as trivial as follows; only needs to change if
+    // we are to skip other tokens (for example, if comments were exposed as tokens)
+    JsonToken t = nextToken();
+    if (t == JsonToken.FIELD_NAME) {
+        t = nextToken();
+    }
+    return t;
+}","public void test055() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""Broken surrogate pair: first char 0x"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0.nextValue();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unrecognized token 'Broken': was expecting ('true', 'false' or 'null')
+        //  at [Source: UNKNOWN; line: 1, column: 7]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",""
+"public short getShortValue() throws IOException {
+    int value = getIntValue();
+    if (value < MIN_SHORT_I || value > MAX_SHORT_I) {
+        throw _constructError(""Numeric value ("" + getText() + "") out of range of Java short"");
+    }
+    return (short) value;
+}","public void test066() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    Float float0 = new Float((float) 1);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, float0, false);
+    PipedInputStream pipedInputStream0 = new PipedInputStream();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    UTF8StreamJsonParser uTF8StreamJsonParser0 = new UTF8StreamJsonParser(iOContext0, 2, pipedInputStream0, (ObjectCodec) null, byteQuadsCanonicalizer0, (byte[]) null, 3, 2, false);
+    try {
+        uTF8StreamJsonParser0.getShortValue();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Current token (null) not numeric, can not use numeric value accessors
+        //  at [Source: UNKNOWN; line: 1, column: 1]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}","/**
+ *  Numeric accessor that can be called when the current
+ *  token is of type {@link JsonToken#VALUE_NUMBER_INT} and
+ *  it can be expressed as a value of Java short primitive type.
+ *  It can also be called for {@link JsonToken#VALUE_NUMBER_FLOAT};
+ *  if so, it is equivalent to calling {@link #getDoubleValue}
+ *  and then casting; except for possible overflow/underflow
+ *  exception.
+ * <p>
+ *  Note: if the resulting integer value falls outside range of
+ *  Java short, a {@link JsonParseException}
+ *  will be thrown to indicate numeric overflow/underflow.
+ */"
+"protected static String _ascii(byte[] b) {
+    try {
+        return new String(b, ""US-ASCII"");
+    } catch (IOException e) {
+        // never occurs
+        throw new RuntimeException(e);
+    }
+}","public void test077() throws Throwable {
+    byte[] byteArray0 = new byte[0];
+    String string0 = ParserMinimalBase._ascii(byteArray0);
+    assertEquals("""", string0);
+}",""
+"@Override
+public JsonToken getCurrentToken() {
+    return _currToken;
+}","public void test088() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectCodec objectCodec0 = mock(ObjectCodec.class, new ViolatedAssumptionAnswer());
+    UTF8DataInputJsonParser uTF8DataInputJsonParser0 = new UTF8DataInputJsonParser(iOContext0, 3, (DataInput) null, objectCodec0, (ByteQuadsCanonicalizer) null, 2);
+    uTF8DataInputJsonParser0.getCurrentToken();
+}",""
+"@Override
+public JsonToken nextValue() throws IOException {
+    // Implementation should be as trivial as follows; only needs to change if
+    // we are to skip other tokens (for example, if comments were exposed as tokens)
+    JsonToken t = nextToken();
+    if (t == JsonToken.FIELD_NAME) {
+        t = nextToken();
+    }
+    return t;
+}","public void test099() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""+"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 3, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0.nextValue();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected end-of-input in a Number value
+        //  at [Source: UNKNOWN; line: 1, column: 3]
+        //
+        verifyException(""com.fasterxml.jackson.core.base.ParserMinimalBase"", e);
+    }
+}",""
+"@Override
+public int currentTokenId() {
+    final JsonToken t = _currToken;
+    return (t == null) ? JsonTokenId.ID_NO_TOKEN : t.id();
+}","public void test1010() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    Float float0 = new Float((float) 1);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, float0, false);
+    PipedInputStream pipedInputStream0 = new PipedInputStream();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    UTF8StreamJsonParser uTF8StreamJsonParser0 = new UTF8StreamJsonParser(iOContext0, 2, pipedInputStream0, (ObjectCodec) null, byteQuadsCanonicalizer0, (byte[]) null, 3, 2, false);
+    int int0 = uTF8StreamJsonParser0.currentTokenId();
+    assertEquals(0, int0);
+}",""
+"@Override
+public int getCurrentTokenId() {
+    final JsonToken t = _currToken;
+    return (t == null) ? JsonTokenId.ID_NO_TOKEN : t.id();
+}","public void test1111() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    StringReader stringReader0 = new StringReader(""u3|2|"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 0, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    int int0 = readerBasedJsonParser0.getCurrentTokenId();
+    assertEquals(0, int0);
+}",""
+"@Override
+public boolean hasCurrentToken() {
+    return _currToken != null;
+}","public void test1212() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    PipedInputStream pipedInputStream0 = new PipedInputStream();
+    DataInputStream dataInputStream0 = new DataInputStream(pipedInputStream0);
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    UTF8DataInputJsonParser uTF8DataInputJsonParser0 = new UTF8DataInputJsonParser(iOContext0, 0, dataInputStream0, (ObjectCodec) null, byteQuadsCanonicalizer0, 0);
+    boolean boolean0 = uTF8DataInputJsonParser0.hasCurrentToken();
+    assertFalse(boolean0);
+}",""
+"@Override
+public boolean hasCurrentToken() {
+    return _currToken != null;
+}","public void test1313() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    StringReader stringReader0 = new StringReader(""7"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 0, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    readerBasedJsonParser0.nextIntValue(33);
+    boolean boolean0 = readerBasedJsonParser0.hasCurrentToken();
+    assertTrue(boolean0);
+}",""
+"@Override
+public boolean hasTokenId(int id) {
+    final JsonToken t = _currToken;
+    if (t == null) {
+        return (JsonTokenId.ID_NO_TOKEN == id);
+    }
+    return t.id() == id;
+}","public void test1414() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    StringReader stringReader0 = new StringReader(""7"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 0, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    readerBasedJsonParser0.nextIntValue(33);
+    boolean boolean0 = readerBasedJsonParser0.hasTokenId(7);
+    assertTrue(boolean0);
+}",""
+"@Override
+public boolean hasTokenId(int id) {
+    final JsonToken t = _currToken;
+    if (t == null) {
+        return (JsonTokenId.ID_NO_TOKEN == id);
+    }
+    return t.id() == id;
+}","public void test1515() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    StringReader stringReader0 = new StringReader("""");
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 33, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    boolean boolean0 = readerBasedJsonParser0.hasTokenId(0);
+    assertTrue(boolean0);
+}",""
+"@Override
+public boolean hasTokenId(int id) {
+    final JsonToken t = _currToken;
+    if (t == null) {
+        return (JsonTokenId.ID_NO_TOKEN == id);
+    }
+    return t.id() == id;
+}","public void test1616() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader("""");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 1, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    boolean boolean0 = readerBasedJsonParser0.hasTokenId(3);
+    assertFalse(boolean0);
+}",""
+"@Override
+public boolean hasTokenId(int id) {
+    final JsonToken t = _currToken;
+    if (t == null) {
+        return (JsonTokenId.ID_NO_TOKEN == id);
+    }
+    return t.id() == id;
+}","public void test1717() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    StringReader stringReader0 = new StringReader(""7"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, stringReader0, false);
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 33, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    readerBasedJsonParser0.nextIntValue((byte) 66);
+    boolean boolean0 = readerBasedJsonParser0.hasTokenId(0);
+    assertFalse(boolean0);
+}",""
+"@Override
+public boolean hasToken(JsonToken t) {
+    return (_currToken == t);
+}","public void test1818() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader("""");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 3, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    JsonToken jsonToken0 = JsonToken.FIELD_NAME;
+    boolean boolean0 = readerBasedJsonParser0.hasToken(jsonToken0);
+    assertFalse(boolean0);
+}",""
+"@Override
+public boolean hasToken(JsonToken t) {
+    return (_currToken == t);
+}","public void test1919() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    StringReader stringReader0 = new StringReader("""");
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, (-774), stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    boolean boolean0 = readerBasedJsonParser0.hasToken((JsonToken) null);
+    assertTrue(boolean0);
+}",""
+"@Override
+public boolean isExpectedStartArrayToken() {
+    return _currToken == JsonToken.START_ARRAY;
+}","public void test2020() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    Float float0 = new Float((float) 1);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, float0, false);
+    PipedInputStream pipedInputStream0 = new PipedInputStream();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    UTF8StreamJsonParser uTF8StreamJsonParser0 = new UTF8StreamJsonParser(iOContext0, 2, pipedInputStream0, (ObjectCodec) null, byteQuadsCanonicalizer0, (byte[]) null, 3, 2, false);
+    boolean boolean0 = uTF8StreamJsonParser0.isExpectedStartArrayToken();
+    assertFalse(boolean0);
+}",""
+"@Override
+public boolean isExpectedStartObjectToken() {
+    return _currToken == JsonToken.START_OBJECT;
+}","public void test2121() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    Float float0 = new Float((float) 1);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, float0, false);
+    PipedInputStream pipedInputStream0 = new PipedInputStream();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    UTF8StreamJsonParser uTF8StreamJsonParser0 = new UTF8StreamJsonParser(iOContext0, 2, pipedInputStream0, (ObjectCodec) null, byteQuadsCanonicalizer0, (byte[]) null, 3, 2, false);
+    boolean boolean0 = uTF8StreamJsonParser0.isExpectedStartObjectToken();
+    assertFalse(boolean0);
+}",""
+"public boolean isExpectedStartObjectToken() {
+    return currentToken() == JsonToken.START_OBJECT;
+}","public void test2222() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""Broken surrogate pair: first char 0x"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    JsonParser jsonParser0 = readerBasedJsonParser0.skipChildren();
+    assertFalse(jsonParser0.isExpectedStartObjectToken());
+}","/**
+ * Similar to {@link #isExpectedStartArrayToken()}, but checks whether stream
+ * currently points to {@link JsonToken#START_OBJECT}.
+ *
+ * @since 2.5
+ */"
+"@Override
+public JsonToken getLastClearedToken() {
+    return _lastClearedToken;
+}","public void test2323() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader("""");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 1, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    readerBasedJsonParser0.clearCurrentToken();
+    assertNull(readerBasedJsonParser0.getLastClearedToken());
+}",""
+"@Override
+public boolean hasCurrentToken() {
+    return _currToken != null;
+}","public void test2424() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    StringReader stringReader0 = new StringReader(""7"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0.CHAR_TOKEN_BUFFER, true);
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, (byte) 4, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    readerBasedJsonParser0.nextIntValue(1);
+    readerBasedJsonParser0.clearCurrentToken();
+    assertFalse(readerBasedJsonParser0.hasCurrentToken());
+}",""
+"/*
+    /**********************************************************
+    /* Public API, access with conversion/coercion
+    /**********************************************************
+     */
+@Override
+public boolean getValueAsBoolean(boolean defaultValue) throws IOException {
+    JsonToken t = _currToken;
+    if (t != null) {
+        switch(t.id()) {
+            case ID_STRING:
+                String str = getText().trim();
+                if (""true"".equals(str)) {
+                    return true;
+                }
+                if (""false"".equals(str)) {
+                    return false;
+                }
+                if (_hasTextualNull(str)) {
+                    return false;
+                }
+                break;
+            case ID_NUMBER_INT:
+                return getIntValue() != 0;
+            case ID_TRUE:
+                return true;
+            case ID_FALSE:
+            case ID_NULL:
+                return false;
+            case ID_EMBEDDED_OBJECT:
+                Object value = getEmbeddedObject();
+                if (value instanceof Boolean) {
+                    return (Boolean) value;
+                }
+                break;
+            default:
+        }
+    }
+    return defaultValue;
+}","public void test2525() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    StringReader stringReader0 = new StringReader(""u3|2|"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 0, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    boolean boolean0 = readerBasedJsonParser0.getValueAsBoolean(false);
+    assertFalse(boolean0);
+}",""
+"/*
+    /**********************************************************
+    /* Public API, access with conversion/coercion
+    /**********************************************************
+     */
+@Override
+public boolean getValueAsBoolean(boolean defaultValue) throws IOException {
+    JsonToken t = _currToken;
+    if (t != null) {
+        switch(t.id()) {
+            case ID_STRING:
+                String str = getText().trim();
+                if (""true"".equals(str)) {
+                    return true;
+                }
+                if (""false"".equals(str)) {
+                    return false;
+                }
+                if (_hasTextualNull(str)) {
+                    return false;
+                }
+                break;
+            case ID_NUMBER_INT:
+                return getIntValue() != 0;
+            case ID_TRUE:
+                return true;
+            case ID_FALSE:
+            case ID_NULL:
+                return false;
+            case ID_EMBEDDED_OBJECT:
+                Object value = getEmbeddedObject();
+                if (value instanceof Boolean) {
+                    return (Boolean) value;
+                }
+                break;
+            default:
+        }
+    }
+    return defaultValue;
+}","public void test2626() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    StringReader stringReader0 = new StringReader(""7"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 0, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    readerBasedJsonParser0.nextIntValue(33);
+    boolean boolean0 = readerBasedJsonParser0.getValueAsBoolean(false);
+    assertTrue(boolean0);
+}",""
+"@Override
+public int currentTokenId() {
+    final JsonToken t = _currToken;
+    return (t == null) ? JsonTokenId.ID_NO_TOKEN : t.id();
+}","public void test2727() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    Float float0 = new Float((float) 1);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, float0, false);
+    StringReader stringReader0 = new StringReader(""7"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 0, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    readerBasedJsonParser0.nextValue();
+    int int0 = readerBasedJsonParser0.getValueAsInt();
+    assertEquals(7, readerBasedJsonParser0.currentTokenId());
+}",""
+"@Override
+public int getValueAsInt() throws IOException {
+    JsonToken t = _currToken;
+    if ((t == JsonToken.VALUE_NUMBER_INT) || (t == JsonToken.VALUE_NUMBER_FLOAT)) {
+        return getIntValue();
+    }
+    return getValueAsInt(0);
+}","public void test2728() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    Float float0 = new Float((float) 1);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, float0, false);
+    StringReader stringReader0 = new StringReader(""7"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 0, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    readerBasedJsonParser0.nextValue();
+    int int0 = readerBasedJsonParser0.getValueAsInt();
+    assertEquals(7, int0);
+}",""
+"@Override
+public int getValueAsInt() throws IOException {
+    JsonToken t = _currToken;
+    if ((t == JsonToken.VALUE_NUMBER_INT) || (t == JsonToken.VALUE_NUMBER_FLOAT)) {
+        return getIntValue();
+    }
+    return getValueAsInt(0);
+}","public void test2829() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader("""");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 1, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    int int0 = readerBasedJsonParser0.getValueAsInt();
+    assertEquals(0, int0);
+}",""
+"@Override
+public long getValueAsLong() throws IOException {
+    JsonToken t = _currToken;
+    if ((t == JsonToken.VALUE_NUMBER_INT) || (t == JsonToken.VALUE_NUMBER_FLOAT)) {
+        return getLongValue();
+    }
+    return getValueAsLong(0L);
+}","public void test2930() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    StringReader stringReader0 = new StringReader(""7"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, stringReader0, false);
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 33, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    readerBasedJsonParser0.nextIntValue((byte) 66);
+    long long0 = readerBasedJsonParser0.getValueAsLong();
+    assertEquals(7L, long0);
+}",""
+"@Override
+public long getValueAsLong() throws IOException {
+    JsonToken t = _currToken;
+    if ((t == JsonToken.VALUE_NUMBER_INT) || (t == JsonToken.VALUE_NUMBER_FLOAT)) {
+        return getLongValue();
+    }
+    return getValueAsLong(0L);
+}","public void test3031() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    StringReader stringReader0 = new StringReader("""");
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 33, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    long long0 = readerBasedJsonParser0.getValueAsLong();
+    assertEquals(0L, long0);
+}",""
+"@Override
+public double getValueAsDouble(double defaultValue) throws IOException {
+    JsonToken t = _currToken;
+    if (t != null) {
+        switch(t.id()) {
+            case ID_STRING:
+                String str = getText();
+                if (_hasTextualNull(str)) {
+                    return 0L;
+                }
+                return NumberInput.parseAsDouble(str, defaultValue);
+            case ID_NUMBER_INT:
+            case ID_NUMBER_FLOAT:
+                return getDoubleValue();
+            case ID_TRUE:
+                return 1.0;
+            case ID_FALSE:
+            case ID_NULL:
+                return 0.0;
+            case ID_EMBEDDED_OBJECT:
+                Object value = this.getEmbeddedObject();
+                if (value instanceof Number) {
+                    return ((Number) value).doubleValue();
+                }
+        }
+    }
+    return defaultValue;
+}","public void test3132() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    Float float0 = new Float((float) 1);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, float0, false);
+    PipedInputStream pipedInputStream0 = new PipedInputStream();
+    ByteQuadsCanonicalizer byteQuadsCanonicalizer0 = ByteQuadsCanonicalizer.createRoot();
+    UTF8StreamJsonParser uTF8StreamJsonParser0 = new UTF8StreamJsonParser(iOContext0, 2, pipedInputStream0, (ObjectCodec) null, byteQuadsCanonicalizer0, (byte[]) null, 3, 2, false);
+    double double0 = uTF8StreamJsonParser0.getValueAsDouble((double) 0);
+    assertEquals(0.0, double0, 0.01);
+}",""
+"@Override
+public double getValueAsDouble(double defaultValue) throws IOException {
+    JsonToken t = _currToken;
+    if (t != null) {
+        switch(t.id()) {
+            case ID_STRING:
+                String str = getText();
+                if (_hasTextualNull(str)) {
+                    return 0L;
+                }
+                return NumberInput.parseAsDouble(str, defaultValue);
+            case ID_NUMBER_INT:
+            case ID_NUMBER_FLOAT:
+                return getDoubleValue();
+            case ID_TRUE:
+                return 1.0;
+            case ID_FALSE:
+            case ID_NULL:
+                return 0.0;
+            case ID_EMBEDDED_OBJECT:
+                Object value = this.getEmbeddedObject();
+                if (value instanceof Number) {
+                    return ((Number) value).doubleValue();
+                }
+        }
+    }
+    return defaultValue;
+}","public void test3233() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    StringReader stringReader0 = new StringReader(""7"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0.CHAR_CONCAT_BUFFER, true);
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, (byte) 4, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    readerBasedJsonParser0.nextIntValue(1);
+    double double0 = readerBasedJsonParser0.getValueAsDouble((double) (byte) (-8));
+    assertEquals(7.0, double0, 0.01);
+}",""
+"// // // Let's override default impls for improved performance
+// @since 2.1
+@Override
+public final String getValueAsString() throws IOException {
+    if (_currToken == JsonToken.VALUE_STRING) {
+        if (_tokenIncomplete) {
+            _tokenIncomplete = false;
+            // only strings can be incomplete
+            _finishString();
+        }
+        return _textBuffer.contentsAsString();
+    }
+    if (_currToken == JsonToken.FIELD_NAME) {
+        return getCurrentName();
+    }
+    return super.getValueAsString(null);
+}","public void test3334() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader("""");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 1, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    String string0 = readerBasedJsonParser0.getValueAsString();
+    assertNull(string0);
+}",""
+"@Override
+public JsonToken nextValue() throws IOException {
+    // Implementation should be as trivial as follows; only needs to change if
+    // we are to skip other tokens (for example, if comments were exposed as tokens)
+    JsonToken t = nextToken();
+    if (t == JsonToken.FIELD_NAME) {
+        t = nextToken();
+    }
+    return t;
+}","public void test3435() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    StringReader stringReader0 = new StringReader(""+`t!F"");
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2, stringReader0, (ObjectCodec) null, charsToNameCanonicalizer0);
+    try {
+        readerBasedJsonParser0.nextValue();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected character ('`' (code 96)) in numeric value: expected digit (0-9) to follow minus sign, for valid numeric value
+        //  at [Source: UNKNOWN; line: 1, column: 3]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Error reporting, generic
+    /**********************************************************
+     */
+protected final static String _getCharDesc(int ch) {
+    char c = (char) ch;
+    if (Character.isISOControl(c)) {
+        return ""(CTRL-CHAR, code "" + ch + "")"";
+    }
+    if (ch > 255) {
+        return ""'"" + c + ""' (code "" + ch + "" / 0x"" + Integer.toHexString(ch) + "")"";
+    }
+    return ""'"" + c + ""' (code "" + ch + "")"";
+}","public void test3536() throws Throwable {
+    String string0 = ParserMinimalBase._getCharDesc(3684);
+    assertEquals(""'\u0E64' (code 3684 / 0xe64)"", string0);
+}",""
+"protected static byte[] _asciiBytes(String str) {
+    byte[] b = new byte[str.length()];
+    for (int i = 0, len = str.length(); i < len; ++i) {
+        b[i] = (byte) str.charAt(i);
+    }
+    return b;
+}","public void test3637() throws Throwable {
+    byte[] byteArray0 = ParserMinimalBase._asciiBytes(""q"");
+    assertArrayEquals(new byte[] { (byte) 113 }, byteArray0);
+}",""

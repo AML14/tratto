@@ -1,0 +1,37 @@
+focal_method,test_prefix,docstring
+"TypedScopeCreator(AbstractCompiler compiler, CodingConvention codingConvention) {
+    this.compiler = compiler;
+    this.validator = compiler.getTypeValidator();
+    this.codingConvention = codingConvention;
+    this.typeRegistry = compiler.getTypeRegistry();
+    this.typeParsingErrorReporter = typeRegistry.getErrorReporter();
+    this.unknownType = typeRegistry.getNativeObjectType(UNKNOWN_TYPE);
+}","public void test00() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    JqueryCodingConvention jqueryCodingConvention0 = new JqueryCodingConvention();
+    TypedScopeCreator typedScopeCreator0 = null;
+    try {
+        typedScopeCreator0 = new TypedScopeCreator(compiler0, jqueryCodingConvention0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.Compiler"", e);
+    }
+}",""
+"TypedScopeCreator(AbstractCompiler compiler) {
+    this(compiler, compiler.getCodingConvention());
+}","public void test11() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    TypedScopeCreator typedScopeCreator0 = null;
+    try {
+        typedScopeCreator0 = new TypedScopeCreator(compiler0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.Compiler"", e);
+    }
+}",""

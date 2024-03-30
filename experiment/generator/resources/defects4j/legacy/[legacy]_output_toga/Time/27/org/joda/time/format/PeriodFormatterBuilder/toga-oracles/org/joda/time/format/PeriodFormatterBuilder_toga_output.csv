@@ -1,0 +1,653 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test0055,"public void test0055() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendWeeks();
+    PeriodFormatterBuilder periodFormatterBuilder2 = periodFormatterBuilder0.appendDays();
+    periodFormatterBuilder2.appendYears();
+    PeriodFormatterBuilder periodFormatterBuilder3 = periodFormatterBuilder0.appendSuffix("""");
+    assertSame(periodFormatterBuilder3, periodFormatterBuilder1);
+}",0,
+project,0,test0076,"public void test0076() throws Throwable {
+    PeriodFormatterBuilder.Literal periodFormatterBuilder_Literal0 = new PeriodFormatterBuilder.Literal(""Invalid style specification: "");
+    CharArrayWriter charArrayWriter0 = new CharArrayWriter(90);
+    BufferedWriter bufferedWriter0 = new BufferedWriter(charArrayWriter0);
+    MutablePeriod mutablePeriod0 = new MutablePeriod((-1433), 796, 90, (-1433), 2964, (-1433), 90, 1);
+    Locale locale0 = Locale.GERMAN;
+    periodFormatterBuilder_Literal0.printTo((Writer) bufferedWriter0, (ReadablePeriod) mutablePeriod0, locale0);
+    assertEquals(8, mutablePeriod0.size());
+}",0,
+project,0,test03027,"public void test03027() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    periodFormatterBuilder0.appendSeparatorIfFieldsAfter(""F"");
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder0.appendSeparatorIfFieldsBefore(""F"");
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Cannot have two adjacent separators
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}",0,
+project,0,test03128,"public void test03128() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendPrefix("""");
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder1.appendSeparatorIfFieldsAfter("""");
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Prefix not followed by field
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}",0,
+project,0,test03229,"public void test03229() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder0.appendSeparatorIfFieldsAfter((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}",0,
+project,0,test03330,"public void test03330() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendPrefix(""4q"", ""4q"");
+    String[] stringArray0 = new String[6];
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder1.appendSeparator(""4q"", """", stringArray0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Prefix not followed by field
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}",0,
+project,0,test03431,"public void test03431() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder0.appendSeparator(""utvuVq7c!VhQ _"", (String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}",1,
+project,0,test03532,"public void test03532() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder0.appendSeparator((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}",0,
+project,0,test03633,"public void test03633() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendPrefix(""V.(\u0006}-BeBAV&OK%lO"");
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder1.appendLiteral(""V.(\u0006}-BeBAV&OK%lO"");
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Prefix not followed by field
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}",1,
+project,0,test03734,"public void test03734() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendPrefix(""org.joda.time.format.PeriodFormatterBuilder$CompositeAffix"");
+    PeriodFormatterBuilder.Literal periodFormatterBuilder_Literal0 = PeriodFormatterBuilder.Literal.EMPTY;
+    PeriodFormatter periodFormatter0 = new PeriodFormatter(periodFormatterBuilder_Literal0, periodFormatterBuilder_Literal0);
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder1.append(periodFormatter0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Prefix not followed by field
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}",0,
+project,0,test03835,"public void test03835() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendMinutes();
+    periodFormatterBuilder0.appendSeparatorIfFieldsBefore(""*^xz(+2cnB\""NmOV{8"");
+    PeriodFormatterBuilder periodFormatterBuilder2 = periodFormatterBuilder1.printZeroIfSupported();
+    periodFormatterBuilder1.appendYears();
+    PeriodPrinter periodPrinter0 = periodFormatterBuilder2.toPrinter();
+    PeriodType periodType0 = PeriodType.hours();
+    MutablePeriod mutablePeriod0 = new MutablePeriod((long) (-1254), periodType0);
+    Duration duration0 = mutablePeriod0.toDurationTo((ReadableInstant) null);
+    Duration duration1 = duration0.withDurationAdded((-1589L), (-1254));
+    Period period0 = duration1.toPeriodTo((ReadableInstant) null);
+    Locale locale0 = Locale.CANADA_FRENCH;
+    int int0 = periodPrinter0.calculatePrintedLength(period0, locale0);
+    assertEquals(22, int0);
+}",0,
+project,0,test04037,"public void test04037() throws Throwable {
+    // Undeclared exception!
+    try {
+        Minutes.parseMinutes(""ytim"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid format: \""ytim\""
+        //
+        verifyException(""org.joda.time.format.PeriodFormatter"", e);
+    }
+}",0,
+project,0,test04541,"public void test04541() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatter periodFormatter0 = periodFormatterBuilder0.toFormatter();
+    // Undeclared exception!
+    try {
+        periodFormatter0.parseMutablePeriod(""No formatter supplied"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid format: \""No formatter supplied\""
+        //
+        verifyException(""org.joda.time.format.PeriodFormatter"", e);
+    }
+}",1,
+project,0,test04844,"public void test04844() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendMinutes();
+    periodFormatterBuilder1.printZeroRarelyFirst();
+    PeriodFormatterBuilder periodFormatterBuilder2 = periodFormatterBuilder0.appendSeparatorIfFieldsBefore(""*^xz(+2cnB\""NmOV{8"");
+    periodFormatterBuilder2.appendWeeks();
+    PeriodPrinter periodPrinter0 = periodFormatterBuilder0.toPrinter();
+    assertNotNull(periodPrinter0);
+}",0,assertNotNull(periodPrinter0)
+project,0,test04845,"public void test04845() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendMinutes();
+    periodFormatterBuilder1.printZeroRarelyFirst();
+    PeriodFormatterBuilder periodFormatterBuilder2 = periodFormatterBuilder0.appendSeparatorIfFieldsBefore(""*^xz(+2cnB\""NmOV{8"");
+    periodFormatterBuilder2.appendWeeks();
+    PeriodPrinter periodPrinter0 = periodFormatterBuilder0.toPrinter();
+    PeriodType periodType0 = PeriodType.hours();
+    MutablePeriod mutablePeriod0 = new MutablePeriod((long) (-1254), periodType0);
+    Duration duration0 = mutablePeriod0.toDurationTo((ReadableInstant) null);
+    Duration duration1 = duration0.withDurationAdded((-1589L), (-1254));
+    Period period0 = duration1.toPeriodTo((ReadableInstant) null);
+    Locale locale0 = Locale.CANADA_FRENCH;
+    int int0 = periodPrinter0.calculatePrintedLength(period0, locale0);
+    assertEquals(21, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test04946,"public void test04946() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendMinutes();
+    periodFormatterBuilder0.appendSeparatorIfFieldsBefore(""*^xz(+2cnB\""NmOV{8"");
+    PeriodFormatterBuilder periodFormatterBuilder2 = periodFormatterBuilder1.printZeroIfSupported();
+    periodFormatterBuilder1.appendYears();
+    PeriodPrinter periodPrinter0 = periodFormatterBuilder2.toPrinter();
+    PeriodType periodType0 = PeriodType.hours();
+    MutablePeriod mutablePeriod0 = new MutablePeriod((long) (-1254), periodType0);
+    Duration duration0 = mutablePeriod0.toDurationTo((ReadableInstant) null);
+    Period period0 = duration0.toPeriodTo((ReadableInstant) null);
+    Locale locale0 = Locale.CANADA_FRENCH;
+    int int0 = periodPrinter0.calculatePrintedLength(period0, locale0);
+    assertEquals(21, int0);
+}",0,
+project,0,test05047,"public void test05047() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    periodFormatterBuilder0.appendSecondsWithMillis();
+    PeriodFormatter periodFormatter0 = periodFormatterBuilder0.toFormatter();
+    // Undeclared exception!
+    try {
+        periodFormatter0.parseMutablePeriod(""No formatter supplied"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid format: \""No formatter supplied\""
+        //
+        verifyException(""org.joda.time.format.PeriodFormatter"", e);
+    }
+}",1,
+project,0,test05148,"public void test05148() throws Throwable {
+    MutablePeriod mutablePeriod0 = new MutablePeriod();
+    String string0 = mutablePeriod0.toString((PeriodFormatter) null);
+    assertEquals(""PT0S"", string0);
+}",0,
+project,0,test06967,"public void test06967() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    LinkedList<Object> linkedList0 = new LinkedList<Object>();
+    PeriodFormatterBuilder.Composite periodFormatterBuilder_Composite0 = new PeriodFormatterBuilder.Composite(linkedList0);
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.append((PeriodPrinter) null, (PeriodParser) periodFormatterBuilder_Composite0);
+    PeriodFormatter periodFormatter0 = periodFormatterBuilder1.toFormatter();
+    assertFalse(periodFormatter0.isPrinter());
+}",0,assertTrue(periodFormatter0.isPrinter())
+project,0,test07068,"public void test07068() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatter periodFormatter0 = new PeriodFormatter((PeriodPrinter) null, (PeriodParser) null);
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.append(periodFormatter0);
+    PeriodFormatterBuilder periodFormatterBuilder2 = periodFormatterBuilder1.appendSeparatorIfFieldsBefore(""{]X`"");
+    assertSame(periodFormatterBuilder2, periodFormatterBuilder1);
+}",0,
+project,0,test07169,"public void test07169() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendPrefix(""'bdmY)A%N:MfW"");
+    PeriodFormatterBuilder.Literal periodFormatterBuilder_Literal0 = new PeriodFormatterBuilder.Literal("""");
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder1.append((PeriodPrinter) periodFormatterBuilder_Literal0, (PeriodParser) periodFormatterBuilder_Literal0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Prefix not followed by field
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}",1,
+project,0,test07270,"public void test07270() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendMinutes();
+    PeriodFormatterBuilder periodFormatterBuilder2 = periodFormatterBuilder1.appendSeparatorIfFieldsBefore(""*^xz(+2cnB\""NmOV{8"");
+    periodFormatterBuilder2.appendWeeks();
+    PeriodFormatterBuilder periodFormatterBuilder3 = periodFormatterBuilder0.appendSeparator(""DateTimeZone must not be null"", """");
+    assertSame(periodFormatterBuilder3, periodFormatterBuilder1);
+}",1,
+project,0,test07371,"public void test07371() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendMinutes();
+    periodFormatterBuilder1.appendSeparatorIfFieldsBefore(""*^xz(+2cnB\""NmOV{8"");
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder0.appendSeparator(""DateTimeZone must not be null"", """");
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Cannot have two adjacent separators
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}",1,
+project,0,test07472,"public void test07472() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendSeparatorIfFieldsBefore(""No formatter supplied"");
+    assertSame(periodFormatterBuilder1, periodFormatterBuilder0);
+}",0,
+project,0,test07573,"public void test07573() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    String[] stringArray0 = new String[2];
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder0.appendSeparator(""O7WvU"", (String) null, stringArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}",0,
+project,0,test07674,"public void test07674() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder0.appendSeparatorIfFieldsBefore((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}",0,
+project,0,test07775,"public void test07775() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder.Literal periodFormatterBuilder_Literal0 = PeriodFormatterBuilder.Literal.EMPTY;
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.append((PeriodPrinter) periodFormatterBuilder_Literal0, (PeriodParser) periodFormatterBuilder_Literal0);
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder1.appendSuffix(""Builder has created neither a printer nor a parser"");
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // No field to apply suffix to
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}",0,
+project,0,test07876,"public void test07876() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder0.appendSuffix("""", ""a-w:_'P#fU2u2;R"");
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // No field to apply suffix to
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}",1,
+project,0,test07977,"public void test07977() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder0.appendSuffix(""*dl2m["", (String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}",1,
+project,0,test08078,"public void test08078() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder0.appendSuffix((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}",0,
+project,0,test08179,"public void test08179() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    periodFormatterBuilder0.appendPrefix(""org.joda.time.format.DateTimeFormatterBuilder$TextField"");
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendPrefix(""org.joda.time.format.DateTimeFormatterBuilder$TextField"");
+    assertSame(periodFormatterBuilder0, periodFormatterBuilder1);
+}",0,
+project,0,test08280,"public void test08280() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder0.appendPrefix("",5wk!J[l`"", (String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}",1,
+project,0,test08381,"public void test08381() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder0.appendPrefix((String) null, ""Cannot have two adjacent separators"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}",1,
+project,0,test08482,"public void test08482() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder0.appendPrefix((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}",0,
+project,0,test08685,"public void test08685() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder0.appendLiteral((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Literal must not be null
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}",1,
+project,0,test08786,"public void test08786() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder0.append((PeriodPrinter) null, (PeriodParser) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // No printer or parser supplied
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}",0,
+project,0,test08887,"public void test08887() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    LinkedList<Object> linkedList0 = new LinkedList<Object>();
+    PeriodFormatterBuilder.Composite periodFormatterBuilder_Composite0 = new PeriodFormatterBuilder.Composite(linkedList0);
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.append((PeriodPrinter) periodFormatterBuilder_Composite0, (PeriodParser) periodFormatterBuilder_Composite0);
+    PeriodFormatter periodFormatter0 = periodFormatterBuilder1.toFormatter();
+    assertTrue(periodFormatter0.isPrinter());
+}",0,assertTrue(periodFormatter0.isPrinter())
+project,0,test08888,"public void test08888() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    LinkedList<Object> linkedList0 = new LinkedList<Object>();
+    PeriodFormatterBuilder.Composite periodFormatterBuilder_Composite0 = new PeriodFormatterBuilder.Composite(linkedList0);
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.append((PeriodPrinter) periodFormatterBuilder_Composite0, (PeriodParser) periodFormatterBuilder_Composite0);
+    PeriodFormatter periodFormatter0 = periodFormatterBuilder1.toFormatter();
+    assertTrue(periodFormatter0.isParser());
+}",0,
+project,0,test08989,"public void test08989() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder0.append((PeriodFormatter) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // No formatter supplied
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}",0,
+project,0,test09090,"public void test09090() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    String[] stringArray0 = new String[0];
+    LinkedList<Object> linkedList0 = new LinkedList<Object>();
+    PeriodFormatterBuilder.Composite periodFormatterBuilder_Composite0 = new PeriodFormatterBuilder.Composite(linkedList0);
+    PeriodFormatterBuilder.Separator periodFormatterBuilder_Separator0 = new PeriodFormatterBuilder.Separator(""ytim"", ""ytim"", stringArray0, (PeriodPrinter) null, periodFormatterBuilder_Composite0, true, true);
+    PeriodFormatter periodFormatter0 = new PeriodFormatter(periodFormatterBuilder_Separator0, periodFormatterBuilder_Composite0);
+    periodFormatterBuilder0.append(periodFormatter0);
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder0.appendSuffix(""LLh!f3 \u0005>2Z1F/L_>"", ""ytim"");
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // No field to apply suffix to
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}",1,
+project,0,test09291,"public void test09291() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodParser periodParser0 = periodFormatterBuilder0.toParser();
+    assertNotNull(periodParser0);
+}",0,assertNotNull(periodParser0)
+project,0,test09392,"public void test09392() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    LinkedList<Object> linkedList0 = new LinkedList<Object>();
+    PeriodFormatterBuilder.Composite periodFormatterBuilder_Composite0 = new PeriodFormatterBuilder.Composite(linkedList0);
+    periodFormatterBuilder0.append((PeriodPrinter) null, (PeriodParser) periodFormatterBuilder_Composite0);
+    PeriodPrinter periodPrinter0 = periodFormatterBuilder0.toPrinter();
+    assertNull(periodPrinter0);
+}",0,
+project,0,test09594,"public void test09594() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendLiteral("""");
+    assertSame(periodFormatterBuilder1, periodFormatterBuilder0);
+}",1,
+project,0,test09695,"public void test09695() throws Throwable {
+    JulianChronology julianChronology0 = JulianChronology.getInstance();
+    MutablePeriod mutablePeriod0 = new MutablePeriod(30617280288L, 1230L, julianChronology0);
+    String string0 = mutablePeriod0.toString((PeriodFormatter) null);
+    assertEquals(""P-11M-2W-6DT-8H-47M-59.058S"", string0);
+}",0,assertNotNull(string0)
+project,0,test09796,"public void test09796() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendMillis3Digit();
+    assertSame(periodFormatterBuilder0, periodFormatterBuilder1);
+}",0,
+project,0,test09897,"public void test09897() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    String[] stringArray0 = new String[1];
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendSeparator(""No formatter supplied"", ""No formatter supplied"", stringArray0);
+    assertSame(periodFormatterBuilder0, periodFormatterBuilder1);
+}",1,
+project,0,test09998,"public void test09998() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendSecondsWithOptionalMillis();
+    String[] stringArray0 = new String[9];
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder1.appendSeparator("":< gl#+/t~.Lg"", """", stringArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test10099,"public void test10099() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.minimumPrintedDigits(76);
+    assertSame(periodFormatterBuilder1, periodFormatterBuilder0);
+}",1,
+project,0,test101100,"public void test101100() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendMonths();
+    assertSame(periodFormatterBuilder0, periodFormatterBuilder1);
+}",0,
+project,0,test102101,"public void test102101() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendMillis();
+    periodFormatterBuilder1.appendSeparator(""zaa$Qq10T{]s{(\""1K"");
+    PeriodPrinter periodPrinter0 = periodFormatterBuilder0.toPrinter();
+    assertNotNull(periodPrinter0);
+}",0,assertNotNull(periodPrinter0)
+project,0,test103104,"public void test103104() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.printZeroNever();
+    assertSame(periodFormatterBuilder0, periodFormatterBuilder1);
+}",0,
+project,0,test104105,"public void test104105() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.maximumParsedDigits(623191204);
+    assertSame(periodFormatterBuilder0, periodFormatterBuilder1);
+}",0,
+project,0,test105106,"public void test105106() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    periodFormatterBuilder0.appendSecondsWithMillis();
+    PeriodFormatter periodFormatter0 = periodFormatterBuilder0.toFormatter();
+    assertTrue(periodFormatter0.isParser());
+}",0,
+project,0,test105107,"public void test105107() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    periodFormatterBuilder0.appendSecondsWithMillis();
+    PeriodFormatter periodFormatter0 = periodFormatterBuilder0.toFormatter();
+    periodFormatter0.parseMutablePeriod("""");
+    assertTrue(periodFormatter0.isPrinter());
+}",0,assertTrue(periodFormatter0.isPrinter())
+project,0,test106108,"public void test106108() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendSeconds();
+    assertSame(periodFormatterBuilder0, periodFormatterBuilder1);
+}",0,
+project,0,test107109,"public void test107109() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.rejectSignedValues(false);
+    assertSame(periodFormatterBuilder1, periodFormatterBuilder0);
+}",0,
+project,0,test108110,"public void test108110() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    periodFormatterBuilder0.printZeroAlways();
+    periodFormatterBuilder0.appendSecondsWithOptionalMillis();
+    PeriodFormatter periodFormatter0 = periodFormatterBuilder0.toFormatter();
+    // Undeclared exception!
+    try {
+        periodFormatter0.parseMutablePeriod("""");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid format: \""\""
+        //
+        verifyException(""org.joda.time.format.PeriodFormatter"", e);
+    }
+}",1,
+project,0,test109111,"public void test109111() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.printZeroRarelyLast();
+    assertSame(periodFormatterBuilder1, periodFormatterBuilder0);
+}",0,
+project,0,test110112,"public void test110112() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendHours();
+    periodFormatterBuilder1.appendSeparator(""org.joda.time.format.PeriodFormatterBuilder$Separator"", ""org.joda.time.format.PeriodFormatterBuilder$Separator"");
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder0.appendSeparator("""");
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Cannot have two adjacent separators
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}",0,
+project,0,test113115,"public void test113115() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendMinutes();
+    periodFormatterBuilder1.printZeroRarelyFirst();
+    PeriodFormatterBuilder periodFormatterBuilder2 = periodFormatterBuilder0.appendSeparatorIfFieldsBefore(""*^xz(+2cnB\""NmOV{8"");
+    periodFormatterBuilder2.appendWeeks();
+    PeriodFormatterBuilder periodFormatterBuilder3 = periodFormatterBuilder0.appendSuffix(""*^xz(+2cnB\""NmOV{8"", ""No resource path provided"");
+    PeriodFormatterBuilder periodFormatterBuilder4 = periodFormatterBuilder3.appendSuffix(""No resource path provided"");
+    PeriodPrinter periodPrinter0 = periodFormatterBuilder4.toPrinter();
+    assertNotNull(periodPrinter0);
+}",0,assertNotNull(periodPrinter0)
+project,0,test113116,"public void test113116() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendMinutes();
+    periodFormatterBuilder1.printZeroRarelyFirst();
+    PeriodFormatterBuilder periodFormatterBuilder2 = periodFormatterBuilder0.appendSeparatorIfFieldsBefore(""*^xz(+2cnB\""NmOV{8"");
+    periodFormatterBuilder2.appendWeeks();
+    PeriodFormatterBuilder periodFormatterBuilder3 = periodFormatterBuilder0.appendSuffix(""*^xz(+2cnB\""NmOV{8"", ""No resource path provided"");
+    PeriodFormatterBuilder periodFormatterBuilder4 = periodFormatterBuilder3.appendSuffix(""No resource path provided"");
+    PeriodPrinter periodPrinter0 = periodFormatterBuilder4.toPrinter();
+    PeriodType periodType0 = PeriodType.hours();
+    MutablePeriod mutablePeriod0 = new MutablePeriod((long) (-1254), periodType0);
+    Duration duration0 = mutablePeriod0.toDurationTo((ReadableInstant) null);
+    Period period0 = duration0.toPeriodTo((ReadableInstant) null);
+    Locale locale0 = Locale.CANADA_FRENCH;
+    int int0 = periodPrinter0.calculatePrintedLength(period0, locale0);
+    assertEquals(71, int0);
+}",0,"assertEquals(0, int0)"

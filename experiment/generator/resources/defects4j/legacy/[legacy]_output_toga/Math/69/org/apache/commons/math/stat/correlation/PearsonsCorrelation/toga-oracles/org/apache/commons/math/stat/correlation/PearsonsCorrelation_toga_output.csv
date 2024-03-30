@@ -1,0 +1,241 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation();
+    double[] doubleArray0 = new double[1];
+    pearsonsCorrelation0.correlation(doubleArray0, doubleArray0);
+    // Undeclared exception!
+    try {
+        pearsonsCorrelation0.getCorrelationMatrix();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // invalid array dimensions. xArray has size 1; yArray has 1 elements
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}",0,
+project,0,test021,"public void test021() throws Throwable {
+    double[] doubleArray0 = new double[1];
+    doubleArray0[0] = 1576.970357826;
+    Array2DRowRealMatrix array2DRowRealMatrix0 = new Array2DRowRealMatrix(doubleArray0);
+    RealMatrix realMatrix0 = array2DRowRealMatrix0.copy();
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation(realMatrix0);
+    // Undeclared exception!
+    try {
+        pearsonsCorrelation0.covarianceToCorrelation(realMatrix0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // insufficient data: only 1 rows and 1 columns.
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}",0,
+project,0,test052,"public void test052() throws Throwable {
+    double[][] doubleArray0 = new double[0][9];
+    PearsonsCorrelation pearsonsCorrelation0 = null;
+    try {
+        pearsonsCorrelation0 = new PearsonsCorrelation(doubleArray0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 0
+        //
+        verifyException(""org.apache.commons.math.linear.BlockRealMatrix"", e);
+    }
+}",0,
+project,0,test083,"public void test083() throws Throwable {
+    Covariance covariance0 = new Covariance();
+    PearsonsCorrelation pearsonsCorrelation0 = null;
+    try {
+        pearsonsCorrelation0 = new PearsonsCorrelation(covariance0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // covariance matrix is null
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}",0,
+project,0,test104,"public void test104() throws Throwable {
+    Covariance covariance0 = new Covariance();
+    PearsonsCorrelation pearsonsCorrelation0 = null;
+    try {
+        pearsonsCorrelation0 = new PearsonsCorrelation(covariance0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // covariance matrix is null
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}",0,
+project,0,test125,"public void test125() throws Throwable {
+    double[][] doubleArray0 = new double[0][8];
+    PearsonsCorrelation pearsonsCorrelation0 = null;
+    try {
+        pearsonsCorrelation0 = new PearsonsCorrelation(doubleArray0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 0
+        //
+        verifyException(""org.apache.commons.math.linear.BlockRealMatrix"", e);
+    }
+}",0,
+project,0,test146,"public void test146() throws Throwable {
+    RealMatrix realMatrix0 = null;
+    PearsonsCorrelation pearsonsCorrelation0 = null;
+    try {
+        pearsonsCorrelation0 = new PearsonsCorrelation((RealMatrix) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.stat.correlation.PearsonsCorrelation"", e);
+    }
+}",0,
+project,0,test157,"public void test157() throws Throwable {
+    RealMatrix realMatrix0 = null;
+    int int0 = 1404;
+    PearsonsCorrelation pearsonsCorrelation0 = null;
+    try {
+        pearsonsCorrelation0 = new PearsonsCorrelation((RealMatrix) null, 1404);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.stat.correlation.PearsonsCorrelation"", e);
+    }
+}",0,
+project,0,test178,"public void test178() throws Throwable {
+    Array2DRowRealMatrix array2DRowRealMatrix0 = new Array2DRowRealMatrix();
+    int int0 = 162;
+    PearsonsCorrelation pearsonsCorrelation0 = null;
+    try {
+        pearsonsCorrelation0 = new PearsonsCorrelation(array2DRowRealMatrix0, 162);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // invalid row dimension 0 (must be positive)
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}",0,
+project,0,test239,"public void test239() throws Throwable {
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation();
+    // Undeclared exception!
+    try {
+        pearsonsCorrelation0.getCorrelationStandardErrors();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.stat.correlation.PearsonsCorrelation"", e);
+    }
+}",0,
+project,0,test2810,"public void test2810() throws Throwable {
+    RealMatrix realMatrix0 = null;
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation((RealMatrix) null, 1667);
+    // Undeclared exception!
+    try {
+        pearsonsCorrelation0.getCorrelationStandardErrors();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.stat.correlation.PearsonsCorrelation"", e);
+    }
+}",0,
+project,0,test2911,"public void test2911() throws Throwable {
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation();
+    // Undeclared exception!
+    try {
+        pearsonsCorrelation0.getCorrelationPValues();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // degrees of freedom must be positive (-2)
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}",0,
+project,0,test3112,"public void test3112() throws Throwable {
+    double[][] doubleArrayArray0 = null;
+    PearsonsCorrelation pearsonsCorrelation0 = null;
+    try {
+        pearsonsCorrelation0 = new PearsonsCorrelation((double[][]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.linear.BlockRealMatrix"", e);
+    }
+}",0,
+project,0,test3213,"public void test3213() throws Throwable {
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation();
+    double[] doubleArray0 = new double[0];
+    Array2DRowRealMatrix array2DRowRealMatrix0 = new Array2DRowRealMatrix(doubleArray0);
+    int int0 = 2892;
+    try {
+        pearsonsCorrelation0.correlation(doubleArray0, doubleArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // invalid array dimensions. xArray has size 0; yArray has 0 elements
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}",0,
+project,0,test3414,"public void test3414() throws Throwable {
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation();
+    pearsonsCorrelation0.getCorrelationMatrix();
+    // Undeclared exception!
+    try {
+        pearsonsCorrelation0.computeCorrelationMatrix((RealMatrix) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.stat.correlation.PearsonsCorrelation"", e);
+    }
+}",0,
+project,0,test3615,"public void test3615() throws Throwable {
+    double[] doubleArray0 = new double[9];
+    doubleArray0[0] = 1576.970357826;
+    Array2DRowRealMatrix array2DRowRealMatrix0 = new Array2DRowRealMatrix(doubleArray0);
+    RealMatrix realMatrix0 = array2DRowRealMatrix0.copy();
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation(realMatrix0);
+    // Undeclared exception!
+    try {
+        pearsonsCorrelation0.covarianceToCorrelation(realMatrix0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // insufficient data: only 9 rows and 1 columns.
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}",0,
+project,0,test3716,"public void test3716() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[0] = 1576.970357826;
+    Array2DRowRealMatrix array2DRowRealMatrix0 = new Array2DRowRealMatrix(doubleArray0);
+    Array2DRowRealMatrix array2DRowRealMatrix1 = (Array2DRowRealMatrix) array2DRowRealMatrix0.copy();
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation(array2DRowRealMatrix1);
+    try {
+        pearsonsCorrelation0.correlation(doubleArray0, doubleArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // insufficient data: only 2 rows and 1 columns.
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}",1,

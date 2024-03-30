@@ -1,0 +1,534 @@
+focal_method,test_prefix,docstring
+"@Override
+public Element before(Node node) {
+    return (Element) super.before(node);
+}","public void test000() throws Throwable {
+    Document document0 = new Document("">z;+@"");
+    // Undeclared exception!
+    try {
+        document0.before((Node) document0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Insert the specified node into the DOM before this node (i.e. as a preceeding sibling).
+ * @param node to add before this element
+ * @return this Element, for chaining
+ * @see #after(Node)
+ */"
+"public int siblingIndex() {
+    return siblingIndex;
+}","public void test011() throws Throwable {
+    DataNode dataNode0 = new DataNode(""abs:!m%\""iczur"", ""abs:!m%\""iczur"");
+    dataNode0.setBaseUri(""abs:!m%\""iczur"");
+    assertEquals(0, dataNode0.siblingIndex());
+}","/**
+ * Get the list index of this node in its node sibling list. I.e. if this is the first node
+ * sibling, returns 0.
+ * @return position in node sibling list
+ * @see org.jsoup.nodes.Element#elementSiblingIndex()
+ */"
+"@Override
+public Element after(Node node) {
+    return (Element) super.after(node);
+}","public void test022() throws Throwable {
+    Document document0 = new Document(""abs:!m%\""icz9u$"");
+    // Undeclared exception!
+    try {
+        document0.after((Node) document0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Insert the specified node into the DOM after this node (i.e. as a following sibling).
+ * @param node to add after this element
+ * @return this element, for chaining
+ * @see #before(Node)
+ */"
+"public int siblingIndex() {
+    return siblingIndex;
+}","public void test033() throws Throwable {
+    Document document0 = Document.createShell(""ohbMr"");
+    document0.parentNode = (Node) document0;
+    document0.parentNode.after(""ohbMr"");
+    assertEquals(0, document0.siblingIndex());
+}","/**
+ * Get the list index of this node in its node sibling list. I.e. if this is the first node
+ * sibling, returns 0.
+ * @return position in node sibling list
+ * @see org.jsoup.nodes.Element#elementSiblingIndex()
+ */"
+"public int siblingIndex() {
+    return siblingIndex;
+}","public void test044() throws Throwable {
+    Document document0 = Document.createShell(""#text"");
+    document0.parentNode = (Node) document0;
+    assertEquals(0, document0.parentNode.siblingIndex());
+}","/**
+ * Get the list index of this node in its node sibling list. I.e. if this is the first node
+ * sibling, returns 0.
+ * @return position in node sibling list
+ * @see org.jsoup.nodes.Element#elementSiblingIndex()
+ */"
+"public int siblingIndex() {
+    return siblingIndex;
+}","public void test045() throws Throwable {
+    Document document0 = Document.createShell(""#text"");
+    document0.parentNode = (Node) document0;
+    Node node0 = document0.unwrap();
+    assertEquals(0, node0.siblingIndex());
+}","/**
+ * Get the list index of this node in its node sibling list. I.e. if this is the first node
+ * sibling, returns 0.
+ * @return position in node sibling list
+ * @see org.jsoup.nodes.Element#elementSiblingIndex()
+ */"
+"public Node unwrap() {
+    Validate.notNull(parentNode);
+    int index = siblingIndex;
+    Node firstChild = childNodes.size() > 0 ? childNodes.get(0) : null;
+    parentNode.addChildren(index, this.childNodesAsArray());
+    this.remove();
+    return firstChild;
+}","public void test046() throws Throwable {
+    Document document0 = Document.createShell(""#text"");
+    document0.parentNode = (Node) document0;
+    Node node0 = document0.unwrap();
+    assertNotNull(node0);
+}","/**
+ * Removes this node from the DOM, and moves its children up into the node's parent. This has the effect of dropping
+ * the node but keeping its children.
+ * <p/>
+ * For example, with the input html:<br/>
+ * {@code <div>One <span>Two <b>Three</b></span></div>}<br/>
+ * Calling {@code element.unwrap()} on the {@code span} element will result in the html:<br/>
+ * {@code <div>One Two <b>Three</b></div>}<br/>
+ * and the {@code ""Two ""} {@link TextNode} being returned.
+ * @return the first child of this node, after the node has been unwrapped. Null if the node had no children.
+ * @see #remove()
+ * @see #wrap(String)
+ */"
+"public int siblingIndex() {
+    return siblingIndex;
+}","public void test068() throws Throwable {
+    DataNode dataNode0 = new DataNode(""abs:m%icz9u$"", ""abs:m%icz9u$"");
+    Node node0 = dataNode0.removeAttr(""abs:m%icz9u$"");
+    assertEquals(0, node0.siblingIndex());
+}","/**
+ * Get the list index of this node in its node sibling list. I.e. if this is the first node
+ * sibling, returns 0.
+ * @return position in node sibling list
+ * @see org.jsoup.nodes.Element#elementSiblingIndex()
+ */"
+"public String toString() {
+    return outerHtml();
+}","public void test079() throws Throwable {
+    TextNode textNode0 = new TextNode(""@GyjTv2s"", ""@GyjTv2s"");
+    String string0 = textNode0.toString();
+    assertEquals(""@GyjTv2s"", string0);
+}",""
+"@Override
+public String outerHtml() {
+    // no outer wrapper tag
+    return super.html();
+}","public void test0810() throws Throwable {
+    Document document0 = Document.createShell(""abs:!m%\""icz9u$"");
+    String string0 = document0.outerHtml();
+    assertEquals(""<html>\n <head></head>\n <body></body>\n</html>"", string0);
+}",""
+"public List<Node> siblingNodes() {
+    return parent().childNodes();
+}","public void test0911() throws Throwable {
+    DataNode dataNode0 = new DataNode(""abs:!m%\""iczur"", ""abs:!m%\""iczur"");
+    // Undeclared exception!
+    try {
+        dataNode0.siblingNodes();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Node"", e);
+    }
+}","/**
+ *     Retrieves this node's sibling nodes. Similar to {@link #childNodes()  node.parent.childNodes()}, but does not
+ *     include this node (a node is not a sibling of itself).
+ *     @return node siblings. If the node has no parent, returns an empty list.
+ */"
+"public Attributes attributes() {
+    return attributes;
+}","public void test1012() throws Throwable {
+    DataNode dataNode0 = new DataNode(""abs:!m%\""iczur"", ""abs:!m%\""iczur"");
+    Attributes attributes0 = dataNode0.attributes();
+    assertNotNull(attributes0);
+}","/**
+ * Get all of the element's attributes.
+ * @return attributes (which implements iterable, in same order as presented in original HTML).
+ */"
+"@Override
+public String absUrl(String attributeKey) {
+    ensureAttributes();
+    return super.absUrl(attributeKey);
+}","public void test1113() throws Throwable {
+    TextNode textNode0 = TextNode.createFromEncoded(""h"", ""h"");
+    String string0 = textNode0.absUrl(""abs:h"");
+    assertEquals("""", string0);
+}",""
+"public String absUrl(String attributeKey) {
+    Validate.notEmpty(attributeKey);
+    String relUrl = attr(attributeKey);
+    if (!hasAttr(attributeKey)) {
+        // nothing to make absolute with
+        return """";
+    } else {
+        URL base;
+        try {
+            try {
+                base = new URL(baseUri);
+            } catch (MalformedURLException e) {
+                // the base is unsuitable, but the attribute may be abs on its own, so try that
+                URL abs = new URL(relUrl);
+                return abs.toExternalForm();
+            }
+            // workaround: java resolves '//path/file + ?foo' to '//path/?foo', not '//path/file?foo' as desired
+            if (relUrl.startsWith(""?""))
+                relUrl = base.getPath() + relUrl;
+            URL abs = new URL(base, relUrl);
+            return abs.toExternalForm();
+        } catch (MalformedURLException e) {
+            return """";
+        }
+    }
+}","public void test1214() throws Throwable {
+    TextNode textNode0 = TextNode.createFromEncoded(""h"", ""h"");
+    Node node0 = textNode0.attr(""h"", ""h"");
+    String string0 = node0.absUrl(""abs:h"");
+    assertEquals("""", string0);
+}","/**
+ * Get an absolute URL from a URL attribute that may be relative (i.e. an <code>&lt;a href></code> or
+ * <code>&lt;img src></code>).
+ * <p/>
+ * E.g.: <code>String absUrl = linkEl.absUrl(""href"");</code>
+ * <p/>
+ * If the attribute value is already absolute (i.e. it starts with a protocol, like
+ * <code>http://</code> or <code>https://</code> etc), and it successfully parses as a URL, the attribute is
+ * returned directly. Otherwise, it is treated as a URL relative to the element's {@link #baseUri}, and made
+ * absolute using that.
+ * <p/>
+ * As an alternate, you can use the {@link #attr} method with the <code>abs:</code> prefix, e.g.:
+ * <code>String absUrl = linkEl.attr(""abs:href"");</code>
+ *
+ * @param attributeKey The attribute key
+ * @return An absolute URL if one could be made, or an empty string (not null) if the attribute was missing or
+ * could not be made successfully into a URL.
+ * @see #attr
+ * @see java.net.URL#URL(java.net.URL, String)
+ */"
+"public Node before(String html) {
+    addSiblingHtml(siblingIndex(), html);
+    return this;
+}","public void test1315() throws Throwable {
+    TextNode textNode0 = new TextNode(""h"", ""h"");
+    textNode0.setParentNode(textNode0);
+    // Undeclared exception!
+    try {
+        textNode0.before(""h"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}","/**
+ * Insert the specified HTML into the DOM before this node (i.e. as a preceeding sibling).
+ * @param html HTML to add before this node
+ * @return this node, for chaining
+ * @see #after(String)
+ */"
+"@Override
+public Element wrap(String html) {
+    return (Element) super.wrap(html);
+}","public void test1416() throws Throwable {
+    Document document0 = new Document(""abs:!m%\""iczur"");
+    // Undeclared exception!
+    try {
+        document0.wrap(""abs:!m%\""iczur"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.HtmlTreeBuilder"", e);
+    }
+}","/**
+ * Wrap the supplied HTML around this element.
+ *
+ * @param html HTML to wrap around this element, e.g. {@code <div class=""head""></div>}. Can be arbitrarily deep.
+ * @return this element, for chaining.
+ */"
+"public Element head() {
+    return findFirstElementByTagName(""head"", this);
+}","public void test1517() throws Throwable {
+    Document document0 = Document.createShell(""Y"");
+    Element element0 = document0.head();
+    assertNotNull(element0);
+}","/**
+ *     Accessor to the document's {@code head} element.
+ *     @return {@code head}
+ */"
+"public int siblingIndex() {
+    return siblingIndex;
+}","public void test1518() throws Throwable {
+    Document document0 = Document.createShell(""Y"");
+    Element element0 = document0.head();
+    Element element1 = element0.wrap(""Y"");
+    assertEquals(0, element1.siblingIndex());
+}","/**
+ * Get the list index of this node in its node sibling list. I.e. if this is the first node
+ * sibling, returns 0.
+ * @return position in node sibling list
+ * @see org.jsoup.nodes.Element#elementSiblingIndex()
+ */"
+"@Override
+public Element wrap(String html) {
+    return (Element) super.wrap(html);
+}","public void test1519() throws Throwable {
+    Document document0 = Document.createShell(""Y"");
+    Element element0 = document0.head();
+    Element element1 = element0.wrap(""Y"");
+    assertNotNull(element1);
+}","/**
+ * Wrap the supplied HTML around this element.
+ *
+ * @param html HTML to wrap around this element, e.g. {@code <div class=""head""></div>}. Can be arbitrarily deep.
+ * @return this element, for chaining.
+ */"
+"@Override
+public Element wrap(String html) {
+    return (Element) super.wrap(html);
+}","public void test1620() throws Throwable {
+    Document document0 = Document.createShell(""Y"");
+    document0.setParentNode(document0);
+    Element element0 = document0.wrap(""Y"");
+    assertNull(element0);
+}","/**
+ * Wrap the supplied HTML around this element.
+ *
+ * @param html HTML to wrap around this element, e.g. {@code <div class=""head""></div>}. Can be arbitrarily deep.
+ * @return this element, for chaining.
+ */"
+"public Node unwrap() {
+    Validate.notNull(parentNode);
+    int index = siblingIndex;
+    Node firstChild = childNodes.size() > 0 ? childNodes.get(0) : null;
+    parentNode.addChildren(index, this.childNodesAsArray());
+    this.remove();
+    return firstChild;
+}","public void test1721() throws Throwable {
+    Document document0 = new Document(""txt"");
+    document0.parentNode = (Node) document0;
+    // Undeclared exception!
+    try {
+        document0.unwrap();
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 0, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}","/**
+ * Removes this node from the DOM, and moves its children up into the node's parent. This has the effect of dropping
+ * the node but keeping its children.
+ * <p/>
+ * For example, with the input html:<br/>
+ * {@code <div>One <span>Two <b>Three</b></span></div>}<br/>
+ * Calling {@code element.unwrap()} on the {@code span} element will result in the html:<br/>
+ * {@code <div>One Two <b>Three</b></div>}<br/>
+ * and the {@code ""Two ""} {@link TextNode} being returned.
+ * @return the first child of this node, after the node has been unwrapped. Null if the node had no children.
+ * @see #remove()
+ * @see #wrap(String)
+ */"
+"@Override
+public String nodeName() {
+    return ""#document"";
+}","public void test1822() throws Throwable {
+    Document document0 = Document.createShell(""Y"");
+    Element element0 = document0.head();
+    element0.setParentNode(document0);
+    assertEquals(""#document"", document0.nodeName());
+}",""
+"protected void replaceChild(Node out, Node in) {
+    Validate.isTrue(out.parentNode == this);
+    Validate.notNull(in);
+    if (in.parentNode != null)
+        in.parentNode.removeChild(in);
+    Integer index = out.siblingIndex();
+    childNodes.set(index, in);
+    in.parentNode = this;
+    in.setSiblingIndex(index);
+    out.parentNode = null;
+}","public void test1923() throws Throwable {
+    DataNode dataNode0 = new DataNode(""v2@S"", ""v2@S"");
+    // Undeclared exception!
+    try {
+        dataNode0.replaceChild(dataNode0, dataNode0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Must be true
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",""
+"public int siblingIndex() {
+    return siblingIndex;
+}","public void test2024() throws Throwable {
+    Document document0 = Document.createShell(""Y"");
+    Element element0 = document0.head();
+    element0.replaceWith(document0);
+    assertEquals(0, document0.siblingIndex());
+}","/**
+ * Get the list index of this node in its node sibling list. I.e. if this is the first node
+ * sibling, returns 0.
+ * @return position in node sibling list
+ * @see org.jsoup.nodes.Element#elementSiblingIndex()
+ */"
+"protected void removeChild(Node out) {
+    Validate.isTrue(out.parentNode == this);
+    int index = out.siblingIndex();
+    childNodes.remove(index);
+    reindexChildren();
+    out.parentNode = null;
+}","public void test2125() throws Throwable {
+    DataNode dataNode0 = new DataNode(""abs:!m%\""icz9u$"", ""abs:!m%\""icz9u$"");
+    // Undeclared exception!
+    try {
+        dataNode0.removeChild(dataNode0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Must be true
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",""
+"public Node previousSibling() {
+    List<Node> siblings = parentNode.childNodes;
+    Integer index = siblingIndex();
+    Validate.notNull(index);
+    if (index > 0)
+        return siblings.get(index - 1);
+    else
+        return null;
+}","public void test2226() throws Throwable {
+    Document document0 = Document.createShell("">+@"");
+    document0.parentNode = (Node) document0;
+    Node node0 = document0.parentNode.previousSibling();
+    assertNull(node0);
+}","/**
+ *     Get this node's previous sibling.
+ *     @return the previous sibling, or null if this is the first sibling
+ */"
+"public Node previousSibling() {
+    List<Node> siblings = parentNode.childNodes;
+    Integer index = siblingIndex();
+    Validate.notNull(index);
+    if (index > 0)
+        return siblings.get(index - 1);
+    else
+        return null;
+}","public void test2327() throws Throwable {
+    DataNode dataNode0 = new DataNode(""v2@S"", ""v2@S"");
+    DataNode dataNode1 = dataNode0.setWholeData(""v2@S"");
+    dataNode0.setSiblingIndex(607);
+    dataNode1.parentNode = (Node) dataNode0;
+    // Undeclared exception!
+    try {
+        dataNode1.previousSibling();
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 606, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}","/**
+ *     Get this node's previous sibling.
+ *     @return the previous sibling, or null if this is the first sibling
+ */"
+"@Override
+public boolean equals(Object o) {
+    if (this == o)
+        return true;
+    // todo: have nodes hold a child index, compare against that and parent (not children)
+    return false;
+}","public void test2428() throws Throwable {
+    DataNode dataNode0 = new DataNode(""abs:!m%\""iczur"", ""abs:!m%\""iczur"");
+    boolean boolean0 = dataNode0.equals(""#data"");
+    assertFalse(boolean0);
+}",""
+"@Override
+public boolean equals(Object o) {
+    if (this == o)
+        return true;
+    // todo: have nodes hold a child index, compare against that and parent (not children)
+    return false;
+}","public void test2529() throws Throwable {
+    DataNode dataNode0 = DataNode.createFromEncoded("">cz@9R"", "">cz@9R"");
+    boolean boolean0 = dataNode0.equals(dataNode0);
+    assertTrue(boolean0);
+}",""
+"@Override
+public int hashCode() {
+    int result = parentNode != null ? parentNode.hashCode() : 0;
+    // not children, or will block stack as they go back up to parent)
+    result = 31 * result + (attributes != null ? attributes.hashCode() : 0);
+    return result;
+}","public void test2630() throws Throwable {
+    TextNode textNode0 = new TextNode(""succJneqq"", ""succJneqq"");
+    textNode0.hashCode();
+}",""
+"@Override
+public int hashCode() {
+    int result = parentNode != null ? parentNode.hashCode() : 0;
+    // not children, or will block stack as they go back up to parent)
+    result = 31 * result + (attributes != null ? attributes.hashCode() : 0);
+    return result;
+}","public void test2731() throws Throwable {
+    Document document0 = Document.createShell(""lqV?8Gyj"");
+    document0.parentNode = (Node) document0;
+    // Undeclared exception!
+    document0.parentNode.hashCode();
+}",""
+"@Override
+public int hashCode() {
+    int result = parentNode != null ? parentNode.hashCode() : 0;
+    // not children, or will block stack as they go back up to parent)
+    result = 31 * result + (attributes != null ? attributes.hashCode() : 0);
+    return result;
+}","public void test2832() throws Throwable {
+    XmlDeclaration xmlDeclaration0 = new XmlDeclaration("">cz@9R"", "">cz@9R"", false);
+    xmlDeclaration0.hashCode();
+}",""
+"@Override
+public Document clone() {
+    Document clone = (Document) super.clone();
+    clone.outputSettings = this.outputSettings.clone();
+    return clone;
+}","public void test2933() throws Throwable {
+    Document document0 = Document.createShell(""abs:!m%iczr"");
+    Element element0 = document0.prependText(""abs:!m%iczr"");
+    Document document1 = document0.clone();
+    assertNotSame(document1, element0);
+}",""

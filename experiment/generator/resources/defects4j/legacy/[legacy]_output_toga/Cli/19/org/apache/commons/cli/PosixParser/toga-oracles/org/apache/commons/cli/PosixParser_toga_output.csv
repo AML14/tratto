@@ -1,0 +1,130 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    Options options0 = new Options();
+    String[] stringArray0 = new String[1];
+    stringArray0[0] = ""--v%(=BZ"";
+    PosixParser posixParser0 = new PosixParser();
+    try {
+        posixParser0.parse(options0, stringArray0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Unrecognized option: --v%(
+        //
+        verifyException(""org.apache.commons.cli.Parser"", e);
+    }
+}",0,
+project,0,test011,"public void test011() throws Throwable {
+    PosixParser posixParser0 = new PosixParser();
+    Options options0 = new Options();
+    String[] stringArray0 = new String[16];
+    stringArray0[0] = ""--"";
+    // Undeclared exception!
+    try {
+        posixParser0.parse(options0, stringArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+    }
+}",0,
+project,0,test022,"public void test022() throws Throwable {
+    PosixParser posixParser0 = new PosixParser();
+    Options options0 = new Options();
+    String[] stringArray0 = new String[16];
+    stringArray0[0] = ""-"";
+    // Undeclared exception!
+    try {
+        posixParser0.parse(options0, stringArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+    }
+}",0,
+project,0,test033,"public void test033() throws Throwable {
+    PosixParser posixParser0 = new PosixParser();
+    Options options0 = new Options();
+    options0.addOption(""v"", ""-v%ZQE"", true, ""-v%ZQE"");
+    String[] stringArray0 = new String[4];
+    stringArray0[0] = ""-v%ZQE"";
+    stringArray0[1] = ""v"";
+    // Undeclared exception!
+    try {
+        posixParser0.flatten(options0, stringArray0, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+    }
+}",0,
+project,0,test044,"public void test044() throws Throwable {
+    Options options0 = new Options();
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = ""-v"";
+    PosixParser posixParser0 = new PosixParser();
+    String[] stringArray1 = posixParser0.flatten(options0, stringArray0, true);
+    assertEquals(2, stringArray1.length);
+}",0,
+project,0,test055,"public void test055() throws Throwable {
+    Options options0 = new Options();
+    Option option0 = new Option(""vCB"", ""-vCB"");
+    options0.addOption(option0);
+    String[] stringArray0 = new String[3];
+    stringArray0[0] = ""-vCB"";
+    PosixParser posixParser0 = new PosixParser();
+    // Undeclared exception!
+    try {
+        posixParser0.flatten(options0, stringArray0, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+    }
+}",0,
+project,0,test066,"public void test066() throws Throwable {
+    PosixParser posixParser0 = new PosixParser();
+    Options options0 = new Options();
+    String[] stringArray0 = new String[5];
+    stringArray0[0] = ""6--"";
+    // Undeclared exception!
+    try {
+        posixParser0.parse(options0, stringArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+    }
+}",1,
+project,0,test077,"public void test077() throws Throwable {
+    PosixParser posixParser0 = new PosixParser();
+    Options options0 = new Options();
+    Options options1 = options0.addOption(""v"", ""-v%ZQE"", false, ""-v%ZQE"");
+    String[] stringArray0 = new String[1];
+    stringArray0[0] = ""-v%ZQE"";
+    String[] stringArray1 = posixParser0.flatten(options1, stringArray0, true);
+    assertEquals(3, stringArray1.length);
+}",0,
+project,0,test088,"public void test088() throws Throwable {
+    Options options0 = new Options();
+    options0.addOption(""v"", ""-v"", true, ""-v"");
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = ""-v"";
+    PosixParser posixParser0 = new PosixParser();
+    // Undeclared exception!
+    try {
+        posixParser0.flatten(options0, stringArray0, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+    }
+}",0,
+project,0,test099,"public void test099() throws Throwable {
+    PosixParser posixParser0 = new PosixParser();
+    Options options0 = new Options();
+    String[] stringArray0 = new String[1];
+    stringArray0[0] = ""-x"";
+    CommandLine commandLine0 = posixParser0.parse(options0, stringArray0);
+    assertNotNull(commandLine0);
+}",1,
+project,0,test1110,"public void test1110() throws Throwable {
+    PosixParser posixParser0 = new PosixParser();
+    Options options0 = new Options();
+    String[] stringArray0 = new String[4];
+    stringArray0[0] = ""-v%ZQE"";
+    // Undeclared exception!
+    try {
+        posixParser0.parse(options0, stringArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+    }
+}",1,

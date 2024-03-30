@@ -1,0 +1,66 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test00,"public void test00() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""arcuments"");
+    AbstractCompiler.LifeCycleStage abstractCompiler_LifeCycleStage0 = AbstractCompiler.LifeCycleStage.NORMALIZED;
+    compiler0.setLifeCycleStage(abstractCompiler_LifeCycleStage0);
+    RemoveUnusedVars removeUnusedVars0 = new RemoveUnusedVars(compiler0, false, true, false);
+    removeUnusedVars0.process(node0, node0);
+}",0,
+project,0,test11,"public void test11() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""aruments"");
+    AbstractCompiler.LifeCycleStage abstractCompiler_LifeCycleStage0 = AbstractCompiler.LifeCycleStage.NORMALIZED;
+    compiler0.setLifeCycleStage(abstractCompiler_LifeCycleStage0);
+    RemoveUnusedVars removeUnusedVars0 = new RemoveUnusedVars(compiler0, true, true, true);
+    // Undeclared exception!
+    try {
+        removeUnusedVars0.process(node0, node0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // Unexpected lValue type NAME
+        //   Node(NAME aruments): [testcode]:1:0
+        // aruments
+        //   Parent(EXPR_RESULT): [testcode]:1:0
+        // aruments
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",0,
+project,0,test22,"public void test22() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""argumens"");
+    RemoveUnusedVars removeUnusedVars0 = new RemoveUnusedVars(compiler0, true, true, true);
+    SimpleDefinitionFinder simpleDefinitionFinder0 = new SimpleDefinitionFinder(compiler0);
+    Node node1 = new Node(37, node0, node0, node0, node0);
+    removeUnusedVars0.process(node0, node1, simpleDefinitionFinder0);
+    assertEquals(37, node1.getType());
+}",0,"assertEquals(0, node1.getType())"
+project,0,test33,"public void test33() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    compiler0.parseTestCode(""inlineP`erties"");
+    RemoveUnusedVars removeUnusedVars0 = new RemoveUnusedVars(compiler0, false, false, false);
+    Node node0 = Node.newString(86, ""inlineP`erties"", 32, 49);
+    SimpleDefinitionFinder simpleDefinitionFinder0 = new SimpleDefinitionFinder(compiler0);
+    // Undeclared exception!
+    try {
+        removeUnusedVars0.process(node0, node0, simpleDefinitionFinder0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.NodeUtil"", e);
+    }
+}",0,
+project,0,test44,"public void test44() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""arguments"");
+    RemoveUnusedVars removeUnusedVars0 = new RemoveUnusedVars(compiler0, false, false, false);
+    SimpleDefinitionFinder simpleDefinitionFinder0 = new SimpleDefinitionFinder(compiler0);
+    removeUnusedVars0.process(node0, node0, simpleDefinitionFinder0);
+    assertFalse(node0.isExprResult());
+}",0,

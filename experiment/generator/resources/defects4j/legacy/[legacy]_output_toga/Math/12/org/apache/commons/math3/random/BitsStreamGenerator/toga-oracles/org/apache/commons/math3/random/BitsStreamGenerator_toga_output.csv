@@ -1,0 +1,272 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    MersenneTwister mersenneTwister0 = new MersenneTwister();
+    try {
+        mersenneTwister0.nextInt(0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // 0 is smaller than, or equal to, the minimum (0)
+        //
+        verifyException(""org.apache.commons.math3.random.BitsStreamGenerator"", e);
+    }
+}",0,
+project,0,test011,"public void test011() throws Throwable {
+    Well19937a well19937a0 = new Well19937a();
+    byte[] byteArray0 = new byte[6];
+    well19937a0.nextBytes(byteArray0);
+    assertArrayEquals(new byte[] { (byte) (-110), (byte) (-65), (byte) 92, (byte) (-40), (byte) (-122), (byte) 22 }, byteArray0);
+}",0,
+project,0,test022,"public void test022() throws Throwable {
+    int[] intArray0 = new int[3];
+    ISAACRandom iSAACRandom0 = new ISAACRandom(intArray0);
+    byte[] byteArray0 = new byte[3];
+    iSAACRandom0.nextBytes(byteArray0);
+    assertArrayEquals(new byte[] { (byte) 69, (byte) (-86), (byte) 97 }, byteArray0);
+}",0,
+project,0,test033,"public void test033() throws Throwable {
+    int[] intArray0 = new int[0];
+    ISAACRandom iSAACRandom0 = new ISAACRandom(intArray0);
+    iSAACRandom0.setSeed(intArray0);
+    assertArrayEquals(new int[] {}, intArray0);
+}",0,
+project,0,test064,"public void test064() throws Throwable {
+    int[] intArray0 = new int[20];
+    Well512a well512a0 = new Well512a(intArray0);
+    long long0 = well512a0.nextLong();
+    assertEquals(0L, long0);
+}",0,"assertEquals(0, long0)"
+project,0,test075,"public void test075() throws Throwable {
+    Well19937a well19937a0 = new Well19937a();
+    long long0 = well19937a0.nextLong();
+    assertEquals((-2856197429189667194L), long0);
+}",0,"assertEquals(0, long0)"
+project,0,test086,"public void test086() throws Throwable {
+    Well44497b well44497b0 = new Well44497b(1284L);
+    long long0 = well44497b0.nextLong();
+    assertEquals(4191224321352990188L, long0);
+}",0,"assertEquals(0, long0)"
+project,0,test087,"public void test087() throws Throwable {
+    Well44497b well44497b0 = new Well44497b(1284L);
+    long long0 = well44497b0.nextLong();
+    int int0 = well44497b0.nextInt();
+    assertEquals((-98967941), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test098,"public void test098() throws Throwable {
+    MersenneTwister mersenneTwister0 = new MersenneTwister((-734));
+    int[] intArray0 = new int[0];
+    // Undeclared exception!
+    try {
+        mersenneTwister0.setSeed(intArray0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test109,"public void test109() throws Throwable {
+    Well512a well512a0 = new Well512a((int[]) null);
+    well512a0.index = 32;
+    // Undeclared exception!
+    try {
+        well512a0.nextLong();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 32
+        //
+        verifyException(""org.apache.commons.math3.random.Well512a"", e);
+    }
+}",0,
+project,0,test1110,"public void test1110() throws Throwable {
+    Well44497b well44497b0 = new Well44497b(1345365059);
+    well44497b0.index = 1345365059;
+    // Undeclared exception!
+    try {
+        well44497b0.nextInt(3491);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test1211,"public void test1211() throws Throwable {
+    Well44497a well44497a0 = new Well44497a();
+    well44497a0.index = 3638;
+    // Undeclared exception!
+    try {
+        well44497a0.nextInt();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 3638
+        //
+        verifyException(""org.apache.commons.math3.random.Well44497a"", e);
+    }
+}",0,
+project,0,test1312,"public void test1312() throws Throwable {
+    Well44497b well44497b0 = new Well44497b(4607182418800017428L);
+    well44497b0.index = 4704;
+    // Undeclared exception!
+    try {
+        well44497b0.nextGaussian();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test1413,"public void test1413() throws Throwable {
+    Well44497a well44497a0 = new Well44497a((-1122L));
+    well44497a0.index = 3593;
+    // Undeclared exception!
+    try {
+        well44497a0.nextFloat();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 3593
+        //
+        verifyException(""org.apache.commons.math3.random.Well44497a"", e);
+    }
+}",0,
+project,0,test1514,"public void test1514() throws Throwable {
+    int[] intArray0 = new int[1];
+    Well512a well512a0 = new Well512a(intArray0);
+    well512a0.index = 1330;
+    // Undeclared exception!
+    try {
+        well512a0.nextDouble();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 1330
+        //
+        verifyException(""org.apache.commons.math3.random.Well512a"", e);
+    }
+}",0,
+project,0,test1615,"public void test1615() throws Throwable {
+    Well44497b well44497b0 = new Well44497b();
+    // Undeclared exception!
+    try {
+        well44497b0.nextBytes((byte[]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math3.random.BitsStreamGenerator"", e);
+    }
+}",0,
+project,0,test1716,"public void test1716() throws Throwable {
+    Well19937c well19937c0 = new Well19937c(1547);
+    well19937c0.index = (-254);
+    byte[] byteArray0 = new byte[1];
+    // Undeclared exception!
+    try {
+        well19937c0.nextBytes(byteArray0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -254
+        //
+        verifyException(""org.apache.commons.math3.random.Well19937c"", e);
+    }
+}",0,
+project,0,test1817,"public void test1817() throws Throwable {
+    Well19937a well19937a0 = new Well19937a(0L);
+    well19937a0.index = 353;
+    well19937a0.index = 1303;
+    // Undeclared exception!
+    try {
+        well19937a0.nextBoolean();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test2018,"public void test2018() throws Throwable {
+    MersenneTwister mersenneTwister0 = new MersenneTwister();
+    int int0 = mersenneTwister0.nextInt(1);
+    assertEquals(0, int0);
+}",0,
+project,0,test2119,"public void test2119() throws Throwable {
+    Well44497b well44497b0 = new Well44497b(1345365059);
+    int int0 = well44497b0.nextInt(3491);
+    assertEquals(612, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test2220,"public void test2220() throws Throwable {
+    Well44497b well44497b0 = new Well44497b();
+    try {
+        well44497b0.nextInt((int) (byte) (-8));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // -8 is smaller than, or equal to, the minimum (0)
+        //
+        verifyException(""org.apache.commons.math3.random.BitsStreamGenerator"", e);
+    }
+}",0,
+project,0,test2321,"public void test2321() throws Throwable {
+    MersenneTwister mersenneTwister0 = new MersenneTwister();
+    double double0 = mersenneTwister0.nextGaussian();
+    assertEquals((-0.05019949134629049), double0, 0.01);
+}",0,
+project,0,test2322,"public void test2322() throws Throwable {
+    MersenneTwister mersenneTwister0 = new MersenneTwister();
+    double double0 = mersenneTwister0.nextGaussian();
+    double double1 = mersenneTwister0.nextGaussian();
+    assertEquals(0.5100163916463146, double1, 0.01);
+}",0,
+project,0,test2423,"public void test2423() throws Throwable {
+    Well44497b well44497b0 = new Well44497b(0L);
+    byte[] byteArray0 = new byte[5];
+    well44497b0.nextBytes(byteArray0);
+    assertArrayEquals(new byte[] { (byte) 75, (byte) 103, (byte) (-84), (byte) 57, (byte) (-48) }, byteArray0);
+}",0,
+project,0,test2424,"public void test2424() throws Throwable {
+    Well44497b well44497b0 = new Well44497b(0L);
+    byte[] byteArray0 = new byte[5];
+    well44497b0.nextBytes(byteArray0);
+    long long0 = well44497b0.nextLong();
+    assertEquals(5747328870099210361L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test2425,"public void test2425() throws Throwable {
+    Well44497b well44497b0 = new Well44497b(0L);
+    byte[] byteArray0 = new byte[5];
+    well44497b0.nextBytes(byteArray0);
+    long long0 = well44497b0.nextLong();
+    boolean boolean0 = well44497b0.nextBoolean();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2526,"public void test2526() throws Throwable {
+    Well44497b well44497b0 = new Well44497b(0L);
+    boolean boolean0 = well44497b0.nextBoolean();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2627,"public void test2627() throws Throwable {
+    MersenneTwister mersenneTwister0 = new MersenneTwister((-734));
+    float float0 = mersenneTwister0.nextFloat();
+    assertEquals(0.53628373F, float0, 0.01F);
+}",0,
+project,0,test2728,"public void test2728() throws Throwable {
+    MersenneTwister mersenneTwister0 = new MersenneTwister();
+    int int0 = mersenneTwister0.nextInt();
+    assertEquals(1140807170, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test2729,"public void test2729() throws Throwable {
+    MersenneTwister mersenneTwister0 = new MersenneTwister();
+    int int0 = mersenneTwister0.nextInt();
+    int int1 = mersenneTwister0.nextInt(1140807170);
+    assertEquals(157004938, int1);
+}",0,"assertEquals(1, int1)"
+project,0,test2830,"public void test2830() throws Throwable {
+    MersenneTwister mersenneTwister0 = new MersenneTwister((-734));
+    double double0 = mersenneTwister0.nextDouble();
+    assertEquals(0.5362838158552343, double0, 0.01);
+}",0,

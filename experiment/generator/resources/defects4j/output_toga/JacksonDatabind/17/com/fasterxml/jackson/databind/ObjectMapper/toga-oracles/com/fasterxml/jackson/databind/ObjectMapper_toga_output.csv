@@ -1,0 +1,1226 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test0000,"public void test0000() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectMapper.DefaultTyping objectMapper_DefaultTyping0 = ObjectMapper.DefaultTyping.NON_CONCRETE_AND_ARRAYS;
+    objectMapper0.enableDefaultTyping(objectMapper_DefaultTyping0);
+    try {
+        objectMapper0.readTree(""\""NON_CONCRETE_AND_ARRAYS\"""");
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected token (VALUE_STRING), expected START_ARRAY: need JSON Array to contain As.WRAPPER_ARRAY type information for class com.fasterxml.jackson.databind.JsonNode
+        //  at [Source: java.lang.String@0000000451; line: 1, column: 1]
+        //
+        verifyException(""com.fasterxml.jackson.databind.JsonMappingException"", e);
+    }
+}",0,
+project,0,test0011,"public void test0011() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    JsonNodeFactory jsonNodeFactory0 = JsonNodeFactory.withExactBigDecimals(false);
+    ObjectMapper objectMapper1 = objectMapper0.setNodeFactory(jsonNodeFactory0);
+    assertEquals(0, objectMapper1.mixInCount());
+}",0,
+project,0,test0033,"public void test0033() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<MockFileWriter> class0 = MockFileWriter.class;
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    JavaType javaType0 = typeFactory0.uncheckedSimpleType(class0);
+    MapLikeType mapLikeType0 = MapLikeType.construct(class0, javaType0, javaType0);
+    SQLTimeoutException sQLTimeoutException0 = new SQLTimeoutException(""JSON"", ""JSON"", 2141);
+    DataTruncation dataTruncation0 = new DataTruncation(58, false, false, 1263, 3702, sQLTimeoutException0);
+    AtomicReference<Throwable> atomicReference0 = new AtomicReference<Throwable>(dataTruncation0);
+    boolean boolean0 = objectMapper0.canDeserialize((JavaType) mapLikeType0, atomicReference0);
+    assertFalse(boolean0);
+}",1,
+project,0,test0044,"public void test0044() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<TextNode> class0 = TextNode.class;
+    Class<CharArrayReader> class1 = CharArrayReader.class;
+    ObjectMapper objectMapper1 = objectMapper0.addMixIn(class0, class1);
+    assertSame(objectMapper1, objectMapper0);
+}",0,
+project,0,test0055,"public void test0055() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    SerializationFeature serializationFeature0 = SerializationFeature.WRITE_NULL_MAP_VALUES;
+    SerializationFeature[] serializationFeatureArray0 = new SerializationFeature[4];
+    // Undeclared exception!
+    try {
+        objectMapper0.enable(serializationFeature0, serializationFeatureArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.SerializationConfig"", e);
+    }
+}",0,
+project,0,test0066,"public void test0066() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<BufferedReader> class0 = BufferedReader.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    boolean boolean0 = objectMapper0.canDeserialize((JavaType) simpleType0);
+    assertTrue(boolean0);
+}",1,
+project,0,test0077,"public void test0077() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
+    ObjectMapper objectMapper1 = objectMapper0.enable(deserializationFeature0);
+    assertSame(objectMapper1, objectMapper0);
+}",0,
+project,0,test0088,"public void test0088() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    byte[] byteArray0 = new byte[0];
+    SimpleType simpleType0 = (SimpleType) TypeBindings.UNBOUND;
+    try {
+        objectMapper0.readValue(byteArray0, (JavaType) simpleType0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // No content to map due to end-of-input
+        //  at [Source: [B@0000000452; line: 1, column: 1]
+        //
+        verifyException(""com.fasterxml.jackson.databind.JsonMappingException"", e);
+    }
+}",0,
+project,0,test0099,"public void test0099() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DateFormat dateFormat0 = MockDateFormat.getTimeInstance();
+    ObjectMapper objectMapper1 = objectMapper0.setDateFormat(dateFormat0);
+    assertEquals(0, objectMapper1.mixInCount());
+}",0,"assertEquals(0, objectMapper1.mixInCount())"
+project,0,test01010,"public void test01010() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectMapper objectMapper1 = objectMapper0.setLocale((Locale) null);
+    assertSame(objectMapper1, objectMapper0);
+}",0,
+project,0,test01414,"public void test01414() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectMapper objectMapper1 = objectMapper0.copy();
+    assertEquals(0, objectMapper1.mixInCount());
+}",0,
+project,0,test01616,"public void test01616() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    SerializationFeature serializationFeature0 = SerializationFeature.WRITE_ENUMS_USING_INDEX;
+    // Undeclared exception!
+    try {
+        objectMapper0.writer(serializationFeature0, (SerializationFeature[]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.SerializationConfig"", e);
+    }
+}",0,
+project,0,test01717,"public void test01717() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    JsonNodeFactory jsonNodeFactory0 = new JsonNodeFactory(true);
+    ObjectReader objectReader0 = objectMapper0.reader(jsonNodeFactory0);
+    assertNotNull(objectReader0);
+}",0,assertNotNull(objectReader0)
+project,0,test01818,"public void test01818() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    byte[] byteArray0 = new byte[0];
+    TypeReference<BooleanNode> typeReference0 = (TypeReference<BooleanNode>) mock(TypeReference.class, new ViolatedAssumptionAnswer());
+    doReturn((Type) null).when(typeReference0).getType();
+    // Undeclared exception!
+    try {
+        objectMapper0.readValue(byteArray0, (TypeReference) typeReference0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unrecognized Type: [null]
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeFactory"", e);
+    }
+}",0,
+project,0,test02020,"public void test02020() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    TimeZone timeZone0 = TimeZone.getDefault();
+    ObjectMapper objectMapper1 = objectMapper0.setTimeZone(timeZone0);
+    assertEquals(0, objectMapper1.mixInCount());
+}",0,
+project,0,test02121,"public void test02121() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    JsonGenerator.Feature jsonGenerator_Feature0 = JsonGenerator.Feature.QUOTE_FIELD_NAMES;
+    boolean boolean0 = objectMapper0.isEnabled(jsonGenerator_Feature0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test02222,"public void test02222() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectMapper objectMapper1 = objectMapper0.findAndRegisterModules();
+    assertEquals(0, objectMapper1.mixInCount());
+}",0,
+project,0,test02323,"public void test02323() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader((Base64Variant) null);
+    assertNotNull(objectReader0);
+}",0,
+project,0,test02424,"public void test02424() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.readerForUpdating(jsonFactory0);
+    assertNotNull(objectReader0);
+}",0,
+project,0,test02525,"public void test02525() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DateFormat dateFormat0 = MockDateFormat.getDateTimeInstance();
+    ObjectWriter objectWriter0 = objectMapper0.writer(dateFormat0);
+    assertFalse(objectWriter0.hasPrefetchedSerializer());
+}",0,assertTrue(objectWriter0.hasPrefetchedSerializer())
+project,0,test02727,"public void test02727() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectMapper objectMapper1 = objectMapper0.setConfig((DeserializationConfig) null);
+    assertEquals(0, objectMapper1.mixInCount());
+}",0,
+project,0,test02828,"public void test02828() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    SimpleFilterProvider simpleFilterProvider0 = new SimpleFilterProvider();
+    ObjectWriter objectWriter0 = objectMapper0.writer((FilterProvider) simpleFilterProvider0);
+    assertFalse(objectWriter0.hasPrefetchedSerializer());
+}",0,
+project,0,test02929,"public void test02929() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    Class<MockFileWriter> class0 = MockFileWriter.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    try {
+        objectMapper0.readValue(""<Qp:7?+sm-!WeSC"", (JavaType) simpleType0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+        //  at [Source: java.lang.String@0000000455; line: 1, column: 2]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",0,
+project,0,test03030,"public void test03030() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    HashMap<String, ByteArrayInputStream> hashMap0 = new HashMap<String, ByteArrayInputStream>();
+    SimpleFilterProvider simpleFilterProvider0 = new SimpleFilterProvider(hashMap0);
+    objectMapper0.setFilters(simpleFilterProvider0);
+    assertEquals(0, objectMapper0.mixInCount());
+}",0,"assertEquals(0, objectMapper0.mixInCount())"
+project,0,test03131,"public void test03131() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.READ_ENUMS_USING_TO_STRING;
+    ObjectReader objectReader0 = objectMapper0.reader(deserializationFeature0);
+    assertNotNull(objectReader0);
+}",0,
+project,0,test03232,"public void test03232() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    MockFile mockFile0 = new MockFile(""com.fasterxml.jackson.databind.ser.std.StdScalarSerializer"", ""com.fasterxml.jackson.databind.ser.std.StdScalarSerializer"");
+    try {
+        objectMapper0.writeValue((File) mockFile0, (Object) mockFile0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Loop has been executed more times than the allowed 10000 (through reference chain: org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""absoluteFile\""]->org.evosuite.runtime.mock.java.io.MockFile[\""path\""])
+        //
+        verifyException(""com.fasterxml.jackson.databind.JsonMappingException"", e);
+    }
+}",0,
+project,0,test03333,"public void test03333() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<FilterOutputStream> class0 = FilterOutputStream.class;
+    SimpleType simpleType0 = SimpleType.constructUnsafe(class0);
+    ArrayType arrayType0 = typeFactory0.constructArrayType((JavaType) simpleType0);
+    ObjectWriter objectWriter0 = objectMapper0.writerWithType((JavaType) arrayType0);
+    assertTrue(objectWriter0.hasPrefetchedSerializer());
+}",0,
+project,0,test03434,"public void test03434() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<StringReader> class0 = StringReader.class;
+    ObjectWriter objectWriter0 = objectMapper0.writerWithView(class0);
+    assertFalse(objectWriter0.hasPrefetchedSerializer());
+}",0,assertTrue(objectWriter0.hasPrefetchedSerializer())
+project,0,test03535,"public void test03535() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    TypeReference<BigIntegerNode> typeReference0 = (TypeReference<BigIntegerNode>) mock(TypeReference.class, new ViolatedAssumptionAnswer());
+    // Undeclared exception!
+    try {
+        objectMapper0.readValue((byte[]) null, 0, 717, (TypeReference) typeReference0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.json.ByteSourceJsonBootstrapper"", e);
+    }
+}",0,
+project,0,test03636,"public void test03636() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    JavaType javaType0 = TypeFactory.unknownType();
+    try {
+        objectMapper0._convert(jsonFactory0, javaType0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Infinite recursion (StackOverflowError) (through reference chain: com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""]->com.fasterxml.jackson.core.JsonFactory[\""codec\""]->com.fasterxml.jackson.databind.ObjectMapper[\""factory\""])
+        //
+        verifyException(""com.fasterxml.jackson.databind.ObjectMapper"", e);
+    }
+}",0,
+project,0,test03737,"public void test03737() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<BufferedReader> class0 = BufferedReader.class;
+    JsonNodeFactory jsonNodeFactory0 = new JsonNodeFactory(false);
+    ArrayNode arrayNode0 = jsonNodeFactory0.arrayNode();
+    NullNode nullNode0 = arrayNode0.nullNode();
+    BufferedReader bufferedReader0 = objectMapper0.treeToValue((TreeNode) nullNode0, class0);
+    assertNull(bufferedReader0);
+}",0,assertNotNull(bufferedReader0)
+project,0,test03838,"public void test03838() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    StringReader stringReader0 = new StringReader(""R8?F6CIrFs85?iO4n"");
+    try {
+        objectMapper0.readValue((Reader) stringReader0, (JavaType) null);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unrecognized token 'R8': was expecting ('true', 'false' or 'null')
+        //  at [Source: java.io.StringReader@0000000456; line: 1, column: 3]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",0,
+project,0,test04040,"public void test04040() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader((FormatSchema) null);
+    assertNotNull(objectReader0);
+}",1,
+project,0,test04141,"public void test04141() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper((JsonFactory) null);
+    // Undeclared exception!
+    try {
+        objectMapper0.reader((TypeReference<?>) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeFactory"", e);
+    }
+}",0,
+project,0,test04242,"public void test04242() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper((JsonFactory) null);
+    InjectableValues.Std injectableValues_Std0 = new InjectableValues.Std();
+    ObjectReader objectReader0 = objectMapper0.reader((InjectableValues) injectableValues_Std0);
+    JsonFactory jsonFactory0 = new JsonFactory(objectReader0);
+    char[] charArray0 = new char[3];
+    JsonParser jsonParser0 = jsonFactory0.createParser(charArray0, 1293, 114);
+    TypeReference<BeanDeserializer> typeReference0 = (TypeReference<BeanDeserializer>) mock(TypeReference.class, new ViolatedAssumptionAnswer());
+    doReturn((Type) null).when(typeReference0).getType();
+    // Undeclared exception!
+    try {
+        objectMapper0.readValue(jsonParser0, (TypeReference<?>) typeReference0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unrecognized Type: [null]
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeFactory"", e);
+    }
+}",0,
+project,0,test04444,"public void test04444() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    VisibilityChecker<?> visibilityChecker0 = objectMapper0.getVisibilityChecker();
+    assertNotNull(visibilityChecker0);
+}",0,
+project,0,test04545,"public void test04545() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    SerializationFeature serializationFeature0 = SerializationFeature.WRITE_ENUMS_USING_INDEX;
+    ObjectMapper objectMapper1 = objectMapper0.enable(serializationFeature0);
+    assertEquals(0, objectMapper1.mixInCount());
+}",0,
+project,0,test04646,"public void test04646() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT;
+    DeserializationFeature[] deserializationFeatureArray0 = new DeserializationFeature[1];
+    // Undeclared exception!
+    try {
+        objectMapper0.enable(deserializationFeature0, deserializationFeatureArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationConfig"", e);
+    }
+}",0,
+project,0,test04747,"public void test04747() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    Class<ArrayNode> class0 = ArrayNode.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    URL uRL0 = MockURL.getFtpExample();
+    // Undeclared exception!
+    try {
+        objectMapper0.readValue(uRL0, (JavaType) simpleType0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.net.URL"", e);
+    }
+}",0,
+project,0,test04848,"public void test04848() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    MockFile mockFile0 = new MockFile("") vs "", "") vs "");
+    try {
+        objectMapper0.readValue((File) mockFile0, (JavaType) null);
+        fail(""Expecting exception: FileNotFoundException"");
+    } catch (FileNotFoundException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.mock.java.io.MockFileInputStream"", e);
+    }
+}",0,
+project,0,test04949,"public void test04949() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectMapper objectMapper1 = objectMapper0.setSerializerFactory((SerializerFactory) null);
+    assertSame(objectMapper1, objectMapper0);
+}",0,
+project,0,test05050,"public void test05050() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    SimpleType simpleType0 = (SimpleType) TypeBindings.UNBOUND;
+    ArrayType arrayType0 = typeFactory0.constructArrayType((JavaType) simpleType0);
+    byte[] byteArray0 = objectMapper0.writeValueAsBytes(arrayType0);
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, 33, 33);
+    try {
+        objectMapper0.readValue((InputStream) byteArrayInputStream0, (JavaType) simpleType0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // No content to map due to end-of-input
+        //  at [Source: java.io.ByteArrayInputStream@0000000457; line: 1, column: 1]
+        //
+        verifyException(""com.fasterxml.jackson.databind.JsonMappingException"", e);
+    }
+}",0,
+project,0,test05151,"public void test05151() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    JsonParser.Feature jsonParser_Feature0 = JsonParser.Feature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER;
+    boolean boolean0 = objectMapper0.isEnabled(jsonParser_Feature0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test05252,"public void test05252() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    JsonNodeFactory jsonNodeFactory0 = JsonNodeFactory.instance;
+    ArrayNode arrayNode0 = new ArrayNode(jsonNodeFactory0);
+    JsonParser jsonParser0 = arrayNode0.traverse((ObjectCodec) objectMapper0);
+    TypeReference<CollectionType> typeReference0 = (TypeReference<CollectionType>) mock(TypeReference.class, new ViolatedAssumptionAnswer());
+    doReturn((Type) null).when(typeReference0).getType();
+    // Undeclared exception!
+    try {
+        objectMapper0.readValues(jsonParser0, (TypeReference<?>) typeReference0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unrecognized Type: [null]
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeFactory"", e);
+    }
+}",1,
+project,0,test05353,"public void test05353() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<LongNode> class0 = LongNode.class;
+    // Undeclared exception!
+    try {
+        objectMapper0._checkInvalidCopy(class0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Failed copy(): com.fasterxml.jackson.databind.ObjectMapper (version: 2.4.7-SNAPSHOT) does not override copy(); it has to
+        //
+        verifyException(""com.fasterxml.jackson.databind.ObjectMapper"", e);
+    }
+}",1,
+project,0,test05454,"public void test05454() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    BufferRecycler bufferRecycler0 = jsonFactory0._getBufferRecycler();
+    ByteArrayBuilder byteArrayBuilder0 = new ByteArrayBuilder(bufferRecycler0, 11);
+    objectMapper0.writeValue((OutputStream) byteArrayBuilder0, (Object) null);
+    assertEquals(0, objectMapper0.mixInCount());
+}",0,"assertEquals(0, objectMapper0.mixInCount())"
+project,0,test05555,"public void test05555() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    CharArrayWriter charArrayWriter0 = new CharArrayWriter();
+    try {
+        objectMapper0.writeValue((Writer) charArrayWriter0, (Object) charArrayWriter0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // No serializer found for class java.io.CharArrayWriter and no properties discovered to create BeanSerializer (to avoid exception, disable SerializationFeature.FAIL_ON_EMPTY_BEANS) )
+        //
+        verifyException(""com.fasterxml.jackson.databind.ser.impl.UnknownSerializer"", e);
+    }
+}",0,
+project,0,test05656,"public void test05656() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    JsonParser.Feature jsonParser_Feature0 = JsonParser.Feature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER;
+    ObjectMapper objectMapper1 = objectMapper0.configure(jsonParser_Feature0, true);
+    assertSame(objectMapper1, objectMapper0);
+}",0,
+project,0,test05757,"public void test05757() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper((JsonFactory) null);
+    Class<MapType> class0 = MapType.class;
+    objectMapper0.addMixInAnnotations(class0, class0);
+    assertEquals(1, objectMapper0.mixInCount());
+}",0,
+project,0,test05858,"public void test05858() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    JsonFactory jsonFactory0 = new JsonFactory(objectMapper0);
+    byte[] byteArray0 = new byte[8];
+    JsonParser jsonParser0 = jsonFactory0.createParser(byteArray0);
+    try {
+        objectMapper0.readValue(jsonParser0, (ResolvedType) null);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Illegal character ((CTRL-CHAR, code 0)): only regular white space (\\r, \\n, \\t) is allowed between tokens
+        //  at [Source: [B@0000000458; line: 1, column: 2]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",1,
+project,0,test05959,"public void test05959() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<ArrayType> class0 = ArrayType.class;
+    ObjectReader objectReader0 = objectMapper0.readerWithView(class0);
+    assertNotNull(objectReader0);
+}",0,
+project,0,test06060,"public void test06060() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    JsonNodeFactory jsonNodeFactory0 = objectMapper0.getNodeFactory();
+    assertNotNull(jsonNodeFactory0);
+}",0,
+project,0,test06161,"public void test06161() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DeserializationContext deserializationContext0 = objectMapper0.getDeserializationContext();
+    assertNotNull(deserializationContext0);
+}",0,
+project,0,test06262,"public void test06262() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    AnnotationIntrospector annotationIntrospector0 = AnnotationIntrospector.nopInstance();
+    AnnotationIntrospector annotationIntrospector1 = AnnotationIntrospector.pair(annotationIntrospector0, annotationIntrospector0);
+    ObjectMapper objectMapper1 = objectMapper0.setAnnotationIntrospector(annotationIntrospector1);
+    assertSame(objectMapper0, objectMapper1);
+}",0,
+project,0,test06363,"public void test06363() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    PropertyAccessor propertyAccessor0 = PropertyAccessor.CREATOR;
+    JsonAutoDetect.Visibility jsonAutoDetect_Visibility0 = JsonAutoDetect.Visibility.NONE;
+    ObjectMapper objectMapper1 = objectMapper0.setVisibility(propertyAccessor0, jsonAutoDetect_Visibility0);
+    assertSame(objectMapper0, objectMapper1);
+}",0,
+project,0,test06464,"public void test06464() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectMapper objectMapper1 = objectMapper0.setSubtypeResolver((SubtypeResolver) null);
+    assertSame(objectMapper1, objectMapper0);
+}",0,
+project,0,test06666,"public void test06666() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    InjectableValues.Std injectableValues_Std0 = new InjectableValues.Std();
+    ObjectMapper objectMapper1 = objectMapper0.setInjectableValues(injectableValues_Std0);
+    assertEquals(0, objectMapper1.mixInCount());
+}",0,
+project,0,test06767,"public void test06767() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    DeserializerFactoryConfig deserializerFactoryConfig0 = new DeserializerFactoryConfig();
+    BeanDeserializerFactory beanDeserializerFactory0 = new BeanDeserializerFactory(deserializerFactoryConfig0);
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0, (DefaultSerializerProvider) null, defaultDeserializationContext_Impl0);
+    SerializerProvider serializerProvider0 = objectMapper0.getSerializerProvider();
+    assertNotNull(serializerProvider0);
+}",0,assertNotNull(serializerProvider0)
+project,0,test06868,"public void test06868() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper((JsonFactory) null);
+    PropertyNamingStrategy.LowerCaseStrategy propertyNamingStrategy_LowerCaseStrategy0 = (PropertyNamingStrategy.LowerCaseStrategy) PropertyNamingStrategy.LOWER_CASE;
+    ObjectMapper objectMapper1 = objectMapper0.setPropertyNamingStrategy(propertyNamingStrategy_LowerCaseStrategy0);
+    assertSame(objectMapper0, objectMapper1);
+}",0,
+project,0,test06969,"public void test06969() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    HandlerInstantiator handlerInstantiator0 = mock(HandlerInstantiator.class, new ViolatedAssumptionAnswer());
+    ObjectMapper objectMapper1 = (ObjectMapper) objectMapper0.setHandlerInstantiator(handlerInstantiator0);
+    assertEquals(0, objectMapper1.mixInCount());
+}",0,"assertEquals(0, objectMapper1.mixInCount())"
+project,0,test07070,"public void test07070() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<MockFileReader> class0 = MockFileReader.class;
+    boolean boolean0 = objectMapper0.canSerialize(class0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test07171,"public void test07171() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    ObjectMapper.DefaultTyping objectMapper_DefaultTyping0 = ObjectMapper.DefaultTyping.NON_FINAL;
+    ObjectMapper objectMapper1 = objectMapper0.enableDefaultTypingAsProperty(objectMapper_DefaultTyping0, ""JSON"");
+    assertEquals(0, objectMapper1.mixInCount());
+}",0,
+project,0,test07373,"public void test07373() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    ObjectWriter objectWriter0 = objectMapper0.writer((CharacterEscapes) null);
+    assertFalse(objectWriter0.hasPrefetchedSerializer());
+}",0,assertTrue(objectWriter0.hasPrefetchedSerializer())
+project,0,test07474,"public void test07474() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<Map> class0 = Map.class;
+    MapType mapType0 = typeFactory0.constructMapType(class0, class0, class0);
+    // Undeclared exception!
+    try {
+        objectMapper0.readValue((JsonParser) null, (JavaType) mapType0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.ObjectMapper"", e);
+    }
+}",0,
+project,0,test07575,"public void test07575() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    SimpleType simpleType0 = (SimpleType) TypeBindings.UNBOUND;
+    MappingIterator<MockFileReader> mappingIterator0 = objectMapper0.readValues((JsonParser) null, (ResolvedType) simpleType0);
+    assertNotNull(mappingIterator0);
+}",1,
+project,0,test07676,"public void test07676() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.FAIL_ON_READING_DUP_TREE_KEY;
+    DeserializationFeature[] deserializationFeatureArray0 = new DeserializationFeature[7];
+    // Undeclared exception!
+    try {
+        objectMapper0.reader(deserializationFeature0, deserializationFeatureArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationConfig"", e);
+    }
+}",0,
+project,0,test07777,"public void test07777() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    JsonFactory.Feature jsonFactory_Feature0 = JsonFactory.Feature.CANONICALIZE_FIELD_NAMES;
+    boolean boolean0 = objectMapper0.isEnabled(jsonFactory_Feature0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test07878,"public void test07878() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectMapper.DefaultTyping objectMapper_DefaultTyping0 = ObjectMapper.DefaultTyping.NON_CONCRETE_AND_ARRAYS;
+    String string0 = objectMapper0.writeValueAsString(objectMapper_DefaultTyping0);
+    assertEquals(""\""NON_CONCRETE_AND_ARRAYS\"""", string0);
+}",0,assertNotNull(string0)
+project,0,test07979,"public void test07979() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    SerializationFeature serializationFeature0 = SerializationFeature.WRITE_CHAR_ARRAYS_AS_JSON_ARRAYS;
+    ObjectWriter objectWriter0 = objectMapper0.writer(serializationFeature0);
+    assertFalse(objectWriter0.hasPrefetchedSerializer());
+}",0,assertTrue(objectWriter0.hasPrefetchedSerializer())
+project,0,test08080,"public void test08080() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectNode objectNode0 = objectMapper0.createObjectNode();
+    assertEquals("""", objectNode0.asText());
+}",0,assertNotNull(objectNode0.asText())
+project,0,test08181,"public void test08181() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<CollectionType> class0 = CollectionType.class;
+    AtomicReference<Throwable> atomicReference0 = new AtomicReference<Throwable>();
+    boolean boolean0 = objectMapper0.canSerialize(class0, atomicReference0);
+    assertTrue(boolean0);
+}",1,
+project,0,test08282,"public void test08282() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper((JsonFactory) null);
+    SerializationFeature serializationFeature0 = SerializationFeature.WRITE_ENUMS_USING_TO_STRING;
+    boolean boolean0 = objectMapper0.isEnabled(serializationFeature0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test08383,"public void test08383() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    SerializerFactory serializerFactory0 = objectMapper0.getSerializerFactory();
+    assertNotNull(serializerFactory0);
+}",0,
+project,0,test08484,"public void test08484() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectMapper objectMapper1 = objectMapper0.clearProblemHandlers();
+    assertEquals(0, objectMapper1.mixInCount());
+}",0,
+project,0,test08585,"public void test08585() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    TypeReference<MockFileWriter> typeReference0 = (TypeReference<MockFileWriter>) mock(TypeReference.class, new ViolatedAssumptionAnswer());
+    // Undeclared exception!
+    try {
+        objectMapper0.readValue((URL) null, (TypeReference) typeReference0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.mock.java.net.MockURL"", e);
+    }
+}",0,
+project,0,test08686,"public void test08686() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectMapper objectMapper1 = objectMapper0.setBase64Variant((Base64Variant) null);
+    assertEquals(0, objectMapper1.mixInCount());
+}",0,"assertEquals(1, objectMapper1.mixInCount())"
+project,0,test08787,"public void test08787() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectWriter objectWriter0 = objectMapper0.writerWithDefaultPrettyPrinter();
+    assertFalse(objectWriter0.hasPrefetchedSerializer());
+}",0,
+project,0,test08888,"public void test08888() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    Class<CollectionType> class0 = CollectionType.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    byte[] byteArray0 = new byte[8];
+    try {
+        objectMapper0.readValue(byteArray0, 2, (int) (-39), (JavaType) simpleType0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // No content to map due to end-of-input
+        //  at [Source: [B@0000000459; line: 1, column: 1]
+        //
+        verifyException(""com.fasterxml.jackson.databind.JsonMappingException"", e);
+    }
+}",0,
+project,0,test08989,"public void test08989() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    JsonInclude.Include jsonInclude_Include0 = JsonInclude.Include.ALWAYS;
+    ObjectMapper objectMapper1 = objectMapper0.setSerializationInclusion(jsonInclude_Include0);
+    assertSame(objectMapper0, objectMapper1);
+}",0,
+project,0,test09090,"public void test09090() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    SerializationFeature serializationFeature0 = SerializationFeature.WRITE_ENUMS_USING_INDEX;
+    SerializationFeature[] serializationFeatureArray0 = new SerializationFeature[1];
+    // Undeclared exception!
+    try {
+        objectMapper0.disable(serializationFeature0, serializationFeatureArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.SerializationConfig"", e);
+    }
+}",0,
+project,0,test09191,"public void test09191() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY;
+    DeserializationFeature[] deserializationFeatureArray0 = new DeserializationFeature[7];
+    // Undeclared exception!
+    try {
+        objectMapper0.disable(deserializationFeature0, deserializationFeatureArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationConfig"", e);
+    }
+}",0,
+project,0,test09494,"public void test09494() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectWriter objectWriter0 = objectMapper0.writer((FormatSchema) null);
+    assertFalse(objectWriter0.hasPrefetchedSerializer());
+}",0,assertFalse(objectWriter0.hasPrefetchedSerializer())
+project,0,test09696,"public void test09696() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectMapper objectMapper1 = objectMapper0.setConfig((SerializationConfig) null);
+    assertSame(objectMapper1, objectMapper0);
+}",0,
+project,0,test09797,"public void test09797() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ArrayNode arrayNode0 = objectMapper0.createArrayNode();
+    assertEquals(JsonToken.START_ARRAY, arrayNode0.asToken());
+}",0,
+project,0,test09898,"public void test09898() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    JsonParser jsonParser0 = jsonFactory0.createParser(""0o"");
+    Version version0 = jsonParser0.version();
+    SimpleModule simpleModule0 = new SimpleModule("") does not override copy(); it has to"", version0);
+    NamedType[] namedTypeArray0 = new NamedType[6];
+    SimpleModule simpleModule1 = simpleModule0.registerSubtypes(namedTypeArray0);
+    ObjectMapper objectMapper1 = objectMapper0.registerModule(simpleModule1);
+    assertEquals(0, objectMapper1.mixInCount());
+}",0,
+project,0,test09999,"public void test09999() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    MapperFeature mapperFeature0 = MapperFeature.AUTO_DETECT_SETTERS;
+    boolean boolean0 = objectMapper0.isEnabled(mapperFeature0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test100100,"public void test100100() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    MockFile mockFile0 = new MockFile(""$RnOpz4ewP3':"");
+    try {
+        objectMapper0.readValue((File) mockFile0, (TypeReference) null);
+        fail(""Expecting exception: FileNotFoundException"");
+    } catch (FileNotFoundException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.mock.java.io.MockFileInputStream"", e);
+    }
+}",0,
+project,0,test101101,"public void test101101() throws Throwable {
+    Class<BufferedWriter> class0 = BufferedWriter.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    JavaType javaType0 = objectMapper0.constructType(simpleType0);
+    assertTrue(javaType0.isConcrete());
+}",0,assertTrue(javaType0.isConcrete())
+project,0,test102102,"public void test102102() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    SerializationFeature serializationFeature0 = SerializationFeature.WRITE_BIGDECIMAL_AS_PLAIN;
+    ObjectMapper objectMapper1 = objectMapper0.disable(serializationFeature0);
+    assertEquals(0, objectMapper1.mixInCount());
+}",0,
+project,0,test103103,"public void test103103() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectWriter objectWriter0 = objectMapper0.writer((Base64Variant) null);
+    assertFalse(objectWriter0.hasPrefetchedSerializer());
+}",0,assertTrue(objectWriter0.hasPrefetchedSerializer())
+project,0,test104104,"public void test104104() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    FileDescriptor fileDescriptor0 = new FileDescriptor();
+    MockFileReader mockFileReader0 = new MockFileReader(fileDescriptor0);
+    TypeReference<MockPrintWriter> typeReference0 = (TypeReference<MockPrintWriter>) mock(TypeReference.class, new ViolatedAssumptionAnswer());
+    doReturn((Type) null).when(typeReference0).getType();
+    // Undeclared exception!
+    try {
+        objectMapper0.readValue((Reader) mockFileReader0, (TypeReference) typeReference0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unrecognized Type: [null]
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeFactory"", e);
+    }
+}",0,
+project,0,test105105,"public void test105105() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectMapper objectMapper1 = objectMapper0.enableDefaultTyping();
+    assertSame(objectMapper1, objectMapper0);
+}",0,
+project,0,test106106,"public void test106106() throws Throwable {
+    ObjectMapper.DefaultTyping objectMapper_DefaultTyping0 = ObjectMapper.DefaultTyping.NON_FINAL;
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    // Undeclared exception!
+    try {
+        objectMapper0.convertValue((Object) objectMapper_DefaultTyping0, (TypeReference<?>) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeFactory"", e);
+    }
+}",0,
+project,0,test107107,"public void test107107() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectWriter objectWriter0 = objectMapper0.writer((ContextAttributes) null);
+    assertFalse(objectWriter0.hasPrefetchedSerializer());
+}",0,
+project,0,test108108,"public void test108108() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DeserializationProblemHandler deserializationProblemHandler0 = mock(DeserializationProblemHandler.class, new ViolatedAssumptionAnswer());
+    ObjectMapper objectMapper1 = objectMapper0.addHandler(deserializationProblemHandler0);
+    assertSame(objectMapper0, objectMapper1);
+}",0,
+project,0,test109109,"public void test109109() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    byte[] byteArray0 = new byte[1];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    TypeReference<MapType> typeReference0 = (TypeReference<MapType>) mock(TypeReference.class, new ViolatedAssumptionAnswer());
+    doReturn((Type) null).when(typeReference0).getType();
+    // Undeclared exception!
+    try {
+        objectMapper0.readValue((InputStream) byteArrayInputStream0, (TypeReference) typeReference0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unrecognized Type: [null]
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeFactory"", e);
+    }
+}",0,
+project,0,test110110,"public void test110110() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    TypeFactory typeFactory0 = objectMapper0.getTypeFactory();
+    assertNotNull(typeFactory0);
+}",0,assertNotNull(typeFactory0)
+project,0,test111111,"public void test111111() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS;
+    ObjectMapper objectMapper1 = objectMapper0.disable(deserializationFeature0);
+    assertEquals(0, objectMapper1.mixInCount());
+}",0,"assertEquals(0, objectMapper1.mixInCount())"
+project,0,test112112,"public void test112112() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    JsonGenerator.Feature jsonGenerator_Feature0 = JsonGenerator.Feature.AUTO_CLOSE_JSON_CONTENT;
+    ObjectMapper objectMapper1 = objectMapper0.configure(jsonGenerator_Feature0, false);
+    assertEquals(0, objectMapper1.mixInCount());
+}",0,
+project,0,test113113,"public void test113113() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectMapper objectMapper1 = objectMapper0.disableDefaultTyping();
+    assertEquals(0, objectMapper1.mixInCount());
+}",0,
+project,0,test114114,"public void test114114() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.WRAP_EXCEPTIONS;
+    boolean boolean0 = objectMapper0.isEnabled(deserializationFeature0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test115115,"public void test115115() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    ObjectMapper objectMapper1 = objectMapper0.setTypeFactory(typeFactory0);
+    assertSame(objectMapper0, objectMapper1);
+}",0,
+project,0,test116116,"public void test116116() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    // Undeclared exception!
+    try {
+        objectMapper0.readValue((String) null, (TypeReference) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonFactory"", e);
+    }
+}",0,
+project,0,test117117,"public void test117117() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    ObjectMapper objectMapper1 = objectMapper0.setSerializerProvider(defaultSerializerProvider_Impl0);
+    assertEquals(0, objectMapper1.mixInCount());
+}",0,
+project,0,test118118,"public void test118118() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    ObjectMapper objectMapper0 = new ObjectMapper((JsonFactory) null, defaultSerializerProvider_Impl0, defaultDeserializationContext_Impl0);
+    JacksonAnnotationIntrospector jacksonAnnotationIntrospector0 = (JacksonAnnotationIntrospector) ObjectMapper.DEFAULT_ANNOTATION_INTROSPECTOR;
+    ObjectMapper objectMapper1 = objectMapper0.setAnnotationIntrospectors(jacksonAnnotationIntrospector0, jacksonAnnotationIntrospector0);
+    assertSame(objectMapper1, objectMapper0);
+}",0,
+project,0,test119119,"public void test119119() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader((ContextAttributes) null);
+    Version version0 = objectReader0.version();
+    SimpleModule simpleModule0 = new SimpleModule(""3X$MJi.gk|s3Qd{4"", version0);
+    BeanSerializerModifier beanSerializerModifier0 = mock(BeanSerializerModifier.class, new ViolatedAssumptionAnswer());
+    simpleModule0.setSerializerModifier(beanSerializerModifier0);
+    ObjectMapper objectMapper1 = objectMapper0.registerModule(simpleModule0);
+    assertSame(objectMapper1, objectMapper0);
+}",0,
+project,0,test121121,"public void test121121() throws Throwable {
+    ObjectMapper.DefaultTyping objectMapper_DefaultTyping0 = ObjectMapper.DefaultTyping.NON_FINAL;
+    ObjectMapper.DefaultTypeResolverBuilder objectMapper_DefaultTypeResolverBuilder0 = new ObjectMapper.DefaultTypeResolverBuilder(objectMapper_DefaultTyping0);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    byte[] byteArray0 = new byte[4];
+    objectMapper0.setDefaultTyping(objectMapper_DefaultTypeResolverBuilder0);
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) (-82), 0);
+    // Undeclared exception!
+    try {
+        objectMapper0.writeValueAsString(byteArrayInputStream0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Can not build, 'init()' not yet called
+        //
+        verifyException(""com.fasterxml.jackson.databind.jsontype.impl.StdTypeResolverBuilder"", e);
+    }
+}",0,
+project,0,test129129,"public void test129129() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    SimpleModule simpleModule0 = new SimpleModule((String) null, (Version) null);
+    // Undeclared exception!
+    try {
+        objectMapper0.registerModule(simpleModule0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Module without defined name
+        //
+        verifyException(""com.fasterxml.jackson.databind.ObjectMapper"", e);
+    }
+}",0,
+project,0,test130130,"public void test130130() throws Throwable {
+    SimpleModule simpleModule0 = new SimpleModule(""3X$MJi.gk|s3Qd{4"", (Version) null);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    // Undeclared exception!
+    try {
+        objectMapper0.registerModule(simpleModule0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Module without defined version
+        //
+        verifyException(""com.fasterxml.jackson.databind.ObjectMapper"", e);
+    }
+}",1,
+project,0,test133133,"public void test133133() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<Integer> class0 = Integer.class;
+    Class<?> class1 = objectMapper0.findMixInClassFor(class0);
+    assertNull(class1);
+}",0,
+project,0,test134134,"public void test134134() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    int int0 = objectMapper0.mixInCount();
+    assertEquals(0, int0);
+}",0,
+project,0,test135135,"public void test135135() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    MapperFeature mapperFeature0 = MapperFeature.USE_WRAPPER_NAME_AS_PROPERTY_NAME;
+    ObjectMapper objectMapper1 = objectMapper0.configure(mapperFeature0, false);
+    assertEquals(0, objectMapper1.mixInCount());
+}",0,
+project,0,test136136,"public void test136136() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    MapperFeature mapperFeature0 = MapperFeature.AUTO_DETECT_GETTERS;
+    ObjectMapper objectMapper1 = objectMapper0.configure(mapperFeature0, true);
+    assertEquals(0, objectMapper1.mixInCount());
+}",0,
+project,0,test137137,"public void test137137() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    SerializationFeature serializationFeature0 = SerializationFeature.WRITE_DATES_AS_TIMESTAMPS;
+    ObjectMapper objectMapper1 = objectMapper0.configure(serializationFeature0, false);
+    assertSame(objectMapper0, objectMapper1);
+}",0,
+project,0,test138138,"public void test138138() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    SerializationFeature serializationFeature0 = SerializationFeature.WRITE_NULL_MAP_VALUES;
+    ObjectMapper objectMapper1 = objectMapper0.configure(serializationFeature0, true);
+    assertSame(objectMapper0, objectMapper1);
+}",0,
+project,0,test139139,"public void test139139() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.FAIL_ON_READING_DUP_TREE_KEY;
+    ObjectMapper objectMapper1 = objectMapper0.configure(deserializationFeature0, false);
+    assertSame(objectMapper0, objectMapper1);
+}",0,
+project,0,test140140,"public void test140140() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.FAIL_ON_READING_DUP_TREE_KEY;
+    ObjectMapper objectMapper1 = objectMapper0.configure(deserializationFeature0, true);
+    assertSame(objectMapper0, objectMapper1);
+}",0,
+project,0,test141141,"public void test141141() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    JsonParser jsonParser0 = jsonFactory0.createParser(""\""yw;Dx"");
+    jsonParser0.nextBooleanValue();
+    try {
+        objectMapper0.readTree(jsonParser0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected end-of-input: was expecting closing quote for a string value
+        //  at [Source: java.lang.String@0000000460; line: 1, column: 13]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",1,
+project,0,test142142,"public void test142142() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    JsonParser jsonParser0 = jsonFactory0.createParser(""\""yw;Dx"");
+    try {
+        objectMapper0.readTree(jsonParser0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Unexpected end-of-input: was expecting closing quote for a string value
+        //  at [Source: java.lang.String@0000000461; line: 1, column: 13]
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonParser"", e);
+    }
+}",1,
+project,0,test143143,"public void test143143() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    JsonParser jsonParser0 = jsonFactory0.createParser("""");
+    DoubleNode doubleNode0 = objectMapper0.readTree(jsonParser0);
+    assertNull(doubleNode0);
+}",1,
+project,0,test145145,"public void test145145() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    byte[] byteArray0 = new byte[2];
+    byteArray0[0] = (byte) 51;
+    JsonNode jsonNode0 = objectMapper0.readTree(byteArray0);
+    assertEquals(3.0F, jsonNode0.floatValue(), 0.01F);
+}",0,
+project,0,test146147,"public void test146147() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    MockFile mockFile0 = new MockFile(""JSON"");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(mockFile0);
+    JsonGenerator jsonGenerator0 = jsonFactory0.createGenerator((OutputStream) mockPrintStream0);
+    IntNode intNode0 = new IntNode(23);
+    objectMapper0.writeTree(jsonGenerator0, (TreeNode) intNode0);
+    JsonNode jsonNode0 = objectMapper0.readTree((File) mockFile0);
+    MockFileReader mockFileReader0 = new MockFileReader(""JSON"");
+    JsonNode jsonNode1 = objectMapper0.readTree((Reader) mockFileReader0);
+    assertNotSame(jsonNode1, jsonNode0);
+}",0,
+project,0,test148149,"public void test148149() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    try {
+        objectMapper0.valueToTree((Object) charsToNameCanonicalizer0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // No serializer found for class com.fasterxml.jackson.core.sym.CharsToNameCanonicalizer and no properties discovered to create BeanSerializer (to avoid exception, disable SerializationFeature.FAIL_ON_EMPTY_BEANS) )
+        //
+        verifyException(""com.fasterxml.jackson.databind.ObjectMapper"", e);
+    }
+}",0,
+project,0,test149150,"public void test149150() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0, defaultSerializerProvider_Impl0, (DefaultDeserializationContext) null);
+    ArrayNode arrayNode0 = objectMapper0.valueToTree((Object) null);
+    assertNull(arrayNode0);
+}",0,
+project,0,test150151,"public void test150151() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<MapType> class0 = MapType.class;
+    ObjectWriter objectWriter0 = objectMapper0.writerWithType(class0);
+    assertTrue(objectWriter0.hasPrefetchedSerializer());
+}",0,assertTrue(objectWriter0.hasPrefetchedSerializer())
+project,0,test152153,"public void test152153() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectWriter objectWriter0 = objectMapper0.writerWithType((TypeReference<?>) null);
+    assertFalse(objectWriter0.hasPrefetchedSerializer());
+}",0,assertTrue(objectWriter0.hasPrefetchedSerializer())
+project,0,test153154,"public void test153154() throws Throwable {
+    DefaultPrettyPrinter defaultPrettyPrinter0 = new DefaultPrettyPrinter();
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectWriter objectWriter0 = objectMapper0.writer((PrettyPrinter) defaultPrettyPrinter0);
+    assertFalse(objectWriter0.hasPrefetchedSerializer());
+}",0,assertTrue(objectWriter0.hasPrefetchedSerializer())
+project,0,test154155,"public void test154155() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectWriter objectWriter0 = objectMapper0.writer((PrettyPrinter) null);
+    assertFalse(objectWriter0.hasPrefetchedSerializer());
+}",0,assertFalse(objectWriter0.hasPrefetchedSerializer())
+project,0,test156157,"public void test156157() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    // Undeclared exception!
+    try {
+        objectMapper0.convertValue((Object) bufferRecycler0, (JavaType) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.ObjectMapper"", e);
+    }
+}",0,
+project,0,test157158,"public void test157158() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ByteArrayOutputStream byteArrayOutputStream0 = objectMapper0.convertValue((Object) null, (JavaType) null);
+    assertNull(byteArrayOutputStream0);
+}",1,
+project,0,test158159,"public void test158159() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<Map> class0 = Map.class;
+    MapType mapType0 = typeFactory0.constructRawMapType(class0);
+    Object object0 = objectMapper0._convert((Object) null, mapType0);
+    assertNull(object0);
+}",0,
+project,0,test159160,"public void test159160() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0, (DefaultSerializerProvider) null, defaultDeserializationContext_Impl0);
+    JsonFormatVisitorWrapper jsonFormatVisitorWrapper0 = mock(JsonFormatVisitorWrapper.class, new ViolatedAssumptionAnswer());
+    // Undeclared exception!
+    try {
+        objectMapper0.acceptJsonFormatVisitor((JavaType) null, jsonFormatVisitorWrapper0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // type must be provided
+        //
+        verifyException(""com.fasterxml.jackson.databind.ObjectMapper"", e);
+    }
+}",1,
+project,0,test160161,"public void test160161() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0, defaultSerializerProvider_Impl0, (DefaultDeserializationContext) null);
+    JsonGenerator jsonGenerator0 = jsonFactory0.createGenerator((Writer) null);
+    // Undeclared exception!
+    try {
+        objectMapper0._configAndWriteValue(jsonGenerator0, (Object) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.json.WriterBasedJsonGenerator"", e);
+    }
+}",0,
+project,0,test162163,"public void test162163() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    WriterBasedJsonGenerator writerBasedJsonGenerator0 = new WriterBasedJsonGenerator(iOContext0, 2, objectMapper0, (Writer) null);
+    JsonGeneratorDelegate jsonGeneratorDelegate0 = new JsonGeneratorDelegate(writerBasedJsonGenerator0);
+    Class<NullNode> class0 = NullNode.class;
+    // Undeclared exception!
+    try {
+        objectMapper0._configAndWriteValue(jsonGeneratorDelegate0, (Object) null, class0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.json.WriterBasedJsonGenerator"", e);
+    }
+}",0,
+project,0,test163164,"public void test163164() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<BufferedReader> class0 = BufferedReader.class;
+    // Undeclared exception!
+    try {
+        objectMapper0._configAndWriteValue((JsonGenerator) null, (Object) null, class0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.ObjectMapper"", e);
+    }
+}",1,
+project,0,test164165,"public void test164165() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    JsonNode jsonNode0 = objectMapper0.readTree(""null"");
+    assertFalse(jsonNode0.isIntegralNumber());
+}",0,assertFalse(jsonNode0.isIntegralNumber())

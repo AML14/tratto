@@ -1,0 +1,360 @@
+focal_method,test_prefix,docstring
+"public <T> VoidMethodStubbable<T> stubVoid(T mock) {
+    MockHandlerInterface<T> handler = mockUtil.getMockHandler(mock);
+    mockingProgress.stubbingStarted();
+    return handler.voidMethodStubbable(mock);
+}","public void test000() throws Throwable {
+    MockitoCore mockitoCore0 = new MockitoCore();
+    // Undeclared exception!
+    try {
+        mockitoCore0.stubVoid((String) null);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",""
+"public <T> DeprecatedOngoingStubbing<T> stub(T methodCall) {
+    mockingProgress.stubbingStarted();
+    return (DeprecatedOngoingStubbing) stub();
+}","public void test011() throws Throwable {
+    MockitoCore mockitoCore0 = new MockitoCore();
+    MockSettingsImpl mockSettingsImpl0 = new MockSettingsImpl();
+    // Undeclared exception!
+    try {
+        mockitoCore0.stub(mockSettingsImpl0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",""
+"public Stubber doAnswer(Answer answer) {
+    mockingProgress.stubbingStarted();
+    mockingProgress.resetOngoingStubbing();
+    return new StubberImpl().doAnswer(answer);
+}","public void test022() throws Throwable {
+    MockitoCore mockitoCore0 = new MockitoCore();
+    mockitoCore0.doAnswer((Answer) null);
+}",""
+"public void verifyNoMoreInteractionsInOrder(List<Object> mocks, InOrderContext inOrderContext) {
+    mockingProgress.validateState();
+    AllInvocationsFinder finder = new AllInvocationsFinder();
+    VerificationDataInOrder data = new VerificationDataInOrderImpl(inOrderContext, finder.find(mocks), null);
+    VerificationModeFactory.noMoreInteractions().verifyInOrder(data);
+}","public void test033() throws Throwable {
+    MockitoCore mockitoCore0 = new MockitoCore();
+    LinkedList<Object> linkedList0 = new LinkedList<Object>();
+    InOrderImpl inOrderImpl0 = new InOrderImpl(linkedList0);
+    // Undeclared exception!
+    try {
+        mockitoCore0.verifyNoMoreInteractionsInOrder(linkedList0, inOrderImpl0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",""
+"public <T> T mock(Class<T> classToMock, MockSettings mockSettings) {
+    T mock = mockUtil.createMock(classToMock, (MockSettingsImpl) mockSettings);
+    mockingProgress.mockingStarted(mock, classToMock, mockSettings);
+    return mock;
+}","public void test044() throws Throwable {
+    MockitoCore mockitoCore0 = new MockitoCore();
+    Class<Object> class0 = Object.class;
+    MockSettingsImpl mockSettingsImpl0 = new MockSettingsImpl();
+    // Undeclared exception!
+    try {
+        mockitoCore0.mock(class0, (MockSettings) mockSettingsImpl0);
+        fail(""Expecting exception: IncompatibleClassChangeError"");
+    } catch (IncompatibleClassChangeError e) {
+        //
+        // Expected non-static field org.mockito.cglib.proxy.Enhancer.serialVersionUID
+        //
+        verifyException(""org.mockito.cglib.proxy.Enhancer"", e);
+    }
+}",""
+"public <T> OngoingStubbing<T> when(T methodCall) {
+    mockingProgress.stubbingStarted();
+    return (OngoingStubbing) stub();
+}","public void test055() throws Throwable {
+    MockitoCore mockitoCore0 = new MockitoCore();
+    // Undeclared exception!
+    try {
+        mockitoCore0.when(""InnerClasses"");
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",""
+"public Invocation getLastInvocation() {
+    OngoingStubbingImpl ongoingStubbing = ((OngoingStubbingImpl) mockingProgress.pullOngoingStubbing());
+    List<Invocation> allInvocations = ongoingStubbing.getRegisteredInvocations();
+    return allInvocations.get(allInvocations.size() - 1);
+}","public void test066() throws Throwable {
+    MockitoCore mockitoCore0 = new MockitoCore();
+    // Undeclared exception!
+    try {
+        mockitoCore0.getLastInvocation();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.mockito.internal.MockitoCore"", e);
+    }
+}","/**
+ * For testing purposes only. Is not the part of main API.
+ * @return last invocation
+ */"
+"public void validateMockitoUsage() {
+    mockingProgress.validateState();
+}","public void test077() throws Throwable {
+    MockitoCore mockitoCore0 = new MockitoCore();
+    mockitoCore0.validateMockitoUsage();
+}",""
+"public <T> T verify(T mock, VerificationMode mode) {
+    if (mock == null) {
+        reporter.nullPassedToVerify();
+    } else if (!mockUtil.isMock(mock)) {
+        reporter.notAMockPassedToVerify();
+    }
+    mockingProgress.verificationStarted(mode);
+    return mock;
+}","public void test088() throws Throwable {
+    MockitoCore mockitoCore0 = new MockitoCore();
+    Only only0 = new Only();
+    // Undeclared exception!
+    try {
+        mockitoCore0.verify((Object) only0, (VerificationMode) only0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",""
+"public <T> T verify(T mock, VerificationMode mode) {
+    if (mock == null) {
+        reporter.nullPassedToVerify();
+    } else if (!mockUtil.isMock(mock)) {
+        reporter.notAMockPassedToVerify();
+    }
+    mockingProgress.verificationStarted(mode);
+    return mock;
+}","public void test099() throws Throwable {
+    MockitoCore mockitoCore0 = new MockitoCore();
+    // Undeclared exception!
+    try {
+        mockitoCore0.verify((Object) null, (VerificationMode) null);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",""
+"public <T> void reset(T... mocks) {
+    mockingProgress.validateState();
+    mockingProgress.reset();
+    mockingProgress.resetOngoingStubbing();
+    for (T m : mocks) {
+        mockUtil.resetMock(m);
+    }
+}","public void test1010() throws Throwable {
+    MockitoCore mockitoCore0 = new MockitoCore();
+    ConsecutiveStubbing<Integer>[] consecutiveStubbingArray0 = (ConsecutiveStubbing<Integer>[]) Array.newInstance(ConsecutiveStubbing.class, 0);
+    mockitoCore0.reset(consecutiveStubbingArray0);
+}",""
+"public <T> void reset(T... mocks) {
+    mockingProgress.validateState();
+    mockingProgress.reset();
+    mockingProgress.resetOngoingStubbing();
+    for (T m : mocks) {
+        mockUtil.resetMock(m);
+    }
+}","public void test1111() throws Throwable {
+    MockitoCore mockitoCore0 = new MockitoCore();
+    ConsecutiveStubbing<Integer>[] consecutiveStubbingArray0 = (ConsecutiveStubbing<Integer>[]) Array.newInstance(ConsecutiveStubbing.class, 1);
+    // Undeclared exception!
+    try {
+        mockitoCore0.reset(consecutiveStubbingArray0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",""
+"public void verifyNoMoreInteractions(Object... mocks) {
+    assertMocksNotEmpty(mocks);
+    mockingProgress.validateState();
+    for (Object mock : mocks) {
+        try {
+            if (mock == null) {
+                reporter.nullPassedToVerifyNoMoreInteractions();
+            }
+            List<Invocation> invocations = mockUtil.getMockHandler(mock).getInvocationContainer().getInvocations();
+            VerificationDataImpl data = new VerificationDataImpl(invocations, null);
+            VerificationModeFactory.noMoreInteractions().verify(data);
+        } catch (NotAMockException e) {
+            reporter.notAMockPassedToVerifyNoMoreInteractions();
+        }
+    }
+}","public void test1212() throws Throwable {
+    MockitoCore mockitoCore0 = new MockitoCore();
+    Object[] objectArray0 = new Object[1];
+    // Undeclared exception!
+    try {
+        mockitoCore0.verifyNoMoreInteractions(objectArray0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",""
+"public void verifyNoMoreInteractions(Object... mocks) {
+    assertMocksNotEmpty(mocks);
+    mockingProgress.validateState();
+    for (Object mock : mocks) {
+        try {
+            if (mock == null) {
+                reporter.nullPassedToVerifyNoMoreInteractions();
+            }
+            List<Invocation> invocations = mockUtil.getMockHandler(mock).getInvocationContainer().getInvocations();
+            VerificationDataImpl data = new VerificationDataImpl(invocations, null);
+            VerificationModeFactory.noMoreInteractions().verify(data);
+        } catch (NotAMockException e) {
+            reporter.notAMockPassedToVerifyNoMoreInteractions();
+        }
+    }
+}","public void test1313() throws Throwable {
+    MockitoCore mockitoCore0 = new MockitoCore();
+    Object[] objectArray0 = new Object[18];
+    objectArray0[0] = (Object) mockitoCore0;
+    // Undeclared exception!
+    try {
+        mockitoCore0.verifyNoMoreInteractions(objectArray0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",""
+"public void verifyNoMoreInteractions(Object... mocks) {
+    assertMocksNotEmpty(mocks);
+    mockingProgress.validateState();
+    for (Object mock : mocks) {
+        try {
+            if (mock == null) {
+                reporter.nullPassedToVerifyNoMoreInteractions();
+            }
+            List<Invocation> invocations = mockUtil.getMockHandler(mock).getInvocationContainer().getInvocations();
+            VerificationDataImpl data = new VerificationDataImpl(invocations, null);
+            VerificationModeFactory.noMoreInteractions().verify(data);
+        } catch (NotAMockException e) {
+            reporter.notAMockPassedToVerifyNoMoreInteractions();
+        }
+    }
+}","public void test1414() throws Throwable {
+    MockitoCore mockitoCore0 = new MockitoCore();
+    // Undeclared exception!
+    try {
+        mockitoCore0.verifyNoMoreInteractions((Object[]) null);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",""
+"public void verifyNoMoreInteractions(Object... mocks) {
+    assertMocksNotEmpty(mocks);
+    mockingProgress.validateState();
+    for (Object mock : mocks) {
+        try {
+            if (mock == null) {
+                reporter.nullPassedToVerifyNoMoreInteractions();
+            }
+            List<Invocation> invocations = mockUtil.getMockHandler(mock).getInvocationContainer().getInvocations();
+            VerificationDataImpl data = new VerificationDataImpl(invocations, null);
+            VerificationModeFactory.noMoreInteractions().verify(data);
+        } catch (NotAMockException e) {
+            reporter.notAMockPassedToVerifyNoMoreInteractions();
+        }
+    }
+}","public void test1515() throws Throwable {
+    MockitoCore mockitoCore0 = new MockitoCore();
+    Object[] objectArray0 = new Object[0];
+    // Undeclared exception!
+    try {
+        mockitoCore0.verifyNoMoreInteractions(objectArray0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",""
+"public InOrder inOrder(Object... mocks) {
+    if (mocks == null || mocks.length == 0) {
+        reporter.mocksHaveToBePassedWhenCreatingInOrder();
+    }
+    for (Object mock : mocks) {
+        if (mock == null) {
+            reporter.nullPassedWhenCreatingInOrder();
+        } else if (!mockUtil.isMock(mock)) {
+            reporter.notAMockPassedWhenCreatingInOrder();
+        }
+    }
+    return new InOrderImpl(Arrays.asList(mocks));
+}","public void test1616() throws Throwable {
+    MockitoCore mockitoCore0 = new MockitoCore();
+    // Undeclared exception!
+    try {
+        mockitoCore0.inOrder((Object[]) null);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",""
+"public InOrder inOrder(Object... mocks) {
+    if (mocks == null || mocks.length == 0) {
+        reporter.mocksHaveToBePassedWhenCreatingInOrder();
+    }
+    for (Object mock : mocks) {
+        if (mock == null) {
+            reporter.nullPassedWhenCreatingInOrder();
+        } else if (!mockUtil.isMock(mock)) {
+            reporter.notAMockPassedWhenCreatingInOrder();
+        }
+    }
+    return new InOrderImpl(Arrays.asList(mocks));
+}","public void test1717() throws Throwable {
+    MockitoCore mockitoCore0 = new MockitoCore();
+    Object[] objectArray0 = new Object[4];
+    // Undeclared exception!
+    try {
+        mockitoCore0.inOrder(objectArray0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",""
+"public InOrder inOrder(Object... mocks) {
+    if (mocks == null || mocks.length == 0) {
+        reporter.mocksHaveToBePassedWhenCreatingInOrder();
+    }
+    for (Object mock : mocks) {
+        if (mock == null) {
+            reporter.nullPassedWhenCreatingInOrder();
+        } else if (!mockUtil.isMock(mock)) {
+            reporter.notAMockPassedWhenCreatingInOrder();
+        }
+    }
+    return new InOrderImpl(Arrays.asList(mocks));
+}","public void test1818() throws Throwable {
+    MockitoCore mockitoCore0 = new MockitoCore();
+    Object[] objectArray0 = new Object[0];
+    // Undeclared exception!
+    try {
+        mockitoCore0.inOrder(objectArray0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",""
+"public InOrder inOrder(Object... mocks) {
+    if (mocks == null || mocks.length == 0) {
+        reporter.mocksHaveToBePassedWhenCreatingInOrder();
+    }
+    for (Object mock : mocks) {
+        if (mock == null) {
+            reporter.nullPassedWhenCreatingInOrder();
+        } else if (!mockUtil.isMock(mock)) {
+            reporter.notAMockPassedWhenCreatingInOrder();
+        }
+    }
+    return new InOrderImpl(Arrays.asList(mocks));
+}","public void test1919() throws Throwable {
+    MockitoCore mockitoCore0 = new MockitoCore();
+    Object[] objectArray0 = new Object[4];
+    objectArray0[0] = (Object) mockitoCore0;
+    // Undeclared exception!
+    try {
+        mockitoCore0.inOrder(objectArray0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",""

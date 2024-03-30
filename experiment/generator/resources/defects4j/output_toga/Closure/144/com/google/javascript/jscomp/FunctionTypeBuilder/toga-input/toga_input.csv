@@ -1,0 +1,580 @@
+focal_method,test_prefix,docstring
+"FunctionTypeBuilder setSourceNode(@Nullable Node sourceNode) {
+    this.sourceNode = sourceNode;
+    return this;
+}","public void test000() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode("" m UlQ"", "" m UlQ"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder("" m UlQ"", compiler0, node0, "" m UlQ"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.setSourceNode(node0);
+    assertSame(functionTypeBuilder1, functionTypeBuilder0);
+}","/**
+ * Sets the FUNCTION node of this function.
+ */"
+"public int getWarningCount() {
+    return errorManager.getWarningCount();
+}","public void test011() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode("""");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder((String) null, compiler0, node0, """", (Scope) null);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    JSType jSType0 = jSTypeRegistry0.createNamedType(""// Input %num%"", (String) null, 8, 23);
+    JSType[] jSTypeArray0 = new JSType[1];
+    jSTypeArray0[0] = jSType0;
+    Node node1 = jSTypeRegistry0.createOptionalParameters(jSTypeArray0);
+    functionTypeBuilder0.inferParameterTypes(node1, (JSDocInfo) null);
+    assertEquals(0, compiler0.getWarningCount());
+}","/**
+ * Gets the number of warnings.
+ */"
+"FunctionTypeBuilder inferFromOverriddenFunction(FunctionType oldType, @Nullable Node paramsParent) {
+    returnType = oldType.getReturnType();
+    if (paramsParent == null) {
+        // Not a function literal.
+        parametersNode = oldType.getParametersNode();
+        if (parametersNode == null) {
+            parametersNode = new FunctionParamBuilder(typeRegistry).build();
+        }
+    } else {
+        // We're overriding with a function literal. Apply type information
+        // to each parameter of the literal.
+        FunctionParamBuilder paramBuilder = new FunctionParamBuilder(typeRegistry);
+        Iterator<Node> oldParams = oldType.getParameters().iterator();
+        boolean warnedAboutArgList = false;
+        for (Node currentParam = paramsParent.getFirstChild(); currentParam != null; currentParam = currentParam.getNext()) {
+            if (oldParams.hasNext()) {
+                paramBuilder.newParameterFromNode(oldParams.next());
+            } else {
+                warnedAboutArgList |= addParameter(paramBuilder, typeRegistry.getNativeType(UNKNOWN_TYPE), warnedAboutArgList, codingConvention.isOptionalParameter(currentParam), codingConvention.isVarArgsParameter(currentParam));
+            }
+        }
+        parametersNode = paramBuilder.build();
+    }
+    return this;
+}","public void test022() throws Throwable {
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""v"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""v"", compiler0, node0, ""v"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferParameterTypes(jSDocInfo0);
+    FunctionType functionType0 = functionTypeBuilder1.buildAndRegister();
+    // Undeclared exception!
+    try {
+        functionTypeBuilder0.inferFromOverriddenFunction(functionType0, node0);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // EXPR_RESULT 1 is not a string node
+        //
+        verifyException(""com.google.javascript.rhino.Node"", e);
+    }
+}","/**
+ * Infer the parameter and return types of a function from
+ * the parameter and return types of the function it is overriding.
+ *
+ * @param oldType The function being overridden.
+ * @param paramsParent The LP node of the function that we're assigning to.
+ *     If null, that just means we're not initializing this to a function
+ *     literal.
+ */"
+"@Override
+public boolean hasCachedValues() {
+    return prototype != null || super.hasCachedValues();
+}","public void test033() throws Throwable {
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""a! ;C/!o"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""a! ;C/!o"", compiler0, node0, ""a! ;C/!o"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferParameterTypes(node0, jSDocInfo0);
+    FunctionType functionType0 = functionTypeBuilder1.buildAndRegister();
+    functionTypeBuilder1.inferFromOverriddenFunction(functionType0, (Node) null);
+    assertFalse(functionType0.hasCachedValues());
+}",""
+"FunctionTypeBuilder inferFromOverriddenFunction(FunctionType oldType, @Nullable Node paramsParent) {
+    returnType = oldType.getReturnType();
+    if (paramsParent == null) {
+        // Not a function literal.
+        parametersNode = oldType.getParametersNode();
+        if (parametersNode == null) {
+            parametersNode = new FunctionParamBuilder(typeRegistry).build();
+        }
+    } else {
+        // We're overriding with a function literal. Apply type information
+        // to each parameter of the literal.
+        FunctionParamBuilder paramBuilder = new FunctionParamBuilder(typeRegistry);
+        Iterator<Node> oldParams = oldType.getParameters().iterator();
+        boolean warnedAboutArgList = false;
+        for (Node currentParam = paramsParent.getFirstChild(); currentParam != null; currentParam = currentParam.getNext()) {
+            if (oldParams.hasNext()) {
+                paramBuilder.newParameterFromNode(oldParams.next());
+            } else {
+                warnedAboutArgList |= addParameter(paramBuilder, typeRegistry.getNativeType(UNKNOWN_TYPE), warnedAboutArgList, codingConvention.isOptionalParameter(currentParam), codingConvention.isVarArgsParameter(currentParam));
+            }
+        }
+        parametersNode = paramBuilder.build();
+    }
+    return this;
+}","public void test044() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""JSC_INEXISTANT_PARAM"", ""JSC_INEXISTANT_PARAM"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""JSC_INEXISTANT_PARAM"", compiler0, node0, ""JSC_INEXISTANT_PARAM"", (Scope) null);
+    TightenTypes tightenTypes0 = new TightenTypes(compiler0);
+    JSTypeRegistry jSTypeRegistry0 = tightenTypes0.getTypeRegistry();
+    JSTypeNative jSTypeNative0 = JSTypeNative.FUNCTION_INSTANCE_TYPE;
+    FunctionType functionType0 = jSTypeRegistry0.getNativeFunctionType(jSTypeNative0);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferFromOverriddenFunction(functionType0, node0);
+    assertSame(functionTypeBuilder1, functionTypeBuilder0);
+}","/**
+ * Infer the parameter and return types of a function from
+ * the parameter and return types of the function it is overriding.
+ *
+ * @param oldType The function being overridden.
+ * @param paramsParent The LP node of the function that we're assigning to.
+ *     If null, that just means we're not initializing this to a function
+ *     literal.
+ */"
+"FunctionTypeBuilder inferReturnType(@Nullable JSDocInfo info) {
+    returnType = info != null && info.hasReturnType() ? info.getReturnType().evaluate(scope, typeRegistry) : typeRegistry.getNativeType(UNKNOWN_TYPE);
+    if (templateTypeName != null && returnType.restrictByNotNullOrUndefined().isTemplateType()) {
+        reportError(TEMPLATE_TYPE_EXPECTED, fnName);
+    }
+    return this;
+}","public void test055() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""H+T`LhD"", ""H+T`LhD"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""H+T`LhD"", compiler0, node0, ""H+T`LhD"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferReturnType((JSDocInfo) null);
+    assertSame(functionTypeBuilder0, functionTypeBuilder1);
+}","/**
+ * Infer the return type from JSDocInfo.
+ */"
+"FunctionType buildAndRegister() {
+    if (returnType == null) {
+        returnType = typeRegistry.getNativeType(UNKNOWN_TYPE);
+    }
+    if (parametersNode == null) {
+        throw new IllegalStateException(""All Function types must have params and a return type"");
+    }
+    FunctionType fnType;
+    if (isConstructor) {
+        fnType = getOrCreateConstructor();
+    } else if (isInterface) {
+        fnType = typeRegistry.createInterfaceType(fnName, sourceNode);
+        if (scope.isGlobal() && !fnName.isEmpty()) {
+            typeRegistry.declareType(fnName, fnType.getInstanceType());
+        }
+        maybeSetBaseType(fnType);
+    } else {
+        fnType = new FunctionBuilder(typeRegistry).withName(fnName).withSourceNode(sourceNode).withParamsNode(parametersNode).withReturnType(returnType).withTypeOfThis(thisType).withTemplateName(templateTypeName).build();
+        maybeSetBaseType(fnType);
+    }
+    if (implementedInterfaces != null) {
+        fnType.setImplementedInterfaces(implementedInterfaces);
+    }
+    typeRegistry.clearTemplateTypeName();
+    return fnType;
+}","public void test066() throws Throwable {
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""+T`LhD"");
+    Scope scope0 = new Scope(node0, compiler0);
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""+T`LhD"", compiler0, node0, ""+T`LhD"", scope0);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferReturnType(jSDocInfo0);
+    // Undeclared exception!
+    try {
+        functionTypeBuilder1.buildAndRegister();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // All Function types must have params and a return type
+        //
+        verifyException(""com.google.javascript.jscomp.FunctionTypeBuilder"", e);
+    }
+}","/**
+ * Builds the function type, and puts it in the registry.
+ */"
+"/**
+ * Infer the role of the function (whether it's a constructor or interface)
+ * and what it inherits from in JSDocInfo.
+ */
+FunctionTypeBuilder inferInheritance(@Nullable JSDocInfo info) {
+    if (info != null) {
+        isConstructor = info.isConstructor();
+        isInterface = info.isInterface();
+        // base type
+        if (info.hasBaseType()) {
+            if (isConstructor || isInterface) {
+                baseType = ObjectType.cast(info.getBaseType().evaluate(scope, typeRegistry));
+                if (baseType == null) {
+                    reportWarning(EXTENDS_NON_OBJECT, fnName, baseType.toString());
+                }
+            } else {
+                reportWarning(EXTENDS_WITHOUT_TYPEDEF, fnName);
+            }
+        }
+        // implemented interfaces
+        if (isConstructor || isInterface) {
+            implementedInterfaces = Lists.newArrayList();
+            for (JSTypeExpression t : info.getImplementedInterfaces()) {
+                ObjectType interType = ObjectType.cast(t.evaluate(scope, typeRegistry));
+                if (interType != null) {
+                    implementedInterfaces.add(interType);
+                } else {
+                    reportError(BAD_IMPLEMENTED_TYPE, fnName);
+                }
+            }
+            if (baseType != null) {
+                JSType maybeFunctionType = baseType.getConstructor();
+                if (maybeFunctionType instanceof FunctionType) {
+                    FunctionType functionType = baseType.getConstructor();
+                    Iterables.addAll(implementedInterfaces, functionType.getImplementedInterfaces());
+                }
+            }
+        } else if (info.getImplementedInterfaceCount() > 0) {
+            reportWarning(IMPLEMENTS_WITHOUT_CONSTRUCTOR, fnName);
+        }
+    }
+    return this;
+}","public void test077() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""+T`LhD"");
+    Scope scope0 = new Scope(node0, compiler0);
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""+T`LhD"", compiler0, node0, ""+T`LhD"", scope0);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferInheritance((JSDocInfo) null);
+    assertSame(functionTypeBuilder1, functionTypeBuilder0);
+}","/**
+ * If we haven't found a return value yet, try to look at the ""return""
+ * statements in the function.
+ */"
+"public int getWarningCount() {
+    return errorManager.getWarningCount();
+}","public void test088() throws Throwable {
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""+T`LhD"");
+    Scope scope0 = new Scope(node0, compiler0);
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""+T`LhD"", compiler0, node0, ""+T`LhD"", scope0);
+    functionTypeBuilder0.inferInheritance(jSDocInfo0);
+    assertEquals(0, compiler0.getWarningCount());
+}","/**
+ * Gets the number of warnings.
+ */"
+"FunctionTypeBuilder inferThisType(JSDocInfo info, JSType type) {
+    ObjectType objType = ObjectType.cast(type);
+    if (objType != null && (info == null || !info.hasType())) {
+        thisType = objType;
+    }
+    return this;
+}","public void test099() throws Throwable {
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""AggregateValue"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""AggregateValue"", compiler0, node0, ""AggregateValue"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferThisType(jSDocInfo0, (JSType) null);
+    assertSame(functionTypeBuilder0, functionTypeBuilder1);
+}","/**
+ * Infers the type of {@code this}.
+ * @param type The type of this.
+ */"
+"@Override
+public boolean hasCachedValues() {
+    return prototype != null || super.hasCachedValues();
+}","public void test1010() throws Throwable {
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""6! ;C/!o"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""6! ;C/!o"", compiler0, node0, ""6! ;C/!o"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferParameterTypes(node0, jSDocInfo0);
+    FunctionType functionType0 = functionTypeBuilder0.buildAndRegister();
+    functionTypeBuilder1.inferThisType(jSDocInfo0, functionType0);
+    assertFalse(functionType0.hasCachedValues());
+}",""
+"@Override
+public boolean hasCachedValues() {
+    return prototype != null || super.hasCachedValues();
+}","public void test1111() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode("" j C"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder("" j C"", compiler0, node0, "" j C"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferParameterTypes(node0, (JSDocInfo) null);
+    FunctionType functionType0 = functionTypeBuilder0.buildAndRegister();
+    functionTypeBuilder1.inferThisType((JSDocInfo) null, functionType0);
+    assertFalse(functionType0.hasCachedValues());
+}",""
+"FunctionTypeBuilder inferThisType(JSDocInfo info, @Nullable Node owner) {
+    ObjectType maybeThisType = null;
+    if (info != null && info.hasThisType()) {
+        maybeThisType = ObjectType.cast(info.getThisType().evaluate(scope, typeRegistry));
+    }
+    if (maybeThisType != null) {
+        // TODO(user): Doing an instanceof check here is too
+        // restrictive as (Date,Error) is, for instance, an object type
+        // even though its implementation is a UnionType. Would need to
+        // create interfaces JSType, ObjectType, FunctionType etc and have
+        // separate implementation instead of the class hierarchy, so that
+        // union types can also be object types, etc.
+        thisType = maybeThisType;
+    } else if (owner != null && (info == null || !info.hasType())) {
+        // If the function is of the form:
+        // x.prototype.y = function() {}
+        // then we can assume ""x"" is the @this type. On the other hand,
+        // if it's of the form:
+        // /** @type {Function} */ x.prototype.y;
+        // then we should not give it a @this type.
+        String ownerTypeName = owner.getQualifiedName();
+        ObjectType ownerType = ObjectType.cast(typeRegistry.getType(scope, ownerTypeName, sourceName, owner.getLineno(), owner.getCharno()));
+        if (ownerType != null) {
+            thisType = ownerType;
+        }
+    }
+    return this;
+}","public void test1212() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""0b(TV"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""0b(TV"", compiler0, node0, ""0b(TV"", (Scope) null);
+    // Undeclared exception!
+    try {
+        functionTypeBuilder0.inferThisType((JSDocInfo) null, node0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.rhino.jstype.JSTypeRegistry"", e);
+    }
+}","/**
+ * Infers the type of {@code this}.
+ * @param info The JSDocInfo for this function.
+ * @param owner The node for the object whose prototype ""owns"" this function.
+ *     For example, {@code A} in the expression {@code A.prototype.foo}. May
+ *     be null to indicate that this is not a prototype property.
+ */"
+"FunctionTypeBuilder inferThisType(JSDocInfo info, @Nullable Node owner) {
+    ObjectType maybeThisType = null;
+    if (info != null && info.hasThisType()) {
+        maybeThisType = ObjectType.cast(info.getThisType().evaluate(scope, typeRegistry));
+    }
+    if (maybeThisType != null) {
+        // TODO(user): Doing an instanceof check here is too
+        // restrictive as (Date,Error) is, for instance, an object type
+        // even though its implementation is a UnionType. Would need to
+        // create interfaces JSType, ObjectType, FunctionType etc and have
+        // separate implementation instead of the class hierarchy, so that
+        // union types can also be object types, etc.
+        thisType = maybeThisType;
+    } else if (owner != null && (info == null || !info.hasType())) {
+        // If the function is of the form:
+        // x.prototype.y = function() {}
+        // then we can assume ""x"" is the @this type. On the other hand,
+        // if it's of the form:
+        // /** @type {Function} */ x.prototype.y;
+        // then we should not give it a @this type.
+        String ownerTypeName = owner.getQualifiedName();
+        ObjectType ownerType = ObjectType.cast(typeRegistry.getType(scope, ownerTypeName, sourceName, owner.getLineno(), owner.getCharno()));
+        if (ownerType != null) {
+            thisType = ownerType;
+        }
+    }
+    return this;
+}","public void test1313() throws Throwable {
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""+T`LhD"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""+T`LhD"", compiler0, node0, ""+T`LhD"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferThisType(jSDocInfo0, (Node) null);
+    assertSame(functionTypeBuilder0, functionTypeBuilder1);
+}","/**
+ * Infers the type of {@code this}.
+ * @param info The JSDocInfo for this function.
+ * @param owner The node for the object whose prototype ""owns"" this function.
+ *     For example, {@code A} in the expression {@code A.prototype.foo}. May
+ *     be null to indicate that this is not a prototype property.
+ */"
+"FunctionTypeBuilder inferThisType(JSDocInfo info, @Nullable Node owner) {
+    ObjectType maybeThisType = null;
+    if (info != null && info.hasThisType()) {
+        maybeThisType = ObjectType.cast(info.getThisType().evaluate(scope, typeRegistry));
+    }
+    if (maybeThisType != null) {
+        // TODO(user): Doing an instanceof check here is too
+        // restrictive as (Date,Error) is, for instance, an object type
+        // even though its implementation is a UnionType. Would need to
+        // create interfaces JSType, ObjectType, FunctionType etc and have
+        // separate implementation instead of the class hierarchy, so that
+        // union types can also be object types, etc.
+        thisType = maybeThisType;
+    } else if (owner != null && (info == null || !info.hasType())) {
+        // If the function is of the form:
+        // x.prototype.y = function() {}
+        // then we can assume ""x"" is the @this type. On the other hand,
+        // if it's of the form:
+        // /** @type {Function} */ x.prototype.y;
+        // then we should not give it a @this type.
+        String ownerTypeName = owner.getQualifiedName();
+        ObjectType ownerType = ObjectType.cast(typeRegistry.getType(scope, ownerTypeName, sourceName, owner.getLineno(), owner.getCharno()));
+        if (ownerType != null) {
+            thisType = ownerType;
+        }
+    }
+    return this;
+}","public void test1414() throws Throwable {
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    Compiler compiler0 = new Compiler();
+    compiler0.parseSyntheticCode("""", """");
+    Node node0 = Node.newString(42, """", 33, 14);
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder("""", compiler0, node0, """", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferThisType(jSDocInfo0, node0);
+    assertSame(functionTypeBuilder0, functionTypeBuilder1);
+}","/**
+ * Infers the type of {@code this}.
+ * @param info The JSDocInfo for this function.
+ * @param owner The node for the object whose prototype ""owns"" this function.
+ *     For example, {@code A} in the expression {@code A.prototype.foo}. May
+ *     be null to indicate that this is not a prototype property.
+ */"
+"FunctionTypeBuilder inferParameterTypes(@Nullable Node argsParent, @Nullable JSDocInfo info) {
+    if (argsParent == null) {
+        if (info == null) {
+            return this;
+        } else {
+            return inferParameterTypes(info);
+        }
+    }
+    // arguments
+    FunctionParamBuilder builder = new FunctionParamBuilder(typeRegistry);
+    boolean warnedAboutArgList = false;
+    Set<String> allJsDocParams = (info == null) ? Sets.<String>newHashSet() : Sets.newHashSet(info.getParameterNames());
+    boolean foundTemplateType = false;
+    for (Node arg : argsParent.children()) {
+        String argumentName = arg.getString();
+        allJsDocParams.remove(argumentName);
+        // type from JSDocInfo
+        JSType parameterType = info != null && info.hasParameterType(argumentName) ? info.getParameterType(argumentName).evaluate(scope, typeRegistry) : typeRegistry.getNativeType(UNKNOWN_TYPE);
+        if (templateTypeName != null && parameterType.restrictByNotNullOrUndefined().isTemplateType()) {
+            if (foundTemplateType) {
+                reportError(TEMPLATE_TYPE_DUPLICATED, fnName);
+            }
+            foundTemplateType = true;
+        }
+        warnedAboutArgList |= addParameter(builder, parameterType, warnedAboutArgList, isOptionalParameter(arg, info), isVarArgsParameter(arg, info));
+    }
+    if (templateTypeName != null && !foundTemplateType) {
+        reportError(TEMPLATE_TYPE_EXPECTED, fnName);
+    }
+    for (String inexistentName : allJsDocParams) {
+        reportWarning(INEXISTANT_PARAM, inexistentName, fnName);
+    }
+    parametersNode = builder.build();
+    return this;
+}","public void test1515() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""+T`LhD"");
+    Scope scope0 = new Scope(node0, compiler0);
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""+T`LhD"", compiler0, node0, ""+T`LhD"", scope0);
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferParameterTypes((Node) null, jSDocInfo0);
+    assertSame(functionTypeBuilder1, functionTypeBuilder0);
+}","/**
+ * Infer the parameter types from the list of argument names and
+ * the doc info.
+ */"
+"FunctionTypeBuilder inferParameterTypes(@Nullable Node argsParent, @Nullable JSDocInfo info) {
+    if (argsParent == null) {
+        if (info == null) {
+            return this;
+        } else {
+            return inferParameterTypes(info);
+        }
+    }
+    // arguments
+    FunctionParamBuilder builder = new FunctionParamBuilder(typeRegistry);
+    boolean warnedAboutArgList = false;
+    Set<String> allJsDocParams = (info == null) ? Sets.<String>newHashSet() : Sets.newHashSet(info.getParameterNames());
+    boolean foundTemplateType = false;
+    for (Node arg : argsParent.children()) {
+        String argumentName = arg.getString();
+        allJsDocParams.remove(argumentName);
+        // type from JSDocInfo
+        JSType parameterType = info != null && info.hasParameterType(argumentName) ? info.getParameterType(argumentName).evaluate(scope, typeRegistry) : typeRegistry.getNativeType(UNKNOWN_TYPE);
+        if (templateTypeName != null && parameterType.restrictByNotNullOrUndefined().isTemplateType()) {
+            if (foundTemplateType) {
+                reportError(TEMPLATE_TYPE_DUPLICATED, fnName);
+            }
+            foundTemplateType = true;
+        }
+        warnedAboutArgList |= addParameter(builder, parameterType, warnedAboutArgList, isOptionalParameter(arg, info), isVarArgsParameter(arg, info));
+    }
+    if (templateTypeName != null && !foundTemplateType) {
+        reportError(TEMPLATE_TYPE_EXPECTED, fnName);
+    }
+    for (String inexistentName : allJsDocParams) {
+        reportWarning(INEXISTANT_PARAM, inexistentName, fnName);
+    }
+    parametersNode = builder.build();
+    return this;
+}","public void test1616() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""+T`LhD"");
+    Scope scope0 = new Scope(node0, compiler0);
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""+T`LhD"", compiler0, node0, ""+T`LhD"", scope0);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferParameterTypes((Node) null, (JSDocInfo) null);
+    assertSame(functionTypeBuilder1, functionTypeBuilder0);
+}","/**
+ * Infer the parameter types from the list of argument names and
+ * the doc info.
+ */"
+"public int getWarningCount() {
+    return errorManager.getWarningCount();
+}","public void test1717() throws Throwable {
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode("""", """");
+    Node node1 = Node.newString(42, """", 33, 14);
+    node0.addChildToFront(node1);
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder("""", compiler0, node1, """", (Scope) null);
+    functionTypeBuilder0.inferParameterTypes(node0, jSDocInfo0);
+    assertEquals(0, compiler0.getWarningCount());
+}","/**
+ * Gets the number of warnings.
+ */"
+"FunctionTypeBuilder inferTemplateTypeName(@Nullable JSDocInfo info) {
+    if (info != null) {
+        templateTypeName = info.getTemplateTypeName();
+        typeRegistry.setTemplateTypeName(templateTypeName);
+    }
+    return this;
+}","public void test1818() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""H+T`LhD"", ""H+T`LhD"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""H+T`LhD"", compiler0, node0, ""H+T`LhD"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferTemplateTypeName((JSDocInfo) null);
+    assertSame(functionTypeBuilder0, functionTypeBuilder1);
+}","/**
+ * Infer the template type from the doc info.
+ */"
+"FunctionTypeBuilder inferTemplateTypeName(@Nullable JSDocInfo info) {
+    if (info != null) {
+        templateTypeName = info.getTemplateTypeName();
+        typeRegistry.setTemplateTypeName(templateTypeName);
+    }
+    return this;
+}","public void test1919() throws Throwable {
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""+T`LhD"");
+    Scope scope0 = new Scope(node0, compiler0);
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""+T`LhD"", compiler0, node0, ""+T`LhD"", scope0);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferTemplateTypeName(jSDocInfo0);
+    assertSame(functionTypeBuilder0, functionTypeBuilder1);
+}","/**
+ * Infer the template type from the doc info.
+ */"
+"static boolean isFunctionTypeDeclaration(JSDocInfo info) {
+    return info.getParameterCount() > 0 || info.hasReturnType() || info.hasThisType() || info.isConstructor() || info.isInterface();
+}","public void test2020() throws Throwable {
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    boolean boolean0 = FunctionTypeBuilder.isFunctionTypeDeclaration(jSDocInfo0);
+    assertFalse(boolean0);
+}","/**
+ * Determines whether the given jsdoc info declares a function type.
+ */"

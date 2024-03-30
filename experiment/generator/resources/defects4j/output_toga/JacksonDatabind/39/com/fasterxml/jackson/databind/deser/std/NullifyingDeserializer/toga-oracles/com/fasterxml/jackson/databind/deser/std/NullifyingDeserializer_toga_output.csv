@@ -1,0 +1,21 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test00,"public void test00() throws Throwable {
+    NullifyingDeserializer nullifyingDeserializer0 = new NullifyingDeserializer();
+    // Undeclared exception!
+    try {
+        nullifyingDeserializer0.deserialize((JsonParser) null, (DeserializationContext) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.NullifyingDeserializer"", e);
+    }
+}",0,
+project,0,test11,"public void test11() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    JsonParser jsonParser0 = jsonFactory0.createParser(""JSON"");
+    NullifyingDeserializer nullifyingDeserializer0 = NullifyingDeserializer.instance;
+    Object object0 = nullifyingDeserializer0.deserializeWithType(jsonParser0, (DeserializationContext) null, (TypeDeserializer) null);
+    assertNull(object0);
+}",0,

@@ -1,0 +1,66 @@
+com.fasterxml.jackson.databind.deser.impl.ObjectIdValueProperty,@Test(timeout = 4000)
+public void test11() throws Throwable {
+    Class<String> class0 = String.class;
+    SimpleType simpleType0 = SimpleType.constructUnsafe(class0);
+    MapLikeType mapLikeType0 = MapLikeType.construct(class0, simpleType0, simpleType0);
+    PropertyName propertyName0 = new PropertyName("""");
+    ObjectIdGenerator<ObjectReader> objectIdGenerator0 = (ObjectIdGenerator<ObjectReader>) mock(ObjectIdGenerator.class, new ViolatedAssumptionAnswer());
+    JsonDeserializer<Annotation> jsonDeserializer0 = (JsonDeserializer<Annotation>) mock(JsonDeserializer.class, new ViolatedAssumptionAnswer());
+    SimpleObjectIdResolver simpleObjectIdResolver0 = new SimpleObjectIdResolver();
+    ObjectIdReader objectIdReader0 = new ObjectIdReader(mapLikeType0, propertyName0, objectIdGenerator0, jsonDeserializer0, (SettableBeanProperty) null, simpleObjectIdResolver0);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_REQUIRED;
+    ObjectIdValueProperty objectIdValueProperty0 = new ObjectIdValueProperty(objectIdReader0, propertyMetadata0);
+    ObjectIdValueProperty objectIdValueProperty1 = new ObjectIdValueProperty(objectIdValueProperty0, """");
+    objectIdValueProperty1.getCreatorIndex();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.fasterxml.jackson.databind.deser.impl.ObjectIdValueProperty,@Test(timeout = 4000)
+public void test44() throws Throwable {
+    Class<String> class0 = String.class;
+    SimpleType simpleType0 = SimpleType.constructUnsafe(class0);
+    PropertyName propertyName0 = PropertyName.USE_DEFAULT;
+    PipedInputStream pipedInputStream0 = new PipedInputStream(1361);
+    ObjectIdGenerator.IdKey objectIdGenerator_IdKey0 = new ObjectIdGenerator.IdKey(class0, class0, pipedInputStream0);
+    ObjectIdGenerator<ObjectReader> objectIdGenerator0 = (ObjectIdGenerator<ObjectReader>) mock(ObjectIdGenerator.class, new ViolatedAssumptionAnswer());
+    doReturn(objectIdGenerator_IdKey0).when(objectIdGenerator0).key(any());
+    SimpleObjectIdResolver simpleObjectIdResolver0 = new SimpleObjectIdResolver();
+    JsonDeserializer<PipedInputStream> jsonDeserializer0 = (JsonDeserializer<PipedInputStream>) mock(JsonDeserializer.class, new ViolatedAssumptionAnswer());
+    doReturn(pipedInputStream0).when(jsonDeserializer0).deserialize(any(com.fasterxml.jackson.core.JsonParser.class), any(com.fasterxml.jackson.databind.DeserializationContext.class));
+    ObjectIdReader objectIdReader0 = new ObjectIdReader(simpleType0, propertyName0, objectIdGenerator0, jsonDeserializer0, (SettableBeanProperty) null, simpleObjectIdResolver0);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_REQUIRED;
+    ObjectIdValueProperty objectIdValueProperty0 = new ObjectIdValueProperty(objectIdReader0, propertyMetadata0);
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    objectIdValueProperty0.deserializeAndSet((JsonParser) null, defaultDeserializationContext_Impl0, (Object) null);
+    objectIdValueProperty0.hasValueTypeDeserializer();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.fasterxml.jackson.databind.deser.impl.ObjectIdValueProperty,@Test(timeout = 4000)
+public void test55() throws Throwable {
+    Class<String> class0 = String.class;
+    SimpleType simpleType0 = SimpleType.constructUnsafe(class0);
+    MapLikeType mapLikeType0 = MapLikeType.construct(class0, simpleType0, simpleType0);
+    PropertyName propertyName0 = PropertyName.NO_NAME;
+    ObjectIdGenerator<ObjectReader> objectIdGenerator0 = (ObjectIdGenerator<ObjectReader>) mock(ObjectIdGenerator.class, new ViolatedAssumptionAnswer());
+    JsonDeserializer<Annotation> jsonDeserializer0 = (JsonDeserializer<Annotation>) mock(JsonDeserializer.class, new ViolatedAssumptionAnswer());
+    SimpleObjectIdResolver simpleObjectIdResolver0 = new SimpleObjectIdResolver();
+    ObjectIdReader objectIdReader0 = new ObjectIdReader(mapLikeType0, propertyName0, objectIdGenerator0, jsonDeserializer0, (SettableBeanProperty) null, simpleObjectIdResolver0);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_REQUIRED;
+    ObjectIdValueProperty objectIdValueProperty0 = new ObjectIdValueProperty(objectIdReader0, propertyMetadata0);
+    SettableBeanProperty settableBeanProperty0 = objectIdValueProperty0.withSimpleName(""N>N!ju{TM;xq]-"");
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.fasterxml.jackson.databind.deser.impl.ObjectIdValueProperty,@Test(timeout = 4000)
+public void test66() throws Throwable {
+    Class<String> class0 = String.class;
+    SimpleType simpleType0 = SimpleType.constructUnsafe(class0);
+    MapLikeType mapLikeType0 = MapLikeType.construct(class0, simpleType0, simpleType0);
+    PropertyName propertyName0 = PropertyName.NO_NAME;
+    ObjectIdGenerator<ObjectReader> objectIdGenerator0 = (ObjectIdGenerator<ObjectReader>) mock(ObjectIdGenerator.class, new ViolatedAssumptionAnswer());
+    JsonDeserializer<Annotation> jsonDeserializer0 = (JsonDeserializer<Annotation>) mock(JsonDeserializer.class, new ViolatedAssumptionAnswer());
+    SimpleObjectIdResolver simpleObjectIdResolver0 = new SimpleObjectIdResolver();
+    ObjectIdReader objectIdReader0 = new ObjectIdReader(mapLikeType0, propertyName0, objectIdGenerator0, jsonDeserializer0, (SettableBeanProperty) null, simpleObjectIdResolver0);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_REQUIRED_OR_OPTIONAL;
+    ObjectIdValueProperty objectIdValueProperty0 = new ObjectIdValueProperty(objectIdReader0, propertyMetadata0);
+    JsonDeserializer<Integer> jsonDeserializer1 = (JsonDeserializer<Integer>) mock(JsonDeserializer.class, new ViolatedAssumptionAnswer());
+    doReturn((Object) null).when(jsonDeserializer1).getNullValue();
+    ObjectIdValueProperty objectIdValueProperty1 = objectIdValueProperty0.withValueDeserializer(jsonDeserializer1);
+    objectIdValueProperty1.getCreatorIndex();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.

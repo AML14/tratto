@@ -1,0 +1,541 @@
+focal_method,test_prefix,docstring
+"@Deprecated
+public static // since 2.7; remove from 2.8
+MapLikeType construct(Class<?> rawType, JavaType keyT, JavaType valueT) {
+    // First: may need to fabricate TypeBindings (needed for refining into
+    // concrete collection types, as per [databind#1102])
+    TypeVariable<?>[] vars = rawType.getTypeParameters();
+    TypeBindings bindings;
+    if ((vars == null) || (vars.length != 2)) {
+        bindings = TypeBindings.emptyBindings();
+    } else {
+        bindings = TypeBindings.create(rawType, keyT, valueT);
+    }
+    return new MapLikeType(rawType, bindings, _bogusSuperClass(rawType), null, keyT, valueT, null, null, false);
+}","public void test000() throws Throwable {
+    Class<Object> class0 = Object.class;
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_OBJECT;
+    MapLikeType.construct(class0, simpleType0, simpleType0);
+}",""
+"@Override
+public boolean hasHandlers() {
+    return super.hasHandlers() || _valueType.hasHandlers() || _keyType.hasHandlers();
+}","public void test011() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<HashMap> class0 = HashMap.class;
+    MapType mapType0 = typeFactory0.constructRawMapType(class0);
+    mapType0.hasHandlers();
+}",""
+"@Deprecated
+public static // since 2.7; remove from 2.8
+MapLikeType construct(Class<?> rawType, JavaType keyT, JavaType valueT) {
+    // First: may need to fabricate TypeBindings (needed for refining into
+    // concrete collection types, as per [databind#1102])
+    TypeVariable<?>[] vars = rawType.getTypeParameters();
+    TypeBindings bindings;
+    if ((vars == null) || (vars.length != 2)) {
+        bindings = TypeBindings.emptyBindings();
+    } else {
+        bindings = TypeBindings.create(rawType, keyT, valueT);
+    }
+    return new MapLikeType(rawType, bindings, _bogusSuperClass(rawType), null, keyT, valueT, null, null, false);
+}","public void test022() throws Throwable {
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_OBJECT;
+    Class<String> class0 = String.class;
+    MapLikeType mapLikeType0 = MapLikeType.construct(class0, simpleType0, simpleType0);
+    mapLikeType0.isTrueMapType();
+    MapLikeType.construct(class0, simpleType0, mapLikeType0);
+}",""
+"@Override
+public boolean equals(Object o) {
+    if (o == this)
+        return true;
+    if (o == null)
+        return false;
+    if (o.getClass() != getClass())
+        return false;
+    MapLikeType other = (MapLikeType) o;
+    return (_class == other._class) && _keyType.equals(other._keyType) && _valueType.equals(other._valueType);
+}","public void test033() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<CollectionType> class0 = CollectionType.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructRawMapLikeType(class0);
+    mapLikeType0.equals(mapLikeType0);
+}",""
+"@Override
+protected String buildCanonicalName() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(_class.getName());
+    if (_keyType != null) {
+        sb.append('<');
+        sb.append(_keyType.toCanonical());
+        sb.append(',');
+        sb.append(_valueType.toCanonical());
+        sb.append('>');
+    }
+    return sb.toString();
+}","public void test044() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<CollectionType> class0 = CollectionType.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructRawMapLikeType(class0);
+    mapLikeType0.buildCanonicalName();
+}",""
+"/*
+    /**********************************************************
+    /* Support for producing signatures
+    /**********************************************************
+     */
+//public abstract String toCanonical();
+/**
+ * Method for accessing signature that contains generic
+ * type information, in form compatible with JVM 1.5
+ * as per JLS. It is a superset of {@link #getErasedSignature},
+ * in that generic information can be automatically removed
+ * if necessary (just remove outermost
+ * angle brackets along with content inside)
+ */
+public String getGenericSignature() {
+    StringBuilder sb = new StringBuilder(40);
+    getGenericSignature(sb);
+    return sb.toString();
+}","public void test055() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<CollectionType> class0 = CollectionType.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructRawMapLikeType(class0);
+    mapLikeType0.getGenericSignature();
+}",""
+"public String getErasedSignature() {
+    StringBuilder sb = new StringBuilder(40);
+    getErasedSignature(sb);
+    return sb.toString();
+}","public void test066() throws Throwable {
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_BOOL;
+    Class<CollectionType> class0 = CollectionType.class;
+    MapLikeType mapLikeType0 = MapLikeType.construct(class0, simpleType0, simpleType0);
+    mapLikeType0.getErasedSignature();
+}","/**
+ * Method for accessing signature without generic
+ * type information, in form compatible with all versions
+ * of JVM, and specifically used for type descriptions
+ * when generating byte code.
+ */"
+"@Override
+public boolean isMapLikeType() {
+    return true;
+}","public void test077() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<String> class0 = String.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructRawMapLikeType(class0);
+    mapLikeType0.isThrowable();
+    mapLikeType0.isMapLikeType();
+}",""
+"/*
+    /**********************************************************
+    /* Public API
+    /**********************************************************
+     */
+@Override
+public boolean isContainerType() {
+    return true;
+}","public void test088() throws Throwable {
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_INT;
+    MapType mapType0 = new MapType(simpleType0, simpleType0, simpleType0);
+    MapType mapType1 = mapType0.withValueHandler(simpleType0);
+    mapType0.withKeyValueHandler(mapType1);
+    mapType1.hasHandlers();
+    mapType1.isContainerType();
+}",""
+"/*
+    /**********************************************************
+    /* Standard methods
+    /**********************************************************
+     */
+@Override
+public String toString() {
+    return String.format(""[map-like type; class %s, %s -> %s]"", _class.getName(), _keyType, _valueType);
+}","public void test099() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<CollectionType> class0 = CollectionType.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructRawMapLikeType(class0);
+    mapLikeType0.toString();
+}",""
+"public MapLikeType constructRawMapLikeType(Class<?> mapClass) {
+    return constructMapLikeType(mapClass, unknownType(), unknownType());
+}","public void test1010() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<Object> class0 = Object.class;
+    typeFactory0.constructRawMapLikeType(class0);
+}","/**
+ *  Method that can be used to construct ""raw"" Map-like type; meaning that its
+ *  parameterization is unknown.
+ *  This is similar to using <code>Object.class</code> parameterization,
+ *  and is equivalent to calling:
+ * <pre>
+ *   typeFactory.constructMapLikeType(collectionClass, typeFactory.unknownType(), typeFactory.unknownType());
+ * </pre>
+ * <p>
+ *  This method should only be used if parameterization is completely unavailable.
+ */"
+"/*
+    /**********************************************************
+    /* Extended API
+    /**********************************************************
+     */
+public MapLikeType withKeyTypeHandler(Object h) {
+    return new MapLikeType(_class, _bindings, _superClass, _superInterfaces, _keyType.withTypeHandler(h), _valueType, _valueHandler, _typeHandler, _asStatic);
+}","public void test1111() throws Throwable {
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_INT;
+    Class<ResolvedRecursiveType> class0 = ResolvedRecursiveType.class;
+    MapLikeType mapLikeType0 = MapLikeType.construct(class0, simpleType0, simpleType0);
+    mapLikeType0.withKeyTypeHandler(simpleType0);
+}",""
+"@Deprecated
+public static // since 2.7; remove from 2.8
+MapLikeType construct(Class<?> rawType, JavaType keyT, JavaType valueT) {
+    // First: may need to fabricate TypeBindings (needed for refining into
+    // concrete collection types, as per [databind#1102])
+    TypeVariable<?>[] vars = rawType.getTypeParameters();
+    TypeBindings bindings;
+    if ((vars == null) || (vars.length != 2)) {
+        bindings = TypeBindings.emptyBindings();
+    } else {
+        bindings = TypeBindings.create(rawType, keyT, valueT);
+    }
+    return new MapLikeType(rawType, bindings, _bogusSuperClass(rawType), null, keyT, valueT, null, null, false);
+}","public void test1212() throws Throwable {
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_INT;
+    Class<Integer> class0 = Integer.class;
+    MapLikeType mapLikeType0 = MapLikeType.construct(class0, simpleType0, simpleType0);
+    mapLikeType0.withTypeHandler(class0);
+    MapLikeType.construct(class0, mapLikeType0, mapLikeType0);
+}",""
+"@Override
+public Object getContentValueHandler() {
+    return _valueType.getValueHandler();
+}","public void test1313() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<CollectionType> class0 = CollectionType.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructRawMapLikeType(class0);
+    mapLikeType0.getContentValueHandler();
+}",""
+"public MapLikeType withKeyType(JavaType keyType) {
+    if (keyType == _keyType) {
+        return this;
+    }
+    return new MapLikeType(_class, _bindings, _superClass, _superInterfaces, keyType, _valueType, _valueHandler, _typeHandler, _asStatic);
+}","public void test1414() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<CollectionType> class0 = CollectionType.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructRawMapLikeType(class0);
+    mapLikeType0.withKeyType(mapLikeType0);
+}","/**
+ * @since 2.7
+ */"
+"@Deprecated
+// since 2.7
+@Override
+protected JavaType _narrow(Class<?> subclass) {
+    return new MapLikeType(subclass, _bindings, _superClass, _superInterfaces, _keyType, _valueType, _valueHandler, _typeHandler, _asStatic);
+}","public void test1515() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<CollectionType> class0 = CollectionType.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructRawMapLikeType(class0);
+    mapLikeType0._narrow(class0);
+}",""
+"/*
+    /**********************************************************
+    /* Public API
+    /**********************************************************
+     */
+@Override
+public boolean isContainerType() {
+    return true;
+}","public void test1616() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<CollectionType> class0 = CollectionType.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructRawMapLikeType(class0);
+    mapLikeType0._narrow(class0);
+    mapLikeType0.isContainerType();
+}",""
+"@Override
+protected String buildCanonicalName() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(_class.getName());
+    if (_keyType != null) {
+        sb.append('<');
+        sb.append(_keyType.toCanonical());
+        sb.append(',');
+        sb.append(_valueType.toCanonical());
+        sb.append('>');
+    }
+    return sb.toString();
+}","public void test1717() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<CollectionType> class0 = CollectionType.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructRawMapLikeType(class0);
+    mapLikeType0.withValueHandler(class0);
+    MapLikeType mapLikeType1 = mapLikeType0.withStaticTyping();
+    mapLikeType1.buildCanonicalName();
+}",""
+"@Override
+public abstract boolean equals(Object o);","public void test1818() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<CollectionType> class0 = CollectionType.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructRawMapLikeType(class0);
+    mapLikeType0.isContainerType();
+    JavaType javaType0 = mapLikeType0.withContentType(mapLikeType0);
+    javaType0.equals(mapLikeType0);
+}",""
+"@Override
+public boolean equals(Object o) {
+    if (o == this)
+        return true;
+    if (o == null)
+        return false;
+    if (o.getClass() != getClass())
+        return false;
+    MapLikeType other = (MapLikeType) o;
+    return (_class == other._class) && _keyType.equals(other._keyType) && _valueType.equals(other._valueType);
+}","public void test2020() throws Throwable {
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_OBJECT;
+    Class<ArrayType> class0 = ArrayType.class;
+    MapLikeType mapLikeType0 = MapLikeType.construct(class0, simpleType0, simpleType0);
+    mapLikeType0.equals(simpleType0);
+}",""
+"@Deprecated
+public static // since 2.7; remove from 2.8
+MapLikeType construct(Class<?> rawType, JavaType keyT, JavaType valueT) {
+    // First: may need to fabricate TypeBindings (needed for refining into
+    // concrete collection types, as per [databind#1102])
+    TypeVariable<?>[] vars = rawType.getTypeParameters();
+    TypeBindings bindings;
+    if ((vars == null) || (vars.length != 2)) {
+        bindings = TypeBindings.emptyBindings();
+    } else {
+        bindings = TypeBindings.create(rawType, keyT, valueT);
+    }
+    return new MapLikeType(rawType, bindings, _bogusSuperClass(rawType), null, keyT, valueT, null, null, false);
+}","public void test2121() throws Throwable {
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_OBJECT;
+    Class<MapType> class0 = MapType.class;
+    MapLikeType mapLikeType0 = MapLikeType.construct(class0, simpleType0, simpleType0);
+    JavaType[] javaTypeArray0 = new JavaType[0];
+    mapLikeType0.refine(class0, (TypeBindings) null, simpleType0, javaTypeArray0);
+    Class<String> class1 = String.class;
+    MapLikeType.construct(class1, mapLikeType0, simpleType0);
+}",""
+"@Deprecated
+public static // since 2.7; remove from 2.8
+MapLikeType construct(Class<?> rawType, JavaType keyT, JavaType valueT) {
+    // First: may need to fabricate TypeBindings (needed for refining into
+    // concrete collection types, as per [databind#1102])
+    TypeVariable<?>[] vars = rawType.getTypeParameters();
+    TypeBindings bindings;
+    if ((vars == null) || (vars.length != 2)) {
+        bindings = TypeBindings.emptyBindings();
+    } else {
+        bindings = TypeBindings.create(rawType, keyT, valueT);
+    }
+    return new MapLikeType(rawType, bindings, _bogusSuperClass(rawType), null, keyT, valueT, null, null, false);
+}","public void test2222() throws Throwable {
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_OBJECT;
+    Class<Integer> class0 = Integer.class;
+    MapLikeType mapLikeType0 = MapLikeType.construct(class0, simpleType0, simpleType0);
+    MapLikeType mapLikeType1 = mapLikeType0.withContentValueHandler(class0);
+    MapLikeType.construct(class0, mapLikeType1, simpleType0);
+}",""
+"public MapType constructMapType(Class<? extends Map> mapClass, JavaType keyType, JavaType valueType) {
+    return (MapType) _fromClass(null, mapClass, TypeBindings.create(mapClass, new JavaType[] { keyType, valueType }));
+}","public void test2323() throws Throwable {
+    Class<CollectionType> class0 = CollectionType.class;
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<HashMap> class1 = HashMap.class;
+    Class<HashMap> class2 = HashMap.class;
+    MapType mapType0 = typeFactory0.constructRawMapType(class2);
+    MapLikeType mapLikeType0 = mapType0.withKeyTypeHandler(class0);
+    MapLikeType mapLikeType1 = mapType0.withKeyType(mapLikeType0);
+    typeFactory0.constructMapType((Class<? extends Map>) class1, (JavaType) mapType0, (JavaType) mapLikeType1);
+}","/**
+ *  Method for constructing a {@link MapType} instance
+ * <p>
+ *  NOTE: type modifiers are NOT called on constructed type itself; but are called
+ *  for contained types.
+ */"
+"@Override
+protected String buildCanonicalName() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(_class.getName());
+    if (_keyType != null) {
+        sb.append('<');
+        sb.append(_keyType.toCanonical());
+        sb.append(',');
+        sb.append(_valueType.toCanonical());
+        sb.append('>');
+    }
+    return sb.toString();
+}","public void test2424() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<CollectionType> class0 = CollectionType.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructRawMapLikeType(class0);
+    MapLikeType mapLikeType1 = mapLikeType0.withStaticTyping();
+    mapLikeType1.withStaticTyping();
+    mapLikeType1.buildCanonicalName();
+}",""
+"@Override
+public boolean equals(Object o) {
+    if (o == this)
+        return true;
+    if (o == null)
+        return false;
+    if (o.getClass() != getClass())
+        return false;
+    MapLikeType other = (MapLikeType) o;
+    return (_class == other._class) && _keyType.equals(other._keyType) && _valueType.equals(other._valueType);
+}","public void test2525() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<CollectionType> class0 = CollectionType.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructRawMapLikeType(class0);
+    Class<Object> class1 = Object.class;
+    MapLikeType mapLikeType1 = MapLikeType.construct(class1, mapLikeType0, mapLikeType0);
+    mapLikeType0.equals(mapLikeType1);
+}",""
+"@Override
+public abstract boolean equals(Object o);","public void test2626() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<CollectionType> class0 = CollectionType.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructRawMapLikeType(class0);
+    JavaType javaType0 = mapLikeType0._narrow(class0);
+    javaType0.equals(mapLikeType0);
+}",""
+"@Override
+public Object getContentTypeHandler() {
+    return _valueType.getTypeHandler();
+}","public void test2727() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<CollectionType> class0 = CollectionType.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructRawMapLikeType(class0);
+    mapLikeType0.getContentTypeHandler();
+}",""
+"@Override
+public boolean equals(Object o) {
+    if (o == this)
+        return true;
+    if (o == null)
+        return false;
+    if (o.getClass() != getClass())
+        return false;
+    MapLikeType other = (MapLikeType) o;
+    return (_class == other._class) && _keyType.equals(other._keyType) && _valueType.equals(other._valueType);
+}","public void test2828() throws Throwable {
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_OBJECT;
+    Class<MapLikeType> class0 = MapLikeType.class;
+    MapLikeType mapLikeType0 = MapLikeType.construct(class0, simpleType0, simpleType0);
+    mapLikeType0.equals((Object) null);
+}",""
+"@Deprecated
+public static // since 2.7; remove from 2.8
+MapLikeType construct(Class<?> rawType, JavaType keyT, JavaType valueT) {
+    // First: may need to fabricate TypeBindings (needed for refining into
+    // concrete collection types, as per [databind#1102])
+    TypeVariable<?>[] vars = rawType.getTypeParameters();
+    TypeBindings bindings;
+    if ((vars == null) || (vars.length != 2)) {
+        bindings = TypeBindings.emptyBindings();
+    } else {
+        bindings = TypeBindings.create(rawType, keyT, valueT);
+    }
+    return new MapLikeType(rawType, bindings, _bogusSuperClass(rawType), null, keyT, valueT, null, null, false);
+}","public void test2929() throws Throwable {
+    Class<HashMap> class0 = HashMap.class;
+    CoreXMLDeserializers.Std coreXMLDeserializers_Std0 = new CoreXMLDeserializers.Std(class0, 3);
+    coreXMLDeserializers_Std0.getValueType();
+    MapLikeType.construct(class0, (JavaType) null, (JavaType) null);
+}",""
+"@Override
+public MapLikeType withContentTypeHandler(Object h) {
+    return new MapLikeType(_class, _bindings, _superClass, _superInterfaces, _keyType, _valueType.withTypeHandler(h), _valueHandler, _typeHandler, _asStatic);
+}","public void test3030() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<CollectionType> class0 = CollectionType.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructRawMapLikeType(class0);
+    mapLikeType0.withContentTypeHandler(class0);
+}",""
+"public MapLikeType withKeyValueHandler(Object h) {
+    return new MapLikeType(_class, _bindings, _superClass, _superInterfaces, _keyType.withValueHandler(h), _valueType, _valueHandler, _typeHandler, _asStatic);
+}","public void test3131() throws Throwable {
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_INT;
+    Class<ResolvedRecursiveType> class0 = ResolvedRecursiveType.class;
+    MapLikeType mapLikeType0 = MapLikeType.construct(class0, simpleType0, simpleType0);
+    mapLikeType0.withKeyValueHandler(class0);
+}",""
+"@Override
+public JavaType withContentType(JavaType contentType) {
+    if (_valueType == contentType) {
+        return this;
+    }
+    return new MapLikeType(_class, _bindings, _superClass, _superInterfaces, _keyType, contentType, _valueHandler, _typeHandler, _asStatic);
+}","public void test3232() throws Throwable {
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_ENUM;
+    Class<Object> class0 = Object.class;
+    MapLikeType mapLikeType0 = MapLikeType.construct(class0, simpleType0, simpleType0);
+    mapLikeType0.withContentType(simpleType0);
+}",""
+"public MapLikeType withKeyType(JavaType keyType) {
+    if (keyType == _keyType) {
+        return this;
+    }
+    return new MapLikeType(_class, _bindings, _superClass, _superInterfaces, keyType, _valueType, _valueHandler, _typeHandler, _asStatic);
+}","public void test3333() throws Throwable {
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_OBJECT;
+    Class<String> class0 = String.class;
+    MapLikeType mapLikeType0 = MapLikeType.construct(class0, simpleType0, simpleType0);
+    mapLikeType0.withKeyType(simpleType0);
+}","/**
+ * @since 2.7
+ */"
+"public static MapLikeType upgradeFrom(JavaType baseType, JavaType keyT, JavaType valueT) {
+    // 19-Oct-2015, tatu: Not sure if and how other types could be used as
+    // base;
+    // will cross that bridge if and when need be
+    if (baseType instanceof TypeBase) {
+        return new MapLikeType((TypeBase) baseType, keyT, valueT);
+    }
+    throw new IllegalArgumentException(""Can not upgrade from an instance of "" + baseType.getClass());
+}","public void test3434() throws Throwable {
+    Class<Object> class0 = Object.class;
+    TypeBase._bogusSuperClass(class0);
+    // Undeclared exception!
+    try {
+        MapLikeType.upgradeFrom((JavaType) null, (JavaType) null, (JavaType) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.MapLikeType"", e);
+    }
+}","/**
+ * Factory method that can be used to ""upgrade"" a basic type into
+ * collection-like one; usually done via {@link TypeModifier}
+ *
+ * @since 2.7
+ */"
+"@Override
+protected String buildCanonicalName() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(_class.getName());
+    if (_keyType != null) {
+        sb.append('<');
+        sb.append(_keyType.toCanonical());
+        sb.append(',');
+        sb.append(_valueType.toCanonical());
+        sb.append('>');
+    }
+    return sb.toString();
+}","public void test3636() throws Throwable {
+    Class<Integer> class0 = Integer.class;
+    SimpleType simpleType0 = new SimpleType(class0);
+    FileSystemHandling.shouldAllThrowIOExceptions();
+    MapLikeType mapLikeType0 = MapLikeType.upgradeFrom(simpleType0, (JavaType) null, simpleType0);
+    mapLikeType0.buildCanonicalName();
+}",""

@@ -1,0 +1,91 @@
+focal_method,test_prefix,docstring
+"public boolean isWhile() {
+    return this.getType() == Token.WHILE;
+}","public void test00() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""vZ0bc$RRC"");
+    PrepareAst prepareAst0 = new PrepareAst(compiler0, true);
+    prepareAst0.process(node0, node0);
+    assertFalse(node0.isWhile());
+}",""
+"@Override
+public void process(Node externs, Node root) {
+    if (checkOnly) {
+        normalizeNodeTypes(root);
+    } else {
+        // Don't perform ""PrepareAnnotations"" when doing checks as
+        // they currently aren't valid during sanity checks.  In particular,
+        // they DIRECT_EVAL shouldn't be applied after inlining has been
+        // performed.
+        if (externs != null) {
+            NodeTraversal.traverse(compiler, externs, new PrepareAnnotations());
+        }
+        if (root != null) {
+            NodeTraversal.traverse(compiler, root, new PrepareAnnotations());
+        }
+    }
+}","public void test11() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    PrepareAst prepareAst0 = new PrepareAst(compiler0);
+    prepareAst0.process((Node) null, (Node) null);
+}",""
+"public boolean isDelProp() {
+    return this.getType() == Token.DELPROP;
+}","public void test22() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newString(108, ""i)=mbX|RwV1q:"", 108, 108);
+    PrepareAst prepareAst0 = new PrepareAst(compiler0, true);
+    Node node1 = new Node(108, node0);
+    prepareAst0.process(node0, node1);
+    assertFalse(node1.isDelProp());
+}",""
+"@Override
+Node ensureLibraryInjected(String resourceName) {
+    if (injectedLibraries.containsKey(resourceName)) {
+        return null;
+    }
+    // All libraries depend on js/base.js
+    boolean isBase = ""base"".equals(resourceName);
+    if (!isBase) {
+        ensureLibraryInjected(""base"");
+    }
+    Node firstChild = loadLibraryCode(resourceName).removeChildren();
+    Node lastChild = firstChild.getLastSibling();
+    Node parent = getNodeForCodeInsertion(null);
+    if (isBase) {
+        parent.addChildrenToFront(firstChild);
+    } else {
+        parent.addChildrenAfter(firstChild, injectedLibraries.get(""base""));
+    }
+    reportCodeChange();
+    injectedLibraries.put(resourceName, lastChild);
+    return lastChild;
+}","public void test33() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    compiler0.parseTestCode(""vZ0bc$RRC"");
+    // Undeclared exception!
+    try {
+        compiler0.ensureLibraryInjected(""vZ0bc$RRC"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.Compiler"", e);
+    }
+}",""
+"public boolean hasMoreThanOneChild() {
+    return first != null && first != last;
+}","public void test44() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""A function call cannot be of the form: new Object.call()"");
+    PrepareAst prepareAst0 = new PrepareAst(compiler0);
+    Node node1 = new Node(37, node0, node0, 0, 52);
+    prepareAst0.process(node1, node1);
+    assertFalse(node1.hasMoreThanOneChild());
+}","/**
+ * Check for more than one child more efficiently than by iterating over all
+ * the children as is done with Node.getChildCount().
+ *
+ * @return Whether the node more than one child.
+ */"

@@ -1,0 +1,93 @@
+focal_method,test_prefix,docstring
+"public static void main(String[] args) {
+    CommandLineRunner runner = new CommandLineRunner(args);
+    if (runner.shouldRunCompiler()) {
+        runner.run();
+    } else {
+        System.exit(-1);
+    }
+}","public void test00() throws Throwable {
+    String[] stringArray0 = new String[0];
+    // Undeclared exception!
+    try {
+        CommandLineRunner.main(stringArray0);
+        fail(""Expecting exception: System.SystemExitException"");
+    } catch (System.SystemExitException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.System"", e);
+    }
+}","/**
+ * Runs the Compiler. Exits cleanly in the event of an error.
+ */"
+"public boolean shouldRunCompiler() {
+    return this.isConfigValid;
+}","public void test11() throws Throwable {
+    String[] stringArray0 = new String[0];
+    CommandLineRunner commandLineRunner0 = new CommandLineRunner(stringArray0, (PrintStream) null, (PrintStream) null);
+    assertTrue(commandLineRunner0.shouldRunCompiler());
+}","/**
+ * @return Whether the configuration is valid.
+ */"
+"public static void main(String[] args) {
+    CommandLineRunner runner = new CommandLineRunner(args);
+    if (runner.shouldRunCompiler()) {
+        runner.run();
+    } else {
+        System.exit(-1);
+    }
+}","public void test22() throws Throwable {
+    String[] stringArray0 = new String[1];
+    stringArray0[0] = ""1"";
+    // Undeclared exception!
+    try {
+        CommandLineRunner.main(stringArray0);
+        fail(""Expecting exception: System.SystemExitException"");
+    } catch (System.SystemExitException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.System"", e);
+    }
+}","/**
+ * Runs the Compiler. Exits cleanly in the event of an error.
+ */"
+"public static void main(String[] args) {
+    CommandLineRunner runner = new CommandLineRunner(args);
+    if (runner.shouldRunCompiler()) {
+        runner.run();
+    } else {
+        System.exit(-1);
+    }
+}","public void test33() throws Throwable {
+    String[] stringArray0 = new String[7];
+    stringArray0[0] = ""--A="";
+    // Undeclared exception!
+    try {
+        CommandLineRunner.main(stringArray0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // No match found
+        //
+        verifyException(""java.util.regex.Matcher"", e);
+    }
+}","/**
+ * Runs the Compiler. Exits cleanly in the event of an error.
+ */"
+"public boolean shouldRunCompiler() {
+    return this.isConfigValid;
+}","public void test44() throws Throwable {
+    String[] stringArray0 = new String[0];
+    CommandLineRunner commandLineRunner0 = new CommandLineRunner(stringArray0);
+    Supplier<List<JSSourceFile>> supplier0 = (Supplier<List<JSSourceFile>>) mock(Supplier.class, new ViolatedAssumptionAnswer());
+    doReturn((Object) null, (Object) null).when(supplier0).get();
+    Function<Integer, Boolean> function0 = (Function<Integer, Boolean>) mock(Function.class, new ViolatedAssumptionAnswer());
+    doReturn((Object) null).when(function0).apply(anyInt());
+    commandLineRunner0.enableTestMode(supplier0, supplier0, (Supplier<List<JSModule>>) null, function0);
+    commandLineRunner0.run();
+    assertTrue(commandLineRunner0.shouldRunCompiler());
+}","/**
+ * @return Whether the configuration is valid.
+ */"

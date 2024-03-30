@@ -1,0 +1,1461 @@
+focal_method,test_prefix,docstring
+"public static int formatCheckSumOctalBytes(final long value, byte[] buf, final int offset, final int length) {
+    // for NUL and space
+    int idx = length - 2;
+    formatUnsignedOctalString(value, buf, offset, idx);
+    // Trailing null
+    buf[offset + idx++] = 0;
+    // Trailing space
+    buf[offset + idx] = (byte) ' ';
+    return offset + length;
+}","public void test000() throws Throwable {
+    byte[] byteArray0 = new byte[8];
+    // Undeclared exception!
+    try {
+        TarUtils.formatCheckSumOctalBytes(0L, byteArray0, (byte) 48, (byte) 0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 45
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}","/**
+ * Writes an octal value into a buffer.
+ *
+ * Uses {@link #formatUnsignedOctalString} to format
+ * the value as an octal string with leading zeros.
+ * The converted number is followed by NUL and then space.
+ *
+ * @param value The value to convert
+ * @param buf The destination buffer
+ * @param offset The starting offset into the buffer.
+ * @param length The size of the buffer.
+ * @return The updated value of offset, i.e. offset+length
+ * @throws IllegalArgumentException if the value (and trailer) will not fit in the buffer
+ */"
+"public static void formatUnsignedOctalString(final long value, byte[] buffer, final int offset, final int length) {
+    int remaining = length;
+    remaining--;
+    if (value == 0) {
+        buffer[offset + remaining--] = (byte) '0';
+    } else {
+        long val = value;
+        for (; remaining >= 0 && val != 0; --remaining) {
+            // CheckStyle:MagicNumber OFF
+            buffer[offset + remaining] = (byte) ((byte) '0' + (byte) (val & 7));
+            val = val >>> 3;
+            // CheckStyle:MagicNumber ON
+        }
+        if (val != 0) {
+            throw new IllegalArgumentException(value + ""="" + Long.toOctalString(value) + "" will not fit in octal number buffer of length "" + length);
+        }
+    }
+    for (; remaining >= 0; --remaining) {
+        // leading zeros
+        buffer[offset + remaining] = (byte) '0';
+    }
+}","public void test011() throws Throwable {
+    byte[] byteArray0 = new byte[7];
+    // Undeclared exception!
+    try {
+        TarUtils.formatUnsignedOctalString((-1423L), byteArray0, 0, (byte) 55);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 54
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}","/**
+ * Fill buffer with unsigned octal number, padded with leading zeroes.
+ *
+ * @param value number to convert to octal - treated as unsigned
+ * @param buffer destination buffer
+ * @param offset starting offset in buffer
+ * @param length length of buffer to fill
+ * @throws IllegalArgumentException if the value will not fit in the buffer
+ */"
+"public static int formatNameBytes(String name, byte[] buf, final int offset, final int length) {
+    int i;
+    // copy until end of input or output is reached.
+    for (i = 0; i < length && i < name.length(); ++i) {
+        buf[offset + i] = (byte) name.charAt(i);
+    }
+    // Pad any remaining output bytes with NUL
+    for (; i < length; ++i) {
+        buf[offset + i] = 0;
+    }
+    return offset + length;
+}","public void test022() throws Throwable {
+    byte[] byteArray0 = new byte[4];
+    // Undeclared exception!
+    try {
+        TarUtils.formatNameBytes(""'"", byteArray0, (byte) 0, (byte) 118);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 4
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}","/**
+ * Copy a name (StringBuffer) into a buffer.
+ * Copies characters from the name into the buffer
+ * starting at the specified offset.
+ * If the buffer is longer than the name, the buffer
+ * is filled with trailing NULs.
+ * If the name is longer than the buffer,
+ * the output is truncated.
+ *
+ * @param name The header name from which to copy the characters.
+ * @param buf The buffer where the name is to be stored.
+ * @param offset The starting offset into the buffer
+ * @param length The maximum number of header bytes to copy.
+ * @return The updated offset, i.e. offset + length
+ */"
+"public static String parseName(byte[] buffer, final int offset, final int length) {
+    StringBuffer result = new StringBuffer(length);
+    int end = offset + length;
+    for (int i = offset; i < end; ++i) {
+        if (buffer[i] == 0) {
+            break;
+        }
+        result.append((char) buffer[i]);
+    }
+    return result.toString();
+}","public void test033() throws Throwable {
+    byte[] byteArray0 = new byte[6];
+    byteArray0[3] = (byte) (-75);
+    String string0 = TarUtils.parseName(byteArray0, (byte) 3, (byte) 30);
+    assertEquals(""\uFFB5"", string0);
+}","/**
+ * Parse an entry name from a buffer.
+ * Parsing stops when a NUL is found
+ * or the buffer length is reached.
+ *
+ * @param buffer The buffer from which to parse.
+ * @param offset The offset into the buffer from which to parse.
+ * @param length The maximum number of bytes to parse.
+ * @return The entry name.
+ */"
+"public static String parseName(byte[] buffer, final int offset, final int length) {
+    StringBuffer result = new StringBuffer(length);
+    int end = offset + length;
+    for (int i = offset; i < end; ++i) {
+        if (buffer[i] == 0) {
+            break;
+        }
+        result.append((char) buffer[i]);
+    }
+    return result.toString();
+}","public void test044() throws Throwable {
+    byte[] byteArray0 = new byte[9];
+    String string0 = TarUtils.parseName(byteArray0, 1073741824, 2034458192);
+    assertEquals("""", string0);
+}","/**
+ * Parse an entry name from a buffer.
+ * Parsing stops when a NUL is found
+ * or the buffer length is reached.
+ *
+ * @param buffer The buffer from which to parse.
+ * @param offset The offset into the buffer from which to parse.
+ * @param length The maximum number of bytes to parse.
+ * @return The entry name.
+ */"
+"public static long parseOctal(byte[] buffer, final int offset, final int length) {
+    long result = 0;
+    boolean stillPadding = true;
+    int end = offset + length;
+    for (int i = offset; i < end; ++i) {
+        final byte currentByte = buffer[i];
+        if (currentByte == 0) {
+            // Found trailing null
+            break;
+        }
+        // Ignore leading spaces ('0' can be ignored anyway)
+        if (currentByte == (byte) ' ' || currentByte == '0') {
+            if (stillPadding) {
+                continue;
+            }
+            if (currentByte == (byte) ' ') {
+                // Found trailing space
+                break;
+            }
+        }
+        stillPadding = false;
+        // CheckStyle:MagicNumber OFF
+        if (currentByte < '0' || currentByte > '7') {
+            throw new IllegalArgumentException(""Invalid octal digit at position "" + i + "" in '"" + new String(buffer, offset, length) + ""'"");
+        }
+        // TODO needs to reject invalid bytes
+        result = (result << 3) + (currentByte - '0');
+        // CheckStyle:MagicNumber ON
+    }
+    return result;
+}","public void test055() throws Throwable {
+    byte[] byteArray0 = new byte[8];
+    byteArray0[0] = (byte) 32;
+    byteArray0[1] = (byte) 22;
+    // Undeclared exception!
+    try {
+        TarUtils.parseOctal(byteArray0, (byte) 0, (byte) 118);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}","/**
+ * Parse an octal string from a buffer.
+ * Leading spaces are ignored.
+ * Parsing stops when a NUL is found, or a trailing space,
+ * or the buffer length is reached.
+ *
+ * Behaviour with non-octal input is currently undefined.
+ *
+ * @param buffer The buffer from which to parse.
+ * @param offset The offset into the buffer from which to parse.
+ * @param length The maximum number of bytes to parse.
+ * @return The long value of the octal string.
+ */"
+"public static long parseOctal(byte[] buffer, final int offset, final int length) {
+    long result = 0;
+    boolean stillPadding = true;
+    int end = offset + length;
+    for (int i = offset; i < end; ++i) {
+        final byte currentByte = buffer[i];
+        if (currentByte == 0) {
+            // Found trailing null
+            break;
+        }
+        // Ignore leading spaces ('0' can be ignored anyway)
+        if (currentByte == (byte) ' ' || currentByte == '0') {
+            if (stillPadding) {
+                continue;
+            }
+            if (currentByte == (byte) ' ') {
+                // Found trailing space
+                break;
+            }
+        }
+        stillPadding = false;
+        // CheckStyle:MagicNumber OFF
+        if (currentByte < '0' || currentByte > '7') {
+            throw new IllegalArgumentException(""Invalid octal digit at position "" + i + "" in '"" + new String(buffer, offset, length) + ""'"");
+        }
+        // TODO needs to reject invalid bytes
+        result = (result << 3) + (currentByte - '0');
+        // CheckStyle:MagicNumber ON
+    }
+    return result;
+}","public void test066() throws Throwable {
+    byte[] byteArray0 = new byte[8];
+    byteArray0[0] = (byte) 55;
+    long long0 = TarUtils.parseOctal(byteArray0, (byte) 0, (byte) 55);
+    assertEquals(7L, long0);
+}","/**
+ * Parse an octal string from a buffer.
+ * Leading spaces are ignored.
+ * Parsing stops when a NUL is found, or a trailing space,
+ * or the buffer length is reached.
+ *
+ * Behaviour with non-octal input is currently undefined.
+ *
+ * @param buffer The buffer from which to parse.
+ * @param offset The offset into the buffer from which to parse.
+ * @param length The maximum number of bytes to parse.
+ * @return The long value of the octal string.
+ */"
+"public static long parseOctal(byte[] buffer, final int offset, final int length) {
+    long result = 0;
+    boolean stillPadding = true;
+    int end = offset + length;
+    for (int i = offset; i < end; ++i) {
+        final byte currentByte = buffer[i];
+        if (currentByte == 0) {
+            // Found trailing null
+            break;
+        }
+        // Ignore leading spaces ('0' can be ignored anyway)
+        if (currentByte == (byte) ' ' || currentByte == '0') {
+            if (stillPadding) {
+                continue;
+            }
+            if (currentByte == (byte) ' ') {
+                // Found trailing space
+                break;
+            }
+        }
+        stillPadding = false;
+        // CheckStyle:MagicNumber OFF
+        if (currentByte < '0' || currentByte > '7') {
+            throw new IllegalArgumentException(""Invalid octal digit at position "" + i + "" in '"" + new String(buffer, offset, length) + ""'"");
+        }
+        // TODO needs to reject invalid bytes
+        result = (result << 3) + (currentByte - '0');
+        // CheckStyle:MagicNumber ON
+    }
+    return result;
+}","public void test077() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    long long0 = TarUtils.parseOctal(byteArray0, (byte) 23, (-1466));
+    assertEquals(0L, long0);
+}","/**
+ * Parse an octal string from a buffer.
+ * Leading spaces are ignored.
+ * Parsing stops when a NUL is found, or a trailing space,
+ * or the buffer length is reached.
+ *
+ * Behaviour with non-octal input is currently undefined.
+ *
+ * @param buffer The buffer from which to parse.
+ * @param offset The offset into the buffer from which to parse.
+ * @param length The maximum number of bytes to parse.
+ * @return The long value of the octal string.
+ */"
+"public static int formatLongOctalBytes(final long value, byte[] buf, final int offset, final int length) {
+    // For space
+    int idx = length - 1;
+    formatUnsignedOctalString(value, buf, offset, idx);
+    // Trailing space
+    buf[offset + idx] = (byte) ' ';
+    return offset + length;
+}","public void test088() throws Throwable {
+    byte[] byteArray0 = new byte[9];
+    // Undeclared exception!
+    try {
+        TarUtils.formatLongOctalBytes(7L, byteArray0, (byte) 48, (byte) 4);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 50
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}","/**
+ * Write an octal long integer into a buffer.
+ *
+ * Uses {@link #formatUnsignedOctalString} to format
+ * the value as an octal string with leading zeros.
+ * The converted number is followed by a space.
+ *
+ * @param value The value to write as octal
+ * @param buf The destinationbuffer.
+ * @param offset The starting offset into the buffer.
+ * @param length The length of the buffer
+ * @return The updated offset
+ * @throws IllegalArgumentException if the value (and trailer) will not fit in the buffer
+ */"
+"public static int formatNameBytes(String name, byte[] buf, final int offset, final int length) {
+    int i;
+    // copy until end of input or output is reached.
+    for (i = 0; i < length && i < name.length(); ++i) {
+        buf[offset + i] = (byte) name.charAt(i);
+    }
+    // Pad any remaining output bytes with NUL
+    for (; i < length; ++i) {
+        buf[offset + i] = 0;
+    }
+    return offset + length;
+}","public void test099() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    int int0 = TarUtils.formatNameBytes(""bttA&$H!0IE:w\""O"", byteArray0, (-2784), (byte) (-1));
+    assertEquals((-2785), int0);
+}","/**
+ * Copy a name (StringBuffer) into a buffer.
+ * Copies characters from the name into the buffer
+ * starting at the specified offset.
+ * If the buffer is longer than the name, the buffer
+ * is filled with trailing NULs.
+ * If the name is longer than the buffer,
+ * the output is truncated.
+ *
+ * @param name The header name from which to copy the characters.
+ * @param buf The buffer where the name is to be stored.
+ * @param offset The starting offset into the buffer
+ * @param length The maximum number of header bytes to copy.
+ * @return The updated offset, i.e. offset + length
+ */"
+"public static long computeCheckSum(final byte[] buf) {
+    long sum = 0;
+    for (int i = 0; i < buf.length; ++i) {
+        sum += BYTE_MASK & buf[i];
+    }
+    return sum;
+}","public void test1010() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    byteArray0[0] = (byte) 23;
+    long long0 = TarUtils.computeCheckSum(byteArray0);
+    assertEquals(23L, long0);
+}","/**
+ * Compute the checksum of a tar entry header.
+ *
+ * @param buf The tar entry's header buffer.
+ * @return The computed checksum.
+ */"
+"public static long parseOctal(byte[] buffer, final int offset, final int length) {
+    long result = 0;
+    boolean stillPadding = true;
+    int end = offset + length;
+    for (int i = offset; i < end; ++i) {
+        final byte currentByte = buffer[i];
+        if (currentByte == 0) {
+            // Found trailing null
+            break;
+        }
+        // Ignore leading spaces ('0' can be ignored anyway)
+        if (currentByte == (byte) ' ' || currentByte == '0') {
+            if (stillPadding) {
+                continue;
+            }
+            if (currentByte == (byte) ' ') {
+                // Found trailing space
+                break;
+            }
+        }
+        stillPadding = false;
+        // CheckStyle:MagicNumber OFF
+        if (currentByte < '0' || currentByte > '7') {
+            throw new IllegalArgumentException(""Invalid octal digit at position "" + i + "" in '"" + new String(buffer, offset, length) + ""'"");
+        }
+        // TODO needs to reject invalid bytes
+        result = (result << 3) + (currentByte - '0');
+        // CheckStyle:MagicNumber ON
+    }
+    return result;
+}","public void test1111() throws Throwable {
+    // Undeclared exception!
+    try {
+        TarUtils.parseOctal((byte[]) null, (byte) 28, (byte) 28);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}","/**
+ * Parse an octal string from a buffer.
+ * Leading spaces are ignored.
+ * Parsing stops when a NUL is found, or a trailing space,
+ * or the buffer length is reached.
+ *
+ * Behaviour with non-octal input is currently undefined.
+ *
+ * @param buffer The buffer from which to parse.
+ * @param offset The offset into the buffer from which to parse.
+ * @param length The maximum number of bytes to parse.
+ * @return The long value of the octal string.
+ */"
+"public static long parseOctal(byte[] buffer, final int offset, final int length) {
+    long result = 0;
+    boolean stillPadding = true;
+    int end = offset + length;
+    for (int i = offset; i < end; ++i) {
+        final byte currentByte = buffer[i];
+        if (currentByte == 0) {
+            // Found trailing null
+            break;
+        }
+        // Ignore leading spaces ('0' can be ignored anyway)
+        if (currentByte == (byte) ' ' || currentByte == '0') {
+            if (stillPadding) {
+                continue;
+            }
+            if (currentByte == (byte) ' ') {
+                // Found trailing space
+                break;
+            }
+        }
+        stillPadding = false;
+        // CheckStyle:MagicNumber OFF
+        if (currentByte < '0' || currentByte > '7') {
+            throw new IllegalArgumentException(""Invalid octal digit at position "" + i + "" in '"" + new String(buffer, offset, length) + ""'"");
+        }
+        // TODO needs to reject invalid bytes
+        result = (result << 3) + (currentByte - '0');
+        // CheckStyle:MagicNumber ON
+    }
+    return result;
+}","public void test1212() throws Throwable {
+    byte[] byteArray0 = new byte[2];
+    // Undeclared exception!
+    try {
+        TarUtils.parseOctal(byteArray0, 263, (byte) 1);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 263
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}","/**
+ * Parse an octal string from a buffer.
+ * Leading spaces are ignored.
+ * Parsing stops when a NUL is found, or a trailing space,
+ * or the buffer length is reached.
+ *
+ * Behaviour with non-octal input is currently undefined.
+ *
+ * @param buffer The buffer from which to parse.
+ * @param offset The offset into the buffer from which to parse.
+ * @param length The maximum number of bytes to parse.
+ * @return The long value of the octal string.
+ */"
+"public static String parseName(byte[] buffer, final int offset, final int length) {
+    StringBuffer result = new StringBuffer(length);
+    int end = offset + length;
+    for (int i = offset; i < end; ++i) {
+        if (buffer[i] == 0) {
+            break;
+        }
+        result.append((char) buffer[i]);
+    }
+    return result.toString();
+}","public void test1313() throws Throwable {
+    // Undeclared exception!
+    try {
+        TarUtils.parseName((byte[]) null, 1684, 490);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}","/**
+ * Parse an entry name from a buffer.
+ * Parsing stops when a NUL is found
+ * or the buffer length is reached.
+ *
+ * @param buffer The buffer from which to parse.
+ * @param offset The offset into the buffer from which to parse.
+ * @param length The maximum number of bytes to parse.
+ * @return The entry name.
+ */"
+"public static String parseName(byte[] buffer, final int offset, final int length) {
+    StringBuffer result = new StringBuffer(length);
+    int end = offset + length;
+    for (int i = offset; i < end; ++i) {
+        if (buffer[i] == 0) {
+            break;
+        }
+        result.append((char) buffer[i]);
+    }
+    return result.toString();
+}","public void test1414() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    // Undeclared exception!
+    try {
+        TarUtils.parseName(byteArray0, (byte) 82, (-4785));
+        fail(""Expecting exception: NegativeArraySizeException"");
+    } catch (NegativeArraySizeException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.lang.AbstractStringBuilder"", e);
+    }
+}","/**
+ * Parse an entry name from a buffer.
+ * Parsing stops when a NUL is found
+ * or the buffer length is reached.
+ *
+ * @param buffer The buffer from which to parse.
+ * @param offset The offset into the buffer from which to parse.
+ * @param length The maximum number of bytes to parse.
+ * @return The entry name.
+ */"
+"public static String parseName(byte[] buffer, final int offset, final int length) {
+    StringBuffer result = new StringBuffer(length);
+    int end = offset + length;
+    for (int i = offset; i < end; ++i) {
+        if (buffer[i] == 0) {
+            break;
+        }
+        result.append((char) buffer[i]);
+    }
+    return result.toString();
+}","public void test1515() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    // Undeclared exception!
+    try {
+        TarUtils.parseName(byteArray0, (-1298), (byte) 23);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -1298
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}","/**
+ * Parse an entry name from a buffer.
+ * Parsing stops when a NUL is found
+ * or the buffer length is reached.
+ *
+ * @param buffer The buffer from which to parse.
+ * @param offset The offset into the buffer from which to parse.
+ * @param length The maximum number of bytes to parse.
+ * @return The entry name.
+ */"
+"public static void formatUnsignedOctalString(final long value, byte[] buffer, final int offset, final int length) {
+    int remaining = length;
+    remaining--;
+    if (value == 0) {
+        buffer[offset + remaining--] = (byte) '0';
+    } else {
+        long val = value;
+        for (; remaining >= 0 && val != 0; --remaining) {
+            // CheckStyle:MagicNumber OFF
+            buffer[offset + remaining] = (byte) ((byte) '0' + (byte) (val & 7));
+            val = val >>> 3;
+            // CheckStyle:MagicNumber ON
+        }
+        if (val != 0) {
+            throw new IllegalArgumentException(value + ""="" + Long.toOctalString(value) + "" will not fit in octal number buffer of length "" + length);
+        }
+    }
+    for (; remaining >= 0; --remaining) {
+        // leading zeros
+        buffer[offset + remaining] = (byte) '0';
+    }
+}","public void test1616() throws Throwable {
+    // Undeclared exception!
+    try {
+        TarUtils.formatUnsignedOctalString(0L, (byte[]) null, 1522, 1522);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}","/**
+ * Fill buffer with unsigned octal number, padded with leading zeroes.
+ *
+ * @param value number to convert to octal - treated as unsigned
+ * @param buffer destination buffer
+ * @param offset starting offset in buffer
+ * @param length length of buffer to fill
+ * @throws IllegalArgumentException if the value will not fit in the buffer
+ */"
+"public static int formatOctalBytes(final long value, byte[] buf, final int offset, final int length) {
+    // For space and trailing null
+    int idx = length - 2;
+    formatUnsignedOctalString(value, buf, offset, idx);
+    // Trailing space
+    buf[offset + idx++] = (byte) ' ';
+    // Trailing null
+    buf[offset + idx] = 0;
+    return offset + length;
+}","public void test1717() throws Throwable {
+    // Undeclared exception!
+    try {
+        TarUtils.formatOctalBytes(0L, (byte[]) null, (-669), (-1));
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}","/**
+ * Write an octal integer into a buffer.
+ *
+ * Uses {@link #formatUnsignedOctalString} to format
+ * the value as an octal string with leading zeros.
+ * The converted number is followed by space and NUL
+ *
+ * @param value The value to write
+ * @param buf The buffer to receive the output
+ * @param offset The starting offset into the buffer
+ * @param length The size of the output buffer
+ * @return The updated offset, i.e offset+length
+ * @throws IllegalArgumentException if the value (and trailer) will not fit in the buffer
+ */"
+"public static int formatOctalBytes(final long value, byte[] buf, final int offset, final int length) {
+    // For space and trailing null
+    int idx = length - 2;
+    formatUnsignedOctalString(value, buf, offset, idx);
+    // Trailing space
+    buf[offset + idx++] = (byte) ' ';
+    // Trailing null
+    buf[offset + idx] = 0;
+    return offset + length;
+}","public void test1818() throws Throwable {
+    // Undeclared exception!
+    try {
+        TarUtils.formatOctalBytes(162L, (byte[]) null, 0, 0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // 162=242 will not fit in octal number buffer of length -2
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}","/**
+ * Write an octal integer into a buffer.
+ *
+ * Uses {@link #formatUnsignedOctalString} to format
+ * the value as an octal string with leading zeros.
+ * The converted number is followed by space and NUL
+ *
+ * @param value The value to write
+ * @param buf The buffer to receive the output
+ * @param offset The starting offset into the buffer
+ * @param length The size of the output buffer
+ * @return The updated offset, i.e offset+length
+ * @throws IllegalArgumentException if the value (and trailer) will not fit in the buffer
+ */"
+"public static int formatOctalBytes(final long value, byte[] buf, final int offset, final int length) {
+    // For space and trailing null
+    int idx = length - 2;
+    formatUnsignedOctalString(value, buf, offset, idx);
+    // Trailing space
+    buf[offset + idx++] = (byte) ' ';
+    // Trailing null
+    buf[offset + idx] = 0;
+    return offset + length;
+}","public void test1919() throws Throwable {
+    byte[] byteArray0 = new byte[3];
+    // Undeclared exception!
+    try {
+        TarUtils.formatOctalBytes(0L, byteArray0, (byte) 48, 0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 45
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}","/**
+ * Write an octal integer into a buffer.
+ *
+ * Uses {@link #formatUnsignedOctalString} to format
+ * the value as an octal string with leading zeros.
+ * The converted number is followed by space and NUL
+ *
+ * @param value The value to write
+ * @param buf The buffer to receive the output
+ * @param offset The starting offset into the buffer
+ * @param length The size of the output buffer
+ * @return The updated offset, i.e offset+length
+ * @throws IllegalArgumentException if the value (and trailer) will not fit in the buffer
+ */"
+"public static int formatNameBytes(String name, byte[] buf, final int offset, final int length) {
+    int i;
+    // copy until end of input or output is reached.
+    for (i = 0; i < length && i < name.length(); ++i) {
+        buf[offset + i] = (byte) name.charAt(i);
+    }
+    // Pad any remaining output bytes with NUL
+    for (; i < length; ++i) {
+        buf[offset + i] = 0;
+    }
+    return offset + length;
+}","public void test2020() throws Throwable {
+    // Undeclared exception!
+    try {
+        TarUtils.formatNameBytes(""(kT"", (byte[]) null, 0, 32);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}","/**
+ * Copy a name (StringBuffer) into a buffer.
+ * Copies characters from the name into the buffer
+ * starting at the specified offset.
+ * If the buffer is longer than the name, the buffer
+ * is filled with trailing NULs.
+ * If the name is longer than the buffer,
+ * the output is truncated.
+ *
+ * @param name The header name from which to copy the characters.
+ * @param buf The buffer where the name is to be stored.
+ * @param offset The starting offset into the buffer
+ * @param length The maximum number of header bytes to copy.
+ * @return The updated offset, i.e. offset + length
+ */"
+"public static int formatNameBytes(String name, byte[] buf, final int offset, final int length) {
+    int i;
+    // copy until end of input or output is reached.
+    for (i = 0; i < length && i < name.length(); ++i) {
+        buf[offset + i] = (byte) name.charAt(i);
+    }
+    // Pad any remaining output bytes with NUL
+    for (; i < length; ++i) {
+        buf[offset + i] = 0;
+    }
+    return offset + length;
+}","public void test2121() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    // Undeclared exception!
+    try {
+        TarUtils.formatNameBytes(""9IuUA1QX[`2ptEo8"", byteArray0, (byte) 44, (byte) 44);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 44
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}","/**
+ * Copy a name (StringBuffer) into a buffer.
+ * Copies characters from the name into the buffer
+ * starting at the specified offset.
+ * If the buffer is longer than the name, the buffer
+ * is filled with trailing NULs.
+ * If the name is longer than the buffer,
+ * the output is truncated.
+ *
+ * @param name The header name from which to copy the characters.
+ * @param buf The buffer where the name is to be stored.
+ * @param offset The starting offset into the buffer
+ * @param length The maximum number of header bytes to copy.
+ * @return The updated offset, i.e. offset + length
+ */"
+"public static int formatLongOctalBytes(final long value, byte[] buf, final int offset, final int length) {
+    // For space
+    int idx = length - 1;
+    formatUnsignedOctalString(value, buf, offset, idx);
+    // Trailing space
+    buf[offset + idx] = (byte) ' ';
+    return offset + length;
+}","public void test2222() throws Throwable {
+    // Undeclared exception!
+    try {
+        TarUtils.formatLongOctalBytes((-4119L), (byte[]) null, 500, 500);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}","/**
+ * Write an octal long integer into a buffer.
+ *
+ * Uses {@link #formatUnsignedOctalString} to format
+ * the value as an octal string with leading zeros.
+ * The converted number is followed by a space.
+ *
+ * @param value The value to write as octal
+ * @param buf The destinationbuffer.
+ * @param offset The starting offset into the buffer.
+ * @param length The length of the buffer
+ * @return The updated offset
+ * @throws IllegalArgumentException if the value (and trailer) will not fit in the buffer
+ */"
+"public static int formatLongOctalBytes(final long value, byte[] buf, final int offset, final int length) {
+    // For space
+    int idx = length - 1;
+    formatUnsignedOctalString(value, buf, offset, idx);
+    // Trailing space
+    buf[offset + idx] = (byte) ' ';
+    return offset + length;
+}","public void test2323() throws Throwable {
+    byte[] byteArray0 = new byte[8];
+    // Undeclared exception!
+    try {
+        TarUtils.formatLongOctalBytes(1576L, byteArray0, (byte) 0, (byte) 0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // 1576=3050 will not fit in octal number buffer of length -1
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}","/**
+ * Write an octal long integer into a buffer.
+ *
+ * Uses {@link #formatUnsignedOctalString} to format
+ * the value as an octal string with leading zeros.
+ * The converted number is followed by a space.
+ *
+ * @param value The value to write as octal
+ * @param buf The destinationbuffer.
+ * @param offset The starting offset into the buffer.
+ * @param length The length of the buffer
+ * @return The updated offset
+ * @throws IllegalArgumentException if the value (and trailer) will not fit in the buffer
+ */"
+"public static int formatCheckSumOctalBytes(final long value, byte[] buf, final int offset, final int length) {
+    // for NUL and space
+    int idx = length - 2;
+    formatUnsignedOctalString(value, buf, offset, idx);
+    // Trailing null
+    buf[offset + idx++] = 0;
+    // Trailing space
+    buf[offset + idx] = (byte) ' ';
+    return offset + length;
+}","public void test2424() throws Throwable {
+    // Undeclared exception!
+    try {
+        TarUtils.formatCheckSumOctalBytes(7L, (byte[]) null, 0, 2457);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}","/**
+ * Writes an octal value into a buffer.
+ *
+ * Uses {@link #formatUnsignedOctalString} to format
+ * the value as an octal string with leading zeros.
+ * The converted number is followed by NUL and then space.
+ *
+ * @param value The value to convert
+ * @param buf The destination buffer
+ * @param offset The starting offset into the buffer.
+ * @param length The size of the buffer.
+ * @return The updated value of offset, i.e. offset+length
+ * @throws IllegalArgumentException if the value (and trailer) will not fit in the buffer
+ */"
+"public static long computeCheckSum(final byte[] buf) {
+    long sum = 0;
+    for (int i = 0; i < buf.length; ++i) {
+        sum += BYTE_MASK & buf[i];
+    }
+    return sum;
+}","public void test2525() throws Throwable {
+    // Undeclared exception!
+    try {
+        TarUtils.computeCheckSum((byte[]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}","/**
+ * Compute the checksum of a tar entry header.
+ *
+ * @param buf The tar entry's header buffer.
+ * @return The computed checksum.
+ */"
+"public static void formatUnsignedOctalString(final long value, byte[] buffer, final int offset, final int length) {
+    int remaining = length;
+    remaining--;
+    if (value == 0) {
+        buffer[offset + remaining--] = (byte) '0';
+    } else {
+        long val = value;
+        for (; remaining >= 0 && val != 0; --remaining) {
+            // CheckStyle:MagicNumber OFF
+            buffer[offset + remaining] = (byte) ((byte) '0' + (byte) (val & 7));
+            val = val >>> 3;
+            // CheckStyle:MagicNumber ON
+        }
+        if (val != 0) {
+            throw new IllegalArgumentException(value + ""="" + Long.toOctalString(value) + "" will not fit in octal number buffer of length "" + length);
+        }
+    }
+    for (; remaining >= 0; --remaining) {
+        // leading zeros
+        buffer[offset + remaining] = (byte) '0';
+    }
+}","public void test2626() throws Throwable {
+    byte[] byteArray0 = new byte[8];
+    TarUtils.formatUnsignedOctalString((byte) 48, byteArray0, (byte) 3, (byte) 3);
+    assertArrayEquals(new byte[] { (byte) 0, (byte) 0, (byte) 0, (byte) 48, (byte) 54, (byte) 48, (byte) 0, (byte) 0 }, byteArray0);
+}","/**
+ * Fill buffer with unsigned octal number, padded with leading zeroes.
+ *
+ * @param value number to convert to octal - treated as unsigned
+ * @param buffer destination buffer
+ * @param offset starting offset in buffer
+ * @param length length of buffer to fill
+ * @throws IllegalArgumentException if the value will not fit in the buffer
+ */"
+"public static void formatUnsignedOctalString(final long value, byte[] buffer, final int offset, final int length) {
+    int remaining = length;
+    remaining--;
+    if (value == 0) {
+        buffer[offset + remaining--] = (byte) '0';
+    } else {
+        long val = value;
+        for (; remaining >= 0 && val != 0; --remaining) {
+            // CheckStyle:MagicNumber OFF
+            buffer[offset + remaining] = (byte) ((byte) '0' + (byte) (val & 7));
+            val = val >>> 3;
+            // CheckStyle:MagicNumber ON
+        }
+        if (val != 0) {
+            throw new IllegalArgumentException(value + ""="" + Long.toOctalString(value) + "" will not fit in octal number buffer of length "" + length);
+        }
+    }
+    for (; remaining >= 0; --remaining) {
+        // leading zeros
+        buffer[offset + remaining] = (byte) '0';
+    }
+}","public void test2727() throws Throwable {
+    byte[] byteArray0 = new byte[8];
+    // Undeclared exception!
+    try {
+        TarUtils.formatUnsignedOctalString((byte) (-1), byteArray0, (byte) 3, (-1645));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // -1=1777777777777777777777 will not fit in octal number buffer of length -1645
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}","/**
+ * Fill buffer with unsigned octal number, padded with leading zeroes.
+ *
+ * @param value number to convert to octal - treated as unsigned
+ * @param buffer destination buffer
+ * @param offset starting offset in buffer
+ * @param length length of buffer to fill
+ * @throws IllegalArgumentException if the value will not fit in the buffer
+ */"
+"public static long computeCheckSum(final byte[] buf) {
+    long sum = 0;
+    for (int i = 0; i < buf.length; ++i) {
+        sum += BYTE_MASK & buf[i];
+    }
+    return sum;
+}","public void test2828() throws Throwable {
+    byte[] byteArray0 = new byte[9];
+    long long0 = TarUtils.computeCheckSum(byteArray0);
+    assertEquals(0L, long0);
+}","/**
+ * Compute the checksum of a tar entry header.
+ *
+ * @param buf The tar entry's header buffer.
+ * @return The computed checksum.
+ */"
+"public static int formatCheckSumOctalBytes(final long value, byte[] buf, final int offset, final int length) {
+    // for NUL and space
+    int idx = length - 2;
+    formatUnsignedOctalString(value, buf, offset, idx);
+    // Trailing null
+    buf[offset + idx++] = 0;
+    // Trailing space
+    buf[offset + idx] = (byte) ' ';
+    return offset + length;
+}","public void test2929() throws Throwable {
+    byte[] byteArray0 = new byte[9];
+    // Undeclared exception!
+    try {
+        TarUtils.formatCheckSumOctalBytes((byte) 49, byteArray0, (byte) 0, (byte) 0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // 49=61 will not fit in octal number buffer of length -2
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}","/**
+ * Writes an octal value into a buffer.
+ *
+ * Uses {@link #formatUnsignedOctalString} to format
+ * the value as an octal string with leading zeros.
+ * The converted number is followed by NUL and then space.
+ *
+ * @param value The value to convert
+ * @param buf The destination buffer
+ * @param offset The starting offset into the buffer.
+ * @param length The size of the buffer.
+ * @return The updated value of offset, i.e. offset+length
+ * @throws IllegalArgumentException if the value (and trailer) will not fit in the buffer
+ */"
+"public static int formatNameBytes(String name, byte[] buf, final int offset, final int length) {
+    int i;
+    // copy until end of input or output is reached.
+    for (i = 0; i < length && i < name.length(); ++i) {
+        buf[offset + i] = (byte) name.charAt(i);
+    }
+    // Pad any remaining output bytes with NUL
+    for (; i < length; ++i) {
+        buf[offset + i] = 0;
+    }
+    return offset + length;
+}","public void test3030() throws Throwable {
+    byte[] byteArray0 = new byte[23];
+    int int0 = TarUtils.formatNameBytes("""", byteArray0, 8, 8);
+    assertEquals(16, int0);
+}","/**
+ * Copy a name (StringBuffer) into a buffer.
+ * Copies characters from the name into the buffer
+ * starting at the specified offset.
+ * If the buffer is longer than the name, the buffer
+ * is filled with trailing NULs.
+ * If the name is longer than the buffer,
+ * the output is truncated.
+ *
+ * @param name The header name from which to copy the characters.
+ * @param buf The buffer where the name is to be stored.
+ * @param offset The starting offset into the buffer
+ * @param length The maximum number of header bytes to copy.
+ * @return The updated offset, i.e. offset + length
+ */"
+"public static int formatNameBytes(String name, byte[] buf, final int offset, final int length) {
+    int i;
+    // copy until end of input or output is reached.
+    for (i = 0; i < length && i < name.length(); ++i) {
+        buf[offset + i] = (byte) name.charAt(i);
+    }
+    // Pad any remaining output bytes with NUL
+    for (; i < length; ++i) {
+        buf[offset + i] = 0;
+    }
+    return offset + length;
+}","public void test3131() throws Throwable {
+    byte[] byteArray0 = new byte[23];
+    int int0 = TarUtils.formatNameBytes(""krm~7gYZ|X"", byteArray0, 8, 8);
+    assertEquals(16, int0);
+}","/**
+ * Copy a name (StringBuffer) into a buffer.
+ * Copies characters from the name into the buffer
+ * starting at the specified offset.
+ * If the buffer is longer than the name, the buffer
+ * is filled with trailing NULs.
+ * If the name is longer than the buffer,
+ * the output is truncated.
+ *
+ * @param name The header name from which to copy the characters.
+ * @param buf The buffer where the name is to be stored.
+ * @param offset The starting offset into the buffer
+ * @param length The maximum number of header bytes to copy.
+ * @return The updated offset, i.e. offset + length
+ */"
+"public static int formatNameBytes(String name, byte[] buf, final int offset, final int length) {
+    int i;
+    // copy until end of input or output is reached.
+    for (i = 0; i < length && i < name.length(); ++i) {
+        buf[offset + i] = (byte) name.charAt(i);
+    }
+    // Pad any remaining output bytes with NUL
+    for (; i < length; ++i) {
+        buf[offset + i] = 0;
+    }
+    return offset + length;
+}","public void test3232() throws Throwable {
+    byte[] byteArray0 = new byte[28];
+    int int0 = TarUtils.formatNameBytes(""1"", byteArray0, (byte) 0, (byte) 0);
+    assertEquals(0, int0);
+}","/**
+ * Copy a name (StringBuffer) into a buffer.
+ * Copies characters from the name into the buffer
+ * starting at the specified offset.
+ * If the buffer is longer than the name, the buffer
+ * is filled with trailing NULs.
+ * If the name is longer than the buffer,
+ * the output is truncated.
+ *
+ * @param name The header name from which to copy the characters.
+ * @param buf The buffer where the name is to be stored.
+ * @param offset The starting offset into the buffer
+ * @param length The maximum number of header bytes to copy.
+ * @return The updated offset, i.e. offset + length
+ */"
+"public static int formatOctalBytes(final long value, byte[] buf, final int offset, final int length) {
+    // For space and trailing null
+    int idx = length - 2;
+    formatUnsignedOctalString(value, buf, offset, idx);
+    // Trailing space
+    buf[offset + idx++] = (byte) ' ';
+    // Trailing null
+    buf[offset + idx] = 0;
+    return offset + length;
+}","public void test3333() throws Throwable {
+    byte[] byteArray0 = new byte[28];
+    int int0 = TarUtils.formatOctalBytes(24L, byteArray0, (byte) 0, 8);
+    assertEquals(8, int0);
+}","/**
+ * Write an octal integer into a buffer.
+ *
+ * Uses {@link #formatUnsignedOctalString} to format
+ * the value as an octal string with leading zeros.
+ * The converted number is followed by space and NUL
+ *
+ * @param value The value to write
+ * @param buf The buffer to receive the output
+ * @param offset The starting offset into the buffer
+ * @param length The size of the output buffer
+ * @return The updated offset, i.e offset+length
+ * @throws IllegalArgumentException if the value (and trailer) will not fit in the buffer
+ */"
+"public static String parseName(byte[] buffer, final int offset, final int length) {
+    StringBuffer result = new StringBuffer(length);
+    int end = offset + length;
+    for (int i = offset; i < end; ++i) {
+        if (buffer[i] == 0) {
+            break;
+        }
+        result.append((char) buffer[i]);
+    }
+    return result.toString();
+}","public void test3334() throws Throwable {
+    byte[] byteArray0 = new byte[28];
+    int int0 = TarUtils.formatOctalBytes(24L, byteArray0, (byte) 0, 8);
+    String string0 = TarUtils.parseName(byteArray0, (byte) 0, (byte) 48);
+    assertEquals(""000030 "", string0);
+}","/**
+ * Parse an entry name from a buffer.
+ * Parsing stops when a NUL is found
+ * or the buffer length is reached.
+ *
+ * @param buffer The buffer from which to parse.
+ * @param offset The offset into the buffer from which to parse.
+ * @param length The maximum number of bytes to parse.
+ * @return The entry name.
+ */"
+"public static String parseName(byte[] buffer, final int offset, final int length) {
+    StringBuffer result = new StringBuffer(length);
+    int end = offset + length;
+    for (int i = offset; i < end; ++i) {
+        if (buffer[i] == 0) {
+            break;
+        }
+        result.append((char) buffer[i]);
+    }
+    return result.toString();
+}","public void test3435() throws Throwable {
+    byte[] byteArray0 = new byte[26];
+    String string0 = TarUtils.parseName(byteArray0, (byte) 0, (byte) 0);
+    assertEquals("""", string0);
+}","/**
+ * Parse an entry name from a buffer.
+ * Parsing stops when a NUL is found
+ * or the buffer length is reached.
+ *
+ * @param buffer The buffer from which to parse.
+ * @param offset The offset into the buffer from which to parse.
+ * @param length The maximum number of bytes to parse.
+ * @return The entry name.
+ */"
+"public static long parseOctal(byte[] buffer, final int offset, final int length) {
+    long result = 0;
+    boolean stillPadding = true;
+    int end = offset + length;
+    for (int i = offset; i < end; ++i) {
+        final byte currentByte = buffer[i];
+        if (currentByte == 0) {
+            // Found trailing null
+            break;
+        }
+        // Ignore leading spaces ('0' can be ignored anyway)
+        if (currentByte == (byte) ' ' || currentByte == '0') {
+            if (stillPadding) {
+                continue;
+            }
+            if (currentByte == (byte) ' ') {
+                // Found trailing space
+                break;
+            }
+        }
+        stillPadding = false;
+        // CheckStyle:MagicNumber OFF
+        if (currentByte < '0' || currentByte > '7') {
+            throw new IllegalArgumentException(""Invalid octal digit at position "" + i + "" in '"" + new String(buffer, offset, length) + ""'"");
+        }
+        // TODO needs to reject invalid bytes
+        result = (result << 3) + (currentByte - '0');
+        // CheckStyle:MagicNumber ON
+    }
+    return result;
+}","public void test3536() throws Throwable {
+    byte[] byteArray0 = new byte[33];
+    byteArray0[0] = (byte) 95;
+    // Undeclared exception!
+    try {
+        TarUtils.parseOctal(byteArray0, (byte) 0, (byte) 95);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}","/**
+ * Parse an octal string from a buffer.
+ * Leading spaces are ignored.
+ * Parsing stops when a NUL is found, or a trailing space,
+ * or the buffer length is reached.
+ *
+ * Behaviour with non-octal input is currently undefined.
+ *
+ * @param buffer The buffer from which to parse.
+ * @param offset The offset into the buffer from which to parse.
+ * @param length The maximum number of bytes to parse.
+ * @return The long value of the octal string.
+ */"
+"public static long parseOctal(byte[] buffer, final int offset, final int length) {
+    long result = 0;
+    boolean stillPadding = true;
+    int end = offset + length;
+    for (int i = offset; i < end; ++i) {
+        final byte currentByte = buffer[i];
+        if (currentByte == 0) {
+            // Found trailing null
+            break;
+        }
+        // Ignore leading spaces ('0' can be ignored anyway)
+        if (currentByte == (byte) ' ' || currentByte == '0') {
+            if (stillPadding) {
+                continue;
+            }
+            if (currentByte == (byte) ' ') {
+                // Found trailing space
+                break;
+            }
+        }
+        stillPadding = false;
+        // CheckStyle:MagicNumber OFF
+        if (currentByte < '0' || currentByte > '7') {
+            throw new IllegalArgumentException(""Invalid octal digit at position "" + i + "" in '"" + new String(buffer, offset, length) + ""'"");
+        }
+        // TODO needs to reject invalid bytes
+        result = (result << 3) + (currentByte - '0');
+        // CheckStyle:MagicNumber ON
+    }
+    return result;
+}","public void test3637() throws Throwable {
+    byte[] byteArray0 = new byte[7];
+    byteArray0[6] = (byte) (-66);
+    // Undeclared exception!
+    try {
+        TarUtils.parseOctal(byteArray0, (byte) 6, (byte) 1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid octal digit at position 6 in '\uFFFD'
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}","/**
+ * Parse an octal string from a buffer.
+ * Leading spaces are ignored.
+ * Parsing stops when a NUL is found, or a trailing space,
+ * or the buffer length is reached.
+ *
+ * Behaviour with non-octal input is currently undefined.
+ *
+ * @param buffer The buffer from which to parse.
+ * @param offset The offset into the buffer from which to parse.
+ * @param length The maximum number of bytes to parse.
+ * @return The long value of the octal string.
+ */"
+"public static long parseOctal(byte[] buffer, final int offset, final int length) {
+    long result = 0;
+    boolean stillPadding = true;
+    int end = offset + length;
+    for (int i = offset; i < end; ++i) {
+        final byte currentByte = buffer[i];
+        if (currentByte == 0) {
+            // Found trailing null
+            break;
+        }
+        // Ignore leading spaces ('0' can be ignored anyway)
+        if (currentByte == (byte) ' ' || currentByte == '0') {
+            if (stillPadding) {
+                continue;
+            }
+            if (currentByte == (byte) ' ') {
+                // Found trailing space
+                break;
+            }
+        }
+        stillPadding = false;
+        // CheckStyle:MagicNumber OFF
+        if (currentByte < '0' || currentByte > '7') {
+            throw new IllegalArgumentException(""Invalid octal digit at position "" + i + "" in '"" + new String(buffer, offset, length) + ""'"");
+        }
+        // TODO needs to reject invalid bytes
+        result = (result << 3) + (currentByte - '0');
+        // CheckStyle:MagicNumber ON
+    }
+    return result;
+}","public void test3738() throws Throwable {
+    byte[] byteArray0 = new byte[2];
+    long long0 = TarUtils.parseOctal(byteArray0, 0, (byte) 0);
+    assertEquals(0L, long0);
+}","/**
+ * Parse an octal string from a buffer.
+ * Leading spaces are ignored.
+ * Parsing stops when a NUL is found, or a trailing space,
+ * or the buffer length is reached.
+ *
+ * Behaviour with non-octal input is currently undefined.
+ *
+ * @param buffer The buffer from which to parse.
+ * @param offset The offset into the buffer from which to parse.
+ * @param length The maximum number of bytes to parse.
+ * @return The long value of the octal string.
+ */"
+"public static long parseOctal(byte[] buffer, final int offset, final int length) {
+    long result = 0;
+    boolean stillPadding = true;
+    int end = offset + length;
+    for (int i = offset; i < end; ++i) {
+        final byte currentByte = buffer[i];
+        if (currentByte == 0) {
+            // Found trailing null
+            break;
+        }
+        // Ignore leading spaces ('0' can be ignored anyway)
+        if (currentByte == (byte) ' ' || currentByte == '0') {
+            if (stillPadding) {
+                continue;
+            }
+            if (currentByte == (byte) ' ') {
+                // Found trailing space
+                break;
+            }
+        }
+        stillPadding = false;
+        // CheckStyle:MagicNumber OFF
+        if (currentByte < '0' || currentByte > '7') {
+            throw new IllegalArgumentException(""Invalid octal digit at position "" + i + "" in '"" + new String(buffer, offset, length) + ""'"");
+        }
+        // TODO needs to reject invalid bytes
+        result = (result << 3) + (currentByte - '0');
+        // CheckStyle:MagicNumber ON
+    }
+    return result;
+}","public void test3840() throws Throwable {
+    byte[] byteArray0 = new byte[28];
+    int int0 = TarUtils.formatOctalBytes(24L, byteArray0, (byte) 0, 8);
+    long long0 = TarUtils.parseOctal(byteArray0, 0, 8);
+    assertEquals(24L, long0);
+}","/**
+ * Parse an octal string from a buffer.
+ * Leading spaces are ignored.
+ * Parsing stops when a NUL is found, or a trailing space,
+ * or the buffer length is reached.
+ *
+ * Behaviour with non-octal input is currently undefined.
+ *
+ * @param buffer The buffer from which to parse.
+ * @param offset The offset into the buffer from which to parse.
+ * @param length The maximum number of bytes to parse.
+ * @return The long value of the octal string.
+ */"
+"public static int formatCheckSumOctalBytes(final long value, byte[] buf, final int offset, final int length) {
+    // for NUL and space
+    int idx = length - 2;
+    formatUnsignedOctalString(value, buf, offset, idx);
+    // Trailing null
+    buf[offset + idx++] = 0;
+    // Trailing space
+    buf[offset + idx] = (byte) ' ';
+    return offset + length;
+}","public void test3941() throws Throwable {
+    byte[] byteArray0 = new byte[8];
+    int int0 = TarUtils.formatCheckSumOctalBytes(0L, byteArray0, (byte) 3, (byte) 0);
+    assertArrayEquals(new byte[] { (byte) 48, (byte) 0, (byte) 32, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0 }, byteArray0);
+}","/**
+ * Writes an octal value into a buffer.
+ *
+ * Uses {@link #formatUnsignedOctalString} to format
+ * the value as an octal string with leading zeros.
+ * The converted number is followed by NUL and then space.
+ *
+ * @param value The value to convert
+ * @param buf The destination buffer
+ * @param offset The starting offset into the buffer.
+ * @param length The size of the buffer.
+ * @return The updated value of offset, i.e. offset+length
+ * @throws IllegalArgumentException if the value (and trailer) will not fit in the buffer
+ */"

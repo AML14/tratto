@@ -1,0 +1,94 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test00,"public void test00() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""function JSCompiler_reurnArg(JSCompiler_returnArg_value) {  return function() {return JSCompiler_returnArg_value}}"", ""function JSCompiler_reurnArg(JSCompiler_returnArg_value) {  return function() {return JSCompiler_returnArg_value}}"");
+    node0.setType(14);
+    Node node1 = new Node(41, node0, node0, node0, node0);
+    VarCheck varCheck0 = new VarCheck(compiler0);
+    varCheck0.process(node0, node0);
+    assertEquals(1, compiler0.getWarningCount());
+}",0,
+project,0,test11,"public void test11() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""function JSCompiler_returnArg(JSCompiler_returnArg_value) {  return function() {return JSCompiler_returnArg_value}}"", ""function JSCompiler_returnArg(JSCompiler_returnArg_value) {  return function() {return JSCompiler_returnArg_value}}"");
+    Node node1 = new Node(14, node0);
+    VarCheck varCheck0 = new VarCheck(compiler0);
+    // Undeclared exception!
+    try {
+        varCheck0.process(node0, node0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",0,
+project,0,test22,"public void test22() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""W"", ""W"");
+    Node node1 = new Node(2, node0);
+    VarCheck varCheck0 = new VarCheck(compiler0, true);
+    // Undeclared exception!
+    try {
+        varCheck0.process(node0, node0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // Unexpected variable W
+        //   Node(NAME W):  [testcode] :1:0
+        // [source unknown]
+        //   Parent(EXPR_RESULT):  [testcode] :1:0
+        // [source unknown]
+        //
+        verifyException(""com.google.javascript.jscomp.VarCheck"", e);
+    }
+}",0,
+project,0,test33,"public void test33() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""function JSCompiler_reurnArg(JSCompiler_returnArg_value) {  return function() {return JSCompiler_returnArg_value}}"", ""function JSCompiler_reurnArg(JSCompiler_returnArg_value) {  return function() {return JSCompiler_returnArg_value}}"");
+    Node node1 = new Node(125, node0);
+    VarCheck varCheck0 = new VarCheck(compiler0);
+    varCheck0.process(node0, node0);
+    assertEquals(1, compiler0.getWarningCount());
+}",0,"assertEquals(0, compiler0.getWarningCount())"
+project,0,test34,"public void test34() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""function JSCompiler_reurnArg(JSCompiler_returnArg_value) {  return function() {return JSCompiler_returnArg_value}}"", ""function JSCompiler_reurnArg(JSCompiler_returnArg_value) {  return function() {return JSCompiler_returnArg_value}}"");
+    Node node1 = new Node(125, node0);
+    VarCheck varCheck0 = new VarCheck(compiler0);
+    varCheck0.process(node0, node0);
+    assertEquals(0, compiler0.getErrorCount());
+}",0,"assertEquals(1, compiler0.getErrorCount())"
+project,0,test45,"public void test45() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""com.google.javascript.jscomp.AstChangeProxy"", ""com.google.javascript.jscomp.AstChangeProxy"");
+    VarCheck varCheck0 = new VarCheck(compiler0);
+    // Undeclared exception!
+    try {
+        varCheck0.process(node0, node0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // null
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",0,
+project,0,test56,"public void test56() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""JSC_INVALID_FUNCTION_DECL"", ""JSC_INVALID_FUNCTION_DECL"");
+    VarCheck varCheck0 = new VarCheck(compiler0);
+    // Undeclared exception!
+    try {
+        varCheck0.process(node0, node0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // null
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",0,

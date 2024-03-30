@@ -1,0 +1,32 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    PatternBuilder patternBuilder0 = new PatternBuilder();
+    patternBuilder0.withPattern(""_"");
+    Option option0 = patternBuilder0.create();
+    assertEquals(""-_"", option0.getPreferredName());
+}",0,assertNotNull(option0.getPreferredName())
+project,0,test001,"public void test001() throws Throwable {
+    PatternBuilder patternBuilder0 = new PatternBuilder();
+    patternBuilder0.withPattern(""_"");
+    Option option0 = patternBuilder0.create();
+    assertFalse(option0.isRequired());
+}",0,assertTrue(option0.isRequired())
+project,0,test012,"public void test012() throws Throwable {
+    PatternBuilder patternBuilder0 = new PatternBuilder();
+    patternBuilder0.withPattern(""u+B54O&?sj$}"");
+    GroupImpl groupImpl0 = (GroupImpl) patternBuilder0.create();
+    assertEquals(0, groupImpl0.getMinimum());
+}",0,
+project,0,test093,"public void test093() throws Throwable {
+    PatternBuilder patternBuilder0 = new PatternBuilder();
+    // Undeclared exception!
+    try {
+        patternBuilder0.withPattern(""WX!E*''e:7l8 /%S'"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Cannot use null as a validator.
+        //
+        verifyException(""org.apache.commons.cli2.builder.ArgumentBuilder"", e);
+    }
+}",1,

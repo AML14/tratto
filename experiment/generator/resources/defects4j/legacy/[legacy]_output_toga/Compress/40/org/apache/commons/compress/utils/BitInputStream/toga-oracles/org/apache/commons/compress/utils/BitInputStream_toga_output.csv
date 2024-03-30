@@ -1,0 +1,38 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test158,"public void test158() throws Throwable {
+    ByteOrder byteOrder0 = ByteOrder.nativeOrder();
+    BitInputStream bitInputStream0 = new BitInputStream((InputStream) null, byteOrder0);
+    bitInputStream0.clearBitCache();
+    ByteOrder.nativeOrder();
+    bitInputStream0.clearBitCache();
+    int int0 = 0;
+    ByteOrder.nativeOrder();
+    bitInputStream0.close();
+    // Undeclared exception!
+    try {
+        bitInputStream0.readBits(int0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.utils.BitInputStream"", e);
+    }
+}",1,
+project,0,test169,"public void test169() throws Throwable {
+    ByteOrder byteOrder0 = ByteOrder.LITTLE_ENDIAN;
+    ByteOrder.nativeOrder();
+    BitInputStream bitInputStream0 = new BitInputStream((InputStream) null, byteOrder0);
+    bitInputStream0.readBits(8);
+    bitInputStream0.close();
+    // Undeclared exception!
+    try {
+        bitInputStream0.clearBitCache();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.utils.BitInputStream"", e);
+    }
+}",0,

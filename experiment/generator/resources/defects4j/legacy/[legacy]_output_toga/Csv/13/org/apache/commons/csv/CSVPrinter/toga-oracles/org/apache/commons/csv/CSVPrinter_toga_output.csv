@@ -1,0 +1,39 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.EXCEL;
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""x_XctZ;Lm1%Yo"");
+    CSVPrinter cSVPrinter0 = new CSVPrinter(mockPrintStream0, cSVFormat0);
+    Appendable appendable0 = cSVPrinter0.getOut();
+    assertSame(appendable0, mockPrintStream0);
+}",0,
+project,0,test011,"public void test011() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.newFormat('f');
+    Object[] objectArray0 = new Object[7];
+    objectArray0[0] = (Object) cSVFormat0;
+    CSVFormat cSVFormat1 = cSVFormat0.withHeaderComments(objectArray0);
+    StringWriter stringWriter0 = new StringWriter(23);
+    StringBuffer stringBuffer0 = stringWriter0.getBuffer();
+    CSVPrinter cSVPrinter0 = cSVFormat1.print(stringBuffer0);
+    assertNotNull(cSVPrinter0);
+}",0,assertNotNull(cSVPrinter0)
+project,0,test034,"public void test034() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    BufferedOutputStream bufferedOutputStream0 = new BufferedOutputStream(byteArrayOutputStream0);
+    MockPrintStream mockPrintStream0 = new MockPrintStream(bufferedOutputStream0);
+    CSVFormat cSVFormat0 = CSVFormat.newFormat('q');
+    CSVFormat cSVFormat1 = cSVFormat0.withSkipHeaderRecord();
+    RowSetMetaDataImpl rowSetMetaDataImpl0 = new RowSetMetaDataImpl();
+    CSVFormat cSVFormat2 = cSVFormat1.withHeader((ResultSetMetaData) rowSetMetaDataImpl0);
+    CSVPrinter cSVPrinter0 = cSVFormat2.print(mockPrintStream0);
+    assertNotNull(cSVPrinter0);
+}",0,
+project,0,test159,"public void test159() throws Throwable {
+    MockFileWriter mockFileWriter0 = new MockFileWriter(""sh [P#W6*\""H%0y-"", true);
+    CSVFormat cSVFormat0 = CSVFormat.TDF;
+    QuoteMode quoteMode0 = QuoteMode.NON_NUMERIC;
+    CSVFormat cSVFormat1 = cSVFormat0.withQuoteMode(quoteMode0);
+    CSVPrinter cSVPrinter0 = cSVFormat1.print(mockFileWriter0);
+    long[] longArray0 = new long[6];
+    cSVPrinter0.print(longArray0[5]);
+    assertArrayEquals(new long[] { 0L, 0L, 0L, 0L, 0L, 0L }, longArray0);
+}",0,

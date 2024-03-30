@@ -1,0 +1,2135 @@
+focal_method,test_prefix,docstring
+"public double getEventTime() {
+    return pendingEventTime;
+}","public void test000() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn(2146763342, (-1)).when(eventHandler0).eventOccurred(anyDouble(), any(double[].class), anyBoolean());
+    doReturn((-1863.0), 1.0, (-1863.0), 1.0, 0.0).when(eventHandler0).g(anyDouble(), any(double[].class));
+    EventState eventState0 = new EventState(eventHandler0, Double.NaN, Double.NaN, 3);
+    double[] doubleArray0 = new double[6];
+    DummyStepInterpolator dummyStepInterpolator0 = new DummyStepInterpolator(doubleArray0, false);
+    boolean boolean0 = eventState0.evaluateStep(dummyStepInterpolator0);
+    eventState0.stepAccepted((-4390.858), doubleArray0);
+    eventState0.stepAccepted((-1.0), doubleArray0);
+    boolean boolean1 = eventState0.reset(0.0, doubleArray0);
+    assertEquals(Double.NaN, eventState0.getEventTime(), 0.01);
+}","/**
+ * Get the occurrence time of the event triggered in the current
+ * step.
+ * @return occurrence time of the event triggered in the current
+ * step.
+ */"
+"public boolean reset(final double t, final double[] y) throws EventException {
+    if (!pendingEvent) {
+        return false;
+    }
+    if (nextAction == EventHandler.RESET_STATE) {
+        handler.resetState(t, y);
+    }
+    pendingEvent = false;
+    pendingEventTime = Double.NaN;
+    return (nextAction == EventHandler.RESET_STATE) || (nextAction == EventHandler.RESET_DERIVATIVES);
+}","public void test001() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn(2146763342, (-1)).when(eventHandler0).eventOccurred(anyDouble(), any(double[].class), anyBoolean());
+    doReturn((-1863.0), 1.0, (-1863.0), 1.0, 0.0).when(eventHandler0).g(anyDouble(), any(double[].class));
+    EventState eventState0 = new EventState(eventHandler0, Double.NaN, Double.NaN, 3);
+    double[] doubleArray0 = new double[6];
+    DummyStepInterpolator dummyStepInterpolator0 = new DummyStepInterpolator(doubleArray0, false);
+    boolean boolean0 = eventState0.evaluateStep(dummyStepInterpolator0);
+    eventState0.stepAccepted((-4390.858), doubleArray0);
+    eventState0.stepAccepted((-1.0), doubleArray0);
+    boolean boolean1 = eventState0.reset(0.0, doubleArray0);
+    assertFalse(boolean1 == boolean0);
+}","/**
+ * Let the event handler reset the state if it wants.
+ * @param t value of the independent <i>time</i> variable at the
+ * beginning of the next step
+ * @param y array were to put the desired state vector at the beginning
+ * of the next step
+ * @return true if the integrator should reset the derivatives too
+ * @exception EventException if the state cannot be reseted by the event
+ * handler
+ */"
+"public int getMaxIterationCount() {
+    return maxIterationCount;
+}","public void test002() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn(2146763342, (-1)).when(eventHandler0).eventOccurred(anyDouble(), any(double[].class), anyBoolean());
+    doReturn((-1863.0), 1.0, (-1863.0), 1.0, 0.0).when(eventHandler0).g(anyDouble(), any(double[].class));
+    EventState eventState0 = new EventState(eventHandler0, Double.NaN, Double.NaN, 3);
+    double[] doubleArray0 = new double[6];
+    DummyStepInterpolator dummyStepInterpolator0 = new DummyStepInterpolator(doubleArray0, false);
+    boolean boolean0 = eventState0.evaluateStep(dummyStepInterpolator0);
+    eventState0.stepAccepted((-4390.858), doubleArray0);
+    eventState0.stepAccepted((-1.0), doubleArray0);
+    boolean boolean1 = eventState0.reset(0.0, doubleArray0);
+    assertEquals(3, eventState0.getMaxIterationCount());
+}","/**
+ * Get the upper limit in the iteration count for event localization.
+ * @return upper limit in the iteration count for event localization
+ */"
+"public double getEventTime() {
+    return pendingEventTime;
+}","public void test014() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn((-1619)).when(eventHandler0).eventOccurred(anyDouble(), any(double[].class), anyBoolean());
+    doReturn(13.1043514962, Double.NaN, 13.1043514962, Double.NaN, 2656.17622683).when(eventHandler0).g(anyDouble(), any(double[].class));
+    EventState eventState0 = new EventState(eventHandler0, 2656.17622683, 2656.17622683, (-1925));
+    double[] doubleArray0 = new double[3];
+    eventState0.stepAccepted((-2298.0), doubleArray0);
+    DummyStepInterpolator dummyStepInterpolator0 = new DummyStepInterpolator(doubleArray0, false);
+    eventState0.evaluateStep(dummyStepInterpolator0);
+    eventState0.stepAccepted(1146.3058360164546, doubleArray0);
+    boolean boolean0 = eventState0.stop();
+    assertEquals((-2298.0), eventState0.getEventTime(), 0.01);
+}","/**
+ * Get the occurrence time of the event triggered in the current
+ * step.
+ * @return occurrence time of the event triggered in the current
+ * step.
+ */"
+"public boolean stop() {
+    return nextAction == EventHandler.STOP;
+}","public void test015() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn((-1619)).when(eventHandler0).eventOccurred(anyDouble(), any(double[].class), anyBoolean());
+    doReturn(13.1043514962, Double.NaN, 13.1043514962, Double.NaN, 2656.17622683).when(eventHandler0).g(anyDouble(), any(double[].class));
+    EventState eventState0 = new EventState(eventHandler0, 2656.17622683, 2656.17622683, (-1925));
+    double[] doubleArray0 = new double[3];
+    eventState0.stepAccepted((-2298.0), doubleArray0);
+    DummyStepInterpolator dummyStepInterpolator0 = new DummyStepInterpolator(doubleArray0, false);
+    eventState0.evaluateStep(dummyStepInterpolator0);
+    eventState0.stepAccepted(1146.3058360164546, doubleArray0);
+    boolean boolean0 = eventState0.stop();
+    assertFalse(boolean0);
+}","/**
+ * Check if the integration should be stopped at the end of the
+ * current step.
+ * @return true if the integration should be stopped
+ */"
+"public double getEventTime() {
+    return pendingEventTime;
+}","public void test026() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn((-1863.0), 1.0, (-1863.0), 1.0, 0.0).when(eventHandler0).g(anyDouble(), any(double[].class));
+    EventState eventState0 = new EventState(eventHandler0, Double.NaN, Double.NaN, 3);
+    assertEquals(Double.NaN, eventState0.getEventTime(), 0.01);
+}","/**
+ * Get the occurrence time of the event triggered in the current
+ * step.
+ * @return occurrence time of the event triggered in the current
+ * step.
+ */"
+"public boolean evaluateStep(final StepInterpolator interpolator) throws DerivativeException, EventException, ConvergenceException {
+    try {
+        forward = interpolator.isForward();
+        final double t1 = interpolator.getCurrentTime();
+        final int n = Math.max(1, (int) Math.ceil(Math.abs(t1 - t0) / maxCheckInterval));
+        final double h = (t1 - t0) / n;
+        double ta = t0;
+        double ga = g0;
+        double tb = t0 + (interpolator.isForward() ? convergence : -convergence);
+        for (int i = 0; i < n; ++i) {
+            // evaluate handler value at the end of the substep
+            tb += h;
+            interpolator.setInterpolatedTime(tb);
+            final double gb = handler.g(tb, interpolator.getInterpolatedState());
+            // check events occurrence
+            if (g0Positive ^ (gb >= 0)) {
+                // there is a sign change: an event is expected during this step
+                // this is a corner case:
+                // - there was an event near ta,
+                // - there is another event between ta and tb
+                // - when ta was computed, convergence was reached on the ""wrong side"" of the interval
+                // this implies that the real sign of ga is the same as gb, so we need to slightly
+                // shift ta to make sure ga and gb get opposite signs and the solver won't complain
+                // about bracketing
+                // this should never happen
+                // variation direction, with respect to the integration direction
+                increasing = gb >= ga;
+                final UnivariateRealFunction f = new UnivariateRealFunction() {
+
+                    public double value(final double t) throws FunctionEvaluationException {
+                        try {
+                            interpolator.setInterpolatedTime(t);
+                            return handler.g(t, interpolator.getInterpolatedState());
+                        } catch (DerivativeException e) {
+                            throw new FunctionEvaluationException(e, t);
+                        } catch (EventException e) {
+                            throw new FunctionEvaluationException(e, t);
+                        }
+                    }
+                };
+                final BrentSolver solver = new BrentSolver();
+                solver.setAbsoluteAccuracy(convergence);
+                solver.setMaximalIterationCount(maxIterationCount);
+                final double root = (ta <= tb) ? solver.solve(f, ta, tb) : solver.solve(f, tb, ta);
+                if ((Math.abs(root - ta) <= convergence) && (Math.abs(root - previousEventTime) <= convergence)) {
+                    // we have either found nothing or found (again ?) a past event, we simply ignore it
+                    ta = tb;
+                    ga = gb;
+                } else if (Double.isNaN(previousEventTime) || (Math.abs(previousEventTime - root) > convergence)) {
+                    pendingEventTime = root;
+                    if (pendingEvent && (Math.abs(t1 - pendingEventTime) <= convergence)) {
+                        // we were already waiting for this event which was
+                        // found during a previous call for a step that was
+                        // rejected, this step must now be accepted since it
+                        // properly ends exactly at the event occurrence
+                        return false;
+                    }
+                    // either we were not waiting for the event or it has
+                    // moved in such a way the step cannot be accepted
+                    pendingEvent = true;
+                    return true;
+                }
+            } else {
+                // no sign change: there is no event for now
+                ta = tb;
+                ga = gb;
+            }
+        }
+        // no event during the whole step
+        pendingEvent = false;
+        pendingEventTime = Double.NaN;
+        return false;
+    } catch (FunctionEvaluationException e) {
+        final Throwable cause = e.getCause();
+        if ((cause != null) && (cause instanceof DerivativeException)) {
+            throw (DerivativeException) cause;
+        } else if ((cause != null) && (cause instanceof EventException)) {
+            throw (EventException) cause;
+        }
+        throw new EventException(e);
+    }
+}","public void test027() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn((-1863.0), 1.0, (-1863.0), 1.0, 0.0).when(eventHandler0).g(anyDouble(), any(double[].class));
+    EventState eventState0 = new EventState(eventHandler0, Double.NaN, Double.NaN, 3);
+    double[] doubleArray0 = new double[6];
+    DummyStepInterpolator dummyStepInterpolator0 = new DummyStepInterpolator(doubleArray0, true);
+    boolean boolean0 = eventState0.evaluateStep(dummyStepInterpolator0);
+    assertTrue(boolean0);
+}","/**
+ * Evaluate the impact of the proposed step on the event handler.
+ * @param interpolator step interpolator for the proposed step
+ * @return true if the event handler triggers an event before
+ * the end of the proposed step (this implies the step should be
+ * rejected)
+ * @exception DerivativeException if the interpolator fails to
+ * compute the switching function somewhere within the step
+ * @exception EventException if the switching function
+ * cannot be evaluated
+ * @exception ConvergenceException if an event cannot be located
+ */"
+"public int getMaxIterationCount() {
+    return maxIterationCount;
+}","public void test028() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn((-1863.0), 1.0, (-1863.0), 1.0, 0.0).when(eventHandler0).g(anyDouble(), any(double[].class));
+    EventState eventState0 = new EventState(eventHandler0, Double.NaN, Double.NaN, 3);
+    double[] doubleArray0 = new double[6];
+    DummyStepInterpolator dummyStepInterpolator0 = new DummyStepInterpolator(doubleArray0, true);
+    boolean boolean0 = eventState0.evaluateStep(dummyStepInterpolator0);
+    eventState0.reinitializeBegin(Double.NaN, doubleArray0);
+    assertEquals(3, eventState0.getMaxIterationCount());
+}","/**
+ * Get the upper limit in the iteration count for event localization.
+ * @return upper limit in the iteration count for event localization
+ */"
+"public boolean stop() {
+    return nextAction == EventHandler.STOP;
+}","public void test029() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn((-1863.0), 1.0, (-1863.0), 1.0, 0.0).when(eventHandler0).g(anyDouble(), any(double[].class));
+    EventState eventState0 = new EventState(eventHandler0, Double.NaN, Double.NaN, 3);
+    double[] doubleArray0 = new double[6];
+    DummyStepInterpolator dummyStepInterpolator0 = new DummyStepInterpolator(doubleArray0, true);
+    boolean boolean0 = eventState0.evaluateStep(dummyStepInterpolator0);
+    eventState0.reinitializeBegin(Double.NaN, doubleArray0);
+    assertFalse(eventState0.stop());
+}","/**
+ * Check if the integration should be stopped at the end of the
+ * current step.
+ * @return true if the integration should be stopped
+ */"
+"public double getEventTime() {
+    return pendingEventTime;
+}","public void test0310() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, 417.0404448, 417.0404448, 46);
+    int int0 = eventState0.getMaxIterationCount();
+    assertEquals(Double.NaN, eventState0.getEventTime(), 0.01);
+}","/**
+ * Get the occurrence time of the event triggered in the current
+ * step.
+ * @return occurrence time of the event triggered in the current
+ * step.
+ */"
+"public boolean stop() {
+    return nextAction == EventHandler.STOP;
+}","public void test0311() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, 417.0404448, 417.0404448, 46);
+    int int0 = eventState0.getMaxIterationCount();
+    assertFalse(eventState0.stop());
+}","/**
+ * Check if the integration should be stopped at the end of the
+ * current step.
+ * @return true if the integration should be stopped
+ */"
+"public double getMaxCheckInterval() {
+    return maxCheckInterval;
+}","public void test0312() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, 417.0404448, 417.0404448, 46);
+    int int0 = eventState0.getMaxIterationCount();
+    assertEquals(417.0404448, eventState0.getMaxCheckInterval(), 0.01);
+}","/**
+ * Get the maximal time interval between events handler checks.
+ * @return maximal time interval between events handler checks
+ */"
+"public int getMaxIterationCount() {
+    return maxIterationCount;
+}","public void test0313() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, 417.0404448, 417.0404448, 46);
+    int int0 = eventState0.getMaxIterationCount();
+    assertEquals(46, int0);
+}","/**
+ * Get the upper limit in the iteration count for event localization.
+ * @return upper limit in the iteration count for event localization
+ */"
+"public int getMaxIterationCount() {
+    return maxIterationCount;
+}","public void test0414() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, 54.079985423256, 54.079985423256, (-1));
+    int int0 = eventState0.getMaxIterationCount();
+    assertEquals((-1), int0);
+}","/**
+ * Get the upper limit in the iteration count for event localization.
+ * @return upper limit in the iteration count for event localization
+ */"
+"public double getMaxCheckInterval() {
+    return maxCheckInterval;
+}","public void test0415() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, 54.079985423256, 54.079985423256, (-1));
+    int int0 = eventState0.getMaxIterationCount();
+    assertEquals(54.079985423256, eventState0.getMaxCheckInterval(), 0.01);
+}","/**
+ * Get the maximal time interval between events handler checks.
+ * @return maximal time interval between events handler checks
+ */"
+"public boolean stop() {
+    return nextAction == EventHandler.STOP;
+}","public void test0416() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, 54.079985423256, 54.079985423256, (-1));
+    int int0 = eventState0.getMaxIterationCount();
+    assertFalse(eventState0.stop());
+}","/**
+ * Check if the integration should be stopped at the end of the
+ * current step.
+ * @return true if the integration should be stopped
+ */"
+"public double getEventTime() {
+    return pendingEventTime;
+}","public void test0417() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, 54.079985423256, 54.079985423256, (-1));
+    int int0 = eventState0.getMaxIterationCount();
+    assertEquals(Double.NaN, eventState0.getEventTime(), 0.01);
+}","/**
+ * Get the occurrence time of the event triggered in the current
+ * step.
+ * @return occurrence time of the event triggered in the current
+ * step.
+ */"
+"public double getConvergence() {
+    return convergence;
+}","public void test0518() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, 0.0, 1378.49288319921, 2);
+    double double0 = eventState0.getMaxCheckInterval();
+    assertEquals(1378.49288319921, eventState0.getConvergence(), 0.01);
+}","/**
+ * Get the convergence threshold for event localization.
+ * @return convergence threshold for event localization
+ */"
+"public boolean stop() {
+    return nextAction == EventHandler.STOP;
+}","public void test0519() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, 0.0, 1378.49288319921, 2);
+    double double0 = eventState0.getMaxCheckInterval();
+    assertFalse(eventState0.stop());
+}","/**
+ * Check if the integration should be stopped at the end of the
+ * current step.
+ * @return true if the integration should be stopped
+ */"
+"public double getEventTime() {
+    return pendingEventTime;
+}","public void test0520() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, 0.0, 1378.49288319921, 2);
+    double double0 = eventState0.getMaxCheckInterval();
+    assertEquals(Double.NaN, eventState0.getEventTime(), 0.01);
+}","/**
+ * Get the occurrence time of the event triggered in the current
+ * step.
+ * @return occurrence time of the event triggered in the current
+ * step.
+ */"
+"public int getMaxIterationCount() {
+    return maxIterationCount;
+}","public void test0521() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, 0.0, 1378.49288319921, 2);
+    double double0 = eventState0.getMaxCheckInterval();
+    assertEquals(2, eventState0.getMaxIterationCount());
+}","/**
+ * Get the upper limit in the iteration count for event localization.
+ * @return upper limit in the iteration count for event localization
+ */"
+"public double getMaxCheckInterval() {
+    return maxCheckInterval;
+}","public void test0522() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, 0.0, 1378.49288319921, 2);
+    double double0 = eventState0.getMaxCheckInterval();
+    assertEquals(0.0, double0, 0.01);
+}","/**
+ * Get the maximal time interval between events handler checks.
+ * @return maximal time interval between events handler checks
+ */"
+"public int getMaxIterationCount() {
+    return maxIterationCount;
+}","public void test0623() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, 1.0, (-2778.2), 0);
+    double double0 = eventState0.getMaxCheckInterval();
+    assertEquals(0, eventState0.getMaxIterationCount());
+}","/**
+ * Get the upper limit in the iteration count for event localization.
+ * @return upper limit in the iteration count for event localization
+ */"
+"public double getMaxCheckInterval() {
+    return maxCheckInterval;
+}","public void test0624() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, 1.0, (-2778.2), 0);
+    double double0 = eventState0.getMaxCheckInterval();
+    assertEquals(1.0, double0, 0.01);
+}","/**
+ * Get the maximal time interval between events handler checks.
+ * @return maximal time interval between events handler checks
+ */"
+"public double getEventTime() {
+    return pendingEventTime;
+}","public void test0625() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, 1.0, (-2778.2), 0);
+    double double0 = eventState0.getMaxCheckInterval();
+    assertEquals(Double.NaN, eventState0.getEventTime(), 0.01);
+}","/**
+ * Get the occurrence time of the event triggered in the current
+ * step.
+ * @return occurrence time of the event triggered in the current
+ * step.
+ */"
+"public boolean stop() {
+    return nextAction == EventHandler.STOP;
+}","public void test0626() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, 1.0, (-2778.2), 0);
+    double double0 = eventState0.getMaxCheckInterval();
+    assertFalse(eventState0.stop());
+}","/**
+ * Check if the integration should be stopped at the end of the
+ * current step.
+ * @return true if the integration should be stopped
+ */"
+"public double getConvergence() {
+    return convergence;
+}","public void test0627() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, 1.0, (-2778.2), 0);
+    double double0 = eventState0.getMaxCheckInterval();
+    assertEquals(2778.2, eventState0.getConvergence(), 0.01);
+}","/**
+ * Get the convergence threshold for event localization.
+ * @return convergence threshold for event localization
+ */"
+"public double getEventTime() {
+    return pendingEventTime;
+}","public void test0728() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn(13.1043514962, Double.NaN, 25.486786159349, Double.NaN).when(eventHandler0).g(anyDouble(), any(double[].class));
+    EventState eventState0 = new EventState(eventHandler0, 1968.5608838813664, 1968.5608838813664, (-1925));
+    double[] doubleArray0 = new double[3];
+    eventState0.stepAccepted(0.0, doubleArray0);
+    DummyStepInterpolator dummyStepInterpolator0 = new DummyStepInterpolator(doubleArray0, true);
+    eventState0.evaluateStep(dummyStepInterpolator0);
+    double double0 = eventState0.getEventTime();
+    assertEquals(0.0, double0, 0.01);
+}","/**
+ * Get the occurrence time of the event triggered in the current
+ * step.
+ * @return occurrence time of the event triggered in the current
+ * step.
+ */"
+"public double getEventTime() {
+    return pendingEventTime;
+}","public void test0829() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn(13.1043514962, Double.NaN, 13.1043514962, Double.NaN).when(eventHandler0).g(anyDouble(), any(double[].class));
+    EventState eventState0 = new EventState(eventHandler0, 2656.17622683, 2656.17622683, (-1925));
+    double[] doubleArray0 = new double[3];
+    eventState0.stepAccepted((-2298.0), doubleArray0);
+    DummyStepInterpolator dummyStepInterpolator0 = new DummyStepInterpolator(doubleArray0, false);
+    eventState0.evaluateStep(dummyStepInterpolator0);
+    double double0 = eventState0.getEventTime();
+    assertEquals((-2298.0), double0, 0.01);
+}","/**
+ * Get the occurrence time of the event triggered in the current
+ * step.
+ * @return occurrence time of the event triggered in the current
+ * step.
+ */"
+"public double getEventTime() {
+    return pendingEventTime;
+}","public void test0930() throws Throwable {
+    EventState eventState0 = new EventState((EventHandler) null, (-0.87865675720713), (-0.87865675720713), 836);
+    eventState0.getEventHandler();
+    assertEquals(Double.NaN, eventState0.getEventTime(), 0.01);
+}","/**
+ * Get the occurrence time of the event triggered in the current
+ * step.
+ * @return occurrence time of the event triggered in the current
+ * step.
+ */"
+"public boolean stop() {
+    return nextAction == EventHandler.STOP;
+}","public void test0931() throws Throwable {
+    EventState eventState0 = new EventState((EventHandler) null, (-0.87865675720713), (-0.87865675720713), 836);
+    eventState0.getEventHandler();
+    assertFalse(eventState0.stop());
+}","/**
+ * Check if the integration should be stopped at the end of the
+ * current step.
+ * @return true if the integration should be stopped
+ */"
+"public int getMaxIterationCount() {
+    return maxIterationCount;
+}","public void test0932() throws Throwable {
+    EventState eventState0 = new EventState((EventHandler) null, (-0.87865675720713), (-0.87865675720713), 836);
+    eventState0.getEventHandler();
+    assertEquals(836, eventState0.getMaxIterationCount());
+}","/**
+ * Get the upper limit in the iteration count for event localization.
+ * @return upper limit in the iteration count for event localization
+ */"
+"public double getMaxCheckInterval() {
+    return maxCheckInterval;
+}","public void test0933() throws Throwable {
+    EventState eventState0 = new EventState((EventHandler) null, (-0.87865675720713), (-0.87865675720713), 836);
+    eventState0.getEventHandler();
+    assertEquals((-0.87865675720713), eventState0.getMaxCheckInterval(), 0.01);
+}","/**
+ * Get the maximal time interval between events handler checks.
+ * @return maximal time interval between events handler checks
+ */"
+"public boolean stop() {
+    return nextAction == EventHandler.STOP;
+}","public void test1034() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, 0.0, 0.0, (-925));
+    double double0 = eventState0.getConvergence();
+    assertFalse(eventState0.stop());
+}","/**
+ * Check if the integration should be stopped at the end of the
+ * current step.
+ * @return true if the integration should be stopped
+ */"
+"public double getEventTime() {
+    return pendingEventTime;
+}","public void test1035() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, 0.0, 0.0, (-925));
+    double double0 = eventState0.getConvergence();
+    assertEquals(Double.NaN, eventState0.getEventTime(), 0.01);
+}","/**
+ * Get the occurrence time of the event triggered in the current
+ * step.
+ * @return occurrence time of the event triggered in the current
+ * step.
+ */"
+"public double getMaxCheckInterval() {
+    return maxCheckInterval;
+}","public void test1036() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, 0.0, 0.0, (-925));
+    double double0 = eventState0.getConvergence();
+    assertEquals(0.0, eventState0.getMaxCheckInterval(), 0.01);
+}","/**
+ * Get the maximal time interval between events handler checks.
+ * @return maximal time interval between events handler checks
+ */"
+"public double getConvergence() {
+    return convergence;
+}","public void test1037() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, 0.0, 0.0, (-925));
+    double double0 = eventState0.getConvergence();
+    assertEquals(0.0, double0, 0.01);
+}","/**
+ * Get the convergence threshold for event localization.
+ * @return convergence threshold for event localization
+ */"
+"public int getMaxIterationCount() {
+    return maxIterationCount;
+}","public void test1038() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, 0.0, 0.0, (-925));
+    double double0 = eventState0.getConvergence();
+    assertEquals((-925), eventState0.getMaxIterationCount());
+}","/**
+ * Get the upper limit in the iteration count for event localization.
+ * @return upper limit in the iteration count for event localization
+ */"
+"public void stepAccepted(final double t, final double[] y) throws EventException {
+    t0 = t;
+    g0 = handler.g(t, y);
+    if (pendingEvent) {
+        // force the sign to its value ""just after the event""
+        previousEventTime = t;
+        g0Positive = increasing;
+        nextAction = handler.eventOccurred(t, y, !(increasing ^ forward));
+    } else {
+        g0Positive = g0 >= 0;
+        nextAction = EventHandler.CONTINUE;
+    }
+}","public void test1139() throws Throwable {
+    EventState eventState0 = new EventState((EventHandler) null, Double.NaN, Double.NaN, (-1927));
+    double[] doubleArray0 = new double[2];
+    // Undeclared exception!
+    try {
+        eventState0.stepAccepted(0.0, doubleArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.ode.events.EventState"", e);
+    }
+}","/**
+ * Acknowledge the fact the step has been accepted by the integrator.
+ * @param t value of the independent <i>time</i> variable at the
+ * end of the step
+ * @param y array containing the current value of the state vector
+ * at the end of the step
+ * @exception EventException if the value of the event
+ * handler cannot be evaluated
+ */"
+"public void reinitializeBegin(final double tStart, final double[] yStart) throws EventException {
+    t0 = tStart;
+    g0 = handler.g(tStart, yStart);
+    g0Positive = g0 >= 0;
+}","public void test1240() throws Throwable {
+    EventState eventState0 = new EventState((EventHandler) null, 1383.9, 679.10588639448, 247);
+    double[] doubleArray0 = new double[7];
+    // Undeclared exception!
+    try {
+        eventState0.reinitializeBegin(1383.9, doubleArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.ode.events.EventState"", e);
+    }
+}","/**
+ * Reinitialize the beginning of the step.
+ * @param tStart value of the independent <i>time</i> variable at the
+ * beginning of the step
+ * @param yStart array containing the current value of the state vector
+ * at the beginning of the step
+ * @exception EventException if the event handler
+ * value cannot be evaluated at the beginning of the step
+ */"
+"public boolean evaluateStep(final StepInterpolator interpolator) throws DerivativeException, EventException, ConvergenceException {
+    try {
+        forward = interpolator.isForward();
+        final double t1 = interpolator.getCurrentTime();
+        final int n = Math.max(1, (int) Math.ceil(Math.abs(t1 - t0) / maxCheckInterval));
+        final double h = (t1 - t0) / n;
+        double ta = t0;
+        double ga = g0;
+        double tb = t0 + (interpolator.isForward() ? convergence : -convergence);
+        for (int i = 0; i < n; ++i) {
+            // evaluate handler value at the end of the substep
+            tb += h;
+            interpolator.setInterpolatedTime(tb);
+            final double gb = handler.g(tb, interpolator.getInterpolatedState());
+            // check events occurrence
+            if (g0Positive ^ (gb >= 0)) {
+                // there is a sign change: an event is expected during this step
+                // this is a corner case:
+                // - there was an event near ta,
+                // - there is another event between ta and tb
+                // - when ta was computed, convergence was reached on the ""wrong side"" of the interval
+                // this implies that the real sign of ga is the same as gb, so we need to slightly
+                // shift ta to make sure ga and gb get opposite signs and the solver won't complain
+                // about bracketing
+                // this should never happen
+                // variation direction, with respect to the integration direction
+                increasing = gb >= ga;
+                final UnivariateRealFunction f = new UnivariateRealFunction() {
+
+                    public double value(final double t) throws FunctionEvaluationException {
+                        try {
+                            interpolator.setInterpolatedTime(t);
+                            return handler.g(t, interpolator.getInterpolatedState());
+                        } catch (DerivativeException e) {
+                            throw new FunctionEvaluationException(e, t);
+                        } catch (EventException e) {
+                            throw new FunctionEvaluationException(e, t);
+                        }
+                    }
+                };
+                final BrentSolver solver = new BrentSolver();
+                solver.setAbsoluteAccuracy(convergence);
+                solver.setMaximalIterationCount(maxIterationCount);
+                final double root = (ta <= tb) ? solver.solve(f, ta, tb) : solver.solve(f, tb, ta);
+                if ((Math.abs(root - ta) <= convergence) && (Math.abs(root - previousEventTime) <= convergence)) {
+                    // we have either found nothing or found (again ?) a past event, we simply ignore it
+                    ta = tb;
+                    ga = gb;
+                } else if (Double.isNaN(previousEventTime) || (Math.abs(previousEventTime - root) > convergence)) {
+                    pendingEventTime = root;
+                    if (pendingEvent && (Math.abs(t1 - pendingEventTime) <= convergence)) {
+                        // we were already waiting for this event which was
+                        // found during a previous call for a step that was
+                        // rejected, this step must now be accepted since it
+                        // properly ends exactly at the event occurrence
+                        return false;
+                    }
+                    // either we were not waiting for the event or it has
+                    // moved in such a way the step cannot be accepted
+                    pendingEvent = true;
+                    return true;
+                }
+            } else {
+                // no sign change: there is no event for now
+                ta = tb;
+                ga = gb;
+            }
+        }
+        // no event during the whole step
+        pendingEvent = false;
+        pendingEventTime = Double.NaN;
+        return false;
+    } catch (FunctionEvaluationException e) {
+        final Throwable cause = e.getCause();
+        if ((cause != null) && (cause instanceof DerivativeException)) {
+            throw (DerivativeException) cause;
+        } else if ((cause != null) && (cause instanceof EventException)) {
+            throw (EventException) cause;
+        }
+        throw new EventException(e);
+    }
+}","public void test1341() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn((-1863.0), 1.0, (-1863.0), 1.0, 0.0).when(eventHandler0).g(anyDouble(), any(double[].class));
+    EventState eventState0 = new EventState(eventHandler0, 1.0, 1.0, 1589);
+    double[] doubleArray0 = new double[6];
+    DummyStepInterpolator dummyStepInterpolator0 = new DummyStepInterpolator(doubleArray0, false);
+    eventState0.evaluateStep(dummyStepInterpolator0);
+    dummyStepInterpolator0.storeTime(0.0);
+    eventState0.reset(0.0, doubleArray0);
+    eventState0.stepAccepted(2146763342, doubleArray0);
+    // Undeclared exception!
+    eventState0.evaluateStep(dummyStepInterpolator0);
+}","/**
+ * Evaluate the impact of the proposed step on the event handler.
+ * @param interpolator step interpolator for the proposed step
+ * @return true if the event handler triggers an event before
+ * the end of the proposed step (this implies the step should be
+ * rejected)
+ * @exception DerivativeException if the interpolator fails to
+ * compute the switching function somewhere within the step
+ * @exception EventException if the switching function
+ * cannot be evaluated
+ * @exception ConvergenceException if an event cannot be located
+ */"
+"public boolean evaluateStep(final StepInterpolator interpolator) throws DerivativeException, EventException, ConvergenceException {
+    try {
+        forward = interpolator.isForward();
+        final double t1 = interpolator.getCurrentTime();
+        final int n = Math.max(1, (int) Math.ceil(Math.abs(t1 - t0) / maxCheckInterval));
+        final double h = (t1 - t0) / n;
+        double ta = t0;
+        double ga = g0;
+        double tb = t0 + (interpolator.isForward() ? convergence : -convergence);
+        for (int i = 0; i < n; ++i) {
+            // evaluate handler value at the end of the substep
+            tb += h;
+            interpolator.setInterpolatedTime(tb);
+            final double gb = handler.g(tb, interpolator.getInterpolatedState());
+            // check events occurrence
+            if (g0Positive ^ (gb >= 0)) {
+                // there is a sign change: an event is expected during this step
+                // this is a corner case:
+                // - there was an event near ta,
+                // - there is another event between ta and tb
+                // - when ta was computed, convergence was reached on the ""wrong side"" of the interval
+                // this implies that the real sign of ga is the same as gb, so we need to slightly
+                // shift ta to make sure ga and gb get opposite signs and the solver won't complain
+                // about bracketing
+                // this should never happen
+                // variation direction, with respect to the integration direction
+                increasing = gb >= ga;
+                final UnivariateRealFunction f = new UnivariateRealFunction() {
+
+                    public double value(final double t) throws FunctionEvaluationException {
+                        try {
+                            interpolator.setInterpolatedTime(t);
+                            return handler.g(t, interpolator.getInterpolatedState());
+                        } catch (DerivativeException e) {
+                            throw new FunctionEvaluationException(e, t);
+                        } catch (EventException e) {
+                            throw new FunctionEvaluationException(e, t);
+                        }
+                    }
+                };
+                final BrentSolver solver = new BrentSolver();
+                solver.setAbsoluteAccuracy(convergence);
+                solver.setMaximalIterationCount(maxIterationCount);
+                final double root = (ta <= tb) ? solver.solve(f, ta, tb) : solver.solve(f, tb, ta);
+                if ((Math.abs(root - ta) <= convergence) && (Math.abs(root - previousEventTime) <= convergence)) {
+                    // we have either found nothing or found (again ?) a past event, we simply ignore it
+                    ta = tb;
+                    ga = gb;
+                } else if (Double.isNaN(previousEventTime) || (Math.abs(previousEventTime - root) > convergence)) {
+                    pendingEventTime = root;
+                    if (pendingEvent && (Math.abs(t1 - pendingEventTime) <= convergence)) {
+                        // we were already waiting for this event which was
+                        // found during a previous call for a step that was
+                        // rejected, this step must now be accepted since it
+                        // properly ends exactly at the event occurrence
+                        return false;
+                    }
+                    // either we were not waiting for the event or it has
+                    // moved in such a way the step cannot be accepted
+                    pendingEvent = true;
+                    return true;
+                }
+            } else {
+                // no sign change: there is no event for now
+                ta = tb;
+                ga = gb;
+            }
+        }
+        // no event during the whole step
+        pendingEvent = false;
+        pendingEventTime = Double.NaN;
+        return false;
+    } catch (FunctionEvaluationException e) {
+        final Throwable cause = e.getCause();
+        if ((cause != null) && (cause instanceof DerivativeException)) {
+            throw (DerivativeException) cause;
+        } else if ((cause != null) && (cause instanceof EventException)) {
+            throw (EventException) cause;
+        }
+        throw new EventException(e);
+    }
+}","public void test1442() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn((-748.584), 1.0, (-748.584)).when(eventHandler0).g(anyDouble(), any(double[].class));
+    EventState eventState0 = new EventState(eventHandler0, (-2637.9), Double.NEGATIVE_INFINITY, 0);
+    double[] doubleArray0 = new double[6];
+    DummyStepInterpolator dummyStepInterpolator0 = new DummyStepInterpolator(doubleArray0, true);
+    try {
+        eventState0.evaluateStep(dummyStepInterpolator0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Maximal number of iterations (0) exceeded
+        //
+        verifyException(""org.apache.commons.math.analysis.solvers.BrentSolver"", e);
+    }
+}","/**
+ * Evaluate the impact of the proposed step on the event handler.
+ * @param interpolator step interpolator for the proposed step
+ * @return true if the event handler triggers an event before
+ * the end of the proposed step (this implies the step should be
+ * rejected)
+ * @exception DerivativeException if the interpolator fails to
+ * compute the switching function somewhere within the step
+ * @exception EventException if the switching function
+ * cannot be evaluated
+ * @exception ConvergenceException if an event cannot be located
+ */"
+"public boolean evaluateStep(final StepInterpolator interpolator) throws DerivativeException, EventException, ConvergenceException {
+    try {
+        forward = interpolator.isForward();
+        final double t1 = interpolator.getCurrentTime();
+        final int n = Math.max(1, (int) Math.ceil(Math.abs(t1 - t0) / maxCheckInterval));
+        final double h = (t1 - t0) / n;
+        double ta = t0;
+        double ga = g0;
+        double tb = t0 + (interpolator.isForward() ? convergence : -convergence);
+        for (int i = 0; i < n; ++i) {
+            // evaluate handler value at the end of the substep
+            tb += h;
+            interpolator.setInterpolatedTime(tb);
+            final double gb = handler.g(tb, interpolator.getInterpolatedState());
+            // check events occurrence
+            if (g0Positive ^ (gb >= 0)) {
+                // there is a sign change: an event is expected during this step
+                // this is a corner case:
+                // - there was an event near ta,
+                // - there is another event between ta and tb
+                // - when ta was computed, convergence was reached on the ""wrong side"" of the interval
+                // this implies that the real sign of ga is the same as gb, so we need to slightly
+                // shift ta to make sure ga and gb get opposite signs and the solver won't complain
+                // about bracketing
+                // this should never happen
+                // variation direction, with respect to the integration direction
+                increasing = gb >= ga;
+                final UnivariateRealFunction f = new UnivariateRealFunction() {
+
+                    public double value(final double t) throws FunctionEvaluationException {
+                        try {
+                            interpolator.setInterpolatedTime(t);
+                            return handler.g(t, interpolator.getInterpolatedState());
+                        } catch (DerivativeException e) {
+                            throw new FunctionEvaluationException(e, t);
+                        } catch (EventException e) {
+                            throw new FunctionEvaluationException(e, t);
+                        }
+                    }
+                };
+                final BrentSolver solver = new BrentSolver();
+                solver.setAbsoluteAccuracy(convergence);
+                solver.setMaximalIterationCount(maxIterationCount);
+                final double root = (ta <= tb) ? solver.solve(f, ta, tb) : solver.solve(f, tb, ta);
+                if ((Math.abs(root - ta) <= convergence) && (Math.abs(root - previousEventTime) <= convergence)) {
+                    // we have either found nothing or found (again ?) a past event, we simply ignore it
+                    ta = tb;
+                    ga = gb;
+                } else if (Double.isNaN(previousEventTime) || (Math.abs(previousEventTime - root) > convergence)) {
+                    pendingEventTime = root;
+                    if (pendingEvent && (Math.abs(t1 - pendingEventTime) <= convergence)) {
+                        // we were already waiting for this event which was
+                        // found during a previous call for a step that was
+                        // rejected, this step must now be accepted since it
+                        // properly ends exactly at the event occurrence
+                        return false;
+                    }
+                    // either we were not waiting for the event or it has
+                    // moved in such a way the step cannot be accepted
+                    pendingEvent = true;
+                    return true;
+                }
+            } else {
+                // no sign change: there is no event for now
+                ta = tb;
+                ga = gb;
+            }
+        }
+        // no event during the whole step
+        pendingEvent = false;
+        pendingEventTime = Double.NaN;
+        return false;
+    } catch (FunctionEvaluationException e) {
+        final Throwable cause = e.getCause();
+        if ((cause != null) && (cause instanceof DerivativeException)) {
+            throw (DerivativeException) cause;
+        } else if ((cause != null) && (cause instanceof EventException)) {
+            throw (EventException) cause;
+        }
+        throw new EventException(e);
+    }
+}","public void test1543() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, (-2880.083445), 0.0, 2655);
+    DummyStepInterpolator dummyStepInterpolator0 = new DummyStepInterpolator();
+    // Undeclared exception!
+    try {
+        eventState0.evaluateStep(dummyStepInterpolator0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * Evaluate the impact of the proposed step on the event handler.
+ * @param interpolator step interpolator for the proposed step
+ * @return true if the event handler triggers an event before
+ * the end of the proposed step (this implies the step should be
+ * rejected)
+ * @exception DerivativeException if the interpolator fails to
+ * compute the switching function somewhere within the step
+ * @exception EventException if the switching function
+ * cannot be evaluated
+ * @exception ConvergenceException if an event cannot be located
+ */"
+"public int getMaxIterationCount() {
+    return maxIterationCount;
+}","public void test1644() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn(2146763342, 2).when(eventHandler0).eventOccurred(anyDouble(), any(double[].class), anyBoolean());
+    doReturn((-1863.0), 1.0, (-1863.0), 1.0, 0.0).when(eventHandler0).g(anyDouble(), any(double[].class));
+    EventState eventState0 = new EventState(eventHandler0, Double.NaN, Double.NaN, 3);
+    assertEquals(3, eventState0.getMaxIterationCount());
+}","/**
+ * Get the upper limit in the iteration count for event localization.
+ * @return upper limit in the iteration count for event localization
+ */"
+"public boolean stop() {
+    return nextAction == EventHandler.STOP;
+}","public void test1645() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn(2146763342, 2).when(eventHandler0).eventOccurred(anyDouble(), any(double[].class), anyBoolean());
+    doReturn((-1863.0), 1.0, (-1863.0), 1.0, 0.0).when(eventHandler0).g(anyDouble(), any(double[].class));
+    EventState eventState0 = new EventState(eventHandler0, Double.NaN, Double.NaN, 3);
+    double[] doubleArray0 = new double[6];
+    DummyStepInterpolator dummyStepInterpolator0 = new DummyStepInterpolator(doubleArray0, false);
+    eventState0.evaluateStep(dummyStepInterpolator0);
+    assertFalse(eventState0.stop());
+}","/**
+ * Check if the integration should be stopped at the end of the
+ * current step.
+ * @return true if the integration should be stopped
+ */"
+"public boolean reset(final double t, final double[] y) throws EventException {
+    if (!pendingEvent) {
+        return false;
+    }
+    if (nextAction == EventHandler.RESET_STATE) {
+        handler.resetState(t, y);
+    }
+    pendingEvent = false;
+    pendingEventTime = Double.NaN;
+    return (nextAction == EventHandler.RESET_STATE) || (nextAction == EventHandler.RESET_DERIVATIVES);
+}","public void test1646() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn(2146763342, 2).when(eventHandler0).eventOccurred(anyDouble(), any(double[].class), anyBoolean());
+    doReturn((-1863.0), 1.0, (-1863.0), 1.0, 0.0).when(eventHandler0).g(anyDouble(), any(double[].class));
+    EventState eventState0 = new EventState(eventHandler0, Double.NaN, Double.NaN, 3);
+    double[] doubleArray0 = new double[6];
+    DummyStepInterpolator dummyStepInterpolator0 = new DummyStepInterpolator(doubleArray0, false);
+    eventState0.evaluateStep(dummyStepInterpolator0);
+    eventState0.stepAccepted((-4390.858), doubleArray0);
+    eventState0.stepAccepted((-1.0), doubleArray0);
+    boolean boolean0 = eventState0.reset(0.0, doubleArray0);
+    assertTrue(boolean0);
+}","/**
+ * Let the event handler reset the state if it wants.
+ * @param t value of the independent <i>time</i> variable at the
+ * beginning of the next step
+ * @param y array were to put the desired state vector at the beginning
+ * of the next step
+ * @return true if the integrator should reset the derivatives too
+ * @exception EventException if the state cannot be reseted by the event
+ * handler
+ */"
+"public double getEventTime() {
+    return pendingEventTime;
+}","public void test1647() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn(2146763342, 2).when(eventHandler0).eventOccurred(anyDouble(), any(double[].class), anyBoolean());
+    doReturn((-1863.0), 1.0, (-1863.0), 1.0, 0.0).when(eventHandler0).g(anyDouble(), any(double[].class));
+    EventState eventState0 = new EventState(eventHandler0, Double.NaN, Double.NaN, 3);
+    double[] doubleArray0 = new double[6];
+    DummyStepInterpolator dummyStepInterpolator0 = new DummyStepInterpolator(doubleArray0, false);
+    eventState0.evaluateStep(dummyStepInterpolator0);
+    eventState0.stepAccepted((-4390.858), doubleArray0);
+    eventState0.stepAccepted((-1.0), doubleArray0);
+    boolean boolean0 = eventState0.reset(0.0, doubleArray0);
+    assertEquals(Double.NaN, eventState0.getEventTime(), 0.01);
+}","/**
+ * Get the occurrence time of the event triggered in the current
+ * step.
+ * @return occurrence time of the event triggered in the current
+ * step.
+ */"
+"public boolean reset(final double t, final double[] y) throws EventException {
+    if (!pendingEvent) {
+        return false;
+    }
+    if (nextAction == EventHandler.RESET_STATE) {
+        handler.resetState(t, y);
+    }
+    pendingEvent = false;
+    pendingEventTime = Double.NaN;
+    return (nextAction == EventHandler.RESET_STATE) || (nextAction == EventHandler.RESET_DERIVATIVES);
+}","public void test1748() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, Double.NaN, Double.NaN, 3);
+    double[] doubleArray0 = new double[6];
+    boolean boolean0 = eventState0.reset(0.0, doubleArray0);
+    assertFalse(boolean0);
+}","/**
+ * Let the event handler reset the state if it wants.
+ * @param t value of the independent <i>time</i> variable at the
+ * beginning of the next step
+ * @param y array were to put the desired state vector at the beginning
+ * of the next step
+ * @return true if the integrator should reset the derivatives too
+ * @exception EventException if the state cannot be reseted by the event
+ * handler
+ */"
+"public boolean stop() {
+    return nextAction == EventHandler.STOP;
+}","public void test1749() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, Double.NaN, Double.NaN, 3);
+    double[] doubleArray0 = new double[6];
+    boolean boolean0 = eventState0.reset(0.0, doubleArray0);
+    assertFalse(eventState0.stop());
+}","/**
+ * Check if the integration should be stopped at the end of the
+ * current step.
+ * @return true if the integration should be stopped
+ */"
+"public double getEventTime() {
+    return pendingEventTime;
+}","public void test1750() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, Double.NaN, Double.NaN, 3);
+    double[] doubleArray0 = new double[6];
+    boolean boolean0 = eventState0.reset(0.0, doubleArray0);
+    assertEquals(Double.NaN, eventState0.getEventTime(), 0.01);
+}","/**
+ * Get the occurrence time of the event triggered in the current
+ * step.
+ * @return occurrence time of the event triggered in the current
+ * step.
+ */"
+"public int getMaxIterationCount() {
+    return maxIterationCount;
+}","public void test1751() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, Double.NaN, Double.NaN, 3);
+    double[] doubleArray0 = new double[6];
+    boolean boolean0 = eventState0.reset(0.0, doubleArray0);
+    assertEquals(3, eventState0.getMaxIterationCount());
+}","/**
+ * Get the upper limit in the iteration count for event localization.
+ * @return upper limit in the iteration count for event localization
+ */"
+"public boolean stop() {
+    return nextAction == EventHandler.STOP;
+}","public void test1852() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn(2146763341, 0).when(eventHandler0).eventOccurred(anyDouble(), any(double[].class), anyBoolean());
+    doReturn((-1863.0), 1.0, (-1863.0), 1.0, 0.0).when(eventHandler0).g(anyDouble(), any(double[].class));
+    EventState eventState0 = new EventState(eventHandler0, 1.0, 1.0, 1589);
+    double[] doubleArray0 = new double[6];
+    DummyStepInterpolator dummyStepInterpolator0 = new DummyStepInterpolator(doubleArray0, false);
+    eventState0.evaluateStep(dummyStepInterpolator0);
+    eventState0.stepAccepted(1589.0, doubleArray0);
+    eventState0.stepAccepted((-1.0), doubleArray0);
+    boolean boolean0 = eventState0.stop();
+    assertTrue(boolean0);
+}","/**
+ * Check if the integration should be stopped at the end of the
+ * current step.
+ * @return true if the integration should be stopped
+ */"
+"public int getMaxIterationCount() {
+    return maxIterationCount;
+}","public void test1953() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, 1.0, 1.0, 1589);
+    boolean boolean0 = eventState0.stop();
+    assertEquals(1589, eventState0.getMaxIterationCount());
+}","/**
+ * Get the upper limit in the iteration count for event localization.
+ * @return upper limit in the iteration count for event localization
+ */"
+"public boolean stop() {
+    return nextAction == EventHandler.STOP;
+}","public void test1954() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, 1.0, 1.0, 1589);
+    boolean boolean0 = eventState0.stop();
+    assertFalse(boolean0);
+}","/**
+ * Check if the integration should be stopped at the end of the
+ * current step.
+ * @return true if the integration should be stopped
+ */"
+"public double getEventTime() {
+    return pendingEventTime;
+}","public void test1955() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, 1.0, 1.0, 1589);
+    boolean boolean0 = eventState0.stop();
+    assertEquals(Double.NaN, eventState0.getEventTime(), 0.01);
+}","/**
+ * Get the occurrence time of the event triggered in the current
+ * step.
+ * @return occurrence time of the event triggered in the current
+ * step.
+ */"
+"public double getMaxCheckInterval() {
+    return maxCheckInterval;
+}","public void test1956() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, 1.0, 1.0, 1589);
+    boolean boolean0 = eventState0.stop();
+    assertEquals(1.0, eventState0.getMaxCheckInterval(), 0.01);
+}","/**
+ * Get the maximal time interval between events handler checks.
+ * @return maximal time interval between events handler checks
+ */"
+"public double getEventTime() {
+    return pendingEventTime;
+}","public void test2057() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn((-1619)).when(eventHandler0).eventOccurred(anyDouble(), any(double[].class), anyBoolean());
+    doReturn(13.1043514962, Double.NaN, 25.486786159349, Double.NaN, 2656.17622683).when(eventHandler0).g(anyDouble(), any(double[].class));
+    EventState eventState0 = new EventState(eventHandler0, (-1619), (-1619), (-1925));
+    double[] doubleArray0 = new double[3];
+    eventState0.stepAccepted(25.486786159349, doubleArray0);
+    DummyStepInterpolator dummyStepInterpolator0 = new DummyStepInterpolator(doubleArray0, true);
+    eventState0.evaluateStep(dummyStepInterpolator0);
+    eventState0.stepAccepted(1146.3058360164546, doubleArray0);
+    assertEquals(25.486786159349, eventState0.getEventTime(), 0.01);
+}","/**
+ * Get the occurrence time of the event triggered in the current
+ * step.
+ * @return occurrence time of the event triggered in the current
+ * step.
+ */"
+"public double getInterpolatedTime() {
+    return interpolatedTime;
+}","public void test2158() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn(2146763342).when(eventHandler0).eventOccurred(anyDouble(), any(double[].class), anyBoolean());
+    doReturn((-1863.0), 1.0, (-1863.0), 1.0, 0.0).when(eventHandler0).g(anyDouble(), any(double[].class));
+    EventState eventState0 = new EventState(eventHandler0, 1.0, 1.0, 1589);
+    double[] doubleArray0 = new double[6];
+    DummyStepInterpolator dummyStepInterpolator0 = new DummyStepInterpolator(doubleArray0, false);
+    eventState0.evaluateStep(dummyStepInterpolator0);
+    dummyStepInterpolator0.storeTime(1.0E-14);
+    eventState0.stepAccepted(1.0, doubleArray0);
+    boolean boolean0 = eventState0.evaluateStep(dummyStepInterpolator0);
+    assertEquals(1.0, dummyStepInterpolator0.getInterpolatedTime(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public boolean evaluateStep(final StepInterpolator interpolator) throws DerivativeException, EventException, ConvergenceException {
+    try {
+        forward = interpolator.isForward();
+        final double t1 = interpolator.getCurrentTime();
+        final int n = Math.max(1, (int) Math.ceil(Math.abs(t1 - t0) / maxCheckInterval));
+        final double h = (t1 - t0) / n;
+        double ta = t0;
+        double ga = g0;
+        double tb = t0 + (interpolator.isForward() ? convergence : -convergence);
+        for (int i = 0; i < n; ++i) {
+            // evaluate handler value at the end of the substep
+            tb += h;
+            interpolator.setInterpolatedTime(tb);
+            final double gb = handler.g(tb, interpolator.getInterpolatedState());
+            // check events occurrence
+            if (g0Positive ^ (gb >= 0)) {
+                // there is a sign change: an event is expected during this step
+                // this is a corner case:
+                // - there was an event near ta,
+                // - there is another event between ta and tb
+                // - when ta was computed, convergence was reached on the ""wrong side"" of the interval
+                // this implies that the real sign of ga is the same as gb, so we need to slightly
+                // shift ta to make sure ga and gb get opposite signs and the solver won't complain
+                // about bracketing
+                // this should never happen
+                // variation direction, with respect to the integration direction
+                increasing = gb >= ga;
+                final UnivariateRealFunction f = new UnivariateRealFunction() {
+
+                    public double value(final double t) throws FunctionEvaluationException {
+                        try {
+                            interpolator.setInterpolatedTime(t);
+                            return handler.g(t, interpolator.getInterpolatedState());
+                        } catch (DerivativeException e) {
+                            throw new FunctionEvaluationException(e, t);
+                        } catch (EventException e) {
+                            throw new FunctionEvaluationException(e, t);
+                        }
+                    }
+                };
+                final BrentSolver solver = new BrentSolver();
+                solver.setAbsoluteAccuracy(convergence);
+                solver.setMaximalIterationCount(maxIterationCount);
+                final double root = (ta <= tb) ? solver.solve(f, ta, tb) : solver.solve(f, tb, ta);
+                if ((Math.abs(root - ta) <= convergence) && (Math.abs(root - previousEventTime) <= convergence)) {
+                    // we have either found nothing or found (again ?) a past event, we simply ignore it
+                    ta = tb;
+                    ga = gb;
+                } else if (Double.isNaN(previousEventTime) || (Math.abs(previousEventTime - root) > convergence)) {
+                    pendingEventTime = root;
+                    if (pendingEvent && (Math.abs(t1 - pendingEventTime) <= convergence)) {
+                        // we were already waiting for this event which was
+                        // found during a previous call for a step that was
+                        // rejected, this step must now be accepted since it
+                        // properly ends exactly at the event occurrence
+                        return false;
+                    }
+                    // either we were not waiting for the event or it has
+                    // moved in such a way the step cannot be accepted
+                    pendingEvent = true;
+                    return true;
+                }
+            } else {
+                // no sign change: there is no event for now
+                ta = tb;
+                ga = gb;
+            }
+        }
+        // no event during the whole step
+        pendingEvent = false;
+        pendingEventTime = Double.NaN;
+        return false;
+    } catch (FunctionEvaluationException e) {
+        final Throwable cause = e.getCause();
+        if ((cause != null) && (cause instanceof DerivativeException)) {
+            throw (DerivativeException) cause;
+        } else if ((cause != null) && (cause instanceof EventException)) {
+            throw (EventException) cause;
+        }
+        throw new EventException(e);
+    }
+}","public void test2159() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn(2146763342).when(eventHandler0).eventOccurred(anyDouble(), any(double[].class), anyBoolean());
+    doReturn((-1863.0), 1.0, (-1863.0), 1.0, 0.0).when(eventHandler0).g(anyDouble(), any(double[].class));
+    EventState eventState0 = new EventState(eventHandler0, 1.0, 1.0, 1589);
+    double[] doubleArray0 = new double[6];
+    DummyStepInterpolator dummyStepInterpolator0 = new DummyStepInterpolator(doubleArray0, false);
+    eventState0.evaluateStep(dummyStepInterpolator0);
+    dummyStepInterpolator0.storeTime(1.0E-14);
+    eventState0.stepAccepted(1.0, doubleArray0);
+    boolean boolean0 = eventState0.evaluateStep(dummyStepInterpolator0);
+    assertFalse(boolean0);
+}","/**
+ * Evaluate the impact of the proposed step on the event handler.
+ * @param interpolator step interpolator for the proposed step
+ * @return true if the event handler triggers an event before
+ * the end of the proposed step (this implies the step should be
+ * rejected)
+ * @exception DerivativeException if the interpolator fails to
+ * compute the switching function somewhere within the step
+ * @exception EventException if the switching function
+ * cannot be evaluated
+ * @exception ConvergenceException if an event cannot be located
+ */"
+"public double getInterpolatedTime() {
+    return interpolatedTime;
+}","public void test2260() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn(2146763342).when(eventHandler0).eventOccurred(anyDouble(), any(double[].class), anyBoolean());
+    doReturn((-1863.0), 1.0, (-1863.0), 1.0, 0.0).when(eventHandler0).g(anyDouble(), any(double[].class));
+    EventState eventState0 = new EventState(eventHandler0, Double.NaN, Double.NaN, 3);
+    double[] doubleArray0 = new double[6];
+    DummyStepInterpolator dummyStepInterpolator0 = new DummyStepInterpolator(doubleArray0, false);
+    eventState0.evaluateStep(dummyStepInterpolator0);
+    eventState0.stepAccepted((-4390.858), doubleArray0);
+    boolean boolean0 = eventState0.evaluateStep(dummyStepInterpolator0);
+    assertEquals((-4390.858), dummyStepInterpolator0.getInterpolatedTime(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public boolean evaluateStep(final StepInterpolator interpolator) throws DerivativeException, EventException, ConvergenceException {
+    try {
+        forward = interpolator.isForward();
+        final double t1 = interpolator.getCurrentTime();
+        final int n = Math.max(1, (int) Math.ceil(Math.abs(t1 - t0) / maxCheckInterval));
+        final double h = (t1 - t0) / n;
+        double ta = t0;
+        double ga = g0;
+        double tb = t0 + (interpolator.isForward() ? convergence : -convergence);
+        for (int i = 0; i < n; ++i) {
+            // evaluate handler value at the end of the substep
+            tb += h;
+            interpolator.setInterpolatedTime(tb);
+            final double gb = handler.g(tb, interpolator.getInterpolatedState());
+            // check events occurrence
+            if (g0Positive ^ (gb >= 0)) {
+                // there is a sign change: an event is expected during this step
+                // this is a corner case:
+                // - there was an event near ta,
+                // - there is another event between ta and tb
+                // - when ta was computed, convergence was reached on the ""wrong side"" of the interval
+                // this implies that the real sign of ga is the same as gb, so we need to slightly
+                // shift ta to make sure ga and gb get opposite signs and the solver won't complain
+                // about bracketing
+                // this should never happen
+                // variation direction, with respect to the integration direction
+                increasing = gb >= ga;
+                final UnivariateRealFunction f = new UnivariateRealFunction() {
+
+                    public double value(final double t) throws FunctionEvaluationException {
+                        try {
+                            interpolator.setInterpolatedTime(t);
+                            return handler.g(t, interpolator.getInterpolatedState());
+                        } catch (DerivativeException e) {
+                            throw new FunctionEvaluationException(e, t);
+                        } catch (EventException e) {
+                            throw new FunctionEvaluationException(e, t);
+                        }
+                    }
+                };
+                final BrentSolver solver = new BrentSolver();
+                solver.setAbsoluteAccuracy(convergence);
+                solver.setMaximalIterationCount(maxIterationCount);
+                final double root = (ta <= tb) ? solver.solve(f, ta, tb) : solver.solve(f, tb, ta);
+                if ((Math.abs(root - ta) <= convergence) && (Math.abs(root - previousEventTime) <= convergence)) {
+                    // we have either found nothing or found (again ?) a past event, we simply ignore it
+                    ta = tb;
+                    ga = gb;
+                } else if (Double.isNaN(previousEventTime) || (Math.abs(previousEventTime - root) > convergence)) {
+                    pendingEventTime = root;
+                    if (pendingEvent && (Math.abs(t1 - pendingEventTime) <= convergence)) {
+                        // we were already waiting for this event which was
+                        // found during a previous call for a step that was
+                        // rejected, this step must now be accepted since it
+                        // properly ends exactly at the event occurrence
+                        return false;
+                    }
+                    // either we were not waiting for the event or it has
+                    // moved in such a way the step cannot be accepted
+                    pendingEvent = true;
+                    return true;
+                }
+            } else {
+                // no sign change: there is no event for now
+                ta = tb;
+                ga = gb;
+            }
+        }
+        // no event during the whole step
+        pendingEvent = false;
+        pendingEventTime = Double.NaN;
+        return false;
+    } catch (FunctionEvaluationException e) {
+        final Throwable cause = e.getCause();
+        if ((cause != null) && (cause instanceof DerivativeException)) {
+            throw (DerivativeException) cause;
+        } else if ((cause != null) && (cause instanceof EventException)) {
+            throw (EventException) cause;
+        }
+        throw new EventException(e);
+    }
+}","public void test2261() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn(2146763342).when(eventHandler0).eventOccurred(anyDouble(), any(double[].class), anyBoolean());
+    doReturn((-1863.0), 1.0, (-1863.0), 1.0, 0.0).when(eventHandler0).g(anyDouble(), any(double[].class));
+    EventState eventState0 = new EventState(eventHandler0, Double.NaN, Double.NaN, 3);
+    double[] doubleArray0 = new double[6];
+    DummyStepInterpolator dummyStepInterpolator0 = new DummyStepInterpolator(doubleArray0, false);
+    eventState0.evaluateStep(dummyStepInterpolator0);
+    eventState0.stepAccepted((-4390.858), doubleArray0);
+    boolean boolean0 = eventState0.evaluateStep(dummyStepInterpolator0);
+    assertFalse(boolean0);
+}","/**
+ * Evaluate the impact of the proposed step on the event handler.
+ * @param interpolator step interpolator for the proposed step
+ * @return true if the event handler triggers an event before
+ * the end of the proposed step (this implies the step should be
+ * rejected)
+ * @exception DerivativeException if the interpolator fails to
+ * compute the switching function somewhere within the step
+ * @exception EventException if the switching function
+ * cannot be evaluated
+ * @exception ConvergenceException if an event cannot be located
+ */"
+"public double getInterpolatedTime() {
+    return interpolatedTime;
+}","public void test2362() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn(2146763341).when(eventHandler0).eventOccurred(anyDouble(), any(double[].class), anyBoolean());
+    doReturn((-1863.0), 1.0, (-1863.0), 1.0, 0.0).when(eventHandler0).g(anyDouble(), any(double[].class));
+    EventState eventState0 = new EventState(eventHandler0, 1.0, 1.0, 1589);
+    double[] doubleArray0 = new double[6];
+    DummyStepInterpolator dummyStepInterpolator0 = new DummyStepInterpolator(doubleArray0, false);
+    eventState0.evaluateStep(dummyStepInterpolator0);
+    dummyStepInterpolator0.storeTime(4.891109038513414);
+    eventState0.stepAccepted((-1.0), doubleArray0);
+    boolean boolean0 = eventState0.evaluateStep(dummyStepInterpolator0);
+    assertEquals(1.9274060256756091, dummyStepInterpolator0.getInterpolatedTime(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public boolean evaluateStep(final StepInterpolator interpolator) throws DerivativeException, EventException, ConvergenceException {
+    try {
+        forward = interpolator.isForward();
+        final double t1 = interpolator.getCurrentTime();
+        final int n = Math.max(1, (int) Math.ceil(Math.abs(t1 - t0) / maxCheckInterval));
+        final double h = (t1 - t0) / n;
+        double ta = t0;
+        double ga = g0;
+        double tb = t0 + (interpolator.isForward() ? convergence : -convergence);
+        for (int i = 0; i < n; ++i) {
+            // evaluate handler value at the end of the substep
+            tb += h;
+            interpolator.setInterpolatedTime(tb);
+            final double gb = handler.g(tb, interpolator.getInterpolatedState());
+            // check events occurrence
+            if (g0Positive ^ (gb >= 0)) {
+                // there is a sign change: an event is expected during this step
+                // this is a corner case:
+                // - there was an event near ta,
+                // - there is another event between ta and tb
+                // - when ta was computed, convergence was reached on the ""wrong side"" of the interval
+                // this implies that the real sign of ga is the same as gb, so we need to slightly
+                // shift ta to make sure ga and gb get opposite signs and the solver won't complain
+                // about bracketing
+                // this should never happen
+                // variation direction, with respect to the integration direction
+                increasing = gb >= ga;
+                final UnivariateRealFunction f = new UnivariateRealFunction() {
+
+                    public double value(final double t) throws FunctionEvaluationException {
+                        try {
+                            interpolator.setInterpolatedTime(t);
+                            return handler.g(t, interpolator.getInterpolatedState());
+                        } catch (DerivativeException e) {
+                            throw new FunctionEvaluationException(e, t);
+                        } catch (EventException e) {
+                            throw new FunctionEvaluationException(e, t);
+                        }
+                    }
+                };
+                final BrentSolver solver = new BrentSolver();
+                solver.setAbsoluteAccuracy(convergence);
+                solver.setMaximalIterationCount(maxIterationCount);
+                final double root = (ta <= tb) ? solver.solve(f, ta, tb) : solver.solve(f, tb, ta);
+                if ((Math.abs(root - ta) <= convergence) && (Math.abs(root - previousEventTime) <= convergence)) {
+                    // we have either found nothing or found (again ?) a past event, we simply ignore it
+                    ta = tb;
+                    ga = gb;
+                } else if (Double.isNaN(previousEventTime) || (Math.abs(previousEventTime - root) > convergence)) {
+                    pendingEventTime = root;
+                    if (pendingEvent && (Math.abs(t1 - pendingEventTime) <= convergence)) {
+                        // we were already waiting for this event which was
+                        // found during a previous call for a step that was
+                        // rejected, this step must now be accepted since it
+                        // properly ends exactly at the event occurrence
+                        return false;
+                    }
+                    // either we were not waiting for the event or it has
+                    // moved in such a way the step cannot be accepted
+                    pendingEvent = true;
+                    return true;
+                }
+            } else {
+                // no sign change: there is no event for now
+                ta = tb;
+                ga = gb;
+            }
+        }
+        // no event during the whole step
+        pendingEvent = false;
+        pendingEventTime = Double.NaN;
+        return false;
+    } catch (FunctionEvaluationException e) {
+        final Throwable cause = e.getCause();
+        if ((cause != null) && (cause instanceof DerivativeException)) {
+            throw (DerivativeException) cause;
+        } else if ((cause != null) && (cause instanceof EventException)) {
+            throw (EventException) cause;
+        }
+        throw new EventException(e);
+    }
+}","public void test2363() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn(2146763341).when(eventHandler0).eventOccurred(anyDouble(), any(double[].class), anyBoolean());
+    doReturn((-1863.0), 1.0, (-1863.0), 1.0, 0.0).when(eventHandler0).g(anyDouble(), any(double[].class));
+    EventState eventState0 = new EventState(eventHandler0, 1.0, 1.0, 1589);
+    double[] doubleArray0 = new double[6];
+    DummyStepInterpolator dummyStepInterpolator0 = new DummyStepInterpolator(doubleArray0, false);
+    eventState0.evaluateStep(dummyStepInterpolator0);
+    dummyStepInterpolator0.storeTime(4.891109038513414);
+    eventState0.stepAccepted((-1.0), doubleArray0);
+    boolean boolean0 = eventState0.evaluateStep(dummyStepInterpolator0);
+    assertTrue(boolean0);
+}","/**
+ * Evaluate the impact of the proposed step on the event handler.
+ * @param interpolator step interpolator for the proposed step
+ * @return true if the event handler triggers an event before
+ * the end of the proposed step (this implies the step should be
+ * rejected)
+ * @exception DerivativeException if the interpolator fails to
+ * compute the switching function somewhere within the step
+ * @exception EventException if the switching function
+ * cannot be evaluated
+ * @exception ConvergenceException if an event cannot be located
+ */"
+"public double getInterpolatedTime() {
+    return interpolatedTime;
+}","public void test2464() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn((-748.584), 1.0, (-748.584), 0.0).when(eventHandler0).g(anyDouble(), any(double[].class));
+    EventState eventState0 = new EventState(eventHandler0, (-2637.9), Double.NEGATIVE_INFINITY, 0);
+    double[] doubleArray0 = new double[6];
+    DummyStepInterpolator dummyStepInterpolator0 = new DummyStepInterpolator(doubleArray0, true);
+    eventState0.stepAccepted((-619.85245), doubleArray0);
+    dummyStepInterpolator0.storeTime((-619.85245));
+    boolean boolean0 = eventState0.evaluateStep(dummyStepInterpolator0);
+    assertEquals(Double.POSITIVE_INFINITY, dummyStepInterpolator0.getInterpolatedTime(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public boolean evaluateStep(final StepInterpolator interpolator) throws DerivativeException, EventException, ConvergenceException {
+    try {
+        forward = interpolator.isForward();
+        final double t1 = interpolator.getCurrentTime();
+        final int n = Math.max(1, (int) Math.ceil(Math.abs(t1 - t0) / maxCheckInterval));
+        final double h = (t1 - t0) / n;
+        double ta = t0;
+        double ga = g0;
+        double tb = t0 + (interpolator.isForward() ? convergence : -convergence);
+        for (int i = 0; i < n; ++i) {
+            // evaluate handler value at the end of the substep
+            tb += h;
+            interpolator.setInterpolatedTime(tb);
+            final double gb = handler.g(tb, interpolator.getInterpolatedState());
+            // check events occurrence
+            if (g0Positive ^ (gb >= 0)) {
+                // there is a sign change: an event is expected during this step
+                // this is a corner case:
+                // - there was an event near ta,
+                // - there is another event between ta and tb
+                // - when ta was computed, convergence was reached on the ""wrong side"" of the interval
+                // this implies that the real sign of ga is the same as gb, so we need to slightly
+                // shift ta to make sure ga and gb get opposite signs and the solver won't complain
+                // about bracketing
+                // this should never happen
+                // variation direction, with respect to the integration direction
+                increasing = gb >= ga;
+                final UnivariateRealFunction f = new UnivariateRealFunction() {
+
+                    public double value(final double t) throws FunctionEvaluationException {
+                        try {
+                            interpolator.setInterpolatedTime(t);
+                            return handler.g(t, interpolator.getInterpolatedState());
+                        } catch (DerivativeException e) {
+                            throw new FunctionEvaluationException(e, t);
+                        } catch (EventException e) {
+                            throw new FunctionEvaluationException(e, t);
+                        }
+                    }
+                };
+                final BrentSolver solver = new BrentSolver();
+                solver.setAbsoluteAccuracy(convergence);
+                solver.setMaximalIterationCount(maxIterationCount);
+                final double root = (ta <= tb) ? solver.solve(f, ta, tb) : solver.solve(f, tb, ta);
+                if ((Math.abs(root - ta) <= convergence) && (Math.abs(root - previousEventTime) <= convergence)) {
+                    // we have either found nothing or found (again ?) a past event, we simply ignore it
+                    ta = tb;
+                    ga = gb;
+                } else if (Double.isNaN(previousEventTime) || (Math.abs(previousEventTime - root) > convergence)) {
+                    pendingEventTime = root;
+                    if (pendingEvent && (Math.abs(t1 - pendingEventTime) <= convergence)) {
+                        // we were already waiting for this event which was
+                        // found during a previous call for a step that was
+                        // rejected, this step must now be accepted since it
+                        // properly ends exactly at the event occurrence
+                        return false;
+                    }
+                    // either we were not waiting for the event or it has
+                    // moved in such a way the step cannot be accepted
+                    pendingEvent = true;
+                    return true;
+                }
+            } else {
+                // no sign change: there is no event for now
+                ta = tb;
+                ga = gb;
+            }
+        }
+        // no event during the whole step
+        pendingEvent = false;
+        pendingEventTime = Double.NaN;
+        return false;
+    } catch (FunctionEvaluationException e) {
+        final Throwable cause = e.getCause();
+        if ((cause != null) && (cause instanceof DerivativeException)) {
+            throw (DerivativeException) cause;
+        } else if ((cause != null) && (cause instanceof EventException)) {
+            throw (EventException) cause;
+        }
+        throw new EventException(e);
+    }
+}","public void test2465() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn((-748.584), 1.0, (-748.584), 0.0).when(eventHandler0).g(anyDouble(), any(double[].class));
+    EventState eventState0 = new EventState(eventHandler0, (-2637.9), Double.NEGATIVE_INFINITY, 0);
+    double[] doubleArray0 = new double[6];
+    DummyStepInterpolator dummyStepInterpolator0 = new DummyStepInterpolator(doubleArray0, true);
+    eventState0.stepAccepted((-619.85245), doubleArray0);
+    dummyStepInterpolator0.storeTime((-619.85245));
+    boolean boolean0 = eventState0.evaluateStep(dummyStepInterpolator0);
+    assertTrue(boolean0);
+}","/**
+ * Evaluate the impact of the proposed step on the event handler.
+ * @param interpolator step interpolator for the proposed step
+ * @return true if the event handler triggers an event before
+ * the end of the proposed step (this implies the step should be
+ * rejected)
+ * @exception DerivativeException if the interpolator fails to
+ * compute the switching function somewhere within the step
+ * @exception EventException if the switching function
+ * cannot be evaluated
+ * @exception ConvergenceException if an event cannot be located
+ */"
+"public double getEventTime() {
+    return pendingEventTime;
+}","public void test2566() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn(Double.NEGATIVE_INFINITY, 2840.0, 2840.0, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY).when(eventHandler0).g(anyDouble(), any(double[].class));
+    EventState eventState0 = new EventState(eventHandler0, (-2099.0), Double.NEGATIVE_INFINITY, 1211);
+    double[] doubleArray0 = new double[2];
+    eventState0.reinitializeBegin(Double.NaN, doubleArray0);
+    eventState0.reinitializeBegin(1211.0, doubleArray0);
+    eventState0.stepAccepted(Double.NEGATIVE_INFINITY, doubleArray0);
+    eventState0.reinitializeBegin(1211, doubleArray0);
+    assertEquals(Double.NaN, eventState0.getEventTime(), 0.01);
+}","/**
+ * Get the occurrence time of the event triggered in the current
+ * step.
+ * @return occurrence time of the event triggered in the current
+ * step.
+ */"
+"public int getMaxIterationCount() {
+    return maxIterationCount;
+}","public void test2567() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn(Double.NEGATIVE_INFINITY, 2840.0, 2840.0, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY).when(eventHandler0).g(anyDouble(), any(double[].class));
+    EventState eventState0 = new EventState(eventHandler0, (-2099.0), Double.NEGATIVE_INFINITY, 1211);
+    double[] doubleArray0 = new double[2];
+    eventState0.reinitializeBegin(Double.NaN, doubleArray0);
+    eventState0.reinitializeBegin(1211.0, doubleArray0);
+    eventState0.stepAccepted(Double.NEGATIVE_INFINITY, doubleArray0);
+    eventState0.reinitializeBegin(1211, doubleArray0);
+    DummyStepInterpolator dummyStepInterpolator0 = new DummyStepInterpolator(doubleArray0, false);
+    eventState0.evaluateStep(dummyStepInterpolator0);
+    assertEquals(1211, eventState0.getMaxIterationCount());
+}","/**
+ * Get the upper limit in the iteration count for event localization.
+ * @return upper limit in the iteration count for event localization
+ */"
+"public boolean stop() {
+    return nextAction == EventHandler.STOP;
+}","public void test2568() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn(Double.NEGATIVE_INFINITY, 2840.0, 2840.0, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY).when(eventHandler0).g(anyDouble(), any(double[].class));
+    EventState eventState0 = new EventState(eventHandler0, (-2099.0), Double.NEGATIVE_INFINITY, 1211);
+    double[] doubleArray0 = new double[2];
+    eventState0.reinitializeBegin(Double.NaN, doubleArray0);
+    eventState0.reinitializeBegin(1211.0, doubleArray0);
+    eventState0.stepAccepted(Double.NEGATIVE_INFINITY, doubleArray0);
+    eventState0.reinitializeBegin(1211, doubleArray0);
+    DummyStepInterpolator dummyStepInterpolator0 = new DummyStepInterpolator(doubleArray0, false);
+    eventState0.evaluateStep(dummyStepInterpolator0);
+    assertFalse(eventState0.stop());
+}","/**
+ * Check if the integration should be stopped at the end of the
+ * current step.
+ * @return true if the integration should be stopped
+ */"
+"public double getInterpolatedTime() {
+    return interpolatedTime;
+}","public void test2569() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn(Double.NEGATIVE_INFINITY, 2840.0, 2840.0, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY).when(eventHandler0).g(anyDouble(), any(double[].class));
+    EventState eventState0 = new EventState(eventHandler0, (-2099.0), Double.NEGATIVE_INFINITY, 1211);
+    double[] doubleArray0 = new double[2];
+    eventState0.reinitializeBegin(Double.NaN, doubleArray0);
+    eventState0.reinitializeBegin(1211.0, doubleArray0);
+    eventState0.stepAccepted(Double.NEGATIVE_INFINITY, doubleArray0);
+    eventState0.reinitializeBegin(1211, doubleArray0);
+    DummyStepInterpolator dummyStepInterpolator0 = new DummyStepInterpolator(doubleArray0, false);
+    eventState0.evaluateStep(dummyStepInterpolator0);
+    assertEquals(Double.NaN, dummyStepInterpolator0.getInterpolatedTime(), 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public double getMaxCheckInterval() {
+    return maxCheckInterval;
+}","public void test2570() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn(Double.NEGATIVE_INFINITY, 2840.0, 2840.0, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY).when(eventHandler0).g(anyDouble(), any(double[].class));
+    EventState eventState0 = new EventState(eventHandler0, (-2099.0), Double.NEGATIVE_INFINITY, 1211);
+    double[] doubleArray0 = new double[2];
+    eventState0.reinitializeBegin(Double.NaN, doubleArray0);
+    eventState0.reinitializeBegin(1211.0, doubleArray0);
+    eventState0.stepAccepted(Double.NEGATIVE_INFINITY, doubleArray0);
+    eventState0.reinitializeBegin(1211, doubleArray0);
+    DummyStepInterpolator dummyStepInterpolator0 = new DummyStepInterpolator(doubleArray0, false);
+    eventState0.evaluateStep(dummyStepInterpolator0);
+    assertEquals((-2099.0), eventState0.getMaxCheckInterval(), 0.01);
+}","/**
+ * Get the maximal time interval between events handler checks.
+ * @return maximal time interval between events handler checks
+ */"
+"public boolean evaluateStep(final StepInterpolator interpolator) throws DerivativeException, EventException, ConvergenceException {
+    try {
+        forward = interpolator.isForward();
+        final double t1 = interpolator.getCurrentTime();
+        final int n = Math.max(1, (int) Math.ceil(Math.abs(t1 - t0) / maxCheckInterval));
+        final double h = (t1 - t0) / n;
+        double ta = t0;
+        double ga = g0;
+        double tb = t0 + (interpolator.isForward() ? convergence : -convergence);
+        for (int i = 0; i < n; ++i) {
+            // evaluate handler value at the end of the substep
+            tb += h;
+            interpolator.setInterpolatedTime(tb);
+            final double gb = handler.g(tb, interpolator.getInterpolatedState());
+            // check events occurrence
+            if (g0Positive ^ (gb >= 0)) {
+                // there is a sign change: an event is expected during this step
+                // this is a corner case:
+                // - there was an event near ta,
+                // - there is another event between ta and tb
+                // - when ta was computed, convergence was reached on the ""wrong side"" of the interval
+                // this implies that the real sign of ga is the same as gb, so we need to slightly
+                // shift ta to make sure ga and gb get opposite signs and the solver won't complain
+                // about bracketing
+                // this should never happen
+                // variation direction, with respect to the integration direction
+                increasing = gb >= ga;
+                final UnivariateRealFunction f = new UnivariateRealFunction() {
+
+                    public double value(final double t) throws FunctionEvaluationException {
+                        try {
+                            interpolator.setInterpolatedTime(t);
+                            return handler.g(t, interpolator.getInterpolatedState());
+                        } catch (DerivativeException e) {
+                            throw new FunctionEvaluationException(e, t);
+                        } catch (EventException e) {
+                            throw new FunctionEvaluationException(e, t);
+                        }
+                    }
+                };
+                final BrentSolver solver = new BrentSolver();
+                solver.setAbsoluteAccuracy(convergence);
+                solver.setMaximalIterationCount(maxIterationCount);
+                final double root = (ta <= tb) ? solver.solve(f, ta, tb) : solver.solve(f, tb, ta);
+                if ((Math.abs(root - ta) <= convergence) && (Math.abs(root - previousEventTime) <= convergence)) {
+                    // we have either found nothing or found (again ?) a past event, we simply ignore it
+                    ta = tb;
+                    ga = gb;
+                } else if (Double.isNaN(previousEventTime) || (Math.abs(previousEventTime - root) > convergence)) {
+                    pendingEventTime = root;
+                    if (pendingEvent && (Math.abs(t1 - pendingEventTime) <= convergence)) {
+                        // we were already waiting for this event which was
+                        // found during a previous call for a step that was
+                        // rejected, this step must now be accepted since it
+                        // properly ends exactly at the event occurrence
+                        return false;
+                    }
+                    // either we were not waiting for the event or it has
+                    // moved in such a way the step cannot be accepted
+                    pendingEvent = true;
+                    return true;
+                }
+            } else {
+                // no sign change: there is no event for now
+                ta = tb;
+                ga = gb;
+            }
+        }
+        // no event during the whole step
+        pendingEvent = false;
+        pendingEventTime = Double.NaN;
+        return false;
+    } catch (FunctionEvaluationException e) {
+        final Throwable cause = e.getCause();
+        if ((cause != null) && (cause instanceof DerivativeException)) {
+            throw (DerivativeException) cause;
+        } else if ((cause != null) && (cause instanceof EventException)) {
+            throw (EventException) cause;
+        }
+        throw new EventException(e);
+    }
+}","public void test2671() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn(Double.NEGATIVE_INFINITY, 2840.0, 2840.0).when(eventHandler0).g(anyDouble(), any(double[].class));
+    EventState eventState0 = new EventState(eventHandler0, (-2099.0), Double.NEGATIVE_INFINITY, 1211);
+    double[] doubleArray0 = new double[2];
+    DummyStepInterpolator dummyStepInterpolator0 = new DummyStepInterpolator(doubleArray0, false);
+    // Undeclared exception!
+    try {
+        eventState0.evaluateStep(dummyStepInterpolator0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // function values at endpoints do not have different signs.  Endpoints: [\uFFFD, \uFFFD], Values: [2,840, 2,840]
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}","/**
+ * Evaluate the impact of the proposed step on the event handler.
+ * @param interpolator step interpolator for the proposed step
+ * @return true if the event handler triggers an event before
+ * the end of the proposed step (this implies the step should be
+ * rejected)
+ * @exception DerivativeException if the interpolator fails to
+ * compute the switching function somewhere within the step
+ * @exception EventException if the switching function
+ * cannot be evaluated
+ * @exception ConvergenceException if an event cannot be located
+ */"
+"public double getConvergence() {
+    return convergence;
+}","public void test2772() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, (-2637.9), Double.NEGATIVE_INFINITY, 0);
+    double double0 = eventState0.getConvergence();
+    assertEquals(Double.POSITIVE_INFINITY, double0, 0.01);
+}","/**
+ * Get the convergence threshold for event localization.
+ * @return convergence threshold for event localization
+ */"
+"public int getMaxIterationCount() {
+    return maxIterationCount;
+}","public void test2773() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, (-2637.9), Double.NEGATIVE_INFINITY, 0);
+    double double0 = eventState0.getConvergence();
+    assertEquals(0, eventState0.getMaxIterationCount());
+}","/**
+ * Get the upper limit in the iteration count for event localization.
+ * @return upper limit in the iteration count for event localization
+ */"
+"public double getMaxCheckInterval() {
+    return maxCheckInterval;
+}","public void test2774() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, (-2637.9), Double.NEGATIVE_INFINITY, 0);
+    double double0 = eventState0.getConvergence();
+    assertEquals((-2637.9), eventState0.getMaxCheckInterval(), 0.01);
+}","/**
+ * Get the maximal time interval between events handler checks.
+ * @return maximal time interval between events handler checks
+ */"
+"public boolean stop() {
+    return nextAction == EventHandler.STOP;
+}","public void test2775() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, (-2637.9), Double.NEGATIVE_INFINITY, 0);
+    double double0 = eventState0.getConvergence();
+    assertFalse(eventState0.stop());
+}","/**
+ * Check if the integration should be stopped at the end of the
+ * current step.
+ * @return true if the integration should be stopped
+ */"
+"public double getEventTime() {
+    return pendingEventTime;
+}","public void test2776() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, (-2637.9), Double.NEGATIVE_INFINITY, 0);
+    double double0 = eventState0.getConvergence();
+    assertEquals(Double.NaN, eventState0.getEventTime(), 0.01);
+}","/**
+ * Get the occurrence time of the event triggered in the current
+ * step.
+ * @return occurrence time of the event triggered in the current
+ * step.
+ */"
+"public double getMaxCheckInterval() {
+    return maxCheckInterval;
+}","public void test2877() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, (-2637.9), Double.NEGATIVE_INFINITY, 0);
+    double double0 = eventState0.getMaxCheckInterval();
+    assertEquals((-2637.9), double0, 0.01);
+}","/**
+ * Get the maximal time interval between events handler checks.
+ * @return maximal time interval between events handler checks
+ */"
+"public boolean stop() {
+    return nextAction == EventHandler.STOP;
+}","public void test2878() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, (-2637.9), Double.NEGATIVE_INFINITY, 0);
+    double double0 = eventState0.getMaxCheckInterval();
+    assertFalse(eventState0.stop());
+}","/**
+ * Check if the integration should be stopped at the end of the
+ * current step.
+ * @return true if the integration should be stopped
+ */"
+"public double getEventTime() {
+    return pendingEventTime;
+}","public void test2879() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, (-2637.9), Double.NEGATIVE_INFINITY, 0);
+    double double0 = eventState0.getMaxCheckInterval();
+    assertEquals(Double.NaN, eventState0.getEventTime(), 0.01);
+}","/**
+ * Get the occurrence time of the event triggered in the current
+ * step.
+ * @return occurrence time of the event triggered in the current
+ * step.
+ */"
+"public double getConvergence() {
+    return convergence;
+}","public void test2880() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, (-2637.9), Double.NEGATIVE_INFINITY, 0);
+    double double0 = eventState0.getMaxCheckInterval();
+    assertEquals(Double.POSITIVE_INFINITY, eventState0.getConvergence(), 0.01);
+}","/**
+ * Get the convergence threshold for event localization.
+ * @return convergence threshold for event localization
+ */"
+"public int getMaxIterationCount() {
+    return maxIterationCount;
+}","public void test2881() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, (-2637.9), Double.NEGATIVE_INFINITY, 0);
+    double double0 = eventState0.getMaxCheckInterval();
+    assertEquals(0, eventState0.getMaxIterationCount());
+}","/**
+ * Get the upper limit in the iteration count for event localization.
+ * @return upper limit in the iteration count for event localization
+ */"
+"public double getEventTime() {
+    return pendingEventTime;
+}","public void test2982() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, (-2637.9), Double.NEGATIVE_INFINITY, 0);
+    int int0 = eventState0.getMaxIterationCount();
+    assertEquals(Double.NaN, eventState0.getEventTime(), 0.01);
+}","/**
+ * Get the occurrence time of the event triggered in the current
+ * step.
+ * @return occurrence time of the event triggered in the current
+ * step.
+ */"
+"public int getMaxIterationCount() {
+    return maxIterationCount;
+}","public void test2983() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, (-2637.9), Double.NEGATIVE_INFINITY, 0);
+    int int0 = eventState0.getMaxIterationCount();
+    assertEquals(0, int0);
+}","/**
+ * Get the upper limit in the iteration count for event localization.
+ * @return upper limit in the iteration count for event localization
+ */"
+"public double getMaxCheckInterval() {
+    return maxCheckInterval;
+}","public void test2984() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, (-2637.9), Double.NEGATIVE_INFINITY, 0);
+    int int0 = eventState0.getMaxIterationCount();
+    assertEquals((-2637.9), eventState0.getMaxCheckInterval(), 0.01);
+}","/**
+ * Get the maximal time interval between events handler checks.
+ * @return maximal time interval between events handler checks
+ */"
+"public boolean stop() {
+    return nextAction == EventHandler.STOP;
+}","public void test2985() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, (-2637.9), Double.NEGATIVE_INFINITY, 0);
+    int int0 = eventState0.getMaxIterationCount();
+    assertFalse(eventState0.stop());
+}","/**
+ * Check if the integration should be stopped at the end of the
+ * current step.
+ * @return true if the integration should be stopped
+ */"
+"public double getConvergence() {
+    return convergence;
+}","public void test2986() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    EventState eventState0 = new EventState(eventHandler0, (-2637.9), Double.NEGATIVE_INFINITY, 0);
+    int int0 = eventState0.getMaxIterationCount();
+    assertEquals(Double.POSITIVE_INFINITY, eventState0.getConvergence(), 0.01);
+}","/**
+ * Get the convergence threshold for event localization.
+ * @return convergence threshold for event localization
+ */"
+"public double getEventTime() {
+    return pendingEventTime;
+}","public void test3087() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn(""7RA#IlJ9-4poj4/6G]"").when(eventHandler0).toString();
+    EventState eventState0 = new EventState(eventHandler0, (-1619), (-1619), (-1925));
+    eventState0.getEventHandler();
+    assertEquals(Double.NaN, eventState0.getEventTime(), 0.01);
+}","/**
+ * Get the occurrence time of the event triggered in the current
+ * step.
+ * @return occurrence time of the event triggered in the current
+ * step.
+ */"
+"public int getMaxIterationCount() {
+    return maxIterationCount;
+}","public void test3088() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn(""7RA#IlJ9-4poj4/6G]"").when(eventHandler0).toString();
+    EventState eventState0 = new EventState(eventHandler0, (-1619), (-1619), (-1925));
+    eventState0.getEventHandler();
+    assertEquals((-1925), eventState0.getMaxIterationCount());
+}","/**
+ * Get the upper limit in the iteration count for event localization.
+ * @return upper limit in the iteration count for event localization
+ */"
+"public boolean stop() {
+    return nextAction == EventHandler.STOP;
+}","public void test3089() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn(""7RA#IlJ9-4poj4/6G]"").when(eventHandler0).toString();
+    EventState eventState0 = new EventState(eventHandler0, (-1619), (-1619), (-1925));
+    eventState0.getEventHandler();
+    assertFalse(eventState0.stop());
+}","/**
+ * Check if the integration should be stopped at the end of the
+ * current step.
+ * @return true if the integration should be stopped
+ */"
+"public double getMaxCheckInterval() {
+    return maxCheckInterval;
+}","public void test3090() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn(""7RA#IlJ9-4poj4/6G]"").when(eventHandler0).toString();
+    EventState eventState0 = new EventState(eventHandler0, (-1619), (-1619), (-1925));
+    eventState0.getEventHandler();
+    assertEquals((-1619.0), eventState0.getMaxCheckInterval(), 0.01);
+}","/**
+ * Get the maximal time interval between events handler checks.
+ * @return maximal time interval between events handler checks
+ */"
+"public double getEventTime() {
+    return pendingEventTime;
+}","public void test3191() throws Throwable {
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    doReturn(13.1043514962, Double.NaN, 25.486786159349, Double.NaN).when(eventHandler0).g(anyDouble(), any(double[].class));
+    EventState eventState0 = new EventState(eventHandler0, (-1619), (-1619), (-1925));
+    double[] doubleArray0 = new double[3];
+    eventState0.stepAccepted(25.486786159349, doubleArray0);
+    DummyStepInterpolator dummyStepInterpolator0 = new DummyStepInterpolator(doubleArray0, true);
+    eventState0.evaluateStep(dummyStepInterpolator0);
+    double double0 = eventState0.getEventTime();
+    assertEquals(25.486786159349, double0, 0.01);
+}","/**
+ * Get the occurrence time of the event triggered in the current
+ * step.
+ * @return occurrence time of the event triggered in the current
+ * step.
+ */"

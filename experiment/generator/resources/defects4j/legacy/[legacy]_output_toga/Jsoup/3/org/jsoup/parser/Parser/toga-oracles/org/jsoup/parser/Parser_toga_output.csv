@@ -1,0 +1,73 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    Document document0 = Parser.parseBodyFragment(""ws<o/</o^ .RR.5H.3vU"", ""ws<o/</o^ .RR.5H.3vU"");
+    assertEquals(""ws<o/</o^ .RR.5H.3vU"", document0.baseUri());
+}",0,assertNotNull(document0.baseUri())
+project,0,test011,"public void test011() throws Throwable {
+    Document document0 = Parser.parse(""<!"", ""<!"");
+    assertEquals(""<!"", document0.baseUri());
+}",0,assertNotNull(document0.baseUri())
+project,0,test022,"public void test022() throws Throwable {
+    Document document0 = Parser.parseBodyFragment(""<![CDATA["", ""<![CDATA["");
+    assertEquals(""<![CDATA["", document0.baseUri());
+}",0,assertNotNull(document0.baseUri())
+project,0,test033,"public void test033() throws Throwable {
+    Document document0 = Parser.parse(""<!--"", ""<!--"");
+    assertFalse(document0.isBlock());
+}",0,
+project,0,test044,"public void test044() throws Throwable {
+    Document document0 = Parser.parse(""<?"", ""<?"");
+    assertFalse(document0.isBlock());
+}",0,assertFalse(document0.isBlock())
+project,0,test055,"public void test055() throws Throwable {
+    Document document0 = Parser.parse(""#E<!---"", ""#E<!---"");
+    assertEquals(""#E<!---"", document0.baseUri());
+}",0,assertNotNull(document0.baseUri())
+project,0,test066,"public void test066() throws Throwable {
+    Document document0 = Parser.parse(""</"", ""</"");
+    assertEquals(""#document"", document0.nodeName());
+}",0,
+project,0,test077,"public void test077() throws Throwable {
+    Document document0 = Parser.parse(""q<)--"", ""q<)--"");
+    assertFalse(document0.isBlock());
+}",0,
+project,0,test088,"public void test088() throws Throwable {
+    Document document0 = Parser.parseBodyFragment(""Os<e///>N .RRk5H*3t"", ""Os<e///>N .RRk5H*3t"");
+    assertEquals(""#root"", document0.tagName());
+}",0,assertNotNull(document0.tagName())
+project,0,test099,"public void test099() throws Throwable {
+    Document document0 = Parser.parse("" w<b-2$=26~B>"", "" w<b-2$=26~B>"");
+    assertEquals(""#document"", document0.nodeName());
+}",0,
+project,0,test1010,"public void test1010() throws Throwable {
+    Document document0 = Parser.parse(""W<aQ?1Gd='*}xUE;39"", ""W<aQ?1Gd='*}xUE;39"");
+    assertEquals(""#document"", document0.nodeName());
+}",0,assertNotNull(document0.nodeName())
+project,0,test1111,"public void test1111() throws Throwable {
+    Document document0 = Parser.parse(""/w<4-2y=\""6>zp2B>"", ""/w<4-2y=\""6>zp2B>"");
+    assertFalse(document0.isBlock());
+}",0,
+project,0,test1212,"public void test1212() throws Throwable {
+    Document document0 = Parser.parseBodyFragment(""0<b2.=2 ~{L"", ""0<b2.=2 ~{L"");
+    assertEquals(""0<b2.=2 ~{L"", document0.baseUri());
+}",0,assertNotNull(document0.baseUri())
+project,0,test1313,"public void test1313() throws Throwable {
+    Document document0 = Parser.parse(""W<y*?1Gd=My}x6H23K"", ""W<y*?1Gd=My}x6H23K"");
+    assertEquals(""#root"", document0.tagName());
+}",0,assertNotNull(document0.tagName())
+project,0,test1414,"public void test1414() throws Throwable {
+    Document document0 = Parser.parse(""a]Y)<BaSe</Kkt,T~K!Q"", ""a]Y)<BaSe</Kkt,T~K!Q"");
+    assertEquals(""#document"", document0.nodeName());
+}",0,assertNotNull(document0.nodeName())
+project,0,test1515,"public void test1515() throws Throwable {
+    Document document0 = Parser.parse(""4l]<dXr<B#V5<p@`yF"", ""4l]<dXr<B#V5<p@`yF"");
+    assertFalse(document0.isBlock());
+}",0,
+project,0,test1616,"public void test1616() throws Throwable {
+    Document document0 = Parser.parse(""hO/</o/ .yTRk5H3(P"", ""hO/</o/ .yTRk5H3(P"");
+    assertEquals(""#root"", document0.tagName());
+}",0,assertNotNull(document0.tagName())
+project,0,test1717,"public void test1717() throws Throwable {
+    Document document0 = Parser.parse(""Os<e/</oN .RRk5HP3t"", ""Os<e/</oN .RRk5HP3t"");
+    assertEquals(""#document"", document0.nodeName());
+}",0,assertNotNull(document0.nodeName())

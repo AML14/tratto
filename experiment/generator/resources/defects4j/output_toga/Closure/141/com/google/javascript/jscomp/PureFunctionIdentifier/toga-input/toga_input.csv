@@ -1,0 +1,281 @@
+focal_method,test_prefix,docstring
+"@Override
+public void process(Node externsAst, Node srcAst) {
+    if (externs != null || root != null) {
+        throw new IllegalStateException(""It is illegal to call PureFunctionIdentifier.process "" + ""twice the same instance.  Please use a new "" + ""PureFunctionIdentifier instance each time."");
+    }
+    externs = externsAst;
+    root = srcAst;
+    NodeTraversal.traverse(compiler, externs, new FunctionAnalyzer(true));
+    NodeTraversal.traverse(compiler, root, new FunctionAnalyzer(false));
+    propagateSideEffects();
+    markPureFunctionCalls();
+}","public void test00() throws Throwable {
+    SimpleDefinitionFinder simpleDefinitionFinder0 = new SimpleDefinitionFinder((AbstractCompiler) null);
+    PureFunctionIdentifier pureFunctionIdentifier0 = new PureFunctionIdentifier((AbstractCompiler) null, simpleDefinitionFinder0);
+    Node node0 = Node.newString(""Qs/\""ZoU8K$<<"");
+    pureFunctionIdentifier0.process(node0, node0);
+    // Undeclared exception!
+    try {
+        pureFunctionIdentifier0.process(node0, node0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // It is illegal to call PureFunctionIdentifier.process twice the same instance.  Please use a new PureFunctionIdentifier instance each time.
+        //
+        verifyException(""com.google.javascript.jscomp.PureFunctionIdentifier"", e);
+    }
+}",""
+"String getDebugReport() {
+    Preconditions.checkNotNull(externs);
+    Preconditions.checkNotNull(root);
+    StringBuilder sb = new StringBuilder();
+    FunctionNames functionNames = new FunctionNames(compiler);
+    functionNames.process(null, externs);
+    functionNames.process(null, root);
+    sb.append(""Pure functions:\n"");
+    for (Map.Entry<Node, FunctionInformation> entry : functionSideEffectMap.entrySet()) {
+        Node function = entry.getKey();
+        FunctionInformation functionInfo = entry.getValue();
+        boolean isPure = functionInfo.mayBePure() && !functionInfo.mayHaveSideEffects();
+        if (isPure) {
+            sb.append(""  "" + functionNames.getFunctionName(function) + ""\n"");
+        }
+    }
+    sb.append(""\n"");
+    for (Map.Entry<Node, FunctionInformation> entry : functionSideEffectMap.entrySet()) {
+        Node function = entry.getKey();
+        FunctionInformation functionInfo = entry.getValue();
+        Set<String> depFunctionNames = Sets.newHashSet();
+        for (Node callSite : functionInfo.getCallsInFunctionBody()) {
+            Collection<Definition> defs = getCallableDefinitions(definitionProvider, callSite.getFirstChild());
+            if (defs == null) {
+                depFunctionNames.add(""<null def list>"");
+                continue;
+            }
+            for (Definition def : defs) {
+                depFunctionNames.add(functionNames.getFunctionName(def.getRValue()));
+            }
+        }
+        sb.append(functionNames.getFunctionName(function) + "" "" + functionInfo.toString() + "" Calls: "" + depFunctionNames + ""\n"");
+    }
+    return sb.toString();
+}","public void test11() throws Throwable {
+    SimpleDefinitionFinder simpleDefinitionFinder0 = new SimpleDefinitionFinder((AbstractCompiler) null);
+    PureFunctionIdentifier pureFunctionIdentifier0 = new PureFunctionIdentifier((AbstractCompiler) null, simpleDefinitionFinder0);
+    Node node0 = Node.newString(""`"");
+    pureFunctionIdentifier0.process(node0, node0);
+    String string0 = pureFunctionIdentifier0.getDebugReport();
+    assertEquals(""Pure functions:\n\n"", string0);
+}","/**
+ * Compute debug report that includes:
+ *  - List of all pure functions.
+ *  - Reasons we think the remaining functions have side effects.
+ */"
+"@Override
+public void process(Node externsAst, Node srcAst) {
+    if (externs != null || root != null) {
+        throw new IllegalStateException(""It is illegal to call PureFunctionIdentifier.process "" + ""twice the same instance.  Please use a new "" + ""PureFunctionIdentifier instance each time."");
+    }
+    externs = externsAst;
+    root = srcAst;
+    NodeTraversal.traverse(compiler, externs, new FunctionAnalyzer(true));
+    NodeTraversal.traverse(compiler, root, new FunctionAnalyzer(false));
+    propagateSideEffects();
+    markPureFunctionCalls();
+}","public void test22() throws Throwable {
+    SimpleDefinitionFinder simpleDefinitionFinder0 = new SimpleDefinitionFinder((AbstractCompiler) null);
+    PureFunctionIdentifier pureFunctionIdentifier0 = new PureFunctionIdentifier((AbstractCompiler) null, simpleDefinitionFinder0);
+    Node node0 = new Node(37);
+    Node node1 = new Node(33);
+    node0.addChildToFront(node1);
+    // Undeclared exception!
+    try {
+        pureFunctionIdentifier0.process(node1, node0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.SimpleDefinitionFinder"", e);
+    }
+}",""
+"@Override
+public void process(Node externsAst, Node srcAst) {
+    if (externs != null || root != null) {
+        throw new IllegalStateException(""It is illegal to call PureFunctionIdentifier.process "" + ""twice the same instance.  Please use a new "" + ""PureFunctionIdentifier instance each time."");
+    }
+    externs = externsAst;
+    root = srcAst;
+    NodeTraversal.traverse(compiler, externs, new FunctionAnalyzer(true));
+    NodeTraversal.traverse(compiler, root, new FunctionAnalyzer(false));
+    propagateSideEffects();
+    markPureFunctionCalls();
+}","public void test33() throws Throwable {
+    SimpleDefinitionFinder simpleDefinitionFinder0 = new SimpleDefinitionFinder((AbstractCompiler) null);
+    PureFunctionIdentifier pureFunctionIdentifier0 = new PureFunctionIdentifier((AbstractCompiler) null, simpleDefinitionFinder0);
+    Node node0 = new Node(37, 37, 37);
+    Node node1 = new Node(0);
+    node0.addChildToFront(node1);
+    pureFunctionIdentifier0.process(node0, node0);
+    assertEquals(42, Node.NO_SIDE_EFFECTS_CALL);
+}",""
+"@Override
+public void process(Node externsAst, Node srcAst) {
+    if (externs != null || root != null) {
+        throw new IllegalStateException(""It is illegal to call PureFunctionIdentifier.process "" + ""twice the same instance.  Please use a new "" + ""PureFunctionIdentifier instance each time."");
+    }
+    externs = externsAst;
+    root = srcAst;
+    NodeTraversal.traverse(compiler, externs, new FunctionAnalyzer(true));
+    NodeTraversal.traverse(compiler, root, new FunctionAnalyzer(false));
+    propagateSideEffects();
+    markPureFunctionCalls();
+}","public void test44() throws Throwable {
+    SimpleDefinitionFinder simpleDefinitionFinder0 = new SimpleDefinitionFinder((AbstractCompiler) null);
+    PureFunctionIdentifier pureFunctionIdentifier0 = new PureFunctionIdentifier((AbstractCompiler) null, simpleDefinitionFinder0);
+    Node node0 = new Node(37);
+    Node node1 = new Node(0);
+    node1.setType(38);
+    node0.addChildToFront(node1);
+    // Undeclared exception!
+    try {
+        pureFunctionIdentifier0.process(node0, node0);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // NAME is not a string node
+        //
+        verifyException(""com.google.javascript.rhino.Node"", e);
+    }
+}",""
+"@Override
+public void process(Node externsAst, Node srcAst) {
+    if (externs != null || root != null) {
+        throw new IllegalStateException(""It is illegal to call PureFunctionIdentifier.process "" + ""twice the same instance.  Please use a new "" + ""PureFunctionIdentifier instance each time."");
+    }
+    externs = externsAst;
+    root = srcAst;
+    NodeTraversal.traverse(compiler, externs, new FunctionAnalyzer(true));
+    NodeTraversal.traverse(compiler, root, new FunctionAnalyzer(false));
+    propagateSideEffects();
+    markPureFunctionCalls();
+}","public void test55() throws Throwable {
+    SimpleDefinitionFinder simpleDefinitionFinder0 = new SimpleDefinitionFinder((AbstractCompiler) null);
+    PureFunctionIdentifier pureFunctionIdentifier0 = new PureFunctionIdentifier((AbstractCompiler) null, simpleDefinitionFinder0);
+    Node node0 = new Node(30);
+    // Undeclared exception!
+    try {
+        pureFunctionIdentifier0.process(node0, node0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.NodeUtil"", e);
+    }
+}",""
+"@Override
+public void process(Node externsAst, Node srcAst) {
+    if (externs != null || root != null) {
+        throw new IllegalStateException(""It is illegal to call PureFunctionIdentifier.process "" + ""twice the same instance.  Please use a new "" + ""PureFunctionIdentifier instance each time."");
+    }
+    externs = externsAst;
+    root = srcAst;
+    NodeTraversal.traverse(compiler, externs, new FunctionAnalyzer(true));
+    NodeTraversal.traverse(compiler, root, new FunctionAnalyzer(false));
+    propagateSideEffects();
+    markPureFunctionCalls();
+}","public void test66() throws Throwable {
+    SimpleDefinitionFinder simpleDefinitionFinder0 = new SimpleDefinitionFinder((AbstractCompiler) null);
+    PureFunctionIdentifier pureFunctionIdentifier0 = new PureFunctionIdentifier((AbstractCompiler) null, simpleDefinitionFinder0);
+    Node node0 = new Node(103, 103, 103);
+    pureFunctionIdentifier0.process(node0, node0);
+    assertEquals(2, Node.ATTRIBUTE_FLAG);
+}",""
+"@Override
+public void process(Node externsAst, Node srcAst) {
+    if (externs != null || root != null) {
+        throw new IllegalStateException(""It is illegal to call PureFunctionIdentifier.process "" + ""twice the same instance.  Please use a new "" + ""PureFunctionIdentifier instance each time."");
+    }
+    externs = externsAst;
+    root = srcAst;
+    NodeTraversal.traverse(compiler, externs, new FunctionAnalyzer(true));
+    NodeTraversal.traverse(compiler, root, new FunctionAnalyzer(false));
+    propagateSideEffects();
+    markPureFunctionCalls();
+}","public void test77() throws Throwable {
+    SimpleDefinitionFinder simpleDefinitionFinder0 = new SimpleDefinitionFinder((AbstractCompiler) null);
+    Node node0 = new Node(105);
+    Node node1 = new Node(38, node0, node0, node0);
+    node0.addChildToFront(node1);
+    PureFunctionIdentifier pureFunctionIdentifier0 = new PureFunctionIdentifier((AbstractCompiler) null, simpleDefinitionFinder0);
+    Node node2 = Node.newNumber((double) 13);
+    // Undeclared exception!
+    try {
+        pureFunctionIdentifier0.process(node2, node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.NodeTraversal"", e);
+    }
+}",""
+"@Override
+public void process(Node externsAst, Node srcAst) {
+    if (externs != null || root != null) {
+        throw new IllegalStateException(""It is illegal to call PureFunctionIdentifier.process "" + ""twice the same instance.  Please use a new "" + ""PureFunctionIdentifier instance each time."");
+    }
+    externs = externsAst;
+    root = srcAst;
+    NodeTraversal.traverse(compiler, externs, new FunctionAnalyzer(true));
+    NodeTraversal.traverse(compiler, root, new FunctionAnalyzer(false));
+    propagateSideEffects();
+    markPureFunctionCalls();
+}","public void test88() throws Throwable {
+    SimpleDefinitionFinder simpleDefinitionFinder0 = new SimpleDefinitionFinder((AbstractCompiler) null);
+    Node node0 = new Node(105);
+    Node node1 = new Node(13, node0, node0, node0);
+    PureFunctionIdentifier pureFunctionIdentifier0 = new PureFunctionIdentifier((AbstractCompiler) null, simpleDefinitionFinder0);
+    // Undeclared exception!
+    try {
+        pureFunctionIdentifier0.process(node1, node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.NodeTraversal"", e);
+    }
+}",""
+"@Override
+public void process(Node externsAst, Node srcAst) {
+    if (externs != null || root != null) {
+        throw new IllegalStateException(""It is illegal to call PureFunctionIdentifier.process "" + ""twice the same instance.  Please use a new "" + ""PureFunctionIdentifier instance each time."");
+    }
+    externs = externsAst;
+    root = srcAst;
+    NodeTraversal.traverse(compiler, externs, new FunctionAnalyzer(true));
+    NodeTraversal.traverse(compiler, root, new FunctionAnalyzer(false));
+    propagateSideEffects();
+    markPureFunctionCalls();
+}","public void test99() throws Throwable {
+    SimpleDefinitionFinder simpleDefinitionFinder0 = new SimpleDefinitionFinder((AbstractCompiler) null);
+    PureFunctionIdentifier pureFunctionIdentifier0 = new PureFunctionIdentifier((AbstractCompiler) null, simpleDefinitionFinder0);
+    Node node0 = new Node(105);
+    Node node1 = new Node(38, node0, node0, node0);
+    Node node2 = Node.newString(29, """");
+    node0.addChildToFront(node2);
+    node0.addChildToFront(node1);
+    // Undeclared exception!
+    try {
+        pureFunctionIdentifier0.process(node1, node0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.NodeTraversal"", e);
+    }
+}",""

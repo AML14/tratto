@@ -1,0 +1,123 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test011,"public void test011() throws Throwable {
+    String string0 = Entities.unescape("""", true);
+    assertEquals("""", string0);
+}",0,
+project,0,test022,"public void test022() throws Throwable {
+    String string0 = Entities.unescape("""");
+    assertEquals("""", string0);
+}",0,
+project,0,test033,"public void test033() throws Throwable {
+    Character character0 = Entities.getCharacterByName(""ShortDownArrow"");
+    assertEquals('\u2193', (char) character0);
+}",0,
+project,0,test044,"public void test044() throws Throwable {
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    String string0 = Entities.escape("""", document_OutputSettings0);
+    assertEquals("""", string0);
+}",0,
+project,0,test055,"public void test055() throws Throwable {
+    // Undeclared exception!
+    try {
+        Entities.unescape((String) null, false);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test066,"public void test066() throws Throwable {
+    // Undeclared exception!
+    try {
+        Entities.unescape((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test077,"public void test077() throws Throwable {
+    // Undeclared exception!
+    try {
+        Entities.escape((StringBuilder) null, ""leftrightarrow"", (Document.OutputSettings) null, true, true, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Entities"", e);
+    }
+}",0,
+project,0,test088,"public void test088() throws Throwable {
+    // Undeclared exception!
+    try {
+        Entities.escape(""Cedilla"", (Document.OutputSettings) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Entities"", e);
+    }
+}",0,
+project,0,test099,"public void test099() throws Throwable {
+    boolean boolean0 = Entities.isBaseNamedEntity(""gt"");
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test1111,"public void test1111() throws Throwable {
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    Charset charset0 = Charset.forName(""US-ASCII"");
+    document_OutputSettings0.charset(charset0);
+    String string0 = Entities.escape(""US-ASCII"", document_OutputSettings0);
+    assertEquals(""US-ASCII"", string0);
+}",0,assertNotNull(string0)
+project,0,test1414,"public void test1414() throws Throwable {
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    Entities.EscapeMode entities_EscapeMode0 = Entities.EscapeMode.xhtml;
+    document_OutputSettings0.escapeMode(entities_EscapeMode0);
+    String string0 = Entities.escape(""\u00A0"", document_OutputSettings0);
+    assertEquals(""&#xa0;"", string0);
+}",0,
+project,0,test1515,"public void test1515() throws Throwable {
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    String string0 = Entities.escape(""\u00A0"", document_OutputSettings0);
+    assertEquals(""&nbsp;"", string0);
+}",0,
+project,0,test1616,"public void test1616() throws Throwable {
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    String string0 = Entities.escape(""gk)9GE2xPi&FtC~"", document_OutputSettings0);
+    assertEquals(""gk)9GE2xPi&amp;FtC~"", string0);
+}",0,
+project,0,test1919,"public void test1919() throws Throwable {
+    String string0 = Entities.unescape(""&gt;"", true);
+    assertEquals("">"", string0);
+}",0,
+project,0,test2020,"public void test2020() throws Throwable {
+    boolean boolean0 = Entities.isBaseNamedEntity((String) null);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2121,"public void test2121() throws Throwable {
+    boolean boolean0 = Entities.isNamedEntity(""vDash"");
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2222,"public void test2222() throws Throwable {
+    boolean boolean0 = Entities.isNamedEntity(""8o|:W{sm?j"");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2323,"public void test2323() throws Throwable {
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    String string0 = Entities.escape("">q<xJw01\""a!9-$C"", document_OutputSettings0);
+    assertEquals(""&gt;q&lt;xJw01\""a!9-$C"", string0);
+}",0,
+project,0,test2424,"public void test2424() throws Throwable {
+    String string0 = Entities.unescape("">q<xJw01\""a!9-$C"");
+    assertEquals("">q<xJw01\""a!9-$C"", string0);
+}",0,
+project,0,test2525,"public void test2525() throws Throwable {
+    Character character0 = Entities.getCharacterByName(""8o|:W{sm?j"");
+    assertNull(character0);
+}",0,assertNotNull(character0)

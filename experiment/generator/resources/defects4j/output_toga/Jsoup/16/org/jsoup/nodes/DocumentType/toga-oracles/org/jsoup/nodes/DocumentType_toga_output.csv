@@ -1,0 +1,48 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test11,"public void test11() throws Throwable {
+    DocumentType documentType0 = new DocumentType(""?_p[gQ[p"", ""`#pMDw.`n~_g|U=[{<D"", ""name"", ""t!@`h#:}<V@U4^S"");
+    StringBuilder stringBuilder0 = new StringBuilder((CharSequence) ""?_p[gQ[p"");
+    documentType0.outerHtmlTail(stringBuilder0, 0, (Document.OutputSettings) null);
+    assertEquals(""t!@`h#:}<V@U4^S"", documentType0.baseUri());
+}",0,assertNotNull(documentType0.baseUri())
+project,0,test22,"public void test22() throws Throwable {
+    DocumentType documentType0 = new DocumentType(""1h"", """", ""PekqQ2W~"", ""1h"");
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    // Undeclared exception!
+    try {
+        documentType0.outerHtmlHead((StringBuilder) null, 982, document_OutputSettings0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.DocumentType"", e);
+    }
+}",0,
+project,0,test33,"public void test33() throws Throwable {
+    DocumentType documentType0 = null;
+    try {
+        documentType0 = new DocumentType(""(G3~{dE,6nC"", (String) null, """", ""(G3~{dE,6nC"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test44,"public void test44() throws Throwable {
+    DocumentType documentType0 = new DocumentType("""", """", ""rho"", ""rho"");
+    String string0 = documentType0.nodeName();
+    assertEquals(""#doctype"", string0);
+}",0,assertNotNull(string0)
+project,0,test55,"public void test55() throws Throwable {
+    DocumentType documentType0 = new DocumentType("""", """", """", """");
+    String string0 = documentType0.toString();
+    assertEquals(""#doctype"", documentType0.nodeName());
+}",0,assertNotNull(documentType0.nodeName())
+project,0,test56,"public void test56() throws Throwable {
+    DocumentType documentType0 = new DocumentType("""", """", """", """");
+    String string0 = documentType0.toString();
+    assertEquals(""<!DOCTYPE html>"", string0);
+}",0,assertNotNull(string0)

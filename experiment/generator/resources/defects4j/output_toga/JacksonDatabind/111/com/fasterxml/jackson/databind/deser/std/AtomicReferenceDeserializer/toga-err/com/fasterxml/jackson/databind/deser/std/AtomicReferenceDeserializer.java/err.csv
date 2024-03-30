@@ -1,0 +1,34 @@
+com.fasterxml.jackson.databind.deser.std.AtomicReferenceDeserializer,@Test(timeout = 4000)
+public void test22() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<Integer> class0 = Integer.class;
+    TypeBindings typeBindings0 = TypeBindings.create(class0, (JavaType[]) null);
+    TypeResolutionContext.Basic typeResolutionContext_Basic0 = new TypeResolutionContext.Basic(typeFactory0, typeBindings0);
+    JavaType javaType0 = typeResolutionContext_Basic0.resolveType(class0);
+    ValueInstantiator.Base valueInstantiator_Base0 = new ValueInstantiator.Base(javaType0);
+    ClassNameIdResolver classNameIdResolver0 = new ClassNameIdResolver(javaType0, typeFactory0);
+    AsExternalTypeDeserializer asExternalTypeDeserializer0 = new AsExternalTypeDeserializer(javaType0, classNameIdResolver0, ""[creator property, name '"", false, javaType0);
+    JsonDeserializer<List<PropertyName>> jsonDeserializer0 = (JsonDeserializer<List<PropertyName>>) mock(JsonDeserializer.class, new ViolatedAssumptionAnswer());
+    AtomicReferenceDeserializer atomicReferenceDeserializer0 = new AtomicReferenceDeserializer(javaType0, valueInstantiator_Base0, asExternalTypeDeserializer0, jsonDeserializer0);
+    MapperFeature mapperFeature0 = MapperFeature.ALLOW_FINAL_FIELDS_AS_MUTATORS;
+    AtomicReference<Object> atomicReference0 = new AtomicReference<Object>(mapperFeature0);
+    MapperFeature mapperFeature1 = (MapperFeature) atomicReferenceDeserializer0.getReferenced(atomicReference0);
+    mapperFeature1.getMask();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.fasterxml.jackson.databind.deser.std.AtomicReferenceDeserializer,@Test(timeout = 4000)
+public void test55() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<List> class0 = List.class;
+    Class<MapperFeature> class1 = MapperFeature.class;
+    CollectionType collectionType0 = typeFactory0.constructCollectionType(class0, class1);
+    ValueInstantiator.Base valueInstantiator_Base0 = new ValueInstantiator.Base(collectionType0);
+    ClassNameIdResolver classNameIdResolver0 = new ClassNameIdResolver(collectionType0, typeFactory0);
+    AsExternalTypeDeserializer asExternalTypeDeserializer0 = new AsExternalTypeDeserializer(collectionType0, classNameIdResolver0, ""S;"", true, collectionType0);
+    JsonDeserializer<SimpleModule> jsonDeserializer0 = (JsonDeserializer<SimpleModule>) mock(JsonDeserializer.class, new ViolatedAssumptionAnswer());
+    AtomicReferenceDeserializer atomicReferenceDeserializer0 = new AtomicReferenceDeserializer(collectionType0, valueInstantiator_Base0, asExternalTypeDeserializer0, jsonDeserializer0);
+    DeserializerFactoryConfig deserializerFactoryConfig0 = new DeserializerFactoryConfig();
+    BeanDeserializerFactory beanDeserializerFactory0 = new BeanDeserializerFactory(deserializerFactoryConfig0);
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    AtomicReference<Object> atomicReference0 = atomicReferenceDeserializer0.getNullValue((DeserializationContext) defaultDeserializationContext_Impl0);
+    atomicReference0.toString();
+},ERROR,java.nio.file.NoSuchFileException,/home/star_usit_group/tratto/experiment/generator/resources/defects4j/temp/JacksonDatabind_111b/src/main/java/java/util/concurrent/atomic/AtomicReference.java

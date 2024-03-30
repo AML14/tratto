@@ -1,0 +1,117 @@
+focal_method,test_prefix,docstring
+"public static JsonDeserializer<?> find(Class<?> rawType, String clsName) {
+    if (_classNames.contains(clsName)) {
+        JsonDeserializer<?> d = FromStringDeserializer.findDeserializer(rawType);
+        if (d != null) {
+            return d;
+        }
+        if (rawType == UUID.class) {
+            return new UUIDDeserializer();
+        }
+        if (rawType == StackTraceElement.class) {
+            return new StackTraceElementDeserializer();
+        }
+        if (rawType == AtomicBoolean.class) {
+            // (note: AtomicInteger/Long work due to single-arg constructor. For now?
+            return new AtomicBooleanDeserializer();
+        }
+        if (rawType == ByteBuffer.class) {
+            return new ByteBufferDeserializer();
+        }
+    }
+    return null;
+}","public void test11() throws Throwable {
+    Class<ByteBuffer> class0 = ByteBuffer.class;
+    JsonDeserializer<?> jsonDeserializer0 = JdkDeserializers.find(class0, ""/I0}z?G $J53C)}>z"");
+    assertNull(jsonDeserializer0);
+}",""
+"public AccessPattern getEmptyAccessPattern() {
+    return AccessPattern.DYNAMIC;
+}","public void test22() throws Throwable {
+    Class<AtomicBoolean> class0 = AtomicBoolean.class;
+    JsonDeserializer<?> jsonDeserializer0 = JdkDeserializers.find(class0, ""com.fasterxml.jackson.databind.JavaType"");
+    assertEquals(AccessPattern.CONSTANT, jsonDeserializer0.getEmptyAccessPattern());
+}","/**
+ * This method may be called in conjunction with calls to
+ * {@link #getEmptyValue(DeserializationContext)}, to check whether it needs
+ * to be called just once (static values), or each time empty value is
+ * needed.
+ *
+ * @since 2.9
+ */"
+"@Override
+public AccessPattern getNullAccessPattern() {
+    // Default implementation assumes that the null value does not vary, which
+    // is usually the case for most implementations. But it is not necessarily
+    // `null`; so sub-classes may want to refine further.
+    return AccessPattern.CONSTANT;
+}","public void test33() throws Throwable {
+    Class<UUID> class0 = UUID.class;
+    JsonDeserializer<?> jsonDeserializer0 = JdkDeserializers.find(class0, ""com.fasterxml.jackson.databind.JavaType"");
+    assertEquals(AccessPattern.ALWAYS_NULL, jsonDeserializer0.getNullAccessPattern());
+}","/**
+ * Default implementation indicates that ""null value"" to use for input null
+ * is simply Java `null` for all deserializers, unless overridden by sub-classes.
+ * This information may be used as optimization.
+ */"
+"public boolean isCachable() {
+    return false;
+}","public void test44() throws Throwable {
+    Class<StackTraceElement> class0 = StackTraceElement.class;
+    JsonDeserializer<?> jsonDeserializer0 = JdkDeserializers.find(class0, ""com.fasterxml.jackson.databind.JavaType"");
+    assertFalse(jsonDeserializer0.isCachable());
+}","/**
+ *  Method called to see if deserializer instance is cachable and
+ *  usable for other properties of same type (type for which instance
+ *  was created).
+ * <p>
+ *  Note that cached instances are still resolved on per-property basis,
+ *  if instance implements {@link com.fasterxml.jackson.databind.deser.ResolvableDeserializer}:
+ *  cached instance is just as the base. This means that in most cases it is safe to
+ *  cache instances; however, it only makes sense to cache instances
+ *  if instantiation is expensive, or if instances are heavy-weight.
+ * <p>
+ *  Default implementation returns false, to indicate that no caching
+ *  is done.
+ */"
+"@Override
+public AccessPattern getNullAccessPattern() {
+    // Default implementation assumes that the null value does not vary, which
+    // is usually the case for most implementations. But it is not necessarily
+    // `null`; so sub-classes may want to refine further.
+    return AccessPattern.CONSTANT;
+}","public void test55() throws Throwable {
+    Class<ByteBuffer> class0 = ByteBuffer.class;
+    JsonDeserializer<?> jsonDeserializer0 = JdkDeserializers.find(class0, ""com.fasterxml.jackson.databind.JavaType"");
+    assertEquals(AccessPattern.ALWAYS_NULL, jsonDeserializer0.getNullAccessPattern());
+}","/**
+ * Default implementation indicates that ""null value"" to use for input null
+ * is simply Java `null` for all deserializers, unless overridden by sub-classes.
+ * This information may be used as optimization.
+ */"
+"public static JsonDeserializer<?> find(Class<?> rawType, String clsName) {
+    if (_classNames.contains(clsName)) {
+        JsonDeserializer<?> d = FromStringDeserializer.findDeserializer(rawType);
+        if (d != null) {
+            return d;
+        }
+        if (rawType == UUID.class) {
+            return new UUIDDeserializer();
+        }
+        if (rawType == StackTraceElement.class) {
+            return new StackTraceElementDeserializer();
+        }
+        if (rawType == AtomicBoolean.class) {
+            // (note: AtomicInteger/Long work due to single-arg constructor. For now?
+            return new AtomicBooleanDeserializer();
+        }
+        if (rawType == ByteBuffer.class) {
+            return new ByteBufferDeserializer();
+        }
+    }
+    return null;
+}","public void test66() throws Throwable {
+    Class<Object> class0 = Object.class;
+    JsonDeserializer<?> jsonDeserializer0 = JdkDeserializers.find(class0, ""com.fasterxml.jackson.databind.JavaType"");
+    assertNull(jsonDeserializer0);
+}",""

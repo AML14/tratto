@@ -1,0 +1,39 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test00,"public void test00() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = new Node(105, 105, 105);
+    PreprocessorSymbolTable preprocessorSymbolTable0 = new PreprocessorSymbolTable(node0);
+    CompilerOptions.AliasTransformationHandler compilerOptions_AliasTransformationHandler0 = CompilerOptions.NULL_ALIAS_TRANSFORMATION_HANDLER;
+    ScopedAliases scopedAliases0 = new ScopedAliases(compiler0, preprocessorSymbolTable0, compilerOptions_AliasTransformationHandler0);
+    scopedAliases0.hotSwapScript(node0, node0);
+    assertEquals(1, Node.DECR_FLAG);
+}",1,
+project,0,test11,"public void test11() throws Throwable {
+    Node node0 = Node.newNumber(9.007199254740992E15);
+    Compiler compiler0 = new Compiler();
+    PreprocessorSymbolTable preprocessorSymbolTable0 = new PreprocessorSymbolTable(node0);
+    CompilerOptions.AliasTransformationHandler compilerOptions_AliasTransformationHandler0 = CompilerOptions.NULL_ALIAS_TRANSFORMATION_HANDLER;
+    ScopedAliases scopedAliases0 = new ScopedAliases(compiler0, preprocessorSymbolTable0, compilerOptions_AliasTransformationHandler0);
+    scopedAliases0.process(node0, node0);
+    assertEquals(51, Node.STATIC_SOURCE_FILE);
+}",0,
+project,0,test22,"public void test22() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = new Node(132, 132, 132);
+    PreprocessorSymbolTable preprocessorSymbolTable0 = new PreprocessorSymbolTable(node0);
+    CompilerOptions.AliasTransformationHandler compilerOptions_AliasTransformationHandler0 = CompilerOptions.NULL_ALIAS_TRANSFORMATION_HANDLER;
+    Node node1 = new Node(37, node0, node0, node0, node0, 16, 39);
+    ScopedAliases scopedAliases0 = new ScopedAliases(compiler0, preprocessorSymbolTable0, compilerOptions_AliasTransformationHandler0);
+    scopedAliases0.hotSwapScript(node0, node1);
+    assertEquals(1, node1.getChildCount());
+}",0,"assertEquals(1, node1.getChildCount())"
+project,0,test33,"public void test33() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = new Node(105, 105, 105);
+    PreprocessorSymbolTable preprocessorSymbolTable0 = new PreprocessorSymbolTable(node0);
+    CompilerOptions.AliasTransformationHandler compilerOptions_AliasTransformationHandler0 = CompilerOptions.NULL_ALIAS_TRANSFORMATION_HANDLER;
+    ScopedAliases scopedAliases0 = new ScopedAliases(compiler0, preprocessorSymbolTable0, compilerOptions_AliasTransformationHandler0);
+    Node node1 = new Node(42, node0, node0, node0, node0, 22, 2);
+    scopedAliases0.hotSwapScript(node1, node0);
+    assertEquals(50, Node.FREE_CALL);
+}",1,

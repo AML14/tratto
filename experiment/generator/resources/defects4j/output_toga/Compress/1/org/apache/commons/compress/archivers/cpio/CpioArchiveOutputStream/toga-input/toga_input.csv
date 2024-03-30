@@ -1,0 +1,877 @@
+focal_method,test_prefix,docstring
+"public void write(final byte[] b, final int off, final int len) throws IOException {
+    ensureOpen();
+    if (off < 0 || len < 0 || off > b.length - len) {
+        throw new IndexOutOfBoundsException();
+    } else if (len == 0) {
+        return;
+    }
+    if (this.cpioEntry == null) {
+        throw new IOException(""no current CPIO entry"");
+    }
+    if (this.written + len > this.cpioEntry.getSize()) {
+        throw new IOException(""attempt to write past end of STORED entry"");
+    }
+    out.write(b, off, len);
+    this.written += len;
+    if ((this.cpioEntry.getFormat() | FORMAT_NEW_CRC) == FORMAT_NEW_CRC) {
+        for (int pos = 0; pos < len; pos++) {
+            this.crc += b[pos] & 0xFF;
+        }
+    }
+}","public void test000() throws Throwable {
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream((OutputStream) null);
+    byte[] byteArray0 = new byte[3];
+    cpioArchiveOutputStream0.write(byteArray0, 0, 0);
+    assertArrayEquals(new byte[] { (byte) 0, (byte) 0, (byte) 0 }, byteArray0);
+}","/**
+ * Writes an array of bytes to the current CPIO entry data. This method will
+ * block until all the bytes are written.
+ *
+ * @param b
+ *            the data to be written
+ * @param off
+ *            the start offset in the data
+ * @param len
+ *            the number of bytes that are written
+ * @throws IOException
+ *             if an I/O error has occurred or if a CPIO file error has
+ *             occurred
+ */"
+"public boolean isPipe() {
+    return (this.mode & S_IFMT) == C_ISFIFO;
+}","public void test011() throws Throwable {
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""YhNE?"");
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(mockFileOutputStream0, (short) 4);
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry(""YhNE?"");
+    cpioArchiveOutputStream0.putArchiveEntry(cpioArchiveEntry0);
+    assertFalse(cpioArchiveEntry0.isPipe());
+}","/**
+ * Check if this entry represents a pipe.
+ *
+ * @return TRUE if this entry is a pipe.
+ */"
+"public void write(final byte[] b, final int off, final int len) throws IOException {
+    ensureOpen();
+    if (off < 0 || len < 0 || off > b.length - len) {
+        throw new IndexOutOfBoundsException();
+    } else if (len == 0) {
+        return;
+    }
+    if (this.cpioEntry == null) {
+        throw new IOException(""no current CPIO entry"");
+    }
+    if (this.written + len > this.cpioEntry.getSize()) {
+        throw new IOException(""attempt to write past end of STORED entry"");
+    }
+    out.write(b, off, len);
+    this.written += len;
+    if ((this.cpioEntry.getFormat() | FORMAT_NEW_CRC) == FORMAT_NEW_CRC) {
+        for (int pos = 0; pos < len; pos++) {
+            this.crc += b[pos] & 0xFF;
+        }
+    }
+}","public void test022() throws Throwable {
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""F/'-[TRfq&Hg?"");
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(mockPrintStream0);
+    // Undeclared exception!
+    try {
+        cpioArchiveOutputStream0.write((byte[]) null, 1440, 850);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}","/**
+ * Writes an array of bytes to the current CPIO entry data. This method will
+ * block until all the bytes are written.
+ *
+ * @param b
+ *            the data to be written
+ * @param off
+ *            the start offset in the data
+ * @param len
+ *            the number of bytes that are written
+ * @throws IOException
+ *             if an I/O error has occurred or if a CPIO file error has
+ *             occurred
+ */"
+"public void write(final byte[] b, final int off, final int len) throws IOException {
+    ensureOpen();
+    if (off < 0 || len < 0 || off > b.length - len) {
+        throw new IndexOutOfBoundsException();
+    } else if (len == 0) {
+        return;
+    }
+    if (this.cpioEntry == null) {
+        throw new IOException(""no current CPIO entry"");
+    }
+    if (this.written + len > this.cpioEntry.getSize()) {
+        throw new IOException(""attempt to write past end of STORED entry"");
+    }
+    out.write(b, off, len);
+    this.written += len;
+    if ((this.cpioEntry.getFormat() | FORMAT_NEW_CRC) == FORMAT_NEW_CRC) {
+        for (int pos = 0; pos < len; pos++) {
+            this.crc += b[pos] & 0xFF;
+        }
+    }
+}","public void test033() throws Throwable {
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream((OutputStream) null);
+    byte[] byteArray0 = new byte[0];
+    cpioArchiveOutputStream0.close();
+    try {
+        cpioArchiveOutputStream0.write(byteArray0, 3, 0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream closed
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}","/**
+ * Writes an array of bytes to the current CPIO entry data. This method will
+ * block until all the bytes are written.
+ *
+ * @param b
+ *            the data to be written
+ * @param off
+ *            the start offset in the data
+ * @param len
+ *            the number of bytes that are written
+ * @throws IOException
+ *             if an I/O error has occurred or if a CPIO file error has
+ *             occurred
+ */"
+"/*
+     * (non-Javadoc)
+     * 
+     * @see java.io.OutputStream#write(int)
+     */
+public void write(int b) throws IOException {
+    out.write(b);
+}","public void test044() throws Throwable {
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream((OutputStream) null);
+    // Undeclared exception!
+    try {
+        cpioArchiveOutputStream0.write(0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"/*
+     * (non-Javadoc)
+     * 
+     * @see java.io.OutputStream#write(int)
+     */
+public void write(int b) throws IOException {
+    out.write(b);
+}","public void test055() throws Throwable {
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""no current CPIO entry"");
+    mockFileOutputStream0.close();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(mockFileOutputStream0);
+    try {
+        cpioArchiveOutputStream0.write(1309);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.mock.java.io.MockFileOutputStream"", e);
+    }
+}",""
+"public void putNextEntry(final CpioArchiveEntry e) throws IOException {
+    ensureOpen();
+    if (this.cpioEntry != null) {
+        // close previous entry
+        closeArchiveEntry();
+    }
+    if (e.getTime() == -1) {
+        e.setTime(System.currentTimeMillis());
+    }
+    // TODO what happens if an entry has an other format than the
+    // outputstream?
+    if (e.getFormat() == -1) {
+        e.setFormat(this.entryFormat);
+    }
+    if (this.names.put(e.getName(), e) != null) {
+        throw new IOException(""duplicate entry: "" + e.getName());
+    }
+    writeHeader(e);
+    this.cpioEntry = e;
+    this.written = 0;
+}","public void test066() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0);
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry((String) null, 1130L);
+    // Undeclared exception!
+    try {
+        cpioArchiveOutputStream0.putNextEntry(cpioArchiveEntry0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}","/**
+ * Begins writing a new CPIO file entry and positions the stream to the
+ * start of the entry data. Closes the current entry if still active. The
+ * current time will be used if the entry has no set modification time and
+ * the default header format will be used if no other format is specified in
+ * the entry.
+ *
+ * @param e
+ *            the CPIO cpioEntry to be written
+ * @throws IOException
+ *             if an I/O error has occurred or if a CPIO file error has
+ *             occurred
+ */"
+"/*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.apache.commons.compress.archivers.ArchiveOutputStream#putArchiveEntry
+     * (org.apache.commons.compress.archivers.ArchiveEntry)
+     */
+public void putArchiveEntry(ArchiveEntry entry) throws IOException {
+    this.putNextEntry((CpioArchiveEntry) entry);
+}","public void test077() throws Throwable {
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream((OutputStream) null);
+    ZipArchiveEntry zipArchiveEntry0 = new ZipArchiveEntry(""'s no-arg constructor is not public"");
+    JarArchiveEntry jarArchiveEntry0 = new JarArchiveEntry((ZipEntry) zipArchiveEntry0);
+    // Undeclared exception!
+    try {
+        cpioArchiveOutputStream0.putArchiveEntry(jarArchiveEntry0);
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // org.apache.commons.compress.archivers.jar.JarArchiveEntry cannot be cast to org.apache.commons.compress.archivers.cpio.CpioArchiveEntry
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",""
+"public void finish() throws IOException {
+    ensureOpen();
+    if (this.finished) {
+        return;
+    }
+    if (this.cpioEntry != null) {
+        closeArchiveEntry();
+    }
+    this.cpioEntry = new CpioArchiveEntry(this.entryFormat);
+    this.cpioEntry.setMode(0);
+    this.cpioEntry.setName(""TRAILER!!!"");
+    this.cpioEntry.setNumberOfLinks(1);
+    writeHeader(this.cpioEntry);
+    closeArchiveEntry();
+}","public void test088() throws Throwable {
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream((OutputStream) null);
+    // Undeclared exception!
+    try {
+        cpioArchiveOutputStream0.finish();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * Finishes writing the contents of the CPIO output stream without closing
+ * the underlying stream. Use this method when applying multiple filters in
+ * succession to the same output stream.
+ *
+ * @throws IOException
+ *             if an I/O exception has occurred or if a CPIO file error has
+ *             occurred
+ */"
+"public void finish() throws IOException {
+    ensureOpen();
+    if (this.finished) {
+        return;
+    }
+    if (this.cpioEntry != null) {
+        closeArchiveEntry();
+    }
+    this.cpioEntry = new CpioArchiveEntry(this.entryFormat);
+    this.cpioEntry.setMode(0);
+    this.cpioEntry.setName(""TRAILER!!!"");
+    this.cpioEntry.setNumberOfLinks(1);
+    writeHeader(this.cpioEntry);
+    closeArchiveEntry();
+}","public void test099() throws Throwable {
+    MockFile mockFile0 = new MockFile(""Q_H ^I:?pEqpZb${bE"", ""Q_H ^I:?pEqpZb${bE"");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(mockFile0);
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(mockPrintStream0);
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry(""070707"");
+    cpioArchiveEntry0.setSize(83L);
+    cpioArchiveOutputStream0.putNextEntry(cpioArchiveEntry0);
+    try {
+        cpioArchiveOutputStream0.finish();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // invalid entry size (expected 83 but got 0 bytes)
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}","/**
+ * Finishes writing the contents of the CPIO output stream without closing
+ * the underlying stream. Use this method when applying multiple filters in
+ * succession to the same output stream.
+ *
+ * @throws IOException
+ *             if an I/O exception has occurred or if a CPIO file error has
+ *             occurred
+ */"
+"/*(non-Javadoc)
+     * 
+     * @see
+     * org.apache.commons.compress.archivers.ArchiveOutputStream#closeArchiveEntry
+     * ()
+     */
+public void closeArchiveEntry() throws IOException {
+    ensureOpen();
+    if (this.cpioEntry.getSize() != this.written) {
+        throw new IOException(""invalid entry size (expected "" + this.cpioEntry.getSize() + "" but got "" + this.written + "" bytes)"");
+    }
+    if ((this.cpioEntry.getFormat() | FORMAT_NEW_MASK) == FORMAT_NEW_MASK) {
+        pad(this.cpioEntry.getSize(), 4);
+    } else if ((this.cpioEntry.getFormat() | FORMAT_OLD_BINARY) == FORMAT_OLD_BINARY) {
+        pad(this.cpioEntry.getSize(), 2);
+    }
+    if ((this.cpioEntry.getFormat() | FORMAT_NEW_CRC) == FORMAT_NEW_CRC) {
+        if (this.crc != this.cpioEntry.getChksum()) {
+            throw new IOException(""CRC Error"");
+        }
+    }
+    this.cpioEntry = null;
+    this.crc = 0;
+    this.written = 0;
+}","public void test1010() throws Throwable {
+    MockFile mockFile0 = new MockFile(""CRC Error"", "" bytes)"");
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(mockFile0);
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(mockFileOutputStream0, (short) 2);
+    // Undeclared exception!
+    try {
+        cpioArchiveOutputStream0.closeArchiveEntry();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",""
+"public void close() throws IOException {
+    if (!this.closed) {
+        super.close();
+        this.closed = true;
+    }
+}","public void test1111() throws Throwable {
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""O>OHGn9/"");
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(mockPrintStream0);
+    cpioArchiveOutputStream0.close();
+    cpioArchiveOutputStream0.close();
+}","/**
+ * Closes the CPIO output stream as well as the stream being filtered.
+ *
+ * @throws IOException
+ *             if an I/O error has occurred or if a CPIO file error has
+ *             occurred
+ */"
+"public void write(final byte[] b, final int off, final int len) throws IOException {
+    ensureOpen();
+    if (off < 0 || len < 0 || off > b.length - len) {
+        throw new IndexOutOfBoundsException();
+    } else if (len == 0) {
+        return;
+    }
+    if (this.cpioEntry == null) {
+        throw new IOException(""no current CPIO entry"");
+    }
+    if (this.written + len > this.cpioEntry.getSize()) {
+        throw new IOException(""attempt to write past end of STORED entry"");
+    }
+    out.write(b, off, len);
+    this.written += len;
+    if ((this.cpioEntry.getFormat() | FORMAT_NEW_CRC) == FORMAT_NEW_CRC) {
+        for (int pos = 0; pos < len; pos++) {
+            this.crc += b[pos] & 0xFF;
+        }
+    }
+}","public void test1414() throws Throwable {
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""YhNE?"");
+    byte[] byteArray0 = new byte[3];
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(mockFileOutputStream0);
+    // Undeclared exception!
+    try {
+        cpioArchiveOutputStream0.write(byteArray0, (int) (byte) 124, (int) (short) 4);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}","/**
+ * Writes an array of bytes to the current CPIO entry data. This method will
+ * block until all the bytes are written.
+ *
+ * @param b
+ *            the data to be written
+ * @param off
+ *            the start offset in the data
+ * @param len
+ *            the number of bytes that are written
+ * @throws IOException
+ *             if an I/O error has occurred or if a CPIO file error has
+ *             occurred
+ */"
+"public void write(final byte[] b, final int off, final int len) throws IOException {
+    ensureOpen();
+    if (off < 0 || len < 0 || off > b.length - len) {
+        throw new IndexOutOfBoundsException();
+    } else if (len == 0) {
+        return;
+    }
+    if (this.cpioEntry == null) {
+        throw new IOException(""no current CPIO entry"");
+    }
+    if (this.written + len > this.cpioEntry.getSize()) {
+        throw new IOException(""attempt to write past end of STORED entry"");
+    }
+    out.write(b, off, len);
+    this.written += len;
+    if ((this.cpioEntry.getFormat() | FORMAT_NEW_CRC) == FORMAT_NEW_CRC) {
+        for (int pos = 0; pos < len; pos++) {
+            this.crc += b[pos] & 0xFF;
+        }
+    }
+}","public void test1515() throws Throwable {
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream((OutputStream) null);
+    byte[] byteArray0 = new byte[1];
+    // Undeclared exception!
+    try {
+        cpioArchiveOutputStream0.write(byteArray0, 409, (int) (byte) (-115));
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}","/**
+ * Writes an array of bytes to the current CPIO entry data. This method will
+ * block until all the bytes are written.
+ *
+ * @param b
+ *            the data to be written
+ * @param off
+ *            the start offset in the data
+ * @param len
+ *            the number of bytes that are written
+ * @throws IOException
+ *             if an I/O error has occurred or if a CPIO file error has
+ *             occurred
+ */"
+"public void write(final byte[] b, final int off, final int len) throws IOException {
+    ensureOpen();
+    if (off < 0 || len < 0 || off > b.length - len) {
+        throw new IndexOutOfBoundsException();
+    } else if (len == 0) {
+        return;
+    }
+    if (this.cpioEntry == null) {
+        throw new IOException(""no current CPIO entry"");
+    }
+    if (this.written + len > this.cpioEntry.getSize()) {
+        throw new IOException(""attempt to write past end of STORED entry"");
+    }
+    out.write(b, off, len);
+    this.written += len;
+    if ((this.cpioEntry.getFormat() | FORMAT_NEW_CRC) == FORMAT_NEW_CRC) {
+        for (int pos = 0; pos < len; pos++) {
+            this.crc += b[pos] & 0xFF;
+        }
+    }
+}","public void test1717() throws Throwable {
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""c@T"");
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(mockPrintStream0, (short) 8);
+    byte[] byteArray0 = new byte[5];
+    // Undeclared exception!
+    try {
+        cpioArchiveOutputStream0.write(byteArray0, (-3345), (int) (byte) 0);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}","/**
+ * Writes an array of bytes to the current CPIO entry data. This method will
+ * block until all the bytes are written.
+ *
+ * @param b
+ *            the data to be written
+ * @param off
+ *            the start offset in the data
+ * @param len
+ *            the number of bytes that are written
+ * @throws IOException
+ *             if an I/O error has occurred or if a CPIO file error has
+ *             occurred
+ */"
+"/*(non-Javadoc)
+     * 
+     * @see
+     * org.apache.commons.compress.archivers.ArchiveOutputStream#closeArchiveEntry
+     * ()
+     */
+public void closeArchiveEntry() throws IOException {
+    ensureOpen();
+    if (this.cpioEntry.getSize() != this.written) {
+        throw new IOException(""invalid entry size (expected "" + this.cpioEntry.getSize() + "" but got "" + this.written + "" bytes)"");
+    }
+    if ((this.cpioEntry.getFormat() | FORMAT_NEW_MASK) == FORMAT_NEW_MASK) {
+        pad(this.cpioEntry.getSize(), 4);
+    } else if ((this.cpioEntry.getFormat() | FORMAT_OLD_BINARY) == FORMAT_OLD_BINARY) {
+        pad(this.cpioEntry.getSize(), 2);
+    }
+    if ((this.cpioEntry.getFormat() | FORMAT_NEW_CRC) == FORMAT_NEW_CRC) {
+        if (this.crc != this.cpioEntry.getChksum()) {
+            throw new IOException(""CRC Error"");
+        }
+    }
+    this.cpioEntry = null;
+    this.crc = 0;
+    this.written = 0;
+}","public void test1818() throws Throwable {
+    MockFile mockFile0 = new MockFile(""Q_H ^I:?pEqpZb${bE"", ""Q_H ^I:?pEqpZb${bE"");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(mockFile0);
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(mockPrintStream0);
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry(""070707"");
+    cpioArchiveEntry0.setSize(83L);
+    cpioArchiveOutputStream0.putNextEntry(cpioArchiveEntry0);
+    try {
+        cpioArchiveOutputStream0.closeArchiveEntry();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // invalid entry size (expected 83 but got 0 bytes)
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",""
+"public void putNextEntry(final CpioArchiveEntry e) throws IOException {
+    ensureOpen();
+    if (this.cpioEntry != null) {
+        // close previous entry
+        closeArchiveEntry();
+    }
+    if (e.getTime() == -1) {
+        e.setTime(System.currentTimeMillis());
+    }
+    // TODO what happens if an entry has an other format than the
+    // outputstream?
+    if (e.getFormat() == -1) {
+        e.setFormat(this.entryFormat);
+    }
+    if (this.names.put(e.getName(), e) != null) {
+        throw new IOException(""duplicate entry: "" + e.getName());
+    }
+    writeHeader(e);
+    this.cpioEntry = e;
+    this.written = 0;
+}","public void test1919() throws Throwable {
+    MockFile mockFile0 = new MockFile(""Q_H ^I:?pEqpZb${bE"", ""Q_H ^I:?pEqpZb${bE"");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(mockFile0);
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(mockPrintStream0);
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry(""070707"");
+    cpioArchiveOutputStream0.putNextEntry(cpioArchiveEntry0);
+    try {
+        cpioArchiveOutputStream0.putNextEntry(cpioArchiveEntry0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // duplicate entry: 070707
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}","/**
+ * Begins writing a new CPIO file entry and positions the stream to the
+ * start of the entry data. Closes the current entry if still active. The
+ * current time will be used if the entry has no set modification time and
+ * the default header format will be used if no other format is specified in
+ * the entry.
+ *
+ * @param e
+ *            the CPIO cpioEntry to be written
+ * @throws IOException
+ *             if an I/O error has occurred or if a CPIO file error has
+ *             occurred
+ */"
+"public CpioArchiveOutputStream(final OutputStream out, final short format) {
+    this.out = new FilterOutputStream(out);
+    setFormat(format);
+}","public void test2020() throws Throwable {
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = null;
+    try {
+        cpioArchiveOutputStream0 = new CpioArchiveOutputStream((OutputStream) null, (short) (-1));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unknown header type
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}","/**
+ * Construct the cpio output stream with a specified format
+ *
+ * @param out
+ *            The cpio stream
+ * @param format
+ *            The format of the stream
+ */"
+"public CpioArchiveOutputStream(final OutputStream out, final short format) {
+    this.out = new FilterOutputStream(out);
+    setFormat(format);
+}","public void test2121() throws Throwable {
+    File file0 = MockFile.createTempFile(""Stream closed"", ""Stream closed"");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(file0);
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = null;
+    try {
+        cpioArchiveOutputStream0 = new CpioArchiveOutputStream(mockPrintStream0, (short) 7);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unknown header type
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}","/**
+ * Construct the cpio output stream with a specified format
+ *
+ * @param out
+ *            The cpio stream
+ * @param format
+ *            The format of the stream
+ */"
+"public CpioArchiveOutputStream(final OutputStream out, final short format) {
+    this.out = new FilterOutputStream(out);
+    setFormat(format);
+}","public void test2222() throws Throwable {
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""duplicate entry: "", true);
+    FilterOutputStream filterOutputStream0 = new FilterOutputStream(mockFileOutputStream0);
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = null;
+    try {
+        cpioArchiveOutputStream0 = new CpioArchiveOutputStream(filterOutputStream0, (short) 6);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unknown header type
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}","/**
+ * Construct the cpio output stream with a specified format
+ *
+ * @param out
+ *            The cpio stream
+ * @param format
+ *            The format of the stream
+ */"
+"public CpioArchiveOutputStream(final OutputStream out, final short format) {
+    this.out = new FilterOutputStream(out);
+    setFormat(format);
+}","public void test2323() throws Throwable {
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = null;
+    try {
+        cpioArchiveOutputStream0 = new CpioArchiveOutputStream((OutputStream) null, (short) 5);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unknown header type
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}","/**
+ * Construct the cpio output stream with a specified format
+ *
+ * @param out
+ *            The cpio stream
+ * @param format
+ *            The format of the stream
+ */"
+"public CpioArchiveOutputStream(final OutputStream out, final short format) {
+    this.out = new FilterOutputStream(out);
+    setFormat(format);
+}","public void test2424() throws Throwable {
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = null;
+    try {
+        cpioArchiveOutputStream0 = new CpioArchiveOutputStream((OutputStream) null, (short) 3);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unknown header type
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}","/**
+ * Construct the cpio output stream with a specified format
+ *
+ * @param out
+ *            The cpio stream
+ * @param format
+ *            The format of the stream
+ */"
+"/*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.apache.commons.compress.archivers.ArchiveOutputStream#putArchiveEntry
+     * (org.apache.commons.compress.archivers.ArchiveEntry)
+     */
+public void putArchiveEntry(ArchiveEntry entry) throws IOException {
+    this.putNextEntry((CpioArchiveEntry) entry);
+}","public void test2627() throws Throwable {
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream((OutputStream) null);
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry(""org.apache.commons.compress.archivers.zip.JarMarker"");
+    cpioArchiveOutputStream0.close();
+    try {
+        cpioArchiveOutputStream0.putArchiveEntry(cpioArchiveEntry0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream closed
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",""
+"/*(non-Javadoc)
+     * 
+     * @see
+     * org.apache.commons.compress.archivers.ArchiveOutputStream#closeArchiveEntry
+     * ()
+     */
+public void closeArchiveEntry() throws IOException {
+    ensureOpen();
+    if (this.cpioEntry.getSize() != this.written) {
+        throw new IOException(""invalid entry size (expected "" + this.cpioEntry.getSize() + "" but got "" + this.written + "" bytes)"");
+    }
+    if ((this.cpioEntry.getFormat() | FORMAT_NEW_MASK) == FORMAT_NEW_MASK) {
+        pad(this.cpioEntry.getSize(), 4);
+    } else if ((this.cpioEntry.getFormat() | FORMAT_OLD_BINARY) == FORMAT_OLD_BINARY) {
+        pad(this.cpioEntry.getSize(), 2);
+    }
+    if ((this.cpioEntry.getFormat() | FORMAT_NEW_CRC) == FORMAT_NEW_CRC) {
+        if (this.crc != this.cpioEntry.getChksum()) {
+            throw new IOException(""CRC Error"");
+        }
+    }
+    this.cpioEntry = null;
+    this.crc = 0;
+    this.written = 0;
+}","public void test2728() throws Throwable {
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""YhNE?"");
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(mockFileOutputStream0, (short) 4);
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry(""YhNE?"");
+    cpioArchiveOutputStream0.putNextEntry(cpioArchiveEntry0);
+    cpioArchiveOutputStream0.closeArchiveEntry();
+}",""
+"public void finish() throws IOException {
+    ensureOpen();
+    if (this.finished) {
+        return;
+    }
+    if (this.cpioEntry != null) {
+        closeArchiveEntry();
+    }
+    this.cpioEntry = new CpioArchiveEntry(this.entryFormat);
+    this.cpioEntry.setMode(0);
+    this.cpioEntry.setName(""TRAILER!!!"");
+    this.cpioEntry.setNumberOfLinks(1);
+    writeHeader(this.cpioEntry);
+    closeArchiveEntry();
+}","public void test2829() throws Throwable {
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""YhNE?"");
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(mockFileOutputStream0, (short) 4);
+    cpioArchiveOutputStream0.finish();
+}","/**
+ * Finishes writing the contents of the CPIO output stream without closing
+ * the underlying stream. Use this method when applying multiple filters in
+ * succession to the same output stream.
+ *
+ * @throws IOException
+ *             if an I/O exception has occurred or if a CPIO file error has
+ *             occurred
+ */"
+"/*
+     * (non-Javadoc)
+     * 
+     * @see java.io.OutputStream#write(int)
+     */
+public void write(int b) throws IOException {
+    out.write(b);
+}","public void test2930() throws Throwable {
+    MockFile mockFile0 = new MockFile(""ustar"");
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(mockFile0);
+    ObjectOutputStream objectOutputStream0 = new ObjectOutputStream(mockFileOutputStream0);
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(objectOutputStream0);
+    cpioArchiveOutputStream0.write(716);
+}",""
+"public void finish() throws IOException {
+    ensureOpen();
+    if (this.finished) {
+        return;
+    }
+    if (this.cpioEntry != null) {
+        closeArchiveEntry();
+    }
+    this.cpioEntry = new CpioArchiveEntry(this.entryFormat);
+    this.cpioEntry.setMode(0);
+    this.cpioEntry.setName(""TRAILER!!!"");
+    this.cpioEntry.setNumberOfLinks(1);
+    writeHeader(this.cpioEntry);
+    closeArchiveEntry();
+}","public void test3031() throws Throwable {
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""c@T"");
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(mockPrintStream0, (short) 8);
+    cpioArchiveOutputStream0.finish();
+}","/**
+ * Finishes writing the contents of the CPIO output stream without closing
+ * the underlying stream. Use this method when applying multiple filters in
+ * succession to the same output stream.
+ *
+ * @throws IOException
+ *             if an I/O exception has occurred or if a CPIO file error has
+ *             occurred
+ */"
+"/*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.apache.commons.compress.archivers.ArchiveOutputStream#putArchiveEntry
+     * (org.apache.commons.compress.archivers.ArchiveEntry)
+     */
+public void putArchiveEntry(ArchiveEntry entry) throws IOException {
+    this.putNextEntry((CpioArchiveEntry) entry);
+}","public void test3132() throws Throwable {
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream((OutputStream) null);
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry("" instead of "");
+    // Undeclared exception!
+    try {
+        cpioArchiveOutputStream0.putArchiveEntry(cpioArchiveEntry0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""

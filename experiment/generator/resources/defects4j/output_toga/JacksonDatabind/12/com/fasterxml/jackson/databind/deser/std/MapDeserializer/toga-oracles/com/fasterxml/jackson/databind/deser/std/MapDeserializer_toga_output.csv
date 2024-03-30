@@ -1,0 +1,272 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    MapDeserializer mapDeserializer0 = new MapDeserializer((JavaType) null, jsonLocationInstantiator0, (KeyDeserializer) null, (JsonDeserializer<Object>) null, (TypeDeserializer) null);
+    // Undeclared exception!
+    try {
+        mapDeserializer0.deserializeWithType((JsonParser) null, (DeserializationContext) null, (TypeDeserializer) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.MapDeserializer"", e);
+    }
+}",0,
+project,0,test022,"public void test022() throws Throwable {
+    Class<String> class0 = String.class;
+    Class<JsonMappingException> class1 = JsonMappingException.class;
+    SimpleType simpleType0 = SimpleType.construct(class1);
+    CollectionLikeType collectionLikeType0 = CollectionLikeType.construct(class0, simpleType0);
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    CoreXMLDeserializers.Std coreXMLDeserializers_Std0 = new CoreXMLDeserializers.Std(class1, (-3214));
+    MapDeserializer mapDeserializer0 = new MapDeserializer(collectionLikeType0, jsonLocationInstantiator0, (KeyDeserializer) null, coreXMLDeserializers_Std0, (TypeDeserializer) null);
+    JavaType javaType0 = mapDeserializer0.getValueType();
+    assertSame(collectionLikeType0, javaType0);
+}",0,
+project,0,test033,"public void test033() throws Throwable {
+    Class<JsonMappingException> class0 = JsonMappingException.class;
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    ObjectReader objectReader1 = objectReader0.withType((Type) class0);
+    assertNotSame(objectReader1, objectReader0);
+}",0,
+project,0,test044,"public void test044() throws Throwable {
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    MapDeserializer mapDeserializer0 = new MapDeserializer((JavaType) null, jsonLocationInstantiator0, (KeyDeserializer) null, (JsonDeserializer<Object>) null, (TypeDeserializer) null);
+    // Undeclared exception!
+    try {
+        mapDeserializer0.findBackReference("""");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Can not handle managed/back reference '': type: container deserializer of type com.fasterxml.jackson.databind.deser.std.MapDeserializer returned null for 'getContentDeserializer()'
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.ContainerDeserializerBase"", e);
+    }
+}",0,
+project,0,test055,"public void test055() throws Throwable {
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    MapDeserializer mapDeserializer0 = new MapDeserializer((JavaType) null, jsonLocationInstantiator0, (KeyDeserializer) null, (JsonDeserializer<Object>) null, (TypeDeserializer) null);
+    // Undeclared exception!
+    try {
+        mapDeserializer0.deserialize((JsonParser) null, (DeserializationContext) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.MapDeserializer"", e);
+    }
+}",0,
+project,0,test066,"public void test066() throws Throwable {
+    Class<ObjectIdGenerators.IntSequenceGenerator> class0 = ObjectIdGenerators.IntSequenceGenerator.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    Class<NamedType> class1 = NamedType.class;
+    CollectionLikeType collectionLikeType0 = CollectionLikeType.construct(class1, simpleType0);
+    Class<Integer> class2 = Integer.class;
+    CoreXMLDeserializers.Std coreXMLDeserializers_Std0 = new CoreXMLDeserializers.Std(class2, 15);
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    MapDeserializer mapDeserializer0 = new MapDeserializer(collectionLikeType0, jsonLocationInstantiator0, (KeyDeserializer) null, coreXMLDeserializers_Std0, (TypeDeserializer) null);
+    JavaType javaType0 = mapDeserializer0.getContentType();
+    assertFalse(javaType0.isPrimitive());
+}",0,assertTrue(javaType0.isPrimitive())
+project,0,test077,"public void test077() throws Throwable {
+    Class<Integer> class0 = Integer.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    MapDeserializer mapDeserializer0 = new MapDeserializer(simpleType0, jsonLocationInstantiator0, (KeyDeserializer) null, (JsonDeserializer<Object>) null, (TypeDeserializer) null);
+    MapDeserializer mapDeserializer1 = mapDeserializer0.withResolved((KeyDeserializer) null, (TypeDeserializer) null, (JsonDeserializer<?>) null, (HashSet<String>) null);
+    assertSame(mapDeserializer1, mapDeserializer0);
+}",0,
+project,0,test088,"public void test088() throws Throwable {
+    Class<JsonMappingException> class0 = JsonMappingException.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    CoreXMLDeserializers.Std coreXMLDeserializers_Std0 = new CoreXMLDeserializers.Std(class0, (-1602));
+    MapDeserializer mapDeserializer0 = new MapDeserializer(simpleType0, jsonLocationInstantiator0, (KeyDeserializer) null, coreXMLDeserializers_Std0, (TypeDeserializer) null);
+    HashSet<String> hashSet0 = new HashSet<String>();
+    MapDeserializer mapDeserializer1 = mapDeserializer0.withResolved((KeyDeserializer) null, (TypeDeserializer) null, mapDeserializer0, hashSet0);
+    assertFalse(mapDeserializer1.isCachable());
+}",0,
+project,0,test099,"public void test099() throws Throwable {
+    Class<JsonMappingException> class0 = JsonMappingException.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    CoreXMLDeserializers.Std coreXMLDeserializers_Std0 = new CoreXMLDeserializers.Std(class0, (-2065));
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    ClassNameIdResolver classNameIdResolver0 = new ClassNameIdResolver(simpleType0, typeFactory0);
+    Class<Error> class1 = Error.class;
+    AsPropertyTypeDeserializer asPropertyTypeDeserializer0 = new AsPropertyTypeDeserializer(simpleType0, classNameIdResolver0, """", false, class1);
+    MapDeserializer mapDeserializer0 = new MapDeserializer(simpleType0, jsonLocationInstantiator0, (KeyDeserializer) null, coreXMLDeserializers_Std0, asPropertyTypeDeserializer0);
+    HashSet<String> hashSet0 = new HashSet<String>();
+    MapDeserializer mapDeserializer1 = mapDeserializer0.withResolved((KeyDeserializer) null, (TypeDeserializer) null, coreXMLDeserializers_Std0, hashSet0);
+    assertFalse(mapDeserializer1.isCachable());
+}",0,
+project,0,test0910,"public void test0910() throws Throwable {
+    Class<JsonMappingException> class0 = JsonMappingException.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    CoreXMLDeserializers.Std coreXMLDeserializers_Std0 = new CoreXMLDeserializers.Std(class0, (-2065));
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    ClassNameIdResolver classNameIdResolver0 = new ClassNameIdResolver(simpleType0, typeFactory0);
+    Class<Error> class1 = Error.class;
+    AsPropertyTypeDeserializer asPropertyTypeDeserializer0 = new AsPropertyTypeDeserializer(simpleType0, classNameIdResolver0, """", false, class1);
+    MapDeserializer mapDeserializer0 = new MapDeserializer(simpleType0, jsonLocationInstantiator0, (KeyDeserializer) null, coreXMLDeserializers_Std0, asPropertyTypeDeserializer0);
+    HashSet<String> hashSet0 = new HashSet<String>();
+    MapDeserializer mapDeserializer1 = mapDeserializer0.withResolved((KeyDeserializer) null, (TypeDeserializer) null, coreXMLDeserializers_Std0, hashSet0);
+    assertFalse(mapDeserializer0.isCachable());
+}",0,
+project,0,test1011,"public void test1011() throws Throwable {
+    Class<JsonMappingException> class0 = JsonMappingException.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    CoreXMLDeserializers.Std coreXMLDeserializers_Std0 = new CoreXMLDeserializers.Std(class0, (-3214));
+    MapDeserializer mapDeserializer0 = new MapDeserializer(simpleType0, jsonLocationInstantiator0, (KeyDeserializer) null, coreXMLDeserializers_Std0, (TypeDeserializer) null);
+    LinkedHashSet<String> linkedHashSet0 = new LinkedHashSet<String>();
+    MapDeserializer mapDeserializer1 = mapDeserializer0.withResolved((KeyDeserializer) null, (TypeDeserializer) null, coreXMLDeserializers_Std0, linkedHashSet0);
+    boolean boolean0 = mapDeserializer1.isCachable();
+    assertTrue(mapDeserializer0.isCachable());
+}",0,
+project,0,test1012,"public void test1012() throws Throwable {
+    Class<JsonMappingException> class0 = JsonMappingException.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    CoreXMLDeserializers.Std coreXMLDeserializers_Std0 = new CoreXMLDeserializers.Std(class0, (-3214));
+    MapDeserializer mapDeserializer0 = new MapDeserializer(simpleType0, jsonLocationInstantiator0, (KeyDeserializer) null, coreXMLDeserializers_Std0, (TypeDeserializer) null);
+    LinkedHashSet<String> linkedHashSet0 = new LinkedHashSet<String>();
+    MapDeserializer mapDeserializer1 = mapDeserializer0.withResolved((KeyDeserializer) null, (TypeDeserializer) null, coreXMLDeserializers_Std0, linkedHashSet0);
+    boolean boolean0 = mapDeserializer1.isCachable();
+    assertFalse(boolean0);
+}",0,
+project,0,test1113,"public void test1113() throws Throwable {
+    Class<JsonMappingException> class0 = JsonMappingException.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    StdKeyDeserializer.StringKD stdKeyDeserializer_StringKD0 = StdKeyDeserializer.StringKD.forType(class0);
+    MapDeserializer mapDeserializer0 = new MapDeserializer(simpleType0, jsonLocationInstantiator0, stdKeyDeserializer_StringKD0, (JsonDeserializer<Object>) null, (TypeDeserializer) null);
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    // Undeclared exception!
+    try {
+        mapDeserializer0.createContextual(defaultDeserializationContext_Impl0, (BeanProperty) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationContext"", e);
+    }
+}",0,
+project,0,test1214,"public void test1214() throws Throwable {
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    Class<InvocationTargetException> class0 = InvocationTargetException.class;
+    CoreXMLDeserializers.Std coreXMLDeserializers_Std0 = new CoreXMLDeserializers.Std(class0, 47);
+    StdKeyDeserializer.StringKD stdKeyDeserializer_StringKD0 = StdKeyDeserializer.StringKD.forType(class0);
+    Class<SimpleObjectIdResolver> class1 = SimpleObjectIdResolver.class;
+    SimpleType simpleType0 = (SimpleType) TypeBindings.UNBOUND;
+    MapLikeType mapLikeType0 = MapLikeType.construct(class0, simpleType0, simpleType0);
+    ArrayType arrayType0 = ArrayType.construct(mapLikeType0, jsonLocationInstantiator0, jsonLocationInstantiator0);
+    MapType mapType0 = MapType.construct(class1, arrayType0, simpleType0);
+    MapDeserializer mapDeserializer0 = new MapDeserializer(mapType0, jsonLocationInstantiator0, stdKeyDeserializer_StringKD0, coreXMLDeserializers_Std0, (TypeDeserializer) null);
+    assertTrue(mapDeserializer0.isCachable());
+}",0,
+project,0,test1315,"public void test1315() throws Throwable {
+    Class<Object> class0 = Object.class;
+    SimpleType simpleType0 = SimpleType.constructUnsafe(class0);
+    MapType mapType0 = MapType.construct(class0, simpleType0, simpleType0);
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    JsonDeserializer<ArrayNode> jsonDeserializer0 = (JsonDeserializer<ArrayNode>) mock(JsonDeserializer.class, new ViolatedAssumptionAnswer());
+    StdKeyDeserializer.DelegatingKD stdKeyDeserializer_DelegatingKD0 = new StdKeyDeserializer.DelegatingKD(class0, jsonDeserializer0);
+    Class<InvocationTargetException> class1 = InvocationTargetException.class;
+    CoreXMLDeserializers.Std coreXMLDeserializers_Std0 = new CoreXMLDeserializers.Std(class1, 0);
+    AsArrayTypeDeserializer asArrayTypeDeserializer0 = new AsArrayTypeDeserializer(simpleType0, (TypeIdResolver) null, ""nG4 p2%)A"", false, class1);
+    MapDeserializer mapDeserializer0 = new MapDeserializer(mapType0, jsonLocationInstantiator0, stdKeyDeserializer_DelegatingKD0, coreXMLDeserializers_Std0, asArrayTypeDeserializer0);
+    assertFalse(mapDeserializer0.isCachable());
+}",0,
+project,0,test1416,"public void test1416() throws Throwable {
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    MapDeserializer mapDeserializer0 = new MapDeserializer((JavaType) null, jsonLocationInstantiator0, (KeyDeserializer) null, (JsonDeserializer<Object>) null, (TypeDeserializer) null);
+    String[] stringArray0 = new String[0];
+    mapDeserializer0.setIgnorableProperties(stringArray0);
+    assertTrue(mapDeserializer0.isCachable());
+}",0,
+project,0,test1517,"public void test1517() throws Throwable {
+    Class<JsonMappingException> class0 = JsonMappingException.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    CoreXMLDeserializers.Std coreXMLDeserializers_Std0 = new CoreXMLDeserializers.Std(class0, 0);
+    MapDeserializer mapDeserializer0 = new MapDeserializer(simpleType0, jsonLocationInstantiator0, (KeyDeserializer) null, coreXMLDeserializers_Std0, (TypeDeserializer) null);
+    String[] stringArray0 = new String[1];
+    mapDeserializer0.setIgnorableProperties(stringArray0);
+    assertFalse(mapDeserializer0.isCachable());
+}",0,
+project,0,test1618,"public void test1618() throws Throwable {
+    Class<Integer> class0 = Integer.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    MapDeserializer mapDeserializer0 = new MapDeserializer(simpleType0, jsonLocationInstantiator0, (KeyDeserializer) null, (JsonDeserializer<Object>) null, (TypeDeserializer) null);
+    // Undeclared exception!
+    try {
+        mapDeserializer0.resolve((DeserializationContext) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.MapDeserializer"", e);
+    }
+}",0,
+project,0,test1719,"public void test1719() throws Throwable {
+    Class<JsonMappingException> class0 = JsonMappingException.class;
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    objectMapper0.enableDefaultTyping();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    ObjectReader objectReader1 = objectReader0.withType((Type) class0);
+    assertNotSame(objectReader0, objectReader1);
+}",0,
+project,0,test1820,"public void test1820() throws Throwable {
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    MapDeserializer mapDeserializer0 = new MapDeserializer((JavaType) null, jsonLocationInstantiator0, (KeyDeserializer) null, (JsonDeserializer<Object>) null, (TypeDeserializer) null);
+    JsonFactory jsonFactory0 = new JsonFactory();
+    JsonParser jsonParser0 = jsonFactory0.createParser(""JSON"");
+    HashMap<Object, Object> hashMap0 = new HashMap<Object, Object>();
+    // Undeclared exception!
+    try {
+        mapDeserializer0.deserialize(jsonParser0, (DeserializationContext) null, (Map<Object, Object>) hashMap0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.MapDeserializer"", e);
+    }
+}",0,
+project,0,test2325,"public void test2325() throws Throwable {
+    Class<String> class0 = String.class;
+    Class<JsonMappingException> class1 = JsonMappingException.class;
+    SimpleType simpleType0 = SimpleType.construct(class1);
+    CollectionLikeType collectionLikeType0 = CollectionLikeType.construct(class0, simpleType0);
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    CoreXMLDeserializers.Std coreXMLDeserializers_Std0 = new CoreXMLDeserializers.Std(class1, 2070);
+    MapDeserializer mapDeserializer0 = new MapDeserializer(collectionLikeType0, jsonLocationInstantiator0, (KeyDeserializer) null, coreXMLDeserializers_Std0, (TypeDeserializer) null);
+    MockError mockError0 = new MockError("""");
+    // Undeclared exception!
+    try {
+        mapDeserializer0.wrapAndThrow(mockError0, (Object) null, """");
+        fail(""Expecting exception: Error"");
+    } catch (Error e) {
+    }
+}",1,
+project,0,test2426,"public void test2426() throws Throwable {
+    Class<JsonMappingException> class0 = JsonMappingException.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    MapDeserializer mapDeserializer0 = new MapDeserializer(simpleType0, jsonLocationInstantiator0, (KeyDeserializer) null, (JsonDeserializer<Object>) null, (TypeDeserializer) null);
+    MockIOException mockIOException0 = new MockIOException((String) null);
+    try {
+        mapDeserializer0.wrapAndThrow(mockIOException0, simpleType0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+    }
+}",0,

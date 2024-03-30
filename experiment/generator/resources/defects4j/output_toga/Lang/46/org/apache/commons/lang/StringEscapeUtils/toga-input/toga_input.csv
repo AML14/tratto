@@ -1,0 +1,1547 @@
+focal_method,test_prefix,docstring
+"public static String unescapeCsv(String str) {
+    if (str == null) {
+        return null;
+    }
+    try {
+        StringWriter writer = new StringWriter();
+        unescapeCsv(writer, str);
+        return writer.toString();
+    } catch (IOException ioe) {
+        // this should never ever happen while writing to a StringWriter
+        ioe.printStackTrace();
+        return null;
+    }
+}","public void test000() throws Throwable {
+    String string0 = ""\\u"";
+    String string1 = StringEscapeUtils.unescapeCsv(string0);
+    assertEquals(""\\u"", string1);
+}","/**
+ * <p>Returns a <code>String</code> value for an unescaped CSV column. </p>
+ *
+ * <p>If the value is enclosed in double quotes, and contains a comma, newline
+ *    or double quote, then quotes are removed.
+ * </p>
+ *
+ * <p>Any double quote escaped characters (a pair of double quotes) are unescaped
+ *    to just one double quote. </p>
+ *
+ * <p>If the value is not enclosed in double quotes, or is and does not contain a
+ *    comma, newline or double quote, then the String value is returned unchanged.</p>
+ * </p>
+ *
+ * see <a href=""http://en.wikipedia.org/wiki/Comma-separated_values"">Wikipedia</a> and
+ * <a href=""http://tools.ietf.org/html/rfc4180"">RFC 4180</a>.
+ *
+ * @param str the input CSV column String, may be null
+ * @return the input String, with enclosing double quotes removed and embedded double
+ * quotes unescaped, <code>null</code> if null string input
+ * @since 2.4
+ */"
+"public static String escapeJavaScript(String str) {
+    return escapeJavaStyleString(str, true);
+}","public void test011() throws Throwable {
+    String string0 = StringEscapeUtils.escapeJavaScript(""@\""rMHcw|cN^a"");
+    assertEquals(""@\\\""rMHcw|cN^a"", string0);
+}","/**
+ * <p>Escapes the characters in a <code>String</code> using JavaScript String rules.</p>
+ * <p>Escapes any values it finds into their JavaScript String form.
+ * Deals correctly with quotes and control-chars (tab, backslash, cr, ff, etc.) </p>
+ *
+ * <p>So a tab becomes the characters <code>'\\'</code> and
+ * <code>'t'</code>.</p>
+ *
+ * <p>The only difference between Java strings and JavaScript strings
+ * is that in JavaScript, a single quote must be escaped.</p>
+ *
+ * <p>Example:
+ * <pre>
+ * input string: He didn't say, ""Stop!""
+ * output string: He didn\'t say, \""Stop!\""
+ * </pre>
+ * </p>
+ *
+ * @param str  String to escape values in, may be null
+ * @return String with escaped values, <code>null</code> if null string input
+ */"
+"public static String unescapeXml(String str) {
+    if (str == null) {
+        return null;
+    }
+    return Entities.XML.unescape(str);
+}","public void test033() throws Throwable {
+    String string0 = StringEscapeUtils.unescapeXml("""");
+    assertEquals("""", string0);
+}","/**
+ * <p>Unescapes a string containing XML entity escapes to a string
+ * containing the actual Unicode characters corresponding to the
+ * escapes.</p>
+ *
+ * <p>Supports only the five basic XML entities (gt, lt, quot, amp, apos).
+ * Does not support DTDs or external entities.</p>
+ *
+ * <p>Note that numerical \\u unicode codes are unescaped to their respective
+ *    unicode characters. This may change in future releases. </p>
+ *
+ * @param str  the <code>String</code> to unescape, may be null
+ * @return a new unescaped <code>String</code>, <code>null</code> if null string input
+ * @see #escapeXml(String)
+ */"
+"public static String unescapeJavaScript(String str) {
+    return unescapeJava(str);
+}","public void test044() throws Throwable {
+    String string0 = StringEscapeUtils.unescapeJavaScript((String) null);
+    assertNull(string0);
+}","/**
+ * <p>Unescapes any JavaScript literals found in the <code>String</code>.</p>
+ *
+ * <p>For example, it will turn a sequence of <code>'\'</code> and <code>'n'</code>
+ * into a newline character, unless the <code>'\'</code> is preceded by another
+ * <code>'\'</code>.</p>
+ *
+ * @see #unescapeJava(String)
+ * @param str  the <code>String</code> to unescape, may be null
+ * @return A new unescaped <code>String</code>, <code>null</code> if null string input
+ */"
+"public static String unescapeJava(String str) {
+    if (str == null) {
+        return null;
+    }
+    try {
+        StringWriter writer = new StringWriter(str.length());
+        unescapeJava(writer, str);
+        return writer.toString();
+    } catch (IOException ioe) {
+        // this should never ever happen while writing to a StringWriter
+        ioe.printStackTrace();
+        return null;
+    }
+}","public void test055() throws Throwable {
+    String string0 = ""\\u0"";
+    String string1 = StringEscapeUtils.unescapeJava(string0);
+    assertEquals("""", string1);
+}","/**
+ * <p>Unescapes any Java literals found in the <code>String</code>.
+ * For example, it will turn a sequence of <code>'\'</code> and
+ * <code>'n'</code> into a newline character, unless the <code>'\'</code>
+ * is preceded by another <code>'\'</code>.</p>
+ *
+ * @param str  the <code>String</code> to unescape, may be null
+ * @return a new unescaped <code>String</code>, <code>null</code> if null string input
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * <p>Unescapes a string containing entity escapes to a string
+ * containing the actual Unicode characters corresponding to the
+ * escapes. Supports HTML 4.0 entities.</p>
+ *
+ * <p>For example, the string ""&amp;lt;Fran&amp;ccedil;ais&amp;gt;""
+ * will become ""&lt;Fran&ccedil;ais&gt;""</p>
+ *
+ * <p>If an entity is unrecognized, it is left alone, and inserted
+ * verbatim into the result string. e.g. ""&amp;gt;&amp;zzzz;x"" will
+ * become ""&gt;&amp;zzzz;x"".</p>
+ *
+ * @param str  the <code>String</code> to unescape, may be null
+ * @return a new unescaped <code>String</code>, <code>null</code> if null string input
+ * @see #escapeHtml(Writer, String)
+ */
+public static String unescapeHtml(String str) {
+    if (str == null) {
+        return null;
+    }
+    try {
+        StringWriter writer = new StringWriter((int) (str.length() * 1.5));
+        unescapeHtml(writer, str);
+        return writer.toString();
+    } catch (IOException e) {
+        //assert false;
+        //should be impossible
+        e.printStackTrace();
+        return null;
+    }
+}","public void test066() throws Throwable {
+    String string0 = StringEscapeUtils.unescapeHtml("""");
+    assertEquals("""", string0);
+}",""
+"public static String escapeXml(String str) {
+    if (str == null) {
+        return null;
+    }
+    return Entities.XML.escape(str);
+}","public void test077() throws Throwable {
+    String string0 = StringEscapeUtils.escapeXml("""");
+    assertEquals("""", string0);
+}","/**
+ * <p>Escapes the characters in a <code>String</code> using XML entities.</p>
+ *
+ * <p>For example: <tt>""bread"" & ""butter""</tt> =>
+ * <tt>&amp;quot;bread&amp;quot; &amp;amp; &amp;quot;butter&amp;quot;</tt>.
+ * </p>
+ *
+ * <p>Supports only the five basic XML entities (gt, lt, quot, amp, apos).
+ * Does not support DTDs or external entities.</p>
+ *
+ * <p>Note that unicode characters greater than 0x7f are currently escaped to
+ *    their numerical \\u equivalent. This may change in future releases. </p>
+ *
+ * @param str  the <code>String</code> to escape, may be null
+ * @return a new escaped <code>String</code>, <code>null</code> if null string input
+ * @see #unescapeXml(java.lang.String)
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * <p>Escapes the characters in a <code>String</code> to be suitable to pass to
+ * an SQL query.</p>
+ *
+ * <p>For example,
+ * <pre>statement.executeQuery(""SELECT * FROM MOVIES WHERE TITLE='"" +
+ *   StringEscapeUtils.escapeSql(""McHale's Navy"") +
+ *   ""'"");</pre>
+ * </p>
+ *
+ * <p>At present, this method only turns single-quotes into doubled single-quotes
+ * (<code>""McHale's Navy""</code> => <code>""McHale''s Navy""</code>). It does not
+ * handle the cases of percent (%) or underscore (_) for use in LIKE clauses.</p>
+ *
+ * see http://www.jguru.com/faq/view.jsp?EID=8881
+ * @param str  the string to escape, may be null
+ * @return a new String, escaped for SQL, <code>null</code> if null string input
+ */
+public static String escapeSql(String str) {
+    if (str == null) {
+        return null;
+    }
+    return StringUtils.replace(str, ""'"", ""''"");
+}","public void test088() throws Throwable {
+    String string0 = StringEscapeUtils.escapeSql(""ZUvr2"");
+    assertEquals(""ZUvr2"", string0);
+}",""
+"public static String escapeJavaScript(String str) {
+    return escapeJavaStyleString(str, true);
+}","public void test099() throws Throwable {
+    String string0 = StringEscapeUtils.escapeJavaScript((String) null);
+    assertNull(string0);
+}","/**
+ * <p>Escapes the characters in a <code>String</code> using JavaScript String rules.</p>
+ * <p>Escapes any values it finds into their JavaScript String form.
+ * Deals correctly with quotes and control-chars (tab, backslash, cr, ff, etc.) </p>
+ *
+ * <p>So a tab becomes the characters <code>'\\'</code> and
+ * <code>'t'</code>.</p>
+ *
+ * <p>The only difference between Java strings and JavaScript strings
+ * is that in JavaScript, a single quote must be escaped.</p>
+ *
+ * <p>Example:
+ * <pre>
+ * input string: He didn't say, ""Stop!""
+ * output string: He didn\'t say, \""Stop!\""
+ * </pre>
+ * </p>
+ *
+ * @param str  String to escape values in, may be null
+ * @return String with escaped values, <code>null</code> if null string input
+ */"
+"public static String escapeJavaScript(String str) {
+    return escapeJavaStyleString(str, true);
+}","public void test1010() throws Throwable {
+    String string0 = StringEscapeUtils.escapeJavaScript("""");
+    assertEquals("""", string0);
+}","/**
+ * <p>Escapes the characters in a <code>String</code> using JavaScript String rules.</p>
+ * <p>Escapes any values it finds into their JavaScript String form.
+ * Deals correctly with quotes and control-chars (tab, backslash, cr, ff, etc.) </p>
+ *
+ * <p>So a tab becomes the characters <code>'\\'</code> and
+ * <code>'t'</code>.</p>
+ *
+ * <p>The only difference between Java strings and JavaScript strings
+ * is that in JavaScript, a single quote must be escaped.</p>
+ *
+ * <p>Example:
+ * <pre>
+ * input string: He didn't say, ""Stop!""
+ * output string: He didn\'t say, \""Stop!\""
+ * </pre>
+ * </p>
+ *
+ * @param str  String to escape values in, may be null
+ * @return String with escaped values, <code>null</code> if null string input
+ */"
+"// HTML and XML
+//--------------------------------------------------------------------------
+/**
+ * <p>Escapes the characters in a <code>String</code> using HTML entities.</p>
+ *
+ * <p>
+ * For example:
+ * </p>
+ * <p><code>""bread"" & ""butter""</code></p>
+ * becomes:
+ * <p>
+ * <code>&amp;quot;bread&amp;quot; &amp;amp; &amp;quot;butter&amp;quot;</code>.
+ * </p>
+ *
+ * <p>Supports all known HTML 4.0 entities, including funky accents.
+ * Note that the commonly used apostrophe escape character (&amp;apos;)
+ * is not a legal entity and so is not supported). </p>
+ *
+ * @param str  the <code>String</code> to escape, may be null
+ * @return a new escaped <code>String</code>, <code>null</code> if null string input
+ *
+ * @see #unescapeHtml(String)
+ * @see <a href=""http://hotwired.lycos.com/webmonkey/reference/special_characters/"">ISO Entities</a>
+ * @see <a href=""http://www.w3.org/TR/REC-html32#latin1"">HTML 3.2 Character Entities for ISO Latin-1</a>
+ * @see <a href=""http://www.w3.org/TR/REC-html40/sgml/entities.html"">HTML 4.0 Character entity references</a>
+ * @see <a href=""http://www.w3.org/TR/html401/charset.html#h-5.3"">HTML 4.01 Character References</a>
+ * @see <a href=""http://www.w3.org/TR/html401/charset.html#code-position"">HTML 4.01 Code positions</a>
+ */
+public static String escapeHtml(String str) {
+    if (str == null) {
+        return null;
+    }
+    try {
+        StringWriter writer = new StringWriter((int) (str.length() * 1.5));
+        escapeHtml(writer, str);
+        return writer.toString();
+    } catch (IOException e) {
+        //assert false;
+        //should be impossible
+        e.printStackTrace();
+        return null;
+    }
+}","public void test1111() throws Throwable {
+    String string0 = StringEscapeUtils.escapeHtml(""The Writer must not be null."");
+    assertEquals(""The Writer must not be null."", string0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>Returns a <code>String</code> value for a CSV column enclosed in double quotes,
+ * if required.</p>
+ *
+ * <p>If the value contains a comma, newline or double quote, then the
+ *    String value is returned enclosed in double quotes.</p>
+ * </p>
+ *
+ * <p>Any double quote characters in the value are escaped with another double quote.</p>
+ *
+ * <p>If the value does not contain a comma, newline or double quote, then the
+ *    String value is returned unchanged.</p>
+ * </p>
+ *
+ * see <a href=""http://en.wikipedia.org/wiki/Comma-separated_values"">Wikipedia</a> and
+ * <a href=""http://tools.ietf.org/html/rfc4180"">RFC 4180</a>.
+ *
+ * @param str the input CSV column String, may be null
+ * @return the input String, enclosed in double quotes if the value contains a comma,
+ * newline or double quote, <code>null</code> if null string input
+ * @since 2.4
+ */
+public static String escapeCsv(String str) {
+    if (StringUtils.containsNone(str, CSV_SEARCH_CHARS)) {
+        return str;
+    }
+    try {
+        StringWriter writer = new StringWriter();
+        escapeCsv(writer, str);
+        return writer.toString();
+    } catch (IOException ioe) {
+        // this should never ever happen while writing to a StringWriter
+        ioe.printStackTrace();
+        return null;
+    }
+}","public void test1212() throws Throwable {
+    String string0 = StringEscapeUtils.escapeCsv((String) null);
+    assertNull(string0);
+}",""
+"public static void unescapeJavaScript(Writer out, String str) throws IOException {
+    unescapeJava(out, str);
+}","public void test1313() throws Throwable {
+    // Undeclared exception!
+    try {
+        StringEscapeUtils.unescapeJavaScript((Writer) null, ""U\""(.s>>e#=*>"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The Writer must not be null
+        //
+        verifyException(""org.apache.commons.lang.StringEscapeUtils"", e);
+    }
+}","/**
+ * <p>Unescapes any JavaScript literals found in the <code>String</code> to a
+ * <code>Writer</code>.</p>
+ *
+ * <p>For example, it will turn a sequence of <code>'\'</code> and <code>'n'</code>
+ * into a newline character, unless the <code>'\'</code> is preceded by another
+ * <code>'\'</code>.</p>
+ *
+ * <p>A <code>null</code> string input has no effect.</p>
+ *
+ * @see #unescapeJava(Writer,String)
+ * @param out  the <code>Writer</code> used to output unescaped characters
+ * @param str  the <code>String</code> to unescape, may be null
+ * @throws IllegalArgumentException if the Writer is <code>null</code>
+ * @throws IOException if error occurs on underlying Writer
+ */"
+"public static void unescapeCsv(Writer out, String str) throws IOException {
+    if (str == null) {
+        return;
+    }
+    if (str.length() < 2) {
+        out.write(str);
+        return;
+    }
+    if (str.charAt(0) != CSV_QUOTE || str.charAt(str.length() - 1) != CSV_QUOTE) {
+        out.write(str);
+        return;
+    }
+    // strip quotes
+    String quoteless = str.substring(1, str.length() - 1);
+    if (StringUtils.containsAny(quoteless, CSV_SEARCH_CHARS)) {
+        // deal with escaped quotes; ie) """"
+        str = StringUtils.replace(quoteless, CSV_QUOTE_STR + CSV_QUOTE_STR, CSV_QUOTE_STR);
+    }
+    out.write(str);
+}","public void test1414() throws Throwable {
+    // Undeclared exception!
+    try {
+        StringEscapeUtils.unescapeCsv((Writer) null, ""!fQ8HU0Q]DkqNF`VcO&"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang.StringEscapeUtils"", e);
+    }
+}","/**
+ * <p>Returns a <code>String</code> value for an unescaped CSV column. </p>
+ *
+ * <p>If the value is enclosed in double quotes, and contains a comma, newline
+ *    or double quote, then quotes are removed.
+ * </p>
+ *
+ * <p>Any double quote escaped characters (a pair of double quotes) are unescaped
+ *    to just one double quote. </p>
+ *
+ * <p>If the value is not enclosed in double quotes, or is and does not contain a
+ *    comma, newline or double quote, then the String value is returned unchanged.</p>
+ * </p>
+ *
+ * see <a href=""http://en.wikipedia.org/wiki/Comma-separated_values"">Wikipedia</a> and
+ * <a href=""http://tools.ietf.org/html/rfc4180"">RFC 4180</a>.
+ *
+ * @param str the input CSV column String, may be null
+ * @param out Writer to write the input String to, with enclosing double quotes
+ * removed and embedded double quotes unescaped, <code>null</code> if null string input
+ * @throws IOException if error occurs on underlying Writer
+ * @since 2.4
+ */"
+"public static void escapeJavaScript(Writer out, String str) throws IOException {
+    escapeJavaStyleString(out, str, true);
+}","public void test1515() throws Throwable {
+    // Undeclared exception!
+    try {
+        StringEscapeUtils.escapeJavaScript((Writer) null, ""tx!%#af<!=,@"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The Writer must not be null
+        //
+        verifyException(""org.apache.commons.lang.StringEscapeUtils"", e);
+    }
+}","/**
+ * <p>Escapes the characters in a <code>String</code> using JavaScript String rules
+ * to a <code>Writer</code>.</p>
+ *
+ * <p>A <code>null</code> string input has no effect.</p>
+ *
+ * @see #escapeJavaScript(java.lang.String)
+ * @param out  Writer to write escaped string into
+ * @param str  String to escape values in, may be null
+ * @throws IllegalArgumentException if the Writer is <code>null</code>
+ * @throws IOException if error occurs on underlying Writer
+ */"
+"public static void escapeCsv(Writer out, String str) throws IOException {
+    if (StringUtils.containsNone(str, CSV_SEARCH_CHARS)) {
+        if (str != null) {
+            out.write(str);
+        }
+        return;
+    }
+    out.write(CSV_QUOTE);
+    for (int i = 0; i < str.length(); i++) {
+        char c = str.charAt(i);
+        if (c == CSV_QUOTE) {
+            // escape double quote
+            out.write(CSV_QUOTE);
+        }
+        out.write(c);
+    }
+    out.write(CSV_QUOTE);
+}","public void test1616() throws Throwable {
+    // Undeclared exception!
+    try {
+        StringEscapeUtils.escapeCsv((Writer) null, """");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang.StringEscapeUtils"", e);
+    }
+}","/**
+ * <p>Writes a <code>String</code> value for a CSV column enclosed in double quotes,
+ * if required.</p>
+ *
+ * <p>If the value contains a comma, newline or double quote, then the
+ *    String value is written enclosed in double quotes.</p>
+ * </p>
+ *
+ * <p>Any double quote characters in the value are escaped with another double quote.</p>
+ *
+ * <p>If the value does not contain a comma, newline or double quote, then the
+ *    String value is written unchanged (null values are ignored).</p>
+ * </p>
+ *
+ * see <a href=""http://en.wikipedia.org/wiki/Comma-separated_values"">Wikipedia</a> and
+ * <a href=""http://tools.ietf.org/html/rfc4180"">RFC 4180</a>.
+ *
+ * @param str the input CSV column String, may be null
+ * @param out Writer to write input string to, enclosed in double quotes if it contains
+ * a comma, newline or double quote
+ * @throws IOException if error occurs on underlying Writer
+ * @since 2.4
+ */"
+"public static String unescapeCsv(String str) {
+    if (str == null) {
+        return null;
+    }
+    try {
+        StringWriter writer = new StringWriter();
+        unescapeCsv(writer, str);
+        return writer.toString();
+    } catch (IOException ioe) {
+        // this should never ever happen while writing to a StringWriter
+        ioe.printStackTrace();
+        return null;
+    }
+}","public void test2828() throws Throwable {
+    String string0 = StringEscapeUtils.unescapeCsv((String) null);
+    assertNull(string0);
+}","/**
+ * <p>Returns a <code>String</code> value for an unescaped CSV column. </p>
+ *
+ * <p>If the value is enclosed in double quotes, and contains a comma, newline
+ *    or double quote, then quotes are removed.
+ * </p>
+ *
+ * <p>Any double quote escaped characters (a pair of double quotes) are unescaped
+ *    to just one double quote. </p>
+ *
+ * <p>If the value is not enclosed in double quotes, or is and does not contain a
+ *    comma, newline or double quote, then the String value is returned unchanged.</p>
+ * </p>
+ *
+ * see <a href=""http://en.wikipedia.org/wiki/Comma-separated_values"">Wikipedia</a> and
+ * <a href=""http://tools.ietf.org/html/rfc4180"">RFC 4180</a>.
+ *
+ * @param str the input CSV column String, may be null
+ * @return the input String, with enclosing double quotes removed and embedded double
+ * quotes unescaped, <code>null</code> if null string input
+ * @since 2.4
+ */"
+"public static String unescapeCsv(String str) {
+    if (str == null) {
+        return null;
+    }
+    try {
+        StringWriter writer = new StringWriter();
+        unescapeCsv(writer, str);
+        return writer.toString();
+    } catch (IOException ioe) {
+        // this should never ever happen while writing to a StringWriter
+        ioe.printStackTrace();
+        return null;
+    }
+}","public void test2929() throws Throwable {
+    String string0 = StringEscapeUtils.unescapeCsv("""");
+    assertEquals("""", string0);
+}","/**
+ * <p>Returns a <code>String</code> value for an unescaped CSV column. </p>
+ *
+ * <p>If the value is enclosed in double quotes, and contains a comma, newline
+ *    or double quote, then quotes are removed.
+ * </p>
+ *
+ * <p>Any double quote escaped characters (a pair of double quotes) are unescaped
+ *    to just one double quote. </p>
+ *
+ * <p>If the value is not enclosed in double quotes, or is and does not contain a
+ *    comma, newline or double quote, then the String value is returned unchanged.</p>
+ * </p>
+ *
+ * see <a href=""http://en.wikipedia.org/wiki/Comma-separated_values"">Wikipedia</a> and
+ * <a href=""http://tools.ietf.org/html/rfc4180"">RFC 4180</a>.
+ *
+ * @param str the input CSV column String, may be null
+ * @return the input String, with enclosing double quotes removed and embedded double
+ * quotes unescaped, <code>null</code> if null string input
+ * @since 2.4
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * <p>Returns a <code>String</code> value for a CSV column enclosed in double quotes,
+ * if required.</p>
+ *
+ * <p>If the value contains a comma, newline or double quote, then the
+ *    String value is returned enclosed in double quotes.</p>
+ * </p>
+ *
+ * <p>Any double quote characters in the value are escaped with another double quote.</p>
+ *
+ * <p>If the value does not contain a comma, newline or double quote, then the
+ *    String value is returned unchanged.</p>
+ * </p>
+ *
+ * see <a href=""http://en.wikipedia.org/wiki/Comma-separated_values"">Wikipedia</a> and
+ * <a href=""http://tools.ietf.org/html/rfc4180"">RFC 4180</a>.
+ *
+ * @param str the input CSV column String, may be null
+ * @return the input String, enclosed in double quotes if the value contains a comma,
+ * newline or double quote, <code>null</code> if null string input
+ * @since 2.4
+ */
+public static String escapeCsv(String str) {
+    if (StringUtils.containsNone(str, CSV_SEARCH_CHARS)) {
+        return str;
+    }
+    try {
+        StringWriter writer = new StringWriter();
+        escapeCsv(writer, str);
+        return writer.toString();
+    } catch (IOException ioe) {
+        // this should never ever happen while writing to a StringWriter
+        ioe.printStackTrace();
+        return null;
+    }
+}","public void test3030() throws Throwable {
+    String string0 = StringEscapeUtils.escapeCsv(""\""Tsz,WMx}CI%oE,}\"""");
+    assertEquals(""\""\""\""Tsz,WMx}CI%oE,}\""\""\"""", string0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>Returns a <code>String</code> value for a CSV column enclosed in double quotes,
+ * if required.</p>
+ *
+ * <p>If the value contains a comma, newline or double quote, then the
+ *    String value is returned enclosed in double quotes.</p>
+ * </p>
+ *
+ * <p>Any double quote characters in the value are escaped with another double quote.</p>
+ *
+ * <p>If the value does not contain a comma, newline or double quote, then the
+ *    String value is returned unchanged.</p>
+ * </p>
+ *
+ * see <a href=""http://en.wikipedia.org/wiki/Comma-separated_values"">Wikipedia</a> and
+ * <a href=""http://tools.ietf.org/html/rfc4180"">RFC 4180</a>.
+ *
+ * @param str the input CSV column String, may be null
+ * @return the input String, enclosed in double quotes if the value contains a comma,
+ * newline or double quote, <code>null</code> if null string input
+ * @since 2.4
+ */
+public static String escapeCsv(String str) {
+    if (StringUtils.containsNone(str, CSV_SEARCH_CHARS)) {
+        return str;
+    }
+    try {
+        StringWriter writer = new StringWriter();
+        escapeCsv(writer, str);
+        return writer.toString();
+    } catch (IOException ioe) {
+        // this should never ever happen while writing to a StringWriter
+        ioe.printStackTrace();
+        return null;
+    }
+}","public void test3232() throws Throwable {
+    String string0 = StringEscapeUtils.escapeCsv("""");
+    assertEquals("""", string0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>Escapes the characters in a <code>String</code> to be suitable to pass to
+ * an SQL query.</p>
+ *
+ * <p>For example,
+ * <pre>statement.executeQuery(""SELECT * FROM MOVIES WHERE TITLE='"" +
+ *   StringEscapeUtils.escapeSql(""McHale's Navy"") +
+ *   ""'"");</pre>
+ * </p>
+ *
+ * <p>At present, this method only turns single-quotes into doubled single-quotes
+ * (<code>""McHale's Navy""</code> => <code>""McHale''s Navy""</code>). It does not
+ * handle the cases of percent (%) or underscore (_) for use in LIKE clauses.</p>
+ *
+ * see http://www.jguru.com/faq/view.jsp?EID=8881
+ * @param str  the string to escape, may be null
+ * @return a new String, escaped for SQL, <code>null</code> if null string input
+ */
+public static String escapeSql(String str) {
+    if (str == null) {
+        return null;
+    }
+    return StringUtils.replace(str, ""'"", ""''"");
+}","public void test3333() throws Throwable {
+    String string0 = StringEscapeUtils.escapeSql((String) null);
+    assertNull(string0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>Escapes the characters in a <code>String</code> to be suitable to pass to
+ * an SQL query.</p>
+ *
+ * <p>For example,
+ * <pre>statement.executeQuery(""SELECT * FROM MOVIES WHERE TITLE='"" +
+ *   StringEscapeUtils.escapeSql(""McHale's Navy"") +
+ *   ""'"");</pre>
+ * </p>
+ *
+ * <p>At present, this method only turns single-quotes into doubled single-quotes
+ * (<code>""McHale's Navy""</code> => <code>""McHale''s Navy""</code>). It does not
+ * handle the cases of percent (%) or underscore (_) for use in LIKE clauses.</p>
+ *
+ * see http://www.jguru.com/faq/view.jsp?EID=8881
+ * @param str  the string to escape, may be null
+ * @return a new String, escaped for SQL, <code>null</code> if null string input
+ */
+public static String escapeSql(String str) {
+    if (str == null) {
+        return null;
+    }
+    return StringUtils.replace(str, ""'"", ""''"");
+}","public void test3434() throws Throwable {
+    String string0 = StringEscapeUtils.escapeSql("""");
+    assertEquals("""", string0);
+}",""
+"public static String unescapeXml(String str) {
+    if (str == null) {
+        return null;
+    }
+    return Entities.XML.unescape(str);
+}","public void test3535() throws Throwable {
+    String string0 = StringEscapeUtils.unescapeXml((String) null);
+    assertNull(string0);
+}","/**
+ * <p>Unescapes a string containing XML entity escapes to a string
+ * containing the actual Unicode characters corresponding to the
+ * escapes.</p>
+ *
+ * <p>Supports only the five basic XML entities (gt, lt, quot, amp, apos).
+ * Does not support DTDs or external entities.</p>
+ *
+ * <p>Note that numerical \\u unicode codes are unescaped to their respective
+ *    unicode characters. This may change in future releases. </p>
+ *
+ * @param str  the <code>String</code> to unescape, may be null
+ * @return a new unescaped <code>String</code>, <code>null</code> if null string input
+ * @see #escapeXml(String)
+ */"
+"public static String unescapeXml(String str) {
+    if (str == null) {
+        return null;
+    }
+    return Entities.XML.unescape(str);
+}","public void test3636() throws Throwable {
+    String string0 = StringEscapeUtils.unescapeXml(""8<\""Oyk'i"");
+    assertEquals(""8<\""Oyk'i"", string0);
+}","/**
+ * <p>Unescapes a string containing XML entity escapes to a string
+ * containing the actual Unicode characters corresponding to the
+ * escapes.</p>
+ *
+ * <p>Supports only the five basic XML entities (gt, lt, quot, amp, apos).
+ * Does not support DTDs or external entities.</p>
+ *
+ * <p>Note that numerical \\u unicode codes are unescaped to their respective
+ *    unicode characters. This may change in future releases. </p>
+ *
+ * @param str  the <code>String</code> to unescape, may be null
+ * @return a new unescaped <code>String</code>, <code>null</code> if null string input
+ * @see #escapeXml(String)
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * <p>Unescapes a string containing XML entity escapes to a string
+ * containing the actual Unicode characters corresponding to the
+ * escapes.</p>
+ *
+ * <p>Supports only the five basic XML entities (gt, lt, quot, amp, apos).
+ * Does not support DTDs or external entities.</p>
+ *
+ * <p>Note that numerical \\u unicode codes are unescaped to their respective
+ *    unicode characters. This may change in future releases. </p>
+ *
+ * @param writer  the writer receiving the unescaped string, not null
+ * @param str  the <code>String</code> to unescape, may be null
+ * @throws IllegalArgumentException if the writer is null
+ * @throws IOException if there is a problem writing
+ * @see #escapeXml(String)
+ */
+public static void unescapeXml(Writer writer, String str) throws IOException {
+    if (writer == null) {
+        throw new IllegalArgumentException(""The Writer must not be null."");
+    }
+    if (str == null) {
+        return;
+    }
+    Entities.XML.unescape(writer, str);
+}","public void test3838() throws Throwable {
+    // Undeclared exception!
+    try {
+        StringEscapeUtils.unescapeXml((Writer) null, ""''"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The Writer must not be null.
+        //
+        verifyException(""org.apache.commons.lang.StringEscapeUtils"", e);
+    }
+}",""
+"public static String escapeXml(String str) {
+    if (str == null) {
+        return null;
+    }
+    return Entities.XML.escape(str);
+}","public void test4040() throws Throwable {
+    String string0 = StringEscapeUtils.escapeXml((String) null);
+    assertNull(string0);
+}","/**
+ * <p>Escapes the characters in a <code>String</code> using XML entities.</p>
+ *
+ * <p>For example: <tt>""bread"" & ""butter""</tt> =>
+ * <tt>&amp;quot;bread&amp;quot; &amp;amp; &amp;quot;butter&amp;quot;</tt>.
+ * </p>
+ *
+ * <p>Supports only the five basic XML entities (gt, lt, quot, amp, apos).
+ * Does not support DTDs or external entities.</p>
+ *
+ * <p>Note that unicode characters greater than 0x7f are currently escaped to
+ *    their numerical \\u equivalent. This may change in future releases. </p>
+ *
+ * @param str  the <code>String</code> to escape, may be null
+ * @return a new escaped <code>String</code>, <code>null</code> if null string input
+ * @see #unescapeXml(java.lang.String)
+ */"
+"public static String escapeXml(String str) {
+    if (str == null) {
+        return null;
+    }
+    return Entities.XML.escape(str);
+}","public void test4141() throws Throwable {
+    String string0 = StringEscapeUtils.escapeXml(""Unable to parse unicode value: "");
+    assertEquals(""Unable to parse unicode value: "", string0);
+}","/**
+ * <p>Escapes the characters in a <code>String</code> using XML entities.</p>
+ *
+ * <p>For example: <tt>""bread"" & ""butter""</tt> =>
+ * <tt>&amp;quot;bread&amp;quot; &amp;amp; &amp;quot;butter&amp;quot;</tt>.
+ * </p>
+ *
+ * <p>Supports only the five basic XML entities (gt, lt, quot, amp, apos).
+ * Does not support DTDs or external entities.</p>
+ *
+ * <p>Note that unicode characters greater than 0x7f are currently escaped to
+ *    their numerical \\u equivalent. This may change in future releases. </p>
+ *
+ * @param str  the <code>String</code> to escape, may be null
+ * @return a new escaped <code>String</code>, <code>null</code> if null string input
+ * @see #unescapeXml(java.lang.String)
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * <p>Escapes the characters in a <code>String</code> using XML entities.</p>
+ *
+ * <p>For example: <tt>""bread"" & ""butter""</tt> =>
+ * <tt>&amp;quot;bread&amp;quot; &amp;amp; &amp;quot;butter&amp;quot;</tt>.
+ * </p>
+ *
+ * <p>Supports only the five basic XML entities (gt, lt, quot, amp, apos).
+ * Does not support DTDs or external entities.</p>
+ *
+ * <p>Note that unicode characters greater than 0x7f are currently escaped to
+ *    their numerical \\u equivalent. This may change in future releases. </p>
+ *
+ * @param writer  the writer receiving the unescaped string, not null
+ * @param str  the <code>String</code> to escape, may be null
+ * @throws IllegalArgumentException if the writer is null
+ * @throws IOException if there is a problem writing
+ * @see #unescapeXml(java.lang.String)
+ */
+public static void escapeXml(Writer writer, String str) throws IOException {
+    if (writer == null) {
+        throw new IllegalArgumentException(""The Writer must not be null."");
+    }
+    if (str == null) {
+        return;
+    }
+    Entities.XML.escape(writer, str);
+}","public void test4343() throws Throwable {
+    // Undeclared exception!
+    try {
+        StringEscapeUtils.escapeXml((Writer) null, ""Z>7eWFsdqQn<6$94fs6"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The Writer must not be null.
+        //
+        verifyException(""org.apache.commons.lang.StringEscapeUtils"", e);
+    }
+}",""
+"public static void unescapeHtml(Writer writer, String string) throws IOException {
+    if (writer == null) {
+        throw new IllegalArgumentException(""The Writer must not be null."");
+    }
+    if (string == null) {
+        return;
+    }
+    Entities.HTML40.unescape(writer, string);
+}","public void test4646() throws Throwable {
+    // Undeclared exception!
+    try {
+        StringEscapeUtils.unescapeHtml((Writer) null, ""@''<Rgshk6Ih-PL"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The Writer must not be null.
+        //
+        verifyException(""org.apache.commons.lang.StringEscapeUtils"", e);
+    }
+}","/**
+ * <p>Unescapes a string containing entity escapes to a string
+ * containing the actual Unicode characters corresponding to the
+ * escapes. Supports HTML 4.0 entities.</p>
+ *
+ * <p>For example, the string ""&amp;lt;Fran&amp;ccedil;ais&amp;gt;""
+ * will become ""&lt;Fran&ccedil;ais&gt;""</p>
+ *
+ * <p>If an entity is unrecognized, it is left alone, and inserted
+ * verbatim into the result string. e.g. ""&amp;gt;&amp;zzzz;x"" will
+ * become ""&gt;&amp;zzzz;x"".</p>
+ *
+ * @param writer  the writer receiving the unescaped string, not null
+ * @param string  the <code>String</code> to unescape, may be null
+ * @throws IllegalArgumentException if the writer is null
+ * @throws IOException if an IOException occurs
+ * @see #escapeHtml(String)
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * <p>Unescapes a string containing entity escapes to a string
+ * containing the actual Unicode characters corresponding to the
+ * escapes. Supports HTML 4.0 entities.</p>
+ *
+ * <p>For example, the string ""&amp;lt;Fran&amp;ccedil;ais&amp;gt;""
+ * will become ""&lt;Fran&ccedil;ais&gt;""</p>
+ *
+ * <p>If an entity is unrecognized, it is left alone, and inserted
+ * verbatim into the result string. e.g. ""&amp;gt;&amp;zzzz;x"" will
+ * become ""&gt;&amp;zzzz;x"".</p>
+ *
+ * @param str  the <code>String</code> to unescape, may be null
+ * @return a new unescaped <code>String</code>, <code>null</code> if null string input
+ * @see #escapeHtml(Writer, String)
+ */
+public static String unescapeHtml(String str) {
+    if (str == null) {
+        return null;
+    }
+    try {
+        StringWriter writer = new StringWriter((int) (str.length() * 1.5));
+        unescapeHtml(writer, str);
+        return writer.toString();
+    } catch (IOException e) {
+        //assert false;
+        //should be impossible
+        e.printStackTrace();
+        return null;
+    }
+}","public void test4747() throws Throwable {
+    String string0 = StringEscapeUtils.unescapeHtml((String) null);
+    assertNull(string0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * <p>Unescapes a string containing entity escapes to a string
+ * containing the actual Unicode characters corresponding to the
+ * escapes. Supports HTML 4.0 entities.</p>
+ *
+ * <p>For example, the string ""&amp;lt;Fran&amp;ccedil;ais&amp;gt;""
+ * will become ""&lt;Fran&ccedil;ais&gt;""</p>
+ *
+ * <p>If an entity is unrecognized, it is left alone, and inserted
+ * verbatim into the result string. e.g. ""&amp;gt;&amp;zzzz;x"" will
+ * become ""&gt;&amp;zzzz;x"".</p>
+ *
+ * @param str  the <code>String</code> to unescape, may be null
+ * @return a new unescaped <code>String</code>, <code>null</code> if null string input
+ * @see #escapeHtml(Writer, String)
+ */
+public static String unescapeHtml(String str) {
+    if (str == null) {
+        return null;
+    }
+    try {
+        StringWriter writer = new StringWriter((int) (str.length() * 1.5));
+        unescapeHtml(writer, str);
+        return writer.toString();
+    } catch (IOException e) {
+        //assert false;
+        //should be impossible
+        e.printStackTrace();
+        return null;
+    }
+}","public void test4848() throws Throwable {
+    String string0 = StringEscapeUtils.unescapeHtml("";tI{s)H=H`$W"");
+    assertNotNull(string0);
+}",""
+"public static void escapeHtml(Writer writer, String string) throws IOException {
+    if (writer == null) {
+        throw new IllegalArgumentException(""The Writer must not be null."");
+    }
+    if (string == null) {
+        return;
+    }
+    Entities.HTML40.escape(writer, string);
+}","public void test5051() throws Throwable {
+    // Undeclared exception!
+    try {
+        StringEscapeUtils.escapeHtml((Writer) null, (String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The Writer must not be null.
+        //
+        verifyException(""org.apache.commons.lang.StringEscapeUtils"", e);
+    }
+}","/**
+ * <p>Escapes the characters in a <code>String</code> using HTML entities and writes
+ * them to a <code>Writer</code>.</p>
+ *
+ * <p>
+ * For example:
+ * </p>
+ * <code>""bread"" & ""butter""</code>
+ * <p>becomes:</p>
+ * <code>&amp;quot;bread&amp;quot; &amp;amp; &amp;quot;butter&amp;quot;</code>.
+ *
+ * <p>Supports all known HTML 4.0 entities, including funky accents.
+ * Note that the commonly used apostrophe escape character (&amp;apos;)
+ * is not a legal entity and so is not supported). </p>
+ *
+ * @param writer  the writer receiving the escaped string, not null
+ * @param string  the <code>String</code> to escape, may be null
+ * @throws IllegalArgumentException if the writer is null
+ * @throws IOException when <code>Writer</code> passed throws the exception from
+ *                                       calls to the {@link Writer#write(int)} methods.
+ *
+ * @see #escapeHtml(String)
+ * @see #unescapeHtml(String)
+ * @see <a href=""http://hotwired.lycos.com/webmonkey/reference/special_characters/"">ISO Entities</a>
+ * @see <a href=""http://www.w3.org/TR/REC-html32#latin1"">HTML 3.2 Character Entities for ISO Latin-1</a>
+ * @see <a href=""http://www.w3.org/TR/REC-html40/sgml/entities.html"">HTML 4.0 Character entity references</a>
+ * @see <a href=""http://www.w3.org/TR/html401/charset.html#h-5.3"">HTML 4.01 Character References</a>
+ * @see <a href=""http://www.w3.org/TR/html401/charset.html#code-position"">HTML 4.01 Code positions</a>
+ */"
+"// HTML and XML
+//--------------------------------------------------------------------------
+/**
+ * <p>Escapes the characters in a <code>String</code> using HTML entities.</p>
+ *
+ * <p>
+ * For example:
+ * </p>
+ * <p><code>""bread"" & ""butter""</code></p>
+ * becomes:
+ * <p>
+ * <code>&amp;quot;bread&amp;quot; &amp;amp; &amp;quot;butter&amp;quot;</code>.
+ * </p>
+ *
+ * <p>Supports all known HTML 4.0 entities, including funky accents.
+ * Note that the commonly used apostrophe escape character (&amp;apos;)
+ * is not a legal entity and so is not supported). </p>
+ *
+ * @param str  the <code>String</code> to escape, may be null
+ * @return a new escaped <code>String</code>, <code>null</code> if null string input
+ *
+ * @see #unescapeHtml(String)
+ * @see <a href=""http://hotwired.lycos.com/webmonkey/reference/special_characters/"">ISO Entities</a>
+ * @see <a href=""http://www.w3.org/TR/REC-html32#latin1"">HTML 3.2 Character Entities for ISO Latin-1</a>
+ * @see <a href=""http://www.w3.org/TR/REC-html40/sgml/entities.html"">HTML 4.0 Character entity references</a>
+ * @see <a href=""http://www.w3.org/TR/html401/charset.html#h-5.3"">HTML 4.01 Character References</a>
+ * @see <a href=""http://www.w3.org/TR/html401/charset.html#code-position"">HTML 4.01 Code positions</a>
+ */
+public static String escapeHtml(String str) {
+    if (str == null) {
+        return null;
+    }
+    try {
+        StringWriter writer = new StringWriter((int) (str.length() * 1.5));
+        escapeHtml(writer, str);
+        return writer.toString();
+    } catch (IOException e) {
+        //assert false;
+        //should be impossible
+        e.printStackTrace();
+        return null;
+    }
+}","public void test5152() throws Throwable {
+    String string0 = StringEscapeUtils.escapeHtml((String) null);
+    assertNull(string0);
+}",""
+"// HTML and XML
+//--------------------------------------------------------------------------
+/**
+ * <p>Escapes the characters in a <code>String</code> using HTML entities.</p>
+ *
+ * <p>
+ * For example:
+ * </p>
+ * <p><code>""bread"" & ""butter""</code></p>
+ * becomes:
+ * <p>
+ * <code>&amp;quot;bread&amp;quot; &amp;amp; &amp;quot;butter&amp;quot;</code>.
+ * </p>
+ *
+ * <p>Supports all known HTML 4.0 entities, including funky accents.
+ * Note that the commonly used apostrophe escape character (&amp;apos;)
+ * is not a legal entity and so is not supported). </p>
+ *
+ * @param str  the <code>String</code> to escape, may be null
+ * @return a new escaped <code>String</code>, <code>null</code> if null string input
+ *
+ * @see #unescapeHtml(String)
+ * @see <a href=""http://hotwired.lycos.com/webmonkey/reference/special_characters/"">ISO Entities</a>
+ * @see <a href=""http://www.w3.org/TR/REC-html32#latin1"">HTML 3.2 Character Entities for ISO Latin-1</a>
+ * @see <a href=""http://www.w3.org/TR/REC-html40/sgml/entities.html"">HTML 4.0 Character entity references</a>
+ * @see <a href=""http://www.w3.org/TR/html401/charset.html#h-5.3"">HTML 4.01 Character References</a>
+ * @see <a href=""http://www.w3.org/TR/html401/charset.html#code-position"">HTML 4.01 Code positions</a>
+ */
+public static String escapeHtml(String str) {
+    if (str == null) {
+        return null;
+    }
+    try {
+        StringWriter writer = new StringWriter((int) (str.length() * 1.5));
+        escapeHtml(writer, str);
+        return writer.toString();
+    } catch (IOException e) {
+        //assert false;
+        //should be impossible
+        e.printStackTrace();
+        return null;
+    }
+}","public void test5253() throws Throwable {
+    String string0 = StringEscapeUtils.escapeHtml("""");
+    assertEquals("""", string0);
+}",""
+"public static String unescapeJava(String str) {
+    if (str == null) {
+        return null;
+    }
+    try {
+        StringWriter writer = new StringWriter(str.length());
+        unescapeJava(writer, str);
+        return writer.toString();
+    } catch (IOException ioe) {
+        // this should never ever happen while writing to a StringWriter
+        ioe.printStackTrace();
+        return null;
+    }
+}","public void test5354() throws Throwable {
+    String string0 = StringEscapeUtils.unescapeJava(""]q\"""");
+    assertEquals(""]q\"""", string0);
+}","/**
+ * <p>Unescapes any Java literals found in the <code>String</code>.
+ * For example, it will turn a sequence of <code>'\'</code> and
+ * <code>'n'</code> into a newline character, unless the <code>'\'</code>
+ * is preceded by another <code>'\'</code>.</p>
+ *
+ * @param str  the <code>String</code> to unescape, may be null
+ * @return a new unescaped <code>String</code>, <code>null</code> if null string input
+ */"
+"public static String unescapeJavaScript(String str) {
+    return unescapeJava(str);
+}","public void test5455() throws Throwable {
+    String string0 = StringEscapeUtils.unescapeJavaScript(""\""k"");
+    assertEquals(""\""k"", string0);
+}","/**
+ * <p>Unescapes any JavaScript literals found in the <code>String</code>.</p>
+ *
+ * <p>For example, it will turn a sequence of <code>'\'</code> and <code>'n'</code>
+ * into a newline character, unless the <code>'\'</code> is preceded by another
+ * <code>'\'</code>.</p>
+ *
+ * @see #unescapeJava(String)
+ * @param str  the <code>String</code> to unescape, may be null
+ * @return A new unescaped <code>String</code>, <code>null</code> if null string input
+ */"
+"public static void unescapeJava(Writer out, String str) throws IOException {
+    if (out == null) {
+        throw new IllegalArgumentException(""The Writer must not be null"");
+    }
+    if (str == null) {
+        return;
+    }
+    int sz = str.length();
+    StringBuffer unicode = new StringBuffer(4);
+    boolean hadSlash = false;
+    boolean inUnicode = false;
+    for (int i = 0; i < sz; i++) {
+        char ch = str.charAt(i);
+        if (inUnicode) {
+            // if in unicode, then we're reading unicode
+            // values in somehow
+            unicode.append(ch);
+            if (unicode.length() == 4) {
+                // unicode now contains the four hex digits
+                // which represents our unicode character
+                try {
+                    int value = Integer.parseInt(unicode.toString(), 16);
+                    out.write((char) value);
+                    unicode.setLength(0);
+                    inUnicode = false;
+                    hadSlash = false;
+                } catch (NumberFormatException nfe) {
+                    throw new NestableRuntimeException(""Unable to parse unicode value: "" + unicode, nfe);
+                }
+            }
+            continue;
+        }
+        if (hadSlash) {
+            // handle an escaped value
+            hadSlash = false;
+            switch(ch) {
+                case '\\':
+                    out.write('\\');
+                    break;
+                case '\'':
+                    out.write('\'');
+                    break;
+                case '\""':
+                    out.write('""');
+                    break;
+                case 'r':
+                    out.write('\r');
+                    break;
+                case 'f':
+                    out.write('\f');
+                    break;
+                case 't':
+                    out.write('\t');
+                    break;
+                case 'n':
+                    out.write('\n');
+                    break;
+                case 'b':
+                    out.write('\b');
+                    break;
+                case 'u':
+                    {
+                        // uh-oh, we're in unicode country....
+                        inUnicode = true;
+                        break;
+                    }
+                default:
+                    out.write(ch);
+                    break;
+            }
+            continue;
+        } else if (ch == '\\') {
+            hadSlash = true;
+            continue;
+        }
+        out.write(ch);
+    }
+    if (hadSlash) {
+        // then we're in the weird case of a \ at the end of the
+        // string, let's output it anyway.
+        out.write('\\');
+    }
+}","public void test5556() throws Throwable {
+    // Undeclared exception!
+    try {
+        StringEscapeUtils.unescapeJava((Writer) null, """");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The Writer must not be null
+        //
+        verifyException(""org.apache.commons.lang.StringEscapeUtils"", e);
+    }
+}","/**
+ * <p>Unescapes any Java literals found in the <code>String</code> to a
+ * <code>Writer</code>.</p>
+ *
+ * <p>For example, it will turn a sequence of <code>'\'</code> and
+ * <code>'n'</code> into a newline character, unless the <code>'\'</code>
+ * is preceded by another <code>'\'</code>.</p>
+ *
+ * <p>A <code>null</code> string input has no effect.</p>
+ *
+ * @param out  the <code>Writer</code> used to output unescaped characters
+ * @param str  the <code>String</code> to unescape, may be null
+ * @throws IllegalArgumentException if the Writer is <code>null</code>
+ * @throws IOException if error occurs on underlying Writer
+ */"
+"public static String unescapeJava(String str) {
+    if (str == null) {
+        return null;
+    }
+    try {
+        StringWriter writer = new StringWriter(str.length());
+        unescapeJava(writer, str);
+        return writer.toString();
+    } catch (IOException ioe) {
+        // this should never ever happen while writing to a StringWriter
+        ioe.printStackTrace();
+        return null;
+    }
+}","public void test5657() throws Throwable {
+    String string0 = StringEscapeUtils.unescapeJava((String) null);
+    assertNull(string0);
+}","/**
+ * <p>Unescapes any Java literals found in the <code>String</code>.
+ * For example, it will turn a sequence of <code>'\'</code> and
+ * <code>'n'</code> into a newline character, unless the <code>'\'</code>
+ * is preceded by another <code>'\'</code>.</p>
+ *
+ * @param str  the <code>String</code> to unescape, may be null
+ * @return a new unescaped <code>String</code>, <code>null</code> if null string input
+ */"
+"// Java and JavaScript
+//--------------------------------------------------------------------------
+/**
+ * <p>Escapes the characters in a <code>String</code> using Java String rules.</p>
+ *
+ * <p>Deals correctly with quotes and control-chars (tab, backslash, cr, ff, etc.) </p>
+ *
+ * <p>So a tab becomes the characters <code>'\\'</code> and
+ * <code>'t'</code>.</p>
+ *
+ * <p>The only difference between Java strings and JavaScript strings
+ * is that in JavaScript, a single quote must be escaped.</p>
+ *
+ * <p>Example:
+ * <pre>
+ * input string: He didn't say, ""Stop!""
+ * output string: He didn't say, \""Stop!\""
+ * </pre>
+ * </p>
+ *
+ * @param str  String to escape values in, may be null
+ * @return String with escaped values, <code>null</code> if null string input
+ */
+public static String escapeJava(String str) {
+    return escapeJavaStyleString(str, false);
+}","public void test5758() throws Throwable {
+    String string0 = StringEscapeUtils.escapeJava(""\""rPd&B,t'f`w"");
+    assertEquals(""\\\""rPd&B,t'f`w"", string0);
+}",""
+"// Java and JavaScript
+//--------------------------------------------------------------------------
+/**
+ * <p>Escapes the characters in a <code>String</code> using Java String rules.</p>
+ *
+ * <p>Deals correctly with quotes and control-chars (tab, backslash, cr, ff, etc.) </p>
+ *
+ * <p>So a tab becomes the characters <code>'\\'</code> and
+ * <code>'t'</code>.</p>
+ *
+ * <p>The only difference between Java strings and JavaScript strings
+ * is that in JavaScript, a single quote must be escaped.</p>
+ *
+ * <p>Example:
+ * <pre>
+ * input string: He didn't say, ""Stop!""
+ * output string: He didn't say, \""Stop!\""
+ * </pre>
+ * </p>
+ *
+ * @param str  String to escape values in, may be null
+ * @return String with escaped values, <code>null</code> if null string input
+ */
+public static String escapeJava(String str) {
+    return escapeJavaStyleString(str, false);
+}","public void test5859() throws Throwable {
+    String string0 = ""\\u00"";
+    String string1 = StringEscapeUtils.escapeJava(string0);
+    assertEquals(""\\\\u00"", string1);
+}",""
+"public static String escapeJavaScript(String str) {
+    return escapeJavaStyleString(str, true);
+}","public void test6061() throws Throwable {
+    String string0 = StringEscapeUtils.escapeJavaScript(""8<\""Oyk'i"");
+    assertEquals(""8<\\\""Oyk\\'i"", string0);
+}","/**
+ * <p>Escapes the characters in a <code>String</code> using JavaScript String rules.</p>
+ * <p>Escapes any values it finds into their JavaScript String form.
+ * Deals correctly with quotes and control-chars (tab, backslash, cr, ff, etc.) </p>
+ *
+ * <p>So a tab becomes the characters <code>'\\'</code> and
+ * <code>'t'</code>.</p>
+ *
+ * <p>The only difference between Java strings and JavaScript strings
+ * is that in JavaScript, a single quote must be escaped.</p>
+ *
+ * <p>Example:
+ * <pre>
+ * input string: He didn't say, ""Stop!""
+ * output string: He didn\'t say, \""Stop!\""
+ * </pre>
+ * </p>
+ *
+ * @param str  String to escape values in, may be null
+ * @return String with escaped values, <code>null</code> if null string input
+ */"
+"// Java and JavaScript
+//--------------------------------------------------------------------------
+/**
+ * <p>Escapes the characters in a <code>String</code> using Java String rules.</p>
+ *
+ * <p>Deals correctly with quotes and control-chars (tab, backslash, cr, ff, etc.) </p>
+ *
+ * <p>So a tab becomes the characters <code>'\\'</code> and
+ * <code>'t'</code>.</p>
+ *
+ * <p>The only difference between Java strings and JavaScript strings
+ * is that in JavaScript, a single quote must be escaped.</p>
+ *
+ * <p>Example:
+ * <pre>
+ * input string: He didn't say, ""Stop!""
+ * output string: He didn't say, \""Stop!\""
+ * </pre>
+ * </p>
+ *
+ * @param str  String to escape values in, may be null
+ * @return String with escaped values, <code>null</code> if null string input
+ */
+public static String escapeJava(String str) {
+    return escapeJavaStyleString(str, false);
+}","public void test6263() throws Throwable {
+    String string0 = StringEscapeUtils.escapeJava((String) null);
+    assertNull(string0);
+}",""
+"// Java and JavaScript
+//--------------------------------------------------------------------------
+/**
+ * <p>Escapes the characters in a <code>String</code> using Java String rules.</p>
+ *
+ * <p>Deals correctly with quotes and control-chars (tab, backslash, cr, ff, etc.) </p>
+ *
+ * <p>So a tab becomes the characters <code>'\\'</code> and
+ * <code>'t'</code>.</p>
+ *
+ * <p>The only difference between Java strings and JavaScript strings
+ * is that in JavaScript, a single quote must be escaped.</p>
+ *
+ * <p>Example:
+ * <pre>
+ * input string: He didn't say, ""Stop!""
+ * output string: He didn't say, \""Stop!\""
+ * </pre>
+ * </p>
+ *
+ * @param str  String to escape values in, may be null
+ * @return String with escaped values, <code>null</code> if null string input
+ */
+public static String escapeJava(String str) {
+    return escapeJavaStyleString(str, false);
+}","public void test6364() throws Throwable {
+    String string0 = StringEscapeUtils.escapeJava("""");
+    assertEquals("""", string0);
+}",""
+"public StringEscapeUtils() {
+    super();
+}","public void test6465() throws Throwable {
+    StringEscapeUtils stringEscapeUtils0 = new StringEscapeUtils();
+}","/**
+ * <p><code>StringEscapeUtils</code> instances should NOT be constructed in
+ * standard programming.</p>
+ *
+ * <p>Instead, the class should be used as:
+ * <pre>StringEscapeUtils.escapeJava(""foo"");</pre></p>
+ *
+ * <p>This constructor is public to permit tools that require a JavaBean
+ * instance to operate.</p>
+ */"
+"public static String escapeJavaScript(String str) {
+    return escapeJavaStyleString(str, true);
+}","public void test6667() throws Throwable {
+    String string0 = StringEscapeUtils.escapeJavaScript(""Unable to parse unicode value: "");
+    assertNotNull(string0);
+}","/**
+ * <p>Escapes the characters in a <code>String</code> using JavaScript String rules.</p>
+ * <p>Escapes any values it finds into their JavaScript String form.
+ * Deals correctly with quotes and control-chars (tab, backslash, cr, ff, etc.) </p>
+ *
+ * <p>So a tab becomes the characters <code>'\\'</code> and
+ * <code>'t'</code>.</p>
+ *
+ * <p>The only difference between Java strings and JavaScript strings
+ * is that in JavaScript, a single quote must be escaped.</p>
+ *
+ * <p>Example:
+ * <pre>
+ * input string: He didn't say, ""Stop!""
+ * output string: He didn\'t say, \""Stop!\""
+ * </pre>
+ * </p>
+ *
+ * @param str  String to escape values in, may be null
+ * @return String with escaped values, <code>null</code> if null string input
+ */"
+"public static void escapeJava(Writer out, String str) throws IOException {
+    escapeJavaStyleString(out, str, false);
+}","public void test6769() throws Throwable {
+    // Undeclared exception!
+    try {
+        StringEscapeUtils.escapeJava((Writer) null, ""8"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The Writer must not be null
+        //
+        verifyException(""org.apache.commons.lang.StringEscapeUtils"", e);
+    }
+}","/**
+ * <p>Escapes the characters in a <code>String</code> using Java String rules to
+ * a <code>Writer</code>.</p>
+ *
+ * <p>A <code>null</code> string input has no effect.</p>
+ *
+ * @see #escapeJava(java.lang.String)
+ * @param out  Writer to write escaped string into
+ * @param str  String to escape values in, may be null
+ * @throws IllegalArgumentException if the Writer is <code>null</code>
+ * @throws IOException if error occurs on underlying Writer
+ */"
+"public static String unescapeJavaScript(String str) {
+    return unescapeJava(str);
+}","public void test6870() throws Throwable {
+    String string0 = ""\\u0"";
+    String string1 = StringEscapeUtils.unescapeJavaScript(string0);
+    assertEquals("""", string1);
+}","/**
+ * <p>Unescapes any JavaScript literals found in the <code>String</code>.</p>
+ *
+ * <p>For example, it will turn a sequence of <code>'\'</code> and <code>'n'</code>
+ * into a newline character, unless the <code>'\'</code> is preceded by another
+ * <code>'\'</code>.</p>
+ *
+ * @see #unescapeJava(String)
+ * @param str  the <code>String</code> to unescape, may be null
+ * @return A new unescaped <code>String</code>, <code>null</code> if null string input
+ */"

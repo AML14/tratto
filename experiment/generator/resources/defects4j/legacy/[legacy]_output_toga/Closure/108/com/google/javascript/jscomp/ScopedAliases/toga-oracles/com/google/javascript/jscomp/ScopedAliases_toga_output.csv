@@ -1,0 +1,35 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test00,"public void test00() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    CompilerOptions.AliasTransformationHandler compilerOptions_AliasTransformationHandler0 = CompilerOptions.NULL_ALIAS_TRANSFORMATION_HANDLER;
+    ScopedAliases scopedAliases0 = new ScopedAliases(compiler0, (PreprocessorSymbolTable) null, compilerOptions_AliasTransformationHandler0);
+    Node node0 = compiler0.parseSyntheticCode(""CharStreams.nullWriter()"", ""CharStreams.nullWriter()"");
+    scopedAliases0.hotSwapScript(node0, node0);
+    assertEquals(0, node0.getChangeTime());
+}",0,
+project,0,test11,"public void test11() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber((-1814.54392726206));
+    CompilerOptions.AliasTransformationHandler compilerOptions_AliasTransformationHandler0 = CompilerOptions.NULL_ALIAS_TRANSFORMATION_HANDLER;
+    ScopedAliases scopedAliases0 = new ScopedAliases(compiler0, (PreprocessorSymbolTable) null, compilerOptions_AliasTransformationHandler0);
+    scopedAliases0.process(node0, node0);
+    assertEquals(39, Node.EMPTY_BLOCK);
+}",0,
+project,0,test22,"public void test22() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Node.newNumber(0.0);
+    Node node1 = new Node(49, node0, node0, node0, node0, 0, 53);
+    PreprocessorSymbolTable preprocessorSymbolTable0 = new PreprocessorSymbolTable(node1);
+    CompilerOptions.AliasTransformationHandler compilerOptions_AliasTransformationHandler0 = CompilerOptions.NULL_ALIAS_TRANSFORMATION_HANDLER;
+    ScopedAliases scopedAliases0 = new ScopedAliases(compiler0, preprocessorSymbolTable0, compilerOptions_AliasTransformationHandler0);
+    scopedAliases0.hotSwapScript(node0, node1);
+    assertEquals(56, Node.CHANGE_TIME);
+}",1,
+project,0,test33,"public void test33() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    CompilerOptions.AliasTransformationHandler compilerOptions_AliasTransformationHandler0 = CompilerOptions.NULL_ALIAS_TRANSFORMATION_HANDLER;
+    ScopedAliases scopedAliases0 = new ScopedAliases(compiler0, (PreprocessorSymbolTable) null, compilerOptions_AliasTransformationHandler0);
+    Node node0 = compiler0.parseTestCode(""function JSCompiler_get(JSCompiler_get_name) {  return function() {return this[JSCompiler_get_name]}}"");
+    scopedAliases0.hotSwapScript(node0, node0);
+    assertFalse(node0.isNew());
+}",0,assertTrue(node0.isNew())

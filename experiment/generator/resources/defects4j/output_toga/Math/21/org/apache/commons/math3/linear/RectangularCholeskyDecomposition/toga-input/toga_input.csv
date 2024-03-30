@@ -1,0 +1,497 @@
+focal_method,test_prefix,docstring
+"public RectangularCholeskyDecomposition(RealMatrix matrix, double small) throws NonPositiveDefiniteMatrixException {
+    final int order = matrix.getRowDimension();
+    final double[][] c = matrix.getData();
+    final double[][] b = new double[order][order];
+    int[] swap = new int[order];
+    int[] index = new int[order];
+    for (int i = 0; i < order; ++i) {
+        index[i] = i;
+    }
+    int r = 0;
+    for (boolean loop = true; loop; ) {
+        // find maximal diagonal element
+        swap[r] = r;
+        for (int i = r + 1; i < order; ++i) {
+            int ii = index[i];
+            int isi = index[swap[i]];
+            if (c[ii][ii] > c[isi][isi]) {
+                swap[r] = i;
+            }
+        }
+        // swap elements
+        if (swap[r] != r) {
+            int tmp = index[r];
+            index[r] = index[swap[r]];
+            index[swap[r]] = tmp;
+        }
+        // check diagonal element
+        int ir = index[r];
+        if (c[ir][ir] < small) {
+            if (r == 0) {
+                throw new NonPositiveDefiniteMatrixException(c[ir][ir], ir, small);
+            }
+            // check remaining diagonal elements
+            for (int i = r; i < order; ++i) {
+                if (c[index[i]][index[i]] < -small) {
+                    // there is at least one sufficiently negative diagonal element,
+                    // the symmetric positive semidefinite matrix is wrong
+                    throw new NonPositiveDefiniteMatrixException(c[index[i]][index[i]], i, small);
+                }
+            }
+            // all remaining diagonal elements are close to zero, we consider we have
+            // found the rank of the symmetric positive semidefinite matrix
+            ++r;
+            loop = false;
+        } else {
+            // transform the matrix
+            final double sqrt = FastMath.sqrt(c[ir][ir]);
+            b[r][r] = sqrt;
+            final double inverse = 1 / sqrt;
+            for (int i = r + 1; i < order; ++i) {
+                final int ii = index[i];
+                final double e = inverse * c[ii][ir];
+                b[i][r] = e;
+                c[ii][ii] -= e * e;
+                for (int j = r + 1; j < i; ++j) {
+                    final int ij = index[j];
+                    final double f = c[ii][ij] - e * b[j][r];
+                    c[ii][ij] = f;
+                    c[ij][ii] = f;
+                }
+            }
+            // prepare next iteration
+            loop = ++r < order;
+        }
+    }
+    // build the root matrix
+    rank = r;
+    root = MatrixUtils.createRealMatrix(order, r);
+    for (int i = 0; i < order; ++i) {
+        for (int j = 0; j < r; ++j) {
+            root.setEntry(index[i], j, b[i][j]);
+        }
+    }
+}","public void test00() throws Throwable {
+    Array2DRowRealMatrix array2DRowRealMatrix0 = new Array2DRowRealMatrix(801, 801);
+    RectangularCholeskyDecomposition rectangularCholeskyDecomposition0 = new RectangularCholeskyDecomposition(array2DRowRealMatrix0, (-2277.04674082));
+}","/**
+ * Decompose a symmetric positive semidefinite matrix.
+ *
+ * @param matrix Symmetric positive semidefinite matrix.
+ * @param small Diagonal elements threshold under which  column are
+ * considered to be dependent on previous ones and are discarded.
+ * @exception NonPositiveDefiniteMatrixException if the matrix is not
+ * positive semidefinite.
+ */"
+"public RectangularCholeskyDecomposition(RealMatrix matrix, double small) throws NonPositiveDefiniteMatrixException {
+    final int order = matrix.getRowDimension();
+    final double[][] c = matrix.getData();
+    final double[][] b = new double[order][order];
+    int[] swap = new int[order];
+    int[] index = new int[order];
+    for (int i = 0; i < order; ++i) {
+        index[i] = i;
+    }
+    int r = 0;
+    for (boolean loop = true; loop; ) {
+        // find maximal diagonal element
+        swap[r] = r;
+        for (int i = r + 1; i < order; ++i) {
+            int ii = index[i];
+            int isi = index[swap[i]];
+            if (c[ii][ii] > c[isi][isi]) {
+                swap[r] = i;
+            }
+        }
+        // swap elements
+        if (swap[r] != r) {
+            int tmp = index[r];
+            index[r] = index[swap[r]];
+            index[swap[r]] = tmp;
+        }
+        // check diagonal element
+        int ir = index[r];
+        if (c[ir][ir] < small) {
+            if (r == 0) {
+                throw new NonPositiveDefiniteMatrixException(c[ir][ir], ir, small);
+            }
+            // check remaining diagonal elements
+            for (int i = r; i < order; ++i) {
+                if (c[index[i]][index[i]] < -small) {
+                    // there is at least one sufficiently negative diagonal element,
+                    // the symmetric positive semidefinite matrix is wrong
+                    throw new NonPositiveDefiniteMatrixException(c[index[i]][index[i]], i, small);
+                }
+            }
+            // all remaining diagonal elements are close to zero, we consider we have
+            // found the rank of the symmetric positive semidefinite matrix
+            ++r;
+            loop = false;
+        } else {
+            // transform the matrix
+            final double sqrt = FastMath.sqrt(c[ir][ir]);
+            b[r][r] = sqrt;
+            final double inverse = 1 / sqrt;
+            for (int i = r + 1; i < order; ++i) {
+                final int ii = index[i];
+                final double e = inverse * c[ii][ir];
+                b[i][r] = e;
+                c[ii][ii] -= e * e;
+                for (int j = r + 1; j < i; ++j) {
+                    final int ij = index[j];
+                    final double f = c[ii][ij] - e * b[j][r];
+                    c[ii][ij] = f;
+                    c[ij][ii] = f;
+                }
+            }
+            // prepare next iteration
+            loop = ++r < order;
+        }
+    }
+    // build the root matrix
+    rank = r;
+    root = MatrixUtils.createRealMatrix(order, r);
+    for (int i = 0; i < order; ++i) {
+        for (int j = 0; j < r; ++j) {
+            root.setEntry(index[i], j, b[i][j]);
+        }
+    }
+}","public void test11() throws Throwable {
+    RectangularCholeskyDecomposition rectangularCholeskyDecomposition0 = null;
+    try {
+        rectangularCholeskyDecomposition0 = new RectangularCholeskyDecomposition((RealMatrix) null, 2028.36210992623);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * Decompose a symmetric positive semidefinite matrix.
+ *
+ * @param matrix Symmetric positive semidefinite matrix.
+ * @param small Diagonal elements threshold under which  column are
+ * considered to be dependent on previous ones and are discarded.
+ * @exception NonPositiveDefiniteMatrixException if the matrix is not
+ * positive semidefinite.
+ */"
+"public RectangularCholeskyDecomposition(RealMatrix matrix, double small) throws NonPositiveDefiniteMatrixException {
+    final int order = matrix.getRowDimension();
+    final double[][] c = matrix.getData();
+    final double[][] b = new double[order][order];
+    int[] swap = new int[order];
+    int[] index = new int[order];
+    for (int i = 0; i < order; ++i) {
+        index[i] = i;
+    }
+    int r = 0;
+    for (boolean loop = true; loop; ) {
+        // find maximal diagonal element
+        swap[r] = r;
+        for (int i = r + 1; i < order; ++i) {
+            int ii = index[i];
+            int isi = index[swap[i]];
+            if (c[ii][ii] > c[isi][isi]) {
+                swap[r] = i;
+            }
+        }
+        // swap elements
+        if (swap[r] != r) {
+            int tmp = index[r];
+            index[r] = index[swap[r]];
+            index[swap[r]] = tmp;
+        }
+        // check diagonal element
+        int ir = index[r];
+        if (c[ir][ir] < small) {
+            if (r == 0) {
+                throw new NonPositiveDefiniteMatrixException(c[ir][ir], ir, small);
+            }
+            // check remaining diagonal elements
+            for (int i = r; i < order; ++i) {
+                if (c[index[i]][index[i]] < -small) {
+                    // there is at least one sufficiently negative diagonal element,
+                    // the symmetric positive semidefinite matrix is wrong
+                    throw new NonPositiveDefiniteMatrixException(c[index[i]][index[i]], i, small);
+                }
+            }
+            // all remaining diagonal elements are close to zero, we consider we have
+            // found the rank of the symmetric positive semidefinite matrix
+            ++r;
+            loop = false;
+        } else {
+            // transform the matrix
+            final double sqrt = FastMath.sqrt(c[ir][ir]);
+            b[r][r] = sqrt;
+            final double inverse = 1 / sqrt;
+            for (int i = r + 1; i < order; ++i) {
+                final int ii = index[i];
+                final double e = inverse * c[ii][ir];
+                b[i][r] = e;
+                c[ii][ii] -= e * e;
+                for (int j = r + 1; j < i; ++j) {
+                    final int ij = index[j];
+                    final double f = c[ii][ij] - e * b[j][r];
+                    c[ii][ij] = f;
+                    c[ij][ii] = f;
+                }
+            }
+            // prepare next iteration
+            loop = ++r < order;
+        }
+    }
+    // build the root matrix
+    rank = r;
+    root = MatrixUtils.createRealMatrix(order, r);
+    for (int i = 0; i < order; ++i) {
+        for (int j = 0; j < r; ++j) {
+            root.setEntry(index[i], j, b[i][j]);
+        }
+    }
+}","public void test22() throws Throwable {
+    double[] doubleArray0 = new double[4];
+    Array2DRowRealMatrix array2DRowRealMatrix0 = new Array2DRowRealMatrix(doubleArray0);
+    RectangularCholeskyDecomposition rectangularCholeskyDecomposition0 = null;
+    try {
+        rectangularCholeskyDecomposition0 = new RectangularCholeskyDecomposition(array2DRowRealMatrix0, (-2040.65));
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * Decompose a symmetric positive semidefinite matrix.
+ *
+ * @param matrix Symmetric positive semidefinite matrix.
+ * @param small Diagonal elements threshold under which  column are
+ * considered to be dependent on previous ones and are discarded.
+ * @exception NonPositiveDefiniteMatrixException if the matrix is not
+ * positive semidefinite.
+ */"
+"public RectangularCholeskyDecomposition(RealMatrix matrix, double small) throws NonPositiveDefiniteMatrixException {
+    final int order = matrix.getRowDimension();
+    final double[][] c = matrix.getData();
+    final double[][] b = new double[order][order];
+    int[] swap = new int[order];
+    int[] index = new int[order];
+    for (int i = 0; i < order; ++i) {
+        index[i] = i;
+    }
+    int r = 0;
+    for (boolean loop = true; loop; ) {
+        // find maximal diagonal element
+        swap[r] = r;
+        for (int i = r + 1; i < order; ++i) {
+            int ii = index[i];
+            int isi = index[swap[i]];
+            if (c[ii][ii] > c[isi][isi]) {
+                swap[r] = i;
+            }
+        }
+        // swap elements
+        if (swap[r] != r) {
+            int tmp = index[r];
+            index[r] = index[swap[r]];
+            index[swap[r]] = tmp;
+        }
+        // check diagonal element
+        int ir = index[r];
+        if (c[ir][ir] < small) {
+            if (r == 0) {
+                throw new NonPositiveDefiniteMatrixException(c[ir][ir], ir, small);
+            }
+            // check remaining diagonal elements
+            for (int i = r; i < order; ++i) {
+                if (c[index[i]][index[i]] < -small) {
+                    // there is at least one sufficiently negative diagonal element,
+                    // the symmetric positive semidefinite matrix is wrong
+                    throw new NonPositiveDefiniteMatrixException(c[index[i]][index[i]], i, small);
+                }
+            }
+            // all remaining diagonal elements are close to zero, we consider we have
+            // found the rank of the symmetric positive semidefinite matrix
+            ++r;
+            loop = false;
+        } else {
+            // transform the matrix
+            final double sqrt = FastMath.sqrt(c[ir][ir]);
+            b[r][r] = sqrt;
+            final double inverse = 1 / sqrt;
+            for (int i = r + 1; i < order; ++i) {
+                final int ii = index[i];
+                final double e = inverse * c[ii][ir];
+                b[i][r] = e;
+                c[ii][ii] -= e * e;
+                for (int j = r + 1; j < i; ++j) {
+                    final int ij = index[j];
+                    final double f = c[ii][ij] - e * b[j][r];
+                    c[ii][ij] = f;
+                    c[ij][ii] = f;
+                }
+            }
+            // prepare next iteration
+            loop = ++r < order;
+        }
+    }
+    // build the root matrix
+    rank = r;
+    root = MatrixUtils.createRealMatrix(order, r);
+    for (int i = 0; i < order; ++i) {
+        for (int j = 0; j < r; ++j) {
+            root.setEntry(index[i], j, b[i][j]);
+        }
+    }
+}","public void test33() throws Throwable {
+    double[][] doubleArray0 = new double[2][1];
+    double[] doubleArray1 = new double[18];
+    doubleArray1[1] = 1183.0008;
+    doubleArray0[0] = doubleArray1;
+    doubleArray0[1] = doubleArray1;
+    Array2DRowRealMatrix array2DRowRealMatrix0 = new Array2DRowRealMatrix(doubleArray0);
+    RectangularCholeskyDecomposition rectangularCholeskyDecomposition0 = null;
+    try {
+        rectangularCholeskyDecomposition0 = new RectangularCholeskyDecomposition(array2DRowRealMatrix0, 2);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // -1,183.001 is smaller than, or equal to, the minimum (2): not positive definite matrix: value -1,183.001 at index 1
+        //
+        verifyException(""org.apache.commons.math3.linear.RectangularCholeskyDecomposition"", e);
+    }
+}","/**
+ * Decompose a symmetric positive semidefinite matrix.
+ *
+ * @param matrix Symmetric positive semidefinite matrix.
+ * @param small Diagonal elements threshold under which  column are
+ * considered to be dependent on previous ones and are discarded.
+ * @exception NonPositiveDefiniteMatrixException if the matrix is not
+ * positive semidefinite.
+ */"
+"public RectangularCholeskyDecomposition(RealMatrix matrix, double small) throws NonPositiveDefiniteMatrixException {
+    final int order = matrix.getRowDimension();
+    final double[][] c = matrix.getData();
+    final double[][] b = new double[order][order];
+    int[] swap = new int[order];
+    int[] index = new int[order];
+    for (int i = 0; i < order; ++i) {
+        index[i] = i;
+    }
+    int r = 0;
+    for (boolean loop = true; loop; ) {
+        // find maximal diagonal element
+        swap[r] = r;
+        for (int i = r + 1; i < order; ++i) {
+            int ii = index[i];
+            int isi = index[swap[i]];
+            if (c[ii][ii] > c[isi][isi]) {
+                swap[r] = i;
+            }
+        }
+        // swap elements
+        if (swap[r] != r) {
+            int tmp = index[r];
+            index[r] = index[swap[r]];
+            index[swap[r]] = tmp;
+        }
+        // check diagonal element
+        int ir = index[r];
+        if (c[ir][ir] < small) {
+            if (r == 0) {
+                throw new NonPositiveDefiniteMatrixException(c[ir][ir], ir, small);
+            }
+            // check remaining diagonal elements
+            for (int i = r; i < order; ++i) {
+                if (c[index[i]][index[i]] < -small) {
+                    // there is at least one sufficiently negative diagonal element,
+                    // the symmetric positive semidefinite matrix is wrong
+                    throw new NonPositiveDefiniteMatrixException(c[index[i]][index[i]], i, small);
+                }
+            }
+            // all remaining diagonal elements are close to zero, we consider we have
+            // found the rank of the symmetric positive semidefinite matrix
+            ++r;
+            loop = false;
+        } else {
+            // transform the matrix
+            final double sqrt = FastMath.sqrt(c[ir][ir]);
+            b[r][r] = sqrt;
+            final double inverse = 1 / sqrt;
+            for (int i = r + 1; i < order; ++i) {
+                final int ii = index[i];
+                final double e = inverse * c[ii][ir];
+                b[i][r] = e;
+                c[ii][ii] -= e * e;
+                for (int j = r + 1; j < i; ++j) {
+                    final int ij = index[j];
+                    final double f = c[ii][ij] - e * b[j][r];
+                    c[ii][ij] = f;
+                    c[ij][ii] = f;
+                }
+            }
+            // prepare next iteration
+            loop = ++r < order;
+        }
+    }
+    // build the root matrix
+    rank = r;
+    root = MatrixUtils.createRealMatrix(order, r);
+    for (int i = 0; i < order; ++i) {
+        for (int j = 0; j < r; ++j) {
+            root.setEntry(index[i], j, b[i][j]);
+        }
+    }
+}","public void test44() throws Throwable {
+    OpenMapRealMatrix openMapRealMatrix0 = new OpenMapRealMatrix(31, 31);
+    RectangularCholeskyDecomposition rectangularCholeskyDecomposition0 = null;
+    try {
+        rectangularCholeskyDecomposition0 = new RectangularCholeskyDecomposition(openMapRealMatrix0, 31);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // 0 is smaller than, or equal to, the minimum (31): not positive definite matrix: value 0 at index 0
+        //
+        verifyException(""org.apache.commons.math3.linear.RectangularCholeskyDecomposition"", e);
+    }
+}","/**
+ * Decompose a symmetric positive semidefinite matrix.
+ *
+ * @param matrix Symmetric positive semidefinite matrix.
+ * @param small Diagonal elements threshold under which  column are
+ * considered to be dependent on previous ones and are discarded.
+ * @exception NonPositiveDefiniteMatrixException if the matrix is not
+ * positive semidefinite.
+ */"
+"int getRowDimension();","public void test55() throws Throwable {
+    double[] doubleArray0 = new double[3];
+    ArrayRealVector arrayRealVector0 = new ArrayRealVector(doubleArray0);
+    RealMatrix realMatrix0 = arrayRealVector0.outerProduct(arrayRealVector0);
+    RectangularCholeskyDecomposition rectangularCholeskyDecomposition0 = new RectangularCholeskyDecomposition(realMatrix0, 0.0);
+    RealMatrix realMatrix1 = rectangularCholeskyDecomposition0.getRootMatrix();
+    assertEquals(3, realMatrix1.getRowDimension());
+}","/**
+ * Returns the number of rows in the matrix.
+ *
+ * @return rowDimension
+ */"
+"public int getRank() {
+    return rank;
+}","public void test66() throws Throwable {
+    double[][] doubleArray0 = new double[2][1];
+    double[] doubleArray1 = new double[18];
+    doubleArray1[1] = 1183.0008;
+    doubleArray0[0] = doubleArray1;
+    doubleArray0[1] = doubleArray1;
+    Array2DRowRealMatrix array2DRowRealMatrix0 = new Array2DRowRealMatrix(doubleArray0);
+    RectangularCholeskyDecomposition rectangularCholeskyDecomposition0 = new RectangularCholeskyDecomposition(array2DRowRealMatrix0, 1183.0008);
+    int int0 = rectangularCholeskyDecomposition0.getRank();
+    assertEquals(2, int0);
+}","/**
+ * Get the rank of the symmetric positive semidefinite matrix.
+ * The r is the number of independent rows in the symmetric positive semidefinite
+ * matrix, it is also the number of columns of the rectangular
+ * matrix of the decomposition.
+ * @return r of the square matrix.
+ * @see #getRootMatrix()
+ */"

@@ -1,0 +1,344 @@
+focal_method,test_prefix,docstring
+"void process(CompilerPass p) {
+    p.process(externsRoot, jsRoot);
+}","public void test000() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    CompilerPass compilerPass0 = MakeDeclaredNamesUnique.getContextualRenameInverter(compiler0);
+    // Undeclared exception!
+    try {
+        compiler0.process(compilerPass0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // null
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",""
+"public static void traverse(AbstractCompiler compiler, Node root, Callback cb) {
+    NodeTraversal t = new NodeTraversal(compiler, cb);
+    t.traverse(root);
+}","public void test011() throws Throwable {
+    MakeDeclaredNamesUnique makeDeclaredNamesUnique0 = new MakeDeclaredNamesUnique();
+    Compiler compiler0 = new Compiler();
+    Node node0 = new Node(105);
+    Node node1 = Node.newString(""iWtYh6OUs1-J:|"", 16, 702);
+    node0.addChildrenToBack(node1);
+    SyntheticAst syntheticAst0 = new SyntheticAst(""iWtYh6OUs1-J:|"");
+    Node node2 = syntheticAst0.getAstRoot(compiler0);
+    node2.addChildrenToBack(node0);
+    // Undeclared exception!
+    try {
+        NodeTraversal.traverse((AbstractCompiler) compiler0, node2, (NodeTraversal.Callback) makeDeclaredNamesUnique0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // null
+        //   Node(FUNCTION iWtYh6OUs1-J:|): iWtYh6OUs1-J:|:-1:-1
+        // [source unknown]
+        //   Parent(SCRIPT): iWtYh6OUs1-J:|:-1:-1
+        // [source unknown]
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * Traverses a node recursively.
+ */"
+"public boolean isQuotedString() {
+    return false;
+}","public void test033() throws Throwable {
+    MakeDeclaredNamesUnique makeDeclaredNamesUnique0 = new MakeDeclaredNamesUnique();
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode("" of "");
+    NodeTraversal.traverse((AbstractCompiler) compiler0, node0, (NodeTraversal.Callback) makeDeclaredNamesUnique0);
+    assertFalse(node0.isQuotedString());
+}","/**
+ * This should only be called for STRING nodes created in object lits.
+ */"
+"public static void traverse(AbstractCompiler compiler, Node root, Callback cb) {
+    NodeTraversal t = new NodeTraversal(compiler, cb);
+    t.traverse(root);
+}","public void test044() throws Throwable {
+    MakeDeclaredNamesUnique makeDeclaredNamesUnique0 = new MakeDeclaredNamesUnique();
+    Compiler compiler0 = new Compiler();
+    Node node0 = new Node(105);
+    Node node1 = Node.newString((-1), ""Z)Id=A"");
+    node0.addChildrenToBack(node0);
+    Node node2 = new Node(8, node1);
+    node0.addChildrenToBack(node2);
+    NodeTraversal.traverse((AbstractCompiler) compiler0, node2, (NodeTraversal.Callback) makeDeclaredNamesUnique0);
+    // Undeclared exception!
+    try {
+        NodeTraversal.traverse((AbstractCompiler) compiler0, node0, (NodeTraversal.Callback) makeDeclaredNamesUnique0);
+        fail(""Expecting exception: StackOverflowError"");
+    } catch (StackOverflowError e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * Traverses a node recursively.
+ */"
+"public static void traverse(AbstractCompiler compiler, Node root, Callback cb) {
+    NodeTraversal t = new NodeTraversal(compiler, cb);
+    t.traverse(root);
+}","public void test1010() throws Throwable {
+    MakeDeclaredNamesUnique makeDeclaredNamesUnique0 = new MakeDeclaredNamesUnique();
+    Compiler compiler0 = new Compiler();
+    Node node0 = new Node(105, (-1784), (-2315));
+    // Undeclared exception!
+    try {
+        NodeTraversal.traverse((AbstractCompiler) compiler0, node0, (NodeTraversal.Callback) makeDeclaredNamesUnique0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // null
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * Traverses a node recursively.
+ */"
+"public static void traverse(AbstractCompiler compiler, Node root, Callback cb) {
+    NodeTraversal t = new NodeTraversal(compiler, cb);
+    t.traverse(root);
+}","public void test1111() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = new Node(105, (-1784), (-2315));
+    Supplier<String> supplier0 = compiler0.getUniqueNameIdSupplier();
+    MakeDeclaredNamesUnique.InlineRenamer makeDeclaredNamesUnique_InlineRenamer0 = new MakeDeclaredNamesUnique.InlineRenamer(supplier0, ""tu\""o{ma=lbReEYy{"", true);
+    MakeDeclaredNamesUnique makeDeclaredNamesUnique0 = new MakeDeclaredNamesUnique(makeDeclaredNamesUnique_InlineRenamer0);
+    // Undeclared exception!
+    try {
+        NodeTraversal.traverse((AbstractCompiler) compiler0, node0, (NodeTraversal.Callback) makeDeclaredNamesUnique0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}","/**
+ * Traverses a node recursively.
+ */"
+"public static void traverse(AbstractCompiler compiler, Node root, Callback cb) {
+    NodeTraversal t = new NodeTraversal(compiler, cb);
+    t.traverse(root);
+}","public void test1212() throws Throwable {
+    MakeDeclaredNamesUnique makeDeclaredNamesUnique0 = new MakeDeclaredNamesUnique();
+    Compiler compiler0 = new Compiler();
+    Node node0 = new Node(120);
+    // Undeclared exception!
+    try {
+        NodeTraversal.traverse((AbstractCompiler) compiler0, node0, (NodeTraversal.Callback) makeDeclaredNamesUnique0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}","/**
+ * Traverses a node recursively.
+ */"
+"public static void traverse(AbstractCompiler compiler, Node root, Callback cb) {
+    NodeTraversal t = new NodeTraversal(compiler, cb);
+    t.traverse(root);
+}","public void test1313() throws Throwable {
+    MakeDeclaredNamesUnique makeDeclaredNamesUnique0 = new MakeDeclaredNamesUnique();
+    Compiler compiler0 = new Compiler();
+    Node node0 = new Node(105);
+    Node node1 = Node.newString("""", 4, 587);
+    node0.addChildrenToBack(node1);
+    Node node2 = new Node(1314, node0, node0, 2, 4095);
+    // Undeclared exception!
+    try {
+        NodeTraversal.traverse((AbstractCompiler) compiler0, node2, (NodeTraversal.Callback) makeDeclaredNamesUnique0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // null
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * Traverses a node recursively.
+ */"
+"public static void traverse(AbstractCompiler compiler, Node root, Callback cb) {
+    NodeTraversal t = new NodeTraversal(compiler, cb);
+    t.traverse(root);
+}","public void test1414() throws Throwable {
+    MakeDeclaredNamesUnique makeDeclaredNamesUnique0 = new MakeDeclaredNamesUnique();
+    Compiler compiler0 = new Compiler();
+    Node node0 = new Node(105);
+    Node node1 = Node.newString(""$$"", 4, 587);
+    Node node2 = Node.newString((-1), ""Z)Id=A"");
+    node0.addChildrenToBack(node1);
+    node0.addChildrenToBack(node2);
+    NodeTraversal.traverse((AbstractCompiler) compiler0, node1, (NodeTraversal.Callback) makeDeclaredNamesUnique0);
+    // Undeclared exception!
+    try {
+        NodeTraversal.traverse((AbstractCompiler) compiler0, node0, (NodeTraversal.Callback) makeDeclaredNamesUnique0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // null
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * Traverses a node recursively.
+ */"
+"public static void traverse(AbstractCompiler compiler, Node root, Callback cb) {
+    NodeTraversal t = new NodeTraversal(compiler, cb);
+    t.traverse(root);
+}","public void test1515() throws Throwable {
+    MakeDeclaredNamesUnique makeDeclaredNamesUnique0 = new MakeDeclaredNamesUnique();
+    Compiler compiler0 = new Compiler();
+    Node node0 = new Node(105);
+    Node node1 = Node.newString(""nH$4K_8N`n7L2"", 29, 24);
+    node0.addChildrenToBack(node1);
+    Node node2 = new Node(9, node0, node0, 2, 1);
+    // Undeclared exception!
+    try {
+        NodeTraversal.traverse((AbstractCompiler) compiler0, node2, (NodeTraversal.Callback) makeDeclaredNamesUnique0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // null
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * Traverses a node recursively.
+ */"
+"@Override
+public void visit(NodeTraversal t, Node n, Node parent) {
+    switch(n.getType()) {
+        case Token.NAME:
+            String newName = getReplacementName(n.getString());
+            if (newName != null) {
+                Renamer renamer = nameStack.peek();
+                if (renamer.stripConstIfReplaced()) {
+                    // TODO(johnlenz): Do we need to do anything about the javadoc?
+                    n.removeProp(Node.IS_CONSTANT_NAME);
+                }
+                n.setString(newName);
+                t.getCompiler().reportCodeChange();
+            }
+            break;
+        case Token.FUNCTION:
+            // Remove function recursive name (if any).
+            nameStack.pop();
+            break;
+        case Token.CATCH:
+            // Remove catch except name from the stack of names.
+            nameStack.pop();
+            break;
+    }
+}","public void test1616() throws Throwable {
+    MakeDeclaredNamesUnique makeDeclaredNamesUnique0 = new MakeDeclaredNamesUnique();
+    Compiler compiler0 = new Compiler();
+    Node node0 = new Node(105, 105, 105);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, makeDeclaredNamesUnique0);
+    // Undeclared exception!
+    try {
+        makeDeclaredNamesUnique0.visit(nodeTraversal0, node0, node0);
+        fail(""Expecting exception: NoSuchElementException"");
+    } catch (NoSuchElementException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.ArrayDeque"", e);
+    }
+}",""
+"@Override
+public void visit(NodeTraversal t, Node n, Node parent) {
+    switch(n.getType()) {
+        case Token.NAME:
+            String newName = getReplacementName(n.getString());
+            if (newName != null) {
+                Renamer renamer = nameStack.peek();
+                if (renamer.stripConstIfReplaced()) {
+                    // TODO(johnlenz): Do we need to do anything about the javadoc?
+                    n.removeProp(Node.IS_CONSTANT_NAME);
+                }
+                n.setString(newName);
+                t.getCompiler().reportCodeChange();
+            }
+            break;
+        case Token.FUNCTION:
+            // Remove function recursive name (if any).
+            nameStack.pop();
+            break;
+        case Token.CATCH:
+            // Remove catch except name from the stack of names.
+            nameStack.pop();
+            break;
+    }
+}","public void test1717() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    MakeDeclaredNamesUnique.ContextualRenamer makeDeclaredNamesUnique_ContextualRenamer0 = new MakeDeclaredNamesUnique.ContextualRenamer();
+    MakeDeclaredNamesUnique makeDeclaredNamesUnique0 = new MakeDeclaredNamesUnique(makeDeclaredNamesUnique_ContextualRenamer0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, makeDeclaredNamesUnique0);
+    Node node0 = Node.newString(120, ""$$"", 120, 120);
+    // Undeclared exception!
+    try {
+        makeDeclaredNamesUnique0.visit(nodeTraversal0, node0, node0);
+        fail(""Expecting exception: NoSuchElementException"");
+    } catch (NoSuchElementException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.ArrayDeque"", e);
+    }
+}",""
+"public static void traverse(AbstractCompiler compiler, Node root, Callback cb) {
+    NodeTraversal t = new NodeTraversal(compiler, cb);
+    t.traverse(root);
+}","public void test1818() throws Throwable {
+    MakeDeclaredNamesUnique makeDeclaredNamesUnique0 = new MakeDeclaredNamesUnique();
+    Compiler compiler0 = new Compiler();
+    Node node0 = new Node(105);
+    Node node1 = compiler0.parseSyntheticCode(""jA/Z+n^FV{"", ""ENUM_NEXT"");
+    node0.addChildrenToBack(node1);
+    Node node2 = Node.newString(""inZ<sta%ce"", 4, 2);
+    node0.addChildrenToBack(node2);
+    Node node3 = new Node(19, node0, 46, 17);
+    // Undeclared exception!
+    try {
+        NodeTraversal.traverse((AbstractCompiler) compiler0, node3, (NodeTraversal.Callback) makeDeclaredNamesUnique0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}","/**
+ * Traverses a node recursively.
+ */"
+"public static void traverse(AbstractCompiler compiler, Node root, Callback cb) {
+    NodeTraversal t = new NodeTraversal(compiler, cb);
+    t.traverse(root);
+}","public void test2020() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    MakeDeclaredNamesUnique.ContextualRenameInverter makeDeclaredNamesUnique_ContextualRenameInverter0 = (MakeDeclaredNamesUnique.ContextualRenameInverter) MakeDeclaredNamesUnique.getContextualRenameInverter(compiler0);
+    ScriptOrFnNode scriptOrFnNode0 = (ScriptOrFnNode) compiler0.parseTestCode(""FCp"");
+    NodeTraversal.traverse((AbstractCompiler) compiler0, (Node) scriptOrFnNode0, (NodeTraversal.Callback) makeDeclaredNamesUnique_ContextualRenameInverter0);
+    assertEquals(13, Node.CASES_PROP);
+}","/**
+ * Traverses a node recursively.
+ */"
+"public static void traverse(AbstractCompiler compiler, Node root, Callback cb) {
+    NodeTraversal t = new NodeTraversal(compiler, cb);
+    t.traverse(root);
+}","public void test2121() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    MakeDeclaredNamesUnique.ContextualRenameInverter makeDeclaredNamesUnique_ContextualRenameInverter0 = (MakeDeclaredNamesUnique.ContextualRenameInverter) MakeDeclaredNamesUnique.getContextualRenameInverter(compiler0);
+    ScriptOrFnNode scriptOrFnNode0 = (ScriptOrFnNode) compiler0.parseTestCode(""$$"");
+    NodeTraversal.traverse((AbstractCompiler) compiler0, (Node) scriptOrFnNode0, (NodeTraversal.Callback) makeDeclaredNamesUnique_ContextualRenameInverter0);
+    assertEquals(41, Node.BRACELESS_TYPE);
+}","/**
+ * Traverses a node recursively.
+ */"

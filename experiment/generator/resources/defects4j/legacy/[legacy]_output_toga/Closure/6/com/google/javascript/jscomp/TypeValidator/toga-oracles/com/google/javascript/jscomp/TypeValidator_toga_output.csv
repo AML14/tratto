@@ -1,0 +1,937 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test010,"public void test010() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s4A[XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNoType();
+    VarCheck varCheck0 = new VarCheck(compiler0, true);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, varCheck0);
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionType(jSType0, node0);
+    typeValidator0.expectNumber(nodeTraversal0, node0, functionType0, ""<uFh0B%Mqok 5Qm'4g"");
+    assertEquals(1, compiler0.getWarningCount());
+}",0,
+project,0,test042,"public void test042() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""[n]A.97h/d,n"");
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNoType();
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, (NodeTraversal.Callback) null);
+    boolean boolean0 = typeValidator0.expectObject(nodeTraversal0, node0, jSType0, ""Not declared as a constructor"");
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test053,"public void test053() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""#M!Td_9QdzpvwM;W[C"");
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    TypeValidator typeValidator0 = new TypeValidator(compiler0);
+    // Undeclared exception!
+    try {
+        typeValidator0.expectObject((NodeTraversal) null, node0, jSType0, (String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.TypeValidator"", e);
+    }
+}",0,
+project,0,test064,"public void test064() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""com.google.javascript.rhino.head.ast.XmlRef"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    StrictModeCheck strictModeCheck0 = new StrictModeCheck(compiler0, true, true);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, strictModeCheck0);
+    TightenTypes tightenTypes0 = new TightenTypes(compiler0);
+    JSTypeRegistry jSTypeRegistry0 = tightenTypes0.getTypeRegistry();
+    JSTypeNative jSTypeNative0 = JSTypeNative.FUNCTION_INSTANCE_TYPE;
+    JSType jSType0 = jSTypeRegistry0.getNativeType(jSTypeNative0);
+    typeValidator0.expectActualObject(nodeTraversal0, node0, jSType0, ""M^dJr9 2rjR"");
+    assertEquals(0, compiler0.getWarningCount());
+}",0,
+project,0,test075,"public void test075() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s4A[XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0, typedScopeCreator0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    typeValidator0.expectActualObject(nodeTraversal0, node0, jSType0, ""F~\""8!okd"");
+    assertEquals(1, compiler0.getWarningCount());
+}",0,
+project,0,test086,"public void test086() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""(hH 20;-Q7>&-"");
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNoType();
+    TypeValidator typeValidator0 = new TypeValidator(compiler0);
+    EnumType enumType0 = jSTypeRegistry0.createEnumType((String) null, node0, jSType0);
+    FindExportableNodes findExportableNodes0 = new FindExportableNodes(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, findExportableNodes0);
+    typeValidator0.expectAnyObject(nodeTraversal0, node0, enumType0, ""|Jf*"");
+    assertEquals(0, compiler0.getWarningCount());
+}",0,"assertEquals(0, compiler0.getWarningCount())"
+project,0,test097,"public void test097() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""com.google.javascript.rhino.head.ast.XmlRef"");
+    TypeValidator typeValidator0 = new TypeValidator(compiler0);
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    NoType noType0 = (NoType) modificationVisitor0.caseNoType();
+    FindExportableNodes findExportableNodes0 = new FindExportableNodes(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, findExportableNodes0);
+    typeValidator0.expectAnyObject(nodeTraversal0, node0, noType0, ""Not declared as a constructor"");
+    assertTrue(noType0.hasCachedValues());
+}",0,
+project,0,test108,"public void test108() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    compiler0.parseTestCode(""s4A[XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0, typedScopeCreator0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    typeValidator0.expectAnyObject(nodeTraversal0, (Node) null, jSType0, ""Q#"");
+    assertEquals(1, compiler0.getWarningCount());
+}",0,
+project,0,test119,"public void test119() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s4A[XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0);
+    typeValidator0.expectString(nodeTraversal0, node0, jSType0, ""Not declared as a type name"");
+    assertEquals(0, compiler0.getWarningCount());
+}",0,
+project,0,test1210,"public void test1210() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s4A[XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0, typedScopeCreator0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionType(jSType0, node0);
+    typeValidator0.expectString(nodeTraversal0, node0, functionType0, ""Not declared as a constructor"");
+    assertTrue(functionType0.hasCachedValues());
+}",0,assertTrue(functionType0.hasCachedValues())
+project,0,test1211,"public void test1211() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s4A[XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0, typedScopeCreator0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionType(jSType0, node0);
+    typeValidator0.expectString(nodeTraversal0, node0, functionType0, ""Not declared as a constructor"");
+    assertEquals(1, compiler0.getWarningCount());
+}",0,"assertEquals(0, compiler0.getWarningCount())"
+project,0,test1312,"public void test1312() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode("""");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    typeValidator0.expectNumber((NodeTraversal) null, node0, jSType0, ""Named type with empty name component"");
+    assertEquals(1, Node.FLAG_GLOBAL_STATE_UNMODIFIED);
+}",0,
+project,0,test1413,"public void test1413() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s4A[XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNoType();
+    typeValidator0.expectBitwiseable((NodeTraversal) null, node0, jSType0, ""Unknown class name"");
+    assertEquals(0, JSType.NOT_ENUMDECL);
+}",0,
+project,0,test1514,"public void test1514() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode("""");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0, typedScopeCreator0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionType(jSType0, node0);
+    typeValidator0.expectBitwiseable(nodeTraversal0, node0, functionType0, ""{y7~Is4<)*NTI*"");
+    assertTrue(functionType0.hasCachedValues());
+}",0,
+project,0,test1515,"public void test1515() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode("""");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0, typedScopeCreator0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionType(jSType0, node0);
+    typeValidator0.expectBitwiseable(nodeTraversal0, node0, functionType0, ""{y7~Is4<)*NTI*"");
+    assertEquals(1, compiler0.getWarningCount());
+}",0,
+project,0,test1616,"public void test1616() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""(hH s0;Q7>&-"");
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNoType();
+    TypeValidator typeValidator0 = new TypeValidator(compiler0);
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    JSType jSType1 = jSTypeRegistry0.createOptionalType(jSType0);
+    CheckAccidentalSemicolon checkAccidentalSemicolon0 = new CheckAccidentalSemicolon(compilerOptions0.brokenClosureRequiresLevel);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, checkAccidentalSemicolon0, (ScopeCreator) null);
+    typeValidator0.expectBitwiseable(nodeTraversal0, node0, jSType1, ""w!"");
+    assertEquals(0, compiler0.getWarningCount());
+}",0,
+project,0,test1717,"public void test1717() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    compiler0.parseTestCode(""s4A[XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    InlineSimpleMethods inlineSimpleMethods0 = new InlineSimpleMethods(compiler0);
+    NodeTraversal.Callback nodeTraversal_Callback0 = inlineSimpleMethods0.getActingCallback();
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, nodeTraversal_Callback0);
+    typeValidator0.expectStringOrNumber(nodeTraversal0, (Node) null, jSType0, ""Not declared as a type name"");
+    assertFalse(jSType0.isResolved());
+}",0,assertTrue(jSType0.isResolved())
+project,0,test1818,"public void test1818() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s4A [XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    FindExportableNodes findExportableNodes0 = new FindExportableNodes(compiler0);
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, findExportableNodes0, typedScopeCreator0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    JSTypeNative jSTypeNative0 = JSTypeNative.RANGE_ERROR_TYPE;
+    ObjectType objectType0 = jSTypeRegistry0.getNativeObjectType(jSTypeNative0);
+    typeValidator0.expectStringOrNumber(nodeTraversal0, node0, objectType0, ""Named type with empty name component"");
+    assertTrue(objectType0.hasCachedValues());
+}",0,assertTrue(objectType0.hasCachedValues())
+project,0,test1819,"public void test1819() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s4A [XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    FindExportableNodes findExportableNodes0 = new FindExportableNodes(compiler0);
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, findExportableNodes0, typedScopeCreator0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    JSTypeNative jSTypeNative0 = JSTypeNative.RANGE_ERROR_TYPE;
+    ObjectType objectType0 = jSTypeRegistry0.getNativeObjectType(jSTypeNative0);
+    typeValidator0.expectStringOrNumber(nodeTraversal0, node0, objectType0, ""Named type with empty name component"");
+    assertEquals(1, compiler0.getWarningCount());
+}",0,
+project,0,test1920,"public void test1920() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s4A[XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    FindExportableNodes findExportableNodes0 = new FindExportableNodes(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, findExportableNodes0);
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseAllType();
+    typeValidator0.expectStringOrNumber(nodeTraversal0, node0, jSType0, ""~h._4LX.92H3-vo)4` "");
+    assertEquals(0, compiler0.getWarningCount());
+}",0,
+project,0,test2021,"public void test2021() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""ohH 2;Q7>&-"");
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNoType();
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    boolean boolean0 = typeValidator0.expectNotNullOrUndefined((NodeTraversal) null, node0, jSType0, ""Named type with empty name component"", jSType0);
+    assertTrue(boolean0);
+}",0,
+project,0,test2122,"public void test2122() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s4A[XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0, typedScopeCreator0);
+    NameReferenceGraph nameReferenceGraph0 = new NameReferenceGraph(compiler0);
+    NameReferenceGraph.Name nameReferenceGraph_Name0 = nameReferenceGraph0.WINDOW;
+    JSType jSType0 = nameReferenceGraph_Name0.getType();
+    boolean boolean0 = typeValidator0.expectNotNullOrUndefined(nodeTraversal0, node0, jSType0, ""|Tgv|~lM<z;x+Lk&ln"", jSType0);
+    assertTrue(boolean0);
+}",0,
+project,0,test2223,"public void test2223() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s4A[XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""s4A[XTD"", node0, jSType0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0);
+    boolean boolean0 = typeValidator0.expectNotNullOrUndefined(nodeTraversal0, node0, enumType0, ""Not declared as a constructor"", enumType0);
+    assertTrue(boolean0);
+}",0,
+project,0,test2324,"public void test2324() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s4A[XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0, typedScopeCreator0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    JSType jSType1 = jSTypeRegistry0.createOptionalType(jSType0);
+    JSType jSType2 = modificationVisitor0.caseBooleanType();
+    boolean boolean0 = typeValidator0.expectNotNullOrUndefined(nodeTraversal0, node0, jSType1, ""Unknown class name"", jSType2);
+    assertEquals(1, compiler0.getWarningCount());
+}",0,"assertEquals(0, compiler0.getWarningCount())"
+project,0,test2325,"public void test2325() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s4A[XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0, typedScopeCreator0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    JSType jSType1 = jSTypeRegistry0.createOptionalType(jSType0);
+    JSType jSType2 = modificationVisitor0.caseBooleanType();
+    boolean boolean0 = typeValidator0.expectNotNullOrUndefined(nodeTraversal0, node0, jSType1, ""Unknown class name"", jSType2);
+    assertFalse(boolean0);
+}",0,
+project,0,test2426,"public void test2426() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    compiler0.parseTestCode(""s4A[XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    InlineSimpleMethods inlineSimpleMethods0 = new InlineSimpleMethods(compiler0);
+    NodeTraversal.Callback nodeTraversal_Callback0 = inlineSimpleMethods0.getActingCallback();
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, nodeTraversal_Callback0);
+    typeValidator0.expectSwitchMatchesCase(nodeTraversal0, (Node) null, jSType0, jSType0);
+    assertFalse(jSType0.isConstructor());
+}",0,
+project,0,test2527,"public void test2527() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s4A[XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""s4A[XTD"", node0, jSType0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0);
+    typeValidator0.expectSwitchMatchesCase(nodeTraversal0, node0, jSType0, enumType0);
+    assertEquals(1, compiler0.getWarningCount());
+}",0,
+project,0,test2628,"public void test2628() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s4A[XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0, typedScopeCreator0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    JSType jSType1 = jSTypeRegistry0.createOptionalType(jSType0);
+    JSType jSType2 = modificationVisitor0.caseBooleanType();
+    typeValidator0.expectSwitchMatchesCase(nodeTraversal0, node0, jSType1, jSType2);
+    assertEquals(1, compiler0.getWarningCount());
+}",0,
+project,0,test2729,"public void test2729() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s4A[XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNoType();
+    FindExportableNodes findExportableNodes0 = new FindExportableNodes(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, findExportableNodes0);
+    boolean boolean0 = typeValidator0.expectCanAssignToPropertyOf(nodeTraversal0, node0, jSType0, jSType0, node0, ""Unknown class name"");
+    assertTrue(boolean0);
+}",0,
+project,0,test2830,"public void test2830() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""sA[XD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0);
+    boolean boolean0 = typeValidator0.expectCanAssignToPropertyOf(nodeTraversal0, node0, jSType0, jSType0, node0, ""Not declared as a constructor"");
+    assertTrue(boolean0);
+}",0,
+project,0,test2931,"public void test2931() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""com.google.javascript.rhino.head.ast.XmlRef"");
+    TypeValidator typeValidator0 = new TypeValidator(compiler0);
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    JSTypeNative jSTypeNative0 = JSTypeNative.SYNTAX_ERROR_FUNCTION_TYPE;
+    JSType jSType0 = jSTypeRegistry0.getNativeType(jSTypeNative0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, (NodeTraversal.Callback) null, (ScopeCreator) null);
+    JSType[] jSTypeArray0 = new JSType[7];
+    FunctionType functionType0 = jSTypeRegistry0.createConstructorType(jSType0, false, jSTypeArray0);
+    boolean boolean0 = typeValidator0.expectCanAssignToPropertyOf(nodeTraversal0, node0, jSType0, functionType0, node0, ""Unknown class name"");
+    assertTrue(functionType0.hasCachedValues());
+}",0,assertTrue(functionType0.hasCachedValues())
+project,0,test2932,"public void test2932() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""com.google.javascript.rhino.head.ast.XmlRef"");
+    TypeValidator typeValidator0 = new TypeValidator(compiler0);
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    JSTypeNative jSTypeNative0 = JSTypeNative.SYNTAX_ERROR_FUNCTION_TYPE;
+    JSType jSType0 = jSTypeRegistry0.getNativeType(jSTypeNative0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, (NodeTraversal.Callback) null, (ScopeCreator) null);
+    JSType[] jSTypeArray0 = new JSType[7];
+    FunctionType functionType0 = jSTypeRegistry0.createConstructorType(jSType0, false, jSTypeArray0);
+    boolean boolean0 = typeValidator0.expectCanAssignToPropertyOf(nodeTraversal0, node0, jSType0, functionType0, node0, ""Unknown class name"");
+    assertFalse(boolean0);
+}",0,
+project,0,test3033,"public void test3033() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s4A[XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Not declared as a constructor"", node0, jSType0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0);
+    boolean boolean0 = typeValidator0.expectCanAssignToPropertyOf(nodeTraversal0, node0, jSType0, enumType0, node0, ""Named type with empty name component"");
+    assertEquals(1, compiler0.getWarningCount());
+}",0,"assertEquals(0, compiler0.getWarningCount())"
+project,0,test3034,"public void test3034() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s4A[XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Not declared as a constructor"", node0, jSType0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0);
+    boolean boolean0 = typeValidator0.expectCanAssignToPropertyOf(nodeTraversal0, node0, jSType0, enumType0, node0, ""Named type with empty name component"");
+    assertFalse(boolean0);
+}",0,
+project,0,test3135,"public void test3135() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""4\"">e:P9G%oD*"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Not declared as a constructor"", node0, jSType0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0);
+    EnumType enumType1 = jSTypeRegistry0.createEnumType(""4\"">e:P9G%oD*"", node0, jSType0);
+    boolean boolean0 = typeValidator0.expectCanAssignToPropertyOf(nodeTraversal0, node0, enumType1, enumType0, node0, """");
+    assertFalse(boolean0);
+}",0,
+project,0,test3136,"public void test3136() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""4\"">e:P9G%oD*"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Not declared as a constructor"", node0, jSType0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0);
+    EnumType enumType1 = jSTypeRegistry0.createEnumType(""4\"">e:P9G%oD*"", node0, jSType0);
+    boolean boolean0 = typeValidator0.expectCanAssignToPropertyOf(nodeTraversal0, node0, enumType1, enumType0, node0, """");
+    assertEquals(0, compiler0.getWarningCount());
+}",0,
+project,0,test3237,"public void test3237() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s4A[XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0);
+    boolean boolean0 = typeValidator0.expectCanAssignTo(nodeTraversal0, node0, jSType0, jSType0, ""Not declared as a constructor"");
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test3338,"public void test3338() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s`4A[XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Named type with empty name component"", node0, jSType0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0);
+    boolean boolean0 = typeValidator0.expectCanAssignTo(nodeTraversal0, node0, enumType0, jSType0, ""Not declared as a constructor"");
+    assertEquals(1, compiler0.getWarningCount());
+}",0,
+project,0,test3339,"public void test3339() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s`4A[XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Named type with empty name component"", node0, jSType0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0);
+    boolean boolean0 = typeValidator0.expectCanAssignTo(nodeTraversal0, node0, enumType0, jSType0, ""Not declared as a constructor"");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test3440,"public void test3440() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s4A[XD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Not declared as a constructor"", node0, jSType0);
+    GoogleCodingConvention googleCodingConvention0 = new GoogleCodingConvention();
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0, googleCodingConvention0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0, typedScopeCreator0);
+    boolean boolean0 = typeValidator0.expectCanAssignTo(nodeTraversal0, node0, jSType0, enumType0, """");
+    assertEquals(1, compiler0.getWarningCount());
+}",0,
+project,0,test3441,"public void test3441() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s4A[XD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Not declared as a constructor"", node0, jSType0);
+    GoogleCodingConvention googleCodingConvention0 = new GoogleCodingConvention();
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0, googleCodingConvention0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0, typedScopeCreator0);
+    boolean boolean0 = typeValidator0.expectCanAssignTo(nodeTraversal0, node0, jSType0, enumType0, """");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test3542,"public void test3542() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""(hH 20;-Q7>&-"");
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    NoType noType0 = (NoType) modificationVisitor0.caseNoType();
+    NullType nullType0 = (NullType) modificationVisitor0.caseNullType();
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""5_0^ EnV;"", node0, nullType0);
+    GatherRawExports gatherRawExports0 = new GatherRawExports(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, gatherRawExports0);
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    boolean boolean0 = typeValidator0.expectCanAssignTo(nodeTraversal0, node0, enumType0, noType0, ""Not declared as a type name"");
+    assertTrue(noType0.hasCachedValues());
+}",0,assertFalse(noType0.hasCachedValues())
+project,0,test3543,"public void test3543() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""(hH 20;-Q7>&-"");
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    NoType noType0 = (NoType) modificationVisitor0.caseNoType();
+    NullType nullType0 = (NullType) modificationVisitor0.caseNullType();
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""5_0^ EnV;"", node0, nullType0);
+    GatherRawExports gatherRawExports0 = new GatherRawExports(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, gatherRawExports0);
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    boolean boolean0 = typeValidator0.expectCanAssignTo(nodeTraversal0, node0, enumType0, noType0, ""Not declared as a type name"");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test3644,"public void test3644() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s4A[XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0);
+    typeValidator0.expectArgumentMatchesParameter(nodeTraversal0, node0, jSType0, jSType0, node0, 40);
+    assertEquals(0, nodeTraversal0.getLineNumber());
+}",0,"assertEquals(0, nodeTraversal0.getLineNumber())"
+project,0,test3745,"public void test3745() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""ohH 2;Q7>&-"");
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNumberType();
+    JSType jSType1 = modificationVisitor0.caseNoType();
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    CheckRegExp checkRegExp0 = new CheckRegExp(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, checkRegExp0);
+    // Undeclared exception!
+    try {
+        typeValidator0.expectArgumentMatchesParameter(nodeTraversal0, node0, jSType0, jSType1, node0, 1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.TypeValidator"", e);
+    }
+}",0,
+project,0,test3846,"public void test3846() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode("""");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0, typedScopeCreator0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    typeValidator0.expectCanOverride(nodeTraversal0, node0, jSType0, jSType0, ""Z\""]|+*^8;"", jSType0);
+    assertEquals(0, compiler0.getWarningCount());
+}",0,
+project,0,test3947,"public void test3947() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    compiler0.parseTestCode(""s4A[XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    InlineSimpleMethods inlineSimpleMethods0 = new InlineSimpleMethods(compiler0);
+    NodeTraversal.Callback nodeTraversal_Callback0 = inlineSimpleMethods0.getActingCallback();
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, nodeTraversal_Callback0);
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionType(jSType0, (Node) null);
+    typeValidator0.expectCanOverride(nodeTraversal0, (Node) null, functionType0, jSType0, ""variable {0} redefined with type {1}, original definition at {2}:{3} with type {4}"", functionType0);
+    assertTrue(functionType0.hasCachedValues());
+}",0,assertTrue(functionType0.hasCachedValues())
+project,0,test3948,"public void test3948() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    compiler0.parseTestCode(""s4A[XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    InlineSimpleMethods inlineSimpleMethods0 = new InlineSimpleMethods(compiler0);
+    NodeTraversal.Callback nodeTraversal_Callback0 = inlineSimpleMethods0.getActingCallback();
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, nodeTraversal_Callback0);
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionType(jSType0, (Node) null);
+    typeValidator0.expectCanOverride(nodeTraversal0, (Node) null, functionType0, jSType0, ""variable {0} redefined with type {1}, original definition at {2}:{3} with type {4}"", functionType0);
+    assertEquals(1, compiler0.getWarningCount());
+}",0,
+project,0,test4049,"public void test4049() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s4A [XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    FindExportableNodes findExportableNodes0 = new FindExportableNodes(compiler0);
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, findExportableNodes0, typedScopeCreator0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    JSTypeNative jSTypeNative0 = JSTypeNative.RANGE_ERROR_TYPE;
+    ObjectType objectType0 = jSTypeRegistry0.getNativeObjectType(jSTypeNative0);
+    typeValidator0.expectSuperType(nodeTraversal0, node0, objectType0, objectType0);
+    assertTrue(objectType0.hasCachedValues());
+}",0,
+project,0,test4050,"public void test4050() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s4A [XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    FindExportableNodes findExportableNodes0 = new FindExportableNodes(compiler0);
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, findExportableNodes0, typedScopeCreator0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    JSTypeNative jSTypeNative0 = JSTypeNative.RANGE_ERROR_TYPE;
+    ObjectType objectType0 = jSTypeRegistry0.getNativeObjectType(jSTypeNative0);
+    typeValidator0.expectSuperType(nodeTraversal0, node0, objectType0, objectType0);
+    assertEquals(1, compiler0.getWarningCount());
+}",0,
+project,0,test4151,"public void test4151() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""ohH 2;Q7>&-"");
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    NoType noType0 = (NoType) modificationVisitor0.caseNoType();
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    FindExportableNodes findExportableNodes0 = new FindExportableNodes(compiler0);
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, findExportableNodes0, typedScopeCreator0);
+    typeValidator0.expectSuperType(nodeTraversal0, node0, noType0, noType0);
+    assertEquals(43, Node.IS_CONSTANT_NAME);
+}",1,
+project,0,test4252,"public void test4252() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""#M!Td_9QdzpvwM;W[C"");
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""unknown type: {0}"", node0, jSType0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0);
+    TypeValidator typeValidator0 = new TypeValidator(compiler0);
+    JSTypeNative jSTypeNative0 = JSTypeNative.UNKNOWN_TYPE;
+    ObjectType objectType0 = jSTypeRegistry0.getNativeObjectType(jSTypeNative0);
+    typeValidator0.expectSuperType(nodeTraversal0, node0, objectType0, enumType0);
+    assertEquals(53, Node.INPUT_ID);
+}",1,
+project,0,test4353,"public void test4353() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s4A[XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    JSTypeNative jSTypeNative0 = JSTypeNative.DATE_TYPE;
+    ObjectType objectType0 = jSTypeRegistry0.getNativeObjectType(jSTypeNative0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0);
+    typeValidator0.expectSuperType(nodeTraversal0, node0, objectType0, objectType0);
+    assertTrue(objectType0.hasCachedValues());
+}",0,assertFalse(objectType0.hasCachedValues())
+project,0,test4354,"public void test4354() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s4A[XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    JSTypeNative jSTypeNative0 = JSTypeNative.DATE_TYPE;
+    ObjectType objectType0 = jSTypeRegistry0.getNativeObjectType(jSTypeNative0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0);
+    typeValidator0.expectSuperType(nodeTraversal0, node0, objectType0, objectType0);
+    assertEquals(1, compiler0.getWarningCount());
+}",0,
+project,0,test4455,"public void test4455() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s4A[XD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Not declared as a constructor"", node0, jSType0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0);
+    typeValidator0.expectCanCast(nodeTraversal0, node0, enumType0, enumType0);
+    assertEquals(2, Node.POST_FLAG);
+}",0,
+project,0,test4556,"public void test4556() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s4A[XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Not declared as a constructor"", node0, jSType0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0);
+    typeValidator0.expectCanCast(nodeTraversal0, node0, enumType0, jSType0);
+    assertEquals(0, compiler0.getWarningCount());
+}",0,"assertEquals(0, compiler0.getWarningCount())"
+project,0,test4657,"public void test4657() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s4A[XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Named type with empty name component"", node0, jSType0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0);
+    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType((JSDocInfo) null);
+    typeValidator0.expectCanCast(nodeTraversal0, node0, enumType0, objectType0);
+    assertTrue(objectType0.hasCachedValues());
+}",0,assertFalse(objectType0.hasCachedValues())
+project,0,test4658,"public void test4658() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s4A[XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;
+    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Named type with empty name component"", node0, jSType0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0);
+    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType((JSDocInfo) null);
+    typeValidator0.expectCanCast(nodeTraversal0, node0, enumType0, objectType0);
+    assertEquals(1, compiler0.getWarningCount());
+}",0,
+project,0,test4759,"public void test4759() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""com.google.javascript.rhino.head.ast.XmlRef"");
+    TypeValidator typeValidator0 = new TypeValidator(compiler0);
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);
+    JSTypeNative jSTypeNative0 = JSTypeNative.STRING_TYPE;
+    JSType jSType0 = jSTypeRegistry0.getNativeType(jSTypeNative0);
+    InputId inputId0 = node0.getInputId();
+    CompilerInput compilerInput0 = compiler0.getInput(inputId0);
+    Scope.Var scope_Var0 = mock(Scope.Var.class, new ViolatedAssumptionAnswer());
+    doReturn((Scope) null).when(scope_Var0).getScope();
+    doReturn(jSType0).when(scope_Var0).getType();
+    // Undeclared exception!
+    try {
+        typeValidator0.expectUndeclaredVariable(""Named type with empty name component"", compilerInput0, node0, node0, scope_Var0, ""Not declared as a constructor"", jSType0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.TypeValidator"", e);
+    }
+}",0,
+project,0,test5062,"public void test5062() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""com.google.javascript.rhino.head.ast.XmlRef"");
+    TypeValidator typeValidator0 = new TypeValidator(compiler0);
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    JSTypeNative jSTypeNative0 = JSTypeNative.SYNTAX_ERROR_FUNCTION_TYPE;
+    JSType jSType0 = jSTypeRegistry0.getNativeType(jSTypeNative0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, (NodeTraversal.Callback) null, (ScopeCreator) null);
+    JSType[] jSTypeArray0 = new JSType[7];
+    jSTypeArray0[0] = jSType0;
+    FunctionType functionType0 = jSTypeRegistry0.createConstructorType(jSType0, false, jSTypeArray0);
+    boolean boolean0 = typeValidator0.expectCanAssignTo(nodeTraversal0, node0, functionType0, jSType0, ""g}anvg/coPorL5"");
+    assertTrue(functionType0.hasCachedValues());
+}",0,assertTrue(functionType0.hasCachedValues())
+project,0,test5063,"public void test5063() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""com.google.javascript.rhino.head.ast.XmlRef"");
+    TypeValidator typeValidator0 = new TypeValidator(compiler0);
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    JSTypeNative jSTypeNative0 = JSTypeNative.SYNTAX_ERROR_FUNCTION_TYPE;
+    JSType jSType0 = jSTypeRegistry0.getNativeType(jSTypeNative0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, (NodeTraversal.Callback) null, (ScopeCreator) null);
+    JSType[] jSTypeArray0 = new JSType[7];
+    jSTypeArray0[0] = jSType0;
+    FunctionType functionType0 = jSTypeRegistry0.createConstructorType(jSType0, false, jSTypeArray0);
+    boolean boolean0 = typeValidator0.expectCanAssignTo(nodeTraversal0, node0, functionType0, jSType0, ""g}anvg/coPorL5"");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test5164,"public void test5164() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""com.google.javascript.rhino.head.ast.XmlRef"");
+    TypeValidator typeValidator0 = new TypeValidator(compiler0);
+    String string0 = typeValidator0.getReadableJSTypeName(node0, false);
+    assertEquals(""?"", string0);
+}",0,
+project,0,test5265,"public void test5265() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s4A[XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    InlineSimpleMethods inlineSimpleMethods0 = new InlineSimpleMethods(compiler0);
+    NodeTraversal.Callback nodeTraversal_Callback0 = inlineSimpleMethods0.getActingCallback();
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, nodeTraversal_Callback0);
+    typeValidator0.setShouldReport(false);
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionType(jSType0, (Node) null);
+    JSType jSType1 = jSTypeRegistry0.createOptionalType(jSType0);
+    boolean boolean0 = typeValidator0.expectCanAssignToPropertyOf(nodeTraversal0, (Node) null, functionType0, jSType1, node0, ""e1!r`,AKpl?T"");
+    assertTrue(functionType0.hasCachedValues());
+}",0,assertTrue(functionType0.hasCachedValues())
+project,0,test5266,"public void test5266() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s4A[XTD"");
+    TypeValidator typeValidator0 = compiler0.getTypeValidator();
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    InlineSimpleMethods inlineSimpleMethods0 = new InlineSimpleMethods(compiler0);
+    NodeTraversal.Callback nodeTraversal_Callback0 = inlineSimpleMethods0.getActingCallback();
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, nodeTraversal_Callback0);
+    typeValidator0.setShouldReport(false);
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionType(jSType0, (Node) null);
+    JSType jSType1 = jSTypeRegistry0.createOptionalType(jSType0);
+    boolean boolean0 = typeValidator0.expectCanAssignToPropertyOf(nodeTraversal0, (Node) null, functionType0, jSType1, node0, ""e1!r`,AKpl?T"");
+    assertFalse(boolean0);
+}",0,
+project,0,test5670,"public void test5670() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s4A[XTD"");
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Not declared as a constructor"", node0, jSType0);
+    EnumElementType enumElementType0 = enumType0.getElementsType();
+    String[] stringArray0 = new String[8];
+    JSError jSError0 = JSError.make(node0, compiler0.OPTIMIZE_LOOP_ERROR, stringArray0);
+    TypeValidator.TypeMismatch typeValidator_TypeMismatch0 = new TypeValidator.TypeMismatch(enumElementType0, jSType0, jSError0);
+    TypeValidator.TypeMismatch typeValidator_TypeMismatch1 = new TypeValidator.TypeMismatch(enumElementType0, enumType0, jSError0);
+    boolean boolean0 = typeValidator_TypeMismatch0.equals(typeValidator_TypeMismatch1);
+    assertTrue(enumElementType0.hasCachedValues());
+}",0,assertTrue(enumElementType0.hasCachedValues())
+project,0,test5772,"public void test5772() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""s4A[XTD"");
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);
+    JSType jSType0 = modificationVisitor0.caseNullType();
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Not declared as a constructor"", node0, jSType0);
+    EnumElementType enumElementType0 = enumType0.getElementsType();
+    String[] stringArray0 = new String[8];
+    JSError jSError0 = JSError.make(node0, compiler0.OPTIMIZE_LOOP_ERROR, stringArray0);
+    TypeValidator.TypeMismatch typeValidator_TypeMismatch0 = new TypeValidator.TypeMismatch(enumElementType0, jSType0, jSError0);
+    TypeValidator.TypeMismatch typeValidator_TypeMismatch1 = new TypeValidator.TypeMismatch(enumElementType0, enumElementType0, jSError0);
+    boolean boolean0 = typeValidator_TypeMismatch0.equals(typeValidator_TypeMismatch1);
+    assertTrue(enumElementType0.hasCachedValues());
+}",0,assertTrue(enumElementType0.hasCachedValues())

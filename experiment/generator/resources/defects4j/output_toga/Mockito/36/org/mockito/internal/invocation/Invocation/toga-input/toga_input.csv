@@ -1,0 +1,35 @@
+focal_method,test_prefix,docstring
+"public Invocation(Object mock, MockitoMethod mockitoMethod, Object[] args, int sequenceNumber, RealMethod realMethod) {
+    this.method = mockitoMethod;
+    this.mock = mock;
+    this.realMethod = realMethod;
+    this.arguments = expandVarArgs(mockitoMethod.isVarArgs(), args);
+    this.rawArguments = args;
+    this.sequenceNumber = sequenceNumber;
+    this.location = new Location();
+}","public void test00() throws Throwable {
+    Invocation invocation0 = null;
+    try {
+        invocation0 = new Invocation((Object) null, (MockitoMethod) null, (Object[]) null, 86, (RealMethod) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.mockito.internal.invocation.Invocation"", e);
+    }
+}",""
+"public static boolean isToString(InvocationOnMock invocation) {
+    return new ObjectMethodsGuru().isToString(invocation.getMethod());
+}","public void test11() throws Throwable {
+    // Undeclared exception!
+    try {
+        Invocation.isToString((InvocationOnMock) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.mockito.internal.invocation.Invocation"", e);
+    }
+}",""

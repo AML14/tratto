@@ -1,0 +1,1942 @@
+focal_method,test_prefix,docstring
+"/*
+    /**********************************************************
+    /* Access checking/handling methods
+    /**********************************************************
+     */
+/**
+ *  Equivalent to call:
+ * <pre>
+ *    checkAndFixAccess(member, false);
+ * </pre>
+ *
+ *  @deprecated Since 2.7 call variant that takes boolean flag.
+ */
+@Deprecated
+public static void checkAndFixAccess(Member member) {
+    checkAndFixAccess(member, false);
+}","public void test0000() throws Throwable {
+    // Undeclared exception!
+    try {
+        ClassUtil.checkAndFixAccess((Member) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.util.ClassUtil"", e);
+    }
+}",""
+"public static void unwrapAndThrowAsIAE(Throwable t) {
+    throwAsIAE(getRootCause(t));
+}","public void test0011() throws Throwable {
+    SQLNonTransientConnectionException sQLNonTransientConnectionException0 = new SQLNonTransientConnectionException();
+    // Undeclared exception!
+    try {
+        ClassUtil.unwrapAndThrowAsIAE((Throwable) sQLNonTransientConnectionException0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.util.ClassUtil"", e);
+    }
+}","/**
+ * Method that will locate the innermost exception for given Throwable;
+ * and then wrap it as an {@link IllegalArgumentException} if it
+ * is a checked exception; otherwise (runtime exception or error) throw as is
+ */"
+"public static void closeOnFailAndThrowAsIOE(JsonGenerator g, Exception fail) throws IOException {
+    /* 04-Mar-2014, tatu: Let's try to prevent auto-closing of
+         *    structures, which typically causes more damage.
+         */
+    g.disable(JsonGenerator.Feature.AUTO_CLOSE_JSON_CONTENT);
+    try {
+        g.close();
+    } catch (Exception e) {
+        fail.addSuppressed(e);
+    }
+    throwIfIOE(fail);
+    throwIfRTE(fail);
+    throw new RuntimeException(fail);
+}","public void test0044() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    ByteArrayBuilder byteArrayBuilder0 = new ByteArrayBuilder(bufferRecycler0, (-1514));
+    DataOutputStream dataOutputStream0 = new DataOutputStream(byteArrayBuilder0);
+    JsonEncoding jsonEncoding0 = JsonEncoding.UTF16_BE;
+    JsonGenerator jsonGenerator0 = jsonFactory0.createGenerator((DataOutput) dataOutputStream0, jsonEncoding0);
+    BatchUpdateException batchUpdateException0 = new BatchUpdateException();
+    // Undeclared exception!
+    try {
+        ClassUtil.closeOnFailAndThrowAsIOE(jsonGenerator0, (Exception) batchUpdateException0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // java.sql.BatchUpdateException
+        //
+        verifyException(""com.fasterxml.jackson.databind.util.ClassUtil"", e);
+    }
+}","/**
+ * Helper method that encapsulate logic in trying to close output generator
+ * in case of failure; useful mostly in forcing flush()ing as otherwise
+ * error conditions tend to be hard to diagnose. However, it is often the
+ * case that output state may be corrupt so we need to be prepared for
+ * secondary exception without masking original one.
+ *
+ * @since 2.8
+ */"
+"public static String quotedOr(Object str, String forNull) {
+    if (str == null) {
+        return forNull;
+    }
+    return String.format(""\""%s\"""", str);
+}","public void test0055() throws Throwable {
+    ClassUtil classUtil0 = new ClassUtil();
+    String string0 = ClassUtil.quotedOr(classUtil0, ""4?7+a&bK'Z;A]vg~V[2"");
+    assertNotNull(string0);
+}","/**
+ * Returns either quoted value (with double-quotes) -- if argument non-null
+ * String -- or String NULL (no quotes) (if null).
+ *
+ * @since 2.9
+ */"
+"public static <T> Constructor<T> findConstructor(Class<T> cls, boolean forceAccess) throws IllegalArgumentException {
+    try {
+        Constructor<T> ctor = cls.getDeclaredConstructor();
+        if (forceAccess) {
+            checkAndFixAccess(ctor, forceAccess);
+        } else {
+            // Has to be public...
+            if (!Modifier.isPublic(ctor.getModifiers())) {
+                throw new IllegalArgumentException(""Default constructor for "" + cls.getName() + "" is not accessible (non-public?): not allowed to try modify access via Reflection: cannot instantiate type"");
+            }
+        }
+        return ctor;
+    } catch (NoSuchMethodException e) {
+        ;
+    } catch (Exception e) {
+        ClassUtil.unwrapAndThrowAsIAE(e, ""Failed to find default constructor of class "" + cls.getName() + "", problem: "" + e.getMessage());
+    }
+    return null;
+}","public void test0077() throws Throwable {
+    Class<AccessibleObject> class0 = AccessibleObject.class;
+    try {
+        ClassUtil.findConstructor(class0, false);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Default constructor for java.lang.reflect.AccessibleObject is not accessible (non-public?): not allowed to try modify access via Reflection: cannot instantiate type
+        //
+        verifyException(""com.fasterxml.jackson.databind.util.ClassUtil"", e);
+    }
+}",""
+"public static Throwable throwRootCauseIfIOE(Throwable t) throws IOException {
+    return throwIfIOE(getRootCause(t));
+}","public void test0088() throws Throwable {
+    SQLIntegrityConstraintViolationException sQLIntegrityConstraintViolationException0 = new SQLIntegrityConstraintViolationException(""2p#.X}#J)j )G"");
+    Throwable throwable0 = ClassUtil.throwRootCauseIfIOE(sQLIntegrityConstraintViolationException0);
+    assertSame(throwable0, sQLIntegrityConstraintViolationException0);
+}","/**
+ * Method that works like by calling {@link #getRootCause} and then
+ * either throwing it (if instanceof {@link IOException}), or
+ * return.
+ *
+ * @since 2.8
+ */"
+"public static <T> Constructor<T> findConstructor(Class<T> cls, boolean forceAccess) throws IllegalArgumentException {
+    try {
+        Constructor<T> ctor = cls.getDeclaredConstructor();
+        if (forceAccess) {
+            checkAndFixAccess(ctor, forceAccess);
+        } else {
+            // Has to be public...
+            if (!Modifier.isPublic(ctor.getModifiers())) {
+                throw new IllegalArgumentException(""Default constructor for "" + cls.getName() + "" is not accessible (non-public?): not allowed to try modify access via Reflection: cannot instantiate type"");
+            }
+        }
+        return ctor;
+    } catch (NoSuchMethodException e) {
+        ;
+    } catch (Exception e) {
+        ClassUtil.unwrapAndThrowAsIAE(e, ""Failed to find default constructor of class "" + cls.getName() + "", problem: "" + e.getMessage());
+    }
+    return null;
+}","public void test0099() throws Throwable {
+    Class<Error> class0 = Error.class;
+    Constructor<Error> constructor0 = ClassUtil.findConstructor(class0, true);
+    assertNotNull(constructor0);
+}",""
+"public ObjectReader readerFor(JavaType type) {
+    return _newReader(getDeserializationConfig(), type, null, null, _injectableValues);
+}","public void test02021() throws Throwable {
+    PlaceholderForType placeholderForType0 = new PlaceholderForType(129);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.readerFor((JavaType) placeholderForType0);
+    assertNotNull(objectReader0);
+}","/**
+ * Factory method for constructing {@link ObjectReader} that will
+ * read or update instances of specified type
+ *
+ * @since 2.6
+ */"
+"/*
+    /**********************************************************
+    /* Class type detection methods
+    /**********************************************************
+     */
+/**
+ * @return Null if class might be a bean; type String (that identifies
+ *   why it's not a bean) if not
+ */
+public static String canBeABeanType(Class<?> type) {
+    // First: language constructs that ain't beans:
+    if (type.isAnnotation()) {
+        return ""annotation"";
+    }
+    if (type.isArray()) {
+        return ""array"";
+    }
+    if (type.isEnum()) {
+        return ""enum"";
+    }
+    if (type.isPrimitive()) {
+        return ""primitive"";
+    }
+    // Anything else? Seems valid, then
+    return null;
+}","public void test02122() throws Throwable {
+    Class<ClientInfoStatus> class0 = ClientInfoStatus.class;
+    String string0 = ClassUtil.canBeABeanType(class0);
+    assertNotNull(string0);
+}",""
+"/*
+    /**********************************************************
+    /* Class type detection methods
+    /**********************************************************
+     */
+/**
+ * @return Null if class might be a bean; type String (that identifies
+ *   why it's not a bean) if not
+ */
+public static String canBeABeanType(Class<?> type) {
+    // First: language constructs that ain't beans:
+    if (type.isAnnotation()) {
+        return ""annotation"";
+    }
+    if (type.isArray()) {
+        return ""array"";
+    }
+    if (type.isEnum()) {
+        return ""enum"";
+    }
+    if (type.isPrimitive()) {
+        return ""primitive"";
+    }
+    // Anything else? Seems valid, then
+    return null;
+}","public void test02224() throws Throwable {
+    Class<Integer> class0 = Integer.TYPE;
+    String string0 = ClassUtil.canBeABeanType(class0);
+    assertNotNull(string0);
+}",""
+"public static String isLocalType(Class<?> type, boolean allowNonStatic) {
+    /* As per [JACKSON-187], GAE seems to throw SecurityExceptions
+         * here and there... and GAE itself has a bug, too
+         * (see []). Bah. So we need to catch some wayward exceptions on GAE
+         */
+    try {
+        // one more: method locals, anonymous, are not good:
+        if (hasEnclosingMethod(type)) {
+            return ""local/anonymous"";
+        }
+        /* But how about non-static inner classes? Can't construct
+             * easily (theoretically, we could try to check if parent
+             * happens to be enclosing... but that gets convoluted)
+             */
+        if (!allowNonStatic) {
+            if (!Modifier.isStatic(type.getModifiers())) {
+                if (getEnclosingClass(type) != null) {
+                    return ""non-static member class"";
+                }
+            }
+        }
+    } catch (SecurityException e) {
+    } catch (NullPointerException e) {
+    }
+    return null;
+}","public void test02326() throws Throwable {
+    Class<PlaceholderForType> class0 = PlaceholderForType.class;
+    String string0 = ClassUtil.isLocalType(class0, false);
+    assertNull(string0);
+}",""
+"public static Class<?> getOuterClass(Class<?> type) {
+    // as above, GAE has some issues...
+    try {
+        // one more: method locals, anonymous, are not good:
+        if (hasEnclosingMethod(type)) {
+            return null;
+        }
+        if (!Modifier.isStatic(type.getModifiers())) {
+            return getEnclosingClass(type);
+        }
+    } catch (SecurityException e) {
+    }
+    return null;
+}","public void test02427() throws Throwable {
+    Class<AccessPattern> class0 = AccessPattern.class;
+    Class<?> class1 = ClassUtil.getOuterClass(class0);
+    assertNull(class1);
+}","/**
+ * Method for finding enclosing class for non-static inner classes
+ */"
+"public static boolean isConcrete(Member member) {
+    int mod = member.getModifiers();
+    return (mod & (Modifier.INTERFACE | Modifier.ABSTRACT)) == 0;
+}","public void test02730() throws Throwable {
+    Class<AccessibleObject> class0 = AccessibleObject.class;
+    Constructor<AccessibleObject> constructor0 = ClassUtil.findConstructor(class0, true);
+    ClassUtil.Ctor classUtil_Ctor0 = new ClassUtil.Ctor(constructor0);
+    boolean boolean0 = ClassUtil.isConcrete((Member) classUtil_Ctor0._ctor);
+    assertTrue(boolean0);
+}",""
+"public static boolean isCollectionMapOrArray(Class<?> type) {
+    if (type.isArray())
+        return true;
+    if (Collection.class.isAssignableFrom(type))
+        return true;
+    if (Map.class.isAssignableFrom(type))
+        return true;
+    return false;
+}","public void test02832() throws Throwable {
+    Class<List> class0 = List.class;
+    boolean boolean0 = ClassUtil.isCollectionMapOrArray(class0);
+    assertTrue(boolean0);
+}",""
+"public static boolean isCollectionMapOrArray(Class<?> type) {
+    if (type.isArray())
+        return true;
+    if (Collection.class.isAssignableFrom(type))
+        return true;
+    if (Map.class.isAssignableFrom(type))
+        return true;
+    return false;
+}","public void test02933() throws Throwable {
+    Class<IOException> class0 = IOException.class;
+    boolean boolean0 = ClassUtil.isCollectionMapOrArray(class0);
+    assertFalse(boolean0);
+}",""
+"public static boolean isBogusClass(Class<?> cls) {
+    return (cls == Void.class || cls == Void.TYPE || cls == com.fasterxml.jackson.databind.annotation.NoClass.class);
+}","public void test03034() throws Throwable {
+    Class<Void> class0 = Void.class;
+    boolean boolean0 = ClassUtil.isBogusClass(class0);
+    assertTrue(boolean0);
+}",""
+"public static boolean isBogusClass(Class<?> cls) {
+    return (cls == Void.class || cls == Void.TYPE || cls == com.fasterxml.jackson.databind.annotation.NoClass.class);
+}","public void test03135() throws Throwable {
+    Class<Void> class0 = Void.TYPE;
+    boolean boolean0 = ClassUtil.isBogusClass(class0);
+    assertTrue(boolean0);
+}",""
+"public static boolean isBogusClass(Class<?> cls) {
+    return (cls == Void.class || cls == Void.TYPE || cls == com.fasterxml.jackson.databind.annotation.NoClass.class);
+}","public void test03236() throws Throwable {
+    Class<NoClass> class0 = NoClass.class;
+    boolean boolean0 = ClassUtil.isBogusClass(class0);
+    assertTrue(boolean0);
+}",""
+"public static boolean isBogusClass(Class<?> cls) {
+    return (cls == Void.class || cls == Void.TYPE || cls == com.fasterxml.jackson.databind.annotation.NoClass.class);
+}","public void test03337() throws Throwable {
+    Class<JsonMappingException> class0 = JsonMappingException.class;
+    boolean boolean0 = ClassUtil.isBogusClass(class0);
+    assertFalse(boolean0);
+}",""
+"public static String isLocalType(Class<?> type, boolean allowNonStatic) {
+    /* As per [JACKSON-187], GAE seems to throw SecurityExceptions
+         * here and there... and GAE itself has a bug, too
+         * (see []). Bah. So we need to catch some wayward exceptions on GAE
+         */
+    try {
+        // one more: method locals, anonymous, are not good:
+        if (hasEnclosingMethod(type)) {
+            return ""local/anonymous"";
+        }
+        /* But how about non-static inner classes? Can't construct
+             * easily (theoretically, we could try to check if parent
+             * happens to be enclosing... but that gets convoluted)
+             */
+        if (!allowNonStatic) {
+            if (!Modifier.isStatic(type.getModifiers())) {
+                if (getEnclosingClass(type) != null) {
+                    return ""non-static member class"";
+                }
+            }
+        }
+    } catch (SecurityException e) {
+    } catch (NullPointerException e) {
+    }
+    return null;
+}","public void test03438() throws Throwable {
+    Class<Void> class0 = Void.TYPE;
+    String string0 = ClassUtil.isLocalType(class0, true);
+    assertNull(string0);
+}",""
+"public static boolean hasClass(Object inst, Class<?> raw) {
+    // 10-Nov-2016, tatu: Could use `Class.isInstance()` if we didn't care
+    //    about being exactly that type
+    return (inst != null) && (inst.getClass() == raw);
+}","public void test03539() throws Throwable {
+    Class<Object> class0 = Object.class;
+    boolean boolean0 = ClassUtil.hasClass((Object) null, class0);
+    assertFalse(boolean0);
+}","/**
+ * @since 2.9
+ */"
+"public static boolean hasClass(Object inst, Class<?> raw) {
+    // 10-Nov-2016, tatu: Could use `Class.isInstance()` if we didn't care
+    //    about being exactly that type
+    return (inst != null) && (inst.getClass() == raw);
+}","public void test03640() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<ArrayType> class0 = ArrayType.class;
+    ArrayType arrayType0 = typeFactory0.constructArrayType(class0);
+    boolean boolean0 = ClassUtil.hasClass(arrayType0, class0);
+    assertTrue(boolean0);
+}","/**
+ * @since 2.9
+ */"
+"public static boolean hasClass(Object inst, Class<?> raw) {
+    // 10-Nov-2016, tatu: Could use `Class.isInstance()` if we didn't care
+    //    about being exactly that type
+    return (inst != null) && (inst.getClass() == raw);
+}","public void test03741() throws Throwable {
+    Class<Object> class0 = Object.class;
+    boolean boolean0 = ClassUtil.hasClass(class0, class0);
+    assertFalse(boolean0);
+}","/**
+ * @since 2.9
+ */"
+"public static void verifyMustOverride(Class<?> expType, Object instance, String method) {
+    if (instance.getClass() != expType) {
+        throw new IllegalStateException(String.format(""Sub-class %s (of class %s) must override method '%s'"", instance.getClass().getName(), expType.getName(), method));
+    }
+}","public void test03943() throws Throwable {
+    Class<Float> class0 = Float.class;
+    SQLTransactionRollbackException sQLTransactionRollbackException0 = new SQLTransactionRollbackException();
+    MockRuntimeException mockRuntimeException0 = new MockRuntimeException(sQLTransactionRollbackException0);
+    // Undeclared exception!
+    try {
+        ClassUtil.verifyMustOverride(class0, mockRuntimeException0, (String) null);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Sub-class org.evosuite.runtime.mock.java.lang.MockRuntimeException (of class java.lang.Float) must override method 'null'
+        //
+        verifyException(""com.fasterxml.jackson.databind.util.ClassUtil"", e);
+    }
+}","/**
+ * @since 2.9
+ */"
+"public static void throwAsIAE(Throwable t, String msg) {
+    throwIfRTE(t);
+    throwIfError(t);
+    throw new IllegalArgumentException(msg, t);
+}","public void test04044() throws Throwable {
+    SQLInvalidAuthorizationSpecException sQLInvalidAuthorizationSpecException0 = new SQLInvalidAuthorizationSpecException();
+    MockError mockError0 = new MockError(sQLInvalidAuthorizationSpecException0);
+    // Undeclared exception!
+    try {
+        ClassUtil.throwAsIAE((Throwable) mockError0, ""NyLL"");
+        fail(""Expecting exception: Error"");
+    } catch (Error e) {
+    }
+}","/**
+ * Method that will wrap 't' as an {@link IllegalArgumentException} (and with
+ * specified message) if it
+ * is a checked exception; otherwise (runtime exception or error) throw as is
+ */"
+"public static void closeOnFailAndThrowAsIOE(JsonGenerator g, Closeable toClose, Exception fail) throws IOException {
+    if (g != null) {
+        g.disable(JsonGenerator.Feature.AUTO_CLOSE_JSON_CONTENT);
+        try {
+            g.close();
+        } catch (Exception e) {
+            fail.addSuppressed(e);
+        }
+    }
+    if (toClose != null) {
+        try {
+            toClose.close();
+        } catch (Exception e) {
+            fail.addSuppressed(e);
+        }
+    }
+    throwIfIOE(fail);
+    throwIfRTE(fail);
+    throw new RuntimeException(fail);
+}","public void test04145() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    MockFileWriter mockFileWriter0 = new MockFileWriter(""java.lang.Class@0000000001"", true);
+    JsonGenerator jsonGenerator0 = jsonFactory0.createGenerator((Writer) mockFileWriter0);
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    Class<Boolean> class0 = Boolean.class;
+    JsonMappingException jsonMappingException0 = defaultDeserializationContext_Impl0.weirdKeyException(class0, ""JSON"", ""0dWyN22u"");
+    try {
+        ClassUtil.closeOnFailAndThrowAsIOE(jsonGenerator0, (Closeable) jsonGenerator0, (Exception) jsonMappingException0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Cannot deserialize Map key of type `java.lang.Boolean` from String \""JSON\"": 0dWyN22u
+        //
+        verifyException(""com.fasterxml.jackson.databind.exc.InvalidFormatException"", e);
+    }
+}","/**
+ * Helper method that encapsulate logic in trying to close given {@link Closeable}
+ * in case of failure; useful mostly in forcing flush()ing as otherwise
+ * error conditions tend to be hard to diagnose. However, it is often the
+ * case that output state may be corrupt so we need to be prepared for
+ * secondary exception without masking original one.
+ *
+ * @since 2.8
+ */"
+"/*
+    /**********************************************************
+    /* Exception handling; other
+    /**********************************************************
+     */
+/**
+ * Method that can be used to find the ""root cause"", innermost
+ * of chained (wrapped) exceptions.
+ */
+public static Throwable getRootCause(Throwable t) {
+    while (t.getCause() != null) {
+        t = t.getCause();
+    }
+    return t;
+}","public void test04246() throws Throwable {
+    SQLTransactionRollbackException sQLTransactionRollbackException0 = new SQLTransactionRollbackException();
+    SQLDataException sQLDataException0 = new SQLDataException(sQLTransactionRollbackException0);
+    Throwable throwable0 = ClassUtil.getRootCause(sQLDataException0);
+    assertSame(sQLTransactionRollbackException0, throwable0);
+}",""
+"public static <T> T throwAsMappingException(DeserializationContext ctxt, IOException e0) throws JsonMappingException {
+    if (e0 instanceof JsonMappingException) {
+        throw (JsonMappingException) e0;
+    }
+    JsonMappingException e = JsonMappingException.from(ctxt, e0.getMessage());
+    e.initCause(e0);
+    throw e;
+}","public void test04347() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    MockIOException mockIOException0 = new MockIOException(""xY3uryV"");
+    try {
+        ClassUtil.throwAsMappingException((DeserializationContext) defaultDeserializationContext_Impl0, (IOException) mockIOException0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // xY3uryV
+        //
+        verifyException(""com.fasterxml.jackson.databind.JsonMappingException"", e);
+    }
+}","/**
+ * @since 2.9
+ */"
+"public static <T> T throwAsMappingException(DeserializationContext ctxt, IOException e0) throws JsonMappingException {
+    if (e0 instanceof JsonMappingException) {
+        throw (JsonMappingException) e0;
+    }
+    JsonMappingException e = JsonMappingException.from(ctxt, e0.getMessage());
+    e.initCause(e0);
+    throw e;
+}","public void test04448() throws Throwable {
+    DeserializerFactoryConfig deserializerFactoryConfig0 = new DeserializerFactoryConfig();
+    BeanDeserializerFactory beanDeserializerFactory0 = new BeanDeserializerFactory(deserializerFactoryConfig0);
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    JsonMappingException jsonMappingException0 = JsonMappingException.from((SerializerProvider) defaultSerializerProvider_Impl0, ""#)63]v9"");
+    try {
+        ClassUtil.throwAsMappingException((DeserializationContext) defaultDeserializationContext_Impl0, (IOException) jsonMappingException0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // #)63]v9
+        //
+        verifyException(""com.fasterxml.jackson.databind.JsonMappingException"", e);
+    }
+}","/**
+ * @since 2.9
+ */"
+"public static void closeOnFailAndThrowAsIOE(JsonGenerator g, Closeable toClose, Exception fail) throws IOException {
+    if (g != null) {
+        g.disable(JsonGenerator.Feature.AUTO_CLOSE_JSON_CONTENT);
+        try {
+            g.close();
+        } catch (Exception e) {
+            fail.addSuppressed(e);
+        }
+    }
+    if (toClose != null) {
+        try {
+            toClose.close();
+        } catch (Exception e) {
+            fail.addSuppressed(e);
+        }
+    }
+    throwIfIOE(fail);
+    throwIfRTE(fail);
+    throw new RuntimeException(fail);
+}","public void test04549() throws Throwable {
+    SQLSyntaxErrorException sQLSyntaxErrorException0 = new SQLSyntaxErrorException(""elementType"");
+    // Undeclared exception!
+    try {
+        ClassUtil.closeOnFailAndThrowAsIOE((JsonGenerator) null, (Closeable) null, (Exception) sQLSyntaxErrorException0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // java.sql.SQLSyntaxErrorException: elementType
+        //
+        verifyException(""com.fasterxml.jackson.databind.util.ClassUtil"", e);
+    }
+}","/**
+ * Helper method that encapsulate logic in trying to close given {@link Closeable}
+ * in case of failure; useful mostly in forcing flush()ing as otherwise
+ * error conditions tend to be hard to diagnose. However, it is often the
+ * case that output state may be corrupt so we need to be prepared for
+ * secondary exception without masking original one.
+ *
+ * @since 2.8
+ */"
+"/*
+    /**********************************************************
+    /* Instantiation
+    /**********************************************************
+     */
+/**
+ * Method that can be called to try to create an instantiate of
+ * specified type. Instantiation is done using default no-argument
+ * constructor.
+ *
+ * @param canFixAccess Whether it is possible to try to change access
+ *   rights of the default constructor (in case it is not publicly
+ *   accessible) or not.
+ *
+ * @throws IllegalArgumentException If instantiation fails for any reason;
+ *    except for cases where constructor throws an unchecked exception
+ *    (which will be passed as is)
+ */
+public static <T> T createInstance(Class<T> cls, boolean canFixAccess) throws IllegalArgumentException {
+    Constructor<T> ctor = findConstructor(cls, canFixAccess);
+    if (ctor == null) {
+        throw new IllegalArgumentException(""Class "" + cls.getName() + "" has no default (no arg) constructor"");
+    }
+    try {
+        return ctor.newInstance();
+    } catch (Exception e) {
+        ClassUtil.unwrapAndThrowAsIAE(e, ""Failed to instantiate class "" + cls.getName() + "", problem: "" + e.getMessage());
+        return null;
+    }
+}","public void test04650() throws Throwable {
+    Class<Object> class0 = Object.class;
+    Object object0 = ClassUtil.createInstance(class0, false);
+    assertNotNull(object0);
+}",""
+"/*
+    /**********************************************************
+    /* Instantiation
+    /**********************************************************
+     */
+/**
+ * Method that can be called to try to create an instantiate of
+ * specified type. Instantiation is done using default no-argument
+ * constructor.
+ *
+ * @param canFixAccess Whether it is possible to try to change access
+ *   rights of the default constructor (in case it is not publicly
+ *   accessible) or not.
+ *
+ * @throws IllegalArgumentException If instantiation fails for any reason;
+ *    except for cases where constructor throws an unchecked exception
+ *    (which will be passed as is)
+ */
+public static <T> T createInstance(Class<T> cls, boolean canFixAccess) throws IllegalArgumentException {
+    Constructor<T> ctor = findConstructor(cls, canFixAccess);
+    if (ctor == null) {
+        throw new IllegalArgumentException(""Class "" + cls.getName() + "" has no default (no arg) constructor"");
+    }
+    try {
+        return ctor.newInstance();
+    } catch (Exception e) {
+        ClassUtil.unwrapAndThrowAsIAE(e, ""Failed to instantiate class "" + cls.getName() + "", problem: "" + e.getMessage());
+        return null;
+    }
+}","public void test04751() throws Throwable {
+    Class<ArrayType> class0 = ArrayType.class;
+    try {
+        ClassUtil.createInstance(class0, false);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Class com.fasterxml.jackson.databind.type.ArrayType has no default (no arg) constructor
+        //
+        verifyException(""com.fasterxml.jackson.databind.util.ClassUtil"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Class name, description access
+    /**********************************************************
+     */
+/**
+ * @since 2.9
+ */
+public static Class<?> classOf(Object inst) {
+    if (inst == null) {
+        return null;
+    }
+    return inst.getClass();
+}","public void test04953() throws Throwable {
+    Class<?> class0 = ClassUtil.classOf((Object) null);
+    assertNull(class0);
+}",""
+"public static Class<?> rawClass(JavaType t) {
+    if (t == null) {
+        return null;
+    }
+    return t.getRawClass();
+}","public void test05155() throws Throwable {
+    Class<?> class0 = ClassUtil.rawClass((JavaType) null);
+    assertNull(class0);
+}","/**
+ * @since 2.9
+ */"
+"public static <T> T nonNull(T valueOrNull, T defaultValue) {
+    return (valueOrNull == null) ? defaultValue : valueOrNull;
+}","public void test05256() throws Throwable {
+    SQLFeatureNotSupportedException sQLFeatureNotSupportedException0 = new SQLFeatureNotSupportedException(""Wkk6Gf!BNw|Wa"", ""Wkk6Gf!BNw|Wa"");
+    MockRuntimeException mockRuntimeException0 = new MockRuntimeException(sQLFeatureNotSupportedException0);
+    RuntimeException runtimeException0 = ClassUtil.nonNull((RuntimeException) mockRuntimeException0, (RuntimeException) mockRuntimeException0);
+    assertSame(runtimeException0, mockRuntimeException0);
+}","/**
+ * @since 2.9
+ */"
+"public static <T> T nonNull(T valueOrNull, T defaultValue) {
+    return (valueOrNull == null) ? defaultValue : valueOrNull;
+}","public void test05357() throws Throwable {
+    Character character0 = Character.valueOf('&');
+    Character character1 = ClassUtil.nonNull((Character) null, character0);
+    assertEquals('&', (char) character1);
+}","/**
+ * @since 2.9
+ */"
+"public static String nullOrToString(Object value) {
+    if (value == null) {
+        return null;
+    }
+    return value.toString();
+}","public void test05458() throws Throwable {
+    Class<Float> class0 = Float.class;
+    String string0 = ClassUtil.nullOrToString(class0);
+    assertNotNull(string0);
+}","/**
+ * @since 2.9
+ */"
+"public static String nullOrToString(Object value) {
+    if (value == null) {
+        return null;
+    }
+    return value.toString();
+}","public void test05559() throws Throwable {
+    String string0 = ClassUtil.nullOrToString((Object) null);
+    assertNull(string0);
+}","/**
+ * @since 2.9
+ */"
+"public static String nonNullString(String str) {
+    if (str == null) {
+        return """";
+    }
+    return str;
+}","public void test05660() throws Throwable {
+    String string0 = ClassUtil.nonNullString((String) null);
+    assertEquals("""", string0);
+}","/**
+ * @since 2.9
+ */"
+"public static String quotedOr(Object str, String forNull) {
+    if (str == null) {
+        return forNull;
+    }
+    return String.format(""\""%s\"""", str);
+}","public void test05761() throws Throwable {
+    String string0 = ClassUtil.quotedOr((Object) null, ""3qrS?IGt"");
+    assertEquals(""3qrS?IGt"", string0);
+}","/**
+ * Returns either quoted value (with double-quotes) -- if argument non-null
+ * String -- or String NULL (no quotes) (if null).
+ *
+ * @since 2.9
+ */"
+"/*
+    /**********************************************************
+    /* Type name, name, desc handling methods
+    /**********************************************************
+     */
+/**
+ * Helper method used to construct appropriate description
+ * when passed either type (Class) or an instance; in latter
+ * case, class of instance is to be used.
+ */
+public static String getClassDescription(Object classOrInstance) {
+    if (classOrInstance == null) {
+        return ""unknown"";
+    }
+    Class<?> cls = (classOrInstance instanceof Class<?>) ? (Class<?>) classOrInstance : classOrInstance.getClass();
+    return nameOf(cls);
+}","public void test05862() throws Throwable {
+    Class<AccessPattern> class0 = AccessPattern.class;
+    String string0 = ClassUtil.getClassDescription(class0);
+    assertEquals(""`com.fasterxml.jackson.databind.util.AccessPattern`"", string0);
+}",""
+"/*
+    /**********************************************************
+    /* Type name, name, desc handling methods
+    /**********************************************************
+     */
+/**
+ * Helper method used to construct appropriate description
+ * when passed either type (Class) or an instance; in latter
+ * case, class of instance is to be used.
+ */
+public static String getClassDescription(Object classOrInstance) {
+    if (classOrInstance == null) {
+        return ""unknown"";
+    }
+    Class<?> cls = (classOrInstance instanceof Class<?>) ? (Class<?>) classOrInstance : classOrInstance.getClass();
+    return nameOf(cls);
+}","public void test05963() throws Throwable {
+    String string0 = ClassUtil.getClassDescription((Object) null);
+    assertEquals(""unknown"", string0);
+}",""
+"/*
+    /**********************************************************
+    /* Type name, name, desc handling methods
+    /**********************************************************
+     */
+/**
+ * Helper method used to construct appropriate description
+ * when passed either type (Class) or an instance; in latter
+ * case, class of instance is to be used.
+ */
+public static String getClassDescription(Object classOrInstance) {
+    if (classOrInstance == null) {
+        return ""unknown"";
+    }
+    Class<?> cls = (classOrInstance instanceof Class<?>) ? (Class<?>) classOrInstance : classOrInstance.getClass();
+    return nameOf(cls);
+}","public void test06064() throws Throwable {
+    MockError mockError0 = new MockError();
+    String string0 = ClassUtil.getClassDescription(mockError0);
+    assertEquals(""`org.evosuite.runtime.mock.java.lang.MockError`"", string0);
+}",""
+"public static String classNameOf(Object inst) {
+    if (inst == null) {
+        return ""[null]"";
+    }
+    return nameOf(inst.getClass());
+}","public void test06165() throws Throwable {
+    Class<Float> class0 = Float.class;
+    String string0 = ClassUtil.classNameOf(class0);
+    assertEquals(""`java.lang.Class`"", string0);
+}","/**
+ * Helper method used to construct appropriate description
+ * when passed either type (Class) or an instance; in latter
+ * case, class of instance is to be used.
+ *
+ * @since 2.9
+ */"
+"public static String classNameOf(Object inst) {
+    if (inst == null) {
+        return ""[null]"";
+    }
+    return nameOf(inst.getClass());
+}","public void test06266() throws Throwable {
+    String string0 = ClassUtil.classNameOf((Object) null);
+    assertEquals(""[null]"", string0);
+}","/**
+ * Helper method used to construct appropriate description
+ * when passed either type (Class) or an instance; in latter
+ * case, class of instance is to be used.
+ *
+ * @since 2.9
+ */"
+"public static String nameOf(Class<?> cls) {
+    if (cls == null) {
+        return ""[null]"";
+    }
+    int index = 0;
+    while (cls.isArray()) {
+        ++index;
+        cls = cls.getComponentType();
+    }
+    String base = cls.isPrimitive() ? cls.getSimpleName() : cls.getName();
+    if (index > 0) {
+        StringBuilder sb = new StringBuilder(base);
+        do {
+            sb.append(""[]"");
+        } while (--index > 0);
+        base = sb.toString();
+    }
+    return backticked(base);
+}","public void test06367() throws Throwable {
+    String string0 = ClassUtil.nameOf((Class<?>) null);
+    assertEquals(""[null]"", string0);
+}","/**
+ * Returns either `cls.getName()` (if `cls` not null),
+ * or ""[null]"" if `cls` is null.
+ *
+ * @since 2.9
+ */"
+"public static String nameOf(Named named) {
+    if (named == null) {
+        return ""[null]"";
+    }
+    return backticked(named.getName());
+}","public void test06570() throws Throwable {
+    Class<AccessibleObject> class0 = AccessibleObject.class;
+    Constructor<AccessibleObject> constructor0 = ClassUtil.findConstructor(class0, true);
+    ClassUtil.Ctor classUtil_Ctor0 = new ClassUtil.Ctor(constructor0);
+    PropertyName propertyName0 = PropertyName.USE_DEFAULT;
+    PlaceholderForType placeholderForType0 = new PlaceholderForType((-10));
+    ArrayType arrayType0 = ArrayType.construct((JavaType) placeholderForType0, (TypeBindings) null, (Object) classUtil_Ctor0, (Object) class0);
+    CollectionLikeType collectionLikeType0 = CollectionLikeType.upgradeFrom(arrayType0, placeholderForType0);
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    TypeResolutionContext.Basic typeResolutionContext_Basic0 = new TypeResolutionContext.Basic(typeFactory0, (TypeBindings) null);
+    Class<Object> class1 = Object.class;
+    VirtualAnnotatedMember virtualAnnotatedMember0 = new VirtualAnnotatedMember(typeResolutionContext_Basic0, class1, ""org.hibernate.proxy.java.lang.reflect.AccessibleObject"", arrayType0);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_OPTIONAL;
+    BeanProperty.Std beanProperty_Std0 = new BeanProperty.Std(propertyName0, collectionLikeType0, propertyName0, virtualAnnotatedMember0, propertyMetadata0);
+    String string0 = ClassUtil.nameOf((Named) beanProperty_Std0);
+    assertEquals(""``"", string0);
+}","/**
+ * Returns either backtick-quoted `named.getName()` (if `named` not null),
+ * or ""[null]"" if `named` is null.
+ *
+ * @since 2.9
+ */"
+"public static String nameOf(Named named) {
+    if (named == null) {
+        return ""[null]"";
+    }
+    return backticked(named.getName());
+}","public void test06671() throws Throwable {
+    String string0 = ClassUtil.nameOf((Named) null);
+    assertEquals(""[null]"", string0);
+}","/**
+ * Returns either backtick-quoted `named.getName()` (if `named` not null),
+ * or ""[null]"" if `named` is null.
+ *
+ * @since 2.9
+ */"
+"/*
+    /**********************************************************
+    /* Other escaping, description acces
+    /**********************************************************
+     */
+/**
+ * Returns either `text` or [null].
+ *
+ * @since 2.9
+ */
+public static String backticked(String text) {
+    if (text == null) {
+        return ""[null]"";
+    }
+    return new StringBuilder(text.length() + 2).append('`').append(text).append('`').toString();
+}","public void test06772() throws Throwable {
+    String string0 = ClassUtil.backticked((String) null);
+    assertEquals(""[null]"", string0);
+}",""
+"/*
+    /**********************************************************
+    /* Primitive type support
+    /**********************************************************
+     */
+/**
+ * Helper method used to get default value for wrappers used for primitive types
+ * (0 for Integer etc)
+ */
+public static Object defaultValue(Class<?> cls) {
+    if (cls == Integer.TYPE) {
+        return Integer.valueOf(0);
+    }
+    if (cls == Long.TYPE) {
+        return Long.valueOf(0L);
+    }
+    if (cls == Boolean.TYPE) {
+        return Boolean.FALSE;
+    }
+    if (cls == Double.TYPE) {
+        return Double.valueOf(0.0);
+    }
+    if (cls == Float.TYPE) {
+        return Float.valueOf(0.0f);
+    }
+    if (cls == Byte.TYPE) {
+        return Byte.valueOf((byte) 0);
+    }
+    if (cls == Short.TYPE) {
+        return Short.valueOf((short) 0);
+    }
+    if (cls == Character.TYPE) {
+        return '\0';
+    }
+    throw new IllegalArgumentException(""Class "" + cls.getName() + "" is not a primitive type"");
+}","public void test06873() throws Throwable {
+    Class<Double> class0 = Double.TYPE;
+    Object object0 = ClassUtil.defaultValue(class0);
+    assertEquals(0.0, object0);
+}","/**
+ * Helper method that returns {@link Throwable#getMessage()} for all other exceptions
+ * except for {@link JsonProcessingException}, for which {@code getOriginalMessage()} is
+ * returned instead.
+ * Method is used to avoid accidentally including trailing location information twice
+ * in message when wrapping exceptions.
+ *
+ * @since 2.9.7
+ */"
+"/*
+    /**********************************************************
+    /* Primitive type support
+    /**********************************************************
+     */
+/**
+ * Helper method used to get default value for wrappers used for primitive types
+ * (0 for Integer etc)
+ */
+public static Object defaultValue(Class<?> cls) {
+    if (cls == Integer.TYPE) {
+        return Integer.valueOf(0);
+    }
+    if (cls == Long.TYPE) {
+        return Long.valueOf(0L);
+    }
+    if (cls == Boolean.TYPE) {
+        return Boolean.FALSE;
+    }
+    if (cls == Double.TYPE) {
+        return Double.valueOf(0.0);
+    }
+    if (cls == Float.TYPE) {
+        return Float.valueOf(0.0f);
+    }
+    if (cls == Byte.TYPE) {
+        return Byte.valueOf((byte) 0);
+    }
+    if (cls == Short.TYPE) {
+        return Short.valueOf((short) 0);
+    }
+    if (cls == Character.TYPE) {
+        return '\0';
+    }
+    throw new IllegalArgumentException(""Class "" + cls.getName() + "" is not a primitive type"");
+}","public void test06974() throws Throwable {
+    Class<Integer> class0 = Integer.TYPE;
+    Object object0 = ClassUtil.defaultValue(class0);
+    assertEquals(0, object0);
+}","/**
+ * Helper method that returns {@link Throwable#getMessage()} for all other exceptions
+ * except for {@link JsonProcessingException}, for which {@code getOriginalMessage()} is
+ * returned instead.
+ * Method is used to avoid accidentally including trailing location information twice
+ * in message when wrapping exceptions.
+ *
+ * @since 2.9.7
+ */"
+"/*
+    /**********************************************************
+    /* Primitive type support
+    /**********************************************************
+     */
+/**
+ * Helper method used to get default value for wrappers used for primitive types
+ * (0 for Integer etc)
+ */
+public static Object defaultValue(Class<?> cls) {
+    if (cls == Integer.TYPE) {
+        return Integer.valueOf(0);
+    }
+    if (cls == Long.TYPE) {
+        return Long.valueOf(0L);
+    }
+    if (cls == Boolean.TYPE) {
+        return Boolean.FALSE;
+    }
+    if (cls == Double.TYPE) {
+        return Double.valueOf(0.0);
+    }
+    if (cls == Float.TYPE) {
+        return Float.valueOf(0.0f);
+    }
+    if (cls == Byte.TYPE) {
+        return Byte.valueOf((byte) 0);
+    }
+    if (cls == Short.TYPE) {
+        return Short.valueOf((short) 0);
+    }
+    if (cls == Character.TYPE) {
+        return '\0';
+    }
+    throw new IllegalArgumentException(""Class "" + cls.getName() + "" is not a primitive type"");
+}","public void test07075() throws Throwable {
+    Class<Long> class0 = Long.TYPE;
+    Object object0 = ClassUtil.defaultValue(class0);
+    assertEquals(0L, object0);
+}","/**
+ * Helper method that returns {@link Throwable#getMessage()} for all other exceptions
+ * except for {@link JsonProcessingException}, for which {@code getOriginalMessage()} is
+ * returned instead.
+ * Method is used to avoid accidentally including trailing location information twice
+ * in message when wrapping exceptions.
+ *
+ * @since 2.9.7
+ */"
+"/*
+    /**********************************************************
+    /* Primitive type support
+    /**********************************************************
+     */
+/**
+ * Helper method used to get default value for wrappers used for primitive types
+ * (0 for Integer etc)
+ */
+public static Object defaultValue(Class<?> cls) {
+    if (cls == Integer.TYPE) {
+        return Integer.valueOf(0);
+    }
+    if (cls == Long.TYPE) {
+        return Long.valueOf(0L);
+    }
+    if (cls == Boolean.TYPE) {
+        return Boolean.FALSE;
+    }
+    if (cls == Double.TYPE) {
+        return Double.valueOf(0.0);
+    }
+    if (cls == Float.TYPE) {
+        return Float.valueOf(0.0f);
+    }
+    if (cls == Byte.TYPE) {
+        return Byte.valueOf((byte) 0);
+    }
+    if (cls == Short.TYPE) {
+        return Short.valueOf((short) 0);
+    }
+    if (cls == Character.TYPE) {
+        return '\0';
+    }
+    throw new IllegalArgumentException(""Class "" + cls.getName() + "" is not a primitive type"");
+}","public void test07176() throws Throwable {
+    Class<Boolean> class0 = Boolean.TYPE;
+    Object object0 = ClassUtil.defaultValue(class0);
+    assertEquals(false, object0);
+}","/**
+ * Helper method that returns {@link Throwable#getMessage()} for all other exceptions
+ * except for {@link JsonProcessingException}, for which {@code getOriginalMessage()} is
+ * returned instead.
+ * Method is used to avoid accidentally including trailing location information twice
+ * in message when wrapping exceptions.
+ *
+ * @since 2.9.7
+ */"
+"/*
+    /**********************************************************
+    /* Primitive type support
+    /**********************************************************
+     */
+/**
+ * Helper method used to get default value for wrappers used for primitive types
+ * (0 for Integer etc)
+ */
+public static Object defaultValue(Class<?> cls) {
+    if (cls == Integer.TYPE) {
+        return Integer.valueOf(0);
+    }
+    if (cls == Long.TYPE) {
+        return Long.valueOf(0L);
+    }
+    if (cls == Boolean.TYPE) {
+        return Boolean.FALSE;
+    }
+    if (cls == Double.TYPE) {
+        return Double.valueOf(0.0);
+    }
+    if (cls == Float.TYPE) {
+        return Float.valueOf(0.0f);
+    }
+    if (cls == Byte.TYPE) {
+        return Byte.valueOf((byte) 0);
+    }
+    if (cls == Short.TYPE) {
+        return Short.valueOf((short) 0);
+    }
+    if (cls == Character.TYPE) {
+        return '\0';
+    }
+    throw new IllegalArgumentException(""Class "" + cls.getName() + "" is not a primitive type"");
+}","public void test07277() throws Throwable {
+    Class<Character> class0 = Character.TYPE;
+    Object object0 = ClassUtil.defaultValue(class0);
+    assertEquals('\u0000', object0);
+}","/**
+ * Helper method that returns {@link Throwable#getMessage()} for all other exceptions
+ * except for {@link JsonProcessingException}, for which {@code getOriginalMessage()} is
+ * returned instead.
+ * Method is used to avoid accidentally including trailing location information twice
+ * in message when wrapping exceptions.
+ *
+ * @since 2.9.7
+ */"
+"/*
+    /**********************************************************
+    /* Primitive type support
+    /**********************************************************
+     */
+/**
+ * Helper method used to get default value for wrappers used for primitive types
+ * (0 for Integer etc)
+ */
+public static Object defaultValue(Class<?> cls) {
+    if (cls == Integer.TYPE) {
+        return Integer.valueOf(0);
+    }
+    if (cls == Long.TYPE) {
+        return Long.valueOf(0L);
+    }
+    if (cls == Boolean.TYPE) {
+        return Boolean.FALSE;
+    }
+    if (cls == Double.TYPE) {
+        return Double.valueOf(0.0);
+    }
+    if (cls == Float.TYPE) {
+        return Float.valueOf(0.0f);
+    }
+    if (cls == Byte.TYPE) {
+        return Byte.valueOf((byte) 0);
+    }
+    if (cls == Short.TYPE) {
+        return Short.valueOf((short) 0);
+    }
+    if (cls == Character.TYPE) {
+        return '\0';
+    }
+    throw new IllegalArgumentException(""Class "" + cls.getName() + "" is not a primitive type"");
+}","public void test07378() throws Throwable {
+    Class<Float> class0 = Float.TYPE;
+    Object object0 = ClassUtil.defaultValue(class0);
+    assertEquals(0.0F, object0);
+}","/**
+ * Helper method that returns {@link Throwable#getMessage()} for all other exceptions
+ * except for {@link JsonProcessingException}, for which {@code getOriginalMessage()} is
+ * returned instead.
+ * Method is used to avoid accidentally including trailing location information twice
+ * in message when wrapping exceptions.
+ *
+ * @since 2.9.7
+ */"
+"/*
+    /**********************************************************
+    /* Primitive type support
+    /**********************************************************
+     */
+/**
+ * Helper method used to get default value for wrappers used for primitive types
+ * (0 for Integer etc)
+ */
+public static Object defaultValue(Class<?> cls) {
+    if (cls == Integer.TYPE) {
+        return Integer.valueOf(0);
+    }
+    if (cls == Long.TYPE) {
+        return Long.valueOf(0L);
+    }
+    if (cls == Boolean.TYPE) {
+        return Boolean.FALSE;
+    }
+    if (cls == Double.TYPE) {
+        return Double.valueOf(0.0);
+    }
+    if (cls == Float.TYPE) {
+        return Float.valueOf(0.0f);
+    }
+    if (cls == Byte.TYPE) {
+        return Byte.valueOf((byte) 0);
+    }
+    if (cls == Short.TYPE) {
+        return Short.valueOf((short) 0);
+    }
+    if (cls == Character.TYPE) {
+        return '\0';
+    }
+    throw new IllegalArgumentException(""Class "" + cls.getName() + "" is not a primitive type"");
+}","public void test07479() throws Throwable {
+    Class<Byte> class0 = Byte.TYPE;
+    Object object0 = ClassUtil.defaultValue(class0);
+    assertEquals((byte) 0, object0);
+}","/**
+ * Helper method that returns {@link Throwable#getMessage()} for all other exceptions
+ * except for {@link JsonProcessingException}, for which {@code getOriginalMessage()} is
+ * returned instead.
+ * Method is used to avoid accidentally including trailing location information twice
+ * in message when wrapping exceptions.
+ *
+ * @since 2.9.7
+ */"
+"/*
+    /**********************************************************
+    /* Primitive type support
+    /**********************************************************
+     */
+/**
+ * Helper method used to get default value for wrappers used for primitive types
+ * (0 for Integer etc)
+ */
+public static Object defaultValue(Class<?> cls) {
+    if (cls == Integer.TYPE) {
+        return Integer.valueOf(0);
+    }
+    if (cls == Long.TYPE) {
+        return Long.valueOf(0L);
+    }
+    if (cls == Boolean.TYPE) {
+        return Boolean.FALSE;
+    }
+    if (cls == Double.TYPE) {
+        return Double.valueOf(0.0);
+    }
+    if (cls == Float.TYPE) {
+        return Float.valueOf(0.0f);
+    }
+    if (cls == Byte.TYPE) {
+        return Byte.valueOf((byte) 0);
+    }
+    if (cls == Short.TYPE) {
+        return Short.valueOf((short) 0);
+    }
+    if (cls == Character.TYPE) {
+        return '\0';
+    }
+    throw new IllegalArgumentException(""Class "" + cls.getName() + "" is not a primitive type"");
+}","public void test07580() throws Throwable {
+    Class<Short> class0 = Short.TYPE;
+    Object object0 = ClassUtil.defaultValue(class0);
+    assertEquals((short) 0, object0);
+}","/**
+ * Helper method that returns {@link Throwable#getMessage()} for all other exceptions
+ * except for {@link JsonProcessingException}, for which {@code getOriginalMessage()} is
+ * returned instead.
+ * Method is used to avoid accidentally including trailing location information twice
+ * in message when wrapping exceptions.
+ *
+ * @since 2.9.7
+ */"
+"/*
+    /**********************************************************
+    /* Primitive type support
+    /**********************************************************
+     */
+/**
+ * Helper method used to get default value for wrappers used for primitive types
+ * (0 for Integer etc)
+ */
+public static Object defaultValue(Class<?> cls) {
+    if (cls == Integer.TYPE) {
+        return Integer.valueOf(0);
+    }
+    if (cls == Long.TYPE) {
+        return Long.valueOf(0L);
+    }
+    if (cls == Boolean.TYPE) {
+        return Boolean.FALSE;
+    }
+    if (cls == Double.TYPE) {
+        return Double.valueOf(0.0);
+    }
+    if (cls == Float.TYPE) {
+        return Float.valueOf(0.0f);
+    }
+    if (cls == Byte.TYPE) {
+        return Byte.valueOf((byte) 0);
+    }
+    if (cls == Short.TYPE) {
+        return Short.valueOf((short) 0);
+    }
+    if (cls == Character.TYPE) {
+        return '\0';
+    }
+    throw new IllegalArgumentException(""Class "" + cls.getName() + "" is not a primitive type"");
+}","public void test07681() throws Throwable {
+    Class<Short> class0 = Short.class;
+    // Undeclared exception!
+    try {
+        ClassUtil.defaultValue(class0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Class java.lang.Short is not a primitive type
+        //
+        verifyException(""com.fasterxml.jackson.databind.util.ClassUtil"", e);
+    }
+}","/**
+ * Helper method that returns {@link Throwable#getMessage()} for all other exceptions
+ * except for {@link JsonProcessingException}, for which {@code getOriginalMessage()} is
+ * returned instead.
+ * Method is used to avoid accidentally including trailing location information twice
+ * in message when wrapping exceptions.
+ *
+ * @since 2.9.7
+ */"
+"public static Class<?> wrapperType(Class<?> primitiveType) {
+    if (primitiveType == Integer.TYPE) {
+        return Integer.class;
+    }
+    if (primitiveType == Long.TYPE) {
+        return Long.class;
+    }
+    if (primitiveType == Boolean.TYPE) {
+        return Boolean.class;
+    }
+    if (primitiveType == Double.TYPE) {
+        return Double.class;
+    }
+    if (primitiveType == Float.TYPE) {
+        return Float.class;
+    }
+    if (primitiveType == Byte.TYPE) {
+        return Byte.class;
+    }
+    if (primitiveType == Short.TYPE) {
+        return Short.class;
+    }
+    if (primitiveType == Character.TYPE) {
+        return Character.class;
+    }
+    throw new IllegalArgumentException(""Class "" + primitiveType.getName() + "" is not a primitive type"");
+}","public void test08590() throws Throwable {
+    Class<NoClass> class0 = NoClass.class;
+    // Undeclared exception!
+    try {
+        ClassUtil.wrapperType(class0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Class com.fasterxml.jackson.databind.annotation.NoClass is not a primitive type
+        //
+        verifyException(""com.fasterxml.jackson.databind.util.ClassUtil"", e);
+    }
+}","/**
+ * Helper method for finding wrapper type for given primitive type (why isn't
+ * there one in JDK?)
+ */"
+"public static Class<?> primitiveType(Class<?> type) {
+    if (type.isPrimitive()) {
+        return type;
+    }
+    if (type == Integer.class) {
+        return Integer.TYPE;
+    }
+    if (type == Long.class) {
+        return Long.TYPE;
+    }
+    if (type == Boolean.class) {
+        return Boolean.TYPE;
+    }
+    if (type == Double.class) {
+        return Double.TYPE;
+    }
+    if (type == Float.class) {
+        return Float.TYPE;
+    }
+    if (type == Byte.class) {
+        return Byte.TYPE;
+    }
+    if (type == Short.class) {
+        return Short.TYPE;
+    }
+    if (type == Character.class) {
+        return Character.TYPE;
+    }
+    return null;
+}","public void test08691() throws Throwable {
+    Class<JsonMappingException> class0 = JsonMappingException.class;
+    Class<?> class1 = ClassUtil.primitiveType(class0);
+    assertNull(class1);
+}","/**
+ * Method that can be used to find primitive type for given class if (but only if)
+ * it is either wrapper type or primitive type; returns `null` if type is neither.
+ *
+ * @since 2.7
+ */"
+"public static Class<?> primitiveType(Class<?> type) {
+    if (type.isPrimitive()) {
+        return type;
+    }
+    if (type == Integer.class) {
+        return Integer.TYPE;
+    }
+    if (type == Long.class) {
+        return Long.TYPE;
+    }
+    if (type == Boolean.class) {
+        return Boolean.TYPE;
+    }
+    if (type == Double.class) {
+        return Double.TYPE;
+    }
+    if (type == Float.class) {
+        return Float.TYPE;
+    }
+    if (type == Byte.class) {
+        return Byte.TYPE;
+    }
+    if (type == Short.class) {
+        return Short.TYPE;
+    }
+    if (type == Character.class) {
+        return Character.TYPE;
+    }
+    return null;
+}","public void test08893() throws Throwable {
+    Class<Integer> class0 = Integer.class;
+    Class<?> class1 = ClassUtil.primitiveType(class0);
+    assertNotNull(class1);
+}","/**
+ * Method that can be used to find primitive type for given class if (but only if)
+ * it is either wrapper type or primitive type; returns `null` if type is neither.
+ *
+ * @since 2.7
+ */"
+"public static Class<?> primitiveType(Class<?> type) {
+    if (type.isPrimitive()) {
+        return type;
+    }
+    if (type == Integer.class) {
+        return Integer.TYPE;
+    }
+    if (type == Long.class) {
+        return Long.TYPE;
+    }
+    if (type == Boolean.class) {
+        return Boolean.TYPE;
+    }
+    if (type == Double.class) {
+        return Double.TYPE;
+    }
+    if (type == Float.class) {
+        return Float.TYPE;
+    }
+    if (type == Byte.class) {
+        return Byte.TYPE;
+    }
+    if (type == Short.class) {
+        return Short.TYPE;
+    }
+    if (type == Character.class) {
+        return Character.TYPE;
+    }
+    return null;
+}","public void test08996() throws Throwable {
+    Class<Long> class0 = Long.class;
+    Class<?> class1 = ClassUtil.primitiveType(class0);
+    assertNotNull(class1);
+}","/**
+ * Method that can be used to find primitive type for given class if (but only if)
+ * it is either wrapper type or primitive type; returns `null` if type is neither.
+ *
+ * @since 2.7
+ */"
+"public static Class<?> primitiveType(Class<?> type) {
+    if (type.isPrimitive()) {
+        return type;
+    }
+    if (type == Integer.class) {
+        return Integer.TYPE;
+    }
+    if (type == Long.class) {
+        return Long.TYPE;
+    }
+    if (type == Boolean.class) {
+        return Boolean.TYPE;
+    }
+    if (type == Double.class) {
+        return Double.TYPE;
+    }
+    if (type == Float.class) {
+        return Float.TYPE;
+    }
+    if (type == Byte.class) {
+        return Byte.TYPE;
+    }
+    if (type == Short.class) {
+        return Short.TYPE;
+    }
+    if (type == Character.class) {
+        return Character.TYPE;
+    }
+    return null;
+}","public void test09097() throws Throwable {
+    Class<Boolean> class0 = Boolean.class;
+    Class<?> class1 = ClassUtil.primitiveType(class0);
+    assertNotNull(class1);
+}","/**
+ * Method that can be used to find primitive type for given class if (but only if)
+ * it is either wrapper type or primitive type; returns `null` if type is neither.
+ *
+ * @since 2.7
+ */"
+"public static Class<?> primitiveType(Class<?> type) {
+    if (type.isPrimitive()) {
+        return type;
+    }
+    if (type == Integer.class) {
+        return Integer.TYPE;
+    }
+    if (type == Long.class) {
+        return Long.TYPE;
+    }
+    if (type == Boolean.class) {
+        return Boolean.TYPE;
+    }
+    if (type == Double.class) {
+        return Double.TYPE;
+    }
+    if (type == Float.class) {
+        return Float.TYPE;
+    }
+    if (type == Byte.class) {
+        return Byte.TYPE;
+    }
+    if (type == Short.class) {
+        return Short.TYPE;
+    }
+    if (type == Character.class) {
+        return Character.TYPE;
+    }
+    return null;
+}","public void test09199() throws Throwable {
+    Class<Double> class0 = Double.class;
+    Class<?> class1 = ClassUtil.primitiveType(class0);
+    assertNotNull(class1);
+}","/**
+ * Method that can be used to find primitive type for given class if (but only if)
+ * it is either wrapper type or primitive type; returns `null` if type is neither.
+ *
+ * @since 2.7
+ */"
+"public static Class<?> primitiveType(Class<?> type) {
+    if (type.isPrimitive()) {
+        return type;
+    }
+    if (type == Integer.class) {
+        return Integer.TYPE;
+    }
+    if (type == Long.class) {
+        return Long.TYPE;
+    }
+    if (type == Boolean.class) {
+        return Boolean.TYPE;
+    }
+    if (type == Double.class) {
+        return Double.TYPE;
+    }
+    if (type == Float.class) {
+        return Float.TYPE;
+    }
+    if (type == Byte.class) {
+        return Byte.TYPE;
+    }
+    if (type == Short.class) {
+        return Short.TYPE;
+    }
+    if (type == Character.class) {
+        return Character.TYPE;
+    }
+    return null;
+}","public void test092102() throws Throwable {
+    Class<Float> class0 = Float.class;
+    Class<?> class1 = ClassUtil.primitiveType(class0);
+    assertNotNull(class1);
+}","/**
+ * Method that can be used to find primitive type for given class if (but only if)
+ * it is either wrapper type or primitive type; returns `null` if type is neither.
+ *
+ * @since 2.7
+ */"
+"public static Class<?> primitiveType(Class<?> type) {
+    if (type.isPrimitive()) {
+        return type;
+    }
+    if (type == Integer.class) {
+        return Integer.TYPE;
+    }
+    if (type == Long.class) {
+        return Long.TYPE;
+    }
+    if (type == Boolean.class) {
+        return Boolean.TYPE;
+    }
+    if (type == Double.class) {
+        return Double.TYPE;
+    }
+    if (type == Float.class) {
+        return Float.TYPE;
+    }
+    if (type == Byte.class) {
+        return Byte.TYPE;
+    }
+    if (type == Short.class) {
+        return Short.TYPE;
+    }
+    if (type == Character.class) {
+        return Character.TYPE;
+    }
+    return null;
+}","public void test093104() throws Throwable {
+    Class<Byte> class0 = Byte.class;
+    Class<?> class1 = ClassUtil.primitiveType(class0);
+    assertNotNull(class1);
+}","/**
+ * Method that can be used to find primitive type for given class if (but only if)
+ * it is either wrapper type or primitive type; returns `null` if type is neither.
+ *
+ * @since 2.7
+ */"
+"public static Class<?> primitiveType(Class<?> type) {
+    if (type.isPrimitive()) {
+        return type;
+    }
+    if (type == Integer.class) {
+        return Integer.TYPE;
+    }
+    if (type == Long.class) {
+        return Long.TYPE;
+    }
+    if (type == Boolean.class) {
+        return Boolean.TYPE;
+    }
+    if (type == Double.class) {
+        return Double.TYPE;
+    }
+    if (type == Float.class) {
+        return Float.TYPE;
+    }
+    if (type == Byte.class) {
+        return Byte.TYPE;
+    }
+    if (type == Short.class) {
+        return Short.TYPE;
+    }
+    if (type == Character.class) {
+        return Character.TYPE;
+    }
+    return null;
+}","public void test094106() throws Throwable {
+    Class<Short> class0 = Short.class;
+    Class<?> class1 = ClassUtil.primitiveType(class0);
+    assertNotNull(class1);
+}","/**
+ * Method that can be used to find primitive type for given class if (but only if)
+ * it is either wrapper type or primitive type; returns `null` if type is neither.
+ *
+ * @since 2.7
+ */"
+"public static Class<?> primitiveType(Class<?> type) {
+    if (type.isPrimitive()) {
+        return type;
+    }
+    if (type == Integer.class) {
+        return Integer.TYPE;
+    }
+    if (type == Long.class) {
+        return Long.TYPE;
+    }
+    if (type == Boolean.class) {
+        return Boolean.TYPE;
+    }
+    if (type == Double.class) {
+        return Double.TYPE;
+    }
+    if (type == Float.class) {
+        return Float.TYPE;
+    }
+    if (type == Byte.class) {
+        return Byte.TYPE;
+    }
+    if (type == Short.class) {
+        return Short.TYPE;
+    }
+    if (type == Character.class) {
+        return Character.TYPE;
+    }
+    return null;
+}","public void test095108() throws Throwable {
+    Class<Character> class0 = Character.class;
+    Class<?> class1 = ClassUtil.primitiveType(class0);
+    assertNotNull(class1);
+}","/**
+ * Method that can be used to find primitive type for given class if (but only if)
+ * it is either wrapper type or primitive type; returns `null` if type is neither.
+ *
+ * @since 2.7
+ */"
+"/*
+    /**********************************************************
+    /* Jackson-specific stuff
+    /**********************************************************
+     */
+/**
+ *  Method that can be called to determine if given Object is the default
+ *  implementation Jackson uses; as opposed to a custom serializer installed by
+ *  a module or calling application. Determination is done using
+ *  {@link JacksonStdImpl} annotation on handler (serializer, deserializer etc)
+ *  class.
+ * <p>
+ *  NOTE: passing `null` is legal, and will result in <code>true</code>
+ *  being returned.
+ */
+public static boolean isJacksonStdImpl(Object impl) {
+    return (impl == null) || isJacksonStdImpl(impl.getClass());
+}","public void test104117() throws Throwable {
+    boolean boolean0 = ClassUtil.isJacksonStdImpl((Object) null);
+    assertTrue(boolean0);
+}",""
+"/*
+    /**********************************************************
+    /* Jackson-specific stuff
+    /**********************************************************
+     */
+/**
+ *  Method that can be called to determine if given Object is the default
+ *  implementation Jackson uses; as opposed to a custom serializer installed by
+ *  a module or calling application. Determination is done using
+ *  {@link JacksonStdImpl} annotation on handler (serializer, deserializer etc)
+ *  class.
+ * <p>
+ *  NOTE: passing `null` is legal, and will result in <code>true</code>
+ *  being returned.
+ */
+public static boolean isJacksonStdImpl(Object impl) {
+    return (impl == null) || isJacksonStdImpl(impl.getClass());
+}","public void test105118() throws Throwable {
+    PlaceholderForType placeholderForType0 = new PlaceholderForType(129);
+    boolean boolean0 = ClassUtil.isJacksonStdImpl((Object) placeholderForType0);
+    assertFalse(boolean0);
+}",""
+"/*
+    /**********************************************************
+    /* Access to various Class definition aspects; possibly
+    /* cacheable; and attempts was made in 2.7.0 - 2.7.7; however
+    /* unintented retention (~= memory leak) wrt [databind#1363]
+    /* resulted in removal of caching
+    /**********************************************************
+     */
+/**
+ * @since 2.7
+ */
+public static String getPackageName(Class<?> cls) {
+    Package pkg = cls.getPackage();
+    return (pkg == null) ? null : pkg.getName();
+}","public void test106119() throws Throwable {
+    Class<Character> class0 = Character.TYPE;
+    String string0 = ClassUtil.getPackageName(class0);
+    assertNull(string0);
+}",""
+"public static Ctor[] getConstructors(Class<?> cls) {
+    // Note: can NOT skip abstract classes as they may be used with mix-ins
+    // and for regular use shouldn't really matter.
+    if (cls.isInterface() || isObjectOrPrimitive(cls)) {
+        return NO_CTORS;
+    }
+    Constructor<?>[] rawCtors = cls.getDeclaredConstructors();
+    final int len = rawCtors.length;
+    Ctor[] result = new Ctor[len];
+    for (int i = 0; i < len; ++i) {
+        result[i] = new Ctor(rawCtors[i]);
+    }
+    return result;
+}","public void test107120() throws Throwable {
+    Class<Annotation> class0 = Annotation.class;
+    ClassUtil.Ctor[] classUtil_CtorArray0 = ClassUtil.getConstructors(class0);
+    assertEquals(0, classUtil_CtorArray0.length);
+}","/**
+ * @since 2.7
+ */"
+"public static Ctor[] getConstructors(Class<?> cls) {
+    // Note: can NOT skip abstract classes as they may be used with mix-ins
+    // and for regular use shouldn't really matter.
+    if (cls.isInterface() || isObjectOrPrimitive(cls)) {
+        return NO_CTORS;
+    }
+    Constructor<?>[] rawCtors = cls.getDeclaredConstructors();
+    final int len = rawCtors.length;
+    Ctor[] result = new Ctor[len];
+    for (int i = 0; i < len; ++i) {
+        result[i] = new Ctor(rawCtors[i]);
+    }
+    return result;
+}","public void test108121() throws Throwable {
+    Class<Integer> class0 = Integer.TYPE;
+    ClassUtil.Ctor[] classUtil_CtorArray0 = ClassUtil.getConstructors(class0);
+    assertEquals(0, classUtil_CtorArray0.length);
+}","/**
+ * @since 2.7
+ */"
+"// // // Then methods that do NOT cache access but were considered
+// // // (and could be added to do caching if it was proven effective)
+/**
+ * @since 2.7
+ */
+public static Class<?> getDeclaringClass(Class<?> cls) {
+    return isObjectOrPrimitive(cls) ? null : cls.getDeclaringClass();
+}","public void test109122() throws Throwable {
+    Class<CollectionType> class0 = CollectionType.class;
+    Class<?> class1 = ClassUtil.getDeclaringClass(class0);
+    assertNull(class1);
+}",""
+"// // // Then methods that do NOT cache access but were considered
+// // // (and could be added to do caching if it was proven effective)
+/**
+ * @since 2.7
+ */
+public static Class<?> getDeclaringClass(Class<?> cls) {
+    return isObjectOrPrimitive(cls) ? null : cls.getDeclaringClass();
+}","public void test110123() throws Throwable {
+    Class<Object> class0 = Object.class;
+    Class<?> class1 = ClassUtil.getDeclaringClass(class0);
+    assertNull(class1);
+}",""
+"public static Class<?> getOuterClass(Class<?> type) {
+    // as above, GAE has some issues...
+    try {
+        // one more: method locals, anonymous, are not good:
+        if (hasEnclosingMethod(type)) {
+            return null;
+        }
+        if (!Modifier.isStatic(type.getModifiers())) {
+            return getEnclosingClass(type);
+        }
+    } catch (SecurityException e) {
+    }
+    return null;
+}","public void test111124() throws Throwable {
+    Class<Object> class0 = Object.class;
+    Class<?> class1 = ClassUtil.getOuterClass(class0);
+    assertNull(class1);
+}","/**
+ * Method for finding enclosing class for non-static inner classes
+ */"

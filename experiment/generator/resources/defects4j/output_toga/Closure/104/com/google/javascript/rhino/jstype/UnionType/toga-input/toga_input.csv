@@ -1,0 +1,1099 @@
+focal_method,test_prefix,docstring
+"public boolean isObject() {
+    return false;
+}","public void test000() throws Throwable {
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    NoObjectType noObjectType0 = new NoObjectType(jSTypeRegistry0);
+    JSType jSType0 = noObjectType0.getLeastSupertype(unionType0);
+    assertTrue(jSType0.isObject());
+}","/**
+ * Tests whether this type is an {@code Object}, or any subtype thereof.
+ * @return {@code this &lt;: Object}
+ */"
+"public boolean isOrdinaryFunction() {
+    return false;
+}","public void test011() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    unionType0.forgiveUnknownNames();
+    assertFalse(unionType0.isOrdinaryFunction());
+}","/**
+ * Whether this type is a {@link FunctionType} that is an ordinary function or
+ * a named type that points to such a type.
+ */"
+"@Override
+public void forgiveUnknownNames() {
+    for (JSType type : getAlternates()) {
+        type.forgiveUnknownNames();
+    }
+}","public void test022() throws Throwable {
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    UnionType unionType0 = new UnionType((JSTypeRegistry) null, linkedHashSet0);
+    linkedHashSet0.add(unionType0);
+    // Undeclared exception!
+    try {
+        unionType0.forgiveUnknownNames();
+        fail(""Expecting exception: StackOverflowError"");
+    } catch (StackOverflowError e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"public final boolean matchesUint32Context() {
+    return matchesNumberContext();
+}","public void test033() throws Throwable {
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    VoidType voidType0 = new VoidType((JSTypeRegistry) null);
+    linkedHashSet0.add(voidType0);
+    UnionType unionType0 = new UnionType((JSTypeRegistry) null, linkedHashSet0);
+    boolean boolean0 = unionType0.matchesUint32Context();
+    assertFalse(boolean0);
+}","/**
+ * This predicate is used to test whether a given type can appear in a
+ * 'Uint32' context.  This context includes the right-hand operand of a shift
+ * operator.
+ */"
+"public final boolean matchesInt32Context() {
+    return matchesNumberContext();
+}","public void test044() throws Throwable {
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    UnknownType unknownType0 = new UnknownType((JSTypeRegistry) null, false);
+    linkedHashSet0.add(unknownType0);
+    UnionType unionType0 = new UnionType((JSTypeRegistry) null, linkedHashSet0);
+    EnumElementType enumElementType0 = new EnumElementType((JSTypeRegistry) null, unionType0, ""Named type with empty name component"");
+    boolean boolean0 = enumElementType0.matchesInt32Context();
+    assertTrue(boolean0);
+}","/**
+ * This predicate is used to test whether a given type can appear in a
+ * 'Int32' context.  This context includes, for example, the operands of a
+ * bitwise or operator.  Since we do not currently support integer types,
+ * this is a synonym for {@code Number}.
+ */"
+"@Override
+public boolean matchesStringContext() {
+    // TODO(user): Reverse this logic to make it correct instead of generous.
+    for (JSType t : alternates) {
+        if (t.matchesStringContext()) {
+            return true;
+        }
+    }
+    return false;
+}","public void test055() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    PrototypeObjectType prototypeObjectType0 = new PrototypeObjectType(jSTypeRegistry0, ""shne"", (ObjectType) null);
+    linkedHashSet0.add(prototypeObjectType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    boolean boolean0 = unionType0.matchesStringContext();
+    assertFalse(boolean0);
+}","/**
+ * This predicate is used to test whether a given type can appear in a
+ * {@code String} context, such as an operand of a string concat ({@code +})
+ * operator.<p>
+ *
+ * All types have at least the potential for converting to {@code String}.
+ * When we add externally defined types, such as a browser OM, we may choose
+ * to add types that do not automatically convert to {@code String}.
+ *
+ * @return {@code true} if not {@link VoidType}
+ */"
+"@Override
+public boolean matchesStringContext() {
+    // TODO(user): Reverse this logic to make it correct instead of generous.
+    for (JSType t : alternates) {
+        if (t.matchesStringContext()) {
+            return true;
+        }
+    }
+    return false;
+}","public void test066() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    NumberType numberType0 = new NumberType(jSTypeRegistry0);
+    JSType jSType0 = numberType0.autoboxesTo();
+    linkedHashSet0.add(jSType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    boolean boolean0 = unionType0.matchesStringContext();
+    assertTrue(boolean0);
+}","/**
+ * This predicate is used to test whether a given type can appear in a
+ * {@code String} context, such as an operand of a string concat ({@code +})
+ * operator.<p>
+ *
+ * All types have at least the potential for converting to {@code String}.
+ * When we add externally defined types, such as a browser OM, we may choose
+ * to add types that do not automatically convert to {@code String}.
+ *
+ * @return {@code true} if not {@link VoidType}
+ */"
+"public boolean matchesObjectContext() {
+    return false;
+}","public void test077() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    JSType jSType0 = jSTypeRegistry0.createOptionalNullableType(unionType0);
+    boolean boolean0 = jSType0.matchesObjectContext();
+    assertFalse(boolean0);
+}","/**
+ * This predicate is used to test whether a given type can appear in an
+ * {@code Object} context, such as the expression in a with statement.
+ *
+ * Most types we will encounter, except notably {@code null}, have at least
+ * the potential for converting to {@code Object}.  Host defined objects can
+ * get peculiar.
+ */"
+"@Override
+public boolean matchesObjectContext() {
+    // TODO(user): Reverse this logic to make it correct instead of generous.
+    for (JSType t : alternates) {
+        if (t.matchesObjectContext()) {
+            return true;
+        }
+    }
+    return false;
+}","public void test088() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    ObjectType objectType0 = unionType0.dereference();
+    linkedHashSet0.add(objectType0);
+    boolean boolean0 = unionType0.matchesObjectContext();
+    assertTrue(boolean0);
+}","/**
+ * This predicate is used to test whether a given type can appear in an
+ * {@code Object} context, such as the expression in a {@code with}
+ * statement.<p>
+ *
+ * Most types we will encounter, except notably {@code null}, have at least
+ * the potential for converting to {@code Object}.  Host defined objects can
+ * get peculiar.<p>
+ *
+ * VOID type is included here because while it is not part of the JavaScript
+ * language, functions returning 'void' type can't be used as operands of
+ * any operator or statement.<p>
+ *
+ * @return {@code true} if the type is not {@link NullType} or
+ *         {@link VoidType}
+ */"
+"@Override
+public JSType findPropertyType(String propertyName) {
+    JSType propertyType = null;
+    for (JSType alternate : getAlternates()) {
+        // Filter out the null/undefined type.
+        if (alternate.isNullType() || alternate.isVoidType()) {
+            continue;
+        }
+        JSType altPropertyType = alternate.findPropertyType(propertyName);
+        if (altPropertyType == null) {
+            continue;
+        }
+        if (propertyType == null) {
+            propertyType = altPropertyType;
+        } else {
+            propertyType = propertyType.getLeastSupertype(altPropertyType);
+        }
+    }
+    return propertyType;
+}","public void test099() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NumberType numberType0 = new NumberType(jSTypeRegistry0);
+    JSType jSType0 = numberType0.autoboxesTo();
+    linkedHashSet0.add(jSType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    JSType jSType1 = unionType0.findPropertyType(""Named type with empty name component"");
+    assertNull(jSType1);
+}",""
+"@Override
+public JSType findPropertyType(String propertyName) {
+    JSType propertyType = null;
+    for (JSType alternate : getAlternates()) {
+        // Filter out the null/undefined type.
+        if (alternate.isNullType() || alternate.isVoidType()) {
+            continue;
+        }
+        JSType altPropertyType = alternate.findPropertyType(propertyName);
+        if (altPropertyType == null) {
+            continue;
+        }
+        if (propertyType == null) {
+            propertyType = altPropertyType;
+        } else {
+            propertyType = propertyType.getLeastSupertype(altPropertyType);
+        }
+    }
+    return propertyType;
+}","public void test1010() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    NullType nullType0 = new NullType(jSTypeRegistry0);
+    linkedHashSet0.add(nullType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    JSType jSType0 = unionType0.findPropertyType(""Not declared as a type name"");
+    assertNull(jSType0);
+}",""
+"@Override
+public JSType findPropertyType(String propertyName) {
+    JSType propertyType = null;
+    for (JSType alternate : getAlternates()) {
+        // Filter out the null/undefined type.
+        if (alternate.isNullType() || alternate.isVoidType()) {
+            continue;
+        }
+        JSType altPropertyType = alternate.findPropertyType(propertyName);
+        if (altPropertyType == null) {
+            continue;
+        }
+        if (propertyType == null) {
+            propertyType = altPropertyType;
+        } else {
+            propertyType = propertyType.getLeastSupertype(altPropertyType);
+        }
+    }
+    return propertyType;
+}","public void test1111() throws Throwable {
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    VoidType voidType0 = new VoidType((JSTypeRegistry) null);
+    linkedHashSet0.add(voidType0);
+    UnionType unionType0 = new UnionType((JSTypeRegistry) null, linkedHashSet0);
+    JSType jSType0 = unionType0.findPropertyType(""Unknown class name"");
+    assertNull(jSType0);
+}",""
+"public boolean isVoidType() {
+    return false;
+}","public void test1212() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>(1190);
+    UnknownType unknownType0 = new UnknownType(jSTypeRegistry0, true);
+    NoType noType0 = new NoType(jSTypeRegistry0);
+    linkedHashSet0.add(unknownType0);
+    linkedHashSet0.add(noType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    JSType jSType0 = unionType0.findPropertyType(""Not declared as a constructor"");
+    assertFalse(jSType0.isVoidType());
+}",""
+"@Override
+public boolean canAssignTo(JSType that) {
+    boolean canAssign = true;
+    for (JSType t : alternates) {
+        if (t.isUnknownType()) {
+            return true;
+        }
+        canAssign &= t.canAssignTo(that);
+    }
+    return canAssign;
+}","public void test1313() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    HashMap<String, JSType> hashMap0 = new HashMap<String, JSType>();
+    RecordType recordType0 = new RecordType(jSTypeRegistry0, hashMap0);
+    linkedHashSet0.add(recordType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    boolean boolean0 = unionType0.canAssignTo(recordType0);
+    assertTrue(boolean0);
+}",""
+"@Override
+public boolean canAssignTo(JSType that) {
+    boolean canAssign = true;
+    for (JSType t : alternates) {
+        if (t.isUnknownType()) {
+            return true;
+        }
+        canAssign &= t.canAssignTo(that);
+    }
+    return canAssign;
+}","public void test1414() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    UnknownType unknownType0 = new UnknownType(jSTypeRegistry0, false);
+    linkedHashSet0.add(unknownType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    boolean boolean0 = unionType0.canAssignTo(unionType0);
+    assertTrue(boolean0);
+}",""
+"public boolean canBeCalled() {
+    return false;
+}","public void test1515() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    JSType jSType0 = jSTypeRegistry0.createOptionalNullableType(unionType0);
+    boolean boolean0 = jSType0.canBeCalled();
+    assertFalse(boolean0);
+}","/**
+ * This predicate is used to test whether a given type can be used as the
+ * 'function' in a function call.
+ *
+ * @return {@code true} if this type might be callable.
+ */"
+"@Override
+public boolean canBeCalled() {
+    for (JSType t : alternates) {
+        if (!t.canBeCalled()) {
+            return false;
+        }
+    }
+    return true;
+}","public void test1616() throws Throwable {
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoType noType0 = new NoType(jSTypeRegistry0);
+    linkedHashSet0.add(noType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    boolean boolean0 = unionType0.canBeCalled();
+    assertTrue(boolean0);
+}",""
+"@Override
+public JSType restrictByNotNullOrUndefined() {
+    UnionTypeBuilder restricted = new UnionTypeBuilder(registry);
+    for (JSType t : alternates) {
+        restricted.addAlternate(t.restrictByNotNullOrUndefined());
+    }
+    return restricted.build();
+}","public void test1717() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    linkedHashSet0.add(unionType0);
+    // Undeclared exception!
+    try {
+        unionType0.restrictByNotNullOrUndefined();
+        fail(""Expecting exception: StackOverflowError"");
+    } catch (StackOverflowError e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"public TypePair getTypesUnderEquality(JSType that) {
+    // unions types
+    if (that instanceof UnionType) {
+        TypePair p = that.getTypesUnderEquality(this);
+        return new TypePair(p.typeB, p.typeA);
+    }
+    // other types
+    switch(this.testForEquality(that)) {
+        case FALSE:
+            return new TypePair(null, null);
+        case TRUE:
+        case UNKNOWN:
+            return new TypePair(this, that);
+    }
+    // switch case is exhaustive
+    throw new IllegalStateException();
+}","public void test1818() throws Throwable {
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    UnionType unionType0 = new UnionType((JSTypeRegistry) null, linkedHashSet0);
+    EnumElementType enumElementType0 = new EnumElementType((JSTypeRegistry) null, unionType0, """");
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JSType jSType0 = jSTypeRegistry0.createOptionalNullableType(enumElementType0);
+    JSType.TypePair jSType_TypePair0 = enumElementType0.getTypesUnderEquality(jSType0);
+    assertNotNull(jSType_TypePair0);
+}","/**
+ * Computes the subset of {@code this} and {@code that} types if equality
+ * is observed. If a value {@code v1} of type {@code null} is equal to a value
+ * {@code v2} of type {@code (undefined,number)}, we can infer that the
+ * type of {@code v1} is {@code null} and the type of {@code v2} is
+ * {@code undefined}.
+ *
+ * @return a pair containing the restricted type of {@code this} as the first
+ *         component and the restricted type of {@code that} as the second
+ *         element. The returned pair is never {@code null} even though its
+ *         components may be {@code null}
+ */"
+"@Override
+public TernaryValue testForEquality(JSType that) {
+    TernaryValue result = null;
+    for (JSType t : alternates) {
+        TernaryValue test = t.testForEquality(that);
+        if (result == null) {
+            result = test;
+        } else if (!result.equals(test)) {
+            return UNKNOWN;
+        }
+    }
+    return result;
+}","public void test1919() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    NumberType numberType0 = new NumberType(jSTypeRegistry0);
+    JSType jSType0 = numberType0.autoboxesTo();
+    linkedHashSet0.add(jSType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    NoType noType0 = new NoType(jSTypeRegistry0);
+    linkedHashSet0.add(noType0);
+    unionType0.testForEquality(numberType0);
+}",""
+"@Override
+public TernaryValue testForEquality(JSType that) {
+    TernaryValue result = null;
+    for (JSType t : alternates) {
+        TernaryValue test = t.testForEquality(that);
+        if (result == null) {
+            result = test;
+        } else if (!result.equals(test)) {
+            return UNKNOWN;
+        }
+    }
+    return result;
+}","public void test2020() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    NumberType numberType0 = new NumberType(jSTypeRegistry0);
+    JSType jSType0 = numberType0.autoboxesTo();
+    linkedHashSet0.add(numberType0);
+    linkedHashSet0.add(jSType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    JSType.TypePair jSType_TypePair0 = unionType0.getTypesUnderShallowInequality(numberType0);
+    unionType0.testForEquality(jSType_TypePair0.typeB);
+}",""
+"public boolean isNullable() {
+    return this.isSubtype(getNativeType(JSTypeNative.NULL_TYPE));
+}","public void test2121() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    JSType jSType0 = jSTypeRegistry0.createOptionalNullableType(unionType0);
+    boolean boolean0 = jSType0.isNullable();
+    assertTrue(boolean0);
+}","/**
+ * Tests whether this type is nullable.
+ */"
+"@Override
+public boolean isNullable() {
+    for (JSType t : alternates) {
+        if (t.isNullable()) {
+            return true;
+        }
+    }
+    return false;
+}","public void test2222() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""8j"");
+    InstanceObjectType instanceObjectType0 = new InstanceObjectType(jSTypeRegistry0, errorFunctionType0);
+    linkedHashSet0.add(instanceObjectType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    boolean boolean0 = unionType0.isNullable();
+    assertFalse(boolean0);
+}","/**
+ * This predicate determines whether objects of this type can have the
+ * {@code null} value, and therefore can appear in contexts where
+ * {@code null} is expected.
+ *
+ * @return {@code true} for everything but {@code Number} and
+ *         {@code Boolean} types.
+ */"
+"JSType meet(JSType that) {
+    UnionTypeBuilder builder = new UnionTypeBuilder(registry);
+    for (JSType alternate : alternates) {
+        if (alternate.isSubtype(that)) {
+            builder.addAlternate(alternate);
+        }
+    }
+    if (that instanceof UnionType) {
+        for (JSType otherAlternate : ((UnionType) that).alternates) {
+            if (otherAlternate.isSubtype(this)) {
+                builder.addAlternate(otherAlternate);
+            }
+        }
+    } else if (that.isSubtype(this)) {
+        builder.addAlternate(that);
+    }
+    JSType result = builder.build();
+    if (result != null) {
+        return result;
+    } else if (this.isObject() && that.isObject()) {
+        return getNativeType(JSTypeNative.NO_OBJECT_TYPE);
+    } else {
+        return getNativeType(JSTypeNative.NO_TYPE);
+    }
+}","public void test2323() throws Throwable {
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    UnknownType unknownType0 = new UnknownType((JSTypeRegistry) null, false);
+    linkedHashSet0.add(unknownType0);
+    UnionType unionType0 = new UnionType((JSTypeRegistry) null, linkedHashSet0);
+    EnumElementType enumElementType0 = new EnumElementType((JSTypeRegistry) null, unionType0, ""Named type with empty name component"");
+    // Undeclared exception!
+    try {
+        unionType0.meet(enumElementType0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.rhino.jstype.UnionTypeBuilder"", e);
+    }
+}",""
+"@Override
+public JSType getLeastSupertype(JSType that) {
+    if (!that.isUnknownType()) {
+        for (JSType alternate : alternates) {
+            if (!alternate.isUnknownType() && that.isSubtype(alternate)) {
+                return this;
+            }
+        }
+    }
+    return getLeastSupertype(this, that);
+}","public void test2424() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, ""Named type with empty name component"", ""Not declared as a type name"", 0, 1);
+    JSType jSType0 = unionType0.getLeastSupertype(namedType0);
+    assertSame(jSType0, namedType0);
+}",""
+"@Override
+public JSType getLeastSupertype(JSType that) {
+    if (!that.isUnknownType()) {
+        for (JSType alternate : alternates) {
+            if (!alternate.isUnknownType() && that.isSubtype(alternate)) {
+                return this;
+            }
+        }
+    }
+    return getLeastSupertype(this, that);
+}","public void test2525() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NumberType numberType0 = new NumberType(jSTypeRegistry0);
+    JSType jSType0 = numberType0.autoboxesTo();
+    linkedHashSet0.add(jSType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    JSType jSType1 = unionType0.getLeastSupertype(unionType0);
+    assertSame(unionType0, jSType1);
+}",""
+"@Override
+public boolean isUnionType() {
+    return true;
+}","public void test2626() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    UnknownType unknownType0 = new UnknownType(jSTypeRegistry0, false);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    linkedHashSet0.add(unknownType0);
+    BooleanType booleanType0 = new BooleanType(jSTypeRegistry0);
+    booleanType0.getLeastSupertype(unionType0);
+    assertTrue(unionType0.isUnionType());
+}",""
+"public JSType getLeastSupertype(JSType that) {
+    if (that.isUnionType()) {
+        // Union types have their own implementation of getLeastSupertype.
+        return that.getLeastSupertype(this);
+    }
+    return getLeastSupertype(this, that);
+}","public void test2727() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    StringType stringType0 = new StringType(jSTypeRegistry0);
+    linkedHashSet0.add(stringType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    BooleanType booleanType0 = new BooleanType(jSTypeRegistry0);
+    JSType jSType0 = booleanType0.getLeastSupertype(unionType0);
+    assertNotSame(jSType0, unionType0);
+}","/**
+ * Gets the least supertype of {@code this} and {@code that}.
+ * The least supertype is the join (&#8744;) or supremum of both types in the
+ * type lattice.<p>
+ * Examples:
+ * <ul>
+ * <li>{@code number &#8744; *} = {@code *}</li>
+ * <li>{@code number &#8744; Object} = {@code (number, Object)}</li>
+ * <li>{@code Number &#8744; Object} = {@code Object}</li>
+ * </ul>
+ * @return {@code this &#8744; that}
+ */"
+"public boolean isUnionType() {
+    return false;
+}","public void test2728() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    StringType stringType0 = new StringType(jSTypeRegistry0);
+    linkedHashSet0.add(stringType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    BooleanType booleanType0 = new BooleanType(jSTypeRegistry0);
+    JSType jSType0 = booleanType0.getLeastSupertype(unionType0);
+    assertTrue(jSType0.isUnionType());
+}",""
+"@Override
+public boolean isUnionType() {
+    return true;
+}","public void test2829() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NumberType numberType0 = new NumberType(jSTypeRegistry0);
+    JSType jSType0 = numberType0.autoboxesTo();
+    linkedHashSet0.add(jSType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    unionType0.getGreatestSubtype(numberType0);
+    assertTrue(unionType0.isUnionType());
+}",""
+"JSType meet(JSType that) {
+    UnionTypeBuilder builder = new UnionTypeBuilder(registry);
+    for (JSType alternate : alternates) {
+        if (alternate.isSubtype(that)) {
+            builder.addAlternate(alternate);
+        }
+    }
+    if (that instanceof UnionType) {
+        for (JSType otherAlternate : ((UnionType) that).alternates) {
+            if (otherAlternate.isSubtype(this)) {
+                builder.addAlternate(otherAlternate);
+            }
+        }
+    } else if (that.isSubtype(this)) {
+        builder.addAlternate(that);
+    }
+    JSType result = builder.build();
+    if (result != null) {
+        return result;
+    } else if (this.isObject() && that.isObject()) {
+        return getNativeType(JSTypeNative.NO_OBJECT_TYPE);
+    } else {
+        return getNativeType(JSTypeNative.NO_TYPE);
+    }
+}","public void test2930() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NumberType numberType0 = new NumberType(jSTypeRegistry0);
+    JSType jSType0 = numberType0.autoboxesTo();
+    linkedHashSet0.add(jSType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    JSType jSType1 = unionType0.meet(unionType0);
+    assertSame(jSType1, jSType0);
+}",""
+"public boolean isNoType() {
+    return false;
+}","public void test3031() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    JSType jSType0 = jSTypeRegistry0.createOptionalNullableType(unionType0);
+    JSType jSType1 = unionType0.meet(jSType0);
+    assertTrue(jSType1.isNoType());
+}",""
+"public boolean isNamedType() {
+    return false;
+}","public void test3132() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Not declared as a constructor"", unionType0);
+    JSType jSType0 = unionType0.meet(enumType0);
+    assertFalse(jSType0.isNamedType());
+}",""
+"static boolean isSubtype(JSType thisType, JSType thatType) {
+    // unknown
+    if (thatType.isUnknownType()) {
+        return true;
+    }
+    // equality
+    if (thisType.equals(thatType)) {
+        return true;
+    }
+    // all type
+    if (thatType.isAllType()) {
+        return true;
+    }
+    // unions
+    if (thatType instanceof UnionType) {
+        UnionType union = (UnionType) thatType;
+        for (JSType element : union.alternates) {
+            if (thisType.isSubtype(element)) {
+                return true;
+            }
+        }
+    }
+    // named types
+    if (thatType instanceof NamedType) {
+        return thisType.isSubtype(((NamedType) thatType).referencedType);
+    }
+    return false;
+}","public void test3233() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    boolean boolean0 = JSType.isSubtype((JSType) unionType0, (JSType) unionType0);
+    assertTrue(boolean0);
+}","/**
+ * A generic implementation meant to be used as a helper for common subtyping
+ * cases.
+ */"
+"@Override
+public boolean isObject() {
+    return primitiveType.isObject();
+}","public void test3334() throws Throwable {
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoObjectType noObjectType0 = new NoObjectType(jSTypeRegistry0);
+    linkedHashSet0.add(noObjectType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    EnumElementType enumElementType0 = new EnumElementType(jSTypeRegistry0, unionType0, ""Named type with empty name component"");
+    NoObjectType noObjectType1 = (NoObjectType) unionType0.meet(enumElementType0);
+    assertTrue(enumElementType0.isObject());
+}",""
+"@Override
+public boolean hasCachedValues() {
+    return prototype != null || super.hasCachedValues();
+}","public void test3335() throws Throwable {
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoObjectType noObjectType0 = new NoObjectType(jSTypeRegistry0);
+    linkedHashSet0.add(noObjectType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    EnumElementType enumElementType0 = new EnumElementType(jSTypeRegistry0, unionType0, ""Named type with empty name component"");
+    NoObjectType noObjectType1 = (NoObjectType) unionType0.meet(enumElementType0);
+    assertTrue(noObjectType1.hasCachedValues());
+}",""
+"@Override
+public boolean isObject() {
+    return primitiveType.isObject();
+}","public void test3436() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoObjectType noObjectType0 = new NoObjectType(jSTypeRegistry0);
+    NumberType numberType0 = new NumberType(jSTypeRegistry0);
+    UnionType unionType0 = (UnionType) noObjectType0.getLeastSupertype(numberType0);
+    EnumElementType enumElementType0 = new EnumElementType((JSTypeRegistry) null, unionType0, ""Named type with empty name component"");
+    EnumElementType enumElementType1 = (EnumElementType) unionType0.meet(enumElementType0);
+    assertFalse(enumElementType1.isObject());
+}",""
+"public boolean contains(JSType alternate) {
+    return alternates.contains(alternate);
+}","public void test3537() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    NumberType numberType0 = new NumberType(jSTypeRegistry0);
+    JSType jSType0 = numberType0.autoboxesTo();
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    boolean boolean0 = unionType0.contains(jSType0);
+    assertFalse(boolean0);
+}","/**
+ * A {@link UnionType} contains a given type (alternate) iff the member
+ * vector contains it.  Since the {@link #equals} method above conforms to
+ * the necessary semantics for the collection, everything works out just
+ * fine.
+ *
+ * @param alternate The alternate which might be in this union.
+ *
+ * @return {@code true} if the alternate is in the union
+ */"
+"public boolean contains(JSType alternate) {
+    return alternates.contains(alternate);
+}","public void test3638() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    NumberType numberType0 = new NumberType(jSTypeRegistry0);
+    JSType jSType0 = numberType0.autoboxesTo();
+    linkedHashSet0.add(jSType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    boolean boolean0 = unionType0.contains(jSType0);
+    assertTrue(boolean0);
+}","/**
+ * A {@link UnionType} contains a given type (alternate) iff the member
+ * vector contains it.  Since the {@link #equals} method above conforms to
+ * the necessary semantics for the collection, everything works out just
+ * fine.
+ *
+ * @param alternate The alternate which might be in this union.
+ *
+ * @return {@code true} if the alternate is in the union
+ */"
+"public boolean isUnionType() {
+    return false;
+}","public void test3739() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    AllType allType0 = new AllType(jSTypeRegistry0);
+    linkedHashSet0.add(allType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    JSType jSType0 = unionType0.getRestrictedUnion(allType0);
+    assertFalse(jSType0.isUnionType());
+}",""
+"public JSType getRestrictedUnion(JSType type) {
+    UnionTypeBuilder restricted = new UnionTypeBuilder(registry);
+    for (JSType t : alternates) {
+        if (t.isUnknownType() || !t.isSubtype(type)) {
+            restricted.addAlternate(t);
+        }
+    }
+    return restricted.build();
+}","public void test3840() throws Throwable {
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    UnknownType unknownType0 = new UnknownType((JSTypeRegistry) null, false);
+    linkedHashSet0.add(unknownType0);
+    UnionType unionType0 = new UnionType((JSTypeRegistry) null, linkedHashSet0);
+    // Undeclared exception!
+    try {
+        unionType0.getRestrictedUnion(unknownType0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.rhino.jstype.UnionTypeBuilder"", e);
+    }
+}","/**
+ * Returns a more restricted union type than {@code this} one, in which all
+ * subtypes of {@code type} have been removed.<p>
+ *
+ * Examples:
+ * <ul>
+ * <li>{@code (number,string)} restricted by {@code number} is
+ *     {@code string}</li>
+ * <li>{@code (null, EvalError, URIError)} restricted by
+ *     {@code Error} is {@code null}</li>
+ * </ul>
+ *
+ * @param type the supertype of the types to remove from this union type
+ */"
+"public boolean isNamedType() {
+    return false;
+}","public void test3941() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    NumberType numberType0 = new NumberType(jSTypeRegistry0);
+    JSType jSType0 = numberType0.autoboxesTo();
+    linkedHashSet0.add(jSType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    JSType jSType1 = unionType0.getRestrictedUnion(numberType0);
+    assertFalse(jSType1.isNamedType());
+}",""
+"public boolean isFunctionType() {
+    return false;
+}","public void test4143() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    JSType jSType0 = unionType0.getRestrictedTypeGivenToBooleanOutcome(false);
+    assertFalse(jSType0.isFunctionType());
+}",""
+"@Override
+public JSType getRestrictedTypeGivenToBooleanOutcome(boolean outcome) {
+    // gather elements after restriction
+    UnionTypeBuilder restricted = new UnionTypeBuilder(registry);
+    for (JSType element : alternates) {
+        restricted.addAlternate(element.getRestrictedTypeGivenToBooleanOutcome(outcome));
+    }
+    return restricted.build();
+}","public void test4244() throws Throwable {
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    UnionType unionType0 = new UnionType((JSTypeRegistry) null, linkedHashSet0);
+    linkedHashSet0.add(unionType0);
+    // Undeclared exception!
+    try {
+        unionType0.getRestrictedTypeGivenToBooleanOutcome(true);
+        fail(""Expecting exception: StackOverflowError"");
+    } catch (StackOverflowError e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"@Override
+public BooleanLiteralSet getPossibleToBooleanOutcomes() {
+    BooleanLiteralSet literals = BooleanLiteralSet.EMPTY;
+    for (JSType element : alternates) {
+        literals = literals.union(element.getPossibleToBooleanOutcomes());
+        if (literals == BooleanLiteralSet.BOTH) {
+            break;
+        }
+    }
+    return literals;
+}","public void test4345() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NumberType numberType0 = new NumberType(jSTypeRegistry0);
+    JSType jSType0 = numberType0.autoboxesTo();
+    linkedHashSet0.add(jSType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    BooleanLiteralSet booleanLiteralSet0 = unionType0.getPossibleToBooleanOutcomes();
+    assertEquals(BooleanLiteralSet.TRUE, booleanLiteralSet0);
+}",""
+"@Override
+public BooleanLiteralSet getPossibleToBooleanOutcomes() {
+    BooleanLiteralSet literals = BooleanLiteralSet.EMPTY;
+    for (JSType element : alternates) {
+        literals = literals.union(element.getPossibleToBooleanOutcomes());
+        if (literals == BooleanLiteralSet.BOTH) {
+            break;
+        }
+    }
+    return literals;
+}","public void test4446() throws Throwable {
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    UnionType unionType0 = new UnionType((JSTypeRegistry) null, linkedHashSet0);
+    NumberType numberType0 = new NumberType((JSTypeRegistry) null);
+    linkedHashSet0.add(numberType0);
+    BooleanLiteralSet booleanLiteralSet0 = unionType0.getPossibleToBooleanOutcomes();
+    assertEquals(BooleanLiteralSet.BOTH, booleanLiteralSet0);
+}",""
+"@Override
+public TypePair getTypesUnderInequality(JSType that) {
+    UnionTypeBuilder thisRestricted = new UnionTypeBuilder(registry);
+    UnionTypeBuilder thatRestricted = new UnionTypeBuilder(registry);
+    for (JSType element : alternates) {
+        TypePair p = element.getTypesUnderInequality(that);
+        if (p.typeA != null) {
+            thisRestricted.addAlternate(p.typeA);
+        }
+        if (p.typeB != null) {
+            thatRestricted.addAlternate(p.typeB);
+        }
+    }
+    return new TypePair(thisRestricted.build(), thatRestricted.build());
+}","public void test4547() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    BooleanType booleanType0 = new BooleanType(jSTypeRegistry0);
+    linkedHashSet0.add(booleanType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    JSType.TypePair jSType_TypePair0 = unionType0.getTypesUnderInequality(booleanType0);
+    assertNotNull(jSType_TypePair0);
+}",""
+"public TypePair getTypesUnderInequality(JSType that) {
+    // unions types
+    if (that instanceof UnionType) {
+        TypePair p = that.getTypesUnderInequality(this);
+        return new TypePair(p.typeB, p.typeA);
+    }
+    // other types
+    switch(this.testForEquality(that)) {
+        case TRUE:
+            return new TypePair(null, null);
+        case FALSE:
+        case UNKNOWN:
+            return new TypePair(this, that);
+    }
+    // switch case is exhaustive
+    throw new IllegalStateException();
+}","public void test4648() throws Throwable {
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    VoidType voidType0 = new VoidType((JSTypeRegistry) null);
+    linkedHashSet0.add(voidType0);
+    UnionType unionType0 = new UnionType((JSTypeRegistry) null, linkedHashSet0);
+    EnumElementType enumElementType0 = new EnumElementType((JSTypeRegistry) null, unionType0, ""Named type with empty name component"");
+    // Undeclared exception!
+    try {
+        enumElementType0.getTypesUnderInequality(unionType0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.rhino.jstype.UnionTypeBuilder"", e);
+    }
+}","/**
+ * Computes the subset of {@code this} and {@code that} types if inequality
+ * is observed. If a value {@code v1} of type {@code number} is not equal to a
+ * value {@code v2} of type {@code (undefined,number)}, we can infer that the
+ * type of {@code v1} is {@code number} and the type of {@code v2} is
+ * {@code number} as well.
+ *
+ * @return a pair containing the restricted type of {@code this} as the first
+ *         component and the restricted type of {@code that} as the second
+ *         element. The returned pair is never {@code null} even though its
+ *         components may be {@code null}
+ */"
+"@Override
+public TypePair getTypesUnderShallowInequality(JSType that) {
+    UnionTypeBuilder thisRestricted = new UnionTypeBuilder(registry);
+    UnionTypeBuilder thatRestricted = new UnionTypeBuilder(registry);
+    for (JSType element : alternates) {
+        TypePair p = element.getTypesUnderShallowInequality(that);
+        if (p.typeA != null) {
+            thisRestricted.addAlternate(p.typeA);
+        }
+        if (p.typeB != null) {
+            thatRestricted.addAlternate(p.typeB);
+        }
+    }
+    return new TypePair(thisRestricted.build(), thatRestricted.build());
+}","public void test4749() throws Throwable {
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    VoidType voidType0 = new VoidType((JSTypeRegistry) null);
+    linkedHashSet0.add(voidType0);
+    UnionType unionType0 = new UnionType((JSTypeRegistry) null, linkedHashSet0);
+    // Undeclared exception!
+    try {
+        unionType0.getTypesUnderShallowInequality(voidType0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.rhino.jstype.UnionTypeBuilder"", e);
+    }
+}",""
+"public boolean isConstructor() {
+    return false;
+}","public void test4850() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NumberType numberType0 = new NumberType(jSTypeRegistry0);
+    JSType jSType0 = numberType0.autoboxesTo();
+    linkedHashSet0.add(jSType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    JSType jSType1 = unionType0.resolveInternal(simpleErrorReporter0, (StaticScope<JSType>) null);
+    assertFalse(jSType1.isConstructor());
+}","/**
+ * Whether this type is a {@link FunctionType} that is a constructor or a
+ * named type that points to such a type.
+ */"
+"public boolean isNullType() {
+    return false;
+}","public void test4951() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    LinkedHashSet<JSType> linkedHashSet0 = new LinkedHashSet<JSType>();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NumberType numberType0 = new NumberType(jSTypeRegistry0);
+    InstanceObjectType instanceObjectType0 = (InstanceObjectType) numberType0.autoboxesTo();
+    linkedHashSet0.add(instanceObjectType0);
+    UnionType unionType0 = new UnionType(jSTypeRegistry0, linkedHashSet0);
+    instanceObjectType0.setResolvedTypeInternal(unionType0);
+    UnionType unionType1 = (UnionType) unionType0.resolveInternal(simpleErrorReporter0, (StaticScope<JSType>) null);
+    assertFalse(unionType1.isNullType());
+}",""

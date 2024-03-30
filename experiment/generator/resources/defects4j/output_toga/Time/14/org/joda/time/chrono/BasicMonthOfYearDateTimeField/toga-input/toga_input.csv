@@ -1,0 +1,1786 @@
+focal_method,test_prefix,docstring
+"//-----------------------------------------------------------------------
+public int getLeapAmount(long instant) {
+    return isLeap(instant) ? 1 : 0;
+}","public void test000() throws Throwable {
+    CopticChronology copticChronology0 = CopticChronology.getInstanceUTC();
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(copticChronology0, 1);
+    int int0 = basicMonthOfYearDateTimeField0.getLeapAmount(10000000000000L);
+    assertEquals(0, int0);
+}",""
+"//-----------------------------------------------------------------------
+public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
+    if (minuendInstant < subtrahendInstant) {
+        return -getDifference(subtrahendInstant, minuendInstant);
+    }
+    int minuendYear = iChronology.getYear(minuendInstant);
+    int minuendMonth = iChronology.getMonthOfYear(minuendInstant, minuendYear);
+    int subtrahendYear = iChronology.getYear(subtrahendInstant);
+    int subtrahendMonth = iChronology.getMonthOfYear(subtrahendInstant, subtrahendYear);
+    long difference = (minuendYear - subtrahendYear) * ((long) iMax) + minuendMonth - subtrahendMonth;
+    // Before adjusting for remainder, account for special case of add
+    // where the day-of-month is forced to the nearest sane value.
+    int minuendDom = iChronology.getDayOfMonth(minuendInstant, minuendYear, minuendMonth);
+    if (minuendDom == iChronology.getDaysInYearMonth(minuendYear, minuendMonth)) {
+        // Last day of the minuend month...
+        int subtrahendDom = iChronology.getDayOfMonth(subtrahendInstant, subtrahendYear, subtrahendMonth);
+        if (subtrahendDom > minuendDom) {
+            // ...and day of subtrahend month is larger.
+            // Note: This works fine, but it ideally shouldn't invoke other
+            // fields from within a field.
+            subtrahendInstant = iChronology.dayOfMonth().set(subtrahendInstant, minuendDom);
+        }
+    }
+    // Inlined remainder method to avoid duplicate calls.
+    long minuendRem = minuendInstant - iChronology.getYearMonthMillis(minuendYear, minuendMonth);
+    long subtrahendRem = subtrahendInstant - iChronology.getYearMonthMillis(subtrahendYear, subtrahendMonth);
+    if (minuendRem < subtrahendRem) {
+        difference--;
+    }
+    return difference;
+}","public void test011() throws Throwable {
+    GregorianChronology gregorianChronology0 = GregorianChronology.getInstance();
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(gregorianChronology0, 292272992);
+    long long0 = basicMonthOfYearDateTimeField0.getDifferenceAsLong((byte) 63, 768603731673597461L);
+    assertEquals((-292272991L), long0);
+}",""
+"public int getDifference(long minuendInstant, long subtrahendInstant) {
+    return FieldUtils.safeToInt(getDifferenceAsLong(minuendInstant, subtrahendInstant));
+}","public void test022() throws Throwable {
+    CopticChronology copticChronology0 = CopticChronology.getInstanceUTC();
+    GJMonthOfYearDateTimeField gJMonthOfYearDateTimeField0 = new GJMonthOfYearDateTimeField(copticChronology0);
+    int int0 = gJMonthOfYearDateTimeField0.getDifference((-51322291200000L), (-85L));
+    assertEquals((-21141), int0);
+}","/**
+ * Computes the difference between two instants, as measured in the units
+ * of this field. Any fractional units are dropped from the result. Calling
+ * getDifference reverses the effect of calling add. In the following code:
+ *
+ * <pre>
+ * long instant = ...
+ * int v = ...
+ * int age = getDifference(add(instant, v), instant);
+ * </pre>
+ *
+ * The value 'age' is the same as the value 'v'.
+ * <p>
+ * The default implementation call getDifferenceAsLong and converts the
+ * return value to an int.
+ *
+ * @param minuendInstant the milliseconds from 1970-01-01T00:00:00Z to
+ * subtract from
+ * @param subtrahendInstant the milliseconds from 1970-01-01T00:00:00Z to
+ * subtract off the minuend
+ * @return the difference in the units of this field
+ */"
+"//-----------------------------------------------------------------------
+public int[] add(ReadablePartial partial, int fieldIndex, int[] values, int valueToAdd) {
+    // overridden as superclass algorithm can't handle
+    // 2004-02-29 + 48 months -> 2008-02-29 type dates
+    if (valueToAdd == 0) {
+        return values;
+    }
+    // month is largest field and being added to, such as month-day
+    if (DateTimeUtils.isContiguous(partial)) {
+        long instant = 0L;
+        for (int i = 0, isize = partial.size(); i < isize; i++) {
+            instant = partial.getFieldType(i).getField(iChronology).set(instant, values[i]);
+        }
+        instant = add(instant, valueToAdd);
+        return iChronology.get(partial, instant);
+    } else {
+        return super.add(partial, fieldIndex, values, valueToAdd);
+    }
+}","public void test033() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis(1);
+    GregorianChronology gregorianChronology0 = GregorianChronology.getInstance(dateTimeZone0);
+    GJMonthOfYearDateTimeField gJMonthOfYearDateTimeField0 = new GJMonthOfYearDateTimeField(gregorianChronology0);
+    LocalDateTime localDateTime0 = LocalDateTime.now(dateTimeZone0);
+    int[] intArray0 = new int[8];
+    // Undeclared exception!
+    try {
+        gJMonthOfYearDateTimeField0.add((ReadablePartial) localDateTime0, 1, intArray0, 1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 0 for monthOfYear must be in the range [1,12]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+public long add(long instant, long months) {
+    int i_months = (int) months;
+    if (i_months == months) {
+        return add(instant, i_months);
+    }
+    // Copied from add(long, int) and modified slightly:
+    long timePart = iChronology.getMillisOfDay(instant);
+    int thisYear = iChronology.getYear(instant);
+    int thisMonth = iChronology.getMonthOfYear(instant, thisYear);
+    long yearToUse;
+    long monthToUse = thisMonth - 1 + months;
+    if (monthToUse >= 0) {
+        yearToUse = thisYear + (monthToUse / iMax);
+        monthToUse = (monthToUse % iMax) + 1;
+    } else {
+        yearToUse = thisYear + (monthToUse / iMax) - 1;
+        monthToUse = Math.abs(monthToUse);
+        int remMonthToUse = (int) (monthToUse % iMax);
+        if (remMonthToUse == 0) {
+            remMonthToUse = iMax;
+        }
+        monthToUse = iMax - remMonthToUse + 1;
+        if (monthToUse == 1) {
+            yearToUse += 1;
+        }
+    }
+    if (yearToUse < iChronology.getMinYear() || yearToUse > iChronology.getMaxYear()) {
+        throw new IllegalArgumentException(""Magnitude of add amount is too large: "" + months);
+    }
+    int i_yearToUse = (int) yearToUse;
+    int i_monthToUse = (int) monthToUse;
+    int dayToUse = iChronology.getDayOfMonth(instant, thisYear, thisMonth);
+    int maxDay = iChronology.getDaysInYearMonth(i_yearToUse, i_monthToUse);
+    if (dayToUse > maxDay) {
+        dayToUse = maxDay;
+    }
+    long datePart = iChronology.getYearMonthDayMillis(i_yearToUse, i_monthToUse, dayToUse);
+    return datePart + timePart;
+}","public void test044() throws Throwable {
+    JulianChronology julianChronology0 = JulianChronology.getInstanceUTC();
+    GJMonthOfYearDateTimeField gJMonthOfYearDateTimeField0 = new GJMonthOfYearDateTimeField(julianChronology0);
+    // Undeclared exception!
+    try {
+        gJMonthOfYearDateTimeField0.add(1555201218L, (-9223372036854775808L));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Magnitude of add amount is too large: -9223372036854775808
+        //
+        verifyException(""org.joda.time.chrono.BasicMonthOfYearDateTimeField"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Returns a copy of this date with the specified period added.
+ * <p>
+ * If the amount is zero or null, then <code>this</code> is returned.
+ * <p>
+ * This method is typically used to add complex period instances.
+ * Adding one field is best achieved using methods
+ * like {@link #plusYears(int)}.
+ * <p>
+ * Unsupported time fields are ignored, thus adding a period of 24 hours
+ * will not have any effect.
+ *
+ * @param period  the period to add to this one, null means zero
+ * @return a copy of this date with the period added
+ * @throws ArithmeticException if the result exceeds the internal capacity
+ */
+public LocalDate plus(ReadablePeriod period) {
+    return withPeriodAdded(period, 1);
+}","public void test055() throws Throwable {
+    Months months0 = Months.MAX_VALUE;
+    LocalDate localDate0 = LocalDate.now();
+    // Undeclared exception!
+    try {
+        localDate0.plus(months0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 20
+        //
+        verifyException(""org.joda.time.chrono.BasicGJChronology"", e);
+    }
+}",""
+"public LocalDateTime minusMonths(int months) {
+    if (months == 0) {
+        return this;
+    }
+    long instant = getChronology().months().subtract(getLocalMillis(), months);
+    return withLocalMillis(instant);
+}","public void test066() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis(1);
+    LocalDateTime localDateTime0 = LocalDateTime.now(dateTimeZone0);
+    LocalDateTime localDateTime1 = localDateTime0.minusMonths(1);
+    assertNotSame(localDateTime1, localDateTime0);
+}","/**
+ * Returns a copy of this datetime minus the specified number of months.
+ * <p>
+ * This LocalDateTime instance is immutable and unaffected by this method call.
+ * <p>
+ * The following three lines are identical in effect:
+ * <pre>
+ * LocalDateTime subtracted = dt.minusMonths(6);
+ * LocalDateTime subtracted = dt.minus(Period.months(6));
+ * LocalDateTime subtracted = dt.withFieldAdded(DurationFieldType.months(), -6);
+ * </pre>
+ *
+ * @param months  the amount of months to subtract, may be negative
+ * @return the new LocalDateTime minus the increased months
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Set the Month component of the specified time instant.<p>
+ * If the new month has less total days than the specified
+ * day of the month, this value is coerced to the nearest
+ * sane value. e.g.<p>
+ * 07-31 to month 6 = 06-30<p>
+ * 03-31 to month 2 = 02-28 or 02-29 depending<p>
+ *
+ * @param instant  the time instant in millis to update.
+ * @param month  the month (1,12) to update the time to.
+ * @return the updated time instant.
+ * @throws IllegalArgumentException  if month is invalid
+ */
+public long set(long instant, int month) {
+    FieldUtils.verifyValueBounds(this, month, MIN, iMax);
+    //
+    int thisYear = iChronology.getYear(instant);
+    //
+    int thisDom = iChronology.getDayOfMonth(instant, thisYear);
+    int maxDom = iChronology.getDaysInYearMonth(thisYear, month);
+    if (thisDom > maxDom) {
+        // Quietly force DOM to nearest sane value.
+        thisDom = maxDom;
+    }
+    // Return newly calculated millis value
+    return iChronology.getYearMonthDayMillis(thisYear, month, thisDom) + iChronology.getMillisOfDay(instant);
+}","public void test077() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis(1);
+    GregorianChronology gregorianChronology0 = GregorianChronology.getInstance(dateTimeZone0);
+    GJMonthOfYearDateTimeField gJMonthOfYearDateTimeField0 = new GJMonthOfYearDateTimeField(gregorianChronology0);
+    long long0 = gJMonthOfYearDateTimeField0.set(0L, 1);
+    assertEquals(0L, long0);
+}",""
+"//-----------------------------------------------------------------------
+public long roundFloor(long instant) {
+    int year = iChronology.getYear(instant);
+    int month = iChronology.getMonthOfYear(instant, year);
+    return iChronology.getYearMonthMillis(year, month);
+}","public void test088() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    GregorianChronology gregorianChronology0 = GregorianChronology.getInstance(dateTimeZone0);
+    GJMonthOfYearDateTimeField gJMonthOfYearDateTimeField0 = new GJMonthOfYearDateTimeField(gregorianChronology0);
+    long long0 = gJMonthOfYearDateTimeField0.roundFloor(0L);
+    assertEquals(0L, long0);
+}",""
+"//-----------------------------------------------------------------------
+public long roundFloor(long instant) {
+    int year = iChronology.getYear(instant);
+    int month = iChronology.getMonthOfYear(instant, year);
+    return iChronology.getYearMonthMillis(year, month);
+}","public void test099() throws Throwable {
+    JulianChronology julianChronology0 = JulianChronology.getInstanceUTC();
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(julianChronology0, 93);
+    long long0 = basicMonthOfYearDateTimeField0.roundFloor(1555200012L);
+    assertEquals(1123200000L, long0);
+}",""
+"//-----------------------------------------------------------------------
+public long remainder(long instant) {
+    return instant - roundFloor(instant);
+}","public void test1010() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis(108);
+    GregorianChronology gregorianChronology0 = GregorianChronology.getInstance(dateTimeZone0);
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(gregorianChronology0, 1519);
+    long long0 = basicMonthOfYearDateTimeField0.remainder(0L);
+    assertEquals(0L, long0);
+}",""
+"//-----------------------------------------------------------------------
+public long remainder(long instant) {
+    return instant - roundFloor(instant);
+}","public void test1111() throws Throwable {
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstance();
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(islamicChronology0, 1);
+    long long0 = basicMonthOfYearDateTimeField0.remainder((-59231164377600000L));
+    assertEquals((-1123200000L), long0);
+}",""
+"//-----------------------------------------------------------------------
+public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
+    if (minuendInstant < subtrahendInstant) {
+        return -getDifference(subtrahendInstant, minuendInstant);
+    }
+    int minuendYear = iChronology.getYear(minuendInstant);
+    int minuendMonth = iChronology.getMonthOfYear(minuendInstant, minuendYear);
+    int subtrahendYear = iChronology.getYear(subtrahendInstant);
+    int subtrahendMonth = iChronology.getMonthOfYear(subtrahendInstant, subtrahendYear);
+    long difference = (minuendYear - subtrahendYear) * ((long) iMax) + minuendMonth - subtrahendMonth;
+    // Before adjusting for remainder, account for special case of add
+    // where the day-of-month is forced to the nearest sane value.
+    int minuendDom = iChronology.getDayOfMonth(minuendInstant, minuendYear, minuendMonth);
+    if (minuendDom == iChronology.getDaysInYearMonth(minuendYear, minuendMonth)) {
+        // Last day of the minuend month...
+        int subtrahendDom = iChronology.getDayOfMonth(subtrahendInstant, subtrahendYear, subtrahendMonth);
+        if (subtrahendDom > minuendDom) {
+            // ...and day of subtrahend month is larger.
+            // Note: This works fine, but it ideally shouldn't invoke other
+            // fields from within a field.
+            subtrahendInstant = iChronology.dayOfMonth().set(subtrahendInstant, minuendDom);
+        }
+    }
+    // Inlined remainder method to avoid duplicate calls.
+    long minuendRem = minuendInstant - iChronology.getYearMonthMillis(minuendYear, minuendMonth);
+    long subtrahendRem = subtrahendInstant - iChronology.getYearMonthMillis(subtrahendYear, subtrahendMonth);
+    if (minuendRem < subtrahendRem) {
+        difference--;
+    }
+    return difference;
+}","public void test1212() throws Throwable {
+    CopticChronology copticChronology0 = CopticChronology.getInstanceUTC();
+    GJMonthOfYearDateTimeField gJMonthOfYearDateTimeField0 = new GJMonthOfYearDateTimeField(copticChronology0);
+    long long0 = gJMonthOfYearDateTimeField0.getDifferenceAsLong(858L, 31083597720000L);
+    assertEquals((-12804L), long0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Add to the Month component of the specified time instant
+ * wrapping around within that component if necessary.
+ *
+ * @see org.joda.time.DateTimeField#addWrapField
+ * @param instant  the time instant in millis to update.
+ * @param months  the months to add (can be negative).
+ * @return the updated time instant.
+ */
+public long addWrapField(long instant, int months) {
+    return set(instant, FieldUtils.getWrappedValue(get(instant), months, MIN, iMax));
+}","public void test1313() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstanceUTC();
+    DateTimeZone dateTimeZone0 = buddhistChronology0.getZone();
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstance(dateTimeZone0);
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(islamicChronology0, 0);
+    long long0 = basicMonthOfYearDateTimeField0.addWrapField((long) 0, 0);
+    assertEquals(0L, long0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Add to the Month component of the specified time instant
+ * wrapping around within that component if necessary.
+ *
+ * @see org.joda.time.DateTimeField#addWrapField
+ * @param instant  the time instant in millis to update.
+ * @param months  the months to add (can be negative).
+ * @return the updated time instant.
+ */
+public long addWrapField(long instant, int months) {
+    return set(instant, FieldUtils.getWrappedValue(get(instant), months, MIN, iMax));
+}","public void test1414() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstanceUTC();
+    DateTimeZone dateTimeZone0 = buddhistChronology0.getZone();
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstance(dateTimeZone0);
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(islamicChronology0, 0);
+    long long0 = basicMonthOfYearDateTimeField0.addWrapField(10000000L, 1);
+    assertEquals(2515600000L, long0);
+}",""
+"//-----------------------------------------------------------------------
+public int getMinimumValue() {
+    return MIN;
+}","public void test1515() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    CopticChronology copticChronology0 = CopticChronology.getInstance((DateTimeZone) fixedDateTimeZone0);
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(copticChronology0, (-1));
+    MonthDay monthDay0 = new MonthDay(1, 1);
+    basicMonthOfYearDateTimeField0.add((ReadablePartial) monthDay0, 1868, (int[]) null, 0);
+    assertEquals(1, basicMonthOfYearDateTimeField0.getMinimumValue());
+}",""
+"//-----------------------------------------------------------------------
+public int getMaximumValue() {
+    return iMax;
+}","public void test1516() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    CopticChronology copticChronology0 = CopticChronology.getInstance((DateTimeZone) fixedDateTimeZone0);
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(copticChronology0, (-1));
+    MonthDay monthDay0 = new MonthDay(1, 1);
+    basicMonthOfYearDateTimeField0.add((ReadablePartial) monthDay0, 1868, (int[]) null, 0);
+    assertEquals(13, basicMonthOfYearDateTimeField0.getMaximumValue());
+}",""
+"//-----------------------------------------------------------------------
+public long add(long instant, long months) {
+    int i_months = (int) months;
+    if (i_months == months) {
+        return add(instant, i_months);
+    }
+    // Copied from add(long, int) and modified slightly:
+    long timePart = iChronology.getMillisOfDay(instant);
+    int thisYear = iChronology.getYear(instant);
+    int thisMonth = iChronology.getMonthOfYear(instant, thisYear);
+    long yearToUse;
+    long monthToUse = thisMonth - 1 + months;
+    if (monthToUse >= 0) {
+        yearToUse = thisYear + (monthToUse / iMax);
+        monthToUse = (monthToUse % iMax) + 1;
+    } else {
+        yearToUse = thisYear + (monthToUse / iMax) - 1;
+        monthToUse = Math.abs(monthToUse);
+        int remMonthToUse = (int) (monthToUse % iMax);
+        if (remMonthToUse == 0) {
+            remMonthToUse = iMax;
+        }
+        monthToUse = iMax - remMonthToUse + 1;
+        if (monthToUse == 1) {
+            yearToUse += 1;
+        }
+    }
+    if (yearToUse < iChronology.getMinYear() || yearToUse > iChronology.getMaxYear()) {
+        throw new IllegalArgumentException(""Magnitude of add amount is too large: "" + months);
+    }
+    int i_yearToUse = (int) yearToUse;
+    int i_monthToUse = (int) monthToUse;
+    int dayToUse = iChronology.getDayOfMonth(instant, thisYear, thisMonth);
+    int maxDay = iChronology.getDaysInYearMonth(i_yearToUse, i_monthToUse);
+    if (dayToUse > maxDay) {
+        dayToUse = maxDay;
+    }
+    long datePart = iChronology.getYearMonthDayMillis(i_yearToUse, i_monthToUse, dayToUse);
+    return datePart + timePart;
+}","public void test1617() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstanceUTC();
+    DateTimeZone dateTimeZone0 = buddhistChronology0.getZone();
+    CopticChronology copticChronology0 = CopticChronology.getInstance(dateTimeZone0, 1);
+    GJMonthOfYearDateTimeField gJMonthOfYearDateTimeField0 = new GJMonthOfYearDateTimeField(copticChronology0);
+    long long0 = gJMonthOfYearDateTimeField0.add(0L, 0L);
+    assertEquals(0L, long0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Add the specified month to the specified time instant.
+ * The amount added may be negative.<p>
+ * If the new month has less total days than the specified
+ * day of the month, this value is coerced to the nearest
+ * sane value. e.g.<p>
+ * 07-31 - (1 month) = 06-30<p>
+ * 03-31 - (1 month) = 02-28 or 02-29 depending<p>
+ *
+ * @see org.joda.time.DateTimeField#add
+ * @see org.joda.time.ReadWritableDateTime#addMonths(int)
+ * @param instant  the time instant in millis to update.
+ * @param months  the months to add (can be negative).
+ * @return the updated time instant.
+ */
+public long add(long instant, int months) {
+    if (months == 0) {
+        // the easy case
+        return instant;
+    }
+    //
+    // Save time part first.
+    //
+    long timePart = iChronology.getMillisOfDay(instant);
+    //
+    //
+    // Get this year and month.
+    //
+    int thisYear = iChronology.getYear(instant);
+    int thisMonth = iChronology.getMonthOfYear(instant, thisYear);
+    // ----------------------------------------------------------
+    //
+    // Do not refactor without careful consideration.
+    // Order of calculation is important.
+    //
+    int yearToUse;
+    // Initially, monthToUse is zero-based
+    int monthToUse = thisMonth - 1 + months;
+    if (monthToUse >= 0) {
+        yearToUse = thisYear + (monthToUse / iMax);
+        monthToUse = (monthToUse % iMax) + 1;
+    } else {
+        yearToUse = thisYear + (monthToUse / iMax) - 1;
+        monthToUse = Math.abs(monthToUse);
+        int remMonthToUse = monthToUse % iMax;
+        // Take care of the boundary condition
+        if (remMonthToUse == 0) {
+            remMonthToUse = iMax;
+        }
+        monthToUse = iMax - remMonthToUse + 1;
+        // Take care of the boundary condition
+        if (monthToUse == 1) {
+            yearToUse += 1;
+        }
+    }
+    // End of do not refactor.
+    // ----------------------------------------------------------
+    //
+    // Quietly force DOM to nearest sane value.
+    //
+    int dayToUse = iChronology.getDayOfMonth(instant, thisYear, thisMonth);
+    int maxDay = iChronology.getDaysInYearMonth(yearToUse, monthToUse);
+    if (dayToUse > maxDay) {
+        dayToUse = maxDay;
+    }
+    //
+    // get proper date part, and return result
+    //
+    long datePart = iChronology.getYearMonthDayMillis(yearToUse, monthToUse, dayToUse);
+    return datePart + timePart;
+}","public void test1718() throws Throwable {
+    JulianChronology julianChronology0 = JulianChronology.getInstanceUTC();
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(julianChronology0, 0);
+    long long0 = basicMonthOfYearDateTimeField0.add(0L, 0);
+    assertEquals(0L, long0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Set the Month component of the specified time instant.<p>
+ * If the new month has less total days than the specified
+ * day of the month, this value is coerced to the nearest
+ * sane value. e.g.<p>
+ * 07-31 to month 6 = 06-30<p>
+ * 03-31 to month 2 = 02-28 or 02-29 depending<p>
+ *
+ * @param instant  the time instant in millis to update.
+ * @param month  the month (1,12) to update the time to.
+ * @return the updated time instant.
+ * @throws IllegalArgumentException  if month is invalid
+ */
+public long set(long instant, int month) {
+    FieldUtils.verifyValueBounds(this, month, MIN, iMax);
+    //
+    int thisYear = iChronology.getYear(instant);
+    //
+    int thisDom = iChronology.getDayOfMonth(instant, thisYear);
+    int maxDom = iChronology.getDaysInYearMonth(thisYear, month);
+    if (thisDom > maxDom) {
+        // Quietly force DOM to nearest sane value.
+        thisDom = maxDom;
+    }
+    // Return newly calculated millis value
+    return iChronology.getYearMonthDayMillis(thisYear, month, thisDom) + iChronology.getMillisOfDay(instant);
+}","public void test1819() throws Throwable {
+    CopticChronology copticChronology0 = CopticChronology.getInstance();
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(copticChronology0, (-84));
+    // Undeclared exception!
+    try {
+        basicMonthOfYearDateTimeField0.set(0L, (-1));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value -1 for monthOfYear must be in the range [1,13]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+public long remainder(long instant) {
+    return instant - roundFloor(instant);
+}","public void test1920() throws Throwable {
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstance((DateTimeZone) null);
+    GJMonthOfYearDateTimeField gJMonthOfYearDateTimeField0 = new GJMonthOfYearDateTimeField(islamicChronology0);
+    // Undeclared exception!
+    try {
+        gJMonthOfYearDateTimeField0.remainder((-9223372036854775808L));
+        fail(""Expecting exception: ArithmeticException"");
+    } catch (ArithmeticException e) {
+        //
+        // Year is too small: -301245869 < -292269337
+        //
+        verifyException(""org.joda.time.chrono.IslamicChronology"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+public int getLeapAmount(long instant) {
+    return isLeap(instant) ? 1 : 0;
+}","public void test2021() throws Throwable {
+    EthiopicChronology ethiopicChronology0 = EthiopicChronology.getInstanceUTC();
+    IslamicChronology islamicChronology0 = new IslamicChronology(ethiopicChronology0, (Object) null, (IslamicChronology.LeapYearPatternType) null);
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(islamicChronology0, 15356250);
+    // Undeclared exception!
+    try {
+        basicMonthOfYearDateTimeField0.getLeapAmount(423L);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.chrono.IslamicChronology"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
+    if (minuendInstant < subtrahendInstant) {
+        return -getDifference(subtrahendInstant, minuendInstant);
+    }
+    int minuendYear = iChronology.getYear(minuendInstant);
+    int minuendMonth = iChronology.getMonthOfYear(minuendInstant, minuendYear);
+    int subtrahendYear = iChronology.getYear(subtrahendInstant);
+    int subtrahendMonth = iChronology.getMonthOfYear(subtrahendInstant, subtrahendYear);
+    long difference = (minuendYear - subtrahendYear) * ((long) iMax) + minuendMonth - subtrahendMonth;
+    // Before adjusting for remainder, account for special case of add
+    // where the day-of-month is forced to the nearest sane value.
+    int minuendDom = iChronology.getDayOfMonth(minuendInstant, minuendYear, minuendMonth);
+    if (minuendDom == iChronology.getDaysInYearMonth(minuendYear, minuendMonth)) {
+        // Last day of the minuend month...
+        int subtrahendDom = iChronology.getDayOfMonth(subtrahendInstant, subtrahendYear, subtrahendMonth);
+        if (subtrahendDom > minuendDom) {
+            // ...and day of subtrahend month is larger.
+            // Note: This works fine, but it ideally shouldn't invoke other
+            // fields from within a field.
+            subtrahendInstant = iChronology.dayOfMonth().set(subtrahendInstant, minuendDom);
+        }
+    }
+    // Inlined remainder method to avoid duplicate calls.
+    long minuendRem = minuendInstant - iChronology.getYearMonthMillis(minuendYear, minuendMonth);
+    long subtrahendRem = subtrahendInstant - iChronology.getYearMonthMillis(subtrahendYear, subtrahendMonth);
+    if (minuendRem < subtrahendRem) {
+        difference--;
+    }
+    return difference;
+}","public void test2122() throws Throwable {
+    TimeZone timeZone0 = TimeZone.getTimeZone("""");
+    DateTimeZone dateTimeZone0 = DateTimeZone.forTimeZone(timeZone0);
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstance(dateTimeZone0);
+    GJMonthOfYearDateTimeField gJMonthOfYearDateTimeField0 = new GJMonthOfYearDateTimeField(islamicChronology0);
+    // Undeclared exception!
+    try {
+        gJMonthOfYearDateTimeField0.getDifferenceAsLong((-9223372036854775808L), 1);
+        fail(""Expecting exception: ArithmeticException"");
+    } catch (ArithmeticException e) {
+        //
+        // Year is too small: -301245869 < -292269337
+        //
+        verifyException(""org.joda.time.chrono.IslamicChronology"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Get the Month component of the specified time instant.
+ *
+ * @see org.joda.time.DateTimeField#get(long)
+ * @see org.joda.time.ReadableDateTime#getMonthOfYear()
+ * @param instant  the time instant in millis to query.
+ * @return the month extracted from the input.
+ */
+public int get(long instant) {
+    return iChronology.getMonthOfYear(instant);
+}","public void test2223() throws Throwable {
+    GregorianChronology gregorianChronology0 = GregorianChronology.getInstance();
+    IslamicChronology islamicChronology0 = new IslamicChronology(gregorianChronology0, gregorianChronology0, (IslamicChronology.LeapYearPatternType) null);
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(islamicChronology0, 70);
+    // Undeclared exception!
+    try {
+        basicMonthOfYearDateTimeField0.get(1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.chrono.IslamicChronology"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+public int[] add(ReadablePartial partial, int fieldIndex, int[] values, int valueToAdd) {
+    // overridden as superclass algorithm can't handle
+    // 2004-02-29 + 48 months -> 2008-02-29 type dates
+    if (valueToAdd == 0) {
+        return values;
+    }
+    // month is largest field and being added to, such as month-day
+    if (DateTimeUtils.isContiguous(partial)) {
+        long instant = 0L;
+        for (int i = 0, isize = partial.size(); i < isize; i++) {
+            instant = partial.getFieldType(i).getField(iChronology).set(instant, values[i]);
+        }
+        instant = add(instant, valueToAdd);
+        return iChronology.get(partial, instant);
+    } else {
+        return super.add(partial, fieldIndex, values, valueToAdd);
+    }
+}","public void test2324() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance();
+    DateTimeZone dateTimeZone0 = buddhistChronology0.getZone();
+    GregorianChronology gregorianChronology0 = GregorianChronology.getInstance(dateTimeZone0);
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(gregorianChronology0, 1);
+    LocalTime localTime0 = new LocalTime((long) (-1657), dateTimeZone0);
+    int[] intArray0 = new int[3];
+    intArray0[0] = (-2982);
+    // Undeclared exception!
+    try {
+        basicMonthOfYearDateTimeField0.add((ReadablePartial) localTime0, 2491, intArray0, (-889));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value -2982 for hourOfDay must be in the range [0,23]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+public int[] add(ReadablePartial partial, int fieldIndex, int[] values, int valueToAdd) {
+    // overridden as superclass algorithm can't handle
+    // 2004-02-29 + 48 months -> 2008-02-29 type dates
+    if (valueToAdd == 0) {
+        return values;
+    }
+    // month is largest field and being added to, such as month-day
+    if (DateTimeUtils.isContiguous(partial)) {
+        long instant = 0L;
+        for (int i = 0, isize = partial.size(); i < isize; i++) {
+            instant = partial.getFieldType(i).getField(iChronology).set(instant, values[i]);
+        }
+        instant = add(instant, valueToAdd);
+        return iChronology.get(partial, instant);
+    } else {
+        return super.add(partial, fieldIndex, values, valueToAdd);
+    }
+}","public void test2425() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis((-2290));
+    CopticChronology copticChronology0 = CopticChronology.getInstance(dateTimeZone0);
+    GJMonthOfYearDateTimeField gJMonthOfYearDateTimeField0 = new GJMonthOfYearDateTimeField(copticChronology0);
+    LocalDate localDate0 = LocalDate.now();
+    // Undeclared exception!
+    try {
+        gJMonthOfYearDateTimeField0.add((ReadablePartial) localDate0, 1, (int[]) null, (-2290));
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.chrono.BasicMonthOfYearDateTimeField"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+public int[] add(ReadablePartial partial, int fieldIndex, int[] values, int valueToAdd) {
+    // overridden as superclass algorithm can't handle
+    // 2004-02-29 + 48 months -> 2008-02-29 type dates
+    if (valueToAdd == 0) {
+        return values;
+    }
+    // month is largest field and being added to, such as month-day
+    if (DateTimeUtils.isContiguous(partial)) {
+        long instant = 0L;
+        for (int i = 0, isize = partial.size(); i < isize; i++) {
+            instant = partial.getFieldType(i).getField(iChronology).set(instant, values[i]);
+        }
+        instant = add(instant, valueToAdd);
+        return iChronology.get(partial, instant);
+    } else {
+        return super.add(partial, fieldIndex, values, valueToAdd);
+    }
+}","public void test2526() throws Throwable {
+    EthiopicChronology ethiopicChronology0 = EthiopicChronology.getInstanceUTC();
+    GJMonthOfYearDateTimeField gJMonthOfYearDateTimeField0 = new GJMonthOfYearDateTimeField(ethiopicChronology0);
+    int[] intArray0 = new int[3];
+    // Undeclared exception!
+    try {
+        gJMonthOfYearDateTimeField0.add((ReadablePartial) null, 2808, intArray0, 2808);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Partial must not be null
+        //
+        verifyException(""org.joda.time.DateTimeUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+public long add(long instant, long months) {
+    int i_months = (int) months;
+    if (i_months == months) {
+        return add(instant, i_months);
+    }
+    // Copied from add(long, int) and modified slightly:
+    long timePart = iChronology.getMillisOfDay(instant);
+    int thisYear = iChronology.getYear(instant);
+    int thisMonth = iChronology.getMonthOfYear(instant, thisYear);
+    long yearToUse;
+    long monthToUse = thisMonth - 1 + months;
+    if (monthToUse >= 0) {
+        yearToUse = thisYear + (monthToUse / iMax);
+        monthToUse = (monthToUse % iMax) + 1;
+    } else {
+        yearToUse = thisYear + (monthToUse / iMax) - 1;
+        monthToUse = Math.abs(monthToUse);
+        int remMonthToUse = (int) (monthToUse % iMax);
+        if (remMonthToUse == 0) {
+            remMonthToUse = iMax;
+        }
+        monthToUse = iMax - remMonthToUse + 1;
+        if (monthToUse == 1) {
+            yearToUse += 1;
+        }
+    }
+    if (yearToUse < iChronology.getMinYear() || yearToUse > iChronology.getMaxYear()) {
+        throw new IllegalArgumentException(""Magnitude of add amount is too large: "" + months);
+    }
+    int i_yearToUse = (int) yearToUse;
+    int i_monthToUse = (int) monthToUse;
+    int dayToUse = iChronology.getDayOfMonth(instant, thisYear, thisMonth);
+    int maxDay = iChronology.getDaysInYearMonth(i_yearToUse, i_monthToUse);
+    if (dayToUse > maxDay) {
+        dayToUse = maxDay;
+    }
+    long datePart = iChronology.getYearMonthDayMillis(i_yearToUse, i_monthToUse, dayToUse);
+    return datePart + timePart;
+}","public void test2627() throws Throwable {
+    EthiopicChronology ethiopicChronology0 = EthiopicChronology.getInstanceUTC();
+    IslamicChronology islamicChronology0 = new IslamicChronology(ethiopicChronology0, (Object) null, (IslamicChronology.LeapYearPatternType) null);
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(islamicChronology0, 15356250);
+    // Undeclared exception!
+    try {
+        basicMonthOfYearDateTimeField0.add((long) 1, 423L);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.chrono.IslamicChronology"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Add the specified month to the specified time instant.
+ * The amount added may be negative.<p>
+ * If the new month has less total days than the specified
+ * day of the month, this value is coerced to the nearest
+ * sane value. e.g.<p>
+ * 07-31 - (1 month) = 06-30<p>
+ * 03-31 - (1 month) = 02-28 or 02-29 depending<p>
+ *
+ * @see org.joda.time.DateTimeField#add
+ * @see org.joda.time.ReadWritableDateTime#addMonths(int)
+ * @param instant  the time instant in millis to update.
+ * @param months  the months to add (can be negative).
+ * @return the updated time instant.
+ */
+public long add(long instant, int months) {
+    if (months == 0) {
+        // the easy case
+        return instant;
+    }
+    //
+    // Save time part first.
+    //
+    long timePart = iChronology.getMillisOfDay(instant);
+    //
+    //
+    // Get this year and month.
+    //
+    int thisYear = iChronology.getYear(instant);
+    int thisMonth = iChronology.getMonthOfYear(instant, thisYear);
+    // ----------------------------------------------------------
+    //
+    // Do not refactor without careful consideration.
+    // Order of calculation is important.
+    //
+    int yearToUse;
+    // Initially, monthToUse is zero-based
+    int monthToUse = thisMonth - 1 + months;
+    if (monthToUse >= 0) {
+        yearToUse = thisYear + (monthToUse / iMax);
+        monthToUse = (monthToUse % iMax) + 1;
+    } else {
+        yearToUse = thisYear + (monthToUse / iMax) - 1;
+        monthToUse = Math.abs(monthToUse);
+        int remMonthToUse = monthToUse % iMax;
+        // Take care of the boundary condition
+        if (remMonthToUse == 0) {
+            remMonthToUse = iMax;
+        }
+        monthToUse = iMax - remMonthToUse + 1;
+        // Take care of the boundary condition
+        if (monthToUse == 1) {
+            yearToUse += 1;
+        }
+    }
+    // End of do not refactor.
+    // ----------------------------------------------------------
+    //
+    // Quietly force DOM to nearest sane value.
+    //
+    int dayToUse = iChronology.getDayOfMonth(instant, thisYear, thisMonth);
+    int maxDay = iChronology.getDaysInYearMonth(yearToUse, monthToUse);
+    if (dayToUse > maxDay) {
+        dayToUse = maxDay;
+    }
+    //
+    // get proper date part, and return result
+    //
+    long datePart = iChronology.getYearMonthDayMillis(yearToUse, monthToUse, dayToUse);
+    return datePart + timePart;
+}","public void test2728() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstanceUTC();
+    Object object0 = new Object();
+    IslamicChronology islamicChronology0 = new IslamicChronology(gJChronology0, object0, (IslamicChronology.LeapYearPatternType) null);
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(islamicChronology0, 1);
+    // Undeclared exception!
+    try {
+        basicMonthOfYearDateTimeField0.add((long) 1, (-401));
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.chrono.IslamicChronology"", e);
+    }
+}",""
+"BasicMonthOfYearDateTimeField(BasicChronology chronology, int leapMonth) {
+    super(DateTimeFieldType.monthOfYear(), chronology.getAverageMillisPerMonth());
+    iChronology = chronology;
+    iMax = iChronology.getMaxMonth();
+    iLeapMonth = leapMonth;
+}","public void test2829() throws Throwable {
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = null;
+    try {
+        basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField((BasicChronology) null, 2028);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.chrono.BasicMonthOfYearDateTimeField"", e);
+    }
+}","/**
+ * Restricted constructor.
+ *
+ * @param leapMonth the month of year that leaps
+ */"
+"//-----------------------------------------------------------------------
+public boolean isLeap(long instant) {
+    int thisYear = iChronology.getYear(instant);
+    if (iChronology.isLeapYear(thisYear)) {
+        return (iChronology.getMonthOfYear(instant, thisYear) == iLeapMonth);
+    }
+    return false;
+}","public void test2930() throws Throwable {
+    CopticChronology copticChronology0 = CopticChronology.getInstanceUTC();
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(copticChronology0, 1);
+    boolean boolean0 = basicMonthOfYearDateTimeField0.isLeap((-2500847999999L));
+    assertTrue(boolean0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Set the Month component of the specified time instant.<p>
+ * If the new month has less total days than the specified
+ * day of the month, this value is coerced to the nearest
+ * sane value. e.g.<p>
+ * 07-31 to month 6 = 06-30<p>
+ * 03-31 to month 2 = 02-28 or 02-29 depending<p>
+ *
+ * @param instant  the time instant in millis to update.
+ * @param month  the month (1,12) to update the time to.
+ * @return the updated time instant.
+ * @throws IllegalArgumentException  if month is invalid
+ */
+public long set(long instant, int month) {
+    FieldUtils.verifyValueBounds(this, month, MIN, iMax);
+    //
+    int thisYear = iChronology.getYear(instant);
+    //
+    int thisDom = iChronology.getDayOfMonth(instant, thisYear);
+    int maxDom = iChronology.getDaysInYearMonth(thisYear, month);
+    if (thisDom > maxDom) {
+        // Quietly force DOM to nearest sane value.
+        thisDom = maxDom;
+    }
+    // Return newly calculated millis value
+    return iChronology.getYearMonthDayMillis(thisYear, month, thisDom) + iChronology.getMillisOfDay(instant);
+}","public void test3031() throws Throwable {
+    CopticChronology copticChronology0 = CopticChronology.getInstance();
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(copticChronology0, 1);
+    long long0 = basicMonthOfYearDateTimeField0.set((long) 1, 1);
+    assertEquals((-7775999999L), long0);
+}",""
+"//-----------------------------------------------------------------------
+public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
+    if (minuendInstant < subtrahendInstant) {
+        return -getDifference(subtrahendInstant, minuendInstant);
+    }
+    int minuendYear = iChronology.getYear(minuendInstant);
+    int minuendMonth = iChronology.getMonthOfYear(minuendInstant, minuendYear);
+    int subtrahendYear = iChronology.getYear(subtrahendInstant);
+    int subtrahendMonth = iChronology.getMonthOfYear(subtrahendInstant, subtrahendYear);
+    long difference = (minuendYear - subtrahendYear) * ((long) iMax) + minuendMonth - subtrahendMonth;
+    // Before adjusting for remainder, account for special case of add
+    // where the day-of-month is forced to the nearest sane value.
+    int minuendDom = iChronology.getDayOfMonth(minuendInstant, minuendYear, minuendMonth);
+    if (minuendDom == iChronology.getDaysInYearMonth(minuendYear, minuendMonth)) {
+        // Last day of the minuend month...
+        int subtrahendDom = iChronology.getDayOfMonth(subtrahendInstant, subtrahendYear, subtrahendMonth);
+        if (subtrahendDom > minuendDom) {
+            // ...and day of subtrahend month is larger.
+            // Note: This works fine, but it ideally shouldn't invoke other
+            // fields from within a field.
+            subtrahendInstant = iChronology.dayOfMonth().set(subtrahendInstant, minuendDom);
+        }
+    }
+    // Inlined remainder method to avoid duplicate calls.
+    long minuendRem = minuendInstant - iChronology.getYearMonthMillis(minuendYear, minuendMonth);
+    long subtrahendRem = subtrahendInstant - iChronology.getYearMonthMillis(subtrahendYear, subtrahendMonth);
+    if (minuendRem < subtrahendRem) {
+        difference--;
+    }
+    return difference;
+}","public void test3132() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    GregorianChronology gregorianChronology0 = GregorianChronology.getInstance(dateTimeZone0);
+    GJMonthOfYearDateTimeField gJMonthOfYearDateTimeField0 = new GJMonthOfYearDateTimeField(gregorianChronology0);
+    long long0 = gJMonthOfYearDateTimeField0.getDifferenceAsLong(1L, 1L);
+    assertEquals(0L, long0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Add the specified month to the specified time instant.
+ * The amount added may be negative.<p>
+ * If the new month has less total days than the specified
+ * day of the month, this value is coerced to the nearest
+ * sane value. e.g.<p>
+ * 07-31 - (1 month) = 06-30<p>
+ * 03-31 - (1 month) = 02-28 or 02-29 depending<p>
+ *
+ * @see org.joda.time.DateTimeField#add
+ * @see org.joda.time.ReadWritableDateTime#addMonths(int)
+ * @param instant  the time instant in millis to update.
+ * @param months  the months to add (can be negative).
+ * @return the updated time instant.
+ */
+public long add(long instant, int months) {
+    if (months == 0) {
+        // the easy case
+        return instant;
+    }
+    //
+    // Save time part first.
+    //
+    long timePart = iChronology.getMillisOfDay(instant);
+    //
+    //
+    // Get this year and month.
+    //
+    int thisYear = iChronology.getYear(instant);
+    int thisMonth = iChronology.getMonthOfYear(instant, thisYear);
+    // ----------------------------------------------------------
+    //
+    // Do not refactor without careful consideration.
+    // Order of calculation is important.
+    //
+    int yearToUse;
+    // Initially, monthToUse is zero-based
+    int monthToUse = thisMonth - 1 + months;
+    if (monthToUse >= 0) {
+        yearToUse = thisYear + (monthToUse / iMax);
+        monthToUse = (monthToUse % iMax) + 1;
+    } else {
+        yearToUse = thisYear + (monthToUse / iMax) - 1;
+        monthToUse = Math.abs(monthToUse);
+        int remMonthToUse = monthToUse % iMax;
+        // Take care of the boundary condition
+        if (remMonthToUse == 0) {
+            remMonthToUse = iMax;
+        }
+        monthToUse = iMax - remMonthToUse + 1;
+        // Take care of the boundary condition
+        if (monthToUse == 1) {
+            yearToUse += 1;
+        }
+    }
+    // End of do not refactor.
+    // ----------------------------------------------------------
+    //
+    // Quietly force DOM to nearest sane value.
+    //
+    int dayToUse = iChronology.getDayOfMonth(instant, thisYear, thisMonth);
+    int maxDay = iChronology.getDaysInYearMonth(yearToUse, monthToUse);
+    if (dayToUse > maxDay) {
+        dayToUse = maxDay;
+    }
+    //
+    // get proper date part, and return result
+    //
+    long datePart = iChronology.getYearMonthDayMillis(yearToUse, monthToUse, dayToUse);
+    return datePart + timePart;
+}","public void test3233() throws Throwable {
+    JulianChronology julianChronology0 = JulianChronology.getInstanceUTC();
+    GJMonthOfYearDateTimeField gJMonthOfYearDateTimeField0 = new GJMonthOfYearDateTimeField(julianChronology0);
+    long long0 = gJMonthOfYearDateTimeField0.add((-1326L), (-1043));
+    assertEquals((-2742854401326L), long0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Add the specified month to the specified time instant.
+ * The amount added may be negative.<p>
+ * If the new month has less total days than the specified
+ * day of the month, this value is coerced to the nearest
+ * sane value. e.g.<p>
+ * 07-31 - (1 month) = 06-30<p>
+ * 03-31 - (1 month) = 02-28 or 02-29 depending<p>
+ *
+ * @see org.joda.time.DateTimeField#add
+ * @see org.joda.time.ReadWritableDateTime#addMonths(int)
+ * @param instant  the time instant in millis to update.
+ * @param months  the months to add (can be negative).
+ * @return the updated time instant.
+ */
+public long add(long instant, int months) {
+    if (months == 0) {
+        // the easy case
+        return instant;
+    }
+    //
+    // Save time part first.
+    //
+    long timePart = iChronology.getMillisOfDay(instant);
+    //
+    //
+    // Get this year and month.
+    //
+    int thisYear = iChronology.getYear(instant);
+    int thisMonth = iChronology.getMonthOfYear(instant, thisYear);
+    // ----------------------------------------------------------
+    //
+    // Do not refactor without careful consideration.
+    // Order of calculation is important.
+    //
+    int yearToUse;
+    // Initially, monthToUse is zero-based
+    int monthToUse = thisMonth - 1 + months;
+    if (monthToUse >= 0) {
+        yearToUse = thisYear + (monthToUse / iMax);
+        monthToUse = (monthToUse % iMax) + 1;
+    } else {
+        yearToUse = thisYear + (monthToUse / iMax) - 1;
+        monthToUse = Math.abs(monthToUse);
+        int remMonthToUse = monthToUse % iMax;
+        // Take care of the boundary condition
+        if (remMonthToUse == 0) {
+            remMonthToUse = iMax;
+        }
+        monthToUse = iMax - remMonthToUse + 1;
+        // Take care of the boundary condition
+        if (monthToUse == 1) {
+            yearToUse += 1;
+        }
+    }
+    // End of do not refactor.
+    // ----------------------------------------------------------
+    //
+    // Quietly force DOM to nearest sane value.
+    //
+    int dayToUse = iChronology.getDayOfMonth(instant, thisYear, thisMonth);
+    int maxDay = iChronology.getDaysInYearMonth(yearToUse, monthToUse);
+    if (dayToUse > maxDay) {
+        dayToUse = maxDay;
+    }
+    //
+    // get proper date part, and return result
+    //
+    long datePart = iChronology.getYearMonthDayMillis(yearToUse, monthToUse, dayToUse);
+    return datePart + timePart;
+}","public void test3334() throws Throwable {
+    GregorianChronology gregorianChronology0 = GregorianChronology.getInstanceUTC();
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(gregorianChronology0, 352831696);
+    long long0 = basicMonthOfYearDateTimeField0.add((long) 352831696, 2145871423);
+    assertEquals(5643096791508031696L, long0);
+}",""
+"//-----------------------------------------------------------------------
+public long roundFloor(long instant) {
+    int year = iChronology.getYear(instant);
+    int month = iChronology.getMonthOfYear(instant, year);
+    return iChronology.getYearMonthMillis(year, month);
+}","public void test3435() throws Throwable {
+    GregorianChronology gregorianChronology0 = GregorianChronology.getInstanceUTC();
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(gregorianChronology0, 352831696);
+    long long0 = basicMonthOfYearDateTimeField0.roundFloor((-1353L));
+    assertEquals((-2678400000L), long0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Get the Month component of the specified time instant.
+ *
+ * @see org.joda.time.DateTimeField#get(long)
+ * @see org.joda.time.ReadableDateTime#getMonthOfYear()
+ * @param instant  the time instant in millis to query.
+ * @return the month extracted from the input.
+ */
+public int get(long instant) {
+    return iChronology.getMonthOfYear(instant);
+}","public void test3536() throws Throwable {
+    GregorianChronology gregorianChronology0 = GregorianChronology.getInstanceUTC();
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(gregorianChronology0, 352831696);
+    int int0 = basicMonthOfYearDateTimeField0.get((-4442L));
+    assertEquals(12, int0);
+}",""
+"//-----------------------------------------------------------------------
+public DurationField getRangeDurationField() {
+    return iChronology.years();
+}","public void test3637() throws Throwable {
+    GregorianChronology gregorianChronology0 = GregorianChronology.getInstanceUTC();
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(gregorianChronology0, 352831696);
+    DurationField durationField0 = basicMonthOfYearDateTimeField0.getRangeDurationField();
+    assertNotNull(durationField0);
+}",""
+"//-----------------------------------------------------------------------
+public int getLeapAmount(long instant) {
+    return isLeap(instant) ? 1 : 0;
+}","public void test3738() throws Throwable {
+    GregorianChronology gregorianChronology0 = GregorianChronology.getInstanceUTC();
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(gregorianChronology0, 352831696);
+    int int0 = basicMonthOfYearDateTimeField0.getLeapAmount(0L);
+    assertEquals(0, int0);
+}",""
+"//-----------------------------------------------------------------------
+public boolean isLeap(long instant) {
+    int thisYear = iChronology.getYear(instant);
+    if (iChronology.isLeapYear(thisYear)) {
+        return (iChronology.getMonthOfYear(instant, thisYear) == iLeapMonth);
+    }
+    return false;
+}","public void test3839() throws Throwable {
+    JulianChronology julianChronology0 = JulianChronology.getInstanceUTC();
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(julianChronology0, 93);
+    boolean boolean0 = basicMonthOfYearDateTimeField0.isLeap((-59245776000000L));
+    assertFalse(boolean0);
+}",""
+"//-----------------------------------------------------------------------
+public int getLeapAmount(long instant) {
+    return isLeap(instant) ? 1 : 0;
+}","public void test3940() throws Throwable {
+    CopticChronology copticChronology0 = CopticChronology.getInstanceUTC();
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(copticChronology0, 1);
+    int int0 = basicMonthOfYearDateTimeField0.getLeapAmount((-2500847999999L));
+    assertEquals(1, int0);
+}",""
+"//-----------------------------------------------------------------------
+public boolean isLeap(long instant) {
+    int thisYear = iChronology.getYear(instant);
+    if (iChronology.isLeapYear(thisYear)) {
+        return (iChronology.getMonthOfYear(instant, thisYear) == iLeapMonth);
+    }
+    return false;
+}","public void test4041() throws Throwable {
+    JulianChronology julianChronology0 = JulianChronology.getInstanceUTC();
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(julianChronology0, 93);
+    boolean boolean0 = basicMonthOfYearDateTimeField0.isLeap(93);
+    assertFalse(boolean0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Set the Month component of the specified time instant.<p>
+ * If the new month has less total days than the specified
+ * day of the month, this value is coerced to the nearest
+ * sane value. e.g.<p>
+ * 07-31 to month 6 = 06-30<p>
+ * 03-31 to month 2 = 02-28 or 02-29 depending<p>
+ *
+ * @param instant  the time instant in millis to update.
+ * @param month  the month (1,12) to update the time to.
+ * @return the updated time instant.
+ * @throws IllegalArgumentException  if month is invalid
+ */
+public long set(long instant, int month) {
+    FieldUtils.verifyValueBounds(this, month, MIN, iMax);
+    //
+    int thisYear = iChronology.getYear(instant);
+    //
+    int thisDom = iChronology.getDayOfMonth(instant, thisYear);
+    int maxDom = iChronology.getDaysInYearMonth(thisYear, month);
+    if (thisDom > maxDom) {
+        // Quietly force DOM to nearest sane value.
+        thisDom = maxDom;
+    }
+    // Return newly calculated millis value
+    return iChronology.getYearMonthDayMillis(thisYear, month, thisDom) + iChronology.getMillisOfDay(instant);
+}","public void test4142() throws Throwable {
+    EthiopicChronology ethiopicChronology0 = EthiopicChronology.getInstanceUTC();
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(ethiopicChronology0, 1);
+    long long0 = basicMonthOfYearDateTimeField0.set(21260793600000L, 13);
+    assertEquals(21291638400000L, long0);
+}",""
+"//-----------------------------------------------------------------------
+public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
+    if (minuendInstant < subtrahendInstant) {
+        return -getDifference(subtrahendInstant, minuendInstant);
+    }
+    int minuendYear = iChronology.getYear(minuendInstant);
+    int minuendMonth = iChronology.getMonthOfYear(minuendInstant, minuendYear);
+    int subtrahendYear = iChronology.getYear(subtrahendInstant);
+    int subtrahendMonth = iChronology.getMonthOfYear(subtrahendInstant, subtrahendYear);
+    long difference = (minuendYear - subtrahendYear) * ((long) iMax) + minuendMonth - subtrahendMonth;
+    // Before adjusting for remainder, account for special case of add
+    // where the day-of-month is forced to the nearest sane value.
+    int minuendDom = iChronology.getDayOfMonth(minuendInstant, minuendYear, minuendMonth);
+    if (minuendDom == iChronology.getDaysInYearMonth(minuendYear, minuendMonth)) {
+        // Last day of the minuend month...
+        int subtrahendDom = iChronology.getDayOfMonth(subtrahendInstant, subtrahendYear, subtrahendMonth);
+        if (subtrahendDom > minuendDom) {
+            // ...and day of subtrahend month is larger.
+            // Note: This works fine, but it ideally shouldn't invoke other
+            // fields from within a field.
+            subtrahendInstant = iChronology.dayOfMonth().set(subtrahendInstant, minuendDom);
+        }
+    }
+    // Inlined remainder method to avoid duplicate calls.
+    long minuendRem = minuendInstant - iChronology.getYearMonthMillis(minuendYear, minuendMonth);
+    long subtrahendRem = subtrahendInstant - iChronology.getYearMonthMillis(subtrahendYear, subtrahendMonth);
+    if (minuendRem < subtrahendRem) {
+        difference--;
+    }
+    return difference;
+}","public void test4243() throws Throwable {
+    GregorianChronology gregorianChronology0 = GregorianChronology.getInstanceUTC();
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(gregorianChronology0, 1873);
+    long long0 = basicMonthOfYearDateTimeField0.getDifferenceAsLong((-1878L), (-2282));
+    assertEquals(0L, long0);
+}",""
+"//-----------------------------------------------------------------------
+public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
+    if (minuendInstant < subtrahendInstant) {
+        return -getDifference(subtrahendInstant, minuendInstant);
+    }
+    int minuendYear = iChronology.getYear(minuendInstant);
+    int minuendMonth = iChronology.getMonthOfYear(minuendInstant, minuendYear);
+    int subtrahendYear = iChronology.getYear(subtrahendInstant);
+    int subtrahendMonth = iChronology.getMonthOfYear(subtrahendInstant, subtrahendYear);
+    long difference = (minuendYear - subtrahendYear) * ((long) iMax) + minuendMonth - subtrahendMonth;
+    // Before adjusting for remainder, account for special case of add
+    // where the day-of-month is forced to the nearest sane value.
+    int minuendDom = iChronology.getDayOfMonth(minuendInstant, minuendYear, minuendMonth);
+    if (minuendDom == iChronology.getDaysInYearMonth(minuendYear, minuendMonth)) {
+        // Last day of the minuend month...
+        int subtrahendDom = iChronology.getDayOfMonth(subtrahendInstant, subtrahendYear, subtrahendMonth);
+        if (subtrahendDom > minuendDom) {
+            // ...and day of subtrahend month is larger.
+            // Note: This works fine, but it ideally shouldn't invoke other
+            // fields from within a field.
+            subtrahendInstant = iChronology.dayOfMonth().set(subtrahendInstant, minuendDom);
+        }
+    }
+    // Inlined remainder method to avoid duplicate calls.
+    long minuendRem = minuendInstant - iChronology.getYearMonthMillis(minuendYear, minuendMonth);
+    long subtrahendRem = subtrahendInstant - iChronology.getYearMonthMillis(subtrahendYear, subtrahendMonth);
+    if (minuendRem < subtrahendRem) {
+        difference--;
+    }
+    return difference;
+}","public void test4344() throws Throwable {
+    EthiopicChronology ethiopicChronology0 = EthiopicChronology.getInstanceUTC();
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(ethiopicChronology0, 1);
+    long long0 = basicMonthOfYearDateTimeField0.getDifferenceAsLong(21260102400000L, 2235);
+    assertEquals(8757L, long0);
+}",""
+"//-----------------------------------------------------------------------
+public int[] add(ReadablePartial partial, int fieldIndex, int[] values, int valueToAdd) {
+    // overridden as superclass algorithm can't handle
+    // 2004-02-29 + 48 months -> 2008-02-29 type dates
+    if (valueToAdd == 0) {
+        return values;
+    }
+    // month is largest field and being added to, such as month-day
+    if (DateTimeUtils.isContiguous(partial)) {
+        long instant = 0L;
+        for (int i = 0, isize = partial.size(); i < isize; i++) {
+            instant = partial.getFieldType(i).getField(iChronology).set(instant, values[i]);
+        }
+        instant = add(instant, valueToAdd);
+        return iChronology.get(partial, instant);
+    } else {
+        return super.add(partial, fieldIndex, values, valueToAdd);
+    }
+}","public void test4445() throws Throwable {
+    CopticChronology copticChronology0 = CopticChronology.getInstance();
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(copticChronology0, 1);
+    Partial partial0 = new Partial();
+    int[] intArray0 = new int[9];
+    int[] intArray1 = basicMonthOfYearDateTimeField0.add((ReadablePartial) partial0, 2144031101, intArray0, 1);
+    assertEquals(0, intArray1.length);
+}",""
+"//-----------------------------------------------------------------------
+public int[] add(ReadablePartial partial, int fieldIndex, int[] values, int valueToAdd) {
+    // overridden as superclass algorithm can't handle
+    // 2004-02-29 + 48 months -> 2008-02-29 type dates
+    if (valueToAdd == 0) {
+        return values;
+    }
+    // month is largest field and being added to, such as month-day
+    if (DateTimeUtils.isContiguous(partial)) {
+        long instant = 0L;
+        for (int i = 0, isize = partial.size(); i < isize; i++) {
+            instant = partial.getFieldType(i).getField(iChronology).set(instant, values[i]);
+        }
+        instant = add(instant, valueToAdd);
+        return iChronology.get(partial, instant);
+    } else {
+        return super.add(partial, fieldIndex, values, valueToAdd);
+    }
+}","public void test4546() throws Throwable {
+    EthiopicChronology ethiopicChronology0 = EthiopicChronology.getInstanceUTC();
+    GJMonthOfYearDateTimeField gJMonthOfYearDateTimeField0 = new GJMonthOfYearDateTimeField(ethiopicChronology0);
+    DateTimeFieldType[] dateTimeFieldTypeArray0 = new DateTimeFieldType[2];
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.hourOfDay();
+    dateTimeFieldTypeArray0[0] = dateTimeFieldType0;
+    DateTimeFieldType dateTimeFieldType1 = DateTimeFieldType.secondOfDay();
+    dateTimeFieldTypeArray0[1] = dateTimeFieldType1;
+    int[] intArray0 = new int[2];
+    Partial partial0 = new Partial(dateTimeFieldTypeArray0, intArray0);
+    gJMonthOfYearDateTimeField0.add((ReadablePartial) partial0, 0, intArray0, 1);
+    assertArrayEquals(new int[] { 1, 0 }, intArray0);
+}",""
+"//-----------------------------------------------------------------------
+public long add(long instant, long months) {
+    int i_months = (int) months;
+    if (i_months == months) {
+        return add(instant, i_months);
+    }
+    // Copied from add(long, int) and modified slightly:
+    long timePart = iChronology.getMillisOfDay(instant);
+    int thisYear = iChronology.getYear(instant);
+    int thisMonth = iChronology.getMonthOfYear(instant, thisYear);
+    long yearToUse;
+    long monthToUse = thisMonth - 1 + months;
+    if (monthToUse >= 0) {
+        yearToUse = thisYear + (monthToUse / iMax);
+        monthToUse = (monthToUse % iMax) + 1;
+    } else {
+        yearToUse = thisYear + (monthToUse / iMax) - 1;
+        monthToUse = Math.abs(monthToUse);
+        int remMonthToUse = (int) (monthToUse % iMax);
+        if (remMonthToUse == 0) {
+            remMonthToUse = iMax;
+        }
+        monthToUse = iMax - remMonthToUse + 1;
+        if (monthToUse == 1) {
+            yearToUse += 1;
+        }
+    }
+    if (yearToUse < iChronology.getMinYear() || yearToUse > iChronology.getMaxYear()) {
+        throw new IllegalArgumentException(""Magnitude of add amount is too large: "" + months);
+    }
+    int i_yearToUse = (int) yearToUse;
+    int i_monthToUse = (int) monthToUse;
+    int dayToUse = iChronology.getDayOfMonth(instant, thisYear, thisMonth);
+    int maxDay = iChronology.getDaysInYearMonth(i_yearToUse, i_monthToUse);
+    if (dayToUse > maxDay) {
+        dayToUse = maxDay;
+    }
+    long datePart = iChronology.getYearMonthDayMillis(i_yearToUse, i_monthToUse, dayToUse);
+    return datePart + timePart;
+}","public void test4647() throws Throwable {
+    EthiopicChronology ethiopicChronology0 = EthiopicChronology.getInstance();
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(ethiopicChronology0, 1);
+    // Undeclared exception!
+    try {
+        basicMonthOfYearDateTimeField0.add((long) (byte) 39, 1000000000000000L);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Magnitude of add amount is too large: 1000000000000000
+        //
+        verifyException(""org.joda.time.chrono.BasicMonthOfYearDateTimeField"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+public long add(long instant, long months) {
+    int i_months = (int) months;
+    if (i_months == months) {
+        return add(instant, i_months);
+    }
+    // Copied from add(long, int) and modified slightly:
+    long timePart = iChronology.getMillisOfDay(instant);
+    int thisYear = iChronology.getYear(instant);
+    int thisMonth = iChronology.getMonthOfYear(instant, thisYear);
+    long yearToUse;
+    long monthToUse = thisMonth - 1 + months;
+    if (monthToUse >= 0) {
+        yearToUse = thisYear + (monthToUse / iMax);
+        monthToUse = (monthToUse % iMax) + 1;
+    } else {
+        yearToUse = thisYear + (monthToUse / iMax) - 1;
+        monthToUse = Math.abs(monthToUse);
+        int remMonthToUse = (int) (monthToUse % iMax);
+        if (remMonthToUse == 0) {
+            remMonthToUse = iMax;
+        }
+        monthToUse = iMax - remMonthToUse + 1;
+        if (monthToUse == 1) {
+            yearToUse += 1;
+        }
+    }
+    if (yearToUse < iChronology.getMinYear() || yearToUse > iChronology.getMaxYear()) {
+        throw new IllegalArgumentException(""Magnitude of add amount is too large: "" + months);
+    }
+    int i_yearToUse = (int) yearToUse;
+    int i_monthToUse = (int) monthToUse;
+    int dayToUse = iChronology.getDayOfMonth(instant, thisYear, thisMonth);
+    int maxDay = iChronology.getDaysInYearMonth(i_yearToUse, i_monthToUse);
+    if (dayToUse > maxDay) {
+        dayToUse = maxDay;
+    }
+    long datePart = iChronology.getYearMonthDayMillis(i_yearToUse, i_monthToUse, dayToUse);
+    return datePart + timePart;
+}","public void test4748() throws Throwable {
+    JulianChronology julianChronology0 = JulianChronology.getInstance();
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(julianChronology0, 93);
+    // Undeclared exception!
+    try {
+        basicMonthOfYearDateTimeField0.add((-59232556800000L), (-59232556800000L));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Magnitude of add amount is too large: -59232556800000
+        //
+        verifyException(""org.joda.time.chrono.BasicMonthOfYearDateTimeField"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+public long add(long instant, long months) {
+    int i_months = (int) months;
+    if (i_months == months) {
+        return add(instant, i_months);
+    }
+    // Copied from add(long, int) and modified slightly:
+    long timePart = iChronology.getMillisOfDay(instant);
+    int thisYear = iChronology.getYear(instant);
+    int thisMonth = iChronology.getMonthOfYear(instant, thisYear);
+    long yearToUse;
+    long monthToUse = thisMonth - 1 + months;
+    if (monthToUse >= 0) {
+        yearToUse = thisYear + (monthToUse / iMax);
+        monthToUse = (monthToUse % iMax) + 1;
+    } else {
+        yearToUse = thisYear + (monthToUse / iMax) - 1;
+        monthToUse = Math.abs(monthToUse);
+        int remMonthToUse = (int) (monthToUse % iMax);
+        if (remMonthToUse == 0) {
+            remMonthToUse = iMax;
+        }
+        monthToUse = iMax - remMonthToUse + 1;
+        if (monthToUse == 1) {
+            yearToUse += 1;
+        }
+    }
+    if (yearToUse < iChronology.getMinYear() || yearToUse > iChronology.getMaxYear()) {
+        throw new IllegalArgumentException(""Magnitude of add amount is too large: "" + months);
+    }
+    int i_yearToUse = (int) yearToUse;
+    int i_monthToUse = (int) monthToUse;
+    int dayToUse = iChronology.getDayOfMonth(instant, thisYear, thisMonth);
+    int maxDay = iChronology.getDaysInYearMonth(i_yearToUse, i_monthToUse);
+    if (dayToUse > maxDay) {
+        dayToUse = maxDay;
+    }
+    long datePart = iChronology.getYearMonthDayMillis(i_yearToUse, i_monthToUse, dayToUse);
+    return datePart + timePart;
+}","public void test4849() throws Throwable {
+    JulianChronology julianChronology0 = JulianChronology.getInstanceUTC();
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(julianChronology0, 1);
+    long long0 = basicMonthOfYearDateTimeField0.add((long) (-2017), (-2591999999L));
+    assertEquals((-6816441597321602017L), long0);
+}",""
+"//-----------------------------------------------------------------------
+public long add(long instant, long months) {
+    int i_months = (int) months;
+    if (i_months == months) {
+        return add(instant, i_months);
+    }
+    // Copied from add(long, int) and modified slightly:
+    long timePart = iChronology.getMillisOfDay(instant);
+    int thisYear = iChronology.getYear(instant);
+    int thisMonth = iChronology.getMonthOfYear(instant, thisYear);
+    long yearToUse;
+    long monthToUse = thisMonth - 1 + months;
+    if (monthToUse >= 0) {
+        yearToUse = thisYear + (monthToUse / iMax);
+        monthToUse = (monthToUse % iMax) + 1;
+    } else {
+        yearToUse = thisYear + (monthToUse / iMax) - 1;
+        monthToUse = Math.abs(monthToUse);
+        int remMonthToUse = (int) (monthToUse % iMax);
+        if (remMonthToUse == 0) {
+            remMonthToUse = iMax;
+        }
+        monthToUse = iMax - remMonthToUse + 1;
+        if (monthToUse == 1) {
+            yearToUse += 1;
+        }
+    }
+    if (yearToUse < iChronology.getMinYear() || yearToUse > iChronology.getMaxYear()) {
+        throw new IllegalArgumentException(""Magnitude of add amount is too large: "" + months);
+    }
+    int i_yearToUse = (int) yearToUse;
+    int i_monthToUse = (int) monthToUse;
+    int dayToUse = iChronology.getDayOfMonth(instant, thisYear, thisMonth);
+    int maxDay = iChronology.getDaysInYearMonth(i_yearToUse, i_monthToUse);
+    if (dayToUse > maxDay) {
+        dayToUse = maxDay;
+    }
+    long datePart = iChronology.getYearMonthDayMillis(i_yearToUse, i_monthToUse, dayToUse);
+    return datePart + timePart;
+}","public void test4950() throws Throwable {
+    EthiopicChronology ethiopicChronology0 = EthiopicChronology.getInstance();
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(ethiopicChronology0, 1);
+    long long0 = basicMonthOfYearDateTimeField0.add(2678397925L, 2678397925L);
+    assertEquals(6501831568502397925L, long0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Add the specified month to the specified time instant.
+ * The amount added may be negative.<p>
+ * If the new month has less total days than the specified
+ * day of the month, this value is coerced to the nearest
+ * sane value. e.g.<p>
+ * 07-31 - (1 month) = 06-30<p>
+ * 03-31 - (1 month) = 02-28 or 02-29 depending<p>
+ *
+ * @see org.joda.time.DateTimeField#add
+ * @see org.joda.time.ReadWritableDateTime#addMonths(int)
+ * @param instant  the time instant in millis to update.
+ * @param months  the months to add (can be negative).
+ * @return the updated time instant.
+ */
+public long add(long instant, int months) {
+    if (months == 0) {
+        // the easy case
+        return instant;
+    }
+    //
+    // Save time part first.
+    //
+    long timePart = iChronology.getMillisOfDay(instant);
+    //
+    //
+    // Get this year and month.
+    //
+    int thisYear = iChronology.getYear(instant);
+    int thisMonth = iChronology.getMonthOfYear(instant, thisYear);
+    // ----------------------------------------------------------
+    //
+    // Do not refactor without careful consideration.
+    // Order of calculation is important.
+    //
+    int yearToUse;
+    // Initially, monthToUse is zero-based
+    int monthToUse = thisMonth - 1 + months;
+    if (monthToUse >= 0) {
+        yearToUse = thisYear + (monthToUse / iMax);
+        monthToUse = (monthToUse % iMax) + 1;
+    } else {
+        yearToUse = thisYear + (monthToUse / iMax) - 1;
+        monthToUse = Math.abs(monthToUse);
+        int remMonthToUse = monthToUse % iMax;
+        // Take care of the boundary condition
+        if (remMonthToUse == 0) {
+            remMonthToUse = iMax;
+        }
+        monthToUse = iMax - remMonthToUse + 1;
+        // Take care of the boundary condition
+        if (monthToUse == 1) {
+            yearToUse += 1;
+        }
+    }
+    // End of do not refactor.
+    // ----------------------------------------------------------
+    //
+    // Quietly force DOM to nearest sane value.
+    //
+    int dayToUse = iChronology.getDayOfMonth(instant, thisYear, thisMonth);
+    int maxDay = iChronology.getDaysInYearMonth(yearToUse, monthToUse);
+    if (dayToUse > maxDay) {
+        dayToUse = maxDay;
+    }
+    //
+    // get proper date part, and return result
+    //
+    long datePart = iChronology.getYearMonthDayMillis(yearToUse, monthToUse, dayToUse);
+    return datePart + timePart;
+}","public void test5051() throws Throwable {
+    EthiopicChronology ethiopicChronology0 = EthiopicChronology.getInstanceUTC();
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(ethiopicChronology0, 1);
+    long long0 = basicMonthOfYearDateTimeField0.add(21260793600000L, (-1));
+    assertEquals(21260102400000L, long0);
+}",""
+"//-----------------------------------------------------------------------
+public int[] add(ReadablePartial partial, int fieldIndex, int[] values, int valueToAdd) {
+    // overridden as superclass algorithm can't handle
+    // 2004-02-29 + 48 months -> 2008-02-29 type dates
+    if (valueToAdd == 0) {
+        return values;
+    }
+    // month is largest field and being added to, such as month-day
+    if (DateTimeUtils.isContiguous(partial)) {
+        long instant = 0L;
+        for (int i = 0, isize = partial.size(); i < isize; i++) {
+            instant = partial.getFieldType(i).getField(iChronology).set(instant, values[i]);
+        }
+        instant = add(instant, valueToAdd);
+        return iChronology.get(partial, instant);
+    } else {
+        return super.add(partial, fieldIndex, values, valueToAdd);
+    }
+}","public void test5152() throws Throwable {
+    JulianChronology julianChronology0 = JulianChronology.getInstanceUTC();
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(julianChronology0, 93);
+    MockDate mockDate0 = new MockDate(2013265920, 93, 93);
+    LocalDateTime localDateTime0 = LocalDateTime.fromDateFields(mockDate0);
+    int[] intArray0 = new int[0];
+    // Undeclared exception!
+    try {
+        basicMonthOfYearDateTimeField0.add((ReadablePartial) localDateTime0, 2013265920, intArray0, 1048);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 0
+        //
+        verifyException(""org.joda.time.chrono.BasicMonthOfYearDateTimeField"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Add to the Month component of the specified time instant
+ * wrapping around within that component if necessary.
+ *
+ * @see org.joda.time.DateTimeField#addWrapField
+ * @param instant  the time instant in millis to update.
+ * @param months  the months to add (can be negative).
+ * @return the updated time instant.
+ */
+public long addWrapField(long instant, int months) {
+    return set(instant, FieldUtils.getWrappedValue(get(instant), months, MIN, iMax));
+}","public void test5253() throws Throwable {
+    JulianChronology julianChronology0 = JulianChronology.getInstanceUTC();
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(julianChronology0, 93);
+    long long0 = basicMonthOfYearDateTimeField0.addWrapField((-59232556800000L), 1123);
+    assertEquals((-59245776000000L), long0);
+}",""
+"//-----------------------------------------------------------------------
+public int getMaximumValue() {
+    return iMax;
+}","public void test5354() throws Throwable {
+    JulianChronology julianChronology0 = JulianChronology.getInstanceUTC();
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(julianChronology0, 93);
+    int int0 = basicMonthOfYearDateTimeField0.getMaximumValue();
+    assertEquals(12, int0);
+}",""
+"//-----------------------------------------------------------------------
+public boolean isLenient() {
+    return false;
+}","public void test5455() throws Throwable {
+    JulianChronology julianChronology0 = JulianChronology.getInstanceUTC();
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(julianChronology0, 93);
+    boolean boolean0 = basicMonthOfYearDateTimeField0.isLenient();
+    assertFalse(boolean0);
+}",""
+"//-----------------------------------------------------------------------
+public int getMinimumValue() {
+    return MIN;
+}","public void test5556() throws Throwable {
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstance();
+    GJMonthOfYearDateTimeField gJMonthOfYearDateTimeField0 = new GJMonthOfYearDateTimeField(islamicChronology0);
+    int int0 = gJMonthOfYearDateTimeField0.getMinimumValue();
+    assertEquals(1, int0);
+}",""
+"public abstract boolean isSupported();","public void test5657() throws Throwable {
+    JulianChronology julianChronology0 = JulianChronology.getInstanceUTC();
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(julianChronology0, 93);
+    DurationField durationField0 = basicMonthOfYearDateTimeField0.getLeapDurationField();
+    assertTrue(durationField0.isSupported());
+}","/**
+ * Returns true if this field is supported.
+ *
+ * @return true if this field is supported
+ */"
+"//-----------------------------------------------------------------------
+public long remainder(long instant) {
+    return instant - roundFloor(instant);
+}","public void test5758() throws Throwable {
+    EthiopicChronology ethiopicChronology0 = EthiopicChronology.getInstance();
+    BasicMonthOfYearDateTimeField basicMonthOfYearDateTimeField0 = new BasicMonthOfYearDateTimeField(ethiopicChronology0, 1);
+    long long0 = basicMonthOfYearDateTimeField0.remainder(1000000000000000L);
+    assertEquals(2080000000L, long0);
+}",""

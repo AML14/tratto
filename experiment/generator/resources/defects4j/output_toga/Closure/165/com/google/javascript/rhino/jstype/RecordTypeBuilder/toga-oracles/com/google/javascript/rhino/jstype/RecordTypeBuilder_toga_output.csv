@@ -1,0 +1,32 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test00,"public void test00() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    RecordTypeBuilder recordTypeBuilder0 = new RecordTypeBuilder(jSTypeRegistry0);
+    Node node0 = new Node(0);
+    recordTypeBuilder0.addProperty("""", (JSType) null, node0);
+    JSType jSType0 = recordTypeBuilder0.build();
+    assertFalse(jSType0.isNoObjectType());
+}",0,assertTrue(jSType0.isNoObjectType())
+project,0,test11,"public void test11() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    RecordTypeBuilder recordTypeBuilder0 = new RecordTypeBuilder(jSTypeRegistry0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, """");
+    RecordTypeBuilder recordTypeBuilder1 = recordTypeBuilder0.addProperty("""", errorFunctionType0, (Node) null);
+    RecordTypeBuilder recordTypeBuilder2 = recordTypeBuilder1.addProperty("""", errorFunctionType0, (Node) null);
+    assertNull(recordTypeBuilder2);
+}",0,
+project,0,test22,"public void test22() throws Throwable {
+    RecordTypeBuilder recordTypeBuilder0 = new RecordTypeBuilder((JSTypeRegistry) null);
+    // Undeclared exception!
+    try {
+        recordTypeBuilder0.build();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.rhino.jstype.RecordTypeBuilder"", e);
+    }
+}",0,

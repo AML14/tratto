@@ -1,0 +1,223 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test1128,"public void test1128() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""com.google.javascript.jscomp.Scope$1"", ""com.google.javascript.jscomp.Scope$1"");
+    Scope scope0 = new Scope(node0, compiler0);
+    boolean boolean0 = scope0.isBottom();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test1229,"public void test1229() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""Scope.Var "", ""Scope.Var "");
+    Scope scope0 = new Scope(node0, compiler0);
+    StaticSlot<JSType> staticSlot0 = scope0.getSlot(""Scope.Var "");
+    assertNull(staticSlot0);
+}",0,
+project,0,test1431,"public void test1431() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""E3W7 lV`%l]"", ""E3W7 lV`%l]"");
+    Scope scope0 = new Scope(node0, compiler0);
+    int int0 = scope0.getDepth();
+    assertEquals(0, int0);
+}",0,
+project,0,test1532,"public void test1532() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""Scope.Var "", ""Scope.Var "");
+    Scope scope0 = new Scope(node0, compiler0);
+    int int0 = scope0.getVarCount();
+    assertEquals(0, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test1633,"public void test1633() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""Scope.Var "", ""Scope.Var "");
+    Scope scope0 = new Scope(node0, compiler0);
+    StaticSlot<JSType> staticSlot0 = scope0.getOwnSlot(""Scope.Var "");
+    assertNull(staticSlot0);
+}",0,
+project,0,test2346,"public void test2346() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""com.google.javascript.jscomp.Scope$1"", ""com.google.javascript.jscomp.Scope$1"");
+    Node node1 = new Node(86, node0, 31, 0);
+    Scope scope0 = new Scope(node0, compiler0);
+    Scope.Var scope_Var0 = scope0.declare(""com.google.javascript.jscomp.Scope$1"", node0, (JSType) null, (CompilerInput) null);
+    Node node2 = scope_Var0.getInitialValue();
+    assertTrue(node2.isSyntheticBlock());
+}",0,assertTrue(node2.isSyntheticBlock())
+project,0,test2451,"public void test2451() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""com.google.javascript.jscomp.ScZpe$1"", ""com.google.javascript.jscomp.ScZpe$1"");
+    Node node1 = new Node(105, node0, 31, 32);
+    Scope scope0 = new Scope(node0, compiler0);
+    Scope.Var scope_Var0 = scope0.declare(""com.google.javascript.jscomp.ScZpe$1"", node0, (JSType) null, (CompilerInput) null);
+    Node node2 = scope_Var0.getInitialValue();
+    assertEquals(105, node2.getType());
+}",0,"assertEquals(0, node2.getType())"
+project,0,test2553,"public void test2553() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""eo4"", ""eo4"");
+    Node node1 = new Node(118, node0, 18, 26);
+    Scope scope0 = new Scope(node1, compiler0);
+    Scope.Var scope_Var0 = scope0.declare(""eo4"", node0, (JSType) null, (CompilerInput) null);
+    Node node2 = scope_Var0.getInitialValue();
+    assertEquals(130, node2.getType());
+}",0,"assertEquals(0, node2.getType())"
+project,0,test3572,"public void test3572() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""lP@G#|XkcckM"", ""lP@G#|XkcckM"");
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    Scope scope0 = typedScopeCreator0.createScope(node0, (Scope) null);
+    Scope scope1 = null;
+    try {
+        scope1 = new Scope(scope0, node0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",0,
+project,0,test3673,"public void test3673() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, """", """");
+    Node node1 = compiler0.parseSyntheticCode("""", """");
+    Scope scope0 = new Scope(node0, compiler0);
+    Scope scope1 = new Scope(scope0, node1);
+    Scope scope2 = scope1.getGlobalScope();
+    assertFalse(scope2.isLocal());
+}",0,assertFalse(scope2.isLocal())
+project,0,test3774,"public void test3774() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""Y51F"", ""Y51F"");
+    Scope scope0 = new Scope(node0, compiler0);
+    // Undeclared exception!
+    try {
+        scope0.declare((String) null, node0, (JSType) null, (CompilerInput) null);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",0,
+project,0,test3875,"public void test3875() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode("""");
+    Scope scope0 = new Scope(node0, compiler0);
+    // Undeclared exception!
+    try {
+        scope0.declare("""", node0, (JSType) null, (CompilerInput) null);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",0,
+project,0,test3976,"public void test3976() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""com.google.javascript.jscomp.Scope$1"", ""com.google.javascript.jscomp.Scope$1"");
+    Scope scope0 = new Scope(node0, compiler0);
+    scope0.declare(""com.google.javascript.jscomp.Scope$1"", node0, (JSType) null, (CompilerInput) null);
+    // Undeclared exception!
+    try {
+        scope0.declare(""com.google.javascript.jscomp.Scope$1"", node0, (JSType) null, (CompilerInput) null);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",1,
+project,0,test4077,"public void test4077() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""qom.googleFjavscript.j3compsScope$1"");
+    Scope scope0 = new Scope(node0, compiler0);
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionType((JSType) null, node0);
+    Scope scope1 = new Scope(node0, functionType0);
+    Scope.Var scope_Var0 = scope1.declare(""Named type with empty name component"", node0, (JSType) null, (CompilerInput) null);
+    // Undeclared exception!
+    try {
+        scope0.undeclare(scope_Var0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",0,
+project,0,test4178,"public void test4178() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""5GA"");
+    Scope scope0 = new Scope(node0, compiler0);
+    Scope.Var scope_Var0 = scope0.declare(""5GA"", node0, (JSType) null, (CompilerInput) null);
+    scope0.undeclare(scope_Var0);
+    // Undeclared exception!
+    try {
+        scope0.undeclare(scope_Var0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",1,
+project,0,test4280,"public void test4280() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""com.google.javascript.jscomp.Scope$1"", ""com.google.javascript.jscomp.Scope$1"");
+    Scope scope0 = new Scope(node0, compiler0);
+    scope0.declare(""com.google.javascript.jscomp.Scope$1"", node0, (JSType) null, (CompilerInput) null);
+    Scope.Var scope_Var0 = scope0.getVar(""com.google.javascript.jscomp.Scope$1"");
+    assertNotNull(scope_Var0);
+}",0,assertNotNull(scope_Var0)
+project,0,test4381,"public void test4381() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, """", """");
+    Node node1 = compiler0.parseSyntheticCode("""", ""checkMissingGetCssName"");
+    Scope scope0 = new Scope(node1, compiler0);
+    Scope scope1 = new Scope(scope0, node0);
+    Scope.Var scope_Var0 = scope1.getVar("""");
+    assertNull(scope_Var0);
+}",0,assertNotNull(scope_Var0)
+project,0,test4483,"public void test4483() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""eo4"", ""eo4"");
+    Scope scope0 = new Scope(node0, compiler0);
+    Scope.Var scope_Var0 = scope0.declare(""eo4"", node0, (JSType) null, (CompilerInput) null);
+    boolean boolean0 = scope0.isDeclared(""eo4"", false);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4584,"public void test4584() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""eo4"", ""eo4"");
+    Node node1 = compiler0.parseSyntheticCode(""eo4"", ""eo4"");
+    Scope scope0 = new Scope(node0, compiler0);
+    Scope scope1 = new Scope(scope0, node1);
+    boolean boolean0 = scope1.isDeclared(""eo4"", true);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4685,"public void test4685() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, """", """");
+    Node node1 = compiler0.parseSyntheticCode("""", ""JSC_UNKNOWN_OVERRIDE"");
+    Scope scope0 = new Scope(node1, compiler0);
+    Scope scope1 = new Scope(scope0, node0);
+    boolean boolean0 = scope1.isDeclared("""", false);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4786,"public void test4786() throws Throwable {
+    Node node0 = Node.newString(""E3W7 lV`%l]"");
+    Compiler compiler0 = new Compiler();
+    Node node1 = Normalize.parseAndNormalizeTestCode(compiler0, """", ""E3W7 lV`%l]"");
+    Scope scope0 = new Scope(node1, compiler0);
+    Scope scope1 = new Scope(scope0, node0);
+    boolean boolean0 = scope1.isLocal();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)

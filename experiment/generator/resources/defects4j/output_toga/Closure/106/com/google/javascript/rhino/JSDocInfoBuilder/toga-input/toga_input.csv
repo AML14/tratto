@@ -1,0 +1,2183 @@
+focal_method,test_prefix,docstring
+"public boolean isPopulated() {
+    return populated;
+}","public void test000() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.isConstructorRecorded();
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test011() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.hasParameter(""?+RYaekn"");
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test022() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.isInterfaceRecorded();
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test033() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    boolean boolean0 = jSDocInfoBuilder0.isPopulatedWithFileOverview();
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulatedWithFileOverview() {
+    return isPopulated() && currentInfo.hasFileOverview();
+}","public void test034() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    boolean boolean0 = jSDocInfoBuilder0.isPopulatedWithFileOverview();
+    assertFalse(boolean0);
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object that has a
+ * fileoverview tag.
+ */"
+"public boolean isPopulatedWithFileOverview() {
+    return isPopulated() && currentInfo.hasFileOverview();
+}","public void test045() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordFileOverview("""");
+    boolean boolean0 = jSDocInfoBuilder0.isPopulatedWithFileOverview();
+    assertTrue(boolean0);
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object that has a
+ * fileoverview tag.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test056() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test057() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordReturnDescription(""w]|!P#;Yvc"");
+    boolean boolean0 = jSDocInfoBuilder0.isPopulatedWithFileOverview();
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulatedWithFileOverview() {
+    return isPopulated() && currentInfo.hasFileOverview();
+}","public void test058() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordReturnDescription(""w]|!P#;Yvc"");
+    boolean boolean0 = jSDocInfoBuilder0.isPopulatedWithFileOverview();
+    assertFalse(boolean0);
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object that has a
+ * fileoverview tag.
+ */"
+"public boolean isDescriptionRecorded() {
+    return currentInfo.getDescription() != null;
+}","public void test069() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    boolean boolean0 = jSDocInfoBuilder0.isDescriptionRecorded();
+    assertFalse(boolean0);
+}","/**
+ * Returns whether this builder recorded a description.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test0610() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    boolean boolean0 = jSDocInfoBuilder0.isDescriptionRecorded();
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isDescriptionRecorded() {
+    return currentInfo.getDescription() != null;
+}","public void test0711() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordDescription("""");
+    boolean boolean0 = jSDocInfoBuilder0.isDescriptionRecorded();
+    assertTrue(boolean0);
+}","/**
+ * Returns whether this builder recorded a description.
+ */"
+"public JSDocInfo build(String sourceName) {
+    if (populated) {
+        JSDocInfo built = currentInfo;
+        built.setSourceName(sourceName);
+        populateDefaults(built);
+        populated = false;
+        currentInfo = new JSDocInfo(this.parseDocumentation);
+        return built;
+    } else {
+        return null;
+    }
+}","public void test0812() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    JSDocInfo jSDocInfo0 = jSDocInfoBuilder0.build(""TN\""C[ba%<!y9Db!]N57"");
+    assertNull(jSDocInfo0);
+}","/**
+ * Builds a {@link JSDocInfo} object based on the populated information and
+ * returns it. Once this method is called, the builder can be reused to build
+ * another {@link JSDocInfo} object.
+ *
+ * @param sourceName The source file containing the JSDoc.
+ * @return a {@link JSDocInfo} object populated with the values given to this
+ *     builder. If no value was populated, this method simply returns
+ *     {@code null}
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test0913() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    JSDocInfo.Visibility jSDocInfo_Visibility0 = JSDocInfo.Visibility.PUBLIC;
+    jSDocInfoBuilder0.recordVisibility(jSDocInfo_Visibility0);
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test0914() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    JSDocInfo.Visibility jSDocInfo_Visibility0 = JSDocInfo.Visibility.PUBLIC;
+    jSDocInfoBuilder0.recordVisibility(jSDocInfo_Visibility0);
+    jSDocInfoBuilder0.build(""GREATEST_FUNCTION_TPE"");
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test1015() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    Node node0 = Node.newString((-1524), ""sbh@Wm4[L"", (-1524), 885);
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression(node0, ""sbh@Wm4[L"", jSTypeRegistry0);
+    jSDocInfoBuilder0.recordBaseType(jSTypeExpression0);
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test1016() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    Node node0 = Node.newString((-1524), ""sbh@Wm4[L"", (-1524), 885);
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression(node0, ""sbh@Wm4[L"", jSTypeRegistry0);
+    jSDocInfoBuilder0.recordBaseType(jSTypeExpression0);
+    jSDocInfoBuilder0.build("""");
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test1117() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.markAnnotation("">c%IX^hYB=O=4s#[iJq"", 1, 1);
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test1218() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.markAnnotation("""", 74, 74);
+    jSDocInfoBuilder0.markText("""", 74, 74, 74, (-2322));
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test1319() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.markText(""new"", 0, 0, 0, 0);
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test1420() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.markTypeNode((Node) null, (-1667), (-1667), (-1667), true);
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test1521() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.markAnnotation(""nof,sS@S_2d)n.co8S"", 1, 1);
+    Node node0 = new Node(1);
+    jSDocInfoBuilder0.markTypeNode(node0, 5, 46, 18, false);
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test1622() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.markName(""Mftl"", 28, 28);
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test1723() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.markAnnotation("">c%IX^hYB=O=4s#[iJq"", 1, 1);
+    jSDocInfoBuilder0.markName("">c%IX^hYB=O=4s#[iJq"", 1, 1);
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test1824() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordBlockDescription(""gX;/IALbPZm[wG"");
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test1926() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordBlockDescription(""gX;/IALbPZm[wG"");
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test2027() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test2028() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    JSDocInfo.Visibility jSDocInfo_Visibility0 = JSDocInfo.Visibility.PRIVATE;
+    jSDocInfoBuilder0.recordVisibility(jSDocInfo_Visibility0);
+    boolean boolean0 = jSDocInfoBuilder0.recordVisibility(jSDocInfo_Visibility0);
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordVisibility(Visibility visibility) {
+    if (currentInfo.getVisibility() == null) {
+        populated = true;
+        currentInfo.setVisibility(visibility);
+        return true;
+    } else {
+        return false;
+    }
+}","public void test2029() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    JSDocInfo.Visibility jSDocInfo_Visibility0 = JSDocInfo.Visibility.PRIVATE;
+    jSDocInfoBuilder0.recordVisibility(jSDocInfo_Visibility0);
+    boolean boolean0 = jSDocInfoBuilder0.recordVisibility(jSDocInfo_Visibility0);
+    assertFalse(boolean0);
+}","/**
+ * Records a visibility.
+ *
+ * @return {@code true} if the visibility was recorded and {@code false}
+ *     if it was already defined
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test2130() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, ""24wH`T+,f\"""", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test2131() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, ""24wH`T+,f\"""", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordDefineType(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordParameter(""24wH`T+,f\"""", jSTypeExpression0);
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordParameter(String parameterName, JSTypeExpression type) {
+    if (!hasAnySingletonTypeTags() && currentInfo.declareParam(type, parameterName)) {
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test2132() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, ""24wH`T+,f\"""", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordDefineType(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordParameter(""24wH`T+,f\"""", jSTypeExpression0);
+    assertFalse(boolean0);
+}","/**
+ * Records a typed parameter.
+ *
+ * @return {@code true} if the typed parameter was recorded and
+ *     {@code false} if a parameter with the same name was already defined
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test2233() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, "";1Q.`TQ|,1b[lg+KMt"", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test2234() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, "";1Q.`TQ|,1b[lg+KMt"", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordParameter("";1Q.`TQ|,1b[lg+KMt"", jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordDefineType(jSTypeExpression0);
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordDefineType(JSTypeExpression type) {
+    if (type != null && !currentInfo.isConstant() && !currentInfo.isDefine() && recordType(type)) {
+        currentInfo.setDefine(true);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test2235() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, "";1Q.`TQ|,1b[lg+KMt"", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordParameter("";1Q.`TQ|,1b[lg+KMt"", jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordDefineType(jSTypeExpression0);
+    assertFalse(boolean0);
+}","/**
+ * Records the type of a define.
+ *
+ * 'Define' values are special constants that may be manipulated by
+ * the compiler. They are designed to mimic the #define command in
+ * the C preprocessor.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test2337() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordParameter("""", (JSTypeExpression) null);
+    boolean boolean0 = jSDocInfoBuilder0.recordParameter("""", (JSTypeExpression) null);
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordParameter(String parameterName, JSTypeExpression type) {
+    if (!hasAnySingletonTypeTags() && currentInfo.declareParam(type, parameterName)) {
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test2338() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordParameter("""", (JSTypeExpression) null);
+    boolean boolean0 = jSDocInfoBuilder0.recordParameter("""", (JSTypeExpression) null);
+    assertFalse(boolean0);
+}","/**
+ * Records a typed parameter.
+ *
+ * @return {@code true} if the typed parameter was recorded and
+ *     {@code false} if a parameter with the same name was already defined
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test2440() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordParameterDescription(""com.google.javascript.rhino.JSDocInfoBuilder"", ""com.google.javascript.rhino.JSDocInfoBuilder"");
+    boolean boolean0 = jSDocInfoBuilder0.recordParameterDescription(""com.google.javascript.rhino.JSDocInfoBuilder"", ""com.google.javascript.rhino.JSDocInfoBuilder"");
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordParameterDescription(String parameterName, String description) {
+    if (currentInfo.documentParam(parameterName, description)) {
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test2441() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordParameterDescription(""com.google.javascript.rhino.JSDocInfoBuilder"", ""com.google.javascript.rhino.JSDocInfoBuilder"");
+    boolean boolean0 = jSDocInfoBuilder0.recordParameterDescription(""com.google.javascript.rhino.JSDocInfoBuilder"", ""com.google.javascript.rhino.JSDocInfoBuilder"");
+    assertFalse(boolean0);
+}","/**
+ * Records a parameter's description.
+ *
+ * @return {@code true} if the parameter's description was recorded and
+ *     {@code false} if a parameter with the same name was already defined
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test2543() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordTemplateTypeName(""-W:U"");
+    boolean boolean0 = jSDocInfoBuilder0.recordTemplateTypeName("""");
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordTemplateTypeName(String name) {
+    if (currentInfo.declareTemplateTypeName(name)) {
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test2544() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordTemplateTypeName(""-W:U"");
+    boolean boolean0 = jSDocInfoBuilder0.recordTemplateTypeName("""");
+    assertFalse(boolean0);
+}","/**
+ * Records a template type name.
+ *
+ * @return {@code true} if the template type name was recorded and
+ *     {@code false} if a template type name was already defined.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test2645() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, ""*goUan]6m"", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test2646() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, ""*goUan]6m"", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordDefineType(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordThrowType(jSTypeExpression0);
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordThrowType(JSTypeExpression type) {
+    if (!hasAnySingletonTypeTags()) {
+        currentInfo.declareThrows(type);
+        populated = true;
+        return true;
+    }
+    return false;
+}","public void test2647() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, ""*goUan]6m"", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordDefineType(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordThrowType(jSTypeExpression0);
+    assertFalse(boolean0);
+}","/**
+ * Records a thrown type.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test2749() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    boolean boolean0 = jSDocInfoBuilder0.recordThrowType((JSTypeExpression) null);
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordThrowType(JSTypeExpression type) {
+    if (!hasAnySingletonTypeTags()) {
+        currentInfo.declareThrows(type);
+        populated = true;
+        return true;
+    }
+    return false;
+}","public void test2750() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    boolean boolean0 = jSDocInfoBuilder0.recordThrowType((JSTypeExpression) null);
+    assertTrue(boolean0);
+}","/**
+ * Records a thrown type.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test2852() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordThrowDescription((JSTypeExpression) null, """");
+    boolean boolean0 = jSDocInfoBuilder0.recordThrowDescription((JSTypeExpression) null, ""$return"");
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordThrowDescription(JSTypeExpression type, String description) {
+    if (currentInfo.documentThrows(type, description)) {
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test2853() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordThrowDescription((JSTypeExpression) null, """");
+    boolean boolean0 = jSDocInfoBuilder0.recordThrowDescription((JSTypeExpression) null, ""$return"");
+    assertFalse(boolean0);
+}","/**
+ * Records a throw type's description.
+ *
+ * @return {@code true} if the type's description was recorded and
+ *     {@code false} if a description with the same type was already defined
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test2955() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    boolean boolean0 = jSDocInfoBuilder0.addAuthor(""com.google.javascript.rhino.JSDocInfoBuilder"");
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean addAuthor(String author) {
+    if (currentInfo.documentAuthor(author)) {
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test2956() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    boolean boolean0 = jSDocInfoBuilder0.addAuthor(""com.google.javascript.rhino.JSDocInfoBuilder"");
+    assertTrue(boolean0);
+}","/**
+ * Adds an author to the current information.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test3058() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    boolean boolean0 = jSDocInfoBuilder0.addReference(""3HV}#oR?Q76~"");
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean addReference(String reference) {
+    if (currentInfo.documentReference(reference)) {
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test3059() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    boolean boolean0 = jSDocInfoBuilder0.addReference(""3HV}#oR?Q76~"");
+    assertTrue(boolean0);
+}","/**
+ * Adds a reference (""@see"") to the current information.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test3161() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordVersion("""");
+    boolean boolean0 = jSDocInfoBuilder0.recordVersion("""");
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordVersion(String version) {
+    if (currentInfo.documentVersion(version)) {
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test3162() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordVersion("""");
+    boolean boolean0 = jSDocInfoBuilder0.recordVersion("""");
+    assertFalse(boolean0);
+}","/**
+ * Records the version.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test3264() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordDeprecationReason("""");
+    boolean boolean0 = jSDocInfoBuilder0.recordDeprecationReason("""");
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordDeprecationReason(String reason) {
+    if (currentInfo.setDeprecationReason(reason)) {
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test3265() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordDeprecationReason("""");
+    boolean boolean0 = jSDocInfoBuilder0.recordDeprecationReason("""");
+    assertFalse(boolean0);
+}","/**
+ * Records the deprecation reason.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test3367() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    LinkedHashSet<String> linkedHashSet0 = new LinkedHashSet<String>(8, 8);
+    jSDocInfoBuilder0.recordSuppressions(linkedHashSet0);
+    boolean boolean0 = jSDocInfoBuilder0.recordSuppressions(linkedHashSet0);
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordSuppressions(Set<String> suppressions) {
+    if (currentInfo.setSuppressions(suppressions)) {
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test3368() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    LinkedHashSet<String> linkedHashSet0 = new LinkedHashSet<String>(8, 8);
+    jSDocInfoBuilder0.recordSuppressions(linkedHashSet0);
+    boolean boolean0 = jSDocInfoBuilder0.recordSuppressions(linkedHashSet0);
+    assertFalse(boolean0);
+}","/**
+ * Records the list of suppressed warnings.
+ */"
+"public boolean recordType(JSTypeExpression type) {
+    if (type != null && !hasAnyTypeRelatedTags()) {
+        currentInfo.setType(type);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test3469() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    boolean boolean0 = jSDocInfoBuilder0.recordType((JSTypeExpression) null);
+    assertFalse(boolean0);
+}","/**
+ * Records a type.
+ *
+ * @return {@code true} if the type was recorded and {@code false} if
+ *     it is invalid or was already defined
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test3470() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    boolean boolean0 = jSDocInfoBuilder0.recordType((JSTypeExpression) null);
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordTypedef(JSTypeExpression type) {
+    if (type != null && !hasAnyTypeRelatedTags()) {
+        currentInfo.setTypedefType(type);
+        populated = true;
+        return true;
+    }
+    return false;
+}","public void test3571() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    boolean boolean0 = jSDocInfoBuilder0.recordTypedef((JSTypeExpression) null);
+    assertFalse(boolean0);
+}","/**
+ * Records that the {@link JSDocInfo} being built should be populated
+ * with a {@code typedef}'d type.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test3572() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    boolean boolean0 = jSDocInfoBuilder0.recordTypedef((JSTypeExpression) null);
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test3673() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, ""nkDL_/!hzDeim-ss5{"", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test3674() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, ""nkDL_/!hzDeim-ss5{"", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordTypedef(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordDefineType(jSTypeExpression0);
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordDefineType(JSTypeExpression type) {
+    if (type != null && !currentInfo.isConstant() && !currentInfo.isDefine() && recordType(type)) {
+        currentInfo.setDefine(true);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test3675() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, ""nkDL_/!hzDeim-ss5{"", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordTypedef(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordDefineType(jSTypeExpression0);
+    assertFalse(boolean0);
+}","/**
+ * Records the type of a define.
+ *
+ * 'Define' values are special constants that may be manipulated by
+ * the compiler. They are designed to mimic the #define command in
+ * the C preprocessor.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test3776() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, ""nkDL_/!hzDeim-ssi5{"", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test3777() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, ""nkDL_/!hzDeim-ssi5{"", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordThisType(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordTypedef(jSTypeExpression0);
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordTypedef(JSTypeExpression type) {
+    if (type != null && !hasAnyTypeRelatedTags()) {
+        currentInfo.setTypedefType(type);
+        populated = true;
+        return true;
+    }
+    return false;
+}","public void test3778() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, ""nkDL_/!hzDeim-ssi5{"", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordThisType(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordTypedef(jSTypeExpression0);
+    assertFalse(boolean0);
+}","/**
+ * Records that the {@link JSDocInfo} being built should be populated
+ * with a {@code typedef}'d type.
+ */"
+"public boolean recordReturnType(JSTypeExpression jsType) {
+    if (jsType != null && currentInfo.getReturnType() == null && !hasAnySingletonTypeTags()) {
+        currentInfo.setReturnType(jsType);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test3879() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    boolean boolean0 = jSDocInfoBuilder0.recordReturnType((JSTypeExpression) null);
+    assertFalse(boolean0);
+}","/**
+ * Records a return type.
+ *
+ * @return {@code true} if the return type was recorded and {@code false} if
+ *     it is invalid or was already defined
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test3880() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    boolean boolean0 = jSDocInfoBuilder0.recordReturnType((JSTypeExpression) null);
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test3981() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, """", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test3982() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, """", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordReturnType(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordDefineType(jSTypeExpression0);
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordDefineType(JSTypeExpression type) {
+    if (type != null && !currentInfo.isConstant() && !currentInfo.isDefine() && recordType(type)) {
+        currentInfo.setDefine(true);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test3983() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, """", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordReturnType(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordDefineType(jSTypeExpression0);
+    assertFalse(boolean0);
+}","/**
+ * Records the type of a define.
+ *
+ * 'Define' values are special constants that may be manipulated by
+ * the compiler. They are designed to mimic the #define command in
+ * the C preprocessor.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test4085() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    Node node0 = Node.newString((-1524), ""sbh@Wm4[L"", (-1524), 885);
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression(node0, ""sbh@Wm4[L"", jSTypeRegistry0);
+    jSDocInfoBuilder0.recordReturnType(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordReturnType(jSTypeExpression0);
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordReturnType(JSTypeExpression jsType) {
+    if (jsType != null && currentInfo.getReturnType() == null && !hasAnySingletonTypeTags()) {
+        currentInfo.setReturnType(jsType);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test4086() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    Node node0 = Node.newString((-1524), ""sbh@Wm4[L"", (-1524), 885);
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression(node0, ""sbh@Wm4[L"", jSTypeRegistry0);
+    jSDocInfoBuilder0.recordReturnType(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordReturnType(jSTypeExpression0);
+    assertFalse(boolean0);
+}","/**
+ * Records a return type.
+ *
+ * @return {@code true} if the return type was recorded and {@code false} if
+ *     it is invalid or was already defined
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test4188() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, """", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordDefineType(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordReturnType(jSTypeExpression0);
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordReturnType(JSTypeExpression jsType) {
+    if (jsType != null && currentInfo.getReturnType() == null && !hasAnySingletonTypeTags()) {
+        currentInfo.setReturnType(jsType);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test4189() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, """", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordDefineType(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordReturnType(jSTypeExpression0);
+    assertFalse(boolean0);
+}","/**
+ * Records a return type.
+ *
+ * @return {@code true} if the return type was recorded and {@code false} if
+ *     it is invalid or was already defined
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test4291() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordReturnDescription("">p3m##Y"");
+    boolean boolean0 = jSDocInfoBuilder0.recordReturnDescription("">p3m##Y"");
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordReturnDescription(String description) {
+    if (currentInfo.documentReturn(description)) {
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test4292() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordReturnDescription("">p3m##Y"");
+    boolean boolean0 = jSDocInfoBuilder0.recordReturnDescription("">p3m##Y"");
+    assertFalse(boolean0);
+}","/**
+ * Records a return description
+ *
+ * @return {@code true} if the return description was recorded and
+ *     {@code false} if it is invalid or was already defined
+ */"
+"public boolean recordDefineType(JSTypeExpression type) {
+    if (type != null && !currentInfo.isConstant() && !currentInfo.isDefine() && recordType(type)) {
+        currentInfo.setDefine(true);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test4393() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    boolean boolean0 = jSDocInfoBuilder0.recordDefineType((JSTypeExpression) null);
+    assertFalse(boolean0);
+}","/**
+ * Records the type of a define.
+ *
+ * 'Define' values are special constants that may be manipulated by
+ * the compiler. They are designed to mimic the #define command in
+ * the C preprocessor.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test4394() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    boolean boolean0 = jSDocInfoBuilder0.recordDefineType((JSTypeExpression) null);
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test4496() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, ""*goUan]6m"", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordDefineType(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordDefineType(jSTypeExpression0);
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordDefineType(JSTypeExpression type) {
+    if (type != null && !currentInfo.isConstant() && !currentInfo.isDefine() && recordType(type)) {
+        currentInfo.setDefine(true);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test4497() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, ""*goUan]6m"", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordDefineType(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordDefineType(jSTypeExpression0);
+    assertFalse(boolean0);
+}","/**
+ * Records the type of a define.
+ *
+ * 'Define' values are special constants that may be manipulated by
+ * the compiler. They are designed to mimic the #define command in
+ * the C preprocessor.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test4598() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    boolean boolean0 = jSDocInfoBuilder0.recordEnumParameterType((JSTypeExpression) null);
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordEnumParameterType(JSTypeExpression type) {
+    if (type != null && !hasAnyTypeRelatedTags()) {
+        currentInfo.setEnumParameterType(type);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test4599() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    boolean boolean0 = jSDocInfoBuilder0.recordEnumParameterType((JSTypeExpression) null);
+    assertFalse(boolean0);
+}","/**
+ * Records a parameter type to an enum.
+ *
+ * @return {@code true} if the enum's parameter type was recorded and
+ *     {@code false} if it was invalid or already defined
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test46100() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, ""u5(OMHv>r"", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test46101() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, ""u5(OMHv>r"", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordEnumParameterType(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordDefineType(jSTypeExpression0);
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordDefineType(JSTypeExpression type) {
+    if (type != null && !currentInfo.isConstant() && !currentInfo.isDefine() && recordType(type)) {
+        currentInfo.setDefine(true);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test46102() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, ""u5(OMHv>r"", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordEnumParameterType(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordDefineType(jSTypeExpression0);
+    assertFalse(boolean0);
+}","/**
+ * Records the type of a define.
+ *
+ * 'Define' values are special constants that may be manipulated by
+ * the compiler. They are designed to mimic the #define command in
+ * the C preprocessor.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test47103() throws Throwable {
+    Node node0 = Node.newString("""");
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression(node0, """", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test47104() throws Throwable {
+    Node node0 = Node.newString("""");
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression(node0, """", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordDefineType(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordEnumParameterType(jSTypeExpression0);
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordEnumParameterType(JSTypeExpression type) {
+    if (type != null && !hasAnyTypeRelatedTags()) {
+        currentInfo.setEnumParameterType(type);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test47105() throws Throwable {
+    Node node0 = Node.newString("""");
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression(node0, """", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordDefineType(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordEnumParameterType(jSTypeExpression0);
+    assertFalse(boolean0);
+}","/**
+ * Records a parameter type to an enum.
+ *
+ * @return {@code true} if the enum's parameter type was recorded and
+ *     {@code false} if it was invalid or already defined
+ */"
+"public boolean recordThisType(JSTypeExpression type) {
+    if (type != null && !hasAnySingletonTypeTags() && !currentInfo.hasThisType()) {
+        currentInfo.setThisType(type);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test48106() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    boolean boolean0 = jSDocInfoBuilder0.recordThisType((JSTypeExpression) null);
+    assertFalse(boolean0);
+}","/**
+ * Records a type for {@code @this} annotation.
+ *
+ * @return {@code true} if the type was recorded and
+ *     {@code false} if it is invalid or if it collided with {@code @enum} or
+ *     {@code @type} annotations
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test48107() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    boolean boolean0 = jSDocInfoBuilder0.recordThisType((JSTypeExpression) null);
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test49108() throws Throwable {
+    Node node0 = Node.newString(""Xw"");
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression(node0, ""Xw"", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test49109() throws Throwable {
+    Node node0 = Node.newString(""Xw"");
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression(node0, ""Xw"", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordDefineType(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordThisType(jSTypeExpression0);
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordThisType(JSTypeExpression type) {
+    if (type != null && !hasAnySingletonTypeTags() && !currentInfo.hasThisType()) {
+        currentInfo.setThisType(type);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test49110() throws Throwable {
+    Node node0 = Node.newString(""Xw"");
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression(node0, ""Xw"", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordDefineType(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordThisType(jSTypeExpression0);
+    assertFalse(boolean0);
+}","/**
+ * Records a type for {@code @this} annotation.
+ *
+ * @return {@code true} if the type was recorded and
+ *     {@code false} if it is invalid or if it collided with {@code @enum} or
+ *     {@code @type} annotations
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test50111() throws Throwable {
+    Node node0 = Node.newString("""");
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression(node0, """", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test50112() throws Throwable {
+    Node node0 = Node.newString("""");
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression(node0, """", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordThisType(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordThisType(jSTypeExpression0);
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordThisType(JSTypeExpression type) {
+    if (type != null && !hasAnySingletonTypeTags() && !currentInfo.hasThisType()) {
+        currentInfo.setThisType(type);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test50113() throws Throwable {
+    Node node0 = Node.newString("""");
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression(node0, """", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordThisType(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordThisType(jSTypeExpression0);
+    assertFalse(boolean0);
+}","/**
+ * Records a type for {@code @this} annotation.
+ *
+ * @return {@code true} if the type was recorded and
+ *     {@code false} if it is invalid or if it collided with {@code @enum} or
+ *     {@code @type} annotations
+ */"
+"public boolean recordBaseType(JSTypeExpression jsType) {
+    if (jsType != null && !hasAnySingletonTypeTags() && !currentInfo.hasBaseType()) {
+        currentInfo.setBaseType(jsType);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test51114() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    boolean boolean0 = jSDocInfoBuilder0.recordBaseType((JSTypeExpression) null);
+    assertFalse(boolean0);
+}","/**
+ * Records a base type.
+ *
+ * @return {@code true} if the base type was recorded and {@code false}
+ *     if it was already defined
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test51115() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    boolean boolean0 = jSDocInfoBuilder0.recordBaseType((JSTypeExpression) null);
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test52116() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, ""com.google.javascript.rhino.JSDocInfoBuilder"", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test52117() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, ""com.google.javascript.rhino.JSDocInfoBuilder"", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordDefineType(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordBaseType(jSTypeExpression0);
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordBaseType(JSTypeExpression jsType) {
+    if (jsType != null && !hasAnySingletonTypeTags() && !currentInfo.hasBaseType()) {
+        currentInfo.setBaseType(jsType);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test52118() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, ""com.google.javascript.rhino.JSDocInfoBuilder"", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordDefineType(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordBaseType(jSTypeExpression0);
+    assertFalse(boolean0);
+}","/**
+ * Records a base type.
+ *
+ * @return {@code true} if the base type was recorded and {@code false}
+ *     if it was already defined
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test53120() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, """", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordBaseType(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordBaseType(jSTypeExpression0);
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordBaseType(JSTypeExpression jsType) {
+    if (jsType != null && !hasAnySingletonTypeTags() && !currentInfo.hasBaseType()) {
+        currentInfo.setBaseType(jsType);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test53121() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, """", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordBaseType(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordBaseType(jSTypeExpression0);
+    assertFalse(boolean0);
+}","/**
+ * Records a base type.
+ *
+ * @return {@code true} if the base type was recorded and {@code false}
+ *     if it was already defined
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test54123() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordConstancy();
+    boolean boolean0 = jSDocInfoBuilder0.recordConstancy();
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordConstancy() {
+    if (!currentInfo.isConstant()) {
+        currentInfo.setConstant(true);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test54124() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordConstancy();
+    boolean boolean0 = jSDocInfoBuilder0.recordConstancy();
+    assertFalse(boolean0);
+}","/**
+ * Records that the {@link JSDocInfo} being built should have its
+ * {@link JSDocInfo#isConstant()} flag set to {@code true}.
+ *
+ * @return {@code true} if the constancy was recorded and {@code false}
+ *     if it was already defined
+ */"
+"public boolean recordDescription(String description) {
+    if (description != null && currentInfo.getDescription() == null) {
+        currentInfo.setDescription(description);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test55125() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    boolean boolean0 = jSDocInfoBuilder0.recordDescription((String) null);
+    assertFalse(boolean0);
+}","/**
+ * Records a description giving context for translation (i18n).
+ *
+ * @return {@code true} if the description was recorded and {@code false}
+ *     if the description was invalid or was already defined
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test55126() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    boolean boolean0 = jSDocInfoBuilder0.recordDescription((String) null);
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isDescriptionRecorded() {
+    return currentInfo.getDescription() != null;
+}","public void test56127() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordDescription(""S\""SR-VV^"");
+    boolean boolean0 = jSDocInfoBuilder0.recordDescription(""S\""SR-VV^"");
+    assertTrue(jSDocInfoBuilder0.isDescriptionRecorded());
+}","/**
+ * Returns whether this builder recorded a description.
+ */"
+"public boolean recordDescription(String description) {
+    if (description != null && currentInfo.getDescription() == null) {
+        currentInfo.setDescription(description);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test56128() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordDescription(""S\""SR-VV^"");
+    boolean boolean0 = jSDocInfoBuilder0.recordDescription(""S\""SR-VV^"");
+    assertFalse(boolean0);
+}","/**
+ * Records a description giving context for translation (i18n).
+ *
+ * @return {@code true} if the description was recorded and {@code false}
+ *     if the description was invalid or was already defined
+ */"
+"public boolean isPopulatedWithFileOverview() {
+    return isPopulated() && currentInfo.hasFileOverview();
+}","public void test57129() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordFileOverview(""/RE"");
+    boolean boolean0 = jSDocInfoBuilder0.recordFileOverview("""");
+    assertTrue(jSDocInfoBuilder0.isPopulatedWithFileOverview());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object that has a
+ * fileoverview tag.
+ */"
+"public boolean recordFileOverview(String description) {
+    if (currentInfo.documentFileOverview(description)) {
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test57130() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordFileOverview(""/RE"");
+    boolean boolean0 = jSDocInfoBuilder0.recordFileOverview("""");
+    assertFalse(boolean0);
+}","/**
+ * Records a fileoverview description.
+ *
+ * @return {@code true} if the description was recorded and {@code false}
+ *     if the description was invalid or was already defined.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test58132() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordHiddenness();
+    boolean boolean0 = jSDocInfoBuilder0.recordHiddenness();
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordHiddenness() {
+    if (!currentInfo.isHidden()) {
+        currentInfo.setHidden(true);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test58133() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordHiddenness();
+    boolean boolean0 = jSDocInfoBuilder0.recordHiddenness();
+    assertFalse(boolean0);
+}","/**
+ * Records that the {@link JSDocInfo} being built should have its
+ * {@link JSDocInfo#isHidden()} flag set to {@code true}.
+ *
+ * @return {@code true} if the hiddenness was recorded and {@code false}
+ *     if it was already defined
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test59135() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordNoTypeCheck();
+    boolean boolean0 = jSDocInfoBuilder0.recordNoTypeCheck();
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordNoTypeCheck() {
+    if (!currentInfo.isNoTypeCheck()) {
+        currentInfo.setNoCheck(true);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test59136() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordNoTypeCheck();
+    boolean boolean0 = jSDocInfoBuilder0.recordNoTypeCheck();
+    assertFalse(boolean0);
+}","/**
+ * Records that the {@link JSDocInfo} being built should have its
+ * {@link JSDocInfo#isNoTypeCheck()} flag set to {@code true}.
+ *
+ * @return {@code true} if the no check flag was recorded and {@code false}
+ *     if it was already recorded
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test60138() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, """", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordDefineType(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordConstructor();
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordConstructor() {
+    if (!hasAnySingletonTypeTags() && !currentInfo.isConstructor() && !currentInfo.isInterface()) {
+        currentInfo.setConstructor(true);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test60139() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, """", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordDefineType(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordConstructor();
+    assertFalse(boolean0);
+}","/**
+ * Records that the {@link JSDocInfo} being built should have its
+ * {@link JSDocInfo#isConstructor()} flag set to {@code true}.
+ *
+ * @return {@code true} if the constructor was recorded and {@code false}
+ *     if it was already defined or it was incompatible with the existing
+ *     flags
+ */"
+"public boolean isConstructorRecorded() {
+    return currentInfo.isConstructor();
+}","public void test61140() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordConstructor();
+    boolean boolean0 = jSDocInfoBuilder0.recordInterface();
+    assertTrue(jSDocInfoBuilder0.isConstructorRecorded());
+}","/**
+ * Whether the {@link JSDocInfo} being built will have its
+ * {@link JSDocInfo#isConstructor()} flag set to {@code true}.
+ */"
+"public boolean recordInterface() {
+    if (!hasAnySingletonTypeTags() && !currentInfo.isConstructor() && !currentInfo.isInterface()) {
+        currentInfo.setInterface(true);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test61141() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordConstructor();
+    boolean boolean0 = jSDocInfoBuilder0.recordInterface();
+    assertFalse(boolean0);
+}","/**
+ * Records that the {@link JSDocInfo} being built should have its
+ * {@link JSDocInfo#isInterface()} flag set to {@code true}.
+ *
+ * @return {@code true} if the flag was recorded and {@code false}
+ *     if it was already defined or it was incompatible with the existing
+ *     flags
+ */"
+"public boolean isConstructorRecorded() {
+    return currentInfo.isConstructor();
+}","public void test62142() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordConstructor();
+    boolean boolean0 = jSDocInfoBuilder0.recordConstructor();
+    assertTrue(jSDocInfoBuilder0.isConstructorRecorded());
+}","/**
+ * Whether the {@link JSDocInfo} being built will have its
+ * {@link JSDocInfo#isConstructor()} flag set to {@code true}.
+ */"
+"public boolean recordConstructor() {
+    if (!hasAnySingletonTypeTags() && !currentInfo.isConstructor() && !currentInfo.isInterface()) {
+        currentInfo.setConstructor(true);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test62143() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordConstructor();
+    boolean boolean0 = jSDocInfoBuilder0.recordConstructor();
+    assertFalse(boolean0);
+}","/**
+ * Records that the {@link JSDocInfo} being built should have its
+ * {@link JSDocInfo#isConstructor()} flag set to {@code true}.
+ *
+ * @return {@code true} if the constructor was recorded and {@code false}
+ *     if it was already defined or it was incompatible with the existing
+ *     flags
+ */"
+"public boolean isInterfaceRecorded() {
+    return currentInfo.isInterface();
+}","public void test63144() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordInterface();
+    boolean boolean0 = jSDocInfoBuilder0.recordConstructor();
+    assertTrue(jSDocInfoBuilder0.isInterfaceRecorded());
+}","/**
+ * Whether the {@link JSDocInfo} being built will have its
+ * {@link JSDocInfo#isInterface()} flag set to {@code true}.
+ */"
+"public boolean recordConstructor() {
+    if (!hasAnySingletonTypeTags() && !currentInfo.isConstructor() && !currentInfo.isInterface()) {
+        currentInfo.setConstructor(true);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test63145() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordInterface();
+    boolean boolean0 = jSDocInfoBuilder0.recordConstructor();
+    assertFalse(boolean0);
+}","/**
+ * Records that the {@link JSDocInfo} being built should have its
+ * {@link JSDocInfo#isConstructor()} flag set to {@code true}.
+ *
+ * @return {@code true} if the constructor was recorded and {@code false}
+ *     if it was already defined or it was incompatible with the existing
+ *     flags
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test64147() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordPreserveTry();
+    boolean boolean0 = jSDocInfoBuilder0.recordPreserveTry();
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordPreserveTry() {
+    if (!currentInfo.shouldPreserveTry()) {
+        currentInfo.setShouldPreserveTry(true);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test64148() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordPreserveTry();
+    boolean boolean0 = jSDocInfoBuilder0.recordPreserveTry();
+    assertFalse(boolean0);
+}","/**
+ * Records that the {@link JSDocInfo} being built should have its
+ * {@link JSDocInfo#shouldPreserveTry()} flag set to {@code true}.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test65150() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordOverride();
+    boolean boolean0 = jSDocInfoBuilder0.recordOverride();
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordOverride() {
+    if (!currentInfo.isOverride()) {
+        currentInfo.setOverride(true);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test65151() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordOverride();
+    boolean boolean0 = jSDocInfoBuilder0.recordOverride();
+    assertFalse(boolean0);
+}","/**
+ * Records that the {@link JSDocInfo} being built should have its
+ * {@link JSDocInfo#isOverride()} flag set to {@code true}.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test66153() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordNoAlias();
+    boolean boolean0 = jSDocInfoBuilder0.recordNoAlias();
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordNoAlias() {
+    if (!currentInfo.isNoAlias()) {
+        currentInfo.setNoAlias(true);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test66154() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordNoAlias();
+    boolean boolean0 = jSDocInfoBuilder0.recordNoAlias();
+    assertFalse(boolean0);
+}","/**
+ * Records that the {@link JSDocInfo} being built should have its
+ * {@link JSDocInfo#isNoAlias()} flag set to {@code true}.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test67156() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordDeprecated();
+    boolean boolean0 = jSDocInfoBuilder0.recordDeprecated();
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordDeprecated() {
+    if (!currentInfo.isDeprecated()) {
+        currentInfo.setDeprecated(true);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test67157() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordDeprecated();
+    boolean boolean0 = jSDocInfoBuilder0.recordDeprecated();
+    assertFalse(boolean0);
+}","/**
+ * Records that the {@link JSDocInfo} being built should have its
+ * {@link JSDocInfo#isDeprecated()} flag set to {@code true}.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test68158() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, """", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test68159() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, """", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordDefineType(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordInterface();
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordInterface() {
+    if (!hasAnySingletonTypeTags() && !currentInfo.isConstructor() && !currentInfo.isInterface()) {
+        currentInfo.setInterface(true);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test68160() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, """", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordDefineType(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordInterface();
+    assertFalse(boolean0);
+}","/**
+ * Records that the {@link JSDocInfo} being built should have its
+ * {@link JSDocInfo#isInterface()} flag set to {@code true}.
+ *
+ * @return {@code true} if the flag was recorded and {@code false}
+ *     if it was already defined or it was incompatible with the existing
+ *     flags
+ */"
+"public boolean isInterfaceRecorded() {
+    return currentInfo.isInterface();
+}","public void test69161() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordInterface();
+    boolean boolean0 = jSDocInfoBuilder0.recordInterface();
+    assertTrue(jSDocInfoBuilder0.isInterfaceRecorded());
+}","/**
+ * Whether the {@link JSDocInfo} being built will have its
+ * {@link JSDocInfo#isInterface()} flag set to {@code true}.
+ */"
+"public boolean recordInterface() {
+    if (!hasAnySingletonTypeTags() && !currentInfo.isConstructor() && !currentInfo.isInterface()) {
+        currentInfo.setInterface(true);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test69162() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordInterface();
+    boolean boolean0 = jSDocInfoBuilder0.recordInterface();
+    assertFalse(boolean0);
+}","/**
+ * Records that the {@link JSDocInfo} being built should have its
+ * {@link JSDocInfo#isInterface()} flag set to {@code true}.
+ *
+ * @return {@code true} if the flag was recorded and {@code false}
+ *     if it was already defined or it was incompatible with the existing
+ *     flags
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test70164() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordExport();
+    boolean boolean0 = jSDocInfoBuilder0.recordExport();
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordExport() {
+    if (!currentInfo.isExport()) {
+        currentInfo.setExport(true);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test70165() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordExport();
+    boolean boolean0 = jSDocInfoBuilder0.recordExport();
+    assertFalse(boolean0);
+}","/**
+ * Records that the {@link JSDocInfo} being built should have its
+ * {@link JSDocInfo#isExport()} flag set to {@code true}.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test71167() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordNoShadow();
+    boolean boolean0 = jSDocInfoBuilder0.recordNoShadow();
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordNoShadow() {
+    if (!currentInfo.isNoShadow()) {
+        currentInfo.setNoShadow(true);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test71168() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordNoShadow();
+    boolean boolean0 = jSDocInfoBuilder0.recordNoShadow();
+    assertFalse(boolean0);
+}","/**
+ * Records that the {@link JSDocInfo} being built should have its
+ * {@link JSDocInfo#isNoShadow()} flag set to {@code true}.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test72170() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordImplicitCast();
+    boolean boolean0 = jSDocInfoBuilder0.recordImplicitCast();
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordImplicitCast() {
+    if (!currentInfo.isImplicitCast()) {
+        currentInfo.setImplicitCast(true);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test72171() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordImplicitCast();
+    boolean boolean0 = jSDocInfoBuilder0.recordImplicitCast();
+    assertFalse(boolean0);
+}","/**
+ * Records that the {@link JSDocInfo} being built should have its
+ * {@link JSDocInfo#isImplicitCast()} flag set to {@code true}.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test73173() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordNoSideEffects();
+    boolean boolean0 = jSDocInfoBuilder0.recordNoSideEffects();
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordNoSideEffects() {
+    if (!currentInfo.isNoSideEffects()) {
+        currentInfo.setNoSideEffects(true);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test73174() throws Throwable {
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(false);
+    jSDocInfoBuilder0.recordNoSideEffects();
+    boolean boolean0 = jSDocInfoBuilder0.recordNoSideEffects();
+    assertFalse(boolean0);
+}","/**
+ * Records that the {@link JSDocInfo} being built should have its
+ * {@link JSDocInfo#isNoSideEffects()} flag set to {@code true}.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test74175() throws Throwable {
+    Node node0 = Node.newString(""RSH"");
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression(node0, ""RSH"", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    assertFalse(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test74176() throws Throwable {
+    Node node0 = Node.newString(""RSH"");
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression(node0, ""RSH"", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordImplementedInterface(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordImplementedInterface(jSTypeExpression0);
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordImplementedInterface(JSTypeExpression interfaceName) {
+    if (currentInfo.addImplementedInterface(interfaceName)) {
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test74177() throws Throwable {
+    Node node0 = Node.newString(""RSH"");
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression(node0, ""RSH"", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordImplementedInterface(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordImplementedInterface(jSTypeExpression0);
+    assertFalse(boolean0);
+}","/**
+ * Records an implemented interface.
+ */"
+"public boolean isConstructorRecorded() {
+    return currentInfo.isConstructor();
+}","public void test75178() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, ""x56w[`at"", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordConstructor();
+    boolean boolean0 = jSDocInfoBuilder0.recordDefineType(jSTypeExpression0);
+    assertTrue(jSDocInfoBuilder0.isConstructorRecorded());
+}","/**
+ * Whether the {@link JSDocInfo} being built will have its
+ * {@link JSDocInfo#isConstructor()} flag set to {@code true}.
+ */"
+"public boolean recordDefineType(JSTypeExpression type) {
+    if (type != null && !currentInfo.isConstant() && !currentInfo.isDefine() && recordType(type)) {
+        currentInfo.setDefine(true);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test75179() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, ""x56w[`at"", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordConstructor();
+    boolean boolean0 = jSDocInfoBuilder0.recordDefineType(jSTypeExpression0);
+    assertFalse(boolean0);
+}","/**
+ * Records the type of a define.
+ *
+ * 'Define' values are special constants that may be manipulated by
+ * the compiler. They are designed to mimic the #define command in
+ * the C preprocessor.
+ */"
+"public boolean isInterfaceRecorded() {
+    return currentInfo.isInterface();
+}","public void test76180() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, """", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordInterface();
+    boolean boolean0 = jSDocInfoBuilder0.recordDefineType(jSTypeExpression0);
+    assertTrue(jSDocInfoBuilder0.isInterfaceRecorded());
+}","/**
+ * Whether the {@link JSDocInfo} being built will have its
+ * {@link JSDocInfo#isInterface()} flag set to {@code true}.
+ */"
+"public boolean recordDefineType(JSTypeExpression type) {
+    if (type != null && !currentInfo.isConstant() && !currentInfo.isDefine() && recordType(type)) {
+        currentInfo.setDefine(true);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test76181() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, """", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordInterface();
+    boolean boolean0 = jSDocInfoBuilder0.recordDefineType(jSTypeExpression0);
+    assertFalse(boolean0);
+}","/**
+ * Records the type of a define.
+ *
+ * 'Define' values are special constants that may be manipulated by
+ * the compiler. They are designed to mimic the #define command in
+ * the C preprocessor.
+ */"
+"public boolean isPopulated() {
+    return populated;
+}","public void test77183() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, """", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordBaseType(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordDefineType(jSTypeExpression0);
+    assertTrue(jSDocInfoBuilder0.isPopulated());
+}","/**
+ * Returns whether this builder is populated with information that can be
+ * used to {@link #build} a {@link JSDocInfo} object.
+ */"
+"public boolean recordDefineType(JSTypeExpression type) {
+    if (type != null && !currentInfo.isConstant() && !currentInfo.isDefine() && recordType(type)) {
+        currentInfo.setDefine(true);
+        populated = true;
+        return true;
+    } else {
+        return false;
+    }
+}","public void test77184() throws Throwable {
+    JSTypeExpression jSTypeExpression0 = new JSTypeExpression((Node) null, """", (JSTypeRegistry) null);
+    JSDocInfoBuilder jSDocInfoBuilder0 = new JSDocInfoBuilder(true);
+    jSDocInfoBuilder0.recordBaseType(jSTypeExpression0);
+    boolean boolean0 = jSDocInfoBuilder0.recordDefineType(jSTypeExpression0);
+    assertFalse(boolean0);
+}","/**
+ * Records the type of a define.
+ *
+ * 'Define' values are special constants that may be manipulated by
+ * the compiler. They are designed to mimic the #define command in
+ * the C preprocessor.
+ */"

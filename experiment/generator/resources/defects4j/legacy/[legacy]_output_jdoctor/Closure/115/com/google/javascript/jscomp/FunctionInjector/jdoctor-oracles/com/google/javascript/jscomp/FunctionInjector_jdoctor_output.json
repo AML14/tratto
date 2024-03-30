@@ -1,0 +1,530 @@
+[
+  {
+    "signature": "com.google.javascript.jscomp.FunctionInjector(com.google.javascript.jscomp.AbstractCompiler compiler, com.google.common.base.Supplier<java.lang.String> safeNameIdSupplier, boolean allowDecomposition, boolean assumeStrictThis, boolean assumeMinimumCapture)",
+    "name": "com.google.javascript.jscomp.FunctionInjector",
+    "containingClass": {
+      "qualifiedName": "com.google.javascript.jscomp.FunctionInjector",
+      "name": "FunctionInjector",
+      "isArray": false
+    },
+    "targetClass": "com.google.javascript.jscomp.FunctionInjector",
+    "isVarArgs": false,
+    "parameters": [
+      {
+        "type": {
+          "qualifiedName": "com.google.javascript.jscomp.AbstractCompiler",
+          "name": "AbstractCompiler",
+          "isArray": false
+        },
+        "name": "compiler"
+      },
+      {
+        "type": {
+          "qualifiedName": "com.google.common.base.Supplier",
+          "name": "Supplier",
+          "isArray": false
+        },
+        "name": "safeNameIdSupplier"
+      },
+      {
+        "type": {
+          "qualifiedName": "boolean",
+          "name": "boolean",
+          "isArray": false
+        },
+        "name": "allowDecomposition"
+      },
+      {
+        "type": {
+          "qualifiedName": "boolean",
+          "name": "boolean",
+          "isArray": false
+        },
+        "name": "assumeStrictThis"
+      },
+      {
+        "type": {
+          "qualifiedName": "boolean",
+          "name": "boolean",
+          "isArray": false
+        },
+        "name": "assumeMinimumCapture"
+      }
+    ],
+    "paramTags": [
+      {
+        "parameter": {
+          "type": {
+            "qualifiedName": "boolean",
+            "name": "boolean",
+            "isArray": false
+          },
+          "name": "allowDecomposition"
+        },
+        "comment": "Whether an effort should be made to break down expressions into simpler expressions to allow functions to be injected where they would otherwise be disallowed.",
+        "kind": "PARAM",
+        "condition": ""
+      }
+    ],
+    "throwsTags": []
+  },
+  {
+    "signature": "doesFunctionMeetMinimumRequirements(java.lang.String fnName, com.google.javascript.rhino.Node fnNode)",
+    "name": "doesFunctionMeetMinimumRequirements",
+    "containingClass": {
+      "qualifiedName": "com.google.javascript.jscomp.FunctionInjector",
+      "name": "FunctionInjector",
+      "isArray": false
+    },
+    "targetClass": "com.google.javascript.jscomp.FunctionInjector",
+    "isVarArgs": false,
+    "returnType": {
+      "qualifiedName": "boolean",
+      "name": "boolean",
+      "isArray": false
+    },
+    "parameters": [
+      {
+        "type": {
+          "qualifiedName": "java.lang.String",
+          "name": "String",
+          "isArray": false
+        },
+        "name": "fnName"
+      },
+      {
+        "type": {
+          "qualifiedName": "com.google.javascript.rhino.Node",
+          "name": "Node",
+          "isArray": false
+        },
+        "name": "fnNode"
+      }
+    ],
+    "paramTags": [
+      {
+        "parameter": {
+          "type": {
+            "qualifiedName": "java.lang.String",
+            "name": "String",
+            "isArray": false
+          },
+          "name": "fnName"
+        },
+        "comment": "The name of this function. This either the name of the variable to which the function is assigned or the name from the FUNCTION node.",
+        "kind": "PARAM",
+        "condition": ""
+      },
+      {
+        "parameter": {
+          "type": {
+            "qualifiedName": "com.google.javascript.rhino.Node",
+            "name": "Node",
+            "isArray": false
+          },
+          "name": "fnNode"
+        },
+        "comment": "The FUNCTION node of the function to inspect.",
+        "kind": "PARAM",
+        "condition": ""
+      }
+    ],
+    "returnTag": {
+      "comment": "Whether the function node meets the minimum requirements for inlining., false otherwise",
+      "kind": "RETURN",
+      "condition": ""
+    },
+    "throwsTags": []
+  },
+  {
+    "signature": "canInlineReferenceToFunction(com.google.javascript.jscomp.NodeTraversal t, com.google.javascript.rhino.Node callNode, com.google.javascript.rhino.Node fnNode, java.util.Set<java.lang.String> needAliases, com.google.javascript.jscomp.FunctionInjector$InliningMode mode, boolean referencesThis, boolean containsFunctions)",
+    "name": "canInlineReferenceToFunction",
+    "containingClass": {
+      "qualifiedName": "com.google.javascript.jscomp.FunctionInjector",
+      "name": "FunctionInjector",
+      "isArray": false
+    },
+    "targetClass": "com.google.javascript.jscomp.FunctionInjector",
+    "isVarArgs": false,
+    "returnType": {
+      "qualifiedName": "com.google.javascript.jscomp.FunctionInjector$CanInlineResult",
+      "name": "com.google.javascript.jscomp.FunctionInjector$CanInlineResult",
+      "isArray": false
+    },
+    "parameters": [
+      {
+        "type": {
+          "qualifiedName": "com.google.javascript.jscomp.NodeTraversal",
+          "name": "NodeTraversal",
+          "isArray": false
+        },
+        "name": "t"
+      },
+      {
+        "type": {
+          "qualifiedName": "com.google.javascript.rhino.Node",
+          "name": "Node",
+          "isArray": false
+        },
+        "name": "callNode"
+      },
+      {
+        "type": {
+          "qualifiedName": "com.google.javascript.rhino.Node",
+          "name": "Node",
+          "isArray": false
+        },
+        "name": "fnNode"
+      },
+      {
+        "type": {
+          "qualifiedName": "java.util.Set",
+          "name": "Set",
+          "isArray": false
+        },
+        "name": "needAliases"
+      },
+      {
+        "type": {
+          "qualifiedName": "com.google.javascript.jscomp.FunctionInjector$InliningMode",
+          "name": "InliningMode",
+          "isArray": false
+        },
+        "name": "mode"
+      },
+      {
+        "type": {
+          "qualifiedName": "boolean",
+          "name": "boolean",
+          "isArray": false
+        },
+        "name": "referencesThis"
+      },
+      {
+        "type": {
+          "qualifiedName": "boolean",
+          "name": "boolean",
+          "isArray": false
+        },
+        "name": "containsFunctions"
+      }
+    ],
+    "paramTags": [
+      {
+        "parameter": {
+          "type": {
+            "qualifiedName": "com.google.javascript.jscomp.NodeTraversal",
+            "name": "NodeTraversal",
+            "isArray": false
+          },
+          "name": "t"
+        },
+        "comment": "The traversal use to reach the call site.",
+        "kind": "PARAM",
+        "condition": ""
+      },
+      {
+        "parameter": {
+          "type": {
+            "qualifiedName": "com.google.javascript.rhino.Node",
+            "name": "Node",
+            "isArray": false
+          },
+          "name": "callNode"
+        },
+        "comment": "The CALL node.",
+        "kind": "PARAM",
+        "condition": ""
+      },
+      {
+        "parameter": {
+          "type": {
+            "qualifiedName": "com.google.javascript.rhino.Node",
+            "name": "Node",
+            "isArray": false
+          },
+          "name": "fnNode"
+        },
+        "comment": "The function to evaluate for inlining.",
+        "kind": "PARAM",
+        "condition": ""
+      },
+      {
+        "parameter": {
+          "type": {
+            "qualifiedName": "java.util.Set",
+            "name": "Set",
+            "isArray": false
+          },
+          "name": "needAliases"
+        },
+        "comment": "A set of function parameter names that can not be used without aliasing. Returned by getUnsafeParameterNames().",
+        "kind": "PARAM",
+        "condition": ""
+      },
+      {
+        "parameter": {
+          "type": {
+            "qualifiedName": "com.google.javascript.jscomp.FunctionInjector$InliningMode",
+            "name": "InliningMode",
+            "isArray": false
+          },
+          "name": "mode"
+        },
+        "comment": "Inlining mode to be used.",
+        "kind": "PARAM",
+        "condition": ""
+      },
+      {
+        "parameter": {
+          "type": {
+            "qualifiedName": "boolean",
+            "name": "boolean",
+            "isArray": false
+          },
+          "name": "referencesThis"
+        },
+        "comment": "Whether fnNode contains references to its this object.",
+        "kind": "PARAM",
+        "condition": ""
+      },
+      {
+        "parameter": {
+          "type": {
+            "qualifiedName": "boolean",
+            "name": "boolean",
+            "isArray": false
+          },
+          "name": "containsFunctions"
+        },
+        "comment": "containsFunctions is Whether. Whether fnNode contains inner functions.",
+        "kind": "PARAM",
+        "condition": ""
+      }
+    ],
+    "returnTag": {
+      "comment": "Whether the inlining can occur., false otherwise",
+      "kind": "RETURN",
+      "condition": ""
+    },
+    "throwsTags": []
+  },
+  {
+    "signature": "inline(com.google.javascript.rhino.Node callNode, java.lang.String fnName, com.google.javascript.rhino.Node fnNode, com.google.javascript.jscomp.FunctionInjector$InliningMode mode)",
+    "name": "inline",
+    "containingClass": {
+      "qualifiedName": "com.google.javascript.jscomp.FunctionInjector",
+      "name": "FunctionInjector",
+      "isArray": false
+    },
+    "targetClass": "com.google.javascript.jscomp.FunctionInjector",
+    "isVarArgs": false,
+    "returnType": {
+      "qualifiedName": "com.google.javascript.rhino.Node",
+      "name": "com.google.javascript.rhino.Node",
+      "isArray": false
+    },
+    "parameters": [
+      {
+        "type": {
+          "qualifiedName": "com.google.javascript.rhino.Node",
+          "name": "Node",
+          "isArray": false
+        },
+        "name": "callNode"
+      },
+      {
+        "type": {
+          "qualifiedName": "java.lang.String",
+          "name": "String",
+          "isArray": false
+        },
+        "name": "fnName"
+      },
+      {
+        "type": {
+          "qualifiedName": "com.google.javascript.rhino.Node",
+          "name": "Node",
+          "isArray": false
+        },
+        "name": "fnNode"
+      },
+      {
+        "type": {
+          "qualifiedName": "com.google.javascript.jscomp.FunctionInjector$InliningMode",
+          "name": "InliningMode",
+          "isArray": false
+        },
+        "name": "mode"
+      }
+    ],
+    "paramTags": [],
+    "throwsTags": []
+  },
+  {
+    "signature": "maybePrepareCall(com.google.javascript.rhino.Node callNode)",
+    "name": "maybePrepareCall",
+    "containingClass": {
+      "qualifiedName": "com.google.javascript.jscomp.FunctionInjector",
+      "name": "FunctionInjector",
+      "isArray": false
+    },
+    "targetClass": "com.google.javascript.jscomp.FunctionInjector",
+    "isVarArgs": false,
+    "returnType": {
+      "qualifiedName": "void",
+      "name": "void",
+      "isArray": false
+    },
+    "parameters": [
+      {
+        "type": {
+          "qualifiedName": "com.google.javascript.rhino.Node",
+          "name": "Node",
+          "isArray": false
+        },
+        "name": "callNode"
+      }
+    ],
+    "paramTags": [],
+    "throwsTags": []
+  },
+  {
+    "signature": "isDirectCallNodeReplacementPossible(com.google.javascript.rhino.Node fnNode)",
+    "name": "isDirectCallNodeReplacementPossible",
+    "containingClass": {
+      "qualifiedName": "com.google.javascript.jscomp.FunctionInjector",
+      "name": "FunctionInjector",
+      "isArray": false
+    },
+    "targetClass": "com.google.javascript.jscomp.FunctionInjector",
+    "isVarArgs": false,
+    "returnType": {
+      "qualifiedName": "boolean",
+      "name": "boolean",
+      "isArray": false
+    },
+    "parameters": [
+      {
+        "type": {
+          "qualifiedName": "com.google.javascript.rhino.Node",
+          "name": "Node",
+          "isArray": false
+        },
+        "name": "fnNode"
+      }
+    ],
+    "paramTags": [],
+    "throwsTags": []
+  },
+  {
+    "signature": "inliningLowersCost(com.google.javascript.jscomp.JSModule fnModule, com.google.javascript.rhino.Node fnNode, java.util.Collection<? extends com.google.javascript.jscomp.FunctionInjector$Reference> refs, java.util.Set<java.lang.String> namesToAlias, boolean isRemovable, boolean referencesThis)",
+    "name": "inliningLowersCost",
+    "containingClass": {
+      "qualifiedName": "com.google.javascript.jscomp.FunctionInjector",
+      "name": "FunctionInjector",
+      "isArray": false
+    },
+    "targetClass": "com.google.javascript.jscomp.FunctionInjector",
+    "isVarArgs": false,
+    "returnType": {
+      "qualifiedName": "boolean",
+      "name": "boolean",
+      "isArray": false
+    },
+    "parameters": [
+      {
+        "type": {
+          "qualifiedName": "com.google.javascript.jscomp.JSModule",
+          "name": "JSModule",
+          "isArray": false
+        },
+        "name": "fnModule"
+      },
+      {
+        "type": {
+          "qualifiedName": "com.google.javascript.rhino.Node",
+          "name": "Node",
+          "isArray": false
+        },
+        "name": "fnNode"
+      },
+      {
+        "type": {
+          "qualifiedName": "java.util.Collection",
+          "name": "Collection",
+          "isArray": false
+        },
+        "name": "refs"
+      },
+      {
+        "type": {
+          "qualifiedName": "java.util.Set",
+          "name": "Set",
+          "isArray": false
+        },
+        "name": "namesToAlias"
+      },
+      {
+        "type": {
+          "qualifiedName": "boolean",
+          "name": "boolean",
+          "isArray": false
+        },
+        "name": "isRemovable"
+      },
+      {
+        "type": {
+          "qualifiedName": "boolean",
+          "name": "boolean",
+          "isArray": false
+        },
+        "name": "referencesThis"
+      }
+    ],
+    "paramTags": [
+      {
+        "parameter": {
+          "type": {
+            "qualifiedName": "java.util.Set",
+            "name": "Set",
+            "isArray": false
+          },
+          "name": "namesToAlias"
+        },
+        "comment": ".",
+        "kind": "PARAM",
+        "condition": ""
+      }
+    ],
+    "throwsTags": []
+  },
+  {
+    "signature": "setKnownConstants(java.util.Set<java.lang.String> knownConstants)",
+    "name": "setKnownConstants",
+    "containingClass": {
+      "qualifiedName": "com.google.javascript.jscomp.FunctionInjector",
+      "name": "FunctionInjector",
+      "isArray": false
+    },
+    "targetClass": "com.google.javascript.jscomp.FunctionInjector",
+    "isVarArgs": false,
+    "returnType": {
+      "qualifiedName": "void",
+      "name": "void",
+      "isArray": false
+    },
+    "parameters": [
+      {
+        "type": {
+          "qualifiedName": "java.util.Set",
+          "name": "Set",
+          "isArray": false
+        },
+        "name": "knownConstants"
+      }
+    ],
+    "paramTags": [],
+    "throwsTags": []
+  }
+]

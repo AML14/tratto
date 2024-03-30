@@ -1,0 +1,364 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    Gson gson0 = new Gson();
+    Class<Object> class0 = Object.class;
+    TypeToken<Object> typeToken0 = TypeToken.get(class0);
+    TypeAdapter<Object> typeAdapter0 = gson0.getAdapter(typeToken0);
+    TypeAdapterRuntimeTypeWrapper<Object> typeAdapterRuntimeTypeWrapper0 = new TypeAdapterRuntimeTypeWrapper<Object>(gson0, typeAdapter0, class0);
+    Class<Calendar> class1 = Calendar.class;
+    Class<MockCalendar> class2 = MockCalendar.class;
+    TypeAdapterFactory typeAdapterFactory0 = TypeAdapters.newFactoryForMultipleTypes(class1, (Class<? extends Calendar>) class2, (TypeAdapter<? super Calendar>) typeAdapterRuntimeTypeWrapper0);
+    assertNotNull(typeAdapterFactory0);
+}",1,
+project,0,test011,"public void test011() throws Throwable {
+    Gson gson0 = new Gson();
+    Class<AtomicIntegerArray> class0 = AtomicIntegerArray.class;
+    try {
+        gson0.fromJson(""U:cd7t{f`~HSIl-iUJ"", class0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // org.evosuite.runtime.mock.java.lang.MockThrowable: Expected BEGIN_ARRAY but was STRING at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.Gson"", e);
+    }
+}",0,
+project,0,test022,"public void test022() throws Throwable {
+    Gson gson0 = new Gson();
+    Class<URI> class0 = URI.class;
+    // Undeclared exception!
+    try {
+        gson0.fromJson(""FT4"", class0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // java.net.URISyntaxException: Illegal character in path at index 0: FT4
+        //
+        verifyException(""com.google.gson.internal.bind.TypeAdapters$23"", e);
+    }
+}",0,
+project,0,test033,"public void test033() throws Throwable {
+    Class<Double> class0 = Double.class;
+    Gson gson0 = new Gson();
+    TypeAdapter<URL> typeAdapter0 = TypeAdapters.URL;
+    TypeAdapterRuntimeTypeWrapper<URL> typeAdapterRuntimeTypeWrapper0 = new TypeAdapterRuntimeTypeWrapper<URL>(gson0, typeAdapter0, class0);
+    StringReader stringReader0 = new StringReader("""");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        typeAdapterRuntimeTypeWrapper0.read(jsonReader0);
+        fail(""Expecting exception: EOFException"");
+    } catch (EOFException e) {
+        //
+        // End of input at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",0,
+project,0,test044,"public void test044() throws Throwable {
+    Class<Character> class0 = Character.class;
+    Gson gson0 = new Gson();
+    TypeAdapter<Character> typeAdapter0 = TypeAdapters.CHARACTER;
+    TypeAdapterRuntimeTypeWrapper<Character> typeAdapterRuntimeTypeWrapper0 = new TypeAdapterRuntimeTypeWrapper<Character>(gson0, typeAdapter0, class0);
+    StringReader stringReader0 = new StringReader(""A6gNLx$Uc^fz}?z!]"");
+    JsonReader jsonReader0 = gson0.newJsonReader(stringReader0);
+    try {
+        typeAdapterRuntimeTypeWrapper0.read(jsonReader0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.stream.JsonReader"", e);
+    }
+}",0,
+project,0,test055,"public void test055() throws Throwable {
+    Class<Character> class0 = Character.class;
+    Gson gson0 = new Gson();
+    TypeToken<Character> typeToken0 = TypeToken.get(class0);
+    TypeAdapter<Character> typeAdapter0 = gson0.getAdapter(typeToken0);
+    TypeAdapterFactory typeAdapterFactory0 = TypeAdapters.newFactory(class0, typeAdapter0);
+    assertNotNull(typeAdapterFactory0);
+}",0,
+project,0,test077,"public void test077() throws Throwable {
+    JsonArray jsonArray0 = new JsonArray();
+    // Undeclared exception!
+    try {
+        jsonArray0.getAsJsonObject();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Not a JSON Object: []
+        //
+        verifyException(""com.google.gson.JsonElement"", e);
+    }
+}",1,
+project,0,test088,"public void test088() throws Throwable {
+    Gson gson0 = new Gson();
+    Boolean boolean0 = Boolean.TRUE;
+    JsonPrimitive jsonPrimitive0 = new JsonPrimitive(boolean0);
+    String string0 = gson0.toJson((JsonElement) jsonPrimitive0);
+    assertEquals(""true"", string0);
+}",0,
+project,0,test099,"public void test099() throws Throwable {
+    Gson gson0 = new Gson();
+    Character character0 = Character.valueOf('s');
+    JsonPrimitive jsonPrimitive0 = new JsonPrimitive(character0);
+    String string0 = gson0.toJson((JsonElement) jsonPrimitive0);
+    assertEquals(""\""s\"""", string0);
+}",0,
+project,0,test1010,"public void test1010() throws Throwable {
+    Gson gson0 = new Gson();
+    JsonObject jsonObject0 = new JsonObject();
+    Byte byte0 = new Byte((byte) 84);
+    jsonObject0.addProperty(""T26e"", (Number) byte0);
+    String string0 = gson0.toJson((JsonElement) jsonObject0);
+    assertNotNull(string0);
+}",0,assertNotNull(string0)
+project,0,test1111,"public void test1111() throws Throwable {
+    Class<Double> class0 = Double.class;
+    Gson gson0 = new Gson();
+    TypeToken<Double> typeToken0 = TypeToken.get(class0);
+    TypeAdapter<Double> typeAdapter0 = gson0.getDelegateAdapter((TypeAdapterFactory) null, typeToken0);
+    TypeAdapterFactory typeAdapterFactory0 = TypeAdapters.newTypeHierarchyFactory(class0, typeAdapter0);
+    Class<Character> class1 = Character.class;
+    JsonSerializer<Character> jsonSerializer0 = (JsonSerializer<Character>) mock(JsonSerializer.class, new ViolatedAssumptionAnswer());
+    doReturn((JsonElement) null).when(jsonSerializer0).serialize(anyChar(), any(java.lang.reflect.Type.class), any(com.google.gson.JsonSerializationContext.class));
+    JsonDeserializer<Character> jsonDeserializer0 = (JsonDeserializer<Character>) mock(JsonDeserializer.class, new ViolatedAssumptionAnswer());
+    TypeToken<Character> typeToken1 = TypeToken.get(class1);
+    TreeTypeAdapter<Character> treeTypeAdapter0 = new TreeTypeAdapter<Character>(jsonSerializer0, jsonDeserializer0, gson0, typeToken1, typeAdapterFactory0);
+    Character character0 = Character.valueOf(']');
+    JsonElement jsonElement0 = treeTypeAdapter0.toJsonTree(character0);
+    assertFalse(jsonElement0.isJsonArray());
+}",0,
+project,0,test1212,"public void test1212() throws Throwable {
+    Gson gson0 = new Gson();
+    Class<JsonArray> class0 = JsonArray.class;
+    try {
+        gson0.fromJson(""3% G9;6\""!3KA$j"", class0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Expected a com.google.gson.JsonArray but was com.google.gson.JsonPrimitive
+        //
+        verifyException(""com.google.gson.internal.bind.TypeAdapters$35$1"", e);
+    }
+}",0,
+project,0,test1414,"public void test1414() throws Throwable {
+    Class<Locale> class0 = Locale.class;
+    Gson gson0 = new Gson();
+    try {
+        gson0.fromJson(""f1?dV6#bN?N5!d4"", (Type) class0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // org.evosuite.runtime.mock.java.lang.MockThrowable: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 8 path $
+        //
+        verifyException(""com.google.gson.Gson"", e);
+    }
+}",1,
+project,0,test1515,"public void test1515() throws Throwable {
+    Gson gson0 = new Gson();
+    Class<Calendar> class0 = Calendar.class;
+    try {
+        gson0.fromJson(""bJ&g%s:dSe"", class0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // org.evosuite.runtime.mock.java.lang.MockThrowable: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.Gson"", e);
+    }
+}",0,
+project,0,test1616,"public void test1616() throws Throwable {
+    Gson gson0 = new Gson();
+    UUID uUID0 = MockUUID.fromString(""END_OBJECT"");
+    JsonElement jsonElement0 = gson0.toJsonTree((Object) uUID0);
+    assertFalse(jsonElement0.isJsonArray());
+}",0,assertTrue(jsonElement0.isJsonArray())
+project,0,test1717,"public void test1717() throws Throwable {
+    Gson gson0 = new Gson();
+    URL uRL0 = MockURL.getFtpExample();
+    char[] charArray0 = new char[8];
+    CharBuffer charBuffer0 = CharBuffer.wrap(charArray0);
+    // Undeclared exception!
+    try {
+        gson0.toJson((Object) uRL0, (Appendable) charBuffer0);
+        fail(""Expecting exception: BufferOverflowException"");
+    } catch (BufferOverflowException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.nio.CharBuffer"", e);
+    }
+}",0,
+project,0,test1818,"public void test1818() throws Throwable {
+    Class<StringBuffer> class0 = StringBuffer.class;
+    Gson gson0 = new Gson();
+    JsonElement jsonElement0 = gson0.toJsonTree((Object) null, (Type) class0);
+    assertTrue(jsonElement0.isJsonNull());
+}",0,assertTrue(jsonElement0.isJsonNull())
+project,0,test1919,"public void test1919() throws Throwable {
+    Class<StringBuffer> class0 = StringBuffer.class;
+    Gson gson0 = new Gson();
+    TypeAdapter<StringBuffer> typeAdapter0 = TypeAdapters.STRING_BUFFER;
+    TypeAdapterRuntimeTypeWrapper<StringBuffer> typeAdapterRuntimeTypeWrapper0 = new TypeAdapterRuntimeTypeWrapper<StringBuffer>(gson0, typeAdapter0, class0);
+    StringWriter stringWriter0 = new StringWriter();
+    StringBuffer stringBuffer0 = stringWriter0.getBuffer();
+    String string0 = typeAdapterRuntimeTypeWrapper0.toJson(stringBuffer0);
+    assertEquals(""\""\"""", string0);
+}",0,assertNotNull(string0)
+project,0,test2020,"public void test2020() throws Throwable {
+    Class<StringBuffer> class0 = StringBuffer.class;
+    Gson gson0 = new Gson();
+    try {
+        gson0.fromJson(""o-EE1x4}U%:l>LEazq"", (Type) class0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // org.evosuite.runtime.mock.java.lang.MockThrowable: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 9 path $
+        //
+        verifyException(""com.google.gson.Gson"", e);
+    }
+}",1,
+project,0,test2121,"public void test2121() throws Throwable {
+    Gson gson0 = new Gson();
+    Character character0 = Character.valueOf('z');
+    JsonPrimitive jsonPrimitive0 = (JsonPrimitive) gson0.toJsonTree((Object) character0);
+    assertFalse(jsonPrimitive0.isNumber());
+}",0,assertTrue(jsonPrimitive0.isNumber())
+project,0,test2222,"public void test2222() throws Throwable {
+    Class<Integer> class0 = Integer.class;
+    Gson gson0 = new Gson();
+    StringReader stringReader0 = new StringReader(""com.google.gson.internal.bind.TypeAdapters$25"");
+    JsonReader jsonReader0 = gson0.newJsonReader(stringReader0);
+    try {
+        gson0.fromJson(jsonReader0, (Type) class0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // java.lang.NumberFormatException: For input string: \""com.google.gson.internal.bind.TypeAdapters$25\""
+        //
+        verifyException(""com.google.gson.internal.bind.TypeAdapters$11"", e);
+    }
+}",1,
+project,0,test2323,"public void test2323() throws Throwable {
+    Class<Byte> class0 = Byte.class;
+    Gson gson0 = new Gson();
+    try {
+        gson0.fromJson(""b"", (Type) class0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // java.lang.NumberFormatException: For input string: \""b\""
+        //
+        verifyException(""com.google.gson.internal.bind.TypeAdapters$9"", e);
+    }
+}",1,
+project,0,test2525,"public void test2525() throws Throwable {
+    Gson gson0 = new Gson();
+    StringReader stringReader0 = new StringReader(""aQ"");
+    Class<BitSet> class0 = BitSet.class;
+    try {
+        gson0.fromJson((Reader) stringReader0, class0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // org.evosuite.runtime.mock.java.lang.MockThrowable: Expected BEGIN_ARRAY but was STRING at line 1 column 1 path $
+        //
+        verifyException(""com.google.gson.Gson"", e);
+    }
+}",0,
+project,0,test2626,"public void test2626() throws Throwable {
+    Class<Short> class0 = Short.class;
+    Gson gson0 = new Gson();
+    // Undeclared exception!
+    try {
+        gson0.toJsonTree((Object) class0);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // Attempted to serialize java.lang.Class: java.lang.Short. Forgot to register a type adapter?
+        //
+        verifyException(""com.google.gson.internal.bind.TypeAdapters$5"", e);
+    }
+}",0,
+project,0,test2727,"public void test2727() throws Throwable {
+    Class<Currency> class0 = Currency.class;
+    Gson gson0 = new Gson();
+    StringReader stringReader0 = new StringReader(""%JiV9Sg10(.tl1p4JX"");
+    // Undeclared exception!
+    try {
+        gson0.fromJson((Reader) stringReader0, (Type) class0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.Currency"", e);
+    }
+}",1,
+project,0,test2828,"public void test2828() throws Throwable {
+    Class<JsonArray> class0 = JsonArray.class;
+    Gson gson0 = new Gson();
+    Object object0 = new Object();
+    // Undeclared exception!
+    try {
+        gson0.toJsonTree(object0, (Type) class0);
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // java.lang.Object cannot be cast to com.google.gson.JsonElement
+        //
+        verifyException(""com.google.gson.internal.bind.TypeAdapters$29"", e);
+    }
+}",0,
+project,0,test2929,"public void test2929() throws Throwable {
+    Gson gson0 = new Gson();
+    Class<Object> class0 = Object.class;
+    AtomicBoolean atomicBoolean0 = new AtomicBoolean();
+    StringBuilder stringBuilder0 = new StringBuilder(""4HUYM=i^"");
+    CharBuffer charBuffer0 = CharBuffer.wrap((CharSequence) stringBuilder0);
+    // Undeclared exception!
+    try {
+        gson0.toJson((Object) atomicBoolean0, (Type) class0, (Appendable) charBuffer0);
+        fail(""Expecting exception: ReadOnlyBufferException"");
+    } catch (ReadOnlyBufferException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.nio.CharBuffer"", e);
+    }
+}",0,
+project,0,test3030,"public void test3030() throws Throwable {
+    Gson gson0 = new Gson();
+    Class<AtomicBoolean> class0 = AtomicBoolean.class;
+    StringReader stringReader0 = new StringReader(""{3(Y4u"");
+    JsonReader jsonReader0 = new JsonReader(stringReader0);
+    try {
+        gson0.fromJson(jsonReader0, (Type) class0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // org.evosuite.runtime.mock.java.lang.MockThrowable: Expected a boolean but was BEGIN_OBJECT at line 1 column 2 path $
+        //
+        verifyException(""com.google.gson.Gson"", e);
+    }
+}",1,
+project,0,test3131,"public void test3131() throws Throwable {
+    Class<Short> class0 = Short.class;
+    Gson gson0 = new Gson();
+    Double double0 = new Double((-860.8));
+    JsonPrimitive jsonPrimitive0 = (JsonPrimitive) gson0.toJsonTree((Object) double0, (Type) class0);
+    assertTrue(jsonPrimitive0.isNumber());
+}",0,assertTrue(jsonPrimitive0.isNumber())
+project,0,test3232,"public void test3232() throws Throwable {
+    Class<URL> class0 = URL.class;
+    TypeToken<URL> typeToken0 = TypeToken.get(class0);
+    TypeAdapterFactory typeAdapterFactory0 = TypeAdapters.newFactory(typeToken0, (TypeAdapter<URL>) null);
+    assertNotNull(typeAdapterFactory0);
+}",1,
+project,0,test3333,"public void test3333() throws Throwable {
+    Gson gson0 = new Gson();
+    String string0 = gson0.toString();
+    assertNotNull(string0);
+}",0,

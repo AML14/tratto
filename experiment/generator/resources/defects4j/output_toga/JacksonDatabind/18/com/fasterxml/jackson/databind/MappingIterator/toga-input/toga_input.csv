@@ -1,0 +1,228 @@
+focal_method,test_prefix,docstring
+"@Override
+public T next() {
+    try {
+        return nextValue();
+    } catch (JsonMappingException e) {
+        throw new RuntimeJsonMappingException(e.getMessage(), e);
+    } catch (IOException e) {
+        throw new RuntimeException(e.getMessage(), e);
+    }
+}","public void test000() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    JsonNodeFactory jsonNodeFactory0 = JsonNodeFactory.withExactBigDecimals(false);
+    ArrayNode arrayNode0 = new ArrayNode(jsonNodeFactory0);
+    RawValue rawValue0 = new RawValue(arrayNode0);
+    ValueNode valueNode0 = arrayNode0.rawValueNode(rawValue0);
+    JsonParser jsonParser0 = objectMapper0.treeAsTokens(valueNode0);
+    MappingIterator<List<SettableBeanProperty>> mappingIterator0 = new MappingIterator<List<SettableBeanProperty>>((JavaType) null, jsonParser0, (DeserializationContext) null, (JsonDeserializer<?>) null, false, rawValue0);
+    // Undeclared exception!
+    try {
+        mappingIterator0.next();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.MappingIterator"", e);
+    }
+}",""
+"protected <R> R _handleIOException(IOException e) {
+    throw new RuntimeException(e.getMessage(), e);
+}","public void test011() throws Throwable {
+    MappingIterator<InputStream> mappingIterator0 = MappingIterator.emptyIterator();
+    // Undeclared exception!
+    try {
+        mappingIterator0._handleIOException((IOException) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.MappingIterator"", e);
+    }
+}",""
+"public JsonLocation getCurrentLocation() {
+    return _parser.getCurrentLocation();
+}","public void test056() throws Throwable {
+    MappingIterator<SequenceInputStream> mappingIterator0 = MappingIterator.emptyIterator();
+    // Undeclared exception!
+    try {
+        mappingIterator0.getCurrentLocation();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.MappingIterator"", e);
+    }
+}","/**
+ *  Convenience method, functionally equivalent to:
+ * <code>
+ *    iterator.getParser().getCurrentLocation()
+ * </code>
+ *
+ *  @return Location of the input stream of the underlying parser
+ *
+ *  @since 2.2.1
+ */"
+"@Override
+public void remove() {
+    throw new UnsupportedOperationException();
+}","public void test067() throws Throwable {
+    MappingIterator<SequenceInputStream> mappingIterator0 = MappingIterator.emptyIterator();
+    // Undeclared exception!
+    try {
+        mappingIterator0.remove();
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.MappingIterator"", e);
+    }
+}",""
+"public FormatSchema getParserSchema() {
+    return _parser.getSchema();
+}","public void test078() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<String> class0 = String.class;
+    ObjectReader objectReader0 = objectMapper0.readerFor(class0);
+    MappingIterator<InputStream> mappingIterator0 = objectReader0.readValues("""");
+    FormatSchema formatSchema0 = mappingIterator0.getParserSchema();
+    assertNull(formatSchema0);
+}","/**
+ * Accessor for accessing {@link FormatSchema} that the underlying parser
+ * (as per {@link #getParser}) is using, if any; only parser of schema-aware
+ * formats use schemas.
+ *
+ * @since 2.2
+ */"
+"public T nextValue() throws IOException {
+    if (!_hasNextChecked) {
+        if (!hasNextValue()) {
+            return _throwNoSuchElement();
+        }
+    }
+    if (_parser == null) {
+        return _throwNoSuchElement();
+    }
+    _hasNextChecked = false;
+    try {
+        T value;
+        if (_updatedValue == null) {
+            value = _deserializer.deserialize(_parser, _context);
+        } else {
+            _deserializer.deserialize(_parser, _context, _updatedValue);
+            value = _updatedValue;
+        }
+        return value;
+    } finally {
+        /* 24-Mar-2015, tatu: As per [#733], need to mark token consumed no
+             *   matter what, to avoid infinite loop for certain failure cases.
+             *   For 2.6 need to improve further.
+             */
+        _parser.clearCurrentToken();
+    }
+}","public void test089() throws Throwable {
+    MappingIterator<SequenceInputStream> mappingIterator0 = MappingIterator.emptyIterator();
+    // Undeclared exception!
+    try {
+        mappingIterator0.nextValue();
+        fail(""Expecting exception: NoSuchElementException"");
+    } catch (NoSuchElementException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.MappingIterator"", e);
+    }
+}",""
+"protected <R> R _handleMappingException(JsonMappingException e) {
+    throw new RuntimeJsonMappingException(e.getMessage(), e);
+}","public void test0910() throws Throwable {
+    Vector<Object> vector0 = new Vector<Object>();
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    JsonFactory jsonFactory0 = new JsonFactory(objectMapper0);
+    char[] charArray0 = new char[2];
+    charArray0[0] = '\""';
+    JsonParser jsonParser0 = jsonFactory0.createParser(charArray0);
+    Class<InputStream> class0 = InputStream.class;
+    ObjectReader objectReader0 = objectMapper0.readerFor(class0);
+    MappingIterator<String> mappingIterator0 = objectReader0._bindAndReadValues(jsonParser0, (Object) vector0);
+    // Undeclared exception!
+    try {
+        mappingIterator0._handleMappingException((JsonMappingException) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.MappingIterator"", e);
+    }
+}",""
+"@Override
+public void close() throws IOException {
+    if (_parser != null) {
+        _parser.close();
+    }
+}","public void test1112() throws Throwable {
+    MappingIterator<SequenceInputStream> mappingIterator0 = MappingIterator.emptyIterator();
+    mappingIterator0.close();
+}",""
+"@Override
+public void close() throws IOException {
+    if (_parser != null) {
+        _parser.close();
+    }
+}","public void test1213() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    JsonFactory jsonFactory0 = new JsonFactory(objectMapper0);
+    char[] charArray0 = new char[2];
+    JsonParser jsonParser0 = jsonFactory0.createParser(charArray0);
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<Map> class0 = Map.class;
+    MapType mapType0 = typeFactory0.constructRawMapType(class0);
+    MappingIterator<POJONode> mappingIterator0 = objectMapper0.readValues(jsonParser0, (ResolvedType) mapType0);
+    mappingIterator0.close();
+}",""
+"public T nextValue() throws IOException {
+    if (!_hasNextChecked) {
+        if (!hasNextValue()) {
+            return _throwNoSuchElement();
+        }
+    }
+    if (_parser == null) {
+        return _throwNoSuchElement();
+    }
+    _hasNextChecked = false;
+    try {
+        T value;
+        if (_updatedValue == null) {
+            value = _deserializer.deserialize(_parser, _context);
+        } else {
+            _deserializer.deserialize(_parser, _context, _updatedValue);
+            value = _updatedValue;
+        }
+        return value;
+    } finally {
+        /* 24-Mar-2015, tatu: As per [#733], need to mark token consumed no
+             *   matter what, to avoid infinite loop for certain failure cases.
+             *   For 2.6 need to improve further.
+             */
+        _parser.clearCurrentToken();
+    }
+}","public void test1618() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<SequenceInputStream> class0 = SequenceInputStream.class;
+    MappingIterator<SequenceInputStream> mappingIterator0 = objectMapper0.readValues((JsonParser) null, class0);
+    // Undeclared exception!
+    try {
+        mappingIterator0.nextValue();
+        fail(""Expecting exception: NoSuchElementException"");
+    } catch (NoSuchElementException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.MappingIterator"", e);
+    }
+}",""

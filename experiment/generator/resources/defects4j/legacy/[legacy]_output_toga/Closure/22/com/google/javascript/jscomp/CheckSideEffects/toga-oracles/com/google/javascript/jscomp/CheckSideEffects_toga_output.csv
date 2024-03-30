@@ -1,0 +1,100 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test00,"public void test00() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""T,w10R"");
+    CheckLevel checkLevel0 = CheckLevel.OFF;
+    CheckSideEffects checkSideEffects0 = new CheckSideEffects(compiler0, checkLevel0, true);
+    checkSideEffects0.hotSwapScript(node0, node0);
+    assertEquals(0, node0.getLength());
+}",0,
+project,0,test11,"public void test11() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = new Node(1237, 1237, 1237);
+    CheckSideEffects.StripProtection checkSideEffects_StripProtection0 = new CheckSideEffects.StripProtection(compiler0);
+    checkSideEffects_StripProtection0.process(node0, node0);
+    assertFalse(node0.isTrue());
+}",0,assertTrue(node0.isTrue())
+project,0,test22,"public void test22() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode("";jQ---xiR7"");
+    CheckLevel checkLevel0 = CheckLevel.WARNING;
+    CheckSideEffects checkSideEffects0 = new CheckSideEffects(compiler0, checkLevel0, true);
+    // Undeclared exception!
+    try {
+        checkSideEffects0.process(node0, node0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.Compiler"", e);
+    }
+}",0,
+project,0,test33,"public void test33() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""G,w10R"", ""G,w10R"");
+    CheckLevel checkLevel0 = CheckLevel.ERROR;
+    node0.setType(125);
+    CheckSideEffects checkSideEffects0 = new CheckSideEffects(compiler0, checkLevel0, false);
+    checkSideEffects0.process(node0, node0);
+    assertTrue(compiler0.hasErrors());
+}",0,
+project,0,test34,"public void test34() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""G,w10R"", ""G,w10R"");
+    CheckLevel checkLevel0 = CheckLevel.ERROR;
+    node0.setType(125);
+    CheckSideEffects checkSideEffects0 = new CheckSideEffects(compiler0, checkLevel0, false);
+    checkSideEffects0.process(node0, node0);
+    assertEquals(2, compiler0.getErrorCount());
+}",0,"assertEquals(0, compiler0.getErrorCount())"
+project,0,test45,"public void test45() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    CheckLevel checkLevel0 = CheckLevel.ERROR;
+    CheckSideEffects checkSideEffects0 = new CheckSideEffects(compiler0, checkLevel0, false);
+    Node node0 = compiler0.parseTestCode(""W`vj%h"");
+    Node node1 = new Node(115, node0, node0, node0, 4, 12);
+    checkSideEffects0.process(node1, node1);
+    assertFalse(node1.isWhile());
+}",0,
+project,0,test56,"public void test56() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    CheckLevel checkLevel0 = CheckLevel.OFF;
+    CheckSideEffects checkSideEffects0 = new CheckSideEffects(compiler0, checkLevel0, true);
+    Node node0 = compiler0.parseTestCode(""Q3_5HJ(T)!`]pLmVV"");
+    Stack<JSSourceFile> stack0 = new Stack<JSSourceFile>();
+    Compiler compiler1 = new Compiler();
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler1, checkSideEffects0);
+    CompilerOptions compilerOptions0 = compiler1.newCompilerOptions();
+    compiler1.compile((List<JSSourceFile>) stack0, (List<JSSourceFile>) stack0, compilerOptions0);
+    Node node1 = new Node(49, node0, node0, node0, 639, (-1053));
+    Node node2 = compiler1.parseInputs();
+    checkSideEffects0.visit(nodeTraversal0, node0, node2);
+    assertEquals(0, node0.getChildCount());
+}",0,"assertEquals(1, node0.getChildCount())"
+project,0,test67,"public void test67() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    CheckLevel checkLevel0 = CheckLevel.ERROR;
+    CheckSideEffects checkSideEffects0 = new CheckSideEffects(compiler0, checkLevel0, true);
+    Node node0 = compiler0.parseSyntheticCode(""Y"", ""Y"");
+    Node node1 = Node.newString(""Y"", 38, 49);
+    Node node2 = new Node(125, node0, node0, node1, 39, 32);
+    // Undeclared exception!
+    try {
+        checkSideEffects0.process(node0, node2);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.Compiler"", e);
+    }
+}",0,
+project,0,test78,"public void test78() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    CheckLevel checkLevel0 = CheckLevel.OFF;
+    CheckSideEffects checkSideEffects0 = new CheckSideEffects(compiler0, checkLevel0, true);
+    Node node0 = compiler0.parseTestCode(""Q3_5HJ(T)!`]pLmVV"");
+    checkSideEffects0.process(node0, node0);
+    assertFalse(node0.isNE());
+}",0,assertTrue(node0.isNE())

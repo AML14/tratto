@@ -1,0 +1,496 @@
+focal_method,test_prefix,docstring
+"/*
+    /**********************************************************
+    /* Simple accessors, extended
+    /**********************************************************
+     */
+@Override
+public AnnotatedMethod findMethod(String name, Class<?>[] paramTypes) {
+    return _classInfo.findMethod(name, paramTypes);
+}","public void test000() throws Throwable {
+    BasicBeanDescription basicBeanDescription0 = BasicClassIntrospector.BOOLEAN_DESC;
+    AnnotatedMethod annotatedMethod0 = basicBeanDescription0.findMethod(""cpul-,B"", (Class<?>[]) null);
+    assertNull(annotatedMethod0);
+}",""
+"public int size() {
+    return _types.length;
+}","public void test011() throws Throwable {
+    BasicBeanDescription basicBeanDescription0 = BasicClassIntrospector.LONG_DESC;
+    TypeBindings typeBindings0 = basicBeanDescription0.bindingsForBeanType();
+    assertEquals(0, typeBindings0.size());
+}","/**
+ * Returns number of bindings contained
+ */"
+"/*
+    /**********************************************************
+    /* Limited modifications by core databind functionality
+    /**********************************************************
+     */
+/**
+ * Method that can be used to prune unwanted properties, during
+ * construction of serializers and deserializers.
+ * Use with utmost care, if at all...
+ *
+ * @since 2.1
+ */
+public boolean removeProperty(String propName) {
+    Iterator<BeanPropertyDefinition> it = _properties().iterator();
+    while (it.hasNext()) {
+        BeanPropertyDefinition prop = it.next();
+        if (prop.getName().equals(propName)) {
+            it.remove();
+            return true;
+        }
+    }
+    return false;
+}","public void test022() throws Throwable {
+    BasicBeanDescription basicBeanDescription0 = BasicClassIntrospector.INT_DESC;
+    boolean boolean0 = basicBeanDescription0.removeProperty(""com.fasterxml.jackson.annotation.SimpleObjectIdResolver"");
+    assertFalse(boolean0);
+}",""
+"public boolean hasProperty(PropertyName name) {
+    return findProperty(name) != null;
+}","public void test033() throws Throwable {
+    BasicBeanDescription basicBeanDescription0 = BasicClassIntrospector.BOOLEAN_DESC;
+    PropertyName propertyName0 = PropertyName.NO_NAME;
+    boolean boolean0 = basicBeanDescription0.hasProperty(propertyName0);
+    assertFalse(boolean0);
+}","/**
+ * @since 2.6
+ */"
+"public BeanPropertyDefinition findProperty(PropertyName name) {
+    for (BeanPropertyDefinition prop : _properties()) {
+        if (prop.hasName(name)) {
+            return prop;
+        }
+    }
+    return null;
+}","public void test044() throws Throwable {
+    BasicBeanDescription basicBeanDescription0 = BasicClassIntrospector.INT_DESC;
+    BeanPropertyDefinition beanPropertyDefinition0 = basicBeanDescription0.findProperty((PropertyName) null);
+    assertNull(beanPropertyDefinition0);
+}","/**
+ * @since 2.6
+ */"
+"@Override
+// since 2.9
+@Deprecated
+public AnnotatedMethod findJsonValueMethod() {
+    return (_propCollector == null) ? null : _propCollector.getJsonValueMethod();
+}","public void test055() throws Throwable {
+    BasicBeanDescription basicBeanDescription0 = BasicClassIntrospector.INT_DESC;
+    AnnotatedMethod annotatedMethod0 = basicBeanDescription0.findJsonValueMethod();
+    assertNull(annotatedMethod0);
+}",""
+"@Override
+// since 2.8
+@Deprecated
+public JavaType resolveType(java.lang.reflect.Type jdkType) {
+    if (jdkType == null) {
+        return null;
+    }
+    return _config.getTypeFactory().constructType(jdkType, _type.getBindings());
+}","public void test077() throws Throwable {
+    BasicBeanDescription basicBeanDescription0 = BasicClassIntrospector.BOOLEAN_DESC;
+    Class<Float> class0 = Float.TYPE;
+    // Undeclared exception!
+    try {
+        basicBeanDescription0.resolveType(class0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.introspect.BasicBeanDescription"", e);
+    }
+}",""
+"@Override
+// since 2.8
+@Deprecated
+public JavaType resolveType(java.lang.reflect.Type jdkType) {
+    if (jdkType == null) {
+        return null;
+    }
+    return _config.getTypeFactory().constructType(jdkType, _type.getBindings());
+}","public void test088() throws Throwable {
+    BasicBeanDescription basicBeanDescription0 = BasicClassIntrospector.BOOLEAN_DESC;
+    JavaType javaType0 = basicBeanDescription0.resolveType((Type) null);
+    assertNull(javaType0);
+}",""
+"@Override
+public AnnotatedMember findAnySetterAccessor() throws IllegalArgumentException {
+    if (_propCollector != null) {
+        AnnotatedMethod anyMethod = _propCollector.getAnySetterMethod();
+        if (anyMethod != null) {
+            // Also, let's be somewhat strict on how field name is to be
+            // passed; String, Object make sense, others not so much.
+            /* !!! 18-May-2009, tatu: how about enums? Can add support if
+                 *  requested; easy enough for devs to add support within method.
+                 */
+            Class<?> type = anyMethod.getRawParameterType(0);
+            if ((type != String.class) && (type != Object.class)) {
+                throw new IllegalArgumentException(String.format(""Invalid 'any-setter' annotation on method '%s()': first argument not of type String or Object, but %s"", anyMethod.getName(), type.getName()));
+            }
+            return anyMethod;
+        }
+        AnnotatedMember anyField = _propCollector.getAnySetterField();
+        if (anyField != null) {
+            // For now let's require a Map; in future can add support for other
+            // types like perhaps Iterable<Map.Entry>?
+            Class<?> type = anyField.getRawType();
+            if (!Map.class.isAssignableFrom(type)) {
+                throw new IllegalArgumentException(String.format(""Invalid 'any-setter' annotation on field '%s': type is not instance of java.util.Map"", anyField.getName()));
+            }
+            return anyField;
+        }
+    }
+    return null;
+}","public void test099() throws Throwable {
+    BasicBeanDescription basicBeanDescription0 = BasicClassIntrospector.LONG_DESC;
+    AnnotatedMember annotatedMember0 = basicBeanDescription0.findAnySetterAccessor();
+    assertNull(annotatedMember0);
+}",""
+"@Override
+public Object instantiateBean(boolean fixAccess) {
+    AnnotatedConstructor ac = _classInfo.getDefaultConstructor();
+    if (ac == null) {
+        return null;
+    }
+    if (fixAccess) {
+        ac.fixAccess(_config.isEnabled(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS));
+    }
+    try {
+        return ac.getAnnotated().newInstance();
+    } catch (Exception e) {
+        Throwable t = e;
+        while (t.getCause() != null) {
+            t = t.getCause();
+        }
+        ClassUtil.throwIfError(t);
+        ClassUtil.throwIfRTE(t);
+        throw new IllegalArgumentException(""Failed to instantiate bean of type "" + _classInfo.getAnnotated().getName() + "": ("" + t.getClass().getName() + "") "" + t.getMessage(), t);
+    }
+}","public void test1111() throws Throwable {
+    BasicBeanDescription basicBeanDescription0 = BasicClassIntrospector.BOOLEAN_DESC;
+    Object object0 = basicBeanDescription0.instantiateBean(false);
+    assertNull(object0);
+}",""
+"/*
+    /**********************************************************
+    /* General per-class annotation introspection
+    /**********************************************************
+     */
+@Override
+public JsonFormat.Value findExpectedFormat(JsonFormat.Value defValue) {
+    // 15-Apr-2016, tatu: Let's check both per-type defaults and annotations; per-type
+    //   defaults having higher precedence, so start with that
+    if (_annotationIntrospector != null) {
+        JsonFormat.Value v = _annotationIntrospector.findFormat(_classInfo);
+        if (v != null) {
+            if (defValue == null) {
+                defValue = v;
+            } else {
+                defValue = defValue.withOverrides(v);
+            }
+        }
+    }
+    JsonFormat.Value v = _config.getDefaultPropertyFormat(_classInfo.getRawType());
+    if (v != null) {
+        if (defValue == null) {
+            defValue = v;
+        } else {
+            defValue = defValue.withOverrides(v);
+        }
+    }
+    return defValue;
+}","public void test1212() throws Throwable {
+    BasicBeanDescription basicBeanDescription0 = BasicClassIntrospector.INT_DESC;
+    JsonFormat.Value jsonFormat_Value0 = new JsonFormat.Value();
+    // Undeclared exception!
+    try {
+        basicBeanDescription0.findExpectedFormat(jsonFormat_Value0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.introspect.BasicBeanDescription"", e);
+    }
+}",""
+"// since 2.9
+@Override
+public Class<?>[] findDefaultViews() {
+    if (!_defaultViewsResolved) {
+        _defaultViewsResolved = true;
+        Class<?>[] def = (_annotationIntrospector == null) ? null : _annotationIntrospector.findViews(_classInfo);
+        // one more twist: if default inclusion disabled, need to force empty set of views
+        if (def == null) {
+            if (!_config.isEnabled(MapperFeature.DEFAULT_VIEW_INCLUSION)) {
+                def = NO_VIEWS;
+            }
+        }
+        _defaultViews = def;
+    }
+    return _defaultViews;
+}","public void test1414() throws Throwable {
+    BasicBeanDescription basicBeanDescription0 = BasicClassIntrospector.STRING_DESC;
+    // Undeclared exception!
+    try {
+        basicBeanDescription0.findDefaultViews();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.introspect.BasicBeanDescription"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Extended Public API, accessors
+    /**********************************************************
+     */
+/**
+ *  Method that can be called to check whether mapper thinks
+ *  it could serialize an instance of given Class.
+ *  Check is done
+ *  by checking whether a serializer can be found for the type.
+ * <p>
+ *  NOTE: since this method does NOT throw exceptions, but internal
+ *  processing may, caller usually has little information as to why
+ *  serialization would fail. If you want access to internal {@link Exception},
+ *  call {@link #canSerialize(Class, AtomicReference)} instead.
+ *
+ *  @return True if mapper can find a serializer for instances of
+ *   given class (potentially serializable), false otherwise (not
+ *   serializable)
+ */
+public boolean canSerialize(Class<?> type) {
+    return _serializerProvider(getSerializationConfig()).hasSerializerFor(type, null);
+}","public void test1515() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    MapperFeature[] mapperFeatureArray0 = new MapperFeature[2];
+    MapperFeature mapperFeature0 = MapperFeature.IGNORE_DUPLICATE_MODULE_REGISTRATIONS;
+    mapperFeatureArray0[0] = mapperFeature0;
+    MapperFeature mapperFeature1 = MapperFeature.DEFAULT_VIEW_INCLUSION;
+    mapperFeatureArray0[1] = mapperFeature1;
+    ObjectMapper objectMapper1 = objectMapper0.disable(mapperFeatureArray0);
+    Class<POJOPropertyBuilder> class0 = POJOPropertyBuilder.class;
+    boolean boolean0 = objectMapper1.canSerialize(class0);
+    assertTrue(boolean0);
+}",""
+"@Override
+public JsonInclude.Value findPropertyInclusion(JsonInclude.Value defValue) {
+    if (_annotationIntrospector != null) {
+        JsonInclude.Value incl = _annotationIntrospector.findPropertyInclusion(_classInfo);
+        if (incl != null) {
+            return (defValue == null) ? incl : defValue.withOverrides(incl);
+        }
+    }
+    return defValue;
+}","public void test1616() throws Throwable {
+    BasicBeanDescription basicBeanDescription0 = BasicClassIntrospector.BOOLEAN_DESC;
+    JsonInclude.Value jsonInclude_Value0 = BeanProperty.EMPTY_INCLUDE;
+    JsonInclude.Value jsonInclude_Value1 = basicBeanDescription0.findPropertyInclusion(jsonInclude_Value0);
+    assertSame(jsonInclude_Value1, jsonInclude_Value0);
+}","/**
+ * Method for determining whether null properties should be written
+ * out for a Bean of introspected type. This is based on global
+ * feature (lowest priority, passed as argument)
+ * and per-class annotation (highest priority).
+ */"
+"@Override
+public AnnotatedMember findAnyGetter() throws IllegalArgumentException {
+    AnnotatedMember anyGetter = (_propCollector == null) ? null : _propCollector.getAnyGetter();
+    if (anyGetter != null) {
+        /* For now let's require a Map; in future can add support for other
+             * types like perhaps Iterable<Map.Entry>?
+             */
+        Class<?> type = anyGetter.getRawType();
+        if (!Map.class.isAssignableFrom(type)) {
+            throw new IllegalArgumentException(""Invalid 'any-getter' annotation on method "" + anyGetter.getName() + ""(): return type is not instance of java.util.Map"");
+        }
+    }
+    return anyGetter;
+}","public void test1717() throws Throwable {
+    BasicBeanDescription basicBeanDescription0 = BasicClassIntrospector.STRING_DESC;
+    AnnotatedMember annotatedMember0 = basicBeanDescription0.findAnyGetter();
+    assertNull(annotatedMember0);
+}","/**
+ * Method used to locate the method of introspected class that
+ * implements {@link com.fasterxml.jackson.annotation.JsonAnyGetter}.
+ * If no such method exists null is returned.
+ * If more than one are found, an exception is thrown.
+ */"
+"// since 2.9
+@Deprecated
+@Override
+public Map<String, AnnotatedMember> findBackReferenceProperties() {
+    List<BeanPropertyDefinition> props = findBackReferences();
+    if (props == null) {
+        return null;
+    }
+    Map<String, AnnotatedMember> result = new HashMap<>();
+    for (BeanPropertyDefinition prop : props) {
+        result.put(prop.getName(), prop.getMutator());
+    }
+    return result;
+}","public void test1818() throws Throwable {
+    BasicBeanDescription basicBeanDescription0 = BasicClassIntrospector.BOOLEAN_DESC;
+    Map<String, AnnotatedMember> map0 = basicBeanDescription0.findBackReferenceProperties();
+    assertNull(map0);
+}",""
+"@Override
+public JsonPOJOBuilder.Value findPOJOBuilderConfig() {
+    return (_annotationIntrospector == null) ? null : _annotationIntrospector.findPOJOBuilderConfig(_classInfo);
+}","public void test2121() throws Throwable {
+    BasicBeanDescription basicBeanDescription0 = BasicClassIntrospector.STRING_DESC;
+    JsonPOJOBuilder.Value jsonPOJOBuilder_Value0 = basicBeanDescription0.findPOJOBuilderConfig();
+    assertNull(jsonPOJOBuilder_Value0);
+}",""
+"@Override
+public String findClassDescription() {
+    return (_annotationIntrospector == null) ? null : _annotationIntrospector.findClassDescription(_classInfo);
+}","public void test2222() throws Throwable {
+    BasicBeanDescription basicBeanDescription0 = BasicClassIntrospector.INT_DESC;
+    String string0 = basicBeanDescription0.findClassDescription();
+    assertNull(string0);
+}",""
+"/*
+    /**********************************************************
+    /* Helper methods for field introspection
+    /**********************************************************
+     */
+/**
+ * @param ignoredProperties (optional) names of properties to ignore;
+ *   any fields that would be recognized as one of these properties
+ *   is ignored.
+ * @param forSerialization If true, will collect serializable property
+ *    fields; if false, deserializable
+ *
+ * @return Ordered Map with logical property name as key, and
+ *    matching field as value.
+ *
+ * @deprecated Since 2.7.2, does not seem to be used?
+ */
+@Deprecated
+public LinkedHashMap<String, AnnotatedField> _findPropertyFields(Collection<String> ignoredProperties, boolean forSerialization) {
+    LinkedHashMap<String, AnnotatedField> results = new LinkedHashMap<String, AnnotatedField>();
+    for (BeanPropertyDefinition property : _properties()) {
+        AnnotatedField f = property.getField();
+        if (f != null) {
+            String name = property.getName();
+            if (ignoredProperties != null) {
+                if (ignoredProperties.contains(name)) {
+                    continue;
+                }
+            }
+            results.put(name, f);
+        }
+    }
+    return results;
+}","public void test2424() throws Throwable {
+    BasicBeanDescription basicBeanDescription0 = BasicClassIntrospector.LONG_DESC;
+    ArrayList<BeanPropertyDefinition> arrayList0 = new ArrayList<BeanPropertyDefinition>();
+    basicBeanDescription0._properties = (List<BeanPropertyDefinition>) arrayList0;
+    arrayList0.add((BeanPropertyDefinition) null);
+    Vector<String> vector0 = new Vector<String>();
+    // Undeclared exception!
+    try {
+        basicBeanDescription0._findPropertyFields(vector0, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.introspect.BasicBeanDescription"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Helper methods, other
+    /**********************************************************
+     */
+@SuppressWarnings(""unchecked"")
+protected Converter<Object, Object> _createConverter(Object converterDef) {
+    if (converterDef == null) {
+        return null;
+    }
+    if (converterDef instanceof Converter<?, ?>) {
+        return (Converter<Object, Object>) converterDef;
+    }
+    if (!(converterDef instanceof Class)) {
+        throw new IllegalStateException(""AnnotationIntrospector returned Converter definition of type "" + converterDef.getClass().getName() + ""; expected type Converter or Class<Converter> instead"");
+    }
+    Class<?> converterClass = (Class<?>) converterDef;
+    // there are some known ""no class"" markers to consider too:
+    if (converterClass == Converter.None.class || ClassUtil.isBogusClass(converterClass)) {
+        return null;
+    }
+    if (!Converter.class.isAssignableFrom(converterClass)) {
+        throw new IllegalStateException(""AnnotationIntrospector returned Class "" + converterClass.getName() + ""; expected Class<Converter>"");
+    }
+    HandlerInstantiator hi = _config.getHandlerInstantiator();
+    Converter<?, ?> conv = (hi == null) ? null : hi.converterInstance(_config, _classInfo, converterClass);
+    if (conv == null) {
+        conv = (Converter<?, ?>) ClassUtil.createInstance(converterClass, _config.canOverrideAccessModifiers());
+    }
+    return (Converter<Object, Object>) conv;
+}","public void test2525() throws Throwable {
+    BasicBeanDescription basicBeanDescription0 = BasicClassIntrospector.STRING_DESC;
+    Class<Integer> class0 = Integer.TYPE;
+    // Undeclared exception!
+    try {
+        basicBeanDescription0._createConverter(class0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // AnnotationIntrospector returned Class int; expected Class<Converter>
+        //
+        verifyException(""com.fasterxml.jackson.databind.introspect.BasicBeanDescription"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Helper methods, other
+    /**********************************************************
+     */
+@SuppressWarnings(""unchecked"")
+protected Converter<Object, Object> _createConverter(Object converterDef) {
+    if (converterDef == null) {
+        return null;
+    }
+    if (converterDef instanceof Converter<?, ?>) {
+        return (Converter<Object, Object>) converterDef;
+    }
+    if (!(converterDef instanceof Class)) {
+        throw new IllegalStateException(""AnnotationIntrospector returned Converter definition of type "" + converterDef.getClass().getName() + ""; expected type Converter or Class<Converter> instead"");
+    }
+    Class<?> converterClass = (Class<?>) converterDef;
+    // there are some known ""no class"" markers to consider too:
+    if (converterClass == Converter.None.class || ClassUtil.isBogusClass(converterClass)) {
+        return null;
+    }
+    if (!Converter.class.isAssignableFrom(converterClass)) {
+        throw new IllegalStateException(""AnnotationIntrospector returned Class "" + converterClass.getName() + ""; expected Class<Converter>"");
+    }
+    HandlerInstantiator hi = _config.getHandlerInstantiator();
+    Converter<?, ?> conv = (hi == null) ? null : hi.converterInstance(_config, _classInfo, converterClass);
+    if (conv == null) {
+        conv = (Converter<?, ?>) ClassUtil.createInstance(converterClass, _config.canOverrideAccessModifiers());
+    }
+    return (Converter<Object, Object>) conv;
+}","public void test2626() throws Throwable {
+    BasicBeanDescription basicBeanDescription0 = BasicClassIntrospector.LONG_DESC;
+    PriorityQueue<String> priorityQueue0 = new PriorityQueue<String>();
+    // Undeclared exception!
+    try {
+        basicBeanDescription0._createConverter(priorityQueue0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // AnnotationIntrospector returned Converter definition of type java.util.PriorityQueue; expected type Converter or Class<Converter> instead
+        //
+        verifyException(""com.fasterxml.jackson.databind.introspect.BasicBeanDescription"", e);
+    }
+}",""

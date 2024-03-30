@@ -1,0 +1,168 @@
+focal_method,test_prefix,docstring
+"JSModule getModule() {
+    return module;
+}","public void test000() throws Throwable {
+    ProcessCommonJSModules processCommonJSModules0 = new ProcessCommonJSModules((AbstractCompiler) null, ""opt_arg"");
+    JSModule jSModule0 = processCommonJSModules0.getModule();
+    assertNull(jSModule0);
+}","/**
+ * For every file that is being processed this returns the module that
+ * created for it.
+ */"
+"@Override
+public void process(Node externs, Node root) {
+    NodeTraversal.traverse(compiler, root, new ProcessCommonJsModulesCallback());
+}","public void test011() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""module.exports"", ""module.exports"");
+    ProcessCommonJSModules processCommonJSModules0 = new ProcessCommonJSModules(compiler0, ""module.exports"", false);
+    // Undeclared exception!
+    try {
+        processCommonJSModules0.process(node0, node0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.Compiler"", e);
+    }
+}",""
+"String guessCJSModuleName(String filename) {
+    return toModuleName(normalizeSourceName(filename));
+}","public void test022() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ProcessCommonJSModules processCommonJSModules0 = new ProcessCommonJSModules(compiler0, ""4HXghP9/"");
+    String string0 = processCommonJSModules0.guessCJSModuleName(""4HXghP9/"");
+    assertEquals(""module$"", string0);
+}",""
+"public static String toModuleName(String requiredFilename, String currentFilename) {
+    requiredFilename = requiredFilename.replaceAll(""\\.js$"", """");
+    currentFilename = currentFilename.replaceAll(""\\.js$"", """");
+    if (requiredFilename.startsWith(""."" + File.separator) || requiredFilename.startsWith("".."" + File.separator)) {
+        try {
+            requiredFilename = (new URI(currentFilename)).resolve(new URI(requiredFilename)).toString();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    return toModuleName(requiredFilename);
+}","public void test033() throws Throwable {
+    String string0 = ProcessCommonJSModules.toModuleName(""./=N,G7,fms85P"", ""./=N,G7,fms85P"");
+    assertEquals(""module$=N,G7,fms85P"", string0);
+}","/**
+ * Turn a filename into a moduleName with support for relative addressing
+ * with ./ and ../ based on currentFilename;
+ */"
+"public static String toModuleName(String requiredFilename, String currentFilename) {
+    requiredFilename = requiredFilename.replaceAll(""\\.js$"", """");
+    currentFilename = currentFilename.replaceAll(""\\.js$"", """");
+    if (requiredFilename.startsWith(""."" + File.separator) || requiredFilename.startsWith("".."" + File.separator)) {
+        try {
+            requiredFilename = (new URI(currentFilename)).resolve(new URI(requiredFilename)).toString();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    return toModuleName(requiredFilename);
+}","public void test044() throws Throwable {
+    // Undeclared exception!
+    try {
+        ProcessCommonJSModules.toModuleName(""../OOZl>0.d{M$U-JzMHt"", ""../OOZl>0.d{M$U-JzMHt"");
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // java.net.URISyntaxException: Illegal character in path at index 7: ../OOZl>0.d{M$U-JzMHt
+        //
+        verifyException(""com.google.javascript.jscomp.ProcessCommonJSModules"", e);
+    }
+}","/**
+ * Turn a filename into a moduleName with support for relative addressing
+ * with ./ and ../ based on currentFilename;
+ */"
+"public static String toModuleName(String requiredFilename, String currentFilename) {
+    requiredFilename = requiredFilename.replaceAll(""\\.js$"", """");
+    currentFilename = currentFilename.replaceAll(""\\.js$"", """");
+    if (requiredFilename.startsWith(""."" + File.separator) || requiredFilename.startsWith("".."" + File.separator)) {
+        try {
+            requiredFilename = (new URI(currentFilename)).resolve(new URI(requiredFilename)).toString();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    return toModuleName(requiredFilename);
+}","public void test055() throws Throwable {
+    String string0 = ProcessCommonJSModules.toModuleName(""ua[do-"", ""ua[do-"");
+    assertEquals(""module$ua[do_"", string0);
+}","/**
+ * Turn a filename into a moduleName with support for relative addressing
+ * with ./ and ../ based on currentFilename;
+ */"
+"@Override
+public void process(Node externs, Node root) {
+    NodeTraversal.traverse(compiler, root, new ProcessCommonJsModulesCallback());
+}","public void test066() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ProcessCommonJSModules processCommonJSModules0 = new ProcessCommonJSModules(compiler0, ""A{mp71fOa,b"");
+    Node node0 = Node.newString(37, ""A{mp71fOa,b"");
+    processCommonJSModules0.process(node0, node0);
+    assertEquals(16, Node.FLAG_LOCAL_RESULTS);
+}",""
+"@Override
+public void process(Node externs, Node root) {
+    NodeTraversal.traverse(compiler, root, new ProcessCommonJsModulesCallback());
+}","public void test077() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""goog.ikArray"");
+    ProcessCommonJSModules processCommonJSModules0 = new ProcessCommonJSModules(compiler0, ""goog.ikArray"");
+    Node node1 = Normalize.parseAndNormalizeSyntheticCode(compiler0, ""goog.ikArray"", ""./"");
+    node0.addChildToBack(node1);
+    // Undeclared exception!
+    try {
+        processCommonJSModules0.process(node0, node0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // ProcessCommonJSModules supports only one invocation per CompilerInput / script node
+        //   Node(SCRIPT):  [synthetic:1] :1:0
+        // goog.ikArray
+        //   Parent: NULL
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",""
+"@Override
+public void process(Node externs, Node root) {
+    NodeTraversal.traverse(compiler, root, new ProcessCommonJsModulesCallback());
+}","public void test088() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""exports"");
+    ProcessCommonJSModules processCommonJSModules0 = new ProcessCommonJSModules(compiler0, ""exports"");
+    processCommonJSModules0.process(node0, node0);
+    assertEquals(44, Node.IS_OPTIONAL_PARAM);
+}",""
+"public int getErrorCount() {
+    return errorManager.getErrorCount();
+}","public void test099() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""7jbqGnDKib\""."");
+    ProcessCommonJSModules processCommonJSModules0 = new ProcessCommonJSModules(compiler0, ""7jbqGnDKib\""."");
+    processCommonJSModules0.process(node0, node0);
+    SourceFile sourceFile0 = new SourceFile(""./"");
+    node0.setStaticSourceFile(sourceFile0);
+    processCommonJSModules0.process(node0, node0);
+    assertEquals(2, compiler0.getErrorCount());
+}","/**
+ * Gets the number of errors.
+ */"
+"@Override
+public void process(Node externs, Node root) {
+    NodeTraversal.traverse(compiler, root, new ProcessCommonJsModulesCallback());
+}","public void test1010() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""function JSCompiler_returnArg(JSCompiler_returnArg_value) {  return function() {return JSCompiler_returnArg_value}}"");
+    ProcessCommonJSModules processCommonJSModules0 = new ProcessCommonJSModules(compiler0, ""function JSCompiler_returnArg(JSCompiler_returnArg_value) {  return function() {return JSCompiler_returnArg_value}}"");
+    processCommonJSModules0.process(node0, node0);
+    assertEquals(31, Node.SIDE_EFFECTS_FLAGS_MASK);
+}",""

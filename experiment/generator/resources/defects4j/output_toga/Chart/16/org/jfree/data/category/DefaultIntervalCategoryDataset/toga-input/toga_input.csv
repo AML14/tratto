@@ -1,0 +1,3172 @@
+focal_method,test_prefix,docstring
+"public int getRowCount() {
+    return this.seriesKeys.length;
+}","public void test000() throws Throwable {
+    Number[][] numberArray0 = new Number[20][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Comparable comparable0 = defaultIntervalCategoryDataset0.getRowKey(16);
+    assertEquals(20, defaultIntervalCategoryDataset0.getRowCount());
+}","/**
+ * Returns the number of series in the dataset (possibly zero).
+ *
+ * @return The number of series in the dataset.
+ *
+ * @see #getSeriesCount()
+ * @see #getColumnCount()
+ */"
+"public Comparable getRowKey(int row) {
+    if ((row >= getRowCount()) || (row < 0)) {
+        throw new IllegalArgumentException(""The 'row' argument is out of bounds."");
+    }
+    return this.seriesKeys[row];
+}","public void test001() throws Throwable {
+    Number[][] numberArray0 = new Number[20][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Comparable comparable0 = defaultIntervalCategoryDataset0.getRowKey(16);
+    assertEquals(""Series 17"", comparable0);
+}","/**
+ * Returns the name of the specified series.
+ *
+ * @param row  the index of the required row/series (zero-based).
+ *
+ * @return The name of the specified series.
+ *
+ * @see #getColumnKey(int)
+ */"
+"public Comparable getRowKey(int row) {
+    if ((row >= getRowCount()) || (row < 0)) {
+        throw new IllegalArgumentException(""The 'row' argument is out of bounds."");
+    }
+    return this.seriesKeys[row];
+}","public void test012() throws Throwable {
+    double[][] doubleArray0 = new double[1][3];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getRowKey(1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The 'row' argument is out of bounds.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns the name of the specified series.
+ *
+ * @param row  the index of the required row/series (zero-based).
+ *
+ * @return The name of the specified series.
+ *
+ * @see #getColumnKey(int)
+ */"
+"public void setStartValue(int series, Comparable category, Number value) {
+    // does the series exist?
+    if ((series < 0) || (series > getSeriesCount() - 1)) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.setValue: "" + ""series outside valid range."");
+    }
+    // is the category valid?
+    int categoryIndex = getCategoryIndex(category);
+    if (categoryIndex < 0) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.setValue: "" + ""unrecognised category."");
+    }
+    // update the data...
+    this.startData[series][categoryIndex] = value;
+    fireDatasetChanged();
+}","public void test023() throws Throwable {
+    Number[][] numberArray0 = new Number[1][8];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    MockDate mockDate0 = new MockDate(0);
+    SimpleTimePeriod simpleTimePeriod0 = new SimpleTimePeriod(mockDate0, mockDate0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.setStartValue(0, simpleTimePeriod0, 2);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.setValue: unrecognised category.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Sets the start data value for one category in a series.
+ *
+ * @param series  the series (zero-based index).
+ * @param category  the category.
+ *
+ * @param value The value.
+ *
+ * @see #setEndValue(int, Comparable, Number)
+ */"
+"public int getRowCount() {
+    return this.seriesKeys.length;
+}","public void test034() throws Throwable {
+    Number[][] numberArray0 = new Number[12][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    defaultIntervalCategoryDataset0.getEndValue(6, 0);
+    assertEquals(12, defaultIntervalCategoryDataset0.getRowCount());
+}","/**
+ * Returns the number of series in the dataset (possibly zero).
+ *
+ * @return The number of series in the dataset.
+ *
+ * @see #getSeriesCount()
+ * @see #getColumnCount()
+ */"
+"public int getCategoryCount() {
+    int result = 0;
+    if (this.startData != null) {
+        if (getSeriesCount() > 0) {
+            result = this.startData[0].length;
+        }
+    }
+    return result;
+}","public void test035() throws Throwable {
+    Number[][] numberArray0 = new Number[12][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    defaultIntervalCategoryDataset0.getEndValue(6, 0);
+    assertEquals(6, defaultIntervalCategoryDataset0.getCategoryCount());
+}","/**
+ * Returns the number of categories in the dataset.
+ *
+ * @return The number of categories in the dataset.
+ *
+ * @see #getColumnCount()
+ */"
+"public Number getValue(int series, int category) {
+    return getEndValue(series, category);
+}","public void test046() throws Throwable {
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset((Number[][]) null, (Number[][]) null);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getValue(0, 0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.getValue(): series index out of range.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns the data value for one category in a series.
+ * <P>
+ * This method is part of the CategoryDataset interface.  Not particularly
+ * meaningful for this class...returns the end value.
+ *
+ * @param series  the required series (zero based index).
+ * @param category  the required category.
+ *
+ * @return The data value for one category in a series (null possible).
+ *
+ * @see #getEndValue(int, int)
+ */"
+"public Number getStartValue(int series, int category) {
+    // check arguments...
+    if ((series < 0) || (series >= getSeriesCount())) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.getValue(): "" + ""series index out of range."");
+    }
+    if ((category < 0) || (category >= getCategoryCount())) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.getValue(): "" + ""category index out of range."");
+    }
+    // fetch the value...
+    return this.startData[series][category];
+}","public void test057() throws Throwable {
+    Number[][] numberArray0 = new Number[1][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getStartValue(1, 957);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.getValue(): series index out of range.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns the start data value for one category in a series.
+ *
+ * @param series  the required series (zero based index).
+ * @param category  the required category.
+ *
+ * @return The start data value for one category in a series
+ *         (possibly <code>null</code>).
+ *
+ * @see #getStartValue(Comparable, Comparable)
+ */"
+"public int getRowCount() {
+    return this.seriesKeys.length;
+}","public void test068() throws Throwable {
+    Number[][] numberArray0 = new Number[1][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    defaultIntervalCategoryDataset0.getStartValue(0, 0);
+    assertEquals(1, defaultIntervalCategoryDataset0.getRowCount());
+}","/**
+ * Returns the number of series in the dataset (possibly zero).
+ *
+ * @return The number of series in the dataset.
+ *
+ * @see #getSeriesCount()
+ * @see #getColumnCount()
+ */"
+"public int getCategoryCount() {
+    int result = 0;
+    if (this.startData != null) {
+        if (getSeriesCount() > 0) {
+            result = this.startData[0].length;
+        }
+    }
+    return result;
+}","public void test069() throws Throwable {
+    Number[][] numberArray0 = new Number[1][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    defaultIntervalCategoryDataset0.getStartValue(0, 0);
+    assertEquals(6, defaultIntervalCategoryDataset0.getCategoryCount());
+}","/**
+ * Returns the number of categories in the dataset.
+ *
+ * @return The number of categories in the dataset.
+ *
+ * @see #getColumnCount()
+ */"
+"public Number getStartValue(Comparable series, Comparable category) {
+    int seriesIndex = getSeriesIndex(series);
+    if (seriesIndex < 0) {
+        throw new UnknownKeyException(""Unknown 'series' key."");
+    }
+    int itemIndex = getColumnIndex(category);
+    if (itemIndex < 0) {
+        throw new UnknownKeyException(""Unknown 'category' key."");
+    }
+    return getStartValue(seriesIndex, itemIndex);
+}","public void test0710() throws Throwable {
+    Number[][] numberArray0 = new Number[2][6];
+    BigInteger bigInteger0 = BigInteger.ZERO;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Comparable<DefaultIntervalCategoryDataset>[] comparableArray0 = (Comparable<DefaultIntervalCategoryDataset>[]) Array.newInstance(Comparable.class, 2);
+    Instant instant0 = MockInstant.now();
+    Date date0 = Date.from(instant0);
+    Minute minute0 = new Minute(date0);
+    Day day0 = minute0.getDay();
+    comparableArray0[0] = (Comparable<DefaultIntervalCategoryDataset>) day0;
+    defaultIntervalCategoryDataset0.setSeriesKeys(comparableArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getStartValue((Comparable) comparableArray0[0], (Comparable) bigInteger0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unknown 'category' key.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns the start data value for one category in a series.
+ *
+ * @param series  the required series.
+ * @param category  the required category.
+ *
+ * @return The start data value for one category in a series
+ *         (possibly <code>null</code>).
+ *
+ * @see #getStartValue(int, int)
+ */"
+"public void setCategoryKeys(Comparable[] categoryKeys) {
+    if (categoryKeys == null) {
+        throw new IllegalArgumentException(""Null 'categoryKeys' argument."");
+    }
+    if (categoryKeys.length != this.startData[0].length) {
+        throw new IllegalArgumentException(""The number of categories does not match the data."");
+    }
+    for (int i = 0; i < categoryKeys.length; i++) {
+        if (categoryKeys[i] == null) {
+            throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.setCategoryKeys(): "" + ""null category not permitted."");
+        }
+    }
+    this.categoryKeys = categoryKeys;
+    fireDatasetChanged();
+}","public void test0811() throws Throwable {
+    Comparable<Object>[] comparableArray0 = (Comparable<Object>[]) Array.newInstance(Comparable.class, 5);
+    Number[][] numberArray0 = new Number[3][8];
+    Number[] numberArray1 = new Number[4];
+    numberArray0[0] = numberArray1;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.setCategoryKeys(comparableArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The number of categories does not match the data.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Sets the categories for the dataset.
+ *
+ * @param categoryKeys  an array of objects representing the categories in
+ *                      the dataset.
+ *
+ * @see #getRowKeys()
+ * @see #setSeriesKeys(Comparable[])
+ */"
+"public void setSeriesKeys(Comparable[] seriesKeys) {
+    if (seriesKeys == null) {
+        throw new IllegalArgumentException(""Null 'seriesKeys' argument."");
+    }
+    if (seriesKeys.length != getSeriesCount()) {
+        throw new IllegalArgumentException(""The number of series keys does not match the data."");
+    }
+    this.seriesKeys = seriesKeys;
+    fireDatasetChanged();
+}","public void test0912() throws Throwable {
+    double[][] doubleArray0 = new double[1][3];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    Comparable<Integer>[] comparableArray0 = (Comparable<Integer>[]) Array.newInstance(Comparable.class, 0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.setSeriesKeys(comparableArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The number of series keys does not match the data.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Sets the names of the series in the dataset.
+ *
+ * @param seriesKeys  the new keys (<code>null</code> not permitted, the
+ *         length of the array must match the number of series in the
+ *         dataset).
+ *
+ * @see #setCategoryKeys(Comparable[])
+ */"
+"public Comparable getSeriesKey(int series) {
+    if ((series >= getSeriesCount()) || (series < 0)) {
+        throw new IllegalArgumentException(""No such series : "" + series);
+    }
+    return this.seriesKeys[series];
+}","public void test1013() throws Throwable {
+    Number[][] numberArray0 = new Number[0][3];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getSeriesKey(0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // No such series : 0
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns the name of the specified series.
+ *
+ * @param series  the index of the required series (zero-based).
+ *
+ * @return The name of the specified series.
+ *
+ * @see #getSeriesIndex(Comparable)
+ */"
+"public int getColumnCount() {
+    return this.categoryKeys.length;
+}","public void test1114() throws Throwable {
+    String[] stringArray0 = new String[6];
+    Number[][] numberArray0 = new Number[6][1];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(stringArray0, numberArray0, numberArray0);
+    assertEquals(1, defaultIntervalCategoryDataset0.getColumnCount());
+}","/**
+ * Returns the number of categories in the dataset.  This method is part of
+ * the {@link CategoryDataset} interface.
+ *
+ * @return The number of categories in the dataset.
+ *
+ * @see #getCategoryCount()
+ * @see #getRowCount()
+ */"
+"public int getRowCount() {
+    return this.seriesKeys.length;
+}","public void test1215() throws Throwable {
+    Number[][] numberArray0 = new Number[2][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Integer integer0 = new Integer(0);
+    defaultIntervalCategoryDataset0.getValue((int) integer0, 0);
+    assertEquals(2, defaultIntervalCategoryDataset0.getRowCount());
+}","/**
+ * Returns the number of series in the dataset (possibly zero).
+ *
+ * @return The number of series in the dataset.
+ *
+ * @see #getSeriesCount()
+ * @see #getColumnCount()
+ */"
+"public int getCategoryCount() {
+    int result = 0;
+    if (this.startData != null) {
+        if (getSeriesCount() > 0) {
+            result = this.startData[0].length;
+        }
+    }
+    return result;
+}","public void test1216() throws Throwable {
+    Number[][] numberArray0 = new Number[2][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Integer integer0 = new Integer(0);
+    defaultIntervalCategoryDataset0.getValue((int) integer0, 0);
+    assertEquals(6, defaultIntervalCategoryDataset0.getCategoryCount());
+}","/**
+ * Returns the number of categories in the dataset.
+ *
+ * @return The number of categories in the dataset.
+ *
+ * @see #getColumnCount()
+ */"
+"public int getCategoryCount() {
+    int result = 0;
+    if (this.startData != null) {
+        if (getSeriesCount() > 0) {
+            result = this.startData[0].length;
+        }
+    }
+    return result;
+}","public void test1317() throws Throwable {
+    double[][] doubleArray0 = new double[8][9];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    defaultIntervalCategoryDataset0.getValue(0, 0);
+    assertEquals(9, defaultIntervalCategoryDataset0.getCategoryCount());
+}","/**
+ * Returns the number of categories in the dataset.
+ *
+ * @return The number of categories in the dataset.
+ *
+ * @see #getColumnCount()
+ */"
+"public int getRowCount() {
+    return this.seriesKeys.length;
+}","public void test1318() throws Throwable {
+    double[][] doubleArray0 = new double[8][9];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    defaultIntervalCategoryDataset0.getValue(0, 0);
+    assertEquals(8, defaultIntervalCategoryDataset0.getRowCount());
+}","/**
+ * Returns the number of series in the dataset (possibly zero).
+ *
+ * @return The number of series in the dataset.
+ *
+ * @see #getSeriesCount()
+ * @see #getColumnCount()
+ */"
+"public int getCategoryCount() {
+    int result = 0;
+    if (this.startData != null) {
+        if (getSeriesCount() > 0) {
+            result = this.startData[0].length;
+        }
+    }
+    return result;
+}","public void test1419() throws Throwable {
+    Number[][] numberArray0 = new Number[2][6];
+    Number[] numberArray1 = new Number[2];
+    BigInteger bigInteger0 = BigInteger.TEN;
+    numberArray1[0] = (Number) bigInteger0;
+    numberArray0[0] = numberArray1;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Number number0 = defaultIntervalCategoryDataset0.getValue(0, 0);
+    assertEquals(2, defaultIntervalCategoryDataset0.getCategoryCount());
+}","/**
+ * Returns the number of categories in the dataset.
+ *
+ * @return The number of categories in the dataset.
+ *
+ * @see #getColumnCount()
+ */"
+"public Number getValue(int series, int category) {
+    return getEndValue(series, category);
+}","public void test1420() throws Throwable {
+    Number[][] numberArray0 = new Number[2][6];
+    Number[] numberArray1 = new Number[2];
+    BigInteger bigInteger0 = BigInteger.TEN;
+    numberArray1[0] = (Number) bigInteger0;
+    numberArray0[0] = numberArray1;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Number number0 = defaultIntervalCategoryDataset0.getValue(0, 0);
+    assertNotNull(number0);
+}","/**
+ * Returns the data value for one category in a series.
+ * <P>
+ * This method is part of the CategoryDataset interface.  Not particularly
+ * meaningful for this class...returns the end value.
+ *
+ * @param series  the required series (zero based index).
+ * @param category  the required category.
+ *
+ * @return The data value for one category in a series (null possible).
+ *
+ * @see #getEndValue(int, int)
+ */"
+"public int getRowCount() {
+    return this.seriesKeys.length;
+}","public void test1421() throws Throwable {
+    Number[][] numberArray0 = new Number[2][6];
+    Number[] numberArray1 = new Number[2];
+    BigInteger bigInteger0 = BigInteger.TEN;
+    numberArray1[0] = (Number) bigInteger0;
+    numberArray0[0] = numberArray1;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Number number0 = defaultIntervalCategoryDataset0.getValue(0, 0);
+    assertEquals(2, defaultIntervalCategoryDataset0.getRowCount());
+}","/**
+ * Returns the number of series in the dataset (possibly zero).
+ *
+ * @return The number of series in the dataset.
+ *
+ * @see #getSeriesCount()
+ * @see #getColumnCount()
+ */"
+"public int getRowCount() {
+    return this.seriesKeys.length;
+}","public void test1522() throws Throwable {
+    double[][] doubleArray0 = new double[9][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    defaultIntervalCategoryDataset0.getSeriesCount();
+    assertEquals(9, defaultIntervalCategoryDataset0.getRowCount());
+}","/**
+ * Returns the number of series in the dataset (possibly zero).
+ *
+ * @return The number of series in the dataset.
+ *
+ * @see #getSeriesCount()
+ * @see #getColumnCount()
+ */"
+"public int getRowCount() {
+    return this.seriesKeys.length;
+}","public void test1623() throws Throwable {
+    Number[][] numberArray0 = new Number[3][8];
+    Number[] numberArray1 = new Number[4];
+    numberArray1[0] = (Number) 0;
+    numberArray0[0] = numberArray1;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Number number0 = defaultIntervalCategoryDataset0.getEndValue(0, 0);
+    assertEquals(3, defaultIntervalCategoryDataset0.getRowCount());
+}","/**
+ * Returns the number of series in the dataset (possibly zero).
+ *
+ * @return The number of series in the dataset.
+ *
+ * @see #getSeriesCount()
+ * @see #getColumnCount()
+ */"
+"public int getCategoryCount() {
+    int result = 0;
+    if (this.startData != null) {
+        if (getSeriesCount() > 0) {
+            result = this.startData[0].length;
+        }
+    }
+    return result;
+}","public void test1624() throws Throwable {
+    Number[][] numberArray0 = new Number[3][8];
+    Number[] numberArray1 = new Number[4];
+    numberArray1[0] = (Number) 0;
+    numberArray0[0] = numberArray1;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Number number0 = defaultIntervalCategoryDataset0.getEndValue(0, 0);
+    assertEquals(4, defaultIntervalCategoryDataset0.getCategoryCount());
+}","/**
+ * Returns the number of categories in the dataset.
+ *
+ * @return The number of categories in the dataset.
+ *
+ * @see #getColumnCount()
+ */"
+"public Number getEndValue(int series, int category) {
+    if ((series < 0) || (series >= getSeriesCount())) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.getValue(): "" + ""series index out of range."");
+    }
+    if ((category < 0) || (category >= getCategoryCount())) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.getValue(): "" + ""category index out of range."");
+    }
+    return this.endData[series][category];
+}","public void test1625() throws Throwable {
+    Number[][] numberArray0 = new Number[3][8];
+    Number[] numberArray1 = new Number[4];
+    numberArray1[0] = (Number) 0;
+    numberArray0[0] = numberArray1;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Number number0 = defaultIntervalCategoryDataset0.getEndValue(0, 0);
+    assertNotNull(number0);
+}","/**
+ * Returns the end data value for one category in a series.
+ *
+ * @param series  the required series (zero based index).
+ * @param category  the required category.
+ *
+ * @return The end data value for one category in a series (null possible).
+ *
+ * @see #getEndValue(Comparable, Comparable)
+ */"
+"public int getRowCount() {
+    return this.seriesKeys.length;
+}","public void test1726() throws Throwable {
+    double[][] doubleArray0 = new double[5][7];
+    double[] doubleArray1 = new double[2];
+    doubleArray1[0] = (-1430.6215251);
+    doubleArray0[0] = doubleArray1;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    Number number0 = defaultIntervalCategoryDataset0.getEndValue(0, 0);
+    assertEquals(5, defaultIntervalCategoryDataset0.getRowCount());
+}","/**
+ * Returns the number of series in the dataset (possibly zero).
+ *
+ * @return The number of series in the dataset.
+ *
+ * @see #getSeriesCount()
+ * @see #getColumnCount()
+ */"
+"public int getCategoryCount() {
+    int result = 0;
+    if (this.startData != null) {
+        if (getSeriesCount() > 0) {
+            result = this.startData[0].length;
+        }
+    }
+    return result;
+}","public void test1727() throws Throwable {
+    double[][] doubleArray0 = new double[5][7];
+    double[] doubleArray1 = new double[2];
+    doubleArray1[0] = (-1430.6215251);
+    doubleArray0[0] = doubleArray1;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    Number number0 = defaultIntervalCategoryDataset0.getEndValue(0, 0);
+    assertEquals(2, defaultIntervalCategoryDataset0.getCategoryCount());
+}","/**
+ * Returns the number of categories in the dataset.
+ *
+ * @return The number of categories in the dataset.
+ *
+ * @see #getColumnCount()
+ */"
+"public Number getEndValue(int series, int category) {
+    if ((series < 0) || (series >= getSeriesCount())) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.getValue(): "" + ""series index out of range."");
+    }
+    if ((category < 0) || (category >= getCategoryCount())) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.getValue(): "" + ""category index out of range."");
+    }
+    return this.endData[series][category];
+}","public void test1728() throws Throwable {
+    double[][] doubleArray0 = new double[5][7];
+    double[] doubleArray1 = new double[2];
+    doubleArray1[0] = (-1430.6215251);
+    doubleArray0[0] = doubleArray1;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    Number number0 = defaultIntervalCategoryDataset0.getEndValue(0, 0);
+    assertEquals((-1430.6215251), number0);
+}","/**
+ * Returns the end data value for one category in a series.
+ *
+ * @param series  the required series (zero based index).
+ * @param category  the required category.
+ *
+ * @return The end data value for one category in a series (null possible).
+ *
+ * @see #getEndValue(Comparable, Comparable)
+ */"
+"public int getColumnCount() {
+    return this.categoryKeys.length;
+}","public void test1829() throws Throwable {
+    Number[] numberArray0 = new Number[4];
+    Float float0 = new Float(1526.7344931);
+    numberArray0[0] = (Number) float0;
+    Number[][] numberArray1 = new Number[6][1];
+    numberArray1[0] = numberArray0;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray1, numberArray1);
+    Number number0 = defaultIntervalCategoryDataset0.getEndValue(0, 0);
+    assertEquals(4, defaultIntervalCategoryDataset0.getColumnCount());
+}","/**
+ * Returns the number of categories in the dataset.  This method is part of
+ * the {@link CategoryDataset} interface.
+ *
+ * @return The number of categories in the dataset.
+ *
+ * @see #getCategoryCount()
+ * @see #getRowCount()
+ */"
+"public Number getEndValue(int series, int category) {
+    if ((series < 0) || (series >= getSeriesCount())) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.getValue(): "" + ""series index out of range."");
+    }
+    if ((category < 0) || (category >= getCategoryCount())) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.getValue(): "" + ""category index out of range."");
+    }
+    return this.endData[series][category];
+}","public void test1830() throws Throwable {
+    Number[] numberArray0 = new Number[4];
+    Float float0 = new Float(1526.7344931);
+    numberArray0[0] = (Number) float0;
+    Number[][] numberArray1 = new Number[6][1];
+    numberArray1[0] = numberArray0;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray1, numberArray1);
+    Number number0 = defaultIntervalCategoryDataset0.getEndValue(0, 0);
+    assertNotNull(number0);
+}","/**
+ * Returns the end data value for one category in a series.
+ *
+ * @param series  the required series (zero based index).
+ * @param category  the required category.
+ *
+ * @return The end data value for one category in a series (null possible).
+ *
+ * @see #getEndValue(Comparable, Comparable)
+ */"
+"public int getCategoryCount() {
+    int result = 0;
+    if (this.startData != null) {
+        if (getSeriesCount() > 0) {
+            result = this.startData[0].length;
+        }
+    }
+    return result;
+}","public void test1831() throws Throwable {
+    Number[] numberArray0 = new Number[4];
+    Float float0 = new Float(1526.7344931);
+    numberArray0[0] = (Number) float0;
+    Number[][] numberArray1 = new Number[6][1];
+    numberArray1[0] = numberArray0;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray1, numberArray1);
+    Number number0 = defaultIntervalCategoryDataset0.getEndValue(0, 0);
+    assertEquals(4, defaultIntervalCategoryDataset0.getCategoryCount());
+}","/**
+ * Returns the number of categories in the dataset.
+ *
+ * @return The number of categories in the dataset.
+ *
+ * @see #getColumnCount()
+ */"
+"public Comparable getColumnKey(int column) {
+    return this.categoryKeys[column];
+}","public void test1932() throws Throwable {
+    Number[][] numberArray0 = new Number[1][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Comparable comparable0 = defaultIntervalCategoryDataset0.getColumnKey(0);
+    assertEquals(""Category 1"", comparable0);
+}","/**
+ * Returns a column key.
+ *
+ * @param column  the column index.
+ *
+ * @return The column key.
+ *
+ * @see #getRowKey(int)
+ */"
+"public int getRowCount() {
+    return this.seriesKeys.length;
+}","public void test1933() throws Throwable {
+    Number[][] numberArray0 = new Number[1][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Comparable comparable0 = defaultIntervalCategoryDataset0.getColumnKey(0);
+    assertEquals(1, defaultIntervalCategoryDataset0.getRowCount());
+}","/**
+ * Returns the number of series in the dataset (possibly zero).
+ *
+ * @return The number of series in the dataset.
+ *
+ * @see #getSeriesCount()
+ * @see #getColumnCount()
+ */"
+"public int getRowCount() {
+    return this.seriesKeys.length;
+}","public void test2034() throws Throwable {
+    double[][] doubleArray0 = new double[4][1];
+    double[] doubleArray1 = new double[0];
+    doubleArray0[0] = doubleArray1;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    int int0 = defaultIntervalCategoryDataset0.getColumnCount();
+    assertEquals(4, defaultIntervalCategoryDataset0.getRowCount());
+}","/**
+ * Returns the number of series in the dataset (possibly zero).
+ *
+ * @return The number of series in the dataset.
+ *
+ * @see #getSeriesCount()
+ * @see #getColumnCount()
+ */"
+"public int getColumnCount() {
+    return this.categoryKeys.length;
+}","public void test2035() throws Throwable {
+    double[][] doubleArray0 = new double[4][1];
+    double[] doubleArray1 = new double[0];
+    doubleArray0[0] = doubleArray1;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    int int0 = defaultIntervalCategoryDataset0.getColumnCount();
+    assertEquals(0, int0);
+}","/**
+ * Returns the number of categories in the dataset.  This method is part of
+ * the {@link CategoryDataset} interface.
+ *
+ * @return The number of categories in the dataset.
+ *
+ * @see #getCategoryCount()
+ * @see #getRowCount()
+ */"
+"public void setCategoryKeys(Comparable[] categoryKeys) {
+    if (categoryKeys == null) {
+        throw new IllegalArgumentException(""Null 'categoryKeys' argument."");
+    }
+    if (categoryKeys.length != this.startData[0].length) {
+        throw new IllegalArgumentException(""The number of categories does not match the data."");
+    }
+    for (int i = 0; i < categoryKeys.length; i++) {
+        if (categoryKeys[i] == null) {
+            throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.setCategoryKeys(): "" + ""null category not permitted."");
+        }
+    }
+    this.categoryKeys = categoryKeys;
+    fireDatasetChanged();
+}","public void test2136() throws Throwable {
+    String[] stringArray0 = new String[4];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(stringArray0, (Number[][]) null, (Number[][]) null);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.setCategoryKeys(stringArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Sets the categories for the dataset.
+ *
+ * @param categoryKeys  an array of objects representing the categories in
+ *                      the dataset.
+ *
+ * @see #getRowKeys()
+ * @see #setSeriesKeys(Comparable[])
+ */"
+"public void setCategoryKeys(Comparable[] categoryKeys) {
+    if (categoryKeys == null) {
+        throw new IllegalArgumentException(""Null 'categoryKeys' argument."");
+    }
+    if (categoryKeys.length != this.startData[0].length) {
+        throw new IllegalArgumentException(""The number of categories does not match the data."");
+    }
+    for (int i = 0; i < categoryKeys.length; i++) {
+        if (categoryKeys[i] == null) {
+            throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.setCategoryKeys(): "" + ""null category not permitted."");
+        }
+    }
+    this.categoryKeys = categoryKeys;
+    fireDatasetChanged();
+}","public void test2237() throws Throwable {
+    Comparable<Object>[] comparableArray0 = (Comparable<Object>[]) Array.newInstance(Comparable.class, 5);
+    Number[][] numberArray0 = new Number[0][0];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(comparableArray0, comparableArray0, numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.setCategoryKeys(comparableArray0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 0
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Sets the categories for the dataset.
+ *
+ * @param categoryKeys  an array of objects representing the categories in
+ *                      the dataset.
+ *
+ * @see #getRowKeys()
+ * @see #setSeriesKeys(Comparable[])
+ */"
+"public Number getValue(Comparable series, Comparable category) {
+    int seriesIndex = getSeriesIndex(series);
+    if (seriesIndex < 0) {
+        throw new UnknownKeyException(""Unknown 'series' key."");
+    }
+    int itemIndex = getColumnIndex(category);
+    if (itemIndex < 0) {
+        throw new UnknownKeyException(""Unknown 'category' key."");
+    }
+    return getValue(seriesIndex, itemIndex);
+}","public void test2338() throws Throwable {
+    Number[][] numberArray0 = new Number[0][3];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getValue((Comparable) null, (Comparable) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns the data value for one category in a series.
+ * <P>
+ * This method is part of the CategoryDataset interface.  Not particularly
+ * meaningful for this class...returns the end value.
+ *
+ * @param series    The required series (zero based index).
+ * @param category  The required category.
+ *
+ * @return The data value for one category in a series (null possible).
+ *
+ * @see #getEndValue(Comparable, Comparable)
+ */"
+"public Number getValue(int series, int category) {
+    return getEndValue(series, category);
+}","public void test2439() throws Throwable {
+    Number[][] numberArray0 = new Number[3][8];
+    Number[] numberArray1 = new Number[0];
+    numberArray0[2] = numberArray1;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getValue(2, 2);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 2
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns the data value for one category in a series.
+ * <P>
+ * This method is part of the CategoryDataset interface.  Not particularly
+ * meaningful for this class...returns the end value.
+ *
+ * @param series  the required series (zero based index).
+ * @param category  the required category.
+ *
+ * @return The data value for one category in a series (null possible).
+ *
+ * @see #getEndValue(int, int)
+ */"
+"public Number getStartValue(Comparable series, Comparable category) {
+    int seriesIndex = getSeriesIndex(series);
+    if (seriesIndex < 0) {
+        throw new UnknownKeyException(""Unknown 'series' key."");
+    }
+    int itemIndex = getColumnIndex(category);
+    if (itemIndex < 0) {
+        throw new UnknownKeyException(""Unknown 'category' key."");
+    }
+    return getStartValue(seriesIndex, itemIndex);
+}","public void test2540() throws Throwable {
+    String[] stringArray0 = new String[2];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(stringArray0, (Number[][]) null, (Number[][]) null);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getStartValue((Comparable) """", (Comparable) """");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns the start data value for one category in a series.
+ *
+ * @param series  the required series.
+ * @param category  the required category.
+ *
+ * @return The start data value for one category in a series
+ *         (possibly <code>null</code>).
+ *
+ * @see #getStartValue(int, int)
+ */"
+"public int getSeriesIndex(Comparable seriesKey) {
+    int result = -1;
+    for (int i = 0; i < this.seriesKeys.length; i++) {
+        if (seriesKey.equals(this.seriesKeys[i])) {
+            result = i;
+            break;
+        }
+    }
+    return result;
+}","public void test2641() throws Throwable {
+    Number[][] numberArray0 = new Number[2][6];
+    BigInteger bigInteger0 = BigInteger.TEN;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, (Number[][]) null);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getSeriesIndex(bigInteger0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns a series index.
+ *
+ * @param seriesKey  the series key.
+ *
+ * @return The series index.
+ *
+ * @see #getRowIndex(Comparable)
+ * @see #getSeriesKey(int)
+ */"
+"public Comparable getRowKey(int row) {
+    if ((row >= getRowCount()) || (row < 0)) {
+        throw new IllegalArgumentException(""The 'row' argument is out of bounds."");
+    }
+    return this.seriesKeys[row];
+}","public void test2742() throws Throwable {
+    String[] stringArray0 = new String[9];
+    Number[][] numberArray0 = new Number[0][5];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(stringArray0, numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getRowKey(0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns the name of the specified series.
+ *
+ * @param row  the index of the required row/series (zero-based).
+ *
+ * @return The name of the specified series.
+ *
+ * @see #getColumnKey(int)
+ */"
+"public Number getEndValue(Comparable series, Comparable category) {
+    int seriesIndex = getSeriesIndex(series);
+    if (seriesIndex < 0) {
+        throw new UnknownKeyException(""Unknown 'series' key."");
+    }
+    int itemIndex = getColumnIndex(category);
+    if (itemIndex < 0) {
+        throw new UnknownKeyException(""Unknown 'category' key."");
+    }
+    return getEndValue(seriesIndex, itemIndex);
+}","public void test2843() throws Throwable {
+    String[] stringArray0 = new String[8];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(stringArray0, (Number[][]) null, (Number[][]) null);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getEndValue((Comparable) """", (Comparable) ""q@T2"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns the end data value for one category in a series.
+ *
+ * @param series  the required series.
+ * @param category  the required category.
+ *
+ * @return The end data value for one category in a series (null possible).
+ *
+ * @see #getEndValue(int, int)
+ */"
+"public Comparable getColumnKey(int column) {
+    return this.categoryKeys[column];
+}","public void test2944() throws Throwable {
+    double[][] doubleArray0 = new double[6][3];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getColumnKey((-4677));
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -4677
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns a column key.
+ *
+ * @param column  the column index.
+ *
+ * @return The column key.
+ *
+ * @see #getRowKey(int)
+ */"
+"public int getColumnIndex(Comparable columnKey) {
+    if (columnKey == null) {
+        throw new IllegalArgumentException(""Null 'columnKey' argument."");
+    }
+    return getCategoryIndex(columnKey);
+}","public void test3045() throws Throwable {
+    String[] stringArray0 = new String[6];
+    Number[][] numberArray0 = new Number[0][2];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(stringArray0, numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getColumnIndex(""tB1@(uonG)"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns a column index.
+ *
+ * @param columnKey  the column key (<code>null</code> not permitted).
+ *
+ * @return The column index.
+ *
+ * @see #getCategoryIndex(Comparable)
+ */"
+"public int getColumnCount() {
+    return this.categoryKeys.length;
+}","public void test3146() throws Throwable {
+    Comparable<String>[] comparableArray0 = (Comparable<String>[]) Array.newInstance(Comparable.class, 2);
+    Number[][] numberArray0 = new Number[0][8];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(comparableArray0, comparableArray0, numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getColumnCount();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns the number of categories in the dataset.  This method is part of
+ * the {@link CategoryDataset} interface.
+ *
+ * @return The number of categories in the dataset.
+ *
+ * @see #getCategoryCount()
+ * @see #getRowCount()
+ */"
+"public int getCategoryIndex(Comparable category) {
+    int result = -1;
+    for (int i = 0; i < this.categoryKeys.length; i++) {
+        if (category.equals(this.categoryKeys[i])) {
+            result = i;
+            break;
+        }
+    }
+    return result;
+}","public void test3247() throws Throwable {
+    Comparable<Object>[] comparableArray0 = (Comparable<Object>[]) Array.newInstance(Comparable.class, 5);
+    Number[][] numberArray0 = new Number[0][0];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(comparableArray0, comparableArray0, numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getCategoryIndex(comparableArray0[1]);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns the index for the given category.
+ *
+ * @param category  the category (<code>null</code> not permitted).
+ *
+ * @return The index.
+ *
+ * @see #getColumnIndex(Comparable)
+ */"
+"public Object clone() throws CloneNotSupportedException {
+    DefaultIntervalCategoryDataset clone = (DefaultIntervalCategoryDataset) super.clone();
+    clone.categoryKeys = (Comparable[]) this.categoryKeys.clone();
+    clone.seriesKeys = (Comparable[]) this.seriesKeys.clone();
+    clone.startData = clone(this.startData);
+    clone.endData = clone(this.endData);
+    return clone;
+}","public void test3348() throws Throwable {
+    String[] stringArray0 = new String[6];
+    Number[][] numberArray0 = new Number[0][1];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(stringArray0, numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.clone();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns a clone of this dataset.
+ *
+ * @return A clone.
+ *
+ * @throws CloneNotSupportedException if there is a problem cloning the
+ *         dataset.
+ */"
+"public DefaultIntervalCategoryDataset(Number[][] starts, Number[][] ends) {
+    this(null, null, starts, ends);
+}","public void test3449() throws Throwable {
+    Number[][] numberArray0 = new Number[2][4];
+    Number[][] numberArray1 = new Number[8][7];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = null;
+    try {
+        defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset: the number of series in the start value dataset does not match the number of series in the end value dataset.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Constructs a dataset and populates it with data from the array.
+ * <p>
+ * The arrays are indexed as data[series][category].  Series and category
+ * names are automatically generated - you can change them using the
+ * {@link #setSeriesKeys(Comparable[])} and
+ * {@link #setCategoryKeys(Comparable[])} methods.
+ *
+ * @param starts  the start values data.
+ * @param ends  the end values data.
+ */"
+"public int getColumnIndex(Comparable columnKey) {
+    if (columnKey == null) {
+        throw new IllegalArgumentException(""Null 'columnKey' argument."");
+    }
+    return getCategoryIndex(columnKey);
+}","public void test3550() throws Throwable {
+    double[][] doubleArray0 = new double[2][7];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    int int0 = defaultIntervalCategoryDataset0.getColumnIndex((-1));
+    assertEquals((-1), int0);
+}","/**
+ * Returns a column index.
+ *
+ * @param columnKey  the column key (<code>null</code> not permitted).
+ *
+ * @return The column index.
+ *
+ * @see #getCategoryIndex(Comparable)
+ */"
+"public int getRowCount() {
+    return this.seriesKeys.length;
+}","public void test3551() throws Throwable {
+    double[][] doubleArray0 = new double[2][7];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    int int0 = defaultIntervalCategoryDataset0.getColumnIndex((-1));
+    assertEquals(2, defaultIntervalCategoryDataset0.getRowCount());
+}","/**
+ * Returns the number of series in the dataset (possibly zero).
+ *
+ * @return The number of series in the dataset.
+ *
+ * @see #getSeriesCount()
+ * @see #getColumnCount()
+ */"
+"public int getRowCount() {
+    return this.seriesKeys.length;
+}","public void test3652() throws Throwable {
+    Number[][] numberArray0 = new Number[4][9];
+    Integer integer0 = JLayeredPane.POPUP_LAYER;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset((String[]) null, numberArray0, numberArray0);
+    int int0 = defaultIntervalCategoryDataset0.getCategoryIndex(integer0);
+    assertEquals(4, defaultIntervalCategoryDataset0.getRowCount());
+}","/**
+ * Returns the number of series in the dataset (possibly zero).
+ *
+ * @return The number of series in the dataset.
+ *
+ * @see #getSeriesCount()
+ * @see #getColumnCount()
+ */"
+"public int getCategoryIndex(Comparable category) {
+    int result = -1;
+    for (int i = 0; i < this.categoryKeys.length; i++) {
+        if (category.equals(this.categoryKeys[i])) {
+            result = i;
+            break;
+        }
+    }
+    return result;
+}","public void test3653() throws Throwable {
+    Number[][] numberArray0 = new Number[4][9];
+    Integer integer0 = JLayeredPane.POPUP_LAYER;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset((String[]) null, numberArray0, numberArray0);
+    int int0 = defaultIntervalCategoryDataset0.getCategoryIndex(integer0);
+    assertEquals((-1), int0);
+}","/**
+ * Returns the index for the given category.
+ *
+ * @param category  the category (<code>null</code> not permitted).
+ *
+ * @return The index.
+ *
+ * @see #getColumnIndex(Comparable)
+ */"
+"public Number getEndValue(int series, int category) {
+    if ((series < 0) || (series >= getSeriesCount())) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.getValue(): "" + ""series index out of range."");
+    }
+    if ((category < 0) || (category >= getCategoryCount())) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.getValue(): "" + ""category index out of range."");
+    }
+    return this.endData[series][category];
+}","public void test3754() throws Throwable {
+    Number[][] numberArray0 = new Number[3][8];
+    Number[] numberArray1 = new Number[0];
+    numberArray0[0] = numberArray1;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getEndValue(0, 0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.getValue(): category index out of range.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns the end data value for one category in a series.
+ *
+ * @param series  the required series (zero based index).
+ * @param category  the required category.
+ *
+ * @return The end data value for one category in a series (null possible).
+ *
+ * @see #getEndValue(Comparable, Comparable)
+ */"
+"public Number getEndValue(int series, int category) {
+    if ((series < 0) || (series >= getSeriesCount())) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.getValue(): "" + ""series index out of range."");
+    }
+    if ((category < 0) || (category >= getCategoryCount())) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.getValue(): "" + ""category index out of range."");
+    }
+    return this.endData[series][category];
+}","public void test3855() throws Throwable {
+    double[][] doubleArray0 = new double[4][5];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getEndValue((-265), (-259));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.getValue(): series index out of range.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns the end data value for one category in a series.
+ *
+ * @param series  the required series (zero based index).
+ * @param category  the required category.
+ *
+ * @return The end data value for one category in a series (null possible).
+ *
+ * @see #getEndValue(Comparable, Comparable)
+ */"
+"public int getCategoryCount() {
+    int result = 0;
+    if (this.startData != null) {
+        if (getSeriesCount() > 0) {
+            result = this.startData[0].length;
+        }
+    }
+    return result;
+}","public void test3956() throws Throwable {
+    Number[][] numberArray0 = new Number[12][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    int int0 = defaultIntervalCategoryDataset0.getCategoryCount();
+    assertEquals(6, int0);
+}","/**
+ * Returns the number of categories in the dataset.
+ *
+ * @return The number of categories in the dataset.
+ *
+ * @see #getColumnCount()
+ */"
+"public int getRowCount() {
+    return this.seriesKeys.length;
+}","public void test3957() throws Throwable {
+    Number[][] numberArray0 = new Number[12][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    int int0 = defaultIntervalCategoryDataset0.getCategoryCount();
+    assertEquals(12, defaultIntervalCategoryDataset0.getRowCount());
+}","/**
+ * Returns the number of series in the dataset (possibly zero).
+ *
+ * @return The number of series in the dataset.
+ *
+ * @see #getSeriesCount()
+ * @see #getColumnCount()
+ */"
+"public int getRowCount() {
+    return this.seriesKeys.length;
+}","public void test4058() throws Throwable {
+    Number[][] numberArray0 = new Number[5][0];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset((Comparable[]) null, (Comparable[]) null, numberArray0, numberArray0);
+    Comparable comparable0 = defaultIntervalCategoryDataset0.getSeriesKey(0);
+    assertEquals(5, defaultIntervalCategoryDataset0.getRowCount());
+}","/**
+ * Returns the number of series in the dataset (possibly zero).
+ *
+ * @return The number of series in the dataset.
+ *
+ * @see #getSeriesCount()
+ * @see #getColumnCount()
+ */"
+"public Comparable getSeriesKey(int series) {
+    if ((series >= getSeriesCount()) || (series < 0)) {
+        throw new IllegalArgumentException(""No such series : "" + series);
+    }
+    return this.seriesKeys[series];
+}","public void test4059() throws Throwable {
+    Number[][] numberArray0 = new Number[5][0];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset((Comparable[]) null, (Comparable[]) null, numberArray0, numberArray0);
+    Comparable comparable0 = defaultIntervalCategoryDataset0.getSeriesKey(0);
+    assertEquals(""Series 1"", comparable0);
+}","/**
+ * Returns the name of the specified series.
+ *
+ * @param series  the index of the required series (zero-based).
+ *
+ * @return The name of the specified series.
+ *
+ * @see #getSeriesIndex(Comparable)
+ */"
+"public int getSeriesIndex(Comparable seriesKey) {
+    int result = -1;
+    for (int i = 0; i < this.seriesKeys.length; i++) {
+        if (seriesKey.equals(this.seriesKeys[i])) {
+            result = i;
+            break;
+        }
+    }
+    return result;
+}","public void test4160() throws Throwable {
+    double[][] doubleArray0 = new double[2][3];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    int int0 = defaultIntervalCategoryDataset0.getSeriesIndex(0.0);
+    assertEquals((-1), int0);
+}","/**
+ * Returns a series index.
+ *
+ * @param seriesKey  the series key.
+ *
+ * @return The series index.
+ *
+ * @see #getRowIndex(Comparable)
+ * @see #getSeriesKey(int)
+ */"
+"public int getRowCount() {
+    return this.seriesKeys.length;
+}","public void test4161() throws Throwable {
+    double[][] doubleArray0 = new double[2][3];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    int int0 = defaultIntervalCategoryDataset0.getSeriesIndex(0.0);
+    assertEquals(2, defaultIntervalCategoryDataset0.getRowCount());
+}","/**
+ * Returns the number of series in the dataset (possibly zero).
+ *
+ * @return The number of series in the dataset.
+ *
+ * @see #getSeriesCount()
+ * @see #getColumnCount()
+ */"
+"public int getSeriesCount() {
+    int result = 0;
+    if (this.startData != null) {
+        result = this.startData.length;
+    }
+    return result;
+}","public void test4262() throws Throwable {
+    String[] stringArray0 = new String[5];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(stringArray0, (Number[][]) null, (Number[][]) null);
+    int int0 = defaultIntervalCategoryDataset0.getSeriesCount();
+    assertEquals(0, int0);
+}","/**
+ * Returns the number of series in the dataset (possibly zero).
+ *
+ * @return The number of series in the dataset.
+ *
+ * @see #getRowCount()
+ * @see #getCategoryCount()
+ */"
+"public DefaultIntervalCategoryDataset(Comparable[] seriesKeys, Comparable[] categoryKeys, Number[][] starts, Number[][] ends) {
+    this.startData = starts;
+    this.endData = ends;
+    if (starts != null && ends != null) {
+        String baseName = ""org.jfree.data.resources.DataPackageResources"";
+        ResourceBundle resources = ResourceBundle.getBundle(baseName);
+        int seriesCount = starts.length;
+        if (seriesCount != ends.length) {
+            String errMsg = ""DefaultIntervalCategoryDataset: the number "" + ""of series in the start value dataset does "" + ""not match the number of series in the end "" + ""value dataset."";
+            throw new IllegalArgumentException(errMsg);
+        }
+        if (seriesCount > 0) {
+            // set up the series names...
+            if (seriesKeys != null) {
+                if (seriesKeys.length != seriesCount) {
+                    throw new IllegalArgumentException(""The number of series keys does not "" + ""match the number of series in the data."");
+                }
+                this.seriesKeys = seriesKeys;
+            } else {
+                String prefix = resources.getString(""series.default-prefix"") + "" "";
+                this.seriesKeys = generateKeys(seriesCount, prefix);
+            }
+            // set up the category names...
+            int categoryCount = starts[0].length;
+            if (categoryCount != ends[0].length) {
+                String errMsg = ""DefaultIntervalCategoryDataset: the "" + ""number of categories in the start value "" + ""dataset does not match the number of "" + ""categories in the end value dataset."";
+                throw new IllegalArgumentException(errMsg);
+            }
+            if (categoryKeys != null) {
+                if (categoryKeys.length != categoryCount) {
+                    throw new IllegalArgumentException(""The number of category keys does not match "" + ""the number of categories in the data."");
+                }
+                this.categoryKeys = categoryKeys;
+            } else {
+                String prefix = resources.getString(""categories.default-prefix"") + "" "";
+                this.categoryKeys = generateKeys(categoryCount, prefix);
+            }
+        } else {
+            this.seriesKeys = null;
+            this.categoryKeys = null;
+        }
+    }
+}","public void test4363() throws Throwable {
+    Comparable<DefaultIntervalCategoryDataset>[] comparableArray0 = (Comparable<DefaultIntervalCategoryDataset>[]) Array.newInstance(Comparable.class, 0);
+    Number[][] numberArray0 = new Number[1][8];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = null;
+    try {
+        defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(comparableArray0, comparableArray0, numberArray0, numberArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The number of series keys does not match the number of series in the data.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Constructs a DefaultIntervalCategoryDataset, populates it with data
+ * from the arrays, and uses the supplied names for the series and the
+ * supplied objects for the categories.
+ *
+ * @param seriesKeys  the series keys (if <code>null</code>, series keys
+ *         will be generated automatically).
+ * @param categoryKeys  the category keys (if <code>null</code>, category
+ *         keys will be generated automatically).
+ * @param starts  the start values data, indexed as data[series][category].
+ * @param ends  the end values data, indexed as data[series][category].
+ */"
+"public Number getEndValue(int series, int category) {
+    if ((series < 0) || (series >= getSeriesCount())) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.getValue(): "" + ""series index out of range."");
+    }
+    if ((category < 0) || (category >= getCategoryCount())) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.getValue(): "" + ""category index out of range."");
+    }
+    return this.endData[series][category];
+}","public void test4464() throws Throwable {
+    Number[][] numberArray0 = new Number[4][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset((Comparable[]) null, (Comparable[]) null, numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getEndValue(555, 555);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.getValue(): series index out of range.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns the end data value for one category in a series.
+ *
+ * @param series  the required series (zero based index).
+ * @param category  the required category.
+ *
+ * @return The end data value for one category in a series (null possible).
+ *
+ * @see #getEndValue(Comparable, Comparable)
+ */"
+"public int getRowCount() {
+    return this.seriesKeys.length;
+}","public void test4565() throws Throwable {
+    Number[][] numberArray0 = new Number[12][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    int int0 = defaultIntervalCategoryDataset0.getRowCount();
+    assertEquals(12, int0);
+}","/**
+ * Returns the number of series in the dataset (possibly zero).
+ *
+ * @return The number of series in the dataset.
+ *
+ * @see #getSeriesCount()
+ * @see #getColumnCount()
+ */"
+"public boolean equals(Object obj) {
+    if (obj == this) {
+        return true;
+    }
+    if (!(obj instanceof DefaultIntervalCategoryDataset)) {
+        return false;
+    }
+    DefaultIntervalCategoryDataset that = (DefaultIntervalCategoryDataset) obj;
+    if (!Arrays.equals(this.seriesKeys, that.seriesKeys)) {
+        return false;
+    }
+    if (!Arrays.equals(this.categoryKeys, that.categoryKeys)) {
+        return false;
+    }
+    if (!equal(this.startData, that.startData)) {
+        return false;
+    }
+    if (!equal(this.endData, that.endData)) {
+        return false;
+    }
+    // seem to be the same...
+    return true;
+}","public void test4666() throws Throwable {
+    double[][] doubleArray0 = new double[3][5];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    Number[][] numberArray0 = new Number[0][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset1 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    boolean boolean0 = defaultIntervalCategoryDataset0.equals(defaultIntervalCategoryDataset1);
+    assertFalse(boolean0);
+}","/**
+ * Tests this dataset for equality with an arbitrary object.
+ *
+ * @param obj  the object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public int getRowCount() {
+    return this.seriesKeys.length;
+}","public void test4667() throws Throwable {
+    double[][] doubleArray0 = new double[3][5];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    Number[][] numberArray0 = new Number[0][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset1 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    boolean boolean0 = defaultIntervalCategoryDataset0.equals(defaultIntervalCategoryDataset1);
+    assertEquals(3, defaultIntervalCategoryDataset0.getRowCount());
+}","/**
+ * Returns the number of series in the dataset (possibly zero).
+ *
+ * @return The number of series in the dataset.
+ *
+ * @see #getSeriesCount()
+ * @see #getColumnCount()
+ */"
+"public int getRowCount() {
+    return this.seriesKeys.length;
+}","public void test4768() throws Throwable {
+    double[][] doubleArray0 = new double[6][1];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset1 = (DefaultIntervalCategoryDataset) defaultIntervalCategoryDataset0.clone();
+    boolean boolean0 = defaultIntervalCategoryDataset0.equals(defaultIntervalCategoryDataset1);
+    assertEquals(6, defaultIntervalCategoryDataset1.getRowCount());
+}","/**
+ * Returns the number of series in the dataset (possibly zero).
+ *
+ * @return The number of series in the dataset.
+ *
+ * @see #getSeriesCount()
+ * @see #getColumnCount()
+ */"
+"public boolean equals(Object obj) {
+    if (obj == this) {
+        return true;
+    }
+    if (!(obj instanceof DefaultIntervalCategoryDataset)) {
+        return false;
+    }
+    DefaultIntervalCategoryDataset that = (DefaultIntervalCategoryDataset) obj;
+    if (!Arrays.equals(this.seriesKeys, that.seriesKeys)) {
+        return false;
+    }
+    if (!Arrays.equals(this.categoryKeys, that.categoryKeys)) {
+        return false;
+    }
+    if (!equal(this.startData, that.startData)) {
+        return false;
+    }
+    if (!equal(this.endData, that.endData)) {
+        return false;
+    }
+    // seem to be the same...
+    return true;
+}","public void test4769() throws Throwable {
+    double[][] doubleArray0 = new double[6][1];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset1 = (DefaultIntervalCategoryDataset) defaultIntervalCategoryDataset0.clone();
+    boolean boolean0 = defaultIntervalCategoryDataset0.equals(defaultIntervalCategoryDataset1);
+    assertNotSame(defaultIntervalCategoryDataset1, defaultIntervalCategoryDataset0);
+}","/**
+ * Tests this dataset for equality with an arbitrary object.
+ *
+ * @param obj  the object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public boolean equals(Object obj) {
+    if (obj == this) {
+        return true;
+    }
+    if (!(obj instanceof DefaultIntervalCategoryDataset)) {
+        return false;
+    }
+    DefaultIntervalCategoryDataset that = (DefaultIntervalCategoryDataset) obj;
+    if (!Arrays.equals(this.seriesKeys, that.seriesKeys)) {
+        return false;
+    }
+    if (!Arrays.equals(this.categoryKeys, that.categoryKeys)) {
+        return false;
+    }
+    if (!equal(this.startData, that.startData)) {
+        return false;
+    }
+    if (!equal(this.endData, that.endData)) {
+        return false;
+    }
+    // seem to be the same...
+    return true;
+}","public void test4871() throws Throwable {
+    double[][] doubleArray0 = new double[6][1];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    boolean boolean0 = defaultIntervalCategoryDataset0.equals(defaultIntervalCategoryDataset0);
+    assertTrue(boolean0);
+}","/**
+ * Tests this dataset for equality with an arbitrary object.
+ *
+ * @param obj  the object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public int getRowCount() {
+    return this.seriesKeys.length;
+}","public void test4872() throws Throwable {
+    double[][] doubleArray0 = new double[6][1];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    boolean boolean0 = defaultIntervalCategoryDataset0.equals(defaultIntervalCategoryDataset0);
+    assertEquals(6, defaultIntervalCategoryDataset0.getRowCount());
+}","/**
+ * Returns the number of series in the dataset (possibly zero).
+ *
+ * @return The number of series in the dataset.
+ *
+ * @see #getSeriesCount()
+ * @see #getColumnCount()
+ */"
+"public boolean equals(Object obj) {
+    if (obj == this) {
+        return true;
+    }
+    if (!(obj instanceof DefaultIntervalCategoryDataset)) {
+        return false;
+    }
+    DefaultIntervalCategoryDataset that = (DefaultIntervalCategoryDataset) obj;
+    if (!Arrays.equals(this.seriesKeys, that.seriesKeys)) {
+        return false;
+    }
+    if (!Arrays.equals(this.categoryKeys, that.categoryKeys)) {
+        return false;
+    }
+    if (!equal(this.startData, that.startData)) {
+        return false;
+    }
+    if (!equal(this.endData, that.endData)) {
+        return false;
+    }
+    // seem to be the same...
+    return true;
+}","public void test4973() throws Throwable {
+    Number[][] numberArray0 = new Number[3][8];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Object object0 = new Object();
+    boolean boolean0 = defaultIntervalCategoryDataset0.equals(object0);
+    assertFalse(boolean0);
+}","/**
+ * Tests this dataset for equality with an arbitrary object.
+ *
+ * @param obj  the object (<code>null</code> permitted).
+ *
+ * @return A boolean.
+ */"
+"public int getRowCount() {
+    return this.seriesKeys.length;
+}","public void test4974() throws Throwable {
+    Number[][] numberArray0 = new Number[3][8];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Object object0 = new Object();
+    boolean boolean0 = defaultIntervalCategoryDataset0.equals(object0);
+    assertEquals(3, defaultIntervalCategoryDataset0.getRowCount());
+}","/**
+ * Returns the number of series in the dataset (possibly zero).
+ *
+ * @return The number of series in the dataset.
+ *
+ * @see #getSeriesCount()
+ * @see #getColumnCount()
+ */"
+"public Comparable getRowKey(int row) {
+    if ((row >= getRowCount()) || (row < 0)) {
+        throw new IllegalArgumentException(""The 'row' argument is out of bounds."");
+    }
+    return this.seriesKeys[row];
+}","public void test5075() throws Throwable {
+    double[][] doubleArray0 = new double[3][5];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getRowKey((-2873));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The 'row' argument is out of bounds.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns the name of the specified series.
+ *
+ * @param row  the index of the required row/series (zero-based).
+ *
+ * @return The name of the specified series.
+ *
+ * @see #getColumnKey(int)
+ */"
+"public Comparable getRowKey(int row) {
+    if ((row >= getRowCount()) || (row < 0)) {
+        throw new IllegalArgumentException(""The 'row' argument is out of bounds."");
+    }
+    return this.seriesKeys[row];
+}","public void test5176() throws Throwable {
+    double[][] doubleArray0 = new double[1][3];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getRowKey(2080);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The 'row' argument is out of bounds.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns the name of the specified series.
+ *
+ * @param row  the index of the required row/series (zero-based).
+ *
+ * @return The name of the specified series.
+ *
+ * @see #getColumnKey(int)
+ */"
+"public int getColumnIndex(Comparable columnKey) {
+    if (columnKey == null) {
+        throw new IllegalArgumentException(""Null 'columnKey' argument."");
+    }
+    return getCategoryIndex(columnKey);
+}","public void test5479() throws Throwable {
+    double[][] doubleArray0 = new double[5][8];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getColumnIndex((Comparable) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'columnKey' argument.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns a column index.
+ *
+ * @param columnKey  the column key (<code>null</code> not permitted).
+ *
+ * @return The column index.
+ *
+ * @see #getCategoryIndex(Comparable)
+ */"
+"public void setEndValue(int series, Comparable category, Number value) {
+    // does the series exist?
+    if ((series < 0) || (series > getSeriesCount() - 1)) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.setValue: "" + ""series outside valid range."");
+    }
+    // is the category valid?
+    int categoryIndex = getCategoryIndex(category);
+    if (categoryIndex < 0) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.setValue: "" + ""unrecognised category."");
+    }
+    // update the data...
+    this.endData[series][categoryIndex] = value;
+    fireDatasetChanged();
+}","public void test5580() throws Throwable {
+    Number[][] numberArray0 = new Number[6][3];
+    Integer integer0 = JLayeredPane.MODAL_LAYER;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.setEndValue(292, integer0, integer0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.setValue: series outside valid range.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Sets the end data value for one category in a series.
+ *
+ * @param series  the series (zero-based index).
+ * @param category  the category.
+ *
+ * @param value the value.
+ *
+ * @see #setStartValue(int, Comparable, Number)
+ */"
+"public void setEndValue(int series, Comparable category, Number value) {
+    // does the series exist?
+    if ((series < 0) || (series > getSeriesCount() - 1)) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.setValue: "" + ""series outside valid range."");
+    }
+    // is the category valid?
+    int categoryIndex = getCategoryIndex(category);
+    if (categoryIndex < 0) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.setValue: "" + ""unrecognised category."");
+    }
+    // update the data...
+    this.endData[series][categoryIndex] = value;
+    fireDatasetChanged();
+}","public void test5681() throws Throwable {
+    Number[][] numberArray0 = new Number[9][8];
+    Number[] numberArray1 = new Number[5];
+    Long long0 = new Long(1L);
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.setEndValue((byte) 0, long0, numberArray1[0]);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.setValue: unrecognised category.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Sets the end data value for one category in a series.
+ *
+ * @param series  the series (zero-based index).
+ * @param category  the category.
+ *
+ * @param value the value.
+ *
+ * @see #setStartValue(int, Comparable, Number)
+ */"
+"public void setEndValue(int series, Comparable category, Number value) {
+    // does the series exist?
+    if ((series < 0) || (series > getSeriesCount() - 1)) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.setValue: "" + ""series outside valid range."");
+    }
+    // is the category valid?
+    int categoryIndex = getCategoryIndex(category);
+    if (categoryIndex < 0) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.setValue: "" + ""unrecognised category."");
+    }
+    // update the data...
+    this.endData[series][categoryIndex] = value;
+    fireDatasetChanged();
+}","public void test5782() throws Throwable {
+    String[] stringArray0 = new String[3];
+    Number[][] numberArray0 = new Number[0][4];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(stringArray0, numberArray0, numberArray0);
+    Short short0 = new Short((short) (-407));
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.setEndValue((-339), ""KJV'!i,^+L3w<EOT,X_"", short0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.setValue: series outside valid range.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Sets the end data value for one category in a series.
+ *
+ * @param series  the series (zero-based index).
+ * @param category  the category.
+ *
+ * @param value the value.
+ *
+ * @see #setStartValue(int, Comparable, Number)
+ */"
+"public void setStartValue(int series, Comparable category, Number value) {
+    // does the series exist?
+    if ((series < 0) || (series > getSeriesCount() - 1)) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.setValue: "" + ""series outside valid range."");
+    }
+    // is the category valid?
+    int categoryIndex = getCategoryIndex(category);
+    if (categoryIndex < 0) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.setValue: "" + ""unrecognised category."");
+    }
+    // update the data...
+    this.startData[series][categoryIndex] = value;
+    fireDatasetChanged();
+}","public void test5883() throws Throwable {
+    double[][] doubleArray0 = new double[3][5];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.setStartValue(28, 1604.2356, 2008.385);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.setValue: series outside valid range.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Sets the start data value for one category in a series.
+ *
+ * @param series  the series (zero-based index).
+ * @param category  the category.
+ *
+ * @param value The value.
+ *
+ * @see #setEndValue(int, Comparable, Number)
+ */"
+"public void setStartValue(int series, Comparable category, Number value) {
+    // does the series exist?
+    if ((series < 0) || (series > getSeriesCount() - 1)) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.setValue: "" + ""series outside valid range."");
+    }
+    // is the category valid?
+    int categoryIndex = getCategoryIndex(category);
+    if (categoryIndex < 0) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.setValue: "" + ""unrecognised category."");
+    }
+    // update the data...
+    this.startData[series][categoryIndex] = value;
+    fireDatasetChanged();
+}","public void test5984() throws Throwable {
+    double[][] doubleArray0 = new double[5][7];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.setStartValue(0, (-1430.6215251), (-1430.6215251));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.setValue: unrecognised category.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Sets the start data value for one category in a series.
+ *
+ * @param series  the series (zero-based index).
+ * @param category  the category.
+ *
+ * @param value The value.
+ *
+ * @see #setEndValue(int, Comparable, Number)
+ */"
+"public void setStartValue(int series, Comparable category, Number value) {
+    // does the series exist?
+    if ((series < 0) || (series > getSeriesCount() - 1)) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.setValue: "" + ""series outside valid range."");
+    }
+    // is the category valid?
+    int categoryIndex = getCategoryIndex(category);
+    if (categoryIndex < 0) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.setValue: "" + ""unrecognised category."");
+    }
+    // update the data...
+    this.startData[series][categoryIndex] = value;
+    fireDatasetChanged();
+}","public void test6085() throws Throwable {
+    double[][] doubleArray0 = new double[1][9];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.setStartValue((-610), (-1179.8902091), (-1179.8902091));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.setValue: series outside valid range.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Sets the start data value for one category in a series.
+ *
+ * @param series  the series (zero-based index).
+ * @param category  the category.
+ *
+ * @param value The value.
+ *
+ * @see #setEndValue(int, Comparable, Number)
+ */"
+"public Number getEndValue(int series, int category) {
+    if ((series < 0) || (series >= getSeriesCount())) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.getValue(): "" + ""series index out of range."");
+    }
+    if ((category < 0) || (category >= getCategoryCount())) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.getValue(): "" + ""category index out of range."");
+    }
+    return this.endData[series][category];
+}","public void test6186() throws Throwable {
+    Number[][] numberArray0 = new Number[12][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getEndValue(4, (-373));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.getValue(): category index out of range.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns the end data value for one category in a series.
+ *
+ * @param series  the required series (zero based index).
+ * @param category  the required category.
+ *
+ * @return The end data value for one category in a series (null possible).
+ *
+ * @see #getEndValue(Comparable, Comparable)
+ */"
+"public Number getEndValue(Comparable series, Comparable category) {
+    int seriesIndex = getSeriesIndex(series);
+    if (seriesIndex < 0) {
+        throw new UnknownKeyException(""Unknown 'series' key."");
+    }
+    int itemIndex = getColumnIndex(category);
+    if (itemIndex < 0) {
+        throw new UnknownKeyException(""Unknown 'category' key."");
+    }
+    return getEndValue(seriesIndex, itemIndex);
+}","public void test6287() throws Throwable {
+    Number[][] numberArray0 = new Number[2][6];
+    BigInteger bigInteger0 = BigInteger.TEN;
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getEndValue((Comparable) bigInteger0, (Comparable) bigInteger0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unknown 'series' key.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns the end data value for one category in a series.
+ *
+ * @param series  the required series.
+ * @param category  the required category.
+ *
+ * @return The end data value for one category in a series (null possible).
+ *
+ * @see #getEndValue(int, int)
+ */"
+"public Number getStartValue(int series, int category) {
+    // check arguments...
+    if ((series < 0) || (series >= getSeriesCount())) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.getValue(): "" + ""series index out of range."");
+    }
+    if ((category < 0) || (category >= getCategoryCount())) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.getValue(): "" + ""category index out of range."");
+    }
+    // fetch the value...
+    return this.startData[series][category];
+}","public void test6388() throws Throwable {
+    Number[][] numberArray0 = new Number[12][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getStartValue(1, 957);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.getValue(): category index out of range.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns the start data value for one category in a series.
+ *
+ * @param series  the required series (zero based index).
+ * @param category  the required category.
+ *
+ * @return The start data value for one category in a series
+ *         (possibly <code>null</code>).
+ *
+ * @see #getStartValue(Comparable, Comparable)
+ */"
+"public Number getStartValue(int series, int category) {
+    // check arguments...
+    if ((series < 0) || (series >= getSeriesCount())) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.getValue(): "" + ""series index out of range."");
+    }
+    if ((category < 0) || (category >= getCategoryCount())) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.getValue(): "" + ""category index out of range."");
+    }
+    // fetch the value...
+    return this.startData[series][category];
+}","public void test6489() throws Throwable {
+    Number[][] numberArray0 = new Number[12][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getStartValue(1, (-1408));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.getValue(): category index out of range.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns the start data value for one category in a series.
+ *
+ * @param series  the required series (zero based index).
+ * @param category  the required category.
+ *
+ * @return The start data value for one category in a series
+ *         (possibly <code>null</code>).
+ *
+ * @see #getStartValue(Comparable, Comparable)
+ */"
+"public Number getStartValue(int series, int category) {
+    // check arguments...
+    if ((series < 0) || (series >= getSeriesCount())) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.getValue(): "" + ""series index out of range."");
+    }
+    if ((category < 0) || (category >= getCategoryCount())) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.getValue(): "" + ""category index out of range."");
+    }
+    // fetch the value...
+    return this.startData[series][category];
+}","public void test6590() throws Throwable {
+    Number[][] numberArray0 = new Number[12][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getStartValue(1377, (-1408));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.getValue(): series index out of range.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns the start data value for one category in a series.
+ *
+ * @param series  the required series (zero based index).
+ * @param category  the required category.
+ *
+ * @return The start data value for one category in a series
+ *         (possibly <code>null</code>).
+ *
+ * @see #getStartValue(Comparable, Comparable)
+ */"
+"public int getCategoryCount() {
+    int result = 0;
+    if (this.startData != null) {
+        if (getSeriesCount() > 0) {
+            result = this.startData[0].length;
+        }
+    }
+    return result;
+}","public void test6691() throws Throwable {
+    Number[][] numberArray0 = new Number[12][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    defaultIntervalCategoryDataset0.getStartValue(1, 0);
+    assertEquals(6, defaultIntervalCategoryDataset0.getCategoryCount());
+}","/**
+ * Returns the number of categories in the dataset.
+ *
+ * @return The number of categories in the dataset.
+ *
+ * @see #getColumnCount()
+ */"
+"public int getRowCount() {
+    return this.seriesKeys.length;
+}","public void test6692() throws Throwable {
+    Number[][] numberArray0 = new Number[12][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    defaultIntervalCategoryDataset0.getStartValue(1, 0);
+    assertEquals(12, defaultIntervalCategoryDataset0.getRowCount());
+}","/**
+ * Returns the number of series in the dataset (possibly zero).
+ *
+ * @return The number of series in the dataset.
+ *
+ * @see #getSeriesCount()
+ * @see #getColumnCount()
+ */"
+"public Number getStartValue(int series, int category) {
+    // check arguments...
+    if ((series < 0) || (series >= getSeriesCount())) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.getValue(): "" + ""series index out of range."");
+    }
+    if ((category < 0) || (category >= getCategoryCount())) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.getValue(): "" + ""category index out of range."");
+    }
+    // fetch the value...
+    return this.startData[series][category];
+}","public void test6793() throws Throwable {
+    Number[][] numberArray0 = new Number[7][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getStartValue((-1), (-1408));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.getValue(): series index out of range.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns the start data value for one category in a series.
+ *
+ * @param series  the required series (zero based index).
+ * @param category  the required category.
+ *
+ * @return The start data value for one category in a series
+ *         (possibly <code>null</code>).
+ *
+ * @see #getStartValue(Comparable, Comparable)
+ */"
+"public Number getStartValue(Comparable series, Comparable category) {
+    int seriesIndex = getSeriesIndex(series);
+    if (seriesIndex < 0) {
+        throw new UnknownKeyException(""Unknown 'series' key."");
+    }
+    int itemIndex = getColumnIndex(category);
+    if (itemIndex < 0) {
+        throw new UnknownKeyException(""Unknown 'category' key."");
+    }
+    return getStartValue(seriesIndex, itemIndex);
+}","public void test6894() throws Throwable {
+    double[][] doubleArray0 = new double[2][7];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getStartValue((Comparable) (-2643.736), (Comparable) (-498.0));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unknown 'series' key.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns the start data value for one category in a series.
+ *
+ * @param series  the required series.
+ * @param category  the required category.
+ *
+ * @return The start data value for one category in a series
+ *         (possibly <code>null</code>).
+ *
+ * @see #getStartValue(int, int)
+ */"
+"public Number getValue(Comparable series, Comparable category) {
+    int seriesIndex = getSeriesIndex(series);
+    if (seriesIndex < 0) {
+        throw new UnknownKeyException(""Unknown 'series' key."");
+    }
+    int itemIndex = getColumnIndex(category);
+    if (itemIndex < 0) {
+        throw new UnknownKeyException(""Unknown 'category' key."");
+    }
+    return getValue(seriesIndex, itemIndex);
+}","public void test6995() throws Throwable {
+    Comparable<Object>[] comparableArray0 = (Comparable<Object>[]) Array.newInstance(Comparable.class, 5);
+    Number[][] numberArray0 = new Number[3][8];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond();
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getValue((Comparable) fixedMillisecond0, (Comparable) comparableArray0[1]);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unknown 'series' key.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns the data value for one category in a series.
+ * <P>
+ * This method is part of the CategoryDataset interface.  Not particularly
+ * meaningful for this class...returns the end value.
+ *
+ * @param series    The required series (zero based index).
+ * @param category  The required category.
+ *
+ * @return The data value for one category in a series (null possible).
+ *
+ * @see #getEndValue(Comparable, Comparable)
+ */"
+"public void setCategoryKeys(Comparable[] categoryKeys) {
+    if (categoryKeys == null) {
+        throw new IllegalArgumentException(""Null 'categoryKeys' argument."");
+    }
+    if (categoryKeys.length != this.startData[0].length) {
+        throw new IllegalArgumentException(""The number of categories does not match the data."");
+    }
+    for (int i = 0; i < categoryKeys.length; i++) {
+        if (categoryKeys[i] == null) {
+            throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.setCategoryKeys(): "" + ""null category not permitted."");
+        }
+    }
+    this.categoryKeys = categoryKeys;
+    fireDatasetChanged();
+}","public void test7096() throws Throwable {
+    Number[][] numberArray0 = new Number[0][9];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset((String[]) null, numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.setCategoryKeys((Comparable[]) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'categoryKeys' argument.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Sets the categories for the dataset.
+ *
+ * @param categoryKeys  an array of objects representing the categories in
+ *                      the dataset.
+ *
+ * @see #getRowKeys()
+ * @see #setSeriesKeys(Comparable[])
+ */"
+"public void setCategoryKeys(Comparable[] categoryKeys) {
+    if (categoryKeys == null) {
+        throw new IllegalArgumentException(""Null 'categoryKeys' argument."");
+    }
+    if (categoryKeys.length != this.startData[0].length) {
+        throw new IllegalArgumentException(""The number of categories does not match the data."");
+    }
+    for (int i = 0; i < categoryKeys.length; i++) {
+        if (categoryKeys[i] == null) {
+            throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.setCategoryKeys(): "" + ""null category not permitted."");
+        }
+    }
+    this.categoryKeys = categoryKeys;
+    fireDatasetChanged();
+}","public void test7197() throws Throwable {
+    Number[][] numberArray0 = new Number[2][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Comparable<DefaultIntervalCategoryDataset>[] comparableArray0 = (Comparable<DefaultIntervalCategoryDataset>[]) Array.newInstance(Comparable.class, 2);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.setCategoryKeys(comparableArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The number of categories does not match the data.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Sets the categories for the dataset.
+ *
+ * @param categoryKeys  an array of objects representing the categories in
+ *                      the dataset.
+ *
+ * @see #getRowKeys()
+ * @see #setSeriesKeys(Comparable[])
+ */"
+"public int getSeriesCount() {
+    int result = 0;
+    if (this.startData != null) {
+        result = this.startData.length;
+    }
+    return result;
+}","public void test7298() throws Throwable {
+    Number[][] numberArray0 = new Number[2][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, (Number[][]) null);
+    defaultIntervalCategoryDataset0.getColumnKeys();
+    assertEquals(2, defaultIntervalCategoryDataset0.getSeriesCount());
+}","/**
+ * Returns the number of series in the dataset (possibly zero).
+ *
+ * @return The number of series in the dataset.
+ *
+ * @see #getRowCount()
+ * @see #getCategoryCount()
+ */"
+"public int getRowCount() {
+    return this.seriesKeys.length;
+}","public void test73100() throws Throwable {
+    Number[][] numberArray0 = new Number[2][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    List list0 = defaultIntervalCategoryDataset0.getColumnKeys();
+    assertEquals(2, defaultIntervalCategoryDataset0.getRowCount());
+}","/**
+ * Returns the number of series in the dataset (possibly zero).
+ *
+ * @return The number of series in the dataset.
+ *
+ * @see #getSeriesCount()
+ * @see #getColumnCount()
+ */"
+"public int getCategoryCount() {
+    int result = 0;
+    if (this.startData != null) {
+        if (getSeriesCount() > 0) {
+            result = this.startData[0].length;
+        }
+    }
+    return result;
+}","public void test74101() throws Throwable {
+    Comparable<Object>[] comparableArray0 = (Comparable<Object>[]) Array.newInstance(Comparable.class, 5);
+    Number[][] numberArray0 = new Number[0][0];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(comparableArray0, comparableArray0, numberArray0, numberArray0);
+    int int0 = defaultIntervalCategoryDataset0.getCategoryCount();
+    assertEquals(0, int0);
+}","/**
+ * Returns the number of categories in the dataset.
+ *
+ * @return The number of categories in the dataset.
+ *
+ * @see #getColumnCount()
+ */"
+"public int getCategoryCount() {
+    int result = 0;
+    if (this.startData != null) {
+        if (getSeriesCount() > 0) {
+            result = this.startData[0].length;
+        }
+    }
+    return result;
+}","public void test75102() throws Throwable {
+    Comparable<Object>[] comparableArray0 = (Comparable<Object>[]) Array.newInstance(Comparable.class, 0);
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(comparableArray0, comparableArray0, (Number[][]) null, (Number[][]) null);
+    int int0 = defaultIntervalCategoryDataset0.getCategoryCount();
+    assertEquals(0, int0);
+}","/**
+ * Returns the number of categories in the dataset.
+ *
+ * @return The number of categories in the dataset.
+ *
+ * @see #getColumnCount()
+ */"
+"public void setSeriesKeys(Comparable[] seriesKeys) {
+    if (seriesKeys == null) {
+        throw new IllegalArgumentException(""Null 'seriesKeys' argument."");
+    }
+    if (seriesKeys.length != getSeriesCount()) {
+        throw new IllegalArgumentException(""The number of series keys does not match the data."");
+    }
+    this.seriesKeys = seriesKeys;
+    fireDatasetChanged();
+}","public void test76103() throws Throwable {
+    String[] stringArray0 = new String[5];
+    Number[][] numberArray0 = new Number[0][1];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(stringArray0, numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.setSeriesKeys(stringArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The number of series keys does not match the data.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Sets the names of the series in the dataset.
+ *
+ * @param seriesKeys  the new keys (<code>null</code> not permitted, the
+ *         length of the array must match the number of series in the
+ *         dataset).
+ *
+ * @see #setCategoryKeys(Comparable[])
+ */"
+"public void setSeriesKeys(Comparable[] seriesKeys) {
+    if (seriesKeys == null) {
+        throw new IllegalArgumentException(""Null 'seriesKeys' argument."");
+    }
+    if (seriesKeys.length != getSeriesCount()) {
+        throw new IllegalArgumentException(""The number of series keys does not match the data."");
+    }
+    this.seriesKeys = seriesKeys;
+    fireDatasetChanged();
+}","public void test77104() throws Throwable {
+    double[][] doubleArray0 = new double[2][7];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.setSeriesKeys((Comparable[]) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'seriesKeys' argument.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Sets the names of the series in the dataset.
+ *
+ * @param seriesKeys  the new keys (<code>null</code> not permitted, the
+ *         length of the array must match the number of series in the
+ *         dataset).
+ *
+ * @see #setCategoryKeys(Comparable[])
+ */"
+"public int getRowCount() {
+    return this.seriesKeys.length;
+}","public void test78105() throws Throwable {
+    Number[][] numberArray0 = new Number[2][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    assertEquals(2, defaultIntervalCategoryDataset0.getRowCount());
+}","/**
+ * Returns the number of series in the dataset (possibly zero).
+ *
+ * @return The number of series in the dataset.
+ *
+ * @see #getSeriesCount()
+ * @see #getColumnCount()
+ */"
+"public int getSeriesCount() {
+    int result = 0;
+    if (this.startData != null) {
+        result = this.startData.length;
+    }
+    return result;
+}","public void test78106() throws Throwable {
+    Number[][] numberArray0 = new Number[2][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    assertEquals(2, defaultIntervalCategoryDataset0.getSeriesCount());
+}","/**
+ * Returns the number of series in the dataset (possibly zero).
+ *
+ * @return The number of series in the dataset.
+ *
+ * @see #getRowCount()
+ * @see #getCategoryCount()
+ */"
+"public int getColumnCount() {
+    return this.categoryKeys.length;
+}","public void test78107() throws Throwable {
+    Number[][] numberArray0 = new Number[2][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Comparable<DefaultIntervalCategoryDataset>[] comparableArray0 = (Comparable<DefaultIntervalCategoryDataset>[]) Array.newInstance(Comparable.class, 2);
+    defaultIntervalCategoryDataset0.setSeriesKeys(comparableArray0);
+    defaultIntervalCategoryDataset0.getRowKey(0);
+    assertEquals(6, defaultIntervalCategoryDataset0.getColumnCount());
+}","/**
+ * Returns the number of categories in the dataset.  This method is part of
+ * the {@link CategoryDataset} interface.
+ *
+ * @return The number of categories in the dataset.
+ *
+ * @see #getCategoryCount()
+ * @see #getRowCount()
+ */"
+"public Comparable getSeriesKey(int series) {
+    if ((series >= getSeriesCount()) || (series < 0)) {
+        throw new IllegalArgumentException(""No such series : "" + series);
+    }
+    return this.seriesKeys[series];
+}","public void test79108() throws Throwable {
+    String[] stringArray0 = new String[3];
+    Number[][] numberArray0 = new Number[0][1];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(stringArray0, numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getSeriesKey((-1331));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // No such series : -1331
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns the name of the specified series.
+ *
+ * @param series  the index of the required series (zero-based).
+ *
+ * @return The name of the specified series.
+ *
+ * @see #getSeriesIndex(Comparable)
+ */"
+"public int getRowCount() {
+    return this.seriesKeys.length;
+}","public void test80109() throws Throwable {
+    double[][] doubleArray0 = new double[8][5];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    defaultIntervalCategoryDataset0.indexOf(0.0);
+    assertEquals(8, defaultIntervalCategoryDataset0.getRowCount());
+}","/**
+ * Returns the number of series in the dataset (possibly zero).
+ *
+ * @return The number of series in the dataset.
+ *
+ * @see #getSeriesCount()
+ * @see #getColumnCount()
+ */"
+"public int getSeriesCount() {
+    int result = 0;
+    if (this.startData != null) {
+        result = this.startData.length;
+    }
+    return result;
+}","public void test80110() throws Throwable {
+    double[][] doubleArray0 = new double[8][5];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    defaultIntervalCategoryDataset0.indexOf(0.0);
+    assertEquals(8, defaultIntervalCategoryDataset0.getSeriesCount());
+}","/**
+ * Returns the number of series in the dataset (possibly zero).
+ *
+ * @return The number of series in the dataset.
+ *
+ * @see #getRowCount()
+ * @see #getCategoryCount()
+ */"
+"public Comparable getSeriesKey(int series) {
+    if ((series >= getSeriesCount()) || (series < 0)) {
+        throw new IllegalArgumentException(""No such series : "" + series);
+    }
+    return this.seriesKeys[series];
+}","public void test81111() throws Throwable {
+    Number[][] numberArray0 = new Number[8][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getSeriesKey(794);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // No such series : 794
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns the name of the specified series.
+ *
+ * @param series  the index of the required series (zero-based).
+ *
+ * @return The name of the specified series.
+ *
+ * @see #getSeriesIndex(Comparable)
+ */"
+"public int getRowIndex(Comparable rowKey) {
+    return getSeriesIndex(rowKey);
+}","public void test82112() throws Throwable {
+    Comparable<Object>[] comparableArray0 = (Comparable<Object>[]) Array.newInstance(Comparable.class, 5);
+    Number[][] numberArray0 = new Number[3][8];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond();
+    comparableArray0[2] = (Comparable<Object>) fixedMillisecond0;
+    int int0 = defaultIntervalCategoryDataset0.getRowIndex(comparableArray0[2]);
+    assertEquals((-1), int0);
+}","/**
+ * Returns a row index.
+ *
+ * @param rowKey  the row key.
+ *
+ * @return The row index.
+ *
+ * @see #getSeriesIndex(Comparable)
+ */"
+"public int getRowCount() {
+    return this.seriesKeys.length;
+}","public void test82113() throws Throwable {
+    Comparable<Object>[] comparableArray0 = (Comparable<Object>[]) Array.newInstance(Comparable.class, 5);
+    Number[][] numberArray0 = new Number[3][8];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    FixedMillisecond fixedMillisecond0 = new FixedMillisecond();
+    comparableArray0[2] = (Comparable<Object>) fixedMillisecond0;
+    int int0 = defaultIntervalCategoryDataset0.getRowIndex(comparableArray0[2]);
+    assertEquals(3, defaultIntervalCategoryDataset0.getRowCount());
+}","/**
+ * Returns the number of series in the dataset (possibly zero).
+ *
+ * @return The number of series in the dataset.
+ *
+ * @see #getSeriesCount()
+ * @see #getColumnCount()
+ */"
+"public Number getValue(int series, int category) {
+    return getEndValue(series, category);
+}","public void test83114() throws Throwable {
+    Number[][] numberArray0 = new Number[12][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    Integer integer0 = new Integer(0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getValue((int) integer0, 90);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset.getValue(): category index out of range.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns the data value for one category in a series.
+ * <P>
+ * This method is part of the CategoryDataset interface.  Not particularly
+ * meaningful for this class...returns the end value.
+ *
+ * @param series  the required series (zero based index).
+ * @param category  the required category.
+ *
+ * @return The data value for one category in a series (null possible).
+ *
+ * @see #getEndValue(int, int)
+ */"
+"public DefaultIntervalCategoryDataset(double[][] starts, double[][] ends) {
+    this(DataUtilities.createNumberArray2D(starts), DataUtilities.createNumberArray2D(ends));
+}","public void test84115() throws Throwable {
+    double[][] doubleArray0 = new double[2][9];
+    double[][] doubleArray1 = new double[2][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = null;
+    try {
+        defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset: the number of categories in the start value dataset does not match the number of categories in the end value dataset.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Creates a new dataset using the specified data values and automatically
+ * generated series and category keys.
+ *
+ * @param starts  the starting values for the intervals (<code>null</code>
+ *                not permitted).
+ * @param ends  the ending values for the intervals (<code>null</code> not
+ *                permitted).
+ */"
+"public DefaultIntervalCategoryDataset(Comparable[] seriesKeys, Comparable[] categoryKeys, Number[][] starts, Number[][] ends) {
+    this.startData = starts;
+    this.endData = ends;
+    if (starts != null && ends != null) {
+        String baseName = ""org.jfree.data.resources.DataPackageResources"";
+        ResourceBundle resources = ResourceBundle.getBundle(baseName);
+        int seriesCount = starts.length;
+        if (seriesCount != ends.length) {
+            String errMsg = ""DefaultIntervalCategoryDataset: the number "" + ""of series in the start value dataset does "" + ""not match the number of series in the end "" + ""value dataset."";
+            throw new IllegalArgumentException(errMsg);
+        }
+        if (seriesCount > 0) {
+            // set up the series names...
+            if (seriesKeys != null) {
+                if (seriesKeys.length != seriesCount) {
+                    throw new IllegalArgumentException(""The number of series keys does not "" + ""match the number of series in the data."");
+                }
+                this.seriesKeys = seriesKeys;
+            } else {
+                String prefix = resources.getString(""series.default-prefix"") + "" "";
+                this.seriesKeys = generateKeys(seriesCount, prefix);
+            }
+            // set up the category names...
+            int categoryCount = starts[0].length;
+            if (categoryCount != ends[0].length) {
+                String errMsg = ""DefaultIntervalCategoryDataset: the "" + ""number of categories in the start value "" + ""dataset does not match the number of "" + ""categories in the end value dataset."";
+                throw new IllegalArgumentException(errMsg);
+            }
+            if (categoryKeys != null) {
+                if (categoryKeys.length != categoryCount) {
+                    throw new IllegalArgumentException(""The number of category keys does not match "" + ""the number of categories in the data."");
+                }
+                this.categoryKeys = categoryKeys;
+            } else {
+                String prefix = resources.getString(""categories.default-prefix"") + "" "";
+                this.categoryKeys = generateKeys(categoryCount, prefix);
+            }
+        } else {
+            this.seriesKeys = null;
+            this.categoryKeys = null;
+        }
+    }
+}","public void test85116() throws Throwable {
+    Number[][] numberArray0 = new Number[9][0];
+    Comparable<DefaultIntervalCategoryDataset>[] comparableArray0 = (Comparable<DefaultIntervalCategoryDataset>[]) Array.newInstance(Comparable.class, 9);
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = null;
+    try {
+        defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(comparableArray0, comparableArray0, numberArray0, numberArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The number of category keys does not match the number of categories in the data.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Constructs a DefaultIntervalCategoryDataset, populates it with data
+ * from the arrays, and uses the supplied names for the series and the
+ * supplied objects for the categories.
+ *
+ * @param seriesKeys  the series keys (if <code>null</code>, series keys
+ *         will be generated automatically).
+ * @param categoryKeys  the category keys (if <code>null</code>, category
+ *         keys will be generated automatically).
+ * @param starts  the start values data, indexed as data[series][category].
+ * @param ends  the end values data, indexed as data[series][category].
+ */"
+"public DefaultIntervalCategoryDataset(String[] seriesNames, Number[][] starts, Number[][] ends) {
+    this(seriesNames, null, starts, ends);
+}","public void test86117() throws Throwable {
+    String[] stringArray0 = new String[0];
+    Number[][] numberArray0 = new Number[9][6];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = null;
+    try {
+        defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(stringArray0, numberArray0, numberArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The number of series keys does not match the number of series in the data.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Constructs a DefaultIntervalCategoryDataset, populates it with data
+ * from the arrays, and uses the supplied names for the series.
+ * <p>
+ * Category names are generated automatically (""Category 1"", ""Category 2"",
+ * etc).
+ *
+ * @param seriesNames  the series names (if <code>null</code>, series names
+ *         will be generated automatically).
+ * @param starts  the start values data, indexed as data[series][category].
+ * @param ends  the end values data, indexed as data[series][category].
+ */"
+"public DefaultIntervalCategoryDataset(Comparable[] seriesKeys, Comparable[] categoryKeys, Number[][] starts, Number[][] ends) {
+    this.startData = starts;
+    this.endData = ends;
+    if (starts != null && ends != null) {
+        String baseName = ""org.jfree.data.resources.DataPackageResources"";
+        ResourceBundle resources = ResourceBundle.getBundle(baseName);
+        int seriesCount = starts.length;
+        if (seriesCount != ends.length) {
+            String errMsg = ""DefaultIntervalCategoryDataset: the number "" + ""of series in the start value dataset does "" + ""not match the number of series in the end "" + ""value dataset."";
+            throw new IllegalArgumentException(errMsg);
+        }
+        if (seriesCount > 0) {
+            // set up the series names...
+            if (seriesKeys != null) {
+                if (seriesKeys.length != seriesCount) {
+                    throw new IllegalArgumentException(""The number of series keys does not "" + ""match the number of series in the data."");
+                }
+                this.seriesKeys = seriesKeys;
+            } else {
+                String prefix = resources.getString(""series.default-prefix"") + "" "";
+                this.seriesKeys = generateKeys(seriesCount, prefix);
+            }
+            // set up the category names...
+            int categoryCount = starts[0].length;
+            if (categoryCount != ends[0].length) {
+                String errMsg = ""DefaultIntervalCategoryDataset: the "" + ""number of categories in the start value "" + ""dataset does not match the number of "" + ""categories in the end value dataset."";
+                throw new IllegalArgumentException(errMsg);
+            }
+            if (categoryKeys != null) {
+                if (categoryKeys.length != categoryCount) {
+                    throw new IllegalArgumentException(""The number of category keys does not match "" + ""the number of categories in the data."");
+                }
+                this.categoryKeys = categoryKeys;
+            } else {
+                String prefix = resources.getString(""categories.default-prefix"") + "" "";
+                this.categoryKeys = generateKeys(categoryCount, prefix);
+            }
+        } else {
+            this.seriesKeys = null;
+            this.categoryKeys = null;
+        }
+    }
+}","public void test87118() throws Throwable {
+    String[] stringArray0 = new String[8];
+    Number[][] numberArray0 = new Number[3][4];
+    Number[][] numberArray1 = new Number[2][5];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = null;
+    try {
+        defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(stringArray0, stringArray0, numberArray0, numberArray1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // DefaultIntervalCategoryDataset: the number of series in the start value dataset does not match the number of series in the end value dataset.
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Constructs a DefaultIntervalCategoryDataset, populates it with data
+ * from the arrays, and uses the supplied names for the series and the
+ * supplied objects for the categories.
+ *
+ * @param seriesKeys  the series keys (if <code>null</code>, series keys
+ *         will be generated automatically).
+ * @param categoryKeys  the category keys (if <code>null</code>, category
+ *         keys will be generated automatically).
+ * @param starts  the start values data, indexed as data[series][category].
+ * @param ends  the end values data, indexed as data[series][category].
+ */"
+"public Number getEndValue(int series, int category) {
+    if ((series < 0) || (series >= getSeriesCount())) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.getValue(): "" + ""series index out of range."");
+    }
+    if ((category < 0) || (category >= getCategoryCount())) {
+        throw new IllegalArgumentException(""DefaultIntervalCategoryDataset.getValue(): "" + ""category index out of range."");
+    }
+    return this.endData[series][category];
+}","public void test88119() throws Throwable {
+    Number[][] numberArray0 = new Number[3][8];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, (Number[][]) null);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getEndValue(0, 0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns the end data value for one category in a series.
+ *
+ * @param series  the required series (zero based index).
+ * @param category  the required category.
+ *
+ * @return The end data value for one category in a series (null possible).
+ *
+ * @see #getEndValue(Comparable, Comparable)
+ */"
+"public Comparable getColumnKey(int column) {
+    return this.categoryKeys[column];
+}","public void test89120() throws Throwable {
+    Comparable<Object>[] comparableArray0 = (Comparable<Object>[]) Array.newInstance(Comparable.class, 5);
+    Number[][] numberArray0 = new Number[0][0];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(comparableArray0, comparableArray0, numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getColumnKey((-456));
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns a column key.
+ *
+ * @param column  the column index.
+ *
+ * @return The column key.
+ *
+ * @see #getRowKey(int)
+ */"
+"public int getRowCount() {
+    return this.seriesKeys.length;
+}","public void test90121() throws Throwable {
+    String[] stringArray0 = new String[0];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(stringArray0, (Number[][]) null, (Number[][]) null);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getRowCount();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns the number of series in the dataset (possibly zero).
+ *
+ * @return The number of series in the dataset.
+ *
+ * @see #getSeriesCount()
+ * @see #getColumnCount()
+ */"
+"public int getRowIndex(Comparable rowKey) {
+    return getSeriesIndex(rowKey);
+}","public void test91122() throws Throwable {
+    Comparable<Object>[] comparableArray0 = (Comparable<Object>[]) Array.newInstance(Comparable.class, 5);
+    Number[][] numberArray0 = new Number[3][8];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(numberArray0, numberArray0);
+    // Undeclared exception!
+    try {
+        defaultIntervalCategoryDataset0.getRowIndex(comparableArray0[2]);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.category.DefaultIntervalCategoryDataset"", e);
+    }
+}","/**
+ * Returns a row index.
+ *
+ * @param rowKey  the row key.
+ *
+ * @return The row index.
+ *
+ * @see #getSeriesIndex(Comparable)
+ */"
+"public int getRowCount() {
+    return this.seriesKeys.length;
+}","public void test92123() throws Throwable {
+    double[][] doubleArray0 = new double[4][1];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    int int0 = defaultIntervalCategoryDataset0.getColumnCount();
+    assertEquals(4, defaultIntervalCategoryDataset0.getRowCount());
+}","/**
+ * Returns the number of series in the dataset (possibly zero).
+ *
+ * @return The number of series in the dataset.
+ *
+ * @see #getSeriesCount()
+ * @see #getColumnCount()
+ */"
+"public int getColumnCount() {
+    return this.categoryKeys.length;
+}","public void test92124() throws Throwable {
+    double[][] doubleArray0 = new double[4][1];
+    DefaultIntervalCategoryDataset defaultIntervalCategoryDataset0 = new DefaultIntervalCategoryDataset(doubleArray0, doubleArray0);
+    int int0 = defaultIntervalCategoryDataset0.getColumnCount();
+    assertEquals(1, int0);
+}","/**
+ * Returns the number of categories in the dataset.  This method is part of
+ * the {@link CategoryDataset} interface.
+ *
+ * @return The number of categories in the dataset.
+ *
+ * @see #getCategoryCount()
+ * @see #getRowCount()
+ */"

@@ -1,0 +1,4588 @@
+focal_method,test_prefix,docstring
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test0000() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public DoubleMetaphone() {
+    super();
+}","public void test0001() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    assertNotNull(doubleMetaphone0);
+}","/**
+ * Creates an instance of this DoubleMetaphone encoder
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test0002() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    DoubleMetaphone.DoubleMetaphoneResult doubleMetaphone_DoubleMetaphoneResult0 = doubleMetaphone0.new DoubleMetaphoneResult((-1));
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test0007() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    DoubleMetaphone.DoubleMetaphoneResult doubleMetaphone_DoubleMetaphoneResult0 = doubleMetaphone0.new DoubleMetaphoneResult((-1));
+    doubleMetaphone_DoubleMetaphoneResult0.appendPrimary('i');
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test00113() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    char char0 = doubleMetaphone0.charAt(""`i86l'ZbrAb(756=4"", 1846);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"protected char charAt(String value, int index) {
+    if (index < 0 || index >= value.length()) {
+        return Character.MIN_VALUE;
+    }
+    return value.charAt(index);
+}","public void test00114() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    char char0 = doubleMetaphone0.charAt(""`i86l'ZbrAb(756=4"", 1846);
+    assertEquals('\u0000', char0);
+}","/**
+ * Gets the character at index <code>index</code> if available, otherwise
+ * it returns <code>Character.MIN_VALUE</code> so that there is some sort
+ * of a default
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test00217() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""R?2/{k8G}a2ZYB!V+"", true);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String doubleMetaphone(String value, boolean alternate) {
+    value = cleanInput(value);
+    if (value == null) {
+        return null;
+    }
+    boolean slavoGermanic = isSlavoGermanic(value);
+    int index = isSilentStart(value) ? 1 : 0;
+    DoubleMetaphoneResult result = new DoubleMetaphoneResult(this.getMaxCodeLen());
+    while (!result.isComplete() && index <= value.length() - 1) {
+        switch(value.charAt(index)) {
+            case 'A':
+            case 'E':
+            case 'I':
+            case 'O':
+            case 'U':
+            case 'Y':
+                index = handleAEIOUY(value, result, index);
+                break;
+            case 'B':
+                result.append('P');
+                index = charAt(value, index + 1) == 'B' ? index + 2 : index + 1;
+                break;
+            case '\u00C7':
+                // A C with a Cedilla
+                result.append('S');
+                index++;
+                break;
+            case 'C':
+                index = handleC(value, result, index);
+                break;
+            case 'D':
+                index = handleD(value, result, index);
+                break;
+            case 'F':
+                result.append('F');
+                index = charAt(value, index + 1) == 'F' ? index + 2 : index + 1;
+                break;
+            case 'G':
+                index = handleG(value, result, index, slavoGermanic);
+                break;
+            case 'H':
+                index = handleH(value, result, index);
+                break;
+            case 'J':
+                index = handleJ(value, result, index, slavoGermanic);
+                break;
+            case 'K':
+                result.append('K');
+                index = charAt(value, index + 1) == 'K' ? index + 2 : index + 1;
+                break;
+            case 'L':
+                index = handleL(value, result, index);
+                break;
+            case 'M':
+                result.append('M');
+                index = conditionM0(value, index) ? index + 2 : index + 1;
+                break;
+            case 'N':
+                result.append('N');
+                index = charAt(value, index + 1) == 'N' ? index + 2 : index + 1;
+                break;
+            case '\u00D1':
+                // N with a tilde (spanish ene)
+                result.append('N');
+                index++;
+                break;
+            case 'P':
+                index = handleP(value, result, index);
+                break;
+            case 'Q':
+                result.append('K');
+                index = charAt(value, index + 1) == 'Q' ? index + 2 : index + 1;
+                break;
+            case 'R':
+                index = handleR(value, result, index, slavoGermanic);
+                break;
+            case 'S':
+                index = handleS(value, result, index, slavoGermanic);
+                break;
+            case 'T':
+                index = handleT(value, result, index);
+                break;
+            case 'V':
+                result.append('F');
+                index = charAt(value, index + 1) == 'V' ? index + 2 : index + 1;
+                break;
+            case 'W':
+                index = handleW(value, result, index);
+                break;
+            case 'X':
+                index = handleX(value, result, index);
+                break;
+            case 'Z':
+                index = handleZ(value, result, index, slavoGermanic);
+                break;
+            default:
+                index++;
+                break;
+        }
+    }
+    return alternate ? result.getAlternate() : result.getPrimary();
+}","public void test00218() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""R?2/{k8G}a2ZYB!V+"", true);
+    assertEquals(""RKKT"", string0);
+}","/**
+ * Encode a value with Double Metaphone, optionally using the alternate
+ * encoding.
+ *
+ * @param value String to encode
+ * @param alternate use alternate encode
+ * @return an encoded string
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test00322() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    Object object0 = doubleMetaphone0.encode((Object) ""1\""c38SC{H#5Oc?'\""YG"");
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public Object encode(Object obj) throws EncoderException {
+    if (!(obj instanceof String)) {
+        throw new EncoderException(""DoubleMetaphone encode parameter is not of type String"");
+    }
+    return doubleMetaphone((String) obj);
+}","public void test00323() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    Object object0 = doubleMetaphone0.encode((Object) ""1\""c38SC{H#5Oc?'\""YG"");
+    assertEquals(""KSKK"", object0);
+}","/**
+ * Encode the value using DoubleMetaphone.  It will only work if
+ * <code>obj</code> is a <code>String</code> (like <code>Metaphone</code>).
+ *
+ * @param obj Object to encode (should be of type String)
+ * @return An encoded Object (will be of type String)
+ * @throws EncoderException encode parameter is not of type String
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test00427() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    doubleMetaphone0.maxCodeLen = 2445;
+    assertEquals(2445, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test00428() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    doubleMetaphone0.maxCodeLen = 2445;
+    boolean boolean0 = doubleMetaphone0.isDoubleMetaphoneEqual(""org.apache.commons.codec.EncoderExceJtio"", ""V&AMk)i5X |hx`HA"", false);
+    assertEquals(2445, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public boolean isDoubleMetaphoneEqual(String value1, String value2, boolean alternate) {
+    return doubleMetaphone(value1, alternate).equals(doubleMetaphone(value2, alternate));
+}","public void test00429() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    doubleMetaphone0.maxCodeLen = 2445;
+    boolean boolean0 = doubleMetaphone0.isDoubleMetaphoneEqual(""org.apache.commons.codec.EncoderExceJtio"", ""V&AMk)i5X |hx`HA"", false);
+    assertFalse(boolean0);
+}","/**
+ * Check if the Double Metaphone values of two <code>String</code> values
+ * are equal, optionally using the alternate value.
+ *
+ * @param value1 The left-hand side of the encoded {@link String#equals(Object)}.
+ * @param value2 The right-hand side of the encoded {@link String#equals(Object)}.
+ * @param alternate use the alternate value if <code>true</code>.
+ * @return <code>true</code> if the encoded <code>String</code>s are equal;
+ *          <code>false</code> otherwise.
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test00532() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""CC"");
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String doubleMetaphone(String value) {
+    return doubleMetaphone(value, false);
+}","public void test00533() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""CC"");
+    assertEquals(""K"", string0);
+}","/**
+ * Encode a value with Double Metaphone
+ *
+ * @param value String to encode
+ * @return an encoded string
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test00637() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    boolean boolean0 = doubleMetaphone0.isDoubleMetaphoneEqual(""CZ"", ""CZ"");
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public boolean isDoubleMetaphoneEqual(String value1, String value2) {
+    return isDoubleMetaphoneEqual(value1, value2, false);
+}","public void test00638() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    boolean boolean0 = doubleMetaphone0.isDoubleMetaphoneEqual(""CZ"", ""CZ"");
+    assertTrue(boolean0);
+}","/**
+ * Check if the Double Metaphone values of two <code>String</code> values
+ * are equal.
+ *
+ * @param value1 The left-hand side of the encoded {@link String#equals(Object)}.
+ * @param value2 The right-hand side of the encoded {@link String#equals(Object)}.
+ * @return <code>true</code> if the encoded <code>String</code>s are equal;
+ *          <code>false</code> otherwise.
+ * @see #isDoubleMetaphoneEqual(String,String,boolean)
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test00741() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    doubleMetaphone0.maxCodeLen = 0;
+    assertEquals(0, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test00742() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    doubleMetaphone0.maxCodeLen = 0;
+    int int0 = doubleMetaphone0.getMaxCodeLen();
+    assertEquals(0, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test00743() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    doubleMetaphone0.maxCodeLen = 0;
+    int int0 = doubleMetaphone0.getMaxCodeLen();
+    assertEquals(0, int0);
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test00846() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    doubleMetaphone0.maxCodeLen = (-2421);
+    assertEquals((-2421), doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test00847() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    doubleMetaphone0.maxCodeLen = (-2421);
+    int int0 = doubleMetaphone0.getMaxCodeLen();
+    assertEquals((-2421), doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test00848() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    doubleMetaphone0.maxCodeLen = (-2421);
+    int int0 = doubleMetaphone0.getMaxCodeLen();
+    assertEquals((-2421), int0);
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test00951() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.encode((String) null);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String encode(String value) {
+    return doubleMetaphone(value);
+}","public void test00952() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.encode((String) null);
+    assertNull(string0);
+}","/**
+ * Encode the value using DoubleMetaphone.
+ *
+ * @param value String to encode
+ * @return An encoded String
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test01055() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    doubleMetaphone0.setMaxCodeLen(0);
+    assertEquals(0, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test01056() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    doubleMetaphone0.setMaxCodeLen(0);
+    String string0 = doubleMetaphone0.encode(""RANGER"");
+    assertEquals(0, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String encode(String value) {
+    return doubleMetaphone(value);
+}","public void test01057() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    doubleMetaphone0.setMaxCodeLen(0);
+    String string0 = doubleMetaphone0.encode(""RANGER"");
+    assertEquals("""", string0);
+}","/**
+ * Encode the value using DoubleMetaphone.
+ *
+ * @param value String to encode
+ * @return An encoded String
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test01161() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    Object object0 = doubleMetaphone0.encode((Object) """");
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public Object encode(Object obj) throws EncoderException {
+    if (!(obj instanceof String)) {
+        throw new EncoderException(""DoubleMetaphone encode parameter is not of type String"");
+    }
+    return doubleMetaphone((String) obj);
+}","public void test01162() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    Object object0 = doubleMetaphone0.encode((Object) """");
+    assertNull(object0);
+}","/**
+ * Encode the value using DoubleMetaphone.  It will only work if
+ * <code>obj</code> is a <code>String</code> (like <code>Metaphone</code>).
+ *
+ * @param obj Object to encode (should be of type String)
+ * @return An encoded Object (will be of type String)
+ * @throws EncoderException encode parameter is not of type String
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test01265() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone("""");
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String doubleMetaphone(String value) {
+    return doubleMetaphone(value, false);
+}","public void test01266() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone("""");
+    assertNull(string0);
+}","/**
+ * Encode a value with Double Metaphone
+ *
+ * @param value String to encode
+ * @return an encoded string
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test01369() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""\""u8"");
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String doubleMetaphone(String value) {
+    return doubleMetaphone(value, false);
+}","public void test01370() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""\""u8"");
+    assertEquals("""", string0);
+}","/**
+ * Encode a value with Double Metaphone
+ *
+ * @param value String to encode
+ * @return an encoded string
+ */"
+"protected static boolean contains(String value, int start, int length, String[] criteria) {
+    boolean result = false;
+    if (start >= 0 && start + length <= value.length()) {
+        String target = value.substring(start, start + length);
+        for (int i = 0; i < criteria.length; i++) {
+            if (target.equals(criteria[i])) {
+                result = true;
+                break;
+            }
+        }
+    }
+    return result;
+}","public void test01472() throws Throwable {
+    String[] stringArray0 = new String[4];
+    stringArray0[3] = """";
+    boolean boolean0 = DoubleMetaphone.contains(""org.apache.commons.codec.EncoderException"", 0, 0, stringArray0);
+    assertEquals(4, stringArray0.length);
+}","/**
+ * Determines whether <code>value</code> contains any of the criteria starting at index <code>start</code> and
+ * matching up to length <code>length</code>
+ */"
+"protected static boolean contains(String value, int start, int length, String[] criteria) {
+    boolean result = false;
+    if (start >= 0 && start + length <= value.length()) {
+        String target = value.substring(start, start + length);
+        for (int i = 0; i < criteria.length; i++) {
+            if (target.equals(criteria[i])) {
+                result = true;
+                break;
+            }
+        }
+    }
+    return result;
+}","public void test01574() throws Throwable {
+    String[] stringArray0 = new String[3];
+    boolean boolean0 = DoubleMetaphone.contains(""org.apache.commons.codec.EncoderException"", 1, 0, stringArray0);
+    assertEquals(3, stringArray0.length);
+}","/**
+ * Determines whether <code>value</code> contains any of the criteria starting at index <code>start</code> and
+ * matching up to length <code>length</code>
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test01678() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    char char0 = doubleMetaphone0.charAt(""elzLR:TuE`=W7aM *"", (-239));
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"protected char charAt(String value, int index) {
+    if (index < 0 || index >= value.length()) {
+        return Character.MIN_VALUE;
+    }
+    return value.charAt(index);
+}","public void test01679() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    char char0 = doubleMetaphone0.charAt(""elzLR:TuE`=W7aM *"", (-239));
+    assertEquals('\u0000', char0);
+}","/**
+ * Gets the character at index <code>index</code> if available, otherwise
+ * it returns <code>Character.MIN_VALUE</code> so that there is some sort
+ * of a default
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test01782() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    char char0 = doubleMetaphone0.charAt(""9vjO9.Ds+l4.7>|^6Fn"", 0);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"protected char charAt(String value, int index) {
+    if (index < 0 || index >= value.length()) {
+        return Character.MIN_VALUE;
+    }
+    return value.charAt(index);
+}","public void test01783() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    char char0 = doubleMetaphone0.charAt(""9vjO9.Ds+l4.7>|^6Fn"", 0);
+    assertEquals('9', char0);
+}","/**
+ * Gets the character at index <code>index</code> if available, otherwise
+ * it returns <code>Character.MIN_VALUE</code> so that there is some sort
+ * of a default
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test01886() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    char char0 = doubleMetaphone0.charAt(""CZ"", 0);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"protected char charAt(String value, int index) {
+    if (index < 0 || index >= value.length()) {
+        return Character.MIN_VALUE;
+    }
+    return value.charAt(index);
+}","public void test01887() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    char char0 = doubleMetaphone0.charAt(""CZ"", 0);
+    assertEquals('C', char0);
+}","/**
+ * Gets the character at index <code>index</code> if available, otherwise
+ * it returns <code>Character.MIN_VALUE</code> so that there is some sort
+ * of a default
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test01990() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    doubleMetaphone0.setMaxCodeLen((-3610));
+    assertEquals((-3610), doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public boolean isDoubleMetaphoneEqual(String value1, String value2, boolean alternate) {
+    return doubleMetaphone(value1, alternate).equals(doubleMetaphone(value2, alternate));
+}","public void test01991() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    doubleMetaphone0.setMaxCodeLen((-3610));
+    // Undeclared exception!
+    try {
+        doubleMetaphone0.isDoubleMetaphoneEqual(""9"", """", true);
+        fail(""Expecting exception: NegativeArraySizeException"");
+    } catch (NegativeArraySizeException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.lang.AbstractStringBuilder"", e);
+    }
+}","/**
+ * Check if the Double Metaphone values of two <code>String</code> values
+ * are equal, optionally using the alternate value.
+ *
+ * @param value1 The left-hand side of the encoded {@link String#equals(Object)}.
+ * @param value2 The right-hand side of the encoded {@link String#equals(Object)}.
+ * @param alternate use the alternate value if <code>true</code>.
+ * @return <code>true</code> if the encoded <code>String</code>s are equal;
+ *          <code>false</code> otherwise.
+ */"
+"public boolean isDoubleMetaphoneEqual(String value1, String value2) {
+    return isDoubleMetaphoneEqual(value1, value2, false);
+}","public void test02095() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    doubleMetaphone0.maxCodeLen = (-2421);
+    // Undeclared exception!
+    try {
+        doubleMetaphone0.isDoubleMetaphoneEqual(""$?%rb[']ujgxJ{JY7"", ""EzBx`s&?pp8XSi+Y"");
+        fail(""Expecting exception: NegativeArraySizeException"");
+    } catch (NegativeArraySizeException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.lang.AbstractStringBuilder"", e);
+    }
+}","/**
+ * Check if the Double Metaphone values of two <code>String</code> values
+ * are equal.
+ *
+ * @param value1 The left-hand side of the encoded {@link String#equals(Object)}.
+ * @param value2 The right-hand side of the encoded {@link String#equals(Object)}.
+ * @return <code>true</code> if the encoded <code>String</code>s are equal;
+ *          <code>false</code> otherwise.
+ * @see #isDoubleMetaphoneEqual(String,String,boolean)
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test02198() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    doubleMetaphone0.setMaxCodeLen((-2550));
+    assertEquals((-2550), doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String encode(String value) {
+    return doubleMetaphone(value);
+}","public void test02199() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    doubleMetaphone0.setMaxCodeLen((-2550));
+    // Undeclared exception!
+    try {
+        doubleMetaphone0.encode(""8&E).&ivm>L4"");
+        fail(""Expecting exception: NegativeArraySizeException"");
+    } catch (NegativeArraySizeException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.lang.AbstractStringBuilder"", e);
+    }
+}","/**
+ * Encode the value using DoubleMetaphone.
+ *
+ * @param value String to encode
+ * @return An encoded String
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test022102() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    doubleMetaphone0.maxCodeLen = (-1);
+    assertEquals((-1), doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public Object encode(Object obj) throws EncoderException {
+    if (!(obj instanceof String)) {
+        throw new EncoderException(""DoubleMetaphone encode parameter is not of type String"");
+    }
+    return doubleMetaphone((String) obj);
+}","public void test022103() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    doubleMetaphone0.maxCodeLen = (-1);
+    // Undeclared exception!
+    try {
+        doubleMetaphone0.encode((Object) ""org.apache.commons.codec.EncoderException"");
+        fail(""Expecting exception: NegativeArraySizeException"");
+    } catch (NegativeArraySizeException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.lang.AbstractStringBuilder"", e);
+    }
+}","/**
+ * Encode the value using DoubleMetaphone.  It will only work if
+ * <code>obj</code> is a <code>String</code> (like <code>Metaphone</code>).
+ *
+ * @param obj Object to encode (should be of type String)
+ * @return An encoded Object (will be of type String)
+ * @throws EncoderException encode parameter is not of type String
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test023106() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    doubleMetaphone0.maxCodeLen = (-867);
+    assertEquals((-867), doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String doubleMetaphone(String value, boolean alternate) {
+    value = cleanInput(value);
+    if (value == null) {
+        return null;
+    }
+    boolean slavoGermanic = isSlavoGermanic(value);
+    int index = isSilentStart(value) ? 1 : 0;
+    DoubleMetaphoneResult result = new DoubleMetaphoneResult(this.getMaxCodeLen());
+    while (!result.isComplete() && index <= value.length() - 1) {
+        switch(value.charAt(index)) {
+            case 'A':
+            case 'E':
+            case 'I':
+            case 'O':
+            case 'U':
+            case 'Y':
+                index = handleAEIOUY(value, result, index);
+                break;
+            case 'B':
+                result.append('P');
+                index = charAt(value, index + 1) == 'B' ? index + 2 : index + 1;
+                break;
+            case '\u00C7':
+                // A C with a Cedilla
+                result.append('S');
+                index++;
+                break;
+            case 'C':
+                index = handleC(value, result, index);
+                break;
+            case 'D':
+                index = handleD(value, result, index);
+                break;
+            case 'F':
+                result.append('F');
+                index = charAt(value, index + 1) == 'F' ? index + 2 : index + 1;
+                break;
+            case 'G':
+                index = handleG(value, result, index, slavoGermanic);
+                break;
+            case 'H':
+                index = handleH(value, result, index);
+                break;
+            case 'J':
+                index = handleJ(value, result, index, slavoGermanic);
+                break;
+            case 'K':
+                result.append('K');
+                index = charAt(value, index + 1) == 'K' ? index + 2 : index + 1;
+                break;
+            case 'L':
+                index = handleL(value, result, index);
+                break;
+            case 'M':
+                result.append('M');
+                index = conditionM0(value, index) ? index + 2 : index + 1;
+                break;
+            case 'N':
+                result.append('N');
+                index = charAt(value, index + 1) == 'N' ? index + 2 : index + 1;
+                break;
+            case '\u00D1':
+                // N with a tilde (spanish ene)
+                result.append('N');
+                index++;
+                break;
+            case 'P':
+                index = handleP(value, result, index);
+                break;
+            case 'Q':
+                result.append('K');
+                index = charAt(value, index + 1) == 'Q' ? index + 2 : index + 1;
+                break;
+            case 'R':
+                index = handleR(value, result, index, slavoGermanic);
+                break;
+            case 'S':
+                index = handleS(value, result, index, slavoGermanic);
+                break;
+            case 'T':
+                index = handleT(value, result, index);
+                break;
+            case 'V':
+                result.append('F');
+                index = charAt(value, index + 1) == 'V' ? index + 2 : index + 1;
+                break;
+            case 'W':
+                index = handleW(value, result, index);
+                break;
+            case 'X':
+                index = handleX(value, result, index);
+                break;
+            case 'Z':
+                index = handleZ(value, result, index, slavoGermanic);
+                break;
+            default:
+                index++;
+                break;
+        }
+    }
+    return alternate ? result.getAlternate() : result.getPrimary();
+}","public void test023107() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    doubleMetaphone0.maxCodeLen = (-867);
+    // Undeclared exception!
+    try {
+        doubleMetaphone0.doubleMetaphone(""3R.DsL>ZsE.XfIx;"", false);
+        fail(""Expecting exception: NegativeArraySizeException"");
+    } catch (NegativeArraySizeException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.lang.AbstractStringBuilder"", e);
+    }
+}","/**
+ * Encode a value with Double Metaphone, optionally using the alternate
+ * encoding.
+ *
+ * @param value String to encode
+ * @param alternate use alternate encode
+ * @return an encoded string
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test024110() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    doubleMetaphone0.setMaxCodeLen((-1802));
+    assertEquals((-1802), doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String doubleMetaphone(String value) {
+    return doubleMetaphone(value, false);
+}","public void test024111() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    doubleMetaphone0.setMaxCodeLen((-1802));
+    // Undeclared exception!
+    try {
+        doubleMetaphone0.doubleMetaphone(""r9{<~!z.S&q<^"");
+        fail(""Expecting exception: NegativeArraySizeException"");
+    } catch (NegativeArraySizeException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.lang.AbstractStringBuilder"", e);
+    }
+}","/**
+ * Encode a value with Double Metaphone
+ *
+ * @param value String to encode
+ * @return an encoded string
+ */"
+"protected static boolean contains(String value, int start, int length, String[] criteria) {
+    boolean result = false;
+    if (start >= 0 && start + length <= value.length()) {
+        String target = value.substring(start, start + length);
+        for (int i = 0; i < criteria.length; i++) {
+            if (target.equals(criteria[i])) {
+                result = true;
+                break;
+            }
+        }
+    }
+    return result;
+}","public void test025112() throws Throwable {
+    String[] stringArray0 = new String[2];
+    // Undeclared exception!
+    try {
+        DoubleMetaphone.contains(""=a[6sVs2vg3Yv~]`"", 279, (-2473), stringArray0);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}","/**
+ * Determines whether <code>value</code> contains any of the criteria starting at index <code>start</code> and
+ * matching up to length <code>length</code>
+ */"
+"protected static boolean contains(String value, int start, int length, String[] criteria) {
+    boolean result = false;
+    if (start >= 0 && start + length <= value.length()) {
+        String target = value.substring(start, start + length);
+        for (int i = 0; i < criteria.length; i++) {
+            if (target.equals(criteria[i])) {
+                result = true;
+                break;
+            }
+        }
+    }
+    return result;
+}","public void test026113() throws Throwable {
+    // Undeclared exception!
+    try {
+        DoubleMetaphone.contains((String) null, 1, 76, (String[]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.codec.language.DoubleMetaphone"", e);
+    }
+}","/**
+ * Determines whether <code>value</code> contains any of the criteria starting at index <code>start</code> and
+ * matching up to length <code>length</code>
+ */"
+"protected char charAt(String value, int index) {
+    if (index < 0 || index >= value.length()) {
+        return Character.MIN_VALUE;
+    }
+    return value.charAt(index);
+}","public void test027116() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    // Undeclared exception!
+    try {
+        doubleMetaphone0.charAt((String) null, 0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.codec.language.DoubleMetaphone"", e);
+    }
+}","/**
+ * Gets the character at index <code>index</code> if available, otherwise
+ * it returns <code>Character.MIN_VALUE</code> so that there is some sort
+ * of a default
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test028119() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    DoubleMetaphone.DoubleMetaphoneResult doubleMetaphone_DoubleMetaphoneResult0 = doubleMetaphone0.new DoubleMetaphoneResult(86);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test028124() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    DoubleMetaphone.DoubleMetaphoneResult doubleMetaphone_DoubleMetaphoneResult0 = doubleMetaphone0.new DoubleMetaphoneResult(86);
+    boolean boolean0 = doubleMetaphone_DoubleMetaphoneResult0.isComplete();
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test029131() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    DoubleMetaphone.DoubleMetaphoneResult doubleMetaphone_DoubleMetaphoneResult0 = doubleMetaphone0.new DoubleMetaphoneResult((-239));
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test029136() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    DoubleMetaphone.DoubleMetaphoneResult doubleMetaphone_DoubleMetaphoneResult0 = doubleMetaphone0.new DoubleMetaphoneResult((-239));
+    boolean boolean0 = doubleMetaphone_DoubleMetaphoneResult0.isComplete();
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test030143() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    DoubleMetaphone.DoubleMetaphoneResult doubleMetaphone_DoubleMetaphoneResult0 = doubleMetaphone0.new DoubleMetaphoneResult(1494);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test030148() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    DoubleMetaphone.DoubleMetaphoneResult doubleMetaphone_DoubleMetaphoneResult0 = doubleMetaphone0.new DoubleMetaphoneResult(1494);
+    doubleMetaphone_DoubleMetaphoneResult0.appendAlternate(""sh!*.52)8[j/NZ"");
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test031154() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    DoubleMetaphone.DoubleMetaphoneResult doubleMetaphone_DoubleMetaphoneResult0 = doubleMetaphone0.new DoubleMetaphoneResult(0);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test031159() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    DoubleMetaphone.DoubleMetaphoneResult doubleMetaphone_DoubleMetaphoneResult0 = doubleMetaphone0.new DoubleMetaphoneResult(0);
+    doubleMetaphone_DoubleMetaphoneResult0.appendAlternate(""CZ"");
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test032170() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    DoubleMetaphone.DoubleMetaphoneResult doubleMetaphone_DoubleMetaphoneResult0 = doubleMetaphone0.new DoubleMetaphoneResult(86);
+    doubleMetaphone_DoubleMetaphoneResult0.appendPrimary(""{y7)^B@^JfPkQ]$ g"");
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test033176() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    DoubleMetaphone.DoubleMetaphoneResult doubleMetaphone_DoubleMetaphoneResult0 = doubleMetaphone0.new DoubleMetaphoneResult(1);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test033181() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    DoubleMetaphone.DoubleMetaphoneResult doubleMetaphone_DoubleMetaphoneResult0 = doubleMetaphone0.new DoubleMetaphoneResult(1);
+    doubleMetaphone_DoubleMetaphoneResult0.appendAlternate('$');
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test034192() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    DoubleMetaphone.DoubleMetaphoneResult doubleMetaphone_DoubleMetaphoneResult0 = doubleMetaphone0.new DoubleMetaphoneResult((-239));
+    doubleMetaphone_DoubleMetaphoneResult0.appendAlternate('Q');
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test035203() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    DoubleMetaphone.DoubleMetaphoneResult doubleMetaphone_DoubleMetaphoneResult0 = doubleMetaphone0.new DoubleMetaphoneResult(0);
+    doubleMetaphone_DoubleMetaphoneResult0.appendPrimary('f');
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test036209() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    DoubleMetaphone.DoubleMetaphoneResult doubleMetaphone_DoubleMetaphoneResult0 = doubleMetaphone0.new DoubleMetaphoneResult(108);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test036214() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    DoubleMetaphone.DoubleMetaphoneResult doubleMetaphone_DoubleMetaphoneResult0 = doubleMetaphone0.new DoubleMetaphoneResult(108);
+    doubleMetaphone_DoubleMetaphoneResult0.appendPrimary('K');
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test037220() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    doubleMetaphone0.maxCodeLen = 1258;
+    assertEquals(1258, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test037221() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    doubleMetaphone0.maxCodeLen = 1258;
+    String string0 = doubleMetaphone0.doubleMetaphone(""org.apache.commons.codec.EncoderException"", false);
+    assertEquals(1258, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String doubleMetaphone(String value, boolean alternate) {
+    value = cleanInput(value);
+    if (value == null) {
+        return null;
+    }
+    boolean slavoGermanic = isSlavoGermanic(value);
+    int index = isSilentStart(value) ? 1 : 0;
+    DoubleMetaphoneResult result = new DoubleMetaphoneResult(this.getMaxCodeLen());
+    while (!result.isComplete() && index <= value.length() - 1) {
+        switch(value.charAt(index)) {
+            case 'A':
+            case 'E':
+            case 'I':
+            case 'O':
+            case 'U':
+            case 'Y':
+                index = handleAEIOUY(value, result, index);
+                break;
+            case 'B':
+                result.append('P');
+                index = charAt(value, index + 1) == 'B' ? index + 2 : index + 1;
+                break;
+            case '\u00C7':
+                // A C with a Cedilla
+                result.append('S');
+                index++;
+                break;
+            case 'C':
+                index = handleC(value, result, index);
+                break;
+            case 'D':
+                index = handleD(value, result, index);
+                break;
+            case 'F':
+                result.append('F');
+                index = charAt(value, index + 1) == 'F' ? index + 2 : index + 1;
+                break;
+            case 'G':
+                index = handleG(value, result, index, slavoGermanic);
+                break;
+            case 'H':
+                index = handleH(value, result, index);
+                break;
+            case 'J':
+                index = handleJ(value, result, index, slavoGermanic);
+                break;
+            case 'K':
+                result.append('K');
+                index = charAt(value, index + 1) == 'K' ? index + 2 : index + 1;
+                break;
+            case 'L':
+                index = handleL(value, result, index);
+                break;
+            case 'M':
+                result.append('M');
+                index = conditionM0(value, index) ? index + 2 : index + 1;
+                break;
+            case 'N':
+                result.append('N');
+                index = charAt(value, index + 1) == 'N' ? index + 2 : index + 1;
+                break;
+            case '\u00D1':
+                // N with a tilde (spanish ene)
+                result.append('N');
+                index++;
+                break;
+            case 'P':
+                index = handleP(value, result, index);
+                break;
+            case 'Q':
+                result.append('K');
+                index = charAt(value, index + 1) == 'Q' ? index + 2 : index + 1;
+                break;
+            case 'R':
+                index = handleR(value, result, index, slavoGermanic);
+                break;
+            case 'S':
+                index = handleS(value, result, index, slavoGermanic);
+                break;
+            case 'T':
+                index = handleT(value, result, index);
+                break;
+            case 'V':
+                result.append('F');
+                index = charAt(value, index + 1) == 'V' ? index + 2 : index + 1;
+                break;
+            case 'W':
+                index = handleW(value, result, index);
+                break;
+            case 'X':
+                index = handleX(value, result, index);
+                break;
+            case 'Z':
+                index = handleZ(value, result, index, slavoGermanic);
+                break;
+            default:
+                index++;
+                break;
+        }
+    }
+    return alternate ? result.getAlternate() : result.getPrimary();
+}","public void test037222() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    doubleMetaphone0.maxCodeLen = 1258;
+    String string0 = doubleMetaphone0.doubleMetaphone(""org.apache.commons.codec.EncoderException"", false);
+    assertEquals(""ARKPXKMNSKTKNKTRKSPXN"", string0);
+}","/**
+ * Encode a value with Double Metaphone, optionally using the alternate
+ * encoding.
+ *
+ * @param value String to encode
+ * @param alternate use alternate encode
+ * @return an encoded string
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test038226() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""OU"", true);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String doubleMetaphone(String value, boolean alternate) {
+    value = cleanInput(value);
+    if (value == null) {
+        return null;
+    }
+    boolean slavoGermanic = isSlavoGermanic(value);
+    int index = isSilentStart(value) ? 1 : 0;
+    DoubleMetaphoneResult result = new DoubleMetaphoneResult(this.getMaxCodeLen());
+    while (!result.isComplete() && index <= value.length() - 1) {
+        switch(value.charAt(index)) {
+            case 'A':
+            case 'E':
+            case 'I':
+            case 'O':
+            case 'U':
+            case 'Y':
+                index = handleAEIOUY(value, result, index);
+                break;
+            case 'B':
+                result.append('P');
+                index = charAt(value, index + 1) == 'B' ? index + 2 : index + 1;
+                break;
+            case '\u00C7':
+                // A C with a Cedilla
+                result.append('S');
+                index++;
+                break;
+            case 'C':
+                index = handleC(value, result, index);
+                break;
+            case 'D':
+                index = handleD(value, result, index);
+                break;
+            case 'F':
+                result.append('F');
+                index = charAt(value, index + 1) == 'F' ? index + 2 : index + 1;
+                break;
+            case 'G':
+                index = handleG(value, result, index, slavoGermanic);
+                break;
+            case 'H':
+                index = handleH(value, result, index);
+                break;
+            case 'J':
+                index = handleJ(value, result, index, slavoGermanic);
+                break;
+            case 'K':
+                result.append('K');
+                index = charAt(value, index + 1) == 'K' ? index + 2 : index + 1;
+                break;
+            case 'L':
+                index = handleL(value, result, index);
+                break;
+            case 'M':
+                result.append('M');
+                index = conditionM0(value, index) ? index + 2 : index + 1;
+                break;
+            case 'N':
+                result.append('N');
+                index = charAt(value, index + 1) == 'N' ? index + 2 : index + 1;
+                break;
+            case '\u00D1':
+                // N with a tilde (spanish ene)
+                result.append('N');
+                index++;
+                break;
+            case 'P':
+                index = handleP(value, result, index);
+                break;
+            case 'Q':
+                result.append('K');
+                index = charAt(value, index + 1) == 'Q' ? index + 2 : index + 1;
+                break;
+            case 'R':
+                index = handleR(value, result, index, slavoGermanic);
+                break;
+            case 'S':
+                index = handleS(value, result, index, slavoGermanic);
+                break;
+            case 'T':
+                index = handleT(value, result, index);
+                break;
+            case 'V':
+                result.append('F');
+                index = charAt(value, index + 1) == 'V' ? index + 2 : index + 1;
+                break;
+            case 'W':
+                index = handleW(value, result, index);
+                break;
+            case 'X':
+                index = handleX(value, result, index);
+                break;
+            case 'Z':
+                index = handleZ(value, result, index, slavoGermanic);
+                break;
+            default:
+                index++;
+                break;
+        }
+    }
+    return alternate ? result.getAlternate() : result.getPrimary();
+}","public void test038227() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""OU"", true);
+    assertEquals(""A"", string0);
+}","/**
+ * Encode a value with Double Metaphone, optionally using the alternate
+ * encoding.
+ *
+ * @param value String to encode
+ * @param alternate use alternate encode
+ * @return an encoded string
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test039231() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone("""", true);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String doubleMetaphone(String value, boolean alternate) {
+    value = cleanInput(value);
+    if (value == null) {
+        return null;
+    }
+    boolean slavoGermanic = isSlavoGermanic(value);
+    int index = isSilentStart(value) ? 1 : 0;
+    DoubleMetaphoneResult result = new DoubleMetaphoneResult(this.getMaxCodeLen());
+    while (!result.isComplete() && index <= value.length() - 1) {
+        switch(value.charAt(index)) {
+            case 'A':
+            case 'E':
+            case 'I':
+            case 'O':
+            case 'U':
+            case 'Y':
+                index = handleAEIOUY(value, result, index);
+                break;
+            case 'B':
+                result.append('P');
+                index = charAt(value, index + 1) == 'B' ? index + 2 : index + 1;
+                break;
+            case '\u00C7':
+                // A C with a Cedilla
+                result.append('S');
+                index++;
+                break;
+            case 'C':
+                index = handleC(value, result, index);
+                break;
+            case 'D':
+                index = handleD(value, result, index);
+                break;
+            case 'F':
+                result.append('F');
+                index = charAt(value, index + 1) == 'F' ? index + 2 : index + 1;
+                break;
+            case 'G':
+                index = handleG(value, result, index, slavoGermanic);
+                break;
+            case 'H':
+                index = handleH(value, result, index);
+                break;
+            case 'J':
+                index = handleJ(value, result, index, slavoGermanic);
+                break;
+            case 'K':
+                result.append('K');
+                index = charAt(value, index + 1) == 'K' ? index + 2 : index + 1;
+                break;
+            case 'L':
+                index = handleL(value, result, index);
+                break;
+            case 'M':
+                result.append('M');
+                index = conditionM0(value, index) ? index + 2 : index + 1;
+                break;
+            case 'N':
+                result.append('N');
+                index = charAt(value, index + 1) == 'N' ? index + 2 : index + 1;
+                break;
+            case '\u00D1':
+                // N with a tilde (spanish ene)
+                result.append('N');
+                index++;
+                break;
+            case 'P':
+                index = handleP(value, result, index);
+                break;
+            case 'Q':
+                result.append('K');
+                index = charAt(value, index + 1) == 'Q' ? index + 2 : index + 1;
+                break;
+            case 'R':
+                index = handleR(value, result, index, slavoGermanic);
+                break;
+            case 'S':
+                index = handleS(value, result, index, slavoGermanic);
+                break;
+            case 'T':
+                index = handleT(value, result, index);
+                break;
+            case 'V':
+                result.append('F');
+                index = charAt(value, index + 1) == 'V' ? index + 2 : index + 1;
+                break;
+            case 'W':
+                index = handleW(value, result, index);
+                break;
+            case 'X':
+                index = handleX(value, result, index);
+                break;
+            case 'Z':
+                index = handleZ(value, result, index, slavoGermanic);
+                break;
+            default:
+                index++;
+                break;
+        }
+    }
+    return alternate ? result.getAlternate() : result.getPrimary();
+}","public void test039232() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone("""", true);
+    assertNull(string0);
+}","/**
+ * Encode a value with Double Metaphone, optionally using the alternate
+ * encoding.
+ *
+ * @param value String to encode
+ * @param alternate use alternate encode
+ * @return an encoded string
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test040235() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    int int0 = doubleMetaphone0.getMaxCodeLen();
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test040236() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    int int0 = doubleMetaphone0.getMaxCodeLen();
+    assertEquals(4, int0);
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test041244() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    DoubleMetaphone.DoubleMetaphoneResult doubleMetaphone_DoubleMetaphoneResult0 = doubleMetaphone0.new DoubleMetaphoneResult(1);
+    String string0 = doubleMetaphone_DoubleMetaphoneResult0.getPrimary();
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test042257() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    DoubleMetaphone.DoubleMetaphoneResult doubleMetaphone_DoubleMetaphoneResult0 = doubleMetaphone0.new DoubleMetaphoneResult(0);
+    doubleMetaphone_DoubleMetaphoneResult0.append(';');
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test043268() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    DoubleMetaphone.DoubleMetaphoneResult doubleMetaphone_DoubleMetaphoneResult0 = doubleMetaphone0.new DoubleMetaphoneResult(0);
+    doubleMetaphone_DoubleMetaphoneResult0.append(""lm,4}]J"", ""W"");
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test044279() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    DoubleMetaphone.DoubleMetaphoneResult doubleMetaphone_DoubleMetaphoneResult0 = doubleMetaphone0.new DoubleMetaphoneResult(108);
+    doubleMetaphone_DoubleMetaphoneResult0.append(""`i86l'ZbrAb(756=4"");
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test045290() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    DoubleMetaphone.DoubleMetaphoneResult doubleMetaphone_DoubleMetaphoneResult0 = doubleMetaphone0.new DoubleMetaphoneResult(0);
+    String string0 = doubleMetaphone_DoubleMetaphoneResult0.getAlternate();
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test046298() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    DoubleMetaphone.DoubleMetaphoneResult doubleMetaphone_DoubleMetaphoneResult0 = doubleMetaphone0.new DoubleMetaphoneResult(2);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test046303() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    DoubleMetaphone.DoubleMetaphoneResult doubleMetaphone_DoubleMetaphoneResult0 = doubleMetaphone0.new DoubleMetaphoneResult(2);
+    doubleMetaphone_DoubleMetaphoneResult0.appendPrimary(""]QGpX;J+Z"");
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test046307() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    DoubleMetaphone.DoubleMetaphoneResult doubleMetaphone_DoubleMetaphoneResult0 = doubleMetaphone0.new DoubleMetaphoneResult(2);
+    doubleMetaphone_DoubleMetaphoneResult0.appendPrimary(""]QGpX;J+Z"");
+    boolean boolean0 = doubleMetaphone_DoubleMetaphoneResult0.isComplete();
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test047319() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    DoubleMetaphone.DoubleMetaphoneResult doubleMetaphone_DoubleMetaphoneResult0 = doubleMetaphone0.new DoubleMetaphoneResult(0);
+    doubleMetaphone_DoubleMetaphoneResult0.append('\\', '\\');
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test048325() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    boolean boolean0 = doubleMetaphone0.isDoubleMetaphoneEqual(""UMB"", """");
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public boolean isDoubleMetaphoneEqual(String value1, String value2) {
+    return isDoubleMetaphoneEqual(value1, value2, false);
+}","public void test048326() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    boolean boolean0 = doubleMetaphone0.isDoubleMetaphoneEqual(""UMB"", """");
+    assertFalse(boolean0);
+}","/**
+ * Check if the Double Metaphone values of two <code>String</code> values
+ * are equal.
+ *
+ * @param value1 The left-hand side of the encoded {@link String#equals(Object)}.
+ * @param value2 The right-hand side of the encoded {@link String#equals(Object)}.
+ * @return <code>true</code> if the encoded <code>String</code>s are equal;
+ *          <code>false</code> otherwise.
+ * @see #isDoubleMetaphoneEqual(String,String,boolean)
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test049329() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""ORCHID"", true);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String doubleMetaphone(String value, boolean alternate) {
+    value = cleanInput(value);
+    if (value == null) {
+        return null;
+    }
+    boolean slavoGermanic = isSlavoGermanic(value);
+    int index = isSilentStart(value) ? 1 : 0;
+    DoubleMetaphoneResult result = new DoubleMetaphoneResult(this.getMaxCodeLen());
+    while (!result.isComplete() && index <= value.length() - 1) {
+        switch(value.charAt(index)) {
+            case 'A':
+            case 'E':
+            case 'I':
+            case 'O':
+            case 'U':
+            case 'Y':
+                index = handleAEIOUY(value, result, index);
+                break;
+            case 'B':
+                result.append('P');
+                index = charAt(value, index + 1) == 'B' ? index + 2 : index + 1;
+                break;
+            case '\u00C7':
+                // A C with a Cedilla
+                result.append('S');
+                index++;
+                break;
+            case 'C':
+                index = handleC(value, result, index);
+                break;
+            case 'D':
+                index = handleD(value, result, index);
+                break;
+            case 'F':
+                result.append('F');
+                index = charAt(value, index + 1) == 'F' ? index + 2 : index + 1;
+                break;
+            case 'G':
+                index = handleG(value, result, index, slavoGermanic);
+                break;
+            case 'H':
+                index = handleH(value, result, index);
+                break;
+            case 'J':
+                index = handleJ(value, result, index, slavoGermanic);
+                break;
+            case 'K':
+                result.append('K');
+                index = charAt(value, index + 1) == 'K' ? index + 2 : index + 1;
+                break;
+            case 'L':
+                index = handleL(value, result, index);
+                break;
+            case 'M':
+                result.append('M');
+                index = conditionM0(value, index) ? index + 2 : index + 1;
+                break;
+            case 'N':
+                result.append('N');
+                index = charAt(value, index + 1) == 'N' ? index + 2 : index + 1;
+                break;
+            case '\u00D1':
+                // N with a tilde (spanish ene)
+                result.append('N');
+                index++;
+                break;
+            case 'P':
+                index = handleP(value, result, index);
+                break;
+            case 'Q':
+                result.append('K');
+                index = charAt(value, index + 1) == 'Q' ? index + 2 : index + 1;
+                break;
+            case 'R':
+                index = handleR(value, result, index, slavoGermanic);
+                break;
+            case 'S':
+                index = handleS(value, result, index, slavoGermanic);
+                break;
+            case 'T':
+                index = handleT(value, result, index);
+                break;
+            case 'V':
+                result.append('F');
+                index = charAt(value, index + 1) == 'V' ? index + 2 : index + 1;
+                break;
+            case 'W':
+                index = handleW(value, result, index);
+                break;
+            case 'X':
+                index = handleX(value, result, index);
+                break;
+            case 'Z':
+                index = handleZ(value, result, index, slavoGermanic);
+                break;
+            default:
+                index++;
+                break;
+        }
+    }
+    return alternate ? result.getAlternate() : result.getPrimary();
+}","public void test049330() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""ORCHID"", true);
+    assertEquals(""ARKT"", string0);
+}","/**
+ * Encode a value with Double Metaphone, optionally using the alternate
+ * encoding.
+ *
+ * @param value String to encode
+ * @param alternate use alternate encode
+ * @return an encoded string
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test050334() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""CHORE"", true);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String doubleMetaphone(String value, boolean alternate) {
+    value = cleanInput(value);
+    if (value == null) {
+        return null;
+    }
+    boolean slavoGermanic = isSlavoGermanic(value);
+    int index = isSilentStart(value) ? 1 : 0;
+    DoubleMetaphoneResult result = new DoubleMetaphoneResult(this.getMaxCodeLen());
+    while (!result.isComplete() && index <= value.length() - 1) {
+        switch(value.charAt(index)) {
+            case 'A':
+            case 'E':
+            case 'I':
+            case 'O':
+            case 'U':
+            case 'Y':
+                index = handleAEIOUY(value, result, index);
+                break;
+            case 'B':
+                result.append('P');
+                index = charAt(value, index + 1) == 'B' ? index + 2 : index + 1;
+                break;
+            case '\u00C7':
+                // A C with a Cedilla
+                result.append('S');
+                index++;
+                break;
+            case 'C':
+                index = handleC(value, result, index);
+                break;
+            case 'D':
+                index = handleD(value, result, index);
+                break;
+            case 'F':
+                result.append('F');
+                index = charAt(value, index + 1) == 'F' ? index + 2 : index + 1;
+                break;
+            case 'G':
+                index = handleG(value, result, index, slavoGermanic);
+                break;
+            case 'H':
+                index = handleH(value, result, index);
+                break;
+            case 'J':
+                index = handleJ(value, result, index, slavoGermanic);
+                break;
+            case 'K':
+                result.append('K');
+                index = charAt(value, index + 1) == 'K' ? index + 2 : index + 1;
+                break;
+            case 'L':
+                index = handleL(value, result, index);
+                break;
+            case 'M':
+                result.append('M');
+                index = conditionM0(value, index) ? index + 2 : index + 1;
+                break;
+            case 'N':
+                result.append('N');
+                index = charAt(value, index + 1) == 'N' ? index + 2 : index + 1;
+                break;
+            case '\u00D1':
+                // N with a tilde (spanish ene)
+                result.append('N');
+                index++;
+                break;
+            case 'P':
+                index = handleP(value, result, index);
+                break;
+            case 'Q':
+                result.append('K');
+                index = charAt(value, index + 1) == 'Q' ? index + 2 : index + 1;
+                break;
+            case 'R':
+                index = handleR(value, result, index, slavoGermanic);
+                break;
+            case 'S':
+                index = handleS(value, result, index, slavoGermanic);
+                break;
+            case 'T':
+                index = handleT(value, result, index);
+                break;
+            case 'V':
+                result.append('F');
+                index = charAt(value, index + 1) == 'V' ? index + 2 : index + 1;
+                break;
+            case 'W':
+                index = handleW(value, result, index);
+                break;
+            case 'X':
+                index = handleX(value, result, index);
+                break;
+            case 'Z':
+                index = handleZ(value, result, index, slavoGermanic);
+                break;
+            default:
+                index++;
+                break;
+        }
+    }
+    return alternate ? result.getAlternate() : result.getPrimary();
+}","public void test050335() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""CHORE"", true);
+    assertEquals(""XR"", string0);
+}","/**
+ * Encode a value with Double Metaphone, optionally using the alternate
+ * encoding.
+ *
+ * @param value String to encode
+ * @param alternate use alternate encode
+ * @return an encoded string
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test051339() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    Object object0 = doubleMetaphone0.encode((Object) ""*-APm{ZzTD 4Fqjb;:"");
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public Object encode(Object obj) throws EncoderException {
+    if (!(obj instanceof String)) {
+        throw new EncoderException(""DoubleMetaphone encode parameter is not of type String"");
+    }
+    return doubleMetaphone((String) obj);
+}","public void test051340() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    Object object0 = doubleMetaphone0.encode((Object) ""*-APm{ZzTD 4Fqjb;:"");
+    assertEquals(""PMST"", object0);
+}","/**
+ * Encode the value using DoubleMetaphone.  It will only work if
+ * <code>obj</code> is a <code>String</code> (like <code>Metaphone</code>).
+ *
+ * @param obj Object to encode (should be of type String)
+ * @return An encoded Object (will be of type String)
+ * @throws EncoderException encode parameter is not of type String
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test052344() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    boolean boolean0 = doubleMetaphone0.isDoubleMetaphoneEqual(""SCH"", ""X"", false);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public boolean isDoubleMetaphoneEqual(String value1, String value2, boolean alternate) {
+    return doubleMetaphone(value1, alternate).equals(doubleMetaphone(value2, alternate));
+}","public void test052345() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    boolean boolean0 = doubleMetaphone0.isDoubleMetaphoneEqual(""SCH"", ""X"", false);
+    assertFalse(boolean0);
+}","/**
+ * Check if the Double Metaphone values of two <code>String</code> values
+ * are equal, optionally using the alternate value.
+ *
+ * @param value1 The left-hand side of the encoded {@link String#equals(Object)}.
+ * @param value2 The right-hand side of the encoded {@link String#equals(Object)}.
+ * @param alternate use the alternate value if <code>true</code>.
+ * @return <code>true</code> if the encoded <code>String</code>s are equal;
+ *          <code>false</code> otherwise.
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test053348() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    Object object0 = doubleMetaphone0.encode((Object) ""OWSKI"");
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public Object encode(Object obj) throws EncoderException {
+    if (!(obj instanceof String)) {
+        throw new EncoderException(""DoubleMetaphone encode parameter is not of type String"");
+    }
+    return doubleMetaphone((String) obj);
+}","public void test053349() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    Object object0 = doubleMetaphone0.encode((Object) ""OWSKI"");
+    assertEquals(""ASK"", object0);
+}","/**
+ * Encode the value using DoubleMetaphone.  It will only work if
+ * <code>obj</code> is a <code>String</code> (like <code>Metaphone</code>).
+ *
+ * @param obj Object to encode (should be of type String)
+ * @return An encoded Object (will be of type String)
+ * @throws EncoderException encode parameter is not of type String
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test054353() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""W"", false);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String doubleMetaphone(String value, boolean alternate) {
+    value = cleanInput(value);
+    if (value == null) {
+        return null;
+    }
+    boolean slavoGermanic = isSlavoGermanic(value);
+    int index = isSilentStart(value) ? 1 : 0;
+    DoubleMetaphoneResult result = new DoubleMetaphoneResult(this.getMaxCodeLen());
+    while (!result.isComplete() && index <= value.length() - 1) {
+        switch(value.charAt(index)) {
+            case 'A':
+            case 'E':
+            case 'I':
+            case 'O':
+            case 'U':
+            case 'Y':
+                index = handleAEIOUY(value, result, index);
+                break;
+            case 'B':
+                result.append('P');
+                index = charAt(value, index + 1) == 'B' ? index + 2 : index + 1;
+                break;
+            case '\u00C7':
+                // A C with a Cedilla
+                result.append('S');
+                index++;
+                break;
+            case 'C':
+                index = handleC(value, result, index);
+                break;
+            case 'D':
+                index = handleD(value, result, index);
+                break;
+            case 'F':
+                result.append('F');
+                index = charAt(value, index + 1) == 'F' ? index + 2 : index + 1;
+                break;
+            case 'G':
+                index = handleG(value, result, index, slavoGermanic);
+                break;
+            case 'H':
+                index = handleH(value, result, index);
+                break;
+            case 'J':
+                index = handleJ(value, result, index, slavoGermanic);
+                break;
+            case 'K':
+                result.append('K');
+                index = charAt(value, index + 1) == 'K' ? index + 2 : index + 1;
+                break;
+            case 'L':
+                index = handleL(value, result, index);
+                break;
+            case 'M':
+                result.append('M');
+                index = conditionM0(value, index) ? index + 2 : index + 1;
+                break;
+            case 'N':
+                result.append('N');
+                index = charAt(value, index + 1) == 'N' ? index + 2 : index + 1;
+                break;
+            case '\u00D1':
+                // N with a tilde (spanish ene)
+                result.append('N');
+                index++;
+                break;
+            case 'P':
+                index = handleP(value, result, index);
+                break;
+            case 'Q':
+                result.append('K');
+                index = charAt(value, index + 1) == 'Q' ? index + 2 : index + 1;
+                break;
+            case 'R':
+                index = handleR(value, result, index, slavoGermanic);
+                break;
+            case 'S':
+                index = handleS(value, result, index, slavoGermanic);
+                break;
+            case 'T':
+                index = handleT(value, result, index);
+                break;
+            case 'V':
+                result.append('F');
+                index = charAt(value, index + 1) == 'V' ? index + 2 : index + 1;
+                break;
+            case 'W':
+                index = handleW(value, result, index);
+                break;
+            case 'X':
+                index = handleX(value, result, index);
+                break;
+            case 'Z':
+                index = handleZ(value, result, index, slavoGermanic);
+                break;
+            default:
+                index++;
+                break;
+        }
+    }
+    return alternate ? result.getAlternate() : result.getPrimary();
+}","public void test054354() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""W"", false);
+    assertEquals("""", string0);
+}","/**
+ * Encode a value with Double Metaphone, optionally using the alternate
+ * encoding.
+ *
+ * @param value String to encode
+ * @param alternate use alternate encode
+ * @return an encoded string
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test055358() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.encode(""wiS=@5,"");
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String encode(String value) {
+    return doubleMetaphone(value);
+}","public void test055359() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.encode(""wiS=@5,"");
+    assertEquals(""AS"", string0);
+}","/**
+ * Encode the value using DoubleMetaphone.
+ *
+ * @param value String to encode
+ * @return An encoded String
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test056363() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    boolean boolean0 = doubleMetaphone0.isDoubleMetaphoneEqual(""(;wrrxa"", """", false);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public boolean isDoubleMetaphoneEqual(String value1, String value2, boolean alternate) {
+    return doubleMetaphone(value1, alternate).equals(doubleMetaphone(value2, alternate));
+}","public void test056364() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    boolean boolean0 = doubleMetaphone0.isDoubleMetaphoneEqual(""(;wrrxa"", """", false);
+    assertFalse(boolean0);
+}","/**
+ * Check if the Double Metaphone values of two <code>String</code> values
+ * are equal, optionally using the alternate value.
+ *
+ * @param value1 The left-hand side of the encoded {@link String#equals(Object)}.
+ * @param value2 The right-hand side of the encoded {@link String#equals(Object)}.
+ * @param alternate use the alternate value if <code>true</code>.
+ * @return <code>true</code> if the encoded <code>String</code>s are equal;
+ *          <code>false</code> otherwise.
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test057367() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.encode(""TTH"");
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String encode(String value) {
+    return doubleMetaphone(value);
+}","public void test057368() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.encode(""TTH"");
+    assertEquals(""0"", string0);
+}","/**
+ * Encode the value using DoubleMetaphone.
+ *
+ * @param value String to encode
+ * @return An encoded String
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test058372() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""TCH"", false);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String doubleMetaphone(String value, boolean alternate) {
+    value = cleanInput(value);
+    if (value == null) {
+        return null;
+    }
+    boolean slavoGermanic = isSlavoGermanic(value);
+    int index = isSilentStart(value) ? 1 : 0;
+    DoubleMetaphoneResult result = new DoubleMetaphoneResult(this.getMaxCodeLen());
+    while (!result.isComplete() && index <= value.length() - 1) {
+        switch(value.charAt(index)) {
+            case 'A':
+            case 'E':
+            case 'I':
+            case 'O':
+            case 'U':
+            case 'Y':
+                index = handleAEIOUY(value, result, index);
+                break;
+            case 'B':
+                result.append('P');
+                index = charAt(value, index + 1) == 'B' ? index + 2 : index + 1;
+                break;
+            case '\u00C7':
+                // A C with a Cedilla
+                result.append('S');
+                index++;
+                break;
+            case 'C':
+                index = handleC(value, result, index);
+                break;
+            case 'D':
+                index = handleD(value, result, index);
+                break;
+            case 'F':
+                result.append('F');
+                index = charAt(value, index + 1) == 'F' ? index + 2 : index + 1;
+                break;
+            case 'G':
+                index = handleG(value, result, index, slavoGermanic);
+                break;
+            case 'H':
+                index = handleH(value, result, index);
+                break;
+            case 'J':
+                index = handleJ(value, result, index, slavoGermanic);
+                break;
+            case 'K':
+                result.append('K');
+                index = charAt(value, index + 1) == 'K' ? index + 2 : index + 1;
+                break;
+            case 'L':
+                index = handleL(value, result, index);
+                break;
+            case 'M':
+                result.append('M');
+                index = conditionM0(value, index) ? index + 2 : index + 1;
+                break;
+            case 'N':
+                result.append('N');
+                index = charAt(value, index + 1) == 'N' ? index + 2 : index + 1;
+                break;
+            case '\u00D1':
+                // N with a tilde (spanish ene)
+                result.append('N');
+                index++;
+                break;
+            case 'P':
+                index = handleP(value, result, index);
+                break;
+            case 'Q':
+                result.append('K');
+                index = charAt(value, index + 1) == 'Q' ? index + 2 : index + 1;
+                break;
+            case 'R':
+                index = handleR(value, result, index, slavoGermanic);
+                break;
+            case 'S':
+                index = handleS(value, result, index, slavoGermanic);
+                break;
+            case 'T':
+                index = handleT(value, result, index);
+                break;
+            case 'V':
+                result.append('F');
+                index = charAt(value, index + 1) == 'V' ? index + 2 : index + 1;
+                break;
+            case 'W':
+                index = handleW(value, result, index);
+                break;
+            case 'X':
+                index = handleX(value, result, index);
+                break;
+            case 'Z':
+                index = handleZ(value, result, index, slavoGermanic);
+                break;
+            default:
+                index++;
+                break;
+        }
+    }
+    return alternate ? result.getAlternate() : result.getPrimary();
+}","public void test058373() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""TCH"", false);
+    assertEquals(""X"", string0);
+}","/**
+ * Encode a value with Double Metaphone, optionally using the alternate
+ * encoding.
+ *
+ * @param value String to encode
+ * @param alternate use alternate encode
+ * @return an encoded string
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test059377() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.encode(""SC"");
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String encode(String value) {
+    return doubleMetaphone(value);
+}","public void test059378() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.encode(""SC"");
+    assertEquals(""SK"", string0);
+}","/**
+ * Encode the value using DoubleMetaphone.
+ *
+ * @param value String to encode
+ * @return An encoded String
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test060382() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    Object object0 = doubleMetaphone0.encode((Object) ""SKSS"");
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public Object encode(Object obj) throws EncoderException {
+    if (!(obj instanceof String)) {
+        throw new EncoderException(""DoubleMetaphone encode parameter is not of type String"");
+    }
+    return doubleMetaphone((String) obj);
+}","public void test060383() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    Object object0 = doubleMetaphone0.encode((Object) ""SKSS"");
+    assertEquals(""SKS"", object0);
+}","/**
+ * Encode the value using DoubleMetaphone.  It will only work if
+ * <code>obj</code> is a <code>String</code> (like <code>Metaphone</code>).
+ *
+ * @param obj Object to encode (should be of type String)
+ * @return An encoded Object (will be of type String)
+ * @throws EncoderException encode parameter is not of type String
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test061387() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""1;).=0tSzMo;]tF"", false);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String doubleMetaphone(String value, boolean alternate) {
+    value = cleanInput(value);
+    if (value == null) {
+        return null;
+    }
+    boolean slavoGermanic = isSlavoGermanic(value);
+    int index = isSilentStart(value) ? 1 : 0;
+    DoubleMetaphoneResult result = new DoubleMetaphoneResult(this.getMaxCodeLen());
+    while (!result.isComplete() && index <= value.length() - 1) {
+        switch(value.charAt(index)) {
+            case 'A':
+            case 'E':
+            case 'I':
+            case 'O':
+            case 'U':
+            case 'Y':
+                index = handleAEIOUY(value, result, index);
+                break;
+            case 'B':
+                result.append('P');
+                index = charAt(value, index + 1) == 'B' ? index + 2 : index + 1;
+                break;
+            case '\u00C7':
+                // A C with a Cedilla
+                result.append('S');
+                index++;
+                break;
+            case 'C':
+                index = handleC(value, result, index);
+                break;
+            case 'D':
+                index = handleD(value, result, index);
+                break;
+            case 'F':
+                result.append('F');
+                index = charAt(value, index + 1) == 'F' ? index + 2 : index + 1;
+                break;
+            case 'G':
+                index = handleG(value, result, index, slavoGermanic);
+                break;
+            case 'H':
+                index = handleH(value, result, index);
+                break;
+            case 'J':
+                index = handleJ(value, result, index, slavoGermanic);
+                break;
+            case 'K':
+                result.append('K');
+                index = charAt(value, index + 1) == 'K' ? index + 2 : index + 1;
+                break;
+            case 'L':
+                index = handleL(value, result, index);
+                break;
+            case 'M':
+                result.append('M');
+                index = conditionM0(value, index) ? index + 2 : index + 1;
+                break;
+            case 'N':
+                result.append('N');
+                index = charAt(value, index + 1) == 'N' ? index + 2 : index + 1;
+                break;
+            case '\u00D1':
+                // N with a tilde (spanish ene)
+                result.append('N');
+                index++;
+                break;
+            case 'P':
+                index = handleP(value, result, index);
+                break;
+            case 'Q':
+                result.append('K');
+                index = charAt(value, index + 1) == 'Q' ? index + 2 : index + 1;
+                break;
+            case 'R':
+                index = handleR(value, result, index, slavoGermanic);
+                break;
+            case 'S':
+                index = handleS(value, result, index, slavoGermanic);
+                break;
+            case 'T':
+                index = handleT(value, result, index);
+                break;
+            case 'V':
+                result.append('F');
+                index = charAt(value, index + 1) == 'V' ? index + 2 : index + 1;
+                break;
+            case 'W':
+                index = handleW(value, result, index);
+                break;
+            case 'X':
+                index = handleX(value, result, index);
+                break;
+            case 'Z':
+                index = handleZ(value, result, index, slavoGermanic);
+                break;
+            default:
+                index++;
+                break;
+        }
+    }
+    return alternate ? result.getAlternate() : result.getPrimary();
+}","public void test061388() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""1;).=0tSzMo;]tF"", false);
+    assertEquals(""TSMT"", string0);
+}","/**
+ * Encode a value with Double Metaphone, optionally using the alternate
+ * encoding.
+ *
+ * @param value String to encode
+ * @param alternate use alternate encode
+ * @return an encoded string
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test062392() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    Object object0 = doubleMetaphone0.encode((Object) ""SL"");
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public Object encode(Object obj) throws EncoderException {
+    if (!(obj instanceof String)) {
+        throw new EncoderException(""DoubleMetaphone encode parameter is not of type String"");
+    }
+    return doubleMetaphone((String) obj);
+}","public void test062393() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    Object object0 = doubleMetaphone0.encode((Object) ""SL"");
+    assertEquals(""SL"", object0);
+}","/**
+ * Encode the value using DoubleMetaphone.  It will only work if
+ * <code>obj</code> is a <code>String</code> (like <code>Metaphone</code>).
+ *
+ * @param obj Object to encode (should be of type String)
+ * @return An encoded Object (will be of type String)
+ * @throws EncoderException encode parameter is not of type String
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test063397() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""SIAN"", false);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String doubleMetaphone(String value, boolean alternate) {
+    value = cleanInput(value);
+    if (value == null) {
+        return null;
+    }
+    boolean slavoGermanic = isSlavoGermanic(value);
+    int index = isSilentStart(value) ? 1 : 0;
+    DoubleMetaphoneResult result = new DoubleMetaphoneResult(this.getMaxCodeLen());
+    while (!result.isComplete() && index <= value.length() - 1) {
+        switch(value.charAt(index)) {
+            case 'A':
+            case 'E':
+            case 'I':
+            case 'O':
+            case 'U':
+            case 'Y':
+                index = handleAEIOUY(value, result, index);
+                break;
+            case 'B':
+                result.append('P');
+                index = charAt(value, index + 1) == 'B' ? index + 2 : index + 1;
+                break;
+            case '\u00C7':
+                // A C with a Cedilla
+                result.append('S');
+                index++;
+                break;
+            case 'C':
+                index = handleC(value, result, index);
+                break;
+            case 'D':
+                index = handleD(value, result, index);
+                break;
+            case 'F':
+                result.append('F');
+                index = charAt(value, index + 1) == 'F' ? index + 2 : index + 1;
+                break;
+            case 'G':
+                index = handleG(value, result, index, slavoGermanic);
+                break;
+            case 'H':
+                index = handleH(value, result, index);
+                break;
+            case 'J':
+                index = handleJ(value, result, index, slavoGermanic);
+                break;
+            case 'K':
+                result.append('K');
+                index = charAt(value, index + 1) == 'K' ? index + 2 : index + 1;
+                break;
+            case 'L':
+                index = handleL(value, result, index);
+                break;
+            case 'M':
+                result.append('M');
+                index = conditionM0(value, index) ? index + 2 : index + 1;
+                break;
+            case 'N':
+                result.append('N');
+                index = charAt(value, index + 1) == 'N' ? index + 2 : index + 1;
+                break;
+            case '\u00D1':
+                // N with a tilde (spanish ene)
+                result.append('N');
+                index++;
+                break;
+            case 'P':
+                index = handleP(value, result, index);
+                break;
+            case 'Q':
+                result.append('K');
+                index = charAt(value, index + 1) == 'Q' ? index + 2 : index + 1;
+                break;
+            case 'R':
+                index = handleR(value, result, index, slavoGermanic);
+                break;
+            case 'S':
+                index = handleS(value, result, index, slavoGermanic);
+                break;
+            case 'T':
+                index = handleT(value, result, index);
+                break;
+            case 'V':
+                result.append('F');
+                index = charAt(value, index + 1) == 'V' ? index + 2 : index + 1;
+                break;
+            case 'W':
+                index = handleW(value, result, index);
+                break;
+            case 'X':
+                index = handleX(value, result, index);
+                break;
+            case 'Z':
+                index = handleZ(value, result, index, slavoGermanic);
+                break;
+            default:
+                index++;
+                break;
+        }
+    }
+    return alternate ? result.getAlternate() : result.getPrimary();
+}","public void test063398() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""SIAN"", false);
+    assertEquals(""SN"", string0);
+}","/**
+ * Encode a value with Double Metaphone, optionally using the alternate
+ * encoding.
+ *
+ * @param value String to encode
+ * @param alternate use alternate encode
+ * @return an encoded string
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test064402() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    boolean boolean0 = doubleMetaphone0.isDoubleMetaphoneEqual(""sh!*.52)8[j/NZ"", ""sh!*.52)8[j/NZ"", false);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public boolean isDoubleMetaphoneEqual(String value1, String value2, boolean alternate) {
+    return doubleMetaphone(value1, alternate).equals(doubleMetaphone(value2, alternate));
+}","public void test064403() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    boolean boolean0 = doubleMetaphone0.isDoubleMetaphoneEqual(""sh!*.52)8[j/NZ"", ""sh!*.52)8[j/NZ"", false);
+    assertTrue(boolean0);
+}","/**
+ * Check if the Double Metaphone values of two <code>String</code> values
+ * are equal, optionally using the alternate value.
+ *
+ * @param value1 The left-hand side of the encoded {@link String#equals(Object)}.
+ * @param value2 The right-hand side of the encoded {@link String#equals(Object)}.
+ * @param alternate use the alternate value if <code>true</code>.
+ * @return <code>true</code> if the encoded <code>String</code>s are equal;
+ *          <code>false</code> otherwise.
+ */"
+"public boolean isDoubleMetaphoneEqual(String value1, String value2) {
+    return isDoubleMetaphoneEqual(value1, value2, false);
+}","public void test065406() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    // Undeclared exception!
+    try {
+        doubleMetaphone0.isDoubleMetaphoneEqual("""", ""RR"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+    }
+}","/**
+ * Check if the Double Metaphone values of two <code>String</code> values
+ * are equal.
+ *
+ * @param value1 The left-hand side of the encoded {@link String#equals(Object)}.
+ * @param value2 The right-hand side of the encoded {@link String#equals(Object)}.
+ * @return <code>true</code> if the encoded <code>String</code>s are equal;
+ *          <code>false</code> otherwise.
+ * @see #isDoubleMetaphoneEqual(String,String,boolean)
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test066409() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""WR"", true);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String doubleMetaphone(String value, boolean alternate) {
+    value = cleanInput(value);
+    if (value == null) {
+        return null;
+    }
+    boolean slavoGermanic = isSlavoGermanic(value);
+    int index = isSilentStart(value) ? 1 : 0;
+    DoubleMetaphoneResult result = new DoubleMetaphoneResult(this.getMaxCodeLen());
+    while (!result.isComplete() && index <= value.length() - 1) {
+        switch(value.charAt(index)) {
+            case 'A':
+            case 'E':
+            case 'I':
+            case 'O':
+            case 'U':
+            case 'Y':
+                index = handleAEIOUY(value, result, index);
+                break;
+            case 'B':
+                result.append('P');
+                index = charAt(value, index + 1) == 'B' ? index + 2 : index + 1;
+                break;
+            case '\u00C7':
+                // A C with a Cedilla
+                result.append('S');
+                index++;
+                break;
+            case 'C':
+                index = handleC(value, result, index);
+                break;
+            case 'D':
+                index = handleD(value, result, index);
+                break;
+            case 'F':
+                result.append('F');
+                index = charAt(value, index + 1) == 'F' ? index + 2 : index + 1;
+                break;
+            case 'G':
+                index = handleG(value, result, index, slavoGermanic);
+                break;
+            case 'H':
+                index = handleH(value, result, index);
+                break;
+            case 'J':
+                index = handleJ(value, result, index, slavoGermanic);
+                break;
+            case 'K':
+                result.append('K');
+                index = charAt(value, index + 1) == 'K' ? index + 2 : index + 1;
+                break;
+            case 'L':
+                index = handleL(value, result, index);
+                break;
+            case 'M':
+                result.append('M');
+                index = conditionM0(value, index) ? index + 2 : index + 1;
+                break;
+            case 'N':
+                result.append('N');
+                index = charAt(value, index + 1) == 'N' ? index + 2 : index + 1;
+                break;
+            case '\u00D1':
+                // N with a tilde (spanish ene)
+                result.append('N');
+                index++;
+                break;
+            case 'P':
+                index = handleP(value, result, index);
+                break;
+            case 'Q':
+                result.append('K');
+                index = charAt(value, index + 1) == 'Q' ? index + 2 : index + 1;
+                break;
+            case 'R':
+                index = handleR(value, result, index, slavoGermanic);
+                break;
+            case 'S':
+                index = handleS(value, result, index, slavoGermanic);
+                break;
+            case 'T':
+                index = handleT(value, result, index);
+                break;
+            case 'V':
+                result.append('F');
+                index = charAt(value, index + 1) == 'V' ? index + 2 : index + 1;
+                break;
+            case 'W':
+                index = handleW(value, result, index);
+                break;
+            case 'X':
+                index = handleX(value, result, index);
+                break;
+            case 'Z':
+                index = handleZ(value, result, index, slavoGermanic);
+                break;
+            default:
+                index++;
+                break;
+        }
+    }
+    return alternate ? result.getAlternate() : result.getPrimary();
+}","public void test066410() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""WR"", true);
+    assertEquals(""R"", string0);
+}","/**
+ * Encode a value with Double Metaphone, optionally using the alternate
+ * encoding.
+ *
+ * @param value String to encode
+ * @param alternate use alternate encode
+ * @return an encoded string
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test067414() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    Object object0 = doubleMetaphone0.encode((Object) ""z*EG>~.ppng% "");
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public Object encode(Object obj) throws EncoderException {
+    if (!(obj instanceof String)) {
+        throw new EncoderException(""DoubleMetaphone encode parameter is not of type String"");
+    }
+    return doubleMetaphone((String) obj);
+}","public void test067415() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    Object object0 = doubleMetaphone0.encode((Object) ""z*EG>~.ppng% "");
+    assertEquals(""SKPN"", object0);
+}","/**
+ * Encode the value using DoubleMetaphone.  It will only work if
+ * <code>obj</code> is a <code>String</code> (like <code>Metaphone</code>).
+ *
+ * @param obj Object to encode (should be of type String)
+ * @return An encoded Object (will be of type String)
+ * @throws EncoderException encode parameter is not of type String
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test068419() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""my(~.aPHv%p$\"""", false);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String doubleMetaphone(String value, boolean alternate) {
+    value = cleanInput(value);
+    if (value == null) {
+        return null;
+    }
+    boolean slavoGermanic = isSlavoGermanic(value);
+    int index = isSilentStart(value) ? 1 : 0;
+    DoubleMetaphoneResult result = new DoubleMetaphoneResult(this.getMaxCodeLen());
+    while (!result.isComplete() && index <= value.length() - 1) {
+        switch(value.charAt(index)) {
+            case 'A':
+            case 'E':
+            case 'I':
+            case 'O':
+            case 'U':
+            case 'Y':
+                index = handleAEIOUY(value, result, index);
+                break;
+            case 'B':
+                result.append('P');
+                index = charAt(value, index + 1) == 'B' ? index + 2 : index + 1;
+                break;
+            case '\u00C7':
+                // A C with a Cedilla
+                result.append('S');
+                index++;
+                break;
+            case 'C':
+                index = handleC(value, result, index);
+                break;
+            case 'D':
+                index = handleD(value, result, index);
+                break;
+            case 'F':
+                result.append('F');
+                index = charAt(value, index + 1) == 'F' ? index + 2 : index + 1;
+                break;
+            case 'G':
+                index = handleG(value, result, index, slavoGermanic);
+                break;
+            case 'H':
+                index = handleH(value, result, index);
+                break;
+            case 'J':
+                index = handleJ(value, result, index, slavoGermanic);
+                break;
+            case 'K':
+                result.append('K');
+                index = charAt(value, index + 1) == 'K' ? index + 2 : index + 1;
+                break;
+            case 'L':
+                index = handleL(value, result, index);
+                break;
+            case 'M':
+                result.append('M');
+                index = conditionM0(value, index) ? index + 2 : index + 1;
+                break;
+            case 'N':
+                result.append('N');
+                index = charAt(value, index + 1) == 'N' ? index + 2 : index + 1;
+                break;
+            case '\u00D1':
+                // N with a tilde (spanish ene)
+                result.append('N');
+                index++;
+                break;
+            case 'P':
+                index = handleP(value, result, index);
+                break;
+            case 'Q':
+                result.append('K');
+                index = charAt(value, index + 1) == 'Q' ? index + 2 : index + 1;
+                break;
+            case 'R':
+                index = handleR(value, result, index, slavoGermanic);
+                break;
+            case 'S':
+                index = handleS(value, result, index, slavoGermanic);
+                break;
+            case 'T':
+                index = handleT(value, result, index);
+                break;
+            case 'V':
+                result.append('F');
+                index = charAt(value, index + 1) == 'V' ? index + 2 : index + 1;
+                break;
+            case 'W':
+                index = handleW(value, result, index);
+                break;
+            case 'X':
+                index = handleX(value, result, index);
+                break;
+            case 'Z':
+                index = handleZ(value, result, index, slavoGermanic);
+                break;
+            default:
+                index++;
+                break;
+        }
+    }
+    return alternate ? result.getAlternate() : result.getPrimary();
+}","public void test068420() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""my(~.aPHv%p$\"""", false);
+    assertEquals(""MFFP"", string0);
+}","/**
+ * Encode a value with Double Metaphone, optionally using the alternate
+ * encoding.
+ *
+ * @param value String to encode
+ * @param alternate use alternate encode
+ * @return an encoded string
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test069424() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""ll,o$(@RsifXZVY_3`"");
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String doubleMetaphone(String value) {
+    return doubleMetaphone(value, false);
+}","public void test069425() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""ll,o$(@RsifXZVY_3`"");
+    assertEquals(""LRSF"", string0);
+}","/**
+ * Encode a value with Double Metaphone
+ *
+ * @param value String to encode
+ * @return an encoded string
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test070429() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""ILLO"");
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String doubleMetaphone(String value) {
+    return doubleMetaphone(value, false);
+}","public void test070430() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""ILLO"");
+    assertEquals(""AL"", string0);
+}","/**
+ * Encode a value with Double Metaphone
+ *
+ * @param value String to encode
+ * @return an encoded string
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test071434() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.encode(""hc?5o`r`Jj"");
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String encode(String value) {
+    return doubleMetaphone(value);
+}","public void test071435() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.encode(""hc?5o`r`Jj"");
+    assertEquals(""KRJ"", string0);
+}","/**
+ * Encode the value using DoubleMetaphone.
+ *
+ * @param value String to encode
+ * @return An encoded String
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test072439() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    Object object0 = doubleMetaphone0.encode((Object) ""J)kjc?"");
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public Object encode(Object obj) throws EncoderException {
+    if (!(obj instanceof String)) {
+        throw new EncoderException(""DoubleMetaphone encode parameter is not of type String"");
+    }
+    return doubleMetaphone((String) obj);
+}","public void test072440() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    Object object0 = doubleMetaphone0.encode((Object) ""J)kjc?"");
+    assertEquals(""JKK"", object0);
+}","/**
+ * Encode the value using DoubleMetaphone.  It will only work if
+ * <code>obj</code> is a <code>String</code> (like <code>Metaphone</code>).
+ *
+ * @param obj Object to encode (should be of type String)
+ * @return An encoded Object (will be of type String)
+ * @throws EncoderException encode parameter is not of type String
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test073444() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""TEE2qjz1><P"", true);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String doubleMetaphone(String value, boolean alternate) {
+    value = cleanInput(value);
+    if (value == null) {
+        return null;
+    }
+    boolean slavoGermanic = isSlavoGermanic(value);
+    int index = isSilentStart(value) ? 1 : 0;
+    DoubleMetaphoneResult result = new DoubleMetaphoneResult(this.getMaxCodeLen());
+    while (!result.isComplete() && index <= value.length() - 1) {
+        switch(value.charAt(index)) {
+            case 'A':
+            case 'E':
+            case 'I':
+            case 'O':
+            case 'U':
+            case 'Y':
+                index = handleAEIOUY(value, result, index);
+                break;
+            case 'B':
+                result.append('P');
+                index = charAt(value, index + 1) == 'B' ? index + 2 : index + 1;
+                break;
+            case '\u00C7':
+                // A C with a Cedilla
+                result.append('S');
+                index++;
+                break;
+            case 'C':
+                index = handleC(value, result, index);
+                break;
+            case 'D':
+                index = handleD(value, result, index);
+                break;
+            case 'F':
+                result.append('F');
+                index = charAt(value, index + 1) == 'F' ? index + 2 : index + 1;
+                break;
+            case 'G':
+                index = handleG(value, result, index, slavoGermanic);
+                break;
+            case 'H':
+                index = handleH(value, result, index);
+                break;
+            case 'J':
+                index = handleJ(value, result, index, slavoGermanic);
+                break;
+            case 'K':
+                result.append('K');
+                index = charAt(value, index + 1) == 'K' ? index + 2 : index + 1;
+                break;
+            case 'L':
+                index = handleL(value, result, index);
+                break;
+            case 'M':
+                result.append('M');
+                index = conditionM0(value, index) ? index + 2 : index + 1;
+                break;
+            case 'N':
+                result.append('N');
+                index = charAt(value, index + 1) == 'N' ? index + 2 : index + 1;
+                break;
+            case '\u00D1':
+                // N with a tilde (spanish ene)
+                result.append('N');
+                index++;
+                break;
+            case 'P':
+                index = handleP(value, result, index);
+                break;
+            case 'Q':
+                result.append('K');
+                index = charAt(value, index + 1) == 'Q' ? index + 2 : index + 1;
+                break;
+            case 'R':
+                index = handleR(value, result, index, slavoGermanic);
+                break;
+            case 'S':
+                index = handleS(value, result, index, slavoGermanic);
+                break;
+            case 'T':
+                index = handleT(value, result, index);
+                break;
+            case 'V':
+                result.append('F');
+                index = charAt(value, index + 1) == 'V' ? index + 2 : index + 1;
+                break;
+            case 'W':
+                index = handleW(value, result, index);
+                break;
+            case 'X':
+                index = handleX(value, result, index);
+                break;
+            case 'Z':
+                index = handleZ(value, result, index, slavoGermanic);
+                break;
+            default:
+                index++;
+                break;
+        }
+    }
+    return alternate ? result.getAlternate() : result.getPrimary();
+}","public void test073445() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""TEE2qjz1><P"", true);
+    assertEquals(""TKSP"", string0);
+}","/**
+ * Encode a value with Double Metaphone, optionally using the alternate
+ * encoding.
+ *
+ * @param value String to encode
+ * @param alternate use alternate encode
+ * @return an encoded string
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test074449() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    boolean boolean0 = doubleMetaphone0.isDoubleMetaphoneEqual(""R=/TH:E2$C-;J"", ""R=/TH:E2$C-;J"");
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public boolean isDoubleMetaphoneEqual(String value1, String value2) {
+    return isDoubleMetaphoneEqual(value1, value2, false);
+}","public void test074450() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    boolean boolean0 = doubleMetaphone0.isDoubleMetaphoneEqual(""R=/TH:E2$C-;J"", ""R=/TH:E2$C-;J"");
+    assertTrue(boolean0);
+}","/**
+ * Check if the Double Metaphone values of two <code>String</code> values
+ * are equal.
+ *
+ * @param value1 The left-hand side of the encoded {@link String#equals(Object)}.
+ * @param value2 The right-hand side of the encoded {@link String#equals(Object)}.
+ * @return <code>true</code> if the encoded <code>String</code>s are equal;
+ *          <code>false</code> otherwise.
+ * @see #isDoubleMetaphoneEqual(String,String,boolean)
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test075454() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    doubleMetaphone0.maxCodeLen = 1258;
+    String string0 = doubleMetaphone0.encode(""Q1#VNgyj7y;k6O'JH@"");
+    assertEquals(1258, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String encode(String value) {
+    return doubleMetaphone(value);
+}","public void test075455() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    doubleMetaphone0.maxCodeLen = 1258;
+    String string0 = doubleMetaphone0.encode(""Q1#VNgyj7y;k6O'JH@"");
+    assertEquals(""KFNKJKJ"", string0);
+}","/**
+ * Encode the value using DoubleMetaphone.
+ *
+ * @param value String to encode
+ * @return An encoded String
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test076459() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""yjdo_:x{"", false);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String doubleMetaphone(String value, boolean alternate) {
+    value = cleanInput(value);
+    if (value == null) {
+        return null;
+    }
+    boolean slavoGermanic = isSlavoGermanic(value);
+    int index = isSilentStart(value) ? 1 : 0;
+    DoubleMetaphoneResult result = new DoubleMetaphoneResult(this.getMaxCodeLen());
+    while (!result.isComplete() && index <= value.length() - 1) {
+        switch(value.charAt(index)) {
+            case 'A':
+            case 'E':
+            case 'I':
+            case 'O':
+            case 'U':
+            case 'Y':
+                index = handleAEIOUY(value, result, index);
+                break;
+            case 'B':
+                result.append('P');
+                index = charAt(value, index + 1) == 'B' ? index + 2 : index + 1;
+                break;
+            case '\u00C7':
+                // A C with a Cedilla
+                result.append('S');
+                index++;
+                break;
+            case 'C':
+                index = handleC(value, result, index);
+                break;
+            case 'D':
+                index = handleD(value, result, index);
+                break;
+            case 'F':
+                result.append('F');
+                index = charAt(value, index + 1) == 'F' ? index + 2 : index + 1;
+                break;
+            case 'G':
+                index = handleG(value, result, index, slavoGermanic);
+                break;
+            case 'H':
+                index = handleH(value, result, index);
+                break;
+            case 'J':
+                index = handleJ(value, result, index, slavoGermanic);
+                break;
+            case 'K':
+                result.append('K');
+                index = charAt(value, index + 1) == 'K' ? index + 2 : index + 1;
+                break;
+            case 'L':
+                index = handleL(value, result, index);
+                break;
+            case 'M':
+                result.append('M');
+                index = conditionM0(value, index) ? index + 2 : index + 1;
+                break;
+            case 'N':
+                result.append('N');
+                index = charAt(value, index + 1) == 'N' ? index + 2 : index + 1;
+                break;
+            case '\u00D1':
+                // N with a tilde (spanish ene)
+                result.append('N');
+                index++;
+                break;
+            case 'P':
+                index = handleP(value, result, index);
+                break;
+            case 'Q':
+                result.append('K');
+                index = charAt(value, index + 1) == 'Q' ? index + 2 : index + 1;
+                break;
+            case 'R':
+                index = handleR(value, result, index, slavoGermanic);
+                break;
+            case 'S':
+                index = handleS(value, result, index, slavoGermanic);
+                break;
+            case 'T':
+                index = handleT(value, result, index);
+                break;
+            case 'V':
+                result.append('F');
+                index = charAt(value, index + 1) == 'V' ? index + 2 : index + 1;
+                break;
+            case 'W':
+                index = handleW(value, result, index);
+                break;
+            case 'X':
+                index = handleX(value, result, index);
+                break;
+            case 'Z':
+                index = handleZ(value, result, index, slavoGermanic);
+                break;
+            default:
+                index++;
+                break;
+        }
+    }
+    return alternate ? result.getAlternate() : result.getPrimary();
+}","public void test076460() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""yjdo_:x{"", false);
+    assertEquals(""AJTK"", string0);
+}","/**
+ * Encode a value with Double Metaphone, optionally using the alternate
+ * encoding.
+ *
+ * @param value String to encode
+ * @param alternate use alternate encode
+ * @return an encoded string
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test077464() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""6~6)yHW4NGj*vMaPz1?"", false);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String doubleMetaphone(String value, boolean alternate) {
+    value = cleanInput(value);
+    if (value == null) {
+        return null;
+    }
+    boolean slavoGermanic = isSlavoGermanic(value);
+    int index = isSilentStart(value) ? 1 : 0;
+    DoubleMetaphoneResult result = new DoubleMetaphoneResult(this.getMaxCodeLen());
+    while (!result.isComplete() && index <= value.length() - 1) {
+        switch(value.charAt(index)) {
+            case 'A':
+            case 'E':
+            case 'I':
+            case 'O':
+            case 'U':
+            case 'Y':
+                index = handleAEIOUY(value, result, index);
+                break;
+            case 'B':
+                result.append('P');
+                index = charAt(value, index + 1) == 'B' ? index + 2 : index + 1;
+                break;
+            case '\u00C7':
+                // A C with a Cedilla
+                result.append('S');
+                index++;
+                break;
+            case 'C':
+                index = handleC(value, result, index);
+                break;
+            case 'D':
+                index = handleD(value, result, index);
+                break;
+            case 'F':
+                result.append('F');
+                index = charAt(value, index + 1) == 'F' ? index + 2 : index + 1;
+                break;
+            case 'G':
+                index = handleG(value, result, index, slavoGermanic);
+                break;
+            case 'H':
+                index = handleH(value, result, index);
+                break;
+            case 'J':
+                index = handleJ(value, result, index, slavoGermanic);
+                break;
+            case 'K':
+                result.append('K');
+                index = charAt(value, index + 1) == 'K' ? index + 2 : index + 1;
+                break;
+            case 'L':
+                index = handleL(value, result, index);
+                break;
+            case 'M':
+                result.append('M');
+                index = conditionM0(value, index) ? index + 2 : index + 1;
+                break;
+            case 'N':
+                result.append('N');
+                index = charAt(value, index + 1) == 'N' ? index + 2 : index + 1;
+                break;
+            case '\u00D1':
+                // N with a tilde (spanish ene)
+                result.append('N');
+                index++;
+                break;
+            case 'P':
+                index = handleP(value, result, index);
+                break;
+            case 'Q':
+                result.append('K');
+                index = charAt(value, index + 1) == 'Q' ? index + 2 : index + 1;
+                break;
+            case 'R':
+                index = handleR(value, result, index, slavoGermanic);
+                break;
+            case 'S':
+                index = handleS(value, result, index, slavoGermanic);
+                break;
+            case 'T':
+                index = handleT(value, result, index);
+                break;
+            case 'V':
+                result.append('F');
+                index = charAt(value, index + 1) == 'V' ? index + 2 : index + 1;
+                break;
+            case 'W':
+                index = handleW(value, result, index);
+                break;
+            case 'X':
+                index = handleX(value, result, index);
+                break;
+            case 'Z':
+                index = handleZ(value, result, index, slavoGermanic);
+                break;
+            default:
+                index++;
+                break;
+        }
+    }
+    return alternate ? result.getAlternate() : result.getPrimary();
+}","public void test077465() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""6~6)yHW4NGj*vMaPz1?"", false);
+    assertEquals(""NKJF"", string0);
+}","/**
+ * Encode a value with Double Metaphone, optionally using the alternate
+ * encoding.
+ *
+ * @param value String to encode
+ * @param alternate use alternate encode
+ * @return an encoded string
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test078469() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""HARIS"", true);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String doubleMetaphone(String value, boolean alternate) {
+    value = cleanInput(value);
+    if (value == null) {
+        return null;
+    }
+    boolean slavoGermanic = isSlavoGermanic(value);
+    int index = isSilentStart(value) ? 1 : 0;
+    DoubleMetaphoneResult result = new DoubleMetaphoneResult(this.getMaxCodeLen());
+    while (!result.isComplete() && index <= value.length() - 1) {
+        switch(value.charAt(index)) {
+            case 'A':
+            case 'E':
+            case 'I':
+            case 'O':
+            case 'U':
+            case 'Y':
+                index = handleAEIOUY(value, result, index);
+                break;
+            case 'B':
+                result.append('P');
+                index = charAt(value, index + 1) == 'B' ? index + 2 : index + 1;
+                break;
+            case '\u00C7':
+                // A C with a Cedilla
+                result.append('S');
+                index++;
+                break;
+            case 'C':
+                index = handleC(value, result, index);
+                break;
+            case 'D':
+                index = handleD(value, result, index);
+                break;
+            case 'F':
+                result.append('F');
+                index = charAt(value, index + 1) == 'F' ? index + 2 : index + 1;
+                break;
+            case 'G':
+                index = handleG(value, result, index, slavoGermanic);
+                break;
+            case 'H':
+                index = handleH(value, result, index);
+                break;
+            case 'J':
+                index = handleJ(value, result, index, slavoGermanic);
+                break;
+            case 'K':
+                result.append('K');
+                index = charAt(value, index + 1) == 'K' ? index + 2 : index + 1;
+                break;
+            case 'L':
+                index = handleL(value, result, index);
+                break;
+            case 'M':
+                result.append('M');
+                index = conditionM0(value, index) ? index + 2 : index + 1;
+                break;
+            case 'N':
+                result.append('N');
+                index = charAt(value, index + 1) == 'N' ? index + 2 : index + 1;
+                break;
+            case '\u00D1':
+                // N with a tilde (spanish ene)
+                result.append('N');
+                index++;
+                break;
+            case 'P':
+                index = handleP(value, result, index);
+                break;
+            case 'Q':
+                result.append('K');
+                index = charAt(value, index + 1) == 'Q' ? index + 2 : index + 1;
+                break;
+            case 'R':
+                index = handleR(value, result, index, slavoGermanic);
+                break;
+            case 'S':
+                index = handleS(value, result, index, slavoGermanic);
+                break;
+            case 'T':
+                index = handleT(value, result, index);
+                break;
+            case 'V':
+                result.append('F');
+                index = charAt(value, index + 1) == 'V' ? index + 2 : index + 1;
+                break;
+            case 'W':
+                index = handleW(value, result, index);
+                break;
+            case 'X':
+                index = handleX(value, result, index);
+                break;
+            case 'Z':
+                index = handleZ(value, result, index, slavoGermanic);
+                break;
+            default:
+                index++;
+                break;
+        }
+    }
+    return alternate ? result.getAlternate() : result.getPrimary();
+}","public void test078470() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""HARIS"", true);
+    assertEquals(""HRS"", string0);
+}","/**
+ * Encode a value with Double Metaphone, optionally using the alternate
+ * encoding.
+ *
+ * @param value String to encode
+ * @param alternate use alternate encode
+ * @return an encoded string
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test079474() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    boolean boolean0 = doubleMetaphone0.isDoubleMetaphoneEqual(""&eGH/n:I"", ""&eGH/n:I"");
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public boolean isDoubleMetaphoneEqual(String value1, String value2) {
+    return isDoubleMetaphoneEqual(value1, value2, false);
+}","public void test079475() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    boolean boolean0 = doubleMetaphone0.isDoubleMetaphoneEqual(""&eGH/n:I"", ""&eGH/n:I"");
+    assertTrue(boolean0);
+}","/**
+ * Check if the Double Metaphone values of two <code>String</code> values
+ * are equal.
+ *
+ * @param value1 The left-hand side of the encoded {@link String#equals(Object)}.
+ * @param value2 The right-hand side of the encoded {@link String#equals(Object)}.
+ * @return <code>true</code> if the encoded <code>String</code>s are equal;
+ *          <code>false</code> otherwise.
+ * @see #isDoubleMetaphoneEqual(String,String,boolean)
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test080478() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""SGH"");
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String doubleMetaphone(String value) {
+    return doubleMetaphone(value, false);
+}","public void test080479() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""SGH"");
+    assertEquals(""SK"", string0);
+}","/**
+ * Encode a value with Double Metaphone
+ *
+ * @param value String to encode
+ * @return an encoded string
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test081483() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    boolean boolean0 = doubleMetaphone0.isDoubleMetaphoneEqual("">(y{iGgn<tI?"", "",f51N+0Msu5`lP[JTw"");
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public boolean isDoubleMetaphoneEqual(String value1, String value2) {
+    return isDoubleMetaphoneEqual(value1, value2, false);
+}","public void test081484() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    boolean boolean0 = doubleMetaphone0.isDoubleMetaphoneEqual("">(y{iGgn<tI?"", "",f51N+0Msu5`lP[JTw"");
+    assertFalse(boolean0);
+}","/**
+ * Check if the Double Metaphone values of two <code>String</code> values
+ * are equal.
+ *
+ * @param value1 The left-hand side of the encoded {@link String#equals(Object)}.
+ * @param value2 The right-hand side of the encoded {@link String#equals(Object)}.
+ * @return <code>true</code> if the encoded <code>String</code>s are equal;
+ *          <code>false</code> otherwise.
+ * @see #isDoubleMetaphoneEqual(String,String,boolean)
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test082487() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    Object object0 = doubleMetaphone0.encode((Object) ""0kGIWN+gs|"");
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public Object encode(Object obj) throws EncoderException {
+    if (!(obj instanceof String)) {
+        throw new EncoderException(""DoubleMetaphone encode parameter is not of type String"");
+    }
+    return doubleMetaphone((String) obj);
+}","public void test082488() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    Object object0 = doubleMetaphone0.encode((Object) ""0kGIWN+gs|"");
+    assertEquals(""KJNK"", object0);
+}","/**
+ * Encode the value using DoubleMetaphone.  It will only work if
+ * <code>obj</code> is a <code>String</code> (like <code>Metaphone</code>).
+ *
+ * @param obj Object to encode (should be of type String)
+ * @return An encoded Object (will be of type String)
+ * @throws EncoderException encode parameter is not of type String
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test083492() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    boolean boolean0 = doubleMetaphone0.isDoubleMetaphoneEqual(""G$m#-%_GN*$mD"", ""G$m#-%_GN*$mD"", true);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public boolean isDoubleMetaphoneEqual(String value1, String value2, boolean alternate) {
+    return doubleMetaphone(value1, alternate).equals(doubleMetaphone(value2, alternate));
+}","public void test083493() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    boolean boolean0 = doubleMetaphone0.isDoubleMetaphoneEqual(""G$m#-%_GN*$mD"", ""G$m#-%_GN*$mD"", true);
+    assertTrue(boolean0);
+}","/**
+ * Check if the Double Metaphone values of two <code>String</code> values
+ * are equal, optionally using the alternate value.
+ *
+ * @param value1 The left-hand side of the encoded {@link String#equals(Object)}.
+ * @param value2 The right-hand side of the encoded {@link String#equals(Object)}.
+ * @param alternate use the alternate value if <code>true</code>.
+ * @return <code>true</code> if the encoded <code>String</code>s are equal;
+ *          <code>false</code> otherwise.
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test084496() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    boolean boolean0 = doubleMetaphone0.isDoubleMetaphoneEqual(""G$^m#k-%\""_GN*$mD"", ""G$^m#k-%\""_GN*$mD"", true);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public boolean isDoubleMetaphoneEqual(String value1, String value2, boolean alternate) {
+    return doubleMetaphone(value1, alternate).equals(doubleMetaphone(value2, alternate));
+}","public void test084497() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    boolean boolean0 = doubleMetaphone0.isDoubleMetaphoneEqual(""G$^m#k-%\""_GN*$mD"", ""G$^m#k-%\""_GN*$mD"", true);
+    assertTrue(boolean0);
+}","/**
+ * Check if the Double Metaphone values of two <code>String</code> values
+ * are equal, optionally using the alternate value.
+ *
+ * @param value1 The left-hand side of the encoded {@link String#equals(Object)}.
+ * @param value2 The right-hand side of the encoded {@link String#equals(Object)}.
+ * @param alternate use the alternate value if <code>true</code>.
+ * @return <code>true</code> if the encoded <code>String</code>s are equal;
+ *          <code>false</code> otherwise.
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test085500() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.encode(""DD"");
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String encode(String value) {
+    return doubleMetaphone(value);
+}","public void test085501() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.encode(""DD"");
+    assertEquals(""T"", string0);
+}","/**
+ * Encode the value using DoubleMetaphone.
+ *
+ * @param value String to encode
+ * @return An encoded String
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test086505() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    boolean boolean0 = doubleMetaphone0.isDoubleMetaphoneEqual(""j_oDg#}MGZ&WuS"", """", false);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public boolean isDoubleMetaphoneEqual(String value1, String value2, boolean alternate) {
+    return doubleMetaphone(value1, alternate).equals(doubleMetaphone(value2, alternate));
+}","public void test086506() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    boolean boolean0 = doubleMetaphone0.isDoubleMetaphoneEqual(""j_oDg#}MGZ&WuS"", """", false);
+    assertFalse(boolean0);
+}","/**
+ * Check if the Double Metaphone values of two <code>String</code> values
+ * are equal, optionally using the alternate value.
+ *
+ * @param value1 The left-hand side of the encoded {@link String#equals(Object)}.
+ * @param value2 The right-hand side of the encoded {@link String#equals(Object)}.
+ * @param alternate use the alternate value if <code>true</code>.
+ * @return <code>true</code> if the encoded <code>String</code>s are equal;
+ *          <code>false</code> otherwise.
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test087509() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""CH"", true);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String doubleMetaphone(String value, boolean alternate) {
+    value = cleanInput(value);
+    if (value == null) {
+        return null;
+    }
+    boolean slavoGermanic = isSlavoGermanic(value);
+    int index = isSilentStart(value) ? 1 : 0;
+    DoubleMetaphoneResult result = new DoubleMetaphoneResult(this.getMaxCodeLen());
+    while (!result.isComplete() && index <= value.length() - 1) {
+        switch(value.charAt(index)) {
+            case 'A':
+            case 'E':
+            case 'I':
+            case 'O':
+            case 'U':
+            case 'Y':
+                index = handleAEIOUY(value, result, index);
+                break;
+            case 'B':
+                result.append('P');
+                index = charAt(value, index + 1) == 'B' ? index + 2 : index + 1;
+                break;
+            case '\u00C7':
+                // A C with a Cedilla
+                result.append('S');
+                index++;
+                break;
+            case 'C':
+                index = handleC(value, result, index);
+                break;
+            case 'D':
+                index = handleD(value, result, index);
+                break;
+            case 'F':
+                result.append('F');
+                index = charAt(value, index + 1) == 'F' ? index + 2 : index + 1;
+                break;
+            case 'G':
+                index = handleG(value, result, index, slavoGermanic);
+                break;
+            case 'H':
+                index = handleH(value, result, index);
+                break;
+            case 'J':
+                index = handleJ(value, result, index, slavoGermanic);
+                break;
+            case 'K':
+                result.append('K');
+                index = charAt(value, index + 1) == 'K' ? index + 2 : index + 1;
+                break;
+            case 'L':
+                index = handleL(value, result, index);
+                break;
+            case 'M':
+                result.append('M');
+                index = conditionM0(value, index) ? index + 2 : index + 1;
+                break;
+            case 'N':
+                result.append('N');
+                index = charAt(value, index + 1) == 'N' ? index + 2 : index + 1;
+                break;
+            case '\u00D1':
+                // N with a tilde (spanish ene)
+                result.append('N');
+                index++;
+                break;
+            case 'P':
+                index = handleP(value, result, index);
+                break;
+            case 'Q':
+                result.append('K');
+                index = charAt(value, index + 1) == 'Q' ? index + 2 : index + 1;
+                break;
+            case 'R':
+                index = handleR(value, result, index, slavoGermanic);
+                break;
+            case 'S':
+                index = handleS(value, result, index, slavoGermanic);
+                break;
+            case 'T':
+                index = handleT(value, result, index);
+                break;
+            case 'V':
+                result.append('F');
+                index = charAt(value, index + 1) == 'V' ? index + 2 : index + 1;
+                break;
+            case 'W':
+                index = handleW(value, result, index);
+                break;
+            case 'X':
+                index = handleX(value, result, index);
+                break;
+            case 'Z':
+                index = handleZ(value, result, index, slavoGermanic);
+                break;
+            default:
+                index++;
+                break;
+        }
+    }
+    return alternate ? result.getAlternate() : result.getPrimary();
+}","public void test087510() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""CH"", true);
+    assertEquals(""K"", string0);
+}","/**
+ * Encode a value with Double Metaphone, optionally using the alternate
+ * encoding.
+ *
+ * @param value String to encode
+ * @param alternate use alternate encode
+ * @return an encoded string
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test088514() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    boolean boolean0 = doubleMetaphone0.isDoubleMetaphoneEqual(""BCY;+ko*Fmpw."", "" Q"", false);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public boolean isDoubleMetaphoneEqual(String value1, String value2, boolean alternate) {
+    return doubleMetaphone(value1, alternate).equals(doubleMetaphone(value2, alternate));
+}","public void test088515() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    boolean boolean0 = doubleMetaphone0.isDoubleMetaphoneEqual(""BCY;+ko*Fmpw."", "" Q"", false);
+    assertFalse(boolean0);
+}","/**
+ * Check if the Double Metaphone values of two <code>String</code> values
+ * are equal, optionally using the alternate value.
+ *
+ * @param value1 The left-hand side of the encoded {@link String#equals(Object)}.
+ * @param value2 The right-hand side of the encoded {@link String#equals(Object)}.
+ * @param alternate use the alternate value if <code>true</code>.
+ * @return <code>true</code> if the encoded <code>String</code>s are equal;
+ *          <code>false</code> otherwise.
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test089518() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""CQ"", false);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String doubleMetaphone(String value, boolean alternate) {
+    value = cleanInput(value);
+    if (value == null) {
+        return null;
+    }
+    boolean slavoGermanic = isSlavoGermanic(value);
+    int index = isSilentStart(value) ? 1 : 0;
+    DoubleMetaphoneResult result = new DoubleMetaphoneResult(this.getMaxCodeLen());
+    while (!result.isComplete() && index <= value.length() - 1) {
+        switch(value.charAt(index)) {
+            case 'A':
+            case 'E':
+            case 'I':
+            case 'O':
+            case 'U':
+            case 'Y':
+                index = handleAEIOUY(value, result, index);
+                break;
+            case 'B':
+                result.append('P');
+                index = charAt(value, index + 1) == 'B' ? index + 2 : index + 1;
+                break;
+            case '\u00C7':
+                // A C with a Cedilla
+                result.append('S');
+                index++;
+                break;
+            case 'C':
+                index = handleC(value, result, index);
+                break;
+            case 'D':
+                index = handleD(value, result, index);
+                break;
+            case 'F':
+                result.append('F');
+                index = charAt(value, index + 1) == 'F' ? index + 2 : index + 1;
+                break;
+            case 'G':
+                index = handleG(value, result, index, slavoGermanic);
+                break;
+            case 'H':
+                index = handleH(value, result, index);
+                break;
+            case 'J':
+                index = handleJ(value, result, index, slavoGermanic);
+                break;
+            case 'K':
+                result.append('K');
+                index = charAt(value, index + 1) == 'K' ? index + 2 : index + 1;
+                break;
+            case 'L':
+                index = handleL(value, result, index);
+                break;
+            case 'M':
+                result.append('M');
+                index = conditionM0(value, index) ? index + 2 : index + 1;
+                break;
+            case 'N':
+                result.append('N');
+                index = charAt(value, index + 1) == 'N' ? index + 2 : index + 1;
+                break;
+            case '\u00D1':
+                // N with a tilde (spanish ene)
+                result.append('N');
+                index++;
+                break;
+            case 'P':
+                index = handleP(value, result, index);
+                break;
+            case 'Q':
+                result.append('K');
+                index = charAt(value, index + 1) == 'Q' ? index + 2 : index + 1;
+                break;
+            case 'R':
+                index = handleR(value, result, index, slavoGermanic);
+                break;
+            case 'S':
+                index = handleS(value, result, index, slavoGermanic);
+                break;
+            case 'T':
+                index = handleT(value, result, index);
+                break;
+            case 'V':
+                result.append('F');
+                index = charAt(value, index + 1) == 'V' ? index + 2 : index + 1;
+                break;
+            case 'W':
+                index = handleW(value, result, index);
+                break;
+            case 'X':
+                index = handleX(value, result, index);
+                break;
+            case 'Z':
+                index = handleZ(value, result, index, slavoGermanic);
+                break;
+            default:
+                index++;
+                break;
+        }
+    }
+    return alternate ? result.getAlternate() : result.getPrimary();
+}","public void test089519() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""CQ"", false);
+    assertEquals(""K"", string0);
+}","/**
+ * Encode a value with Double Metaphone, optionally using the alternate
+ * encoding.
+ *
+ * @param value String to encode
+ * @param alternate use alternate encode
+ * @return an encoded string
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test090523() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""Zwccx"");
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String doubleMetaphone(String value) {
+    return doubleMetaphone(value, false);
+}","public void test090524() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""Zwccx"");
+    assertEquals(""SKKS"", string0);
+}","/**
+ * Encode a value with Double Metaphone
+ *
+ * @param value String to encode
+ * @return an encoded string
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test091528() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    boolean boolean0 = doubleMetaphone0.isDoubleMetaphoneEqual(""_wZ"", ""CAESAR"");
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public boolean isDoubleMetaphoneEqual(String value1, String value2) {
+    return isDoubleMetaphoneEqual(value1, value2, false);
+}","public void test091529() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    boolean boolean0 = doubleMetaphone0.isDoubleMetaphoneEqual(""_wZ"", ""CAESAR"");
+    assertFalse(boolean0);
+}","/**
+ * Check if the Double Metaphone values of two <code>String</code> values
+ * are equal.
+ *
+ * @param value1 The left-hand side of the encoded {@link String#equals(Object)}.
+ * @param value2 The right-hand side of the encoded {@link String#equals(Object)}.
+ * @return <code>true</code> if the encoded <code>String</code>s are equal;
+ *          <code>false</code> otherwise.
+ * @see #isDoubleMetaphoneEqual(String,String,boolean)
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test092532() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    boolean boolean0 = doubleMetaphone0.isDoubleMetaphoneEqual(""9&eGH/n:I"", ""CHAE"", false);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public boolean isDoubleMetaphoneEqual(String value1, String value2, boolean alternate) {
+    return doubleMetaphone(value1, alternate).equals(doubleMetaphone(value2, alternate));
+}","public void test092533() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    boolean boolean0 = doubleMetaphone0.isDoubleMetaphoneEqual(""9&eGH/n:I"", ""CHAE"", false);
+    assertFalse(boolean0);
+}","/**
+ * Check if the Double Metaphone values of two <code>String</code> values
+ * are equal, optionally using the alternate value.
+ *
+ * @param value1 The left-hand side of the encoded {@link String#equals(Object)}.
+ * @param value2 The right-hand side of the encoded {@link String#equals(Object)}.
+ * @param alternate use the alternate value if <code>true</code>.
+ * @return <code>true</code> if the encoded <code>String</code>s are equal;
+ *          <code>false</code> otherwise.
+ */"
+"public String doubleMetaphone(String value) {
+    return doubleMetaphone(value, false);
+}","public void test093534() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""BACHER"");
+    assertEquals(""PKR"", string0);
+}","/**
+ * Encode a value with Double Metaphone
+ *
+ * @param value String to encode
+ * @return an encoded string
+ */"
+"public Object encode(Object obj) throws EncoderException {
+    if (!(obj instanceof String)) {
+        throw new EncoderException(""DoubleMetaphone encode parameter is not of type String"");
+    }
+    return doubleMetaphone((String) obj);
+}","public void test094535() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    DoubleMetaphone.DoubleMetaphoneResult doubleMetaphone_DoubleMetaphoneResult0 = doubleMetaphone0.new DoubleMetaphoneResult(108);
+    try {
+        doubleMetaphone0.encode((Object) doubleMetaphone_DoubleMetaphoneResult0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // DoubleMetaphone encode parameter is not of type String
+        //
+        verifyException(""org.apache.commons.codec.language.DoubleMetaphone"", e);
+    }
+}","/**
+ * Encode the value using DoubleMetaphone.  It will only work if
+ * <code>obj</code> is a <code>String</code> (like <code>Metaphone</code>).
+ *
+ * @param obj Object to encode (should be of type String)
+ * @return An encoded Object (will be of type String)
+ * @throws EncoderException encode parameter is not of type String
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test095536() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    doubleMetaphone0.setMaxCodeLen(1985);
+    doubleMetaphone0.doubleMetaphone(""FOCzNybmSNVlg4vV0x"", true);
+    assertEquals(1985, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String doubleMetaphone(String value, boolean alternate) {
+    value = cleanInput(value);
+    if (value == null) {
+        return null;
+    }
+    boolean slavoGermanic = isSlavoGermanic(value);
+    int index = isSilentStart(value) ? 1 : 0;
+    DoubleMetaphoneResult result = new DoubleMetaphoneResult(this.getMaxCodeLen());
+    while (!result.isComplete() && index <= value.length() - 1) {
+        switch(value.charAt(index)) {
+            case 'A':
+            case 'E':
+            case 'I':
+            case 'O':
+            case 'U':
+            case 'Y':
+                index = handleAEIOUY(value, result, index);
+                break;
+            case 'B':
+                result.append('P');
+                index = charAt(value, index + 1) == 'B' ? index + 2 : index + 1;
+                break;
+            case '\u00C7':
+                // A C with a Cedilla
+                result.append('S');
+                index++;
+                break;
+            case 'C':
+                index = handleC(value, result, index);
+                break;
+            case 'D':
+                index = handleD(value, result, index);
+                break;
+            case 'F':
+                result.append('F');
+                index = charAt(value, index + 1) == 'F' ? index + 2 : index + 1;
+                break;
+            case 'G':
+                index = handleG(value, result, index, slavoGermanic);
+                break;
+            case 'H':
+                index = handleH(value, result, index);
+                break;
+            case 'J':
+                index = handleJ(value, result, index, slavoGermanic);
+                break;
+            case 'K':
+                result.append('K');
+                index = charAt(value, index + 1) == 'K' ? index + 2 : index + 1;
+                break;
+            case 'L':
+                index = handleL(value, result, index);
+                break;
+            case 'M':
+                result.append('M');
+                index = conditionM0(value, index) ? index + 2 : index + 1;
+                break;
+            case 'N':
+                result.append('N');
+                index = charAt(value, index + 1) == 'N' ? index + 2 : index + 1;
+                break;
+            case '\u00D1':
+                // N with a tilde (spanish ene)
+                result.append('N');
+                index++;
+                break;
+            case 'P':
+                index = handleP(value, result, index);
+                break;
+            case 'Q':
+                result.append('K');
+                index = charAt(value, index + 1) == 'Q' ? index + 2 : index + 1;
+                break;
+            case 'R':
+                index = handleR(value, result, index, slavoGermanic);
+                break;
+            case 'S':
+                index = handleS(value, result, index, slavoGermanic);
+                break;
+            case 'T':
+                index = handleT(value, result, index);
+                break;
+            case 'V':
+                result.append('F');
+                index = charAt(value, index + 1) == 'V' ? index + 2 : index + 1;
+                break;
+            case 'W':
+                index = handleW(value, result, index);
+                break;
+            case 'X':
+                index = handleX(value, result, index);
+                break;
+            case 'Z':
+                index = handleZ(value, result, index, slavoGermanic);
+                break;
+            default:
+                index++;
+                break;
+        }
+    }
+    return alternate ? result.getAlternate() : result.getPrimary();
+}","public void test096537() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""PNN6"", false);
+    assertEquals(""N"", string0);
+}","/**
+ * Encode a value with Double Metaphone, optionally using the alternate
+ * encoding.
+ *
+ * @param value String to encode
+ * @param alternate use alternate encode
+ * @return an encoded string
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test096538() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""PNN6"", false);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String doubleMetaphone(String value, boolean alternate) {
+    value = cleanInput(value);
+    if (value == null) {
+        return null;
+    }
+    boolean slavoGermanic = isSlavoGermanic(value);
+    int index = isSilentStart(value) ? 1 : 0;
+    DoubleMetaphoneResult result = new DoubleMetaphoneResult(this.getMaxCodeLen());
+    while (!result.isComplete() && index <= value.length() - 1) {
+        switch(value.charAt(index)) {
+            case 'A':
+            case 'E':
+            case 'I':
+            case 'O':
+            case 'U':
+            case 'Y':
+                index = handleAEIOUY(value, result, index);
+                break;
+            case 'B':
+                result.append('P');
+                index = charAt(value, index + 1) == 'B' ? index + 2 : index + 1;
+                break;
+            case '\u00C7':
+                // A C with a Cedilla
+                result.append('S');
+                index++;
+                break;
+            case 'C':
+                index = handleC(value, result, index);
+                break;
+            case 'D':
+                index = handleD(value, result, index);
+                break;
+            case 'F':
+                result.append('F');
+                index = charAt(value, index + 1) == 'F' ? index + 2 : index + 1;
+                break;
+            case 'G':
+                index = handleG(value, result, index, slavoGermanic);
+                break;
+            case 'H':
+                index = handleH(value, result, index);
+                break;
+            case 'J':
+                index = handleJ(value, result, index, slavoGermanic);
+                break;
+            case 'K':
+                result.append('K');
+                index = charAt(value, index + 1) == 'K' ? index + 2 : index + 1;
+                break;
+            case 'L':
+                index = handleL(value, result, index);
+                break;
+            case 'M':
+                result.append('M');
+                index = conditionM0(value, index) ? index + 2 : index + 1;
+                break;
+            case 'N':
+                result.append('N');
+                index = charAt(value, index + 1) == 'N' ? index + 2 : index + 1;
+                break;
+            case '\u00D1':
+                // N with a tilde (spanish ene)
+                result.append('N');
+                index++;
+                break;
+            case 'P':
+                index = handleP(value, result, index);
+                break;
+            case 'Q':
+                result.append('K');
+                index = charAt(value, index + 1) == 'Q' ? index + 2 : index + 1;
+                break;
+            case 'R':
+                index = handleR(value, result, index, slavoGermanic);
+                break;
+            case 'S':
+                index = handleS(value, result, index, slavoGermanic);
+                break;
+            case 'T':
+                index = handleT(value, result, index);
+                break;
+            case 'V':
+                result.append('F');
+                index = charAt(value, index + 1) == 'V' ? index + 2 : index + 1;
+                break;
+            case 'W':
+                index = handleW(value, result, index);
+                break;
+            case 'X':
+                index = handleX(value, result, index);
+                break;
+            case 'Z':
+                index = handleZ(value, result, index, slavoGermanic);
+                break;
+            default:
+                index++;
+                break;
+        }
+    }
+    return alternate ? result.getAlternate() : result.getPrimary();
+}","public void test097540() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""WRAKKS"", false);
+    assertEquals(""RKS"", string0);
+}","/**
+ * Encode a value with Double Metaphone, optionally using the alternate
+ * encoding.
+ *
+ * @param value String to encode
+ * @param alternate use alternate encode
+ * @return an encoded string
+ */"
+"public String doubleMetaphone(String value, boolean alternate) {
+    value = cleanInput(value);
+    if (value == null) {
+        return null;
+    }
+    boolean slavoGermanic = isSlavoGermanic(value);
+    int index = isSilentStart(value) ? 1 : 0;
+    DoubleMetaphoneResult result = new DoubleMetaphoneResult(this.getMaxCodeLen());
+    while (!result.isComplete() && index <= value.length() - 1) {
+        switch(value.charAt(index)) {
+            case 'A':
+            case 'E':
+            case 'I':
+            case 'O':
+            case 'U':
+            case 'Y':
+                index = handleAEIOUY(value, result, index);
+                break;
+            case 'B':
+                result.append('P');
+                index = charAt(value, index + 1) == 'B' ? index + 2 : index + 1;
+                break;
+            case '\u00C7':
+                // A C with a Cedilla
+                result.append('S');
+                index++;
+                break;
+            case 'C':
+                index = handleC(value, result, index);
+                break;
+            case 'D':
+                index = handleD(value, result, index);
+                break;
+            case 'F':
+                result.append('F');
+                index = charAt(value, index + 1) == 'F' ? index + 2 : index + 1;
+                break;
+            case 'G':
+                index = handleG(value, result, index, slavoGermanic);
+                break;
+            case 'H':
+                index = handleH(value, result, index);
+                break;
+            case 'J':
+                index = handleJ(value, result, index, slavoGermanic);
+                break;
+            case 'K':
+                result.append('K');
+                index = charAt(value, index + 1) == 'K' ? index + 2 : index + 1;
+                break;
+            case 'L':
+                index = handleL(value, result, index);
+                break;
+            case 'M':
+                result.append('M');
+                index = conditionM0(value, index) ? index + 2 : index + 1;
+                break;
+            case 'N':
+                result.append('N');
+                index = charAt(value, index + 1) == 'N' ? index + 2 : index + 1;
+                break;
+            case '\u00D1':
+                // N with a tilde (spanish ene)
+                result.append('N');
+                index++;
+                break;
+            case 'P':
+                index = handleP(value, result, index);
+                break;
+            case 'Q':
+                result.append('K');
+                index = charAt(value, index + 1) == 'Q' ? index + 2 : index + 1;
+                break;
+            case 'R':
+                index = handleR(value, result, index, slavoGermanic);
+                break;
+            case 'S':
+                index = handleS(value, result, index, slavoGermanic);
+                break;
+            case 'T':
+                index = handleT(value, result, index);
+                break;
+            case 'V':
+                result.append('F');
+                index = charAt(value, index + 1) == 'V' ? index + 2 : index + 1;
+                break;
+            case 'W':
+                index = handleW(value, result, index);
+                break;
+            case 'X':
+                index = handleX(value, result, index);
+                break;
+            case 'Z':
+                index = handleZ(value, result, index, slavoGermanic);
+                break;
+            default:
+                index++;
+                break;
+        }
+    }
+    return alternate ? result.getAlternate() : result.getPrimary();
+}","public void test098541() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""MFFP"", false);
+    assertEquals(""MFP"", string0);
+}","/**
+ * Encode a value with Double Metaphone, optionally using the alternate
+ * encoding.
+ *
+ * @param value String to encode
+ * @param alternate use alternate encode
+ * @return an encoded string
+ */"
+"public int getMaxCodeLen() {
+    return this.maxCodeLen;
+}","public void test098542() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.doubleMetaphone(""MFFP"", false);
+    assertEquals(4, doubleMetaphone0.getMaxCodeLen());
+}","/**
+ * Returns the maxCodeLen.
+ * @return int
+ */"
+"public String encode(String value) {
+    return doubleMetaphone(value);
+}","public void test099543() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    String string0 = doubleMetaphone0.encode(""'I\""Bbb]/YzOf9"");
+    assertEquals(""PPSF"", string0);
+}","/**
+ * Encode the value using DoubleMetaphone.
+ *
+ * @param value String to encode
+ * @return An encoded String
+ */"
+"public boolean isDoubleMetaphoneEqual(String value1, String value2, boolean alternate) {
+    return doubleMetaphone(value1, alternate).equals(doubleMetaphone(value2, alternate));
+}","public void test100545() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    doubleMetaphone0.maxCodeLen = 2445;
+    boolean boolean0 = doubleMetaphone0.isDoubleMetaphoneEqual(""wk!J[l`/TdD,."", ""F&&?:?[Cv).[{ZNK<um"", false);
+    assertFalse(boolean0);
+}","/**
+ * Check if the Double Metaphone values of two <code>String</code> values
+ * are equal, optionally using the alternate value.
+ *
+ * @param value1 The left-hand side of the encoded {@link String#equals(Object)}.
+ * @param value2 The right-hand side of the encoded {@link String#equals(Object)}.
+ * @param alternate use the alternate value if <code>true</code>.
+ * @return <code>true</code> if the encoded <code>String</code>s are equal;
+ *          <code>false</code> otherwise.
+ */"
+"public boolean isDoubleMetaphoneEqual(String value1, String value2, boolean alternate) {
+    return doubleMetaphone(value1, alternate).equals(doubleMetaphone(value2, alternate));
+}","public void test101546() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    boolean boolean0 = doubleMetaphone0.isDoubleMetaphoneEqual(""eQ>"", ""$ 3[Z~zTxi"", true);
+    assertFalse(boolean0);
+}","/**
+ * Check if the Double Metaphone values of two <code>String</code> values
+ * are equal, optionally using the alternate value.
+ *
+ * @param value1 The left-hand side of the encoded {@link String#equals(Object)}.
+ * @param value2 The right-hand side of the encoded {@link String#equals(Object)}.
+ * @param alternate use the alternate value if <code>true</code>.
+ * @return <code>true</code> if the encoded <code>String</code>s are equal;
+ *          <code>false</code> otherwise.
+ */"
+"public boolean isDoubleMetaphoneEqual(String value1, String value2, boolean alternate) {
+    return doubleMetaphone(value1, alternate).equals(doubleMetaphone(value2, alternate));
+}","public void test102547() throws Throwable {
+    DoubleMetaphone doubleMetaphone0 = new DoubleMetaphone();
+    // Undeclared exception!
+    try {
+        doubleMetaphone0.isDoubleMetaphoneEqual((String) null, ""S']ifOvD9pJyt"", true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+    }
+}","/**
+ * Check if the Double Metaphone values of two <code>String</code> values
+ * are equal, optionally using the alternate value.
+ *
+ * @param value1 The left-hand side of the encoded {@link String#equals(Object)}.
+ * @param value2 The right-hand side of the encoded {@link String#equals(Object)}.
+ * @param alternate use the alternate value if <code>true</code>.
+ * @return <code>true</code> if the encoded <code>String</code>s are equal;
+ *          <code>false</code> otherwise.
+ */"

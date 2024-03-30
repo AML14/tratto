@@ -1,0 +1,64 @@
+com.google.javascript.jscomp.TypeInference,@Test(timeout = 4000)
+public void test0077() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, """", """");
+    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);
+    ControlFlowGraph.Branch controlFlowGraph_Branch0 = ControlFlowGraph.Branch.ON_EX;
+    controlFlowGraph0.connectIfNotFound(node0, controlFlowGraph_Branch0, node0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();
+    Scope scope0 = new Scope(node0, objectType0);
+    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();
+    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);
+    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);
+    List<FlowScope> list0 = typeInference0.branchedFlowThrough(node0, linkedFlowScope0);
+    list0.size();
+},ERROR,java.nio.file.NoSuchFileException,/home/star_usit_group/tratto/experiment/generator/resources/defects4j/temp/Closure_35b/src/java/util/List.java
+com.google.javascript.jscomp.TypeInference,@Test(timeout = 4000)
+public void test118118() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, """", """");
+    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, false, false);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();
+    Scope scope0 = new Scope(node0, objectType0);
+    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();
+    node0.addSuppression(""Not declared as a constructor"");
+    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);
+    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);
+    List<FlowScope> list0 = typeInference0.branchedFlowThrough(node0, linkedFlowScope0);
+    list0.size();
+},ERROR,java.nio.file.NoSuchFileException,/home/star_usit_group/tratto/experiment/generator/resources/defects4j/temp/Closure_35b/src/java/util/List.java
+com.google.javascript.jscomp.TypeInference,@Test(timeout = 4000)
+public void test122122() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""9"", ""9"");
+    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();
+    Scope scope0 = new Scope(node0, objectType0);
+    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);
+    Node node1 = Node.newString(4, ""Not declared as a type name"", 29, 16);
+    Node node2 = new Node(93, node0, node0, node1, 0, 1);
+    node0.setJSType(objectType0);
+    HashMap<String, CodingConvention.AssertionFunctionSpec> hashMap0 = new HashMap<String, CodingConvention.AssertionFunctionSpec>();
+    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, hashMap0);
+    FlowScope flowScope0 = typeInference0.flowThrough(node2, linkedFlowScope0);
+    objectType0.hasCachedValues();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.google.javascript.jscomp.TypeInference,@Test(timeout = 4000)
+public void test127128() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""."", ""."");
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType();
+    Scope scope0 = new Scope(node0, objectType0);
+    TreeMap<String, CodingConvention.AssertionFunctionSpec> treeMap0 = new TreeMap<String, CodingConvention.AssertionFunctionSpec>();
+    Node node1 = new Node(30, node0, node0, node0, 42, 4084);
+    ControlFlowGraph<Node> controlFlowGraph0 = new ControlFlowGraph<Node>(node0, true, true);
+    TypeInference typeInference0 = new TypeInference(compiler0, controlFlowGraph0, (ReverseAbstractInterpreter) null, scope0, treeMap0);
+    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);
+    node0.setJSType(objectType0);
+    typeInference0.flowThrough(node1, linkedFlowScope0);
+    objectType0.hasCachedValues();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.

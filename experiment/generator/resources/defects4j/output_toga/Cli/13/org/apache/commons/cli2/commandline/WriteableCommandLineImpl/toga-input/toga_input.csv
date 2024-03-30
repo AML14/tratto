@@ -1,0 +1,251 @@
+focal_method,test_prefix,docstring
+"public String getProperty(final String property, final String defaultValue) {
+    return properties.getProperty(property, defaultValue);
+}","public void test000() throws Throwable {
+    PropertyOption propertyOption0 = PropertyOption.INSTANCE;
+    LinkedList<Switch> linkedList0 = new LinkedList<Switch>();
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(propertyOption0, linkedList0);
+    String string0 = writeableCommandLineImpl0.getProperty(""-D"", ""Passes properties and values to the application"");
+    assertEquals(""Passes properties and values to the application"", string0);
+}",""
+"public void addProperty(final String property, final String value) {
+    properties.setProperty(property, value);
+}","public void test022() throws Throwable {
+    PropertyOption propertyOption0 = new PropertyOption();
+    LinkedList<Switch> linkedList0 = new LinkedList<Switch>();
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(propertyOption0, linkedList0);
+    writeableCommandLineImpl0.addProperty(""-D"", ""-D"");
+}",""
+"public final int getOptionCount(final Option option) {
+    if (option == null) {
+        return 0;
+    }
+    int count = 0;
+    for (Iterator i = getOptions().iterator(); i.hasNext(); ) {
+        if (option.equals(i.next())) {
+            ++count;
+        }
+    }
+    return count;
+}","public void test044() throws Throwable {
+    PropertyOption propertyOption0 = new PropertyOption();
+    LinkedList<Switch> linkedList0 = new LinkedList<Switch>();
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(propertyOption0, linkedList0);
+    int int0 = writeableCommandLineImpl0.getOptionCount((Option) propertyOption0);
+    assertEquals(0, int0);
+}",""
+"public final Object getValue(final String trigger) {
+    return getValue(getOption(trigger), null);
+}","public void test066() throws Throwable {
+    PropertyOption propertyOption0 = new PropertyOption();
+    LinkedList<Switch> linkedList0 = new LinkedList<Switch>();
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(propertyOption0, linkedList0);
+    Object object0 = writeableCommandLineImpl0.getValue(""Passes properties and values to the application"");
+    assertNull(object0);
+}",""
+"public final boolean hasOption(final String trigger) {
+    return hasOption(getOption(trigger));
+}","public void test077() throws Throwable {
+    PropertyOption propertyOption0 = PropertyOption.INSTANCE;
+    LinkedList<Switch> linkedList0 = new LinkedList<Switch>();
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(propertyOption0, linkedList0);
+    writeableCommandLineImpl0.addOption(propertyOption0);
+    boolean boolean0 = writeableCommandLineImpl0.hasOption(""-D"");
+    assertTrue(boolean0);
+}",""
+"public boolean isRequired() {
+    return required;
+}","public void test088() throws Throwable {
+    PropertyOption propertyOption0 = new PropertyOption();
+    LinkedList<Switch> linkedList0 = new LinkedList<Switch>();
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(propertyOption0, linkedList0);
+    writeableCommandLineImpl0.addValue(propertyOption0, linkedList0);
+    writeableCommandLineImpl0.addValue(propertyOption0, linkedList0);
+    assertFalse(propertyOption0.isRequired());
+}",""
+"public int getMaximum() {
+    return maximum;
+}","public void test099() throws Throwable {
+    LinkedList<Switch> linkedList0 = new LinkedList<Switch>();
+    DateValidator dateValidator0 = DateValidator.getDateInstance();
+    ArgumentImpl argumentImpl0 = new ArgumentImpl(""Passes properties and values to the application"", ""Passes properties and values to the application"", 1, 1, '#', '#', dateValidator0, ""-D"", linkedList0, 1);
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(argumentImpl0, linkedList0);
+    writeableCommandLineImpl0.addValue(argumentImpl0, argumentImpl0);
+    assertEquals(1, argumentImpl0.getMaximum());
+}",""
+"public void addSwitch(final Option option, final boolean value) {
+    addOption(option);
+    if (switches.containsKey(option)) {
+        throw new IllegalStateException(ResourceHelper.getResourceHelper().getMessage(ResourceConstants.SWITCH_ALREADY_SET));
+    } else {
+        switches.put(option, value ? Boolean.TRUE : Boolean.FALSE);
+    }
+}","public void test1010() throws Throwable {
+    PropertyOption propertyOption0 = new PropertyOption();
+    LinkedList<Switch> linkedList0 = new LinkedList<Switch>();
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(propertyOption0, linkedList0);
+    writeableCommandLineImpl0.addSwitch(propertyOption0, false);
+    // Undeclared exception!
+    try {
+        writeableCommandLineImpl0.addSwitch(propertyOption0, false);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Switch already set.
+        //
+        verifyException(""org.apache.commons.cli2.commandline.WriteableCommandLineImpl"", e);
+    }
+}",""
+"public final boolean hasOption(final String trigger) {
+    return hasOption(getOption(trigger));
+}","public void test1111() throws Throwable {
+    PropertyOption propertyOption0 = PropertyOption.INSTANCE;
+    LinkedList<Switch> linkedList0 = new LinkedList<Switch>();
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(propertyOption0, linkedList0);
+    boolean boolean0 = writeableCommandLineImpl0.hasOption(""-D"");
+    assertFalse(boolean0);
+}",""
+"// First grab the command line values
+// Finally use an empty list
+public Boolean getSwitch(final Option option, final Boolean defaultValue) {
+    // First grab the command line values
+    Boolean bool = (Boolean) switches.get(option);
+    // Secondly try the defaults supplied to the method
+    if (bool == null) {
+        bool = defaultValue;
+    }
+    // Thirdly try the option's default values
+    if (bool == null) {
+        bool = (Boolean) this.defaultSwitches.get(option);
+    }
+    return bool;
+}","public void test1414() throws Throwable {
+    PropertyOption propertyOption0 = new PropertyOption(""?"", ""?"", (-30));
+    LinkedList<DefaultOption> linkedList0 = new LinkedList<DefaultOption>();
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(propertyOption0, linkedList0);
+    writeableCommandLineImpl0.addSwitch(propertyOption0, true);
+    Boolean boolean0 = writeableCommandLineImpl0.getSwitch((Option) propertyOption0, (Boolean) null);
+    assertTrue(boolean0);
+}",""
+"public final Boolean getSwitch(final String trigger) {
+    return getSwitch(getOption(trigger), null);
+}","public void test1516() throws Throwable {
+    PropertyOption propertyOption0 = PropertyOption.INSTANCE;
+    LinkedList<Switch> linkedList0 = new LinkedList<Switch>();
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(propertyOption0, linkedList0);
+    Boolean boolean0 = writeableCommandLineImpl0.getSwitch(""Passes properties and values to the application"");
+    assertNull(boolean0);
+}",""
+"public boolean looksLikeOption(final String trigger) {
+    for (final Iterator i = prefixes.iterator(); i.hasNext(); ) {
+        final String prefix = (String) i.next();
+        if (trigger.startsWith(prefix)) {
+            return true;
+        }
+    }
+    return false;
+}","public void test1617() throws Throwable {
+    PropertyOption propertyOption0 = PropertyOption.INSTANCE;
+    LinkedList<Switch> linkedList0 = new LinkedList<Switch>();
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(propertyOption0, linkedList0);
+    boolean boolean0 = writeableCommandLineImpl0.looksLikeOption(""Passes properties and values to the application"");
+    assertFalse(boolean0);
+}",""
+"public boolean looksLikeOption(final String trigger) {
+    for (final Iterator i = prefixes.iterator(); i.hasNext(); ) {
+        final String prefix = (String) i.next();
+        if (trigger.startsWith(prefix)) {
+            return true;
+        }
+    }
+    return false;
+}","public void test1718() throws Throwable {
+    PropertyOption propertyOption0 = PropertyOption.INSTANCE;
+    LinkedList<Switch> linkedList0 = new LinkedList<Switch>();
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(propertyOption0, linkedList0);
+    boolean boolean0 = writeableCommandLineImpl0.looksLikeOption(""-D"");
+    assertTrue(boolean0);
+}",""
+"public String toString() {
+    final StringBuffer buffer = new StringBuffer();
+    // need to add group header
+    for (final Iterator i = normalised.iterator(); i.hasNext(); ) {
+        final String arg = (String) i.next();
+        if (arg.indexOf(' ') >= 0) {
+            buffer.append(""\"""").append(arg).append(""\"""");
+        } else {
+            buffer.append(arg);
+        }
+        if (i.hasNext()) {
+            buffer.append(' ');
+        }
+    }
+    return buffer.toString();
+}","public void test1819() throws Throwable {
+    PropertyOption propertyOption0 = new PropertyOption();
+    LinkedList<Object> linkedList0 = new LinkedList<Object>();
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(propertyOption0, linkedList0);
+    linkedList0.add((Object) ""-D"");
+    String string0 = writeableCommandLineImpl0.toString();
+    assertEquals(""-D"", string0);
+}",""
+"public String toString() {
+    final StringBuffer buffer = new StringBuffer();
+    // need to add group header
+    for (final Iterator i = normalised.iterator(); i.hasNext(); ) {
+        final String arg = (String) i.next();
+        if (arg.indexOf(' ') >= 0) {
+            buffer.append(""\"""").append(arg).append(""\"""");
+        } else {
+            buffer.append(arg);
+        }
+        if (i.hasNext()) {
+            buffer.append(' ');
+        }
+    }
+    return buffer.toString();
+}","public void test1920() throws Throwable {
+    PropertyOption propertyOption0 = new PropertyOption();
+    LinkedList<Object> linkedList0 = new LinkedList<Object>();
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(propertyOption0, linkedList0);
+    linkedList0.add((Object) ""Passes properties and values to the application"");
+    linkedList0.addLast(""Passes properties and values to the application"");
+    String string0 = writeableCommandLineImpl0.toString();
+    assertEquals(""\""Passes properties and values to the application\"" \""Passes properties and values to the application\"""", string0);
+}",""
+"public String getDescription() {
+    return description;
+}","public void test2021() throws Throwable {
+    PropertyOption propertyOption0 = new PropertyOption();
+    LinkedList<Switch> linkedList0 = new LinkedList<Switch>();
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(propertyOption0, linkedList0);
+    writeableCommandLineImpl0.setDefaultValues(propertyOption0, linkedList0);
+    assertEquals(""Passes properties and values to the application"", propertyOption0.getDescription());
+}",""
+"public int getId() {
+    return id;
+}","public void test2122() throws Throwable {
+    PropertyOption propertyOption0 = PropertyOption.INSTANCE;
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(propertyOption0, (List) null);
+    writeableCommandLineImpl0.setDefaultValues(propertyOption0, (List) null);
+    assertEquals(68, propertyOption0.getId());
+}",""
+"public int getId() {
+    return id;
+}","public void test2223() throws Throwable {
+    PropertyOption propertyOption0 = PropertyOption.INSTANCE;
+    LinkedList<Switch> linkedList0 = new LinkedList<Switch>();
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(propertyOption0, linkedList0);
+    Boolean boolean0 = Boolean.TRUE;
+    writeableCommandLineImpl0.setDefaultSwitch(propertyOption0, boolean0);
+    assertEquals(68, propertyOption0.getId());
+}",""
+"public int getId() {
+    return id;
+}","public void test2324() throws Throwable {
+    PropertyOption propertyOption0 = PropertyOption.INSTANCE;
+    LinkedList<Switch> linkedList0 = new LinkedList<Switch>();
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(propertyOption0, linkedList0);
+    writeableCommandLineImpl0.setDefaultSwitch(propertyOption0, (Boolean) null);
+    assertEquals(68, propertyOption0.getId());
+}",""

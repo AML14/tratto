@@ -1,0 +1,2904 @@
+focal_method,test_prefix,docstring
+"boolean rangeEquals(final int start, int count, final String cached) {
+    if (count == cached.length()) {
+        char[] one = input;
+        int i = start;
+        int j = 0;
+        while (count-- != 0) {
+            if (one[i++] != cached.charAt(j++))
+                return false;
+        }
+        return true;
+    }
+    return false;
+}","public void test0000() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""Su|N*[:L0"");
+    boolean boolean0 = characterReader0.rangeEquals(1, 32, ""org.jsoup.parser.CharacterReader"");
+    assertFalse(boolean0);
+}","/**
+ * Check if the value of the provided range equals the string.
+ */"
+"boolean rangeEquals(final int start, int count, final String cached) {
+    if (count == cached.length()) {
+        char[] one = input;
+        int i = start;
+        int j = 0;
+        while (count-- != 0) {
+            if (one[i++] != cached.charAt(j++))
+                return false;
+        }
+        return true;
+    }
+    return false;
+}","public void test0011() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""3KhZ)1<|YM%,N|p"");
+    boolean boolean0 = characterReader0.rangeEquals((-1), 2335, """");
+    assertFalse(boolean0);
+}","/**
+ * Check if the value of the provided range equals the string.
+ */"
+"boolean matchConsumeIgnoreCase(String seq) {
+    if (matchesIgnoreCase(seq)) {
+        pos += seq.length();
+        return true;
+    } else {
+        return false;
+    }
+}","public void test0022() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""0M_E/RG9tfSu&DE.l9"");
+    boolean boolean0 = characterReader0.matchConsumeIgnoreCase(""0M_E/RG9tfSu&DE.l9"");
+    assertTrue(boolean0);
+}",""
+"boolean matchesLetter() {
+    if (isEmpty())
+        return false;
+    char c = input[pos];
+    return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
+}","public void test0033() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""aAsktoAmC</PH_NFr"");
+    boolean boolean0 = characterReader0.matchesLetter();
+    assertTrue(boolean0);
+}",""
+"boolean matchesLetter() {
+    if (isEmpty())
+        return false;
+    char c = input[pos];
+    return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
+}","public void test0044() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""ASup|QN*[:L0"");
+    boolean boolean0 = characterReader0.matchesLetter();
+    assertTrue(boolean0);
+}",""
+"String consumeLetterThenDigitSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+            pos++;
+        else
+            break;
+    }
+    while (!isEmpty()) {
+        char c = input[pos];
+        if (c >= '0' && c <= '9')
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test0055() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""P3sx6L/a+t_MUY"");
+    String string0 = characterReader0.consumeLetterThenDigitSequence();
+    assertEquals(""P3"", string0);
+}",""
+"String consumeLetterSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test0056() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""P3sx6L/a+t_MUY"");
+    String string0 = characterReader0.consumeLetterThenDigitSequence();
+    String string1 = characterReader0.consumeLetterSequence();
+    assertEquals(""sx"", string1);
+}",""
+"String consumeAsString() {
+    return new String(input, pos++, 1);
+}","public void test0057() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""P3sx6L/a+t_MUY"");
+    String string0 = characterReader0.consumeLetterThenDigitSequence();
+    String string1 = characterReader0.consumeLetterSequence();
+    String string2 = characterReader0.consumeAsString();
+    assertEquals(""6"", string2);
+}",""
+"boolean matchesAnySorted(char[] seq) {
+    return !isEmpty() && Arrays.binarySearch(seq, input[pos]) >= 0;
+}","public void test0058() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""P3sx6L/a+t_MUY"");
+    String string0 = characterReader0.consumeLetterThenDigitSequence();
+    String string1 = characterReader0.consumeLetterSequence();
+    String string2 = characterReader0.consumeAsString();
+    char[] charArray0 = new char[3];
+    charArray0[1] = 'L';
+    boolean boolean0 = characterReader0.matchesAnySorted(charArray0);
+    assertTrue(boolean0);
+}",""
+"boolean matchesAny(char... seq) {
+    if (isEmpty())
+        return false;
+    char c = input[pos];
+    for (char seek : seq) {
+        if (seek == c)
+            return true;
+    }
+    return false;
+}","public void test0069() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""Object must not be null"");
+    char[] charArray0 = new char[5];
+    charArray0[0] = 'j';
+    boolean boolean0 = characterReader0.matchesAny(charArray0);
+    assertFalse(boolean0);
+}",""
+"String consumeAsString() {
+    return new String(input, pos++, 1);
+}","public void test00710() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""'1at{|}5q 5dP'%1"");
+    String string0 = characterReader0.consumeAsString();
+    assertEquals(""'"", string0);
+}",""
+"boolean matchesIgnoreCase(String seq) {
+    int scanLength = seq.length();
+    if (scanLength > length - pos)
+        return false;
+    for (int offset = 0; offset < scanLength; offset++) {
+        char upScan = Character.toUpperCase(seq.charAt(offset));
+        char upTarget = Character.toUpperCase(input[pos + offset]);
+        if (upScan != upTarget)
+            return false;
+    }
+    return true;
+}","public void test00711() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""'1at{|}5q 5dP'%1"");
+    String string0 = characterReader0.consumeAsString();
+    boolean boolean0 = characterReader0.matchesIgnoreCase(""'"");
+    assertFalse(boolean0);
+}",""
+"String consumeToEnd() {
+    String data = cacheString(pos, length - pos);
+    pos = length;
+    return data;
+}","public void test00812() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader("" TfG7kymYe1^"");
+    String string0 = characterReader0.consumeToEnd();
+    assertEquals("" TfG7kymYe1^"", string0);
+}",""
+"boolean matchConsumeIgnoreCase(String seq) {
+    if (matchesIgnoreCase(seq)) {
+        pos += seq.length();
+        return true;
+    } else {
+        return false;
+    }
+}","public void test00813() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader("" TfG7kymYe1^"");
+    String string0 = characterReader0.consumeToEnd();
+    boolean boolean0 = characterReader0.matchConsumeIgnoreCase("""");
+    assertTrue(boolean0);
+}",""
+"boolean matchConsume(String seq) {
+    if (matches(seq)) {
+        pos += seq.length();
+        return true;
+    } else {
+        return false;
+    }
+}","public void test00914() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""4^xC6J("");
+    boolean boolean0 = characterReader0.matchConsume(""S&Te"");
+    assertFalse(boolean0);
+}",""
+"boolean matches(char c) {
+    return !isEmpty() && input[pos] == c;
+}","public void test01015() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""<iOZ :U6l^}(QHCFk "");
+    boolean boolean0 = characterReader0.matches('M');
+    assertFalse(boolean0);
+}",""
+"String consumeDigitSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if (c >= '0' && c <= '9')
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test01116() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""9k_mAEp]<"");
+    characterReader0.unconsume();
+    characterReader0.advance();
+    String string0 = characterReader0.consumeDigitSequence();
+    assertEquals(""9"", string0);
+}",""
+"String consumeHexSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f'))
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test01217() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""7aD~vKiLY[2\""nIz~"");
+    String string0 = characterReader0.consumeHexSequence();
+    assertEquals(""7aD"", string0);
+}",""
+"String consumeHexSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f'))
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test01318() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""06"");
+    String string0 = characterReader0.consumeHexSequence();
+    assertEquals(""06"", string0);
+}",""
+"String consumeLetterThenDigitSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+            pos++;
+        else
+            break;
+    }
+    while (!isEmpty()) {
+        char c = input[pos];
+        if (c >= '0' && c <= '9')
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test01419() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""0,`&nI1`Xga"");
+    String string0 = characterReader0.consumeLetterThenDigitSequence();
+    assertEquals(""0"", string0);
+}",""
+"String consumeLetterThenDigitSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+            pos++;
+        else
+            break;
+    }
+    while (!isEmpty()) {
+        char c = input[pos];
+        if (c >= '0' && c <= '9')
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test01520() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""zk"");
+    String string0 = characterReader0.consumeLetterThenDigitSequence();
+    assertEquals(""zk"", string0);
+}",""
+"String consumeLetterThenDigitSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+            pos++;
+        else
+            break;
+    }
+    while (!isEmpty()) {
+        char c = input[pos];
+        if (c >= '0' && c <= '9')
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test01621() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""Array must not contain any null objects"");
+    String string0 = characterReader0.consumeLetterThenDigitSequence();
+    assertEquals(""Array"", string0);
+}",""
+"String consumeLetterThenDigitSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+            pos++;
+        else
+            break;
+    }
+    while (!isEmpty()) {
+        char c = input[pos];
+        if (c >= '0' && c <= '9')
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test01722() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""mZNE@JyuX"");
+    String string0 = characterReader0.consumeLetterThenDigitSequence();
+    assertEquals(""mZNE"", string0);
+}",""
+"String consumeLetterSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test01823() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""Array must not contain any null objects"");
+    String string0 = characterReader0.consumeLetterSequence();
+    assertEquals(""Array"", string0);
+}",""
+"String consumeLetterSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test01924() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""ZP'MG){"");
+    String string0 = characterReader0.consumeLetterSequence();
+    assertEquals(""ZP"", string0);
+}",""
+"String consumeToAnySorted(final char... chars) {
+    final int start = pos;
+    final int remaining = length;
+    final char[] val = input;
+    while (pos < remaining) {
+        if (Arrays.binarySearch(chars, val[pos]) >= 0)
+            break;
+        pos++;
+    }
+    return pos > start ? cacheString(start, pos - start) : """";
+}","public void test02025() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""@<E"");
+    char[] charArray0 = new char[9];
+    String string0 = characterReader0.consumeToAnySorted(charArray0);
+    assertEquals(""@<E"", string0);
+}",""
+"String consumeTagName() {
+    // '\t', '\n', '\r', '\f', ' ', '/', '>', nullChar
+    final int start = pos;
+    final int remaining = length;
+    final char[] val = input;
+    while (pos < remaining) {
+        final char c = val[pos];
+        if (c == '\t' || c == '\n' || c == '\r' || c == '\f' || c == ' ' || c == '/' || c == '>' || c == TokeniserState.nullChar)
+            break;
+        pos++;
+    }
+    return pos > start ? cacheString(start, pos - start) : """";
+}","public void test02026() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""@<E"");
+    char[] charArray0 = new char[9];
+    String string0 = characterReader0.consumeToAnySorted(charArray0);
+    characterReader0.advance();
+    String string1 = characterReader0.consumeTagName();
+    assertEquals("""", string1);
+}",""
+"String consumeData() {
+    // &, <, null
+    final int start = pos;
+    final int remaining = length;
+    final char[] val = input;
+    while (pos < remaining) {
+        final char c = val[pos];
+        if (c == '&' || c == '<' || c == TokeniserState.nullChar)
+            break;
+        pos++;
+    }
+    return pos > start ? cacheString(start, pos - start) : """";
+}","public void test02127() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader("""");
+    characterReader0.consume();
+    String string0 = characterReader0.consumeData();
+    assertEquals("""", string0);
+}",""
+"char consume() {
+    char val = pos >= length ? EOF : input[pos];
+    pos++;
+    return val;
+}","public void test02228() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""3KhZ)1<|YM%,N|p"");
+    char[] charArray0 = new char[2];
+    char char0 = characterReader0.consume();
+    assertEquals('3', char0);
+}",""
+"String consumeToAnySorted(final char... chars) {
+    final int start = pos;
+    final int remaining = length;
+    final char[] val = input;
+    while (pos < remaining) {
+        if (Arrays.binarySearch(chars, val[pos]) >= 0)
+            break;
+        pos++;
+    }
+    return pos > start ? cacheString(start, pos - start) : """";
+}","public void test02229() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""3KhZ)1<|YM%,N|p"");
+    char[] charArray0 = new char[2];
+    char char0 = characterReader0.consume();
+    String string0 = characterReader0.consumeToAnySorted(charArray0);
+    assertEquals(""KhZ)1<|YM%,N|p"", string0);
+}",""
+"String consumeToAnySorted(final char... chars) {
+    final int start = pos;
+    final int remaining = length;
+    final char[] val = input;
+    while (pos < remaining) {
+        if (Arrays.binarySearch(chars, val[pos]) >= 0)
+            break;
+        pos++;
+    }
+    return pos > start ? cacheString(start, pos - start) : """";
+}","public void test02330() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""ASup|QN*[:L0"");
+    char[] charArray0 = new char[7];
+    charArray0[3] = '[';
+    String string0 = characterReader0.consumeToAnySorted(charArray0);
+    assertEquals(""ASup|QN*"", string0);
+}",""
+"String consumeData() {
+    // &, <, null
+    final int start = pos;
+    final int remaining = length;
+    final char[] val = input;
+    while (pos < remaining) {
+        final char c = val[pos];
+        if (c == '&' || c == '<' || c == TokeniserState.nullChar)
+            break;
+        pos++;
+    }
+    return pos > start ? cacheString(start, pos - start) : """";
+}","public void test02431() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""-Fu-"");
+    String string0 = characterReader0.consumeData();
+    assertEquals(""-Fu-"", string0);
+}",""
+"char consume() {
+    char val = pos >= length ? EOF : input[pos];
+    pos++;
+    return val;
+}","public void test02432() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""-Fu-"");
+    String string0 = characterReader0.consumeData();
+    char char0 = characterReader0.consume();
+    assertEquals('\uFFFF', char0);
+}",""
+"String consumeToAnySorted(final char... chars) {
+    final int start = pos;
+    final int remaining = length;
+    final char[] val = input;
+    while (pos < remaining) {
+        if (Arrays.binarySearch(chars, val[pos]) >= 0)
+            break;
+        pos++;
+    }
+    return pos > start ? cacheString(start, pos - start) : """";
+}","public void test02433() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""-Fu-"");
+    String string0 = characterReader0.consumeData();
+    char char0 = characterReader0.consume();
+    char[] charArray0 = new char[8];
+    String string1 = characterReader0.consumeToAnySorted(charArray0);
+    assertEquals("""", string1);
+}",""
+"String consumeToAny(final char... chars) {
+    final int start = pos;
+    final int remaining = length;
+    final char[] val = input;
+    OUTER: while (pos < remaining) {
+        for (char c : chars) {
+            if (val[pos] == c)
+                break OUTER;
+        }
+        pos++;
+    }
+    return pos > start ? cacheString(start, pos - start) : """";
+}","public void test02534() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""2q8>#qbSvqFP"");
+    char[] charArray0 = new char[8];
+    charArray0[0] = 'f';
+    String string0 = characterReader0.consumeToAny(charArray0);
+    assertEquals(""2q8>#qbSvqFP"", string0);
+}",""
+"String consumeToAny(final char... chars) {
+    final int start = pos;
+    final int remaining = length;
+    final char[] val = input;
+    OUTER: while (pos < remaining) {
+        for (char c : chars) {
+            if (val[pos] == c)
+                break OUTER;
+        }
+        pos++;
+    }
+    return pos > start ? cacheString(start, pos - start) : """";
+}","public void test02635() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader("""");
+    characterReader0.consume();
+    char[] charArray0 = new char[7];
+    String string0 = characterReader0.consumeToAny(charArray0);
+    assertEquals("""", string0);
+}",""
+"String consumeAsString() {
+    return new String(input, pos++, 1);
+}","public void test02736() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""org.jsoup.parser.CharacterReader"");
+    String string0 = characterReader0.consumeAsString();
+    assertEquals(""o"", string0);
+}",""
+"String consumeTo(String seq) {
+    int offset = nextIndexOf(seq);
+    if (offset != -1) {
+        String consumed = cacheString(pos, offset);
+        pos += offset;
+        return consumed;
+    } else {
+        return consumeToEnd();
+    }
+}","public void test02737() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""org.jsoup.parser.CharacterReader"");
+    String string0 = characterReader0.consumeAsString();
+    String string1 = characterReader0.consumeTo(""o"");
+    assertEquals(""rg.js"", string1);
+}",""
+"char consume() {
+    char val = pos >= length ? EOF : input[pos];
+    pos++;
+    return val;
+}","public void test02838() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""org.jsoup.parser.CharacterReader"");
+    char char0 = characterReader0.consume();
+    assertEquals('o', char0);
+}",""
+"String consumeTo(char c) {
+    int offset = nextIndexOf(c);
+    if (offset != -1) {
+        String consumed = cacheString(pos, offset);
+        pos += offset;
+        return consumed;
+    } else {
+        return consumeToEnd();
+    }
+}","public void test02839() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""org.jsoup.parser.CharacterReader"");
+    char char0 = characterReader0.consume();
+    String string0 = characterReader0.consumeTo('o');
+    assertEquals(""rg.js"", string0);
+}",""
+"boolean containsIgnoreCase(String seq) {
+    // used to check presence of </title>, </style>. only finds consistent case.
+    String loScan = seq.toLowerCase(Locale.ENGLISH);
+    String hiScan = seq.toUpperCase(Locale.ENGLISH);
+    return (nextIndexOf(loScan) > -1) || (nextIndexOf(hiScan) > -1);
+}","public void test02941() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""org.jsoup.parser.CharacterReader"");
+    String string0 = characterReader0.consumeAsString();
+    boolean boolean0 = characterReader0.containsIgnoreCase(""o"");
+    assertTrue(boolean0);
+}",""
+"boolean containsIgnoreCase(String seq) {
+    // used to check presence of </title>, </style>. only finds consistent case.
+    String loScan = seq.toLowerCase(Locale.ENGLISH);
+    String hiScan = seq.toUpperCase(Locale.ENGLISH);
+    return (nextIndexOf(loScan) > -1) || (nextIndexOf(hiScan) > -1);
+}","public void test03042() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""Array must not contain any null objects"");
+    boolean boolean0 = characterReader0.containsIgnoreCase(""Array"");
+    assertFalse(boolean0);
+}",""
+"String consumeTagName() {
+    // '\t', '\n', '\r', '\f', ' ', '/', '>', nullChar
+    final int start = pos;
+    final int remaining = length;
+    final char[] val = input;
+    while (pos < remaining) {
+        final char c = val[pos];
+        if (c == '\t' || c == '\n' || c == '\r' || c == '\f' || c == ' ' || c == '/' || c == '>' || c == TokeniserState.nullChar)
+            break;
+        pos++;
+    }
+    return pos > start ? cacheString(start, pos - start) : """";
+}","public void test03143() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""3KhZ)1<|YM%,N|p"");
+    String string0 = characterReader0.consumeTagName();
+    assertEquals(""3KhZ)1<|YM%,N|p"", string0);
+}",""
+"int nextIndexOf(CharSequence seq) {
+    // doesn't handle scanning for surrogates
+    char startChar = seq.charAt(0);
+    for (int offset = pos; offset < length; offset++) {
+        // scan to first instance of startchar:
+        if (startChar != input[offset])
+            while (++offset < length && startChar != input[offset]) {
+                /* empty */
+            }
+        int i = offset + 1;
+        int last = i + seq.length() - 1;
+        if (offset < length && last <= length) {
+            for (int j = 1; i < last && seq.charAt(j) == input[i]; i++, j++) {
+                /* empty */
+            }
+            if (// found full sequence
+            i == last)
+                return offset - pos;
+        }
+    }
+    return -1;
+}","public void test03144() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""3KhZ)1<|YM%,N|p"");
+    String string0 = characterReader0.consumeTagName();
+    int int0 = characterReader0.nextIndexOf(""wDqoY!w_T<yhYGe.:U"");
+    assertEquals((-1), int0);
+}","/**
+ * Returns the number of characters between the current position and the next instance of the input sequence
+ *
+ * @param seq scan target
+ * @return offset between current position and next instance of target. -1 if not found.
+ */"
+"String consumeToEnd() {
+    String data = cacheString(pos, length - pos);
+    pos = length;
+    return data;
+}","public void test03245() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""EI.Twzz%y<+s,,Q"");
+    String string0 = characterReader0.consumeToEnd();
+    assertEquals(""EI.Twzz%y<+s,,Q"", string0);
+}",""
+"char consume() {
+    char val = pos >= length ? EOF : input[pos];
+    pos++;
+    return val;
+}","public void test03246() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""EI.Twzz%y<+s,,Q"");
+    String string0 = characterReader0.consumeToEnd();
+    characterReader0.advance();
+    char char0 = characterReader0.consume();
+    assertEquals('\uFFFF', char0);
+}",""
+"char current() {
+    return pos >= length ? EOF : input[pos];
+}","public void test03347() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader("""");
+    characterReader0.advance();
+    char char0 = characterReader0.current();
+    assertEquals('\uFFFF', char0);
+}",""
+"String consumeTagName() {
+    // '\t', '\n', '\r', '\f', ' ', '/', '>', nullChar
+    final int start = pos;
+    final int remaining = length;
+    final char[] val = input;
+    while (pos < remaining) {
+        final char c = val[pos];
+        if (c == '\t' || c == '\n' || c == '\r' || c == '\f' || c == ' ' || c == '/' || c == '>' || c == TokeniserState.nullChar)
+            break;
+        pos++;
+    }
+    return pos > start ? cacheString(start, pos - start) : """";
+}","public void test03448() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""XZ#"");
+    String string0 = characterReader0.consumeTagName();
+    assertEquals(""XZ#"", string0);
+}",""
+"@Override
+public String toString() {
+    return new String(input, pos, length - pos);
+}","public void test03449() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""XZ#"");
+    String string0 = characterReader0.consumeTagName();
+    String string1 = characterReader0.toString();
+    assertEquals("""", string1);
+}",""
+"boolean rangeEquals(final int start, int count, final String cached) {
+    if (count == cached.length()) {
+        char[] one = input;
+        int i = start;
+        int j = 0;
+        while (count-- != 0) {
+            if (one[i++] != cached.charAt(j++))
+                return false;
+        }
+        return true;
+    }
+    return false;
+}","public void test03550() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""=Tc:$]:,s"");
+    boolean boolean0 = characterReader0.rangeEquals(0, 0, """");
+    assertTrue(boolean0);
+}","/**
+ * Check if the value of the provided range equals the string.
+ */"
+"int pos() {
+    return pos;
+}","public void test03651() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader("" TfG7kymYe1^"");
+    characterReader0.consumeToEnd();
+    int int0 = characterReader0.pos();
+    assertEquals(12, int0);
+}",""
+"int pos() {
+    return pos;
+}","public void test03752() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""Z$ :-h}{o"");
+    characterReader0.unconsume();
+    int int0 = characterReader0.pos();
+    assertEquals((-1), int0);
+}",""
+"int nextIndexOf(CharSequence seq) {
+    // doesn't handle scanning for surrogates
+    char startChar = seq.charAt(0);
+    for (int offset = pos; offset < length; offset++) {
+        // scan to first instance of startchar:
+        if (startChar != input[offset])
+            while (++offset < length && startChar != input[offset]) {
+                /* empty */
+            }
+        int i = offset + 1;
+        int last = i + seq.length() - 1;
+        if (offset < length && last <= length) {
+            for (int j = 1; i < last && seq.charAt(j) == input[i]; i++, j++) {
+                /* empty */
+            }
+            if (// found full sequence
+            i == last)
+                return offset - pos;
+        }
+    }
+    return -1;
+}","public void test03853() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""En!nL^."");
+    int int0 = characterReader0.nextIndexOf(""En!nL^."");
+    assertEquals(0, int0);
+}","/**
+ * Returns the number of characters between the current position and the next instance of the input sequence
+ *
+ * @param seq scan target
+ * @return offset between current position and next instance of target. -1 if not found.
+ */"
+"String consumeLetterThenDigitSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+            pos++;
+        else
+            break;
+    }
+    while (!isEmpty()) {
+        char c = input[pos];
+        if (c >= '0' && c <= '9')
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test03954() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""org.jsoup.parser.CharacterReader"");
+    String string0 = characterReader0.consumeLetterThenDigitSequence();
+    assertEquals(""org"", string0);
+}",""
+"int nextIndexOf(char c) {
+    // doesn't handle scanning for surrogates
+    for (int i = pos; i < length; i++) {
+        if (c == input[i])
+            return i - pos;
+    }
+    return -1;
+}","public void test03955() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""org.jsoup.parser.CharacterReader"");
+    String string0 = characterReader0.consumeLetterThenDigitSequence();
+    int int0 = characterReader0.nextIndexOf('.');
+    assertEquals(0, int0);
+}","/**
+ * Returns the number of characters between the current position and the next instance of the input char
+ * @param c scan target
+ * @return offset between current position and next instance of target. -1 if not found.
+ */"
+"int nextIndexOf(char c) {
+    // doesn't handle scanning for surrogates
+    for (int i = pos; i < length; i++) {
+        if (c == input[i])
+            return i - pos;
+    }
+    return -1;
+}","public void test04056() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""org.jsoup.parser.CharacterReader"");
+    int int0 = characterReader0.nextIndexOf('.');
+    assertEquals(3, int0);
+}","/**
+ * Returns the number of characters between the current position and the next instance of the input char
+ * @param c scan target
+ * @return offset between current position and next instance of target. -1 if not found.
+ */"
+"int nextIndexOf(char c) {
+    // doesn't handle scanning for surrogates
+    for (int i = pos; i < length; i++) {
+        if (c == input[i])
+            return i - pos;
+    }
+    return -1;
+}","public void test04157() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""9k_mAEp]<"");
+    int int0 = characterReader0.nextIndexOf('x');
+    assertEquals((-1), int0);
+}","/**
+ * Returns the number of characters between the current position and the next instance of the input char
+ * @param c scan target
+ * @return offset between current position and next instance of target. -1 if not found.
+ */"
+"boolean matchesIgnoreCase(String seq) {
+    int scanLength = seq.length();
+    if (scanLength > length - pos)
+        return false;
+    for (int offset = 0; offset < scanLength; offset++) {
+        char upScan = Character.toUpperCase(seq.charAt(offset));
+        char upTarget = Character.toUpperCase(input[pos + offset]);
+        if (upScan != upTarget)
+            return false;
+    }
+    return true;
+}","public void test04258() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""XZ#"");
+    boolean boolean0 = characterReader0.matchesIgnoreCase(""Z#"");
+    assertFalse(boolean0);
+}",""
+"char consume() {
+    char val = pos >= length ? EOF : input[pos];
+    pos++;
+    return val;
+}","public void test04359() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader("",k$prN"");
+    char char0 = characterReader0.consume();
+    assertEquals(',', char0);
+}",""
+"boolean matches(String seq) {
+    int scanLength = seq.length();
+    if (scanLength > length - pos)
+        return false;
+    for (int offset = 0; offset < scanLength; offset++) if (seq.charAt(offset) != input[pos + offset])
+        return false;
+    return true;
+}","public void test04360() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader("",k$prN"");
+    char char0 = characterReader0.consume();
+    boolean boolean0 = characterReader0.matches("",k$prN"");
+    assertFalse(boolean0);
+}",""
+"boolean isEmpty() {
+    return pos >= length;
+}","public void test04462() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""3KhZ)1<|YM%,N|p"");
+    String string0 = characterReader0.consumeTagName();
+    boolean boolean0 = characterReader0.isEmpty();
+    assertTrue(boolean0);
+}",""
+"boolean isEmpty() {
+    return pos >= length;
+}","public void test04563() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""=Tc:$]:,s"");
+    boolean boolean0 = characterReader0.isEmpty();
+    assertFalse(boolean0);
+}",""
+"String consumeLetterSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test04664() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""ws6`m8US 5xp"");
+    String string0 = characterReader0.consumeLetterSequence();
+    assertEquals(""ws"", string0);
+}",""
+"char current() {
+    return pos >= length ? EOF : input[pos];
+}","public void test04665() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""ws6`m8US 5xp"");
+    String string0 = characterReader0.consumeLetterSequence();
+    char char0 = characterReader0.current();
+    assertEquals('6', char0);
+}",""
+"String consumeTagName() {
+    // '\t', '\n', '\r', '\f', ' ', '/', '>', nullChar
+    final int start = pos;
+    final int remaining = length;
+    final char[] val = input;
+    while (pos < remaining) {
+        final char c = val[pos];
+        if (c == '\t' || c == '\n' || c == '\r' || c == '\f' || c == ' ' || c == '/' || c == '>' || c == TokeniserState.nullChar)
+            break;
+        pos++;
+    }
+    return pos > start ? cacheString(start, pos - start) : """";
+}","public void test04766() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""9k_mAEp]<"");
+    String string0 = characterReader0.consumeTagName();
+    assertEquals(""9k_mAEp]<"", string0);
+}",""
+"String consumeToEnd() {
+    String data = cacheString(pos, length - pos);
+    pos = length;
+    return data;
+}","public void test04767() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""9k_mAEp]<"");
+    String string0 = characterReader0.consumeTagName();
+    String string1 = characterReader0.consumeToEnd();
+    assertEquals("""", string1);
+}",""
+"boolean rangeEquals(final int start, int count, final String cached) {
+    if (count == cached.length()) {
+        char[] one = input;
+        int i = start;
+        int j = 0;
+        while (count-- != 0) {
+            if (one[i++] != cached.charAt(j++))
+                return false;
+        }
+        return true;
+    }
+    return false;
+}","public void test04868() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""CY]"");
+    // Undeclared exception!
+    try {
+        characterReader0.rangeEquals(5159, 0, (String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.CharacterReader"", e);
+    }
+}","/**
+ * Check if the value of the provided range equals the string.
+ */"
+"boolean rangeEquals(final int start, int count, final String cached) {
+    if (count == cached.length()) {
+        char[] one = input;
+        int i = start;
+        int j = 0;
+        while (count-- != 0) {
+            if (one[i++] != cached.charAt(j++))
+                return false;
+        }
+        return true;
+    }
+    return false;
+}","public void test04969() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""S$w&"");
+    // Undeclared exception!
+    try {
+        characterReader0.rangeEquals(12, 12, ""oF2*q>XDAnEC"");
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 12
+        //
+        verifyException(""org.jsoup.parser.CharacterReader"", e);
+    }
+}","/**
+ * Check if the value of the provided range equals the string.
+ */"
+"int nextIndexOf(CharSequence seq) {
+    // doesn't handle scanning for surrogates
+    char startChar = seq.charAt(0);
+    for (int offset = pos; offset < length; offset++) {
+        // scan to first instance of startchar:
+        if (startChar != input[offset])
+            while (++offset < length && startChar != input[offset]) {
+                /* empty */
+            }
+        int i = offset + 1;
+        int last = i + seq.length() - 1;
+        if (offset < length && last <= length) {
+            for (int j = 1; i < last && seq.charAt(j) == input[i]; i++, j++) {
+                /* empty */
+            }
+            if (// found full sequence
+            i == last)
+                return offset - pos;
+        }
+    }
+    return -1;
+}","public void test05070() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader("""");
+    // Undeclared exception!
+    try {
+        characterReader0.nextIndexOf("""");
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}","/**
+ * Returns the number of characters between the current position and the next instance of the input sequence
+ *
+ * @param seq scan target
+ * @return offset between current position and next instance of target. -1 if not found.
+ */"
+"int nextIndexOf(CharSequence seq) {
+    // doesn't handle scanning for surrogates
+    char startChar = seq.charAt(0);
+    for (int offset = pos; offset < length; offset++) {
+        // scan to first instance of startchar:
+        if (startChar != input[offset])
+            while (++offset < length && startChar != input[offset]) {
+                /* empty */
+            }
+        int i = offset + 1;
+        int last = i + seq.length() - 1;
+        if (offset < length && last <= length) {
+            for (int j = 1; i < last && seq.charAt(j) == input[i]; i++, j++) {
+                /* empty */
+            }
+            if (// found full sequence
+            i == last)
+                return offset - pos;
+        }
+    }
+    return -1;
+}","public void test05171() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""org.jsoup.parser.CharacterReader"");
+    characterReader0.unconsume();
+    // Undeclared exception!
+    try {
+        characterReader0.nextIndexOf(""org.jsoup.parser.CharacterReader"");
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -1
+        //
+        verifyException(""org.jsoup.parser.CharacterReader"", e);
+    }
+}","/**
+ * Returns the number of characters between the current position and the next instance of the input sequence
+ *
+ * @param seq scan target
+ * @return offset between current position and next instance of target. -1 if not found.
+ */"
+"int nextIndexOf(char c) {
+    // doesn't handle scanning for surrogates
+    for (int i = pos; i < length; i++) {
+        if (c == input[i])
+            return i - pos;
+    }
+    return -1;
+}","public void test05272() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""joAaP?"");
+    characterReader0.unconsume();
+    // Undeclared exception!
+    try {
+        characterReader0.nextIndexOf('1');
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -1
+        //
+        verifyException(""org.jsoup.parser.CharacterReader"", e);
+    }
+}","/**
+ * Returns the number of characters between the current position and the next instance of the input char
+ * @param c scan target
+ * @return offset between current position and next instance of target. -1 if not found.
+ */"
+"boolean matchesLetter() {
+    if (isEmpty())
+        return false;
+    char c = input[pos];
+    return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
+}","public void test05373() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader("""");
+    characterReader0.unconsume();
+    // Undeclared exception!
+    try {
+        characterReader0.matchesLetter();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -1
+        //
+        verifyException(""org.jsoup.parser.CharacterReader"", e);
+    }
+}",""
+"boolean matchesIgnoreCase(String seq) {
+    int scanLength = seq.length();
+    if (scanLength > length - pos)
+        return false;
+    for (int offset = 0; offset < scanLength; offset++) {
+        char upScan = Character.toUpperCase(seq.charAt(offset));
+        char upTarget = Character.toUpperCase(input[pos + offset]);
+        if (upScan != upTarget)
+            return false;
+    }
+    return true;
+}","public void test05474() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""--d,B;ARK."");
+    // Undeclared exception!
+    try {
+        characterReader0.matchesIgnoreCase((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.CharacterReader"", e);
+    }
+}",""
+"boolean matchesIgnoreCase(String seq) {
+    int scanLength = seq.length();
+    if (scanLength > length - pos)
+        return false;
+    for (int offset = 0; offset < scanLength; offset++) {
+        char upScan = Character.toUpperCase(seq.charAt(offset));
+        char upTarget = Character.toUpperCase(input[pos + offset]);
+        if (upScan != upTarget)
+            return false;
+    }
+    return true;
+}","public void test05575() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""=Tc:$]:,s"");
+    characterReader0.unconsume();
+    // Undeclared exception!
+    try {
+        characterReader0.matchesIgnoreCase(""=Tc:$]:,s"");
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -1
+        //
+        verifyException(""org.jsoup.parser.CharacterReader"", e);
+    }
+}",""
+"boolean matchesDigit() {
+    if (isEmpty())
+        return false;
+    char c = input[pos];
+    return (c >= '0' && c <= '9');
+}","public void test05676() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader("""");
+    characterReader0.unconsume();
+    // Undeclared exception!
+    try {
+        characterReader0.matchesDigit();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -1
+        //
+        verifyException(""org.jsoup.parser.CharacterReader"", e);
+    }
+}",""
+"boolean matchesAnySorted(char[] seq) {
+    return !isEmpty() && Arrays.binarySearch(seq, input[pos]) >= 0;
+}","public void test05777() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""dx'e#lx?"");
+    // Undeclared exception!
+    try {
+        characterReader0.matchesAnySorted((char[]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"boolean matchesAnySorted(char[] seq) {
+    return !isEmpty() && Arrays.binarySearch(seq, input[pos]) >= 0;
+}","public void test05878() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader("""");
+    char[] charArray0 = new char[7];
+    characterReader0.unconsume();
+    // Undeclared exception!
+    try {
+        characterReader0.matchesAnySorted(charArray0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -1
+        //
+        verifyException(""org.jsoup.parser.CharacterReader"", e);
+    }
+}",""
+"boolean matchesAny(char... seq) {
+    if (isEmpty())
+        return false;
+    char c = input[pos];
+    for (char seek : seq) {
+        if (seek == c)
+            return true;
+    }
+    return false;
+}","public void test05979() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""B$AApvF hS+"");
+    // Undeclared exception!
+    try {
+        characterReader0.matchesAny((char[]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.CharacterReader"", e);
+    }
+}",""
+"boolean matchesAny(char... seq) {
+    if (isEmpty())
+        return false;
+    char c = input[pos];
+    for (char seek : seq) {
+        if (seek == c)
+            return true;
+    }
+    return false;
+}","public void test06080() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""]kjmhB#.T3inG1 I$qx"");
+    characterReader0.unconsume();
+    char[] charArray0 = new char[4];
+    // Undeclared exception!
+    try {
+        characterReader0.matchesAny(charArray0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -1
+        //
+        verifyException(""org.jsoup.parser.CharacterReader"", e);
+    }
+}",""
+"boolean matches(String seq) {
+    int scanLength = seq.length();
+    if (scanLength > length - pos)
+        return false;
+    for (int offset = 0; offset < scanLength; offset++) if (seq.charAt(offset) != input[pos + offset])
+        return false;
+    return true;
+}","public void test06181() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""`AmxE"");
+    // Undeclared exception!
+    try {
+        characterReader0.matches((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.CharacterReader"", e);
+    }
+}",""
+"boolean matches(String seq) {
+    int scanLength = seq.length();
+    if (scanLength > length - pos)
+        return false;
+    for (int offset = 0; offset < scanLength; offset++) if (seq.charAt(offset) != input[pos + offset])
+        return false;
+    return true;
+}","public void test06282() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""Object must not be null"");
+    characterReader0.unconsume();
+    // Undeclared exception!
+    try {
+        characterReader0.matches(""Object must not be null"");
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -1
+        //
+        verifyException(""org.jsoup.parser.CharacterReader"", e);
+    }
+}",""
+"boolean matches(char c) {
+    return !isEmpty() && input[pos] == c;
+}","public void test06383() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""^-zSS]J}30h"");
+    characterReader0.unconsume();
+    // Undeclared exception!
+    try {
+        characterReader0.matches('b');
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -1
+        //
+        verifyException(""org.jsoup.parser.CharacterReader"", e);
+    }
+}",""
+"boolean matchConsumeIgnoreCase(String seq) {
+    if (matchesIgnoreCase(seq)) {
+        pos += seq.length();
+        return true;
+    } else {
+        return false;
+    }
+}","public void test06484() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""c"");
+    // Undeclared exception!
+    try {
+        characterReader0.matchConsumeIgnoreCase((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.CharacterReader"", e);
+    }
+}",""
+"boolean matchConsumeIgnoreCase(String seq) {
+    if (matchesIgnoreCase(seq)) {
+        pos += seq.length();
+        return true;
+    } else {
+        return false;
+    }
+}","public void test06585() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader("":Eyhv?(a6;Ii?2"");
+    characterReader0.unconsume();
+    // Undeclared exception!
+    try {
+        characterReader0.matchConsumeIgnoreCase(""a6;Ii?2"");
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -1
+        //
+        verifyException(""org.jsoup.parser.CharacterReader"", e);
+    }
+}",""
+"boolean matchConsume(String seq) {
+    if (matches(seq)) {
+        pos += seq.length();
+        return true;
+    } else {
+        return false;
+    }
+}","public void test06686() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""K .xCO$m"");
+    // Undeclared exception!
+    try {
+        characterReader0.matchConsume((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.CharacterReader"", e);
+    }
+}",""
+"boolean matchConsume(String seq) {
+    if (matches(seq)) {
+        pos += seq.length();
+        return true;
+    } else {
+        return false;
+    }
+}","public void test06787() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""9k_mAEp]<"");
+    characterReader0.unconsume();
+    // Undeclared exception!
+    try {
+        characterReader0.matchConsume(""9k_mAEp]<"");
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -1
+        //
+        verifyException(""org.jsoup.parser.CharacterReader"", e);
+    }
+}",""
+"boolean containsIgnoreCase(String seq) {
+    // used to check presence of </title>, </style>. only finds consistent case.
+    String loScan = seq.toLowerCase(Locale.ENGLISH);
+    String hiScan = seq.toUpperCase(Locale.ENGLISH);
+    return (nextIndexOf(loScan) > -1) || (nextIndexOf(hiScan) > -1);
+}","public void test06888() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""9k_mAEp]<"");
+    // Undeclared exception!
+    try {
+        characterReader0.containsIgnoreCase("""");
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",""
+"boolean containsIgnoreCase(String seq) {
+    // used to check presence of </title>, </style>. only finds consistent case.
+    String loScan = seq.toLowerCase(Locale.ENGLISH);
+    String hiScan = seq.toUpperCase(Locale.ENGLISH);
+    return (nextIndexOf(loScan) > -1) || (nextIndexOf(hiScan) > -1);
+}","public void test06989() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""`AmxE"");
+    // Undeclared exception!
+    try {
+        characterReader0.containsIgnoreCase((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.CharacterReader"", e);
+    }
+}",""
+"boolean containsIgnoreCase(String seq) {
+    // used to check presence of </title>, </style>. only finds consistent case.
+    String loScan = seq.toLowerCase(Locale.ENGLISH);
+    String hiScan = seq.toUpperCase(Locale.ENGLISH);
+    return (nextIndexOf(loScan) > -1) || (nextIndexOf(hiScan) > -1);
+}","public void test07090() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader("""");
+    characterReader0.unconsume();
+    // Undeclared exception!
+    try {
+        characterReader0.containsIgnoreCase(""\""@F,"");
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -1
+        //
+        verifyException(""org.jsoup.parser.CharacterReader"", e);
+    }
+}",""
+"String consumeToEnd() {
+    String data = cacheString(pos, length - pos);
+    pos = length;
+    return data;
+}","public void test07191() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader("""");
+    characterReader0.unconsume();
+    // Undeclared exception!
+    try {
+        characterReader0.consumeToEnd();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -1
+        //
+        verifyException(""org.jsoup.parser.CharacterReader"", e);
+    }
+}",""
+"String consumeToAnySorted(final char... chars) {
+    final int start = pos;
+    final int remaining = length;
+    final char[] val = input;
+    while (pos < remaining) {
+        if (Arrays.binarySearch(chars, val[pos]) >= 0)
+            break;
+        pos++;
+    }
+    return pos > start ? cacheString(start, pos - start) : """";
+}","public void test07292() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""2"");
+    // Undeclared exception!
+    try {
+        characterReader0.consumeToAnySorted((char[]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.Arrays"", e);
+    }
+}",""
+"String consumeToAnySorted(final char... chars) {
+    final int start = pos;
+    final int remaining = length;
+    final char[] val = input;
+    while (pos < remaining) {
+        if (Arrays.binarySearch(chars, val[pos]) >= 0)
+            break;
+        pos++;
+    }
+    return pos > start ? cacheString(start, pos - start) : """";
+}","public void test07393() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""org.jsoup.parser.CharacterReader"");
+    characterReader0.unconsume();
+    char[] charArray0 = new char[0];
+    // Undeclared exception!
+    try {
+        characterReader0.consumeToAnySorted(charArray0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -1
+        //
+        verifyException(""org.jsoup.parser.CharacterReader"", e);
+    }
+}",""
+"String consumeToAny(final char... chars) {
+    final int start = pos;
+    final int remaining = length;
+    final char[] val = input;
+    OUTER: while (pos < remaining) {
+        for (char c : chars) {
+            if (val[pos] == c)
+                break OUTER;
+        }
+        pos++;
+    }
+    return pos > start ? cacheString(start, pos - start) : """";
+}","public void test07494() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader("""");
+    characterReader0.unconsume();
+    // Undeclared exception!
+    try {
+        characterReader0.consumeToAny((char[]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.CharacterReader"", e);
+    }
+}",""
+"String consumeToAny(final char... chars) {
+    final int start = pos;
+    final int remaining = length;
+    final char[] val = input;
+    OUTER: while (pos < remaining) {
+        for (char c : chars) {
+            if (val[pos] == c)
+                break OUTER;
+        }
+        pos++;
+    }
+    return pos > start ? cacheString(start, pos - start) : """";
+}","public void test07595() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""ASup|QN*[:L0"");
+    char[] charArray0 = new char[7];
+    characterReader0.unconsume();
+    // Undeclared exception!
+    try {
+        characterReader0.consumeToAny(charArray0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -1
+        //
+        verifyException(""org.jsoup.parser.CharacterReader"", e);
+    }
+}",""
+"String consumeTo(String seq) {
+    int offset = nextIndexOf(seq);
+    if (offset != -1) {
+        String consumed = cacheString(pos, offset);
+        pos += offset;
+        return consumed;
+    } else {
+        return consumeToEnd();
+    }
+}","public void test07696() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""Object must not be null"");
+    // Undeclared exception!
+    try {
+        characterReader0.consumeTo("""");
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",""
+"String consumeTo(String seq) {
+    int offset = nextIndexOf(seq);
+    if (offset != -1) {
+        String consumed = cacheString(pos, offset);
+        pos += offset;
+        return consumed;
+    } else {
+        return consumeToEnd();
+    }
+}","public void test07797() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader("""");
+    // Undeclared exception!
+    try {
+        characterReader0.consumeTo((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.CharacterReader"", e);
+    }
+}",""
+"String consumeTo(String seq) {
+    int offset = nextIndexOf(seq);
+    if (offset != -1) {
+        String consumed = cacheString(pos, offset);
+        pos += offset;
+        return consumed;
+    } else {
+        return consumeToEnd();
+    }
+}","public void test07898() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader("""");
+    characterReader0.unconsume();
+    // Undeclared exception!
+    try {
+        characterReader0.consumeTo(""4%*Y'ZxA"");
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -1
+        //
+        verifyException(""org.jsoup.parser.CharacterReader"", e);
+    }
+}",""
+"String consumeTo(char c) {
+    int offset = nextIndexOf(c);
+    if (offset != -1) {
+        String consumed = cacheString(pos, offset);
+        pos += offset;
+        return consumed;
+    } else {
+        return consumeToEnd();
+    }
+}","public void test07999() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader("""");
+    characterReader0.consume();
+    // Undeclared exception!
+    try {
+        characterReader0.consumeTo('-');
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",""
+"String consumeTo(char c) {
+    int offset = nextIndexOf(c);
+    if (offset != -1) {
+        String consumed = cacheString(pos, offset);
+        pos += offset;
+        return consumed;
+    } else {
+        return consumeToEnd();
+    }
+}","public void test080100() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader("""");
+    characterReader0.unconsume();
+    // Undeclared exception!
+    try {
+        characterReader0.consumeTo('5');
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -1
+        //
+        verifyException(""org.jsoup.parser.CharacterReader"", e);
+    }
+}",""
+"String consumeTagName() {
+    // '\t', '\n', '\r', '\f', ' ', '/', '>', nullChar
+    final int start = pos;
+    final int remaining = length;
+    final char[] val = input;
+    while (pos < remaining) {
+        final char c = val[pos];
+        if (c == '\t' || c == '\n' || c == '\r' || c == '\f' || c == ' ' || c == '/' || c == '>' || c == TokeniserState.nullChar)
+            break;
+        pos++;
+    }
+    return pos > start ? cacheString(start, pos - start) : """";
+}","public void test081101() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader("""");
+    characterReader0.unconsume();
+    // Undeclared exception!
+    try {
+        characterReader0.consumeTagName();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"String consumeLetterThenDigitSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+            pos++;
+        else
+            break;
+    }
+    while (!isEmpty()) {
+        char c = input[pos];
+        if (c >= '0' && c <= '9')
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test082102() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""uaB,]bj6vYFupWYk_K"");
+    characterReader0.consumeData();
+    characterReader0.consume();
+    // Undeclared exception!
+    try {
+        characterReader0.consumeLetterThenDigitSequence();
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",""
+"String consumeLetterThenDigitSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+            pos++;
+        else
+            break;
+    }
+    while (!isEmpty()) {
+        char c = input[pos];
+        if (c >= '0' && c <= '9')
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test083103() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""_wZ"");
+    characterReader0.unconsume();
+    // Undeclared exception!
+    try {
+        characterReader0.consumeLetterThenDigitSequence();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -1
+        //
+        verifyException(""org.jsoup.parser.CharacterReader"", e);
+    }
+}",""
+"String consumeLetterSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test084104() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""@<E"");
+    char[] charArray0 = new char[9];
+    characterReader0.consumeToAnySorted(charArray0);
+    characterReader0.advance();
+    // Undeclared exception!
+    try {
+        characterReader0.consumeLetterSequence();
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",""
+"String consumeLetterSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test085105() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader("""");
+    characterReader0.unconsume();
+    // Undeclared exception!
+    try {
+        characterReader0.consumeLetterSequence();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -1
+        //
+        verifyException(""org.jsoup.parser.CharacterReader"", e);
+    }
+}",""
+"String consumeHexSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f'))
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test086106() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""RLj<al"");
+    characterReader0.unconsume();
+    // Undeclared exception!
+    try {
+        characterReader0.consumeHexSequence();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -1
+        //
+        verifyException(""org.jsoup.parser.CharacterReader"", e);
+    }
+}",""
+"String consumeDigitSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if (c >= '0' && c <= '9')
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test087107() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader("""");
+    characterReader0.advance();
+    // Undeclared exception!
+    try {
+        characterReader0.consumeDigitSequence();
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",""
+"String consumeDigitSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if (c >= '0' && c <= '9')
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test088108() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""8t9z*>z]*"");
+    characterReader0.unconsume();
+    // Undeclared exception!
+    try {
+        characterReader0.consumeDigitSequence();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -1
+        //
+        verifyException(""org.jsoup.parser.CharacterReader"", e);
+    }
+}",""
+"String consumeData() {
+    // &, <, null
+    final int start = pos;
+    final int remaining = length;
+    final char[] val = input;
+    while (pos < remaining) {
+        final char c = val[pos];
+        if (c == '&' || c == '<' || c == TokeniserState.nullChar)
+            break;
+        pos++;
+    }
+    return pos > start ? cacheString(start, pos - start) : """";
+}","public void test089109() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader("""");
+    characterReader0.unconsume();
+    // Undeclared exception!
+    try {
+        characterReader0.consumeData();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -1
+        //
+        verifyException(""org.jsoup.parser.CharacterReader"", e);
+    }
+}",""
+"String consumeAsString() {
+    return new String(input, pos++, 1);
+}","public void test090110() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader("""");
+    // Undeclared exception!
+    try {
+        characterReader0.consumeAsString();
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",""
+"char consume() {
+    char val = pos >= length ? EOF : input[pos];
+    pos++;
+    return val;
+}","public void test091111() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader("""");
+    characterReader0.unconsume();
+    // Undeclared exception!
+    try {
+        characterReader0.consume();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -1
+        //
+        verifyException(""org.jsoup.parser.CharacterReader"", e);
+    }
+}",""
+"CharacterReader(String input) {
+    Validate.notNull(input);
+    this.input = input.toCharArray();
+    this.length = this.input.length;
+}","public void test092112() throws Throwable {
+    CharacterReader characterReader0 = null;
+    try {
+        characterReader0 = new CharacterReader((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",""
+"String consumeToEnd() {
+    String data = cacheString(pos, length - pos);
+    pos = length;
+    return data;
+}","public void test093113() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader("")z$N^GizY"");
+    characterReader0.consumeLetterThenDigitSequence();
+    characterReader0.consumeTagName();
+    characterReader0.advance();
+    // Undeclared exception!
+    try {
+        characterReader0.consumeToEnd();
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",""
+"boolean rangeEquals(final int start, int count, final String cached) {
+    if (count == cached.length()) {
+        char[] one = input;
+        int i = start;
+        int j = 0;
+        while (count-- != 0) {
+            if (one[i++] != cached.charAt(j++))
+                return false;
+        }
+        return true;
+    }
+    return false;
+}","public void test094114() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""ASup|QN*[:L0"");
+    boolean boolean0 = characterReader0.rangeEquals(1, 32, ""org.jsoup.parser.CharacterReader"");
+    assertFalse(boolean0);
+}","/**
+ * Check if the value of the provided range equals the string.
+ */"
+"String consumeTagName() {
+    // '\t', '\n', '\r', '\f', ' ', '/', '>', nullChar
+    final int start = pos;
+    final int remaining = length;
+    final char[] val = input;
+    while (pos < remaining) {
+        final char c = val[pos];
+        if (c == '\t' || c == '\n' || c == '\r' || c == '\f' || c == ' ' || c == '/' || c == '>' || c == TokeniserState.nullChar)
+            break;
+        pos++;
+    }
+    return pos > start ? cacheString(start, pos - start) : """";
+}","public void test095115() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""Object must not be null"");
+    String string0 = characterReader0.consumeTagName();
+    assertEquals(""Object"", string0);
+}",""
+"String consumeLetterSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test095116() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""Object must not be null"");
+    String string0 = characterReader0.consumeTagName();
+    characterReader0.rewindToMark();
+    String string1 = characterReader0.consumeLetterSequence();
+    assertEquals(""Object"", string1);
+}",""
+"String consumeHexSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f'))
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test096117() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""org.joup.parser.Charac5erReader"");
+    String string0 = characterReader0.consumeHexSequence();
+    assertEquals("""", string0);
+}",""
+"String consumeDigitSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if (c >= '0' && c <= '9')
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test096118() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""org.joup.parser.Charac5erReader"");
+    String string0 = characterReader0.consumeHexSequence();
+    String string1 = characterReader0.consumeDigitSequence();
+    assertEquals("""", string1);
+}",""
+"boolean containsIgnoreCase(String seq) {
+    // used to check presence of </title>, </style>. only finds consistent case.
+    String loScan = seq.toLowerCase(Locale.ENGLISH);
+    String hiScan = seq.toUpperCase(Locale.ENGLISH);
+    return (nextIndexOf(loScan) > -1) || (nextIndexOf(hiScan) > -1);
+}","public void test097119() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""Y ,F|"");
+    boolean boolean0 = characterReader0.containsIgnoreCase(""Y ,F|"");
+    assertTrue(boolean0);
+}",""
+"boolean matchesDigit() {
+    if (isEmpty())
+        return false;
+    char c = input[pos];
+    return (c >= '0' && c <= '9');
+}","public void test098120() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""06"");
+    boolean boolean0 = characterReader0.matchesDigit();
+    assertTrue(boolean0);
+}",""
+"boolean matchesDigit() {
+    if (isEmpty())
+        return false;
+    char c = input[pos];
+    return (c >= '0' && c <= '9');
+}","public void test099122() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""org.jsoup.parser.CharacterReader"");
+    String string0 = characterReader0.consumeLetterThenDigitSequence();
+    boolean boolean0 = characterReader0.matchesDigit();
+    assertFalse(boolean0);
+}",""
+"boolean matchesDigit() {
+    if (isEmpty())
+        return false;
+    char c = input[pos];
+    return (c >= '0' && c <= '9');
+}","public void test100124() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""9k_mAEp]<"");
+    String string0 = characterReader0.consumeTagName();
+    boolean boolean0 = characterReader0.matchesDigit();
+    assertFalse(boolean0);
+}",""
+"boolean matchesDigit() {
+    if (isEmpty())
+        return false;
+    char c = input[pos];
+    return (c >= '0' && c <= '9');
+}","public void test101125() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""Object must not be null"");
+    boolean boolean0 = characterReader0.matchesDigit();
+    assertFalse(boolean0);
+}",""
+"boolean matchesLetter() {
+    if (isEmpty())
+        return false;
+    char c = input[pos];
+    return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
+}","public void test102126() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""org.jsoup.parser.CharacterReader"");
+    boolean boolean0 = characterReader0.matchesLetter();
+    assertTrue(boolean0);
+}",""
+"boolean matchesLetter() {
+    if (isEmpty())
+        return false;
+    char c = input[pos];
+    return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
+}","public void test103128() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""Object must not be null"");
+    String string0 = characterReader0.consumeTagName();
+    boolean boolean0 = characterReader0.matchesLetter();
+    assertFalse(boolean0);
+}",""
+"boolean matchesAnySorted(char[] seq) {
+    return !isEmpty() && Arrays.binarySearch(seq, input[pos]) >= 0;
+}","public void test104131() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""P3sx6L/a+t_MUY"");
+    String string0 = characterReader0.consumeLetterThenDigitSequence();
+    String string1 = characterReader0.consumeLetterSequence();
+    char[] charArray0 = new char[2];
+    charArray0[0] = 'L';
+    characterReader0.consumeAsString();
+    boolean boolean0 = characterReader0.matchesAnySorted(charArray0);
+    assertTrue(boolean0);
+}",""
+"boolean matchesAnySorted(char[] seq) {
+    return !isEmpty() && Arrays.binarySearch(seq, input[pos]) >= 0;
+}","public void test105132() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""P3sx6L/a+t_MUY"");
+    char[] charArray0 = new char[2];
+    boolean boolean0 = characterReader0.matchesAnySorted(charArray0);
+    assertFalse(boolean0);
+}",""
+"String consumeTagName() {
+    // '\t', '\n', '\r', '\f', ' ', '/', '>', nullChar
+    final int start = pos;
+    final int remaining = length;
+    final char[] val = input;
+    while (pos < remaining) {
+        final char c = val[pos];
+        if (c == '\t' || c == '\n' || c == '\r' || c == '\f' || c == ' ' || c == '/' || c == '>' || c == TokeniserState.nullChar)
+            break;
+        pos++;
+    }
+    return pos > start ? cacheString(start, pos - start) : """";
+}","public void test106133() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""org.joup.parser.Charac5erReader"");
+    String string0 = characterReader0.consumeTagName();
+    assertEquals(""org.joup.parser.Charac5erReader"", string0);
+}",""
+"boolean matchesAny(char... seq) {
+    if (isEmpty())
+        return false;
+    char c = input[pos];
+    for (char seek : seq) {
+        if (seek == c)
+            return true;
+    }
+    return false;
+}","public void test106134() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""org.joup.parser.Charac5erReader"");
+    String string0 = characterReader0.consumeTagName();
+    char[] charArray0 = new char[4];
+    boolean boolean0 = characterReader0.matchesAny(charArray0);
+    assertFalse(boolean0);
+}",""
+"boolean matchConsumeIgnoreCase(String seq) {
+    if (matchesIgnoreCase(seq)) {
+        pos += seq.length();
+        return true;
+    } else {
+        return false;
+    }
+}","public void test107135() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""Object must not be null"");
+    boolean boolean0 = characterReader0.matchConsumeIgnoreCase(""|>*;&"");
+    assertFalse(boolean0);
+}",""
+"boolean matchConsumeIgnoreCase(String seq) {
+    if (matchesIgnoreCase(seq)) {
+        pos += seq.length();
+        return true;
+    } else {
+        return false;
+    }
+}","public void test108137() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""org.joup.parser.Charac5erReader"");
+    String string0 = characterReader0.consumeTagName();
+    boolean boolean0 = characterReader0.matchConsumeIgnoreCase(""5p9`_9]#5\""pv~MC}"");
+    assertFalse(boolean0);
+}",""
+"boolean matchesIgnoreCase(String seq) {
+    int scanLength = seq.length();
+    if (scanLength > length - pos)
+        return false;
+    for (int offset = 0; offset < scanLength; offset++) {
+        char upScan = Character.toUpperCase(seq.charAt(offset));
+        char upTarget = Character.toUpperCase(input[pos + offset]);
+        if (upScan != upTarget)
+            return false;
+    }
+    return true;
+}","public void test109138() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""En!nL^."");
+    boolean boolean0 = characterReader0.matchesIgnoreCase("""");
+    assertTrue(boolean0);
+}",""
+"String consumeHexSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f'))
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test110139() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""FbXJ`I2+'9,v"");
+    characterReader0.matchConsume(""FbXJ`I2+'9,v"");
+    characterReader0.advance();
+    // Undeclared exception!
+    try {
+        characterReader0.consumeHexSequence();
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",""
+"boolean matchConsume(String seq) {
+    if (matches(seq)) {
+        pos += seq.length();
+        return true;
+    } else {
+        return false;
+    }
+}","public void test111140() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""org.jsoup.parser.CharacterReader"");
+    boolean boolean0 = characterReader0.matchConsume(""Gy{7+~bW5x4v"");
+    assertFalse(boolean0);
+}",""
+"boolean matches(String seq) {
+    int scanLength = seq.length();
+    if (scanLength > length - pos)
+        return false;
+    for (int offset = 0; offset < scanLength; offset++) if (seq.charAt(offset) != input[pos + offset])
+        return false;
+    return true;
+}","public void test112141() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""Nu/p^mIv"");
+    boolean boolean0 = characterReader0.matches("""");
+    assertTrue(boolean0);
+}",""
+"boolean matches(char c) {
+    return !isEmpty() && input[pos] == c;
+}","public void test113142() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""d{1U:"");
+    boolean boolean0 = characterReader0.matches('1');
+    assertFalse(boolean0);
+}",""
+"String consumeTo(char c) {
+    int offset = nextIndexOf(c);
+    if (offset != -1) {
+        String consumed = cacheString(pos, offset);
+        pos += offset;
+        return consumed;
+    } else {
+        return consumeToEnd();
+    }
+}","public void test114143() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""LwPTmB1-~!u<W&c.s"");
+    String string0 = characterReader0.consumeTo('h');
+    assertEquals(""LwPTmB1-~!u<W&c.s"", string0);
+}",""
+"boolean matches(char c) {
+    return !isEmpty() && input[pos] == c;
+}","public void test114144() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""LwPTmB1-~!u<W&c.s"");
+    String string0 = characterReader0.consumeTo('h');
+    boolean boolean0 = characterReader0.matches('h');
+    assertFalse(boolean0);
+}",""
+"String consumeDigitSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if (c >= '0' && c <= '9')
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test115145() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""06"");
+    String string0 = characterReader0.consumeDigitSequence();
+    assertEquals(""06"", string0);
+}",""
+"boolean matchesAnySorted(char[] seq) {
+    return !isEmpty() && Arrays.binarySearch(seq, input[pos]) >= 0;
+}","public void test115146() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""06"");
+    String string0 = characterReader0.consumeDigitSequence();
+    char[] charArray0 = new char[0];
+    boolean boolean0 = characterReader0.matchesAnySorted(charArray0);
+    assertFalse(boolean0);
+}",""
+"String consumeDigitSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if (c >= '0' && c <= '9')
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test116148() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""Object must not be null"");
+    String string0 = characterReader0.consumeTagName();
+    String string1 = characterReader0.consumeDigitSequence();
+    assertEquals("""", string1);
+}",""
+"String consumeHexSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f'))
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test117149() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""d{1U:"");
+    String string0 = characterReader0.consumeHexSequence();
+    assertEquals(""d"", string0);
+}",""
+"boolean matches(char c) {
+    return !isEmpty() && input[pos] == c;
+}","public void test117150() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""d{1U:"");
+    String string0 = characterReader0.consumeHexSequence();
+    characterReader0.advance();
+    boolean boolean0 = characterReader0.matches('1');
+    assertTrue(boolean0);
+}",""
+"String consumeHexSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f'))
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test118151() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""3AEy"");
+    String string0 = characterReader0.consumeHexSequence();
+    assertEquals(""3AE"", string0);
+}",""
+"String consumeLetterSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test119152() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""org.joup.parser.Charac5erReader"");
+    String string0 = characterReader0.consumeLetterSequence();
+    assertEquals(""org"", string0);
+}",""
+"String consumeHexSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f'))
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test119153() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""org.joup.parser.Charac5erReader"");
+    String string0 = characterReader0.consumeLetterSequence();
+    String string1 = characterReader0.consumeHexSequence();
+    assertEquals("""", string1);
+}",""
+"String consumeLetterThenDigitSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+            pos++;
+        else
+            break;
+    }
+    while (!isEmpty()) {
+        char c = input[pos];
+        if (c >= '0' && c <= '9')
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test120154() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""Nu/p^mIv"");
+    characterReader0.consumeHexSequence();
+    String string0 = characterReader0.consumeLetterThenDigitSequence();
+    assertEquals(""Nu"", string0);
+}",""
+"String consumeLetterSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test120155() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""Nu/p^mIv"");
+    characterReader0.consumeHexSequence();
+    String string0 = characterReader0.consumeLetterThenDigitSequence();
+    String string1 = characterReader0.consumeLetterSequence();
+    assertEquals("""", string1);
+}",""
+"String consumeData() {
+    // &, <, null
+    final int start = pos;
+    final int remaining = length;
+    final char[] val = input;
+    while (pos < remaining) {
+        final char c = val[pos];
+        if (c == '&' || c == '<' || c == TokeniserState.nullChar)
+            break;
+        pos++;
+    }
+    return pos > start ? cacheString(start, pos - start) : """";
+}","public void test121156() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""En!nL^."");
+    String string0 = characterReader0.consumeData();
+    assertEquals(""En!nL^."", string0);
+}",""
+"String consumeHexSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f'))
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test121157() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""En!nL^."");
+    String string0 = characterReader0.consumeData();
+    String string1 = characterReader0.consumeHexSequence();
+    assertEquals("""", string1);
+}",""
+"String consumeLetterThenDigitSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+            pos++;
+        else
+            break;
+    }
+    while (!isEmpty()) {
+        char c = input[pos];
+        if (c >= '0' && c <= '9')
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test122158() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""ASup|QN*[:L0"");
+    String string0 = characterReader0.consumeLetterThenDigitSequence();
+    assertEquals(""ASup"", string0);
+}",""
+"boolean matchesIgnoreCase(String seq) {
+    int scanLength = seq.length();
+    if (scanLength > length - pos)
+        return false;
+    for (int offset = 0; offset < scanLength; offset++) {
+        char upScan = Character.toUpperCase(seq.charAt(offset));
+        char upTarget = Character.toUpperCase(input[pos + offset]);
+        if (upScan != upTarget)
+            return false;
+    }
+    return true;
+}","public void test122159() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""ASup|QN*[:L0"");
+    String string0 = characterReader0.consumeLetterThenDigitSequence();
+    boolean boolean0 = characterReader0.matchesIgnoreCase(""|QN*"");
+    assertTrue(boolean0);
+}",""
+"String consumeLetterSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test123160() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""ASup|QN*[:L0"");
+    String string0 = characterReader0.consumeLetterSequence();
+    assertEquals(""ASup"", string0);
+}",""
+"boolean matchesLetter() {
+    if (isEmpty())
+        return false;
+    char c = input[pos];
+    return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
+}","public void test123161() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""ASup|QN*[:L0"");
+    String string0 = characterReader0.consumeLetterSequence();
+    boolean boolean0 = characterReader0.matchesLetter();
+    assertFalse(boolean0);
+}",""
+"String consumeToAny(final char... chars) {
+    final int start = pos;
+    final int remaining = length;
+    final char[] val = input;
+    OUTER: while (pos < remaining) {
+        for (char c : chars) {
+            if (val[pos] == c)
+                break OUTER;
+        }
+        pos++;
+    }
+    return pos > start ? cacheString(start, pos - start) : """";
+}","public void test124162() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""2q8>#qbSvqFP"");
+    characterReader0.consumeTagName();
+    char[] charArray0 = new char[8];
+    String string0 = characterReader0.consumeToAny(charArray0);
+    assertEquals("">#qbSvqFP"", string0);
+}",""
+"String consumeTagName() {
+    // '\t', '\n', '\r', '\f', ' ', '/', '>', nullChar
+    final int start = pos;
+    final int remaining = length;
+    final char[] val = input;
+    while (pos < remaining) {
+        final char c = val[pos];
+        if (c == '\t' || c == '\n' || c == '\r' || c == '\f' || c == ' ' || c == '/' || c == '>' || c == TokeniserState.nullChar)
+            break;
+        pos++;
+    }
+    return pos > start ? cacheString(start, pos - start) : """";
+}","public void test125163() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""lRrCW/tL=ri-8.Zq"");
+    String string0 = characterReader0.consumeTagName();
+    assertEquals(""lRrCW"", string0);
+}",""
+"String consumeLetterSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test126165() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""org.joup.parser.Charac5erReader"");
+    String string0 = characterReader0.consumeTagName();
+    String string1 = characterReader0.consumeLetterSequence();
+    assertEquals("""", string1);
+}",""
+"String consumeData() {
+    // &, <, null
+    final int start = pos;
+    final int remaining = length;
+    final char[] val = input;
+    while (pos < remaining) {
+        final char c = val[pos];
+        if (c == '&' || c == '<' || c == TokeniserState.nullChar)
+            break;
+        pos++;
+    }
+    return pos > start ? cacheString(start, pos - start) : """";
+}","public void test127166() throws Throwable {
+    String string0 = ""Q+3q\\u==+CQ{fn<2 k"";
+    CharacterReader characterReader0 = new CharacterReader(string0);
+    String string1 = characterReader0.consumeData();
+    assertEquals(""Q+3q\\u==+CQ{fn"", string1);
+}",""
+"@Override
+public String toString() {
+    return new String(input, pos, length - pos);
+}","public void test128167() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader("",~,\""rPd&B"");
+    characterReader0.consumeData();
+    characterReader0.consumeAsString();
+    characterReader0.consumeLetterSequence();
+    characterReader0.advance();
+    // Undeclared exception!
+    try {
+        characterReader0.toString();
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",""
+"String consumeToAnySorted(final char... chars) {
+    final int start = pos;
+    final int remaining = length;
+    final char[] val = input;
+    while (pos < remaining) {
+        if (Arrays.binarySearch(chars, val[pos]) >= 0)
+            break;
+        pos++;
+    }
+    return pos > start ? cacheString(start, pos - start) : """";
+}","public void test129168() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""org.jsoup.helper.Validate"");
+    char[] charArray0 = new char[1];
+    charArray0[0] = '.';
+    String string0 = characterReader0.consumeToAnySorted(charArray0);
+    assertEquals(""org"", string0);
+}",""
+"boolean matchesAny(char... seq) {
+    if (isEmpty())
+        return false;
+    char c = input[pos];
+    for (char seek : seq) {
+        if (seek == c)
+            return true;
+    }
+    return false;
+}","public void test129169() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""org.jsoup.helper.Validate"");
+    char[] charArray0 = new char[1];
+    charArray0[0] = '.';
+    String string0 = characterReader0.consumeToAnySorted(charArray0);
+    boolean boolean0 = characterReader0.matchesAny(charArray0);
+    assertTrue(boolean0);
+}",""
+"String consumeToAny(final char... chars) {
+    final int start = pos;
+    final int remaining = length;
+    final char[] val = input;
+    OUTER: while (pos < remaining) {
+        for (char c : chars) {
+            if (val[pos] == c)
+                break OUTER;
+        }
+        pos++;
+    }
+    return pos > start ? cacheString(start, pos - start) : """";
+}","public void test130170() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""org.jsoup.helper.Validate"");
+    char[] charArray0 = new char[1];
+    charArray0[0] = '.';
+    String string0 = characterReader0.consumeToAny(charArray0);
+    assertEquals(""org"", string0);
+}",""
+"boolean containsIgnoreCase(String seq) {
+    // used to check presence of </title>, </style>. only finds consistent case.
+    String loScan = seq.toLowerCase(Locale.ENGLISH);
+    String hiScan = seq.toUpperCase(Locale.ENGLISH);
+    return (nextIndexOf(loScan) > -1) || (nextIndexOf(hiScan) > -1);
+}","public void test131171() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""mQ^zjzmK(Ki)"");
+    boolean boolean0 = characterReader0.containsIgnoreCase(""mQ^zjzmK(Ki)"");
+    assertFalse(boolean0);
+}",""
+"String consumeTo(String seq) {
+    int offset = nextIndexOf(seq);
+    if (offset != -1) {
+        String consumed = cacheString(pos, offset);
+        pos += offset;
+        return consumed;
+    } else {
+        return consumeToEnd();
+    }
+}","public void test132172() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""LwPTmB1-~!u<W&c.s"");
+    String string0 = characterReader0.consumeTo(""LwPTmB1-~!u<W&c.s"");
+    assertEquals("""", string0);
+}",""
+"String consumeLetterSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test133173() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""LwPTmB1-~!u<W&c.s"");
+    String string0 = characterReader0.consumeLetterSequence();
+    assertEquals(""LwPTmB"", string0);
+}",""
+"String consumeTo(String seq) {
+    int offset = nextIndexOf(seq);
+    if (offset != -1) {
+        String consumed = cacheString(pos, offset);
+        pos += offset;
+        return consumed;
+    } else {
+        return consumeToEnd();
+    }
+}","public void test133174() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""LwPTmB1-~!u<W&c.s"");
+    String string0 = characterReader0.consumeLetterSequence();
+    String string1 = characterReader0.consumeTo(""LwPTmB1-~!u<W&c.s"");
+    assertEquals(""1-~!u<W&c.s"", string1);
+}",""
+"String consumeTo(char c) {
+    int offset = nextIndexOf(c);
+    if (offset != -1) {
+        String consumed = cacheString(pos, offset);
+        pos += offset;
+        return consumed;
+    } else {
+        return consumeToEnd();
+    }
+}","public void test134175() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""org.jsoup.parser.CharacterReader"");
+    String string0 = characterReader0.consumeTo('o');
+    assertEquals("""", string0);
+}",""
+"char consume() {
+    char val = pos >= length ? EOF : input[pos];
+    pos++;
+    return val;
+}","public void test135176() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""=Tc:$]:,s"");
+    char char0 = characterReader0.consume();
+    assertEquals('=', char0);
+}",""
+"String consumeData() {
+    // &, <, null
+    final int start = pos;
+    final int remaining = length;
+    final char[] val = input;
+    while (pos < remaining) {
+        final char c = val[pos];
+        if (c == '&' || c == '<' || c == TokeniserState.nullChar)
+            break;
+        pos++;
+    }
+    return pos > start ? cacheString(start, pos - start) : """";
+}","public void test135177() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""=Tc:$]:,s"");
+    char char0 = characterReader0.consume();
+    String string0 = characterReader0.consumeData();
+    assertEquals(""Tc:$]:,s"", string0);
+}",""
+"char current() {
+    return pos >= length ? EOF : input[pos];
+}","public void test136179() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""LwPTmB1-~!u<W&c.s"");
+    String string0 = characterReader0.consumeTo('h');
+    char char0 = characterReader0.current();
+    assertEquals('\uFFFF', char0);
+}",""
+"char current() {
+    return pos >= length ? EOF : input[pos];
+}","public void test137180() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""K\""0|@e(WN#v=]LaK"");
+    char char0 = characterReader0.current();
+    assertEquals('K', char0);
+}",""
+"String consumeToEnd() {
+    String data = cacheString(pos, length - pos);
+    pos = length;
+    return data;
+}","public void test138181() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""FwLvb.Fsa#w\""s1"");
+    String string0 = characterReader0.consumeToEnd();
+    assertEquals(""FwLvb.Fsa#w\""s1"", string0);
+}",""
+"boolean matchesLetter() {
+    if (isEmpty())
+        return false;
+    char c = input[pos];
+    return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
+}","public void test138182() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""FwLvb.Fsa#w\""s1"");
+    String string0 = characterReader0.consumeToEnd();
+    boolean boolean0 = characterReader0.matchesLetter();
+    assertFalse(boolean0);
+}",""
+"String consumeLetterThenDigitSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+            pos++;
+        else
+            break;
+    }
+    while (!isEmpty()) {
+        char c = input[pos];
+        if (c >= '0' && c <= '9')
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test139183() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""9k_mAEp]<"");
+    String string0 = characterReader0.consumeLetterThenDigitSequence();
+    assertEquals(""9"", string0);
+}",""
+"int pos() {
+    return pos;
+}","public void test140184() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""FwLvb.Fsa#w\""s1"");
+    int int0 = characterReader0.pos();
+    assertEquals(0, int0);
+}",""
+"@Override
+public String toString() {
+    return new String(input, pos, length - pos);
+}","public void test141185() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""FwLvb.Fsa#w\""s1"");
+    String string0 = characterReader0.toString();
+    assertEquals(""FwLvb.Fsa#w\""s1"", string0);
+}",""
+"String consumeHexSequence() {
+    int start = pos;
+    while (pos < length) {
+        char c = input[pos];
+        if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f'))
+            pos++;
+        else
+            break;
+    }
+    return cacheString(start, pos - start);
+}","public void test142186() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""9k_mAEp]<"");
+    characterReader0.unconsume();
+    characterReader0.advance();
+    String string0 = characterReader0.consumeHexSequence();
+    assertEquals(""9"", string0);
+}",""
+"String consumeTagName() {
+    // '\t', '\n', '\r', '\f', ' ', '/', '>', nullChar
+    final int start = pos;
+    final int remaining = length;
+    final char[] val = input;
+    while (pos < remaining) {
+        final char c = val[pos];
+        if (c == '\t' || c == '\n' || c == '\r' || c == '\f' || c == ' ' || c == '/' || c == '>' || c == TokeniserState.nullChar)
+            break;
+        pos++;
+    }
+    return pos > start ? cacheString(start, pos - start) : """";
+}","public void test143187() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""9k_mAEp]<"");
+    characterReader0.advance();
+    String string0 = characterReader0.consumeTagName();
+    assertEquals(""k_mAEp]<"", string0);
+}",""
+"void mark() {
+    mark = pos;
+}","public void test144188() throws Throwable {
+    CharacterReader characterReader0 = new CharacterReader(""9k_mAEp]<"");
+    characterReader0.mark();
+}",""

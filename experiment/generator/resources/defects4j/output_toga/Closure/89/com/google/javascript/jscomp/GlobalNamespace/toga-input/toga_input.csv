@@ -1,0 +1,53 @@
+focal_method,test_prefix,docstring
+"public boolean isGlobal() {
+    return parent == null;
+}","public void test011() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""com.google.javascript.jscomp.mozilla.rhino.xml.XMLObject"", ""com.google.javascript.jscomp.mozilla.rhino.xml.XMLObject"");
+    GlobalNamespace globalNamespace0 = new GlobalNamespace(compiler0, node0);
+    ImmutableSortedSet<Node> immutableSortedSet0 = ImmutableSortedSet.of();
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    Scope scope0 = typedScopeCreator0.createInitialScope(node0);
+    globalNamespace0.scanNewNodes(scope0, immutableSortedSet0);
+    assertTrue(scope0.isGlobal());
+}","/**
+ * Returns whether this is the global scope.
+ */"
+"List<Name> getNameForest() {
+    if (!generated) {
+        process();
+    }
+    return globalNames;
+}","public void test088() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = new Node(38, (-354), 40);
+    GlobalNamespace globalNamespace0 = new GlobalNamespace(compiler0, node0);
+    // Undeclared exception!
+    try {
+        globalNamespace0.getNameForest();
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}","/**
+ * Gets a list of the roots of the forest of the global names, where the
+ * roots are the top-level names.
+ */"
+"Map<String, Name> getNameIndex() {
+    if (!generated) {
+        process();
+    }
+    return nameMap;
+}","public void test099() throws Throwable {
+    Node node0 = new Node(33, 33, 33);
+    Compiler compiler0 = new Compiler();
+    GlobalNamespace globalNamespace0 = new GlobalNamespace(compiler0, node0);
+    // Undeclared exception!
+    try {
+        globalNamespace0.getNameIndex();
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}","/**
+ * Gets an index of all the global names, indexed by full qualified name
+ * (as in ""a"", ""a.b.c"", etc.).
+ */"

@@ -1,0 +1,1658 @@
+focal_method,test_prefix,docstring
+"protected final long _parseLongPrimitive(DeserializationContext ctxt, String text) throws IOException {
+    try {
+        return NumberInput.parseLong(text);
+    } catch (IllegalArgumentException iae) {
+    }
+    {
+        Number v = (Number) ctxt.handleWeirdStringValue(_valueClass, text, ""not a valid long value"");
+        return _nonNullNumber(v).longValue();
+    }
+}","public void test000() throws Throwable {
+    StdDelegatingDeserializer<Class<InputStream>> stdDelegatingDeserializer0 = new StdDelegatingDeserializer<Class<InputStream>>((Converter<?, Class<InputStream>>) null);
+    // Undeclared exception!
+    try {
+        stdDelegatingDeserializer0._parseLongPrimitive((DeserializationContext) null, ""JSON"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdDeserializer"", e);
+    }
+}","/**
+ * @since 2.9
+ */"
+"protected boolean _hasTextualNull(String value) {
+    return ""null"".equals(value);
+}","public void test011() throws Throwable {
+    Converter<Calendar, BeanDeserializer> converter0 = (Converter<Calendar, BeanDeserializer>) mock(Converter.class, new ViolatedAssumptionAnswer());
+    StdDelegatingDeserializer<BeanDeserializer> stdDelegatingDeserializer0 = new StdDelegatingDeserializer<BeanDeserializer>(converter0);
+    boolean boolean0 = stdDelegatingDeserializer0._hasTextualNull(""LP!Pv+yBA)Q&3x,pb9"");
+    assertFalse(boolean0);
+}","/**
+ * Helper method called to determine if we are seeing String value of
+ * ""null"", and, further, that it should be coerced to null just like
+ * null token.
+ *
+ * @since 2.3
+ */"
+"protected final double _parseDoublePrimitive(DeserializationContext ctxt, String text) throws IOException {
+    switch(text.charAt(0)) {
+        case 'I':
+            if (_isPosInf(text)) {
+                return Double.POSITIVE_INFINITY;
+            }
+            break;
+        case 'N':
+            if (_isNaN(text)) {
+                return Double.NaN;
+            }
+            break;
+        case '-':
+            if (_isNegInf(text)) {
+                return Double.NEGATIVE_INFINITY;
+            }
+            break;
+    }
+    try {
+        return parseDouble(text);
+    } catch (IllegalArgumentException iae) {
+    }
+    Number v = (Number) ctxt.handleWeirdStringValue(_valueClass, text, ""not a valid double value (as String to convert)"");
+    return _nonNullNumber(v).doubleValue();
+}","public void test033() throws Throwable {
+    NumberDeserializers.FloatDeserializer numberDeserializers_FloatDeserializer0 = NumberDeserializers.FloatDeserializer.primitiveInstance;
+    double double0 = numberDeserializers_FloatDeserializer0._parseDoublePrimitive((DeserializationContext) null, ""NaN"");
+    assertEquals(Double.NaN, double0, 0.01);
+}","/**
+ * @since 2.9
+ */"
+"protected void _verifyEndArrayForSingle(JsonParser p, DeserializationContext ctxt) throws IOException {
+    JsonToken t = p.nextToken();
+    if (t != JsonToken.END_ARRAY) {
+        handleMissingEndArrayForSingle(p, ctxt);
+    }
+}","public void test044() throws Throwable {
+    UUIDDeserializer uUIDDeserializer0 = new UUIDDeserializer();
+    JsonFactory jsonFactory0 = new JsonFactory((ObjectCodec) null);
+    char[] charArray0 = new char[0];
+    JsonParser jsonParser0 = jsonFactory0.createParser(charArray0);
+    // Undeclared exception!
+    try {
+        uUIDDeserializer0._verifyEndArrayForSingle(jsonParser0, (DeserializationContext) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdDeserializer"", e);
+    }
+}",""
+"/*
+    /****************************************************
+    /* Helper methods for sub-classes, coercions
+    /****************************************************
+     */
+protected void _failDoubleToIntCoercion(JsonParser p, DeserializationContext ctxt, String type) throws IOException {
+    ctxt.reportInputMismatch(handledType(), ""Cannot coerce a floating-point value ('%s') into %s (enable `DeserializationFeature.ACCEPT_FLOAT_AS_INT` to allow)"", p.getValueAsString(), type);
+}","public void test055() throws Throwable {
+    PrimitiveArrayDeserializers.BooleanDeser primitiveArrayDeserializers_BooleanDeser0 = new PrimitiveArrayDeserializers.BooleanDeser();
+    // Undeclared exception!
+    try {
+        primitiveArrayDeserializers_BooleanDeser0._failDoubleToIntCoercion((JsonParser) null, (DeserializationContext) null, ""INF"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdDeserializer"", e);
+    }
+}",""
+"protected boolean isDefaultKeyDeserializer(KeyDeserializer keyDeser) {
+    return ClassUtil.isJacksonStdImpl(keyDeser);
+}","public void test077() throws Throwable {
+    StdDelegatingDeserializer<Class<InputStream>> stdDelegatingDeserializer0 = new StdDelegatingDeserializer<Class<InputStream>>((Converter<?, Class<InputStream>>) null);
+    boolean boolean0 = stdDelegatingDeserializer0.isDefaultKeyDeserializer((KeyDeserializer) null);
+    assertTrue(boolean0);
+}",""
+"protected boolean isDefaultDeserializer(JsonDeserializer<?> deserializer) {
+    return ClassUtil.isJacksonStdImpl(deserializer);
+}","public void test088() throws Throwable {
+    NumberDeserializers.NumberDeserializer numberDeserializers_NumberDeserializer0 = new NumberDeserializers.NumberDeserializer();
+    PrimitiveArrayDeserializers.IntDeser primitiveArrayDeserializers_IntDeser0 = new PrimitiveArrayDeserializers.IntDeser();
+    boolean boolean0 = primitiveArrayDeserializers_IntDeser0.isDefaultDeserializer(numberDeserializers_NumberDeserializer0);
+    assertTrue(boolean0);
+}","/**
+ * Method that can be called to determine if given deserializer is the default
+ * deserializer Jackson uses; as opposed to a custom deserializer installed by
+ * a module or calling application. Determination is done using
+ * {@link JacksonStdImpl} annotation on deserializer class.
+ */"
+"/*
+    /**********************************************************
+    /* Helper methods for sub-classes, parsing: while mostly
+    /* useful for numeric types, can be also useful for dealing
+    /* with things serialized as numbers (such as Dates).
+    /**********************************************************
+     */
+protected final boolean _parseBooleanPrimitive(JsonParser p, DeserializationContext ctxt) throws IOException {
+    JsonToken t = p.getCurrentToken();
+    if (t == JsonToken.VALUE_TRUE)
+        return true;
+    if (t == JsonToken.VALUE_FALSE)
+        return false;
+    if (t == JsonToken.VALUE_NULL) {
+        _verifyNullForPrimitive(ctxt);
+        return false;
+    }
+    // should accept ints too, (0 == false, otherwise true)
+    if (t == JsonToken.VALUE_NUMBER_INT) {
+        return _parseBooleanFromInt(p, ctxt);
+    }
+    // And finally, let's allow Strings to be converted too
+    if (t == JsonToken.VALUE_STRING) {
+        String text = p.getText().trim();
+        // [databind#422]: Allow aliases
+        if (""true"".equals(text) || ""True"".equals(text)) {
+            return true;
+        }
+        if (""false"".equals(text) || ""False"".equals(text)) {
+            return false;
+        }
+        if (_isEmptyOrTextualNull(text)) {
+            _verifyNullForPrimitiveCoercion(ctxt, text);
+            return false;
+        }
+        Boolean b = (Boolean) ctxt.handleWeirdStringValue(_valueClass, text, ""only \""true\"" or \""false\"" recognized"");
+        return Boolean.TRUE.equals(b);
+    }
+    // [databind#381]
+    if (t == JsonToken.START_ARRAY && ctxt.isEnabled(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS)) {
+        p.nextToken();
+        final boolean parsed = _parseBooleanPrimitive(p, ctxt);
+        _verifyEndArrayForSingle(p, ctxt);
+        return parsed;
+    }
+    // Otherwise, no can do:
+    return ((Boolean) ctxt.handleUnexpectedToken(_valueClass, p)).booleanValue();
+}","public void test099() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    StdDelegatingDeserializer<DataInputStream> stdDelegatingDeserializer0 = new StdDelegatingDeserializer<DataInputStream>((Converter<?, DataInputStream>) null);
+    JsonParser jsonParser0 = jsonFactory0.createParser((Reader) null);
+    // Undeclared exception!
+    try {
+        stdDelegatingDeserializer0._parseBooleanPrimitive(jsonParser0, (DeserializationContext) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdDeserializer"", e);
+    }
+}",""
+"protected final byte _parseBytePrimitive(JsonParser p, DeserializationContext ctxt) throws IOException {
+    int value = _parseIntPrimitive(p, ctxt);
+    // So far so good: but does it fit?
+    if (_byteOverflow(value)) {
+        Number v = (Number) ctxt.handleWeirdStringValue(_valueClass, String.valueOf(value), ""overflow, value cannot be represented as 8-bit value"");
+        return _nonNullNumber(v).byteValue();
+    }
+    return (byte) value;
+}","public void test1010() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    JsonParser jsonParser0 = jsonFactory0.createNonBlockingByteArrayParser();
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    AtomicBooleanDeserializer atomicBooleanDeserializer0 = new AtomicBooleanDeserializer();
+    // Undeclared exception!
+    try {
+        atomicBooleanDeserializer0._parseBytePrimitive(jsonParser0, defaultDeserializationContext_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationContext"", e);
+    }
+}",""
+"protected final int _parseIntPrimitive(DeserializationContext ctxt, String text) throws IOException {
+    try {
+        if (text.length() > 9) {
+            long l = Long.parseLong(text);
+            if (_intOverflow(l)) {
+                Number v = (Number) ctxt.handleWeirdStringValue(_valueClass, text, ""Overflow: numeric value (%s) out of range of int (%d -%d)"", text, Integer.MIN_VALUE, Integer.MAX_VALUE);
+                return _nonNullNumber(v).intValue();
+            }
+            return (int) l;
+        }
+        return NumberInput.parseInt(text);
+    } catch (IllegalArgumentException iae) {
+        Number v = (Number) ctxt.handleWeirdStringValue(_valueClass, text, ""not a valid int value"");
+        return _nonNullNumber(v).intValue();
+    }
+}","public void test1111() throws Throwable {
+    NumberDeserializers.FloatDeserializer numberDeserializers_FloatDeserializer0 = NumberDeserializers.FloatDeserializer.wrapperInstance;
+    // Undeclared exception!
+    try {
+        numberDeserializers_FloatDeserializer0._parseIntPrimitive((DeserializationContext) null, ""a/p9]>uL"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdDeserializer"", e);
+    }
+}","/**
+ * @since 2.9
+ */"
+"protected final int _parseIntPrimitive(DeserializationContext ctxt, String text) throws IOException {
+    try {
+        if (text.length() > 9) {
+            long l = Long.parseLong(text);
+            if (_intOverflow(l)) {
+                Number v = (Number) ctxt.handleWeirdStringValue(_valueClass, text, ""Overflow: numeric value (%s) out of range of int (%d -%d)"", text, Integer.MIN_VALUE, Integer.MAX_VALUE);
+                return _nonNullNumber(v).intValue();
+            }
+            return (int) l;
+        }
+        return NumberInput.parseInt(text);
+    } catch (IllegalArgumentException iae) {
+        Number v = (Number) ctxt.handleWeirdStringValue(_valueClass, text, ""not a valid int value"");
+        return _nonNullNumber(v).intValue();
+    }
+}","public void test1212() throws Throwable {
+    NumberDeserializers.FloatDeserializer numberDeserializers_FloatDeserializer0 = NumberDeserializers.FloatDeserializer.primitiveInstance;
+    // Undeclared exception!
+    try {
+        numberDeserializers_FloatDeserializer0._parseIntPrimitive((DeserializationContext) null, ""2.2250738585072012e-308"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdDeserializer"", e);
+    }
+}","/**
+ * @since 2.9
+ */"
+"protected final float _parseFloatPrimitive(JsonParser p, DeserializationContext ctxt) throws IOException {
+    if (p.hasToken(JsonToken.VALUE_NUMBER_FLOAT)) {
+        return p.getFloatValue();
+    }
+    switch(p.getCurrentTokenId()) {
+        case JsonTokenId.ID_STRING:
+            String text = p.getText().trim();
+            if (_isEmptyOrTextualNull(text)) {
+                _verifyNullForPrimitiveCoercion(ctxt, text);
+                return 0.0f;
+            }
+            return _parseFloatPrimitive(ctxt, text);
+        case JsonTokenId.ID_NUMBER_INT:
+            return p.getFloatValue();
+        case JsonTokenId.ID_NULL:
+            _verifyNullForPrimitive(ctxt);
+            return 0.0f;
+        case JsonTokenId.ID_START_ARRAY:
+            if (ctxt.isEnabled(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS)) {
+                p.nextToken();
+                final float parsed = _parseFloatPrimitive(p, ctxt);
+                _verifyEndArrayForSingle(p, ctxt);
+                return parsed;
+            }
+            break;
+    }
+    // Otherwise, no can do:
+    return ((Number) ctxt.handleUnexpectedToken(_valueClass, p)).floatValue();
+}","public void test1414() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    JsonParser jsonParser0 = jsonFactory0.createNonBlockingByteArrayParser();
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    NumberDeserializers.ByteDeserializer numberDeserializers_ByteDeserializer0 = NumberDeserializers.ByteDeserializer.wrapperInstance;
+    // Undeclared exception!
+    try {
+        numberDeserializers_ByteDeserializer0._parseFloatPrimitive(jsonParser0, defaultDeserializationContext_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationContext"", e);
+    }
+}",""
+"protected final float _parseFloatPrimitive(DeserializationContext ctxt, String text) throws IOException {
+    switch(text.charAt(0)) {
+        case 'I':
+            if (_isPosInf(text)) {
+                return Float.POSITIVE_INFINITY;
+            }
+            break;
+        case 'N':
+            if (_isNaN(text)) {
+                return Float.NaN;
+            }
+            break;
+        case '-':
+            if (_isNegInf(text)) {
+                return Float.NEGATIVE_INFINITY;
+            }
+            break;
+    }
+    try {
+        return Float.parseFloat(text);
+    } catch (IllegalArgumentException iae) {
+    }
+    Number v = (Number) ctxt.handleWeirdStringValue(_valueClass, text, ""not a valid float value"");
+    return _nonNullNumber(v).floatValue();
+}","public void test1515() throws Throwable {
+    NumberDeserializers.FloatDeserializer numberDeserializers_FloatDeserializer0 = NumberDeserializers.FloatDeserializer.primitiveInstance;
+    float float0 = numberDeserializers_FloatDeserializer0._parseFloatPrimitive((DeserializationContext) null, ""-INF"");
+    assertEquals(Float.NEGATIVE_INFINITY, float0, 0.01F);
+}","/**
+ * @since 2.9
+ */"
+"protected final float _parseFloatPrimitive(DeserializationContext ctxt, String text) throws IOException {
+    switch(text.charAt(0)) {
+        case 'I':
+            if (_isPosInf(text)) {
+                return Float.POSITIVE_INFINITY;
+            }
+            break;
+        case 'N':
+            if (_isNaN(text)) {
+                return Float.NaN;
+            }
+            break;
+        case '-':
+            if (_isNegInf(text)) {
+                return Float.NEGATIVE_INFINITY;
+            }
+            break;
+    }
+    try {
+        return Float.parseFloat(text);
+    } catch (IllegalArgumentException iae) {
+    }
+    Number v = (Number) ctxt.handleWeirdStringValue(_valueClass, text, ""not a valid float value"");
+    return _nonNullNumber(v).floatValue();
+}","public void test1616() throws Throwable {
+    NumberDeserializers.IntegerDeserializer numberDeserializers_IntegerDeserializer0 = NumberDeserializers.IntegerDeserializer.wrapperInstance;
+    // Undeclared exception!
+    try {
+        numberDeserializers_IntegerDeserializer0._parseFloatPrimitive((DeserializationContext) null, ""IUz"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdDeserializer"", e);
+    }
+}","/**
+ * @since 2.9
+ */"
+"protected final float _parseFloatPrimitive(DeserializationContext ctxt, String text) throws IOException {
+    switch(text.charAt(0)) {
+        case 'I':
+            if (_isPosInf(text)) {
+                return Float.POSITIVE_INFINITY;
+            }
+            break;
+        case 'N':
+            if (_isNaN(text)) {
+                return Float.NaN;
+            }
+            break;
+        case '-':
+            if (_isNegInf(text)) {
+                return Float.NEGATIVE_INFINITY;
+            }
+            break;
+    }
+    try {
+        return Float.parseFloat(text);
+    } catch (IllegalArgumentException iae) {
+    }
+    Number v = (Number) ctxt.handleWeirdStringValue(_valueClass, text, ""not a valid float value"");
+    return _nonNullNumber(v).floatValue();
+}","public void test1717() throws Throwable {
+    NumberDeserializers.IntegerDeserializer numberDeserializers_IntegerDeserializer0 = NumberDeserializers.IntegerDeserializer.wrapperInstance;
+    float float0 = numberDeserializers_IntegerDeserializer0._parseFloatPrimitive((DeserializationContext) null, ""NaN"");
+    assertEquals(Float.NaN, float0, 0.01F);
+}","/**
+ * @since 2.9
+ */"
+"protected final float _parseFloatPrimitive(DeserializationContext ctxt, String text) throws IOException {
+    switch(text.charAt(0)) {
+        case 'I':
+            if (_isPosInf(text)) {
+                return Float.POSITIVE_INFINITY;
+            }
+            break;
+        case 'N':
+            if (_isNaN(text)) {
+                return Float.NaN;
+            }
+            break;
+        case '-':
+            if (_isNegInf(text)) {
+                return Float.NEGATIVE_INFINITY;
+            }
+            break;
+    }
+    try {
+        return Float.parseFloat(text);
+    } catch (IllegalArgumentException iae) {
+    }
+    Number v = (Number) ctxt.handleWeirdStringValue(_valueClass, text, ""not a valid float value"");
+    return _nonNullNumber(v).floatValue();
+}","public void test1818() throws Throwable {
+    NumberDeserializers.IntegerDeserializer numberDeserializers_IntegerDeserializer0 = NumberDeserializers.IntegerDeserializer.wrapperInstance;
+    // Undeclared exception!
+    try {
+        numberDeserializers_IntegerDeserializer0._parseFloatPrimitive((DeserializationContext) null, ""MIN"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdDeserializer"", e);
+    }
+}","/**
+ * @since 2.9
+ */"
+"protected final float _parseFloatPrimitive(DeserializationContext ctxt, String text) throws IOException {
+    switch(text.charAt(0)) {
+        case 'I':
+            if (_isPosInf(text)) {
+                return Float.POSITIVE_INFINITY;
+            }
+            break;
+        case 'N':
+            if (_isNaN(text)) {
+                return Float.NaN;
+            }
+            break;
+        case '-':
+            if (_isNegInf(text)) {
+                return Float.NEGATIVE_INFINITY;
+            }
+            break;
+    }
+    try {
+        return Float.parseFloat(text);
+    } catch (IllegalArgumentException iae) {
+    }
+    Number v = (Number) ctxt.handleWeirdStringValue(_valueClass, text, ""not a valid float value"");
+    return _nonNullNumber(v).floatValue();
+}","public void test1919() throws Throwable {
+    NumberDeserializers.IntegerDeserializer numberDeserializers_IntegerDeserializer0 = NumberDeserializers.IntegerDeserializer.wrapperInstance;
+    float float0 = numberDeserializers_IntegerDeserializer0._parseFloatPrimitive((DeserializationContext) null, ""INF"");
+    assertEquals(Float.POSITIVE_INFINITY, float0, 0.01F);
+}","/**
+ * @since 2.9
+ */"
+"protected final float _parseFloatPrimitive(DeserializationContext ctxt, String text) throws IOException {
+    switch(text.charAt(0)) {
+        case 'I':
+            if (_isPosInf(text)) {
+                return Float.POSITIVE_INFINITY;
+            }
+            break;
+        case 'N':
+            if (_isNaN(text)) {
+                return Float.NaN;
+            }
+            break;
+        case '-':
+            if (_isNegInf(text)) {
+                return Float.NEGATIVE_INFINITY;
+            }
+            break;
+    }
+    try {
+        return Float.parseFloat(text);
+    } catch (IllegalArgumentException iae) {
+    }
+    Number v = (Number) ctxt.handleWeirdStringValue(_valueClass, text, ""not a valid float value"");
+    return _nonNullNumber(v).floatValue();
+}","public void test2020() throws Throwable {
+    NumberDeserializers.IntegerDeserializer numberDeserializers_IntegerDeserializer0 = NumberDeserializers.IntegerDeserializer.wrapperInstance;
+    // Undeclared exception!
+    try {
+        numberDeserializers_IntegerDeserializer0._parseFloatPrimitive((DeserializationContext) null, ""NF"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdDeserializer"", e);
+    }
+}","/**
+ * @since 2.9
+ */"
+"protected final float _parseFloatPrimitive(DeserializationContext ctxt, String text) throws IOException {
+    switch(text.charAt(0)) {
+        case 'I':
+            if (_isPosInf(text)) {
+                return Float.POSITIVE_INFINITY;
+            }
+            break;
+        case 'N':
+            if (_isNaN(text)) {
+                return Float.NaN;
+            }
+            break;
+        case '-':
+            if (_isNegInf(text)) {
+                return Float.NEGATIVE_INFINITY;
+            }
+            break;
+    }
+    try {
+        return Float.parseFloat(text);
+    } catch (IllegalArgumentException iae) {
+    }
+    Number v = (Number) ctxt.handleWeirdStringValue(_valueClass, text, ""not a valid float value"");
+    return _nonNullNumber(v).floatValue();
+}","public void test2121() throws Throwable {
+    NumberDeserializers.IntegerDeserializer numberDeserializers_IntegerDeserializer0 = NumberDeserializers.IntegerDeserializer.wrapperInstance;
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    // Undeclared exception!
+    try {
+        numberDeserializers_IntegerDeserializer0._parseFloatPrimitive(defaultDeserializationContext_Impl0, ""-N8V*1?cG/"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationContext"", e);
+    }
+}","/**
+ * @since 2.9
+ */"
+"protected final double _parseDoublePrimitive(JsonParser p, DeserializationContext ctxt) throws IOException {
+    if (p.hasToken(JsonToken.VALUE_NUMBER_FLOAT)) {
+        return p.getDoubleValue();
+    }
+    switch(p.getCurrentTokenId()) {
+        case JsonTokenId.ID_STRING:
+            String text = p.getText().trim();
+            if (_isEmptyOrTextualNull(text)) {
+                _verifyNullForPrimitiveCoercion(ctxt, text);
+                return 0.0;
+            }
+            return _parseDoublePrimitive(ctxt, text);
+        case JsonTokenId.ID_NUMBER_INT:
+            return p.getDoubleValue();
+        case JsonTokenId.ID_NULL:
+            _verifyNullForPrimitive(ctxt);
+            return 0.0;
+        case JsonTokenId.ID_START_ARRAY:
+            if (ctxt.isEnabled(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS)) {
+                p.nextToken();
+                final double parsed = _parseDoublePrimitive(p, ctxt);
+                _verifyEndArrayForSingle(p, ctxt);
+                return parsed;
+            }
+            break;
+    }
+    // Otherwise, no can do:
+    return ((Number) ctxt.handleUnexpectedToken(_valueClass, p)).doubleValue();
+}","public void test2222() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory((ObjectCodec) null);
+    JsonParser jsonParser0 = jsonFactory0.createNonBlockingByteArrayParser();
+    NumberDeserializers.ShortDeserializer numberDeserializers_ShortDeserializer0 = NumberDeserializers.ShortDeserializer.wrapperInstance;
+    // Undeclared exception!
+    try {
+        numberDeserializers_ShortDeserializer0._parseDoublePrimitive(jsonParser0, (DeserializationContext) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdDeserializer"", e);
+    }
+}",""
+"protected final double _parseDoublePrimitive(DeserializationContext ctxt, String text) throws IOException {
+    switch(text.charAt(0)) {
+        case 'I':
+            if (_isPosInf(text)) {
+                return Double.POSITIVE_INFINITY;
+            }
+            break;
+        case 'N':
+            if (_isNaN(text)) {
+                return Double.NaN;
+            }
+            break;
+        case '-':
+            if (_isNegInf(text)) {
+                return Double.NEGATIVE_INFINITY;
+            }
+            break;
+    }
+    try {
+        return parseDouble(text);
+    } catch (IllegalArgumentException iae) {
+    }
+    Number v = (Number) ctxt.handleWeirdStringValue(_valueClass, text, ""not a valid double value (as String to convert)"");
+    return _nonNullNumber(v).doubleValue();
+}","public void test2323() throws Throwable {
+    NumberDeserializers.FloatDeserializer numberDeserializers_FloatDeserializer0 = NumberDeserializers.FloatDeserializer.primitiveInstance;
+    double double0 = numberDeserializers_FloatDeserializer0._parseDoublePrimitive((DeserializationContext) null, ""-Infinity"");
+    assertEquals(Double.NEGATIVE_INFINITY, double0, 0.01);
+}","/**
+ * @since 2.9
+ */"
+"protected final double _parseDoublePrimitive(DeserializationContext ctxt, String text) throws IOException {
+    switch(text.charAt(0)) {
+        case 'I':
+            if (_isPosInf(text)) {
+                return Double.POSITIVE_INFINITY;
+            }
+            break;
+        case 'N':
+            if (_isNaN(text)) {
+                return Double.NaN;
+            }
+            break;
+        case '-':
+            if (_isNegInf(text)) {
+                return Double.NEGATIVE_INFINITY;
+            }
+            break;
+    }
+    try {
+        return parseDouble(text);
+    } catch (IllegalArgumentException iae) {
+    }
+    Number v = (Number) ctxt.handleWeirdStringValue(_valueClass, text, ""not a valid double value (as String to convert)"");
+    return _nonNullNumber(v).doubleValue();
+}","public void test2424() throws Throwable {
+    NumberDeserializers.FloatDeserializer numberDeserializers_FloatDeserializer0 = NumberDeserializers.FloatDeserializer.wrapperInstance;
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DeserializationContext deserializationContext0 = objectMapper0.getDeserializationContext();
+    double double0 = numberDeserializers_FloatDeserializer0._parseDoublePrimitive(deserializationContext0, ""Infinity"");
+    assertEquals(Double.POSITIVE_INFINITY, double0, 0.01);
+}","/**
+ * @since 2.9
+ */"
+"protected final double _parseDoublePrimitive(DeserializationContext ctxt, String text) throws IOException {
+    switch(text.charAt(0)) {
+        case 'I':
+            if (_isPosInf(text)) {
+                return Double.POSITIVE_INFINITY;
+            }
+            break;
+        case 'N':
+            if (_isNaN(text)) {
+                return Double.NaN;
+            }
+            break;
+        case '-':
+            if (_isNegInf(text)) {
+                return Double.NEGATIVE_INFINITY;
+            }
+            break;
+    }
+    try {
+        return parseDouble(text);
+    } catch (IllegalArgumentException iae) {
+    }
+    Number v = (Number) ctxt.handleWeirdStringValue(_valueClass, text, ""not a valid double value (as String to convert)"");
+    return _nonNullNumber(v).doubleValue();
+}","public void test2525() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    NumberDeserializers.FloatDeserializer numberDeserializers_FloatDeserializer0 = NumberDeserializers.FloatDeserializer.wrapperInstance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    // Undeclared exception!
+    try {
+        numberDeserializers_FloatDeserializer0._parseDoublePrimitive(defaultDeserializationContext_Impl0, ""IxbM@u_BM$G/RU/8"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationContext"", e);
+    }
+}","/**
+ * @since 2.9
+ */"
+"protected final double _parseDoublePrimitive(DeserializationContext ctxt, String text) throws IOException {
+    switch(text.charAt(0)) {
+        case 'I':
+            if (_isPosInf(text)) {
+                return Double.POSITIVE_INFINITY;
+            }
+            break;
+        case 'N':
+            if (_isNaN(text)) {
+                return Double.NaN;
+            }
+            break;
+        case '-':
+            if (_isNegInf(text)) {
+                return Double.NEGATIVE_INFINITY;
+            }
+            break;
+    }
+    try {
+        return parseDouble(text);
+    } catch (IllegalArgumentException iae) {
+    }
+    Number v = (Number) ctxt.handleWeirdStringValue(_valueClass, text, ""not a valid double value (as String to convert)"");
+    return _nonNullNumber(v).doubleValue();
+}","public void test2626() throws Throwable {
+    NumberDeserializers.FloatDeserializer numberDeserializers_FloatDeserializer0 = NumberDeserializers.FloatDeserializer.primitiveInstance;
+    // Undeclared exception!
+    try {
+        numberDeserializers_FloatDeserializer0._parseDoublePrimitive((DeserializationContext) null, ""Not a subtype"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdDeserializer"", e);
+    }
+}","/**
+ * @since 2.9
+ */"
+"protected final double _parseDoublePrimitive(DeserializationContext ctxt, String text) throws IOException {
+    switch(text.charAt(0)) {
+        case 'I':
+            if (_isPosInf(text)) {
+                return Double.POSITIVE_INFINITY;
+            }
+            break;
+        case 'N':
+            if (_isNaN(text)) {
+                return Double.NaN;
+            }
+            break;
+        case '-':
+            if (_isNegInf(text)) {
+                return Double.NEGATIVE_INFINITY;
+            }
+            break;
+    }
+    try {
+        return parseDouble(text);
+    } catch (IllegalArgumentException iae) {
+    }
+    Number v = (Number) ctxt.handleWeirdStringValue(_valueClass, text, ""not a valid double value (as String to convert)"");
+    return _nonNullNumber(v).doubleValue();
+}","public void test2727() throws Throwable {
+    NumberDeserializers.FloatDeserializer numberDeserializers_FloatDeserializer0 = NumberDeserializers.FloatDeserializer.primitiveInstance;
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    // Undeclared exception!
+    try {
+        numberDeserializers_FloatDeserializer0._parseDoublePrimitive(defaultDeserializationContext_Impl0, ""-N8V*1?cG/"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationContext"", e);
+    }
+}","/**
+ * @since 2.9
+ */"
+"protected java.util.Date _parseDate(JsonParser p, DeserializationContext ctxt) throws IOException {
+    switch(p.getCurrentTokenId()) {
+        case JsonTokenId.ID_STRING:
+            return _parseDate(p.getText().trim(), ctxt);
+        case JsonTokenId.ID_NUMBER_INT:
+            {
+                long ts;
+                try {
+                    ts = p.getLongValue();
+                } catch (JsonParseException e) {
+                    Number v = (Number) ctxt.handleWeirdNumberValue(_valueClass, p.getNumberValue(), ""not a valid 64-bit long for creating `java.util.Date`"");
+                    ts = v.longValue();
+                }
+                return new java.util.Date(ts);
+            }
+        case JsonTokenId.ID_NULL:
+            return (java.util.Date) getNullValue(ctxt);
+        case JsonTokenId.ID_START_ARRAY:
+            return _parseDateFromArray(p, ctxt);
+    }
+    return (java.util.Date) ctxt.handleUnexpectedToken(_valueClass, p);
+}","public void test2828() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory((ObjectCodec) null);
+    char[] charArray0 = new char[0];
+    JsonParser jsonParser0 = jsonFactory0.createParser(charArray0);
+    StdDelegatingDeserializer<DecimalNode> stdDelegatingDeserializer0 = new StdDelegatingDeserializer<DecimalNode>((Converter<?, DecimalNode>) null);
+    // Undeclared exception!
+    try {
+        stdDelegatingDeserializer0._parseDate(jsonParser0, (DeserializationContext) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdDeserializer"", e);
+    }
+}",""
+"// @since 2.9
+protected java.util.Date _parseDateFromArray(JsonParser p, DeserializationContext ctxt) throws IOException {
+    JsonToken t;
+    if (ctxt.hasSomeOfFeatures(F_MASK_ACCEPT_ARRAYS)) {
+        t = p.nextToken();
+        if (t == JsonToken.END_ARRAY) {
+            if (ctxt.isEnabled(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT)) {
+                return (java.util.Date) getNullValue(ctxt);
+            }
+        }
+        if (ctxt.isEnabled(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS)) {
+            final Date parsed = _parseDate(p, ctxt);
+            _verifyEndArrayForSingle(p, ctxt);
+            return parsed;
+        }
+    } else {
+        t = p.getCurrentToken();
+    }
+    return (java.util.Date) ctxt.handleUnexpectedToken(_valueClass, t, p, null);
+}","public void test2929() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    StdDelegatingDeserializer<BuilderBasedDeserializer> stdDelegatingDeserializer0 = new StdDelegatingDeserializer<BuilderBasedDeserializer>((Converter<?, BuilderBasedDeserializer>) null);
+    // Undeclared exception!
+    try {
+        stdDelegatingDeserializer0._parseDateFromArray((JsonParser) null, defaultDeserializationContext_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdDeserializer"", e);
+    }
+}",""
+"protected java.util.Date _parseDate(String value, DeserializationContext ctxt) throws IOException {
+    try {
+        // Take empty Strings to mean 'empty' Value, usually 'null':
+        if (_isEmptyOrTextualNull(value)) {
+            return (java.util.Date) getNullValue(ctxt);
+        }
+        return ctxt.parseDate(value);
+    } catch (IllegalArgumentException iae) {
+        return (java.util.Date) ctxt.handleWeirdStringValue(_valueClass, value, ""not a valid representation (error: %s)"", iae.getMessage());
+    }
+}","public void test3030() throws Throwable {
+    NumberDeserializers.ByteDeserializer numberDeserializers_ByteDeserializer0 = NumberDeserializers.ByteDeserializer.primitiveInstance;
+    // Undeclared exception!
+    try {
+        numberDeserializers_ByteDeserializer0._parseDate(""O"", (DeserializationContext) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdDeserializer"", e);
+    }
+}","/**
+ * @since 2.8
+ */"
+"protected java.util.Date _parseDate(String value, DeserializationContext ctxt) throws IOException {
+    try {
+        // Take empty Strings to mean 'empty' Value, usually 'null':
+        if (_isEmptyOrTextualNull(value)) {
+            return (java.util.Date) getNullValue(ctxt);
+        }
+        return ctxt.parseDate(value);
+    } catch (IllegalArgumentException iae) {
+        return (java.util.Date) ctxt.handleWeirdStringValue(_valueClass, value, ""not a valid representation (error: %s)"", iae.getMessage());
+    }
+}","public void test3131() throws Throwable {
+    DateDeserializers.CalendarDeserializer dateDeserializers_CalendarDeserializer0 = new DateDeserializers.CalendarDeserializer();
+    Date date0 = dateDeserializers_CalendarDeserializer0._parseDate("""", (DeserializationContext) null);
+    assertNull(date0);
+}","/**
+ * @since 2.8
+ */"
+"protected final double _parseDoublePrimitive(DeserializationContext ctxt, String text) throws IOException {
+    switch(text.charAt(0)) {
+        case 'I':
+            if (_isPosInf(text)) {
+                return Double.POSITIVE_INFINITY;
+            }
+            break;
+        case 'N':
+            if (_isNaN(text)) {
+                return Double.NaN;
+            }
+            break;
+        case '-':
+            if (_isNegInf(text)) {
+                return Double.NEGATIVE_INFINITY;
+            }
+            break;
+    }
+    try {
+        return parseDouble(text);
+    } catch (IllegalArgumentException iae) {
+    }
+    Number v = (Number) ctxt.handleWeirdStringValue(_valueClass, text, ""not a valid double value (as String to convert)"");
+    return _nonNullNumber(v).doubleValue();
+}","public void test3232() throws Throwable {
+    NumberDeserializers.FloatDeserializer numberDeserializers_FloatDeserializer0 = NumberDeserializers.FloatDeserializer.wrapperInstance;
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    double double0 = numberDeserializers_FloatDeserializer0._parseDoublePrimitive(defaultDeserializationContext_Impl0, ""2.2250738585072012e-308"");
+    assertEquals(2.2250738585072014E-308, double0, 0.01);
+}","/**
+ * @since 2.9
+ */"
+"@SuppressWarnings(""unchecked"")
+protected T _deserializeFromEmpty(JsonParser p, DeserializationContext ctxt) throws IOException {
+    JsonToken t = p.getCurrentToken();
+    if (t == JsonToken.START_ARRAY) {
+        if (ctxt.isEnabled(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT)) {
+            t = p.nextToken();
+            if (t == JsonToken.END_ARRAY) {
+                return null;
+            }
+            return (T) ctxt.handleUnexpectedToken(handledType(), p);
+        }
+    } else if (t == JsonToken.VALUE_STRING) {
+        if (ctxt.isEnabled(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)) {
+            String str = p.getText().trim();
+            if (str.isEmpty()) {
+                return null;
+            }
+        }
+    }
+    return (T) ctxt.handleUnexpectedToken(handledType(), p);
+}","public void test3333() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    JsonParser jsonParser0 = jsonFactory0.createNonBlockingByteArrayParser();
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    UUIDDeserializer uUIDDeserializer0 = new UUIDDeserializer();
+    // Undeclared exception!
+    try {
+        uUIDDeserializer0._deserializeFromEmpty(jsonParser0, defaultDeserializationContext_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationContext"", e);
+    }
+}","/**
+ * Helper method that may be used to support fallback for Empty String / Empty Array
+ * non-standard representations; usually for things serialized as JSON Objects.
+ *
+ * @since 2.5
+ */"
+"protected java.util.Date _parseDate(String value, DeserializationContext ctxt) throws IOException {
+    try {
+        // Take empty Strings to mean 'empty' Value, usually 'null':
+        if (_isEmptyOrTextualNull(value)) {
+            return (java.util.Date) getNullValue(ctxt);
+        }
+        return ctxt.parseDate(value);
+    } catch (IllegalArgumentException iae) {
+        return (java.util.Date) ctxt.handleWeirdStringValue(_valueClass, value, ""not a valid representation (error: %s)"", iae.getMessage());
+    }
+}","public void test3434() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    StringDeserializer stringDeserializer0 = new StringDeserializer();
+    Date date0 = stringDeserializer0._parseDate(""null"", defaultDeserializationContext_Impl0);
+    assertNull(date0);
+}","/**
+ * @since 2.8
+ */"
+"/*
+    /**********************************************************
+    /* Helper methods for sub-classes regarding decoding from
+    /* alternate representations
+    /**********************************************************
+     */
+/**
+ *  Helper method that allows easy support for array-related {@link DeserializationFeature}s
+ *  `ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT` and `UNWRAP_SINGLE_VALUE_ARRAYS`: checks for either
+ *  empty array, or single-value array-wrapped value (respectively), and either reports
+ *  an exception (if no match, or feature(s) not enabled), or returns appropriate
+ *  result value.
+ * <p>
+ *  This method should NOT be called if Array representation is explicitly supported
+ *  for type: it should only be called in case it is otherwise unrecognized.
+ * <p>
+ *  NOTE: in case of unwrapped single element, will handle actual decoding
+ *  by calling {@link #_deserializeWrappedValue}, which by default calls
+ *  {@link #deserialize(JsonParser, DeserializationContext)}.
+ *
+ *  @since 2.9
+ */
+protected T _deserializeFromArray(JsonParser p, DeserializationContext ctxt) throws IOException {
+    JsonToken t;
+    if (ctxt.hasSomeOfFeatures(F_MASK_ACCEPT_ARRAYS)) {
+        t = p.nextToken();
+        if (t == JsonToken.END_ARRAY) {
+            if (ctxt.isEnabled(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT)) {
+                return getNullValue(ctxt);
+            }
+        }
+        if (ctxt.isEnabled(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS)) {
+            final T parsed = deserialize(p, ctxt);
+            if (p.nextToken() != JsonToken.END_ARRAY) {
+                handleMissingEndArrayForSingle(p, ctxt);
+            }
+            return parsed;
+        }
+    } else {
+        t = p.getCurrentToken();
+    }
+    @SuppressWarnings(""unchecked"")
+    T result = (T) ctxt.handleUnexpectedToken(_valueClass, t, p, null);
+    return result;
+}","public void test3535() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    NumberDeserializers.FloatDeserializer numberDeserializers_FloatDeserializer0 = NumberDeserializers.FloatDeserializer.wrapperInstance;
+    // Undeclared exception!
+    try {
+        numberDeserializers_FloatDeserializer0._deserializeFromArray((JsonParser) null, defaultDeserializationContext_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdDeserializer"", e);
+    }
+}",""
+"protected T _deserializeWrappedValue(JsonParser p, DeserializationContext ctxt) throws IOException {
+    // 23-Mar-2017, tatu: Let's specifically block recursive resolution to avoid
+    //   either supporting nested arrays, or to cause infinite looping.
+    if (p.hasToken(JsonToken.START_ARRAY)) {
+        String msg = String.format(""Cannot deserialize instance of %s out of %s token: nested Arrays not allowed with %s"", ClassUtil.nameOf(_valueClass), JsonToken.START_ARRAY, ""DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS"");
+        @SuppressWarnings(""unchecked"")
+        T result = (T) ctxt.handleUnexpectedToken(_valueClass, p.getCurrentToken(), p, msg);
+        return result;
+    }
+    return (T) deserialize(p, ctxt);
+}","public void test3636() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    StdDelegatingDeserializer<DataInputStream> stdDelegatingDeserializer0 = new StdDelegatingDeserializer<DataInputStream>((Converter<?, DataInputStream>) null);
+    JsonParser jsonParser0 = jsonFactory0.createParser(""JSON"");
+    // Undeclared exception!
+    try {
+        stdDelegatingDeserializer0._deserializeWrappedValue(jsonParser0, (DeserializationContext) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdDelegatingDeserializer"", e);
+    }
+}","/**
+ * Helper called to support {@link DeserializationFeature#UNWRAP_SINGLE_VALUE_ARRAYS}:
+ * default implementation simply calls
+ * {@link #deserialize(JsonParser, DeserializationContext)},
+ * but handling may be overridden.
+ *
+ * @since 2.9
+ */"
+"protected Object _coerceIntegral(JsonParser p, DeserializationContext ctxt) throws IOException {
+    int feats = ctxt.getDeserializationFeatures();
+    if (DeserializationFeature.USE_BIG_INTEGER_FOR_INTS.enabledIn(feats)) {
+        return p.getBigIntegerValue();
+    }
+    if (DeserializationFeature.USE_LONG_FOR_INTS.enabledIn(feats)) {
+        return p.getLongValue();
+    }
+    // should be optimal, whatever it is
+    return p.getBigIntegerValue();
+}","public void test3737() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    StdDelegatingDeserializer<BuilderBasedDeserializer> stdDelegatingDeserializer0 = new StdDelegatingDeserializer<BuilderBasedDeserializer>((Converter<?, BuilderBasedDeserializer>) null);
+    // Undeclared exception!
+    try {
+        stdDelegatingDeserializer0._coerceIntegral((JsonParser) null, defaultDeserializationContext_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdDeserializer"", e);
+    }
+}","/**
+ * Helper method called in case where an integral number is encountered, but
+ * config settings suggest that a coercion may be needed to ""upgrade""
+ * {@link java.lang.Number} into ""bigger"" type like {@link java.lang.Long} or
+ * {@link java.math.BigInteger}
+ *
+ * @see DeserializationFeature#USE_BIG_INTEGER_FOR_INTS
+ * @see DeserializationFeature#USE_LONG_FOR_INTS
+ *
+ * @since 2.6
+ */"
+"protected Object _coerceNullToken(DeserializationContext ctxt, boolean isPrimitive) throws JsonMappingException {
+    if (isPrimitive) {
+        _verifyNullForPrimitive(ctxt);
+    }
+    return getNullValue(ctxt);
+}","public void test3838() throws Throwable {
+    NumberDeserializers.FloatDeserializer numberDeserializers_FloatDeserializer0 = NumberDeserializers.FloatDeserializer.wrapperInstance;
+    Object object0 = numberDeserializers_FloatDeserializer0._coerceNullToken((DeserializationContext) null, false);
+    assertNull(object0);
+}","/**
+ * Method to call when JSON `null` token is encountered. Note: only called when
+ * this deserializer encounters it but NOT when reached via property
+ *
+ * @since 2.9
+ */"
+"protected Object _coerceNullToken(DeserializationContext ctxt, boolean isPrimitive) throws JsonMappingException {
+    if (isPrimitive) {
+        _verifyNullForPrimitive(ctxt);
+    }
+    return getNullValue(ctxt);
+}","public void test3939() throws Throwable {
+    NumberDeserializers.ByteDeserializer numberDeserializers_ByteDeserializer0 = NumberDeserializers.ByteDeserializer.wrapperInstance;
+    // Undeclared exception!
+    try {
+        numberDeserializers_ByteDeserializer0._coerceNullToken((DeserializationContext) null, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdDeserializer"", e);
+    }
+}","/**
+ * Method to call when JSON `null` token is encountered. Note: only called when
+ * this deserializer encounters it but NOT when reached via property
+ *
+ * @since 2.9
+ */"
+"@Override
+public AccessPattern getEmptyAccessPattern() {
+    // Empty values shareable freely
+    return AccessPattern.CONSTANT;
+}","public void test4040() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    PrimitiveArrayDeserializers.DoubleDeser primitiveArrayDeserializers_DoubleDeser0 = new PrimitiveArrayDeserializers.DoubleDeser();
+    primitiveArrayDeserializers_DoubleDeser0._verifyNullForPrimitive(defaultDeserializationContext_Impl0);
+    assertEquals(AccessPattern.CONSTANT, primitiveArrayDeserializers_DoubleDeser0.getEmptyAccessPattern());
+}",""
+"protected void _reportFailedNullCoerce(DeserializationContext ctxt, boolean state, Enum<?> feature, String inputDesc) throws JsonMappingException {
+    String enableDesc = state ? ""enable"" : ""disable"";
+    ctxt.reportInputMismatch(this, ""Cannot coerce %s to Null value %s (%s `%s.%s` to allow)"", inputDesc, _coercedTypeDesc(), enableDesc, feature.getClass().getSimpleName(), feature.name());
+}","public void test4141() throws Throwable {
+    UUIDDeserializer uUIDDeserializer0 = new UUIDDeserializer();
+    SerializationFeature serializationFeature0 = SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS;
+    // Undeclared exception!
+    try {
+        uUIDDeserializer0._reportFailedNullCoerce((DeserializationContext) null, false, serializationFeature0, (String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdDeserializer"", e);
+    }
+}",""
+"protected void _reportFailedNullCoerce(DeserializationContext ctxt, boolean state, Enum<?> feature, String inputDesc) throws JsonMappingException {
+    String enableDesc = state ? ""enable"" : ""disable"";
+    ctxt.reportInputMismatch(this, ""Cannot coerce %s to Null value %s (%s `%s.%s` to allow)"", inputDesc, _coercedTypeDesc(), enableDesc, feature.getClass().getSimpleName(), feature.name());
+}","public void test4242() throws Throwable {
+    NumberDeserializers.ByteDeserializer numberDeserializers_ByteDeserializer0 = NumberDeserializers.ByteDeserializer.primitiveInstance;
+    DeserializerFactoryConfig deserializerFactoryConfig0 = new DeserializerFactoryConfig();
+    BeanDeserializerFactory beanDeserializerFactory0 = new BeanDeserializerFactory(deserializerFactoryConfig0);
+    JsonFactory.Feature jsonFactory_Feature0 = JsonFactory.Feature.FAIL_ON_SYMBOL_HASH_OVERFLOW;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    try {
+        numberDeserializers_ByteDeserializer0._reportFailedNullCoerce(defaultDeserializationContext_Impl0, true, jsonFactory_Feature0, ""JSON"");
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Cannot coerce JSON to Null value for type `byte` (enable `Feature.FAIL_ON_SYMBOL_HASH_OVERFLOW` to allow)
+        //
+        verifyException(""com.fasterxml.jackson.databind.exc.MismatchedInputException"", e);
+    }
+}",""
+"protected String _coercedTypeDesc() {
+    boolean structured;
+    String typeDesc;
+    JavaType t = getValueType();
+    if ((t != null) && !t.isPrimitive()) {
+        structured = (t.isContainerType() || t.isReferenceType());
+        // 21-Jul-2017, tatu: Probably want to change this (JavaType.toString() not very good) but...
+        typeDesc = ""'"" + t.toString() + ""'"";
+    } else {
+        Class<?> cls = handledType();
+        structured = cls.isArray() || Collection.class.isAssignableFrom(cls) || Map.class.isAssignableFrom(cls);
+        typeDesc = ClassUtil.nameOf(cls);
+    }
+    if (structured) {
+        return ""as content of type "" + typeDesc;
+    }
+    return ""for type "" + typeDesc;
+}","public void test4343() throws Throwable {
+    PrimitiveArrayDeserializers.DoubleDeser primitiveArrayDeserializers_DoubleDeser0 = new PrimitiveArrayDeserializers.DoubleDeser();
+    String string0 = primitiveArrayDeserializers_DoubleDeser0._coercedTypeDesc();
+    assertEquals(""as content of type `double[]`"", string0);
+}","/**
+ * Helper method called to get a description of type into which a scalar value coercion
+ * is (most likely) being applied, to be used for constructing exception messages
+ * on coerce failure.
+ *
+ * @return Message with backtick-enclosed name of type this deserializer supports
+ *
+ * @since 2.9
+ */"
+"protected final boolean _isIntNumber(String text) {
+    final int len = text.length();
+    if (len > 0) {
+        char c = text.charAt(0);
+        // skip leading sign (plus not allowed for strict JSON numbers but...)
+        int i = (c == '-' || c == '+') ? 1 : 0;
+        for (; i < len; ++i) {
+            int ch = text.charAt(i);
+            if (ch > '9' || ch < '0') {
+                return false;
+            }
+        }
+        return true;
+    }
+    return false;
+}","public void test4444() throws Throwable {
+    NumberDeserializers.IntegerDeserializer numberDeserializers_IntegerDeserializer0 = NumberDeserializers.IntegerDeserializer.wrapperInstance;
+    boolean boolean0 = numberDeserializers_IntegerDeserializer0._isIntNumber("""");
+    assertFalse(boolean0);
+}","/**
+ * Helper method to check whether given text refers to what looks like a clean simple
+ * integer number, consisting of optional sign followed by a sequence of digits.
+ */"
+"protected final boolean _isIntNumber(String text) {
+    final int len = text.length();
+    if (len > 0) {
+        char c = text.charAt(0);
+        // skip leading sign (plus not allowed for strict JSON numbers but...)
+        int i = (c == '-' || c == '+') ? 1 : 0;
+        for (; i < len; ++i) {
+            int ch = text.charAt(i);
+            if (ch > '9' || ch < '0') {
+                return false;
+            }
+        }
+        return true;
+    }
+    return false;
+}","public void test4545() throws Throwable {
+    NumberDeserializers.IntegerDeserializer numberDeserializers_IntegerDeserializer0 = NumberDeserializers.IntegerDeserializer.primitiveInstance;
+    boolean boolean0 = numberDeserializers_IntegerDeserializer0._isIntNumber(""+FWMt60F}c@"");
+    assertFalse(boolean0);
+}","/**
+ * Helper method to check whether given text refers to what looks like a clean simple
+ * integer number, consisting of optional sign followed by a sequence of digits.
+ */"
+"protected final boolean _isIntNumber(String text) {
+    final int len = text.length();
+    if (len > 0) {
+        char c = text.charAt(0);
+        // skip leading sign (plus not allowed for strict JSON numbers but...)
+        int i = (c == '-' || c == '+') ? 1 : 0;
+        for (; i < len; ++i) {
+            int ch = text.charAt(i);
+            if (ch > '9' || ch < '0') {
+                return false;
+            }
+        }
+        return true;
+    }
+    return false;
+}","public void test4646() throws Throwable {
+    NumberDeserializers.IntegerDeserializer numberDeserializers_IntegerDeserializer0 = NumberDeserializers.IntegerDeserializer.primitiveInstance;
+    boolean boolean0 = numberDeserializers_IntegerDeserializer0._isIntNumber(""-Infinity"");
+    assertFalse(boolean0);
+}","/**
+ * Helper method to check whether given text refers to what looks like a clean simple
+ * integer number, consisting of optional sign followed by a sequence of digits.
+ */"
+"protected final boolean _isIntNumber(String text) {
+    final int len = text.length();
+    if (len > 0) {
+        char c = text.charAt(0);
+        // skip leading sign (plus not allowed for strict JSON numbers but...)
+        int i = (c == '-' || c == '+') ? 1 : 0;
+        for (; i < len; ++i) {
+            int ch = text.charAt(i);
+            if (ch > '9' || ch < '0') {
+                return false;
+            }
+        }
+        return true;
+    }
+    return false;
+}","public void test4747() throws Throwable {
+    NumberDeserializers.IntegerDeserializer numberDeserializers_IntegerDeserializer0 = NumberDeserializers.IntegerDeserializer.primitiveInstance;
+    boolean boolean0 = numberDeserializers_IntegerDeserializer0._isIntNumber(""1%"");
+    assertFalse(boolean0);
+}","/**
+ * Helper method to check whether given text refers to what looks like a clean simple
+ * integer number, consisting of optional sign followed by a sequence of digits.
+ */"
+"protected final NullValueProvider findValueNullProvider(DeserializationContext ctxt, SettableBeanProperty prop, PropertyMetadata propMetadata) throws JsonMappingException {
+    if (prop != null) {
+        return _findNullProvider(ctxt, prop, propMetadata.getValueNulls(), prop.getValueDeserializer());
+    }
+    return null;
+}","public void test4949() throws Throwable {
+    NumberDeserializers.FloatDeserializer numberDeserializers_FloatDeserializer0 = NumberDeserializers.FloatDeserializer.primitiveInstance;
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_REQUIRED;
+    NullValueProvider nullValueProvider0 = numberDeserializers_FloatDeserializer0.findValueNullProvider((DeserializationContext) null, (SettableBeanProperty) null, propertyMetadata0);
+    assertNull(nullValueProvider0);
+}","/**
+ * Method called to find {@link NullValueProvider} for a primary property, using
+ * ""value nulls"" setting. If no provider found (not defined, or is ""skip""),
+ * will return `null`.
+ *
+ * @since 2.9
+ */"
+"// @since 2.9
+protected final NullValueProvider _findNullProvider(DeserializationContext ctxt, BeanProperty prop, Nulls nulls, JsonDeserializer<?> valueDeser) throws JsonMappingException {
+    if (nulls == Nulls.FAIL) {
+        if (prop == null) {
+            return NullsFailProvider.constructForRootValue(ctxt.constructType(valueDeser.handledType()));
+        }
+        return NullsFailProvider.constructForProperty(prop);
+    }
+    if (nulls == Nulls.AS_EMPTY) {
+        // cannot deal with empty values if there is no value deserializer that
+        // can indicate what ""empty value"" is:
+        if (valueDeser == null) {
+            return null;
+        }
+        // Let's first do some sanity checking...
+        // NOTE: although we could use `ValueInstantiator.Gettable` in general,
+        // let's not since that would prevent being able to use custom impls:
+        if (valueDeser instanceof BeanDeserializerBase) {
+            ValueInstantiator vi = ((BeanDeserializerBase) valueDeser).getValueInstantiator();
+            if (!vi.canCreateUsingDefault()) {
+                final JavaType type = prop.getType();
+                ctxt.reportBadDefinition(type, String.format(""Cannot create empty instance of %s, no default Creator"", type));
+            }
+        }
+        // Second: can with pre-fetch value?
+        {
+            AccessPattern access = valueDeser.getEmptyAccessPattern();
+            if (access == AccessPattern.ALWAYS_NULL) {
+                return NullsConstantProvider.nuller();
+            }
+            if (access == AccessPattern.CONSTANT) {
+                return NullsConstantProvider.forValue(valueDeser.getEmptyValue(ctxt));
+            }
+        }
+        return new NullsAsEmptyProvider(valueDeser);
+    }
+    if (nulls == Nulls.SKIP) {
+        return NullsConstantProvider.skipper();
+    }
+    return null;
+}","public void test5151() throws Throwable {
+    DeserializerFactoryConfig deserializerFactoryConfig0 = new DeserializerFactoryConfig();
+    BeanDeserializerFactory beanDeserializerFactory0 = new BeanDeserializerFactory(deserializerFactoryConfig0);
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    DateDeserializers.CalendarDeserializer dateDeserializers_CalendarDeserializer0 = new DateDeserializers.CalendarDeserializer();
+    Converter<Calendar, DataInputStream> converter0 = (Converter<Calendar, DataInputStream>) mock(Converter.class, new ViolatedAssumptionAnswer());
+    StdDelegatingDeserializer<DataInputStream> stdDelegatingDeserializer0 = new StdDelegatingDeserializer<DataInputStream>(converter0);
+    Nulls nulls0 = Nulls.FAIL;
+    // Undeclared exception!
+    try {
+        stdDelegatingDeserializer0._findNullProvider(defaultDeserializationContext_Impl0, (BeanProperty) null, nulls0, dateDeserializers_CalendarDeserializer0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationContext"", e);
+    }
+}",""
+"public AccessPattern getNullAccessPattern();","public void test5252() throws Throwable {
+    DeserializerFactoryConfig deserializerFactoryConfig0 = new DeserializerFactoryConfig();
+    BeanDeserializerFactory beanDeserializerFactory0 = new BeanDeserializerFactory(deserializerFactoryConfig0);
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    DateDeserializers.CalendarDeserializer dateDeserializers_CalendarDeserializer0 = new DateDeserializers.CalendarDeserializer();
+    Converter<Calendar, DataInputStream> converter0 = (Converter<Calendar, DataInputStream>) mock(Converter.class, new ViolatedAssumptionAnswer());
+    StdDelegatingDeserializer<DataInputStream> stdDelegatingDeserializer0 = new StdDelegatingDeserializer<DataInputStream>(converter0);
+    Nulls nulls0 = Nulls.SKIP;
+    NullValueProvider nullValueProvider0 = stdDelegatingDeserializer0._findNullProvider(defaultDeserializationContext_Impl0, (BeanProperty) null, nulls0, dateDeserializers_CalendarDeserializer0);
+    assertEquals(AccessPattern.ALWAYS_NULL, nullValueProvider0.getNullAccessPattern());
+}","/**
+ * Accessor that may be used to determine if and when provider must be called to
+ * access null replacement value.
+ */"
+"/*
+    /**********************************************************
+    /* Helper methods for sub-classes, problem reporting
+    /**********************************************************
+     */
+/**
+ * Method called to deal with a property that did not map to a known
+ * Bean property. Method can deal with the problem as it sees fit (ignore,
+ * throw exception); but if it does return, it has to skip the matching
+ * Json content parser has.
+ *
+ * @param p Parser that points to value of the unknown property
+ * @param ctxt Context for deserialization; allows access to the parser,
+ *    error reporting functionality
+ * @param instanceOrClass Instance that is being populated by this
+ *   deserializer, or if not known, Class that would be instantiated.
+ *   If null, will assume type is what {@link #getValueClass} returns.
+ * @param propName Name of the property that cannot be mapped
+ */
+protected void handleUnknownProperty(JsonParser p, DeserializationContext ctxt, Object instanceOrClass, String propName) throws IOException {
+    if (instanceOrClass == null) {
+        instanceOrClass = handledType();
+    }
+    // Maybe we have configured handler(s) to take care of it?
+    if (ctxt.handleUnknownProperty(p, this, instanceOrClass, propName)) {
+        return;
+    }
+    /* But if we do get this far, need to skip whatever value we
+         * are pointing to now (although handler is likely to have done that already)
+         */
+    p.skipChildren();
+}","public void test5353() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    StdDelegatingDeserializer<String> stdDelegatingDeserializer0 = new StdDelegatingDeserializer<String>((Converter<?, String>) null);
+    Integer integer0 = new Integer((-3160));
+    // Undeclared exception!
+    try {
+        stdDelegatingDeserializer0.handleUnknownProperty((JsonParser) null, defaultDeserializationContext_Impl0, integer0, "".l 8RH?7<'Nt"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationContext"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Helper methods for sub-classes, problem reporting
+    /**********************************************************
+     */
+/**
+ * Method called to deal with a property that did not map to a known
+ * Bean property. Method can deal with the problem as it sees fit (ignore,
+ * throw exception); but if it does return, it has to skip the matching
+ * Json content parser has.
+ *
+ * @param p Parser that points to value of the unknown property
+ * @param ctxt Context for deserialization; allows access to the parser,
+ *    error reporting functionality
+ * @param instanceOrClass Instance that is being populated by this
+ *   deserializer, or if not known, Class that would be instantiated.
+ *   If null, will assume type is what {@link #getValueClass} returns.
+ * @param propName Name of the property that cannot be mapped
+ */
+protected void handleUnknownProperty(JsonParser p, DeserializationContext ctxt, Object instanceOrClass, String propName) throws IOException {
+    if (instanceOrClass == null) {
+        instanceOrClass = handledType();
+    }
+    // Maybe we have configured handler(s) to take care of it?
+    if (ctxt.handleUnknownProperty(p, this, instanceOrClass, propName)) {
+        return;
+    }
+    /* But if we do get this far, need to skip whatever value we
+         * are pointing to now (although handler is likely to have done that already)
+         */
+    p.skipChildren();
+}","public void test5454() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    JsonParser jsonParser0 = jsonFactory0.createNonBlockingByteArrayParser();
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    StdDelegatingDeserializer<Boolean> stdDelegatingDeserializer0 = new StdDelegatingDeserializer<Boolean>((Converter<?, Boolean>) null);
+    // Undeclared exception!
+    try {
+        stdDelegatingDeserializer0.handleUnknownProperty(jsonParser0, defaultDeserializationContext_Impl0, (Object) null, ""-bmJ:jc/ZC5"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdDelegatingDeserializer"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Helper methods, other
+    /**********************************************************
+     */
+/**
+ * @since 2.9
+ */
+protected final static boolean _neitherNull(Object a, Object b) {
+    return (a != null) && (b != null);
+}","public void test5555() throws Throwable {
+    Double double0 = new Double(0.0);
+    boolean boolean0 = StdDeserializer._neitherNull(double0, (Object) null);
+    assertFalse(boolean0);
+}",""
+"protected final boolean _byteOverflow(int value) {
+    // 07-nov-2016, tatu: We support ""unsigned byte"" as well
+    //    as Java signed range since that's relatively common usage
+    return (value < Byte.MIN_VALUE || value > 255);
+}","public void test5656() throws Throwable {
+    StringDeserializer stringDeserializer0 = StringDeserializer.instance;
+    boolean boolean0 = stringDeserializer0._byteOverflow((-438));
+    assertTrue(boolean0);
+}","/**
+ * @since 2.9
+ */"
+"protected final boolean _byteOverflow(int value) {
+    // 07-nov-2016, tatu: We support ""unsigned byte"" as well
+    //    as Java signed range since that's relatively common usage
+    return (value < Byte.MIN_VALUE || value > 255);
+}","public void test5757() throws Throwable {
+    StringDeserializer stringDeserializer0 = StringDeserializer.instance;
+    boolean boolean0 = stringDeserializer0._byteOverflow((-2));
+    assertFalse(boolean0);
+}","/**
+ * @since 2.9
+ */"
+"protected final boolean _byteOverflow(int value) {
+    // 07-nov-2016, tatu: We support ""unsigned byte"" as well
+    //    as Java signed range since that's relatively common usage
+    return (value < Byte.MIN_VALUE || value > 255);
+}","public void test5858() throws Throwable {
+    NumberDeserializers.FloatDeserializer numberDeserializers_FloatDeserializer0 = NumberDeserializers.FloatDeserializer.wrapperInstance;
+    boolean boolean0 = numberDeserializers_FloatDeserializer0._byteOverflow(412);
+    assertTrue(boolean0);
+}","/**
+ * @since 2.9
+ */"
+"protected final boolean _shortOverflow(int value) {
+    return (value < Short.MIN_VALUE || value > Short.MAX_VALUE);
+}","public void test5959() throws Throwable {
+    Converter<DecimalNode, BuilderBasedDeserializer> converter0 = (Converter<DecimalNode, BuilderBasedDeserializer>) mock(Converter.class, new ViolatedAssumptionAnswer());
+    StdDelegatingDeserializer<BuilderBasedDeserializer> stdDelegatingDeserializer0 = new StdDelegatingDeserializer<BuilderBasedDeserializer>(converter0);
+    boolean boolean0 = stdDelegatingDeserializer0._shortOverflow((-2147483632));
+    assertTrue(boolean0);
+}","/**
+ * @since 2.9
+ */"
+"protected final boolean _shortOverflow(int value) {
+    return (value < Short.MIN_VALUE || value > Short.MAX_VALUE);
+}","public void test6060() throws Throwable {
+    Converter<DecimalNode, LinkedList<Calendar>> converter0 = (Converter<DecimalNode, LinkedList<Calendar>>) mock(Converter.class, new ViolatedAssumptionAnswer());
+    StdDelegatingDeserializer<LinkedList<Calendar>> stdDelegatingDeserializer0 = new StdDelegatingDeserializer<LinkedList<Calendar>>(converter0);
+    boolean boolean0 = stdDelegatingDeserializer0._shortOverflow(Integer.MAX_VALUE);
+    assertTrue(boolean0);
+}","/**
+ * @since 2.9
+ */"
+"protected final boolean _shortOverflow(int value) {
+    return (value < Short.MIN_VALUE || value > Short.MAX_VALUE);
+}","public void test6161() throws Throwable {
+    StdDelegatingDeserializer<BuilderBasedDeserializer> stdDelegatingDeserializer0 = new StdDelegatingDeserializer<BuilderBasedDeserializer>((Converter<?, BuilderBasedDeserializer>) null);
+    boolean boolean0 = stdDelegatingDeserializer0._shortOverflow(2700);
+    assertFalse(boolean0);
+}","/**
+ * @since 2.9
+ */"
+"protected final boolean _intOverflow(long value) {
+    return (value < Integer.MIN_VALUE || value > Integer.MAX_VALUE);
+}","public void test6262() throws Throwable {
+    StdDelegatingDeserializer<BuilderBasedDeserializer> stdDelegatingDeserializer0 = new StdDelegatingDeserializer<BuilderBasedDeserializer>((Converter<?, BuilderBasedDeserializer>) null);
+    boolean boolean0 = stdDelegatingDeserializer0._intOverflow((-9223372036854775808L));
+    assertTrue(boolean0);
+}","/**
+ * @since 2.9
+ */"
+"protected final boolean _intOverflow(long value) {
+    return (value < Integer.MIN_VALUE || value > Integer.MAX_VALUE);
+}","public void test6363() throws Throwable {
+    StdDelegatingDeserializer<Integer> stdDelegatingDeserializer0 = new StdDelegatingDeserializer<Integer>((Converter<?, Integer>) null);
+    StdDelegatingDeserializer<BuilderBasedDeserializer> stdDelegatingDeserializer1 = new StdDelegatingDeserializer<BuilderBasedDeserializer>((Converter<Object, BuilderBasedDeserializer>) null, (JavaType) null, stdDelegatingDeserializer0);
+    boolean boolean0 = stdDelegatingDeserializer1._intOverflow(2615);
+    assertFalse(boolean0);
+}","/**
+ * @since 2.9
+ */"
+"protected final boolean _intOverflow(long value) {
+    return (value < Integer.MIN_VALUE || value > Integer.MAX_VALUE);
+}","public void test6464() throws Throwable {
+    Converter<Double, BuilderBasedDeserializer> converter0 = (Converter<Double, BuilderBasedDeserializer>) mock(Converter.class, new ViolatedAssumptionAnswer());
+    StdDelegatingDeserializer<BuilderBasedDeserializer> stdDelegatingDeserializer0 = new StdDelegatingDeserializer<BuilderBasedDeserializer>(converter0);
+    boolean boolean0 = stdDelegatingDeserializer0._intOverflow(9223372036854775807L);
+    assertTrue(boolean0);
+}","/**
+ * @since 2.9
+ */"
+"protected Number _nonNullNumber(Number n) {
+    if (n == null) {
+        n = Integer.valueOf(0);
+    }
+    return n;
+}","public void test6565() throws Throwable {
+    StdDelegatingDeserializer<Boolean> stdDelegatingDeserializer0 = new StdDelegatingDeserializer<Boolean>((Converter<?, Boolean>) null);
+    Integer integer0 = new Integer((-319));
+    Number number0 = stdDelegatingDeserializer0._nonNullNumber(integer0);
+    assertEquals((-319), number0);
+}","/**
+ * @since 2.9
+ */"
+"protected Number _nonNullNumber(Number n) {
+    if (n == null) {
+        n = Integer.valueOf(0);
+    }
+    return n;
+}","public void test6666() throws Throwable {
+    StdDelegatingDeserializer<Boolean> stdDelegatingDeserializer0 = new StdDelegatingDeserializer<Boolean>((Converter<?, Boolean>) null);
+    Number number0 = stdDelegatingDeserializer0._nonNullNumber((Number) null);
+    assertEquals(0, number0);
+}","/**
+ * @since 2.9
+ */"

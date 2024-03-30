@@ -1,0 +1,586 @@
+focal_method,test_prefix,docstring
+"public boolean isUnwrapping() {
+    return false;
+}","public void test000() throws Throwable {
+    BeanSerializerFactory beanSerializerFactory0 = BeanSerializerFactory.instance;
+    BeanPropertyWriter beanPropertyWriter0 = new BeanPropertyWriter();
+    Class<Object>[] classArray0 = (Class<Object>[]) Array.newInstance(Class.class, 0);
+    BeanPropertyWriter beanPropertyWriter1 = beanSerializerFactory0.instance.constructFilteredBeanWriter(beanPropertyWriter0, classArray0);
+    assertFalse(beanPropertyWriter1.isUnwrapping());
+}","/**
+ *  Accessor that will return true if this bean property has to support
+ *  ""unwrapping""; ability to replace POJO structural wrapping with optional
+ *  name prefix and/or suffix (or in some cases, just removal of wrapper name).
+ * <p>
+ *  Default implementation simply returns false.
+ *
+ *  @since 2.3
+ */"
+"@Override
+public SerializerFactory withConfig(SerializerFactoryConfig config) {
+    if (_factoryConfig == config) {
+        return this;
+    }
+    /* 22-Nov-2010, tatu: Handling of subtypes is tricky if we do immutable-with-copy-ctor;
+         *    and we pretty much have to here either choose between losing subtype instance
+         *    when registering additional serializers, or losing serializers.
+         *    Instead, let's actually just throw an error if this method is called when subtype
+         *    has not properly overridden this method; this to indicate problem as soon as possible.
+         */
+    if (getClass() != BeanSerializerFactory.class) {
+        throw new IllegalStateException(""Subtype of BeanSerializerFactory ("" + getClass().getName() + "") has not properly overridden method 'withAdditionalSerializers': can not instantiate subtype with "" + ""additional serializer definitions"");
+    }
+    return new BeanSerializerFactory(config);
+}","public void test011() throws Throwable {
+    SerializerFactoryConfig serializerFactoryConfig0 = new SerializerFactoryConfig();
+    BeanSerializerFactory beanSerializerFactory0 = new BeanSerializerFactory(serializerFactoryConfig0);
+    SerializerFactory serializerFactory0 = beanSerializerFactory0.withConfig(serializerFactoryConfig0);
+    assertSame(serializerFactory0, beanSerializerFactory0);
+}","/**
+ * Method used by module registration functionality, to attach additional
+ * serializer providers into this serializer factory. This is typically
+ * handled by constructing a new instance with additional serializers,
+ * to ensure thread-safe access.
+ */"
+"/*
+    /**********************************************************
+    /* Extended Public API, accessors
+    /**********************************************************
+     */
+/**
+ *  Method that can be called to check whether mapper thinks
+ *  it could serialize an instance of given Class.
+ *  Check is done
+ *  by checking whether a serializer can be found for the type.
+ * <p>
+ *  NOTE: since this method does NOT throw exceptions, but internal
+ *  processing may, caller usually has little information as to why
+ *  serialization would fail. If you want access to internal {@link Exception},
+ *  call {@link #canSerialize(Class, AtomicReference)} instead.
+ *
+ *  @return True if mapper can find a serializer for instances of
+ *   given class (potentially serializable), false otherwise (not
+ *   serializable)
+ */
+public boolean canSerialize(Class<?> type) {
+    return _serializerProvider(getSerializationConfig()).hasSerializerFor(type, null);
+}","public void test022() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<MapType> class0 = MapType.class;
+    boolean boolean0 = objectMapper0.canSerialize(class0);
+    assertTrue(boolean0);
+}",""
+"protected JsonSerializer<?> _createSerializer2(SerializerProvider prov, JavaType type, BeanDescription beanDesc, boolean staticTyping) throws JsonMappingException {
+    JsonSerializer<?> ser = findSerializerByAnnotations(prov, type, beanDesc);
+    if (ser != null) {
+        return ser;
+    }
+    final SerializationConfig config = prov.getConfig();
+    // Container types differ from non-container types
+    // (note: called method checks for module-provided serializers)
+    if (type.isContainerType()) {
+        if (!staticTyping) {
+            staticTyping = usesStaticTyping(config, beanDesc, null);
+            // [Issue#23]: Need to figure out how to force passed parameterization
+            //  to stick...
+            /*
+                if (property == null) {
+                    JavaType t = origType.getContentType();
+                    if (t != null && !t.hasRawClass(Object.class)) {
+                        staticTyping = true;
+                    }
+                }
+                */
+        }
+        // 03-Aug-2012, tatu: As per [Issue#40], may require POJO serializer...
+        ser = buildContainerSerializer(prov, type, beanDesc, staticTyping);
+        // Will return right away, since called method does post-processing:
+        if (ser != null) {
+            return ser;
+        }
+    } else {
+        // Modules may provide serializers of POJO types:
+        for (Serializers serializers : customSerializers()) {
+            ser = serializers.findSerializer(config, type, beanDesc);
+            if (ser != null) {
+                break;
+            }
+        }
+        // 25-Jun-2015, tatu: Then JsonSerializable, @JsonValue etc. NOTE! Prior to 2.6,
+        //    this call was BEFORE custom serializer lookup, which was wrong.
+    }
+    if (ser == null) {
+        // Otherwise, we will check ""primary types""; both marker types that
+        // indicate specific handling (JsonSerializable), or main types that have
+        // precedence over container types
+        ser = findSerializerByLookup(type, config, beanDesc, staticTyping);
+        if (ser == null) {
+            ser = findSerializerByPrimaryType(prov, type, beanDesc, staticTyping);
+            if (ser == null) {
+                // And this is where this class comes in: if type is not a
+                // known ""primary JDK type"", perhaps it's a bean? We can still
+                // get a null, if we can't find a single suitable bean property.
+                ser = findBeanSerializer(prov, type, beanDesc);
+                // Finally: maybe we can still deal with it as an implementation of some basic JDK interface?
+                if (ser == null) {
+                    ser = findSerializerByAddonType(config, type, beanDesc, staticTyping);
+                    // 18-Sep-2014, tatu: Actually, as per [jackson-databind#539], need to get
+                    //   'unknown' serializer assigned earlier, here, so that it gets properly
+                    //   post-processed
+                    if (ser == null) {
+                        ser = prov.getUnknownTypeSerializer(beanDesc.getBeanClass());
+                    }
+                }
+            }
+        }
+    }
+    if (ser != null) {
+        // [databind#120]: Allow post-processing
+        if (_factoryConfig.hasSerializerModifiers()) {
+            for (BeanSerializerModifier mod : _factoryConfig.serializerModifiers()) {
+                ser = mod.modifySerializer(config, beanDesc, ser);
+            }
+        }
+    }
+    return ser;
+}","public void test033() throws Throwable {
+    BeanSerializerFactory beanSerializerFactory0 = BeanSerializerFactory.instance;
+    POJOPropertiesCollector pOJOPropertiesCollector0 = mock(POJOPropertiesCollector.class, new ViolatedAssumptionAnswer());
+    doReturn((AnnotatedClass) null).when(pOJOPropertiesCollector0).getClassDef();
+    doReturn((MapperConfig) null).when(pOJOPropertiesCollector0).getConfig();
+    doReturn((AnnotatedMethod) null).when(pOJOPropertiesCollector0).getJsonValueMethod();
+    doReturn((ObjectIdInfo) null).when(pOJOPropertiesCollector0).getObjectIdInfo();
+    doReturn((JavaType) null).when(pOJOPropertiesCollector0).getType();
+    BasicBeanDescription basicBeanDescription0 = BasicBeanDescription.forDeserialization(pOJOPropertiesCollector0);
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<MinimalClassNameIdResolver> class0 = MinimalClassNameIdResolver.class;
+    ArrayType arrayType0 = typeFactory0.constructArrayType(class0);
+    // Undeclared exception!
+    try {
+        beanSerializerFactory0._createSerializer2(defaultSerializerProvider_Impl0, arrayType0, basicBeanDescription0, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.ser.BasicSerializerFactory"", e);
+    }
+}",""
+"public boolean hasPrefetchedSerializer() {
+    return _prefetch.hasSerializer();
+}","public void test044() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<InputStream> class0 = InputStream.class;
+    SimpleType simpleType0 = (SimpleType) TypeBindings.UNBOUND;
+    CollectionType collectionType0 = CollectionType.construct(class0, simpleType0);
+    ObjectWriter objectWriter0 = objectMapper0.writerFor((JavaType) collectionType0);
+    assertTrue(objectWriter0.hasPrefetchedSerializer());
+}","/**
+ * Diagnostics method that can be called to check whether this writer
+ * has pre-fetched serializer to use: pre-fetching improves performance
+ * when writer instances are reused as it avoids a per-call serializer
+ * lookup.
+ *
+ * @since 2.2
+ */"
+"/*
+    /**********************************************************
+    /* Extended Public API, accessors
+    /**********************************************************
+     */
+/**
+ *  Method that can be called to check whether mapper thinks
+ *  it could serialize an instance of given Class.
+ *  Check is done
+ *  by checking whether a serializer can be found for the type.
+ * <p>
+ *  NOTE: since this method does NOT throw exceptions, but internal
+ *  processing may, caller usually has little information as to why
+ *  serialization would fail. If you want access to internal {@link Exception},
+ *  call {@link #canSerialize(Class, AtomicReference)} instead.
+ *
+ *  @return True if mapper can find a serializer for instances of
+ *   given class (potentially serializable), false otherwise (not
+ *   serializable)
+ */
+public boolean canSerialize(Class<?> type) {
+    return _serializerProvider(getSerializationConfig()).hasSerializerFor(type, null);
+}","public void test055() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    SimpleSerializers simpleSerializers0 = new SimpleSerializers();
+    BeanSerializerFactory beanSerializerFactory0 = BeanSerializerFactory.instance;
+    SerializerFactory serializerFactory0 = beanSerializerFactory0.withAdditionalSerializers(simpleSerializers0);
+    ObjectMapper objectMapper1 = objectMapper0.setSerializerFactory(serializerFactory0);
+    Class<POJOPropertyBuilder> class0 = POJOPropertyBuilder.class;
+    boolean boolean0 = objectMapper1.canSerialize(class0);
+    assertNotSame(serializerFactory0, beanSerializerFactory0);
+}",""
+"/*
+    /**********************************************************
+    /* Extended Public API, accessors
+    /**********************************************************
+     */
+/**
+ *  Method that can be called to check whether mapper thinks
+ *  it could serialize an instance of given Class.
+ *  Check is done
+ *  by checking whether a serializer can be found for the type.
+ * <p>
+ *  NOTE: since this method does NOT throw exceptions, but internal
+ *  processing may, caller usually has little information as to why
+ *  serialization would fail. If you want access to internal {@link Exception},
+ *  call {@link #canSerialize(Class, AtomicReference)} instead.
+ *
+ *  @return True if mapper can find a serializer for instances of
+ *   given class (potentially serializable), false otherwise (not
+ *   serializable)
+ */
+public boolean canSerialize(Class<?> type) {
+    return _serializerProvider(getSerializationConfig()).hasSerializerFor(type, null);
+}","public void test067() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<JsonParser.Feature> class0 = JsonParser.Feature.class;
+    boolean boolean0 = objectMapper0.canSerialize(class0);
+    assertTrue(boolean0);
+}",""
+"/*
+    /**********************************************************
+    /* Extended Public API, accessors
+    /**********************************************************
+     */
+/**
+ *  Method that can be called to check whether mapper thinks
+ *  it could serialize an instance of given Class.
+ *  Check is done
+ *  by checking whether a serializer can be found for the type.
+ * <p>
+ *  NOTE: since this method does NOT throw exceptions, but internal
+ *  processing may, caller usually has little information as to why
+ *  serialization would fail. If you want access to internal {@link Exception},
+ *  call {@link #canSerialize(Class, AtomicReference)} instead.
+ *
+ *  @return True if mapper can find a serializer for instances of
+ *   given class (potentially serializable), false otherwise (not
+ *   serializable)
+ */
+public boolean canSerialize(Class<?> type) {
+    return _serializerProvider(getSerializationConfig()).hasSerializerFor(type, null);
+}","public void test078() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    SerializerFactoryConfig serializerFactoryConfig0 = new SerializerFactoryConfig();
+    BeanSerializerModifier beanSerializerModifier0 = mock(BeanSerializerModifier.class, new ViolatedAssumptionAnswer());
+    doReturn((JsonSerializer) null).when(beanSerializerModifier0).modifySerializer(any(com.fasterxml.jackson.databind.SerializationConfig.class), any(com.fasterxml.jackson.databind.BeanDescription.class), any(com.fasterxml.jackson.databind.JsonSerializer.class));
+    SerializerFactoryConfig serializerFactoryConfig1 = serializerFactoryConfig0.withSerializerModifier(beanSerializerModifier0);
+    BeanSerializerFactory beanSerializerFactory0 = new BeanSerializerFactory(serializerFactoryConfig1);
+    objectMapper0.setSerializerFactory(beanSerializerFactory0);
+    Class<Integer> class0 = Integer.class;
+    boolean boolean0 = objectMapper0.canSerialize(class0);
+    assertFalse(boolean0);
+}",""
+"/*
+    /**********************************************************
+    /* Extended Public API, accessors
+    /**********************************************************
+     */
+/**
+ *  Method that can be called to check whether mapper thinks
+ *  it could serialize an instance of given Class.
+ *  Check is done
+ *  by checking whether a serializer can be found for the type.
+ * <p>
+ *  NOTE: since this method does NOT throw exceptions, but internal
+ *  processing may, caller usually has little information as to why
+ *  serialization would fail. If you want access to internal {@link Exception},
+ *  call {@link #canSerialize(Class, AtomicReference)} instead.
+ *
+ *  @return True if mapper can find a serializer for instances of
+ *   given class (potentially serializable), false otherwise (not
+ *   serializable)
+ */
+public boolean canSerialize(Class<?> type) {
+    return _serializerProvider(getSerializationConfig()).hasSerializerFor(type, null);
+}","public void test089() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    BeanSerializerFactory beanSerializerFactory0 = BeanSerializerFactory.instance;
+    BeanSerializerModifier beanSerializerModifier0 = mock(BeanSerializerModifier.class, new ViolatedAssumptionAnswer());
+    doReturn((List) null).when(beanSerializerModifier0).changeProperties(any(com.fasterxml.jackson.databind.SerializationConfig.class), any(com.fasterxml.jackson.databind.BeanDescription.class), anyList());
+    doReturn((JsonSerializer) null).when(beanSerializerModifier0).modifyEnumSerializer(any(com.fasterxml.jackson.databind.SerializationConfig.class), any(com.fasterxml.jackson.databind.JavaType.class), any(com.fasterxml.jackson.databind.BeanDescription.class), any(com.fasterxml.jackson.databind.JsonSerializer.class));
+    doReturn((List) null).when(beanSerializerModifier0).orderProperties(any(com.fasterxml.jackson.databind.SerializationConfig.class), any(com.fasterxml.jackson.databind.BeanDescription.class), anyList());
+    doReturn((BeanSerializerBuilder) null).when(beanSerializerModifier0).updateBuilder(any(com.fasterxml.jackson.databind.SerializationConfig.class), any(com.fasterxml.jackson.databind.BeanDescription.class), any(com.fasterxml.jackson.databind.ser.BeanSerializerBuilder.class));
+    SerializerFactory serializerFactory0 = beanSerializerFactory0.withSerializerModifier(beanSerializerModifier0);
+    ObjectMapper objectMapper1 = objectMapper0.setSerializerFactory(serializerFactory0);
+    Class<JsonParser.Feature> class0 = JsonParser.Feature.class;
+    // Undeclared exception!
+    try {
+        objectMapper1.canSerialize(class0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.ser.BeanSerializerFactory"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Other public methods that are not part of
+    /* JsonSerializerFactory API
+    /**********************************************************
+     */
+/**
+ * Method that will try to construct a {@link BeanSerializer} for
+ * given class. Returns null if no properties are found.
+ */
+public JsonSerializer<Object> findBeanSerializer(SerializerProvider prov, JavaType type, BeanDescription beanDesc) throws JsonMappingException {
+    // First things first: we know some types are not beans...
+    if (!isPotentialBeanType(type.getRawClass())) {
+        // 03-Aug-2012, tatu: Except we do need to allow serializers for Enums,
+        //   as per [Issue#24]
+        if (!type.isEnumType()) {
+            return null;
+        }
+    }
+    return constructBeanSerializer(prov, beanDesc);
+}","public void test0910() throws Throwable {
+    BeanSerializerFactory beanSerializerFactory0 = BeanSerializerFactory.instance;
+    POJOPropertiesCollector pOJOPropertiesCollector0 = mock(POJOPropertiesCollector.class, new ViolatedAssumptionAnswer());
+    doReturn((AnnotatedClass) null).when(pOJOPropertiesCollector0).getClassDef();
+    doReturn((MapperConfig) null).when(pOJOPropertiesCollector0).getConfig();
+    doReturn((ObjectIdInfo) null).when(pOJOPropertiesCollector0).getObjectIdInfo();
+    doReturn((JavaType) null).when(pOJOPropertiesCollector0).getType();
+    BasicBeanDescription basicBeanDescription0 = BasicBeanDescription.forDeserialization(pOJOPropertiesCollector0);
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<MinimalClassNameIdResolver> class0 = MinimalClassNameIdResolver.class;
+    ArrayType arrayType0 = typeFactory0.constructArrayType(class0);
+    JsonSerializer<Object> jsonSerializer0 = beanSerializerFactory0.findBeanSerializer(defaultSerializerProvider_Impl0, arrayType0, basicBeanDescription0);
+    assertNull(jsonSerializer0);
+}",""
+"/*
+    /**********************************************************
+    /* Extended Public API, accessors
+    /**********************************************************
+     */
+/**
+ *  Method that can be called to check whether mapper thinks
+ *  it could serialize an instance of given Class.
+ *  Check is done
+ *  by checking whether a serializer can be found for the type.
+ * <p>
+ *  NOTE: since this method does NOT throw exceptions, but internal
+ *  processing may, caller usually has little information as to why
+ *  serialization would fail. If you want access to internal {@link Exception},
+ *  call {@link #canSerialize(Class, AtomicReference)} instead.
+ *
+ *  @return True if mapper can find a serializer for instances of
+ *   given class (potentially serializable), false otherwise (not
+ *   serializable)
+ */
+public boolean canSerialize(Class<?> type) {
+    return _serializerProvider(getSerializationConfig()).hasSerializerFor(type, null);
+}","public void test1011() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<Object> class0 = Object.class;
+    boolean boolean0 = objectMapper0.canSerialize(class0);
+    assertFalse(boolean0);
+}",""
+"/*
+    /**********************************************************
+    /* Extended Public API, accessors
+    /**********************************************************
+     */
+/**
+ *  Method that can be called to check whether mapper thinks
+ *  it could serialize an instance of given Class.
+ *  Check is done
+ *  by checking whether a serializer can be found for the type.
+ * <p>
+ *  NOTE: since this method does NOT throw exceptions, but internal
+ *  processing may, caller usually has little information as to why
+ *  serialization would fail. If you want access to internal {@link Exception},
+ *  call {@link #canSerialize(Class, AtomicReference)} instead.
+ *
+ *  @return True if mapper can find a serializer for instances of
+ *   given class (potentially serializable), false otherwise (not
+ *   serializable)
+ */
+public boolean canSerialize(Class<?> type) {
+    return _serializerProvider(getSerializationConfig()).hasSerializerFor(type, null);
+}","public void test1112() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    MapperFeature[] mapperFeatureArray0 = new MapperFeature[1];
+    MapperFeature mapperFeature0 = MapperFeature.REQUIRE_SETTERS_FOR_GETTERS;
+    mapperFeatureArray0[0] = mapperFeature0;
+    ObjectMapper objectMapper1 = objectMapper0.enable(mapperFeatureArray0);
+    Class<BeanPropertyWriter> class0 = BeanPropertyWriter.class;
+    boolean boolean0 = objectMapper1.canSerialize(class0);
+    assertTrue(boolean0);
+}",""
+"/*
+    /**********************************************************
+    /* Extended Public API, accessors
+    /**********************************************************
+     */
+/**
+ *  Method that can be called to check whether mapper thinks
+ *  it could serialize an instance of given Class.
+ *  Check is done
+ *  by checking whether a serializer can be found for the type.
+ * <p>
+ *  NOTE: since this method does NOT throw exceptions, but internal
+ *  processing may, caller usually has little information as to why
+ *  serialization would fail. If you want access to internal {@link Exception},
+ *  call {@link #canSerialize(Class, AtomicReference)} instead.
+ *
+ *  @return True if mapper can find a serializer for instances of
+ *   given class (potentially serializable), false otherwise (not
+ *   serializable)
+ */
+public boolean canSerialize(Class<?> type) {
+    return _serializerProvider(getSerializationConfig()).hasSerializerFor(type, null);
+}","public void test1213() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    PropertyAccessor propertyAccessor0 = PropertyAccessor.ALL;
+    JsonAutoDetect.Visibility jsonAutoDetect_Visibility0 = JsonAutoDetect.Visibility.PROTECTED_AND_PUBLIC;
+    objectMapper0.setVisibility(propertyAccessor0, jsonAutoDetect_Visibility0);
+    Class<BeanSerializerFactory> class0 = BeanSerializerFactory.class;
+    boolean boolean0 = objectMapper0.canSerialize(class0);
+    assertTrue(boolean0);
+}",""
+"/*
+    /**********************************************************
+    /* Extended Public API, accessors
+    /**********************************************************
+     */
+/**
+ *  Method that can be called to check whether mapper thinks
+ *  it could serialize an instance of given Class.
+ *  Check is done
+ *  by checking whether a serializer can be found for the type.
+ * <p>
+ *  NOTE: since this method does NOT throw exceptions, but internal
+ *  processing may, caller usually has little information as to why
+ *  serialization would fail. If you want access to internal {@link Exception},
+ *  call {@link #canSerialize(Class, AtomicReference)} instead.
+ *
+ *  @return True if mapper can find a serializer for instances of
+ *   given class (potentially serializable), false otherwise (not
+ *   serializable)
+ */
+public boolean canSerialize(Class<?> type) {
+    return _serializerProvider(getSerializationConfig()).hasSerializerFor(type, null);
+}","public void test1314() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    MapperFeature mapperFeature0 = MapperFeature.DEFAULT_VIEW_INCLUSION;
+    objectMapper0.configure(mapperFeature0, false);
+    Class<MinimalClassNameIdResolver> class0 = MinimalClassNameIdResolver.class;
+    boolean boolean0 = objectMapper0.canSerialize(class0);
+    assertTrue(boolean0);
+}",""
+"@SuppressWarnings(""resource"")
+public byte[] writeValueAsBytes(Object value) throws JsonProcessingException {
+    ByteArrayBuilder bb = new ByteArrayBuilder(_jsonFactory._getBufferRecycler());
+    try {
+        _configAndWriteValue(_jsonFactory.createGenerator(bb, JsonEncoding.UTF8), value);
+    } catch (JsonProcessingException e) {
+        // to support [JACKSON-758]
+        throw e;
+    } catch (IOException e) {
+        // shouldn't really happen, but is declared as possibility so:
+        throw JsonMappingException.fromUnexpectedIOE(e);
+    }
+    byte[] result = bb.toByteArray();
+    bb.release();
+    return result;
+}","public void test1415() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    MapperFeature[] mapperFeatureArray0 = new MapperFeature[1];
+    MapperFeature mapperFeature0 = MapperFeature.REQUIRE_SETTERS_FOR_GETTERS;
+    mapperFeatureArray0[0] = mapperFeature0;
+    ObjectMapper objectMapper1 = objectMapper0.enable(mapperFeatureArray0);
+    try {
+        objectMapper1.writeValueAsBytes(objectMapper0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // (was java.lang.NullPointerException) (through reference chain: com.fasterxml.jackson.databind.ObjectMapper[\""dateFormat\""]->com.fasterxml.jackson.databind.util.StdDateFormat[\""lenient\""])
+        //
+        verifyException(""com.fasterxml.jackson.databind.JsonMappingException"", e);
+    }
+}","/**
+ *  Method that can be used to serialize any Java value as
+ *  a byte array. Functionally equivalent to calling
+ *  {@link #writeValue(Writer,Object)} with {@link java.io.ByteArrayOutputStream}
+ *  and getting bytes, but more efficient.
+ *  Encoding used will be UTF-8.
+ * <p>
+ *  Note: prior to version 2.1, throws clause included {@link IOException}; 2.1 removed it.
+ */"
+"/*
+    /**********************************************************
+    /* Extended Public API, accessors
+    /**********************************************************
+     */
+/**
+ *  Method that can be called to check whether mapper thinks
+ *  it could serialize an instance of given Class.
+ *  Check is done
+ *  by checking whether a serializer can be found for the type.
+ * <p>
+ *  NOTE: since this method does NOT throw exceptions, but internal
+ *  processing may, caller usually has little information as to why
+ *  serialization would fail. If you want access to internal {@link Exception},
+ *  call {@link #canSerialize(Class, AtomicReference)} instead.
+ *
+ *  @return True if mapper can find a serializer for instances of
+ *   given class (potentially serializable), false otherwise (not
+ *   serializable)
+ */
+public boolean canSerialize(Class<?> type) {
+    return _serializerProvider(getSerializationConfig()).hasSerializerFor(type, null);
+}","public void test1516() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    objectMapper0.enableDefaultTyping();
+    Class<AnnotatedMethod> class0 = AnnotatedMethod.class;
+    boolean boolean0 = objectMapper0.canSerialize(class0);
+    assertTrue(boolean0);
+}",""
+"/*
+    /**********************************************************
+    /* Extended Public API, accessors
+    /**********************************************************
+     */
+/**
+ *  Method that can be called to check whether mapper thinks
+ *  it could serialize an instance of given Class.
+ *  Check is done
+ *  by checking whether a serializer can be found for the type.
+ * <p>
+ *  NOTE: since this method does NOT throw exceptions, but internal
+ *  processing may, caller usually has little information as to why
+ *  serialization would fail. If you want access to internal {@link Exception},
+ *  call {@link #canSerialize(Class, AtomicReference)} instead.
+ *
+ *  @return True if mapper can find a serializer for instances of
+ *   given class (potentially serializable), false otherwise (not
+ *   serializable)
+ */
+public boolean canSerialize(Class<?> type) {
+    return _serializerProvider(getSerializationConfig()).hasSerializerFor(type, null);
+}","public void test1617() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    MapperFeature[] mapperFeatureArray0 = new MapperFeature[6];
+    MapperFeature mapperFeature0 = MapperFeature.REQUIRE_SETTERS_FOR_GETTERS;
+    mapperFeatureArray0[0] = mapperFeature0;
+    mapperFeatureArray0[1] = mapperFeature0;
+    mapperFeatureArray0[2] = mapperFeature0;
+    mapperFeatureArray0[3] = mapperFeatureArray0[2];
+    mapperFeatureArray0[4] = mapperFeatureArray0[0];
+    MapperFeature mapperFeature1 = MapperFeature.CAN_OVERRIDE_ACCESS_MODIFIERS;
+    mapperFeatureArray0[5] = mapperFeature1;
+    objectMapper0.disable(mapperFeatureArray0);
+    Class<AnnotatedMethod> class0 = AnnotatedMethod.class;
+    boolean boolean0 = objectMapper0.canSerialize(class0);
+    assertTrue(boolean0);
+}",""

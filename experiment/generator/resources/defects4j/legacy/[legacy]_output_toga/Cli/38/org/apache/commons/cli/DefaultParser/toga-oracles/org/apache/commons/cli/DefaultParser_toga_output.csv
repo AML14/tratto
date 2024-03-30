@@ -1,0 +1,250 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    DefaultParser defaultParser0 = new DefaultParser();
+    Options options0 = new Options();
+    String[] stringArray0 = new String[1];
+    // Undeclared exception!
+    try {
+        defaultParser0.parse(options0, stringArray0, false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test011,"public void test011() throws Throwable {
+    DefaultParser defaultParser0 = new DefaultParser();
+    Options options0 = new Options();
+    options0.addRequiredOption(""1"", ""-1"", true, ""1"");
+    String[] stringArray0 = new String[8];
+    stringArray0[0] = ""-1"";
+    stringArray0[1] = ""-1"";
+    // Undeclared exception!
+    try {
+        defaultParser0.parse(options0, stringArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test032,"public void test032() throws Throwable {
+    DefaultParser defaultParser0 = new DefaultParser();
+    Options options0 = new Options();
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = ""--"";
+    CommandLine commandLine0 = defaultParser0.parse(options0, stringArray0);
+    assertNotNull(commandLine0);
+}",0,assertNotNull(commandLine0)
+project,0,test043,"public void test043() throws Throwable {
+    DefaultParser defaultParser0 = new DefaultParser();
+    Options options0 = new Options();
+    Properties properties0 = new Properties();
+    properties0.put(""(tM_M.-lD<"", options0);
+    try {
+        defaultParser0.parse(options0, (String[]) null, properties0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Default option wasn't defined
+        //
+        verifyException(""org.apache.commons.cli.DefaultParser"", e);
+    }
+}",0,
+project,0,test054,"public void test054() throws Throwable {
+    DefaultParser defaultParser0 = new DefaultParser();
+    Options options0 = new Options();
+    Options options1 = options0.addRequiredOption("""", """", false, """");
+    String[] stringArray0 = new String[0];
+    try {
+        defaultParser0.parse(options1, stringArray0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Missing required option:
+        //
+        verifyException(""org.apache.commons.cli.DefaultParser"", e);
+    }
+}",0,
+project,0,test075,"public void test075() throws Throwable {
+    DefaultParser defaultParser0 = new DefaultParser();
+    Options options0 = new Options();
+    Options options1 = options0.addRequiredOption(""1"", ""1"", true, ""-"");
+    String[] stringArray0 = new String[9];
+    stringArray0[0] = ""--1"";
+    stringArray0[1] = ""-"";
+    stringArray0[2] = ""1"";
+    stringArray0[3] = ""1"";
+    stringArray0[4] = ""--1"";
+    stringArray0[5] = ""--1"";
+    try {
+        defaultParser0.parse(options1, stringArray0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Missing argument for option: 1
+        //
+        verifyException(""org.apache.commons.cli.DefaultParser"", e);
+    }
+}",0,
+project,0,test086,"public void test086() throws Throwable {
+    DefaultParser defaultParser0 = new DefaultParser();
+    Options options0 = new Options();
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = ""-"";
+    // Undeclared exception!
+    try {
+        defaultParser0.parse(options0, stringArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test097,"public void test097() throws Throwable {
+    DefaultParser defaultParser0 = new DefaultParser();
+    Options options0 = new Options();
+    Options options1 = options0.addRequiredOption(""1"", ""-1"", true, ""1"");
+    String[] stringArray0 = new String[8];
+    stringArray0[0] = ""-1"";
+    stringArray0[1] = ""1"";
+    // Undeclared exception!
+    try {
+        defaultParser0.parse(options1, stringArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test108,"public void test108() throws Throwable {
+    DefaultParser defaultParser0 = new DefaultParser();
+    Options options0 = new Options();
+    Options options1 = options0.addRequiredOption(""1"", ""1"", true, ""--1"");
+    String[] stringArray0 = new String[4];
+    stringArray0[0] = ""--1"";
+    stringArray0[1] = ""---6="";
+    // Undeclared exception!
+    try {
+        defaultParser0.parse(options1, stringArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test119,"public void test119() throws Throwable {
+    Options options0 = new Options();
+    String[] stringArray0 = new String[3];
+    stringArray0[0] = ""-6="";
+    DefaultParser defaultParser0 = new DefaultParser();
+    try {
+        defaultParser0.parse(options0, stringArray0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Unrecognized option: -6=
+        //
+        verifyException(""org.apache.commons.cli.DefaultParser"", e);
+    }
+}",0,
+project,0,test1210,"public void test1210() throws Throwable {
+    DefaultParser defaultParser0 = new DefaultParser();
+    Options options0 = new Options();
+    String[] stringArray0 = new String[1];
+    stringArray0[0] = ""-----G6="";
+    try {
+        defaultParser0.parse(options0, stringArray0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Unrecognized option: -----G6=
+        //
+        verifyException(""org.apache.commons.cli.DefaultParser"", e);
+    }
+}",0,
+project,0,test1311,"public void test1311() throws Throwable {
+    DefaultParser defaultParser0 = new DefaultParser();
+    Options options0 = new Options();
+    String[] stringArray0 = new String[1];
+    stringArray0[0] = ""--1"";
+    try {
+        defaultParser0.parse(options0, stringArray0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Unrecognized option: --1
+        //
+        verifyException(""org.apache.commons.cli.DefaultParser"", e);
+    }
+}",0,
+project,0,test1412,"public void test1412() throws Throwable {
+    DefaultParser defaultParser0 = new DefaultParser();
+    Options options0 = new Options();
+    String[] stringArray0 = new String[1];
+    stringArray0[0] = ""-\"""";
+    try {
+        defaultParser0.parse(options0, stringArray0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Unrecognized option: -\""
+        //
+        verifyException(""org.apache.commons.cli.DefaultParser"", e);
+    }
+}",0,
+project,0,test1513,"public void test1513() throws Throwable {
+    Options options0 = new Options();
+    DefaultParser defaultParser0 = new DefaultParser();
+    String[] stringArray0 = new String[5];
+    stringArray0[0] = ""^u"";
+    stringArray0[1] = ""^u"";
+    stringArray0[2] = ""-^u8&#Q$Gsl:Mp:"";
+    try {
+        defaultParser0.parse(options0, stringArray0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Unrecognized option: -^u8&#Q$Gsl:Mp:
+        //
+        verifyException(""org.apache.commons.cli.DefaultParser"", e);
+    }
+}",0,
+project,0,test1614,"public void test1614() throws Throwable {
+    Options options0 = new Options();
+    options0.addRequiredOption(""1"", ""^u"", true, ""^u"");
+    DefaultParser defaultParser0 = new DefaultParser();
+    String[] stringArray0 = new String[5];
+    stringArray0[0] = ""^u"";
+    stringArray0[1] = ""^u"";
+    stringArray0[2] = ""-^u8&#Q$Gsl:Mp:"";
+    // Undeclared exception!
+    try {
+        defaultParser0.parse(options0, stringArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test1715,"public void test1715() throws Throwable {
+    DefaultParser defaultParser0 = new DefaultParser();
+    Options options0 = new Options();
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = ""-B6A)w='9"";
+    try {
+        defaultParser0.parse(options0, stringArray0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Unrecognized option: -B6A)w='9
+        //
+        verifyException(""org.apache.commons.cli.DefaultParser"", e);
+    }
+}",1,

@@ -1,0 +1,1114 @@
+focal_method,test_prefix,docstring
+"public CommandLine parse(Options options, String[] arguments) throws ParseException {
+    return parse(options, arguments, null, false);
+}","public void test000() throws Throwable {
+    Options options0 = new Options();
+    GnuParser gnuParser0 = new GnuParser();
+    CommandLine commandLine0 = gnuParser0.parse(options0, (String[]) null);
+    assertNotNull(commandLine0);
+}","/**
+ * Parses the specified <code>arguments</code> based
+ * on the specifed {@link Options}.
+ *
+ * @param options the <code>Options</code>
+ * @param arguments the <code>arguments</code>
+ * @return the <code>CommandLine</code>
+ * @throws ParseException if an error occurs when parsing the
+ * arguments.
+ */"
+"public CommandLine parse(Options options, String[] arguments, Properties properties) throws ParseException {
+    return parse(options, arguments, properties, false);
+}","public void test011() throws Throwable {
+    GnuParser gnuParser0 = new GnuParser();
+    Options options0 = new Options();
+    Properties properties0 = new Properties();
+    CommandLine commandLine0 = gnuParser0.parse(options0, (String[]) null, properties0);
+    assertNotNull(commandLine0);
+}","/**
+ * Parse the arguments according to the specified options and properties.
+ *
+ * @param options    the specified Options
+ * @param arguments  the command line arguments
+ * @param properties command line option name-value pairs
+ * @return the list of atomic option and value tokens
+ * @throws ParseException if there are any problems encountered
+ *                        while parsing the command line tokens.
+ *
+ * @since 1.1
+ */"
+"protected void processOption(String arg, ListIterator iter) throws ParseException {
+    boolean hasOption = getOptions().hasOption(arg);
+    // if there is no option throw an UnrecognisedOptionException
+    if (!hasOption) {
+        throw new UnrecognizedOptionException(""Unrecognized option: "" + arg, arg);
+    }
+    // get the option represented by arg
+    Option opt = (Option) getOptions().getOption(arg).clone();
+    // if the option is a required option remove the option from
+    // the requiredOptions list
+    if (opt.isRequired()) {
+        getRequiredOptions().remove(opt.getKey());
+    }
+    // if the option is in an OptionGroup make that option the selected
+    // option of the group
+    if (getOptions().getOptionGroup(opt) != null) {
+        OptionGroup group = getOptions().getOptionGroup(opt);
+        if (group.isRequired()) {
+            getRequiredOptions().remove(group);
+        }
+        group.setSelected(opt);
+    }
+    // if the option takes an argument value
+    if (opt.hasArg()) {
+        processArgs(opt, iter);
+    }
+    // set the option on the command line
+    cmd.addOption(opt);
+}","public void test022() throws Throwable {
+    Option option0 = new Option(""4"", ""4"", true, ""4"");
+    GnuParser gnuParser0 = new GnuParser();
+    Options options0 = new Options();
+    OptionGroup optionGroup0 = new OptionGroup();
+    OptionGroup optionGroup1 = optionGroup0.addOption(option0);
+    options0.addOptionGroup(optionGroup1);
+    gnuParser0.parse(options0, (String[]) null, true);
+    ListIterator<OptionGroup> listIterator0 = (ListIterator<OptionGroup>) mock(ListIterator.class, new ViolatedAssumptionAnswer());
+    doReturn(false).when(listIterator0).hasNext();
+    try {
+        gnuParser0.processOption(""4"", listIterator0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Missing argument for option: 4
+        //
+        verifyException(""org.apache.commons.cli.Parser"", e);
+    }
+}","/**
+ * Process the Option specified by <code>arg</code> using the values
+ * retrieved from the specfied iterator <code>iter</code>.
+ *
+ * @param arg The String value representing an Option
+ * @param iter The iterator over the flattened command line arguments.
+ *
+ * @throws ParseException if <code>arg</code> does not represent an Option
+ */"
+"public CommandLine parse(Options options, String[] arguments, Properties properties, boolean stopAtNonOption) throws ParseException {
+    // clear out the data in options in case it's been used before (CLI-71)
+    for (Iterator it = options.helpOptions().iterator(); it.hasNext(); ) {
+        Option opt = (Option) it.next();
+        opt.clearValues();
+    }
+    // clear the data from the groups
+    for (Iterator it = options.getOptionGroups().iterator(); it.hasNext(); ) {
+        OptionGroup group = (OptionGroup) it.next();
+        group.setSelected(null);
+    }
+    // initialise members
+    setOptions(options);
+    cmd = new CommandLine();
+    boolean eatTheRest = false;
+    if (arguments == null) {
+        arguments = new String[0];
+    }
+    List tokenList = Arrays.asList(flatten(getOptions(), arguments, stopAtNonOption));
+    ListIterator iterator = tokenList.listIterator();
+    // process each flattened token
+    while (iterator.hasNext()) {
+        String t = (String) iterator.next();
+        // the value is the double-dash
+        if (""--"".equals(t)) {
+            eatTheRest = true;
+        } else // the value is a single dash
+        if (""-"".equals(t)) {
+            if (stopAtNonOption) {
+                eatTheRest = true;
+            } else {
+                cmd.addArg(t);
+            }
+        } else // the value is an option
+        if (t.startsWith(""-"")) {
+            if (stopAtNonOption && !getOptions().hasOption(t)) {
+                eatTheRest = true;
+                cmd.addArg(t);
+            } else {
+                processOption(t, iterator);
+            }
+        } else // the value is an argument
+        {
+            cmd.addArg(t);
+            if (stopAtNonOption) {
+                eatTheRest = true;
+            }
+        }
+        // eat the remaining tokens
+        if (eatTheRest) {
+            while (iterator.hasNext()) {
+                String str = (String) iterator.next();
+                // ensure only one double-dash is added
+                if (!""--"".equals(str)) {
+                    cmd.addArg(str);
+                }
+            }
+        }
+    }
+    processProperties(properties);
+    checkRequiredOptions();
+    return cmd;
+}","public void test033() throws Throwable {
+    Options options0 = new Options();
+    Properties properties0 = new Properties();
+    GnuParser gnuParser0 = new GnuParser();
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = ""-"";
+    stringArray0[1] = ""-"";
+    CommandLine commandLine0 = gnuParser0.parse(options0, stringArray0, properties0, true);
+    assertNotNull(commandLine0);
+}","/**
+ * Parse the arguments according to the specified options and
+ * properties.
+ *
+ * @param options the specified Options
+ * @param arguments the command line arguments
+ * @param properties command line option name-value pairs
+ * @param stopAtNonOption if <tt>true</tt> an unrecognized argument stops
+ *     the parsing and the remaining arguments are added to the
+ *     {@link CommandLine}s args list. If <tt>false</tt> an unrecognized
+ *     argument triggers a ParseException.
+ *
+ * @return the list of atomic option and value tokens
+ *
+ * @throws ParseException if there are any problems encountered
+ * while parsing the command line tokens.
+ *
+ * @since 1.1
+ */"
+"public CommandLine parse(Options options, String[] arguments, boolean stopAtNonOption) throws ParseException {
+    return parse(options, arguments, null, stopAtNonOption);
+}","public void test044() throws Throwable {
+    Options options0 = new Options();
+    GnuParser gnuParser0 = new GnuParser();
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = ""--"";
+    CommandLine commandLine0 = gnuParser0.parse(options0, stringArray0, false);
+    assertNotNull(commandLine0);
+}","/**
+ * Parses the specified <code>arguments</code>
+ * based on the specifed {@link Options}.
+ *
+ * @param options         the <code>Options</code>
+ * @param arguments       the <code>arguments</code>
+ * @param stopAtNonOption if <tt>true</tt> an unrecognized argument stops
+ *     the parsing and the remaining arguments are added to the
+ *     {@link CommandLine}s args list. If <tt>false</tt> an unrecognized
+ *     argument triggers a ParseException.
+ * @return the <code>CommandLine</code>
+ * @throws ParseException if an error occurs when parsing the arguments.
+ */"
+"public CommandLine parse(Options options, String[] arguments, Properties properties, boolean stopAtNonOption) throws ParseException {
+    // clear out the data in options in case it's been used before (CLI-71)
+    for (Iterator it = options.helpOptions().iterator(); it.hasNext(); ) {
+        Option opt = (Option) it.next();
+        opt.clearValues();
+    }
+    // clear the data from the groups
+    for (Iterator it = options.getOptionGroups().iterator(); it.hasNext(); ) {
+        OptionGroup group = (OptionGroup) it.next();
+        group.setSelected(null);
+    }
+    // initialise members
+    setOptions(options);
+    cmd = new CommandLine();
+    boolean eatTheRest = false;
+    if (arguments == null) {
+        arguments = new String[0];
+    }
+    List tokenList = Arrays.asList(flatten(getOptions(), arguments, stopAtNonOption));
+    ListIterator iterator = tokenList.listIterator();
+    // process each flattened token
+    while (iterator.hasNext()) {
+        String t = (String) iterator.next();
+        // the value is the double-dash
+        if (""--"".equals(t)) {
+            eatTheRest = true;
+        } else // the value is a single dash
+        if (""-"".equals(t)) {
+            if (stopAtNonOption) {
+                eatTheRest = true;
+            } else {
+                cmd.addArg(t);
+            }
+        } else // the value is an option
+        if (t.startsWith(""-"")) {
+            if (stopAtNonOption && !getOptions().hasOption(t)) {
+                eatTheRest = true;
+                cmd.addArg(t);
+            } else {
+                processOption(t, iterator);
+            }
+        } else // the value is an argument
+        {
+            cmd.addArg(t);
+            if (stopAtNonOption) {
+                eatTheRest = true;
+            }
+        }
+        // eat the remaining tokens
+        if (eatTheRest) {
+            while (iterator.hasNext()) {
+                String str = (String) iterator.next();
+                // ensure only one double-dash is added
+                if (!""--"".equals(str)) {
+                    cmd.addArg(str);
+                }
+            }
+        }
+    }
+    processProperties(properties);
+    checkRequiredOptions();
+    return cmd;
+}","public void test055() throws Throwable {
+    Options options0 = new Options();
+    Properties properties0 = new Properties();
+    GnuParser gnuParser0 = new GnuParser();
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = ""-"";
+    stringArray0[1] = ""-"";
+    CommandLine commandLine0 = gnuParser0.parse(options0, stringArray0, properties0, false);
+    assertNotNull(commandLine0);
+}","/**
+ * Parse the arguments according to the specified options and
+ * properties.
+ *
+ * @param options the specified Options
+ * @param arguments the command line arguments
+ * @param properties command line option name-value pairs
+ * @param stopAtNonOption if <tt>true</tt> an unrecognized argument stops
+ *     the parsing and the remaining arguments are added to the
+ *     {@link CommandLine}s args list. If <tt>false</tt> an unrecognized
+ *     argument triggers a ParseException.
+ *
+ * @return the list of atomic option and value tokens
+ *
+ * @throws ParseException if there are any problems encountered
+ * while parsing the command line tokens.
+ *
+ * @since 1.1
+ */"
+"public CommandLine parse(Options options, String[] arguments, Properties properties, boolean stopAtNonOption) throws ParseException {
+    // clear out the data in options in case it's been used before (CLI-71)
+    for (Iterator it = options.helpOptions().iterator(); it.hasNext(); ) {
+        Option opt = (Option) it.next();
+        opt.clearValues();
+    }
+    // clear the data from the groups
+    for (Iterator it = options.getOptionGroups().iterator(); it.hasNext(); ) {
+        OptionGroup group = (OptionGroup) it.next();
+        group.setSelected(null);
+    }
+    // initialise members
+    setOptions(options);
+    cmd = new CommandLine();
+    boolean eatTheRest = false;
+    if (arguments == null) {
+        arguments = new String[0];
+    }
+    List tokenList = Arrays.asList(flatten(getOptions(), arguments, stopAtNonOption));
+    ListIterator iterator = tokenList.listIterator();
+    // process each flattened token
+    while (iterator.hasNext()) {
+        String t = (String) iterator.next();
+        // the value is the double-dash
+        if (""--"".equals(t)) {
+            eatTheRest = true;
+        } else // the value is a single dash
+        if (""-"".equals(t)) {
+            if (stopAtNonOption) {
+                eatTheRest = true;
+            } else {
+                cmd.addArg(t);
+            }
+        } else // the value is an option
+        if (t.startsWith(""-"")) {
+            if (stopAtNonOption && !getOptions().hasOption(t)) {
+                eatTheRest = true;
+                cmd.addArg(t);
+            } else {
+                processOption(t, iterator);
+            }
+        } else // the value is an argument
+        {
+            cmd.addArg(t);
+            if (stopAtNonOption) {
+                eatTheRest = true;
+            }
+        }
+        // eat the remaining tokens
+        if (eatTheRest) {
+            while (iterator.hasNext()) {
+                String str = (String) iterator.next();
+                // ensure only one double-dash is added
+                if (!""--"".equals(str)) {
+                    cmd.addArg(str);
+                }
+            }
+        }
+    }
+    processProperties(properties);
+    checkRequiredOptions();
+    return cmd;
+}","public void test066() throws Throwable {
+    GnuParser gnuParser0 = new GnuParser();
+    Options options0 = new Options();
+    Properties properties0 = new Properties();
+    String[] stringArray0 = new String[7];
+    stringArray0[0] = ""1"";
+    stringArray0[1] = ""*"";
+    stringArray0[2] = """";
+    stringArray0[3] = ""--1"";
+    stringArray0[4] = """";
+    stringArray0[5] = """";
+    stringArray0[6] = """";
+    try {
+        gnuParser0.parse(options0, stringArray0, properties0, false);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Unrecognized option: --1
+        //
+        verifyException(""org.apache.commons.cli.Parser"", e);
+    }
+}","/**
+ * Parse the arguments according to the specified options and
+ * properties.
+ *
+ * @param options the specified Options
+ * @param arguments the command line arguments
+ * @param properties command line option name-value pairs
+ * @param stopAtNonOption if <tt>true</tt> an unrecognized argument stops
+ *     the parsing and the remaining arguments are added to the
+ *     {@link CommandLine}s args list. If <tt>false</tt> an unrecognized
+ *     argument triggers a ParseException.
+ *
+ * @return the list of atomic option and value tokens
+ *
+ * @throws ParseException if there are any problems encountered
+ * while parsing the command line tokens.
+ *
+ * @since 1.1
+ */"
+"public CommandLine parse(Options options, String[] arguments, Properties properties, boolean stopAtNonOption) throws ParseException {
+    // clear out the data in options in case it's been used before (CLI-71)
+    for (Iterator it = options.helpOptions().iterator(); it.hasNext(); ) {
+        Option opt = (Option) it.next();
+        opt.clearValues();
+    }
+    // clear the data from the groups
+    for (Iterator it = options.getOptionGroups().iterator(); it.hasNext(); ) {
+        OptionGroup group = (OptionGroup) it.next();
+        group.setSelected(null);
+    }
+    // initialise members
+    setOptions(options);
+    cmd = new CommandLine();
+    boolean eatTheRest = false;
+    if (arguments == null) {
+        arguments = new String[0];
+    }
+    List tokenList = Arrays.asList(flatten(getOptions(), arguments, stopAtNonOption));
+    ListIterator iterator = tokenList.listIterator();
+    // process each flattened token
+    while (iterator.hasNext()) {
+        String t = (String) iterator.next();
+        // the value is the double-dash
+        if (""--"".equals(t)) {
+            eatTheRest = true;
+        } else // the value is a single dash
+        if (""-"".equals(t)) {
+            if (stopAtNonOption) {
+                eatTheRest = true;
+            } else {
+                cmd.addArg(t);
+            }
+        } else // the value is an option
+        if (t.startsWith(""-"")) {
+            if (stopAtNonOption && !getOptions().hasOption(t)) {
+                eatTheRest = true;
+                cmd.addArg(t);
+            } else {
+                processOption(t, iterator);
+            }
+        } else // the value is an argument
+        {
+            cmd.addArg(t);
+            if (stopAtNonOption) {
+                eatTheRest = true;
+            }
+        }
+        // eat the remaining tokens
+        if (eatTheRest) {
+            while (iterator.hasNext()) {
+                String str = (String) iterator.next();
+                // ensure only one double-dash is added
+                if (!""--"".equals(str)) {
+                    cmd.addArg(str);
+                }
+            }
+        }
+    }
+    processProperties(properties);
+    checkRequiredOptions();
+    return cmd;
+}","public void test077() throws Throwable {
+    GnuParser gnuParser0 = new GnuParser();
+    Options options0 = new Options();
+    Properties properties0 = new Properties();
+    String[] stringArray0 = new String[1];
+    stringArray0[0] = ""--1"";
+    CommandLine commandLine0 = gnuParser0.parse(options0, stringArray0, properties0, true);
+    assertNotNull(commandLine0);
+}","/**
+ * Parse the arguments according to the specified options and
+ * properties.
+ *
+ * @param options the specified Options
+ * @param arguments the command line arguments
+ * @param properties command line option name-value pairs
+ * @param stopAtNonOption if <tt>true</tt> an unrecognized argument stops
+ *     the parsing and the remaining arguments are added to the
+ *     {@link CommandLine}s args list. If <tt>false</tt> an unrecognized
+ *     argument triggers a ParseException.
+ *
+ * @return the list of atomic option and value tokens
+ *
+ * @throws ParseException if there are any problems encountered
+ * while parsing the command line tokens.
+ *
+ * @since 1.1
+ */"
+"public CommandLine parse(Options options, String[] arguments, Properties properties, boolean stopAtNonOption) throws ParseException {
+    // clear out the data in options in case it's been used before (CLI-71)
+    for (Iterator it = options.helpOptions().iterator(); it.hasNext(); ) {
+        Option opt = (Option) it.next();
+        opt.clearValues();
+    }
+    // clear the data from the groups
+    for (Iterator it = options.getOptionGroups().iterator(); it.hasNext(); ) {
+        OptionGroup group = (OptionGroup) it.next();
+        group.setSelected(null);
+    }
+    // initialise members
+    setOptions(options);
+    cmd = new CommandLine();
+    boolean eatTheRest = false;
+    if (arguments == null) {
+        arguments = new String[0];
+    }
+    List tokenList = Arrays.asList(flatten(getOptions(), arguments, stopAtNonOption));
+    ListIterator iterator = tokenList.listIterator();
+    // process each flattened token
+    while (iterator.hasNext()) {
+        String t = (String) iterator.next();
+        // the value is the double-dash
+        if (""--"".equals(t)) {
+            eatTheRest = true;
+        } else // the value is a single dash
+        if (""-"".equals(t)) {
+            if (stopAtNonOption) {
+                eatTheRest = true;
+            } else {
+                cmd.addArg(t);
+            }
+        } else // the value is an option
+        if (t.startsWith(""-"")) {
+            if (stopAtNonOption && !getOptions().hasOption(t)) {
+                eatTheRest = true;
+                cmd.addArg(t);
+            } else {
+                processOption(t, iterator);
+            }
+        } else // the value is an argument
+        {
+            cmd.addArg(t);
+            if (stopAtNonOption) {
+                eatTheRest = true;
+            }
+        }
+        // eat the remaining tokens
+        if (eatTheRest) {
+            while (iterator.hasNext()) {
+                String str = (String) iterator.next();
+                // ensure only one double-dash is added
+                if (!""--"".equals(str)) {
+                    cmd.addArg(str);
+                }
+            }
+        }
+    }
+    processProperties(properties);
+    checkRequiredOptions();
+    return cmd;
+}","public void test088() throws Throwable {
+    GnuParser gnuParser0 = new GnuParser();
+    Options options0 = new Options();
+    options0.addOption(""1"", true, ""1"");
+    Properties properties0 = new Properties();
+    String[] stringArray0 = new String[1];
+    stringArray0[0] = ""--1"";
+    try {
+        gnuParser0.parse(options0, stringArray0, properties0, true);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Missing argument for option: 1
+        //
+        verifyException(""org.apache.commons.cli.Parser"", e);
+    }
+}","/**
+ * Parse the arguments according to the specified options and
+ * properties.
+ *
+ * @param options the specified Options
+ * @param arguments the command line arguments
+ * @param properties command line option name-value pairs
+ * @param stopAtNonOption if <tt>true</tt> an unrecognized argument stops
+ *     the parsing and the remaining arguments are added to the
+ *     {@link CommandLine}s args list. If <tt>false</tt> an unrecognized
+ *     argument triggers a ParseException.
+ *
+ * @return the list of atomic option and value tokens
+ *
+ * @throws ParseException if there are any problems encountered
+ * while parsing the command line tokens.
+ *
+ * @since 1.1
+ */"
+"public CommandLine parse(Options options, String[] arguments, Properties properties, boolean stopAtNonOption) throws ParseException {
+    // clear out the data in options in case it's been used before (CLI-71)
+    for (Iterator it = options.helpOptions().iterator(); it.hasNext(); ) {
+        Option opt = (Option) it.next();
+        opt.clearValues();
+    }
+    // clear the data from the groups
+    for (Iterator it = options.getOptionGroups().iterator(); it.hasNext(); ) {
+        OptionGroup group = (OptionGroup) it.next();
+        group.setSelected(null);
+    }
+    // initialise members
+    setOptions(options);
+    cmd = new CommandLine();
+    boolean eatTheRest = false;
+    if (arguments == null) {
+        arguments = new String[0];
+    }
+    List tokenList = Arrays.asList(flatten(getOptions(), arguments, stopAtNonOption));
+    ListIterator iterator = tokenList.listIterator();
+    // process each flattened token
+    while (iterator.hasNext()) {
+        String t = (String) iterator.next();
+        // the value is the double-dash
+        if (""--"".equals(t)) {
+            eatTheRest = true;
+        } else // the value is a single dash
+        if (""-"".equals(t)) {
+            if (stopAtNonOption) {
+                eatTheRest = true;
+            } else {
+                cmd.addArg(t);
+            }
+        } else // the value is an option
+        if (t.startsWith(""-"")) {
+            if (stopAtNonOption && !getOptions().hasOption(t)) {
+                eatTheRest = true;
+                cmd.addArg(t);
+            } else {
+                processOption(t, iterator);
+            }
+        } else // the value is an argument
+        {
+            cmd.addArg(t);
+            if (stopAtNonOption) {
+                eatTheRest = true;
+            }
+        }
+        // eat the remaining tokens
+        if (eatTheRest) {
+            while (iterator.hasNext()) {
+                String str = (String) iterator.next();
+                // ensure only one double-dash is added
+                if (!""--"".equals(str)) {
+                    cmd.addArg(str);
+                }
+            }
+        }
+    }
+    processProperties(properties);
+    checkRequiredOptions();
+    return cmd;
+}","public void test099() throws Throwable {
+    Options options0 = new Options();
+    Properties properties0 = new Properties();
+    properties0.put(""0:Ki)V)*E`Gj;P %iG"", options0);
+    GnuParser gnuParser0 = new GnuParser();
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = ""0:Ki)V)*E`Gj;P %iG"";
+    stringArray0[1] = ""--"";
+    // Undeclared exception!
+    try {
+        gnuParser0.parse(options0, stringArray0, properties0, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.cli.Parser"", e);
+    }
+}","/**
+ * Parse the arguments according to the specified options and
+ * properties.
+ *
+ * @param options the specified Options
+ * @param arguments the command line arguments
+ * @param properties command line option name-value pairs
+ * @param stopAtNonOption if <tt>true</tt> an unrecognized argument stops
+ *     the parsing and the remaining arguments are added to the
+ *     {@link CommandLine}s args list. If <tt>false</tt> an unrecognized
+ *     argument triggers a ParseException.
+ *
+ * @return the list of atomic option and value tokens
+ *
+ * @throws ParseException if there are any problems encountered
+ * while parsing the command line tokens.
+ *
+ * @since 1.1
+ */"
+"public CommandLine parse(Options options, String[] arguments, boolean stopAtNonOption) throws ParseException {
+    return parse(options, arguments, null, stopAtNonOption);
+}","public void test1010() throws Throwable {
+    Option option0 = new Option(""4"", true, ""4"");
+    GnuParser gnuParser0 = new GnuParser();
+    Options options0 = new Options();
+    option0.setRequired(true);
+    options0.addOption(option0);
+    try {
+        gnuParser0.parse(options0, (String[]) null, true);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Missing required option: 4
+        //
+        verifyException(""org.apache.commons.cli.Parser"", e);
+    }
+}","/**
+ * Parses the specified <code>arguments</code>
+ * based on the specifed {@link Options}.
+ *
+ * @param options         the <code>Options</code>
+ * @param arguments       the <code>arguments</code>
+ * @param stopAtNonOption if <tt>true</tt> an unrecognized argument stops
+ *     the parsing and the remaining arguments are added to the
+ *     {@link CommandLine}s args list. If <tt>false</tt> an unrecognized
+ *     argument triggers a ParseException.
+ * @return the <code>CommandLine</code>
+ * @throws ParseException if an error occurs when parsing the arguments.
+ */"
+"public CommandLine parse(Options options, String[] arguments, Properties properties, boolean stopAtNonOption) throws ParseException {
+    // clear out the data in options in case it's been used before (CLI-71)
+    for (Iterator it = options.helpOptions().iterator(); it.hasNext(); ) {
+        Option opt = (Option) it.next();
+        opt.clearValues();
+    }
+    // clear the data from the groups
+    for (Iterator it = options.getOptionGroups().iterator(); it.hasNext(); ) {
+        OptionGroup group = (OptionGroup) it.next();
+        group.setSelected(null);
+    }
+    // initialise members
+    setOptions(options);
+    cmd = new CommandLine();
+    boolean eatTheRest = false;
+    if (arguments == null) {
+        arguments = new String[0];
+    }
+    List tokenList = Arrays.asList(flatten(getOptions(), arguments, stopAtNonOption));
+    ListIterator iterator = tokenList.listIterator();
+    // process each flattened token
+    while (iterator.hasNext()) {
+        String t = (String) iterator.next();
+        // the value is the double-dash
+        if (""--"".equals(t)) {
+            eatTheRest = true;
+        } else // the value is a single dash
+        if (""-"".equals(t)) {
+            if (stopAtNonOption) {
+                eatTheRest = true;
+            } else {
+                cmd.addArg(t);
+            }
+        } else // the value is an option
+        if (t.startsWith(""-"")) {
+            if (stopAtNonOption && !getOptions().hasOption(t)) {
+                eatTheRest = true;
+                cmd.addArg(t);
+            } else {
+                processOption(t, iterator);
+            }
+        } else // the value is an argument
+        {
+            cmd.addArg(t);
+            if (stopAtNonOption) {
+                eatTheRest = true;
+            }
+        }
+        // eat the remaining tokens
+        if (eatTheRest) {
+            while (iterator.hasNext()) {
+                String str = (String) iterator.next();
+                // ensure only one double-dash is added
+                if (!""--"".equals(str)) {
+                    cmd.addArg(str);
+                }
+            }
+        }
+    }
+    processProperties(properties);
+    checkRequiredOptions();
+    return cmd;
+}","public void test1111() throws Throwable {
+    GnuParser gnuParser0 = new GnuParser();
+    Options options0 = new Options();
+    options0.addOption(""1"", true, ""1"");
+    Properties properties0 = new Properties();
+    String[] stringArray0 = new String[7];
+    stringArray0[0] = ""1"";
+    stringArray0[1] = ""*"";
+    stringArray0[2] = """";
+    stringArray0[3] = ""--1"";
+    stringArray0[4] = """";
+    stringArray0[5] = """";
+    stringArray0[6] = """";
+    CommandLine commandLine0 = gnuParser0.parse(options0, stringArray0, properties0, false);
+    assertNotNull(commandLine0);
+}","/**
+ * Parse the arguments according to the specified options and
+ * properties.
+ *
+ * @param options the specified Options
+ * @param arguments the command line arguments
+ * @param properties command line option name-value pairs
+ * @param stopAtNonOption if <tt>true</tt> an unrecognized argument stops
+ *     the parsing and the remaining arguments are added to the
+ *     {@link CommandLine}s args list. If <tt>false</tt> an unrecognized
+ *     argument triggers a ParseException.
+ *
+ * @return the list of atomic option and value tokens
+ *
+ * @throws ParseException if there are any problems encountered
+ * while parsing the command line tokens.
+ *
+ * @since 1.1
+ */"
+"public CommandLine parse(Options options, String[] arguments, Properties properties, boolean stopAtNonOption) throws ParseException {
+    // clear out the data in options in case it's been used before (CLI-71)
+    for (Iterator it = options.helpOptions().iterator(); it.hasNext(); ) {
+        Option opt = (Option) it.next();
+        opt.clearValues();
+    }
+    // clear the data from the groups
+    for (Iterator it = options.getOptionGroups().iterator(); it.hasNext(); ) {
+        OptionGroup group = (OptionGroup) it.next();
+        group.setSelected(null);
+    }
+    // initialise members
+    setOptions(options);
+    cmd = new CommandLine();
+    boolean eatTheRest = false;
+    if (arguments == null) {
+        arguments = new String[0];
+    }
+    List tokenList = Arrays.asList(flatten(getOptions(), arguments, stopAtNonOption));
+    ListIterator iterator = tokenList.listIterator();
+    // process each flattened token
+    while (iterator.hasNext()) {
+        String t = (String) iterator.next();
+        // the value is the double-dash
+        if (""--"".equals(t)) {
+            eatTheRest = true;
+        } else // the value is a single dash
+        if (""-"".equals(t)) {
+            if (stopAtNonOption) {
+                eatTheRest = true;
+            } else {
+                cmd.addArg(t);
+            }
+        } else // the value is an option
+        if (t.startsWith(""-"")) {
+            if (stopAtNonOption && !getOptions().hasOption(t)) {
+                eatTheRest = true;
+                cmd.addArg(t);
+            } else {
+                processOption(t, iterator);
+            }
+        } else // the value is an argument
+        {
+            cmd.addArg(t);
+            if (stopAtNonOption) {
+                eatTheRest = true;
+            }
+        }
+        // eat the remaining tokens
+        if (eatTheRest) {
+            while (iterator.hasNext()) {
+                String str = (String) iterator.next();
+                // ensure only one double-dash is added
+                if (!""--"".equals(str)) {
+                    cmd.addArg(str);
+                }
+            }
+        }
+    }
+    processProperties(properties);
+    checkRequiredOptions();
+    return cmd;
+}","public void test1212() throws Throwable {
+    Option option0 = new Option("""", """", true, """");
+    GnuParser gnuParser0 = new GnuParser();
+    Options options0 = new Options();
+    Options options1 = options0.addOption(option0);
+    options0.addOption(""1"", true, ""1"");
+    Properties properties0 = new Properties();
+    String[] stringArray0 = new String[7];
+    stringArray0[0] = ""1"";
+    stringArray0[1] = ""*"";
+    stringArray0[2] = """";
+    stringArray0[3] = ""--1"";
+    stringArray0[4] = """";
+    stringArray0[5] = """";
+    stringArray0[6] = """";
+    CommandLine commandLine0 = gnuParser0.parse(options1, stringArray0, properties0, false);
+    assertNotNull(commandLine0);
+}","/**
+ * Parse the arguments according to the specified options and
+ * properties.
+ *
+ * @param options the specified Options
+ * @param arguments the command line arguments
+ * @param properties command line option name-value pairs
+ * @param stopAtNonOption if <tt>true</tt> an unrecognized argument stops
+ *     the parsing and the remaining arguments are added to the
+ *     {@link CommandLine}s args list. If <tt>false</tt> an unrecognized
+ *     argument triggers a ParseException.
+ *
+ * @return the list of atomic option and value tokens
+ *
+ * @throws ParseException if there are any problems encountered
+ * while parsing the command line tokens.
+ *
+ * @since 1.1
+ */"
+"public CommandLine parse(Options options, String[] arguments, Properties properties, boolean stopAtNonOption) throws ParseException {
+    // clear out the data in options in case it's been used before (CLI-71)
+    for (Iterator it = options.helpOptions().iterator(); it.hasNext(); ) {
+        Option opt = (Option) it.next();
+        opt.clearValues();
+    }
+    // clear the data from the groups
+    for (Iterator it = options.getOptionGroups().iterator(); it.hasNext(); ) {
+        OptionGroup group = (OptionGroup) it.next();
+        group.setSelected(null);
+    }
+    // initialise members
+    setOptions(options);
+    cmd = new CommandLine();
+    boolean eatTheRest = false;
+    if (arguments == null) {
+        arguments = new String[0];
+    }
+    List tokenList = Arrays.asList(flatten(getOptions(), arguments, stopAtNonOption));
+    ListIterator iterator = tokenList.listIterator();
+    // process each flattened token
+    while (iterator.hasNext()) {
+        String t = (String) iterator.next();
+        // the value is the double-dash
+        if (""--"".equals(t)) {
+            eatTheRest = true;
+        } else // the value is a single dash
+        if (""-"".equals(t)) {
+            if (stopAtNonOption) {
+                eatTheRest = true;
+            } else {
+                cmd.addArg(t);
+            }
+        } else // the value is an option
+        if (t.startsWith(""-"")) {
+            if (stopAtNonOption && !getOptions().hasOption(t)) {
+                eatTheRest = true;
+                cmd.addArg(t);
+            } else {
+                processOption(t, iterator);
+            }
+        } else // the value is an argument
+        {
+            cmd.addArg(t);
+            if (stopAtNonOption) {
+                eatTheRest = true;
+            }
+        }
+        // eat the remaining tokens
+        if (eatTheRest) {
+            while (iterator.hasNext()) {
+                String str = (String) iterator.next();
+                // ensure only one double-dash is added
+                if (!""--"".equals(str)) {
+                    cmd.addArg(str);
+                }
+            }
+        }
+    }
+    processProperties(properties);
+    checkRequiredOptions();
+    return cmd;
+}","public void test1313() throws Throwable {
+    GnuParser gnuParser0 = new GnuParser();
+    Options options0 = new Options();
+    options0.addOption(""1"", true, ""1"");
+    Properties properties0 = new Properties();
+    String[] stringArray0 = new String[5];
+    stringArray0[0] = ""*"";
+    stringArray0[1] = ""1"";
+    stringArray0[2] = ""--1"";
+    stringArray0[3] = ""--1"";
+    stringArray0[4] = ""--1"";
+    try {
+        gnuParser0.parse(options0, stringArray0, properties0, false);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Missing argument for option: 1
+        //
+        verifyException(""org.apache.commons.cli.Parser"", e);
+    }
+}","/**
+ * Parse the arguments according to the specified options and
+ * properties.
+ *
+ * @param options the specified Options
+ * @param arguments the command line arguments
+ * @param properties command line option name-value pairs
+ * @param stopAtNonOption if <tt>true</tt> an unrecognized argument stops
+ *     the parsing and the remaining arguments are added to the
+ *     {@link CommandLine}s args list. If <tt>false</tt> an unrecognized
+ *     argument triggers a ParseException.
+ *
+ * @return the list of atomic option and value tokens
+ *
+ * @throws ParseException if there are any problems encountered
+ * while parsing the command line tokens.
+ *
+ * @since 1.1
+ */"
+"protected void processOption(String arg, ListIterator iter) throws ParseException {
+    boolean hasOption = getOptions().hasOption(arg);
+    // if there is no option throw an UnrecognisedOptionException
+    if (!hasOption) {
+        throw new UnrecognizedOptionException(""Unrecognized option: "" + arg, arg);
+    }
+    // get the option represented by arg
+    Option opt = (Option) getOptions().getOption(arg).clone();
+    // if the option is a required option remove the option from
+    // the requiredOptions list
+    if (opt.isRequired()) {
+        getRequiredOptions().remove(opt.getKey());
+    }
+    // if the option is in an OptionGroup make that option the selected
+    // option of the group
+    if (getOptions().getOptionGroup(opt) != null) {
+        OptionGroup group = getOptions().getOptionGroup(opt);
+        if (group.isRequired()) {
+            getRequiredOptions().remove(group);
+        }
+        group.setSelected(opt);
+    }
+    // if the option takes an argument value
+    if (opt.hasArg()) {
+        processArgs(opt, iter);
+    }
+    // set the option on the command line
+    cmd.addOption(opt);
+}","public void test1515() throws Throwable {
+    Option option0 = new Option("""", """", false, """");
+    ListIterator<OptionGroup> listIterator0 = (ListIterator<OptionGroup>) mock(ListIterator.class, new ViolatedAssumptionAnswer());
+    GnuParser gnuParser0 = new GnuParser();
+    Options options0 = new Options();
+    Options options1 = options0.addOption(option0);
+    option0.setRequired(true);
+    String[] stringArray0 = new String[0];
+    gnuParser0.parse(options1, stringArray0, false);
+    gnuParser0.processOption("""", listIterator0);
+}","/**
+ * Process the Option specified by <code>arg</code> using the values
+ * retrieved from the specfied iterator <code>iter</code>.
+ *
+ * @param arg The String value representing an Option
+ * @param iter The iterator over the flattened command line arguments.
+ *
+ * @throws ParseException if <code>arg</code> does not represent an Option
+ */"
+"protected void processOption(String arg, ListIterator iter) throws ParseException {
+    boolean hasOption = getOptions().hasOption(arg);
+    // if there is no option throw an UnrecognisedOptionException
+    if (!hasOption) {
+        throw new UnrecognizedOptionException(""Unrecognized option: "" + arg, arg);
+    }
+    // get the option represented by arg
+    Option opt = (Option) getOptions().getOption(arg).clone();
+    // if the option is a required option remove the option from
+    // the requiredOptions list
+    if (opt.isRequired()) {
+        getRequiredOptions().remove(opt.getKey());
+    }
+    // if the option is in an OptionGroup make that option the selected
+    // option of the group
+    if (getOptions().getOptionGroup(opt) != null) {
+        OptionGroup group = getOptions().getOptionGroup(opt);
+        if (group.isRequired()) {
+            getRequiredOptions().remove(group);
+        }
+        group.setSelected(opt);
+    }
+    // if the option takes an argument value
+    if (opt.hasArg()) {
+        processArgs(opt, iter);
+    }
+    // set the option on the command line
+    cmd.addOption(opt);
+}","public void test1616() throws Throwable {
+    Option option0 = new Option(""4"", ""4"", true, ""4"");
+    GnuParser gnuParser0 = new GnuParser();
+    Options options0 = new Options();
+    OptionGroup optionGroup0 = new OptionGroup();
+    OptionGroup optionGroup1 = optionGroup0.addOption(option0);
+    options0.addOptionGroup(optionGroup1);
+    optionGroup1.setRequired(true);
+    gnuParser0.parse(options0, (String[]) null, true);
+    ListIterator<OptionGroup> listIterator0 = (ListIterator<OptionGroup>) mock(ListIterator.class, new ViolatedAssumptionAnswer());
+    doReturn(true).when(listIterator0).hasNext();
+    doReturn(optionGroup1).when(listIterator0).next();
+    // Undeclared exception!
+    try {
+        gnuParser0.processOption(""4"", listIterator0);
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // org.apache.commons.cli.OptionGroup cannot be cast to java.lang.String
+        //
+        verifyException(""org.apache.commons.cli.Parser"", e);
+    }
+}","/**
+ * Process the Option specified by <code>arg</code> using the values
+ * retrieved from the specfied iterator <code>iter</code>.
+ *
+ * @param arg The String value representing an Option
+ * @param iter The iterator over the flattened command line arguments.
+ *
+ * @throws ParseException if <code>arg</code> does not represent an Option
+ */"

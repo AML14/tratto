@@ -1,0 +1,295 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test011,"public void test011() throws Throwable {
+    Class<ArrayList> class0 = ArrayList.class;
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    Class<Proxy.Type> class1 = Proxy.Type.class;
+    CollectionLikeType collectionLikeType0 = typeFactory0.constructCollectionLikeType(class0, class1);
+    JavaType[] javaTypeArray0 = collectionLikeType0.findTypeParameters(class0);
+    assertEquals(1, javaTypeArray0.length);
+}",0,
+project,0,test022,"public void test022() throws Throwable {
+    TypeBindings typeBindings0 = TypeBindings.emptyBindings();
+    TypeBindings typeBindings1 = (TypeBindings) typeBindings0.readResolve();
+    assertEquals(0, typeBindings1.size());
+}",0,
+project,0,test033,"public void test033() throws Throwable {
+    TypeBindings typeBindings0 = TypeFactory.EMPTY_BINDINGS;
+    typeBindings0.hashCode();
+}",0,
+project,0,test044,"public void test044() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<ArrayList> class0 = ArrayList.class;
+    CollectionType collectionType0 = typeFactory0.constructRawCollectionType(class0);
+    JavaType[] javaTypeArray0 = new JavaType[2];
+    javaTypeArray0[0] = (JavaType) collectionType0;
+    javaTypeArray0[1] = (JavaType) collectionType0;
+    Class<Map> class1 = Map.class;
+    TypeBindings typeBindings0 = TypeBindings.createIfNeeded(class1, javaTypeArray0);
+    String string0 = typeBindings0.toString();
+    assertEquals(""<Ljava/util/ArrayList<Ljava/lang/Object;>;,Ljava/util/ArrayList<Ljava/lang/Object;>;>"", string0);
+}",0,
+project,0,test045,"public void test045() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<ArrayList> class0 = ArrayList.class;
+    CollectionType collectionType0 = typeFactory0.constructRawCollectionType(class0);
+    JavaType[] javaTypeArray0 = new JavaType[2];
+    javaTypeArray0[0] = (JavaType) collectionType0;
+    javaTypeArray0[1] = (JavaType) collectionType0;
+    Class<Map> class1 = Map.class;
+    TypeBindings typeBindings0 = TypeBindings.createIfNeeded(class1, javaTypeArray0);
+    String string0 = typeBindings0.toString();
+    assertFalse(typeBindings0.isEmpty());
+}",0,assertTrue(typeBindings0.isEmpty())
+project,0,test056,"public void test056() throws Throwable {
+    Class<ArrayList> class0 = ArrayList.class;
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_BOOL;
+    TypeBindings typeBindings0 = TypeBindings.createIfNeeded((Class<?>) class0, (JavaType) simpleType0);
+    TypeBindings typeBindings1 = (TypeBindings) typeBindings0.readResolve();
+    assertEquals(1, typeBindings1.size());
+}",0,
+project,0,test078,"public void test078() throws Throwable {
+    Class<ReferenceType> class0 = ReferenceType.class;
+    LinkedList<JavaType> linkedList0 = new LinkedList<JavaType>();
+    TypeBindings typeBindings0 = TypeBindings.create((Class<?>) class0, (List<JavaType>) linkedList0);
+    assertEquals(0, typeBindings0.size());
+}",0,"assertEquals(0, typeBindings0.size())"
+project,0,test0910,"public void test0910() throws Throwable {
+    Class<Integer> class0 = Integer.class;
+    TypeBindings typeBindings0 = TypeBindings.create(class0, (JavaType[]) null);
+    assertTrue(typeBindings0.isEmpty());
+}",0,assertTrue(typeBindings0.isEmpty())
+project,0,test1011,"public void test1011() throws Throwable {
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<Map> class0 = Map.class;
+    MapType mapType0 = typeFactory0.constructRawMapType(class0);
+    JavaType javaType0 = mapType0.containedTypeOrUnknown(1);
+    assertFalse(javaType0.isInterface());
+}",0,assertTrue(javaType0.isInterface())
+project,0,test1112,"public void test1112() throws Throwable {
+    JavaType[] javaTypeArray0 = new JavaType[2];
+    Class<JsonDeserializer> class0 = JsonDeserializer.class;
+    // Undeclared exception!
+    try {
+        TypeBindings.create(class0, javaTypeArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Can not create TypeBindings for class com.fasterxml.jackson.databind.JsonDeserializer with 2 type parameters: class expects 1
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeBindings"", e);
+    }
+}",0,
+project,0,test1213,"public void test1213() throws Throwable {
+    Class<Object> class0 = Object.class;
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_COMPARABLE;
+    TypeBindings typeBindings0 = TypeBindings.createIfNeeded((Class<?>) class0, (JavaType) simpleType0);
+    assertTrue(typeBindings0.isEmpty());
+}",0,assertTrue(typeBindings0.isEmpty())
+project,0,test1314,"public void test1314() throws Throwable {
+    Class<Map> class0 = Map.class;
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_OBJECT;
+    // Undeclared exception!
+    try {
+        TypeBindings.createIfNeeded((Class<?>) class0, (JavaType) simpleType0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Can not create TypeBindings for class java.util.Map with 1 type parameter: class expects 2
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeBindings"", e);
+    }
+}",0,
+project,0,test1415,"public void test1415() throws Throwable {
+    Class<Integer> class0 = Integer.TYPE;
+    JavaType[] javaTypeArray0 = new JavaType[1];
+    TypeBindings typeBindings0 = TypeBindings.createIfNeeded(class0, javaTypeArray0);
+    assertTrue(typeBindings0.isEmpty());
+}",0,assertTrue(typeBindings0.isEmpty())
+project,0,test1516,"public void test1516() throws Throwable {
+    Class<ArrayList> class0 = ArrayList.class;
+    // Undeclared exception!
+    try {
+        TypeBindings.createIfNeeded(class0, (JavaType[]) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Can not create TypeBindings for class java.util.ArrayList with 0 type parameters: class expects 1
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeBindings"", e);
+    }
+}",0,
+project,0,test1617,"public void test1617() throws Throwable {
+    JavaType[] javaTypeArray0 = new JavaType[1];
+    Class<Map> class0 = Map.class;
+    // Undeclared exception!
+    try {
+        TypeBindings.createIfNeeded(class0, javaTypeArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Can not create TypeBindings for class java.util.Map with 1 type parameter: class expects 2
+        //
+        verifyException(""com.fasterxml.jackson.databind.type.TypeBindings"", e);
+    }
+}",0,
+project,0,test1718,"public void test1718() throws Throwable {
+    TypeBindings typeBindings0 = TypeFactory.EMPTY_BINDINGS;
+    TypeBindings typeBindings1 = typeBindings0.withUnboundVariable(""_b;Z(\""B,QdH2)E,zds"");
+    TypeBindings typeBindings2 = typeBindings1.withUnboundVariable(""_b;Z(\""B,QdH2)E,zds"");
+    assertNotSame(typeBindings2, typeBindings0);
+}",0,
+project,0,test1819,"public void test1819() throws Throwable {
+    TypeBindings typeBindings0 = TypeFactory.EMPTY_BINDINGS;
+    JavaType javaType0 = typeBindings0.findBoundType(""~&{,22vsQ\""C"");
+    assertNull(javaType0);
+}",0,
+project,0,test1920,"public void test1920() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<JsonDeserializer> class0 = JsonDeserializer.class;
+    JavaType javaType0 = TypeBase._bogusSuperClass(class0);
+    ObjectReader objectReader0 = objectMapper0.readerFor(javaType0);
+    assertNotNull(objectReader0);
+}",0,assertNotNull(objectReader0)
+project,0,test2021,"public void test2021() throws Throwable {
+    TypeBindings typeBindings0 = TypeBindings.emptyBindings();
+    Class<ArrayList> class0 = ArrayList.class;
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, typeBindings0);
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    typeFactory0.constructCollectionType((Class<? extends Collection>) class0, (JavaType) resolvedRecursiveType0);
+    assertTrue(typeBindings0.isEmpty());
+}",0,assertTrue(typeBindings0.isEmpty())
+project,0,test2122,"public void test2122() throws Throwable {
+    TypeBindings typeBindings0 = TypeBindings.emptyBindings();
+    Class<ArrayList> class0 = ArrayList.class;
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, typeBindings0);
+    Class<TypeBindings> class1 = TypeBindings.class;
+    JavaType[] javaTypeArray0 = new JavaType[4];
+    javaTypeArray0[0] = (JavaType) resolvedRecursiveType0;
+    CollectionType collectionType0 = CollectionType.construct((Class<?>) class1, typeBindings0, (JavaType) resolvedRecursiveType0, javaTypeArray0, javaTypeArray0[0]);
+    resolvedRecursiveType0.setReference(collectionType0);
+    TypeFactory typeFactory0 = TypeFactory.instance;
+    typeFactory0.constructCollectionType((Class<? extends Collection>) class0, (JavaType) resolvedRecursiveType0);
+    assertTrue(typeBindings0.isEmpty());
+}",0,assertTrue(typeBindings0.isEmpty())
+project,0,test2223,"public void test2223() throws Throwable {
+    TypeBindings typeBindings0 = TypeBindings.emptyBindings();
+    String string0 = typeBindings0.getBoundName((-1440));
+    assertNull(string0);
+}",0,assertNotNull(string0)
+project,0,test2324,"public void test2324() throws Throwable {
+    Class<ArrayList> class0 = ArrayList.class;
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_COMPARABLE;
+    TypeBindings typeBindings0 = TypeBindings.createIfNeeded((Class<?>) class0, (JavaType) simpleType0);
+    String string0 = typeBindings0.getBoundName(0);
+    assertNotNull(string0);
+}",0,assertNotNull(string0)
+project,0,test2325,"public void test2325() throws Throwable {
+    Class<ArrayList> class0 = ArrayList.class;
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_COMPARABLE;
+    TypeBindings typeBindings0 = TypeBindings.createIfNeeded((Class<?>) class0, (JavaType) simpleType0);
+    String string0 = typeBindings0.getBoundName(0);
+    assertFalse(typeBindings0.isEmpty());
+}",0,assertTrue(typeBindings0.isEmpty())
+project,0,test2426,"public void test2426() throws Throwable {
+    TypeBindings typeBindings0 = TypeFactory.EMPTY_BINDINGS;
+    String string0 = typeBindings0.getBoundName(52);
+    assertNull(string0);
+}",0,
+project,0,test2527,"public void test2527() throws Throwable {
+    TypeBindings typeBindings0 = TypeFactory.EMPTY_BINDINGS;
+    JavaType javaType0 = typeBindings0.getBoundType((-2744));
+    assertNull(javaType0);
+}",0,assertNotNull(javaType0)
+project,0,test2628,"public void test2628() throws Throwable {
+    TypeBindings typeBindings0 = TypeFactory.EMPTY_BINDINGS;
+    JavaType javaType0 = typeBindings0.getBoundType(0);
+    assertNull(javaType0);
+}",0,
+project,0,test2830,"public void test2830() throws Throwable {
+    TypeBindings typeBindings0 = TypeBindings.emptyBindings();
+    boolean boolean0 = typeBindings0.hasUnbound(""E"");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2931,"public void test2931() throws Throwable {
+    TypeBindings typeBindings0 = TypeBindings.emptyBindings();
+    TypeBindings typeBindings1 = typeBindings0.withUnboundVariable("" with 1 type parameter: class expects "");
+    boolean boolean0 = typeBindings1.hasUnbound("""");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test3032,"public void test3032() throws Throwable {
+    TypeBindings typeBindings0 = TypeBindings.emptyBindings();
+    TypeBindings typeBindings1 = typeBindings0.withUnboundVariable("""");
+    boolean boolean0 = typeBindings1.hasUnbound("""");
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test3133,"public void test3133() throws Throwable {
+    TypeBindings typeBindings0 = TypeBindings.emptyBindings();
+    String string0 = typeBindings0.toString();
+    assertEquals(""<>"", string0);
+}",0,assertNotNull(string0)
+project,0,test3234,"public void test3234() throws Throwable {
+    Class<ArrayList> class0 = ArrayList.class;
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_COMPARABLE;
+    ReferenceType referenceType0 = ReferenceType.upgradeFrom(simpleType0, simpleType0);
+    TypeBindings typeBindings0 = TypeBindings.createIfNeeded((Class<?>) class0, (JavaType) referenceType0);
+    TypeBindings typeBindings1 = TypeBindings.create((Class<?>) class0, (JavaType) simpleType0);
+    boolean boolean0 = typeBindings0.equals(typeBindings1);
+    assertEquals(1, typeBindings0.size());
+}",0,"assertEquals(0, typeBindings0.size())"
+project,0,test3235,"public void test3235() throws Throwable {
+    Class<ArrayList> class0 = ArrayList.class;
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_COMPARABLE;
+    ReferenceType referenceType0 = ReferenceType.upgradeFrom(simpleType0, simpleType0);
+    TypeBindings typeBindings0 = TypeBindings.createIfNeeded((Class<?>) class0, (JavaType) referenceType0);
+    TypeBindings typeBindings1 = TypeBindings.create((Class<?>) class0, (JavaType) simpleType0);
+    boolean boolean0 = typeBindings0.equals(typeBindings1);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test3336,"public void test3336() throws Throwable {
+    TypeBindings typeBindings0 = TypeBindings.emptyBindings();
+    boolean boolean0 = typeBindings0.equals(typeBindings0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test3437,"public void test3437() throws Throwable {
+    TypeBindings typeBindings0 = TypeFactory.EMPTY_BINDINGS;
+    boolean boolean0 = typeBindings0.equals((Object) null);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test3538,"public void test3538() throws Throwable {
+    Stack<JavaType> stack0 = new Stack<JavaType>();
+    TypeBindings typeBindings0 = TypeFactory.EMPTY_BINDINGS;
+    boolean boolean0 = typeBindings0.equals(stack0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test3639,"public void test3639() throws Throwable {
+    Class<ArrayList> class0 = ArrayList.class;
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_COMPARABLE;
+    TypeBindings typeBindings0 = TypeBindings.createIfNeeded((Class<?>) class0, (JavaType) simpleType0);
+    TypeBindings typeBindings1 = TypeFactory.EMPTY_BINDINGS;
+    boolean boolean0 = typeBindings1.equals(typeBindings0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test3640,"public void test3640() throws Throwable {
+    Class<ArrayList> class0 = ArrayList.class;
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_COMPARABLE;
+    TypeBindings typeBindings0 = TypeBindings.createIfNeeded((Class<?>) class0, (JavaType) simpleType0);
+    TypeBindings typeBindings1 = TypeFactory.EMPTY_BINDINGS;
+    boolean boolean0 = typeBindings1.equals(typeBindings0);
+    assertFalse(typeBindings0.equals((Object) typeBindings1));
+}",0,
+project,0,test3741,"public void test3741() throws Throwable {
+    Class<ArrayList> class0 = ArrayList.class;
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_BOOL;
+    TypeBindings typeBindings0 = TypeBindings.createIfNeeded((Class<?>) class0, (JavaType) simpleType0);
+    TypeBindings typeBindings1 = TypeBindings.createIfNeeded((Class<?>) class0, (JavaType) simpleType0);
+    boolean boolean0 = typeBindings0.equals(typeBindings1);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test3742,"public void test3742() throws Throwable {
+    Class<ArrayList> class0 = ArrayList.class;
+    SimpleType simpleType0 = TypeFactory.CORE_TYPE_BOOL;
+    TypeBindings typeBindings0 = TypeBindings.createIfNeeded((Class<?>) class0, (JavaType) simpleType0);
+    TypeBindings typeBindings1 = TypeBindings.createIfNeeded((Class<?>) class0, (JavaType) simpleType0);
+    boolean boolean0 = typeBindings0.equals(typeBindings1);
+    assertFalse(typeBindings1.isEmpty());
+}",0,assertTrue(typeBindings1.isEmpty())

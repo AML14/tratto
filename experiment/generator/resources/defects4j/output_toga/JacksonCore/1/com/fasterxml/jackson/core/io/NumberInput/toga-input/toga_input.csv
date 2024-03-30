@@ -1,0 +1,2422 @@
+focal_method,test_prefix,docstring
+"public static long parseAsLong(String input, long defaultValue) {
+    if (input == null) {
+        return defaultValue;
+    }
+    input = input.trim();
+    int len = input.length();
+    if (len == 0) {
+        return defaultValue;
+    }
+    // One more thing: use long parsing for 'simple'
+    int i = 0;
+    if (i < len) {
+        // skip leading sign:
+        char c = input.charAt(0);
+        if (c == '+') {
+            // for plus, actually physically remove
+            input = input.substring(1);
+            len = input.length();
+        } else if (c == '-') {
+            // minus, just skip for checks, must retain
+            ++i;
+        }
+    }
+    for (; i < len; ++i) {
+        char c = input.charAt(i);
+        // if other symbols, parse as Double, coerce
+        if (c > '9' || c < '0') {
+            try {
+                return (long) parseDouble(input);
+            } catch (NumberFormatException e) {
+                return defaultValue;
+            }
+        }
+    }
+    try {
+        return Long.parseLong(input);
+    } catch (NumberFormatException e) {
+    }
+    return defaultValue;
+}","public void test000() throws Throwable {
+    long long0 = NumberInput.parseAsLong(""9\""ba("", 9223372036854775807L);
+    assertEquals(9223372036854775807L, long0);
+}",""
+"public static long parseAsLong(String input, long defaultValue) {
+    if (input == null) {
+        return defaultValue;
+    }
+    input = input.trim();
+    int len = input.length();
+    if (len == 0) {
+        return defaultValue;
+    }
+    // One more thing: use long parsing for 'simple'
+    int i = 0;
+    if (i < len) {
+        // skip leading sign:
+        char c = input.charAt(0);
+        if (c == '+') {
+            // for plus, actually physically remove
+            input = input.substring(1);
+            len = input.length();
+        } else if (c == '-') {
+            // minus, just skip for checks, must retain
+            ++i;
+        }
+    }
+    for (; i < len; ++i) {
+        char c = input.charAt(i);
+        // if other symbols, parse as Double, coerce
+        if (c > '9' || c < '0') {
+            try {
+                return (long) parseDouble(input);
+            } catch (NumberFormatException e) {
+                return defaultValue;
+            }
+        }
+    }
+    try {
+        return Long.parseLong(input);
+    } catch (NumberFormatException e) {
+    }
+    return defaultValue;
+}","public void test011() throws Throwable {
+    long long0 = NumberInput.parseAsLong(""$)z)>r7$#$Gn^Nd\"","", 730L);
+    assertEquals(730L, long0);
+}",""
+"public static int parseAsInt(String input, int defaultValue) {
+    if (input == null) {
+        return defaultValue;
+    }
+    input = input.trim();
+    int len = input.length();
+    if (len == 0) {
+        return defaultValue;
+    }
+    // One more thing: use integer parsing for 'simple'
+    int i = 0;
+    if (i < len) {
+        // skip leading sign:
+        char c = input.charAt(0);
+        if (c == '+') {
+            // for plus, actually physically remove
+            input = input.substring(1);
+            len = input.length();
+        } else if (c == '-') {
+            // minus, just skip for checks, must retain
+            ++i;
+        }
+    }
+    for (; i < len; ++i) {
+        char c = input.charAt(i);
+        // if other symbols, parse as Double, coerce
+        if (c > '9' || c < '0') {
+            try {
+                return (int) parseDouble(input);
+            } catch (NumberFormatException e) {
+                return defaultValue;
+            }
+        }
+    }
+    try {
+        return Integer.parseInt(input);
+    } catch (NumberFormatException e) {
+    }
+    return defaultValue;
+}","public void test022() throws Throwable {
+    int int0 = NumberInput.parseAsInt(""0"", 15);
+    assertEquals(0, int0);
+}",""
+"public static int parseAsInt(String input, int defaultValue) {
+    if (input == null) {
+        return defaultValue;
+    }
+    input = input.trim();
+    int len = input.length();
+    if (len == 0) {
+        return defaultValue;
+    }
+    // One more thing: use integer parsing for 'simple'
+    int i = 0;
+    if (i < len) {
+        // skip leading sign:
+        char c = input.charAt(0);
+        if (c == '+') {
+            // for plus, actually physically remove
+            input = input.substring(1);
+            len = input.length();
+        } else if (c == '-') {
+            // minus, just skip for checks, must retain
+            ++i;
+        }
+    }
+    for (; i < len; ++i) {
+        char c = input.charAt(i);
+        // if other symbols, parse as Double, coerce
+        if (c > '9' || c < '0') {
+            try {
+                return (int) parseDouble(input);
+            } catch (NumberFormatException e) {
+                return defaultValue;
+            }
+        }
+    }
+    try {
+        return Integer.parseInt(input);
+    } catch (NumberFormatException e) {
+    }
+    return defaultValue;
+}","public void test033() throws Throwable {
+    int int0 = NumberInput.parseAsInt(""9k&W%0apzCxj0zPGA"", 44);
+    assertEquals(44, int0);
+}",""
+"public static int parseAsInt(String input, int defaultValue) {
+    if (input == null) {
+        return defaultValue;
+    }
+    input = input.trim();
+    int len = input.length();
+    if (len == 0) {
+        return defaultValue;
+    }
+    // One more thing: use integer parsing for 'simple'
+    int i = 0;
+    if (i < len) {
+        // skip leading sign:
+        char c = input.charAt(0);
+        if (c == '+') {
+            // for plus, actually physically remove
+            input = input.substring(1);
+            len = input.length();
+        } else if (c == '-') {
+            // minus, just skip for checks, must retain
+            ++i;
+        }
+    }
+    for (; i < len; ++i) {
+        char c = input.charAt(i);
+        // if other symbols, parse as Double, coerce
+        if (c > '9' || c < '0') {
+            try {
+                return (int) parseDouble(input);
+            } catch (NumberFormatException e) {
+                return defaultValue;
+            }
+        }
+    }
+    try {
+        return Integer.parseInt(input);
+    } catch (NumberFormatException e) {
+    }
+    return defaultValue;
+}","public void test044() throws Throwable {
+    int int0 = NumberInput.parseAsInt(""\""@DU4j 9[~t/j~6+"", (-1870));
+    assertEquals((-1870), int0);
+}",""
+"public static long parseLong(String str) {
+    /* Ok, now; as the very first thing, let's just optimize case of ""fake longs"";
+         * that is, if we know they must be ints, call int parsing
+         */
+    int length = str.length();
+    if (length <= 9) {
+        return (long) parseInt(str);
+    }
+    // !!! TODO: implement efficient 2-int parsing...
+    return Long.parseLong(str);
+}","public void test055() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberInput.parseLong(""m5]._Gfgt"");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // For input string: \""m5]._Gfgt\""
+        //
+        verifyException(""java.lang.NumberFormatException"", e);
+    }
+}",""
+"public static int parseInt(String str) {
+    /* Ok: let's keep strategy simple: ignoring optional minus sign,
+         * we'll accept 1 - 9 digits and parse things efficiently;
+         * otherwise just defer to JDK parse functionality.
+         */
+    char c = str.charAt(0);
+    int length = str.length();
+    boolean negative = (c == '-');
+    int offset = 1;
+    // must have 1 - 9 digits after optional sign:
+    // negative?
+    if (negative) {
+        if (length == 1 || length > 10) {
+            return Integer.parseInt(str);
+        }
+        c = str.charAt(offset++);
+    } else {
+        if (length > 9) {
+            return Integer.parseInt(str);
+        }
+    }
+    if (c > '9' || c < '0') {
+        return Integer.parseInt(str);
+    }
+    int num = c - '0';
+    if (offset < length) {
+        c = str.charAt(offset++);
+        if (c > '9' || c < '0') {
+            return Integer.parseInt(str);
+        }
+        num = (num * 10) + (c - '0');
+        if (offset < length) {
+            c = str.charAt(offset++);
+            if (c > '9' || c < '0') {
+                return Integer.parseInt(str);
+            }
+            num = (num * 10) + (c - '0');
+            // Let's just loop if we have more than 3 digits:
+            if (offset < length) {
+                do {
+                    c = str.charAt(offset++);
+                    if (c > '9' || c < '0') {
+                        return Integer.parseInt(str);
+                    }
+                    num = (num * 10) + (c - '0');
+                } while (offset < length);
+            }
+        }
+    }
+    return negative ? -num : num;
+}","public void test066() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberInput.parseInt(""793l7Ryo"");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // For input string: \""793l7Ryo\""
+        //
+        verifyException(""java.lang.NumberFormatException"", e);
+    }
+}","/**
+ * Helper method to (more) efficiently parse integer numbers from
+ * String values.
+ */"
+"public static int parseInt(String str) {
+    /* Ok: let's keep strategy simple: ignoring optional minus sign,
+         * we'll accept 1 - 9 digits and parse things efficiently;
+         * otherwise just defer to JDK parse functionality.
+         */
+    char c = str.charAt(0);
+    int length = str.length();
+    boolean negative = (c == '-');
+    int offset = 1;
+    // must have 1 - 9 digits after optional sign:
+    // negative?
+    if (negative) {
+        if (length == 1 || length > 10) {
+            return Integer.parseInt(str);
+        }
+        c = str.charAt(offset++);
+    } else {
+        if (length > 9) {
+            return Integer.parseInt(str);
+        }
+    }
+    if (c > '9' || c < '0') {
+        return Integer.parseInt(str);
+    }
+    int num = c - '0';
+    if (offset < length) {
+        c = str.charAt(offset++);
+        if (c > '9' || c < '0') {
+            return Integer.parseInt(str);
+        }
+        num = (num * 10) + (c - '0');
+        if (offset < length) {
+            c = str.charAt(offset++);
+            if (c > '9' || c < '0') {
+                return Integer.parseInt(str);
+            }
+            num = (num * 10) + (c - '0');
+            // Let's just loop if we have more than 3 digits:
+            if (offset < length) {
+                do {
+                    c = str.charAt(offset++);
+                    if (c > '9' || c < '0') {
+                        return Integer.parseInt(str);
+                    }
+                    num = (num * 10) + (c - '0');
+                } while (offset < length);
+            }
+        }
+    }
+    return negative ? -num : num;
+}","public void test077() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberInput.parseInt(""9K1[u8aeI"");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // For input string: \""9K1[u8aeI\""
+        //
+        verifyException(""java.lang.NumberFormatException"", e);
+    }
+}","/**
+ * Helper method to (more) efficiently parse integer numbers from
+ * String values.
+ */"
+"public static long parseLong(String str) {
+    /* Ok, now; as the very first thing, let's just optimize case of ""fake longs"";
+         * that is, if we know they must be ints, call int parsing
+         */
+    int length = str.length();
+    if (length <= 9) {
+        return (long) parseInt(str);
+    }
+    // !!! TODO: implement efficient 2-int parsing...
+    return Long.parseLong(str);
+}","public void test088() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberInput.parseLong(""*eX5A["");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // For input string: \""*eX5A[\""
+        //
+        verifyException(""java.lang.NumberFormatException"", e);
+    }
+}",""
+"public static int parseInt(char[] digitChars, int offset, int len) {
+    int num = digitChars[offset] - '0';
+    len += offset;
+    // This looks ugly, but appears the fastest way (as per measurements)
+    if (++offset < len) {
+        num = (num * 10) + (digitChars[offset] - '0');
+        if (++offset < len) {
+            num = (num * 10) + (digitChars[offset] - '0');
+            if (++offset < len) {
+                num = (num * 10) + (digitChars[offset] - '0');
+                if (++offset < len) {
+                    num = (num * 10) + (digitChars[offset] - '0');
+                    if (++offset < len) {
+                        num = (num * 10) + (digitChars[offset] - '0');
+                        if (++offset < len) {
+                            num = (num * 10) + (digitChars[offset] - '0');
+                            if (++offset < len) {
+                                num = (num * 10) + (digitChars[offset] - '0');
+                                if (++offset < len) {
+                                    num = (num * 10) + (digitChars[offset] - '0');
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return num;
+}","public void test099() throws Throwable {
+    char[] charArray0 = new char[3];
+    int int0 = NumberInput.parseInt(charArray0, 1, 1);
+    assertEquals((-48), int0);
+}","/**
+ *  Fast method for parsing integers that are known to fit into
+ *  regular 32-bit signed int type. This means that length is
+ *  between 1 and 9 digits (inclusive)
+ * <p>
+ *  Note: public to let unit tests call it
+ */"
+"public static double parseAsDouble(String input, double defaultValue) {
+    if (input == null) {
+        return defaultValue;
+    }
+    input = input.trim();
+    int len = input.length();
+    if (len == 0) {
+        return defaultValue;
+    }
+    try {
+        return parseDouble(input);
+    } catch (NumberFormatException e) {
+    }
+    return defaultValue;
+}","public void test1010() throws Throwable {
+    double double0 = NumberInput.parseAsDouble(""w#c)d f}r[Td"", 0.0);
+    assertEquals(0.0, double0, 0.01);
+}",""
+"public static long parseLong(String str) {
+    /* Ok, now; as the very first thing, let's just optimize case of ""fake longs"";
+         * that is, if we know they must be ints, call int parsing
+         */
+    int length = str.length();
+    if (length <= 9) {
+        return (long) parseInt(str);
+    }
+    // !!! TODO: implement efficient 2-int parsing...
+    return Long.parseLong(str);
+}","public void test1111() throws Throwable {
+    long long0 = NumberInput.parseLong(""0"");
+    assertEquals(0L, long0);
+}",""
+"public static long parseLong(String str) {
+    /* Ok, now; as the very first thing, let's just optimize case of ""fake longs"";
+         * that is, if we know they must be ints, call int parsing
+         */
+    int length = str.length();
+    if (length <= 9) {
+        return (long) parseInt(str);
+    }
+    // !!! TODO: implement efficient 2-int parsing...
+    return Long.parseLong(str);
+}","public void test1212() throws Throwable {
+    long long0 = NumberInput.parseLong(""4"");
+    assertEquals(4L, long0);
+}",""
+"public static int parseInt(char[] digitChars, int offset, int len) {
+    int num = digitChars[offset] - '0';
+    len += offset;
+    // This looks ugly, but appears the fastest way (as per measurements)
+    if (++offset < len) {
+        num = (num * 10) + (digitChars[offset] - '0');
+        if (++offset < len) {
+            num = (num * 10) + (digitChars[offset] - '0');
+            if (++offset < len) {
+                num = (num * 10) + (digitChars[offset] - '0');
+                if (++offset < len) {
+                    num = (num * 10) + (digitChars[offset] - '0');
+                    if (++offset < len) {
+                        num = (num * 10) + (digitChars[offset] - '0');
+                        if (++offset < len) {
+                            num = (num * 10) + (digitChars[offset] - '0');
+                            if (++offset < len) {
+                                num = (num * 10) + (digitChars[offset] - '0');
+                                if (++offset < len) {
+                                    num = (num * 10) + (digitChars[offset] - '0');
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return num;
+}","public void test1313() throws Throwable {
+    char[] charArray0 = new char[7];
+    charArray0[0] = 'r';
+    int int0 = NumberInput.parseInt(charArray0, 0, 0);
+    assertEquals(66, int0);
+}","/**
+ *  Fast method for parsing integers that are known to fit into
+ *  regular 32-bit signed int type. This means that length is
+ *  between 1 and 9 digits (inclusive)
+ * <p>
+ *  Note: public to let unit tests call it
+ */"
+"public static int parseInt(String str) {
+    /* Ok: let's keep strategy simple: ignoring optional minus sign,
+         * we'll accept 1 - 9 digits and parse things efficiently;
+         * otherwise just defer to JDK parse functionality.
+         */
+    char c = str.charAt(0);
+    int length = str.length();
+    boolean negative = (c == '-');
+    int offset = 1;
+    // must have 1 - 9 digits after optional sign:
+    // negative?
+    if (negative) {
+        if (length == 1 || length > 10) {
+            return Integer.parseInt(str);
+        }
+        c = str.charAt(offset++);
+    } else {
+        if (length > 9) {
+            return Integer.parseInt(str);
+        }
+    }
+    if (c > '9' || c < '0') {
+        return Integer.parseInt(str);
+    }
+    int num = c - '0';
+    if (offset < length) {
+        c = str.charAt(offset++);
+        if (c > '9' || c < '0') {
+            return Integer.parseInt(str);
+        }
+        num = (num * 10) + (c - '0');
+        if (offset < length) {
+            c = str.charAt(offset++);
+            if (c > '9' || c < '0') {
+                return Integer.parseInt(str);
+            }
+            num = (num * 10) + (c - '0');
+            // Let's just loop if we have more than 3 digits:
+            if (offset < length) {
+                do {
+                    c = str.charAt(offset++);
+                    if (c > '9' || c < '0') {
+                        return Integer.parseInt(str);
+                    }
+                    num = (num * 10) + (c - '0');
+                } while (offset < length);
+            }
+        }
+    }
+    return negative ? -num : num;
+}","public void test1414() throws Throwable {
+    int int0 = NumberInput.parseInt(""0"");
+    assertEquals(0, int0);
+}","/**
+ * Helper method to (more) efficiently parse integer numbers from
+ * String values.
+ */"
+"public static long parseAsLong(String input, long defaultValue) {
+    if (input == null) {
+        return defaultValue;
+    }
+    input = input.trim();
+    int len = input.length();
+    if (len == 0) {
+        return defaultValue;
+    }
+    // One more thing: use long parsing for 'simple'
+    int i = 0;
+    if (i < len) {
+        // skip leading sign:
+        char c = input.charAt(0);
+        if (c == '+') {
+            // for plus, actually physically remove
+            input = input.substring(1);
+            len = input.length();
+        } else if (c == '-') {
+            // minus, just skip for checks, must retain
+            ++i;
+        }
+    }
+    for (; i < len; ++i) {
+        char c = input.charAt(i);
+        // if other symbols, parse as Double, coerce
+        if (c > '9' || c < '0') {
+            try {
+                return (long) parseDouble(input);
+            } catch (NumberFormatException e) {
+                return defaultValue;
+            }
+        }
+    }
+    try {
+        return Long.parseLong(input);
+    } catch (NumberFormatException e) {
+    }
+    return defaultValue;
+}","public void test1818() throws Throwable {
+    long long0 = NumberInput.parseAsLong("""", (-1355L));
+    assertEquals((-1355L), long0);
+}",""
+"public static long parseLong(char[] digitChars, int offset, int len) {
+    // Note: caller must ensure length is [10, 18]
+    int len1 = len - 9;
+    long val = parseInt(digitChars, offset, len1) * L_BILLION;
+    return val + (long) parseInt(digitChars, offset + len1, 9);
+}","public void test1919() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberInput.parseLong((char[]) null, 1241, 1736);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.io.NumberInput"", e);
+    }
+}",""
+"public static long parseLong(String str) {
+    /* Ok, now; as the very first thing, let's just optimize case of ""fake longs"";
+         * that is, if we know they must be ints, call int parsing
+         */
+    int length = str.length();
+    if (length <= 9) {
+        return (long) parseInt(str);
+    }
+    // !!! TODO: implement efficient 2-int parsing...
+    return Long.parseLong(str);
+}","public void test2020() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberInput.parseLong("""");
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",""
+"public static long parseLong(String str) {
+    /* Ok, now; as the very first thing, let's just optimize case of ""fake longs"";
+         * that is, if we know they must be ints, call int parsing
+         */
+    int length = str.length();
+    if (length <= 9) {
+        return (long) parseInt(str);
+    }
+    // !!! TODO: implement efficient 2-int parsing...
+    return Long.parseLong(str);
+}","public void test2121() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberInput.parseLong((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.io.NumberInput"", e);
+    }
+}",""
+"public static int parseInt(char[] digitChars, int offset, int len) {
+    int num = digitChars[offset] - '0';
+    len += offset;
+    // This looks ugly, but appears the fastest way (as per measurements)
+    if (++offset < len) {
+        num = (num * 10) + (digitChars[offset] - '0');
+        if (++offset < len) {
+            num = (num * 10) + (digitChars[offset] - '0');
+            if (++offset < len) {
+                num = (num * 10) + (digitChars[offset] - '0');
+                if (++offset < len) {
+                    num = (num * 10) + (digitChars[offset] - '0');
+                    if (++offset < len) {
+                        num = (num * 10) + (digitChars[offset] - '0');
+                        if (++offset < len) {
+                            num = (num * 10) + (digitChars[offset] - '0');
+                            if (++offset < len) {
+                                num = (num * 10) + (digitChars[offset] - '0');
+                                if (++offset < len) {
+                                    num = (num * 10) + (digitChars[offset] - '0');
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return num;
+}","public void test2222() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberInput.parseInt((char[]) null, (-406), (-406));
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.io.NumberInput"", e);
+    }
+}","/**
+ *  Fast method for parsing integers that are known to fit into
+ *  regular 32-bit signed int type. This means that length is
+ *  between 1 and 9 digits (inclusive)
+ * <p>
+ *  Note: public to let unit tests call it
+ */"
+"public static int parseInt(String str) {
+    /* Ok: let's keep strategy simple: ignoring optional minus sign,
+         * we'll accept 1 - 9 digits and parse things efficiently;
+         * otherwise just defer to JDK parse functionality.
+         */
+    char c = str.charAt(0);
+    int length = str.length();
+    boolean negative = (c == '-');
+    int offset = 1;
+    // must have 1 - 9 digits after optional sign:
+    // negative?
+    if (negative) {
+        if (length == 1 || length > 10) {
+            return Integer.parseInt(str);
+        }
+        c = str.charAt(offset++);
+    } else {
+        if (length > 9) {
+            return Integer.parseInt(str);
+        }
+    }
+    if (c > '9' || c < '0') {
+        return Integer.parseInt(str);
+    }
+    int num = c - '0';
+    if (offset < length) {
+        c = str.charAt(offset++);
+        if (c > '9' || c < '0') {
+            return Integer.parseInt(str);
+        }
+        num = (num * 10) + (c - '0');
+        if (offset < length) {
+            c = str.charAt(offset++);
+            if (c > '9' || c < '0') {
+                return Integer.parseInt(str);
+            }
+            num = (num * 10) + (c - '0');
+            // Let's just loop if we have more than 3 digits:
+            if (offset < length) {
+                do {
+                    c = str.charAt(offset++);
+                    if (c > '9' || c < '0') {
+                        return Integer.parseInt(str);
+                    }
+                    num = (num * 10) + (c - '0');
+                } while (offset < length);
+            }
+        }
+    }
+    return negative ? -num : num;
+}","public void test2323() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberInput.parseInt("""");
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}","/**
+ * Helper method to (more) efficiently parse integer numbers from
+ * String values.
+ */"
+"public static int parseInt(String str) {
+    /* Ok: let's keep strategy simple: ignoring optional minus sign,
+         * we'll accept 1 - 9 digits and parse things efficiently;
+         * otherwise just defer to JDK parse functionality.
+         */
+    char c = str.charAt(0);
+    int length = str.length();
+    boolean negative = (c == '-');
+    int offset = 1;
+    // must have 1 - 9 digits after optional sign:
+    // negative?
+    if (negative) {
+        if (length == 1 || length > 10) {
+            return Integer.parseInt(str);
+        }
+        c = str.charAt(offset++);
+    } else {
+        if (length > 9) {
+            return Integer.parseInt(str);
+        }
+    }
+    if (c > '9' || c < '0') {
+        return Integer.parseInt(str);
+    }
+    int num = c - '0';
+    if (offset < length) {
+        c = str.charAt(offset++);
+        if (c > '9' || c < '0') {
+            return Integer.parseInt(str);
+        }
+        num = (num * 10) + (c - '0');
+        if (offset < length) {
+            c = str.charAt(offset++);
+            if (c > '9' || c < '0') {
+                return Integer.parseInt(str);
+            }
+            num = (num * 10) + (c - '0');
+            // Let's just loop if we have more than 3 digits:
+            if (offset < length) {
+                do {
+                    c = str.charAt(offset++);
+                    if (c > '9' || c < '0') {
+                        return Integer.parseInt(str);
+                    }
+                    num = (num * 10) + (c - '0');
+                } while (offset < length);
+            }
+        }
+    }
+    return negative ? -num : num;
+}","public void test2424() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberInput.parseInt((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.io.NumberInput"", e);
+    }
+}","/**
+ * Helper method to (more) efficiently parse integer numbers from
+ * String values.
+ */"
+"public static double parseDouble(String numStr) throws NumberFormatException {
+    // [JACKSON-486]: avoid some nasty float representations... but should it be MIN_NORMAL or MIN_VALUE?
+    /* as per [JACKSON-827], let's use MIN_VALUE as it is available on all JDKs; normalized
+         * only in JDK 1.6. In practice, should not really matter.
+         */
+    if (NASTY_SMALL_DOUBLE.equals(numStr)) {
+        return Double.MIN_VALUE;
+    }
+    return Double.parseDouble(numStr);
+}","public void test2525() throws Throwable {
+    try {
+        NumberInput.parseDouble(""8B4fGkT`E+&!ht~*}"");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+    }
+}",""
+"public static double parseDouble(String numStr) throws NumberFormatException {
+    // [JACKSON-486]: avoid some nasty float representations... but should it be MIN_NORMAL or MIN_VALUE?
+    /* as per [JACKSON-827], let's use MIN_VALUE as it is available on all JDKs; normalized
+         * only in JDK 1.6. In practice, should not really matter.
+         */
+    if (NASTY_SMALL_DOUBLE.equals(numStr)) {
+        return Double.MIN_VALUE;
+    }
+    return Double.parseDouble(numStr);
+}","public void test2626() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberInput.parseDouble((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+    }
+}",""
+"public static BigDecimal parseBigDecimal(char[] buffer, int offset, int len) throws NumberFormatException {
+    return new BigDecimal(buffer, offset, len);
+}","public void test2727() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberInput.parseBigDecimal((char[]) null, 2028, 0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.math.BigDecimal"", e);
+    }
+}",""
+"public static BigDecimal parseBigDecimal(char[] buffer) throws NumberFormatException {
+    return parseBigDecimal(buffer, 0, buffer.length);
+}","public void test2828() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberInput.parseBigDecimal((char[]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.io.NumberInput"", e);
+    }
+}",""
+"public static BigDecimal parseBigDecimal(String numStr) throws NumberFormatException {
+    return new BigDecimal(numStr);
+}","public void test2929() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberInput.parseBigDecimal((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.math.BigDecimal"", e);
+    }
+}",""
+"public static boolean inLongRange(String numberStr, boolean negative) {
+    String cmpStr = negative ? MIN_LONG_STR_NO_SIGN : MAX_LONG_STR;
+    int cmpLen = cmpStr.length();
+    int actualLen = numberStr.length();
+    if (actualLen < cmpLen)
+        return true;
+    if (actualLen > cmpLen)
+        return false;
+    // could perhaps just use String.compareTo()?
+    for (int i = 0; i < cmpLen; ++i) {
+        int diff = numberStr.charAt(i) - cmpStr.charAt(i);
+        if (diff != 0) {
+            return (diff < 0);
+        }
+    }
+    return true;
+}","public void test3030() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberInput.inLongRange((String) null, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.io.NumberInput"", e);
+    }
+}","/**
+ * Similar to {@link #inLongRange(char[],int,int,boolean)}, but
+ * with String argument
+ *
+ * @param negative Whether original number had a minus sign (which is
+ *    NOT passed to this method) or not
+ */"
+"public static double parseDouble(String numStr) throws NumberFormatException {
+    // [JACKSON-486]: avoid some nasty float representations... but should it be MIN_NORMAL or MIN_VALUE?
+    /* as per [JACKSON-827], let's use MIN_VALUE as it is available on all JDKs; normalized
+         * only in JDK 1.6. In practice, should not really matter.
+         */
+    if (NASTY_SMALL_DOUBLE.equals(numStr)) {
+        return Double.MIN_VALUE;
+    }
+    return Double.parseDouble(numStr);
+}","public void test3131() throws Throwable {
+    double double0 = NumberInput.parseDouble(""2.2250738585072012e-308"");
+    assertEquals(4.9E-324, double0, 0.01);
+}",""
+"public static double parseDouble(String numStr) throws NumberFormatException {
+    // [JACKSON-486]: avoid some nasty float representations... but should it be MIN_NORMAL or MIN_VALUE?
+    /* as per [JACKSON-827], let's use MIN_VALUE as it is available on all JDKs; normalized
+         * only in JDK 1.6. In practice, should not really matter.
+         */
+    if (NASTY_SMALL_DOUBLE.equals(numStr)) {
+        return Double.MIN_VALUE;
+    }
+    return Double.parseDouble(numStr);
+}","public void test3232() throws Throwable {
+    double double0 = NumberInput.parseDouble(""0"");
+    assertEquals(0.0, double0, 0.01);
+}",""
+"public static int parseInt(String str) {
+    /* Ok: let's keep strategy simple: ignoring optional minus sign,
+         * we'll accept 1 - 9 digits and parse things efficiently;
+         * otherwise just defer to JDK parse functionality.
+         */
+    char c = str.charAt(0);
+    int length = str.length();
+    boolean negative = (c == '-');
+    int offset = 1;
+    // must have 1 - 9 digits after optional sign:
+    // negative?
+    if (negative) {
+        if (length == 1 || length > 10) {
+            return Integer.parseInt(str);
+        }
+        c = str.charAt(offset++);
+    } else {
+        if (length > 9) {
+            return Integer.parseInt(str);
+        }
+    }
+    if (c > '9' || c < '0') {
+        return Integer.parseInt(str);
+    }
+    int num = c - '0';
+    if (offset < length) {
+        c = str.charAt(offset++);
+        if (c > '9' || c < '0') {
+            return Integer.parseInt(str);
+        }
+        num = (num * 10) + (c - '0');
+        if (offset < length) {
+            c = str.charAt(offset++);
+            if (c > '9' || c < '0') {
+                return Integer.parseInt(str);
+            }
+            num = (num * 10) + (c - '0');
+            // Let's just loop if we have more than 3 digits:
+            if (offset < length) {
+                do {
+                    c = str.charAt(offset++);
+                    if (c > '9' || c < '0') {
+                        return Integer.parseInt(str);
+                    }
+                    num = (num * 10) + (c - '0');
+                } while (offset < length);
+            }
+        }
+    }
+    return negative ? -num : num;
+}","public void test3333() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberInput.parseInt(""75.|SH"");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // For input string: \""75.|SH\""
+        //
+        verifyException(""java.lang.NumberFormatException"", e);
+    }
+}","/**
+ * Helper method to (more) efficiently parse integer numbers from
+ * String values.
+ */"
+"public static BigDecimal parseBigDecimal(char[] buffer, int offset, int len) throws NumberFormatException {
+    return new BigDecimal(buffer, offset, len);
+}","public void test3434() throws Throwable {
+    char[] charArray0 = new char[1];
+    try {
+        NumberInput.parseBigDecimal(charArray0, (-3510), (-3510));
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // Bad offset or len arguments for char[] input.
+        //
+        verifyException(""java.math.BigDecimal"", e);
+    }
+}",""
+"public static double parseAsDouble(String input, double defaultValue) {
+    if (input == null) {
+        return defaultValue;
+    }
+    input = input.trim();
+    int len = input.length();
+    if (len == 0) {
+        return defaultValue;
+    }
+    try {
+        return parseDouble(input);
+    } catch (NumberFormatException e) {
+    }
+    return defaultValue;
+}","public void test3535() throws Throwable {
+    double double0 = NumberInput.parseAsDouble("""", 0.0);
+    assertEquals(0.0, double0, 0.01);
+}",""
+"public static double parseAsDouble(String input, double defaultValue) {
+    if (input == null) {
+        return defaultValue;
+    }
+    input = input.trim();
+    int len = input.length();
+    if (len == 0) {
+        return defaultValue;
+    }
+    try {
+        return parseDouble(input);
+    } catch (NumberFormatException e) {
+    }
+    return defaultValue;
+}","public void test3636() throws Throwable {
+    double double0 = NumberInput.parseAsDouble((String) null, (-3593.177975));
+    assertEquals((-3593.177975), double0, 0.01);
+}",""
+"public static double parseAsDouble(String input, double defaultValue) {
+    if (input == null) {
+        return defaultValue;
+    }
+    input = input.trim();
+    int len = input.length();
+    if (len == 0) {
+        return defaultValue;
+    }
+    try {
+        return parseDouble(input);
+    } catch (NumberFormatException e) {
+    }
+    return defaultValue;
+}","public void test3737() throws Throwable {
+    double double0 = NumberInput.parseAsDouble(""2.2250738585072012e-308"", (-3593.177975));
+    assertEquals(4.9E-324, double0, 0.01);
+}",""
+"public static long parseAsLong(String input, long defaultValue) {
+    if (input == null) {
+        return defaultValue;
+    }
+    input = input.trim();
+    int len = input.length();
+    if (len == 0) {
+        return defaultValue;
+    }
+    // One more thing: use long parsing for 'simple'
+    int i = 0;
+    if (i < len) {
+        // skip leading sign:
+        char c = input.charAt(0);
+        if (c == '+') {
+            // for plus, actually physically remove
+            input = input.substring(1);
+            len = input.length();
+        } else if (c == '-') {
+            // minus, just skip for checks, must retain
+            ++i;
+        }
+    }
+    for (; i < len; ++i) {
+        char c = input.charAt(i);
+        // if other symbols, parse as Double, coerce
+        if (c > '9' || c < '0') {
+            try {
+                return (long) parseDouble(input);
+            } catch (NumberFormatException e) {
+                return defaultValue;
+            }
+        }
+    }
+    try {
+        return Long.parseLong(input);
+    } catch (NumberFormatException e) {
+    }
+    return defaultValue;
+}","public void test3838() throws Throwable {
+    long long0 = NumberInput.parseAsLong(""2.2250738585072012e-308"", (-1355L));
+    assertEquals(0L, long0);
+}",""
+"public static long parseAsLong(String input, long defaultValue) {
+    if (input == null) {
+        return defaultValue;
+    }
+    input = input.trim();
+    int len = input.length();
+    if (len == 0) {
+        return defaultValue;
+    }
+    // One more thing: use long parsing for 'simple'
+    int i = 0;
+    if (i < len) {
+        // skip leading sign:
+        char c = input.charAt(0);
+        if (c == '+') {
+            // for plus, actually physically remove
+            input = input.substring(1);
+            len = input.length();
+        } else if (c == '-') {
+            // minus, just skip for checks, must retain
+            ++i;
+        }
+    }
+    for (; i < len; ++i) {
+        char c = input.charAt(i);
+        // if other symbols, parse as Double, coerce
+        if (c > '9' || c < '0') {
+            try {
+                return (long) parseDouble(input);
+            } catch (NumberFormatException e) {
+                return defaultValue;
+            }
+        }
+    }
+    try {
+        return Long.parseLong(input);
+    } catch (NumberFormatException e) {
+    }
+    return defaultValue;
+}","public void test3939() throws Throwable {
+    long long0 = NumberInput.parseAsLong(""-^d/ep]7s9T9];}!3h"", 2017L);
+    assertEquals(2017L, long0);
+}",""
+"public static long parseAsLong(String input, long defaultValue) {
+    if (input == null) {
+        return defaultValue;
+    }
+    input = input.trim();
+    int len = input.length();
+    if (len == 0) {
+        return defaultValue;
+    }
+    // One more thing: use long parsing for 'simple'
+    int i = 0;
+    if (i < len) {
+        // skip leading sign:
+        char c = input.charAt(0);
+        if (c == '+') {
+            // for plus, actually physically remove
+            input = input.substring(1);
+            len = input.length();
+        } else if (c == '-') {
+            // minus, just skip for checks, must retain
+            ++i;
+        }
+    }
+    for (; i < len; ++i) {
+        char c = input.charAt(i);
+        // if other symbols, parse as Double, coerce
+        if (c > '9' || c < '0') {
+            try {
+                return (long) parseDouble(input);
+            } catch (NumberFormatException e) {
+                return defaultValue;
+            }
+        }
+    }
+    try {
+        return Long.parseLong(input);
+    } catch (NumberFormatException e) {
+    }
+    return defaultValue;
+}","public void test4040() throws Throwable {
+    long long0 = NumberInput.parseAsLong(""+d"", 0L);
+    assertEquals(0L, long0);
+}",""
+"public static long parseAsLong(String input, long defaultValue) {
+    if (input == null) {
+        return defaultValue;
+    }
+    input = input.trim();
+    int len = input.length();
+    if (len == 0) {
+        return defaultValue;
+    }
+    // One more thing: use long parsing for 'simple'
+    int i = 0;
+    if (i < len) {
+        // skip leading sign:
+        char c = input.charAt(0);
+        if (c == '+') {
+            // for plus, actually physically remove
+            input = input.substring(1);
+            len = input.length();
+        } else if (c == '-') {
+            // minus, just skip for checks, must retain
+            ++i;
+        }
+    }
+    for (; i < len; ++i) {
+        char c = input.charAt(i);
+        // if other symbols, parse as Double, coerce
+        if (c > '9' || c < '0') {
+            try {
+                return (long) parseDouble(input);
+            } catch (NumberFormatException e) {
+                return defaultValue;
+            }
+        }
+    }
+    try {
+        return Long.parseLong(input);
+    } catch (NumberFormatException e) {
+    }
+    return defaultValue;
+}","public void test4141() throws Throwable {
+    long long0 = NumberInput.parseAsLong((String) null, 0L);
+    assertEquals(0L, long0);
+}",""
+"public static long parseAsLong(String input, long defaultValue) {
+    if (input == null) {
+        return defaultValue;
+    }
+    input = input.trim();
+    int len = input.length();
+    if (len == 0) {
+        return defaultValue;
+    }
+    // One more thing: use long parsing for 'simple'
+    int i = 0;
+    if (i < len) {
+        // skip leading sign:
+        char c = input.charAt(0);
+        if (c == '+') {
+            // for plus, actually physically remove
+            input = input.substring(1);
+            len = input.length();
+        } else if (c == '-') {
+            // minus, just skip for checks, must retain
+            ++i;
+        }
+    }
+    for (; i < len; ++i) {
+        char c = input.charAt(i);
+        // if other symbols, parse as Double, coerce
+        if (c > '9' || c < '0') {
+            try {
+                return (long) parseDouble(input);
+            } catch (NumberFormatException e) {
+                return defaultValue;
+            }
+        }
+    }
+    try {
+        return Long.parseLong(input);
+    } catch (NumberFormatException e) {
+    }
+    return defaultValue;
+}","public void test4242() throws Throwable {
+    long long0 = NumberInput.parseAsLong(""0"", 2017L);
+    assertEquals(0L, long0);
+}",""
+"public static int parseAsInt(String input, int defaultValue) {
+    if (input == null) {
+        return defaultValue;
+    }
+    input = input.trim();
+    int len = input.length();
+    if (len == 0) {
+        return defaultValue;
+    }
+    // One more thing: use integer parsing for 'simple'
+    int i = 0;
+    if (i < len) {
+        // skip leading sign:
+        char c = input.charAt(0);
+        if (c == '+') {
+            // for plus, actually physically remove
+            input = input.substring(1);
+            len = input.length();
+        } else if (c == '-') {
+            // minus, just skip for checks, must retain
+            ++i;
+        }
+    }
+    for (; i < len; ++i) {
+        char c = input.charAt(i);
+        // if other symbols, parse as Double, coerce
+        if (c > '9' || c < '0') {
+            try {
+                return (int) parseDouble(input);
+            } catch (NumberFormatException e) {
+                return defaultValue;
+            }
+        }
+    }
+    try {
+        return Integer.parseInt(input);
+    } catch (NumberFormatException e) {
+    }
+    return defaultValue;
+}","public void test4343() throws Throwable {
+    int int0 = NumberInput.parseAsInt(""-^d/ep]7s9T9];}!3h"", 0);
+    assertEquals(0, int0);
+}",""
+"public static int parseAsInt(String input, int defaultValue) {
+    if (input == null) {
+        return defaultValue;
+    }
+    input = input.trim();
+    int len = input.length();
+    if (len == 0) {
+        return defaultValue;
+    }
+    // One more thing: use integer parsing for 'simple'
+    int i = 0;
+    if (i < len) {
+        // skip leading sign:
+        char c = input.charAt(0);
+        if (c == '+') {
+            // for plus, actually physically remove
+            input = input.substring(1);
+            len = input.length();
+        } else if (c == '-') {
+            // minus, just skip for checks, must retain
+            ++i;
+        }
+    }
+    for (; i < len; ++i) {
+        char c = input.charAt(i);
+        // if other symbols, parse as Double, coerce
+        if (c > '9' || c < '0') {
+            try {
+                return (int) parseDouble(input);
+            } catch (NumberFormatException e) {
+                return defaultValue;
+            }
+        }
+    }
+    try {
+        return Integer.parseInt(input);
+    } catch (NumberFormatException e) {
+    }
+    return defaultValue;
+}","public void test4444() throws Throwable {
+    int int0 = NumberInput.parseAsInt(""+"", 23);
+    assertEquals(23, int0);
+}",""
+"public static int parseAsInt(String input, int defaultValue) {
+    if (input == null) {
+        return defaultValue;
+    }
+    input = input.trim();
+    int len = input.length();
+    if (len == 0) {
+        return defaultValue;
+    }
+    // One more thing: use integer parsing for 'simple'
+    int i = 0;
+    if (i < len) {
+        // skip leading sign:
+        char c = input.charAt(0);
+        if (c == '+') {
+            // for plus, actually physically remove
+            input = input.substring(1);
+            len = input.length();
+        } else if (c == '-') {
+            // minus, just skip for checks, must retain
+            ++i;
+        }
+    }
+    for (; i < len; ++i) {
+        char c = input.charAt(i);
+        // if other symbols, parse as Double, coerce
+        if (c > '9' || c < '0') {
+            try {
+                return (int) parseDouble(input);
+            } catch (NumberFormatException e) {
+                return defaultValue;
+            }
+        }
+    }
+    try {
+        return Integer.parseInt(input);
+    } catch (NumberFormatException e) {
+    }
+    return defaultValue;
+}","public void test4545() throws Throwable {
+    int int0 = NumberInput.parseAsInt("""", 0);
+    assertEquals(0, int0);
+}",""
+"public static int parseAsInt(String input, int defaultValue) {
+    if (input == null) {
+        return defaultValue;
+    }
+    input = input.trim();
+    int len = input.length();
+    if (len == 0) {
+        return defaultValue;
+    }
+    // One more thing: use integer parsing for 'simple'
+    int i = 0;
+    if (i < len) {
+        // skip leading sign:
+        char c = input.charAt(0);
+        if (c == '+') {
+            // for plus, actually physically remove
+            input = input.substring(1);
+            len = input.length();
+        } else if (c == '-') {
+            // minus, just skip for checks, must retain
+            ++i;
+        }
+    }
+    for (; i < len; ++i) {
+        char c = input.charAt(i);
+        // if other symbols, parse as Double, coerce
+        if (c > '9' || c < '0') {
+            try {
+                return (int) parseDouble(input);
+            } catch (NumberFormatException e) {
+                return defaultValue;
+            }
+        }
+    }
+    try {
+        return Integer.parseInt(input);
+    } catch (NumberFormatException e) {
+    }
+    return defaultValue;
+}","public void test4646() throws Throwable {
+    int int0 = NumberInput.parseAsInt((String) null, 50);
+    assertEquals(50, int0);
+}",""
+"public static boolean inLongRange(String numberStr, boolean negative) {
+    String cmpStr = negative ? MIN_LONG_STR_NO_SIGN : MAX_LONG_STR;
+    int cmpLen = cmpStr.length();
+    int actualLen = numberStr.length();
+    if (actualLen < cmpLen)
+        return true;
+    if (actualLen > cmpLen)
+        return false;
+    // could perhaps just use String.compareTo()?
+    for (int i = 0; i < cmpLen; ++i) {
+        int diff = numberStr.charAt(i) - cmpStr.charAt(i);
+        if (diff != 0) {
+            return (diff < 0);
+        }
+    }
+    return true;
+}","public void test4747() throws Throwable {
+    boolean boolean0 = NumberInput.inLongRange(""hmE%tkd0#,Z}M;zfFm4"", true);
+    assertFalse(boolean0);
+}","/**
+ * Similar to {@link #inLongRange(char[],int,int,boolean)}, but
+ * with String argument
+ *
+ * @param negative Whether original number had a minus sign (which is
+ *    NOT passed to this method) or not
+ */"
+"public static boolean inLongRange(String numberStr, boolean negative) {
+    String cmpStr = negative ? MIN_LONG_STR_NO_SIGN : MAX_LONG_STR;
+    int cmpLen = cmpStr.length();
+    int actualLen = numberStr.length();
+    if (actualLen < cmpLen)
+        return true;
+    if (actualLen > cmpLen)
+        return false;
+    // could perhaps just use String.compareTo()?
+    for (int i = 0; i < cmpLen; ++i) {
+        int diff = numberStr.charAt(i) - cmpStr.charAt(i);
+        if (diff != 0) {
+            return (diff < 0);
+        }
+    }
+    return true;
+}","public void test4848() throws Throwable {
+    boolean boolean0 = NumberInput.inLongRange(""com.fasterxml.jackson.core.io.NumberInput"", false);
+    assertFalse(boolean0);
+}","/**
+ * Similar to {@link #inLongRange(char[],int,int,boolean)}, but
+ * with String argument
+ *
+ * @param negative Whether original number had a minus sign (which is
+ *    NOT passed to this method) or not
+ */"
+"public static boolean inLongRange(String numberStr, boolean negative) {
+    String cmpStr = negative ? MIN_LONG_STR_NO_SIGN : MAX_LONG_STR;
+    int cmpLen = cmpStr.length();
+    int actualLen = numberStr.length();
+    if (actualLen < cmpLen)
+        return true;
+    if (actualLen > cmpLen)
+        return false;
+    // could perhaps just use String.compareTo()?
+    for (int i = 0; i < cmpLen; ++i) {
+        int diff = numberStr.charAt(i) - cmpStr.charAt(i);
+        if (diff != 0) {
+            return (diff < 0);
+        }
+    }
+    return true;
+}","public void test4949() throws Throwable {
+    boolean boolean0 = NumberInput.inLongRange(""-^d/ep]7s9T9];}!3h"", true);
+    assertTrue(boolean0);
+}","/**
+ * Similar to {@link #inLongRange(char[],int,int,boolean)}, but
+ * with String argument
+ *
+ * @param negative Whether original number had a minus sign (which is
+ *    NOT passed to this method) or not
+ */"
+"public static boolean inLongRange(String numberStr, boolean negative) {
+    String cmpStr = negative ? MIN_LONG_STR_NO_SIGN : MAX_LONG_STR;
+    int cmpLen = cmpStr.length();
+    int actualLen = numberStr.length();
+    if (actualLen < cmpLen)
+        return true;
+    if (actualLen > cmpLen)
+        return false;
+    // could perhaps just use String.compareTo()?
+    for (int i = 0; i < cmpLen; ++i) {
+        int diff = numberStr.charAt(i) - cmpStr.charAt(i);
+        if (diff != 0) {
+            return (diff < 0);
+        }
+    }
+    return true;
+}","public void test5050() throws Throwable {
+    boolean boolean0 = NumberInput.inLongRange(""u6!-dhq#Ryzo#vF;xN"", true);
+    assertTrue(boolean0);
+}","/**
+ * Similar to {@link #inLongRange(char[],int,int,boolean)}, but
+ * with String argument
+ *
+ * @param negative Whether original number had a minus sign (which is
+ *    NOT passed to this method) or not
+ */"
+"public static boolean inLongRange(char[] digitChars, int offset, int len, boolean negative) {
+    String cmpStr = negative ? MIN_LONG_STR_NO_SIGN : MAX_LONG_STR;
+    int cmpLen = cmpStr.length();
+    if (len < cmpLen)
+        return true;
+    if (len > cmpLen)
+        return false;
+    for (int i = 0; i < cmpLen; ++i) {
+        int diff = digitChars[offset + i] - cmpStr.charAt(i);
+        if (diff != 0) {
+            return (diff < 0);
+        }
+    }
+    return true;
+}","public void test5151() throws Throwable {
+    char[] charArray0 = new char[5];
+    charArray0[0] = 'V';
+    boolean boolean0 = NumberInput.inLongRange(charArray0, 0, 19, false);
+    assertFalse(boolean0);
+}","/**
+ * Helper method for determining if given String representation of
+ * an integral number would fit in 64-bit Java long or not.
+ * Note that input String must NOT contain leading minus sign (even
+ * if 'negative' is set to true).
+ *
+ * @param negative Whether original number had a minus sign (which is
+ *    NOT passed to this method) or not
+ */"
+"public static boolean inLongRange(char[] digitChars, int offset, int len, boolean negative) {
+    String cmpStr = negative ? MIN_LONG_STR_NO_SIGN : MAX_LONG_STR;
+    int cmpLen = cmpStr.length();
+    if (len < cmpLen)
+        return true;
+    if (len > cmpLen)
+        return false;
+    for (int i = 0; i < cmpLen; ++i) {
+        int diff = digitChars[offset + i] - cmpStr.charAt(i);
+        if (diff != 0) {
+            return (diff < 0);
+        }
+    }
+    return true;
+}","public void test5252() throws Throwable {
+    char[] charArray0 = new char[5];
+    boolean boolean0 = NumberInput.inLongRange(charArray0, 0, 19, false);
+    assertTrue(boolean0);
+}","/**
+ * Helper method for determining if given String representation of
+ * an integral number would fit in 64-bit Java long or not.
+ * Note that input String must NOT contain leading minus sign (even
+ * if 'negative' is set to true).
+ *
+ * @param negative Whether original number had a minus sign (which is
+ *    NOT passed to this method) or not
+ */"
+"public static boolean inLongRange(char[] digitChars, int offset, int len, boolean negative) {
+    String cmpStr = negative ? MIN_LONG_STR_NO_SIGN : MAX_LONG_STR;
+    int cmpLen = cmpStr.length();
+    if (len < cmpLen)
+        return true;
+    if (len > cmpLen)
+        return false;
+    for (int i = 0; i < cmpLen; ++i) {
+        int diff = digitChars[offset + i] - cmpStr.charAt(i);
+        if (diff != 0) {
+            return (diff < 0);
+        }
+    }
+    return true;
+}","public void test5353() throws Throwable {
+    char[] charArray0 = new char[5];
+    boolean boolean0 = NumberInput.inLongRange(charArray0, (-5137), 512, true);
+    assertFalse(boolean0);
+}","/**
+ * Helper method for determining if given String representation of
+ * an integral number would fit in 64-bit Java long or not.
+ * Note that input String must NOT contain leading minus sign (even
+ * if 'negative' is set to true).
+ *
+ * @param negative Whether original number had a minus sign (which is
+ *    NOT passed to this method) or not
+ */"
+"public static boolean inLongRange(char[] digitChars, int offset, int len, boolean negative) {
+    String cmpStr = negative ? MIN_LONG_STR_NO_SIGN : MAX_LONG_STR;
+    int cmpLen = cmpStr.length();
+    if (len < cmpLen)
+        return true;
+    if (len > cmpLen)
+        return false;
+    for (int i = 0; i < cmpLen; ++i) {
+        int diff = digitChars[offset + i] - cmpStr.charAt(i);
+        if (diff != 0) {
+            return (diff < 0);
+        }
+    }
+    return true;
+}","public void test5454() throws Throwable {
+    char[] charArray0 = new char[19];
+    boolean boolean0 = NumberInput.inLongRange(charArray0, 0, 6, false);
+    assertTrue(boolean0);
+}","/**
+ * Helper method for determining if given String representation of
+ * an integral number would fit in 64-bit Java long or not.
+ * Note that input String must NOT contain leading minus sign (even
+ * if 'negative' is set to true).
+ *
+ * @param negative Whether original number had a minus sign (which is
+ *    NOT passed to this method) or not
+ */"
+"public static long parseLong(String str) {
+    /* Ok, now; as the very first thing, let's just optimize case of ""fake longs"";
+         * that is, if we know they must be ints, call int parsing
+         */
+    int length = str.length();
+    if (length <= 9) {
+        return (long) parseInt(str);
+    }
+    // !!! TODO: implement efficient 2-int parsing...
+    return Long.parseLong(str);
+}","public void test5555() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberInput.parseLong(""-^d/ep]7s9T9];}!3h"");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // For input string: \""-^d/ep]7s9T9];}!3h\""
+        //
+        verifyException(""java.lang.NumberFormatException"", e);
+    }
+}",""
+"public static int parseInt(String str) {
+    /* Ok: let's keep strategy simple: ignoring optional minus sign,
+         * we'll accept 1 - 9 digits and parse things efficiently;
+         * otherwise just defer to JDK parse functionality.
+         */
+    char c = str.charAt(0);
+    int length = str.length();
+    boolean negative = (c == '-');
+    int offset = 1;
+    // must have 1 - 9 digits after optional sign:
+    // negative?
+    if (negative) {
+        if (length == 1 || length > 10) {
+            return Integer.parseInt(str);
+        }
+        c = str.charAt(offset++);
+    } else {
+        if (length > 9) {
+            return Integer.parseInt(str);
+        }
+    }
+    if (c > '9' || c < '0') {
+        return Integer.parseInt(str);
+    }
+    int num = c - '0';
+    if (offset < length) {
+        c = str.charAt(offset++);
+        if (c > '9' || c < '0') {
+            return Integer.parseInt(str);
+        }
+        num = (num * 10) + (c - '0');
+        if (offset < length) {
+            c = str.charAt(offset++);
+            if (c > '9' || c < '0') {
+                return Integer.parseInt(str);
+            }
+            num = (num * 10) + (c - '0');
+            // Let's just loop if we have more than 3 digits:
+            if (offset < length) {
+                do {
+                    c = str.charAt(offset++);
+                    if (c > '9' || c < '0') {
+                        return Integer.parseInt(str);
+                    }
+                    num = (num * 10) + (c - '0');
+                } while (offset < length);
+            }
+        }
+    }
+    return negative ? -num : num;
+}","public void test5656() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberInput.parseInt(""73l7Ryo"");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // For input string: \""73l7Ryo\""
+        //
+        verifyException(""java.lang.NumberFormatException"", e);
+    }
+}","/**
+ * Helper method to (more) efficiently parse integer numbers from
+ * String values.
+ */"
+"public static int parseInt(String str) {
+    /* Ok: let's keep strategy simple: ignoring optional minus sign,
+         * we'll accept 1 - 9 digits and parse things efficiently;
+         * otherwise just defer to JDK parse functionality.
+         */
+    char c = str.charAt(0);
+    int length = str.length();
+    boolean negative = (c == '-');
+    int offset = 1;
+    // must have 1 - 9 digits after optional sign:
+    // negative?
+    if (negative) {
+        if (length == 1 || length > 10) {
+            return Integer.parseInt(str);
+        }
+        c = str.charAt(offset++);
+    } else {
+        if (length > 9) {
+            return Integer.parseInt(str);
+        }
+    }
+    if (c > '9' || c < '0') {
+        return Integer.parseInt(str);
+    }
+    int num = c - '0';
+    if (offset < length) {
+        c = str.charAt(offset++);
+        if (c > '9' || c < '0') {
+            return Integer.parseInt(str);
+        }
+        num = (num * 10) + (c - '0');
+        if (offset < length) {
+            c = str.charAt(offset++);
+            if (c > '9' || c < '0') {
+                return Integer.parseInt(str);
+            }
+            num = (num * 10) + (c - '0');
+            // Let's just loop if we have more than 3 digits:
+            if (offset < length) {
+                do {
+                    c = str.charAt(offset++);
+                    if (c > '9' || c < '0') {
+                        return Integer.parseInt(str);
+                    }
+                    num = (num * 10) + (c - '0');
+                } while (offset < length);
+            }
+        }
+    }
+    return negative ? -num : num;
+}","public void test5757() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberInput.parseInt(""737#vQly"");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // For input string: \""737#vQly\""
+        //
+        verifyException(""java.lang.NumberFormatException"", e);
+    }
+}","/**
+ * Helper method to (more) efficiently parse integer numbers from
+ * String values.
+ */"
+"public static int parseInt(String str) {
+    /* Ok: let's keep strategy simple: ignoring optional minus sign,
+         * we'll accept 1 - 9 digits and parse things efficiently;
+         * otherwise just defer to JDK parse functionality.
+         */
+    char c = str.charAt(0);
+    int length = str.length();
+    boolean negative = (c == '-');
+    int offset = 1;
+    // must have 1 - 9 digits after optional sign:
+    // negative?
+    if (negative) {
+        if (length == 1 || length > 10) {
+            return Integer.parseInt(str);
+        }
+        c = str.charAt(offset++);
+    } else {
+        if (length > 9) {
+            return Integer.parseInt(str);
+        }
+    }
+    if (c > '9' || c < '0') {
+        return Integer.parseInt(str);
+    }
+    int num = c - '0';
+    if (offset < length) {
+        c = str.charAt(offset++);
+        if (c > '9' || c < '0') {
+            return Integer.parseInt(str);
+        }
+        num = (num * 10) + (c - '0');
+        if (offset < length) {
+            c = str.charAt(offset++);
+            if (c > '9' || c < '0') {
+                return Integer.parseInt(str);
+            }
+            num = (num * 10) + (c - '0');
+            // Let's just loop if we have more than 3 digits:
+            if (offset < length) {
+                do {
+                    c = str.charAt(offset++);
+                    if (c > '9' || c < '0') {
+                        return Integer.parseInt(str);
+                    }
+                    num = (num * 10) + (c - '0');
+                } while (offset < length);
+            }
+        }
+    }
+    return negative ? -num : num;
+}","public void test5858() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberInput.parseInt(""2(F"");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // For input string: \""2(F\""
+        //
+        verifyException(""java.lang.NumberFormatException"", e);
+    }
+}","/**
+ * Helper method to (more) efficiently parse integer numbers from
+ * String values.
+ */"
+"public static int parseInt(String str) {
+    /* Ok: let's keep strategy simple: ignoring optional minus sign,
+         * we'll accept 1 - 9 digits and parse things efficiently;
+         * otherwise just defer to JDK parse functionality.
+         */
+    char c = str.charAt(0);
+    int length = str.length();
+    boolean negative = (c == '-');
+    int offset = 1;
+    // must have 1 - 9 digits after optional sign:
+    // negative?
+    if (negative) {
+        if (length == 1 || length > 10) {
+            return Integer.parseInt(str);
+        }
+        c = str.charAt(offset++);
+    } else {
+        if (length > 9) {
+            return Integer.parseInt(str);
+        }
+    }
+    if (c > '9' || c < '0') {
+        return Integer.parseInt(str);
+    }
+    int num = c - '0';
+    if (offset < length) {
+        c = str.charAt(offset++);
+        if (c > '9' || c < '0') {
+            return Integer.parseInt(str);
+        }
+        num = (num * 10) + (c - '0');
+        if (offset < length) {
+            c = str.charAt(offset++);
+            if (c > '9' || c < '0') {
+                return Integer.parseInt(str);
+            }
+            num = (num * 10) + (c - '0');
+            // Let's just loop if we have more than 3 digits:
+            if (offset < length) {
+                do {
+                    c = str.charAt(offset++);
+                    if (c > '9' || c < '0') {
+                        return Integer.parseInt(str);
+                    }
+                    num = (num * 10) + (c - '0');
+                } while (offset < length);
+            }
+        }
+    }
+    return negative ? -num : num;
+}","public void test5959() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberInput.parseInt(""/ApglaL>]"");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // For input string: \""/ApglaL>]\""
+        //
+        verifyException(""java.lang.NumberFormatException"", e);
+    }
+}","/**
+ * Helper method to (more) efficiently parse integer numbers from
+ * String values.
+ */"
+"public static int parseInt(String str) {
+    /* Ok: let's keep strategy simple: ignoring optional minus sign,
+         * we'll accept 1 - 9 digits and parse things efficiently;
+         * otherwise just defer to JDK parse functionality.
+         */
+    char c = str.charAt(0);
+    int length = str.length();
+    boolean negative = (c == '-');
+    int offset = 1;
+    // must have 1 - 9 digits after optional sign:
+    // negative?
+    if (negative) {
+        if (length == 1 || length > 10) {
+            return Integer.parseInt(str);
+        }
+        c = str.charAt(offset++);
+    } else {
+        if (length > 9) {
+            return Integer.parseInt(str);
+        }
+    }
+    if (c > '9' || c < '0') {
+        return Integer.parseInt(str);
+    }
+    int num = c - '0';
+    if (offset < length) {
+        c = str.charAt(offset++);
+        if (c > '9' || c < '0') {
+            return Integer.parseInt(str);
+        }
+        num = (num * 10) + (c - '0');
+        if (offset < length) {
+            c = str.charAt(offset++);
+            if (c > '9' || c < '0') {
+                return Integer.parseInt(str);
+            }
+            num = (num * 10) + (c - '0');
+            // Let's just loop if we have more than 3 digits:
+            if (offset < length) {
+                do {
+                    c = str.charAt(offset++);
+                    if (c > '9' || c < '0') {
+                        return Integer.parseInt(str);
+                    }
+                    num = (num * 10) + (c - '0');
+                } while (offset < length);
+            }
+        }
+    }
+    return negative ? -num : num;
+}","public void test6060() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberInput.parseInt(""2.2250738585072012e-308"");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // For input string: \""2.2250738585072012e-308\""
+        //
+        verifyException(""java.lang.NumberFormatException"", e);
+    }
+}","/**
+ * Helper method to (more) efficiently parse integer numbers from
+ * String values.
+ */"
+"public static int parseInt(String str) {
+    /* Ok: let's keep strategy simple: ignoring optional minus sign,
+         * we'll accept 1 - 9 digits and parse things efficiently;
+         * otherwise just defer to JDK parse functionality.
+         */
+    char c = str.charAt(0);
+    int length = str.length();
+    boolean negative = (c == '-');
+    int offset = 1;
+    // must have 1 - 9 digits after optional sign:
+    // negative?
+    if (negative) {
+        if (length == 1 || length > 10) {
+            return Integer.parseInt(str);
+        }
+        c = str.charAt(offset++);
+    } else {
+        if (length > 9) {
+            return Integer.parseInt(str);
+        }
+    }
+    if (c > '9' || c < '0') {
+        return Integer.parseInt(str);
+    }
+    int num = c - '0';
+    if (offset < length) {
+        c = str.charAt(offset++);
+        if (c > '9' || c < '0') {
+            return Integer.parseInt(str);
+        }
+        num = (num * 10) + (c - '0');
+        if (offset < length) {
+            c = str.charAt(offset++);
+            if (c > '9' || c < '0') {
+                return Integer.parseInt(str);
+            }
+            num = (num * 10) + (c - '0');
+            // Let's just loop if we have more than 3 digits:
+            if (offset < length) {
+                do {
+                    c = str.charAt(offset++);
+                    if (c > '9' || c < '0') {
+                        return Integer.parseInt(str);
+                    }
+                    num = (num * 10) + (c - '0');
+                } while (offset < length);
+            }
+        }
+    }
+    return negative ? -num : num;
+}","public void test6161() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberInput.parseInt(""-P"");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // For input string: \""-P\""
+        //
+        verifyException(""java.lang.NumberFormatException"", e);
+    }
+}","/**
+ * Helper method to (more) efficiently parse integer numbers from
+ * String values.
+ */"
+"public static int parseInt(String str) {
+    /* Ok: let's keep strategy simple: ignoring optional minus sign,
+         * we'll accept 1 - 9 digits and parse things efficiently;
+         * otherwise just defer to JDK parse functionality.
+         */
+    char c = str.charAt(0);
+    int length = str.length();
+    boolean negative = (c == '-');
+    int offset = 1;
+    // must have 1 - 9 digits after optional sign:
+    // negative?
+    if (negative) {
+        if (length == 1 || length > 10) {
+            return Integer.parseInt(str);
+        }
+        c = str.charAt(offset++);
+    } else {
+        if (length > 9) {
+            return Integer.parseInt(str);
+        }
+    }
+    if (c > '9' || c < '0') {
+        return Integer.parseInt(str);
+    }
+    int num = c - '0';
+    if (offset < length) {
+        c = str.charAt(offset++);
+        if (c > '9' || c < '0') {
+            return Integer.parseInt(str);
+        }
+        num = (num * 10) + (c - '0');
+        if (offset < length) {
+            c = str.charAt(offset++);
+            if (c > '9' || c < '0') {
+                return Integer.parseInt(str);
+            }
+            num = (num * 10) + (c - '0');
+            // Let's just loop if we have more than 3 digits:
+            if (offset < length) {
+                do {
+                    c = str.charAt(offset++);
+                    if (c > '9' || c < '0') {
+                        return Integer.parseInt(str);
+                    }
+                    num = (num * 10) + (c - '0');
+                } while (offset < length);
+            }
+        }
+    }
+    return negative ? -num : num;
+}","public void test6262() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberInput.parseInt(""-^d/ep]7s9T9];}!3h"");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // For input string: \""-^d/ep]7s9T9];}!3h\""
+        //
+        verifyException(""java.lang.NumberFormatException"", e);
+    }
+}","/**
+ * Helper method to (more) efficiently parse integer numbers from
+ * String values.
+ */"
+"public static int parseInt(String str) {
+    /* Ok: let's keep strategy simple: ignoring optional minus sign,
+         * we'll accept 1 - 9 digits and parse things efficiently;
+         * otherwise just defer to JDK parse functionality.
+         */
+    char c = str.charAt(0);
+    int length = str.length();
+    boolean negative = (c == '-');
+    int offset = 1;
+    // must have 1 - 9 digits after optional sign:
+    // negative?
+    if (negative) {
+        if (length == 1 || length > 10) {
+            return Integer.parseInt(str);
+        }
+        c = str.charAt(offset++);
+    } else {
+        if (length > 9) {
+            return Integer.parseInt(str);
+        }
+    }
+    if (c > '9' || c < '0') {
+        return Integer.parseInt(str);
+    }
+    int num = c - '0';
+    if (offset < length) {
+        c = str.charAt(offset++);
+        if (c > '9' || c < '0') {
+            return Integer.parseInt(str);
+        }
+        num = (num * 10) + (c - '0');
+        if (offset < length) {
+            c = str.charAt(offset++);
+            if (c > '9' || c < '0') {
+                return Integer.parseInt(str);
+            }
+            num = (num * 10) + (c - '0');
+            // Let's just loop if we have more than 3 digits:
+            if (offset < length) {
+                do {
+                    c = str.charAt(offset++);
+                    if (c > '9' || c < '0') {
+                        return Integer.parseInt(str);
+                    }
+                    num = (num * 10) + (c - '0');
+                } while (offset < length);
+            }
+        }
+    }
+    return negative ? -num : num;
+}","public void test6363() throws Throwable {
+    int int0 = NumberInput.parseInt(""6"");
+    assertEquals(6, int0);
+}","/**
+ * Helper method to (more) efficiently parse integer numbers from
+ * String values.
+ */"
+"public static int parseInt(char[] digitChars, int offset, int len) {
+    int num = digitChars[offset] - '0';
+    len += offset;
+    // This looks ugly, but appears the fastest way (as per measurements)
+    if (++offset < len) {
+        num = (num * 10) + (digitChars[offset] - '0');
+        if (++offset < len) {
+            num = (num * 10) + (digitChars[offset] - '0');
+            if (++offset < len) {
+                num = (num * 10) + (digitChars[offset] - '0');
+                if (++offset < len) {
+                    num = (num * 10) + (digitChars[offset] - '0');
+                    if (++offset < len) {
+                        num = (num * 10) + (digitChars[offset] - '0');
+                        if (++offset < len) {
+                            num = (num * 10) + (digitChars[offset] - '0');
+                            if (++offset < len) {
+                                num = (num * 10) + (digitChars[offset] - '0');
+                                if (++offset < len) {
+                                    num = (num * 10) + (digitChars[offset] - '0');
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return num;
+}","public void test6464() throws Throwable {
+    char[] charArray0 = new char[8];
+    // Undeclared exception!
+    try {
+        NumberInput.parseInt(charArray0, 0, 43);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 8
+        //
+        verifyException(""com.fasterxml.jackson.core.io.NumberInput"", e);
+    }
+}","/**
+ *  Fast method for parsing integers that are known to fit into
+ *  regular 32-bit signed int type. This means that length is
+ *  between 1 and 9 digits (inclusive)
+ * <p>
+ *  Note: public to let unit tests call it
+ */"
+"public static int parseInt(char[] digitChars, int offset, int len) {
+    int num = digitChars[offset] - '0';
+    len += offset;
+    // This looks ugly, but appears the fastest way (as per measurements)
+    if (++offset < len) {
+        num = (num * 10) + (digitChars[offset] - '0');
+        if (++offset < len) {
+            num = (num * 10) + (digitChars[offset] - '0');
+            if (++offset < len) {
+                num = (num * 10) + (digitChars[offset] - '0');
+                if (++offset < len) {
+                    num = (num * 10) + (digitChars[offset] - '0');
+                    if (++offset < len) {
+                        num = (num * 10) + (digitChars[offset] - '0');
+                        if (++offset < len) {
+                            num = (num * 10) + (digitChars[offset] - '0');
+                            if (++offset < len) {
+                                num = (num * 10) + (digitChars[offset] - '0');
+                                if (++offset < len) {
+                                    num = (num * 10) + (digitChars[offset] - '0');
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return num;
+}","public void test6565() throws Throwable {
+    char[] charArray0 = new char[8];
+    int int0 = NumberInput.parseInt(charArray0, 5, 2);
+    assertEquals((-528), int0);
+}","/**
+ *  Fast method for parsing integers that are known to fit into
+ *  regular 32-bit signed int type. This means that length is
+ *  between 1 and 9 digits (inclusive)
+ * <p>
+ *  Note: public to let unit tests call it
+ */"
+"public static int parseInt(char[] digitChars, int offset, int len) {
+    int num = digitChars[offset] - '0';
+    len += offset;
+    // This looks ugly, but appears the fastest way (as per measurements)
+    if (++offset < len) {
+        num = (num * 10) + (digitChars[offset] - '0');
+        if (++offset < len) {
+            num = (num * 10) + (digitChars[offset] - '0');
+            if (++offset < len) {
+                num = (num * 10) + (digitChars[offset] - '0');
+                if (++offset < len) {
+                    num = (num * 10) + (digitChars[offset] - '0');
+                    if (++offset < len) {
+                        num = (num * 10) + (digitChars[offset] - '0');
+                        if (++offset < len) {
+                            num = (num * 10) + (digitChars[offset] - '0');
+                            if (++offset < len) {
+                                num = (num * 10) + (digitChars[offset] - '0');
+                                if (++offset < len) {
+                                    num = (num * 10) + (digitChars[offset] - '0');
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return num;
+}","public void test6666() throws Throwable {
+    char[] charArray0 = new char[19];
+    int int0 = NumberInput.parseInt(charArray0, 6, 6);
+    assertEquals((-5333328), int0);
+}","/**
+ *  Fast method for parsing integers that are known to fit into
+ *  regular 32-bit signed int type. This means that length is
+ *  between 1 and 9 digits (inclusive)
+ * <p>
+ *  Note: public to let unit tests call it
+ */"
+"public static BigDecimal parseBigDecimal(String numStr) throws NumberFormatException {
+    return new BigDecimal(numStr);
+}","public void test6868() throws Throwable {
+    try {
+        NumberInput.parseBigDecimal(""w#c)d f}r[Td"");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.math.BigDecimal"", e);
+    }
+}",""
+"public static long parseLong(char[] digitChars, int offset, int len) {
+    // Note: caller must ensure length is [10, 18]
+    int len1 = len - 9;
+    long val = parseInt(digitChars, offset, len1) * L_BILLION;
+    return val + (long) parseInt(digitChars, offset + len1, 9);
+}","public void test6969() throws Throwable {
+    char[] charArray0 = new char[3];
+    // Undeclared exception!
+    try {
+        NumberInput.parseLong(charArray0, 0, (-1));
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -10
+        //
+        verifyException(""com.fasterxml.jackson.core.io.NumberInput"", e);
+    }
+}",""
+"public static BigDecimal parseBigDecimal(char[] buffer) throws NumberFormatException {
+    return parseBigDecimal(buffer, 0, buffer.length);
+}","public void test7070() throws Throwable {
+    char[] charArray0 = new char[5];
+    try {
+        NumberInput.parseBigDecimal(charArray0);
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.math.BigDecimal"", e);
+    }
+}",""

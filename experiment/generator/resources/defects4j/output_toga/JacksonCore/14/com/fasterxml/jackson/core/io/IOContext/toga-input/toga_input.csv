@@ -1,0 +1,998 @@
+focal_method,test_prefix,docstring
+"public boolean isResourceManaged() {
+    return _managedResource;
+}","public void test000() throws Throwable {
+    IOContext iOContext0 = new IOContext((BufferRecycler) null, (Object) null, true);
+    iOContext0._verifyAlloc((Object) null);
+    assertTrue(iOContext0.isResourceManaged());
+}",""
+"public boolean isResourceManaged() {
+    return _managedResource;
+}","public void test011() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    byte[] byteArray0 = new byte[6];
+    iOContext0._writeEncodingBuffer = byteArray0;
+    iOContext0.releaseWriteEncodingBuffer(byteArray0);
+    assertTrue(iOContext0.isResourceManaged());
+}",""
+"public boolean isResourceManaged() {
+    return _managedResource;
+}","public void test022() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    byte[] byteArray0 = iOContext0.allocReadIOBuffer(2);
+    iOContext0.releaseReadIOBuffer(byteArray0);
+    assertFalse(iOContext0.isResourceManaged());
+}",""
+"public boolean isResourceManaged() {
+    return _managedResource;
+}","public void test033() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    Object object0 = new Object();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, object0, true);
+    char[] charArray0 = iOContext0.allocNameCopyBuffer(2);
+    iOContext0.releaseNameCopyBuffer(charArray0);
+    assertTrue(iOContext0.isResourceManaged());
+}",""
+"public void releaseNameCopyBuffer(char[] buf) {
+    if (buf != null) {
+        // 14-Jan-2014, tatu: Let's actually allow upgrade of the original buffer.
+        _verifyRelease(buf, _nameCopyBuffer);
+        _nameCopyBuffer = null;
+        _bufferRecycler.releaseCharBuffer(BufferRecycler.CHAR_NAME_COPY_BUFFER, buf);
+    }
+}","public void test034() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    Object object0 = new Object();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, object0, true);
+    char[] charArray0 = iOContext0.allocNameCopyBuffer(2);
+    iOContext0.releaseNameCopyBuffer(charArray0);
+    assertEquals(200, charArray0.length);
+}",""
+"public boolean isResourceManaged() {
+    return _managedResource;
+}","public void test045() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    char[] charArray0 = iOContext0.allocConcatBuffer();
+    iOContext0.releaseConcatBuffer(charArray0);
+    assertTrue(iOContext0.isResourceManaged());
+}",""
+"public boolean isResourceManaged() {
+    return _managedResource;
+}","public void test056() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    boolean boolean0 = iOContext0.isResourceManaged();
+    assertFalse(boolean0);
+}",""
+"public boolean isResourceManaged() {
+    return _managedResource;
+}","public void test067() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, (Object) null, true);
+    iOContext0.getSourceReference();
+    assertTrue(iOContext0.isResourceManaged());
+}",""
+"public boolean isResourceManaged() {
+    return _managedResource;
+}","public void test078() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    Object object0 = new Object();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, object0, true);
+    JsonEncoding jsonEncoding0 = JsonEncoding.UTF16_BE;
+    iOContext0.setEncoding(jsonEncoding0);
+    iOContext0.getEncoding();
+    assertTrue(iOContext0.isResourceManaged());
+}",""
+"public boolean isResourceManaged() {
+    return _managedResource;
+}","public void test089() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, "".Dq;=2"", true);
+    JsonEncoding jsonEncoding0 = JsonEncoding.UTF8;
+    IOContext iOContext1 = iOContext0.withEncoding(jsonEncoding0);
+    iOContext1.getEncoding();
+    assertTrue(iOContext1.isResourceManaged());
+}",""
+"public void releaseWriteEncodingBuffer(byte[] buf) {
+    if (buf != null) {
+        /* Let's do sanity checks to ensure once-and-only-once release,
+             * as well as avoiding trying to release buffers not owned
+             */
+        _verifyRelease(buf, _writeEncodingBuffer);
+        _writeEncodingBuffer = null;
+        _bufferRecycler.releaseByteBuffer(BufferRecycler.BYTE_WRITE_ENCODING_BUFFER, buf);
+    }
+}","public void test0910() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    byte[] byteArray0 = new byte[2];
+    iOContext0.allocWriteEncodingBuffer(3);
+    // Undeclared exception!
+    try {
+        iOContext0.releaseWriteEncodingBuffer(byteArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Trying to release buffer not owned by the context
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}",""
+"public void releaseTokenBuffer(char[] buf) {
+    if (buf != null) {
+        _verifyRelease(buf, _tokenCBuffer);
+        _tokenCBuffer = null;
+        _bufferRecycler.releaseCharBuffer(BufferRecycler.CHAR_TOKEN_BUFFER, buf);
+    }
+}","public void test1011() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    Object object0 = new Object();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, object0, false);
+    char[] charArray0 = new char[1];
+    // Undeclared exception!
+    try {
+        iOContext0.releaseTokenBuffer(charArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}",""
+"public void releaseTokenBuffer(char[] buf) {
+    if (buf != null) {
+        _verifyRelease(buf, _tokenCBuffer);
+        _tokenCBuffer = null;
+        _bufferRecycler.releaseCharBuffer(BufferRecycler.CHAR_TOKEN_BUFFER, buf);
+    }
+}","public void test1112() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    Object object0 = new Object();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, object0, true);
+    iOContext0.allocTokenBuffer((-436));
+    char[] charArray0 = new char[0];
+    // Undeclared exception!
+    try {
+        iOContext0.releaseTokenBuffer(charArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Trying to release buffer not owned by the context
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}",""
+"public void releaseReadIOBuffer(byte[] buf) {
+    if (buf != null) {
+        /* Let's do sanity checks to ensure once-and-only-once release,
+             * as well as avoiding trying to release buffers not owned
+             */
+        _verifyRelease(buf, _readIOBuffer);
+        _readIOBuffer = null;
+        _bufferRecycler.releaseByteBuffer(BufferRecycler.BYTE_READ_IO_BUFFER, buf);
+    }
+}","public void test1213() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    iOContext0.allocReadIOBuffer((-813));
+    byte[] byteArray0 = new byte[9];
+    // Undeclared exception!
+    try {
+        iOContext0.releaseReadIOBuffer(byteArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Trying to release buffer not owned by the context
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}","/**
+ * Method to call when all the processing buffers can be safely
+ * recycled.
+ */"
+"public void releaseNameCopyBuffer(char[] buf) {
+    if (buf != null) {
+        // 14-Jan-2014, tatu: Let's actually allow upgrade of the original buffer.
+        _verifyRelease(buf, _nameCopyBuffer);
+        _nameCopyBuffer = null;
+        _bufferRecycler.releaseCharBuffer(BufferRecycler.CHAR_NAME_COPY_BUFFER, buf);
+    }
+}","public void test1314() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    char[] charArray0 = new char[7];
+    iOContext0._nameCopyBuffer = charArray0;
+    char[] charArray1 = new char[0];
+    // Undeclared exception!
+    try {
+        iOContext0.releaseNameCopyBuffer(charArray1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Trying to release buffer not owned by the context
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}",""
+"public byte[] allocWriteEncodingBuffer(int minSize) {
+    _verifyAlloc(_writeEncodingBuffer);
+    return (_writeEncodingBuffer = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_WRITE_ENCODING_BUFFER, minSize));
+}","public void test1415() throws Throwable {
+    IOContext iOContext0 = new IOContext((BufferRecycler) null, (Object) null, false);
+    // Undeclared exception!
+    try {
+        iOContext0.allocWriteEncodingBuffer((-881));
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}","/**
+ * @since 2.4
+ */"
+"public byte[] allocWriteEncodingBuffer() {
+    _verifyAlloc(_writeEncodingBuffer);
+    return (_writeEncodingBuffer = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_WRITE_ENCODING_BUFFER));
+}","public void test1516() throws Throwable {
+    IOContext iOContext0 = new IOContext((BufferRecycler) null, (Object) null, false);
+    // Undeclared exception!
+    try {
+        iOContext0.allocWriteEncodingBuffer();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}",""
+"public byte[] allocWriteEncodingBuffer() {
+    _verifyAlloc(_writeEncodingBuffer);
+    return (_writeEncodingBuffer = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_WRITE_ENCODING_BUFFER));
+}","public void test1617() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    iOContext0.allocWriteEncodingBuffer(0);
+    // Undeclared exception!
+    try {
+        iOContext0.allocWriteEncodingBuffer();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Trying to call same allocXxx() method second time
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}",""
+"public char[] allocTokenBuffer(int minSize) {
+    _verifyAlloc(_tokenCBuffer);
+    return (_tokenCBuffer = _bufferRecycler.allocCharBuffer(BufferRecycler.CHAR_TOKEN_BUFFER, minSize));
+}","public void test1718() throws Throwable {
+    Object object0 = new Object();
+    IOContext iOContext0 = new IOContext((BufferRecycler) null, object0, true);
+    // Undeclared exception!
+    try {
+        iOContext0.allocTokenBuffer(3);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}","/**
+ * @since 2.4
+ */"
+"public char[] allocTokenBuffer(int minSize) {
+    _verifyAlloc(_tokenCBuffer);
+    return (_tokenCBuffer = _bufferRecycler.allocCharBuffer(BufferRecycler.CHAR_TOKEN_BUFFER, minSize));
+}","public void test1819() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    Object object0 = new Object();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, object0, true);
+    iOContext0.allocTokenBuffer(3);
+    // Undeclared exception!
+    try {
+        iOContext0.allocTokenBuffer(0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Trying to call same allocXxx() method second time
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}","/**
+ * @since 2.4
+ */"
+"public char[] allocTokenBuffer() {
+    _verifyAlloc(_tokenCBuffer);
+    return (_tokenCBuffer = _bufferRecycler.allocCharBuffer(BufferRecycler.CHAR_TOKEN_BUFFER));
+}","public void test1920() throws Throwable {
+    Object object0 = new Object();
+    IOContext iOContext0 = new IOContext((BufferRecycler) null, object0, true);
+    // Undeclared exception!
+    try {
+        iOContext0.allocTokenBuffer();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}",""
+"public char[] allocTokenBuffer() {
+    _verifyAlloc(_tokenCBuffer);
+    return (_tokenCBuffer = _bufferRecycler.allocCharBuffer(BufferRecycler.CHAR_TOKEN_BUFFER));
+}","public void test2021() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    iOContext0.allocTokenBuffer(0);
+    // Undeclared exception!
+    try {
+        iOContext0.allocTokenBuffer();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Trying to call same allocXxx() method second time
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}",""
+"public byte[] allocReadIOBuffer(int minSize) {
+    _verifyAlloc(_readIOBuffer);
+    return (_readIOBuffer = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_READ_IO_BUFFER, minSize));
+}","public void test2122() throws Throwable {
+    IOContext iOContext0 = new IOContext((BufferRecycler) null, (Object) null, false);
+    // Undeclared exception!
+    try {
+        iOContext0.allocReadIOBuffer(0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}","/**
+ * @since 2.4
+ */"
+"public byte[] allocReadIOBuffer(int minSize) {
+    _verifyAlloc(_readIOBuffer);
+    return (_readIOBuffer = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_READ_IO_BUFFER, minSize));
+}","public void test2223() throws Throwable {
+    IOContext iOContext0 = new IOContext((BufferRecycler) null, (Object) null, true);
+    byte[] byteArray0 = new byte[4];
+    iOContext0._readIOBuffer = byteArray0;
+    // Undeclared exception!
+    try {
+        iOContext0.allocReadIOBuffer((-56));
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Trying to call same allocXxx() method second time
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}","/**
+ * @since 2.4
+ */"
+"public byte[] allocReadIOBuffer() {
+    _verifyAlloc(_readIOBuffer);
+    return (_readIOBuffer = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_READ_IO_BUFFER));
+}","public void test2324() throws Throwable {
+    IOContext iOContext0 = new IOContext((BufferRecycler) null, (Object) null, false);
+    // Undeclared exception!
+    try {
+        iOContext0.allocReadIOBuffer();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}","/**
+ * <p>
+ *  Note: the method can only be called once during its life cycle.
+ *  This is to protect against accidental sharing.
+ */"
+"public char[] allocNameCopyBuffer(int minSize) {
+    _verifyAlloc(_nameCopyBuffer);
+    return (_nameCopyBuffer = _bufferRecycler.allocCharBuffer(BufferRecycler.CHAR_NAME_COPY_BUFFER, minSize));
+}","public void test2425() throws Throwable {
+    Object object0 = new Object();
+    IOContext iOContext0 = new IOContext((BufferRecycler) null, object0, false);
+    // Undeclared exception!
+    try {
+        iOContext0.allocNameCopyBuffer(1067);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}",""
+"public char[] allocNameCopyBuffer(int minSize) {
+    _verifyAlloc(_nameCopyBuffer);
+    return (_nameCopyBuffer = _bufferRecycler.allocCharBuffer(BufferRecycler.CHAR_NAME_COPY_BUFFER, minSize));
+}","public void test2526() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    Object object0 = new Object();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, object0, true);
+    char[] charArray0 = new char[3];
+    iOContext0._nameCopyBuffer = charArray0;
+    // Undeclared exception!
+    try {
+        iOContext0.allocNameCopyBuffer(3);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Trying to call same allocXxx() method second time
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}",""
+"public char[] allocConcatBuffer() {
+    _verifyAlloc(_concatCBuffer);
+    return (_concatCBuffer = _bufferRecycler.allocCharBuffer(BufferRecycler.CHAR_CONCAT_BUFFER));
+}","public void test2627() throws Throwable {
+    IOContext iOContext0 = new IOContext((BufferRecycler) null, (Object) null, false);
+    // Undeclared exception!
+    try {
+        iOContext0.allocConcatBuffer();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}",""
+"public byte[] allocBase64Buffer() {
+    _verifyAlloc(_base64Buffer);
+    return (_base64Buffer = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_BASE64_CODEC_BUFFER));
+}","public void test2728() throws Throwable {
+    IOContext iOContext0 = new IOContext((BufferRecycler) null, (Object) null, false);
+    // Undeclared exception!
+    try {
+        iOContext0.allocBase64Buffer();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}","/**
+ * @since 2.1
+ */"
+"public byte[] allocBase64Buffer() {
+    _verifyAlloc(_base64Buffer);
+    return (_base64Buffer = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_BASE64_CODEC_BUFFER));
+}","public void test2829() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    iOContext0.allocBase64Buffer();
+    // Undeclared exception!
+    try {
+        iOContext0.allocBase64Buffer();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Trying to call same allocXxx() method second time
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}","/**
+ * @since 2.1
+ */"
+"protected final void _verifyRelease(char[] toRelease, char[] src) {
+    // 07-Mar-2016, tatu: As per [core#255], only prevent shrinking of buffer
+    if ((toRelease != src) && (toRelease.length <= src.length)) {
+        throw wrongBuf();
+    }
+}","public void test2930() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    char[] charArray0 = new char[5];
+    // Undeclared exception!
+    try {
+        iOContext0._verifyRelease(charArray0, (char[]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}",""
+"protected final void _verifyRelease(byte[] toRelease, byte[] src) {
+    // 07-Mar-2016, tatu: As per [core#255], only prevent shrinking of buffer
+    if ((toRelease != src) && (toRelease.length <= src.length)) {
+        throw wrongBuf();
+    }
+}","public void test3031() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    Object object0 = new Object();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, object0, false);
+    iOContext0.allocWriteEncodingBuffer();
+    // Undeclared exception!
+    try {
+        iOContext0._verifyRelease(iOContext0._writeEncodingBuffer, (byte[]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}",""
+"protected final void _verifyRelease(byte[] toRelease, byte[] src) {
+    // 07-Mar-2016, tatu: As per [core#255], only prevent shrinking of buffer
+    if ((toRelease != src) && (toRelease.length <= src.length)) {
+        throw wrongBuf();
+    }
+}","public void test3132() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    byte[] byteArray0 = new byte[4];
+    byte[] byteArray1 = new byte[5];
+    // Undeclared exception!
+    try {
+        iOContext0._verifyRelease(byteArray0, byteArray1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Trying to release buffer not owned by the context
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Internal helpers
+    /**********************************************************
+     */
+protected final void _verifyAlloc(Object buffer) {
+    if (buffer != null) {
+        throw new IllegalStateException(""Trying to call same allocXxx() method second time"");
+    }
+}","public void test3233() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    Object object0 = new Object();
+    // Undeclared exception!
+    try {
+        iOContext0._verifyAlloc(object0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Trying to call same allocXxx() method second time
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}",""
+"public boolean isResourceManaged() {
+    return _managedResource;
+}","public void test3334() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    char[] charArray0 = new char[7];
+    char[] charArray1 = new char[6];
+    iOContext0._verifyRelease(charArray0, charArray1);
+    assertFalse(iOContext0.isResourceManaged());
+}",""
+"public void releaseBase64Buffer(byte[] buf) {
+    if (buf != null) {
+        // sanity checks, release once-and-only-once, must be one owned
+        _verifyRelease(buf, _base64Buffer);
+        _base64Buffer = null;
+        _bufferRecycler.releaseByteBuffer(BufferRecycler.BYTE_BASE64_CODEC_BUFFER, buf);
+    }
+}","public void test3435() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    iOContext0.allocBase64Buffer();
+    byte[] byteArray0 = new byte[2];
+    // Undeclared exception!
+    try {
+        iOContext0.releaseBase64Buffer(byteArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Trying to release buffer not owned by the context
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}",""
+"public boolean isResourceManaged() {
+    return _managedResource;
+}","public void test3536() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    byte[] byteArray0 = iOContext0.allocWriteEncodingBuffer();
+    byte[] byteArray1 = new byte[2];
+    iOContext0._verifyRelease(byteArray0, byteArray1);
+    assertFalse(iOContext0.isResourceManaged());
+}",""
+"public byte[] allocWriteEncodingBuffer(int minSize) {
+    _verifyAlloc(_writeEncodingBuffer);
+    return (_writeEncodingBuffer = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_WRITE_ENCODING_BUFFER, minSize));
+}","public void test3637() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    iOContext0.allocWriteEncodingBuffer();
+    // Undeclared exception!
+    try {
+        iOContext0.allocWriteEncodingBuffer(0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Trying to call same allocXxx() method second time
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}","/**
+ * @since 2.4
+ */"
+"public void releaseNameCopyBuffer(char[] buf) {
+    if (buf != null) {
+        // 14-Jan-2014, tatu: Let's actually allow upgrade of the original buffer.
+        _verifyRelease(buf, _nameCopyBuffer);
+        _nameCopyBuffer = null;
+        _bufferRecycler.releaseCharBuffer(BufferRecycler.CHAR_NAME_COPY_BUFFER, buf);
+    }
+}","public void test3738() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    char[] charArray0 = new char[7];
+    // Undeclared exception!
+    try {
+        iOContext0.releaseNameCopyBuffer(charArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}",""
+"public boolean isResourceManaged() {
+    return _managedResource;
+}","public void test3839() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    iOContext0.releaseNameCopyBuffer((char[]) null);
+    assertFalse(iOContext0.isResourceManaged());
+}",""
+"public void releaseConcatBuffer(char[] buf) {
+    if (buf != null) {
+        // 14-Jan-2014, tatu: Let's actually allow upgrade of the original buffer.
+        _verifyRelease(buf, _concatCBuffer);
+        _concatCBuffer = null;
+        _bufferRecycler.releaseCharBuffer(BufferRecycler.CHAR_CONCAT_BUFFER, buf);
+    }
+}","public void test3940() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    JsonEncoding jsonEncoding0 = JsonEncoding.UTF8;
+    char[] charArray0 = iOContext0.allocTokenBuffer();
+    IOContext iOContext1 = iOContext0.withEncoding(jsonEncoding0);
+    iOContext1._nameCopyBuffer = charArray0;
+    // Undeclared exception!
+    try {
+        iOContext0.releaseConcatBuffer(iOContext1._nameCopyBuffer);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}",""
+"public boolean isResourceManaged() {
+    return _managedResource;
+}","public void test4041() throws Throwable {
+    IOContext iOContext0 = new IOContext((BufferRecycler) null, (Object) null, false);
+    iOContext0.releaseConcatBuffer((char[]) null);
+    assertFalse(iOContext0.isResourceManaged());
+}",""
+"public boolean isResourceManaged() {
+    return _managedResource;
+}","public void test4142() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    char[] charArray0 = iOContext0.allocTokenBuffer();
+    iOContext0.releaseTokenBuffer(charArray0);
+    assertTrue(iOContext0.isResourceManaged());
+}",""
+"public boolean isResourceManaged() {
+    return _managedResource;
+}","public void test4243() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    iOContext0.releaseTokenBuffer((char[]) null);
+    assertTrue(iOContext0.isResourceManaged());
+}",""
+"public void releaseBase64Buffer(byte[] buf) {
+    if (buf != null) {
+        // sanity checks, release once-and-only-once, must be one owned
+        _verifyRelease(buf, _base64Buffer);
+        _base64Buffer = null;
+        _bufferRecycler.releaseByteBuffer(BufferRecycler.BYTE_BASE64_CODEC_BUFFER, buf);
+    }
+}","public void test4344() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    byte[] byteArray0 = new byte[2];
+    // Undeclared exception!
+    try {
+        iOContext0.releaseBase64Buffer(byteArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}",""
+"public boolean isResourceManaged() {
+    return _managedResource;
+}","public void test4445() throws Throwable {
+    IOContext iOContext0 = new IOContext((BufferRecycler) null, (Object) null, false);
+    iOContext0.releaseBase64Buffer((byte[]) null);
+    assertFalse(iOContext0.isResourceManaged());
+}",""
+"public void releaseWriteEncodingBuffer(byte[] buf) {
+    if (buf != null) {
+        /* Let's do sanity checks to ensure once-and-only-once release,
+             * as well as avoiding trying to release buffers not owned
+             */
+        _verifyRelease(buf, _writeEncodingBuffer);
+        _writeEncodingBuffer = null;
+        _bufferRecycler.releaseByteBuffer(BufferRecycler.BYTE_WRITE_ENCODING_BUFFER, buf);
+    }
+}","public void test4546() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    byte[] byteArray0 = new byte[2];
+    // Undeclared exception!
+    try {
+        iOContext0.releaseWriteEncodingBuffer(byteArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}",""
+"public boolean isResourceManaged() {
+    return _managedResource;
+}","public void test4647() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    iOContext0.releaseWriteEncodingBuffer((byte[]) null);
+    assertTrue(iOContext0.isResourceManaged());
+}",""
+"public void releaseReadIOBuffer(byte[] buf) {
+    if (buf != null) {
+        /* Let's do sanity checks to ensure once-and-only-once release,
+             * as well as avoiding trying to release buffers not owned
+             */
+        _verifyRelease(buf, _readIOBuffer);
+        _readIOBuffer = null;
+        _bufferRecycler.releaseByteBuffer(BufferRecycler.BYTE_READ_IO_BUFFER, buf);
+    }
+}","public void test4748() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    byte[] byteArray0 = new byte[9];
+    // Undeclared exception!
+    try {
+        iOContext0.releaseReadIOBuffer(byteArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}","/**
+ * Method to call when all the processing buffers can be safely
+ * recycled.
+ */"
+"public boolean isResourceManaged() {
+    return _managedResource;
+}","public void test4849() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    iOContext0.releaseReadIOBuffer((byte[]) null);
+    assertFalse(iOContext0.isResourceManaged());
+}",""
+"public byte[] allocReadIOBuffer() {
+    _verifyAlloc(_readIOBuffer);
+    return (_readIOBuffer = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_READ_IO_BUFFER));
+}","public void test4950() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    Object object0 = new Object();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, object0, true);
+    iOContext0.allocReadIOBuffer();
+    // Undeclared exception!
+    try {
+        iOContext0.allocReadIOBuffer();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Trying to call same allocXxx() method second time
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}","/**
+ * <p>
+ *  Note: the method can only be called once during its life cycle.
+ *  This is to protect against accidental sharing.
+ */"
+"protected final void _verifyRelease(char[] toRelease, char[] src) {
+    // 07-Mar-2016, tatu: As per [core#255], only prevent shrinking of buffer
+    if ((toRelease != src) && (toRelease.length <= src.length)) {
+        throw wrongBuf();
+    }
+}","public void test5051() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    char[] charArray0 = iOContext0.allocConcatBuffer();
+    char[] charArray1 = iOContext0.allocTokenBuffer(1);
+    // Undeclared exception!
+    try {
+        iOContext0._verifyRelease(charArray0, charArray1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Trying to release buffer not owned by the context
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Public API, accessors
+    /**********************************************************
+     */
+public Object getSourceReference() {
+    return _sourceRef;
+}","public void test5152() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    Object object0 = iOContext0.getSourceReference();
+    assertNotNull(object0);
+}",""
+"public boolean isResourceManaged() {
+    return _managedResource;
+}","public void test5153() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    Object object0 = iOContext0.getSourceReference();
+    assertFalse(iOContext0.isResourceManaged());
+}",""
+"public boolean isResourceManaged() {
+    return _managedResource;
+}","public void test5254() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    iOContext0.constructTextBuffer();
+    assertFalse(iOContext0.isResourceManaged());
+}",""
+"public boolean isResourceManaged() {
+    return _managedResource;
+}","public void test5355() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    iOContext0.getEncoding();
+    assertFalse(iOContext0.isResourceManaged());
+}",""
+"public boolean isResourceManaged() {
+    return _managedResource;
+}","public void test5456() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    byte[] byteArray0 = iOContext0.allocBase64Buffer();
+    iOContext0.releaseBase64Buffer(byteArray0);
+    assertFalse(iOContext0.isResourceManaged());
+}",""
+"public void releaseBase64Buffer(byte[] buf) {
+    if (buf != null) {
+        // sanity checks, release once-and-only-once, must be one owned
+        _verifyRelease(buf, _base64Buffer);
+        _base64Buffer = null;
+        _bufferRecycler.releaseByteBuffer(BufferRecycler.BYTE_BASE64_CODEC_BUFFER, buf);
+    }
+}","public void test5457() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    byte[] byteArray0 = iOContext0.allocBase64Buffer();
+    iOContext0.releaseBase64Buffer(byteArray0);
+    assertEquals(2000, byteArray0.length);
+}",""
+"public boolean isResourceManaged() {
+    return _managedResource;
+}","public void test5558() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    boolean boolean0 = iOContext0.isResourceManaged();
+    assertTrue(boolean0);
+}",""
+"public void releaseWriteEncodingBuffer(byte[] buf) {
+    if (buf != null) {
+        /* Let's do sanity checks to ensure once-and-only-once release,
+             * as well as avoiding trying to release buffers not owned
+             */
+        _verifyRelease(buf, _writeEncodingBuffer);
+        _writeEncodingBuffer = null;
+        _bufferRecycler.releaseByteBuffer(BufferRecycler.BYTE_WRITE_ENCODING_BUFFER, buf);
+    }
+}","public void test5659() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    iOContext0.allocWriteEncodingBuffer();
+    byte[] byteArray0 = iOContext0.allocReadIOBuffer();
+    // Undeclared exception!
+    try {
+        iOContext0.releaseWriteEncodingBuffer(byteArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Trying to release buffer not owned by the context
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}",""
+"public char[] allocConcatBuffer() {
+    _verifyAlloc(_concatCBuffer);
+    return (_concatCBuffer = _bufferRecycler.allocCharBuffer(BufferRecycler.CHAR_CONCAT_BUFFER));
+}","public void test5760() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    iOContext0.allocConcatBuffer();
+    // Undeclared exception!
+    try {
+        iOContext0.allocConcatBuffer();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Trying to call same allocXxx() method second time
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}",""
+"public void releaseConcatBuffer(char[] buf) {
+    if (buf != null) {
+        // 14-Jan-2014, tatu: Let's actually allow upgrade of the original buffer.
+        _verifyRelease(buf, _concatCBuffer);
+        _concatCBuffer = null;
+        _bufferRecycler.releaseCharBuffer(BufferRecycler.CHAR_CONCAT_BUFFER, buf);
+    }
+}","public void test5861() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    char[] charArray0 = iOContext0.allocTokenBuffer();
+    iOContext0.allocConcatBuffer();
+    // Undeclared exception!
+    try {
+        iOContext0.releaseConcatBuffer(charArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Trying to release buffer not owned by the context
+        //
+        verifyException(""com.fasterxml.jackson.core.io.IOContext"", e);
+    }
+}",""

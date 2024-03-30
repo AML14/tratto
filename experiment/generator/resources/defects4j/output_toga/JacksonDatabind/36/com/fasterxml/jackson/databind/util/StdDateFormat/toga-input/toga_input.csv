@@ -1,0 +1,2743 @@
+focal_method,test_prefix,docstring
+"@Override
+public StdDateFormat clone() {
+    /* Although there is that much state to share, we do need to
+         * orchestrate a bit, mostly since timezones may be changed
+         */
+    return new StdDateFormat(_timezone, _locale, _lenient);
+}","public void test011() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    StdDateFormat stdDateFormat1 = stdDateFormat0.clone();
+    assertNotSame(stdDateFormat1, stdDateFormat0);
+}",""
+"/*
+    /**********************************************************
+    /* Public API, configuration
+    /**********************************************************
+     */
+// since 2.6
+@Override
+public TimeZone getTimeZone() {
+    return _timezone;
+}","public void test044() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    TimeZone timeZone0 = stdDateFormat0.getTimeZone();
+    assertNull(timeZone0);
+}",""
+"/*
+    /**********************************************************
+    /* Public API, parsing
+    /**********************************************************
+     */
+@Override
+public Date parse(String dateStr) throws ParseException {
+    dateStr = dateStr.trim();
+    ParsePosition pos = new ParsePosition(0);
+    Date dt;
+    if (looksLikeISO8601(dateStr)) {
+        // also includes ""plain""
+        dt = parseAsISO8601(dateStr, pos, true);
+    } else {
+        // Also consider ""stringified"" simple time stamp
+        int i = dateStr.length();
+        while (--i >= 0) {
+            char ch = dateStr.charAt(i);
+            if (ch < '0' || ch > '9') {
+                // 07-Aug-2013, tatu: And [databind#267] points out that negative numbers should also work
+                if (i > 0 || ch != '-') {
+                    break;
+                }
+            }
+        }
+        if ((i < 0) && // let's just assume negative numbers are fine (can't be RFC-1123 anyway); check length for positive
+        (dateStr.charAt(0) == '-' || NumberInput.inLongRange(dateStr, false))) {
+            dt = new Date(Long.parseLong(dateStr));
+        } else {
+            // Otherwise, fall back to using RFC 1123
+            dt = parseAsRFC1123(dateStr, pos);
+        }
+    }
+    if (dt != null) {
+        return dt;
+    }
+    StringBuilder sb = new StringBuilder();
+    for (String f : ALL_FORMATS) {
+        if (sb.length() > 0) {
+            sb.append(""\"", \"""");
+        } else {
+            sb.append('""');
+        }
+        sb.append(f);
+    }
+    sb.append('""');
+    throw new ParseException(String.format(""Can not parse date \""%s\"": not compatible with any of standard forms (%s)"", dateStr, sb.toString()), pos.getErrorIndex());
+}","public void test055() throws Throwable {
+    StdDateFormat stdDateFormat0 = new StdDateFormat();
+    TimeZone timeZone0 = TimeZone.getDefault();
+    stdDateFormat0.instance.setTimeZone(timeZone0);
+    try {
+        stdDateFormat0.parse(""dj#o0uqt6@;'qoS"");
+        fail(""Expecting exception: ParseException"");
+    } catch (ParseException e) {
+        //
+        // Can not parse date \""dj#o0uqt6@;'qoS\"": not compatible with any of standard forms (\""yyyy-MM-dd'T'HH:mm:ss.SSSZ\"", \""yyyy-MM-dd'T'HH:mm:ss.SSS'Z'\"", \""EEE, dd MMM yyyy HH:mm:ss zzz\"", \""yyyy-MM-dd\"")
+        //
+        verifyException(""com.fasterxml.jackson.databind.util.StdDateFormat"", e);
+    }
+}",""
+"public StdDateFormat withTimeZone(TimeZone tz) {
+    if (tz == null) {
+        tz = DEFAULT_TIMEZONE;
+    }
+    if ((tz == _timezone) || tz.equals(_timezone)) {
+        return this;
+    }
+    return new StdDateFormat(tz, _locale, _lenient);
+}","public void test066() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    StdDateFormat stdDateFormat1 = stdDateFormat0.withTimeZone((TimeZone) null);
+    assertNotSame(stdDateFormat1, stdDateFormat0);
+}","/**
+ * Method used for creating a new instance with specified timezone;
+ * if no timezone specified, defaults to the default timezone (UTC).
+ */"
+"public StdDateFormat withTimeZone(TimeZone tz) {
+    if (tz == null) {
+        tz = DEFAULT_TIMEZONE;
+    }
+    if ((tz == _timezone) || tz.equals(_timezone)) {
+        return this;
+    }
+    return new StdDateFormat(tz, _locale, _lenient);
+}","public void test077() throws Throwable {
+    TimeZone timeZone0 = StdDateFormat.getDefaultTimeZone();
+    Locale locale0 = Locale.PRC;
+    StdDateFormat stdDateFormat0 = new StdDateFormat(timeZone0, locale0);
+    StdDateFormat stdDateFormat1 = stdDateFormat0.withTimeZone(timeZone0);
+    assertSame(stdDateFormat1, stdDateFormat0);
+}","/**
+ * Method used for creating a new instance with specified timezone;
+ * if no timezone specified, defaults to the default timezone (UTC).
+ */"
+"public StdDateFormat withTimeZone(TimeZone tz) {
+    if (tz == null) {
+        tz = DEFAULT_TIMEZONE;
+    }
+    if ((tz == _timezone) || tz.equals(_timezone)) {
+        return this;
+    }
+    return new StdDateFormat(tz, _locale, _lenient);
+}","public void test088() throws Throwable {
+    TimeZone timeZone0 = TimeZone.getDefault();
+    StdDateFormat stdDateFormat0 = new StdDateFormat();
+    StdDateFormat stdDateFormat1 = StdDateFormat.instance;
+    StdDateFormat stdDateFormat2 = stdDateFormat1.withTimeZone(timeZone0);
+    assertNotSame(stdDateFormat2, stdDateFormat1);
+}","/**
+ * Method used for creating a new instance with specified timezone;
+ * if no timezone specified, defaults to the default timezone (UTC).
+ */"
+"public StdDateFormat withLocale(Locale loc) {
+    if (loc.equals(_locale)) {
+        return this;
+    }
+    return new StdDateFormat(_timezone, loc, _lenient);
+}","public void test099() throws Throwable {
+    StdDateFormat stdDateFormat0 = new StdDateFormat();
+    Locale locale0 = Locale.JAPANESE;
+    StdDateFormat stdDateFormat1 = stdDateFormat0.withLocale(locale0);
+    assertNotSame(stdDateFormat1, stdDateFormat0);
+}",""
+"public StdDateFormat withLocale(Locale loc) {
+    if (loc.equals(_locale)) {
+        return this;
+    }
+    return new StdDateFormat(_timezone, loc, _lenient);
+}","public void test1010() throws Throwable {
+    StdDateFormat stdDateFormat0 = new StdDateFormat();
+    Locale locale0 = Locale.US;
+    StdDateFormat stdDateFormat1 = stdDateFormat0.withLocale(locale0);
+    assertSame(stdDateFormat1, stdDateFormat0);
+}",""
+"// and since leniency settings may have been used:
+// since 2.7
+@Override
+public boolean isLenient() {
+    if (_lenient == null) {
+        // default is, I believe, true
+        return true;
+    }
+    return _lenient.booleanValue();
+}","public void test1111() throws Throwable {
+    TimeZone timeZone0 = StdDateFormat.getDefaultTimeZone();
+    Locale locale0 = Locale.JAPANESE;
+    Boolean boolean0 = new Boolean("""");
+    StdDateFormat stdDateFormat0 = new StdDateFormat(timeZone0, locale0, boolean0);
+    boolean boolean1 = stdDateFormat0.isLenient();
+    assertFalse(boolean1);
+}","/**
+ * Need to override since we need to keep track of leniency locally,
+ * and not via underlying {@link Calendar} instance like base class
+ * does.
+ */"
+"// and since leniency settings may have been used:
+// since 2.7
+@Override
+public boolean isLenient() {
+    if (_lenient == null) {
+        // default is, I believe, true
+        return true;
+    }
+    return _lenient.booleanValue();
+}","public void test1212() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    boolean boolean0 = stdDateFormat0.isLenient();
+    assertTrue(boolean0);
+}","/**
+ * Need to override since we need to keep track of leniency locally,
+ * and not via underlying {@link Calendar} instance like base class
+ * does.
+ */"
+"/*
+    /**********************************************************
+    /* Public API, parsing
+    /**********************************************************
+     */
+@Override
+public Date parse(String dateStr) throws ParseException {
+    dateStr = dateStr.trim();
+    ParsePosition pos = new ParsePosition(0);
+    Date dt;
+    if (looksLikeISO8601(dateStr)) {
+        // also includes ""plain""
+        dt = parseAsISO8601(dateStr, pos, true);
+    } else {
+        // Also consider ""stringified"" simple time stamp
+        int i = dateStr.length();
+        while (--i >= 0) {
+            char ch = dateStr.charAt(i);
+            if (ch < '0' || ch > '9') {
+                // 07-Aug-2013, tatu: And [databind#267] points out that negative numbers should also work
+                if (i > 0 || ch != '-') {
+                    break;
+                }
+            }
+        }
+        if ((i < 0) && // let's just assume negative numbers are fine (can't be RFC-1123 anyway); check length for positive
+        (dateStr.charAt(0) == '-' || NumberInput.inLongRange(dateStr, false))) {
+            dt = new Date(Long.parseLong(dateStr));
+        } else {
+            // Otherwise, fall back to using RFC 1123
+            dt = parseAsRFC1123(dateStr, pos);
+        }
+    }
+    if (dt != null) {
+        return dt;
+    }
+    StringBuilder sb = new StringBuilder();
+    for (String f : ALL_FORMATS) {
+        if (sb.length() > 0) {
+            sb.append(""\"", \"""");
+        } else {
+            sb.append('""');
+        }
+        sb.append(f);
+    }
+    sb.append('""');
+    throw new ParseException(String.format(""Can not parse date \""%s\"": not compatible with any of standard forms (%s)"", dateStr, sb.toString()), pos.getErrorIndex());
+}","public void test1414() throws Throwable {
+    StdDateFormat stdDateFormat0 = new StdDateFormat();
+    // Undeclared exception!
+    try {
+        stdDateFormat0.parse(""-"");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // For input string: \""-\""
+        //
+        verifyException(""java.lang.NumberFormatException"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Public API, parsing
+    /**********************************************************
+     */
+@Override
+public Date parse(String dateStr) throws ParseException {
+    dateStr = dateStr.trim();
+    ParsePosition pos = new ParsePosition(0);
+    Date dt;
+    if (looksLikeISO8601(dateStr)) {
+        // also includes ""plain""
+        dt = parseAsISO8601(dateStr, pos, true);
+    } else {
+        // Also consider ""stringified"" simple time stamp
+        int i = dateStr.length();
+        while (--i >= 0) {
+            char ch = dateStr.charAt(i);
+            if (ch < '0' || ch > '9') {
+                // 07-Aug-2013, tatu: And [databind#267] points out that negative numbers should also work
+                if (i > 0 || ch != '-') {
+                    break;
+                }
+            }
+        }
+        if ((i < 0) && // let's just assume negative numbers are fine (can't be RFC-1123 anyway); check length for positive
+        (dateStr.charAt(0) == '-' || NumberInput.inLongRange(dateStr, false))) {
+            dt = new Date(Long.parseLong(dateStr));
+        } else {
+            // Otherwise, fall back to using RFC 1123
+            dt = parseAsRFC1123(dateStr, pos);
+        }
+    }
+    if (dt != null) {
+        return dt;
+    }
+    StringBuilder sb = new StringBuilder();
+    for (String f : ALL_FORMATS) {
+        if (sb.length() > 0) {
+            sb.append(""\"", \"""");
+        } else {
+            sb.append('""');
+        }
+        sb.append(f);
+    }
+    sb.append('""');
+    throw new ParseException(String.format(""Can not parse date \""%s\"": not compatible with any of standard forms (%s)"", dateStr, sb.toString()), pos.getErrorIndex());
+}","public void test1616() throws Throwable {
+    StdDateFormat stdDateFormat0 = new StdDateFormat();
+    try {
+        stdDateFormat0.parse(""["");
+        fail(""Expecting exception: ParseException"");
+    } catch (ParseException e) {
+        //
+        // Can not parse date \""[\"": not compatible with any of standard forms (\""yyyy-MM-dd'T'HH:mm:ss.SSSZ\"", \""yyyy-MM-dd'T'HH:mm:ss.SSS'Z'\"", \""EEE, dd MMM yyyy HH:mm:ss zzz\"", \""yyyy-MM-dd\"")
+        //
+        verifyException(""com.fasterxml.jackson.databind.util.StdDateFormat"", e);
+    }
+}",""
+"@Override
+public Date parse(String dateStr, ParsePosition pos) {
+    if (looksLikeISO8601(dateStr)) {
+        // also includes ""plain""
+        try {
+            return parseAsISO8601(dateStr, pos, false);
+        } catch (ParseException e) {
+            // will NOT be thrown due to false but is declared...
+            return null;
+        }
+    }
+    // Also consider ""stringified"" simple time stamp
+    int i = dateStr.length();
+    while (--i >= 0) {
+        char ch = dateStr.charAt(i);
+        if (ch < '0' || ch > '9') {
+            // 07-Aug-2013, tatu: And [databind#267] points out that negative numbers should also work
+            if (i > 0 || ch != '-') {
+                break;
+            }
+        }
+    }
+    if (i < 0) {
+        // all digits
+        // let's just assume negative numbers are fine (can't be RFC-1123 anyway); check length for positive
+        if (dateStr.charAt(0) == '-' || NumberInput.inLongRange(dateStr, false)) {
+            return new Date(Long.parseLong(dateStr));
+        }
+    }
+    // Otherwise, fall back to using RFC 1123
+    return parseAsRFC1123(dateStr, pos);
+}","public void test1717() throws Throwable {
+    StdDateFormat stdDateFormat0 = new StdDateFormat();
+    ParsePosition parsePosition0 = new ParsePosition((-2868));
+    // Undeclared exception!
+    try {
+        stdDateFormat0.parse(""2014-02-14T20:21:21.320+0000"", parsePosition0);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Std overrides
+    /**********************************************************
+     */
+@Override
+public String toString() {
+    String str = ""DateFormat "" + getClass().getName();
+    TimeZone tz = _timezone;
+    if (tz != null) {
+        str += "" (timezone: "" + tz + "")"";
+    }
+    str += ""(locale: "" + _locale + "")"";
+    return str;
+}","public void test2222() throws Throwable {
+    StdDateFormat stdDateFormat0 = new StdDateFormat();
+    String string0 = stdDateFormat0.instance.toString();
+    assertEquals(""DateFormat com.fasterxml.jackson.databind.util.StdDateFormat(locale: en_US)"", string0);
+}",""
+"/*
+    /**********************************************************
+    /* Public API, parsing
+    /**********************************************************
+     */
+@Override
+public Date parse(String dateStr) throws ParseException {
+    dateStr = dateStr.trim();
+    ParsePosition pos = new ParsePosition(0);
+    Date dt;
+    if (looksLikeISO8601(dateStr)) {
+        // also includes ""plain""
+        dt = parseAsISO8601(dateStr, pos, true);
+    } else {
+        // Also consider ""stringified"" simple time stamp
+        int i = dateStr.length();
+        while (--i >= 0) {
+            char ch = dateStr.charAt(i);
+            if (ch < '0' || ch > '9') {
+                // 07-Aug-2013, tatu: And [databind#267] points out that negative numbers should also work
+                if (i > 0 || ch != '-') {
+                    break;
+                }
+            }
+        }
+        if ((i < 0) && // let's just assume negative numbers are fine (can't be RFC-1123 anyway); check length for positive
+        (dateStr.charAt(0) == '-' || NumberInput.inLongRange(dateStr, false))) {
+            dt = new Date(Long.parseLong(dateStr));
+        } else {
+            // Otherwise, fall back to using RFC 1123
+            dt = parseAsRFC1123(dateStr, pos);
+        }
+    }
+    if (dt != null) {
+        return dt;
+    }
+    StringBuilder sb = new StringBuilder();
+    for (String f : ALL_FORMATS) {
+        if (sb.length() > 0) {
+            sb.append(""\"", \"""");
+        } else {
+            sb.append('""');
+        }
+        sb.append(f);
+    }
+    sb.append('""');
+    throw new ParseException(String.format(""Can not parse date \""%s\"": not compatible with any of standard forms (%s)"", dateStr, sb.toString()), pos.getErrorIndex());
+}","public void test2323() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    try {
+        stdDateFormat0.parse(""0n{|"");
+        fail(""Expecting exception: ParseException"");
+    } catch (ParseException e) {
+        //
+        // Can not parse date \""0n{|\"": not compatible with any of standard forms (\""yyyy-MM-dd'T'HH:mm:ss.SSSZ\"", \""yyyy-MM-dd'T'HH:mm:ss.SSS'Z'\"", \""EEE, dd MMM yyyy HH:mm:ss zzz\"", \""yyyy-MM-dd\"")
+        //
+        verifyException(""com.fasterxml.jackson.databind.util.StdDateFormat"", e);
+    }
+}",""
+"protected Date parseAsISO8601(String dateStr, ParsePosition pos, boolean throwErrors) throws ParseException {
+    /* 21-May-2009, tatu: DateFormat has very strict handling of
+         * timezone  modifiers for ISO-8601. So we need to do some scrubbing.
+         */
+    /* First: do we have ""zulu"" format ('Z' == ""UTC"")? If yes, that's
+         * quite simple because we already set date format timezone to be
+         * UTC, and hence can just strip out 'Z' altogether
+         */
+    int len = dateStr.length();
+    char c = dateStr.charAt(len - 1);
+    DateFormat df;
+    String formatStr;
+    // Need to support ""plain"" date...
+    if (len <= 10 && Character.isDigit(c)) {
+        df = _formatPlain;
+        formatStr = DATE_FORMAT_STR_PLAIN;
+        if (df == null) {
+            df = _formatPlain = _cloneFormat(DATE_FORMAT_PLAIN, formatStr, _timezone, _locale, _lenient);
+        }
+    } else if (c == 'Z') {
+        df = _formatISO8601_z;
+        formatStr = DATE_FORMAT_STR_ISO8601_Z;
+        if (df == null) {
+            df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, formatStr, _timezone, _locale, _lenient);
+        }
+        // may be missing milliseconds... if so, add
+        if (dateStr.charAt(len - 4) == ':') {
+            StringBuilder sb = new StringBuilder(dateStr);
+            sb.insert(len - 1, "".000"");
+            dateStr = sb.toString();
+        }
+    } else {
+        // Let's see if we have timezone indicator or not...
+        if (hasTimeZone(dateStr)) {
+            c = dateStr.charAt(len - 3);
+            if (c == ':') {
+                // remove optional colon
+                // remove colon
+                StringBuilder sb = new StringBuilder(dateStr);
+                sb.delete(len - 3, len - 2);
+                dateStr = sb.toString();
+            } else if (c == '+' || c == '-') {
+                // missing minutes
+                // let's just append '00'
+                dateStr += ""00"";
+            }
+            // Milliseconds partial or missing; and even seconds are optional
+            len = dateStr.length();
+            // remove 'T', '+'/'-' and 4-digit timezone-offset
+            int timeLen = len - dateStr.lastIndexOf('T') - 6;
+            if (timeLen < 12) {
+                // 8 for hh:mm:ss, 4 for .sss
+                // insertion offset, before tz-offset
+                int offset = len - 5;
+                StringBuilder sb = new StringBuilder(dateStr);
+                switch(timeLen) {
+                    case 11:
+                        sb.insert(offset, '0');
+                        break;
+                    case 10:
+                        sb.insert(offset, ""00"");
+                        break;
+                    case // is this legal? (just second fraction marker)
+                    9:
+                        sb.insert(offset, ""000"");
+                        break;
+                    case 8:
+                        sb.insert(offset, "".000"");
+                        break;
+                    case // not legal to have single-digit second
+                    7:
+                        break;
+                    case // probably not legal, but let's allow
+                    6:
+                        sb.insert(offset, ""00.000"");
+                    case // is legal to omit seconds
+                    5:
+                        sb.insert(offset, "":00.000"");
+                }
+                dateStr = sb.toString();
+            }
+            df = _formatISO8601;
+            formatStr = DATE_FORMAT_STR_ISO8601;
+            if (_formatISO8601 == null) {
+                df = _formatISO8601 = _cloneFormat(DATE_FORMAT_ISO8601, formatStr, _timezone, _locale, _lenient);
+            }
+        } else {
+            // If not, plain date. Easiest to just patch 'Z' in the end?
+            StringBuilder sb = new StringBuilder(dateStr);
+            // And possible also millisecond part if missing
+            int timeLen = len - dateStr.lastIndexOf('T') - 1;
+            if (timeLen < 12) {
+                // missing, or partial
+                switch(timeLen) {
+                    case 11:
+                        sb.append('0');
+                    case 10:
+                        sb.append('0');
+                    case 9:
+                        sb.append('0');
+                        break;
+                    default:
+                        sb.append("".000"");
+                }
+            }
+            sb.append('Z');
+            dateStr = sb.toString();
+            df = _formatISO8601_z;
+            formatStr = DATE_FORMAT_STR_ISO8601_Z;
+            if (df == null) {
+                df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, formatStr, _timezone, _locale, _lenient);
+            }
+        }
+    }
+    Date dt = df.parse(dateStr, pos);
+    // 22-Dec-2015, tatu: With non-lenient, may get null
+    if (dt == null) {
+        throw new ParseException(String.format(""Can not parse date \""%s\"": while it seems to fit format '%s', parsing fails (leniency? %s)"", dateStr, formatStr, _lenient), pos.getErrorIndex());
+    }
+    return dt;
+}","public void test2525() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    // Undeclared exception!
+    try {
+        stdDateFormat0.parseAsISO8601(""000"", (ParsePosition) null, false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"protected Date parseAsISO8601(String dateStr, ParsePosition pos, boolean throwErrors) throws ParseException {
+    /* 21-May-2009, tatu: DateFormat has very strict handling of
+         * timezone  modifiers for ISO-8601. So we need to do some scrubbing.
+         */
+    /* First: do we have ""zulu"" format ('Z' == ""UTC"")? If yes, that's
+         * quite simple because we already set date format timezone to be
+         * UTC, and hence can just strip out 'Z' altogether
+         */
+    int len = dateStr.length();
+    char c = dateStr.charAt(len - 1);
+    DateFormat df;
+    String formatStr;
+    // Need to support ""plain"" date...
+    if (len <= 10 && Character.isDigit(c)) {
+        df = _formatPlain;
+        formatStr = DATE_FORMAT_STR_PLAIN;
+        if (df == null) {
+            df = _formatPlain = _cloneFormat(DATE_FORMAT_PLAIN, formatStr, _timezone, _locale, _lenient);
+        }
+    } else if (c == 'Z') {
+        df = _formatISO8601_z;
+        formatStr = DATE_FORMAT_STR_ISO8601_Z;
+        if (df == null) {
+            df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, formatStr, _timezone, _locale, _lenient);
+        }
+        // may be missing milliseconds... if so, add
+        if (dateStr.charAt(len - 4) == ':') {
+            StringBuilder sb = new StringBuilder(dateStr);
+            sb.insert(len - 1, "".000"");
+            dateStr = sb.toString();
+        }
+    } else {
+        // Let's see if we have timezone indicator or not...
+        if (hasTimeZone(dateStr)) {
+            c = dateStr.charAt(len - 3);
+            if (c == ':') {
+                // remove optional colon
+                // remove colon
+                StringBuilder sb = new StringBuilder(dateStr);
+                sb.delete(len - 3, len - 2);
+                dateStr = sb.toString();
+            } else if (c == '+' || c == '-') {
+                // missing minutes
+                // let's just append '00'
+                dateStr += ""00"";
+            }
+            // Milliseconds partial or missing; and even seconds are optional
+            len = dateStr.length();
+            // remove 'T', '+'/'-' and 4-digit timezone-offset
+            int timeLen = len - dateStr.lastIndexOf('T') - 6;
+            if (timeLen < 12) {
+                // 8 for hh:mm:ss, 4 for .sss
+                // insertion offset, before tz-offset
+                int offset = len - 5;
+                StringBuilder sb = new StringBuilder(dateStr);
+                switch(timeLen) {
+                    case 11:
+                        sb.insert(offset, '0');
+                        break;
+                    case 10:
+                        sb.insert(offset, ""00"");
+                        break;
+                    case // is this legal? (just second fraction marker)
+                    9:
+                        sb.insert(offset, ""000"");
+                        break;
+                    case 8:
+                        sb.insert(offset, "".000"");
+                        break;
+                    case // not legal to have single-digit second
+                    7:
+                        break;
+                    case // probably not legal, but let's allow
+                    6:
+                        sb.insert(offset, ""00.000"");
+                    case // is legal to omit seconds
+                    5:
+                        sb.insert(offset, "":00.000"");
+                }
+                dateStr = sb.toString();
+            }
+            df = _formatISO8601;
+            formatStr = DATE_FORMAT_STR_ISO8601;
+            if (_formatISO8601 == null) {
+                df = _formatISO8601 = _cloneFormat(DATE_FORMAT_ISO8601, formatStr, _timezone, _locale, _lenient);
+            }
+        } else {
+            // If not, plain date. Easiest to just patch 'Z' in the end?
+            StringBuilder sb = new StringBuilder(dateStr);
+            // And possible also millisecond part if missing
+            int timeLen = len - dateStr.lastIndexOf('T') - 1;
+            if (timeLen < 12) {
+                // missing, or partial
+                switch(timeLen) {
+                    case 11:
+                        sb.append('0');
+                    case 10:
+                        sb.append('0');
+                    case 9:
+                        sb.append('0');
+                        break;
+                    default:
+                        sb.append("".000"");
+                }
+            }
+            sb.append('Z');
+            dateStr = sb.toString();
+            df = _formatISO8601_z;
+            formatStr = DATE_FORMAT_STR_ISO8601_Z;
+            if (df == null) {
+                df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, formatStr, _timezone, _locale, _lenient);
+            }
+        }
+    }
+    Date dt = df.parse(dateStr, pos);
+    // 22-Dec-2015, tatu: With non-lenient, may get null
+    if (dt == null) {
+        throw new ParseException(String.format(""Can not parse date \""%s\"": while it seems to fit format '%s', parsing fails (leniency? %s)"", dateStr, formatStr, _lenient), pos.getErrorIndex());
+    }
+    return dt;
+}","public void test2626() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    // Undeclared exception!
+    try {
+        stdDateFormat0.parseAsISO8601(""p,-B^WsU@o 5:K!Z"", (ParsePosition) null, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"protected Date parseAsISO8601(String dateStr, ParsePosition pos, boolean throwErrors) throws ParseException {
+    /* 21-May-2009, tatu: DateFormat has very strict handling of
+         * timezone  modifiers for ISO-8601. So we need to do some scrubbing.
+         */
+    /* First: do we have ""zulu"" format ('Z' == ""UTC"")? If yes, that's
+         * quite simple because we already set date format timezone to be
+         * UTC, and hence can just strip out 'Z' altogether
+         */
+    int len = dateStr.length();
+    char c = dateStr.charAt(len - 1);
+    DateFormat df;
+    String formatStr;
+    // Need to support ""plain"" date...
+    if (len <= 10 && Character.isDigit(c)) {
+        df = _formatPlain;
+        formatStr = DATE_FORMAT_STR_PLAIN;
+        if (df == null) {
+            df = _formatPlain = _cloneFormat(DATE_FORMAT_PLAIN, formatStr, _timezone, _locale, _lenient);
+        }
+    } else if (c == 'Z') {
+        df = _formatISO8601_z;
+        formatStr = DATE_FORMAT_STR_ISO8601_Z;
+        if (df == null) {
+            df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, formatStr, _timezone, _locale, _lenient);
+        }
+        // may be missing milliseconds... if so, add
+        if (dateStr.charAt(len - 4) == ':') {
+            StringBuilder sb = new StringBuilder(dateStr);
+            sb.insert(len - 1, "".000"");
+            dateStr = sb.toString();
+        }
+    } else {
+        // Let's see if we have timezone indicator or not...
+        if (hasTimeZone(dateStr)) {
+            c = dateStr.charAt(len - 3);
+            if (c == ':') {
+                // remove optional colon
+                // remove colon
+                StringBuilder sb = new StringBuilder(dateStr);
+                sb.delete(len - 3, len - 2);
+                dateStr = sb.toString();
+            } else if (c == '+' || c == '-') {
+                // missing minutes
+                // let's just append '00'
+                dateStr += ""00"";
+            }
+            // Milliseconds partial or missing; and even seconds are optional
+            len = dateStr.length();
+            // remove 'T', '+'/'-' and 4-digit timezone-offset
+            int timeLen = len - dateStr.lastIndexOf('T') - 6;
+            if (timeLen < 12) {
+                // 8 for hh:mm:ss, 4 for .sss
+                // insertion offset, before tz-offset
+                int offset = len - 5;
+                StringBuilder sb = new StringBuilder(dateStr);
+                switch(timeLen) {
+                    case 11:
+                        sb.insert(offset, '0');
+                        break;
+                    case 10:
+                        sb.insert(offset, ""00"");
+                        break;
+                    case // is this legal? (just second fraction marker)
+                    9:
+                        sb.insert(offset, ""000"");
+                        break;
+                    case 8:
+                        sb.insert(offset, "".000"");
+                        break;
+                    case // not legal to have single-digit second
+                    7:
+                        break;
+                    case // probably not legal, but let's allow
+                    6:
+                        sb.insert(offset, ""00.000"");
+                    case // is legal to omit seconds
+                    5:
+                        sb.insert(offset, "":00.000"");
+                }
+                dateStr = sb.toString();
+            }
+            df = _formatISO8601;
+            formatStr = DATE_FORMAT_STR_ISO8601;
+            if (_formatISO8601 == null) {
+                df = _formatISO8601 = _cloneFormat(DATE_FORMAT_ISO8601, formatStr, _timezone, _locale, _lenient);
+            }
+        } else {
+            // If not, plain date. Easiest to just patch 'Z' in the end?
+            StringBuilder sb = new StringBuilder(dateStr);
+            // And possible also millisecond part if missing
+            int timeLen = len - dateStr.lastIndexOf('T') - 1;
+            if (timeLen < 12) {
+                // missing, or partial
+                switch(timeLen) {
+                    case 11:
+                        sb.append('0');
+                    case 10:
+                        sb.append('0');
+                    case 9:
+                        sb.append('0');
+                        break;
+                    default:
+                        sb.append("".000"");
+                }
+            }
+            sb.append('Z');
+            dateStr = sb.toString();
+            df = _formatISO8601_z;
+            formatStr = DATE_FORMAT_STR_ISO8601_Z;
+            if (df == null) {
+                df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, formatStr, _timezone, _locale, _lenient);
+            }
+        }
+    }
+    Date dt = df.parse(dateStr, pos);
+    // 22-Dec-2015, tatu: With non-lenient, may get null
+    if (dt == null) {
+        throw new ParseException(String.format(""Can not parse date \""%s\"": while it seems to fit format '%s', parsing fails (leniency? %s)"", dateStr, formatStr, _lenient), pos.getErrorIndex());
+    }
+    return dt;
+}","public void test2727() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    // Undeclared exception!
+    try {
+        stdDateFormat0.parseAsISO8601(""B~4?XK17h9Z"", (ParsePosition) null, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"protected Date parseAsISO8601(String dateStr, ParsePosition pos, boolean throwErrors) throws ParseException {
+    /* 21-May-2009, tatu: DateFormat has very strict handling of
+         * timezone  modifiers for ISO-8601. So we need to do some scrubbing.
+         */
+    /* First: do we have ""zulu"" format ('Z' == ""UTC"")? If yes, that's
+         * quite simple because we already set date format timezone to be
+         * UTC, and hence can just strip out 'Z' altogether
+         */
+    int len = dateStr.length();
+    char c = dateStr.charAt(len - 1);
+    DateFormat df;
+    String formatStr;
+    // Need to support ""plain"" date...
+    if (len <= 10 && Character.isDigit(c)) {
+        df = _formatPlain;
+        formatStr = DATE_FORMAT_STR_PLAIN;
+        if (df == null) {
+            df = _formatPlain = _cloneFormat(DATE_FORMAT_PLAIN, formatStr, _timezone, _locale, _lenient);
+        }
+    } else if (c == 'Z') {
+        df = _formatISO8601_z;
+        formatStr = DATE_FORMAT_STR_ISO8601_Z;
+        if (df == null) {
+            df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, formatStr, _timezone, _locale, _lenient);
+        }
+        // may be missing milliseconds... if so, add
+        if (dateStr.charAt(len - 4) == ':') {
+            StringBuilder sb = new StringBuilder(dateStr);
+            sb.insert(len - 1, "".000"");
+            dateStr = sb.toString();
+        }
+    } else {
+        // Let's see if we have timezone indicator or not...
+        if (hasTimeZone(dateStr)) {
+            c = dateStr.charAt(len - 3);
+            if (c == ':') {
+                // remove optional colon
+                // remove colon
+                StringBuilder sb = new StringBuilder(dateStr);
+                sb.delete(len - 3, len - 2);
+                dateStr = sb.toString();
+            } else if (c == '+' || c == '-') {
+                // missing minutes
+                // let's just append '00'
+                dateStr += ""00"";
+            }
+            // Milliseconds partial or missing; and even seconds are optional
+            len = dateStr.length();
+            // remove 'T', '+'/'-' and 4-digit timezone-offset
+            int timeLen = len - dateStr.lastIndexOf('T') - 6;
+            if (timeLen < 12) {
+                // 8 for hh:mm:ss, 4 for .sss
+                // insertion offset, before tz-offset
+                int offset = len - 5;
+                StringBuilder sb = new StringBuilder(dateStr);
+                switch(timeLen) {
+                    case 11:
+                        sb.insert(offset, '0');
+                        break;
+                    case 10:
+                        sb.insert(offset, ""00"");
+                        break;
+                    case // is this legal? (just second fraction marker)
+                    9:
+                        sb.insert(offset, ""000"");
+                        break;
+                    case 8:
+                        sb.insert(offset, "".000"");
+                        break;
+                    case // not legal to have single-digit second
+                    7:
+                        break;
+                    case // probably not legal, but let's allow
+                    6:
+                        sb.insert(offset, ""00.000"");
+                    case // is legal to omit seconds
+                    5:
+                        sb.insert(offset, "":00.000"");
+                }
+                dateStr = sb.toString();
+            }
+            df = _formatISO8601;
+            formatStr = DATE_FORMAT_STR_ISO8601;
+            if (_formatISO8601 == null) {
+                df = _formatISO8601 = _cloneFormat(DATE_FORMAT_ISO8601, formatStr, _timezone, _locale, _lenient);
+            }
+        } else {
+            // If not, plain date. Easiest to just patch 'Z' in the end?
+            StringBuilder sb = new StringBuilder(dateStr);
+            // And possible also millisecond part if missing
+            int timeLen = len - dateStr.lastIndexOf('T') - 1;
+            if (timeLen < 12) {
+                // missing, or partial
+                switch(timeLen) {
+                    case 11:
+                        sb.append('0');
+                    case 10:
+                        sb.append('0');
+                    case 9:
+                        sb.append('0');
+                        break;
+                    default:
+                        sb.append("".000"");
+                }
+            }
+            sb.append('Z');
+            dateStr = sb.toString();
+            df = _formatISO8601_z;
+            formatStr = DATE_FORMAT_STR_ISO8601_Z;
+            if (df == null) {
+                df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, formatStr, _timezone, _locale, _lenient);
+            }
+        }
+    }
+    Date dt = df.parse(dateStr, pos);
+    // 22-Dec-2015, tatu: With non-lenient, may get null
+    if (dt == null) {
+        throw new ParseException(String.format(""Can not parse date \""%s\"": while it seems to fit format '%s', parsing fails (leniency? %s)"", dateStr, formatStr, _lenient), pos.getErrorIndex());
+    }
+    return dt;
+}","public void test2828() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    // Undeclared exception!
+    try {
+        stdDateFormat0.parseAsISO8601(""(locale: "", (ParsePosition) null, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"protected Date parseAsISO8601(String dateStr, ParsePosition pos, boolean throwErrors) throws ParseException {
+    /* 21-May-2009, tatu: DateFormat has very strict handling of
+         * timezone  modifiers for ISO-8601. So we need to do some scrubbing.
+         */
+    /* First: do we have ""zulu"" format ('Z' == ""UTC"")? If yes, that's
+         * quite simple because we already set date format timezone to be
+         * UTC, and hence can just strip out 'Z' altogether
+         */
+    int len = dateStr.length();
+    char c = dateStr.charAt(len - 1);
+    DateFormat df;
+    String formatStr;
+    // Need to support ""plain"" date...
+    if (len <= 10 && Character.isDigit(c)) {
+        df = _formatPlain;
+        formatStr = DATE_FORMAT_STR_PLAIN;
+        if (df == null) {
+            df = _formatPlain = _cloneFormat(DATE_FORMAT_PLAIN, formatStr, _timezone, _locale, _lenient);
+        }
+    } else if (c == 'Z') {
+        df = _formatISO8601_z;
+        formatStr = DATE_FORMAT_STR_ISO8601_Z;
+        if (df == null) {
+            df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, formatStr, _timezone, _locale, _lenient);
+        }
+        // may be missing milliseconds... if so, add
+        if (dateStr.charAt(len - 4) == ':') {
+            StringBuilder sb = new StringBuilder(dateStr);
+            sb.insert(len - 1, "".000"");
+            dateStr = sb.toString();
+        }
+    } else {
+        // Let's see if we have timezone indicator or not...
+        if (hasTimeZone(dateStr)) {
+            c = dateStr.charAt(len - 3);
+            if (c == ':') {
+                // remove optional colon
+                // remove colon
+                StringBuilder sb = new StringBuilder(dateStr);
+                sb.delete(len - 3, len - 2);
+                dateStr = sb.toString();
+            } else if (c == '+' || c == '-') {
+                // missing minutes
+                // let's just append '00'
+                dateStr += ""00"";
+            }
+            // Milliseconds partial or missing; and even seconds are optional
+            len = dateStr.length();
+            // remove 'T', '+'/'-' and 4-digit timezone-offset
+            int timeLen = len - dateStr.lastIndexOf('T') - 6;
+            if (timeLen < 12) {
+                // 8 for hh:mm:ss, 4 for .sss
+                // insertion offset, before tz-offset
+                int offset = len - 5;
+                StringBuilder sb = new StringBuilder(dateStr);
+                switch(timeLen) {
+                    case 11:
+                        sb.insert(offset, '0');
+                        break;
+                    case 10:
+                        sb.insert(offset, ""00"");
+                        break;
+                    case // is this legal? (just second fraction marker)
+                    9:
+                        sb.insert(offset, ""000"");
+                        break;
+                    case 8:
+                        sb.insert(offset, "".000"");
+                        break;
+                    case // not legal to have single-digit second
+                    7:
+                        break;
+                    case // probably not legal, but let's allow
+                    6:
+                        sb.insert(offset, ""00.000"");
+                    case // is legal to omit seconds
+                    5:
+                        sb.insert(offset, "":00.000"");
+                }
+                dateStr = sb.toString();
+            }
+            df = _formatISO8601;
+            formatStr = DATE_FORMAT_STR_ISO8601;
+            if (_formatISO8601 == null) {
+                df = _formatISO8601 = _cloneFormat(DATE_FORMAT_ISO8601, formatStr, _timezone, _locale, _lenient);
+            }
+        } else {
+            // If not, plain date. Easiest to just patch 'Z' in the end?
+            StringBuilder sb = new StringBuilder(dateStr);
+            // And possible also millisecond part if missing
+            int timeLen = len - dateStr.lastIndexOf('T') - 1;
+            if (timeLen < 12) {
+                // missing, or partial
+                switch(timeLen) {
+                    case 11:
+                        sb.append('0');
+                    case 10:
+                        sb.append('0');
+                    case 9:
+                        sb.append('0');
+                        break;
+                    default:
+                        sb.append("".000"");
+                }
+            }
+            sb.append('Z');
+            dateStr = sb.toString();
+            df = _formatISO8601_z;
+            formatStr = DATE_FORMAT_STR_ISO8601_Z;
+            if (df == null) {
+                df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, formatStr, _timezone, _locale, _lenient);
+            }
+        }
+    }
+    Date dt = df.parse(dateStr, pos);
+    // 22-Dec-2015, tatu: With non-lenient, may get null
+    if (dt == null) {
+        throw new ParseException(String.format(""Can not parse date \""%s\"": while it seems to fit format '%s', parsing fails (leniency? %s)"", dateStr, formatStr, _lenient), pos.getErrorIndex());
+    }
+    return dt;
+}","public void test2929() throws Throwable {
+    StdDateFormat stdDateFormat0 = new StdDateFormat();
+    ParsePosition parsePosition0 = new ParsePosition(57);
+    try {
+        stdDateFormat0.parseAsISO8601(""gwjQ X-6:=>"", parsePosition0, true);
+        fail(""Expecting exception: ParseException"");
+    } catch (ParseException e) {
+        //
+        // Can not parse date \""gwjQ :00.000X-6=>\"": while it seems to fit format 'yyyy-MM-dd'T'HH:mm:ss.SSSZ', parsing fails (leniency? null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.util.StdDateFormat"", e);
+    }
+}",""
+"protected Date parseAsISO8601(String dateStr, ParsePosition pos, boolean throwErrors) throws ParseException {
+    /* 21-May-2009, tatu: DateFormat has very strict handling of
+         * timezone  modifiers for ISO-8601. So we need to do some scrubbing.
+         */
+    /* First: do we have ""zulu"" format ('Z' == ""UTC"")? If yes, that's
+         * quite simple because we already set date format timezone to be
+         * UTC, and hence can just strip out 'Z' altogether
+         */
+    int len = dateStr.length();
+    char c = dateStr.charAt(len - 1);
+    DateFormat df;
+    String formatStr;
+    // Need to support ""plain"" date...
+    if (len <= 10 && Character.isDigit(c)) {
+        df = _formatPlain;
+        formatStr = DATE_FORMAT_STR_PLAIN;
+        if (df == null) {
+            df = _formatPlain = _cloneFormat(DATE_FORMAT_PLAIN, formatStr, _timezone, _locale, _lenient);
+        }
+    } else if (c == 'Z') {
+        df = _formatISO8601_z;
+        formatStr = DATE_FORMAT_STR_ISO8601_Z;
+        if (df == null) {
+            df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, formatStr, _timezone, _locale, _lenient);
+        }
+        // may be missing milliseconds... if so, add
+        if (dateStr.charAt(len - 4) == ':') {
+            StringBuilder sb = new StringBuilder(dateStr);
+            sb.insert(len - 1, "".000"");
+            dateStr = sb.toString();
+        }
+    } else {
+        // Let's see if we have timezone indicator or not...
+        if (hasTimeZone(dateStr)) {
+            c = dateStr.charAt(len - 3);
+            if (c == ':') {
+                // remove optional colon
+                // remove colon
+                StringBuilder sb = new StringBuilder(dateStr);
+                sb.delete(len - 3, len - 2);
+                dateStr = sb.toString();
+            } else if (c == '+' || c == '-') {
+                // missing minutes
+                // let's just append '00'
+                dateStr += ""00"";
+            }
+            // Milliseconds partial or missing; and even seconds are optional
+            len = dateStr.length();
+            // remove 'T', '+'/'-' and 4-digit timezone-offset
+            int timeLen = len - dateStr.lastIndexOf('T') - 6;
+            if (timeLen < 12) {
+                // 8 for hh:mm:ss, 4 for .sss
+                // insertion offset, before tz-offset
+                int offset = len - 5;
+                StringBuilder sb = new StringBuilder(dateStr);
+                switch(timeLen) {
+                    case 11:
+                        sb.insert(offset, '0');
+                        break;
+                    case 10:
+                        sb.insert(offset, ""00"");
+                        break;
+                    case // is this legal? (just second fraction marker)
+                    9:
+                        sb.insert(offset, ""000"");
+                        break;
+                    case 8:
+                        sb.insert(offset, "".000"");
+                        break;
+                    case // not legal to have single-digit second
+                    7:
+                        break;
+                    case // probably not legal, but let's allow
+                    6:
+                        sb.insert(offset, ""00.000"");
+                    case // is legal to omit seconds
+                    5:
+                        sb.insert(offset, "":00.000"");
+                }
+                dateStr = sb.toString();
+            }
+            df = _formatISO8601;
+            formatStr = DATE_FORMAT_STR_ISO8601;
+            if (_formatISO8601 == null) {
+                df = _formatISO8601 = _cloneFormat(DATE_FORMAT_ISO8601, formatStr, _timezone, _locale, _lenient);
+            }
+        } else {
+            // If not, plain date. Easiest to just patch 'Z' in the end?
+            StringBuilder sb = new StringBuilder(dateStr);
+            // And possible also millisecond part if missing
+            int timeLen = len - dateStr.lastIndexOf('T') - 1;
+            if (timeLen < 12) {
+                // missing, or partial
+                switch(timeLen) {
+                    case 11:
+                        sb.append('0');
+                    case 10:
+                        sb.append('0');
+                    case 9:
+                        sb.append('0');
+                        break;
+                    default:
+                        sb.append("".000"");
+                }
+            }
+            sb.append('Z');
+            dateStr = sb.toString();
+            df = _formatISO8601_z;
+            formatStr = DATE_FORMAT_STR_ISO8601_Z;
+            if (df == null) {
+                df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, formatStr, _timezone, _locale, _lenient);
+            }
+        }
+    }
+    Date dt = df.parse(dateStr, pos);
+    // 22-Dec-2015, tatu: With non-lenient, may get null
+    if (dt == null) {
+        throw new ParseException(String.format(""Can not parse date \""%s\"": while it seems to fit format '%s', parsing fails (leniency? %s)"", dateStr, formatStr, _lenient), pos.getErrorIndex());
+    }
+    return dt;
+}","public void test3030() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    // Undeclared exception!
+    try {
+        stdDateFormat0.parseAsISO8601(""&~A'_H\""&R<!B8sf+H$"", (ParsePosition) null, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"protected Date parseAsISO8601(String dateStr, ParsePosition pos, boolean throwErrors) throws ParseException {
+    /* 21-May-2009, tatu: DateFormat has very strict handling of
+         * timezone  modifiers for ISO-8601. So we need to do some scrubbing.
+         */
+    /* First: do we have ""zulu"" format ('Z' == ""UTC"")? If yes, that's
+         * quite simple because we already set date format timezone to be
+         * UTC, and hence can just strip out 'Z' altogether
+         */
+    int len = dateStr.length();
+    char c = dateStr.charAt(len - 1);
+    DateFormat df;
+    String formatStr;
+    // Need to support ""plain"" date...
+    if (len <= 10 && Character.isDigit(c)) {
+        df = _formatPlain;
+        formatStr = DATE_FORMAT_STR_PLAIN;
+        if (df == null) {
+            df = _formatPlain = _cloneFormat(DATE_FORMAT_PLAIN, formatStr, _timezone, _locale, _lenient);
+        }
+    } else if (c == 'Z') {
+        df = _formatISO8601_z;
+        formatStr = DATE_FORMAT_STR_ISO8601_Z;
+        if (df == null) {
+            df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, formatStr, _timezone, _locale, _lenient);
+        }
+        // may be missing milliseconds... if so, add
+        if (dateStr.charAt(len - 4) == ':') {
+            StringBuilder sb = new StringBuilder(dateStr);
+            sb.insert(len - 1, "".000"");
+            dateStr = sb.toString();
+        }
+    } else {
+        // Let's see if we have timezone indicator or not...
+        if (hasTimeZone(dateStr)) {
+            c = dateStr.charAt(len - 3);
+            if (c == ':') {
+                // remove optional colon
+                // remove colon
+                StringBuilder sb = new StringBuilder(dateStr);
+                sb.delete(len - 3, len - 2);
+                dateStr = sb.toString();
+            } else if (c == '+' || c == '-') {
+                // missing minutes
+                // let's just append '00'
+                dateStr += ""00"";
+            }
+            // Milliseconds partial or missing; and even seconds are optional
+            len = dateStr.length();
+            // remove 'T', '+'/'-' and 4-digit timezone-offset
+            int timeLen = len - dateStr.lastIndexOf('T') - 6;
+            if (timeLen < 12) {
+                // 8 for hh:mm:ss, 4 for .sss
+                // insertion offset, before tz-offset
+                int offset = len - 5;
+                StringBuilder sb = new StringBuilder(dateStr);
+                switch(timeLen) {
+                    case 11:
+                        sb.insert(offset, '0');
+                        break;
+                    case 10:
+                        sb.insert(offset, ""00"");
+                        break;
+                    case // is this legal? (just second fraction marker)
+                    9:
+                        sb.insert(offset, ""000"");
+                        break;
+                    case 8:
+                        sb.insert(offset, "".000"");
+                        break;
+                    case // not legal to have single-digit second
+                    7:
+                        break;
+                    case // probably not legal, but let's allow
+                    6:
+                        sb.insert(offset, ""00.000"");
+                    case // is legal to omit seconds
+                    5:
+                        sb.insert(offset, "":00.000"");
+                }
+                dateStr = sb.toString();
+            }
+            df = _formatISO8601;
+            formatStr = DATE_FORMAT_STR_ISO8601;
+            if (_formatISO8601 == null) {
+                df = _formatISO8601 = _cloneFormat(DATE_FORMAT_ISO8601, formatStr, _timezone, _locale, _lenient);
+            }
+        } else {
+            // If not, plain date. Easiest to just patch 'Z' in the end?
+            StringBuilder sb = new StringBuilder(dateStr);
+            // And possible also millisecond part if missing
+            int timeLen = len - dateStr.lastIndexOf('T') - 1;
+            if (timeLen < 12) {
+                // missing, or partial
+                switch(timeLen) {
+                    case 11:
+                        sb.append('0');
+                    case 10:
+                        sb.append('0');
+                    case 9:
+                        sb.append('0');
+                        break;
+                    default:
+                        sb.append("".000"");
+                }
+            }
+            sb.append('Z');
+            dateStr = sb.toString();
+            df = _formatISO8601_z;
+            formatStr = DATE_FORMAT_STR_ISO8601_Z;
+            if (df == null) {
+                df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, formatStr, _timezone, _locale, _lenient);
+            }
+        }
+    }
+    Date dt = df.parse(dateStr, pos);
+    // 22-Dec-2015, tatu: With non-lenient, may get null
+    if (dt == null) {
+        throw new ParseException(String.format(""Can not parse date \""%s\"": while it seems to fit format '%s', parsing fails (leniency? %s)"", dateStr, formatStr, _lenient), pos.getErrorIndex());
+    }
+    return dt;
+}","public void test3131() throws Throwable {
+    StdDateFormat stdDateFormat0 = new StdDateFormat();
+    // Undeclared exception!
+    try {
+        stdDateFormat0.parseAsISO8601(""yyyy-MM-dd"", (ParsePosition) null, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"protected Date parseAsISO8601(String dateStr, ParsePosition pos, boolean throwErrors) throws ParseException {
+    /* 21-May-2009, tatu: DateFormat has very strict handling of
+         * timezone  modifiers for ISO-8601. So we need to do some scrubbing.
+         */
+    /* First: do we have ""zulu"" format ('Z' == ""UTC"")? If yes, that's
+         * quite simple because we already set date format timezone to be
+         * UTC, and hence can just strip out 'Z' altogether
+         */
+    int len = dateStr.length();
+    char c = dateStr.charAt(len - 1);
+    DateFormat df;
+    String formatStr;
+    // Need to support ""plain"" date...
+    if (len <= 10 && Character.isDigit(c)) {
+        df = _formatPlain;
+        formatStr = DATE_FORMAT_STR_PLAIN;
+        if (df == null) {
+            df = _formatPlain = _cloneFormat(DATE_FORMAT_PLAIN, formatStr, _timezone, _locale, _lenient);
+        }
+    } else if (c == 'Z') {
+        df = _formatISO8601_z;
+        formatStr = DATE_FORMAT_STR_ISO8601_Z;
+        if (df == null) {
+            df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, formatStr, _timezone, _locale, _lenient);
+        }
+        // may be missing milliseconds... if so, add
+        if (dateStr.charAt(len - 4) == ':') {
+            StringBuilder sb = new StringBuilder(dateStr);
+            sb.insert(len - 1, "".000"");
+            dateStr = sb.toString();
+        }
+    } else {
+        // Let's see if we have timezone indicator or not...
+        if (hasTimeZone(dateStr)) {
+            c = dateStr.charAt(len - 3);
+            if (c == ':') {
+                // remove optional colon
+                // remove colon
+                StringBuilder sb = new StringBuilder(dateStr);
+                sb.delete(len - 3, len - 2);
+                dateStr = sb.toString();
+            } else if (c == '+' || c == '-') {
+                // missing minutes
+                // let's just append '00'
+                dateStr += ""00"";
+            }
+            // Milliseconds partial or missing; and even seconds are optional
+            len = dateStr.length();
+            // remove 'T', '+'/'-' and 4-digit timezone-offset
+            int timeLen = len - dateStr.lastIndexOf('T') - 6;
+            if (timeLen < 12) {
+                // 8 for hh:mm:ss, 4 for .sss
+                // insertion offset, before tz-offset
+                int offset = len - 5;
+                StringBuilder sb = new StringBuilder(dateStr);
+                switch(timeLen) {
+                    case 11:
+                        sb.insert(offset, '0');
+                        break;
+                    case 10:
+                        sb.insert(offset, ""00"");
+                        break;
+                    case // is this legal? (just second fraction marker)
+                    9:
+                        sb.insert(offset, ""000"");
+                        break;
+                    case 8:
+                        sb.insert(offset, "".000"");
+                        break;
+                    case // not legal to have single-digit second
+                    7:
+                        break;
+                    case // probably not legal, but let's allow
+                    6:
+                        sb.insert(offset, ""00.000"");
+                    case // is legal to omit seconds
+                    5:
+                        sb.insert(offset, "":00.000"");
+                }
+                dateStr = sb.toString();
+            }
+            df = _formatISO8601;
+            formatStr = DATE_FORMAT_STR_ISO8601;
+            if (_formatISO8601 == null) {
+                df = _formatISO8601 = _cloneFormat(DATE_FORMAT_ISO8601, formatStr, _timezone, _locale, _lenient);
+            }
+        } else {
+            // If not, plain date. Easiest to just patch 'Z' in the end?
+            StringBuilder sb = new StringBuilder(dateStr);
+            // And possible also millisecond part if missing
+            int timeLen = len - dateStr.lastIndexOf('T') - 1;
+            if (timeLen < 12) {
+                // missing, or partial
+                switch(timeLen) {
+                    case 11:
+                        sb.append('0');
+                    case 10:
+                        sb.append('0');
+                    case 9:
+                        sb.append('0');
+                        break;
+                    default:
+                        sb.append("".000"");
+                }
+            }
+            sb.append('Z');
+            dateStr = sb.toString();
+            df = _formatISO8601_z;
+            formatStr = DATE_FORMAT_STR_ISO8601_Z;
+            if (df == null) {
+                df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, formatStr, _timezone, _locale, _lenient);
+            }
+        }
+    }
+    Date dt = df.parse(dateStr, pos);
+    // 22-Dec-2015, tatu: With non-lenient, may get null
+    if (dt == null) {
+        throw new ParseException(String.format(""Can not parse date \""%s\"": while it seems to fit format '%s', parsing fails (leniency? %s)"", dateStr, formatStr, _lenient), pos.getErrorIndex());
+    }
+    return dt;
+}","public void test3232() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    // Undeclared exception!
+    try {
+        stdDateFormat0.parseAsISO8601(""A##PgC'+`7C~"", (ParsePosition) null, false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"protected Date parseAsISO8601(String dateStr, ParsePosition pos, boolean throwErrors) throws ParseException {
+    /* 21-May-2009, tatu: DateFormat has very strict handling of
+         * timezone  modifiers for ISO-8601. So we need to do some scrubbing.
+         */
+    /* First: do we have ""zulu"" format ('Z' == ""UTC"")? If yes, that's
+         * quite simple because we already set date format timezone to be
+         * UTC, and hence can just strip out 'Z' altogether
+         */
+    int len = dateStr.length();
+    char c = dateStr.charAt(len - 1);
+    DateFormat df;
+    String formatStr;
+    // Need to support ""plain"" date...
+    if (len <= 10 && Character.isDigit(c)) {
+        df = _formatPlain;
+        formatStr = DATE_FORMAT_STR_PLAIN;
+        if (df == null) {
+            df = _formatPlain = _cloneFormat(DATE_FORMAT_PLAIN, formatStr, _timezone, _locale, _lenient);
+        }
+    } else if (c == 'Z') {
+        df = _formatISO8601_z;
+        formatStr = DATE_FORMAT_STR_ISO8601_Z;
+        if (df == null) {
+            df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, formatStr, _timezone, _locale, _lenient);
+        }
+        // may be missing milliseconds... if so, add
+        if (dateStr.charAt(len - 4) == ':') {
+            StringBuilder sb = new StringBuilder(dateStr);
+            sb.insert(len - 1, "".000"");
+            dateStr = sb.toString();
+        }
+    } else {
+        // Let's see if we have timezone indicator or not...
+        if (hasTimeZone(dateStr)) {
+            c = dateStr.charAt(len - 3);
+            if (c == ':') {
+                // remove optional colon
+                // remove colon
+                StringBuilder sb = new StringBuilder(dateStr);
+                sb.delete(len - 3, len - 2);
+                dateStr = sb.toString();
+            } else if (c == '+' || c == '-') {
+                // missing minutes
+                // let's just append '00'
+                dateStr += ""00"";
+            }
+            // Milliseconds partial or missing; and even seconds are optional
+            len = dateStr.length();
+            // remove 'T', '+'/'-' and 4-digit timezone-offset
+            int timeLen = len - dateStr.lastIndexOf('T') - 6;
+            if (timeLen < 12) {
+                // 8 for hh:mm:ss, 4 for .sss
+                // insertion offset, before tz-offset
+                int offset = len - 5;
+                StringBuilder sb = new StringBuilder(dateStr);
+                switch(timeLen) {
+                    case 11:
+                        sb.insert(offset, '0');
+                        break;
+                    case 10:
+                        sb.insert(offset, ""00"");
+                        break;
+                    case // is this legal? (just second fraction marker)
+                    9:
+                        sb.insert(offset, ""000"");
+                        break;
+                    case 8:
+                        sb.insert(offset, "".000"");
+                        break;
+                    case // not legal to have single-digit second
+                    7:
+                        break;
+                    case // probably not legal, but let's allow
+                    6:
+                        sb.insert(offset, ""00.000"");
+                    case // is legal to omit seconds
+                    5:
+                        sb.insert(offset, "":00.000"");
+                }
+                dateStr = sb.toString();
+            }
+            df = _formatISO8601;
+            formatStr = DATE_FORMAT_STR_ISO8601;
+            if (_formatISO8601 == null) {
+                df = _formatISO8601 = _cloneFormat(DATE_FORMAT_ISO8601, formatStr, _timezone, _locale, _lenient);
+            }
+        } else {
+            // If not, plain date. Easiest to just patch 'Z' in the end?
+            StringBuilder sb = new StringBuilder(dateStr);
+            // And possible also millisecond part if missing
+            int timeLen = len - dateStr.lastIndexOf('T') - 1;
+            if (timeLen < 12) {
+                // missing, or partial
+                switch(timeLen) {
+                    case 11:
+                        sb.append('0');
+                    case 10:
+                        sb.append('0');
+                    case 9:
+                        sb.append('0');
+                        break;
+                    default:
+                        sb.append("".000"");
+                }
+            }
+            sb.append('Z');
+            dateStr = sb.toString();
+            df = _formatISO8601_z;
+            formatStr = DATE_FORMAT_STR_ISO8601_Z;
+            if (df == null) {
+                df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, formatStr, _timezone, _locale, _lenient);
+            }
+        }
+    }
+    Date dt = df.parse(dateStr, pos);
+    // 22-Dec-2015, tatu: With non-lenient, may get null
+    if (dt == null) {
+        throw new ParseException(String.format(""Can not parse date \""%s\"": while it seems to fit format '%s', parsing fails (leniency? %s)"", dateStr, formatStr, _lenient), pos.getErrorIndex());
+    }
+    return dt;
+}","public void test3333() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    // Undeclared exception!
+    try {
+        stdDateFormat0.parseAsISO8601(""A=##PgC'+`7C~"", (ParsePosition) null, false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"protected Date parseAsISO8601(String dateStr, ParsePosition pos, boolean throwErrors) throws ParseException {
+    /* 21-May-2009, tatu: DateFormat has very strict handling of
+         * timezone  modifiers for ISO-8601. So we need to do some scrubbing.
+         */
+    /* First: do we have ""zulu"" format ('Z' == ""UTC"")? If yes, that's
+         * quite simple because we already set date format timezone to be
+         * UTC, and hence can just strip out 'Z' altogether
+         */
+    int len = dateStr.length();
+    char c = dateStr.charAt(len - 1);
+    DateFormat df;
+    String formatStr;
+    // Need to support ""plain"" date...
+    if (len <= 10 && Character.isDigit(c)) {
+        df = _formatPlain;
+        formatStr = DATE_FORMAT_STR_PLAIN;
+        if (df == null) {
+            df = _formatPlain = _cloneFormat(DATE_FORMAT_PLAIN, formatStr, _timezone, _locale, _lenient);
+        }
+    } else if (c == 'Z') {
+        df = _formatISO8601_z;
+        formatStr = DATE_FORMAT_STR_ISO8601_Z;
+        if (df == null) {
+            df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, formatStr, _timezone, _locale, _lenient);
+        }
+        // may be missing milliseconds... if so, add
+        if (dateStr.charAt(len - 4) == ':') {
+            StringBuilder sb = new StringBuilder(dateStr);
+            sb.insert(len - 1, "".000"");
+            dateStr = sb.toString();
+        }
+    } else {
+        // Let's see if we have timezone indicator or not...
+        if (hasTimeZone(dateStr)) {
+            c = dateStr.charAt(len - 3);
+            if (c == ':') {
+                // remove optional colon
+                // remove colon
+                StringBuilder sb = new StringBuilder(dateStr);
+                sb.delete(len - 3, len - 2);
+                dateStr = sb.toString();
+            } else if (c == '+' || c == '-') {
+                // missing minutes
+                // let's just append '00'
+                dateStr += ""00"";
+            }
+            // Milliseconds partial or missing; and even seconds are optional
+            len = dateStr.length();
+            // remove 'T', '+'/'-' and 4-digit timezone-offset
+            int timeLen = len - dateStr.lastIndexOf('T') - 6;
+            if (timeLen < 12) {
+                // 8 for hh:mm:ss, 4 for .sss
+                // insertion offset, before tz-offset
+                int offset = len - 5;
+                StringBuilder sb = new StringBuilder(dateStr);
+                switch(timeLen) {
+                    case 11:
+                        sb.insert(offset, '0');
+                        break;
+                    case 10:
+                        sb.insert(offset, ""00"");
+                        break;
+                    case // is this legal? (just second fraction marker)
+                    9:
+                        sb.insert(offset, ""000"");
+                        break;
+                    case 8:
+                        sb.insert(offset, "".000"");
+                        break;
+                    case // not legal to have single-digit second
+                    7:
+                        break;
+                    case // probably not legal, but let's allow
+                    6:
+                        sb.insert(offset, ""00.000"");
+                    case // is legal to omit seconds
+                    5:
+                        sb.insert(offset, "":00.000"");
+                }
+                dateStr = sb.toString();
+            }
+            df = _formatISO8601;
+            formatStr = DATE_FORMAT_STR_ISO8601;
+            if (_formatISO8601 == null) {
+                df = _formatISO8601 = _cloneFormat(DATE_FORMAT_ISO8601, formatStr, _timezone, _locale, _lenient);
+            }
+        } else {
+            // If not, plain date. Easiest to just patch 'Z' in the end?
+            StringBuilder sb = new StringBuilder(dateStr);
+            // And possible also millisecond part if missing
+            int timeLen = len - dateStr.lastIndexOf('T') - 1;
+            if (timeLen < 12) {
+                // missing, or partial
+                switch(timeLen) {
+                    case 11:
+                        sb.append('0');
+                    case 10:
+                        sb.append('0');
+                    case 9:
+                        sb.append('0');
+                        break;
+                    default:
+                        sb.append("".000"");
+                }
+            }
+            sb.append('Z');
+            dateStr = sb.toString();
+            df = _formatISO8601_z;
+            formatStr = DATE_FORMAT_STR_ISO8601_Z;
+            if (df == null) {
+                df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, formatStr, _timezone, _locale, _lenient);
+            }
+        }
+    }
+    Date dt = df.parse(dateStr, pos);
+    // 22-Dec-2015, tatu: With non-lenient, may get null
+    if (dt == null) {
+        throw new ParseException(String.format(""Can not parse date \""%s\"": while it seems to fit format '%s', parsing fails (leniency? %s)"", dateStr, formatStr, _lenient), pos.getErrorIndex());
+    }
+    return dt;
+}","public void test3434() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    // Undeclared exception!
+    try {
+        stdDateFormat0.parseAsISO8601(""A=##XgC'+``7C~"", (ParsePosition) null, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"protected Date parseAsISO8601(String dateStr, ParsePosition pos, boolean throwErrors) throws ParseException {
+    /* 21-May-2009, tatu: DateFormat has very strict handling of
+         * timezone  modifiers for ISO-8601. So we need to do some scrubbing.
+         */
+    /* First: do we have ""zulu"" format ('Z' == ""UTC"")? If yes, that's
+         * quite simple because we already set date format timezone to be
+         * UTC, and hence can just strip out 'Z' altogether
+         */
+    int len = dateStr.length();
+    char c = dateStr.charAt(len - 1);
+    DateFormat df;
+    String formatStr;
+    // Need to support ""plain"" date...
+    if (len <= 10 && Character.isDigit(c)) {
+        df = _formatPlain;
+        formatStr = DATE_FORMAT_STR_PLAIN;
+        if (df == null) {
+            df = _formatPlain = _cloneFormat(DATE_FORMAT_PLAIN, formatStr, _timezone, _locale, _lenient);
+        }
+    } else if (c == 'Z') {
+        df = _formatISO8601_z;
+        formatStr = DATE_FORMAT_STR_ISO8601_Z;
+        if (df == null) {
+            df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, formatStr, _timezone, _locale, _lenient);
+        }
+        // may be missing milliseconds... if so, add
+        if (dateStr.charAt(len - 4) == ':') {
+            StringBuilder sb = new StringBuilder(dateStr);
+            sb.insert(len - 1, "".000"");
+            dateStr = sb.toString();
+        }
+    } else {
+        // Let's see if we have timezone indicator or not...
+        if (hasTimeZone(dateStr)) {
+            c = dateStr.charAt(len - 3);
+            if (c == ':') {
+                // remove optional colon
+                // remove colon
+                StringBuilder sb = new StringBuilder(dateStr);
+                sb.delete(len - 3, len - 2);
+                dateStr = sb.toString();
+            } else if (c == '+' || c == '-') {
+                // missing minutes
+                // let's just append '00'
+                dateStr += ""00"";
+            }
+            // Milliseconds partial or missing; and even seconds are optional
+            len = dateStr.length();
+            // remove 'T', '+'/'-' and 4-digit timezone-offset
+            int timeLen = len - dateStr.lastIndexOf('T') - 6;
+            if (timeLen < 12) {
+                // 8 for hh:mm:ss, 4 for .sss
+                // insertion offset, before tz-offset
+                int offset = len - 5;
+                StringBuilder sb = new StringBuilder(dateStr);
+                switch(timeLen) {
+                    case 11:
+                        sb.insert(offset, '0');
+                        break;
+                    case 10:
+                        sb.insert(offset, ""00"");
+                        break;
+                    case // is this legal? (just second fraction marker)
+                    9:
+                        sb.insert(offset, ""000"");
+                        break;
+                    case 8:
+                        sb.insert(offset, "".000"");
+                        break;
+                    case // not legal to have single-digit second
+                    7:
+                        break;
+                    case // probably not legal, but let's allow
+                    6:
+                        sb.insert(offset, ""00.000"");
+                    case // is legal to omit seconds
+                    5:
+                        sb.insert(offset, "":00.000"");
+                }
+                dateStr = sb.toString();
+            }
+            df = _formatISO8601;
+            formatStr = DATE_FORMAT_STR_ISO8601;
+            if (_formatISO8601 == null) {
+                df = _formatISO8601 = _cloneFormat(DATE_FORMAT_ISO8601, formatStr, _timezone, _locale, _lenient);
+            }
+        } else {
+            // If not, plain date. Easiest to just patch 'Z' in the end?
+            StringBuilder sb = new StringBuilder(dateStr);
+            // And possible also millisecond part if missing
+            int timeLen = len - dateStr.lastIndexOf('T') - 1;
+            if (timeLen < 12) {
+                // missing, or partial
+                switch(timeLen) {
+                    case 11:
+                        sb.append('0');
+                    case 10:
+                        sb.append('0');
+                    case 9:
+                        sb.append('0');
+                        break;
+                    default:
+                        sb.append("".000"");
+                }
+            }
+            sb.append('Z');
+            dateStr = sb.toString();
+            df = _formatISO8601_z;
+            formatStr = DATE_FORMAT_STR_ISO8601_Z;
+            if (df == null) {
+                df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, formatStr, _timezone, _locale, _lenient);
+            }
+        }
+    }
+    Date dt = df.parse(dateStr, pos);
+    // 22-Dec-2015, tatu: With non-lenient, may get null
+    if (dt == null) {
+        throw new ParseException(String.format(""Can not parse date \""%s\"": while it seems to fit format '%s', parsing fails (leniency? %s)"", dateStr, formatStr, _lenient), pos.getErrorIndex());
+    }
+    return dt;
+}","public void test3535() throws Throwable {
+    StdDateFormat stdDateFormat0 = new StdDateFormat();
+    // Undeclared exception!
+    try {
+        stdDateFormat0.parseAsISO8601(""A=##=XgC'+``CC~"", (ParsePosition) null, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"protected Date parseAsISO8601(String dateStr, ParsePosition pos, boolean throwErrors) throws ParseException {
+    /* 21-May-2009, tatu: DateFormat has very strict handling of
+         * timezone  modifiers for ISO-8601. So we need to do some scrubbing.
+         */
+    /* First: do we have ""zulu"" format ('Z' == ""UTC"")? If yes, that's
+         * quite simple because we already set date format timezone to be
+         * UTC, and hence can just strip out 'Z' altogether
+         */
+    int len = dateStr.length();
+    char c = dateStr.charAt(len - 1);
+    DateFormat df;
+    String formatStr;
+    // Need to support ""plain"" date...
+    if (len <= 10 && Character.isDigit(c)) {
+        df = _formatPlain;
+        formatStr = DATE_FORMAT_STR_PLAIN;
+        if (df == null) {
+            df = _formatPlain = _cloneFormat(DATE_FORMAT_PLAIN, formatStr, _timezone, _locale, _lenient);
+        }
+    } else if (c == 'Z') {
+        df = _formatISO8601_z;
+        formatStr = DATE_FORMAT_STR_ISO8601_Z;
+        if (df == null) {
+            df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, formatStr, _timezone, _locale, _lenient);
+        }
+        // may be missing milliseconds... if so, add
+        if (dateStr.charAt(len - 4) == ':') {
+            StringBuilder sb = new StringBuilder(dateStr);
+            sb.insert(len - 1, "".000"");
+            dateStr = sb.toString();
+        }
+    } else {
+        // Let's see if we have timezone indicator or not...
+        if (hasTimeZone(dateStr)) {
+            c = dateStr.charAt(len - 3);
+            if (c == ':') {
+                // remove optional colon
+                // remove colon
+                StringBuilder sb = new StringBuilder(dateStr);
+                sb.delete(len - 3, len - 2);
+                dateStr = sb.toString();
+            } else if (c == '+' || c == '-') {
+                // missing minutes
+                // let's just append '00'
+                dateStr += ""00"";
+            }
+            // Milliseconds partial or missing; and even seconds are optional
+            len = dateStr.length();
+            // remove 'T', '+'/'-' and 4-digit timezone-offset
+            int timeLen = len - dateStr.lastIndexOf('T') - 6;
+            if (timeLen < 12) {
+                // 8 for hh:mm:ss, 4 for .sss
+                // insertion offset, before tz-offset
+                int offset = len - 5;
+                StringBuilder sb = new StringBuilder(dateStr);
+                switch(timeLen) {
+                    case 11:
+                        sb.insert(offset, '0');
+                        break;
+                    case 10:
+                        sb.insert(offset, ""00"");
+                        break;
+                    case // is this legal? (just second fraction marker)
+                    9:
+                        sb.insert(offset, ""000"");
+                        break;
+                    case 8:
+                        sb.insert(offset, "".000"");
+                        break;
+                    case // not legal to have single-digit second
+                    7:
+                        break;
+                    case // probably not legal, but let's allow
+                    6:
+                        sb.insert(offset, ""00.000"");
+                    case // is legal to omit seconds
+                    5:
+                        sb.insert(offset, "":00.000"");
+                }
+                dateStr = sb.toString();
+            }
+            df = _formatISO8601;
+            formatStr = DATE_FORMAT_STR_ISO8601;
+            if (_formatISO8601 == null) {
+                df = _formatISO8601 = _cloneFormat(DATE_FORMAT_ISO8601, formatStr, _timezone, _locale, _lenient);
+            }
+        } else {
+            // If not, plain date. Easiest to just patch 'Z' in the end?
+            StringBuilder sb = new StringBuilder(dateStr);
+            // And possible also millisecond part if missing
+            int timeLen = len - dateStr.lastIndexOf('T') - 1;
+            if (timeLen < 12) {
+                // missing, or partial
+                switch(timeLen) {
+                    case 11:
+                        sb.append('0');
+                    case 10:
+                        sb.append('0');
+                    case 9:
+                        sb.append('0');
+                        break;
+                    default:
+                        sb.append("".000"");
+                }
+            }
+            sb.append('Z');
+            dateStr = sb.toString();
+            df = _formatISO8601_z;
+            formatStr = DATE_FORMAT_STR_ISO8601_Z;
+            if (df == null) {
+                df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, formatStr, _timezone, _locale, _lenient);
+            }
+        }
+    }
+    Date dt = df.parse(dateStr, pos);
+    // 22-Dec-2015, tatu: With non-lenient, may get null
+    if (dt == null) {
+        throw new ParseException(String.format(""Can not parse date \""%s\"": while it seems to fit format '%s', parsing fails (leniency? %s)"", dateStr, formatStr, _lenient), pos.getErrorIndex());
+    }
+    return dt;
+}","public void test3636() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    // Undeclared exception!
+    try {
+        stdDateFormat0.parseAsISO8601(""|0L-n Xi"", (ParsePosition) null, false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"protected Date parseAsISO8601(String dateStr, ParsePosition pos, boolean throwErrors) throws ParseException {
+    /* 21-May-2009, tatu: DateFormat has very strict handling of
+         * timezone  modifiers for ISO-8601. So we need to do some scrubbing.
+         */
+    /* First: do we have ""zulu"" format ('Z' == ""UTC"")? If yes, that's
+         * quite simple because we already set date format timezone to be
+         * UTC, and hence can just strip out 'Z' altogether
+         */
+    int len = dateStr.length();
+    char c = dateStr.charAt(len - 1);
+    DateFormat df;
+    String formatStr;
+    // Need to support ""plain"" date...
+    if (len <= 10 && Character.isDigit(c)) {
+        df = _formatPlain;
+        formatStr = DATE_FORMAT_STR_PLAIN;
+        if (df == null) {
+            df = _formatPlain = _cloneFormat(DATE_FORMAT_PLAIN, formatStr, _timezone, _locale, _lenient);
+        }
+    } else if (c == 'Z') {
+        df = _formatISO8601_z;
+        formatStr = DATE_FORMAT_STR_ISO8601_Z;
+        if (df == null) {
+            df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, formatStr, _timezone, _locale, _lenient);
+        }
+        // may be missing milliseconds... if so, add
+        if (dateStr.charAt(len - 4) == ':') {
+            StringBuilder sb = new StringBuilder(dateStr);
+            sb.insert(len - 1, "".000"");
+            dateStr = sb.toString();
+        }
+    } else {
+        // Let's see if we have timezone indicator or not...
+        if (hasTimeZone(dateStr)) {
+            c = dateStr.charAt(len - 3);
+            if (c == ':') {
+                // remove optional colon
+                // remove colon
+                StringBuilder sb = new StringBuilder(dateStr);
+                sb.delete(len - 3, len - 2);
+                dateStr = sb.toString();
+            } else if (c == '+' || c == '-') {
+                // missing minutes
+                // let's just append '00'
+                dateStr += ""00"";
+            }
+            // Milliseconds partial or missing; and even seconds are optional
+            len = dateStr.length();
+            // remove 'T', '+'/'-' and 4-digit timezone-offset
+            int timeLen = len - dateStr.lastIndexOf('T') - 6;
+            if (timeLen < 12) {
+                // 8 for hh:mm:ss, 4 for .sss
+                // insertion offset, before tz-offset
+                int offset = len - 5;
+                StringBuilder sb = new StringBuilder(dateStr);
+                switch(timeLen) {
+                    case 11:
+                        sb.insert(offset, '0');
+                        break;
+                    case 10:
+                        sb.insert(offset, ""00"");
+                        break;
+                    case // is this legal? (just second fraction marker)
+                    9:
+                        sb.insert(offset, ""000"");
+                        break;
+                    case 8:
+                        sb.insert(offset, "".000"");
+                        break;
+                    case // not legal to have single-digit second
+                    7:
+                        break;
+                    case // probably not legal, but let's allow
+                    6:
+                        sb.insert(offset, ""00.000"");
+                    case // is legal to omit seconds
+                    5:
+                        sb.insert(offset, "":00.000"");
+                }
+                dateStr = sb.toString();
+            }
+            df = _formatISO8601;
+            formatStr = DATE_FORMAT_STR_ISO8601;
+            if (_formatISO8601 == null) {
+                df = _formatISO8601 = _cloneFormat(DATE_FORMAT_ISO8601, formatStr, _timezone, _locale, _lenient);
+            }
+        } else {
+            // If not, plain date. Easiest to just patch 'Z' in the end?
+            StringBuilder sb = new StringBuilder(dateStr);
+            // And possible also millisecond part if missing
+            int timeLen = len - dateStr.lastIndexOf('T') - 1;
+            if (timeLen < 12) {
+                // missing, or partial
+                switch(timeLen) {
+                    case 11:
+                        sb.append('0');
+                    case 10:
+                        sb.append('0');
+                    case 9:
+                        sb.append('0');
+                        break;
+                    default:
+                        sb.append("".000"");
+                }
+            }
+            sb.append('Z');
+            dateStr = sb.toString();
+            df = _formatISO8601_z;
+            formatStr = DATE_FORMAT_STR_ISO8601_Z;
+            if (df == null) {
+                df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, formatStr, _timezone, _locale, _lenient);
+            }
+        }
+    }
+    Date dt = df.parse(dateStr, pos);
+    // 22-Dec-2015, tatu: With non-lenient, may get null
+    if (dt == null) {
+        throw new ParseException(String.format(""Can not parse date \""%s\"": while it seems to fit format '%s', parsing fails (leniency? %s)"", dateStr, formatStr, _lenient), pos.getErrorIndex());
+    }
+    return dt;
+}","public void test3737() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    // Undeclared exception!
+    try {
+        stdDateFormat0.parseAsISO8601(""!%Zms4fvJzAYL& "", (ParsePosition) null, false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"protected Date parseAsISO8601(String dateStr, ParsePosition pos, boolean throwErrors) throws ParseException {
+    /* 21-May-2009, tatu: DateFormat has very strict handling of
+         * timezone  modifiers for ISO-8601. So we need to do some scrubbing.
+         */
+    /* First: do we have ""zulu"" format ('Z' == ""UTC"")? If yes, that's
+         * quite simple because we already set date format timezone to be
+         * UTC, and hence can just strip out 'Z' altogether
+         */
+    int len = dateStr.length();
+    char c = dateStr.charAt(len - 1);
+    DateFormat df;
+    String formatStr;
+    // Need to support ""plain"" date...
+    if (len <= 10 && Character.isDigit(c)) {
+        df = _formatPlain;
+        formatStr = DATE_FORMAT_STR_PLAIN;
+        if (df == null) {
+            df = _formatPlain = _cloneFormat(DATE_FORMAT_PLAIN, formatStr, _timezone, _locale, _lenient);
+        }
+    } else if (c == 'Z') {
+        df = _formatISO8601_z;
+        formatStr = DATE_FORMAT_STR_ISO8601_Z;
+        if (df == null) {
+            df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, formatStr, _timezone, _locale, _lenient);
+        }
+        // may be missing milliseconds... if so, add
+        if (dateStr.charAt(len - 4) == ':') {
+            StringBuilder sb = new StringBuilder(dateStr);
+            sb.insert(len - 1, "".000"");
+            dateStr = sb.toString();
+        }
+    } else {
+        // Let's see if we have timezone indicator or not...
+        if (hasTimeZone(dateStr)) {
+            c = dateStr.charAt(len - 3);
+            if (c == ':') {
+                // remove optional colon
+                // remove colon
+                StringBuilder sb = new StringBuilder(dateStr);
+                sb.delete(len - 3, len - 2);
+                dateStr = sb.toString();
+            } else if (c == '+' || c == '-') {
+                // missing minutes
+                // let's just append '00'
+                dateStr += ""00"";
+            }
+            // Milliseconds partial or missing; and even seconds are optional
+            len = dateStr.length();
+            // remove 'T', '+'/'-' and 4-digit timezone-offset
+            int timeLen = len - dateStr.lastIndexOf('T') - 6;
+            if (timeLen < 12) {
+                // 8 for hh:mm:ss, 4 for .sss
+                // insertion offset, before tz-offset
+                int offset = len - 5;
+                StringBuilder sb = new StringBuilder(dateStr);
+                switch(timeLen) {
+                    case 11:
+                        sb.insert(offset, '0');
+                        break;
+                    case 10:
+                        sb.insert(offset, ""00"");
+                        break;
+                    case // is this legal? (just second fraction marker)
+                    9:
+                        sb.insert(offset, ""000"");
+                        break;
+                    case 8:
+                        sb.insert(offset, "".000"");
+                        break;
+                    case // not legal to have single-digit second
+                    7:
+                        break;
+                    case // probably not legal, but let's allow
+                    6:
+                        sb.insert(offset, ""00.000"");
+                    case // is legal to omit seconds
+                    5:
+                        sb.insert(offset, "":00.000"");
+                }
+                dateStr = sb.toString();
+            }
+            df = _formatISO8601;
+            formatStr = DATE_FORMAT_STR_ISO8601;
+            if (_formatISO8601 == null) {
+                df = _formatISO8601 = _cloneFormat(DATE_FORMAT_ISO8601, formatStr, _timezone, _locale, _lenient);
+            }
+        } else {
+            // If not, plain date. Easiest to just patch 'Z' in the end?
+            StringBuilder sb = new StringBuilder(dateStr);
+            // And possible also millisecond part if missing
+            int timeLen = len - dateStr.lastIndexOf('T') - 1;
+            if (timeLen < 12) {
+                // missing, or partial
+                switch(timeLen) {
+                    case 11:
+                        sb.append('0');
+                    case 10:
+                        sb.append('0');
+                    case 9:
+                        sb.append('0');
+                        break;
+                    default:
+                        sb.append("".000"");
+                }
+            }
+            sb.append('Z');
+            dateStr = sb.toString();
+            df = _formatISO8601_z;
+            formatStr = DATE_FORMAT_STR_ISO8601_Z;
+            if (df == null) {
+                df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, formatStr, _timezone, _locale, _lenient);
+            }
+        }
+    }
+    Date dt = df.parse(dateStr, pos);
+    // 22-Dec-2015, tatu: With non-lenient, may get null
+    if (dt == null) {
+        throw new ParseException(String.format(""Can not parse date \""%s\"": while it seems to fit format '%s', parsing fails (leniency? %s)"", dateStr, formatStr, _lenient), pos.getErrorIndex());
+    }
+    return dt;
+}","public void test3838() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    // Undeclared exception!
+    try {
+        stdDateFormat0.parseAsISO8601(""e0a`@sXfB|"", (ParsePosition) null, false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"protected Date parseAsISO8601(String dateStr, ParsePosition pos, boolean throwErrors) throws ParseException {
+    /* 21-May-2009, tatu: DateFormat has very strict handling of
+         * timezone  modifiers for ISO-8601. So we need to do some scrubbing.
+         */
+    /* First: do we have ""zulu"" format ('Z' == ""UTC"")? If yes, that's
+         * quite simple because we already set date format timezone to be
+         * UTC, and hence can just strip out 'Z' altogether
+         */
+    int len = dateStr.length();
+    char c = dateStr.charAt(len - 1);
+    DateFormat df;
+    String formatStr;
+    // Need to support ""plain"" date...
+    if (len <= 10 && Character.isDigit(c)) {
+        df = _formatPlain;
+        formatStr = DATE_FORMAT_STR_PLAIN;
+        if (df == null) {
+            df = _formatPlain = _cloneFormat(DATE_FORMAT_PLAIN, formatStr, _timezone, _locale, _lenient);
+        }
+    } else if (c == 'Z') {
+        df = _formatISO8601_z;
+        formatStr = DATE_FORMAT_STR_ISO8601_Z;
+        if (df == null) {
+            df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, formatStr, _timezone, _locale, _lenient);
+        }
+        // may be missing milliseconds... if so, add
+        if (dateStr.charAt(len - 4) == ':') {
+            StringBuilder sb = new StringBuilder(dateStr);
+            sb.insert(len - 1, "".000"");
+            dateStr = sb.toString();
+        }
+    } else {
+        // Let's see if we have timezone indicator or not...
+        if (hasTimeZone(dateStr)) {
+            c = dateStr.charAt(len - 3);
+            if (c == ':') {
+                // remove optional colon
+                // remove colon
+                StringBuilder sb = new StringBuilder(dateStr);
+                sb.delete(len - 3, len - 2);
+                dateStr = sb.toString();
+            } else if (c == '+' || c == '-') {
+                // missing minutes
+                // let's just append '00'
+                dateStr += ""00"";
+            }
+            // Milliseconds partial or missing; and even seconds are optional
+            len = dateStr.length();
+            // remove 'T', '+'/'-' and 4-digit timezone-offset
+            int timeLen = len - dateStr.lastIndexOf('T') - 6;
+            if (timeLen < 12) {
+                // 8 for hh:mm:ss, 4 for .sss
+                // insertion offset, before tz-offset
+                int offset = len - 5;
+                StringBuilder sb = new StringBuilder(dateStr);
+                switch(timeLen) {
+                    case 11:
+                        sb.insert(offset, '0');
+                        break;
+                    case 10:
+                        sb.insert(offset, ""00"");
+                        break;
+                    case // is this legal? (just second fraction marker)
+                    9:
+                        sb.insert(offset, ""000"");
+                        break;
+                    case 8:
+                        sb.insert(offset, "".000"");
+                        break;
+                    case // not legal to have single-digit second
+                    7:
+                        break;
+                    case // probably not legal, but let's allow
+                    6:
+                        sb.insert(offset, ""00.000"");
+                    case // is legal to omit seconds
+                    5:
+                        sb.insert(offset, "":00.000"");
+                }
+                dateStr = sb.toString();
+            }
+            df = _formatISO8601;
+            formatStr = DATE_FORMAT_STR_ISO8601;
+            if (_formatISO8601 == null) {
+                df = _formatISO8601 = _cloneFormat(DATE_FORMAT_ISO8601, formatStr, _timezone, _locale, _lenient);
+            }
+        } else {
+            // If not, plain date. Easiest to just patch 'Z' in the end?
+            StringBuilder sb = new StringBuilder(dateStr);
+            // And possible also millisecond part if missing
+            int timeLen = len - dateStr.lastIndexOf('T') - 1;
+            if (timeLen < 12) {
+                // missing, or partial
+                switch(timeLen) {
+                    case 11:
+                        sb.append('0');
+                    case 10:
+                        sb.append('0');
+                    case 9:
+                        sb.append('0');
+                        break;
+                    default:
+                        sb.append("".000"");
+                }
+            }
+            sb.append('Z');
+            dateStr = sb.toString();
+            df = _formatISO8601_z;
+            formatStr = DATE_FORMAT_STR_ISO8601_Z;
+            if (df == null) {
+                df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, formatStr, _timezone, _locale, _lenient);
+            }
+        }
+    }
+    Date dt = df.parse(dateStr, pos);
+    // 22-Dec-2015, tatu: With non-lenient, may get null
+    if (dt == null) {
+        throw new ParseException(String.format(""Can not parse date \""%s\"": while it seems to fit format '%s', parsing fails (leniency? %s)"", dateStr, formatStr, _lenient), pos.getErrorIndex());
+    }
+    return dt;
+}","public void test3939() throws Throwable {
+    StdDateFormat stdDateFormat0 = new StdDateFormat();
+    // Undeclared exception!
+    try {
+        stdDateFormat0.parseAsISO8601(""`=W9p7`9@<"", (ParsePosition) null, false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"protected Date parseAsISO8601(String dateStr, ParsePosition pos, boolean throwErrors) throws ParseException {
+    /* 21-May-2009, tatu: DateFormat has very strict handling of
+         * timezone  modifiers for ISO-8601. So we need to do some scrubbing.
+         */
+    /* First: do we have ""zulu"" format ('Z' == ""UTC"")? If yes, that's
+         * quite simple because we already set date format timezone to be
+         * UTC, and hence can just strip out 'Z' altogether
+         */
+    int len = dateStr.length();
+    char c = dateStr.charAt(len - 1);
+    DateFormat df;
+    String formatStr;
+    // Need to support ""plain"" date...
+    if (len <= 10 && Character.isDigit(c)) {
+        df = _formatPlain;
+        formatStr = DATE_FORMAT_STR_PLAIN;
+        if (df == null) {
+            df = _formatPlain = _cloneFormat(DATE_FORMAT_PLAIN, formatStr, _timezone, _locale, _lenient);
+        }
+    } else if (c == 'Z') {
+        df = _formatISO8601_z;
+        formatStr = DATE_FORMAT_STR_ISO8601_Z;
+        if (df == null) {
+            df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, formatStr, _timezone, _locale, _lenient);
+        }
+        // may be missing milliseconds... if so, add
+        if (dateStr.charAt(len - 4) == ':') {
+            StringBuilder sb = new StringBuilder(dateStr);
+            sb.insert(len - 1, "".000"");
+            dateStr = sb.toString();
+        }
+    } else {
+        // Let's see if we have timezone indicator or not...
+        if (hasTimeZone(dateStr)) {
+            c = dateStr.charAt(len - 3);
+            if (c == ':') {
+                // remove optional colon
+                // remove colon
+                StringBuilder sb = new StringBuilder(dateStr);
+                sb.delete(len - 3, len - 2);
+                dateStr = sb.toString();
+            } else if (c == '+' || c == '-') {
+                // missing minutes
+                // let's just append '00'
+                dateStr += ""00"";
+            }
+            // Milliseconds partial or missing; and even seconds are optional
+            len = dateStr.length();
+            // remove 'T', '+'/'-' and 4-digit timezone-offset
+            int timeLen = len - dateStr.lastIndexOf('T') - 6;
+            if (timeLen < 12) {
+                // 8 for hh:mm:ss, 4 for .sss
+                // insertion offset, before tz-offset
+                int offset = len - 5;
+                StringBuilder sb = new StringBuilder(dateStr);
+                switch(timeLen) {
+                    case 11:
+                        sb.insert(offset, '0');
+                        break;
+                    case 10:
+                        sb.insert(offset, ""00"");
+                        break;
+                    case // is this legal? (just second fraction marker)
+                    9:
+                        sb.insert(offset, ""000"");
+                        break;
+                    case 8:
+                        sb.insert(offset, "".000"");
+                        break;
+                    case // not legal to have single-digit second
+                    7:
+                        break;
+                    case // probably not legal, but let's allow
+                    6:
+                        sb.insert(offset, ""00.000"");
+                    case // is legal to omit seconds
+                    5:
+                        sb.insert(offset, "":00.000"");
+                }
+                dateStr = sb.toString();
+            }
+            df = _formatISO8601;
+            formatStr = DATE_FORMAT_STR_ISO8601;
+            if (_formatISO8601 == null) {
+                df = _formatISO8601 = _cloneFormat(DATE_FORMAT_ISO8601, formatStr, _timezone, _locale, _lenient);
+            }
+        } else {
+            // If not, plain date. Easiest to just patch 'Z' in the end?
+            StringBuilder sb = new StringBuilder(dateStr);
+            // And possible also millisecond part if missing
+            int timeLen = len - dateStr.lastIndexOf('T') - 1;
+            if (timeLen < 12) {
+                // missing, or partial
+                switch(timeLen) {
+                    case 11:
+                        sb.append('0');
+                    case 10:
+                        sb.append('0');
+                    case 9:
+                        sb.append('0');
+                        break;
+                    default:
+                        sb.append("".000"");
+                }
+            }
+            sb.append('Z');
+            dateStr = sb.toString();
+            df = _formatISO8601_z;
+            formatStr = DATE_FORMAT_STR_ISO8601_Z;
+            if (df == null) {
+                df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, formatStr, _timezone, _locale, _lenient);
+            }
+        }
+    }
+    Date dt = df.parse(dateStr, pos);
+    // 22-Dec-2015, tatu: With non-lenient, may get null
+    if (dt == null) {
+        throw new ParseException(String.format(""Can not parse date \""%s\"": while it seems to fit format '%s', parsing fails (leniency? %s)"", dateStr, formatStr, _lenient), pos.getErrorIndex());
+    }
+    return dt;
+}","public void test4040() throws Throwable {
+    StdDateFormat stdDateFormat0 = new StdDateFormat();
+    // Undeclared exception!
+    try {
+        stdDateFormat0.parseAsISO8601("","", (ParsePosition) null, false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"protected Date parseAsISO8601(String dateStr, ParsePosition pos, boolean throwErrors) throws ParseException {
+    /* 21-May-2009, tatu: DateFormat has very strict handling of
+         * timezone  modifiers for ISO-8601. So we need to do some scrubbing.
+         */
+    /* First: do we have ""zulu"" format ('Z' == ""UTC"")? If yes, that's
+         * quite simple because we already set date format timezone to be
+         * UTC, and hence can just strip out 'Z' altogether
+         */
+    int len = dateStr.length();
+    char c = dateStr.charAt(len - 1);
+    DateFormat df;
+    String formatStr;
+    // Need to support ""plain"" date...
+    if (len <= 10 && Character.isDigit(c)) {
+        df = _formatPlain;
+        formatStr = DATE_FORMAT_STR_PLAIN;
+        if (df == null) {
+            df = _formatPlain = _cloneFormat(DATE_FORMAT_PLAIN, formatStr, _timezone, _locale, _lenient);
+        }
+    } else if (c == 'Z') {
+        df = _formatISO8601_z;
+        formatStr = DATE_FORMAT_STR_ISO8601_Z;
+        if (df == null) {
+            df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, formatStr, _timezone, _locale, _lenient);
+        }
+        // may be missing milliseconds... if so, add
+        if (dateStr.charAt(len - 4) == ':') {
+            StringBuilder sb = new StringBuilder(dateStr);
+            sb.insert(len - 1, "".000"");
+            dateStr = sb.toString();
+        }
+    } else {
+        // Let's see if we have timezone indicator or not...
+        if (hasTimeZone(dateStr)) {
+            c = dateStr.charAt(len - 3);
+            if (c == ':') {
+                // remove optional colon
+                // remove colon
+                StringBuilder sb = new StringBuilder(dateStr);
+                sb.delete(len - 3, len - 2);
+                dateStr = sb.toString();
+            } else if (c == '+' || c == '-') {
+                // missing minutes
+                // let's just append '00'
+                dateStr += ""00"";
+            }
+            // Milliseconds partial or missing; and even seconds are optional
+            len = dateStr.length();
+            // remove 'T', '+'/'-' and 4-digit timezone-offset
+            int timeLen = len - dateStr.lastIndexOf('T') - 6;
+            if (timeLen < 12) {
+                // 8 for hh:mm:ss, 4 for .sss
+                // insertion offset, before tz-offset
+                int offset = len - 5;
+                StringBuilder sb = new StringBuilder(dateStr);
+                switch(timeLen) {
+                    case 11:
+                        sb.insert(offset, '0');
+                        break;
+                    case 10:
+                        sb.insert(offset, ""00"");
+                        break;
+                    case // is this legal? (just second fraction marker)
+                    9:
+                        sb.insert(offset, ""000"");
+                        break;
+                    case 8:
+                        sb.insert(offset, "".000"");
+                        break;
+                    case // not legal to have single-digit second
+                    7:
+                        break;
+                    case // probably not legal, but let's allow
+                    6:
+                        sb.insert(offset, ""00.000"");
+                    case // is legal to omit seconds
+                    5:
+                        sb.insert(offset, "":00.000"");
+                }
+                dateStr = sb.toString();
+            }
+            df = _formatISO8601;
+            formatStr = DATE_FORMAT_STR_ISO8601;
+            if (_formatISO8601 == null) {
+                df = _formatISO8601 = _cloneFormat(DATE_FORMAT_ISO8601, formatStr, _timezone, _locale, _lenient);
+            }
+        } else {
+            // If not, plain date. Easiest to just patch 'Z' in the end?
+            StringBuilder sb = new StringBuilder(dateStr);
+            // And possible also millisecond part if missing
+            int timeLen = len - dateStr.lastIndexOf('T') - 1;
+            if (timeLen < 12) {
+                // missing, or partial
+                switch(timeLen) {
+                    case 11:
+                        sb.append('0');
+                    case 10:
+                        sb.append('0');
+                    case 9:
+                        sb.append('0');
+                        break;
+                    default:
+                        sb.append("".000"");
+                }
+            }
+            sb.append('Z');
+            dateStr = sb.toString();
+            df = _formatISO8601_z;
+            formatStr = DATE_FORMAT_STR_ISO8601_Z;
+            if (df == null) {
+                df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, formatStr, _timezone, _locale, _lenient);
+            }
+        }
+    }
+    Date dt = df.parse(dateStr, pos);
+    // 22-Dec-2015, tatu: With non-lenient, may get null
+    if (dt == null) {
+        throw new ParseException(String.format(""Can not parse date \""%s\"": while it seems to fit format '%s', parsing fails (leniency? %s)"", dateStr, formatStr, _lenient), pos.getErrorIndex());
+    }
+    return dt;
+}","public void test4141() throws Throwable {
+    StdDateFormat stdDateFormat0 = new StdDateFormat();
+    ParsePosition parsePosition0 = new ParsePosition(2);
+    try {
+        stdDateFormat0.parseAsISO8601(""yyyMM-dd"", parsePosition0, false);
+        fail(""Expecting exception: ParseException"");
+    } catch (ParseException e) {
+        //
+        // Can not parse date \""yyyMM:00.000-dd00\"": while it seems to fit format 'yyyy-MM-dd'T'HH:mm:ss.SSSZ', parsing fails (leniency? null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.util.StdDateFormat"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Public API, parsing
+    /**********************************************************
+     */
+@Override
+public Date parse(String dateStr) throws ParseException {
+    dateStr = dateStr.trim();
+    ParsePosition pos = new ParsePosition(0);
+    Date dt;
+    if (looksLikeISO8601(dateStr)) {
+        // also includes ""plain""
+        dt = parseAsISO8601(dateStr, pos, true);
+    } else {
+        // Also consider ""stringified"" simple time stamp
+        int i = dateStr.length();
+        while (--i >= 0) {
+            char ch = dateStr.charAt(i);
+            if (ch < '0' || ch > '9') {
+                // 07-Aug-2013, tatu: And [databind#267] points out that negative numbers should also work
+                if (i > 0 || ch != '-') {
+                    break;
+                }
+            }
+        }
+        if ((i < 0) && // let's just assume negative numbers are fine (can't be RFC-1123 anyway); check length for positive
+        (dateStr.charAt(0) == '-' || NumberInput.inLongRange(dateStr, false))) {
+            dt = new Date(Long.parseLong(dateStr));
+        } else {
+            // Otherwise, fall back to using RFC 1123
+            dt = parseAsRFC1123(dateStr, pos);
+        }
+    }
+    if (dt != null) {
+        return dt;
+    }
+    StringBuilder sb = new StringBuilder();
+    for (String f : ALL_FORMATS) {
+        if (sb.length() > 0) {
+            sb.append(""\"", \"""");
+        } else {
+            sb.append('""');
+        }
+        sb.append(f);
+    }
+    sb.append('""');
+    throw new ParseException(String.format(""Can not parse date \""%s\"": not compatible with any of standard forms (%s)"", dateStr, sb.toString()), pos.getErrorIndex());
+}","public void test4242() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    try {
+        stdDateFormat0.parse(""my|Ho"");
+        fail(""Expecting exception: ParseException"");
+    } catch (ParseException e) {
+        //
+        // Can not parse date \""my|Ho\"": not compatible with any of standard forms (\""yyyy-MM-dd'T'HH:mm:ss.SSSZ\"", \""yyyy-MM-dd'T'HH:mm:ss.SSS'Z'\"", \""EEE, dd MMM yyyy HH:mm:ss zzz\"", \""yyyy-MM-dd\"")
+        //
+        verifyException(""com.fasterxml.jackson.databind.util.StdDateFormat"", e);
+    }
+}",""

@@ -1,0 +1,1246 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test0000,"public void test0000() throws Throwable {
+    long long0 = NumberUtils.max((-3664L), (-3664L), (-3664L));
+    assertEquals((-3664L), long0);
+}",0,"assertEquals(0, long0)"
+project,0,test0011,"public void test0011() throws Throwable {
+    byte byte0 = NumberUtils.min((byte) (-114), (byte) (-72), (byte) (-112));
+    assertEquals((byte) (-114), byte0);
+}",0,
+project,0,test0022,"public void test0022() throws Throwable {
+    short short0 = NumberUtils.min((short) 0, (short) 86, (short) 86);
+    assertEquals((short) 0, short0);
+}",0,
+project,0,test0033,"public void test0033() throws Throwable {
+    long long0 = NumberUtils.min((-1042L), (-1042L), (-1718L));
+    assertEquals((-1718L), long0);
+}",0,"assertEquals(1, long0)"
+project,0,test0044,"public void test0044() throws Throwable {
+    try {
+        NumberUtils.createNumber(""%.J^M#DI@yl\""o^"");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // %.J^M#DI@yl\""o^ is not a valid number.
+        //
+        verifyException(""org.apache.commons.lang3.math.NumberUtils"", e);
+    }
+}",0,
+project,0,test0055,"public void test0055() throws Throwable {
+    try {
+        NumberUtils.createNumber(""gF"");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // gF is not a valid number.
+        //
+        verifyException(""org.apache.commons.lang3.math.NumberUtils"", e);
+    }
+}",0,
+project,0,test0066,"public void test0066() throws Throwable {
+    short short0 = NumberUtils.toShort(""%.J^M#DI@yl\""o^"", (short) 0);
+    assertEquals((short) 0, short0);
+}",0,assertNotNull(short0)
+project,0,test0077,"public void test0077() throws Throwable {
+    short short0 = NumberUtils.toShort(""5"");
+    assertEquals((short) 5, short0);
+}",0,assertNotNull(short0)
+project,0,test0088,"public void test0088() throws Throwable {
+    long long0 = NumberUtils.toLong(""'&;V0%Jd}BE$.w"", (-1L));
+    assertEquals((-1L), long0);
+}",1,
+project,0,test0099,"public void test0099() throws Throwable {
+    long long0 = NumberUtils.toLong(""8"");
+    assertEquals(8L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test01010,"public void test01010() throws Throwable {
+    int int0 = NumberUtils.toInt(""-s?Nb;k="", 0);
+    assertEquals(0, int0);
+}",1,
+project,0,test01111,"public void test01111() throws Throwable {
+    NumberUtils numberUtils0 = new NumberUtils();
+    int int0 = NumberUtils.toInt(""-s?Nb;k="", (int) numberUtils0.SHORT_MINUS_ONE);
+    assertEquals((-1), int0);
+}",1,
+project,0,test01212,"public void test01212() throws Throwable {
+    float float0 = NumberUtils.toFloat("">^(D`^eJPu@"", (-3172.517F));
+    assertEquals((-3172.517F), float0, 0.01F);
+}",1,
+project,0,test01313,"public void test01313() throws Throwable {
+    double double0 = NumberUtils.toDouble("":/C}"", (-2437.57933038));
+    assertEquals((-2437.57933038), double0, 0.01);
+}",1,
+project,0,test01414,"public void test01414() throws Throwable {
+    double double0 = NumberUtils.toDouble(""6F"");
+    assertEquals(6.0, double0, 0.01);
+}",0,
+project,0,test01515,"public void test01515() throws Throwable {
+    byte byte0 = NumberUtils.toByte("""", (byte) (-33));
+    assertEquals((byte) (-33), byte0);
+}",0,
+project,0,test01616,"public void test01616() throws Throwable {
+    short[] shortArray0 = new short[1];
+    shortArray0[0] = (short) 803;
+    short short0 = NumberUtils.min(shortArray0);
+    assertEquals((short) 803, short0);
+}",1,
+project,0,test01717,"public void test01717() throws Throwable {
+    long[] longArray0 = new long[3];
+    longArray0[0] = (long) (byte) 39;
+    longArray0[1] = (long) 39;
+    longArray0[2] = (long) (byte) 39;
+    long long0 = NumberUtils.min(longArray0);
+    assertEquals(39L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test01818,"public void test01818() throws Throwable {
+    long[] longArray0 = new long[9];
+    longArray0[4] = (-947L);
+    long long0 = NumberUtils.min(longArray0);
+    assertEquals((-947L), long0);
+}",0,
+project,0,test01919,"public void test01919() throws Throwable {
+    int[] intArray0 = new int[7];
+    intArray0[0] = (int) (short) 2022;
+    intArray0[1] = (int) (short) 2022;
+    intArray0[2] = (int) (short) 2022;
+    intArray0[3] = (int) (short) 2022;
+    intArray0[4] = (int) (short) 2022;
+    intArray0[5] = (int) (short) 2022;
+    intArray0[6] = (int) (short) 2022;
+    int int0 = NumberUtils.min(intArray0);
+    assertEquals(2022, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test02020,"public void test02020() throws Throwable {
+    NumberUtils numberUtils0 = new NumberUtils();
+    int[] intArray0 = new int[3];
+    intArray0[0] = (int) (short) numberUtils0.SHORT_MINUS_ONE;
+    int int0 = NumberUtils.min(intArray0);
+    assertEquals((-1), int0);
+}",0,"assertEquals(1, int0)"
+project,0,test02121,"public void test02121() throws Throwable {
+    float[] floatArray0 = new float[1];
+    floatArray0[0] = (float) 138L;
+    float float0 = NumberUtils.min(floatArray0);
+    assertEquals(138.0F, float0, 0.01F);
+}",0,
+project,0,test02222,"public void test02222() throws Throwable {
+    NumberUtils numberUtils0 = new NumberUtils();
+    float[] floatArray0 = new float[5];
+    floatArray0[1] = (float) (long) numberUtils0.LONG_MINUS_ONE;
+    float float0 = NumberUtils.min(floatArray0);
+    assertEquals((-1.0F), float0, 0.01F);
+}",1,
+project,0,test02323,"public void test02323() throws Throwable {
+    double[] doubleArray0 = new double[1];
+    doubleArray0[0] = (double) (byte) 36;
+    double double0 = NumberUtils.min(doubleArray0);
+    assertEquals(36.0, double0, 0.01);
+}",0,
+project,0,test02424,"public void test02424() throws Throwable {
+    byte[] byteArray0 = new byte[4];
+    byteArray0[0] = (byte) 85;
+    byteArray0[1] = (byte) 27;
+    byteArray0[2] = (byte) 68;
+    byteArray0[3] = (byte) 117;
+    byte byte0 = NumberUtils.min(byteArray0);
+    assertEquals((byte) 27, byte0);
+}",0,"assertEquals(byteArray0, byte0)"
+project,0,test02525,"public void test02525() throws Throwable {
+    short short0 = NumberUtils.min((short) 101, (short) 101, (short) 995);
+    assertEquals((short) 101, short0);
+}",0,
+project,0,test02626,"public void test02626() throws Throwable {
+    long long0 = NumberUtils.min(107L, 3488L, 3488L);
+    assertEquals(107L, long0);
+}",0,"assertEquals(0, long0)"
+project,0,test02727,"public void test02727() throws Throwable {
+    int int0 = NumberUtils.min(0, 0, 1191);
+    assertEquals(0, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test02828,"public void test02828() throws Throwable {
+    float float0 = NumberUtils.min(1349.4127F, 1349.4127F, 1349.4127F);
+    assertEquals(1349.4127F, float0, 0.01F);
+}",0,
+project,0,test02929,"public void test02929() throws Throwable {
+    float float0 = NumberUtils.min((-1827.8975F), (-1827.8975F), (-2771.039F));
+    assertEquals((-2771.039F), float0, 0.01F);
+}",0,
+project,0,test03030,"public void test03030() throws Throwable {
+    double double0 = NumberUtils.min((double) 1.0F, (double) 1.0F, (double) 1.0F);
+    assertEquals(1.0, double0, 0.01);
+}",0,
+project,0,test03131,"public void test03131() throws Throwable {
+    double double0 = NumberUtils.min(1831.9964283, (-234.46364), 1831.9964283);
+    assertEquals((-234.46364), double0, 0.01);
+}",0,
+project,0,test03232,"public void test03232() throws Throwable {
+    byte byte0 = NumberUtils.min((byte) 1, (byte) 1, (byte) 1);
+    assertEquals((byte) 1, byte0);
+}",0,assertNotNull(byte0)
+project,0,test03333,"public void test03333() throws Throwable {
+    short[] shortArray0 = new short[9];
+    shortArray0[1] = (short) 4112;
+    short short0 = NumberUtils.max(shortArray0);
+    assertEquals((short) 4112, short0);
+}",1,
+project,0,test03434,"public void test03434() throws Throwable {
+    short[] shortArray0 = new short[1];
+    shortArray0[0] = (short) (-635);
+    short short0 = NumberUtils.max(shortArray0);
+    assertEquals((short) (-635), short0);
+}",1,
+project,0,test03535,"public void test03535() throws Throwable {
+    long[] longArray0 = new long[6];
+    longArray0[0] = (long) (byte) 117;
+    long long0 = NumberUtils.max(longArray0);
+    assertEquals(117L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test03636,"public void test03636() throws Throwable {
+    long[] longArray0 = new long[1];
+    longArray0[0] = (-691L);
+    long long0 = NumberUtils.max(longArray0);
+    assertEquals((-691L), long0);
+}",0,"assertEquals(1, long0)"
+project,0,test03737,"public void test03737() throws Throwable {
+    int[] intArray0 = new int[6];
+    intArray0[1] = 69;
+    int int0 = NumberUtils.max(intArray0);
+    assertEquals(69, int0);
+}",1,
+project,0,test03838,"public void test03838() throws Throwable {
+    int[] intArray0 = new int[1];
+    intArray0[0] = (-1);
+    int int0 = NumberUtils.max(intArray0);
+    assertEquals((-1), int0);
+}",1,
+project,0,test03939,"public void test03939() throws Throwable {
+    NumberUtils numberUtils0 = new NumberUtils();
+    float[] floatArray0 = new float[5];
+    floatArray0[0] = (float) numberUtils0.FLOAT_ONE;
+    float float0 = NumberUtils.max(floatArray0);
+    assertEquals(1.0F, float0, 0.01F);
+}",1,
+project,0,test04040,"public void test04040() throws Throwable {
+    float[] floatArray0 = new float[2];
+    floatArray0[0] = (-1.0F);
+    floatArray0[1] = (-1.0F);
+    float float0 = NumberUtils.max(floatArray0);
+    assertEquals((-1.0F), float0, 0.01F);
+}",1,
+project,0,test04141,"public void test04141() throws Throwable {
+    NumberUtils numberUtils0 = new NumberUtils();
+    double[] doubleArray0 = new double[3];
+    doubleArray0[0] = (double) (short) numberUtils0.SHORT_ONE;
+    double double0 = NumberUtils.max(doubleArray0);
+    assertEquals(1.0, double0, 0.01);
+}",1,
+project,0,test04242,"public void test04242() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[0] = (double) (short) (-925);
+    doubleArray0[1] = (-1.0);
+    double double0 = NumberUtils.max(doubleArray0);
+    assertEquals((-1.0), double0, 0.01);
+}",1,
+project,0,test04343,"public void test04343() throws Throwable {
+    byte[] byteArray0 = new byte[9];
+    byteArray0[0] = (byte) 36;
+    byte byte0 = NumberUtils.max(byteArray0);
+    assertEquals((byte) 36, byte0);
+}",1,
+project,0,test04444,"public void test04444() throws Throwable {
+    byte[] byteArray0 = new byte[9];
+    byteArray0[0] = (byte) (-93);
+    byteArray0[1] = (byte) (-93);
+    byteArray0[2] = (byte) (-93);
+    byteArray0[3] = (byte) (-93);
+    byteArray0[4] = (byte) (-93);
+    byteArray0[5] = (byte) (-93);
+    byteArray0[6] = (byte) (-56);
+    byteArray0[7] = (byte) (-93);
+    byteArray0[8] = (byte) (-93);
+    byte byte0 = NumberUtils.max(byteArray0);
+    assertEquals((byte) (-56), byte0);
+}",0,"assertEquals(byteArray0, byte0)"
+project,0,test04545,"public void test04545() throws Throwable {
+    short short0 = NumberUtils.max((short) (byte) (-119), (short) (byte) (-119), (short) (byte) (-119));
+    assertEquals((short) (-119), short0);
+}",0,assertNotNull(short0)
+project,0,test04646,"public void test04646() throws Throwable {
+    long long0 = NumberUtils.max((-193L), (-193L), 0L);
+    assertEquals(0L, long0);
+}",0,"assertEquals(0, long0)"
+project,0,test04747,"public void test04747() throws Throwable {
+    int int0 = NumberUtils.max((int) (byte) (-69), 0, 0);
+    assertEquals(0, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test04848,"public void test04848() throws Throwable {
+    int int0 = NumberUtils.max((-2354), (-2354), (-1684));
+    assertEquals((-1684), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test04949,"public void test04949() throws Throwable {
+    float float0 = NumberUtils.max(0.0F, 0.0F, (-3004.806F));
+    assertEquals(0.0F, float0, 0.01F);
+}",0,
+project,0,test05050,"public void test05050() throws Throwable {
+    float float0 = NumberUtils.max((-1.0F), (-1.0F), (-1.0F));
+    assertEquals((-1.0F), float0, 0.01F);
+}",0,
+project,0,test05151,"public void test05151() throws Throwable {
+    double double0 = NumberUtils.max(3834.953739427214, 0.0, 710.875217);
+    assertEquals(3834.953739427214, double0, 0.01);
+}",0,
+project,0,test05252,"public void test05252() throws Throwable {
+    double double0 = NumberUtils.max((double) (-1483L), (-5807.7), (-5807.7));
+    assertEquals((-1483.0), double0, 0.01);
+}",0,
+project,0,test05353,"public void test05353() throws Throwable {
+    byte byte0 = NumberUtils.max((byte) 47, (byte) 0, (byte) 0);
+    assertEquals((byte) 47, byte0);
+}",0,
+project,0,test05454,"public void test05454() throws Throwable {
+    byte byte0 = NumberUtils.max((byte) (-38), (byte) (-8), (byte) (-8));
+    assertEquals((byte) (-8), byte0);
+}",0,assertNotNull(byte0)
+project,0,test05555,"public void test05555() throws Throwable {
+    Number number0 = NumberUtils.createNumber(""-0"");
+    assertEquals(0, number0);
+}",0,
+project,0,test05656,"public void test05656() throws Throwable {
+    Long long0 = NumberUtils.createLong(""-0"");
+    assertEquals(0L, (long) long0);
+}",1,
+project,0,test05757,"public void test05757() throws Throwable {
+    Integer integer0 = NumberUtils.createInteger(""0"");
+    assertEquals(0, (int) integer0);
+}",1,
+project,0,test05858,"public void test05858() throws Throwable {
+    Integer integer0 = NumberUtils.createInteger(""8"");
+    assertEquals(8, (int) integer0);
+}",1,
+project,0,test05959,"public void test05959() throws Throwable {
+    Float float0 = NumberUtils.createFloat(""-0"");
+    assertEquals(-0.0F, (float) float0, 0.01F);
+}",1,
+project,0,test06060,"public void test06060() throws Throwable {
+    Float float0 = NumberUtils.createFloat(""6F"");
+    assertEquals(6.0F, (float) float0, 0.01F);
+}",0,
+project,0,test06161,"public void test06161() throws Throwable {
+    Double double0 = NumberUtils.createDouble(""-0"");
+    assertEquals(-0.0, (double) double0, 0.01);
+}",1,
+project,0,test06262,"public void test06262() throws Throwable {
+    Double double0 = NumberUtils.createDouble(""6F"");
+    assertEquals(6.0, (double) double0, 0.01);
+}",1,
+project,0,test06767,"public void test06767() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberUtils.createLong("""");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // Zero length string
+        //
+        verifyException(""java.lang.Long"", e);
+    }
+}",1,
+project,0,test06868,"public void test06868() throws Throwable {
+    boolean boolean0 = NumberUtils.isDigits(""0xmS:p0sP"");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test06969,"public void test06969() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberUtils.createBigDecimal(""1m`JpWR"");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.math.BigDecimal"", e);
+    }
+}",1,
+project,0,test07070,"public void test07070() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberUtils.createBigInteger(""d?8EUKCpjg1~95Bn"");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // For input string: \""d?8EUKC\""
+        //
+        verifyException(""java.lang.NumberFormatException"", e);
+    }
+}",1,
+project,0,test07171,"public void test07171() throws Throwable {
+    Long long0 = NumberUtils.createLong(""0x6F"");
+    assertEquals(111L, (long) long0);
+}",1,
+project,0,test07272,"public void test07272() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberUtils.createInteger("""");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // Zero length string
+        //
+        verifyException(""java.lang.Integer"", e);
+    }
+}",1,
+project,0,test07373,"public void test07373() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberUtils.createDouble("";21W$eQ>{"");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+    }
+}",1,
+project,0,test07474,"public void test07474() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberUtils.createFloat(""e4Q*"");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+    }
+}",0,
+project,0,test07575,"public void test07575() throws Throwable {
+    short short0 = NumberUtils.toShort((String) null, (short) 2022);
+    assertEquals((short) 2022, short0);
+}",0,
+project,0,test07676,"public void test07676() throws Throwable {
+    short short0 = NumberUtils.toShort(""aW+na=fT}2ru86SS1"", (short) (byte) (-114));
+    assertEquals((short) (-114), short0);
+}",0,
+project,0,test07777,"public void test07777() throws Throwable {
+    byte byte0 = NumberUtils.toByte("""", (byte) 0);
+    assertEquals((byte) 0, byte0);
+}",0,
+project,0,test07878,"public void test07878() throws Throwable {
+    byte byte0 = NumberUtils.toByte((String) null, (byte) 81);
+    assertEquals((byte) 81, byte0);
+}",0,
+project,0,test07979,"public void test07979() throws Throwable {
+    double double0 = NumberUtils.toDouble((String) null, (double) (short) 0);
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test08080,"public void test08080() throws Throwable {
+    double double0 = NumberUtils.toDouble(""|=cMEo\n`&r_a/aeEs`"", 1.0);
+    assertEquals(1.0, double0, 0.01);
+}",1,
+project,0,test08181,"public void test08181() throws Throwable {
+    float float0 = NumberUtils.toFloat((String) null, 354.7F);
+    assertEquals(354.7F, float0, 0.01F);
+}",0,
+project,0,test08282,"public void test08282() throws Throwable {
+    float float0 = NumberUtils.toFloat("""", (float) (byte) 0);
+    assertEquals(0.0F, float0, 0.01F);
+}",0,
+project,0,test08383,"public void test08383() throws Throwable {
+    long long0 = NumberUtils.toLong((String) null, 138L);
+    assertEquals(138L, long0);
+}",1,
+project,0,test08484,"public void test08484() throws Throwable {
+    long long0 = NumberUtils.toLong(""kxuF%msTz5kUs"", 0L);
+    assertEquals(0L, long0);
+}",1,
+project,0,test08585,"public void test08585() throws Throwable {
+    int int0 = NumberUtils.toInt((String) null, 2);
+    assertEquals(2, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test08686,"public void test08686() throws Throwable {
+    boolean boolean0 = NumberUtils.isNumber(""-e"");
+    assertFalse(boolean0);
+}",0,
+project,0,test08787,"public void test08787() throws Throwable {
+    boolean boolean0 = NumberUtils.isNumber(""F"");
+    assertFalse(boolean0);
+}",0,
+project,0,test08888,"public void test08888() throws Throwable {
+    boolean boolean0 = NumberUtils.isNumber(""--0x"");
+    assertFalse(boolean0);
+}",0,
+project,0,test08989,"public void test08989() throws Throwable {
+    boolean boolean0 = NumberUtils.isNumber(""+yCv[z%9^Cv"");
+    assertFalse(boolean0);
+}",0,
+project,0,test09090,"public void test09090() throws Throwable {
+    boolean boolean0 = NumberUtils.isNumber(""?6$O!cK K`1]xbsQ8"");
+    assertFalse(boolean0);
+}",0,
+project,0,test09191,"public void test09191() throws Throwable {
+    boolean boolean0 = NumberUtils.isNumber(""eYQ50O^e+=3pn_3O"");
+    assertFalse(boolean0);
+}",0,
+project,0,test09292,"public void test09292() throws Throwable {
+    boolean boolean0 = NumberUtils.isNumber(""-"");
+    assertFalse(boolean0);
+}",0,
+project,0,test09393,"public void test09393() throws Throwable {
+    boolean boolean0 = NumberUtils.isNumber(""0xAborting to protect against StackOverflowError - output of one loop is the input of another"");
+    assertFalse(boolean0);
+}",0,
+project,0,test09494,"public void test09494() throws Throwable {
+    boolean boolean0 = NumberUtils.isNumber(""0x-0x"");
+    assertFalse(boolean0);
+}",0,
+project,0,test09595,"public void test09595() throws Throwable {
+    boolean boolean0 = NumberUtils.isNumber(""-0x"");
+    assertFalse(boolean0);
+}",0,
+project,0,test09696,"public void test09696() throws Throwable {
+    boolean boolean0 = NumberUtils.isNumber(""-04"");
+    assertTrue(boolean0);
+}",0,
+project,0,test09797,"public void test09797() throws Throwable {
+    boolean boolean0 = NumberUtils.isNumber(""0x0x"");
+    assertFalse(boolean0);
+}",0,
+project,0,test09898,"public void test09898() throws Throwable {
+    boolean boolean0 = NumberUtils.isNumber(""--"");
+    assertFalse(boolean0);
+}",0,
+project,0,test09999,"public void test09999() throws Throwable {
+    boolean boolean0 = NumberUtils.isNumber((String) null);
+    assertFalse(boolean0);
+}",0,
+project,0,test100100,"public void test100100() throws Throwable {
+    boolean boolean0 = NumberUtils.isNumber(""..."");
+    assertFalse(boolean0);
+}",0,
+project,0,test101101,"public void test101101() throws Throwable {
+    boolean boolean0 = NumberUtils.isDigits(""0"");
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test102102,"public void test102102() throws Throwable {
+    boolean boolean0 = NumberUtils.isDigits("""");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test103103,"public void test103103() throws Throwable {
+    byte byte0 = NumberUtils.max((byte) (-87), (byte) (-35), (byte) 0);
+    assertEquals((byte) 0, byte0);
+}",0,assertNotNull(byte0)
+project,0,test104104,"public void test104104() throws Throwable {
+    byte byte0 = NumberUtils.max((byte) 0, (byte) 0, (byte) (-46));
+    assertEquals((byte) 0, byte0);
+}",0,assertNotNull(byte0)
+project,0,test105105,"public void test105105() throws Throwable {
+    short short0 = NumberUtils.max((short) 0, (short) 1, (short) 17);
+    assertEquals((short) 17, short0);
+}",0,assertNotNull(short0)
+project,0,test106106,"public void test106106() throws Throwable {
+    short short0 = NumberUtils.max((short) 2, (short) 2022, (short) 0);
+    assertEquals((short) 2022, short0);
+}",0,
+project,0,test107107,"public void test107107() throws Throwable {
+    short short0 = NumberUtils.max((short) (byte) 0, (short) (-267), (short) 0);
+    assertEquals((short) 0, short0);
+}",0,
+project,0,test108108,"public void test108108() throws Throwable {
+    int int0 = NumberUtils.max((-682), 70, (-4289));
+    assertEquals(70, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test109109,"public void test109109() throws Throwable {
+    int int0 = NumberUtils.max((int) (short) 0, (int) (short) (-75), (int) (short) 1);
+    assertEquals(1, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test110110,"public void test110110() throws Throwable {
+    long long0 = NumberUtils.max((-614L), 0L, 1208L);
+    assertEquals(1208L, long0);
+}",1,
+project,0,test111111,"public void test111111() throws Throwable {
+    long long0 = NumberUtils.max((long) 45, (long) (byte) 0, (long) (short) 0);
+    assertEquals(45L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test112112,"public void test112112() throws Throwable {
+    byte byte0 = NumberUtils.min((byte) 86, (byte) 1, (byte) (-107));
+    assertEquals((byte) (-107), byte0);
+}",0,assertNotNull(byte0)
+project,0,test113113,"public void test113113() throws Throwable {
+    byte byte0 = NumberUtils.min((byte) 0, (byte) 36, (byte) 0);
+    assertEquals((byte) 0, byte0);
+}",0,
+project,0,test114114,"public void test114114() throws Throwable {
+    short short0 = NumberUtils.min((short) 2243, (short) 2243, (short) (byte) 0);
+    assertEquals((short) 0, short0);
+}",0,
+project,0,test115115,"public void test115115() throws Throwable {
+    short short0 = NumberUtils.min((short) 977, (short) (-925), (short) 977);
+    assertEquals((short) (-925), short0);
+}",0,
+project,0,test116116,"public void test116116() throws Throwable {
+    short short0 = NumberUtils.min((short) (-1), (short) (-1), (short) (-1));
+    assertEquals((short) (-1), short0);
+}",0,assertNotNull(short0)
+project,0,test117117,"public void test117117() throws Throwable {
+    int int0 = NumberUtils.min(100, 76, 43);
+    assertEquals(43, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test118118,"public void test118118() throws Throwable {
+    int int0 = NumberUtils.min((-1), (-2761), (-1));
+    assertEquals((-2761), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test119119,"public void test119119() throws Throwable {
+    int int0 = NumberUtils.min((-1), 1833, (-1));
+    assertEquals((-1), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test120120,"public void test120120() throws Throwable {
+    long long0 = NumberUtils.min((long) (byte) 36, (long) (byte) 0, (long) (byte) 0);
+    assertEquals(0L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test121121,"public void test121121() throws Throwable {
+    NumberUtils numberUtils0 = new NumberUtils();
+    float[] floatArray0 = new float[7];
+    floatArray0[0] = (float) (byte) numberUtils0.BYTE_MINUS_ONE;
+    float float0 = NumberUtils.max(floatArray0);
+    assertEquals(0.0F, float0, 0.01F);
+}",1,
+project,0,test122122,"public void test122122() throws Throwable {
+    float[] floatArray0 = new float[6];
+    floatArray0[3] = Float.NaN;
+    float float0 = NumberUtils.max(floatArray0);
+    assertEquals(Float.NaN, float0, 0.01F);
+}",1,
+project,0,test123123,"public void test123123() throws Throwable {
+    float[] floatArray0 = new float[0];
+    // Undeclared exception!
+    try {
+        NumberUtils.max(floatArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Array cannot be empty.
+        //
+        verifyException(""org.apache.commons.lang3.math.NumberUtils"", e);
+    }
+}",1,
+project,0,test124124,"public void test124124() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberUtils.max((float[]) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The Array must not be null
+        //
+        verifyException(""org.apache.commons.lang3.math.NumberUtils"", e);
+    }
+}",1,
+project,0,test125125,"public void test125125() throws Throwable {
+    double[] doubleArray0 = new double[5];
+    doubleArray0[0] = (double) (-1L);
+    double double0 = NumberUtils.max(doubleArray0);
+    assertEquals(0.0, double0, 0.01);
+}",1,
+project,0,test126126,"public void test126126() throws Throwable {
+    double[] doubleArray0 = new double[9];
+    doubleArray0[4] = (double) Float.NaN;
+    double double0 = NumberUtils.max(doubleArray0);
+    assertEquals(Double.NaN, double0, 0.01);
+}",1,
+project,0,test127127,"public void test127127() throws Throwable {
+    double[] doubleArray0 = new double[0];
+    // Undeclared exception!
+    try {
+        NumberUtils.max(doubleArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Array cannot be empty.
+        //
+        verifyException(""org.apache.commons.lang3.math.NumberUtils"", e);
+    }
+}",1,
+project,0,test128128,"public void test128128() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberUtils.max((double[]) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The Array must not be null
+        //
+        verifyException(""org.apache.commons.lang3.math.NumberUtils"", e);
+    }
+}",1,
+project,0,test129129,"public void test129129() throws Throwable {
+    byte[] byteArray0 = new byte[4];
+    byteArray0[0] = (byte) (-99);
+    byte byte0 = NumberUtils.max(byteArray0);
+    assertEquals((byte) 0, byte0);
+}",1,
+project,0,test130130,"public void test130130() throws Throwable {
+    byte[] byteArray0 = new byte[0];
+    // Undeclared exception!
+    try {
+        NumberUtils.max(byteArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Array cannot be empty.
+        //
+        verifyException(""org.apache.commons.lang3.math.NumberUtils"", e);
+    }
+}",1,
+project,0,test131131,"public void test131131() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberUtils.max((byte[]) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The Array must not be null
+        //
+        verifyException(""org.apache.commons.lang3.math.NumberUtils"", e);
+    }
+}",1,
+project,0,test132132,"public void test132132() throws Throwable {
+    short[] shortArray0 = new short[9];
+    shortArray0[0] = (short) (-1662);
+    short short0 = NumberUtils.max(shortArray0);
+    assertEquals((short) 0, short0);
+}",1,
+project,0,test133133,"public void test133133() throws Throwable {
+    short[] shortArray0 = new short[0];
+    // Undeclared exception!
+    try {
+        NumberUtils.max(shortArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Array cannot be empty.
+        //
+        verifyException(""org.apache.commons.lang3.math.NumberUtils"", e);
+    }
+}",1,
+project,0,test134134,"public void test134134() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberUtils.max((short[]) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The Array must not be null
+        //
+        verifyException(""org.apache.commons.lang3.math.NumberUtils"", e);
+    }
+}",1,
+project,0,test135135,"public void test135135() throws Throwable {
+    int[] intArray0 = new int[5];
+    intArray0[0] = (int) (short) (-525);
+    int int0 = NumberUtils.max(intArray0);
+    assertEquals(0, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test136136,"public void test136136() throws Throwable {
+    int[] intArray0 = new int[0];
+    // Undeclared exception!
+    try {
+        NumberUtils.max(intArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Array cannot be empty.
+        //
+        verifyException(""org.apache.commons.lang3.math.NumberUtils"", e);
+    }
+}",1,
+project,0,test137137,"public void test137137() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberUtils.max((int[]) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The Array must not be null
+        //
+        verifyException(""org.apache.commons.lang3.math.NumberUtils"", e);
+    }
+}",1,
+project,0,test138138,"public void test138138() throws Throwable {
+    long[] longArray0 = new long[8];
+    longArray0[0] = (-1082L);
+    long long0 = NumberUtils.max(longArray0);
+    assertEquals(0L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test139139,"public void test139139() throws Throwable {
+    long[] longArray0 = new long[0];
+    // Undeclared exception!
+    try {
+        NumberUtils.max(longArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Array cannot be empty.
+        //
+        verifyException(""org.apache.commons.lang3.math.NumberUtils"", e);
+    }
+}",0,
+project,0,test140140,"public void test140140() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberUtils.max((long[]) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The Array must not be null
+        //
+        verifyException(""org.apache.commons.lang3.math.NumberUtils"", e);
+    }
+}",0,
+project,0,test141141,"public void test141141() throws Throwable {
+    float[] floatArray0 = new float[6];
+    floatArray0[0] = 1973.261F;
+    float float0 = NumberUtils.min(floatArray0);
+    assertEquals(0.0F, float0, 0.01F);
+}",1,
+project,0,test142142,"public void test142142() throws Throwable {
+    float[] floatArray0 = new float[6];
+    floatArray0[3] = Float.NaN;
+    float float0 = NumberUtils.min(floatArray0);
+    assertEquals(Float.NaN, float0, 0.01F);
+}",1,
+project,0,test143143,"public void test143143() throws Throwable {
+    float[] floatArray0 = new float[0];
+    // Undeclared exception!
+    try {
+        NumberUtils.min(floatArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Array cannot be empty.
+        //
+        verifyException(""org.apache.commons.lang3.math.NumberUtils"", e);
+    }
+}",1,
+project,0,test144144,"public void test144144() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberUtils.min((float[]) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The Array must not be null
+        //
+        verifyException(""org.apache.commons.lang3.math.NumberUtils"", e);
+    }
+}",1,
+project,0,test145145,"public void test145145() throws Throwable {
+    double[] doubleArray0 = new double[8];
+    doubleArray0[2] = (-230.3166676145615);
+    double double0 = NumberUtils.min(doubleArray0);
+    assertEquals((-230.3166676145615), double0, 0.01);
+}",1,
+project,0,test146146,"public void test146146() throws Throwable {
+    double[] doubleArray0 = new double[7];
+    doubleArray0[2] = Double.NaN;
+    double double0 = NumberUtils.min(doubleArray0);
+    assertEquals(Double.NaN, double0, 0.01);
+}",0,
+project,0,test147147,"public void test147147() throws Throwable {
+    double[] doubleArray0 = new double[0];
+    // Undeclared exception!
+    try {
+        NumberUtils.min(doubleArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Array cannot be empty.
+        //
+        verifyException(""org.apache.commons.lang3.math.NumberUtils"", e);
+    }
+}",0,
+project,0,test148148,"public void test148148() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberUtils.min((double[]) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The Array must not be null
+        //
+        verifyException(""org.apache.commons.lang3.math.NumberUtils"", e);
+    }
+}",1,
+project,0,test149149,"public void test149149() throws Throwable {
+    double[] doubleArray0 = new double[8];
+    double double0 = NumberUtils.min(doubleArray0);
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test150150,"public void test150150() throws Throwable {
+    byte[] byteArray0 = new byte[7];
+    byteArray0[2] = (byte) (-17);
+    byte byte0 = NumberUtils.min(byteArray0);
+    assertEquals((byte) (-17), byte0);
+}",0,"assertEquals(byteArray0, byte0)"
+project,0,test151151,"public void test151151() throws Throwable {
+    byte[] byteArray0 = new byte[0];
+    // Undeclared exception!
+    try {
+        NumberUtils.min(byteArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Array cannot be empty.
+        //
+        verifyException(""org.apache.commons.lang3.math.NumberUtils"", e);
+    }
+}",0,
+project,0,test152152,"public void test152152() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberUtils.min((byte[]) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The Array must not be null
+        //
+        verifyException(""org.apache.commons.lang3.math.NumberUtils"", e);
+    }
+}",0,
+project,0,test153153,"public void test153153() throws Throwable {
+    byte[] byteArray0 = new byte[5];
+    byte byte0 = NumberUtils.min(byteArray0);
+    assertEquals((byte) 0, byte0);
+}",0,"assertEquals(byteArray0, byte0)"
+project,0,test154154,"public void test154154() throws Throwable {
+    short[] shortArray0 = new short[0];
+    // Undeclared exception!
+    try {
+        NumberUtils.min(shortArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Array cannot be empty.
+        //
+        verifyException(""org.apache.commons.lang3.math.NumberUtils"", e);
+    }
+}",0,
+project,0,test155155,"public void test155155() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberUtils.min((short[]) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The Array must not be null
+        //
+        verifyException(""org.apache.commons.lang3.math.NumberUtils"", e);
+    }
+}",1,
+project,0,test156156,"public void test156156() throws Throwable {
+    short[] shortArray0 = new short[4];
+    short short0 = NumberUtils.min(shortArray0);
+    assertEquals((short) 0, short0);
+}",0,
+project,0,test157157,"public void test157157() throws Throwable {
+    int[] intArray0 = new int[2];
+    intArray0[0] = 97;
+    int int0 = NumberUtils.min(intArray0);
+    assertEquals(0, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test158158,"public void test158158() throws Throwable {
+    int[] intArray0 = new int[0];
+    // Undeclared exception!
+    try {
+        NumberUtils.min(intArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Array cannot be empty.
+        //
+        verifyException(""org.apache.commons.lang3.math.NumberUtils"", e);
+    }
+}",1,
+project,0,test159159,"public void test159159() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberUtils.min((int[]) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The Array must not be null
+        //
+        verifyException(""org.apache.commons.lang3.math.NumberUtils"", e);
+    }
+}",1,
+project,0,test160160,"public void test160160() throws Throwable {
+    long[] longArray0 = new long[3];
+    longArray0[0] = 1L;
+    long long0 = NumberUtils.min(longArray0);
+    assertEquals(0L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test161161,"public void test161161() throws Throwable {
+    long[] longArray0 = new long[0];
+    // Undeclared exception!
+    try {
+        NumberUtils.min(longArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Array cannot be empty.
+        //
+        verifyException(""org.apache.commons.lang3.math.NumberUtils"", e);
+    }
+}",1,
+project,0,test162162,"public void test162162() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberUtils.min((long[]) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The Array must not be null
+        //
+        verifyException(""org.apache.commons.lang3.math.NumberUtils"", e);
+    }
+}",1,
+project,0,test163163,"public void test163163() throws Throwable {
+    // Undeclared exception!
+    try {
+        NumberUtils.createBigDecimal("""");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // A blank string is not a valid number
+        //
+        verifyException(""org.apache.commons.lang3.math.NumberUtils"", e);
+    }
+}",1,
+project,0,test164164,"public void test164164() throws Throwable {
+    BigDecimal bigDecimal0 = NumberUtils.createBigDecimal((String) null);
+    assertNull(bigDecimal0);
+}",1,
+project,0,test165165,"public void test165165() throws Throwable {
+    BigInteger bigInteger0 = NumberUtils.createBigInteger((String) null);
+    assertNull(bigInteger0);
+}",0,assertNotNull(bigInteger0)
+project,0,test166166,"public void test166166() throws Throwable {
+    Long long0 = NumberUtils.createLong((String) null);
+    assertNull(long0);
+}",1,
+project,0,test167167,"public void test167167() throws Throwable {
+    Integer integer0 = NumberUtils.createInteger((String) null);
+    assertNull(integer0);
+}",1,
+project,0,test168168,"public void test168168() throws Throwable {
+    Double double0 = NumberUtils.createDouble((String) null);
+    assertNull(double0);
+}",1,
+project,0,test169169,"public void test169169() throws Throwable {
+    Float float0 = NumberUtils.createFloat((String) null);
+    assertNull(float0);
+}",0,assertNotNull(float0)
+project,0,test170170,"public void test170170() throws Throwable {
+    try {
+        NumberUtils.createNumber(""fiqivQG~Ob6,y4"");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // For input string: \""fiqiv\""
+        //
+        verifyException(""java.lang.NumberFormatException"", e);
+    }
+}",0,
+project,0,test171171,"public void test171171() throws Throwable {
+    try {
+        NumberUtils.createNumber("".,NH[{~R}rt|d"");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // .,NH[{~R}rt|d is not a valid number.
+        //
+        verifyException(""org.apache.commons.lang3.math.NumberUtils"", e);
+    }
+}",0,
+project,0,test172172,"public void test172172() throws Throwable {
+    try {
+        NumberUtils.createNumber("">IL^qZ0L"");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // >IL^qZ0L is not a valid number.
+        //
+        verifyException(""org.apache.commons.lang3.math.NumberUtils"", e);
+    }
+}",0,
+project,0,test173173,"public void test173173() throws Throwable {
+    try {
+        NumberUtils.createNumber(""."");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.math.BigDecimal"", e);
+    }
+}",0,
+project,0,test174174,"public void test174174() throws Throwable {
+    try {
+        NumberUtils.createNumber(""heI?rG0"");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.math.BigDecimal"", e);
+    }
+}",0,
+project,0,test175175,"public void test175175() throws Throwable {
+    try {
+        NumberUtils.createNumber(""Strings must not be null"");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // Strings must not be null is not a valid number.
+        //
+        verifyException(""org.apache.commons.lang3.math.NumberUtils"", e);
+    }
+}",0,
+project,0,test176176,"public void test176176() throws Throwable {
+    try {
+        NumberUtils.createNumber(""org.apache.commons.lang3.math.NumberUtils"");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // org.apache.commons.lang3.math.NumberUtils is not a valid number.
+        //
+        verifyException(""org.apache.commons.lang3.math.NumberUtils"", e);
+    }
+}",0,
+project,0,test177177,"public void test177177() throws Throwable {
+    try {
+        NumberUtils.createNumber(""Array cannot be empty."");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // Array cannot be empty. is not a valid number.
+        //
+        verifyException(""org.apache.commons.lang3.math.NumberUtils"", e);
+    }
+}",0,
+project,0,test178178,"public void test178178() throws Throwable {
+    Number number0 = NumberUtils.createNumber(""6F"");
+    assertEquals(6.0F, number0);
+}",0,
+project,0,test179179,"public void test179179() throws Throwable {
+    try {
+        NumberUtils.createNumber(""-0XAborting to protect against StackOverflowError - output of one loop is the input of another"");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // For input string: \""-Aborting to protect against StackOverflowError - output of one loop is the input of another\""
+        //
+        verifyException(""java.lang.NumberFormatException"", e);
+    }
+}",0,
+project,0,test180180,"public void test180180() throws Throwable {
+    try {
+        NumberUtils.createNumber(""-0X>IL^qZ0L"");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // For input string: \""->IL^qZ0L\""
+        //
+        verifyException(""java.lang.NumberFormatException"", e);
+    }
+}",0,
+project,0,test181181,"public void test181181() throws Throwable {
+    try {
+        NumberUtils.createNumber(""0X#c8c"");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // For input string: \""#c8c\""
+        //
+        verifyException(""java.lang.NumberFormatException"", e);
+    }
+}",0,
+project,0,test182182,"public void test182182() throws Throwable {
+    try {
+        NumberUtils.createNumber(""-0x"");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // For input string: \""-\""
+        //
+        verifyException(""java.lang.NumberFormatException"", e);
+    }
+}",0,
+project,0,test183183,"public void test183183() throws Throwable {
+    try {
+        NumberUtils.createNumber(""0x"");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // For input string: \""\""
+        //
+        verifyException(""java.lang.NumberFormatException"", e);
+    }
+}",0,
+project,0,test184184,"public void test184184() throws Throwable {
+    try {
+        NumberUtils.createNumber("""");
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // A blank string is not a valid number
+        //
+        verifyException(""org.apache.commons.lang3.math.NumberUtils"", e);
+    }
+}",0,
+project,0,test185185,"public void test185185() throws Throwable {
+    Number number0 = NumberUtils.createNumber((String) null);
+    assertNull(number0);
+}",0,
+project,0,test186186,"public void test186186() throws Throwable {
+    Number number0 = NumberUtils.createNumber(""--"");
+    assertNull(number0);
+}",0,
+project,0,test187187,"public void test187187() throws Throwable {
+    short short0 = NumberUtils.toShort((String) null);
+    assertEquals((short) 0, short0);
+}",0,
+project,0,test188188,"public void test188188() throws Throwable {
+    byte byte0 = NumberUtils.toByte((String) null);
+    assertEquals((byte) 0, byte0);
+}",0,assertNotNull(byte0)
+project,0,test189189,"public void test189189() throws Throwable {
+    double double0 = NumberUtils.toDouble((String) null);
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test190190,"public void test190190() throws Throwable {
+    float float0 = NumberUtils.toFloat("":sjK%[DT@.6XRZ="");
+    assertEquals(0.0F, float0, 0.01F);
+}",0,
+project,0,test191191,"public void test191191() throws Throwable {
+    long long0 = NumberUtils.toLong((String) null);
+    assertEquals(0L, long0);
+}",0,
+project,0,test192192,"public void test192192() throws Throwable {
+    int int0 = NumberUtils.toInt(""--"");
+    assertEquals(0, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test193193,"public void test193193() throws Throwable {
+    double double0 = NumberUtils.max((-84.9169040138), (double) (byte) 0, (double) (byte) 0);
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test194194,"public void test194194() throws Throwable {
+    NumberUtils numberUtils0 = new NumberUtils();
+    short[] shortArray0 = new short[4];
+    shortArray0[2] = (short) numberUtils0.SHORT_MINUS_ONE;
+    short short0 = NumberUtils.min(shortArray0);
+    assertEquals((short) (-1), short0);
+}",0,"assertEquals(shortArray0, short0)"
+project,0,test195195,"public void test195195() throws Throwable {
+    double double0 = NumberUtils.min(0.0, 0.0, 1017.3642232835962);
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test196196,"public void test196196() throws Throwable {
+    float float0 = NumberUtils.min(0.0F, 0.0F, (float) 0L);
+    assertEquals(0.0F, float0, 0.01F);
+}",0,
+project,0,test197197,"public void test197197() throws Throwable {
+    float float0 = NumberUtils.max(0.0F, 1.0F, 0.0F);
+    assertEquals(1.0F, float0, 0.01F);
+}",0,

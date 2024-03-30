@@ -1,0 +1,1229 @@
+focal_method,test_prefix,docstring
+"public Base64InputStream(InputStream in, boolean doEncode, int lineLength, byte[] lineSeparator) {
+    super(in);
+    this.doEncode = doEncode;
+    this.base64 = new Base64(lineLength, lineSeparator);
+}","public void test000() throws Throwable {
+    byte[] byteArray0 = new byte[0];
+    Base64InputStream base64InputStream0 = new Base64InputStream((InputStream) null, true, (-1866), byteArray0);
+    assertNotNull(base64InputStream0);
+}","/**
+ * Creates a Base64InputStream such that all data read is either Base64-encoded or Base64-decoded from the original
+ * provided InputStream.
+ *
+ * @param in
+ *            InputStream to wrap.
+ * @param doEncode
+ *            true if we should encode all data read from us, false if we should decode.
+ * @param lineLength
+ *            If doEncode is true, each line of encoded data will contain lineLength characters (rounded down to
+ *            nearest multiple of 4). If lineLength <=0, the encoded data is not divided into lines. If doEncode is
+ *            false, lineLength is ignored.
+ * @param lineSeparator
+ *            If doEncode is true, each line of encoded data will be terminated with this byte sequence (e.g. \r\n).
+ *            If lineLength <= 0, the lineSeparator is not used. If doEncode is false lineSeparator is ignored.
+ */"
+"public boolean markSupported() {
+    // not an easy job to support marks
+    return false;
+}","public void test001() throws Throwable {
+    byte[] byteArray0 = new byte[0];
+    Base64InputStream base64InputStream0 = new Base64InputStream((InputStream) null, true, (-1866), byteArray0);
+    assertFalse(base64InputStream0.markSupported());
+}","/**
+ * {@inheritDoc}
+ *
+ * @return false
+ */"
+"public boolean markSupported() {
+    // not an easy job to support marks
+    return false;
+}","public void test005() throws Throwable {
+    byte[] byteArray0 = new byte[0];
+    Base64InputStream base64InputStream0 = new Base64InputStream((InputStream) null, true, (-1866), byteArray0);
+    int int0 = base64InputStream0.read(byteArray0);
+    assertFalse(base64InputStream0.markSupported());
+}","/**
+ * {@inheritDoc}
+ *
+ * @return false
+ */"
+"public Base64InputStream(InputStream in, boolean doEncode, int lineLength, byte[] lineSeparator) {
+    super(in);
+    this.doEncode = doEncode;
+    this.base64 = new Base64(lineLength, lineSeparator);
+}","public void test018() throws Throwable {
+    byte[] byteArray0 = new byte[5];
+    Base64InputStream base64InputStream0 = new Base64InputStream((InputStream) null, true, (-1378), byteArray0);
+    assertNotNull(base64InputStream0);
+}","/**
+ * Creates a Base64InputStream such that all data read is either Base64-encoded or Base64-decoded from the original
+ * provided InputStream.
+ *
+ * @param in
+ *            InputStream to wrap.
+ * @param doEncode
+ *            true if we should encode all data read from us, false if we should decode.
+ * @param lineLength
+ *            If doEncode is true, each line of encoded data will contain lineLength characters (rounded down to
+ *            nearest multiple of 4). If lineLength <=0, the encoded data is not divided into lines. If doEncode is
+ *            false, lineLength is ignored.
+ * @param lineSeparator
+ *            If doEncode is true, each line of encoded data will be terminated with this byte sequence (e.g. \r\n).
+ *            If lineLength <= 0, the lineSeparator is not used. If doEncode is false lineSeparator is ignored.
+ */"
+"public boolean markSupported() {
+    // not an easy job to support marks
+    return false;
+}","public void test019() throws Throwable {
+    byte[] byteArray0 = new byte[5];
+    Base64InputStream base64InputStream0 = new Base64InputStream((InputStream) null, true, (-1378), byteArray0);
+    assertFalse(base64InputStream0.markSupported());
+}","/**
+ * {@inheritDoc}
+ *
+ * @return false
+ */"
+"public int read() throws IOException {
+    int r = read(singleByte, 0, 1);
+    while (r == 0) {
+        r = read(singleByte, 0, 1);
+    }
+    if (r > 0) {
+        return singleByte[0] < 0 ? 256 + singleByte[0] : singleByte[0];
+    }
+    return -1;
+}","public void test0112() throws Throwable {
+    byte[] byteArray0 = new byte[5];
+    Base64InputStream base64InputStream0 = new Base64InputStream((InputStream) null, true, (-1378), byteArray0);
+    // Undeclared exception!
+    try {
+        base64InputStream0.read();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64InputStream"", e);
+    }
+}","/**
+ * Reads one <code>byte</code> from this input stream.
+ *
+ * @return the byte as an integer in the range 0 to 255. Returns -1 if EOF has been reached.
+ * @throws IOException
+ *             if an I/O error occurs.
+ */"
+"public Base64InputStream(InputStream in, boolean doEncode) {
+    super(in);
+    this.doEncode = doEncode;
+    this.base64 = new Base64(false);
+}","public void test0221() throws Throwable {
+    byte[] byteArray0 = new byte[5];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) (-43), 256);
+    BufferedInputStream bufferedInputStream0 = new BufferedInputStream(byteArrayInputStream0);
+    Base64InputStream base64InputStream0 = new Base64InputStream(bufferedInputStream0, false);
+    assertNotNull(base64InputStream0);
+}","/**
+ * Creates a Base64InputStream such that all data read is either Base64-encoded or Base64-decoded from the original
+ * provided InputStream.
+ *
+ * @param in
+ *            InputStream to wrap.
+ * @param doEncode
+ *            true if we should encode all data read from us, false if we should decode.
+ */"
+"public boolean markSupported() {
+    // not an easy job to support marks
+    return false;
+}","public void test0223() throws Throwable {
+    byte[] byteArray0 = new byte[5];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) (-43), 256);
+    BufferedInputStream bufferedInputStream0 = new BufferedInputStream(byteArrayInputStream0);
+    Base64InputStream base64InputStream0 = new Base64InputStream(bufferedInputStream0, false);
+    assertFalse(base64InputStream0.markSupported());
+}","/**
+ * {@inheritDoc}
+ *
+ * @return false
+ */"
+"public int read() throws IOException {
+    int r = read(singleByte, 0, 1);
+    while (r == 0) {
+        r = read(singleByte, 0, 1);
+    }
+    if (r > 0) {
+        return singleByte[0] < 0 ? 256 + singleByte[0] : singleByte[0];
+    }
+    return -1;
+}","public void test0226() throws Throwable {
+    byte[] byteArray0 = new byte[5];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) (-43), 256);
+    BufferedInputStream bufferedInputStream0 = new BufferedInputStream(byteArrayInputStream0);
+    Base64InputStream base64InputStream0 = new Base64InputStream(bufferedInputStream0, false);
+    // Undeclared exception!
+    try {
+        base64InputStream0.read();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.io.ByteArrayInputStream"", e);
+    }
+}","/**
+ * Reads one <code>byte</code> from this input stream.
+ *
+ * @return the byte as an integer in the range 0 to 255. Returns -1 if EOF has been reached.
+ * @throws IOException
+ *             if an I/O error occurs.
+ */"
+"public Base64InputStream(InputStream in) {
+    this(in, false);
+}","public void test0329() throws Throwable {
+    PipedInputStream pipedInputStream0 = new PipedInputStream();
+    Base64InputStream base64InputStream0 = new Base64InputStream(pipedInputStream0);
+    assertNotNull(base64InputStream0);
+}","/**
+ * Creates a Base64InputStream such that all data read is Base64-decoded from the original provided InputStream.
+ *
+ * @param in
+ *            InputStream to wrap.
+ */"
+"public boolean markSupported() {
+    // not an easy job to support marks
+    return false;
+}","public void test0331() throws Throwable {
+    PipedInputStream pipedInputStream0 = new PipedInputStream();
+    Base64InputStream base64InputStream0 = new Base64InputStream(pipedInputStream0);
+    assertFalse(base64InputStream0.markSupported());
+}","/**
+ * {@inheritDoc}
+ *
+ * @return false
+ */"
+"public int read() throws IOException {
+    int r = read(singleByte, 0, 1);
+    while (r == 0) {
+        r = read(singleByte, 0, 1);
+    }
+    if (r > 0) {
+        return singleByte[0] < 0 ? 256 + singleByte[0] : singleByte[0];
+    }
+    return -1;
+}","public void test0332() throws Throwable {
+    PipedInputStream pipedInputStream0 = new PipedInputStream();
+    Base64InputStream base64InputStream0 = new Base64InputStream(pipedInputStream0);
+    try {
+        base64InputStream0.read();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Pipe not connected
+        //
+        verifyException(""java.io.PipedInputStream"", e);
+    }
+}","/**
+ * Reads one <code>byte</code> from this input stream.
+ *
+ * @return the byte as an integer in the range 0 to 255. Returns -1 if EOF has been reached.
+ * @throws IOException
+ *             if an I/O error occurs.
+ */"
+"public Base64InputStream(InputStream in, boolean doEncode, int lineLength, byte[] lineSeparator) {
+    super(in);
+    this.doEncode = doEncode;
+    this.base64 = new Base64(lineLength, lineSeparator);
+}","public void test0434() throws Throwable {
+    Enumeration<InputStream> enumeration0 = (Enumeration<InputStream>) mock(Enumeration.class, new ViolatedAssumptionAnswer());
+    doReturn(false).when(enumeration0).hasMoreElements();
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(enumeration0);
+    byte[] byteArray0 = new byte[8];
+    byteArray0[0] = (byte) 97;
+    Base64InputStream base64InputStream0 = null;
+    try {
+        base64InputStream0 = new Base64InputStream(sequenceInputStream0, true, 3099, byteArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // lineSeperator must not contain base64 characters: [a\u0000\u0000\u0000\u0000\u0000\u0000\u0000]
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64"", e);
+    }
+}","/**
+ * Creates a Base64InputStream such that all data read is either Base64-encoded or Base64-decoded from the original
+ * provided InputStream.
+ *
+ * @param in
+ *            InputStream to wrap.
+ * @param doEncode
+ *            true if we should encode all data read from us, false if we should decode.
+ * @param lineLength
+ *            If doEncode is true, each line of encoded data will contain lineLength characters (rounded down to
+ *            nearest multiple of 4). If lineLength <=0, the encoded data is not divided into lines. If doEncode is
+ *            false, lineLength is ignored.
+ * @param lineSeparator
+ *            If doEncode is true, each line of encoded data will be terminated with this byte sequence (e.g. \r\n).
+ *            If lineLength <= 0, the lineSeparator is not used. If doEncode is false lineSeparator is ignored.
+ */"
+"public Base64InputStream(InputStream in, boolean doEncode) {
+    super(in);
+    this.doEncode = doEncode;
+    this.base64 = new Base64(false);
+}","public void test0543() throws Throwable {
+    byte[] byteArray0 = new byte[9];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, 4096, (byte) (-120));
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(byteArrayInputStream0, byteArrayInputStream0);
+    Base64InputStream base64InputStream0 = new Base64InputStream(sequenceInputStream0, true);
+    assertNotNull(base64InputStream0);
+}","/**
+ * Creates a Base64InputStream such that all data read is either Base64-encoded or Base64-decoded from the original
+ * provided InputStream.
+ *
+ * @param in
+ *            InputStream to wrap.
+ * @param doEncode
+ *            true if we should encode all data read from us, false if we should decode.
+ */"
+"public boolean markSupported() {
+    // not an easy job to support marks
+    return false;
+}","public void test0545() throws Throwable {
+    byte[] byteArray0 = new byte[9];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, 4096, (byte) (-120));
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(byteArrayInputStream0, byteArrayInputStream0);
+    Base64InputStream base64InputStream0 = new Base64InputStream(sequenceInputStream0, true);
+    assertFalse(base64InputStream0.markSupported());
+}","/**
+ * {@inheritDoc}
+ *
+ * @return false
+ */"
+"public Base64InputStream(InputStream in) {
+    this(in, false);
+}","public void test0653() throws Throwable {
+    byte[] byteArray0 = new byte[6];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) 0, (byte) 98);
+    Base64InputStream base64InputStream0 = new Base64InputStream(byteArrayInputStream0);
+    assertNotNull(base64InputStream0);
+}","/**
+ * Creates a Base64InputStream such that all data read is Base64-decoded from the original provided InputStream.
+ *
+ * @param in
+ *            InputStream to wrap.
+ */"
+"public boolean markSupported() {
+    // not an easy job to support marks
+    return false;
+}","public void test0655() throws Throwable {
+    byte[] byteArray0 = new byte[6];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) 0, (byte) 98);
+    Base64InputStream base64InputStream0 = new Base64InputStream(byteArrayInputStream0);
+    assertFalse(base64InputStream0.markSupported());
+}","/**
+ * {@inheritDoc}
+ *
+ * @return false
+ */"
+"public int read(byte[] b, int offset, int len) throws IOException {
+    if (b == null) {
+        throw new NullPointerException();
+    } else if (offset < 0 || len < 0) {
+        throw new IndexOutOfBoundsException();
+    } else if (offset > b.length || offset + len > b.length) {
+        throw new IndexOutOfBoundsException();
+    } else if (len == 0) {
+        return 0;
+    } else {
+        /*
+             Rationale for while-loop on (readLen == 0):
+             -----
+             Base64.readResults() usually returns > 0 or EOF (-1).  In the
+             rare case where it returns 0, we just keep trying.
+
+             This is essentially an undocumented contract for InputStream
+             implementors that want their code to work properly with
+             java.io.InputStreamReader, since the latter hates it when
+             InputStream.read(byte[]) returns a zero.  Unfortunately our
+             readResults() call must return 0 if a large amount of the data
+             being decoded was non-base64, so this while-loop enables proper
+             interop with InputStreamReader for that scenario.
+             -----
+             This is a fix for CODEC-101
+            */
+        if (!base64.hasData()) {
+            byte[] buf = new byte[doEncode ? 4096 : 8192];
+            int c = in.read(buf);
+            // A little optimization to avoid System.arraycopy()
+            // when possible.
+            if (c > 0 && b.length == len) {
+                base64.setInitialBuffer(b, offset, len);
+            }
+            if (doEncode) {
+                base64.encode(buf, 0, c);
+            } else {
+                base64.decode(buf, 0, c);
+            }
+        }
+        return base64.readResults(b, offset, len);
+    }
+}","public void test0658() throws Throwable {
+    byte[] byteArray0 = new byte[6];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) 0, (byte) 98);
+    Base64InputStream base64InputStream0 = new Base64InputStream(byteArrayInputStream0);
+    int int0 = base64InputStream0.read(byteArray0, 0, (int) (byte) 3);
+    assertEquals(0, int0);
+}","/**
+ * Attempts to read <code>len</code> bytes into the specified <code>b</code> array starting at <code>offset</code>
+ * from this InputStream.
+ *
+ * @param b
+ *            destination byte array
+ * @param offset
+ *            where to start writing the bytes
+ * @param len
+ *            maximum number of bytes to read
+ *
+ * @return number of bytes read
+ * @throws IOException
+ *             if an I/O error occurs.
+ * @throws NullPointerException
+ *             if the byte array parameter is null
+ * @throws IndexOutOfBoundsException
+ *             if offset, len or buffer size are invalid
+ */"
+"public boolean markSupported() {
+    // not an easy job to support marks
+    return false;
+}","public void test0660() throws Throwable {
+    byte[] byteArray0 = new byte[6];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) 0, (byte) 98);
+    Base64InputStream base64InputStream0 = new Base64InputStream(byteArrayInputStream0);
+    int int0 = base64InputStream0.read(byteArray0, 0, (int) (byte) 3);
+    assertFalse(base64InputStream0.markSupported());
+}","/**
+ * {@inheritDoc}
+ *
+ * @return false
+ */"
+"public boolean markSupported() {
+    // not an easy job to support marks
+    return false;
+}","public void test0665() throws Throwable {
+    byte[] byteArray0 = new byte[6];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) 0, (byte) 98);
+    Base64InputStream base64InputStream0 = new Base64InputStream(byteArrayInputStream0);
+    int int0 = base64InputStream0.read(byteArray0, 0, (int) (byte) 3);
+    int int1 = base64InputStream0.read(byteArray0);
+    assertFalse(base64InputStream0.markSupported());
+}","/**
+ * {@inheritDoc}
+ *
+ * @return false
+ */"
+"public Base64InputStream(InputStream in, boolean doEncode, int lineLength, byte[] lineSeparator) {
+    super(in);
+    this.doEncode = doEncode;
+    this.base64 = new Base64(lineLength, lineSeparator);
+}","public void test0777() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(byteArrayInputStream0, byteArrayInputStream0);
+    Base64InputStream base64InputStream0 = new Base64InputStream(sequenceInputStream0, true, (byte) 125, byteArray0);
+    assertNotNull(base64InputStream0);
+}","/**
+ * Creates a Base64InputStream such that all data read is either Base64-encoded or Base64-decoded from the original
+ * provided InputStream.
+ *
+ * @param in
+ *            InputStream to wrap.
+ * @param doEncode
+ *            true if we should encode all data read from us, false if we should decode.
+ * @param lineLength
+ *            If doEncode is true, each line of encoded data will contain lineLength characters (rounded down to
+ *            nearest multiple of 4). If lineLength <=0, the encoded data is not divided into lines. If doEncode is
+ *            false, lineLength is ignored.
+ * @param lineSeparator
+ *            If doEncode is true, each line of encoded data will be terminated with this byte sequence (e.g. \r\n).
+ *            If lineLength <= 0, the lineSeparator is not used. If doEncode is false lineSeparator is ignored.
+ */"
+"public boolean markSupported() {
+    // not an easy job to support marks
+    return false;
+}","public void test0779() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(byteArrayInputStream0, byteArrayInputStream0);
+    Base64InputStream base64InputStream0 = new Base64InputStream(sequenceInputStream0, true, (byte) 125, byteArray0);
+    assertFalse(base64InputStream0.markSupported());
+}","/**
+ * {@inheritDoc}
+ *
+ * @return false
+ */"
+"public int read() throws IOException {
+    int r = read(singleByte, 0, 1);
+    while (r == 0) {
+        r = read(singleByte, 0, 1);
+    }
+    if (r > 0) {
+        return singleByte[0] < 0 ? 256 + singleByte[0] : singleByte[0];
+    }
+    return -1;
+}","public void test0782() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(byteArrayInputStream0, byteArrayInputStream0);
+    Base64InputStream base64InputStream0 = new Base64InputStream(sequenceInputStream0, true, (byte) 125, byteArray0);
+    int int0 = base64InputStream0.read();
+    assertEquals(65, int0);
+}","/**
+ * Reads one <code>byte</code> from this input stream.
+ *
+ * @return the byte as an integer in the range 0 to 255. Returns -1 if EOF has been reached.
+ * @throws IOException
+ *             if an I/O error occurs.
+ */"
+"public boolean markSupported() {
+    // not an easy job to support marks
+    return false;
+}","public void test0784() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(byteArrayInputStream0, byteArrayInputStream0);
+    Base64InputStream base64InputStream0 = new Base64InputStream(sequenceInputStream0, true, (byte) 125, byteArray0);
+    int int0 = base64InputStream0.read();
+    assertFalse(base64InputStream0.markSupported());
+}","/**
+ * {@inheritDoc}
+ *
+ * @return false
+ */"
+"public int read(byte[] b, int offset, int len) throws IOException {
+    if (b == null) {
+        throw new NullPointerException();
+    } else if (offset < 0 || len < 0) {
+        throw new IndexOutOfBoundsException();
+    } else if (offset > b.length || offset + len > b.length) {
+        throw new IndexOutOfBoundsException();
+    } else if (len == 0) {
+        return 0;
+    } else {
+        /*
+             Rationale for while-loop on (readLen == 0):
+             -----
+             Base64.readResults() usually returns > 0 or EOF (-1).  In the
+             rare case where it returns 0, we just keep trying.
+
+             This is essentially an undocumented contract for InputStream
+             implementors that want their code to work properly with
+             java.io.InputStreamReader, since the latter hates it when
+             InputStream.read(byte[]) returns a zero.  Unfortunately our
+             readResults() call must return 0 if a large amount of the data
+             being decoded was non-base64, so this while-loop enables proper
+             interop with InputStreamReader for that scenario.
+             -----
+             This is a fix for CODEC-101
+            */
+        if (!base64.hasData()) {
+            byte[] buf = new byte[doEncode ? 4096 : 8192];
+            int c = in.read(buf);
+            // A little optimization to avoid System.arraycopy()
+            // when possible.
+            if (c > 0 && b.length == len) {
+                base64.setInitialBuffer(b, offset, len);
+            }
+            if (doEncode) {
+                base64.encode(buf, 0, c);
+            } else {
+                base64.decode(buf, 0, c);
+            }
+        }
+        return base64.readResults(b, offset, len);
+    }
+}","public void test0896() throws Throwable {
+    byte[] byteArray0 = new byte[6];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) 0, (byte) 98);
+    Base64InputStream base64InputStream0 = new Base64InputStream(byteArrayInputStream0);
+    // Undeclared exception!
+    try {
+        base64InputStream0.read(byteArray0, 85, 0);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64InputStream"", e);
+    }
+}","/**
+ * Attempts to read <code>len</code> bytes into the specified <code>b</code> array starting at <code>offset</code>
+ * from this InputStream.
+ *
+ * @param b
+ *            destination byte array
+ * @param offset
+ *            where to start writing the bytes
+ * @param len
+ *            maximum number of bytes to read
+ *
+ * @return number of bytes read
+ * @throws IOException
+ *             if an I/O error occurs.
+ * @throws NullPointerException
+ *             if the byte array parameter is null
+ * @throws IndexOutOfBoundsException
+ *             if offset, len or buffer size are invalid
+ */"
+"public Base64InputStream(InputStream in, boolean doEncode) {
+    super(in);
+    this.doEncode = doEncode;
+    this.base64 = new Base64(false);
+}","public void test09102() throws Throwable {
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    PipedInputStream pipedInputStream0 = new PipedInputStream(pipedOutputStream0, 2125);
+    PushbackInputStream pushbackInputStream0 = new PushbackInputStream(pipedInputStream0);
+    Base64InputStream base64InputStream0 = new Base64InputStream(pushbackInputStream0, true);
+    assertNotNull(base64InputStream0);
+}","/**
+ * Creates a Base64InputStream such that all data read is either Base64-encoded or Base64-decoded from the original
+ * provided InputStream.
+ *
+ * @param in
+ *            InputStream to wrap.
+ * @param doEncode
+ *            true if we should encode all data read from us, false if we should decode.
+ */"
+"public boolean markSupported() {
+    // not an easy job to support marks
+    return false;
+}","public void test09104() throws Throwable {
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    PipedInputStream pipedInputStream0 = new PipedInputStream(pipedOutputStream0, 2125);
+    PushbackInputStream pushbackInputStream0 = new PushbackInputStream(pipedInputStream0);
+    Base64InputStream base64InputStream0 = new Base64InputStream(pushbackInputStream0, true);
+    assertFalse(base64InputStream0.markSupported());
+}","/**
+ * {@inheritDoc}
+ *
+ * @return false
+ */"
+"public int read(byte[] b, int offset, int len) throws IOException {
+    if (b == null) {
+        throw new NullPointerException();
+    } else if (offset < 0 || len < 0) {
+        throw new IndexOutOfBoundsException();
+    } else if (offset > b.length || offset + len > b.length) {
+        throw new IndexOutOfBoundsException();
+    } else if (len == 0) {
+        return 0;
+    } else {
+        /*
+             Rationale for while-loop on (readLen == 0):
+             -----
+             Base64.readResults() usually returns > 0 or EOF (-1).  In the
+             rare case where it returns 0, we just keep trying.
+
+             This is essentially an undocumented contract for InputStream
+             implementors that want their code to work properly with
+             java.io.InputStreamReader, since the latter hates it when
+             InputStream.read(byte[]) returns a zero.  Unfortunately our
+             readResults() call must return 0 if a large amount of the data
+             being decoded was non-base64, so this while-loop enables proper
+             interop with InputStreamReader for that scenario.
+             -----
+             This is a fix for CODEC-101
+            */
+        if (!base64.hasData()) {
+            byte[] buf = new byte[doEncode ? 4096 : 8192];
+            int c = in.read(buf);
+            // A little optimization to avoid System.arraycopy()
+            // when possible.
+            if (c > 0 && b.length == len) {
+                base64.setInitialBuffer(b, offset, len);
+            }
+            if (doEncode) {
+                base64.encode(buf, 0, c);
+            } else {
+                base64.decode(buf, 0, c);
+            }
+        }
+        return base64.readResults(b, offset, len);
+    }
+}","public void test09105() throws Throwable {
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    PipedInputStream pipedInputStream0 = new PipedInputStream(pipedOutputStream0, 2125);
+    PushbackInputStream pushbackInputStream0 = new PushbackInputStream(pipedInputStream0);
+    Base64InputStream base64InputStream0 = new Base64InputStream(pushbackInputStream0, true);
+    byte[] byteArray0 = new byte[8];
+    // Undeclared exception!
+    try {
+        base64InputStream0.read(byteArray0, 733, (-1207));
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64InputStream"", e);
+    }
+}","/**
+ * Attempts to read <code>len</code> bytes into the specified <code>b</code> array starting at <code>offset</code>
+ * from this InputStream.
+ *
+ * @param b
+ *            destination byte array
+ * @param offset
+ *            where to start writing the bytes
+ * @param len
+ *            maximum number of bytes to read
+ *
+ * @return number of bytes read
+ * @throws IOException
+ *             if an I/O error occurs.
+ * @throws NullPointerException
+ *             if the byte array parameter is null
+ * @throws IndexOutOfBoundsException
+ *             if offset, len or buffer size are invalid
+ */"
+"public Base64InputStream(InputStream in, boolean doEncode) {
+    super(in);
+    this.doEncode = doEncode;
+    this.base64 = new Base64(false);
+}","public void test10110() throws Throwable {
+    byte[] byteArray0 = new byte[5];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    Base64InputStream base64InputStream0 = new Base64InputStream(byteArrayInputStream0, true);
+    assertNotNull(base64InputStream0);
+}","/**
+ * Creates a Base64InputStream such that all data read is either Base64-encoded or Base64-decoded from the original
+ * provided InputStream.
+ *
+ * @param in
+ *            InputStream to wrap.
+ * @param doEncode
+ *            true if we should encode all data read from us, false if we should decode.
+ */"
+"public boolean markSupported() {
+    // not an easy job to support marks
+    return false;
+}","public void test10112() throws Throwable {
+    byte[] byteArray0 = new byte[5];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    Base64InputStream base64InputStream0 = new Base64InputStream(byteArrayInputStream0, true);
+    assertFalse(base64InputStream0.markSupported());
+}","/**
+ * {@inheritDoc}
+ *
+ * @return false
+ */"
+"public int read(byte[] b, int offset, int len) throws IOException {
+    if (b == null) {
+        throw new NullPointerException();
+    } else if (offset < 0 || len < 0) {
+        throw new IndexOutOfBoundsException();
+    } else if (offset > b.length || offset + len > b.length) {
+        throw new IndexOutOfBoundsException();
+    } else if (len == 0) {
+        return 0;
+    } else {
+        /*
+             Rationale for while-loop on (readLen == 0):
+             -----
+             Base64.readResults() usually returns > 0 or EOF (-1).  In the
+             rare case where it returns 0, we just keep trying.
+
+             This is essentially an undocumented contract for InputStream
+             implementors that want their code to work properly with
+             java.io.InputStreamReader, since the latter hates it when
+             InputStream.read(byte[]) returns a zero.  Unfortunately our
+             readResults() call must return 0 if a large amount of the data
+             being decoded was non-base64, so this while-loop enables proper
+             interop with InputStreamReader for that scenario.
+             -----
+             This is a fix for CODEC-101
+            */
+        if (!base64.hasData()) {
+            byte[] buf = new byte[doEncode ? 4096 : 8192];
+            int c = in.read(buf);
+            // A little optimization to avoid System.arraycopy()
+            // when possible.
+            if (c > 0 && b.length == len) {
+                base64.setInitialBuffer(b, offset, len);
+            }
+            if (doEncode) {
+                base64.encode(buf, 0, c);
+            } else {
+                base64.decode(buf, 0, c);
+            }
+        }
+        return base64.readResults(b, offset, len);
+    }
+}","public void test10115() throws Throwable {
+    byte[] byteArray0 = new byte[5];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    Base64InputStream base64InputStream0 = new Base64InputStream(byteArrayInputStream0, true);
+    // Undeclared exception!
+    try {
+        base64InputStream0.read(byteArray0, (-37), 1919);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64InputStream"", e);
+    }
+}","/**
+ * Attempts to read <code>len</code> bytes into the specified <code>b</code> array starting at <code>offset</code>
+ * from this InputStream.
+ *
+ * @param b
+ *            destination byte array
+ * @param offset
+ *            where to start writing the bytes
+ * @param len
+ *            maximum number of bytes to read
+ *
+ * @return number of bytes read
+ * @throws IOException
+ *             if an I/O error occurs.
+ * @throws NullPointerException
+ *             if the byte array parameter is null
+ * @throws IndexOutOfBoundsException
+ *             if offset, len or buffer size are invalid
+ */"
+"public Base64InputStream(InputStream in, boolean doEncode, int lineLength, byte[] lineSeparator) {
+    super(in);
+    this.doEncode = doEncode;
+    this.base64 = new Base64(lineLength, lineSeparator);
+}","public void test11116() throws Throwable {
+    Base64InputStream base64InputStream0 = new Base64InputStream((InputStream) null, true, (-2281), (byte[]) null);
+    assertNotNull(base64InputStream0);
+}","/**
+ * Creates a Base64InputStream such that all data read is either Base64-encoded or Base64-decoded from the original
+ * provided InputStream.
+ *
+ * @param in
+ *            InputStream to wrap.
+ * @param doEncode
+ *            true if we should encode all data read from us, false if we should decode.
+ * @param lineLength
+ *            If doEncode is true, each line of encoded data will contain lineLength characters (rounded down to
+ *            nearest multiple of 4). If lineLength <=0, the encoded data is not divided into lines. If doEncode is
+ *            false, lineLength is ignored.
+ * @param lineSeparator
+ *            If doEncode is true, each line of encoded data will be terminated with this byte sequence (e.g. \r\n).
+ *            If lineLength <= 0, the lineSeparator is not used. If doEncode is false lineSeparator is ignored.
+ */"
+"public boolean markSupported() {
+    // not an easy job to support marks
+    return false;
+}","public void test11117() throws Throwable {
+    Base64InputStream base64InputStream0 = new Base64InputStream((InputStream) null, true, (-2281), (byte[]) null);
+    assertFalse(base64InputStream0.markSupported());
+}","/**
+ * {@inheritDoc}
+ *
+ * @return false
+ */"
+"public int read(byte[] b, int offset, int len) throws IOException {
+    if (b == null) {
+        throw new NullPointerException();
+    } else if (offset < 0 || len < 0) {
+        throw new IndexOutOfBoundsException();
+    } else if (offset > b.length || offset + len > b.length) {
+        throw new IndexOutOfBoundsException();
+    } else if (len == 0) {
+        return 0;
+    } else {
+        /*
+             Rationale for while-loop on (readLen == 0):
+             -----
+             Base64.readResults() usually returns > 0 or EOF (-1).  In the
+             rare case where it returns 0, we just keep trying.
+
+             This is essentially an undocumented contract for InputStream
+             implementors that want their code to work properly with
+             java.io.InputStreamReader, since the latter hates it when
+             InputStream.read(byte[]) returns a zero.  Unfortunately our
+             readResults() call must return 0 if a large amount of the data
+             being decoded was non-base64, so this while-loop enables proper
+             interop with InputStreamReader for that scenario.
+             -----
+             This is a fix for CODEC-101
+            */
+        if (!base64.hasData()) {
+            byte[] buf = new byte[doEncode ? 4096 : 8192];
+            int c = in.read(buf);
+            // A little optimization to avoid System.arraycopy()
+            // when possible.
+            if (c > 0 && b.length == len) {
+                base64.setInitialBuffer(b, offset, len);
+            }
+            if (doEncode) {
+                base64.encode(buf, 0, c);
+            } else {
+                base64.decode(buf, 0, c);
+            }
+        }
+        return base64.readResults(b, offset, len);
+    }
+}","public void test11118() throws Throwable {
+    Base64InputStream base64InputStream0 = new Base64InputStream((InputStream) null, true, (-2281), (byte[]) null);
+    // Undeclared exception!
+    try {
+        base64InputStream0.read((byte[]) null, 0, Integer.MAX_VALUE);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64InputStream"", e);
+    }
+}","/**
+ * Attempts to read <code>len</code> bytes into the specified <code>b</code> array starting at <code>offset</code>
+ * from this InputStream.
+ *
+ * @param b
+ *            destination byte array
+ * @param offset
+ *            where to start writing the bytes
+ * @param len
+ *            maximum number of bytes to read
+ *
+ * @return number of bytes read
+ * @throws IOException
+ *             if an I/O error occurs.
+ * @throws NullPointerException
+ *             if the byte array parameter is null
+ * @throws IndexOutOfBoundsException
+ *             if offset, len or buffer size are invalid
+ */"
+"public Base64InputStream(InputStream in) {
+    this(in, false);
+}","public void test12123() throws Throwable {
+    byte[] byteArray0 = new byte[4];
+    byteArray0[1] = (byte) 110;
+    byteArray0[2] = (byte) 45;
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    Base64InputStream base64InputStream0 = new Base64InputStream(byteArrayInputStream0);
+    assertNotNull(base64InputStream0);
+}","/**
+ * Creates a Base64InputStream such that all data read is Base64-decoded from the original provided InputStream.
+ *
+ * @param in
+ *            InputStream to wrap.
+ */"
+"public boolean markSupported() {
+    // not an easy job to support marks
+    return false;
+}","public void test12125() throws Throwable {
+    byte[] byteArray0 = new byte[4];
+    byteArray0[1] = (byte) 110;
+    byteArray0[2] = (byte) 45;
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    Base64InputStream base64InputStream0 = new Base64InputStream(byteArrayInputStream0);
+    assertFalse(base64InputStream0.markSupported());
+}","/**
+ * {@inheritDoc}
+ *
+ * @return false
+ */"
+"public int read() throws IOException {
+    int r = read(singleByte, 0, 1);
+    while (r == 0) {
+        r = read(singleByte, 0, 1);
+    }
+    if (r > 0) {
+        return singleByte[0] < 0 ? 256 + singleByte[0] : singleByte[0];
+    }
+    return -1;
+}","public void test12128() throws Throwable {
+    byte[] byteArray0 = new byte[4];
+    byteArray0[1] = (byte) 110;
+    byteArray0[2] = (byte) 45;
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    Base64InputStream base64InputStream0 = new Base64InputStream(byteArrayInputStream0);
+    int int0 = base64InputStream0.read();
+    assertEquals(159, int0);
+}","/**
+ * Reads one <code>byte</code> from this input stream.
+ *
+ * @return the byte as an integer in the range 0 to 255. Returns -1 if EOF has been reached.
+ * @throws IOException
+ *             if an I/O error occurs.
+ */"
+"public boolean markSupported() {
+    // not an easy job to support marks
+    return false;
+}","public void test12130() throws Throwable {
+    byte[] byteArray0 = new byte[4];
+    byteArray0[1] = (byte) 110;
+    byteArray0[2] = (byte) 45;
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    Base64InputStream base64InputStream0 = new Base64InputStream(byteArrayInputStream0);
+    int int0 = base64InputStream0.read();
+    assertFalse(base64InputStream0.markSupported());
+}","/**
+ * {@inheritDoc}
+ *
+ * @return false
+ */"
+"public Base64InputStream(InputStream in) {
+    this(in, false);
+}","public void test13137() throws Throwable {
+    byte[] byteArray0 = new byte[6];
+    byteArray0[1] = (byte) 98;
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) 0, (byte) 98);
+    Base64InputStream base64InputStream0 = new Base64InputStream(byteArrayInputStream0);
+    assertNotNull(base64InputStream0);
+}","/**
+ * Creates a Base64InputStream such that all data read is Base64-decoded from the original provided InputStream.
+ *
+ * @param in
+ *            InputStream to wrap.
+ */"
+"public boolean markSupported() {
+    // not an easy job to support marks
+    return false;
+}","public void test13139() throws Throwable {
+    byte[] byteArray0 = new byte[6];
+    byteArray0[1] = (byte) 98;
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) 0, (byte) 98);
+    Base64InputStream base64InputStream0 = new Base64InputStream(byteArrayInputStream0);
+    assertFalse(base64InputStream0.markSupported());
+}","/**
+ * {@inheritDoc}
+ *
+ * @return false
+ */"
+"public boolean markSupported() {
+    // not an easy job to support marks
+    return false;
+}","public void test13144() throws Throwable {
+    byte[] byteArray0 = new byte[6];
+    byteArray0[1] = (byte) 98;
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) 0, (byte) 98);
+    Base64InputStream base64InputStream0 = new Base64InputStream(byteArrayInputStream0);
+    int int0 = base64InputStream0.read(byteArray0);
+    assertFalse(base64InputStream0.markSupported());
+}","/**
+ * {@inheritDoc}
+ *
+ * @return false
+ */"
+"public boolean markSupported() {
+    // not an easy job to support marks
+    return false;
+}","public void test13148() throws Throwable {
+    byte[] byteArray0 = new byte[6];
+    byteArray0[1] = (byte) 98;
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) 0, (byte) 98);
+    Base64InputStream base64InputStream0 = new Base64InputStream(byteArrayInputStream0);
+    int int0 = base64InputStream0.read(byteArray0);
+    base64InputStream0.reset();
+    assertFalse(base64InputStream0.markSupported());
+}","/**
+ * {@inheritDoc}
+ *
+ * @return false
+ */"
+"public int read() throws IOException {
+    int r = read(singleByte, 0, 1);
+    while (r == 0) {
+        r = read(singleByte, 0, 1);
+    }
+    if (r > 0) {
+        return singleByte[0] < 0 ? 256 + singleByte[0] : singleByte[0];
+    }
+    return -1;
+}","public void test13151() throws Throwable {
+    byte[] byteArray0 = new byte[6];
+    byteArray0[1] = (byte) 98;
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) 0, (byte) 98);
+    Base64InputStream base64InputStream0 = new Base64InputStream(byteArrayInputStream0);
+    int int0 = base64InputStream0.read(byteArray0);
+    base64InputStream0.reset();
+    int int1 = base64InputStream0.read();
+    assertEquals(109, int1);
+}","/**
+ * Reads one <code>byte</code> from this input stream.
+ *
+ * @return the byte as an integer in the range 0 to 255. Returns -1 if EOF has been reached.
+ * @throws IOException
+ *             if an I/O error occurs.
+ */"
+"public boolean markSupported() {
+    // not an easy job to support marks
+    return false;
+}","public void test13153() throws Throwable {
+    byte[] byteArray0 = new byte[6];
+    byteArray0[1] = (byte) 98;
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) 0, (byte) 98);
+    Base64InputStream base64InputStream0 = new Base64InputStream(byteArrayInputStream0);
+    int int0 = base64InputStream0.read(byteArray0);
+    base64InputStream0.reset();
+    int int1 = base64InputStream0.read();
+    assertFalse(base64InputStream0.markSupported());
+}","/**
+ * {@inheritDoc}
+ *
+ * @return false
+ */"
+"public int read() throws IOException {
+    int r = read(singleByte, 0, 1);
+    while (r == 0) {
+        r = read(singleByte, 0, 1);
+    }
+    if (r > 0) {
+        return singleByte[0] < 0 ? 256 + singleByte[0] : singleByte[0];
+    }
+    return -1;
+}","public void test14166() throws Throwable {
+    byte[] byteArray0 = new byte[6];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) 0, (byte) 98);
+    Base64InputStream base64InputStream0 = new Base64InputStream(byteArrayInputStream0);
+    int int0 = base64InputStream0.read();
+    assertEquals((-1), int0);
+}","/**
+ * Reads one <code>byte</code> from this input stream.
+ *
+ * @return the byte as an integer in the range 0 to 255. Returns -1 if EOF has been reached.
+ * @throws IOException
+ *             if an I/O error occurs.
+ */"
+"public boolean markSupported() {
+    // not an easy job to support marks
+    return false;
+}","public void test14168() throws Throwable {
+    byte[] byteArray0 = new byte[6];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) 0, (byte) 98);
+    Base64InputStream base64InputStream0 = new Base64InputStream(byteArrayInputStream0);
+    int int0 = base64InputStream0.read();
+    assertFalse(base64InputStream0.markSupported());
+}","/**
+ * {@inheritDoc}
+ *
+ * @return false
+ */"
+"public boolean markSupported() {
+    // not an easy job to support marks
+    return false;
+}","public void test15180() throws Throwable {
+    byte[] byteArray0 = new byte[6];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) 0, (byte) 98);
+    Base64InputStream base64InputStream0 = new Base64InputStream(byteArrayInputStream0);
+    boolean boolean0 = base64InputStream0.markSupported();
+    assertFalse(boolean0);
+}","/**
+ * {@inheritDoc}
+ *
+ * @return false
+ */"
+"public boolean markSupported() {
+    // not an easy job to support marks
+    return false;
+}","public void test15182() throws Throwable {
+    byte[] byteArray0 = new byte[6];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (byte) 0, (byte) 98);
+    Base64InputStream base64InputStream0 = new Base64InputStream(byteArrayInputStream0);
+    boolean boolean0 = base64InputStream0.markSupported();
+    assertFalse(base64InputStream0.markSupported());
+}","/**
+ * {@inheritDoc}
+ *
+ * @return false
+ */"
+"public Base64InputStream(InputStream in) {
+    this(in, false);
+}","public void test16185() throws Throwable {
+    Base64InputStream base64InputStream0 = new Base64InputStream((InputStream) null);
+    assertNotNull(base64InputStream0);
+}","/**
+ * Creates a Base64InputStream such that all data read is Base64-decoded from the original provided InputStream.
+ *
+ * @param in
+ *            InputStream to wrap.
+ */"
+"public boolean markSupported() {
+    // not an easy job to support marks
+    return false;
+}","public void test16186() throws Throwable {
+    Base64InputStream base64InputStream0 = new Base64InputStream((InputStream) null);
+    assertFalse(base64InputStream0.markSupported());
+}","/**
+ * {@inheritDoc}
+ *
+ * @return false
+ */"
+"public int read(byte[] b, int offset, int len) throws IOException {
+    if (b == null) {
+        throw new NullPointerException();
+    } else if (offset < 0 || len < 0) {
+        throw new IndexOutOfBoundsException();
+    } else if (offset > b.length || offset + len > b.length) {
+        throw new IndexOutOfBoundsException();
+    } else if (len == 0) {
+        return 0;
+    } else {
+        /*
+             Rationale for while-loop on (readLen == 0):
+             -----
+             Base64.readResults() usually returns > 0 or EOF (-1).  In the
+             rare case where it returns 0, we just keep trying.
+
+             This is essentially an undocumented contract for InputStream
+             implementors that want their code to work properly with
+             java.io.InputStreamReader, since the latter hates it when
+             InputStream.read(byte[]) returns a zero.  Unfortunately our
+             readResults() call must return 0 if a large amount of the data
+             being decoded was non-base64, so this while-loop enables proper
+             interop with InputStreamReader for that scenario.
+             -----
+             This is a fix for CODEC-101
+            */
+        if (!base64.hasData()) {
+            byte[] buf = new byte[doEncode ? 4096 : 8192];
+            int c = in.read(buf);
+            // A little optimization to avoid System.arraycopy()
+            // when possible.
+            if (c > 0 && b.length == len) {
+                base64.setInitialBuffer(b, offset, len);
+            }
+            if (doEncode) {
+                base64.encode(buf, 0, c);
+            } else {
+                base64.decode(buf, 0, c);
+            }
+        }
+        return base64.readResults(b, offset, len);
+    }
+}","public void test16187() throws Throwable {
+    Base64InputStream base64InputStream0 = new Base64InputStream((InputStream) null);
+    byte[] byteArray0 = new byte[6];
+    // Undeclared exception!
+    try {
+        base64InputStream0.read(byteArray0, (int) (byte) 0, 256);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.codec.binary.Base64InputStream"", e);
+    }
+}","/**
+ * Attempts to read <code>len</code> bytes into the specified <code>b</code> array starting at <code>offset</code>
+ * from this InputStream.
+ *
+ * @param b
+ *            destination byte array
+ * @param offset
+ *            where to start writing the bytes
+ * @param len
+ *            maximum number of bytes to read
+ *
+ * @return number of bytes read
+ * @throws IOException
+ *             if an I/O error occurs.
+ * @throws NullPointerException
+ *             if the byte array parameter is null
+ * @throws IndexOutOfBoundsException
+ *             if offset, len or buffer size are invalid
+ */"

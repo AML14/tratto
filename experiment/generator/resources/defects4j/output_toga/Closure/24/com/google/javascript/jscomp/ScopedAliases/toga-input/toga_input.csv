@@ -1,0 +1,98 @@
+focal_method,test_prefix,docstring
+"@Override
+public void process(Node externs, Node root) {
+    hotSwapScript(root, null);
+}","public void test00() throws Throwable {
+    PreprocessorSymbolTable preprocessorSymbolTable0 = new PreprocessorSymbolTable((Node) null);
+    CompilerOptions.AliasTransformationHandler compilerOptions_AliasTransformationHandler0 = CompilerOptions.NULL_ALIAS_TRANSFORMATION_HANDLER;
+    ScopedAliases scopedAliases0 = new ScopedAliases((AbstractCompiler) null, preprocessorSymbolTable0, compilerOptions_AliasTransformationHandler0);
+    // Undeclared exception!
+    try {
+        scopedAliases0.process((Node) null, (Node) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.NodeTraversal"", e);
+    }
+}",""
+"@Override
+public void hotSwapScript(Node root, Node originalRoot) {
+    Traversal traversal = new Traversal();
+    NodeTraversal.traverse(compiler, root, traversal);
+    if (!traversal.hasErrors()) {
+        // Apply the aliases.
+        for (AliasUsage aliasUsage : traversal.getAliasUsages()) {
+            aliasUsage.applyAlias();
+        }
+        // Remove the alias definitions.
+        for (Node aliasDefinition : traversal.getAliasDefinitionsInOrder()) {
+            if (aliasDefinition.getParent().isVar() && aliasDefinition.getParent().hasOneChild()) {
+                aliasDefinition.getParent().detachFromParent();
+            } else {
+                aliasDefinition.detachFromParent();
+            }
+        }
+        // Collapse the scopes.
+        for (Node scopeCall : traversal.getScopeCalls()) {
+            Node expressionWithScopeCall = scopeCall.getParent();
+            Node scopeClosureBlock = scopeCall.getLastChild().getLastChild();
+            scopeClosureBlock.detachFromParent();
+            expressionWithScopeCall.getParent().replaceChild(expressionWithScopeCall, scopeClosureBlock);
+            NodeUtil.tryMergeBlock(scopeClosureBlock);
+        }
+        if (traversal.getAliasUsages().size() > 0 || traversal.getAliasDefinitionsInOrder().size() > 0 || traversal.getScopeCalls().size() > 0) {
+            compiler.reportCodeChange();
+        }
+    }
+}","public void test11() throws Throwable {
+    CompilerOptions.AliasTransformationHandler compilerOptions_AliasTransformationHandler0 = CompilerOptions.NULL_ALIAS_TRANSFORMATION_HANDLER;
+    Node node0 = new Node(105);
+    ScopedAliases scopedAliases0 = new ScopedAliases((AbstractCompiler) null, (PreprocessorSymbolTable) null, compilerOptions_AliasTransformationHandler0);
+    scopedAliases0.hotSwapScript(node0, node0);
+    assertEquals(8, Node.FLAG_NO_THROWS);
+}",""
+"public boolean isUnscopedQualifiedName() {
+    switch(getType()) {
+        case Token.NAME:
+            return true;
+        case Token.GETPROP:
+            return getFirstChild().isUnscopedQualifiedName();
+        default:
+            return false;
+    }
+}","public void test22() throws Throwable {
+    CompilerOptions.AliasTransformationHandler compilerOptions_AliasTransformationHandler0 = CompilerOptions.NULL_ALIAS_TRANSFORMATION_HANDLER;
+    Node node0 = new Node(105);
+    Node node1 = new Node(36, node0, node0);
+    ScopedAliases scopedAliases0 = new ScopedAliases((AbstractCompiler) null, (PreprocessorSymbolTable) null, compilerOptions_AliasTransformationHandler0);
+    scopedAliases0.hotSwapScript(node1, node0);
+    assertFalse(node0.isUnscopedQualifiedName());
+}","/**
+ * Returns whether a node corresponds to a simple or a qualified name without
+ * a ""this"" reference, such as <code>a.b.c</code>, but not <code>this.a</code>
+ * .
+ */"
+"public boolean isExprResult() {
+    return this.getType() == Token.EXPR_RESULT;
+}","public void test33() throws Throwable {
+    Node node0 = Node.newString(""{3EnW'=AW"");
+    CompilerOptions.AliasTransformationHandler compilerOptions_AliasTransformationHandler0 = CompilerOptions.NULL_ALIAS_TRANSFORMATION_HANDLER;
+    PreprocessorSymbolTable preprocessorSymbolTable0 = new PreprocessorSymbolTable(node0);
+    ScopedAliases scopedAliases0 = new ScopedAliases((AbstractCompiler) null, preprocessorSymbolTable0, compilerOptions_AliasTransformationHandler0);
+    Node node1 = new Node(37, node0, node0);
+    scopedAliases0.hotSwapScript(node1, node0);
+    assertFalse(node0.isExprResult());
+}",""
+"public boolean isTry() {
+    return this.getType() == Token.TRY;
+}","public void test44() throws Throwable {
+    Node node0 = Node.newString(""S("");
+    CompilerOptions.AliasTransformationHandler compilerOptions_AliasTransformationHandler0 = CompilerOptions.NULL_ALIAS_TRANSFORMATION_HANDLER;
+    Node node1 = new Node(16, node0, node0, node0, 54, 47);
+    PreprocessorSymbolTable preprocessorSymbolTable0 = new PreprocessorSymbolTable(node1);
+    ScopedAliases scopedAliases0 = new ScopedAliases((AbstractCompiler) null, preprocessorSymbolTable0, compilerOptions_AliasTransformationHandler0);
+    scopedAliases0.hotSwapScript(node0, node0);
+    assertFalse(node0.isTry());
+}",""

@@ -1,0 +1,10 @@
+com.google.javascript.rhino.jstype.RecordTypeBuilder,@Test(timeout = 4000)
+public void test00() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    RecordTypeBuilder recordTypeBuilder0 = new RecordTypeBuilder(jSTypeRegistry0);
+    Node node0 = new Node(0);
+    recordTypeBuilder0.addProperty("""", (JSType) null, node0);
+    JSType jSType0 = recordTypeBuilder0.build();
+    jSType0.isNoObjectType();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.

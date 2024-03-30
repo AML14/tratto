@@ -1,0 +1,405 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0);
+    cpioArchiveOutputStream0.close();
+    try {
+        cpioArchiveOutputStream0.finish();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream closed
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",1,
+project,0,test023,"public void test023() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry((short) 8);
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0, (short) 8);
+    // Undeclared exception!
+    try {
+        cpioArchiveOutputStream0.putArchiveEntry(cpioArchiveEntry0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",0,
+project,0,test046,"public void test046() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0, ""uy"");
+    try {
+        cpioArchiveOutputStream0.closeArchiveEntry();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Trying to close non-existent entry
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",0,
+project,0,test057,"public void test057() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = null;
+    try {
+        cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0, (short) 3);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unknown format: 3
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",0,
+project,0,test068,"public void test068() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0, (short) 4);
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry((short) 4, ""uE:~"");
+    cpioArchiveOutputStream0.putArchiveEntry(cpioArchiveEntry0);
+    try {
+        cpioArchiveOutputStream0.write((int) (short) 4);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // attempt to write past end of STORED entry
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",0,
+project,0,test079,"public void test079() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = null;
+    try {
+        cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0, (short) 5);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unknown format: 5
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",0,
+project,0,test0810,"public void test0810() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = null;
+    try {
+        cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0, (short) 6);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unknown format: 6
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",0,
+project,0,test0911,"public void test0911() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = null;
+    try {
+        cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0, (short) 7);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unknown format: 7
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",0,
+project,0,test1012,"public void test1012() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = null;
+    try {
+        cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0, (short) 43);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unknown format: 43
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",0,
+project,0,test1113,"public void test1113() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0);
+    cpioArchiveOutputStream0.finish();
+    ArjArchiveEntry arjArchiveEntry0 = new ArjArchiveEntry();
+    try {
+        cpioArchiveOutputStream0.putArchiveEntry(arjArchiveEntry0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream has already been finished
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",0,
+project,0,test1214,"public void test1214() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0);
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry(""@Jtg@"", 1392409315L);
+    cpioArchiveOutputStream0.putArchiveEntry(cpioArchiveEntry0);
+    try {
+        cpioArchiveOutputStream0.putArchiveEntry(cpioArchiveEntry0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // invalid entry size (expected 1392409315 but got 0 bytes)
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",0,
+project,0,test1315,"public void test1315() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry((short) 8);
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0);
+    try {
+        cpioArchiveOutputStream0.putArchiveEntry(cpioArchiveEntry0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Header format: 8 does not match existing format: 1
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",0,
+project,0,test1416,"public void test1416() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0);
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry(""-B`6oe-M0"");
+    cpioArchiveOutputStream0.putArchiveEntry(cpioArchiveEntry0);
+    try {
+        cpioArchiveOutputStream0.putArchiveEntry(cpioArchiveEntry0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // duplicate entry: -B`6oe-M0
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",0,
+project,0,test1517,"public void test1517() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry(""gt,,mJ{jd"", (short) 8);
+    cpioArchiveEntry0.setInode(3851L);
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0);
+    cpioArchiveOutputStream0.putArchiveEntry(cpioArchiveEntry0);
+    assertEquals(120, cpioArchiveOutputStream0.getCount());
+}",0,
+project,0,test1618,"public void test1618() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0);
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry(""E:~"");
+    cpioArchiveEntry0.setDeviceMin(1L);
+    cpioArchiveOutputStream0.putArchiveEntry(cpioArchiveEntry0);
+}",0,
+project,0,test1719,"public void test1719() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0, (short) 4);
+    cpioArchiveOutputStream0.finish();
+}",1,
+project,0,test1820,"public void test1820() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0, (short) 4);
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry((short) 4, ""uE:~"");
+    cpioArchiveEntry0.setInode(2L);
+    cpioArchiveOutputStream0.putArchiveEntry(cpioArchiveEntry0);
+}",0,
+project,0,test1921,"public void test1921() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0, (short) 4);
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry((short) 4);
+    cpioArchiveEntry0.setDevice((short) 4);
+    // Undeclared exception!
+    try {
+        cpioArchiveOutputStream0.putArchiveEntry(cpioArchiveEntry0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",0,
+project,0,test2022,"public void test2022() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry((short) 8);
+    cpioArchiveEntry0.setInode(262139L);
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0, (short) 8);
+    // Undeclared exception!
+    try {
+        cpioArchiveOutputStream0.putArchiveEntry(cpioArchiveEntry0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",0,
+project,0,test2123,"public void test2123() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0, (short) 8);
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry((short) 8);
+    cpioArchiveEntry0.setDevice(1L);
+    // Undeclared exception!
+    try {
+        cpioArchiveOutputStream0.putArchiveEntry(cpioArchiveEntry0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",0,
+project,0,test2224,"public void test2224() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0);
+    cpioArchiveOutputStream0.finish();
+    try {
+        cpioArchiveOutputStream0.closeArchiveEntry();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream has already been finished
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",0,
+project,0,test2325,"public void test2325() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0);
+    byte[] byteArray0 = new byte[1];
+    // Undeclared exception!
+    try {
+        cpioArchiveOutputStream0.write(byteArray0, (int) (byte) (-21), (-3465));
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",1,
+project,0,test2426,"public void test2426() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0, (short) 4);
+    try {
+        cpioArchiveOutputStream0.write((int) (short) 4);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // no current CPIO entry
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",0,
+project,0,test2527,"public void test2527() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0, (short) 2);
+    byte[] byteArray0 = new byte[0];
+    // Undeclared exception!
+    try {
+        cpioArchiveOutputStream0.write(byteArray0, (int) (short) 2, (-1932735282));
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",1,
+project,0,test2628,"public void test2628() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0);
+    byte[] byteArray0 = new byte[0];
+    // Undeclared exception!
+    try {
+        cpioArchiveOutputStream0.write(byteArray0, 32, 32);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",1,
+project,0,test2830,"public void test2830() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0);
+    cpioArchiveOutputStream0.finish();
+    try {
+        cpioArchiveOutputStream0.finish();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // This archive has already been finished
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",1,
+project,0,test2931,"public void test2931() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0);
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry("">Rh9kLBerkW>t7dxUnY"");
+    cpioArchiveOutputStream0.putArchiveEntry(cpioArchiveEntry0);
+    try {
+        cpioArchiveOutputStream0.finish();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // This archive contains unclosed entries.
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",1,
+project,0,test3032,"public void test3032() throws Throwable {
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""$z5YcO{Qh!-zLrhAvr"");
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(mockPrintStream0, (short) 2);
+    cpioArchiveOutputStream0.finish();
+    cpioArchiveOutputStream0.close();
+}",0,
+project,0,test3133,"public void test3133() throws Throwable {
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""$z5YcO{Qh!-zLrhAvr"");
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(mockPrintStream0, (short) 8);
+    cpioArchiveOutputStream0.close();
+    cpioArchiveOutputStream0.close();
+}",0,
+project,0,test3234,"public void test3234() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0);
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry("">Rh9kLBerkW>t7dxUlnY"");
+    cpioArchiveEntry0.setRemoteDeviceMin(4294967296L);
+    cpioArchiveOutputStream0.putArchiveEntry(cpioArchiveEntry0);
+}",0,
+project,0,test3335,"public void test3335() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0);
+    // Undeclared exception!
+    try {
+        cpioArchiveOutputStream0.createArchiveEntry((File) null, (String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveEntry"", e);
+    }
+}",1,
+project,0,test3436,"public void test3436() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0);
+    cpioArchiveOutputStream0.finish();
+    try {
+        cpioArchiveOutputStream0.createArchiveEntry((File) null, (String) null);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream has already been finished
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",1,

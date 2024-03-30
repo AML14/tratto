@@ -1,0 +1,345 @@
+{
+  "test2027" : {
+    "methodSignature" : "boolean expectNotNullOrUndefined(NodeTraversal t, Node n, JSType type, String msg, JSType expectedType)",
+    "methodName" : "expectNotNullOrUndefined",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test2027() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"array access\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    JSDocInfo jSDocInfo0 = new JSDocInfo();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType(jSDocInfo0);\n    CheckRegExp checkRegExp0 = new CheckRegExp(compiler0);\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, checkRegExp0);\n    boolean boolean0 = typeValidator0.expectNotNullOrUndefined(nodeTraversal0, node0, objectType0, \"Not declared as a type name\", objectType0);\n}",
+    "testName" : "test2027"
+  },
+  "test2026" : {
+    "methodSignature" : "public boolean hasCachedValues()",
+    "methodName" : "hasCachedValues",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test2026() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"array access\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    JSDocInfo jSDocInfo0 = new JSDocInfo();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType(jSDocInfo0);\n    CheckRegExp checkRegExp0 = new CheckRegExp(compiler0);\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, checkRegExp0);\n    boolean boolean0 = typeValidator0.expectNotNullOrUndefined(nodeTraversal0, node0, objectType0, \"Not declared as a type name\", objectType0);\n    objectType0.hasCachedValues();\n}",
+    "testName" : "test2026"
+  },
+  "test3038" : {
+    "methodSignature" : "public int getWarningCount()",
+    "methodName" : "getWarningCount",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test3038() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"array access\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    JSDocInfo jSDocInfo0 = new JSDocInfo();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType(jSDocInfo0);\n    CheckRegExp checkRegExp0 = new CheckRegExp(compiler0);\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, checkRegExp0);\n    typeValidator0.expectCanOverride(nodeTraversal0, node0, objectType0, objectType0, \"Not declared as a constructor\", objectType0);\n    compiler0.getWarningCount();\n}",
+    "testName" : "test3038"
+  },
+  "test1215" : {
+    "methodSignature" : "public int getWarningCount()",
+    "methodName" : "getWarningCount",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1215() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\" 9+NY\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    CheckLevel checkLevel0 = CheckLevel.WARNING;\n    CheckMissingGetCssName checkMissingGetCssName0 = new CheckMissingGetCssName(compiler0, checkLevel0, \" 9+NY\");\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, checkMissingGetCssName0);\n    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);\n    TemplateType templateType0 = jSTypeRegistry0.createTemplateType(\" 9+NY\");\n    typeValidator0.expectString(nodeTraversal0, node0, templateType0, \" 9+NY\");\n    compiler0.getWarningCount();\n}",
+    "testName" : "test1215"
+  },
+  "test4049" : {
+    "methodSignature" : "String getReadableJSTypeName(Node n, boolean dereference)",
+    "methodName" : "getReadableJSTypeName",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test4049() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\" 9+NY\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    Node node1 = new Node(42, node0, node0, node0, node0, (-2712), 29);\n    String string0 = typeValidator0.getReadableJSTypeName(node1, true);\n}",
+    "testName" : "test4049"
+  },
+  "test1012" : {
+    "methodSignature" : "public int getWarningCount()",
+    "methodName" : "getWarningCount",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1012() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"\");\n    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);\n    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);\n    JSType jSType0 = modificationVisitor0.caseNumberType();\n    TypeValidator typeValidator0 = compiler0.getTypeValidator();\n    CheckLevel checkLevel0 = CheckLevel.OFF;\n    CheckMissingReturn checkMissingReturn0 = new CheckMissingReturn(compiler0, checkLevel0);\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, checkMissingReturn0);\n    typeValidator0.expectAnyObject(nodeTraversal0, node0, jSType0, \"Object#Element\");\n    compiler0.getWarningCount();\n}",
+    "testName" : "test1012"
+  },
+  "test1418" : {
+    "methodSignature" : "public int getWarningCount()",
+    "methodName" : "getWarningCount",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1418() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\" 9+NY\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    CheckLevel checkLevel0 = CheckLevel.WARNING;\n    CheckMissingGetCssName checkMissingGetCssName0 = new CheckMissingGetCssName(compiler0, checkLevel0, \" 9+NY\");\n    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);\n    TemplateType templateType0 = jSTypeRegistry0.createTemplateType(\" 9+NY\");\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, checkMissingGetCssName0, (ScopeCreator) null);\n    typeValidator0.expectNumber(nodeTraversal0, node0, templateType0, \"\");\n    compiler0.getWarningCount();\n}",
+    "testName" : "test1418"
+  },
+  "test034" : {
+    "methodSignature" : "InlineProperties(AbstractCompiler compiler)",
+    "methodName" : "InlineProperties",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test034() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    compiler0.parseTestCode(\" 9+NY\");\n    InlineProperties inlineProperties0 = new InlineProperties(compiler0);\n}",
+    "testName" : "test034"
+  },
+  "test078" : {
+    "methodSignature" : "public boolean hasCachedValues()",
+    "methodName" : "hasCachedValues",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test078() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\" 9+NY\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    CheckLevel checkLevel0 = CheckLevel.WARNING;\n    CheckMissingGetCssName checkMissingGetCssName0 = new CheckMissingGetCssName(compiler0, checkLevel0, \" 9+NY\");\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, checkMissingGetCssName0);\n    TightenTypes tightenTypes0 = new TightenTypes(compiler0);\n    JSTypeRegistry jSTypeRegistry0 = tightenTypes0.getTypeRegistry();\n    JSDocInfo jSDocInfo0 = new JSDocInfo();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType(jSDocInfo0);\n    typeValidator0.expectActualObject(nodeTraversal0, node0, objectType0, \"Object#Element\");\n    objectType0.hasCachedValues();\n}",
+    "testName" : "test078"
+  },
+  "test2229" : {
+    "methodSignature" : "public int getWarningCount()",
+    "methodName" : "getWarningCount",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test2229() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\" 9+NY\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    CheckLevel checkLevel0 = CheckLevel.WARNING;\n    CheckMissingGetCssName checkMissingGetCssName0 = new CheckMissingGetCssName(compiler0, checkLevel0, \" 9+NY\");\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, checkMissingGetCssName0);\n    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);\n    TemplateType templateType0 = jSTypeRegistry0.createTemplateType(\" 9+NY\");\n    typeValidator0.expectSwitchMatchesCase(nodeTraversal0, node0, templateType0, templateType0);\n    compiler0.getWarningCount();\n}",
+    "testName" : "test2229"
+  },
+  "test3644" : {
+    "methodSignature" : "Var expectUndeclaredVariable(String sourceName, CompilerInput input, Node n, Node parent, Var var, String variableName, JSType newType)",
+    "methodName" : "expectUndeclaredVariable",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test3644() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"array access\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    JSDocInfo jSDocInfo0 = new JSDocInfo();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType(jSDocInfo0);\n    typeValidator0.expectUndeclaredVariable(\"Unknown class name\", (CompilerInput) null, node0, node0, (Scope.Var) null, \"Named type with empty name component\", objectType0);\n}",
+    "testName" : "test3644"
+  },
+  "test1620" : {
+    "methodSignature" : "public boolean hasCachedValues()",
+    "methodName" : "hasCachedValues",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1620() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"array access\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    JSDocInfo jSDocInfo0 = new JSDocInfo();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType(jSDocInfo0);\n    CheckRegExp checkRegExp0 = new CheckRegExp(compiler0);\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, checkRegExp0);\n    typeValidator0.expectBitwiseable(nodeTraversal0, node0, objectType0, \"Not declared as a type name\");\n    objectType0.hasCachedValues();\n}",
+    "testName" : "test1620"
+  },
+  "test1621" : {
+    "methodSignature" : "public int getWarningCount()",
+    "methodName" : "getWarningCount",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1621() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"array access\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    JSDocInfo jSDocInfo0 = new JSDocInfo();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType(jSDocInfo0);\n    CheckRegExp checkRegExp0 = new CheckRegExp(compiler0);\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, checkRegExp0);\n    typeValidator0.expectBitwiseable(nodeTraversal0, node0, objectType0, \"Not declared as a type name\");\n    compiler0.getWarningCount();\n}",
+    "testName" : "test1621"
+  },
+  "test2633" : {
+    "methodSignature" : "boolean expectCanAssignTo(NodeTraversal t, Node n, JSType rightType, JSType leftType, String msg)",
+    "methodName" : "expectCanAssignTo",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test2633() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"array access\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    JSDocInfo jSDocInfo0 = new JSDocInfo();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType(jSDocInfo0);\n    CheckRegExp checkRegExp0 = new CheckRegExp(compiler0);\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, checkRegExp0);\n    boolean boolean0 = typeValidator0.expectCanAssignTo(nodeTraversal0, node0, objectType0, objectType0, \"Object#Key\");\n}",
+    "testName" : "test2633"
+  },
+  "test3442" : {
+    "methodSignature" : "public int getWarningCount()",
+    "methodName" : "getWarningCount",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test3442() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"\");\n    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);\n    TemplateType templateType0 = jSTypeRegistry0.createTemplateType(\"Q\\\"'\");\n    ReferenceCollectingCallback.Behavior referenceCollectingCallback_Behavior0 = ReferenceCollectingCallback.DO_NOTHING_BEHAVIOR;\n    ReferenceCollectingCallback referenceCollectingCallback0 = new ReferenceCollectingCallback(compiler0, referenceCollectingCallback_Behavior0);\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);\n    JSType jSType0 = jSTypeRegistry0.createOptionalType(templateType0);\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, referenceCollectingCallback0, syntacticScopeCreator0);\n    typeValidator0.expectCanCast(nodeTraversal0, node0, jSType0, jSType0);\n    compiler0.getWarningCount();\n}",
+    "testName" : "test3442"
+  },
+  "test2431" : {
+    "methodSignature" : "boolean expectCanAssignToPropertyOf(NodeTraversal t, Node n, JSType rightType, JSType leftType, Node owner, String propName)",
+    "methodName" : "expectCanAssignToPropertyOf",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test2431() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"\");\n    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);\n    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);\n    JSType jSType0 = modificationVisitor0.caseNumberType();\n    TypeValidator typeValidator0 = compiler0.getTypeValidator();\n    CheckLevel checkLevel0 = CheckLevel.OFF;\n    CheckMissingReturn checkMissingReturn0 = new CheckMissingReturn(compiler0, checkLevel0);\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, checkMissingReturn0);\n    JSType jSType1 = modificationVisitor0.caseNoType();\n    boolean boolean0 = typeValidator0.expectCanAssignToPropertyOf(nodeTraversal0, node0, jSType0, jSType1, node0, \"Unknown class name\");\n}",
+    "testName" : "test2431"
+  },
+  "test022" : {
+    "methodSignature" : "public int getWarningCount()",
+    "methodName" : "getWarningCount",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test022() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\" 9+NY\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    Normalize.VerifyConstants normalize_VerifyConstants0 = new Normalize.VerifyConstants(compiler0, true);\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, normalize_VerifyConstants0);\n    TightenTypes tightenTypes0 = new TightenTypes(compiler0);\n    JSTypeRegistry jSTypeRegistry0 = tightenTypes0.getTypeRegistry();\n    JSTypeNative jSTypeNative0 = JSTypeNative.GLOBAL_THIS;\n    ObjectType objectType0 = jSTypeRegistry0.getNativeObjectType(jSTypeNative0);\n    typeValidator0.expectNumber(nodeTraversal0, node0, objectType0, \"variable {0} redefined with type {1}, original definition at {2}:{3} with type {4}\");\n    compiler0.getWarningCount();\n}",
+    "testName" : "test022"
+  },
+  "test023" : {
+    "methodSignature" : "public boolean hasCachedValues()",
+    "methodName" : "hasCachedValues",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test023() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\" 9+NY\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    Normalize.VerifyConstants normalize_VerifyConstants0 = new Normalize.VerifyConstants(compiler0, true);\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, normalize_VerifyConstants0);\n    TightenTypes tightenTypes0 = new TightenTypes(compiler0);\n    JSTypeRegistry jSTypeRegistry0 = tightenTypes0.getTypeRegistry();\n    JSTypeNative jSTypeNative0 = JSTypeNative.GLOBAL_THIS;\n    ObjectType objectType0 = jSTypeRegistry0.getNativeObjectType(jSTypeNative0);\n    typeValidator0.expectNumber(nodeTraversal0, node0, objectType0, \"variable {0} redefined with type {1}, original definition at {2}:{3} with type {4}\");\n    objectType0.hasCachedValues();\n}",
+    "testName" : "test023"
+  },
+  "test067" : {
+    "methodSignature" : "boolean expectObject(NodeTraversal t, Node n, JSType type, String msg)",
+    "methodName" : "expectObject",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test067() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\" 9+NY\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, (NodeTraversal.Callback) null);\n    JSTypeNative jSTypeNative0 = JSTypeNative.DATE_FUNCTION_TYPE;\n    FunctionType functionType0 = jSTypeRegistry0.getNativeFunctionType(jSTypeNative0);\n    boolean boolean0 = typeValidator0.expectObject(nodeTraversal0, node0, functionType0, \"8k;Aw-|.G^fIp\");\n}",
+    "testName" : "test067"
+  },
+  "test3846" : {
+    "methodSignature" : "public int getWarningCount()",
+    "methodName" : "getWarningCount",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test3846() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\" 9+NY\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    TemplateType templateType0 = jSTypeRegistry0.getObjectElementKey();\n    EnumType enumType0 = jSTypeRegistry0.createEnumType(\"Not declared as a constructor\", node0, templateType0);\n    ObjectType objectType0 = enumType0.getImplicitPrototype();\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, (NodeTraversal.Callback) null);\n    boolean boolean0 = typeValidator0.expectCanAssignToPropertyOf(nodeTraversal0, node0, objectType0, enumType0, node0, \"Not declared as a constructor\");\n    compiler0.getWarningCount();\n}",
+    "testName" : "test3846"
+  },
+  "test0810" : {
+    "methodSignature" : "public int getWarningCount()",
+    "methodName" : "getWarningCount",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0810() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"\");\n    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);\n    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);\n    JSType jSType0 = modificationVisitor0.caseNumberType();\n    TypeValidator typeValidator0 = compiler0.getTypeValidator();\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, (NodeTraversal.Callback) null);\n    typeValidator0.expectActualObject(nodeTraversal0, node0, jSType0, \"msg.continue.nonloop\");\n    compiler0.getWarningCount();\n}",
+    "testName" : "test0810"
+  },
+  "test1823" : {
+    "methodSignature" : "public boolean hasCachedValues()",
+    "methodName" : "hasCachedValues",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1823() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"array access\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    CheckLevel checkLevel0 = CheckLevel.WARNING;\n    CheckMissingGetCssName checkMissingGetCssName0 = new CheckMissingGetCssName(compiler0, checkLevel0, \"array access\");\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, checkMissingGetCssName0);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    JSDocInfo jSDocInfo0 = new JSDocInfo();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType(jSDocInfo0);\n    typeValidator0.expectStringOrNumber(nodeTraversal0, node0, objectType0, \"zv-y[|0/N!e9sHo}\");\n    objectType0.hasCachedValues();\n}",
+    "testName" : "test1823"
+  },
+  "test2836" : {
+    "methodSignature" : "public int getWarningCount()",
+    "methodName" : "getWarningCount",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test2836() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\" 9+NY\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    CheckLevel checkLevel0 = CheckLevel.WARNING;\n    CheckMissingGetCssName checkMissingGetCssName0 = new CheckMissingGetCssName(compiler0, checkLevel0, \" 9+NY\");\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, checkMissingGetCssName0);\n    TightenTypes tightenTypes0 = new TightenTypes(compiler0);\n    JSTypeRegistry jSTypeRegistry0 = tightenTypes0.getTypeRegistry();\n    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);\n    JSType jSType0 = modificationVisitor0.caseNumberType();\n    typeValidator0.expectArgumentMatchesParameter(nodeTraversal0, node0, jSType0, jSType0, node0, 4095);\n    compiler0.getWarningCount();\n}",
+    "testName" : "test2836"
+  },
+  "test1824" : {
+    "methodSignature" : "public int getWarningCount()",
+    "methodName" : "getWarningCount",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1824() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"array access\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    CheckLevel checkLevel0 = CheckLevel.WARNING;\n    CheckMissingGetCssName checkMissingGetCssName0 = new CheckMissingGetCssName(compiler0, checkLevel0, \"array access\");\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, checkMissingGetCssName0);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    JSDocInfo jSDocInfo0 = new JSDocInfo();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType(jSDocInfo0);\n    typeValidator0.expectStringOrNumber(nodeTraversal0, node0, objectType0, \"zv-y[|0/N!e9sHo}\");\n    compiler0.getWarningCount();\n}",
+    "testName" : "test1824"
+  },
+  "test3847" : {
+    "methodSignature" : "boolean expectCanAssignToPropertyOf(NodeTraversal t, Node n, JSType rightType, JSType leftType, Node owner, String propName)",
+    "methodName" : "expectCanAssignToPropertyOf",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test3847() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\" 9+NY\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    TemplateType templateType0 = jSTypeRegistry0.getObjectElementKey();\n    EnumType enumType0 = jSTypeRegistry0.createEnumType(\"Not declared as a constructor\", node0, templateType0);\n    ObjectType objectType0 = enumType0.getImplicitPrototype();\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, (NodeTraversal.Callback) null);\n    boolean boolean0 = typeValidator0.expectCanAssignToPropertyOf(nodeTraversal0, node0, objectType0, enumType0, node0, \"Not declared as a constructor\");\n}",
+    "testName" : "test3847"
+  },
+  "test3240" : {
+    "methodSignature" : "void expectSuperType(NodeTraversal t, Node n, ObjectType superObject, ObjectType subObject)",
+    "methodName" : "expectSuperType",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test3240() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"array access\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    JSDocInfo jSDocInfo0 = new JSDocInfo();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType(jSDocInfo0);\n    CheckRegExp checkRegExp0 = new CheckRegExp(compiler0);\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, checkRegExp0);\n    typeValidator0.expectSuperType(nodeTraversal0, node0, objectType0, objectType0);\n}",
+    "testName" : "test3240"
+  },
+  "test1113" : {
+    "methodSignature" : "public boolean hasCachedValues()",
+    "methodName" : "hasCachedValues",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1113() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\" 9+NY\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    CheckLevel checkLevel0 = CheckLevel.WARNING;\n    CheckMissingGetCssName checkMissingGetCssName0 = new CheckMissingGetCssName(compiler0, checkLevel0, \" 9+NY\");\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, checkMissingGetCssName0);\n    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);\n    JSTypeNative jSTypeNative0 = JSTypeNative.NO_RESOLVED_TYPE;\n    FunctionType functionType0 = jSTypeRegistry0.getNativeFunctionType(jSTypeNative0);\n    typeValidator0.expectAnyObject(nodeTraversal0, node0, functionType0, \"Unknown class name\");\n    functionType0.hasCachedValues();\n}",
+    "testName" : "test1113"
+  },
+  "test1114" : {
+    "methodSignature" : "public int getWarningCount()",
+    "methodName" : "getWarningCount",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1114() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\" 9+NY\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    CheckLevel checkLevel0 = CheckLevel.WARNING;\n    CheckMissingGetCssName checkMissingGetCssName0 = new CheckMissingGetCssName(compiler0, checkLevel0, \" 9+NY\");\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, checkMissingGetCssName0);\n    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);\n    JSTypeNative jSTypeNative0 = JSTypeNative.NO_RESOLVED_TYPE;\n    FunctionType functionType0 = jSTypeRegistry0.getNativeFunctionType(jSTypeNative0);\n    typeValidator0.expectAnyObject(nodeTraversal0, node0, functionType0, \"Unknown class name\");\n    compiler0.getWarningCount();\n}",
+    "testName" : "test1114"
+  },
+  "test2128" : {
+    "methodSignature" : "boolean expectNotNullOrUndefined(NodeTraversal t, Node n, JSType type, String msg, JSType expectedType)",
+    "methodName" : "expectNotNullOrUndefined",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test2128() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\" 9+NY\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    CheckLevel checkLevel0 = CheckLevel.WARNING;\n    CheckMissingGetCssName checkMissingGetCssName0 = new CheckMissingGetCssName(compiler0, checkLevel0, \" 9+NY\");\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, checkMissingGetCssName0);\n    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);\n    TemplateType templateType0 = jSTypeRegistry0.createTemplateType(\" 9+NY\");\n    boolean boolean0 = typeValidator0.expectNotNullOrUndefined(nodeTraversal0, node0, templateType0, \"Unknown class name\", templateType0);\n}",
+    "testName" : "test2128"
+  },
+  "test3139" : {
+    "methodSignature" : "void expectCanOverride(NodeTraversal t, Node n, JSType overridingType, JSType hiddenType, String propertyName, JSType ownerType)",
+    "methodName" : "expectCanOverride",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test3139() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\" 9+NY\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    CheckLevel checkLevel0 = CheckLevel.WARNING;\n    CheckMissingGetCssName checkMissingGetCssName0 = new CheckMissingGetCssName(compiler0, checkLevel0, \" 9+NY\");\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, checkMissingGetCssName0);\n    TightenTypes tightenTypes0 = new TightenTypes(compiler0);\n    JSTypeRegistry jSTypeRegistry0 = tightenTypes0.getTypeRegistry();\n    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);\n    JSType jSType0 = modificationVisitor0.caseNumberType();\n    JSType[] jSTypeArray0 = new JSType[5];\n    jSTypeArray0[2] = jSType0;\n    jSTypeArray0[4] = jSType0;\n    FunctionType functionType0 = jSTypeRegistry0.createConstructorType(jSType0, true, jSTypeArray0);\n    typeValidator0.expectCanOverride(nodeTraversal0, node0, functionType0, jSTypeArray0[2], \"x#?q9o'ryW\", functionType0);\n}",
+    "testName" : "test3139"
+  },
+  "test011" : {
+    "methodSignature" : "public int getWarningCount()",
+    "methodName" : "getWarningCount",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test011() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\" 9+NY\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    CheckLevel checkLevel0 = CheckLevel.ERROR;\n    CheckMissingGetCssName checkMissingGetCssName0 = new CheckMissingGetCssName(compiler0, checkLevel0, \" 9+NY\");\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, checkMissingGetCssName0);\n    typeValidator0.expectValidTypeofName(nodeTraversal0, node0, \"?\");\n    compiler0.getWarningCount();\n}",
+    "testName" : "test011"
+  },
+  "test1519" : {
+    "methodSignature" : "public boolean isComma()",
+    "methodName" : "isComma",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1519() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\" 9+NY\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    CheckLevel checkLevel0 = CheckLevel.WARNING;\n    CheckMissingGetCssName checkMissingGetCssName0 = new CheckMissingGetCssName(compiler0, checkLevel0, \" 9+NY\");\n    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);\n    TemplateType templateType0 = jSTypeRegistry0.createTemplateType(\" 9+NY\");\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, checkMissingGetCssName0, (ScopeCreator) null);\n    typeValidator0.expectBitwiseable(nodeTraversal0, node0, templateType0, \"\");\n    node0.isComma();\n}",
+    "testName" : "test1519"
+  },
+  "test1316" : {
+    "methodSignature" : "public boolean hasCachedValues()",
+    "methodName" : "hasCachedValues",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1316() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\" 9+NY\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    CheckLevel checkLevel0 = CheckLevel.WARNING;\n    CheckMissingGetCssName checkMissingGetCssName0 = new CheckMissingGetCssName(compiler0, checkLevel0, \" 9+NY\");\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, checkMissingGetCssName0);\n    TightenTypes tightenTypes0 = new TightenTypes(compiler0);\n    JSTypeRegistry jSTypeRegistry0 = tightenTypes0.getTypeRegistry();\n    JSDocInfo jSDocInfo0 = new JSDocInfo();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType(jSDocInfo0);\n    typeValidator0.expectString(nodeTraversal0, node0, objectType0, \"Object#Element\");\n    objectType0.hasCachedValues();\n}",
+    "testName" : "test1316"
+  },
+  "test1317" : {
+    "methodSignature" : "public int getWarningCount()",
+    "methodName" : "getWarningCount",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1317() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\" 9+NY\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    CheckLevel checkLevel0 = CheckLevel.WARNING;\n    CheckMissingGetCssName checkMissingGetCssName0 = new CheckMissingGetCssName(compiler0, checkLevel0, \" 9+NY\");\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, checkMissingGetCssName0);\n    TightenTypes tightenTypes0 = new TightenTypes(compiler0);\n    JSTypeRegistry jSTypeRegistry0 = tightenTypes0.getTypeRegistry();\n    JSDocInfo jSDocInfo0 = new JSDocInfo();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType(jSDocInfo0);\n    typeValidator0.expectString(nodeTraversal0, node0, objectType0, \"Object#Element\");\n    compiler0.getWarningCount();\n}",
+    "testName" : "test1317"
+  },
+  "test2532" : {
+    "methodSignature" : "boolean expectCanAssignToPropertyOf(NodeTraversal t, Node n, JSType rightType, JSType leftType, Node owner, String propName)",
+    "methodName" : "expectCanAssignToPropertyOf",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test2532() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"\");\n    TypeValidator typeValidator0 = compiler0.getTypeValidator();\n    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);\n    TemplateType templateType0 = jSTypeRegistry0.createTemplateType(\"\");\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, (NodeTraversal.Callback) null, (ScopeCreator) null);\n    boolean boolean0 = typeValidator0.expectCanAssignToPropertyOf(nodeTraversal0, node0, templateType0, templateType0, node0, \"Object#Element\");\n}",
+    "testName" : "test2532"
+  },
+  "test3745" : {
+    "methodSignature" : "public boolean isInterface()",
+    "methodName" : "isInterface",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test3745() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\" 9+NY\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, (NodeTraversal.Callback) null);\n    JSTypeNative jSTypeNative0 = JSTypeNative.DATE_FUNCTION_TYPE;\n    FunctionType functionType0 = jSTypeRegistry0.getNativeFunctionType(jSTypeNative0);\n    typeValidator0.expectAllInterfaceProperties(nodeTraversal0, node0, functionType0);\n    functionType0.isInterface();\n}",
+    "testName" : "test3745"
+  },
+  "test2330" : {
+    "methodSignature" : "public int getWarningCount()",
+    "methodName" : "getWarningCount",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test2330() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\" 9+NY\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    CheckLevel checkLevel0 = CheckLevel.WARNING;\n    CheckMissingGetCssName checkMissingGetCssName0 = new CheckMissingGetCssName(compiler0, checkLevel0, \" 9+NY\");\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, checkMissingGetCssName0);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);\n    JSType jSType0 = modificationVisitor0.caseNumberType();\n    JSTypeNative jSTypeNative0 = JSTypeNative.DATE_FUNCTION_TYPE;\n    FunctionType functionType0 = jSTypeRegistry0.getNativeFunctionType(jSTypeNative0);\n    typeValidator0.expectSwitchMatchesCase(nodeTraversal0, node0, functionType0, jSType0);\n    compiler0.getWarningCount();\n}",
+    "testName" : "test2330"
+  },
+  "test3543" : {
+    "methodSignature" : "public int getWarningCount()",
+    "methodName" : "getWarningCount",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test3543() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"vH_ljC#t\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    TemplateType templateType0 = jSTypeRegistry0.getObjectElementKey();\n    EnumType enumType0 = jSTypeRegistry0.createEnumType(\"X{SHS)D6L_E6\", node0, templateType0);\n    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);\n    JSType jSType0 = modificationVisitor0.caseNumberType();\n    SyntacticScopeCreator syntacticScopeCreator0 = new SyntacticScopeCreator(compiler0);\n    JSType jSType1 = jSTypeRegistry0.createOptionalType(enumType0);\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, (NodeTraversal.Callback) null, syntacticScopeCreator0);\n    typeValidator0.expectCanCast(nodeTraversal0, node0, jSType1, jSType0);\n    compiler0.getWarningCount();\n}",
+    "testName" : "test3543"
+  },
+  "test000" : {
+    "methodSignature" : "public int getWarningCount()",
+    "methodName" : "getWarningCount",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test000() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\" 9+NY\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);\n    JSType jSType0 = modificationVisitor0.caseNumberType();\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, (NodeTraversal.Callback) null);\n    JSTypeNative jSTypeNative0 = JSTypeNative.DATE_FUNCTION_TYPE;\n    FunctionType functionType0 = jSTypeRegistry0.getNativeFunctionType(jSTypeNative0);\n    typeValidator0.expectSwitchMatchesCase(nodeTraversal0, node0, jSType0, functionType0);\n    compiler0.getWarningCount();\n}",
+    "testName" : "test000"
+  },
+  "test2937" : {
+    "methodSignature" : "void expectArgumentMatchesParameter(NodeTraversal t, Node n, JSType argType, JSType paramType, Node callNode, int ordinal)",
+    "methodName" : "expectArgumentMatchesParameter",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test2937() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"H_ljC#t\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);\n    JSType jSType0 = modificationVisitor0.caseNumberType();\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, (NodeTraversal.Callback) null);\n    JSTypeNative jSTypeNative0 = JSTypeNative.DATE_FUNCTION_TYPE;\n    FunctionType functionType0 = jSTypeRegistry0.getNativeFunctionType(jSTypeNative0);\n    typeValidator0.expectArgumentMatchesParameter(nodeTraversal0, node0, functionType0, jSType0, node0, 0);\n}",
+    "testName" : "test2937"
+  },
+  "test045" : {
+    "methodSignature" : "void setShouldReport(boolean report)",
+    "methodName" : "setShouldReport",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test045() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    compiler0.parseTestCode(\"\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    typeValidator0.setShouldReport(true);\n}",
+    "testName" : "test045"
+  },
+  "test1925" : {
+    "methodSignature" : "public int getWarningCount()",
+    "methodName" : "getWarningCount",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1925() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"vH_ljC#t\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    TemplateType templateType0 = jSTypeRegistry0.getObjectElementKey();\n    EnumType enumType0 = jSTypeRegistry0.createEnumType(\"X{SHS)D6L_E6\", node0, templateType0);\n    RemoveUnusedClassProperties removeUnusedClassProperties0 = new RemoveUnusedClassProperties(compiler0);\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, removeUnusedClassProperties0);\n    typeValidator0.expectStringOrNumber(nodeTraversal0, (Node) null, enumType0, \"Named type with empty name component\");\n    compiler0.getWarningCount();\n}",
+    "testName" : "test1925"
+  },
+  "test3948" : {
+    "methodSignature" : "String getReadableJSTypeName(Node n, boolean dereference)",
+    "methodName" : "getReadableJSTypeName",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test3948() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\" 9+NY\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    String string0 = typeValidator0.getReadableJSTypeName(node0, false);\n}",
+    "testName" : "test3948"
+  },
+  "test1722" : {
+    "methodSignature" : "void expectStringOrNumber(NodeTraversal t, Node n, JSType type, String msg)",
+    "methodName" : "expectStringOrNumber",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1722() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\" 9+NY\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    CheckLevel checkLevel0 = CheckLevel.WARNING;\n    CheckMissingGetCssName checkMissingGetCssName0 = new CheckMissingGetCssName(compiler0, checkLevel0, \" 9+NY\");\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, checkMissingGetCssName0);\n    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);\n    TemplateType templateType0 = jSTypeRegistry0.createTemplateType(\" 9+NY\");\n    typeValidator0.expectStringOrNumber(nodeTraversal0, node0, templateType0, \"Not declared as a constructor\");\n}",
+    "testName" : "test1722"
+  },
+  "test2735" : {
+    "methodSignature" : "boolean expectCanAssignTo(NodeTraversal t, Node n, JSType rightType, JSType leftType, String msg)",
+    "methodName" : "expectCanAssignTo",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test2735() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\" 9+NY\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);\n    JSType jSType0 = modificationVisitor0.caseNumberType();\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, (NodeTraversal.Callback) null);\n    JSTypeNative jSTypeNative0 = JSTypeNative.DATE_FUNCTION_TYPE;\n    FunctionType functionType0 = jSTypeRegistry0.getNativeFunctionType(jSTypeNative0);\n    boolean boolean0 = typeValidator0.expectCanAssignTo(nodeTraversal0, node0, functionType0, jSType0, \"Not declared as a type name\");\n}",
+    "testName" : "test2735"
+  },
+  "test2734" : {
+    "methodSignature" : "public int getWarningCount()",
+    "methodName" : "getWarningCount",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test2734() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\" 9+NY\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    ModificationVisitor modificationVisitor0 = new ModificationVisitor(jSTypeRegistry0);\n    JSType jSType0 = modificationVisitor0.caseNumberType();\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, (NodeTraversal.Callback) null);\n    JSTypeNative jSTypeNative0 = JSTypeNative.DATE_FUNCTION_TYPE;\n    FunctionType functionType0 = jSTypeRegistry0.getNativeFunctionType(jSTypeNative0);\n    boolean boolean0 = typeValidator0.expectCanAssignTo(nodeTraversal0, node0, functionType0, jSType0, \"Not declared as a type name\");\n    compiler0.getWarningCount();\n}",
+    "testName" : "test2734"
+  },
+  "test0911" : {
+    "methodSignature" : "public boolean hasCachedValues()",
+    "methodName" : "hasCachedValues",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0911() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"array access\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();\n    JSDocInfo jSDocInfo0 = new JSDocInfo();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType(jSDocInfo0);\n    CheckRegExp checkRegExp0 = new CheckRegExp(compiler0);\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, checkRegExp0);\n    typeValidator0.expectAnyObject(nodeTraversal0, node0, objectType0, \"Not declared as a type name\");\n    objectType0.hasCachedValues();\n}",
+    "testName" : "test0911"
+  },
+  "test079" : {
+    "methodSignature" : "public int getWarningCount()",
+    "methodName" : "getWarningCount",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test079() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\" 9+NY\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    CheckLevel checkLevel0 = CheckLevel.WARNING;\n    CheckMissingGetCssName checkMissingGetCssName0 = new CheckMissingGetCssName(compiler0, checkLevel0, \" 9+NY\");\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, checkMissingGetCssName0);\n    TightenTypes tightenTypes0 = new TightenTypes(compiler0);\n    JSTypeRegistry jSTypeRegistry0 = tightenTypes0.getTypeRegistry();\n    JSDocInfo jSDocInfo0 = new JSDocInfo();\n    ObjectType objectType0 = jSTypeRegistry0.createAnonymousObjectType(jSDocInfo0);\n    typeValidator0.expectActualObject(nodeTraversal0, node0, objectType0, \"Object#Element\");\n    compiler0.getWarningCount();\n}",
+    "testName" : "test079"
+  },
+  "test3341" : {
+    "methodSignature" : "public boolean isIf()",
+    "methodName" : "isIf",
+    "className" : "com.google.javascript.jscomp.TypeValidator",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test3341() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\" 9+NY\");\n    TypeValidator typeValidator0 = new TypeValidator(compiler0);\n    CheckLevel checkLevel0 = CheckLevel.WARNING;\n    CheckMissingGetCssName checkMissingGetCssName0 = new CheckMissingGetCssName(compiler0, checkLevel0, \" 9+NY\");\n    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();\n    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);\n    TemplateType templateType0 = jSTypeRegistry0.createTemplateType(\" 9+NY\");\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, checkMissingGetCssName0, (ScopeCreator) null);\n    typeValidator0.expectSuperType(nodeTraversal0, node0, templateType0, templateType0);\n    node0.isIf();\n}",
+    "testName" : "test3341"
+  }
+}

@@ -1,0 +1,40 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test00,"public void test00() throws Throwable {
+    XmlDeclaration xmlDeclaration0 = new XmlDeclaration("""", """", true);
+    String string0 = xmlDeclaration0.name();
+    assertEquals("""", string0);
+}",0,assertNotNull(string0)
+project,0,test11,"public void test11() throws Throwable {
+    XmlDeclaration xmlDeclaration0 = new XmlDeclaration(""X>DIw+GL+x_X"", ""X>DIw+GL+x_X"", false);
+    String string0 = xmlDeclaration0.toString();
+    assertEquals(""<?X>DIw+GL+x_X>"", string0);
+}",0,assertNotNull(string0)
+project,0,test12,"public void test12() throws Throwable {
+    XmlDeclaration xmlDeclaration0 = new XmlDeclaration(""X>DIw+GL+x_X"", ""X>DIw+GL+x_X"", false);
+    String string0 = xmlDeclaration0.toString();
+    assertEquals(""#declaration"", xmlDeclaration0.nodeName());
+}",0,assertNotNull(xmlDeclaration0.nodeName())
+project,0,test23,"public void test23() throws Throwable {
+    XmlDeclaration xmlDeclaration0 = new XmlDeclaration(""xml"", ""xml"", false);
+    Node node0 = xmlDeclaration0.attr(""xml"", ""xml"");
+    node0.attr(""<?xml>"", ""xml"");
+    String string0 = xmlDeclaration0.toString();
+    assertEquals(""#declaration"", xmlDeclaration0.nodeName());
+}",0,assertNotNull(xmlDeclaration0.nodeName())
+project,0,test24,"public void test24() throws Throwable {
+    XmlDeclaration xmlDeclaration0 = new XmlDeclaration(""xml"", ""xml"", false);
+    Node node0 = xmlDeclaration0.attr(""xml"", ""xml"");
+    node0.attr(""<?xml>"", ""xml"");
+    String string0 = xmlDeclaration0.toString();
+    assertEquals(""<?xml version=\""\"" encoding=\""\"">"", string0);
+}",0,assertNotNull(string0)
+project,0,test35,"public void test35() throws Throwable {
+    XmlDeclaration xmlDeclaration0 = new XmlDeclaration(""xml"", ""xml"", true);
+    String string0 = xmlDeclaration0.toString();
+    assertEquals(""#declaration"", xmlDeclaration0.nodeName());
+}",0,assertNotNull(xmlDeclaration0.nodeName())
+project,0,test36,"public void test36() throws Throwable {
+    XmlDeclaration xmlDeclaration0 = new XmlDeclaration(""xml"", ""xml"", true);
+    String string0 = xmlDeclaration0.toString();
+    assertEquals(""<!xml>"", string0);
+}",0,assertNotNull(string0)

@@ -1,0 +1,283 @@
+focal_method,test_prefix,docstring
+"@Override
+public String toString() {
+    return getClass().getName() + "": "" + getMessage();
+}","public void test055() throws Throwable {
+    SQLDataException sQLDataException0 = new SQLDataException();
+    JsonMappingException jsonMappingException0 = JsonMappingException.wrapWithPath((Throwable) sQLDataException0, (Object) sQLDataException0, 87);
+    String string0 = jsonMappingException0.toString();
+    assertEquals(""com.fasterxml.jackson.databind.JsonMappingException: (was java.sql.SQLDataException) (through reference chain: java.sql.SQLDataException[87])"", string0);
+}",""
+"public String getPathReference() {
+    return getPathReference(new StringBuilder()).toString();
+}","public void test0910() throws Throwable {
+    JsonMappingException jsonMappingException0 = new JsonMappingException(""FY"");
+    String string0 = jsonMappingException0.getPathReference();
+    assertEquals("""", string0);
+}","/**
+ * Method for accessing description of path that lead to the
+ * problem that triggered this exception
+ */"
+"/*
+    /********************************************************
+    /* Error reporting
+    /********************************************************
+     */
+/**
+ * Factory method for constructing a {@link JsonMappingException};
+ * usually only indirectly used by calling
+ * {@link #reportMappingProblem(String, Object...)}.
+ *
+ * @since 2.6
+ */
+public JsonMappingException mappingException(String message, Object... args) {
+    if (args != null && args.length > 0) {
+        message = String.format(message, args);
+    }
+    return JsonMappingException.from(getGenerator(), message);
+}","public void test1213() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    JsonMappingException jsonMappingException0 = defaultSerializerProvider_Impl0.mappingException("""", (Object[]) null);
+    assertNotNull(jsonMappingException0);
+}",""
+"public static JsonMappingException from(DeserializationContext ctxt, String msg, Throwable t) {
+    return new JsonMappingException(ctxt.getParser(), msg, t);
+}","public void test1314() throws Throwable {
+    SQLSyntaxErrorException sQLSyntaxErrorException0 = new SQLSyntaxErrorException(""'h>JzHfY$F{"");
+    // Undeclared exception!
+    try {
+        JsonMappingException.from((DeserializationContext) null, ""'h>JzHfY$F{"", (Throwable) sQLSyntaxErrorException0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.JsonMappingException"", e);
+    }
+}","/**
+ * @since 2.7
+ */"
+"public static JsonMappingException from(DeserializationContext ctxt, String msg) {
+    return new JsonMappingException(ctxt.getParser(), msg);
+}","public void test1415() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    JsonMappingException jsonMappingException0 = JsonMappingException.from((DeserializationContext) defaultDeserializationContext_Impl0, ""bRb{m"");
+    assertNotNull(jsonMappingException0);
+}","/**
+ * @since 2.7
+ */"
+"/*
+    /**********************************************************
+    /* Overridden methods
+    /**********************************************************
+     */
+// since 2.7.5
+@Override
+// as per [databind#1368]
+@JsonIgnore
+public Object getProcessor() {
+    return _processor;
+}","public void test1516() throws Throwable {
+    SQLDataException sQLDataException0 = new SQLDataException();
+    JsonMappingException jsonMappingException0 = JsonMappingException.wrapWithPath((Throwable) sQLDataException0, (Object) sQLDataException0, (-1));
+    Object object0 = jsonMappingException0.getProcessor();
+    assertNull(object0);
+}",""
+"public static JsonMappingException from(JsonGenerator g, String msg, Throwable problem) {
+    return new JsonMappingException(g, msg, problem);
+}","public void test1617() throws Throwable {
+    SQLDataException sQLDataException0 = new SQLDataException();
+    JsonMappingException jsonMappingException0 = JsonMappingException.from((JsonGenerator) null, ""F"", (Throwable) sQLDataException0);
+    assertNotNull(jsonMappingException0);
+}","/**
+ * @since 2.7
+ */"
+"public static JsonMappingException from(SerializerProvider ctxt, String msg) {
+    return new JsonMappingException(ctxt.getGenerator(), msg);
+}","public void test1718() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    JsonMappingException jsonMappingException0 = JsonMappingException.from((SerializerProvider) defaultSerializerProvider_Impl0, ""Q"");
+    assertNotNull(jsonMappingException0);
+}","/**
+ * @since 2.7
+ */"
+"public static JsonMappingException from(SerializerProvider ctxt, String msg, Throwable problem) {
+    /* 17-Aug-2015, tatu: As per [databind#903] this is bit problematic as
+         *   SerializerProvider instance does not currently hold on to generator...
+         */
+    return new JsonMappingException(ctxt.getGenerator(), msg, problem);
+}","public void test1819() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    SQLNonTransientException sQLNonTransientException0 = new SQLNonTransientException(""~8Z"");
+    JsonMappingException jsonMappingException0 = JsonMappingException.from((SerializerProvider) defaultSerializerProvider_Impl0, ""~8Z"", (Throwable) sQLNonTransientException0);
+    assertNotNull(jsonMappingException0);
+}","/**
+ * @since 2.7
+ */"
+"protected String _buildMessage() {
+    /* First: if we have no path info, let's just use parent's
+         * definition as is
+         */
+    String msg = super.getMessage();
+    if (_path == null) {
+        return msg;
+    }
+    StringBuilder sb = (msg == null) ? new StringBuilder() : new StringBuilder(msg);
+    /* 18-Feb-2009, tatu: initially there was a linefeed between
+         *    message and path reference; but unfortunately many systems
+         *   (loggers, junit) seem to assume linefeeds are only added to
+         *   separate stack trace.
+         */
+    sb.append("" (through reference chain: "");
+    sb = getPathReference(sb);
+    sb.append(')');
+    return sb.toString();
+}","public void test1920() throws Throwable {
+    SQLDataException sQLDataException0 = new SQLDataException();
+    JsonMappingException jsonMappingException0 = JsonMappingException.wrapWithPath((Throwable) sQLDataException0, (Object) sQLDataException0, ""f!8"");
+    jsonMappingException0.prependPath((Object) ""f!8"", ""f!8"");
+    String string0 = jsonMappingException0._buildMessage();
+    assertEquals(""(was java.sql.SQLDataException) (through reference chain: java.lang.String[\""f!8\""]->java.sql.SQLDataException[\""f!8\""])"", string0);
+}",""
+"public static JsonMappingException from(JsonParser p, String msg) {
+    return new JsonMappingException(p, msg);
+}","public void test2324() throws Throwable {
+    JsonMappingException jsonMappingException0 = JsonMappingException.from((JsonParser) null, """");
+    assertNotNull(jsonMappingException0);
+}","/**
+ * @since 2.7
+ */"
+"@Override
+public String getLocalizedMessage() {
+    return _buildMessage();
+}","public void test2425() throws Throwable {
+    JsonMappingException jsonMappingException0 = new JsonMappingException("""");
+    String string0 = jsonMappingException0.getLocalizedMessage();
+    assertEquals("""", string0);
+}",""
+"public static JsonMappingException fromUnexpectedIOE(IOException src) {
+    return new JsonMappingException(null, String.format(""Unexpected IOException (of type %s): %s"", src.getClass().getName(), src.getMessage()));
+}","public void test2526() throws Throwable {
+    JsonMappingException jsonMappingException0 = new JsonMappingException("")"");
+    JsonMappingException jsonMappingException1 = JsonMappingException.fromUnexpectedIOE(jsonMappingException0);
+    assertNotSame(jsonMappingException1, jsonMappingException0);
+}","/**
+ * Factory method used when ""upgrading"" an {@link IOException} into
+ * {@link JsonMappingException}: usually only needed to comply with
+ * a signature.
+ *
+ * @since 2.1
+ */"
+"public static JsonMappingException wrapWithPath(Throwable src, Object refFrom, String refFieldName) {
+    return wrapWithPath(src, new Reference(refFrom, refFieldName));
+}","public void test2627() throws Throwable {
+    SQLDataException sQLDataException0 = new SQLDataException();
+    // Undeclared exception!
+    try {
+        JsonMappingException.wrapWithPath((Throwable) sQLDataException0, (Object) sQLDataException0, (String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // Can not pass null fieldName
+        //
+        verifyException(""com.fasterxml.jackson.databind.JsonMappingException$Reference"", e);
+    }
+}","/**
+ * Method that can be called to either create a new JsonMappingException
+ * (if underlying exception is not a JsonMappingException), or augment
+ * given exception with given path/reference information.
+ *
+ * This version of method is called when the reference is through a
+ * non-indexed object, such as a Map or POJO/bean.
+ */"
+"protected String _buildMessage() {
+    /* First: if we have no path info, let's just use parent's
+         * definition as is
+         */
+    String msg = super.getMessage();
+    if (_path == null) {
+        return msg;
+    }
+    StringBuilder sb = (msg == null) ? new StringBuilder() : new StringBuilder(msg);
+    /* 18-Feb-2009, tatu: initially there was a linefeed between
+         *    message and path reference; but unfortunately many systems
+         *   (loggers, junit) seem to assume linefeeds are only added to
+         *   separate stack trace.
+         */
+    sb.append("" (through reference chain: "");
+    sb = getPathReference(sb);
+    sb.append(')');
+    return sb.toString();
+}","public void test2831() throws Throwable {
+    Class<ReaderBasedJsonParser> class0 = ReaderBasedJsonParser.class;
+    SQLTransientConnectionException sQLTransientConnectionException0 = new SQLTransientConnectionException(""J?[O\""xk!`!CQkr((?Jz"");
+    JsonMappingException jsonMappingException0 = JsonMappingException.wrapWithPath((Throwable) sQLTransientConnectionException0, (Object) class0, ""J?[O\""xk!`!CQkr((?Jz"");
+    String string0 = jsonMappingException0._buildMessage();
+    assertEquals(""J?[O\""xk!`!CQkr((?Jz (through reference chain: com.fasterxml.jackson.core.json.ReaderBasedJsonParser[\""J?[O\""xk!`!CQkr((?Jz\""])"", string0);
+}",""
+"public static JsonMappingException from(JsonParser p, String msg, Throwable problem) {
+    return new JsonMappingException(p, msg, problem);
+}","public void test3033() throws Throwable {
+    MockIOException mockIOException0 = new MockIOException();
+    JsonParserSequence jsonParserSequence0 = JsonParserSequence.createFlattened(false, (JsonParser) null, (JsonParser) null);
+    // Undeclared exception!
+    try {
+        JsonMappingException.from((JsonParser) jsonParserSequence0, (String) null, (Throwable) mockIOException0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.core.util.JsonParserDelegate"", e);
+    }
+}","/**
+ * @since 2.7
+ */"
+"@SuppressWarnings(""resource"")
+public static JsonMappingException wrapWithPath(Throwable src, Reference ref) {
+    JsonMappingException jme;
+    if (src instanceof JsonMappingException) {
+        jme = (JsonMappingException) src;
+    } else {
+        String msg = src.getMessage();
+        // Let's use a more meaningful placeholder if all we have is null
+        if (msg == null || msg.length() == 0) {
+            msg = ""(was "" + src.getClass().getName() + "")"";
+        }
+        // 17-Aug-2015, tatu: Let's also pass the processor (parser/generator) along
+        Closeable proc = null;
+        if (src instanceof JsonProcessingException) {
+            Object proc0 = ((JsonProcessingException) src).getProcessor();
+            if (proc0 instanceof Closeable) {
+                proc = (Closeable) proc0;
+            }
+        }
+        jme = new JsonMappingException(proc, msg, src);
+    }
+    jme.prependPath(ref);
+    return jme;
+}","public void test3134() throws Throwable {
+    SQLDataException sQLDataException0 = new SQLDataException();
+    JsonMappingException jsonMappingException0 = JsonMappingException.wrapWithPath((Throwable) sQLDataException0, (JsonMappingException.Reference) null);
+    JsonMappingException jsonMappingException1 = JsonMappingException.wrapWithPath((Throwable) jsonMappingException0, (JsonMappingException.Reference) null);
+    assertSame(jsonMappingException1, jsonMappingException0);
+}","/**
+ * Method that can be called to either create a new JsonMappingException
+ * (if underlying exception is not a JsonMappingException), or augment
+ * given exception with given path/reference information.
+ */"
+"public static JsonMappingException wrapWithPath(Throwable src, Object refFrom, String refFieldName) {
+    return wrapWithPath(src, new Reference(refFrom, refFieldName));
+}","public void test3235() throws Throwable {
+    SQLTransactionRollbackException sQLTransactionRollbackException0 = new SQLTransactionRollbackException("""", """");
+    JsonMappingException jsonMappingException0 = JsonMappingException.wrapWithPath((Throwable) sQLTransactionRollbackException0, (Object) sQLTransactionRollbackException0, """");
+    assertNotNull(jsonMappingException0);
+}","/**
+ * Method that can be called to either create a new JsonMappingException
+ * (if underlying exception is not a JsonMappingException), or augment
+ * given exception with given path/reference information.
+ *
+ * This version of method is called when the reference is through a
+ * non-indexed object, such as a Map or POJO/bean.
+ */"

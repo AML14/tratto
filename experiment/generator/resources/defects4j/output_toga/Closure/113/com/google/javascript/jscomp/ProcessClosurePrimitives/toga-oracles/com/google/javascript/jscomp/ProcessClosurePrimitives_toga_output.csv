@@ -1,0 +1,80 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test00,"public void test00() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""goog.base"");
+    CheckLevel checkLevel0 = CheckLevel.WARNING;
+    PreprocessorSymbolTable preprocessorSymbolTable0 = new PreprocessorSymbolTable(node0);
+    ProcessClosurePrimitives processClosurePrimitives0 = new ProcessClosurePrimitives(compiler0, preprocessorSymbolTable0, checkLevel0);
+    processClosurePrimitives0.process(node0, node0);
+    assertEquals(1, compiler0.getErrorCount());
+}",0,"assertEquals(0, compiler0.getErrorCount())"
+project,0,test01,"public void test01() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""goog.base"");
+    CheckLevel checkLevel0 = CheckLevel.WARNING;
+    PreprocessorSymbolTable preprocessorSymbolTable0 = new PreprocessorSymbolTable(node0);
+    ProcessClosurePrimitives processClosurePrimitives0 = new ProcessClosurePrimitives(compiler0, preprocessorSymbolTable0, checkLevel0);
+    processClosurePrimitives0.process(node0, node0);
+    assertTrue(compiler0.hasErrors());
+}",1,
+project,0,test12,"public void test12() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    compiler0.newCompilerOptions();
+    // Undeclared exception!
+    try {
+        Normalize.parseAndNormalizeTestCode(compiler0, ""// Input %num%"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Multiple entries with same key: author=NOT_IMPLEMENTED and author=AUTHOR
+        //
+        verifyException(""com.google.common.collect.ImmutableMap"", e);
+    }
+}",0,
+project,0,test34,"public void test34() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""JSC_NON_STRING_PASSED_TO_SET_CSS_NAME_MAPPING_ERROR"");
+    CheckLevel checkLevel0 = CheckLevel.OFF;
+    ProcessClosurePrimitives processClosurePrimitives0 = new ProcessClosurePrimitives(compiler0, (PreprocessorSymbolTable) null, checkLevel0);
+    processClosurePrimitives0.process(node0, node0);
+    assertEquals(1, node0.getLineno());
+}",0,"assertEquals(1, node0.getLineno())"
+project,0,test45,"public void test45() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = new Node(37, 37, 37);
+    Node node1 = new Node(37, node0, node0, node0);
+    PreprocessorSymbolTable preprocessorSymbolTable0 = new PreprocessorSymbolTable(node0);
+    CheckLevel checkLevel0 = CheckLevel.ERROR;
+    ProcessClosurePrimitives processClosurePrimitives0 = new ProcessClosurePrimitives(compiler0, preprocessorSymbolTable0, checkLevel0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, processClosurePrimitives0);
+    processClosurePrimitives0.visit(nodeTraversal0, node1, node0);
+    assertFalse(node1.hasMoreThanOneChild());
+}",0,
+project,0,test56,"public void test56() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    CompilerOptions compilerOptions0 = compiler0.newCompilerOptions();
+    Node node0 = new Node(105);
+    ProcessClosurePrimitives processClosurePrimitives0 = new ProcessClosurePrimitives(compiler0, (PreprocessorSymbolTable) null, compilerOptions0.brokenClosureRequiresLevel);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, processClosurePrimitives0);
+    Node node1 = new Node(43, node0, node0, node0, 0, 1);
+    processClosurePrimitives0.visit(nodeTraversal0, node0, node0);
+    assertEquals(0, node0.getChildCount());
+}",0,"assertEquals(1, node0.getChildCount())"
+project,0,test67,"public void test67() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""msg.invalid.iterator"");
+    CheckLevel checkLevel0 = CheckLevel.ERROR;
+    PreprocessorSymbolTable preprocessorSymbolTable0 = new PreprocessorSymbolTable(node0);
+    ProcessClosurePrimitives processClosurePrimitives0 = new ProcessClosurePrimitives(compiler0, preprocessorSymbolTable0, checkLevel0);
+    processClosurePrimitives0.process(node0, node0);
+    assertFalse(node0.isGetElem());
+}",0,
+project,0,test78,"public void test78() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    CompilerOptions compilerOptions0 = compiler0.newCompilerOptions();
+    Node node0 = new Node(86);
+    ProcessClosurePrimitives processClosurePrimitives0 = new ProcessClosurePrimitives(compiler0, (PreprocessorSymbolTable) null, compilerOptions0.checkMissingReturn);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, processClosurePrimitives0);
+    processClosurePrimitives0.visit(nodeTraversal0, node0, node0);
+    assertEquals(54, Node.SLASH_V);
+}",0,

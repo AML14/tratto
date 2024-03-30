@@ -1,0 +1,35 @@
+focal_method,test_prefix,docstring
+"static DiagnosticGroup registerGroup(String name, DiagnosticType... types) {
+    DiagnosticGroup group = new DiagnosticGroup(name, types);
+    groupsByName.put(name, group);
+    return group;
+}","public void test00() throws Throwable {
+    DiagnosticType[] diagnosticTypeArray0 = new DiagnosticType[2];
+    DiagnosticGroup diagnosticGroup0 = DiagnosticGroups.registerGroup("""", diagnosticTypeArray0);
+    assertNotNull(diagnosticGroup0);
+}",""
+"static DiagnosticGroup registerGroup(String name, DiagnosticGroup group) {
+    groupsByName.put(name, group);
+    return group;
+}","public void test32() throws Throwable {
+    DiagnosticGroup diagnosticGroup0 = DiagnosticGroups.CONSTANT_PROPERTY;
+    DiagnosticGroup diagnosticGroup1 = DiagnosticGroups.registerGroup("""", diagnosticGroup0);
+    assertSame(diagnosticGroup1, diagnosticGroup0);
+}",""
+"static DiagnosticGroup registerGroup(String name, DiagnosticGroup... groups) {
+    DiagnosticGroup group = new DiagnosticGroup(name, groups);
+    groupsByName.put(name, group);
+    return group;
+}","public void test43() throws Throwable {
+    DiagnosticGroup[] diagnosticGroupArray0 = new DiagnosticGroup[1];
+    // Undeclared exception!
+    try {
+        DiagnosticGroups.registerGroup(""DiagnosticGroup<deprecated>"", diagnosticGroupArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.DiagnosticGroup"", e);
+    }
+}",""

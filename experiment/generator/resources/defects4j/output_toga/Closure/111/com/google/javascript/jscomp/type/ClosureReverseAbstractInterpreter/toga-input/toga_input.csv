@@ -1,0 +1,79 @@
+focal_method,test_prefix,docstring
+"@Override
+public FlowScope getPreciserScopeKnowingConditionOutcome(Node condition, FlowScope blindScope, boolean outcome) {
+    if (condition.isCall() && condition.getChildCount() == 2) {
+        Node callee = condition.getFirstChild();
+        Node param = condition.getLastChild();
+        if (callee.isGetProp() && param.isQualifiedName()) {
+            JSType paramType = getTypeIfRefinable(param, blindScope);
+            Node left = callee.getFirstChild();
+            Node right = callee.getLastChild();
+            if (left.isName() && ""goog"".equals(left.getString()) && right.isString()) {
+                Function<TypeRestriction, JSType> restricter = restricters.get(right.getString());
+                if (restricter != null) {
+                    return restrictParameter(param, paramType, blindScope, restricter, outcome);
+                }
+            }
+        }
+    }
+    return nextPreciserScopeKnowingConditionOutcome(condition, blindScope, outcome);
+}","public void test00() throws Throwable {
+    Node node0 = new Node(1283, 1283, 1283);
+    GoogleCodingConvention googleCodingConvention0 = new GoogleCodingConvention();
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(googleCodingConvention0, (JSTypeRegistry) null);
+    FlowScope flowScope0 = closureReverseAbstractInterpreter0.getPreciserScopeKnowingConditionOutcome(node0, (FlowScope) null, false);
+    assertNull(flowScope0);
+}",""
+"@Override
+public FlowScope getPreciserScopeKnowingConditionOutcome(Node condition, FlowScope blindScope, boolean outcome) {
+    if (condition.isCall() && condition.getChildCount() == 2) {
+        Node callee = condition.getFirstChild();
+        Node param = condition.getLastChild();
+        if (callee.isGetProp() && param.isQualifiedName()) {
+            JSType paramType = getTypeIfRefinable(param, blindScope);
+            Node left = callee.getFirstChild();
+            Node right = callee.getLastChild();
+            if (left.isName() && ""goog"".equals(left.getString()) && right.isString()) {
+                Function<TypeRestriction, JSType> restricter = restricters.get(right.getString());
+                if (restricter != null) {
+                    return restrictParameter(param, paramType, blindScope, restricter, outcome);
+                }
+            }
+        }
+    }
+    return nextPreciserScopeKnowingConditionOutcome(condition, blindScope, outcome);
+}","public void test11() throws Throwable {
+    Node node0 = Node.newString(""API tried to add two incompatible type tags. This should have been blocked and emitted a warning."");
+    Node node1 = new Node(37, node0, node0, node0, 4095, 52);
+    GoogleCodingConvention googleCodingConvention0 = new GoogleCodingConvention();
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(googleCodingConvention0, (JSTypeRegistry) null);
+    FlowScope flowScope0 = closureReverseAbstractInterpreter0.getPreciserScopeKnowingConditionOutcome(node1, (FlowScope) null, true);
+    assertNull(flowScope0);
+}",""
+"@Override
+public FlowScope getPreciserScopeKnowingConditionOutcome(Node condition, FlowScope blindScope, boolean outcome) {
+    if (condition.isCall() && condition.getChildCount() == 2) {
+        Node callee = condition.getFirstChild();
+        Node param = condition.getLastChild();
+        if (callee.isGetProp() && param.isQualifiedName()) {
+            JSType paramType = getTypeIfRefinable(param, blindScope);
+            Node left = callee.getFirstChild();
+            Node right = callee.getLastChild();
+            if (left.isName() && ""goog"".equals(left.getString()) && right.isString()) {
+                Function<TypeRestriction, JSType> restricter = restricters.get(right.getString());
+                if (restricter != null) {
+                    return restrictParameter(param, paramType, blindScope, restricter, outcome);
+                }
+            }
+        }
+    }
+    return nextPreciserScopeKnowingConditionOutcome(condition, blindScope, outcome);
+}","public void test22() throws Throwable {
+    Node node0 = Node.newString(""API tried to add two incompatible type tags. This should have been blocked and emitted a warning."");
+    Node node1 = Node.newString(54, ""API tried to add two incompatible type tags. This should have been blocked and emitted a warning."", 0, 43);
+    Node node2 = new Node(37, node1, node1, node0, 4095, 52);
+    GoogleCodingConvention googleCodingConvention0 = new GoogleCodingConvention();
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(googleCodingConvention0, (JSTypeRegistry) null);
+    FlowScope flowScope0 = closureReverseAbstractInterpreter0.getPreciserScopeKnowingConditionOutcome(node2, (FlowScope) null, true);
+    assertNull(flowScope0);
+}",""

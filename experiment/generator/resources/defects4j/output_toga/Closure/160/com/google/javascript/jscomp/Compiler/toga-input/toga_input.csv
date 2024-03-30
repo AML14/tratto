@@ -1,0 +1,2058 @@
+focal_method,test_prefix,docstring
+"public Result compile(JSSourceFile extern, JSModule[] modules, CompilerOptions options) {
+    return compile(new JSSourceFile[] { extern }, modules, options);
+}","public void test000() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) arrayList0, compilerOptions0);
+    File file0 = MockFile.createTempFile("" in "", (String) null);
+    JSSourceFile jSSourceFile0 = JSSourceFile.fromFile(file0);
+    JSModule[] jSModuleArray0 = new JSModule[1];
+    // Undeclared exception!
+    try {
+        compiler0.compile(jSSourceFile0, jSModuleArray0, compilerOptions0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",""
+"public String toSource(final JSModule module) {
+    return runInCompilerThread(new Callable<String>() {
+
+        public String call() throws Exception {
+            List<CompilerInput> inputs = module.getInputs();
+            int numInputs = inputs.size();
+            if (numInputs == 0) {
+                return """";
+            }
+            CodeBuilder cb = new CodeBuilder();
+            for (int i = 0; i < numInputs; i++) {
+                Node scriptNode = inputs.get(i).getAstRoot(Compiler.this);
+                if (scriptNode == null) {
+                    throw new IllegalArgumentException(""Bad module: "" + module.getName());
+                }
+                toSource(cb, i, scriptNode);
+            }
+            return cb.toString();
+        }
+    });
+}","public void test011() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    JSModule jSModule0 = new JSModule(""9_<"");
+    // Undeclared exception!
+    try {
+        compiler0.toSource(jSModule0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.Compiler"", e);
+    }
+}","/**
+ * Converts the parse tree for a module back to js code.
+ */"
+"public String[] toSourceArray() {
+    return runInCompilerThread(new Callable<String[]>() {
+
+        public String[] call() throws Exception {
+            Tracer tracer = newTracer(""toSourceArray"");
+            try {
+                int numInputs = inputs.size();
+                String[] sources = new String[numInputs];
+                CodeBuilder cb = new CodeBuilder();
+                for (int i = 0; i < numInputs; i++) {
+                    Node scriptNode = inputs.get(i).getAstRoot(Compiler.this);
+                    cb.reset();
+                    toSource(cb, i, scriptNode);
+                    sources[i] = cb.toString();
+                }
+                return sources;
+            } finally {
+                stopTracer(tracer, ""toSourceArray"");
+            }
+        }
+    });
+}","public void test022() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    // Undeclared exception!
+    try {
+        compiler0.toSourceArray();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.Compiler"", e);
+    }
+}","/**
+ * Converts the parse tree for each input back to js code.
+ */"
+"//------------------------------------------------------------------------
+// Convert back to source code
+//------------------------------------------------------------------------
+/**
+ * Converts the main parse tree back to js code.
+ */
+public String toSource() {
+    return runInCompilerThread(new Callable<String>() {
+
+        public String call() throws Exception {
+            Tracer tracer = newTracer(""toSource"");
+            try {
+                CodeBuilder cb = new CodeBuilder();
+                if (jsRoot != null) {
+                    int i = 0;
+                    for (Node scriptNode = jsRoot.getFirstChild(); scriptNode != null; scriptNode = scriptNode.getNext()) {
+                        toSource(cb, i++, scriptNode);
+                    }
+                }
+                return cb.toString();
+            } finally {
+                stopTracer(tracer, ""toSource"");
+            }
+        }
+    });
+}","public void test033() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    compiler0.disableThreads();
+    compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) arrayList0, compilerOptions0);
+    String string0 = compiler0.toSource();
+    assertEquals("""", string0);
+}",""
+"@Override
+public boolean isTypeCheckingEnabled() {
+    return options.checkTypes;
+}","public void test034() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    compiler0.disableThreads();
+    compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) arrayList0, compilerOptions0);
+    String string0 = compiler0.toSource();
+    assertFalse(compiler0.isTypeCheckingEnabled());
+}",""
+"public boolean hasErrors() {
+    return hasHaltingErrors();
+}","public void test035() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    compiler0.disableThreads();
+    compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) arrayList0, compilerOptions0);
+    String string0 = compiler0.toSource();
+    assertFalse(compiler0.hasErrors());
+}","/**
+ * Consults the {@link ErrorManager} to see if we've encountered errors
+ * that should halt compilation. <p>
+ *
+ * If {@link CompilerOptions#ideMode} is {@code true}, this function
+ * always returns {@code false} without consulting the error manager. The
+ * error manager will continue to be told about new errors and warnings, but
+ * the compiler will complete compilation of all inputs.<p>
+ */"
+"public String[] toSourceArray(final JSModule module) {
+    return runInCompilerThread(new Callable<String[]>() {
+
+        public String[] call() throws Exception {
+            List<CompilerInput> inputs = module.getInputs();
+            int numInputs = inputs.size();
+            if (numInputs == 0) {
+                return new String[0];
+            }
+            String[] sources = new String[numInputs];
+            CodeBuilder cb = new CodeBuilder();
+            for (int i = 0; i < numInputs; i++) {
+                Node scriptNode = inputs.get(i).getAstRoot(Compiler.this);
+                if (scriptNode == null) {
+                    throw new IllegalArgumentException(""Bad module input: "" + inputs.get(i).getName());
+                }
+                cb.reset();
+                toSource(cb, i, scriptNode);
+                sources[i] = cb.toString();
+            }
+            return sources;
+        }
+    });
+}","public void test046() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    JSModule jSModule0 = new JSModule((String) null);
+    // Undeclared exception!
+    try {
+        compiler0.toSourceArray(jSModule0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.Compiler"", e);
+    }
+}","/**
+ * Converts the parse tree for each input in a module back to js code.
+ */"
+"@VisibleForTesting
+void resetUniqueNameId() {
+    uniqueNameId = 0;
+}","public void test057() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    compiler0.resetUniqueNameId();
+}","/**
+ * Resets the unique name id counter
+ */"
+"@Override
+CssRenamingMap getCssRenamingMap() {
+    return options.cssRenamingMap;
+}","public void test079() throws Throwable {
+    MockFile mockFile0 = new MockFile(""com.google.javascript.jscomp"");
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(mockFile0, true);
+    MockPrintStream mockPrintStream0 = new MockPrintStream(mockFileOutputStream0, true);
+    PrintStreamErrorManager printStreamErrorManager0 = new PrintStreamErrorManager(mockPrintStream0);
+    Compiler compiler0 = new Compiler(printStreamErrorManager0);
+    // Undeclared exception!
+    try {
+        compiler0.getCssRenamingMap();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.Compiler"", e);
+    }
+}",""
+"@Override
+boolean hasRegExpGlobalReferences() {
+    return hasRegExpGlobalReferences;
+}","public void test0810() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    boolean boolean0 = compiler0.hasRegExpGlobalReferences();
+    assertTrue(boolean0);
+}",""
+"public int getErrorCount() {
+    return errorManager.getErrorCount();
+}","public void test0911() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    JSSourceFile jSSourceFile0 = JSSourceFile.fromFile(""com.google.javascript.jscomp.ControlFlowGraph$Branch"");
+    compiler0.parse(jSSourceFile0);
+    assertEquals(1, compiler0.getErrorCount());
+}","/**
+ * Gets the number of errors.
+ */"
+"@Override
+public boolean isTypeCheckingEnabled() {
+    return options.checkTypes;
+}","public void test0912() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    JSSourceFile jSSourceFile0 = JSSourceFile.fromFile(""com.google.javascript.jscomp.ControlFlowGraph$Branch"");
+    compiler0.parse(jSSourceFile0);
+    assertFalse(compiler0.isTypeCheckingEnabled());
+}",""
+"public void setState(IntermediateState state) {
+    externsRoot = state.externsRoot;
+    jsRoot = state.jsRoot;
+    externs = state.externs;
+    inputs = state.inputs;
+    modules = state.modules;
+    passes = createPassConfigInternal();
+    getPassConfig().setIntermediateState(state.passConfigState);
+    typeRegistry = state.typeRegistry;
+    setLifeCycleStage(state.lifeCycleStage);
+}","public void test1013() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Compiler.IntermediateState compiler_IntermediateState0 = compiler0.getState();
+    compiler0.setState(compiler_IntermediateState0);
+}","/**
+ * Sets the internal state to the capture given.  Note that this assumes that
+ * the input files are already set up.
+ */"
+"public void init(JSSourceFile[] externs, JSSourceFile[] inputs, CompilerOptions options) {
+    init(Lists.<JSSourceFile>newArrayList(externs), Lists.<JSSourceFile>newArrayList(inputs), options);
+}","public void test1114() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    // Undeclared exception!
+    try {
+        compiler0.init((JSSourceFile[]) null, (JSSourceFile[]) null, compilerOptions0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * Initializes the instance state needed for a compile job.
+ */"
+"CompilerOptions getOptions() {
+    return options;
+}","public void test1215() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    CompilerOptions compilerOptions0 = compiler0.getOptions();
+    assertNull(compilerOptions0);
+}",""
+"public void rebuildInputsFromModules() {
+    inputs = getAllInputsFromModules(modules);
+    initInputsByNameMap();
+}","public void test1316() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    // Undeclared exception!
+    try {
+        compiler0.rebuildInputsFromModules();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.Compiler"", e);
+    }
+}","/**
+ * Rebuilds the internal list of inputs by iterating over all modules.
+ * This is necessary if inputs have been added to or removed from a module
+ * after the {@link #init(JSSourceFile[], JSModule[], CompilerOptions)} call.
+ */"
+"ControlFlowGraph<Node> computeCFG() {
+    logger.info(""Computing Control Flow Graph"");
+    Tracer tracer = newTracer(""computeCFG"");
+    ControlFlowAnalysis cfa = new ControlFlowAnalysis(this, true, false);
+    process(cfa);
+    stopTracer(tracer, ""computeCFG"");
+    return cfa.getCfg();
+}","public void test1417() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    // Undeclared exception!
+    try {
+        compiler0.computeCFG();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * Control Flow Analysis.
+ */"
+"VariableMap getPropertyMap() {
+    return getPassConfig().getIntermediateState().propertyMap;
+}","public void test1518() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    VariableMap variableMap0 = compiler0.getPropertyMap();
+    assertNull(variableMap0);
+}",""
+"@Override
+ScopeCreator getTypedScopeCreator() {
+    return getPassConfig().getTypedScopeCreator();
+}","public void test1619() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ScopeCreator scopeCreator0 = compiler0.getTypedScopeCreator();
+    assertNull(scopeCreator0);
+}",""
+"@Override
+Node parseSyntheticCode(String fileName, String js) {
+    initCompilerOptionsIfTesting();
+    return parse(JSSourceFile.fromCode(fileName, js));
+}","public void test1720() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    // Undeclared exception!
+    try {
+        compiler0.parseSyntheticCode((String) null, (String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // a source must have a name
+        //
+        verifyException(""com.google.javascript.jscomp.SourceFile"", e);
+    }
+}",""
+"public void processDefines() {
+    (new DefaultPassConfig(options)).processDefines.create(this).process(externsRoot, jsRoot);
+}","public void test1821() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    // Undeclared exception!
+    try {
+        compiler0.processDefines();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.DefaultPassConfig"", e);
+    }
+}","/**
+ * Reprocesses the current defines over the AST.  This is used by GwtCompiler
+ * to generate N outputs for different targets from the same (checked) AST.
+ * For each target, we apply the target-specific defines by calling
+ * {@code processDefines} and then {@code optimize} to optimize the AST
+ * specifically for that target.
+ */"
+"static <T> T runCallableWithLargeStack(final Callable<T> callable) {
+    return runCallable(callable, true, false);
+}","public void test1922() throws Throwable {
+    Callable<AstValidator> callable0 = (Callable<AstValidator>) mock(Callable.class, new ViolatedAssumptionAnswer());
+    doReturn((Object) null).when(callable0).call();
+    AstValidator astValidator0 = Compiler.runCallableWithLargeStack(callable0);
+    assertNull(astValidator0);
+}",""
+"public LanguageMode languageMode() {
+    return options.getLanguageIn();
+}","public void test2023() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    // Undeclared exception!
+    try {
+        compiler0.languageMode();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"@Override
+void setCssRenamingMap(CssRenamingMap map) {
+    options.cssRenamingMap = map;
+}","public void test2124() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    // Undeclared exception!
+    try {
+        compiler0.setCssRenamingMap((CssRenamingMap) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.Compiler"", e);
+    }
+}",""
+"public int getWarningCount() {
+    return errorManager.getWarningCount();
+}","public void test2225() throws Throwable {
+    Logger logger0 = Logger.getLogger(""w"");
+    LoggerErrorManager loggerErrorManager0 = new LoggerErrorManager(logger0);
+    Compiler compiler0 = new Compiler(loggerErrorManager0);
+    int int0 = compiler0.getWarningCount();
+    assertEquals(0, int0);
+}","/**
+ * Gets the number of warnings.
+ */"
+"VariableMap getVariableMap() {
+    return getPassConfig().getIntermediateState().variableMap;
+}","public void test2326() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    VariableMap variableMap0 = compiler0.getVariableMap();
+    assertNull(variableMap0);
+}",""
+"FunctionInformationMap getFunctionalInformationMap() {
+    return functionInformationMap;
+}","public void test2427() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    FunctionInformationMap functionInformationMap0 = compiler0.getFunctionalInformationMap();
+    assertNull(functionInformationMap0);
+}",""
+"@Override
+Supplier<String> getUniqueNameIdSupplier() {
+    final Compiler self = this;
+    return new Supplier<String>() {
+
+        public String get() {
+            return String.valueOf(self.nextUniqueNameId());
+        }
+    };
+}","public void test2528() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Supplier<String> supplier0 = compiler0.getUniqueNameIdSupplier();
+    assertNotNull(supplier0);
+}",""
+"void recordFunctionInformation() {
+    logger.info(""Recording function information"");
+    startPass(""recordFunctionInformation"");
+    RecordFunctionInformation recordFunctionInfoPass = new RecordFunctionInformation(this, getPassConfig().getIntermediateState().functionNames);
+    process(recordFunctionInfoPass);
+    functionInformationMap = recordFunctionInfoPass.getMap();
+    endPass();
+}","public void test2629() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    compiler0.getErrorManager();
+    // Undeclared exception!
+    try {
+        compiler0.recordFunctionInformation();
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // null
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",""
+"public SourceMap getSourceMap() {
+    return sourceMap;
+}","public void test2730() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    SourceMap sourceMap0 = compiler0.getSourceMap();
+    assertNull(sourceMap0);
+}",""
+"@Override
+public boolean isTypeCheckingEnabled() {
+    return options.checkTypes;
+}","public void test2831() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    // Undeclared exception!
+    try {
+        compiler0.isTypeCheckingEnabled();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"@Override
+public Node getRoot() {
+    return externAndJsRoot;
+}","public void test2932() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.getRoot();
+    assertNull(node0);
+}",""
+"@VisibleForTesting
+List<CompilerInput> getInputsForTesting() {
+    return inputs;
+}","public void test3033() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    List<CompilerInput> list0 = compiler0.getInputsForTesting();
+    assertNull(list0);
+}",""
+"public Result compile(JSSourceFile extern, JSModule[] modules, CompilerOptions options) {
+    return compile(new JSSourceFile[] { extern }, modules, options);
+}","public void test3134() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    File file0 = MockFile.createTempFile("" in "", (String) null);
+    JSSourceFile jSSourceFile0 = JSSourceFile.fromFile(file0);
+    JSModule[] jSModuleArray0 = new JSModule[1];
+    // Undeclared exception!
+    try {
+        compiler0.compile(jSSourceFile0, jSModuleArray0, compilerOptions0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.Compiler"", e);
+    }
+}",""
+"@Override
+void removeChangeHandler(CodeChangeHandler handler) {
+    codeChangeHandlers.remove(handler);
+}","public void test3235() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    CodeChangeHandler.RecentChange codeChangeHandler_RecentChange0 = compiler0.recentChange;
+    compiler0.removeChangeHandler(codeChangeHandler_RecentChange0);
+}",""
+"@Override
+void setHasRegExpGlobalReferences(boolean references) {
+    hasRegExpGlobalReferences = references;
+}","public void test3336() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    compiler0.setHasRegExpGlobalReferences(true);
+}",""
+"public JSError[] getMessages() {
+    return getErrors();
+}","public void test3437() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    // Undeclared exception!
+    try {
+        compiler0.getMessages();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.Compiler"", e);
+    }
+}","/**
+ * Returns an array constructed from errors + temporary warnings.
+ */"
+"@VisibleForTesting
+List<CompilerInput> getExternsForTesting() {
+    return externs;
+}","public void test3538() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    List<CompilerInput> list0 = compiler0.getExternsForTesting();
+    assertNull(list0);
+}",""
+"void removeTryCatchFinally() {
+    logger.info(""Remove try/catch/finally"");
+    startPass(""removeTryCatchFinally"");
+    RemoveTryCatch r = new RemoveTryCatch(this);
+    process(r);
+    endPass();
+}","public void test3639() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    // Undeclared exception!
+    try {
+        compiler0.removeTryCatchFinally();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * Removes try/catch/finally statements for easier debugging.
+ */"
+"@Override
+public Scope getTopScope() {
+    return getPassConfig().getTopScope();
+}","public void test3740() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Scope scope0 = compiler0.getTopScope();
+    assertNull(scope0);
+}",""
+"@Override
+ReferenceMap getGlobalVarReferences() {
+    return globalRefMap;
+}","public void test3841() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ReferenceCollectingCallback.ReferenceMap referenceCollectingCallback_ReferenceMap0 = compiler0.getGlobalVarReferences();
+    assertNull(referenceCollectingCallback_ReferenceMap0);
+}",""
+"public int getErrorCount() {
+    return errorManager.getErrorCount();
+}","public void test4346() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    compiler0.getErrorManager();
+    JSSourceFile jSSourceFile0 = JSSourceFile.fromCode(""com.google.javascript.jscomp.Compiler$8"", ""com.google.javascript.jscomp.Compiler$8"");
+    CompilerOptions compilerOptions0 = compiler0.options;
+    compiler0.compile(jSSourceFile0, jSSourceFile0, compilerOptions0);
+    compiler0.parse();
+    compiler0.check();
+    assertEquals(1, compiler0.getErrorCount());
+}","/**
+ * Gets the number of errors.
+ */"
+"@Override
+public ErrorManager getErrorManager() {
+    if (options == null) {
+        initOptions(new CompilerOptions());
+    }
+    return errorManager;
+}","public void test4447() throws Throwable {
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""com.google.javascript.jscomp.TypedScopeCreator$AbstractScopeBuilder"");
+    Compiler compiler0 = new Compiler(mockPrintStream0);
+    ErrorManager errorManager0 = compiler0.getErrorManager();
+    assertNotNull(errorManager0);
+}",""
+"@Override
+public boolean isTypeCheckingEnabled() {
+    return options.checkTypes;
+}","public void test4448() throws Throwable {
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""com.google.javascript.jscomp.TypedScopeCreator$AbstractScopeBuilder"");
+    Compiler compiler0 = new Compiler(mockPrintStream0);
+    ErrorManager errorManager0 = compiler0.getErrorManager();
+    assertFalse(compiler0.isTypeCheckingEnabled());
+}",""
+"public boolean hasErrors() {
+    return hasHaltingErrors();
+}","public void test4549() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    LinkedList<JSModule> linkedList0 = new LinkedList<JSModule>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    DiagnosticGroup[] diagnosticGroupArray0 = new DiagnosticGroup[0];
+    DiagnosticGroup diagnosticGroup0 = new DiagnosticGroup(""Root module has no inputs"", diagnosticGroupArray0);
+    DiagnosticGroups.CHECK_TYPES = diagnosticGroup0;
+    compiler0.compileModules(arrayList0, linkedList0, compilerOptions0);
+    assertTrue(compiler0.hasErrors());
+}","/**
+ * Consults the {@link ErrorManager} to see if we've encountered errors
+ * that should halt compilation. <p>
+ *
+ * If {@link CompilerOptions#ideMode} is {@code true}, this function
+ * always returns {@code false} without consulting the error manager. The
+ * error manager will continue to be told about new errors and warnings, but
+ * the compiler will complete compilation of all inputs.<p>
+ */"
+"public Result compileModules(List<JSSourceFile> externs, List<JSModule> modules, CompilerOptions options) {
+    // The compile method should only be called once.
+    Preconditions.checkState(jsRoot == null);
+    try {
+        initModules(externs, modules, options);
+        if (hasErrors()) {
+            return getResult();
+        }
+        return compile();
+    } finally {
+        Tracer t = newTracer(""generateReport"");
+        errorManager.generateReport();
+        stopTracer(t, ""generateReport"");
+    }
+}","public void test4550() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    LinkedList<JSModule> linkedList0 = new LinkedList<JSModule>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    DiagnosticGroup[] diagnosticGroupArray0 = new DiagnosticGroup[0];
+    DiagnosticGroup diagnosticGroup0 = new DiagnosticGroup(""Root module has no inputs"", diagnosticGroupArray0);
+    DiagnosticGroups.CHECK_TYPES = diagnosticGroup0;
+    compiler0.compileModules(arrayList0, linkedList0, compilerOptions0);
+    assertFalse(compilerOptions0.checkTypes);
+}","/**
+ * Compiles a list of modules.
+ */"
+"public int getErrorCount() {
+    return errorManager.getErrorCount();
+}","public void test4652() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    compiler0.getErrorManager();
+    JSSourceFile jSSourceFile0 = JSSourceFile.fromCode(""~?50iH,fu9(IIR"", ""~?50iH,fu9(IIR"");
+    CompilerOptions compilerOptions0 = compiler0.options;
+    CheckLevel checkLevel0 = CheckLevel.ERROR;
+    compilerOptions0.checkGlobalThisLevel = checkLevel0;
+    compiler0.compile(jSSourceFile0, jSSourceFile0, compilerOptions0);
+    assertEquals(1, compiler0.getErrorCount());
+}","/**
+ * Gets the number of errors.
+ */"
+"public boolean hasErrors() {
+    return hasHaltingErrors();
+}","public void test4753() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    LinkedList<JSSourceFile> linkedList0 = new LinkedList<JSSourceFile>();
+    compilerOptions0.checkSymbols = true;
+    compiler0.compile((List<JSSourceFile>) linkedList0, (List<JSSourceFile>) linkedList0, compilerOptions0);
+    assertFalse(compiler0.hasErrors());
+}","/**
+ * Consults the {@link ErrorManager} to see if we've encountered errors
+ * that should halt compilation. <p>
+ *
+ * If {@link CompilerOptions#ideMode} is {@code true}, this function
+ * always returns {@code false} without consulting the error manager. The
+ * error manager will continue to be told about new errors and warnings, but
+ * the compiler will complete compilation of all inputs.<p>
+ */"
+"public Result compile(List<JSSourceFile> externs, List<JSSourceFile> inputs, CompilerOptions options) {
+    // The compile method should only be called once.
+    Preconditions.checkState(jsRoot == null);
+    try {
+        init(externs, inputs, options);
+        if (hasErrors()) {
+            return getResult();
+        }
+        return compile();
+    } finally {
+        Tracer t = newTracer(""generateReport"");
+        errorManager.generateReport();
+        stopTracer(t, ""generateReport"");
+    }
+}","public void test4754() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    LinkedList<JSSourceFile> linkedList0 = new LinkedList<JSSourceFile>();
+    compilerOptions0.checkSymbols = true;
+    compiler0.compile((List<JSSourceFile>) linkedList0, (List<JSSourceFile>) linkedList0, compilerOptions0);
+    assertFalse(compilerOptions0.checkTypes);
+}","/**
+ * Compiles a list of inputs.
+ */"
+"public int getDepth() {
+    return depth;
+}","public void test4855() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    JSModule jSModule0 = new JSModule(""j/5Qf`-G%KDV"");
+    JSSourceFile[] jSSourceFileArray0 = new JSSourceFile[0];
+    JSModule[] jSModuleArray0 = new JSModule[2];
+    jSModuleArray0[0] = jSModule0;
+    jSModuleArray0[1] = jSModule0;
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    compiler0.init(jSSourceFileArray0, jSModuleArray0, compilerOptions0);
+    compiler0.getNodeForCodeInsertion(jSModule0);
+    assertEquals(0, jSModule0.getDepth());
+}","/**
+ * @return the depth
+ */"
+"public int getErrorCount() {
+    return errorManager.getErrorCount();
+}","public void test4956() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    JSSourceFile jSSourceFile0 = JSSourceFile.fromFile(""{0} expressions are not callable"");
+    arrayList0.add(jSSourceFile0);
+    arrayList0.add(jSSourceFile0);
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) arrayList0, compilerOptions0);
+    assertEquals(2, compiler0.getErrorCount());
+}","/**
+ * Gets the number of errors.
+ */"
+"public Result compile(List<JSSourceFile> externs, List<JSSourceFile> inputs, CompilerOptions options) {
+    // The compile method should only be called once.
+    Preconditions.checkState(jsRoot == null);
+    try {
+        init(externs, inputs, options);
+        if (hasErrors()) {
+            return getResult();
+        }
+        return compile();
+    } finally {
+        Tracer t = newTracer(""generateReport"");
+        errorManager.generateReport();
+        stopTracer(t, ""generateReport"");
+    }
+}","public void test4957() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    JSSourceFile jSSourceFile0 = JSSourceFile.fromFile(""{0} expressions are not callable"");
+    arrayList0.add(jSSourceFile0);
+    arrayList0.add(jSSourceFile0);
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) arrayList0, compilerOptions0);
+    assertFalse(compilerOptions0.checkTypes);
+}","/**
+ * Compiles a list of inputs.
+ */"
+"public Result compile(List<JSSourceFile> externs, List<JSSourceFile> inputs, CompilerOptions options) {
+    // The compile method should only be called once.
+    Preconditions.checkState(jsRoot == null);
+    try {
+        init(externs, inputs, options);
+        if (hasErrors()) {
+            return getResult();
+        }
+        return compile();
+    } finally {
+        Tracer t = newTracer(""generateReport"");
+        errorManager.generateReport();
+        stopTracer(t, ""generateReport"");
+    }
+}","public void test5058() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    LinkedList<JSSourceFile> linkedList0 = new LinkedList<JSSourceFile>();
+    compiler0.compile((List<JSSourceFile>) linkedList0, (List<JSSourceFile>) linkedList0, compilerOptions0);
+    // Undeclared exception!
+    try {
+        compiler0.compile((List<JSSourceFile>) linkedList0, (List<JSSourceFile>) linkedList0, compilerOptions0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * Compiles a list of inputs.
+ */"
+"public Result compileModules(List<JSSourceFile> externs, List<JSModule> modules, CompilerOptions options) {
+    // The compile method should only be called once.
+    Preconditions.checkState(jsRoot == null);
+    try {
+        initModules(externs, modules, options);
+        if (hasErrors()) {
+            return getResult();
+        }
+        return compile();
+    } finally {
+        Tracer t = newTracer(""generateReport"");
+        errorManager.generateReport();
+        stopTracer(t, ""generateReport"");
+    }
+}","public void test5159() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    JSModule jSModule0 = new JSModule((String) null);
+    Stack<JSSourceFile> stack0 = new Stack<JSSourceFile>();
+    Vector<JSModule> vector0 = new Vector<JSModule>();
+    vector0.add(jSModule0);
+    compiler0.compileModules(stack0, vector0, compilerOptions0);
+    assertFalse(compilerOptions0.checkTypes);
+}","/**
+ * Compiles a list of modules.
+ */"
+"public boolean hasErrors() {
+    return hasHaltingErrors();
+}","public void test5160() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    JSModule jSModule0 = new JSModule((String) null);
+    Stack<JSSourceFile> stack0 = new Stack<JSSourceFile>();
+    Vector<JSModule> vector0 = new Vector<JSModule>();
+    vector0.add(jSModule0);
+    compiler0.compileModules(stack0, vector0, compilerOptions0);
+    assertFalse(compiler0.hasErrors());
+}","/**
+ * Consults the {@link ErrorManager} to see if we've encountered errors
+ * that should halt compilation. <p>
+ *
+ * If {@link CompilerOptions#ideMode} is {@code true}, this function
+ * always returns {@code false} without consulting the error manager. The
+ * error manager will continue to be told about new errors and warnings, but
+ * the compiler will complete compilation of all inputs.<p>
+ */"
+"@SuppressWarnings(""unchecked"")
+static <T> T runCallable(final Callable<T> callable, boolean useLargeStackThread, boolean trace) {
+    // Under JRE 1.6, the jscompiler overflows the stack when running on some
+    // large or complex js code. Here we start a new thread with a larger
+    // stack in order to let the compiler do its thing, without having to
+    // increase the stack size for *every* thread (which is what -Xss does).
+    // Might want to add thread pool support for clients that compile a lot.
+    final boolean dumpTraceReport = trace;
+    final Object[] result = new Object[1];
+    final Throwable[] exception = new Throwable[1];
+    Runnable runnable = new Runnable() {
+
+        public void run() {
+            try {
+                if (dumpTraceReport) {
+                    Tracer.initCurrentThreadTrace();
+                }
+                result[0] = callable.call();
+            } catch (Throwable e) {
+                exception[0] = e;
+            } finally {
+                if (dumpTraceReport) {
+                    Tracer.logAndClearCurrentThreadTrace();
+                }
+            }
+        }
+    };
+    if (useLargeStackThread) {
+        Thread th = new Thread(null, runnable, ""jscompiler"", COMPILER_STACK_SIZE);
+        th.start();
+        while (true) {
+            try {
+                th.join();
+                break;
+            } catch (InterruptedException ignore) {
+                // ignore
+            }
+        }
+    } else {
+        runnable.run();
+    }
+    // Pass on any exception caught by the runnable object.
+    if (exception[0] != null) {
+        throw new RuntimeException(exception[0]);
+    }
+    return (T) result[0];
+}","public void test5261() throws Throwable {
+    Callable<NameAnalyzer> callable0 = (Callable<NameAnalyzer>) mock(Callable.class, new ViolatedAssumptionAnswer());
+    doReturn((Object) null).when(callable0).call();
+    NameAnalyzer nameAnalyzer0 = Compiler.runCallable(callable0, false, true);
+    assertNull(nameAnalyzer0);
+}",""
+"@SuppressWarnings(""unchecked"")
+static <T> T runCallable(final Callable<T> callable, boolean useLargeStackThread, boolean trace) {
+    // Under JRE 1.6, the jscompiler overflows the stack when running on some
+    // large or complex js code. Here we start a new thread with a larger
+    // stack in order to let the compiler do its thing, without having to
+    // increase the stack size for *every* thread (which is what -Xss does).
+    // Might want to add thread pool support for clients that compile a lot.
+    final boolean dumpTraceReport = trace;
+    final Object[] result = new Object[1];
+    final Throwable[] exception = new Throwable[1];
+    Runnable runnable = new Runnable() {
+
+        public void run() {
+            try {
+                if (dumpTraceReport) {
+                    Tracer.initCurrentThreadTrace();
+                }
+                result[0] = callable.call();
+            } catch (Throwable e) {
+                exception[0] = e;
+            } finally {
+                if (dumpTraceReport) {
+                    Tracer.logAndClearCurrentThreadTrace();
+                }
+            }
+        }
+    };
+    if (useLargeStackThread) {
+        Thread th = new Thread(null, runnable, ""jscompiler"", COMPILER_STACK_SIZE);
+        th.start();
+        while (true) {
+            try {
+                th.join();
+                break;
+            } catch (InterruptedException ignore) {
+                // ignore
+            }
+        }
+    } else {
+        runnable.run();
+    }
+    // Pass on any exception caught by the runnable object.
+    if (exception[0] != null) {
+        throw new RuntimeException(exception[0]);
+    }
+    return (T) result[0];
+}","public void test5362() throws Throwable {
+    // Undeclared exception!
+    try {
+        Compiler.runCallable((Callable<NameAnalyzer>) null, false, false);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // java.lang.NullPointerException
+        //
+        verifyException(""com.google.javascript.jscomp.Compiler"", e);
+    }
+}",""
+"@SuppressWarnings(""unchecked"")
+static <T> T runCallable(final Callable<T> callable, boolean useLargeStackThread, boolean trace) {
+    // Under JRE 1.6, the jscompiler overflows the stack when running on some
+    // large or complex js code. Here we start a new thread with a larger
+    // stack in order to let the compiler do its thing, without having to
+    // increase the stack size for *every* thread (which is what -Xss does).
+    // Might want to add thread pool support for clients that compile a lot.
+    final boolean dumpTraceReport = trace;
+    final Object[] result = new Object[1];
+    final Throwable[] exception = new Throwable[1];
+    Runnable runnable = new Runnable() {
+
+        public void run() {
+            try {
+                if (dumpTraceReport) {
+                    Tracer.initCurrentThreadTrace();
+                }
+                result[0] = callable.call();
+            } catch (Throwable e) {
+                exception[0] = e;
+            } finally {
+                if (dumpTraceReport) {
+                    Tracer.logAndClearCurrentThreadTrace();
+                }
+            }
+        }
+    };
+    if (useLargeStackThread) {
+        Thread th = new Thread(null, runnable, ""jscompiler"", COMPILER_STACK_SIZE);
+        th.start();
+        while (true) {
+            try {
+                th.join();
+                break;
+            } catch (InterruptedException ignore) {
+                // ignore
+            }
+        }
+    } else {
+        runnable.run();
+    }
+    // Pass on any exception caught by the runnable object.
+    if (exception[0] != null) {
+        throw new RuntimeException(exception[0]);
+    }
+    return (T) result[0];
+}","public void test5463() throws Throwable {
+    // Undeclared exception!
+    try {
+        Compiler.runCallable((Callable<NameAnalyzer>) null, false, true);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // java.lang.NullPointerException
+        //
+        verifyException(""com.google.javascript.jscomp.Compiler"", e);
+    }
+}",""
+"public void setPassConfig(PassConfig passes) {
+    // Important to check for null because if setPassConfig(null) is
+    // called before this.passes is set, getPassConfig() will create a
+    // new PassConfig object and use that, which is probably not what
+    // the client wanted since he or she probably meant to use their
+    // own PassConfig object.
+    Preconditions.checkNotNull(passes);
+    if (this.passes != null) {
+        throw new IllegalStateException(""this.passes has already been assigned"");
+    }
+    this.passes = passes;
+}","public void test5564() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    DefaultPassConfig defaultPassConfig0 = new DefaultPassConfig(compilerOptions0);
+    compiler0.setPassConfig(defaultPassConfig0);
+}","/**
+ * @param passes The PassConfig to use with this Compiler.
+ * @throws NullPointerException if passes is null
+ * @throws IllegalStateException if this.passes has already been assigned
+ */"
+"public void setPassConfig(PassConfig passes) {
+    // Important to check for null because if setPassConfig(null) is
+    // called before this.passes is set, getPassConfig() will create a
+    // new PassConfig object and use that, which is probably not what
+    // the client wanted since he or she probably meant to use their
+    // own PassConfig object.
+    Preconditions.checkNotNull(passes);
+    if (this.passes != null) {
+        throw new IllegalStateException(""this.passes has already been assigned"");
+    }
+    this.passes = passes;
+}","public void test5665() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) arrayList0, compilerOptions0);
+    DefaultPassConfig defaultPassConfig0 = new DefaultPassConfig(compilerOptions0);
+    PassConfig.PassConfigDelegate passConfig_PassConfigDelegate0 = new PassConfig.PassConfigDelegate(defaultPassConfig0);
+    // Undeclared exception!
+    try {
+        compiler0.setPassConfig(passConfig_PassConfigDelegate0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // this.passes has already been assigned
+        //
+        verifyException(""com.google.javascript.jscomp.Compiler"", e);
+    }
+}","/**
+ * @param passes The PassConfig to use with this Compiler.
+ * @throws NullPointerException if passes is null
+ * @throws IllegalStateException if this.passes has already been assigned
+ */"
+"public boolean hasErrors() {
+    return hasHaltingErrors();
+}","public void test5766() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    Stack<JSSourceFile> stack0 = new Stack<JSSourceFile>();
+    compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) stack0, compilerOptions0);
+    assertFalse(compiler0.hasErrors());
+}","/**
+ * Consults the {@link ErrorManager} to see if we've encountered errors
+ * that should halt compilation. <p>
+ *
+ * If {@link CompilerOptions#ideMode} is {@code true}, this function
+ * always returns {@code false} without consulting the error manager. The
+ * error manager will continue to be told about new errors and warnings, but
+ * the compiler will complete compilation of all inputs.<p>
+ */"
+"void stripCode(Set<String> stripTypes, Set<String> stripNameSuffixes, Set<String> stripTypePrefixes, Set<String> stripNamePrefixes) {
+    logger.info(""Strip code"");
+    startPass(""stripCode"");
+    StripCode r = new StripCode(this, stripTypes, stripNameSuffixes, stripTypePrefixes, stripNamePrefixes);
+    if (options.getTweakProcessing().shouldStrip()) {
+        r.enableTweakStripping();
+    }
+    process(r);
+    endPass();
+}","public void test5767() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    Stack<JSSourceFile> stack0 = new Stack<JSSourceFile>();
+    compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) stack0, compilerOptions0);
+    compiler0.stripCode(compilerOptions0.stripNameSuffixes, compilerOptions0.stripTypePrefixes, compilerOptions0.stripNameSuffixes, compilerOptions0.stripNamePrefixes);
+    assertFalse(compilerOptions0.checkTypes);
+}","/**
+ * Strips code for smaller compiled code. This is useful for removing debug
+ * statements to prevent leaking them publicly.
+ */"
+"@Override
+public boolean isTypeCheckingEnabled() {
+    return options.checkTypes;
+}","public void test5768() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    Stack<JSSourceFile> stack0 = new Stack<JSSourceFile>();
+    compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) stack0, compilerOptions0);
+    compiler0.stripCode(compilerOptions0.stripNameSuffixes, compilerOptions0.stripTypePrefixes, compilerOptions0.stripNameSuffixes, compilerOptions0.stripNamePrefixes);
+    assertFalse(compiler0.isTypeCheckingEnabled());
+}",""
+"void endPass() {
+    Preconditions.checkState(currentTracer != null, ""Tracer should not be null at the end of a pass."");
+    stopTracer(currentTracer, currentPassName);
+    String passToCheck = currentPassName;
+    currentPassName = null;
+    currentTracer = null;
+    maybeSanityCheck();
+}","public void test5869() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    // Undeclared exception!
+    try {
+        compiler0.endPass();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Tracer should not be null at the end of a pass.
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * Marks the end of a pass.
+ */"
+"public Result compileModules(List<JSSourceFile> externs, List<JSModule> modules, CompilerOptions options) {
+    // The compile method should only be called once.
+    Preconditions.checkState(jsRoot == null);
+    try {
+        initModules(externs, modules, options);
+        if (hasErrors()) {
+            return getResult();
+        }
+        return compile();
+    } finally {
+        Tracer t = newTracer(""generateReport"");
+        errorManager.generateReport();
+        stopTracer(t, ""generateReport"");
+    }
+}","public void test5970() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    compiler0.reportCodeChange();
+    LinkedList<JSModule> linkedList0 = new LinkedList<JSModule>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    compiler0.compileModules(arrayList0, linkedList0, compilerOptions0);
+    assertFalse(compilerOptions0.checkTypes);
+}","/**
+ * Compiles a list of modules.
+ */"
+"@Override
+public boolean isTypeCheckingEnabled() {
+    return options.checkTypes;
+}","public void test5971() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    compiler0.reportCodeChange();
+    LinkedList<JSModule> linkedList0 = new LinkedList<JSModule>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    compiler0.compileModules(arrayList0, linkedList0, compilerOptions0);
+    assertFalse(compiler0.isTypeCheckingEnabled());
+}",""
+"//------------------------------------------------------------------------
+// Parsing
+//------------------------------------------------------------------------
+/**
+ * Parses the externs and main inputs.
+ *
+ * @return A synthetic root node whose two children are the externs root
+ *     and the main root
+ */
+Node parseInputs() {
+    boolean devMode = options.devMode != DevMode.OFF;
+    // If old roots exist (we are parsing a second time), detach each of the
+    // individual file parse trees.
+    if (externsRoot != null) {
+        externsRoot.detachChildren();
+    }
+    if (jsRoot != null) {
+        jsRoot.detachChildren();
+    }
+    // Parse main js sources.
+    jsRoot = new Node(Token.BLOCK);
+    jsRoot.setIsSyntheticBlock(true);
+    externsRoot = new Node(Token.BLOCK);
+    externsRoot.setIsSyntheticBlock(true);
+    externAndJsRoot = new Node(Token.BLOCK, externsRoot, jsRoot);
+    externAndJsRoot.setIsSyntheticBlock(true);
+    if (options.tracer.isOn()) {
+        tracker = new PerformanceTracker(jsRoot, options.tracer == TracerMode.ALL);
+        addChangeHandler(tracker.getCodeChangeHandler());
+    }
+    Tracer tracer = newTracer(""parseInputs"");
+    try {
+        // Parse externs sources.
+        for (CompilerInput input : externs) {
+            Node n = input.getAstRoot(this);
+            if (hasErrors()) {
+                return null;
+            }
+            externsRoot.addChildToBack(n);
+        }
+        // Check if the sources need to be re-ordered.
+        if (options.manageClosureDependencies) {
+            for (CompilerInput input : inputs) {
+                input.setCompiler(this);
+                // Forward-declare all the provided types, so that they
+                // are not flagged even if they are dropped from the process.
+                for (String provide : input.getProvides()) {
+                    getTypeRegistry().forwardDeclareType(provide);
+                }
+            }
+            try {
+                inputs = (moduleGraph == null ? new JSModuleGraph(modules) : moduleGraph).manageDependencies(options.manageClosureDependenciesEntryPoints, inputs);
+            } catch (CircularDependencyException e) {
+                report(JSError.make(JSModule.CIRCULAR_DEPENDENCY_ERROR, e.getMessage()));
+                return null;
+            } catch (MissingProvideException e) {
+                report(JSError.make(MISSING_ENTRY_ERROR, e.getMessage()));
+                return null;
+            }
+        }
+        // Check if inputs need to be rebuilt from modules.
+        boolean staleInputs = false;
+        for (CompilerInput input : inputs) {
+            Node n = input.getAstRoot(this);
+            // Inputs can have a null AST during initial parse.
+            if (n == null) {
+                continue;
+            }
+            if (n.getJSDocInfo() != null) {
+                JSDocInfo info = n.getJSDocInfo();
+                if (info.isExterns()) {
+                    // If the input file is explicitly marked as an externs file, then
+                    // assume the programmer made a mistake and throw it into
+                    // the externs pile anyways.
+                    externsRoot.addChildToBack(n);
+                    input.setIsExtern(true);
+                    input.getModule().remove(input);
+                    externs.add(input);
+                    staleInputs = true;
+                } else if (info.isNoCompile()) {
+                    input.getModule().remove(input);
+                    staleInputs = true;
+                }
+            }
+        }
+        if (staleInputs) {
+            fillEmptyModules(modules);
+            rebuildInputsFromModules();
+        }
+        // Build the AST.
+        for (CompilerInput input : inputs) {
+            Node n = input.getAstRoot(this);
+            if (n == null) {
+                continue;
+            }
+            if (devMode) {
+                runSanityCheck();
+                if (hasErrors()) {
+                    return null;
+                }
+            }
+            if (options.sourceMapOutputPath != null || options.nameReferenceReportPath != null) {
+                // Annotate the nodes in the tree with information from the
+                // input file. This information is used to construct the SourceMap.
+                SourceInformationAnnotator sia = new SourceInformationAnnotator(input.getName(), options.devMode != DevMode.OFF);
+                NodeTraversal.traverse(this, n, sia);
+            }
+            jsRoot.addChildToBack(n);
+        }
+        if (hasErrors()) {
+            return null;
+        }
+        return externAndJsRoot;
+    } finally {
+        stopTracer(tracer, ""parseInputs"");
+    }
+}","public void test6072() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) arrayList0, compilerOptions0);
+    CompilerOptions.TracerMode compilerOptions_TracerMode0 = CompilerOptions.TracerMode.FAST;
+    compilerOptions0.tracer = compilerOptions_TracerMode0;
+    Node node0 = compiler0.parseInputs();
+    assertNotNull(node0);
+}",""
+"public boolean isSyntheticBlock() {
+    return getBooleanProp(SYNTHETIC_BLOCK_PROP);
+}","public void test6073() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) arrayList0, compilerOptions0);
+    CompilerOptions.TracerMode compilerOptions_TracerMode0 = CompilerOptions.TracerMode.FAST;
+    compilerOptions0.tracer = compilerOptions_TracerMode0;
+    Node node0 = compiler0.parseInputs();
+    assertTrue(node0.isSyntheticBlock());
+}","/**
+ * Returns whether this is a synthetic block that should not be considered
+ * a real source block.
+ */"
+"public int getType() {
+    return type;
+}","public void test6074() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) arrayList0, compilerOptions0);
+    CompilerOptions.TracerMode compilerOptions_TracerMode0 = CompilerOptions.TracerMode.FAST;
+    compilerOptions0.tracer = compilerOptions_TracerMode0;
+    Node node0 = compiler0.parseInputs();
+    assertEquals(125, node0.getType());
+}",""
+"@Override
+boolean areNodesEqualForInlining(Node n1, Node n2) {
+    if (options.ambiguateProperties || options.disambiguateProperties) {
+        // The type based optimizations require that type information is preserved
+        // during other optimizations.
+        return n1.isEquivalentToTyped(n2);
+    } else {
+        return n1.isEquivalentTo(n2);
+    }
+}","public void test6175() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    compiler0.getErrorManager();
+    // Undeclared exception!
+    try {
+        compiler0.areNodesEqualForInlining((Node) null, (Node) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.Compiler"", e);
+    }
+}",""
+"@Override
+public boolean acceptConstKeyword() {
+    return options.acceptConstKeyword;
+}","public void test6276() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) arrayList0, compilerOptions0);
+    compiler0.newExternInput((String) null);
+    compiler0.removeInput((String) null);
+    assertFalse(compiler0.acceptConstKeyword());
+}",""
+"public boolean hasErrors() {
+    return hasHaltingErrors();
+}","public void test6377() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) arrayList0, compilerOptions0);
+    compiler0.removeInput((String) null);
+    assertFalse(compiler0.hasErrors());
+}","/**
+ * Consults the {@link ErrorManager} to see if we've encountered errors
+ * that should halt compilation. <p>
+ *
+ * If {@link CompilerOptions#ideMode} is {@code true}, this function
+ * always returns {@code false} without consulting the error manager. The
+ * error manager will continue to be told about new errors and warnings, but
+ * the compiler will complete compilation of all inputs.<p>
+ */"
+"@Override
+public boolean isTypeCheckingEnabled() {
+    return options.checkTypes;
+}","public void test6378() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) arrayList0, compilerOptions0);
+    compiler0.removeInput((String) null);
+    assertFalse(compiler0.isTypeCheckingEnabled());
+}",""
+"@Override
+public CompilerInput newExternInput(String name) {
+    if (inputsByName.containsKey(name)) {
+        throw new IllegalArgumentException(""Conflicting externs name: "" + name);
+    }
+    SourceAst ast = new SyntheticAst(name);
+    CompilerInput input = new CompilerInput(ast, name, true);
+    inputsByName.put(name, input);
+    externsRoot.addChildToFront(ast.getAstRoot(this));
+    return input;
+}","public void test6479() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) arrayList0, compilerOptions0);
+    // Undeclared exception!
+    try {
+        compiler0.newExternInput(""[[singleton]]"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Conflicting externs name: [[singleton]]
+        //
+        verifyException(""com.google.javascript.jscomp.Compiler"", e);
+    }
+}",""
+"void addIncrementalSourceAst(JsAst ast) {
+    String sourceName = ast.getSourceFile().getName();
+    Preconditions.checkState(getInput(sourceName) == null, ""Duplicate input of name "" + sourceName);
+    inputsByName.put(sourceName, new CompilerInput(ast));
+}","public void test6580() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) arrayList0, compilerOptions0);
+    MockFile mockFile0 = new MockFile((File) null, ""[[singleton]]"");
+    JSSourceFile jSSourceFile0 = JSSourceFile.fromFile((File) mockFile0);
+    JsAst jsAst0 = new JsAst(jSSourceFile0);
+    // Undeclared exception!
+    try {
+        compiler0.addIncrementalSourceAst(jsAst0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Duplicate input of name [[singleton]]
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * Add a source input dynamically. Intended for incremental compilation.
+ */"
+"@Override
+public boolean isTypeCheckingEnabled() {
+    return options.checkTypes;
+}","public void test6681() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    compiler0.parseTestCode(""TYobZX?"");
+    MockFile mockFile0 = new MockFile(""TYobZX?"");
+    SourceFile sourceFile0 = SourceFile.fromFile((File) mockFile0);
+    JsAst jsAst0 = new JsAst(sourceFile0);
+    compiler0.addIncrementalSourceAst(jsAst0);
+    assertFalse(compiler0.isTypeCheckingEnabled());
+}",""
+"public boolean hasErrors() {
+    return hasHaltingErrors();
+}","public void test6782() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) arrayList0, compilerOptions0);
+    assertFalse(compiler0.hasErrors());
+}","/**
+ * Consults the {@link ErrorManager} to see if we've encountered errors
+ * that should halt compilation. <p>
+ *
+ * If {@link CompilerOptions#ideMode} is {@code true}, this function
+ * always returns {@code false} without consulting the error manager. The
+ * error manager will continue to be told about new errors and warnings, but
+ * the compiler will complete compilation of all inputs.<p>
+ */"
+"boolean replaceIncrementalSourceAst(JsAst ast) {
+    String sourceName = ast.getSourceFile().getName();
+    CompilerInput oldInput = Preconditions.checkNotNull(getInput(sourceName), ""No input to replace: "" + sourceName);
+    Node newRoot = ast.getAstRoot(this);
+    if (newRoot == null) {
+        return false;
+    }
+    Node oldRoot = oldInput.getAstRoot(this);
+    if (oldRoot != null) {
+        oldRoot.getParent().replaceChild(oldRoot, newRoot);
+    } else {
+        getRoot().getLastChild().addChildToBack(newRoot);
+    }
+    CompilerInput newInput = new CompilerInput(ast);
+    inputsByName.put(sourceName, newInput);
+    JSModule module = oldInput.getModule();
+    if (module != null) {
+        module.addAfter(newInput, oldInput);
+        module.remove(oldInput);
+    }
+    return true;
+}","public void test6783() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) arrayList0, compilerOptions0);
+    char[] charArray0 = new char[7];
+    CharArrayReader charArrayReader0 = new CharArrayReader(charArray0);
+    SourceFile sourceFile0 = SourceFile.fromReader(""[[singleton]]"", charArrayReader0);
+    JsAst jsAst0 = new JsAst(sourceFile0);
+    boolean boolean0 = compiler0.replaceIncrementalSourceAst(jsAst0);
+    assertTrue(boolean0);
+}","/**
+ * Replace a source input dynamically. Intended for incremental
+ * re-compilation.
+ *
+ * If the new source input doesn't parse, then keep the old input
+ * in the AST and return false.
+ *
+ * @return Whether the new AST was attached successfully.
+ */"
+"public int getErrorCount() {
+    return errorManager.getErrorCount();
+}","public void test6884() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    compiler0.getErrorManager();
+    JSSourceFile jSSourceFile0 = JSSourceFile.fromFile(""Gqsz@:itDX9]k^Y)AJe"");
+    CompilerOptions compilerOptions0 = compiler0.options;
+    compiler0.compile(jSSourceFile0, jSSourceFile0, compilerOptions0);
+    JsAst jsAst0 = new JsAst(jSSourceFile0);
+    compiler0.replaceIncrementalSourceAst(jsAst0);
+    assertEquals(2, compiler0.getErrorCount());
+}","/**
+ * Gets the number of errors.
+ */"
+"@Override
+public boolean isTypeCheckingEnabled() {
+    return options.checkTypes;
+}","public void test6985() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    compiler0.getErrorManager();
+    compiler0.getReverseAbstractInterpreter();
+    ReverseAbstractInterpreter reverseAbstractInterpreter0 = compiler0.getReverseAbstractInterpreter();
+    assertFalse(compiler0.isTypeCheckingEnabled());
+}",""
+"@Override
+public ReverseAbstractInterpreter getReverseAbstractInterpreter() {
+    if (abstractInterpreter == null) {
+        ChainableReverseAbstractInterpreter interpreter = new SemanticReverseAbstractInterpreter(getCodingConvention(), getTypeRegistry());
+        if (options.closurePass) {
+            interpreter = new ClosureReverseAbstractInterpreter(getCodingConvention(), getTypeRegistry()).append(interpreter).getFirst();
+        }
+        abstractInterpreter = interpreter;
+    }
+    return abstractInterpreter;
+}","public void test6986() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    compiler0.getErrorManager();
+    compiler0.getReverseAbstractInterpreter();
+    ReverseAbstractInterpreter reverseAbstractInterpreter0 = compiler0.getReverseAbstractInterpreter();
+    assertNotNull(reverseAbstractInterpreter0);
+}",""
+"@Override
+public boolean isTypeCheckingEnabled() {
+    return options.checkTypes;
+}","public void test7087() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) arrayList0, compilerOptions0);
+    DefaultPassConfig defaultPassConfig0 = new DefaultPassConfig(compilerOptions0);
+    defaultPassConfig0.makeTypeCheck(compiler0);
+    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);
+    assertFalse(compiler0.isTypeCheckingEnabled());
+}",""
+"@Override
+public boolean isTypeCheckingEnabled() {
+    return options.checkTypes;
+}","public void test7188() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) arrayList0, compilerOptions0);
+    CompilerOptions.TracerMode compilerOptions_TracerMode0 = CompilerOptions.TracerMode.ALL;
+    compilerOptions0.tracer = compilerOptions_TracerMode0;
+    Node node0 = compiler0.parseInputs();
+    assertFalse(compiler0.isTypeCheckingEnabled());
+}",""
+"public int getType() {
+    return type;
+}","public void test7189() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) arrayList0, compilerOptions0);
+    CompilerOptions.TracerMode compilerOptions_TracerMode0 = CompilerOptions.TracerMode.ALL;
+    compilerOptions0.tracer = compilerOptions_TracerMode0;
+    Node node0 = compiler0.parseInputs();
+    assertEquals(125, node0.getType());
+}",""
+"public int getErrorCount() {
+    return errorManager.getErrorCount();
+}","public void test7290() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    JSSourceFile jSSourceFile0 = JSSourceFile.fromFile(""xi|%*USa["");
+    ArrayList<JSSourceFile> arrayList1 = new ArrayList<JSSourceFile>();
+    arrayList1.add(jSSourceFile0);
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) arrayList1, compilerOptions0);
+    compiler0.parse();
+    assertEquals(1, compiler0.getErrorCount());
+}","/**
+ * Gets the number of errors.
+ */"
+"@Override
+public boolean isTypeCheckingEnabled() {
+    return options.checkTypes;
+}","public void test7291() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    JSSourceFile jSSourceFile0 = JSSourceFile.fromFile(""xi|%*USa["");
+    ArrayList<JSSourceFile> arrayList1 = new ArrayList<JSSourceFile>();
+    arrayList1.add(jSSourceFile0);
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) arrayList1, compilerOptions0);
+    compiler0.parse();
+    assertFalse(compiler0.isTypeCheckingEnabled());
+}",""
+"@Override
+Node parseTestCode(String js) {
+    initCompilerOptionsIfTesting();
+    CompilerInput input = new CompilerInput(JSSourceFile.fromCode("" [testcode] "", js));
+    if (inputsByName == null) {
+        inputsByName = Maps.newHashMap();
+    }
+    inputsByName.put(input.getName(), input);
+    return input.getAstRoot(this);
+}","public void test7392() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) arrayList0, compilerOptions0);
+    // Undeclared exception!
+    try {
+        compiler0.parseTestCode((String) null);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // FAILED ASSERTION
+        //
+        verifyException(""com.google.javascript.jscomp.mozilla.rhino.Kit"", e);
+    }
+}",""
+"@Override
+public boolean isTypeCheckingEnabled() {
+    return options.checkTypes;
+}","public void test7493() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    compiler0.getErrorManager();
+    compiler0.disableThreads();
+    compiler0.toSource();
+    assertFalse(compiler0.isTypeCheckingEnabled());
+}",""
+"public int getErrorCount() {
+    return errorManager.getErrorCount();
+}","public void test7998() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    compiler0.getErrorManager();
+    JSSourceFile jSSourceFile0 = JSSourceFile.fromCode(""com.google.javascript.jscomp.Compiler$8"", ""com.google.javascript.jscomp.Compiler$8"");
+    CompilerOptions compilerOptions0 = compiler0.options;
+    compiler0.compile(jSSourceFile0, jSSourceFile0, compilerOptions0);
+    compiler0.parse();
+    compiler0.optimize();
+    assertEquals(1, compiler0.getErrorCount());
+}","/**
+ * Gets the number of errors.
+ */"
+"boolean isInliningForbidden() {
+    return options.propertyRenaming == PropertyRenamingPolicy.HEURISTIC || options.propertyRenaming == PropertyRenamingPolicy.AGGRESSIVE_HEURISTIC;
+}","public void test8099() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    compiler0.getErrorManager();
+    boolean boolean0 = compiler0.isInliningForbidden();
+    assertFalse(boolean0);
+}",""
+"@Override
+public boolean isTypeCheckingEnabled() {
+    return options.checkTypes;
+}","public void test80100() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    compiler0.getErrorManager();
+    boolean boolean0 = compiler0.isInliningForbidden();
+    assertFalse(compiler0.isTypeCheckingEnabled());
+}",""
+"public Result compile(List<JSSourceFile> externs, List<JSSourceFile> inputs, CompilerOptions options) {
+    // The compile method should only be called once.
+    Preconditions.checkState(jsRoot == null);
+    try {
+        init(externs, inputs, options);
+        if (hasErrors()) {
+            return getResult();
+        }
+        return compile();
+    } finally {
+        Tracer t = newTracer(""generateReport"");
+        errorManager.generateReport();
+        stopTracer(t, ""generateReport"");
+    }
+}","public void test81101() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    ClosureCodingConvention closureCodingConvention0 = new ClosureCodingConvention();
+    compilerOptions0.setCodingConvention(closureCodingConvention0);
+    compiler0.disableThreads();
+    Result result0 = compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) arrayList0, compilerOptions0);
+    assertTrue(result0.success);
+}","/**
+ * Compiles a list of inputs.
+ */"
+"@Override
+public boolean isTypeCheckingEnabled() {
+    return options.checkTypes;
+}","public void test82102() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) arrayList0, compilerOptions0);
+    compiler0.acceptEcmaScript5();
+    assertFalse(compiler0.isTypeCheckingEnabled());
+}",""
+"@Override
+public void report(JSError error) {
+    CheckLevel level = error.level;
+    if (warningsGuard != null) {
+        CheckLevel newLevel = warningsGuard.level(error);
+        if (newLevel != null) {
+            level = newLevel;
+        }
+    }
+    if (level.isOn()) {
+        errorManager.report(level, error);
+    }
+}","public void test83103() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    JSError jSError0 = JSError.make(""com.google.common.collect.Synchronized$SynchronizedSetMultimap"", (-984), (-1394), compilerOptions0.checkGlobalNamesLevel, compiler0.MOTION_ITERATIONS_ERROR, (String[]) null);
+    compiler0.report(jSError0);
+    assertEquals((-984), jSError0.lineNumber);
+}",""
+"@Override
+void throwInternalError(String message, Exception cause) {
+    String finalMessage = ""INTERNAL COMPILER ERROR.\n"" + ""Please report this problem.\n"" + message;
+    RuntimeException e = new RuntimeException(finalMessage, cause);
+    if (cause != null) {
+        e.setStackTrace(cause.getStackTrace());
+    }
+    throw e;
+}","public void test84104() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    // Undeclared exception!
+    try {
+        compiler0.throwInternalError(""com.google.javascript.jscomp.Compiler$9"", (Exception) null);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // com.google.javascript.jscomp.Compiler$9
+        //
+        verifyException(""com.google.javascript.jscomp.Compiler"", e);
+    }
+}","/**
+ * Report an internal error.
+ */"
+"public Result compile(List<JSSourceFile> externs, List<JSSourceFile> inputs, CompilerOptions options) {
+    // The compile method should only be called once.
+    Preconditions.checkState(jsRoot == null);
+    try {
+        init(externs, inputs, options);
+        if (hasErrors()) {
+            return getResult();
+        }
+        return compile();
+    } finally {
+        Tracer t = newTracer(""generateReport"");
+        errorManager.generateReport();
+        stopTracer(t, ""generateReport"");
+    }
+}","public void test85105() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    compiler0.parseTestCode(""/&c@q0zh"");
+    Result result0 = compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) arrayList0, compilerOptions0);
+    assertFalse(result0.success);
+}","/**
+ * Compiles a list of inputs.
+ */"
+"public Result compile(List<JSSourceFile> externs, List<JSSourceFile> inputs, CompilerOptions options) {
+    // The compile method should only be called once.
+    Preconditions.checkState(jsRoot == null);
+    try {
+        init(externs, inputs, options);
+        if (hasErrors()) {
+            return getResult();
+        }
+        return compile();
+    } finally {
+        Tracer t = newTracer(""generateReport"");
+        errorManager.generateReport();
+        stopTracer(t, ""generateReport"");
+    }
+}","public void test86106() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    JSSourceFile jSSourceFile0 = JSSourceFile.fromCode("".U<pVfLGD|nroI/"", "".U<pVfLGD|nroI/"");
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    arrayList0.add(jSSourceFile0);
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    Stack<JSSourceFile> stack0 = new Stack<JSSourceFile>();
+    Result result0 = compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) stack0, compilerOptions0);
+    assertFalse(compilerOptions0.checkTypes);
+}","/**
+ * Compiles a list of inputs.
+ */"
+"public Region getSourceRegion(String sourceName, int lineNumber) {
+    if (lineNumber < 1) {
+        return null;
+    }
+    SourceFile input = getSourceFileByName(sourceName);
+    if (input != null) {
+        return input.getRegion(lineNumber);
+    }
+    return null;
+}","public void test87108() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Region region0 = compiler0.getSourceRegion((String) null, (-708));
+    assertNull(region0);
+}",""
+"@Override
+public boolean isTypeCheckingEnabled() {
+    return options.checkTypes;
+}","public void test88109() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) arrayList0, compilerOptions0);
+    compiler0.getSourceRegion(""// Input %num%"", 65263);
+    assertFalse(compiler0.isTypeCheckingEnabled());
+}",""
+"//------------------------------------------------------------------------
+// Package-private helpers
+//------------------------------------------------------------------------
+@Override
+Node getNodeForCodeInsertion(JSModule module) {
+    if (module == null) {
+        if (inputs.isEmpty()) {
+            throw new IllegalStateException(""No inputs"");
+        }
+        return inputs.get(0).getAstRoot(this);
+    }
+    List<CompilerInput> moduleInputs = module.getInputs();
+    if (moduleInputs.size() > 0) {
+        return moduleInputs.get(0).getAstRoot(this);
+    }
+    throw new IllegalStateException(""Root module has no inputs"");
+}","public void test89110() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    JSModule jSModule0 = new JSModule(""com.google.javascript.jscomp.Compiler$CodeBuilder"");
+    // Undeclared exception!
+    try {
+        compiler0.getNodeForCodeInsertion(jSModule0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Root module has no inputs
+        //
+        verifyException(""com.google.javascript.jscomp.Compiler"", e);
+    }
+}",""
+"//------------------------------------------------------------------------
+// Package-private helpers
+//------------------------------------------------------------------------
+@Override
+Node getNodeForCodeInsertion(JSModule module) {
+    if (module == null) {
+        if (inputs.isEmpty()) {
+            throw new IllegalStateException(""No inputs"");
+        }
+        return inputs.get(0).getAstRoot(this);
+    }
+    List<CompilerInput> moduleInputs = module.getInputs();
+    if (moduleInputs.size() > 0) {
+        return moduleInputs.get(0).getAstRoot(this);
+    }
+    throw new IllegalStateException(""Root module has no inputs"");
+}","public void test90111() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) arrayList0, compilerOptions0);
+    Node node0 = compiler0.getNodeForCodeInsertion((JSModule) null);
+    assertEquals(2, Node.POST_FLAG);
+}",""
+"public String getAstDotGraph() throws IOException {
+    if (jsRoot != null) {
+        ControlFlowAnalysis cfa = new ControlFlowAnalysis(this, true, false);
+        cfa.process(null, jsRoot);
+        return DotFormatter.toDot(jsRoot, cfa.getCfg());
+    } else {
+        return """";
+    }
+}","public void test91112() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    String string0 = compiler0.getAstDotGraph();
+    assertEquals("""", string0);
+}","/**
+ * Gets the DOT graph of the AST generated at the end of compilation.
+ */"
+"public String getAstDotGraph() throws IOException {
+    if (jsRoot != null) {
+        ControlFlowAnalysis cfa = new ControlFlowAnalysis(this, true, false);
+        cfa.process(null, jsRoot);
+        return DotFormatter.toDot(jsRoot, cfa.getCfg());
+    } else {
+        return """";
+    }
+}","public void test92113() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) arrayList0, compilerOptions0);
+    String string0 = compiler0.getAstDotGraph();
+    assertEquals(""digraph AST {\n  node [color=lightblue2, style=filled];\n  node0 [label=\""BLOCK\""];\n  node1 [label=\""SCRIPT\""];\n  node0 -> node1 [weight=1];\n  node1 -> RETURN [label=\""UNCOND\"", fontcolor=\""red\"", weight=0.01, color=\""red\""];\n  node0 -> RETURN [label=\""SYN_BLOCK\"", fontcolor=\""red\"", weight=0.01, color=\""red\""];\n  node0 -> node1 [label=\""UNCOND\"", fontcolor=\""red\"", weight=0.01, color=\""red\""];\n}\n"", string0);
+}","/**
+ * Gets the DOT graph of the AST generated at the end of compilation.
+ */"
+"@Override
+public boolean isTypeCheckingEnabled() {
+    return options.checkTypes;
+}","public void test93114() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    compiler0.getErrorManager();
+    compiler0.getErrorManager();
+    assertFalse(compiler0.isTypeCheckingEnabled());
+}",""
+"@Override
+public boolean isTypeCheckingEnabled() {
+    return options.checkTypes;
+}","public void test94115() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) arrayList0, compilerOptions0);
+    HashMap<Scope.Var, ReferenceCollectingCallback.ReferenceCollection> hashMap0 = new HashMap<Scope.Var, ReferenceCollectingCallback.ReferenceCollection>();
+    Node node0 = compiler0.parseSyntheticCode(""// Input %num%"");
+    compiler0.updateGlobalVarReferences(hashMap0, node0);
+    assertFalse(compiler0.isTypeCheckingEnabled());
+}",""
+"@Override
+void updateGlobalVarReferences(Map<Var, ReferenceCollection> refMapPatch, Node collectionRoot) {
+    Preconditions.checkState(collectionRoot.getType() == Token.SCRIPT || collectionRoot.getType() == Token.BLOCK);
+    if (globalRefMap == null) {
+        globalRefMap = new GlobalVarReferenceMap(getInputsInOrder());
+    }
+    globalRefMap.updateGlobalVarReferences(refMapPatch, collectionRoot);
+}","public void test95116() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    TreeMap<Scope.Var, ReferenceCollectingCallback.ReferenceCollection> treeMap0 = new TreeMap<Scope.Var, ReferenceCollectingCallback.ReferenceCollection>();
+    Node node0 = new Node(2643);
+    // Undeclared exception!
+    try {
+        compiler0.updateGlobalVarReferences(treeMap0, node0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",""
+"public boolean hasChildren() {
+    return first != null;
+}","public void test96117() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) arrayList0, compilerOptions0);
+    Compiler.IntermediateState compiler_IntermediateState0 = compiler0.getState();
+    Node node0 = compiler_IntermediateState0.externsRoot;
+    HashMap<Scope.Var, ReferenceCollectingCallback.ReferenceCollection> hashMap0 = new HashMap<Scope.Var, ReferenceCollectingCallback.ReferenceCollection>();
+    compiler0.updateGlobalVarReferences(hashMap0, node0);
+    compiler0.updateGlobalVarReferences(hashMap0, node0);
+    assertFalse(node0.hasChildren());
+}",""
+"public int getChildCount() {
+    int c = 0;
+    for (Node n = first; n != null; n = n.next) c++;
+    return c;
+}","public void test96118() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    ArrayList<JSSourceFile> arrayList0 = new ArrayList<JSSourceFile>();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    compiler0.compile((List<JSSourceFile>) arrayList0, (List<JSSourceFile>) arrayList0, compilerOptions0);
+    Compiler.IntermediateState compiler_IntermediateState0 = compiler0.getState();
+    Node node0 = compiler_IntermediateState0.externsRoot;
+    HashMap<Scope.Var, ReferenceCollectingCallback.ReferenceCollection> hashMap0 = new HashMap<Scope.Var, ReferenceCollectingCallback.ReferenceCollection>();
+    compiler0.updateGlobalVarReferences(hashMap0, node0);
+    compiler0.updateGlobalVarReferences(hashMap0, node0);
+    assertEquals(0, node0.getChildCount());
+}",""

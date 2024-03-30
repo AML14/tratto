@@ -1,0 +1,63 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test00,"public void test00() throws Throwable {
+    MockUtil mockUtil0 = new MockUtil();
+    mockUtil0.isMock(mockUtil0);
+}",0,
+project,0,test11,"public void test11() throws Throwable {
+    MockUtil mockUtil0 = new MockUtil();
+    // Undeclared exception!
+    try {
+        mockUtil0.resetMock((Object) mockUtil0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",0,
+project,0,test22,"public void test22() throws Throwable {
+    MockUtil mockUtil0 = new MockUtil();
+    MockSettingsImpl mockSettingsImpl0 = new MockSettingsImpl();
+    Class<Object> class0 = Object.class;
+    // Undeclared exception!
+    try {
+        mockUtil0.createMock(class0, mockSettingsImpl0);
+        fail(""Expecting exception: IncompatibleClassChangeError"");
+    } catch (IncompatibleClassChangeError e) {
+        //
+        // Expected non-static field org.mockito.cglib.proxy.Enhancer.serialVersionUID
+        //
+        verifyException(""org.mockito.cglib.proxy.Enhancer"", e);
+    }
+}",0,
+project,0,test33,"public void test33() throws Throwable {
+    MockUtil mockUtil0 = new MockUtil();
+    MockSettingsImpl mockSettingsImpl0 = new MockSettingsImpl();
+    // Undeclared exception!
+    try {
+        mockUtil0.getMockName(mockSettingsImpl0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",0,
+project,0,test44,"public void test44() throws Throwable {
+    MockUtil mockUtil0 = new MockUtil();
+    mockUtil0.getMockHandler((String) null);
+}",1,
+project,0,test55,"public void test55() throws Throwable {
+    MockUtil mockUtil0 = new MockUtil();
+    mockUtil0.isMock((Object) null);
+}",0,
+project,0,test66,"public void test66() throws Throwable {
+    MockUtil mockUtil0 = new MockUtil();
+    MockSettingsImpl mockSettingsImpl0 = new MockSettingsImpl();
+    mockSettingsImpl0.serializable();
+    Class<Object> class0 = Object.class;
+    // Undeclared exception!
+    try {
+        mockUtil0.createMock(class0, mockSettingsImpl0);
+        fail(""Expecting exception: IncompatibleClassChangeError"");
+    } catch (IncompatibleClassChangeError e) {
+        //
+        // Expected non-static field org.mockito.cglib.proxy.Enhancer.serialVersionUID
+        //
+        verifyException(""org.mockito.cglib.proxy.Enhancer"", e);
+    }
+}",0,

@@ -1,0 +1,600 @@
+focal_method,test_prefix,docstring
+"public CommandLine parse(Options options, String[] arguments, boolean stopAtNonOption) throws ParseException {
+    return parse(options, arguments, null, stopAtNonOption);
+}","public void test000() throws Throwable {
+    DefaultParser defaultParser0 = new DefaultParser();
+    Options options0 = new Options();
+    String[] stringArray0 = new String[1];
+    // Undeclared exception!
+    try {
+        defaultParser0.parse(options0, stringArray0, false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"public CommandLine parse(Options options, String[] arguments) throws ParseException {
+    return parse(options, arguments, null);
+}","public void test011() throws Throwable {
+    DefaultParser defaultParser0 = new DefaultParser();
+    Options options0 = new Options();
+    options0.addRequiredOption(""1"", ""-1"", true, ""1"");
+    String[] stringArray0 = new String[8];
+    stringArray0[0] = ""-1"";
+    stringArray0[1] = ""-1"";
+    // Undeclared exception!
+    try {
+        defaultParser0.parse(options0, stringArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"protected void handleConcatenatedOptions(String token) throws ParseException {
+    for (int i = 1; i < token.length(); i++) {
+        String ch = String.valueOf(token.charAt(i));
+        if (options.hasOption(ch)) {
+            handleOption(options.getOption(ch));
+            if (currentOption != null && token.length() != i + 1) {
+                // add the trail as an argument of the option
+                currentOption.addValueForProcessing(token.substring(i + 1));
+                break;
+            }
+        } else {
+            handleUnknownToken(stopAtNonOption && i > 1 ? token.substring(i) : token);
+            break;
+        }
+    }
+}","public void test022() throws Throwable {
+    DefaultParser defaultParser0 = new DefaultParser();
+    Options options0 = new Options();
+    Properties properties0 = new Properties();
+    defaultParser0.parse(options0, (String[]) null, properties0, true);
+    defaultParser0.handleConcatenatedOptions(""--]R+;2-HIc"");
+}","/**
+ * Breaks <code>token</code> into its constituent parts
+ * using the following algorithm.
+ *
+ * <ul>
+ *  <li>ignore the first character (""<b>-</b>"")</li>
+ *  <li>foreach remaining character check if an {@link Option}
+ *  exists with that id.</li>
+ *  <li>if an {@link Option} does exist then add that character
+ *  prepended with ""<b>-</b>"" to the list of processed tokens.</li>
+ *  <li>if the {@link Option} can have an argument value and there
+ *  are remaining characters in the token then add the remaining
+ *  characters as a token to the list of processed tokens.</li>
+ *  <li>if an {@link Option} does <b>NOT</b> exist <b>AND</b>
+ *  <code>stopAtNonOption</code> <b>IS</b> set then add the special token
+ *  ""<b>--</b>"" followed by the remaining characters and also
+ *  the remaining tokens directly to the processed tokens list.</li>
+ *  <li>if an {@link Option} does <b>NOT</b> exist <b>AND</b>
+ *  <code>stopAtNonOption</code> <b>IS NOT</b> set then add that
+ *  character prepended with ""<b>-</b>"".</li>
+ * </ul>
+ *
+ * @param token The current token to be <b>burst</b>
+ * at the first non-Option encountered.
+ * @throws ParseException if there are any problems encountered
+ *                        while parsing the command line token.
+ */"
+"public CommandLine parse(Options options, String[] arguments) throws ParseException {
+    return parse(options, arguments, null);
+}","public void test033() throws Throwable {
+    DefaultParser defaultParser0 = new DefaultParser();
+    Options options0 = new Options();
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = ""--"";
+    CommandLine commandLine0 = defaultParser0.parse(options0, stringArray0);
+    assertNotNull(commandLine0);
+}",""
+"public CommandLine parse(Options options, String[] arguments, Properties properties) throws ParseException {
+    return parse(options, arguments, properties, false);
+}","public void test044() throws Throwable {
+    DefaultParser defaultParser0 = new DefaultParser();
+    Options options0 = new Options();
+    Properties properties0 = new Properties();
+    properties0.put(""(tM_M.-lD<"", options0);
+    try {
+        defaultParser0.parse(options0, (String[]) null, properties0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Default option wasn't defined
+        //
+        verifyException(""org.apache.commons.cli.DefaultParser"", e);
+    }
+}","/**
+ * Parse the arguments according to the specified options and properties.
+ *
+ * @param options    the specified Options
+ * @param arguments  the command line arguments
+ * @param properties command line option name-value pairs
+ * @return the list of atomic option and value tokens
+ *
+ * @throws ParseException if there are any problems encountered
+ * while parsing the command line tokens.
+ */"
+"public CommandLine parse(Options options, String[] arguments) throws ParseException {
+    return parse(options, arguments, null);
+}","public void test055() throws Throwable {
+    DefaultParser defaultParser0 = new DefaultParser();
+    Options options0 = new Options();
+    Options options1 = options0.addRequiredOption("""", """", false, """");
+    String[] stringArray0 = new String[0];
+    try {
+        defaultParser0.parse(options1, stringArray0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Missing required option:
+        //
+        verifyException(""org.apache.commons.cli.DefaultParser"", e);
+    }
+}",""
+"protected void handleConcatenatedOptions(String token) throws ParseException {
+    for (int i = 1; i < token.length(); i++) {
+        String ch = String.valueOf(token.charAt(i));
+        if (options.hasOption(ch)) {
+            handleOption(options.getOption(ch));
+            if (currentOption != null && token.length() != i + 1) {
+                // add the trail as an argument of the option
+                currentOption.addValueForProcessing(token.substring(i + 1));
+                break;
+            }
+        } else {
+            handleUnknownToken(stopAtNonOption && i > 1 ? token.substring(i) : token);
+            break;
+        }
+    }
+}","public void test066() throws Throwable {
+    DefaultParser defaultParser0 = new DefaultParser();
+    Options options0 = new Options();
+    Options options1 = options0.addOption(""1"", true, ""1"");
+    Properties properties0 = new Properties();
+    String[] stringArray0 = new String[17];
+    stringArray0[0] = ""1"";
+    defaultParser0.parse(options1, stringArray0, properties0, true);
+    defaultParser0.handleConcatenatedOptions(""$1#U{D5s`p"");
+    defaultParser0.handleConcatenatedOptions(""$1#U{D5s`p"");
+}","/**
+ * Breaks <code>token</code> into its constituent parts
+ * using the following algorithm.
+ *
+ * <ul>
+ *  <li>ignore the first character (""<b>-</b>"")</li>
+ *  <li>foreach remaining character check if an {@link Option}
+ *  exists with that id.</li>
+ *  <li>if an {@link Option} does exist then add that character
+ *  prepended with ""<b>-</b>"" to the list of processed tokens.</li>
+ *  <li>if the {@link Option} can have an argument value and there
+ *  are remaining characters in the token then add the remaining
+ *  characters as a token to the list of processed tokens.</li>
+ *  <li>if an {@link Option} does <b>NOT</b> exist <b>AND</b>
+ *  <code>stopAtNonOption</code> <b>IS</b> set then add the special token
+ *  ""<b>--</b>"" followed by the remaining characters and also
+ *  the remaining tokens directly to the processed tokens list.</li>
+ *  <li>if an {@link Option} does <b>NOT</b> exist <b>AND</b>
+ *  <code>stopAtNonOption</code> <b>IS NOT</b> set then add that
+ *  character prepended with ""<b>-</b>"".</li>
+ * </ul>
+ *
+ * @param token The current token to be <b>burst</b>
+ * at the first non-Option encountered.
+ * @throws ParseException if there are any problems encountered
+ *                        while parsing the command line token.
+ */"
+"public CommandLine parse(Options options, String[] arguments) throws ParseException {
+    return parse(options, arguments, null);
+}","public void test077() throws Throwable {
+    DefaultParser defaultParser0 = new DefaultParser();
+    Options options0 = new Options();
+    Options options1 = options0.addRequiredOption(""1"", ""1"", true, ""-"");
+    String[] stringArray0 = new String[9];
+    stringArray0[0] = ""--1"";
+    stringArray0[1] = ""-"";
+    stringArray0[2] = ""1"";
+    stringArray0[3] = ""1"";
+    stringArray0[4] = ""--1"";
+    stringArray0[5] = ""--1"";
+    try {
+        defaultParser0.parse(options1, stringArray0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Missing argument for option: 1
+        //
+        verifyException(""org.apache.commons.cli.DefaultParser"", e);
+    }
+}",""
+"public CommandLine parse(Options options, String[] arguments) throws ParseException {
+    return parse(options, arguments, null);
+}","public void test088() throws Throwable {
+    DefaultParser defaultParser0 = new DefaultParser();
+    Options options0 = new Options();
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = ""-"";
+    // Undeclared exception!
+    try {
+        defaultParser0.parse(options0, stringArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"public CommandLine parse(Options options, String[] arguments) throws ParseException {
+    return parse(options, arguments, null);
+}","public void test099() throws Throwable {
+    DefaultParser defaultParser0 = new DefaultParser();
+    Options options0 = new Options();
+    Options options1 = options0.addRequiredOption(""1"", ""-1"", true, ""1"");
+    String[] stringArray0 = new String[8];
+    stringArray0[0] = ""-1"";
+    stringArray0[1] = ""1"";
+    // Undeclared exception!
+    try {
+        defaultParser0.parse(options1, stringArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"public CommandLine parse(Options options, String[] arguments) throws ParseException {
+    return parse(options, arguments, null);
+}","public void test1010() throws Throwable {
+    DefaultParser defaultParser0 = new DefaultParser();
+    Options options0 = new Options();
+    Options options1 = options0.addRequiredOption(""1"", ""1"", true, ""--1"");
+    String[] stringArray0 = new String[4];
+    stringArray0[0] = ""--1"";
+    stringArray0[1] = ""---6="";
+    // Undeclared exception!
+    try {
+        defaultParser0.parse(options1, stringArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"public CommandLine parse(Options options, String[] arguments) throws ParseException {
+    return parse(options, arguments, null);
+}","public void test1111() throws Throwable {
+    Options options0 = new Options();
+    String[] stringArray0 = new String[3];
+    stringArray0[0] = ""-6="";
+    DefaultParser defaultParser0 = new DefaultParser();
+    try {
+        defaultParser0.parse(options0, stringArray0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Unrecognized option: -6=
+        //
+        verifyException(""org.apache.commons.cli.DefaultParser"", e);
+    }
+}",""
+"public CommandLine parse(Options options, String[] arguments) throws ParseException {
+    return parse(options, arguments, null);
+}","public void test1212() throws Throwable {
+    DefaultParser defaultParser0 = new DefaultParser();
+    Options options0 = new Options();
+    String[] stringArray0 = new String[1];
+    stringArray0[0] = ""-----G6="";
+    try {
+        defaultParser0.parse(options0, stringArray0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Unrecognized option: -----G6=
+        //
+        verifyException(""org.apache.commons.cli.DefaultParser"", e);
+    }
+}",""
+"public CommandLine parse(Options options, String[] arguments) throws ParseException {
+    return parse(options, arguments, null);
+}","public void test1313() throws Throwable {
+    DefaultParser defaultParser0 = new DefaultParser();
+    Options options0 = new Options();
+    String[] stringArray0 = new String[1];
+    stringArray0[0] = ""--1"";
+    try {
+        defaultParser0.parse(options0, stringArray0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Unrecognized option: --1
+        //
+        verifyException(""org.apache.commons.cli.DefaultParser"", e);
+    }
+}",""
+"public CommandLine parse(Options options, String[] arguments) throws ParseException {
+    return parse(options, arguments, null);
+}","public void test1414() throws Throwable {
+    DefaultParser defaultParser0 = new DefaultParser();
+    Options options0 = new Options();
+    String[] stringArray0 = new String[1];
+    stringArray0[0] = ""-\"""";
+    try {
+        defaultParser0.parse(options0, stringArray0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Unrecognized option: -\""
+        //
+        verifyException(""org.apache.commons.cli.DefaultParser"", e);
+    }
+}",""
+"public CommandLine parse(Options options, String[] arguments) throws ParseException {
+    return parse(options, arguments, null);
+}","public void test1515() throws Throwable {
+    Options options0 = new Options();
+    DefaultParser defaultParser0 = new DefaultParser();
+    String[] stringArray0 = new String[5];
+    stringArray0[0] = ""^u"";
+    stringArray0[1] = ""^u"";
+    stringArray0[2] = ""-^u8&#Q$Gsl:Mp:"";
+    try {
+        defaultParser0.parse(options0, stringArray0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Unrecognized option: -^u8&#Q$Gsl:Mp:
+        //
+        verifyException(""org.apache.commons.cli.DefaultParser"", e);
+    }
+}",""
+"public CommandLine parse(Options options, String[] arguments) throws ParseException {
+    return parse(options, arguments, null);
+}","public void test1616() throws Throwable {
+    Options options0 = new Options();
+    options0.addRequiredOption(""1"", ""^u"", true, ""^u"");
+    DefaultParser defaultParser0 = new DefaultParser();
+    String[] stringArray0 = new String[5];
+    stringArray0[0] = ""^u"";
+    stringArray0[1] = ""^u"";
+    stringArray0[2] = ""-^u8&#Q$Gsl:Mp:"";
+    // Undeclared exception!
+    try {
+        defaultParser0.parse(options0, stringArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"public CommandLine parse(Options options, String[] arguments) throws ParseException {
+    return parse(options, arguments, null);
+}","public void test1717() throws Throwable {
+    DefaultParser defaultParser0 = new DefaultParser();
+    Options options0 = new Options();
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = ""-B6A)w='9"";
+    try {
+        defaultParser0.parse(options0, stringArray0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Unrecognized option: -B6A)w='9
+        //
+        verifyException(""org.apache.commons.cli.DefaultParser"", e);
+    }
+}",""
+"protected void handleConcatenatedOptions(String token) throws ParseException {
+    for (int i = 1; i < token.length(); i++) {
+        String ch = String.valueOf(token.charAt(i));
+        if (options.hasOption(ch)) {
+            handleOption(options.getOption(ch));
+            if (currentOption != null && token.length() != i + 1) {
+                // add the trail as an argument of the option
+                currentOption.addValueForProcessing(token.substring(i + 1));
+                break;
+            }
+        } else {
+            handleUnknownToken(stopAtNonOption && i > 1 ? token.substring(i) : token);
+            break;
+        }
+    }
+}","public void test1818() throws Throwable {
+    DefaultParser defaultParser0 = new DefaultParser();
+    Options options0 = new Options();
+    Options options1 = options0.addOption(""1"", false, ""1"");
+    Properties properties0 = new Properties();
+    String[] stringArray0 = new String[1];
+    stringArray0[0] = ""$1HU/S{D5s`p"";
+    defaultParser0.parse(options1, stringArray0, properties0, false);
+    defaultParser0.handleConcatenatedOptions(""$1HU/S{D5s`p"");
+}","/**
+ * Breaks <code>token</code> into its constituent parts
+ * using the following algorithm.
+ *
+ * <ul>
+ *  <li>ignore the first character (""<b>-</b>"")</li>
+ *  <li>foreach remaining character check if an {@link Option}
+ *  exists with that id.</li>
+ *  <li>if an {@link Option} does exist then add that character
+ *  prepended with ""<b>-</b>"" to the list of processed tokens.</li>
+ *  <li>if the {@link Option} can have an argument value and there
+ *  are remaining characters in the token then add the remaining
+ *  characters as a token to the list of processed tokens.</li>
+ *  <li>if an {@link Option} does <b>NOT</b> exist <b>AND</b>
+ *  <code>stopAtNonOption</code> <b>IS</b> set then add the special token
+ *  ""<b>--</b>"" followed by the remaining characters and also
+ *  the remaining tokens directly to the processed tokens list.</li>
+ *  <li>if an {@link Option} does <b>NOT</b> exist <b>AND</b>
+ *  <code>stopAtNonOption</code> <b>IS NOT</b> set then add that
+ *  character prepended with ""<b>-</b>"".</li>
+ * </ul>
+ *
+ * @param token The current token to be <b>burst</b>
+ * at the first non-Option encountered.
+ * @throws ParseException if there are any problems encountered
+ *                        while parsing the command line token.
+ */"
+"protected void handleConcatenatedOptions(String token) throws ParseException {
+    for (int i = 1; i < token.length(); i++) {
+        String ch = String.valueOf(token.charAt(i));
+        if (options.hasOption(ch)) {
+            handleOption(options.getOption(ch));
+            if (currentOption != null && token.length() != i + 1) {
+                // add the trail as an argument of the option
+                currentOption.addValueForProcessing(token.substring(i + 1));
+                break;
+            }
+        } else {
+            handleUnknownToken(stopAtNonOption && i > 1 ? token.substring(i) : token);
+            break;
+        }
+    }
+}","public void test1919() throws Throwable {
+    DefaultParser defaultParser0 = new DefaultParser();
+    Options options0 = new Options();
+    OptionGroup optionGroup0 = new OptionGroup();
+    Option option0 = new Option(""1"", ""1"");
+    OptionGroup optionGroup1 = optionGroup0.addOption(option0);
+    Options options1 = options0.addOptionGroup(optionGroup1);
+    Properties properties0 = new Properties();
+    String[] stringArray0 = new String[17];
+    stringArray0[0] = ""1"";
+    defaultParser0.parse(options1, stringArray0, properties0, true);
+    defaultParser0.handleConcatenatedOptions(""$1HU/S{D5s`p"");
+}","/**
+ * Breaks <code>token</code> into its constituent parts
+ * using the following algorithm.
+ *
+ * <ul>
+ *  <li>ignore the first character (""<b>-</b>"")</li>
+ *  <li>foreach remaining character check if an {@link Option}
+ *  exists with that id.</li>
+ *  <li>if an {@link Option} does exist then add that character
+ *  prepended with ""<b>-</b>"" to the list of processed tokens.</li>
+ *  <li>if the {@link Option} can have an argument value and there
+ *  are remaining characters in the token then add the remaining
+ *  characters as a token to the list of processed tokens.</li>
+ *  <li>if an {@link Option} does <b>NOT</b> exist <b>AND</b>
+ *  <code>stopAtNonOption</code> <b>IS</b> set then add the special token
+ *  ""<b>--</b>"" followed by the remaining characters and also
+ *  the remaining tokens directly to the processed tokens list.</li>
+ *  <li>if an {@link Option} does <b>NOT</b> exist <b>AND</b>
+ *  <code>stopAtNonOption</code> <b>IS NOT</b> set then add that
+ *  character prepended with ""<b>-</b>"".</li>
+ * </ul>
+ *
+ * @param token The current token to be <b>burst</b>
+ * at the first non-Option encountered.
+ * @throws ParseException if there are any problems encountered
+ *                        while parsing the command line token.
+ */"
+"protected void handleConcatenatedOptions(String token) throws ParseException {
+    for (int i = 1; i < token.length(); i++) {
+        String ch = String.valueOf(token.charAt(i));
+        if (options.hasOption(ch)) {
+            handleOption(options.getOption(ch));
+            if (currentOption != null && token.length() != i + 1) {
+                // add the trail as an argument of the option
+                currentOption.addValueForProcessing(token.substring(i + 1));
+                break;
+            }
+        } else {
+            handleUnknownToken(stopAtNonOption && i > 1 ? token.substring(i) : token);
+            break;
+        }
+    }
+}","public void test2020() throws Throwable {
+    DefaultParser defaultParser0 = new DefaultParser();
+    Options options0 = new Options();
+    OptionGroup optionGroup0 = new OptionGroup();
+    Option option0 = new Option(""1"", ""1"");
+    OptionGroup optionGroup1 = optionGroup0.addOption(option0);
+    String[] stringArray0 = new String[0];
+    defaultParser0.parse(options0, stringArray0, (Properties) null, true);
+    optionGroup1.setRequired(true);
+    options0.addOptionGroup(optionGroup1);
+    defaultParser0.handleConcatenatedOptions(""$1HU/S{D5s`p"");
+}","/**
+ * Breaks <code>token</code> into its constituent parts
+ * using the following algorithm.
+ *
+ * <ul>
+ *  <li>ignore the first character (""<b>-</b>"")</li>
+ *  <li>foreach remaining character check if an {@link Option}
+ *  exists with that id.</li>
+ *  <li>if an {@link Option} does exist then add that character
+ *  prepended with ""<b>-</b>"" to the list of processed tokens.</li>
+ *  <li>if the {@link Option} can have an argument value and there
+ *  are remaining characters in the token then add the remaining
+ *  characters as a token to the list of processed tokens.</li>
+ *  <li>if an {@link Option} does <b>NOT</b> exist <b>AND</b>
+ *  <code>stopAtNonOption</code> <b>IS</b> set then add the special token
+ *  ""<b>--</b>"" followed by the remaining characters and also
+ *  the remaining tokens directly to the processed tokens list.</li>
+ *  <li>if an {@link Option} does <b>NOT</b> exist <b>AND</b>
+ *  <code>stopAtNonOption</code> <b>IS NOT</b> set then add that
+ *  character prepended with ""<b>-</b>"".</li>
+ * </ul>
+ *
+ * @param token The current token to be <b>burst</b>
+ * at the first non-Option encountered.
+ * @throws ParseException if there are any problems encountered
+ *                        while parsing the command line token.
+ */"
+"protected void handleConcatenatedOptions(String token) throws ParseException {
+    for (int i = 1; i < token.length(); i++) {
+        String ch = String.valueOf(token.charAt(i));
+        if (options.hasOption(ch)) {
+            handleOption(options.getOption(ch));
+            if (currentOption != null && token.length() != i + 1) {
+                // add the trail as an argument of the option
+                currentOption.addValueForProcessing(token.substring(i + 1));
+                break;
+            }
+        } else {
+            handleUnknownToken(stopAtNonOption && i > 1 ? token.substring(i) : token);
+            break;
+        }
+    }
+}","public void test2121() throws Throwable {
+    DefaultParser defaultParser0 = new DefaultParser();
+    Options options0 = new Options();
+    Options options1 = options0.addOption(""1"", true, ""1"");
+    String[] stringArray0 = new String[1];
+    stringArray0[0] = ""1"";
+    defaultParser0.parse(options1, stringArray0);
+    defaultParser0.handleConcatenatedOptions(""-1"");
+}","/**
+ * Breaks <code>token</code> into its constituent parts
+ * using the following algorithm.
+ *
+ * <ul>
+ *  <li>ignore the first character (""<b>-</b>"")</li>
+ *  <li>foreach remaining character check if an {@link Option}
+ *  exists with that id.</li>
+ *  <li>if an {@link Option} does exist then add that character
+ *  prepended with ""<b>-</b>"" to the list of processed tokens.</li>
+ *  <li>if the {@link Option} can have an argument value and there
+ *  are remaining characters in the token then add the remaining
+ *  characters as a token to the list of processed tokens.</li>
+ *  <li>if an {@link Option} does <b>NOT</b> exist <b>AND</b>
+ *  <code>stopAtNonOption</code> <b>IS</b> set then add the special token
+ *  ""<b>--</b>"" followed by the remaining characters and also
+ *  the remaining tokens directly to the processed tokens list.</li>
+ *  <li>if an {@link Option} does <b>NOT</b> exist <b>AND</b>
+ *  <code>stopAtNonOption</code> <b>IS NOT</b> set then add that
+ *  character prepended with ""<b>-</b>"".</li>
+ * </ul>
+ *
+ * @param token The current token to be <b>burst</b>
+ * at the first non-Option encountered.
+ * @throws ParseException if there are any problems encountered
+ *                        while parsing the command line token.
+ */"

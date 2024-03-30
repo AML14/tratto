@@ -1,0 +1,240 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    File file0 = MockFile.createTempFile(""\""Bbb]/YzOf96#"", """");
+    MockFileInputStream mockFileInputStream0 = new MockFileInputStream(file0);
+    DeflateParameters deflateParameters0 = new DeflateParameters();
+    DeflateCompressorInputStream deflateCompressorInputStream0 = new DeflateCompressorInputStream(mockFileInputStream0, deflateParameters0);
+    long long0 = deflateCompressorInputStream0.skip(0L);
+    assertEquals(0L, long0);
+}",0,"assertEquals(0, long0)"
+project,0,test011,"public void test011() throws Throwable {
+    byte[] byteArray0 = new byte[7];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    DeflateCompressorInputStream deflateCompressorInputStream0 = new DeflateCompressorInputStream(byteArrayInputStream0);
+    try {
+        deflateCompressorInputStream0.skip(2558L);
+        fail(""Expecting exception: ZipException"");
+    } catch (ZipException e) {
+        //
+        // unknown compression method
+        //
+        verifyException(""java.util.zip.InflaterInputStream"", e);
+    }
+}",0,
+project,0,test022,"public void test022() throws Throwable {
+    PipedInputStream pipedInputStream0 = new PipedInputStream();
+    BufferedInputStream bufferedInputStream0 = new BufferedInputStream(pipedInputStream0, 9);
+    DeflateCompressorInputStream deflateCompressorInputStream0 = new DeflateCompressorInputStream(bufferedInputStream0);
+    try {
+        deflateCompressorInputStream0.skip(9);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Pipe not connected
+        //
+        verifyException(""java.io.PipedInputStream"", e);
+    }
+}",0,
+project,0,test033,"public void test033() throws Throwable {
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    PipedInputStream pipedInputStream0 = new PipedInputStream(pipedOutputStream0, 3845);
+    PushbackInputStream pushbackInputStream0 = new PushbackInputStream(pipedInputStream0, 3845);
+    pipedOutputStream0.close();
+    DeflateParameters deflateParameters0 = new DeflateParameters();
+    DeflateCompressorInputStream deflateCompressorInputStream0 = new DeflateCompressorInputStream(pushbackInputStream0, deflateParameters0);
+    try {
+        deflateCompressorInputStream0.skip(1);
+        fail(""Expecting exception: EOFException"");
+    } catch (EOFException e) {
+        //
+        // Unexpected end of ZLIB input stream
+        //
+        verifyException(""java.util.zip.InflaterInputStream"", e);
+    }
+}",0,
+project,0,test044,"public void test044() throws Throwable {
+    PipedInputStream pipedInputStream0 = new PipedInputStream(9);
+    BufferedInputStream bufferedInputStream0 = new BufferedInputStream(pipedInputStream0);
+    DeflateCompressorInputStream deflateCompressorInputStream0 = new DeflateCompressorInputStream(bufferedInputStream0);
+    // Undeclared exception!
+    try {
+        deflateCompressorInputStream0.read((byte[]) null, 0, 9);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.zip.InflaterInputStream"", e);
+    }
+}",0,
+project,0,test055,"public void test055() throws Throwable {
+    Enumeration<InputStream> enumeration0 = (Enumeration<InputStream>) mock(Enumeration.class, new ViolatedAssumptionAnswer());
+    doReturn(false).when(enumeration0).hasMoreElements();
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(enumeration0);
+    DeflateCompressorInputStream deflateCompressorInputStream0 = new DeflateCompressorInputStream(sequenceInputStream0);
+    byte[] byteArray0 = new byte[5];
+    // Undeclared exception!
+    try {
+        deflateCompressorInputStream0.read(byteArray0, (-2247), (int) (byte) 0);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.zip.InflaterInputStream"", e);
+    }
+}",0,
+project,0,test066,"public void test066() throws Throwable {
+    PipedInputStream pipedInputStream0 = new PipedInputStream();
+    DeflateParameters deflateParameters0 = new DeflateParameters();
+    DeflateCompressorInputStream deflateCompressorInputStream0 = new DeflateCompressorInputStream(pipedInputStream0, deflateParameters0);
+    deflateCompressorInputStream0.close();
+    byte[] byteArray0 = new byte[4];
+    try {
+        deflateCompressorInputStream0.read(byteArray0, 0, 0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream closed
+        //
+        verifyException(""java.util.zip.InflaterInputStream"", e);
+    }
+}",0,
+project,0,test077,"public void test077() throws Throwable {
+    byte[] byteArray0 = new byte[8];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    DeflateCompressorInputStream deflateCompressorInputStream0 = new DeflateCompressorInputStream(byteArrayInputStream0);
+    try {
+        deflateCompressorInputStream0.read();
+        fail(""Expecting exception: ZipException"");
+    } catch (ZipException e) {
+        //
+        // unknown compression method
+        //
+        verifyException(""java.util.zip.InflaterInputStream"", e);
+    }
+}",0,
+project,0,test088,"public void test088() throws Throwable {
+    byte[] byteArray0 = new byte[9];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, (-261), 1);
+    BufferedInputStream bufferedInputStream0 = new BufferedInputStream(byteArrayInputStream0);
+    DeflateCompressorInputStream deflateCompressorInputStream0 = new DeflateCompressorInputStream(bufferedInputStream0);
+    // Undeclared exception!
+    try {
+        deflateCompressorInputStream0.read();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.io.ByteArrayInputStream"", e);
+    }
+}",0,
+project,0,test099,"public void test099() throws Throwable {
+    BufferedInputStream bufferedInputStream0 = new BufferedInputStream((InputStream) null);
+    DeflateCompressorInputStream deflateCompressorInputStream0 = new DeflateCompressorInputStream(bufferedInputStream0);
+    try {
+        deflateCompressorInputStream0.read();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream closed
+        //
+        verifyException(""java.io.BufferedInputStream"", e);
+    }
+}",0,
+project,0,test1010,"public void test1010() throws Throwable {
+    File file0 = MockFile.createTempFile(""\""Bbb]/YzOf96#"", """");
+    MockFileInputStream mockFileInputStream0 = new MockFileInputStream(file0);
+    DeflateParameters deflateParameters0 = new DeflateParameters();
+    DeflateCompressorInputStream deflateCompressorInputStream0 = new DeflateCompressorInputStream(mockFileInputStream0, deflateParameters0);
+    try {
+        deflateCompressorInputStream0.read();
+        fail(""Expecting exception: EOFException"");
+    } catch (EOFException e) {
+        //
+        // Unexpected end of ZLIB input stream
+        //
+        verifyException(""java.util.zip.InflaterInputStream"", e);
+    }
+}",0,
+project,0,test1111,"public void test1111() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    DeflateParameters deflateParameters0 = new DeflateParameters();
+    DeflateCompressorInputStream deflateCompressorInputStream0 = new DeflateCompressorInputStream(byteArrayInputStream0, deflateParameters0);
+    deflateCompressorInputStream0.close();
+    try {
+        deflateCompressorInputStream0.available();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream closed
+        //
+        verifyException(""java.util.zip.InflaterInputStream"", e);
+    }
+}",0,
+project,0,test1212,"public void test1212() throws Throwable {
+    DeflateCompressorInputStream deflateCompressorInputStream0 = null;
+    try {
+        deflateCompressorInputStream0 = new DeflateCompressorInputStream((InputStream) null, (DeflateParameters) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.compressors.deflate.DeflateCompressorInputStream"", e);
+    }
+}",0,
+project,0,test1313,"public void test1313() throws Throwable {
+    DeflateCompressorInputStream deflateCompressorInputStream0 = null;
+    try {
+        deflateCompressorInputStream0 = new DeflateCompressorInputStream((InputStream) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.zip.InflaterInputStream"", e);
+    }
+}",0,
+project,0,test1414,"public void test1414() throws Throwable {
+    PipedInputStream pipedInputStream0 = new PipedInputStream();
+    DeflateParameters deflateParameters0 = new DeflateParameters();
+    deflateParameters0.setWithZlibHeader(false);
+    DeflateCompressorInputStream deflateCompressorInputStream0 = new DeflateCompressorInputStream(pipedInputStream0, deflateParameters0);
+    assertEquals(0L, deflateCompressorInputStream0.getBytesRead());
+}",0,"assertEquals(0, deflateCompressorInputStream0.getBytesRead())"
+project,0,test1515,"public void test1515() throws Throwable {
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    PipedInputStream pipedInputStream0 = new PipedInputStream(pipedOutputStream0, 2212);
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(pipedInputStream0, pipedInputStream0);
+    DeflateParameters deflateParameters0 = new DeflateParameters();
+    DeflateCompressorInputStream deflateCompressorInputStream0 = new DeflateCompressorInputStream(sequenceInputStream0, deflateParameters0);
+    int int0 = deflateCompressorInputStream0.available();
+    assertEquals(1, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test1616,"public void test1616() throws Throwable {
+    PipedInputStream pipedInputStream0 = new PipedInputStream();
+    DeflateParameters deflateParameters0 = new DeflateParameters();
+    DeflateCompressorInputStream deflateCompressorInputStream0 = new DeflateCompressorInputStream(pipedInputStream0, deflateParameters0);
+    byte[] byteArray0 = new byte[4];
+    int int0 = deflateCompressorInputStream0.read(byteArray0, 0, 0);
+    assertEquals(0, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test1717,"public void test1717() throws Throwable {
+    Enumeration<InputStream> enumeration0 = (Enumeration<InputStream>) mock(Enumeration.class, new ViolatedAssumptionAnswer());
+    doReturn(false).when(enumeration0).hasMoreElements();
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(enumeration0);
+    DeflateCompressorInputStream deflateCompressorInputStream0 = new DeflateCompressorInputStream(sequenceInputStream0);
+    // Undeclared exception!
+    try {
+        deflateCompressorInputStream0.skip((-997L));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // negative skip length
+        //
+        verifyException(""java.util.zip.InflaterInputStream"", e);
+    }
+}",0,

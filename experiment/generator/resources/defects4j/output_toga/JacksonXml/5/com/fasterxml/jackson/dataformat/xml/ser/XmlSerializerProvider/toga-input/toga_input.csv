@@ -1,0 +1,692 @@
+focal_method,test_prefix,docstring
+"protected void _startRootArray(ToXmlGenerator xgen, QName rootName) throws IOException {
+    xgen.writeStartObject();
+    // Could repeat root name, but what's the point? How to customize?
+    xgen.writeFieldName(""item"");
+}","public void test000() throws Throwable {
+    XmlSerializerProvider xmlSerializerProvider0 = new XmlSerializerProvider((XmlRootNameLookup) null);
+    QName qName0 = new QName("", new = "", ""x#z11#'7p1&DEi ?[U"", "", new = "");
+    // Undeclared exception!
+    try {
+        xmlSerializerProvider0._startRootArray((ToXmlGenerator) null, qName0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.dataformat.xml.ser.XmlSerializerProvider"", e);
+    }
+}",""
+"/*
+    /**********************************************************************
+    /* Overridden methods
+    /**********************************************************************
+     */
+@Override
+public DefaultSerializerProvider copy() {
+    return new XmlSerializerProvider(this);
+}","public void test011() throws Throwable {
+    XmlRootNameLookup xmlRootNameLookup0 = new XmlRootNameLookup();
+    XmlSerializerProvider xmlSerializerProvider0 = new XmlSerializerProvider(xmlRootNameLookup0);
+    DefaultSerializerProvider defaultSerializerProvider0 = xmlSerializerProvider0.copy();
+    assertNotSame(defaultSerializerProvider0, xmlSerializerProvider0);
+}",""
+"@SuppressWarnings(""resource"")
+@Override
+public void serializeValue(JsonGenerator gen, Object value) throws IOException {
+    if (value == null) {
+        _serializeXmlNull(gen);
+        return;
+    }
+    final Class<?> cls = value.getClass();
+    final boolean asArray;
+    final ToXmlGenerator xgen = _asXmlGenerator(gen);
+    if (xgen == null) {
+        // called by convertValue()
+        asArray = false;
+    } else {
+        QName rootName = _rootNameFromConfig();
+        if (rootName == null) {
+            rootName = _rootNameLookup.findRootName(cls, _config);
+        }
+        _initWithRootName(xgen, rootName);
+        asArray = TypeUtil.isIndexedType(cls);
+        if (asArray) {
+            _startRootArray(xgen, rootName);
+        }
+    }
+    // From super-class implementation
+    final JsonSerializer<Object> ser = findTypedValueSerializer(cls, true, null);
+    try {
+        ser.serialize(value, gen, this);
+    } catch (Exception e) {
+        // but wrap RuntimeExceptions, to get path information
+        throw _wrapAsIOE(gen, e);
+    }
+    // end of super-class implementation
+    if (asArray) {
+        gen.writeEndObject();
+    }
+}","public void test022() throws Throwable {
+    XmlRootNameLookup xmlRootNameLookup0 = new XmlRootNameLookup();
+    XmlSerializerProvider xmlSerializerProvider0 = new XmlSerializerProvider(xmlRootNameLookup0);
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    ConfigOverrides configOverrides0 = new ConfigOverrides();
+    SerializationConfig serializationConfig0 = new SerializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0, configOverrides0);
+    BeanSerializerFactory beanSerializerFactory0 = BeanSerializerFactory.instance;
+    XmlSerializerProvider xmlSerializerProvider1 = new XmlSerializerProvider(xmlSerializerProvider0, serializationConfig0, beanSerializerFactory0);
+    JsonFactory jsonFactory0 = new JsonFactory();
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    SimpleNsStreamWriter simpleNsStreamWriter0 = new SimpleNsStreamWriter((XmlWriter) null, ""JSON"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator((IOContext) null, (-3443), (-3443), (ObjectCodec) null, simpleNsStreamWriter0);
+    // Undeclared exception!
+    try {
+        xmlSerializerProvider1.serializeValue((JsonGenerator) toXmlGenerator0, (Object) jsonFactory0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.cfg.MapperConfig"", e);
+    }
+}",""
+"@Override
+public DefaultSerializerProvider createInstance(SerializationConfig config, SerializerFactory jsf) {
+    return new XmlSerializerProvider(this, config, jsf);
+}","public void test033() throws Throwable {
+    XmlRootNameLookup xmlRootNameLookup0 = new XmlRootNameLookup();
+    XmlSerializerProvider xmlSerializerProvider0 = new XmlSerializerProvider(xmlRootNameLookup0);
+    BeanSerializerFactory beanSerializerFactory0 = BeanSerializerFactory.instance;
+    // Undeclared exception!
+    try {
+        xmlSerializerProvider0.createInstance((SerializationConfig) null, beanSerializerFactory0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.SerializerProvider"", e);
+    }
+}",""
+"@SuppressWarnings(""resource"")
+@Override
+public void serializeValue(JsonGenerator gen, Object value) throws IOException {
+    if (value == null) {
+        _serializeXmlNull(gen);
+        return;
+    }
+    final Class<?> cls = value.getClass();
+    final boolean asArray;
+    final ToXmlGenerator xgen = _asXmlGenerator(gen);
+    if (xgen == null) {
+        // called by convertValue()
+        asArray = false;
+    } else {
+        QName rootName = _rootNameFromConfig();
+        if (rootName == null) {
+            rootName = _rootNameLookup.findRootName(cls, _config);
+        }
+        _initWithRootName(xgen, rootName);
+        asArray = TypeUtil.isIndexedType(cls);
+        if (asArray) {
+            _startRootArray(xgen, rootName);
+        }
+    }
+    // From super-class implementation
+    final JsonSerializer<Object> ser = findTypedValueSerializer(cls, true, null);
+    try {
+        ser.serialize(value, gen, this);
+    } catch (Exception e) {
+        // but wrap RuntimeExceptions, to get path information
+        throw _wrapAsIOE(gen, e);
+    }
+    // end of super-class implementation
+    if (asArray) {
+        gen.writeEndObject();
+    }
+}","public void test044() throws Throwable {
+    XmlRootNameLookup xmlRootNameLookup0 = new XmlRootNameLookup();
+    XmlSerializerProvider xmlSerializerProvider0 = new XmlSerializerProvider(xmlRootNameLookup0);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    SimpleNsStreamWriter simpleNsStreamWriter0 = new SimpleNsStreamWriter((XmlWriter) null, ""[no message for "", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator((IOContext) null, 744, 744, objectMapper0, simpleNsStreamWriter0);
+    // Undeclared exception!
+    try {
+        xmlSerializerProvider0.serializeValue((JsonGenerator) toXmlGenerator0, (Object) ""[no message for "");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.dataformat.xml.ser.XmlSerializerProvider"", e);
+    }
+}",""
+"@SuppressWarnings(""resource"")
+@Override
+public void serializeValue(JsonGenerator gen, Object value) throws IOException {
+    if (value == null) {
+        _serializeXmlNull(gen);
+        return;
+    }
+    final Class<?> cls = value.getClass();
+    final boolean asArray;
+    final ToXmlGenerator xgen = _asXmlGenerator(gen);
+    if (xgen == null) {
+        // called by convertValue()
+        asArray = false;
+    } else {
+        QName rootName = _rootNameFromConfig();
+        if (rootName == null) {
+            rootName = _rootNameLookup.findRootName(cls, _config);
+        }
+        _initWithRootName(xgen, rootName);
+        asArray = TypeUtil.isIndexedType(cls);
+        if (asArray) {
+            _startRootArray(xgen, rootName);
+        }
+    }
+    // From super-class implementation
+    final JsonSerializer<Object> ser = findTypedValueSerializer(cls, true, null);
+    try {
+        ser.serialize(value, gen, this);
+    } catch (Exception e) {
+        // but wrap RuntimeExceptions, to get path information
+        throw _wrapAsIOE(gen, e);
+    }
+    // end of super-class implementation
+    if (asArray) {
+        gen.writeEndObject();
+    }
+}","public void test055() throws Throwable {
+    XmlSerializerProvider xmlSerializerProvider0 = new XmlSerializerProvider((XmlRootNameLookup) null);
+    // Undeclared exception!
+    try {
+        xmlSerializerProvider0.serializeValue((JsonGenerator) null, (Object) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.dataformat.xml.ser.XmlSerializerProvider"", e);
+    }
+}",""
+"@SuppressWarnings(""resource"")
+@Override
+public void serializeValue(JsonGenerator gen, Object value) throws IOException {
+    if (value == null) {
+        _serializeXmlNull(gen);
+        return;
+    }
+    final Class<?> cls = value.getClass();
+    final boolean asArray;
+    final ToXmlGenerator xgen = _asXmlGenerator(gen);
+    if (xgen == null) {
+        // called by convertValue()
+        asArray = false;
+    } else {
+        QName rootName = _rootNameFromConfig();
+        if (rootName == null) {
+            rootName = _rootNameLookup.findRootName(cls, _config);
+        }
+        _initWithRootName(xgen, rootName);
+        asArray = TypeUtil.isIndexedType(cls);
+        if (asArray) {
+            _startRootArray(xgen, rootName);
+        }
+    }
+    // From super-class implementation
+    final JsonSerializer<Object> ser = findTypedValueSerializer(cls, true, null);
+    try {
+        ser.serialize(value, gen, this);
+    } catch (Exception e) {
+        // but wrap RuntimeExceptions, to get path information
+        throw _wrapAsIOE(gen, e);
+    }
+    // end of super-class implementation
+    if (asArray) {
+        gen.writeEndObject();
+    }
+}","public void test066() throws Throwable {
+    XmlRootNameLookup xmlRootNameLookup0 = new XmlRootNameLookup();
+    XmlSerializerProvider xmlSerializerProvider0 = new XmlSerializerProvider(xmlRootNameLookup0);
+    JsonFactory jsonFactory0 = new JsonFactory();
+    JsonParser jsonParser0 = jsonFactory0.createParser(""JSON"");
+    TokenBuffer tokenBuffer0 = new TokenBuffer(jsonParser0);
+    // Undeclared exception!
+    try {
+        xmlSerializerProvider0.serializeValue((JsonGenerator) tokenBuffer0, (Object) jsonFactory0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.SerializerProvider"", e);
+    }
+}",""
+"// @since 2.1
+@SuppressWarnings(""resource"")
+@Override
+public void serializeValue(JsonGenerator gen, Object value, JavaType rootType, JsonSerializer<Object> ser) throws IOException {
+    if (value == null) {
+        _serializeXmlNull(gen);
+        return;
+    }
+    final boolean asArray;
+    final ToXmlGenerator xgen = _asXmlGenerator(gen);
+    if (xgen == null) {
+        // called by convertValue()
+        asArray = false;
+    } else {
+        QName rootName = _rootNameFromConfig();
+        if (rootName == null) {
+            rootName = _rootNameLookup.findRootName(rootType, _config);
+        }
+        _initWithRootName(xgen, rootName);
+        asArray = TypeUtil.isIndexedType(rootType);
+        if (asArray) {
+            _startRootArray(xgen, rootName);
+        }
+    }
+    if (ser == null) {
+        ser = findTypedValueSerializer(rootType, true, null);
+    }
+    // From super-class implementation
+    try {
+        ser.serialize(value, gen, this);
+    } catch (Exception e) {
+        // but others do need to be, to get path etc
+        throw _wrapAsIOE(gen, e);
+    }
+    // end of super-class implementation
+    if (asArray) {
+        gen.writeEndObject();
+    }
+}","public void test077() throws Throwable {
+    XmlRootNameLookup xmlRootNameLookup0 = new XmlRootNameLookup();
+    XmlSerializerProvider xmlSerializerProvider0 = new XmlSerializerProvider(xmlRootNameLookup0);
+    // Undeclared exception!
+    try {
+        xmlSerializerProvider0.serializeValue((JsonGenerator) null, (Object) null, (JavaType) null, xmlSerializerProvider0.DEFAULT_NULL_KEY_SERIALIZER);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.dataformat.xml.ser.XmlSerializerProvider"", e);
+    }
+}",""
+"// @since 2.1
+@SuppressWarnings(""resource"")
+@Override
+public void serializeValue(JsonGenerator gen, Object value, JavaType rootType, JsonSerializer<Object> ser) throws IOException {
+    if (value == null) {
+        _serializeXmlNull(gen);
+        return;
+    }
+    final boolean asArray;
+    final ToXmlGenerator xgen = _asXmlGenerator(gen);
+    if (xgen == null) {
+        // called by convertValue()
+        asArray = false;
+    } else {
+        QName rootName = _rootNameFromConfig();
+        if (rootName == null) {
+            rootName = _rootNameLookup.findRootName(rootType, _config);
+        }
+        _initWithRootName(xgen, rootName);
+        asArray = TypeUtil.isIndexedType(rootType);
+        if (asArray) {
+            _startRootArray(xgen, rootName);
+        }
+    }
+    if (ser == null) {
+        ser = findTypedValueSerializer(rootType, true, null);
+    }
+    // From super-class implementation
+    try {
+        ser.serialize(value, gen, this);
+    } catch (Exception e) {
+        // but others do need to be, to get path etc
+        throw _wrapAsIOE(gen, e);
+    }
+    // end of super-class implementation
+    if (asArray) {
+        gen.writeEndObject();
+    }
+}","public void test099() throws Throwable {
+    XmlRootNameLookup xmlRootNameLookup0 = new XmlRootNameLookup();
+    XmlSerializerProvider xmlSerializerProvider0 = new XmlSerializerProvider(xmlRootNameLookup0);
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    ConfigOverrides configOverrides0 = new ConfigOverrides();
+    SerializationConfig serializationConfig0 = new SerializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0, configOverrides0);
+    BeanSerializerFactory beanSerializerFactory0 = BeanSerializerFactory.instance;
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    SimpleNsStreamWriter simpleNsStreamWriter0 = new SimpleNsStreamWriter((XmlWriter) null, ""JSON"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator((IOContext) null, (-3443), (-3443), (ObjectCodec) null, simpleNsStreamWriter0);
+    XmlSerializerProvider xmlSerializerProvider1 = new XmlSerializerProvider(xmlSerializerProvider0, serializationConfig0, beanSerializerFactory0);
+    // Undeclared exception!
+    try {
+        xmlSerializerProvider1.serializeValue((JsonGenerator) toXmlGenerator0, (Object) rootNameLookup0, (JavaType) null, xmlSerializerProvider0.DEFAULT_NULL_KEY_SERIALIZER);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.dataformat.xml.util.XmlRootNameLookup"", e);
+    }
+}",""
+"// @since 2.1
+@SuppressWarnings(""resource"")
+@Override
+public void serializeValue(JsonGenerator gen, Object value, JavaType rootType, JsonSerializer<Object> ser) throws IOException {
+    if (value == null) {
+        _serializeXmlNull(gen);
+        return;
+    }
+    final boolean asArray;
+    final ToXmlGenerator xgen = _asXmlGenerator(gen);
+    if (xgen == null) {
+        // called by convertValue()
+        asArray = false;
+    } else {
+        QName rootName = _rootNameFromConfig();
+        if (rootName == null) {
+            rootName = _rootNameLookup.findRootName(rootType, _config);
+        }
+        _initWithRootName(xgen, rootName);
+        asArray = TypeUtil.isIndexedType(rootType);
+        if (asArray) {
+            _startRootArray(xgen, rootName);
+        }
+    }
+    if (ser == null) {
+        ser = findTypedValueSerializer(rootType, true, null);
+    }
+    // From super-class implementation
+    try {
+        ser.serialize(value, gen, this);
+    } catch (Exception e) {
+        // but others do need to be, to get path etc
+        throw _wrapAsIOE(gen, e);
+    }
+    // end of super-class implementation
+    if (asArray) {
+        gen.writeEndObject();
+    }
+}","public void test1010() throws Throwable {
+    XmlRootNameLookup xmlRootNameLookup0 = new XmlRootNameLookup();
+    JsonFactory jsonFactory0 = new JsonFactory();
+    JsonParser jsonParser0 = jsonFactory0.createParser(""JSON"");
+    TokenBuffer tokenBuffer0 = new TokenBuffer(jsonParser0);
+    Class<JavaType> class0 = JavaType.class;
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, (TypeBindings) null);
+    XmlSerializerProvider xmlSerializerProvider0 = new XmlSerializerProvider(xmlRootNameLookup0);
+    // Undeclared exception!
+    try {
+        xmlSerializerProvider0.serializeValue((JsonGenerator) tokenBuffer0, (Object) xmlRootNameLookup0, (JavaType) resolvedRecursiveType0, (JsonSerializer<Object>) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.SerializerProvider"", e);
+    }
+}",""
+"protected void _serializeXmlNull(JsonGenerator jgen) throws IOException {
+    // 14-Nov-2016, tatu: As per [dataformat-xml#213], we may have explicitly
+    //    configured root name...
+    QName rootName = _rootNameFromConfig();
+    if (rootName == null) {
+        rootName = ROOT_NAME_FOR_NULL;
+    }
+    if (jgen instanceof ToXmlGenerator) {
+        _initWithRootName((ToXmlGenerator) jgen, rootName);
+    }
+    super.serializeValue(jgen, null);
+}","public void test1111() throws Throwable {
+    XmlRootNameLookup xmlRootNameLookup0 = new XmlRootNameLookup();
+    XmlSerializerProvider xmlSerializerProvider0 = new XmlSerializerProvider(xmlRootNameLookup0);
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    ConfigOverrides configOverrides0 = new ConfigOverrides();
+    SerializationConfig serializationConfig0 = new SerializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0, configOverrides0);
+    BeanSerializerFactory beanSerializerFactory0 = BeanSerializerFactory.instance;
+    XmlSerializerProvider xmlSerializerProvider1 = new XmlSerializerProvider(xmlSerializerProvider0, serializationConfig0, beanSerializerFactory0);
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    SimpleNsStreamWriter simpleNsStreamWriter0 = new SimpleNsStreamWriter((XmlWriter) null, ""JSON"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator((IOContext) null, (-3443), (-3443), (ObjectCodec) null, simpleNsStreamWriter0);
+    // Undeclared exception!
+    try {
+        xmlSerializerProvider1._serializeXmlNull(toXmlGenerator0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.ctc.wstx.sw.BaseStreamWriter"", e);
+    }
+}",""
+"protected void _serializeXmlNull(JsonGenerator jgen) throws IOException {
+    // 14-Nov-2016, tatu: As per [dataformat-xml#213], we may have explicitly
+    //    configured root name...
+    QName rootName = _rootNameFromConfig();
+    if (rootName == null) {
+        rootName = ROOT_NAME_FOR_NULL;
+    }
+    if (jgen instanceof ToXmlGenerator) {
+        _initWithRootName((ToXmlGenerator) jgen, rootName);
+    }
+    super.serializeValue(jgen, null);
+}","public void test1212() throws Throwable {
+    XmlRootNameLookup xmlRootNameLookup0 = new XmlRootNameLookup();
+    XmlSerializerProvider xmlSerializerProvider0 = new XmlSerializerProvider(xmlRootNameLookup0);
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    ConfigOverrides configOverrides0 = new ConfigOverrides();
+    SerializationConfig serializationConfig0 = new SerializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0, configOverrides0);
+    BeanSerializerFactory beanSerializerFactory0 = BeanSerializerFactory.instance;
+    XmlSerializerProvider xmlSerializerProvider1 = new XmlSerializerProvider(xmlSerializerProvider0, serializationConfig0, beanSerializerFactory0);
+    try {
+        xmlSerializerProvider1._serializeXmlNull((JsonGenerator) null);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // [no message for java.lang.NullPointerException]
+        //
+        verifyException(""com.fasterxml.jackson.databind.ser.DefaultSerializerProvider"", e);
+    }
+}",""
+"protected void _initWithRootName(ToXmlGenerator xgen, QName rootName) throws IOException {
+    /* 28-Nov-2012, tatu: We should only initialize the root
+         *  name if no name has been set, as per [dataformat-xml#42],
+         *  to allow for custom serializers to work.
+         */
+    if (!xgen.setNextNameIfMissing(rootName)) {
+        // however, if we are root, we... insist
+        if (xgen.inRoot()) {
+            xgen.setNextName(rootName);
+        }
+    }
+    xgen.initGenerator();
+    String ns = rootName.getNamespaceURI();
+    /* [dataformat-xml#26] If we just try writing root element with namespace,
+         * we will get an explicit prefix. But we'd rather use the default
+         * namespace, so let's try to force that.
+         */
+    if (ns != null && ns.length() > 0) {
+        try {
+            xgen.getStaxWriter().setDefaultNamespace(ns);
+        } catch (XMLStreamException e) {
+            StaxUtil.throwAsGenerationException(e, xgen);
+        }
+    }
+}","public void test1414() throws Throwable {
+    XmlRootNameLookup xmlRootNameLookup0 = new XmlRootNameLookup();
+    XmlSerializerProvider xmlSerializerProvider0 = new XmlSerializerProvider(xmlRootNameLookup0);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    SimpleNsStreamWriter simpleNsStreamWriter0 = new SimpleNsStreamWriter((XmlWriter) null, ""i{em"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator((IOContext) null, (-216), (-216), objectMapper0, simpleNsStreamWriter0);
+    QName qName0 = XmlSerializerProvider.ROOT_NAME_FOR_NULL;
+    toXmlGenerator0.writeStartArray();
+    xmlSerializerProvider0._initWithRootName(toXmlGenerator0, qName0);
+    xmlSerializerProvider0._initWithRootName(toXmlGenerator0, qName0);
+    assertEquals(57343, GeneratorBase.SURR2_LAST);
+}",""
+"@Override
+public boolean canWriteFormattedNumbers() {
+    return true;
+}","public void test1515() throws Throwable {
+    XmlRootNameLookup xmlRootNameLookup0 = new XmlRootNameLookup();
+    XmlSerializerProvider xmlSerializerProvider0 = new XmlSerializerProvider(xmlRootNameLookup0);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    SimpleNsStreamWriter simpleNsStreamWriter0 = new SimpleNsStreamWriter((XmlWriter) null, ""#HTdD_f*@I=9vDb9:"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator((IOContext) null, (-216), (-216), objectMapper0, simpleNsStreamWriter0);
+    QName qName0 = new QName(""#HTdD_f*@I=9vDb9:"", ""#HTdD_f*@I=9vDb9:"");
+    xmlSerializerProvider0._initWithRootName(toXmlGenerator0, qName0);
+    assertTrue(toXmlGenerator0.canWriteFormattedNumbers());
+}",""
+"@SuppressWarnings(""resource"")
+@Override
+public void serializeValue(JsonGenerator gen, Object value) throws IOException {
+    if (value == null) {
+        _serializeXmlNull(gen);
+        return;
+    }
+    final Class<?> cls = value.getClass();
+    final boolean asArray;
+    final ToXmlGenerator xgen = _asXmlGenerator(gen);
+    if (xgen == null) {
+        // called by convertValue()
+        asArray = false;
+    } else {
+        QName rootName = _rootNameFromConfig();
+        if (rootName == null) {
+            rootName = _rootNameLookup.findRootName(cls, _config);
+        }
+        _initWithRootName(xgen, rootName);
+        asArray = TypeUtil.isIndexedType(cls);
+        if (asArray) {
+            _startRootArray(xgen, rootName);
+        }
+    }
+    // From super-class implementation
+    final JsonSerializer<Object> ser = findTypedValueSerializer(cls, true, null);
+    try {
+        ser.serialize(value, gen, this);
+    } catch (Exception e) {
+        // but wrap RuntimeExceptions, to get path information
+        throw _wrapAsIOE(gen, e);
+    }
+    // end of super-class implementation
+    if (asArray) {
+        gen.writeEndObject();
+    }
+}","public void test1616() throws Throwable {
+    XmlRootNameLookup xmlRootNameLookup0 = new XmlRootNameLookup();
+    XmlSerializerProvider xmlSerializerProvider0 = new XmlSerializerProvider(xmlRootNameLookup0);
+    // Undeclared exception!
+    try {
+        xmlSerializerProvider0.serializeValue((JsonGenerator) null, (Object) xmlRootNameLookup0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.dataformat.xml.ser.XmlSerializerProvider"", e);
+    }
+}",""
+"protected IOException _wrapAsIOE(JsonGenerator g, Exception e) {
+    if (e instanceof IOException) {
+        return (IOException) e;
+    }
+    String msg = e.getMessage();
+    if (msg == null) {
+        msg = ""[no message for "" + e.getClass().getName() + ""]"";
+    }
+    return new JsonMappingException(g, msg, e);
+}","public void test1717() throws Throwable {
+    XmlSerializerProvider xmlSerializerProvider0 = new XmlSerializerProvider((XmlRootNameLookup) null);
+    SQLRecoverableException sQLRecoverableException0 = new SQLRecoverableException();
+    IOException iOException0 = xmlSerializerProvider0._wrapAsIOE((JsonGenerator) null, sQLRecoverableException0);
+    assertNotNull(iOException0);
+}",""
+"// @since 2.1
+@SuppressWarnings(""resource"")
+@Override
+public void serializeValue(JsonGenerator gen, Object value, JavaType rootType, JsonSerializer<Object> ser) throws IOException {
+    if (value == null) {
+        _serializeXmlNull(gen);
+        return;
+    }
+    final boolean asArray;
+    final ToXmlGenerator xgen = _asXmlGenerator(gen);
+    if (xgen == null) {
+        // called by convertValue()
+        asArray = false;
+    } else {
+        QName rootName = _rootNameFromConfig();
+        if (rootName == null) {
+            rootName = _rootNameLookup.findRootName(rootType, _config);
+        }
+        _initWithRootName(xgen, rootName);
+        asArray = TypeUtil.isIndexedType(rootType);
+        if (asArray) {
+            _startRootArray(xgen, rootName);
+        }
+    }
+    if (ser == null) {
+        ser = findTypedValueSerializer(rootType, true, null);
+    }
+    // From super-class implementation
+    try {
+        ser.serialize(value, gen, this);
+    } catch (Exception e) {
+        // but others do need to be, to get path etc
+        throw _wrapAsIOE(gen, e);
+    }
+    // end of super-class implementation
+    if (asArray) {
+        gen.writeEndObject();
+    }
+}","public void test1818() throws Throwable {
+    XmlRootNameLookup xmlRootNameLookup0 = new XmlRootNameLookup();
+    XmlSerializerProvider xmlSerializerProvider0 = new XmlSerializerProvider(xmlRootNameLookup0);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    NullNode nullNode0 = NullNode.getInstance();
+    JsonParser jsonParser0 = objectMapper0.treeAsTokens(nullNode0);
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    TokenBuffer tokenBuffer0 = new TokenBuffer(jsonParser0, defaultDeserializationContext_Impl0);
+    try {
+        xmlSerializerProvider0.serializeValue((JsonGenerator) tokenBuffer0, (Object) xmlRootNameLookup0, (JavaType) null, xmlSerializerProvider0.DEFAULT_NULL_KEY_SERIALIZER);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Null key for a Map not allowed in JSON (use a converting NullKeySerializer?)
+        //
+        verifyException(""com.fasterxml.jackson.databind.JsonMappingException"", e);
+    }
+}",""
+"protected IOException _wrapAsIOE(JsonGenerator g, Exception e) {
+    if (e instanceof IOException) {
+        return (IOException) e;
+    }
+    String msg = e.getMessage();
+    if (msg == null) {
+        msg = ""[no message for "" + e.getClass().getName() + ""]"";
+    }
+    return new JsonMappingException(g, msg, e);
+}","public void test1919() throws Throwable {
+    XmlSerializerProvider xmlSerializerProvider0 = new XmlSerializerProvider((XmlRootNameLookup) null);
+    SQLDataException sQLDataException0 = new SQLDataException(""S[%OJ+1sw"", ""S[%OJ+1sw"");
+    SQLRecoverableException sQLRecoverableException0 = new SQLRecoverableException(""S[%OJ+1sw"", sQLDataException0);
+    SQLTransientConnectionException sQLTransientConnectionException0 = new SQLTransientConnectionException(""S[%OJ+1sw"", ""S[%OJ+1sw"", (-642), sQLRecoverableException0);
+    SQLNonTransientConnectionException sQLNonTransientConnectionException0 = new SQLNonTransientConnectionException(""S[%OJ+1sw"", ""S[%OJ+1sw"", (-642), sQLTransientConnectionException0);
+    IOException iOException0 = xmlSerializerProvider0._wrapAsIOE((JsonGenerator) null, sQLNonTransientConnectionException0);
+    assertNotNull(iOException0);
+}",""

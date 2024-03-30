@@ -1,0 +1,598 @@
+focal_method,test_prefix,docstring
+"@SuppressWarnings(""unchecked"")
+public <T extends ObjectReader> T reader(Class<?> type) {
+    return (T) _newReader(getDeserializationConfig(), _typeFactory.constructType(type), null, null, _injectableValues);
+}","public void test000() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    Class<Module> class0 = Module.class;
+    ObjectReader objectReader0 = objectMapper0.reader((Class<?>) class0);
+    assertNotNull(objectReader0);
+}","/**
+ * Factory method for constructing {@link ObjectReader} that will
+ * read or update instances of specified type
+ */"
+"// since 2.4
+@Deprecated
+@Override
+public ReadableObjectId findObjectId(Object id, ObjectIdGenerator<?> gen) {
+    return findObjectId(id, gen, new SimpleObjectIdResolver());
+}","public void test033() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    // Undeclared exception!
+    try {
+        defaultDeserializationContext_Impl0.findObjectId((Object) null, (ObjectIdGenerator<?>) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.DefaultDeserializationContext"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Abstract methods impls, Object Id
+    /**********************************************************
+     */
+@Override
+public ReadableObjectId findObjectId(Object id, ObjectIdGenerator<?> gen, ObjectIdResolver resolverType) {
+    /* 02-Apr-2015, tatu: As per [databind#742] should allow 'null', similar to how
+         *   missing id already works.
+         */
+    final ObjectIdGenerator.IdKey key = gen.key(id);
+    if (_objectIds == null) {
+        _objectIds = new LinkedHashMap<ObjectIdGenerator.IdKey, ReadableObjectId>();
+    } else {
+        ReadableObjectId entry = _objectIds.get(key);
+        if (entry != null) {
+            return entry;
+        }
+    }
+    // Not seen yet, must create entry and configure resolver.
+    ObjectIdResolver resolver = null;
+    if (_objectIdResolvers == null) {
+        _objectIdResolvers = new ArrayList<ObjectIdResolver>(8);
+    } else {
+        for (ObjectIdResolver res : _objectIdResolvers) {
+            if (res.canUseFor(resolverType)) {
+                resolver = res;
+                break;
+            }
+        }
+    }
+    if (resolver == null) {
+        resolver = resolverType.newForDeserialization(this);
+        // 19-Dec-2014, tatu: For final 2.5.0, remove temporary (2.4.x) work-around
+        //   needed to clear state between calls.
+        // !!! 18-Jun-2014, pgelinas: Temporary fix for [#490] until real
+        //    fix (for jackson-annotations, SimpleObjectIdResolver) can be added.
+        /*
+            if (resolverType.getClass() == SimpleObjectIdResolver.class) {
+                resolver = new SimpleObjectIdResolver();
+            }
+            */
+        _objectIdResolvers.add(resolver);
+    }
+    ReadableObjectId entry = new ReadableObjectId(key);
+    entry.setResolver(resolver);
+    _objectIds.put(key, entry);
+    return entry;
+}","public void test055() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    SimpleObjectIdResolver simpleObjectIdResolver0 = new SimpleObjectIdResolver();
+    ObjectIdGenerators.IntSequenceGenerator objectIdGenerators_IntSequenceGenerator0 = new ObjectIdGenerators.IntSequenceGenerator();
+    ReadableObjectId readableObjectId0 = defaultDeserializationContext_Impl0.findObjectId((Object) simpleObjectIdResolver0, (ObjectIdGenerator<?>) objectIdGenerators_IntSequenceGenerator0, (ObjectIdResolver) simpleObjectIdResolver0);
+    ReadableObjectId readableObjectId1 = defaultDeserializationContext_Impl0.findObjectId((Object) simpleObjectIdResolver0, (ObjectIdGenerator<?>) objectIdGenerators_IntSequenceGenerator0, (ObjectIdResolver) simpleObjectIdResolver0);
+    assertSame(readableObjectId1, readableObjectId0);
+}",""
+"@Override
+public void checkUnresolvedObjectId() throws UnresolvedForwardReference {
+    if (_objectIds == null) {
+        return;
+    }
+    // 29-Dec-2014, tatu: As per [databind#299], may also just let unresolved refs be...
+    if (!isEnabled(DeserializationFeature.FAIL_ON_UNRESOLVED_OBJECT_IDS)) {
+        return;
+    }
+    UnresolvedForwardReference exception = null;
+    for (Entry<IdKey, ReadableObjectId> entry : _objectIds.entrySet()) {
+        ReadableObjectId roid = entry.getValue();
+        if (roid.hasReferringProperties()) {
+            if (exception == null) {
+                exception = new UnresolvedForwardReference(""Unresolved forward references for: "");
+            }
+            for (Iterator<Referring> iterator = roid.referringProperties(); iterator.hasNext(); ) {
+                Referring referring = iterator.next();
+                exception.addUnresolvedId(roid.getKey().key, referring.getBeanType(), referring.getLocation());
+            }
+        }
+    }
+    if (exception != null) {
+        throw exception;
+    }
+}","public void test066() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    SimpleObjectIdResolver simpleObjectIdResolver0 = new SimpleObjectIdResolver();
+    ObjectIdGenerators.IntSequenceGenerator objectIdGenerators_IntSequenceGenerator0 = new ObjectIdGenerators.IntSequenceGenerator();
+    defaultDeserializationContext_Impl0.findObjectId((Object) simpleObjectIdResolver0, (ObjectIdGenerator<?>) objectIdGenerators_IntSequenceGenerator0, (ObjectIdResolver) simpleObjectIdResolver0);
+    defaultDeserializationContext_Impl0.checkUnresolvedObjectId();
+}",""
+"@Override
+public void checkUnresolvedObjectId() throws UnresolvedForwardReference {
+    if (_objectIds == null) {
+        return;
+    }
+    // 29-Dec-2014, tatu: As per [databind#299], may also just let unresolved refs be...
+    if (!isEnabled(DeserializationFeature.FAIL_ON_UNRESOLVED_OBJECT_IDS)) {
+        return;
+    }
+    UnresolvedForwardReference exception = null;
+    for (Entry<IdKey, ReadableObjectId> entry : _objectIds.entrySet()) {
+        ReadableObjectId roid = entry.getValue();
+        if (roid.hasReferringProperties()) {
+            if (exception == null) {
+                exception = new UnresolvedForwardReference(""Unresolved forward references for: "");
+            }
+            for (Iterator<Referring> iterator = roid.referringProperties(); iterator.hasNext(); ) {
+                Referring referring = iterator.next();
+                exception.addUnresolvedId(roid.getKey().key, referring.getBeanType(), referring.getLocation());
+            }
+        }
+    }
+    if (exception != null) {
+        throw exception;
+    }
+}","public void test077() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    defaultDeserializationContext_Impl0.checkUnresolvedObjectId();
+}",""
+"public boolean isCachable() {
+    return false;
+}","public void test088() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    JsonDeserializer<Object> jsonDeserializer0 = SettableBeanProperty.MISSING_VALUE_DESERIALIZER;
+    JsonDeserializer<Object> jsonDeserializer1 = defaultDeserializationContext_Impl0.deserializerInstance((Annotated) null, jsonDeserializer0);
+    assertFalse(jsonDeserializer1.isCachable());
+}","/**
+ *  Method called to see if deserializer instance is cachable and
+ *  usable for other properties of same type (type for which instance
+ *  was created).
+ * <p>
+ *  Note that cached instances are still resolved on per-property basis,
+ *  if instance implements {@link com.fasterxml.jackson.databind.deser.ResolvableDeserializer}:
+ *  cached instance is just as the base. This means that in most cases it is safe to
+ *  cache instances; however, it only makes sense to cache instances
+ *  if instantiation is expensive, or if instances are heavy-weight.
+ * <p>
+ *  Default implementation returns false, to indicate that no caching
+ *  is done.
+ */"
+"/*
+    /**********************************************************
+    /* Abstract methods impls, other factory methods
+    /**********************************************************
+     */
+@SuppressWarnings(""unchecked"")
+@Override
+public JsonDeserializer<Object> deserializerInstance(Annotated ann, Object deserDef) throws JsonMappingException {
+    if (deserDef == null) {
+        return null;
+    }
+    JsonDeserializer<?> deser;
+    if (deserDef instanceof JsonDeserializer) {
+        deser = (JsonDeserializer<?>) deserDef;
+    } else {
+        /* Alas, there's no way to force return type of ""either class
+             * X or Y"" -- need to throw an exception after the fact
+             */
+        if (!(deserDef instanceof Class)) {
+            throw new IllegalStateException(""AnnotationIntrospector returned deserializer definition of type "" + deserDef.getClass().getName() + ""; expected type JsonDeserializer or Class<JsonDeserializer> instead"");
+        }
+        Class<?> deserClass = (Class<?>) deserDef;
+        // there are some known ""no class"" markers to consider too:
+        if (deserClass == JsonDeserializer.None.class || ClassUtil.isBogusClass(deserClass)) {
+            return null;
+        }
+        if (!JsonDeserializer.class.isAssignableFrom(deserClass)) {
+            throw new IllegalStateException(""AnnotationIntrospector returned Class "" + deserClass.getName() + ""; expected Class<JsonDeserializer>"");
+        }
+        HandlerInstantiator hi = _config.getHandlerInstantiator();
+        deser = (hi == null) ? null : hi.deserializerInstance(_config, ann, deserClass);
+        if (deser == null) {
+            deser = (JsonDeserializer<?>) ClassUtil.createInstance(deserClass, _config.canOverrideAccessModifiers());
+        }
+    }
+    // First: need to resolve
+    if (deser instanceof ResolvableDeserializer) {
+        ((ResolvableDeserializer) deser).resolve(this);
+    }
+    return (JsonDeserializer<Object>) deser;
+}","public void test099() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    JsonDeserializer<Object> jsonDeserializer0 = defaultDeserializationContext_Impl0.deserializerInstance((Annotated) null, (Object) null);
+    assertNull(jsonDeserializer0);
+}",""
+"/*
+    /**********************************************************
+    /* Abstract methods impls, other factory methods
+    /**********************************************************
+     */
+@SuppressWarnings(""unchecked"")
+@Override
+public JsonDeserializer<Object> deserializerInstance(Annotated ann, Object deserDef) throws JsonMappingException {
+    if (deserDef == null) {
+        return null;
+    }
+    JsonDeserializer<?> deser;
+    if (deserDef instanceof JsonDeserializer) {
+        deser = (JsonDeserializer<?>) deserDef;
+    } else {
+        /* Alas, there's no way to force return type of ""either class
+             * X or Y"" -- need to throw an exception after the fact
+             */
+        if (!(deserDef instanceof Class)) {
+            throw new IllegalStateException(""AnnotationIntrospector returned deserializer definition of type "" + deserDef.getClass().getName() + ""; expected type JsonDeserializer or Class<JsonDeserializer> instead"");
+        }
+        Class<?> deserClass = (Class<?>) deserDef;
+        // there are some known ""no class"" markers to consider too:
+        if (deserClass == JsonDeserializer.None.class || ClassUtil.isBogusClass(deserClass)) {
+            return null;
+        }
+        if (!JsonDeserializer.class.isAssignableFrom(deserClass)) {
+            throw new IllegalStateException(""AnnotationIntrospector returned Class "" + deserClass.getName() + ""; expected Class<JsonDeserializer>"");
+        }
+        HandlerInstantiator hi = _config.getHandlerInstantiator();
+        deser = (hi == null) ? null : hi.deserializerInstance(_config, ann, deserClass);
+        if (deser == null) {
+            deser = (JsonDeserializer<?>) ClassUtil.createInstance(deserClass, _config.canOverrideAccessModifiers());
+        }
+    }
+    // First: need to resolve
+    if (deser instanceof ResolvableDeserializer) {
+        ((ResolvableDeserializer) deser).resolve(this);
+    }
+    return (JsonDeserializer<Object>) deser;
+}","public void test1010() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    Class<AbstractDeserializer> class0 = AbstractDeserializer.class;
+    // Undeclared exception!
+    try {
+        defaultDeserializationContext_Impl0.deserializerInstance((Annotated) null, class0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.DefaultDeserializationContext"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Abstract methods impls, other factory methods
+    /**********************************************************
+     */
+@SuppressWarnings(""unchecked"")
+@Override
+public JsonDeserializer<Object> deserializerInstance(Annotated ann, Object deserDef) throws JsonMappingException {
+    if (deserDef == null) {
+        return null;
+    }
+    JsonDeserializer<?> deser;
+    if (deserDef instanceof JsonDeserializer) {
+        deser = (JsonDeserializer<?>) deserDef;
+    } else {
+        /* Alas, there's no way to force return type of ""either class
+             * X or Y"" -- need to throw an exception after the fact
+             */
+        if (!(deserDef instanceof Class)) {
+            throw new IllegalStateException(""AnnotationIntrospector returned deserializer definition of type "" + deserDef.getClass().getName() + ""; expected type JsonDeserializer or Class<JsonDeserializer> instead"");
+        }
+        Class<?> deserClass = (Class<?>) deserDef;
+        // there are some known ""no class"" markers to consider too:
+        if (deserClass == JsonDeserializer.None.class || ClassUtil.isBogusClass(deserClass)) {
+            return null;
+        }
+        if (!JsonDeserializer.class.isAssignableFrom(deserClass)) {
+            throw new IllegalStateException(""AnnotationIntrospector returned Class "" + deserClass.getName() + ""; expected Class<JsonDeserializer>"");
+        }
+        HandlerInstantiator hi = _config.getHandlerInstantiator();
+        deser = (hi == null) ? null : hi.deserializerInstance(_config, ann, deserClass);
+        if (deser == null) {
+            deser = (JsonDeserializer<?>) ClassUtil.createInstance(deserClass, _config.canOverrideAccessModifiers());
+        }
+    }
+    // First: need to resolve
+    if (deser instanceof ResolvableDeserializer) {
+        ((ResolvableDeserializer) deser).resolve(this);
+    }
+    return (JsonDeserializer<Object>) deser;
+}","public void test1111() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    // Undeclared exception!
+    try {
+        defaultDeserializationContext_Impl0.deserializerInstance((Annotated) null, beanDeserializerFactory0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // AnnotationIntrospector returned deserializer definition of type com.fasterxml.jackson.databind.deser.BeanDeserializerFactory; expected type JsonDeserializer or Class<JsonDeserializer> instead
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.DefaultDeserializationContext"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Abstract methods impls, other factory methods
+    /**********************************************************
+     */
+@SuppressWarnings(""unchecked"")
+@Override
+public JsonDeserializer<Object> deserializerInstance(Annotated ann, Object deserDef) throws JsonMappingException {
+    if (deserDef == null) {
+        return null;
+    }
+    JsonDeserializer<?> deser;
+    if (deserDef instanceof JsonDeserializer) {
+        deser = (JsonDeserializer<?>) deserDef;
+    } else {
+        /* Alas, there's no way to force return type of ""either class
+             * X or Y"" -- need to throw an exception after the fact
+             */
+        if (!(deserDef instanceof Class)) {
+            throw new IllegalStateException(""AnnotationIntrospector returned deserializer definition of type "" + deserDef.getClass().getName() + ""; expected type JsonDeserializer or Class<JsonDeserializer> instead"");
+        }
+        Class<?> deserClass = (Class<?>) deserDef;
+        // there are some known ""no class"" markers to consider too:
+        if (deserClass == JsonDeserializer.None.class || ClassUtil.isBogusClass(deserClass)) {
+            return null;
+        }
+        if (!JsonDeserializer.class.isAssignableFrom(deserClass)) {
+            throw new IllegalStateException(""AnnotationIntrospector returned Class "" + deserClass.getName() + ""; expected Class<JsonDeserializer>"");
+        }
+        HandlerInstantiator hi = _config.getHandlerInstantiator();
+        deser = (hi == null) ? null : hi.deserializerInstance(_config, ann, deserClass);
+        if (deser == null) {
+            deser = (JsonDeserializer<?>) ClassUtil.createInstance(deserClass, _config.canOverrideAccessModifiers());
+        }
+    }
+    // First: need to resolve
+    if (deser instanceof ResolvableDeserializer) {
+        ((ResolvableDeserializer) deser).resolve(this);
+    }
+    return (JsonDeserializer<Object>) deser;
+}","public void test1212() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    Class<FilterInputStream> class0 = FilterInputStream.class;
+    // Undeclared exception!
+    try {
+        defaultDeserializationContext_Impl0.deserializerInstance((Annotated) null, class0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // AnnotationIntrospector returned Class java.io.FilterInputStream; expected Class<JsonDeserializer>
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.DefaultDeserializationContext"", e);
+    }
+}",""
+"@Override
+public final KeyDeserializer keyDeserializerInstance(Annotated ann, Object deserDef) throws JsonMappingException {
+    if (deserDef == null) {
+        return null;
+    }
+    KeyDeserializer deser;
+    if (deserDef instanceof KeyDeserializer) {
+        deser = (KeyDeserializer) deserDef;
+    } else {
+        if (!(deserDef instanceof Class)) {
+            throw new IllegalStateException(""AnnotationIntrospector returned key deserializer definition of type "" + deserDef.getClass().getName() + ""; expected type KeyDeserializer or Class<KeyDeserializer> instead"");
+        }
+        Class<?> deserClass = (Class<?>) deserDef;
+        // there are some known ""no class"" markers to consider too:
+        if (deserClass == KeyDeserializer.None.class || ClassUtil.isBogusClass(deserClass)) {
+            return null;
+        }
+        if (!KeyDeserializer.class.isAssignableFrom(deserClass)) {
+            throw new IllegalStateException(""AnnotationIntrospector returned Class "" + deserClass.getName() + ""; expected Class<KeyDeserializer>"");
+        }
+        HandlerInstantiator hi = _config.getHandlerInstantiator();
+        deser = (hi == null) ? null : hi.keyDeserializerInstance(_config, ann, deserClass);
+        if (deser == null) {
+            deser = (KeyDeserializer) ClassUtil.createInstance(deserClass, _config.canOverrideAccessModifiers());
+        }
+    }
+    // First: need to resolve
+    if (deser instanceof ResolvableDeserializer) {
+        ((ResolvableDeserializer) deser).resolve(this);
+    }
+    return deser;
+}","public void test1313() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    Class<StdKeyDeserializer> class0 = StdKeyDeserializer.class;
+    // Undeclared exception!
+    try {
+        defaultDeserializationContext_Impl0.keyDeserializerInstance((Annotated) null, class0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.DefaultDeserializationContext"", e);
+    }
+}",""
+"@Override
+public final KeyDeserializer keyDeserializerInstance(Annotated ann, Object deserDef) throws JsonMappingException {
+    if (deserDef == null) {
+        return null;
+    }
+    KeyDeserializer deser;
+    if (deserDef instanceof KeyDeserializer) {
+        deser = (KeyDeserializer) deserDef;
+    } else {
+        if (!(deserDef instanceof Class)) {
+            throw new IllegalStateException(""AnnotationIntrospector returned key deserializer definition of type "" + deserDef.getClass().getName() + ""; expected type KeyDeserializer or Class<KeyDeserializer> instead"");
+        }
+        Class<?> deserClass = (Class<?>) deserDef;
+        // there are some known ""no class"" markers to consider too:
+        if (deserClass == KeyDeserializer.None.class || ClassUtil.isBogusClass(deserClass)) {
+            return null;
+        }
+        if (!KeyDeserializer.class.isAssignableFrom(deserClass)) {
+            throw new IllegalStateException(""AnnotationIntrospector returned Class "" + deserClass.getName() + ""; expected Class<KeyDeserializer>"");
+        }
+        HandlerInstantiator hi = _config.getHandlerInstantiator();
+        deser = (hi == null) ? null : hi.keyDeserializerInstance(_config, ann, deserClass);
+        if (deser == null) {
+            deser = (KeyDeserializer) ClassUtil.createInstance(deserClass, _config.canOverrideAccessModifiers());
+        }
+    }
+    // First: need to resolve
+    if (deser instanceof ResolvableDeserializer) {
+        ((ResolvableDeserializer) deser).resolve(this);
+    }
+    return deser;
+}","public void test1414() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    KeyDeserializer keyDeserializer0 = defaultDeserializationContext_Impl0.keyDeserializerInstance((Annotated) null, (Object) null);
+    assertNull(keyDeserializer0);
+}",""
+"@Override
+public final KeyDeserializer keyDeserializerInstance(Annotated ann, Object deserDef) throws JsonMappingException {
+    if (deserDef == null) {
+        return null;
+    }
+    KeyDeserializer deser;
+    if (deserDef instanceof KeyDeserializer) {
+        deser = (KeyDeserializer) deserDef;
+    } else {
+        if (!(deserDef instanceof Class)) {
+            throw new IllegalStateException(""AnnotationIntrospector returned key deserializer definition of type "" + deserDef.getClass().getName() + ""; expected type KeyDeserializer or Class<KeyDeserializer> instead"");
+        }
+        Class<?> deserClass = (Class<?>) deserDef;
+        // there are some known ""no class"" markers to consider too:
+        if (deserClass == KeyDeserializer.None.class || ClassUtil.isBogusClass(deserClass)) {
+            return null;
+        }
+        if (!KeyDeserializer.class.isAssignableFrom(deserClass)) {
+            throw new IllegalStateException(""AnnotationIntrospector returned Class "" + deserClass.getName() + ""; expected Class<KeyDeserializer>"");
+        }
+        HandlerInstantiator hi = _config.getHandlerInstantiator();
+        deser = (hi == null) ? null : hi.keyDeserializerInstance(_config, ann, deserClass);
+        if (deser == null) {
+            deser = (KeyDeserializer) ClassUtil.createInstance(deserClass, _config.canOverrideAccessModifiers());
+        }
+    }
+    // First: need to resolve
+    if (deser instanceof ResolvableDeserializer) {
+        ((ResolvableDeserializer) deser).resolve(this);
+    }
+    return deser;
+}","public void test1515() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    Class<Integer> class0 = Integer.class;
+    StdKeyDeserializer stdKeyDeserializer0 = StdKeyDeserializer.forType(class0);
+    KeyDeserializer keyDeserializer0 = defaultDeserializationContext_Impl0.keyDeserializerInstance((Annotated) null, stdKeyDeserializer0);
+    assertSame(keyDeserializer0, stdKeyDeserializer0);
+}",""
+"@Override
+public final KeyDeserializer keyDeserializerInstance(Annotated ann, Object deserDef) throws JsonMappingException {
+    if (deserDef == null) {
+        return null;
+    }
+    KeyDeserializer deser;
+    if (deserDef instanceof KeyDeserializer) {
+        deser = (KeyDeserializer) deserDef;
+    } else {
+        if (!(deserDef instanceof Class)) {
+            throw new IllegalStateException(""AnnotationIntrospector returned key deserializer definition of type "" + deserDef.getClass().getName() + ""; expected type KeyDeserializer or Class<KeyDeserializer> instead"");
+        }
+        Class<?> deserClass = (Class<?>) deserDef;
+        // there are some known ""no class"" markers to consider too:
+        if (deserClass == KeyDeserializer.None.class || ClassUtil.isBogusClass(deserClass)) {
+            return null;
+        }
+        if (!KeyDeserializer.class.isAssignableFrom(deserClass)) {
+            throw new IllegalStateException(""AnnotationIntrospector returned Class "" + deserClass.getName() + ""; expected Class<KeyDeserializer>"");
+        }
+        HandlerInstantiator hi = _config.getHandlerInstantiator();
+        deser = (hi == null) ? null : hi.keyDeserializerInstance(_config, ann, deserClass);
+        if (deser == null) {
+            deser = (KeyDeserializer) ClassUtil.createInstance(deserClass, _config.canOverrideAccessModifiers());
+        }
+    }
+    // First: need to resolve
+    if (deser instanceof ResolvableDeserializer) {
+        ((ResolvableDeserializer) deser).resolve(this);
+    }
+    return deser;
+}","public void test1616() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    // Undeclared exception!
+    try {
+        defaultDeserializationContext_Impl0.keyDeserializerInstance((Annotated) null, beanDeserializerFactory0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // AnnotationIntrospector returned key deserializer definition of type com.fasterxml.jackson.databind.deser.BeanDeserializerFactory; expected type KeyDeserializer or Class<KeyDeserializer> instead
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.DefaultDeserializationContext"", e);
+    }
+}",""
+"@Override
+public final KeyDeserializer keyDeserializerInstance(Annotated ann, Object deserDef) throws JsonMappingException {
+    if (deserDef == null) {
+        return null;
+    }
+    KeyDeserializer deser;
+    if (deserDef instanceof KeyDeserializer) {
+        deser = (KeyDeserializer) deserDef;
+    } else {
+        if (!(deserDef instanceof Class)) {
+            throw new IllegalStateException(""AnnotationIntrospector returned key deserializer definition of type "" + deserDef.getClass().getName() + ""; expected type KeyDeserializer or Class<KeyDeserializer> instead"");
+        }
+        Class<?> deserClass = (Class<?>) deserDef;
+        // there are some known ""no class"" markers to consider too:
+        if (deserClass == KeyDeserializer.None.class || ClassUtil.isBogusClass(deserClass)) {
+            return null;
+        }
+        if (!KeyDeserializer.class.isAssignableFrom(deserClass)) {
+            throw new IllegalStateException(""AnnotationIntrospector returned Class "" + deserClass.getName() + ""; expected Class<KeyDeserializer>"");
+        }
+        HandlerInstantiator hi = _config.getHandlerInstantiator();
+        deser = (hi == null) ? null : hi.keyDeserializerInstance(_config, ann, deserClass);
+        if (deser == null) {
+            deser = (KeyDeserializer) ClassUtil.createInstance(deserClass, _config.canOverrideAccessModifiers());
+        }
+    }
+    // First: need to resolve
+    if (deser instanceof ResolvableDeserializer) {
+        ((ResolvableDeserializer) deser).resolve(this);
+    }
+    return deser;
+}","public void test1717() throws Throwable {
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    Class<BeanDeserializer> class0 = BeanDeserializer.class;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    // Undeclared exception!
+    try {
+        defaultDeserializationContext_Impl0.keyDeserializerInstance((Annotated) null, class0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // AnnotationIntrospector returned Class com.fasterxml.jackson.databind.deser.BeanDeserializer; expected Class<KeyDeserializer>
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.DefaultDeserializationContext"", e);
+    }
+}",""

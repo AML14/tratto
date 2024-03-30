@@ -1,0 +1,580 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    ZoneOffset zoneOffset0 = ZoneOffset.ofHours(1);
+    TimeZone timeZone0 = TimeZone.getTimeZone((ZoneId) zoneOffset0);
+    DateTimeZone dateTimeZone0 = DateTimeZone.forTimeZone(timeZone0);
+    assertEquals(""+01:00"", dateTimeZone0.toString());
+}",0,
+project,0,test001,"public void test001() throws Throwable {
+    ZoneOffset zoneOffset0 = ZoneOffset.ofHours(1);
+    TimeZone timeZone0 = TimeZone.getTimeZone((ZoneId) zoneOffset0);
+    DateTimeZone dateTimeZone0 = DateTimeZone.forTimeZone(timeZone0);
+    assertNotNull(dateTimeZone0);
+}",0,
+project,0,test022,"public void test022() throws Throwable {
+    try {
+        DateTimeZone.forOffsetHoursMinutes((-621), 59);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Offset is too large
+        //
+        verifyException(""org.joda.time.DateTimeZone"", e);
+    }
+}",1,
+project,0,test033,"public void test033() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forID(""-08:00"");
+    assertEquals(""-08:00"", dateTimeZone0.getID());
+}",0,
+project,0,test044,"public void test044() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    DateTimeZone.setDefault(dateTimeZone0);
+    assertEquals(""America/Los_Angeles"", dateTimeZone0.toString());
+}",0,
+project,0,test065,"public void test065() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(549);
+    TimeZone timeZone0 = dateTimeZone0.toTimeZone();
+    assertEquals(""java.util.SimpleTimeZone[id=+549:00,offset=1976400000,dstSavings=3600000,useDaylight=false,startYear=0,startMode=0,startMonth=0,startDay=0,startDayOfWeek=0,startTime=0,startTimeMode=0,endMode=0,endMonth=0,endDay=0,endDayOfWeek=0,endTime=0,endTimeMode=0]"", timeZone0.toString());
+}",0,
+project,0,test066,"public void test066() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(549);
+    TimeZone timeZone0 = dateTimeZone0.toTimeZone();
+    assertEquals(""+549:00"", dateTimeZone0.getID());
+}",0,
+project,0,test077,"public void test077() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    long long0 = fixedDateTimeZone0.previousTransition(0L);
+    assertEquals(0L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test088,"public void test088() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    long long0 = fixedDateTimeZone0.previousTransition(2189L);
+    assertEquals(2189L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test099,"public void test099() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance();
+    DateTimeZone dateTimeZone0 = buddhistChronology0.getZone();
+    long long0 = dateTimeZone0.previousTransition(1);
+    assertEquals((-5756400001L), long0);
+}",0,"assertEquals(0, long0)"
+project,0,test1010,"public void test1010() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    long long0 = dateTimeZone0.UTC.nextTransition(0L);
+    assertEquals(0L, long0);
+}",0,"assertEquals(0, long0)"
+project,0,test1111,"public void test1111() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    long long0 = dateTimeZone0.nextTransition(637L);
+    assertEquals(9972000000L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test1212,"public void test1212() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis(1);
+    dateTimeZone0.nextTransition((-2180L));
+    assertEquals(""+00:00:00.001"", dateTimeZone0.toString());
+}",0,
+project,0,test1313,"public void test1313() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstanceUTC();
+    DateTimeZone dateTimeZone0 = buddhistChronology0.getZone();
+    boolean boolean0 = dateTimeZone0.isFixed();
+    assertTrue(boolean0);
+}",0,
+project,0,test1414,"public void test1414() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    boolean boolean0 = dateTimeZone0.isFixed();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test1515,"public void test1515() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstanceUTC();
+    DateTimeZone dateTimeZone0 = buddhistChronology0.getZone();
+    int int0 = dateTimeZone0.getStandardOffset((-266L));
+    assertEquals(0, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test1616,"public void test1616() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(3);
+    int int0 = dateTimeZone0.getStandardOffset(0L);
+    assertEquals(""+03:00"", dateTimeZone0.toString());
+}",0,
+project,0,test1617,"public void test1617() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(3);
+    int int0 = dateTimeZone0.getStandardOffset(0L);
+    assertEquals(10800000, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test1718,"public void test1718() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis((-1314));
+    int int0 = dateTimeZone0.getStandardOffset((-1314));
+    assertEquals((-1314), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test1719,"public void test1719() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis((-1314));
+    int int0 = dateTimeZone0.getStandardOffset((-1314));
+    assertEquals(""-00:00:01.314"", dateTimeZone0.toString());
+}",0,
+project,0,test1820,"public void test1820() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance();
+    DateTimeZone dateTimeZone0 = buddhistChronology0.getZone();
+    int int0 = dateTimeZone0.UTC.getOffsetFromLocal(1);
+    assertEquals(0, int0);
+}",0,
+project,0,test1921,"public void test1921() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(1);
+    int int0 = dateTimeZone0.getOffsetFromLocal(0L);
+    assertEquals(3600000, int0);
+}",0,
+project,0,test1922,"public void test1922() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(1);
+    int int0 = dateTimeZone0.getOffsetFromLocal(0L);
+    assertEquals(""+01:00"", dateTimeZone0.getID());
+}",0,
+project,0,test2023,"public void test2023() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    DateMidnight dateMidnight0 = new DateMidnight(dateTimeZone0);
+    int int0 = dateTimeZone0.getOffset((ReadableInstant) dateMidnight0);
+    assertEquals(1392364800000L, dateMidnight0.getMillis());
+}",0,"assertEquals(0, dateMidnight0.getMillis())"
+project,0,test2024,"public void test2024() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    DateMidnight dateMidnight0 = new DateMidnight(dateTimeZone0);
+    int int0 = dateTimeZone0.getOffset((ReadableInstant) dateMidnight0);
+    assertEquals((-28800000), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test2125,"public void test2125() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstanceUTC();
+    DateTimeZone dateTimeZone0 = buddhistChronology0.getZone();
+    int int0 = dateTimeZone0.getOffset(0L);
+    assertEquals(0, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test2226,"public void test2226() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis(1189);
+    int int0 = dateTimeZone0.getOffset(2587L);
+    assertEquals(1189, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test2227,"public void test2227() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis(1189);
+    int int0 = dateTimeZone0.getOffset(2587L);
+    assertEquals(""+00:00:01.189"", dateTimeZone0.getID());
+}",0,
+project,0,test2328,"public void test2328() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    int int0 = dateTimeZone0.getOffset(162L);
+    assertEquals((-28800000), int0);
+}",0,
+project,0,test2429,"public void test2429() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(3);
+    dateTimeZone0.getNameKey(918518400000L);
+    assertEquals(""+03:00"", dateTimeZone0.toString());
+}",0,
+project,0,test2530,"public void test2530() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance();
+    DateTimeZone dateTimeZone0 = buddhistChronology0.getZone();
+    String string0 = dateTimeZone0.getNameKey((-2642L));
+    assertEquals(""PST"", string0);
+}",0,assertNotNull(string0)
+project,0,test2631,"public void test2631() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstanceUTC();
+    DateTimeZone dateTimeZone0 = buddhistChronology0.getZone();
+    boolean boolean0 = dateTimeZone0.equals(dateTimeZone0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2732,"public void test2732() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(0);
+    long long0 = dateTimeZone0.convertUTCToLocal(15778800000L);
+    assertEquals(15778800000L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test2833,"public void test2833() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    long long0 = dateTimeZone0.UTC.convertLocalToUTC(0L, false, 0L);
+    assertEquals(0L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test2934,"public void test2934() throws Throwable {
+    UTCProvider uTCProvider0 = new UTCProvider();
+    DateTimeZone dateTimeZone0 = uTCProvider0.getZone(""UTC"");
+    long long0 = dateTimeZone0.convertLocalToUTC((-1L), false, (-1L));
+    assertEquals((-1L), long0);
+}",0,"assertEquals(1, long0)"
+project,0,test3035,"public void test3035() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(1);
+    long long0 = dateTimeZone0.convertLocalToUTC((long) 1, false);
+    assertEquals(""+01:00"", dateTimeZone0.toString());
+}",1,
+project,0,test3036,"public void test3036() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(1);
+    long long0 = dateTimeZone0.convertLocalToUTC((long) 1, false);
+    assertEquals((-3599999L), long0);
+}",0,
+project,0,test3137,"public void test3137() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance();
+    DateTimeZone dateTimeZone0 = buddhistChronology0.getZone();
+    // Undeclared exception!
+    try {
+        dateTimeZone0.isLocalDateTimeGap((LocalDateTime) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.DateTimeZone"", e);
+    }
+}",0,
+project,0,test3238,"public void test3238() throws Throwable {
+    try {
+        DateTimeZone.forOffsetHours((-1585));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Offset is too large
+        //
+        verifyException(""org.joda.time.DateTimeZone"", e);
+    }
+}",1,
+project,0,test3339,"public void test3339() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(3);
+    dateTimeZone0.getMillisKeepLocal(dateTimeZone0, 0L);
+    assertEquals(""+03:00"", dateTimeZone0.toString());
+}",0,
+project,0,test3440,"public void test3440() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    long long0 = dateTimeZone0.convertLocalToUTC(0L, false, 9223372036854775807L);
+    assertEquals(28800000L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test3541,"public void test3541() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis((-1841));
+    long long0 = dateTimeZone0.convertUTCToLocal(1);
+    assertEquals((-1840L), long0);
+}",0,"assertEquals(1, long0)"
+project,0,test3542,"public void test3542() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis((-1841));
+    long long0 = dateTimeZone0.convertUTCToLocal(1);
+    assertEquals(""-00:00:01.841"", dateTimeZone0.toString());
+}",1,
+project,0,test3643,"public void test3643() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstanceUTC();
+    DateTimeZone dateTimeZone0 = buddhistChronology0.getZone();
+    long long0 = dateTimeZone0.convertUTCToLocal(0L);
+    assertEquals(0L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test3744,"public void test3744() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    int int0 = dateTimeZone0.getOffsetFromLocal(9223372036854775807L);
+    assertEquals((-28378000), int0);
+}",0,
+project,0,test3845,"public void test3845() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance();
+    DateTimeZone dateTimeZone0 = buddhistChronology0.getZone();
+    int int0 = dateTimeZone0.getOffsetFromLocal((-1L));
+    assertEquals((-28800000), int0);
+}",0,
+project,0,test3946,"public void test3946() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    String string0 = dateTimeZone0.getName(465L, (Locale) null);
+    assertNotNull(string0);
+}",0,
+project,0,test3947,"public void test3947() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    String string0 = dateTimeZone0.getName(465L, (Locale) null);
+    assertEquals(""-08:00"", string0);
+}",0,
+project,0,test4048,"public void test4048() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis((-1778));
+    String string0 = dateTimeZone0.getShortName(793L, (Locale) null);
+    assertEquals(""-00:00:01.778"", string0);
+}",0,
+project,0,test4149,"public void test4149() throws Throwable {
+    TimeZone timeZone0 = TimeZone.getTimeZone(""-08:00"");
+    DateTimeZone dateTimeZone0 = DateTimeZone.forTimeZone(timeZone0);
+    assertEquals(""UTC"", dateTimeZone0.toString());
+}",0,
+project,0,test4250,"public void test4250() throws Throwable {
+    // Undeclared exception!
+    try {
+        DateTimeZone.forID(""Eg&"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The datetime zone id 'Eg&' is not recognised
+        //
+        verifyException(""org.joda.time.DateTimeZone"", e);
+    }
+}",0,
+project,0,test4351,"public void test4351() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forID(""MST"");
+    assertEquals(""MST"", dateTimeZone0.getID());
+}",0,
+project,0,test4452,"public void test4452() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance();
+    DateTimeZone dateTimeZone0 = buddhistChronology0.getZone();
+    String string0 = dateTimeZone0.getID();
+    assertEquals(""America/Los_Angeles"", string0);
+}",0,
+project,0,test4553,"public void test4553() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    boolean boolean0 = fixedDateTimeZone0.UTC.isLocalDateTimeGap((LocalDateTime) null);
+    assertFalse(boolean0);
+}",0,
+project,0,test4654,"public void test4654() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    LocalDateTime localDateTime0 = new LocalDateTime(dateTimeZone0);
+    boolean boolean0 = dateTimeZone0.isLocalDateTimeGap(localDateTime0);
+    assertFalse(boolean0);
+}",0,
+project,0,test4755,"public void test4755() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis((-3185));
+    long long0 = dateTimeZone0.convertLocalToUTC((long) (-3185), true);
+    assertEquals(""-00:00:03.185"", dateTimeZone0.toString());
+}",1,
+project,0,test4756,"public void test4756() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis((-3185));
+    long long0 = dateTimeZone0.convertLocalToUTC((long) (-3185), true);
+    assertEquals(0L, long0);
+}",0,
+project,0,test4857,"public void test4857() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    // Undeclared exception!
+    try {
+        dateTimeZone0.convertLocalToUTC(9223372036854775807L, true);
+        fail(""Expecting exception: ArithmeticException"");
+    } catch (ArithmeticException e) {
+        //
+        // Subtracting time zone offset caused overflow
+        //
+        verifyException(""org.joda.time.DateTimeZone"", e);
+    }
+}",0,
+project,0,test4958,"public void test4958() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance();
+    DateTimeZone dateTimeZone0 = buddhistChronology0.getZone();
+    long long0 = dateTimeZone0.convertLocalToUTC(249L, false);
+    assertEquals(28800249L, long0);
+}",0,
+project,0,test5059,"public void test5059() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(256);
+    // Undeclared exception!
+    try {
+        dateTimeZone0.convertUTCToLocal(9223372036854775807L);
+        fail(""Expecting exception: ArithmeticException"");
+    } catch (ArithmeticException e) {
+        //
+        // Adding time zone offset caused overflow
+        //
+        verifyException(""org.joda.time.DateTimeZone"", e);
+    }
+}",0,
+project,0,test5160,"public void test5160() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    long long0 = fixedDateTimeZone0.getMillisKeepLocal(dateTimeZone0, 9223372036854775807L);
+    assertEquals((-9223372036826397809L), long0);
+}",0,"assertEquals(0, long0)"
+project,0,test5261,"public void test5261() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis(24);
+    long long0 = dateTimeZone0.getMillisKeepLocal((DateTimeZone) null, (-580L));
+    assertEquals(28799444L, long0);
+}",0,"assertEquals(0, long0)"
+project,0,test5262,"public void test5262() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis(24);
+    long long0 = dateTimeZone0.getMillisKeepLocal((DateTimeZone) null, (-580L));
+    assertEquals(""+00:00:00.024"", dateTimeZone0.toString());
+}",1,
+project,0,test5363,"public void test5363() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    boolean boolean0 = fixedDateTimeZone0.isStandardOffset(1L);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test5464,"public void test5464() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    assertNotNull(dateTimeZone0);
+}",0,
+project,0,test5465,"public void test5465() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    boolean boolean0 = dateTimeZone0.isStandardOffset(9223372036854775807L);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test5566,"public void test5566() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHoursMinutes(1, 2);
+    int int0 = dateTimeZone0.getOffset((ReadableInstant) null);
+    assertEquals(""+01:02"", dateTimeZone0.toString());
+}",0,
+project,0,test5567,"public void test5567() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHoursMinutes(1, 2);
+    int int0 = dateTimeZone0.getOffset((ReadableInstant) null);
+    assertEquals(3720000, int0);
+}",0,
+project,0,test5668,"public void test5668() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    DateMidnight dateMidnight0 = new DateMidnight(0L, (DateTimeZone) fixedDateTimeZone0);
+    int int0 = fixedDateTimeZone0.getOffset((ReadableInstant) dateMidnight0);
+    assertEquals(0, int0);
+}",0,
+project,0,test5769,"public void test5769() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis(24);
+    Locale locale0 = Locale.ROOT;
+    String string0 = dateTimeZone0.getName(877L, locale0);
+    assertEquals(""+00:00:00.024"", string0);
+}",0,
+project,0,test5870,"public void test5870() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis(24);
+    String string0 = dateTimeZone0.getShortName(877L);
+    assertEquals(""+00:00:00.024"", string0);
+}",0,
+project,0,test5971,"public void test5971() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    Locale locale0 = Locale.ITALY;
+    String string0 = fixedDateTimeZone0.getShortName(0L, locale0);
+    assertNotNull(string0);
+}",0,
+project,0,test5972,"public void test5972() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    Locale locale0 = Locale.ITALY;
+    String string0 = fixedDateTimeZone0.getShortName(0L, locale0);
+    assertEquals(""+00:00"", string0);
+}",0,
+project,0,test6073,"public void test6073() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis((-28378000));
+    assertEquals(""-07:52:58"", dateTimeZone0.toString());
+}",0,
+project,0,test6474,"public void test6474() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis(24);
+    DateTimeZone dateTimeZone1 = DateTimeZone.forID(""+00:00:00.024"");
+    assertEquals(""+00:00:00.024"", dateTimeZone1.toString());
+}",0,assertNotNull(dateTimeZone1.toString())
+project,0,test6475,"public void test6475() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis(24);
+    DateTimeZone dateTimeZone1 = DateTimeZone.forID(""+00:00:00.024"");
+    assertSame(dateTimeZone1, dateTimeZone0);
+}",0,
+project,0,test6576,"public void test6576() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis(0);
+    assertEquals(""UTC"", dateTimeZone0.toString());
+}",0,
+project,0,test6677,"public void test6677() throws Throwable {
+    ZoneOffset zoneOffset0 = ZoneOffset.MIN;
+    TimeZone timeZone0 = TimeZone.getTimeZone((ZoneId) zoneOffset0);
+    DateTimeZone.forTimeZone(timeZone0);
+    DateTimeZone dateTimeZone0 = DateTimeZone.forTimeZone(timeZone0);
+    assertEquals(""-18:00"", dateTimeZone0.toString());
+}",0,
+project,0,test6678,"public void test6678() throws Throwable {
+    ZoneOffset zoneOffset0 = ZoneOffset.MIN;
+    TimeZone timeZone0 = TimeZone.getTimeZone((ZoneId) zoneOffset0);
+    DateTimeZone.forTimeZone(timeZone0);
+    DateTimeZone dateTimeZone0 = DateTimeZone.forTimeZone(timeZone0);
+    assertNotNull(dateTimeZone0);
+}",0,
+project,0,test6779,"public void test6779() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    TimeZone timeZone0 = fixedDateTimeZone0.UTC.toTimeZone();
+    DateTimeZone dateTimeZone0 = DateTimeZone.forTimeZone(timeZone0);
+    assertSame(dateTimeZone0, fixedDateTimeZone0);
+}",0,
+project,0,test6880,"public void test6880() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forTimeZone((TimeZone) null);
+    assertEquals(""America/Los_Angeles"", dateTimeZone0.getID());
+}",0,
+project,0,test6981,"public void test6981() throws Throwable {
+    try {
+        DateTimeZone.forOffsetHoursMinutes(89, 75);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Minutes out of range: 75
+        //
+        verifyException(""org.joda.time.DateTimeZone"", e);
+    }
+}",0,
+project,0,test7082,"public void test7082() throws Throwable {
+    try {
+        DateTimeZone.forOffsetHoursMinutes(0, (-4177984));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Minutes out of range: -4177984
+        //
+        verifyException(""org.joda.time.DateTimeZone"", e);
+    }
+}",0,
+project,0,test7183,"public void test7183() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHoursMinutes(0, 0);
+    assertEquals(""UTC"", dateTimeZone0.getID());
+}",0,
+project,0,test7284,"public void test7284() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHoursMinutes(0, 1);
+    assertEquals(""+00:01"", dateTimeZone0.getID());
+}",0,
+project,0,test7385,"public void test7385() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forID(""+00:00"");
+    assertNotNull(dateTimeZone0);
+}",0,
+project,0,test7386,"public void test7386() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forID(""+00:00"");
+    assertEquals(""UTC"", dateTimeZone0.toString());
+}",0,
+project,0,test7487,"public void test7487() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forID(""UTC"");
+    assertEquals(""UTC"", dateTimeZone0.getID());
+}",0,
+project,0,test7588,"public void test7588() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forID((String) null);
+    assertEquals(""America/Los_Angeles"", dateTimeZone0.toString());
+}",0,
+project,0,test7689,"public void test7689() throws Throwable {
+    // Undeclared exception!
+    try {
+        DateTimeZone.setDefault((DateTimeZone) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The datetime zone must not be null
+        //
+        verifyException(""org.joda.time.DateTimeZone"", e);
+    }
+}",0,
+project,0,test7890,"public void test7890() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    DateTimeZone dateTimeZone1 = DateTimeZone.getDefault();
+    assertSame(dateTimeZone1, dateTimeZone0);
+}",0,
+project,0,test7991,"public void test7991() throws Throwable {
+    Provider provider0 = DateTimeZone.getProvider();
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(1);
+    dateTimeZone0.equals(provider0);
+    assertEquals(""+01:00"", dateTimeZone0.getID());
+}",0,assertNotNull(dateTimeZone0.getID())
+project,0,test8092,"public void test8092() throws Throwable {
+    NameProvider nameProvider0 = DateTimeZone.getNameProvider();
+    assertNotNull(nameProvider0);
+}",0,
+project,0,test8294,"public void test8294() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    String string0 = fixedDateTimeZone0.toString();
+    assertEquals(""UTC"", string0);
+}",0,
+project,0,test8395,"public void test8395() throws Throwable {
+    SimpleTimeZone simpleTimeZone0 = new SimpleTimeZone(2831, ""hsZfnd<-{UF+T"");
+    DateTimeZone dateTimeZone0 = DateTimeZone.forTimeZone(simpleTimeZone0);
+    String string0 = dateTimeZone0.getName((long) 807);
+    assertEquals(""+00:00"", string0);
+}",0,
+project,0,test8396,"public void test8396() throws Throwable {
+    SimpleTimeZone simpleTimeZone0 = new SimpleTimeZone(2831, ""hsZfnd<-{UF+T"");
+    DateTimeZone dateTimeZone0 = DateTimeZone.forTimeZone(simpleTimeZone0);
+    String string0 = dateTimeZone0.getName((long) 807);
+    assertNotNull(string0);
+}",0,
+project,0,test8497,"public void test8497() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours((-589));
+    TimeZone timeZone0 = dateTimeZone0.toTimeZone();
+    // Undeclared exception!
+    try {
+        DateTimeZone.forTimeZone(timeZone0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid format: \""-j9:00\"" is malformed at \""j9:00\""
+        //
+        verifyException(""org.joda.time.format.DateTimeFormatter"", e);
+    }
+}",0,
+project,0,test8598,"public void test8598() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    Object object0 = fixedDateTimeZone0.UTC.writeReplace();
+    assertNotNull(object0);
+}",0,

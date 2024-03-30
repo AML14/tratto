@@ -1,0 +1,473 @@
+focal_method,test_prefix,docstring
+"@Override
+public String getReferenceName() {
+    return reference;
+}","public void test000() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, """", """", 5, 5);
+    boolean boolean0 = namedType0.isNamedType();
+    assertEquals("""", namedType0.getReferenceName());
+}",""
+"@Override
+boolean isNamedType() {
+    return true;
+}","public void test001() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, """", """", 5, 5);
+    boolean boolean0 = namedType0.isNamedType();
+    assertTrue(boolean0);
+}",""
+"public final String toAnnotationString() {
+    return toStringHelper(true);
+}","public void test012() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, ""Object"", ""Object"", 2048, 2048);
+    String string0 = namedType0.toAnnotationString();
+    assertEquals(""Object"", string0);
+}","/**
+ * A string representation of this type, suitable for printing
+ * in type annotations at code generation time.
+ */"
+"public final boolean isResolved() {
+    return resolved;
+}","public void test023() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, true);
+    ObjectType objectType0 = jSTypeRegistry0.createNativeAnonymousObjectType();
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, ""Named type with empty name component"", ""Named type with empty name component"", 1, 0);
+    ParameterizedType parameterizedType0 = new ParameterizedType(jSTypeRegistry0, objectType0, (JSType) null);
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Not declared as a constructor"", (Node) null, namedType0);
+    parameterizedType0.defineSynthesizedProperty(""Named type with empty name component"", enumType0, (Node) null);
+    namedType0.resolveInternal(simpleErrorReporter0, parameterizedType0);
+    assertTrue(namedType0.isResolved());
+}","/**
+ * Whether the type has been resolved.
+ */"
+"@Override
+public String getReferenceName() {
+    return reference;
+}","public void test034() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoObjectType noObjectType0 = new NoObjectType(jSTypeRegistry0);
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, ""Not declared as a constructor"", ""Named type with empty name component"", 0, 1);
+    namedType0.isImplicitPrototype(noObjectType0);
+    assertEquals(""Not declared as a constructor"", namedType0.getReferenceName());
+}",""
+"@Override
+public boolean isNominalType() {
+    return true;
+}","public void test035() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoObjectType noObjectType0 = new NoObjectType(jSTypeRegistry0);
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, ""Not declared as a constructor"", ""Named type with empty name component"", 0, 1);
+    namedType0.isImplicitPrototype(noObjectType0);
+    assertTrue(namedType0.isNominalType());
+}",""
+"@Override
+public String getReferenceName() {
+    return reference;
+}","public void test046() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, ""Named type with empty name component"", ""Unknown class name"", 1, 1);
+    boolean boolean0 = namedType0.defineInferredProperty(""Unknown class name"", noResolvedType0, (Node) null);
+    assertEquals(""Named type with empty name component"", namedType0.getReferenceName());
+}",""
+"@Override
+public boolean hasReferenceName() {
+    return true;
+}","public void test047() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, ""Named type with empty name component"", ""Unknown class name"", 1, 1);
+    boolean boolean0 = namedType0.defineInferredProperty(""Unknown class name"", noResolvedType0, (Node) null);
+    assertTrue(namedType0.hasReferenceName());
+}",""
+"public final boolean defineInferredProperty(String propertyName, JSType type, Node propertyNode) {
+    StaticSlot<JSType> originalSlot = getSlot(propertyName);
+    if (hasProperty(propertyName)) {
+        if (isPropertyTypeDeclared(propertyName)) {
+            // We never want to hide a declared property with an inferred property.
+            return true;
+        }
+        JSType originalType = getPropertyType(propertyName);
+        type = originalType == null ? type : originalType.getLeastSupertype(type);
+    }
+    boolean result = defineProperty(propertyName, type, true, propertyNode);
+    // All property definitions go through this method
+    // or defineDeclaredProperty. Because the properties defined an an
+    // object can affect subtyping, it's slightly more efficient
+    // to register this after defining the property.
+    registry.registerPropertyOnType(propertyName, this);
+    return result;
+}","public void test048() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, ""Named type with empty name component"", ""Unknown class name"", 1, 1);
+    boolean boolean0 = namedType0.defineInferredProperty(""Unknown class name"", noResolvedType0, (Node) null);
+    assertTrue(boolean0);
+}","/**
+ * Defines a property whose type is inferred.
+ * @param propertyName the property's name
+ * @param type the type
+ * @param propertyNode the node corresponding to the inferred definition of
+ *        property that might later be accessed using {@code getPropertyNode}.
+ */"
+"@Override
+public String getReferenceName() {
+    return reference;
+}","public void test059() throws Throwable {
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry((ErrorReporter) null);
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, ""-X,at+!,h:Y'i.0O{,"", (String) null, 1886, 1886);
+    namedType0.hashCode();
+    assertEquals(""-X,at+!,h:Y'i.0O{,"", namedType0.getReferenceName());
+}",""
+"@Override
+public boolean isNativeObjectType() {
+    return referencedObjType == null ? false : referencedObjType.isNativeObjectType();
+}","public void test0610() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    jSTypeRegistry0.forwardDeclareType(""Unknown class name"");
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, ""Unknown class name"", ""Named type with empty name component"", 1, 1);
+    namedType0.defineSynthesizedProperty(""Named type with empty name component"", noResolvedType0, (Node) null);
+    namedType0.resolveInternal(simpleErrorReporter0, noResolvedType0);
+    assertTrue(namedType0.isNativeObjectType());
+}",""
+"@Override
+boolean defineProperty(String propertyName, JSType type, boolean inferred, Node propertyNode) {
+    if (!isResolved()) {
+        // If this is an unresolved object type, we need to save all its
+        // properties and define them when it is resolved.
+        if (propertyContinuations == null) {
+            propertyContinuations = Lists.newArrayList();
+        }
+        propertyContinuations.add(new PropertyContinuation(propertyName, type, inferred, propertyNode));
+        return true;
+    } else {
+        return super.defineProperty(propertyName, type, inferred, propertyNode);
+    }
+}","public void test0711() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, "".?#7b`4XDE[>+9B'o{x"", "".?#7b`4XDE[>+9B'o{x"", (-23), (-23));
+    ObjectType objectType0 = jSTypeRegistry0.createNativeAnonymousObjectType();
+    Node node0 = new Node(0, 160, 1);
+    namedType0.defineProperty(""Named type with empty name component"", objectType0, false, node0);
+    boolean boolean0 = namedType0.defineProperty(""Not declared as a constructor"", objectType0, false, node0);
+    assertTrue(boolean0);
+}",""
+"@Override
+public String getReferenceName() {
+    return reference;
+}","public void test0712() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, "".?#7b`4XDE[>+9B'o{x"", "".?#7b`4XDE[>+9B'o{x"", (-23), (-23));
+    ObjectType objectType0 = jSTypeRegistry0.createNativeAnonymousObjectType();
+    Node node0 = new Node(0, 160, 1);
+    namedType0.defineProperty(""Named type with empty name component"", objectType0, false, node0);
+    boolean boolean0 = namedType0.defineProperty(""Not declared as a constructor"", objectType0, false, node0);
+    assertEquals("".?#7b`4XDE[>+9B'o{x"", namedType0.getReferenceName());
+}",""
+"@Override
+public String getReferenceName() {
+    return reference;
+}","public void test0813() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, ""void"", ""void"", 1, 0);
+    namedType0.resolveInternal(simpleErrorReporter0, noResolvedType0);
+    assertEquals(""void"", namedType0.getReferenceName());
+}",""
+"public final boolean isResolved() {
+    return resolved;
+}","public void test0914() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    jSTypeRegistry0.forwardDeclareType(""Not declared as a constructor"");
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, ""Not declared as a constructor"", ""Unknown class name"", 1, 0);
+    namedType0.resolveInternal(simpleErrorReporter0, noResolvedType0);
+    assertTrue(namedType0.isResolved());
+}","/**
+ * Whether the type has been resolved.
+ */"
+"@Override
+public boolean isNativeObjectType() {
+    return referencedObjType == null ? false : referencedObjType.isNativeObjectType();
+}","public void test1015() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, ""Object"", ""Object"", 2138, 2138);
+    jSTypeRegistry0.setLastGeneration(false);
+    namedType0.resolveInternal(simpleErrorReporter0, namedType0);
+    assertTrue(namedType0.isNativeObjectType());
+}",""
+"public final boolean isResolved() {
+    return resolved;
+}","public void test1116() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    jSTypeRegistry0.setLastGeneration(false);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, ""Unknown class name"", ""Named type with empty name component"", 1, 1);
+    namedType0.resolveInternal(simpleErrorReporter0, noResolvedType0);
+    assertTrue(namedType0.isResolved());
+}","/**
+ * Whether the type has been resolved.
+ */"
+"public final boolean isResolved() {
+    return resolved;
+}","public void test1217() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithNewReturnType(noResolvedType0, noResolvedType0);
+    ParameterizedType parameterizedType0 = jSTypeRegistry0.createParameterizedType(functionType0, noResolvedType0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""Not declared as a constructor"");
+    parameterizedType0.defineSynthesizedProperty(""Named type with empty name component"", errorFunctionType0, (Node) null);
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, ""Named type with empty name component"", ""^zG4ow'8W7"", 1, 1);
+    namedType0.resolveInternal(simpleErrorReporter0, parameterizedType0);
+    assertTrue(namedType0.isResolved());
+}","/**
+ * Whether the type has been resolved.
+ */"
+"public final boolean isResolved() {
+    return resolved;
+}","public void test1318() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithNewReturnType(noResolvedType0, noResolvedType0);
+    ParameterizedType parameterizedType0 = jSTypeRegistry0.createParameterizedType(functionType0, noResolvedType0);
+    ErrorFunctionType errorFunctionType0 = new ErrorFunctionType(jSTypeRegistry0, ""Not declared as a constructor"");
+    FunctionType functionType1 = errorFunctionType0.getBindReturnType(1);
+    parameterizedType0.defineSynthesizedProperty(""Named type with empty name component"", functionType1, (Node) null);
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, ""Named type with empty name component"", ""^zG4ow'8W7"", 1, 1);
+    namedType0.resolveInternal(simpleErrorReporter0, parameterizedType0);
+    assertTrue(namedType0.isResolved());
+}","/**
+ * Whether the type has been resolved.
+ */"
+"public final boolean isResolved() {
+    return resolved;
+}","public void test1419() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionTypeWithNewReturnType(noResolvedType0, noResolvedType0);
+    ParameterizedType parameterizedType0 = jSTypeRegistry0.createParameterizedType(functionType0, noResolvedType0);
+    FunctionType functionType1 = jSTypeRegistry0.createInterfaceType(""Unknown class name"", (Node) null);
+    parameterizedType0.defineSynthesizedProperty(""Named type with empty name component"", functionType1, (Node) null);
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, ""Named type with empty name component"", ""Unknown class name"", 1, 1);
+    namedType0.resolveInternal(simpleErrorReporter0, parameterizedType0);
+    assertTrue(namedType0.isResolved());
+}","/**
+ * Whether the type has been resolved.
+ */"
+"public final boolean isResolved() {
+    return resolved;
+}","public void test1520() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    NoObjectType noObjectType0 = new NoObjectType(jSTypeRegistry0);
+    Node node0 = Node.newString(1, ""#s0+k&c%dur"", 1, 1);
+    noResolvedType0.setPrototype(noObjectType0, node0);
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, ""prototype"", ""Not declared as a type name"", 1, 0);
+    namedType0.resolveInternal(simpleErrorReporter0, noResolvedType0);
+    assertTrue(namedType0.isResolved());
+}","/**
+ * Whether the type has been resolved.
+ */"
+"public final boolean isResolved() {
+    return resolved;
+}","public void test1621() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, ""prototype"", ""Named type with empty name component"", 1, 0);
+    namedType0.resolveInternal(simpleErrorReporter0, noResolvedType0);
+    assertTrue(namedType0.isResolved());
+}","/**
+ * Whether the type has been resolved.
+ */"
+"public final boolean isResolved() {
+    return resolved;
+}","public void test1722() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ObjectType objectType0 = jSTypeRegistry0.createNativeAnonymousObjectType();
+    ParameterizedType parameterizedType0 = new ParameterizedType(jSTypeRegistry0, objectType0, objectType0);
+    parameterizedType0.defineSynthesizedProperty(""Not declared as a constructor"", (JSType) null, (Node) null);
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, ""Not declared as a constructor"", ""Not declared as a type name"", 0, 1);
+    namedType0.resolveInternal(simpleErrorReporter0, objectType0);
+    assertTrue(namedType0.isResolved());
+}","/**
+ * Whether the type has been resolved.
+ */"
+"public final boolean isResolved() {
+    return resolved;
+}","public void test1823() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ObjectType objectType0 = jSTypeRegistry0.createNativeAnonymousObjectType();
+    ParameterizedType parameterizedType0 = new ParameterizedType(jSTypeRegistry0, objectType0, objectType0);
+    AllType allType0 = new AllType(jSTypeRegistry0);
+    parameterizedType0.defineSynthesizedProperty(""Unknown class name"", allType0, (Node) null);
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, ""Unknown class name"", ""Not declared as a constructor"", 0, 1);
+    namedType0.resolveInternal(simpleErrorReporter0, parameterizedType0);
+    assertTrue(namedType0.isResolved());
+}","/**
+ * Whether the type has been resolved.
+ */"
+"public final boolean isResolved() {
+    return resolved;
+}","public void test1924() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    NoType noType0 = new NoType(jSTypeRegistry0);
+    Node node0 = Node.newString(1, ""#s0+k&c%dur"", 1, 0);
+    noResolvedType0.setPrototype(noType0, node0);
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, ""prototype"", ""Not declared as a type name"", 1, 0);
+    namedType0.resolveInternal(simpleErrorReporter0, noResolvedType0);
+    assertTrue(namedType0.isResolved());
+}","/**
+ * Whether the type has been resolved.
+ */"
+"@Override
+public boolean isNativeObjectType() {
+    return referencedObjType == null ? false : referencedObjType.isNativeObjectType();
+}","public void test2025() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, ""Object"", ""Object"", 2068, 2068);
+    Predicate<JSType> predicate0 = (Predicate<JSType>) mock(Predicate.class, new ViolatedAssumptionAnswer());
+    doReturn(false).when(predicate0).apply(any(com.google.javascript.rhino.jstype.JSType.class));
+    namedType0.setValidator(predicate0);
+    namedType0.resolveInternal(simpleErrorReporter0, namedType0);
+    assertTrue(namedType0.isNativeObjectType());
+}",""
+"@Override
+JSType resolveInternal(ErrorReporter t, StaticScope<JSType> enclosing) {
+    // TODO(user): Investigate whether it is really necessary to keep two
+    // different mechanisms for resolving named types, and if so, which order
+    // makes more sense. Now, resolution via registry is first in order to
+    // avoid triggering the warnings built into the resolution via properties.
+    boolean resolved = resolveViaRegistry(t, enclosing);
+    if (detectImplicitPrototypeCycle()) {
+        handleTypeCycle(t);
+    }
+    if (resolved) {
+        super.resolveInternal(t, enclosing);
+        finishPropertyContinuations();
+        return registry.isLastGeneration() ? getReferencedType() : this;
+    }
+    resolveViaProperties(t, enclosing);
+    if (detectImplicitPrototypeCycle()) {
+        handleTypeCycle(t);
+    }
+    super.resolveInternal(t, enclosing);
+    if (isResolved()) {
+        finishPropertyContinuations();
+    }
+    return registry.isLastGeneration() ? getReferencedType() : this;
+}","public void test2126() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    ObjectType objectType0 = jSTypeRegistry0.createNativeAnonymousObjectType();
+    ParameterizedType parameterizedType0 = new ParameterizedType(jSTypeRegistry0, objectType0, objectType0);
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Not declared as a type name"", (Node) null, parameterizedType0);
+    parameterizedType0.defineSynthesizedProperty(""Not declared as a type name"", enumType0, (Node) null);
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, ""Not declared as a type name"", ""Not declared as a constructor"", 1, 1);
+    // Undeclared exception!
+    try {
+        namedType0.resolveInternal(simpleErrorReporter0, parameterizedType0);
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // com.google.javascript.rhino.jstype.UnknownType cannot be cast to com.google.javascript.rhino.jstype.EnumElementType
+        //
+        verifyException(""com.google.javascript.rhino.jstype.EnumType"", e);
+    }
+}","/**
+ * Resolve the referenced type within the enclosing scope.
+ */"
+"public final boolean isResolved() {
+    return resolved;
+}","public void test2227() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NoResolvedType noResolvedType0 = new NoResolvedType(jSTypeRegistry0);
+    jSTypeRegistry0.forwardDeclareType(""Not declared as a constructor"");
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, ""Not declared as a constructor"", ""Unknown class name"", 1, 0);
+    Predicate<JSType> predicate0 = (Predicate<JSType>) mock(Predicate.class, new ViolatedAssumptionAnswer());
+    doReturn(false).when(predicate0).apply(any(com.google.javascript.rhino.jstype.JSType.class));
+    namedType0.setValidator(predicate0);
+    namedType0.resolveInternal(simpleErrorReporter0, noResolvedType0);
+    assertTrue(namedType0.isResolved());
+}","/**
+ * Whether the type has been resolved.
+ */"
+"public final boolean isResolved() {
+    return resolved;
+}","public void test2328() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0);
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, ""CONSTRUCTOR"", ""CONSTRUCTOR"", 1099, 1099);
+    Node node0 = Node.newString(""CONSTRUCTOR"");
+    Property property0 = new Property(""Named type with empty name component"", (JSType) null, false, node0);
+    namedType0.getTypedefType(simpleErrorReporter0, property0, ""CONSTRUCTOR"");
+    assertTrue(namedType0.isResolved());
+}","/**
+ * Whether the type has been resolved.
+ */"
+"public final boolean isResolved() {
+    return resolved;
+}","public void test2429() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, "".?#7b`4XDE[>+9B'o{x"", "".?#7b`4XDE[>+9B'o{x"", 0, 0);
+    ObjectType objectType0 = jSTypeRegistry0.createNativeAnonymousObjectType();
+    namedType0.resolveInternal(simpleErrorReporter0, objectType0);
+    Predicate<JSType> predicate0 = (Predicate<JSType>) mock(Predicate.class, new ViolatedAssumptionAnswer());
+    doReturn(false).when(predicate0).apply(any(com.google.javascript.rhino.jstype.JSType.class));
+    boolean boolean0 = namedType0.setValidator(predicate0);
+    assertTrue(namedType0.isResolved());
+}","/**
+ * Whether the type has been resolved.
+ */"
+"@Override
+public boolean setValidator(Predicate<JSType> validator) {
+    // If the type is already resolved, we can validate it now. If
+    // the type has not been resolved yet, we need to wait till its
+    // resolved before we can validate it.
+    if (this.isResolved()) {
+        return super.setValidator(validator);
+    } else {
+        this.validator = validator;
+        return true;
+    }
+}","public void test2430() throws Throwable {
+    SimpleErrorReporter simpleErrorReporter0 = new SimpleErrorReporter();
+    JSTypeRegistry jSTypeRegistry0 = new JSTypeRegistry(simpleErrorReporter0, false);
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, "".?#7b`4XDE[>+9B'o{x"", "".?#7b`4XDE[>+9B'o{x"", 0, 0);
+    ObjectType objectType0 = jSTypeRegistry0.createNativeAnonymousObjectType();
+    namedType0.resolveInternal(simpleErrorReporter0, objectType0);
+    Predicate<JSType> predicate0 = (Predicate<JSType>) mock(Predicate.class, new ViolatedAssumptionAnswer());
+    doReturn(false).when(predicate0).apply(any(com.google.javascript.rhino.jstype.JSType.class));
+    boolean boolean0 = namedType0.setValidator(predicate0);
+    assertFalse(boolean0);
+}",""

@@ -1,0 +1,74 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test11,"public void test11() throws Throwable {
+    MockHandler<Object> mockHandler0 = new MockHandler<Object>();
+    // Undeclared exception!
+    try {
+        mockHandler0.setAnswersForStubbing((List<Answer>) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}",0,
+project,0,test22,"public void test22() throws Throwable {
+    MockHandler<Object> mockHandler0 = new MockHandler<Object>();
+    InvocationContainerImpl invocationContainerImpl0 = (InvocationContainerImpl) mockHandler0.getInvocationContainer();
+    assertFalse(invocationContainerImpl0.hasAnswersForStubbing());
+}",0,assertTrue(invocationContainerImpl0.hasAnswersForStubbing())
+project,0,test33,"public void test33() throws Throwable {
+    MockHandler<Object> mockHandler0 = new MockHandler<Object>();
+    VoidMethodStubbable<Object> voidMethodStubbable0 = mockHandler0.voidMethodStubbable(mockHandler0);
+    assertNotNull(voidMethodStubbable0);
+}",0,assertNotNull(voidMethodStubbable0)
+project,0,test44,"public void test44() throws Throwable {
+    Invocation invocation0 = mock(Invocation.class, new ViolatedAssumptionAnswer());
+    MockHandler<ReturnsElementsOf> mockHandler0 = new MockHandler<ReturnsElementsOf>();
+    try {
+        mockHandler0.handle(invocation0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.mockito.internal.MockHandler"", e);
+    }
+}",0,
+project,0,test55,"public void test55() throws Throwable {
+    Invocation invocation0 = mock(Invocation.class, new ViolatedAssumptionAnswer());
+    MockHandler<Locale.Category> mockHandler0 = new MockHandler<Locale.Category>();
+    ThreadSafeMockingProgress threadSafeMockingProgress0 = (ThreadSafeMockingProgress) mockHandler0.mockingProgress;
+    InvocationContainerImpl invocationContainerImpl0 = new InvocationContainerImpl(threadSafeMockingProgress0);
+    invocationContainerImpl0.addAnswerForVoidMethod((Answer) null);
+    mockHandler0.invocationContainerImpl = invocationContainerImpl0;
+    try {
+        mockHandler0.handle(invocation0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.concurrent.ConcurrentLinkedQueue"", e);
+    }
+}",0,
+project,0,test66,"public void test66() throws Throwable {
+    Integer integer0 = new Integer((-43));
+    Invocation invocation0 = mock(Invocation.class, new ViolatedAssumptionAnswer());
+    doReturn((Method) null).when(invocation0).getMethod();
+    doReturn(integer0).when(invocation0).getMock();
+    MockHandler<ReturnsElementsOf> mockHandler0 = new MockHandler<ReturnsElementsOf>();
+    ThreadSafeMockingProgress threadSafeMockingProgress0 = new ThreadSafeMockingProgress();
+    VerificationWithTimeout verificationWithTimeout0 = new VerificationWithTimeout((-43), (VerificationMode) null);
+    MockAwareVerificationMode mockAwareVerificationMode0 = new MockAwareVerificationMode(integer0, verificationWithTimeout0);
+    threadSafeMockingProgress0.verificationStarted(mockAwareVerificationMode0);
+    try {
+        mockHandler0.handle(invocation0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.mockito.internal.creation.DelegatingMethod"", e);
+    }
+}",0,

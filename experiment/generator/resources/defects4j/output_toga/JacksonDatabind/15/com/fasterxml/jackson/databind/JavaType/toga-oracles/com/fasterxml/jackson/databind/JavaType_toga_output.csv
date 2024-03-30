@@ -1,0 +1,273 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<Throwable> class0 = Throwable.class;
+    ObjectWriter objectWriter0 = objectMapper0.writerFor((Class<?>) class0);
+    assertTrue(objectWriter0.hasPrefetchedSerializer());
+}",0,assertFalse(objectWriter0.hasPrefetchedSerializer())
+project,0,test011,"public void test011() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<Throwable> class0 = Throwable.class;
+    ObjectReader objectReader0 = objectMapper0.reader((Class<?>) class0);
+    assertNotNull(objectReader0);
+}",0,assertNotNull(objectReader0)
+project,0,test022,"public void test022() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    assertFalse(javaType0.isArrayType());
+}",0,assertFalse(javaType0.isArrayType())
+project,0,test023,"public void test023() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    assertFalse(javaType0.isMapLikeType());
+}",0,assertTrue(javaType0.isMapLikeType())
+project,0,test024,"public void test024() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    objectMapper0.reader(javaType0);
+    assertTrue(javaType0.isConcrete());
+}",0,
+project,0,test025,"public void test025() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    objectMapper0.reader(javaType0);
+    assertFalse(javaType0.isCollectionLikeType());
+}",0,
+project,0,test026,"public void test026() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    objectMapper0.reader(javaType0);
+    assertFalse(javaType0.useStaticType());
+}",0,assertTrue(javaType0.useStaticType())
+project,0,test037,"public void test037() throws Throwable {
+    SimpleType simpleType0 = (SimpleType) TypeBindings.UNBOUND;
+    String string0 = simpleType0.getGenericSignature();
+    assertEquals(""Ljava/lang/Object;"", string0);
+}",0,
+project,0,test048,"public void test048() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    javaType0.getErasedSignature();
+    assertFalse(javaType0.useStaticType());
+}",0,assertTrue(javaType0.useStaticType())
+project,0,test059,"public void test059() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    Class<String> class0 = String.class;
+    JavaType javaType1 = javaType0.widenBy(class0);
+    assertFalse(javaType0.useStaticType());
+}",0,assertTrue(javaType0.useStaticType())
+project,0,test0510,"public void test0510() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    Class<String> class0 = String.class;
+    JavaType javaType1 = javaType0.widenBy(class0);
+    assertTrue(javaType1.isFinal());
+}",0,
+project,0,test0611,"public void test0611() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    javaType0.getContentType();
+    assertFalse(javaType0.useStaticType());
+}",0,assertTrue(javaType0.useStaticType())
+project,0,test0712,"public void test0712() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    Class<Object> class0 = Object.class;
+    JavaType javaType1 = javaType0.narrowBy(class0);
+    assertSame(javaType1, javaType0);
+}",0,
+project,0,test0713,"public void test0713() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    Class<Object> class0 = Object.class;
+    JavaType javaType1 = javaType0.narrowBy(class0);
+    assertFalse(javaType1.useStaticType());
+}",0,assertTrue(javaType1.useStaticType())
+project,0,test0814,"public void test0814() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    Class<Object> class0 = Object.class;
+    CollectionType collectionType0 = CollectionType.construct(class0, javaType0);
+    CollectionType collectionType1 = collectionType0.withValueHandler(javaType0);
+    Class<Annotation> class1 = Annotation.class;
+    JavaType javaType1 = collectionType1.narrowBy(class1);
+    assertFalse(collectionType0.useStaticType());
+}",0,
+project,0,test0815,"public void test0815() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    Class<Object> class0 = Object.class;
+    CollectionType collectionType0 = CollectionType.construct(class0, javaType0);
+    CollectionType collectionType1 = collectionType0.withValueHandler(javaType0);
+    Class<Annotation> class1 = Annotation.class;
+    JavaType javaType1 = collectionType1.narrowBy(class1);
+    assertTrue(javaType1.isAbstract());
+}",0,assertFalse(javaType1.isAbstract())
+project,0,test0916,"public void test0916() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    Class<Object> class0 = Object.class;
+    CollectionType collectionType0 = CollectionType.construct(class0, javaType0);
+    HashMap<String, ClientInfoStatus> hashMap0 = new HashMap<String, ClientInfoStatus>();
+    SQLClientInfoException sQLClientInfoException0 = new SQLClientInfoException(hashMap0);
+    CollectionType collectionType1 = collectionType0.withTypeHandler(sQLClientInfoException0);
+    MapType mapType0 = MapType.construct(class0, collectionType0, collectionType1);
+    Class<Throwable> class1 = Throwable.class;
+    JavaType javaType1 = mapType0.narrowContentsBy(class1);
+    assertFalse(mapType0.useStaticType());
+}",0,assertTrue(mapType0.useStaticType())
+project,0,test0917,"public void test0917() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    Class<Object> class0 = Object.class;
+    CollectionType collectionType0 = CollectionType.construct(class0, javaType0);
+    HashMap<String, ClientInfoStatus> hashMap0 = new HashMap<String, ClientInfoStatus>();
+    SQLClientInfoException sQLClientInfoException0 = new SQLClientInfoException(hashMap0);
+    CollectionType collectionType1 = collectionType0.withTypeHandler(sQLClientInfoException0);
+    MapType mapType0 = MapType.construct(class0, collectionType0, collectionType1);
+    Class<Throwable> class1 = Throwable.class;
+    JavaType javaType1 = mapType0.narrowContentsBy(class1);
+    assertFalse(javaType1.equals((Object) mapType0));
+}",0,
+project,0,test1018,"public void test1018() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    Class<Object> class0 = Object.class;
+    JavaType javaType1 = javaType0.forcedNarrowBy(class0);
+    assertFalse(javaType1.useStaticType());
+}",0,assertTrue(javaType1.useStaticType())
+project,0,test1019,"public void test1019() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    Class<Object> class0 = Object.class;
+    JavaType javaType1 = javaType0.forcedNarrowBy(class0);
+    assertSame(javaType1, javaType0);
+}",0,
+project,0,test1120,"public void test1120() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<TreeSet> class0 = TreeSet.class;
+    CollectionType collectionType0 = typeFactory0.constructCollectionType(class0, javaType0);
+    CollectionType collectionType1 = collectionType0.withValueHandler(typeFactory0);
+    Class<ClassKey> class1 = ClassKey.class;
+    JavaType javaType1 = collectionType1.forcedNarrowBy(class1);
+    assertTrue(javaType1.isFinal());
+}",0,assertTrue(javaType1.isFinal())
+project,0,test1121,"public void test1121() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<TreeSet> class0 = TreeSet.class;
+    CollectionType collectionType0 = typeFactory0.constructCollectionType(class0, javaType0);
+    CollectionType collectionType1 = collectionType0.withValueHandler(typeFactory0);
+    Class<ClassKey> class1 = ClassKey.class;
+    JavaType javaType1 = collectionType1.forcedNarrowBy(class1);
+    assertFalse(collectionType0.useStaticType());
+}",0,assertTrue(collectionType0.useStaticType())
+project,0,test1222,"public void test1222() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    Class<Integer> class0 = Integer.class;
+    MapType mapType0 = MapType.construct(class0, javaType0, javaType0);
+    CollectionType collectionType0 = CollectionType.construct(class0, mapType0);
+    CollectionType collectionType1 = collectionType0.withTypeHandler(class0);
+    Class<Object> class1 = Object.class;
+    JavaType javaType1 = collectionType1.forcedNarrowBy(class1);
+    assertFalse(collectionType0.useStaticType());
+}",0,assertTrue(collectionType0.useStaticType())
+project,0,test1223,"public void test1223() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    Class<Integer> class0 = Integer.class;
+    MapType mapType0 = MapType.construct(class0, javaType0, javaType0);
+    CollectionType collectionType0 = CollectionType.construct(class0, mapType0);
+    CollectionType collectionType1 = collectionType0.withTypeHandler(class0);
+    Class<Object> class1 = Object.class;
+    JavaType javaType1 = collectionType1.forcedNarrowBy(class1);
+    assertFalse(javaType1.isFinal());
+}",0,
+project,0,test1324,"public void test1324() throws Throwable {
+    Class<Throwable> class0 = Throwable.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    JavaType javaType0 = simpleType0.widenBy(class0);
+    assertSame(javaType0, simpleType0);
+}",0,
+project,0,test1325,"public void test1325() throws Throwable {
+    Class<Throwable> class0 = Throwable.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    JavaType javaType0 = simpleType0.widenBy(class0);
+    assertFalse(javaType0.useStaticType());
+}",0,assertTrue(javaType0.useStaticType())
+project,0,test1426,"public void test1426() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectWriter objectWriter0 = objectMapper0.writerFor(javaType0);
+    assertFalse(javaType0.useStaticType());
+}",0,assertTrue(javaType0.useStaticType())
+project,0,test1427,"public void test1427() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectWriter objectWriter0 = objectMapper0.writerFor(javaType0);
+    assertFalse(objectWriter0.hasPrefetchedSerializer());
+}",0,
+project,0,test1528,"public void test1528() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<InputStream> class0 = InputStream.class;
+    ObjectReader objectReader0 = objectMapper0.reader((Class<?>) class0);
+    assertNotNull(objectReader0);
+}",0,assertNotNull(objectReader0)
+project,0,test1629,"public void test1629() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    ArrayType arrayType0 = ArrayType.construct(javaType0, javaType0, javaType0);
+    boolean boolean0 = arrayType0.hasGenericTypes();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test1630,"public void test1630() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    ArrayType arrayType0 = ArrayType.construct(javaType0, javaType0, javaType0);
+    boolean boolean0 = arrayType0.hasGenericTypes();
+    assertFalse(arrayType0.useStaticType());
+}",0,assertTrue(arrayType0.useStaticType())
+project,0,test1731,"public void test1731() throws Throwable {
+    Class<Map> class0 = Map.class;
+    JavaType javaType0 = TypeFactory.unknownType();
+    CollectionType collectionType0 = CollectionType.construct(class0, javaType0);
+    boolean boolean0 = collectionType0.hasGenericTypes();
+    assertFalse(javaType0.hasGenericTypes());
+}",0,assertTrue(javaType0.hasGenericTypes())
+project,0,test1732,"public void test1732() throws Throwable {
+    Class<Map> class0 = Map.class;
+    JavaType javaType0 = TypeFactory.unknownType();
+    CollectionType collectionType0 = CollectionType.construct(class0, javaType0);
+    boolean boolean0 = collectionType0.hasGenericTypes();
+    assertFalse(collectionType0.useStaticType());
+}",0,assertTrue(collectionType0.useStaticType())
+project,0,test1733,"public void test1733() throws Throwable {
+    Class<Map> class0 = Map.class;
+    JavaType javaType0 = TypeFactory.unknownType();
+    CollectionType collectionType0 = CollectionType.construct(class0, javaType0);
+    boolean boolean0 = collectionType0.hasGenericTypes();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test1834,"public void test1834() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    Class<PipedInputStream> class0 = PipedInputStream.class;
+    MapLikeType mapLikeType0 = MapLikeType.construct(class0, javaType0, javaType0);
+    JavaType javaType1 = mapLikeType0.containedTypeOrUnknown(0);
+    assertFalse(javaType1.useStaticType());
+}",0,assertTrue(javaType1.useStaticType())
+project,0,test1835,"public void test1835() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    Class<PipedInputStream> class0 = PipedInputStream.class;
+    MapLikeType mapLikeType0 = MapLikeType.construct(class0, javaType0, javaType0);
+    JavaType javaType1 = mapLikeType0.containedTypeOrUnknown(0);
+    assertSame(javaType1, javaType0);
+}",0,
+project,0,test1936,"public void test1936() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    JavaType javaType1 = javaType0.containedTypeOrUnknown(0);
+    assertFalse(javaType1.useStaticType());
+}",1,
+project,0,test1937,"public void test1937() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    JavaType javaType1 = javaType0.containedTypeOrUnknown(0);
+    assertNotNull(javaType1);
+}",0,
+project,0,test2038,"public void test2038() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    Class<Integer> class0 = Integer.TYPE;
+    // Undeclared exception!
+    try {
+        javaType0.narrowBy(class0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Class int is not assignable to java.lang.Object
+        //
+        verifyException(""com.fasterxml.jackson.databind.JavaType"", e);
+    }
+}",0,

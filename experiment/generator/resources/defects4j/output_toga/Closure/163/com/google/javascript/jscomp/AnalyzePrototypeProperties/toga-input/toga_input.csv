@@ -1,0 +1,90 @@
+focal_method,test_prefix,docstring
+"@Override
+public void process(Node externRoot, Node root) {
+    if (!canModifyExterns) {
+        NodeTraversal.traverse(compiler, externRoot, new ProcessExternProperties());
+    }
+    NodeTraversal.traverse(compiler, root, new ProcessProperties());
+    FixedPointGraphTraversal<NameInfo, JSModule> t = FixedPointGraphTraversal.newTraversal(new PropagateReferences());
+    t.computeFixedPoint(symbolGraph, Sets.newHashSet(externNode, globalNode));
+}","public void test000() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""function JSCompiler_set(JSCompiler_set_name) {  return function(JSCompiler_set_value) {this[JSCompiler_set_name] = JSCompiler_set_value}}"");
+    AnalyzePrototypeProperties analyzePrototypeProperties0 = new AnalyzePrototypeProperties(compiler0, (JSModuleGraph) null, false, false);
+    analyzePrototypeProperties0.process(node0, node0);
+    assertEquals(41, Node.BRACELESS_TYPE);
+}",""
+"public boolean isUnscopedQualifiedName() {
+    switch(getType()) {
+        case Token.NAME:
+            return true;
+        case Token.GETPROP:
+            return getFirstChild().isUnscopedQualifiedName();
+        default:
+            return false;
+    }
+}","public void test011() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""function JSCompiler_set(JSCompiler_set_name) {  return function(JSCompiler_set_value) {this[JSCompiler_set_name] = JSCompiler_set_value}}"");
+    AnalyzePrototypeProperties analyzePrototypeProperties0 = new AnalyzePrototypeProperties(compiler0, (JSModuleGraph) null, true, true);
+    analyzePrototypeProperties0.process(node0, node0);
+    assertFalse(node0.isUnscopedQualifiedName());
+}","/**
+ * Returns whether a node corresponds to a simple or a qualified name without
+ * a ""this"" reference, such as <code>a.b.c</code>, but not <code>this.a</code>
+ * .
+ */"
+"public Collection<NameInfo> getAllNameInfo() {
+    List<NameInfo> result = Lists.newArrayList(propertyNameInfo.values());
+    result.addAll(varNameInfo.values());
+    return result;
+}","public void test044() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    AnalyzePrototypeProperties analyzePrototypeProperties0 = new AnalyzePrototypeProperties(compiler0, (JSModuleGraph) null, true, true);
+    Collection<AnalyzePrototypeProperties.NameInfo> collection0 = analyzePrototypeProperties0.getAllNameInfo();
+    assertNotNull(collection0);
+}","/**
+ * Returns information on all prototype properties.
+ */"
+"public boolean isScript() {
+    return this.getType() == Token.SCRIPT;
+}","public void test135() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""com.google.javascript.rhino.jstype.TemlateType"", ""com.google.javascript.rhino.jstype.TemlateType"");
+    AnalyzePrototypeProperties analyzePrototypeProperties0 = new AnalyzePrototypeProperties(compiler0, (JSModuleGraph) null, false, false);
+    analyzePrototypeProperties0.process(node0, node0);
+    assertTrue(node0.isScript());
+}",""
+"public boolean isComma() {
+    return this.getType() == Token.COMMA;
+}","public void test146() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""function JSCompiler_et(JSCompiler_set_name) {  return function(JSCompiler_set_value) {this[JSCompiler_set_name] = JSCompiler_set_value}}"");
+    node0.setType((-2916));
+    AnalyzePrototypeProperties analyzePrototypeProperties0 = new AnalyzePrototypeProperties(compiler0, (JSModuleGraph) null, true, true);
+    analyzePrototypeProperties0.process(node0, node0);
+    assertFalse(node0.isComma());
+}",""
+"public boolean isAssignAdd() {
+    return this.getType() == Token.ASSIGN_ADD;
+}","public void test157() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""w.lcW=J"");
+    AnalyzePrototypeProperties analyzePrototypeProperties0 = new AnalyzePrototypeProperties(compiler0, (JSModuleGraph) null, true, true);
+    analyzePrototypeProperties0.process(node0, node0);
+    assertFalse(node0.isAssignAdd());
+}",""
+"public boolean isBreak() {
+    return this.getType() == Token.BREAK;
+}","public void test178() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""javaript"");
+    JSModule[] jSModuleArray0 = new JSModule[1];
+    JSModule jSModule0 = new JSModule(""mozilla"");
+    jSModuleArray0[0] = jSModule0;
+    JSModuleGraph jSModuleGraph0 = new JSModuleGraph(jSModuleArray0);
+    AnalyzePrototypeProperties analyzePrototypeProperties0 = new AnalyzePrototypeProperties(compiler0, jSModuleGraph0, true, true);
+    analyzePrototypeProperties0.process(node0, node0);
+    analyzePrototypeProperties0.process(node0, node0);
+    assertFalse(node0.isBreak());
+}",""

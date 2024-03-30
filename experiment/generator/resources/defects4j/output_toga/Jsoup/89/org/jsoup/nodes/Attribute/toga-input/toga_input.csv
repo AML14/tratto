@@ -1,0 +1,762 @@
+focal_method,test_prefix,docstring
+"protected static boolean isBooleanAttribute(final String key) {
+    return Arrays.binarySearch(booleanAttributes, key) >= 0;
+}","public void test000() throws Throwable {
+    boolean boolean0 = Attribute.isBooleanAttribute(""allowfullscreen"");
+    assertTrue(boolean0);
+}","/**
+ * Checks if this attribute name is defined as a boolean attribute in HTML5
+ */"
+"protected boolean isBooleanAttribute() {
+    return Arrays.binarySearch(booleanAttributes, key) >= 0 || val == null;
+}","public void test011() throws Throwable {
+    Attribute attribute0 = new Attribute(""39T(g;UY\""6=Q^Zb>0Q"", ""nowra"");
+    attribute0.setKey(""allowfullscreen"");
+    boolean boolean0 = attribute0.isBooleanAttribute();
+    assertTrue(boolean0);
+}","/**
+ * @deprecated
+ */"
+"public String getValue() {
+    return Attributes.checkNotNull(val);
+}","public void test012() throws Throwable {
+    Attribute attribute0 = new Attribute(""39T(g;UY\""6=Q^Zb>0Q"", ""nowra"");
+    attribute0.setKey(""allowfullscreen"");
+    boolean boolean0 = attribute0.isBooleanAttribute();
+    assertEquals(""nowra"", attribute0.getValue());
+}","/**
+ *     Get the attribute value.
+ *     @return the attribute value
+ */"
+"protected final boolean shouldCollapseAttribute(Document.OutputSettings out) {
+    return shouldCollapseAttribute(key, val, out);
+}","public void test023() throws Throwable {
+    Attribute attribute0 = Attribute.createFromEncoded(""disabled"", ""disabled"");
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    boolean boolean0 = attribute0.shouldCollapseAttribute(document_OutputSettings0);
+    assertTrue(boolean0);
+}","/**
+ * Collapsible if it's a boolean attribute and value is empty or same as name
+ *
+ * @param out output settings
+ * @return  Returns whether collapsible or not
+ */"
+"protected static boolean shouldCollapseAttribute(final String key, final String val, final Document.OutputSettings out) {
+    return (out.syntax() == Document.OutputSettings.Syntax.html && (val == null || ("""".equals(val) || val.equalsIgnoreCase(key)) && Attribute.isBooleanAttribute(key)));
+}","public void test034() throws Throwable {
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    boolean boolean0 = Attribute.shouldCollapseAttribute((String) null, (String) null, document_OutputSettings0);
+    assertTrue(boolean0);
+}",""
+"protected static boolean isDataAttribute(String key) {
+    return key.startsWith(Attributes.dataPrefix) && key.length() > Attributes.dataPrefix.length();
+}","public void test045() throws Throwable {
+    boolean boolean0 = Attribute.isDataAttribute(""data-&3R.DsL>ZsE.Xf"");
+    assertTrue(boolean0);
+}",""
+"public String getValue() {
+    return Attributes.checkNotNull(val);
+}","public void test056() throws Throwable {
+    Attribute attribute0 = Attribute.createFromEncoded(""8'A_c*d}i"", ""!mpWjI49%sr"");
+    boolean boolean0 = attribute0.isDataAttribute();
+    assertEquals(""!mpWjI49%sr"", attribute0.getValue());
+}","/**
+ *     Get the attribute value.
+ *     @return the attribute value
+ */"
+"protected boolean isDataAttribute() {
+    return isDataAttribute(key);
+}","public void test057() throws Throwable {
+    Attribute attribute0 = Attribute.createFromEncoded(""8'A_c*d}i"", ""!mpWjI49%sr"");
+    boolean boolean0 = attribute0.isDataAttribute();
+    assertFalse(boolean0);
+}",""
+"protected static boolean isBooleanAttribute(final String key) {
+    return Arrays.binarySearch(booleanAttributes, key) >= 0;
+}","public void test068() throws Throwable {
+    boolean boolean0 = Attribute.isBooleanAttribute("""");
+    assertFalse(boolean0);
+}","/**
+ * Checks if this attribute name is defined as a boolean attribute in HTML5
+ */"
+"public String getValue() {
+    return Attributes.checkNotNull(val);
+}","public void test079() throws Throwable {
+    Attribute attribute0 = Attribute.createFromEncoded(""xhtml"", """");
+    String string0 = attribute0.getValue();
+    assertEquals("""", string0);
+}","/**
+ *     Get the attribute value.
+ *     @return the attribute value
+ */"
+"protected final boolean shouldCollapseAttribute(Document.OutputSettings out) {
+    return shouldCollapseAttribute(key, val, out);
+}","public void test0810() throws Throwable {
+    Attribute attribute0 = Attribute.createFromEncoded(""e'E,YoM(JP{m"", ""e'E,YoM(JP{m"");
+    // Undeclared exception!
+    try {
+        attribute0.shouldCollapseAttribute((Document.OutputSettings) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Attribute"", e);
+    }
+}","/**
+ * Collapsible if it's a boolean attribute and value is empty or same as name
+ *
+ * @param out output settings
+ * @return  Returns whether collapsible or not
+ */"
+"protected static boolean shouldCollapseAttribute(final String key, final String val, final Document.OutputSettings out) {
+    return (out.syntax() == Document.OutputSettings.Syntax.html && (val == null || ("""".equals(val) || val.equalsIgnoreCase(key)) && Attribute.isBooleanAttribute(key)));
+}","public void test0911() throws Throwable {
+    // Undeclared exception!
+    try {
+        Attribute.shouldCollapseAttribute(""|w2kb2{.\""W90"", ""+8>TZ"", (Document.OutputSettings) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Attribute"", e);
+    }
+}",""
+"public String setValue(String val) {
+    String oldVal = parent.get(this.key);
+    if (parent != null) {
+        int i = parent.indexOfKey(this.key);
+        if (i != Attributes.NotFound)
+            parent.vals[i] = val;
+    }
+    this.val = val;
+    return Attributes.checkNotNull(oldVal);
+}","public void test1012() throws Throwable {
+    Attribute attribute0 = Attribute.createFromEncoded(""L&1\""c"", ""5Oc?'\""YGR4\""<zYp"");
+    // Undeclared exception!
+    try {
+        attribute0.setValue(""L&1\""c"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Attribute"", e);
+    }
+}","/**
+ *     Set the attribute value.
+ *     @param val the new attribute value; must not be null
+ */"
+"public void setKey(String key) {
+    Validate.notNull(key);
+    key = key.trim();
+    // trimming could potentially make empty, so validate here
+    Validate.notEmpty(key);
+    if (parent != null) {
+        int i = parent.indexOfKey(this.key);
+        if (i != Attributes.NotFound)
+            parent.keys[i] = key;
+    }
+    this.key = key;
+}","public void test1113() throws Throwable {
+    Attributes attributes0 = new Attributes();
+    Attribute attribute0 = new Attribute(""limitedQuirks"", (String) null, attributes0);
+    // Undeclared exception!
+    try {
+        attribute0.setKey("""");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ *     Set the attribute key; case is preserved.
+ *     @param key the new key; must not be null
+ */"
+"protected static boolean isDataAttribute(String key) {
+    return key.startsWith(Attributes.dataPrefix) && key.length() > Attributes.dataPrefix.length();
+}","public void test1214() throws Throwable {
+    // Undeclared exception!
+    try {
+        Attribute.isDataAttribute((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"protected static boolean isBooleanAttribute(final String key) {
+    return Arrays.binarySearch(booleanAttributes, key) >= 0;
+}","public void test1315() throws Throwable {
+    // Undeclared exception!
+    try {
+        Attribute.isBooleanAttribute((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * Checks if this attribute name is defined as a boolean attribute in HTML5
+ */"
+"protected static void html(String key, String val, Appendable accum, Document.OutputSettings out) throws IOException {
+    accum.append(key);
+    if (!shouldCollapseAttribute(key, val, out)) {
+        accum.append(""=\"""");
+        Entities.escape(accum, Attributes.checkNotNull(val), out, true, false, false);
+        accum.append('""');
+    }
+}","public void test1416() throws Throwable {
+    CharBuffer charBuffer0 = CharBuffer.wrap((CharSequence) ""           "");
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    // Undeclared exception!
+    try {
+        Attribute.html(""seamless"", ""           "", (Appendable) charBuffer0, document_OutputSettings0);
+        fail(""Expecting exception: ReadOnlyBufferException"");
+    } catch (ReadOnlyBufferException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.nio.CharBuffer"", e);
+    }
+}",""
+"protected static void html(String key, String val, Appendable accum, Document.OutputSettings out) throws IOException {
+    accum.append(key);
+    if (!shouldCollapseAttribute(key, val, out)) {
+        accum.append(""=\"""");
+        Entities.escape(accum, Attributes.checkNotNull(val), out, true, false, false);
+        accum.append('""');
+    }
+}","public void test1517() throws Throwable {
+    char[] charArray0 = new char[5];
+    CharBuffer charBuffer0 = CharBuffer.wrap(charArray0);
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    // Undeclared exception!
+    try {
+        Attribute.html((String) null, ""WzX3uM9gA'Lp[\""q"", (Appendable) charBuffer0, document_OutputSettings0);
+        fail(""Expecting exception: BufferOverflowException"");
+    } catch (BufferOverflowException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.nio.CharBuffer"", e);
+    }
+}",""
+"protected static void html(String key, String val, Appendable accum, Document.OutputSettings out) throws IOException {
+    accum.append(key);
+    if (!shouldCollapseAttribute(key, val, out)) {
+        accum.append(""=\"""");
+        Entities.escape(accum, Attributes.checkNotNull(val), out, true, false, false);
+        accum.append('""');
+    }
+}","public void test1618() throws Throwable {
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    // Undeclared exception!
+    try {
+        Attribute.html("""", """", (Appendable) null, document_OutputSettings0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Attribute"", e);
+    }
+}",""
+"protected static void html(String key, String val, Appendable accum, Document.OutputSettings out) throws IOException {
+    accum.append(key);
+    if (!shouldCollapseAttribute(key, val, out)) {
+        accum.append(""=\"""");
+        Entities.escape(accum, Attributes.checkNotNull(val), out, true, false, false);
+        accum.append('""');
+    }
+}","public void test1719() throws Throwable {
+    PipedWriter pipedWriter0 = new PipedWriter();
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    try {
+        Attribute.html(""GC[#TaBCg%Gc+"", ""org.jsoup.parser.Token"", (Appendable) pipedWriter0, document_OutputSettings0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Pipe not connected
+        //
+        verifyException(""java.io.PipedWriter"", e);
+    }
+}",""
+"protected void html(Appendable accum, Document.OutputSettings out) throws IOException {
+    html(key, val, accum, out);
+}","public void test1820() throws Throwable {
+    Attribute attribute0 = Attribute.createFromEncoded(""selected"", ""selected"");
+    CharBuffer charBuffer0 = CharBuffer.wrap((CharSequence) ""selected"");
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    // Undeclared exception!
+    try {
+        attribute0.html((Appendable) charBuffer0, document_OutputSettings0);
+        fail(""Expecting exception: ReadOnlyBufferException"");
+    } catch (ReadOnlyBufferException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.nio.CharBuffer"", e);
+    }
+}",""
+"protected void html(Appendable accum, Document.OutputSettings out) throws IOException {
+    html(key, val, accum, out);
+}","public void test1921() throws Throwable {
+    Attributes attributes0 = new Attributes();
+    Attribute attribute0 = new Attribute(""?sW,9,"", ""t_IH22J_RVbg<"", attributes0);
+    char[] charArray0 = new char[9];
+    CharBuffer charBuffer0 = CharBuffer.wrap(charArray0);
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    // Undeclared exception!
+    try {
+        attribute0.html((Appendable) charBuffer0, document_OutputSettings0);
+        fail(""Expecting exception: BufferOverflowException"");
+    } catch (BufferOverflowException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.nio.Buffer"", e);
+    }
+}",""
+"protected void html(Appendable accum, Document.OutputSettings out) throws IOException {
+    html(key, val, accum, out);
+}","public void test2022() throws Throwable {
+    Attributes attributes0 = new Attributes();
+    Attribute attribute0 = new Attribute(""No buffer left to unconsume"", ""&#xa0;"", attributes0);
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    // Undeclared exception!
+    try {
+        attribute0.html((Appendable) null, document_OutputSettings0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Attribute"", e);
+    }
+}",""
+"protected void html(Appendable accum, Document.OutputSettings out) throws IOException {
+    html(key, val, accum, out);
+}","public void test2123() throws Throwable {
+    Attribute attribute0 = new Attribute(""readonly"", ""selected"", (Attributes) null);
+    PipedWriter pipedWriter0 = new PipedWriter();
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    try {
+        attribute0.html((Appendable) pipedWriter0, document_OutputSettings0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Pipe not connected
+        //
+        verifyException(""java.io.PipedWriter"", e);
+    }
+}",""
+"public static Attribute createFromEncoded(String unencodedKey, String encodedValue) {
+    String value = Entities.unescape(encodedValue, true);
+    // parent will get set when Put
+    return new Attribute(unencodedKey, value, null);
+}","public void test2224() throws Throwable {
+    // Undeclared exception!
+    try {
+        Attribute.createFromEncoded("""", (String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.io.StringReader"", e);
+    }
+}","/**
+ * Create a new Attribute from an unencoded key and a HTML attribute encoded value.
+ * @param unencodedKey assumes the key is not encoded, as can be only run of simple \w chars.
+ * @param encodedValue HTML attribute encoded value
+ * @return attribute
+ */"
+"public static Attribute createFromEncoded(String unencodedKey, String encodedValue) {
+    String value = Entities.unescape(encodedValue, true);
+    // parent will get set when Put
+    return new Attribute(unencodedKey, value, null);
+}","public void test2325() throws Throwable {
+    // Undeclared exception!
+    try {
+        Attribute.createFromEncoded("""", """");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Create a new Attribute from an unencoded key and a HTML attribute encoded value.
+ * @param unencodedKey assumes the key is not encoded, as can be only run of simple \w chars.
+ * @param encodedValue HTML attribute encoded value
+ * @return attribute
+ */"
+"public Attribute(String key, String val, Attributes parent) {
+    Validate.notNull(key);
+    key = key.trim();
+    // trimming could potentially make empty, so validate here
+    Validate.notEmpty(key);
+    this.key = key;
+    this.val = val;
+    this.parent = parent;
+}","public void test2426() throws Throwable {
+    Attribute attribute0 = null;
+    try {
+        attribute0 = new Attribute("""", (String) null, (Attributes) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Create a new attribute from unencoded (raw) key and value.
+ * @param key attribute key; case is preserved.
+ * @param val attribute value
+ * @param parent the containing Attributes (this Attribute is not automatically added to said Attributes)
+ * @see #createFromEncoded
+ */"
+"public Attribute(String key, String value) {
+    this(key, value, null);
+}","public void test2527() throws Throwable {
+    Attribute attribute0 = null;
+    try {
+        attribute0 = new Attribute((String) null, (String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Create a new attribute from unencoded (raw) key and value.
+ * @param key attribute key; case is preserved.
+ * @param value attribute value
+ * @see #createFromEncoded
+ */"
+"public String getValue() {
+    return Attributes.checkNotNull(val);
+}","public void test2931() throws Throwable {
+    Attributes attributes0 = new Attributes();
+    String[] stringArray0 = new String[2];
+    Attribute attribute0 = new Attribute(""limitedQuirks"", stringArray0[0], attributes0);
+    attribute0.hashCode();
+    assertEquals("""", attribute0.getValue());
+}","/**
+ *     Get the attribute value.
+ *     @return the attribute value
+ */"
+"@Override
+public int hashCode() {
+    // note parent not considered
+    int result = key != null ? key.hashCode() : 0;
+    result = 31 * result + (val != null ? val.hashCode() : 0);
+    return result;
+}","public void test3032() throws Throwable {
+    Attribute attribute0 = new Attribute(""readonly"", ""readonly"", (Attributes) null);
+    attribute0.hashCode();
+}",""
+"@Override
+public boolean equals(Object o) {
+    // note parent not considered
+    if (this == o)
+        return true;
+    if (o == null || getClass() != o.getClass())
+        return false;
+    Attribute attribute = (Attribute) o;
+    if (key != null ? !key.equals(attribute.key) : attribute.key != null)
+        return false;
+    return val != null ? val.equals(attribute.val) : attribute.val == null;
+}","public void test3133() throws Throwable {
+    Attributes attributes0 = new Attributes();
+    Attribute attribute0 = new Attribute(""limiteQQuirks"", (String) null, attributes0);
+    Attribute attribute1 = Attribute.createFromEncoded(""limiteQQuirks"", ""limiteQQuirks"");
+    boolean boolean0 = attribute0.equals(attribute1);
+    //  // Unstable assertion: assertFalse(boolean0);
+    //  // Unstable assertion: assertTrue(attribute1.equals((Object)attribute0));
+}",""
+"@Override
+public boolean equals(Object o) {
+    // note parent not considered
+    if (this == o)
+        return true;
+    if (o == null || getClass() != o.getClass())
+        return false;
+    Attribute attribute = (Attribute) o;
+    if (key != null ? !key.equals(attribute.key) : attribute.key != null)
+        return false;
+    return val != null ? val.equals(attribute.val) : attribute.val == null;
+}","public void test3234() throws Throwable {
+    Attributes attributes0 = new Attributes();
+    String[] stringArray0 = new String[2];
+    Attribute attribute0 = new Attribute(""limitedQuirks"", stringArray0[0], attributes0);
+    Attribute attribute1 = attribute0.clone();
+    boolean boolean0 = attribute0.equals(attribute1);
+    assertTrue(boolean0);
+}",""
+"public String getValue() {
+    return Attributes.checkNotNull(val);
+}","public void test3235() throws Throwable {
+    Attributes attributes0 = new Attributes();
+    String[] stringArray0 = new String[2];
+    Attribute attribute0 = new Attribute(""limitedQuirks"", stringArray0[0], attributes0);
+    Attribute attribute1 = attribute0.clone();
+    boolean boolean0 = attribute0.equals(attribute1);
+    assertEquals("""", attribute1.getValue());
+}","/**
+ *     Get the attribute value.
+ *     @return the attribute value
+ */"
+"@Override
+public boolean equals(Object o) {
+    // note parent not considered
+    if (this == o)
+        return true;
+    if (o == null || getClass() != o.getClass())
+        return false;
+    Attribute attribute = (Attribute) o;
+    if (key != null ? !key.equals(attribute.key) : attribute.key != null)
+        return false;
+    return val != null ? val.equals(attribute.val) : attribute.val == null;
+}","public void test3336() throws Throwable {
+    Attribute attribute0 = Attribute.createFromEncoded(""disabled"", ""disabled"");
+    boolean boolean0 = attribute0.equals(""disabled"");
+    assertFalse(boolean0);
+}",""
+"@Override
+public boolean equals(Object o) {
+    // note parent not considered
+    if (this == o)
+        return true;
+    if (o == null || getClass() != o.getClass())
+        return false;
+    Attribute attribute = (Attribute) o;
+    if (key != null ? !key.equals(attribute.key) : attribute.key != null)
+        return false;
+    return val != null ? val.equals(attribute.val) : attribute.val == null;
+}","public void test3437() throws Throwable {
+    Attributes attributes0 = new Attributes();
+    Attribute attribute0 = new Attribute(""goat qhu+e\""1[\""/c"", ""r?y[b"", attributes0);
+    boolean boolean0 = attribute0.equals((Object) null);
+    assertFalse(boolean0);
+}",""
+"public String getValue() {
+    return Attributes.checkNotNull(val);
+}","public void test3438() throws Throwable {
+    Attributes attributes0 = new Attributes();
+    Attribute attribute0 = new Attribute(""goat qhu+e\""1[\""/c"", ""r?y[b"", attributes0);
+    boolean boolean0 = attribute0.equals((Object) null);
+    assertEquals(""r?y[b"", attribute0.getValue());
+}","/**
+ *     Get the attribute value.
+ *     @return the attribute value
+ */"
+"@Override
+public boolean equals(Object o) {
+    // note parent not considered
+    if (this == o)
+        return true;
+    if (o == null || getClass() != o.getClass())
+        return false;
+    Attribute attribute = (Attribute) o;
+    if (key != null ? !key.equals(attribute.key) : attribute.key != null)
+        return false;
+    return val != null ? val.equals(attribute.val) : attribute.val == null;
+}","public void test3539() throws Throwable {
+    Attribute attribute0 = new Attribute(""readonly"", ""readonly"", (Attributes) null);
+    boolean boolean0 = attribute0.equals(attribute0);
+    assertTrue(boolean0);
+}",""
+"protected boolean isBooleanAttribute() {
+    return Arrays.binarySearch(booleanAttributes, key) >= 0 || val == null;
+}","public void test3640() throws Throwable {
+    Attributes attributes0 = new Attributes();
+    Attribute attribute0 = new Attribute(""qt+0, DI8j.Wy"", (String) null, attributes0);
+    boolean boolean0 = attribute0.isBooleanAttribute();
+    assertTrue(boolean0);
+}","/**
+ * @deprecated
+ */"
+"protected boolean isBooleanAttribute() {
+    return Arrays.binarySearch(booleanAttributes, key) >= 0 || val == null;
+}","public void test3741() throws Throwable {
+    Attribute attribute0 = Attribute.createFromEncoded(""'E,Yo(J_Pk0m&"", ""'E,Yo(J_Pk0m&"");
+    boolean boolean0 = attribute0.isBooleanAttribute();
+    assertFalse(boolean0);
+}","/**
+ * @deprecated
+ */"
+"protected boolean isBooleanAttribute() {
+    return Arrays.binarySearch(booleanAttributes, key) >= 0 || val == null;
+}","public void test3842() throws Throwable {
+    Attribute attribute0 = new Attribute(""readonly"", ""readonly"", (Attributes) null);
+    boolean boolean0 = attribute0.isBooleanAttribute();
+    assertTrue(boolean0);
+}","/**
+ * @deprecated
+ */"
+"public String getValue() {
+    return Attributes.checkNotNull(val);
+}","public void test3943() throws Throwable {
+    Attributes attributes0 = new Attributes();
+    Attribute attribute0 = new Attribute(""data-&3R.DsL>ZsE.Xf"", ""data-&3R.DsL>ZsE.Xf"");
+    attributes0.put(attribute0);
+    attribute0.setValue(""'_`%C|$PRepc"");
+    attribute0.toString();
+    assertEquals(""'_`%C|$PRepc"", attribute0.getValue());
+}","/**
+ *     Get the attribute value.
+ *     @return the attribute value
+ */"
+"@Override
+public String toString() {
+    return html();
+}","public void test4044() throws Throwable {
+    Attributes attributes0 = new Attributes();
+    Attribute attribute0 = new Attribute(""T"", """", attributes0);
+    String string0 = attribute0.toString();
+    assertEquals(""T=\""\"""", string0);
+}","/**
+ *     Get the string representation of this attribute, implemented as {@link #html()}.
+ *     @return string
+ */"
+"public String html() {
+    StringBuilder sb = StringUtil.borrowBuilder();
+    try {
+        html(sb, (new Document("""")).outputSettings());
+    } catch (IOException exception) {
+        throw new SerializationException(exception);
+    }
+    return StringUtil.releaseBuilder(sb);
+}","public void test4145() throws Throwable {
+    Attribute attribute0 = new Attribute(""|*ssaQ}t"", (String) null);
+    String string0 = attribute0.html();
+    assertEquals(""|*ssaQ}t"", string0);
+}","/**
+ *     Get the HTML representation of this attribute; e.g. {@code href=""index.html""}.
+ *     @return HTML
+ */"
+"protected static boolean shouldCollapseAttribute(final String key, final String val, final Document.OutputSettings out) {
+    return (out.syntax() == Document.OutputSettings.Syntax.html && (val == null || ("""".equals(val) || val.equalsIgnoreCase(key)) && Attribute.isBooleanAttribute(key)));
+}","public void test4246() throws Throwable {
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    Document.OutputSettings.Syntax document_OutputSettings_Syntax0 = Document.OutputSettings.Syntax.xml;
+    document_OutputSettings0.syntax(document_OutputSettings_Syntax0);
+    boolean boolean0 = Attribute.shouldCollapseAttribute(""data-&3R.DsL>ZsE.Xf"", ""t[)XD. J dBoG%"", document_OutputSettings0);
+    assertFalse(boolean0);
+}",""
+"protected static boolean isDataAttribute(String key) {
+    return key.startsWith(Attributes.dataPrefix) && key.length() > Attributes.dataPrefix.length();
+}","public void test4347() throws Throwable {
+    boolean boolean0 = Attribute.isDataAttribute(""data-"");
+    assertFalse(boolean0);
+}",""
+"public String getValue() {
+    return Attributes.checkNotNull(val);
+}","public void test4448() throws Throwable {
+    Attributes attributes0 = new Attributes();
+    Attribute attribute0 = new Attribute(""goat qhu+e\""1[\""/c"", ""r?y[b"", attributes0);
+    attribute0.setValue(""KucdgcT8[E{;fsBS(.("");
+    assertEquals(""KucdgcT8[E{;fsBS(.("", attribute0.getValue());
+}","/**
+ *     Get the attribute value.
+ *     @return the attribute value
+ */"
+"public String getValue() {
+    return Attributes.checkNotNull(val);
+}","public void test4549() throws Throwable {
+    Attributes attributes0 = new Attributes();
+    Attribute attribute0 = new Attribute(""data-&3R.DsL>ZsE.Xf"", ""data-&3R.DsL>ZsE.Xf"");
+    attributes0.put(attribute0);
+    attribute0.setKey(""t[)XD. J dBoG%"");
+    assertEquals(""data-&3R.DsL>ZsE.Xf"", attribute0.getValue());
+}","/**
+ *     Get the attribute value.
+ *     @return the attribute value
+ */"
+"@Override
+public boolean equals(Object o) {
+    // note parent not considered
+    if (this == o)
+        return true;
+    if (o == null || getClass() != o.getClass())
+        return false;
+    Attribute attribute = (Attribute) o;
+    if (key != null ? !key.equals(attribute.key) : attribute.key != null)
+        return false;
+    return val != null ? val.equals(attribute.val) : attribute.val == null;
+}","public void test4650() throws Throwable {
+    Attributes attributes0 = new Attributes();
+    Attribute attribute0 = new Attribute(""d"", ""d"", attributes0);
+    attribute0.setKey(""c"");
+    Attribute attribute1 = Attribute.createFromEncoded(""d"", ""d"");
+    boolean boolean0 = attribute0.equals(attribute1);
+    assertFalse(boolean0);
+}",""
+"protected final boolean shouldCollapseAttribute(Document.OutputSettings out) {
+    return shouldCollapseAttribute(key, val, out);
+}","public void test4751() throws Throwable {
+    Attribute attribute0 = Attribute.createFromEncoded(""'E,Yo(J_Pk0m&"", ""'E,Yo(J_Pk0m&"");
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    boolean boolean0 = attribute0.shouldCollapseAttribute(document_OutputSettings0);
+    assertFalse(boolean0);
+}","/**
+ * Collapsible if it's a boolean attribute and value is empty or same as name
+ *
+ * @param out output settings
+ * @return  Returns whether collapsible or not
+ */"
+"public String getValue() {
+    return Attributes.checkNotNull(val);
+}","public void test4852() throws Throwable {
+    Attributes attributes0 = new Attributes();
+    Attribute attribute0 = new Attribute(""d"", ""d"", attributes0);
+    String string0 = attribute0.getValue();
+    assertEquals(""d"", string0);
+}","/**
+ *     Get the attribute value.
+ *     @return the attribute value
+ */"
+"@Override
+public boolean equals(Object o) {
+    // note parent not considered
+    if (this == o)
+        return true;
+    if (o == null || getClass() != o.getClass())
+        return false;
+    Attribute attribute = (Attribute) o;
+    if (key != null ? !key.equals(attribute.key) : attribute.key != null)
+        return false;
+    return val != null ? val.equals(attribute.val) : attribute.val == null;
+}","public void test4953() throws Throwable {
+    Attribute attribute0 = new Attribute(""readonly"", ""readonly"", (Attributes) null);
+    Attribute attribute1 = attribute0.clone();
+    boolean boolean0 = attribute1.equals(attribute0);
+    assertTrue(boolean0);
+}",""
+"protected boolean isDataAttribute() {
+    return isDataAttribute(key);
+}","public void test5054() throws Throwable {
+    Attribute attribute0 = new Attribute(""data-&3R.DsL>ZsE.Xf"", ""data-&3R.DsL>ZsE.Xf"");
+    boolean boolean0 = attribute0.isDataAttribute();
+    assertTrue(boolean0);
+}",""
+"public String getKey() {
+    return key;
+}","public void test5155() throws Throwable {
+    Attribute attribute0 = new Attribute(""readonly"", ""readonly"", (Attributes) null);
+    String string0 = attribute0.getKey();
+    assertEquals(""readonly"", string0);
+}","/**
+ *     Get the attribute key.
+ *     @return the attribute key
+ */"

@@ -1,0 +1,171 @@
+focal_method,test_prefix,docstring
+"@Override
+Node optimizeSubtree(Node subtree) {
+    if (NodeUtil.isCall(subtree)) {
+        return tryFoldKnownMethods(subtree);
+    }
+    return subtree;
+}","public void test00() throws Throwable {
+    PeepholeReplaceKnownMethods peepholeReplaceKnownMethods0 = new PeepholeReplaceKnownMethods();
+    Node node0 = Node.newString("""");
+    Node node1 = peepholeReplaceKnownMethods0.optimizeSubtree(node0);
+    assertEquals(46, Node.IS_NAMESPACE);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    if (NodeUtil.isCall(subtree)) {
+        return tryFoldKnownMethods(subtree);
+    }
+    return subtree;
+}","public void test11() throws Throwable {
+    PeepholeReplaceKnownMethods peepholeReplaceKnownMethods0 = new PeepholeReplaceKnownMethods();
+    Node node0 = new Node(37);
+    Node node1 = peepholeReplaceKnownMethods0.optimizeSubtree(node0);
+    assertEquals(1, Node.FLAG_GLOBAL_STATE_UNMODIFIED);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    if (NodeUtil.isCall(subtree)) {
+        return tryFoldKnownMethods(subtree);
+    }
+    return subtree;
+}","public void test22() throws Throwable {
+    PeepholeReplaceKnownMethods peepholeReplaceKnownMethods0 = new PeepholeReplaceKnownMethods();
+    Node node0 = new Node(37);
+    Node node1 = new Node(33, node0, node0, 47, 1);
+    node0.addChildrenToFront(node1);
+    Node node2 = peepholeReplaceKnownMethods0.optimizeSubtree(node0);
+    assertNotNull(node2);
+}",""
+"public int getType() {
+    return type;
+}","public void test23() throws Throwable {
+    PeepholeReplaceKnownMethods peepholeReplaceKnownMethods0 = new PeepholeReplaceKnownMethods();
+    Node node0 = new Node(37);
+    Node node1 = new Node(33, node0, node0, 47, 1);
+    node0.addChildrenToFront(node1);
+    Node node2 = peepholeReplaceKnownMethods0.optimizeSubtree(node0);
+    assertEquals(37, node2.getType());
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    if (NodeUtil.isCall(subtree)) {
+        return tryFoldKnownMethods(subtree);
+    }
+    return subtree;
+}","public void test34() throws Throwable {
+    PeepholeReplaceKnownMethods peepholeReplaceKnownMethods0 = new PeepholeReplaceKnownMethods();
+    Node node0 = new Node(37);
+    node0.addChildrenToFront(node0);
+    Compiler compiler0 = new Compiler();
+    OperaCompoundAssignFix operaCompoundAssignFix0 = new OperaCompoundAssignFix(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, operaCompoundAssignFix0);
+    peepholeReplaceKnownMethods0.beginTraversal(nodeTraversal0);
+    Node node1 = peepholeReplaceKnownMethods0.optimizeSubtree(node0);
+    assertEquals((-3), Node.LOCAL_BLOCK_PROP);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    if (NodeUtil.isCall(subtree)) {
+        return tryFoldKnownMethods(subtree);
+    }
+    return subtree;
+}","public void test45() throws Throwable {
+    Node node0 = new Node(37, 37, 37);
+    node0.addChildrenToFront(node0);
+    Compiler compiler0 = new Compiler();
+    OperaCompoundAssignFix operaCompoundAssignFix0 = new OperaCompoundAssignFix(compiler0);
+    AbstractCompiler.LifeCycleStage abstractCompiler_LifeCycleStage0 = AbstractCompiler.LifeCycleStage.NORMALIZED;
+    compiler0.setLifeCycleStage(abstractCompiler_LifeCycleStage0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, operaCompoundAssignFix0);
+    PeepholeReplaceKnownMethods peepholeReplaceKnownMethods0 = new PeepholeReplaceKnownMethods();
+    peepholeReplaceKnownMethods0.beginTraversal(nodeTraversal0);
+    Node node1 = peepholeReplaceKnownMethods0.optimizeSubtree(node0);
+    assertEquals(21, Node.LOCALCOUNT_PROP);
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    if (NodeUtil.isCall(subtree)) {
+        return tryFoldKnownMethods(subtree);
+    }
+    return subtree;
+}","public void test56() throws Throwable {
+    Node node0 = new Node(37, 37, 37);
+    Node node1 = new Node(38, node0, node0, node0, 46, 31);
+    node0.addChildrenToFront(node1);
+    Compiler compiler0 = new Compiler();
+    OperaCompoundAssignFix operaCompoundAssignFix0 = new OperaCompoundAssignFix(compiler0);
+    AbstractCompiler.LifeCycleStage abstractCompiler_LifeCycleStage0 = AbstractCompiler.LifeCycleStage.NORMALIZED;
+    compiler0.setLifeCycleStage(abstractCompiler_LifeCycleStage0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, operaCompoundAssignFix0);
+    PeepholeReplaceKnownMethods peepholeReplaceKnownMethods0 = new PeepholeReplaceKnownMethods();
+    peepholeReplaceKnownMethods0.beginTraversal(nodeTraversal0);
+    // Undeclared exception!
+    try {
+        peepholeReplaceKnownMethods0.optimizeSubtree(node0);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // NAME 46 is not a string node
+        //
+        verifyException(""com.google.javascript.rhino.Node"", e);
+    }
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    if (NodeUtil.isCall(subtree)) {
+        return tryFoldKnownMethods(subtree);
+    }
+    return subtree;
+}","public void test67() throws Throwable {
+    PeepholeReplaceKnownMethods peepholeReplaceKnownMethods0 = new PeepholeReplaceKnownMethods();
+    Node node0 = new Node(37);
+    Node node1 = new Node(43);
+    node0.addChildrenToFront(node1);
+    Node node2 = new Node(33, node0, node0, 47, 1);
+    node0.addChildrenToFront(node2);
+    Node node3 = peepholeReplaceKnownMethods0.optimizeSubtree(node0);
+    assertNotNull(node3);
+}",""
+"public int getCharno() {
+    return extractCharno(sourcePosition);
+}","public void test68() throws Throwable {
+    PeepholeReplaceKnownMethods peepholeReplaceKnownMethods0 = new PeepholeReplaceKnownMethods();
+    Node node0 = new Node(37);
+    Node node1 = new Node(43);
+    node0.addChildrenToFront(node1);
+    Node node2 = new Node(33, node0, node0, 47, 1);
+    node0.addChildrenToFront(node2);
+    Node node3 = peepholeReplaceKnownMethods0.optimizeSubtree(node0);
+    assertEquals((-1), node3.getCharno());
+}",""
+"@Override
+Node optimizeSubtree(Node subtree) {
+    if (NodeUtil.isCall(subtree)) {
+        return tryFoldKnownMethods(subtree);
+    }
+    return subtree;
+}","public void test79() throws Throwable {
+    PeepholeReplaceKnownMethods peepholeReplaceKnownMethods0 = new PeepholeReplaceKnownMethods();
+    Node node0 = new Node(37);
+    Node node1 = new Node(53);
+    node0.addChildrenToFront(node1);
+    Node node2 = new Node(33, node0, node0, 47, 1);
+    node0.addChildrenToFront(node2);
+    Node node3 = peepholeReplaceKnownMethods0.optimizeSubtree(node0);
+    assertNotNull(node3);
+}",""
+"public int getChildCount() {
+    int c = 0;
+    for (Node n = first; n != null; n = n.next) c++;
+    return c;
+}","public void test710() throws Throwable {
+    PeepholeReplaceKnownMethods peepholeReplaceKnownMethods0 = new PeepholeReplaceKnownMethods();
+    Node node0 = new Node(37);
+    Node node1 = new Node(53);
+    node0.addChildrenToFront(node1);
+    Node node2 = new Node(33, node0, node0, 47, 1);
+    node0.addChildrenToFront(node2);
+    Node node3 = peepholeReplaceKnownMethods0.optimizeSubtree(node0);
+    assertEquals(2, node3.getChildCount());
+}",""

@@ -1,0 +1,931 @@
+focal_method,test_prefix,docstring
+"public int getMaximum() {
+    return maximum;
+}","public void test000() throws Throwable {
+    LinkedList<GroupImpl> linkedList0 = new LinkedList<GroupImpl>();
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, """", """", 60, 60);
+    groupImpl0.getAnonymous();
+    assertEquals(60, groupImpl0.getMaximum());
+}",""
+"public int getMinimum() {
+    return minimum;
+}","public void test001() throws Throwable {
+    LinkedList<GroupImpl> linkedList0 = new LinkedList<GroupImpl>();
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, """", """", 60, 60);
+    groupImpl0.getAnonymous();
+    assertEquals(60, groupImpl0.getMinimum());
+}",""
+"public int getMaximum() {
+    return maximum;
+}","public void test012() throws Throwable {
+    LinkedList<GroupImpl> linkedList0 = new LinkedList<GroupImpl>();
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, ""6fH~_%MC"", ""6fH~_%MC"", 3, 3);
+    int int0 = groupImpl0.getMaximum();
+    assertEquals(3, int0);
+}",""
+"public int getMinimum() {
+    return minimum;
+}","public void test013() throws Throwable {
+    LinkedList<GroupImpl> linkedList0 = new LinkedList<GroupImpl>();
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, ""6fH~_%MC"", ""6fH~_%MC"", 3, 3);
+    int int0 = groupImpl0.getMaximum();
+    assertEquals(3, groupImpl0.getMinimum());
+}",""
+"public int getMinimum() {
+    return minimum;
+}","public void test025() throws Throwable {
+    LinkedList<PropertyOption> linkedList0 = new LinkedList<PropertyOption>();
+    PropertyOption propertyOption0 = PropertyOption.INSTANCE;
+    linkedList0.add(propertyOption0);
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, ""Passes properties and values to the application"", ""Passes properties and values to the application"", 0, 0);
+    groupImpl0.findOption(""Passes properties and values to the application"");
+    assertEquals(0, groupImpl0.getMinimum());
+}",""
+"public int getMaximum() {
+    return maximum;
+}","public void test037() throws Throwable {
+    LinkedList<Object> linkedList0 = new LinkedList<Object>();
+    UrlValidator urlValidator0 = new UrlValidator("""");
+    ArgumentImpl argumentImpl0 = new ArgumentImpl("""", """", 217, 217, '~', '~', urlValidator0, (String) null, linkedList0, '~');
+    SourceDestArgument sourceDestArgument0 = new SourceDestArgument(argumentImpl0, argumentImpl0);
+    linkedList0.add((Object) sourceDestArgument0);
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, ""EZfj7W|"", ""--"", 217, '\u0000');
+    groupImpl0.toString();
+    assertEquals(0, groupImpl0.getMaximum());
+}",""
+"public int getMinimum() {
+    return minimum;
+}","public void test048() throws Throwable {
+    LinkedList<GroupImpl> linkedList0 = new LinkedList<GroupImpl>();
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, ""org.apache.commons.cli2.option.SourceDestArgument"", ""org.apache.commons.cli2.option.SourceDestArgument"", 0, 0);
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(groupImpl0, linkedList0);
+    boolean boolean0 = groupImpl0.canProcess((WriteableCommandLine) writeableCommandLineImpl0, (String) null);
+    assertEquals(0, groupImpl0.getMinimum());
+}",""
+"public int getMaximum() {
+    return maximum;
+}","public void test049() throws Throwable {
+    LinkedList<GroupImpl> linkedList0 = new LinkedList<GroupImpl>();
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, ""org.apache.commons.cli2.option.SourceDestArgument"", ""org.apache.commons.cli2.option.SourceDestArgument"", 0, 0);
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(groupImpl0, linkedList0);
+    boolean boolean0 = groupImpl0.canProcess((WriteableCommandLine) writeableCommandLineImpl0, (String) null);
+    assertEquals(0, groupImpl0.getMaximum());
+}",""
+"public boolean canProcess(final WriteableCommandLine commandLine, final String arg) {
+    if (arg == null) {
+        return false;
+    }
+    // if arg does not require bursting
+    if (optionMap.containsKey(arg)) {
+        return true;
+    }
+    // filter
+    final Map tailMap = optionMap.tailMap(arg);
+    // check if bursting is required
+    for (final Iterator iter = tailMap.values().iterator(); iter.hasNext(); ) {
+        final Option option = (Option) iter.next();
+        if (option.canProcess(commandLine, arg)) {
+            return true;
+        }
+    }
+    if (commandLine.looksLikeOption(arg)) {
+        return false;
+    }
+    // anonymous argument(s) means we can process it
+    if (anonymous.size() > 0) {
+        return true;
+    }
+    return false;
+}","public void test0410() throws Throwable {
+    LinkedList<GroupImpl> linkedList0 = new LinkedList<GroupImpl>();
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, ""org.apache.commons.cli2.option.SourceDestArgument"", ""org.apache.commons.cli2.option.SourceDestArgument"", 0, 0);
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(groupImpl0, linkedList0);
+    boolean boolean0 = groupImpl0.canProcess((WriteableCommandLine) writeableCommandLineImpl0, (String) null);
+    assertFalse(boolean0);
+}",""
+"public boolean canProcess(final WriteableCommandLine commandLine, final String arg) {
+    if (arg == null) {
+        return false;
+    }
+    // if arg does not require bursting
+    if (optionMap.containsKey(arg)) {
+        return true;
+    }
+    // filter
+    final Map tailMap = optionMap.tailMap(arg);
+    // check if bursting is required
+    for (final Iterator iter = tailMap.values().iterator(); iter.hasNext(); ) {
+        final Option option = (Option) iter.next();
+        if (option.canProcess(commandLine, arg)) {
+            return true;
+        }
+    }
+    if (commandLine.looksLikeOption(arg)) {
+        return false;
+    }
+    // anonymous argument(s) means we can process it
+    if (anonymous.size() > 0) {
+        return true;
+    }
+    return false;
+}","public void test0512() throws Throwable {
+    LinkedList<PropertyOption> linkedList0 = new LinkedList<PropertyOption>();
+    PropertyOption propertyOption0 = PropertyOption.INSTANCE;
+    linkedList0.add(propertyOption0);
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, """", ""-D"", (-784), (-784));
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(groupImpl0, linkedList0);
+    boolean boolean0 = groupImpl0.canProcess((WriteableCommandLine) writeableCommandLineImpl0, ""-D"");
+    assertTrue(boolean0);
+}",""
+"public boolean canProcess(final WriteableCommandLine commandLine, final String arg) {
+    if (arg == null) {
+        return false;
+    }
+    // if arg does not require bursting
+    if (optionMap.containsKey(arg)) {
+        return true;
+    }
+    // filter
+    final Map tailMap = optionMap.tailMap(arg);
+    // check if bursting is required
+    for (final Iterator iter = tailMap.values().iterator(); iter.hasNext(); ) {
+        final Option option = (Option) iter.next();
+        if (option.canProcess(commandLine, arg)) {
+            return true;
+        }
+    }
+    if (commandLine.looksLikeOption(arg)) {
+        return false;
+    }
+    // anonymous argument(s) means we can process it
+    if (anonymous.size() > 0) {
+        return true;
+    }
+    return false;
+}","public void test0614() throws Throwable {
+    LinkedList<PropertyOption> linkedList0 = new LinkedList<PropertyOption>();
+    PropertyOption propertyOption0 = PropertyOption.INSTANCE;
+    linkedList0.add(propertyOption0);
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, ""w71WR"", ""w71WR"", 0, 0);
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(groupImpl0, linkedList0);
+    boolean boolean0 = groupImpl0.canProcess((WriteableCommandLine) writeableCommandLineImpl0, ""w71WR"");
+    assertFalse(boolean0);
+}",""
+"public boolean canProcess(final WriteableCommandLine commandLine, final String arg) {
+    if (arg == null) {
+        return false;
+    }
+    // if arg does not require bursting
+    if (optionMap.containsKey(arg)) {
+        return true;
+    }
+    // filter
+    final Map tailMap = optionMap.tailMap(arg);
+    // check if bursting is required
+    for (final Iterator iter = tailMap.values().iterator(); iter.hasNext(); ) {
+        final Option option = (Option) iter.next();
+        if (option.canProcess(commandLine, arg)) {
+            return true;
+        }
+    }
+    if (commandLine.looksLikeOption(arg)) {
+        return false;
+    }
+    // anonymous argument(s) means we can process it
+    if (anonymous.size() > 0) {
+        return true;
+    }
+    return false;
+}","public void test0716() throws Throwable {
+    LinkedList<PropertyOption> linkedList0 = new LinkedList<PropertyOption>();
+    PropertyOption propertyOption0 = new PropertyOption("""", """", 2676);
+    linkedList0.add(propertyOption0);
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, """", """", (-1968), (-1968));
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(groupImpl0, linkedList0);
+    boolean boolean0 = groupImpl0.canProcess((WriteableCommandLine) writeableCommandLineImpl0, ""-D"");
+    assertTrue(boolean0);
+}",""
+"public int getMinimum() {
+    return minimum;
+}","public void test0817() throws Throwable {
+    LinkedList<PropertyOption> linkedList0 = new LinkedList<PropertyOption>();
+    PropertyOption propertyOption0 = new PropertyOption();
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, """", (String) null, (-283), (-283));
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(propertyOption0, linkedList0);
+    boolean boolean0 = groupImpl0.canProcess((WriteableCommandLine) writeableCommandLineImpl0, ""-D"");
+    assertEquals((-283), groupImpl0.getMinimum());
+}",""
+"public boolean canProcess(final WriteableCommandLine commandLine, final String arg) {
+    if (arg == null) {
+        return false;
+    }
+    // if arg does not require bursting
+    if (optionMap.containsKey(arg)) {
+        return true;
+    }
+    // filter
+    final Map tailMap = optionMap.tailMap(arg);
+    // check if bursting is required
+    for (final Iterator iter = tailMap.values().iterator(); iter.hasNext(); ) {
+        final Option option = (Option) iter.next();
+        if (option.canProcess(commandLine, arg)) {
+            return true;
+        }
+    }
+    if (commandLine.looksLikeOption(arg)) {
+        return false;
+    }
+    // anonymous argument(s) means we can process it
+    if (anonymous.size() > 0) {
+        return true;
+    }
+    return false;
+}","public void test0818() throws Throwable {
+    LinkedList<PropertyOption> linkedList0 = new LinkedList<PropertyOption>();
+    PropertyOption propertyOption0 = new PropertyOption();
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, """", (String) null, (-283), (-283));
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(propertyOption0, linkedList0);
+    boolean boolean0 = groupImpl0.canProcess((WriteableCommandLine) writeableCommandLineImpl0, ""-D"");
+    assertFalse(boolean0);
+}",""
+"public int getMaximum() {
+    return maximum;
+}","public void test0819() throws Throwable {
+    LinkedList<PropertyOption> linkedList0 = new LinkedList<PropertyOption>();
+    PropertyOption propertyOption0 = new PropertyOption();
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, """", (String) null, (-283), (-283));
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(propertyOption0, linkedList0);
+    boolean boolean0 = groupImpl0.canProcess((WriteableCommandLine) writeableCommandLineImpl0, ""-D"");
+    assertEquals((-283), groupImpl0.getMaximum());
+}",""
+"public boolean canProcess(final WriteableCommandLine commandLine, final String arg) {
+    if (arg == null) {
+        return false;
+    }
+    // if arg does not require bursting
+    if (optionMap.containsKey(arg)) {
+        return true;
+    }
+    // filter
+    final Map tailMap = optionMap.tailMap(arg);
+    // check if bursting is required
+    for (final Iterator iter = tailMap.values().iterator(); iter.hasNext(); ) {
+        final Option option = (Option) iter.next();
+        if (option.canProcess(commandLine, arg)) {
+            return true;
+        }
+    }
+    if (commandLine.looksLikeOption(arg)) {
+        return false;
+    }
+    // anonymous argument(s) means we can process it
+    if (anonymous.size() > 0) {
+        return true;
+    }
+    return false;
+}","public void test0921() throws Throwable {
+    LinkedList<SourceDestArgument> linkedList0 = new LinkedList<SourceDestArgument>();
+    FileValidator fileValidator0 = FileValidator.getExistingDirectoryInstance();
+    ArgumentImpl argumentImpl0 = new ArgumentImpl(""x:zZJ-"", ""x:zZJ-"", 61, 61, '7', '7', fileValidator0, ""x:zZJ-"", linkedList0, 61);
+    LinkedList<DefaultOption> linkedList1 = new LinkedList<DefaultOption>();
+    SourceDestArgument sourceDestArgument0 = new SourceDestArgument(argumentImpl0, argumentImpl0, 'j', 'j', ""--"", linkedList1);
+    linkedList0.add(sourceDestArgument0);
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, ""\""1ez(U #n_t"", ""\""1ez(U #n_t"", '7', '7');
+    LinkedList<GroupImpl> linkedList2 = new LinkedList<GroupImpl>();
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(sourceDestArgument0, linkedList2);
+    boolean boolean0 = groupImpl0.canProcess((WriteableCommandLine) writeableCommandLineImpl0, ""--"");
+    assertTrue(boolean0);
+}",""
+"public int getMaximum() {
+    return maximum;
+}","public void test1022() throws Throwable {
+    LinkedList<GroupImpl> linkedList0 = new LinkedList<GroupImpl>();
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, ""DISPLAY_GRUP_OUT/ER"", ""DISPLAY_GRUP_OUT/ER"", 0, 0);
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(groupImpl0, linkedList0);
+    ListIterator<GroupImpl> listIterator0 = linkedList0.listIterator();
+    groupImpl0.process(writeableCommandLineImpl0, listIterator0);
+    assertEquals(0, groupImpl0.getMaximum());
+}",""
+"public int getMinimum() {
+    return minimum;
+}","public void test1023() throws Throwable {
+    LinkedList<GroupImpl> linkedList0 = new LinkedList<GroupImpl>();
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, ""DISPLAY_GRUP_OUT/ER"", ""DISPLAY_GRUP_OUT/ER"", 0, 0);
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(groupImpl0, linkedList0);
+    ListIterator<GroupImpl> listIterator0 = linkedList0.listIterator();
+    groupImpl0.process(writeableCommandLineImpl0, listIterator0);
+    assertEquals(0, groupImpl0.getMinimum());
+}",""
+"public String getPreferredName() {
+    return name;
+}","public void test1124() throws Throwable {
+    LinkedList<PropertyOption> linkedList0 = new LinkedList<PropertyOption>();
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, ""Passes properties and values to the application"", ""-D"", (-2163), (-2163));
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(groupImpl0, linkedList0);
+    Set<String> set0 = ZoneId.getAvailableZoneIds();
+    LinkedList<String> linkedList1 = new LinkedList<String>(set0);
+    ListIterator<String> listIterator0 = linkedList1.listIterator();
+    groupImpl0.process(writeableCommandLineImpl0, listIterator0);
+    assertEquals(""Passes properties and values to the application"", groupImpl0.getPreferredName());
+}",""
+"public int getMinimum() {
+    return minimum;
+}","public void test1125() throws Throwable {
+    LinkedList<PropertyOption> linkedList0 = new LinkedList<PropertyOption>();
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, ""Passes properties and values to the application"", ""-D"", (-2163), (-2163));
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(groupImpl0, linkedList0);
+    Set<String> set0 = ZoneId.getAvailableZoneIds();
+    LinkedList<String> linkedList1 = new LinkedList<String>(set0);
+    ListIterator<String> listIterator0 = linkedList1.listIterator();
+    groupImpl0.process(writeableCommandLineImpl0, listIterator0);
+    assertEquals((-2163), groupImpl0.getMinimum());
+}",""
+"public int getMaximum() {
+    return maximum;
+}","public void test1126() throws Throwable {
+    LinkedList<PropertyOption> linkedList0 = new LinkedList<PropertyOption>();
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, ""Passes properties and values to the application"", ""-D"", (-2163), (-2163));
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(groupImpl0, linkedList0);
+    Set<String> set0 = ZoneId.getAvailableZoneIds();
+    LinkedList<String> linkedList1 = new LinkedList<String>(set0);
+    ListIterator<String> listIterator0 = linkedList1.listIterator();
+    groupImpl0.process(writeableCommandLineImpl0, listIterator0);
+    assertEquals((-2163), groupImpl0.getMaximum());
+}",""
+"public String getDescription() {
+    return description;
+}","public void test1127() throws Throwable {
+    LinkedList<PropertyOption> linkedList0 = new LinkedList<PropertyOption>();
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, ""Passes properties and values to the application"", ""-D"", (-2163), (-2163));
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(groupImpl0, linkedList0);
+    Set<String> set0 = ZoneId.getAvailableZoneIds();
+    LinkedList<String> linkedList1 = new LinkedList<String>(set0);
+    ListIterator<String> listIterator0 = linkedList1.listIterator();
+    groupImpl0.process(writeableCommandLineImpl0, listIterator0);
+    assertEquals(""-D"", groupImpl0.getDescription());
+}",""
+"public int getMinimum() {
+    return minimum;
+}","public void test1229() throws Throwable {
+    LinkedList<PropertyOption> linkedList0 = new LinkedList<PropertyOption>();
+    PropertyOption propertyOption0 = new PropertyOption("""", """", 2676);
+    linkedList0.add(propertyOption0);
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, """", ""-D"", 2676, 2676);
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(groupImpl0, linkedList0);
+    ListIterator<String> listIterator0 = (ListIterator<String>) mock(ListIterator.class, new ViolatedAssumptionAnswer());
+    doReturn(true, false).when(listIterator0).hasNext();
+    doReturn(""Passes properties and values to the application"", (Object) null, (Object) null).when(listIterator0).next();
+    doReturn((Object) null, (Object) null).when(listIterator0).previous();
+    groupImpl0.process(writeableCommandLineImpl0, listIterator0);
+    assertEquals(2676, groupImpl0.getMinimum());
+}",""
+"public void process(final WriteableCommandLine commandLine, final ListIterator arguments) throws OptionException {
+    String previous = null;
+    // [START process each command line token
+    while (arguments.hasNext()) {
+        // grab the next argument
+        final String arg = (String) arguments.next();
+        // if we have just tried to process this instance
+        if (arg == previous) {
+            // rollback and abort
+            arguments.previous();
+            break;
+        }
+        // remember last processed instance
+        previous = arg;
+        final Option opt = (Option) optionMap.get(arg);
+        // option found
+        if (opt != null) {
+            arguments.previous();
+            opt.process(commandLine, arguments);
+        } else // [START option NOT found
+        {
+            // it might be an anonymous argument continue search
+            // [START argument may be anonymous
+            if (commandLine.looksLikeOption(arg)) {
+                // narrow the search
+                final Collection values = optionMap.tailMap(arg).values();
+                boolean foundMemberOption = false;
+                for (Iterator i = values.iterator(); i.hasNext() && !foundMemberOption; ) {
+                    final Option option = (Option) i.next();
+                    if (option.canProcess(commandLine, arg)) {
+                        foundMemberOption = true;
+                        arguments.previous();
+                        option.process(commandLine, arguments);
+                    }
+                }
+                // back track and abort this group if necessary
+                if (!foundMemberOption) {
+                    arguments.previous();
+                    return;
+                }
+            } else // [END argument may be anonymous
+            // [START argument is NOT anonymous
+            {
+                // move iterator back, current value not used
+                arguments.previous();
+                // if there are no anonymous arguments then this group can't
+                // process the argument
+                if (anonymous.isEmpty()) {
+                    break;
+                }
+                // TODO: why do we iterate over all anonymous arguments?
+                // canProcess will always return true?
+                for (final Iterator i = anonymous.iterator(); i.hasNext(); ) {
+                    final Argument argument = (Argument) i.next();
+                    if (argument.canProcess(commandLine, arguments)) {
+                        argument.process(commandLine, arguments);
+                    }
+                }
+            }
+            // [END argument is NOT anonymous
+        }
+        // [END option NOT found
+    }
+    // [END process each command line token
+}","public void test1330() throws Throwable {
+    LinkedList<PropertyOption> linkedList0 = new LinkedList<PropertyOption>();
+    PropertyOption propertyOption0 = PropertyOption.INSTANCE;
+    linkedList0.add(propertyOption0);
+    PropertyOption propertyOption1 = new PropertyOption("""", """", 2676);
+    linkedList0.add(propertyOption1);
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, """", ""-D"", 2676, 2676);
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(groupImpl0, linkedList0);
+    ListIterator<String> listIterator0 = (ListIterator<String>) mock(ListIterator.class, new ViolatedAssumptionAnswer());
+    doReturn(true, false).when(listIterator0).hasNext();
+    doReturn(""Passes properties and values to the application"", (Object) null, (Object) null).when(listIterator0).next();
+    doReturn(""-D"", (Object) null).when(listIterator0).previous();
+    groupImpl0.process(writeableCommandLineImpl0, listIterator0);
+}",""
+"public int getMaximum() {
+    return maximum;
+}","public void test1431() throws Throwable {
+    LinkedList<PropertyOption> linkedList0 = new LinkedList<PropertyOption>();
+    PropertyOption propertyOption0 = PropertyOption.INSTANCE;
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, ""Passes properties and values to the application"", ""Passes properties and values to the application"", (-2343), (-2343));
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(propertyOption0, linkedList0);
+    LinkedList<String> linkedList1 = new LinkedList<String>();
+    linkedList1.add(""-D"");
+    ListIterator<String> listIterator0 = linkedList1.listIterator();
+    groupImpl0.process(writeableCommandLineImpl0, listIterator0);
+    assertEquals((-2343), groupImpl0.getMaximum());
+}",""
+"public int getMinimum() {
+    return minimum;
+}","public void test1433() throws Throwable {
+    LinkedList<PropertyOption> linkedList0 = new LinkedList<PropertyOption>();
+    PropertyOption propertyOption0 = PropertyOption.INSTANCE;
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, ""Passes properties and values to the application"", ""Passes properties and values to the application"", (-2343), (-2343));
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(propertyOption0, linkedList0);
+    LinkedList<String> linkedList1 = new LinkedList<String>();
+    linkedList1.add(""-D"");
+    ListIterator<String> listIterator0 = linkedList1.listIterator();
+    groupImpl0.process(writeableCommandLineImpl0, listIterator0);
+    assertEquals((-2343), groupImpl0.getMinimum());
+}",""
+"public void validate(final WriteableCommandLine commandLine) throws OptionException {
+    // number of options found
+    int present = 0;
+    // reference to first unexpected option
+    Option unexpected = null;
+    for (final Iterator i = options.iterator(); i.hasNext(); ) {
+        final Option option = (Option) i.next();
+        // needs validation?
+        boolean validate = option.isRequired() || option instanceof Group;
+        // if the child option is present then validate it
+        if (commandLine.hasOption(option)) {
+            if (++present > maximum) {
+                unexpected = option;
+                break;
+            }
+            validate = true;
+        }
+        if (validate) {
+            option.validate(commandLine);
+        }
+    }
+    // too many options
+    if (unexpected != null) {
+        throw new OptionException(this, ResourceConstants.UNEXPECTED_TOKEN, unexpected.getPreferredName());
+    }
+    // too few option
+    if (present < minimum) {
+        throw new OptionException(this, ResourceConstants.MISSING_OPTION);
+    }
+    // validate each anonymous argument
+    for (final Iterator i = anonymous.iterator(); i.hasNext(); ) {
+        final Option option = (Option) i.next();
+        option.validate(commandLine);
+    }
+}","public void test1534() throws Throwable {
+    LinkedList<PropertyOption> linkedList0 = new LinkedList<PropertyOption>();
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, (String) null, (String) null, 45, 45);
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(groupImpl0, linkedList0);
+    try {
+        groupImpl0.validate(writeableCommandLineImpl0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Missing option
+        //
+        verifyException(""org.apache.commons.cli2.option.GroupImpl"", e);
+    }
+}",""
+"public void validate(final WriteableCommandLine commandLine) throws OptionException {
+    // number of options found
+    int present = 0;
+    // reference to first unexpected option
+    Option unexpected = null;
+    for (final Iterator i = options.iterator(); i.hasNext(); ) {
+        final Option option = (Option) i.next();
+        // needs validation?
+        boolean validate = option.isRequired() || option instanceof Group;
+        // if the child option is present then validate it
+        if (commandLine.hasOption(option)) {
+            if (++present > maximum) {
+                unexpected = option;
+                break;
+            }
+            validate = true;
+        }
+        if (validate) {
+            option.validate(commandLine);
+        }
+    }
+    // too many options
+    if (unexpected != null) {
+        throw new OptionException(this, ResourceConstants.UNEXPECTED_TOKEN, unexpected.getPreferredName());
+    }
+    // too few option
+    if (present < minimum) {
+        throw new OptionException(this, ResourceConstants.MISSING_OPTION);
+    }
+    // validate each anonymous argument
+    for (final Iterator i = anonymous.iterator(); i.hasNext(); ) {
+        final Option option = (Option) i.next();
+        option.validate(commandLine);
+    }
+}","public void test1635() throws Throwable {
+    LinkedList<GroupImpl> linkedList0 = new LinkedList<GroupImpl>();
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, """", """", 60, 60);
+    linkedList0.add(groupImpl0);
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(groupImpl0, linkedList0);
+    // Undeclared exception!
+    try {
+        groupImpl0.validate(writeableCommandLineImpl0);
+        fail(""Expecting exception: StackOverflowError"");
+    } catch (StackOverflowError e) {
+    }
+}",""
+"public int getMaximum() {
+    return maximum;
+}","public void test1736() throws Throwable {
+    LinkedList<PropertyOption> linkedList0 = new LinkedList<PropertyOption>();
+    PropertyOption propertyOption0 = new PropertyOption();
+    linkedList0.offerLast(propertyOption0);
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, ""eAP^/,L}F1laI:"", ""eAP^/,L}F1laI:"", 0, 0);
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(groupImpl0, linkedList0);
+    groupImpl0.validate(writeableCommandLineImpl0);
+    assertEquals(0, groupImpl0.getMaximum());
+}",""
+"public int getMinimum() {
+    return minimum;
+}","public void test1737() throws Throwable {
+    LinkedList<PropertyOption> linkedList0 = new LinkedList<PropertyOption>();
+    PropertyOption propertyOption0 = new PropertyOption();
+    linkedList0.offerLast(propertyOption0);
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, ""eAP^/,L}F1laI:"", ""eAP^/,L}F1laI:"", 0, 0);
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(groupImpl0, linkedList0);
+    groupImpl0.validate(writeableCommandLineImpl0);
+    assertEquals(0, groupImpl0.getMinimum());
+}",""
+"public void validate(final WriteableCommandLine commandLine) throws OptionException {
+    // number of options found
+    int present = 0;
+    // reference to first unexpected option
+    Option unexpected = null;
+    for (final Iterator i = options.iterator(); i.hasNext(); ) {
+        final Option option = (Option) i.next();
+        // needs validation?
+        boolean validate = option.isRequired() || option instanceof Group;
+        // if the child option is present then validate it
+        if (commandLine.hasOption(option)) {
+            if (++present > maximum) {
+                unexpected = option;
+                break;
+            }
+            validate = true;
+        }
+        if (validate) {
+            option.validate(commandLine);
+        }
+    }
+    // too many options
+    if (unexpected != null) {
+        throw new OptionException(this, ResourceConstants.UNEXPECTED_TOKEN, unexpected.getPreferredName());
+    }
+    // too few option
+    if (present < minimum) {
+        throw new OptionException(this, ResourceConstants.MISSING_OPTION);
+    }
+    // validate each anonymous argument
+    for (final Iterator i = anonymous.iterator(); i.hasNext(); ) {
+        final Option option = (Option) i.next();
+        option.validate(commandLine);
+    }
+}","public void test1838() throws Throwable {
+    LinkedList<GroupImpl> linkedList0 = new LinkedList<GroupImpl>();
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, ""3S-TqUp'"", ""3S-TqUp'"", (-386), (-386));
+    linkedList0.add(groupImpl0);
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(groupImpl0, linkedList0);
+    writeableCommandLineImpl0.addOption(groupImpl0);
+    GroupImpl groupImpl1 = new GroupImpl(linkedList0, ""3S-TqUp'"", ""3S-TqUp'"", 3, 3);
+    try {
+        groupImpl1.validate(writeableCommandLineImpl0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Unexpected 3S-TqUp' while processing 3S-TqUp'
+        //
+        verifyException(""org.apache.commons.cli2.option.GroupImpl"", e);
+    }
+}",""
+"public void validate(final WriteableCommandLine commandLine) throws OptionException {
+    // number of options found
+    int present = 0;
+    // reference to first unexpected option
+    Option unexpected = null;
+    for (final Iterator i = options.iterator(); i.hasNext(); ) {
+        final Option option = (Option) i.next();
+        // needs validation?
+        boolean validate = option.isRequired() || option instanceof Group;
+        // if the child option is present then validate it
+        if (commandLine.hasOption(option)) {
+            if (++present > maximum) {
+                unexpected = option;
+                break;
+            }
+            validate = true;
+        }
+        if (validate) {
+            option.validate(commandLine);
+        }
+    }
+    // too many options
+    if (unexpected != null) {
+        throw new OptionException(this, ResourceConstants.UNEXPECTED_TOKEN, unexpected.getPreferredName());
+    }
+    // too few option
+    if (present < minimum) {
+        throw new OptionException(this, ResourceConstants.MISSING_OPTION);
+    }
+    // validate each anonymous argument
+    for (final Iterator i = anonymous.iterator(); i.hasNext(); ) {
+        final Option option = (Option) i.next();
+        option.validate(commandLine);
+    }
+}","public void test1939() throws Throwable {
+    LinkedList<SourceDestArgument> linkedList0 = new LinkedList<SourceDestArgument>();
+    NumberValidator numberValidator0 = NumberValidator.getNumberInstance();
+    ArgumentImpl argumentImpl0 = new ArgumentImpl(""so"", ""so"", (-1), (-1), 'f', 'f', numberValidator0, ""cdl/0m\""T4T}e|y)x0"", linkedList0, (-1));
+    SourceDestArgument sourceDestArgument0 = new SourceDestArgument(argumentImpl0, argumentImpl0);
+    linkedList0.add(sourceDestArgument0);
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, ""@U"", ""|"", (-1), (-1));
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(groupImpl0, linkedList0);
+    // Undeclared exception!
+    try {
+        groupImpl0.validate(writeableCommandLineImpl0);
+        fail(""Expecting exception: NoSuchElementException"");
+    } catch (NoSuchElementException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.Collections$EmptyIterator"", e);
+    }
+}",""
+"public int getMaximum() {
+    return maximum;
+}","public void test2040() throws Throwable {
+    LinkedList<GroupImpl> linkedList0 = new LinkedList<GroupImpl>();
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, (String) null, (String) null, 0, 0);
+    LinkedHashSet<Object> linkedHashSet0 = new LinkedHashSet<Object>();
+    Comparator<Command> comparator0 = (Comparator<Command>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    groupImpl0.appendUsage((StringBuffer) null, (Set) linkedHashSet0, (Comparator) comparator0, (String) null);
+    assertEquals(0, groupImpl0.getMaximum());
+}",""
+"public int getMinimum() {
+    return minimum;
+}","public void test2041() throws Throwable {
+    LinkedList<GroupImpl> linkedList0 = new LinkedList<GroupImpl>();
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, (String) null, (String) null, 0, 0);
+    LinkedHashSet<Object> linkedHashSet0 = new LinkedHashSet<Object>();
+    Comparator<Command> comparator0 = (Comparator<Command>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    groupImpl0.appendUsage((StringBuffer) null, (Set) linkedHashSet0, (Comparator) comparator0, (String) null);
+    assertEquals(0, groupImpl0.getMinimum());
+}",""
+"public int getMaximum() {
+    return maximum;
+}","public void test2142() throws Throwable {
+    LinkedList<PropertyOption> linkedList0 = new LinkedList<PropertyOption>();
+    PropertyOption propertyOption0 = PropertyOption.INSTANCE;
+    linkedList0.offerLast(propertyOption0);
+    linkedList0.add(propertyOption0);
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, ""Ix"", ""Ix"", 0, 0);
+    String string0 = groupImpl0.toString();
+    assertEquals(0, groupImpl0.getMaximum());
+}",""
+"public String toString() {
+    final StringBuffer buffer = new StringBuffer();
+    appendUsage(buffer, DisplaySetting.ALL, null);
+    return buffer.toString();
+}","public void test2143() throws Throwable {
+    LinkedList<PropertyOption> linkedList0 = new LinkedList<PropertyOption>();
+    PropertyOption propertyOption0 = PropertyOption.INSTANCE;
+    linkedList0.offerLast(propertyOption0);
+    linkedList0.add(propertyOption0);
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, ""Ix"", ""Ix"", 0, 0);
+    String string0 = groupImpl0.toString();
+    assertEquals(""[Ix (-D<property>=<value>|-D<property>=<value>)]"", string0);
+}",""
+"public int getMaximum() {
+    return maximum;
+}","public void test2244() throws Throwable {
+    LinkedList<GroupImpl> linkedList0 = new LinkedList<GroupImpl>();
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, ""org.apache.commons.cli2.option.SourceDestArgument"", ""org.apache.commons.cli2.option.SourceDestArgument"", 0, 0);
+    LinkedHashSet<GroupImpl> linkedHashSet0 = new LinkedHashSet<GroupImpl>();
+    List list0 = groupImpl0.helpLines(0, linkedHashSet0, (Comparator) null);
+    assertEquals(0, groupImpl0.getMaximum());
+}",""
+"public int getMinimum() {
+    return minimum;
+}","public void test2246() throws Throwable {
+    LinkedList<GroupImpl> linkedList0 = new LinkedList<GroupImpl>();
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, ""org.apache.commons.cli2.option.SourceDestArgument"", ""org.apache.commons.cli2.option.SourceDestArgument"", 0, 0);
+    LinkedHashSet<GroupImpl> linkedHashSet0 = new LinkedHashSet<GroupImpl>();
+    List list0 = groupImpl0.helpLines(0, linkedHashSet0, (Comparator) null);
+    assertEquals(0, groupImpl0.getMinimum());
+}",""
+"public int getMaximum() {
+    return maximum;
+}","public void test2348() throws Throwable {
+    LinkedList<Integer> linkedList0 = new LinkedList<Integer>();
+    DisplaySetting displaySetting0 = mock(DisplaySetting.class, new ViolatedAssumptionAnswer());
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, ""DIS9LAY_ARxUMENT_BRACKETED"", ""DIS9LAY_ARxUMENT_BRACKETED"", 2865, 2865);
+    List list0 = groupImpl0.helpLines(2865, displaySetting0.ALL, (Comparator) null);
+    assertEquals(2865, groupImpl0.getMaximum());
+}",""
+"public int getMinimum() {
+    return minimum;
+}","public void test2349() throws Throwable {
+    LinkedList<Integer> linkedList0 = new LinkedList<Integer>();
+    DisplaySetting displaySetting0 = mock(DisplaySetting.class, new ViolatedAssumptionAnswer());
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, ""DIS9LAY_ARxUMENT_BRACKETED"", ""DIS9LAY_ARxUMENT_BRACKETED"", 2865, 2865);
+    List list0 = groupImpl0.helpLines(2865, displaySetting0.ALL, (Comparator) null);
+    assertEquals(2865, groupImpl0.getMinimum());
+}",""
+"public int getMaximum() {
+    return maximum;
+}","public void test2450() throws Throwable {
+    LinkedList<Integer> linkedList0 = new LinkedList<Integer>();
+    DisplaySetting displaySetting0 = mock(DisplaySetting.class, new ViolatedAssumptionAnswer());
+    Comparator<Command> comparator0 = (Comparator<Command>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, """", """", 1325, 1325);
+    List list0 = groupImpl0.helpLines(1325, displaySetting0.ALL, comparator0);
+    assertEquals(1325, groupImpl0.getMaximum());
+}",""
+"public int getMinimum() {
+    return minimum;
+}","public void test2451() throws Throwable {
+    LinkedList<Integer> linkedList0 = new LinkedList<Integer>();
+    DisplaySetting displaySetting0 = mock(DisplaySetting.class, new ViolatedAssumptionAnswer());
+    Comparator<Command> comparator0 = (Comparator<Command>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, """", """", 1325, 1325);
+    List list0 = groupImpl0.helpLines(1325, displaySetting0.ALL, comparator0);
+    assertEquals(1325, groupImpl0.getMinimum());
+}",""
+"public List helpLines(final int depth, final Set helpSettings, final Comparator comp) {
+    final List helpLines = new ArrayList();
+    if (helpSettings.contains(DisplaySetting.DISPLAY_GROUP_NAME)) {
+        final HelpLine helpLine = new HelpLineImpl(this, depth);
+        helpLines.add(helpLine);
+    }
+    if (helpSettings.contains(DisplaySetting.DISPLAY_GROUP_EXPANDED)) {
+        // grab a list of the group's options.
+        final List list;
+        if (comp == null) {
+            // default to using the initial order
+            list = options;
+        } else {
+            // sort options if comparator is supplied
+            list = new ArrayList(options);
+            Collections.sort(list, comp);
+        }
+        // for each option
+        for (final Iterator i = list.iterator(); i.hasNext(); ) {
+            final Option option = (Option) i.next();
+            helpLines.addAll(option.helpLines(depth + 1, helpSettings, comp));
+        }
+    }
+    if (helpSettings.contains(DisplaySetting.DISPLAY_GROUP_ARGUMENT)) {
+        for (final Iterator i = anonymous.iterator(); i.hasNext(); ) {
+            final Option option = (Option) i.next();
+            helpLines.addAll(option.helpLines(depth + 1, helpSettings, comp));
+        }
+    }
+    return helpLines;
+}","public void test2553() throws Throwable {
+    LinkedList<Integer> linkedList0 = new LinkedList<Integer>();
+    DisplaySetting displaySetting0 = mock(DisplaySetting.class, new ViolatedAssumptionAnswer());
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, ""\""p"", ""\""p"", (-1929), (-1929));
+    Integer integer0 = new Integer((-1929));
+    linkedList0.add(integer0);
+    Comparator<GroupImpl> comparator0 = (Comparator<GroupImpl>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    // Undeclared exception!
+    try {
+        groupImpl0.helpLines((-1929), displaySetting0.ALL, comparator0);
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // java.lang.Integer cannot be cast to org.apache.commons.cli2.Option
+        //
+        verifyException(""org.apache.commons.cli2.option.GroupImpl"", e);
+    }
+}",""
+"public Option findOption(final String trigger) {
+    final Iterator i = getOptions().iterator();
+    while (i.hasNext()) {
+        final Option option = (Option) i.next();
+        final Option found = option.findOption(trigger);
+        if (found != null) {
+            return found;
+        }
+    }
+    return null;
+}","public void test2654() throws Throwable {
+    LinkedList<PropertyOption> linkedList0 = new LinkedList<PropertyOption>();
+    PropertyOption propertyOption0 = new PropertyOption("""", """", 2676);
+    linkedList0.add(propertyOption0);
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, ""-D"", ""-D"", 2676, 2676);
+    Option option0 = groupImpl0.findOption("""");
+    assertNotNull(option0);
+}",""
+"public int getMinimum() {
+    return minimum;
+}","public void test2655() throws Throwable {
+    LinkedList<PropertyOption> linkedList0 = new LinkedList<PropertyOption>();
+    PropertyOption propertyOption0 = new PropertyOption("""", """", 2676);
+    linkedList0.add(propertyOption0);
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, ""-D"", ""-D"", 2676, 2676);
+    Option option0 = groupImpl0.findOption("""");
+    assertEquals(2676, groupImpl0.getMinimum());
+}",""
+"public int getMaximum() {
+    return maximum;
+}","public void test2656() throws Throwable {
+    LinkedList<PropertyOption> linkedList0 = new LinkedList<PropertyOption>();
+    PropertyOption propertyOption0 = new PropertyOption("""", """", 2676);
+    linkedList0.add(propertyOption0);
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, ""-D"", ""-D"", 2676, 2676);
+    Option option0 = groupImpl0.findOption("""");
+    assertEquals(2676, groupImpl0.getMaximum());
+}",""
+"public void defaults(final WriteableCommandLine commandLine) {
+    super.defaults(commandLine);
+    for (final Iterator i = options.iterator(); i.hasNext(); ) {
+        final Option option = (Option) i.next();
+        option.defaults(commandLine);
+    }
+    for (final Iterator i = anonymous.iterator(); i.hasNext(); ) {
+        final Option option = (Option) i.next();
+        option.defaults(commandLine);
+    }
+}","public void test2757() throws Throwable {
+    LinkedList<GroupImpl> linkedList0 = new LinkedList<GroupImpl>();
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, ""6fH~_%MC"", ""6fH~_%MC"", 3, 3);
+    linkedList0.offer(groupImpl0);
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(groupImpl0, linkedList0);
+    // Undeclared exception!
+    try {
+        groupImpl0.defaults(writeableCommandLineImpl0);
+        fail(""Expecting exception: StackOverflowError"");
+    } catch (StackOverflowError e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"public int getMaximum() {
+    return maximum;
+}","public void test2859() throws Throwable {
+    LinkedList<SourceDestArgument> linkedList0 = new LinkedList<SourceDestArgument>();
+    FileValidator fileValidator0 = FileValidator.getExistingDirectoryInstance();
+    ArgumentImpl argumentImpl0 = new ArgumentImpl(""x:zZJ-"", ""x:zZJ-"", 61, 61, '7', 'G', fileValidator0, ""joE%RX$7"", linkedList0, 61);
+    LinkedList<DefaultOption> linkedList1 = new LinkedList<DefaultOption>();
+    SourceDestArgument sourceDestArgument0 = new SourceDestArgument(argumentImpl0, argumentImpl0, 'j', 'j', ""--"", linkedList1);
+    linkedList0.add(sourceDestArgument0);
+    GroupImpl groupImpl0 = new GroupImpl(linkedList0, ""\""1ez(U #n_t"", ""\""1ez(U #n_t"", '\u0000', '\u0000');
+    LinkedList<GroupImpl> linkedList2 = new LinkedList<GroupImpl>();
+    WriteableCommandLineImpl writeableCommandLineImpl0 = new WriteableCommandLineImpl(sourceDestArgument0, linkedList2);
+    groupImpl0.defaults(writeableCommandLineImpl0);
+    assertEquals(0, groupImpl0.getMaximum());
+}",""

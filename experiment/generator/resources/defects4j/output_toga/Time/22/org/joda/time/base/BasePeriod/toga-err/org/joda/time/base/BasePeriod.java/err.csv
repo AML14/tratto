@@ -1,0 +1,175 @@
+org.joda.time.base.BasePeriod,@Test(timeout = 4000)
+public void test000() throws Throwable {
+    MutablePeriod mutablePeriod0 = new MutablePeriod((-2880L));
+    mutablePeriod0.setValue(1204, 18);
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+org.joda.time.base.BasePeriod,@Test(timeout = 4000)
+public void test011() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstance();
+    Period period0 = new Period((-1458L), (Chronology) gJChronology0);
+    PeriodType periodType0 = PeriodType.weeks();
+    MutablePeriod mutablePeriod0 = new MutablePeriod(100000000L, periodType0);
+    mutablePeriod0.add((ReadablePeriod) period0);
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+org.joda.time.base.BasePeriod,@Test(timeout = 4000)
+public void test022() throws Throwable {
+    Weeks weeks0 = Weeks.MIN_VALUE;
+    PeriodType periodType0 = weeks0.getPeriodType();
+    MutablePeriod mutablePeriod0 = new MutablePeriod(10000000000000000L, periodType0);
+    mutablePeriod0.addYears((-1375));
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+org.joda.time.base.BasePeriod,@Test(timeout = 4000)
+public void test033() throws Throwable {
+    Period period0 = new Period(0L);
+    Days days0 = period0.toStandardDays();
+    PeriodType periodType0 = days0.getPeriodType();
+    MutablePeriod mutablePeriod0 = new MutablePeriod(0L, 0L, periodType0);
+    mutablePeriod0.setMillis((-1808));
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+org.joda.time.base.BasePeriod,@Test(timeout = 4000)
+public void test066() throws Throwable {
+    Months months0 = Months.MIN_VALUE;
+    PeriodType periodType0 = months0.getPeriodType();
+    Period period0 = null;
+    period0 = new Period(0, 0, 0, 0, 725, 3216, 0, 0, periodType0);
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+org.joda.time.base.BasePeriod,@Test(timeout = 4000)
+public void test077() throws Throwable {
+    PeriodType periodType0 = PeriodType.standard();
+    EthiopicChronology ethiopicChronology0 = EthiopicChronology.getInstance();
+    MutablePeriod mutablePeriod0 = new MutablePeriod(10000000000000L, periodType0, (Chronology) ethiopicChronology0);
+    mutablePeriod0.setPeriod(0L, (Chronology) ethiopicChronology0);
+    mutablePeriod0.addMonths((-499));
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(1);
+    LocalDate localDate0 = new LocalDate(dateTimeZone0);
+    DateMidnight dateMidnight0 = localDate0.toDateMidnight(dateTimeZone0);
+    Duration duration0 = mutablePeriod0.toDurationTo(dateMidnight0);
+    duration0.getMillis();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+org.joda.time.base.BasePeriod,@Test(timeout = 4000)
+public void test088() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstance();
+    DateTime dateTime0 = new DateTime((Chronology) gJChronology0);
+    Interval interval0 = new Interval((ReadablePeriod) null, dateTime0);
+    Period period0 = interval0.toPeriod();
+    Period period1 = period0.plusYears(1024);
+    Duration duration0 = period1.toDurationTo(dateTime0);
+    duration0.getStandardSeconds();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+org.joda.time.base.BasePeriod,@Test(timeout = 4000)
+public void test099() throws Throwable {
+    Period period0 = Period.millis((-978));
+    GJChronology gJChronology0 = GJChronology.getInstance();
+    Instant instant0 = gJChronology0.getGregorianCutover();
+    Duration duration0 = period0.toDurationTo(instant0);
+    duration0.getMillis();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+org.joda.time.base.BasePeriod,@Test(timeout = 4000)
+public void test1010() throws Throwable {
+    GregorianChronology gregorianChronology0 = GregorianChronology.getInstanceUTC();
+    DateMidnight dateMidnight0 = new DateMidnight((Chronology) gregorianChronology0);
+    MutablePeriod mutablePeriod0 = new MutablePeriod(dateMidnight0, (ReadableInstant) null);
+    mutablePeriod0.setDays(1576);
+    Duration duration0 = mutablePeriod0.toDurationFrom((ReadableInstant) null);
+    duration0.getStandardHours();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+org.joda.time.base.BasePeriod,@Test(timeout = 4000)
+public void test1111() throws Throwable {
+    Period period0 = Period.millis((-115));
+    Period period1 = period0.withDays((-115));
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHoursMinutes(0, 0);
+    ISOChronology iSOChronology0 = ISOChronology.getInstance(dateTimeZone0);
+    YearMonthDay yearMonthDay0 = new YearMonthDay((Chronology) iSOChronology0);
+    DateMidnight dateMidnight0 = yearMonthDay0.toDateMidnight(dateTimeZone0);
+    Duration duration0 = period1.toDurationFrom(dateMidnight0);
+    duration0.getStandardSeconds();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+org.joda.time.base.BasePeriod,@Test(timeout = 4000)
+public void test1212() throws Throwable {
+    GregorianChronology gregorianChronology0 = GregorianChronology.getInstanceUTC();
+    DateMidnight dateMidnight0 = new DateMidnight((Chronology) gregorianChronology0);
+    MutablePeriod mutablePeriod0 = new MutablePeriod(dateMidnight0, (ReadableInstant) null);
+    Duration duration0 = mutablePeriod0.toDurationFrom((ReadableInstant) null);
+    duration0.getStandardHours();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+org.joda.time.base.BasePeriod,@Test(timeout = 4000)
+public void test1313() throws Throwable {
+    Period period0 = Period.millis((-115));
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHoursMinutes(0, 0);
+    ISOChronology iSOChronology0 = ISOChronology.getInstance(dateTimeZone0);
+    YearMonthDay yearMonthDay0 = new YearMonthDay((Chronology) iSOChronology0);
+    DateMidnight dateMidnight0 = yearMonthDay0.toDateMidnight(dateTimeZone0);
+    Duration duration0 = period0.toDurationFrom(dateMidnight0);
+    duration0.getMillis();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+org.joda.time.base.BasePeriod,@Test(timeout = 4000)
+public void test1616() throws Throwable {
+    Period period0 = Period.hours(0);
+    PeriodType periodType0 = period0.getPeriodType();
+    periodType0.getName();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+org.joda.time.base.BasePeriod,@Test(timeout = 4000)
+public void test1818() throws Throwable {
+    Period period0 = new Period(0L, (Chronology) null);
+    DurationFieldType durationFieldType0 = period0.getFieldType(0);
+    durationFieldType0.getName();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+org.joda.time.base.BasePeriod,@Test(timeout = 4000)
+public void test2020() throws Throwable {
+    PeriodType periodType0 = PeriodType.yearMonthDay();
+    MutablePeriod mutablePeriod0 = new MutablePeriod(0L, periodType0, (Chronology) null);
+    Days days0 = Days.THREE;
+    Period period0 = days0.toPeriod();
+    Period period1 = period0.plusMinutes(903);
+    mutablePeriod0.add((ReadablePeriod) period1);
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+org.joda.time.base.BasePeriod,@Test(timeout = 4000)
+public void test2525() throws Throwable {
+    Period period0 = Period.millis((-579));
+    PeriodType periodType0 = PeriodType.months();
+    Instant instant0 = new Instant((-2788L));
+    Chronology chronology0 = instant0.getChronology();
+    MutablePeriod mutablePeriod0 = new MutablePeriod((long) (-579), periodType0, chronology0);
+    mutablePeriod0.mergePeriod(period0);
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+org.joda.time.base.BasePeriod,@Test(timeout = 4000)
+public void test2727() throws Throwable {
+    TimeOfDay timeOfDay0 = new TimeOfDay();
+    PeriodType periodType0 = PeriodType.hours();
+    Period period0 = new Period(timeOfDay0, timeOfDay0, periodType0);
+    ISOChronology iSOChronology0 = ISOChronology.getInstanceUTC();
+    MutablePeriod mutablePeriod0 = new MutablePeriod(period0, iSOChronology0);
+    mutablePeriod0.setWeeks(2);
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+org.joda.time.base.BasePeriod,@Test(timeout = 4000)
+public void test2929() throws Throwable {
+    LocalTime localTime0 = new LocalTime();
+    Period period0 = null;
+    period0 = new Period(localTime0, (ReadablePartial) null);
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+org.joda.time.base.BasePeriod,@Test(timeout = 4000)
+public void test3030() throws Throwable {
+    Period period0 = null;
+    period0 = new Period((ReadablePartial) null, (ReadablePartial) null);
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+org.joda.time.base.BasePeriod,@Test(timeout = 4000)
+public void test3232() throws Throwable {
+    PeriodType periodType0 = PeriodType.minutes();
+    MutablePeriod mutablePeriod0 = new MutablePeriod((Object) null, periodType0);
+    mutablePeriod0.addDays(2000);
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+org.joda.time.base.BasePeriod,@Test(timeout = 4000)
+public void test3434() throws Throwable {
+    MutablePeriod mutablePeriod0 = new MutablePeriod();
+    Instant instant0 = new Instant((-2887L));
+    Duration duration0 = mutablePeriod0.toDurationTo(instant0);
+    duration0.getMillis();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+org.joda.time.base.BasePeriod,@Test(timeout = 4000)
+public void test3636() throws Throwable {
+    Instant instant0 = new Instant();
+    Duration duration0 = Duration.millis(0L);
+    Period period0 = new Period(instant0, duration0);
+    Duration duration1 = period0.toDurationFrom(instant0);
+    duration1.getMillis();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.

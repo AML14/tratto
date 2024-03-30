@@ -1,0 +1,187 @@
+com.google.javascript.jscomp.FunctionTypeBuilder,@Test(timeout = 4000)
+public void test022() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""0"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""0"", compiler0, node0, ""0"", (Scope) null);
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferParameterTypes(jSDocInfo0);
+    FunctionType functionType0 = functionTypeBuilder0.buildAndRegister();
+    functionTypeBuilder1.inferFromOverriddenFunction(functionType0, (Node) null);
+    functionType0.isReturnTypeInferred();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.google.javascript.jscomp.FunctionTypeBuilder,@Test(timeout = 4000)
+public void test023() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""0"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""0"", compiler0, node0, ""0"", (Scope) null);
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferParameterTypes(jSDocInfo0);
+    FunctionType functionType0 = functionTypeBuilder0.buildAndRegister();
+    functionTypeBuilder1.inferFromOverriddenFunction(functionType0, (Node) null);
+    functionType0.hasCachedValues();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.google.javascript.jscomp.FunctionTypeBuilder,@Test(timeout = 4000)
+public void test034() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""JSC_THIS_TYPE_NON_OBJECT"", ""JSC_THIS_TYPE_NON_OBJECT"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""JSC_THIS_TYPE_NON_OBJECT"", compiler0, node0, ""JSC_THIS_TYPE_NON_OBJECT"", (Scope) null);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionType((JSType) null, node0);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferFromOverriddenFunction(functionType0, node0);
+    FunctionType functionType1 = functionTypeBuilder1.buildAndRegister();
+    functionType1.hasCachedValues();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.google.javascript.jscomp.FunctionTypeBuilder,@Test(timeout = 4000)
+public void test035() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""JSC_THIS_TYPE_NON_OBJECT"", ""JSC_THIS_TYPE_NON_OBJECT"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""JSC_THIS_TYPE_NON_OBJECT"", compiler0, node0, ""JSC_THIS_TYPE_NON_OBJECT"", (Scope) null);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionType((JSType) null, node0);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferFromOverriddenFunction(functionType0, node0);
+    FunctionType functionType1 = functionTypeBuilder1.buildAndRegister();
+    functionType1.getMaxArguments();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.google.javascript.jscomp.FunctionTypeBuilder,@Test(timeout = 4000)
+public void test046() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode("""", """");
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    JSType[] jSTypeArray0 = new JSType[4];
+    JSTypeNative jSTypeNative0 = JSTypeNative.SYNTAX_ERROR_TYPE;
+    ObjectType objectType0 = jSTypeRegistry0.getNativeObjectType(jSTypeNative0);
+    jSTypeArray0[0] = (JSType) objectType0;
+    jSTypeArray0[1] = (JSType) objectType0;
+    EnumType enumType0 = jSTypeRegistry0.createEnumType(""Not declared as a constructor"", jSTypeArray0[0]);
+    EnumElementType enumElementType0 = enumType0.getElementsType();
+    FunctionType functionType0 = enumElementType0.getConstructor();
+    jSTypeArray0[2] = (JSType) functionType0;
+    jSTypeArray0[3] = (JSType) enumElementType0;
+    Node node1 = jSTypeRegistry0.createOptionalParameters(jSTypeArray0);
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""Named type with empty name component"", compiler0, node0, ""Not declared as a constructor"", (Scope) null);
+    functionTypeBuilder0.inferFromOverriddenFunction(functionType0, node1);
+    compiler0.getWarningCount();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.google.javascript.jscomp.FunctionTypeBuilder,@Test(timeout = 4000)
+public void test068() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""JSC_INVLID_MARKER_UAGE"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""JSC_INVLID_MARKER_UAGE"", compiler0, node0, ""JSC_INVLID_MARKER_UAGE"", (Scope) null);
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferParameterTypes(jSDocInfo0);
+    FunctionType functionType0 = functionTypeBuilder1.buildAndRegister();
+    functionType0.hasCachedValues();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.google.javascript.jscomp.FunctionTypeBuilder,@Test(timeout = 4000)
+public void test069() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""JSC_INVLID_MARKER_UAGE"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""JSC_INVLID_MARKER_UAGE"", compiler0, node0, ""JSC_INVLID_MARKER_UAGE"", (Scope) null);
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferParameterTypes(jSDocInfo0);
+    FunctionType functionType0 = functionTypeBuilder1.buildAndRegister();
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    JSType[] jSTypeArray0 = new JSType[1];
+    jSTypeArray0[0] = (JSType) functionType0;
+    Node node1 = jSTypeRegistry0.createOptionalParameters(jSTypeArray0);
+    functionTypeBuilder1.inferFromOverriddenFunction(functionType0, node1);
+    compiler0.getWarningCount();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.google.javascript.jscomp.FunctionTypeBuilder,@Test(timeout = 4000)
+public void test1518() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""0"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""0"", compiler0, node0, ""0"", (Scope) null);
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    functionTypeBuilder0.inferInheritance(jSDocInfo0);
+    compiler0.getWarningCount();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.google.javascript.jscomp.FunctionTypeBuilder,@Test(timeout = 4000)
+public void test1821() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""rsT*.f:u}P7j"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""rsT*.f:u}P7j"", compiler0, node0, ""rsT*.f:u}P7j"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferParameterTypes(node0, (JSDocInfo) null);
+    FunctionType functionType0 = functionTypeBuilder0.buildAndRegister();
+    functionTypeBuilder1.inferThisType((JSDocInfo) null, functionType0);
+    functionType0.isReturnTypeInferred();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.google.javascript.jscomp.FunctionTypeBuilder,@Test(timeout = 4000)
+public void test1822() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""rsT*.f:u}P7j"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""rsT*.f:u}P7j"", compiler0, node0, ""rsT*.f:u}P7j"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferParameterTypes(node0, (JSDocInfo) null);
+    FunctionType functionType0 = functionTypeBuilder0.buildAndRegister();
+    functionTypeBuilder1.inferThisType((JSDocInfo) null, functionType0);
+    functionType0.hasCachedValues();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.google.javascript.jscomp.FunctionTypeBuilder,@Test(timeout = 4000)
+public void test2428() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""2"", ""2"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""2"", compiler0, node0, ""2"", (Scope) null);
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferParameterTypes(jSDocInfo0);
+    FunctionType functionType0 = functionTypeBuilder1.buildAndRegister();
+    functionType0.isReturnTypeInferred();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.google.javascript.jscomp.FunctionTypeBuilder,@Test(timeout = 4000)
+public void test2429() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""2"", ""2"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""2"", compiler0, node0, ""2"", (Scope) null);
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferParameterTypes(jSDocInfo0);
+    FunctionType functionType0 = functionTypeBuilder1.buildAndRegister();
+    functionType0.hasCachedValues();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.google.javascript.jscomp.FunctionTypeBuilder,@Test(timeout = 4000)
+public void test2430() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""2"", ""2"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""2"", compiler0, node0, ""2"", (Scope) null);
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferParameterTypes(jSDocInfo0);
+    FunctionType functionType0 = functionTypeBuilder1.buildAndRegister();
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    JSType[] jSTypeArray0 = new JSType[1];
+    jSTypeArray0[0] = (JSType) functionType0;
+    Node node1 = jSTypeRegistry0.createOptionalParameters(jSTypeArray0);
+    functionTypeBuilder1.inferParameterTypes(node1, (JSDocInfo) null);
+    compiler0.getWarningCount();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.google.javascript.jscomp.FunctionTypeBuilder,@Test(timeout = 4000)
+public void test2531() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""JSC_THIS_TYPE_NON_OBJECT"", ""JSC_THIS_TYPE_NON_OBJECT"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""JSC_THIS_TYPE_NON_OBJECT"", compiler0, node0, ""JSC_THIS_TYPE_NON_OBJECT"", (Scope) null);
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionType((JSType) null, node0);
+    JSType[] jSTypeArray0 = new JSType[3];
+    jSTypeArray0[0] = (JSType) functionType0;
+    jSTypeArray0[1] = (JSType) functionType0;
+    jSTypeArray0[2] = (JSType) functionType0;
+    Node node1 = jSTypeRegistry0.createOptionalParameters(jSTypeArray0);
+    functionTypeBuilder0.inferParameterTypes(node1, jSDocInfo0);
+    functionTypeBuilder0.inferParameterTypes(node1, jSDocInfo0);
+    compiler0.getWarningCount();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.google.javascript.jscomp.FunctionTypeBuilder,@Test(timeout = 4000)
+public void test2632() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""JSC_THIS_TYPE_NON_OBJECT"", ""JSC_THIS_TYPE_NON_OBJECT"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""JSC_THIS_TYPE_NON_OBJECT"", compiler0, node0, ""JSC_THIS_TYPE_NON_OBJECT"", (Scope) null);
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionType((JSType) null, node0);
+    functionTypeBuilder0.inferFromOverriddenFunction(functionType0, node0);
+    JSType[] jSTypeArray0 = new JSType[3];
+    jSTypeArray0[0] = (JSType) functionType0;
+    jSTypeArray0[1] = (JSType) functionType0;
+    jSTypeArray0[2] = (JSType) functionType0;
+    Node node1 = jSTypeRegistry0.createOptionalParameters(jSTypeArray0);
+    functionTypeBuilder0.inferParameterTypes(node1, jSDocInfo0);
+    compiler0.getWarningCount();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.

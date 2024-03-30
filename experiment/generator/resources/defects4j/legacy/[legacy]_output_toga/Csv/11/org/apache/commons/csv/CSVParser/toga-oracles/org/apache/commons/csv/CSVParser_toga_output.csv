@@ -1,0 +1,303 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.MYSQL;
+    CSVParser cSVParser0 = CSVParser.parse("""", cSVFormat0);
+    CSVRecord cSVRecord0 = cSVParser0.nextRecord();
+    assertNull(cSVRecord0);
+}",0,
+project,0,test011,"public void test011() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.RFC4180;
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = "">"";
+    stringArray0[1] = ""string"";
+    CSVFormat cSVFormat1 = cSVFormat0.withHeader(stringArray0);
+    CSVParser cSVParser0 = CSVParser.parse(""string"", cSVFormat1);
+    assertEquals(0L, cSVParser0.getRecordNumber());
+}",0,"assertEquals(0, cSVParser0.getRecordNumber())"
+project,0,test012,"public void test012() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.RFC4180;
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = "">"";
+    stringArray0[1] = ""string"";
+    CSVFormat cSVFormat1 = cSVFormat0.withHeader(stringArray0);
+    CSVParser cSVParser0 = CSVParser.parse(""string"", cSVFormat1);
+    CSVRecord cSVRecord0 = cSVParser0.nextRecord();
+    assertFalse(cSVRecord0.isConsistent());
+}",0,assertTrue(cSVRecord0.isConsistent())
+project,0,test023,"public void test023() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.RFC4180;
+    PipedWriter pipedWriter0 = new PipedWriter();
+    PipedReader pipedReader0 = new PipedReader(pipedWriter0, 35);
+    CSVParser cSVParser0 = cSVFormat0.parse(pipedReader0);
+    cSVParser0.close();
+    boolean boolean0 = cSVParser0.isClosed();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test034,"public void test034() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.MYSQL;
+    CSVParser cSVParser0 = CSVParser.parse(""(line "", cSVFormat0);
+    cSVParser0.nextRecord();
+    LinkedList<CSVRecord> linkedList0 = cSVParser0.getRecords((LinkedList<CSVRecord>) null);
+    assertNull(linkedList0);
+}",0,
+project,0,test045,"public void test045() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.TDF;
+    URI uRI0 = MockURI.aFileURI;
+    URL uRL0 = MockURI.toURL(uRI0);
+    Charset charset0 = Charset.defaultCharset();
+    // Undeclared exception!
+    try {
+        CSVParser.parse(uRL0, charset0, cSVFormat0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.net.URL"", e);
+    }
+}",0,
+project,0,test056,"public void test056() throws Throwable {
+    Charset charset0 = Charset.defaultCharset();
+    // Undeclared exception!
+    try {
+        CSVParser.parse((URL) null, charset0, (CSVFormat) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Parameter 'url' must not be null!
+        //
+        verifyException(""org.apache.commons.csv.Assertions"", e);
+    }
+}",0,
+project,0,test067,"public void test067() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.TDF;
+    String[] stringArray0 = new String[1];
+    CSVFormat cSVFormat1 = cSVFormat0.withHeader(stringArray0);
+    // Undeclared exception!
+    try {
+        CSVParser.parse("""", cSVFormat1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.csv.CSVParser"", e);
+    }
+}",0,
+project,0,test078,"public void test078() throws Throwable {
+    // Undeclared exception!
+    try {
+        CSVParser.parse(""gtjqJAKF$}f4^#"", (CSVFormat) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Parameter 'format' must not be null!
+        //
+        verifyException(""org.apache.commons.csv.Assertions"", e);
+    }
+}",1,
+project,0,test089,"public void test089() throws Throwable {
+    File file0 = MockFile.createTempFile(""ygTPJ><bl[d^LLv.`hn"", ""[LrS_H&F+GyXtIZ:`"");
+    CSVFormat cSVFormat0 = CSVFormat.newFormat('$');
+    // Undeclared exception!
+    try {
+        CSVParser.parse(file0, (Charset) null, cSVFormat0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // charset
+        //
+        verifyException(""java.io.InputStreamReader"", e);
+    }
+}",0,
+project,0,test0910,"public void test0910() throws Throwable {
+    MockFile mockFile0 = new MockFile("",`g|C]bw%"", "",`g|C]bw%"");
+    Charset charset0 = Charset.defaultCharset();
+    CSVFormat cSVFormat0 = CSVFormat.MYSQL;
+    try {
+        CSVParser.parse((File) mockFile0, charset0, cSVFormat0);
+        fail(""Expecting exception: FileNotFoundException"");
+    } catch (FileNotFoundException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.mock.java.io.MockFileInputStream"", e);
+    }
+}",1,
+project,0,test1011,"public void test1011() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.RFC4180;
+    PipedReader pipedReader0 = new PipedReader();
+    CSVParser cSVParser0 = cSVFormat0.parse(pipedReader0);
+    try {
+        cSVParser0.nextRecord();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Pipe not connected
+        //
+        verifyException(""java.io.PipedReader"", e);
+    }
+}",0,
+project,0,test1112,"public void test1112() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.RFC4180;
+    PipedWriter pipedWriter0 = new PipedWriter();
+    PipedReader pipedReader0 = new PipedReader(pipedWriter0, 35);
+    CSVParser cSVParser0 = cSVFormat0.parse(pipedReader0);
+    cSVParser0.close();
+    LinkedList<CSVRecord> linkedList0 = new LinkedList<CSVRecord>();
+    try {
+        cSVParser0.getRecords(linkedList0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream closed
+        //
+        verifyException(""java.io.BufferedReader"", e);
+    }
+}",0,
+project,0,test1314,"public void test1314() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.EXCEL;
+    CSVParser cSVParser0 = CSVParser.parse(""XhdDY"", cSVFormat0);
+    LinkedList<CSVRecord> linkedList0 = new LinkedList<CSVRecord>();
+    LinkedList<CSVRecord> linkedList1 = cSVParser0.getRecords(linkedList0);
+    assertSame(linkedList0, linkedList1);
+}",0,
+project,0,test1415,"public void test1415() throws Throwable {
+    PipedReader pipedReader0 = new PipedReader(98);
+    CSVFormat cSVFormat0 = CSVFormat.MYSQL;
+    CSVParser cSVParser0 = new CSVParser(pipedReader0, cSVFormat0);
+    boolean boolean0 = cSVParser0.isClosed();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test1516,"public void test1516() throws Throwable {
+    PipedReader pipedReader0 = new PipedReader(288);
+    CSVFormat cSVFormat0 = CSVFormat.EXCEL;
+    CSVParser cSVParser0 = new CSVParser(pipedReader0, cSVFormat0);
+    try {
+        cSVParser0.getRecords();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Pipe not connected
+        //
+        verifyException(""java.io.PipedReader"", e);
+    }
+}",0,
+project,0,test1617,"public void test1617() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.DEFAULT;
+    CSVParser cSVParser0 = CSVParser.parse(""*#"", cSVFormat0);
+    cSVParser0.close();
+    Consumer<CSVRecord> consumer0 = (Consumer<CSVRecord>) mock(Consumer.class, new ViolatedAssumptionAnswer());
+    cSVParser0.forEach(consumer0);
+    assertEquals(0L, cSVParser0.getRecordNumber());
+}",0,"assertEquals(1, cSVParser0.getRecordNumber())"
+project,0,test1718,"public void test1718() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.newFormat(',');
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = ""org.apache.commons.csv.CSVParser"";
+    CSVFormat cSVFormat1 = cSVFormat0.withHeader(stringArray0);
+    CSVFormat cSVFormat2 = cSVFormat1.withSkipHeaderRecord(true);
+    PipedReader pipedReader0 = new PipedReader(2097);
+    try {
+        cSVFormat2.parse(pipedReader0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Pipe not connected
+        //
+        verifyException(""java.io.PipedReader"", e);
+    }
+}",0,
+project,0,test1819,"public void test1819() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.TDF;
+    String[] stringArray0 = new String[0];
+    CSVFormat cSVFormat1 = cSVFormat0.withHeader(stringArray0);
+    CSVParser cSVParser0 = CSVParser.parse("") "", cSVFormat1);
+    assertEquals(1L, cSVParser0.getRecordNumber());
+}",0,"assertEquals(0, cSVParser0.getRecordNumber())"
+project,0,test2122,"public void test2122() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.RFC4180;
+    CSVParser cSVParser0 = CSVParser.parse(""string"", cSVFormat0);
+    Map<String, Integer> map0 = cSVParser0.getHeaderMap();
+    assertNull(map0);
+}",0,
+project,0,test2224,"public void test2224() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.RFC4180;
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = "">"";
+    stringArray0[1] = ""string"";
+    CSVFormat cSVFormat1 = cSVFormat0.withHeader(stringArray0);
+    PipedWriter pipedWriter0 = new PipedWriter();
+    PipedReader pipedReader0 = new PipedReader(pipedWriter0, 35);
+    CSVParser cSVParser0 = cSVFormat1.parse(pipedReader0);
+    Map<String, Integer> map0 = cSVParser0.getHeaderMap();
+    assertNotNull(map0);
+}",0,
+project,0,test2325,"public void test2325() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.EXCEL;
+    CSVFormat cSVFormat1 = cSVFormat0.withNullString(""The delimiter cannot be a line break"");
+    CSVParser cSVParser0 = CSVParser.parse(""The delimiter cannot be a line break"", cSVFormat1);
+    CSVRecord cSVRecord0 = cSVParser0.nextRecord();
+    assertEquals(""[null]"", cSVRecord0.toString());
+}",0,
+project,0,test2426,"public void test2426() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.RFC4180;
+    CSVFormat cSVFormat1 = cSVFormat0.withNullString(""6+<SO]1CEx]vC4+W#$"");
+    CSVParser cSVParser0 = CSVParser.parse(""string"", cSVFormat1);
+    CSVRecord cSVRecord0 = cSVParser0.nextRecord();
+    assertEquals(""[string]"", cSVRecord0.toString());
+}",0,assertNotNull(cSVRecord0.toString())
+project,0,test2527,"public void test2527() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.RFC4180;
+    CSVParser cSVParser0 = CSVParser.parse(""(line "", cSVFormat0);
+    long long0 = cSVParser0.getRecordNumber();
+    assertEquals(0L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test2628,"public void test2628() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.EXCEL;
+    CSVParser cSVParser0 = CSVParser.parse(""XhdDY"", cSVFormat0);
+    long long0 = cSVParser0.getCurrentLineNumber();
+    assertEquals(0L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test2830,"public void test2830() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.RFC4180;
+    CSVParser cSVParser0 = CSVParser.parse(""(line "", cSVFormat0);
+    Consumer<CSVRecord> consumer0 = (Consumer<CSVRecord>) mock(Consumer.class, new ViolatedAssumptionAnswer());
+    cSVParser0.forEach(consumer0);
+    long long0 = cSVParser0.getRecordNumber();
+    assertEquals(1L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test2931,"public void test2931() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.TDF;
+    URL uRL0 = MockURL.getHttpExample();
+    Charset charset0 = Charset.defaultCharset();
+    try {
+        CSVParser.parse(uRL0, charset0, cSVFormat0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Could not find: www.someFakeButWellFormedURL.org
+        //
+        verifyException(""org.evosuite.runtime.mock.java.net.EvoHttpURLConnection"", e);
+    }
+}",0,
+project,0,test3032,"public void test3032() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.EXCEL;
+    CSVParser cSVParser0 = CSVParser.parse(""XhdDY"", cSVFormat0);
+    Iterator<CSVRecord> iterator0 = cSVParser0.iterator();
+    assertNotNull(iterator0);
+}",1,
+project,0,test3133,"public void test3133() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.EXCEL;
+    Charset charset0 = Charset.defaultCharset();
+    // Undeclared exception!
+    try {
+        CSVParser.parse((File) null, charset0, cSVFormat0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Parameter 'file' must not be null!
+        //
+        verifyException(""org.apache.commons.csv.Assertions"", e);
+    }
+}",0,

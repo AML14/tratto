@@ -1,0 +1,28 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test00,"public void test00() throws Throwable {
+    Expression[] expressionArray0 = new Expression[0];
+    CoreOperationAdd coreOperationAdd0 = new CoreOperationAdd(expressionArray0);
+    CoreOperationLessThanOrEqual coreOperationLessThanOrEqual0 = new CoreOperationLessThanOrEqual(coreOperationAdd0, coreOperationAdd0);
+    String string0 = coreOperationLessThanOrEqual0.getSymbol();
+    assertEquals(""<="", string0);
+}",0,assertNotNull(string0)
+project,0,test11,"public void test11() throws Throwable {
+    Constant constant0 = new Constant(""''"");
+    CoreOperationMultiply coreOperationMultiply0 = new CoreOperationMultiply(constant0, constant0);
+    CoreOperationLessThanOrEqual coreOperationLessThanOrEqual0 = new CoreOperationLessThanOrEqual(coreOperationMultiply0, coreOperationMultiply0);
+    QName qName0 = new QName(""|BOU$lydGisag/,+"");
+    Locale locale0 = Locale.CANADA;
+    NodePointer nodePointer0 = NodePointer.newNodePointer(qName0, ""<="", locale0);
+    JXPathContextReferenceImpl jXPathContextReferenceImpl0 = new JXPathContextReferenceImpl((JXPathContext) null, constant0, nodePointer0);
+    EvalContext evalContext0 = jXPathContextReferenceImpl0.getAbsoluteRootContext();
+    PredicateContext predicateContext0 = new PredicateContext(evalContext0, constant0);
+    Object object0 = coreOperationLessThanOrEqual0.computeValue(predicateContext0);
+    assertEquals(false, object0);
+}",0,assertTrue(object0)
+project,0,test22,"public void test22() throws Throwable {
+    Expression[] expressionArray0 = new Expression[0];
+    CoreOperationAdd coreOperationAdd0 = new CoreOperationAdd(expressionArray0);
+    CoreOperationLessThanOrEqual coreOperationLessThanOrEqual0 = new CoreOperationLessThanOrEqual(coreOperationAdd0, coreOperationAdd0);
+    Object object0 = coreOperationLessThanOrEqual0.computeValue((EvalContext) null);
+    assertEquals(true, object0);
+}",0,assertTrue(object0)

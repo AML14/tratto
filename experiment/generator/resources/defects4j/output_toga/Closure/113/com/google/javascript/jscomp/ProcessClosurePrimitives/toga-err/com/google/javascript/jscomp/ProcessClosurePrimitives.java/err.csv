@@ -1,0 +1,79 @@
+com.google.javascript.jscomp.ProcessClosurePrimitives,@Test(timeout = 4000)
+public void test00() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""goog.base"");
+    CheckLevel checkLevel0 = CheckLevel.WARNING;
+    PreprocessorSymbolTable preprocessorSymbolTable0 = new PreprocessorSymbolTable(node0);
+    ProcessClosurePrimitives processClosurePrimitives0 = new ProcessClosurePrimitives(compiler0, preprocessorSymbolTable0, checkLevel0);
+    processClosurePrimitives0.process(node0, node0);
+    compiler0.getErrorCount();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.google.javascript.jscomp.ProcessClosurePrimitives,@Test(timeout = 4000)
+public void test01() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""goog.base"");
+    CheckLevel checkLevel0 = CheckLevel.WARNING;
+    PreprocessorSymbolTable preprocessorSymbolTable0 = new PreprocessorSymbolTable(node0);
+    ProcessClosurePrimitives processClosurePrimitives0 = new ProcessClosurePrimitives(compiler0, preprocessorSymbolTable0, checkLevel0);
+    processClosurePrimitives0.process(node0, node0);
+    compiler0.hasErrors();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.google.javascript.jscomp.ProcessClosurePrimitives,@Test(timeout = 4000)
+public void test12() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    compiler0.newCompilerOptions();
+    Normalize.parseAndNormalizeTestCode(compiler0, ""// Input %num%"");
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.google.javascript.jscomp.ProcessClosurePrimitives,@Test(timeout = 4000)
+public void test23() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    SyntheticAst syntheticAst0 = new SyntheticAst(""setCssNameMapping"");
+    Node node0 = syntheticAst0.getAstRoot(compiler0);
+    PreprocessorSymbolTable preprocessorSymbolTable0 = new PreprocessorSymbolTable(node0);
+    CheckLevel checkLevel0 = CheckLevel.WARNING;
+    ProcessClosurePrimitives processClosurePrimitives0 = new ProcessClosurePrimitives(compiler0, preprocessorSymbolTable0, checkLevel0);
+    Set<String> set0 = processClosurePrimitives0.getExportedVariableNames();
+    set0.isEmpty();
+},ERROR,java.nio.file.NoSuchFileException,/home/star_usit_group/tratto/experiment/generator/resources/defects4j/temp/Closure_113b/src/java/util/Set.java
+com.google.javascript.jscomp.ProcessClosurePrimitives,@Test(timeout = 4000)
+public void test34() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""JSC_NON_STRING_PASSED_TO_SET_CSS_NAME_MAPPING_ERROR"");
+    CheckLevel checkLevel0 = CheckLevel.OFF;
+    ProcessClosurePrimitives processClosurePrimitives0 = new ProcessClosurePrimitives(compiler0, (PreprocessorSymbolTable) null, checkLevel0);
+    processClosurePrimitives0.process(node0, node0);
+    node0.getLineno();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.google.javascript.jscomp.ProcessClosurePrimitives,@Test(timeout = 4000)
+public void test45() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = new Node(37, 37, 37);
+    Node node1 = new Node(37, node0, node0, node0);
+    PreprocessorSymbolTable preprocessorSymbolTable0 = new PreprocessorSymbolTable(node0);
+    CheckLevel checkLevel0 = CheckLevel.ERROR;
+    ProcessClosurePrimitives processClosurePrimitives0 = new ProcessClosurePrimitives(compiler0, preprocessorSymbolTable0, checkLevel0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, processClosurePrimitives0);
+    processClosurePrimitives0.visit(nodeTraversal0, node1, node0);
+    node1.hasMoreThanOneChild();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.google.javascript.jscomp.ProcessClosurePrimitives,@Test(timeout = 4000)
+public void test56() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    CompilerOptions compilerOptions0 = compiler0.newCompilerOptions();
+    Node node0 = new Node(105);
+    ProcessClosurePrimitives processClosurePrimitives0 = new ProcessClosurePrimitives(compiler0, (PreprocessorSymbolTable) null, compilerOptions0.brokenClosureRequiresLevel);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, processClosurePrimitives0);
+    Node node1 = new Node(43, node0, node0, node0, 0, 1);
+    processClosurePrimitives0.visit(nodeTraversal0, node0, node0);
+    node0.getChildCount();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.google.javascript.jscomp.ProcessClosurePrimitives,@Test(timeout = 4000)
+public void test67() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""msg.invalid.iterator"");
+    CheckLevel checkLevel0 = CheckLevel.ERROR;
+    PreprocessorSymbolTable preprocessorSymbolTable0 = new PreprocessorSymbolTable(node0);
+    ProcessClosurePrimitives processClosurePrimitives0 = new ProcessClosurePrimitives(compiler0, preprocessorSymbolTable0, checkLevel0);
+    processClosurePrimitives0.process(node0, node0);
+    node0.isGetElem();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.

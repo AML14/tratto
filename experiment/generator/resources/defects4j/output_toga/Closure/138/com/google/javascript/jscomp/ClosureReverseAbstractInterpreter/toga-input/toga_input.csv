@@ -1,0 +1,155 @@
+focal_method,test_prefix,docstring
+"@Override
+public FlowScope getPreciserScopeKnowingConditionOutcome(Node condition, FlowScope blindScope, boolean outcome) {
+    if (condition.getType() == CALL && condition.getChildCount() == 2) {
+        Node callee = condition.getFirstChild();
+        Node param = condition.getLastChild();
+        if (callee.getType() == GETPROP && param.isQualifiedName()) {
+            JSType paramType = getTypeIfRefinable(param, blindScope);
+            if (paramType != null) {
+                Node left = callee.getFirstChild();
+                Node right = callee.getLastChild();
+                if (left.getType() == NAME && ""goog"".equals(left.getString()) && right.getType() == STRING) {
+                    Function<TypeRestriction, JSType> restricter = restricters.get(right.getString());
+                    if (restricter != null) {
+                        return restrictParameter(param, paramType, blindScope, restricter, outcome);
+                    }
+                }
+            }
+        }
+    }
+    return nextPreciserScopeKnowingConditionOutcome(condition, blindScope, outcome);
+}","public void test00() throws Throwable {
+    GoogleCodingConvention googleCodingConvention0 = new GoogleCodingConvention();
+    Node node0 = new Node(1);
+    Compiler compiler0 = new Compiler();
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(googleCodingConvention0, jSTypeRegistry0);
+    FlowScope flowScope0 = closureReverseAbstractInterpreter0.getPreciserScopeKnowingConditionOutcome(node0, (FlowScope) null, true);
+    assertNull(flowScope0);
+}",""
+"@Override
+public FlowScope getPreciserScopeKnowingConditionOutcome(Node condition, FlowScope blindScope, boolean outcome) {
+    if (condition.getType() == CALL && condition.getChildCount() == 2) {
+        Node callee = condition.getFirstChild();
+        Node param = condition.getLastChild();
+        if (callee.getType() == GETPROP && param.isQualifiedName()) {
+            JSType paramType = getTypeIfRefinable(param, blindScope);
+            if (paramType != null) {
+                Node left = callee.getFirstChild();
+                Node right = callee.getLastChild();
+                if (left.getType() == NAME && ""goog"".equals(left.getString()) && right.getType() == STRING) {
+                    Function<TypeRestriction, JSType> restricter = restricters.get(right.getString());
+                    if (restricter != null) {
+                        return restrictParameter(param, paramType, blindScope, restricter, outcome);
+                    }
+                }
+            }
+        }
+    }
+    return nextPreciserScopeKnowingConditionOutcome(condition, blindScope, outcome);
+}","public void test11() throws Throwable {
+    GoogleCodingConvention googleCodingConvention0 = new GoogleCodingConvention();
+    Node node0 = new Node((-1230));
+    Node node1 = new Node(37, node0, node0, 10, 46);
+    Compiler compiler0 = new Compiler();
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(googleCodingConvention0, jSTypeRegistry0);
+    FlowScope flowScope0 = closureReverseAbstractInterpreter0.getPreciserScopeKnowingConditionOutcome(node1, (FlowScope) null, false);
+    assertNull(flowScope0);
+}",""
+"@Override
+public FlowScope getPreciserScopeKnowingConditionOutcome(Node condition, FlowScope blindScope, boolean outcome) {
+    if (condition.getType() == CALL && condition.getChildCount() == 2) {
+        Node callee = condition.getFirstChild();
+        Node param = condition.getLastChild();
+        if (callee.getType() == GETPROP && param.isQualifiedName()) {
+            JSType paramType = getTypeIfRefinable(param, blindScope);
+            if (paramType != null) {
+                Node left = callee.getFirstChild();
+                Node right = callee.getLastChild();
+                if (left.getType() == NAME && ""goog"".equals(left.getString()) && right.getType() == STRING) {
+                    Function<TypeRestriction, JSType> restricter = restricters.get(right.getString());
+                    if (restricter != null) {
+                        return restrictParameter(param, paramType, blindScope, restricter, outcome);
+                    }
+                }
+            }
+        }
+    }
+    return nextPreciserScopeKnowingConditionOutcome(condition, blindScope, outcome);
+}","public void test22() throws Throwable {
+    GoogleCodingConvention googleCodingConvention0 = new GoogleCodingConvention();
+    Node node0 = new Node((-1230));
+    Node node1 = new Node(38);
+    Node node2 = new Node(37, node0, node1, 10, 46);
+    Compiler compiler0 = new Compiler();
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(googleCodingConvention0, jSTypeRegistry0);
+    FlowScope flowScope0 = closureReverseAbstractInterpreter0.getPreciserScopeKnowingConditionOutcome(node2, (FlowScope) null, false);
+    assertNull(flowScope0);
+}",""
+"@Override
+public FlowScope getPreciserScopeKnowingConditionOutcome(Node condition, FlowScope blindScope, boolean outcome) {
+    if (condition.getType() == CALL && condition.getChildCount() == 2) {
+        Node callee = condition.getFirstChild();
+        Node param = condition.getLastChild();
+        if (callee.getType() == GETPROP && param.isQualifiedName()) {
+            JSType paramType = getTypeIfRefinable(param, blindScope);
+            if (paramType != null) {
+                Node left = callee.getFirstChild();
+                Node right = callee.getLastChild();
+                if (left.getType() == NAME && ""goog"".equals(left.getString()) && right.getType() == STRING) {
+                    Function<TypeRestriction, JSType> restricter = restricters.get(right.getString());
+                    if (restricter != null) {
+                        return restrictParameter(param, paramType, blindScope, restricter, outcome);
+                    }
+                }
+            }
+        }
+    }
+    return nextPreciserScopeKnowingConditionOutcome(condition, blindScope, outcome);
+}","public void test33() throws Throwable {
+    GoogleCodingConvention googleCodingConvention0 = new GoogleCodingConvention();
+    Node node0 = new Node((-1225), (-1225), (-1225));
+    Node node1 = new Node(21, 21, 33);
+    Node node2 = new Node(33, node0, 42, 26);
+    Node node3 = new Node(37, node2, node1, 10, 46);
+    Compiler compiler0 = new Compiler();
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(googleCodingConvention0, jSTypeRegistry0);
+    FlowScope flowScope0 = closureReverseAbstractInterpreter0.getPreciserScopeKnowingConditionOutcome(node3, (FlowScope) null, true);
+    assertNull(flowScope0);
+}",""
+"@Override
+public FlowScope getPreciserScopeKnowingConditionOutcome(Node condition, FlowScope blindScope, boolean outcome) {
+    if (condition.getType() == CALL && condition.getChildCount() == 2) {
+        Node callee = condition.getFirstChild();
+        Node param = condition.getLastChild();
+        if (callee.getType() == GETPROP && param.isQualifiedName()) {
+            JSType paramType = getTypeIfRefinable(param, blindScope);
+            if (paramType != null) {
+                Node left = callee.getFirstChild();
+                Node right = callee.getLastChild();
+                if (left.getType() == NAME && ""goog"".equals(left.getString()) && right.getType() == STRING) {
+                    Function<TypeRestriction, JSType> restricter = restricters.get(right.getString());
+                    if (restricter != null) {
+                        return restrictParameter(param, paramType, blindScope, restricter, outcome);
+                    }
+                }
+            }
+        }
+    }
+    return nextPreciserScopeKnowingConditionOutcome(condition, blindScope, outcome);
+}","public void test44() throws Throwable {
+    GoogleCodingConvention googleCodingConvention0 = new GoogleCodingConvention();
+    Node node0 = new Node(1);
+    Node node1 = new Node(42, 17, 0);
+    Node node2 = new Node(33, node0, 42, 26);
+    Node node3 = new Node(37, node2, node1, 10, 46);
+    Compiler compiler0 = new Compiler();
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    ClosureReverseAbstractInterpreter closureReverseAbstractInterpreter0 = new ClosureReverseAbstractInterpreter(googleCodingConvention0, jSTypeRegistry0);
+    FlowScope flowScope0 = closureReverseAbstractInterpreter0.getPreciserScopeKnowingConditionOutcome(node3, (FlowScope) null, true);
+    assertNull(flowScope0);
+}",""

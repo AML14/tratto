@@ -1,0 +1,22 @@
+org.apache.commons.compress.archivers.sevenz.SevenZOutputFile,@Test(timeout = 4000)
+public void test000() throws Throwable {
+    MockFile mockFile0 = new MockFile("""");
+    SevenZOutputFile sevenZOutputFile0 = new SevenZOutputFile(mockFile0);
+    SevenZArchiveEntry sevenZArchiveEntry0 = sevenZOutputFile0.createArchiveEntry(mockFile0, """");
+    sevenZArchiveEntry0.getHasWindowsAttributes();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+org.apache.commons.compress.archivers.sevenz.SevenZOutputFile,@Test(timeout = 4000)
+public void test1010() throws Throwable {
+    File file0 = MockFile.createTempFile(""I`;"", ""FATAL: UTF-8 encoding not supported."");
+    SevenZOutputFile sevenZOutputFile0 = new SevenZOutputFile(file0);
+    SevenZArchiveEntry sevenZArchiveEntry0 = sevenZOutputFile0.createArchiveEntry(file0, ""org.apache.commons.compress.archivers.sevenz.SevenZOutputFile$1"");
+    sevenZArchiveEntry0.getHasWindowsAttributes();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+org.apache.commons.compress.archivers.sevenz.SevenZOutputFile,@Test(timeout = 4000)
+public void test1515() throws Throwable {
+    MockFile mockFile0 = new MockFile("", dateTimeCreated="");
+    SevenZOutputFile sevenZOutputFile0 = new SevenZOutputFile(mockFile0);
+    sevenZOutputFile0.finish();
+    sevenZOutputFile0.close();
+    mockFile0.length();
+},ERROR,java.util.NoSuchElementException,[ERROR] - Focal method not found. No candidate methods found in the original class, analyzing both the name and the number of parameters.

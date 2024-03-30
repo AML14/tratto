@@ -1,0 +1,114 @@
+{
+  "test1014" : {
+    "methodSignature" : "public TarArchiveInputStream(InputStream is, int blockSize, String encoding)",
+    "methodName" : "TarArchiveInputStream",
+    "className" : "org.apache.commons.compress.archivers.tar.TarArchiveInputStream",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1014() throws Throwable {\n    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream((InputStream) null, 1902, 1902);\n    PushbackInputStream pushbackInputStream0 = new PushbackInputStream(tarArchiveInputStream0, 1902);\n    String string0 = \"O\";\n    TarArchiveInputStream tarArchiveInputStream1 = new TarArchiveInputStream(pushbackInputStream0, \"O\");\n    BufferedInputStream bufferedInputStream0 = new BufferedInputStream(tarArchiveInputStream1);\n    TarArchiveInputStream tarArchiveInputStream2 = null;\n    tarArchiveInputStream2 = new TarArchiveInputStream(bufferedInputStream0, 256, \"\");\n}",
+    "testName" : "test1014"
+  },
+  "test1115" : {
+    "methodSignature" : "public int getRecordSize()",
+    "methodName" : "getRecordSize",
+    "className" : "org.apache.commons.compress.archivers.tar.TarArchiveInputStream",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1115() throws Throwable {\n    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();\n    PipedInputStream pipedInputStream0 = new PipedInputStream(pipedOutputStream0);\n    byte[] byteArray0 = new byte[0];\n    pipedOutputStream0.write(byteArray0);\n    PushbackInputStream pushbackInputStream0 = new PushbackInputStream(pipedInputStream0);\n    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(pushbackInputStream0, 48, 23);\n    tarArchiveInputStream0.reset();\n    boolean boolean0 = tarArchiveInputStream0.isAtEOF();\n    tarArchiveInputStream0.getRecordSize();\n}",
+    "testName" : "test1115"
+  },
+  "test0610" : {
+    "methodSignature" : "Map<String, String> parsePaxHeaders(InputStream i) throws IOException",
+    "methodName" : "parsePaxHeaders",
+    "className" : "org.apache.commons.compress.archivers.tar.TarArchiveInputStream",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0610() throws Throwable {\n    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream((InputStream) null);\n    tarArchiveInputStream0.parsePaxHeaders((InputStream) null);\n}",
+    "testName" : "test0610"
+  },
+  "test1116" : {
+    "methodSignature" : "protected final boolean isAtEOF()",
+    "methodName" : "isAtEOF",
+    "className" : "org.apache.commons.compress.archivers.tar.TarArchiveInputStream",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1116() throws Throwable {\n    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();\n    PipedInputStream pipedInputStream0 = new PipedInputStream(pipedOutputStream0);\n    byte[] byteArray0 = new byte[0];\n    pipedOutputStream0.write(byteArray0);\n    PushbackInputStream pushbackInputStream0 = new PushbackInputStream(pipedInputStream0);\n    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(pushbackInputStream0, 48, 23);\n    tarArchiveInputStream0.reset();\n    boolean boolean0 = tarArchiveInputStream0.isAtEOF();\n}",
+    "testName" : "test1116"
+  },
+  "test011" : {
+    "methodSignature" : "public static boolean matches(byte[] signature, int length)",
+    "methodName" : "matches",
+    "className" : "org.apache.commons.compress.archivers.tar.TarArchiveInputStream",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test011() throws Throwable {\n    byte[] byteArray0 = new byte[5];\n    byteArray0[0] = (byte) 0;\n    byteArray0[1] = (byte) 0;\n    byteArray0[2] = (byte) (-95);\n    byteArray0[3] = (byte) 98;\n    byteArray0[4] = (byte) 48;\n    boolean boolean0 = TarArchiveInputStream.matches(byteArray0, 0);\n}",
+    "testName" : "test011"
+  },
+  "test022" : {
+    "methodSignature" : "public TarArchiveEntry(byte[] headerBuf)",
+    "methodName" : "TarArchiveEntry",
+    "className" : "org.apache.commons.compress.archivers.tar.TarArchiveInputStream",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test022() throws Throwable {\n    Enumeration<ByteArrayInputStream> enumeration0 = (Enumeration<ByteArrayInputStream>) mock(Enumeration.class, new ViolatedAssumptionAnswer());\n    doReturn(false).when(enumeration0).hasMoreElements();\n    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(enumeration0);\n    sequenceInputStream0.available();\n    int int0 = (-2350);\n    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(sequenceInputStream0, (-2350));\n    String string0 = \"C6<v;\\\"na3/E/)\";\n    byte byte0 = (byte) (-79);\n    long long0 = 3L;\n    byte[] byteArray0 = new byte[3];\n    byteArray0[0] = (byte) (-79);\n    byteArray0[1] = (byte) (-79);\n    byteArray0[2] = (byte) (-79);\n    TarArchiveEntry tarArchiveEntry0 = null;\n    tarArchiveEntry0 = new TarArchiveEntry(byteArray0);\n}",
+    "testName" : "test022"
+  },
+  "test033" : {
+    "methodSignature" : "protected byte[] getLongNameData() throws IOException",
+    "methodName" : "getLongNameData",
+    "className" : "org.apache.commons.compress.archivers.tar.TarArchiveInputStream",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test033() throws Throwable {\n    byte[] byteArray0 = new byte[2];\n    byteArray0[0] = (byte) (-25);\n    byteArray0[1] = (byte) (-78);\n    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, 200, (byte) (-78));\n    byteArrayInputStream0.skip((byte) (-25));\n    byteArrayInputStream0.close();\n    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(byteArrayInputStream0, 0);\n    tarArchiveInputStream0.getNextEntry();\n    tarArchiveInputStream0.getNextEntry();\n    byte[] byteArray1 = tarArchiveInputStream0.getLongNameData();\n}",
+    "testName" : "test033"
+  },
+  "test034" : {
+    "methodSignature" : "public int read(byte[] buf, int offset, int numToRead) throws IOException",
+    "methodName" : "read",
+    "className" : "org.apache.commons.compress.archivers.tar.TarArchiveInputStream",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test034() throws Throwable {\n    byte[] byteArray0 = new byte[2];\n    byteArray0[0] = (byte) (-25);\n    byteArray0[1] = (byte) (-78);\n    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, 200, (byte) (-78));\n    byteArrayInputStream0.skip((byte) (-25));\n    byteArrayInputStream0.close();\n    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(byteArrayInputStream0, 0);\n    tarArchiveInputStream0.getNextEntry();\n    tarArchiveInputStream0.getNextEntry();\n    byte[] byteArray1 = tarArchiveInputStream0.getLongNameData();\n    tarArchiveInputStream0.getNextEntry();\n    tarArchiveInputStream0.parsePaxHeaders(byteArrayInputStream0);\n    tarArchiveInputStream0.markSupported();\n    int int0 = tarArchiveInputStream0.read(byteArray0, 0, (int) (byte) (-78));\n}",
+    "testName" : "test034"
+  },
+  "test0913" : {
+    "methodSignature" : "public TarArchiveInputStream(InputStream is, int blockSize, int recordSize, String encoding)",
+    "methodName" : "TarArchiveInputStream",
+    "className" : "org.apache.commons.compress.archivers.tar.TarArchiveInputStream",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0913() throws Throwable {\n    byte[] byteArray0 = new byte[0];\n    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);\n    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(byteArrayInputStream0, 0);\n    TarArchiveInputStream tarArchiveInputStream1 = new TarArchiveInputStream(tarArchiveInputStream0, 0, 830);\n    String string0 = \"\";\n    TarArchiveInputStream tarArchiveInputStream2 = null;\n    tarArchiveInputStream2 = new TarArchiveInputStream(tarArchiveInputStream1, 0, 0, \"\");\n}",
+    "testName" : "test0913"
+  },
+  "test0711" : {
+    "methodSignature" : "Map<String, String> parsePaxHeaders(InputStream i) throws IOException",
+    "methodName" : "parsePaxHeaders",
+    "className" : "org.apache.commons.compress.archivers.tar.TarArchiveInputStream",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0711() throws Throwable {\n    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();\n    PipedInputStream pipedInputStream0 = new PipedInputStream(pipedOutputStream0);\n    pipedOutputStream0.flush();\n    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(pipedInputStream0, 10240, 10240, \"org.apache.commons.compress.archivers.tar.TarArchiveInputStream\");\n    tarArchiveInputStream0.close();\n    tarArchiveInputStream0.parsePaxHeaders(pipedInputStream0);\n}",
+    "testName" : "test0711"
+  },
+  "test1218" : {
+    "methodSignature" : "public int getRecordSize()",
+    "methodName" : "getRecordSize",
+    "className" : "org.apache.commons.compress.archivers.tar.TarArchiveInputStream",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1218() throws Throwable {\n    Enumeration<InputStream> enumeration0 = (Enumeration<InputStream>) mock(Enumeration.class, new ViolatedAssumptionAnswer());\n    doReturn(false).when(enumeration0).hasMoreElements();\n    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(enumeration0);\n    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(sequenceInputStream0);\n    byte[] byteArray0 = new byte[9];\n    byteArray0[0] = (byte) 98;\n    byteArray0[1] = (byte) 0;\n    byteArray0[2] = (byte) 122;\n    byteArray0[3] = (byte) 20;\n    byteArray0[4] = (byte) 42;\n    byteArray0[5] = (byte) 3;\n    byteArray0[6] = (byte) 0;\n    byteArray0[7] = (byte) 0;\n    byteArray0[8] = (byte) 11;\n    int int0 = tarArchiveInputStream0.read(byteArray0);\n    tarArchiveInputStream0.getCurrentEntry();\n    tarArchiveInputStream0.getRecordSize();\n}",
+    "testName" : "test1218"
+  },
+  "test0812" : {
+    "methodSignature" : "public TarArchiveInputStream(InputStream is, int blockSize, String encoding)",
+    "methodName" : "TarArchiveInputStream",
+    "className" : "org.apache.commons.compress.archivers.tar.TarArchiveInputStream",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0812() throws Throwable {\n    byte[] byteArray0 = new byte[5];\n    byteArray0[0] = (byte) 114;\n    byteArray0[1] = (byte) 0;\n    byteArray0[2] = (byte) 0;\n    byteArray0[3] = (byte) 42;\n    byteArray0[4] = (byte) 0;\n    TarArchiveInputStream.matches(byteArray0, (byte) 0);\n    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);\n    DataInputStream dataInputStream0 = new DataInputStream(byteArrayInputStream0);\n    byteArrayInputStream0.skip(0L);\n    TarArchiveInputStream tarArchiveInputStream0 = null;\n    tarArchiveInputStream0 = new TarArchiveInputStream(dataInputStream0, (byte) 0, \"_?pID9k@[EV-SwopsG\");\n}",
+    "testName" : "test0812"
+  },
+  "test037" : {
+    "methodSignature" : "public int getRecordSize()",
+    "methodName" : "getRecordSize",
+    "className" : "org.apache.commons.compress.archivers.tar.TarArchiveInputStream",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test037() throws Throwable {\n    byte[] byteArray0 = new byte[2];\n    byteArray0[0] = (byte) (-25);\n    byteArray0[1] = (byte) (-78);\n    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, 200, (byte) (-78));\n    byteArrayInputStream0.skip((byte) (-25));\n    byteArrayInputStream0.close();\n    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(byteArrayInputStream0, 0);\n    tarArchiveInputStream0.getNextEntry();\n    tarArchiveInputStream0.getNextEntry();\n    byte[] byteArray1 = tarArchiveInputStream0.getLongNameData();\n    tarArchiveInputStream0.getNextEntry();\n    tarArchiveInputStream0.parsePaxHeaders(byteArrayInputStream0);\n    tarArchiveInputStream0.markSupported();\n    int int0 = tarArchiveInputStream0.read(byteArray0, 0, (int) (byte) (-78));\n    boolean boolean0 = tarArchiveInputStream0.isEOFRecord(byteArray0);\n    int int1 = tarArchiveInputStream0.getRecordSize();\n}",
+    "testName" : "test037"
+  },
+  "test059" : {
+    "methodSignature" : "public void close() throws IOException",
+    "methodName" : "close",
+    "className" : "org.apache.commons.compress.archivers.tar.TarArchiveInputStream",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test059() throws Throwable {\n    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream((InputStream) null, 61, (String) null);\n    TarArchiveInputStream tarArchiveInputStream1 = new TarArchiveInputStream(tarArchiveInputStream0, 48, 256, (String) null);\n    tarArchiveInputStream1.close();\n}",
+    "testName" : "test059"
+  },
+  "test035" : {
+    "methodSignature" : "protected boolean isEOFRecord(byte[] record)",
+    "methodName" : "isEOFRecord",
+    "className" : "org.apache.commons.compress.archivers.tar.TarArchiveInputStream",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test035() throws Throwable {\n    byte[] byteArray0 = new byte[2];\n    byteArray0[0] = (byte) (-25);\n    byteArray0[1] = (byte) (-78);\n    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, 200, (byte) (-78));\n    byteArrayInputStream0.skip((byte) (-25));\n    byteArrayInputStream0.close();\n    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(byteArrayInputStream0, 0);\n    tarArchiveInputStream0.getNextEntry();\n    tarArchiveInputStream0.getNextEntry();\n    byte[] byteArray1 = tarArchiveInputStream0.getLongNameData();\n    tarArchiveInputStream0.getNextEntry();\n    tarArchiveInputStream0.parsePaxHeaders(byteArrayInputStream0);\n    tarArchiveInputStream0.markSupported();\n    int int0 = tarArchiveInputStream0.read(byteArray0, 0, (int) (byte) (-78));\n    boolean boolean0 = tarArchiveInputStream0.isEOFRecord(byteArray0);\n}",
+    "testName" : "test035"
+  },
+  "test036" : {
+    "methodSignature" : "public long getBytesRead()",
+    "methodName" : "getBytesRead",
+    "className" : "org.apache.commons.compress.archivers.tar.TarArchiveInputStream",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test036() throws Throwable {\n    byte[] byteArray0 = new byte[2];\n    byteArray0[0] = (byte) (-25);\n    byteArray0[1] = (byte) (-78);\n    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, 200, (byte) (-78));\n    byteArrayInputStream0.skip((byte) (-25));\n    byteArrayInputStream0.close();\n    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(byteArrayInputStream0, 0);\n    tarArchiveInputStream0.getNextEntry();\n    tarArchiveInputStream0.getNextEntry();\n    byte[] byteArray1 = tarArchiveInputStream0.getLongNameData();\n    tarArchiveInputStream0.getNextEntry();\n    tarArchiveInputStream0.parsePaxHeaders(byteArrayInputStream0);\n    tarArchiveInputStream0.markSupported();\n    int int0 = tarArchiveInputStream0.read(byteArray0, 0, (int) (byte) (-78));\n    boolean boolean0 = tarArchiveInputStream0.isEOFRecord(byteArray0);\n    int int1 = tarArchiveInputStream0.getRecordSize();\n    tarArchiveInputStream0.getBytesRead();\n}",
+    "testName" : "test036"
+  }
+}

@@ -1,0 +1,1549 @@
+focal_method,test_prefix,docstring
+"/*
+    /**********************************************************
+    /* Raw access, for high-performance use:
+    /**********************************************************
+     */
+public char[] getCurrentSegment() {
+    /* Since the intention of the caller is to directly add stuff into
+         * buffers, we should NOT have anything in shared buffer... ie. may
+         * need to unshare contents.
+         */
+    if (_inputStart >= 0) {
+        unshare(1);
+    } else {
+        char[] curr = _currentSegment;
+        if (curr == null) {
+            _currentSegment = findBuffer(0);
+        } else if (_currentSize >= curr.length) {
+            // Plus, we better have room for at least one more char
+            expand(1);
+        }
+    }
+    return _currentSegment;
+}","public void test000() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    textBuffer0.emptyAndGetCurrentSegment();
+    textBuffer0.finishCurrentSegment();
+    char[] charArray0 = textBuffer0.expandCurrentSegment();
+    textBuffer0.resetWithShared(charArray0, 1500, 1500);
+    // Undeclared exception!
+    try {
+        textBuffer0.getCurrentSegment();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}",""
+"public char[] contentsAsArray() {
+    char[] result = _resultArray;
+    if (result == null) {
+        _resultArray = result = buildResultArray();
+    }
+    return result;
+}","public void test011() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.toString();
+    char[] charArray0 = textBuffer0.contentsAsArray();
+    assertArrayEquals(new char[] {}, charArray0);
+}",""
+"public double contentsAsDouble() throws NumberFormatException {
+    return NumberInput.parseDouble(contentsAsString());
+}","public void test022() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    try {
+        textBuffer0.contentsAsDouble();
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+    }
+}","/**
+ * Convenience method for converting contents of the buffer
+ * into a Double value.
+ */"
+"public int getCurrentSegmentSize() {
+    return _currentSize;
+}","public void test033() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    int int0 = textBuffer0.getCurrentSegmentSize();
+    assertEquals(0, int0);
+}",""
+"public int getCurrentSegmentSize() {
+    return _currentSize;
+}","public void test044() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.releaseBuffers();
+    assertEquals(0, textBuffer0.getCurrentSegmentSize());
+}",""
+"/*
+    /**********************************************************
+    /* Accessors for implementing public interface
+    /**********************************************************
+     */
+/**
+ * @return Number of characters currently stored by this collector
+ */
+public int size() {
+    if (_inputStart >= 0) {
+        // shared copy from input buf
+        return _inputLen;
+    }
+    if (_resultArray != null) {
+        return _resultArray.length;
+    }
+    if (_resultString != null) {
+        return _resultString.length();
+    }
+    // local segmented buffers
+    return _segmentSize + _currentSize;
+}","public void test055() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    textBuffer0.releaseBuffers();
+    assertEquals(0, textBuffer0.size());
+}",""
+"public int getTextOffset() {
+    /* Only shared input buffer can have non-zero offset; buffer
+         * segments start at 0, and if we have to create a combo buffer,
+         * that too will start from beginning of the buffer
+         */
+    return (_inputStart >= 0) ? _inputStart : 0;
+}","public void test056() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    textBuffer0.releaseBuffers();
+    assertEquals(0, textBuffer0.getTextOffset());
+}",""
+"/*
+    /**********************************************************
+    /* Accessors for implementing public interface
+    /**********************************************************
+     */
+/**
+ * @return Number of characters currently stored by this collector
+ */
+public int size() {
+    if (_inputStart >= 0) {
+        // shared copy from input buf
+        return _inputLen;
+    }
+    if (_resultArray != null) {
+        return _resultArray.length;
+    }
+    if (_resultString != null) {
+        return _resultString.length();
+    }
+    // local segmented buffers
+    return _segmentSize + _currentSize;
+}","public void test067() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.emptyAndGetCurrentSegment();
+    textBuffer0.finishCurrentSegment();
+    assertEquals(200, textBuffer0.size());
+}",""
+"/*
+    /**********************************************************
+    /* Accessors for implementing public interface
+    /**********************************************************
+     */
+/**
+ * @return Number of characters currently stored by this collector
+ */
+public int size() {
+    if (_inputStart >= 0) {
+        // shared copy from input buf
+        return _inputLen;
+    }
+    if (_resultArray != null) {
+        return _resultArray.length;
+    }
+    if (_resultString != null) {
+        return _resultString.length();
+    }
+    // local segmented buffers
+    return _segmentSize + _currentSize;
+}","public void test068() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.emptyAndGetCurrentSegment();
+    textBuffer0.finishCurrentSegment();
+    textBuffer0.releaseBuffers();
+    assertEquals(0, textBuffer0.size());
+}",""
+"public void resetWithCopy(char[] buf, int start, int len) {
+    _inputBuffer = null;
+    // indicates shared buffer not used
+    _inputStart = -1;
+    _inputLen = 0;
+    _resultString = null;
+    _resultArray = null;
+    // And then reset internal input buffers, if necessary:
+    if (_hasSegments) {
+        clearSegments();
+    } else if (_currentSegment == null) {
+        _currentSegment = findBuffer(len);
+    }
+    _currentSize = _segmentSize = 0;
+    append(buf, start, len);
+}","public void test079() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = new char[0];
+    // Undeclared exception!
+    try {
+        textBuffer0.resetWithCopy(charArray0, 2000, 2000);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}",""
+"public void resetWithCopy(char[] buf, int start, int len) {
+    _inputBuffer = null;
+    // indicates shared buffer not used
+    _inputStart = -1;
+    _inputLen = 0;
+    _resultString = null;
+    _resultArray = null;
+    // And then reset internal input buffers, if necessary:
+    if (_hasSegments) {
+        clearSegments();
+    } else if (_currentSegment == null) {
+        _currentSegment = findBuffer(len);
+    }
+    _currentSize = _segmentSize = 0;
+    append(buf, start, len);
+}","public void test0810() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.getCurrentSegment();
+    char[] charArray0 = textBuffer0.finishCurrentSegment();
+    // Undeclared exception!
+    try {
+        textBuffer0.resetWithCopy(charArray0, 2000, 2000);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}",""
+"public void resetWithCopy(char[] buf, int start, int len) {
+    _inputBuffer = null;
+    // indicates shared buffer not used
+    _inputStart = -1;
+    _inputLen = 0;
+    _resultString = null;
+    _resultArray = null;
+    // And then reset internal input buffers, if necessary:
+    if (_hasSegments) {
+        clearSegments();
+    } else if (_currentSegment == null) {
+        _currentSegment = findBuffer(len);
+    }
+    _currentSize = _segmentSize = 0;
+    append(buf, start, len);
+}","public void test0911() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.emptyAndGetCurrentSegment();
+    // Undeclared exception!
+    try {
+        textBuffer0.resetWithCopy(charArray0, 2000, 2000);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}",""
+"public boolean hasTextAsCharacters() {
+    // if we have array in some form, sure
+    if (_inputStart >= 0 || _resultArray != null) {
+        return true;
+    }
+    // not if we have String as value
+    if (_resultString != null) {
+        return false;
+    }
+    return true;
+}","public void test1012() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.resetWithString(""com.fasterxml.jackson.core.util.TextBuffer"");
+    int int0 = textBuffer0.size();
+    assertFalse(textBuffer0.hasTextAsCharacters());
+}","/**
+ * Method that can be used to check whether textual contents can
+ * be efficiently accessed using {@link #getTextBuffer}.
+ */"
+"/*
+    /**********************************************************
+    /* Accessors for implementing public interface
+    /**********************************************************
+     */
+/**
+ * @return Number of characters currently stored by this collector
+ */
+public int size() {
+    if (_inputStart >= 0) {
+        // shared copy from input buf
+        return _inputLen;
+    }
+    if (_resultArray != null) {
+        return _resultArray.length;
+    }
+    if (_resultString != null) {
+        return _resultString.length();
+    }
+    // local segmented buffers
+    return _segmentSize + _currentSize;
+}","public void test1013() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.resetWithString(""com.fasterxml.jackson.core.util.TextBuffer"");
+    int int0 = textBuffer0.size();
+    assertEquals(42, int0);
+}",""
+"public boolean hasTextAsCharacters() {
+    // if we have array in some form, sure
+    if (_inputStart >= 0 || _resultArray != null) {
+        return true;
+    }
+    // not if we have String as value
+    if (_resultString != null) {
+        return false;
+    }
+    return true;
+}","public void test1114() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.emptyAndGetCurrentSegment();
+    textBuffer0.finishCurrentSegment();
+    textBuffer0.resetWithString(""&!Y!pm'&<N9(:mip4"");
+    assertFalse(textBuffer0.hasTextAsCharacters());
+}","/**
+ * Method that can be used to check whether textual contents can
+ * be efficiently accessed using {@link #getTextBuffer}.
+ */"
+"/*
+    /**********************************************************
+    /* Accessors for implementing public interface
+    /**********************************************************
+     */
+/**
+ * @return Number of characters currently stored by this collector
+ */
+public int size() {
+    if (_inputStart >= 0) {
+        // shared copy from input buf
+        return _inputLen;
+    }
+    if (_resultArray != null) {
+        return _resultArray.length;
+    }
+    if (_resultString != null) {
+        return _resultString.length();
+    }
+    // local segmented buffers
+    return _segmentSize + _currentSize;
+}","public void test1215() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.getCurrentSegment();
+    textBuffer0.finishCurrentSegment();
+    textBuffer0.getTextBuffer();
+    textBuffer0.toString();
+    assertEquals(200, textBuffer0.size());
+}",""
+"/*
+    /**********************************************************
+    /* Accessors for implementing public interface
+    /**********************************************************
+     */
+/**
+ * @return Number of characters currently stored by this collector
+ */
+public int size() {
+    if (_inputStart >= 0) {
+        // shared copy from input buf
+        return _inputLen;
+    }
+    if (_resultArray != null) {
+        return _resultArray.length;
+    }
+    if (_resultString != null) {
+        return _resultString.length();
+    }
+    // local segmented buffers
+    return _segmentSize + _currentSize;
+}","public void test1316() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    int int0 = textBuffer0.size();
+    assertEquals(0, int0);
+}",""
+"public char[] emptyAndGetCurrentSegment() {
+    // inlined 'resetWithEmpty()'
+    // indicates shared buffer not used
+    _inputStart = -1;
+    _currentSize = 0;
+    _inputLen = 0;
+    _inputBuffer = null;
+    _resultString = null;
+    _resultArray = null;
+    // And then reset internal input buffers, if necessary:
+    if (_hasSegments) {
+        clearSegments();
+    }
+    char[] curr = _currentSegment;
+    if (curr == null) {
+        _currentSegment = curr = findBuffer(0);
+    }
+    return curr;
+}","public void test1417() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.emptyAndGetCurrentSegment();
+    assertEquals(200, charArray0.length);
+}",""
+"public char[] contentsAsArray() {
+    char[] result = _resultArray;
+    if (result == null) {
+        _resultArray = result = buildResultArray();
+    }
+    return result;
+}","public void test1418() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.emptyAndGetCurrentSegment();
+    char[] charArray1 = textBuffer0.contentsAsArray();
+    assertNotNull(charArray1);
+}",""
+"public int getTextOffset() {
+    /* Only shared input buffer can have non-zero offset; buffer
+         * segments start at 0, and if we have to create a combo buffer,
+         * that too will start from beginning of the buffer
+         */
+    return (_inputStart >= 0) ? _inputStart : 0;
+}","public void test1419() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.emptyAndGetCurrentSegment();
+    char[] charArray1 = textBuffer0.contentsAsArray();
+    int int0 = textBuffer0.size();
+    assertEquals(0, textBuffer0.getTextOffset());
+}",""
+"/*
+    /**********************************************************
+    /* Accessors for implementing public interface
+    /**********************************************************
+     */
+/**
+ * @return Number of characters currently stored by this collector
+ */
+public int size() {
+    if (_inputStart >= 0) {
+        // shared copy from input buf
+        return _inputLen;
+    }
+    if (_resultArray != null) {
+        return _resultArray.length;
+    }
+    if (_resultString != null) {
+        return _resultString.length();
+    }
+    // local segmented buffers
+    return _segmentSize + _currentSize;
+}","public void test1420() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.emptyAndGetCurrentSegment();
+    char[] charArray1 = textBuffer0.contentsAsArray();
+    int int0 = textBuffer0.size();
+    assertEquals(0, int0);
+}",""
+"public int getTextOffset() {
+    /* Only shared input buffer can have non-zero offset; buffer
+         * segments start at 0, and if we have to create a combo buffer,
+         * that too will start from beginning of the buffer
+         */
+    return (_inputStart >= 0) ? _inputStart : 0;
+}","public void test1521() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.ensureNotShared();
+    int int0 = textBuffer0.getTextOffset();
+    assertEquals(0, int0);
+}",""
+"/*
+    /**********************************************************
+    /* Accessors for implementing public interface
+    /**********************************************************
+     */
+/**
+ * @return Number of characters currently stored by this collector
+ */
+public int size() {
+    if (_inputStart >= 0) {
+        // shared copy from input buf
+        return _inputLen;
+    }
+    if (_resultArray != null) {
+        return _resultArray.length;
+    }
+    if (_resultString != null) {
+        return _resultString.length();
+    }
+    // local segmented buffers
+    return _segmentSize + _currentSize;
+}","public void test1522() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.ensureNotShared();
+    int int0 = textBuffer0.getTextOffset();
+    assertEquals(0, textBuffer0.size());
+}",""
+"public int getTextOffset() {
+    /* Only shared input buffer can have non-zero offset; buffer
+         * segments start at 0, and if we have to create a combo buffer,
+         * that too will start from beginning of the buffer
+         */
+    return (_inputStart >= 0) ? _inputStart : 0;
+}","public void test1623() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    int int0 = textBuffer0.getTextOffset();
+    assertEquals(0, int0);
+}",""
+"public boolean hasTextAsCharacters() {
+    // if we have array in some form, sure
+    if (_inputStart >= 0 || _resultArray != null) {
+        return true;
+    }
+    // not if we have String as value
+    if (_resultString != null) {
+        return false;
+    }
+    return true;
+}","public void test1724() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    boolean boolean0 = textBuffer0.hasTextAsCharacters();
+    assertTrue(boolean0);
+}","/**
+ * Method that can be used to check whether textual contents can
+ * be efficiently accessed using {@link #getTextBuffer}.
+ */"
+"public int getTextOffset() {
+    /* Only shared input buffer can have non-zero offset; buffer
+         * segments start at 0, and if we have to create a combo buffer,
+         * that too will start from beginning of the buffer
+         */
+    return (_inputStart >= 0) ? _inputStart : 0;
+}","public void test1826() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.emptyAndGetCurrentSegment();
+    boolean boolean0 = textBuffer0.hasTextAsCharacters();
+    assertEquals(0, textBuffer0.getTextOffset());
+}",""
+"public boolean hasTextAsCharacters() {
+    // if we have array in some form, sure
+    if (_inputStart >= 0 || _resultArray != null) {
+        return true;
+    }
+    // not if we have String as value
+    if (_resultString != null) {
+        return false;
+    }
+    return true;
+}","public void test1827() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.emptyAndGetCurrentSegment();
+    boolean boolean0 = textBuffer0.hasTextAsCharacters();
+    assertTrue(boolean0);
+}","/**
+ * Method that can be used to check whether textual contents can
+ * be efficiently accessed using {@link #getTextBuffer}.
+ */"
+"/*
+    /**********************************************************
+    /* Accessors for implementing public interface
+    /**********************************************************
+     */
+/**
+ * @return Number of characters currently stored by this collector
+ */
+public int size() {
+    if (_inputStart >= 0) {
+        // shared copy from input buf
+        return _inputLen;
+    }
+    if (_resultArray != null) {
+        return _resultArray.length;
+    }
+    if (_resultString != null) {
+        return _resultString.length();
+    }
+    // local segmented buffers
+    return _segmentSize + _currentSize;
+}","public void test1828() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.emptyAndGetCurrentSegment();
+    boolean boolean0 = textBuffer0.hasTextAsCharacters();
+    assertEquals(0, textBuffer0.size());
+}",""
+"/*
+    /**********************************************************
+    /* Accessors for implementing public interface
+    /**********************************************************
+     */
+/**
+ * @return Number of characters currently stored by this collector
+ */
+public int size() {
+    if (_inputStart >= 0) {
+        // shared copy from input buf
+        return _inputLen;
+    }
+    if (_resultArray != null) {
+        return _resultArray.length;
+    }
+    if (_resultString != null) {
+        return _resultString.length();
+    }
+    // local segmented buffers
+    return _segmentSize + _currentSize;
+}","public void test1931() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.emptyAndGetCurrentSegment();
+    char[] charArray1 = textBuffer0.contentsAsArray();
+    boolean boolean0 = textBuffer0.hasTextAsCharacters();
+    assertEquals(0, textBuffer0.size());
+}",""
+"public int getTextOffset() {
+    /* Only shared input buffer can have non-zero offset; buffer
+         * segments start at 0, and if we have to create a combo buffer,
+         * that too will start from beginning of the buffer
+         */
+    return (_inputStart >= 0) ? _inputStart : 0;
+}","public void test1932() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.emptyAndGetCurrentSegment();
+    char[] charArray1 = textBuffer0.contentsAsArray();
+    boolean boolean0 = textBuffer0.hasTextAsCharacters();
+    assertEquals(0, textBuffer0.getTextOffset());
+}",""
+"public boolean hasTextAsCharacters() {
+    // if we have array in some form, sure
+    if (_inputStart >= 0 || _resultArray != null) {
+        return true;
+    }
+    // not if we have String as value
+    if (_resultString != null) {
+        return false;
+    }
+    return true;
+}","public void test1933() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.emptyAndGetCurrentSegment();
+    char[] charArray1 = textBuffer0.contentsAsArray();
+    boolean boolean0 = textBuffer0.hasTextAsCharacters();
+    assertTrue(boolean0);
+}","/**
+ * Method that can be used to check whether textual contents can
+ * be efficiently accessed using {@link #getTextBuffer}.
+ */"
+"public boolean hasTextAsCharacters() {
+    // if we have array in some form, sure
+    if (_inputStart >= 0 || _resultArray != null) {
+        return true;
+    }
+    // not if we have String as value
+    if (_resultString != null) {
+        return false;
+    }
+    return true;
+}","public void test2034() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.resetWithEmpty();
+    textBuffer0.contentsAsString();
+    boolean boolean0 = textBuffer0.hasTextAsCharacters();
+    assertFalse(boolean0);
+}","/**
+ * Method that can be used to check whether textual contents can
+ * be efficiently accessed using {@link #getTextBuffer}.
+ */"
+"public char[] getTextBuffer() {
+    // Are we just using shared input buffer?
+    if (_inputStart >= 0) {
+        return _inputBuffer;
+    }
+    if (_resultArray != null) {
+        return _resultArray;
+    }
+    if (_resultString != null) {
+        return (_resultArray = _resultString.toCharArray());
+    }
+    // Nope; but does it fit in just one segment?
+    if (!_hasSegments) {
+        return _currentSegment;
+    }
+    // Nope, need to have/create a non-segmented array and return it
+    return contentsAsArray();
+}","public void test2135() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.getTextBuffer();
+    assertNull(charArray0);
+}",""
+"public char[] getTextBuffer() {
+    // Are we just using shared input buffer?
+    if (_inputStart >= 0) {
+        return _inputBuffer;
+    }
+    if (_resultArray != null) {
+        return _resultArray;
+    }
+    if (_resultString != null) {
+        return (_resultArray = _resultString.toCharArray());
+    }
+    // Nope; but does it fit in just one segment?
+    if (!_hasSegments) {
+        return _currentSegment;
+    }
+    // Nope, need to have/create a non-segmented array and return it
+    return contentsAsArray();
+}","public void test2237() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.emptyAndGetCurrentSegment();
+    textBuffer0.contentsAsArray();
+    char[] charArray1 = textBuffer0.getTextBuffer();
+    assertEquals(0, charArray1.length);
+}",""
+"/*
+    /**********************************************************
+    /* Accessors for implementing public interface
+    /**********************************************************
+     */
+/**
+ * @return Number of characters currently stored by this collector
+ */
+public int size() {
+    if (_inputStart >= 0) {
+        // shared copy from input buf
+        return _inputLen;
+    }
+    if (_resultArray != null) {
+        return _resultArray.length;
+    }
+    if (_resultString != null) {
+        return _resultString.length();
+    }
+    // local segmented buffers
+    return _segmentSize + _currentSize;
+}","public void test2239() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.emptyAndGetCurrentSegment();
+    textBuffer0.contentsAsArray();
+    char[] charArray1 = textBuffer0.getTextBuffer();
+    assertEquals(0, textBuffer0.size());
+}",""
+"/*
+    /**********************************************************
+    /* Accessors for implementing public interface
+    /**********************************************************
+     */
+/**
+ * @return Number of characters currently stored by this collector
+ */
+public int size() {
+    if (_inputStart >= 0) {
+        // shared copy from input buf
+        return _inputLen;
+    }
+    if (_resultArray != null) {
+        return _resultArray.length;
+    }
+    if (_resultString != null) {
+        return _resultString.length();
+    }
+    // local segmented buffers
+    return _segmentSize + _currentSize;
+}","public void test2340() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.resetWithString(""nL"");
+    textBuffer0.getTextBuffer();
+    assertEquals(2, textBuffer0.size());
+}",""
+"public char[] getTextBuffer() {
+    // Are we just using shared input buffer?
+    if (_inputStart >= 0) {
+        return _inputBuffer;
+    }
+    if (_resultArray != null) {
+        return _resultArray;
+    }
+    if (_resultString != null) {
+        return (_resultArray = _resultString.toCharArray());
+    }
+    // Nope; but does it fit in just one segment?
+    if (!_hasSegments) {
+        return _currentSegment;
+    }
+    // Nope, need to have/create a non-segmented array and return it
+    return contentsAsArray();
+}","public void test2441() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.emptyAndGetCurrentSegment();
+    char[] charArray1 = textBuffer0.getTextBuffer();
+    assertSame(charArray1, charArray0);
+}",""
+"public int getCurrentSegmentSize() {
+    return _currentSize;
+}","public void test2442() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.emptyAndGetCurrentSegment();
+    char[] charArray1 = textBuffer0.getTextBuffer();
+    assertEquals(0, textBuffer0.getCurrentSegmentSize());
+}",""
+"/*
+    /**********************************************************
+    /* Other accessors:
+    /**********************************************************
+     */
+public String contentsAsString() {
+    if (_resultString == null) {
+        // Has array been requested? Can make a shortcut, if so:
+        if (_resultArray != null) {
+            _resultString = new String(_resultArray);
+        } else {
+            // Do we use shared array?
+            if (_inputStart >= 0) {
+                if (_inputLen < 1) {
+                    return (_resultString = """");
+                }
+                _resultString = new String(_inputBuffer, _inputStart, _inputLen);
+            } else {
+                // nope... need to copy
+                // But first, let's see if we have just one buffer
+                int segLen = _segmentSize;
+                int currLen = _currentSize;
+                if (segLen == 0) {
+                    // yup
+                    _resultString = (currLen == 0) ? """" : new String(_currentSegment, 0, currLen);
+                } else {
+                    // no, need to combine
+                    StringBuilder sb = new StringBuilder(segLen + currLen);
+                    // First stored segments
+                    if (_segments != null) {
+                        for (int i = 0, len = _segments.size(); i < len; ++i) {
+                            char[] curr = _segments.get(i);
+                            sb.append(curr, 0, curr.length);
+                        }
+                    }
+                    // And finally, current segment:
+                    sb.append(_currentSegment, 0, _currentSize);
+                    _resultString = sb.toString();
+                }
+            }
+        }
+    }
+    return _resultString;
+}","public void test2545() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    textBuffer0.contentsAsString();
+    String string0 = textBuffer0.contentsAsString();
+    assertEquals("""", string0);
+}",""
+"/*
+    /**********************************************************
+    /* Other accessors:
+    /**********************************************************
+     */
+public String contentsAsString() {
+    if (_resultString == null) {
+        // Has array been requested? Can make a shortcut, if so:
+        if (_resultArray != null) {
+            _resultString = new String(_resultArray);
+        } else {
+            // Do we use shared array?
+            if (_inputStart >= 0) {
+                if (_inputLen < 1) {
+                    return (_resultString = """");
+                }
+                _resultString = new String(_inputBuffer, _inputStart, _inputLen);
+            } else {
+                // nope... need to copy
+                // But first, let's see if we have just one buffer
+                int segLen = _segmentSize;
+                int currLen = _currentSize;
+                if (segLen == 0) {
+                    // yup
+                    _resultString = (currLen == 0) ? """" : new String(_currentSegment, 0, currLen);
+                } else {
+                    // no, need to combine
+                    StringBuilder sb = new StringBuilder(segLen + currLen);
+                    // First stored segments
+                    if (_segments != null) {
+                        for (int i = 0, len = _segments.size(); i < len; ++i) {
+                            char[] curr = _segments.get(i);
+                            sb.append(curr, 0, curr.length);
+                        }
+                    }
+                    // And finally, current segment:
+                    sb.append(_currentSegment, 0, _currentSize);
+                    _resultString = sb.toString();
+                }
+            }
+        }
+    }
+    return _resultString;
+}","public void test2646() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    textBuffer0.resetWithShared(charArray0, 2000, 2000);
+    // Undeclared exception!
+    try {
+        textBuffer0.contentsAsString();
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",""
+"public boolean hasTextAsCharacters() {
+    // if we have array in some form, sure
+    if (_inputStart >= 0 || _resultArray != null) {
+        return true;
+    }
+    // not if we have String as value
+    if (_resultString != null) {
+        return false;
+    }
+    return true;
+}","public void test2747() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    textBuffer0.emptyAndGetCurrentSegment();
+    textBuffer0.finishCurrentSegment();
+    textBuffer0.contentsAsString();
+    assertFalse(textBuffer0.hasTextAsCharacters());
+}","/**
+ * Method that can be used to check whether textual contents can
+ * be efficiently accessed using {@link #getTextBuffer}.
+ */"
+"/*
+    /**********************************************************
+    /* Accessors for implementing public interface
+    /**********************************************************
+     */
+/**
+ * @return Number of characters currently stored by this collector
+ */
+public int size() {
+    if (_inputStart >= 0) {
+        // shared copy from input buf
+        return _inputLen;
+    }
+    if (_resultArray != null) {
+        return _resultArray.length;
+    }
+    if (_resultString != null) {
+        return _resultString.length();
+    }
+    // local segmented buffers
+    return _segmentSize + _currentSize;
+}","public void test2848() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    BufferRecycler.CharBufferType bufferRecycler_CharBufferType0 = BufferRecycler.CharBufferType.NAME_COPY_BUFFER;
+    char[] charArray0 = bufferRecycler0.allocCharBuffer(bufferRecycler_CharBufferType0, 2000);
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.append(charArray0, 0, 2000);
+    String string0 = textBuffer0.toString();
+    textBuffer0.append(string0, 0, 2000);
+    assertEquals(4000, textBuffer0.size());
+}",""
+"public char[] contentsAsArray() {
+    char[] result = _resultArray;
+    if (result == null) {
+        _resultArray = result = buildResultArray();
+    }
+    return result;
+}","public void test2949() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.contentsAsArray();
+    char[] charArray0 = textBuffer0.contentsAsArray();
+    assertArrayEquals(new char[] {}, charArray0);
+}",""
+"public BigDecimal contentsAsDecimal() throws NumberFormatException {
+    // Already got a pre-cut array?
+    if (_resultArray != null) {
+        return NumberInput.parseBigDecimal(_resultArray);
+    }
+    // Or a shared buffer?
+    if (_inputStart >= 0) {
+        return NumberInput.parseBigDecimal(_inputBuffer, _inputStart, _inputLen);
+    }
+    // Or if not, just a single buffer (the usual case)
+    if (_segmentSize == 0) {
+        return NumberInput.parseBigDecimal(_currentSegment, 0, _currentSize);
+    }
+    // If not, let's just get it aggregated...
+    return NumberInput.parseBigDecimal(contentsAsArray());
+}","public void test3050() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    // Undeclared exception!
+    try {
+        textBuffer0.contentsAsDecimal();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.math.BigDecimal"", e);
+    }
+}","/**
+ * Convenience method for converting contents of the buffer
+ * into a {@link BigDecimal}.
+ */"
+"public BigDecimal contentsAsDecimal() throws NumberFormatException {
+    // Already got a pre-cut array?
+    if (_resultArray != null) {
+        return NumberInput.parseBigDecimal(_resultArray);
+    }
+    // Or a shared buffer?
+    if (_inputStart >= 0) {
+        return NumberInput.parseBigDecimal(_inputBuffer, _inputStart, _inputLen);
+    }
+    // Or if not, just a single buffer (the usual case)
+    if (_segmentSize == 0) {
+        return NumberInput.parseBigDecimal(_currentSegment, 0, _currentSize);
+    }
+    // If not, let's just get it aggregated...
+    return NumberInput.parseBigDecimal(contentsAsArray());
+}","public void test3151() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.contentsAsArray();
+    try {
+        textBuffer0.contentsAsDecimal();
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.math.BigDecimal"", e);
+    }
+}","/**
+ * Convenience method for converting contents of the buffer
+ * into a {@link BigDecimal}.
+ */"
+"public BigDecimal contentsAsDecimal() throws NumberFormatException {
+    // Already got a pre-cut array?
+    if (_resultArray != null) {
+        return NumberInput.parseBigDecimal(_resultArray);
+    }
+    // Or a shared buffer?
+    if (_inputStart >= 0) {
+        return NumberInput.parseBigDecimal(_inputBuffer, _inputStart, _inputLen);
+    }
+    // Or if not, just a single buffer (the usual case)
+    if (_segmentSize == 0) {
+        return NumberInput.parseBigDecimal(_currentSegment, 0, _currentSize);
+    }
+    // If not, let's just get it aggregated...
+    return NumberInput.parseBigDecimal(contentsAsArray());
+}","public void test3252() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.append('[');
+    try {
+        textBuffer0.contentsAsDecimal();
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.math.BigDecimal"", e);
+    }
+}","/**
+ * Convenience method for converting contents of the buffer
+ * into a {@link BigDecimal}.
+ */"
+"public BigDecimal contentsAsDecimal() throws NumberFormatException {
+    // Already got a pre-cut array?
+    if (_resultArray != null) {
+        return NumberInput.parseBigDecimal(_resultArray);
+    }
+    // Or a shared buffer?
+    if (_inputStart >= 0) {
+        return NumberInput.parseBigDecimal(_inputBuffer, _inputStart, _inputLen);
+    }
+    // Or if not, just a single buffer (the usual case)
+    if (_segmentSize == 0) {
+        return NumberInput.parseBigDecimal(_currentSegment, 0, _currentSize);
+    }
+    // If not, let's just get it aggregated...
+    return NumberInput.parseBigDecimal(contentsAsArray());
+}","public void test3353() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.append('[');
+    textBuffer0.finishCurrentSegment();
+    try {
+        textBuffer0.contentsAsDecimal();
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.math.BigDecimal"", e);
+    }
+}","/**
+ * Convenience method for converting contents of the buffer
+ * into a {@link BigDecimal}.
+ */"
+"public boolean hasTextAsCharacters() {
+    // if we have array in some form, sure
+    if (_inputStart >= 0 || _resultArray != null) {
+        return true;
+    }
+    // not if we have String as value
+    if (_resultString != null) {
+        return false;
+    }
+    return true;
+}","public void test3454() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.resetWithEmpty();
+    textBuffer0.ensureNotShared();
+    assertTrue(textBuffer0.hasTextAsCharacters());
+}","/**
+ * Method that can be used to check whether textual contents can
+ * be efficiently accessed using {@link #getTextBuffer}.
+ */"
+"public void append(char[] c, int start, int len) {
+    // Can't append to shared buf (sanity check)
+    if (_inputStart >= 0) {
+        unshare(len);
+    }
+    _resultString = null;
+    _resultArray = null;
+    // Room in current segment?
+    char[] curr = _currentSegment;
+    int max = curr.length - _currentSize;
+    if (max >= len) {
+        System.arraycopy(c, start, curr, _currentSize, len);
+        _currentSize += len;
+        return;
+    }
+    // No room for all, need to copy part(s):
+    if (max > 0) {
+        System.arraycopy(c, start, curr, _currentSize, max);
+        start += max;
+        len -= max;
+    }
+    /* And then allocate new segment; we are guaranteed to now
+         * have enough room in segment.
+         */
+    // Except, as per [Issue-24], not for HUGE appends... so:
+    do {
+        expand(len);
+        int amount = Math.min(_currentSegment.length, len);
+        System.arraycopy(c, start, _currentSegment, 0, amount);
+        _currentSize += amount;
+        start += amount;
+        len -= amount;
+    } while (len > 0);
+}","public void test3555() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    textBuffer0.emptyAndGetCurrentSegment();
+    textBuffer0.setCurrentLength(262144);
+    char[] charArray0 = textBuffer0.expandCurrentSegment();
+    // Undeclared exception!
+    try {
+        textBuffer0.append(charArray0, 1500, 1500);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}",""
+"public void append(String str, int offset, int len) {
+    // Can't append to shared buf (sanity check)
+    if (_inputStart >= 0) {
+        unshare(len);
+    }
+    _resultString = null;
+    _resultArray = null;
+    // Room in current segment?
+    char[] curr = _currentSegment;
+    int max = curr.length - _currentSize;
+    if (max >= len) {
+        str.getChars(offset, offset + len, curr, _currentSize);
+        _currentSize += len;
+        return;
+    }
+    // No room for all, need to copy part(s):
+    if (max > 0) {
+        str.getChars(offset, offset + max, curr, _currentSize);
+        len -= max;
+        offset += max;
+    }
+    /* And then allocate new segment; we are guaranteed to now
+         * have enough room in segment.
+         */
+    // Except, as per [Issue-24], not for HUGE appends... so:
+    do {
+        expand(len);
+        int amount = Math.min(_currentSegment.length, len);
+        str.getChars(offset, offset + amount, _currentSegment, 0);
+        _currentSize += amount;
+        offset += amount;
+        len -= amount;
+    } while (len > 0);
+}","public void test3656() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    textBuffer0.emptyAndGetCurrentSegment();
+    String string0 = textBuffer0.contentsAsString();
+    // Undeclared exception!
+    try {
+        textBuffer0.append(string0, 262144, 262144);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",""
+"public void append(String str, int offset, int len) {
+    // Can't append to shared buf (sanity check)
+    if (_inputStart >= 0) {
+        unshare(len);
+    }
+    _resultString = null;
+    _resultArray = null;
+    // Room in current segment?
+    char[] curr = _currentSegment;
+    int max = curr.length - _currentSize;
+    if (max >= len) {
+        str.getChars(offset, offset + len, curr, _currentSize);
+        _currentSize += len;
+        return;
+    }
+    // No room for all, need to copy part(s):
+    if (max > 0) {
+        str.getChars(offset, offset + max, curr, _currentSize);
+        len -= max;
+        offset += max;
+    }
+    /* And then allocate new segment; we are guaranteed to now
+         * have enough room in segment.
+         */
+    // Except, as per [Issue-24], not for HUGE appends... so:
+    do {
+        expand(len);
+        int amount = Math.min(_currentSegment.length, len);
+        str.getChars(offset, offset + amount, _currentSegment, 0);
+        _currentSize += amount;
+        offset += amount;
+        len -= amount;
+    } while (len > 0);
+}","public void test3757() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    // Undeclared exception!
+    try {
+        textBuffer0.append("""", 2000, (-4210));
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",""
+"public int getTextOffset() {
+    /* Only shared input buffer can have non-zero offset; buffer
+         * segments start at 0, and if we have to create a combo buffer,
+         * that too will start from beginning of the buffer
+         */
+    return (_inputStart >= 0) ? _inputStart : 0;
+}","public void test3858() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    char[] charArray0 = textBuffer0.emptyAndGetCurrentSegment();
+    assertEquals(0, textBuffer0.getTextOffset());
+}",""
+"/*
+    /**********************************************************
+    /* Raw access, for high-performance use:
+    /**********************************************************
+     */
+public char[] getCurrentSegment() {
+    /* Since the intention of the caller is to directly add stuff into
+         * buffers, we should NOT have anything in shared buffer... ie. may
+         * need to unshare contents.
+         */
+    if (_inputStart >= 0) {
+        unshare(1);
+    } else {
+        char[] curr = _currentSegment;
+        if (curr == null) {
+            _currentSegment = findBuffer(0);
+        } else if (_currentSize >= curr.length) {
+            // Plus, we better have room for at least one more char
+            expand(1);
+        }
+    }
+    return _currentSegment;
+}","public void test3859() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    char[] charArray0 = textBuffer0.emptyAndGetCurrentSegment();
+    char[] charArray1 = textBuffer0.getCurrentSegment();
+    assertEquals(1000, charArray1.length);
+}",""
+"public int getCurrentSegmentSize() {
+    return _currentSize;
+}","public void test3861() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    char[] charArray0 = textBuffer0.emptyAndGetCurrentSegment();
+    char[] charArray1 = textBuffer0.getCurrentSegment();
+    assertEquals(0, textBuffer0.getCurrentSegmentSize());
+}",""
+"public int getTextOffset() {
+    /* Only shared input buffer can have non-zero offset; buffer
+         * segments start at 0, and if we have to create a combo buffer,
+         * that too will start from beginning of the buffer
+         */
+    return (_inputStart >= 0) ? _inputStart : 0;
+}","public void test3962() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.resetWithEmpty();
+    assertEquals(0, textBuffer0.getTextOffset());
+}",""
+"/*
+    /**********************************************************
+    /* Raw access, for high-performance use:
+    /**********************************************************
+     */
+public char[] getCurrentSegment() {
+    /* Since the intention of the caller is to directly add stuff into
+         * buffers, we should NOT have anything in shared buffer... ie. may
+         * need to unshare contents.
+         */
+    if (_inputStart >= 0) {
+        unshare(1);
+    } else {
+        char[] curr = _currentSegment;
+        if (curr == null) {
+            _currentSegment = findBuffer(0);
+        } else if (_currentSize >= curr.length) {
+            // Plus, we better have room for at least one more char
+            expand(1);
+        }
+    }
+    return _currentSegment;
+}","public void test3963() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.resetWithEmpty();
+    char[] charArray0 = textBuffer0.getCurrentSegment();
+    assertEquals(200, charArray0.length);
+}",""
+"/*
+    /**********************************************************
+    /* Accessors for implementing public interface
+    /**********************************************************
+     */
+/**
+ * @return Number of characters currently stored by this collector
+ */
+public int size() {
+    if (_inputStart >= 0) {
+        // shared copy from input buf
+        return _inputLen;
+    }
+    if (_resultArray != null) {
+        return _resultArray.length;
+    }
+    if (_resultString != null) {
+        return _resultString.length();
+    }
+    // local segmented buffers
+    return _segmentSize + _currentSize;
+}","public void test4064() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    BufferRecycler.CharBufferType bufferRecycler_CharBufferType0 = BufferRecycler.CharBufferType.TOKEN_BUFFER;
+    char[] charArray0 = bufferRecycler0.allocCharBuffer(bufferRecycler_CharBufferType0, 2000);
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.append(charArray0, (int) '(', 1768);
+    textBuffer0.getCurrentSegment();
+    assertEquals(1768, textBuffer0.size());
+}",""
+"/*
+    /**********************************************************
+    /* Accessors for implementing public interface
+    /**********************************************************
+     */
+/**
+ * @return Number of characters currently stored by this collector
+ */
+public int size() {
+    if (_inputStart >= 0) {
+        // shared copy from input buf
+        return _inputLen;
+    }
+    if (_resultArray != null) {
+        return _resultArray.length;
+    }
+    if (_resultString != null) {
+        return _resultString.length();
+    }
+    // local segmented buffers
+    return _segmentSize + _currentSize;
+}","public void test4165() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.getCurrentSegment();
+    textBuffer0.finishCurrentSegment();
+    assertEquals(200, textBuffer0.size());
+}",""
+"public char[] emptyAndGetCurrentSegment() {
+    // inlined 'resetWithEmpty()'
+    // indicates shared buffer not used
+    _inputStart = -1;
+    _currentSize = 0;
+    _inputLen = 0;
+    _inputBuffer = null;
+    _resultString = null;
+    _resultArray = null;
+    // And then reset internal input buffers, if necessary:
+    if (_hasSegments) {
+        clearSegments();
+    }
+    char[] curr = _currentSegment;
+    if (curr == null) {
+        _currentSegment = curr = findBuffer(0);
+    }
+    return curr;
+}","public void test4166() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.getCurrentSegment();
+    textBuffer0.finishCurrentSegment();
+    char[] charArray0 = textBuffer0.emptyAndGetCurrentSegment();
+    assertEquals(300, charArray0.length);
+}",""
+"public int getCurrentSegmentSize() {
+    return _currentSize;
+}","public void test4267() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    textBuffer0.emptyAndGetCurrentSegment();
+    textBuffer0.finishCurrentSegment();
+    textBuffer0.expandCurrentSegment();
+    textBuffer0.expandCurrentSegment();
+    textBuffer0.finishCurrentSegment();
+    textBuffer0.finishCurrentSegment();
+    textBuffer0.setCurrentLength(262144);
+    textBuffer0.expandCurrentSegment();
+    textBuffer0.append('h');
+    textBuffer0.expandCurrentSegment();
+    char[] charArray0 = textBuffer0.expandCurrentSegment();
+    textBuffer0.expandCurrentSegment();
+    textBuffer0.setCurrentLength(262144);
+    textBuffer0.expandCurrentSegment();
+    textBuffer0.append(charArray0, 1500, 1500);
+    textBuffer0.expandCurrentSegment();
+    textBuffer0.expandCurrentSegment();
+    textBuffer0.expandCurrentSegment();
+    assertEquals(1500, textBuffer0.getCurrentSegmentSize());
+}",""
+"/*
+    /**********************************************************
+    /* Raw access, for high-performance use:
+    /**********************************************************
+     */
+public char[] getCurrentSegment() {
+    /* Since the intention of the caller is to directly add stuff into
+         * buffers, we should NOT have anything in shared buffer... ie. may
+         * need to unshare contents.
+         */
+    if (_inputStart >= 0) {
+        unshare(1);
+    } else {
+        char[] curr = _currentSegment;
+        if (curr == null) {
+            _currentSegment = findBuffer(0);
+        } else if (_currentSize >= curr.length) {
+            // Plus, we better have room for at least one more char
+            expand(1);
+        }
+    }
+    return _currentSegment;
+}","public void test4368() throws Throwable {
+    TextBuffer textBuffer0 = new TextBuffer((BufferRecycler) null);
+    textBuffer0.emptyAndGetCurrentSegment();
+    char[] charArray0 = textBuffer0.expandCurrentSegment();
+    textBuffer0.resetWithShared(charArray0, 1500, 1500);
+    // Undeclared exception!
+    try {
+        textBuffer0.getCurrentSegment();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Accessors for implementing public interface
+    /**********************************************************
+     */
+/**
+ * @return Number of characters currently stored by this collector
+ */
+public int size() {
+    if (_inputStart >= 0) {
+        // shared copy from input buf
+        return _inputLen;
+    }
+    if (_resultArray != null) {
+        return _resultArray.length;
+    }
+    if (_resultString != null) {
+        return _resultString.length();
+    }
+    // local segmented buffers
+    return _segmentSize + _currentSize;
+}","public void test4469() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = new char[4];
+    textBuffer0.resetWithShared(charArray0, 0, 45);
+    textBuffer0.contentsAsArray();
+    assertEquals(45, textBuffer0.size());
+}",""
+"public char[] contentsAsArray() {
+    char[] result = _resultArray;
+    if (result == null) {
+        _resultArray = result = buildResultArray();
+    }
+    return result;
+}","public void test4570() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    char[] charArray0 = textBuffer0.emptyAndGetCurrentSegment();
+    textBuffer0.resetWithShared(charArray0, 2000, 2000);
+    // Undeclared exception!
+    try {
+        textBuffer0.contentsAsArray();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}",""
+"public int getCurrentSegmentSize() {
+    return _currentSize;
+}","public void test4671() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    TextBuffer textBuffer0 = new TextBuffer(bufferRecycler0);
+    textBuffer0.append('r');
+    textBuffer0.contentsAsArray();
+    assertEquals(1, textBuffer0.getCurrentSegmentSize());
+}",""

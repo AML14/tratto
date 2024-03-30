@@ -1,0 +1,1624 @@
+focal_method,test_prefix,docstring
+"public boolean canSerialize(Class<?> type, AtomicReference<Throwable> cause) {
+    return _serializerProvider(getSerializationConfig()).hasSerializerFor(type, cause);
+}","public void test000() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    AtomicReference<Throwable> atomicReference0 = new AtomicReference<Throwable>();
+    Class<Object> class0 = Object.class;
+    boolean boolean0 = objectMapper0.canSerialize(class0, atomicReference0);
+    assertFalse(boolean0);
+}","/**
+ * Method similar to {@link #canSerialize(Class)} but that can return
+ * actual {@link Throwable} that was thrown when trying to construct
+ * serializer: this may be useful in figuring out what the actual problem is.
+ *
+ * @since 2.3
+ */"
+"@SuppressWarnings(""resource"")
+public <T> T updateValue(T valueToUpdate, Object overrides) throws JsonMappingException {
+    T result = valueToUpdate;
+    if ((valueToUpdate != null) && (overrides != null)) {
+        TokenBuffer buf = new TokenBuffer(this, false);
+        if (isEnabled(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS)) {
+            buf = buf.forceUseOfBigDecimal(true);
+        }
+        try {
+            SerializationConfig config = getSerializationConfig().without(SerializationFeature.WRAP_ROOT_VALUE);
+            _serializerProvider(config).serializeValue(buf, overrides);
+            JsonParser p = buf.asParser();
+            result = readerForUpdating(valueToUpdate).readValue(p);
+            p.close();
+        } catch (IOException e) {
+            // should not occur, no real i/o...
+            if (e instanceof JsonMappingException) {
+                throw (JsonMappingException) e;
+            }
+            // 17-Mar-2017, tatu: Really ought not happen...
+            throw JsonMappingException.fromUnexpectedIOE(e);
+        }
+    }
+    return result;
+}","public void test022() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    AtomicReference<Throwable> atomicReference0 = new AtomicReference<Throwable>();
+    MockIOException mockIOException0 = new MockIOException();
+    IOException iOException0 = objectMapper0.updateValue((IOException) mockIOException0, (Object) atomicReference0);
+    assertSame(iOException0, mockIOException0);
+}","/**
+ *  Convenience method similar to {@link #convertValue(Object, JavaType)} but one
+ *  in which
+ * <p>
+ *  Implementation is approximately as follows:
+ * <ol>
+ *  <li>Serialize `updateWithValue` into {@link TokenBuffer}</li>
+ *  <li>Construct {@link ObjectReader} with `valueToUpdate` (using {@link #readerForUpdating(Object)})
+ *    </li>
+ *  <li>Construct {@link JsonParser} (using {@link TokenBuffer#asParser()})
+ *    </li>
+ *  <li>Update using {@link ObjectReader#readValue(JsonParser)}.
+ *    </li>
+ *  <li>Return `valueToUpdate`
+ *    </li>
+ * </ol>
+ * <p>
+ *  Note that update is ""shallow"" in that only first level of properties (or, immediate contents
+ *  of container to update) are modified, unless properties themselves indicate that
+ *  merging should be applied for contents. Such merging can be specified using
+ *  annotations (see <code>JsonMerge</code>) as well as using ""config overrides"" (see
+ *  {@link #configOverride(Class)} and {@link #setDefaultMergeable(Boolean)}).
+ *
+ *  @param valueToUpdate Object to update
+ *  @param overrides Object to conceptually serialize and merge into value to
+ *      update; can be thought of as a provider for overrides to apply.
+ *
+ *  @return Either the first argument (`valueToUpdate`), if it is mutable; or a result of
+ *      creating new instance that is result of ""merging"" values (for example, ""updating"" a
+ *      Java array will create a new array)
+ *
+ *  @throws JsonMappingException if there are structural incompatibilities that prevent update.
+ *
+ *  @since 2.9
+ */"
+"public void serializePolymorphic(JsonGenerator gen, Object value, JavaType rootType, JsonSerializer<Object> valueSer, TypeSerializer typeSer) throws IOException {
+    _generator = gen;
+    if (value == null) {
+        _serializeNull(gen);
+        return;
+    }
+    // Let's ensure types are compatible at this point
+    if ((rootType != null) && !rootType.getRawClass().isAssignableFrom(value.getClass())) {
+        _reportIncompatibleRootType(value, rootType);
+    }
+    /* 12-Jun-2015, tatu: nominal root type is necessary for Maps at least;
+         *   possibly collections, but can cause problems for other polymorphic
+         *   types. We really need to distinguish between serialization type,
+         *   base type; but right we don't. Hence this check
+         */
+    if (valueSer == null) {
+        if ((rootType != null) && rootType.isContainerType()) {
+            valueSer = findValueSerializer(rootType, null);
+        } else {
+            valueSer = findValueSerializer(value.getClass(), null);
+        }
+    }
+    final boolean wrap;
+    PropertyName rootName = _config.getFullRootName();
+    if (rootName == null) {
+        wrap = _config.isEnabled(SerializationFeature.WRAP_ROOT_VALUE);
+        if (wrap) {
+            gen.writeStartObject();
+            PropertyName pname = _config.findRootName(value.getClass());
+            gen.writeFieldName(pname.simpleAsEncoded(_config));
+        }
+    } else if (rootName.isEmpty()) {
+        wrap = false;
+    } else {
+        wrap = true;
+        gen.writeStartObject();
+        gen.writeFieldName(rootName.getSimpleName());
+    }
+    try {
+        valueSer.serializeWithType(value, gen, this, typeSer);
+        if (wrap) {
+            gen.writeEndObject();
+        }
+    } catch (Exception e) {
+        throw _wrapAsIOE(gen, e);
+    }
+}","public void test033() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    try {
+        defaultSerializerProvider_Impl0.serializePolymorphic((JsonGenerator) null, (Object) null, (JavaType) null, defaultSerializerProvider_Impl0.DEFAULT_NULL_KEY_SERIALIZER, (TypeSerializer) null);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // [no message for java.lang.NullPointerException]
+        //
+        verifyException(""com.fasterxml.jackson.databind.ser.DefaultSerializerProvider"", e);
+    }
+}","/**
+ * Alternate serialization call used for polymorphic types, when {@link TypeSerializer}
+ * is already known, but the actual serializer may or may not be.
+ *
+ * @since 2.6
+ */"
+"public void flushCachedSerializers() {
+    _serializerCache.flush();
+}","public void test044() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    defaultSerializerProvider_Impl0.flushCachedSerializers();
+}","/**
+ * Method that will drop all serializers currently cached by this provider.
+ * This can be used to remove memory usage (in case some serializers are
+ * only used once or so), or to force re-construction of serializers after
+ * configuration changes for mapper than owns the provider.
+ */"
+"/*
+    /********************************************************
+    /* Access to caching details
+    /********************************************************
+     */
+/**
+ *  Method that can be used to determine how many serializers this
+ *  provider is caching currently
+ *  (if it does caching: default implementation does)
+ *  Exact count depends on what kind of serializers get cached;
+ *  default implementation caches all serializers, including ones that
+ *  are eagerly constructed (for optimal access speed)
+ * <p>
+ *  The main use case for this method is to allow conditional flushing of
+ *  serializer cache, if certain number of entries is reached.
+ */
+public int cachedSerializersCount() {
+    return _serializerCache.size();
+}","public void test055() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    int int0 = defaultSerializerProvider_Impl0.cachedSerializersCount();
+    assertEquals(0, int0);
+}",""
+"public void serializePolymorphic(JsonGenerator gen, Object value, JavaType rootType, JsonSerializer<Object> valueSer, TypeSerializer typeSer) throws IOException {
+    _generator = gen;
+    if (value == null) {
+        _serializeNull(gen);
+        return;
+    }
+    // Let's ensure types are compatible at this point
+    if ((rootType != null) && !rootType.getRawClass().isAssignableFrom(value.getClass())) {
+        _reportIncompatibleRootType(value, rootType);
+    }
+    /* 12-Jun-2015, tatu: nominal root type is necessary for Maps at least;
+         *   possibly collections, but can cause problems for other polymorphic
+         *   types. We really need to distinguish between serialization type,
+         *   base type; but right we don't. Hence this check
+         */
+    if (valueSer == null) {
+        if ((rootType != null) && rootType.isContainerType()) {
+            valueSer = findValueSerializer(rootType, null);
+        } else {
+            valueSer = findValueSerializer(value.getClass(), null);
+        }
+    }
+    final boolean wrap;
+    PropertyName rootName = _config.getFullRootName();
+    if (rootName == null) {
+        wrap = _config.isEnabled(SerializationFeature.WRAP_ROOT_VALUE);
+        if (wrap) {
+            gen.writeStartObject();
+            PropertyName pname = _config.findRootName(value.getClass());
+            gen.writeFieldName(pname.simpleAsEncoded(_config));
+        }
+    } else if (rootName.isEmpty()) {
+        wrap = false;
+    } else {
+        wrap = true;
+        gen.writeStartObject();
+        gen.writeFieldName(rootName.getSimpleName());
+    }
+    try {
+        valueSer.serializeWithType(value, gen, this, typeSer);
+        if (wrap) {
+            gen.writeEndObject();
+        }
+    } catch (Exception e) {
+        throw _wrapAsIOE(gen, e);
+    }
+}","public void test066() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    TypeBindings typeBindings0 = TypeBindings.emptyBindings();
+    Class<ChronoLocalDate> class0 = ChronoLocalDate.class;
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, typeBindings0);
+    NioPathSerializer nioPathSerializer0 = new NioPathSerializer();
+    try {
+        defaultSerializerProvider_Impl0.serializePolymorphic((JsonGenerator) null, nioPathSerializer0, resolvedRecursiveType0, (JsonSerializer<Object>) null, (TypeSerializer) null);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Incompatible types: declared root type ([recursive type; UNRESOLVED) vs `com.fasterxml.jackson.databind.ext.NioPathSerializer`
+        //
+        verifyException(""com.fasterxml.jackson.databind.exc.InvalidDefinitionException"", e);
+    }
+}","/**
+ * Alternate serialization call used for polymorphic types, when {@link TypeSerializer}
+ * is already known, but the actual serializer may or may not be.
+ *
+ * @since 2.6
+ */"
+"public boolean isUnwrappingSerializer() {
+    return false;
+}","public void test077() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    NioPathSerializer nioPathSerializer0 = new NioPathSerializer();
+    JsonSerializer<Object> jsonSerializer0 = defaultSerializerProvider_Impl0.serializerInstance((Annotated) null, nioPathSerializer0);
+    assertFalse(jsonSerializer0.isUnwrappingSerializer());
+}","/**
+ * Accessor for checking whether this serializer is an
+ * ""unwrapping"" serializer; this is necessary to know since
+ * it may also require caller to suppress writing of the
+ * leading property name.
+ */"
+"/*
+    /**********************************************************
+    /* Abstract method impls, factory methods
+    /**********************************************************
+     */
+@Override
+public JsonSerializer<Object> serializerInstance(Annotated annotated, Object serDef) throws JsonMappingException {
+    if (serDef == null) {
+        return null;
+    }
+    JsonSerializer<?> ser;
+    if (serDef instanceof JsonSerializer) {
+        ser = (JsonSerializer<?>) serDef;
+    } else {
+        // Alas, there's no way to force return type of ""either class
+        // X or Y"" -- need to throw an exception after the fact
+        if (!(serDef instanceof Class)) {
+            reportBadDefinition(annotated.getType(), ""AnnotationIntrospector returned serializer definition of type "" + serDef.getClass().getName() + ""; expected type JsonSerializer or Class<JsonSerializer> instead"");
+        }
+        Class<?> serClass = (Class<?>) serDef;
+        // there are some known ""no class"" markers to consider too:
+        if (serClass == JsonSerializer.None.class || ClassUtil.isBogusClass(serClass)) {
+            return null;
+        }
+        if (!JsonSerializer.class.isAssignableFrom(serClass)) {
+            reportBadDefinition(annotated.getType(), ""AnnotationIntrospector returned Class "" + serClass.getName() + ""; expected Class<JsonSerializer>"");
+        }
+        HandlerInstantiator hi = _config.getHandlerInstantiator();
+        ser = (hi == null) ? null : hi.serializerInstance(_config, annotated, serClass);
+        if (ser == null) {
+            ser = (JsonSerializer<?>) ClassUtil.createInstance(serClass, _config.canOverrideAccessModifiers());
+        }
+    }
+    return (JsonSerializer<Object>) _handleResolvable(ser);
+}","public void test088() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    JsonSerializer<Object> jsonSerializer0 = defaultSerializerProvider_Impl0.serializerInstance((Annotated) null, (Object) null);
+    assertNull(jsonSerializer0);
+}",""
+"/*
+    /**********************************************************
+    /* Abstract method impls, factory methods
+    /**********************************************************
+     */
+@Override
+public JsonSerializer<Object> serializerInstance(Annotated annotated, Object serDef) throws JsonMappingException {
+    if (serDef == null) {
+        return null;
+    }
+    JsonSerializer<?> ser;
+    if (serDef instanceof JsonSerializer) {
+        ser = (JsonSerializer<?>) serDef;
+    } else {
+        // Alas, there's no way to force return type of ""either class
+        // X or Y"" -- need to throw an exception after the fact
+        if (!(serDef instanceof Class)) {
+            reportBadDefinition(annotated.getType(), ""AnnotationIntrospector returned serializer definition of type "" + serDef.getClass().getName() + ""; expected type JsonSerializer or Class<JsonSerializer> instead"");
+        }
+        Class<?> serClass = (Class<?>) serDef;
+        // there are some known ""no class"" markers to consider too:
+        if (serClass == JsonSerializer.None.class || ClassUtil.isBogusClass(serClass)) {
+            return null;
+        }
+        if (!JsonSerializer.class.isAssignableFrom(serClass)) {
+            reportBadDefinition(annotated.getType(), ""AnnotationIntrospector returned Class "" + serClass.getName() + ""; expected Class<JsonSerializer>"");
+        }
+        HandlerInstantiator hi = _config.getHandlerInstantiator();
+        ser = (hi == null) ? null : hi.serializerInstance(_config, annotated, serClass);
+        if (ser == null) {
+            ser = (JsonSerializer<?>) ClassUtil.createInstance(serClass, _config.canOverrideAccessModifiers());
+        }
+    }
+    return (JsonSerializer<Object>) _handleResolvable(ser);
+}","public void test099() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    Class<BeanSerializer> class0 = BeanSerializer.class;
+    // Undeclared exception!
+    try {
+        defaultSerializerProvider_Impl0.serializerInstance((Annotated) null, class0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.ser.DefaultSerializerProvider"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Abstract method impls, factory methods
+    /**********************************************************
+     */
+@Override
+public JsonSerializer<Object> serializerInstance(Annotated annotated, Object serDef) throws JsonMappingException {
+    if (serDef == null) {
+        return null;
+    }
+    JsonSerializer<?> ser;
+    if (serDef instanceof JsonSerializer) {
+        ser = (JsonSerializer<?>) serDef;
+    } else {
+        // Alas, there's no way to force return type of ""either class
+        // X or Y"" -- need to throw an exception after the fact
+        if (!(serDef instanceof Class)) {
+            reportBadDefinition(annotated.getType(), ""AnnotationIntrospector returned serializer definition of type "" + serDef.getClass().getName() + ""; expected type JsonSerializer or Class<JsonSerializer> instead"");
+        }
+        Class<?> serClass = (Class<?>) serDef;
+        // there are some known ""no class"" markers to consider too:
+        if (serClass == JsonSerializer.None.class || ClassUtil.isBogusClass(serClass)) {
+            return null;
+        }
+        if (!JsonSerializer.class.isAssignableFrom(serClass)) {
+            reportBadDefinition(annotated.getType(), ""AnnotationIntrospector returned Class "" + serClass.getName() + ""; expected Class<JsonSerializer>"");
+        }
+        HandlerInstantiator hi = _config.getHandlerInstantiator();
+        ser = (hi == null) ? null : hi.serializerInstance(_config, annotated, serClass);
+        if (ser == null) {
+            ser = (JsonSerializer<?>) ClassUtil.createInstance(serClass, _config.canOverrideAccessModifiers());
+        }
+    }
+    return (JsonSerializer<Object>) _handleResolvable(ser);
+}","public void test1010() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    // Undeclared exception!
+    try {
+        defaultSerializerProvider_Impl0.serializerInstance((Annotated) null, defaultSerializerProvider_Impl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.ser.DefaultSerializerProvider"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Abstract method impls, factory methods
+    /**********************************************************
+     */
+@Override
+public JsonSerializer<Object> serializerInstance(Annotated annotated, Object serDef) throws JsonMappingException {
+    if (serDef == null) {
+        return null;
+    }
+    JsonSerializer<?> ser;
+    if (serDef instanceof JsonSerializer) {
+        ser = (JsonSerializer<?>) serDef;
+    } else {
+        // Alas, there's no way to force return type of ""either class
+        // X or Y"" -- need to throw an exception after the fact
+        if (!(serDef instanceof Class)) {
+            reportBadDefinition(annotated.getType(), ""AnnotationIntrospector returned serializer definition of type "" + serDef.getClass().getName() + ""; expected type JsonSerializer or Class<JsonSerializer> instead"");
+        }
+        Class<?> serClass = (Class<?>) serDef;
+        // there are some known ""no class"" markers to consider too:
+        if (serClass == JsonSerializer.None.class || ClassUtil.isBogusClass(serClass)) {
+            return null;
+        }
+        if (!JsonSerializer.class.isAssignableFrom(serClass)) {
+            reportBadDefinition(annotated.getType(), ""AnnotationIntrospector returned Class "" + serClass.getName() + ""; expected Class<JsonSerializer>"");
+        }
+        HandlerInstantiator hi = _config.getHandlerInstantiator();
+        ser = (hi == null) ? null : hi.serializerInstance(_config, annotated, serClass);
+        if (ser == null) {
+            ser = (JsonSerializer<?>) ClassUtil.createInstance(serClass, _config.canOverrideAccessModifiers());
+        }
+    }
+    return (JsonSerializer<Object>) _handleResolvable(ser);
+}","public void test1111() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    Class<Object> class0 = Object.class;
+    // Undeclared exception!
+    try {
+        defaultSerializerProvider_Impl0.serializerInstance((Annotated) null, class0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.ser.DefaultSerializerProvider"", e);
+    }
+}",""
+"@Override
+public Object includeFilterInstance(BeanPropertyDefinition forProperty, Class<?> filterClass) {
+    if (filterClass == null) {
+        return null;
+    }
+    HandlerInstantiator hi = _config.getHandlerInstantiator();
+    Object filter = (hi == null) ? null : hi.includeFilterInstance(_config, forProperty, filterClass);
+    if (filter == null) {
+        filter = ClassUtil.createInstance(filterClass, _config.canOverrideAccessModifiers());
+    }
+    return filter;
+}","public void test1212() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    SerializationConfig serializationConfig0 = new SerializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0, (ConfigOverrides) null);
+    PropertyName propertyName0 = PropertyName.construct(""[eTPYX?JMnM/Yn$5"", ""[eTPYX?JMnM/Yn$5"");
+    POJOPropertyBuilder pOJOPropertyBuilder0 = new POJOPropertyBuilder(serializationConfig0, (AnnotationIntrospector) null, false, propertyName0);
+    Class<Throwable> class0 = Throwable.class;
+    // Undeclared exception!
+    try {
+        defaultSerializerProvider_Impl0.includeFilterInstance(pOJOPropertyBuilder0, class0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.ser.DefaultSerializerProvider"", e);
+    }
+}",""
+"@Override
+public Object includeFilterInstance(BeanPropertyDefinition forProperty, Class<?> filterClass) {
+    if (filterClass == null) {
+        return null;
+    }
+    HandlerInstantiator hi = _config.getHandlerInstantiator();
+    Object filter = (hi == null) ? null : hi.includeFilterInstance(_config, forProperty, filterClass);
+    if (filter == null) {
+        filter = ClassUtil.createInstance(filterClass, _config.canOverrideAccessModifiers());
+    }
+    return filter;
+}","public void test1313() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    Object object0 = defaultSerializerProvider_Impl0.includeFilterInstance((BeanPropertyDefinition) null, (Class<?>) null);
+    assertNull(object0);
+}",""
+"@Override
+public boolean includeFilterSuppressNulls(Object filter) throws JsonMappingException {
+    if (filter == null) {
+        return true;
+    }
+    // should let filter decide what to do with nulls:
+    // But just case, let's handle unexpected (from our perspective) problems explicitly
+    try {
+        return filter.equals(null);
+    } catch (Throwable t) {
+        String msg = String.format(""Problem determining whether filter of type '%s' should filter out `null` values: (%s) %s"", filter.getClass().getName(), t.getClass().getName(), t.getMessage());
+        reportBadDefinition(filter.getClass(), msg, t);
+        // never gets here
+        return false;
+    }
+}","public void test1414() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    boolean boolean0 = defaultSerializerProvider_Impl0.includeFilterSuppressNulls(defaultSerializerProvider_Impl0);
+    assertFalse(boolean0);
+}",""
+"@Override
+public boolean includeFilterSuppressNulls(Object filter) throws JsonMappingException {
+    if (filter == null) {
+        return true;
+    }
+    // should let filter decide what to do with nulls:
+    // But just case, let's handle unexpected (from our perspective) problems explicitly
+    try {
+        return filter.equals(null);
+    } catch (Throwable t) {
+        String msg = String.format(""Problem determining whether filter of type '%s' should filter out `null` values: (%s) %s"", filter.getClass().getName(), t.getClass().getName(), t.getMessage());
+        reportBadDefinition(filter.getClass(), msg, t);
+        // never gets here
+        return false;
+    }
+}","public void test1515() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    boolean boolean0 = defaultSerializerProvider_Impl0.includeFilterSuppressNulls((Object) null);
+    assertTrue(boolean0);
+}",""
+"/*
+    /**********************************************************
+    /* Object Id handling
+    /**********************************************************
+     */
+@Override
+public WritableObjectId findObjectId(Object forPojo, ObjectIdGenerator<?> generatorType) {
+    if (_seenObjectIds == null) {
+        _seenObjectIds = _createObjectIdMap();
+    } else {
+        WritableObjectId oid = _seenObjectIds.get(forPojo);
+        if (oid != null) {
+            return oid;
+        }
+    }
+    // Not seen yet; must add an entry, return it. For that, we need generator
+    ObjectIdGenerator<?> generator = null;
+    if (_objectIdGenerators == null) {
+        _objectIdGenerators = new ArrayList<ObjectIdGenerator<?>>(8);
+    } else {
+        for (int i = 0, len = _objectIdGenerators.size(); i < len; ++i) {
+            ObjectIdGenerator<?> gen = _objectIdGenerators.get(i);
+            if (gen.canUseFor(generatorType)) {
+                generator = gen;
+                break;
+            }
+        }
+    }
+    if (generator == null) {
+        generator = generatorType.newForSerialization(this);
+        _objectIdGenerators.add(generator);
+    }
+    WritableObjectId oid = new WritableObjectId(generator);
+    _seenObjectIds.put(forPojo, oid);
+    return oid;
+}","public void test1616() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    HashMap<Object, WritableObjectId> hashMap0 = new HashMap<Object, WritableObjectId>();
+    defaultSerializerProvider_Impl0._seenObjectIds = (Map<Object, WritableObjectId>) hashMap0;
+    ObjectIdGenerators.StringIdGenerator objectIdGenerators_StringIdGenerator0 = new ObjectIdGenerators.StringIdGenerator();
+    WritableObjectId writableObjectId0 = defaultSerializerProvider_Impl0.findObjectId(""<{`z!`9n["", objectIdGenerators_StringIdGenerator0);
+    WritableObjectId writableObjectId1 = defaultSerializerProvider_Impl0.findObjectId((Object) null, objectIdGenerators_StringIdGenerator0);
+    assertNotSame(writableObjectId1, writableObjectId0);
+}",""
+"/*
+    /**********************************************************
+    /* Object Id handling
+    /**********************************************************
+     */
+@Override
+public WritableObjectId findObjectId(Object forPojo, ObjectIdGenerator<?> generatorType) {
+    if (_seenObjectIds == null) {
+        _seenObjectIds = _createObjectIdMap();
+    } else {
+        WritableObjectId oid = _seenObjectIds.get(forPojo);
+        if (oid != null) {
+            return oid;
+        }
+    }
+    // Not seen yet; must add an entry, return it. For that, we need generator
+    ObjectIdGenerator<?> generator = null;
+    if (_objectIdGenerators == null) {
+        _objectIdGenerators = new ArrayList<ObjectIdGenerator<?>>(8);
+    } else {
+        for (int i = 0, len = _objectIdGenerators.size(); i < len; ++i) {
+            ObjectIdGenerator<?> gen = _objectIdGenerators.get(i);
+            if (gen.canUseFor(generatorType)) {
+                generator = gen;
+                break;
+            }
+        }
+    }
+    if (generator == null) {
+        generator = generatorType.newForSerialization(this);
+        _objectIdGenerators.add(generator);
+    }
+    WritableObjectId oid = new WritableObjectId(generator);
+    _seenObjectIds.put(forPojo, oid);
+    return oid;
+}","public void test1717() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    ObjectIdGenerators.StringIdGenerator objectIdGenerators_StringIdGenerator0 = new ObjectIdGenerators.StringIdGenerator();
+    // Undeclared exception!
+    try {
+        defaultSerializerProvider_Impl0.findObjectId(objectIdGenerators_StringIdGenerator0, objectIdGenerators_StringIdGenerator0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.SerializerProvider"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Object Id handling
+    /**********************************************************
+     */
+@Override
+public WritableObjectId findObjectId(Object forPojo, ObjectIdGenerator<?> generatorType) {
+    if (_seenObjectIds == null) {
+        _seenObjectIds = _createObjectIdMap();
+    } else {
+        WritableObjectId oid = _seenObjectIds.get(forPojo);
+        if (oid != null) {
+            return oid;
+        }
+    }
+    // Not seen yet; must add an entry, return it. For that, we need generator
+    ObjectIdGenerator<?> generator = null;
+    if (_objectIdGenerators == null) {
+        _objectIdGenerators = new ArrayList<ObjectIdGenerator<?>>(8);
+    } else {
+        for (int i = 0, len = _objectIdGenerators.size(); i < len; ++i) {
+            ObjectIdGenerator<?> gen = _objectIdGenerators.get(i);
+            if (gen.canUseFor(generatorType)) {
+                generator = gen;
+                break;
+            }
+        }
+    }
+    if (generator == null) {
+        generator = generatorType.newForSerialization(this);
+        _objectIdGenerators.add(generator);
+    }
+    WritableObjectId oid = new WritableObjectId(generator);
+    _seenObjectIds.put(forPojo, oid);
+    return oid;
+}","public void test1818() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    HashMap<Object, WritableObjectId> hashMap0 = new HashMap<Object, WritableObjectId>();
+    defaultSerializerProvider_Impl0._seenObjectIds = (Map<Object, WritableObjectId>) hashMap0;
+    ObjectIdGenerators.StringIdGenerator objectIdGenerators_StringIdGenerator0 = new ObjectIdGenerators.StringIdGenerator();
+    SimpleObjectIdResolver simpleObjectIdResolver0 = new SimpleObjectIdResolver();
+    WritableObjectId writableObjectId0 = defaultSerializerProvider_Impl0.findObjectId(simpleObjectIdResolver0, objectIdGenerators_StringIdGenerator0);
+    ObjectIdGenerators.IntSequenceGenerator objectIdGenerators_IntSequenceGenerator0 = new ObjectIdGenerators.IntSequenceGenerator();
+    WritableObjectId writableObjectId1 = defaultSerializerProvider_Impl0.findObjectId(simpleObjectIdResolver0, objectIdGenerators_IntSequenceGenerator0);
+    assertSame(writableObjectId1, writableObjectId0);
+}",""
+"/*
+    /**********************************************************
+    /* Object Id handling
+    /**********************************************************
+     */
+@Override
+public WritableObjectId findObjectId(Object forPojo, ObjectIdGenerator<?> generatorType) {
+    if (_seenObjectIds == null) {
+        _seenObjectIds = _createObjectIdMap();
+    } else {
+        WritableObjectId oid = _seenObjectIds.get(forPojo);
+        if (oid != null) {
+            return oid;
+        }
+    }
+    // Not seen yet; must add an entry, return it. For that, we need generator
+    ObjectIdGenerator<?> generator = null;
+    if (_objectIdGenerators == null) {
+        _objectIdGenerators = new ArrayList<ObjectIdGenerator<?>>(8);
+    } else {
+        for (int i = 0, len = _objectIdGenerators.size(); i < len; ++i) {
+            ObjectIdGenerator<?> gen = _objectIdGenerators.get(i);
+            if (gen.canUseFor(generatorType)) {
+                generator = gen;
+                break;
+            }
+        }
+    }
+    if (generator == null) {
+        generator = generatorType.newForSerialization(this);
+        _objectIdGenerators.add(generator);
+    }
+    WritableObjectId oid = new WritableObjectId(generator);
+    _seenObjectIds.put(forPojo, oid);
+    return oid;
+}","public void test1919() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    HashMap<Object, WritableObjectId> hashMap0 = new HashMap<Object, WritableObjectId>();
+    defaultSerializerProvider_Impl0._seenObjectIds = (Map<Object, WritableObjectId>) hashMap0;
+    ObjectIdGenerators.StringIdGenerator objectIdGenerators_StringIdGenerator0 = new ObjectIdGenerators.StringIdGenerator();
+    WritableObjectId writableObjectId0 = defaultSerializerProvider_Impl0.findObjectId((Object) null, objectIdGenerators_StringIdGenerator0);
+    ObjectIdGenerators.IntSequenceGenerator objectIdGenerators_IntSequenceGenerator0 = new ObjectIdGenerators.IntSequenceGenerator();
+    WritableObjectId writableObjectId1 = defaultSerializerProvider_Impl0.findObjectId(objectIdGenerators_IntSequenceGenerator0, objectIdGenerators_IntSequenceGenerator0);
+    assertNotSame(writableObjectId1, writableObjectId0);
+}",""
+"public boolean canSerialize(Class<?> type, AtomicReference<Throwable> cause) {
+    return _serializerProvider(getSerializationConfig()).hasSerializerFor(type, cause);
+}","public void test2222() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    AtomicReference<Throwable> atomicReference0 = new AtomicReference<Throwable>();
+    Class<NioPathSerializer> class0 = NioPathSerializer.class;
+    boolean boolean0 = objectMapper0.canSerialize(class0, atomicReference0);
+    assertTrue(boolean0);
+}","/**
+ * Method similar to {@link #canSerialize(Class)} but that can return
+ * actual {@link Throwable} that was thrown when trying to construct
+ * serializer: this may be useful in figuring out what the actual problem is.
+ *
+ * @since 2.3
+ */"
+"/*
+    /**********************************************************
+    /* Extended API: simple accesors
+    /**********************************************************
+     */
+/**
+ *  Method that can be called to see if this serializer provider
+ *  can find a serializer for an instance of given class.
+ * <p>
+ *  Note that no Exceptions are thrown, including unchecked ones:
+ *  implementations are to swallow exceptions if necessary.
+ */
+public boolean hasSerializerFor(Class<?> cls, AtomicReference<Throwable> cause) {
+    // 07-Nov-2015, tatu: One special case, Object.class; will work only if
+    //   empty beans are allowed or custom serializer registered. Easiest to
+    //   check here.
+    if (cls == Object.class) {
+        if (!_config.isEnabled(SerializationFeature.FAIL_ON_EMPTY_BEANS)) {
+            return true;
+        }
+    }
+    try {
+        JsonSerializer<?> ser = _findExplicitUntypedSerializer(cls);
+        return (ser != null);
+    } catch (JsonMappingException e) {
+        if (cause != null) {
+            cause.set(e);
+        }
+    } catch (RuntimeException e) {
+        if (cause == null) {
+            // earlier behavior
+            throw e;
+        }
+        cause.set(e);
+    }
+    return false;
+}","public void test2323() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    AtomicReference<Throwable> atomicReference0 = new AtomicReference<Throwable>();
+    Class<ObjectIdGenerators.IntSequenceGenerator> class0 = ObjectIdGenerators.IntSequenceGenerator.class;
+    boolean boolean0 = defaultSerializerProvider_Impl0.hasSerializerFor(class0, atomicReference0);
+    assertFalse(boolean0);
+}",""
+"/*
+    /**********************************************************
+    /* Extended API: simple accesors
+    /**********************************************************
+     */
+/**
+ *  Method that can be called to see if this serializer provider
+ *  can find a serializer for an instance of given class.
+ * <p>
+ *  Note that no Exceptions are thrown, including unchecked ones:
+ *  implementations are to swallow exceptions if necessary.
+ */
+public boolean hasSerializerFor(Class<?> cls, AtomicReference<Throwable> cause) {
+    // 07-Nov-2015, tatu: One special case, Object.class; will work only if
+    //   empty beans are allowed or custom serializer registered. Easiest to
+    //   check here.
+    if (cls == Object.class) {
+        if (!_config.isEnabled(SerializationFeature.FAIL_ON_EMPTY_BEANS)) {
+            return true;
+        }
+    }
+    try {
+        JsonSerializer<?> ser = _findExplicitUntypedSerializer(cls);
+        return (ser != null);
+    } catch (JsonMappingException e) {
+        if (cause != null) {
+            cause.set(e);
+        }
+    } catch (RuntimeException e) {
+        if (cause == null) {
+            // earlier behavior
+            throw e;
+        }
+        cause.set(e);
+    }
+    return false;
+}","public void test2424() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    Class<IOException> class0 = IOException.class;
+    // Undeclared exception!
+    try {
+        defaultSerializerProvider_Impl0.hasSerializerFor(class0, (AtomicReference<Throwable>) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.SerializerProvider"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Extended API called by ObjectMapper: value serialization
+    /**********************************************************
+     */
+/**
+ * The method to be called by {@link ObjectMapper} and {@link ObjectWriter}
+ * for serializing given value, using serializers that
+ * this provider has access to (via caching and/or creating new serializers
+ * as need be).
+ */
+public void serializeValue(JsonGenerator gen, Object value) throws IOException {
+    _generator = gen;
+    if (value == null) {
+        _serializeNull(gen);
+        return;
+    }
+    final Class<?> cls = value.getClass();
+    // true, since we do want to cache root-level typed serializers (ditto for null property)
+    final JsonSerializer<Object> ser = findTypedValueSerializer(cls, true, null);
+    PropertyName rootName = _config.getFullRootName();
+    if (rootName == null) {
+        // not explicitly specified
+        if (_config.isEnabled(SerializationFeature.WRAP_ROOT_VALUE)) {
+            _serialize(gen, value, ser, _config.findRootName(cls));
+            return;
+        }
+    } else if (!rootName.isEmpty()) {
+        _serialize(gen, value, ser, rootName);
+        return;
+    }
+    _serialize(gen, value, ser);
+}","public void test2525() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    try {
+        defaultSerializerProvider_Impl0.serializeValue((JsonGenerator) null, (Object) null);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // [no message for java.lang.NullPointerException]
+        //
+        verifyException(""com.fasterxml.jackson.databind.ser.DefaultSerializerProvider"", e);
+    }
+}",""
+"public void serializeValue(JsonGenerator gen, Object value, JavaType rootType) throws IOException {
+    _generator = gen;
+    if (value == null) {
+        _serializeNull(gen);
+        return;
+    }
+    // Let's ensure types are compatible at this point
+    if (!rootType.getRawClass().isAssignableFrom(value.getClass())) {
+        _reportIncompatibleRootType(value, rootType);
+    }
+    // root value, not reached via property:
+    JsonSerializer<Object> ser = findTypedValueSerializer(rootType, true, null);
+    PropertyName rootName = _config.getFullRootName();
+    if (rootName == null) {
+        // not explicitly specified
+        if (_config.isEnabled(SerializationFeature.WRAP_ROOT_VALUE)) {
+            _serialize(gen, value, ser, _config.findRootName(rootType));
+            return;
+        }
+    } else if (!rootName.isEmpty()) {
+        _serialize(gen, value, ser, rootName);
+        return;
+    }
+    _serialize(gen, value, ser);
+}","public void test2626() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    try {
+        defaultSerializerProvider_Impl0.serializeValue((JsonGenerator) null, (Object) null, (JavaType) null);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // [no message for java.lang.NullPointerException]
+        //
+        verifyException(""com.fasterxml.jackson.databind.ser.DefaultSerializerProvider"", e);
+    }
+}","/**
+ * The method to be called by {@link ObjectMapper} and {@link ObjectWriter}
+ * for serializing given value (assumed to be of specified root type,
+ * instead of runtime type of value),
+ * using serializers that
+ * this provider has access to (via caching and/or creating new serializers
+ * as need be),
+ *
+ * @param rootType Type to use for locating serializer to use, instead of actual
+ *    runtime type. Must be actual type, or one of its super types
+ */"
+"public void serializeValue(JsonGenerator gen, Object value, JavaType rootType) throws IOException {
+    _generator = gen;
+    if (value == null) {
+        _serializeNull(gen);
+        return;
+    }
+    // Let's ensure types are compatible at this point
+    if (!rootType.getRawClass().isAssignableFrom(value.getClass())) {
+        _reportIncompatibleRootType(value, rootType);
+    }
+    // root value, not reached via property:
+    JsonSerializer<Object> ser = findTypedValueSerializer(rootType, true, null);
+    PropertyName rootName = _config.getFullRootName();
+    if (rootName == null) {
+        // not explicitly specified
+        if (_config.isEnabled(SerializationFeature.WRAP_ROOT_VALUE)) {
+            _serialize(gen, value, ser, _config.findRootName(rootType));
+            return;
+        }
+    } else if (!rootName.isEmpty()) {
+        _serialize(gen, value, ser, rootName);
+        return;
+    }
+    _serialize(gen, value, ser);
+}","public void test2727() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    PlaceholderForType placeholderForType0 = new PlaceholderForType(0);
+    // Undeclared exception!
+    try {
+        defaultSerializerProvider_Impl0.serializeValue((JsonGenerator) null, (Object) placeholderForType0, (JavaType) placeholderForType0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.SerializerProvider"", e);
+    }
+}","/**
+ * The method to be called by {@link ObjectMapper} and {@link ObjectWriter}
+ * for serializing given value (assumed to be of specified root type,
+ * instead of runtime type of value),
+ * using serializers that
+ * this provider has access to (via caching and/or creating new serializers
+ * as need be),
+ *
+ * @param rootType Type to use for locating serializer to use, instead of actual
+ *    runtime type. Must be actual type, or one of its super types
+ */"
+"public void serializeValue(JsonGenerator gen, Object value, JavaType rootType) throws IOException {
+    _generator = gen;
+    if (value == null) {
+        _serializeNull(gen);
+        return;
+    }
+    // Let's ensure types are compatible at this point
+    if (!rootType.getRawClass().isAssignableFrom(value.getClass())) {
+        _reportIncompatibleRootType(value, rootType);
+    }
+    // root value, not reached via property:
+    JsonSerializer<Object> ser = findTypedValueSerializer(rootType, true, null);
+    PropertyName rootName = _config.getFullRootName();
+    if (rootName == null) {
+        // not explicitly specified
+        if (_config.isEnabled(SerializationFeature.WRAP_ROOT_VALUE)) {
+            _serialize(gen, value, ser, _config.findRootName(rootType));
+            return;
+        }
+    } else if (!rootName.isEmpty()) {
+        _serialize(gen, value, ser, rootName);
+        return;
+    }
+    _serialize(gen, value, ser);
+}","public void test2828() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    TypeBindings typeBindings0 = TypeBindings.emptyBindings();
+    Class<ChronoLocalDate> class0 = ChronoLocalDate.class;
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, typeBindings0);
+    try {
+        defaultSerializerProvider_Impl0.serializeValue((JsonGenerator) null, (Object) resolvedRecursiveType0, (JavaType) resolvedRecursiveType0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Incompatible types: declared root type ([recursive type; UNRESOLVED) vs `com.fasterxml.jackson.databind.type.ResolvedRecursiveType`
+        //
+        verifyException(""com.fasterxml.jackson.databind.exc.InvalidDefinitionException"", e);
+    }
+}","/**
+ * The method to be called by {@link ObjectMapper} and {@link ObjectWriter}
+ * for serializing given value (assumed to be of specified root type,
+ * instead of runtime type of value),
+ * using serializers that
+ * this provider has access to (via caching and/or creating new serializers
+ * as need be),
+ *
+ * @param rootType Type to use for locating serializer to use, instead of actual
+ *    runtime type. Must be actual type, or one of its super types
+ */"
+"public void serializeValue(JsonGenerator gen, Object value, JavaType rootType, JsonSerializer<Object> ser) throws IOException {
+    _generator = gen;
+    if (value == null) {
+        _serializeNull(gen);
+        return;
+    }
+    // Let's ensure types are compatible at this point
+    if ((rootType != null) && !rootType.getRawClass().isAssignableFrom(value.getClass())) {
+        _reportIncompatibleRootType(value, rootType);
+    }
+    // root value, not reached via property:
+    if (ser == null) {
+        ser = findTypedValueSerializer(rootType, true, null);
+    }
+    PropertyName rootName = _config.getFullRootName();
+    if (rootName == null) {
+        // not explicitly specified
+        if (_config.isEnabled(SerializationFeature.WRAP_ROOT_VALUE)) {
+            rootName = (rootType == null) ? _config.findRootName(value.getClass()) : _config.findRootName(rootType);
+            _serialize(gen, value, ser, rootName);
+            return;
+        }
+    } else if (!rootName.isEmpty()) {
+        _serialize(gen, value, ser, rootName);
+        return;
+    }
+    _serialize(gen, value, ser);
+}","public void test2929() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    JavaType javaType0 = TypeFactory.unknownType();
+    // Undeclared exception!
+    try {
+        defaultSerializerProvider_Impl0.serializeValue((JsonGenerator) null, (Object) defaultSerializerProvider_Impl0, javaType0, defaultSerializerProvider_Impl0.DEFAULT_NULL_KEY_SERIALIZER);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.ser.DefaultSerializerProvider"", e);
+    }
+}","/**
+ * The method to be called by {@link ObjectWriter}
+ * for serializing given value (assumed to be of specified root type,
+ * instead of runtime type of value), when it may know specific
+ * {@link JsonSerializer} to use.
+ *
+ * @param rootType Type to use for locating serializer to use, instead of actual
+ *    runtime type, if no serializer is passed
+ * @param ser Root Serializer to use, if not null
+ *
+ * @since 2.1
+ */"
+"public void serializeValue(JsonGenerator gen, Object value, JavaType rootType, JsonSerializer<Object> ser) throws IOException {
+    _generator = gen;
+    if (value == null) {
+        _serializeNull(gen);
+        return;
+    }
+    // Let's ensure types are compatible at this point
+    if ((rootType != null) && !rootType.getRawClass().isAssignableFrom(value.getClass())) {
+        _reportIncompatibleRootType(value, rootType);
+    }
+    // root value, not reached via property:
+    if (ser == null) {
+        ser = findTypedValueSerializer(rootType, true, null);
+    }
+    PropertyName rootName = _config.getFullRootName();
+    if (rootName == null) {
+        // not explicitly specified
+        if (_config.isEnabled(SerializationFeature.WRAP_ROOT_VALUE)) {
+            rootName = (rootType == null) ? _config.findRootName(value.getClass()) : _config.findRootName(rootType);
+            _serialize(gen, value, ser, rootName);
+            return;
+        }
+    } else if (!rootName.isEmpty()) {
+        _serialize(gen, value, ser, rootName);
+        return;
+    }
+    _serialize(gen, value, ser);
+}","public void test3030() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    try {
+        defaultSerializerProvider_Impl0.serializeValue((JsonGenerator) null, (Object) null, (JavaType) null, defaultSerializerProvider_Impl0.DEFAULT_NULL_KEY_SERIALIZER);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // [no message for java.lang.NullPointerException]
+        //
+        verifyException(""com.fasterxml.jackson.databind.ser.DefaultSerializerProvider"", e);
+    }
+}","/**
+ * The method to be called by {@link ObjectWriter}
+ * for serializing given value (assumed to be of specified root type,
+ * instead of runtime type of value), when it may know specific
+ * {@link JsonSerializer} to use.
+ *
+ * @param rootType Type to use for locating serializer to use, instead of actual
+ *    runtime type, if no serializer is passed
+ * @param ser Root Serializer to use, if not null
+ *
+ * @since 2.1
+ */"
+"public void serializeValue(JsonGenerator gen, Object value, JavaType rootType, JsonSerializer<Object> ser) throws IOException {
+    _generator = gen;
+    if (value == null) {
+        _serializeNull(gen);
+        return;
+    }
+    // Let's ensure types are compatible at this point
+    if ((rootType != null) && !rootType.getRawClass().isAssignableFrom(value.getClass())) {
+        _reportIncompatibleRootType(value, rootType);
+    }
+    // root value, not reached via property:
+    if (ser == null) {
+        ser = findTypedValueSerializer(rootType, true, null);
+    }
+    PropertyName rootName = _config.getFullRootName();
+    if (rootName == null) {
+        // not explicitly specified
+        if (_config.isEnabled(SerializationFeature.WRAP_ROOT_VALUE)) {
+            rootName = (rootType == null) ? _config.findRootName(value.getClass()) : _config.findRootName(rootType);
+            _serialize(gen, value, ser, rootName);
+            return;
+        }
+    } else if (!rootName.isEmpty()) {
+        _serialize(gen, value, ser, rootName);
+        return;
+    }
+    _serialize(gen, value, ser);
+}","public void test3131() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL;
+    // Undeclared exception!
+    try {
+        defaultSerializerProvider_Impl0.serializeValue((JsonGenerator) null, (Object) deserializationFeature0, (JavaType) null, defaultSerializerProvider_Impl0.DEFAULT_NULL_KEY_SERIALIZER);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.ser.DefaultSerializerProvider"", e);
+    }
+}","/**
+ * The method to be called by {@link ObjectWriter}
+ * for serializing given value (assumed to be of specified root type,
+ * instead of runtime type of value), when it may know specific
+ * {@link JsonSerializer} to use.
+ *
+ * @param rootType Type to use for locating serializer to use, instead of actual
+ *    runtime type, if no serializer is passed
+ * @param ser Root Serializer to use, if not null
+ *
+ * @since 2.1
+ */"
+"public void serializeValue(JsonGenerator gen, Object value, JavaType rootType, JsonSerializer<Object> ser) throws IOException {
+    _generator = gen;
+    if (value == null) {
+        _serializeNull(gen);
+        return;
+    }
+    // Let's ensure types are compatible at this point
+    if ((rootType != null) && !rootType.getRawClass().isAssignableFrom(value.getClass())) {
+        _reportIncompatibleRootType(value, rootType);
+    }
+    // root value, not reached via property:
+    if (ser == null) {
+        ser = findTypedValueSerializer(rootType, true, null);
+    }
+    PropertyName rootName = _config.getFullRootName();
+    if (rootName == null) {
+        // not explicitly specified
+        if (_config.isEnabled(SerializationFeature.WRAP_ROOT_VALUE)) {
+            rootName = (rootType == null) ? _config.findRootName(value.getClass()) : _config.findRootName(rootType);
+            _serialize(gen, value, ser, rootName);
+            return;
+        }
+    } else if (!rootName.isEmpty()) {
+        _serialize(gen, value, ser, rootName);
+        return;
+    }
+    _serialize(gen, value, ser);
+}","public void test3232() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    TypeBindings typeBindings0 = TypeBindings.emptyBindings();
+    Class<ChronoLocalDate> class0 = ChronoLocalDate.class;
+    ResolvedRecursiveType resolvedRecursiveType0 = new ResolvedRecursiveType(class0, typeBindings0);
+    try {
+        defaultSerializerProvider_Impl0.serializeValue((JsonGenerator) null, (Object) resolvedRecursiveType0, (JavaType) resolvedRecursiveType0, defaultSerializerProvider_Impl0.DEFAULT_NULL_KEY_SERIALIZER);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Incompatible types: declared root type ([recursive type; UNRESOLVED) vs `com.fasterxml.jackson.databind.type.ResolvedRecursiveType`
+        //
+        verifyException(""com.fasterxml.jackson.databind.exc.InvalidDefinitionException"", e);
+    }
+}","/**
+ * The method to be called by {@link ObjectWriter}
+ * for serializing given value (assumed to be of specified root type,
+ * instead of runtime type of value), when it may know specific
+ * {@link JsonSerializer} to use.
+ *
+ * @param rootType Type to use for locating serializer to use, instead of actual
+ *    runtime type, if no serializer is passed
+ * @param ser Root Serializer to use, if not null
+ *
+ * @since 2.1
+ */"
+"public void serializeValue(JsonGenerator gen, Object value, JavaType rootType, JsonSerializer<Object> ser) throws IOException {
+    _generator = gen;
+    if (value == null) {
+        _serializeNull(gen);
+        return;
+    }
+    // Let's ensure types are compatible at this point
+    if ((rootType != null) && !rootType.getRawClass().isAssignableFrom(value.getClass())) {
+        _reportIncompatibleRootType(value, rootType);
+    }
+    // root value, not reached via property:
+    if (ser == null) {
+        ser = findTypedValueSerializer(rootType, true, null);
+    }
+    PropertyName rootName = _config.getFullRootName();
+    if (rootName == null) {
+        // not explicitly specified
+        if (_config.isEnabled(SerializationFeature.WRAP_ROOT_VALUE)) {
+            rootName = (rootType == null) ? _config.findRootName(value.getClass()) : _config.findRootName(rootType);
+            _serialize(gen, value, ser, rootName);
+            return;
+        }
+    } else if (!rootName.isEmpty()) {
+        _serialize(gen, value, ser, rootName);
+        return;
+    }
+    _serialize(gen, value, ser);
+}","public void test3333() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    SimpleObjectIdResolver simpleObjectIdResolver0 = new SimpleObjectIdResolver();
+    // Undeclared exception!
+    try {
+        defaultSerializerProvider_Impl0.serializeValue((JsonGenerator) null, (Object) simpleObjectIdResolver0, (JavaType) null, (JsonSerializer<Object>) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.SerializerProvider"", e);
+    }
+}","/**
+ * The method to be called by {@link ObjectWriter}
+ * for serializing given value (assumed to be of specified root type,
+ * instead of runtime type of value), when it may know specific
+ * {@link JsonSerializer} to use.
+ *
+ * @param rootType Type to use for locating serializer to use, instead of actual
+ *    runtime type, if no serializer is passed
+ * @param ser Root Serializer to use, if not null
+ *
+ * @since 2.1
+ */"
+"public void serializePolymorphic(JsonGenerator gen, Object value, JavaType rootType, JsonSerializer<Object> valueSer, TypeSerializer typeSer) throws IOException {
+    _generator = gen;
+    if (value == null) {
+        _serializeNull(gen);
+        return;
+    }
+    // Let's ensure types are compatible at this point
+    if ((rootType != null) && !rootType.getRawClass().isAssignableFrom(value.getClass())) {
+        _reportIncompatibleRootType(value, rootType);
+    }
+    /* 12-Jun-2015, tatu: nominal root type is necessary for Maps at least;
+         *   possibly collections, but can cause problems for other polymorphic
+         *   types. We really need to distinguish between serialization type,
+         *   base type; but right we don't. Hence this check
+         */
+    if (valueSer == null) {
+        if ((rootType != null) && rootType.isContainerType()) {
+            valueSer = findValueSerializer(rootType, null);
+        } else {
+            valueSer = findValueSerializer(value.getClass(), null);
+        }
+    }
+    final boolean wrap;
+    PropertyName rootName = _config.getFullRootName();
+    if (rootName == null) {
+        wrap = _config.isEnabled(SerializationFeature.WRAP_ROOT_VALUE);
+        if (wrap) {
+            gen.writeStartObject();
+            PropertyName pname = _config.findRootName(value.getClass());
+            gen.writeFieldName(pname.simpleAsEncoded(_config));
+        }
+    } else if (rootName.isEmpty()) {
+        wrap = false;
+    } else {
+        wrap = true;
+        gen.writeStartObject();
+        gen.writeFieldName(rootName.getSimpleName());
+    }
+    try {
+        valueSer.serializeWithType(value, gen, this, typeSer);
+        if (wrap) {
+            gen.writeEndObject();
+        }
+    } catch (Exception e) {
+        throw _wrapAsIOE(gen, e);
+    }
+}","public void test3434() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS;
+    // Undeclared exception!
+    try {
+        defaultSerializerProvider_Impl0.serializePolymorphic((JsonGenerator) null, deserializationFeature0, (JavaType) null, (JsonSerializer<Object>) null, (TypeSerializer) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.SerializerProvider"", e);
+    }
+}","/**
+ * Alternate serialization call used for polymorphic types, when {@link TypeSerializer}
+ * is already known, but the actual serializer may or may not be.
+ *
+ * @since 2.6
+ */"
+"public void serializePolymorphic(JsonGenerator gen, Object value, JavaType rootType, JsonSerializer<Object> valueSer, TypeSerializer typeSer) throws IOException {
+    _generator = gen;
+    if (value == null) {
+        _serializeNull(gen);
+        return;
+    }
+    // Let's ensure types are compatible at this point
+    if ((rootType != null) && !rootType.getRawClass().isAssignableFrom(value.getClass())) {
+        _reportIncompatibleRootType(value, rootType);
+    }
+    /* 12-Jun-2015, tatu: nominal root type is necessary for Maps at least;
+         *   possibly collections, but can cause problems for other polymorphic
+         *   types. We really need to distinguish between serialization type,
+         *   base type; but right we don't. Hence this check
+         */
+    if (valueSer == null) {
+        if ((rootType != null) && rootType.isContainerType()) {
+            valueSer = findValueSerializer(rootType, null);
+        } else {
+            valueSer = findValueSerializer(value.getClass(), null);
+        }
+    }
+    final boolean wrap;
+    PropertyName rootName = _config.getFullRootName();
+    if (rootName == null) {
+        wrap = _config.isEnabled(SerializationFeature.WRAP_ROOT_VALUE);
+        if (wrap) {
+            gen.writeStartObject();
+            PropertyName pname = _config.findRootName(value.getClass());
+            gen.writeFieldName(pname.simpleAsEncoded(_config));
+        }
+    } else if (rootName.isEmpty()) {
+        wrap = false;
+    } else {
+        wrap = true;
+        gen.writeStartObject();
+        gen.writeFieldName(rootName.getSimpleName());
+    }
+    try {
+        valueSer.serializeWithType(value, gen, this, typeSer);
+        if (wrap) {
+            gen.writeEndObject();
+        }
+    } catch (Exception e) {
+        throw _wrapAsIOE(gen, e);
+    }
+}","public void test3535() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    TokenFilter tokenFilter0 = TokenFilter.INCLUDE_ALL;
+    FilteringGeneratorDelegate filteringGeneratorDelegate0 = new FilteringGeneratorDelegate((JsonGenerator) null, tokenFilter0, true, true);
+    JavaType javaType0 = TypeFactory.unknownType();
+    CollectionLikeType collectionLikeType0 = CollectionLikeType.upgradeFrom(javaType0, javaType0);
+    // Undeclared exception!
+    try {
+        defaultSerializerProvider_Impl0.serializePolymorphic(filteringGeneratorDelegate0, tokenFilter0, collectionLikeType0, (JsonSerializer<Object>) null, (TypeSerializer) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.SerializerProvider"", e);
+    }
+}","/**
+ * Alternate serialization call used for polymorphic types, when {@link TypeSerializer}
+ * is already known, but the actual serializer may or may not be.
+ *
+ * @since 2.6
+ */"
+"public void serializePolymorphic(JsonGenerator gen, Object value, JavaType rootType, JsonSerializer<Object> valueSer, TypeSerializer typeSer) throws IOException {
+    _generator = gen;
+    if (value == null) {
+        _serializeNull(gen);
+        return;
+    }
+    // Let's ensure types are compatible at this point
+    if ((rootType != null) && !rootType.getRawClass().isAssignableFrom(value.getClass())) {
+        _reportIncompatibleRootType(value, rootType);
+    }
+    /* 12-Jun-2015, tatu: nominal root type is necessary for Maps at least;
+         *   possibly collections, but can cause problems for other polymorphic
+         *   types. We really need to distinguish between serialization type,
+         *   base type; but right we don't. Hence this check
+         */
+    if (valueSer == null) {
+        if ((rootType != null) && rootType.isContainerType()) {
+            valueSer = findValueSerializer(rootType, null);
+        } else {
+            valueSer = findValueSerializer(value.getClass(), null);
+        }
+    }
+    final boolean wrap;
+    PropertyName rootName = _config.getFullRootName();
+    if (rootName == null) {
+        wrap = _config.isEnabled(SerializationFeature.WRAP_ROOT_VALUE);
+        if (wrap) {
+            gen.writeStartObject();
+            PropertyName pname = _config.findRootName(value.getClass());
+            gen.writeFieldName(pname.simpleAsEncoded(_config));
+        }
+    } else if (rootName.isEmpty()) {
+        wrap = false;
+    } else {
+        wrap = true;
+        gen.writeStartObject();
+        gen.writeFieldName(rootName.getSimpleName());
+    }
+    try {
+        valueSer.serializeWithType(value, gen, this, typeSer);
+        if (wrap) {
+            gen.writeEndObject();
+        }
+    } catch (Exception e) {
+        throw _wrapAsIOE(gen, e);
+    }
+}","public void test3636() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    PlaceholderForType placeholderForType0 = new PlaceholderForType(0);
+    // Undeclared exception!
+    try {
+        defaultSerializerProvider_Impl0.serializePolymorphic((JsonGenerator) null, placeholderForType0, placeholderForType0, defaultSerializerProvider_Impl0.DEFAULT_NULL_KEY_SERIALIZER, (TypeSerializer) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.ser.DefaultSerializerProvider"", e);
+    }
+}","/**
+ * Alternate serialization call used for polymorphic types, when {@link TypeSerializer}
+ * is already known, but the actual serializer may or may not be.
+ *
+ * @since 2.6
+ */"
+"public void serializePolymorphic(JsonGenerator gen, Object value, JavaType rootType, JsonSerializer<Object> valueSer, TypeSerializer typeSer) throws IOException {
+    _generator = gen;
+    if (value == null) {
+        _serializeNull(gen);
+        return;
+    }
+    // Let's ensure types are compatible at this point
+    if ((rootType != null) && !rootType.getRawClass().isAssignableFrom(value.getClass())) {
+        _reportIncompatibleRootType(value, rootType);
+    }
+    /* 12-Jun-2015, tatu: nominal root type is necessary for Maps at least;
+         *   possibly collections, but can cause problems for other polymorphic
+         *   types. We really need to distinguish between serialization type,
+         *   base type; but right we don't. Hence this check
+         */
+    if (valueSer == null) {
+        if ((rootType != null) && rootType.isContainerType()) {
+            valueSer = findValueSerializer(rootType, null);
+        } else {
+            valueSer = findValueSerializer(value.getClass(), null);
+        }
+    }
+    final boolean wrap;
+    PropertyName rootName = _config.getFullRootName();
+    if (rootName == null) {
+        wrap = _config.isEnabled(SerializationFeature.WRAP_ROOT_VALUE);
+        if (wrap) {
+            gen.writeStartObject();
+            PropertyName pname = _config.findRootName(value.getClass());
+            gen.writeFieldName(pname.simpleAsEncoded(_config));
+        }
+    } else if (rootName.isEmpty()) {
+        wrap = false;
+    } else {
+        wrap = true;
+        gen.writeStartObject();
+        gen.writeFieldName(rootName.getSimpleName());
+    }
+    try {
+        valueSer.serializeWithType(value, gen, this, typeSer);
+        if (wrap) {
+            gen.writeEndObject();
+        }
+    } catch (Exception e) {
+        throw _wrapAsIOE(gen, e);
+    }
+}","public void test3737() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    PlaceholderForType placeholderForType0 = new PlaceholderForType(24);
+    // Undeclared exception!
+    try {
+        defaultSerializerProvider_Impl0.serializePolymorphic((JsonGenerator) null, placeholderForType0, placeholderForType0, (JsonSerializer<Object>) null, (TypeSerializer) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.SerializerProvider"", e);
+    }
+}","/**
+ * Alternate serialization call used for polymorphic types, when {@link TypeSerializer}
+ * is already known, but the actual serializer may or may not be.
+ *
+ * @since 2.6
+ */"
+"protected void _serializeNull(JsonGenerator gen) throws IOException {
+    JsonSerializer<Object> ser = getDefaultNullValueSerializer();
+    try {
+        ser.serialize(null, gen, this);
+    } catch (Exception e) {
+        throw _wrapAsIOE(gen, e);
+    }
+}","public void test3838() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    defaultSerializerProvider_Impl0.setNullValueSerializer(defaultSerializerProvider_Impl0.DEFAULT_NULL_KEY_SERIALIZER);
+    try {
+        defaultSerializerProvider_Impl0._serializeNull((JsonGenerator) null);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Null key for a Map not allowed in JSON (use a converting NullKeySerializer?)
+        //
+        verifyException(""com.fasterxml.jackson.databind.JsonMappingException"", e);
+    }
+}","/**
+ * Helper method called when root value to serialize is null
+ *
+ * @since 2.3
+ */"
+"/*
+    /**********************************************************
+    /* Extended API called by ObjectMapper: other
+    /**********************************************************
+     */
+/**
+ * The method to be called by {@link ObjectMapper} and {@link ObjectWriter}
+ * to to expose the format of the given to to the given visitor
+ *
+ * @param javaType The type for which to generate format
+ * @param visitor the visitor to accept the format
+ */
+public void acceptJsonFormatVisitor(JavaType javaType, JsonFormatVisitorWrapper visitor) throws JsonMappingException {
+    if (javaType == null) {
+        throw new IllegalArgumentException(""A class must be provided"");
+    }
+    /* no need for embedded type information for JSON schema generation (all
+         * type information it needs is accessible via ""untyped"" serializer)
+         */
+    visitor.setProvider(this);
+    findValueSerializer(javaType, null).acceptJsonFormatVisitor(visitor, javaType);
+}","public void test3939() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    JsonFormatVisitorWrapper.Base jsonFormatVisitorWrapper_Base0 = new JsonFormatVisitorWrapper.Base();
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<HashMap> class0 = HashMap.class;
+    MapType mapType0 = typeFactory0.constructRawMapType(class0);
+    // Undeclared exception!
+    try {
+        defaultSerializerProvider_Impl0.acceptJsonFormatVisitor(mapType0, jsonFormatVisitorWrapper_Base0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.SerializerProvider"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Extended API called by ObjectMapper: other
+    /**********************************************************
+     */
+/**
+ * The method to be called by {@link ObjectMapper} and {@link ObjectWriter}
+ * to to expose the format of the given to to the given visitor
+ *
+ * @param javaType The type for which to generate format
+ * @param visitor the visitor to accept the format
+ */
+public void acceptJsonFormatVisitor(JavaType javaType, JsonFormatVisitorWrapper visitor) throws JsonMappingException {
+    if (javaType == null) {
+        throw new IllegalArgumentException(""A class must be provided"");
+    }
+    /* no need for embedded type information for JSON schema generation (all
+         * type information it needs is accessible via ""untyped"" serializer)
+         */
+    visitor.setProvider(this);
+    findValueSerializer(javaType, null).acceptJsonFormatVisitor(visitor, javaType);
+}","public void test4040() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    JsonFormatVisitorWrapper.Base jsonFormatVisitorWrapper_Base0 = new JsonFormatVisitorWrapper.Base();
+    // Undeclared exception!
+    try {
+        defaultSerializerProvider_Impl0.acceptJsonFormatVisitor((JavaType) null, jsonFormatVisitorWrapper_Base0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // A class must be provided
+        //
+        verifyException(""com.fasterxml.jackson.databind.ser.DefaultSerializerProvider"", e);
+    }
+}",""

@@ -1,0 +1,559 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test030,"public void test030() throws Throwable {
+    Document document0 = new Document(""m9e"");
+    Document document1 = document0.normalise();
+    document0.setParentNode(document1);
+    document0.removeChild(document0);
+    assertEquals(""#document"", document0.nodeName());
+}",0,assertNotNull(document0.nodeName())
+project,0,test041,"public void test041() throws Throwable {
+    Document document0 = new Document("""");
+    StringBuilder stringBuilder0 = new StringBuilder((CharSequence) """");
+    document0.outerHtml(stringBuilder0);
+    assertEquals(0, (int) document0.siblingIndex());
+}",0,
+project,0,test052,"public void test052() throws Throwable {
+    DataNode dataNode0 = new DataNode(""Xfr"", "",\u0000Twq9"");
+    Node[] nodeArray0 = new Node[4];
+    nodeArray0[0] = (Node) dataNode0;
+    nodeArray0[1] = (Node) dataNode0;
+    nodeArray0[2] = (Node) dataNode0;
+    nodeArray0[3] = (Node) dataNode0;
+    dataNode0.addChildren(0, nodeArray0);
+    assertEquals("",\u0000Twq9"", dataNode0.baseUri());
+}",0,
+project,0,test063,"public void test063() throws Throwable {
+    Document document0 = new Document("""");
+    document0.setSiblingIndex(31);
+    assertEquals(31, (int) document0.siblingIndex());
+}",0,
+project,0,test074,"public void test074() throws Throwable {
+    Document document0 = Document.createShell(""\u0007"");
+    Element element0 = document0.empty();
+    String string0 = element0.toString();
+    assertEquals("""", string0);
+}",0,assertNotNull(string0)
+project,0,test085,"public void test085() throws Throwable {
+    TextNode textNode0 = TextNode.createFromEncoded(""n"", ""Ropf"");
+    Node node0 = textNode0.removeAttr(""8N"");
+    assertSame(node0, textNode0);
+}",0,
+project,0,test096,"public void test096() throws Throwable {
+    TextNode textNode0 = new TextNode("""", """");
+    String string0 = textNode0.outerHtml();
+    assertEquals("""", string0);
+}",0,assertNotNull(string0)
+project,0,test107,"public void test107() throws Throwable {
+    Document document0 = new Document(""93nFD{n"");
+    String string0 = document0.nodeName();
+    assertEquals(""#document"", string0);
+}",0,assertNotNull(string0)
+project,0,test118,"public void test118() throws Throwable {
+    XmlDeclaration xmlDeclaration0 = new XmlDeclaration(""`?d^=c@jraB?~;tI"", ""#text"", true);
+    Node node0 = xmlDeclaration0.doClone(xmlDeclaration0);
+    assertNotSame(node0, xmlDeclaration0);
+}",0,
+project,0,test119,"public void test119() throws Throwable {
+    XmlDeclaration xmlDeclaration0 = new XmlDeclaration(""`?d^=c@jraB?~;tI"", ""#text"", true);
+    Node node0 = xmlDeclaration0.doClone(xmlDeclaration0);
+    assertEquals(0, (int) node0.siblingIndex());
+}",0,
+project,0,test1210,"public void test1210() throws Throwable {
+    Document document0 = Document.createShell("""");
+    Node[] nodeArray0 = document0.childNodesAsArray();
+    assertEquals(1, nodeArray0.length);
+}",0,
+project,0,test1311,"public void test1311() throws Throwable {
+    XmlDeclaration xmlDeclaration0 = new XmlDeclaration("""", """", false);
+    Node[] nodeArray0 = xmlDeclaration0.childNodesAsArray();
+    assertEquals(0, nodeArray0.length);
+}",0,
+project,0,test1412,"public void test1412() throws Throwable {
+    Document document0 = new Document(""}n(Ukq@WGXV$h5ie"");
+    Comment comment0 = new Comment("";&W!X{SVUl>Kh,s=rC("", "";&W!X{SVUl>Kh,s=rC("");
+    // Undeclared exception!
+    try {
+        comment0.replaceChild((Node) null, document0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Node"", e);
+    }
+}",0,
+project,0,test1513,"public void test1513() throws Throwable {
+    Document document0 = Document.createShell(""3mZ"");
+    document0.appendChild(document0);
+    // Undeclared exception!
+    try {
+        document0.replaceChild(document0, document0);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 1, Size: 1
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}",0,
+project,0,test1614,"public void test1614() throws Throwable {
+    DataNode dataNode0 = DataNode.createFromEncoded(""M6\""5q`Y"", ""WPd2<)?~t`{2\"""");
+    // Undeclared exception!
+    try {
+        dataNode0.removeChild((Node) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Node"", e);
+    }
+}",1,
+project,0,test1715,"public void test1715() throws Throwable {
+    Document document0 = Document.createShell(""abs:trie"");
+    // Undeclared exception!
+    try {
+        document0.previousSibling();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Node"", e);
+    }
+}",0,
+project,0,test1816,"public void test1816() throws Throwable {
+    Document document0 = Document.createShell(""(.s>>e"");
+    // Undeclared exception!
+    try {
+        document0.indent((StringBuilder) null, 0, (Document.OutputSettings) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test1917,"public void test1917() throws Throwable {
+    Document document0 = Document.createShell(""vf?Qd*`9`KeVb_@7"");
+    StringBuilder stringBuilder0 = new StringBuilder();
+    Document.OutputSettings document_OutputSettings0 = document0.new OutputSettings();
+    // Undeclared exception!
+    try {
+        document0.indent(stringBuilder0, (-2322), document_OutputSettings0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // width must be > 0
+        //
+        verifyException(""org.jsoup.helper.StringUtil"", e);
+    }
+}",0,
+project,0,test2018,"public void test2018() throws Throwable {
+    Document document0 = new Document(""abs:"");
+    // Undeclared exception!
+    try {
+        document0.childNode((-138728127));
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test2119,"public void test2119() throws Throwable {
+    XmlDeclaration xmlDeclaration0 = new XmlDeclaration(""`?d^=c@jraB?~;tI"", ""#text"", true);
+    // Undeclared exception!
+    try {
+        xmlDeclaration0.attr("""", ""#text"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test2220,"public void test2220() throws Throwable {
+    Document document0 = new Document(""planck"");
+    // Undeclared exception!
+    try {
+        document0.attr((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",1,
+project,0,test2321,"public void test2321() throws Throwable {
+    TextNode textNode0 = TextNode.createFromEncoded("""", ""\n"");
+    Node[] nodeArray0 = new Node[5];
+    nodeArray0[0] = (Node) textNode0;
+    // Undeclared exception!
+    try {
+        textNode0.addChildren(nodeArray0);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.AbstractList"", e);
+    }
+}",0,
+project,0,test2422,"public void test2422() throws Throwable {
+    Document document0 = new Document(""4>3"");
+    Node[] nodeArray0 = new Node[2];
+    // Undeclared exception!
+    try {
+        document0.addChildren(nodeArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Node"", e);
+    }
+}",0,
+project,0,test2523,"public void test2523() throws Throwable {
+    Document document0 = Document.createShell(""fszc/xF-2"");
+    TextNode textNode0 = TextNode.createFromEncoded(""#comment"", ""fszc/xF-2"");
+    Node[] nodeArray0 = new Node[4];
+    nodeArray0[0] = (Node) textNode0;
+    nodeArray0[1] = (Node) document0;
+    nodeArray0[2] = (Node) document0;
+    nodeArray0[3] = (Node) textNode0;
+    // Undeclared exception!
+    try {
+        textNode0.addChildren(0, nodeArray0);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.AbstractList"", e);
+    }
+}",1,
+project,0,test2624,"public void test2624() throws Throwable {
+    Document document0 = new Document(""abs:{y7)^b@^jfpkq]$ g"");
+    Node[] nodeArray0 = new Node[9];
+    nodeArray0[0] = (Node) document0;
+    nodeArray0[1] = (Node) document0;
+    nodeArray0[2] = (Node) document0;
+    nodeArray0[3] = (Node) document0;
+    nodeArray0[4] = (Node) document0;
+    TextNode textNode0 = new TextNode(""Colon"", "" km"");
+    nodeArray0[5] = (Node) textNode0;
+    nodeArray0[6] = (Node) document0;
+    nodeArray0[7] = (Node) document0;
+    nodeArray0[8] = (Node) document0;
+    // Undeclared exception!
+    try {
+        document0.addChildren((-2217), nodeArray0);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: -2217, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}",1,
+project,0,test2725,"public void test2725() throws Throwable {
+    Document document0 = new Document(""abs:"");
+    Node[] nodeArray0 = new Node[4];
+    // Undeclared exception!
+    try {
+        document0.addChildren((-264984309), nodeArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Array must not contain any null objects
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",1,
+project,0,test2826,"public void test2826() throws Throwable {
+    Document document0 = new Document(""{y7)^B@^JfPkQ]$ g"");
+    // Undeclared exception!
+    try {
+        document0.absUrl("""");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test2927,"public void test2927() throws Throwable {
+    Document document0 = Document.createShell("""");
+    Document document1 = document0.clone();
+    assertEquals(0, (int) document1.siblingIndex());
+}",0,
+project,0,test2928,"public void test2928() throws Throwable {
+    Document document0 = Document.createShell("""");
+    Document document1 = document0.clone();
+    assertNotSame(document1, document0);
+}",0,
+project,0,test3129,"public void test3129() throws Throwable {
+    Comment comment0 = new Comment("""", ""e\""9(GQMW*:PsQsP|6"");
+    boolean boolean0 = comment0.equals(""e\""9(GQMW*:PsQsP|6"");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test3230,"public void test3230() throws Throwable {
+    Document document0 = new Document(""{~ HodE"");
+    XmlDeclaration xmlDeclaration0 = new XmlDeclaration("""", """", false);
+    Element element0 = document0.appendChild(xmlDeclaration0);
+    Element element1 = element0.prependElement(""xhArr"");
+    element1.parentNode.parentNode = (Node) element0;
+    element1.parentNode.parentNode.nextSibling();
+    assertEquals(1, (int) xmlDeclaration0.siblingIndex());
+}",0,
+project,0,test3331,"public void test3331() throws Throwable {
+    Document document0 = Document.createShell("",#$0(65,'V',^MFM\"""");
+    Node node0 = document0.nextSibling();
+    assertNull(node0);
+}",0,
+project,0,test3432,"public void test3432() throws Throwable {
+    Document document0 = Document.createShell(""#com"");
+    Element element0 = document0.appendElement(""#com"");
+    Node node0 = element0.nextSibling();
+    assertNull(node0);
+}",0,assertNotNull(node0)
+project,0,test3433,"public void test3433() throws Throwable {
+    Document document0 = Document.createShell(""#com"");
+    Element element0 = document0.appendElement(""#com"");
+    Node node0 = element0.nextSibling();
+    assertEquals(1, (int) element0.siblingIndex());
+}",0,
+project,0,test3534,"public void test3534() throws Throwable {
+    TextNode textNode0 = new TextNode(""=\"""", ""=\"""");
+    Document document0 = textNode0.ownerDocument();
+    assertNull(document0);
+}",0,
+project,0,test3635,"public void test3635() throws Throwable {
+    Document document0 = Document.createShell("""");
+    Element element0 = document0.appendElement(""Ufr"");
+    element0.ownerDocument();
+    assertEquals(1, (int) element0.siblingIndex());
+}",0,
+project,0,test3736,"public void test3736() throws Throwable {
+    Document document0 = Document.createShell(""abs:q`"");
+    Document document1 = document0.ownerDocument();
+    assertEquals(""abs:q`"", document1.baseUri());
+}",0,assertNotNull(document1.baseUri())
+project,0,test3837,"public void test3837() throws Throwable {
+    Comment comment0 = new Comment(""F,9VdJTEq#"", ""Dj<7o=#"");
+    String string0 = comment0.absUrl(""Dj<7o=#"");
+    assertEquals("""", string0);
+}",0,
+project,0,test3938,"public void test3938() throws Throwable {
+    Document document0 = Document.createShell(""abs:q`"");
+    String string0 = document0.attr(""@u"");
+    assertEquals("""", string0);
+}",1,
+project,0,test4140,"public void test4140() throws Throwable {
+    Document document0 = new Document(""abs:q`"");
+    Integer integer0 = document0.siblingIndex();
+    assertEquals(0, (int) integer0);
+}",0,
+project,0,test4241,"public void test4241() throws Throwable {
+    TextNode textNode0 = TextNode.createFromEncoded(""t<*hB:-f3ha"", ""F,9VdJTEq#"");
+    String string0 = textNode0.outerHtml();
+    assertEquals(""t&lt;*hB:-f3ha"", string0);
+}",0,assertNotNull(string0)
+project,0,test4342,"public void test4342() throws Throwable {
+    Comment comment0 = new Comment("""", ""e\""9(GQMW*:PsQsP|6"");
+    // Undeclared exception!
+    try {
+        comment0.outerHtml((StringBuilder) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test4443,"public void test4443() throws Throwable {
+    TextNode textNode0 = TextNode.createFromEncoded(""swnwar"", ""swnwar"");
+    Node node0 = textNode0.clone();
+    assertEquals(0, (int) node0.siblingIndex());
+}",0,
+project,0,test4444,"public void test4444() throws Throwable {
+    TextNode textNode0 = TextNode.createFromEncoded(""swnwar"", ""swnwar"");
+    Node node0 = textNode0.clone();
+    assertNotSame(node0, textNode0);
+}",0,
+project,0,test4545,"public void test4545() throws Throwable {
+    Document document0 = Document.createShell("""");
+    // Undeclared exception!
+    try {
+        document0.removeAttr("""");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",1,
+project,0,test4646,"public void test4646() throws Throwable {
+    DataNode dataNode0 = new DataNode(""mgg;c"", ""e"");
+    String string0 = dataNode0.baseUri();
+    assertEquals(""e"", string0);
+}",0,assertNotNull(string0)
+project,0,test4747,"public void test4747() throws Throwable {
+    XmlDeclaration xmlDeclaration0 = new XmlDeclaration(""aB:"", ""aB:"", true);
+    Node node0 = xmlDeclaration0.parent();
+    assertNull(node0);
+}",0,assertNotNull(node0)
+project,0,test4848,"public void test4848() throws Throwable {
+    Document document0 = Document.createShell(""abs:"");
+    // Undeclared exception!
+    try {
+        document0.childNode(228);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 228, Size: 1
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}",0,
+project,0,test4949,"public void test4949() throws Throwable {
+    Document document0 = new Document(""sA9Xq:+rC}_al#b@D)"");
+    Attributes attributes0 = document0.attributes();
+    assertNotNull(attributes0);
+}",0,assertNotNull(attributes0)
+project,0,test5050,"public void test5050() throws Throwable {
+    XmlDeclaration xmlDeclaration0 = new XmlDeclaration(""`?d^=c@jraB?~;tI"", ""#text"", true);
+    Node node0 = xmlDeclaration0.attr(""#text"", ""#text"");
+    assertEquals(""#declaration"", node0.nodeName());
+}",0,assertNotNull(node0.nodeName())
+project,0,test5151,"public void test5151() throws Throwable {
+    XmlDeclaration xmlDeclaration0 = new XmlDeclaration("""", """", false);
+    boolean boolean0 = xmlDeclaration0.hasAttr(""kr8s2"");
+    assertFalse(boolean0);
+}",1,
+project,0,test5252,"public void test5252() throws Throwable {
+    Document document0 = new Document(""abs:"");
+    document0.html(""abs:"");
+    String string0 = document0.toString();
+    assertEquals(""abs:"", string0);
+}",0,
+project,0,test5553,"public void test5553() throws Throwable {
+    Document document0 = new Document(""{~ HodE"");
+    XmlDeclaration xmlDeclaration0 = new XmlDeclaration("""", """", false);
+    document0.appendChild(xmlDeclaration0);
+    Node node0 = xmlDeclaration0.previousSibling();
+    assertNull(node0);
+}",0,assertNotNull(node0)
+project,0,test5654,"public void test5654() throws Throwable {
+    Document document0 = new Document(""m9e"");
+    // Undeclared exception!
+    try {
+        document0.removeChild(document0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Must be true
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test5755,"public void test5755() throws Throwable {
+    Document document0 = new Document(""{~ HodE"");
+    Element element0 = document0.prependElement(""xhArr"");
+    element0.parentNode.parentNode = (Node) document0;
+    // Undeclared exception!
+    try {
+        element0.replaceWith(document0);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 0, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}",1,
+project,0,test5856,"public void test5856() throws Throwable {
+    Document document0 = new Document(""{~ HodE"");
+    Element element0 = document0.prependElement(""xhArr"");
+    element0.replaceWith(document0);
+    assertFalse(document0.isBlock());
+}",0,assertTrue(document0.isBlock())
+project,0,test5957,"public void test5957() throws Throwable {
+    Document document0 = new Document(""\u0007"");
+    // Undeclared exception!
+    try {
+        document0.replaceChild(document0, document0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Must be true
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test6058,"public void test6058() throws Throwable {
+    Document document0 = Document.createShell(""org.jsoup.nodes.Node$OuterHtmlVisitor"");
+    Element element0 = document0.appendElement(""org.jsoup.nodes.Node$OuterHtmlVisitor"");
+    element0.setParentNode(document0);
+    assertEquals(1, (int) element0.siblingIndex());
+}",0,
+project,0,test6159,"public void test6159() throws Throwable {
+    Document document0 = new Document(""abs:"");
+    String string0 = document0.attr(""abs:trie"");
+    assertEquals("""", string0);
+}",1,
+project,0,test6260,"public void test6260() throws Throwable {
+    Document document0 = new Document(""m9e"");
+    Element element0 = document0.attr(""m9e"", ""m9e"");
+    Elements elements0 = element0.getElementsByAttributeValueContaining(""m9e"", ""m9e"");
+    assertEquals(1, elements0.size());
+}",0,"assertEquals(1, elements0.size())"
+project,0,test6361,"public void test6361() throws Throwable {
+    XmlDeclaration xmlDeclaration0 = new XmlDeclaration(""aB:"", ""aB:"", true);
+    // Undeclared exception!
+    try {
+        xmlDeclaration0.remove();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test6462,"public void test6462() throws Throwable {
+    DataNode dataNode0 = new DataNode(""@LNr`+O6Q$"", ""@LNr`+O6Q$"");
+    // Undeclared exception!
+    try {
+        dataNode0.siblingNodes();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Node"", e);
+    }
+}",0,
+project,0,test6563,"public void test6563() throws Throwable {
+    Document document0 = Document.createShell(""&26/x&<_x`RJmtmiH"");
+    // Undeclared exception!
+    try {
+        document0.replaceWith(document0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",1,
+project,0,test6664,"public void test6664() throws Throwable {
+    XmlDeclaration xmlDeclaration0 = new XmlDeclaration(""A#)Clg8&#"", """", false);
+    xmlDeclaration0.setBaseUri("""");
+    assertEquals("""", xmlDeclaration0.baseUri());
+}",0,assertNotNull(xmlDeclaration0.baseUri())

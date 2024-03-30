@@ -1,0 +1,140 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    BufferedOutputStream bufferedOutputStream0 = new BufferedOutputStream(pipedOutputStream0, 1982);
+    SerializationUtils.serialize((Serializable) (byte) 117, (OutputStream) bufferedOutputStream0);
+}",0,
+project,0,test011,"public void test011() throws Throwable {
+    byte[] byteArray0 = SerializationUtils.serialize((Serializable) null);
+    Object object0 = SerializationUtils.deserialize(byteArray0);
+    assertNull(object0);
+}",1,
+project,0,test022,"public void test022() throws Throwable {
+    Certificate[] certificateArray0 = new Certificate[8];
+    UnresolvedPermission unresolvedPermission0 = new UnresolvedPermission(""W("", ""org.apache.commons.lang3.SerializationUtils$ClassLoaderAwareObjectInputStream"", ""W("", certificateArray0);
+    // Undeclared exception!
+    try {
+        SerializationUtils.serialize((Serializable) unresolvedPermission0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.security.UnresolvedPermission"", e);
+    }
+}",0,
+project,0,test033,"public void test033() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    // Undeclared exception!
+    try {
+        SerializationUtils.deserialize(byteArray0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // java.io.EOFException
+        //
+        verifyException(""org.apache.commons.lang3.SerializationUtils"", e);
+    }
+}",1,
+project,0,test044,"public void test044() throws Throwable {
+    BufferedInputStream bufferedInputStream0 = new BufferedInputStream((InputStream) null);
+    // Undeclared exception!
+    try {
+        SerializationUtils.deserialize((InputStream) bufferedInputStream0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // java.io.IOException: Stream closed
+        //
+        verifyException(""org.apache.commons.lang3.SerializationUtils"", e);
+    }
+}",0,
+project,0,test066,"public void test066() throws Throwable {
+    // Undeclared exception!
+    try {
+        SerializationUtils.deserialize((byte[]) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The byte[] must not be null
+        //
+        verifyException(""org.apache.commons.lang3.SerializationUtils"", e);
+    }
+}",1,
+project,0,test077,"public void test077() throws Throwable {
+    DataInputStream dataInputStream0 = new DataInputStream((InputStream) null);
+    // Undeclared exception!
+    try {
+        SerializationUtils.deserialize((InputStream) dataInputStream0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.io.DataInputStream"", e);
+    }
+}",0,
+project,0,test088,"public void test088() throws Throwable {
+    // Undeclared exception!
+    try {
+        SerializationUtils.deserialize((InputStream) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The InputStream must not be null
+        //
+        verifyException(""org.apache.commons.lang3.SerializationUtils"", e);
+    }
+}",0,
+project,0,test1010,"public void test1010() throws Throwable {
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    // Undeclared exception!
+    try {
+        SerializationUtils.serialize((Serializable) null, (OutputStream) pipedOutputStream0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // java.io.IOException: Pipe not connected
+        //
+        verifyException(""org.apache.commons.lang3.SerializationUtils"", e);
+    }
+}",0,
+project,0,test1111,"public void test1111() throws Throwable {
+    Locale.FilteringMode locale_FilteringMode0 = Locale.FilteringMode.IGNORE_EXTENDED_RANGES;
+    // Undeclared exception!
+    try {
+        SerializationUtils.serialize((Serializable) locale_FilteringMode0, (OutputStream) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The OutputStream must not be null
+        //
+        verifyException(""org.apache.commons.lang3.SerializationUtils"", e);
+    }
+}",0,
+project,0,test1212,"public void test1212() throws Throwable {
+    Integer integer0 = SerializationUtils.clone((Integer) null);
+    assertNull(integer0);
+}",0,
+project,0,test1313,"public void test1313() throws Throwable {
+    SerializationUtils serializationUtils0 = new SerializationUtils();
+    Object[] objectArray0 = new Object[16];
+    objectArray0[2] = (Object) serializationUtils0;
+    File file0 = MockFile.createTempFile(""7Lky+ g.rE6v,k"", ""7Lky+ g.rE6v,k"");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(file0);
+    // Undeclared exception!
+    try {
+        SerializationUtils.serialize((Serializable) objectArray0, (OutputStream) mockPrintStream0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // java.io.NotSerializableException: org.apache.commons.lang3.SerializationUtils
+        //
+        verifyException(""org.apache.commons.lang3.SerializationUtils"", e);
+    }
+}",0,
+project,0,test1414,"public void test1414() throws Throwable {
+    Integer integer0 = new Integer((-1));
+    Integer integer1 = SerializationUtils.clone(integer0);
+    assertEquals((-1), (int) integer1);
+}",0,

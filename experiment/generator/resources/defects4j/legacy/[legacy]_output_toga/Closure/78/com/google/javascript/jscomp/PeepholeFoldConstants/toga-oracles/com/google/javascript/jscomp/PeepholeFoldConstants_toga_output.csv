@@ -1,0 +1,1345 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test0000,"public void test0000() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((double) (-333), (-333), (-333));
+    Node node1 = peepholeFoldConstants0.optimizeSubtree(node0);
+    assertEquals((-3), Node.LOCAL_BLOCK_PROP);
+}",0,
+project,0,test0011,"public void test0011() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(47, 47, 47);
+    Node node1 = new Node(29, node0, node0, node0, node0);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.AbstractPeepholeOptimization"", e);
+    }
+}",0,
+project,0,test0022,"public void test0022() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(63, 63, 63);
+    Node node1 = new Node(32, node0, 18, 31);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",0,
+project,0,test0033,"public void test0033() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(63);
+    Node node1 = new Node(37, node0, 2, 42);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(42, node2.getCharno());
+}",0,"assertEquals(0, node2.getCharno())"
+project,0,test0044,"public void test0044() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(1512);
+    Node node1 = new Node(41, node0, 40, 7);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(49, Node.FREE_CALL);
+}",0,
+project,0,test0055,"public void test0055() throws Throwable {
+    Node node0 = new Node(1, 1, 1);
+    Node node1 = new Node(9, node0, 1, 36);
+    node1.addChildToFront(node1);
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(36, node2.getCharno());
+}",0,
+project,0,test0056,"public void test0056() throws Throwable {
+    Node node0 = new Node(1, 1, 1);
+    Node node1 = new Node(9, node0, 1, 36);
+    node1.addChildToFront(node1);
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertNotNull(node2);
+}",0,
+project,0,test0067,"public void test0067() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(89, 89, 89);
+    Node node1 = new Node(89, 89, 89);
+    Node node2 = new Node(10, node1, node1, node0);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertNotNull(node3);
+}",0,
+project,0,test0068,"public void test0068() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(89, 89, 89);
+    Node node1 = new Node(89, 89, 89);
+    Node node2 = new Node(10, node1, node1, node0);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(10, node3.getType());
+}",0,"assertEquals(0, node3.getType())"
+project,0,test0079,"public void test0079() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(52);
+    Node node1 = new Node(12, node0, 2, 1);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(1, node2.getCharno());
+}",0,"assertEquals(0, node2.getCharno())"
+project,0,test00810,"public void test00810() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(27);
+    Node node1 = new Node(39, 15, (-948));
+    Node node2 = new Node(13, node0, node0, node1);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertTrue(node3.hasChildren());
+}",0,
+project,0,test00911,"public void test00911() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(1447, 1447, 1447);
+    Node node1 = new Node(15, node0, node0);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals((-1), node2.getCharno());
+}",0,"assertEquals(0, node2.getCharno())"
+project,0,test01012,"public void test01012() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(1512);
+    Node node1 = node0.cloneTree();
+    Node[] nodeArray0 = new Node[1];
+    nodeArray0[0] = node0;
+    Node node2 = new Node(16, nodeArray0);
+    node2.addChildToFront(node1);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(1, Node.LEFT);
+}",0,
+project,0,test01113,"public void test01113() throws Throwable {
+    Node node0 = Node.newNumber(98.0);
+    Node node1 = new Node(17, node0, 30, 7);
+    Node node2 = Node.newNumber((double) 13);
+    node1.addChildToFront(node2);
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",0,
+project,0,test01214,"public void test01214() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node((-2721), (-2721), (-2721));
+    Node node1 = new Node(19, node0, node0, node0, node0, 1, 1);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(2, node2.getChildCount());
+}",0,"assertEquals(1, node2.getChildCount())"
+project,0,test01315,"public void test01315() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(80, 80, 80);
+    Node node1 = new Node(20, node0);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertTrue(node2.hasChildren());
+}",0,
+project,0,test01416,"public void test01416() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node((-3383));
+    Node node1 = new Node(12, 4, 46);
+    Node node2 = new Node(21, node0, node0, node0, node1);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertTrue(node3.hasMoreThanOneChild());
+}",0,assertFalse(node3.hasMoreThanOneChild())
+project,0,test01517,"public void test01517() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(70, 70, 70);
+    Node node1 = new Node(23, node0, node0, node0, node0);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertNotNull(node2);
+}",0,
+project,0,test01518,"public void test01518() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(70, 70, 70);
+    Node node1 = new Node(23, node0, node0, node0, node0);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertTrue(node2.hasChildren());
+}",0,assertFalse(node2.hasChildren())
+project,0,test01619,"public void test01619() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(1455);
+    Node node1 = new Node(24, node0, node0);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertTrue(node2.hasChildren());
+}",0,assertFalse(node2.hasChildren())
+project,0,test01620,"public void test01620() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(1455);
+    Node node1 = new Node(24, node0, node0);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertNotNull(node2);
+}",0,
+project,0,test01721,"public void test01721() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(1336, 1336, 1336);
+    Node node1 = new Node(25, node0, 16, 23);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertNotNull(node2);
+}",0,
+project,0,test01722,"public void test01722() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(1336, 1336, 1336);
+    Node node1 = new Node(25, node0, 16, 23);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(2, node2.getChildCount());
+}",0,"assertEquals(1, node2.getChildCount())"
+project,0,test01823,"public void test01823() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(1447);
+    Node node1 = new Node(31, node0, 23, 0);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(24, Node.LASTUSE_PROP);
+}",0,
+project,0,test01924,"public void test01924() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(40, 40, 40);
+    Node node1 = new Node(33, node0, 19, (-1));
+    node1.addChildToFront(node1);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // String node not created with Node.newString
+        //
+        verifyException(""com.google.javascript.rhino.Node"", e);
+    }
+}",0,
+project,0,test02025,"public void test02025() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(61, 61, 61);
+    Node node1 = new Node(25, 9, 61);
+    Node node2 = new Node(34, node0, node1);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertNotSame(node0, node3);
+}",0,
+project,0,test02126,"public void test02126() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(1447, 1447, 1447);
+    Node node1 = new Node(35, node0, 40, 12);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertFalse(node2.wasEmptyNode());
+}",0,assertTrue(node2.wasEmptyNode())
+project,0,test02227,"public void test02227() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(80);
+    Node node1 = new Node(36, node0, node0, node0, node0, 7, 2);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertFalse(node2.isLocalResultCall());
+}",0,assertFalse(node2.isLocalResultCall())
+project,0,test02328,"public void test02328() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(1, 1, 1);
+    Node node1 = new Node(38, node0, node0);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(5, Node.FUNCTION_PROP);
+}",0,
+project,0,test02429,"public void test02429() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(70, 70, 70);
+    Node node1 = new Node(39, node0, node0, node0, node0, 13, 31);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(35, Node.QUOTED_PROP);
+}",0,
+project,0,test02530,"public void test02530() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node((-390), (-390), (-390));
+    Node node1 = new Node(40, node0);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(4, Node.DESCENDANTS_FLAG);
+}",0,
+project,0,test02631,"public void test02631() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(78, 78, 78);
+    Node node1 = new Node(42, node0, node0, node0, 4095, 26);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(8, Node.FLAG_NO_THROWS);
+}",0,
+project,0,test02732,"public void test02732() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(65, 65, 65);
+    Node node1 = new Node(43, node0, 6, 15);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(46, Node.IS_DISPATCHER);
+}",0,
+project,0,test02833,"public void test02833() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(1447, 1447, 1447);
+    Node node1 = new Node(44, node0, node0);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(15, Node.CASEARRAY_PROP);
+}",0,
+project,0,test02934,"public void test02934() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(80, 80, 80);
+    Node node1 = new Node(45, node0, node0);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertTrue(node2.hasMoreThanOneChild());
+}",0,
+project,0,test03035,"public void test03035() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(71);
+    Node node1 = new Node(46, node0, node0);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(46, node2.getType());
+}",0,"assertEquals(1, node2.getType())"
+project,0,test03136,"public void test03136() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(1782, 1782, 1782);
+    Node node1 = new Node(47, node0);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(29, Node.VAR_ARGS_NAME);
+}",0,
+project,0,test03237,"public void test03237() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(1454, 1454, 1454);
+    Node node1 = new Node(48, node0, node0, node0, 8, 15);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(11, Node.USES_PROP);
+}",0,
+project,0,test03338,"public void test03338() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(1454, 1454, 1454);
+    Node node1 = new Node(49, node0, node0, node0, node0, 25, 2);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(18, Node.SPECIAL_PROP_PROP);
+}",0,
+project,0,test03439,"public void test03439() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(50);
+    Node node1 = new Node(50, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(43, node2.getCharno());
+}",0,
+project,0,test03540,"public void test03540() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(51, 51, 51);
+    Node node1 = new Node(51, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(42, Node.IS_CONSTANT_NAME);
+}",0,
+project,0,test03641,"public void test03641() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(52);
+    Node node1 = new Node(52, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(43, node2.getCharno());
+}",0,"assertEquals(0, node2.getCharno())"
+project,0,test03742,"public void test03742() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(53);
+    Node node1 = new Node(53, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertFalse(node2.isVarArgs());
+}",0,assertTrue(node2.isVarArgs())
+project,0,test03843,"public void test03843() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(54);
+    Node node1 = new Node(54, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(22, Node.TARGETBLOCK_PROP);
+}",0,
+project,0,test03944,"public void test03944() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(55, 55, 55);
+    Node node1 = new Node(55, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(0, Node.BOTH);
+}",0,
+project,0,test04045,"public void test04045() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(56);
+    Node node1 = new Node(56, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(15, Node.CASEARRAY_PROP);
+}",0,
+project,0,test04146,"public void test04146() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(57);
+    Node node1 = new Node(57, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(47, Node.DIRECTIVES);
+}",0,
+project,0,test04247,"public void test04247() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(58, 58, 58);
+    Node node1 = new Node(58, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(49, Node.FREE_CALL);
+}",0,
+project,0,test04348,"public void test04348() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(59, 59, 59);
+    Node node1 = new Node(59, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(1, Node.PROPERTY_FLAG);
+}",0,
+project,0,test04449,"public void test04449() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(60);
+    Node node1 = new Node(60, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(0, node2.getSideEffectFlags());
+}",0,"assertEquals(0, node2.getSideEffectFlags())"
+project,0,test04550,"public void test04550() throws Throwable {
+    Node node0 = new Node(61);
+    Node node1 = new Node(61, node0, 37, 43);
+    node1.addChildToFront(node1);
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(30, Node.SKIP_INDEXES_PROP);
+}",0,
+project,0,test04651,"public void test04651() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(62, 62, 62);
+    Node node1 = new Node(62, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(43, node2.getCharno());
+}",0,"assertEquals(0, node2.getCharno())"
+project,0,test04752,"public void test04752() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(63);
+    Node node1 = new Node(63, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertFalse(node2.isOnlyModifiesThisCall());
+}",0,assertTrue(node2.isOnlyModifiesThisCall())
+project,0,test04853,"public void test04853() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(64, 64, 64);
+    Node node1 = new Node(64, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(26, Node.DIRECTCALL_PROP);
+}",0,
+project,0,test04954,"public void test04954() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(65, 65, 65);
+    Node node1 = new Node(65, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(24, Node.LASTUSE_PROP);
+}",0,
+project,0,test05055,"public void test05055() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(89, 89, 1385);
+    Node node1 = new Node(66, node0, node0, node0, node0, 32, (-551));
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(2, Node.SPECIALCALL_WITH);
+}",0,
+project,0,test05156,"public void test05156() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(67);
+    Node node1 = new Node(67, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertTrue(node2.hasChildren());
+}",0,assertFalse(node2.hasChildren())
+project,0,test05257,"public void test05257() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(68, 68, 68);
+    Node node1 = new Node(68, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals((-1), Node.CATCH_SCOPE_PROP);
+}",0,
+project,0,test05358,"public void test05358() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(69);
+    Node node1 = new Node(69, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertNotSame(node0, node2);
+}",0,
+project,0,test05459,"public void test05459() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(70, 70, 70);
+    Node node1 = new Node(70, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(9, Node.FIXUPS_PROP);
+}",0,
+project,0,test05560,"public void test05560() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(71);
+    Node node1 = new Node(71, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(25, Node.ISNUMBER_PROP);
+}",0,
+project,0,test05661,"public void test05661() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node((-2721));
+    Node node1 = new Node(72, node0, 1, 56);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(15, Node.CASEARRAY_PROP);
+}",0,
+project,0,test05762,"public void test05762() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(73, 73, 73);
+    Node node1 = new Node(73, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(1, Node.FLAG_GLOBAL_STATE_UNMODIFIED);
+}",0,
+project,0,test05863,"public void test05863() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(74, 74, 74);
+    Node node1 = new Node(74, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(25, Node.ISNUMBER_PROP);
+}",0,
+project,0,test05964,"public void test05964() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(93, 93, 93);
+    Node node1 = new Node(4, 31, 36);
+    Node node2 = new Node(75, node0, node0, node1);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertNotSame(node0, node3);
+}",0,
+project,0,test06065,"public void test06065() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(76, 76, 76);
+    Node node1 = new Node(76, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(1, Node.SPECIALCALL_EVAL);
+}",0,
+project,0,test06166,"public void test06166() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(77);
+    Node node1 = new Node(77, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertFalse(node2.hasOneChild());
+}",0,assertFalse(node2.hasOneChild())
+project,0,test06267,"public void test06267() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(78, 78, 78);
+    Node node1 = new Node(78, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(2, Node.FLAG_THIS_UNMODIFIED);
+}",0,
+project,0,test06368,"public void test06368() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(79, 79, 79);
+    Node node1 = new Node(79, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(26, Node.DIRECTCALL_PROP);
+}",0,
+project,0,test06469,"public void test06469() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(80, 80, 80);
+    Node node1 = new Node(80, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(46, Node.IS_DISPATCHER);
+}",0,
+project,0,test06570,"public void test06570() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(81);
+    Node node1 = new Node(81, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(7, Node.LOCAL_PROP);
+}",0,
+project,0,test06671,"public void test06671() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(80, 80, 80);
+    Node node1 = new Node(82, node0, 36, 12);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(10, Node.VARS_PROP);
+}",0,
+project,0,test06772,"public void test06772() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(83);
+    Node node1 = new Node(83, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(6, Node.TEMP_PROP);
+}",0,
+project,0,test06873,"public void test06873() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(84, 84, 84);
+    Node node1 = new Node(84, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(37, node2.getLineno());
+}",0,
+project,0,test06974,"public void test06974() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(1447);
+    Node node1 = new Node(85, node0, 40, 12);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(13, Node.CASES_PROP);
+}",0,
+project,0,test07075,"public void test07075() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(86, 86, 86);
+    Node node1 = new Node(86, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertTrue(node2.hasMoreThanOneChild());
+}",0,assertTrue(node2.hasMoreThanOneChild())
+project,0,test07176,"public void test07176() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(87);
+    Node node1 = new Node(87, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(26, Node.DIRECTCALL_PROP);
+}",0,
+project,0,test07277,"public void test07277() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(88);
+    Node node1 = new Node(88, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(2, node2.getChildCount());
+}",0,"assertEquals(0, node2.getChildCount())"
+project,0,test07378,"public void test07378() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(89);
+    Node node1 = new Node(89, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(47, Node.DIRECTIVES);
+}",0,
+project,0,test07479,"public void test07479() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(90);
+    Node node1 = new Node(90, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(1, Node.LEFT);
+}",0,
+project,0,test07580,"public void test07580() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(92);
+    Node node1 = new Node(92, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(15, Node.NO_SIDE_EFFECTS);
+}",0,
+project,0,test07681,"public void test07681() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(93);
+    Node node1 = new Node(93, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(34, Node.PARENTHESIZED_PROP);
+}",0,
+project,0,test07782,"public void test07782() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node((-784));
+    Node node1 = new Node(4, 34, (-784));
+    Node node2 = new Node(94, node0, node1, node1);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertTrue(node3.hasMoreThanOneChild());
+}",0,assertTrue(node3.hasMoreThanOneChild())
+project,0,test07883,"public void test07883() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(95);
+    Node node1 = new Node(95, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(4095, Node.MAX_COLUMN_NUMBER);
+}",0,
+project,0,test07984,"public void test07984() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(96);
+    Node node1 = new Node(96, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(16, Node.FLAG_LOCAL_RESULTS);
+}",0,
+project,0,test08085,"public void test08085() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(97);
+    Node node1 = new Node(97, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertFalse(node2.isQualifiedName());
+}",0,assertTrue(node2.isQualifiedName())
+project,0,test08186,"public void test08186() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(98);
+    Node node1 = new Node(98, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(28, Node.DEBUGSOURCE_PROP);
+}",0,
+project,0,test08287,"public void test08287() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(99, 99, 99);
+    Node node1 = new Node(99, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(1, Node.SPECIALCALL_EVAL);
+}",0,
+project,0,test08388,"public void test08388() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(100);
+    Node node1 = new Node(100, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertTrue(node2.hasChildren());
+}",0,assertFalse(node2.hasChildren())
+project,0,test08389,"public void test08389() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(100);
+    Node node1 = new Node(100, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertNotNull(node2);
+}",0,
+project,0,test08490,"public void test08490() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(101, 101, 101);
+    Node node1 = new Node(101, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertNotNull(node2);
+}",0,
+project,0,test08491,"public void test08491() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(101, 101, 101);
+    Node node1 = new Node(101, node0, 37, 43);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(37, node2.getLineno());
+}",0,"assertEquals(0, node2.getLineno())"
+project,0,test08592,"public void test08592() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(70, 70, 70);
+    Node node1 = new Node(2, node0, node0, node0, node0);
+    node1.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(44, Node.IS_VAR_ARGS_PARAM);
+}",0,
+project,0,test08693,"public void test08693() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newString(""<KI"", 122, 122);
+    Node node1 = new Node(122, node0, 6, 1);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.AbstractPeepholeOptimization"", e);
+    }
+}",0,
+project,0,test08794,"public void test08794() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((double) 16, 1, 122);
+    Node node1 = new Node(122, node0, 2, 30);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.AbstractPeepholeOptimization"", e);
+    }
+}",0,
+project,0,test08895,"public void test08895() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(91, 39, 91);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",0,
+project,0,test08996,"public void test08996() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(1032, 1032, 1032);
+    Node node1 = new Node(11, node0, node0, node0, node0, 40, 9);
+    Node node2 = new Node(21, node1, 44, 23);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertNotNull(node3);
+}",0,
+project,0,test08997,"public void test08997() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(1032, 1032, 1032);
+    Node node1 = new Node(11, node0, node0, node0, node0, 40, 9);
+    Node node2 = new Node(21, node1, 44, 23);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(21, node3.getType());
+}",0,"assertEquals(0, node3.getType())"
+project,0,test09098,"public void test09098() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(11, 11, 11);
+    Node node1 = Node.newString(38, ""]=H*z0s7L+=Vs"", 11, 33);
+    node0.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node0);
+    assertEquals(1, node2.getChildCount());
+}",0,"assertEquals(0, node2.getChildCount())"
+project,0,test09099,"public void test09099() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(11, 11, 11);
+    Node node1 = Node.newString(38, ""]=H*z0s7L+=Vs"", 11, 33);
+    node0.addChildToFront(node1);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node0);
+    assertNotNull(node2);
+}",0,
+project,0,test091100,"public void test091100() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(85);
+    Node node1 = new Node(19, node0, node0, 1, 23);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",0,
+project,0,test092101,"public void test092101() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(98);
+    Node node1 = new Node(25, node0, node0, 1, 27);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.rhino.Node"", e);
+    }
+}",0,
+project,0,test093102,"public void test093102() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(100, 100, 100);
+    Node node1 = new Node(23, node0, 4, 95);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",0,
+project,0,test094103,"public void test094103() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(101, (-1165), (-1165));
+    Node node1 = new Node(87, node0, 0, (-464));
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",0,
+project,0,test095104,"public void test095104() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(63, 63, 63);
+    Node node1 = new Node(10, node0, node0, node0);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",0,
+project,0,test096105,"public void test096105() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newString(""K"");
+    Node node1 = new Node(9, node0, 1, 39);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",0,
+project,0,test097106,"public void test097106() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(32, 32, 32);
+    Node node1 = peepholeFoldConstants0.optimizeSubtree(node0);
+    assertEquals(16, Node.SOURCENAME_PROP);
+}",0,
+project,0,test098107,"public void test098107() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(688);
+    Node node1 = new Node(32, node0, 2, 9);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertTrue(node2.hasOneChild());
+}",0,assertTrue(node2.hasOneChild())
+project,0,test099108,"public void test099108() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(39);
+    Node node1 = new Node(32, node0, 32, 17);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",0,
+project,0,test100109,"public void test100109() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(40);
+    Node node1 = new Node(32, node0, 18, 31);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",0,
+project,0,test101110,"public void test101110() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(41, 41, 41);
+    Node node1 = new Node(32, node0, 18, 31);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",0,
+project,0,test102111,"public void test102111() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(44);
+    Node node1 = new Node(32, node0, 35, 36);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",0,
+project,0,test103112,"public void test103112() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(47);
+    Node node1 = new Node(32, node0, 18, 31);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(1, node2.getChildCount());
+}",0,"assertEquals(0, node2.getChildCount())"
+project,0,test104113,"public void test104113() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node((-2721), (-2721), (-2721));
+    Node node1 = new Node(29, node0, node0, node0);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertTrue(node2.hasOneChild());
+}",0,
+project,0,test104114,"public void test104114() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node((-2721), (-2721), (-2721));
+    Node node1 = new Node(29, node0, node0, node0);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertNotNull(node2);
+}",0,
+project,0,test105115,"public void test105115() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber(2364.69, (-3), 55);
+    Node node1 = new Node(27, node0, 11, 12);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.AbstractPeepholeOptimization"", e);
+    }
+}",0,
+project,0,test106116,"public void test106116() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((double) 2385, 2385, 2385);
+    Node node1 = new Node(28, node0, 48, 4);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",0,
+project,0,test107117,"public void test107117() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((double) 84, 84, 84);
+    Node node1 = new Node(26, node0, 2, 2);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",0,
+project,0,test108118,"public void test108118() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newString("""");
+    Node node1 = new Node(26, node0, 33, 26);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",0,
+project,0,test109119,"public void test109119() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((double) 22, 9, 6);
+    Node node1 = new Node(27, node0, 23, 42);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",0,
+project,0,test110120,"public void test110120() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(43);
+    VerboseMessageFormatter verboseMessageFormatter0 = new VerboseMessageFormatter((SourceExcerptProvider) null);
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""M:s~2oJ{]3#8tSl="");
+    PrintStreamErrorManager printStreamErrorManager0 = new PrintStreamErrorManager(verboseMessageFormatter0, mockPrintStream0);
+    Compiler compiler0 = new Compiler(printStreamErrorManager0);
+    MakeDeclaredNamesUnique makeDeclaredNamesUnique0 = new MakeDeclaredNamesUnique();
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, makeDeclaredNamesUnique0);
+    peepholeFoldConstants0.beginTraversal(nodeTraversal0);
+    Node node1 = new Node(22, node0, 10, (-163));
+    peepholeFoldConstants0.optimizeSubtree(node1);
+    node1.addChildToFront(node0);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",0,
+project,0,test111121,"public void test111121() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(2161, 2161, 2161);
+    Node node1 = new Node(11, node0, node0, node0, node0, 40, 9);
+    Node node2 = Node.newNumber((-1741.1881612608));
+    node1.addChildToFront(node2);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertNotNull(node3);
+}",0,
+project,0,test111122,"public void test111122() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(2161, 2161, 2161);
+    Node node1 = new Node(11, node0, node0, node0, node0, 40, 9);
+    Node node2 = Node.newNumber((-1741.1881612608));
+    node1.addChildToFront(node2);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertTrue(node3.hasChildren());
+}",0,
+project,0,test112123,"public void test112123() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((double) 66);
+    Node node1 = new Node(18, node0, 23, 21);
+    Node node2 = Node.newNumber((double) 13);
+    node1.addChildToFront(node2);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.AbstractPeepholeOptimization"", e);
+    }
+}",0,
+project,0,test113124,"public void test113124() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(6, 6, 6);
+    Node node1 = new Node(18, node0, 23, 21);
+    Node node2 = Node.newNumber((double) 13);
+    node1.addChildToFront(node2);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(23, node3.getLineno());
+}",0,
+project,0,test114125,"public void test114125() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((double) (-1651));
+    Node node1 = new Node(18, node0, 23, 21);
+    Node node2 = Node.newNumber((double) 13);
+    node1.addChildToFront(node2);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.AbstractPeepholeOptimization"", e);
+    }
+}",0,
+project,0,test115126,"public void test115126() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((double) 6);
+    Node node1 = new Node(18, node0, 23, 21);
+    Node node2 = Node.newNumber((double) 13);
+    node1.addChildToFront(node2);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",0,
+project,0,test116127,"public void test116127() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(74, 74, 74);
+    Node node1 = new Node(14, node0, 16, 46);
+    Node node2 = Node.newNumber(621.4443450634527);
+    node1.addChildToFront(node2);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertEquals(42, Node.IS_CONSTANT_NAME);
+}",0,
+project,0,test117128,"public void test117128() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(1447);
+    Node node1 = new Node(40, node0, 40, 7);
+    Node node2 = new Node(4, 0, 25);
+    Node[] nodeArray0 = new Node[1];
+    nodeArray0[0] = node2;
+    Node node3 = new Node(16, nodeArray0);
+    node3.addChildToFront(node1);
+    Node node4 = peepholeFoldConstants0.optimizeSubtree(node3);
+    assertEquals(44, Node.IS_VAR_ARGS_PARAM);
+}",0,
+project,0,test118129,"public void test118129() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(1512);
+    Node node1 = new Node(41, node0, 40, 7);
+    Node node2 = node1.cloneTree();
+    Node[] nodeArray0 = new Node[1];
+    nodeArray0[0] = node1;
+    Node node3 = new Node(16, nodeArray0);
+    node3.addChildToFront(node2);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node3);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",0,
+project,0,test119130,"public void test119130() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(100, 100, 100);
+    Node node1 = new Node(42);
+    Node node2 = new Node(16, node1, node0, 32, 42);
+    Node node3 = peepholeFoldConstants0.optimizeSubtree(node2);
+    assertEquals(1, Node.LEFT);
+}",0,
+project,0,test120131,"public void test120131() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(112);
+    Node node1 = new Node(44, node0, node0, node0);
+    Node node2 = node1.cloneTree();
+    Node[] nodeArray0 = new Node[1];
+    nodeArray0[0] = node1;
+    Node node3 = new Node(16, nodeArray0);
+    node3.addChildToFront(node2);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node3);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",0,
+project,0,test121132,"public void test121132() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(1447, 1447, 1447);
+    Node node1 = new Node(42, node0, 40, 7);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    Node node3 = node1.cloneTree();
+    Node[] nodeArray0 = new Node[1];
+    nodeArray0[0] = node2;
+    Node node4 = new Node(16, nodeArray0);
+    node4.addChildToFront(node3);
+    Node node5 = peepholeFoldConstants0.optimizeSubtree(node4);
+    assertNotSame(node5, node0);
+}",0,
+project,0,test122133,"public void test122133() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(1447, 1447, 1447);
+    Node node1 = new Node(40, node0, 40, 7);
+    Node node2 = node1.cloneTree();
+    Node[] nodeArray0 = new Node[1];
+    nodeArray0[0] = node1;
+    Node node3 = new Node(16, nodeArray0);
+    node3.addChildToFront(node2);
+    Node node4 = peepholeFoldConstants0.optimizeSubtree(node3);
+    assertSame(node3, node4);
+}",0,
+project,0,test123134,"public void test123134() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = Node.newNumber((double) 20);
+    Node node1 = new Node(14, node0, 16, 46);
+    Node node2 = Node.newNumber((double) 36);
+    node1.addChildToFront(node2);
+    // Undeclared exception!
+    try {
+        peepholeFoldConstants0.optimizeSubtree(node1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.PeepholeFoldConstants"", e);
+    }
+}",0,
+project,0,test124135,"public void test124135() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(30);
+    Node node1 = new Node(25, node0, node0);
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node0);
+    assertEquals(0, node2.getChildCount());
+}",0,"assertEquals(0, node2.getChildCount())"
+project,0,test125136,"public void test125136() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node0 = new Node(37);
+    Node node1 = peepholeFoldConstants0.optimizeSubtree(node0);
+    assertEquals(43, Node.IS_OPTIONAL_PARAM);
+}",0,
+project,0,test126137,"public void test126137() throws Throwable {
+    Node node0 = new Node(1, 1, 1);
+    Node node1 = new Node(33, node0, 1, 36);
+    node1.addChildToFront(node1);
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants();
+    Node node2 = peepholeFoldConstants0.optimizeSubtree(node1);
+    assertTrue(node2.hasMoreThanOneChild());
+}",0,assertTrue(node2.hasMoreThanOneChild())

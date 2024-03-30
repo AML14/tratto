@@ -1,0 +1,85 @@
+focal_method,test_prefix,docstring
+"@Override
+public void process(Node externs, Node root) {
+    GlobalNamespace namespace;
+    if (collapsePropertiesOnExternTypes) {
+        namespace = new GlobalNamespace(compiler, externs, root);
+    } else {
+        namespace = new GlobalNamespace(compiler, root);
+    }
+    if (inlineAliases) {
+        inlineAliases(namespace);
+    }
+    nameMap = namespace.getNameIndex();
+    globalNames = namespace.getNameForest();
+    checkNamespaces();
+    for (Name n : globalNames) {
+        flattenReferencesToCollapsibleDescendantNames(n, n.name);
+    }
+    // We collapse property definitions after collapsing property references
+    // because this step can alter the parse tree above property references,
+    // invalidating the node ancestry stored with each reference.
+    for (Name n : globalNames) {
+        collapseDeclarationOfNameAndDescendants(n, n.name);
+    }
+}","public void test00() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""function JSCompiler_get(JSCompiler_get_name) {  return function() {return this[JSCompiler_get_name]}}"");
+    CollapseProperties collapseProperties0 = new CollapseProperties(compiler0, false, true);
+    collapseProperties0.process(node0, node0);
+    assertEquals(31, Node.INCRDECR_PROP);
+}",""
+"public int getWarningCount() {
+    return errorManager.getWarningCount();
+}","public void test11() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""function JSCompiler_get(JSCompiler_get_name) {  return function() {return this[JSCompiler_get_name]}}"");
+    CollapseProperties collapseProperties0 = new CollapseProperties(compiler0, true, true);
+    collapseProperties0.process(node0, node0);
+    assertEquals(0, compiler0.getWarningCount());
+}","/**
+ * Gets the number of warnings.
+ */"
+"@Override
+public void process(Node externs, Node root) {
+    GlobalNamespace namespace;
+    if (collapsePropertiesOnExternTypes) {
+        namespace = new GlobalNamespace(compiler, externs, root);
+    } else {
+        namespace = new GlobalNamespace(compiler, root);
+    }
+    if (inlineAliases) {
+        inlineAliases(namespace);
+    }
+    nameMap = namespace.getNameIndex();
+    globalNames = namespace.getNameForest();
+    checkNamespaces();
+    for (Name n : globalNames) {
+        flattenReferencesToCollapsibleDescendantNames(n, n.name);
+    }
+    // We collapse property definitions after collapsing property references
+    // because this step can alter the parse tree above property references,
+    // invalidating the node ancestry stored with each reference.
+    for (Name n : globalNames) {
+        collapseDeclarationOfNameAndDescendants(n, n.name);
+    }
+}","public void test22() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""function JSCompiler_get(JSCompiler_get_name) {  return function() {return this[JSCompiler_get_name]}}"");
+    CollapseProperties collapseProperties0 = new CollapseProperties(compiler0, false, false);
+    collapseProperties0.process(node0, node0);
+    assertEquals((-3), Node.LOCAL_BLOCK_PROP);
+}",""
+"public int getWarningCount() {
+    return errorManager.getWarningCount();
+}","public void test33() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""function SCompiler_get(JSCompiler_get_name) { return function() {return this[JSCompiler_get_name]}}"");
+    Node node1 = Normalize.parseAndNormalizeTestCode(compiler0, ""function SCompiler_get(JSCompiler_get_name) { return function() {return this[JSCompiler_get_name]}}"", ""function SCompiler_get(JSCompiler_get_name) { return function() {return this[JSCompiler_get_name]}}"");
+    node0.addChildToFront(node1);
+    CollapseProperties collapseProperties0 = new CollapseProperties(compiler0, false, false);
+    collapseProperties0.process(node0, node0);
+    assertEquals(0, compiler0.getWarningCount());
+}","/**
+ * Gets the number of warnings.
+ */"

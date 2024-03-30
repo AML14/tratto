@@ -1,0 +1,23 @@
+{
+  "test00" : {
+    "methodSignature" : "public abstract long set(long instant, int value)",
+    "methodName" : "set",
+    "className" : "org.joda.time.field.LenientDateTimeField",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test00() throws Throwable {\n    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstanceUTC();\n    DateTimeField dateTimeField0 = buddhistChronology0.era();\n    DateTimeField dateTimeField1 = LenientDateTimeField.getInstance(dateTimeField0, buddhistChronology0);\n    dateTimeField1.set((long) 1, 1);\n}",
+    "testName" : "test00"
+  },
+  "test11" : {
+    "methodSignature" : "public static DateTimeField getInstance(DateTimeField field, Chronology base)",
+    "methodName" : "getInstance",
+    "className" : "org.joda.time.field.LenientDateTimeField",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test11() throws Throwable {\n    DateTimeField dateTimeField0 = LenientDateTimeField.getInstance((DateTimeField) null, (Chronology) null);\n}",
+    "testName" : "test11"
+  },
+  "test22" : {
+    "methodSignature" : "public static DateTimeField getInstance(DateTimeField field, Chronology base)",
+    "methodName" : "getInstance",
+    "className" : "org.joda.time.field.LenientDateTimeField",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test22() throws Throwable {\n    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance();\n    DateTimeField dateTimeField0 = buddhistChronology0.halfdayOfDay();\n    LenientDateTimeField lenientDateTimeField0 = new LenientDateTimeField(dateTimeField0, buddhistChronology0);\n    StrictDateTimeField strictDateTimeField0 = new StrictDateTimeField(lenientDateTimeField0);\n    DateTimeField dateTimeField1 = LenientDateTimeField.getInstance(strictDateTimeField0, buddhistChronology0);\n}",
+    "testName" : "test22"
+  }
+}

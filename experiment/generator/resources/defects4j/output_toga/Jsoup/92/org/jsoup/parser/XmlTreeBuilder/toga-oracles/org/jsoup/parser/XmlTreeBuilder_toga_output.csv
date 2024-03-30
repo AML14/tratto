@@ -1,0 +1,94 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    XmlTreeBuilder xmlTreeBuilder0 = new XmlTreeBuilder();
+    Parser parser0 = Parser.htmlParser();
+    xmlTreeBuilder0.parseFragment(""k`FVihJ<?hz"", (Element) null, ""k`FVihJ<?hz"", parser0);
+}",0,
+project,0,test011,"public void test011() throws Throwable {
+    XmlTreeBuilder xmlTreeBuilder0 = new XmlTreeBuilder();
+    Token.Doctype token_Doctype0 = new Token.Doctype();
+    // Undeclared exception!
+    try {
+        xmlTreeBuilder0.process(token_Doctype0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.XmlTreeBuilder"", e);
+    }
+}",0,
+project,0,test022,"public void test022() throws Throwable {
+    XmlTreeBuilder xmlTreeBuilder0 = new XmlTreeBuilder();
+    PipedReader pipedReader0 = new PipedReader();
+    // Undeclared exception!
+    try {
+        xmlTreeBuilder0.parse(pipedReader0, ""org.jsoup.parser.XmlTreeBuilder"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Must be true
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test033,"public void test033() throws Throwable {
+    XmlTreeBuilder xmlTreeBuilder0 = new XmlTreeBuilder();
+    xmlTreeBuilder0.parse(""k`FVKhJ<?hz"", ""k`FVKhJ<?hz"");
+    Token.StartTag token_StartTag0 = new Token.StartTag();
+    Attributes attributes0 = new Attributes();
+    Token.StartTag token_StartTag1 = token_StartTag0.nameAttr(""k`FVKhJ<?hz"", attributes0);
+    token_StartTag1.selfClosing = true;
+    Element element0 = xmlTreeBuilder0.insert(token_StartTag0);
+    assertEquals(""k`FVKhJ<?hz"", element0.tagName());
+}",0,assertNotNull(element0.tagName())
+project,0,test044,"public void test044() throws Throwable {
+    XmlTreeBuilder xmlTreeBuilder0 = new XmlTreeBuilder();
+    xmlTreeBuilder0.parse(""k`FVKhJ<?hz"", ""k`FVKhJ<?hz"");
+    Token.StartTag token_StartTag0 = new Token.StartTag();
+    Attributes attributes0 = new Attributes();
+    Token.StartTag token_StartTag1 = token_StartTag0.nameAttr(""k`FVKhJ<?hz"", attributes0);
+    token_StartTag1.selfClosing = true;
+    token_StartTag0.nameAttr(""u"", attributes0);
+    Element element0 = xmlTreeBuilder0.insert(token_StartTag1);
+    assertEquals(""k`FVKhJ<?hz"", element0.baseUri());
+}",0,assertNotNull(element0.baseUri())
+project,0,test055,"public void test055() throws Throwable {
+    XmlTreeBuilder xmlTreeBuilder0 = new XmlTreeBuilder();
+    Token.Comment token_Comment0 = new Token.Comment();
+    // Undeclared exception!
+    try {
+        xmlTreeBuilder0.process(token_Comment0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.TreeBuilder"", e);
+    }
+}",0,
+project,0,test077,"public void test077() throws Throwable {
+    XmlTreeBuilder xmlTreeBuilder0 = new XmlTreeBuilder();
+    Document document0 = xmlTreeBuilder0.parse(""k`-Vh7c[<?z"", ""k`-Vh7c[<?z"");
+    assertEquals(""k`-Vh7c[<?z"", document0.baseUri());
+}",0,assertNotNull(document0.baseUri())
+project,0,test099,"public void test099() throws Throwable {
+    XmlTreeBuilder xmlTreeBuilder0 = new XmlTreeBuilder();
+    xmlTreeBuilder0.parse(""org.jsoup.parser.XmlTreeBuilder$1"", ""org.jsoup.parser.XmlTreeBuilder$1"");
+    boolean boolean0 = xmlTreeBuilder0.processEndTag(""org.jsoup.parser.XmlTreeBuilder$1"");
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test1010,"public void test1010() throws Throwable {
+    XmlTreeBuilder xmlTreeBuilder0 = new XmlTreeBuilder();
+    xmlTreeBuilder0.parse(""k`FVKhJ<?hz"", ""k`FVKhJ<?hz"");
+    xmlTreeBuilder0.processStartTag(""k`FVKhJ<?hz"");
+    boolean boolean0 = xmlTreeBuilder0.processEndTag(""k`FVKhJ<?hz"");
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test1111,"public void test1111() throws Throwable {
+    XmlTreeBuilder xmlTreeBuilder0 = new XmlTreeBuilder();
+    xmlTreeBuilder0.parse(""Scrpz2IDat/nYTYgOpTn"", ""Scrpz2IDat/nYTYgOpTn"");
+    xmlTreeBuilder0.processStartTag(""Scrpz2IDat/nYTYgOpTn"");
+    boolean boolean0 = xmlTreeBuilder0.processEndTag(""#document"");
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)

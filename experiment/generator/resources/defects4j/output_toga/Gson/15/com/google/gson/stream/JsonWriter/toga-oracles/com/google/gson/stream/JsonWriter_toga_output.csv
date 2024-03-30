@@ -1,0 +1,537 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    JsonWriter jsonWriter1 = jsonWriter0.beginArray();
+    JsonWriter jsonWriter2 = jsonWriter1.name(""Xvw&Uz};,bZFt!42"");
+    // Undeclared exception!
+    try {
+        jsonWriter2.beginArray();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Nesting problem.
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}",0,
+project,0,test011,"public void test011() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.beginArray();
+    // Undeclared exception!
+    try {
+        jsonWriter0.endObject();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Nesting problem.
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}",1,
+project,0,test044,"public void test044() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.setHtmlSafe(true);
+    jsonWriter0.value(true);
+    assertTrue(jsonWriter0.isHtmlSafe());
+}",0,assertTrue(jsonWriter0.isHtmlSafe())
+project,0,test077,"public void test077() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    Double double0 = new Double((-2415.298894));
+    jsonWriter0.setHtmlSafe(true);
+    jsonWriter0.value((Number) double0);
+    assertTrue(jsonWriter0.isHtmlSafe());
+}",0,assertFalse(jsonWriter0.isHtmlSafe())
+project,0,test088,"public void test088() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    Double double0 = new Double((-2415.298894));
+    jsonWriter0.setSerializeNulls(false);
+    JsonWriter jsonWriter1 = jsonWriter0.value((Number) double0);
+    assertFalse(jsonWriter1.isHtmlSafe());
+}",0,assertTrue(jsonWriter1.isHtmlSafe())
+project,0,test1010,"public void test1010() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    Boolean boolean0 = Boolean.FALSE;
+    jsonWriter0.setHtmlSafe(true);
+    jsonWriter0.value(boolean0);
+    assertTrue(jsonWriter0.isHtmlSafe());
+}",0,assertFalse(jsonWriter0.isHtmlSafe())
+project,0,test1212,"public void test1212() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.setLenient(true);
+    JsonWriter jsonWriter1 = jsonWriter0.value((long) 0);
+    assertTrue(jsonWriter1.getSerializeNulls());
+}",0,assertTrue(jsonWriter1.getSerializeNulls())
+project,0,test1313,"public void test1313() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.setHtmlSafe(true);
+    jsonWriter0.value((long) 'p');
+    assertTrue(jsonWriter0.isHtmlSafe());
+}",0,assertTrue(jsonWriter0.isHtmlSafe())
+project,0,test1515,"public void test1515() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.setLenient(true);
+    jsonWriter0.setHtmlSafe(true);
+    jsonWriter0.beginObject();
+    jsonWriter0.endObject();
+    jsonWriter0.value(0.0);
+    assertTrue(jsonWriter0.isHtmlSafe());
+}",0,assertTrue(jsonWriter0.isHtmlSafe())
+project,0,test1718,"public void test1718() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.setLenient(true);
+    jsonWriter0.nullValue();
+    assertTrue(jsonWriter0.getSerializeNulls());
+}",0,assertTrue(jsonWriter0.getSerializeNulls())
+project,0,test1820,"public void test1820() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.setHtmlSafe(true);
+    jsonWriter0.nullValue();
+    assertTrue(jsonWriter0.isHtmlSafe());
+}",0,assertTrue(jsonWriter0.isHtmlSafe())
+project,0,test1921,"public void test1921() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.setLenient(true);
+    JsonWriter jsonWriter1 = jsonWriter0.name(""&"");
+    assertTrue(jsonWriter1.getSerializeNulls());
+}",0,assertTrue(jsonWriter1.getSerializeNulls())
+project,0,test2022,"public void test2022() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.setHtmlSafe(true);
+    jsonWriter0.name(""&"");
+    assertTrue(jsonWriter0.isHtmlSafe());
+}",0,assertTrue(jsonWriter0.isHtmlSafe())
+project,0,test2123,"public void test2123() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.setSerializeNulls(false);
+    JsonWriter jsonWriter1 = jsonWriter0.name("""");
+    assertFalse(jsonWriter1.getSerializeNulls());
+}",0,assertFalse(jsonWriter1.getSerializeNulls())
+project,0,test2326,"public void test2326() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.setHtmlSafe(true);
+    jsonWriter0.jsonValue(""=1A5/g7.E^"");
+    assertTrue(jsonWriter0.isHtmlSafe());
+}",0,assertTrue(jsonWriter0.isHtmlSafe())
+project,0,test2528,"public void test2528() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.setLenient(true);
+    jsonWriter0.isLenient();
+    assertTrue(jsonWriter0.getSerializeNulls());
+}",0,assertTrue(jsonWriter0.getSerializeNulls())
+project,0,test2629,"public void test2629() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.setHtmlSafe(true);
+    boolean boolean0 = jsonWriter0.isHtmlSafe();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2730,"public void test2730() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(1348);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.setSerializeNulls(false);
+    boolean boolean0 = jsonWriter0.getSerializeNulls();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2932,"public void test2932() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    JsonWriter jsonWriter1 = jsonWriter0.beginObject();
+    jsonWriter1.setHtmlSafe(true);
+    jsonWriter0.endObject();
+    assertTrue(jsonWriter0.isHtmlSafe());
+}",0,
+project,0,test3336,"public void test3336() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.beginObject();
+    // Undeclared exception!
+    try {
+        jsonWriter0.value(true);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Nesting problem.
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}",0,
+project,0,test3437,"public void test3437() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(1);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    JsonWriter jsonWriter1 = jsonWriter0.value(false);
+    Boolean boolean0 = Boolean.valueOf(false);
+    // Undeclared exception!
+    try {
+        jsonWriter1.value(boolean0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // JSON must have only one top-level value.
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}",0,
+project,0,test3538,"public void test3538() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    Byte byte0 = new Byte((byte) (-27));
+    JsonWriter jsonWriter1 = jsonWriter0.value((Number) byte0);
+    // Undeclared exception!
+    try {
+        jsonWriter1.value((-1L));
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // JSON must have only one top-level value.
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}",0,
+project,0,test3639,"public void test3639() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.beginArray();
+    JsonWriter jsonWriter1 = jsonWriter0.endArray();
+    // Undeclared exception!
+    try {
+        jsonWriter1.value((-1.0));
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // JSON must have only one top-level value.
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}",1,
+project,0,test3740,"public void test3740() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(1348);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    // Undeclared exception!
+    try {
+        jsonWriter0.setIndent((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}",0,
+project,0,test3942,"public void test3942() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    JsonWriter jsonWriter1 = jsonWriter0.beginObject();
+    jsonWriter0.name("""");
+    Short short0 = new Short((short) 10);
+    jsonWriter1.value((Number) short0);
+    Float float0 = new Float((float) 0);
+    // Undeclared exception!
+    try {
+        jsonWriter1.value((Number) float0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Nesting problem.
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}",0,
+project,0,test4043,"public void test4043() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(1348);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.beginObject();
+    // Undeclared exception!
+    try {
+        jsonWriter0.jsonValue(""=1A5/g7.E^"");
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Nesting problem.
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}",0,
+project,0,test4145,"public void test4145() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(1348);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    JsonWriter jsonWriter1 = jsonWriter0.beginArray();
+    jsonWriter1.jsonValue("":V"");
+    Double double0 = new Double((-2415.298894));
+    jsonWriter1.value((Number) double0);
+    assertTrue(jsonWriter0.getSerializeNulls());
+}",0,assertFalse(jsonWriter0.getSerializeNulls())
+project,0,test4448,"public void test4448() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    try {
+        jsonWriter0.close();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Incomplete document
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}",1,
+project,0,test4549,"public void test4549() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.beginArray();
+    try {
+        jsonWriter0.close();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Incomplete document
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}",1,
+project,0,test4650,"public void test4650() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(38);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    JsonWriter jsonWriter1 = jsonWriter0.value(0L);
+    jsonWriter1.close();
+    // Undeclared exception!
+    try {
+        jsonWriter0.flush();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // JsonWriter is closed.
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}",0,
+project,0,test4751,"public void test4751() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(1348);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.flush();
+    assertTrue(jsonWriter0.getSerializeNulls());
+}",0,assertFalse(jsonWriter0.getSerializeNulls())
+project,0,test4852,"public void test4852() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    Double double0 = new Double((-2415.298894));
+    jsonWriter0.setLenient(true);
+    jsonWriter0.value((Number) double0);
+    assertTrue(jsonWriter0.isLenient());
+}",0,assertTrue(jsonWriter0.isLenient())
+project,0,test4953,"public void test4953() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    JsonWriter jsonWriter1 = jsonWriter0.value((Number) null);
+    // Undeclared exception!
+    try {
+        jsonWriter1.beginObject();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // JSON must have only one top-level value.
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}",0,
+project,0,test5054,"public void test5054() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    JsonWriter jsonWriter1 = jsonWriter0.value((-1.0));
+    // Undeclared exception!
+    try {
+        jsonWriter1.value("""");
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // JSON must have only one top-level value.
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}",0,
+project,0,test5256,"public void test5256() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    JsonWriter jsonWriter1 = jsonWriter0.name(""w"");
+    assertTrue(jsonWriter1.getSerializeNulls());
+}",0,assertFalse(jsonWriter1.getSerializeNulls())
+project,0,test5257,"public void test5257() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    JsonWriter jsonWriter1 = jsonWriter0.name(""w"");
+    jsonWriter1.setSerializeNulls(false);
+    assertFalse(jsonWriter0.getSerializeNulls());
+}",0,
+project,0,test5359,"public void test5359() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.name(""w"");
+    // Undeclared exception!
+    try {
+        jsonWriter0.nullValue();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Nesting problem.
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}",0,
+project,0,test5562,"public void test5562() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(1);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.value((String) null);
+    assertTrue(jsonWriter0.getSerializeNulls());
+}",0,assertFalse(jsonWriter0.getSerializeNulls())
+project,0,test5663,"public void test5663() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.jsonValue("""");
+    jsonWriter0.close();
+    // Undeclared exception!
+    try {
+        jsonWriter0.name(""YhZIkLSDJ /X7,}r"");
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // JsonWriter is closed.
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}",0,
+project,0,test5764,"public void test5764() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    JsonWriter jsonWriter1 = jsonWriter0.name(""YhZIkLSDJ /X7,}r"");
+    // Undeclared exception!
+    try {
+        jsonWriter1.name(""YhZIkLSDJ /X7,}r"");
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}",0,
+project,0,test5865,"public void test5865() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    // Undeclared exception!
+    try {
+        jsonWriter0.name((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // name == null
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}",0,
+project,0,test5966,"public void test5966() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(38);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    JsonWriter jsonWriter1 = jsonWriter0.value(0L);
+    jsonWriter1.close();
+    // Undeclared exception!
+    try {
+        jsonWriter1.endArray();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // JsonWriter is closed.
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}",0,
+project,0,test6067,"public void test6067() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.setIndent("""");
+    assertTrue(jsonWriter0.getSerializeNulls());
+}",0,assertFalse(jsonWriter0.getSerializeNulls())
+project,0,test6168,"public void test6168() throws Throwable {
+    JsonWriter jsonWriter0 = null;
+    try {
+        jsonWriter0 = new JsonWriter((Writer) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // out == null
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}",1,
+project,0,test6269,"public void test6269() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    JsonWriter jsonWriter1 = jsonWriter0.beginObject();
+    JsonWriter jsonWriter2 = jsonWriter1.name("""");
+    JsonWriter jsonWriter3 = jsonWriter0.beginArray();
+    jsonWriter3.name("">V{+[ex"");
+    // Undeclared exception!
+    try {
+        jsonWriter2.endArray();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Dangling name: >V{+[ex
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}",0,
+project,0,test6370,"public void test6370() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    // Undeclared exception!
+    try {
+        jsonWriter0.endObject();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Nesting problem.
+        //
+        verifyException(""com.google.gson.stream.JsonWriter"", e);
+    }
+}",1,
+project,0,test6471,"public void test6471() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(1348);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    boolean boolean0 = jsonWriter0.getSerializeNulls();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test6572,"public void test6572() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter(0);
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.isLenient();
+    assertTrue(jsonWriter0.getSerializeNulls());
+}",0,assertFalse(jsonWriter0.getSerializeNulls())
+project,0,test6674,"public void test6674() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    JsonWriter jsonWriter1 = jsonWriter0.beginArray();
+    Double double0 = new Double((-2415.298894));
+    jsonWriter1.value((Number) double0);
+    jsonWriter1.jsonValue(""=1A5/g7.E^"");
+    assertTrue(jsonWriter0.getSerializeNulls());
+}",0,assertFalse(jsonWriter0.getSerializeNulls())
+project,0,test6775,"public void test6775() throws Throwable {
+    StringWriter stringWriter0 = new StringWriter();
+    JsonWriter jsonWriter0 = new JsonWriter(stringWriter0);
+    jsonWriter0.isHtmlSafe();
+    assertTrue(jsonWriter0.getSerializeNulls());
+}",0,assertFalse(jsonWriter0.getSerializeNulls())

@@ -1,0 +1,246 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    PosixParser posixParser0 = new PosixParser();
+    Options options0 = new Options();
+    CommandLine commandLine0 = posixParser0.parse(options0, (String[]) null);
+    assertNotNull(commandLine0);
+}",1,
+project,0,test011,"public void test011() throws Throwable {
+    Options options0 = new Options();
+    GnuParser gnuParser0 = new GnuParser();
+    Properties properties0 = new Properties();
+    String[] stringArray0 = new String[1];
+    stringArray0[0] = ""-"";
+    CommandLine commandLine0 = gnuParser0.parse(options0, stringArray0, properties0, true);
+    assertNotNull(commandLine0);
+}",0,
+project,0,test022,"public void test022() throws Throwable {
+    PosixParser posixParser0 = new PosixParser();
+    Options options0 = new Options();
+    String[] stringArray0 = new String[7];
+    stringArray0[0] = ""YTc*cX :#5_XKki4L-A"";
+    stringArray0[1] = ""yes"";
+    stringArray0[2] = ""7"";
+    stringArray0[3] = ""7"";
+    stringArray0[4] = ""--"";
+    stringArray0[5] = ""YTc*cX :#5_XKki4L-A"";
+    stringArray0[6] = ""--"";
+    posixParser0.parse(options0, stringArray0, (Properties) null);
+    options0.addOption(""7"", ""7"", true, ""7"");
+    Option option0 = new Option(""7"", true, ""yes"");
+    ListIterator<String> listIterator0 = (ListIterator<String>) mock(ListIterator.class, new ViolatedAssumptionAnswer());
+    doReturn(true, true).when(listIterator0).hasNext();
+    doReturn(""7"", ""-7"").when(listIterator0).next();
+    doReturn(""--"").when(listIterator0).previous();
+    posixParser0.processArgs(option0, listIterator0);
+    assertNull(option0.getLongOpt());
+}",0,assertNotNull(option0.getLongOpt())
+project,0,test033,"public void test033() throws Throwable {
+    Options options0 = new Options();
+    GnuParser gnuParser0 = new GnuParser();
+    String[] stringArray0 = new String[1];
+    stringArray0[0] = ""-"";
+    Properties properties0 = new Properties();
+    CommandLine commandLine0 = gnuParser0.parse(options0, stringArray0, properties0);
+    assertNotNull(commandLine0);
+}",0,assertNotNull(commandLine0)
+project,0,test044,"public void test044() throws Throwable {
+    Options options0 = new Options();
+    GnuParser gnuParser0 = new GnuParser();
+    Properties properties0 = new Properties();
+    String[] stringArray0 = new String[1];
+    stringArray0[0] = ""-}cc"";
+    try {
+        gnuParser0.parse(options0, stringArray0, properties0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Unrecognized option: -}cc
+        //
+        verifyException(""org.apache.commons.cli.Parser"", e);
+    }
+}",0,
+project,0,test055,"public void test055() throws Throwable {
+    Options options0 = new Options();
+    GnuParser gnuParser0 = new GnuParser();
+    Properties properties0 = new Properties();
+    String[] stringArray0 = new String[1];
+    stringArray0[0] = ""u7a}[2=V"";
+    CommandLine commandLine0 = gnuParser0.parse(options0, stringArray0, properties0, true);
+    assertNotNull(commandLine0);
+}",0,
+project,0,test066,"public void test066() throws Throwable {
+    PosixParser posixParser0 = new PosixParser();
+    Options options0 = new Options();
+    String[] stringArray0 = new String[0];
+    Properties properties0 = new Properties();
+    properties0.put("""", posixParser0);
+    // Undeclared exception!
+    try {
+        posixParser0.parse(options0, stringArray0, properties0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.cli.Parser"", e);
+    }
+}",0,
+project,0,test077,"public void test077() throws Throwable {
+    Options options0 = new Options();
+    OptionGroup optionGroup0 = new OptionGroup();
+    optionGroup0.setRequired(true);
+    BasicParser basicParser0 = new BasicParser();
+    options0.addOptionGroup(optionGroup0);
+    try {
+        basicParser0.parse(options0, (String[]) null, true);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Missing required option: []
+        //
+        verifyException(""org.apache.commons.cli.Parser"", e);
+    }
+}",0,
+project,0,test088,"public void test088() throws Throwable {
+    Options options0 = new Options();
+    OptionGroup optionGroup0 = new OptionGroup();
+    optionGroup0.setRequired(true);
+    Options options1 = options0.addOptionGroup(optionGroup0);
+    BasicParser basicParser0 = new BasicParser();
+    options1.addOptionGroup(optionGroup0);
+    try {
+        basicParser0.parse(options1, (String[]) null, false);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Missing required options: [][]
+        //
+        verifyException(""org.apache.commons.cli.Parser"", e);
+    }
+}",1,
+project,0,test099,"public void test099() throws Throwable {
+    Options options0 = new Options();
+    Options options1 = options0.addOption((String) null, true, ""true"");
+    String[] stringArray0 = new String[0];
+    GnuParser gnuParser0 = new GnuParser();
+    Properties properties0 = new Properties();
+    gnuParser0.parse(options1, stringArray0, properties0, true);
+    LinkedList<Object> linkedList0 = new LinkedList<Object>();
+    ListIterator<Object> listIterator0 = linkedList0.listIterator();
+    try {
+        gnuParser0.processOption((String) null, listIterator0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Missing argument for option:null
+        //
+        verifyException(""org.apache.commons.cli.Parser"", e);
+    }
+}",0,
+project,0,test1010,"public void test1010() throws Throwable {
+    PosixParser posixParser0 = new PosixParser();
+    Options options0 = new Options();
+    String[] stringArray0 = new String[0];
+    Properties properties0 = new Properties();
+    posixParser0.parse(options0, stringArray0, properties0);
+    Option option0 = new Option((String) null, (String) null);
+    ListIterator<String> listIterator0 = (ListIterator<String>) mock(ListIterator.class, new ViolatedAssumptionAnswer());
+    doReturn(true).when(listIterator0).hasNext();
+    doReturn((String) null).when(listIterator0).next();
+    doReturn((Object) null).when(listIterator0).previous();
+    try {
+        posixParser0.processArgs(option0, listIterator0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Missing argument for option:null
+        //
+        verifyException(""org.apache.commons.cli.Parser"", e);
+    }
+}",1,
+project,0,test1111,"public void test1111() throws Throwable {
+    PosixParser posixParser0 = new PosixParser();
+    Options options0 = new Options();
+    String[] stringArray0 = new String[7];
+    stringArray0[0] = ""YTc*cX :#5_XKki4CXA"";
+    stringArray0[1] = ""yes"";
+    stringArray0[2] = ""7"";
+    stringArray0[3] = ""7"";
+    stringArray0[4] = ""YTc*cX :#5_XKki4CXA"";
+    stringArray0[5] = ""YTc*cX :#5_XKki4CXA"";
+    stringArray0[6] = ""YTc*cX :#5_XKki4CXA"";
+    posixParser0.parse(options0, stringArray0, (Properties) null);
+    options0.addOption(""7"", ""7"", true, ""7"");
+    Option option0 = new Option(""yes"", ""yes"");
+    ListIterator<String> listIterator0 = (ListIterator<String>) mock(ListIterator.class, new ViolatedAssumptionAnswer());
+    doReturn(true).when(listIterator0).hasNext();
+    doReturn(""7"").when(listIterator0).next();
+    doReturn(""YTc*cX :#5_XKki4CXA"").when(listIterator0).previous();
+    try {
+        posixParser0.processArgs(option0, listIterator0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Missing argument for option:yes
+        //
+        verifyException(""org.apache.commons.cli.Parser"", e);
+    }
+}",1,
+project,0,test1212,"public void test1212() throws Throwable {
+    PosixParser posixParser0 = new PosixParser();
+    Option option0 = new Option("""", ""}uOe;`_98Lf"");
+    option0.setOptionalArg(true);
+    ListIterator<String> listIterator0 = (ListIterator<String>) mock(ListIterator.class, new ViolatedAssumptionAnswer());
+    doReturn(false).when(listIterator0).hasNext();
+    posixParser0.processArgs(option0, listIterator0);
+    assertEquals(""arg"", option0.getArgName());
+}",0,assertNotNull(option0.getArgName())
+project,0,test1313,"public void test1313() throws Throwable {
+    Options options0 = new Options();
+    OptionGroup optionGroup0 = new OptionGroup();
+    Option option0 = new Option(""LwnQ"", true, ""LwnQ"");
+    OptionGroup optionGroup1 = optionGroup0.addOption(option0);
+    Options options1 = options0.addOptionGroup(optionGroup1);
+    Properties properties0 = new Properties();
+    GnuParser gnuParser0 = new GnuParser();
+    String[] stringArray0 = new String[5];
+    stringArray0[0] = ""-7a}[2cV"";
+    option0.setRequired(true);
+    gnuParser0.parse(options1, stringArray0, properties0, true);
+    LinkedList<Object> linkedList0 = new LinkedList<Object>();
+    ListIterator<Object> listIterator0 = linkedList0.listIterator();
+    try {
+        gnuParser0.processOption(""LwnQ"", listIterator0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Missing argument for option:LwnQ
+        //
+        verifyException(""org.apache.commons.cli.Parser"", e);
+    }
+}",0,
+project,0,test1414,"public void test1414() throws Throwable {
+    Options options0 = new Options();
+    OptionGroup optionGroup0 = new OptionGroup();
+    Option option0 = new Option(""LwnQ"", true, ""LwnQ"");
+    OptionGroup optionGroup1 = optionGroup0.addOption(option0);
+    Options options1 = options0.addOptionGroup(optionGroup1);
+    Properties properties0 = new Properties();
+    optionGroup0.setRequired(true);
+    GnuParser gnuParser0 = new GnuParser();
+    String[] stringArray0 = new String[5];
+    stringArray0[0] = ""-7a}[2cV"";
+    gnuParser0.parse(options1, stringArray0, properties0, true);
+    LinkedList<Object> linkedList0 = new LinkedList<Object>();
+    ListIterator<Object> listIterator0 = linkedList0.listIterator();
+    try {
+        gnuParser0.processOption(""LwnQ"", listIterator0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Missing argument for option:LwnQ
+        //
+        verifyException(""org.apache.commons.cli.Parser"", e);
+    }
+}",0,

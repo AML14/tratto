@@ -1,0 +1,498 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    Years years0 = Years.MIN_VALUE;
+    Years years1 = Years.TWO;
+    boolean boolean0 = years0.equals(years1);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test001,"public void test001() throws Throwable {
+    Years years0 = Years.MIN_VALUE;
+    Years years1 = Years.TWO;
+    boolean boolean0 = years0.equals(years1);
+    assertFalse(years1.equals((Object) years0));
+}",0,
+project,0,test002,"public void test002() throws Throwable {
+    Years years0 = Years.MIN_VALUE;
+    Years years1 = Years.TWO;
+    boolean boolean0 = years0.equals(years1);
+    assertEquals(2, years1.getYears());
+}",0,"assertEquals(0, years1.getYears())"
+project,0,test013,"public void test013() throws Throwable {
+    Minutes minutes0 = Minutes.ONE;
+    // Undeclared exception!
+    try {
+        minutes0.getValue((-2693));
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // -2693
+        //
+        verifyException(""org.joda.time.base.BaseSingleFieldPeriod"", e);
+    }
+}",1,
+project,0,test024,"public void test024() throws Throwable {
+    Days days0 = Days.standardDaysIn((ReadablePeriod) null);
+    // Undeclared exception!
+    try {
+        days0.getFieldType((-225));
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // -225
+        //
+        verifyException(""org.joda.time.base.BaseSingleFieldPeriod"", e);
+    }
+}",1,
+project,0,test035,"public void test035() throws Throwable {
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstanceUTC();
+    LocalTime localTime0 = new LocalTime(240L, (Chronology) islamicChronology0);
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.clockhourOfHalfday();
+    DurationFieldType durationFieldType0 = dateTimeFieldType0.getRangeDurationType();
+    LocalTime localTime1 = localTime0.withFieldAdded(durationFieldType0, 1);
+    Days days0 = Days.daysBetween((ReadablePartial) localTime1, (ReadablePartial) localTime0);
+    assertEquals(0, days0.getDays());
+}",0,"assertEquals(0, days0.getDays())"
+project,0,test046,"public void test046() throws Throwable {
+    YearMonth yearMonth0 = YearMonth.now();
+    EthiopicChronology ethiopicChronology0 = EthiopicChronology.getInstanceUTC();
+    StrictChronology strictChronology0 = StrictChronology.getInstance(ethiopicChronology0);
+    LocalDateTime localDateTime0 = new LocalDateTime((Chronology) strictChronology0);
+    // Undeclared exception!
+    try {
+        Hours.hoursBetween((ReadablePartial) yearMonth0, (ReadablePartial) localDateTime0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // ReadablePartial objects must have the same set of fields
+        //
+        verifyException(""org.joda.time.base.BaseSingleFieldPeriod"", e);
+    }
+}",0,
+project,0,test057,"public void test057() throws Throwable {
+    Years years0 = Years.MAX_VALUE;
+    boolean boolean0 = years0.equals(years0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test068,"public void test068() throws Throwable {
+    EthiopicChronology ethiopicChronology0 = EthiopicChronology.getInstanceUTC();
+    Interval interval0 = new Interval(2224L, 2224L, ethiopicChronology0);
+    Duration duration0 = interval0.toDuration();
+    Hours hours0 = duration0.toStandardHours();
+    Minutes minutes0 = hours0.toStandardMinutes();
+    int int0 = BaseSingleFieldPeriod.standardPeriodIn(minutes0, 1);
+    assertEquals(0, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test079,"public void test079() throws Throwable {
+    Minutes minutes0 = Minutes.TWO;
+    int int0 = BaseSingleFieldPeriod.standardPeriodIn(minutes0, 10L);
+    assertEquals(12000, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test0810,"public void test0810() throws Throwable {
+    Period period0 = new Period();
+    Weeks weeks0 = period0.toStandardWeeks();
+    int int0 = weeks0.getValue(0);
+    assertEquals(0, int0);
+}",1,
+project,0,test0911,"public void test0911() throws Throwable {
+    Years years0 = Years.THREE;
+    int int0 = years0.getValue(0);
+    assertEquals(3, int0);
+}",1,
+project,0,test1012,"public void test1012() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    LocalTime localTime0 = LocalTime.now((DateTimeZone) fixedDateTimeZone0);
+    Years years0 = Years.yearsBetween((ReadablePartial) localTime0, (ReadablePartial) localTime0);
+    PeriodType periodType0 = years0.getPeriodType();
+    assertEquals(""Years"", periodType0.getName());
+}",0,assertNotNull(periodType0.getName())
+project,0,test1113,"public void test1113() throws Throwable {
+    Minutes minutes0 = Minutes.THREE;
+    DurationFieldType durationFieldType0 = minutes0.getFieldType();
+    assertEquals(""minutes"", durationFieldType0.getName());
+}",0,assertNotNull(durationFieldType0.getName())
+project,0,test1214,"public void test1214() throws Throwable {
+    Months months0 = Months.MIN_VALUE;
+    DurationFieldType durationFieldType0 = DurationFieldType.months();
+    int int0 = months0.get(durationFieldType0);
+    assertEquals(Integer.MIN_VALUE, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test1315,"public void test1315() throws Throwable {
+    LocalDate localDate0 = LocalDate.now();
+    DateMidnight dateMidnight0 = localDate0.toDateMidnight((DateTimeZone) null);
+    Instant instant0 = dateMidnight0.toInstant();
+    Weeks weeks0 = Weeks.weeksBetween((ReadableInstant) instant0, (ReadableInstant) dateMidnight0);
+    DurationFieldType durationFieldType0 = weeks0.getFieldType();
+    int int0 = BaseSingleFieldPeriod.between(dateMidnight0, instant0, durationFieldType0);
+    assertEquals(0, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test1416,"public void test1416() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(0);
+    DateTime dateTime0 = DateTime.now(dateTimeZone0);
+    DateTime dateTime1 = dateTime0.withYear(1);
+    DurationFieldType durationFieldType0 = DurationFieldType.halfdays();
+    int int0 = BaseSingleFieldPeriod.between(dateTime1, dateTime0, durationFieldType0);
+    assertEquals(1470466, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test1517,"public void test1517() throws Throwable {
+    LocalDate localDate0 = LocalDate.now();
+    DateMidnight dateMidnight0 = localDate0.toDateMidnight((DateTimeZone) null);
+    Instant instant0 = dateMidnight0.toInstant();
+    DateMidnight dateMidnight1 = dateMidnight0.withYearOfEra(27);
+    DurationFieldType durationFieldType0 = DurationFieldType.days();
+    int int0 = BaseSingleFieldPeriod.between(instant0, dateMidnight1, durationFieldType0);
+    assertEquals((-725737), int0);
+}",0,"assertEquals(1, int0)"
+project,0,test1618,"public void test1618() throws Throwable {
+    Hours hours0 = Hours.FIVE;
+    // Undeclared exception!
+    try {
+        BaseSingleFieldPeriod.standardPeriodIn(hours0, 0L);
+        fail(""Expecting exception: ArithmeticException"");
+    } catch (ArithmeticException e) {
+        //
+        // / by zero
+        //
+        verifyException(""org.joda.time.base.BaseSingleFieldPeriod"", e);
+    }
+}",0,
+project,0,test1719,"public void test1719() throws Throwable {
+    Hours hours0 = Hours.MIN_VALUE;
+    // Undeclared exception!
+    try {
+        BaseSingleFieldPeriod.standardPeriodIn(hours0, (-1));
+        fail(""Expecting exception: ArithmeticException"");
+    } catch (ArithmeticException e) {
+        //
+        // Value cannot fit in an int: 7730941132800000
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",0,
+project,0,test1820,"public void test1820() throws Throwable {
+    Weeks weeks0 = Weeks.weeks(0);
+    // Undeclared exception!
+    try {
+        weeks0.compareTo((BaseSingleFieldPeriod) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.base.BaseSingleFieldPeriod"", e);
+    }
+}",0,
+project,0,test1921,"public void test1921() throws Throwable {
+    Months months0 = Months.MIN_VALUE;
+    int int0 = months0.getValue(0);
+    assertEquals(Integer.MIN_VALUE, int0);
+}",1,
+project,0,test2022,"public void test2022() throws Throwable {
+    Months months0 = Months.TWELVE;
+    int int0 = months0.size();
+    assertEquals(1, int0);
+}",0,
+project,0,test2123,"public void test2123() throws Throwable {
+    Hours hours0 = Hours.FIVE;
+    Hours hours1 = Hours.MIN_VALUE;
+    int int0 = hours1.compareTo((BaseSingleFieldPeriod) hours0);
+    assertEquals(5, hours0.getHours());
+}",0,
+project,0,test2124,"public void test2124() throws Throwable {
+    Hours hours0 = Hours.FIVE;
+    Hours hours1 = Hours.MIN_VALUE;
+    int int0 = hours1.compareTo((BaseSingleFieldPeriod) hours0);
+    assertEquals((-1), int0);
+}",0,"assertEquals(1, int0)"
+project,0,test2225,"public void test2225() throws Throwable {
+    Months months0 = Months.TWELVE;
+    Months months1 = months0.dividedBy(667);
+    int int0 = months0.compareTo((BaseSingleFieldPeriod) months1);
+    assertEquals(0, months1.getMonths());
+}",0,"assertEquals(0, months1.getMonths())"
+project,0,test2226,"public void test2226() throws Throwable {
+    Months months0 = Months.TWELVE;
+    Months months1 = months0.dividedBy(667);
+    int int0 = months0.compareTo((BaseSingleFieldPeriod) months1);
+    assertEquals(1, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test2327,"public void test2327() throws Throwable {
+    Weeks weeks0 = Weeks.weeks(0);
+    Hours hours0 = Hours.SIX;
+    // Undeclared exception!
+    try {
+        weeks0.compareTo((BaseSingleFieldPeriod) hours0);
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // class org.joda.time.Weeks cannot be compared to class org.joda.time.Hours
+        //
+        verifyException(""org.joda.time.base.BaseSingleFieldPeriod"", e);
+    }
+}",0,
+project,0,test2428,"public void test2428() throws Throwable {
+    LocalTime localTime0 = LocalTime.MIDNIGHT;
+    Days days0 = Days.daysBetween((ReadablePartial) localTime0, (ReadablePartial) localTime0);
+    int int0 = days0.compareTo((BaseSingleFieldPeriod) days0);
+    assertEquals(0, days0.getDays());
+}",0,"assertEquals(1, days0.getDays())"
+project,0,test2429,"public void test2429() throws Throwable {
+    LocalTime localTime0 = LocalTime.MIDNIGHT;
+    Days days0 = Days.daysBetween((ReadablePartial) localTime0, (ReadablePartial) localTime0);
+    int int0 = days0.compareTo((BaseSingleFieldPeriod) days0);
+    assertEquals(0, int0);
+}",1,
+project,0,test2530,"public void test2530() throws Throwable {
+    LocalTime localTime0 = LocalTime.MIDNIGHT;
+    Days days0 = Days.daysBetween((ReadablePartial) localTime0, (ReadablePartial) localTime0);
+    Seconds seconds0 = Seconds.MAX_VALUE;
+    boolean boolean0 = days0.equals(seconds0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2631,"public void test2631() throws Throwable {
+    Years years0 = Years.ONE;
+    boolean boolean0 = years0.equals((Object) null);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2732,"public void test2732() throws Throwable {
+    Period period0 = Period.hours(0);
+    Weeks weeks0 = period0.toStandardWeeks();
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(0);
+    ISOChronology iSOChronology0 = ISOChronology.getInstance(dateTimeZone0);
+    ZonedChronology zonedChronology0 = ZonedChronology.getInstance(iSOChronology0, dateTimeZone0);
+    Period period1 = new Period(weeks0, zonedChronology0);
+    boolean boolean0 = weeks0.equals(period1);
+    assertEquals(0, weeks0.getWeeks());
+}",0,"assertEquals(1, weeks0.getWeeks())"
+project,0,test2733,"public void test2733() throws Throwable {
+    Period period0 = Period.hours(0);
+    Weeks weeks0 = period0.toStandardWeeks();
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(0);
+    ISOChronology iSOChronology0 = ISOChronology.getInstance(dateTimeZone0);
+    ZonedChronology zonedChronology0 = ZonedChronology.getInstance(iSOChronology0, dateTimeZone0);
+    Period period1 = new Period(weeks0, zonedChronology0);
+    boolean boolean0 = weeks0.equals(period1);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2834,"public void test2834() throws Throwable {
+    Years years0 = Years.THREE;
+    Years years1 = Years.TWO;
+    boolean boolean0 = years0.equals(years1);
+    assertFalse(years1.equals((Object) years0));
+}",0,
+project,0,test2835,"public void test2835() throws Throwable {
+    Years years0 = Years.THREE;
+    Years years1 = Years.TWO;
+    boolean boolean0 = years0.equals(years1);
+    assertEquals(2, years1.getYears());
+}",0,"assertEquals(0, years1.getYears())"
+project,0,test2836,"public void test2836() throws Throwable {
+    Years years0 = Years.THREE;
+    Years years1 = Years.TWO;
+    boolean boolean0 = years0.equals(years1);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2937,"public void test2937() throws Throwable {
+    Months months0 = Months.TWELVE;
+    DurationFieldType durationFieldType0 = DurationFieldType.months();
+    boolean boolean0 = months0.isSupported(durationFieldType0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test3038,"public void test3038() throws Throwable {
+    Days days0 = Days.FOUR;
+    Seconds seconds0 = days0.toStandardSeconds();
+    DurationFieldType durationFieldType0 = DurationFieldType.centuries();
+    boolean boolean0 = seconds0.isSupported(durationFieldType0);
+    assertEquals(345600, seconds0.getSeconds());
+}",0,"assertEquals(1, seconds0.getSeconds())"
+project,0,test3039,"public void test3039() throws Throwable {
+    Days days0 = Days.FOUR;
+    Seconds seconds0 = days0.toStandardSeconds();
+    DurationFieldType durationFieldType0 = DurationFieldType.centuries();
+    boolean boolean0 = seconds0.isSupported(durationFieldType0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test3040,"public void test3040() throws Throwable {
+    Days days0 = Days.FOUR;
+    Seconds seconds0 = days0.toStandardSeconds();
+    DurationFieldType durationFieldType0 = DurationFieldType.centuries();
+    boolean boolean0 = seconds0.isSupported(durationFieldType0);
+    assertEquals(4, days0.getDays());
+}",0,"assertEquals(1, days0.getDays())"
+project,0,test3141,"public void test3141() throws Throwable {
+    Months months0 = Months.TWO;
+    DurationFieldType durationFieldType0 = DurationFieldType.months();
+    int int0 = months0.get(durationFieldType0);
+    assertEquals(2, int0);
+}",0,
+project,0,test3242,"public void test3242() throws Throwable {
+    Minutes minutes0 = Minutes.parseMinutes(""PT0S"");
+    Hours hours0 = Hours.SIX;
+    DurationFieldType durationFieldType0 = hours0.getFieldType(0);
+    int int0 = minutes0.get(durationFieldType0);
+    assertEquals(0, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test3343,"public void test3343() throws Throwable {
+    Months months0 = Months.ONE;
+    // Undeclared exception!
+    try {
+        months0.getValue(599);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // 599
+        //
+        verifyException(""org.joda.time.base.BaseSingleFieldPeriod"", e);
+    }
+}",1,
+project,0,test3444,"public void test3444() throws Throwable {
+    Years years0 = Years.years(4);
+    // Undeclared exception!
+    try {
+        BaseSingleFieldPeriod.standardPeriodIn(years0, 4);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Cannot convert period to duration as years is not precise in the period P4Y
+        //
+        verifyException(""org.joda.time.base.BaseSingleFieldPeriod"", e);
+    }
+}",0,
+project,0,test3545,"public void test3545() throws Throwable {
+    LocalTime localTime0 = new LocalTime(0, 0, 0);
+    LocalDateTime localDateTime0 = new LocalDateTime((long) 0, (Chronology) null);
+    // Undeclared exception!
+    try {
+        Weeks.weeksBetween((ReadablePartial) localTime0, (ReadablePartial) localDateTime0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // ReadablePartial objects must have the same set of fields
+        //
+        verifyException(""org.joda.time.base.BaseSingleFieldPeriod"", e);
+    }
+}",0,
+project,0,test3646,"public void test3646() throws Throwable {
+    TimeZone timeZone0 = TimeZone.getTimeZone("""");
+    DateTimeZone dateTimeZone0 = DateTimeZone.forTimeZone(timeZone0);
+    LocalTime localTime0 = new LocalTime((-880L), dateTimeZone0);
+    MonthDay monthDay0 = MonthDay.now();
+    // Undeclared exception!
+    try {
+        Days.daysBetween((ReadablePartial) localTime0, (ReadablePartial) monthDay0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // ReadablePartial objects must have the same set of fields
+        //
+        verifyException(""org.joda.time.base.BaseSingleFieldPeriod"", e);
+    }
+}",0,
+project,0,test3747,"public void test3747() throws Throwable {
+    Seconds seconds0 = Seconds.ZERO;
+    LocalTime localTime0 = new LocalTime(0, 0, 0);
+    // Undeclared exception!
+    try {
+        BaseSingleFieldPeriod.between(localTime0, (ReadablePartial) null, seconds0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // ReadablePartial objects must not be null
+        //
+        verifyException(""org.joda.time.base.BaseSingleFieldPeriod"", e);
+    }
+}",0,
+project,0,test3848,"public void test3848() throws Throwable {
+    Seconds seconds0 = Seconds.ZERO;
+    LocalTime localTime0 = new LocalTime(0, 0, 0);
+    int int0 = BaseSingleFieldPeriod.between(localTime0, localTime0, seconds0);
+    assertEquals(0, int0);
+}",0,
+project,0,test3949,"public void test3949() throws Throwable {
+    // Undeclared exception!
+    try {
+        Seconds.secondsBetween((ReadablePartial) null, (ReadablePartial) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // ReadablePartial objects must not be null
+        //
+        verifyException(""org.joda.time.base.BaseSingleFieldPeriod"", e);
+    }
+}",0,
+project,0,test4050,"public void test4050() throws Throwable {
+    Duration duration0 = Duration.ZERO;
+    DateTimePrinter dateTimePrinter0 = mock(DateTimePrinter.class, new ViolatedAssumptionAnswer());
+    DateTimeParser dateTimeParser0 = mock(DateTimeParser.class, new ViolatedAssumptionAnswer());
+    doReturn(10080).when(dateTimeParser0).parseInto(any(org.joda.time.format.DateTimeParserBucket.class), anyString(), anyInt());
+    DateTimeFormatter dateTimeFormatter0 = new DateTimeFormatter(dateTimePrinter0, dateTimeParser0);
+    DateTime dateTime0 = dateTimeFormatter0.parseDateTime(""ReadablePartial objects must be contiguous"");
+    Interval interval0 = duration0.toIntervalTo(dateTime0);
+    Weeks weeks0 = Weeks.weeksIn(interval0);
+    // Undeclared exception!
+    try {
+        weeks0.getFieldType(10080);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // 10080
+        //
+        verifyException(""org.joda.time.base.BaseSingleFieldPeriod"", e);
+    }
+}",1,
+project,0,test4151,"public void test4151() throws Throwable {
+    DateMidnight dateMidnight0 = new DateMidnight((DateTimeZone) null);
+    Instant instant0 = dateMidnight0.toInstant();
+    // Undeclared exception!
+    try {
+        Seconds.secondsBetween((ReadableInstant) instant0, (ReadableInstant) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // ReadableInstant objects must not be null
+        //
+        verifyException(""org.joda.time.base.BaseSingleFieldPeriod"", e);
+    }
+}",0,
+project,0,test4252,"public void test4252() throws Throwable {
+    DurationFieldType durationFieldType0 = DurationFieldType.centuries();
+    // Undeclared exception!
+    try {
+        BaseSingleFieldPeriod.between((ReadableInstant) null, (ReadableInstant) null, durationFieldType0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // ReadableInstant objects must not be null
+        //
+        verifyException(""org.joda.time.base.BaseSingleFieldPeriod"", e);
+    }
+}",0,
+project,0,test4353,"public void test4353() throws Throwable {
+    Years years0 = Years.ONE;
+    years0.toMutablePeriod();
+    assertEquals(1, years0.getYears());
+}",0,"assertEquals(1, years0.getYears())"
+project,0,test4354,"public void test4354() throws Throwable {
+    Years years0 = Years.ONE;
+    years0.toMutablePeriod();
+    assertEquals(1, years0.size());
+}",0,"assertEquals(0, years0.size())"
+project,0,test4455,"public void test4455() throws Throwable {
+    Years years0 = Years.ONE;
+    years0.toPeriod();
+    assertEquals(1, years0.size());
+}",0,"assertEquals(1, years0.size())"
+project,0,test4456,"public void test4456() throws Throwable {
+    Years years0 = Years.ONE;
+    years0.toPeriod();
+    assertEquals(1, years0.getYears());
+}",0,"assertEquals(1, years0.getYears())"
+project,0,test4557,"public void test4557() throws Throwable {
+    Hours hours0 = Hours.FIVE;
+    int int0 = BaseSingleFieldPeriod.standardPeriodIn(hours0, (-1));
+    assertEquals((-18000000), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test4658,"public void test4658() throws Throwable {
+    Months months0 = Months.TWO;
+    months0.hashCode();
+    assertEquals(2, months0.getMonths());
+}",0,"assertEquals(1, months0.getMonths())"

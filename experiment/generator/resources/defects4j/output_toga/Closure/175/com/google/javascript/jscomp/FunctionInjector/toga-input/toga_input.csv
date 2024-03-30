@@ -1,0 +1,437 @@
+focal_method,test_prefix,docstring
+"CanInlineResult canInlineReferenceToFunction(NodeTraversal t, Node callNode, Node fnNode, Set<String> needAliases, InliningMode mode, boolean referencesThis, boolean containsFunctions) {
+    // TODO(johnlenz): This function takes too many parameter, without
+    // context.  Modify the API to take a structure describing the function.
+    // Allow direct function calls or ""fn.call"" style calls.
+    if (!isSupportedCallType(callNode)) {
+        return CanInlineResult.NO;
+    }
+    // Limit where functions that contain functions can be inline.  Introducing
+    // an inner function into another function can capture a variable and cause
+    // a memory leak.  This isn't a problem in the global scope as those values
+    // last until explicitly cleared.
+    if (containsFunctions) {
+        if (!assumeMinimumCapture && !t.inGlobalScope()) {
+            // TODO(johnlenz): Allow inlining into any scope without local names or
+            // inner functions.
+            return CanInlineResult.NO;
+        } else if (NodeUtil.isWithinLoop(callNode)) {
+            // An inner closure maybe relying on a local value holding a value for a
+            // single iteration through a loop.
+            return CanInlineResult.NO;
+        }
+    }
+    // TODO(johnlenz): Add support for 'apply'
+    if (referencesThis && !NodeUtil.isFunctionObjectCall(callNode)) {
+        // TODO(johnlenz): Allow 'this' references to be replaced with a
+        // global 'this' object.
+        return CanInlineResult.NO;
+    }
+    if (mode == InliningMode.DIRECT) {
+        return canInlineReferenceDirectly(callNode, fnNode);
+    } else {
+        return canInlineReferenceAsStatementBlock(t, callNode, fnNode, needAliases);
+    }
+}","public void test000() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Supplier<String> supplier0 = compiler0.getUniqueNameIdSupplier();
+    FunctionInjector functionInjector0 = new FunctionInjector(compiler0, supplier0, true, true, true);
+    HashSet<String> hashSet0 = new HashSet<String>();
+    OptimizeArgumentsArray optimizeArgumentsArray0 = new OptimizeArgumentsArray(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, optimizeArgumentsArray0, (ScopeCreator) null);
+    Node node0 = Node.newString(5, ""w!@nRXU"", 5, 5);
+    Node node1 = new Node(48, node0, 4, 30);
+    FunctionInjector.InliningMode functionInjector_InliningMode0 = FunctionInjector.InliningMode.DIRECT;
+    functionInjector0.canInlineReferenceToFunction(nodeTraversal0, node1, node0, hashSet0, functionInjector_InliningMode0, true, true);
+}","/**
+ * @param t  The traversal use to reach the call site.
+ * @param callNode The CALL node.
+ * @param fnNode The function to evaluate for inlining.
+ * @param needAliases A set of function parameter names that can not be
+ *     used without aliasing. Returned by getUnsafeParameterNames().
+ * @param mode Inlining mode to be used.
+ * @param referencesThis Whether fnNode contains references to its this
+ *     object.
+ * @param containsFunctions Whether fnNode contains inner functions.
+ * @return Whether the inlining can occur.
+ */"
+"CanInlineResult canInlineReferenceToFunction(NodeTraversal t, Node callNode, Node fnNode, Set<String> needAliases, InliningMode mode, boolean referencesThis, boolean containsFunctions) {
+    // TODO(johnlenz): This function takes too many parameter, without
+    // context.  Modify the API to take a structure describing the function.
+    // Allow direct function calls or ""fn.call"" style calls.
+    if (!isSupportedCallType(callNode)) {
+        return CanInlineResult.NO;
+    }
+    // Limit where functions that contain functions can be inline.  Introducing
+    // an inner function into another function can capture a variable and cause
+    // a memory leak.  This isn't a problem in the global scope as those values
+    // last until explicitly cleared.
+    if (containsFunctions) {
+        if (!assumeMinimumCapture && !t.inGlobalScope()) {
+            // TODO(johnlenz): Allow inlining into any scope without local names or
+            // inner functions.
+            return CanInlineResult.NO;
+        } else if (NodeUtil.isWithinLoop(callNode)) {
+            // An inner closure maybe relying on a local value holding a value for a
+            // single iteration through a loop.
+            return CanInlineResult.NO;
+        }
+    }
+    // TODO(johnlenz): Add support for 'apply'
+    if (referencesThis && !NodeUtil.isFunctionObjectCall(callNode)) {
+        // TODO(johnlenz): Allow 'this' references to be replaced with a
+        // global 'this' object.
+        return CanInlineResult.NO;
+    }
+    if (mode == InliningMode.DIRECT) {
+        return canInlineReferenceDirectly(callNode, fnNode);
+    } else {
+        return canInlineReferenceAsStatementBlock(t, callNode, fnNode, needAliases);
+    }
+}","public void test011() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Supplier<String> supplier0 = compiler0.getUniqueNameIdSupplier();
+    FunctionInjector functionInjector0 = new FunctionInjector(compiler0, supplier0, false, false, false);
+    HashSet<String> hashSet0 = new HashSet<String>();
+    OptimizeArgumentsArray optimizeArgumentsArray0 = new OptimizeArgumentsArray(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, optimizeArgumentsArray0, (ScopeCreator) null);
+    Node node0 = new Node(5);
+    Node node1 = new Node(48, node0, 4, 30);
+    FunctionInjector.InliningMode functionInjector_InliningMode0 = FunctionInjector.InliningMode.DIRECT;
+    functionInjector0.canInlineReferenceToFunction(nodeTraversal0, node1, node0, hashSet0, functionInjector_InliningMode0, false, false);
+}","/**
+ * @param t  The traversal use to reach the call site.
+ * @param callNode The CALL node.
+ * @param fnNode The function to evaluate for inlining.
+ * @param needAliases A set of function parameter names that can not be
+ *     used without aliasing. Returned by getUnsafeParameterNames().
+ * @param mode Inlining mode to be used.
+ * @param referencesThis Whether fnNode contains references to its this
+ *     object.
+ * @param containsFunctions Whether fnNode contains inner functions.
+ * @return Whether the inlining can occur.
+ */"
+"public FunctionInjector(AbstractCompiler compiler, Supplier<String> safeNameIdSupplier, boolean allowDecomposition, boolean assumeStrictThis, boolean assumeMinimumCapture) {
+    Preconditions.checkNotNull(compiler);
+    Preconditions.checkNotNull(safeNameIdSupplier);
+    this.compiler = compiler;
+    this.safeNameIdSupplier = safeNameIdSupplier;
+    this.allowDecomposition = allowDecomposition;
+    this.assumeStrictThis = assumeStrictThis;
+    this.assumeMinimumCapture = assumeMinimumCapture;
+}","public void test022() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Supplier<String> supplier0 = compiler0.getUniqueNameIdSupplier();
+    FunctionInjector functionInjector0 = new FunctionInjector(compiler0, supplier0, false, false, false);
+    HashSet<String> hashSet0 = new HashSet<String>();
+    functionInjector0.setKnownConstants(hashSet0);
+    FunctionInjector functionInjector1 = new FunctionInjector(compiler0, supplier0, false, false, false);
+}","/**
+ * @param allowDecomposition Whether an effort should be made to break down
+ * expressions into simpler expressions to allow functions to be injected
+ * where they would otherwise be disallowed.
+ */"
+"void maybePrepareCall(Node callNode) {
+    CallSiteType callSiteType = classifyCallSite(callNode);
+    callSiteType.prepare(this, callNode);
+}","public void test033() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Supplier<String> supplier0 = compiler0.getUniqueNameIdSupplier();
+    FunctionInjector functionInjector0 = new FunctionInjector(compiler0, supplier0, false, false, false);
+    functionInjector0.maybePrepareCall((Node) null);
+}","/**
+ * If required, rewrite the statement containing the call expression.
+ * @see ExpressionDecomposer#canExposeExpression
+ */"
+"CanInlineResult canInlineReferenceToFunction(NodeTraversal t, Node callNode, Node fnNode, Set<String> needAliases, InliningMode mode, boolean referencesThis, boolean containsFunctions) {
+    // TODO(johnlenz): This function takes too many parameter, without
+    // context.  Modify the API to take a structure describing the function.
+    // Allow direct function calls or ""fn.call"" style calls.
+    if (!isSupportedCallType(callNode)) {
+        return CanInlineResult.NO;
+    }
+    // Limit where functions that contain functions can be inline.  Introducing
+    // an inner function into another function can capture a variable and cause
+    // a memory leak.  This isn't a problem in the global scope as those values
+    // last until explicitly cleared.
+    if (containsFunctions) {
+        if (!assumeMinimumCapture && !t.inGlobalScope()) {
+            // TODO(johnlenz): Allow inlining into any scope without local names or
+            // inner functions.
+            return CanInlineResult.NO;
+        } else if (NodeUtil.isWithinLoop(callNode)) {
+            // An inner closure maybe relying on a local value holding a value for a
+            // single iteration through a loop.
+            return CanInlineResult.NO;
+        }
+    }
+    // TODO(johnlenz): Add support for 'apply'
+    if (referencesThis && !NodeUtil.isFunctionObjectCall(callNode)) {
+        // TODO(johnlenz): Allow 'this' references to be replaced with a
+        // global 'this' object.
+        return CanInlineResult.NO;
+    }
+    if (mode == InliningMode.DIRECT) {
+        return canInlineReferenceDirectly(callNode, fnNode);
+    } else {
+        return canInlineReferenceAsStatementBlock(t, callNode, fnNode, needAliases);
+    }
+}","public void test044() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Supplier<String> supplier0 = compiler0.getUniqueNameIdSupplier();
+    FunctionInjector functionInjector0 = new FunctionInjector(compiler0, supplier0, false, false, false);
+    HashSet<String> hashSet0 = new HashSet<String>();
+    OptimizeArgumentsArray optimizeArgumentsArray0 = new OptimizeArgumentsArray(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, optimizeArgumentsArray0, (ScopeCreator) null);
+    Node node0 = new Node(12);
+    Node node1 = new Node(48, node0, 4, 30);
+    FunctionInjector.InliningMode functionInjector_InliningMode0 = FunctionInjector.InliningMode.BLOCK;
+    functionInjector0.canInlineReferenceToFunction(nodeTraversal0, node1, node0, hashSet0, functionInjector_InliningMode0, false, false);
+}","/**
+ * @param t  The traversal use to reach the call site.
+ * @param callNode The CALL node.
+ * @param fnNode The function to evaluate for inlining.
+ * @param needAliases A set of function parameter names that can not be
+ *     used without aliasing. Returned by getUnsafeParameterNames().
+ * @param mode Inlining mode to be used.
+ * @param referencesThis Whether fnNode contains references to its this
+ *     object.
+ * @param containsFunctions Whether fnNode contains inner functions.
+ * @return Whether the inlining can occur.
+ */"
+"CanInlineResult canInlineReferenceToFunction(NodeTraversal t, Node callNode, Node fnNode, Set<String> needAliases, InliningMode mode, boolean referencesThis, boolean containsFunctions) {
+    // TODO(johnlenz): This function takes too many parameter, without
+    // context.  Modify the API to take a structure describing the function.
+    // Allow direct function calls or ""fn.call"" style calls.
+    if (!isSupportedCallType(callNode)) {
+        return CanInlineResult.NO;
+    }
+    // Limit where functions that contain functions can be inline.  Introducing
+    // an inner function into another function can capture a variable and cause
+    // a memory leak.  This isn't a problem in the global scope as those values
+    // last until explicitly cleared.
+    if (containsFunctions) {
+        if (!assumeMinimumCapture && !t.inGlobalScope()) {
+            // TODO(johnlenz): Allow inlining into any scope without local names or
+            // inner functions.
+            return CanInlineResult.NO;
+        } else if (NodeUtil.isWithinLoop(callNode)) {
+            // An inner closure maybe relying on a local value holding a value for a
+            // single iteration through a loop.
+            return CanInlineResult.NO;
+        }
+    }
+    // TODO(johnlenz): Add support for 'apply'
+    if (referencesThis && !NodeUtil.isFunctionObjectCall(callNode)) {
+        // TODO(johnlenz): Allow 'this' references to be replaced with a
+        // global 'this' object.
+        return CanInlineResult.NO;
+    }
+    if (mode == InliningMode.DIRECT) {
+        return canInlineReferenceDirectly(callNode, fnNode);
+    } else {
+        return canInlineReferenceAsStatementBlock(t, callNode, fnNode, needAliases);
+    }
+}","public void test066() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Supplier<String> supplier0 = compiler0.getUniqueNameIdSupplier();
+    FunctionInjector functionInjector0 = new FunctionInjector(compiler0, supplier0, false, false, false);
+    HashSet<String> hashSet0 = new HashSet<String>();
+    OptimizeArgumentsArray optimizeArgumentsArray0 = new OptimizeArgumentsArray(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, optimizeArgumentsArray0, (ScopeCreator) null);
+    Node node0 = Node.newString(5, ""w!@_RXU"", 5, 5);
+    Node node1 = new Node(57, node0, node0, node0, node0);
+    FunctionInjector.InliningMode functionInjector_InliningMode0 = FunctionInjector.InliningMode.DIRECT;
+    functionInjector0.canInlineReferenceToFunction(nodeTraversal0, node1, node0, hashSet0, functionInjector_InliningMode0, true, true);
+}","/**
+ * @param t  The traversal use to reach the call site.
+ * @param callNode The CALL node.
+ * @param fnNode The function to evaluate for inlining.
+ * @param needAliases A set of function parameter names that can not be
+ *     used without aliasing. Returned by getUnsafeParameterNames().
+ * @param mode Inlining mode to be used.
+ * @param referencesThis Whether fnNode contains references to its this
+ *     object.
+ * @param containsFunctions Whether fnNode contains inner functions.
+ * @return Whether the inlining can occur.
+ */"
+"Node inline(Node callNode, String fnName, Node fnNode, InliningMode mode) {
+    Preconditions.checkState(compiler.getLifeCycleStage().isNormalized());
+    if (mode == InliningMode.DIRECT) {
+        return inlineReturnValue(callNode, fnNode);
+    } else {
+        return inlineFunction(callNode, fnNode, fnName);
+    }
+}","public void test1111() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Supplier<String> supplier0 = compiler0.getUniqueNameIdSupplier();
+    FunctionInjector functionInjector0 = new FunctionInjector(compiler0, supplier0, true, true, true);
+    Node node0 = null;
+    FunctionInjector.InliningMode functionInjector_InliningMode0 = FunctionInjector.InliningMode.DIRECT;
+    FunctionInjector.Reference functionInjector_Reference0 = new FunctionInjector.Reference((Node) null, (JSModule) null, functionInjector_InliningMode0);
+    ImmutableList<FunctionInjector.Reference> immutableList0 = ImmutableList.of(functionInjector_Reference0, functionInjector_Reference0, functionInjector_Reference0, functionInjector_Reference0);
+    HashSet<String> hashSet0 = new HashSet<String>();
+    functionInjector0.inliningLowersCost((JSModule) null, (Node) null, immutableList0, hashSet0, true, true);
+    String string0 = ""VAR_DECL_SIMPLE_ASSIGNMENT"";
+    FunctionInjector.InliningMode functionInjector_InliningMode1 = FunctionInjector.InliningMode.DIRECT;
+    // Undeclared exception!
+    try {
+        functionInjector0.inline(node0, string0, node0, functionInjector_InliningMode1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.NodeUtil"", e);
+    }
+}","/**
+ * Inline a function into the call site.
+ */"
+"void maybePrepareCall(Node callNode) {
+    CallSiteType callSiteType = classifyCallSite(callNode);
+    callSiteType.prepare(this, callNode);
+}","public void test1212() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Supplier<String> supplier0 = compiler0.getUniqueNameIdSupplier();
+    FunctionInjector functionInjector0 = new FunctionInjector(compiler0, supplier0, true, true, true);
+    Node node0 = new Node(2877);
+    Node node1 = new Node(16, node0, node0, node0, node0, 55, 56);
+    functionInjector0.maybePrepareCall(node0);
+}","/**
+ * If required, rewrite the statement containing the call expression.
+ * @see ExpressionDecomposer#canExposeExpression
+ */"
+"void maybePrepareCall(Node callNode) {
+    CallSiteType callSiteType = classifyCallSite(callNode);
+    callSiteType.prepare(this, callNode);
+}","public void test1515() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Supplier<String> supplier0 = compiler0.getUniqueNameIdSupplier();
+    FunctionInjector functionInjector0 = new FunctionInjector(compiler0, supplier0, false, false, false);
+    HashSet<String> hashSet0 = new HashSet<String>();
+    hashSet0.stream();
+    Node node0 = Node.newString(12, ""w!@_RXU"", 12, 12);
+    hashSet0.add(""w!@_RXU"");
+    FunctionInjector.InliningMode functionInjector_InliningMode0 = FunctionInjector.InliningMode.DIRECT;
+    FunctionInjector.Reference functionInjector_Reference0 = new FunctionInjector.Reference(node0, (JSModule) null, functionInjector_InliningMode0);
+    ImmutableList<FunctionInjector.Reference> immutableList0 = ImmutableList.of(functionInjector_Reference0);
+    functionInjector0.inliningLowersCost((JSModule) null, node0, immutableList0, hashSet0, true, false);
+    functionInjector0.maybePrepareCall(node0);
+}","/**
+ * If required, rewrite the statement containing the call expression.
+ * @see ExpressionDecomposer#canExposeExpression
+ */"
+"boolean doesFunctionMeetMinimumRequirements(final String fnName, Node fnNode) {
+    Node block = NodeUtil.getFunctionBody(fnNode);
+    // Basic restrictions on functions that can be inlined:
+    // 0) The function is inlinable by convention
+    // 1) It contains a reference to itself.
+    // 2) It uses its parameters indirectly using ""arguments"" (it isn't
+    //    handled yet.
+    // 3) It references ""eval"". Inline a function containing eval can have
+    //    large performance implications.
+    if (!compiler.getCodingConvention().isInlinableFunction(fnNode)) {
+        return false;
+    }
+    final String fnRecursionName = fnNode.getFirstChild().getString();
+    Preconditions.checkState(fnRecursionName != null);
+    // If the function references ""arguments"" directly in the function
+    boolean referencesArguments = NodeUtil.isNameReferenced(block, ""arguments"", NodeUtil.MATCH_NOT_FUNCTION);
+    // or it references ""eval"" or one of its names anywhere.
+    Predicate<Node> p = new Predicate<Node>() {
+
+        @Override
+        public boolean apply(Node n) {
+            if (n.isName()) {
+                return n.getString().equals(""eval"") || (!fnName.isEmpty() && n.getString().equals(fnName)) || (!fnRecursionName.isEmpty() && n.getString().equals(fnRecursionName));
+            }
+            return false;
+        }
+    };
+    return !referencesArguments && !NodeUtil.has(block, p, Predicates.<Node>alwaysTrue());
+}","public void test1616() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Supplier<String> supplier0 = compiler0.getUniqueNameIdSupplier();
+    FunctionInjector functionInjector0 = new FunctionInjector(compiler0, supplier0, false, false, false);
+    Node node0 = null;
+    ProcessCommonJSModules processCommonJSModules0 = new ProcessCommonJSModules(compiler0, ""com.google.javascript.jscomp.CheckEventfulObjectDisposal$1"", false);
+    processCommonJSModules0.getModule();
+    FunctionInjector.InliningMode functionInjector_InliningMode0 = FunctionInjector.InliningMode.DIRECT;
+    FunctionInjector.Reference functionInjector_Reference0 = new FunctionInjector.Reference((Node) null, (JSModule) null, functionInjector_InliningMode0);
+    ImmutableList<FunctionInjector.Reference> immutableList0 = ImmutableList.of(functionInjector_Reference0);
+    functionInjector0.inliningLowersCost((JSModule) null, (Node) null, immutableList0, (Set<String>) null, false, false);
+    FileSystemHandling.shouldAllThrowIOExceptions();
+    String string0 = """";
+    functionInjector0.doesFunctionMeetMinimumRequirements(string0, node0);
+}","/**
+ * @param fnName The name of this function. This either the name of the
+ *  variable to which the function is assigned or the name from the FUNCTION
+ *  node.
+ * @param fnNode The FUNCTION node of the function to inspect.
+ * @return Whether the function node meets the minimum requirements for
+ * inlining.
+ */"
+"void maybePrepareCall(Node callNode) {
+    CallSiteType callSiteType = classifyCallSite(callNode);
+    callSiteType.prepare(this, callNode);
+}","public void test1717() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Supplier<String> supplier0 = compiler0.getUniqueNameIdSupplier();
+    FunctionInjector functionInjector0 = new FunctionInjector(compiler0, supplier0, true, true, true);
+    GatherRawExports gatherRawExports0 = new GatherRawExports(compiler0);
+    gatherRawExports0.getExportedVariableNames();
+    JSModule jSModule0 = new JSModule(""k*k l!v,cCXw"");
+    Node node0 = compiler0.externsRoot;
+    FunctionInjector.InliningMode functionInjector_InliningMode0 = FunctionInjector.InliningMode.BLOCK;
+    FunctionInjector.Reference functionInjector_Reference0 = new FunctionInjector.Reference((Node) null, jSModule0, functionInjector_InliningMode0);
+    FunctionInjector.Reference functionInjector_Reference1 = new FunctionInjector.Reference((Node) null, jSModule0, functionInjector_InliningMode0);
+    ImmutableList<FunctionInjector.Reference> immutableList0 = ImmutableList.of(functionInjector_Reference0);
+    Locale locale0 = Locale.US;
+    locale0.toLanguageTag();
+    Set<String> set0 = locale0.getUnicodeLocaleKeys();
+    functionInjector0.inliningLowersCost(jSModule0, (Node) null, immutableList0, set0, true, true);
+    functionInjector0.maybePrepareCall(node0);
+}","/**
+ * If required, rewrite the statement containing the call expression.
+ * @see ExpressionDecomposer#canExposeExpression
+ */"
+"Node inline(Node callNode, String fnName, Node fnNode, InliningMode mode) {
+    Preconditions.checkState(compiler.getLifeCycleStage().isNormalized());
+    if (mode == InliningMode.DIRECT) {
+        return inlineReturnValue(callNode, fnNode);
+    } else {
+        return inlineFunction(callNode, fnNode, fnName);
+    }
+}","public void test1818() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Supplier<String> supplier0 = compiler0.getUniqueNameIdSupplier();
+    String string0 = ""k*k l!v,cCVXw"";
+    JSModule jSModule0 = new JSModule(""k*k l!v,cCVXw"");
+    Node node0 = compiler0.externsRoot;
+    FunctionInjector.InliningMode functionInjector_InliningMode0 = FunctionInjector.InliningMode.DIRECT;
+    FunctionInjector.Reference functionInjector_Reference0 = new FunctionInjector.Reference((Node) null, jSModule0, functionInjector_InliningMode0);
+    Set<String> set0 = NameAnalyzer.DEFAULT_GLOBAL_NAMES;
+    FunctionInjector functionInjector0 = new FunctionInjector(compiler0, supplier0, true, true, true);
+    JSModule jSModule1 = new JSModule(""k*k l!v,cCVXw"");
+    FunctionInjector.Reference functionInjector_Reference1 = new FunctionInjector.Reference((Node) null, jSModule1, functionInjector_InliningMode0);
+    ImmutableList<FunctionInjector.Reference> immutableList0 = ImmutableList.of(functionInjector_Reference0, functionInjector_Reference0, functionInjector_Reference1, functionInjector_Reference1);
+    functionInjector0.inliningLowersCost(jSModule0, (Node) null, immutableList0, set0, true, true);
+    functionInjector0.inline(node0, string0, node0, functionInjector_InliningMode0);
+}","/**
+ * Inline a function into the call site.
+ */"
+"void maybePrepareCall(Node callNode) {
+    CallSiteType callSiteType = classifyCallSite(callNode);
+    callSiteType.prepare(this, callNode);
+}","public void test1919() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Supplier<String> supplier0 = compiler0.getUniqueNameIdSupplier();
+    FunctionInjector functionInjector0 = new FunctionInjector(compiler0, supplier0, false, false, false);
+    Node node0 = new Node(3364);
+    Node node1 = new Node(3364, node0, node0, node0, node0, 1, 36);
+    Node node2 = new Node(0, node1, 56, (-2609));
+    functionInjector0.maybePrepareCall(node0);
+}","/**
+ * If required, rewrite the statement containing the call expression.
+ * @see ExpressionDecomposer#canExposeExpression
+ */"

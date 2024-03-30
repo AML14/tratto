@@ -1,0 +1,28 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test00,"public void test00() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstanceUTC();
+    DateTimeField dateTimeField0 = buddhistChronology0.era();
+    DateTimeField dateTimeField1 = LenientDateTimeField.getInstance(dateTimeField0, buddhistChronology0);
+    // Undeclared exception!
+    try {
+        dateTimeField1.set((long) 1, 1);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // eras field is unsupported
+        //
+        verifyException(""org.joda.time.field.UnsupportedDurationField"", e);
+    }
+}",0,
+project,0,test11,"public void test11() throws Throwable {
+    DateTimeField dateTimeField0 = LenientDateTimeField.getInstance((DateTimeField) null, (Chronology) null);
+    assertNull(dateTimeField0);
+}",0,
+project,0,test22,"public void test22() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance();
+    DateTimeField dateTimeField0 = buddhistChronology0.halfdayOfDay();
+    LenientDateTimeField lenientDateTimeField0 = new LenientDateTimeField(dateTimeField0, buddhistChronology0);
+    StrictDateTimeField strictDateTimeField0 = new StrictDateTimeField(lenientDateTimeField0);
+    DateTimeField dateTimeField1 = LenientDateTimeField.getInstance(strictDateTimeField0, buddhistChronology0);
+    assertSame(dateTimeField1, lenientDateTimeField0);
+}",1,

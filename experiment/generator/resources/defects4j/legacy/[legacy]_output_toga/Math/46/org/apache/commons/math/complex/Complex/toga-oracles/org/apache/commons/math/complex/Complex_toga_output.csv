@@ -1,0 +1,459 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test010,"public void test010() throws Throwable {
+    Complex complex0 = Complex.NaN;
+    Complex complex1 = Complex.NaN;
+    Complex complex2 = complex0.subtract(complex1);
+    Complex complex3 = complex2.tan();
+    complex3.subtract(complex2);
+    double double0 = complex3.abs();
+    assertEquals(Double.NaN, double0, 0.01);
+}",0,
+project,0,test011,"public void test011() throws Throwable {
+    Complex complex0 = Complex.NaN;
+    Complex complex1 = Complex.NaN;
+    Complex complex2 = complex0.subtract(complex1);
+    Complex complex3 = complex2.tan();
+    complex3.subtract(complex2);
+    double double0 = complex3.abs();
+    Complex complex4 = complex3.tanh();
+    assertSame(complex4, complex3);
+}",0,
+project,0,test022,"public void test022() throws Throwable {
+    Complex complex0 = Complex.INF;
+    Complex complex1 = complex0.I.cosh();
+    assertFalse(complex1.isInfinite());
+}",0,assertFalse(complex1.isInfinite())
+project,0,test023,"public void test023() throws Throwable {
+    Complex complex0 = Complex.INF;
+    Complex complex1 = complex0.I.cosh();
+    assertEquals(0.5403023058681398, complex1.getReal(), 0.01);
+}",0,
+project,0,test024,"public void test024() throws Throwable {
+    Complex complex0 = Complex.INF;
+    Complex complex1 = complex0.I.cosh();
+    assertEquals(0.0, complex1.getImaginary(), 0.01);
+}",0,
+project,0,test025,"public void test025() throws Throwable {
+    Complex complex0 = Complex.INF;
+    Complex complex1 = complex0.I.cosh();
+    Complex complex2 = complex0.NaN.tan();
+    Complex complex3 = complex0.add(1.0);
+    Complex complex4 = complex0.subtract(0.0);
+    complex4.INF.cosh();
+    Complex complex5 = complex4.cos();
+    assertTrue(complex4.equals((Object) complex3));
+}",0,
+project,0,test026,"public void test026() throws Throwable {
+    Complex complex0 = Complex.INF;
+    Complex complex1 = complex0.I.cosh();
+    Complex complex2 = complex0.NaN.tan();
+    Complex complex3 = complex0.add(1.0);
+    Complex complex4 = complex0.subtract(0.0);
+    complex4.INF.cosh();
+    Complex complex5 = complex4.cos();
+    assertNotSame(complex5, complex2);
+}",0,
+project,0,test027,"public void test027() throws Throwable {
+    Complex complex0 = Complex.INF;
+    Complex complex1 = complex0.I.cosh();
+    Complex complex2 = complex0.NaN.tan();
+    Complex complex3 = complex0.add(1.0);
+    Complex complex4 = complex0.subtract(0.0);
+    complex4.INF.cosh();
+    Complex complex5 = complex4.cos();
+    assertTrue(complex0.equals((Object) complex4));
+}",0,
+project,0,test028,"public void test028() throws Throwable {
+    Complex complex0 = Complex.INF;
+    Complex complex1 = complex0.I.cosh();
+    Complex complex2 = complex0.NaN.tan();
+    Complex complex3 = complex0.add(1.0);
+    Complex complex4 = complex0.subtract(0.0);
+    complex4.INF.cosh();
+    Complex complex5 = complex4.cos();
+    assertTrue(complex4.isInfinite());
+}",0,assertTrue(complex4.isInfinite())
+project,0,test029,"public void test029() throws Throwable {
+    Complex complex0 = Complex.INF;
+    Complex complex1 = complex0.I.cosh();
+    Complex complex2 = complex0.NaN.tan();
+    Complex complex3 = complex0.add(1.0);
+    Complex complex4 = complex0.subtract(0.0);
+    complex4.INF.cosh();
+    Complex complex5 = complex4.cos();
+    assertTrue(complex5.equals((Object) complex2));
+}",0,
+project,0,test0310,"public void test0310() throws Throwable {
+    Complex complex0 = new Complex(1.0, 1.0);
+    Complex complex1 = complex0.multiply(0.0);
+    Complex complex2 = complex1.ZERO.conjugate();
+    complex2.I.createComplex((-618.01996014), 0.0);
+    Complex complex3 = complex0.NaN.exp();
+    Complex complex4 = complex1.INF.divide(0.0);
+    Complex complex5 = complex1.divide(0.0);
+    Complex complex6 = complex0.log();
+    assertEquals(0.3465735902799727, complex6.getReal(), 0.01);
+}",0,
+project,0,test0311,"public void test0311() throws Throwable {
+    Complex complex0 = new Complex(1.0, 1.0);
+    Complex complex1 = complex0.multiply(0.0);
+    Complex complex2 = complex1.ZERO.conjugate();
+    complex2.I.createComplex((-618.01996014), 0.0);
+    Complex complex3 = complex0.NaN.exp();
+    Complex complex4 = complex1.INF.divide(0.0);
+    Complex complex5 = complex1.divide(0.0);
+    Complex complex6 = complex0.log();
+    Complex complex7 = complex1.sin();
+    Complex complex8 = complex0.INF.sqrt();
+    Complex complex9 = complex0.NaN.tan();
+    complex7.I.getArgument();
+    complex5.atan();
+    Complex complex10 = complex5.conjugate();
+    Complex complex11 = complex0.INF.multiply(complex3);
+    Complex complex12 = complex10.INF.cosh();
+    Complex complex13 = complex12.I.pow(1.0);
+    Complex complex14 = complex7.negate();
+    assertEquals(-0.0, complex14.getImaginary(), 0.01);
+}",0,
+project,0,test0312,"public void test0312() throws Throwable {
+    Complex complex0 = new Complex(1.0, 1.0);
+    Complex complex1 = complex0.multiply(0.0);
+    Complex complex2 = complex1.ZERO.conjugate();
+    complex2.I.createComplex((-618.01996014), 0.0);
+    Complex complex3 = complex0.NaN.exp();
+    Complex complex4 = complex1.INF.divide(0.0);
+    Complex complex5 = complex1.divide(0.0);
+    Complex complex6 = complex0.log();
+    Complex complex7 = complex1.sin();
+    Complex complex8 = complex0.INF.sqrt();
+    Complex complex9 = complex0.NaN.tan();
+    complex7.I.getArgument();
+    complex5.atan();
+    Complex complex10 = complex5.conjugate();
+    Complex complex11 = complex0.INF.multiply(complex3);
+    Complex complex12 = complex10.INF.cosh();
+    Complex complex13 = complex12.I.pow(1.0);
+    Complex complex14 = complex7.negate();
+    assertEquals(-0.0, complex14.getReal(), 0.01);
+}",0,
+project,0,test0313,"public void test0313() throws Throwable {
+    Complex complex0 = new Complex(1.0, 1.0);
+    Complex complex1 = complex0.multiply(0.0);
+    Complex complex2 = complex1.ZERO.conjugate();
+    complex2.I.createComplex((-618.01996014), 0.0);
+    Complex complex3 = complex0.NaN.exp();
+    Complex complex4 = complex1.INF.divide(0.0);
+    Complex complex5 = complex1.divide(0.0);
+    Complex complex6 = complex0.log();
+    Complex complex7 = complex1.sin();
+    Complex complex8 = complex0.INF.sqrt();
+    Complex complex9 = complex0.NaN.tan();
+    complex7.I.getArgument();
+    complex5.atan();
+    Complex complex10 = complex5.conjugate();
+    Complex complex11 = complex0.INF.multiply(complex3);
+    Complex complex12 = complex10.INF.cosh();
+    Complex complex13 = complex12.I.pow(1.0);
+    Complex complex14 = complex7.negate();
+    complex7.getImaginary();
+    Complex complex15 = complex7.add(complex0);
+    Complex complex16 = complex1.log();
+    Complex complex17 = complex12.multiply(0.0);
+    Complex complex18 = complex17.I.pow(1.5707963267948966);
+    Complex complex19 = Complex.valueOf(4734.7381062603);
+    complex19.INF.exp();
+    Complex complex20 = complex9.divide(1.0);
+    Complex complex21 = complex19.multiply(1.0);
+    complex20.equals(complex21);
+    complex9.multiply(complex13);
+    assertSame(complex9, complex5);
+}",0,
+project,0,test0314,"public void test0314() throws Throwable {
+    Complex complex0 = new Complex(1.0, 1.0);
+    Complex complex1 = complex0.multiply(0.0);
+    Complex complex2 = complex1.ZERO.conjugate();
+    complex2.I.createComplex((-618.01996014), 0.0);
+    Complex complex3 = complex0.NaN.exp();
+    Complex complex4 = complex1.INF.divide(0.0);
+    Complex complex5 = complex1.divide(0.0);
+    Complex complex6 = complex0.log();
+    Complex complex7 = complex1.sin();
+    Complex complex8 = complex0.INF.sqrt();
+    Complex complex9 = complex0.NaN.tan();
+    complex7.I.getArgument();
+    complex5.atan();
+    Complex complex10 = complex5.conjugate();
+    Complex complex11 = complex0.INF.multiply(complex3);
+    Complex complex12 = complex10.INF.cosh();
+    Complex complex13 = complex12.I.pow(1.0);
+    Complex complex14 = complex7.negate();
+    complex7.getImaginary();
+    Complex complex15 = complex7.add(complex0);
+    Complex complex16 = complex1.log();
+    Complex complex17 = complex12.multiply(0.0);
+    Complex complex18 = complex17.I.pow(1.5707963267948966);
+    Complex complex19 = Complex.valueOf(4734.7381062603);
+    complex19.INF.exp();
+    Complex complex20 = complex9.divide(1.0);
+    Complex complex21 = complex19.multiply(1.0);
+    complex20.equals(complex21);
+    complex9.multiply(complex13);
+    Complex complex22 = complex21.tanh();
+    Complex complex23 = complex22.INF.pow(complex16);
+    assertTrue(complex22.equals((Object) complex11));
+}",0,
+project,0,test0315,"public void test0315() throws Throwable {
+    Complex complex0 = new Complex(1.0, 1.0);
+    Complex complex1 = complex0.multiply(0.0);
+    Complex complex2 = complex1.ZERO.conjugate();
+    complex2.I.createComplex((-618.01996014), 0.0);
+    Complex complex3 = complex0.NaN.exp();
+    Complex complex4 = complex1.INF.divide(0.0);
+    Complex complex5 = complex1.divide(0.0);
+    Complex complex6 = complex0.log();
+    Complex complex7 = complex1.sin();
+    Complex complex8 = complex0.INF.sqrt();
+    Complex complex9 = complex0.NaN.tan();
+    complex7.I.getArgument();
+    complex5.atan();
+    Complex complex10 = complex5.conjugate();
+    Complex complex11 = complex0.INF.multiply(complex3);
+    Complex complex12 = complex10.INF.cosh();
+    Complex complex13 = complex12.I.pow(1.0);
+    Complex complex14 = complex7.negate();
+    complex7.getImaginary();
+    Complex complex15 = complex7.add(complex0);
+    Complex complex16 = complex1.log();
+    Complex complex17 = complex12.multiply(0.0);
+    Complex complex18 = complex17.I.pow(1.5707963267948966);
+    Complex complex19 = Complex.valueOf(4734.7381062603);
+    complex19.INF.exp();
+    Complex complex20 = complex9.divide(1.0);
+    Complex complex21 = complex19.multiply(1.0);
+    complex20.equals(complex21);
+    complex9.multiply(complex13);
+    Complex complex22 = complex21.tanh();
+    Complex complex23 = complex22.INF.pow(complex16);
+    assertEquals(0.0, complex22.getImaginary(), 0.01);
+}",0,
+project,0,test0316,"public void test0316() throws Throwable {
+    Complex complex0 = new Complex(1.0, 1.0);
+    Complex complex1 = complex0.multiply(0.0);
+    Complex complex2 = complex1.ZERO.conjugate();
+    complex2.I.createComplex((-618.01996014), 0.0);
+    Complex complex3 = complex0.NaN.exp();
+    Complex complex4 = complex1.INF.divide(0.0);
+    Complex complex5 = complex1.divide(0.0);
+    Complex complex6 = complex0.log();
+    Complex complex7 = complex1.sin();
+    Complex complex8 = complex0.INF.sqrt();
+    Complex complex9 = complex0.NaN.tan();
+    complex7.I.getArgument();
+    complex5.atan();
+    Complex complex10 = complex5.conjugate();
+    Complex complex11 = complex0.INF.multiply(complex3);
+    Complex complex12 = complex10.INF.cosh();
+    Complex complex13 = complex12.I.pow(1.0);
+    Complex complex14 = complex7.negate();
+    complex7.getImaginary();
+    Complex complex15 = complex7.add(complex0);
+    Complex complex16 = complex1.log();
+    Complex complex17 = complex12.multiply(0.0);
+    Complex complex18 = complex17.I.pow(1.5707963267948966);
+    Complex complex19 = Complex.valueOf(4734.7381062603);
+    complex19.INF.exp();
+    Complex complex20 = complex9.divide(1.0);
+    Complex complex21 = complex19.multiply(1.0);
+    complex20.equals(complex21);
+    complex9.multiply(complex13);
+    Complex complex22 = complex21.tanh();
+    Complex complex23 = complex22.INF.pow(complex16);
+    assertNotSame(complex23, complex11);
+}",1,
+project,0,test0317,"public void test0317() throws Throwable {
+    Complex complex0 = new Complex(1.0, 1.0);
+    Complex complex1 = complex0.multiply(0.0);
+    Complex complex2 = complex1.ZERO.conjugate();
+    complex2.I.createComplex((-618.01996014), 0.0);
+    Complex complex3 = complex0.NaN.exp();
+    Complex complex4 = complex1.INF.divide(0.0);
+    Complex complex5 = complex1.divide(0.0);
+    Complex complex6 = complex0.log();
+    Complex complex7 = complex1.sin();
+    Complex complex8 = complex0.INF.sqrt();
+    Complex complex9 = complex0.NaN.tan();
+    complex7.I.getArgument();
+    complex5.atan();
+    Complex complex10 = complex5.conjugate();
+    Complex complex11 = complex0.INF.multiply(complex3);
+    Complex complex12 = complex10.INF.cosh();
+    Complex complex13 = complex12.I.pow(1.0);
+    Complex complex14 = complex7.negate();
+    complex7.getImaginary();
+    Complex complex15 = complex7.add(complex0);
+    Complex complex16 = complex1.log();
+    Complex complex17 = complex12.multiply(0.0);
+    Complex complex18 = complex17.I.pow(1.5707963267948966);
+    Complex complex19 = Complex.valueOf(4734.7381062603);
+    complex19.INF.exp();
+    Complex complex20 = complex9.divide(1.0);
+    Complex complex21 = complex19.multiply(1.0);
+    complex20.equals(complex21);
+    complex9.multiply(complex13);
+    Complex complex22 = complex21.tanh();
+    Complex complex23 = complex22.INF.pow(complex16);
+    String string0 = complex8.toString();
+    assertFalse(complex8.equals((Object) complex4));
+}",0,
+project,0,test0318,"public void test0318() throws Throwable {
+    Complex complex0 = new Complex(1.0, 1.0);
+    Complex complex1 = complex0.multiply(0.0);
+    Complex complex2 = complex1.ZERO.conjugate();
+    complex2.I.createComplex((-618.01996014), 0.0);
+    Complex complex3 = complex0.NaN.exp();
+    Complex complex4 = complex1.INF.divide(0.0);
+    Complex complex5 = complex1.divide(0.0);
+    Complex complex6 = complex0.log();
+    Complex complex7 = complex1.sin();
+    Complex complex8 = complex0.INF.sqrt();
+    Complex complex9 = complex0.NaN.tan();
+    complex7.I.getArgument();
+    complex5.atan();
+    Complex complex10 = complex5.conjugate();
+    Complex complex11 = complex0.INF.multiply(complex3);
+    Complex complex12 = complex10.INF.cosh();
+    Complex complex13 = complex12.I.pow(1.0);
+    Complex complex14 = complex7.negate();
+    complex7.getImaginary();
+    Complex complex15 = complex7.add(complex0);
+    Complex complex16 = complex1.log();
+    Complex complex17 = complex12.multiply(0.0);
+    Complex complex18 = complex17.I.pow(1.5707963267948966);
+    Complex complex19 = Complex.valueOf(4734.7381062603);
+    complex19.INF.exp();
+    Complex complex20 = complex9.divide(1.0);
+    Complex complex21 = complex19.multiply(1.0);
+    complex20.equals(complex21);
+    complex9.multiply(complex13);
+    Complex complex22 = complex21.tanh();
+    Complex complex23 = complex22.INF.pow(complex16);
+    String string0 = complex8.toString();
+    assertTrue(complex0.equals((Object) complex15));
+}",0,
+project,0,test0319,"public void test0319() throws Throwable {
+    Complex complex0 = new Complex(1.0, 1.0);
+    Complex complex1 = complex0.multiply(0.0);
+    Complex complex2 = complex1.ZERO.conjugate();
+    complex2.I.createComplex((-618.01996014), 0.0);
+    Complex complex3 = complex0.NaN.exp();
+    Complex complex4 = complex1.INF.divide(0.0);
+    Complex complex5 = complex1.divide(0.0);
+    Complex complex6 = complex0.log();
+    Complex complex7 = complex1.sin();
+    Complex complex8 = complex0.INF.sqrt();
+    Complex complex9 = complex0.NaN.tan();
+    complex7.I.getArgument();
+    complex5.atan();
+    Complex complex10 = complex5.conjugate();
+    Complex complex11 = complex0.INF.multiply(complex3);
+    Complex complex12 = complex10.INF.cosh();
+    Complex complex13 = complex12.I.pow(1.0);
+    Complex complex14 = complex7.negate();
+    complex7.getImaginary();
+    Complex complex15 = complex7.add(complex0);
+    Complex complex16 = complex1.log();
+    Complex complex17 = complex12.multiply(0.0);
+    Complex complex18 = complex17.I.pow(1.5707963267948966);
+    Complex complex19 = Complex.valueOf(4734.7381062603);
+    complex19.INF.exp();
+    Complex complex20 = complex9.divide(1.0);
+    Complex complex21 = complex19.multiply(1.0);
+    complex20.equals(complex21);
+    complex9.multiply(complex13);
+    Complex complex22 = complex21.tanh();
+    Complex complex23 = complex22.INF.pow(complex16);
+    String string0 = complex8.toString();
+    assertFalse(complex8.equals((Object) complex18));
+}",0,
+project,0,test0320,"public void test0320() throws Throwable {
+    Complex complex0 = new Complex(1.0, 1.0);
+    Complex complex1 = complex0.multiply(0.0);
+    Complex complex2 = complex1.ZERO.conjugate();
+    complex2.I.createComplex((-618.01996014), 0.0);
+    Complex complex3 = complex0.NaN.exp();
+    Complex complex4 = complex1.INF.divide(0.0);
+    Complex complex5 = complex1.divide(0.0);
+    Complex complex6 = complex0.log();
+    Complex complex7 = complex1.sin();
+    Complex complex8 = complex0.INF.sqrt();
+    Complex complex9 = complex0.NaN.tan();
+    complex7.I.getArgument();
+    complex5.atan();
+    Complex complex10 = complex5.conjugate();
+    Complex complex11 = complex0.INF.multiply(complex3);
+    Complex complex12 = complex10.INF.cosh();
+    Complex complex13 = complex12.I.pow(1.0);
+    Complex complex14 = complex7.negate();
+    complex7.getImaginary();
+    Complex complex15 = complex7.add(complex0);
+    Complex complex16 = complex1.log();
+    Complex complex17 = complex12.multiply(0.0);
+    Complex complex18 = complex17.I.pow(1.5707963267948966);
+    Complex complex19 = Complex.valueOf(4734.7381062603);
+    complex19.INF.exp();
+    Complex complex20 = complex9.divide(1.0);
+    Complex complex21 = complex19.multiply(1.0);
+    complex20.equals(complex21);
+    complex9.multiply(complex13);
+    Complex complex22 = complex21.tanh();
+    Complex complex23 = complex22.INF.pow(complex16);
+    String string0 = complex8.toString();
+    assertEquals(""(Infinity, NaN)"", string0);
+}",0,
+project,0,test0321,"public void test0321() throws Throwable {
+    Complex complex0 = new Complex(1.0, 1.0);
+    Complex complex1 = complex0.multiply(0.0);
+    Complex complex2 = complex1.ZERO.conjugate();
+    complex2.I.createComplex((-618.01996014), 0.0);
+    Complex complex3 = complex0.NaN.exp();
+    Complex complex4 = complex1.INF.divide(0.0);
+    Complex complex5 = complex1.divide(0.0);
+    Complex complex6 = complex0.log();
+    Complex complex7 = complex1.sin();
+    Complex complex8 = complex0.INF.sqrt();
+    Complex complex9 = complex0.NaN.tan();
+    complex7.I.getArgument();
+    complex5.atan();
+    Complex complex10 = complex5.conjugate();
+    Complex complex11 = complex0.INF.multiply(complex3);
+    Complex complex12 = complex10.INF.cosh();
+    Complex complex13 = complex12.I.pow(1.0);
+    Complex complex14 = complex7.negate();
+    complex7.getImaginary();
+    Complex complex15 = complex7.add(complex0);
+    Complex complex16 = complex1.log();
+    Complex complex17 = complex12.multiply(0.0);
+    Complex complex18 = complex17.I.pow(1.5707963267948966);
+    Complex complex19 = Complex.valueOf(4734.7381062603);
+    complex19.INF.exp();
+    Complex complex20 = complex9.divide(1.0);
+    Complex complex21 = complex19.multiply(1.0);
+    complex20.equals(complex21);
+    complex9.multiply(complex13);
+    Complex complex22 = complex21.tanh();
+    Complex complex23 = complex22.INF.pow(complex16);
+    String string0 = complex8.toString();
+    assertTrue(complex8.equals((Object) complex17));
+}",0,
+project,0,test1722,"public void test1722() throws Throwable {
+    Complex complex0 = Complex.ZERO;
+    try {
+        complex0.INF.subtract((Complex) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // null is not allowed
+        //
+        verifyException(""org.apache.commons.math.util.MathUtils"", e);
+    }
+}",0,

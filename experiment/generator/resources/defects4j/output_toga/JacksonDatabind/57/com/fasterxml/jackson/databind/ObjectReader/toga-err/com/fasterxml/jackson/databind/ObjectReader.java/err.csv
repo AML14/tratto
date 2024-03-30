@@ -1,0 +1,306 @@
+com.fasterxml.jackson.databind.ObjectReader,@Test(timeout = 4000)
+public void test011() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    MockFile mockFile0 = new MockFile(""No 'injectableValues' configured, can notinjeVt value with id ["");
+    FileSystemHandling.shouldAllThrowIOExceptions();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.EAGER_DESERIALIZER_FETCH;
+    ObjectReader objectReader0 = objectMapper0.reader((JsonNodeFactory) null);
+    TokenFilter tokenFilter0 = TokenFilter.INCLUDE_ALL;
+    TokenFilter tokenFilter1 = tokenFilter0.filterStartArray();
+    TokenFilter tokenFilter2 = tokenFilter1.includeProperty(""Current token not END_OBJECT (to match wrapper object with root name '"");
+    TokenFilter tokenFilter3 = tokenFilter2.filterStartObject();
+    ObjectReader objectReader1 = new ObjectReader(objectReader0, tokenFilter3);
+    DeserializationFeature[] deserializationFeatureArray0 = new DeserializationFeature[1];
+    deserializationFeatureArray0[0] = deserializationFeature0;
+    objectReader1.withoutFeatures(deserializationFeatureArray0);
+},ERROR,java.util.NoSuchElementException,[ERROR] - Multiple candidate methods/constructors found. Impossible to discern the focal method.
+com.fasterxml.jackson.databind.ObjectReader,@Test(timeout = 4000)
+public void test044() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectMapper objectMapper1 = new ObjectMapper(objectMapper0);
+    JsonNodeFactory jsonNodeFactory0 = JsonNodeFactory.withExactBigDecimals(true);
+    ObjectReader objectReader0 = objectMapper1.reader(jsonNodeFactory0);
+    DeserializationProblemHandler deserializationProblemHandler0 = mock(DeserializationProblemHandler.class, new ViolatedAssumptionAnswer());
+    objectReader0.withHandler(deserializationProblemHandler0);
+    JsonParser.Feature[] jsonParser_FeatureArray0 = new JsonParser.Feature[7];
+    JsonParser.Feature jsonParser_Feature0 = JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS;
+    jsonParser_FeatureArray0[0] = jsonParser_Feature0;
+    JsonParser.Feature jsonParser_Feature1 = JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS;
+    jsonParser_FeatureArray0[1] = jsonParser_Feature1;
+    JsonParser.Feature jsonParser_Feature2 = JsonParser.Feature.STRICT_DUPLICATE_DETECTION;
+    jsonParser_FeatureArray0[2] = jsonParser_Feature2;
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    ShortNode shortNode0 = ShortNode.valueOf((short) (-2308));
+    IOContext iOContext0 = new IOContext(bufferRecycler0, shortNode0, true);
+    PipedWriter pipedWriter0 = new PipedWriter();
+    PipedReader pipedReader0 = new PipedReader(pipedWriter0);
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    char[] charArray0 = new char[1];
+    charArray0[0] = '>';
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 0, pipedReader0, objectReader0, charsToNameCanonicalizer0, charArray0, 2, 3, true);
+    JsonParser jsonParser0 = readerBasedJsonParser0.skipChildren();
+    JsonParserSequence jsonParserSequence0 = JsonParserSequence.createFlattened(jsonParser0, jsonParser0);
+    Class<DoubleNode> class0 = DoubleNode.class;
+    objectMapper1.readValue((JsonParser) jsonParserSequence0, class0);
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.fasterxml.jackson.databind.ObjectReader,@Test(timeout = 4000)
+public void test044() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectMapper objectMapper1 = new ObjectMapper(objectMapper0);
+    JsonNodeFactory jsonNodeFactory0 = JsonNodeFactory.withExactBigDecimals(true);
+    ObjectReader objectReader0 = objectMapper1.reader(jsonNodeFactory0);
+    DeserializationProblemHandler deserializationProblemHandler0 = mock(DeserializationProblemHandler.class, new ViolatedAssumptionAnswer());
+    objectReader0.withHandler(deserializationProblemHandler0);
+    JsonParser.Feature[] jsonParser_FeatureArray0 = new JsonParser.Feature[7];
+    JsonParser.Feature jsonParser_Feature0 = JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS;
+    jsonParser_FeatureArray0[0] = jsonParser_Feature0;
+    JsonParser.Feature jsonParser_Feature1 = JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS;
+    jsonParser_FeatureArray0[1] = jsonParser_Feature1;
+    JsonParser.Feature jsonParser_Feature2 = JsonParser.Feature.STRICT_DUPLICATE_DETECTION;
+    jsonParser_FeatureArray0[2] = jsonParser_Feature2;
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    ShortNode shortNode0 = ShortNode.valueOf((short) (-2308));
+    IOContext iOContext0 = new IOContext(bufferRecycler0, shortNode0, true);
+    PipedWriter pipedWriter0 = new PipedWriter();
+    PipedReader pipedReader0 = new PipedReader(pipedWriter0);
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    char[] charArray0 = new char[1];
+    charArray0[0] = '>';
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 0, pipedReader0, objectReader0, charsToNameCanonicalizer0, charArray0, 2, 3, true);
+    JsonParser jsonParser0 = readerBasedJsonParser0.skipChildren();
+    JsonParserSequence jsonParserSequence0 = JsonParserSequence.createFlattened(jsonParser0, jsonParser0);
+    Class<DoubleNode> class0 = DoubleNode.class;
+    objectMapper1.readValue((JsonParser) jsonParserSequence0, class0);
+},ERROR,java.util.NoSuchElementException,[ERROR] - Multiple candidate methods/constructors found. Impossible to discern the focal method.
+com.fasterxml.jackson.databind.ObjectReader,@Test(timeout = 4000)
+public void test055() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    JsonFactory jsonFactory0 = new JsonFactory(objectMapper0);
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.USE_LONG_FOR_INTS;
+    objectReader0.without(deserializationFeature0);
+    DeserializationFeature deserializationFeature1 = DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS;
+    objectMapper0.reader(deserializationFeature1);
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.fasterxml.jackson.databind.ObjectReader,@Test(timeout = 4000)
+public void test077() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    ObjectReader objectReader0 = objectMapper0.reader();
+    TokenFilter tokenFilter0 = TokenFilter.INCLUDE_ALL;
+    TokenFilter tokenFilter1 = tokenFilter0.filterStartObject();
+    tokenFilter1.filterStartArray();
+    objectReader0.getAttributes();
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    JsonNodeFactory jsonNodeFactory0 = JsonNodeFactory.withExactBigDecimals(true);
+    BooleanNode booleanNode0 = jsonNodeFactory0.booleanNode(true);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, booleanNode0, true);
+    PipedWriter pipedWriter0 = new PipedWriter();
+    CharsToNameCanonicalizer.createRoot();
+    ObjectReader objectReader1 = new ObjectReader(objectReader0, jsonFactory0);
+},ERROR,java.lang.ClassCastException,class com.github.javaparser.ast.expr.VariableDeclarationExpr cannot be cast to class com.github.javaparser.ast.expr.MethodCallExpr (com.github.javaparser.ast.expr.VariableDeclarationExpr and com.github.javaparser.ast.expr.MethodCallExpr are in unnamed module of loader 'app')
+com.fasterxml.jackson.databind.ObjectReader,@Test(timeout = 4000)
+public void test1616() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    ObjectMapper objectMapper1 = new ObjectMapper(objectMapper0);
+    Class<MapLikeType> class0 = MapLikeType.class;
+    ObjectReader objectReader0 = objectMapper1.readerWithView(class0);
+    JsonParser.Feature jsonParser_Feature0 = JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS;
+    objectReader0.without(jsonParser_Feature0);
+    objectReader0.createArrayNode();
+    EvoSuiteFile evoSuiteFile0 = new EvoSuiteFile(""JSON"");
+    FileSystemHandling.appendLineToFile(evoSuiteFile0, ""JSON"");
+},ERROR,java.util.NoSuchElementException,[ERROR] - Focal method not found. No candidate methods found in the original class, analyzing both the name and the number of parameters.
+com.fasterxml.jackson.databind.ObjectReader,@Test(timeout = 4000)
+public void test2222() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.WRAP_EXCEPTIONS;
+    DeserializationFeature[] deserializationFeatureArray0 = new DeserializationFeature[3];
+    deserializationFeatureArray0[1] = deserializationFeature0;
+    ObjectReader objectReader0 = objectMapper0.reader();
+    FileSystemHandling.shouldAllThrowIOExceptions();
+    ObjectReader objectReader1 = objectMapper0.reader();
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, "" 8 2M|3[M4@{f"", false);
+    PipedReader pipedReader0 = new PipedReader();
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    CharsToNameCanonicalizer charsToNameCanonicalizer1 = charsToNameCanonicalizer0.makeChild(16);
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 3, pipedReader0, objectReader1, charsToNameCanonicalizer1);
+    JsonParser jsonParser0 = readerBasedJsonParser0.skipChildren();
+    Class<Object> class0 = Object.class;
+    objectReader0.readValues(jsonParser0, class0);
+},ERROR,java.util.NoSuchElementException,[ERROR] - Multiple candidate methods/constructors found. Impossible to discern the focal method.
+com.fasterxml.jackson.databind.ObjectReader,@Test(timeout = 4000)
+public void test2424() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectMapper objectMapper1 = new ObjectMapper(objectMapper0);
+    ObjectReader objectReader0 = objectMapper1.reader();
+    MockURL.getFtpExample();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS;
+    ObjectReader objectReader1 = objectReader0.without(deserializationFeature0);
+    objectReader1.withoutFeatures((JsonParser.Feature[]) null);
+},ERROR,java.util.NoSuchElementException,[ERROR] - Multiple candidate methods/constructors found. Impossible to discern the focal method.
+com.fasterxml.jackson.databind.ObjectReader,@Test(timeout = 4000)
+public void test2525() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.WRAP_EXCEPTIONS;
+    DeserializationFeature[] deserializationFeatureArray0 = new DeserializationFeature[4];
+    deserializationFeatureArray0[0] = deserializationFeature0;
+    ObjectReader objectReader0 = objectMapper0.reader(deserializationFeature0);
+    objectReader0.createArrayNode();
+    LinkedHashSet<ObjectReader> linkedHashSet0 = new LinkedHashSet<ObjectReader>();
+    DataFormatReaders dataFormatReaders0 = new DataFormatReaders(linkedHashSet0);
+    byte[] byteArray0 = new byte[1];
+    DataFormatReaders.Match dataFormatReaders_Match0 = dataFormatReaders0.findFormat(byteArray0, 0, 0);
+    objectReader0._detectBindAndClose(dataFormatReaders_Match0, false);
+    objectReader0.withoutRootName();
+    objectReader0.withoutFeatures(deserializationFeatureArray0);
+},ERROR,java.util.NoSuchElementException,[ERROR] - Multiple candidate methods/constructors found. Impossible to discern the focal method.
+com.fasterxml.jackson.databind.ObjectReader,@Test(timeout = 4000)
+public void test2929() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.WRAP_EXCEPTIONS;
+    DeserializationFeature[] deserializationFeatureArray0 = new DeserializationFeature[4];
+    deserializationFeatureArray0[0] = deserializationFeature0;
+    ObjectReader objectReader0 = objectMapper0.reader(deserializationFeature0);
+    JsonNode jsonNode0 = objectReader0.createArrayNode();
+    JsonFactory jsonFactory0 = new JsonFactory();
+    JsonParser.Feature jsonParser_Feature0 = JsonParser.Feature.AUTO_CLOSE_SOURCE;
+    jsonFactory0.disable(jsonParser_Feature0);
+    JsonParser jsonParser0 = objectMapper0.treeAsTokens(jsonNode0);
+    objectReader0._bindAsTree(jsonParser0);
+    MockURL.getHttpExample();
+    objectReader0.withoutFeatures(deserializationFeatureArray0);
+},ERROR,java.util.NoSuchElementException,[ERROR] - Multiple candidate methods/constructors found. Impossible to discern the focal method.
+com.fasterxml.jackson.databind.ObjectReader,@Test(timeout = 4000)
+public void test3030() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<NullNode> class0 = NullNode.class;
+    ObjectReader objectReader0 = objectMapper0.readerFor(class0);
+    MissingNode missingNode0 = MissingNode.getInstance();
+    JsonParser jsonParser0 = objectMapper0.treeAsTokens(missingNode0);
+    JsonNodeFactory jsonNodeFactory0 = JsonNodeFactory.withExactBigDecimals(true);
+    NullNode nullNode0 = jsonNodeFactory0.nullNode();
+    objectReader0._bind(jsonParser0, nullNode0);
+    Stack<ObjectReader> stack0 = null;
+    stack0 = new Stack<ObjectReader>();
+},ERROR,java.nio.file.NoSuchFileException,/home/star_usit_group/tratto/experiment/generator/resources/defects4j/temp/JacksonDatabind_57b/src/main/java/java/util/Stack<com/fasterxml/jackson/databind/ObjectReader>.java
+com.fasterxml.jackson.databind.ObjectReader,@Test(timeout = 4000)
+public void test3232() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectMapper objectMapper1 = new ObjectMapper(objectMapper0);
+    ObjectReader objectReader0 = objectMapper1.reader();
+    ObjectReader[] objectReaderArray0 = new ObjectReader[6];
+    ObjectReader objectReader1 = objectMapper0.reader((Base64Variant) null);
+    objectReaderArray0[0] = objectReader1;
+    objectReaderArray0[1] = objectReader0;
+    objectReaderArray0[2] = objectReader0;
+    objectReaderArray0[3] = objectReader0;
+    objectReaderArray0[4] = objectReader0;
+    objectReaderArray0[5] = objectReader0;
+    DataFormatReaders dataFormatReaders0 = new DataFormatReaders(objectReaderArray0);
+    DataFormatReaders dataFormatReaders1 = dataFormatReaders0.with((DeserializationConfig) null);
+    dataFormatReaders1.with(objectReaderArray0);
+    int int0 = (-32768);
+},ERROR,java.lang.IllegalStateException,[ERROR] - Unable to parse last statement as a MethodCallExpr or an ObjectCreationExpr statement.
+com.fasterxml.jackson.databind.ObjectReader,@Test(timeout = 4000)
+public void test3535() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.WRAP_EXCEPTIONS;
+    DeserializationFeature[] deserializationFeatureArray0 = new DeserializationFeature[3];
+    deserializationFeatureArray0[1] = deserializationFeature0;
+    deserializationFeatureArray0[2] = deserializationFeature0;
+    ObjectReader objectReader0 = objectMapper0.reader();
+    JsonFactory jsonFactory0 = new JsonFactory(objectMapper0);
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, jsonFactory0, true);
+    JsonEncoding jsonEncoding0 = JsonEncoding.UTF16_LE;
+    IOContext iOContext1 = iOContext0.withEncoding(jsonEncoding0);
+    Class<AbstractDeserializer> class0 = AbstractDeserializer.class;
+    ObjectReader objectReader1 = objectMapper0.readerWithView(class0);
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream("".VRMy]xKr>"");
+    byte[] byteArray0 = new byte[1];
+    byteArray0[0] = (byte) 26;
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext1, 1, objectReader1, mockFileOutputStream0, byteArray0, (-1), true);
+    JsonGenerator jsonGenerator0 = uTF8JsonGenerator0.overrideStdFeatures(3, 0);
+    Integer integer0 = new Integer((-1105));
+    objectReader0.writeValue(jsonGenerator0, integer0);
+    byte[] byteArray1 = null;
+    int int0 = 0;
+    boolean boolean0 = true;
+    JsonNodeFactory jsonNodeFactory0 = JsonNodeFactory.withExactBigDecimals(boolean0);
+    ConcurrentHashMap<String, JsonNode> concurrentHashMap0 = new ConcurrentHashMap<String, JsonNode>();
+    ObjectNode objectNode0 = null;
+    objectNode0 = new ObjectNode(jsonNodeFactory0, concurrentHashMap0);
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.fasterxml.jackson.databind.ObjectReader,@Test(timeout = 4000)
+public void test3535() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.WRAP_EXCEPTIONS;
+    DeserializationFeature[] deserializationFeatureArray0 = new DeserializationFeature[3];
+    deserializationFeatureArray0[1] = deserializationFeature0;
+    deserializationFeatureArray0[2] = deserializationFeature0;
+    ObjectReader objectReader0 = objectMapper0.reader();
+    JsonFactory jsonFactory0 = new JsonFactory(objectMapper0);
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, jsonFactory0, true);
+    JsonEncoding jsonEncoding0 = JsonEncoding.UTF16_LE;
+    IOContext iOContext1 = iOContext0.withEncoding(jsonEncoding0);
+    Class<AbstractDeserializer> class0 = AbstractDeserializer.class;
+    ObjectReader objectReader1 = objectMapper0.readerWithView(class0);
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream("".VRMy]xKr>"");
+    byte[] byteArray0 = new byte[1];
+    byteArray0[0] = (byte) 26;
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext1, 1, objectReader1, mockFileOutputStream0, byteArray0, (-1), true);
+    JsonGenerator jsonGenerator0 = uTF8JsonGenerator0.overrideStdFeatures(3, 0);
+    Integer integer0 = new Integer((-1105));
+    objectReader0.writeValue(jsonGenerator0, integer0);
+    byte[] byteArray1 = null;
+    int int0 = 0;
+    boolean boolean0 = true;
+    JsonNodeFactory jsonNodeFactory0 = JsonNodeFactory.withExactBigDecimals(boolean0);
+    ConcurrentHashMap<String, JsonNode> concurrentHashMap0 = new ConcurrentHashMap<String, JsonNode>();
+    ObjectNode objectNode0 = null;
+    objectNode0 = new ObjectNode(jsonNodeFactory0, concurrentHashMap0);
+},ERROR,java.lang.ClassCastException,class com.github.javaparser.ast.expr.AssignExpr cannot be cast to class com.github.javaparser.ast.expr.MethodCallExpr (com.github.javaparser.ast.expr.AssignExpr and com.github.javaparser.ast.expr.MethodCallExpr are in unnamed module of loader 'app')
+com.fasterxml.jackson.databind.ObjectReader,@Test(timeout = 4000)
+public void test4646() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectMapper objectMapper1 = new ObjectMapper(objectMapper0);
+    ObjectReader objectReader0 = objectMapper1.reader();
+    ClassLoader classLoader0 = ClassLoader.getSystemClassLoader();
+    ObjectMapper.findModules(classLoader0);
+    MockURL.getFtpExample();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS;
+    ObjectReader objectReader1 = objectReader0.without(deserializationFeature0);
+    MapperFeature mapperFeature0 = MapperFeature.SORT_PROPERTIES_ALPHABETICALLY;
+    objectReader0.isEnabled(mapperFeature0);
+    objectReader1.withoutFeatures((JsonParser.Feature[]) null);
+},ERROR,java.util.NoSuchElementException,[ERROR] - Multiple candidate methods/constructors found. Impossible to discern the focal method.
+com.fasterxml.jackson.databind.ObjectReader,@Test(timeout = 4000)
+public void test4949() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.WRAP_EXCEPTIONS;
+    DeserializationFeature[] deserializationFeatureArray0 = new DeserializationFeature[3];
+    deserializationFeatureArray0[1] = deserializationFeature0;
+    deserializationFeatureArray0[2] = deserializationFeature0;
+    ObjectReader objectReader0 = objectMapper0.reader();
+    JsonFactory jsonFactory0 = new JsonFactory(objectMapper0);
+    LinkedList<ObjectReader> linkedList0 = new LinkedList<ObjectReader>();
+    DataFormatReaders dataFormatReaders0 = new DataFormatReaders(linkedList0);
+    objectReader0.withoutRootName();
+    objectReader0.withoutFeatures(deserializationFeatureArray0);
+},ERROR,java.util.NoSuchElementException,[ERROR] - Multiple candidate methods/constructors found. Impossible to discern the focal method.
+com.fasterxml.jackson.databind.ObjectReader,@Test(timeout = 4000)
+public void test5151() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<NullNode> class0 = NullNode.class;
+    ObjectReader objectReader0 = objectMapper0.readerFor(class0);
+    MissingNode missingNode0 = MissingNode.getInstance();
+    JsonParser jsonParser0 = objectMapper0.treeAsTokens(missingNode0);
+    JsonNodeFactory jsonNodeFactory0 = JsonNodeFactory.withExactBigDecimals(true);
+    jsonNodeFactory0.nullNode();
+    objectReader0._bind(jsonParser0, (Object) null);
+    Stack<ObjectReader> stack0 = new Stack<ObjectReader>();
+},ERROR,java.nio.file.NoSuchFileException,/home/star_usit_group/tratto/experiment/generator/resources/defects4j/temp/JacksonDatabind_57b/src/main/java/java/util/Stack<com/fasterxml/jackson/databind/ObjectReader>.java

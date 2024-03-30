@@ -1,0 +1,128 @@
+org.apache.commons.csv.CSVPrinter,@Test(timeout = 4000)
+public void test000() throws Throwable {
+    CharArrayWriter charArrayWriter0 = new CharArrayWriter(1174);
+    CSVFormat cSVFormat0 = CSVFormat.MYSQL;
+    CSVFormat cSVFormat1 = cSVFormat0.withDelimiter('i');
+    CSVPrinter cSVPrinter0 = new CSVPrinter(charArrayWriter0, cSVFormat1);
+    Object[] objectArray0 = new Object[9];
+    objectArray0[2] = (Object) charArrayWriter0;
+    cSVPrinter0.printRecord(objectArray0);
+    charArrayWriter0.size();
+},ERROR,java.nio.file.NoSuchFileException,/home/star_usit_group/tratto/experiment/generator/resources/defects4j/temp/Csv_5b/src/main/java/java/io/CharArrayWriter.java
+org.apache.commons.csv.CSVPrinter,@Test(timeout = 4000)
+public void test011() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.newFormat(']');
+    Object[] objectArray0 = new Object[7];
+    objectArray0[4] = (Object) cSVFormat0;
+    String string0 = cSVFormat0.format(objectArray0);
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+org.apache.commons.csv.CSVPrinter,@Test(timeout = 4000)
+public void test055() throws Throwable {
+    CharBuffer charBuffer0 = CharBuffer.allocate(0);
+    CSVFormat cSVFormat0 = CSVFormat.RFC4180;
+    CSVPrinter cSVPrinter0 = new CSVPrinter(charBuffer0, cSVFormat0);
+    Object[] objectArray0 = new Object[1];
+    cSVPrinter0.printRecord(objectArray0);
+},ERROR,java.util.NoSuchElementException,[ERROR] - Multiple candidate methods/constructors found. Impossible to discern the focal method.
+org.apache.commons.csv.CSVPrinter,@Test(timeout = 4000)
+public void test066() throws Throwable {
+    CharArrayWriter charArrayWriter0 = new CharArrayWriter();
+    MockPrintWriter mockPrintWriter0 = new MockPrintWriter(charArrayWriter0);
+    CSVFormat cSVFormat0 = CSVFormat.newFormat('\'');
+    CSVPrinter cSVPrinter0 = new CSVPrinter(mockPrintWriter0, cSVFormat0);
+    cSVPrinter0.printRecord((Object[]) null);
+},ERROR,java.util.NoSuchElementException,[ERROR] - Multiple candidate methods/constructors found. Impossible to discern the focal method.
+org.apache.commons.csv.CSVPrinter,@Test(timeout = 4000)
+public void test077() throws Throwable {
+    PipedWriter pipedWriter0 = new PipedWriter();
+    CSVFormat cSVFormat0 = CSVFormat.newFormat('J');
+    CSVPrinter cSVPrinter0 = new CSVPrinter(pipedWriter0, cSVFormat0);
+    Object[] objectArray0 = new Object[0];
+    cSVPrinter0.printRecord(objectArray0);
+},ERROR,java.util.NoSuchElementException,[ERROR] - Multiple candidate methods/constructors found. Impossible to discern the focal method.
+org.apache.commons.csv.CSVPrinter,@Test(timeout = 4000)
+public void test1414() throws Throwable {
+    CharArrayWriter charArrayWriter0 = new CharArrayWriter();
+    CSVFormat cSVFormat0 = CSVFormat.EXCEL;
+    CSVPrinter cSVPrinter0 = new CSVPrinter(charArrayWriter0, cSVFormat0);
+    HashSet<SequenceInputStream> hashSet0 = new HashSet<SequenceInputStream>();
+    ArrayList<SequenceInputStream> arrayList0 = new ArrayList<SequenceInputStream>(hashSet0);
+    PipedInputStream pipedInputStream0 = new PipedInputStream(110);
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(pipedInputStream0, pipedInputStream0);
+    arrayList0.add(sequenceInputStream0);
+    cSVPrinter0.printRecord((Iterable<?>) arrayList0);
+    charArrayWriter0.size();
+},ERROR,java.nio.file.NoSuchFileException,/home/star_usit_group/tratto/experiment/generator/resources/defects4j/temp/Csv_5b/src/main/java/java/io/CharArrayWriter.java
+org.apache.commons.csv.CSVPrinter,@Test(timeout = 4000)
+public void test1515() throws Throwable {
+    MockFile mockFile0 = new MockFile(""qdQa-EU:/yl"", ""qdQa-EU:/yl"");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(mockFile0);
+    CSVFormat cSVFormat0 = CSVFormat.EXCEL;
+    CSVPrinter cSVPrinter0 = new CSVPrinter(mockPrintStream0, cSVFormat0);
+    cSVPrinter0.print((Object) null);
+    mockFile0.length();
+},ERROR,java.util.NoSuchElementException,[ERROR] - Focal method not found. No candidate methods found in the original class, analyzing both the name and the number of parameters.
+org.apache.commons.csv.CSVPrinter,@Test(timeout = 4000)
+public void test2121() throws Throwable {
+    File file0 = MockFile.createTempFile(""The comment start and the escape character cannot be the same ('"", ""The comment start and the escape character cannot be the same ('"");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(file0);
+    CSVFormat cSVFormat0 = CSVFormat.EXCEL;
+    CSVFormat cSVFormat1 = cSVFormat0.withDelimiter('r');
+    CSVPrinter cSVPrinter0 = new CSVPrinter(mockPrintStream0, cSVFormat1);
+    Object[] objectArray0 = new Object[3];
+    objectArray0[1] = (Object) file0;
+    cSVPrinter0.printRecord(objectArray0);
+    file0.length();
+},ERROR,java.nio.file.NoSuchFileException,/home/star_usit_group/tratto/experiment/generator/resources/defects4j/temp/Csv_5b/src/main/java/java/io/File.java
+org.apache.commons.csv.CSVPrinter,@Test(timeout = 4000)
+public void test2323() throws Throwable {
+    MockFile mockFile0 = new MockFile(""QuoteChar=<"");
+    MockPrintWriter mockPrintWriter0 = new MockPrintWriter(mockFile0);
+    CSVFormat cSVFormat0 = CSVFormat.EXCEL;
+    Quote quote0 = Quote.ALL;
+    CSVFormat cSVFormat1 = cSVFormat0.withQuotePolicy(quote0);
+    CSVPrinter cSVPrinter0 = new CSVPrinter(mockPrintWriter0, cSVFormat1);
+    cSVPrinter0.print(mockFile0);
+    mockFile0.getTotalSpace();
+},ERROR,java.util.NoSuchElementException,[ERROR] - Focal method not found. No candidate methods found in the original class, analyzing both the name and the number of parameters.
+org.apache.commons.csv.CSVPrinter,@Test(timeout = 4000)
+public void test2424() throws Throwable {
+    MockFile mockFile0 = new MockFile(""QuoteChar=<"");
+    MockPrintWriter mockPrintWriter0 = new MockPrintWriter(mockFile0);
+    CSVFormat cSVFormat0 = CSVFormat.EXCEL;
+    Quote quote0 = Quote.NON_NUMERIC;
+    CSVFormat cSVFormat1 = cSVFormat0.withQuotePolicy(quote0);
+    CSVPrinter cSVPrinter0 = new CSVPrinter(mockPrintWriter0, cSVFormat1);
+    cSVPrinter0.print(mockFile0);
+    mockFile0.isHidden();
+},ERROR,java.util.NoSuchElementException,[ERROR] - Focal method not found. No candidate methods found in the original class, analyzing both the name and the number of parameters.
+org.apache.commons.csv.CSVPrinter,@Test(timeout = 4000)
+public void test2525() throws Throwable {
+    CharArrayWriter charArrayWriter0 = new CharArrayWriter(29);
+    CSVFormat cSVFormat0 = CSVFormat.MYSQL;
+    CSVFormat cSVFormat1 = cSVFormat0.withEscape('i');
+    CSVPrinter cSVPrinter0 = new CSVPrinter(charArrayWriter0, cSVFormat1);
+    Object[] objectArray0 = new Object[9];
+    objectArray0[0] = (Object) cSVPrinter0;
+    cSVPrinter0.printRecord(objectArray0);
+    charArrayWriter0.size();
+},ERROR,java.nio.file.NoSuchFileException,/home/star_usit_group/tratto/experiment/generator/resources/defects4j/temp/Csv_5b/src/main/java/java/io/CharArrayWriter.java
+org.apache.commons.csv.CSVPrinter,@Test(timeout = 4000)
+public void test2626() throws Throwable {
+    MockFileWriter mockFileWriter0 = new MockFileWriter(""[{"", false);
+    CSVFormat cSVFormat0 = CSVFormat.MYSQL;
+    CSVPrinter cSVPrinter0 = new CSVPrinter(mockFileWriter0, cSVFormat0);
+    HashSet<BatchUpdateException> hashSet0 = new HashSet<BatchUpdateException>(0);
+    SQLTransactionRollbackException sQLTransactionRollbackException0 = new SQLTransactionRollbackException("""");
+    SQLNonTransientConnectionException sQLNonTransientConnectionException0 = new SQLNonTransientConnectionException((String) null, ""(a^(>Ccp|'CVN/Q468"", sQLTransactionRollbackException0);
+    BatchUpdateException batchUpdateException0 = new BatchUpdateException(sQLNonTransientConnectionException0);
+    hashSet0.add(batchUpdateException0);
+    cSVPrinter0.printRecords((Iterable<?>) hashSet0);
+    hashSet0.contains(batchUpdateException0);
+},ERROR,java.nio.file.NoSuchFileException,/home/star_usit_group/tratto/experiment/generator/resources/defects4j/temp/Csv_5b/src/main/java/java/util/HashSet.java
+org.apache.commons.csv.CSVPrinter,@Test(timeout = 4000)
+public void test3131() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.MYSQL;
+    CSVPrinter cSVPrinter0 = null;
+    cSVPrinter0 = new CSVPrinter((Appendable) null, cSVFormat0);
+},ERROR,java.lang.ClassCastException,class com.github.javaparser.ast.expr.AssignExpr cannot be cast to class com.github.javaparser.ast.expr.MethodCallExpr (com.github.javaparser.ast.expr.AssignExpr and com.github.javaparser.ast.expr.MethodCallExpr are in unnamed module of loader 'app')

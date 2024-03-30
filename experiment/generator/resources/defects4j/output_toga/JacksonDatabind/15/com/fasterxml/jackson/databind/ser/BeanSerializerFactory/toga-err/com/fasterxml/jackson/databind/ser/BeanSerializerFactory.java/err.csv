@@ -1,0 +1,59 @@
+com.fasterxml.jackson.databind.ser.BeanSerializerFactory,@Test(timeout = 4000)
+public void test011() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    objectMapper0.writeValueAsBytes(objectMapper0);
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.fasterxml.jackson.databind.ser.BeanSerializerFactory,@Test(timeout = 4000)
+public void test044() throws Throwable {
+    Class<String> class0 = String.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    byte[] byteArray0 = objectMapper0.writeValueAsBytes(simpleType0);
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.fasterxml.jackson.databind.ser.BeanSerializerFactory,@Test(timeout = 4000)
+public void test077() throws Throwable {
+    Class<String> class0 = String.class;
+    SimpleType simpleType0 = SimpleType.construct(class0);
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    POJOPropertiesCollector pOJOPropertiesCollector0 = mock(POJOPropertiesCollector.class, new ViolatedAssumptionAnswer());
+    doReturn((AnnotatedMethod) null).when(pOJOPropertiesCollector0).getAnySetterMethod();
+    doReturn((AnnotatedClass) null).when(pOJOPropertiesCollector0).getClassDef();
+    doReturn((MapperConfig) null).when(pOJOPropertiesCollector0).getConfig();
+    doReturn((Set) null).when(pOJOPropertiesCollector0).getIgnoredPropertyNames();
+    doReturn((Map) null).when(pOJOPropertiesCollector0).getInjectables();
+    doReturn((AnnotatedMethod) null).when(pOJOPropertiesCollector0).getJsonValueMethod();
+    doReturn((ObjectIdInfo) null).when(pOJOPropertiesCollector0).getObjectIdInfo();
+    doReturn((List) null).when(pOJOPropertiesCollector0).getProperties();
+    doReturn((JavaType) null).when(pOJOPropertiesCollector0).getType();
+    BasicBeanDescription basicBeanDescription0 = BasicBeanDescription.forDeserialization(pOJOPropertiesCollector0);
+    SerializerFactoryConfig serializerFactoryConfig0 = new SerializerFactoryConfig();
+    SimpleSerializers simpleSerializers0 = new SimpleSerializers();
+    SerializerFactoryConfig serializerFactoryConfig1 = serializerFactoryConfig0.withAdditionalSerializers(simpleSerializers0);
+    BeanSerializerFactory beanSerializerFactory0 = new BeanSerializerFactory(serializerFactoryConfig1);
+    JsonSerializer<?> jsonSerializer0 = beanSerializerFactory0._createSerializer2(defaultSerializerProvider_Impl0, simpleType0, basicBeanDescription0, true);
+    jsonSerializer0.usesObjectId();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.fasterxml.jackson.databind.ser.BeanSerializerFactory,@Test(timeout = 4000)
+public void test088() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    SerializationFeature serializationFeature0 = SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS;
+    byte[] byteArray0 = objectMapper0.writeValueAsBytes(serializationFeature0);
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.fasterxml.jackson.databind.ser.BeanSerializerFactory,@Test(timeout = 4000)
+public void test099() throws Throwable {
+    SerializerFactoryConfig serializerFactoryConfig0 = new SerializerFactoryConfig();
+    Iterable<Serializers> iterable0 = serializerFactoryConfig0.keySerializers();
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    byte[] byteArray0 = objectMapper0.writeValueAsBytes(iterable0);
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.fasterxml.jackson.databind.ser.BeanSerializerFactory,@Test(timeout = 4000)
+public void test1212() throws Throwable {
+    BeanSerializerFactory beanSerializerFactory0 = BeanSerializerFactory.instance;
+    LinkedList<BeanPropertyDefinition> linkedList0 = new LinkedList<BeanPropertyDefinition>();
+    AnnotationIntrospector annotationIntrospector0 = AnnotationIntrospector.nopInstance();
+    PropertyName propertyName0 = PropertyName.USE_DEFAULT;
+    POJOPropertyBuilder pOJOPropertyBuilder0 = new POJOPropertyBuilder(propertyName0, annotationIntrospector0, false);
+    linkedList0.add((BeanPropertyDefinition) pOJOPropertyBuilder0);
+    beanSerializerFactory0.removeSetterlessGetters((SerializationConfig) null, (BeanDescription) null, linkedList0);
+    linkedList0.size();
+},ERROR,java.nio.file.NoSuchFileException,/home/star_usit_group/tratto/experiment/generator/resources/defects4j/temp/JacksonDatabind_15b/src/main/java/java/util/LinkedList.java

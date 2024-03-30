@@ -1,0 +1,29 @@
+focal_method,test_prefix,docstring
+"public String getSymbol() {
+    return ""<"";
+}","public void test00() throws Throwable {
+    Expression[] expressionArray0 = new Expression[0];
+    CoreOperationAdd coreOperationAdd0 = new CoreOperationAdd(expressionArray0);
+    CoreOperationGreaterThanOrEqual coreOperationGreaterThanOrEqual0 = new CoreOperationGreaterThanOrEqual(coreOperationAdd0, coreOperationAdd0);
+    CoreOperationLessThan coreOperationLessThan0 = new CoreOperationLessThan(coreOperationGreaterThanOrEqual0, coreOperationAdd0);
+    String string0 = coreOperationLessThan0.getSymbol();
+    assertEquals(""<"", string0);
+}",""
+"public Object computeValue(org.apache.commons.jxpath.ri.EvalContext context) {
+    double l = org.apache.commons.jxpath.ri.InfoSetUtil.doubleValue(args[0].computeValue(context));
+    double r = org.apache.commons.jxpath.ri.InfoSetUtil.doubleValue(args[1].computeValue(context));
+    return l < r ? Boolean.TRUE : Boolean.FALSE;
+}","public void test11() throws Throwable {
+    Expression[] expressionArray0 = new Expression[0];
+    CoreOperationAdd coreOperationAdd0 = new CoreOperationAdd(expressionArray0);
+    CoreOperationGreaterThanOrEqual coreOperationGreaterThanOrEqual0 = new CoreOperationGreaterThanOrEqual(coreOperationAdd0, coreOperationAdd0);
+    CoreOperationLessThan coreOperationLessThan0 = new CoreOperationLessThan(coreOperationGreaterThanOrEqual0, coreOperationAdd0);
+    QName qName0 = new QName(""<"");
+    Locale locale0 = Locale.ROOT;
+    NodePointer nodePointer0 = NodePointer.newNodePointer(qName0, ""org.apache.commons.jxpath.ri.parser.XPathParser"", locale0);
+    JXPathContextReferenceImpl jXPathContextReferenceImpl0 = new JXPathContextReferenceImpl((JXPathContext) null, nodePointer0.WHOLE_COLLECTION, nodePointer0);
+    RootContext rootContext0 = new RootContext(jXPathContextReferenceImpl0, nodePointer0);
+    CoreOperationLessThan coreOperationLessThan1 = new CoreOperationLessThan(coreOperationAdd0, coreOperationLessThan0);
+    Object object0 = coreOperationLessThan1.computeValue(rootContext0);
+    assertEquals(true, object0);
+}",""

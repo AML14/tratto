@@ -1,0 +1,721 @@
+focal_method,test_prefix,docstring
+"public boolean hasDelegatingCreator() {
+    return _creators[C_DELEGATE] != null;
+}","public void test000() throws Throwable {
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    CreatorCollector creatorCollector0 = new CreatorCollector((BeanDescription) null, deserializationConfig0);
+    creatorCollector0.addLongCreator((AnnotatedWithParams) null, true);
+    assertFalse(creatorCollector0.hasDelegatingCreator());
+}","/**
+ * @since 2.6
+ */"
+"public boolean hasDelegatingCreator() {
+    return _creators[C_DELEGATE] != null;
+}","public void test011() throws Throwable {
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    Class<String> class0 = String.class;
+    BasicClassIntrospector basicClassIntrospector0 = new BasicClassIntrospector();
+    SimpleType simpleType0 = SimpleType.constructUnsafe(class0);
+    BasicBeanDescription basicBeanDescription0 = basicClassIntrospector0.forDirectClassAnnotations(deserializationConfig0, simpleType0, deserializationConfig0);
+    CreatorCollector creatorCollector0 = new CreatorCollector(basicBeanDescription0, deserializationConfig0);
+    creatorCollector0.addLongCreator((AnnotatedWithParams) null);
+    assertFalse(creatorCollector0.hasDelegatingCreator());
+}","/**
+ * @since 2.6
+ */"
+"public boolean hasPropertyBasedCreator() {
+    return _creators[C_PROPS] != null;
+}","public void test022() throws Throwable {
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    CreatorCollector creatorCollector0 = new CreatorCollector((BeanDescription) null, deserializationConfig0);
+    creatorCollector0.addIntCreator((AnnotatedWithParams) null);
+    assertFalse(creatorCollector0.hasPropertyBasedCreator());
+}","/**
+ * @since 2.6
+ */"
+"public boolean hasDelegatingCreator() {
+    return _creators[C_DELEGATE] != null;
+}","public void test033() throws Throwable {
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    CreatorCollector creatorCollector0 = new CreatorCollector((BeanDescription) null, deserializationConfig0);
+    creatorCollector0.addIntCreator((AnnotatedWithParams) null, true);
+    assertFalse(creatorCollector0.hasDelegatingCreator());
+}","/**
+ * @since 2.6
+ */"
+"// since 2.5
+@Deprecated
+public void addDelegatingCreator(AnnotatedWithParams creator, CreatorProperty[] injectables) {
+    addDelegatingCreator(creator, false, injectables);
+}","public void test044() throws Throwable {
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    CreatorCollector creatorCollector0 = new CreatorCollector((BeanDescription) null, deserializationConfig0);
+    // Undeclared exception!
+    try {
+        creatorCollector0.addDelegatingCreator((AnnotatedWithParams) null, (CreatorProperty[]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.impl.CreatorCollector"", e);
+    }
+}",""
+"public boolean hasDelegatingCreator() {
+    return _creators[C_DELEGATE] != null;
+}","public void test055() throws Throwable {
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    CreatorCollector creatorCollector0 = new CreatorCollector((BeanDescription) null, deserializationConfig0);
+    creatorCollector0.addBooleanCreator((AnnotatedWithParams) null);
+    assertFalse(creatorCollector0.hasDelegatingCreator());
+}","/**
+ * @since 2.6
+ */"
+"/*
+    /**********************************************************
+    /* Accessors
+    /**********************************************************
+     */
+/**
+ * @since 2.1
+ */
+public boolean hasDefaultCreator() {
+    return _creators[C_DEFAULT] != null;
+}","public void test066() throws Throwable {
+    BasicClassIntrospector basicClassIntrospector0 = new BasicClassIntrospector();
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<String> class0 = String.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructMapLikeType(class0, class0, class0);
+    BasicBeanDescription basicBeanDescription0 = basicClassIntrospector0.forDeserialization(deserializationConfig0, mapLikeType0, (ClassIntrospector.MixInResolver) null);
+    AnnotatedConstructor annotatedConstructor0 = basicBeanDescription0.findDefaultConstructor();
+    CreatorCollector creatorCollector0 = new CreatorCollector(basicBeanDescription0, deserializationConfig0);
+    creatorCollector0.setDefaultCreator(annotatedConstructor0);
+    boolean boolean0 = creatorCollector0.hasDefaultCreator();
+    assertTrue(boolean0);
+}",""
+"public boolean hasDelegatingCreator() {
+    return _creators[C_DELEGATE] != null;
+}","public void test077() throws Throwable {
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    CreatorCollector creatorCollector0 = new CreatorCollector((BeanDescription) null, deserializationConfig0);
+    creatorCollector0.addDoubleCreator((AnnotatedWithParams) null);
+    assertFalse(creatorCollector0.hasDelegatingCreator());
+}","/**
+ * @since 2.6
+ */"
+"public boolean hasPropertyBasedCreator() {
+    return _creators[C_PROPS] != null;
+}","public void test088() throws Throwable {
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    CreatorCollector creatorCollector0 = new CreatorCollector((BeanDescription) null, deserializationConfig0);
+    creatorCollector0.addStringCreator((AnnotatedWithParams) null);
+    assertFalse(creatorCollector0.hasPropertyBasedCreator());
+}","/**
+ * @since 2.6
+ */"
+"public boolean hasPropertyBasedCreator() {
+    return _creators[C_PROPS] != null;
+}","public void test099() throws Throwable {
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    CreatorCollector creatorCollector0 = new CreatorCollector((BeanDescription) null, deserializationConfig0);
+    creatorCollector0.addDoubleCreator((AnnotatedWithParams) null, false);
+    assertFalse(creatorCollector0.hasPropertyBasedCreator());
+}","/**
+ * @since 2.6
+ */"
+"public boolean canInstantiate() {
+    return canCreateUsingDefault() || canCreateUsingDelegate() || canCreateFromObjectWith() || canCreateFromString() || canCreateFromInt() || canCreateFromLong() || canCreateFromDouble() || canCreateFromBoolean();
+}","public void test1212() throws Throwable {
+    BasicClassIntrospector basicClassIntrospector0 = new BasicClassIntrospector();
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<String> class0 = String.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructMapLikeType(class0, class0, class0);
+    BasicBeanDescription basicBeanDescription0 = basicClassIntrospector0.forDeserialization(deserializationConfig0, mapLikeType0, (ClassIntrospector.MixInResolver) null);
+    AnnotatedConstructor annotatedConstructor0 = basicBeanDescription0.findDefaultConstructor();
+    CreatorCollector creatorCollector0 = new CreatorCollector(basicBeanDescription0, deserializationConfig0);
+    creatorCollector0.verifyNonDup(annotatedConstructor0, 8, false);
+    ValueInstantiator valueInstantiator0 = creatorCollector0.constructValueInstantiator(deserializationConfig0);
+    assertFalse(valueInstantiator0.canInstantiate());
+}","/**
+ * Method that will return true if any of <code>canCreateXxx</code> method
+ * returns true: that is, if there is any way that an instance could
+ * be created.
+ */"
+"/*
+    /**********************************************************
+    /* Metadata accessors
+    /**********************************************************
+     */
+/**
+ * Method that returns description of the value type this instantiator
+ * handles. Used for error messages, diagnostics.
+ */
+public abstract String getValueTypeDesc();","public void test1213() throws Throwable {
+    BasicClassIntrospector basicClassIntrospector0 = new BasicClassIntrospector();
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<String> class0 = String.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructMapLikeType(class0, class0, class0);
+    BasicBeanDescription basicBeanDescription0 = basicClassIntrospector0.forDeserialization(deserializationConfig0, mapLikeType0, (ClassIntrospector.MixInResolver) null);
+    AnnotatedConstructor annotatedConstructor0 = basicBeanDescription0.findDefaultConstructor();
+    CreatorCollector creatorCollector0 = new CreatorCollector(basicBeanDescription0, deserializationConfig0);
+    creatorCollector0.verifyNonDup(annotatedConstructor0, 8, false);
+    ValueInstantiator valueInstantiator0 = creatorCollector0.constructValueInstantiator(deserializationConfig0);
+    assertEquals(""[simple type, class java.lang.String]"", valueInstantiator0.getValueTypeDesc());
+}",""
+"public boolean canInstantiate() {
+    return canCreateUsingDefault() || canCreateUsingDelegate() || canCreateFromObjectWith() || canCreateFromString() || canCreateFromInt() || canCreateFromLong() || canCreateFromDouble() || canCreateFromBoolean();
+}","public void test1314() throws Throwable {
+    BasicClassIntrospector basicClassIntrospector0 = new BasicClassIntrospector();
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<String> class0 = String.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructMapLikeType(class0, class0, class0);
+    BasicBeanDescription basicBeanDescription0 = basicClassIntrospector0.forDeserialization(deserializationConfig0, mapLikeType0, (ClassIntrospector.MixInResolver) null);
+    CreatorCollector creatorCollector0 = new CreatorCollector(basicBeanDescription0, deserializationConfig0);
+    ValueInstantiator valueInstantiator0 = creatorCollector0.constructValueInstantiator(deserializationConfig0);
+    assertFalse(valueInstantiator0.canInstantiate());
+}","/**
+ * Method that will return true if any of <code>canCreateXxx</code> method
+ * returns true: that is, if there is any way that an instance could
+ * be created.
+ */"
+"/*
+    /**********************************************************
+    /* Metadata accessors
+    /**********************************************************
+     */
+/**
+ * Method that returns description of the value type this instantiator
+ * handles. Used for error messages, diagnostics.
+ */
+public abstract String getValueTypeDesc();","public void test1315() throws Throwable {
+    BasicClassIntrospector basicClassIntrospector0 = new BasicClassIntrospector();
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<String> class0 = String.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructMapLikeType(class0, class0, class0);
+    BasicBeanDescription basicBeanDescription0 = basicClassIntrospector0.forDeserialization(deserializationConfig0, mapLikeType0, (ClassIntrospector.MixInResolver) null);
+    CreatorCollector creatorCollector0 = new CreatorCollector(basicBeanDescription0, deserializationConfig0);
+    ValueInstantiator valueInstantiator0 = creatorCollector0.constructValueInstantiator(deserializationConfig0);
+    assertEquals(""[simple type, class java.lang.String]"", valueInstantiator0.getValueTypeDesc());
+}",""
+"// since 2.5
+@Deprecated
+public void addPropertyCreator(AnnotatedWithParams creator, CreatorProperty[] properties) {
+    addPropertyCreator(creator, false, properties);
+}","public void test1416() throws Throwable {
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    CreatorCollector creatorCollector0 = new CreatorCollector((BeanDescription) null, deserializationConfig0);
+    CreatorProperty[] creatorPropertyArray0 = new CreatorProperty[10];
+    // Undeclared exception!
+    try {
+        creatorCollector0.addPropertyCreator((AnnotatedWithParams) null, creatorPropertyArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.impl.CreatorCollector"", e);
+    }
+}",""
+"public boolean hasPropertyBasedCreator() {
+    return _creators[C_PROPS] != null;
+}","public void test1517() throws Throwable {
+    BasicClassIntrospector basicClassIntrospector0 = new BasicClassIntrospector();
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<String> class0 = String.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructMapLikeType(class0, class0, class0);
+    BasicBeanDescription basicBeanDescription0 = basicClassIntrospector0.forDeserialization(deserializationConfig0, mapLikeType0, deserializationConfig0);
+    CreatorCollector creatorCollector0 = new CreatorCollector(basicBeanDescription0, deserializationConfig0);
+    PropertyName propertyName0 = new PropertyName("""");
+    AnnotationMap annotationMap0 = new AnnotationMap();
+    AnnotatedParameter annotatedParameter0 = new AnnotatedParameter((AnnotatedWithParams) null, mapLikeType0, annotationMap0, (-2721));
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_REQUIRED;
+    Locale locale0 = Locale.UK;
+    CreatorProperty creatorProperty0 = new CreatorProperty(propertyName0, mapLikeType0, propertyName0, (TypeDeserializer) null, annotationMap0, annotatedParameter0, 695, locale0, propertyMetadata0);
+    SettableBeanProperty[] settableBeanPropertyArray0 = new SettableBeanProperty[8];
+    settableBeanPropertyArray0[0] = (SettableBeanProperty) creatorProperty0;
+    settableBeanPropertyArray0[1] = (SettableBeanProperty) creatorProperty0;
+    settableBeanPropertyArray0[2] = (SettableBeanProperty) creatorProperty0;
+    settableBeanPropertyArray0[3] = (SettableBeanProperty) creatorProperty0;
+    settableBeanPropertyArray0[4] = (SettableBeanProperty) creatorProperty0;
+    settableBeanPropertyArray0[5] = (SettableBeanProperty) creatorProperty0;
+    settableBeanPropertyArray0[6] = (SettableBeanProperty) creatorProperty0;
+    settableBeanPropertyArray0[7] = (SettableBeanProperty) creatorProperty0;
+    creatorCollector0.addPropertyCreator((AnnotatedWithParams) null, false, settableBeanPropertyArray0);
+    assertFalse(creatorCollector0.hasPropertyBasedCreator());
+}","/**
+ * @since 2.6
+ */"
+"public void addPropertyCreator(AnnotatedWithParams creator, boolean explicit, SettableBeanProperty[] properties) {
+    verifyNonDup(creator, C_PROPS, explicit);
+    // Better ensure we have no duplicate names either...
+    if (properties.length > 1) {
+        HashMap<String, Integer> names = new HashMap<String, Integer>();
+        for (int i = 0, len = properties.length; i < len; ++i) {
+            String name = properties[i].getName();
+            /* [Issue-13]: Need to consider Injectables, which may not have
+                     *   a name at all, and need to be skipped
+                     */
+            if (name.length() == 0 && properties[i].getInjectableValueId() != null) {
+                continue;
+            }
+            Integer old = names.put(name, Integer.valueOf(i));
+            if (old != null) {
+                throw new IllegalArgumentException(""Duplicate creator property \"""" + name + ""\"" (index "" + old + "" vs "" + i + "")"");
+            }
+        }
+    }
+    _propertyBasedArgs = properties;
+}","public void test1618() throws Throwable {
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<String> class0 = String.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructMapLikeType(class0, class0, class0);
+    BasicClassIntrospector basicClassIntrospector0 = new BasicClassIntrospector();
+    BasicBeanDescription basicBeanDescription0 = basicClassIntrospector0.forDeserialization(deserializationConfig0, mapLikeType0, deserializationConfig0);
+    CreatorCollector creatorCollector0 = new CreatorCollector(basicBeanDescription0, deserializationConfig0);
+    AnnotatedConstructor annotatedConstructor0 = basicBeanDescription0.findDefaultConstructor();
+    PropertyName propertyName0 = new PropertyName(""?e{o\u0004Vqm{Sv'g~"");
+    AnnotationMap annotationMap0 = new AnnotationMap();
+    AnnotatedParameter annotatedParameter0 = new AnnotatedParameter(annotatedConstructor0, mapLikeType0, annotationMap0, (-1732));
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_OPTIONAL;
+    CreatorProperty creatorProperty0 = new CreatorProperty(propertyName0, mapLikeType0, propertyName0, (TypeDeserializer) null, annotationMap0, annotatedParameter0, (-1732), (Object) null, propertyMetadata0);
+    SettableBeanProperty settableBeanProperty0 = creatorProperty0.withSimpleName("""");
+    SettableBeanProperty[] settableBeanPropertyArray0 = new SettableBeanProperty[3];
+    settableBeanPropertyArray0[0] = (SettableBeanProperty) creatorProperty0;
+    settableBeanPropertyArray0[1] = settableBeanProperty0;
+    // Undeclared exception!
+    try {
+        creatorCollector0.addPropertyCreator((AnnotatedWithParams) annotatedConstructor0, true, settableBeanPropertyArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.impl.CreatorCollector"", e);
+    }
+}",""
+"public void addPropertyCreator(AnnotatedWithParams creator, boolean explicit, SettableBeanProperty[] properties) {
+    verifyNonDup(creator, C_PROPS, explicit);
+    // Better ensure we have no duplicate names either...
+    if (properties.length > 1) {
+        HashMap<String, Integer> names = new HashMap<String, Integer>();
+        for (int i = 0, len = properties.length; i < len; ++i) {
+            String name = properties[i].getName();
+            /* [Issue-13]: Need to consider Injectables, which may not have
+                     *   a name at all, and need to be skipped
+                     */
+            if (name.length() == 0 && properties[i].getInjectableValueId() != null) {
+                continue;
+            }
+            Integer old = names.put(name, Integer.valueOf(i));
+            if (old != null) {
+                throw new IllegalArgumentException(""Duplicate creator property \"""" + name + ""\"" (index "" + old + "" vs "" + i + "")"");
+            }
+        }
+    }
+    _propertyBasedArgs = properties;
+}","public void test1719() throws Throwable {
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<String> class0 = String.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructMapLikeType(class0, class0, class0);
+    BasicClassIntrospector basicClassIntrospector0 = new BasicClassIntrospector();
+    BasicBeanDescription basicBeanDescription0 = basicClassIntrospector0.forDeserialization(deserializationConfig0, mapLikeType0, deserializationConfig0);
+    CreatorCollector creatorCollector0 = new CreatorCollector(basicBeanDescription0, deserializationConfig0);
+    AnnotatedConstructor annotatedConstructor0 = basicBeanDescription0.findDefaultConstructor();
+    PropertyName propertyName0 = new PropertyName(""?e{o\u0004Vqm{Sv'g~"");
+    AnnotationMap annotationMap0 = new AnnotationMap();
+    AnnotatedParameter annotatedParameter0 = new AnnotatedParameter(annotatedConstructor0, mapLikeType0, annotationMap0, (-2721));
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_REQUIRED;
+    CreatorProperty creatorProperty0 = new CreatorProperty(propertyName0, mapLikeType0, propertyName0, (TypeDeserializer) null, annotationMap0, annotatedParameter0, (-2721), propertyName0, propertyMetadata0);
+    SettableBeanProperty[] settableBeanPropertyArray0 = new SettableBeanProperty[13];
+    settableBeanPropertyArray0[0] = (SettableBeanProperty) creatorProperty0;
+    settableBeanPropertyArray0[1] = (SettableBeanProperty) creatorProperty0;
+    // Undeclared exception!
+    try {
+        creatorCollector0.addPropertyCreator((AnnotatedWithParams) annotatedConstructor0, true, settableBeanPropertyArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Duplicate creator property \""?e{o\u0004Vqm{Sv'g~\"" (index 0 vs 1)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.impl.CreatorCollector"", e);
+    }
+}",""
+"@Override
+public String getName() {
+    return """";
+}","public void test1820() throws Throwable {
+    BasicClassIntrospector basicClassIntrospector0 = new BasicClassIntrospector();
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<String> class0 = String.class;
+    Class<TextStyle> class1 = TextStyle.class;
+    Class<Integer> class2 = Integer.TYPE;
+    MapLikeType mapLikeType0 = typeFactory0.constructMapLikeType(class0, class1, class2);
+    BasicBeanDescription basicBeanDescription0 = basicClassIntrospector0.forDeserialization(deserializationConfig0, mapLikeType0, (ClassIntrospector.MixInResolver) null);
+    CreatorCollector creatorCollector0 = new CreatorCollector(basicBeanDescription0, deserializationConfig0);
+    AnnotatedConstructor annotatedConstructor0 = basicBeanDescription0.findDefaultConstructor();
+    AnnotatedParameter annotatedParameter0 = annotatedConstructor0.getParameter(492);
+    creatorCollector0.addIncompeteParameter(annotatedParameter0);
+    creatorCollector0.addIncompeteParameter(annotatedParameter0);
+    assertEquals("""", annotatedParameter0.getName());
+}","/**
+ * Parameters have no names in bytecode (unlike in source code),
+ * will always return empty String ("""").
+ */"
+"/*
+    /**********************************************************
+    /* Accessors
+    /**********************************************************
+     */
+/**
+ * @since 2.1
+ */
+public boolean hasDefaultCreator() {
+    return _creators[C_DEFAULT] != null;
+}","public void test1921() throws Throwable {
+    BasicClassIntrospector basicClassIntrospector0 = new BasicClassIntrospector();
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<String> class0 = String.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructMapLikeType(class0, class0, class0);
+    BasicBeanDescription basicBeanDescription0 = basicClassIntrospector0.forDeserialization(deserializationConfig0, mapLikeType0, (ClassIntrospector.MixInResolver) null);
+    CreatorCollector creatorCollector0 = new CreatorCollector(basicBeanDescription0, deserializationConfig0);
+    boolean boolean0 = creatorCollector0.hasDefaultCreator();
+    assertFalse(boolean0);
+}",""
+"public boolean hasDelegatingCreator() {
+    return _creators[C_DELEGATE] != null;
+}","public void test2022() throws Throwable {
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    CreatorCollector creatorCollector0 = new CreatorCollector((BeanDescription) null, deserializationConfig0);
+    boolean boolean0 = creatorCollector0.hasDelegatingCreator();
+    assertFalse(boolean0);
+}","/**
+ * @since 2.6
+ */"
+"public boolean hasDelegatingCreator() {
+    return _creators[C_DELEGATE] != null;
+}","public void test2123() throws Throwable {
+    BasicClassIntrospector basicClassIntrospector0 = new BasicClassIntrospector();
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<String> class0 = String.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructMapLikeType(class0, class0, class0);
+    BasicBeanDescription basicBeanDescription0 = basicClassIntrospector0.forDeserialization(deserializationConfig0, mapLikeType0, (ClassIntrospector.MixInResolver) null);
+    AnnotatedConstructor annotatedConstructor0 = basicBeanDescription0.findDefaultConstructor();
+    CreatorCollector creatorCollector0 = new CreatorCollector(basicBeanDescription0, deserializationConfig0);
+    creatorCollector0.verifyNonDup(annotatedConstructor0, 6, false);
+    boolean boolean0 = creatorCollector0.hasDelegatingCreator();
+    assertTrue(boolean0);
+}","/**
+ * @since 2.6
+ */"
+"public boolean hasPropertyBasedCreator() {
+    return _creators[C_PROPS] != null;
+}","public void test2224() throws Throwable {
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    CreatorCollector creatorCollector0 = new CreatorCollector((BeanDescription) null, deserializationConfig0);
+    boolean boolean0 = creatorCollector0.hasPropertyBasedCreator();
+    assertFalse(boolean0);
+}","/**
+ * @since 2.6
+ */"
+"public boolean hasPropertyBasedCreator() {
+    return _creators[C_PROPS] != null;
+}","public void test2325() throws Throwable {
+    BasicClassIntrospector basicClassIntrospector0 = new BasicClassIntrospector();
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<String> class0 = String.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructMapLikeType(class0, class0, class0);
+    BasicBeanDescription basicBeanDescription0 = basicClassIntrospector0.forDeserialization(deserializationConfig0, mapLikeType0, (ClassIntrospector.MixInResolver) null);
+    AnnotatedConstructor annotatedConstructor0 = basicBeanDescription0.findDefaultConstructor();
+    CreatorCollector creatorCollector0 = new CreatorCollector(basicBeanDescription0, deserializationConfig0);
+    SettableBeanProperty[] settableBeanPropertyArray0 = new SettableBeanProperty[0];
+    creatorCollector0.addPropertyCreator((AnnotatedWithParams) annotatedConstructor0, false, settableBeanPropertyArray0);
+    boolean boolean0 = creatorCollector0.hasPropertyBasedCreator();
+    assertTrue(boolean0);
+}","/**
+ * @since 2.6
+ */"
+"/*
+    /**********************************************************
+    /* Metadata accessors
+    /**********************************************************
+     */
+/**
+ * Method that returns description of the value type this instantiator
+ * handles. Used for error messages, diagnostics.
+ */
+public abstract String getValueTypeDesc();","public void test2426() throws Throwable {
+    BasicClassIntrospector basicClassIntrospector0 = new BasicClassIntrospector();
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<String> class0 = String.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructMapLikeType(class0, class0, class0);
+    BasicBeanDescription basicBeanDescription0 = basicClassIntrospector0.forClassAnnotations(deserializationConfig0, mapLikeType0, deserializationConfig0);
+    AnnotatedConstructor annotatedConstructor0 = basicBeanDescription0.findDefaultConstructor();
+    CreatorCollector creatorCollector0 = new CreatorCollector(basicBeanDescription0, deserializationConfig0);
+    SettableBeanProperty[] settableBeanPropertyArray0 = new SettableBeanProperty[1];
+    creatorCollector0._arrayDelegateArgs = settableBeanPropertyArray0;
+    creatorCollector0.verifyNonDup(annotatedConstructor0, 8, true);
+    ValueInstantiator valueInstantiator0 = creatorCollector0.constructValueInstantiator(deserializationConfig0);
+    assertEquals(""[simple type, class java.lang.String]"", valueInstantiator0.getValueTypeDesc());
+}",""
+"public boolean canInstantiate() {
+    return canCreateUsingDefault() || canCreateUsingDelegate() || canCreateFromObjectWith() || canCreateFromString() || canCreateFromInt() || canCreateFromLong() || canCreateFromDouble() || canCreateFromBoolean();
+}","public void test2427() throws Throwable {
+    BasicClassIntrospector basicClassIntrospector0 = new BasicClassIntrospector();
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<String> class0 = String.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructMapLikeType(class0, class0, class0);
+    BasicBeanDescription basicBeanDescription0 = basicClassIntrospector0.forClassAnnotations(deserializationConfig0, mapLikeType0, deserializationConfig0);
+    AnnotatedConstructor annotatedConstructor0 = basicBeanDescription0.findDefaultConstructor();
+    CreatorCollector creatorCollector0 = new CreatorCollector(basicBeanDescription0, deserializationConfig0);
+    SettableBeanProperty[] settableBeanPropertyArray0 = new SettableBeanProperty[1];
+    creatorCollector0._arrayDelegateArgs = settableBeanPropertyArray0;
+    creatorCollector0.verifyNonDup(annotatedConstructor0, 8, true);
+    ValueInstantiator valueInstantiator0 = creatorCollector0.constructValueInstantiator(deserializationConfig0);
+    assertFalse(valueInstantiator0.canInstantiate());
+}","/**
+ * Method that will return true if any of <code>canCreateXxx</code> method
+ * returns true: that is, if there is any way that an instance could
+ * be created.
+ */"
+"public boolean canCreateFromObjectWith() {
+    return false;
+}","public void test2528() throws Throwable {
+    BasicClassIntrospector basicClassIntrospector0 = new BasicClassIntrospector();
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<String> class0 = String.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructMapLikeType(class0, class0, class0);
+    BasicBeanDescription basicBeanDescription0 = basicClassIntrospector0.forClassAnnotations(deserializationConfig0, mapLikeType0, deserializationConfig0);
+    AnnotatedConstructor annotatedConstructor0 = basicBeanDescription0.findDefaultConstructor();
+    CreatorCollector creatorCollector0 = new CreatorCollector(basicBeanDescription0, deserializationConfig0);
+    SettableBeanProperty[] settableBeanPropertyArray0 = new SettableBeanProperty[1];
+    PropertyName propertyName0 = PropertyName.construct("""");
+    AnnotationMap annotationMap0 = new AnnotationMap();
+    AnnotatedParameter annotatedParameter0 = new AnnotatedParameter(annotatedConstructor0, mapLikeType0, annotationMap0, 8);
+    Integer integer0 = new Integer(54);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.construct(true, ""ftsm!\""q>rdEd<+Anv"", integer0, "", encountered "");
+    CreatorProperty creatorProperty0 = new CreatorProperty(propertyName0, mapLikeType0, propertyName0, (TypeDeserializer) null, annotationMap0, annotatedParameter0, 54, (Object) null, propertyMetadata0);
+    settableBeanPropertyArray0[0] = (SettableBeanProperty) creatorProperty0;
+    creatorCollector0._arrayDelegateArgs = settableBeanPropertyArray0;
+    creatorCollector0.verifyNonDup(annotatedConstructor0, 8, true);
+    ValueInstantiator valueInstantiator0 = creatorCollector0.constructValueInstantiator(deserializationConfig0);
+    assertFalse(valueInstantiator0.canCreateFromObjectWith());
+}","/**
+ * Method that can be called to check whether a property-based creator
+ * (argument-taking constructor or factory method)
+ * is available to instantiate values from JSON Object
+ */"
+"public boolean hasPropertyBasedCreator() {
+    return _creators[C_PROPS] != null;
+}","public void test2629() throws Throwable {
+    BasicClassIntrospector basicClassIntrospector0 = new BasicClassIntrospector();
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<String> class0 = String.class;
+    MapLikeType mapLikeType0 = typeFactory0.constructMapLikeType(class0, class0, class0);
+    SerializationConfig serializationConfig0 = new SerializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    MapperFeature[] mapperFeatureArray0 = new MapperFeature[3];
+    MapperFeature mapperFeature0 = MapperFeature.AUTO_DETECT_GETTERS;
+    mapperFeatureArray0[0] = mapperFeature0;
+    mapperFeatureArray0[1] = mapperFeature0;
+    MapperFeature mapperFeature1 = MapperFeature.CAN_OVERRIDE_ACCESS_MODIFIERS;
+    mapperFeatureArray0[2] = mapperFeature1;
+    SerializationConfig serializationConfig1 = serializationConfig0.without(mapperFeatureArray0);
+    BasicBeanDescription basicBeanDescription0 = basicClassIntrospector0.forDeserialization(deserializationConfig0, mapLikeType0, serializationConfig0);
+    AnnotatedConstructor annotatedConstructor0 = basicBeanDescription0.findDefaultConstructor();
+    CreatorCollector creatorCollector0 = new CreatorCollector(basicBeanDescription0, serializationConfig1);
+    creatorCollector0.verifyNonDup(annotatedConstructor0, 8, false);
+    assertFalse(creatorCollector0.hasPropertyBasedCreator());
+}","/**
+ * @since 2.6
+ */"
+"public void addStringCreator(AnnotatedWithParams creator, boolean explicit) {
+    verifyNonDup(creator, C_STRING, explicit);
+}","public void test2730() throws Throwable {
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    Class<String> class0 = String.class;
+    BasicClassIntrospector basicClassIntrospector0 = new BasicClassIntrospector();
+    SimpleType simpleType0 = SimpleType.constructUnsafe(class0);
+    BasicBeanDescription basicBeanDescription0 = basicClassIntrospector0.forDeserialization(deserializationConfig0, simpleType0, (ClassIntrospector.MixInResolver) null);
+    AnnotatedConstructor annotatedConstructor0 = basicBeanDescription0.findDefaultConstructor();
+    CreatorCollector creatorCollector0 = new CreatorCollector(basicBeanDescription0, deserializationConfig0);
+    creatorCollector0.addStringCreator((AnnotatedWithParams) annotatedConstructor0, false);
+    // Undeclared exception!
+    try {
+        creatorCollector0.addStringCreator((AnnotatedWithParams) annotatedConstructor0, false);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Conflicting String creators: already had explicitly marked [constructor for java.lang.String, annotations: [null]], encountered [constructor for java.lang.String, annotations: [null]]
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.impl.CreatorCollector"", e);
+    }
+}",""
+"public void addStringCreator(AnnotatedWithParams creator, boolean explicit) {
+    verifyNonDup(creator, C_STRING, explicit);
+}","public void test2831() throws Throwable {
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    Class<String> class0 = String.class;
+    BasicClassIntrospector basicClassIntrospector0 = new BasicClassIntrospector();
+    SimpleType simpleType0 = SimpleType.constructUnsafe(class0);
+    BasicBeanDescription basicBeanDescription0 = basicClassIntrospector0.forDeserialization(deserializationConfig0, simpleType0, deserializationConfig0);
+    AnnotatedConstructor annotatedConstructor0 = basicBeanDescription0.findDefaultConstructor();
+    CreatorCollector creatorCollector0 = new CreatorCollector(basicBeanDescription0, deserializationConfig0);
+    creatorCollector0.addStringCreator((AnnotatedWithParams) annotatedConstructor0, true);
+    // Undeclared exception!
+    try {
+        creatorCollector0.addStringCreator((AnnotatedWithParams) annotatedConstructor0, true);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Conflicting String creators: already had explicitly marked [constructor for java.lang.String, annotations: [null]], encountered [constructor for java.lang.String, annotations: [null]]
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.impl.CreatorCollector"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Accessors
+    /**********************************************************
+     */
+/**
+ * @since 2.1
+ */
+public boolean hasDefaultCreator() {
+    return _creators[C_DEFAULT] != null;
+}","public void test2932() throws Throwable {
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    Class<String> class0 = String.class;
+    BasicClassIntrospector basicClassIntrospector0 = new BasicClassIntrospector();
+    SimpleType simpleType0 = SimpleType.constructUnsafe(class0);
+    BasicBeanDescription basicBeanDescription0 = basicClassIntrospector0.forDeserialization(deserializationConfig0, simpleType0, deserializationConfig0);
+    AnnotatedConstructor annotatedConstructor0 = basicBeanDescription0.findDefaultConstructor();
+    CreatorCollector creatorCollector0 = new CreatorCollector(basicBeanDescription0, deserializationConfig0);
+    creatorCollector0.addStringCreator((AnnotatedWithParams) annotatedConstructor0, true);
+    creatorCollector0.addStringCreator((AnnotatedWithParams) annotatedConstructor0, false);
+    assertFalse(creatorCollector0.hasDefaultCreator());
+}",""
+"/*
+    /**********************************************************
+    /* Accessors
+    /**********************************************************
+     */
+/**
+ * @since 2.1
+ */
+public boolean hasDefaultCreator() {
+    return _creators[C_DEFAULT] != null;
+}","public void test3033() throws Throwable {
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    Class<String> class0 = String.class;
+    BasicClassIntrospector basicClassIntrospector0 = new BasicClassIntrospector();
+    SimpleType simpleType0 = SimpleType.constructUnsafe(class0);
+    BasicBeanDescription basicBeanDescription0 = basicClassIntrospector0.forDeserialization(deserializationConfig0, simpleType0, (ClassIntrospector.MixInResolver) null);
+    AnnotatedConstructor annotatedConstructor0 = basicBeanDescription0.findDefaultConstructor();
+    CreatorCollector creatorCollector0 = new CreatorCollector(basicBeanDescription0, deserializationConfig0);
+    creatorCollector0.addStringCreator((AnnotatedWithParams) annotatedConstructor0, false);
+    creatorCollector0.addStringCreator((AnnotatedWithParams) annotatedConstructor0, true);
+    assertFalse(creatorCollector0.hasDefaultCreator());
+}",""
+"public Object createFromObjectWith(DeserializationContext ctxt, Object[] args) throws IOException {
+    throw ctxt.mappingException(""Can not instantiate value of type %s with arguments"", getValueTypeDesc());
+}","public void test3134() throws Throwable {
+    CreatorCollector.Vanilla creatorCollector_Vanilla0 = new CreatorCollector.Vanilla(1);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DeserializationContext deserializationContext0 = objectMapper0.getDeserializationContext();
+    Object[] objectArray0 = new Object[0];
+    try {
+        creatorCollector_Vanilla0.createFromObjectWith(deserializationContext0, objectArray0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Can not instantiate value of type java.util.ArrayList with arguments
+        //
+        verifyException(""com.fasterxml.jackson.databind.JsonMappingException"", e);
+    }
+}","/**
+ *  Method called to create value instance from JSON Object when
+ *  instantiation arguments are passed; this is done, for example when passing information
+ *  specified with ""Creator"" annotations.
+ * <p>
+ *  This method is called if {@link #getFromObjectArguments} returns
+ *  a non-empty List of arguments.
+ */"

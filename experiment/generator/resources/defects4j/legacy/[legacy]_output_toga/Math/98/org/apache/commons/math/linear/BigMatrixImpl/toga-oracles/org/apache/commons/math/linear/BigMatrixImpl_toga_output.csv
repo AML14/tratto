@@ -1,0 +1,3317 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test0000,"public void test0000() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(3376, 324);
+    try {
+        bigMatrixImpl0.getColumn(3376);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // illegal column argument
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test0011,"public void test0011() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    double[] doubleArray1 = new double[7];
+    doubleArray1[0] = 1.0;
+    doubleArray0[0] = doubleArray1;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    bigMatrixImpl0.hashCode();
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl0.getRoundingMode())"
+project,0,test0012,"public void test0012() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    double[] doubleArray1 = new double[7];
+    doubleArray1[0] = 1.0;
+    doubleArray0[0] = doubleArray1;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    bigMatrixImpl0.hashCode();
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,
+project,0,test0023,"public void test0023() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[2];
+    BigMatrixImpl bigMatrixImpl1 = new BigMatrixImpl(bigDecimalArray0);
+    try {
+        bigMatrixImpl0.solve((BigMatrix) bigMatrixImpl1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Incorrect row dimension
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test0034,"public void test0034() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[9];
+    try {
+        bigMatrixImpl0.preMultiply(bigDecimalArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // vector has wrong length
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test0045,"public void test0045() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(1498, 1498);
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[3];
+    try {
+        bigMatrixImpl0.operate(bigDecimalArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // vector has wrong length
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test0056,"public void test0056() throws Throwable {
+    BigDecimal[][] bigDecimalArray0 = new BigDecimal[7][9];
+    BigDecimal[] bigDecimalArray1 = new BigDecimal[6];
+    bigDecimalArray0[1] = bigDecimalArray1;
+    BigMatrixImpl bigMatrixImpl0 = null;
+    try {
+        bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // All input rows must have the same length.
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test0067,"public void test0067() throws Throwable {
+    BigDecimal[][] bigDecimalArray0 = new BigDecimal[8][0];
+    BigDecimal[] bigDecimalArray1 = new BigDecimal[9];
+    bigDecimalArray0[0] = bigDecimalArray1;
+    BigMatrixImpl bigMatrixImpl0 = null;
+    try {
+        bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0, false);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // All input rows must have the same length.
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test0078,"public void test0078() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.transpose();
+    assertEquals(4, bigMatrixImpl1.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl1.getRoundingMode())"
+project,0,test0079,"public void test0079() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.transpose();
+    assertEquals(64, bigMatrixImpl1.getScale());
+}",0,"assertEquals(0, bigMatrixImpl1.getScale())"
+project,0,test00710,"public void test00710() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.transpose();
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,
+project,0,test00711,"public void test00711() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.transpose();
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(1, bigMatrixImpl0.getRoundingMode())"
+project,0,test00812,"public void test00812() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[3];
+    BigDecimal bigDecimal0 = new BigDecimal(0.0);
+    bigDecimalArray0[0] = bigDecimal0;
+    bigDecimalArray0[1] = bigDecimal0;
+    bigDecimalArray0[2] = bigDecimalArray0[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = bigMatrixImpl0.subtract(bigMatrixImpl0);
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,
+project,0,test00813,"public void test00813() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[3];
+    BigDecimal bigDecimal0 = new BigDecimal(0.0);
+    bigDecimalArray0[0] = bigDecimal0;
+    bigDecimalArray0[1] = bigDecimal0;
+    bigDecimalArray0[2] = bigDecimalArray0[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = bigMatrixImpl0.subtract(bigMatrixImpl0);
+    assertEquals(4, bigMatrixImpl1.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl1.getRoundingMode())"
+project,0,test00814,"public void test00814() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[3];
+    BigDecimal bigDecimal0 = new BigDecimal(0.0);
+    bigDecimalArray0[0] = bigDecimal0;
+    bigDecimalArray0[1] = bigDecimal0;
+    bigDecimalArray0[2] = bigDecimalArray0[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = bigMatrixImpl0.subtract(bigMatrixImpl0);
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl0.getRoundingMode())"
+project,0,test00815,"public void test00815() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[3];
+    BigDecimal bigDecimal0 = new BigDecimal(0.0);
+    bigDecimalArray0[0] = bigDecimal0;
+    bigDecimalArray0[1] = bigDecimal0;
+    bigDecimalArray0[2] = bigDecimalArray0[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = bigMatrixImpl0.subtract(bigMatrixImpl0);
+    assertEquals(64, bigMatrixImpl1.getScale());
+}",0,"assertEquals(0, bigMatrixImpl1.getScale())"
+project,0,test00816,"public void test00816() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[3];
+    BigDecimal bigDecimal0 = new BigDecimal(0.0);
+    bigDecimalArray0[0] = bigDecimal0;
+    bigDecimalArray0[1] = bigDecimal0;
+    bigDecimalArray0[2] = bigDecimalArray0[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = bigMatrixImpl0.subtract(bigMatrixImpl0);
+    assertFalse(bigMatrixImpl1.isSquare());
+}",0,assertTrue(bigMatrixImpl1.isSquare())
+project,0,test00917,"public void test00917() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.subtract((BigMatrix) bigMatrixImpl0);
+    assertFalse(bigMatrixImpl1.equals((Object) bigMatrixImpl0));
+}",0,
+project,0,test00918,"public void test00918() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.subtract((BigMatrix) bigMatrixImpl0);
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl0.getRoundingMode())"
+project,0,test00919,"public void test00919() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.subtract((BigMatrix) bigMatrixImpl0);
+    assertEquals(4, bigMatrixImpl1.getRoundingMode());
+}",0,
+project,0,test00920,"public void test00920() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.subtract((BigMatrix) bigMatrixImpl0);
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(0, bigMatrixImpl0.getScale())"
+project,0,test00921,"public void test00921() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.subtract((BigMatrix) bigMatrixImpl0);
+    assertEquals(64, bigMatrixImpl1.getScale());
+}",0,
+project,0,test01022,"public void test01022() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.scalarMultiply(bigDecimal0);
+    assertEquals(64, bigMatrixImpl1.getScale());
+}",0,
+project,0,test01023,"public void test01023() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.scalarMultiply(bigDecimal0);
+    assertFalse(bigMatrixImpl1.equals((Object) bigMatrixImpl0));
+}",0,
+project,0,test01024,"public void test01024() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.scalarMultiply(bigDecimal0);
+    assertEquals(4, bigMatrixImpl1.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl1.getRoundingMode())"
+project,0,test01025,"public void test01025() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.scalarMultiply(bigDecimal0);
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl0.getRoundingMode())"
+project,0,test01026,"public void test01026() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.scalarMultiply(bigDecimal0);
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(0, bigMatrixImpl0.getScale())"
+project,0,test01127,"public void test01127() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.scalarAdd(bigDecimal0);
+    assertEquals(4, bigMatrixImpl1.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl1.getRoundingMode())"
+project,0,test01128,"public void test01128() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.scalarAdd(bigDecimal0);
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(0, bigMatrixImpl0.getScale())"
+project,0,test01129,"public void test01129() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.scalarAdd(bigDecimal0);
+    assertFalse(bigMatrixImpl1.equals((Object) bigMatrixImpl0));
+}",0,
+project,0,test01130,"public void test01130() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.scalarAdd(bigDecimal0);
+    assertEquals(64, bigMatrixImpl1.getScale());
+}",0,"assertEquals(0, bigMatrixImpl1.getScale())"
+project,0,test01131,"public void test01131() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.scalarAdd(bigDecimal0);
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl0.getRoundingMode())"
+project,0,test01232,"public void test01232() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[2];
+    BigDecimal bigDecimal0 = BigDecimal.ONE;
+    bigDecimalArray0[0] = bigDecimal0;
+    bigDecimalArray0[1] = bigDecimalArray0[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrix bigMatrix0 = bigMatrixImpl0.transpose();
+    assertEquals(2, bigMatrix0.getColumnDimension());
+}",0,"assertEquals(0, bigMatrix0.getColumnDimension())"
+project,0,test01233,"public void test01233() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[2];
+    BigDecimal bigDecimal0 = BigDecimal.ONE;
+    bigDecimalArray0[0] = bigDecimal0;
+    bigDecimalArray0[1] = bigDecimalArray0[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrix bigMatrix0 = bigMatrixImpl0.transpose();
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.preMultiply(bigMatrix0);
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl0.getRoundingMode())"
+project,0,test01234,"public void test01234() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[2];
+    BigDecimal bigDecimal0 = BigDecimal.ONE;
+    bigDecimalArray0[0] = bigDecimal0;
+    bigDecimalArray0[1] = bigDecimalArray0[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrix bigMatrix0 = bigMatrixImpl0.transpose();
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.preMultiply(bigMatrix0);
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(0, bigMatrixImpl0.getScale())"
+project,0,test01235,"public void test01235() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[2];
+    BigDecimal bigDecimal0 = BigDecimal.ONE;
+    bigDecimalArray0[0] = bigDecimal0;
+    bigDecimalArray0[1] = bigDecimalArray0[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrix bigMatrix0 = bigMatrixImpl0.transpose();
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.preMultiply(bigMatrix0);
+    assertEquals(4, bigMatrixImpl1.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl1.getRoundingMode())"
+project,0,test01236,"public void test01236() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[2];
+    BigDecimal bigDecimal0 = BigDecimal.ONE;
+    bigDecimalArray0[0] = bigDecimal0;
+    bigDecimalArray0[1] = bigDecimalArray0[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrix bigMatrix0 = bigMatrixImpl0.transpose();
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.preMultiply(bigMatrix0);
+    assertEquals(64, bigMatrixImpl1.getScale());
+}",0,
+project,0,test01337,"public void test01337() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    double[] doubleArray1 = new double[7];
+    doubleArray0[0] = doubleArray1;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    assertEquals(7, bigMatrixImpl0.getColumnDimension());
+}",0,"assertEquals(1, bigMatrixImpl0.getColumnDimension())"
+project,0,test01338,"public void test01338() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    double[] doubleArray1 = new double[7];
+    doubleArray0[0] = doubleArray1;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    bigMatrixImpl0.operate(doubleArray1);
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl0.getRoundingMode())"
+project,0,test01339,"public void test01339() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    double[] doubleArray1 = new double[7];
+    doubleArray0[0] = doubleArray1;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    bigMatrixImpl0.operate(doubleArray1);
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(1, bigMatrixImpl0.getScale())"
+project,0,test01440,"public void test01440() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.multiply((BigMatrix) bigMatrixImpl0);
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(0, bigMatrixImpl0.getScale())"
+project,0,test01441,"public void test01441() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.multiply((BigMatrix) bigMatrixImpl0);
+    assertEquals(64, bigMatrixImpl1.getScale());
+}",0,
+project,0,test01442,"public void test01442() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.multiply((BigMatrix) bigMatrixImpl0);
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl0.getRoundingMode())"
+project,0,test01443,"public void test01443() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.multiply((BigMatrix) bigMatrixImpl0);
+    assertEquals(4, bigMatrixImpl1.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl1.getRoundingMode())"
+project,0,test01544,"public void test01544() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.inverse();
+    assertEquals(64, bigMatrixImpl1.getScale());
+}",0,"assertEquals(0, bigMatrixImpl1.getScale())"
+project,0,test01545,"public void test01545() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.inverse();
+    assertEquals(4, bigMatrixImpl1.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl1.getRoundingMode())"
+project,0,test01546,"public void test01546() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.inverse();
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(0, bigMatrixImpl0.getScale())"
+project,0,test01647,"public void test01647() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigDecimal bigDecimal0 = bigMatrixImpl0.getTrace();
+    assertNull(bigDecimal0);
+}",0,"assertEquals(bigDecimalArray0, bigDecimal0)"
+project,0,test01648,"public void test01648() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigDecimal bigDecimal0 = bigMatrixImpl0.getTrace();
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,
+project,0,test01649,"public void test01649() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigDecimal bigDecimal0 = bigMatrixImpl0.getTrace();
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(1, bigMatrixImpl0.getRoundingMode())"
+project,0,test01750,"public void test01750() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigDecimal bigDecimal1 = bigMatrixImpl0.getTrace();
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl0.getRoundingMode())"
+project,0,test01752,"public void test01752() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigDecimal bigDecimal1 = bigMatrixImpl0.getTrace();
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(0, bigMatrixImpl0.getScale())"
+project,0,test01853,"public void test01853() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.getRowMatrix(0);
+    assertEquals(64, bigMatrixImpl1.getScale());
+}",0,"assertEquals(0, bigMatrixImpl1.getScale())"
+project,0,test01854,"public void test01854() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.getRowMatrix(0);
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(0, bigMatrixImpl0.getScale())"
+project,0,test01855,"public void test01855() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.getRowMatrix(0);
+    assertEquals(4, bigMatrixImpl1.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl1.getRoundingMode())"
+project,0,test01856,"public void test01856() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.getRowMatrix(0);
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl0.getRoundingMode())"
+project,0,test01957,"public void test01957() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[5];
+    BigDecimal bigDecimal0 = BigDecimal.ONE;
+    bigDecimalArray0[0] = bigDecimal0;
+    bigDecimalArray0[1] = bigDecimalArray0[0];
+    bigDecimalArray0[2] = bigDecimalArray0[0];
+    bigDecimalArray0[3] = bigDecimal0;
+    bigDecimalArray0[4] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigDecimal bigDecimal1 = bigMatrixImpl0.getNorm();
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl0.getRoundingMode())"
+project,0,test01958,"public void test01958() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[5];
+    BigDecimal bigDecimal0 = BigDecimal.ONE;
+    bigDecimalArray0[0] = bigDecimal0;
+    bigDecimalArray0[1] = bigDecimalArray0[0];
+    bigDecimalArray0[2] = bigDecimalArray0[0];
+    bigDecimalArray0[3] = bigDecimal0;
+    bigDecimalArray0[4] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigDecimal bigDecimal1 = bigMatrixImpl0.getNorm();
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(0, bigMatrixImpl0.getScale())"
+project,0,test02060,"public void test02060() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[9];
+    BigDecimal bigDecimal0 = new BigDecimal(0);
+    bigDecimalArray0[0] = bigDecimal0;
+    bigDecimalArray0[1] = bigDecimalArray0[0];
+    bigDecimalArray0[2] = bigDecimalArray0[1];
+    bigDecimalArray0[3] = bigDecimalArray0[1];
+    BigDecimal bigDecimal1 = new BigDecimal(834);
+    bigDecimalArray0[4] = bigDecimal1;
+    bigDecimalArray0[5] = bigDecimal0;
+    bigDecimalArray0[6] = bigDecimalArray0[4];
+    bigDecimalArray0[7] = bigDecimalArray0[2];
+    bigDecimalArray0[8] = bigDecimalArray0[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigDecimal bigDecimal2 = bigMatrixImpl0.getNorm();
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(0, bigMatrixImpl0.getScale())"
+project,0,test02062,"public void test02062() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[9];
+    BigDecimal bigDecimal0 = new BigDecimal(0);
+    bigDecimalArray0[0] = bigDecimal0;
+    bigDecimalArray0[1] = bigDecimalArray0[0];
+    bigDecimalArray0[2] = bigDecimalArray0[1];
+    bigDecimalArray0[3] = bigDecimalArray0[1];
+    BigDecimal bigDecimal1 = new BigDecimal(834);
+    bigDecimalArray0[4] = bigDecimal1;
+    bigDecimalArray0[5] = bigDecimal0;
+    bigDecimalArray0[6] = bigDecimalArray0[4];
+    bigDecimalArray0[7] = bigDecimalArray0[2];
+    bigDecimalArray0[8] = bigDecimalArray0[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigDecimal bigDecimal2 = bigMatrixImpl0.getNorm();
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl0.getRoundingMode())"
+project,0,test02163,"public void test02163() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    bigMatrixImpl0.getEntryAsDouble(0, 0);
+    assertEquals(5, bigMatrixImpl0.getColumnDimension());
+}",0,"assertEquals(0, bigMatrixImpl0.getColumnDimension())"
+project,0,test02164,"public void test02164() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    bigMatrixImpl0.getEntryAsDouble(0, 0);
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(1, bigMatrixImpl0.getScale())"
+project,0,test02165,"public void test02165() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    bigMatrixImpl0.getEntryAsDouble(0, 0);
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl0.getRoundingMode())"
+project,0,test02266,"public void test02266() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl();
+    bigMatrixImpl0.getDataRef();
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl0.getRoundingMode())"
+project,0,test02267,"public void test02267() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl();
+    bigMatrixImpl0.getDataRef();
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(0, bigMatrixImpl0.getScale())"
+project,0,test02368,"public void test02368() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    bigMatrixImpl0.getColumnDimension();
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(1, bigMatrixImpl0.getRoundingMode())"
+project,0,test02369,"public void test02369() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    bigMatrixImpl0.getColumnDimension();
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,
+project,0,test02470,"public void test02470() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[3];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.copy();
+    assertEquals(64, bigMatrixImpl1.getScale());
+}",0,"assertEquals(1, bigMatrixImpl1.getScale())"
+project,0,test02471,"public void test02471() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[3];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.copy();
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,
+project,0,test02472,"public void test02472() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[3];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.copy();
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl0.getRoundingMode())"
+project,0,test02473,"public void test02473() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[3];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.copy();
+    assertEquals(4, bigMatrixImpl1.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl1.getRoundingMode())"
+project,0,test02574,"public void test02574() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.copy();
+    assertEquals(4, bigMatrixImpl1.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl1.getRoundingMode())"
+project,0,test02575,"public void test02575() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.copy();
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,
+project,0,test02576,"public void test02576() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.copy();
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(1, bigMatrixImpl0.getRoundingMode())"
+project,0,test02577,"public void test02577() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.copy();
+    assertEquals(64, bigMatrixImpl1.getScale());
+}",0,
+project,0,test02678,"public void test02678() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigMatrixImpl bigMatrixImpl1 = bigMatrixImpl0.add(bigMatrixImpl0);
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,
+project,0,test02679,"public void test02679() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigMatrixImpl bigMatrixImpl1 = bigMatrixImpl0.add(bigMatrixImpl0);
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,
+project,0,test02680,"public void test02680() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigMatrixImpl bigMatrixImpl1 = bigMatrixImpl0.add(bigMatrixImpl0);
+    assertEquals(64, bigMatrixImpl1.getScale());
+}",0,"assertEquals(1, bigMatrixImpl1.getScale())"
+project,0,test02681,"public void test02681() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigMatrixImpl bigMatrixImpl1 = bigMatrixImpl0.add(bigMatrixImpl0);
+    assertFalse(bigMatrixImpl1.isSquare());
+}",0,assertTrue(bigMatrixImpl1.isSquare())
+project,0,test02682,"public void test02682() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigMatrixImpl bigMatrixImpl1 = bigMatrixImpl0.add(bigMatrixImpl0);
+    assertEquals(5, bigMatrixImpl1.getColumnDimension());
+}",0,
+project,0,test02683,"public void test02683() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigMatrixImpl bigMatrixImpl1 = bigMatrixImpl0.add(bigMatrixImpl0);
+    assertEquals(4, bigMatrixImpl1.getRoundingMode());
+}",0,
+project,0,test02784,"public void test02784() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl();
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.transpose();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test02885,"public void test02885() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.transpose();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test02986,"public void test02986() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.subtract(bigMatrixImpl0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test03087,"public void test03087() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigMatrixImpl.ZERO;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    try {
+        bigMatrixImpl0.solve(bigDecimalArray0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Matrix is singular.
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test03188,"public void test03188() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.solve(bigDecimalArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test03289,"public void test03289() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.solve(bigDecimalArray0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test03390,"public void test03390() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigDecimal[][] bigDecimalArray1 = new BigDecimal[5][3];
+    bigDecimalArray1[1] = null;
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.setSubMatrix(bigDecimalArray1, 1, 0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test03491,"public void test03491() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl();
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.scalarMultiply((BigDecimal) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test03592,"public void test03592() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigDecimal bigDecimal0 = new BigDecimal((-727));
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.scalarMultiply(bigDecimal0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test03693,"public void test03693() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl();
+    BigDecimal bigDecimal0 = new BigDecimal(3051L);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.scalarAdd(bigDecimal0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test03794,"public void test03794() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigDecimal bigDecimal0 = BigMatrixImpl.ZERO;
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.scalarAdd(bigDecimal0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test03895,"public void test03895() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.preMultiply(bigDecimalArray0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test03996,"public void test03996() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(121, 121);
+    BigDecimal[][] bigDecimalArray0 = new BigDecimal[7][2];
+    BigMatrixImpl bigMatrixImpl1 = new BigMatrixImpl(bigDecimalArray0);
+    try {
+        bigMatrixImpl0.preMultiply((BigMatrix) bigMatrixImpl1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Matrices are not multiplication compatible.
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test04097,"public void test04097() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigDecimal[] bigDecimalArray1 = new BigDecimal[1];
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.operate(bigDecimalArray1);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test04198,"public void test04198() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl();
+    double[] doubleArray0 = new double[7];
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.operate(doubleArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test04299,"public void test04299() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    double[] doubleArray0 = new double[3];
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.operate(doubleArray0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test043100,"public void test043100() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(467, 17);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.multiply((BigMatrixImpl) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test044101,"public void test044101() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl();
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.multiply((BigMatrix) bigMatrixImpl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test045102,"public void test045102() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.multiply((BigMatrix) bigMatrixImpl0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test046103,"public void test046103() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(64, 64);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.luDecompose();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test047104,"public void test047104() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl();
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.isSquare();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test048105,"public void test048105() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl();
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.isSingular();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test049106,"public void test049106() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.isSingular();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test050107,"public void test050107() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl();
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.hashCode();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test051108,"public void test051108() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.hashCode();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test052109,"public void test052109() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.getTrace();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test053110,"public void test053110() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    int[] intArray0 = new int[9];
+    try {
+        bigMatrixImpl0.getSubMatrix(intArray0, intArray0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // matrix dimension mismatch
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test054111,"public void test054111() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl();
+    int[] intArray0 = new int[9];
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.getSubMatrix(intArray0, intArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test055112,"public void test055112() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl();
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.getSubMatrix(1, 1, 0, 4);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test056113,"public void test056113() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl();
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.getRowMatrix(1960);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test057114,"public void test057114() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.getRowMatrix(0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test058115,"public void test058115() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.getRowAsDoubleArray(1916);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test059116,"public void test059116() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl();
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.getRow(0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test060117,"public void test060117() throws Throwable {
+    BigDecimal[][] bigDecimalArray0 = new BigDecimal[6][9];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0, true);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.getNorm();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test061118,"public void test061118() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.getNorm();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test062119,"public void test062119() throws Throwable {
+    BigDecimal[][] bigDecimalArray0 = new BigDecimal[7][2];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    try {
+        bigMatrixImpl0.getLUMatrix();
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // LU decomposition requires that the matrix be square.
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test063120,"public void test063120() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl();
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.getLUMatrix();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test064121,"public void test064121() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.getLUMatrix();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test065122,"public void test065122() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl();
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.getEntryAsDouble((-16), (-16));
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test066123,"public void test066123() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl();
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.getEntry((-2962), 75);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test067124,"public void test067124() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.getDeterminant();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test068125,"public void test068125() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl();
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.getDataAsDoubleArray();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test069126,"public void test069126() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.getDataAsDoubleArray();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test070127,"public void test070127() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl();
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.getData();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test071128,"public void test071128() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl();
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.getColumnMatrix(0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test072129,"public void test072129() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.getColumnMatrix((-1));
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test073130,"public void test073130() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl();
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.getColumnDimension();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test074131,"public void test074131() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl();
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.getColumnAsDoubleArray((-1));
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test075132,"public void test075132() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.getColumnAsDoubleArray((-403));
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test076133,"public void test076133() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl();
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.getColumn(0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test077134,"public void test077134() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigMatrixImpl bigMatrixImpl1 = new BigMatrixImpl();
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.equals(bigMatrixImpl1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test078135,"public void test078135() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl();
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.copy();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test079136,"public void test079136() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.add((BigMatrixImpl) null);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test080137,"public void test080137() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl();
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.add((BigMatrix) bigMatrixImpl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test081138,"public void test081138() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.add((BigMatrix) null);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test082139,"public void test082139() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = null;
+    try {
+        bigMatrixImpl0 = new BigMatrixImpl((BigDecimal[][]) null, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test083140,"public void test083140() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = null;
+    try {
+        bigMatrixImpl0 = new BigMatrixImpl((BigDecimal[][]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test084141,"public void test084141() throws Throwable {
+    String[][] stringArray0 = new String[1][4];
+    String[] stringArray1 = new String[9];
+    stringArray1[0] = ""EOdo$1A>M*I"";
+    stringArray0[0] = stringArray1;
+    BigMatrixImpl bigMatrixImpl0 = null;
+    try {
+        bigMatrixImpl0 = new BigMatrixImpl(stringArray0);
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.math.BigDecimal"", e);
+    }
+}",0,
+project,0,test085142,"public void test085142() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = null;
+    try {
+        bigMatrixImpl0 = new BigMatrixImpl((double[][]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test086143,"public void test086143() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = null;
+    try {
+        bigMatrixImpl0 = new BigMatrixImpl((BigDecimal[]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test087144,"public void test087144() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[7];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    try {
+        bigMatrixImpl0.luDecompose();
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // LU decomposition requires that the matrix be square.
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test088145,"public void test088145() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.solve((BigMatrix) bigMatrixImpl0);
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(0, bigMatrixImpl0.getScale())"
+project,0,test088146,"public void test088146() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.solve((BigMatrix) bigMatrixImpl0);
+    assertEquals(64, bigMatrixImpl1.getScale());
+}",0,
+project,0,test088147,"public void test088147() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.solve((BigMatrix) bigMatrixImpl0);
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl0.getRoundingMode())"
+project,0,test088148,"public void test088148() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.solve((BigMatrix) bigMatrixImpl0);
+    assertEquals(4, bigMatrixImpl1.getRoundingMode());
+}",0,
+project,0,test089149,"public void test089149() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.solve((BigMatrix) bigMatrixImpl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test090150,"public void test090150() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(777, 1120);
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[6];
+    try {
+        bigMatrixImpl0.solve(bigDecimalArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // constant vector has wrong length
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test091151,"public void test091151() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigDecimal[][] bigDecimalArray0 = bigMatrixImpl0.getDataRef();
+    bigMatrixImpl0.lu = bigDecimalArray0;
+    boolean boolean0 = bigMatrixImpl0.isSingular();
+    assertEquals(5, bigMatrixImpl0.getColumnDimension());
+}",0,"assertEquals(1, bigMatrixImpl0.getColumnDimension())"
+project,0,test091152,"public void test091152() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigDecimal[][] bigDecimalArray0 = bigMatrixImpl0.getDataRef();
+    bigMatrixImpl0.lu = bigDecimalArray0;
+    boolean boolean0 = bigMatrixImpl0.isSingular();
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(1, bigMatrixImpl0.getRoundingMode())"
+project,0,test091153,"public void test091153() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigDecimal[][] bigDecimalArray0 = bigMatrixImpl0.getDataRef();
+    bigMatrixImpl0.lu = bigDecimalArray0;
+    boolean boolean0 = bigMatrixImpl0.isSingular();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test091154,"public void test091154() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigDecimal[][] bigDecimalArray0 = bigMatrixImpl0.getDataRef();
+    bigMatrixImpl0.lu = bigDecimalArray0;
+    boolean boolean0 = bigMatrixImpl0.isSingular();
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(1, bigMatrixImpl0.getScale())"
+project,0,test092155,"public void test092155() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[4];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    boolean boolean0 = bigMatrixImpl0.isSquare();
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl0.getRoundingMode())"
+project,0,test092156,"public void test092156() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[4];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    boolean boolean0 = bigMatrixImpl0.isSquare();
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(0, bigMatrixImpl0.getScale())"
+project,0,test092157,"public void test092157() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[4];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    boolean boolean0 = bigMatrixImpl0.isSquare();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test093158,"public void test093158() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    bigMatrixImpl0.isSquare();
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(1, bigMatrixImpl0.getScale())"
+project,0,test093159,"public void test093159() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    bigMatrixImpl0.isSquare();
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(1, bigMatrixImpl0.getRoundingMode())"
+project,0,test094160,"public void test094160() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[4];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    try {
+        bigMatrixImpl0.multiply(bigMatrixImpl0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Matrices are not multiplication compatible.
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test095161,"public void test095161() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = bigMatrixImpl0.subtract(bigMatrixImpl0);
+    assertEquals(4, bigMatrixImpl1.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl1.getRoundingMode())"
+project,0,test095162,"public void test095162() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = bigMatrixImpl0.subtract(bigMatrixImpl0);
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl0.getRoundingMode())"
+project,0,test095163,"public void test095163() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = bigMatrixImpl0.subtract(bigMatrixImpl0);
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(0, bigMatrixImpl0.getScale())"
+project,0,test095164,"public void test095164() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = bigMatrixImpl0.subtract(bigMatrixImpl0);
+    assertFalse(bigMatrixImpl1.equals((Object) bigMatrixImpl0));
+}",0,
+project,0,test095165,"public void test095165() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = bigMatrixImpl0.subtract(bigMatrixImpl0);
+    assertEquals(64, bigMatrixImpl1.getScale());
+}",0,
+project,0,test096166,"public void test096166() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.subtract(bigMatrixImpl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test097167,"public void test097167() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(121, 121);
+    BigDecimal[][] bigDecimalArray0 = new BigDecimal[7][2];
+    BigMatrixImpl bigMatrixImpl1 = new BigMatrixImpl(bigDecimalArray0);
+    try {
+        bigMatrixImpl1.subtract(bigMatrixImpl0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // matrix dimension mismatch
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test098168,"public void test098168() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = bigMatrixImpl0.add(bigMatrixImpl0);
+    assertEquals(64, bigMatrixImpl1.getScale());
+}",0,
+project,0,test098169,"public void test098169() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = bigMatrixImpl0.add(bigMatrixImpl0);
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(0, bigMatrixImpl0.getScale())"
+project,0,test098170,"public void test098170() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = bigMatrixImpl0.add(bigMatrixImpl0);
+    assertEquals(4, bigMatrixImpl1.getRoundingMode());
+}",0,
+project,0,test098171,"public void test098171() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = bigMatrixImpl0.add(bigMatrixImpl0);
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl0.getRoundingMode())"
+project,0,test099172,"public void test099172() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.add(bigMatrixImpl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test100173,"public void test100173() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(2912, 2912);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.getRowMatrix(1);
+    try {
+        bigMatrixImpl1.add(bigMatrixImpl0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // matrix dimension mismatch
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test101174,"public void test101174() throws Throwable {
+    BigDecimal[][] bigDecimalArray0 = new BigDecimal[6][4];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0, false);
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl0.getRoundingMode())"
+project,0,test101175,"public void test101175() throws Throwable {
+    BigDecimal[][] bigDecimalArray0 = new BigDecimal[6][4];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0, false);
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(0, bigMatrixImpl0.getScale())"
+project,0,test102176,"public void test102176() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    bigMatrixImpl0.getData();
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,
+project,0,test102177,"public void test102177() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    bigMatrixImpl0.getData();
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(1, bigMatrixImpl0.getRoundingMode())"
+project,0,test103178,"public void test103178() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    try {
+        bigMatrixImpl0.getEntry(121, 0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // matrix entry does not exist
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test104179,"public void test104179() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.getColumnDimension();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test105180,"public void test105180() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    bigMatrixImpl0.getRowDimension();
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(1, bigMatrixImpl0.getRoundingMode())"
+project,0,test105181,"public void test105181() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    bigMatrixImpl0.getRowDimension();
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,
+project,0,test106182,"public void test106182() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigMatrixImpl.ONE;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    bigMatrixImpl0.luDecompose();
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.getLUMatrix();
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl0.getRoundingMode())"
+project,0,test106183,"public void test106183() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigMatrixImpl.ONE;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    bigMatrixImpl0.luDecompose();
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.getLUMatrix();
+    assertEquals(4, bigMatrixImpl1.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl1.getRoundingMode())"
+project,0,test106184,"public void test106184() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigMatrixImpl.ONE;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    bigMatrixImpl0.luDecompose();
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.getLUMatrix();
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(1, bigMatrixImpl0.getScale())"
+project,0,test106185,"public void test106185() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigMatrixImpl.ONE;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    bigMatrixImpl0.luDecompose();
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.getLUMatrix();
+    assertEquals(64, bigMatrixImpl1.getScale());
+}",0,
+project,0,test107186,"public void test107186() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[3];
+    BigDecimal bigDecimal0 = new BigDecimal(0.0);
+    bigDecimalArray0[0] = bigDecimal0;
+    bigDecimalArray0[1] = bigDecimal0;
+    bigDecimalArray0[2] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    bigMatrixImpl0.hashCode();
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(0, bigMatrixImpl0.getScale())"
+project,0,test107187,"public void test107187() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[3];
+    BigDecimal bigDecimal0 = new BigDecimal(0.0);
+    bigDecimalArray0[0] = bigDecimal0;
+    bigDecimalArray0[1] = bigDecimal0;
+    bigDecimalArray0[2] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    bigMatrixImpl0.hashCode();
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl0.getRoundingMode())"
+project,0,test108188,"public void test108188() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigDecimal bigDecimal0 = new BigDecimal(0L);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.scalarMultiply(bigDecimal0);
+    boolean boolean0 = bigMatrixImpl1.equals(bigMatrixImpl0);
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl0.getRoundingMode())"
+project,0,test108189,"public void test108189() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigDecimal bigDecimal0 = new BigDecimal(0L);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.scalarMultiply(bigDecimal0);
+    boolean boolean0 = bigMatrixImpl1.equals(bigMatrixImpl0);
+    assertEquals(64, bigMatrixImpl1.getScale());
+}",0,"assertEquals(1, bigMatrixImpl1.getScale())"
+project,0,test108190,"public void test108190() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigDecimal bigDecimal0 = new BigDecimal(0L);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.scalarMultiply(bigDecimal0);
+    boolean boolean0 = bigMatrixImpl1.equals(bigMatrixImpl0);
+    assertEquals(4, bigMatrixImpl1.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl1.getRoundingMode())"
+project,0,test108191,"public void test108191() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigDecimal bigDecimal0 = new BigDecimal(0L);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.scalarMultiply(bigDecimal0);
+    boolean boolean0 = bigMatrixImpl1.equals(bigMatrixImpl0);
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(1, bigMatrixImpl0.getScale())"
+project,0,test108192,"public void test108192() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigDecimal bigDecimal0 = new BigDecimal(0L);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.scalarMultiply(bigDecimal0);
+    boolean boolean0 = bigMatrixImpl1.equals(bigMatrixImpl0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test109193,"public void test109193() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    boolean boolean0 = bigMatrixImpl0.equals(bigMatrixImpl0);
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl0.getRoundingMode())"
+project,0,test109194,"public void test109194() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    boolean boolean0 = bigMatrixImpl0.equals(bigMatrixImpl0);
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(1, bigMatrixImpl0.getScale())"
+project,0,test109195,"public void test109195() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    boolean boolean0 = bigMatrixImpl0.equals(bigMatrixImpl0);
+    assertEquals(5, bigMatrixImpl0.getColumnDimension());
+}",0,"assertEquals(0, bigMatrixImpl0.getColumnDimension())"
+project,0,test109196,"public void test109196() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    boolean boolean0 = bigMatrixImpl0.equals(bigMatrixImpl0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test110197,"public void test110197() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    Object object0 = new Object();
+    boolean boolean0 = bigMatrixImpl0.equals(object0);
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(1, bigMatrixImpl0.getRoundingMode())"
+project,0,test110198,"public void test110198() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    Object object0 = new Object();
+    boolean boolean0 = bigMatrixImpl0.equals(object0);
+    assertEquals(5, bigMatrixImpl0.getColumnDimension());
+}",0,"assertEquals(1, bigMatrixImpl0.getColumnDimension())"
+project,0,test110199,"public void test110199() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    Object object0 = new Object();
+    boolean boolean0 = bigMatrixImpl0.equals(object0);
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(1, bigMatrixImpl0.getScale())"
+project,0,test110200,"public void test110200() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    Object object0 = new Object();
+    boolean boolean0 = bigMatrixImpl0.equals(object0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test111201,"public void test111201() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    String string0 = bigMatrixImpl0.toString();
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(1, bigMatrixImpl0.getScale())"
+project,0,test111202,"public void test111202() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    String string0 = bigMatrixImpl0.toString();
+    assertEquals(""BigMatrixImpl{{0,0,0,0,0}}"", string0);
+}",0,
+project,0,test111203,"public void test111203() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    String string0 = bigMatrixImpl0.toString();
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(1, bigMatrixImpl0.getRoundingMode())"
+project,0,test112204,"public void test112204() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[3];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    String string0 = bigMatrixImpl0.toString();
+    assertEquals(""BigMatrixImpl{{null},{null},{null}}"", string0);
+}",0,
+project,0,test112205,"public void test112205() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[3];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    String string0 = bigMatrixImpl0.toString();
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(0, bigMatrixImpl0.getScale())"
+project,0,test112206,"public void test112206() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[3];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    String string0 = bigMatrixImpl0.toString();
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl0.getRoundingMode())"
+project,0,test113207,"public void test113207() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    assertEquals(5, bigMatrixImpl0.getColumnDimension());
+}",0,"assertEquals(1, bigMatrixImpl0.getColumnDimension())"
+project,0,test113208,"public void test113208() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    bigMatrixImpl0.data = null;
+    String string0 = bigMatrixImpl0.toString();
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(1, bigMatrixImpl0.getRoundingMode())"
+project,0,test113209,"public void test113209() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    bigMatrixImpl0.data = null;
+    String string0 = bigMatrixImpl0.toString();
+    assertEquals(""BigMatrixImpl{}"", string0);
+}",0,assertNotNull(string0)
+project,0,test113210,"public void test113210() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    bigMatrixImpl0.data = null;
+    String string0 = bigMatrixImpl0.toString();
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(1, bigMatrixImpl0.getScale())"
+project,0,test114211,"public void test114211() throws Throwable {
+    double[][] doubleArray0 = new double[1][8];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    boolean boolean0 = bigMatrixImpl0.isSingular();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test114212,"public void test114212() throws Throwable {
+    double[][] doubleArray0 = new double[1][8];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    boolean boolean0 = bigMatrixImpl0.isSingular();
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(1, bigMatrixImpl0.getRoundingMode())"
+project,0,test114213,"public void test114213() throws Throwable {
+    double[][] doubleArray0 = new double[1][8];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    boolean boolean0 = bigMatrixImpl0.isSingular();
+    assertEquals(8, bigMatrixImpl0.getColumnDimension());
+}",0,"assertEquals(1, bigMatrixImpl0.getColumnDimension())"
+project,0,test115214,"public void test115214() throws Throwable {
+    double[][] doubleArray0 = new double[8][8];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    try {
+        bigMatrixImpl0.inverse();
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Matrix is singular.
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test116215,"public void test116215() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    try {
+        bigMatrixImpl0.solve((BigMatrix) bigMatrixImpl0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // coefficient matrix is not square
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test117216,"public void test117216() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigMatrix bigMatrix0 = bigMatrixImpl0.transpose();
+    try {
+        bigMatrix0.solve((BigMatrix) bigMatrixImpl0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Incorrect row dimension
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test118217,"public void test118217() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    double[] doubleArray0 = new double[4];
+    try {
+        bigMatrixImpl0.solve(doubleArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // constant vector has wrong length
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test119218,"public void test119218() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigMatrixImpl.ONE;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigDecimal[] bigDecimalArray1 = bigMatrixImpl0.preMultiply(bigDecimalArray0);
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(1, bigMatrixImpl0.getRoundingMode())"
+project,0,test119219,"public void test119219() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigMatrixImpl.ONE;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigDecimal[] bigDecimalArray1 = bigMatrixImpl0.preMultiply(bigDecimalArray0);
+    assertEquals(1, bigDecimalArray1.length);
+}",1,
+project,0,test119220,"public void test119220() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigMatrixImpl.ONE;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigDecimal[] bigDecimalArray1 = bigMatrixImpl0.preMultiply(bigDecimalArray0);
+    assertNotSame(bigDecimalArray1, bigDecimalArray0);
+}",1,
+project,0,test119221,"public void test119221() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigMatrixImpl.ONE;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigDecimal[] bigDecimalArray1 = bigMatrixImpl0.preMultiply(bigDecimalArray0);
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(1, bigMatrixImpl0.getScale())"
+project,0,test120222,"public void test120222() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(130, 130);
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[5];
+    try {
+        bigMatrixImpl0.preMultiply(bigDecimalArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // vector has wrong length
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test121223,"public void test121223() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.preMultiply(bigDecimalArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test122224,"public void test122224() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    double[] doubleArray1 = new double[7];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    try {
+        bigMatrixImpl0.operate(doubleArray1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // vector has wrong length
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test123225,"public void test123225() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigDecimal[] bigDecimalArray1 = bigMatrixImpl0.operate(bigDecimalArray0);
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,
+project,0,test123226,"public void test123226() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigDecimal[] bigDecimalArray1 = bigMatrixImpl0.operate(bigDecimalArray0);
+    assertNotSame(bigDecimalArray1, bigDecimalArray0);
+}",0,
+project,0,test123227,"public void test123227() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigDecimal[] bigDecimalArray1 = bigMatrixImpl0.operate(bigDecimalArray0);
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,
+project,0,test124228,"public void test124228() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.operate(bigDecimalArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test125229,"public void test125229() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(297, 297);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.getTrace();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test126230,"public void test126230() throws Throwable {
+    double[][] doubleArray0 = new double[1][0];
+    double[] doubleArray1 = new double[7];
+    doubleArray0[0] = doubleArray1;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    try {
+        bigMatrixImpl0.getTrace();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // matrix is not square
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test127231,"public void test127231() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigMatrixImpl.ONE;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    bigMatrixImpl0.luDecompose();
+    bigMatrixImpl0.solve(bigDecimalArray0);
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(1, bigMatrixImpl0.getRoundingMode())"
+project,0,test127232,"public void test127232() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigMatrixImpl.ONE;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    bigMatrixImpl0.luDecompose();
+    bigMatrixImpl0.solve(bigDecimalArray0);
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,
+project,0,test128233,"public void test128233() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigMatrixImpl.ONE;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    assertTrue(bigMatrixImpl0.isSquare());
+}",0,assertTrue(bigMatrixImpl0.isSquare())
+project,0,test128234,"public void test128234() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigMatrixImpl.ONE;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigDecimal bigDecimal1 = bigMatrixImpl0.getDeterminant();
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(1, bigMatrixImpl0.getRoundingMode())"
+project,0,test128235,"public void test128235() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigMatrixImpl.ONE;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigDecimal bigDecimal1 = bigMatrixImpl0.getDeterminant();
+    assertNotSame(bigDecimal1, bigDecimal0);
+}",0,
+project,0,test128236,"public void test128236() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigMatrixImpl.ONE;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigDecimal bigDecimal1 = bigMatrixImpl0.getDeterminant();
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,
+project,0,test129238,"public void test129238() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    try {
+        bigMatrixImpl0.getDeterminant();
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // matrix is not square
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test130239,"public void test130239() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.getDeterminant();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test131240,"public void test131240() throws Throwable {
+    double[][] doubleArray0 = new double[1][4];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    try {
+        bigMatrixImpl0.getColumnAsDoubleArray((-2818));
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // illegal column argument
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test132241,"public void test132241() throws Throwable {
+    double[][] doubleArray0 = new double[3][8];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    bigMatrixImpl0.getColumnAsDoubleArray(1);
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(0, bigMatrixImpl0.getScale())"
+project,0,test132242,"public void test132242() throws Throwable {
+    double[][] doubleArray0 = new double[3][8];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    bigMatrixImpl0.getColumnAsDoubleArray(1);
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl0.getRoundingMode())"
+project,0,test132243,"public void test132243() throws Throwable {
+    double[][] doubleArray0 = new double[3][8];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    bigMatrixImpl0.getColumnAsDoubleArray(1);
+    assertEquals(8, bigMatrixImpl0.getColumnDimension());
+}",0,"assertEquals(0, bigMatrixImpl0.getColumnDimension())"
+project,0,test133244,"public void test133244() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[3];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    try {
+        bigMatrixImpl0.getColumn(1);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // illegal column argument
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test134245,"public void test134245() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(2912, 2912);
+    BigDecimal[] bigDecimalArray0 = bigMatrixImpl0.getColumn(11);
+    assertEquals(2912, bigDecimalArray0.length);
+}",1,
+project,0,test134246,"public void test134246() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(2912, 2912);
+    BigDecimal[] bigDecimalArray0 = bigMatrixImpl0.getColumn(11);
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,
+project,0,test134247,"public void test134247() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(2912, 2912);
+    BigDecimal[] bigDecimalArray0 = bigMatrixImpl0.getColumn(11);
+    assertTrue(bigMatrixImpl0.isSquare());
+}",0,assertTrue(bigMatrixImpl0.isSquare())
+project,0,test134248,"public void test134248() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(2912, 2912);
+    BigDecimal[] bigDecimalArray0 = bigMatrixImpl0.getColumn(11);
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl0.getRoundingMode())"
+project,0,test135249,"public void test135249() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[3];
+    BigDecimal bigDecimal0 = new BigDecimal(0.0);
+    bigDecimalArray0[1] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    double[] doubleArray0 = bigMatrixImpl0.getRowAsDoubleArray(1);
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl0.getRoundingMode())"
+project,0,test135250,"public void test135250() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[3];
+    BigDecimal bigDecimal0 = new BigDecimal(0.0);
+    bigDecimalArray0[1] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    double[] doubleArray0 = bigMatrixImpl0.getRowAsDoubleArray(1);
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(0, bigMatrixImpl0.getScale())"
+project,0,test135251,"public void test135251() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[3];
+    BigDecimal bigDecimal0 = new BigDecimal(0.0);
+    bigDecimalArray0[1] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    double[] doubleArray0 = bigMatrixImpl0.getRowAsDoubleArray(1);
+    assertEquals(1, doubleArray0.length);
+}",1,
+project,0,test136252,"public void test136252() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(155, 155);
+    try {
+        bigMatrixImpl0.getRowAsDoubleArray(155);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // illegal row argument
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test137253,"public void test137253() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[3];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.getRowAsDoubleArray(1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test138254,"public void test138254() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    try {
+        bigMatrixImpl0.getRow(64);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // illegal row argument
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test139255,"public void test139255() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigDecimal[] bigDecimalArray1 = bigMatrixImpl0.getRow(0);
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(1, bigMatrixImpl0.getScale())"
+project,0,test139256,"public void test139256() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigDecimal[] bigDecimalArray1 = bigMatrixImpl0.getRow(0);
+    assertEquals(1, bigDecimalArray1.length);
+}",1,
+project,0,test139257,"public void test139257() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigDecimal[] bigDecimalArray1 = bigMatrixImpl0.getRow(0);
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,
+project,0,test140258,"public void test140258() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[12];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    try {
+        bigMatrixImpl0.getColumnMatrix((-3914));
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // illegal column argument
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test141259,"public void test141259() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    double[] doubleArray1 = new double[7];
+    doubleArray0[0] = doubleArray1;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    assertEquals(1, bigMatrixImpl0.getRowDimension());
+}",0,"assertEquals(1, bigMatrixImpl0.getRowDimension())"
+project,0,test141260,"public void test141260() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    double[] doubleArray1 = new double[7];
+    doubleArray0[0] = doubleArray1;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.getColumnMatrix(6);
+    assertTrue(bigMatrixImpl1.isSquare());
+}",0,assertTrue(bigMatrixImpl1.isSquare())
+project,0,test141261,"public void test141261() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    double[] doubleArray1 = new double[7];
+    doubleArray0[0] = doubleArray1;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.getColumnMatrix(6);
+    BigDecimal bigDecimal0 = bigMatrixImpl1.getTrace();
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(1, bigMatrixImpl0.getRoundingMode())"
+project,0,test141262,"public void test141262() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    double[] doubleArray1 = new double[7];
+    doubleArray0[0] = doubleArray1;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.getColumnMatrix(6);
+    BigDecimal bigDecimal0 = bigMatrixImpl1.getTrace();
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(1, bigMatrixImpl0.getScale())"
+project,0,test141263,"public void test141263() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    double[] doubleArray1 = new double[7];
+    doubleArray0[0] = doubleArray1;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.getColumnMatrix(6);
+    BigDecimal bigDecimal0 = bigMatrixImpl1.getTrace();
+    assertEquals(64, bigMatrixImpl1.getScale());
+}",0,
+project,0,test141264,"public void test141264() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    double[] doubleArray1 = new double[7];
+    doubleArray0[0] = doubleArray1;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.getColumnMatrix(6);
+    BigDecimal bigDecimal0 = bigMatrixImpl1.getTrace();
+    assertNotNull(bigDecimal0);
+}",0,assertNotNull(bigDecimal0)
+project,0,test141265,"public void test141265() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    double[] doubleArray1 = new double[7];
+    doubleArray0[0] = doubleArray1;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.getColumnMatrix(6);
+    BigDecimal bigDecimal0 = bigMatrixImpl1.getTrace();
+    assertEquals(4, bigMatrixImpl1.getRoundingMode());
+}",0,"assertEquals(1, bigMatrixImpl1.getRoundingMode())"
+project,0,test142266,"public void test142266() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(2912, 2912);
+    try {
+        bigMatrixImpl0.getRowMatrix((-14));
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // illegal row argument
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test143267,"public void test143267() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigDecimal[][] bigDecimalArray1 = new BigDecimal[5][3];
+    bigDecimalArray1[0] = bigDecimalArray0;
+    bigDecimalArray1[1] = bigDecimalArray0;
+    bigDecimalArray1[2] = bigDecimalArray0;
+    bigDecimalArray1[3] = bigDecimalArray0;
+    bigDecimalArray1[4] = bigDecimalArray0;
+    try {
+        bigMatrixImpl0.setSubMatrix(bigDecimalArray1, 1, 0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // invalid row or column index selection
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test144268,"public void test144268() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl();
+    BigDecimal[][] bigDecimalArray0 = new BigDecimal[1][2];
+    try {
+        bigMatrixImpl0.setSubMatrix(bigDecimalArray0, 0, 1082);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // matrix must be initialized to perfom this method
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test145269,"public void test145269() throws Throwable {
+    BigDecimal[][] bigDecimalArray0 = new BigDecimal[6][9];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl();
+    try {
+        bigMatrixImpl0.setSubMatrix(bigDecimalArray0, 1396, 1396);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // matrix must be initialized to perfom this method
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test146270,"public void test146270() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigDecimal[][] bigDecimalArray0 = bigMatrixImpl0.getDataRef();
+    try {
+        bigMatrixImpl0.setSubMatrix(bigDecimalArray0, 0, 1);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // invalid row or column index selection
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test147271,"public void test147271() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigDecimal[][] bigDecimalArray1 = new BigDecimal[5][3];
+    bigDecimalArray1[0] = bigDecimalArray0;
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.setSubMatrix(bigDecimalArray1, 1, 0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // All input rows must have the same length.
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test148272,"public void test148272() throws Throwable {
+    BigDecimal[][] bigDecimalArray0 = new BigDecimal[4][0];
+    BigMatrixImpl bigMatrixImpl0 = null;
+    try {
+        bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Matrix must have at least one column.
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test149273,"public void test149273() throws Throwable {
+    BigDecimal[][] bigDecimalArray0 = new BigDecimal[0][7];
+    BigMatrixImpl bigMatrixImpl0 = null;
+    try {
+        bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Matrix must have at least one row.
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test150274,"public void test150274() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigDecimal[][] bigDecimalArray1 = new BigDecimal[5][3];
+    try {
+        bigMatrixImpl0.setSubMatrix(bigDecimalArray1, 1, (-24));
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // invalid row or column index selection
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test151275,"public void test151275() throws Throwable {
+    BigDecimal[][] bigDecimalArray0 = new BigDecimal[6][9];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0, true);
+    try {
+        bigMatrixImpl0.setSubMatrix(bigDecimalArray0, (-1), 11);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // invalid row or column index selection
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test152276,"public void test152276() throws Throwable {
+    double[][] doubleArray0 = new double[3][8];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    int[] intArray0 = new int[4];
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.getSubMatrix(intArray0, intArray0);
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl0.getRoundingMode())"
+project,0,test152277,"public void test152277() throws Throwable {
+    double[][] doubleArray0 = new double[3][8];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    int[] intArray0 = new int[4];
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.getSubMatrix(intArray0, intArray0);
+    assertEquals(4, bigMatrixImpl1.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl1.getRoundingMode())"
+project,0,test152278,"public void test152278() throws Throwable {
+    double[][] doubleArray0 = new double[3][8];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    int[] intArray0 = new int[4];
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.getSubMatrix(intArray0, intArray0);
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(0, bigMatrixImpl0.getScale())"
+project,0,test152279,"public void test152279() throws Throwable {
+    double[][] doubleArray0 = new double[3][8];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    int[] intArray0 = new int[4];
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.getSubMatrix(intArray0, intArray0);
+    assertEquals(4, bigMatrixImpl1.getRowDimension());
+}",0,"assertEquals(0, bigMatrixImpl1.getRowDimension())"
+project,0,test152280,"public void test152280() throws Throwable {
+    double[][] doubleArray0 = new double[3][8];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    int[] intArray0 = new int[4];
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.getSubMatrix(intArray0, intArray0);
+    assertEquals(64, bigMatrixImpl1.getScale());
+}",0,"assertEquals(0, bigMatrixImpl1.getScale())"
+project,0,test152281,"public void test152281() throws Throwable {
+    double[][] doubleArray0 = new double[3][8];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    int[] intArray0 = new int[4];
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.getSubMatrix(intArray0, intArray0);
+    assertEquals(3, bigMatrixImpl0.getRowDimension());
+}",0,"assertEquals(1, bigMatrixImpl0.getRowDimension())"
+project,0,test153282,"public void test153282() throws Throwable {
+    double[][] doubleArray0 = new double[1][6];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    try {
+        bigMatrixImpl0.getSubMatrix(0, 31, 0, 0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // invalid row or column index selection
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test154283,"public void test154283() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[8];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    try {
+        bigMatrixImpl0.getSubMatrix(0, (-2621), (-269), 31);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // invalid row or column index selection
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test155284,"public void test155284() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.getSubMatrix(0, 0, 0, 0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 0
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test156285,"public void test156285() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl();
+    try {
+        bigMatrixImpl0.getSubMatrix((-2415), 659, (-4553), 64);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // invalid row or column index selection
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test157286,"public void test157286() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigDecimal bigDecimal0 = bigMatrixImpl0.getNorm();
+    assertEquals(5, bigMatrixImpl0.getColumnDimension());
+}",0,"assertEquals(1, bigMatrixImpl0.getColumnDimension())"
+project,0,test157287,"public void test157287() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigDecimal bigDecimal0 = bigMatrixImpl0.getNorm();
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(1, bigMatrixImpl0.getScale())"
+project,0,test157289,"public void test157289() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigDecimal bigDecimal0 = bigMatrixImpl0.getNorm();
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(1, bigMatrixImpl0.getRoundingMode())"
+project,0,test158290,"public void test158290() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    double[][] doubleArray1 = bigMatrixImpl0.getDataAsDoubleArray();
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(1, bigMatrixImpl0.getRoundingMode())"
+project,0,test158291,"public void test158291() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    double[][] doubleArray1 = bigMatrixImpl0.getDataAsDoubleArray();
+    assertEquals(1, doubleArray1.length);
+}",0,
+project,0,test158292,"public void test158292() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    double[][] doubleArray1 = bigMatrixImpl0.getDataAsDoubleArray();
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(1, bigMatrixImpl0.getScale())"
+project,0,test159293,"public void test159293() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    assertEquals(1, bigMatrixImpl0.getRowDimension());
+}",0,
+project,0,test159294,"public void test159294() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = bigMatrixImpl0.multiply(bigMatrixImpl0);
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(1, bigMatrixImpl0.getScale())"
+project,0,test159295,"public void test159295() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = bigMatrixImpl0.multiply(bigMatrixImpl0);
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl0.getRoundingMode())"
+project,0,test159296,"public void test159296() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = bigMatrixImpl0.multiply(bigMatrixImpl0);
+    assertEquals(64, bigMatrixImpl1.getScale());
+}",0,
+project,0,test159297,"public void test159297() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    bigDecimalArray0[0] = bigDecimal0;
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = bigMatrixImpl0.multiply(bigMatrixImpl0);
+    assertEquals(4, bigMatrixImpl1.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl1.getRoundingMode())"
+project,0,test160298,"public void test160298() throws Throwable {
+    BigDecimal[][] bigDecimalArray0 = new BigDecimal[6][9];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0, true);
+    try {
+        bigMatrixImpl0.multiply((BigMatrix) bigMatrixImpl0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Matrices are not multiplication compatible.
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test161299,"public void test161299() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[3];
+    BigDecimal bigDecimal0 = new BigDecimal(0.0);
+    bigDecimalArray0[0] = bigDecimal0;
+    bigDecimalArray0[1] = bigDecimalArray0[0];
+    bigDecimalArray0[2] = bigDecimalArray0[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.scalarAdd(bigDecimal0);
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,
+project,0,test161300,"public void test161300() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[3];
+    BigDecimal bigDecimal0 = new BigDecimal(0.0);
+    bigDecimalArray0[0] = bigDecimal0;
+    bigDecimalArray0[1] = bigDecimalArray0[0];
+    bigDecimalArray0[2] = bigDecimalArray0[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.scalarAdd(bigDecimal0);
+    assertEquals(3, bigMatrixImpl1.getRowDimension());
+}",0,"assertEquals(0, bigMatrixImpl1.getRowDimension())"
+project,0,test161301,"public void test161301() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[3];
+    BigDecimal bigDecimal0 = new BigDecimal(0.0);
+    bigDecimalArray0[0] = bigDecimal0;
+    bigDecimalArray0[1] = bigDecimalArray0[0];
+    bigDecimalArray0[2] = bigDecimalArray0[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.scalarAdd(bigDecimal0);
+    assertEquals(64, bigMatrixImpl1.getScale());
+}",0,
+project,0,test161302,"public void test161302() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[3];
+    BigDecimal bigDecimal0 = new BigDecimal(0.0);
+    bigDecimalArray0[0] = bigDecimal0;
+    bigDecimalArray0[1] = bigDecimalArray0[0];
+    bigDecimalArray0[2] = bigDecimalArray0[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.scalarAdd(bigDecimal0);
+    assertEquals(4, bigMatrixImpl1.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl1.getRoundingMode())"
+project,0,test161303,"public void test161303() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[3];
+    BigDecimal bigDecimal0 = new BigDecimal(0.0);
+    bigDecimalArray0[0] = bigDecimal0;
+    bigDecimalArray0[1] = bigDecimalArray0[0];
+    bigDecimalArray0[2] = bigDecimalArray0[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.scalarAdd(bigDecimal0);
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,
+project,0,test162304,"public void test162304() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[3];
+    BigDecimal bigDecimal0 = new BigDecimal(0.0);
+    bigDecimalArray0[0] = bigDecimal0;
+    bigDecimalArray0[1] = bigDecimal0;
+    bigDecimalArray0[2] = bigDecimalArray0[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.subtract((BigMatrix) bigMatrixImpl0);
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,
+project,0,test162305,"public void test162305() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[3];
+    BigDecimal bigDecimal0 = new BigDecimal(0.0);
+    bigDecimalArray0[0] = bigDecimal0;
+    bigDecimalArray0[1] = bigDecimal0;
+    bigDecimalArray0[2] = bigDecimalArray0[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.subtract((BigMatrix) bigMatrixImpl0);
+    assertEquals(64, bigMatrixImpl1.getScale());
+}",0,
+project,0,test162306,"public void test162306() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[3];
+    BigDecimal bigDecimal0 = new BigDecimal(0.0);
+    bigDecimalArray0[0] = bigDecimal0;
+    bigDecimalArray0[1] = bigDecimal0;
+    bigDecimalArray0[2] = bigDecimalArray0[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.subtract((BigMatrix) bigMatrixImpl0);
+    assertEquals(4, bigMatrixImpl1.getRoundingMode());
+}",0,
+project,0,test162307,"public void test162307() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[3];
+    BigDecimal bigDecimal0 = new BigDecimal(0.0);
+    bigDecimalArray0[0] = bigDecimal0;
+    bigDecimalArray0[1] = bigDecimal0;
+    bigDecimalArray0[2] = bigDecimalArray0[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.subtract((BigMatrix) bigMatrixImpl0);
+    assertEquals(1, bigMatrixImpl1.getColumnDimension());
+}",0,"assertEquals(0, bigMatrixImpl1.getColumnDimension())"
+project,0,test162308,"public void test162308() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[3];
+    BigDecimal bigDecimal0 = new BigDecimal(0.0);
+    bigDecimalArray0[0] = bigDecimal0;
+    bigDecimalArray0[1] = bigDecimal0;
+    bigDecimalArray0[2] = bigDecimalArray0[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.subtract((BigMatrix) bigMatrixImpl0);
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,
+project,0,test163309,"public void test163309() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(2912, 2912);
+    BigMatrix bigMatrix0 = bigMatrixImpl0.getRowMatrix(1);
+    try {
+        bigMatrixImpl0.subtract(bigMatrix0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // matrix dimension mismatch
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test164310,"public void test164310() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(2912, 2912);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.subtract((BigMatrix) bigMatrixImpl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test165311,"public void test165311() throws Throwable {
+    double[][] doubleArray0 = new double[3][8];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigMatrix bigMatrix0 = bigMatrixImpl0.getRowMatrix(1);
+    try {
+        bigMatrixImpl0.add(bigMatrix0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // matrix dimension mismatch
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test166312,"public void test166312() throws Throwable {
+    double[][] doubleArray0 = new double[3][8];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.add((BigMatrix) bigMatrixImpl0);
+    assertEquals(3, bigMatrixImpl0.getRowDimension());
+}",0,"assertEquals(0, bigMatrixImpl0.getRowDimension())"
+project,0,test166313,"public void test166313() throws Throwable {
+    double[][] doubleArray0 = new double[3][8];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.add((BigMatrix) bigMatrixImpl0);
+    assertEquals(4, bigMatrixImpl1.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl1.getRoundingMode())"
+project,0,test166314,"public void test166314() throws Throwable {
+    double[][] doubleArray0 = new double[3][8];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.add((BigMatrix) bigMatrixImpl0);
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",1,
+project,0,test166315,"public void test166315() throws Throwable {
+    double[][] doubleArray0 = new double[3][8];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.add((BigMatrix) bigMatrixImpl0);
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(0, bigMatrixImpl0.getRoundingMode())"
+project,0,test166316,"public void test166316() throws Throwable {
+    double[][] doubleArray0 = new double[3][8];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.add((BigMatrix) bigMatrixImpl0);
+    assertEquals(64, bigMatrixImpl1.getScale());
+}",1,
+project,0,test166317,"public void test166317() throws Throwable {
+    double[][] doubleArray0 = new double[3][8];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.add((BigMatrix) bigMatrixImpl0);
+    assertEquals(8, bigMatrixImpl1.getColumnDimension());
+}",0,"assertEquals(0, bigMatrixImpl1.getColumnDimension())"
+project,0,test166318,"public void test166318() throws Throwable {
+    double[][] doubleArray0 = new double[3][8];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.add((BigMatrix) bigMatrixImpl0);
+    assertTrue(bigMatrixImpl1.equals((Object) bigMatrixImpl0));
+}",0,
+project,0,test167319,"public void test167319() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    BigMatrixImpl bigMatrixImpl1 = (BigMatrixImpl) bigMatrixImpl0.transpose();
+    try {
+        bigMatrixImpl1.add(bigMatrixImpl0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // matrix dimension mismatch
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test168320,"public void test168320() throws Throwable {
+    String[][] stringArray0 = new String[6][8];
+    String[] stringArray1 = new String[2];
+    stringArray0[0] = stringArray1;
+    BigMatrixImpl bigMatrixImpl0 = null;
+    try {
+        bigMatrixImpl0 = new BigMatrixImpl(stringArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // All input rows must have the same length.
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test169321,"public void test169321() throws Throwable {
+    String[][] stringArray0 = new String[6][8];
+    BigMatrixImpl bigMatrixImpl0 = null;
+    try {
+        bigMatrixImpl0 = new BigMatrixImpl(stringArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.math.BigDecimal"", e);
+    }
+}",0,
+project,0,test170322,"public void test170322() throws Throwable {
+    String[][] stringArray0 = new String[1][3];
+    String[] stringArray1 = new String[0];
+    stringArray0[0] = stringArray1;
+    BigMatrixImpl bigMatrixImpl0 = null;
+    try {
+        bigMatrixImpl0 = new BigMatrixImpl(stringArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Matrix must have at least one column.
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test171323,"public void test171323() throws Throwable {
+    String[][] stringArray0 = new String[0][9];
+    BigMatrixImpl bigMatrixImpl0 = null;
+    try {
+        bigMatrixImpl0 = new BigMatrixImpl(stringArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Matrix must have at least one row.
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test172324,"public void test172324() throws Throwable {
+    double[][] doubleArray0 = new double[3][1];
+    double[] doubleArray1 = new double[5];
+    doubleArray0[0] = doubleArray1;
+    BigMatrixImpl bigMatrixImpl0 = null;
+    try {
+        bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // All input rows must have the same length.
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test173325,"public void test173325() throws Throwable {
+    double[][] doubleArray0 = new double[5][0];
+    BigMatrixImpl bigMatrixImpl0 = null;
+    try {
+        bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Matrix must have at least one column.
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test174326,"public void test174326() throws Throwable {
+    double[][] doubleArray0 = new double[0][0];
+    BigMatrixImpl bigMatrixImpl0 = null;
+    try {
+        bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Matrix must have at least one row.
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test175327,"public void test175327() throws Throwable {
+    BigDecimal[][] bigDecimalArray0 = new BigDecimal[6][4];
+    BigDecimal[] bigDecimalArray1 = new BigDecimal[3];
+    bigDecimalArray0[0] = bigDecimalArray1;
+    BigMatrixImpl bigMatrixImpl0 = null;
+    try {
+        bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0, false);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // All input rows must have the same length.
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test176328,"public void test176328() throws Throwable {
+    BigDecimal[][] bigDecimalArray0 = new BigDecimal[8][2];
+    BigDecimal[] bigDecimalArray1 = new BigDecimal[0];
+    bigDecimalArray0[0] = bigDecimalArray1;
+    BigMatrixImpl bigMatrixImpl0 = null;
+    try {
+        bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0, false);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Matrix must have at least one column.
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test177329,"public void test177329() throws Throwable {
+    BigDecimal[][] bigDecimalArray0 = new BigDecimal[0][6];
+    BigMatrixImpl bigMatrixImpl0 = null;
+    try {
+        bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0, false);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Matrix must have at least one row.
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test178330,"public void test178330() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = null;
+    try {
+        bigMatrixImpl0 = new BigMatrixImpl((BigDecimal[][]) null, false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test179331,"public void test179331() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = null;
+    try {
+        bigMatrixImpl0 = new BigMatrixImpl(7, (-668));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // row and column dimensions must be positive
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test180332,"public void test180332() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = null;
+    try {
+        bigMatrixImpl0 = new BigMatrixImpl((-741), (-881));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // row and column dimensions must be positive
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",1,
+project,0,test181333,"public void test181333() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl();
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.inverse();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test182334,"public void test182334() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[3];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    int int0 = bigMatrixImpl0.getRoundingMode();
+    assertEquals(4, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test182335,"public void test182335() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[3];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    int int0 = bigMatrixImpl0.getRoundingMode();
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(0, bigMatrixImpl0.getScale())"
+project,0,test182336,"public void test182336() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[3];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    int int0 = bigMatrixImpl0.getRoundingMode();
+    assertEquals(3, bigMatrixImpl0.getRowDimension());
+}",0,
+project,0,test183337,"public void test183337() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(121, 121);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.preMultiply((BigMatrix) bigMatrixImpl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test184338,"public void test184338() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(1, bigMatrixImpl0.getScale())"
+project,0,test184339,"public void test184339() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    bigMatrixImpl0.setScale(0);
+    assertEquals(5, bigMatrixImpl0.getColumnDimension());
+}",0,"assertEquals(1, bigMatrixImpl0.getColumnDimension())"
+project,0,test185340,"public void test185340() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    int int0 = bigMatrixImpl0.getScale();
+    assertEquals(64, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test185341,"public void test185341() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    int int0 = bigMatrixImpl0.getScale();
+    assertEquals(1, bigMatrixImpl0.getRowDimension());
+}",0,"assertEquals(0, bigMatrixImpl0.getRowDimension())"
+project,0,test185342,"public void test185342() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    int int0 = bigMatrixImpl0.getScale();
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,
+project,0,test186343,"public void test186343() throws Throwable {
+    BigDecimal[][] bigDecimalArray0 = new BigDecimal[6][9];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0, true);
+    BigMatrix bigMatrix0 = bigMatrixImpl0.transpose();
+    try {
+        bigMatrixImpl0.subtract(bigMatrix0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // matrix dimension mismatch
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test187344,"public void test187344() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    assertEquals(4, bigMatrixImpl0.getRoundingMode());
+}",0,"assertEquals(1, bigMatrixImpl0.getRoundingMode())"
+project,0,test187345,"public void test187345() throws Throwable {
+    double[][] doubleArray0 = new double[1][5];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(doubleArray0);
+    bigMatrixImpl0.setRoundingMode(0);
+    assertEquals(64, bigMatrixImpl0.getScale());
+}",0,"assertEquals(1, bigMatrixImpl0.getScale())"
+project,0,test188346,"public void test188346() throws Throwable {
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl();
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.getPermutation();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test189347,"public void test189347() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[1];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    try {
+        bigMatrixImpl0.getEntryAsDouble(40, 474);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // matrix entry does not exist
+        //
+        verifyException(""org.apache.commons.math.linear.BigMatrixImpl"", e);
+    }
+}",0,
+project,0,test190348,"public void test190348() throws Throwable {
+    BigDecimal[] bigDecimalArray0 = new BigDecimal[0];
+    BigMatrixImpl bigMatrixImpl0 = new BigMatrixImpl(bigDecimalArray0);
+    // Undeclared exception!
+    try {
+        bigMatrixImpl0.copy();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,

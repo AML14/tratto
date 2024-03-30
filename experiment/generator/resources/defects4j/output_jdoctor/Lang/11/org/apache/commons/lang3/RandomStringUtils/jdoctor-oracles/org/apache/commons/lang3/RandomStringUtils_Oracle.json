@@ -1,0 +1,36 @@
+[ {
+  "className" : "org.apache.commons.lang3.RandomStringUtils",
+  "methodSignature" : "random(int count, int start, int end, boolean letters, boolean numbers, char[] chars, java.util.Random random)",
+  "oracleType" : "PRE",
+  "oracle" : "(chars.length == 0) == false",
+  "exception" : "",
+  "testName" : ""
+}, {
+  "className" : "org.apache.commons.lang3.RandomStringUtils",
+  "methodSignature" : "random(int count, int start, int end, boolean letters, boolean numbers, char[] chars, java.util.Random random)",
+  "oracleType" : "EXCEPT_POST",
+  "oracle" : "count < 0 || chars.length == 0",
+  "exception" : "java.lang.IllegalArgumentException",
+  "testName" : ""
+}, {
+  "className" : "org.apache.commons.lang3.RandomStringUtils",
+  "methodSignature" : "random(int count, java.lang.String chars)",
+  "oracleType" : "PRE",
+  "oracle" : "(chars.isEmpty()) == false",
+  "exception" : "",
+  "testName" : ""
+}, {
+  "className" : "org.apache.commons.lang3.RandomStringUtils",
+  "methodSignature" : "random(int count, java.lang.String chars)",
+  "oracleType" : "EXCEPT_POST",
+  "oracle" : "count < 0 || chars.isEmpty()",
+  "exception" : "java.lang.IllegalArgumentException",
+  "testName" : ""
+}, {
+  "className" : "org.apache.commons.lang3.RandomStringUtils",
+  "methodSignature" : "random(int count, char... chars)",
+  "oracleType" : "EXCEPT_POST",
+  "oracle" : "count < 0",
+  "exception" : "java.lang.IllegalArgumentException",
+  "testName" : ""
+} ]

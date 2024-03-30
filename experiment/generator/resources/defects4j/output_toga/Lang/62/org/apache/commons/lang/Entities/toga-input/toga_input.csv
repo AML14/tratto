@@ -1,0 +1,926 @@
+focal_method,test_prefix,docstring
+"public String unescape(String str) {
+    int firstAmp = str.indexOf('&');
+    if (firstAmp < 0) {
+        return str;
+    }
+    StringBuffer buf = new StringBuffer(str.length());
+    buf.append(str.substring(0, firstAmp));
+    for (int i = firstAmp; i < str.length(); ++i) {
+        char ch = str.charAt(i);
+        if (ch == '&') {
+            int semi = str.indexOf(';', i + 1);
+            if (semi == -1) {
+                buf.append(ch);
+                continue;
+            }
+            int amph = str.indexOf('&', i + 1);
+            if (amph != -1 && amph < semi) {
+                // Then the text looks like &...&...;
+                buf.append(ch);
+                continue;
+            }
+            String entityName = str.substring(i + 1, semi);
+            int entityValue;
+            if (entityName.length() == 0) {
+                entityValue = -1;
+            } else if (entityName.charAt(0) == '#') {
+                if (entityName.length() == 1) {
+                    entityValue = -1;
+                } else {
+                    char charAt1 = entityName.charAt(1);
+                    try {
+                        if (charAt1 == 'x' || charAt1 == 'X') {
+                            entityValue = Integer.valueOf(entityName.substring(2), 16).intValue();
+                        } else {
+                            entityValue = Integer.parseInt(entityName.substring(1));
+                        }
+                    } catch (NumberFormatException ex) {
+                        entityValue = -1;
+                    }
+                }
+            } else {
+                entityValue = this.entityValue(entityName);
+            }
+            if (entityValue == -1) {
+                buf.append('&');
+                buf.append(entityName);
+                buf.append(';');
+            } else {
+                buf.append((char) (entityValue));
+            }
+            i = semi;
+        } else {
+            buf.append(ch);
+        }
+    }
+    return buf.toString();
+}","public void test011() throws Throwable {
+    Entities entities0 = Entities.HTML32;
+    String string0 = entities0.unescape(""0dp$bq$KX&#(&y,2\""Ze"");
+    assertEquals(""0dp$bq$KX&#(&y,2\""Ze"", string0);
+}","/**
+ * <p>Unescapes the entities in a <code>String</code>.</p>
+ *
+ * <p>For example, if you have called addEntity(&quot;foo&quot;, 0xA1),
+ * unescape(&quot;&amp;foo;&quot;) will return &quot;\u00A1&quot;</p>
+ *
+ * @param str The <code>String</code> to escape.
+ * @return A new escaped <code>String</code>.
+ */"
+"public String unescape(String str) {
+    int firstAmp = str.indexOf('&');
+    if (firstAmp < 0) {
+        return str;
+    }
+    StringBuffer buf = new StringBuffer(str.length());
+    buf.append(str.substring(0, firstAmp));
+    for (int i = firstAmp; i < str.length(); ++i) {
+        char ch = str.charAt(i);
+        if (ch == '&') {
+            int semi = str.indexOf(';', i + 1);
+            if (semi == -1) {
+                buf.append(ch);
+                continue;
+            }
+            int amph = str.indexOf('&', i + 1);
+            if (amph != -1 && amph < semi) {
+                // Then the text looks like &...&...;
+                buf.append(ch);
+                continue;
+            }
+            String entityName = str.substring(i + 1, semi);
+            int entityValue;
+            if (entityName.length() == 0) {
+                entityValue = -1;
+            } else if (entityName.charAt(0) == '#') {
+                if (entityName.length() == 1) {
+                    entityValue = -1;
+                } else {
+                    char charAt1 = entityName.charAt(1);
+                    try {
+                        if (charAt1 == 'x' || charAt1 == 'X') {
+                            entityValue = Integer.valueOf(entityName.substring(2), 16).intValue();
+                        } else {
+                            entityValue = Integer.parseInt(entityName.substring(1));
+                        }
+                    } catch (NumberFormatException ex) {
+                        entityValue = -1;
+                    }
+                }
+            } else {
+                entityValue = this.entityValue(entityName);
+            }
+            if (entityValue == -1) {
+                buf.append('&');
+                buf.append(entityName);
+                buf.append(';');
+            } else {
+                buf.append((char) (entityValue));
+            }
+            i = semi;
+        } else {
+            buf.append(ch);
+        }
+    }
+    return buf.toString();
+}","public void test022() throws Throwable {
+    Entities entities0 = Entities.HTML32;
+    String string0 = entities0.HTML40.unescape(""&ac/"");
+    assertEquals(""&ac/"", string0);
+}","/**
+ * <p>Unescapes the entities in a <code>String</code>.</p>
+ *
+ * <p>For example, if you have called addEntity(&quot;foo&quot;, 0xA1),
+ * unescape(&quot;&amp;foo;&quot;) will return &quot;\u00A1&quot;</p>
+ *
+ * @param str The <code>String</code> to escape.
+ * @return A new escaped <code>String</code>.
+ */"
+"public String escape(String str) {
+    //todo: rewrite to use a Writer
+    StringBuffer buf = new StringBuffer(str.length() * 2);
+    int i;
+    for (i = 0; i < str.length(); ++i) {
+        char ch = str.charAt(i);
+        String entityName = this.entityName(ch);
+        if (entityName == null) {
+            if (ch > 0x7F) {
+                int intValue = ch;
+                buf.append(""&#"");
+                buf.append(intValue);
+                buf.append(';');
+            } else {
+                buf.append(ch);
+            }
+        } else {
+            buf.append('&');
+            buf.append(entityName);
+            buf.append(';');
+        }
+    }
+    return buf.toString();
+}","public void test044() throws Throwable {
+    Entities entities0 = Entities.HTML32;
+    String string0 = entities0.escape(""@k)YGE2Pi&FtC~"");
+    assertEquals(""@k)YGE2Pi&amp;FtC~"", string0);
+}","/**
+ * <p>Escapes the characters in a <code>String</code>.</p>
+ *
+ * <p>For example, if you have called addEntity(&quot;foo&quot;, 0xA1),
+ * escape(&quot;\u00A1&quot;) will return &quot;&amp;foo;&quot;</p>
+ *
+ * @param str The <code>String</code> to escape.
+ * @return A new escaped <code>String</code>.
+ */"
+"public String entityName(int value) {
+    return map.name(value);
+}","public void test099() throws Throwable {
+    Entities.ArrayEntityMap entities_ArrayEntityMap0 = new Entities.ArrayEntityMap();
+    int[] intArray0 = new int[5];
+    intArray0[0] = (-2765);
+    intArray0[1] = (-2765);
+    intArray0[2] = 1458;
+    intArray0[3] = 2;
+    intArray0[4] = (-851);
+    entities_ArrayEntityMap0.values = intArray0;
+    entities_ArrayEntityMap0.add(""a_symp"", 256);
+    Entities entities0 = Entities.HTML40;
+    entities0.XML.escape("""");
+    String string0 = entities0.entityName(4073);
+    assertNull(string0);
+}","/**
+ * <p>Returns the name of the entity identified by the specified value.</p>
+ *
+ * @param value the value to locate
+ * @return entity name associated with the specified value
+ */"
+"public String unescape(String str) {
+    int firstAmp = str.indexOf('&');
+    if (firstAmp < 0) {
+        return str;
+    }
+    StringBuffer buf = new StringBuffer(str.length());
+    buf.append(str.substring(0, firstAmp));
+    for (int i = firstAmp; i < str.length(); ++i) {
+        char ch = str.charAt(i);
+        if (ch == '&') {
+            int semi = str.indexOf(';', i + 1);
+            if (semi == -1) {
+                buf.append(ch);
+                continue;
+            }
+            int amph = str.indexOf('&', i + 1);
+            if (amph != -1 && amph < semi) {
+                // Then the text looks like &...&...;
+                buf.append(ch);
+                continue;
+            }
+            String entityName = str.substring(i + 1, semi);
+            int entityValue;
+            if (entityName.length() == 0) {
+                entityValue = -1;
+            } else if (entityName.charAt(0) == '#') {
+                if (entityName.length() == 1) {
+                    entityValue = -1;
+                } else {
+                    char charAt1 = entityName.charAt(1);
+                    try {
+                        if (charAt1 == 'x' || charAt1 == 'X') {
+                            entityValue = Integer.valueOf(entityName.substring(2), 16).intValue();
+                        } else {
+                            entityValue = Integer.parseInt(entityName.substring(1));
+                        }
+                    } catch (NumberFormatException ex) {
+                        entityValue = -1;
+                    }
+                }
+            } else {
+                entityValue = this.entityValue(entityName);
+            }
+            if (entityValue == -1) {
+                buf.append('&');
+                buf.append(entityName);
+                buf.append(';');
+            } else {
+                buf.append((char) (entityValue));
+            }
+            i = semi;
+        } else {
+            buf.append(ch);
+        }
+    }
+    return buf.toString();
+}","public void test1919() throws Throwable {
+    Entities entities0 = new Entities();
+    String string0 = entities0.HTML32.unescape("""");
+    assertEquals("""", string0);
+}","/**
+ * <p>Unescapes the entities in a <code>String</code>.</p>
+ *
+ * <p>For example, if you have called addEntity(&quot;foo&quot;, 0xA1),
+ * unescape(&quot;&amp;foo;&quot;) will return &quot;\u00A1&quot;</p>
+ *
+ * @param str The <code>String</code> to escape.
+ * @return A new escaped <code>String</code>.
+ */"
+"public int entityValue(String name) {
+    return map.value(name);
+}","public void test2020() throws Throwable {
+    Entities.BinaryEntityMap entities_BinaryEntityMap0 = new Entities.BinaryEntityMap();
+    Entities entities0 = new Entities();
+    entities0.map = (Entities.EntityMap) entities_BinaryEntityMap0;
+    entities_BinaryEntityMap0.add("""", 4086);
+    int int0 = entities0.entityValue("""");
+    assertEquals(4086, int0);
+}","/**
+ * <p>Returns the value of the entity identified by the specified name.</p>
+ *
+ * @param name the name to locate
+ * @return entity value associated with the specified name
+ */"
+"public String entityName(int value) {
+    return map.name(value);
+}","public void test2121() throws Throwable {
+    Entities entities0 = new Entities();
+    Entities.fillWithHtml40Entities(entities0);
+    String string0 = entities0.entityName(38);
+    assertNotNull(string0);
+}","/**
+ * <p>Returns the name of the entity identified by the specified value.</p>
+ *
+ * @param value the value to locate
+ * @return entity name associated with the specified value
+ */"
+"public String entityName(int value) {
+    return map.name(value);
+}","public void test2223() throws Throwable {
+    Entities.ArrayEntityMap entities_ArrayEntityMap0 = new Entities.ArrayEntityMap();
+    Entities entities0 = Entities.HTML40;
+    entities0.map = (Entities.EntityMap) entities_ArrayEntityMap0;
+    entities_ArrayEntityMap0.add("""", 4073);
+    String string0 = entities0.entityName(4073);
+    assertEquals("""", string0);
+}","/**
+ * <p>Returns the name of the entity identified by the specified value.</p>
+ *
+ * @param value the value to locate
+ * @return entity name associated with the specified value
+ */"
+"public String unescape(String str) {
+    int firstAmp = str.indexOf('&');
+    if (firstAmp < 0) {
+        return str;
+    }
+    StringBuffer buf = new StringBuffer(str.length());
+    buf.append(str.substring(0, firstAmp));
+    for (int i = firstAmp; i < str.length(); ++i) {
+        char ch = str.charAt(i);
+        if (ch == '&') {
+            int semi = str.indexOf(';', i + 1);
+            if (semi == -1) {
+                buf.append(ch);
+                continue;
+            }
+            int amph = str.indexOf('&', i + 1);
+            if (amph != -1 && amph < semi) {
+                // Then the text looks like &...&...;
+                buf.append(ch);
+                continue;
+            }
+            String entityName = str.substring(i + 1, semi);
+            int entityValue;
+            if (entityName.length() == 0) {
+                entityValue = -1;
+            } else if (entityName.charAt(0) == '#') {
+                if (entityName.length() == 1) {
+                    entityValue = -1;
+                } else {
+                    char charAt1 = entityName.charAt(1);
+                    try {
+                        if (charAt1 == 'x' || charAt1 == 'X') {
+                            entityValue = Integer.valueOf(entityName.substring(2), 16).intValue();
+                        } else {
+                            entityValue = Integer.parseInt(entityName.substring(1));
+                        }
+                    } catch (NumberFormatException ex) {
+                        entityValue = -1;
+                    }
+                }
+            } else {
+                entityValue = this.entityValue(entityName);
+            }
+            if (entityValue == -1) {
+                buf.append('&');
+                buf.append(entityName);
+                buf.append(';');
+            } else {
+                buf.append((char) (entityValue));
+            }
+            i = semi;
+        } else {
+            buf.append(ch);
+        }
+    }
+    return buf.toString();
+}","public void test2324() throws Throwable {
+    Entities entities0 = Entities.HTML32;
+    // Undeclared exception!
+    try {
+        entities0.unescape((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang.Entities"", e);
+    }
+}","/**
+ * <p>Unescapes the entities in a <code>String</code>.</p>
+ *
+ * <p>For example, if you have called addEntity(&quot;foo&quot;, 0xA1),
+ * unescape(&quot;&amp;foo;&quot;) will return &quot;\u00A1&quot;</p>
+ *
+ * @param str The <code>String</code> to escape.
+ * @return A new escaped <code>String</code>.
+ */"
+"public void unescape(Writer writer, String string) throws IOException {
+    int firstAmp = string.indexOf('&');
+    if (firstAmp < 0) {
+        writer.write(string);
+        return;
+    }
+    writer.write(string, 0, firstAmp);
+    int len = string.length();
+    for (int i = firstAmp; i < len; i++) {
+        char c = string.charAt(i);
+        if (c == '&') {
+            int nextIdx = i + 1;
+            int semiColonIdx = string.indexOf(';', nextIdx);
+            if (semiColonIdx == -1) {
+                writer.write(c);
+                continue;
+            }
+            int amphersandIdx = string.indexOf('&', i + 1);
+            if (amphersandIdx != -1 && amphersandIdx < semiColonIdx) {
+                // Then the text looks like &...&...;
+                writer.write(c);
+                continue;
+            }
+            String entityContent = string.substring(nextIdx, semiColonIdx);
+            int entityValue = -1;
+            int entityContentLen = entityContent.length();
+            if (entityContentLen > 0) {
+                if (entityContent.charAt(0) == '#') {
+                    //escaped value content is an integer (decimal or hexidecimal)
+                    if (entityContentLen > 1) {
+                        char isHexChar = entityContent.charAt(1);
+                        try {
+                            switch(isHexChar) {
+                                case 'X':
+                                case 'x':
+                                    {
+                                        entityValue = Integer.parseInt(entityContent.substring(2), 16);
+                                    }
+                                default:
+                                    {
+                                        entityValue = Integer.parseInt(entityContent.substring(1), 10);
+                                    }
+                            }
+                        } catch (NumberFormatException e) {
+                        }
+                    }
+                } else {
+                    //escaped value content is an entity name
+                    entityValue = this.entityValue(entityContent);
+                }
+            }
+            if (entityValue == -1) {
+                writer.write('&');
+                writer.write(entityContent);
+                writer.write(';');
+            } else {
+                writer.write(entityValue);
+            }
+            //move index up to the semi-colon
+            i = semiColonIdx;
+        } else {
+            writer.write(c);
+        }
+    }
+}","public void test2425() throws Throwable {
+    Entities entities0 = new Entities();
+    // Undeclared exception!
+    try {
+        entities0.unescape((Writer) null, ""wo"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang.Entities"", e);
+    }
+}","/**
+ * <p>Unescapes the escaped entities in the <code>String</code> passed and
+ * writes the result to the <code>Writer</code> passed.</p>
+ *
+ * @param writer The <code>Writer</code> to write the results to; assumed to be non-null.
+ * @param string The <code>String</code> to write the results to; assumed to be non-null.
+ * @throws IOException when <code>Writer</code> passed throws the exception from
+ *                                       calls to the {@link Writer#write(int)} methods.
+ *
+ * @see #escape(String)
+ * @see Writer
+ */"
+"static void fillWithHtml40Entities(Entities entities) {
+    entities.addEntities(BASIC_ARRAY);
+    entities.addEntities(ISO8859_1_ARRAY);
+    entities.addEntities(HTML40_ARRAY);
+}","public void test2526() throws Throwable {
+    // Undeclared exception!
+    try {
+        Entities.fillWithHtml40Entities((Entities) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang.Entities"", e);
+    }
+}","/**
+ * <p>Fills the specified entities instance with HTML 40 entities.</p>
+ *
+ * @param entities the instance to be filled.
+ */"
+"static void fillWithHtml40Entities(Entities entities) {
+    entities.addEntities(BASIC_ARRAY);
+    entities.addEntities(ISO8859_1_ARRAY);
+    entities.addEntities(HTML40_ARRAY);
+}","public void test2627() throws Throwable {
+    Entities.ArrayEntityMap entities_ArrayEntityMap0 = new Entities.ArrayEntityMap();
+    int[] intArray0 = new int[5];
+    entities_ArrayEntityMap0.values = intArray0;
+    Entities entities0 = new Entities();
+    entities0.map = (Entities.EntityMap) entities_ArrayEntityMap0;
+    // Undeclared exception!
+    try {
+        Entities.fillWithHtml40Entities(entities0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 5
+        //
+        verifyException(""org.apache.commons.lang.Entities$ArrayEntityMap"", e);
+    }
+}","/**
+ * <p>Fills the specified entities instance with HTML 40 entities.</p>
+ *
+ * @param entities the instance to be filled.
+ */"
+"public String escape(String str) {
+    //todo: rewrite to use a Writer
+    StringBuffer buf = new StringBuffer(str.length() * 2);
+    int i;
+    for (i = 0; i < str.length(); ++i) {
+        char ch = str.charAt(i);
+        String entityName = this.entityName(ch);
+        if (entityName == null) {
+            if (ch > 0x7F) {
+                int intValue = ch;
+                buf.append(""&#"");
+                buf.append(intValue);
+                buf.append(';');
+            } else {
+                buf.append(ch);
+            }
+        } else {
+            buf.append('&');
+            buf.append(entityName);
+            buf.append(';');
+        }
+    }
+    return buf.toString();
+}","public void test2728() throws Throwable {
+    Entities entities0 = new Entities();
+    // Undeclared exception!
+    try {
+        entities0.XML.escape((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang.Entities"", e);
+    }
+}","/**
+ * <p>Escapes the characters in a <code>String</code>.</p>
+ *
+ * <p>For example, if you have called addEntity(&quot;foo&quot;, 0xA1),
+ * escape(&quot;\u00A1&quot;) will return &quot;&amp;foo;&quot;</p>
+ *
+ * @param str The <code>String</code> to escape.
+ * @return A new escaped <code>String</code>.
+ */"
+"public void escape(Writer writer, String str) throws IOException {
+    int len = str.length();
+    for (int i = 0; i < len; i++) {
+        char c = str.charAt(i);
+        String entityName = this.entityName(c);
+        if (entityName == null) {
+            if (c > 0x7F) {
+                writer.write(""&#"");
+                writer.write(Integer.toString(c, 10));
+                writer.write(';');
+            } else {
+                writer.write(c);
+            }
+        } else {
+            writer.write('&');
+            writer.write(entityName);
+            writer.write(';');
+        }
+    }
+}","public void test2829() throws Throwable {
+    Entities entities0 = Entities.HTML32;
+    // Undeclared exception!
+    try {
+        entities0.HTML32.escape((Writer) null, ""loz"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang.Entities"", e);
+    }
+}","/**
+ * <p>Escapes the characters in the <code>String</code> passed and writes the result
+ * to the <code>Writer</code> passed. </p>
+ *
+ * @param writer The <code>Writer</code> to write the results of the escaping to.
+ *                            Assumed to be a non-null value.
+ * @param str The <code>String</code> to escape. Assumed to be a non-null value.
+ * @throws IOException when <code>Writer</code> passed throws the exception from
+ *                                       calls to the {@link Writer#write(int)} methods.
+ *
+ * @see #escape(String)
+ * @see Writer
+ */"
+"public int entityValue(String name) {
+    return map.value(name);
+}","public void test2930() throws Throwable {
+    Entities.BinaryEntityMap entities_BinaryEntityMap0 = new Entities.BinaryEntityMap();
+    entities_BinaryEntityMap0.add(""asymp"", 256);
+    Entities entities0 = new Entities();
+    entities0.map = (Entities.EntityMap) entities_BinaryEntityMap0;
+    entities_BinaryEntityMap0.names = null;
+    // Undeclared exception!
+    try {
+        entities0.entityValue(""Illegal Capacity: "");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang.Entities$ArrayEntityMap"", e);
+    }
+}","/**
+ * <p>Returns the value of the entity identified by the specified name.</p>
+ *
+ * @param name the name to locate
+ * @return entity value associated with the specified name
+ */"
+"public String entityName(int value) {
+    return map.name(value);
+}","public void test3031() throws Throwable {
+    Entities entities0 = Entities.XML;
+    // Undeclared exception!
+    try {
+        entities0.XML.entityName((-1833));
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -1833
+        //
+        verifyException(""org.apache.commons.lang.Entities$LookupEntityMap"", e);
+    }
+}","/**
+ * <p>Returns the name of the entity identified by the specified value.</p>
+ *
+ * @param value the value to locate
+ * @return entity name associated with the specified value
+ */"
+"public void addEntity(String name, int value) {
+    map.add(name, value);
+}","public void test3132() throws Throwable {
+    Entities.ArrayEntityMap entities_ArrayEntityMap0 = new Entities.ArrayEntityMap();
+    Entities entities0 = Entities.HTML32;
+    entities0.map = (Entities.EntityMap) entities_ArrayEntityMap0;
+    entities_ArrayEntityMap0.names = null;
+    // Undeclared exception!
+    try {
+        entities0.addEntity(""'~.E<@[d@=?ZqzS*AK"", 4045);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang.Entities$ArrayEntityMap"", e);
+    }
+}","/**
+ * <p>Add an entity to this entity.</p>
+ *
+ * @param name name of the entity
+ * @param value vale of the entity
+ */"
+"public void addEntities(String[][] entityArray) {
+    for (int i = 0; i < entityArray.length; ++i) {
+        addEntity(entityArray[i][0], Integer.parseInt(entityArray[i][1]));
+    }
+}","public void test3233() throws Throwable {
+    Entities entities0 = Entities.XML;
+    // Undeclared exception!
+    try {
+        entities0.HTML40.addEntities((String[][]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * <p>Adds entities to this entity.</p>
+ *
+ * @param entityArray array of entities to be added
+ */"
+"public void addEntities(String[][] entityArray) {
+    for (int i = 0; i < entityArray.length; ++i) {
+        addEntity(entityArray[i][0], Integer.parseInt(entityArray[i][1]));
+    }
+}","public void test3334() throws Throwable {
+    Entities entities0 = Entities.HTML32;
+    String[][] stringArray0 = new String[2][0];
+    // Undeclared exception!
+    try {
+        entities0.addEntities(stringArray0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * <p>Adds entities to this entity.</p>
+ *
+ * @param entityArray array of entities to be added
+ */"
+"public void addEntities(String[][] entityArray) {
+    for (int i = 0; i < entityArray.length; ++i) {
+        addEntity(entityArray[i][0], Integer.parseInt(entityArray[i][1]));
+    }
+}","public void test3435() throws Throwable {
+    Entities entities0 = new Entities();
+    String[][] stringArray0 = new String[0][3];
+    entities0.XML.addEntities(stringArray0);
+    assertEquals(0, stringArray0.length);
+}","/**
+ * <p>Adds entities to this entity.</p>
+ *
+ * @param entityArray array of entities to be added
+ */"
+"public void addEntities(String[][] entityArray) {
+    for (int i = 0; i < entityArray.length; ++i) {
+        addEntity(entityArray[i][0], Integer.parseInt(entityArray[i][1]));
+    }
+}","public void test3536() throws Throwable {
+    Entities entities0 = Entities.HTML32;
+    String[][] stringArray0 = new String[9][7];
+    // Undeclared exception!
+    try {
+        entities0.addEntities(stringArray0);
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // null
+        //
+        verifyException(""java.lang.Integer"", e);
+    }
+}","/**
+ * <p>Adds entities to this entity.</p>
+ *
+ * @param entityArray array of entities to be added
+ */"
+"public void addEntity(String name, int value) {
+    map.add(name, value);
+}","public void test3637() throws Throwable {
+    Entities entities0 = Entities.HTML32;
+    // Undeclared exception!
+    try {
+        entities0.addEntity(""'~.E<@[d@=?ZqzS*AK"", 4045);
+        //  fail(""Expecting exception: NullPointerException"");
+        // Unstable assertion
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang.Entities$ArrayEntityMap"", e);
+    }
+}","/**
+ * <p>Add an entity to this entity.</p>
+ *
+ * @param name name of the entity
+ * @param value vale of the entity
+ */"
+"public String unescape(String str) {
+    int firstAmp = str.indexOf('&');
+    if (firstAmp < 0) {
+        return str;
+    }
+    StringBuffer buf = new StringBuffer(str.length());
+    buf.append(str.substring(0, firstAmp));
+    for (int i = firstAmp; i < str.length(); ++i) {
+        char ch = str.charAt(i);
+        if (ch == '&') {
+            int semi = str.indexOf(';', i + 1);
+            if (semi == -1) {
+                buf.append(ch);
+                continue;
+            }
+            int amph = str.indexOf('&', i + 1);
+            if (amph != -1 && amph < semi) {
+                // Then the text looks like &...&...;
+                buf.append(ch);
+                continue;
+            }
+            String entityName = str.substring(i + 1, semi);
+            int entityValue;
+            if (entityName.length() == 0) {
+                entityValue = -1;
+            } else if (entityName.charAt(0) == '#') {
+                if (entityName.length() == 1) {
+                    entityValue = -1;
+                } else {
+                    char charAt1 = entityName.charAt(1);
+                    try {
+                        if (charAt1 == 'x' || charAt1 == 'X') {
+                            entityValue = Integer.valueOf(entityName.substring(2), 16).intValue();
+                        } else {
+                            entityValue = Integer.parseInt(entityName.substring(1));
+                        }
+                    } catch (NumberFormatException ex) {
+                        entityValue = -1;
+                    }
+                }
+            } else {
+                entityValue = this.entityValue(entityName);
+            }
+            if (entityValue == -1) {
+                buf.append('&');
+                buf.append(entityName);
+                buf.append(';');
+            } else {
+                buf.append((char) (entityValue));
+            }
+            i = semi;
+        } else {
+            buf.append(ch);
+        }
+    }
+    return buf.toString();
+}","public void test3940() throws Throwable {
+    Entities entities0 = Entities.HTML32;
+    String string0 = entities0.unescape(""@k)YGE2Pi&amp;FtC~"");
+    assertEquals(""@k)YGE2Pi&FtC~"", string0);
+}","/**
+ * <p>Unescapes the entities in a <code>String</code>.</p>
+ *
+ * <p>For example, if you have called addEntity(&quot;foo&quot;, 0xA1),
+ * unescape(&quot;&amp;foo;&quot;) will return &quot;\u00A1&quot;</p>
+ *
+ * @param str The <code>String</code> to escape.
+ * @return A new escaped <code>String</code>.
+ */"
+"public String escape(String str) {
+    //todo: rewrite to use a Writer
+    StringBuffer buf = new StringBuffer(str.length() * 2);
+    int i;
+    for (i = 0; i < str.length(); ++i) {
+        char ch = str.charAt(i);
+        String entityName = this.entityName(ch);
+        if (entityName == null) {
+            if (ch > 0x7F) {
+                int intValue = ch;
+                buf.append(""&#"");
+                buf.append(intValue);
+                buf.append(';');
+            } else {
+                buf.append(ch);
+            }
+        } else {
+            buf.append('&');
+            buf.append(entityName);
+            buf.append(';');
+        }
+    }
+    return buf.toString();
+}","public void test4243() throws Throwable {
+    Entities.BinaryEntityMap entities_BinaryEntityMap0 = new Entities.BinaryEntityMap();
+    entities_BinaryEntityMap0.add(""asymp"", 256);
+    Entities entities0 = new Entities();
+    entities0.map = (Entities.EntityMap) entities_BinaryEntityMap0;
+    String string0 = entities0.escape(""cB"");
+    assertEquals(""cB"", string0);
+}","/**
+ * <p>Escapes the characters in a <code>String</code>.</p>
+ *
+ * <p>For example, if you have called addEntity(&quot;foo&quot;, 0xA1),
+ * escape(&quot;\u00A1&quot;) will return &quot;&amp;foo;&quot;</p>
+ *
+ * @param str The <code>String</code> to escape.
+ * @return A new escaped <code>String</code>.
+ */"
+"public String entityName(int value) {
+    return map.name(value);
+}","public void test4647() throws Throwable {
+    Entities.ArrayEntityMap entities_ArrayEntityMap0 = new Entities.ArrayEntityMap();
+    String[] stringArray0 = new String[15];
+    stringArray0[2] = ""EL49]oTg)Gj!L"";
+    entities_ArrayEntityMap0.names = stringArray0;
+    int[] intArray0 = new int[0];
+    entities_ArrayEntityMap0.values = intArray0;
+    entities_ArrayEntityMap0.ensureCapacity(4075);
+    Entities entities0 = Entities.HTML32;
+    entities0.XML.map = (Entities.EntityMap) entities_ArrayEntityMap0;
+    entities0.HTML40.escape(""p<PkZFq$,4,=*Wi"");
+    entities0.XML.map.add(""EL49]oTg)Gj!L"", 27);
+    String string0 = entities0.entityName(1);
+    assertNull(string0);
+}","/**
+ * <p>Returns the name of the entity identified by the specified value.</p>
+ *
+ * @param value the value to locate
+ * @return entity name associated with the specified value
+ */"
+"public String entityName(int value) {
+    return map.name(value);
+}","public void test4748() throws Throwable {
+    Entities entities0 = new Entities();
+    String string0 = entities0.HTML40.entityName(256);
+    assertNull(string0);
+}","/**
+ * <p>Returns the name of the entity identified by the specified value.</p>
+ *
+ * @param value the value to locate
+ * @return entity name associated with the specified value
+ */"
+"public int entityValue(String name) {
+    return map.value(name);
+}","public void test5253() throws Throwable {
+    Entities entities0 = new Entities();
+    int int0 = entities0.entityValue("""");
+    assertEquals((-1), int0);
+}","/**
+ * <p>Returns the value of the entity identified by the specified name.</p>
+ *
+ * @param name the name to locate
+ * @return entity value associated with the specified name
+ */"

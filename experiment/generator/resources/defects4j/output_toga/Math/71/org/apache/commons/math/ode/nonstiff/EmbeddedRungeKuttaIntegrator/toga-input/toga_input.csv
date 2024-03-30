@@ -1,0 +1,879 @@
+focal_method,test_prefix,docstring
+"@Override
+public double integrate(final FirstOrderDifferentialEquations equations, final double t0, final double[] y0, final double t, final double[] y) throws DerivativeException, IntegratorException {
+    sanityChecks(equations, t0, y0, t, y);
+    setEquations(equations);
+    resetEvaluations();
+    final boolean forward = t > t0;
+    // create some internal working arrays
+    final int stages = c.length + 1;
+    if (y != y0) {
+        System.arraycopy(y0, 0, y, 0, y0.length);
+    }
+    final double[][] yDotK = new double[stages][y0.length];
+    final double[] yTmp = new double[y0.length];
+    // set up an interpolator sharing the integrator arrays
+    AbstractStepInterpolator interpolator;
+    if (requiresDenseOutput() || (!eventsHandlersManager.isEmpty())) {
+        final RungeKuttaStepInterpolator rki = (RungeKuttaStepInterpolator) prototype.copy();
+        rki.reinitialize(this, yTmp, yDotK, forward);
+        interpolator = rki;
+    } else {
+        interpolator = new DummyStepInterpolator(yTmp, yDotK[stages - 1], forward);
+    }
+    interpolator.storeTime(t0);
+    // set up integration control objects
+    stepStart = t0;
+    double hNew = 0;
+    boolean firstTime = true;
+    for (StepHandler handler : stepHandlers) {
+        handler.reset();
+    }
+    CombinedEventsManager manager = addEndTimeChecker(t0, t, eventsHandlersManager);
+    boolean lastStep = false;
+    // main integration loop
+    while (!lastStep) {
+        interpolator.shift();
+        double error = 0;
+        for (boolean loop = true; loop; ) {
+            if (firstTime || !fsal) {
+                // first stage
+                computeDerivatives(stepStart, y, yDotK[0]);
+            }
+            if (firstTime) {
+                final double[] scale = new double[y0.length];
+                if (vecAbsoluteTolerance == null) {
+                    for (int i = 0; i < scale.length; ++i) {
+                        scale[i] = scalAbsoluteTolerance + scalRelativeTolerance * Math.abs(y[i]);
+                    }
+                } else {
+                    for (int i = 0; i < scale.length; ++i) {
+                        scale[i] = vecAbsoluteTolerance[i] + vecRelativeTolerance[i] * Math.abs(y[i]);
+                    }
+                }
+                hNew = initializeStep(equations, forward, getOrder(), scale, stepStart, y, yDotK[0], yTmp, yDotK[1]);
+                firstTime = false;
+            }
+            stepSize = hNew;
+            // next stages
+            for (int k = 1; k < stages; ++k) {
+                for (int j = 0; j < y0.length; ++j) {
+                    double sum = a[k - 1][0] * yDotK[0][j];
+                    for (int l = 1; l < k; ++l) {
+                        sum += a[k - 1][l] * yDotK[l][j];
+                    }
+                    yTmp[j] = y[j] + stepSize * sum;
+                }
+                computeDerivatives(stepStart + c[k - 1] * stepSize, yTmp, yDotK[k]);
+            }
+            // estimate the state at the end of the step
+            for (int j = 0; j < y0.length; ++j) {
+                double sum = b[0] * yDotK[0][j];
+                for (int l = 1; l < stages; ++l) {
+                    sum += b[l] * yDotK[l][j];
+                }
+                yTmp[j] = y[j] + stepSize * sum;
+            }
+            // estimate the error at the end of the step
+            error = estimateError(yDotK, y, yTmp, stepSize);
+            if (error <= 1.0) {
+                // discrete events handling
+                interpolator.storeTime(stepStart + stepSize);
+                if (manager.evaluateStep(interpolator)) {
+                    final double dt = manager.getEventTime() - stepStart;
+                    if (Math.abs(dt) <= Math.ulp(stepStart)) {
+                        // we cannot simply truncate the step, reject the current computation
+                        // and let the loop compute another state with the truncated step.
+                        // it is so small (much probably exactly 0 due to limited accuracy)
+                        // that the code above would fail handling it.
+                        // So we set up an artificial 0 size step by copying states
+                        loop = false;
+                    } else {
+                        // reject the step to match exactly the next switch time
+                        hNew = dt;
+                    }
+                } else {
+                    // accept the step
+                    loop = false;
+                }
+            } else {
+                // reject the step and attempt to reduce error by stepsize control
+                final double factor = Math.min(maxGrowth, Math.max(minReduction, safety * Math.pow(error, exp)));
+                hNew = filterStep(stepSize * factor, forward, false);
+            }
+        }
+        // the step has been accepted
+        final double nextStep = stepStart + stepSize;
+        System.arraycopy(yTmp, 0, y, 0, y0.length);
+        manager.stepAccepted(nextStep, y);
+        lastStep = manager.stop();
+        // provide the step data to the step handler
+        interpolator.storeTime(nextStep);
+        for (StepHandler handler : stepHandlers) {
+            handler.handleStep(interpolator, lastStep);
+        }
+        stepStart = nextStep;
+        if (fsal) {
+            // save the last evaluation for the next step
+            System.arraycopy(yDotK[stages - 1], 0, yDotK[0], 0, y0.length);
+        }
+        if (manager.reset(stepStart, y) && !lastStep) {
+            // some event handler has triggered changes that
+            // invalidate the derivatives, we need to recompute them
+            computeDerivatives(stepStart, y, yDotK[0]);
+        }
+        if (!lastStep) {
+            // in some rare cases we may get here with stepSize = 0, for example
+            // when an event occurs at integration start, reducing the first step
+            // to zero; we have to reset the step to some safe non zero value
+            stepSize = filterStep(stepSize, forward, true);
+            // stepsize control for next step
+            final double factor = Math.min(maxGrowth, Math.max(minReduction, safety * Math.pow(error, exp)));
+            final double scaledH = stepSize * factor;
+            final double nextT = stepStart + scaledH;
+            final boolean nextIsLast = forward ? (nextT >= t) : (nextT <= t);
+            hNew = filterStep(scaledH, forward, nextIsLast);
+        }
+    }
+    final double stopTime = stepStart;
+    resetInternalState();
+    return stopTime;
+}","public void test000() throws Throwable {
+    double[] doubleArray0 = new double[0];
+    DormandPrince54Integrator dormandPrince54Integrator0 = new DormandPrince54Integrator(408.234179, 408.234179, doubleArray0, doubleArray0);
+    SecondOrderDifferentialEquations secondOrderDifferentialEquations0 = mock(SecondOrderDifferentialEquations.class, new ViolatedAssumptionAnswer());
+    doReturn(0).when(secondOrderDifferentialEquations0).getDimension();
+    FirstOrderConverter firstOrderConverter0 = new FirstOrderConverter(secondOrderDifferentialEquations0);
+    // Undeclared exception!
+    dormandPrince54Integrator0.integrate(firstOrderConverter0, (-186.065561), doubleArray0, 1.0, doubleArray0);
+}","/**
+ * {@inheritDoc}
+ */"
+"public int getEvaluations() {
+    return evaluations;
+}","public void test011() throws Throwable {
+    DormandPrince54Integrator dormandPrince54Integrator0 = new DormandPrince54Integrator(958.3823, 958.3823, 958.3823, (-6.179694156470946));
+    SecondOrderDifferentialEquations secondOrderDifferentialEquations0 = mock(SecondOrderDifferentialEquations.class, new ViolatedAssumptionAnswer());
+    doReturn(2).when(secondOrderDifferentialEquations0).getDimension();
+    FirstOrderConverter firstOrderConverter0 = new FirstOrderConverter(secondOrderDifferentialEquations0);
+    double[] doubleArray0 = new double[4];
+    dormandPrince54Integrator0.integrate(firstOrderConverter0, (-6.179694156470946), doubleArray0, 0.0, doubleArray0);
+    assertEquals(14, dormandPrince54Integrator0.getEvaluations());
+}","/**
+ * {@inheritDoc}
+ */"
+"public double getSafety() {
+    return safety;
+}","public void test022() throws Throwable {
+    DormandPrince54Integrator dormandPrince54Integrator0 = new DormandPrince54Integrator(10.0, (-2333.907148752371), (-1151.70847888), (-2826.589577));
+    assertEquals(0.9, dormandPrince54Integrator0.getSafety(), 0.01);
+}","/**
+ * Get the safety factor for stepsize control.
+ * @return safety factor
+ */"
+"public double getSafety() {
+    return safety;
+}","public void test023() throws Throwable {
+    DormandPrince54Integrator dormandPrince54Integrator0 = new DormandPrince54Integrator(10.0, (-2333.907148752371), (-1151.70847888), (-2826.589577));
+    dormandPrince54Integrator0.setSafety((-1151.70847888));
+    double double0 = dormandPrince54Integrator0.getSafety();
+    assertEquals((-1151.70847888), double0, 0.01);
+}","/**
+ * Get the safety factor for stepsize control.
+ * @return safety factor
+ */"
+"public double getMaxGrowth() {
+    return maxGrowth;
+}","public void test034() throws Throwable {
+    double[] doubleArray0 = new double[1];
+    HighamHall54Integrator highamHall54Integrator0 = new HighamHall54Integrator((-547.75788), (-7.35), doubleArray0, doubleArray0);
+    highamHall54Integrator0.getOrder();
+    assertEquals(10.0, highamHall54Integrator0.getMaxGrowth(), 0.01);
+}","/**
+ * Get the maximal growth factor for stepsize control.
+ * @return maximal growth factor
+ */"
+"public double getMinReduction() {
+    return minReduction;
+}","public void test035() throws Throwable {
+    double[] doubleArray0 = new double[1];
+    HighamHall54Integrator highamHall54Integrator0 = new HighamHall54Integrator((-547.75788), (-7.35), doubleArray0, doubleArray0);
+    highamHall54Integrator0.getOrder();
+    assertEquals(0.2, highamHall54Integrator0.getMinReduction(), 0.01);
+}","/**
+ * Get the minimal reduction factor for stepsize control.
+ * @return minimal reduction factor
+ */"
+"public double getSafety() {
+    return safety;
+}","public void test036() throws Throwable {
+    double[] doubleArray0 = new double[1];
+    HighamHall54Integrator highamHall54Integrator0 = new HighamHall54Integrator((-547.75788), (-7.35), doubleArray0, doubleArray0);
+    highamHall54Integrator0.getOrder();
+    assertEquals(0.9, highamHall54Integrator0.getSafety(), 0.01);
+}","/**
+ * Get the safety factor for stepsize control.
+ * @return safety factor
+ */"
+"public double getMinReduction() {
+    return minReduction;
+}","public void test047() throws Throwable {
+    double[] doubleArray0 = new double[7];
+    DormandPrince54Integrator dormandPrince54Integrator0 = new DormandPrince54Integrator(0.0, 0.0, doubleArray0, doubleArray0);
+    assertEquals(0.2, dormandPrince54Integrator0.getMinReduction(), 0.01);
+}","/**
+ * Get the minimal reduction factor for stepsize control.
+ * @return minimal reduction factor
+ */"
+"public double getMinReduction() {
+    return minReduction;
+}","public void test048() throws Throwable {
+    double[] doubleArray0 = new double[7];
+    DormandPrince54Integrator dormandPrince54Integrator0 = new DormandPrince54Integrator(0.0, 0.0, doubleArray0, doubleArray0);
+    dormandPrince54Integrator0.setMinReduction(0.0);
+    double double0 = dormandPrince54Integrator0.getMinReduction();
+    assertEquals(0.0, double0, 0.01);
+}","/**
+ * Get the minimal reduction factor for stepsize control.
+ * @return minimal reduction factor
+ */"
+"public double getMinReduction() {
+    return minReduction;
+}","public void test059() throws Throwable {
+    HighamHall54Integrator highamHall54Integrator0 = new HighamHall54Integrator(1643.914493, 1643.914493, (-1368.3), (-1368.3));
+    highamHall54Integrator0.setMinReduction((-3.0689499459498917));
+    double double0 = highamHall54Integrator0.getMinReduction();
+    assertEquals((-3.0689499459498917), double0, 0.01);
+}","/**
+ * Get the minimal reduction factor for stepsize control.
+ * @return minimal reduction factor
+ */"
+"public double getMaxGrowth() {
+    return maxGrowth;
+}","public void test0610() throws Throwable {
+    DormandPrince54Integrator dormandPrince54Integrator0 = new DormandPrince54Integrator(10.0, (-2333.907148752371), (-1151.70847888), (-2826.589577));
+    dormandPrince54Integrator0.setMaxGrowth((-2629.544768));
+    double double0 = dormandPrince54Integrator0.getMaxGrowth();
+    assertEquals((-2629.544768), double0, 0.01);
+}","/**
+ * Get the maximal growth factor for stepsize control.
+ * @return maximal growth factor
+ */"
+"@Override
+public double integrate(final FirstOrderDifferentialEquations equations, final double t0, final double[] y0, final double t, final double[] y) throws DerivativeException, IntegratorException {
+    sanityChecks(equations, t0, y0, t, y);
+    setEquations(equations);
+    resetEvaluations();
+    final boolean forward = t > t0;
+    // create some internal working arrays
+    final int stages = c.length + 1;
+    if (y != y0) {
+        System.arraycopy(y0, 0, y, 0, y0.length);
+    }
+    final double[][] yDotK = new double[stages][y0.length];
+    final double[] yTmp = new double[y0.length];
+    // set up an interpolator sharing the integrator arrays
+    AbstractStepInterpolator interpolator;
+    if (requiresDenseOutput() || (!eventsHandlersManager.isEmpty())) {
+        final RungeKuttaStepInterpolator rki = (RungeKuttaStepInterpolator) prototype.copy();
+        rki.reinitialize(this, yTmp, yDotK, forward);
+        interpolator = rki;
+    } else {
+        interpolator = new DummyStepInterpolator(yTmp, yDotK[stages - 1], forward);
+    }
+    interpolator.storeTime(t0);
+    // set up integration control objects
+    stepStart = t0;
+    double hNew = 0;
+    boolean firstTime = true;
+    for (StepHandler handler : stepHandlers) {
+        handler.reset();
+    }
+    CombinedEventsManager manager = addEndTimeChecker(t0, t, eventsHandlersManager);
+    boolean lastStep = false;
+    // main integration loop
+    while (!lastStep) {
+        interpolator.shift();
+        double error = 0;
+        for (boolean loop = true; loop; ) {
+            if (firstTime || !fsal) {
+                // first stage
+                computeDerivatives(stepStart, y, yDotK[0]);
+            }
+            if (firstTime) {
+                final double[] scale = new double[y0.length];
+                if (vecAbsoluteTolerance == null) {
+                    for (int i = 0; i < scale.length; ++i) {
+                        scale[i] = scalAbsoluteTolerance + scalRelativeTolerance * Math.abs(y[i]);
+                    }
+                } else {
+                    for (int i = 0; i < scale.length; ++i) {
+                        scale[i] = vecAbsoluteTolerance[i] + vecRelativeTolerance[i] * Math.abs(y[i]);
+                    }
+                }
+                hNew = initializeStep(equations, forward, getOrder(), scale, stepStart, y, yDotK[0], yTmp, yDotK[1]);
+                firstTime = false;
+            }
+            stepSize = hNew;
+            // next stages
+            for (int k = 1; k < stages; ++k) {
+                for (int j = 0; j < y0.length; ++j) {
+                    double sum = a[k - 1][0] * yDotK[0][j];
+                    for (int l = 1; l < k; ++l) {
+                        sum += a[k - 1][l] * yDotK[l][j];
+                    }
+                    yTmp[j] = y[j] + stepSize * sum;
+                }
+                computeDerivatives(stepStart + c[k - 1] * stepSize, yTmp, yDotK[k]);
+            }
+            // estimate the state at the end of the step
+            for (int j = 0; j < y0.length; ++j) {
+                double sum = b[0] * yDotK[0][j];
+                for (int l = 1; l < stages; ++l) {
+                    sum += b[l] * yDotK[l][j];
+                }
+                yTmp[j] = y[j] + stepSize * sum;
+            }
+            // estimate the error at the end of the step
+            error = estimateError(yDotK, y, yTmp, stepSize);
+            if (error <= 1.0) {
+                // discrete events handling
+                interpolator.storeTime(stepStart + stepSize);
+                if (manager.evaluateStep(interpolator)) {
+                    final double dt = manager.getEventTime() - stepStart;
+                    if (Math.abs(dt) <= Math.ulp(stepStart)) {
+                        // we cannot simply truncate the step, reject the current computation
+                        // and let the loop compute another state with the truncated step.
+                        // it is so small (much probably exactly 0 due to limited accuracy)
+                        // that the code above would fail handling it.
+                        // So we set up an artificial 0 size step by copying states
+                        loop = false;
+                    } else {
+                        // reject the step to match exactly the next switch time
+                        hNew = dt;
+                    }
+                } else {
+                    // accept the step
+                    loop = false;
+                }
+            } else {
+                // reject the step and attempt to reduce error by stepsize control
+                final double factor = Math.min(maxGrowth, Math.max(minReduction, safety * Math.pow(error, exp)));
+                hNew = filterStep(stepSize * factor, forward, false);
+            }
+        }
+        // the step has been accepted
+        final double nextStep = stepStart + stepSize;
+        System.arraycopy(yTmp, 0, y, 0, y0.length);
+        manager.stepAccepted(nextStep, y);
+        lastStep = manager.stop();
+        // provide the step data to the step handler
+        interpolator.storeTime(nextStep);
+        for (StepHandler handler : stepHandlers) {
+            handler.handleStep(interpolator, lastStep);
+        }
+        stepStart = nextStep;
+        if (fsal) {
+            // save the last evaluation for the next step
+            System.arraycopy(yDotK[stages - 1], 0, yDotK[0], 0, y0.length);
+        }
+        if (manager.reset(stepStart, y) && !lastStep) {
+            // some event handler has triggered changes that
+            // invalidate the derivatives, we need to recompute them
+            computeDerivatives(stepStart, y, yDotK[0]);
+        }
+        if (!lastStep) {
+            // in some rare cases we may get here with stepSize = 0, for example
+            // when an event occurs at integration start, reducing the first step
+            // to zero; we have to reset the step to some safe non zero value
+            stepSize = filterStep(stepSize, forward, true);
+            // stepsize control for next step
+            final double factor = Math.min(maxGrowth, Math.max(minReduction, safety * Math.pow(error, exp)));
+            final double scaledH = stepSize * factor;
+            final double nextT = stepStart + scaledH;
+            final boolean nextIsLast = forward ? (nextT >= t) : (nextT <= t);
+            hNew = filterStep(scaledH, forward, nextIsLast);
+        }
+    }
+    final double stopTime = stepStart;
+    resetInternalState();
+    return stopTime;
+}","public void test0711() throws Throwable {
+    DormandPrince853Integrator dormandPrince853Integrator0 = new DormandPrince853Integrator(510.63347, 510.63347, 510.63347, 510.63347);
+    SecondOrderDifferentialEquations secondOrderDifferentialEquations0 = mock(SecondOrderDifferentialEquations.class, new ViolatedAssumptionAnswer());
+    doReturn(0).when(secondOrderDifferentialEquations0).getDimension();
+    FirstOrderConverter firstOrderConverter0 = new FirstOrderConverter(secondOrderDifferentialEquations0);
+    double[] doubleArray0 = new double[6];
+    try {
+        dormandPrince853Integrator0.integrate(firstOrderConverter0, 510.63347, doubleArray0, 3963.8, doubleArray0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // dimensions mismatch: ODE problem has dimension 0, initial state vector has dimension 6
+        //
+        verifyException(""org.apache.commons.math.ode.AbstractIntegrator"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"@Override
+public double integrate(final FirstOrderDifferentialEquations equations, final double t0, final double[] y0, final double t, final double[] y) throws DerivativeException, IntegratorException {
+    sanityChecks(equations, t0, y0, t, y);
+    setEquations(equations);
+    resetEvaluations();
+    final boolean forward = t > t0;
+    // create some internal working arrays
+    final int stages = c.length + 1;
+    if (y != y0) {
+        System.arraycopy(y0, 0, y, 0, y0.length);
+    }
+    final double[][] yDotK = new double[stages][y0.length];
+    final double[] yTmp = new double[y0.length];
+    // set up an interpolator sharing the integrator arrays
+    AbstractStepInterpolator interpolator;
+    if (requiresDenseOutput() || (!eventsHandlersManager.isEmpty())) {
+        final RungeKuttaStepInterpolator rki = (RungeKuttaStepInterpolator) prototype.copy();
+        rki.reinitialize(this, yTmp, yDotK, forward);
+        interpolator = rki;
+    } else {
+        interpolator = new DummyStepInterpolator(yTmp, yDotK[stages - 1], forward);
+    }
+    interpolator.storeTime(t0);
+    // set up integration control objects
+    stepStart = t0;
+    double hNew = 0;
+    boolean firstTime = true;
+    for (StepHandler handler : stepHandlers) {
+        handler.reset();
+    }
+    CombinedEventsManager manager = addEndTimeChecker(t0, t, eventsHandlersManager);
+    boolean lastStep = false;
+    // main integration loop
+    while (!lastStep) {
+        interpolator.shift();
+        double error = 0;
+        for (boolean loop = true; loop; ) {
+            if (firstTime || !fsal) {
+                // first stage
+                computeDerivatives(stepStart, y, yDotK[0]);
+            }
+            if (firstTime) {
+                final double[] scale = new double[y0.length];
+                if (vecAbsoluteTolerance == null) {
+                    for (int i = 0; i < scale.length; ++i) {
+                        scale[i] = scalAbsoluteTolerance + scalRelativeTolerance * Math.abs(y[i]);
+                    }
+                } else {
+                    for (int i = 0; i < scale.length; ++i) {
+                        scale[i] = vecAbsoluteTolerance[i] + vecRelativeTolerance[i] * Math.abs(y[i]);
+                    }
+                }
+                hNew = initializeStep(equations, forward, getOrder(), scale, stepStart, y, yDotK[0], yTmp, yDotK[1]);
+                firstTime = false;
+            }
+            stepSize = hNew;
+            // next stages
+            for (int k = 1; k < stages; ++k) {
+                for (int j = 0; j < y0.length; ++j) {
+                    double sum = a[k - 1][0] * yDotK[0][j];
+                    for (int l = 1; l < k; ++l) {
+                        sum += a[k - 1][l] * yDotK[l][j];
+                    }
+                    yTmp[j] = y[j] + stepSize * sum;
+                }
+                computeDerivatives(stepStart + c[k - 1] * stepSize, yTmp, yDotK[k]);
+            }
+            // estimate the state at the end of the step
+            for (int j = 0; j < y0.length; ++j) {
+                double sum = b[0] * yDotK[0][j];
+                for (int l = 1; l < stages; ++l) {
+                    sum += b[l] * yDotK[l][j];
+                }
+                yTmp[j] = y[j] + stepSize * sum;
+            }
+            // estimate the error at the end of the step
+            error = estimateError(yDotK, y, yTmp, stepSize);
+            if (error <= 1.0) {
+                // discrete events handling
+                interpolator.storeTime(stepStart + stepSize);
+                if (manager.evaluateStep(interpolator)) {
+                    final double dt = manager.getEventTime() - stepStart;
+                    if (Math.abs(dt) <= Math.ulp(stepStart)) {
+                        // we cannot simply truncate the step, reject the current computation
+                        // and let the loop compute another state with the truncated step.
+                        // it is so small (much probably exactly 0 due to limited accuracy)
+                        // that the code above would fail handling it.
+                        // So we set up an artificial 0 size step by copying states
+                        loop = false;
+                    } else {
+                        // reject the step to match exactly the next switch time
+                        hNew = dt;
+                    }
+                } else {
+                    // accept the step
+                    loop = false;
+                }
+            } else {
+                // reject the step and attempt to reduce error by stepsize control
+                final double factor = Math.min(maxGrowth, Math.max(minReduction, safety * Math.pow(error, exp)));
+                hNew = filterStep(stepSize * factor, forward, false);
+            }
+        }
+        // the step has been accepted
+        final double nextStep = stepStart + stepSize;
+        System.arraycopy(yTmp, 0, y, 0, y0.length);
+        manager.stepAccepted(nextStep, y);
+        lastStep = manager.stop();
+        // provide the step data to the step handler
+        interpolator.storeTime(nextStep);
+        for (StepHandler handler : stepHandlers) {
+            handler.handleStep(interpolator, lastStep);
+        }
+        stepStart = nextStep;
+        if (fsal) {
+            // save the last evaluation for the next step
+            System.arraycopy(yDotK[stages - 1], 0, yDotK[0], 0, y0.length);
+        }
+        if (manager.reset(stepStart, y) && !lastStep) {
+            // some event handler has triggered changes that
+            // invalidate the derivatives, we need to recompute them
+            computeDerivatives(stepStart, y, yDotK[0]);
+        }
+        if (!lastStep) {
+            // in some rare cases we may get here with stepSize = 0, for example
+            // when an event occurs at integration start, reducing the first step
+            // to zero; we have to reset the step to some safe non zero value
+            stepSize = filterStep(stepSize, forward, true);
+            // stepsize control for next step
+            final double factor = Math.min(maxGrowth, Math.max(minReduction, safety * Math.pow(error, exp)));
+            final double scaledH = stepSize * factor;
+            final double nextT = stepStart + scaledH;
+            final boolean nextIsLast = forward ? (nextT >= t) : (nextT <= t);
+            hNew = filterStep(scaledH, forward, nextIsLast);
+        }
+    }
+    final double stopTime = stepStart;
+    resetInternalState();
+    return stopTime;
+}","public void test0812() throws Throwable {
+    DormandPrince54Integrator dormandPrince54Integrator0 = new DormandPrince54Integrator(305.07576780617, 305.07576780617, 539.627267855558, 0.0);
+    double[] doubleArray0 = new double[7];
+    // Undeclared exception!
+    try {
+        dormandPrince54Integrator0.integrate((FirstOrderDifferentialEquations) null, (-331.364376440207), doubleArray0, 0.0, doubleArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.ode.AbstractIntegrator"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"public double getMaxGrowth() {
+    return maxGrowth;
+}","public void test0913() throws Throwable {
+    double[] doubleArray0 = new double[1];
+    DormandPrince54Integrator dormandPrince54Integrator0 = new DormandPrince54Integrator((-2473.63036006), 573.13, doubleArray0, doubleArray0);
+    assertEquals(10.0, dormandPrince54Integrator0.getMaxGrowth(), 0.01);
+}","/**
+ * Get the maximal growth factor for stepsize control.
+ * @return maximal growth factor
+ */"
+"public double getMaxGrowth() {
+    return maxGrowth;
+}","public void test0914() throws Throwable {
+    double[] doubleArray0 = new double[1];
+    DormandPrince54Integrator dormandPrince54Integrator0 = new DormandPrince54Integrator((-2473.63036006), 573.13, doubleArray0, doubleArray0);
+    dormandPrince54Integrator0.setMaxGrowth(0.0);
+    double double0 = dormandPrince54Integrator0.getMaxGrowth();
+    assertEquals(0.0, double0, 0.01);
+}","/**
+ * Get the maximal growth factor for stepsize control.
+ * @return maximal growth factor
+ */"
+"public double getSafety() {
+    return safety;
+}","public void test1015() throws Throwable {
+    double[] doubleArray0 = new double[1];
+    DormandPrince54Integrator dormandPrince54Integrator0 = new DormandPrince54Integrator((-2473.63036006), 573.13, doubleArray0, doubleArray0);
+    assertEquals(0.9, dormandPrince54Integrator0.getSafety(), 0.01);
+}","/**
+ * Get the safety factor for stepsize control.
+ * @return safety factor
+ */"
+"public double getSafety() {
+    return safety;
+}","public void test1016() throws Throwable {
+    double[] doubleArray0 = new double[1];
+    DormandPrince54Integrator dormandPrince54Integrator0 = new DormandPrince54Integrator((-2473.63036006), 573.13, doubleArray0, doubleArray0);
+    dormandPrince54Integrator0.setSafety(0.0);
+    double double0 = dormandPrince54Integrator0.getSafety();
+    assertEquals(0.0, double0, 0.01);
+}","/**
+ * Get the safety factor for stepsize control.
+ * @return safety factor
+ */"
+"@Override
+public double integrate(final FirstOrderDifferentialEquations equations, final double t0, final double[] y0, final double t, final double[] y) throws DerivativeException, IntegratorException {
+    sanityChecks(equations, t0, y0, t, y);
+    setEquations(equations);
+    resetEvaluations();
+    final boolean forward = t > t0;
+    // create some internal working arrays
+    final int stages = c.length + 1;
+    if (y != y0) {
+        System.arraycopy(y0, 0, y, 0, y0.length);
+    }
+    final double[][] yDotK = new double[stages][y0.length];
+    final double[] yTmp = new double[y0.length];
+    // set up an interpolator sharing the integrator arrays
+    AbstractStepInterpolator interpolator;
+    if (requiresDenseOutput() || (!eventsHandlersManager.isEmpty())) {
+        final RungeKuttaStepInterpolator rki = (RungeKuttaStepInterpolator) prototype.copy();
+        rki.reinitialize(this, yTmp, yDotK, forward);
+        interpolator = rki;
+    } else {
+        interpolator = new DummyStepInterpolator(yTmp, yDotK[stages - 1], forward);
+    }
+    interpolator.storeTime(t0);
+    // set up integration control objects
+    stepStart = t0;
+    double hNew = 0;
+    boolean firstTime = true;
+    for (StepHandler handler : stepHandlers) {
+        handler.reset();
+    }
+    CombinedEventsManager manager = addEndTimeChecker(t0, t, eventsHandlersManager);
+    boolean lastStep = false;
+    // main integration loop
+    while (!lastStep) {
+        interpolator.shift();
+        double error = 0;
+        for (boolean loop = true; loop; ) {
+            if (firstTime || !fsal) {
+                // first stage
+                computeDerivatives(stepStart, y, yDotK[0]);
+            }
+            if (firstTime) {
+                final double[] scale = new double[y0.length];
+                if (vecAbsoluteTolerance == null) {
+                    for (int i = 0; i < scale.length; ++i) {
+                        scale[i] = scalAbsoluteTolerance + scalRelativeTolerance * Math.abs(y[i]);
+                    }
+                } else {
+                    for (int i = 0; i < scale.length; ++i) {
+                        scale[i] = vecAbsoluteTolerance[i] + vecRelativeTolerance[i] * Math.abs(y[i]);
+                    }
+                }
+                hNew = initializeStep(equations, forward, getOrder(), scale, stepStart, y, yDotK[0], yTmp, yDotK[1]);
+                firstTime = false;
+            }
+            stepSize = hNew;
+            // next stages
+            for (int k = 1; k < stages; ++k) {
+                for (int j = 0; j < y0.length; ++j) {
+                    double sum = a[k - 1][0] * yDotK[0][j];
+                    for (int l = 1; l < k; ++l) {
+                        sum += a[k - 1][l] * yDotK[l][j];
+                    }
+                    yTmp[j] = y[j] + stepSize * sum;
+                }
+                computeDerivatives(stepStart + c[k - 1] * stepSize, yTmp, yDotK[k]);
+            }
+            // estimate the state at the end of the step
+            for (int j = 0; j < y0.length; ++j) {
+                double sum = b[0] * yDotK[0][j];
+                for (int l = 1; l < stages; ++l) {
+                    sum += b[l] * yDotK[l][j];
+                }
+                yTmp[j] = y[j] + stepSize * sum;
+            }
+            // estimate the error at the end of the step
+            error = estimateError(yDotK, y, yTmp, stepSize);
+            if (error <= 1.0) {
+                // discrete events handling
+                interpolator.storeTime(stepStart + stepSize);
+                if (manager.evaluateStep(interpolator)) {
+                    final double dt = manager.getEventTime() - stepStart;
+                    if (Math.abs(dt) <= Math.ulp(stepStart)) {
+                        // we cannot simply truncate the step, reject the current computation
+                        // and let the loop compute another state with the truncated step.
+                        // it is so small (much probably exactly 0 due to limited accuracy)
+                        // that the code above would fail handling it.
+                        // So we set up an artificial 0 size step by copying states
+                        loop = false;
+                    } else {
+                        // reject the step to match exactly the next switch time
+                        hNew = dt;
+                    }
+                } else {
+                    // accept the step
+                    loop = false;
+                }
+            } else {
+                // reject the step and attempt to reduce error by stepsize control
+                final double factor = Math.min(maxGrowth, Math.max(minReduction, safety * Math.pow(error, exp)));
+                hNew = filterStep(stepSize * factor, forward, false);
+            }
+        }
+        // the step has been accepted
+        final double nextStep = stepStart + stepSize;
+        System.arraycopy(yTmp, 0, y, 0, y0.length);
+        manager.stepAccepted(nextStep, y);
+        lastStep = manager.stop();
+        // provide the step data to the step handler
+        interpolator.storeTime(nextStep);
+        for (StepHandler handler : stepHandlers) {
+            handler.handleStep(interpolator, lastStep);
+        }
+        stepStart = nextStep;
+        if (fsal) {
+            // save the last evaluation for the next step
+            System.arraycopy(yDotK[stages - 1], 0, yDotK[0], 0, y0.length);
+        }
+        if (manager.reset(stepStart, y) && !lastStep) {
+            // some event handler has triggered changes that
+            // invalidate the derivatives, we need to recompute them
+            computeDerivatives(stepStart, y, yDotK[0]);
+        }
+        if (!lastStep) {
+            // in some rare cases we may get here with stepSize = 0, for example
+            // when an event occurs at integration start, reducing the first step
+            // to zero; we have to reset the step to some safe non zero value
+            stepSize = filterStep(stepSize, forward, true);
+            // stepsize control for next step
+            final double factor = Math.min(maxGrowth, Math.max(minReduction, safety * Math.pow(error, exp)));
+            final double scaledH = stepSize * factor;
+            final double nextT = stepStart + scaledH;
+            final boolean nextIsLast = forward ? (nextT >= t) : (nextT <= t);
+            hNew = filterStep(scaledH, forward, nextIsLast);
+        }
+    }
+    final double stopTime = stepStart;
+    resetInternalState();
+    return stopTime;
+}","public void test1117() throws Throwable {
+    double[] doubleArray0 = new double[0];
+    HighamHall54Integrator highamHall54Integrator0 = new HighamHall54Integrator(2602.0188660334, 0.0, doubleArray0, doubleArray0);
+    SecondOrderDifferentialEquations secondOrderDifferentialEquations0 = mock(SecondOrderDifferentialEquations.class, new ViolatedAssumptionAnswer());
+    doReturn(0).when(secondOrderDifferentialEquations0).getDimension();
+    FirstOrderConverter firstOrderConverter0 = new FirstOrderConverter(secondOrderDifferentialEquations0);
+    EventHandler eventHandler0 = mock(EventHandler.class, new ViolatedAssumptionAnswer());
+    highamHall54Integrator0.addEventHandler(eventHandler0, 6579.906, (-783.025116643216), 951);
+    // Undeclared exception!
+    highamHall54Integrator0.integrate(firstOrderConverter0, 0.0, doubleArray0, (-2561.6749248379533), doubleArray0);
+}","/**
+ * {@inheritDoc}
+ */"
+"public int getEvaluations() {
+    return evaluations;
+}","public void test1218() throws Throwable {
+    DormandPrince54Integrator dormandPrince54Integrator0 = new DormandPrince54Integrator(958.3823, 958.3823, 958.3823, 958.3823);
+    SecondOrderDifferentialEquations secondOrderDifferentialEquations0 = mock(SecondOrderDifferentialEquations.class, new ViolatedAssumptionAnswer());
+    doReturn(2).when(secondOrderDifferentialEquations0).getDimension();
+    FirstOrderConverter firstOrderConverter0 = new FirstOrderConverter(secondOrderDifferentialEquations0);
+    double[] doubleArray0 = new double[4];
+    double[] doubleArray1 = new double[4];
+    dormandPrince54Integrator0.integrate(firstOrderConverter0, 958.3823, doubleArray0, 3831.9243024, doubleArray1);
+    assertEquals(26, dormandPrince54Integrator0.getEvaluations());
+}","/**
+ * {@inheritDoc}
+ */"
+"public double getMaxGrowth() {
+    return maxGrowth;
+}","public void test1319() throws Throwable {
+    double[] doubleArray0 = new double[9];
+    HighamHall54Integrator highamHall54Integrator0 = new HighamHall54Integrator((-3004.8064), (-3004.8064), doubleArray0, doubleArray0);
+    double double0 = highamHall54Integrator0.getMaxGrowth();
+    assertEquals(10.0, double0, 0.01);
+}","/**
+ * Get the maximal growth factor for stepsize control.
+ * @return maximal growth factor
+ */"
+"public double getMinReduction() {
+    return minReduction;
+}","public void test1320() throws Throwable {
+    double[] doubleArray0 = new double[9];
+    HighamHall54Integrator highamHall54Integrator0 = new HighamHall54Integrator((-3004.8064), (-3004.8064), doubleArray0, doubleArray0);
+    double double0 = highamHall54Integrator0.getMaxGrowth();
+    assertEquals(0.2, highamHall54Integrator0.getMinReduction(), 0.01);
+}","/**
+ * Get the minimal reduction factor for stepsize control.
+ * @return minimal reduction factor
+ */"
+"public double getSafety() {
+    return safety;
+}","public void test1321() throws Throwable {
+    double[] doubleArray0 = new double[9];
+    HighamHall54Integrator highamHall54Integrator0 = new HighamHall54Integrator((-3004.8064), (-3004.8064), doubleArray0, doubleArray0);
+    double double0 = highamHall54Integrator0.getMaxGrowth();
+    assertEquals(0.9, highamHall54Integrator0.getSafety(), 0.01);
+}","/**
+ * Get the safety factor for stepsize control.
+ * @return safety factor
+ */"
+"public double getMinReduction() {
+    return minReduction;
+}","public void test1422() throws Throwable {
+    HighamHall54Integrator highamHall54Integrator0 = new HighamHall54Integrator(1643.914493, 1643.914493, (-1368.3), (-1368.3));
+    double double0 = highamHall54Integrator0.getMinReduction();
+    assertEquals(0.2, double0, 0.01);
+}","/**
+ * Get the minimal reduction factor for stepsize control.
+ * @return minimal reduction factor
+ */"
+"public double getSafety() {
+    return safety;
+}","public void test1423() throws Throwable {
+    HighamHall54Integrator highamHall54Integrator0 = new HighamHall54Integrator(1643.914493, 1643.914493, (-1368.3), (-1368.3));
+    double double0 = highamHall54Integrator0.getMinReduction();
+    assertEquals(0.9, highamHall54Integrator0.getSafety(), 0.01);
+}","/**
+ * Get the safety factor for stepsize control.
+ * @return safety factor
+ */"
+"public double getMaxGrowth() {
+    return maxGrowth;
+}","public void test1424() throws Throwable {
+    HighamHall54Integrator highamHall54Integrator0 = new HighamHall54Integrator(1643.914493, 1643.914493, (-1368.3), (-1368.3));
+    double double0 = highamHall54Integrator0.getMinReduction();
+    assertEquals(10.0, highamHall54Integrator0.getMaxGrowth(), 0.01);
+}","/**
+ * Get the maximal growth factor for stepsize control.
+ * @return maximal growth factor
+ */"
+"public double getSafety() {
+    return safety;
+}","public void test1525() throws Throwable {
+    double[] doubleArray0 = new double[9];
+    HighamHall54Integrator highamHall54Integrator0 = new HighamHall54Integrator((-3004.8064), (-3004.8064), doubleArray0, doubleArray0);
+    double double0 = highamHall54Integrator0.getSafety();
+    assertEquals(0.9, double0, 0.01);
+}","/**
+ * Get the safety factor for stepsize control.
+ * @return safety factor
+ */"
+"public double getMaxGrowth() {
+    return maxGrowth;
+}","public void test1526() throws Throwable {
+    double[] doubleArray0 = new double[9];
+    HighamHall54Integrator highamHall54Integrator0 = new HighamHall54Integrator((-3004.8064), (-3004.8064), doubleArray0, doubleArray0);
+    double double0 = highamHall54Integrator0.getSafety();
+    assertEquals(10.0, highamHall54Integrator0.getMaxGrowth(), 0.01);
+}","/**
+ * Get the maximal growth factor for stepsize control.
+ * @return maximal growth factor
+ */"
+"public double getMinReduction() {
+    return minReduction;
+}","public void test1527() throws Throwable {
+    double[] doubleArray0 = new double[9];
+    HighamHall54Integrator highamHall54Integrator0 = new HighamHall54Integrator((-3004.8064), (-3004.8064), doubleArray0, doubleArray0);
+    double double0 = highamHall54Integrator0.getSafety();
+    assertEquals(0.2, highamHall54Integrator0.getMinReduction(), 0.01);
+}","/**
+ * Get the minimal reduction factor for stepsize control.
+ * @return minimal reduction factor
+ */"

@@ -1,0 +1,115 @@
+focal_method,test_prefix,docstring
+"public boolean isMock(Object mock) {
+    return mock != null && isMockitoMock(mock);
+}","public void test00() throws Throwable {
+    MockUtil mockUtil0 = new MockUtil();
+    mockUtil0.isMock(mockUtil0);
+}",""
+"public <T> void resetMock(T mock) {
+    MockHandlerInterface<T> oldMockHandler = getMockHandler(mock);
+    MockHandler<T> newMockHandler = new MockHandler<T>(oldMockHandler);
+    MethodInterceptorFilter newFilter = new MethodInterceptorFilter(newMockHandler, (MockSettingsImpl) withSettings().defaultAnswer(RETURNS_DEFAULTS));
+    ((Factory) mock).setCallback(0, newFilter);
+}","public void test11() throws Throwable {
+    MockUtil mockUtil0 = new MockUtil();
+    // Undeclared exception!
+    try {
+        mockUtil0.resetMock((Object) mockUtil0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",""
+"public <T> T createMock(Class<T> classToMock, MockSettingsImpl settings) {
+    creationValidator.validateType(classToMock);
+    creationValidator.validateExtraInterfaces(classToMock, settings.getExtraInterfaces());
+    creationValidator.validateMockedType(classToMock, settings.getSpiedInstance());
+    settings.initiateMockName(classToMock);
+    MockHandler<T> mockHandler = new MockHandler<T>(settings);
+    MethodInterceptorFilter filter = new MethodInterceptorFilter(mockHandler, settings);
+    Class<?>[] interfaces = settings.getExtraInterfaces();
+    Class<?>[] ancillaryTypes;
+    ancillaryTypes = interfaces == null ? new Class<?>[0] : interfaces;
+    Object spiedInstance = settings.getSpiedInstance();
+    T mock = ClassImposterizer.INSTANCE.imposterise(filter, classToMock, ancillaryTypes);
+    if (spiedInstance != null) {
+        new LenientCopyTool().copyToMock(spiedInstance, mock);
+    }
+    return mock;
+}","public void test22() throws Throwable {
+    MockUtil mockUtil0 = new MockUtil();
+    MockSettingsImpl mockSettingsImpl0 = new MockSettingsImpl();
+    Class<Object> class0 = Object.class;
+    // Undeclared exception!
+    try {
+        mockUtil0.createMock(class0, mockSettingsImpl0);
+        fail(""Expecting exception: IncompatibleClassChangeError"");
+    } catch (IncompatibleClassChangeError e) {
+        //
+        // Expected non-static field org.mockito.cglib.proxy.Enhancer.serialVersionUID
+        //
+        verifyException(""org.mockito.cglib.proxy.Enhancer"", e);
+    }
+}",""
+"public MockName getMockName(Object mock) {
+    return getMockHandler(mock).getMockSettings().getMockName();
+}","public void test33() throws Throwable {
+    MockUtil mockUtil0 = new MockUtil();
+    MockSettingsImpl mockSettingsImpl0 = new MockSettingsImpl();
+    // Undeclared exception!
+    try {
+        mockUtil0.getMockName(mockSettingsImpl0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",""
+"public <T> MockHandlerInterface<T> getMockHandler(T mock) {
+    if (mock == null) {
+        throw new NotAMockException(""Argument should be a mock, but is null!"");
+    }
+    if (isMockitoMock(mock)) {
+        return (MockHandlerInterface) getInterceptor(mock).getHandler();
+    } else {
+        throw new NotAMockException(""Argument should be a mock, but is: "" + mock.getClass());
+    }
+}","public void test44() throws Throwable {
+    MockUtil mockUtil0 = new MockUtil();
+    mockUtil0.getMockHandler((String) null);
+}",""
+"public boolean isMock(Object mock) {
+    return mock != null && isMockitoMock(mock);
+}","public void test55() throws Throwable {
+    MockUtil mockUtil0 = new MockUtil();
+    mockUtil0.isMock((Object) null);
+}",""
+"public <T> T createMock(Class<T> classToMock, MockSettingsImpl settings) {
+    creationValidator.validateType(classToMock);
+    creationValidator.validateExtraInterfaces(classToMock, settings.getExtraInterfaces());
+    creationValidator.validateMockedType(classToMock, settings.getSpiedInstance());
+    settings.initiateMockName(classToMock);
+    MockHandler<T> mockHandler = new MockHandler<T>(settings);
+    MethodInterceptorFilter filter = new MethodInterceptorFilter(mockHandler, settings);
+    Class<?>[] interfaces = settings.getExtraInterfaces();
+    Class<?>[] ancillaryTypes;
+    ancillaryTypes = interfaces == null ? new Class<?>[0] : interfaces;
+    Object spiedInstance = settings.getSpiedInstance();
+    T mock = ClassImposterizer.INSTANCE.imposterise(filter, classToMock, ancillaryTypes);
+    if (spiedInstance != null) {
+        new LenientCopyTool().copyToMock(spiedInstance, mock);
+    }
+    return mock;
+}","public void test66() throws Throwable {
+    MockUtil mockUtil0 = new MockUtil();
+    MockSettingsImpl mockSettingsImpl0 = new MockSettingsImpl();
+    mockSettingsImpl0.serializable();
+    Class<Object> class0 = Object.class;
+    // Undeclared exception!
+    try {
+        mockUtil0.createMock(class0, mockSettingsImpl0);
+        fail(""Expecting exception: IncompatibleClassChangeError"");
+    } catch (IncompatibleClassChangeError e) {
+        //
+        // Expected non-static field org.mockito.cglib.proxy.Enhancer.serialVersionUID
+        //
+        verifyException(""org.mockito.cglib.proxy.Enhancer"", e);
+    }
+}",""

@@ -1,0 +1,262 @@
+focal_method,test_prefix,docstring
+"public static OptionBuilder hasArgs(int num) {
+    OptionBuilder.numberOfArgs = num;
+    return instance;
+}","public void test000() throws Throwable {
+    OptionBuilder optionBuilder0 = OptionBuilder.hasArgs(293);
+    assertNotNull(optionBuilder0);
+}","/**
+ * The next Option created can have <code>num</code> argument values.
+ *
+ * @param num the number of args that the option can have
+ * @return the OptionBuilder instance
+ */"
+"public static OptionBuilder withType(Object newType) {
+    OptionBuilder.type = newType;
+    return instance;
+}","public void test011() throws Throwable {
+    Object object0 = new Object();
+    OptionBuilder optionBuilder0 = OptionBuilder.withType(object0);
+    assertNotNull(optionBuilder0);
+}","/**
+ * The next Option created will have a value that will be an instance
+ * of <code>type</code>.
+ *
+ * @param newType the type of the Options argument value
+ * @return the OptionBuilder instance
+ */"
+"public static OptionBuilder isRequired() {
+    OptionBuilder.required = true;
+    return instance;
+}","public void test022() throws Throwable {
+    OptionBuilder optionBuilder0 = OptionBuilder.isRequired();
+    assertNotNull(optionBuilder0);
+}","/**
+ * The next Option created will be required.
+ *
+ * @return the OptionBuilder instance
+ */"
+"public static OptionBuilder withValueSeparator(char sep) {
+    OptionBuilder.valuesep = sep;
+    return instance;
+}","public void test033() throws Throwable {
+    OptionBuilder optionBuilder0 = OptionBuilder.withValueSeparator('4');
+    assertNotNull(optionBuilder0);
+}","/**
+ * The next Option created uses <code>sep</code> as a means to
+ * separate argument values.
+ *
+ * <b>Example:</b>
+ * <pre>
+ * Option opt = OptionBuilder.withValueSeparator(':')
+ *                           .create('D');
+ *
+ * CommandLine line = parser.parse(args);
+ * String propertyName = opt.getValue(0);
+ * String propertyValue = opt.getValue(1);
+ * </pre>
+ *
+ * @param sep The value separator to be used for the argument values.
+ *
+ * @return the OptionBuilder instance
+ */"
+"public static OptionBuilder hasArg() {
+    OptionBuilder.numberOfArgs = 1;
+    return instance;
+}","public void test044() throws Throwable {
+    OptionBuilder optionBuilder0 = OptionBuilder.hasArg();
+    assertNotNull(optionBuilder0);
+}","/**
+ * The next Option created will require an argument value.
+ *
+ * @return the OptionBuilder instance
+ */"
+"public int getArgs() {
+    return numberOfArgs;
+}","public void test055() throws Throwable {
+    OptionBuilder.withLongOpt(""org.apache.commons.cli.OptionBuilder"");
+    Option option0 = OptionBuilder.create();
+    assertEquals((-1), option0.getArgs());
+}","/**
+ * Returns the number of argument values this Option can take.
+ *
+ * @return num the number of argument values
+ */"
+"public static OptionBuilder isRequired(boolean newRequired) {
+    OptionBuilder.required = newRequired;
+    return instance;
+}","public void test066() throws Throwable {
+    OptionBuilder optionBuilder0 = OptionBuilder.isRequired(false);
+    assertNotNull(optionBuilder0);
+}","/**
+ * The next Option created will be required if <code>required</code>
+ * is true.
+ *
+ * @param newRequired if true then the Option is required
+ * @return the OptionBuilder instance
+ */"
+"public static OptionBuilder withArgName(String name) {
+    OptionBuilder.argName = name;
+    return instance;
+}","public void test077() throws Throwable {
+    OptionBuilder optionBuilder0 = OptionBuilder.withArgName(""org.apache.commons.cli.OptionBuilder"");
+    assertNotNull(optionBuilder0);
+}","/**
+ * The next Option created will have the specified argument value name.
+ *
+ * @param name the name for the argument value
+ * @return the OptionBuilder instance
+ */"
+"public static OptionBuilder withValueSeparator() {
+    OptionBuilder.valuesep = '=';
+    return instance;
+}","public void test088() throws Throwable {
+    OptionBuilder optionBuilder0 = OptionBuilder.withValueSeparator();
+    assertNotNull(optionBuilder0);
+}","/**
+ * The next Option created uses '<code>=</code>' as a means to
+ * separate argument values.
+ *
+ * <b>Example:</b>
+ * <pre>
+ * Option opt = OptionBuilder.withValueSeparator()
+ *                           .create('D');
+ *
+ * CommandLine line = parser.parse(args);
+ * String propertyName = opt.getValue(0);
+ * String propertyValue = opt.getValue(1);
+ * </pre>
+ *
+ * @return the OptionBuilder instance
+ */"
+"public static OptionBuilder hasOptionalArg() {
+    OptionBuilder.numberOfArgs = 1;
+    OptionBuilder.optionalArg = true;
+    return instance;
+}","public void test099() throws Throwable {
+    OptionBuilder optionBuilder0 = OptionBuilder.hasOptionalArg();
+    assertNotNull(optionBuilder0);
+}","/**
+ * The next Option can have an optional argument.
+ *
+ * @return the OptionBuilder instance
+ */"
+"public int getId() {
+    return getKey().charAt(0);
+}","public void test1010() throws Throwable {
+    Option option0 = OptionBuilder.create('q');
+    assertEquals(113, option0.getId());
+}","/**
+ * Returns the id of this Option.  This is only set when the
+ * Option shortOpt is a single character.  This is used for switch
+ * statements.
+ *
+ * @return the id of this Option
+ */"
+"public int getArgs() {
+    return numberOfArgs;
+}","public void test1011() throws Throwable {
+    Option option0 = OptionBuilder.create('q');
+    assertEquals((-1), option0.getArgs());
+}","/**
+ * Returns the number of argument values this Option can take.
+ *
+ * @return num the number of argument values
+ */"
+"public static OptionBuilder hasArgs() {
+    OptionBuilder.numberOfArgs = Option.UNLIMITED_VALUES;
+    return instance;
+}","public void test1112() throws Throwable {
+    OptionBuilder optionBuilder0 = OptionBuilder.hasArgs();
+    assertNotNull(optionBuilder0);
+}","/**
+ * The next Option created can have unlimited argument values.
+ *
+ * @return the OptionBuilder instance
+ */"
+"public static OptionBuilder hasOptionalArgs(int numArgs) {
+    OptionBuilder.numberOfArgs = numArgs;
+    OptionBuilder.optionalArg = true;
+    return instance;
+}","public void test1213() throws Throwable {
+    OptionBuilder optionBuilder0 = OptionBuilder.hasOptionalArgs((-2));
+    assertNotNull(optionBuilder0);
+}","/**
+ * The next Option can have the specified number of optional arguments.
+ *
+ * @param numArgs - the maximum number of optional arguments
+ * the next Option created can have.
+ * @return the OptionBuilder instance
+ */"
+"public static OptionBuilder hasOptionalArgs() {
+    OptionBuilder.numberOfArgs = Option.UNLIMITED_VALUES;
+    OptionBuilder.optionalArg = true;
+    return instance;
+}","public void test1314() throws Throwable {
+    OptionBuilder optionBuilder0 = OptionBuilder.hasOptionalArgs();
+    assertNotNull(optionBuilder0);
+}","/**
+ * The next Option can have an unlimited number of optional arguments.
+ *
+ * @return the OptionBuilder instance
+ */"
+"public static OptionBuilder withDescription(String newDescription) {
+    OptionBuilder.description = newDescription;
+    return instance;
+}","public void test1415() throws Throwable {
+    OptionBuilder optionBuilder0 = OptionBuilder.withDescription(""org.apache.commons.cli.OptionBuilder"");
+    assertNotNull(optionBuilder0);
+}","/**
+ * The next Option created will have the specified description
+ *
+ * @param newDescription a description of the Option's purpose
+ * @return the OptionBuilder instance
+ */"
+"public static OptionBuilder hasArg(boolean hasArg) {
+    OptionBuilder.numberOfArgs = hasArg ? 1 : Option.UNINITIALIZED;
+    return instance;
+}","public void test1516() throws Throwable {
+    OptionBuilder optionBuilder0 = OptionBuilder.hasArg(false);
+    assertNotNull(optionBuilder0);
+}","/**
+ * The next Option created will require an argument value if
+ * <code>hasArg</code> is true.
+ *
+ * @param hasArg if true then the Option has an argument value
+ * @return the OptionBuilder instance
+ */"
+"public static OptionBuilder hasArg(boolean hasArg) {
+    OptionBuilder.numberOfArgs = hasArg ? 1 : Option.UNINITIALIZED;
+    return instance;
+}","public void test1617() throws Throwable {
+    OptionBuilder optionBuilder0 = OptionBuilder.hasArg(true);
+    assertNotNull(optionBuilder0);
+}","/**
+ * The next Option created will require an argument value if
+ * <code>hasArg</code> is true.
+ *
+ * @param hasArg if true then the Option has an argument value
+ * @return the OptionBuilder instance
+ */"
+"public static Option create() throws IllegalArgumentException {
+    if (longopt == null) {
+        OptionBuilder.reset();
+        throw new IllegalArgumentException(""must specify longopt"");
+    }
+    return create(null);
+}","public void test1718() throws Throwable {
+    try {
+        OptionBuilder.create();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // must specify longopt
+        //
+        verifyException(""org.apache.commons.cli.OptionBuilder"", e);
+    }
+}","/**
+ * Create an Option using the current settings
+ *
+ * @return the Option instance
+ * @throws IllegalArgumentException if <code>longOpt</code> has not been set.
+ */"

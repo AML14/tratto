@@ -1,0 +1,1230 @@
+focal_method,test_prefix,docstring
+"@Override
+public void finish() throws IOException {
+    ensureOpen();
+    if (finished) {
+        throw new IOException(""This archive has already been finished"");
+    }
+    if (this.entry != null) {
+        throw new IOException(""This archive contains unclosed entries."");
+    }
+    this.entry = new CpioArchiveEntry(this.entryFormat);
+    this.entry.setName(CPIO_TRAILER);
+    this.entry.setNumberOfLinks(1);
+    writeHeader(this.entry);
+    closeArchiveEntry();
+    int lengthOfLastBlock = (int) (getBytesWritten() % blockSize);
+    if (lengthOfLastBlock != 0) {
+        pad(blockSize - lengthOfLastBlock);
+    }
+    finished = true;
+}","public void test000() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0);
+    cpioArchiveOutputStream0.close();
+    try {
+        cpioArchiveOutputStream0.finish();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream closed
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}","/**
+ * Finishes writing the contents of the CPIO output stream without closing
+ * the underlying stream. Use this method when applying multiple filters in
+ * succession to the same output stream.
+ *
+ * @throws IOException
+ *             if an I/O exception has occurred or if a CPIO file error has
+ *             occurred
+ */"
+"@Override
+public void putArchiveEntry(ArchiveEntry entry) throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    CpioArchiveEntry e = (CpioArchiveEntry) entry;
+    ensureOpen();
+    if (this.entry != null) {
+        // close previous entry
+        closeArchiveEntry();
+    }
+    if (e.getTime() == -1) {
+        e.setTime(System.currentTimeMillis() / 1000);
+    }
+    final short format = e.getFormat();
+    if (format != this.entryFormat) {
+        throw new IOException(""Header format: "" + format + "" does not match existing format: "" + this.entryFormat);
+    }
+    if (this.names.put(e.getName(), e) != null) {
+        throw new IOException(""duplicate entry: "" + e.getName());
+    }
+    writeHeader(e);
+    this.entry = e;
+    this.written = 0;
+}","public void test023() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry((short) 8);
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0, (short) 8);
+    // Undeclared exception!
+    try {
+        cpioArchiveOutputStream0.putArchiveEntry(cpioArchiveEntry0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}","/**
+ * Begins writing a new CPIO file entry and positions the stream to the
+ * start of the entry data. Closes the current entry if still active. The
+ * current time will be used if the entry has no set modification time and
+ * the default header format will be used if no other format is specified in
+ * the entry.
+ *
+ * @param entry
+ *            the CPIO cpioEntry to be written
+ * @throws IOException
+ *             if an I/O error has occurred or if a CPIO file error has
+ *             occurred
+ * @throws ClassCastException if entry is not an instance of CpioArchiveEntry
+ */"
+"/*(non-Javadoc)
+     * 
+     * @see
+     * org.apache.commons.compress.archivers.ArchiveOutputStream#closeArchiveEntry
+     * ()
+     */
+@Override
+public void closeArchiveEntry() throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    ensureOpen();
+    if (entry == null) {
+        throw new IOException(""Trying to close non-existent entry"");
+    }
+    if (this.entry.getSize() != this.written) {
+        throw new IOException(""invalid entry size (expected "" + this.entry.getSize() + "" but got "" + this.written + "" bytes)"");
+    }
+    pad(this.entry.getDataPadCount());
+    if (this.entry.getFormat() == FORMAT_NEW_CRC && this.crc != this.entry.getChksum()) {
+        throw new IOException(""CRC Error"");
+    }
+    this.entry = null;
+    this.crc = 0;
+    this.written = 0;
+}","public void test046() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0, ""uy"");
+    try {
+        cpioArchiveOutputStream0.closeArchiveEntry();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Trying to close non-existent entry
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",""
+"// the provided encoding (for unit tests)
+/**
+ * Construct the cpio output stream with a specified format, a
+ * blocksize of {@link CpioConstants#BLOCK_SIZE BLOCK_SIZE} and
+ * using ASCII as the file name encoding.
+ *
+ * @param out
+ *            The cpio stream
+ * @param format
+ *            The format of the stream
+ */
+public CpioArchiveOutputStream(final OutputStream out, final short format) {
+    this(out, format, BLOCK_SIZE, CharsetNames.US_ASCII);
+}","public void test057() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = null;
+    try {
+        cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0, (short) 3);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unknown format: 3
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",""
+"// Generic implementations of OutputStream methods that may be useful to sub-classes
+/**
+ * Writes a byte to the current archive entry.
+ *
+ * <p>This method simply calls {@code write( byte[], 0, 1 )}.
+ *
+ * <p>MUST be overridden if the {@link #write(byte[], int, int)} method
+ * is not overridden; may be overridden otherwise.
+ *
+ * @param b The byte to be written.
+ * @throws IOException on error
+ */
+@Override
+public void write(int b) throws IOException {
+    oneByte[0] = (byte) (b & BYTE_MASK);
+    write(oneByte, 0, 1);
+}","public void test068() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0, (short) 4);
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry((short) 4, ""uE:~"");
+    cpioArchiveOutputStream0.putArchiveEntry(cpioArchiveEntry0);
+    try {
+        cpioArchiveOutputStream0.write((int) (short) 4);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // attempt to write past end of STORED entry
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",""
+"// the provided encoding (for unit tests)
+/**
+ * Construct the cpio output stream with a specified format, a
+ * blocksize of {@link CpioConstants#BLOCK_SIZE BLOCK_SIZE} and
+ * using ASCII as the file name encoding.
+ *
+ * @param out
+ *            The cpio stream
+ * @param format
+ *            The format of the stream
+ */
+public CpioArchiveOutputStream(final OutputStream out, final short format) {
+    this(out, format, BLOCK_SIZE, CharsetNames.US_ASCII);
+}","public void test079() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = null;
+    try {
+        cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0, (short) 5);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unknown format: 5
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",""
+"// the provided encoding (for unit tests)
+/**
+ * Construct the cpio output stream with a specified format, a
+ * blocksize of {@link CpioConstants#BLOCK_SIZE BLOCK_SIZE} and
+ * using ASCII as the file name encoding.
+ *
+ * @param out
+ *            The cpio stream
+ * @param format
+ *            The format of the stream
+ */
+public CpioArchiveOutputStream(final OutputStream out, final short format) {
+    this(out, format, BLOCK_SIZE, CharsetNames.US_ASCII);
+}","public void test0810() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = null;
+    try {
+        cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0, (short) 6);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unknown format: 6
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",""
+"// the provided encoding (for unit tests)
+/**
+ * Construct the cpio output stream with a specified format, a
+ * blocksize of {@link CpioConstants#BLOCK_SIZE BLOCK_SIZE} and
+ * using ASCII as the file name encoding.
+ *
+ * @param out
+ *            The cpio stream
+ * @param format
+ *            The format of the stream
+ */
+public CpioArchiveOutputStream(final OutputStream out, final short format) {
+    this(out, format, BLOCK_SIZE, CharsetNames.US_ASCII);
+}","public void test0911() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = null;
+    try {
+        cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0, (short) 7);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unknown format: 7
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",""
+"// the provided encoding (for unit tests)
+/**
+ * Construct the cpio output stream with a specified format, a
+ * blocksize of {@link CpioConstants#BLOCK_SIZE BLOCK_SIZE} and
+ * using ASCII as the file name encoding.
+ *
+ * @param out
+ *            The cpio stream
+ * @param format
+ *            The format of the stream
+ */
+public CpioArchiveOutputStream(final OutputStream out, final short format) {
+    this(out, format, BLOCK_SIZE, CharsetNames.US_ASCII);
+}","public void test1012() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = null;
+    try {
+        cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0, (short) 43);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Unknown format: 43
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",""
+"@Override
+public void putArchiveEntry(ArchiveEntry entry) throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    CpioArchiveEntry e = (CpioArchiveEntry) entry;
+    ensureOpen();
+    if (this.entry != null) {
+        // close previous entry
+        closeArchiveEntry();
+    }
+    if (e.getTime() == -1) {
+        e.setTime(System.currentTimeMillis() / 1000);
+    }
+    final short format = e.getFormat();
+    if (format != this.entryFormat) {
+        throw new IOException(""Header format: "" + format + "" does not match existing format: "" + this.entryFormat);
+    }
+    if (this.names.put(e.getName(), e) != null) {
+        throw new IOException(""duplicate entry: "" + e.getName());
+    }
+    writeHeader(e);
+    this.entry = e;
+    this.written = 0;
+}","public void test1113() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0);
+    cpioArchiveOutputStream0.finish();
+    ArjArchiveEntry arjArchiveEntry0 = new ArjArchiveEntry();
+    try {
+        cpioArchiveOutputStream0.putArchiveEntry(arjArchiveEntry0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream has already been finished
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}","/**
+ * Begins writing a new CPIO file entry and positions the stream to the
+ * start of the entry data. Closes the current entry if still active. The
+ * current time will be used if the entry has no set modification time and
+ * the default header format will be used if no other format is specified in
+ * the entry.
+ *
+ * @param entry
+ *            the CPIO cpioEntry to be written
+ * @throws IOException
+ *             if an I/O error has occurred or if a CPIO file error has
+ *             occurred
+ * @throws ClassCastException if entry is not an instance of CpioArchiveEntry
+ */"
+"@Override
+public void putArchiveEntry(ArchiveEntry entry) throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    CpioArchiveEntry e = (CpioArchiveEntry) entry;
+    ensureOpen();
+    if (this.entry != null) {
+        // close previous entry
+        closeArchiveEntry();
+    }
+    if (e.getTime() == -1) {
+        e.setTime(System.currentTimeMillis() / 1000);
+    }
+    final short format = e.getFormat();
+    if (format != this.entryFormat) {
+        throw new IOException(""Header format: "" + format + "" does not match existing format: "" + this.entryFormat);
+    }
+    if (this.names.put(e.getName(), e) != null) {
+        throw new IOException(""duplicate entry: "" + e.getName());
+    }
+    writeHeader(e);
+    this.entry = e;
+    this.written = 0;
+}","public void test1214() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0);
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry(""@Jtg@"", 1392409315L);
+    cpioArchiveOutputStream0.putArchiveEntry(cpioArchiveEntry0);
+    try {
+        cpioArchiveOutputStream0.putArchiveEntry(cpioArchiveEntry0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // invalid entry size (expected 1392409315 but got 0 bytes)
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}","/**
+ * Begins writing a new CPIO file entry and positions the stream to the
+ * start of the entry data. Closes the current entry if still active. The
+ * current time will be used if the entry has no set modification time and
+ * the default header format will be used if no other format is specified in
+ * the entry.
+ *
+ * @param entry
+ *            the CPIO cpioEntry to be written
+ * @throws IOException
+ *             if an I/O error has occurred or if a CPIO file error has
+ *             occurred
+ * @throws ClassCastException if entry is not an instance of CpioArchiveEntry
+ */"
+"@Override
+public void putArchiveEntry(ArchiveEntry entry) throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    CpioArchiveEntry e = (CpioArchiveEntry) entry;
+    ensureOpen();
+    if (this.entry != null) {
+        // close previous entry
+        closeArchiveEntry();
+    }
+    if (e.getTime() == -1) {
+        e.setTime(System.currentTimeMillis() / 1000);
+    }
+    final short format = e.getFormat();
+    if (format != this.entryFormat) {
+        throw new IOException(""Header format: "" + format + "" does not match existing format: "" + this.entryFormat);
+    }
+    if (this.names.put(e.getName(), e) != null) {
+        throw new IOException(""duplicate entry: "" + e.getName());
+    }
+    writeHeader(e);
+    this.entry = e;
+    this.written = 0;
+}","public void test1315() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry((short) 8);
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0);
+    try {
+        cpioArchiveOutputStream0.putArchiveEntry(cpioArchiveEntry0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Header format: 8 does not match existing format: 1
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}","/**
+ * Begins writing a new CPIO file entry and positions the stream to the
+ * start of the entry data. Closes the current entry if still active. The
+ * current time will be used if the entry has no set modification time and
+ * the default header format will be used if no other format is specified in
+ * the entry.
+ *
+ * @param entry
+ *            the CPIO cpioEntry to be written
+ * @throws IOException
+ *             if an I/O error has occurred or if a CPIO file error has
+ *             occurred
+ * @throws ClassCastException if entry is not an instance of CpioArchiveEntry
+ */"
+"@Override
+public void putArchiveEntry(ArchiveEntry entry) throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    CpioArchiveEntry e = (CpioArchiveEntry) entry;
+    ensureOpen();
+    if (this.entry != null) {
+        // close previous entry
+        closeArchiveEntry();
+    }
+    if (e.getTime() == -1) {
+        e.setTime(System.currentTimeMillis() / 1000);
+    }
+    final short format = e.getFormat();
+    if (format != this.entryFormat) {
+        throw new IOException(""Header format: "" + format + "" does not match existing format: "" + this.entryFormat);
+    }
+    if (this.names.put(e.getName(), e) != null) {
+        throw new IOException(""duplicate entry: "" + e.getName());
+    }
+    writeHeader(e);
+    this.entry = e;
+    this.written = 0;
+}","public void test1416() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0);
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry(""-B`6oe-M0"");
+    cpioArchiveOutputStream0.putArchiveEntry(cpioArchiveEntry0);
+    try {
+        cpioArchiveOutputStream0.putArchiveEntry(cpioArchiveEntry0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // duplicate entry: -B`6oe-M0
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}","/**
+ * Begins writing a new CPIO file entry and positions the stream to the
+ * start of the entry data. Closes the current entry if still active. The
+ * current time will be used if the entry has no set modification time and
+ * the default header format will be used if no other format is specified in
+ * the entry.
+ *
+ * @param entry
+ *            the CPIO cpioEntry to be written
+ * @throws IOException
+ *             if an I/O error has occurred or if a CPIO file error has
+ *             occurred
+ * @throws ClassCastException if entry is not an instance of CpioArchiveEntry
+ */"
+"@Deprecated
+public int getCount() {
+    return (int) bytesWritten;
+}","public void test1517() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry(""gt,,mJ{jd"", (short) 8);
+    cpioArchiveEntry0.setInode(3851L);
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0);
+    cpioArchiveOutputStream0.putArchiveEntry(cpioArchiveEntry0);
+    assertEquals(120, cpioArchiveOutputStream0.getCount());
+}","/**
+ * Returns the current number of bytes written to this stream.
+ * @return the number of written bytes
+ * @deprecated this method may yield wrong results for large
+ * archives, use #getBytesWritten instead
+ */"
+"@Override
+public void putArchiveEntry(ArchiveEntry entry) throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    CpioArchiveEntry e = (CpioArchiveEntry) entry;
+    ensureOpen();
+    if (this.entry != null) {
+        // close previous entry
+        closeArchiveEntry();
+    }
+    if (e.getTime() == -1) {
+        e.setTime(System.currentTimeMillis() / 1000);
+    }
+    final short format = e.getFormat();
+    if (format != this.entryFormat) {
+        throw new IOException(""Header format: "" + format + "" does not match existing format: "" + this.entryFormat);
+    }
+    if (this.names.put(e.getName(), e) != null) {
+        throw new IOException(""duplicate entry: "" + e.getName());
+    }
+    writeHeader(e);
+    this.entry = e;
+    this.written = 0;
+}","public void test1618() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0);
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry(""E:~"");
+    cpioArchiveEntry0.setDeviceMin(1L);
+    cpioArchiveOutputStream0.putArchiveEntry(cpioArchiveEntry0);
+}","/**
+ * Begins writing a new CPIO file entry and positions the stream to the
+ * start of the entry data. Closes the current entry if still active. The
+ * current time will be used if the entry has no set modification time and
+ * the default header format will be used if no other format is specified in
+ * the entry.
+ *
+ * @param entry
+ *            the CPIO cpioEntry to be written
+ * @throws IOException
+ *             if an I/O error has occurred or if a CPIO file error has
+ *             occurred
+ * @throws ClassCastException if entry is not an instance of CpioArchiveEntry
+ */"
+"@Override
+public void finish() throws IOException {
+    ensureOpen();
+    if (finished) {
+        throw new IOException(""This archive has already been finished"");
+    }
+    if (this.entry != null) {
+        throw new IOException(""This archive contains unclosed entries."");
+    }
+    this.entry = new CpioArchiveEntry(this.entryFormat);
+    this.entry.setName(CPIO_TRAILER);
+    this.entry.setNumberOfLinks(1);
+    writeHeader(this.entry);
+    closeArchiveEntry();
+    int lengthOfLastBlock = (int) (getBytesWritten() % blockSize);
+    if (lengthOfLastBlock != 0) {
+        pad(blockSize - lengthOfLastBlock);
+    }
+    finished = true;
+}","public void test1719() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0, (short) 4);
+    cpioArchiveOutputStream0.finish();
+}","/**
+ * Finishes writing the contents of the CPIO output stream without closing
+ * the underlying stream. Use this method when applying multiple filters in
+ * succession to the same output stream.
+ *
+ * @throws IOException
+ *             if an I/O exception has occurred or if a CPIO file error has
+ *             occurred
+ */"
+"@Override
+public void putArchiveEntry(ArchiveEntry entry) throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    CpioArchiveEntry e = (CpioArchiveEntry) entry;
+    ensureOpen();
+    if (this.entry != null) {
+        // close previous entry
+        closeArchiveEntry();
+    }
+    if (e.getTime() == -1) {
+        e.setTime(System.currentTimeMillis() / 1000);
+    }
+    final short format = e.getFormat();
+    if (format != this.entryFormat) {
+        throw new IOException(""Header format: "" + format + "" does not match existing format: "" + this.entryFormat);
+    }
+    if (this.names.put(e.getName(), e) != null) {
+        throw new IOException(""duplicate entry: "" + e.getName());
+    }
+    writeHeader(e);
+    this.entry = e;
+    this.written = 0;
+}","public void test1820() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0, (short) 4);
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry((short) 4, ""uE:~"");
+    cpioArchiveEntry0.setInode(2L);
+    cpioArchiveOutputStream0.putArchiveEntry(cpioArchiveEntry0);
+}","/**
+ * Begins writing a new CPIO file entry and positions the stream to the
+ * start of the entry data. Closes the current entry if still active. The
+ * current time will be used if the entry has no set modification time and
+ * the default header format will be used if no other format is specified in
+ * the entry.
+ *
+ * @param entry
+ *            the CPIO cpioEntry to be written
+ * @throws IOException
+ *             if an I/O error has occurred or if a CPIO file error has
+ *             occurred
+ * @throws ClassCastException if entry is not an instance of CpioArchiveEntry
+ */"
+"@Override
+public void putArchiveEntry(ArchiveEntry entry) throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    CpioArchiveEntry e = (CpioArchiveEntry) entry;
+    ensureOpen();
+    if (this.entry != null) {
+        // close previous entry
+        closeArchiveEntry();
+    }
+    if (e.getTime() == -1) {
+        e.setTime(System.currentTimeMillis() / 1000);
+    }
+    final short format = e.getFormat();
+    if (format != this.entryFormat) {
+        throw new IOException(""Header format: "" + format + "" does not match existing format: "" + this.entryFormat);
+    }
+    if (this.names.put(e.getName(), e) != null) {
+        throw new IOException(""duplicate entry: "" + e.getName());
+    }
+    writeHeader(e);
+    this.entry = e;
+    this.written = 0;
+}","public void test1921() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0, (short) 4);
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry((short) 4);
+    cpioArchiveEntry0.setDevice((short) 4);
+    // Undeclared exception!
+    try {
+        cpioArchiveOutputStream0.putArchiveEntry(cpioArchiveEntry0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}","/**
+ * Begins writing a new CPIO file entry and positions the stream to the
+ * start of the entry data. Closes the current entry if still active. The
+ * current time will be used if the entry has no set modification time and
+ * the default header format will be used if no other format is specified in
+ * the entry.
+ *
+ * @param entry
+ *            the CPIO cpioEntry to be written
+ * @throws IOException
+ *             if an I/O error has occurred or if a CPIO file error has
+ *             occurred
+ * @throws ClassCastException if entry is not an instance of CpioArchiveEntry
+ */"
+"@Override
+public void putArchiveEntry(ArchiveEntry entry) throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    CpioArchiveEntry e = (CpioArchiveEntry) entry;
+    ensureOpen();
+    if (this.entry != null) {
+        // close previous entry
+        closeArchiveEntry();
+    }
+    if (e.getTime() == -1) {
+        e.setTime(System.currentTimeMillis() / 1000);
+    }
+    final short format = e.getFormat();
+    if (format != this.entryFormat) {
+        throw new IOException(""Header format: "" + format + "" does not match existing format: "" + this.entryFormat);
+    }
+    if (this.names.put(e.getName(), e) != null) {
+        throw new IOException(""duplicate entry: "" + e.getName());
+    }
+    writeHeader(e);
+    this.entry = e;
+    this.written = 0;
+}","public void test2022() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry((short) 8);
+    cpioArchiveEntry0.setInode(262139L);
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0, (short) 8);
+    // Undeclared exception!
+    try {
+        cpioArchiveOutputStream0.putArchiveEntry(cpioArchiveEntry0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}","/**
+ * Begins writing a new CPIO file entry and positions the stream to the
+ * start of the entry data. Closes the current entry if still active. The
+ * current time will be used if the entry has no set modification time and
+ * the default header format will be used if no other format is specified in
+ * the entry.
+ *
+ * @param entry
+ *            the CPIO cpioEntry to be written
+ * @throws IOException
+ *             if an I/O error has occurred or if a CPIO file error has
+ *             occurred
+ * @throws ClassCastException if entry is not an instance of CpioArchiveEntry
+ */"
+"@Override
+public void putArchiveEntry(ArchiveEntry entry) throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    CpioArchiveEntry e = (CpioArchiveEntry) entry;
+    ensureOpen();
+    if (this.entry != null) {
+        // close previous entry
+        closeArchiveEntry();
+    }
+    if (e.getTime() == -1) {
+        e.setTime(System.currentTimeMillis() / 1000);
+    }
+    final short format = e.getFormat();
+    if (format != this.entryFormat) {
+        throw new IOException(""Header format: "" + format + "" does not match existing format: "" + this.entryFormat);
+    }
+    if (this.names.put(e.getName(), e) != null) {
+        throw new IOException(""duplicate entry: "" + e.getName());
+    }
+    writeHeader(e);
+    this.entry = e;
+    this.written = 0;
+}","public void test2123() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0, (short) 8);
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry((short) 8);
+    cpioArchiveEntry0.setDevice(1L);
+    // Undeclared exception!
+    try {
+        cpioArchiveOutputStream0.putArchiveEntry(cpioArchiveEntry0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}","/**
+ * Begins writing a new CPIO file entry and positions the stream to the
+ * start of the entry data. Closes the current entry if still active. The
+ * current time will be used if the entry has no set modification time and
+ * the default header format will be used if no other format is specified in
+ * the entry.
+ *
+ * @param entry
+ *            the CPIO cpioEntry to be written
+ * @throws IOException
+ *             if an I/O error has occurred or if a CPIO file error has
+ *             occurred
+ * @throws ClassCastException if entry is not an instance of CpioArchiveEntry
+ */"
+"/*(non-Javadoc)
+     * 
+     * @see
+     * org.apache.commons.compress.archivers.ArchiveOutputStream#closeArchiveEntry
+     * ()
+     */
+@Override
+public void closeArchiveEntry() throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    ensureOpen();
+    if (entry == null) {
+        throw new IOException(""Trying to close non-existent entry"");
+    }
+    if (this.entry.getSize() != this.written) {
+        throw new IOException(""invalid entry size (expected "" + this.entry.getSize() + "" but got "" + this.written + "" bytes)"");
+    }
+    pad(this.entry.getDataPadCount());
+    if (this.entry.getFormat() == FORMAT_NEW_CRC && this.crc != this.entry.getChksum()) {
+        throw new IOException(""CRC Error"");
+    }
+    this.entry = null;
+    this.crc = 0;
+    this.written = 0;
+}","public void test2224() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0);
+    cpioArchiveOutputStream0.finish();
+    try {
+        cpioArchiveOutputStream0.closeArchiveEntry();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream has already been finished
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",""
+"@Override
+public void write(final byte[] b, final int off, final int len) throws IOException {
+    ensureOpen();
+    if (off < 0 || len < 0 || off > b.length - len) {
+        throw new IndexOutOfBoundsException();
+    } else if (len == 0) {
+        return;
+    }
+    if (this.entry == null) {
+        throw new IOException(""no current CPIO entry"");
+    }
+    if (this.written + len > this.entry.getSize()) {
+        throw new IOException(""attempt to write past end of STORED entry"");
+    }
+    out.write(b, off, len);
+    this.written += len;
+    if (this.entry.getFormat() == FORMAT_NEW_CRC) {
+        for (int pos = 0; pos < len; pos++) {
+            this.crc += b[pos] & 0xFF;
+        }
+    }
+    count(len);
+}","public void test2325() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0);
+    byte[] byteArray0 = new byte[1];
+    // Undeclared exception!
+    try {
+        cpioArchiveOutputStream0.write(byteArray0, (int) (byte) (-21), (-3465));
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}","/**
+ * Writes an array of bytes to the current CPIO entry data. This method will
+ * block until all the bytes are written.
+ *
+ * @param b
+ *            the data to be written
+ * @param off
+ *            the start offset in the data
+ * @param len
+ *            the number of bytes that are written
+ * @throws IOException
+ *             if an I/O error has occurred or if a CPIO file error has
+ *             occurred
+ */"
+"// Generic implementations of OutputStream methods that may be useful to sub-classes
+/**
+ * Writes a byte to the current archive entry.
+ *
+ * <p>This method simply calls {@code write( byte[], 0, 1 )}.
+ *
+ * <p>MUST be overridden if the {@link #write(byte[], int, int)} method
+ * is not overridden; may be overridden otherwise.
+ *
+ * @param b The byte to be written.
+ * @throws IOException on error
+ */
+@Override
+public void write(int b) throws IOException {
+    oneByte[0] = (byte) (b & BYTE_MASK);
+    write(oneByte, 0, 1);
+}","public void test2426() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0, (short) 4);
+    try {
+        cpioArchiveOutputStream0.write((int) (short) 4);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // no current CPIO entry
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}",""
+"@Override
+public void write(final byte[] b, final int off, final int len) throws IOException {
+    ensureOpen();
+    if (off < 0 || len < 0 || off > b.length - len) {
+        throw new IndexOutOfBoundsException();
+    } else if (len == 0) {
+        return;
+    }
+    if (this.entry == null) {
+        throw new IOException(""no current CPIO entry"");
+    }
+    if (this.written + len > this.entry.getSize()) {
+        throw new IOException(""attempt to write past end of STORED entry"");
+    }
+    out.write(b, off, len);
+    this.written += len;
+    if (this.entry.getFormat() == FORMAT_NEW_CRC) {
+        for (int pos = 0; pos < len; pos++) {
+            this.crc += b[pos] & 0xFF;
+        }
+    }
+    count(len);
+}","public void test2527() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0, (short) 2);
+    byte[] byteArray0 = new byte[0];
+    // Undeclared exception!
+    try {
+        cpioArchiveOutputStream0.write(byteArray0, (int) (short) 2, (-1932735282));
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}","/**
+ * Writes an array of bytes to the current CPIO entry data. This method will
+ * block until all the bytes are written.
+ *
+ * @param b
+ *            the data to be written
+ * @param off
+ *            the start offset in the data
+ * @param len
+ *            the number of bytes that are written
+ * @throws IOException
+ *             if an I/O error has occurred or if a CPIO file error has
+ *             occurred
+ */"
+"@Override
+public void write(final byte[] b, final int off, final int len) throws IOException {
+    ensureOpen();
+    if (off < 0 || len < 0 || off > b.length - len) {
+        throw new IndexOutOfBoundsException();
+    } else if (len == 0) {
+        return;
+    }
+    if (this.entry == null) {
+        throw new IOException(""no current CPIO entry"");
+    }
+    if (this.written + len > this.entry.getSize()) {
+        throw new IOException(""attempt to write past end of STORED entry"");
+    }
+    out.write(b, off, len);
+    this.written += len;
+    if (this.entry.getFormat() == FORMAT_NEW_CRC) {
+        for (int pos = 0; pos < len; pos++) {
+            this.crc += b[pos] & 0xFF;
+        }
+    }
+    count(len);
+}","public void test2628() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0);
+    byte[] byteArray0 = new byte[0];
+    // Undeclared exception!
+    try {
+        cpioArchiveOutputStream0.write(byteArray0, 32, 32);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}","/**
+ * Writes an array of bytes to the current CPIO entry data. This method will
+ * block until all the bytes are written.
+ *
+ * @param b
+ *            the data to be written
+ * @param off
+ *            the start offset in the data
+ * @param len
+ *            the number of bytes that are written
+ * @throws IOException
+ *             if an I/O error has occurred or if a CPIO file error has
+ *             occurred
+ */"
+"@Override
+public void finish() throws IOException {
+    ensureOpen();
+    if (finished) {
+        throw new IOException(""This archive has already been finished"");
+    }
+    if (this.entry != null) {
+        throw new IOException(""This archive contains unclosed entries."");
+    }
+    this.entry = new CpioArchiveEntry(this.entryFormat);
+    this.entry.setName(CPIO_TRAILER);
+    this.entry.setNumberOfLinks(1);
+    writeHeader(this.entry);
+    closeArchiveEntry();
+    int lengthOfLastBlock = (int) (getBytesWritten() % blockSize);
+    if (lengthOfLastBlock != 0) {
+        pad(blockSize - lengthOfLastBlock);
+    }
+    finished = true;
+}","public void test2830() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0);
+    cpioArchiveOutputStream0.finish();
+    try {
+        cpioArchiveOutputStream0.finish();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // This archive has already been finished
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}","/**
+ * Finishes writing the contents of the CPIO output stream without closing
+ * the underlying stream. Use this method when applying multiple filters in
+ * succession to the same output stream.
+ *
+ * @throws IOException
+ *             if an I/O exception has occurred or if a CPIO file error has
+ *             occurred
+ */"
+"@Override
+public void finish() throws IOException {
+    ensureOpen();
+    if (finished) {
+        throw new IOException(""This archive has already been finished"");
+    }
+    if (this.entry != null) {
+        throw new IOException(""This archive contains unclosed entries."");
+    }
+    this.entry = new CpioArchiveEntry(this.entryFormat);
+    this.entry.setName(CPIO_TRAILER);
+    this.entry.setNumberOfLinks(1);
+    writeHeader(this.entry);
+    closeArchiveEntry();
+    int lengthOfLastBlock = (int) (getBytesWritten() % blockSize);
+    if (lengthOfLastBlock != 0) {
+        pad(blockSize - lengthOfLastBlock);
+    }
+    finished = true;
+}","public void test2931() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0);
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry("">Rh9kLBerkW>t7dxUnY"");
+    cpioArchiveOutputStream0.putArchiveEntry(cpioArchiveEntry0);
+    try {
+        cpioArchiveOutputStream0.finish();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // This archive contains unclosed entries.
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}","/**
+ * Finishes writing the contents of the CPIO output stream without closing
+ * the underlying stream. Use this method when applying multiple filters in
+ * succession to the same output stream.
+ *
+ * @throws IOException
+ *             if an I/O exception has occurred or if a CPIO file error has
+ *             occurred
+ */"
+"@Override
+public void close() throws IOException {
+    if (!finished) {
+        finish();
+    }
+    if (!this.closed) {
+        out.close();
+        this.closed = true;
+    }
+}","public void test3032() throws Throwable {
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""$z5YcO{Qh!-zLrhAvr"");
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(mockPrintStream0, (short) 2);
+    cpioArchiveOutputStream0.finish();
+    cpioArchiveOutputStream0.close();
+}","/**
+ * Closes the CPIO output stream as well as the stream being filtered.
+ *
+ * @throws IOException
+ *             if an I/O error has occurred or if a CPIO file error has
+ *             occurred
+ */"
+"@Override
+public void close() throws IOException {
+    if (!finished) {
+        finish();
+    }
+    if (!this.closed) {
+        out.close();
+        this.closed = true;
+    }
+}","public void test3133() throws Throwable {
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""$z5YcO{Qh!-zLrhAvr"");
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(mockPrintStream0, (short) 8);
+    cpioArchiveOutputStream0.close();
+    cpioArchiveOutputStream0.close();
+}","/**
+ * Closes the CPIO output stream as well as the stream being filtered.
+ *
+ * @throws IOException
+ *             if an I/O error has occurred or if a CPIO file error has
+ *             occurred
+ */"
+"@Override
+public void putArchiveEntry(ArchiveEntry entry) throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    CpioArchiveEntry e = (CpioArchiveEntry) entry;
+    ensureOpen();
+    if (this.entry != null) {
+        // close previous entry
+        closeArchiveEntry();
+    }
+    if (e.getTime() == -1) {
+        e.setTime(System.currentTimeMillis() / 1000);
+    }
+    final short format = e.getFormat();
+    if (format != this.entryFormat) {
+        throw new IOException(""Header format: "" + format + "" does not match existing format: "" + this.entryFormat);
+    }
+    if (this.names.put(e.getName(), e) != null) {
+        throw new IOException(""duplicate entry: "" + e.getName());
+    }
+    writeHeader(e);
+    this.entry = e;
+    this.written = 0;
+}","public void test3234() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0);
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry("">Rh9kLBerkW>t7dxUlnY"");
+    cpioArchiveEntry0.setRemoteDeviceMin(4294967296L);
+    cpioArchiveOutputStream0.putArchiveEntry(cpioArchiveEntry0);
+}","/**
+ * Begins writing a new CPIO file entry and positions the stream to the
+ * start of the entry data. Closes the current entry if still active. The
+ * current time will be used if the entry has no set modification time and
+ * the default header format will be used if no other format is specified in
+ * the entry.
+ *
+ * @param entry
+ *            the CPIO cpioEntry to be written
+ * @throws IOException
+ *             if an I/O error has occurred or if a CPIO file error has
+ *             occurred
+ * @throws ClassCastException if entry is not an instance of CpioArchiveEntry
+ */"
+"@Override
+public ArchiveEntry createArchiveEntry(File inputFile, String entryName) throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    return new CpioArchiveEntry(inputFile, entryName);
+}","public void test3335() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0);
+    // Undeclared exception!
+    try {
+        cpioArchiveOutputStream0.createArchiveEntry((File) null, (String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveEntry"", e);
+    }
+}","/**
+ * Creates a new ArchiveEntry. The entryName must be an ASCII encoded string.
+ *
+ * @see org.apache.commons.compress.archivers.ArchiveOutputStream#createArchiveEntry(java.io.File, java.lang.String)
+ */"
+"@Override
+public ArchiveEntry createArchiveEntry(File inputFile, String entryName) throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    return new CpioArchiveEntry(inputFile, entryName);
+}","public void test3436() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpioArchiveOutputStream0 = new CpioArchiveOutputStream(byteArrayOutputStream0);
+    cpioArchiveOutputStream0.finish();
+    try {
+        cpioArchiveOutputStream0.createArchiveEntry((File) null, (String) null);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Stream has already been finished
+        //
+        verifyException(""org.apache.commons.compress.archivers.cpio.CpioArchiveOutputStream"", e);
+    }
+}","/**
+ * Creates a new ArchiveEntry. The entryName must be an ASCII encoded string.
+ *
+ * @see org.apache.commons.compress.archivers.ArchiveOutputStream#createArchiveEntry(java.io.File, java.lang.String)
+ */"

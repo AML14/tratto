@@ -1,0 +1,331 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test033,"public void test033() throws Throwable {
+    URI uRI0 = MockURI.aFileURI;
+    URL uRL0 = MockURI.toURL(uRI0);
+    Connection connection0 = HttpConnection.connect(uRL0);
+    String[] stringArray0 = new String[12];
+    stringArray0[0] = ""Method must not be null"";
+    // Undeclared exception!
+    try {
+        connection0.data(stringArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Data value must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test044,"public void test044() throws Throwable {
+    URI uRI0 = MockURI.aFileURI;
+    URL uRL0 = MockURI.toURL(uRI0);
+    Connection connection0 = HttpConnection.connect(uRL0);
+    // Undeclared exception!
+    try {
+        connection0.postDataCharset(""u<r-agent"");
+        fail(""Expecting exception: IllegalCharsetNameException"");
+    } catch (IllegalCharsetNameException e) {
+        //
+        // u<r-agent
+        //
+        verifyException(""java.nio.charset.Charset"", e);
+    }
+}",0,
+project,0,test055,"public void test055() throws Throwable {
+    URL uRL0 = MockURL.getFileExample();
+    Connection connection0 = HttpConnection.connect(uRL0);
+    // Undeclared exception!
+    try {
+        connection0.header("""", ""-$A';FJS!u\""w"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Header name must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test066,"public void test066() throws Throwable {
+    URL uRL0 = MockURL.getFileExample();
+    Connection connection0 = HttpConnection.connect(uRL0);
+    try {
+        connection0.get();
+        fail(""Expecting exception: MalformedURLException"");
+    } catch (MalformedURLException e) {
+        //
+        // Only http & https protocols supported
+        //
+        verifyException(""org.jsoup.helper.HttpConnection$Response"", e);
+    }
+}",0,
+project,0,test077,"public void test077() throws Throwable {
+    URI uRI0 = MockURI.aFileURI;
+    URL uRL0 = MockURI.toURL(uRI0);
+    Connection connection0 = HttpConnection.connect(uRL0);
+    // Undeclared exception!
+    try {
+        connection0.cookies((Map<String, String>) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Cookie map must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test088,"public void test088() throws Throwable {
+    // Undeclared exception!
+    try {
+        HttpConnection.connect((URL) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // URL must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test1011,"public void test1011() throws Throwable {
+    URI uRI0 = MockURI.aFileURI;
+    URL uRL0 = MockURI.toURL(uRI0);
+    Connection connection0 = HttpConnection.connect(uRL0);
+    // Undeclared exception!
+    try {
+        connection0.url((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Must supply a valid URL
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test1112,"public void test1112() throws Throwable {
+    URI uRI0 = MockURI.aFileURI;
+    URL uRL0 = MockURI.toURL(uRI0);
+    Connection connection0 = HttpConnection.connect(uRL0);
+    Connection connection1 = connection0.url(uRL0);
+    assertSame(connection0, connection1);
+}",0,
+project,0,test1822,"public void test1822() throws Throwable {
+    URI uRI0 = MockURI.aFileURI;
+    URL uRL0 = MockURI.toURL(uRI0);
+    Connection connection0 = HttpConnection.connect(uRL0);
+    try {
+        connection0.execute();
+        fail(""Expecting exception: MalformedURLException"");
+    } catch (MalformedURLException e) {
+        //
+        // Only http & https protocols supported
+        //
+        verifyException(""org.jsoup.helper.HttpConnection$Response"", e);
+    }
+}",0,
+project,0,test1923,"public void test1923() throws Throwable {
+    URI uRI0 = MockURI.aFileURI;
+    URL uRL0 = MockURI.toURL(uRI0);
+    Connection connection0 = HttpConnection.connect(uRL0);
+    // Undeclared exception!
+    try {
+        connection0.maxBodySize((-1841796721));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // maxSize must be 0 (unlimited) or larger
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test2125,"public void test2125() throws Throwable {
+    URL uRL0 = MockURL.getFileExample();
+    Connection connection0 = HttpConnection.connect(uRL0);
+    Attributes attributes0 = new Attributes();
+    Map<String, String> map0 = attributes0.dataset();
+    Connection connection1 = connection0.cookies(map0);
+    assertSame(connection1, connection0);
+}",0,
+project,0,test2226,"public void test2226() throws Throwable {
+    URI uRI0 = MockURI.aFileURI;
+    URL uRL0 = MockURI.toURL(uRI0);
+    Connection connection0 = HttpConnection.connect(uRL0);
+    String[] stringArray0 = new String[0];
+    Connection connection1 = connection0.data(stringArray0);
+    assertSame(connection1, connection0);
+}",0,
+project,0,test2327,"public void test2327() throws Throwable {
+    URI uRI0 = MockURI.aFileURI;
+    URL uRL0 = MockURI.toURL(uRI0);
+    Connection connection0 = HttpConnection.connect(uRL0);
+    String[] stringArray0 = new String[1];
+    // Undeclared exception!
+    try {
+        connection0.data(stringArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Must supply an even number of key value pairs
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test3440,"public void test3440() throws Throwable {
+    URL uRL0 = MockURL.getHttpExample();
+    Connection connection0 = HttpConnection.connect(uRL0);
+    Connection connection1 = connection0.referrer(""user-agent"");
+    assertSame(connection1, connection0);
+}",0,
+project,0,test3541,"public void test3541() throws Throwable {
+    URI uRI0 = MockURI.aFileURI;
+    URL uRL0 = MockURI.toURL(uRI0);
+    Connection connection0 = HttpConnection.connect(uRL0);
+    Connection connection1 = connection0.header(""Content-Encoding"", ""4p-ijQ'56@U6dQ"");
+    assertSame(connection1, connection0);
+}",0,
+project,0,test3749,"public void test3749() throws Throwable {
+    URI uRI0 = MockURI.aFileURI;
+    URL uRL0 = MockURI.toURL(uRI0);
+    Connection connection0 = HttpConnection.connect(uRL0);
+    Connection.Method connection_Method0 = Connection.Method.PATCH;
+    Connection connection1 = connection0.method(connection_Method0);
+    assertSame(connection1, connection0);
+}",0,
+project,0,test3850,"public void test3850() throws Throwable {
+    URL uRL0 = MockURL.getHttpExample();
+    Connection connection0 = HttpConnection.connect(uRL0);
+    // Undeclared exception!
+    try {
+        connection0.data((String) null, (String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Data key must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test3951,"public void test3951() throws Throwable {
+    URI uRI0 = MockURI.aFileURI;
+    URL uRL0 = MockURI.toURL(uRI0);
+    Connection connection0 = HttpConnection.connect(uRL0);
+    Connection connection1 = connection0.timeout(48);
+    assertSame(connection0, connection1);
+}",0,
+project,0,test4052,"public void test4052() throws Throwable {
+    URI uRI0 = MockURI.aFileURI;
+    URL uRL0 = MockURI.toURL(uRI0);
+    Connection connection0 = HttpConnection.connect(uRL0);
+    // Undeclared exception!
+    try {
+        connection0.postDataCharset(""put"");
+        fail(""Expecting exception: IllegalCharsetNameException"");
+    } catch (IllegalCharsetNameException e) {
+        //
+        // put
+        //
+        verifyException(""org.jsoup.helper.HttpConnection$Request"", e);
+    }
+}",0,
+project,0,test4153,"public void test4153() throws Throwable {
+    // Undeclared exception!
+    try {
+        HttpConnection.connect(""`^Bp5z}U|}|We"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Malformed URL: `^Bp5z}U|}|We
+        //
+        verifyException(""org.jsoup.helper.HttpConnection"", e);
+    }
+}",1,
+project,0,test4254,"public void test4254() throws Throwable {
+    URI uRI0 = MockURI.aFileURI;
+    URL uRL0 = MockURI.toURL(uRI0);
+    Connection connection0 = HttpConnection.connect(uRL0);
+    Connection connection1 = connection0.maxBodySize(48);
+    assertSame(connection0, connection1);
+}",0,
+project,0,test4355,"public void test4355() throws Throwable {
+    URL uRL0 = MockURL.getHttpExample();
+    Connection connection0 = HttpConnection.connect(uRL0);
+    try {
+        connection0.get();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // HTTP error fetching URL
+        //
+        verifyException(""org.jsoup.helper.HttpConnection$Response"", e);
+    }
+}",0,
+project,0,test4456,"public void test4456() throws Throwable {
+    URI uRI0 = MockURI.aFileURI;
+    URL uRL0 = MockURI.toURL(uRI0);
+    Connection connection0 = HttpConnection.connect(uRL0);
+    Connection connection1 = connection0.cookie(""user-agent"", ""[6fu2"");
+    assertSame(connection0, connection1);
+}",0,
+project,0,test4658,"public void test4658() throws Throwable {
+    URL uRL0 = MockURL.getHttpExample();
+    Connection connection0 = HttpConnection.connect(uRL0);
+    Connection connection1 = connection0.validateTLSCertificates(true);
+    assertSame(connection1, connection0);
+}",0,
+project,0,test4759,"public void test4759() throws Throwable {
+    URL uRL0 = MockURL.getHttpExample();
+    Connection connection0 = HttpConnection.connect(uRL0);
+    Connection connection1 = connection0.ignoreContentType(false);
+    assertSame(connection1, connection0);
+}",0,
+project,0,test4860,"public void test4860() throws Throwable {
+    URL uRL0 = MockURL.getHttpExample();
+    Connection connection0 = HttpConnection.connect(uRL0);
+    try {
+        connection0.execute();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // HTTP error fetching URL
+        //
+        verifyException(""org.jsoup.helper.HttpConnection$Response"", e);
+    }
+}",0,
+project,0,test4961,"public void test4961() throws Throwable {
+    URI uRI0 = MockURI.aFileURI;
+    URL uRL0 = MockURI.toURL(uRI0);
+    Connection connection0 = HttpConnection.connect(uRL0);
+    Parser parser0 = Parser.xmlParser();
+    Connection connection1 = connection0.parser(parser0);
+    assertSame(connection0, connection1);
+}",0,
+project,0,test5062,"public void test5062() throws Throwable {
+    URI uRI0 = MockURI.aFileURI;
+    URL uRL0 = MockURI.toURL(uRI0);
+    Connection connection0 = HttpConnection.connect(uRL0);
+    Connection connection1 = connection0.data(""(m)"", ""j?oGgW_86|C"", (InputStream) null);
+    assertSame(connection1, connection0);
+}",0,
+project,0,test5163,"public void test5163() throws Throwable {
+    URL uRL0 = MockURL.getHttpExample();
+    Connection connection0 = HttpConnection.connect(uRL0);
+    try {
+        connection0.post();
+        fail(""Expecting exception: UnknownServiceException"");
+    } catch (UnknownServiceException e) {
+        //
+        // protocol doesn't support output
+        //
+        verifyException(""org.evosuite.runtime.mock.java.net.EvoHttpURLConnection"", e);
+    }
+}",0,
+project,0,test5264,"public void test5264() throws Throwable {
+    URL uRL0 = MockURL.getHttpExample();
+    Connection connection0 = HttpConnection.connect(uRL0);
+    Connection connection1 = connection0.ignoreHttpErrors(true);
+    assertSame(connection1, connection0);
+}",0,
+project,0,test5365,"public void test5365() throws Throwable {
+    URL uRL0 = MockURL.getFileExample();
+    Connection connection0 = HttpConnection.connect(uRL0);
+    Connection connection1 = connection0.followRedirects(false);
+    assertSame(connection1, connection0);
+}",0,

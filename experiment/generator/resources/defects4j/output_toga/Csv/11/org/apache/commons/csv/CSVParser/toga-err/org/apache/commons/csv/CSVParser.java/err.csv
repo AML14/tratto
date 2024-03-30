@@ -1,0 +1,81 @@
+org.apache.commons.csv.CSVParser,@Test(timeout = 4000)
+public void test012() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.RFC4180;
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = "">"";
+    stringArray0[1] = ""string"";
+    CSVFormat cSVFormat1 = cSVFormat0.withHeader(stringArray0);
+    CSVParser cSVParser0 = CSVParser.parse(""string"", cSVFormat1);
+    CSVRecord cSVRecord0 = cSVParser0.nextRecord();
+    cSVRecord0.isConsistent();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+org.apache.commons.csv.CSVParser,@Test(timeout = 4000)
+public void test1213() throws Throwable {
+    PipedReader pipedReader0 = new PipedReader();
+    CSVParser cSVParser0 = null;
+    cSVParser0 = new CSVParser(pipedReader0, (CSVFormat) null);
+},ERROR,java.lang.ClassCastException,class com.github.javaparser.ast.expr.AssignExpr cannot be cast to class com.github.javaparser.ast.expr.MethodCallExpr (com.github.javaparser.ast.expr.AssignExpr and com.github.javaparser.ast.expr.MethodCallExpr are in unnamed module of loader 'app')
+org.apache.commons.csv.CSVParser,@Test(timeout = 4000)
+public void test1718() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.newFormat(',');
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = ""org.apache.commons.csv.CSVParser"";
+    CSVFormat cSVFormat1 = cSVFormat0.withHeader(stringArray0);
+    CSVFormat cSVFormat2 = cSVFormat1.withSkipHeaderRecord(true);
+    PipedReader pipedReader0 = new PipedReader(2097);
+    cSVFormat2.parse(pipedReader0);
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+org.apache.commons.csv.CSVParser,@Test(timeout = 4000)
+public void test1920() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.TDF;
+    String[] stringArray0 = new String[0];
+    CSVFormat cSVFormat1 = cSVFormat0.withHeader(stringArray0);
+    CSVParser cSVParser0 = CSVParser.parse("""", cSVFormat1);
+    Map<String, Integer> map0 = cSVParser0.getHeaderMap();
+    map0.size();
+},ERROR,java.nio.file.NoSuchFileException,/home/star_usit_group/tratto/experiment/generator/resources/defects4j/temp/Csv_11b/src/main/java/java/util/Map.java
+org.apache.commons.csv.CSVParser,@Test(timeout = 4000)
+public void test2021() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.RFC4180;
+    CSVParser cSVParser0 = CSVParser.parse(""string"", cSVFormat0);
+    List<CSVRecord> list0 = cSVParser0.getRecords();
+    list0.isEmpty();
+},ERROR,java.nio.file.NoSuchFileException,/home/star_usit_group/tratto/experiment/generator/resources/defects4j/temp/Csv_11b/src/main/java/java/util/List.java
+org.apache.commons.csv.CSVParser,@Test(timeout = 4000)
+public void test2223() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.RFC4180;
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = "">"";
+    stringArray0[1] = ""string"";
+    CSVFormat cSVFormat1 = cSVFormat0.withHeader(stringArray0);
+    PipedWriter pipedWriter0 = new PipedWriter();
+    PipedReader pipedReader0 = new PipedReader(pipedWriter0, 35);
+    CSVParser cSVParser0 = cSVFormat1.parse(pipedReader0);
+    Map<String, Integer> map0 = cSVParser0.getHeaderMap();
+    map0.size();
+},ERROR,java.nio.file.NoSuchFileException,/home/star_usit_group/tratto/experiment/generator/resources/defects4j/temp/Csv_11b/src/main/java/java/util/Map.java
+org.apache.commons.csv.CSVParser,@Test(timeout = 4000)
+public void test2325() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.EXCEL;
+    CSVFormat cSVFormat1 = cSVFormat0.withNullString(""The delimiter cannot be a line break"");
+    CSVParser cSVParser0 = CSVParser.parse(""The delimiter cannot be a line break"", cSVFormat1);
+    CSVRecord cSVRecord0 = cSVParser0.nextRecord();
+    cSVRecord0.toString();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+org.apache.commons.csv.CSVParser,@Test(timeout = 4000)
+public void test2426() throws Throwable {
+    CSVFormat cSVFormat0 = CSVFormat.RFC4180;
+    CSVFormat cSVFormat1 = cSVFormat0.withNullString(""6+<SO]1CEx]vC4+W#$"");
+    CSVParser cSVParser0 = CSVParser.parse(""string"", cSVFormat1);
+    CSVRecord cSVRecord0 = cSVParser0.nextRecord();
+    cSVRecord0.toString();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+org.apache.commons.csv.CSVParser,@Test(timeout = 4000)
+public void test2729() throws Throwable {
+    File file0 = MockFile.createTempFile(""I1d` Z\""])yE3\"""", ""I1d` Z\""])yE3\"""");
+    Charset charset0 = Charset.defaultCharset();
+    CSVFormat cSVFormat0 = CSVFormat.RFC4180;
+    CSVParser cSVParser0 = CSVParser.parse(file0, charset0, cSVFormat0);
+    List<CSVRecord> list0 = cSVParser0.getRecords();
+    list0.isEmpty();
+},ERROR,java.nio.file.NoSuchFileException,/home/star_usit_group/tratto/experiment/generator/resources/defects4j/temp/Csv_11b/src/main/java/java/util/List.java

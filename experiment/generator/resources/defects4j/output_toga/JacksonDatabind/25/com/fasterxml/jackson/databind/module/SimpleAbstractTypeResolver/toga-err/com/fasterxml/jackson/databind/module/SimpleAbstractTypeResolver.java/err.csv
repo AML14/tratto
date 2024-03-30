@@ -1,0 +1,13 @@
+com.fasterxml.jackson.databind.module.SimpleAbstractTypeResolver,@Test(timeout = 4000)
+public void test45() throws Throwable {
+    SimpleAbstractTypeResolver simpleAbstractTypeResolver0 = new SimpleAbstractTypeResolver();
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<Map> class0 = Map.class;
+    TypeBindings typeBindings0 = new TypeBindings(typeFactory0, class0);
+    Class<ObjectIdResolver> class1 = ObjectIdResolver.class;
+    Class<SimpleObjectIdResolver> class2 = SimpleObjectIdResolver.class;
+    SimpleAbstractTypeResolver simpleAbstractTypeResolver1 = simpleAbstractTypeResolver0.addMapping(class1, (Class<? extends ObjectIdResolver>) class2);
+    CollectionType collectionType0 = CollectionType.construct(class1, typeBindings0.UNBOUND);
+    JavaType javaType0 = simpleAbstractTypeResolver1.findTypeMapping((DeserializationConfig) null, collectionType0);
+    javaType0.isConcrete();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.

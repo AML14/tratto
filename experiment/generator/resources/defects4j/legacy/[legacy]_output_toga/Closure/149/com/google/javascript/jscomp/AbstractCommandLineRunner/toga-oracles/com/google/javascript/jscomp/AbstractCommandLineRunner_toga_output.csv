@@ -1,0 +1,289 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    String[] stringArray0 = new String[0];
+    CommandLineRunner commandLineRunner0 = new CommandLineRunner(stringArray0);
+    Compiler compiler0 = commandLineRunner0.createCompiler();
+    assertNotNull(compiler0);
+}",0,
+project,0,test011,"public void test011() throws Throwable {
+    String[] stringArray0 = new String[0];
+    CommandLineRunner commandLineRunner0 = new CommandLineRunner(stringArray0);
+    CompilerOptions compilerOptions0 = commandLineRunner0.createOptions();
+    JSModule jSModule0 = new JSModule("""");
+    List<String> list0 = jSModule0.getProvides();
+    // Undeclared exception!
+    try {
+        AbstractCommandLineRunner.createDefineReplacements(list0, compilerOptions0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // --define flag syntax invalid:
+        //
+        verifyException(""com.google.javascript.jscomp.AbstractCommandLineRunner"", e);
+    }
+}",0,
+project,0,test022,"public void test022() throws Throwable {
+    String[] stringArray0 = new String[0];
+    CommandLineRunner commandLineRunner0 = new CommandLineRunner(stringArray0);
+    Compiler compiler0 = commandLineRunner0.getCompiler();
+    assertNull(compiler0);
+}",0,assertNotNull(compiler0)
+project,0,test033,"public void test033() throws Throwable {
+    String[] stringArray0 = new String[0];
+    // Undeclared exception!
+    try {
+        CommandLineRunner.main(stringArray0);
+        fail(""Expecting exception: System.SystemExitException"");
+    } catch (System.SystemExitException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.System"", e);
+    }
+}",0,
+project,0,test044,"public void test044() throws Throwable {
+    String[] stringArray0 = new String[0];
+    CommandLineRunner commandLineRunner0 = new CommandLineRunner(stringArray0);
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    commandLineRunner0.setRunOptions(compilerOptions0);
+    assertFalse(compilerOptions0.collapseProperties);
+}",1,
+project,0,test055,"public void test055() throws Throwable {
+    LinkedList<String> linkedList0 = new LinkedList<String>();
+    linkedList0.addLast(""flFa76rE:'%%"");
+    try {
+        AbstractCommandLineRunner.createJsModules(linkedList0, linkedList0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Invalid js file count ''%%' for module: flFa76rE
+        //
+        verifyException(""com.google.javascript.jscomp.AbstractCommandLineRunner"", e);
+    }
+}",1,
+project,0,test077,"public void test077() throws Throwable {
+    String[] stringArray0 = new String[0];
+    CommandLineRunner commandLineRunner0 = new CommandLineRunner(stringArray0);
+    AbstractCommandLineRunner.RunTimeStats abstractCommandLineRunner_RunTimeStats0 = commandLineRunner0.new RunTimeStats();
+    // Undeclared exception!
+    try {
+        commandLineRunner0.exit(abstractCommandLineRunner_RunTimeStats0, (Throwable) null);
+        fail(""Expecting exception: System.SystemExitException"");
+    } catch (System.SystemExitException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.System"", e);
+    }
+}",0,
+project,0,test088,"public void test088() throws Throwable {
+    // Undeclared exception!
+    try {
+        AbstractCommandLineRunner.createJsModules((List<String>) null, (List<String>) null);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",1,
+project,0,test099,"public void test099() throws Throwable {
+    LinkedList<String> linkedList0 = new LinkedList<String>();
+    // Undeclared exception!
+    try {
+        AbstractCommandLineRunner.createJsModules(linkedList0, linkedList0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",1,
+project,0,test1010,"public void test1010() throws Throwable {
+    LinkedList<String> linkedList0 = new LinkedList<String>();
+    linkedList0.addLast(""Expected module wrapperCto have <name>:<wrapper> fdrmat: "");
+    // Undeclared exception!
+    try {
+        AbstractCommandLineRunner.createJsModules(linkedList0, (List<String>) null);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",1,
+project,0,test1111,"public void test1111() throws Throwable {
+    List<String> list0 = ResourceBundle.Control.FORMAT_DEFAULT;
+    try {
+        AbstractCommandLineRunner.createJsModules(list0, list0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Expected 2-4 colon-delimited parts in module spec: java.class
+        //
+        verifyException(""com.google.javascript.jscomp.AbstractCommandLineRunner"", e);
+    }
+}",1,
+project,0,test1212,"public void test1212() throws Throwable {
+    LinkedList<String> linkedList0 = new LinkedList<String>();
+    linkedList0.addFirst(""Expected module wrapperCto have <name>:<wrapper> format: "");
+    try {
+        AbstractCommandLineRunner.createJsModules(linkedList0, linkedList0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Invalid module name: 'Expected module wrapperCto have <name>'
+        //
+        verifyException(""com.google.javascript.jscomp.AbstractCommandLineRunner"", e);
+    }
+}",1,
+project,0,test1313,"public void test1313() throws Throwable {
+    JSModule[] jSModuleArray0 = new JSModule[0];
+    // Undeclared exception!
+    try {
+        AbstractCommandLineRunner.parseModuleWrappers((List<String>) null, jSModuleArray0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",0,
+project,0,test1414,"public void test1414() throws Throwable {
+    String[] stringArray0 = new String[3];
+    stringArray0[0] = ""^2[L9"";
+    stringArray0[1] = """";
+    stringArray0[2] = ""lWwOf%hEJ=N7]!"";
+    CommandLineRunner commandLineRunner0 = new CommandLineRunner(stringArray0);
+    Logger logger0 = Logger.getAnonymousLogger();
+    LoggerErrorManager loggerErrorManager0 = new LoggerErrorManager(logger0);
+    Compiler compiler0 = new Compiler(loggerErrorManager0);
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    Result result0 = compiler0.getResult();
+    JSModule[] jSModuleArray0 = new JSModule[0];
+    int int0 = commandLineRunner0.processResults(result0, jSModuleArray0, compilerOptions0);
+    assertEquals(0, int0);
+}",1,
+project,0,test1515,"public void test1515() throws Throwable {
+    String[] stringArray0 = new String[0];
+    CommandLineRunner commandLineRunner0 = new CommandLineRunner(stringArray0);
+    Logger logger0 = Logger.getAnonymousLogger();
+    LoggerErrorManager loggerErrorManager0 = new LoggerErrorManager(logger0);
+    Compiler compiler0 = new Compiler(loggerErrorManager0);
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    Result result0 = compiler0.getResult();
+    JSModule[] jSModuleArray0 = new JSModule[1];
+    // Undeclared exception!
+    try {
+        commandLineRunner0.processResults(result0, jSModuleArray0, compilerOptions0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.AbstractCommandLineRunner"", e);
+    }
+}",1,
+project,0,test1616,"public void test1616() throws Throwable {
+    LinkedList<String> linkedList0 = new LinkedList<String>();
+    linkedList0.addLast(""Expected module wrapperCto have <name>:<wrapper> fdrmat: "");
+    JSModule[] jSModuleArray0 = new JSModule[0];
+    try {
+        AbstractCommandLineRunner.parseModuleWrappers(linkedList0, jSModuleArray0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Unknown module: 'Expected module wrapperCto have <name>'
+        //
+        verifyException(""com.google.javascript.jscomp.AbstractCommandLineRunner"", e);
+    }
+}",1,
+project,0,test1717,"public void test1717() throws Throwable {
+    List<String> list0 = PhaseOptimizer.OPTIMAL_ORDER;
+    JSModule[] jSModuleArray0 = new JSModule[0];
+    try {
+        AbstractCommandLineRunner.parseModuleWrappers(list0, jSModuleArray0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Expected module wrapper to have <name>:<wrapper> format: removeUnreachableCode
+        //
+        verifyException(""com.google.javascript.jscomp.AbstractCommandLineRunner"", e);
+    }
+}",0,
+project,0,test1818,"public void test1818() throws Throwable {
+    PipedWriter pipedWriter0 = new PipedWriter();
+    Compiler compiler0 = new Compiler();
+    try {
+        AbstractCommandLineRunner.writeOutput(pipedWriter0, compiler0, ""/dev/null"", ""N"", ""/dev/null"");
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Pipe not connected
+        //
+        verifyException(""java.io.PipedWriter"", e);
+    }
+}",0,
+project,0,test2122,"public void test2122() throws Throwable {
+    String[] stringArray0 = new String[0];
+    CommandLineRunner commandLineRunner0 = new CommandLineRunner(stringArray0);
+    Logger logger0 = Logger.getLogger("""");
+    LoggerErrorManager loggerErrorManager0 = new LoggerErrorManager(logger0);
+    Compiler compiler0 = new Compiler(loggerErrorManager0);
+    JSSourceFile jSSourceFile0 = JSSourceFile.fromFile("""");
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    Result result0 = compiler0.compile(jSSourceFile0, jSSourceFile0, compilerOptions0);
+    JSModule[] jSModuleArray0 = new JSModule[3];
+    int int0 = commandLineRunner0.processResults(result0, jSModuleArray0, compilerOptions0);
+    assertEquals(1, int0);
+}",0,
+project,0,test2223,"public void test2223() throws Throwable {
+    String[] stringArray0 = new String[0];
+    Logger logger0 = Logger.getAnonymousLogger();
+    LoggerErrorManager loggerErrorManager0 = new LoggerErrorManager(logger0);
+    Compiler compiler0 = new Compiler(loggerErrorManager0);
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    Result result0 = compiler0.getResult();
+    CommandLineRunner commandLineRunner0 = new CommandLineRunner(stringArray0);
+    // Undeclared exception!
+    try {
+        commandLineRunner0.processResults(result0, (JSModule[]) null, compilerOptions0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.AbstractCommandLineRunner"", e);
+    }
+}",1,
+project,0,test2324,"public void test2324() throws Throwable {
+    String string0 = ""@?Rci3\\uD;yo#tLR's"";
+    JSModule jSModule0 = new JSModule(string0);
+    String[] stringArray0 = new String[6];
+    stringArray0[0] = string0;
+    stringArray0[1] = ""required \""{0\"" namesace not provided yet"";
+    stringArray0[2] = ""required \""{0\"" namesace not provided yet"";
+    stringArray0[3] = string0;
+    stringArray0[4] = ""required \""{0\"" namesace not provided yet"";
+    stringArray0[5] = ""required \""{0\"" namesace not provided yet"";
+    CommandLineRunner commandLineRunner0 = new CommandLineRunner(stringArray0);
+    String string1 = commandLineRunner0.expandManifest(jSModule0);
+    assertNull(string1);
+}",0,assertNotNull(string1)
+project,0,test2425,"public void test2425() throws Throwable {
+    List<String> list0 = ResourceBundle.Control.FORMAT_PROPERTIES;
+    // Undeclared exception!
+    try {
+        AbstractCommandLineRunner.createDefineReplacements(list0, (CompilerOptions) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.AbstractCommandLineRunner"", e);
+    }
+}",0,

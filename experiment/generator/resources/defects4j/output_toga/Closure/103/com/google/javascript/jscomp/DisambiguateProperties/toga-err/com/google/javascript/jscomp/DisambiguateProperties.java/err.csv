@@ -1,0 +1,10 @@
+com.google.javascript.jscomp.DisambiguateProperties,@Test(timeout = 4000)
+public void test1111() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    DisambiguateProperties<JSType> disambiguateProperties0 = DisambiguateProperties.forJSTypeSystem(compiler0);
+    TightenTypes tightenTypes0 = new TightenTypes(compiler0);
+    JSTypeRegistry jSTypeRegistry0 = tightenTypes0.getTypeRegistry();
+    NamedType namedType0 = new NamedType(jSTypeRegistry0, ""TightenTypes pass appears to be stuck in an infinite loop."", ""TightenTypes pass appears to be stuck in an infinite loop."", 18, 44);
+    NamedType namedType1 = (NamedType) disambiguateProperties0.getTypeWithProperty(""Not declared as a type name"", namedType0);
+    namedType1.isStringValueType();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.

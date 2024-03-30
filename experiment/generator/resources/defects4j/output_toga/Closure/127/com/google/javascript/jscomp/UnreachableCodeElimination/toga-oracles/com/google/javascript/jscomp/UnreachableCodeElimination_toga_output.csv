@@ -1,0 +1,15 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test00,"public void test00() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    UnreachableCodeElimination unreachableCodeElimination0 = new UnreachableCodeElimination(compiler0, true);
+    // Undeclared exception!
+    try {
+        unreachableCodeElimination0.process((Node) null, (Node) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.ControlFlowAnalysis"", e);
+    }
+}",0,

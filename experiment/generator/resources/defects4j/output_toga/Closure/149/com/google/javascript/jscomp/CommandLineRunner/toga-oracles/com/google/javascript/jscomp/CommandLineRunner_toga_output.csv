@@ -1,0 +1,59 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test00,"public void test00() throws Throwable {
+    String[] stringArray0 = new String[0];
+    // Undeclared exception!
+    try {
+        CommandLineRunner.main(stringArray0);
+        fail(""Expecting exception: System.SystemExitException"");
+    } catch (System.SystemExitException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.System"", e);
+    }
+}",0,
+project,0,test11,"public void test11() throws Throwable {
+    String[] stringArray0 = new String[0];
+    CommandLineRunner commandLineRunner0 = new CommandLineRunner(stringArray0);
+    commandLineRunner0.createCompiler();
+    assertTrue(commandLineRunner0.shouldRunCompiler());
+}",0,assertTrue(commandLineRunner0.shouldRunCompiler())
+project,0,test22,"public void test22() throws Throwable {
+    String[] stringArray0 = new String[0];
+    CommandLineRunner commandLineRunner0 = new CommandLineRunner(stringArray0, (PrintStream) null, (PrintStream) null);
+    assertTrue(commandLineRunner0.shouldRunCompiler());
+}",0,assertFalse(commandLineRunner0.shouldRunCompiler())
+project,0,test33,"public void test33() throws Throwable {
+    String[] stringArray0 = new String[1];
+    stringArray0[0] = ""AZm[miAtF$["";
+    // Undeclared exception!
+    try {
+        CommandLineRunner.main(stringArray0);
+        fail(""Expecting exception: System.SystemExitException"");
+    } catch (System.SystemExitException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.System"", e);
+    }
+}",0,
+project,0,test44,"public void test44() throws Throwable {
+    String[] stringArray0 = new String[1];
+    stringArray0[0] = ""--A="";
+    // Undeclared exception!
+    try {
+        CommandLineRunner.main(stringArray0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // No match found
+        //
+        verifyException(""java.util.regex.Matcher"", e);
+    }
+}",0,
+project,0,test55,"public void test55() throws Throwable {
+    String[] stringArray0 = new String[0];
+    CommandLineRunner commandLineRunner0 = new CommandLineRunner(stringArray0);
+    CompilerOptions compilerOptions0 = commandLineRunner0.createOptions();
+    assertFalse(compilerOptions0.generatePseudoNames);
+}",0,

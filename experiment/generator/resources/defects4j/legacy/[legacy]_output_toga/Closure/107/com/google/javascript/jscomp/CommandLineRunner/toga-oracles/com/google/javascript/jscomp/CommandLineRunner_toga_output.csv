@@ -1,0 +1,68 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test00,"public void test00() throws Throwable {
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""P/*M@?%1k_0 TALCB"");
+    CommandLineRunner commandLineRunner0 = null;
+    try {
+        commandLineRunner0 = new CommandLineRunner((String[]) null, mockPrintStream0, mockPrintStream0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.CommandLineRunner"", e);
+    }
+}",0,
+project,0,test11,"public void test11() throws Throwable {
+    String[] stringArray0 = new String[1];
+    stringArray0[0] = ""Unexpected Node subclass."";
+    // Undeclared exception!
+    try {
+        CommandLineRunner.main(stringArray0);
+        fail(""Expecting exception: NoSuchElementException"");
+    } catch (NoSuchElementException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.LinkedList"", e);
+    }
+}",0,
+project,0,test22,"public void test22() throws Throwable {
+    String[] stringArray0 = new String[1];
+    stringArray0[0] = ""-A="";
+    // Undeclared exception!
+    try {
+        CommandLineRunner.main(stringArray0);
+        fail(""Expecting exception: NoSuchElementException"");
+    } catch (NoSuchElementException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.LinkedList"", e);
+    }
+}",0,
+project,0,test33,"public void test33() throws Throwable {
+    String[] stringArray0 = new String[5];
+    stringArray0[0] = ""--A="";
+    // Undeclared exception!
+    try {
+        CommandLineRunner.main(stringArray0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // No match found
+        //
+        verifyException(""java.util.regex.Matcher"", e);
+    }
+}",0,
+project,0,test44,"public void test44() throws Throwable {
+    // Undeclared exception!
+    try {
+        CommandLineRunner.getDefaultExterns();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",0,

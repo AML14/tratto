@@ -1,0 +1,1304 @@
+focal_method,test_prefix,docstring
+"@Override
+public Object deserializeKey(String key, DeserializationContext ctxt) throws IOException {
+    if (key == null) {
+        // is this even legal call?
+        return null;
+    }
+    try {
+        Object result = _parse(key, ctxt);
+        if (result != null) {
+            return result;
+        }
+    } catch (Exception re) {
+        throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation: "" + re.getMessage());
+    }
+    if (_keyClass.isEnum() && ctxt.getConfig().isEnabled(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL)) {
+        return null;
+    }
+    throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation"");
+}","public void test011() throws Throwable {
+    Class<URL> class0 = URL.class;
+    StdKeyDeserializer stdKeyDeserializer0 = StdKeyDeserializer.forType(class0);
+    // Undeclared exception!
+    try {
+        stdKeyDeserializer0.deserializeKey(""\""aS"", (DeserializationContext) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdKeyDeserializer"", e);
+    }
+}",""
+"@Override
+public Object deserializeKey(String key, DeserializationContext ctxt) throws IOException {
+    if (key == null) {
+        // is this even legal call?
+        return null;
+    }
+    try {
+        Object result = _parse(key, ctxt);
+        if (result != null) {
+            return result;
+        }
+    } catch (Exception re) {
+        throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation: "" + re.getMessage());
+    }
+    if (_keyClass.isEnum() && ctxt.getConfig().isEnabled(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL)) {
+        return null;
+    }
+    throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation"");
+}","public void test022() throws Throwable {
+    Class<Byte> class0 = Byte.class;
+    StdKeyDeserializer stdKeyDeserializer0 = StdKeyDeserializer.forType(class0);
+    Object object0 = stdKeyDeserializer0.deserializeKey(""6"", (DeserializationContext) null);
+    assertNotNull(object0);
+}",""
+"@Override
+public Object deserializeKey(String key, DeserializationContext ctxt) throws IOException {
+    if (key == null) {
+        // is this even legal call?
+        return null;
+    }
+    try {
+        Object result = _parse(key, ctxt);
+        if (result != null) {
+            return result;
+        }
+    } catch (Exception re) {
+        throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation: "" + re.getMessage());
+    }
+    if (_keyClass.isEnum() && ctxt.getConfig().isEnabled(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL)) {
+        return null;
+    }
+    throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation"");
+}","public void test034() throws Throwable {
+    Class<Long> class0 = Long.class;
+    StdKeyDeserializer stdKeyDeserializer0 = StdKeyDeserializer.forType(class0);
+    // Undeclared exception!
+    try {
+        stdKeyDeserializer0.deserializeKey(""A^WsIn2+b`ow<"", (DeserializationContext) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdKeyDeserializer"", e);
+    }
+}",""
+"@Override
+public Object deserializeKey(String key, DeserializationContext ctxt) throws IOException {
+    if (key == null) {
+        // is this even legal call?
+        return null;
+    }
+    try {
+        Object result = _parse(key, ctxt);
+        if (result != null) {
+            return result;
+        }
+    } catch (Exception re) {
+        throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation: "" + re.getMessage());
+    }
+    if (_keyClass.isEnum() && ctxt.getConfig().isEnabled(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL)) {
+        return null;
+    }
+    throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation"");
+}","public void test045() throws Throwable {
+    Class<Double> class0 = Double.class;
+    StdKeyDeserializer stdKeyDeserializer0 = StdKeyDeserializer.forType(class0);
+    // Undeclared exception!
+    try {
+        stdKeyDeserializer0.deserializeKey(""y,x:cRCbsP;n"", (DeserializationContext) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdKeyDeserializer"", e);
+    }
+}",""
+"public Class<?> getKeyClass() {
+    return _keyClass;
+}","public void test056() throws Throwable {
+    Class<Calendar> class0 = Calendar.class;
+    StdKeyDeserializer.StringKD stdKeyDeserializer_StringKD0 = StdKeyDeserializer.StringKD.forType(class0);
+    Class<?> class1 = stdKeyDeserializer_StringKD0.getKeyClass();
+    assertNotNull(class1);
+}",""
+"public static StdKeyDeserializer forType(Class<?> raw) {
+    int kind;
+    // first common types:
+    if (raw == String.class || raw == Object.class) {
+        return StringKD.forType(raw);
+    } else if (raw == UUID.class) {
+        kind = TYPE_UUID;
+    } else if (raw == Integer.class) {
+        kind = TYPE_INT;
+    } else if (raw == Long.class) {
+        kind = TYPE_LONG;
+    } else if (raw == Date.class) {
+        kind = TYPE_DATE;
+    } else if (raw == Calendar.class) {
+        kind = TYPE_CALENDAR;
+        // then less common ones...
+    } else if (raw == Boolean.class) {
+        kind = TYPE_BOOLEAN;
+    } else if (raw == Byte.class) {
+        kind = TYPE_BYTE;
+    } else if (raw == Character.class) {
+        kind = TYPE_CHAR;
+    } else if (raw == Short.class) {
+        kind = TYPE_SHORT;
+    } else if (raw == Float.class) {
+        kind = TYPE_FLOAT;
+    } else if (raw == Double.class) {
+        kind = TYPE_DOUBLE;
+    } else if (raw == URI.class) {
+        kind = TYPE_URI;
+    } else if (raw == URL.class) {
+        kind = TYPE_URL;
+    } else if (raw == Class.class) {
+        kind = TYPE_CLASS;
+    } else if (raw == Locale.class) {
+        FromStringDeserializer<?> deser = FromStringDeserializer.findDeserializer(Locale.class);
+        return new StdKeyDeserializer(TYPE_LOCALE, raw, deser);
+    } else if (raw == Currency.class) {
+        FromStringDeserializer<?> deser = FromStringDeserializer.findDeserializer(Currency.class);
+        return new StdKeyDeserializer(TYPE_CURRENCY, raw, deser);
+    } else {
+        return null;
+    }
+    return new StdKeyDeserializer(kind, raw);
+}","public void test0911() throws Throwable {
+    Class<String> class0 = String.class;
+    StdKeyDeserializer stdKeyDeserializer0 = StdKeyDeserializer.forType(class0);
+    assertEquals(8, StdKeyDeserializer.TYPE_DOUBLE);
+}",""
+"public static StdKeyDeserializer forType(Class<?> raw) {
+    int kind;
+    // first common types:
+    if (raw == String.class || raw == Object.class) {
+        return StringKD.forType(raw);
+    } else if (raw == UUID.class) {
+        kind = TYPE_UUID;
+    } else if (raw == Integer.class) {
+        kind = TYPE_INT;
+    } else if (raw == Long.class) {
+        kind = TYPE_LONG;
+    } else if (raw == Date.class) {
+        kind = TYPE_DATE;
+    } else if (raw == Calendar.class) {
+        kind = TYPE_CALENDAR;
+        // then less common ones...
+    } else if (raw == Boolean.class) {
+        kind = TYPE_BOOLEAN;
+    } else if (raw == Byte.class) {
+        kind = TYPE_BYTE;
+    } else if (raw == Character.class) {
+        kind = TYPE_CHAR;
+    } else if (raw == Short.class) {
+        kind = TYPE_SHORT;
+    } else if (raw == Float.class) {
+        kind = TYPE_FLOAT;
+    } else if (raw == Double.class) {
+        kind = TYPE_DOUBLE;
+    } else if (raw == URI.class) {
+        kind = TYPE_URI;
+    } else if (raw == URL.class) {
+        kind = TYPE_URL;
+    } else if (raw == Class.class) {
+        kind = TYPE_CLASS;
+    } else if (raw == Locale.class) {
+        FromStringDeserializer<?> deser = FromStringDeserializer.findDeserializer(Locale.class);
+        return new StdKeyDeserializer(TYPE_LOCALE, raw, deser);
+    } else if (raw == Currency.class) {
+        FromStringDeserializer<?> deser = FromStringDeserializer.findDeserializer(Currency.class);
+        return new StdKeyDeserializer(TYPE_CURRENCY, raw, deser);
+    } else {
+        return null;
+    }
+    return new StdKeyDeserializer(kind, raw);
+}","public void test1012() throws Throwable {
+    Class<Object> class0 = Object.class;
+    StdKeyDeserializer stdKeyDeserializer0 = StdKeyDeserializer.forType(class0);
+    assertEquals(4, StdKeyDeserializer.TYPE_CHAR);
+}",""
+"protected Object _parse(String key, DeserializationContext ctxt) throws Exception {
+    switch(_kind) {
+        case TYPE_BOOLEAN:
+            if (""true"".equals(key)) {
+                return Boolean.TRUE;
+            }
+            if (""false"".equals(key)) {
+                return Boolean.FALSE;
+            }
+            throw ctxt.weirdKeyException(_keyClass, key, ""value not 'true' or 'false'"");
+        case TYPE_BYTE:
+            {
+                int value = _parseInt(key);
+                // as per [JACKSON-804], allow range up to 255, inclusive
+                if (value < Byte.MIN_VALUE || value > 255) {
+                    throw ctxt.weirdKeyException(_keyClass, key, ""overflow, value can not be represented as 8-bit value"");
+                }
+                return Byte.valueOf((byte) value);
+            }
+        case TYPE_SHORT:
+            {
+                int value = _parseInt(key);
+                if (value < Short.MIN_VALUE || value > Short.MAX_VALUE) {
+                    throw ctxt.weirdKeyException(_keyClass, key, ""overflow, value can not be represented as 16-bit value"");
+                }
+                return Short.valueOf((short) value);
+            }
+        case TYPE_CHAR:
+            if (key.length() == 1) {
+                return Character.valueOf(key.charAt(0));
+            }
+            throw ctxt.weirdKeyException(_keyClass, key, ""can only convert 1-character Strings"");
+        case TYPE_INT:
+            return _parseInt(key);
+        case TYPE_LONG:
+            return _parseLong(key);
+        case TYPE_FLOAT:
+            // Bounds/range checks would be tricky here, so let's not bother even trying...
+            return Float.valueOf((float) _parseDouble(key));
+        case TYPE_DOUBLE:
+            return _parseDouble(key);
+        case TYPE_LOCALE:
+            try {
+                return _deser._deserialize(key, ctxt);
+            } catch (IOException e) {
+                throw ctxt.weirdKeyException(_keyClass, key, ""unable to parse key as locale"");
+            }
+        case TYPE_CURRENCY:
+            try {
+                return _deser._deserialize(key, ctxt);
+            } catch (IOException e) {
+                throw ctxt.weirdKeyException(_keyClass, key, ""unable to parse key as currency"");
+            }
+        case TYPE_DATE:
+            return ctxt.parseDate(key);
+        case TYPE_CALENDAR:
+            java.util.Date date = ctxt.parseDate(key);
+            return (date == null) ? null : ctxt.constructCalendar(date);
+        case TYPE_UUID:
+            return UUID.fromString(key);
+        case TYPE_URI:
+            return URI.create(key);
+        case TYPE_URL:
+            return new URL(key);
+        case TYPE_CLASS:
+            try {
+                return ctxt.findClass(key);
+            } catch (Exception e) {
+                throw ctxt.weirdKeyException(_keyClass, key, ""unable to parse key as Class"");
+            }
+    }
+    return null;
+}","public void test1214() throws Throwable {
+    Class<Integer> class0 = Integer.class;
+    StdKeyDeserializer stdKeyDeserializer0 = StdKeyDeserializer.forType(class0);
+    try {
+        stdKeyDeserializer0._parse(""unable to parse key as Class"", (DeserializationContext) null);
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // For input string: \""unable to parse key as Class\""
+        //
+        verifyException(""java.lang.NumberFormatException"", e);
+    }
+}",""
+"@Override
+public Object deserializeKey(String key, DeserializationContext ctxt) throws IOException {
+    if (key == null) {
+        // is this even legal call?
+        return null;
+    }
+    try {
+        Object result = _parse(key, ctxt);
+        if (result != null) {
+            return result;
+        }
+    } catch (Exception re) {
+        throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation: "" + re.getMessage());
+    }
+    if (_keyClass.isEnum() && ctxt.getConfig().isEnabled(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL)) {
+        return null;
+    }
+    throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation"");
+}","public void test1315() throws Throwable {
+    Class<Date> class0 = Date.class;
+    StdKeyDeserializer stdKeyDeserializer0 = StdKeyDeserializer.forType(class0);
+    // Undeclared exception!
+    try {
+        stdKeyDeserializer0.deserializeKey(""com.fasterxml.jackson.databind.deser.std.StdKeyDeserializer$StringCtorKeyDeserializer"", (DeserializationContext) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdKeyDeserializer"", e);
+    }
+}",""
+"@Override
+public Object deserializeKey(String key, DeserializationContext ctxt) throws IOException {
+    if (key == null) {
+        // is this even legal call?
+        return null;
+    }
+    try {
+        Object result = _parse(key, ctxt);
+        if (result != null) {
+            return result;
+        }
+    } catch (Exception re) {
+        throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation: "" + re.getMessage());
+    }
+    if (_keyClass.isEnum() && ctxt.getConfig().isEnabled(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL)) {
+        return null;
+    }
+    throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation"");
+}","public void test1416() throws Throwable {
+    Class<Calendar> class0 = Calendar.class;
+    StdKeyDeserializer stdKeyDeserializer0 = StdKeyDeserializer.forType(class0);
+    // Undeclared exception!
+    try {
+        stdKeyDeserializer0.deserializeKey(""6"", (DeserializationContext) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdKeyDeserializer"", e);
+    }
+}",""
+"@Override
+public Object deserializeKey(String key, DeserializationContext ctxt) throws IOException {
+    if (key == null) {
+        // is this even legal call?
+        return null;
+    }
+    try {
+        Object result = _parse(key, ctxt);
+        if (result != null) {
+            return result;
+        }
+    } catch (Exception re) {
+        throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation: "" + re.getMessage());
+    }
+    if (_keyClass.isEnum() && ctxt.getConfig().isEnabled(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL)) {
+        return null;
+    }
+    throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation"");
+}","public void test1517() throws Throwable {
+    Class<Boolean> class0 = Boolean.class;
+    StdKeyDeserializer stdKeyDeserializer0 = StdKeyDeserializer.forType(class0);
+    // Undeclared exception!
+    try {
+        stdKeyDeserializer0.deserializeKey(""}1d3(?=D%i"", (DeserializationContext) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdKeyDeserializer"", e);
+    }
+}",""
+"public static StdKeyDeserializer forType(Class<?> raw) {
+    int kind;
+    // first common types:
+    if (raw == String.class || raw == Object.class) {
+        return StringKD.forType(raw);
+    } else if (raw == UUID.class) {
+        kind = TYPE_UUID;
+    } else if (raw == Integer.class) {
+        kind = TYPE_INT;
+    } else if (raw == Long.class) {
+        kind = TYPE_LONG;
+    } else if (raw == Date.class) {
+        kind = TYPE_DATE;
+    } else if (raw == Calendar.class) {
+        kind = TYPE_CALENDAR;
+        // then less common ones...
+    } else if (raw == Boolean.class) {
+        kind = TYPE_BOOLEAN;
+    } else if (raw == Byte.class) {
+        kind = TYPE_BYTE;
+    } else if (raw == Character.class) {
+        kind = TYPE_CHAR;
+    } else if (raw == Short.class) {
+        kind = TYPE_SHORT;
+    } else if (raw == Float.class) {
+        kind = TYPE_FLOAT;
+    } else if (raw == Double.class) {
+        kind = TYPE_DOUBLE;
+    } else if (raw == URI.class) {
+        kind = TYPE_URI;
+    } else if (raw == URL.class) {
+        kind = TYPE_URL;
+    } else if (raw == Class.class) {
+        kind = TYPE_CLASS;
+    } else if (raw == Locale.class) {
+        FromStringDeserializer<?> deser = FromStringDeserializer.findDeserializer(Locale.class);
+        return new StdKeyDeserializer(TYPE_LOCALE, raw, deser);
+    } else if (raw == Currency.class) {
+        FromStringDeserializer<?> deser = FromStringDeserializer.findDeserializer(Currency.class);
+        return new StdKeyDeserializer(TYPE_CURRENCY, raw, deser);
+    } else {
+        return null;
+    }
+    return new StdKeyDeserializer(kind, raw);
+}","public void test1618() throws Throwable {
+    Class<Character> class0 = Character.class;
+    StdKeyDeserializer stdKeyDeserializer0 = StdKeyDeserializer.forType(class0);
+    assertNotNull(stdKeyDeserializer0);
+}",""
+"@Override
+public Object deserializeKey(String key, DeserializationContext ctxt) throws IOException {
+    if (key == null) {
+        // is this even legal call?
+        return null;
+    }
+    try {
+        Object result = _parse(key, ctxt);
+        if (result != null) {
+            return result;
+        }
+    } catch (Exception re) {
+        throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation: "" + re.getMessage());
+    }
+    if (_keyClass.isEnum() && ctxt.getConfig().isEnabled(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL)) {
+        return null;
+    }
+    throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation"");
+}","public void test1619() throws Throwable {
+    Class<Character> class0 = Character.class;
+    StdKeyDeserializer stdKeyDeserializer0 = StdKeyDeserializer.forType(class0);
+    Object object0 = stdKeyDeserializer0.deserializeKey(""h"", (DeserializationContext) null);
+    assertNotNull(object0);
+}",""
+"@Override
+public Object deserializeKey(String key, DeserializationContext ctxt) throws IOException {
+    if (key == null) {
+        // is this even legal call?
+        return null;
+    }
+    try {
+        Object result = _parse(key, ctxt);
+        if (result != null) {
+            return result;
+        }
+    } catch (Exception re) {
+        throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation: "" + re.getMessage());
+    }
+    if (_keyClass.isEnum() && ctxt.getConfig().isEnabled(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL)) {
+        return null;
+    }
+    throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation"");
+}","public void test1721() throws Throwable {
+    Class<Short> class0 = Short.class;
+    StdKeyDeserializer stdKeyDeserializer0 = StdKeyDeserializer.forType(class0);
+    Object object0 = stdKeyDeserializer0.deserializeKey(""6"", (DeserializationContext) null);
+    assertEquals((short) 6, object0);
+}",""
+"@Override
+public Object deserializeKey(String key, DeserializationContext ctxt) throws IOException {
+    if (key == null) {
+        // is this even legal call?
+        return null;
+    }
+    try {
+        Object result = _parse(key, ctxt);
+        if (result != null) {
+            return result;
+        }
+    } catch (Exception re) {
+        throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation: "" + re.getMessage());
+    }
+    if (_keyClass.isEnum() && ctxt.getConfig().isEnabled(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL)) {
+        return null;
+    }
+    throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation"");
+}","public void test1823() throws Throwable {
+    Class<Float> class0 = Float.class;
+    StdKeyDeserializer stdKeyDeserializer0 = StdKeyDeserializer.forType(class0);
+    // Undeclared exception!
+    try {
+        stdKeyDeserializer0.deserializeKey("":00.000"", (DeserializationContext) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdKeyDeserializer"", e);
+    }
+}",""
+"protected Object _parse(String key, DeserializationContext ctxt) throws Exception {
+    switch(_kind) {
+        case TYPE_BOOLEAN:
+            if (""true"".equals(key)) {
+                return Boolean.TRUE;
+            }
+            if (""false"".equals(key)) {
+                return Boolean.FALSE;
+            }
+            throw ctxt.weirdKeyException(_keyClass, key, ""value not 'true' or 'false'"");
+        case TYPE_BYTE:
+            {
+                int value = _parseInt(key);
+                // as per [JACKSON-804], allow range up to 255, inclusive
+                if (value < Byte.MIN_VALUE || value > 255) {
+                    throw ctxt.weirdKeyException(_keyClass, key, ""overflow, value can not be represented as 8-bit value"");
+                }
+                return Byte.valueOf((byte) value);
+            }
+        case TYPE_SHORT:
+            {
+                int value = _parseInt(key);
+                if (value < Short.MIN_VALUE || value > Short.MAX_VALUE) {
+                    throw ctxt.weirdKeyException(_keyClass, key, ""overflow, value can not be represented as 16-bit value"");
+                }
+                return Short.valueOf((short) value);
+            }
+        case TYPE_CHAR:
+            if (key.length() == 1) {
+                return Character.valueOf(key.charAt(0));
+            }
+            throw ctxt.weirdKeyException(_keyClass, key, ""can only convert 1-character Strings"");
+        case TYPE_INT:
+            return _parseInt(key);
+        case TYPE_LONG:
+            return _parseLong(key);
+        case TYPE_FLOAT:
+            // Bounds/range checks would be tricky here, so let's not bother even trying...
+            return Float.valueOf((float) _parseDouble(key));
+        case TYPE_DOUBLE:
+            return _parseDouble(key);
+        case TYPE_LOCALE:
+            try {
+                return _deser._deserialize(key, ctxt);
+            } catch (IOException e) {
+                throw ctxt.weirdKeyException(_keyClass, key, ""unable to parse key as locale"");
+            }
+        case TYPE_CURRENCY:
+            try {
+                return _deser._deserialize(key, ctxt);
+            } catch (IOException e) {
+                throw ctxt.weirdKeyException(_keyClass, key, ""unable to parse key as currency"");
+            }
+        case TYPE_DATE:
+            return ctxt.parseDate(key);
+        case TYPE_CALENDAR:
+            java.util.Date date = ctxt.parseDate(key);
+            return (date == null) ? null : ctxt.constructCalendar(date);
+        case TYPE_UUID:
+            return UUID.fromString(key);
+        case TYPE_URI:
+            return URI.create(key);
+        case TYPE_URL:
+            return new URL(key);
+        case TYPE_CLASS:
+            try {
+                return ctxt.findClass(key);
+            } catch (Exception e) {
+                throw ctxt.weirdKeyException(_keyClass, key, ""unable to parse key as Class"");
+            }
+    }
+    return null;
+}","public void test1924() throws Throwable {
+    Class<URI> class0 = URI.class;
+    StdKeyDeserializer stdKeyDeserializer0 = StdKeyDeserializer.forType(class0);
+    try {
+        stdKeyDeserializer0._parse(""QZ+AE{Dx@ko6i"", (DeserializationContext) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Illegal character in path at index 5: QZ+AE{Dx@ko6i
+        //
+        verifyException(""java.net.URI"", e);
+    }
+}",""
+"@Override
+public Object deserializeKey(String key, DeserializationContext ctxt) throws IOException {
+    if (key == null) {
+        // is this even legal call?
+        return null;
+    }
+    try {
+        Object result = _parse(key, ctxt);
+        if (result != null) {
+            return result;
+        }
+    } catch (Exception re) {
+        throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation: "" + re.getMessage());
+    }
+    if (_keyClass.isEnum() && ctxt.getConfig().isEnabled(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL)) {
+        return null;
+    }
+    throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation"");
+}","public void test2126() throws Throwable {
+    Class<Currency> class0 = Currency.class;
+    StdKeyDeserializer stdKeyDeserializer0 = StdKeyDeserializer.forType(class0);
+    Object object0 = stdKeyDeserializer0.deserializeKey((String) null, (DeserializationContext) null);
+    assertNull(object0);
+}",""
+"public static StdKeyDeserializer forType(Class<?> raw) {
+    int kind;
+    // first common types:
+    if (raw == String.class || raw == Object.class) {
+        return StringKD.forType(raw);
+    } else if (raw == UUID.class) {
+        kind = TYPE_UUID;
+    } else if (raw == Integer.class) {
+        kind = TYPE_INT;
+    } else if (raw == Long.class) {
+        kind = TYPE_LONG;
+    } else if (raw == Date.class) {
+        kind = TYPE_DATE;
+    } else if (raw == Calendar.class) {
+        kind = TYPE_CALENDAR;
+        // then less common ones...
+    } else if (raw == Boolean.class) {
+        kind = TYPE_BOOLEAN;
+    } else if (raw == Byte.class) {
+        kind = TYPE_BYTE;
+    } else if (raw == Character.class) {
+        kind = TYPE_CHAR;
+    } else if (raw == Short.class) {
+        kind = TYPE_SHORT;
+    } else if (raw == Float.class) {
+        kind = TYPE_FLOAT;
+    } else if (raw == Double.class) {
+        kind = TYPE_DOUBLE;
+    } else if (raw == URI.class) {
+        kind = TYPE_URI;
+    } else if (raw == URL.class) {
+        kind = TYPE_URL;
+    } else if (raw == Class.class) {
+        kind = TYPE_CLASS;
+    } else if (raw == Locale.class) {
+        FromStringDeserializer<?> deser = FromStringDeserializer.findDeserializer(Locale.class);
+        return new StdKeyDeserializer(TYPE_LOCALE, raw, deser);
+    } else if (raw == Currency.class) {
+        FromStringDeserializer<?> deser = FromStringDeserializer.findDeserializer(Currency.class);
+        return new StdKeyDeserializer(TYPE_CURRENCY, raw, deser);
+    } else {
+        return null;
+    }
+    return new StdKeyDeserializer(kind, raw);
+}","public void test2227() throws Throwable {
+    Class<ShortNode> class0 = ShortNode.class;
+    StdKeyDeserializer stdKeyDeserializer0 = StdKeyDeserializer.forType(class0);
+    assertNull(stdKeyDeserializer0);
+}",""
+"@Override
+public Object deserializeKey(String key, DeserializationContext ctxt) throws IOException {
+    if (key == null) {
+        // is this even legal call?
+        return null;
+    }
+    try {
+        Object result = _parse(key, ctxt);
+        if (result != null) {
+            return result;
+        }
+    } catch (Exception re) {
+        throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation: "" + re.getMessage());
+    }
+    if (_keyClass.isEnum() && ctxt.getConfig().isEnabled(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL)) {
+        return null;
+    }
+    throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation"");
+}","public void test2328() throws Throwable {
+    Class<Long> class0 = Long.class;
+    StdKeyDeserializer stdKeyDeserializer0 = new StdKeyDeserializer((-3087), class0);
+    // Undeclared exception!
+    try {
+        stdKeyDeserializer0.deserializeKey(""true"", (DeserializationContext) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdKeyDeserializer"", e);
+    }
+}",""
+"@Override
+public Object deserializeKey(String key, DeserializationContext ctxt) throws IOException {
+    if (key == null) {
+        // is this even legal call?
+        return null;
+    }
+    try {
+        Object result = _parse(key, ctxt);
+        if (result != null) {
+            return result;
+        }
+    } catch (Exception re) {
+        throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation: "" + re.getMessage());
+    }
+    if (_keyClass.isEnum() && ctxt.getConfig().isEnabled(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL)) {
+        return null;
+    }
+    throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation"");
+}","public void test2429() throws Throwable {
+    Class<TextStyle> class0 = TextStyle.class;
+    StdKeyDeserializer stdKeyDeserializer0 = new StdKeyDeserializer((-2029), class0);
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig((BaseSettings) null, (SubtypeResolver) null, (SimpleMixInResolver) null, rootNameLookup0);
+    InjectableValues.Std injectableValues_Std0 = new InjectableValues.Std();
+    DefaultDeserializationContext defaultDeserializationContext0 = defaultDeserializationContext_Impl0.createInstance(deserializationConfig0, (JsonParser) null, injectableValues_Std0);
+    try {
+        stdKeyDeserializer0.deserializeKey(""com.fasterxmljackson.databind.util.ArrayIterator"", defaultDeserializationContext0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Can not construct Map key of type java.time.format.TextStyle from String (\""com.fasterxmljackson.databind.util.ArrayIterator\""): not a valid representation
+        //
+        verifyException(""com.fasterxml.jackson.databind.exc.InvalidFormatException"", e);
+    }
+}",""
+"@Override
+public Object deserializeKey(String key, DeserializationContext ctxt) throws IOException {
+    if (key == null) {
+        // is this even legal call?
+        return null;
+    }
+    try {
+        Object result = _parse(key, ctxt);
+        if (result != null) {
+            return result;
+        }
+    } catch (Exception re) {
+        throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation: "" + re.getMessage());
+    }
+    if (_keyClass.isEnum() && ctxt.getConfig().isEnabled(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL)) {
+        return null;
+    }
+    throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation"");
+}","public void test2530() throws Throwable {
+    Class<Calendar> class0 = Calendar.class;
+    StdKeyDeserializer stdKeyDeserializer0 = new StdKeyDeserializer(15, class0);
+    // Undeclared exception!
+    try {
+        stdKeyDeserializer0.deserializeKey(""L"", (DeserializationContext) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdKeyDeserializer"", e);
+    }
+}",""
+"@Override
+public Object deserializeKey(String key, DeserializationContext ctxt) throws IOException {
+    if (key == null) {
+        // is this even legal call?
+        return null;
+    }
+    try {
+        Object result = _parse(key, ctxt);
+        if (result != null) {
+            return result;
+        }
+    } catch (Exception re) {
+        throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation: "" + re.getMessage());
+    }
+    if (_keyClass.isEnum() && ctxt.getConfig().isEnabled(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL)) {
+        return null;
+    }
+    throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation"");
+}","public void test2631() throws Throwable {
+    Class<Currency> class0 = Currency.class;
+    StdKeyDeserializer stdKeyDeserializer0 = StdKeyDeserializer.forType(class0);
+    // Undeclared exception!
+    try {
+        stdKeyDeserializer0.deserializeKey(""coN.fasterxml.jackson.databind.deser.std.StdKeyDeserializer$StringCtorKeyDeserializer"", (DeserializationContext) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdKeyDeserializer"", e);
+    }
+}",""
+"@Override
+public Object deserializeKey(String key, DeserializationContext ctxt) throws IOException {
+    if (key == null) {
+        // is this even legal call?
+        return null;
+    }
+    try {
+        Object result = _parse(key, ctxt);
+        if (result != null) {
+            return result;
+        }
+    } catch (Exception re) {
+        throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation: "" + re.getMessage());
+    }
+    if (_keyClass.isEnum() && ctxt.getConfig().isEnabled(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL)) {
+        return null;
+    }
+    throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation"");
+}","public void test2732() throws Throwable {
+    Class<Boolean> class0 = Boolean.class;
+    StdKeyDeserializer stdKeyDeserializer0 = StdKeyDeserializer.forType(class0);
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    Object object0 = stdKeyDeserializer0.deserializeKey(""true"", defaultDeserializationContext_Impl0);
+    assertEquals(true, object0);
+}",""
+"protected Object _parse(String key, DeserializationContext ctxt) throws Exception {
+    switch(_kind) {
+        case TYPE_BOOLEAN:
+            if (""true"".equals(key)) {
+                return Boolean.TRUE;
+            }
+            if (""false"".equals(key)) {
+                return Boolean.FALSE;
+            }
+            throw ctxt.weirdKeyException(_keyClass, key, ""value not 'true' or 'false'"");
+        case TYPE_BYTE:
+            {
+                int value = _parseInt(key);
+                // as per [JACKSON-804], allow range up to 255, inclusive
+                if (value < Byte.MIN_VALUE || value > 255) {
+                    throw ctxt.weirdKeyException(_keyClass, key, ""overflow, value can not be represented as 8-bit value"");
+                }
+                return Byte.valueOf((byte) value);
+            }
+        case TYPE_SHORT:
+            {
+                int value = _parseInt(key);
+                if (value < Short.MIN_VALUE || value > Short.MAX_VALUE) {
+                    throw ctxt.weirdKeyException(_keyClass, key, ""overflow, value can not be represented as 16-bit value"");
+                }
+                return Short.valueOf((short) value);
+            }
+        case TYPE_CHAR:
+            if (key.length() == 1) {
+                return Character.valueOf(key.charAt(0));
+            }
+            throw ctxt.weirdKeyException(_keyClass, key, ""can only convert 1-character Strings"");
+        case TYPE_INT:
+            return _parseInt(key);
+        case TYPE_LONG:
+            return _parseLong(key);
+        case TYPE_FLOAT:
+            // Bounds/range checks would be tricky here, so let's not bother even trying...
+            return Float.valueOf((float) _parseDouble(key));
+        case TYPE_DOUBLE:
+            return _parseDouble(key);
+        case TYPE_LOCALE:
+            try {
+                return _deser._deserialize(key, ctxt);
+            } catch (IOException e) {
+                throw ctxt.weirdKeyException(_keyClass, key, ""unable to parse key as locale"");
+            }
+        case TYPE_CURRENCY:
+            try {
+                return _deser._deserialize(key, ctxt);
+            } catch (IOException e) {
+                throw ctxt.weirdKeyException(_keyClass, key, ""unable to parse key as currency"");
+            }
+        case TYPE_DATE:
+            return ctxt.parseDate(key);
+        case TYPE_CALENDAR:
+            java.util.Date date = ctxt.parseDate(key);
+            return (date == null) ? null : ctxt.constructCalendar(date);
+        case TYPE_UUID:
+            return UUID.fromString(key);
+        case TYPE_URI:
+            return URI.create(key);
+        case TYPE_URL:
+            return new URL(key);
+        case TYPE_CLASS:
+            try {
+                return ctxt.findClass(key);
+            } catch (Exception e) {
+                throw ctxt.weirdKeyException(_keyClass, key, ""unable to parse key as Class"");
+            }
+    }
+    return null;
+}","public void test2833() throws Throwable {
+    Class<Boolean> class0 = Boolean.class;
+    StdKeyDeserializer stdKeyDeserializer0 = StdKeyDeserializer.forType(class0);
+    Object object0 = stdKeyDeserializer0._parse(""false"", (DeserializationContext) null);
+    assertNotNull(object0);
+}",""
+"@Override
+public Object deserializeKey(String key, DeserializationContext ctxt) throws IOException {
+    if (key == null) {
+        // is this even legal call?
+        return null;
+    }
+    try {
+        Object result = _parse(key, ctxt);
+        if (result != null) {
+            return result;
+        }
+    } catch (Exception re) {
+        throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation: "" + re.getMessage());
+    }
+    if (_keyClass.isEnum() && ctxt.getConfig().isEnabled(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL)) {
+        return null;
+    }
+    throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation"");
+}","public void test2935() throws Throwable {
+    Class<Byte> class0 = Byte.class;
+    StdKeyDeserializer stdKeyDeserializer0 = StdKeyDeserializer.forType(class0);
+    // Undeclared exception!
+    try {
+        stdKeyDeserializer0.deserializeKey(""-685"", (DeserializationContext) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdKeyDeserializer"", e);
+    }
+}",""
+"@Override
+public Object deserializeKey(String key, DeserializationContext ctxt) throws IOException {
+    if (key == null) {
+        // is this even legal call?
+        return null;
+    }
+    try {
+        Object result = _parse(key, ctxt);
+        if (result != null) {
+            return result;
+        }
+    } catch (Exception re) {
+        throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation: "" + re.getMessage());
+    }
+    if (_keyClass.isEnum() && ctxt.getConfig().isEnabled(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL)) {
+        return null;
+    }
+    throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation"");
+}","public void test3036() throws Throwable {
+    Class<Byte> class0 = Byte.class;
+    StdKeyDeserializer stdKeyDeserializer0 = StdKeyDeserializer.forType(class0);
+    // Undeclared exception!
+    try {
+        stdKeyDeserializer0.deserializeKey(""3412"", (DeserializationContext) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdKeyDeserializer"", e);
+    }
+}",""
+"protected Object _parse(String key, DeserializationContext ctxt) throws Exception {
+    switch(_kind) {
+        case TYPE_BOOLEAN:
+            if (""true"".equals(key)) {
+                return Boolean.TRUE;
+            }
+            if (""false"".equals(key)) {
+                return Boolean.FALSE;
+            }
+            throw ctxt.weirdKeyException(_keyClass, key, ""value not 'true' or 'false'"");
+        case TYPE_BYTE:
+            {
+                int value = _parseInt(key);
+                // as per [JACKSON-804], allow range up to 255, inclusive
+                if (value < Byte.MIN_VALUE || value > 255) {
+                    throw ctxt.weirdKeyException(_keyClass, key, ""overflow, value can not be represented as 8-bit value"");
+                }
+                return Byte.valueOf((byte) value);
+            }
+        case TYPE_SHORT:
+            {
+                int value = _parseInt(key);
+                if (value < Short.MIN_VALUE || value > Short.MAX_VALUE) {
+                    throw ctxt.weirdKeyException(_keyClass, key, ""overflow, value can not be represented as 16-bit value"");
+                }
+                return Short.valueOf((short) value);
+            }
+        case TYPE_CHAR:
+            if (key.length() == 1) {
+                return Character.valueOf(key.charAt(0));
+            }
+            throw ctxt.weirdKeyException(_keyClass, key, ""can only convert 1-character Strings"");
+        case TYPE_INT:
+            return _parseInt(key);
+        case TYPE_LONG:
+            return _parseLong(key);
+        case TYPE_FLOAT:
+            // Bounds/range checks would be tricky here, so let's not bother even trying...
+            return Float.valueOf((float) _parseDouble(key));
+        case TYPE_DOUBLE:
+            return _parseDouble(key);
+        case TYPE_LOCALE:
+            try {
+                return _deser._deserialize(key, ctxt);
+            } catch (IOException e) {
+                throw ctxt.weirdKeyException(_keyClass, key, ""unable to parse key as locale"");
+            }
+        case TYPE_CURRENCY:
+            try {
+                return _deser._deserialize(key, ctxt);
+            } catch (IOException e) {
+                throw ctxt.weirdKeyException(_keyClass, key, ""unable to parse key as currency"");
+            }
+        case TYPE_DATE:
+            return ctxt.parseDate(key);
+        case TYPE_CALENDAR:
+            java.util.Date date = ctxt.parseDate(key);
+            return (date == null) ? null : ctxt.constructCalendar(date);
+        case TYPE_UUID:
+            return UUID.fromString(key);
+        case TYPE_URI:
+            return URI.create(key);
+        case TYPE_URL:
+            return new URL(key);
+        case TYPE_CLASS:
+            try {
+                return ctxt.findClass(key);
+            } catch (Exception e) {
+                throw ctxt.weirdKeyException(_keyClass, key, ""unable to parse key as Class"");
+            }
+    }
+    return null;
+}","public void test3137() throws Throwable {
+    Class<Short> class0 = Short.class;
+    StdKeyDeserializer stdKeyDeserializer0 = StdKeyDeserializer.forType(class0);
+    try {
+        stdKeyDeserializer0._parse(""-36285"", (DeserializationContext) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdKeyDeserializer"", e);
+    }
+}",""
+"protected Object _parse(String key, DeserializationContext ctxt) throws Exception {
+    switch(_kind) {
+        case TYPE_BOOLEAN:
+            if (""true"".equals(key)) {
+                return Boolean.TRUE;
+            }
+            if (""false"".equals(key)) {
+                return Boolean.FALSE;
+            }
+            throw ctxt.weirdKeyException(_keyClass, key, ""value not 'true' or 'false'"");
+        case TYPE_BYTE:
+            {
+                int value = _parseInt(key);
+                // as per [JACKSON-804], allow range up to 255, inclusive
+                if (value < Byte.MIN_VALUE || value > 255) {
+                    throw ctxt.weirdKeyException(_keyClass, key, ""overflow, value can not be represented as 8-bit value"");
+                }
+                return Byte.valueOf((byte) value);
+            }
+        case TYPE_SHORT:
+            {
+                int value = _parseInt(key);
+                if (value < Short.MIN_VALUE || value > Short.MAX_VALUE) {
+                    throw ctxt.weirdKeyException(_keyClass, key, ""overflow, value can not be represented as 16-bit value"");
+                }
+                return Short.valueOf((short) value);
+            }
+        case TYPE_CHAR:
+            if (key.length() == 1) {
+                return Character.valueOf(key.charAt(0));
+            }
+            throw ctxt.weirdKeyException(_keyClass, key, ""can only convert 1-character Strings"");
+        case TYPE_INT:
+            return _parseInt(key);
+        case TYPE_LONG:
+            return _parseLong(key);
+        case TYPE_FLOAT:
+            // Bounds/range checks would be tricky here, so let's not bother even trying...
+            return Float.valueOf((float) _parseDouble(key));
+        case TYPE_DOUBLE:
+            return _parseDouble(key);
+        case TYPE_LOCALE:
+            try {
+                return _deser._deserialize(key, ctxt);
+            } catch (IOException e) {
+                throw ctxt.weirdKeyException(_keyClass, key, ""unable to parse key as locale"");
+            }
+        case TYPE_CURRENCY:
+            try {
+                return _deser._deserialize(key, ctxt);
+            } catch (IOException e) {
+                throw ctxt.weirdKeyException(_keyClass, key, ""unable to parse key as currency"");
+            }
+        case TYPE_DATE:
+            return ctxt.parseDate(key);
+        case TYPE_CALENDAR:
+            java.util.Date date = ctxt.parseDate(key);
+            return (date == null) ? null : ctxt.constructCalendar(date);
+        case TYPE_UUID:
+            return UUID.fromString(key);
+        case TYPE_URI:
+            return URI.create(key);
+        case TYPE_URL:
+            return new URL(key);
+        case TYPE_CLASS:
+            try {
+                return ctxt.findClass(key);
+            } catch (Exception e) {
+                throw ctxt.weirdKeyException(_keyClass, key, ""unable to parse key as Class"");
+            }
+    }
+    return null;
+}","public void test3238() throws Throwable {
+    Class<Short> class0 = Short.class;
+    StdKeyDeserializer stdKeyDeserializer0 = StdKeyDeserializer.forType(class0);
+    try {
+        stdKeyDeserializer0._parse(""93685"", (DeserializationContext) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdKeyDeserializer"", e);
+    }
+}",""
+"protected Object _parse(String key, DeserializationContext ctxt) throws Exception {
+    switch(_kind) {
+        case TYPE_BOOLEAN:
+            if (""true"".equals(key)) {
+                return Boolean.TRUE;
+            }
+            if (""false"".equals(key)) {
+                return Boolean.FALSE;
+            }
+            throw ctxt.weirdKeyException(_keyClass, key, ""value not 'true' or 'false'"");
+        case TYPE_BYTE:
+            {
+                int value = _parseInt(key);
+                // as per [JACKSON-804], allow range up to 255, inclusive
+                if (value < Byte.MIN_VALUE || value > 255) {
+                    throw ctxt.weirdKeyException(_keyClass, key, ""overflow, value can not be represented as 8-bit value"");
+                }
+                return Byte.valueOf((byte) value);
+            }
+        case TYPE_SHORT:
+            {
+                int value = _parseInt(key);
+                if (value < Short.MIN_VALUE || value > Short.MAX_VALUE) {
+                    throw ctxt.weirdKeyException(_keyClass, key, ""overflow, value can not be represented as 16-bit value"");
+                }
+                return Short.valueOf((short) value);
+            }
+        case TYPE_CHAR:
+            if (key.length() == 1) {
+                return Character.valueOf(key.charAt(0));
+            }
+            throw ctxt.weirdKeyException(_keyClass, key, ""can only convert 1-character Strings"");
+        case TYPE_INT:
+            return _parseInt(key);
+        case TYPE_LONG:
+            return _parseLong(key);
+        case TYPE_FLOAT:
+            // Bounds/range checks would be tricky here, so let's not bother even trying...
+            return Float.valueOf((float) _parseDouble(key));
+        case TYPE_DOUBLE:
+            return _parseDouble(key);
+        case TYPE_LOCALE:
+            try {
+                return _deser._deserialize(key, ctxt);
+            } catch (IOException e) {
+                throw ctxt.weirdKeyException(_keyClass, key, ""unable to parse key as locale"");
+            }
+        case TYPE_CURRENCY:
+            try {
+                return _deser._deserialize(key, ctxt);
+            } catch (IOException e) {
+                throw ctxt.weirdKeyException(_keyClass, key, ""unable to parse key as currency"");
+            }
+        case TYPE_DATE:
+            return ctxt.parseDate(key);
+        case TYPE_CALENDAR:
+            java.util.Date date = ctxt.parseDate(key);
+            return (date == null) ? null : ctxt.constructCalendar(date);
+        case TYPE_UUID:
+            return UUID.fromString(key);
+        case TYPE_URI:
+            return URI.create(key);
+        case TYPE_URL:
+            return new URL(key);
+        case TYPE_CLASS:
+            try {
+                return ctxt.findClass(key);
+            } catch (Exception e) {
+                throw ctxt.weirdKeyException(_keyClass, key, ""unable to parse key as Class"");
+            }
+    }
+    return null;
+}","public void test3339() throws Throwable {
+    Class<Character> class0 = Character.class;
+    StdKeyDeserializer stdKeyDeserializer0 = StdKeyDeserializer.forType(class0);
+    try {
+        stdKeyDeserializer0._parse("""", (DeserializationContext) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdKeyDeserializer"", e);
+    }
+}",""
+"@Override
+public short shortValue() {
+    return _value;
+}","public void test3642() throws Throwable {
+    Class<Float> class0 = Float.class;
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    ShortNode shortNode0 = ShortNode.valueOf((short) 117);
+    JsonDeserializer<ShortNode> jsonDeserializer0 = (JsonDeserializer<ShortNode>) mock(JsonDeserializer.class, new ViolatedAssumptionAnswer());
+    doReturn(shortNode0).when(jsonDeserializer0).deserialize(any(com.fasterxml.jackson.core.JsonParser.class), any(com.fasterxml.jackson.databind.DeserializationContext.class));
+    StdKeyDeserializer.DelegatingKD stdKeyDeserializer_DelegatingKD0 = new StdKeyDeserializer.DelegatingKD(class0, jsonDeserializer0);
+    ShortNode shortNode1 = (ShortNode) stdKeyDeserializer_DelegatingKD0.deserializeKey(""73"", defaultDeserializationContext_Impl0);
+    assertEquals((short) 117, shortNode1.shortValue());
+}",""
+"@Override
+public Object deserializeKey(String key, DeserializationContext ctxt) throws IOException {
+    if (key == null) {
+        // is this even legal call?
+        return null;
+    }
+    try {
+        Object result = _parse(key, ctxt);
+        if (result != null) {
+            return result;
+        }
+    } catch (Exception re) {
+        throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation: "" + re.getMessage());
+    }
+    if (_keyClass.isEnum() && ctxt.getConfig().isEnabled(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL)) {
+        return null;
+    }
+    throw ctxt.weirdKeyException(_keyClass, key, ""not a valid representation"");
+}","public void test3743() throws Throwable {
+    Class<TextStyle> class0 = TextStyle.class;
+    EnumResolver enumResolver0 = EnumResolver.constructUnsafeUsingToString(class0);
+    StdKeyDeserializer.EnumKD stdKeyDeserializer_EnumKD0 = new StdKeyDeserializer.EnumKD(enumResolver0, (AnnotatedMethod) null);
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig((BaseSettings) null, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    InjectableValues.Std injectableValues_Std0 = new InjectableValues.Std();
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    DefaultDeserializationContext defaultDeserializationContext0 = defaultDeserializationContext_Impl0.createInstance(deserializationConfig0, (JsonParser) null, injectableValues_Std0);
+    try {
+        stdKeyDeserializer_EnumKD0.deserializeKey(""&a^r$^H.RvI'Y5Y"", defaultDeserializationContext0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Can not construct Map key of type java.time.format.TextStyle from String (\""&a^r$^H.RvI'Y5Y\""): not a valid representation: Can not construct Map key of type java.time.format.TextStyle from String (\""&a^r$^H.RvI'Y5Y\""): not one of values excepted for Enum class: [SHORT_STANDALONE, NARROW_STANDALONE, FULL_STANDALONE, FULL, NARROW, SHORT]
+        //
+        verifyException(""com.fasterxml.jackson.databind.exc.InvalidFormatException"", e);
+    }
+}",""

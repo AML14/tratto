@@ -1,0 +1,31 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test00,"public void test00() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""var t;"");
+    CollapseProperties collapseProperties0 = new CollapseProperties(compiler0, false, true);
+    collapseProperties0.process(node0, node0);
+    assertEquals(1, node0.getChildCount());
+}",0,"assertEquals(0, node0.getChildCount())"
+project,0,test11,"public void test11() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""var t;"");
+    CollapseProperties collapseProperties0 = new CollapseProperties(compiler0, true, true);
+    collapseProperties0.process(node0, node0);
+    assertEquals(0, compiler0.getWarningCount());
+}",0,"assertEquals(0, compiler0.getWarningCount())"
+project,0,test22,"public void test22() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    CollapseProperties collapseProperties0 = new CollapseProperties(compiler0, false, false);
+    // Undeclared exception!
+    try {
+        collapseProperties0.process((Node) null, (Node) null);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // null
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",0,

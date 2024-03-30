@@ -1,0 +1,2682 @@
+focal_method,test_prefix,docstring
+"public void setDateTime(final int year, final int monthOfYear, final int dayOfMonth, final int hourOfDay, final int minuteOfHour, final int secondOfMinute, final int millisOfSecond) {
+    long instant = getChronology().getDateTimeMillis(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+    setMillis(instant);
+}","public void test0000() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime();
+    // Undeclared exception!
+    try {
+        mutableDateTime0.setDateTime(0, 0, (-1302), 5, (-1794), (-134), 2735);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value -1794 for minuteOfHour must be in the range [0,59]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}","/**
+ * Set the date and time from fields.
+ *
+ * @param year  the year
+ * @param monthOfYear  the month of the year
+ * @param dayOfMonth  the day of the month
+ * @param hourOfDay  the hour of the day
+ * @param minuteOfHour  the minute of the hour
+ * @param secondOfMinute  the second of the minute
+ * @param millisOfSecond  the millisecond of the second
+ * @throws IllegalArgumentException if the value is invalid
+ */"
+"public void setDateTime(final int year, final int monthOfYear, final int dayOfMonth, final int hourOfDay, final int minuteOfHour, final int secondOfMinute, final int millisOfSecond) {
+    long instant = getChronology().getDateTimeMillis(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+    setMillis(instant);
+}","public void test0011() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    MutableDateTime mutableDateTime0 = MutableDateTime.now(dateTimeZone0);
+    // Undeclared exception!
+    try {
+        mutableDateTime0.setDateTime(1, (-529), 4, 1, 0, 2892, 0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 2892 for secondOfMinute must be in the range [0,59]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}","/**
+ * Set the date and time from fields.
+ *
+ * @param year  the year
+ * @param monthOfYear  the month of the year
+ * @param dayOfMonth  the day of the month
+ * @param hourOfDay  the hour of the day
+ * @param minuteOfHour  the minute of the hour
+ * @param secondOfMinute  the second of the minute
+ * @param millisOfSecond  the millisecond of the second
+ * @throws IllegalArgumentException if the value is invalid
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test0022() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime();
+    mutableDateTime0.addSeconds(0);
+    assertEquals(1392409281320L, mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test0033() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime();
+    mutableDateTime0.addMinutes((-1886));
+    assertEquals(1392296121320L, mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test0044() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance();
+    MutableDateTime mutableDateTime0 = new MutableDateTime((Chronology) buddhistChronology0);
+    mutableDateTime0.addDays(1);
+    assertEquals(1392495681320L, mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test0055() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime((-373L));
+    mutableDateTime0.addMonths(1);
+    assertEquals(2678399627L, mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test0066() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstanceUTC();
+    Instant instant0 = gJChronology0.getGregorianCutover();
+    MutableDateTime mutableDateTime0 = instant0.toMutableDateTime();
+    mutableDateTime0.addWeekyears(3);
+    assertEquals((-12124944000000L), mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test0077() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime();
+    mutableDateTime0.setWeekyear(3230);
+    assertEquals(39765759681320L, mutableDateTime0.getMillis());
+}",""
+"public void setZoneRetainFields(DateTimeZone newZone) {
+    newZone = DateTimeUtils.getZone(newZone);
+    DateTimeZone originalZone = DateTimeUtils.getZone(getZone());
+    if (newZone == originalZone) {
+        return;
+    }
+    long millis = originalZone.getMillisKeepLocal(newZone, getMillis());
+    // set via this class not super
+    setChronology(getChronology().withZone(newZone));
+    setMillis(millis);
+}","public void test01111() throws Throwable {
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstance();
+    LenientChronology lenientChronology0 = LenientChronology.getInstance(islamicChronology0);
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(1);
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance(dateTimeZone0);
+    DateTimeZone dateTimeZone1 = buddhistChronology0.getZone();
+    Chronology chronology0 = lenientChronology0.withZone(dateTimeZone1);
+    MutableDateTime mutableDateTime0 = new MutableDateTime((-172L), chronology0);
+    mutableDateTime0.setZoneRetainFields(dateTimeZone1);
+    assertSame(dateTimeZone1, dateTimeZone0);
+}","/**
+ * Sets the time zone of the datetime, changing the chronology and millisecond.
+ * <p>
+ * Changing the zone using this method retains the field values.
+ * The millisecond instant is adjusted in the new zone to compensate.
+ * <p>
+ * If the chronology already has this time zone, no change occurs.
+ *
+ * @param newZone  the time zone to use, null means default zone
+ * @see #setZone
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test01213() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstance((DateTimeZone) fixedDateTimeZone0);
+    MutableDateTime mutableDateTime0 = new MutableDateTime((-52L), (Chronology) islamicChronology0);
+    mutableDateTime0.setTime(1, 1, 1, 1);
+    assertEquals((-82738999L), mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test01314() throws Throwable {
+    MutableDateTime mutableDateTime0 = MutableDateTime.now();
+    mutableDateTime0.setSecondOfDay(2247);
+    assertEquals(1392367047320L, mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test01415() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    MutableDateTime mutableDateTime0 = new MutableDateTime((DateTimeZone) fixedDateTimeZone0);
+    mutableDateTime0.setMonthOfYear(4);
+    assertEquals(1397506881320L, mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test01516() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance();
+    MutableDateTime mutableDateTime0 = new MutableDateTime((Chronology) buddhistChronology0);
+    mutableDateTime0.setDayOfMonth(1);
+    assertEquals(1391286081320L, mutableDateTime0.getMillis());
+}",""
+"public static MutableDateTime parse(String str, DateTimeFormatter formatter) {
+    return formatter.parseDateTime(str).toMutableDateTime();
+}","public void test01617() throws Throwable {
+    DateTimePrinter dateTimePrinter0 = mock(DateTimePrinter.class, new ViolatedAssumptionAnswer());
+    DateTimeParser dateTimeParser0 = mock(DateTimeParser.class, new ViolatedAssumptionAnswer());
+    doReturn(236).when(dateTimeParser0).parseInto(any(org.joda.time.format.DateTimeParserBucket.class), anyString(), anyInt());
+    DateTimeFormatter dateTimeFormatter0 = new DateTimeFormatter(dateTimePrinter0, dateTimeParser0);
+    DateTimeFormatter dateTimeFormatter1 = dateTimeFormatter0.withZoneUTC();
+    MutableDateTime mutableDateTime0 = MutableDateTime.parse("""", dateTimeFormatter1);
+    assertEquals(4, MutableDateTime.ROUND_HALF_CEILING);
+}","/**
+ * Parses a {@code MutableDateTime} from the specified string using a formatter.
+ *
+ * @param str  the string to parse, not null
+ * @param formatter  the formatter to use, not null
+ * @since 2.0
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test01718() throws Throwable {
+    DateTimePrinter dateTimePrinter0 = mock(DateTimePrinter.class, new ViolatedAssumptionAnswer());
+    DateTimeParser dateTimeParser0 = mock(DateTimeParser.class, new ViolatedAssumptionAnswer());
+    doReturn(0).when(dateTimeParser0).parseInto(any(org.joda.time.format.DateTimeParserBucket.class), anyString(), anyInt());
+    DateTimeFormatter dateTimeFormatter0 = new DateTimeFormatter(dateTimePrinter0, dateTimeParser0);
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis(10125000);
+    DateTimeFormatter dateTimeFormatter1 = dateTimeFormatter0.withZone(dateTimeZone0);
+    MutableDateTime mutableDateTime0 = MutableDateTime.parse("""", dateTimeFormatter1);
+    assertEquals((-10125000L), mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test01819() throws Throwable {
+    MutableDateTime mutableDateTime0 = MutableDateTime.parse(""2014-02-17T08:00:00.000Z"");
+    assertEquals(1392624000000L, mutableDateTime0.getMillis());
+}",""
+"public static MutableDateTime now(DateTimeZone zone) {
+    if (zone == null) {
+        throw new NullPointerException(""Zone must not be null"");
+    }
+    return new MutableDateTime(zone);
+}","public void test01920() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis(1);
+    DateTimeUtils.MillisProvider dateTimeUtils_MillisProvider0 = mock(DateTimeUtils.MillisProvider.class, new ViolatedAssumptionAnswer());
+    doReturn((-1823L)).when(dateTimeUtils_MillisProvider0).getMillis();
+    DateTimeUtils.setCurrentMillisProvider(dateTimeUtils_MillisProvider0);
+    MutableDateTime mutableDateTime0 = MutableDateTime.now(dateTimeZone0);
+    assertEquals(2, MutableDateTime.ROUND_CEILING);
+}","/**
+ * Obtains a {@code MutableDateTime} set to the current system millisecond time
+ * using <code>ISOChronology</code> in the specified time zone.
+ *
+ * @param zone  the time zone, not null
+ * @return the current date-time, not null
+ * @since 2.0
+ */"
+"public static MutableDateTime now(Chronology chronology) {
+    if (chronology == null) {
+        throw new NullPointerException(""Chronology must not be null"");
+    }
+    return new MutableDateTime(chronology);
+}","public void test02021() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis(1);
+    CopticChronology copticChronology0 = CopticChronology.getInstance(dateTimeZone0, 1);
+    DateTimeUtils.MillisProvider dateTimeUtils_MillisProvider0 = mock(DateTimeUtils.MillisProvider.class, new ViolatedAssumptionAnswer());
+    doReturn(0L).when(dateTimeUtils_MillisProvider0).getMillis();
+    DateTimeUtils.setCurrentMillisProvider(dateTimeUtils_MillisProvider0);
+    MutableDateTime mutableDateTime0 = MutableDateTime.now((Chronology) copticChronology0);
+    assertEquals(0, MutableDateTime.ROUND_NONE);
+}","/**
+ * Obtains a {@code MutableDateTime} set to the current system millisecond time
+ * using the specified chronology.
+ *
+ * @param chronology  the chronology, not null
+ * @return the current date-time, not null
+ * @since 2.0
+ */"
+"public static MutableDateTime now(Chronology chronology) {
+    if (chronology == null) {
+        throw new NullPointerException(""Chronology must not be null"");
+    }
+    return new MutableDateTime(chronology);
+}","public void test02122() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHoursMinutes(3, 2);
+    CopticChronology copticChronology0 = CopticChronology.getInstance(dateTimeZone0, 1);
+    DateTimeUtils.MillisProvider dateTimeUtils_MillisProvider0 = mock(DateTimeUtils.MillisProvider.class, new ViolatedAssumptionAnswer());
+    doReturn((long) 0, (-1L)).when(dateTimeUtils_MillisProvider0).getMillis();
+    DateTimeUtils.setCurrentMillisProvider(dateTimeUtils_MillisProvider0);
+    MutableDateTime.now(dateTimeZone0);
+    MutableDateTime mutableDateTime0 = MutableDateTime.now((Chronology) copticChronology0);
+    assertEquals(0, MutableDateTime.ROUND_NONE);
+}","/**
+ * Obtains a {@code MutableDateTime} set to the current system millisecond time
+ * using the specified chronology.
+ *
+ * @param chronology  the chronology, not null
+ * @return the current date-time, not null
+ * @since 2.0
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Obtains a {@code MutableDateTime} set to the current system millisecond time
+ * using <code>ISOChronology</code> in the default time zone.
+ *
+ * @return the current date-time, not null
+ * @since 2.0
+ */
+public static MutableDateTime now() {
+    return new MutableDateTime();
+}","public void test02223() throws Throwable {
+    DateTimeUtils.MillisProvider dateTimeUtils_MillisProvider0 = mock(DateTimeUtils.MillisProvider.class, new ViolatedAssumptionAnswer());
+    doReturn(0L).when(dateTimeUtils_MillisProvider0).getMillis();
+    DateTimeUtils.setCurrentMillisProvider(dateTimeUtils_MillisProvider0);
+    MutableDateTime mutableDateTime0 = MutableDateTime.now();
+    assertEquals(2, MutableDateTime.ROUND_CEILING);
+}",""
+"public int getRoundingMode() {
+    return iRoundingMode;
+}","public void test02324() throws Throwable {
+    DateTimeUtils.MillisProvider dateTimeUtils_MillisProvider0 = mock(DateTimeUtils.MillisProvider.class, new ViolatedAssumptionAnswer());
+    doReturn((-442L)).when(dateTimeUtils_MillisProvider0).getMillis();
+    DateTimeUtils.setCurrentMillisProvider(dateTimeUtils_MillisProvider0);
+    MutableDateTime mutableDateTime0 = MutableDateTime.now();
+    assertEquals(0, mutableDateTime0.getRoundingMode());
+}","/**
+ * Gets the rounding mode for this instant, returning ROUND_NONE if rounding
+ * is not enabled.
+ *
+ * @return the rounding mode constant
+ */"
+"public int getRoundingMode() {
+    return iRoundingMode;
+}","public void test02425() throws Throwable {
+    TimeZone timeZone0 = TimeZone.getDefault();
+    DateTimeZone dateTimeZone0 = DateTimeZone.forTimeZone(timeZone0);
+    MutableDateTime mutableDateTime0 = new MutableDateTime(0L, dateTimeZone0);
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance(dateTimeZone0);
+    DateTimeField dateTimeField0 = buddhistChronology0.millisOfDay();
+    mutableDateTime0.setRounding(dateTimeField0, 3);
+    mutableDateTime0.getRoundingField();
+    assertEquals(3, mutableDateTime0.getRoundingMode());
+}","/**
+ * Gets the rounding mode for this instant, returning ROUND_NONE if rounding
+ * is not enabled.
+ *
+ * @return the rounding mode constant
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test02526() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    EthiopicChronology ethiopicChronology0 = EthiopicChronology.getInstance(dateTimeZone0);
+    MutableDateTime mutableDateTime0 = new MutableDateTime((Chronology) ethiopicChronology0);
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance();
+    DateTimeField dateTimeField0 = buddhistChronology0.weekOfWeekyear();
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.clockhourOfHalfday();
+    OffsetDateTimeField offsetDateTimeField0 = new OffsetDateTimeField(dateTimeField0, dateTimeFieldType0, 1, 1, 1);
+    mutableDateTime0.setRounding((DateTimeField) offsetDateTimeField0, 1);
+    mutableDateTime0.copy();
+    assertEquals(1392019200000L, mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Clone this object without having to cast the returned object.
+ *
+ * @return a clone of the this object.
+ */
+public MutableDateTime copy() {
+    return (MutableDateTime) clone();
+}","public void test02627() throws Throwable {
+    System.setCurrentTimeMillis(0L);
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    MutableDateTime mutableDateTime0 = MutableDateTime.now(dateTimeZone0);
+    MutableDateTime mutableDateTime1 = mutableDateTime0.copy();
+    assertEquals(4, MutableDateTime.ROUND_HALF_CEILING);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Set the year to the specified value.
+ *
+ * @param year  the year
+ * @throws IllegalArgumentException if the value is invalid
+ */
+public void setYear(final int year) {
+    setMillis(getChronology().year().set(getMillis(), year));
+}","public void test02728() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime();
+    // Undeclared exception!
+    try {
+        mutableDateTime0.setYear(352831696);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 352831696 for year must be in the range [-292275054,292278993]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Set the week of weekyear to the specified value.
+ *
+ * @param weekOfWeekyear the week of the weekyear
+ * @throws IllegalArgumentException if the value is invalid
+ */
+public void setWeekOfWeekyear(final int weekOfWeekyear) {
+    setMillis(getChronology().weekOfWeekyear().set(getMillis(), weekOfWeekyear));
+}","public void test02829() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime();
+    // Undeclared exception!
+    try {
+        mutableDateTime0.setWeekOfWeekyear(317);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 317 for weekOfWeekyear must be in the range [1,52]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",""
+"public void setSecondOfMinute(final int secondOfMinute) {
+    setMillis(getChronology().secondOfMinute().set(getMillis(), secondOfMinute));
+}","public void test02930() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(0);
+    IslamicChronology.LeapYearPatternType islamicChronology_LeapYearPatternType0 = IslamicChronology.LEAP_YEAR_16_BASED;
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstance(dateTimeZone0, islamicChronology_LeapYearPatternType0);
+    MutableDateTime mutableDateTime0 = MutableDateTime.now((Chronology) islamicChronology0);
+    // Undeclared exception!
+    try {
+        mutableDateTime0.setSecondOfMinute((-23));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value -23 for secondOfMinute must be in the range [0,59]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}","/**
+ * Set the second of the minute to the specified value.
+ *
+ * @param secondOfMinute  the second of minute
+ * @throws IllegalArgumentException if the value is invalid
+ */"
+"public void setRounding(DateTimeField field, int mode) {
+    if (field != null && (mode < ROUND_NONE || mode > ROUND_HALF_EVEN)) {
+        throw new IllegalArgumentException(""Illegal rounding mode: "" + mode);
+    }
+    iRoundingField = (mode == ROUND_NONE ? null : field);
+    iRoundingMode = (field == null ? ROUND_NONE : mode);
+    setMillis(getMillis());
+}","public void test03031() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance();
+    DateTimeField dateTimeField0 = buddhistChronology0.weekOfWeekyear();
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.millisOfDay();
+    DividedDateTimeField dividedDateTimeField0 = new DividedDateTimeField(dateTimeField0, dateTimeFieldType0, 5);
+    MutableDateTime mutableDateTime0 = MutableDateTime.parse(""-473"");
+    // Undeclared exception!
+    try {
+        mutableDateTime0.setRounding((DateTimeField) dividedDateTimeField0, 3);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 0 for weekOfWeekyear must be in the range [1,52]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}","/**
+ * Sets the status of rounding to use the specified field and mode.
+ * A null field or mode of ROUND_NONE will disable rounding.
+ * Once set, the instant is then rounded using the new field and mode.
+ * <p>
+ * Enabling rounding will cause all subsequent calls to {@link #setMillis(long)}
+ * to be rounded. This can be used to control the precision of the instant,
+ * for example by setting a rounding field of minuteOfDay, the seconds and
+ * milliseconds will always be zero.
+ *
+ * @param field  rounding field or null to disable
+ * @param mode  rounding mode or ROUND_NONE to disable
+ * @throws IllegalArgumentException if mode is unknown, no exception if field is null
+ */"
+"public void setMinuteOfHour(final int minuteOfHour) {
+    setMillis(getChronology().minuteOfHour().set(getMillis(), minuteOfHour));
+}","public void test03132() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime();
+    // Undeclared exception!
+    try {
+        mutableDateTime0.setMinuteOfHour(1257);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 1257 for minuteOfHour must be in the range [0,59]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}","/**
+ * Set the minute of the hour to the specified value.
+ *
+ * @param minuteOfHour  the minute of hour
+ * @throws IllegalArgumentException if the value is invalid
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Set the minute of the day to the specified value.
+ *
+ * @param minuteOfDay  the minute of day
+ * @throws IllegalArgumentException if the value is invalid
+ */
+public void setMinuteOfDay(final int minuteOfDay) {
+    setMillis(getChronology().minuteOfDay().set(getMillis(), minuteOfDay));
+}","public void test03233() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime(0L);
+    // Undeclared exception!
+    try {
+        mutableDateTime0.setMinuteOfDay((-395));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value -395 for minuteOfDay must be in the range [0,1439]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",""
+"public void setMillisOfSecond(final int millisOfSecond) {
+    setMillis(getChronology().millisOfSecond().set(getMillis(), millisOfSecond));
+}","public void test03334() throws Throwable {
+    MutableDateTime mutableDateTime0 = MutableDateTime.now();
+    // Undeclared exception!
+    try {
+        mutableDateTime0.setMillisOfSecond((-3015));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value -3015 for millisOfSecond must be in the range [0,999]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}","/**
+ * Set the millis of the second to the specified value.
+ *
+ * @param millisOfSecond  the millis of second
+ * @throws IllegalArgumentException if the value is invalid
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Set the millis of the day to the specified value.
+ *
+ * @param millisOfDay  the millis of day
+ * @throws IllegalArgumentException if the value is invalid
+ */
+public void setMillisOfDay(final int millisOfDay) {
+    setMillis(getChronology().millisOfDay().set(getMillis(), millisOfDay));
+}","public void test03435() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime();
+    // Undeclared exception!
+    try {
+        mutableDateTime0.setMillisOfDay((-3739));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value -3739 for millisOfDay must be in the range [0,86399999]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Set the hour of the day to the specified value.
+ *
+ * @param hourOfDay  the hour of day
+ * @throws IllegalArgumentException if the value is invalid
+ */
+public void setHourOfDay(final int hourOfDay) {
+    setMillis(getChronology().hourOfDay().set(getMillis(), hourOfDay));
+}","public void test03536() throws Throwable {
+    MutableDateTime mutableDateTime0 = MutableDateTime.now();
+    // Undeclared exception!
+    try {
+        mutableDateTime0.setHourOfDay(119);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 119 for hourOfDay must be in the range [0,23]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Set the day of year to the specified value.
+ *
+ * @param dayOfYear the day of the year
+ * @throws IllegalArgumentException if the value is invalid
+ */
+public void setDayOfYear(final int dayOfYear) {
+    setMillis(getChronology().dayOfYear().set(getMillis(), dayOfYear));
+}","public void test03637() throws Throwable {
+    MutableDateTime mutableDateTime0 = MutableDateTime.now();
+    // Undeclared exception!
+    try {
+        mutableDateTime0.setDayOfYear(0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 0 for dayOfYear must be in the range [1,365]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",""
+"public void setDayOfWeek(final int dayOfWeek) {
+    setMillis(getChronology().dayOfWeek().set(getMillis(), dayOfWeek));
+}","public void test03738() throws Throwable {
+    MutableDateTime mutableDateTime0 = MutableDateTime.now();
+    // Undeclared exception!
+    try {
+        mutableDateTime0.setDayOfWeek(7678125);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 7678125 for dayOfWeek must be in the range [1,7]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}","/**
+ * Set the day of week to the specified value.
+ *
+ * @param dayOfWeek  the day of the week
+ * @throws IllegalArgumentException if the value is invalid
+ */"
+"public void setDate(final ReadableInstant instant) {
+    long instantMillis = DateTimeUtils.getInstantMillis(instant);
+    if (instant instanceof ReadableDateTime) {
+        ReadableDateTime rdt = (ReadableDateTime) instant;
+        Chronology instantChrono = DateTimeUtils.getChronology(rdt.getChronology());
+        DateTimeZone zone = instantChrono.getZone();
+        if (zone != null) {
+            instantMillis = zone.getMillisKeepLocal(getZone(), instantMillis);
+        }
+    }
+    setDate(instantMillis);
+}","public void test03839() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    MutableDateTime mutableDateTime0 = new MutableDateTime((DateTimeZone) fixedDateTimeZone0);
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstanceUTC();
+    MutableDateTime mutableDateTime1 = mutableDateTime0.toMutableDateTime((Chronology) islamicChronology0);
+    MutableDateTime mutableDateTime2 = MutableDateTime.parse(""-473"");
+    // Undeclared exception!
+    try {
+        mutableDateTime1.setDate((ReadableInstant) mutableDateTime2);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The instant is below the supported minimum of 0001-01-01T00:00:00.000Z (IslamicChronology[UTC])
+        //
+        verifyException(""org.joda.time.chrono.LimitChronology"", e);
+    }
+}","/**
+ * Set the date from another instant.
+ * The time part of this object will be unaffected.
+ * <p>
+ * If the input is a {@code ReadableDateTime} then it is converted to the
+ * same time-zone as this object before using the instant millis.
+ *
+ * @param instant  an instant to copy the date from, time part ignored
+ * @throws IllegalArgumentException if the object is invalid
+ */"
+"public void setDate(final int year, final int monthOfYear, final int dayOfMonth) {
+    Chronology c = getChronology();
+    long instantMidnight = c.getDateTimeMillis(year, monthOfYear, dayOfMonth, 0);
+    setDate(instantMidnight);
+}","public void test03940() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime(0L);
+    // Undeclared exception!
+    try {
+        mutableDateTime0.setDate(292272984, 20, 5);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 20 for monthOfYear must be in the range [1,12]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}","/**
+ * Set the date from fields.
+ * The time part of this object will be unaffected.
+ *
+ * @param year  the year
+ * @param monthOfYear  the month of the year
+ * @param dayOfMonth  the day of the month
+ * @throws IllegalArgumentException if the value is invalid
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Sets the value of one of the fields of the instant, such as hourOfDay.
+ *
+ * @param type  a field type, usually obtained from DateTimeFieldType, not null
+ * @param value  the value to set the field to
+ * @throws IllegalArgumentException if the value is null or invalid
+ */
+public void set(DateTimeFieldType type, int value) {
+    if (type == null) {
+        throw new IllegalArgumentException(""Field must not be null"");
+    }
+    setMillis(type.getField(getChronology()).set(getMillis(), value));
+}","public void test04041() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstance((DateTimeZone) fixedDateTimeZone0);
+    MutableDateTime mutableDateTime0 = new MutableDateTime((-52L), (Chronology) islamicChronology0);
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.secondOfDay();
+    // Undeclared exception!
+    try {
+        mutableDateTime0.set(dateTimeFieldType0, (-3650));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value -3650 for secondOfDay must be in the range [0,86399]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",""
+"public static MutableDateTime parse(String str, DateTimeFormatter formatter) {
+    return formatter.parseDateTime(str).toMutableDateTime();
+}","public void test04142() throws Throwable {
+    DateTimePrinter dateTimePrinter0 = mock(DateTimePrinter.class, new ViolatedAssumptionAnswer());
+    DateTimeFormatter dateTimeFormatter0 = new DateTimeFormatter(dateTimePrinter0, (DateTimeParser) null);
+    // Undeclared exception!
+    try {
+        MutableDateTime.parse(""Field must not be null"", dateTimeFormatter0);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // Parsing not supported
+        //
+        verifyException(""org.joda.time.format.DateTimeFormatter"", e);
+    }
+}","/**
+ * Parses a {@code MutableDateTime} from the specified string using a formatter.
+ *
+ * @param str  the string to parse, not null
+ * @param formatter  the formatter to use, not null
+ * @since 2.0
+ */"
+"public static MutableDateTime parse(String str, DateTimeFormatter formatter) {
+    return formatter.parseDateTime(str).toMutableDateTime();
+}","public void test04243() throws Throwable {
+    // Undeclared exception!
+    try {
+        MutableDateTime.parse("""", (DateTimeFormatter) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.MutableDateTime"", e);
+    }
+}","/**
+ * Parses a {@code MutableDateTime} from the specified string using a formatter.
+ *
+ * @param str  the string to parse, not null
+ * @param formatter  the formatter to use, not null
+ * @since 2.0
+ */"
+"public static MutableDateTime parse(String str, DateTimeFormatter formatter) {
+    return formatter.parseDateTime(str).toMutableDateTime();
+}","public void test04344() throws Throwable {
+    DateTimePrinter dateTimePrinter0 = mock(DateTimePrinter.class, new ViolatedAssumptionAnswer());
+    DateTimeParser dateTimeParser0 = mock(DateTimeParser.class, new ViolatedAssumptionAnswer());
+    doReturn(0).when(dateTimeParser0).parseInto(any(org.joda.time.format.DateTimeParserBucket.class), anyString(), anyInt());
+    DateTimeFormatter dateTimeFormatter0 = new DateTimeFormatter(dateTimePrinter0, dateTimeParser0);
+    // Undeclared exception!
+    try {
+        MutableDateTime.parse("";2=yI7!"", dateTimeFormatter0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid format: \"";2=yI7!\""
+        //
+        verifyException(""org.joda.time.format.DateTimeFormatter"", e);
+    }
+}","/**
+ * Parses a {@code MutableDateTime} from the specified string using a formatter.
+ *
+ * @param str  the string to parse, not null
+ * @param formatter  the formatter to use, not null
+ * @since 2.0
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Parses a {@code MutableDateTime} from the specified string.
+ * <p>
+ * This uses {@link ISODateTimeFormat#dateTimeParser()}.
+ *
+ * @param str  the string to parse, not null
+ * @since 2.0
+ */
+@FromString
+public static MutableDateTime parse(String str) {
+    return parse(str, ISODateTimeFormat.dateTimeParser().withOffsetParsed());
+}","public void test04445() throws Throwable {
+    // Undeclared exception!
+    try {
+        MutableDateTime.parse((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.format.DateTimeFormatterBuilder$CharacterLiteral"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Parses a {@code MutableDateTime} from the specified string.
+ * <p>
+ * This uses {@link ISODateTimeFormat#dateTimeParser()}.
+ *
+ * @param str  the string to parse, not null
+ * @since 2.0
+ */
+@FromString
+public static MutableDateTime parse(String str) {
+    return parse(str, ISODateTimeFormat.dateTimeParser().withOffsetParsed());
+}","public void test04546() throws Throwable {
+    // Undeclared exception!
+    try {
+        MutableDateTime.parse("""");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid format: \""\""
+        //
+        verifyException(""org.joda.time.format.DateTimeFormatter"", e);
+    }
+}",""
+"public void add(DurationFieldType type, int amount) {
+    if (type == null) {
+        throw new IllegalArgumentException(""Field must not be null"");
+    }
+    setMillis(type.getField(getChronology()).add(getMillis(), amount));
+}","public void test04647() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime(0L, (DateTimeZone) null);
+    DurationFieldType durationFieldType0 = DurationFieldType.ERAS_TYPE;
+    // Undeclared exception!
+    try {
+        mutableDateTime0.add(durationFieldType0, (-3966));
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // eras field is unsupported
+        //
+        verifyException(""org.joda.time.field.UnsupportedDurationField"", e);
+    }
+}","/**
+ * Adds to the instant specifying the duration and multiple to add.
+ *
+ * @param type  a field type, usually obtained from DateTimeFieldType, not null
+ * @param amount  the amount to add of this duration
+ * @throws IllegalArgumentException if the value is null or invalid
+ * @throws ArithmeticException if the result exceeds the capacity of the instant
+ */"
+"public MutableDateTime(Object instant, Chronology chronology) {
+    super(instant, DateTimeUtils.getChronology(chronology));
+}","public void test04748() throws Throwable {
+    GregorianChronology gregorianChronology0 = GregorianChronology.getInstance();
+    MutableDateTime mutableDateTime0 = null;
+    try {
+        mutableDateTime0 = new MutableDateTime(gregorianChronology0, gregorianChronology0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // No instant converter found for type: org.joda.time.chrono.GregorianChronology
+        //
+        verifyException(""org.joda.time.convert.ConverterManager"", e);
+    }
+}","/**
+ * Constructs an instance from an Object that represents a datetime,
+ * using the specified chronology.
+ * <p>
+ * If the chronology is null, ISO in the default time zone is used.
+ * Any chronology implied by the object (such as GregorianCalendar does)
+ * is ignored.
+ * <p>
+ * The recognised object types are defined in
+ * {@link org.joda.time.convert.ConverterManager ConverterManager} and
+ * include ReadableInstant, String, Calendar and Date.
+ *
+ * @param instant  the datetime object, null means now
+ * @param chronology  the chronology, null means ISOChronology in default zone
+ * @throws IllegalArgumentException if the instant is invalid
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Constructs an instance from datetime field values
+ * using <code>ISOChronology</code> in the default time zone.
+ *
+ * @param year  the year
+ * @param monthOfYear  the month of the year
+ * @param dayOfMonth  the day of the month
+ * @param hourOfDay  the hour of the day
+ * @param minuteOfHour  the minute of the hour
+ * @param secondOfMinute  the second of the minute
+ * @param millisOfSecond  the millisecond of the second
+ */
+public MutableDateTime(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute, int millisOfSecond) {
+    super(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+}","public void test04849() throws Throwable {
+    MutableDateTime mutableDateTime0 = null;
+    try {
+        mutableDateTime0 = new MutableDateTime(58, 2034, 2034, 0, 64, (-2939), 0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 64 for minuteOfHour must be in the range [0,59]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test04950() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    MutableDateTime mutableDateTime0 = new MutableDateTime((DateTimeZone) fixedDateTimeZone0);
+    Period period0 = Period.weeks((-1140));
+    mutableDateTime0.add((ReadablePeriod) period0, 0);
+    assertEquals(1392409281320L, mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test05051() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime((-1399L));
+    Duration duration0 = new Duration(0L, 3);
+    mutableDateTime0.add((ReadableDuration) duration0, 5);
+    assertEquals((-1384L), mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test05152() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstanceUTC();
+    Instant instant0 = gJChronology0.getGregorianCutover();
+    MutableDateTime mutableDateTime0 = instant0.toMutableDateTime();
+    mutableDateTime0.setMillis((long) 60000);
+    assertEquals(60000L, mutableDateTime0.getMillis());
+}",""
+"public MutableDateTime(Object instant, DateTimeZone zone) {
+    super(instant, zone);
+}","public void test05253() throws Throwable {
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance();
+    DateTimeZone dateTimeZone0 = buddhistChronology0.getZone();
+    MutableDateTime mutableDateTime0 = new MutableDateTime((Object) null, dateTimeZone0);
+    assertEquals(4, MutableDateTime.ROUND_HALF_CEILING);
+}","/**
+ * Constructs an instance from an Object that represents a datetime,
+ * forcing the time zone to that specified.
+ * <p>
+ * If the object implies a chronology (such as GregorianCalendar does),
+ * then that chronology will be used, but with the time zone adjusted.
+ * Otherwise, ISO is used in the specified time zone.
+ * If the specified time zone is null, the default zone is used.
+ * Thus if a GregorianCalendar is passed in, the chronology used will
+ * be GJ, but if a Date is passed in the chronology will be ISO.
+ * <p>
+ * The recognised object types are defined in
+ * {@link org.joda.time.convert.ConverterManager ConverterManager} and
+ * include ReadableInstant, String, Calendar and Date.
+ *
+ * @param instant  the datetime object, null means now
+ * @param zone  the time zone, null means default time zone
+ * @throws IllegalArgumentException if the instant is invalid
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test05354() throws Throwable {
+    DateTimePrinter dateTimePrinter0 = mock(DateTimePrinter.class, new ViolatedAssumptionAnswer());
+    DateTimeParser dateTimeParser0 = mock(DateTimeParser.class, new ViolatedAssumptionAnswer());
+    doReturn(0).when(dateTimeParser0).parseInto(any(org.joda.time.format.DateTimeParserBucket.class), anyString(), anyInt());
+    DateTimeFormatter dateTimeFormatter0 = new DateTimeFormatter(dateTimePrinter0, dateTimeParser0);
+    MutableDateTime mutableDateTime0 = MutableDateTime.parse("""", dateTimeFormatter0);
+    mutableDateTime0.addMillis((-804));
+    assertEquals(28799196L, mutableDateTime0.getMillis());
+}",""
+"public MutableDateTime(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute, int millisOfSecond, Chronology chronology) {
+    super(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond, chronology);
+}","public void test05455() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstance();
+    LenientChronology lenientChronology0 = LenientChronology.getInstance(gJChronology0);
+    MutableDateTime mutableDateTime0 = new MutableDateTime(1899, 536, 1093, (-3307), (-606), 1, 722, lenientChronology0);
+    assertEquals(3, MutableDateTime.ROUND_HALF_FLOOR);
+}","/**
+ * Constructs an instance from datetime field values
+ * using the specified chronology.
+ * <p>
+ * If the chronology is null, <code>ISOChronology</code>
+ * in the default time zone is used.
+ *
+ * @param year  the year
+ * @param monthOfYear  the month of the year
+ * @param dayOfMonth  the day of the month
+ * @param hourOfDay  the hour of the day
+ * @param minuteOfHour  the minute of the hour
+ * @param secondOfMinute  the second of the minute
+ * @param millisOfSecond  the millisecond of the second
+ * @param chronology  the chronology, null means ISOChronology in default zone
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test05556() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime((Object) null);
+    mutableDateTime0.setWeekyear(0);
+    assertEquals((-62162999140680L), mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test05657() throws Throwable {
+    Instant instant0 = new Instant();
+    MutableDateTime mutableDateTime0 = instant0.toMutableDateTime();
+    mutableDateTime0.add(1968L);
+    assertEquals(1392409283288L, mutableDateTime0.getMillis());
+}",""
+"public MutableDateTime(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute, int millisOfSecond, DateTimeZone zone) {
+    super(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond, zone);
+}","public void test05758() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    MutableDateTime mutableDateTime0 = new MutableDateTime(5, 4, 1, 3, 0, 0, 4, fixedDateTimeZone0);
+    assertEquals(3, MutableDateTime.ROUND_HALF_FLOOR);
+}","/**
+ * Constructs an instance from datetime field values
+ * using <code>ISOChronology</code> in the specified time zone.
+ * <p>
+ * If the specified time zone is null, the default zone is used.
+ *
+ * @param year  the year
+ * @param monthOfYear  the month of the year
+ * @param dayOfMonth  the day of the month
+ * @param hourOfDay  the hour of the day
+ * @param minuteOfHour  the minute of the hour
+ * @param secondOfMinute  the second of the minute
+ * @param millisOfSecond  the millisecond of the second
+ * @param zone  the time zone, null means default time zone
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Gets the property object for the specified type, which contains many useful methods.
+ *
+ * @param type  the field type to get the chronology for
+ * @return the property object
+ * @throws IllegalArgumentException if the field is null or unsupported
+ * @since 1.2
+ */
+public Property property(DateTimeFieldType type) {
+    if (type == null) {
+        throw new IllegalArgumentException(""The DateTimeFieldType must not be null"");
+    }
+    DateTimeField field = type.getField(getChronology());
+    if (field.isSupported() == false) {
+        throw new IllegalArgumentException(""Field '"" + type + ""' is not supported"");
+    }
+    return new Property(this, field);
+}","public void test05859() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstance();
+    MutableDateTime mutableDateTime0 = MutableDateTime.now((Chronology) gJChronology0);
+    // Undeclared exception!
+    try {
+        mutableDateTime0.property((DateTimeFieldType) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The DateTimeFieldType must not be null
+        //
+        verifyException(""org.joda.time.MutableDateTime"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the property object for the specified type, which contains many useful methods.
+ *
+ * @param type  the field type to get the chronology for
+ * @return the property object
+ * @throws IllegalArgumentException if the field is null or unsupported
+ * @since 1.2
+ */
+public Property property(DateTimeFieldType type) {
+    if (type == null) {
+        throw new IllegalArgumentException(""The DateTimeFieldType must not be null"");
+    }
+    DateTimeField field = type.getField(getChronology());
+    if (field.isSupported() == false) {
+        throw new IllegalArgumentException(""Field '"" + type + ""' is not supported"");
+    }
+    return new Property(this, field);
+}","public void test05960() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(0);
+    IslamicChronology.LeapYearPatternType islamicChronology_LeapYearPatternType0 = IslamicChronology.LEAP_YEAR_16_BASED;
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstance(dateTimeZone0, islamicChronology_LeapYearPatternType0);
+    MutableDateTime mutableDateTime0 = MutableDateTime.now((Chronology) islamicChronology0);
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.year();
+    MutableDateTime.Property mutableDateTime_Property0 = mutableDateTime0.property(dateTimeFieldType0);
+    assertNotNull(mutableDateTime_Property0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test06061() throws Throwable {
+    MutableDateTime mutableDateTime0 = MutableDateTime.now();
+    mutableDateTime0.setTime((ReadableInstant) null);
+    assertEquals(1392409281320L, mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test06162() throws Throwable {
+    MutableDateTime mutableDateTime0 = MutableDateTime.now();
+    mutableDateTime0.setDate((ReadableInstant) mutableDateTime0);
+    assertEquals(1392409281320L, mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test06263() throws Throwable {
+    MutableDateTime mutableDateTime0 = MutableDateTime.now();
+    mutableDateTime0.setDate((ReadableInstant) null);
+    assertEquals(1392409281320L, mutableDateTime0.getMillis());
+}",""
+"public void add(DurationFieldType type, int amount) {
+    if (type == null) {
+        throw new IllegalArgumentException(""Field must not be null"");
+    }
+    setMillis(type.getField(getChronology()).add(getMillis(), amount));
+}","public void test06364() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance((DateTimeZone) fixedDateTimeZone0);
+    MutableDateTime mutableDateTime0 = new MutableDateTime(1193L, (Chronology) buddhistChronology0);
+    // Undeclared exception!
+    try {
+        mutableDateTime0.add((DurationFieldType) null, 4);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Field must not be null
+        //
+        verifyException(""org.joda.time.MutableDateTime"", e);
+    }
+}","/**
+ * Adds to the instant specifying the duration and multiple to add.
+ *
+ * @param type  a field type, usually obtained from DateTimeFieldType, not null
+ * @param amount  the amount to add of this duration
+ * @throws IllegalArgumentException if the value is null or invalid
+ * @throws ArithmeticException if the result exceeds the capacity of the instant
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test06465() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(0);
+    IslamicChronology.LeapYearPatternType islamicChronology_LeapYearPatternType0 = IslamicChronology.LEAP_YEAR_16_BASED;
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstance(dateTimeZone0, islamicChronology_LeapYearPatternType0);
+    MutableDateTime mutableDateTime0 = MutableDateTime.now((Chronology) islamicChronology0);
+    DurationFieldType durationFieldType0 = DurationFieldType.DAYS_TYPE;
+    mutableDateTime0.add(durationFieldType0, 1);
+    assertEquals(1392495681320L, mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Sets the value of one of the fields of the instant, such as hourOfDay.
+ *
+ * @param type  a field type, usually obtained from DateTimeFieldType, not null
+ * @param value  the value to set the field to
+ * @throws IllegalArgumentException if the value is null or invalid
+ */
+public void set(DateTimeFieldType type, int value) {
+    if (type == null) {
+        throw new IllegalArgumentException(""Field must not be null"");
+    }
+    setMillis(type.getField(getChronology()).set(getMillis(), value));
+}","public void test06566() throws Throwable {
+    MutableDateTime mutableDateTime0 = MutableDateTime.now();
+    // Undeclared exception!
+    try {
+        mutableDateTime0.set((DateTimeFieldType) null, 0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Field must not be null
+        //
+        verifyException(""org.joda.time.MutableDateTime"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test06667() throws Throwable {
+    MutableDateTime mutableDateTime0 = MutableDateTime.now();
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.yearOfCentury();
+    mutableDateTime0.set(dateTimeFieldType0, 24);
+    assertEquals(1707942081320L, mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test06768() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime();
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHoursMinutes(3, 2);
+    CopticChronology copticChronology0 = CopticChronology.getInstance(dateTimeZone0, 1);
+    MutableDateTime mutableDateTime1 = mutableDateTime0.toMutableDateTime((Chronology) copticChronology0);
+    mutableDateTime1.setZoneRetainFields((DateTimeZone) null);
+    assertEquals(1392449001320L, mutableDateTime1.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test06869() throws Throwable {
+    MutableDateTime mutableDateTime0 = MutableDateTime.now();
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHoursMinutes(5, 4);
+    mutableDateTime0.setZone(dateTimeZone0);
+    mutableDateTime0.setZoneRetainFields(dateTimeZone0);
+    assertEquals(1392409281320L, mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Sets the time zone of the datetime, changing the chronology and field values.
+ * <p>
+ * Changing the zone using this method retains the millisecond instant.
+ * The millisecond instant is adjusted in the new zone to compensate.
+ *
+ * chronology. Setting the time zone does not affect the millisecond value
+ * of this instant.
+ * <p>
+ * If the chronology already has this time zone, no change occurs.
+ *
+ * @param newZone  the time zone to use, null means default zone
+ * @see #setZoneRetainFields
+ */
+public void setZone(DateTimeZone newZone) {
+    newZone = DateTimeUtils.getZone(newZone);
+    Chronology chrono = getChronology();
+    if (chrono.getZone() != newZone) {
+        // set via this class not super
+        setChronology(chrono.withZone(newZone));
+    }
+}","public void test06970() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(0);
+    IslamicChronology.LeapYearPatternType islamicChronology_LeapYearPatternType0 = IslamicChronology.LEAP_YEAR_16_BASED;
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstance(dateTimeZone0, islamicChronology_LeapYearPatternType0);
+    MutableDateTime mutableDateTime0 = MutableDateTime.now((Chronology) islamicChronology0);
+    mutableDateTime0.setZone(dateTimeZone0);
+    assertEquals(4, MutableDateTime.ROUND_HALF_CEILING);
+}",""
+"public void add(ReadablePeriod period, int scalar) {
+    if (period != null) {
+        // set via this class not super
+        setMillis(getChronology().add(period, getMillis(), scalar));
+    }
+}","public void test07071() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(0);
+    IslamicChronology.LeapYearPatternType islamicChronology_LeapYearPatternType0 = IslamicChronology.LEAP_YEAR_16_BASED;
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstance(dateTimeZone0, islamicChronology_LeapYearPatternType0);
+    MutableDateTime mutableDateTime0 = MutableDateTime.now((Chronology) islamicChronology0);
+    mutableDateTime0.add((ReadablePeriod) null, 1);
+    assertEquals(5, MutableDateTime.ROUND_HALF_EVEN);
+}","/**
+ * Adds a period to this instant specifying how many times to add.
+ * <p>
+ * This will typically change the value of most fields.
+ *
+ * @param period  the period to add, null means add zero
+ * @param scalar  direction and amount to add, which may be negative
+ * @throws ArithmeticException if the result exceeds the capacity of the instant
+ */"
+"public void add(ReadableDuration duration, int scalar) {
+    if (duration != null) {
+        add(FieldUtils.safeMultiply(duration.getMillis(), scalar));
+    }
+}","public void test07172() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    EthiopicChronology ethiopicChronology0 = EthiopicChronology.getInstance(dateTimeZone0);
+    MutableDateTime mutableDateTime0 = new MutableDateTime((Chronology) ethiopicChronology0);
+    mutableDateTime0.add((ReadableDuration) null, 3346);
+    assertEquals(5, MutableDateTime.ROUND_HALF_EVEN);
+}","/**
+ * Adds a duration to this instant specifying how many times to add.
+ * <p>
+ * This will typically change the value of most fields.
+ *
+ * @param duration  the duration to add, null means add zero
+ * @param scalar  direction and amount to add, which may be negative
+ * @throws ArithmeticException if the result exceeds the capacity of the instant
+ */"
+"public int getRoundingMode() {
+    return iRoundingMode;
+}","public void test07273() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstanceUTC();
+    Instant instant0 = gJChronology0.getGregorianCutover();
+    MutableDateTime mutableDateTime0 = instant0.toMutableDateTime();
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance();
+    DateTimeField dateTimeField0 = buddhistChronology0.millisOfDay();
+    DateTimeField dateTimeField1 = LenientDateTimeField.getInstance(dateTimeField0, buddhistChronology0);
+    mutableDateTime0.setRounding(dateTimeField1, 5);
+    assertEquals(5, mutableDateTime0.getRoundingMode());
+}","/**
+ * Gets the rounding mode for this instant, returning ROUND_NONE if rounding
+ * is not enabled.
+ *
+ * @return the rounding mode constant
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test07374() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    MutableDateTime mutableDateTime0 = new MutableDateTime((DateTimeZone) fixedDateTimeZone0);
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance();
+    DateTimeField dateTimeField0 = buddhistChronology0.weekOfWeekyear();
+    mutableDateTime0.setRounding(dateTimeField0, 4);
+    assertEquals(1392624000000L, mutableDateTime0.getMillis());
+}",""
+"public void setRounding(DateTimeField field, int mode) {
+    if (field != null && (mode < ROUND_NONE || mode > ROUND_HALF_EVEN)) {
+        throw new IllegalArgumentException(""Illegal rounding mode: "" + mode);
+    }
+    iRoundingField = (mode == ROUND_NONE ? null : field);
+    iRoundingMode = (field == null ? ROUND_NONE : mode);
+    setMillis(getMillis());
+}","public void test07475() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forTimeZone((TimeZone) null);
+    GregorianChronology gregorianChronology0 = GregorianChronology.getInstance(dateTimeZone0);
+    MutableDateTime mutableDateTime0 = new MutableDateTime((Chronology) gregorianChronology0);
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.dayOfMonth();
+    MillisDurationField millisDurationField0 = (MillisDurationField) MillisDurationField.INSTANCE;
+    DurationFieldType durationFieldType0 = DurationFieldType.days();
+    DecoratedDurationField decoratedDurationField0 = new DecoratedDurationField(millisDurationField0, durationFieldType0);
+    ScaledDurationField scaledDurationField0 = new ScaledDurationField(decoratedDurationField0, durationFieldType0, (-984));
+    UnsupportedDateTimeField unsupportedDateTimeField0 = UnsupportedDateTimeField.getInstance(dateTimeFieldType0, scaledDurationField0);
+    // Undeclared exception!
+    try {
+        mutableDateTime0.setRounding((DateTimeField) unsupportedDateTimeField0, 3);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // dayOfMonth field is unsupported
+        //
+        verifyException(""org.joda.time.field.UnsupportedDateTimeField"", e);
+    }
+}","/**
+ * Sets the status of rounding to use the specified field and mode.
+ * A null field or mode of ROUND_NONE will disable rounding.
+ * Once set, the instant is then rounded using the new field and mode.
+ * <p>
+ * Enabling rounding will cause all subsequent calls to {@link #setMillis(long)}
+ * to be rounded. This can be used to control the precision of the instant,
+ * for example by setting a rounding field of minuteOfDay, the seconds and
+ * milliseconds will always be zero.
+ *
+ * @param field  rounding field or null to disable
+ * @param mode  rounding mode or ROUND_NONE to disable
+ * @throws IllegalArgumentException if mode is unknown, no exception if field is null
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test07576() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    MutableDateTime mutableDateTime0 = new MutableDateTime((DateTimeZone) fixedDateTimeZone0);
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance();
+    DateTimeField dateTimeField0 = buddhistChronology0.monthOfYear();
+    mutableDateTime0.setRounding(dateTimeField0, 2);
+    mutableDateTime0.setMillis((long) 4);
+    assertEquals(28800000L, mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test07677() throws Throwable {
+    MutableDateTime mutableDateTime0 = MutableDateTime.now();
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance();
+    DateTimeField dateTimeField0 = buddhistChronology0.dayOfMonth();
+    mutableDateTime0.setRounding(dateTimeField0, 0);
+    assertEquals(1392409281320L, mutableDateTime0.getMillis());
+}",""
+"public int getRoundingMode() {
+    return iRoundingMode;
+}","public void test07678() throws Throwable {
+    MutableDateTime mutableDateTime0 = MutableDateTime.now();
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance();
+    DateTimeField dateTimeField0 = buddhistChronology0.dayOfMonth();
+    mutableDateTime0.setRounding(dateTimeField0, 0);
+    assertEquals(0, mutableDateTime0.getRoundingMode());
+}","/**
+ * Gets the rounding mode for this instant, returning ROUND_NONE if rounding
+ * is not enabled.
+ *
+ * @return the rounding mode constant
+ */"
+"public void setRounding(DateTimeField field, int mode) {
+    if (field != null && (mode < ROUND_NONE || mode > ROUND_HALF_EVEN)) {
+        throw new IllegalArgumentException(""Illegal rounding mode: "" + mode);
+    }
+    iRoundingField = (mode == ROUND_NONE ? null : field);
+    iRoundingMode = (field == null ? ROUND_NONE : mode);
+    setMillis(getMillis());
+}","public void test07779() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    MutableDateTime mutableDateTime0 = new MutableDateTime((DateTimeZone) fixedDateTimeZone0);
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance();
+    DateTimeField dateTimeField0 = buddhistChronology0.weekOfWeekyear();
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.millisOfDay();
+    DividedDateTimeField dividedDateTimeField0 = new DividedDateTimeField(dateTimeField0, dateTimeFieldType0, 5);
+    // Undeclared exception!
+    try {
+        mutableDateTime0.setRounding((DateTimeField) dividedDateTimeField0, 6);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Illegal rounding mode: 6
+        //
+        verifyException(""org.joda.time.MutableDateTime"", e);
+    }
+}","/**
+ * Sets the status of rounding to use the specified field and mode.
+ * A null field or mode of ROUND_NONE will disable rounding.
+ * Once set, the instant is then rounded using the new field and mode.
+ * <p>
+ * Enabling rounding will cause all subsequent calls to {@link #setMillis(long)}
+ * to be rounded. This can be used to control the precision of the instant,
+ * for example by setting a rounding field of minuteOfDay, the seconds and
+ * milliseconds will always be zero.
+ *
+ * @param field  rounding field or null to disable
+ * @param mode  rounding mode or ROUND_NONE to disable
+ * @throws IllegalArgumentException if mode is unknown, no exception if field is null
+ */"
+"public void setRounding(DateTimeField field, int mode) {
+    if (field != null && (mode < ROUND_NONE || mode > ROUND_HALF_EVEN)) {
+        throw new IllegalArgumentException(""Illegal rounding mode: "" + mode);
+    }
+    iRoundingField = (mode == ROUND_NONE ? null : field);
+    iRoundingMode = (field == null ? ROUND_NONE : mode);
+    setMillis(getMillis());
+}","public void test07880() throws Throwable {
+    TimeZone timeZone0 = TimeZone.getDefault();
+    DateTimeZone dateTimeZone0 = DateTimeZone.forTimeZone(timeZone0);
+    MutableDateTime mutableDateTime0 = new MutableDateTime(0L, dateTimeZone0);
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance(dateTimeZone0);
+    DateTimeField dateTimeField0 = buddhistChronology0.millisOfDay();
+    // Undeclared exception!
+    try {
+        mutableDateTime0.setRounding(dateTimeField0, (-901));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Illegal rounding mode: -901
+        //
+        verifyException(""org.joda.time.MutableDateTime"", e);
+    }
+}","/**
+ * Sets the status of rounding to use the specified field and mode.
+ * A null field or mode of ROUND_NONE will disable rounding.
+ * Once set, the instant is then rounded using the new field and mode.
+ * <p>
+ * Enabling rounding will cause all subsequent calls to {@link #setMillis(long)}
+ * to be rounded. This can be used to control the precision of the instant,
+ * for example by setting a rounding field of minuteOfDay, the seconds and
+ * milliseconds will always be zero.
+ *
+ * @param field  rounding field or null to disable
+ * @param mode  rounding mode or ROUND_NONE to disable
+ * @throws IllegalArgumentException if mode is unknown, no exception if field is null
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test07981() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    MutableDateTime mutableDateTime0 = new MutableDateTime(dateTimeZone0);
+    mutableDateTime0.setRounding((DateTimeField) null, (-1703));
+    assertEquals(1392409281320L, mutableDateTime0.getMillis());
+}",""
+"public int getRoundingMode() {
+    return iRoundingMode;
+}","public void test07982() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    MutableDateTime mutableDateTime0 = new MutableDateTime(dateTimeZone0);
+    mutableDateTime0.setRounding((DateTimeField) null, (-1703));
+    assertEquals(0, mutableDateTime0.getRoundingMode());
+}","/**
+ * Gets the rounding mode for this instant, returning ROUND_NONE if rounding
+ * is not enabled.
+ *
+ * @return the rounding mode constant
+ */"
+"public static MutableDateTime now(Chronology chronology) {
+    if (chronology == null) {
+        throw new NullPointerException(""Chronology must not be null"");
+    }
+    return new MutableDateTime(chronology);
+}","public void test08083() throws Throwable {
+    // Undeclared exception!
+    try {
+        MutableDateTime.now((Chronology) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // Chronology must not be null
+        //
+        verifyException(""org.joda.time.MutableDateTime"", e);
+    }
+}","/**
+ * Obtains a {@code MutableDateTime} set to the current system millisecond time
+ * using the specified chronology.
+ *
+ * @param chronology  the chronology, not null
+ * @return the current date-time, not null
+ * @since 2.0
+ */"
+"public static MutableDateTime now(DateTimeZone zone) {
+    if (zone == null) {
+        throw new NullPointerException(""Zone must not be null"");
+    }
+    return new MutableDateTime(zone);
+}","public void test08184() throws Throwable {
+    // Undeclared exception!
+    try {
+        MutableDateTime.now((DateTimeZone) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // Zone must not be null
+        //
+        verifyException(""org.joda.time.MutableDateTime"", e);
+    }
+}","/**
+ * Obtains a {@code MutableDateTime} set to the current system millisecond time
+ * using <code>ISOChronology</code> in the specified time zone.
+ *
+ * @param zone  the time zone, not null
+ * @return the current date-time, not null
+ * @since 2.0
+ */"
+"public Property year() {
+    return new Property(this, getChronology().year());
+}","public void test08285() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    EthiopicChronology ethiopicChronology0 = EthiopicChronology.getInstance(dateTimeZone0);
+    MutableDateTime mutableDateTime0 = new MutableDateTime((Chronology) ethiopicChronology0);
+    MutableDateTime.Property mutableDateTime_Property0 = mutableDateTime0.year();
+    assertNotNull(mutableDateTime_Property0);
+}","/**
+ * Get the year property.
+ *
+ * @return the year property
+ */"
+"public Property dayOfYear() {
+    return new Property(this, getChronology().dayOfYear());
+}","public void test08386() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstanceUTC();
+    Instant instant0 = gJChronology0.getGregorianCutover();
+    MutableDateTime mutableDateTime0 = instant0.toMutableDateTime();
+    MutableDateTime.Property mutableDateTime_Property0 = mutableDateTime0.dayOfYear();
+    assertNotNull(mutableDateTime_Property0);
+}","/**
+ * Get the day of year property.
+ *
+ * @return the day of year property
+ */"
+"public Property dayOfMonth() {
+    return new Property(this, getChronology().dayOfMonth());
+}","public void test08487() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime((-1399L));
+    MutableDateTime.Property mutableDateTime_Property0 = mutableDateTime0.dayOfMonth();
+    assertNotNull(mutableDateTime_Property0);
+}","/**
+ * Get the day of month property.
+ * <p>
+ * The values for day of month are defined in {@link DateTimeConstants}.
+ *
+ * @return the day of month property
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test08588() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime();
+    mutableDateTime0.setMinuteOfHour(2);
+    assertEquals(1392408141320L, mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test08689() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime((-1399L));
+    mutableDateTime0.addWeeks((-1269));
+    assertEquals((-767494801399L), mutableDateTime0.getMillis());
+}",""
+"public MutableDateTime(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute, int millisOfSecond, Chronology chronology) {
+    super(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond, chronology);
+}","public void test08790() throws Throwable {
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstanceUTC();
+    MutableDateTime mutableDateTime0 = null;
+    try {
+        mutableDateTime0 = new MutableDateTime(7678125, 7678125, 7678125, 7678125, 2180, 2180, 7678125, islamicChronology0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 7678125 for hourOfDay must be in the range [0,23]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}","/**
+ * Constructs an instance from datetime field values
+ * using the specified chronology.
+ * <p>
+ * If the chronology is null, <code>ISOChronology</code>
+ * in the default time zone is used.
+ *
+ * @param year  the year
+ * @param monthOfYear  the month of the year
+ * @param dayOfMonth  the day of the month
+ * @param hourOfDay  the hour of the day
+ * @param minuteOfHour  the minute of the hour
+ * @param secondOfMinute  the second of the minute
+ * @param millisOfSecond  the millisecond of the second
+ * @param chronology  the chronology, null means ISOChronology in default zone
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test08891() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime();
+    mutableDateTime0.addMonths(0);
+    assertEquals(1392409281320L, mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test08992() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(0);
+    IslamicChronology.LeapYearPatternType islamicChronology_LeapYearPatternType0 = IslamicChronology.LEAP_YEAR_16_BASED;
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstance(dateTimeZone0, islamicChronology_LeapYearPatternType0);
+    MutableDateTime mutableDateTime0 = MutableDateTime.now((Chronology) islamicChronology0);
+    mutableDateTime0.setMillis((ReadableInstant) mutableDateTime0);
+    assertEquals(1392409281320L, mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test09093() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    EthiopicChronology ethiopicChronology0 = EthiopicChronology.getInstance(dateTimeZone0);
+    MutableDateTime mutableDateTime0 = new MutableDateTime((Chronology) ethiopicChronology0);
+    mutableDateTime0.setWeekOfWeekyear(1);
+    assertEquals(1379100081320L, mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Set the month of the year to the specified value.
+ *
+ * @param monthOfYear  the month of the year
+ * @throws IllegalArgumentException if the value is invalid
+ */
+public void setMonthOfYear(final int monthOfYear) {
+    setMillis(getChronology().monthOfYear().set(getMillis(), monthOfYear));
+}","public void test09194() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstanceUTC();
+    Instant instant0 = gJChronology0.getGregorianCutover();
+    MutableDateTime mutableDateTime0 = instant0.toMutableDateTime();
+    // Undeclared exception!
+    try {
+        mutableDateTime0.setMonthOfYear(60000);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 60000 for monthOfYear must be in the range [1,12]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",""
+"public Property monthOfYear() {
+    return new Property(this, getChronology().monthOfYear());
+}","public void test09295() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime(0L);
+    MutableDateTime.Property mutableDateTime_Property0 = mutableDateTime0.monthOfYear();
+    assertNotNull(mutableDateTime_Property0);
+}","/**
+ * Get the month of year property.
+ *
+ * @return the month of year property
+ */"
+"public MutableDateTime(Object instant, DateTimeZone zone) {
+    super(instant, zone);
+}","public void test09396() throws Throwable {
+    CopticChronology copticChronology0 = CopticChronology.getInstance();
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetMillis(1);
+    MutableDateTime mutableDateTime0 = null;
+    try {
+        mutableDateTime0 = new MutableDateTime(copticChronology0, dateTimeZone0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // No instant converter found for type: org.joda.time.chrono.CopticChronology
+        //
+        verifyException(""org.joda.time.convert.ConverterManager"", e);
+    }
+}","/**
+ * Constructs an instance from an Object that represents a datetime,
+ * forcing the time zone to that specified.
+ * <p>
+ * If the object implies a chronology (such as GregorianCalendar does),
+ * then that chronology will be used, but with the time zone adjusted.
+ * Otherwise, ISO is used in the specified time zone.
+ * If the specified time zone is null, the default zone is used.
+ * Thus if a GregorianCalendar is passed in, the chronology used will
+ * be GJ, but if a Date is passed in the chronology will be ISO.
+ * <p>
+ * The recognised object types are defined in
+ * {@link org.joda.time.convert.ConverterManager ConverterManager} and
+ * include ReadableInstant, String, Calendar and Date.
+ *
+ * @param instant  the datetime object, null means now
+ * @param zone  the time zone, null means default time zone
+ * @throws IllegalArgumentException if the instant is invalid
+ */"
+"public Property weekyear() {
+    return new Property(this, getChronology().weekyear());
+}","public void test09497() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime();
+    MutableDateTime.Property mutableDateTime_Property0 = mutableDateTime0.weekyear();
+    assertNotNull(mutableDateTime_Property0);
+}","/**
+ * Get the year of a week based year property.
+ *
+ * @return the year of a week based year property
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Clone this object without having to cast the returned object.
+ *
+ * @return a clone of the this object.
+ */
+public MutableDateTime copy() {
+    return (MutableDateTime) clone();
+}","public void test09598() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime((-1399L));
+    MutableDateTime mutableDateTime1 = mutableDateTime0.copy();
+    assertEquals(3, MutableDateTime.ROUND_HALF_FLOOR);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test09699() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(0);
+    IslamicChronology.LeapYearPatternType islamicChronology_LeapYearPatternType0 = IslamicChronology.LEAP_YEAR_16_BASED;
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstance(dateTimeZone0, islamicChronology_LeapYearPatternType0);
+    MutableDateTime mutableDateTime0 = MutableDateTime.now((Chronology) islamicChronology0);
+    mutableDateTime0.setDayOfYear(5);
+    assertEquals(1384028481320L, mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test097100() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(0);
+    IslamicChronology.LeapYearPatternType islamicChronology_LeapYearPatternType0 = IslamicChronology.LEAP_YEAR_16_BASED;
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstance(dateTimeZone0, islamicChronology_LeapYearPatternType0);
+    MutableDateTime mutableDateTime0 = MutableDateTime.now((Chronology) islamicChronology0);
+    Duration duration0 = Duration.standardMinutes((-549L));
+    mutableDateTime0.add((ReadableDuration) duration0);
+    assertEquals(1392376341320L, mutableDateTime0.getMillis());
+}",""
+"public Property secondOfDay() {
+    return new Property(this, getChronology().secondOfDay());
+}","public void test098101() throws Throwable {
+    MutableDateTime mutableDateTime0 = MutableDateTime.now();
+    MutableDateTime.Property mutableDateTime_Property0 = mutableDateTime0.secondOfDay();
+    assertNotNull(mutableDateTime_Property0);
+}","/**
+ * Get the second of day property
+ *
+ * @return the second of day property
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test099102() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime(0L);
+    mutableDateTime0.setTime((long) 0);
+    assertEquals((-57600000L), mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test100103() throws Throwable {
+    MutableDateTime mutableDateTime0 = MutableDateTime.now();
+    mutableDateTime0.setHourOfDay(2);
+    assertEquals(1392373281320L, mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test101104() throws Throwable {
+    TimeZone timeZone0 = TimeZone.getDefault();
+    DateTimeZone dateTimeZone0 = DateTimeZone.forTimeZone(timeZone0);
+    MutableDateTime mutableDateTime0 = new MutableDateTime(0L, dateTimeZone0);
+    mutableDateTime0.setMillisOfSecond(143);
+    assertEquals(143L, mutableDateTime0.getMillis());
+}",""
+"@ToString
+public String toString() {
+    return ISODateTimeFormat.dateTime().print(this);
+}","public void test102105() throws Throwable {
+    TimeZone timeZone0 = TimeZone.getDefault();
+    DateTimeZone dateTimeZone0 = DateTimeZone.forTimeZone(timeZone0);
+    MutableDateTime mutableDateTime0 = new MutableDateTime(0L, dateTimeZone0);
+    String string0 = mutableDateTime0.toString();
+    assertEquals(""1970-01-01T00:00:00.000Z"", string0);
+}","/**
+ * Output the date time in ISO8601 format (yyyy-MM-ddTHH:mm:ss.SSSZZ).
+ *
+ * @return ISO8601 time formatted string.
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test103106() throws Throwable {
+    TimeZone timeZone0 = TimeZone.getDefault();
+    DateTimeZone dateTimeZone0 = DateTimeZone.forTimeZone(timeZone0);
+    MutableDateTime mutableDateTime0 = new MutableDateTime(0L, dateTimeZone0);
+    mutableDateTime0.setMillisOfDay(2670);
+    assertEquals(2670L, mutableDateTime0.getMillis());
+}",""
+"public void setDayOfMonth(final int dayOfMonth) {
+    setMillis(getChronology().dayOfMonth().set(getMillis(), dayOfMonth));
+}","public void test104107() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime(4294967295L);
+    // Undeclared exception!
+    try {
+        mutableDateTime0.setDayOfMonth(1947);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 1947 for dayOfMonth must be in the range [1,28]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}","/**
+ * Set the day of the month to the specified value.
+ *
+ * @param dayOfMonth  the day of the month
+ * @throws IllegalArgumentException if the value is invalid
+ */"
+"public int getRoundingMode() {
+    return iRoundingMode;
+}","public void test105108() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(0);
+    IslamicChronology.LeapYearPatternType islamicChronology_LeapYearPatternType0 = IslamicChronology.LEAP_YEAR_16_BASED;
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstance(dateTimeZone0, islamicChronology_LeapYearPatternType0);
+    MutableDateTime mutableDateTime0 = MutableDateTime.now((Chronology) islamicChronology0);
+    int int0 = mutableDateTime0.getRoundingMode();
+    assertEquals(0, int0);
+}","/**
+ * Gets the rounding mode for this instant, returning ROUND_NONE if rounding
+ * is not enabled.
+ *
+ * @return the rounding mode constant
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test106109() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    MutableDateTime mutableDateTime0 = new MutableDateTime((DateTimeZone) fixedDateTimeZone0);
+    mutableDateTime0.setDayOfWeek(4);
+    assertEquals(1392322881320L, mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Get the hour of day field property
+ *
+ * @return the hour of day property
+ */
+public Property hourOfDay() {
+    return new Property(this, getChronology().hourOfDay());
+}","public void test107110() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(0);
+    IslamicChronology.LeapYearPatternType islamicChronology_LeapYearPatternType0 = IslamicChronology.LEAP_YEAR_16_BASED;
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstance(dateTimeZone0, islamicChronology_LeapYearPatternType0);
+    MutableDateTime mutableDateTime0 = MutableDateTime.now((Chronology) islamicChronology0);
+    MutableDateTime.Property mutableDateTime_Property0 = mutableDateTime0.hourOfDay();
+    assertNotNull(mutableDateTime_Property0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test108111() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(0);
+    IslamicChronology.LeapYearPatternType islamicChronology_LeapYearPatternType0 = IslamicChronology.LEAP_YEAR_16_BASED;
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstance(dateTimeZone0, islamicChronology_LeapYearPatternType0);
+    MutableDateTime mutableDateTime0 = MutableDateTime.now((Chronology) islamicChronology0);
+    mutableDateTime0.setSecondOfMinute(0);
+    assertEquals(1392409260320L, mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test109112() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(0);
+    IslamicChronology.LeapYearPatternType islamicChronology_LeapYearPatternType0 = IslamicChronology.LEAP_YEAR_16_BASED;
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstance(dateTimeZone0, islamicChronology_LeapYearPatternType0);
+    MutableDateTime mutableDateTime0 = MutableDateTime.now((Chronology) islamicChronology0);
+    mutableDateTime0.setMinuteOfDay(0);
+    assertEquals(1392336021320L, mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test110113() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(0);
+    IslamicChronology.LeapYearPatternType islamicChronology_LeapYearPatternType0 = IslamicChronology.LEAP_YEAR_16_BASED;
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstance(dateTimeZone0, islamicChronology_LeapYearPatternType0);
+    MutableDateTime mutableDateTime0 = MutableDateTime.now((Chronology) islamicChronology0);
+    mutableDateTime0.setDate(5, 2, 4);
+    assertEquals((-42396233918680L), mutableDateTime0.getMillis());
+}",""
+"public MutableDateTime(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute, int millisOfSecond, DateTimeZone zone) {
+    super(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond, zone);
+}","public void test111114() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forID((String) null);
+    MutableDateTime mutableDateTime0 = null;
+    try {
+        mutableDateTime0 = new MutableDateTime(0, 4, 4, 0, 23118750, 0, 0, dateTimeZone0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 23118750 for minuteOfHour must be in the range [0,59]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}","/**
+ * Constructs an instance from datetime field values
+ * using <code>ISOChronology</code> in the specified time zone.
+ * <p>
+ * If the specified time zone is null, the default zone is used.
+ *
+ * @param year  the year
+ * @param monthOfYear  the month of the year
+ * @param dayOfMonth  the day of the month
+ * @param hourOfDay  the hour of the day
+ * @param minuteOfHour  the minute of the hour
+ * @param secondOfMinute  the second of the minute
+ * @param millisOfSecond  the millisecond of the second
+ * @param zone  the time zone, null means default time zone
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test112115() throws Throwable {
+    MutableDateTime mutableDateTime0 = MutableDateTime.now();
+    mutableDateTime0.addSeconds(1);
+    assertEquals(1392409282320L, mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test113116() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime(2, 1, 5, 1, 5, 1, 1);
+    assertEquals((-62103682920999L), mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test114117() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime((Object) null, (Chronology) null);
+    assertEquals(1392409281320L, mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test115118() throws Throwable {
+    MutableDateTime mutableDateTime0 = MutableDateTime.now();
+    mutableDateTime0.addHours((-553));
+    assertEquals(1390418481320L, mutableDateTime0.getMillis());
+}",""
+"public Property secondOfMinute() {
+    return new Property(this, getChronology().secondOfMinute());
+}","public void test116119() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();
+    EthiopicChronology ethiopicChronology0 = EthiopicChronology.getInstance(dateTimeZone0);
+    MutableDateTime mutableDateTime0 = new MutableDateTime((Chronology) ethiopicChronology0);
+    MutableDateTime.Property mutableDateTime_Property0 = mutableDateTime0.secondOfMinute();
+    assertNotNull(mutableDateTime_Property0);
+}","/**
+ * Get the second of minute field property
+ *
+ * @return the second of minute property
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test117120() throws Throwable {
+    MutableDateTime mutableDateTime0 = MutableDateTime.now();
+    Minutes minutes0 = Minutes.ZERO;
+    mutableDateTime0.add((ReadablePeriod) minutes0);
+    assertEquals(1392409281320L, mutableDateTime0.getMillis());
+}",""
+"public Property centuryOfEra() {
+    return new Property(this, getChronology().centuryOfEra());
+}","public void test118121() throws Throwable {
+    MutableDateTime mutableDateTime0 = MutableDateTime.now();
+    MutableDateTime.Property mutableDateTime_Property0 = mutableDateTime0.centuryOfEra();
+    assertNotNull(mutableDateTime_Property0);
+}","/**
+ * Get the century of era property.
+ *
+ * @return the year of era property
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Set the weekyear to the specified value.
+ *
+ * @param weekyear  the weekyear
+ * @throws IllegalArgumentException if the value is invalid
+ */
+public void setWeekyear(final int weekyear) {
+    setMillis(getChronology().weekyear().set(getMillis(), weekyear));
+}","public void test119122() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(12);
+    IslamicChronology.LeapYearPatternType islamicChronology_LeapYearPatternType0 = IslamicChronology.LEAP_YEAR_16_BASED;
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstance(dateTimeZone0, islamicChronology_LeapYearPatternType0);
+    MutableDateTime mutableDateTime0 = MutableDateTime.now((Chronology) islamicChronology0);
+    // Undeclared exception!
+    try {
+        mutableDateTime0.setWeekyear(0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 0 for weekyear must be in the range [1,292271022]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test120123() throws Throwable {
+    MutableDateTime mutableDateTime0 = MutableDateTime.now();
+    mutableDateTime0.addYears(529);
+    assertEquals(18086012481320L, mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Clone this object.
+ *
+ * @return a clone of this object.
+ */
+public Object clone() {
+    try {
+        return super.clone();
+    } catch (CloneNotSupportedException ex) {
+        throw new InternalError(""Clone error"");
+    }
+}","public void test121124() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime(0L);
+    MutableDateTime mutableDateTime1 = (MutableDateTime) mutableDateTime0.clone();
+    assertEquals(1, MutableDateTime.ROUND_FLOOR);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Set the date from milliseconds.
+ * The time part of this object will be unaffected.
+ *
+ * @param instant  an instant to copy the date from, time part ignored
+ * @throws IllegalArgumentException if the value is invalid
+ */
+public void setDate(final long instant) {
+    setMillis(getChronology().millisOfDay().set(instant, getMillisOfDay()));
+}","public void test122125() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime(0L);
+    mutableDateTime0.setDate(0L);
+    assertEquals(0, MutableDateTime.ROUND_NONE);
+}",""
+"public void setTime(final int hour, final int minuteOfHour, final int secondOfMinute, final int millisOfSecond) {
+    long instant = getChronology().getDateTimeMillis(getMillis(), hour, minuteOfHour, secondOfMinute, millisOfSecond);
+    setMillis(instant);
+}","public void test123126() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime();
+    // Undeclared exception!
+    try {
+        mutableDateTime0.setTime(5, 4, 124, 0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 124 for secondOfMinute must be in the range [0,59]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}","/**
+ * Set the time from fields.
+ * The date part of this object will be unaffected.
+ *
+ * @param hour  the hour
+ * @param minuteOfHour  the minute of the hour
+ * @param secondOfMinute  the second of the minute
+ * @param millisOfSecond  the millisecond of the second
+ * @throws IllegalArgumentException if the value is invalid
+ */"
+"public Property weekOfWeekyear() {
+    return new Property(this, getChronology().weekOfWeekyear());
+}","public void test124127() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime(0L);
+    MutableDateTime.Property mutableDateTime_Property0 = mutableDateTime0.weekOfWeekyear();
+    assertNotNull(mutableDateTime_Property0);
+}","/**
+ * Get the week of a week based year property.
+ *
+ * @return the week of a week based year property
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Gets the field used for rounding this instant, returning null if rounding
+ * is not enabled.
+ *
+ * @return the rounding field
+ */
+public DateTimeField getRoundingField() {
+    return iRoundingField;
+}","public void test125128() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(0);
+    IslamicChronology.LeapYearPatternType islamicChronology_LeapYearPatternType0 = IslamicChronology.LEAP_YEAR_16_BASED;
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstance(dateTimeZone0, islamicChronology_LeapYearPatternType0);
+    MutableDateTime mutableDateTime0 = MutableDateTime.now((Chronology) islamicChronology0);
+    DateTimeField dateTimeField0 = mutableDateTime0.getRoundingField();
+    assertNull(dateTimeField0);
+}",""
+"public Property yearOfCentury() {
+    return new Property(this, getChronology().yearOfCentury());
+}","public void test126129() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstance((DateTimeZone) fixedDateTimeZone0);
+    MutableDateTime mutableDateTime0 = new MutableDateTime((-52L), (Chronology) islamicChronology0);
+    MutableDateTime.Property mutableDateTime_Property0 = mutableDateTime0.yearOfCentury();
+    assertNotNull(mutableDateTime_Property0);
+}","/**
+ * Get the year of century property.
+ *
+ * @return the year of era property
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Constructs an instance from an Object that represents a datetime.
+ * <p>
+ * If the object implies a chronology (such as GregorianCalendar does),
+ * then that chronology will be used. Otherwise, ISO default is used.
+ * Thus if a GregorianCalendar is passed in, the chronology used will
+ * be GJ, but if a Date is passed in the chronology will be ISO.
+ * <p>
+ * The recognised object types are defined in
+ * {@link org.joda.time.convert.ConverterManager ConverterManager} and
+ * include ReadableInstant, String, Calendar and Date.
+ *
+ * @param instant  the datetime object, null means now
+ * @throws IllegalArgumentException if the instant is invalid
+ */
+public MutableDateTime(Object instant) {
+    super(instant, (Chronology) null);
+}","public void test127130() throws Throwable {
+    MutableDateTime mutableDateTime0 = null;
+    try {
+        mutableDateTime0 = new MutableDateTime(""(.s>>e"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid format: \""(.s>>e\""
+        //
+        verifyException(""org.joda.time.format.DateTimeFormatter"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test128131() throws Throwable {
+    MutableDateTime mutableDateTime0 = MutableDateTime.now();
+    mutableDateTime0.addDays(0);
+    assertEquals(1392409281320L, mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Set the chronology of the datetime.
+ * <p>
+ * All changes to the chronology occur via this method.
+ *
+ * @param chronology  the chronology to use, null means ISOChronology in default zone
+ */
+public void setChronology(Chronology chronology) {
+    super.setChronology(chronology);
+}","public void test129132() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(0);
+    IslamicChronology.LeapYearPatternType islamicChronology_LeapYearPatternType0 = IslamicChronology.LEAP_YEAR_16_BASED;
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstance(dateTimeZone0, islamicChronology_LeapYearPatternType0);
+    MutableDateTime mutableDateTime0 = MutableDateTime.now((Chronology) islamicChronology0);
+    mutableDateTime0.setChronology(islamicChronology0);
+    assertEquals(4, MutableDateTime.ROUND_HALF_CEILING);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test130133() throws Throwable {
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstance();
+    MutableDateTime mutableDateTime0 = new MutableDateTime((-52L), (Chronology) islamicChronology0);
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstanceUTC();
+    DateTimeField dateTimeField0 = buddhistChronology0.weekOfWeekyear();
+    mutableDateTime0.setRounding(dateTimeField0);
+    int int0 = mutableDateTime0.getRoundingMode();
+    assertEquals((-259200000L), mutableDateTime0.getMillis());
+}",""
+"public int getRoundingMode() {
+    return iRoundingMode;
+}","public void test130134() throws Throwable {
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstance();
+    MutableDateTime mutableDateTime0 = new MutableDateTime((-52L), (Chronology) islamicChronology0);
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstanceUTC();
+    DateTimeField dateTimeField0 = buddhistChronology0.weekOfWeekyear();
+    mutableDateTime0.setRounding(dateTimeField0);
+    int int0 = mutableDateTime0.getRoundingMode();
+    assertEquals(1, int0);
+}","/**
+ * Gets the rounding mode for this instant, returning ROUND_NONE if rounding
+ * is not enabled.
+ *
+ * @return the rounding mode constant
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test131135() throws Throwable {
+    MutableDateTime mutableDateTime0 = MutableDateTime.now();
+    mutableDateTime0.setYear(529);
+    assertEquals((-45469655140680L), mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Set the second of the day to the specified value.
+ *
+ * @param secondOfDay  the second of day
+ * @throws IllegalArgumentException if the value is invalid
+ */
+public void setSecondOfDay(final int secondOfDay) {
+    setMillis(getChronology().secondOfDay().set(getMillis(), secondOfDay));
+}","public void test132136() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstanceUTC();
+    MutableDateTime mutableDateTime0 = MutableDateTime.now((Chronology) gJChronology0);
+    // Undeclared exception!
+    try {
+        mutableDateTime0.setSecondOfDay(5062500);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 5062500 for secondOfDay must be in the range [0,86399]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test133137() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstanceUTC();
+    Instant instant0 = gJChronology0.getGregorianCutover();
+    MutableDateTime mutableDateTime0 = instant0.toMutableDateTime();
+    mutableDateTime0.addWeekyears(1);
+    assertEquals((-12187843200000L), mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test135139() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    MutableDateTime mutableDateTime0 = new MutableDateTime((DateTimeZone) fixedDateTimeZone0);
+    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstance();
+    DateTimeField dateTimeField0 = buddhistChronology0.weekOfWeekyear();
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.millisOfDay();
+    DividedDateTimeField dividedDateTimeField0 = new DividedDateTimeField(dateTimeField0, dateTimeFieldType0, 5);
+    MutableDateTime.Property mutableDateTime_Property0 = new MutableDateTime.Property(mutableDateTime0, dividedDateTimeField0);
+    mutableDateTime_Property0.addWrapField(1);
+    assertEquals(1395429681320L, mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test137141() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(0);
+    IslamicChronology.LeapYearPatternType islamicChronology_LeapYearPatternType0 = IslamicChronology.LEAP_YEAR_16_BASED;
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstance(dateTimeZone0, islamicChronology_LeapYearPatternType0);
+    MutableDateTime mutableDateTime0 = MutableDateTime.now((Chronology) islamicChronology0);
+    MutableDateTime.Property mutableDateTime_Property0 = mutableDateTime0.minuteOfDay();
+    mutableDateTime_Property0.add((long) 4);
+    assertEquals(1392409521320L, mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test138142() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime(0L);
+    MutableDateTime.Property mutableDateTime_Property0 = mutableDateTime0.minuteOfHour();
+    MutableDateTime mutableDateTime1 = mutableDateTime_Property0.set(0);
+    assertEquals(0L, mutableDateTime1.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test139143() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(0);
+    IslamicChronology.LeapYearPatternType islamicChronology_LeapYearPatternType0 = IslamicChronology.LEAP_YEAR_16_BASED;
+    IslamicChronology islamicChronology0 = IslamicChronology.getInstance(dateTimeZone0, islamicChronology_LeapYearPatternType0);
+    MutableDateTime mutableDateTime0 = MutableDateTime.now((Chronology) islamicChronology0);
+    MutableDateTime.Property mutableDateTime_Property0 = mutableDateTime0.minuteOfDay();
+    mutableDateTime_Property0.add((-3169));
+    assertEquals(1392219141320L, mutableDateTime0.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test142146() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstanceUTC();
+    MutableDateTime mutableDateTime0 = MutableDateTime.now((Chronology) gJChronology0);
+    MutableDateTime.Property mutableDateTime_Property0 = mutableDateTime0.millisOfDay();
+    MutableDateTime mutableDateTime1 = mutableDateTime_Property0.roundFloor();
+    assertEquals(1392409281320L, mutableDateTime1.getMillis());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the milliseconds of the datetime instant from the Java epoch
+ * of 1970-01-01T00:00:00Z.
+ *
+ * @return the number of milliseconds since 1970-01-01T00:00:00Z
+ */
+public long getMillis() {
+    return iMillis;
+}","public void test145149() throws Throwable {
+    MutableDateTime mutableDateTime0 = new MutableDateTime(4294967295L);
+    MutableDateTime.Property mutableDateTime_Property0 = mutableDateTime0.dayOfWeek();
+    mutableDateTime_Property0.roundHalfEven();
+    assertEquals(4262400000L, mutableDateTime0.getMillis());
+}",""

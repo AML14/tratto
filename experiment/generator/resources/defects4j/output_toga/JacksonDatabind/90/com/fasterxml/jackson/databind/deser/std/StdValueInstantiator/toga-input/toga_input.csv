@@ -1,0 +1,578 @@
+focal_method,test_prefix,docstring
+"/*
+    /**********************************************************
+    /* Public API implementation; metadata
+    /**********************************************************
+     */
+@Override
+public String getValueTypeDesc() {
+    return _valueTypeDesc;
+}","public void test000() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    ReferenceType referenceType0 = ReferenceType.upgradeFrom(javaType0, javaType0);
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, referenceType0);
+    stdValueInstantiator0.getDelegateType((DeserializationConfig) null);
+    assertEquals(""[reference type, class java.lang.Object<java.lang.Object<[simple type, class java.lang.Object]>]"", stdValueInstantiator0.getValueTypeDesc());
+}",""
+"@Override
+public boolean canCreateUsingArrayDelegate() {
+    return (_arrayDelegateType != null);
+}","public void test011() throws Throwable {
+    Class<ObjectMapper.DefaultTypeResolverBuilder> class0 = ObjectMapper.DefaultTypeResolverBuilder.class;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    assertFalse(stdValueInstantiator0.canCreateUsingArrayDelegate());
+}",""
+"/*
+    /**********************************************************
+    /* Public API implementation; metadata
+    /**********************************************************
+     */
+@Override
+public String getValueTypeDesc() {
+    return _valueTypeDesc;
+}","public void test012() throws Throwable {
+    Class<ObjectMapper.DefaultTypeResolverBuilder> class0 = ObjectMapper.DefaultTypeResolverBuilder.class;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    objectMapper0.readerForUpdating(stdValueInstantiator0);
+    assertEquals(""com.fasterxml.jackson.databind.ObjectMapper$DefaultTypeResolverBuilder"", stdValueInstantiator0.getValueTypeDesc());
+}",""
+"@Override
+public Object createUsingArrayDelegate(DeserializationContext ctxt, Object delegate) throws IOException {
+    if (_arrayDelegateCreator == null) {
+        if (_delegateCreator != null) {
+            // sanity-check; caller should check
+            // fallback to the classic delegate creator
+            return createUsingDelegate(ctxt, delegate);
+        }
+    }
+    return _createUsingDelegate(_arrayDelegateCreator, _arrayDelegateArguments, ctxt, delegate);
+}","public void test024() throws Throwable {
+    Class<String> class0 = String.class;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    // Undeclared exception!
+    try {
+        stdValueInstantiator0.createUsingArrayDelegate((DeserializationContext) null, (Object) null);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // No delegate constructor for java.lang.String
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdValueInstantiator"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Public API implementation; metadata
+    /**********************************************************
+     */
+@Override
+public String getValueTypeDesc() {
+    return _valueTypeDesc;
+}","public void test035() throws Throwable {
+    Class<Module> class0 = Module.class;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    stdValueInstantiator0.getDelegateCreator();
+    assertEquals(""com.fasterxml.jackson.databind.Module"", stdValueInstantiator0.getValueTypeDesc());
+}",""
+"/*
+    /**********************************************************
+    /* Public API implementation; metadata
+    /**********************************************************
+     */
+@Override
+public String getValueTypeDesc() {
+    return _valueTypeDesc;
+}","public void test046() throws Throwable {
+    Class<Integer> class0 = Integer.TYPE;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    stdValueInstantiator0.getArrayDelegateCreator();
+    assertEquals(""int"", stdValueInstantiator0.getValueTypeDesc());
+}",""
+"/*
+    /**********************************************************
+    /* Public API implementation; instantiation from JSON Object
+    /**********************************************************
+     */
+@Override
+public Object createUsingDefault(DeserializationContext ctxt) throws IOException {
+    if (_defaultCreator == null) {
+        // sanity-check; caller should check
+        return super.createUsingDefault(ctxt);
+    }
+    try {
+        return _defaultCreator.call();
+    } catch (Throwable t) {
+        return ctxt.handleInstantiationProblem(_defaultCreator.getDeclaringClass(), null, rewrapCtorProblem(ctxt, t));
+    }
+}","public void test057() throws Throwable {
+    Class<MinimalClassNameIdResolver> class0 = MinimalClassNameIdResolver.class;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    // Undeclared exception!
+    try {
+        stdValueInstantiator0.createUsingDefault((DeserializationContext) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.ValueInstantiator"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Public API implementation; metadata
+    /**********************************************************
+     */
+@Override
+public String getValueTypeDesc() {
+    return _valueTypeDesc;
+}","public void test079() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    ReferenceType referenceType0 = ReferenceType.upgradeFrom(javaType0, javaType0);
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, referenceType0);
+    stdValueInstantiator0.getArrayDelegateType((DeserializationConfig) null);
+    assertEquals(""[reference type, class java.lang.Object<java.lang.Object<[simple type, class java.lang.Object]>]"", stdValueInstantiator0.getValueTypeDesc());
+}",""
+"/*
+    /**********************************************************
+    /* Public API implementation; metadata
+    /**********************************************************
+     */
+@Override
+public String getValueTypeDesc() {
+    return _valueTypeDesc;
+}","public void test0810() throws Throwable {
+    Class<JsonDeserializer> class0 = JsonDeserializer.class;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    stdValueInstantiator0.getDefaultCreator();
+    assertEquals(""com.fasterxml.jackson.databind.JsonDeserializer"", stdValueInstantiator0.getValueTypeDesc());
+}",""
+"/*
+    /**********************************************************
+    /* Public API implementation; metadata
+    /**********************************************************
+     */
+@Override
+public String getValueTypeDesc() {
+    return _valueTypeDesc;
+}","public void test0911() throws Throwable {
+    Class<Module> class0 = Module.class;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    stdValueInstantiator0.getWithArgsCreator();
+    assertEquals(""com.fasterxml.jackson.databind.Module"", stdValueInstantiator0.getValueTypeDesc());
+}",""
+"/*
+    /**********************************************************
+    /* Public API implementation; metadata
+    /**********************************************************
+     */
+@Override
+public String getValueTypeDesc() {
+    return _valueTypeDesc;
+}","public void test1012() throws Throwable {
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, (Class<?>) null);
+    assertEquals(""UNKNOWN TYPE"", stdValueInstantiator0.getValueTypeDesc());
+}",""
+"/*
+    /**********************************************************
+    /* Public API implementation; metadata
+    /**********************************************************
+     */
+@Override
+public String getValueTypeDesc() {
+    return _valueTypeDesc;
+}","public void test1113() throws Throwable {
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, (JavaType) null);
+    assertEquals(""UNKNOWN TYPE"", stdValueInstantiator0.getValueTypeDesc());
+}",""
+"public ObjectReader readerFor(JavaType type) {
+    return _newReader(getDeserializationConfig(), type, null, null, _injectableValues);
+}","public void test1214() throws Throwable {
+    JavaType javaType0 = TypeFactory.unknownType();
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.readerFor(javaType0);
+    assertNotNull(objectReader0);
+}","/**
+ * Factory method for constructing {@link ObjectReader} that will
+ * read or update instances of specified type
+ *
+ * @since 2.6
+ */"
+"@Override
+public boolean canCreateUsingDelegate() {
+    return (_delegateType != null);
+}","public void test1315() throws Throwable {
+    Class<ClientInfoStatus> class0 = ClientInfoStatus.class;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<HashSet> class1 = HashSet.class;
+    CollectionType collectionType0 = typeFactory0.constructRawCollectionType(class1);
+    stdValueInstantiator0._delegateType = (JavaType) collectionType0;
+    boolean boolean0 = stdValueInstantiator0.canInstantiate();
+    assertTrue(stdValueInstantiator0.canCreateUsingDelegate());
+}",""
+"@Override
+public boolean canCreateUsingArrayDelegate() {
+    return (_arrayDelegateType != null);
+}","public void test1417() throws Throwable {
+    Class<JsonMappingException> class0 = JsonMappingException.class;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<HashMap> class1 = HashMap.class;
+    MapType mapType0 = typeFactory0.constructMapType(class1, class0, class0);
+    stdValueInstantiator0._arrayDelegateType = (JavaType) mapType0;
+    boolean boolean0 = stdValueInstantiator0.canCreateUsingArrayDelegate();
+    assertTrue(boolean0);
+}",""
+"@Override
+public Object createFromObjectWith(DeserializationContext ctxt, Object[] args) throws IOException {
+    if (_withArgsCreator == null) {
+        // sanity-check; caller should check
+        return super.createFromObjectWith(ctxt, args);
+    }
+    try {
+        return _withArgsCreator.call(args);
+    } catch (Throwable t) {
+        return ctxt.handleInstantiationProblem(_withArgsCreator.getDeclaringClass(), args, rewrapCtorProblem(ctxt, t));
+    }
+}","public void test1518() throws Throwable {
+    Class<Integer> class0 = Integer.TYPE;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    // Undeclared exception!
+    try {
+        stdValueInstantiator0.createFromObjectWith((DeserializationContext) null, (Object[]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.ValueInstantiator"", e);
+    }
+}",""
+"@Override
+public Object createUsingDelegate(DeserializationContext ctxt, Object delegate) throws IOException {
+    // 04-Oct-2016, tatu: Need delegation to work around [databind#1392]...
+    if (_delegateCreator == null) {
+        if (_arrayDelegateCreator != null) {
+            return _createUsingDelegate(_arrayDelegateCreator, _arrayDelegateArguments, ctxt, delegate);
+        }
+    }
+    return _createUsingDelegate(_delegateCreator, _delegateArguments, ctxt, delegate);
+}","public void test1619() throws Throwable {
+    Class<Integer> class0 = Integer.TYPE;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    // Undeclared exception!
+    try {
+        stdValueInstantiator0.createUsingDelegate((DeserializationContext) null, class0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // No delegate constructor for int
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdValueInstantiator"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Public API implementation; instantiation from JSON scalars
+    /**********************************************************
+     */
+@Override
+public Object createFromString(DeserializationContext ctxt, String value) throws IOException {
+    if (_fromStringCreator == null) {
+        return _createFromStringFallbacks(ctxt, value);
+    }
+    try {
+        return _fromStringCreator.call1(value);
+    } catch (Throwable t) {
+        return ctxt.handleInstantiationProblem(_fromStringCreator.getDeclaringClass(), value, rewrapCtorProblem(ctxt, t));
+    }
+}","public void test1720() throws Throwable {
+    Class<Integer> class0 = Integer.TYPE;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    // Undeclared exception!
+    try {
+        stdValueInstantiator0.createFromString((DeserializationContext) null, ""49?9O$u;qv@%"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.ValueInstantiator"", e);
+    }
+}",""
+"@Override
+public Object createFromInt(DeserializationContext ctxt, int value) throws IOException {
+    // First: ""native"" int methods work best:
+    if (_fromIntCreator != null) {
+        Object arg = Integer.valueOf(value);
+        try {
+            return _fromIntCreator.call1(arg);
+        } catch (Throwable t0) {
+            return ctxt.handleInstantiationProblem(_fromIntCreator.getDeclaringClass(), arg, rewrapCtorProblem(ctxt, t0));
+        }
+    }
+    // but if not, can do widening conversion
+    if (_fromLongCreator != null) {
+        Object arg = Long.valueOf(value);
+        try {
+            return _fromLongCreator.call1(arg);
+        } catch (Throwable t0) {
+            return ctxt.handleInstantiationProblem(_fromLongCreator.getDeclaringClass(), arg, rewrapCtorProblem(ctxt, t0));
+        }
+    }
+    return super.createFromInt(ctxt, value);
+}","public void test1821() throws Throwable {
+    Class<Integer> class0 = Integer.TYPE;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    // Undeclared exception!
+    try {
+        stdValueInstantiator0.createFromInt((DeserializationContext) null, (-941));
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.ValueInstantiator"", e);
+    }
+}",""
+"@Override
+public Object createFromLong(DeserializationContext ctxt, long value) throws IOException {
+    if (_fromLongCreator == null) {
+        return super.createFromLong(ctxt, value);
+    }
+    Object arg = Long.valueOf(value);
+    try {
+        return _fromLongCreator.call1(arg);
+    } catch (Throwable t0) {
+        return ctxt.handleInstantiationProblem(_fromLongCreator.getDeclaringClass(), arg, rewrapCtorProblem(ctxt, t0));
+    }
+}","public void test1922() throws Throwable {
+    Class<Integer> class0 = Integer.TYPE;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    // Undeclared exception!
+    try {
+        stdValueInstantiator0.createFromLong((DeserializationContext) null, 0L);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.ValueInstantiator"", e);
+    }
+}",""
+"@Override
+public Object createFromDouble(DeserializationContext ctxt, double value) throws IOException {
+    if (_fromDoubleCreator == null) {
+        return super.createFromDouble(ctxt, value);
+    }
+    Object arg = Double.valueOf(value);
+    try {
+        return _fromDoubleCreator.call1(arg);
+    } catch (Throwable t0) {
+        return ctxt.handleInstantiationProblem(_fromDoubleCreator.getDeclaringClass(), arg, rewrapCtorProblem(ctxt, t0));
+    }
+}","public void test2023() throws Throwable {
+    Class<Integer> class0 = Integer.TYPE;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    // Undeclared exception!
+    try {
+        stdValueInstantiator0.createFromDouble((DeserializationContext) null, (-504.571942));
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.ValueInstantiator"", e);
+    }
+}",""
+"@Override
+public Object createFromBoolean(DeserializationContext ctxt, boolean value) throws IOException {
+    if (_fromBooleanCreator == null) {
+        return super.createFromBoolean(ctxt, value);
+    }
+    final Boolean arg = Boolean.valueOf(value);
+    try {
+        return _fromBooleanCreator.call1(arg);
+    } catch (Throwable t0) {
+        return ctxt.handleInstantiationProblem(_fromBooleanCreator.getDeclaringClass(), arg, rewrapCtorProblem(ctxt, t0));
+    }
+}","public void test2124() throws Throwable {
+    Class<Integer> class0 = Integer.TYPE;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    // Undeclared exception!
+    try {
+        stdValueInstantiator0.createFromBoolean((DeserializationContext) null, false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.ValueInstantiator"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Public API implementation; metadata
+    /**********************************************************
+     */
+@Override
+public String getValueTypeDesc() {
+    return _valueTypeDesc;
+}","public void test2225() throws Throwable {
+    Class<MinimalClassNameIdResolver> class0 = MinimalClassNameIdResolver.class;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    SQLTimeoutException sQLTimeoutException0 = new SQLTimeoutException(""@[Ct@:3V85X?&oEQ"", """");
+    JsonMappingException jsonMappingException0 = stdValueInstantiator0.wrapException(sQLTimeoutException0);
+    stdValueInstantiator0.unwrapAndWrapException((DeserializationContext) null, jsonMappingException0);
+    assertEquals(""com.fasterxml.jackson.databind.jsontype.impl.MinimalClassNameIdResolver"", stdValueInstantiator0.getValueTypeDesc());
+}",""
+"/*
+    /**********************************************************
+    /* Public API implementation; metadata
+    /**********************************************************
+     */
+@Override
+public String getValueTypeDesc() {
+    return _valueTypeDesc;
+}","public void test2326() throws Throwable {
+    Class<Integer> class0 = Integer.TYPE;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    SQLFeatureNotSupportedException sQLFeatureNotSupportedException0 = new SQLFeatureNotSupportedException("""");
+    JsonMappingException.Reference jsonMappingException_Reference0 = new JsonMappingException.Reference(stdValueInstantiator0, """");
+    JsonMappingException jsonMappingException0 = JsonMappingException.wrapWithPath((Throwable) sQLFeatureNotSupportedException0, jsonMappingException_Reference0);
+    JsonMappingException jsonMappingException1 = stdValueInstantiator0.wrapException(jsonMappingException0);
+    assertEquals(""int"", stdValueInstantiator0.getValueTypeDesc());
+}",""
+"/*
+    /**********************************************************
+    /* Internal methods
+    /**********************************************************
+     */
+/**
+ * @deprecated Since 2.7 call either {@link #unwrapAndWrapException} or
+ *  {@link #wrapAsJsonMappingException}
+ */
+// since 2.7
+@Deprecated
+protected JsonMappingException wrapException(Throwable t) {
+    // 05-Nov-2015, tatu: This used to always unwrap the whole exception, but now only
+    //   does so if and until `JsonMappingException` is found.
+    for (Throwable curr = t; curr != null; curr = curr.getCause()) {
+        if (curr instanceof JsonMappingException) {
+            return (JsonMappingException) curr;
+        }
+    }
+    return new JsonMappingException(null, ""Instantiation of "" + getValueTypeDesc() + "" value failed: "" + t.getMessage(), t);
+}","public void test2327() throws Throwable {
+    Class<Integer> class0 = Integer.TYPE;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    SQLFeatureNotSupportedException sQLFeatureNotSupportedException0 = new SQLFeatureNotSupportedException("""");
+    JsonMappingException.Reference jsonMappingException_Reference0 = new JsonMappingException.Reference(stdValueInstantiator0, """");
+    JsonMappingException jsonMappingException0 = JsonMappingException.wrapWithPath((Throwable) sQLFeatureNotSupportedException0, jsonMappingException_Reference0);
+    JsonMappingException jsonMappingException1 = stdValueInstantiator0.wrapException(jsonMappingException0);
+    assertSame(jsonMappingException1, jsonMappingException0);
+}",""
+"protected JsonMappingException unwrapAndWrapException(DeserializationContext ctxt, Throwable t) {
+    // 05-Nov-2015, tatu: This used to always unwrap the whole exception, but now only
+    //   does so if and until `JsonMappingException` is found.
+    for (Throwable curr = t; curr != null; curr = curr.getCause()) {
+        if (curr instanceof JsonMappingException) {
+            return (JsonMappingException) curr;
+        }
+    }
+    return ctxt.instantiationException(getValueClass(), t);
+}","public void test2428() throws Throwable {
+    Class<JsonMappingException> class0 = JsonMappingException.class;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    SQLTransactionRollbackException sQLTransactionRollbackException0 = new SQLTransactionRollbackException();
+    // Undeclared exception!
+    try {
+        stdValueInstantiator0.unwrapAndWrapException((DeserializationContext) null, sQLTransactionRollbackException0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdValueInstantiator"", e);
+    }
+}","/**
+ * @since 2.7
+ */"
+"protected JsonMappingException rewrapCtorProblem(DeserializationContext ctxt, Throwable t) {
+    // 05-Nov-2015, tatu: Seems like there are really only 2 useless wrapper errors/exceptions,
+    //    so just peel those, and nothing else
+    if (// from static initialization block
+    (t instanceof ExceptionInInitializerError) || // from constructor/method
+    (t instanceof InvocationTargetException)) {
+        Throwable cause = t.getCause();
+        if (cause != null) {
+            t = cause;
+        }
+    }
+    return wrapAsJsonMappingException(ctxt, t);
+}","public void test2529() throws Throwable {
+    Class<NamedType> class0 = NamedType.class;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    SQLNonTransientConnectionException sQLNonTransientConnectionException0 = new SQLNonTransientConnectionException(""b><EK^rFo^BKLB-P"", ""b><EK^rFo^BKLB-P"");
+    InvocationTargetException invocationTargetException0 = new InvocationTargetException(sQLNonTransientConnectionException0);
+    // Undeclared exception!
+    try {
+        stdValueInstantiator0.rewrapCtorProblem((DeserializationContext) null, invocationTargetException0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdValueInstantiator"", e);
+    }
+}","/**
+ * @since 2.7
+ */"
+"/*
+    /**********************************************************
+    /* Public API implementation; metadata
+    /**********************************************************
+     */
+@Override
+public String getValueTypeDesc() {
+    return _valueTypeDesc;
+}","public void test2630() throws Throwable {
+    Class<BasicBeanDescription> class0 = BasicBeanDescription.class;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    SQLTransactionRollbackException sQLTransactionRollbackException0 = new SQLTransactionRollbackException();
+    JsonMappingException.Reference jsonMappingException_Reference0 = new JsonMappingException.Reference(stdValueInstantiator0, 2901);
+    JsonMappingException jsonMappingException0 = JsonMappingException.wrapWithPath((Throwable) sQLTransactionRollbackException0, jsonMappingException_Reference0);
+    stdValueInstantiator0.rewrapCtorProblem((DeserializationContext) null, jsonMappingException0);
+    assertEquals(""com.fasterxml.jackson.databind.introspect.BasicBeanDescription"", stdValueInstantiator0.getValueTypeDesc());
+}",""
+"protected JsonMappingException rewrapCtorProblem(DeserializationContext ctxt, Throwable t) {
+    // 05-Nov-2015, tatu: Seems like there are really only 2 useless wrapper errors/exceptions,
+    //    so just peel those, and nothing else
+    if (// from static initialization block
+    (t instanceof ExceptionInInitializerError) || // from constructor/method
+    (t instanceof InvocationTargetException)) {
+        Throwable cause = t.getCause();
+        if (cause != null) {
+            t = cause;
+        }
+    }
+    return wrapAsJsonMappingException(ctxt, t);
+}","public void test2731() throws Throwable {
+    Class<Module> class0 = Module.class;
+    StdValueInstantiator stdValueInstantiator0 = new StdValueInstantiator((DeserializationConfig) null, class0);
+    ExceptionInInitializerError exceptionInInitializerError0 = new ExceptionInInitializerError();
+    // Undeclared exception!
+    try {
+        stdValueInstantiator0.rewrapCtorProblem((DeserializationContext) null, exceptionInInitializerError0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.std.StdValueInstantiator"", e);
+    }
+}","/**
+ * @since 2.7
+ */"

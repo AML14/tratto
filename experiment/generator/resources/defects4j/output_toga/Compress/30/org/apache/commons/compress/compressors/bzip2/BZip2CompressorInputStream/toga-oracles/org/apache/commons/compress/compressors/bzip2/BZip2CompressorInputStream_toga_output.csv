@@ -1,0 +1,76 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test011,"public void test011() throws Throwable {
+    byte[] byteArray0 = new byte[0];
+    int int0 = 0;
+    BZip2CompressorInputStream.matches(byteArray0, 0);
+    MockFileInputStream mockFileInputStream0 = new MockFileInputStream("""");
+    BZip2CompressorInputStream bZip2CompressorInputStream0 = null;
+    try {
+        bZip2CompressorInputStream0 = new BZip2CompressorInputStream(mockFileInputStream0);
+        fail(""Expecting exception: FileNotFoundException"");
+    } catch (Throwable e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.mock.java.io.MockFileInputStream"", e);
+    }
+}",0,
+project,0,test022,"public void test022() throws Throwable {
+    BZip2CompressorInputStream.matches((byte[]) null, (-65));
+    FileDescriptor fileDescriptor0 = new FileDescriptor();
+    MockFileInputStream mockFileInputStream0 = new MockFileInputStream(fileDescriptor0);
+    mockFileInputStream0.release();
+    BufferedInputStream bufferedInputStream0 = new BufferedInputStream(mockFileInputStream0, (-1737));
+    boolean boolean0 = true;
+    BZip2CompressorInputStream bZip2CompressorInputStream0 = new BZip2CompressorInputStream(bufferedInputStream0, boolean0);
+    // Undeclared exception!
+    try {
+        bZip2CompressorInputStream0.read();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Buffer size <= 0
+        //
+        verifyException(""java.io.BufferedInputStream"", e);
+    }
+}",0,
+project,0,test033,"public void test033() throws Throwable {
+    byte[] byteArray0 = new byte[8];
+    byteArray0[0] = (byte) 56;
+    byteArray0[1] = (byte) (-120);
+    byteArray0[2] = (byte) 0;
+    byteArray0[3] = (byte) 0;
+    byteArray0[4] = (byte) (-35);
+    byteArray0[5] = (byte) 1;
+    byteArray0[6] = (byte) 0;
+    byteArray0[7] = (byte) (-100);
+    BZip2CompressorInputStream.matches(byteArray0, 849);
+    boolean boolean0 = BZip2CompressorInputStream.matches(byteArray0, (byte) (-100));
+    int int0 = 762;
+    PipedInputStream pipedInputStream0 = new PipedInputStream(762);
+    ObjectInputStream objectInputStream0 = new ObjectInputStream(pipedInputStream0);
+    objectInputStream0.readFloat();
+    pipedInputStream0.read(byteArray0);
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(objectInputStream0, pipedInputStream0);
+    BZip2CompressorInputStream bZip2CompressorInputStream0 = new BZip2CompressorInputStream(sequenceInputStream0, boolean0);
+    BZip2CompressorInputStream.matches(byteArray0, int0);
+    bZip2CompressorInputStream0.read();
+}",0,
+project,0,test088,"public void test088() throws Throwable {
+    DataInputStream dataInputStream0 = new DataInputStream((InputStream) null);
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(dataInputStream0, (InputStream) null);
+    BufferedInputStream bufferedInputStream0 = new BufferedInputStream(sequenceInputStream0);
+    BZip2CompressorInputStream bZip2CompressorInputStream0 = new BZip2CompressorInputStream(bufferedInputStream0, false);
+    bZip2CompressorInputStream0.close();
+}",0,
+project,0,test099,"public void test099() throws Throwable {
+    byte[] byteArray0 = new byte[2];
+    byteArray0[0] = (byte) 24;
+    byteArray0[1] = (byte) (-111);
+    BZip2CompressorInputStream.matches(byteArray0, 0);
+    BZip2CompressorInputStream.matches(byteArray0, (byte) (-111));
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    BZip2CompressorInputStream bZip2CompressorInputStream0 = new BZip2CompressorInputStream(byteArrayInputStream0, false);
+    int int0 = (-1905510760);
+    bZip2CompressorInputStream0.read(byteArray0, int0, (int) byteArray0[1]);
+}",0,

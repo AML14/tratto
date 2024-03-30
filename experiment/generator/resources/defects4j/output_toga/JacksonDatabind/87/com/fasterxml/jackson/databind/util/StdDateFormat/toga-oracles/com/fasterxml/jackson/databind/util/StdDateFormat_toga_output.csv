@@ -1,0 +1,316 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    TimeZone timeZone0 = StdDateFormat.getDefaultTimeZone();
+    Locale locale0 = Locale.TAIWAN;
+    StdDateFormat stdDateFormat0 = new StdDateFormat(timeZone0, locale0);
+    StdDateFormat stdDateFormat1 = stdDateFormat0.withTimeZone(timeZone0);
+    assertSame(stdDateFormat1, stdDateFormat0);
+}",0,
+project,0,test011,"public void test011() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    StdDateFormat stdDateFormat1 = stdDateFormat0.clone();
+    assertNotSame(stdDateFormat0, stdDateFormat1);
+}",0,
+project,0,test044,"public void test044() throws Throwable {
+    TimeZone timeZone0 = TimeZone.getTimeZone("""");
+    Locale locale0 = Locale.forLanguageTag("""");
+    StdDateFormat stdDateFormat0 = new StdDateFormat(timeZone0, locale0);
+    TimeZone timeZone1 = stdDateFormat0.getTimeZone();
+    assertSame(timeZone0, timeZone1);
+}",0,
+project,0,test055,"public void test055() throws Throwable {
+    StdDateFormat stdDateFormat0 = new StdDateFormat();
+    StdDateFormat stdDateFormat1 = stdDateFormat0.withTimeZone((TimeZone) null);
+    assertNotSame(stdDateFormat1, stdDateFormat0);
+}",0,
+project,0,test066,"public void test066() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    stdDateFormat0.hashCode();
+}",0,
+project,0,test077,"public void test077() throws Throwable {
+    TimeZone timeZone0 = TimeZone.getTimeZone("""");
+    Locale locale0 = Locale.JAPANESE;
+    TimeZone timeZone1 = TimeZone.getTimeZone("""");
+    StdDateFormat stdDateFormat0 = new StdDateFormat(timeZone0, locale0);
+    StdDateFormat stdDateFormat1 = stdDateFormat0.withTimeZone(timeZone1);
+    assertSame(stdDateFormat1, stdDateFormat0);
+}",0,
+project,0,test088,"public void test088() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    Locale locale0 = Locale.PRC;
+    StdDateFormat stdDateFormat1 = stdDateFormat0.withLocale(locale0);
+    try {
+        stdDateFormat1.parse(""yyyy-MM-dd'T'HH:mm:ss.SSSZ"");
+        fail(""Expecting exception: ParseException"");
+    } catch (ParseException e) {
+        //
+        // Can not parse date \""yyyy-MM-dd'T'HH:mm:ss.SSSZ\"": not compatible with any of standard forms (\""yyyy-MM-dd'T'HH:mm:ss.SSSZ\"", \""yyyy-MM-dd'T'HH:mm:ss.SSS'Z'\"", \""EEE, dd MMM yyyy HH:mm:ss zzz\"", \""yyyy-MM-dd\"")
+        //
+        verifyException(""com.fasterxml.jackson.databind.util.StdDateFormat"", e);
+    }
+}",0,
+project,0,test099,"public void test099() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    Locale locale0 = Locale.US;
+    StdDateFormat stdDateFormat1 = stdDateFormat0.withLocale(locale0);
+    assertSame(stdDateFormat1, stdDateFormat0);
+}",0,
+project,0,test1111,"public void test1111() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    TimeZone timeZone0 = TimeZone.getDefault();
+    stdDateFormat0.setTimeZone(timeZone0);
+    assertTrue(stdDateFormat0.isLenient());
+}",0,assertTrue(stdDateFormat0.isLenient())
+project,0,test1212,"public void test1212() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    stdDateFormat0.setLenient(true);
+    assertTrue(stdDateFormat0.isLenient());
+}",0,assertTrue(stdDateFormat0.isLenient())
+project,0,test1313,"public void test1313() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    boolean boolean0 = stdDateFormat0.isLenient();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test1717,"public void test1717() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    try {
+        stdDateFormat0.parse("")"");
+        fail(""Expecting exception: ParseException"");
+    } catch (ParseException e) {
+        //
+        // Can not parse date \"")\"": not compatible with any of standard forms (\""yyyy-MM-dd'T'HH:mm:ss.SSSZ\"", \""yyyy-MM-dd'T'HH:mm:ss.SSS'Z'\"", \""EEE, dd MMM yyyy HH:mm:ss zzz\"", \""yyyy-MM-dd\"")
+        //
+        verifyException(""com.fasterxml.jackson.databind.util.StdDateFormat"", e);
+    }
+}",0,
+project,0,test2324,"public void test2324() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    String string0 = stdDateFormat0.toString();
+    assertEquals(""DateFormat com.fasterxml.jackson.databind.util.StdDateFormat(locale: en_US)"", string0);
+}",0,
+project,0,test2425,"public void test2425() throws Throwable {
+    StdDateFormat stdDateFormat0 = new StdDateFormat();
+    boolean boolean0 = stdDateFormat0.equals((Object) null);
+    assertFalse(boolean0);
+}",0,
+project,0,test2526,"public void test2526() throws Throwable {
+    StdDateFormat stdDateFormat0 = new StdDateFormat();
+    boolean boolean0 = stdDateFormat0.equals(stdDateFormat0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2627,"public void test2627() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    try {
+        stdDateFormat0.parse(""8JdG1V8wzx2q(XSh"");
+        fail(""Expecting exception: ParseException"");
+    } catch (ParseException e) {
+        //
+        // Can not parse date \""8JdG1V8wzx2q(XSh\"": not compatible with any of standard forms (\""yyyy-MM-dd'T'HH:mm:ss.SSSZ\"", \""yyyy-MM-dd'T'HH:mm:ss.SSS'Z'\"", \""EEE, dd MMM yyyy HH:mm:ss zzz\"", \""yyyy-MM-dd\"")
+        //
+        verifyException(""com.fasterxml.jackson.databind.util.StdDateFormat"", e);
+    }
+}",0,
+project,0,test2728,"public void test2728() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    try {
+        stdDateFormat0.parse(""0.000"");
+        fail(""Expecting exception: ParseException"");
+    } catch (ParseException e) {
+        //
+        // Can not parse date \""0.000\"": not compatible with any of standard forms (\""yyyy-MM-dd'T'HH:mm:ss.SSSZ\"", \""yyyy-MM-dd'T'HH:mm:ss.SSS'Z'\"", \""EEE, dd MMM yyyy HH:mm:ss zzz\"", \""yyyy-MM-dd\"")
+        //
+        verifyException(""com.fasterxml.jackson.databind.util.StdDateFormat"", e);
+    }
+}",0,
+project,0,test2829,"public void test2829() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    // Undeclared exception!
+    try {
+        stdDateFormat0.parseAsISO8601("".000"", (ParsePosition) null, false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test2930,"public void test2930() throws Throwable {
+    StdDateFormat stdDateFormat0 = new StdDateFormat();
+    // Undeclared exception!
+    try {
+        stdDateFormat0.parseAsISO8601(""y6)]-X\""4m "", (ParsePosition) null, false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test3031,"public void test3031() throws Throwable {
+    StdDateFormat stdDateFormat0 = new StdDateFormat();
+    // Undeclared exception!
+    try {
+        stdDateFormat0.parseAsISO8601(""y.3ogo$BfvJLw3O:t<Z"", (ParsePosition) null, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test3132,"public void test3132() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    // Undeclared exception!
+    try {
+        stdDateFormat0.parseAsISO8601(""yyyy-MM-dd'T'HH:mm:ss.SSSZ"", (ParsePosition) null, false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test3233,"public void test3233() throws Throwable {
+    StdDateFormat stdDateFormat0 = new StdDateFormat();
+    // Undeclared exception!
+    try {
+        stdDateFormat0.parseAsISO8601(""(locale: "", (ParsePosition) null, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test3334,"public void test3334() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    ParsePosition parsePosition0 = new ParsePosition(638);
+    try {
+        stdDateFormat0.parseAsISO8601(""eJXu:g-*?(S-HP:rK"", parsePosition0, true);
+        fail(""Expecting exception: ParseException"");
+    } catch (ParseException e) {
+        //
+        // Can not parse date \""eJXu:g-*?(S0-HPrK\"": while it seems to fit format 'yyyy-MM-dd'T'HH:mm:ss.SSSZ', parsing fails (leniency? null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.util.StdDateFormat"", e);
+    }
+}",1,
+project,0,test3435,"public void test3435() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    ParsePosition parsePosition0 = new ParsePosition((-1092));
+    // Undeclared exception!
+    try {
+        stdDateFormat0.parseAsISO8601(""f\""R>X#-):"", parsePosition0, false);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",1,
+project,0,test3536,"public void test3536() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    // Undeclared exception!
+    try {
+        stdDateFormat0.parseAsISO8601("">]/@?+W_^.F"", (ParsePosition) null, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test3637,"public void test3637() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    // Undeclared exception!
+    try {
+        stdDateFormat0.parseAsISO8601("")SrMG#$Rc+;6"", (ParsePosition) null, false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test3738,"public void test3738() throws Throwable {
+    StdDateFormat stdDateFormat0 = new StdDateFormat();
+    // Undeclared exception!
+    try {
+        stdDateFormat0.parseAsISO8601(""yvR+;3;#"", (ParsePosition) null, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test3839,"public void test3839() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    // Undeclared exception!
+    try {
+        stdDateFormat0.parseAsISO8601(""com.fasterxml.jackson.core.io.NumberInput"", (ParsePosition) null, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test3940,"public void test3940() throws Throwable {
+    StdDateFormat stdDateFormat0 = new StdDateFormat();
+    // Undeclared exception!
+    try {
+        stdDateFormat0.parseAsISO8601(""*'KlEo>q{w"", (ParsePosition) null, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test4041,"public void test4041() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    // Undeclared exception!
+    try {
+        stdDateFormat0.parseAsISO8601(""DateFormat "", (ParsePosition) null, false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test4142,"public void test4142() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    // Undeclared exception!
+    try {
+        stdDateFormat0.parseAsISO8601(""(kawq"", (ParsePosition) null, true);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",1,
+project,0,test4243,"public void test4243() throws Throwable {
+    StdDateFormat stdDateFormat0 = new StdDateFormat();
+    ParsePosition parsePosition0 = new ParsePosition(9);
+    try {
+        stdDateFormat0.parseAsISO8601(""]2\""'C0nB- <'O"", parsePosition0, true);
+        fail(""Expecting exception: ParseException"");
+    } catch (ParseException e) {
+        //
+        // Can not parse date \""]2\""'C0nB.000- <'O\"": while it seems to fit format 'yyyy-MM-dd'T'HH:mm:ss.SSSZ', parsing fails (leniency? null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.util.StdDateFormat"", e);
+    }
+}",1,
+project,0,test4344,"public void test4344() throws Throwable {
+    StdDateFormat stdDateFormat0 = StdDateFormat.instance;
+    try {
+        stdDateFormat0.parse(""Can not parse date \""%s\"": while it seems to fit format '%s', parsing fails (leniency? %s)"");
+        fail(""Expecting exception: ParseException"");
+    } catch (ParseException e) {
+        //
+        // Can not parse date \""Can not parse date \""%s\"": while it seems to fit format '%s', parsing fails (leniency? %s)\"": not compatible with any of standard forms (\""yyyy-MM-dd'T'HH:mm:ss.SSSZ\"", \""yyyy-MM-dd'T'HH:mm:ss.SSS'Z'\"", \""EEE, dd MMM yyyy HH:mm:ss zzz\"", \""yyyy-MM-dd\"")
+        //
+        verifyException(""com.fasterxml.jackson.databind.util.StdDateFormat"", e);
+    }
+}",1,

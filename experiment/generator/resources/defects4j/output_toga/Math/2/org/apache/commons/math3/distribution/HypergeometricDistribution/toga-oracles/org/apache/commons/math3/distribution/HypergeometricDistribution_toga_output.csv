@@ -1,0 +1,493 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(1130, 888, 568);
+    double double0 = hypergeometricDistribution0.upperCumulativeProbability(568);
+    assertEquals(9.678525982176148E-89, double0, 0.01);
+}",0,
+project,0,test011,"public void test011() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(1, 1, 1);
+    double double0 = hypergeometricDistribution0.upperCumulativeProbability(1);
+    assertEquals(1.0, double0, 0.01);
+}",0,
+project,0,test012,"public void test012() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(1, 1, 1);
+    double double0 = hypergeometricDistribution0.upperCumulativeProbability(1);
+    assertEquals(1.0, hypergeometricDistribution0.getNumericalMean(), 0.01);
+}",0,
+project,0,test023,"public void test023() throws Throwable {
+    ISAACRandom iSAACRandom0 = new ISAACRandom();
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(iSAACRandom0, 2548, 324, 324);
+    // Undeclared exception!
+    hypergeometricDistribution0.sample(2048);
+}",1,
+project,0,test034,"public void test034() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(1395, 0, 1395);
+    double double0 = hypergeometricDistribution0.cumulativeProbability(0, 144);
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test035,"public void test035() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(1395, 0, 1395);
+    double double0 = hypergeometricDistribution0.cumulativeProbability(0, 144);
+    assertEquals(1395, hypergeometricDistribution0.getPopulationSize());
+}",0,
+project,0,test036,"public void test036() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(1395, 0, 1395);
+    double double0 = hypergeometricDistribution0.cumulativeProbability(0, 144);
+    assertEquals(0.0, hypergeometricDistribution0.getNumericalMean(), 0.01);
+}",0,
+project,0,test037,"public void test037() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(1395, 0, 1395);
+    double double0 = hypergeometricDistribution0.cumulativeProbability(0, 144);
+    assertEquals(1395, hypergeometricDistribution0.getSampleSize());
+}",0,
+project,0,test048,"public void test048() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(1130, 888, 568);
+    double double0 = hypergeometricDistribution0.cumulativeProbability(326);
+    assertEquals(2.7617451183816397E-87, double0, 0.01);
+}",0,
+project,0,test059,"public void test059() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = null;
+    try {
+        hypergeometricDistribution0 = new HypergeometricDistribution(0, 0, 0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // population size (0)
+        //
+        verifyException(""org.apache.commons.math3.distribution.HypergeometricDistribution"", e);
+    }
+}",1,
+project,0,test0610,"public void test0610() throws Throwable {
+    Well19937a well19937a0 = new Well19937a();
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(well19937a0, 200, 1, 1);
+    double double0 = hypergeometricDistribution0.probability(1);
+    assertEquals(0.005000000000000006, double0, 0.01);
+}",0,
+project,0,test0711,"public void test0711() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(1395, 0, 1395);
+    int int0 = hypergeometricDistribution0.getSupportUpperBound();
+    assertEquals(0, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test0712,"public void test0712() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(1395, 0, 1395);
+    int int0 = hypergeometricDistribution0.getSupportUpperBound();
+    assertEquals(1395, hypergeometricDistribution0.getPopulationSize());
+}",0,"assertEquals(0, hypergeometricDistribution0.getPopulationSize())"
+project,0,test0713,"public void test0713() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(1395, 0, 1395);
+    int int0 = hypergeometricDistribution0.getSupportUpperBound();
+    assertEquals(1395, hypergeometricDistribution0.getSampleSize());
+}",0,"assertEquals(0, hypergeometricDistribution0.getSampleSize())"
+project,0,test0814,"public void test0814() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(1130, 888, 568);
+    int int0 = hypergeometricDistribution0.getSupportLowerBound();
+    assertEquals(326, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test0915,"public void test0915() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(2, 2, 0);
+    int int0 = hypergeometricDistribution0.getSampleSize();
+    assertEquals(2, hypergeometricDistribution0.getPopulationSize());
+}",0,"assertEquals(1, hypergeometricDistribution0.getPopulationSize())"
+project,0,test0916,"public void test0916() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(2, 2, 0);
+    int int0 = hypergeometricDistribution0.getSampleSize();
+    assertEquals(0.0, hypergeometricDistribution0.getNumericalMean(), 0.01);
+}",0,
+project,0,test0917,"public void test0917() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(2, 2, 0);
+    int int0 = hypergeometricDistribution0.getSampleSize();
+    assertEquals(2, hypergeometricDistribution0.getNumberOfSuccesses());
+}",0,
+project,0,test0918,"public void test0918() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(2, 2, 0);
+    int int0 = hypergeometricDistribution0.getSampleSize();
+    assertEquals(0, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test1019,"public void test1019() throws Throwable {
+    Well19937c well19937c0 = new Well19937c();
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(well19937c0, 1795, 1795, 0);
+    double double0 = hypergeometricDistribution0.getNumericalMean();
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test1020,"public void test1020() throws Throwable {
+    Well19937c well19937c0 = new Well19937c();
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(well19937c0, 1795, 1795, 0);
+    double double0 = hypergeometricDistribution0.getNumericalMean();
+    assertEquals(1795, hypergeometricDistribution0.getNumberOfSuccesses());
+}",0,"assertEquals(0, hypergeometricDistribution0.getNumberOfSuccesses())"
+project,0,test1021,"public void test1021() throws Throwable {
+    Well19937c well19937c0 = new Well19937c();
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(well19937c0, 1795, 1795, 0);
+    double double0 = hypergeometricDistribution0.getNumericalMean();
+    assertEquals(1795, hypergeometricDistribution0.getPopulationSize());
+}",0,"assertEquals(1, hypergeometricDistribution0.getPopulationSize())"
+project,0,test1122,"public void test1122() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(474, 474, 474);
+    int int0 = hypergeometricDistribution0.getNumberOfSuccesses();
+    assertEquals(474.0, hypergeometricDistribution0.getNumericalMean(), 0.01);
+}",0,
+project,0,test1123,"public void test1123() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(474, 474, 474);
+    int int0 = hypergeometricDistribution0.getNumberOfSuccesses();
+    assertEquals(474, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test1224,"public void test1224() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(1395, 0, 1395);
+    double double0 = hypergeometricDistribution0.calculateNumericalVariance();
+    assertEquals(1395, hypergeometricDistribution0.getPopulationSize());
+}",1,
+project,0,test1225,"public void test1225() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(1395, 0, 1395);
+    double double0 = hypergeometricDistribution0.calculateNumericalVariance();
+    assertEquals(1395, hypergeometricDistribution0.getSampleSize());
+}",0,"assertEquals(1, hypergeometricDistribution0.getSampleSize())"
+project,0,test1226,"public void test1226() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(1395, 0, 1395);
+    double double0 = hypergeometricDistribution0.calculateNumericalVariance();
+    assertEquals(0, hypergeometricDistribution0.getNumberOfSuccesses());
+}",0,"assertEquals(0, hypergeometricDistribution0.getNumberOfSuccesses())"
+project,0,test1227,"public void test1227() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(1395, 0, 1395);
+    double double0 = hypergeometricDistribution0.calculateNumericalVariance();
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test1328,"public void test1328() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = null;
+    try {
+        hypergeometricDistribution0 = new HypergeometricDistribution(807, 807, 1880);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // sample size (1,880) must be less than or equal to population size (807)
+        //
+        verifyException(""org.apache.commons.math3.distribution.HypergeometricDistribution"", e);
+    }
+}",1,
+project,0,test1429,"public void test1429() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(1130, 888, 568);
+    double double0 = hypergeometricDistribution0.getNumericalVariance();
+    assertEquals(47.58413228006463, double0, 0.01);
+}",0,
+project,0,test1530,"public void test1530() throws Throwable {
+    MersenneTwister mersenneTwister0 = new MersenneTwister(6722166367014452318L);
+    HypergeometricDistribution hypergeometricDistribution0 = null;
+    try {
+        hypergeometricDistribution0 = new HypergeometricDistribution(mersenneTwister0, 0, 0, 0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // population size (0)
+        //
+        verifyException(""org.apache.commons.math3.distribution.HypergeometricDistribution"", e);
+    }
+}",1,
+project,0,test1631,"public void test1631() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(474, 474, 474);
+    double double0 = hypergeometricDistribution0.getNumericalMean();
+    assertEquals(474.0, double0, 0.01);
+}",0,
+project,0,test1732,"public void test1732() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(474, 474, 474);
+    int int0 = hypergeometricDistribution0.getPopulationSize();
+    assertEquals(474.0, hypergeometricDistribution0.getNumericalMean(), 0.01);
+}",0,
+project,0,test1733,"public void test1733() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(474, 474, 474);
+    int int0 = hypergeometricDistribution0.getPopulationSize();
+    assertEquals(474, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test1834,"public void test1834() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(1395, 0, 1395);
+    int int0 = hypergeometricDistribution0.getNumberOfSuccesses();
+    assertEquals(1395, hypergeometricDistribution0.getSampleSize());
+}",0,"assertEquals(0, hypergeometricDistribution0.getSampleSize())"
+project,0,test1835,"public void test1835() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(1395, 0, 1395);
+    int int0 = hypergeometricDistribution0.getNumberOfSuccesses();
+    assertEquals(0.0, hypergeometricDistribution0.getNumericalMean(), 0.01);
+}",0,
+project,0,test1836,"public void test1836() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(1395, 0, 1395);
+    int int0 = hypergeometricDistribution0.getNumberOfSuccesses();
+    assertEquals(1395, hypergeometricDistribution0.getPopulationSize());
+}",0,"assertEquals(0, hypergeometricDistribution0.getPopulationSize())"
+project,0,test1837,"public void test1837() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(1395, 0, 1395);
+    int int0 = hypergeometricDistribution0.getNumberOfSuccesses();
+    assertEquals(0, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test1938,"public void test1938() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(1395, 0, 1395);
+    int int0 = hypergeometricDistribution0.getSupportLowerBound();
+    assertEquals(0, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test1939,"public void test1939() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(1395, 0, 1395);
+    int int0 = hypergeometricDistribution0.getSupportLowerBound();
+    assertEquals(1395, hypergeometricDistribution0.getSampleSize());
+}",0,"assertEquals(0, hypergeometricDistribution0.getSampleSize())"
+project,0,test1940,"public void test1940() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(1395, 0, 1395);
+    int int0 = hypergeometricDistribution0.getSupportLowerBound();
+    assertEquals(1395, hypergeometricDistribution0.getPopulationSize());
+}",0,
+project,0,test1941,"public void test1941() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(1395, 0, 1395);
+    int int0 = hypergeometricDistribution0.getSupportLowerBound();
+    assertEquals(0.0, hypergeometricDistribution0.getNumericalMean(), 0.01);
+}",0,
+project,0,test2042,"public void test2042() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(1395, 0, 1395);
+    int int0 = hypergeometricDistribution0.getSampleSize();
+    assertEquals(1395, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test2043,"public void test2043() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(1395, 0, 1395);
+    int int0 = hypergeometricDistribution0.getSampleSize();
+    assertEquals(1395, hypergeometricDistribution0.getPopulationSize());
+}",0,"assertEquals(0, hypergeometricDistribution0.getPopulationSize())"
+project,0,test2044,"public void test2044() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(1395, 0, 1395);
+    int int0 = hypergeometricDistribution0.getSampleSize();
+    assertEquals(0, hypergeometricDistribution0.getNumberOfSuccesses());
+}",0,
+project,0,test2145,"public void test2145() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(1130, 888, 568);
+    int int0 = hypergeometricDistribution0.getSupportUpperBound();
+    assertEquals(446.35752212389383, hypergeometricDistribution0.getNumericalMean(), 0.01);
+}",0,
+project,0,test2146,"public void test2146() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(1130, 888, 568);
+    int int0 = hypergeometricDistribution0.getSupportUpperBound();
+    assertEquals(568, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test2247,"public void test2247() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(1130, 888, 568);
+    double double0 = hypergeometricDistribution0.upperCumulativeProbability(458);
+    assertEquals(0.0529983853060436, double0, 0.01);
+}",0,
+project,0,test2348,"public void test2348() throws Throwable {
+    Well1024a well1024a0 = new Well1024a();
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(well1024a0, 835, 0, 835);
+    double double0 = hypergeometricDistribution0.upperCumulativeProbability((-2040));
+    assertEquals(835, hypergeometricDistribution0.getSampleSize());
+}",0,"assertEquals(0, hypergeometricDistribution0.getSampleSize())"
+project,0,test2349,"public void test2349() throws Throwable {
+    Well1024a well1024a0 = new Well1024a();
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(well1024a0, 835, 0, 835);
+    double double0 = hypergeometricDistribution0.upperCumulativeProbability((-2040));
+    assertEquals(835, hypergeometricDistribution0.getPopulationSize());
+}",0,"assertEquals(1, hypergeometricDistribution0.getPopulationSize())"
+project,0,test2350,"public void test2350() throws Throwable {
+    Well1024a well1024a0 = new Well1024a();
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(well1024a0, 835, 0, 835);
+    double double0 = hypergeometricDistribution0.upperCumulativeProbability((-2040));
+    assertEquals(0.0, hypergeometricDistribution0.getNumericalMean(), 0.01);
+}",0,
+project,0,test2351,"public void test2351() throws Throwable {
+    Well1024a well1024a0 = new Well1024a();
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(well1024a0, 835, 0, 835);
+    double double0 = hypergeometricDistribution0.upperCumulativeProbability((-2040));
+    assertEquals(1.0, double0, 0.01);
+}",0,
+project,0,test2452,"public void test2452() throws Throwable {
+    Well1024a well1024a0 = new Well1024a();
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(well1024a0, 835, 0, 835);
+    double double0 = hypergeometricDistribution0.upperCumulativeProbability(835);
+    assertEquals(0.0, hypergeometricDistribution0.getNumericalMean(), 0.01);
+}",0,
+project,0,test2453,"public void test2453() throws Throwable {
+    Well1024a well1024a0 = new Well1024a();
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(well1024a0, 835, 0, 835);
+    double double0 = hypergeometricDistribution0.upperCumulativeProbability(835);
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test2454,"public void test2454() throws Throwable {
+    Well1024a well1024a0 = new Well1024a();
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(well1024a0, 835, 0, 835);
+    double double0 = hypergeometricDistribution0.upperCumulativeProbability(835);
+    assertEquals(835, hypergeometricDistribution0.getSampleSize());
+}",0,"assertEquals(0, hypergeometricDistribution0.getSampleSize())"
+project,0,test2455,"public void test2455() throws Throwable {
+    Well1024a well1024a0 = new Well1024a();
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(well1024a0, 835, 0, 835);
+    double double0 = hypergeometricDistribution0.upperCumulativeProbability(835);
+    assertEquals(835, hypergeometricDistribution0.getPopulationSize());
+}",0,"assertEquals(1, hypergeometricDistribution0.getPopulationSize())"
+project,0,test2556,"public void test2556() throws Throwable {
+    Well1024a well1024a0 = new Well1024a();
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(well1024a0, 835, 0, 835);
+    double double0 = hypergeometricDistribution0.probability(835);
+    assertEquals(835, hypergeometricDistribution0.getPopulationSize());
+}",0,"assertEquals(1, hypergeometricDistribution0.getPopulationSize())"
+project,0,test2557,"public void test2557() throws Throwable {
+    Well1024a well1024a0 = new Well1024a();
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(well1024a0, 835, 0, 835);
+    double double0 = hypergeometricDistribution0.probability(835);
+    assertEquals(0.0, hypergeometricDistribution0.getNumericalMean(), 0.01);
+}",0,
+project,0,test2558,"public void test2558() throws Throwable {
+    Well1024a well1024a0 = new Well1024a();
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(well1024a0, 835, 0, 835);
+    double double0 = hypergeometricDistribution0.probability(835);
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test2559,"public void test2559() throws Throwable {
+    Well1024a well1024a0 = new Well1024a();
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(well1024a0, 835, 0, 835);
+    double double0 = hypergeometricDistribution0.probability(835);
+    assertEquals(835, hypergeometricDistribution0.getSampleSize());
+}",0,"assertEquals(0, hypergeometricDistribution0.getSampleSize())"
+project,0,test2660,"public void test2660() throws Throwable {
+    Well1024a well1024a0 = new Well1024a();
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(well1024a0, 835, 0, 835);
+    double double0 = hypergeometricDistribution0.probability((-1892));
+    assertEquals(835, hypergeometricDistribution0.getSampleSize());
+}",0,"assertEquals(0, hypergeometricDistribution0.getSampleSize())"
+project,0,test2661,"public void test2661() throws Throwable {
+    Well1024a well1024a0 = new Well1024a();
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(well1024a0, 835, 0, 835);
+    double double0 = hypergeometricDistribution0.probability((-1892));
+    assertEquals(0.0, hypergeometricDistribution0.getNumericalMean(), 0.01);
+}",0,
+project,0,test2662,"public void test2662() throws Throwable {
+    Well1024a well1024a0 = new Well1024a();
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(well1024a0, 835, 0, 835);
+    double double0 = hypergeometricDistribution0.probability((-1892));
+    assertEquals(835, hypergeometricDistribution0.getPopulationSize());
+}",0,"assertEquals(1, hypergeometricDistribution0.getPopulationSize())"
+project,0,test2663,"public void test2663() throws Throwable {
+    Well1024a well1024a0 = new Well1024a();
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(well1024a0, 835, 0, 835);
+    double double0 = hypergeometricDistribution0.probability((-1892));
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test2764,"public void test2764() throws Throwable {
+    Well1024a well1024a0 = new Well1024a();
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(well1024a0, 835, 0, 835);
+    double double0 = hypergeometricDistribution0.cumulativeProbability((-24));
+    assertEquals(835, hypergeometricDistribution0.getSampleSize());
+}",0,"assertEquals(0, hypergeometricDistribution0.getSampleSize())"
+project,0,test2765,"public void test2765() throws Throwable {
+    Well1024a well1024a0 = new Well1024a();
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(well1024a0, 835, 0, 835);
+    double double0 = hypergeometricDistribution0.cumulativeProbability((-24));
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test2766,"public void test2766() throws Throwable {
+    Well1024a well1024a0 = new Well1024a();
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(well1024a0, 835, 0, 835);
+    double double0 = hypergeometricDistribution0.cumulativeProbability((-24));
+    assertEquals(0.0, hypergeometricDistribution0.getNumericalMean(), 0.01);
+}",0,
+project,0,test2767,"public void test2767() throws Throwable {
+    Well1024a well1024a0 = new Well1024a();
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(well1024a0, 835, 0, 835);
+    double double0 = hypergeometricDistribution0.cumulativeProbability((-24));
+    assertEquals(835, hypergeometricDistribution0.getPopulationSize());
+}",0,"assertEquals(1, hypergeometricDistribution0.getPopulationSize())"
+project,0,test2868,"public void test2868() throws Throwable {
+    Well1024a well1024a0 = new Well1024a(3952L);
+    HypergeometricDistribution hypergeometricDistribution0 = null;
+    try {
+        hypergeometricDistribution0 = new HypergeometricDistribution(well1024a0, 30, 30, 1269);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // sample size (1,269) must be less than or equal to population size (30)
+        //
+        verifyException(""org.apache.commons.math3.distribution.HypergeometricDistribution"", e);
+    }
+}",1,
+project,0,test2969,"public void test2969() throws Throwable {
+    Well44497a well44497a0 = new Well44497a(860);
+    HypergeometricDistribution hypergeometricDistribution0 = null;
+    try {
+        hypergeometricDistribution0 = new HypergeometricDistribution(well44497a0, 739, 860, 1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // number of successes (860) must be less than or equal to population size (739)
+        //
+        verifyException(""org.apache.commons.math3.distribution.HypergeometricDistribution"", e);
+    }
+}",1,
+project,0,test3070,"public void test3070() throws Throwable {
+    Well512a well512a0 = new Well512a();
+    HypergeometricDistribution hypergeometricDistribution0 = null;
+    try {
+        hypergeometricDistribution0 = new HypergeometricDistribution(well512a0, 426, 426, (byte) (-13));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // number of samples (-13)
+        //
+        verifyException(""org.apache.commons.math3.distribution.HypergeometricDistribution"", e);
+    }
+}",1,
+project,0,test3171,"public void test3171() throws Throwable {
+    Well44497b well44497b0 = new Well44497b(178);
+    HypergeometricDistribution hypergeometricDistribution0 = null;
+    try {
+        hypergeometricDistribution0 = new HypergeometricDistribution(well44497b0, 1, (-766), 5976);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // number of successes (-766)
+        //
+        verifyException(""org.apache.commons.math3.distribution.HypergeometricDistribution"", e);
+    }
+}",1,
+project,0,test3272,"public void test3272() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(474, 474, 474);
+    boolean boolean0 = hypergeometricDistribution0.isSupportConnected();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test3273,"public void test3273() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(474, 474, 474);
+    boolean boolean0 = hypergeometricDistribution0.isSupportConnected();
+    assertEquals(474.0, hypergeometricDistribution0.getNumericalMean(), 0.01);
+}",0,
+project,0,test3374,"public void test3374() throws Throwable {
+    Well1024a well1024a0 = new Well1024a();
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(well1024a0, 835, 0, 835);
+    hypergeometricDistribution0.sample();
+    double double0 = hypergeometricDistribution0.getNumericalVariance();
+    assertEquals(835, hypergeometricDistribution0.getSampleSize());
+}",0,"assertEquals(0, hypergeometricDistribution0.getSampleSize())"
+project,0,test3375,"public void test3375() throws Throwable {
+    Well1024a well1024a0 = new Well1024a();
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(well1024a0, 835, 0, 835);
+    hypergeometricDistribution0.sample();
+    double double0 = hypergeometricDistribution0.getNumericalVariance();
+    assertEquals(835, hypergeometricDistribution0.getPopulationSize());
+}",0,"assertEquals(1, hypergeometricDistribution0.getPopulationSize())"
+project,0,test3376,"public void test3376() throws Throwable {
+    Well1024a well1024a0 = new Well1024a();
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(well1024a0, 835, 0, 835);
+    hypergeometricDistribution0.sample();
+    double double0 = hypergeometricDistribution0.getNumericalVariance();
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test3377,"public void test3377() throws Throwable {
+    Well1024a well1024a0 = new Well1024a();
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(well1024a0, 835, 0, 835);
+    hypergeometricDistribution0.sample();
+    double double0 = hypergeometricDistribution0.getNumericalVariance();
+    assertEquals(0.0, hypergeometricDistribution0.getNumericalMean(), 0.01);
+}",0,
+project,0,test3478,"public void test3478() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(1130, 888, 568);
+    double double0 = hypergeometricDistribution0.cumulativeProbability(1130);
+    assertEquals(446.35752212389383, hypergeometricDistribution0.getNumericalMean(), 0.01);
+}",0,
+project,0,test3479,"public void test3479() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(1130, 888, 568);
+    double double0 = hypergeometricDistribution0.cumulativeProbability(1130);
+    assertEquals(1.0, double0, 0.01);
+}",0,
+project,0,test3580,"public void test3580() throws Throwable {
+    HypergeometricDistribution hypergeometricDistribution0 = new HypergeometricDistribution(1130, 888, 568);
+    double double0 = hypergeometricDistribution0.calculateNumericalVariance();
+    assertEquals(47.58413228006463, double0, 0.01);
+}",0,

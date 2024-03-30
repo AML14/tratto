@@ -1,0 +1,314 @@
+focal_method,test_prefix,docstring
+"protected double computeObjectiveValue(double[] point) {
+    try {
+        evaluations.incrementCount();
+    } catch (MaxCountExceededException e) {
+        throw new TooManyEvaluationsException(e.getMax());
+    }
+    return function.value(point);
+}","public void test000() throws Throwable {
+    BOBYQAOptimizer bOBYQAOptimizer0 = new BOBYQAOptimizer(34);
+    double[] doubleArray0 = new double[1];
+    double[][] doubleArray1 = new double[1][7];
+    UnitSphereRandomVectorGenerator unitSphereRandomVectorGenerator0 = new UnitSphereRandomVectorGenerator(2);
+    MicrosphereInterpolatingFunction microsphereInterpolatingFunction0 = new MicrosphereInterpolatingFunction(doubleArray1, doubleArray0, 34, 650, unitSphereRandomVectorGenerator0);
+    GoalType goalType0 = GoalType.MAXIMIZE;
+    bOBYQAOptimizer0.optimize(34, microsphereInterpolatingFunction0, goalType0, doubleArray1[0]);
+    bOBYQAOptimizer0.doOptimize();
+    // Undeclared exception!
+    try {
+        bOBYQAOptimizer0.computeObjectiveValue(doubleArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // 7 != 2
+        //
+        verifyException(""org.apache.commons.math.linear.ArrayRealVector"", e);
+    }
+}","/**
+ * Compute the objective function value.
+ *
+ * @param point Point at which the objective function must be evaluated.
+ * @return the objective function value at the specified point.
+ * @throws TooManyEvaluationsException if the maximal number of
+ * evaluations is exceeded.
+ */"
+"public MicrosphereInterpolatingFunction(double[][] xval, double[] yval, int brightnessExponent, int microsphereElements, UnitSphereRandomVectorGenerator rand) {
+    if (xval == null || yval == null) {
+        throw new NullArgumentException();
+    }
+    if (xval.length == 0) {
+        throw new NoDataException();
+    }
+    if (xval.length != yval.length) {
+        throw new DimensionMismatchException(xval.length, yval.length);
+    }
+    if (xval[0] == null) {
+        throw new NullArgumentException();
+    }
+    dimension = xval[0].length;
+    this.brightnessExponent = brightnessExponent;
+    // Copy data samples.
+    samples = new HashMap<RealVector, Double>(yval.length);
+    for (int i = 0; i < xval.length; ++i) {
+        final double[] xvalI = xval[i];
+        if (xvalI == null) {
+            throw new NullArgumentException();
+        }
+        if (xvalI.length != dimension) {
+            throw new DimensionMismatchException(xvalI.length, dimension);
+        }
+        samples.put(new ArrayRealVector(xvalI), yval[i]);
+    }
+    microsphere = new ArrayList<MicrosphereSurfaceElement>(microsphereElements);
+    // Generate the microsphere, assuming that a fairly large number of
+    // randomly generated normals will represent a sphere.
+    for (int i = 0; i < microsphereElements; i++) {
+        microsphere.add(new MicrosphereSurfaceElement(rand.nextVector()));
+    }
+}","public void test011() throws Throwable {
+    int int0 = 0;
+    BOBYQAOptimizer bOBYQAOptimizer0 = new BOBYQAOptimizer(0);
+    double[] doubleArray0 = new double[1];
+    double[][] doubleArray1 = new double[1][7];
+    UnitSphereRandomVectorGenerator unitSphereRandomVectorGenerator0 = new UnitSphereRandomVectorGenerator(317);
+    MicrosphereInterpolatingFunction microsphereInterpolatingFunction0 = new MicrosphereInterpolatingFunction(doubleArray1, doubleArray0, 317, 0, unitSphereRandomVectorGenerator0);
+    GoalType goalType0 = GoalType.MINIMIZE;
+    bOBYQAOptimizer0.optimize(942, (MultivariateFunction) microsphereInterpolatingFunction0, goalType0, doubleArray0, doubleArray0, doubleArray0);
+    UnitSphereRandomVectorGenerator unitSphereRandomVectorGenerator1 = new UnitSphereRandomVectorGenerator(bOBYQAOptimizer0.MINIMUM_PROBLEM_DIMENSION);
+    MicrosphereInterpolatingFunction microsphereInterpolatingFunction1 = null;
+    try {
+        microsphereInterpolatingFunction1 = new MicrosphereInterpolatingFunction(doubleArray1, doubleArray0, int0, bOBYQAOptimizer0.MINIMUM_PROBLEM_DIMENSION, unitSphereRandomVectorGenerator1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // 1 is smaller than the minimum (2)
+        //
+        verifyException(""org.apache.commons.math.optimization.direct.BOBYQAOptimizer"", e);
+    }
+}","/**
+ * @param xval the arguments for the interpolation points.
+ * {@code xval[i][0]} is the first component of interpolation point
+ * {@code i}, {@code xval[i][1]} is the second component, and so on
+ * until {@code xval[i][d-1]}, the last component of that interpolation
+ * point (where {@code dimension} is thus the dimension of the sampled
+ * space).
+ * @param yval the values for the interpolation points
+ * @param brightnessExponent Brightness dimming factor.
+ * @param microsphereElements Number of surface elements of the
+ * microsphere.
+ * @param rand Unit vector generator for creating the microsphere.
+ * @throws DimensionMismatchException if the lengths of {@code yval} and
+ * {@code xval} (equal to {@code n}, the number of interpolation points)
+ * do not match, or the the arrays {@code xval[0]} ... {@code xval[n]},
+ * have lengths different from {@code dimension}.
+ * @throws NoDataException if there an array has zero-length.
+ * @throws NullArgumentException if an argument is {@code null}.
+ */"
+"@Override
+protected RealPointValuePair doOptimize() {
+    final double[] lowerBound = getLowerBound();
+    final double[] upperBound = getUpperBound();
+    // Validity checks.
+    setup(lowerBound, upperBound);
+    isMinimize = (getGoalType() == GoalType.MINIMIZE);
+    currentBest = new ArrayRealVector(getStartPoint());
+    final double value = bobyqa(lowerBound, upperBound);
+    return new RealPointValuePair(currentBest.getDataRef(), isMinimize ? value : -value);
+}","public void test022() throws Throwable {
+    BOBYQAOptimizer bOBYQAOptimizer0 = new BOBYQAOptimizer(35);
+    double[] doubleArray0 = new double[1];
+    double[][] doubleArray1 = new double[1][7];
+    UnitSphereRandomVectorGenerator unitSphereRandomVectorGenerator0 = new UnitSphereRandomVectorGenerator(2);
+    MicrosphereInterpolatingFunction microsphereInterpolatingFunction0 = new MicrosphereInterpolatingFunction(doubleArray1, doubleArray0, 35, 650, unitSphereRandomVectorGenerator0);
+    GoalType goalType0 = GoalType.MINIMIZE;
+    bOBYQAOptimizer0.optimize(35, microsphereInterpolatingFunction0, goalType0, doubleArray1[0]);
+    bOBYQAOptimizer0.computeObjectiveValue(doubleArray0);
+    // Undeclared exception!
+    try {
+        bOBYQAOptimizer0.doOptimize();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // 7 != 2
+        //
+        verifyException(""org.apache.commons.math.linear.ArrayRealVector"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"@Override
+protected RealPointValuePair doOptimize() {
+    final double[] lowerBound = getLowerBound();
+    final double[] upperBound = getUpperBound();
+    // Validity checks.
+    setup(lowerBound, upperBound);
+    isMinimize = (getGoalType() == GoalType.MINIMIZE);
+    currentBest = new ArrayRealVector(getStartPoint());
+    final double value = bobyqa(lowerBound, upperBound);
+    return new RealPointValuePair(currentBest.getDataRef(), isMinimize ? value : -value);
+}","public void test044() throws Throwable {
+    BOBYQAOptimizer bOBYQAOptimizer0 = new BOBYQAOptimizer(150);
+    double[] doubleArray0 = new double[1];
+    double[][] doubleArray1 = new double[1][7];
+    UnitSphereRandomVectorGenerator unitSphereRandomVectorGenerator0 = new UnitSphereRandomVectorGenerator(2);
+    MicrosphereInterpolatingFunction microsphereInterpolatingFunction0 = new MicrosphereInterpolatingFunction(doubleArray1, doubleArray0, 150, 650, unitSphereRandomVectorGenerator0);
+    GoalType goalType0 = GoalType.MINIMIZE;
+    bOBYQAOptimizer0.optimize(150, microsphereInterpolatingFunction0, goalType0, doubleArray1[0]);
+    bOBYQAOptimizer0.computeObjectiveValue(doubleArray0);
+    // Undeclared exception!
+    try {
+        bOBYQAOptimizer0.doOptimize();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // number of interpolation points (150)
+        //
+        verifyException(""org.apache.commons.math.optimization.direct.BOBYQAOptimizer"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"public BOBYQAOptimizer(int numberOfInterpolationPoints) {
+    this(numberOfInterpolationPoints, DEFAULT_INITIAL_RADIUS, DEFAULT_STOPPING_RADIUS);
+}","public void test055() throws Throwable {
+    BOBYQAOptimizer bOBYQAOptimizer0 = new BOBYQAOptimizer((-640));
+}","/**
+ * @param numberOfInterpolationPoints Number of interpolation conditions.
+ * For a problem of dimension {@code n}, its value must be in the interval
+ * {@code [n+2, (n+1)(n+2)/2]}.
+ * Choices that exceed {@code 2n+1} are not recommended.
+ */"
+"@Override
+protected RealPointValuePair doOptimize() {
+    final double[] lowerBound = getLowerBound();
+    final double[] upperBound = getUpperBound();
+    // Validity checks.
+    setup(lowerBound, upperBound);
+    isMinimize = (getGoalType() == GoalType.MINIMIZE);
+    currentBest = new ArrayRealVector(getStartPoint());
+    final double value = bobyqa(lowerBound, upperBound);
+    return new RealPointValuePair(currentBest.getDataRef(), isMinimize ? value : -value);
+}","public void test066() throws Throwable {
+    BOBYQAOptimizer bOBYQAOptimizer0 = new BOBYQAOptimizer(524);
+    bOBYQAOptimizer0.doOptimize();
+}","/**
+ * {@inheritDoc}
+ */"
+"public int getEvaluations() {
+    return evaluations.getCount();
+}","public void test077() throws Throwable {
+    double double0 = (-1645.832532305);
+    BOBYQAOptimizer bOBYQAOptimizer0 = new BOBYQAOptimizer(877, 877, (-1645.832532305));
+    bOBYQAOptimizer0.doOptimize();
+    // Undeclared exception!
+    try {
+        bOBYQAOptimizer0.getEvaluations();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.optimization.direct.BaseAbstractMultivariateSimpleBoundsOptimizer"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"@Override
+protected RealPointValuePair doOptimize() {
+    final double[] lowerBound = getLowerBound();
+    final double[] upperBound = getUpperBound();
+    // Validity checks.
+    setup(lowerBound, upperBound);
+    isMinimize = (getGoalType() == GoalType.MINIMIZE);
+    currentBest = new ArrayRealVector(getStartPoint());
+    final double value = bobyqa(lowerBound, upperBound);
+    return new RealPointValuePair(currentBest.getDataRef(), isMinimize ? value : -value);
+}","public void test088() throws Throwable {
+    BOBYQAOptimizer bOBYQAOptimizer0 = new BOBYQAOptimizer(0);
+    double[] doubleArray0 = new double[1];
+    doubleArray0[0] = (double) 0;
+    double[][] doubleArray1 = new double[1][7];
+    doubleArray1[0] = doubleArray0;
+    UnitSphereRandomVectorGenerator unitSphereRandomVectorGenerator0 = new UnitSphereRandomVectorGenerator(2);
+    MicrosphereInterpolatingFunction microsphereInterpolatingFunction0 = new MicrosphereInterpolatingFunction(doubleArray1, doubleArray0, 0, 650, unitSphereRandomVectorGenerator0);
+    GoalType goalType0 = GoalType.MINIMIZE;
+    bOBYQAOptimizer0.optimize(0, microsphereInterpolatingFunction0, goalType0, doubleArray0);
+    bOBYQAOptimizer0.computeObjectiveValue(doubleArray0);
+    // Undeclared exception!
+    try {
+        bOBYQAOptimizer0.doOptimize();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // 1 is smaller than the minimum (2)
+        //
+        verifyException(""org.apache.commons.math.optimization.direct.BOBYQAOptimizer"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"@Override
+protected RealPointValuePair doOptimize() {
+    final double[] lowerBound = getLowerBound();
+    final double[] upperBound = getUpperBound();
+    // Validity checks.
+    setup(lowerBound, upperBound);
+    isMinimize = (getGoalType() == GoalType.MINIMIZE);
+    currentBest = new ArrayRealVector(getStartPoint());
+    final double value = bobyqa(lowerBound, upperBound);
+    return new RealPointValuePair(currentBest.getDataRef(), isMinimize ? value : -value);
+}","public void test099() throws Throwable {
+    BOBYQAOptimizer bOBYQAOptimizer0 = new BOBYQAOptimizer(0);
+    double[] doubleArray0 = new double[1];
+    double[][] doubleArray1 = new double[1][7];
+    UnitSphereRandomVectorGenerator unitSphereRandomVectorGenerator0 = new UnitSphereRandomVectorGenerator(2);
+    MicrosphereInterpolatingFunction microsphereInterpolatingFunction0 = new MicrosphereInterpolatingFunction(doubleArray1, doubleArray0, 0, 650, unitSphereRandomVectorGenerator0);
+    GoalType goalType0 = GoalType.MINIMIZE;
+    bOBYQAOptimizer0.optimize(0, microsphereInterpolatingFunction0, goalType0, doubleArray1[0]);
+    bOBYQAOptimizer0.computeObjectiveValue(doubleArray0);
+    // Undeclared exception!
+    try {
+        bOBYQAOptimizer0.doOptimize();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // number of interpolation points (0)
+        //
+        verifyException(""org.apache.commons.math.optimization.direct.BOBYQAOptimizer"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"@Override
+protected RealPointValuePair doOptimize() {
+    final double[] lowerBound = getLowerBound();
+    final double[] upperBound = getUpperBound();
+    // Validity checks.
+    setup(lowerBound, upperBound);
+    isMinimize = (getGoalType() == GoalType.MINIMIZE);
+    currentBest = new ArrayRealVector(getStartPoint());
+    final double value = bobyqa(lowerBound, upperBound);
+    return new RealPointValuePair(currentBest.getDataRef(), isMinimize ? value : -value);
+}","public void test1010() throws Throwable {
+    BOBYQAOptimizer bOBYQAOptimizer0 = new BOBYQAOptimizer(34);
+    double[] doubleArray0 = new double[1];
+    double[][] doubleArray1 = new double[1][7];
+    UnitSphereRandomVectorGenerator unitSphereRandomVectorGenerator0 = new UnitSphereRandomVectorGenerator(2);
+    MicrosphereInterpolatingFunction microsphereInterpolatingFunction0 = new MicrosphereInterpolatingFunction(doubleArray1, doubleArray0, 34, 650, unitSphereRandomVectorGenerator0);
+    GoalType goalType0 = GoalType.MINIMIZE;
+    bOBYQAOptimizer0.optimize(34, microsphereInterpolatingFunction0, goalType0, doubleArray1[0]);
+    bOBYQAOptimizer0.computeObjectiveValue(doubleArray0);
+    // Undeclared exception!
+    try {
+        bOBYQAOptimizer0.doOptimize();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // 7 != 2
+        //
+        verifyException(""org.apache.commons.math.linear.ArrayRealVector"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"

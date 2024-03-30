@@ -1,0 +1,3205 @@
+focal_method,test_prefix,docstring
+"public int getIndex() {
+    return index;
+}","public void test000() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.US;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    dOMNodePointer0.getNamespaceURI(""http://www.w3.org/XML/1998/namespace"");
+    DocumentTypeImpl documentTypeImpl0 = new DocumentTypeImpl(hTMLDocumentImpl0, ""http://www.w3.org/XML/1998/namespace"");
+    WMLDocumentImpl wMLDocumentImpl0 = new WMLDocumentImpl(documentTypeImpl0);
+    WMLWmlElementImpl wMLWmlElementImpl0 = new WMLWmlElementImpl(wMLDocumentImpl0, ""http://www.w3.org/XML/1998/namespace"");
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) wMLWmlElementImpl0);
+    DOMNodePointer dOMNodePointer1 = (DOMNodePointer) dOMNodePointer0.getPointerByID(jXPathContext0, """");
+    assertEquals(Integer.MIN_VALUE, dOMNodePointer1.getIndex());
+}","/**
+ * If the pointer represents a collection, the index identifies
+ * an element of that collection.  The default value of <code>index</code>
+ * is <code>WHOLE_COLLECTION</code>, which just means that the pointer
+ * is not indexed at all.
+ * Note: the index on NodePointer starts with 0, not 1.
+ */"
+"public int compareChildNodePointers(NodePointer pointer1, NodePointer pointer2) {
+    Node node1 = (Node) pointer1.getBaseValue();
+    Node node2 = (Node) pointer2.getBaseValue();
+    if (node1 == node2) {
+        return 0;
+    }
+    int t1 = node1.getNodeType();
+    int t2 = node2.getNodeType();
+    if (t1 == Node.ATTRIBUTE_NODE && t2 != Node.ATTRIBUTE_NODE) {
+        return -1;
+    }
+    if (t1 != Node.ATTRIBUTE_NODE && t2 == Node.ATTRIBUTE_NODE) {
+        return 1;
+    }
+    if (t1 == Node.ATTRIBUTE_NODE && t2 == Node.ATTRIBUTE_NODE) {
+        NamedNodeMap map = ((Node) getNode()).getAttributes();
+        int length = map.getLength();
+        for (int i = 0; i < length; i++) {
+            Node n = map.item(i);
+            if (n == node1) {
+                return -1;
+            }
+            if (n == node2) {
+                return 1;
+            }
+        }
+        // Should not happen
+        return 0;
+    }
+    Node current = node.getFirstChild();
+    while (current != null) {
+        if (current == node1) {
+            return -1;
+        }
+        if (current == node2) {
+            return 1;
+        }
+        current = current.getNextSibling();
+    }
+    return 0;
+}","public void test011() throws Throwable {
+    Locale locale0 = Locale.UK;
+    AttrNSImpl attrNSImpl0 = new AttrNSImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(attrNSImpl0, locale0);
+    int int0 = dOMNodePointer0.compareChildNodePointers(dOMNodePointer0, dOMNodePointer0);
+    assertEquals(0, int0);
+}",""
+"public boolean isLanguage(String lang) {
+    String current = getLanguage();
+    return current == null ? super.isLanguage(lang) : current.toUpperCase().startsWith(lang.toUpperCase());
+}","public void test022() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.ENGLISH;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    boolean boolean0 = dOMNodePointer0.isLanguage(""http://www.w3.org/2000/xmlns/"");
+    assertFalse(boolean0);
+}","/**
+ * Returns true if the xml:lang attribute for the current node
+ * or its parent has the specified prefix <i>lang</i>.
+ * If no node has this prefix, calls <code>super.isLanguage(lang)</code>.
+ */"
+"public boolean isCollection() {
+    return false;
+}","public void test033() throws Throwable {
+    DeferredDocumentImpl deferredDocumentImpl0 = new DeferredDocumentImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(deferredDocumentImpl0, (Locale) null);
+    boolean boolean0 = dOMNodePointer0.isCollection();
+    assertFalse(boolean0);
+}",""
+"public String asPath() {
+    if (id != null) {
+        return ""id('"" + escape(id) + ""')"";
+    }
+    StringBuffer buffer = new StringBuffer();
+    if (parent != null) {
+        buffer.append(parent.asPath());
+    }
+    switch(node.getNodeType()) {
+        case Node.ELEMENT_NODE:
+            // If the parent pointer is not a DOMNodePointer, it is
+            // the parent's responsibility to produce the node test part
+            // of the path
+            if (parent instanceof DOMNodePointer) {
+                if (buffer.length() == 0 || buffer.charAt(buffer.length() - 1) != '/') {
+                    buffer.append('/');
+                }
+                String ln = DOMNodePointer.getLocalName(node);
+                String nsURI = getNamespaceURI();
+                if (nsURI == null) {
+                    buffer.append(ln);
+                    buffer.append('[');
+                    buffer.append(getRelativePositionByName()).append(']');
+                } else {
+                    String prefix = getNamespaceResolver().getPrefix(nsURI);
+                    if (prefix != null) {
+                        buffer.append(prefix);
+                        buffer.append(':');
+                        buffer.append(ln);
+                        buffer.append('[');
+                        buffer.append(getRelativePositionByName());
+                        buffer.append(']');
+                    } else {
+                        buffer.append(""node()"");
+                        buffer.append('[');
+                        buffer.append(getRelativePositionOfElement());
+                        buffer.append(']');
+                    }
+                }
+            }
+            break;
+        case Node.TEXT_NODE:
+        case Node.CDATA_SECTION_NODE:
+            buffer.append(""/text()"");
+            buffer.append('[');
+            buffer.append(getRelativePositionOfTextNode()).append(']');
+            break;
+        case Node.PROCESSING_INSTRUCTION_NODE:
+            String target = ((ProcessingInstruction) node).getTarget();
+            buffer.append(""/processing-instruction(\'"");
+            buffer.append(target).append(""')"");
+            buffer.append('[');
+            buffer.append(getRelativePositionOfPI(target)).append(']');
+            break;
+        case Node.DOCUMENT_NODE:
+    }
+    return buffer.toString();
+}","public void test044() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.FRENCH;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    HTMLElement hTMLElement0 = hTMLDocumentImpl0.getBody();
+    DOMNodePointer dOMNodePointer1 = new DOMNodePointer(dOMNodePointer0, hTMLElement0);
+    String string0 = dOMNodePointer1.asPath();
+    assertEquals(""/BODY[1]"", string0);
+}",""
+"public NodePointer createChild(JXPathContext context, QName name, int index, Object value) {
+    NodePointer ptr = createChild(context, name, index);
+    ptr.setValue(value);
+    return ptr;
+}","public void test055() throws Throwable {
+    DocumentImpl documentImpl0 = new DocumentImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(documentImpl0, (Locale) null);
+    QName qName0 = dOMNodePointer0.getName();
+    // Undeclared exception!
+    try {
+        dOMNodePointer0.createChild((JXPathContext) null, qName0, Integer.MIN_VALUE, (Object) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.dom.DOMNodePointer"", e);
+    }
+}",""
+"public boolean isNode() {
+    return !isContainer();
+}","public void test066() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.CHINA;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    NodePointer nodePointer0 = dOMNodePointer0.namespacePointer(""http://www.w3.org/XML/1998/namespace"");
+    assertTrue(nodePointer0.isNode());
+}","/**
+ * @deprecated Please use !isContainer()
+ */"
+"public int getLength() {
+    return 1;
+}","public void test077() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.FRENCH;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    int int0 = dOMNodePointer0.getLength();
+    assertEquals(1, int0);
+}",""
+"public int hashCode() {
+    return System.identityHashCode(node);
+}","public void test088() throws Throwable {
+    Locale locale0 = Locale.ITALIAN;
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    dOMNodePointer0.hashCode();
+}",""
+"public int compareChildNodePointers(NodePointer pointer1, NodePointer pointer2) {
+    Node node1 = (Node) pointer1.getBaseValue();
+    Node node2 = (Node) pointer2.getBaseValue();
+    if (node1 == node2) {
+        return 0;
+    }
+    int t1 = node1.getNodeType();
+    int t2 = node2.getNodeType();
+    if (t1 == Node.ATTRIBUTE_NODE && t2 != Node.ATTRIBUTE_NODE) {
+        return -1;
+    }
+    if (t1 != Node.ATTRIBUTE_NODE && t2 == Node.ATTRIBUTE_NODE) {
+        return 1;
+    }
+    if (t1 == Node.ATTRIBUTE_NODE && t2 == Node.ATTRIBUTE_NODE) {
+        NamedNodeMap map = ((Node) getNode()).getAttributes();
+        int length = map.getLength();
+        for (int i = 0; i < length; i++) {
+            Node n = map.item(i);
+            if (n == node1) {
+                return -1;
+            }
+            if (n == node2) {
+                return 1;
+            }
+        }
+        // Should not happen
+        return 0;
+    }
+    Node current = node.getFirstChild();
+    while (current != null) {
+        if (current == node1) {
+            return -1;
+        }
+        if (current == node2) {
+            return 1;
+        }
+        current = current.getNextSibling();
+    }
+    return 0;
+}","public void test099() throws Throwable {
+    Locale locale0 = Locale.GERMANY;
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    AttrNSImpl attrNSImpl0 = new AttrNSImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(attrNSImpl0, locale0);
+    QName qName0 = new QName(""http://www.w3.org/2000/xmlns/"", ""http://www.w3.org/2000/xmlns/"");
+    PSVIAttrNSImpl pSVIAttrNSImpl0 = new PSVIAttrNSImpl(hTMLDocumentImpl0, ""http://www.w3.org/2000/xmlns/"", ""<<unknown namespace>>"", ""<<unknown namespace>>"");
+    NodePointer nodePointer0 = NodePointer.newChildNodePointer(dOMNodePointer0, qName0, pSVIAttrNSImpl0);
+    // Undeclared exception!
+    try {
+        dOMNodePointer0.compareChildNodePointers(dOMNodePointer0, nodePointer0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.dom.DOMNodePointer"", e);
+    }
+}",""
+"public boolean isActual() {
+    return true;
+}","public void test1010() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.ENGLISH;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    boolean boolean0 = dOMNodePointer0.isActual();
+    assertTrue(boolean0);
+}",""
+"public boolean testNode(NodeTest test) {
+    return testNode(node, test);
+}","public void test1111() throws Throwable {
+    TextImpl textImpl0 = new TextImpl();
+    Locale locale0 = Locale.KOREA;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(textImpl0, locale0);
+    boolean boolean0 = dOMNodePointer0.testNode((NodeTest) null);
+    assertTrue(boolean0);
+}",""
+"int getPosition();","public void test1212() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.GERMAN;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    NodeIterator nodeIterator0 = dOMNodePointer0.namespaceIterator();
+    assertEquals(0, nodeIterator0.getPosition());
+}",""
+"public NodePointer createAttribute(JXPathContext context, QName name) {
+    if (!(node instanceof Element)) {
+        return super.createAttribute(context, name);
+    }
+    Element element = (Element) node;
+    String prefix = name.getPrefix();
+    if (prefix != null) {
+        String ns = getNamespaceURI(prefix);
+        if (ns == null) {
+            throw new JXPathException(""Unknown namespace prefix: "" + prefix);
+        }
+        element.setAttributeNS(ns, name.toString(), """");
+    } else {
+        if (!element.hasAttribute(name.getName())) {
+            element.setAttribute(name.getName(), """");
+        }
+    }
+    NodeIterator it = attributeIterator(name);
+    it.setPosition(1);
+    return it.getNodePointer();
+}","public void test1313() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    HTMLAppletElementImpl hTMLAppletElementImpl0 = new HTMLAppletElementImpl(hTMLDocumentImpl0, ""xmlns"");
+    Locale locale0 = Locale.ITALIAN;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLAppletElementImpl0, locale0, ""^"");
+    QName qName0 = new QName(""xmlns"", ""xmlns"");
+    // Undeclared exception!
+    try {
+        dOMNodePointer0.createAttribute((JXPathContext) null, qName0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.dom.DOMAttributeIterator"", e);
+    }
+}",""
+"int getPosition();","public void test1414() throws Throwable {
+    Locale locale0 = Locale.GERMANY;
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    ProcessingInstructionTest processingInstructionTest0 = new ProcessingInstructionTest(""http://www.w3.org/XML/1998/namespace"");
+    NodeIterator nodeIterator0 = dOMNodePointer0.childIterator(processingInstructionTest0, true, dOMNodePointer0);
+    assertEquals(0, nodeIterator0.getPosition());
+}",""
+"public static boolean testNode(Node node, NodeTest test) {
+    if (test == null) {
+        return true;
+    }
+    if (test instanceof NodeNameTest) {
+        if (node.getNodeType() != Node.ELEMENT_NODE) {
+            return false;
+        }
+        NodeNameTest nodeNameTest = (NodeNameTest) test;
+        QName testName = nodeNameTest.getNodeName();
+        String namespaceURI = nodeNameTest.getNamespaceURI();
+        boolean wildcard = nodeNameTest.isWildcard();
+        String testPrefix = testName.getPrefix();
+        if (wildcard && testPrefix == null) {
+            return true;
+        }
+        if (wildcard || testName.getName().equals(DOMNodePointer.getLocalName(node))) {
+            String nodeNS = DOMNodePointer.getNamespaceURI(node);
+            return equalStrings(namespaceURI, nodeNS) || nodeNS == null && equalStrings(testPrefix, getPrefix(node));
+        }
+        return false;
+    }
+    if (test instanceof NodeTypeTest) {
+        int nodeType = node.getNodeType();
+        switch(((NodeTypeTest) test).getNodeType()) {
+            case Compiler.NODE_TYPE_NODE:
+                return nodeType == Node.ELEMENT_NODE || nodeType == Node.DOCUMENT_NODE;
+            case Compiler.NODE_TYPE_TEXT:
+                return nodeType == Node.CDATA_SECTION_NODE || nodeType == Node.TEXT_NODE;
+            case Compiler.NODE_TYPE_COMMENT:
+                return nodeType == Node.COMMENT_NODE;
+            case Compiler.NODE_TYPE_PI:
+                return nodeType == Node.PROCESSING_INSTRUCTION_NODE;
+        }
+        return false;
+    }
+    if (test instanceof ProcessingInstructionTest) {
+        if (node.getNodeType() == Node.PROCESSING_INSTRUCTION_NODE) {
+            String testPI = ((ProcessingInstructionTest) test).getTarget();
+            String nodePI = ((ProcessingInstruction) node).getTarget();
+            return testPI.equals(nodePI);
+        }
+    }
+    return false;
+}","public void test1515() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    HTMLInputElementImpl hTMLInputElementImpl0 = new HTMLInputElementImpl(hTMLDocumentImpl0, "")&"");
+    QName qName0 = new QName(""K7]QMt_tN+|K9:*"");
+    NodeNameTest nodeNameTest0 = new NodeNameTest(qName0, "")&"");
+    boolean boolean0 = DOMNodePointer.testNode((Node) hTMLInputElementImpl0, (NodeTest) nodeNameTest0);
+    assertFalse(boolean0);
+}",""
+"public static boolean testNode(Node node, NodeTest test) {
+    if (test == null) {
+        return true;
+    }
+    if (test instanceof NodeNameTest) {
+        if (node.getNodeType() != Node.ELEMENT_NODE) {
+            return false;
+        }
+        NodeNameTest nodeNameTest = (NodeNameTest) test;
+        QName testName = nodeNameTest.getNodeName();
+        String namespaceURI = nodeNameTest.getNamespaceURI();
+        boolean wildcard = nodeNameTest.isWildcard();
+        String testPrefix = testName.getPrefix();
+        if (wildcard && testPrefix == null) {
+            return true;
+        }
+        if (wildcard || testName.getName().equals(DOMNodePointer.getLocalName(node))) {
+            String nodeNS = DOMNodePointer.getNamespaceURI(node);
+            return equalStrings(namespaceURI, nodeNS) || nodeNS == null && equalStrings(testPrefix, getPrefix(node));
+        }
+        return false;
+    }
+    if (test instanceof NodeTypeTest) {
+        int nodeType = node.getNodeType();
+        switch(((NodeTypeTest) test).getNodeType()) {
+            case Compiler.NODE_TYPE_NODE:
+                return nodeType == Node.ELEMENT_NODE || nodeType == Node.DOCUMENT_NODE;
+            case Compiler.NODE_TYPE_TEXT:
+                return nodeType == Node.CDATA_SECTION_NODE || nodeType == Node.TEXT_NODE;
+            case Compiler.NODE_TYPE_COMMENT:
+                return nodeType == Node.COMMENT_NODE;
+            case Compiler.NODE_TYPE_PI:
+                return nodeType == Node.PROCESSING_INSTRUCTION_NODE;
+        }
+        return false;
+    }
+    if (test instanceof ProcessingInstructionTest) {
+        if (node.getNodeType() == Node.PROCESSING_INSTRUCTION_NODE) {
+            String testPI = ((ProcessingInstructionTest) test).getTarget();
+            String nodePI = ((ProcessingInstruction) node).getTarget();
+            return testPI.equals(nodePI);
+        }
+    }
+    return false;
+}","public void test1616() throws Throwable {
+    NodeTypeTest nodeTypeTest0 = new NodeTypeTest(4);
+    DeferredDocumentImpl deferredDocumentImpl0 = new DeferredDocumentImpl();
+    ProcessingInstructionImpl processingInstructionImpl0 = new ProcessingInstructionImpl(deferredDocumentImpl0, ""_~3%EWzz#hPodH-w+"", ""c=xd"");
+    boolean boolean0 = DOMNodePointer.testNode((Node) processingInstructionImpl0, (NodeTest) nodeTypeTest0);
+    assertTrue(boolean0);
+}",""
+"public static boolean testNode(Node node, NodeTest test) {
+    if (test == null) {
+        return true;
+    }
+    if (test instanceof NodeNameTest) {
+        if (node.getNodeType() != Node.ELEMENT_NODE) {
+            return false;
+        }
+        NodeNameTest nodeNameTest = (NodeNameTest) test;
+        QName testName = nodeNameTest.getNodeName();
+        String namespaceURI = nodeNameTest.getNamespaceURI();
+        boolean wildcard = nodeNameTest.isWildcard();
+        String testPrefix = testName.getPrefix();
+        if (wildcard && testPrefix == null) {
+            return true;
+        }
+        if (wildcard || testName.getName().equals(DOMNodePointer.getLocalName(node))) {
+            String nodeNS = DOMNodePointer.getNamespaceURI(node);
+            return equalStrings(namespaceURI, nodeNS) || nodeNS == null && equalStrings(testPrefix, getPrefix(node));
+        }
+        return false;
+    }
+    if (test instanceof NodeTypeTest) {
+        int nodeType = node.getNodeType();
+        switch(((NodeTypeTest) test).getNodeType()) {
+            case Compiler.NODE_TYPE_NODE:
+                return nodeType == Node.ELEMENT_NODE || nodeType == Node.DOCUMENT_NODE;
+            case Compiler.NODE_TYPE_TEXT:
+                return nodeType == Node.CDATA_SECTION_NODE || nodeType == Node.TEXT_NODE;
+            case Compiler.NODE_TYPE_COMMENT:
+                return nodeType == Node.COMMENT_NODE;
+            case Compiler.NODE_TYPE_PI:
+                return nodeType == Node.PROCESSING_INSTRUCTION_NODE;
+        }
+        return false;
+    }
+    if (test instanceof ProcessingInstructionTest) {
+        if (node.getNodeType() == Node.PROCESSING_INSTRUCTION_NODE) {
+            String testPI = ((ProcessingInstructionTest) test).getTarget();
+            String nodePI = ((ProcessingInstruction) node).getTarget();
+            return testPI.equals(nodePI);
+        }
+    }
+    return false;
+}","public void test1717() throws Throwable {
+    TextImpl textImpl0 = new TextImpl();
+    NodeNameTest nodeNameTest0 = new NodeNameTest((QName) null);
+    boolean boolean0 = DOMNodePointer.testNode((Node) textImpl0, (NodeTest) nodeNameTest0);
+    assertFalse(boolean0);
+}",""
+"public static boolean testNode(Node node, NodeTest test) {
+    if (test == null) {
+        return true;
+    }
+    if (test instanceof NodeNameTest) {
+        if (node.getNodeType() != Node.ELEMENT_NODE) {
+            return false;
+        }
+        NodeNameTest nodeNameTest = (NodeNameTest) test;
+        QName testName = nodeNameTest.getNodeName();
+        String namespaceURI = nodeNameTest.getNamespaceURI();
+        boolean wildcard = nodeNameTest.isWildcard();
+        String testPrefix = testName.getPrefix();
+        if (wildcard && testPrefix == null) {
+            return true;
+        }
+        if (wildcard || testName.getName().equals(DOMNodePointer.getLocalName(node))) {
+            String nodeNS = DOMNodePointer.getNamespaceURI(node);
+            return equalStrings(namespaceURI, nodeNS) || nodeNS == null && equalStrings(testPrefix, getPrefix(node));
+        }
+        return false;
+    }
+    if (test instanceof NodeTypeTest) {
+        int nodeType = node.getNodeType();
+        switch(((NodeTypeTest) test).getNodeType()) {
+            case Compiler.NODE_TYPE_NODE:
+                return nodeType == Node.ELEMENT_NODE || nodeType == Node.DOCUMENT_NODE;
+            case Compiler.NODE_TYPE_TEXT:
+                return nodeType == Node.CDATA_SECTION_NODE || nodeType == Node.TEXT_NODE;
+            case Compiler.NODE_TYPE_COMMENT:
+                return nodeType == Node.COMMENT_NODE;
+            case Compiler.NODE_TYPE_PI:
+                return nodeType == Node.PROCESSING_INSTRUCTION_NODE;
+        }
+        return false;
+    }
+    if (test instanceof ProcessingInstructionTest) {
+        if (node.getNodeType() == Node.PROCESSING_INSTRUCTION_NODE) {
+            String testPI = ((ProcessingInstructionTest) test).getTarget();
+            String nodePI = ((ProcessingInstruction) node).getTarget();
+            return testPI.equals(nodePI);
+        }
+    }
+    return false;
+}","public void test1818() throws Throwable {
+    QName qName0 = new QName(""Cannot create a relative context for a n0n-exBstent node: "");
+    PSVIDocumentImpl pSVIDocumentImpl0 = new PSVIDocumentImpl();
+    PSVIElementNSImpl pSVIElementNSImpl0 = new PSVIElementNSImpl(pSVIDocumentImpl0, ""Cannot create a relative context for a n0n-exBstent node: "", ""Cannot create a relative context for a n0n-exBstent node: "", ""<<unknown namespace>>"");
+    NodeNameTest nodeNameTest0 = new NodeNameTest(qName0);
+    boolean boolean0 = DOMNodePointer.testNode((Node) pSVIElementNSImpl0, (NodeTest) nodeNameTest0);
+    assertFalse(boolean0);
+}",""
+"public static boolean testNode(Node node, NodeTest test) {
+    if (test == null) {
+        return true;
+    }
+    if (test instanceof NodeNameTest) {
+        if (node.getNodeType() != Node.ELEMENT_NODE) {
+            return false;
+        }
+        NodeNameTest nodeNameTest = (NodeNameTest) test;
+        QName testName = nodeNameTest.getNodeName();
+        String namespaceURI = nodeNameTest.getNamespaceURI();
+        boolean wildcard = nodeNameTest.isWildcard();
+        String testPrefix = testName.getPrefix();
+        if (wildcard && testPrefix == null) {
+            return true;
+        }
+        if (wildcard || testName.getName().equals(DOMNodePointer.getLocalName(node))) {
+            String nodeNS = DOMNodePointer.getNamespaceURI(node);
+            return equalStrings(namespaceURI, nodeNS) || nodeNS == null && equalStrings(testPrefix, getPrefix(node));
+        }
+        return false;
+    }
+    if (test instanceof NodeTypeTest) {
+        int nodeType = node.getNodeType();
+        switch(((NodeTypeTest) test).getNodeType()) {
+            case Compiler.NODE_TYPE_NODE:
+                return nodeType == Node.ELEMENT_NODE || nodeType == Node.DOCUMENT_NODE;
+            case Compiler.NODE_TYPE_TEXT:
+                return nodeType == Node.CDATA_SECTION_NODE || nodeType == Node.TEXT_NODE;
+            case Compiler.NODE_TYPE_COMMENT:
+                return nodeType == Node.COMMENT_NODE;
+            case Compiler.NODE_TYPE_PI:
+                return nodeType == Node.PROCESSING_INSTRUCTION_NODE;
+        }
+        return false;
+    }
+    if (test instanceof ProcessingInstructionTest) {
+        if (node.getNodeType() == Node.PROCESSING_INSTRUCTION_NODE) {
+            String testPI = ((ProcessingInstructionTest) test).getTarget();
+            String nodePI = ((ProcessingInstruction) node).getTarget();
+            return testPI.equals(nodePI);
+        }
+    }
+    return false;
+}","public void test1919() throws Throwable {
+    QName qName0 = new QName(""j_mjC<X},X[zu^@"");
+    PSVIDocumentImpl pSVIDocumentImpl0 = new PSVIDocumentImpl();
+    PSVIElementNSImpl pSVIElementNSImpl0 = new PSVIElementNSImpl(pSVIDocumentImpl0, ""j_mjC<X},X[zu^@"", ""j_mjC<X},X[zu^@"", (String) null);
+    NodeNameTest nodeNameTest0 = new NodeNameTest(qName0);
+    boolean boolean0 = DOMNodePointer.testNode((Node) pSVIElementNSImpl0, (NodeTest) nodeNameTest0);
+    assertFalse(boolean0);
+}",""
+"public static boolean testNode(Node node, NodeTest test) {
+    if (test == null) {
+        return true;
+    }
+    if (test instanceof NodeNameTest) {
+        if (node.getNodeType() != Node.ELEMENT_NODE) {
+            return false;
+        }
+        NodeNameTest nodeNameTest = (NodeNameTest) test;
+        QName testName = nodeNameTest.getNodeName();
+        String namespaceURI = nodeNameTest.getNamespaceURI();
+        boolean wildcard = nodeNameTest.isWildcard();
+        String testPrefix = testName.getPrefix();
+        if (wildcard && testPrefix == null) {
+            return true;
+        }
+        if (wildcard || testName.getName().equals(DOMNodePointer.getLocalName(node))) {
+            String nodeNS = DOMNodePointer.getNamespaceURI(node);
+            return equalStrings(namespaceURI, nodeNS) || nodeNS == null && equalStrings(testPrefix, getPrefix(node));
+        }
+        return false;
+    }
+    if (test instanceof NodeTypeTest) {
+        int nodeType = node.getNodeType();
+        switch(((NodeTypeTest) test).getNodeType()) {
+            case Compiler.NODE_TYPE_NODE:
+                return nodeType == Node.ELEMENT_NODE || nodeType == Node.DOCUMENT_NODE;
+            case Compiler.NODE_TYPE_TEXT:
+                return nodeType == Node.CDATA_SECTION_NODE || nodeType == Node.TEXT_NODE;
+            case Compiler.NODE_TYPE_COMMENT:
+                return nodeType == Node.COMMENT_NODE;
+            case Compiler.NODE_TYPE_PI:
+                return nodeType == Node.PROCESSING_INSTRUCTION_NODE;
+        }
+        return false;
+    }
+    if (test instanceof ProcessingInstructionTest) {
+        if (node.getNodeType() == Node.PROCESSING_INSTRUCTION_NODE) {
+            String testPI = ((ProcessingInstructionTest) test).getTarget();
+            String nodePI = ((ProcessingInstruction) node).getTarget();
+            return testPI.equals(nodePI);
+        }
+    }
+    return false;
+}","public void test2020() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    HTMLInputElementImpl hTMLInputElementImpl0 = new HTMLInputElementImpl(hTMLDocumentImpl0, ""%"");
+    QName qName0 = new QName(""%"");
+    NodeNameTest nodeNameTest0 = new NodeNameTest(qName0);
+    boolean boolean0 = DOMNodePointer.testNode((Node) hTMLInputElementImpl0, (NodeTest) nodeNameTest0);
+    assertTrue(boolean0);
+}",""
+"public static boolean testNode(Node node, NodeTest test) {
+    if (test == null) {
+        return true;
+    }
+    if (test instanceof NodeNameTest) {
+        if (node.getNodeType() != Node.ELEMENT_NODE) {
+            return false;
+        }
+        NodeNameTest nodeNameTest = (NodeNameTest) test;
+        QName testName = nodeNameTest.getNodeName();
+        String namespaceURI = nodeNameTest.getNamespaceURI();
+        boolean wildcard = nodeNameTest.isWildcard();
+        String testPrefix = testName.getPrefix();
+        if (wildcard && testPrefix == null) {
+            return true;
+        }
+        if (wildcard || testName.getName().equals(DOMNodePointer.getLocalName(node))) {
+            String nodeNS = DOMNodePointer.getNamespaceURI(node);
+            return equalStrings(namespaceURI, nodeNS) || nodeNS == null && equalStrings(testPrefix, getPrefix(node));
+        }
+        return false;
+    }
+    if (test instanceof NodeTypeTest) {
+        int nodeType = node.getNodeType();
+        switch(((NodeTypeTest) test).getNodeType()) {
+            case Compiler.NODE_TYPE_NODE:
+                return nodeType == Node.ELEMENT_NODE || nodeType == Node.DOCUMENT_NODE;
+            case Compiler.NODE_TYPE_TEXT:
+                return nodeType == Node.CDATA_SECTION_NODE || nodeType == Node.TEXT_NODE;
+            case Compiler.NODE_TYPE_COMMENT:
+                return nodeType == Node.COMMENT_NODE;
+            case Compiler.NODE_TYPE_PI:
+                return nodeType == Node.PROCESSING_INSTRUCTION_NODE;
+        }
+        return false;
+    }
+    if (test instanceof ProcessingInstructionTest) {
+        if (node.getNodeType() == Node.PROCESSING_INSTRUCTION_NODE) {
+            String testPI = ((ProcessingInstructionTest) test).getTarget();
+            String nodePI = ((ProcessingInstruction) node).getTarget();
+            return testPI.equals(nodePI);
+        }
+    }
+    return false;
+}","public void test2121() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    HTMLInputElementImpl hTMLInputElementImpl0 = new HTMLInputElementImpl(hTMLDocumentImpl0, "":"");
+    QName qName0 = new QName("":"");
+    NodeNameTest nodeNameTest0 = new NodeNameTest(qName0, "":"");
+    boolean boolean0 = DOMNodePointer.testNode((Node) hTMLInputElementImpl0, (NodeTest) nodeNameTest0);
+    assertTrue(boolean0);
+}",""
+"public static boolean testNode(Node node, NodeTest test) {
+    if (test == null) {
+        return true;
+    }
+    if (test instanceof NodeNameTest) {
+        if (node.getNodeType() != Node.ELEMENT_NODE) {
+            return false;
+        }
+        NodeNameTest nodeNameTest = (NodeNameTest) test;
+        QName testName = nodeNameTest.getNodeName();
+        String namespaceURI = nodeNameTest.getNamespaceURI();
+        boolean wildcard = nodeNameTest.isWildcard();
+        String testPrefix = testName.getPrefix();
+        if (wildcard && testPrefix == null) {
+            return true;
+        }
+        if (wildcard || testName.getName().equals(DOMNodePointer.getLocalName(node))) {
+            String nodeNS = DOMNodePointer.getNamespaceURI(node);
+            return equalStrings(namespaceURI, nodeNS) || nodeNS == null && equalStrings(testPrefix, getPrefix(node));
+        }
+        return false;
+    }
+    if (test instanceof NodeTypeTest) {
+        int nodeType = node.getNodeType();
+        switch(((NodeTypeTest) test).getNodeType()) {
+            case Compiler.NODE_TYPE_NODE:
+                return nodeType == Node.ELEMENT_NODE || nodeType == Node.DOCUMENT_NODE;
+            case Compiler.NODE_TYPE_TEXT:
+                return nodeType == Node.CDATA_SECTION_NODE || nodeType == Node.TEXT_NODE;
+            case Compiler.NODE_TYPE_COMMENT:
+                return nodeType == Node.COMMENT_NODE;
+            case Compiler.NODE_TYPE_PI:
+                return nodeType == Node.PROCESSING_INSTRUCTION_NODE;
+        }
+        return false;
+    }
+    if (test instanceof ProcessingInstructionTest) {
+        if (node.getNodeType() == Node.PROCESSING_INSTRUCTION_NODE) {
+            String testPI = ((ProcessingInstructionTest) test).getTarget();
+            String nodePI = ((ProcessingInstruction) node).getTarget();
+            return testPI.equals(nodePI);
+        }
+    }
+    return false;
+}","public void test2222() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    ProcessingInstructionImpl processingInstructionImpl0 = new ProcessingInstructionImpl(hTMLDocumentImpl0, ""el]{JH"", ""el]{JH"");
+    ProcessingInstructionTest processingInstructionTest0 = new ProcessingInstructionTest(""el]{JH"");
+    boolean boolean0 = DOMNodePointer.testNode((Node) processingInstructionImpl0, (NodeTest) processingInstructionTest0);
+    assertTrue(boolean0);
+}",""
+"public static boolean testNode(Node node, NodeTest test) {
+    if (test == null) {
+        return true;
+    }
+    if (test instanceof NodeNameTest) {
+        if (node.getNodeType() != Node.ELEMENT_NODE) {
+            return false;
+        }
+        NodeNameTest nodeNameTest = (NodeNameTest) test;
+        QName testName = nodeNameTest.getNodeName();
+        String namespaceURI = nodeNameTest.getNamespaceURI();
+        boolean wildcard = nodeNameTest.isWildcard();
+        String testPrefix = testName.getPrefix();
+        if (wildcard && testPrefix == null) {
+            return true;
+        }
+        if (wildcard || testName.getName().equals(DOMNodePointer.getLocalName(node))) {
+            String nodeNS = DOMNodePointer.getNamespaceURI(node);
+            return equalStrings(namespaceURI, nodeNS) || nodeNS == null && equalStrings(testPrefix, getPrefix(node));
+        }
+        return false;
+    }
+    if (test instanceof NodeTypeTest) {
+        int nodeType = node.getNodeType();
+        switch(((NodeTypeTest) test).getNodeType()) {
+            case Compiler.NODE_TYPE_NODE:
+                return nodeType == Node.ELEMENT_NODE || nodeType == Node.DOCUMENT_NODE;
+            case Compiler.NODE_TYPE_TEXT:
+                return nodeType == Node.CDATA_SECTION_NODE || nodeType == Node.TEXT_NODE;
+            case Compiler.NODE_TYPE_COMMENT:
+                return nodeType == Node.COMMENT_NODE;
+            case Compiler.NODE_TYPE_PI:
+                return nodeType == Node.PROCESSING_INSTRUCTION_NODE;
+        }
+        return false;
+    }
+    if (test instanceof ProcessingInstructionTest) {
+        if (node.getNodeType() == Node.PROCESSING_INSTRUCTION_NODE) {
+            String testPI = ((ProcessingInstructionTest) test).getTarget();
+            String nodePI = ((ProcessingInstruction) node).getTarget();
+            return testPI.equals(nodePI);
+        }
+    }
+    return false;
+}","public void test2323() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    CDATASection cDATASection0 = hTMLDocumentImpl0.createCDATASection(""el]{JH"");
+    NodeTypeTest nodeTypeTest0 = new NodeTypeTest(1);
+    boolean boolean0 = DOMNodePointer.testNode((Node) cDATASection0, (NodeTest) nodeTypeTest0);
+    assertFalse(boolean0);
+}",""
+"public static boolean testNode(Node node, NodeTest test) {
+    if (test == null) {
+        return true;
+    }
+    if (test instanceof NodeNameTest) {
+        if (node.getNodeType() != Node.ELEMENT_NODE) {
+            return false;
+        }
+        NodeNameTest nodeNameTest = (NodeNameTest) test;
+        QName testName = nodeNameTest.getNodeName();
+        String namespaceURI = nodeNameTest.getNamespaceURI();
+        boolean wildcard = nodeNameTest.isWildcard();
+        String testPrefix = testName.getPrefix();
+        if (wildcard && testPrefix == null) {
+            return true;
+        }
+        if (wildcard || testName.getName().equals(DOMNodePointer.getLocalName(node))) {
+            String nodeNS = DOMNodePointer.getNamespaceURI(node);
+            return equalStrings(namespaceURI, nodeNS) || nodeNS == null && equalStrings(testPrefix, getPrefix(node));
+        }
+        return false;
+    }
+    if (test instanceof NodeTypeTest) {
+        int nodeType = node.getNodeType();
+        switch(((NodeTypeTest) test).getNodeType()) {
+            case Compiler.NODE_TYPE_NODE:
+                return nodeType == Node.ELEMENT_NODE || nodeType == Node.DOCUMENT_NODE;
+            case Compiler.NODE_TYPE_TEXT:
+                return nodeType == Node.CDATA_SECTION_NODE || nodeType == Node.TEXT_NODE;
+            case Compiler.NODE_TYPE_COMMENT:
+                return nodeType == Node.COMMENT_NODE;
+            case Compiler.NODE_TYPE_PI:
+                return nodeType == Node.PROCESSING_INSTRUCTION_NODE;
+        }
+        return false;
+    }
+    if (test instanceof ProcessingInstructionTest) {
+        if (node.getNodeType() == Node.PROCESSING_INSTRUCTION_NODE) {
+            String testPI = ((ProcessingInstructionTest) test).getTarget();
+            String nodePI = ((ProcessingInstruction) node).getTarget();
+            return testPI.equals(nodePI);
+        }
+    }
+    return false;
+}","public void test2424() throws Throwable {
+    TextImpl textImpl0 = new TextImpl();
+    NodeTypeTest nodeTypeTest0 = new NodeTypeTest(2);
+    boolean boolean0 = DOMNodePointer.testNode((Node) textImpl0, (NodeTest) nodeTypeTest0);
+    assertTrue(boolean0);
+}",""
+"public static boolean testNode(Node node, NodeTest test) {
+    if (test == null) {
+        return true;
+    }
+    if (test instanceof NodeNameTest) {
+        if (node.getNodeType() != Node.ELEMENT_NODE) {
+            return false;
+        }
+        NodeNameTest nodeNameTest = (NodeNameTest) test;
+        QName testName = nodeNameTest.getNodeName();
+        String namespaceURI = nodeNameTest.getNamespaceURI();
+        boolean wildcard = nodeNameTest.isWildcard();
+        String testPrefix = testName.getPrefix();
+        if (wildcard && testPrefix == null) {
+            return true;
+        }
+        if (wildcard || testName.getName().equals(DOMNodePointer.getLocalName(node))) {
+            String nodeNS = DOMNodePointer.getNamespaceURI(node);
+            return equalStrings(namespaceURI, nodeNS) || nodeNS == null && equalStrings(testPrefix, getPrefix(node));
+        }
+        return false;
+    }
+    if (test instanceof NodeTypeTest) {
+        int nodeType = node.getNodeType();
+        switch(((NodeTypeTest) test).getNodeType()) {
+            case Compiler.NODE_TYPE_NODE:
+                return nodeType == Node.ELEMENT_NODE || nodeType == Node.DOCUMENT_NODE;
+            case Compiler.NODE_TYPE_TEXT:
+                return nodeType == Node.CDATA_SECTION_NODE || nodeType == Node.TEXT_NODE;
+            case Compiler.NODE_TYPE_COMMENT:
+                return nodeType == Node.COMMENT_NODE;
+            case Compiler.NODE_TYPE_PI:
+                return nodeType == Node.PROCESSING_INSTRUCTION_NODE;
+        }
+        return false;
+    }
+    if (test instanceof ProcessingInstructionTest) {
+        if (node.getNodeType() == Node.PROCESSING_INSTRUCTION_NODE) {
+            String testPI = ((ProcessingInstructionTest) test).getTarget();
+            String nodePI = ((ProcessingInstruction) node).getTarget();
+            return testPI.equals(nodePI);
+        }
+    }
+    return false;
+}","public void test2525() throws Throwable {
+    NodeTypeTest nodeTypeTest0 = new NodeTypeTest(3);
+    DocumentTypeImpl documentTypeImpl0 = new DocumentTypeImpl((CoreDocumentImpl) null, ""xmlns"", ""xmlns"", ""xmlns"");
+    CoreDocumentImpl coreDocumentImpl0 = new CoreDocumentImpl(documentTypeImpl0, true);
+    Comment comment0 = coreDocumentImpl0.createComment(""xmlns"");
+    boolean boolean0 = DOMNodePointer.testNode((Node) comment0, (NodeTest) nodeTypeTest0);
+    assertTrue(boolean0);
+}",""
+"public static boolean testNode(Node node, NodeTest test) {
+    if (test == null) {
+        return true;
+    }
+    if (test instanceof NodeNameTest) {
+        if (node.getNodeType() != Node.ELEMENT_NODE) {
+            return false;
+        }
+        NodeNameTest nodeNameTest = (NodeNameTest) test;
+        QName testName = nodeNameTest.getNodeName();
+        String namespaceURI = nodeNameTest.getNamespaceURI();
+        boolean wildcard = nodeNameTest.isWildcard();
+        String testPrefix = testName.getPrefix();
+        if (wildcard && testPrefix == null) {
+            return true;
+        }
+        if (wildcard || testName.getName().equals(DOMNodePointer.getLocalName(node))) {
+            String nodeNS = DOMNodePointer.getNamespaceURI(node);
+            return equalStrings(namespaceURI, nodeNS) || nodeNS == null && equalStrings(testPrefix, getPrefix(node));
+        }
+        return false;
+    }
+    if (test instanceof NodeTypeTest) {
+        int nodeType = node.getNodeType();
+        switch(((NodeTypeTest) test).getNodeType()) {
+            case Compiler.NODE_TYPE_NODE:
+                return nodeType == Node.ELEMENT_NODE || nodeType == Node.DOCUMENT_NODE;
+            case Compiler.NODE_TYPE_TEXT:
+                return nodeType == Node.CDATA_SECTION_NODE || nodeType == Node.TEXT_NODE;
+            case Compiler.NODE_TYPE_COMMENT:
+                return nodeType == Node.COMMENT_NODE;
+            case Compiler.NODE_TYPE_PI:
+                return nodeType == Node.PROCESSING_INSTRUCTION_NODE;
+        }
+        return false;
+    }
+    if (test instanceof ProcessingInstructionTest) {
+        if (node.getNodeType() == Node.PROCESSING_INSTRUCTION_NODE) {
+            String testPI = ((ProcessingInstructionTest) test).getTarget();
+            String nodePI = ((ProcessingInstruction) node).getTarget();
+            return testPI.equals(nodePI);
+        }
+    }
+    return false;
+}","public void test2626() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    NodeTypeTest nodeTypeTest0 = new NodeTypeTest(24);
+    boolean boolean0 = DOMNodePointer.testNode((Node) hTMLDocumentImpl0, (NodeTest) nodeTypeTest0);
+    assertFalse(boolean0);
+}",""
+"public static boolean testNode(Node node, NodeTest test) {
+    if (test == null) {
+        return true;
+    }
+    if (test instanceof NodeNameTest) {
+        if (node.getNodeType() != Node.ELEMENT_NODE) {
+            return false;
+        }
+        NodeNameTest nodeNameTest = (NodeNameTest) test;
+        QName testName = nodeNameTest.getNodeName();
+        String namespaceURI = nodeNameTest.getNamespaceURI();
+        boolean wildcard = nodeNameTest.isWildcard();
+        String testPrefix = testName.getPrefix();
+        if (wildcard && testPrefix == null) {
+            return true;
+        }
+        if (wildcard || testName.getName().equals(DOMNodePointer.getLocalName(node))) {
+            String nodeNS = DOMNodePointer.getNamespaceURI(node);
+            return equalStrings(namespaceURI, nodeNS) || nodeNS == null && equalStrings(testPrefix, getPrefix(node));
+        }
+        return false;
+    }
+    if (test instanceof NodeTypeTest) {
+        int nodeType = node.getNodeType();
+        switch(((NodeTypeTest) test).getNodeType()) {
+            case Compiler.NODE_TYPE_NODE:
+                return nodeType == Node.ELEMENT_NODE || nodeType == Node.DOCUMENT_NODE;
+            case Compiler.NODE_TYPE_TEXT:
+                return nodeType == Node.CDATA_SECTION_NODE || nodeType == Node.TEXT_NODE;
+            case Compiler.NODE_TYPE_COMMENT:
+                return nodeType == Node.COMMENT_NODE;
+            case Compiler.NODE_TYPE_PI:
+                return nodeType == Node.PROCESSING_INSTRUCTION_NODE;
+        }
+        return false;
+    }
+    if (test instanceof ProcessingInstructionTest) {
+        if (node.getNodeType() == Node.PROCESSING_INSTRUCTION_NODE) {
+            String testPI = ((ProcessingInstructionTest) test).getTarget();
+            String nodePI = ((ProcessingInstruction) node).getTarget();
+            return testPI.equals(nodePI);
+        }
+    }
+    return false;
+}","public void test2727() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    HTMLInputElementImpl hTMLInputElementImpl0 = new HTMLInputElementImpl(hTMLDocumentImpl0, ""Cannot c7eate a relative context for5a non-existent node: "");
+    NodeTypeTest nodeTypeTest0 = new NodeTypeTest(1);
+    boolean boolean0 = DOMNodePointer.testNode((Node) hTMLInputElementImpl0, (NodeTest) nodeTypeTest0);
+    assertTrue(boolean0);
+}",""
+"public static boolean testNode(Node node, NodeTest test) {
+    if (test == null) {
+        return true;
+    }
+    if (test instanceof NodeNameTest) {
+        if (node.getNodeType() != Node.ELEMENT_NODE) {
+            return false;
+        }
+        NodeNameTest nodeNameTest = (NodeNameTest) test;
+        QName testName = nodeNameTest.getNodeName();
+        String namespaceURI = nodeNameTest.getNamespaceURI();
+        boolean wildcard = nodeNameTest.isWildcard();
+        String testPrefix = testName.getPrefix();
+        if (wildcard && testPrefix == null) {
+            return true;
+        }
+        if (wildcard || testName.getName().equals(DOMNodePointer.getLocalName(node))) {
+            String nodeNS = DOMNodePointer.getNamespaceURI(node);
+            return equalStrings(namespaceURI, nodeNS) || nodeNS == null && equalStrings(testPrefix, getPrefix(node));
+        }
+        return false;
+    }
+    if (test instanceof NodeTypeTest) {
+        int nodeType = node.getNodeType();
+        switch(((NodeTypeTest) test).getNodeType()) {
+            case Compiler.NODE_TYPE_NODE:
+                return nodeType == Node.ELEMENT_NODE || nodeType == Node.DOCUMENT_NODE;
+            case Compiler.NODE_TYPE_TEXT:
+                return nodeType == Node.CDATA_SECTION_NODE || nodeType == Node.TEXT_NODE;
+            case Compiler.NODE_TYPE_COMMENT:
+                return nodeType == Node.COMMENT_NODE;
+            case Compiler.NODE_TYPE_PI:
+                return nodeType == Node.PROCESSING_INSTRUCTION_NODE;
+        }
+        return false;
+    }
+    if (test instanceof ProcessingInstructionTest) {
+        if (node.getNodeType() == Node.PROCESSING_INSTRUCTION_NODE) {
+            String testPI = ((ProcessingInstructionTest) test).getTarget();
+            String nodePI = ((ProcessingInstruction) node).getTarget();
+            return testPI.equals(nodePI);
+        }
+    }
+    return false;
+}","public void test2828() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    NodeTypeTest nodeTypeTest0 = new NodeTypeTest(1);
+    boolean boolean0 = DOMNodePointer.testNode((Node) hTMLDocumentImpl0, (NodeTest) nodeTypeTest0);
+    assertTrue(boolean0);
+}",""
+"public static boolean testNode(Node node, NodeTest test) {
+    if (test == null) {
+        return true;
+    }
+    if (test instanceof NodeNameTest) {
+        if (node.getNodeType() != Node.ELEMENT_NODE) {
+            return false;
+        }
+        NodeNameTest nodeNameTest = (NodeNameTest) test;
+        QName testName = nodeNameTest.getNodeName();
+        String namespaceURI = nodeNameTest.getNamespaceURI();
+        boolean wildcard = nodeNameTest.isWildcard();
+        String testPrefix = testName.getPrefix();
+        if (wildcard && testPrefix == null) {
+            return true;
+        }
+        if (wildcard || testName.getName().equals(DOMNodePointer.getLocalName(node))) {
+            String nodeNS = DOMNodePointer.getNamespaceURI(node);
+            return equalStrings(namespaceURI, nodeNS) || nodeNS == null && equalStrings(testPrefix, getPrefix(node));
+        }
+        return false;
+    }
+    if (test instanceof NodeTypeTest) {
+        int nodeType = node.getNodeType();
+        switch(((NodeTypeTest) test).getNodeType()) {
+            case Compiler.NODE_TYPE_NODE:
+                return nodeType == Node.ELEMENT_NODE || nodeType == Node.DOCUMENT_NODE;
+            case Compiler.NODE_TYPE_TEXT:
+                return nodeType == Node.CDATA_SECTION_NODE || nodeType == Node.TEXT_NODE;
+            case Compiler.NODE_TYPE_COMMENT:
+                return nodeType == Node.COMMENT_NODE;
+            case Compiler.NODE_TYPE_PI:
+                return nodeType == Node.PROCESSING_INSTRUCTION_NODE;
+        }
+        return false;
+    }
+    if (test instanceof ProcessingInstructionTest) {
+        if (node.getNodeType() == Node.PROCESSING_INSTRUCTION_NODE) {
+            String testPI = ((ProcessingInstructionTest) test).getTarget();
+            String nodePI = ((ProcessingInstruction) node).getTarget();
+            return testPI.equals(nodePI);
+        }
+    }
+    return false;
+}","public void test2929() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    CDATASection cDATASection0 = hTMLDocumentImpl0.createCDATASection(""&quot;"");
+    NodeTypeTest nodeTypeTest0 = new NodeTypeTest(2);
+    boolean boolean0 = DOMNodePointer.testNode((Node) cDATASection0, (NodeTest) nodeTypeTest0);
+    assertTrue(boolean0);
+}",""
+"public static boolean testNode(Node node, NodeTest test) {
+    if (test == null) {
+        return true;
+    }
+    if (test instanceof NodeNameTest) {
+        if (node.getNodeType() != Node.ELEMENT_NODE) {
+            return false;
+        }
+        NodeNameTest nodeNameTest = (NodeNameTest) test;
+        QName testName = nodeNameTest.getNodeName();
+        String namespaceURI = nodeNameTest.getNamespaceURI();
+        boolean wildcard = nodeNameTest.isWildcard();
+        String testPrefix = testName.getPrefix();
+        if (wildcard && testPrefix == null) {
+            return true;
+        }
+        if (wildcard || testName.getName().equals(DOMNodePointer.getLocalName(node))) {
+            String nodeNS = DOMNodePointer.getNamespaceURI(node);
+            return equalStrings(namespaceURI, nodeNS) || nodeNS == null && equalStrings(testPrefix, getPrefix(node));
+        }
+        return false;
+    }
+    if (test instanceof NodeTypeTest) {
+        int nodeType = node.getNodeType();
+        switch(((NodeTypeTest) test).getNodeType()) {
+            case Compiler.NODE_TYPE_NODE:
+                return nodeType == Node.ELEMENT_NODE || nodeType == Node.DOCUMENT_NODE;
+            case Compiler.NODE_TYPE_TEXT:
+                return nodeType == Node.CDATA_SECTION_NODE || nodeType == Node.TEXT_NODE;
+            case Compiler.NODE_TYPE_COMMENT:
+                return nodeType == Node.COMMENT_NODE;
+            case Compiler.NODE_TYPE_PI:
+                return nodeType == Node.PROCESSING_INSTRUCTION_NODE;
+        }
+        return false;
+    }
+    if (test instanceof ProcessingInstructionTest) {
+        if (node.getNodeType() == Node.PROCESSING_INSTRUCTION_NODE) {
+            String testPI = ((ProcessingInstructionTest) test).getTarget();
+            String nodePI = ((ProcessingInstruction) node).getTarget();
+            return testPI.equals(nodePI);
+        }
+    }
+    return false;
+}","public void test3030() throws Throwable {
+    PSVIDocumentImpl pSVIDocumentImpl0 = new PSVIDocumentImpl();
+    NodeTypeTest nodeTypeTest0 = new NodeTypeTest(2);
+    boolean boolean0 = DOMNodePointer.testNode((Node) pSVIDocumentImpl0, (NodeTest) nodeTypeTest0);
+    assertFalse(boolean0);
+}",""
+"public static boolean testNode(Node node, NodeTest test) {
+    if (test == null) {
+        return true;
+    }
+    if (test instanceof NodeNameTest) {
+        if (node.getNodeType() != Node.ELEMENT_NODE) {
+            return false;
+        }
+        NodeNameTest nodeNameTest = (NodeNameTest) test;
+        QName testName = nodeNameTest.getNodeName();
+        String namespaceURI = nodeNameTest.getNamespaceURI();
+        boolean wildcard = nodeNameTest.isWildcard();
+        String testPrefix = testName.getPrefix();
+        if (wildcard && testPrefix == null) {
+            return true;
+        }
+        if (wildcard || testName.getName().equals(DOMNodePointer.getLocalName(node))) {
+            String nodeNS = DOMNodePointer.getNamespaceURI(node);
+            return equalStrings(namespaceURI, nodeNS) || nodeNS == null && equalStrings(testPrefix, getPrefix(node));
+        }
+        return false;
+    }
+    if (test instanceof NodeTypeTest) {
+        int nodeType = node.getNodeType();
+        switch(((NodeTypeTest) test).getNodeType()) {
+            case Compiler.NODE_TYPE_NODE:
+                return nodeType == Node.ELEMENT_NODE || nodeType == Node.DOCUMENT_NODE;
+            case Compiler.NODE_TYPE_TEXT:
+                return nodeType == Node.CDATA_SECTION_NODE || nodeType == Node.TEXT_NODE;
+            case Compiler.NODE_TYPE_COMMENT:
+                return nodeType == Node.COMMENT_NODE;
+            case Compiler.NODE_TYPE_PI:
+                return nodeType == Node.PROCESSING_INSTRUCTION_NODE;
+        }
+        return false;
+    }
+    if (test instanceof ProcessingInstructionTest) {
+        if (node.getNodeType() == Node.PROCESSING_INSTRUCTION_NODE) {
+            String testPI = ((ProcessingInstructionTest) test).getTarget();
+            String nodePI = ((ProcessingInstruction) node).getTarget();
+            return testPI.equals(nodePI);
+        }
+    }
+    return false;
+}","public void test3131() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    NodeTypeTest nodeTypeTest0 = new NodeTypeTest(3);
+    boolean boolean0 = DOMNodePointer.testNode((Node) hTMLDocumentImpl0, (NodeTest) nodeTypeTest0);
+    assertFalse(boolean0);
+}",""
+"public static boolean testNode(Node node, NodeTest test) {
+    if (test == null) {
+        return true;
+    }
+    if (test instanceof NodeNameTest) {
+        if (node.getNodeType() != Node.ELEMENT_NODE) {
+            return false;
+        }
+        NodeNameTest nodeNameTest = (NodeNameTest) test;
+        QName testName = nodeNameTest.getNodeName();
+        String namespaceURI = nodeNameTest.getNamespaceURI();
+        boolean wildcard = nodeNameTest.isWildcard();
+        String testPrefix = testName.getPrefix();
+        if (wildcard && testPrefix == null) {
+            return true;
+        }
+        if (wildcard || testName.getName().equals(DOMNodePointer.getLocalName(node))) {
+            String nodeNS = DOMNodePointer.getNamespaceURI(node);
+            return equalStrings(namespaceURI, nodeNS) || nodeNS == null && equalStrings(testPrefix, getPrefix(node));
+        }
+        return false;
+    }
+    if (test instanceof NodeTypeTest) {
+        int nodeType = node.getNodeType();
+        switch(((NodeTypeTest) test).getNodeType()) {
+            case Compiler.NODE_TYPE_NODE:
+                return nodeType == Node.ELEMENT_NODE || nodeType == Node.DOCUMENT_NODE;
+            case Compiler.NODE_TYPE_TEXT:
+                return nodeType == Node.CDATA_SECTION_NODE || nodeType == Node.TEXT_NODE;
+            case Compiler.NODE_TYPE_COMMENT:
+                return nodeType == Node.COMMENT_NODE;
+            case Compiler.NODE_TYPE_PI:
+                return nodeType == Node.PROCESSING_INSTRUCTION_NODE;
+        }
+        return false;
+    }
+    if (test instanceof ProcessingInstructionTest) {
+        if (node.getNodeType() == Node.PROCESSING_INSTRUCTION_NODE) {
+            String testPI = ((ProcessingInstructionTest) test).getTarget();
+            String nodePI = ((ProcessingInstruction) node).getTarget();
+            return testPI.equals(nodePI);
+        }
+    }
+    return false;
+}","public void test3232() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    NodeTypeTest nodeTypeTest0 = new NodeTypeTest(4);
+    boolean boolean0 = DOMNodePointer.testNode((Node) hTMLDocumentImpl0, (NodeTest) nodeTypeTest0);
+    assertFalse(boolean0);
+}",""
+"public static boolean testNode(Node node, NodeTest test) {
+    if (test == null) {
+        return true;
+    }
+    if (test instanceof NodeNameTest) {
+        if (node.getNodeType() != Node.ELEMENT_NODE) {
+            return false;
+        }
+        NodeNameTest nodeNameTest = (NodeNameTest) test;
+        QName testName = nodeNameTest.getNodeName();
+        String namespaceURI = nodeNameTest.getNamespaceURI();
+        boolean wildcard = nodeNameTest.isWildcard();
+        String testPrefix = testName.getPrefix();
+        if (wildcard && testPrefix == null) {
+            return true;
+        }
+        if (wildcard || testName.getName().equals(DOMNodePointer.getLocalName(node))) {
+            String nodeNS = DOMNodePointer.getNamespaceURI(node);
+            return equalStrings(namespaceURI, nodeNS) || nodeNS == null && equalStrings(testPrefix, getPrefix(node));
+        }
+        return false;
+    }
+    if (test instanceof NodeTypeTest) {
+        int nodeType = node.getNodeType();
+        switch(((NodeTypeTest) test).getNodeType()) {
+            case Compiler.NODE_TYPE_NODE:
+                return nodeType == Node.ELEMENT_NODE || nodeType == Node.DOCUMENT_NODE;
+            case Compiler.NODE_TYPE_TEXT:
+                return nodeType == Node.CDATA_SECTION_NODE || nodeType == Node.TEXT_NODE;
+            case Compiler.NODE_TYPE_COMMENT:
+                return nodeType == Node.COMMENT_NODE;
+            case Compiler.NODE_TYPE_PI:
+                return nodeType == Node.PROCESSING_INSTRUCTION_NODE;
+        }
+        return false;
+    }
+    if (test instanceof ProcessingInstructionTest) {
+        if (node.getNodeType() == Node.PROCESSING_INSTRUCTION_NODE) {
+            String testPI = ((ProcessingInstructionTest) test).getTarget();
+            String nodePI = ((ProcessingInstruction) node).getTarget();
+            return testPI.equals(nodePI);
+        }
+    }
+    return false;
+}","public void test3333() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    ProcessingInstructionTest processingInstructionTest0 = new ProcessingInstructionTest(""\""/KJU"");
+    boolean boolean0 = DOMNodePointer.testNode((Node) hTMLDocumentImpl0, (NodeTest) processingInstructionTest0);
+    assertFalse(boolean0);
+}",""
+"public String toString() {
+    return qualifiedName;
+}","public void test3434() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    ProcessingInstructionImpl processingInstructionImpl0 = new ProcessingInstructionImpl(hTMLDocumentImpl0, ""http://www.w3.org/2000/xmlns/"", ""http://www.w3.org/2000/xmlns/"");
+    Locale locale0 = Locale.GERMANY;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(processingInstructionImpl0, locale0);
+    QName qName0 = dOMNodePointer0.getName();
+    assertEquals(""http://www.w3.org/2000/xmlns/"", qName0.toString());
+}",""
+"public String getName() {
+    return name;
+}","public void test3435() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    ProcessingInstructionImpl processingInstructionImpl0 = new ProcessingInstructionImpl(hTMLDocumentImpl0, ""http://www.w3.org/2000/xmlns/"", ""http://www.w3.org/2000/xmlns/"");
+    Locale locale0 = Locale.GERMANY;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(processingInstructionImpl0, locale0);
+    QName qName0 = dOMNodePointer0.getName();
+    assertEquals(""http://www.w3.org/2000/xmlns/"", qName0.getName());
+}",""
+"/* (non-Javadoc)
+     * @see org.apache.commons.jxpath.ri.model.NodePointer#getNamespaceResolver()
+     */
+public String getNamespaceURI(String prefix) {
+    if (prefix == null || prefix.equals("""")) {
+        return getDefaultNamespaceURI();
+    }
+    if (prefix.equals(""xml"")) {
+        return XML_NAMESPACE_URI;
+    }
+    if (prefix.equals(""xmlns"")) {
+        return XMLNS_NAMESPACE_URI;
+    }
+    String namespace = null;
+    if (namespaces == null) {
+        namespaces = new HashMap();
+    } else {
+        namespace = (String) namespaces.get(prefix);
+    }
+    if (namespace == null) {
+        String qname = ""xmlns:"" + prefix;
+        Node aNode = node;
+        if (aNode instanceof Document) {
+            aNode = ((Document) aNode).getDocumentElement();
+        }
+        while (aNode != null) {
+            if (aNode.getNodeType() == Node.ELEMENT_NODE) {
+                Attr attr = ((Element) aNode).getAttributeNode(qname);
+                if (attr != null) {
+                    namespace = attr.getValue();
+                    break;
+                }
+            }
+            aNode = aNode.getParentNode();
+        }
+        if (namespace == null || namespace.equals("""")) {
+            namespace = NodePointer.UNKNOWN_NAMESPACE;
+        }
+    }
+    namespaces.put(prefix, namespace);
+    if (namespace == UNKNOWN_NAMESPACE) {
+        return null;
+    }
+    // TBD: We are supposed to resolve relative URIs to absolute ones.
+    return namespace;
+}","public void test3536() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, (Locale) null);
+    String string0 = dOMNodePointer0.getNamespaceURI("""");
+    assertNull(string0);
+}",""
+"/* (non-Javadoc)
+     * @see org.apache.commons.jxpath.ri.model.NodePointer#getNamespaceResolver()
+     */
+public String getNamespaceURI(String prefix) {
+    if (prefix == null || prefix.equals("""")) {
+        return getDefaultNamespaceURI();
+    }
+    if (prefix.equals(""xml"")) {
+        return XML_NAMESPACE_URI;
+    }
+    if (prefix.equals(""xmlns"")) {
+        return XMLNS_NAMESPACE_URI;
+    }
+    String namespace = null;
+    if (namespaces == null) {
+        namespaces = new HashMap();
+    } else {
+        namespace = (String) namespaces.get(prefix);
+    }
+    if (namespace == null) {
+        String qname = ""xmlns:"" + prefix;
+        Node aNode = node;
+        if (aNode instanceof Document) {
+            aNode = ((Document) aNode).getDocumentElement();
+        }
+        while (aNode != null) {
+            if (aNode.getNodeType() == Node.ELEMENT_NODE) {
+                Attr attr = ((Element) aNode).getAttributeNode(qname);
+                if (attr != null) {
+                    namespace = attr.getValue();
+                    break;
+                }
+            }
+            aNode = aNode.getParentNode();
+        }
+        if (namespace == null || namespace.equals("""")) {
+            namespace = NodePointer.UNKNOWN_NAMESPACE;
+        }
+    }
+    namespaces.put(prefix, namespace);
+    if (namespace == UNKNOWN_NAMESPACE) {
+        return null;
+    }
+    // TBD: We are supposed to resolve relative URIs to absolute ones.
+    return namespace;
+}","public void test3637() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.PRC;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    String string0 = dOMNodePointer0.getNamespaceURI(""xml"");
+    assertEquals(""http://www.w3.org/XML/1998/namespace"", string0);
+}",""
+"/* (non-Javadoc)
+     * @see org.apache.commons.jxpath.ri.model.NodePointer#getNamespaceResolver()
+     */
+public String getNamespaceURI(String prefix) {
+    if (prefix == null || prefix.equals("""")) {
+        return getDefaultNamespaceURI();
+    }
+    if (prefix.equals(""xml"")) {
+        return XML_NAMESPACE_URI;
+    }
+    if (prefix.equals(""xmlns"")) {
+        return XMLNS_NAMESPACE_URI;
+    }
+    String namespace = null;
+    if (namespaces == null) {
+        namespaces = new HashMap();
+    } else {
+        namespace = (String) namespaces.get(prefix);
+    }
+    if (namespace == null) {
+        String qname = ""xmlns:"" + prefix;
+        Node aNode = node;
+        if (aNode instanceof Document) {
+            aNode = ((Document) aNode).getDocumentElement();
+        }
+        while (aNode != null) {
+            if (aNode.getNodeType() == Node.ELEMENT_NODE) {
+                Attr attr = ((Element) aNode).getAttributeNode(qname);
+                if (attr != null) {
+                    namespace = attr.getValue();
+                    break;
+                }
+            }
+            aNode = aNode.getParentNode();
+        }
+        if (namespace == null || namespace.equals("""")) {
+            namespace = NodePointer.UNKNOWN_NAMESPACE;
+        }
+    }
+    namespaces.put(prefix, namespace);
+    if (namespace == UNKNOWN_NAMESPACE) {
+        return null;
+    }
+    // TBD: We are supposed to resolve relative URIs to absolute ones.
+    return namespace;
+}","public void test3739() throws Throwable {
+    Locale locale0 = Locale.CANADA;
+    TextImpl textImpl0 = new TextImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(textImpl0, locale0);
+    dOMNodePointer0.getNamespaceURI(""<<unknown namespace>>"");
+    String string0 = dOMNodePointer0.getNamespaceURI(""<<unknown namespace>>"");
+    assertNull(string0);
+}",""
+"/* (non-Javadoc)
+     * @see org.apache.commons.jxpath.ri.model.NodePointer#getNamespaceResolver()
+     */
+public String getNamespaceURI(String prefix) {
+    if (prefix == null || prefix.equals("""")) {
+        return getDefaultNamespaceURI();
+    }
+    if (prefix.equals(""xml"")) {
+        return XML_NAMESPACE_URI;
+    }
+    if (prefix.equals(""xmlns"")) {
+        return XMLNS_NAMESPACE_URI;
+    }
+    String namespace = null;
+    if (namespaces == null) {
+        namespaces = new HashMap();
+    } else {
+        namespace = (String) namespaces.get(prefix);
+    }
+    if (namespace == null) {
+        String qname = ""xmlns:"" + prefix;
+        Node aNode = node;
+        if (aNode instanceof Document) {
+            aNode = ((Document) aNode).getDocumentElement();
+        }
+        while (aNode != null) {
+            if (aNode.getNodeType() == Node.ELEMENT_NODE) {
+                Attr attr = ((Element) aNode).getAttributeNode(qname);
+                if (attr != null) {
+                    namespace = attr.getValue();
+                    break;
+                }
+            }
+            aNode = aNode.getParentNode();
+        }
+        if (namespace == null || namespace.equals("""")) {
+            namespace = NodePointer.UNKNOWN_NAMESPACE;
+        }
+    }
+    namespaces.put(prefix, namespace);
+    if (namespace == UNKNOWN_NAMESPACE) {
+        return null;
+    }
+    // TBD: We are supposed to resolve relative URIs to absolute ones.
+    return namespace;
+}","public void test3840() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.PRC;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    dOMNodePointer0.getDefaultNamespaceURI();
+    String string0 = dOMNodePointer0.getNamespaceURI((String) null);
+    assertNull(string0);
+}",""
+"public String getDefaultNamespaceURI() {
+    if (defaultNamespace == null) {
+        Node aNode = node;
+        if (aNode instanceof Document) {
+            aNode = ((Document) aNode).getDocumentElement();
+        }
+        while (aNode != null) {
+            if (aNode.getNodeType() == Node.ELEMENT_NODE) {
+                Attr attr = ((Element) aNode).getAttributeNode(""xmlns"");
+                if (attr != null) {
+                    defaultNamespace = attr.getValue();
+                    break;
+                }
+            }
+            aNode = aNode.getParentNode();
+        }
+    }
+    if (defaultNamespace == null) {
+        defaultNamespace = """";
+    }
+    // TBD: We are supposed to resolve relative URIs to absolute ones.
+    return defaultNamespace.equals("""") ? null : defaultNamespace;
+}","public void test3941() throws Throwable {
+    Locale locale0 = Locale.UK;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer((Node) null, locale0);
+    String string0 = dOMNodePointer0.getDefaultNamespaceURI();
+    assertNull(string0);
+}",""
+"public boolean isLeaf() {
+    return !node.hasChildNodes();
+}","public void test4042() throws Throwable {
+    Locale locale0 = Locale.TAIWAN;
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    hTMLDocumentImpl0.getBody();
+    boolean boolean0 = dOMNodePointer0.isLeaf();
+    assertFalse(boolean0);
+}",""
+"public boolean isLeaf() {
+    return !node.hasChildNodes();
+}","public void test4143() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.ENGLISH;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    boolean boolean0 = dOMNodePointer0.isLeaf();
+    assertTrue(boolean0);
+}",""
+"public Object getValue() {
+    if (node.getNodeType() == Node.COMMENT_NODE) {
+        String text = ((Comment) node).getData();
+        return text == null ? """" : text.trim();
+    }
+    return stringValue(node);
+}","public void test4244() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.US;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    dOMNodePointer0.getNamespaceURI(""http://www.w3.org/XML/1998/namespace"");
+    Object object0 = dOMNodePointer0.getValue();
+    assertEquals("""", object0);
+}",""
+"public void setValue(Object value) {
+    if (node.getNodeType() == Node.TEXT_NODE || node.getNodeType() == Node.CDATA_SECTION_NODE) {
+        String string = (String) TypeUtils.convert(value, String.class);
+        if (string != null && !string.equals("""")) {
+            node.setNodeValue(string);
+        } else {
+            node.getParentNode().removeChild(node);
+        }
+    } else {
+        NodeList children = node.getChildNodes();
+        int count = children.getLength();
+        for (int i = count; --i >= 0; ) {
+            Node child = children.item(i);
+            node.removeChild(child);
+        }
+        if (value instanceof Node) {
+            Node valueNode = (Node) value;
+            if (valueNode instanceof Element || valueNode instanceof Document) {
+                children = valueNode.getChildNodes();
+                for (int i = 0; i < children.getLength(); i++) {
+                    Node child = children.item(i);
+                    node.appendChild(child.cloneNode(true));
+                }
+            } else {
+                node.appendChild(valueNode.cloneNode(true));
+            }
+        } else {
+            String string = (String) TypeUtils.convert(value, String.class);
+            if (string != null && !string.equals("""")) {
+                Node textNode = node.getOwnerDocument().createTextNode(string);
+                node.appendChild(textNode);
+            }
+        }
+    }
+}","public void test4345() throws Throwable {
+    Locale locale0 = Locale.JAPANESE;
+    TextImpl textImpl0 = new TextImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(textImpl0, locale0);
+    // Undeclared exception!
+    try {
+        dOMNodePointer0.setValue(locale0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.xerces.dom.CharacterDataImpl"", e);
+    }
+}","/**
+ * Sets contents of the node to the specified value. If the value is
+ * a String, the contents of the node are replaced with this text.
+ * If the value is an Element or Document, the children of the
+ * node are replaced with the children of the passed node.
+ */"
+"public boolean isAttribute() {
+    return attribute;
+}","public void test4446() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.ROOT;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    dOMNodePointer0.setValue(dOMNodePointer0);
+    assertFalse(dOMNodePointer0.isAttribute());
+}","/**
+ * Returns true if the pointer represents the ""attribute::"" axis.
+ */"
+"public void setValue(Object value) {
+    if (node.getNodeType() == Node.TEXT_NODE || node.getNodeType() == Node.CDATA_SECTION_NODE) {
+        String string = (String) TypeUtils.convert(value, String.class);
+        if (string != null && !string.equals("""")) {
+            node.setNodeValue(string);
+        } else {
+            node.getParentNode().removeChild(node);
+        }
+    } else {
+        NodeList children = node.getChildNodes();
+        int count = children.getLength();
+        for (int i = count; --i >= 0; ) {
+            Node child = children.item(i);
+            node.removeChild(child);
+        }
+        if (value instanceof Node) {
+            Node valueNode = (Node) value;
+            if (valueNode instanceof Element || valueNode instanceof Document) {
+                children = valueNode.getChildNodes();
+                for (int i = 0; i < children.getLength(); i++) {
+                    Node child = children.item(i);
+                    node.appendChild(child.cloneNode(true));
+                }
+            } else {
+                node.appendChild(valueNode.cloneNode(true));
+            }
+        } else {
+            String string = (String) TypeUtils.convert(value, String.class);
+            if (string != null && !string.equals("""")) {
+                Node textNode = node.getOwnerDocument().createTextNode(string);
+                node.appendChild(textNode);
+            }
+        }
+    }
+}","public void test4547() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    CDATASection cDATASection0 = hTMLDocumentImpl0.createCDATASection(""http://www.w3.org/XML/1998/namespace"");
+    Locale locale0 = Locale.FRENCH;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(cDATASection0, locale0);
+    // Undeclared exception!
+    try {
+        dOMNodePointer0.setValue("""");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.dom.DOMNodePointer"", e);
+    }
+}","/**
+ * Sets contents of the node to the specified value. If the value is
+ * a String, the contents of the node are replaced with this text.
+ * If the value is an Element or Document, the children of the
+ * node are replaced with the children of the passed node.
+ */"
+"public void setValue(Object value) {
+    if (node.getNodeType() == Node.TEXT_NODE || node.getNodeType() == Node.CDATA_SECTION_NODE) {
+        String string = (String) TypeUtils.convert(value, String.class);
+        if (string != null && !string.equals("""")) {
+            node.setNodeValue(string);
+        } else {
+            node.getParentNode().removeChild(node);
+        }
+    } else {
+        NodeList children = node.getChildNodes();
+        int count = children.getLength();
+        for (int i = count; --i >= 0; ) {
+            Node child = children.item(i);
+            node.removeChild(child);
+        }
+        if (value instanceof Node) {
+            Node valueNode = (Node) value;
+            if (valueNode instanceof Element || valueNode instanceof Document) {
+                children = valueNode.getChildNodes();
+                for (int i = 0; i < children.getLength(); i++) {
+                    Node child = children.item(i);
+                    node.appendChild(child.cloneNode(true));
+                }
+            } else {
+                node.appendChild(valueNode.cloneNode(true));
+            }
+        } else {
+            String string = (String) TypeUtils.convert(value, String.class);
+            if (string != null && !string.equals("""")) {
+                Node textNode = node.getOwnerDocument().createTextNode(string);
+                node.appendChild(textNode);
+            }
+        }
+    }
+}","public void test4648() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    CDATASection cDATASection0 = hTMLDocumentImpl0.createCDATASection(""?^@{HBqi"");
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(cDATASection0, (Locale) null, ""?^@{HBqi"");
+    // Undeclared exception!
+    try {
+        dOMNodePointer0.setValue((Object) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.dom.DOMNodePointer"", e);
+    }
+}","/**
+ * Sets contents of the node to the specified value. If the value is
+ * a String, the contents of the node are replaced with this text.
+ * If the value is an Element or Document, the children of the
+ * node are replaced with the children of the passed node.
+ */"
+"public boolean isNode() {
+    return !isContainer();
+}","public void test4850() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, (Locale) null);
+    HTMLImageElementImpl hTMLImageElementImpl0 = new HTMLImageElementImpl(hTMLDocumentImpl0, ""<<unknown namespace>>"");
+    dOMNodePointer0.setValue(hTMLImageElementImpl0);
+    assertTrue(dOMNodePointer0.isNode());
+}","/**
+ * @deprecated Please use !isContainer()
+ */"
+"public void setValue(Object value) {
+    if (node.getNodeType() == Node.TEXT_NODE || node.getNodeType() == Node.CDATA_SECTION_NODE) {
+        String string = (String) TypeUtils.convert(value, String.class);
+        if (string != null && !string.equals("""")) {
+            node.setNodeValue(string);
+        } else {
+            node.getParentNode().removeChild(node);
+        }
+    } else {
+        NodeList children = node.getChildNodes();
+        int count = children.getLength();
+        for (int i = count; --i >= 0; ) {
+            Node child = children.item(i);
+            node.removeChild(child);
+        }
+        if (value instanceof Node) {
+            Node valueNode = (Node) value;
+            if (valueNode instanceof Element || valueNode instanceof Document) {
+                children = valueNode.getChildNodes();
+                for (int i = 0; i < children.getLength(); i++) {
+                    Node child = children.item(i);
+                    node.appendChild(child.cloneNode(true));
+                }
+            } else {
+                node.appendChild(valueNode.cloneNode(true));
+            }
+        } else {
+            String string = (String) TypeUtils.convert(value, String.class);
+            if (string != null && !string.equals("""")) {
+                Node textNode = node.getOwnerDocument().createTextNode(string);
+                node.appendChild(textNode);
+            }
+        }
+    }
+}","public void test4951() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    ProcessingInstructionImpl processingInstructionImpl0 = new ProcessingInstructionImpl(hTMLDocumentImpl0, ""@v&y}^,`l+x}F"", ""@v&y}^,`l+x}F"");
+    Locale locale0 = Locale.US;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(processingInstructionImpl0, locale0);
+    // Undeclared exception!
+    try {
+        dOMNodePointer0.setValue(processingInstructionImpl0);
+        fail(""Expecting exception: DOMException"");
+    } catch (DOMException e) {
+        //
+        // HIERARCHY_REQUEST_ERR: An attempt was made to insert a node where it is not permitted.
+        //
+        verifyException(""org.apache.xerces.dom.NodeImpl"", e);
+    }
+}","/**
+ * Sets contents of the node to the specified value. If the value is
+ * a String, the contents of the node are replaced with this text.
+ * If the value is an Element or Document, the children of the
+ * node are replaced with the children of the passed node.
+ */"
+"public void setValue(Object value) {
+    if (node.getNodeType() == Node.TEXT_NODE || node.getNodeType() == Node.CDATA_SECTION_NODE) {
+        String string = (String) TypeUtils.convert(value, String.class);
+        if (string != null && !string.equals("""")) {
+            node.setNodeValue(string);
+        } else {
+            node.getParentNode().removeChild(node);
+        }
+    } else {
+        NodeList children = node.getChildNodes();
+        int count = children.getLength();
+        for (int i = count; --i >= 0; ) {
+            Node child = children.item(i);
+            node.removeChild(child);
+        }
+        if (value instanceof Node) {
+            Node valueNode = (Node) value;
+            if (valueNode instanceof Element || valueNode instanceof Document) {
+                children = valueNode.getChildNodes();
+                for (int i = 0; i < children.getLength(); i++) {
+                    Node child = children.item(i);
+                    node.appendChild(child.cloneNode(true));
+                }
+            } else {
+                node.appendChild(valueNode.cloneNode(true));
+            }
+        } else {
+            String string = (String) TypeUtils.convert(value, String.class);
+            if (string != null && !string.equals("""")) {
+                Node textNode = node.getOwnerDocument().createTextNode(string);
+                node.appendChild(textNode);
+            }
+        }
+    }
+}","public void test5052() throws Throwable {
+    Locale locale0 = Locale.TRADITIONAL_CHINESE;
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    AttrNSImpl attrNSImpl0 = new AttrNSImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(attrNSImpl0, locale0);
+    hTMLDocumentImpl0.getDocumentElement();
+    // Undeclared exception!
+    try {
+        dOMNodePointer0.setValue(hTMLDocumentImpl0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.xerces.dom.AttrImpl"", e);
+    }
+}","/**
+ * Sets contents of the node to the specified value. If the value is
+ * a String, the contents of the node are replaced with this text.
+ * If the value is an Element or Document, the children of the
+ * node are replaced with the children of the passed node.
+ */"
+"public int getLength() {
+    return 1;
+}","public void test5153() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, (Locale) null, (String) null);
+    dOMNodePointer0.setValue((Object) null);
+    assertEquals(1, dOMNodePointer0.getLength());
+}",""
+"public void setValue(Object value) {
+    if (node.getNodeType() == Node.TEXT_NODE || node.getNodeType() == Node.CDATA_SECTION_NODE) {
+        String string = (String) TypeUtils.convert(value, String.class);
+        if (string != null && !string.equals("""")) {
+            node.setNodeValue(string);
+        } else {
+            node.getParentNode().removeChild(node);
+        }
+    } else {
+        NodeList children = node.getChildNodes();
+        int count = children.getLength();
+        for (int i = count; --i >= 0; ) {
+            Node child = children.item(i);
+            node.removeChild(child);
+        }
+        if (value instanceof Node) {
+            Node valueNode = (Node) value;
+            if (valueNode instanceof Element || valueNode instanceof Document) {
+                children = valueNode.getChildNodes();
+                for (int i = 0; i < children.getLength(); i++) {
+                    Node child = children.item(i);
+                    node.appendChild(child.cloneNode(true));
+                }
+            } else {
+                node.appendChild(valueNode.cloneNode(true));
+            }
+        } else {
+            String string = (String) TypeUtils.convert(value, String.class);
+            if (string != null && !string.equals("""")) {
+                Node textNode = node.getOwnerDocument().createTextNode(string);
+                node.appendChild(textNode);
+            }
+        }
+    }
+}","public void test5254() throws Throwable {
+    CoreDocumentImpl coreDocumentImpl0 = new CoreDocumentImpl();
+    Locale locale0 = Locale.CANADA;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(coreDocumentImpl0, locale0);
+    // Undeclared exception!
+    try {
+        dOMNodePointer0.setValue(locale0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.dom.DOMNodePointer"", e);
+    }
+}","/**
+ * Sets contents of the node to the specified value. If the value is
+ * a String, the contents of the node are replaced with this text.
+ * If the value is an Element or Document, the children of the
+ * node are replaced with the children of the passed node.
+ */"
+"public NodePointer createChild(JXPathContext context, QName name, int index) {
+    if (index == WHOLE_COLLECTION) {
+        index = 0;
+    }
+    boolean success = getAbstractFactory(context).createObject(context, this, node, name.toString(), index);
+    if (success) {
+        NodeTest nodeTest;
+        String prefix = name.getPrefix();
+        String namespaceURI = prefix == null ? null : context.getNamespaceURI(prefix);
+        nodeTest = new NodeNameTest(name, namespaceURI);
+        NodeIterator it = childIterator(nodeTest, false, null);
+        if (it != null && it.setPosition(index + 1)) {
+            return it.getNodePointer();
+        }
+    }
+    throw new JXPathAbstractFactoryException(""Factory could not create a child node for path: "" + asPath() + ""/"" + name + ""["" + (index + 1) + ""]"");
+}","public void test5355() throws Throwable {
+    CoreDocumentImpl coreDocumentImpl0 = new CoreDocumentImpl();
+    Locale locale0 = Locale.CANADA;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(coreDocumentImpl0, locale0);
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) locale0);
+    QName qName0 = dOMNodePointer0.getName();
+    // Undeclared exception!
+    try {
+        dOMNodePointer0.createChild(jXPathContext0, qName0, (-656));
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Factory is not set on the JXPathContext - cannot create path:
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.dom.DOMNodePointer"", e);
+    }
+}",""
+"public NodePointer createAttribute(JXPathContext context, QName name) {
+    if (!(node instanceof Element)) {
+        return super.createAttribute(context, name);
+    }
+    Element element = (Element) node;
+    String prefix = name.getPrefix();
+    if (prefix != null) {
+        String ns = getNamespaceURI(prefix);
+        if (ns == null) {
+            throw new JXPathException(""Unknown namespace prefix: "" + prefix);
+        }
+        element.setAttributeNS(ns, name.toString(), """");
+    } else {
+        if (!element.hasAttribute(name.getName())) {
+            element.setAttribute(name.getName(), """");
+        }
+    }
+    NodeIterator it = attributeIterator(name);
+    it.setPosition(1);
+    return it.getNodePointer();
+}","public void test5456() throws Throwable {
+    Locale locale0 = Locale.CHINA;
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) dOMNodePointer0);
+    QName qName0 = dOMNodePointer0.getName();
+    // Undeclared exception!
+    try {
+        dOMNodePointer0.createAttribute(jXPathContext0, qName0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Cannot create an attribute for path /@null, operation is not allowed for this type of node
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.NodePointer"", e);
+    }
+}",""
+"public String toString() {
+    return qualifiedName;
+}","public void test5557() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Element element0 = hTMLDocumentImpl0.getDocumentElement();
+    Locale locale0 = Locale.CHINA;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(element0, locale0);
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) hTMLDocumentImpl0);
+    QName qName0 = dOMNodePointer0.getName();
+    dOMNodePointer0.createAttribute(jXPathContext0, qName0);
+    assertEquals(""HTML"", qName0.toString());
+}",""
+"public NodePointer createAttribute(JXPathContext context, QName name) {
+    if (!(node instanceof Element)) {
+        return super.createAttribute(context, name);
+    }
+    Element element = (Element) node;
+    String prefix = name.getPrefix();
+    if (prefix != null) {
+        String ns = getNamespaceURI(prefix);
+        if (ns == null) {
+            throw new JXPathException(""Unknown namespace prefix: "" + prefix);
+        }
+        element.setAttributeNS(ns, name.toString(), """");
+    } else {
+        if (!element.hasAttribute(name.getName())) {
+            element.setAttribute(name.getName(), """");
+        }
+    }
+    NodeIterator it = attributeIterator(name);
+    it.setPosition(1);
+    return it.getNodePointer();
+}","public void test5658() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    HTMLAppletElementImpl hTMLAppletElementImpl0 = new HTMLAppletElementImpl(hTMLDocumentImpl0, ""[Jd'U?Tdjz' .]6F<W"");
+    Locale locale0 = Locale.forLanguageTag(""[Jd'U?Tdjz' .]6F<W"");
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLAppletElementImpl0, locale0, ""[Jd'U?Tdjz' .]6F<W"");
+    QName qName0 = new QName(""<<unknown namespace>>"", ""http://www.w3.org/2000/xmlns/"");
+    // Undeclared exception!
+    try {
+        dOMNodePointer0.createAttribute((JXPathContext) null, qName0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Unknown namespace prefix: <<unknown namespace>>
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.dom.DOMNodePointer"", e);
+    }
+}",""
+"public NodePointer createAttribute(JXPathContext context, QName name) {
+    if (!(node instanceof Element)) {
+        return super.createAttribute(context, name);
+    }
+    Element element = (Element) node;
+    String prefix = name.getPrefix();
+    if (prefix != null) {
+        String ns = getNamespaceURI(prefix);
+        if (ns == null) {
+            throw new JXPathException(""Unknown namespace prefix: "" + prefix);
+        }
+        element.setAttributeNS(ns, name.toString(), """");
+    } else {
+        if (!element.hasAttribute(name.getName())) {
+            element.setAttribute(name.getName(), """");
+        }
+    }
+    NodeIterator it = attributeIterator(name);
+    it.setPosition(1);
+    return it.getNodePointer();
+}","public void test5759() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    DocumentTypeImpl documentTypeImpl0 = new DocumentTypeImpl(hTMLDocumentImpl0, ""true()"", ""true()"", ""FRAMESET"");
+    WMLDocumentImpl wMLDocumentImpl0 = new WMLDocumentImpl(documentTypeImpl0);
+    WMLTimerElementImpl wMLTimerElementImpl0 = new WMLTimerElementImpl(wMLDocumentImpl0, ""FRAMESET"");
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) wMLTimerElementImpl0);
+    Locale locale0 = jXPathContext0.getLocale();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(wMLTimerElementImpl0, locale0);
+    QName qName0 = new QName(""M9M"");
+    dOMNodePointer0.createAttribute(jXPathContext0, qName0);
+    NodePointer nodePointer0 = dOMNodePointer0.createAttribute(jXPathContext0, qName0);
+    assertEquals(Integer.MIN_VALUE, NodePointer.WHOLE_COLLECTION);
+}",""
+"public int getIndex() {
+    return index;
+}","public void test5860() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Element element0 = hTMLDocumentImpl0.getDocumentElement();
+    Locale locale0 = Locale.CHINA;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(element0, locale0);
+    dOMNodePointer0.remove();
+    assertEquals(Integer.MIN_VALUE, dOMNodePointer0.getIndex());
+}","/**
+ * If the pointer represents a collection, the index identifies
+ * an element of that collection.  The default value of <code>index</code>
+ * is <code>WHOLE_COLLECTION</code>, which just means that the pointer
+ * is not indexed at all.
+ * Note: the index on NodePointer starts with 0, not 1.
+ */"
+"public void remove() {
+    Node parent = node.getParentNode();
+    if (parent == null) {
+        throw new JXPathException(""Cannot remove root DOM node"");
+    }
+    parent.removeChild(node);
+}","public void test5961() throws Throwable {
+    DocumentImpl documentImpl0 = new DocumentImpl();
+    Locale locale0 = Locale.TRADITIONAL_CHINESE;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(documentImpl0, locale0);
+    // Undeclared exception!
+    try {
+        dOMNodePointer0.remove();
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Cannot remove root DOM node
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.dom.DOMNodePointer"", e);
+    }
+}",""
+"public String asPath() {
+    if (id != null) {
+        return ""id('"" + escape(id) + ""')"";
+    }
+    StringBuffer buffer = new StringBuffer();
+    if (parent != null) {
+        buffer.append(parent.asPath());
+    }
+    switch(node.getNodeType()) {
+        case Node.ELEMENT_NODE:
+            // If the parent pointer is not a DOMNodePointer, it is
+            // the parent's responsibility to produce the node test part
+            // of the path
+            if (parent instanceof DOMNodePointer) {
+                if (buffer.length() == 0 || buffer.charAt(buffer.length() - 1) != '/') {
+                    buffer.append('/');
+                }
+                String ln = DOMNodePointer.getLocalName(node);
+                String nsURI = getNamespaceURI();
+                if (nsURI == null) {
+                    buffer.append(ln);
+                    buffer.append('[');
+                    buffer.append(getRelativePositionByName()).append(']');
+                } else {
+                    String prefix = getNamespaceResolver().getPrefix(nsURI);
+                    if (prefix != null) {
+                        buffer.append(prefix);
+                        buffer.append(':');
+                        buffer.append(ln);
+                        buffer.append('[');
+                        buffer.append(getRelativePositionByName());
+                        buffer.append(']');
+                    } else {
+                        buffer.append(""node()"");
+                        buffer.append('[');
+                        buffer.append(getRelativePositionOfElement());
+                        buffer.append(']');
+                    }
+                }
+            }
+            break;
+        case Node.TEXT_NODE:
+        case Node.CDATA_SECTION_NODE:
+            buffer.append(""/text()"");
+            buffer.append('[');
+            buffer.append(getRelativePositionOfTextNode()).append(']');
+            break;
+        case Node.PROCESSING_INSTRUCTION_NODE:
+            String target = ((ProcessingInstruction) node).getTarget();
+            buffer.append(""/processing-instruction(\'"");
+            buffer.append(target).append(""')"");
+            buffer.append('[');
+            buffer.append(getRelativePositionOfPI(target)).append(']');
+            break;
+        case Node.DOCUMENT_NODE:
+    }
+    return buffer.toString();
+}","public void test6062() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.CHINA;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0, ""M'e1MqNI'<emq^R*h)"");
+    String string0 = dOMNodePointer0.asPath();
+    assertEquals(""id('M&apos;e1MqNI&apos;<emq^R*h)')"", string0);
+}",""
+"public String asPath() {
+    if (id != null) {
+        return ""id('"" + escape(id) + ""')"";
+    }
+    StringBuffer buffer = new StringBuffer();
+    if (parent != null) {
+        buffer.append(parent.asPath());
+    }
+    switch(node.getNodeType()) {
+        case Node.ELEMENT_NODE:
+            // If the parent pointer is not a DOMNodePointer, it is
+            // the parent's responsibility to produce the node test part
+            // of the path
+            if (parent instanceof DOMNodePointer) {
+                if (buffer.length() == 0 || buffer.charAt(buffer.length() - 1) != '/') {
+                    buffer.append('/');
+                }
+                String ln = DOMNodePointer.getLocalName(node);
+                String nsURI = getNamespaceURI();
+                if (nsURI == null) {
+                    buffer.append(ln);
+                    buffer.append('[');
+                    buffer.append(getRelativePositionByName()).append(']');
+                } else {
+                    String prefix = getNamespaceResolver().getPrefix(nsURI);
+                    if (prefix != null) {
+                        buffer.append(prefix);
+                        buffer.append(':');
+                        buffer.append(ln);
+                        buffer.append('[');
+                        buffer.append(getRelativePositionByName());
+                        buffer.append(']');
+                    } else {
+                        buffer.append(""node()"");
+                        buffer.append('[');
+                        buffer.append(getRelativePositionOfElement());
+                        buffer.append(']');
+                    }
+                }
+            }
+            break;
+        case Node.TEXT_NODE:
+        case Node.CDATA_SECTION_NODE:
+            buffer.append(""/text()"");
+            buffer.append('[');
+            buffer.append(getRelativePositionOfTextNode()).append(']');
+            break;
+        case Node.PROCESSING_INSTRUCTION_NODE:
+            String target = ((ProcessingInstruction) node).getTarget();
+            buffer.append(""/processing-instruction(\'"");
+            buffer.append(target).append(""')"");
+            buffer.append('[');
+            buffer.append(getRelativePositionOfPI(target)).append(']');
+            break;
+        case Node.DOCUMENT_NODE:
+    }
+    return buffer.toString();
+}","public void test6163() throws Throwable {
+    Locale locale0 = Locale.TRADITIONAL_CHINESE;
+    AttrNSImpl attrNSImpl0 = new AttrNSImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(attrNSImpl0, locale0);
+    String string0 = dOMNodePointer0.asPath();
+    assertEquals("""", string0);
+}",""
+"public String asPath() {
+    if (id != null) {
+        return ""id('"" + escape(id) + ""')"";
+    }
+    StringBuffer buffer = new StringBuffer();
+    if (parent != null) {
+        buffer.append(parent.asPath());
+    }
+    switch(node.getNodeType()) {
+        case Node.ELEMENT_NODE:
+            // If the parent pointer is not a DOMNodePointer, it is
+            // the parent's responsibility to produce the node test part
+            // of the path
+            if (parent instanceof DOMNodePointer) {
+                if (buffer.length() == 0 || buffer.charAt(buffer.length() - 1) != '/') {
+                    buffer.append('/');
+                }
+                String ln = DOMNodePointer.getLocalName(node);
+                String nsURI = getNamespaceURI();
+                if (nsURI == null) {
+                    buffer.append(ln);
+                    buffer.append('[');
+                    buffer.append(getRelativePositionByName()).append(']');
+                } else {
+                    String prefix = getNamespaceResolver().getPrefix(nsURI);
+                    if (prefix != null) {
+                        buffer.append(prefix);
+                        buffer.append(':');
+                        buffer.append(ln);
+                        buffer.append('[');
+                        buffer.append(getRelativePositionByName());
+                        buffer.append(']');
+                    } else {
+                        buffer.append(""node()"");
+                        buffer.append('[');
+                        buffer.append(getRelativePositionOfElement());
+                        buffer.append(']');
+                    }
+                }
+            }
+            break;
+        case Node.TEXT_NODE:
+        case Node.CDATA_SECTION_NODE:
+            buffer.append(""/text()"");
+            buffer.append('[');
+            buffer.append(getRelativePositionOfTextNode()).append(']');
+            break;
+        case Node.PROCESSING_INSTRUCTION_NODE:
+            String target = ((ProcessingInstruction) node).getTarget();
+            buffer.append(""/processing-instruction(\'"");
+            buffer.append(target).append(""')"");
+            buffer.append('[');
+            buffer.append(getRelativePositionOfPI(target)).append(']');
+            break;
+        case Node.DOCUMENT_NODE:
+    }
+    return buffer.toString();
+}","public void test6264() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    CDATASection cDATASection0 = hTMLDocumentImpl0.createCDATASection(""http://www.w3.org/XML/1998/namespace"");
+    Locale locale0 = Locale.FRENCH;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(cDATASection0, locale0);
+    String string0 = dOMNodePointer0.asPath();
+    assertEquals(""/text()[1]"", string0);
+}",""
+"public String asPath() {
+    if (id != null) {
+        return ""id('"" + escape(id) + ""')"";
+    }
+    StringBuffer buffer = new StringBuffer();
+    if (parent != null) {
+        buffer.append(parent.asPath());
+    }
+    switch(node.getNodeType()) {
+        case Node.ELEMENT_NODE:
+            // If the parent pointer is not a DOMNodePointer, it is
+            // the parent's responsibility to produce the node test part
+            // of the path
+            if (parent instanceof DOMNodePointer) {
+                if (buffer.length() == 0 || buffer.charAt(buffer.length() - 1) != '/') {
+                    buffer.append('/');
+                }
+                String ln = DOMNodePointer.getLocalName(node);
+                String nsURI = getNamespaceURI();
+                if (nsURI == null) {
+                    buffer.append(ln);
+                    buffer.append('[');
+                    buffer.append(getRelativePositionByName()).append(']');
+                } else {
+                    String prefix = getNamespaceResolver().getPrefix(nsURI);
+                    if (prefix != null) {
+                        buffer.append(prefix);
+                        buffer.append(':');
+                        buffer.append(ln);
+                        buffer.append('[');
+                        buffer.append(getRelativePositionByName());
+                        buffer.append(']');
+                    } else {
+                        buffer.append(""node()"");
+                        buffer.append('[');
+                        buffer.append(getRelativePositionOfElement());
+                        buffer.append(']');
+                    }
+                }
+            }
+            break;
+        case Node.TEXT_NODE:
+        case Node.CDATA_SECTION_NODE:
+            buffer.append(""/text()"");
+            buffer.append('[');
+            buffer.append(getRelativePositionOfTextNode()).append(']');
+            break;
+        case Node.PROCESSING_INSTRUCTION_NODE:
+            String target = ((ProcessingInstruction) node).getTarget();
+            buffer.append(""/processing-instruction(\'"");
+            buffer.append(target).append(""')"");
+            buffer.append('[');
+            buffer.append(getRelativePositionOfPI(target)).append(']');
+            break;
+        case Node.DOCUMENT_NODE:
+    }
+    return buffer.toString();
+}","public void test6365() throws Throwable {
+    Locale locale0 = Locale.ENGLISH;
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    EntityReference entityReference0 = hTMLDocumentImpl0.createEntityReference(""US"");
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(entityReference0, locale0);
+    String string0 = dOMNodePointer0.asPath();
+    assertEquals("""", string0);
+}",""
+"public String asPath() {
+    if (id != null) {
+        return ""id('"" + escape(id) + ""')"";
+    }
+    StringBuffer buffer = new StringBuffer();
+    if (parent != null) {
+        buffer.append(parent.asPath());
+    }
+    switch(node.getNodeType()) {
+        case Node.ELEMENT_NODE:
+            // If the parent pointer is not a DOMNodePointer, it is
+            // the parent's responsibility to produce the node test part
+            // of the path
+            if (parent instanceof DOMNodePointer) {
+                if (buffer.length() == 0 || buffer.charAt(buffer.length() - 1) != '/') {
+                    buffer.append('/');
+                }
+                String ln = DOMNodePointer.getLocalName(node);
+                String nsURI = getNamespaceURI();
+                if (nsURI == null) {
+                    buffer.append(ln);
+                    buffer.append('[');
+                    buffer.append(getRelativePositionByName()).append(']');
+                } else {
+                    String prefix = getNamespaceResolver().getPrefix(nsURI);
+                    if (prefix != null) {
+                        buffer.append(prefix);
+                        buffer.append(':');
+                        buffer.append(ln);
+                        buffer.append('[');
+                        buffer.append(getRelativePositionByName());
+                        buffer.append(']');
+                    } else {
+                        buffer.append(""node()"");
+                        buffer.append('[');
+                        buffer.append(getRelativePositionOfElement());
+                        buffer.append(']');
+                    }
+                }
+            }
+            break;
+        case Node.TEXT_NODE:
+        case Node.CDATA_SECTION_NODE:
+            buffer.append(""/text()"");
+            buffer.append('[');
+            buffer.append(getRelativePositionOfTextNode()).append(']');
+            break;
+        case Node.PROCESSING_INSTRUCTION_NODE:
+            String target = ((ProcessingInstruction) node).getTarget();
+            buffer.append(""/processing-instruction(\'"");
+            buffer.append(target).append(""')"");
+            buffer.append('[');
+            buffer.append(getRelativePositionOfPI(target)).append(']');
+            break;
+        case Node.DOCUMENT_NODE:
+    }
+    return buffer.toString();
+}","public void test6466() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Entity entity0 = hTMLDocumentImpl0.createEntity(""xml"");
+    Locale locale0 = Locale.TRADITIONAL_CHINESE;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(entity0, locale0);
+    String string0 = dOMNodePointer0.asPath();
+    assertEquals("""", string0);
+}",""
+"public String asPath() {
+    if (id != null) {
+        return ""id('"" + escape(id) + ""')"";
+    }
+    StringBuffer buffer = new StringBuffer();
+    if (parent != null) {
+        buffer.append(parent.asPath());
+    }
+    switch(node.getNodeType()) {
+        case Node.ELEMENT_NODE:
+            // If the parent pointer is not a DOMNodePointer, it is
+            // the parent's responsibility to produce the node test part
+            // of the path
+            if (parent instanceof DOMNodePointer) {
+                if (buffer.length() == 0 || buffer.charAt(buffer.length() - 1) != '/') {
+                    buffer.append('/');
+                }
+                String ln = DOMNodePointer.getLocalName(node);
+                String nsURI = getNamespaceURI();
+                if (nsURI == null) {
+                    buffer.append(ln);
+                    buffer.append('[');
+                    buffer.append(getRelativePositionByName()).append(']');
+                } else {
+                    String prefix = getNamespaceResolver().getPrefix(nsURI);
+                    if (prefix != null) {
+                        buffer.append(prefix);
+                        buffer.append(':');
+                        buffer.append(ln);
+                        buffer.append('[');
+                        buffer.append(getRelativePositionByName());
+                        buffer.append(']');
+                    } else {
+                        buffer.append(""node()"");
+                        buffer.append('[');
+                        buffer.append(getRelativePositionOfElement());
+                        buffer.append(']');
+                    }
+                }
+            }
+            break;
+        case Node.TEXT_NODE:
+        case Node.CDATA_SECTION_NODE:
+            buffer.append(""/text()"");
+            buffer.append('[');
+            buffer.append(getRelativePositionOfTextNode()).append(']');
+            break;
+        case Node.PROCESSING_INSTRUCTION_NODE:
+            String target = ((ProcessingInstruction) node).getTarget();
+            buffer.append(""/processing-instruction(\'"");
+            buffer.append(target).append(""')"");
+            buffer.append('[');
+            buffer.append(getRelativePositionOfPI(target)).append(']');
+            break;
+        case Node.DOCUMENT_NODE:
+    }
+    return buffer.toString();
+}","public void test6567() throws Throwable {
+    Locale locale0 = Locale.GERMANY;
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    ProcessingInstructionImpl processingInstructionImpl0 = new ProcessingInstructionImpl(hTMLDocumentImpl0, ""]}%W"", ""]}%W"");
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(processingInstructionImpl0, locale0);
+    String string0 = dOMNodePointer0.asPath();
+    assertEquals(""/processing-instruction(']}%W')[1]"", string0);
+}",""
+"public String asPath() {
+    if (id != null) {
+        return ""id('"" + escape(id) + ""')"";
+    }
+    StringBuffer buffer = new StringBuffer();
+    if (parent != null) {
+        buffer.append(parent.asPath());
+    }
+    switch(node.getNodeType()) {
+        case Node.ELEMENT_NODE:
+            // If the parent pointer is not a DOMNodePointer, it is
+            // the parent's responsibility to produce the node test part
+            // of the path
+            if (parent instanceof DOMNodePointer) {
+                if (buffer.length() == 0 || buffer.charAt(buffer.length() - 1) != '/') {
+                    buffer.append('/');
+                }
+                String ln = DOMNodePointer.getLocalName(node);
+                String nsURI = getNamespaceURI();
+                if (nsURI == null) {
+                    buffer.append(ln);
+                    buffer.append('[');
+                    buffer.append(getRelativePositionByName()).append(']');
+                } else {
+                    String prefix = getNamespaceResolver().getPrefix(nsURI);
+                    if (prefix != null) {
+                        buffer.append(prefix);
+                        buffer.append(':');
+                        buffer.append(ln);
+                        buffer.append('[');
+                        buffer.append(getRelativePositionByName());
+                        buffer.append(']');
+                    } else {
+                        buffer.append(""node()"");
+                        buffer.append('[');
+                        buffer.append(getRelativePositionOfElement());
+                        buffer.append(']');
+                    }
+                }
+            }
+            break;
+        case Node.TEXT_NODE:
+        case Node.CDATA_SECTION_NODE:
+            buffer.append(""/text()"");
+            buffer.append('[');
+            buffer.append(getRelativePositionOfTextNode()).append(']');
+            break;
+        case Node.PROCESSING_INSTRUCTION_NODE:
+            String target = ((ProcessingInstruction) node).getTarget();
+            buffer.append(""/processing-instruction(\'"");
+            buffer.append(target).append(""')"");
+            buffer.append('[');
+            buffer.append(getRelativePositionOfPI(target)).append(']');
+            break;
+        case Node.DOCUMENT_NODE:
+    }
+    return buffer.toString();
+}","public void test6668() throws Throwable {
+    Locale locale0 = Locale.JAPAN;
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Comment comment0 = hTMLDocumentImpl0.createComment(""F_B4{kFdir"");
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(comment0, locale0);
+    String string0 = dOMNodePointer0.asPath();
+    assertEquals("""", string0);
+}",""
+"public String asPath() {
+    if (id != null) {
+        return ""id('"" + escape(id) + ""')"";
+    }
+    StringBuffer buffer = new StringBuffer();
+    if (parent != null) {
+        buffer.append(parent.asPath());
+    }
+    switch(node.getNodeType()) {
+        case Node.ELEMENT_NODE:
+            // If the parent pointer is not a DOMNodePointer, it is
+            // the parent's responsibility to produce the node test part
+            // of the path
+            if (parent instanceof DOMNodePointer) {
+                if (buffer.length() == 0 || buffer.charAt(buffer.length() - 1) != '/') {
+                    buffer.append('/');
+                }
+                String ln = DOMNodePointer.getLocalName(node);
+                String nsURI = getNamespaceURI();
+                if (nsURI == null) {
+                    buffer.append(ln);
+                    buffer.append('[');
+                    buffer.append(getRelativePositionByName()).append(']');
+                } else {
+                    String prefix = getNamespaceResolver().getPrefix(nsURI);
+                    if (prefix != null) {
+                        buffer.append(prefix);
+                        buffer.append(':');
+                        buffer.append(ln);
+                        buffer.append('[');
+                        buffer.append(getRelativePositionByName());
+                        buffer.append(']');
+                    } else {
+                        buffer.append(""node()"");
+                        buffer.append('[');
+                        buffer.append(getRelativePositionOfElement());
+                        buffer.append(']');
+                    }
+                }
+            }
+            break;
+        case Node.TEXT_NODE:
+        case Node.CDATA_SECTION_NODE:
+            buffer.append(""/text()"");
+            buffer.append('[');
+            buffer.append(getRelativePositionOfTextNode()).append(']');
+            break;
+        case Node.PROCESSING_INSTRUCTION_NODE:
+            String target = ((ProcessingInstruction) node).getTarget();
+            buffer.append(""/processing-instruction(\'"");
+            buffer.append(target).append(""')"");
+            buffer.append('[');
+            buffer.append(getRelativePositionOfPI(target)).append(']');
+            break;
+        case Node.DOCUMENT_NODE:
+    }
+    return buffer.toString();
+}","public void test6769() throws Throwable {
+    DocumentFragmentImpl documentFragmentImpl0 = new DocumentFragmentImpl();
+    Locale locale0 = Locale.GERMANY;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(documentFragmentImpl0, locale0);
+    String string0 = dOMNodePointer0.asPath();
+    assertEquals("""", string0);
+}",""
+"public NodePointer createChild(JXPathContext context, QName name, int index) {
+    if (index == WHOLE_COLLECTION) {
+        index = 0;
+    }
+    boolean success = getAbstractFactory(context).createObject(context, this, node, name.toString(), index);
+    if (success) {
+        NodeTest nodeTest;
+        String prefix = name.getPrefix();
+        String namespaceURI = prefix == null ? null : context.getNamespaceURI(prefix);
+        nodeTest = new NodeNameTest(name, namespaceURI);
+        NodeIterator it = childIterator(nodeTest, false, null);
+        if (it != null && it.setPosition(index + 1)) {
+            return it.getNodePointer();
+        }
+    }
+    throw new JXPathAbstractFactoryException(""Factory could not create a child node for path: "" + asPath() + ""/"" + name + ""["" + (index + 1) + ""]"");
+}","public void test6870() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    HTMLInputElementImpl hTMLInputElementImpl0 = new HTMLInputElementImpl(hTMLDocumentImpl0, ""~5`1xS"");
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) hTMLInputElementImpl0);
+    QName qName0 = new QName(""~5`1xS"", ""~5`1xS"");
+    Locale locale0 = new Locale(""~5`1xS"", ""~5`1xS"");
+    NodePointer nodePointer0 = NodePointer.newNodePointer(qName0, qName0, locale0);
+    NodePointer nodePointer1 = NodePointer.newChildNodePointer(nodePointer0, qName0, hTMLInputElementImpl0);
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(nodePointer1, hTMLInputElementImpl0);
+    // Undeclared exception!
+    try {
+        dOMNodePointer0.createChild(jXPathContext0, qName0, Integer.MIN_VALUE);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // Factory is not set on the JXPathContext - cannot create path: /~5`1XS[1]
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.dom.DOMNodePointer"", e);
+    }
+}",""
+"public String asPath() {
+    if (id != null) {
+        return ""id('"" + escape(id) + ""')"";
+    }
+    StringBuffer buffer = new StringBuffer();
+    if (parent != null) {
+        buffer.append(parent.asPath());
+    }
+    switch(node.getNodeType()) {
+        case Node.ELEMENT_NODE:
+            // If the parent pointer is not a DOMNodePointer, it is
+            // the parent's responsibility to produce the node test part
+            // of the path
+            if (parent instanceof DOMNodePointer) {
+                if (buffer.length() == 0 || buffer.charAt(buffer.length() - 1) != '/') {
+                    buffer.append('/');
+                }
+                String ln = DOMNodePointer.getLocalName(node);
+                String nsURI = getNamespaceURI();
+                if (nsURI == null) {
+                    buffer.append(ln);
+                    buffer.append('[');
+                    buffer.append(getRelativePositionByName()).append(']');
+                } else {
+                    String prefix = getNamespaceResolver().getPrefix(nsURI);
+                    if (prefix != null) {
+                        buffer.append(prefix);
+                        buffer.append(':');
+                        buffer.append(ln);
+                        buffer.append('[');
+                        buffer.append(getRelativePositionByName());
+                        buffer.append(']');
+                    } else {
+                        buffer.append(""node()"");
+                        buffer.append('[');
+                        buffer.append(getRelativePositionOfElement());
+                        buffer.append(']');
+                    }
+                }
+            }
+            break;
+        case Node.TEXT_NODE:
+        case Node.CDATA_SECTION_NODE:
+            buffer.append(""/text()"");
+            buffer.append('[');
+            buffer.append(getRelativePositionOfTextNode()).append(']');
+            break;
+        case Node.PROCESSING_INSTRUCTION_NODE:
+            String target = ((ProcessingInstruction) node).getTarget();
+            buffer.append(""/processing-instruction(\'"");
+            buffer.append(target).append(""')"");
+            buffer.append('[');
+            buffer.append(getRelativePositionOfPI(target)).append(']');
+            break;
+        case Node.DOCUMENT_NODE:
+    }
+    return buffer.toString();
+}","public void test6971() throws Throwable {
+    QName qName0 = new QName(""Cannot create a relative context for a non-existent node: "", ""Cannot create a relative context for a non-existent node: "");
+    VariablePointer variablePointer0 = new VariablePointer(qName0);
+    PSVIDocumentImpl pSVIDocumentImpl0 = new PSVIDocumentImpl();
+    PSVIElementNSImpl pSVIElementNSImpl0 = new PSVIElementNSImpl(pSVIDocumentImpl0, ""Cannot create a relative context for a non-existent node: "", ""Cannot create a relative context for a non-existent node: "", ""<<unknown namespace>>"");
+    NodePointer nodePointer0 = NodePointer.newChildNodePointer(variablePointer0, qName0, pSVIElementNSImpl0);
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(nodePointer0, pSVIElementNSImpl0);
+    // Undeclared exception!
+    try {
+        dOMNodePointer0.asPath();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.dom.DOMNodePointer"", e);
+    }
+}",""
+"public String asPath() {
+    if (id != null) {
+        return ""id('"" + escape(id) + ""')"";
+    }
+    StringBuffer buffer = new StringBuffer();
+    if (parent != null) {
+        buffer.append(parent.asPath());
+    }
+    switch(node.getNodeType()) {
+        case Node.ELEMENT_NODE:
+            // If the parent pointer is not a DOMNodePointer, it is
+            // the parent's responsibility to produce the node test part
+            // of the path
+            if (parent instanceof DOMNodePointer) {
+                if (buffer.length() == 0 || buffer.charAt(buffer.length() - 1) != '/') {
+                    buffer.append('/');
+                }
+                String ln = DOMNodePointer.getLocalName(node);
+                String nsURI = getNamespaceURI();
+                if (nsURI == null) {
+                    buffer.append(ln);
+                    buffer.append('[');
+                    buffer.append(getRelativePositionByName()).append(']');
+                } else {
+                    String prefix = getNamespaceResolver().getPrefix(nsURI);
+                    if (prefix != null) {
+                        buffer.append(prefix);
+                        buffer.append(':');
+                        buffer.append(ln);
+                        buffer.append('[');
+                        buffer.append(getRelativePositionByName());
+                        buffer.append(']');
+                    } else {
+                        buffer.append(""node()"");
+                        buffer.append('[');
+                        buffer.append(getRelativePositionOfElement());
+                        buffer.append(']');
+                    }
+                }
+            }
+            break;
+        case Node.TEXT_NODE:
+        case Node.CDATA_SECTION_NODE:
+            buffer.append(""/text()"");
+            buffer.append('[');
+            buffer.append(getRelativePositionOfTextNode()).append(']');
+            break;
+        case Node.PROCESSING_INSTRUCTION_NODE:
+            String target = ((ProcessingInstruction) node).getTarget();
+            buffer.append(""/processing-instruction(\'"");
+            buffer.append(target).append(""')"");
+            buffer.append('[');
+            buffer.append(getRelativePositionOfPI(target)).append(']');
+            break;
+        case Node.DOCUMENT_NODE:
+    }
+    return buffer.toString();
+}","public void test7072() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.ITALY;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0, ""Cannot ;reaE a reativU conte\""t for a n9n-ee8stent node: "");
+    String string0 = dOMNodePointer0.asPath();
+    assertEquals(""id('Cannot ;reaE a reativU conte&quot;t for a n9n-ee8stent node: ')"", string0);
+}",""
+"public boolean equals(Object object) {
+    return object == this || object instanceof DOMNodePointer && node == ((DOMNodePointer) object).node;
+}","public void test7173() throws Throwable {
+    Locale locale0 = Locale.GERMANY;
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    boolean boolean0 = dOMNodePointer0.equals(dOMNodePointer0);
+    assertTrue(boolean0);
+}",""
+"public boolean equals(Object object) {
+    return object == this || object instanceof DOMNodePointer && node == ((DOMNodePointer) object).node;
+}","public void test7274() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, (Locale) null);
+    HTMLImageElementImpl hTMLImageElementImpl0 = new HTMLImageElementImpl(hTMLDocumentImpl0, ""<<unknown namespace>>"");
+    boolean boolean0 = dOMNodePointer0.equals(hTMLImageElementImpl0);
+    assertFalse(boolean0);
+}",""
+"public boolean equals(Object object) {
+    return object == this || object instanceof DOMNodePointer && node == ((DOMNodePointer) object).node;
+}","public void test7375() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.ENGLISH;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    DOMNodePointer dOMNodePointer1 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    boolean boolean0 = dOMNodePointer0.equals(dOMNodePointer1);
+    assertTrue(boolean0);
+}",""
+"public boolean equals(Object object) {
+    return object == this || object instanceof DOMNodePointer && node == ((DOMNodePointer) object).node;
+}","public void test7476() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.ENGLISH;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    HTMLDocumentImpl hTMLDocumentImpl1 = new HTMLDocumentImpl();
+    DOMNodePointer dOMNodePointer1 = new DOMNodePointer(hTMLDocumentImpl1, locale0);
+    boolean boolean0 = dOMNodePointer0.equals(dOMNodePointer1);
+    assertFalse(boolean0);
+}",""
+"public static String getPrefix(Node node) {
+    String prefix = node.getPrefix();
+    if (prefix != null) {
+        return prefix;
+    }
+    String name = node.getNodeName();
+    int index = name.lastIndexOf(':');
+    return index < 0 ? null : name.substring(0, index);
+}","public void test7577() throws Throwable {
+    PSVIDocumentImpl pSVIDocumentImpl0 = new PSVIDocumentImpl();
+    PSVIElementNSImpl pSVIElementNSImpl0 = new PSVIElementNSImpl(pSVIDocumentImpl0, ""Cannot create a relative context for a non-existent node: "", ""Cannot create a relative context for a non-existent node: "", ""<<unknown namespace>>"");
+    String string0 = DOMNodePointer.getPrefix(pSVIElementNSImpl0);
+    assertEquals(""Cannot create a relative context for a non-existent node"", string0);
+}",""
+"public String getNamespaceURI() {
+    return getNamespaceURI(node);
+}","public void test7678() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, (Locale) null);
+    String string0 = dOMNodePointer0.getNamespaceURI();
+    assertNull(string0);
+}",""
+"public Object getValue() {
+    if (node.getNodeType() == Node.COMMENT_NODE) {
+        String text = ((Comment) node).getData();
+        return text == null ? """" : text.trim();
+    }
+    return stringValue(node);
+}","public void test7779() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Comment comment0 = hTMLDocumentImpl0.createComment(""+M,e}MY3.6Qn,g"");
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(comment0, (Locale) null);
+    Object object0 = dOMNodePointer0.getValue();
+    assertEquals(""+M,e}MY3.6Qn,g"", object0);
+}",""
+"public Object getValue() {
+    if (node.getNodeType() == Node.COMMENT_NODE) {
+        String text = ((Comment) node).getData();
+        return text == null ? """" : text.trim();
+    }
+    return stringValue(node);
+}","public void test7880() throws Throwable {
+    Locale locale0 = Locale.PRC;
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Comment comment0 = hTMLDocumentImpl0.createComment((String) null);
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(comment0, locale0);
+    Object object0 = dOMNodePointer0.getValue();
+    assertEquals("""", object0);
+}",""
+"public Object getValue() {
+    if (node.getNodeType() == Node.COMMENT_NODE) {
+        String text = ((Comment) node).getData();
+        return text == null ? """" : text.trim();
+    }
+    return stringValue(node);
+}","public void test7981() throws Throwable {
+    TextImpl textImpl0 = new TextImpl();
+    Locale locale0 = Locale.US;
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(textImpl0, locale0);
+    Object object0 = dOMNodePointer0.getValue();
+    assertEquals("""", object0);
+}",""
+"public Object getValue() {
+    if (node.getNodeType() == Node.COMMENT_NODE) {
+        String text = ((Comment) node).getData();
+        return text == null ? """" : text.trim();
+    }
+    return stringValue(node);
+}","public void test8082() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.CHINESE;
+    CDATASection cDATASection0 = hTMLDocumentImpl0.createCDATASection(""HTMLTableCellElementImpl"");
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(cDATASection0, locale0, ""HTMLTableCellElementImpl"");
+    Object object0 = dOMNodePointer0.getValue();
+    assertEquals(""HTMLTableCellElementImpl"", object0);
+}",""
+"public Object getValue() {
+    if (node.getNodeType() == Node.COMMENT_NODE) {
+        String text = ((Comment) node).getData();
+        return text == null ? """" : text.trim();
+    }
+    return stringValue(node);
+}","public void test8183() throws Throwable {
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    Locale locale0 = Locale.TAIWAN;
+    ProcessingInstructionImpl processingInstructionImpl0 = new ProcessingInstructionImpl(hTMLDocumentImpl0, (String) null, (String) null);
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(processingInstructionImpl0, locale0);
+    Object object0 = dOMNodePointer0.getValue();
+    assertEquals("""", object0);
+}",""
+"public Object getValue() {
+    if (node.getNodeType() == Node.COMMENT_NODE) {
+        String text = ((Comment) node).getData();
+        return text == null ? """" : text.trim();
+    }
+    return stringValue(node);
+}","public void test8284() throws Throwable {
+    Locale locale0 = Locale.GERMANY;
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    ProcessingInstructionImpl processingInstructionImpl0 = new ProcessingInstructionImpl(hTMLDocumentImpl0, ""xml:lang"", ""xml:lang"");
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(processingInstructionImpl0, locale0);
+    Object object0 = dOMNodePointer0.getValue();
+    assertEquals(""xml:lang"", object0);
+}",""
+"public Pointer getPointerByID(JXPathContext context, String id) {
+    Document document = node.getNodeType() == Node.DOCUMENT_NODE ? (Document) node : node.getOwnerDocument();
+    Element element = document.getElementById(id);
+    return element == null ? (Pointer) new NullPointer(getLocale(), id) : new DOMNodePointer(element, getLocale(), id);
+}","public void test8385() throws Throwable {
+    TextImpl textImpl0 = new TextImpl();
+    Locale locale0 = Locale.US;
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) textImpl0);
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(textImpl0, locale0, ""node()"");
+    // Undeclared exception!
+    try {
+        dOMNodePointer0.getPointerByID(jXPathContext0, ""node()"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.jxpath.ri.model.dom.DOMNodePointer"", e);
+    }
+}","/**
+ * Locates a node by ID.
+ */"
+"public boolean isContainer() {
+    return false;
+}","public void test8486() throws Throwable {
+    Locale locale0 = Locale.CHINA;
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    JXPathContext jXPathContext0 = JXPathContext.newContext((Object) dOMNodePointer0);
+    NullPointer nullPointer0 = (NullPointer) dOMNodePointer0.getPointerByID(jXPathContext0, ""<<unknown namespace>>"");
+    assertFalse(nullPointer0.isContainer());
+}","/**
+ * If true, this node is axiliary and can only be used as an intermediate in
+ * the chain of pointers.
+ */"
+"public int compareChildNodePointers(NodePointer pointer1, NodePointer pointer2) {
+    Node node1 = (Node) pointer1.getBaseValue();
+    Node node2 = (Node) pointer2.getBaseValue();
+    if (node1 == node2) {
+        return 0;
+    }
+    int t1 = node1.getNodeType();
+    int t2 = node2.getNodeType();
+    if (t1 == Node.ATTRIBUTE_NODE && t2 != Node.ATTRIBUTE_NODE) {
+        return -1;
+    }
+    if (t1 != Node.ATTRIBUTE_NODE && t2 == Node.ATTRIBUTE_NODE) {
+        return 1;
+    }
+    if (t1 == Node.ATTRIBUTE_NODE && t2 == Node.ATTRIBUTE_NODE) {
+        NamedNodeMap map = ((Node) getNode()).getAttributes();
+        int length = map.getLength();
+        for (int i = 0; i < length; i++) {
+            Node n = map.item(i);
+            if (n == node1) {
+                return -1;
+            }
+            if (n == node2) {
+                return 1;
+            }
+        }
+        // Should not happen
+        return 0;
+    }
+    Node current = node.getFirstChild();
+    while (current != null) {
+        if (current == node1) {
+            return -1;
+        }
+        if (current == node2) {
+            return 1;
+        }
+        current = current.getNextSibling();
+    }
+    return 0;
+}","public void test8587() throws Throwable {
+    Locale locale0 = Locale.UK;
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    AttrNSImpl attrNSImpl0 = new AttrNSImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(attrNSImpl0, locale0);
+    DOMNodePointer dOMNodePointer1 = new DOMNodePointer(dOMNodePointer0, hTMLDocumentImpl0);
+    int int0 = dOMNodePointer0.compareChildNodePointers(dOMNodePointer1, dOMNodePointer0);
+    assertEquals(1, int0);
+}",""
+"public int compareChildNodePointers(NodePointer pointer1, NodePointer pointer2) {
+    Node node1 = (Node) pointer1.getBaseValue();
+    Node node2 = (Node) pointer2.getBaseValue();
+    if (node1 == node2) {
+        return 0;
+    }
+    int t1 = node1.getNodeType();
+    int t2 = node2.getNodeType();
+    if (t1 == Node.ATTRIBUTE_NODE && t2 != Node.ATTRIBUTE_NODE) {
+        return -1;
+    }
+    if (t1 != Node.ATTRIBUTE_NODE && t2 == Node.ATTRIBUTE_NODE) {
+        return 1;
+    }
+    if (t1 == Node.ATTRIBUTE_NODE && t2 == Node.ATTRIBUTE_NODE) {
+        NamedNodeMap map = ((Node) getNode()).getAttributes();
+        int length = map.getLength();
+        for (int i = 0; i < length; i++) {
+            Node n = map.item(i);
+            if (n == node1) {
+                return -1;
+            }
+            if (n == node2) {
+                return 1;
+            }
+        }
+        // Should not happen
+        return 0;
+    }
+    Node current = node.getFirstChild();
+    while (current != null) {
+        if (current == node1) {
+            return -1;
+        }
+        if (current == node2) {
+            return 1;
+        }
+        current = current.getNextSibling();
+    }
+    return 0;
+}","public void test8688() throws Throwable {
+    Locale locale0 = Locale.FRENCH;
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    AttrNSImpl attrNSImpl0 = new AttrNSImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(attrNSImpl0, locale0);
+    HTMLElement hTMLElement0 = hTMLDocumentImpl0.getBody();
+    DOMNodePointer dOMNodePointer1 = new DOMNodePointer(dOMNodePointer0, hTMLElement0);
+    int int0 = dOMNodePointer0.compareChildNodePointers(dOMNodePointer0, dOMNodePointer1);
+    assertEquals((-1), int0);
+}",""
+"public int compareChildNodePointers(NodePointer pointer1, NodePointer pointer2) {
+    Node node1 = (Node) pointer1.getBaseValue();
+    Node node2 = (Node) pointer2.getBaseValue();
+    if (node1 == node2) {
+        return 0;
+    }
+    int t1 = node1.getNodeType();
+    int t2 = node2.getNodeType();
+    if (t1 == Node.ATTRIBUTE_NODE && t2 != Node.ATTRIBUTE_NODE) {
+        return -1;
+    }
+    if (t1 != Node.ATTRIBUTE_NODE && t2 == Node.ATTRIBUTE_NODE) {
+        return 1;
+    }
+    if (t1 == Node.ATTRIBUTE_NODE && t2 == Node.ATTRIBUTE_NODE) {
+        NamedNodeMap map = ((Node) getNode()).getAttributes();
+        int length = map.getLength();
+        for (int i = 0; i < length; i++) {
+            Node n = map.item(i);
+            if (n == node1) {
+                return -1;
+            }
+            if (n == node2) {
+                return 1;
+            }
+        }
+        // Should not happen
+        return 0;
+    }
+    Node current = node.getFirstChild();
+    while (current != null) {
+        if (current == node1) {
+            return -1;
+        }
+        if (current == node2) {
+            return 1;
+        }
+        current = current.getNextSibling();
+    }
+    return 0;
+}","public void test8789() throws Throwable {
+    Locale locale0 = Locale.TAIWAN;
+    HTMLDocumentImpl hTMLDocumentImpl0 = new HTMLDocumentImpl();
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(hTMLDocumentImpl0, locale0);
+    HTMLElement hTMLElement0 = hTMLDocumentImpl0.getBody();
+    DOMNodePointer dOMNodePointer1 = new DOMNodePointer(dOMNodePointer0, hTMLElement0);
+    int int0 = dOMNodePointer0.compareChildNodePointers(dOMNodePointer1, dOMNodePointer0);
+    assertEquals(0, int0);
+}",""
+"public int compareChildNodePointers(NodePointer pointer1, NodePointer pointer2) {
+    Node node1 = (Node) pointer1.getBaseValue();
+    Node node2 = (Node) pointer2.getBaseValue();
+    if (node1 == node2) {
+        return 0;
+    }
+    int t1 = node1.getNodeType();
+    int t2 = node2.getNodeType();
+    if (t1 == Node.ATTRIBUTE_NODE && t2 != Node.ATTRIBUTE_NODE) {
+        return -1;
+    }
+    if (t1 != Node.ATTRIBUTE_NODE && t2 == Node.ATTRIBUTE_NODE) {
+        return 1;
+    }
+    if (t1 == Node.ATTRIBUTE_NODE && t2 == Node.ATTRIBUTE_NODE) {
+        NamedNodeMap map = ((Node) getNode()).getAttributes();
+        int length = map.getLength();
+        for (int i = 0; i < length; i++) {
+            Node n = map.item(i);
+            if (n == node1) {
+                return -1;
+            }
+            if (n == node2) {
+                return 1;
+            }
+        }
+        // Should not happen
+        return 0;
+    }
+    Node current = node.getFirstChild();
+    while (current != null) {
+        if (current == node1) {
+            return -1;
+        }
+        if (current == node2) {
+            return 1;
+        }
+        current = current.getNextSibling();
+    }
+    return 0;
+}","public void test8890() throws Throwable {
+    DeferredDocumentImpl deferredDocumentImpl0 = new DeferredDocumentImpl(true, true);
+    DocumentTypeImpl documentTypeImpl0 = new DocumentTypeImpl(deferredDocumentImpl0, ""-fuH]"");
+    DocumentImpl documentImpl0 = new DocumentImpl(documentTypeImpl0);
+    Locale locale0 = new Locale(""-fuH]"", ""-fuH]"");
+    DOMNodePointer dOMNodePointer0 = new DOMNodePointer(documentImpl0, locale0, ""-fuH]"");
+    DOMNodePointer dOMNodePointer1 = new DOMNodePointer(documentTypeImpl0, locale0, ""http://www.w3.org/XML/1998/namespace"");
+    DOMNodePointer dOMNodePointer2 = new DOMNodePointer(deferredDocumentImpl0, locale0);
+    int int0 = dOMNodePointer0.compareChildNodePointers(dOMNodePointer1, dOMNodePointer2);
+    assertEquals((-1), int0);
+}",""

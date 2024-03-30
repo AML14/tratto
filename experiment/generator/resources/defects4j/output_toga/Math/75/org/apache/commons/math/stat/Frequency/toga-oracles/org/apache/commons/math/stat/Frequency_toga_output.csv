@@ -1,0 +1,726 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    frequency0.addValue(770L);
+    frequency0.hashCode();
+}",0,
+project,0,test011,"public void test011() throws Throwable {
+    Comparator<Integer> comparator0 = (Comparator<Integer>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    doReturn(0, 0, 0, 0, 0).when(comparator0).compare(anyInt(), anyInt());
+    Frequency frequency0 = new Frequency(comparator0);
+    frequency0.addValue((-2007));
+    frequency0.addValue((-2007));
+    String string0 = frequency0.toString();
+    assertEquals(""Value \t Freq. \t Pct. \t Cum Pct. \n-2007\t2\t100%\t100%\n"", string0);
+}",0,
+project,0,test022,"public void test022() throws Throwable {
+    Comparator<String> comparator0 = (Comparator<String>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    doReturn(0, 0, 0).when(comparator0).compare(anyString(), anyString());
+    Frequency frequency0 = new Frequency(comparator0);
+    frequency0.addValue(31);
+    Integer integer0 = new Integer(31);
+    frequency0.addValue((Object) integer0);
+}",0,
+project,0,test033,"public void test033() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    frequency0.addValue('l');
+    double double0 = frequency0.getPct((Object) """");
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test044,"public void test044() throws Throwable {
+    Comparator<Integer> comparator0 = (Comparator<Integer>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    doReturn(0, 0, 0, 0).when(comparator0).compare(anyInt(), anyInt());
+    Frequency frequency0 = new Frequency(comparator0);
+    frequency0.addValue(0);
+    double double0 = frequency0.getPct((Object) """");
+    assertEquals(1.0, double0, 0.01);
+}",0,
+project,0,test055,"public void test055() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    frequency0.addValue(0L);
+    double double0 = frequency0.getPct((Comparable<?>) 33);
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test066,"public void test066() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    frequency0.addValue('');
+    double double0 = frequency0.getPct(796L);
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test077,"public void test077() throws Throwable {
+    Comparator<Integer> comparator0 = (Comparator<Integer>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    doReturn(0, 0).when(comparator0).compare(anyInt(), anyInt());
+    Frequency frequency0 = new Frequency(comparator0);
+    frequency0.addValue(0);
+    double double0 = frequency0.getPct(1L);
+    assertEquals(1.0, double0, 0.01);
+}",0,
+project,0,test088,"public void test088() throws Throwable {
+    Comparator<Frequency> comparator0 = (Comparator<Frequency>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    doReturn(0, 0).when(comparator0).compare(any(org.apache.commons.math.stat.Frequency.class), any(org.apache.commons.math.stat.Frequency.class));
+    Frequency frequency0 = new Frequency(comparator0);
+    frequency0.addValue((long) (-797));
+    double double0 = frequency0.getPct((-797));
+    assertEquals(1.0, double0, 0.01);
+}",0,
+project,0,test099,"public void test099() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    frequency0.addValue(770L);
+    double double0 = frequency0.getPct('Y');
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test1010,"public void test1010() throws Throwable {
+    Comparator<Integer> comparator0 = (Comparator<Integer>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    doReturn(0, 0).when(comparator0).compare(anyInt(), anyInt());
+    Frequency frequency0 = new Frequency(comparator0);
+    frequency0.addValue((-2007));
+    double double0 = frequency0.getPct(',');
+    assertEquals(1.0, double0, 0.01);
+}",0,
+project,0,test1111,"public void test1111() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    frequency0.addValue('a');
+    Integer integer0 = new Integer(1961);
+    double double0 = frequency0.getCumPct((Object) integer0);
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test1212,"public void test1212() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    frequency0.addValue(1);
+    Long long0 = Long.getLong(""QiSON~eFIdi]WTwsEb"", (-1388L));
+    double double0 = frequency0.getCumPct((Comparable<?>) long0);
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test1313,"public void test1313() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    Comparable<Object> comparable0 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    doReturn(0).when(comparable0).compareTo(any());
+    frequency0.addValue(comparable0);
+    double double0 = frequency0.getCumPct(2L);
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test1414,"public void test1414() throws Throwable {
+    Comparator<Frequency> comparator0 = (Comparator<Frequency>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    doReturn(0, 0, 0, 0).when(comparator0).compare(any(org.apache.commons.math.stat.Frequency.class), any(org.apache.commons.math.stat.Frequency.class));
+    Frequency frequency0 = new Frequency(comparator0);
+    frequency0.addValue((long) (-797));
+    double double0 = frequency0.getCumPct((long) (-797));
+    assertEquals(1.0, double0, 0.01);
+}",0,
+project,0,test1515,"public void test1515() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    frequency0.addValue(770L);
+    double double0 = frequency0.getCumPct((-2288));
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test1616,"public void test1616() throws Throwable {
+    Comparator<Integer> comparator0 = (Comparator<Integer>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    doReturn(0, 0, 0, 0).when(comparator0).compare(anyInt(), anyInt());
+    Frequency frequency0 = new Frequency(comparator0);
+    frequency0.addValue((-2715L));
+    double double0 = frequency0.getCumPct(520);
+    assertEquals(1.0, double0, 0.01);
+}",0,
+project,0,test1717,"public void test1717() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    frequency0.addValue(1);
+    double double0 = frequency0.getCumPct('+');
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test1818,"public void test1818() throws Throwable {
+    Comparator<Frequency> comparator0 = (Comparator<Frequency>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    doReturn(0, 0, 0, 0).when(comparator0).compare(any(org.apache.commons.math.stat.Frequency.class), any(org.apache.commons.math.stat.Frequency.class));
+    Frequency frequency0 = new Frequency(comparator0);
+    frequency0.addValue((long) (-797));
+    double double0 = frequency0.getCumPct('>');
+    assertEquals(1.0, double0, 0.01);
+}",0,
+project,0,test1919,"public void test1919() throws Throwable {
+    Comparator<String> comparator0 = (Comparator<String>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    doReturn(0, 0, 0, 0).when(comparator0).compare(anyString(), anyString());
+    Frequency frequency0 = new Frequency(comparator0);
+    frequency0.addValue((Object) ""[H0Ka"");
+    long long0 = frequency0.getCumFreq((Object) ""[H0Ka"");
+    assertEquals(1L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test2020,"public void test2020() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    Integer integer0 = new Integer((-3471));
+    frequency0.addValue(integer0);
+    long long0 = frequency0.getCumFreq(1);
+    assertEquals(1L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test2121,"public void test2121() throws Throwable {
+    Comparator<String> comparator0 = (Comparator<String>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    doReturn(0, 0, 0, 0).when(comparator0).compare(anyString(), anyString());
+    Frequency frequency0 = new Frequency(comparator0);
+    frequency0.addValue((Object) ""[H0Ka"");
+    long long0 = frequency0.getCumFreq('/');
+    assertEquals(1L, long0);
+}",0,
+project,0,test2222,"public void test2222() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    long long0 = frequency0.getCount((Object) ""org.apace.ommons.math.MathRntimeException2"");
+    assertEquals(0L, long0);
+}",0,"assertEquals(0, long0)"
+project,0,test2323,"public void test2323() throws Throwable {
+    Comparator<Integer> comparator0 = (Comparator<Integer>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    doReturn(0, 0).when(comparator0).compare(anyInt(), anyInt());
+    Frequency frequency0 = new Frequency(comparator0);
+    frequency0.addValue(0);
+    long long0 = frequency0.getCount((Object) """");
+    assertEquals(1L, long0);
+}",0,
+project,0,test2424,"public void test2424() throws Throwable {
+    Comparator<Integer> comparator0 = (Comparator<Integer>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    doReturn(0, 0).when(comparator0).compare(anyInt(), anyInt());
+    Frequency frequency0 = new Frequency(comparator0);
+    frequency0.addValue((-2007));
+    long long0 = frequency0.getCount((long) (-2007));
+    assertEquals(1L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test2525,"public void test2525() throws Throwable {
+    Comparator<Frequency> comparator0 = (Comparator<Frequency>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    doReturn(0, 0).when(comparator0).compare(any(org.apache.commons.math.stat.Frequency.class), any(org.apache.commons.math.stat.Frequency.class));
+    Frequency frequency0 = new Frequency(comparator0);
+    frequency0.addValue((long) (-797));
+    long long0 = frequency0.getCount(3306);
+    assertEquals(1L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test2626,"public void test2626() throws Throwable {
+    Comparator<Integer> comparator0 = (Comparator<Integer>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    doReturn(0, 0).when(comparator0).compare(anyInt(), anyInt());
+    Frequency frequency0 = new Frequency(comparator0);
+    frequency0.addValue((-2007));
+    long long0 = frequency0.getCount('e');
+    assertEquals(1L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test2727,"public void test2727() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    frequency0.addValue(9);
+    // Undeclared exception!
+    try {
+        frequency0.getPct((Object) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.TreeMap"", e);
+    }
+}",0,
+project,0,test2828,"public void test2828() throws Throwable {
+    Comparator<Frequency> comparator0 = (Comparator<Frequency>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    Frequency frequency0 = new Frequency(comparator0);
+    Object object0 = new Object();
+    // Undeclared exception!
+    try {
+        frequency0.getPct(object0);
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // java.lang.Object cannot be cast to java.lang.Comparable
+        //
+        verifyException(""org.apache.commons.math.stat.Frequency"", e);
+    }
+}",0,
+project,0,test2929,"public void test2929() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    Integer integer0 = new Integer((-571));
+    frequency0.addValue(integer0);
+    // Undeclared exception!
+    try {
+        frequency0.getPct((Comparable<?>) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.TreeMap"", e);
+    }
+}",0,
+project,0,test3030,"public void test3030() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    frequency0.addValue((Object) ""Value \t Freq. \t Pct. \t Cum Pct. \n"");
+    // Undeclared exception!
+    try {
+        frequency0.getCumPct((Object) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.TreeMap"", e);
+    }
+}",0,
+project,0,test3131,"public void test3131() throws Throwable {
+    Comparator<Object> comparator0 = (Comparator<Object>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    Frequency frequency0 = new Frequency(comparator0);
+    Iterator<Comparable<?>> iterator0 = frequency0.valuesIterator();
+    // Undeclared exception!
+    try {
+        frequency0.getCumPct((Object) iterator0);
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // java.util.TreeMap$KeyIterator cannot be cast to java.lang.Comparable
+        //
+        verifyException(""org.apache.commons.math.stat.Frequency"", e);
+    }
+}",0,
+project,0,test3232,"public void test3232() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    frequency0.addValue(13);
+    // Undeclared exception!
+    try {
+        frequency0.getCumPct((Comparable<?>) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.TreeMap"", e);
+    }
+}",0,
+project,0,test3333,"public void test3333() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    frequency0.addValue((-450));
+    // Undeclared exception!
+    try {
+        frequency0.getCumFreq((Object) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.TreeMap"", e);
+    }
+}",0,
+project,0,test3434,"public void test3434() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    Object object0 = new Object();
+    // Undeclared exception!
+    try {
+        frequency0.getCumFreq(object0);
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // java.lang.Object cannot be cast to java.lang.Comparable
+        //
+        verifyException(""org.apache.commons.math.stat.Frequency"", e);
+    }
+}",0,
+project,0,test3535,"public void test3535() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    Comparable<Object> comparable0 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    doReturn(0).when(comparable0).compareTo(any());
+    frequency0.addValue(comparable0);
+    // Undeclared exception!
+    try {
+        frequency0.getCumFreq((Comparable<?>) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.TreeMap"", e);
+    }
+}",0,
+project,0,test3636,"public void test3636() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    Comparable<Object> comparable0 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    doReturn(1431655765, 1431655765).when(comparable0).compareTo(any());
+    Integer integer0 = new Integer((-8));
+    frequency0.addValue(integer0);
+    frequency0.addValue(comparable0);
+    // Undeclared exception!
+    try {
+        frequency0.getCumFreq((-8));
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test3737,"public void test3737() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    // Undeclared exception!
+    try {
+        frequency0.getCount((Object) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.TreeMap"", e);
+    }
+}",0,
+project,0,test3838,"public void test3838() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    // Undeclared exception!
+    try {
+        frequency0.getCount((Comparable<?>) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.TreeMap"", e);
+    }
+}",0,
+project,0,test3939,"public void test3939() throws Throwable {
+    Comparator<Integer> comparator0 = (Comparator<Integer>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    Frequency frequency0 = new Frequency(comparator0);
+    // Undeclared exception!
+    try {
+        frequency0.addValue((Object) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.stat.Frequency"", e);
+    }
+}",1,
+project,0,test4040,"public void test4040() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    frequency0.addValue((Object) ""Value \t Freq. \t Pct. \t Cum Pct. \n"");
+    Integer integer0 = new Integer(237);
+    // Undeclared exception!
+    try {
+        frequency0.addValue(integer0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // instance of class java.lang.Long not comparable to existing values
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}",0,
+project,0,test4141,"public void test4141() throws Throwable {
+    Comparator<Integer> comparator0 = (Comparator<Integer>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    Frequency frequency0 = new Frequency(comparator0);
+    // Undeclared exception!
+    try {
+        frequency0.addValue((Integer) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.stat.Frequency"", e);
+    }
+}",0,
+project,0,test4242,"public void test4242() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    frequency0.addValue('a');
+    Integer integer0 = new Integer(1961);
+    // Undeclared exception!
+    try {
+        frequency0.addValue((Comparable<?>) integer0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // instance of class java.lang.Integer not comparable to existing values
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}",0,
+project,0,test4343,"public void test4343() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    // Undeclared exception!
+    try {
+        frequency0.addValue((Comparable<?>) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.TreeMap"", e);
+    }
+}",0,
+project,0,test4444,"public void test4444() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    frequency0.addValue('\'');
+    // Undeclared exception!
+    try {
+        frequency0.addValue((-148));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // instance of class java.lang.Long not comparable to existing values
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}",0,
+project,0,test4545,"public void test4545() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    frequency0.addValue(770L);
+    // Undeclared exception!
+    try {
+        frequency0.addValue('Y');
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // instance of class java.lang.Character not comparable to existing values
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}",0,
+project,0,test4646,"public void test4646() throws Throwable {
+    Comparator<Integer> comparator0 = (Comparator<Integer>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    doReturn(0, 0, 0, 0).when(comparator0).compare(anyInt(), anyInt());
+    Frequency frequency0 = new Frequency(comparator0);
+    frequency0.addValue((-2007));
+    double double0 = frequency0.getCumPct((Comparable<?>) ""Value \t Freq. \t Pct. \t Cum Pct. \n-2007\t1\t100%\t100%\n"");
+    assertEquals(1.0, double0, 0.01);
+}",0,
+project,0,test4747,"public void test4747() throws Throwable {
+    Comparator<Integer> comparator0 = (Comparator<Integer>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    Frequency frequency0 = new Frequency(comparator0);
+    Comparable<Frequency> comparable0 = (Comparable<Frequency>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    double double0 = frequency0.getCumPct(comparable0);
+    assertEquals(Double.NaN, double0, 0.01);
+}",0,
+project,0,test4848,"public void test4848() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    frequency0.addValue(1);
+    Comparable<Object> comparable0 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    doReturn(1431655765, 1, (-594), 0).when(comparable0).compareTo(any());
+    long long0 = frequency0.getCumFreq(comparable0);
+    assertEquals(0L, long0);
+}",0,
+project,0,test4949,"public void test4949() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    frequency0.addValue(1);
+    Comparable<Object> comparable0 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    doReturn(1610612736, (-687)).when(comparable0).compareTo(any());
+    long long0 = frequency0.getCumFreq(comparable0);
+    assertEquals(0L, long0);
+}",0,
+project,0,test5050,"public void test5050() throws Throwable {
+    Comparator<Frequency> comparator0 = (Comparator<Frequency>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    doReturn(0, 0, 0, 0).when(comparator0).compare(any(org.apache.commons.math.stat.Frequency.class), any(org.apache.commons.math.stat.Frequency.class));
+    Frequency frequency0 = new Frequency(comparator0);
+    Long long0 = new Long((-875L));
+    frequency0.addValue('0');
+    long long1 = frequency0.getCumFreq((Comparable<?>) long0);
+    assertEquals(1L, long1);
+}",0,
+project,0,test5151,"public void test5151() throws Throwable {
+    Comparator<Integer> comparator0 = (Comparator<Integer>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    doReturn(0, 0, 0, 0).when(comparator0).compare(anyInt(), anyInt());
+    Frequency frequency0 = new Frequency(comparator0);
+    frequency0.addValue((-2007));
+    Integer integer0 = new Integer((-617));
+    long long0 = frequency0.getCumFreq((Comparable<?>) integer0);
+    assertEquals(1L, long0);
+}",0,
+project,0,test5252,"public void test5252() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    long long0 = frequency0.getCumFreq((Comparable<?>) ""Value \t Freq. \t Pct. \t Cum Pct. \n"");
+    assertEquals(0L, long0);
+}",0,
+project,0,test5353,"public void test5353() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    double double0 = frequency0.getPct((Comparable<?>) ""Value \t Freq. \t Pct. \t Cum Pct. \n"");
+    assertEquals(Double.NaN, double0, 0.01);
+}",0,
+project,0,test5454,"public void test5454() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    frequency0.addValue((Object) ""Value \t Freq. \t Pct. \t Cum Pct. \n"");
+    double double0 = frequency0.getPct((Comparable<?>) ""Value \t Freq. \t Pct. \t Cum Pct. \n"");
+    assertEquals(1.0, double0, 0.01);
+}",0,
+project,0,test5555,"public void test5555() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    Comparable<Object> comparable0 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    doReturn(0).when(comparable0).compareTo(any());
+    frequency0.addValue(comparable0);
+    Comparable<Object> comparable1 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    doReturn(0).when(comparable1).compareTo(any());
+    long long0 = frequency0.getCount(comparable1);
+    assertEquals(1L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test5656,"public void test5656() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    long long0 = frequency0.getCount((Comparable<?>) ""Value \t Freq. \t Pct. \t Cum Pct. \n"");
+    assertEquals(0L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test5757,"public void test5757() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    frequency0.addValue('a');
+    long long0 = frequency0.getSumFreq();
+    assertEquals(1L, long0);
+}",0,"assertEquals(0, long0)"
+project,0,test5858,"public void test5858() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    long long0 = frequency0.getSumFreq();
+    assertEquals(0L, long0);
+}",0,"assertEquals(0, long0)"
+project,0,test5959,"public void test5959() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    Integer integer0 = new Integer(1961);
+    frequency0.addValue((Comparable<?>) integer0);
+}",0,
+project,0,test6060,"public void test6060() throws Throwable {
+    Comparator<Integer> comparator0 = (Comparator<Integer>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    Frequency frequency0 = new Frequency(comparator0);
+    long long0 = frequency0.getCount((long) (-2007));
+    assertEquals(0L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test6161,"public void test6161() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    frequency0.addValue((Object) ""instance of class {0} not comparableto exiting values"");
+    Frequency frequency1 = new Frequency();
+    boolean boolean0 = frequency0.equals(frequency1);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test6262,"public void test6262() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    Frequency frequency1 = new Frequency();
+    boolean boolean0 = frequency0.equals(frequency1);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test6363,"public void test6363() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    boolean boolean0 = frequency0.equals((Object) null);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test6464,"public void test6464() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    boolean boolean0 = frequency0.equals(frequency0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test6565,"public void test6565() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    boolean boolean0 = frequency0.equals(""Value \t Freq. \t Pct. \t Cum Pct. \n"");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test6666,"public void test6666() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    Integer integer0 = new Integer((-571));
+    frequency0.addValue(integer0);
+    frequency0.addValue(9);
+    long long0 = frequency0.getCumFreq(1L);
+    assertEquals(1L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test6767,"public void test6767() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    frequency0.addValue(9);
+    long long0 = frequency0.getCumFreq(1L);
+    assertEquals(0L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test6868,"public void test6868() throws Throwable {
+    Comparator<String> comparator0 = (Comparator<String>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    doReturn(10, 10, 10, (-872), 10).when(comparator0).compare(anyString(), anyString());
+    Frequency frequency0 = new Frequency(comparator0);
+    frequency0.addValue((Comparable<?>) ""Value \t Freq. \t Pct. \t Cum Pct. \n10\t1\t100%\t100%\n"");
+    long long0 = frequency0.getCumFreq((Object) ""Value \t Freq. \t Pct. \t Cum Pct. \n10\t1\t100%\t100%\n"");
+    assertEquals(0L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test6969,"public void test6969() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    frequency0.addValue((Object) ""Value \t Freq. \t Pct. \t Cum Pct. \n"");
+    frequency0.addValue((Comparable<?>) ""Value \t Freq. \t Pct. \t Cum Pct. \n"");
+}",0,
+project,0,test7070,"public void test7070() throws Throwable {
+    Comparator<Object> comparator0 = (Comparator<Object>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    Frequency frequency0 = new Frequency(comparator0);
+    // Undeclared exception!
+    try {
+        frequency0.addValue((Object) frequency0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // class (org.apache.commons.math.stat.Frequency) does not implement Comparable
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}",1,
+project,0,test7171,"public void test7171() throws Throwable {
+    Comparator<Integer> comparator0 = (Comparator<Integer>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    Frequency frequency0 = new Frequency(comparator0);
+    Integer integer0 = new Integer((-617));
+    long long0 = frequency0.getCount((Comparable<?>) integer0);
+    assertEquals(0L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test7272,"public void test7272() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    Integer integer0 = new Integer((-542));
+    frequency0.addValue(integer0);
+    double double0 = frequency0.getPct(0);
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test7373,"public void test7373() throws Throwable {
+    Comparator<Integer> comparator0 = (Comparator<Integer>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    Frequency frequency0 = new Frequency(comparator0);
+    long long0 = frequency0.getCount((-2007));
+    assertEquals(0L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test7474,"public void test7474() throws Throwable {
+    Comparator<Integer> comparator0 = (Comparator<Integer>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    Frequency frequency0 = new Frequency(comparator0);
+    Iterator<Comparable<?>> iterator0 = frequency0.valuesIterator();
+    // Undeclared exception!
+    try {
+        frequency0.getCount((Object) iterator0);
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // java.util.TreeMap$KeyIterator cannot be cast to java.lang.Comparable
+        //
+        verifyException(""org.apache.commons.math.stat.Frequency"", e);
+    }
+}",0,
+project,0,test7575,"public void test7575() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    frequency0.addValue('#');
+    // Undeclared exception!
+    try {
+        frequency0.addValue(69L);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // instance of class java.lang.Long not comparable to existing values
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}",0,
+project,0,test7676,"public void test7676() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    long long0 = frequency0.getCumFreq(':');
+    assertEquals(0L, long0);
+}",0,"assertEquals(0, long0)"
+project,0,test7777,"public void test7777() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    long long0 = frequency0.getCount('b');
+    assertEquals(0L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test7878,"public void test7878() throws Throwable {
+    Comparator<Integer> comparator0 = (Comparator<Integer>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    doReturn(0, 0, 0, 0).when(comparator0).compare(anyInt(), anyInt());
+    Frequency frequency0 = new Frequency(comparator0);
+    frequency0.addValue((-2007));
+    Integer integer0 = new Integer((-617));
+    double double0 = frequency0.getCumPct((Object) integer0);
+    assertEquals(1.0, double0, 0.01);
+}",0,
+project,0,test7979,"public void test7979() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    frequency0.clear();
+}",0,
+project,0,test8080,"public void test8080() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    long long0 = frequency0.getCumFreq((-8));
+    assertEquals(0L, long0);
+}",0,"assertEquals(0, long0)"
+project,0,test8181,"public void test8181() throws Throwable {
+    Frequency frequency0 = new Frequency();
+    frequency0.addValue(1);
+    Comparable<Object> comparable0 = (Comparable<Object>) mock(Comparable.class, new ViolatedAssumptionAnswer());
+    doReturn(1, 582, (-1234), 73).when(comparable0).compareTo(any());
+    long long0 = frequency0.getCumFreq(comparable0);
+    assertEquals(1L, long0);
+}",0,

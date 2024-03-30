@@ -1,0 +1,58 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test00,"public void test00() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""arguments"");
+    RemoveUnusedVars removeUnusedVars0 = new RemoveUnusedVars(compiler0, false, false, false);
+    AbstractCompiler.LifeCycleStage abstractCompiler_LifeCycleStage0 = AbstractCompiler.LifeCycleStage.NORMALIZED_OBFUSCATED;
+    compiler0.setLifeCycleStage(abstractCompiler_LifeCycleStage0);
+    removeUnusedVars0.process(node0, node0);
+    assertEquals(49, Node.DIRECT_EVAL);
+}",0,
+project,0,test11,"public void test11() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""arguments"");
+    RemoveUnusedVars removeUnusedVars0 = new RemoveUnusedVars(compiler0, true, true, true);
+    AbstractCompiler.LifeCycleStage abstractCompiler_LifeCycleStage0 = AbstractCompiler.LifeCycleStage.NORMALIZED_OBFUSCATED;
+    compiler0.setLifeCycleStage(abstractCompiler_LifeCycleStage0);
+    // Undeclared exception!
+    try {
+        removeUnusedVars0.process(node0, node0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // INTERNAL COMPILER ERROR.
+        // Please report this problem.
+        // Unexpected lValue type NAME
+        //   Node(NAME arguments):  [testcode] :1:0
+        // arguments
+        //   Parent(EXPR_RESULT):  [testcode] :1:0
+        // arguments
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",0,
+project,0,test22,"public void test22() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""a=hrguments"");
+    Node node1 = new Node(37, node0, node0, node0, node0, 2, 41);
+    SimpleDefinitionFinder simpleDefinitionFinder0 = new SimpleDefinitionFinder(compiler0);
+    RemoveUnusedVars removeUnusedVars0 = new RemoveUnusedVars(compiler0, true, true, true);
+    removeUnusedVars0.process(node1, node1, simpleDefinitionFinder0);
+    assertFalse(node1.isTrue());
+}",0,assertTrue(node1.isTrue())
+project,0,test33,"public void test33() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""com.google.javascript.jscompRemoveUnusedars$mn=lSiteOptimizer"", ""com.google.javascript.jscompRemoveUnusedars$mn=lSiteOptimizer"");
+    RemoveUnusedVars removeUnusedVars0 = new RemoveUnusedVars(compiler0, true, true, true);
+    SimpleDefinitionFinder simpleDefinitionFinder0 = new SimpleDefinitionFinder(compiler0);
+    removeUnusedVars0.process(node0, node0, simpleDefinitionFinder0);
+    assertFalse(node0.isSetterDef());
+}",0,assertTrue(node0.isSetterDef())
+project,0,test44,"public void test44() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""a=hrgument=es"");
+    RemoveUnusedVars removeUnusedVars0 = new RemoveUnusedVars(compiler0, true, true, true);
+    SimpleDefinitionFinder simpleDefinitionFinder0 = new SimpleDefinitionFinder(compiler0);
+    removeUnusedVars0.process(node0, node0, simpleDefinitionFinder0);
+    assertEquals(0, node0.getCharno());
+}",0,"assertEquals(0, node0.getCharno())"

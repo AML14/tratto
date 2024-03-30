@@ -1,0 +1,377 @@
+focal_method,test_prefix,docstring
+"public boolean getHasWindowsAttributes() {
+    return hasWindowsAttributes;
+}","public void test000() throws Throwable {
+    MockFile mockFile0 = new MockFile("""");
+    SevenZOutputFile sevenZOutputFile0 = new SevenZOutputFile(mockFile0);
+    SevenZArchiveEntry sevenZArchiveEntry0 = sevenZOutputFile0.createArchiveEntry(mockFile0, """");
+    assertFalse(sevenZArchiveEntry0.getHasWindowsAttributes());
+}","/**
+ * Returns whether this entry has windows attributes.
+ */"
+"public void write(final byte[] b) throws IOException {
+    write(b, 0, b.length);
+}","public void test011() throws Throwable {
+    MockFile mockFile0 = new MockFile(""CY]"", ""CY]"");
+    SevenZOutputFile sevenZOutputFile0 = new SevenZOutputFile(mockFile0);
+    // Undeclared exception!
+    try {
+        sevenZOutputFile0.write((byte[]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.sevenz.SevenZOutputFile"", e);
+    }
+}","/**
+ * Writes a byte array to the current archive entry.
+ * @param b The byte array to be written.
+ * @throws IOException on error
+ */"
+"public void write(final int b) throws IOException {
+    getCurrentOutputStream().write(b);
+}","public void test022() throws Throwable {
+    MockFile mockFile0 = new MockFile("""");
+    SevenZOutputFile sevenZOutputFile0 = new SevenZOutputFile(mockFile0);
+    // Undeclared exception!
+    try {
+        sevenZOutputFile0.write(0);
+        fail(""Expecting exception: NoClassDefFoundError"");
+    } catch (NoClassDefFoundError e) {
+        //
+        // Could not initialize class org.apache.commons.compress.archivers.sevenz.Coders
+        //
+        verifyException(""org.apache.commons.compress.archivers.sevenz.SevenZOutputFile"", e);
+    }
+}","/**
+ * Writes a byte to the current archive entry.
+ * @param b The byte to be written.
+ * @throws IOException on error
+ */"
+"public void putArchiveEntry(final ArchiveEntry archiveEntry) throws IOException {
+    final SevenZArchiveEntry entry = (SevenZArchiveEntry) archiveEntry;
+    files.add(entry);
+}","public void test033() throws Throwable {
+    MockFile mockFile0 = new MockFile(""ir"", ""rw"");
+    SevenZOutputFile sevenZOutputFile0 = new SevenZOutputFile(mockFile0);
+    TarArchiveEntry tarArchiveEntry0 = new TarArchiveEntry(mockFile0, ""rw"");
+    // Undeclared exception!
+    try {
+        sevenZOutputFile0.putArchiveEntry(tarArchiveEntry0);
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // org.apache.commons.compress.archivers.tar.TarArchiveEntry cannot be cast to org.apache.commons.compress.archivers.sevenz.SevenZArchiveEntry
+        //
+        verifyException(""org.apache.commons.compress.archivers.sevenz.SevenZOutputFile"", e);
+    }
+}","/**
+ * Records an archive entry to add.
+ *
+ * The caller must then write the content to the archive and call
+ * {@link #closeArchiveEntry()} to complete the process.
+ *
+ * @param archiveEntry describes the entry
+ * @throws IOException
+ */"
+"public SevenZArchiveEntry createArchiveEntry(final File inputFile, final String entryName) throws IOException {
+    final SevenZArchiveEntry entry = new SevenZArchiveEntry();
+    entry.setDirectory(inputFile.isDirectory());
+    entry.setName(entryName);
+    entry.setLastModifiedDate(new Date(inputFile.lastModified()));
+    return entry;
+}","public void test044() throws Throwable {
+    MockFile mockFile0 = new MockFile("""");
+    SevenZOutputFile sevenZOutputFile0 = new SevenZOutputFile(mockFile0);
+    // Undeclared exception!
+    try {
+        sevenZOutputFile0.createArchiveEntry((File) null, """");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.sevenz.SevenZOutputFile"", e);
+    }
+}","/**
+ * Create an archive entry using the inputFile and entryName provided.
+ *
+ * @param inputFile
+ * @param entryName
+ * @return the ArchiveEntry set up with details from the file
+ *
+ * @throws IOException
+ */"
+"public void close() throws IOException {
+    if (!finished) {
+        finish();
+    }
+    file.close();
+}","public void test055() throws Throwable {
+    MockFile mockFile0 = new MockFile("""", """");
+    SevenZOutputFile sevenZOutputFile0 = new SevenZOutputFile(mockFile0);
+    try {
+        sevenZOutputFile0.close();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.mock.java.io.NativeMockedIO"", e);
+    }
+}","/**
+ * Closes the archive, calling {@link #finish} if necessary.
+ *
+ * @throws IOException
+ */"
+"public SevenZOutputFile(final File filename) throws IOException {
+    file = new RandomAccessFile(filename, ""rw"");
+    file.seek(SevenZFile.SIGNATURE_HEADER_SIZE);
+}","public void test066() throws Throwable {
+    SevenZOutputFile sevenZOutputFile0 = null;
+    try {
+        sevenZOutputFile0 = new SevenZOutputFile((File) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.mock.java.io.MockRandomAccessFile"", e);
+    }
+}","/**
+ * Opens file to write a 7z archive to.
+ *
+ * @param filename name of the file to write to
+ * @throws IOException if opening the file fails
+ */"
+"public SevenZOutputFile(final File filename) throws IOException {
+    file = new RandomAccessFile(filename, ""rw"");
+    file.seek(SevenZFile.SIGNATURE_HEADER_SIZE);
+}","public void test077() throws Throwable {
+    File file0 = MockFile.createTempFile(""Broken or unsupported archive: no Header"", ""GROUP_EXEC"");
+    MockFile mockFile0 = new MockFile(file0, ""GROUP_EXEC"");
+    SevenZOutputFile sevenZOutputFile0 = null;
+    try {
+        sevenZOutputFile0 = new SevenZOutputFile(mockFile0);
+        fail(""Expecting exception: FileNotFoundException"");
+    } catch (Throwable e) {
+        //
+        // Failed to create file
+        //
+        verifyException(""org.evosuite.runtime.mock.java.io.MockRandomAccessFile"", e);
+    }
+}","/**
+ * Opens file to write a 7z archive to.
+ *
+ * @param filename name of the file to write to
+ * @throws IOException if opening the file fails
+ */"
+"public void write(final byte[] b, final int off, final int len) throws IOException {
+    if (len > 0) {
+        getCurrentOutputStream().write(b, off, len);
+    }
+}","public void test088() throws Throwable {
+    MockFile mockFile0 = new MockFile("""");
+    SevenZOutputFile sevenZOutputFile0 = new SevenZOutputFile(mockFile0);
+    byte[] byteArray0 = new byte[6];
+    // Undeclared exception!
+    try {
+        sevenZOutputFile0.write(byteArray0, 0, 2048);
+        fail(""Expecting exception: NoClassDefFoundError"");
+    } catch (NoClassDefFoundError e) {
+        //
+        // Could not initialize class org.apache.commons.compress.archivers.sevenz.Coders
+        //
+        verifyException(""org.apache.commons.compress.archivers.sevenz.SevenZOutputFile"", e);
+    }
+}","/**
+ * Writes part of a byte array to the current archive entry.
+ * @param b The byte array to be written.
+ * @param off offset into the array to start writing from
+ * @param len number of bytes to write
+ * @throws IOException on error
+ */"
+"public void write(final byte[] b, final int off, final int len) throws IOException {
+    if (len > 0) {
+        getCurrentOutputStream().write(b, off, len);
+    }
+}","public void test099() throws Throwable {
+    MockFile mockFile0 = new MockFile(""org.apache.commons.compress.archivers.sevenz.Coders$LZMADecoder"", ""q=2"");
+    SevenZOutputFile sevenZOutputFile0 = new SevenZOutputFile(mockFile0);
+    byte[] byteArray0 = new byte[9];
+    sevenZOutputFile0.write(byteArray0, (int) (byte) 61, (int) (byte) (-41));
+    assertEquals(9, byteArray0.length);
+}","/**
+ * Writes part of a byte array to the current archive entry.
+ * @param b The byte array to be written.
+ * @param off offset into the array to start writing from
+ * @param len number of bytes to write
+ * @throws IOException on error
+ */"
+"public boolean getHasWindowsAttributes() {
+    return hasWindowsAttributes;
+}","public void test1010() throws Throwable {
+    File file0 = MockFile.createTempFile(""I`;"", ""FATAL: UTF-8 encoding not supported."");
+    SevenZOutputFile sevenZOutputFile0 = new SevenZOutputFile(file0);
+    SevenZArchiveEntry sevenZArchiveEntry0 = sevenZOutputFile0.createArchiveEntry(file0, ""org.apache.commons.compress.archivers.sevenz.SevenZOutputFile$1"");
+    assertFalse(sevenZArchiveEntry0.getHasWindowsAttributes());
+}","/**
+ * Returns whether this entry has windows attributes.
+ */"
+"public void finish() throws IOException {
+    if (finished) {
+        throw new IOException(""This archive has already been finished"");
+    }
+    finished = true;
+    final long headerPosition = file.getFilePointer();
+    final ByteArrayOutputStream headerBaos = new ByteArrayOutputStream();
+    final DataOutputStream header = new DataOutputStream(headerBaos);
+    writeHeader(header);
+    header.flush();
+    final byte[] headerBytes = headerBaos.toByteArray();
+    file.write(headerBytes);
+    final CRC32 crc32 = new CRC32();
+    // signature header
+    file.seek(0);
+    file.write(SevenZFile.sevenZSignature);
+    // version
+    file.write(0);
+    file.write(2);
+    // start header
+    final ByteArrayOutputStream startHeaderBaos = new ByteArrayOutputStream();
+    final DataOutputStream startHeaderStream = new DataOutputStream(startHeaderBaos);
+    startHeaderStream.writeLong(Long.reverseBytes(headerPosition - SevenZFile.SIGNATURE_HEADER_SIZE));
+    startHeaderStream.writeLong(Long.reverseBytes(0xffffFFFFL & headerBytes.length));
+    crc32.reset();
+    crc32.update(headerBytes);
+    startHeaderStream.writeInt(Integer.reverseBytes((int) crc32.getValue()));
+    startHeaderStream.flush();
+    final byte[] startHeaderBytes = startHeaderBaos.toByteArray();
+    crc32.reset();
+    crc32.update(startHeaderBytes);
+    file.writeInt(Integer.reverseBytes((int) crc32.getValue()));
+    file.write(startHeaderBytes);
+}","public void test1111() throws Throwable {
+    MockFile mockFile0 = new MockFile("":4l]<dXp<75<ps`y"", """");
+    SevenZOutputFile sevenZOutputFile0 = new SevenZOutputFile(mockFile0);
+    sevenZOutputFile0.close();
+    try {
+        sevenZOutputFile0.finish();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // This archive has already been finished
+        //
+        verifyException(""org.apache.commons.compress.archivers.sevenz.SevenZOutputFile"", e);
+    }
+}","/**
+ * Finishes the addition of entries to this archive, without closing it.
+ *
+ * @throws IOException if archive is already closed.
+ */"
+"public void write(final byte[] b) throws IOException {
+    write(b, 0, b.length);
+}","public void test1212() throws Throwable {
+    MockFile mockFile0 = new MockFile(""XDuAy@Z^kD:[0"", ""CWU"");
+    SevenZOutputFile sevenZOutputFile0 = new SevenZOutputFile(mockFile0);
+    byte[] byteArray0 = new byte[2];
+    // Undeclared exception!
+    try {
+        sevenZOutputFile0.write(byteArray0);
+        fail(""Expecting exception: NoClassDefFoundError"");
+    } catch (NoClassDefFoundError e) {
+        //
+        // Could not initialize class org.apache.commons.compress.archivers.sevenz.Coders
+        //
+        verifyException(""org.apache.commons.compress.archivers.sevenz.SevenZOutputFile"", e);
+    }
+}","/**
+ * Writes a byte array to the current archive entry.
+ * @param b The byte array to be written.
+ * @throws IOException on error
+ */"
+"public void closeArchiveEntry() throws IOException {
+    if (currentOutputStream != null) {
+        currentOutputStream.flush();
+        currentOutputStream.close();
+    }
+    final SevenZArchiveEntry entry = files.get(files.size() - 1);
+    if (fileBytesWritten > 0) {
+        entry.setHasStream(true);
+        ++numNonEmptyStreams;
+        entry.setSize(currentOutputStream.getBytesWritten());
+        entry.setCompressedSize(fileBytesWritten);
+        entry.setCrcValue(crc32.getValue());
+        entry.setCompressedCrcValue(compressedCrc32.getValue());
+        entry.setHasCrc(true);
+    } else {
+        entry.setHasStream(false);
+        entry.setSize(0);
+        entry.setCompressedSize(0);
+        entry.setHasCrc(false);
+    }
+    currentOutputStream = null;
+    crc32.reset();
+    compressedCrc32.reset();
+    fileBytesWritten = 0;
+}","public void test1313() throws Throwable {
+    MockFile mockFile0 = new MockFile("""");
+    SevenZOutputFile sevenZOutputFile0 = new SevenZOutputFile(mockFile0);
+    // Undeclared exception!
+    try {
+        sevenZOutputFile0.closeArchiveEntry();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * Closes the archive entry.
+ * @throws IOException
+ */"
+"public void write(final byte[] b) throws IOException {
+    write(b, 0, b.length);
+}","public void test1414() throws Throwable {
+    MockFile mockFile0 = new MockFile("""", ""}Ht~ ;Vp;bS+s"");
+    SevenZOutputFile sevenZOutputFile0 = new SevenZOutputFile(mockFile0);
+    byte[] byteArray0 = new byte[0];
+    sevenZOutputFile0.write(byteArray0);
+    assertArrayEquals(new byte[] {}, byteArray0);
+}","/**
+ * Writes a byte array to the current archive entry.
+ * @param b The byte array to be written.
+ * @throws IOException on error
+ */"
+"public void setContentCompression(SevenZMethod method) {
+    this.contentCompression = method;
+}","public void test1616() throws Throwable {
+    MockFile mockFile0 = new MockFile(""XDuAy@Z^kD:[0"", ""CWU"");
+    SevenZOutputFile sevenZOutputFile0 = new SevenZOutputFile(mockFile0);
+    SevenZMethod sevenZMethod0 = SevenZMethod.LZMA;
+    sevenZOutputFile0.setContentCompression(sevenZMethod0);
+}","/**
+ * Sets the compression method to use for entry contents - the
+ * default is LZMA2.
+ *
+ * <p>Currently only {@link SevenZMethod#COPY}, {@link
+ * SevenZMethod#LZMA2}, {@link SevenZMethod#BZIP2} and {@link
+ * SevenZMethod#DEFLATE} are supported.</p>
+ */"
+"public void putArchiveEntry(final ArchiveEntry archiveEntry) throws IOException {
+    final SevenZArchiveEntry entry = (SevenZArchiveEntry) archiveEntry;
+    files.add(entry);
+}","public void test1717() throws Throwable {
+    MockFile mockFile0 = new MockFile("""", ""}Ht~ ;Vp;bS+s"");
+    SevenZOutputFile sevenZOutputFile0 = new SevenZOutputFile(mockFile0);
+    sevenZOutputFile0.putArchiveEntry((ArchiveEntry) null);
+}","/**
+ * Records an archive entry to add.
+ *
+ * The caller must then write the content to the archive and call
+ * {@link #closeArchiveEntry()} to complete the process.
+ *
+ * @param archiveEntry describes the entry
+ * @throws IOException
+ */"

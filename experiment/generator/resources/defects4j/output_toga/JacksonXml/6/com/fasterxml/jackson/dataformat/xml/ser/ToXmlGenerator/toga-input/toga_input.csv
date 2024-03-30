@@ -1,0 +1,2599 @@
+focal_method,test_prefix,docstring
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test0000() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    RepairingNsStreamWriter repairingNsStreamWriter0 = new RepairingNsStreamWriter((XmlWriter) null, """", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 2, 1898, objectMapper0, repairingNsStreamWriter0);
+    toXmlGenerator0._releaseBuffers();
+    assertEquals(1898, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public void writeNumber(BigDecimal dec) throws IOException {
+    if (dec == null) {
+        writeNull();
+        return;
+    }
+    _verifyValueWrite(""write number"");
+    if (_nextName == null) {
+        handleMissingName();
+    }
+    boolean usePlain = isEnabled(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN);
+    try {
+        if (_nextIsAttribute) {
+            if (usePlain) {
+                _xmlWriter.writeAttribute("""", _nextName.getNamespaceURI(), _nextName.getLocalPart(), dec.toPlainString());
+            } else {
+                _xmlWriter.writeDecimalAttribute("""", _nextName.getNamespaceURI(), _nextName.getLocalPart(), dec);
+            }
+        } else if (checkNextIsUnwrapped()) {
+            if (usePlain) {
+                _xmlWriter.writeCharacters(dec.toPlainString());
+            } else {
+                _xmlWriter.writeDecimal(dec);
+            }
+        } else {
+            if (_xmlPrettyPrinter != null) {
+                _xmlPrettyPrinter.writeLeafElement(_xmlWriter, _nextName.getNamespaceURI(), _nextName.getLocalPart(), dec);
+            } else {
+                _xmlWriter.writeStartElement(_nextName.getNamespaceURI(), _nextName.getLocalPart());
+                if (usePlain) {
+                    _xmlWriter.writeCharacters(dec.toPlainString());
+                } else {
+                    _xmlWriter.writeDecimal(dec);
+                }
+                _xmlWriter.writeEndElement();
+            }
+        }
+    } catch (XMLStreamException e) {
+        StaxUtil.throwAsGenerationException(e, this);
+    }
+}","public void test0011() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter((XmlWriter) null, ""Underlying Stax XMLStreamWriter (of type "", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 1, 3, objectMapper0, nonNsStreamWriter0);
+    // Undeclared exception!
+    try {
+        toXmlGenerator0.writeNumber((BigDecimal) null);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // No element/attribute name specified when trying to output element
+        //
+        verifyException(""com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator"", e);
+    }
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test0022() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    JsonFactory jsonFactory0 = new JsonFactory(objectMapper0);
+    BufferRecycler bufferRecycler0 = jsonFactory0._getBufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter((XmlWriter) null, ""JSON"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, (-1437), 1, objectMapper0, nonNsStreamWriter0);
+    toXmlGenerator0.inRoot();
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public void writeRaw(char c) throws IOException {
+    writeRaw(String.valueOf(c));
+}","public void test0033() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream("">"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, "">"", writerConfig0);
+    StreamWriterDelegate streamWriterDelegate0 = new StreamWriterDelegate(nonNsStreamWriter0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 0, 698, objectMapper0, streamWriterDelegate0);
+    try {
+        toXmlGenerator0.writeRaw('Z');
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Underlying Stax XMLStreamWriter (of type org.codehaus.stax2.util.StreamWriterDelegate) does not implement Stax2 API natively and is missing method 'writeRaw': this breaks functionality such as indentation that relies on it. You need to upgrade to using compliant Stax implementation like Woodstox or Aalto
+        //
+        verifyException(""com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator"", e);
+    }
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test0044() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""Can not write END_LEMENT without opeR START_E&EM:NT"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""Can not write END_LEMENT without opeR START_E&EM:NT"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 1, 1, objectMapper0, nonNsStreamWriter0);
+    toXmlGenerator0.setNextIsCData(true);
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public final void writeStringField(String fieldName, String value) throws IOException {
+    writeFieldName(fieldName);
+    writeString(value);
+}","public void test0055() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream("".>`B'"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, "".>`B'"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 3, 1, objectMapper0, nonNsStreamWriter0);
+    try {
+        toXmlGenerator0.writeStringField("".>`B'"", "".>`B'"");
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Can not write a field name, expecting a value
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonGenerator"", e);
+    }
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test0066() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""[PreAndSuffxTransfomer('"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""[PreAndSuffxTransfomer('"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 2, 1, objectMapper0, nonNsStreamWriter0);
+    toXmlGenerator0.setNextIsUnwrapped(true);
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public void writeUTF8String(byte[] text, int offset, int length) throws IOException {
+    // could add support for this case if we really want it (and can make Stax2 support it)
+    _reportUnsupportedOperation();
+}","public void test0077() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""JsonInclude.Value(value="");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""JsonInclude.Value(value="", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 1, 1, objectMapper0, nonNsStreamWriter0);
+    // Undeclared exception!
+    try {
+        toXmlGenerator0.writeUTF8String((byte[]) null, (-1043), 38);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // Operation not supported by generator of type com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonGenerator"", e);
+    }
+}",""
+"@Override
+public void writeRawValue(SerializableString text) throws IOException {
+    _reportUnsupportedOperation();
+}","public void test0099() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    RepairingNsStreamWriter repairingNsStreamWriter0 = new RepairingNsStreamWriter((XmlWriter) null, """", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 2, 3, objectMapper0, repairingNsStreamWriter0);
+    // Undeclared exception!
+    try {
+        toXmlGenerator0.writeRawValue((SerializableString) null);
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // Operation not supported by generator of type com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonGenerator"", e);
+    }
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test01010() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockFile mockFile0 = new MockFile(""m"");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(mockFile0);
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""m"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 3, 3, objectMapper0, nonNsStreamWriter0);
+    ToXmlGenerator toXmlGenerator1 = (ToXmlGenerator) toXmlGenerator0.useDefaultPrettyPrinter();
+    QName qName0 = new QName(""m"", ""m"", ""m"");
+    toXmlGenerator1.startWrappedValue(qName0, qName0);
+    BigInteger bigInteger0 = BigInteger.ZERO;
+    BigDecimal bigDecimal0 = new BigDecimal(bigInteger0);
+    toXmlGenerator0.writeNumber(bigDecimal0);
+    assertEquals(3, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public boolean canWriteFormattedNumbers() {
+    return true;
+}","public void test01212() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    BufferRecycler bufferRecycler0 = jsonFactory0._getBufferRecycler();
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    MockPrintWriter mockPrintWriter0 = new MockPrintWriter(""7r~{()clj!"");
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""7r~{()clj!"");
+    BufferingXmlWriter bufferingXmlWriter0 = new BufferingXmlWriter(mockPrintWriter0, writerConfig0, ""JSON"", false, mockFileOutputStream0, (-539));
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(bufferingXmlWriter0, ""7r~{()clj!"", writerConfig0);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, nonNsStreamWriter0, false);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 0, 2, objectMapper0, nonNsStreamWriter0);
+    boolean boolean0 = toXmlGenerator0.canWriteFormattedNumbers();
+    assertTrue(boolean0);
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test01213() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    BufferRecycler bufferRecycler0 = jsonFactory0._getBufferRecycler();
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    MockPrintWriter mockPrintWriter0 = new MockPrintWriter(""7r~{()clj!"");
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""7r~{()clj!"");
+    BufferingXmlWriter bufferingXmlWriter0 = new BufferingXmlWriter(mockPrintWriter0, writerConfig0, ""JSON"", false, mockFileOutputStream0, (-539));
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(bufferingXmlWriter0, ""7r~{()clj!"", writerConfig0);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, nonNsStreamWriter0, false);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 0, 2, objectMapper0, nonNsStreamWriter0);
+    boolean boolean0 = toXmlGenerator0.canWriteFormattedNumbers();
+    assertEquals(2, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public void writeRawUTF8String(byte[] text, int offset, int length) throws IOException {
+    // could add support for this case if we really want it (and can make Stax2 support it)
+    _reportUnsupportedOperation();
+}","public void test01314() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""Unexpected character "");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""Unexpected character "", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 3, 1, objectMapper0, nonNsStreamWriter0);
+    // Undeclared exception!
+    try {
+        toXmlGenerator0.writeRawUTF8String((byte[]) null, 382, (-128));
+        fail(""Expecting exception: UnsupportedOperationException"");
+    } catch (UnsupportedOperationException e) {
+        //
+        // Operation not supported by generator of type com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonGenerator"", e);
+    }
+}",""
+"@Override
+public void writeNumber(String encodedValue) throws IOException, UnsupportedOperationException {
+    writeString(encodedValue);
+}","public void test01415() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    RepairingNsStreamWriter repairingNsStreamWriter0 = new RepairingNsStreamWriter((XmlWriter) null, """", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 2, 3, objectMapper0, repairingNsStreamWriter0);
+    // Undeclared exception!
+    try {
+        toXmlGenerator0.writeNumber(""<OV'C\""N"");
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // No element/attribute name specified when trying to output element
+        //
+        verifyException(""com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator"", e);
+    }
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test01617() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    RepairingNsStreamWriter repairingNsStreamWriter0 = new RepairingNsStreamWriter((XmlWriter) null, """", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 3, 0, objectMapper0, repairingNsStreamWriter0);
+    toXmlGenerator0.initGenerator();
+    toXmlGenerator0.initGenerator();
+    assertEquals(0, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test01921() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""[\""reAndSuffixTrasfomer(M"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, false);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""[\""reAndSuffixTrasfomer(M"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 3, 1, objectMapper0, nonNsStreamWriter0);
+    toXmlGenerator0.useDefaultPrettyPrinter();
+    toXmlGenerator0.initGenerator();
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test02224() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""[PreAndSuff5TransfSmer('"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, false);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""[PreAndSuff5TransfSmer('"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 2, 1, objectMapper0, nonNsStreamWriter0);
+    toXmlGenerator0.overrideFormatFeatures(1021, (-234));
+    assertEquals(789, toXmlGenerator0.getFormatFeatures());
+}",""
+"public final boolean isEnabled(Feature f) {
+    return (_formatFeatures & f.getMask()) != 0;
+}","public void test02325() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream(3);
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    ISOLatin1XmlWriter iSOLatin1XmlWriter0 = new ISOLatin1XmlWriter(byteArrayOutputStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(iSOLatin1XmlWriter0, """", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator((IOContext) null, (-701), 0, objectMapper0, nonNsStreamWriter0);
+    ToXmlGenerator.Feature toXmlGenerator_Feature0 = ToXmlGenerator.Feature.WRITE_XML_1_1;
+    boolean boolean0 = toXmlGenerator0.isEnabled(toXmlGenerator_Feature0);
+    assertFalse(boolean0);
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test02326() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream(3);
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    ISOLatin1XmlWriter iSOLatin1XmlWriter0 = new ISOLatin1XmlWriter(byteArrayOutputStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(iSOLatin1XmlWriter0, """", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator((IOContext) null, (-701), 0, objectMapper0, nonNsStreamWriter0);
+    ToXmlGenerator.Feature toXmlGenerator_Feature0 = ToXmlGenerator.Feature.WRITE_XML_1_1;
+    boolean boolean0 = toXmlGenerator0.isEnabled(toXmlGenerator_Feature0);
+    assertEquals(0, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test02427() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    BufferRecycler bufferRecycler0 = jsonFactory0._getBufferRecycler();
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    MockPrintWriter mockPrintWriter0 = new MockPrintWriter(""7r~{()clj!"");
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""7r~{()clj!"");
+    BufferingXmlWriter bufferingXmlWriter0 = new BufferingXmlWriter(mockPrintWriter0, writerConfig0, ""JSON"", false, mockFileOutputStream0, (-539));
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(bufferingXmlWriter0, ""7r~{()clj!"", writerConfig0);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, nonNsStreamWriter0, false);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 0, 2, objectMapper0, nonNsStreamWriter0);
+    ToXmlGenerator.Feature toXmlGenerator_Feature0 = ToXmlGenerator.Feature.WRITE_XML_1_1;
+    boolean boolean0 = toXmlGenerator0.isEnabled(toXmlGenerator_Feature0);
+    assertEquals(2, toXmlGenerator0.getFormatFeatures());
+}",""
+"public final boolean isEnabled(Feature f) {
+    return (_formatFeatures & f.getMask()) != 0;
+}","public void test02428() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    BufferRecycler bufferRecycler0 = jsonFactory0._getBufferRecycler();
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    MockPrintWriter mockPrintWriter0 = new MockPrintWriter(""7r~{()clj!"");
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""7r~{()clj!"");
+    BufferingXmlWriter bufferingXmlWriter0 = new BufferingXmlWriter(mockPrintWriter0, writerConfig0, ""JSON"", false, mockFileOutputStream0, (-539));
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(bufferingXmlWriter0, ""7r~{()clj!"", writerConfig0);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, nonNsStreamWriter0, false);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 0, 2, objectMapper0, nonNsStreamWriter0);
+    ToXmlGenerator.Feature toXmlGenerator_Feature0 = ToXmlGenerator.Feature.WRITE_XML_1_1;
+    boolean boolean0 = toXmlGenerator0.isEnabled(toXmlGenerator_Feature0);
+    assertTrue(boolean0);
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test02529() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""writeRaw"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""writeRaw"", writerConfig0);
+    ObjectReader objectReader0 = objectMapper0.reader((JsonNodeFactory) null);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 1, 3, objectReader0, nonNsStreamWriter0);
+    ToXmlGenerator.Feature toXmlGenerator_Feature0 = ToXmlGenerator.Feature.WRITE_XML_1_1;
+    toXmlGenerator0.configure(toXmlGenerator_Feature0, false);
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test02630() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""[PreAndSuffixranformer('"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, false);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""[PreAndSuffixranformer('"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 3, 1, objectMapper0, nonNsStreamWriter0);
+    ToXmlGenerator.Feature toXmlGenerator_Feature0 = ToXmlGenerator.Feature.WRITE_XML_DECLARATION;
+    toXmlGenerator0.configure(toXmlGenerator_Feature0, true);
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"public final boolean setNextNameIfMissing(QName name) {
+    if (_nextName == null) {
+        _nextName = name;
+        return true;
+    }
+    return false;
+}","public void test02731() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockFile mockFile0 = new MockFile(""[PreAndSuffixTransformer('"");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(mockFile0);
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, false);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""[PreAndSuffixTransformer('"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 2, 3, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName(""a\""HB4OP$'"");
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    boolean boolean0 = toXmlGenerator0.setNextNameIfMissing(qName0);
+    assertFalse(boolean0);
+}","/**
+ * Method that does same as {@link #setNextName}, unless
+ * a name has already been set.
+ *
+ * @since 2.1.2
+ */"
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test02732() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockFile mockFile0 = new MockFile(""[PreAndSuffixTransformer('"");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(mockFile0);
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, false);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""[PreAndSuffixTransformer('"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 2, 3, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName(""a\""HB4OP$'"");
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    boolean boolean0 = toXmlGenerator0.setNextNameIfMissing(qName0);
+    assertEquals(3, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test02833() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""[\""eASuffixTrasfomer("");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""[\""eASuffixTrasfomer("", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 3, 1, objectMapper0, nonNsStreamWriter0);
+    toXmlGenerator0.startWrappedValue((QName) null, (QName) null);
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test02934() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    RepairingNsStreamWriter repairingNsStreamWriter0 = new RepairingNsStreamWriter((XmlWriter) null, ""Q"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 2, 3, objectMapper0, repairingNsStreamWriter0);
+    toXmlGenerator0.finishWrappedValue((QName) null, (QName) null);
+    assertEquals(3, toXmlGenerator0.getFormatFeatures());
+}",""
+"public void finishWrappedValue(QName wrapperName, QName wrappedName) throws IOException {
+    // First: wrapper to close?
+    if (wrapperName != null) {
+        try {
+            if (_xmlPrettyPrinter != null) {
+                _xmlPrettyPrinter.writeEndElement(_xmlWriter, _writeContext.getEntryCount());
+            } else {
+                _xmlWriter.writeEndElement();
+            }
+        } catch (XMLStreamException e) {
+            StaxUtil.throwAsGenerationException(e, this);
+        }
+    }
+}","public void test03035() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockFile mockFile0 = new MockFile(""[PreAndSuffixTransformer('"", ""[PreAndSuffixTransformer('"");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(mockFile0);
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, false);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, """", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 2897, 3, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName("""", """", """");
+    try {
+        toXmlGenerator0.finishWrappedValue(qName0, qName0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // No open start element, when trying to write end element
+        //
+        verifyException(""com.fasterxml.jackson.dataformat.xml.util.StaxUtil"", e);
+    }
+}","/**
+ * Method called after a structured collection output has completed
+ */"
+"public void finishWrappedValue(QName wrapperName, QName wrappedName) throws IOException {
+    // First: wrapper to close?
+    if (wrapperName != null) {
+        try {
+            if (_xmlPrettyPrinter != null) {
+                _xmlPrettyPrinter.writeEndElement(_xmlWriter, _writeContext.getEntryCount());
+            } else {
+                _xmlWriter.writeEndElement();
+            }
+        } catch (XMLStreamException e) {
+            StaxUtil.throwAsGenerationException(e, this);
+        }
+    }
+}","public void test03136() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    RepairingNsStreamWriter repairingNsStreamWriter0 = new RepairingNsStreamWriter((XmlWriter) null, """", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 2, 3, objectMapper0, repairingNsStreamWriter0);
+    toXmlGenerator0.useDefaultPrettyPrinter();
+    QName qName0 = new QName("""", """");
+    // Undeclared exception!
+    try {
+        toXmlGenerator0.finishWrappedValue(qName0, qName0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.ctc.wstx.sw.BaseStreamWriter"", e);
+    }
+}","/**
+ * Method called after a structured collection output has completed
+ */"
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test03237() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockFile mockFile0 = new MockFile(""[PreAndSuffixTransformer('"", ""[PreAndSuffixTransformer('"");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(mockFile0);
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""[PreAndSuffixTransformer('"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 12, 3, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName(""[PreAndSuffixTransformer('"");
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    toXmlGenerator0.writeStartObject();
+    toXmlGenerator0.writeRepeatedFieldName();
+    assertEquals(3, toXmlGenerator0.getFormatFeatures());
+}",""
+"public void writeRepeatedFieldName() throws IOException {
+    if (_writeContext.writeFieldName(_nextName.getLocalPart()) == JsonWriteContext.STATUS_EXPECT_VALUE) {
+        _reportError(""Can not write a field name, expecting a value"");
+    }
+}","public void test03338() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockFile mockFile0 = new MockFile(""[PreAndSuffixTransformer('"", ""[PreAndSuffixTransformer('"");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(mockFile0);
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""[PreAndSuffixTransformer('"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 12, 3, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName(""[PreAndSuffixTransformer('"");
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    try {
+        toXmlGenerator0.writeRepeatedFieldName();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Can not write a field name, expecting a value
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonGenerator"", e);
+    }
+}","/**
+ * Trivial helper method called when to add a replicated wrapper name
+ *
+ * @since 2.2
+ */"
+"public final boolean setNextNameIfMissing(QName name) {
+    if (_nextName == null) {
+        _nextName = name;
+        return true;
+    }
+    return false;
+}","public void test03439() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""Can not write END_ELEMENT without open START_ElEM:NT"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""Can not write END_ELEMENT without open START_ElEM:NT"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 1, 1, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = QName.valueOf(""Can not write END_ELEMENT without open START_ElEM:NT"");
+    toXmlGenerator0.useDefaultPrettyPrinter();
+    boolean boolean0 = toXmlGenerator0.setNextNameIfMissing(qName0);
+    assertTrue(boolean0);
+}","/**
+ * Method that does same as {@link #setNextName}, unless
+ * a name has already been set.
+ *
+ * @since 2.1.2
+ */"
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test03440() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""Can not write END_ELEMENT without open START_ElEM:NT"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""Can not write END_ELEMENT without open START_ElEM:NT"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 1, 1, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = QName.valueOf(""Can not write END_ELEMENT without open START_ElEM:NT"");
+    toXmlGenerator0.useDefaultPrettyPrinter();
+    boolean boolean0 = toXmlGenerator0.setNextNameIfMissing(qName0);
+    toXmlGenerator0.writeObject(nonNsStreamWriter0);
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public final void writeEndArray() throws IOException {
+    if (!_writeContext.inArray()) {
+        _reportError(""Current context not Array but "" + _writeContext.typeDesc());
+    }
+    if (_cfgPrettyPrinter != null) {
+        _cfgPrettyPrinter.writeEndArray(this, _writeContext.getEntryCount());
+    } else {
+        // nothing to do here; no-operation
+    }
+    _writeContext = _writeContext.getParent();
+}","public void test03541() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""[PreAndSuffixranformer('"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""[PreAndSuffixranformer('"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 3, 1, objectMapper0, nonNsStreamWriter0);
+    try {
+        toXmlGenerator0.writeEndArray();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Current context not Array but root
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonGenerator"", e);
+    }
+}",""
+"@Override
+public final void writeEndObject() throws IOException {
+    if (!_writeContext.inObject()) {
+        _reportError(""Current context not Object but "" + _writeContext.typeDesc());
+    }
+    _writeContext = _writeContext.getParent();
+    if (_cfgPrettyPrinter != null) {
+        // as per [Issue#45], need to suppress indentation if only attributes written:
+        int count = _nextIsAttribute ? 0 : _writeContext.getEntryCount();
+        _cfgPrettyPrinter.writeEndObject(this, count);
+    } else {
+        _handleEndObject();
+    }
+}","public void test03642() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter((XmlWriter) null, ""[PreAndSuffixTransformer('"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 1, 3, objectMapper0, nonNsStreamWriter0);
+    try {
+        toXmlGenerator0.writeEndObject();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Current context not Object but root
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonGenerator"", e);
+    }
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test03743() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockFile mockFile0 = new MockFile(""m"");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(mockFile0);
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""m"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 3, 3, objectMapper0, nonNsStreamWriter0);
+    ToXmlGenerator toXmlGenerator1 = (ToXmlGenerator) toXmlGenerator0.useDefaultPrettyPrinter();
+    toXmlGenerator1.setNextIsAttribute(true);
+    QName qName0 = new QName(""m"", ""m"", ""m"");
+    toXmlGenerator1.startWrappedValue(qName0, qName0);
+    toXmlGenerator0.writeObject(writerConfig0);
+    assertEquals(3, toXmlGenerator0.getFormatFeatures());
+}",""
+"// note: public just because pretty printer needs to make a callback
+public final void _handleEndObject() throws IOException {
+    // We may want to repeat same element, so:
+    if (_elementNameStack.isEmpty()) {
+        throw new JsonGenerationException(""Can not write END_ELEMENT without open START_ELEMENT"", this);
+    }
+    _nextName = _elementNameStack.removeLast();
+    try {
+        // note: since attributes don't nest, can only have one attribute active, so:
+        _nextIsAttribute = false;
+        _xmlWriter.writeEndElement();
+        // [databind-xml#172]: possibly also need indentation
+        if (_elementNameStack.isEmpty() && (_xmlPrettyPrinter != null)) {
+            // ... but only if it is likely to succeed:
+            if (!_stax2Emulation) {
+                _xmlPrettyPrinter.writePrologLinefeed(_xmlWriter);
+            }
+        }
+    } catch (XMLStreamException e) {
+        StaxUtil.throwAsGenerationException(e, this);
+    }
+}","public void test03946() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter((XmlWriter) null, ""[PreAndSuffixTransformer('"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 1, 3, objectMapper0, nonNsStreamWriter0);
+    try {
+        toXmlGenerator0._handleEndObject();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Can not write END_ELEMENT without open START_ELEMENT
+        //
+        verifyException(""com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator"", e);
+    }
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test04047() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""Can not write END_ELEMENT without open START_ELEMENT"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""Can not write END_ELEMENT without open START_ELEMENT"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 1, 1, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName(""Can not write END_ELEMENT without open START_ELEMENT"", ""Can not write END_ELEMENT without open START_ELEMENT"");
+    toXmlGenerator0._nextIsUnwrapped = true;
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    toXmlGenerator0.writeObject(""Can not write END_ELEMENT without open START_ELEMENT"");
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test04148() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""Can not write END_ELEMENT without open START_ELEMENT"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""Can not write END_ELEMENT without open START_ELEMENT"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 1, 1, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName(""Can not write END_ELEMENT without open START_ELEMENT"", ""Can not write END_ELEMENT without open START_ELEMENT"");
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    toXmlGenerator0._nextIsCData = true;
+    toXmlGenerator0.writeObject(nonNsStreamWriter0);
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test04249() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""Can not write END_ELEMENT without open START_ELEMENT"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""Can not write END_ELEMENT without open START_ELEMENT"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 1, 1, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName(""Can not write END_ELEMENT without open START_ELEMENT"", ""Can not write END_ELEMENT without open START_ELEMENT"");
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    char[] charArray0 = new char[9];
+    toXmlGenerator0.writeString(charArray0, 1, 0);
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public void writeString(char[] text, int offset, int len) throws IOException {
+    _verifyValueWrite(""write String value"");
+    if (_nextName == null) {
+        handleMissingName();
+    }
+    try {
+        if (_nextIsAttribute) {
+            _xmlWriter.writeAttribute(_nextName.getNamespaceURI(), _nextName.getLocalPart(), new String(text, offset, len));
+        } else if (checkNextIsUnwrapped()) {
+            // should we consider pretty-printing or not?
+            if (_nextIsCData) {
+                _xmlWriter.writeCData(text, offset, len);
+            } else {
+                _xmlWriter.writeCharacters(text, offset, len);
+            }
+        } else if (_xmlPrettyPrinter != null) {
+            _xmlPrettyPrinter.writeLeafElement(_xmlWriter, _nextName.getNamespaceURI(), _nextName.getLocalPart(), text, offset, len, _nextIsCData);
+        } else {
+            _xmlWriter.writeStartElement(_nextName.getNamespaceURI(), _nextName.getLocalPart());
+            if (_nextIsCData) {
+                _xmlWriter.writeCData(text, offset, len);
+            } else {
+                _xmlWriter.writeCharacters(text, offset, len);
+            }
+            _xmlWriter.writeEndElement();
+        }
+    } catch (XMLStreamException e) {
+        StaxUtil.throwAsGenerationException(e, this);
+    }
+}","public void test04350() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""[PreAndSuffxTransfomer('"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""[PreAndSuffxTransfomer('"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 2, 1, objectMapper0, nonNsStreamWriter0);
+    // Undeclared exception!
+    try {
+        toXmlGenerator0.writeString((char[]) null, 2, 1);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // No element/attribute name specified when trying to output element
+        //
+        verifyException(""com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator"", e);
+    }
+}",""
+"@Override
+public void writeString(char[] text, int offset, int len) throws IOException {
+    _verifyValueWrite(""write String value"");
+    if (_nextName == null) {
+        handleMissingName();
+    }
+    try {
+        if (_nextIsAttribute) {
+            _xmlWriter.writeAttribute(_nextName.getNamespaceURI(), _nextName.getLocalPart(), new String(text, offset, len));
+        } else if (checkNextIsUnwrapped()) {
+            // should we consider pretty-printing or not?
+            if (_nextIsCData) {
+                _xmlWriter.writeCData(text, offset, len);
+            } else {
+                _xmlWriter.writeCharacters(text, offset, len);
+            }
+        } else if (_xmlPrettyPrinter != null) {
+            _xmlPrettyPrinter.writeLeafElement(_xmlWriter, _nextName.getNamespaceURI(), _nextName.getLocalPart(), text, offset, len, _nextIsCData);
+        } else {
+            _xmlWriter.writeStartElement(_nextName.getNamespaceURI(), _nextName.getLocalPart());
+            if (_nextIsCData) {
+                _xmlWriter.writeCData(text, offset, len);
+            } else {
+                _xmlWriter.writeCharacters(text, offset, len);
+            }
+            _xmlWriter.writeEndElement();
+        }
+    } catch (XMLStreamException e) {
+        StaxUtil.throwAsGenerationException(e, this);
+    }
+}","public void test04451() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream("".>`B'"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, "".>`B'"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 3, 1, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName("".>`B'"", "".>`B'"");
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    toXmlGenerator0._nextIsAttribute = true;
+    // Undeclared exception!
+    try {
+        toXmlGenerator0.writeString((char[]) null, 1, 3);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test04552() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""Can not write END_ELEMENT without open START_ELEMENT"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""Can not write END_ELEMENT without open START_ELEMENT"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 1, 1, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName(""Can not write END_ELEMENT without open START_ELEMENT"", ""Can not write END_ELEMENT without open START_ELEMENT"");
+    toXmlGenerator0._nextIsUnwrapped = true;
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    char[] charArray0 = new char[9];
+    toXmlGenerator0.writeString(charArray0, 1, 0);
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test04653() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""Can not write END_ELEMENT without open START_ELEMENT"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""Can not write END_ELEMENT without open START_ELEMENT"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 1, 1, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName(""Can not write END_ELEMENT without open START_ELEMENT"", ""Can not write END_ELEMENT without open START_ELEMENT"");
+    toXmlGenerator0._nextIsUnwrapped = true;
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    char[] charArray0 = new char[9];
+    toXmlGenerator0._nextIsCData = true;
+    toXmlGenerator0.writeString(charArray0, 1, 0);
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test04855() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockFile mockFile0 = new MockFile(""[PreAndSuffixTransformer('"", ""[PreAndSuffixTransformer('"");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(mockFile0);
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, false);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""^3b5Cj/"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 2, 3, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName(""|duy-68?A"");
+    toXmlGenerator0._nextIsCData = true;
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    char[] charArray0 = new char[2];
+    toXmlGenerator0.writeString(charArray0, 56319, 0);
+    assertEquals(3, toXmlGenerator0.getFormatFeatures());
+}",""
+"/*
+    /**********************************************************
+    /* Output method implementations, unprocessed (""raw"")
+    /**********************************************************
+     */
+@Override
+public void writeRawValue(String text) throws IOException {
+    // [dataformat-xml#39]
+    if (_stax2Emulation) {
+        _reportUnimplementedStax2(""writeRawValue"");
+    }
+    try {
+        _verifyValueWrite(""write raw value"");
+        if (_nextName == null) {
+            handleMissingName();
+        }
+        if (_nextIsAttribute) {
+            _xmlWriter.writeAttribute(_nextName.getNamespaceURI(), _nextName.getLocalPart(), text);
+        } else {
+            _xmlWriter.writeStartElement(_nextName.getNamespaceURI(), _nextName.getLocalPart());
+            _xmlWriter.writeRaw(text);
+            _xmlWriter.writeEndElement();
+        }
+    } catch (XMLStreamException e) {
+        StaxUtil.throwAsGenerationException(e, this);
+    }
+}","public void test04956() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""[PreAndSuffixranformer('"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""Xwu#g'HA"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 3, 1, objectMapper0, nonNsStreamWriter0);
+    // Undeclared exception!
+    try {
+        toXmlGenerator0.writeRawValue(""Xwu#g'HA"");
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // No element/attribute name specified when trying to output element
+        //
+        verifyException(""com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator"", e);
+    }
+}",""
+"/*
+    /**********************************************************
+    /* Output method implementations, unprocessed (""raw"")
+    /**********************************************************
+     */
+@Override
+public void writeRawValue(String text) throws IOException {
+    // [dataformat-xml#39]
+    if (_stax2Emulation) {
+        _reportUnimplementedStax2(""writeRawValue"");
+    }
+    try {
+        _verifyValueWrite(""write raw value"");
+        if (_nextName == null) {
+            handleMissingName();
+        }
+        if (_nextIsAttribute) {
+            _xmlWriter.writeAttribute(_nextName.getNamespaceURI(), _nextName.getLocalPart(), text);
+        } else {
+            _xmlWriter.writeStartElement(_nextName.getNamespaceURI(), _nextName.getLocalPart());
+            _xmlWriter.writeRaw(text);
+            _xmlWriter.writeEndElement();
+        }
+    } catch (XMLStreamException e) {
+        StaxUtil.throwAsGenerationException(e, this);
+    }
+}","public void test05057() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter((XmlWriter) null, ""C{NF$-"", writerConfig0);
+    StreamWriterDelegate streamWriterDelegate0 = new StreamWriterDelegate(nonNsStreamWriter0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 1373, 0, objectMapper0, streamWriterDelegate0);
+    try {
+        toXmlGenerator0.writeRawValue(""Cvf%/Ueh1'('#)@"");
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Underlying Stax XMLStreamWriter (of type org.codehaus.stax2.util.StreamWriterDelegate) does not implement Stax2 API natively and is missing method 'writeRawValue': this breaks functionality such as indentation that relies on it. You need to upgrade to using compliant Stax implementation like Woodstox or Aalto
+        //
+        verifyException(""com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator"", e);
+    }
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test05158() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""[PreAndSuffixranformer('"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""Xwu#g'HA"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 3, 1, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName(""[PreAndSuffixranformer('"", ""Xwu#g'HA"", ""[PreAndSuffixranformer('"");
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    toXmlGenerator0.writeRawValue(""Xwu#g'HA"");
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test05259() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""[PreAndSuffixranformer('"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""Xwu#g'HA"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 3, 1, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName(""[PreAndSuffixranformer('"", ""Xwu#g'HA"", ""[PreAndSuffixranformer('"");
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    toXmlGenerator0.setNextIsAttribute(true);
+    toXmlGenerator0.writeRawValue(""Xwu#g'HA"");
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public void writeRawValue(String text, int offset, int len) throws IOException {
+    // [dataformat-xml#39]
+    if (_stax2Emulation) {
+        _reportUnimplementedStax2(""writeRawValue"");
+    }
+    try {
+        _verifyValueWrite(""write raw value"");
+        if (_nextName == null) {
+            handleMissingName();
+        }
+        if (_nextIsAttribute) {
+            _xmlWriter.writeAttribute(_nextName.getNamespaceURI(), _nextName.getLocalPart(), text.substring(offset, offset + len));
+        } else {
+            _xmlWriter.writeStartElement(_nextName.getNamespaceURI(), _nextName.getLocalPart());
+            _xmlWriter.writeRaw(text, offset, len);
+            _xmlWriter.writeEndElement();
+        }
+    } catch (XMLStreamException e) {
+        StaxUtil.throwAsGenerationException(e, this);
+    }
+}","public void test05360() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""writeRaw"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""writeRaw"", writerConfig0);
+    ObjectReader objectReader0 = objectMapper0.reader((JsonNodeFactory) null);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 1, 3, objectReader0, nonNsStreamWriter0);
+    // Undeclared exception!
+    try {
+        toXmlGenerator0.writeRawValue("""", 2, 3);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // No element/attribute name specified when trying to output element
+        //
+        verifyException(""com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator"", e);
+    }
+}",""
+"@Override
+public void writeRawValue(String text, int offset, int len) throws IOException {
+    // [dataformat-xml#39]
+    if (_stax2Emulation) {
+        _reportUnimplementedStax2(""writeRawValue"");
+    }
+    try {
+        _verifyValueWrite(""write raw value"");
+        if (_nextName == null) {
+            handleMissingName();
+        }
+        if (_nextIsAttribute) {
+            _xmlWriter.writeAttribute(_nextName.getNamespaceURI(), _nextName.getLocalPart(), text.substring(offset, offset + len));
+        } else {
+            _xmlWriter.writeStartElement(_nextName.getNamespaceURI(), _nextName.getLocalPart());
+            _xmlWriter.writeRaw(text, offset, len);
+            _xmlWriter.writeEndElement();
+        }
+    } catch (XMLStreamException e) {
+        StaxUtil.throwAsGenerationException(e, this);
+    }
+}","public void test05461() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectMapper objectMapper0 = new ObjectMapper((JsonFactory) null);
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    SimpleNsStreamWriter simpleNsStreamWriter0 = new SimpleNsStreamWriter((XmlWriter) null, ""T/]lUXv_Pw"", writerConfig0);
+    StreamWriterDelegate streamWriterDelegate0 = new StreamWriterDelegate(simpleNsStreamWriter0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 4900, 3, objectMapper0, streamWriterDelegate0);
+    try {
+        toXmlGenerator0.writeRawValue("""", 56319, 3);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Underlying Stax XMLStreamWriter (of type org.codehaus.stax2.util.StreamWriterDelegate) does not implement Stax2 API natively and is missing method 'writeRawValue': this breaks functionality such as indentation that relies on it. You need to upgrade to using compliant Stax implementation like Woodstox or Aalto
+        //
+        verifyException(""com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator"", e);
+    }
+}",""
+"@Override
+public void writeRawValue(String text, int offset, int len) throws IOException {
+    // [dataformat-xml#39]
+    if (_stax2Emulation) {
+        _reportUnimplementedStax2(""writeRawValue"");
+    }
+    try {
+        _verifyValueWrite(""write raw value"");
+        if (_nextName == null) {
+            handleMissingName();
+        }
+        if (_nextIsAttribute) {
+            _xmlWriter.writeAttribute(_nextName.getNamespaceURI(), _nextName.getLocalPart(), text.substring(offset, offset + len));
+        } else {
+            _xmlWriter.writeStartElement(_nextName.getNamespaceURI(), _nextName.getLocalPart());
+            _xmlWriter.writeRaw(text, offset, len);
+            _xmlWriter.writeEndElement();
+        }
+    } catch (XMLStreamException e) {
+        StaxUtil.throwAsGenerationException(e, this);
+    }
+}","public void test05562() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""writeRaw"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""writeRaw"", writerConfig0);
+    ObjectReader objectReader0 = objectMapper0.reader((JsonNodeFactory) null);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 1, 3, objectReader0, nonNsStreamWriter0);
+    QName qName0 = new QName(""writeRaw"");
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    // Undeclared exception!
+    try {
+        toXmlGenerator0.writeRawValue("""", 2, 3);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",""
+"@Override
+public void writeRawValue(String text, int offset, int len) throws IOException {
+    // [dataformat-xml#39]
+    if (_stax2Emulation) {
+        _reportUnimplementedStax2(""writeRawValue"");
+    }
+    try {
+        _verifyValueWrite(""write raw value"");
+        if (_nextName == null) {
+            handleMissingName();
+        }
+        if (_nextIsAttribute) {
+            _xmlWriter.writeAttribute(_nextName.getNamespaceURI(), _nextName.getLocalPart(), text.substring(offset, offset + len));
+        } else {
+            _xmlWriter.writeStartElement(_nextName.getNamespaceURI(), _nextName.getLocalPart());
+            _xmlWriter.writeRaw(text, offset, len);
+            _xmlWriter.writeEndElement();
+        }
+    } catch (XMLStreamException e) {
+        StaxUtil.throwAsGenerationException(e, this);
+    }
+}","public void test05663() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""writeRaw"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""writeRaw"", writerConfig0);
+    ObjectReader objectReader0 = objectMapper0.reader((JsonNodeFactory) null);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 1, 3, objectReader0, nonNsStreamWriter0);
+    QName qName0 = new QName(""writeRaw"");
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    toXmlGenerator0.setNextIsAttribute(true);
+    // Undeclared exception!
+    try {
+        toXmlGenerator0.writeRawValue("""", 2, 3);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",""
+"@Override
+public void writeRawValue(char[] text, int offset, int len) throws IOException {
+    // [dataformat-xml#39]
+    if (_stax2Emulation) {
+        _reportUnimplementedStax2(""writeRawValue"");
+    }
+    _verifyValueWrite(""write raw value"");
+    if (_nextName == null) {
+        handleMissingName();
+    }
+    try {
+        if (_nextIsAttribute) {
+            _xmlWriter.writeAttribute(_nextName.getNamespaceURI(), _nextName.getLocalPart(), new String(text, offset, len));
+        } else {
+            _xmlWriter.writeStartElement(_nextName.getNamespaceURI(), _nextName.getLocalPart());
+            _xmlWriter.writeRaw(text, offset, len);
+            _xmlWriter.writeEndElement();
+        }
+    } catch (XMLStreamException e) {
+        StaxUtil.throwAsGenerationException(e, this);
+    }
+}","public void test05764() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""[PreAndSuffixranformer('"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, false);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""Xwu#g'HA"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 3, 1, objectMapper0, nonNsStreamWriter0);
+    // Undeclared exception!
+    try {
+        toXmlGenerator0.writeRawValue((char[]) null, 1, (int) (byte) 64);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // No element/attribute name specified when trying to output element
+        //
+        verifyException(""com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator"", e);
+    }
+}",""
+"@Override
+public void writeRawValue(char[] text, int offset, int len) throws IOException {
+    // [dataformat-xml#39]
+    if (_stax2Emulation) {
+        _reportUnimplementedStax2(""writeRawValue"");
+    }
+    _verifyValueWrite(""write raw value"");
+    if (_nextName == null) {
+        handleMissingName();
+    }
+    try {
+        if (_nextIsAttribute) {
+            _xmlWriter.writeAttribute(_nextName.getNamespaceURI(), _nextName.getLocalPart(), new String(text, offset, len));
+        } else {
+            _xmlWriter.writeStartElement(_nextName.getNamespaceURI(), _nextName.getLocalPart());
+            _xmlWriter.writeRaw(text, offset, len);
+            _xmlWriter.writeEndElement();
+        }
+    } catch (XMLStreamException e) {
+        StaxUtil.throwAsGenerationException(e, this);
+    }
+}","public void test05865() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""[PreAndSuffxTransfomer('"");
+    ISOLatin1XmlWriter iSOLatin1XmlWriter0 = new ISOLatin1XmlWriter(mockPrintStream0, writerConfig0, false);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(iSOLatin1XmlWriter0, "",D,'"", writerConfig0);
+    StreamWriterDelegate streamWriterDelegate0 = new StreamWriterDelegate(nonNsStreamWriter0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 8000, 3, objectMapper0, streamWriterDelegate0);
+    try {
+        toXmlGenerator0.writeRawValue((char[]) null, 2, 180);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Underlying Stax XMLStreamWriter (of type org.codehaus.stax2.util.StreamWriterDelegate) does not implement Stax2 API natively and is missing method 'writeRawValue': this breaks functionality such as indentation that relies on it. You need to upgrade to using compliant Stax implementation like Woodstox or Aalto
+        //
+        verifyException(""com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator"", e);
+    }
+}",""
+"@Override
+public void writeRawValue(char[] text, int offset, int len) throws IOException {
+    // [dataformat-xml#39]
+    if (_stax2Emulation) {
+        _reportUnimplementedStax2(""writeRawValue"");
+    }
+    _verifyValueWrite(""write raw value"");
+    if (_nextName == null) {
+        handleMissingName();
+    }
+    try {
+        if (_nextIsAttribute) {
+            _xmlWriter.writeAttribute(_nextName.getNamespaceURI(), _nextName.getLocalPart(), new String(text, offset, len));
+        } else {
+            _xmlWriter.writeStartElement(_nextName.getNamespaceURI(), _nextName.getLocalPart());
+            _xmlWriter.writeRaw(text, offset, len);
+            _xmlWriter.writeEndElement();
+        }
+    } catch (XMLStreamException e) {
+        StaxUtil.throwAsGenerationException(e, this);
+    }
+}","public void test05966() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""[PreAndSuffixranformer('"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, false);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""Xwu#g'HA"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 3, 1, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName(""[PreAndSuffixranformer('"", ""Xwu#g'HA"", ""[PreAndSuffixranformer('"");
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    // Undeclared exception!
+    try {
+        toXmlGenerator0.writeRawValue((char[]) null, 1, (int) (byte) 64);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.ctc.wstx.sw.AsciiXmlWriter"", e);
+    }
+}",""
+"@Override
+public void writeRawValue(char[] text, int offset, int len) throws IOException {
+    // [dataformat-xml#39]
+    if (_stax2Emulation) {
+        _reportUnimplementedStax2(""writeRawValue"");
+    }
+    _verifyValueWrite(""write raw value"");
+    if (_nextName == null) {
+        handleMissingName();
+    }
+    try {
+        if (_nextIsAttribute) {
+            _xmlWriter.writeAttribute(_nextName.getNamespaceURI(), _nextName.getLocalPart(), new String(text, offset, len));
+        } else {
+            _xmlWriter.writeStartElement(_nextName.getNamespaceURI(), _nextName.getLocalPart());
+            _xmlWriter.writeRaw(text, offset, len);
+            _xmlWriter.writeEndElement();
+        }
+    } catch (XMLStreamException e) {
+        StaxUtil.throwAsGenerationException(e, this);
+    }
+}","public void test06067() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""[PreAndSuffixranformer('"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, false);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""Xwu#g'HA"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 3, 1, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName(""[PreAndSuffixranformer('"", ""Xwu#g'HA"", ""[PreAndSuffixranformer('"");
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    toXmlGenerator0.setNextIsAttribute(true);
+    // Undeclared exception!
+    try {
+        toXmlGenerator0.writeRawValue((char[]) null, 1, (int) (byte) 64);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"@Override
+public void writeRaw(String text, int offset, int len) throws IOException {
+    // [dataformat-xml#39]
+    if (_stax2Emulation) {
+        _reportUnimplementedStax2(""writeRaw"");
+    }
+    try {
+        _xmlWriter.writeRaw(text, offset, len);
+    } catch (XMLStreamException e) {
+        StaxUtil.throwAsGenerationException(e, this);
+    }
+}","public void test06168() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter((XmlWriter) null, ""S|H3;f+@@e|NUEJibj"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 1, 1, objectMapper0, nonNsStreamWriter0);
+    // Undeclared exception!
+    try {
+        toXmlGenerator0.writeRaw(""S|H3;f+@@e|NUEJibj"", 0, 1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.ctc.wstx.sw.BaseStreamWriter"", e);
+    }
+}",""
+"@Override
+public void writeRaw(String text, int offset, int len) throws IOException {
+    // [dataformat-xml#39]
+    if (_stax2Emulation) {
+        _reportUnimplementedStax2(""writeRaw"");
+    }
+    try {
+        _xmlWriter.writeRaw(text, offset, len);
+    } catch (XMLStreamException e) {
+        StaxUtil.throwAsGenerationException(e, this);
+    }
+}","public void test06269() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    SimpleModule simpleModule0 = new SimpleModule();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, simpleModule0, false);
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    ISOLatin1XmlWriter iSOLatin1XmlWriter0 = new ISOLatin1XmlWriter(pipedOutputStream0, writerConfig0, true);
+    RepairingNsStreamWriter repairingNsStreamWriter0 = new RepairingNsStreamWriter(iSOLatin1XmlWriter0, ""Can not write END_ELEMENT without open START_ELEMENT"", writerConfig0);
+    StreamWriterDelegate streamWriterDelegate0 = new StreamWriterDelegate(repairingNsStreamWriter0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 0, 1, (ObjectCodec) null, streamWriterDelegate0);
+    try {
+        toXmlGenerator0.writeRaw(""]5;F`o(l_AE'+*<9eU"", 0, 2);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Underlying Stax XMLStreamWriter (of type org.codehaus.stax2.util.StreamWriterDelegate) does not implement Stax2 API natively and is missing method 'writeRaw': this breaks functionality such as indentation that relies on it. You need to upgrade to using compliant Stax implementation like Woodstox or Aalto
+        //
+        verifyException(""com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator"", e);
+    }
+}",""
+"@Override
+public void writeRaw(char[] text, int offset, int len) throws IOException {
+    // [dataformat-xml#39]
+    if (_stax2Emulation) {
+        _reportUnimplementedStax2(""writeRaw"");
+    }
+    try {
+        _xmlWriter.writeRaw(text, offset, len);
+    } catch (XMLStreamException e) {
+        StaxUtil.throwAsGenerationException(e, this);
+    }
+}","public void test06370() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    SimpleModule simpleModule0 = new SimpleModule();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, simpleModule0, false);
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    ISOLatin1XmlWriter iSOLatin1XmlWriter0 = new ISOLatin1XmlWriter(pipedOutputStream0, writerConfig0, true);
+    RepairingNsStreamWriter repairingNsStreamWriter0 = new RepairingNsStreamWriter(iSOLatin1XmlWriter0, ""Can not write END_ELEMENT without open START_ELEMENT"", writerConfig0);
+    StreamWriterDelegate streamWriterDelegate0 = new StreamWriterDelegate(repairingNsStreamWriter0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 0, 1, (ObjectCodec) null, streamWriterDelegate0);
+    char[] charArray0 = new char[1];
+    try {
+        toXmlGenerator0.writeRaw(charArray0, 56319, 56320);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Underlying Stax XMLStreamWriter (of type org.codehaus.stax2.util.StreamWriterDelegate) does not implement Stax2 API natively and is missing method 'writeRaw': this breaks functionality such as indentation that relies on it. You need to upgrade to using compliant Stax implementation like Woodstox or Aalto
+        //
+        verifyException(""com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator"", e);
+    }
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test06673() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream("">C&'"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, "">C&'"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 1, 1, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName("">C&'"", "">C&'"");
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    byte[] byteArray0 = new byte[0];
+    toXmlGenerator0.writeBinary(byteArray0, 57343, 0);
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test06774() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""[PreAndSuffixranformer('"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""Xwu#g'HA"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 3, 1, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName(""[PreAndSuffixranformer('"", ""Xwu#g'HA"", ""[PreAndSuffixranformer('"");
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    toXmlGenerator0.setNextIsAttribute(true);
+    byte[] byteArray0 = new byte[3];
+    toXmlGenerator0.writeBinary(byteArray0, 0, 3);
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test06875() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream("">C&'"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, "">C&'"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 1, 1, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName("">C&'"", "">C&'"");
+    toXmlGenerator0._nextIsUnwrapped = true;
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    byte[] byteArray0 = new byte[0];
+    toXmlGenerator0.writeBinary(byteArray0, 57343, 0);
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test07178() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""[PreAndSuffixranformer('"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""[PreAndSuffixranformer('"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 3, 1, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName(""[PreAndSuffixranformer('"", ""[PreAndSuffixranformer('"", ""[PreAndSuffixranformer('"");
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    toXmlGenerator0.setNextIsAttribute(true);
+    byte[] byteArray0 = new byte[4];
+    toXmlGenerator0.writeBinary(byteArray0, (-361), (int) (byte) 0);
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"/*
+    /**********************************************************
+    /* Output method implementations, primitive
+    /**********************************************************
+     */
+@Override
+public void writeBoolean(boolean value) throws IOException {
+    _verifyValueWrite(""write boolean value"");
+    if (_nextName == null) {
+        handleMissingName();
+    }
+    try {
+        if (_nextIsAttribute) {
+            _xmlWriter.writeBooleanAttribute(null, _nextName.getNamespaceURI(), _nextName.getLocalPart(), value);
+        } else if (checkNextIsUnwrapped()) {
+            // should we consider pretty-printing or not?
+            _xmlWriter.writeBoolean(value);
+        } else {
+            if (_xmlPrettyPrinter != null) {
+                _xmlPrettyPrinter.writeLeafElement(_xmlWriter, _nextName.getNamespaceURI(), _nextName.getLocalPart(), value);
+            } else {
+                _xmlWriter.writeStartElement(_nextName.getNamespaceURI(), _nextName.getLocalPart());
+                _xmlWriter.writeBoolean(value);
+                _xmlWriter.writeEndElement();
+            }
+        }
+    } catch (XMLStreamException e) {
+        StaxUtil.throwAsGenerationException(e, this);
+    }
+}","public void test07279() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    RepairingNsStreamWriter repairingNsStreamWriter0 = new RepairingNsStreamWriter((XmlWriter) null, "",@R^:V702P=>zRt+"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 3, 2, objectMapper0, repairingNsStreamWriter0);
+    // Undeclared exception!
+    try {
+        toXmlGenerator0.writeBoolean(true);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // No element/attribute name specified when trying to output element
+        //
+        verifyException(""com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator"", e);
+    }
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test07380() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockFile mockFile0 = new MockFile(""[PreAndSuffixTrasfomer('"", ""[PreAndSuffixTrasfomer('"");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(mockFile0);
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, false);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""[PreAndSuffixTrasfomer('"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 3, 1, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName(""[PreAndSuffixTrasfomer('"", ""[PreAndSuffixTrasfomer('"", ""[PreAndSuffixTrasfomer('"");
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    toXmlGenerator0._nextIsAttribute = true;
+    toXmlGenerator0.writeBoolean(false);
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test07683() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""Can not write END_ELEENTwithout openSTART_ELEMENT"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""Can not write END_ELEENTwithout openSTART_ELEMENT"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 1, 1, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName(""Can not write END_ELEENTwithout openSTART_ELEMENT"", ""Can not write END_ELEENTwithout openSTART_ELEMENT"", ""Can not write END_ELEENTwithout openSTART_ELEMENT"");
+    toXmlGenerator0._nextIsUnwrapped = true;
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    toXmlGenerator0.writeObject(writerConfig0);
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public void writeNumber(int i) throws IOException {
+    _verifyValueWrite(""write number"");
+    if (_nextName == null) {
+        handleMissingName();
+    }
+    try {
+        if (_nextIsAttribute) {
+            _xmlWriter.writeIntAttribute(null, _nextName.getNamespaceURI(), _nextName.getLocalPart(), i);
+        } else if (checkNextIsUnwrapped()) {
+            // should we consider pretty-printing or not?
+            _xmlWriter.writeInt(i);
+        } else {
+            if (_xmlPrettyPrinter != null) {
+                _xmlPrettyPrinter.writeLeafElement(_xmlWriter, _nextName.getNamespaceURI(), _nextName.getLocalPart(), i);
+            } else {
+                _xmlWriter.writeStartElement(_nextName.getNamespaceURI(), _nextName.getLocalPart());
+                _xmlWriter.writeInt(i);
+                _xmlWriter.writeEndElement();
+            }
+        }
+    } catch (XMLStreamException e) {
+        StaxUtil.throwAsGenerationException(e, this);
+    }
+}","public void test07784() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""[PreAndSuffxTransfomer('"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""[PreAndSuffxTransfomer('"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 2, 1, objectMapper0, nonNsStreamWriter0);
+    // Undeclared exception!
+    try {
+        toXmlGenerator0.writeNumber(1);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // No element/attribute name specified when trying to output element
+        //
+        verifyException(""com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator"", e);
+    }
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test07885() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""Can not write END_ELEMENT without open START_ELEMENT"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""Can not write END_ELEMENT without open START_ELEMENT"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 1, 1, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName(""Can not write END_ELEMENT without open START_ELEMENT"", ""Can not write END_ELEMENT without open START_ELEMENT"", ""Can not write END_ELEMENT without open START_ELEMENT"");
+    toXmlGenerator0._nextIsUnwrapped = true;
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    toXmlGenerator0.writeObject(asciiXmlWriter0);
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public void writeNumber(long l) throws IOException {
+    _verifyValueWrite(""write number"");
+    if (_nextName == null) {
+        handleMissingName();
+    }
+    try {
+        if (_nextIsAttribute) {
+            _xmlWriter.writeLongAttribute(null, _nextName.getNamespaceURI(), _nextName.getLocalPart(), l);
+        } else if (checkNextIsUnwrapped()) {
+            _xmlWriter.writeLong(l);
+        } else {
+            if (_xmlPrettyPrinter != null) {
+                _xmlPrettyPrinter.writeLeafElement(_xmlWriter, _nextName.getNamespaceURI(), _nextName.getLocalPart(), l);
+            } else {
+                _xmlWriter.writeStartElement(_nextName.getNamespaceURI(), _nextName.getLocalPart());
+                _xmlWriter.writeLong(l);
+                _xmlWriter.writeEndElement();
+            }
+        }
+    } catch (XMLStreamException e) {
+        StaxUtil.throwAsGenerationException(e, this);
+    }
+}","public void test07986() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    RepairingNsStreamWriter repairingNsStreamWriter0 = new RepairingNsStreamWriter((XmlWriter) null, "",@R^2:V702P=>@3t+"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 3, 2, objectMapper0, repairingNsStreamWriter0);
+    // Undeclared exception!
+    try {
+        toXmlGenerator0.writeNumber((long) 1);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // No element/attribute name specified when trying to output element
+        //
+        verifyException(""com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator"", e);
+    }
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test08087() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""[PreAndSuffixranformer('"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""Xwu#g'HA"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 3, 1, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName(""[PreAndSuffixranformer('"", ""Xwu#g'HA"", ""[PreAndSuffixranformer('"");
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    toXmlGenerator0.setNextIsAttribute(true);
+    toXmlGenerator0.writeNumber((long) 3);
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test08188() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream("">C&'"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, "">C&'"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 1, 1, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName("">C&'"", "">C&'"");
+    toXmlGenerator0._nextIsUnwrapped = true;
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    toXmlGenerator0.writeNumber((long) 0);
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test08289() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    MockFile mockFile0 = new MockFile(""Failed to setValue() for field "", ""Failed to setValue() for field "");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(mockFile0);
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, false);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""Failed to setValue() for field "", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 3, 3, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = QName.valueOf(""Failed to setValue() for field "");
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    toXmlGenerator0.writeNumber((double) 56320);
+    assertEquals(3, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public void writeNumber(double d) throws IOException {
+    _verifyValueWrite(""write number"");
+    if (_nextName == null) {
+        handleMissingName();
+    }
+    try {
+        if (_nextIsAttribute) {
+            _xmlWriter.writeDoubleAttribute(null, _nextName.getNamespaceURI(), _nextName.getLocalPart(), d);
+        } else if (checkNextIsUnwrapped()) {
+            _xmlWriter.writeDouble(d);
+        } else {
+            if (_xmlPrettyPrinter != null) {
+                _xmlPrettyPrinter.writeLeafElement(_xmlWriter, _nextName.getNamespaceURI(), _nextName.getLocalPart(), d);
+            } else {
+                _xmlWriter.writeStartElement(_nextName.getNamespaceURI(), _nextName.getLocalPart());
+                _xmlWriter.writeDouble(d);
+                _xmlWriter.writeEndElement();
+            }
+        }
+    } catch (XMLStreamException e) {
+        StaxUtil.throwAsGenerationException(e, this);
+    }
+}","public void test08390() throws Throwable {
+    StreamWriter2Delegate streamWriter2Delegate0 = new StreamWriter2Delegate((XMLStreamWriter2) null);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator((IOContext) null, 56319, (-1328), (ObjectCodec) null, streamWriter2Delegate0);
+    // Undeclared exception!
+    try {
+        toXmlGenerator0.writeNumber((double) 56319);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // No element/attribute name specified when trying to output element
+        //
+        verifyException(""com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator"", e);
+    }
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test08491() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""[PreAndSuffixranformer('"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""Xwu#g'HA"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 3, 1, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName(""[PreAndSuffixranformer('"", ""Xwu#g'HA"", ""[PreAndSuffixranformer('"");
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    toXmlGenerator0.setNextIsAttribute(true);
+    toXmlGenerator0.writeNumber((double) (byte) 64);
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test08592() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream("">C&'"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, "">C&'"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 1, 1, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName("">C&'"", "">C&'"");
+    toXmlGenerator0._nextIsUnwrapped = true;
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    toXmlGenerator0.writeNumber(0.0);
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test08693() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    MockFile mockFile0 = new MockFile(""Failed to setValue() for field "", ""Failed to setValue() for field "");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(mockFile0);
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, false);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""Failed to setValue() for field "", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 3, 3, objectMapper0, nonNsStreamWriter0);
+    toXmlGenerator0.useDefaultPrettyPrinter();
+    QName qName0 = QName.valueOf(""Failed to setValue() for field "");
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    toXmlGenerator0.writeNumber((double) 56320);
+    assertEquals(3, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test08794() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream("">C&'"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, "">C&'"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 1, 1, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName("">C&'"", "">C&'"");
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    toXmlGenerator0.writeNumber((float) 56320);
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public void writeNumber(float f) throws IOException {
+    _verifyValueWrite(""write number"");
+    if (_nextName == null) {
+        handleMissingName();
+    }
+    try {
+        if (_nextIsAttribute) {
+            _xmlWriter.writeFloatAttribute(null, _nextName.getNamespaceURI(), _nextName.getLocalPart(), f);
+        } else if (checkNextIsUnwrapped()) {
+            _xmlWriter.writeFloat(f);
+        } else {
+            if (_xmlPrettyPrinter != null) {
+                _xmlPrettyPrinter.writeLeafElement(_xmlWriter, _nextName.getNamespaceURI(), _nextName.getLocalPart(), f);
+            } else {
+                _xmlWriter.writeStartElement(_nextName.getNamespaceURI(), _nextName.getLocalPart());
+                _xmlWriter.writeFloat(f);
+                _xmlWriter.writeEndElement();
+            }
+        }
+    } catch (XMLStreamException e) {
+        StaxUtil.throwAsGenerationException(e, this);
+    }
+}","public void test08895() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    RepairingNsStreamWriter repairingNsStreamWriter0 = new RepairingNsStreamWriter((XmlWriter) null, """", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 2, 3, objectMapper0, repairingNsStreamWriter0);
+    // Undeclared exception!
+    try {
+        toXmlGenerator0.writeNumber((float) 0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // No element/attribute name specified when trying to output element
+        //
+        verifyException(""com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator"", e);
+    }
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test08996() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream("".>`B'"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, "".>`B'"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 3, 1, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = QName.valueOf("".>`B'"");
+    toXmlGenerator0.setNextIsAttribute(true);
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    toXmlGenerator0.writeNumber((float) 0);
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test09097() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream("">C&'"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, "">C&'"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 1, 1, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName("">C&'"", "">C&'"");
+    toXmlGenerator0._nextIsUnwrapped = true;
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    toXmlGenerator0.writeNumber((float) 56320);
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test09198() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    MockFile mockFile0 = new MockFile(""[PreAndSffixTrdnsormer'"", ""[PreAndSffixTrdnsormer'"");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(mockFile0);
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, false);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""[PreAndSffixTrdnsormer'"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 3, 3, objectMapper0, nonNsStreamWriter0);
+    ToXmlGenerator toXmlGenerator1 = (ToXmlGenerator) toXmlGenerator0.useDefaultPrettyPrinter();
+    QName qName0 = QName.valueOf(""[PreAndSffixTrdnsormer'"");
+    toXmlGenerator1.startWrappedValue(qName0, qName0);
+    toXmlGenerator1.writeNumber((float) 55296);
+    assertEquals(3, toXmlGenerator1.getFormatFeatures());
+}",""
+"@Override
+public void writeNumber(BigDecimal dec) throws IOException {
+    if (dec == null) {
+        writeNull();
+        return;
+    }
+    _verifyValueWrite(""write number"");
+    if (_nextName == null) {
+        handleMissingName();
+    }
+    boolean usePlain = isEnabled(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN);
+    try {
+        if (_nextIsAttribute) {
+            if (usePlain) {
+                _xmlWriter.writeAttribute("""", _nextName.getNamespaceURI(), _nextName.getLocalPart(), dec.toPlainString());
+            } else {
+                _xmlWriter.writeDecimalAttribute("""", _nextName.getNamespaceURI(), _nextName.getLocalPart(), dec);
+            }
+        } else if (checkNextIsUnwrapped()) {
+            if (usePlain) {
+                _xmlWriter.writeCharacters(dec.toPlainString());
+            } else {
+                _xmlWriter.writeDecimal(dec);
+            }
+        } else {
+            if (_xmlPrettyPrinter != null) {
+                _xmlPrettyPrinter.writeLeafElement(_xmlWriter, _nextName.getNamespaceURI(), _nextName.getLocalPart(), dec);
+            } else {
+                _xmlWriter.writeStartElement(_nextName.getNamespaceURI(), _nextName.getLocalPart());
+                if (usePlain) {
+                    _xmlWriter.writeCharacters(dec.toPlainString());
+                } else {
+                    _xmlWriter.writeDecimal(dec);
+                }
+                _xmlWriter.writeEndElement();
+            }
+        }
+    } catch (XMLStreamException e) {
+        StaxUtil.throwAsGenerationException(e, this);
+    }
+}","public void test09299() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""Can not write END_ELEMENT without open START_ELEMENT"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""Can not write END_ELEMENT without open START_ELEMENT"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 1, 1, objectMapper0, nonNsStreamWriter0);
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    // Undeclared exception!
+    try {
+        toXmlGenerator0.writeNumber(bigDecimal0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // No element/attribute name specified when trying to output element
+        //
+        verifyException(""com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator"", e);
+    }
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test093100() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""Can not write END_ELEMENT without open START_ELEMENT"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""Can not write END_ELEMENT without open START_ELEMENT"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 1, 1, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName(""Can not write END_ELEMENT without open START_ELEMENT"", ""Can not write END_ELEMENT without open START_ELEMENT"");
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    toXmlGenerator0.writeNumber(bigDecimal0);
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test094101() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockFile mockFile0 = new MockFile(""[PreAndSuffixTrasfomer('"", ""[PreAndSuffixTrasfomer('"");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(mockFile0);
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, false);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""[PreAndSuffixTrasfomer('"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 3, 1, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName(""[PreAndSuffixTrasfomer('"", ""[PreAndSuffixTrasfomer('"", ""[PreAndSuffixTrasfomer('"");
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    toXmlGenerator0._nextIsAttribute = true;
+    BigDecimal bigDecimal0 = new BigDecimal(56320);
+    toXmlGenerator0.writeNumber(bigDecimal0);
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test095102() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockFile mockFile0 = new MockFile(""[PreAndSuffixTransformer('"", ""[PreAndSuffixTransformer('"");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(mockFile0);
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, false);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, """", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 2897, 3, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName("""", """", """");
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    toXmlGenerator0.setNextIsAttribute(true);
+    BigDecimal bigDecimal0 = new BigDecimal(2286L);
+    toXmlGenerator0.writeNumber(bigDecimal0);
+    assertEquals(3, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test096103() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""Can not write END_ELEME>T withot ope START_E1EMENT"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""Can not write END_ELEME>T withot ope START_E1EMENT"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 1, 1, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = QName.valueOf(""Can not write END_ELEME>T withot ope START_E1EMENT"");
+    toXmlGenerator0._nextIsUnwrapped = true;
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    toXmlGenerator0.writeNumber(bigDecimal0);
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test097104() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""[\""eAndSuffixTrasfomer("");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, false);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""[\""eAndSuffixTrasfomer("", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 3022, 0, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = QName.valueOf(""[\""eAndSuffixTrasfomer("");
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    toXmlGenerator0.writeNumber(bigDecimal0);
+    assertEquals(0, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public void writeNumber(BigInteger value) throws IOException {
+    if (value == null) {
+        writeNull();
+        return;
+    }
+    _verifyValueWrite(""write number"");
+    if (_nextName == null) {
+        handleMissingName();
+    }
+    try {
+        if (_nextIsAttribute) {
+            _xmlWriter.writeIntegerAttribute("""", _nextName.getNamespaceURI(), _nextName.getLocalPart(), value);
+        } else if (checkNextIsUnwrapped()) {
+            _xmlWriter.writeInteger(value);
+        } else {
+            if (_xmlPrettyPrinter != null) {
+                _xmlPrettyPrinter.writeLeafElement(_xmlWriter, _nextName.getNamespaceURI(), _nextName.getLocalPart(), value);
+            } else {
+                _xmlWriter.writeStartElement(_nextName.getNamespaceURI(), _nextName.getLocalPart());
+                _xmlWriter.writeInteger(value);
+                _xmlWriter.writeEndElement();
+            }
+        }
+    } catch (XMLStreamException e) {
+        StaxUtil.throwAsGenerationException(e, this);
+    }
+}","public void test098105() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""Can not write END_ELEMENT without open START_ELEMENT"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""Can not write END_ELEMENT without open START_ELEMENT"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 1, 1, objectMapper0, nonNsStreamWriter0);
+    BigInteger bigInteger0 = BigInteger.ONE;
+    // Undeclared exception!
+    try {
+        toXmlGenerator0.writeNumber(bigInteger0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // No element/attribute name specified when trying to output element
+        //
+        verifyException(""com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator"", e);
+    }
+}",""
+"@Override
+public void writeNumber(BigInteger value) throws IOException {
+    if (value == null) {
+        writeNull();
+        return;
+    }
+    _verifyValueWrite(""write number"");
+    if (_nextName == null) {
+        handleMissingName();
+    }
+    try {
+        if (_nextIsAttribute) {
+            _xmlWriter.writeIntegerAttribute("""", _nextName.getNamespaceURI(), _nextName.getLocalPart(), value);
+        } else if (checkNextIsUnwrapped()) {
+            _xmlWriter.writeInteger(value);
+        } else {
+            if (_xmlPrettyPrinter != null) {
+                _xmlPrettyPrinter.writeLeafElement(_xmlWriter, _nextName.getNamespaceURI(), _nextName.getLocalPart(), value);
+            } else {
+                _xmlWriter.writeStartElement(_nextName.getNamespaceURI(), _nextName.getLocalPart());
+                _xmlWriter.writeInteger(value);
+                _xmlWriter.writeEndElement();
+            }
+        }
+    } catch (XMLStreamException e) {
+        StaxUtil.throwAsGenerationException(e, this);
+    }
+}","public void test099106() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""[PreAndSuffxTransfomer('"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""[PreAndSuffxTransfomer('"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 2, 1, objectMapper0, nonNsStreamWriter0);
+    // Undeclared exception!
+    try {
+        toXmlGenerator0.writeNumber((BigInteger) null);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // No element/attribute name specified when trying to output element
+        //
+        verifyException(""com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator"", e);
+    }
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test100107() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""Can not write END_ELEMENT without open START_ELEMENT"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""Can not write END_ELEMENT without open START_ELEMENT"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 1, 1, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName(""Can not write END_ELEMENT without open START_ELEMENT"", ""Can not write END_ELEMENT without open START_ELEMENT"", ""Can not write END_ELEMENT without open START_ELEMENT"");
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    BigInteger bigInteger0 = BigInteger.ONE;
+    toXmlGenerator0.writeNumber(bigInteger0);
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test101108() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""[PreAndSuffixranformer('"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""Xwu#g'HA"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 3, 1, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName(""[PreAndSuffixranformer('"", ""Xwu#g'HA"", ""[PreAndSuffixranformer('"");
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    toXmlGenerator0.setNextIsAttribute(true);
+    BigInteger bigInteger0 = BigInteger.ONE;
+    toXmlGenerator0.writeNumber(bigInteger0);
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test102109() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""Can not write END_ELEMENT without open START_ELEMENT"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""Can not write END_ELEMENT without open START_ELEMENT"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 1, 1, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName(""Can not write END_ELEMENT without open START_ELEMENT"", ""Can not write END_ELEMENT without open START_ELEMENT"", ""Can not write END_ELEMENT without open START_ELEMENT"");
+    toXmlGenerator0._nextIsUnwrapped = true;
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    BigInteger bigInteger0 = BigInteger.ONE;
+    toXmlGenerator0.writeNumber(bigInteger0);
+    assertEquals(1, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public void writeNumber(BigDecimal dec) throws IOException {
+    if (dec == null) {
+        writeNull();
+        return;
+    }
+    _verifyValueWrite(""write number"");
+    if (_nextName == null) {
+        handleMissingName();
+    }
+    boolean usePlain = isEnabled(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN);
+    try {
+        if (_nextIsAttribute) {
+            if (usePlain) {
+                _xmlWriter.writeAttribute("""", _nextName.getNamespaceURI(), _nextName.getLocalPart(), dec.toPlainString());
+            } else {
+                _xmlWriter.writeDecimalAttribute("""", _nextName.getNamespaceURI(), _nextName.getLocalPart(), dec);
+            }
+        } else if (checkNextIsUnwrapped()) {
+            if (usePlain) {
+                _xmlWriter.writeCharacters(dec.toPlainString());
+            } else {
+                _xmlWriter.writeDecimal(dec);
+            }
+        } else {
+            if (_xmlPrettyPrinter != null) {
+                _xmlPrettyPrinter.writeLeafElement(_xmlWriter, _nextName.getNamespaceURI(), _nextName.getLocalPart(), dec);
+            } else {
+                _xmlWriter.writeStartElement(_nextName.getNamespaceURI(), _nextName.getLocalPart());
+                if (usePlain) {
+                    _xmlWriter.writeCharacters(dec.toPlainString());
+                } else {
+                    _xmlWriter.writeDecimal(dec);
+                }
+                _xmlWriter.writeEndElement();
+            }
+        }
+    } catch (XMLStreamException e) {
+        StaxUtil.throwAsGenerationException(e, this);
+    }
+}","public void test104111() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""Can not write END_ELEME>T withot ope START_E1EMENT"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""Can not write END_ELEME>T withot ope START_E1EMENT"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 1, 1, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = QName.valueOf(""Can not write END_ELEME>T withot ope START_E1EMENT"");
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    toXmlGenerator0.writeStartObject((Object) objectMapper0);
+    BigDecimal bigDecimal0 = BigDecimal.TEN;
+    try {
+        toXmlGenerator0.writeNumber(bigDecimal0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Can not write number, expecting field name
+        //
+        verifyException(""com.fasterxml.jackson.core.JsonGenerator"", e);
+    }
+}",""
+"@Override
+public int getFormatFeatures() {
+    return _formatFeatures;
+}","public void test105112() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""Can not write END_ELEENTwithout openSTART_ELEMENT"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, true);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""Can not write END_ELEENTwithout openSTART_ELEMENT"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 965, 2, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = new QName(""Can not write END_ELEENTwithout openSTART_ELEMENT"", ""Can not write END_ELEENTwithout openSTART_ELEMENT"", ""Can not write END_ELEENTwithout openSTART_ELEMENT"");
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    toXmlGenerator0.writeObject(""Can not write END_ELEENTwithout openSTART_ELEMENT"");
+    assertEquals(2, toXmlGenerator0.getFormatFeatures());
+}",""
+"@Override
+public void close() throws IOException {
+    //        boolean wasClosed = _closed;
+    super.close();
+    // First: let's see that we still have buffers...
+    if (isEnabled(JsonGenerator.Feature.AUTO_CLOSE_JSON_CONTENT)) {
+        try {
+            while (true) {
+                /* 28-May-2016, tatu: To work around incompatibility introduced by
+		     *     `jackson-core` 2.8 where return type of `getOutputContext()`
+		     *     changed, let's do direct access here.
+		     */
+                //                    JsonStreamContext ctxt = getOutputContext();
+                JsonStreamContext ctxt = _writeContext;
+                if (ctxt.inArray()) {
+                    writeEndArray();
+                } else if (ctxt.inObject()) {
+                    writeEndObject();
+                } else {
+                    break;
+                }
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            /* 29-Nov-2010, tatu: Stupid, stupid SJSXP doesn't do array checks, so we get
+                 *   hit by this as a collateral problem in some cases. Yuck.
+                 */
+            throw new JsonGenerationException(e, this);
+        }
+    }
+    try {
+        if (_ioContext.isResourceManaged() || isEnabled(JsonGenerator.Feature.AUTO_CLOSE_TARGET)) {
+            _xmlWriter.closeCompletely();
+        } else {
+            _xmlWriter.close();
+        }
+    } catch (XMLStreamException e) {
+        StaxUtil.throwAsGenerationException(e, this);
+    }
+}","public void test106113() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createFullDefaults();
+    RepairingNsStreamWriter repairingNsStreamWriter0 = new RepairingNsStreamWriter((XmlWriter) null, ""E~d"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 0, 3, objectMapper0, repairingNsStreamWriter0);
+    try {
+        toXmlGenerator0.close();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Trying to write END_DOCUMENT when document has no root (ie. trying to output empty document).
+        //
+        verifyException(""com.fasterxml.jackson.dataformat.xml.util.StaxUtil"", e);
+    }
+}",""
+"@Override
+public void close() throws IOException {
+    //        boolean wasClosed = _closed;
+    super.close();
+    // First: let's see that we still have buffers...
+    if (isEnabled(JsonGenerator.Feature.AUTO_CLOSE_JSON_CONTENT)) {
+        try {
+            while (true) {
+                /* 28-May-2016, tatu: To work around incompatibility introduced by
+		     *     `jackson-core` 2.8 where return type of `getOutputContext()`
+		     *     changed, let's do direct access here.
+		     */
+                //                    JsonStreamContext ctxt = getOutputContext();
+                JsonStreamContext ctxt = _writeContext;
+                if (ctxt.inArray()) {
+                    writeEndArray();
+                } else if (ctxt.inObject()) {
+                    writeEndObject();
+                } else {
+                    break;
+                }
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            /* 29-Nov-2010, tatu: Stupid, stupid SJSXP doesn't do array checks, so we get
+                 *   hit by this as a collateral problem in some cases. Yuck.
+                 */
+            throw new JsonGenerationException(e, this);
+        }
+    }
+    try {
+        if (_ioContext.isResourceManaged() || isEnabled(JsonGenerator.Feature.AUTO_CLOSE_TARGET)) {
+            _xmlWriter.closeCompletely();
+        } else {
+            _xmlWriter.close();
+        }
+    } catch (XMLStreamException e) {
+        StaxUtil.throwAsGenerationException(e, this);
+    }
+}","public void test107114() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    RepairingNsStreamWriter repairingNsStreamWriter0 = new RepairingNsStreamWriter((XmlWriter) null, """", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 3, 2, objectMapper0, repairingNsStreamWriter0);
+    toXmlGenerator0.writeStartArray(2);
+    try {
+        toXmlGenerator0.close();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Trying to write END_DOCUMENT when document has no root (ie. trying to output empty document).
+        //
+        verifyException(""com.fasterxml.jackson.dataformat.xml.util.StaxUtil"", e);
+    }
+}",""
+"// @since 2.7.5
+public boolean inRoot() {
+    return _writeContext.inRoot();
+}","public void test108115() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, false);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    WriterConfig writerConfig0 = WriterConfig.createJ2MEDefaults();
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""[\""reAndSuffixTrasfomerM"");
+    AsciiXmlWriter asciiXmlWriter0 = new AsciiXmlWriter(mockPrintStream0, writerConfig0, false);
+    NonNsStreamWriter nonNsStreamWriter0 = new NonNsStreamWriter(asciiXmlWriter0, ""[\""reAndSuffixTrasfomerM"", writerConfig0);
+    ToXmlGenerator toXmlGenerator0 = new ToXmlGenerator(iOContext0, 3, 1, objectMapper0, nonNsStreamWriter0);
+    QName qName0 = QName.valueOf(""[\""reAndSuffixTrasfomerM"");
+    toXmlGenerator0.startWrappedValue(qName0, qName0);
+    toXmlGenerator0.writeStartObject();
+    toXmlGenerator0.close();
+    assertTrue(toXmlGenerator0.inRoot());
+}",""

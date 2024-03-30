@@ -1,0 +1,74 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test040,"public void test040() throws Throwable {
+    LevenbergMarquardtOptimizer levenbergMarquardtOptimizer0 = new LevenbergMarquardtOptimizer();
+    // Undeclared exception!
+    try {
+        levenbergMarquardtOptimizer0.doOptimize();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.optimization.general.AbstractLeastSquaresOptimizer"", e);
+    }
+}",0,
+project,0,test071,"public void test071() throws Throwable {
+    LevenbergMarquardtOptimizer levenbergMarquardtOptimizer0 = new LevenbergMarquardtOptimizer();
+    levenbergMarquardtOptimizer0.rows = (-2562);
+    levenbergMarquardtOptimizer0.checker = null;
+    levenbergMarquardtOptimizer0.doOptimize();
+    levenbergMarquardtOptimizer0.doOptimize();
+    // Undeclared exception!
+    try {
+        levenbergMarquardtOptimizer0.doOptimize();
+        fail(""Expecting exception: NegativeArraySizeException"");
+    } catch (NegativeArraySizeException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.optimization.general.LevenbergMarquardtOptimizer"", e);
+    }
+}",0,
+project,0,test082,"public void test082() throws Throwable {
+    LevenbergMarquardtOptimizer levenbergMarquardtOptimizer0 = new LevenbergMarquardtOptimizer();
+    levenbergMarquardtOptimizer0.rows = 1910;
+    levenbergMarquardtOptimizer0.doOptimize();
+    // Undeclared exception!
+    try {
+        levenbergMarquardtOptimizer0.doOptimize();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.optimization.general.AbstractLeastSquaresOptimizer"", e);
+    }
+}",0,
+project,0,test213,"public void test213() throws Throwable {
+    LevenbergMarquardtOptimizer levenbergMarquardtOptimizer0 = new LevenbergMarquardtOptimizer();
+    levenbergMarquardtOptimizer0.checker = null;
+    double[][] doubleArray0 = new double[2][9];
+    MultivariateMatrixFunction multivariateMatrixFunction0 = mock(MultivariateMatrixFunction.class, new ViolatedAssumptionAnswer());
+    doReturn((Object) doubleArray0, (Object) doubleArray0, (Object) doubleArray0).when(multivariateMatrixFunction0).value(any(double[].class));
+    double[] doubleArray1 = new double[2];
+    DifferentiableMultivariateVectorialFunction differentiableMultivariateVectorialFunction0 = mock(DifferentiableMultivariateVectorialFunction.class, new ViolatedAssumptionAnswer());
+    doReturn(multivariateMatrixFunction0).when(differentiableMultivariateVectorialFunction0).jacobian();
+    doReturn((Object) doubleArray1, (Object) doubleArray1, (Object) doubleArray1, (Object) doubleArray1).when(differentiableMultivariateVectorialFunction0).value(any(double[].class));
+    levenbergMarquardtOptimizer0.optimize(differentiableMultivariateVectorialFunction0, doubleArray1, doubleArray1, doubleArray1);
+    levenbergMarquardtOptimizer0.doOptimize();
+    doubleArray0[0] = doubleArray1;
+    levenbergMarquardtOptimizer0.setOrthoTolerance((-869.9265));
+    levenbergMarquardtOptimizer0.setInitialStepBoundFactor((-869.9265));
+    levenbergMarquardtOptimizer0.doOptimize();
+    levenbergMarquardtOptimizer0.doOptimize();
+    levenbergMarquardtOptimizer0.doOptimize();
+    try {
+        levenbergMarquardtOptimizer0.doOptimize();
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // orthogonality tolerance is too small (-869.927), solution is orthogonal to the jacobian
+        //
+        verifyException(""org.apache.commons.math.optimization.general.LevenbergMarquardtOptimizer"", e);
+    }
+}",0,

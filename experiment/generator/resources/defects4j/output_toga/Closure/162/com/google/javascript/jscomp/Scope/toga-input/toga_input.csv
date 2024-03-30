@@ -1,0 +1,402 @@
+focal_method,test_prefix,docstring
+"void regenerateGlobalTypedScope(AbstractCompiler compiler, Node root) {
+    internalScopeCreator = new TypedScopeCreator(compiler);
+    typedScopeCreator = new MemoizedScopeCreator(internalScopeCreator);
+    topScope = typedScopeCreator.createScope(root, null);
+}","public void test1730() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    DefaultPassConfig defaultPassConfig0 = new DefaultPassConfig((CompilerOptions) null);
+    Node node0 = compiler0.parseTestCode(""[native code]\n"");
+    defaultPassConfig0.regenerateGlobalTypedScope(compiler0, node0);
+    assertEquals(41, Node.BRACELESS_TYPE);
+}","/**
+ * Regenerates the top scope from scratch.
+ *
+ * @param compiler The compiler for which the global scope is regenerated.
+ * @param root The root of the AST.
+ */"
+"@Override
+public Iterable<Var> getAllSymbols() {
+    return Collections.unmodifiableCollection(vars.values());
+}","public void test1831() throws Throwable {
+    Scope scope0 = new Scope((Node) null, (ObjectType) null);
+    Iterable<Scope.Var> iterable0 = scope0.getAllSymbols();
+    assertNotNull(iterable0);
+}",""
+"public Iterator<Var> getDeclarativelyUnboundVarsWithoutTypes() {
+    return Iterators.filter(getVars(), DECLARATIVELY_UNBOUND_VARS_WITHOUT_TYPES);
+}","public void test1932() throws Throwable {
+    Node node0 = new Node((-60));
+    Scope scope0 = new Scope(node0, (ObjectType) null);
+    Iterator<Scope.Var> iterator0 = scope0.getDeclarativelyUnboundVarsWithoutTypes();
+    assertNotNull(iterator0);
+}","/**
+ * Gets all variables declared with ""var"" but without declared types attached.
+ */"
+"boolean isBottom() {
+    return isBottom;
+}","public void test2033() throws Throwable {
+    Scope scope0 = new Scope((Node) null, (ObjectType) null);
+    boolean boolean0 = scope0.isBottom();
+    assertTrue(boolean0);
+}","/**
+ * Whether this is the bottom of the lattice.
+ */"
+"@Override
+public StaticSlot<JSType> getSlot(String name) {
+    return getVar(name);
+}","public void test2235() throws Throwable {
+    Scope scope0 = new Scope((Node) null, (ObjectType) null);
+    StaticSlot<JSType> staticSlot0 = scope0.getSlot((String) null);
+    assertNull(staticSlot0);
+}",""
+"@Override
+public StaticScope<JSType> getScope(Var var) {
+    return var.scope;
+}","public void test2336() throws Throwable {
+    Scope scope0 = new Scope((Node) null, (ObjectType) null);
+    Scope.Arguments scope_Arguments0 = new Scope.Arguments(scope0);
+    StaticScope<JSType> staticScope0 = scope0.getScope((Scope.Var) scope_Arguments0);
+    assertNotNull(staticScope0);
+}",""
+"int getDepth() {
+    return depth;
+}","public void test2540() throws Throwable {
+    Scope scope0 = new Scope((Node) null, (ObjectType) null);
+    int int0 = scope0.getDepth();
+    assertEquals(0, int0);
+}","/**
+ * The depth of the scope. The global scope has depth 0.
+ */"
+"public int getVarCount() {
+    return vars.size();
+}","public void test2641() throws Throwable {
+    Scope scope0 = new Scope((Node) null, (ObjectType) null);
+    int int0 = scope0.getVarCount();
+    assertEquals(0, int0);
+}","/**
+ * Returns number of variables in this scope
+ */"
+"@Override
+public JSType getTypeOfThis() {
+    return cache.functionScope.getTypeOfThis();
+}","public void test2742() throws Throwable {
+    Scope scope0 = new Scope((Node) null, (ObjectType) null);
+    LinkedFlowScope linkedFlowScope0 = LinkedFlowScope.createEntryLattice(scope0);
+    JSType jSType0 = linkedFlowScope0.getTypeOfThis();
+    assertNull(jSType0);
+}",""
+"@Override
+public StaticSlot<JSType> getOwnSlot(String name) {
+    return vars.get(name);
+}","public void test2843() throws Throwable {
+    Scope scope0 = new Scope((Node) null, (ObjectType) null);
+    StaticSlot<JSType> staticSlot0 = scope0.getOwnSlot((String) null);
+    assertNull(staticSlot0);
+}",""
+"public boolean hasOneChild() {
+    return first != null && first == last;
+}","public void test3763() throws Throwable {
+    Node node0 = new Node(11, 11, 11);
+    Node node1 = new Node(105, node0, node0, node0);
+    Scope scope0 = new Scope(node0, (ObjectType) null);
+    Scope.Var scope_Var0 = scope0.declare(""Not declared as a type name"", node0, (JSType) null, (CompilerInput) null);
+    Node node2 = scope_Var0.getInitialValue();
+    assertTrue(node2.hasOneChild());
+}","/**
+ * Check for one child more efficiently than by iterating over all the
+ * children as is done with Node.getChildCount().
+ *
+ * @return Whether the node has exactly one child.
+ */"
+"public boolean hasOneChild() {
+    return first != null && first == last;
+}","public void test3866() throws Throwable {
+    Node node0 = new Node(11, 11, 1245);
+    Node node1 = new Node(86, node0, node0, node0);
+    Scope scope0 = new Scope(node0, (ObjectType) null);
+    Scope.Var scope_Var0 = scope0.declare(""Not declared as a type name"", node0, (JSType) null, (CompilerInput) null);
+    Node node2 = scope_Var0.getInitialValue();
+    assertFalse(node2.hasOneChild());
+}","/**
+ * Check for one child more efficiently than by iterating over all the
+ * children as is done with Node.getChildCount().
+ *
+ * @return Whether the node has exactly one child.
+ */"
+"Scope(Scope parent, Node rootNode) {
+    Preconditions.checkNotNull(parent);
+    Preconditions.checkArgument(rootNode != parent.rootNode);
+    this.parent = parent;
+    this.rootNode = rootNode;
+    JSType nodeType = rootNode.getJSType();
+    if (nodeType != null && nodeType.isFunctionType()) {
+        thisType = nodeType.toMaybeFunctionType().getTypeOfThis();
+    } else {
+        thisType = parent.thisType;
+    }
+    this.isBottom = false;
+    this.depth = parent.depth + 1;
+}","public void test5089() throws Throwable {
+    Scope scope0 = new Scope((Node) null, (ObjectType) null);
+    Scope scope1 = null;
+    try {
+        scope1 = new Scope(scope0, (Node) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * Creates a Scope given the parent Scope and the root node of the scope.
+ * @param parent  The parent Scope. Cannot be null.
+ * @param rootNode  Typically the FUNCTION node.
+ */"
+"public boolean isLocal() {
+    return !isGlobal();
+}","public void test5190() throws Throwable {
+    Node node0 = new Node((-60));
+    Node node1 = new Node((-60), node0);
+    Scope scope0 = new Scope(node0, (ObjectType) null);
+    Scope scope1 = new Scope(scope0, node1);
+    Scope scope2 = scope1.getGlobalScope();
+    assertFalse(scope2.isLocal());
+}","/**
+ * Returns whether this is a local scope (i.e. not the global scope).
+ */"
+"Var declare(String name, Node nameNode, JSType type, CompilerInput input) {
+    return declare(name, nameNode, type, input, true);
+}","public void test5291() throws Throwable {
+    Scope scope0 = new Scope((Node) null, (ObjectType) null);
+    // Undeclared exception!
+    try {
+        scope0.declare((String) null, (Node) null, (JSType) null, (CompilerInput) null);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * Declares a variable whose type is inferred.
+ *
+ * @param name name of the variable
+ * @param nameNode the NAME node declaring the variable
+ * @param type the variable's type
+ * @param input the input in which this variable is defined.
+ */"
+"Var declare(String name, Node nameNode, JSType type, CompilerInput input) {
+    return declare(name, nameNode, type, input, true);
+}","public void test5392() throws Throwable {
+    Scope scope0 = new Scope((Node) null, (ObjectType) null);
+    // Undeclared exception!
+    try {
+        scope0.declare("""", (Node) null, (JSType) null, (CompilerInput) null);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * Declares a variable whose type is inferred.
+ *
+ * @param name name of the variable
+ * @param nameNode the NAME node declaring the variable
+ * @param type the variable's type
+ * @param input the input in which this variable is defined.
+ */"
+"Var declare(String name, Node nameNode, JSType type, CompilerInput input) {
+    return declare(name, nameNode, type, input, true);
+}","public void test5493() throws Throwable {
+    Node node0 = new Node(0);
+    Scope scope0 = new Scope(node0, (ObjectType) null);
+    scope0.declare(""Unknown class name"", node0, (JSType) null, (CompilerInput) null);
+    // Undeclared exception!
+    try {
+        scope0.declare(""Unknown class name"", node0, (JSType) null, (CompilerInput) null);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * Declares a variable whose type is inferred.
+ *
+ * @param name name of the variable
+ * @param nameNode the NAME node declaring the variable
+ * @param type the variable's type
+ * @param input the input in which this variable is defined.
+ */"
+"void undeclare(Var var) {
+    Preconditions.checkState(var.scope == this);
+    Preconditions.checkState(vars.get(var.name) == var);
+    vars.remove(var.name);
+}","public void test5594() throws Throwable {
+    Node node0 = new Node((-15), (-15), (-15));
+    Node node1 = new Node(48, node0, node0, node0);
+    Scope scope0 = new Scope(node0, (ObjectType) null);
+    Scope scope1 = new Scope(scope0, node1);
+    Scope.Arguments scope_Arguments0 = new Scope.Arguments(scope1);
+    // Undeclared exception!
+    try {
+        scope0.undeclare(scope_Arguments0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * Undeclares a variable, to be used when the compiler optimizes out
+ * a variable and removes it from the scope.
+ */"
+"void undeclare(Var var) {
+    Preconditions.checkState(var.scope == this);
+    Preconditions.checkState(vars.get(var.name) == var);
+    vars.remove(var.name);
+}","public void test5796() throws Throwable {
+    Scope scope0 = new Scope((Node) null, (ObjectType) null);
+    Scope.Arguments scope_Arguments0 = new Scope.Arguments(scope0);
+    // Undeclared exception!
+    try {
+        scope0.undeclare(scope_Arguments0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}","/**
+ * Undeclares a variable, to be used when the compiler optimizes out
+ * a variable and removes it from the scope.
+ */"
+"public Var getVar(String name) {
+    Var var = vars.get(name);
+    if (var != null) {
+        return var;
+    } else if (parent != null) {
+        // Recurse up the parent Scope
+        return parent.getVar(name);
+    } else {
+        return null;
+    }
+}","public void test5898() throws Throwable {
+    Scope scope0 = new Scope((Node) null, (ObjectType) null);
+    scope0.declare(""`A"", (Node) null, (JSType) null, (CompilerInput) null);
+    Scope.Var scope_Var0 = scope0.getVar(""`A"");
+    assertNotNull(scope_Var0);
+}","/**
+ * Returns the variable, may be null
+ */"
+"public Var getVar(String name) {
+    Var var = vars.get(name);
+    if (var != null) {
+        return var;
+    } else if (parent != null) {
+        // Recurse up the parent Scope
+        return parent.getVar(name);
+    } else {
+        return null;
+    }
+}","public void test5999() throws Throwable {
+    Node node0 = new Node((-60));
+    Node node1 = new Node((-60), node0);
+    Scope scope0 = new Scope(node0, (ObjectType) null);
+    Scope scope1 = new Scope(scope0, node1);
+    Scope.Var scope_Var0 = scope1.getVar(""Not declared as a constructor"");
+    assertNull(scope_Var0);
+}","/**
+ * Returns the variable, may be null
+ */"
+"public Var getArgumentsVar() {
+    if (arguments == null) {
+        arguments = new Arguments(this);
+    }
+    return arguments;
+}","public void test60100() throws Throwable {
+    Scope scope0 = new Scope((Node) null, (ObjectType) null);
+    scope0.getArgumentsVar();
+    Scope.Var scope_Var0 = scope0.getArgumentsVar();
+    assertNotNull(scope_Var0);
+}","/**
+ * Get a unique VAR object to represents ""arguments"" within this scope
+ */"
+"public boolean isDeclared(String name, boolean recurse) {
+    Scope scope = this;
+    if (scope.vars.containsKey(name))
+        return true;
+    if (scope.parent != null && recurse) {
+        return scope.parent.isDeclared(name, recurse);
+    }
+    return false;
+}","public void test61103() throws Throwable {
+    Scope scope0 = new Scope((Node) null, (ObjectType) null);
+    Scope.Var scope_Var0 = scope0.declare(""HJ8Yd\""_IoRofb/Mb"", (Node) null, (JSType) null, (CompilerInput) null);
+    boolean boolean0 = scope0.isDeclared(""HJ8Yd\""_IoRofb/Mb"", false);
+    assertTrue(boolean0);
+}","/**
+ * Returns true if a variable is declared.
+ */"
+"public boolean isDeclared(String name, boolean recurse) {
+    Scope scope = this;
+    if (scope.vars.containsKey(name))
+        return true;
+    if (scope.parent != null && recurse) {
+        return scope.parent.isDeclared(name, recurse);
+    }
+    return false;
+}","public void test62104() throws Throwable {
+    Node node0 = new Node((-20));
+    Scope scope0 = new Scope((Node) null, (ObjectType) null);
+    Scope scope1 = new Scope(scope0, node0);
+    boolean boolean0 = scope1.isDeclared(""Not declared as a type name"", false);
+    assertFalse(boolean0);
+}","/**
+ * Returns true if a variable is declared.
+ */"
+"public boolean isDeclared(String name, boolean recurse) {
+    Scope scope = this;
+    if (scope.vars.containsKey(name))
+        return true;
+    if (scope.parent != null && recurse) {
+        return scope.parent.isDeclared(name, recurse);
+    }
+    return false;
+}","public void test63105() throws Throwable {
+    Node node0 = new Node((-20));
+    Scope scope0 = new Scope((Node) null, (ObjectType) null);
+    Scope scope1 = new Scope(scope0, node0);
+    boolean boolean0 = scope1.isDeclared(""Not declared as a type name"", true);
+    assertFalse(boolean0);
+}","/**
+ * Returns true if a variable is declared.
+ */"
+"public boolean isLocal() {
+    return !isGlobal();
+}","public void test64106() throws Throwable {
+    Node node0 = new Node((-20));
+    Scope scope0 = new Scope((Node) null, (ObjectType) null);
+    Scope scope1 = new Scope(scope0, node0);
+    boolean boolean0 = scope1.isLocal();
+    assertTrue(boolean0);
+}","/**
+ * Returns whether this is a local scope (i.e. not the global scope).
+ */"
+"public boolean isLocal() {
+    return !isGlobal();
+}","public void test65107() throws Throwable {
+    Scope scope0 = new Scope((Node) null, (ObjectType) null);
+    boolean boolean0 = scope0.isLocal();
+    assertFalse(boolean0);
+}","/**
+ * Returns whether this is a local scope (i.e. not the global scope).
+ */"

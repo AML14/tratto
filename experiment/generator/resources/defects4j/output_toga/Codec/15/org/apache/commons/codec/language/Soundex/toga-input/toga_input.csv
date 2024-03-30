@@ -1,0 +1,663 @@
+focal_method,test_prefix,docstring
+"@Deprecated
+public int getMaxLength() {
+    return this.maxLength;
+}","public void test000() throws Throwable {
+    Soundex soundex0 = new Soundex(""org.apache.commons.codec.EncoderException"");
+    String string0 = soundex0.soundex(""f.RdLls"");
+    assertEquals(4, soundex0.getMaxLength());
+}","/**
+ * Returns the maxLength. Standard Soundex
+ *
+ * @deprecated This feature is not needed since the encoding size must be constant. Will be removed in 2.0.
+ * @return int
+ */"
+"public String soundex(String str) {
+    if (str == null) {
+        return null;
+    }
+    str = SoundexUtils.clean(str);
+    if (str.length() == 0) {
+        return str;
+    }
+    final char[] out = { '0', '0', '0', '0' };
+    char last, mapped;
+    int incount = 1, count = 1;
+    out[0] = str.charAt(0);
+    // getMappingCode() throws IllegalArgumentException
+    last = getMappingCode(str, 0);
+    while (incount < str.length() && count < out.length) {
+        mapped = getMappingCode(str, incount++);
+        if (mapped != 0) {
+            if (mapped != '0' && mapped != last) {
+                out[count++] = mapped;
+            }
+            last = mapped;
+        }
+    }
+    return new String(out);
+}","public void test001() throws Throwable {
+    Soundex soundex0 = new Soundex(""org.apache.commons.codec.EncoderException"");
+    String string0 = soundex0.soundex(""f.RdLls"");
+    assertEquals(""Fs.c"", string0);
+}","/**
+ * Retrieves the Soundex code for a given String object.
+ *
+ * @param str
+ *                  String to encode using the Soundex algorithm
+ * @return A soundex code for the String supplied
+ * @throws IllegalArgumentException
+ *                  if a character is not mapped
+ */"
+"@Deprecated
+public int getMaxLength() {
+    return this.maxLength;
+}","public void test012() throws Throwable {
+    Soundex soundex0 = new Soundex();
+    assertEquals(4, soundex0.getMaxLength());
+}","/**
+ * Returns the maxLength. Standard Soundex
+ *
+ * @deprecated This feature is not needed since the encoding size must be constant. Will be removed in 2.0.
+ * @return int
+ */"
+"@Deprecated
+public int getMaxLength() {
+    return this.maxLength;
+}","public void test013() throws Throwable {
+    Soundex soundex0 = new Soundex();
+    soundex0.setMaxLength(0);
+    int int0 = soundex0.getMaxLength();
+    assertEquals(0, int0);
+}","/**
+ * Returns the maxLength. Standard Soundex
+ *
+ * @deprecated This feature is not needed since the encoding size must be constant. Will be removed in 2.0.
+ * @return int
+ */"
+"@Deprecated
+public int getMaxLength() {
+    return this.maxLength;
+}","public void test025() throws Throwable {
+    Soundex soundex0 = new Soundex();
+    soundex0.setMaxLength((-1));
+    int int0 = soundex0.getMaxLength();
+    assertEquals((-1), int0);
+}","/**
+ * Returns the maxLength. Standard Soundex
+ *
+ * @deprecated This feature is not needed since the encoding size must be constant. Will be removed in 2.0.
+ * @return int
+ */"
+"@Override
+public String encode(final String str) {
+    return soundex(str);
+}","public void test036() throws Throwable {
+    Soundex soundex0 = Soundex.US_ENGLISH;
+    String string0 = soundex0.encode((String) null);
+    assertNull(string0);
+}","/**
+ * Encodes a String using the soundex algorithm.
+ *
+ * @param str
+ *                  A String object to encode
+ * @return A Soundex code corresponding to the String supplied
+ * @throws IllegalArgumentException
+ *                  if a character is not mapped
+ */"
+"@Override
+public String encode(final String str) {
+    return soundex(str);
+}","public void test047() throws Throwable {
+    Soundex soundex0 = Soundex.US_ENGLISH;
+    String string0 = soundex0.US_ENGLISH.encode(""01230120022455012623010202"");
+    assertEquals("""", string0);
+}","/**
+ * Encodes a String using the soundex algorithm.
+ *
+ * @param str
+ *                  A String object to encode
+ * @return A Soundex code corresponding to the String supplied
+ * @throws IllegalArgumentException
+ *                  if a character is not mapped
+ */"
+"public int difference(final String s1, final String s2) throws EncoderException {
+    return SoundexUtils.difference(this, s1, s2);
+}","public void test058() throws Throwable {
+    Soundex soundex0 = new Soundex();
+    int int0 = soundex0.difference(""r!e=Mn"", ""r!e=Mn"");
+    assertEquals(4, int0);
+}","/**
+ * Encodes the Strings and returns the number of characters in the two encoded Strings that are the same. This
+ * return value ranges from 0 through 4: 0 indicates little or no similarity, and 4 indicates strong similarity or
+ * identical values.
+ *
+ * @param s1
+ *                  A String that will be encoded and compared.
+ * @param s2
+ *                  A String that will be encoded and compared.
+ * @return The number of characters in the two encoded Strings that are the same from 0 to 4.
+ *
+ * @see SoundexUtils#difference(StringEncoder,String,String)
+ * @see <a href=""http://msdn.microsoft.com/library/default.asp?url=/library/en-us/tsqlref/ts_de-dz_8co5.asp""> MS
+ *          T-SQL DIFFERENCE </a>
+ *
+ * @throws EncoderException
+ *                  if an error occurs encoding one of the strings
+ * @since 1.3
+ */"
+"@Deprecated
+public int getMaxLength() {
+    return this.maxLength;
+}","public void test059() throws Throwable {
+    Soundex soundex0 = new Soundex();
+    int int0 = soundex0.difference(""r!e=Mn"", ""r!e=Mn"");
+    assertEquals(4, soundex0.getMaxLength());
+}","/**
+ * Returns the maxLength. Standard Soundex
+ *
+ * @deprecated This feature is not needed since the encoding size must be constant. Will be removed in 2.0.
+ * @return int
+ */"
+"public String soundex(String str) {
+    if (str == null) {
+        return null;
+    }
+    str = SoundexUtils.clean(str);
+    if (str.length() == 0) {
+        return str;
+    }
+    final char[] out = { '0', '0', '0', '0' };
+    char last, mapped;
+    int incount = 1, count = 1;
+    out[0] = str.charAt(0);
+    // getMappingCode() throws IllegalArgumentException
+    last = getMappingCode(str, 0);
+    while (incount < str.length() && count < out.length) {
+        mapped = getMappingCode(str, incount++);
+        if (mapped != 0) {
+            if (mapped != '0' && mapped != last) {
+                out[count++] = mapped;
+            }
+            last = mapped;
+        }
+    }
+    return new String(out);
+}","public void test0610() throws Throwable {
+    Soundex soundex0 = new Soundex(""V.(\u0006}-BeBAV&OK%lO"");
+    // Undeclared exception!
+    try {
+        soundex0.soundex(""V.(\u0006}-BeBAV&OK%lO"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The character is not mapped: V
+        //
+        verifyException(""org.apache.commons.codec.language.Soundex"", e);
+    }
+}","/**
+ * Retrieves the Soundex code for a given String object.
+ *
+ * @param str
+ *                  String to encode using the Soundex algorithm
+ * @return A soundex code for the String supplied
+ * @throws IllegalArgumentException
+ *                  if a character is not mapped
+ */"
+"@Override
+public String encode(final String str) {
+    return soundex(str);
+}","public void test0711() throws Throwable {
+    Soundex soundex0 = new Soundex(""+C.H"");
+    // Undeclared exception!
+    try {
+        soundex0.encode(""Ea)^AavF^U}j]OC;"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The character is not mapped: E
+        //
+        verifyException(""org.apache.commons.codec.language.Soundex"", e);
+    }
+}","/**
+ * Encodes a String using the soundex algorithm.
+ *
+ * @param str
+ *                  A String object to encode
+ * @return A Soundex code corresponding to the String supplied
+ * @throws IllegalArgumentException
+ *                  if a character is not mapped
+ */"
+"public int difference(final String s1, final String s2) throws EncoderException {
+    return SoundexUtils.difference(this, s1, s2);
+}","public void test0812() throws Throwable {
+    char[] charArray0 = new char[10];
+    Soundex soundex0 = new Soundex(charArray0);
+    // Undeclared exception!
+    try {
+        soundex0.difference(""org.apache.cmmons.codec.EncoderException"", ""01230120022455012623010202"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The character is not mapped: O
+        //
+        verifyException(""org.apache.commons.codec.language.Soundex"", e);
+    }
+}","/**
+ * Encodes the Strings and returns the number of characters in the two encoded Strings that are the same. This
+ * return value ranges from 0 through 4: 0 indicates little or no similarity, and 4 indicates strong similarity or
+ * identical values.
+ *
+ * @param s1
+ *                  A String that will be encoded and compared.
+ * @param s2
+ *                  A String that will be encoded and compared.
+ * @return The number of characters in the two encoded Strings that are the same from 0 to 4.
+ *
+ * @see SoundexUtils#difference(StringEncoder,String,String)
+ * @see <a href=""http://msdn.microsoft.com/library/default.asp?url=/library/en-us/tsqlref/ts_de-dz_8co5.asp""> MS
+ *          T-SQL DIFFERENCE </a>
+ *
+ * @throws EncoderException
+ *                  if an error occurs encoding one of the strings
+ * @since 1.3
+ */"
+"public Soundex(final char[] mapping) {
+    this.soundexMapping = new char[mapping.length];
+    System.arraycopy(mapping, 0, this.soundexMapping, 0, mapping.length);
+}","public void test0913() throws Throwable {
+    Soundex soundex0 = null;
+    try {
+        soundex0 = new Soundex((char[]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.codec.language.Soundex"", e);
+    }
+}","/**
+ * Creates a soundex instance using the given mapping. This constructor can be used to provide an internationalized
+ * mapping for a non-Western character set.
+ *
+ * Every letter of the alphabet is ""mapped"" to a numerical value. This char array holds the values to which each
+ * letter is mapped. This implementation contains a default map for US_ENGLISH
+ *
+ * @param mapping
+ *                  Mapping array to use when finding the corresponding code for a given character
+ */"
+"public Soundex(final String mapping) {
+    this.soundexMapping = mapping.toCharArray();
+}","public void test1014() throws Throwable {
+    Soundex soundex0 = null;
+    try {
+        soundex0 = new Soundex((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.codec.language.Soundex"", e);
+    }
+}","/**
+ * Creates a refined soundex instance using a custom mapping. This constructor can be used to customize the mapping,
+ * and/or possibly provide an internationalized mapping for a non-Western character set.
+ *
+ * @param mapping
+ *            Mapping string to use when finding the corresponding code for a given character
+ * @since 1.4
+ */"
+"@Deprecated
+public int getMaxLength() {
+    return this.maxLength;
+}","public void test1115() throws Throwable {
+    Soundex soundex0 = new Soundex();
+    String string0 = soundex0.soundex(""~p|xqH/k4t"");
+    assertEquals(4, soundex0.getMaxLength());
+}","/**
+ * Returns the maxLength. Standard Soundex
+ *
+ * @deprecated This feature is not needed since the encoding size must be constant. Will be removed in 2.0.
+ * @return int
+ */"
+"public String soundex(String str) {
+    if (str == null) {
+        return null;
+    }
+    str = SoundexUtils.clean(str);
+    if (str.length() == 0) {
+        return str;
+    }
+    final char[] out = { '0', '0', '0', '0' };
+    char last, mapped;
+    int incount = 1, count = 1;
+    out[0] = str.charAt(0);
+    // getMappingCode() throws IllegalArgumentException
+    last = getMappingCode(str, 0);
+    while (incount < str.length() && count < out.length) {
+        mapped = getMappingCode(str, incount++);
+        if (mapped != 0) {
+            if (mapped != '0' && mapped != last) {
+                out[count++] = mapped;
+            }
+            last = mapped;
+        }
+    }
+    return new String(out);
+}","public void test1116() throws Throwable {
+    Soundex soundex0 = new Soundex();
+    String string0 = soundex0.soundex(""~p|xqH/k4t"");
+    assertEquals(""P230"", string0);
+}","/**
+ * Retrieves the Soundex code for a given String object.
+ *
+ * @param str
+ *                  String to encode using the Soundex algorithm
+ * @return A soundex code for the String supplied
+ * @throws IllegalArgumentException
+ *                  if a character is not mapped
+ */"
+"public String soundex(String str) {
+    if (str == null) {
+        return null;
+    }
+    str = SoundexUtils.clean(str);
+    if (str.length() == 0) {
+        return str;
+    }
+    final char[] out = { '0', '0', '0', '0' };
+    char last, mapped;
+    int incount = 1, count = 1;
+    out[0] = str.charAt(0);
+    // getMappingCode() throws IllegalArgumentException
+    last = getMappingCode(str, 0);
+    while (incount < str.length() && count < out.length) {
+        mapped = getMappingCode(str, incount++);
+        if (mapped != 0) {
+            if (mapped != '0' && mapped != last) {
+                out[count++] = mapped;
+            }
+            last = mapped;
+        }
+    }
+    return new String(out);
+}","public void test1217() throws Throwable {
+    Soundex soundex0 = Soundex.US_ENGLISH;
+    String string0 = soundex0.soundex("";"");
+    assertEquals("""", string0);
+}","/**
+ * Retrieves the Soundex code for a given String object.
+ *
+ * @param str
+ *                  String to encode using the Soundex algorithm
+ * @return A soundex code for the String supplied
+ * @throws IllegalArgumentException
+ *                  if a character is not mapped
+ */"
+"public String soundex(String str) {
+    if (str == null) {
+        return null;
+    }
+    str = SoundexUtils.clean(str);
+    if (str.length() == 0) {
+        return str;
+    }
+    final char[] out = { '0', '0', '0', '0' };
+    char last, mapped;
+    int incount = 1, count = 1;
+    out[0] = str.charAt(0);
+    // getMappingCode() throws IllegalArgumentException
+    last = getMappingCode(str, 0);
+    while (incount < str.length() && count < out.length) {
+        mapped = getMappingCode(str, incount++);
+        if (mapped != 0) {
+            if (mapped != '0' && mapped != last) {
+                out[count++] = mapped;
+            }
+            last = mapped;
+        }
+    }
+    return new String(out);
+}","public void test1318() throws Throwable {
+    Soundex soundex0 = Soundex.US_ENGLISH;
+    String string0 = soundex0.soundex(""bpfmYW*-MZ,J}A8"");
+    assertEquals(""B552"", string0);
+}","/**
+ * Retrieves the Soundex code for a given String object.
+ *
+ * @param str
+ *                  String to encode using the Soundex algorithm
+ * @return A soundex code for the String supplied
+ * @throws IllegalArgumentException
+ *                  if a character is not mapped
+ */"
+"@Deprecated
+public int getMaxLength() {
+    return this.maxLength;
+}","public void test1419() throws Throwable {
+    Soundex soundex0 = new Soundex();
+    soundex0.soundex((String) null);
+    assertEquals(4, soundex0.getMaxLength());
+}","/**
+ * Returns the maxLength. Standard Soundex
+ *
+ * @deprecated This feature is not needed since the encoding size must be constant. Will be removed in 2.0.
+ * @return int
+ */"
+"@Override
+public Object encode(final Object obj) throws EncoderException {
+    if (!(obj instanceof String)) {
+        throw new EncoderException(""Parameter supplied to Soundex encode is not of type java.lang.String"");
+    }
+    return soundex((String) obj);
+}","public void test1520() throws Throwable {
+    char[] charArray0 = new char[5];
+    Soundex soundex0 = new Soundex(charArray0);
+    // Undeclared exception!
+    try {
+        soundex0.encode((Object) ""k_RM6Sk6}q"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The character is not mapped: K
+        //
+        verifyException(""org.apache.commons.codec.language.Soundex"", e);
+    }
+}","/**
+ * Encodes an Object using the soundex algorithm. This method is provided in order to satisfy the requirements of
+ * the Encoder interface, and will throw an EncoderException if the supplied object is not of type java.lang.String.
+ *
+ * @param obj
+ *                  Object to encode
+ * @return An object (or type java.lang.String) containing the soundex code which corresponds to the String
+ *             supplied.
+ * @throws EncoderException
+ *                  if the parameter supplied is not of type java.lang.String
+ * @throws IllegalArgumentException
+ *                  if a character is not mapped
+ */"
+"public int difference(final String s1, final String s2) throws EncoderException {
+    return SoundexUtils.difference(this, s1, s2);
+}","public void test1621() throws Throwable {
+    Soundex soundex0 = new Soundex();
+    int int0 = soundex0.difference(""!zu~P~HBlRk"", (String) null);
+    assertEquals(0, int0);
+}","/**
+ * Encodes the Strings and returns the number of characters in the two encoded Strings that are the same. This
+ * return value ranges from 0 through 4: 0 indicates little or no similarity, and 4 indicates strong similarity or
+ * identical values.
+ *
+ * @param s1
+ *                  A String that will be encoded and compared.
+ * @param s2
+ *                  A String that will be encoded and compared.
+ * @return The number of characters in the two encoded Strings that are the same from 0 to 4.
+ *
+ * @see SoundexUtils#difference(StringEncoder,String,String)
+ * @see <a href=""http://msdn.microsoft.com/library/default.asp?url=/library/en-us/tsqlref/ts_de-dz_8co5.asp""> MS
+ *          T-SQL DIFFERENCE </a>
+ *
+ * @throws EncoderException
+ *                  if an error occurs encoding one of the strings
+ * @since 1.3
+ */"
+"@Deprecated
+public int getMaxLength() {
+    return this.maxLength;
+}","public void test1622() throws Throwable {
+    Soundex soundex0 = new Soundex();
+    int int0 = soundex0.difference(""!zu~P~HBlRk"", (String) null);
+    assertEquals(4, soundex0.getMaxLength());
+}","/**
+ * Returns the maxLength. Standard Soundex
+ *
+ * @deprecated This feature is not needed since the encoding size must be constant. Will be removed in 2.0.
+ * @return int
+ */"
+"@Deprecated
+public int getMaxLength() {
+    return this.maxLength;
+}","public void test1723() throws Throwable {
+    Soundex soundex0 = new Soundex();
+    Object object0 = soundex0.encode((Object) ""zO5LPw,`hDKIC%d,mP+"");
+    assertEquals(4, soundex0.getMaxLength());
+}","/**
+ * Returns the maxLength. Standard Soundex
+ *
+ * @deprecated This feature is not needed since the encoding size must be constant. Will be removed in 2.0.
+ * @return int
+ */"
+"@Override
+public Object encode(final Object obj) throws EncoderException {
+    if (!(obj instanceof String)) {
+        throw new EncoderException(""Parameter supplied to Soundex encode is not of type java.lang.String"");
+    }
+    return soundex((String) obj);
+}","public void test1724() throws Throwable {
+    Soundex soundex0 = new Soundex();
+    Object object0 = soundex0.encode((Object) ""zO5LPw,`hDKIC%d,mP+"");
+    assertEquals(""Z412"", object0);
+}","/**
+ * Encodes an Object using the soundex algorithm. This method is provided in order to satisfy the requirements of
+ * the Encoder interface, and will throw an EncoderException if the supplied object is not of type java.lang.String.
+ *
+ * @param obj
+ *                  Object to encode
+ * @return An object (or type java.lang.String) containing the soundex code which corresponds to the String
+ *             supplied.
+ * @throws EncoderException
+ *                  if the parameter supplied is not of type java.lang.String
+ * @throws IllegalArgumentException
+ *                  if a character is not mapped
+ */"
+"@Override
+public Object encode(final Object obj) throws EncoderException {
+    if (!(obj instanceof String)) {
+        throw new EncoderException(""Parameter supplied to Soundex encode is not of type java.lang.String"");
+    }
+    return soundex((String) obj);
+}","public void test1825() throws Throwable {
+    Soundex soundex0 = Soundex.US_ENGLISH;
+    Object object0 = new Object();
+    try {
+        soundex0.encode(object0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Parameter supplied to Soundex encode is not of type java.lang.String
+        //
+        verifyException(""org.apache.commons.codec.language.Soundex"", e);
+    }
+}","/**
+ * Encodes an Object using the soundex algorithm. This method is provided in order to satisfy the requirements of
+ * the Encoder interface, and will throw an EncoderException if the supplied object is not of type java.lang.String.
+ *
+ * @param obj
+ *                  Object to encode
+ * @return An object (or type java.lang.String) containing the soundex code which corresponds to the String
+ *             supplied.
+ * @throws EncoderException
+ *                  if the parameter supplied is not of type java.lang.String
+ * @throws IllegalArgumentException
+ *                  if a character is not mapped
+ */"
+"@Deprecated
+public int getMaxLength() {
+    return this.maxLength;
+}","public void test1926() throws Throwable {
+    Soundex soundex0 = new Soundex(""org.apache.commons.codec.EncoderException"");
+    String string0 = soundex0.encode(""CH?75#hn"");
+    assertEquals(4, soundex0.getMaxLength());
+}","/**
+ * Returns the maxLength. Standard Soundex
+ *
+ * @deprecated This feature is not needed since the encoding size must be constant. Will be removed in 2.0.
+ * @return int
+ */"
+"@Override
+public String encode(final String str) {
+    return soundex(str);
+}","public void test1927() throws Throwable {
+    Soundex soundex0 = new Soundex(""org.apache.commons.codec.EncoderException"");
+    String string0 = soundex0.encode(""CH?75#hn"");
+    assertEquals(""Cc00"", string0);
+}","/**
+ * Encodes a String using the soundex algorithm.
+ *
+ * @param str
+ *                  A String object to encode
+ * @return A Soundex code corresponding to the String supplied
+ * @throws IllegalArgumentException
+ *                  if a character is not mapped
+ */"
+"@Deprecated
+public int getMaxLength() {
+    return this.maxLength;
+}","public void test2029() throws Throwable {
+    Soundex soundex0 = new Soundex();
+    int int0 = soundex0.difference(""01230120022455012623010202"", ""AZEW3ML7vCD)EX"");
+    assertEquals(4, soundex0.getMaxLength());
+}","/**
+ * Returns the maxLength. Standard Soundex
+ *
+ * @deprecated This feature is not needed since the encoding size must be constant. Will be removed in 2.0.
+ * @return int
+ */"
+"public int difference(final String s1, final String s2) throws EncoderException {
+    return SoundexUtils.difference(this, s1, s2);
+}","public void test2030() throws Throwable {
+    Soundex soundex0 = new Soundex();
+    int int0 = soundex0.difference(""01230120022455012623010202"", ""AZEW3ML7vCD)EX"");
+    assertEquals(0, int0);
+}","/**
+ * Encodes the Strings and returns the number of characters in the two encoded Strings that are the same. This
+ * return value ranges from 0 through 4: 0 indicates little or no similarity, and 4 indicates strong similarity or
+ * identical values.
+ *
+ * @param s1
+ *                  A String that will be encoded and compared.
+ * @param s2
+ *                  A String that will be encoded and compared.
+ * @return The number of characters in the two encoded Strings that are the same from 0 to 4.
+ *
+ * @see SoundexUtils#difference(StringEncoder,String,String)
+ * @see <a href=""http://msdn.microsoft.com/library/default.asp?url=/library/en-us/tsqlref/ts_de-dz_8co5.asp""> MS
+ *          T-SQL DIFFERENCE </a>
+ *
+ * @throws EncoderException
+ *                  if an error occurs encoding one of the strings
+ * @since 1.3
+ */"
+"@Deprecated
+public int getMaxLength() {
+    return this.maxLength;
+}","public void test2131() throws Throwable {
+    Soundex soundex0 = new Soundex();
+    int int0 = soundex0.getMaxLength();
+    assertEquals(4, int0);
+}","/**
+ * Returns the maxLength. Standard Soundex
+ *
+ * @deprecated This feature is not needed since the encoding size must be constant. Will be removed in 2.0.
+ * @return int
+ */"

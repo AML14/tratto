@@ -1,0 +1,2858 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test0180,"public void test0180() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("")P2?~ !DCD)@"");
+    char[] charArray0 = new char[5];
+    // Undeclared exception!
+    try {
+        strBuilder0.append(charArray0, 5, 5);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // Invalid length: 5
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test0201,"public void test0201() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    // Undeclared exception!
+    try {
+        strBuilder0.deleteCharAt(2);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // String index out of range: 2
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test0212,"public void test0212() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    // Undeclared exception!
+    try {
+        strBuilder0.setCharAt(0, '8');
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // String index out of range: 0
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test0223,"public void test0223() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(0);
+    // Undeclared exception!
+    try {
+        strBuilder0.charAt(0);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // String index out of range: 0
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",0,
+project,0,test0605,"public void test0605() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    StringBuffer stringBuffer0 = new StringBuffer();
+    Object[] objectArray0 = new Object[7];
+    objectArray0[1] = (Object) stringBuffer0;
+    strBuilder0.appendWithSeparators(objectArray0, """");
+    strBuilder0.deleteFirst((String) null);
+    assertEquals(33, strBuilder0.length());
+}",0,"assertEquals(0, strBuilder0.length())"
+project,0,test0616,"public void test0616() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    assertEquals(32, strBuilder0.capacity());
+}",1,
+project,0,test0617,"public void test0617() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    strBuilder0.minimizeCapacity();
+    strBuilder0.deleteFirst("""");
+    assertEquals(0, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test0628,"public void test0628() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    strBuilder0.size = (-3018);
+    StrBuilder strBuilder1 = strBuilder0.deleteFirst('=');
+    assertEquals(32, strBuilder1.capacity());
+}",0,"assertEquals(1, strBuilder1.capacity())"
+project,0,test0639,"public void test0639() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(0);
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test06310,"public void test06310() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(0);
+    StrMatcher strMatcher0 = StrMatcher.charMatcher('i');
+    strBuilder0.minimizeCapacity();
+    StrBuilder strBuilder1 = strBuilder0.deleteAll(strMatcher0);
+    assertEquals(0, strBuilder1.capacity());
+}",1,
+project,0,test06411,"public void test06411() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""*lh#f>4"");
+    StrBuilder strBuilder1 = strBuilder0.deleteAll(""5kI"");
+    assertEquals(39, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test06412,"public void test06412() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""*lh#f>4"");
+    StrBuilder strBuilder1 = strBuilder0.deleteAll(""5kI"");
+    assertEquals(7, strBuilder1.length());
+}",0,
+project,0,test06513,"public void test06513() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(0);
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test06514,"public void test06514() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(0);
+    StrBuilder strBuilder1 = strBuilder0.minimizeCapacity();
+    StrBuilder strBuilder2 = strBuilder1.deleteAll("" ;Xw%#c{@u7-q"");
+    assertEquals(0, strBuilder2.capacity());
+}",0,
+project,0,test06615,"public void test06615() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    assertEquals(32, strBuilder0.capacity());
+}",1,
+project,0,test06616,"public void test06616() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    strBuilder0.minimizeCapacity();
+    strBuilder0.clear();
+    assertEquals(0, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test06717,"public void test06717() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""4"");
+    char char0 = strBuilder0.charAt(0);
+    assertEquals(1, strBuilder0.length());
+}",0,
+project,0,test06718,"public void test06718() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""4"");
+    char char0 = strBuilder0.charAt(0);
+    assertEquals(33, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test06719,"public void test06719() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""4"");
+    char char0 = strBuilder0.charAt(0);
+    assertEquals('4', char0);
+}",0,assertNotNull(char0)
+project,0,test06820,"public void test06820() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""$>G*(EL"");
+    char char0 = strBuilder0.charAt(2);
+    assertEquals('G', char0);
+}",1,
+project,0,test06821,"public void test06821() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""$>G*(EL"");
+    char char0 = strBuilder0.charAt(2);
+    assertEquals(39, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test06822,"public void test06822() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""$>G*(EL"");
+    char char0 = strBuilder0.charAt(2);
+    assertEquals(7, strBuilder0.size());
+}",0,"assertEquals(0, strBuilder0.size())"
+project,0,test06923,"public void test06923() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""_"");
+    assertEquals(33, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test06924,"public void test06924() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""_"");
+    char[] charArray0 = new char[0];
+    strBuilder0.buffer = charArray0;
+    strBuilder0.capacity();
+    assertEquals(1, strBuilder0.length());
+}",0,"assertEquals(0, strBuilder0.length())"
+project,0,test07025,"public void test07025() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    assertEquals(32, strBuilder0.capacity());
+}",1,
+project,0,test07026,"public void test07026() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder strBuilder1 = strBuilder0.minimizeCapacity();
+    strBuilder1.appendFixedWidthPadRight((-2395), (-2395), 'y');
+    assertEquals(0, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test07027,"public void test07027() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder strBuilder1 = strBuilder0.minimizeCapacity();
+    strBuilder1.appendFixedWidthPadRight((-2395), (-2395), 'y');
+    assertEquals(0, strBuilder0.size());
+}",0,"assertEquals(0, strBuilder0.size())"
+project,0,test07128,"public void test07128() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""org.apache.commons.lang.text.StrBuilder$StrBuilderReader"");
+    StrBuilder.StrBuilderTokenizer strBuilder_StrBuilderTokenizer0 = strBuilder0.new StrBuilderTokenizer();
+    StrBuilder strBuilder1 = strBuilder0.appendWithSeparators((Iterator) strBuilder_StrBuilderTokenizer0, ""'\"""");
+    strBuilder1.size = (-1794);
+    strBuilder0.appendFixedWidthPadLeft((Object) "".8 3T([*>{`y$Z"", (-1093), '_');
+    assertEquals((-1794), strBuilder0.size());
+}",0,"assertEquals(0, strBuilder0.size())"
+project,0,test07229,"public void test07229() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder strBuilder1 = strBuilder0.appendFixedWidthPadLeft((Object) null, 0, '/');
+    assertEquals(32, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test07330,"public void test07330() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder((-711));
+    StrBuilder strBuilder1 = strBuilder0.appendFixedWidthPadLeft(1148, 0, 't');
+    assertEquals(32, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test07331,"public void test07331() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder((-711));
+    StrBuilder strBuilder1 = strBuilder0.appendFixedWidthPadLeft(1148, 0, 't');
+    assertEquals(0, strBuilder1.size());
+}",0,"assertEquals(0, strBuilder1.size())"
+project,0,test07432,"public void test07432() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    assertEquals(32, strBuilder0.capacity());
+}",1,
+project,0,test07433,"public void test07433() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    strBuilder0.minimizeCapacity();
+    strBuilder0.append((char[]) null);
+    assertEquals(0, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test07534,"public void test07534() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(0);
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test07535,"public void test07535() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(0);
+    StrBuilder strBuilder1 = strBuilder0.minimizeCapacity();
+    StrBuilder strBuilder2 = strBuilder0.append(strBuilder1);
+    assertEquals(0, strBuilder2.capacity());
+}",0,
+project,0,test07636,"public void test07636() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""StrTokenizer[not tokenized yet]"");
+    StringBuffer stringBuffer0 = new StringBuffer((CharSequence) ""n&^*_N,]XwD[Z"");
+    StrBuilder strBuilder1 = strBuilder0.append(stringBuffer0, 0, 0);
+    assertEquals(31, strBuilder1.length());
+}",0,"assertEquals(0, strBuilder1.length())"
+project,0,test07637,"public void test07637() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""StrTokenizer[not tokenized yet]"");
+    StringBuffer stringBuffer0 = new StringBuffer((CharSequence) ""n&^*_N,]XwD[Z"");
+    StrBuilder strBuilder1 = strBuilder0.append(stringBuffer0, 0, 0);
+    assertEquals(63, strBuilder1.capacity());
+}",0,
+project,0,test07738,"public void test07738() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test07739,"public void test07739() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    StrBuilder strBuilder1 = strBuilder0.minimizeCapacity();
+    StrBuilder strBuilder2 = strBuilder1.append("""");
+    assertEquals(0, strBuilder2.capacity());
+}",0,"assertEquals(0, strBuilder2.capacity())"
+project,0,test07840,"public void test07840() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(3);
+    StrBuilder strBuilder1 = strBuilder0.append((Object) null);
+    assertEquals(3, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test07941,"public void test07941() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""*mn;Z\""Up|q4!4`*<C<"");
+    // Undeclared exception!
+    try {
+        strBuilder0.validateIndex((-1));
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // String index out of range: -1
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test08042,"public void test08042() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder((String) null);
+    strBuilder0.size = 52;
+    // Undeclared exception!
+    try {
+        strBuilder0.toStringBuffer();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.lang.AbstractStringBuilder"", e);
+    }
+}",0,
+project,0,test08143,"public void test08143() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder strBuilder1 = strBuilder0.appendPadding('*', '*');
+    strBuilder1.size = 105;
+    // Undeclared exception!
+    try {
+        strBuilder1.toString();
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+    }
+}",0,
+project,0,test08244,"public void test08244() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    // Undeclared exception!
+    try {
+        strBuilder0.toCharArray(6, (-1267));
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // end < start
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",0,
+project,0,test08345,"public void test08345() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    // Undeclared exception!
+    try {
+        strBuilder0.substring(32);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // end < start
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test08446,"public void test08446() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder((-1281));
+    strBuilder0.size = 78;
+    // Undeclared exception!
+    try {
+        strBuilder0.setLength(1394);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test08547,"public void test08547() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""Invalid length: "");
+    StrMatcher strMatcher0 = StrMatcher.charSetMatcher(""Invalid length: "");
+    // Undeclared exception!
+    try {
+        strBuilder0.replaceAll(strMatcher0, ""Invalid length: "");
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test08648,"public void test08648() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrMatcher strMatcher0 = StrMatcher.doubleQuoteMatcher();
+    // Undeclared exception!
+    try {
+        strBuilder0.replace(strMatcher0, ""X%uArmufCYl"", (-1), (-1), (-1));
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // String index out of range: -1
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",0,
+project,0,test08749,"public void test08749() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder((-1298));
+    // Undeclared exception!
+    try {
+        strBuilder0.replace(2796, 59, """");
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // end < start
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",0,
+project,0,test08850,"public void test08850() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(0);
+    char[] charArray0 = new char[3];
+    // Undeclared exception!
+    try {
+        strBuilder0.insert((-694), charArray0);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // String index out of range: -694
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test08951,"public void test08951() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(0);
+    // Undeclared exception!
+    try {
+        strBuilder0.insert(4, true);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // String index out of range: 4
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test09052,"public void test09052() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    // Undeclared exception!
+    try {
+        strBuilder0.insert(114, ""8?Ffx"");
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // String index out of range: 114
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test09153,"public void test09153() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""4"");
+    // Undeclared exception!
+    try {
+        strBuilder0.insert((-2578), (-3018.0155));
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // String index out of range: -2578
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test09254,"public void test09254() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder((-4612));
+    // Undeclared exception!
+    try {
+        strBuilder0.insert(1123, 'l');
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // String index out of range: 1123
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test09355,"public void test09355() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    strBuilder0.size = (-3018);
+    char[] charArray0 = new char[0];
+    // Undeclared exception!
+    try {
+        strBuilder0.getChars(charArray0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}",0,
+project,0,test09456,"public void test09456() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    // Undeclared exception!
+    try {
+        strBuilder0.equals((StrBuilder) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",0,
+project,0,test09557,"public void test09557() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    // Undeclared exception!
+    try {
+        strBuilder0.delete((-853), (-853));
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // String index out of range: -853
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",0,
+project,0,test09658,"public void test09658() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""w{@?n"");
+    char[] charArray0 = new char[0];
+    strBuilder0.buffer = charArray0;
+    // Undeclared exception!
+    try {
+        strBuilder0.charAt(0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 0
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test09759,"public void test09759() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    Object[] objectArray0 = new Object[2];
+    strBuilder0.size = 1909;
+    objectArray0[0] = (Object) ""<r[Y9y7;Zxf$2.^`So"";
+    // Undeclared exception!
+    try {
+        strBuilder0.appendWithSeparators(objectArray0, (String) null);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",0,
+project,0,test09860,"public void test09860() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""Af1D>yz|[>VCfcld=-,"");
+    LinkedList<Integer> linkedList0 = new LinkedList<Integer>();
+    ListIterator<Integer> listIterator0 = linkedList0.listIterator(0);
+    Integer integer0 = new Integer(0);
+    linkedList0.add(integer0);
+    // Undeclared exception!
+    try {
+        strBuilder0.appendWithSeparators((Iterator) listIterator0, ""Invalid length: "");
+        fail(""Expecting exception: ConcurrentModificationException"");
+    } catch (ConcurrentModificationException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.LinkedList$ListItr"", e);
+    }
+}",0,
+project,0,test09961,"public void test09961() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""_"");
+    char[] charArray0 = new char[0];
+    strBuilder0.buffer = charArray0;
+    // Undeclared exception!
+    try {
+        strBuilder0.appendNewLine();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",0,
+project,0,test10062,"public void test10062() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(3);
+    // Undeclared exception!
+    try {
+        strBuilder0.appendFixedWidthPadRight((Object) strBuilder0, 3, 's');
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}",0,
+project,0,test10163,"public void test10163() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(2);
+    // Undeclared exception!
+    try {
+        strBuilder0.appendFixedWidthPadRight(101, 2, 'e');
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}",0,
+project,0,test10264,"public void test10264() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder((-1281));
+    strBuilder0.size = 78;
+    // Undeclared exception!
+    try {
+        strBuilder0.append(false);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",0,
+project,0,test10365,"public void test10365() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrMatcher.CharMatcher strMatcher_CharMatcher0 = new StrMatcher.CharMatcher('<');
+    int int0 = strBuilder0.lastIndexOf((StrMatcher) strMatcher_CharMatcher0, 0);
+    assertEquals((-1), int0);
+}",0,
+project,0,test10366,"public void test10366() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrMatcher.CharMatcher strMatcher_CharMatcher0 = new StrMatcher.CharMatcher('<');
+    int int0 = strBuilder0.lastIndexOf((StrMatcher) strMatcher_CharMatcher0, 0);
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test10467,"public void test10467() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder strBuilder1 = strBuilder0.append(true);
+    int int0 = strBuilder1.lastIndexOf('>', 115);
+    assertFalse(strBuilder0.isEmpty());
+}",0,assertTrue(strBuilder0.isEmpty())
+project,0,test10468,"public void test10468() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder strBuilder1 = strBuilder0.append(true);
+    int int0 = strBuilder1.lastIndexOf('>', 115);
+    assertEquals((-1), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test10569,"public void test10569() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(108);
+    int int0 = strBuilder0.lastIndexOf('\\', (-131));
+    assertEquals((-1), int0);
+}",0,"assertEquals(1, int0)"
+project,0,test10570,"public void test10570() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(108);
+    int int0 = strBuilder0.lastIndexOf('\\', (-131));
+    assertEquals(108, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test10671,"public void test10671() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""Invalid length: "");
+    StrMatcher strMatcher0 = StrMatcher.charSetMatcher(""Invalid length: "");
+    int int0 = strBuilder0.indexOf(strMatcher0, (-1191));
+    assertEquals(0, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test10672,"public void test10672() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""Invalid length: "");
+    StrMatcher strMatcher0 = StrMatcher.charSetMatcher(""Invalid length: "");
+    int int0 = strBuilder0.indexOf(strMatcher0, (-1191));
+    assertEquals(48, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test10673,"public void test10673() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""Invalid length: "");
+    StrMatcher strMatcher0 = StrMatcher.charSetMatcher(""Invalid length: "");
+    int int0 = strBuilder0.indexOf(strMatcher0, (-1191));
+    assertEquals(16, strBuilder0.size());
+}",0,"assertEquals(0, strBuilder0.size())"
+project,0,test10774,"public void test10774() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""=6zG`s@-nIovl?u"");
+    int int0 = strBuilder0.indexOf((StrMatcher) null, (-2252));
+    assertEquals((-1), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test10775,"public void test10775() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""=6zG`s@-nIovl?u"");
+    int int0 = strBuilder0.indexOf((StrMatcher) null, (-2252));
+    assertEquals(48, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test10776,"public void test10776() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""=6zG`s@-nIovl?u"");
+    int int0 = strBuilder0.indexOf((StrMatcher) null, (-2252));
+    assertEquals(16, strBuilder0.length());
+}",0,"assertEquals(0, strBuilder0.length())"
+project,0,test10877,"public void test10877() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""$>G*(EL"");
+    StrBuilder.StrBuilderTokenizer strBuilder_StrBuilderTokenizer0 = strBuilder0.new StrBuilderTokenizer();
+    StrMatcher strMatcher0 = strBuilder_StrBuilderTokenizer0.getTrimmerMatcher();
+    int int0 = strBuilder0.indexOf(strMatcher0, 5);
+    assertEquals((-1), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test10878,"public void test10878() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""$>G*(EL"");
+    StrBuilder.StrBuilderTokenizer strBuilder_StrBuilderTokenizer0 = strBuilder0.new StrBuilderTokenizer();
+    StrMatcher strMatcher0 = strBuilder_StrBuilderTokenizer0.getTrimmerMatcher();
+    int int0 = strBuilder0.indexOf(strMatcher0, 5);
+    assertEquals(7, strBuilder0.length());
+}",0,"assertEquals(0, strBuilder0.length())"
+project,0,test10879,"public void test10879() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""$>G*(EL"");
+    StrBuilder.StrBuilderTokenizer strBuilder_StrBuilderTokenizer0 = strBuilder0.new StrBuilderTokenizer();
+    StrMatcher strMatcher0 = strBuilder_StrBuilderTokenizer0.getTrimmerMatcher();
+    int int0 = strBuilder0.indexOf(strMatcher0, 5);
+    assertEquals(39, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test10980,"public void test10980() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""org.apache.commons.lang.text.StrBuilder$StrBuilderReader"");
+    int int0 = strBuilder0.indexOf(""Caught a SecurityException reading the system property '"", (-1655));
+    assertEquals(88, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test10981,"public void test10981() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""org.apache.commons.lang.text.StrBuilder$StrBuilderReader"");
+    int int0 = strBuilder0.indexOf(""Caught a SecurityException reading the system property '"", (-1655));
+    assertEquals((-1), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test11082,"public void test11082() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    strBuilder0.appendFixedWidthPadLeft((Object) strBuilder0, 31, 'w');
+    int int0 = strBuilder0.indexOf('w', (-1));
+    assertFalse(strBuilder0.isEmpty());
+}",0,assertTrue(strBuilder0.isEmpty())
+project,0,test11083,"public void test11083() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    strBuilder0.appendFixedWidthPadLeft((Object) strBuilder0, 31, 'w');
+    int int0 = strBuilder0.indexOf('w', (-1));
+    assertEquals((-1), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test11184,"public void test11184() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    int int0 = strBuilder0.indexOf('[', 0);
+    assertEquals(15, strBuilder0.length());
+}",0,"assertEquals(0, strBuilder0.length())"
+project,0,test11185,"public void test11185() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    int int0 = strBuilder0.indexOf('[', 0);
+    assertEquals(0, int0);
+}",0,
+project,0,test11186,"public void test11186() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    int int0 = strBuilder0.indexOf('[', 0);
+    assertEquals(47, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test11287,"public void test11287() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    int int0 = strBuilder0.indexOf('@', 969);
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test11288,"public void test11288() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    int int0 = strBuilder0.indexOf('@', 969);
+    assertEquals((-1), int0);
+}",0,
+project,0,test11389,"public void test11389() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    strBuilder0.appendFixedWidthPadLeft(102, 102, 'w');
+    strBuilder0.delete(102, Integer.MAX_VALUE);
+    assertEquals(117, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test11490,"public void test11490() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    StrBuilder strBuilder1 = strBuilder0.insert(0, """");
+    assertEquals(32, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test11591,"public void test11591() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""StrTokenizer[not tokenized yet]"");
+    strBuilder0.appendFixedWidthPadRight((Object) ""n&^*_N,]XwD[Z"", 2928, '(');
+    assertEquals(2959, strBuilder0.capacity());
+}",0,
+project,0,test11692,"public void test11692() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder((-1281));
+    StrBuilder strBuilder1 = strBuilder0.appendFixedWidthPadRight((Object) strBuilder0, (-1281), '/');
+    assertEquals(32, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test11793,"public void test11793() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""4.0"");
+    strBuilder0.appendFixedWidthPadLeft((Object) strBuilder0, 115, 'w');
+    strBuilder0.insert(115, 1918);
+    assertEquals(122, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test11894,"public void test11894() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    char[] charArray0 = new char[9];
+    StrBuilder strBuilder1 = strBuilder0.append(charArray0, 0, 0);
+    assertEquals(32, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test11995,"public void test11995() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""Mi-"");
+    StrMatcher strMatcher0 = StrMatcher.tabMatcher();
+    StrBuilder strBuilder1 = strBuilder0.append((Object) strMatcher0);
+    char[] charArray0 = new char[7];
+    // Undeclared exception!
+    try {
+        strBuilder1.getChars(0, 48, charArray0, 2);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}",0,
+project,0,test12096,"public void test12096() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""'H]t,2vFypKA%nhMf="");
+    StrBuilder strBuilder1 = strBuilder0.ensureCapacity(27);
+    assertEquals(19, strBuilder1.length());
+}",0,"assertEquals(0, strBuilder1.length())"
+project,0,test12097,"public void test12097() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""'H]t,2vFypKA%nhMf="");
+    StrBuilder strBuilder1 = strBuilder0.ensureCapacity(27);
+    assertEquals(51, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test12198,"public void test12198() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    strBuilder0.ensureCapacity(684);
+    assertEquals(684, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test12299,"public void test12299() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    int int0 = strBuilder0.length();
+    assertEquals(0, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test122100,"public void test122100() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    int int0 = strBuilder0.length();
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test123101,"public void test123101() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(0);
+    int int0 = strBuilder0.size();
+    assertEquals(0, int0);
+}",0,
+project,0,test123102,"public void test123102() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(0);
+    int int0 = strBuilder0.size();
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test124103,"public void test124103() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""$>G*(EL"");
+    strBuilder0.clear();
+    StrBuilder.StrBuilderTokenizer strBuilder_StrBuilderTokenizer0 = strBuilder0.new StrBuilderTokenizer();
+    StrMatcher strMatcher0 = strBuilder_StrBuilderTokenizer0.getTrimmerMatcher();
+    int int0 = strBuilder0.indexOf(strMatcher0, 5);
+    assertEquals(0, strBuilder0.size());
+}",0,"assertEquals(0, strBuilder0.size())"
+project,0,test124104,"public void test124104() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""$>G*(EL"");
+    strBuilder0.clear();
+    StrBuilder.StrBuilderTokenizer strBuilder_StrBuilderTokenizer0 = strBuilder0.new StrBuilderTokenizer();
+    StrMatcher strMatcher0 = strBuilder_StrBuilderTokenizer0.getTrimmerMatcher();
+    int int0 = strBuilder0.indexOf(strMatcher0, 5);
+    assertEquals((-1), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test125105,"public void test125105() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    strBuilder0.getNullText();
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test126106,"public void test126106() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder.StrBuilderReader strBuilder_StrBuilderReader0 = strBuilder0.new StrBuilderReader();
+    long long0 = strBuilder_StrBuilderReader0.skip((-1L));
+    assertEquals(0, strBuilder0.size());
+}",0,"assertEquals(0, strBuilder0.size())"
+project,0,test126108,"public void test126108() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder.StrBuilderReader strBuilder_StrBuilderReader0 = strBuilder0.new StrBuilderReader();
+    long long0 = strBuilder_StrBuilderReader0.skip((-1L));
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test127109,"public void test127109() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder.StrBuilderReader strBuilder_StrBuilderReader0 = strBuilder0.new StrBuilderReader();
+    long long0 = strBuilder_StrBuilderReader0.skip(33L);
+    assertEquals(0, strBuilder0.size());
+}",0,"assertEquals(0, strBuilder0.size())"
+project,0,test127111,"public void test127111() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder.StrBuilderReader strBuilder_StrBuilderReader0 = strBuilder0.new StrBuilderReader();
+    long long0 = strBuilder_StrBuilderReader0.skip(33L);
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test128114,"public void test128114() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(0);
+    StrBuilder.StrBuilderReader strBuilder_StrBuilderReader0 = strBuilder0.new StrBuilderReader();
+    strBuilder_StrBuilderReader0.skip(0L);
+    assertEquals(0, strBuilder0.size());
+}",0,"assertEquals(0, strBuilder0.size())"
+project,0,test128115,"public void test128115() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(0);
+    StrBuilder.StrBuilderReader strBuilder_StrBuilderReader0 = strBuilder0.new StrBuilderReader();
+    strBuilder_StrBuilderReader0.skip(0L);
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test129116,"public void test129116() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder.StrBuilderReader strBuilder_StrBuilderReader0 = strBuilder0.new StrBuilderReader();
+    char[] charArray0 = new char[8];
+    strBuilder0.appendFixedWidthPadRight(69, 242, 'W');
+    int int0 = strBuilder_StrBuilderReader0.read(charArray0, 2, 2);
+    assertFalse(strBuilder0.isEmpty());
+}",0,assertTrue(strBuilder0.isEmpty())
+project,0,test130118,"public void test130118() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(2);
+    StrBuilder.StrBuilderReader strBuilder_StrBuilderReader0 = strBuilder0.new StrBuilderReader();
+    char[] charArray0 = new char[6];
+    strBuilder0.append(""^^"");
+    int int0 = strBuilder_StrBuilderReader0.read(charArray0);
+    assertEquals(2, strBuilder0.length());
+}",0,"assertEquals(1, strBuilder0.length())"
+project,0,test134123,"public void test134123() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(2);
+    StrBuilder.StrBuilderReader strBuilder_StrBuilderReader0 = strBuilder0.new StrBuilderReader();
+    char[] charArray0 = new char[6];
+    int int0 = strBuilder_StrBuilderReader0.read(charArray0);
+    assertEquals(2, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test134124,"public void test134124() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(2);
+    StrBuilder.StrBuilderReader strBuilder_StrBuilderReader0 = strBuilder0.new StrBuilderReader();
+    char[] charArray0 = new char[6];
+    int int0 = strBuilder_StrBuilderReader0.read(charArray0);
+    assertEquals(0, strBuilder0.size());
+}",0,"assertEquals(0, strBuilder0.size())"
+project,0,test136128,"public void test136128() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder.StrBuilderReader strBuilder_StrBuilderReader0 = strBuilder0.new StrBuilderReader();
+    int int0 = strBuilder_StrBuilderReader0.read();
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test136130,"public void test136130() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder.StrBuilderReader strBuilder_StrBuilderReader0 = strBuilder0.new StrBuilderReader();
+    int int0 = strBuilder_StrBuilderReader0.read();
+    assertEquals(0, strBuilder0.size());
+}",0,"assertEquals(0, strBuilder0.size())"
+project,0,test137131,"public void test137131() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(0);
+    strBuilder0.append((float) 0);
+    Reader reader0 = strBuilder0.asReader();
+    int int0 = reader0.read();
+    assertEquals(3, strBuilder0.size());
+}",0,"assertEquals(0, strBuilder0.size())"
+project,0,test138134,"public void test138134() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(0);
+    StrBuilder.StrBuilderTokenizer strBuilder_StrBuilderTokenizer0 = strBuilder0.new StrBuilderTokenizer();
+    String string0 = strBuilder_StrBuilderTokenizer0.getContent();
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test139136,"public void test139136() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""org.apache.commons.lang.text.StrBuilder$StrBuilderReader"");
+    StrBuilder.StrBuilderTokenizer strBuilder_StrBuilderTokenizer0 = strBuilder0.new StrBuilderTokenizer();
+    strBuilder_StrBuilderTokenizer0.reset(""org.apache.commons.lang.text.StrBuilder$StrBuilderReader"");
+    strBuilder_StrBuilderTokenizer0.getContent();
+    assertEquals(88, strBuilder0.capacity());
+}",0,"assertEquals(1, strBuilder0.capacity())"
+project,0,test139137,"public void test139137() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""org.apache.commons.lang.text.StrBuilder$StrBuilderReader"");
+    StrBuilder.StrBuilderTokenizer strBuilder_StrBuilderTokenizer0 = strBuilder0.new StrBuilderTokenizer();
+    strBuilder_StrBuilderTokenizer0.reset(""org.apache.commons.lang.text.StrBuilder$StrBuilderReader"");
+    strBuilder_StrBuilderTokenizer0.getContent();
+    assertEquals(56, strBuilder0.length());
+}",0,"assertEquals(0, strBuilder0.length())"
+project,0,test140138,"public void test140138() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    char[] charArray0 = new char[3];
+    // Undeclared exception!
+    try {
+        strBuilder0.insert((-1650), charArray0, (-302), (-2387));
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // String index out of range: -1650
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test141139,"public void test141139() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""org.apache.commons.lang.text.StrBuilder$StrBuilderReader"");
+    // Undeclared exception!
+    try {
+        strBuilder0.validateRange(100, (-2094));
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // end < start
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test142140,"public void test142140() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(2);
+    // Undeclared exception!
+    try {
+        strBuilder0.substring((-1142), (-1772));
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // String index out of range: -1142
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",0,
+project,0,test143141,"public void test143141() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    char[] charArray0 = new char[7];
+    strBuilder0.append(charArray0);
+    strBuilder0.hashCode();
+    assertFalse(strBuilder0.isEmpty());
+}",0,assertTrue(strBuilder0.isEmpty())
+project,0,test144142,"public void test144142() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    boolean boolean0 = strBuilder0.equals((Object) strBuilder0);
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test144143,"public void test144143() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    boolean boolean0 = strBuilder0.equals((Object) strBuilder0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test145144,"public void test145144() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(0);
+    boolean boolean0 = strBuilder0.equals((Object) ""QLFd,MHQ"");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test145145,"public void test145145() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(0);
+    boolean boolean0 = strBuilder0.equals((Object) ""QLFd,MHQ"");
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test146146,"public void test146146() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder strBuilder1 = new StrBuilder();
+    boolean boolean0 = strBuilder0.equals(strBuilder1);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test146147,"public void test146147() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder strBuilder1 = new StrBuilder();
+    boolean boolean0 = strBuilder0.equals(strBuilder1);
+    assertEquals(32, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test147148,"public void test147148() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    StrBuilder strBuilder1 = new StrBuilder();
+    boolean boolean0 = strBuilder0.equals(strBuilder1);
+    assertEquals(47, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test147149,"public void test147149() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    StrBuilder strBuilder1 = new StrBuilder();
+    boolean boolean0 = strBuilder0.equals(strBuilder1);
+    assertEquals(15, strBuilder0.length());
+}",0,
+project,0,test147150,"public void test147150() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    StrBuilder strBuilder1 = new StrBuilder();
+    boolean boolean0 = strBuilder0.equals(strBuilder1);
+    assertFalse(strBuilder1.equals((Object) strBuilder0));
+}",0,
+project,0,test147151,"public void test147151() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    StrBuilder strBuilder1 = new StrBuilder();
+    boolean boolean0 = strBuilder0.equals(strBuilder1);
+    assertEquals(32, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test147152,"public void test147152() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    StrBuilder strBuilder1 = new StrBuilder();
+    boolean boolean0 = strBuilder0.equals(strBuilder1);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test148153,"public void test148153() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""(%"");
+    boolean boolean0 = strBuilder0.equalsIgnoreCase(strBuilder0);
+    assertEquals(34, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test148154,"public void test148154() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""(%"");
+    boolean boolean0 = strBuilder0.equalsIgnoreCase(strBuilder0);
+    assertTrue(boolean0);
+}",1,
+project,0,test148155,"public void test148155() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""(%"");
+    boolean boolean0 = strBuilder0.equalsIgnoreCase(strBuilder0);
+    assertEquals(2, strBuilder0.length());
+}",0,"assertEquals(0, strBuilder0.length())"
+project,0,test149156,"public void test149156() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder strBuilder1 = new StrBuilder(""0n39 "");
+    boolean boolean0 = strBuilder0.equalsIgnoreCase(strBuilder1);
+    assertFalse(boolean0);
+}",1,
+project,0,test149157,"public void test149157() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder strBuilder1 = new StrBuilder(""0n39 "");
+    boolean boolean0 = strBuilder0.equalsIgnoreCase(strBuilder1);
+    assertEquals(37, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test149158,"public void test149158() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder strBuilder1 = new StrBuilder(""0n39 "");
+    boolean boolean0 = strBuilder0.equalsIgnoreCase(strBuilder1);
+    assertEquals(5, strBuilder1.length());
+}",0,
+project,0,test149159,"public void test149159() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder strBuilder1 = new StrBuilder(""0n39 "");
+    boolean boolean0 = strBuilder0.equalsIgnoreCase(strBuilder1);
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test150160,"public void test150160() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""startIndex must be valid"");
+    StrMatcher strMatcher0 = StrMatcher.splitMatcher();
+    int int0 = strBuilder0.lastIndexOf(strMatcher0, 342);
+    assertEquals(18, int0);
+}",0,
+project,0,test150161,"public void test150161() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""startIndex must be valid"");
+    StrMatcher strMatcher0 = StrMatcher.splitMatcher();
+    int int0 = strBuilder0.lastIndexOf(strMatcher0, 342);
+    assertEquals(56, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test150162,"public void test150162() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""startIndex must be valid"");
+    StrMatcher strMatcher0 = StrMatcher.splitMatcher();
+    int int0 = strBuilder0.lastIndexOf(strMatcher0, 342);
+    assertEquals(24, strBuilder0.size());
+}",0,"assertEquals(0, strBuilder0.size())"
+project,0,test151163,"public void test151163() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    int int0 = strBuilder0.lastIndexOf((StrMatcher) null, 186);
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test151164,"public void test151164() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    int int0 = strBuilder0.lastIndexOf((StrMatcher) null, 186);
+    assertEquals((-1), int0);
+}",0,"assertEquals(1, int0)"
+project,0,test152165,"public void test152165() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(0);
+    StrMatcher strMatcher0 = StrMatcher.quoteMatcher();
+    strBuilder0.append('9');
+    int int0 = strBuilder0.lastIndexOf(strMatcher0, 0);
+    assertFalse(strBuilder0.isEmpty());
+}",0,assertTrue(strBuilder0.isEmpty())
+project,0,test152166,"public void test152166() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(0);
+    StrMatcher strMatcher0 = StrMatcher.quoteMatcher();
+    strBuilder0.append('9');
+    int int0 = strBuilder0.lastIndexOf(strMatcher0, 0);
+    assertEquals((-1), int0);
+}",0,
+project,0,test153167,"public void test153167() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    strBuilder0.setLength(4621);
+    int int0 = strBuilder0.lastIndexOf(""`?d^=c@jraB?~;tI"");
+    assertEquals(4621, strBuilder0.size());
+}",0,"assertEquals(0, strBuilder0.size())"
+project,0,test153168,"public void test153168() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    strBuilder0.setLength(4621);
+    int int0 = strBuilder0.lastIndexOf(""`?d^=c@jraB?~;tI"");
+    assertEquals((-1), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test154169,"public void test154169() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""K0#v9;k<Xe$f"");
+    int int0 = strBuilder0.lastIndexOf(""K0#v9;k<Xe$f"");
+    assertEquals(0, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test154170,"public void test154170() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""K0#v9;k<Xe$f"");
+    int int0 = strBuilder0.lastIndexOf(""K0#v9;k<Xe$f"");
+    assertEquals(44, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test155171,"public void test155171() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    int int0 = strBuilder0.lastIndexOf(""O"", 15);
+    assertEquals(15, strBuilder0.length());
+}",0,"assertEquals(1, strBuilder0.length())"
+project,0,test155172,"public void test155172() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    int int0 = strBuilder0.lastIndexOf(""O"", 15);
+    assertEquals(47, strBuilder0.capacity());
+}",0,"assertEquals(1, strBuilder0.capacity())"
+project,0,test155173,"public void test155173() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    int int0 = strBuilder0.lastIndexOf(""O"", 15);
+    assertEquals((-1), int0);
+}",0,
+project,0,test156174,"public void test156174() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder((String) null);
+    strBuilder0.appendFixedWidthPadLeft(102, 102, 'w');
+    int int0 = strBuilder0.lastIndexOf("""", 32);
+    assertFalse(strBuilder0.isEmpty());
+}",0,assertTrue(strBuilder0.isEmpty())
+project,0,test156175,"public void test156175() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder((String) null);
+    strBuilder0.appendFixedWidthPadLeft(102, 102, 'w');
+    int int0 = strBuilder0.lastIndexOf("""", 32);
+    assertEquals(32, int0);
+}",0,
+project,0,test157176,"public void test157176() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""z:RKeWBf4a"");
+    int int0 = strBuilder0.lastIndexOf(""z:RKeWBf4a"", 4);
+    assertEquals(42, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test157177,"public void test157177() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""z:RKeWBf4a"");
+    int int0 = strBuilder0.lastIndexOf(""z:RKeWBf4a"", 4);
+    assertEquals((-1), int0);
+}",0,
+project,0,test157178,"public void test157178() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""z:RKeWBf4a"");
+    int int0 = strBuilder0.lastIndexOf(""z:RKeWBf4a"", 4);
+    assertEquals(10, strBuilder0.length());
+}",0,"assertEquals(0, strBuilder0.length())"
+project,0,test158179,"public void test158179() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(2784);
+    int int0 = strBuilder0.lastIndexOf(""AN,?_"", 17);
+    assertEquals(2784, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test158180,"public void test158180() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(2784);
+    int int0 = strBuilder0.lastIndexOf(""AN,?_"", 17);
+    assertEquals((-1), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test159181,"public void test159181() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder((-1263));
+    StrBuilder strBuilder1 = strBuilder0.setLength(102);
+    int int0 = strBuilder1.lastIndexOf('f');
+    assertEquals(102, strBuilder0.size());
+}",0,"assertEquals(0, strBuilder0.size())"
+project,0,test159182,"public void test159182() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder((-1263));
+    StrBuilder strBuilder1 = strBuilder0.setLength(102);
+    int int0 = strBuilder1.lastIndexOf('f');
+    assertEquals((-1), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test160183,"public void test160183() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    int int0 = strBuilder0.lastIndexOf('}', 0);
+    assertEquals((-1), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test160184,"public void test160184() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    int int0 = strBuilder0.lastIndexOf('}', 0);
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test161185,"public void test161185() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(0);
+    StrMatcher strMatcher0 = StrMatcher.splitMatcher();
+    boolean boolean0 = strBuilder0.contains(strMatcher0);
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test161186,"public void test161186() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(0);
+    StrMatcher strMatcher0 = StrMatcher.splitMatcher();
+    boolean boolean0 = strBuilder0.contains(strMatcher0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test162187,"public void test162187() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""4.0"");
+    int int0 = strBuilder0.indexOf(""length must be valid"", 0);
+    assertEquals(35, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test162188,"public void test162188() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""4.0"");
+    int int0 = strBuilder0.indexOf(""length must be valid"", 0);
+    assertEquals((-1), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test162189,"public void test162189() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""4.0"");
+    int int0 = strBuilder0.indexOf(""length must be valid"", 0);
+    assertEquals(3, strBuilder0.length());
+}",0,
+project,0,test163190,"public void test163190() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    int int0 = strBuilder0.indexOf("""", 0);
+    assertEquals(15, strBuilder0.length());
+}",0,"assertEquals(0, strBuilder0.length())"
+project,0,test163191,"public void test163191() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    int int0 = strBuilder0.indexOf("""", 0);
+    assertEquals(47, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test163192,"public void test163192() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    int int0 = strBuilder0.indexOf("""", 0);
+    assertEquals(0, int0);
+}",0,
+project,0,test164193,"public void test164193() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""4.0"");
+    int int0 = strBuilder0.indexOf((String) null, 54);
+    assertEquals((-1), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test164194,"public void test164194() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""4.0"");
+    int int0 = strBuilder0.indexOf((String) null, 54);
+    assertEquals(3, strBuilder0.length());
+}",0,"assertEquals(0, strBuilder0.length())"
+project,0,test164195,"public void test164195() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""4.0"");
+    int int0 = strBuilder0.indexOf((String) null, 54);
+    assertEquals(35, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test165196,"public void test165196() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    int int0 = strBuilder0.indexOf(""E"", 0);
+    assertEquals(47, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test165197,"public void test165197() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    int int0 = strBuilder0.indexOf(""E"", 0);
+    assertEquals((-1), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test166198,"public void test166198() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    int int0 = strBuilder0.indexOf('w', (-1));
+    assertEquals((-1), int0);
+}",0,
+project,0,test166199,"public void test166199() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    int int0 = strBuilder0.indexOf('w', (-1));
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test167200,"public void test167200() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""Invalid olength: "");
+    StrMatcher strMatcher0 = StrMatcher.charSetMatcher(""Invalid olength: "");
+    boolean boolean0 = strBuilder0.contains(strMatcher0);
+    assertEquals(49, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test167201,"public void test167201() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""Invalid olength: "");
+    StrMatcher strMatcher0 = StrMatcher.charSetMatcher(""Invalid olength: "");
+    boolean boolean0 = strBuilder0.contains(strMatcher0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test168202,"public void test168202() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""*"");
+    boolean boolean0 = strBuilder0.contains(""*"");
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test168203,"public void test168203() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""*"");
+    boolean boolean0 = strBuilder0.contains(""*"");
+    assertEquals(33, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test169204,"public void test169204() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    boolean boolean0 = strBuilder0.contains(""Invalid offset: "");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test169205,"public void test169205() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    boolean boolean0 = strBuilder0.contains(""Invalid offset: "");
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(1, strBuilder0.capacity())"
+project,0,test170206,"public void test170206() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    StrBuilder strBuilder1 = strBuilder0.appendPadding(1, 'e');
+    boolean boolean0 = strBuilder1.contains('S');
+    assertEquals(1, strBuilder0.size());
+}",0,"assertEquals(0, strBuilder0.size())"
+project,0,test170207,"public void test170207() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    StrBuilder strBuilder1 = strBuilder0.appendPadding(1, 'e');
+    boolean boolean0 = strBuilder1.contains('S');
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test171208,"public void test171208() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder((-1281));
+    strBuilder0.setLength(1394);
+    strBuilder0.midString((-1), 31);
+    assertEquals(1394, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test172209,"public void test172209() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder((-1298));
+    strBuilder0.midString(2796, 2796);
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test173210,"public void test173210() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    strBuilder0.midString((-1241), (-1241));
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test174211,"public void test174211() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""_"");
+    String string0 = strBuilder0.rightString(108);
+    assertEquals(""_"", string0);
+}",0,assertNotNull(string0)
+project,0,test174212,"public void test174212() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""_"");
+    String string0 = strBuilder0.rightString(108);
+    assertEquals(33, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test175213,"public void test175213() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    strBuilder0.rightString((-2395));
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test176214,"public void test176214() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    String string0 = strBuilder0.rightString(1);
+    assertEquals(47, strBuilder0.capacity());
+}",0,"assertEquals(1, strBuilder0.capacity())"
+project,0,test176215,"public void test176215() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    String string0 = strBuilder0.rightString(1);
+    assertEquals(""q"", string0);
+}",0,assertNotNull(string0)
+project,0,test177216,"public void test177216() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""Invalid olength: "");
+    strBuilder0.append((Object) strBuilder0);
+    strBuilder0.leftString(32);
+    assertEquals(67, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test178217,"public void test178217() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(2);
+    strBuilder0.leftString(0);
+    assertEquals(2, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test179218,"public void test179218() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""Invalid olength: "");
+    String string0 = strBuilder0.leftString(32);
+    assertEquals(49, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test179219,"public void test179219() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""Invalid olength: "");
+    String string0 = strBuilder0.leftString(32);
+    assertEquals(""Invalid olength: "", string0);
+}",0,
+project,0,test180220,"public void test180220() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder((-1263));
+    strBuilder0.setLength(102);
+    boolean boolean0 = strBuilder0.endsWith(""z&wf@BX+i{[9~T"");
+    assertEquals(102, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test180221,"public void test180221() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder((-1263));
+    strBuilder0.setLength(102);
+    boolean boolean0 = strBuilder0.endsWith(""z&wf@BX+i{[9~T"");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test181222,"public void test181222() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    boolean boolean0 = strBuilder0.endsWith("",qL"");
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(1, strBuilder0.capacity())"
+project,0,test181223,"public void test181223() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    boolean boolean0 = strBuilder0.endsWith("",qL"");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test182224,"public void test182224() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(108);
+    boolean boolean0 = strBuilder0.endsWith("""");
+    assertEquals(108, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test182225,"public void test182225() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(108);
+    boolean boolean0 = strBuilder0.endsWith("""");
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test183226,"public void test183226() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(2);
+    boolean boolean0 = strBuilder0.endsWith((String) null);
+    assertEquals(2, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test183227,"public void test183227() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(2);
+    boolean boolean0 = strBuilder0.endsWith((String) null);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test184228,"public void test184228() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""Invalid startIndex: "");
+    boolean boolean0 = strBuilder0.endsWith(""Invalid startIndex: "");
+    assertEquals(52, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test184229,"public void test184229() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""Invalid startIndex: "");
+    boolean boolean0 = strBuilder0.endsWith(""Invalid startIndex: "");
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test185230,"public void test185230() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""(%"");
+    strBuilder0.insert(0, (-1.0));
+    boolean boolean0 = strBuilder0.startsWith(""(%"");
+    assertEquals(6, strBuilder0.size());
+}",0,"assertEquals(0, strBuilder0.size())"
+project,0,test185231,"public void test185231() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""(%"");
+    strBuilder0.insert(0, (-1.0));
+    boolean boolean0 = strBuilder0.startsWith(""(%"");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test186232,"public void test186232() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(0);
+    boolean boolean0 = strBuilder0.startsWith(""(%"");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test186233,"public void test186233() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(0);
+    boolean boolean0 = strBuilder0.startsWith(""(%"");
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test187234,"public void test187234() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    boolean boolean0 = strBuilder0.startsWith("""");
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test187235,"public void test187235() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    boolean boolean0 = strBuilder0.startsWith("""");
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test188236,"public void test188236() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""(%"");
+    boolean boolean0 = strBuilder0.startsWith((String) null);
+    assertEquals(34, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test188237,"public void test188237() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""(%"");
+    boolean boolean0 = strBuilder0.startsWith((String) null);
+    assertEquals(2, strBuilder0.length());
+}",0,"assertEquals(0, strBuilder0.length())"
+project,0,test188238,"public void test188238() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""(%"");
+    boolean boolean0 = strBuilder0.startsWith((String) null);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test189239,"public void test189239() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""(%"");
+    boolean boolean0 = strBuilder0.startsWith(""(%"");
+    assertEquals(34, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test189240,"public void test189240() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""(%"");
+    boolean boolean0 = strBuilder0.startsWith(""(%"");
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test190241,"public void test190241() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    StrBuilder strBuilder1 = strBuilder0.trim();
+    assertEquals(32, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test191242,"public void test191242() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder strBuilder1 = strBuilder0.append('\""');
+    assertEquals(1, strBuilder0.length());
+}",0,"assertEquals(0, strBuilder0.length())"
+project,0,test191243,"public void test191243() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder strBuilder1 = strBuilder0.append('\""');
+    StrMatcher strMatcher0 = StrMatcher.quoteMatcher();
+    strBuilder1.deleteAll(strMatcher0);
+    assertEquals(0, strBuilder0.length());
+}",0,"assertEquals(1, strBuilder0.length())"
+project,0,test192244,"public void test192244() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder((String) null);
+    strBuilder0.appendFixedWidthPadLeft(102, 102, 'w');
+    StrMatcher.CharMatcher strMatcher_CharMatcher0 = new StrMatcher.CharMatcher('w');
+    strBuilder0.deleteFirst((StrMatcher) strMatcher_CharMatcher0);
+    assertFalse(strBuilder0.isEmpty());
+}",0,assertTrue(strBuilder0.isEmpty())
+project,0,test193245,"public void test193245() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(2);
+    StrMatcher strMatcher0 = StrMatcher.charMatcher('|');
+    StrBuilder strBuilder1 = strBuilder0.replaceFirst(strMatcher0, (String) null);
+    assertEquals(2, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test194246,"public void test194246() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(2818);
+    StrBuilder strBuilder1 = strBuilder0.append(""z5)lw!g6"");
+    strBuilder1.replaceFirst(""z5)lw!g6"", ""z5)lw!g6"");
+    assertEquals(8, strBuilder0.length());
+}",0,"assertEquals(0, strBuilder0.length())"
+project,0,test194247,"public void test194247() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(2818);
+    StrBuilder strBuilder1 = strBuilder0.append(""z5)lw!g6"");
+    strBuilder1.replaceFirst(""z5)lw!g6"", ""z5)lw!g6"");
+    assertEquals(8, strBuilder0.size());
+}",0,"assertEquals(0, strBuilder0.size())"
+project,0,test195248,"public void test195248() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder strBuilder1 = strBuilder0.replaceFirst((String) null, (String) null);
+    assertEquals(32, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test196249,"public void test196249() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(5);
+    StrBuilder strBuilder1 = strBuilder0.replaceFirst(""gs!hQyV9Uz>>&U"", """");
+    assertEquals(5, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test197250,"public void test197250() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    StrBuilder strBuilder1 = strBuilder0.replaceAll(""Fz<x#p+1cWz:uyr"", (String) null);
+    assertEquals(47, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test197251,"public void test197251() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    StrBuilder strBuilder1 = strBuilder0.replaceAll(""Fz<x#p+1cWz:uyr"", (String) null);
+    assertEquals(15, strBuilder1.length());
+}",0,"assertEquals(0, strBuilder1.length())"
+project,0,test198252,"public void test198252() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder strBuilder1 = strBuilder0.replaceAll((String) null, ""file.encoding"");
+    assertEquals(32, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test199253,"public void test199253() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    strBuilder0.appendFixedWidthPadLeft(102, 102, 'w');
+    StrBuilder strBuilder1 = strBuilder0.replaceFirst('w', 'm');
+    int int0 = strBuilder1.lastIndexOf('m');
+    assertEquals(117, strBuilder0.length());
+}",0,"assertEquals(1, strBuilder0.length())"
+project,0,test199254,"public void test199254() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    strBuilder0.appendFixedWidthPadLeft(102, 102, 'w');
+    StrBuilder strBuilder1 = strBuilder0.replaceFirst('w', 'm');
+    int int0 = strBuilder1.lastIndexOf('m');
+    assertEquals(15, int0);
+}",0,
+project,0,test200255,"public void test200255() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(3);
+    StrBuilder strBuilder1 = strBuilder0.replaceFirst('E', 'E');
+    assertEquals(3, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test201256,"public void test201256() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    StrBuilder strBuilder1 = strBuilder0.replaceAll('[', '^');
+    assertEquals(47, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test201257,"public void test201257() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    StrBuilder strBuilder1 = strBuilder0.replaceAll('[', '^');
+    assertEquals(15, strBuilder1.length());
+}",0,"assertEquals(0, strBuilder1.length())"
+project,0,test202258,"public void test202258() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(2855);
+    StrBuilder strBuilder1 = strBuilder0.replaceAll('V', 'V');
+    assertEquals(2855, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test203259,"public void test203259() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(1379);
+    strBuilder0.replace(0, 1379, ""!cKI+| >S2,wSPL1]%"");
+    assertEquals(19, strBuilder0.size());
+}",0,"assertEquals(0, strBuilder0.size())"
+project,0,test204260,"public void test204260() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""org.apache.commons.lang.text.StrBuilder$StrBuilderReader"");
+    strBuilder0.replaceAll(""org.apache.commons.lang.text.StrBuilder$StrBuilderReader"", ""Nx"");
+    assertEquals(2, strBuilder0.size());
+}",0,"assertEquals(0, strBuilder0.size())"
+project,0,test205261,"public void test205261() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder strBuilder1 = strBuilder0.deleteFirst(""length must be valid"");
+    assertEquals(32, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test206262,"public void test206262() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(2);
+    strBuilder0.append(""^^"");
+    strBuilder0.deleteAll(""^^"");
+    assertEquals(0, strBuilder0.size());
+}",0,"assertEquals(1, strBuilder0.size())"
+project,0,test207263,"public void test207263() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder((String) null);
+    StrBuilder strBuilder1 = strBuilder0.deleteAll((String) null);
+    assertEquals(32, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test208264,"public void test208264() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    strBuilder0.deleteFirst('A');
+    assertEquals(14, strBuilder0.length());
+}",0,"assertEquals(0, strBuilder0.length())"
+project,0,test209265,"public void test209265() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(2);
+    StrBuilder strBuilder1 = strBuilder0.deleteFirst('A');
+    assertEquals(2, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test210266,"public void test210266() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(3);
+    Integer integer0 = new Integer(3);
+    StrBuilder strBuilder1 = strBuilder0.append((Object) integer0);
+    strBuilder1.deleteAll('.');
+    assertEquals(28, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test210267,"public void test210267() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(3);
+    Integer integer0 = new Integer(3);
+    StrBuilder strBuilder1 = strBuilder0.append((Object) integer0);
+    strBuilder1.deleteAll('.');
+    assertEquals(26, strBuilder0.length());
+}",0,"assertEquals(0, strBuilder0.length())"
+project,0,test211268,"public void test211268() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(3);
+    Integer integer0 = new Integer(3);
+    StrBuilder strBuilder1 = strBuilder0.append((Object) integer0);
+    strBuilder1.deleteAll('E');
+    assertEquals(28, strBuilder0.size());
+}",0,
+project,0,test211269,"public void test211269() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(3);
+    Integer integer0 = new Integer(3);
+    StrBuilder strBuilder1 = strBuilder0.append((Object) integer0);
+    strBuilder1.deleteAll('E');
+    assertEquals(28, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test212270,"public void test212270() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(3);
+    StrBuilder strBuilder1 = strBuilder0.deleteAll('E');
+    assertEquals(3, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test213271,"public void test213271() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    strBuilder0.appendNewLine();
+    strBuilder0.trim();
+    assertTrue(strBuilder0.isEmpty());
+}",0,assertTrue(strBuilder0.isEmpty())
+project,0,test214272,"public void test214272() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder strBuilder1 = strBuilder0.appendPadding('*', '/');
+    strBuilder1.delete(3, 3);
+    assertEquals(42, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test214273,"public void test214273() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder strBuilder1 = strBuilder0.appendPadding('*', '/');
+    strBuilder1.delete(3, 3);
+    assertEquals(42, strBuilder0.length());
+}",0,"assertEquals(0, strBuilder0.length())"
+project,0,test215274,"public void test215274() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""org.apache.commons.lang.text.StrBuilder$StrBuilderReader"");
+    strBuilder0.insert(3, true);
+    assertEquals(60, strBuilder0.size());
+}",0,"assertEquals(1, strBuilder0.size())"
+project,0,test216275,"public void test216275() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""org.apache.commons.lang.text.StrBuilder$StrBuilderReader"");
+    strBuilder0.insert(3, false);
+    assertEquals(61, strBuilder0.size());
+}",0,"assertEquals(1, strBuilder0.size())"
+project,0,test217276,"public void test217276() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    char[] charArray0 = new char[7];
+    // Undeclared exception!
+    try {
+        strBuilder0.insert(0, charArray0, 0, 108);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // Invalid length: 108
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test218277,"public void test218277() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    char[] charArray0 = new char[8];
+    StrBuilder strBuilder1 = strBuilder0.insert(0, charArray0, 0, 0);
+    assertEquals(32, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test218278,"public void test218278() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    char[] charArray0 = new char[8];
+    StrBuilder strBuilder1 = strBuilder0.insert(0, charArray0, 0, 0);
+    assertEquals(0, strBuilder1.length());
+}",0,
+project,0,test219279,"public void test219279() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    char[] charArray0 = new char[1];
+    // Undeclared exception!
+    try {
+        strBuilder0.insert(0, charArray0, 0, (-1435));
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // Invalid length: -1435
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test220280,"public void test220280() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder((-1298));
+    StrBuilder strBuilder1 = strBuilder0.appendNewLine();
+    strBuilder1.insert(1, (char[]) null, 11, 11);
+    assertEquals(1, strBuilder0.size());
+}",0,"assertEquals(0, strBuilder0.size())"
+project,0,test220281,"public void test220281() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder((-1298));
+    StrBuilder strBuilder1 = strBuilder0.appendNewLine();
+    strBuilder1.insert(1, (char[]) null, 11, 11);
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test221282,"public void test221282() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    char[] charArray0 = new char[5];
+    // Undeclared exception!
+    try {
+        strBuilder0.insert(0, charArray0, 89, 1061);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // Invalid offset: 89
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test222283,"public void test222283() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""sae|Wpu)I8nn#Y'#/"");
+    StrBuilder strBuilder1 = strBuilder0.insert(0, (char[]) null);
+    strBuilder1.size = 2382;
+    char[] charArray0 = new char[8];
+    // Undeclared exception!
+    try {
+        strBuilder0.append(charArray0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",0,
+project,0,test223284,"public void test223284() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder((-1324));
+    // Undeclared exception!
+    try {
+        strBuilder0.insert(2, (Object) null);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // String index out of range: 2
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",0,
+project,0,test224285,"public void test224285() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""4.0"");
+    StrMatcher strMatcher0 = StrMatcher.commaMatcher();
+    strBuilder0.insert(0, (Object) strMatcher0);
+    assertEquals(65, strBuilder0.length());
+}",0,"assertEquals(1, strBuilder0.length())"
+project,0,test225286,"public void test225286() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(2);
+    StrBuilder strBuilder1 = strBuilder0.appendFixedWidthPadRight(2, 0, 'F');
+    assertEquals(2, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test226287,"public void test226287() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(32);
+    // Undeclared exception!
+    try {
+        strBuilder0.appendFixedWidthPadLeft((Object) null, 32, 'M');
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",0,
+project,0,test227288,"public void test227288() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    StrBuilder strBuilder1 = strBuilder0.appendPadding((-1272), '<');
+    assertEquals(32, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test228289,"public void test228289() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""4.0"");
+    StrBuilder.StrBuilderTokenizer strBuilder_StrBuilderTokenizer0 = strBuilder0.new StrBuilderTokenizer();
+    strBuilder0.appendWithSeparators((Iterator) strBuilder_StrBuilderTokenizer0, (String) null);
+    assertEquals(1, strBuilder_StrBuilderTokenizer0.nextIndex());
+}",0,"assertEquals(0, strBuilder_StrBuilderTokenizer0.nextIndex())"
+project,0,test228290,"public void test228290() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""4.0"");
+    StrBuilder.StrBuilderTokenizer strBuilder_StrBuilderTokenizer0 = strBuilder0.new StrBuilderTokenizer();
+    strBuilder0.appendWithSeparators((Iterator) strBuilder_StrBuilderTokenizer0, (String) null);
+    assertEquals(30, strBuilder0.size());
+}",0,"assertEquals(0, strBuilder0.size())"
+project,0,test229291,"public void test229291() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(5);
+    StrBuilder strBuilder1 = strBuilder0.appendWithSeparators((Iterator) null, """");
+    assertEquals(5, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test230292,"public void test230292() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(1584);
+    LinkedList<Integer> linkedList0 = new LinkedList<Integer>();
+    Integer integer0 = new Integer(1584);
+    linkedList0.add(integer0);
+    linkedList0.add(integer0);
+    strBuilder0.appendWithSeparators((Collection) linkedList0, (String) null);
+    assertFalse(strBuilder0.isEmpty());
+}",0,assertTrue(strBuilder0.isEmpty())
+project,0,test231293,"public void test231293() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(1584);
+    LinkedList<Integer> linkedList0 = new LinkedList<Integer>();
+    Integer integer0 = new Integer(1584);
+    linkedList0.add(integer0);
+    StrBuilder strBuilder1 = strBuilder0.appendWithSeparators((Collection) linkedList0, (String) null);
+    char[] charArray0 = new char[3];
+    StrMatcher strMatcher0 = StrMatcher.charSetMatcher(charArray0);
+    StrBuilder strBuilder2 = strBuilder1.append(charArray0);
+    boolean boolean0 = strBuilder2.contains(strMatcher0);
+    assertEquals(31, strBuilder1.length());
+}",0,"assertEquals(0, strBuilder1.length())"
+project,0,test231294,"public void test231294() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(1584);
+    LinkedList<Integer> linkedList0 = new LinkedList<Integer>();
+    Integer integer0 = new Integer(1584);
+    linkedList0.add(integer0);
+    StrBuilder strBuilder1 = strBuilder0.appendWithSeparators((Collection) linkedList0, (String) null);
+    char[] charArray0 = new char[3];
+    StrMatcher strMatcher0 = StrMatcher.charSetMatcher(charArray0);
+    StrBuilder strBuilder2 = strBuilder1.append(charArray0);
+    boolean boolean0 = strBuilder2.contains(strMatcher0);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test232295,"public void test232295() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(105);
+    LinkedList<Object> linkedList0 = new LinkedList<Object>();
+    linkedList0.add((Object) strBuilder0);
+    strBuilder0.appendWithSeparators((Collection) linkedList0, ""java.specification.version"");
+    assertFalse(strBuilder0.isEmpty());
+}",0,assertTrue(strBuilder0.isEmpty())
+project,0,test233296,"public void test233296() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(2);
+    LinkedList<Integer> linkedList0 = new LinkedList<Integer>();
+    StrBuilder strBuilder1 = strBuilder0.appendWithSeparators((Collection) linkedList0, ""t"");
+    assertEquals(2, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test234297,"public void test234297() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""Af1D>yz|[>VCfcld=-,"");
+    StrBuilder strBuilder1 = strBuilder0.appendWithSeparators((Collection) null, ""<m(ro>)wKc"");
+    assertEquals(51, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test234298,"public void test234298() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""Af1D>yz|[>VCfcld=-,"");
+    StrBuilder strBuilder1 = strBuilder0.appendWithSeparators((Collection) null, ""<m(ro>)wKc"");
+    assertEquals(19, strBuilder1.length());
+}",0,"assertEquals(0, strBuilder1.length())"
+project,0,test235299,"public void test235299() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""$>G*(EL"");
+    Object[] objectArray0 = new Object[0];
+    StrBuilder strBuilder1 = strBuilder0.appendWithSeparators(objectArray0, ""(a&dT[5.S6}[x~"");
+    assertEquals(7, strBuilder1.length());
+}",0,"assertEquals(0, strBuilder1.length())"
+project,0,test235300,"public void test235300() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""$>G*(EL"");
+    Object[] objectArray0 = new Object[0];
+    StrBuilder strBuilder1 = strBuilder0.appendWithSeparators(objectArray0, ""(a&dT[5.S6}[x~"");
+    assertEquals(39, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test236301,"public void test236301() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder strBuilder1 = strBuilder0.appendWithSeparators((Object[]) null, """");
+    assertEquals(32, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test237302,"public void test237302() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""'SM }A"");
+    strBuilder0.append(false);
+    assertEquals(11, strBuilder0.length());
+}",0,"assertEquals(0, strBuilder0.length())"
+project,0,test238303,"public void test238303() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(3);
+    char[] charArray0 = new char[6];
+    strBuilder0.append(charArray0, 3, 3);
+    assertEquals(3, strBuilder0.size());
+}",0,"assertEquals(0, strBuilder0.size())"
+project,0,test240305,"public void test240305() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    char[] charArray0 = new char[2];
+    // Undeclared exception!
+    try {
+        strBuilder0.append(charArray0, 60, 60);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // Invalid startIndex: 60
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test241306,"public void test241306() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(0);
+    char[] charArray0 = new char[9];
+    // Undeclared exception!
+    try {
+        strBuilder0.append(charArray0, (-3787), 0);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // Invalid startIndex: 0
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",0,
+project,0,test242307,"public void test242307() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    StrBuilder strBuilder1 = strBuilder0.append((char[]) null, 0, 0);
+    assertEquals(32, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test243308,"public void test243308() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(0);
+    char[] charArray0 = new char[0];
+    StrBuilder strBuilder1 = strBuilder0.append(charArray0);
+    assertEquals(32, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test244309,"public void test244309() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(116);
+    StrBuilder strBuilder1 = strBuilder0.append(strBuilder0, 0, 0);
+    assertEquals(116, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test244310,"public void test244310() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(116);
+    StrBuilder strBuilder1 = strBuilder0.append(strBuilder0, 0, 0);
+    assertEquals(0, strBuilder1.length());
+}",0,"assertEquals(0, strBuilder1.length())"
+project,0,test245311,"public void test245311() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(0);
+    // Undeclared exception!
+    try {
+        strBuilder0.append(strBuilder0, 0, 1230);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // length must be valid
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test246312,"public void test246312() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""Q\"""");
+    // Undeclared exception!
+    try {
+        strBuilder0.append(strBuilder0, 2903, 112);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // startIndex must be valid
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test247313,"public void test247313() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder((-533));
+    // Undeclared exception!
+    try {
+        strBuilder0.append(strBuilder0, (-1289), 97);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // startIndex must be valid
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test248314,"public void test248314() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder((-284));
+    StrBuilder strBuilder1 = strBuilder0.append((StrBuilder) null, (-284), (-284));
+    assertEquals(32, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test249315,"public void test249315() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""4.0"");
+    StrBuilder strBuilder1 = new StrBuilder((-1));
+    StrBuilder strBuilder2 = strBuilder0.append(strBuilder1);
+    assertEquals(3, strBuilder2.length());
+}",0,"assertEquals(0, strBuilder2.length())"
+project,0,test249316,"public void test249316() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""4.0"");
+    StrBuilder strBuilder1 = new StrBuilder((-1));
+    StrBuilder strBuilder2 = strBuilder0.append(strBuilder1);
+    assertEquals(32, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test249317,"public void test249317() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""4.0"");
+    StrBuilder strBuilder1 = new StrBuilder((-1));
+    StrBuilder strBuilder2 = strBuilder0.append(strBuilder1);
+    assertEquals(35, strBuilder2.capacity());
+}",0,"assertEquals(0, strBuilder2.capacity())"
+project,0,test250318,"public void test250318() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""4.0"");
+    strBuilder0.append(strBuilder0);
+    assertEquals(6, strBuilder0.length());
+}",0,"assertEquals(0, strBuilder0.length())"
+project,0,test251319,"public void test251319() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    StringBuffer stringBuffer0 = new StringBuffer();
+    // Undeclared exception!
+    try {
+        strBuilder0.append(stringBuffer0, 0, 33);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // length must be valid
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test252320,"public void test252320() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(0);
+    StringBuffer stringBuffer0 = new StringBuffer();
+    StrBuilder strBuilder1 = strBuilder0.append(stringBuffer0, 0, 0);
+    assertEquals(32, strBuilder1.capacity());
+}",0,"assertEquals(1, strBuilder1.capacity())"
+project,0,test253321,"public void test253321() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""1B1/lA%8;b"");
+    StringBuffer stringBuffer0 = new StringBuffer((CharSequence) ""1B1/lA%8;b"");
+    // Undeclared exception!
+    try {
+        strBuilder0.append(stringBuffer0, (-2286), (-2286));
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // startIndex must be valid
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test254322,"public void test254322() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder strBuilder1 = strBuilder0.append((StringBuffer) null, 9, 0);
+    assertEquals(32, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test255323,"public void test255323() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StringBuffer stringBuffer0 = new StringBuffer("""");
+    // Undeclared exception!
+    try {
+        strBuilder0.append(stringBuffer0, 2, 2);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // startIndex must be valid
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test256324,"public void test256324() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StringBuffer stringBuffer0 = new StringBuffer();
+    StrBuilder strBuilder1 = strBuilder0.append(stringBuffer0);
+    assertEquals(32, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test257325,"public void test257325() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(9);
+    StrBuilder strBuilder1 = strBuilder0.append((StringBuffer) null);
+    assertEquals(9, strBuilder1.capacity());
+}",0,"assertEquals(1, strBuilder1.capacity())"
+project,0,test258326,"public void test258326() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    StringBuffer stringBuffer0 = new StringBuffer(""V13;0hu5L-%"");
+    strBuilder0.append(stringBuffer0);
+    int int0 = strBuilder0.lastIndexOf(""org.apache.commons.lang.text.StrBuilder"", 0);
+    assertFalse(strBuilder0.isEmpty());
+}",0,assertTrue(strBuilder0.isEmpty())
+project,0,test258327,"public void test258327() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    StringBuffer stringBuffer0 = new StringBuffer(""V13;0hu5L-%"");
+    strBuilder0.append(stringBuffer0);
+    int int0 = strBuilder0.lastIndexOf(""org.apache.commons.lang.text.StrBuilder"", 0);
+    assertEquals((-1), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test259328,"public void test259328() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder strBuilder1 = strBuilder0.append(""9Ay"", 0, 0);
+    assertEquals(32, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test259329,"public void test259329() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder strBuilder1 = strBuilder0.append(""9Ay"", 0, 0);
+    assertEquals(0, strBuilder1.length());
+}",0,"assertEquals(0, strBuilder1.length())"
+project,0,test260330,"public void test260330() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""org.apache.commons.lang.text.StrBuilder$StrBuilderReader"");
+    strBuilder0.append(""org.apache.commons.lang.text.StrBuilder$StrBuilderReader"", 1, 1);
+    assertEquals(57, strBuilder0.size());
+}",0,"assertEquals(0, strBuilder0.size())"
+project,0,test261331,"public void test261331() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""user.home"");
+    // Undeclared exception!
+    try {
+        strBuilder0.append(""java.vendor.url"", 3786, 5012);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // startIndex must be valid
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test262332,"public void test262332() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder((-2281));
+    // Undeclared exception!
+    try {
+        strBuilder0.append(""startIndex must be valid"", (-2281), (-2281));
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // startIndex must be valid
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test263333,"public void test263333() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(1584);
+    StrBuilder strBuilder1 = strBuilder0.append((String) null, 3032, (-5670));
+    assertEquals(1584, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test264334,"public void test264334() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(2);
+    StrBuilder strBuilder1 = strBuilder0.append((String) null);
+    assertEquals(2, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test265335,"public void test265335() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(2);
+    StrBuilder strBuilder1 = strBuilder0.appendNull();
+    assertEquals(2, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test266336,"public void test266336() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(0);
+    StrBuilder strBuilder1 = strBuilder0.setNewLineText("" \t\n\r\f"");
+    strBuilder1.appendNewLine();
+    assertEquals(5, strBuilder1.size());
+}",0,
+project,0,test267337,"public void test267337() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""Mi-"");
+    StrMatcher strMatcher0 = StrMatcher.tabMatcher();
+    StrBuilder strBuilder1 = strBuilder0.append((Object) strMatcher0);
+    char[] charArray0 = new char[7];
+    // Undeclared exception!
+    try {
+        strBuilder1.getChars(2365, 48, charArray0, 2);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // end < start
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test268338,"public void test268338() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    char[] charArray0 = new char[3];
+    // Undeclared exception!
+    try {
+        strBuilder0.getChars(0, 48, charArray0, (-750));
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // String index out of range: 48
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test269339,"public void test269339() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""*lh#f>4"");
+    // Undeclared exception!
+    try {
+        strBuilder0.getChars(3, (-611), (char[]) null, 3);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // String index out of range: -611
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test270340,"public void test270340() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""Invalid startIndex: "");
+    char[] charArray0 = new char[2];
+    // Undeclared exception!
+    try {
+        strBuilder0.getChars((-872), 522, charArray0, 3);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // String index out of range: -872
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test271341,"public void test271341() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    char[] charArray0 = new char[4];
+    char[] charArray1 = strBuilder0.getChars(charArray0);
+    assertEquals(0, strBuilder0.length());
+}",0,"assertEquals(1, strBuilder0.length())"
+project,0,test271342,"public void test271342() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    char[] charArray0 = new char[4];
+    char[] charArray1 = strBuilder0.getChars(charArray0);
+    assertEquals(4, charArray1.length);
+}",0,
+project,0,test271343,"public void test271343() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    char[] charArray0 = new char[4];
+    char[] charArray1 = strBuilder0.getChars(charArray0);
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test272344,"public void test272344() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""java.awt.headless"");
+    char[] charArray0 = new char[8];
+    char[] charArray1 = strBuilder0.getChars(charArray0);
+    assertEquals(17, charArray1.length);
+}",0,
+project,0,test272345,"public void test272345() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""java.awt.headless"");
+    char[] charArray0 = new char[8];
+    char[] charArray1 = strBuilder0.getChars(charArray0);
+    assertEquals(49, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test273346,"public void test273346() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    char[] charArray0 = strBuilder0.getChars((char[]) null);
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test273347,"public void test273347() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    char[] charArray0 = strBuilder0.getChars((char[]) null);
+    assertEquals(0, charArray0.length);
+}",0,
+project,0,test274348,"public void test274348() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(3);
+    Integer integer0 = new Integer(3);
+    strBuilder0.append((Object) integer0);
+    strBuilder0.toCharArray(3, 3);
+    assertEquals(28, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test275349,"public void test275349() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    strBuilder0.appendNewLine();
+    strBuilder0.toCharArray(0, 51);
+    assertEquals(1, strBuilder0.size());
+}",0,"assertEquals(1, strBuilder0.size())"
+project,0,test276350,"public void test276350() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    strBuilder0.toCharArray();
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test277351,"public void test277351() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    char[] charArray0 = strBuilder0.toCharArray();
+    assertEquals(15, strBuilder0.length());
+}",0,"assertEquals(0, strBuilder0.length())"
+project,0,test277352,"public void test277352() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    char[] charArray0 = strBuilder0.toCharArray();
+    assertEquals(15, charArray0.length);
+}",0,
+project,0,test277353,"public void test277353() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    char[] charArray0 = strBuilder0.toCharArray();
+    assertEquals(47, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test278354,"public void test278354() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(113);
+    strBuilder0.setLength(6);
+    strBuilder0.deleteCharAt(4);
+    assertEquals(5, strBuilder0.length());
+}",0,"assertEquals(0, strBuilder0.length())"
+project,0,test279355,"public void test279355() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(0);
+    // Undeclared exception!
+    try {
+        strBuilder0.deleteCharAt(0);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // String index out of range: 0
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test280356,"public void test280356() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(3);
+    // Undeclared exception!
+    try {
+        strBuilder0.setCharAt(1830, 'N');
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // String index out of range: 1830
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test281357,"public void test281357() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""org.apache.commons.lang.text.StrBuilder$StrBuilderReader"");
+    StrBuilder strBuilder1 = strBuilder0.setCharAt(1, 'X');
+    assertEquals(56, strBuilder1.length());
+}",0,"assertEquals(0, strBuilder1.length())"
+project,0,test281358,"public void test281358() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""org.apache.commons.lang.text.StrBuilder$StrBuilderReader"");
+    StrBuilder strBuilder1 = strBuilder0.setCharAt(1, 'X');
+    assertEquals(88, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test282359,"public void test282359() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""3Le_A+48kMV_"");
+    // Undeclared exception!
+    try {
+        strBuilder0.setCharAt((-1169), '8');
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // String index out of range: -1169
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test283360,"public void test283360() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(5);
+    // Undeclared exception!
+    try {
+        strBuilder0.charAt(1043);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // String index out of range: 1043
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",0,
+project,0,test284361,"public void test284361() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    char char0 = strBuilder0.charAt(0);
+    assertEquals(15, strBuilder0.length());
+}",0,"assertEquals(0, strBuilder0.length())"
+project,0,test284362,"public void test284362() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    char char0 = strBuilder0.charAt(0);
+    assertEquals('[', char0);
+}",1,
+project,0,test284363,"public void test284363() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    char char0 = strBuilder0.charAt(0);
+    assertEquals(47, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test285364,"public void test285364() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""<r[Y9y7;Zxf$2.^`So"");
+    // Undeclared exception!
+    try {
+        strBuilder0.charAt((-1838));
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // String index out of range: -1838
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test286365,"public void test286365() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    boolean boolean0 = strBuilder0.isEmpty();
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test286366,"public void test286366() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    boolean boolean0 = strBuilder0.isEmpty();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test287367,"public void test287367() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""Mi-"");
+    boolean boolean0 = strBuilder0.isEmpty();
+    assertEquals(35, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test287368,"public void test287368() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""Mi-"");
+    boolean boolean0 = strBuilder0.isEmpty();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test287369,"public void test287369() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""Mi-"");
+    boolean boolean0 = strBuilder0.isEmpty();
+    assertEquals(3, strBuilder0.length());
+}",0,
+project,0,test288370,"public void test288370() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    assertEquals(32, strBuilder0.capacity());
+}",1,
+project,0,test288371,"public void test288371() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    strBuilder0.minimizeCapacity();
+    StringBuffer stringBuffer0 = new StringBuffer();
+    strBuilder0.append(stringBuffer0);
+    assertEquals(0, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test289372,"public void test289372() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""Invalid olength: "");
+    strBuilder0.append((Object) strBuilder0);
+    strBuilder0.minimizeCapacity();
+    assertEquals(67, strBuilder0.length());
+}",0,"assertEquals(0, strBuilder0.length())"
+project,0,test290373,"public void test290373() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder((-1263));
+    StrBuilder strBuilder1 = strBuilder0.setLength(102);
+    strBuilder1.insert(102, (String) null);
+    assertEquals(102, strBuilder0.length());
+}",0,"assertEquals(0, strBuilder0.length())"
+project,0,test290374,"public void test290374() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder((-1263));
+    StrBuilder strBuilder1 = strBuilder0.setLength(102);
+    strBuilder1.insert(102, (String) null);
+    assertEquals(102, strBuilder0.size());
+}",0,"assertEquals(0, strBuilder0.size())"
+project,0,test291375,"public void test291375() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    StrBuilder strBuilder1 = strBuilder0.setLength(0);
+    assertTrue(strBuilder1.isEmpty());
+}",0,assertTrue(strBuilder1.isEmpty())
+project,0,test291376,"public void test291376() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    StrBuilder strBuilder1 = strBuilder0.setLength(0);
+    assertEquals(32, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test292377,"public void test292377() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    // Undeclared exception!
+    try {
+        strBuilder0.setLength((-128));
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // String index out of range: -128
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test293378,"public void test293378() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""(%"");
+    assertEquals(2, strBuilder0.size());
+}",0,"assertEquals(1, strBuilder0.size())"
+project,0,test293379,"public void test293379() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""(%"");
+    strBuilder0.setLength(0);
+    assertEquals(0, strBuilder0.length());
+}",0,"assertEquals(0, strBuilder0.length())"
+project,0,test294380,"public void test294380() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder strBuilder1 = strBuilder0.setNullText("""");
+    assertEquals(32, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test295381,"public void test295381() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder strBuilder1 = strBuilder0.setNullText(""baA"");
+    strBuilder1.appendNull();
+    assertFalse(strBuilder1.isEmpty());
+}",0,assertTrue(strBuilder1.isEmpty())
+project,0,test296382,"public void test296382() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder((String) null);
+    // Undeclared exception!
+    try {
+        strBuilder0.deleteCharAt((-1));
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // String index out of range: -1
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test298384,"public void test298384() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    char[] charArray0 = new char[4];
+    StrBuilder.StrBuilderWriter strBuilder_StrBuilderWriter0 = strBuilder0.new StrBuilderWriter();
+    strBuilder_StrBuilderWriter0.write(charArray0, 0, 0);
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test298385,"public void test298385() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    char[] charArray0 = new char[4];
+    StrBuilder.StrBuilderWriter strBuilder_StrBuilderWriter0 = strBuilder0.new StrBuilderWriter();
+    strBuilder_StrBuilderWriter0.write(charArray0, 0, 0);
+    assertEquals(0, strBuilder0.size());
+}",0,"assertEquals(0, strBuilder0.size())"
+project,0,test299386,"public void test299386() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""Invalid startIndex: "");
+    StrBuilder.StrBuilderWriter strBuilder_StrBuilderWriter0 = strBuilder0.new StrBuilderWriter();
+    strBuilder_StrBuilderWriter0.flush();
+    assertEquals(52, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test299387,"public void test299387() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""Invalid startIndex: "");
+    StrBuilder.StrBuilderWriter strBuilder_StrBuilderWriter0 = strBuilder0.new StrBuilderWriter();
+    strBuilder_StrBuilderWriter0.flush();
+    assertEquals(20, strBuilder0.length());
+}",0,
+project,0,test299388,"public void test299388() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""Invalid startIndex: "");
+    StrBuilder.StrBuilderWriter strBuilder_StrBuilderWriter0 = strBuilder0.new StrBuilderWriter();
+    strBuilder_StrBuilderWriter0.flush();
+    assertEquals(20, strBuilder0.size());
+}",0,"assertEquals(0, strBuilder0.size())"
+project,0,test300389,"public void test300389() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder.StrBuilderWriter strBuilder_StrBuilderWriter0 = strBuilder0.new StrBuilderWriter();
+    char[] charArray0 = new char[1];
+    strBuilder_StrBuilderWriter0.write(charArray0);
+    assertFalse(strBuilder0.isEmpty());
+}",0,assertTrue(strBuilder0.isEmpty())
+project,0,test300390,"public void test300390() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder.StrBuilderWriter strBuilder_StrBuilderWriter0 = strBuilder0.new StrBuilderWriter();
+    char[] charArray0 = new char[1];
+    strBuilder_StrBuilderWriter0.write(charArray0);
+    assertEquals(1, strBuilder0.size());
+}",0,"assertEquals(0, strBuilder0.size())"
+project,0,test301391,"public void test301391() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder.StrBuilderWriter strBuilder_StrBuilderWriter0 = strBuilder0.new StrBuilderWriter();
+    strBuilder_StrBuilderWriter0.write((-2057));
+    assertFalse(strBuilder0.isEmpty());
+}",0,assertTrue(strBuilder0.isEmpty())
+project,0,test301392,"public void test301392() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    StrBuilder.StrBuilderWriter strBuilder_StrBuilderWriter0 = strBuilder0.new StrBuilderWriter();
+    strBuilder_StrBuilderWriter0.write((-2057));
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test302393,"public void test302393() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""*lh#f>4"");
+    StrBuilder.StrBuilderWriter strBuilder_StrBuilderWriter0 = strBuilder0.new StrBuilderWriter();
+    strBuilder_StrBuilderWriter0.close();
+    assertEquals(39, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test302394,"public void test302394() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""*lh#f>4"");
+    StrBuilder.StrBuilderWriter strBuilder_StrBuilderWriter0 = strBuilder0.new StrBuilderWriter();
+    strBuilder_StrBuilderWriter0.close();
+    assertEquals(7, strBuilder0.length());
+}",0,"assertEquals(0, strBuilder0.length())"
+project,0,test303395,"public void test303395() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(0);
+    StrBuilder.StrBuilderReader strBuilder_StrBuilderReader0 = strBuilder0.new StrBuilderReader();
+    strBuilder_StrBuilderReader0.mark(1860);
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test304397,"public void test304397() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(3);
+    StrBuilder.StrBuilderReader strBuilder_StrBuilderReader0 = strBuilder0.new StrBuilderReader();
+    boolean boolean0 = strBuilder_StrBuilderReader0.markSupported();
+    assertEquals(3, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test305398,"public void test305398() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(2);
+    StrBuilder.StrBuilderReader strBuilder_StrBuilderReader0 = strBuilder0.new StrBuilderReader();
+    strBuilder_StrBuilderReader0.reset();
+    assertEquals(2, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test306400,"public void test306400() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""4"");
+    StrBuilder.StrBuilderReader strBuilder_StrBuilderReader0 = strBuilder0.new StrBuilderReader();
+    strBuilder_StrBuilderReader0.close();
+    assertEquals(1, strBuilder0.length());
+}",0,"assertEquals(0, strBuilder0.length())"
+project,0,test306401,"public void test306401() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""4"");
+    StrBuilder.StrBuilderReader strBuilder_StrBuilderReader0 = strBuilder0.new StrBuilderReader();
+    strBuilder_StrBuilderReader0.close();
+    assertEquals(33, strBuilder0.capacity());
+}",1,
+project,0,test307402,"public void test307402() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    strBuilder0.append(1.0);
+    assertEquals(3, strBuilder0.length());
+}",0,"assertEquals(1, strBuilder0.length())"
+project,0,test308403,"public void test308403() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    StrBuilder strBuilder1 = strBuilder0.append((float) 0);
+    char[] charArray0 = new char[8];
+    strBuilder1.buffer = charArray0;
+    // Undeclared exception!
+    try {
+        strBuilder1.deleteFirst('A');
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 8
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",0,
+project,0,test309404,"public void test309404() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder((-1298));
+    // Undeclared exception!
+    try {
+        strBuilder0.insert(1, (float) 1);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // String index out of range: 1
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test310405,"public void test310405() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""4.0"");
+    // Undeclared exception!
+    try {
+        strBuilder0.insert(115, 1918);
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // String index out of range: 115
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test311406,"public void test311406() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""'H]t,2vFypKA%nhMf="");
+    // Undeclared exception!
+    try {
+        strBuilder0.insert(27, (-1L));
+        fail(""Expecting exception: StringIndexOutOfBoundsException"");
+    } catch (StringIndexOutOfBoundsException e) {
+        //
+        // String index out of range: 27
+        //
+        verifyException(""org.apache.commons.lang.text.StrBuilder"", e);
+    }
+}",1,
+project,0,test312407,"public void test312407() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    // Undeclared exception!
+    try {
+        strBuilder0.appendFixedWidthPadRight((Object) null, 108, 'Z');
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test313408,"public void test313408() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""sae|Wpu)I8nn#Y'#/"");
+    strBuilder0.asTokenizer();
+    assertEquals(49, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test313409,"public void test313409() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""sae|Wpu)I8nn#Y'#/"");
+    strBuilder0.asTokenizer();
+    assertEquals(17, strBuilder0.length());
+}",0,"assertEquals(0, strBuilder0.length())"
+project,0,test314410,"public void test314410() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    StrMatcher strMatcher0 = StrMatcher.commaMatcher();
+    StrBuilder strBuilder1 = strBuilder0.deleteAll(strMatcher0);
+    assertEquals(15, strBuilder1.length());
+}",0,"assertEquals(0, strBuilder1.length())"
+project,0,test314411,"public void test314411() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    StrMatcher strMatcher0 = StrMatcher.commaMatcher();
+    StrBuilder strBuilder1 = strBuilder0.deleteAll(strMatcher0);
+    assertEquals(47, strBuilder1.capacity());
+}",0,
+project,0,test315412,"public void test315412() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    strBuilder0.append((-1L));
+    strBuilder0.trim();
+    assertEquals(2, strBuilder0.length());
+}",0,"assertEquals(0, strBuilder0.length())"
+project,0,test316413,"public void test316413() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(3644);
+    strBuilder0.append(3644);
+    assertFalse(strBuilder0.isEmpty());
+}",0,assertTrue(strBuilder0.isEmpty())
+project,0,test317414,"public void test317414() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""(%"");
+    int int0 = strBuilder0.indexOf(""(%"");
+    assertEquals(0, int0);
+}",0,
+project,0,test317415,"public void test317415() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""(%"");
+    int int0 = strBuilder0.indexOf(""(%"");
+    assertEquals(34, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test317416,"public void test317416() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""(%"");
+    int int0 = strBuilder0.indexOf(""(%"");
+    assertEquals(2, strBuilder0.length());
+}",0,"assertEquals(0, strBuilder0.length())"
+project,0,test318417,"public void test318417() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""(%"");
+    StrBuilder strBuilder1 = strBuilder0.replaceFirst((StrMatcher) null, ""(%"");
+    assertEquals(2, strBuilder1.length());
+}",0,"assertEquals(0, strBuilder1.length())"
+project,0,test318418,"public void test318418() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""(%"");
+    StrBuilder strBuilder1 = strBuilder0.replaceFirst((StrMatcher) null, ""(%"");
+    assertEquals(34, strBuilder1.capacity());
+}",0,"assertEquals(0, strBuilder1.capacity())"
+project,0,test319419,"public void test319419() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    StrBuilder strBuilder1 = strBuilder0.appendFixedWidthPadLeft(102, 102, 'w');
+    strBuilder1.replace(102, 102, (String) null);
+    assertEquals(117, strBuilder0.size());
+}",0,
+project,0,test319420,"public void test319420() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    StrBuilder strBuilder1 = strBuilder0.appendFixedWidthPadLeft(102, 102, 'w');
+    strBuilder1.replace(102, 102, (String) null);
+    assertEquals(117, strBuilder0.length());
+}",0,"assertEquals(0, strBuilder0.length())"
+project,0,test320421,"public void test320421() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    StrBuilder strBuilder1 = strBuilder0.appendPadding(1, 'e');
+    StrBuilder.StrBuilderTokenizer strBuilder_StrBuilderTokenizer0 = strBuilder0.new StrBuilderTokenizer();
+    strBuilder1.appendWithSeparators((Iterator) strBuilder_StrBuilderTokenizer0, """");
+    boolean boolean0 = strBuilder1.contains('S');
+    assertEquals(28, strBuilder0.length());
+}",0,"assertEquals(1, strBuilder0.length())"
+project,0,test320422,"public void test320422() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    StrBuilder strBuilder1 = strBuilder0.appendPadding(1, 'e');
+    StrBuilder.StrBuilderTokenizer strBuilder_StrBuilderTokenizer0 = strBuilder0.new StrBuilderTokenizer();
+    strBuilder1.appendWithSeparators((Iterator) strBuilder_StrBuilderTokenizer0, """");
+    boolean boolean0 = strBuilder1.contains('S');
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test321423,"public void test321423() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    int int0 = strBuilder0.indexOf((StrMatcher) null);
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test321424,"public void test321424() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    int int0 = strBuilder0.indexOf((StrMatcher) null);
+    assertEquals((-1), int0);
+}",0,
+project,0,test322425,"public void test322425() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    String string0 = strBuilder0.toString();
+    assertEquals("""", string0);
+}",0,assertNotNull(string0)
+project,0,test322426,"public void test322426() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    String string0 = strBuilder0.toString();
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test323427,"public void test323427() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    String string0 = strBuilder0.substring(0);
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test323428,"public void test323428() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    String string0 = strBuilder0.substring(0);
+    assertEquals("""", string0);
+}",1,
+project,0,test324429,"public void test324429() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""4.0"");
+    strBuilder0.asWriter();
+    assertEquals(35, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test324430,"public void test324430() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""4.0"");
+    strBuilder0.asWriter();
+    assertEquals(3, strBuilder0.length());
+}",0,"assertEquals(0, strBuilder0.length())"
+project,0,test325431,"public void test325431() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    int int0 = strBuilder0.indexOf('t');
+    assertEquals((-1), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test325432,"public void test325432() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    int int0 = strBuilder0.indexOf('t');
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test326433,"public void test326433() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder();
+    strBuilder0.getNewLineText();
+    assertEquals(32, strBuilder0.capacity());
+}",0,"assertEquals(1, strBuilder0.capacity())"
+project,0,test327434,"public void test327434() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(105);
+    int int0 = strBuilder0.capacity();
+    assertEquals(105, int0);
+}",0,
+project,0,test328435,"public void test328435() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    StrMatcher strMatcher0 = StrMatcher.commaMatcher();
+    StrBuilder strBuilder1 = strBuilder0.replaceAll(strMatcher0, """");
+    assertEquals(47, strBuilder1.capacity());
+}",0,
+project,0,test328436,"public void test328436() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    StrMatcher strMatcher0 = StrMatcher.commaMatcher();
+    StrBuilder strBuilder1 = strBuilder0.replaceAll(strMatcher0, """");
+    assertEquals(15, strBuilder1.length());
+}",0,"assertEquals(0, strBuilder1.length())"
+project,0,test329437,"public void test329437() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    StrMatcher.NoMatcher strMatcher_NoMatcher0 = new StrMatcher.NoMatcher();
+    int int0 = strBuilder0.lastIndexOf((StrMatcher) strMatcher_NoMatcher0);
+    assertEquals(32, strBuilder0.capacity());
+}",1,
+project,0,test329438,"public void test329438() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder("""");
+    StrMatcher.NoMatcher strMatcher_NoMatcher0 = new StrMatcher.NoMatcher();
+    int int0 = strBuilder0.lastIndexOf((StrMatcher) strMatcher_NoMatcher0);
+    assertEquals((-1), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test330440,"public void test330440() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    StringBuffer stringBuffer0 = strBuilder0.toStringBuffer();
+    assertEquals(47, strBuilder0.capacity());
+}",0,"assertEquals(0, strBuilder0.capacity())"
+project,0,test330441,"public void test330441() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""[q9vDLA7X}qlQLq"");
+    StringBuffer stringBuffer0 = strBuilder0.toStringBuffer();
+    assertEquals(15, strBuilder0.length());
+}",0,"assertEquals(0, strBuilder0.length())"
+project,0,test331442,"public void test331442() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""Mi-"");
+    assertEquals(3, strBuilder0.size());
+}",0,"assertEquals(1, strBuilder0.size())"
+project,0,test331443,"public void test331443() throws Throwable {
+    StrBuilder strBuilder0 = new StrBuilder(""Mi-"");
+    strBuilder0.deleteFirst(""Mi-"");
+    assertEquals(0, strBuilder0.size());
+}",0,"assertEquals(0, strBuilder0.size())"

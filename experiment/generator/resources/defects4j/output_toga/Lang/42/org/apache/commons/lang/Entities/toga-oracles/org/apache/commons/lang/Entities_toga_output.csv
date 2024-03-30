@@ -1,0 +1,300 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    Entities entities0 = Entities.HTML32;
+    String string0 = entities0.unescape(""KS!!0%&{&8{b(W'LqVf"");
+    assertEquals(""KS!!0%&{&8{b(W'LqVf"", string0);
+}",0,assertNotNull(string0)
+project,0,test011,"public void test011() throws Throwable {
+    Entities entities0 = new Entities();
+    String string0 = entities0.unescape(""&"");
+    assertEquals(""&"", string0);
+}",0,assertNotNull(string0)
+project,0,test066,"public void test066() throws Throwable {
+    Entities.ArrayEntityMap entities_ArrayEntityMap0 = new Entities.ArrayEntityMap();
+    entities_ArrayEntityMap0.value("""");
+    entities_ArrayEntityMap0.add("""", (-1));
+    Entities entities0 = Entities.HTML32;
+    String string0 = entities0.entityName(2059);
+    assertNull(string0);
+}",0,
+project,0,test1313,"public void test1313() throws Throwable {
+    Entities entities0 = new Entities();
+    String string0 = entities0.escape("""");
+    assertEquals("""", string0);
+}",0,assertNotNull(string0)
+project,0,test1414,"public void test1414() throws Throwable {
+    Entities entities0 = Entities.HTML40;
+    int int0 = entities0.entityValue(""igrave"");
+    assertEquals(236, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test1515,"public void test1515() throws Throwable {
+    Entities entities0 = new Entities();
+    Entities.fillWithHtml40Entities(entities0);
+    String string0 = entities0.entityName(34);
+    assertEquals(""quot"", string0);
+}",0,assertNotNull(string0)
+project,0,test1617,"public void test1617() throws Throwable {
+    Entities entities0 = Entities.HTML40;
+    // Undeclared exception!
+    try {
+        entities0.unescape((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang.Entities"", e);
+    }
+}",0,
+project,0,test1718,"public void test1718() throws Throwable {
+    Entities entities0 = Entities.HTML40;
+    // Undeclared exception!
+    try {
+        entities0.HTML32.unescape((Writer) null, (String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang.Entities"", e);
+    }
+}",0,
+project,0,test1819,"public void test1819() throws Throwable {
+    // Undeclared exception!
+    try {
+        Entities.fillWithHtml40Entities((Entities) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang.Entities"", e);
+    }
+}",0,
+project,0,test1920,"public void test1920() throws Throwable {
+    Entities entities0 = Entities.HTML40;
+    // Undeclared exception!
+    try {
+        entities0.escape((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang.Entities"", e);
+    }
+}",0,
+project,0,test2021,"public void test2021() throws Throwable {
+    Entities entities0 = Entities.HTML32;
+    // Undeclared exception!
+    try {
+        entities0.HTML32.escape((Writer) null, ""loz"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang.Entities"", e);
+    }
+}",0,
+project,0,test2122,"public void test2122() throws Throwable {
+    Entities entities0 = Entities.XML;
+    Entities entities1 = Entities.HTML32;
+    Entities.fillWithHtml40Entities(entities1);
+    Entities entities2 = Entities.XML;
+    Entities.fillWithHtml40Entities(entities2);
+    entities0.HTML40.addEntity(""org.apache.commons.lang.Entities$LookupEntityMap"", 0);
+    Entities.fillWithHtml40Entities(entities0);
+    entities0.XML.map = null;
+    entities0.HTML32.unescape(""1A-%<\""'"");
+    // Undeclared exception!
+    try {
+        entities0.entityValue(""]s:E5`o@)+^4vaKA$r"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang.Entities"", e);
+    }
+}",0,
+project,0,test2223,"public void test2223() throws Throwable {
+    Entities.BinaryEntityMap entities_BinaryEntityMap0 = new Entities.BinaryEntityMap(703);
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = ""loz"";
+    stringArray0[1] = ""8225"";
+    entities_BinaryEntityMap0.names = stringArray0;
+    int[] intArray0 = new int[9];
+    intArray0[0] = 703;
+    intArray0[1] = 703;
+    intArray0[2] = 703;
+    intArray0[3] = 703;
+    intArray0[4] = 703;
+    intArray0[6] = 703;
+    intArray0[7] = 703;
+    intArray0[8] = 703;
+    entities_BinaryEntityMap0.ensureCapacity(0);
+    entities_BinaryEntityMap0.values = intArray0;
+    entities_BinaryEntityMap0.ensureCapacity(703);
+    entities_BinaryEntityMap0.name((-870));
+    Entities entities0 = Entities.XML;
+    // Undeclared exception!
+    try {
+        entities0.entityName(703);
+        //  fail(""Expecting exception: NullPointerException"");
+        // Unstable assertion
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.lang.Entities"", e);
+    }
+}",0,
+project,0,test2324,"public void test2324() throws Throwable {
+    Entities entities0 = new Entities();
+    entities0.HTML32.addEntity("""", 217);
+}",0,
+project,0,test2425,"public void test2425() throws Throwable {
+    Entities entities0 = Entities.XML;
+    // Undeclared exception!
+    try {
+        entities0.HTML40.addEntities((String[][]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test2526,"public void test2526() throws Throwable {
+    Entities entities0 = Entities.HTML40;
+    String[][] stringArray0 = new String[5][0];
+    // Undeclared exception!
+    try {
+        entities0.XML.addEntities(stringArray0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test2627,"public void test2627() throws Throwable {
+    Entities entities0 = new Entities();
+    String[][] stringArray0 = new String[0][3];
+    entities0.XML.addEntities(stringArray0);
+    assertEquals(0, stringArray0.length);
+}",0,
+project,0,test2728,"public void test2728() throws Throwable {
+    Entities entities0 = new Entities();
+    String[][] stringArray0 = new String[5][2];
+    // Undeclared exception!
+    try {
+        entities0.addEntities(stringArray0);
+        fail(""Expecting exception: NumberFormatException"");
+    } catch (NumberFormatException e) {
+        //
+        // null
+        //
+        verifyException(""java.lang.Integer"", e);
+    }
+}",0,
+project,0,test2930,"public void test2930() throws Throwable {
+    Entities entities0 = Entities.HTML32;
+    String string0 = entities0.unescape("""");
+    assertEquals("""", string0);
+}",0,
+project,0,test3031,"public void test3031() throws Throwable {
+    Entities entities0 = new Entities();
+    String string0 = entities0.unescape(""$+kkY&NC1%.#"");
+    assertEquals(""$+kkY&NC1%.#"", string0);
+}",0,assertNotNull(string0)
+project,0,test3233,"public void test3233() throws Throwable {
+    Entities.BinaryEntityMap entities_BinaryEntityMap0 = new Entities.BinaryEntityMap();
+    String[] stringArray0 = new String[4];
+    stringArray0[0] = ""M)er1y"";
+    stringArray0[1] = ""org.apache.commons.lang.IntHashMap"";
+    stringArray0[2] = ""org.apache.commons.lang.IntHashMap"";
+    stringArray0[3] = ""t},&&A~7>3MM8.kKeF"";
+    entities_BinaryEntityMap0.names = stringArray0;
+    entities_BinaryEntityMap0.ensureCapacity((-958));
+    Entities entities0 = Entities.XML;
+    Entities.fillWithHtml40Entities(entities0);
+    Entities entities1 = Entities.XML;
+    StringWriter stringWriter0 = new StringWriter();
+    entities1.escape((Writer) stringWriter0, """");
+    entities1.unescape((Writer) stringWriter0, """");
+    Entities.fillWithHtml40Entities(entities1);
+    entities0.addEntity(""org.apache.commons.lang.exception.NestableRuntimeException"", (-958));
+    entities0.HTML32.escape((Writer) stringWriter0, ""org.apache.commons.lang.exception.NestableRuntimeException"");
+    entities_BinaryEntityMap0.add("""", 1437);
+    int int0 = entities0.entityValue("""");
+    assertEquals((-1), int0);
+}",0,"assertEquals(1, int0)"
+project,0,test3334,"public void test3334() throws Throwable {
+    Entities.BinaryEntityMap entities_BinaryEntityMap0 = new Entities.BinaryEntityMap();
+    Entities entities0 = new Entities();
+    entities_BinaryEntityMap0.size = 116;
+    entities0.map = (Entities.EntityMap) entities_BinaryEntityMap0;
+    // Undeclared exception!
+    try {
+        entities0.escape(""H3A"");
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test3435,"public void test3435() throws Throwable {
+    Entities.BinaryEntityMap entities_BinaryEntityMap0 = new Entities.BinaryEntityMap();
+    entities_BinaryEntityMap0.add(""$+kkY&NC1%#"", 116);
+    Entities entities0 = new Entities();
+    entities0.map = (Entities.EntityMap) entities_BinaryEntityMap0;
+    String string0 = entities0.escape(""H3A"");
+    assertEquals(""H3A"", string0);
+}",0,
+project,0,test3536,"public void test3536() throws Throwable {
+    Entities entities0 = Entities.HTML32;
+    int int0 = entities0.entityValue((String) null);
+    assertEquals((-1), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test3637,"public void test3637() throws Throwable {
+    Entities.ArrayEntityMap entities_ArrayEntityMap0 = new Entities.ArrayEntityMap();
+    entities_ArrayEntityMap0.value("""");
+    entities_ArrayEntityMap0.add("""", (-1));
+    Entities entities0 = Entities.HTML32;
+    // Undeclared exception!
+    try {
+        entities0.entityName((-1));
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -1
+        //
+        verifyException(""org.apache.commons.lang.Entities$LookupEntityMap"", e);
+    }
+}",0,
+project,0,test3738,"public void test3738() throws Throwable {
+    Entities entities0 = Entities.HTML32;
+    // Undeclared exception!
+    try {
+        entities0.HTML32.entityName((-854));
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -854
+        //
+        verifyException(""org.apache.commons.lang.Entities$LookupEntityMap"", e);
+    }
+}",0,
+project,0,test4041,"public void test4041() throws Throwable {
+    Entities entities0 = Entities.HTML40;
+    Entities.TreeEntityMap entities_TreeEntityMap0 = new Entities.TreeEntityMap();
+    String string0 = entities0.escape(""951"");
+    assertEquals(""951"", string0);
+}",0,
+project,0,test4445,"public void test4445() throws Throwable {
+    Entities entities0 = Entities.HTML32;
+    Entities.fillWithHtml40Entities(entities0);
+}",0,

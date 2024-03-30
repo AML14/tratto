@@ -1,0 +1,52 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test00,"public void test00() throws Throwable {
+    StdKeySerializer stdKeySerializer0 = new StdKeySerializer();
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    Class<HashMap> class0 = HashMap.class;
+    MapType mapType0 = typeFactory0.constructRawMapType(class0);
+    Class<?> class1 = mapType0.getParameterSource();
+    JsonNode jsonNode0 = stdKeySerializer0.getSchema((SerializerProvider) defaultSerializerProvider_Impl0, (Type) class1);
+    assertEquals(JsonNodeType.OBJECT, jsonNode0.getNodeType());
+}",0,assertNotNull(jsonNode0.getNodeType())
+project,0,test11,"public void test11() throws Throwable {
+    StdKeySerializer stdKeySerializer0 = new StdKeySerializer();
+    JsonFormatVisitorWrapper jsonFormatVisitorWrapper0 = mock(JsonFormatVisitorWrapper.class, new ViolatedAssumptionAnswer());
+    doReturn((JsonStringFormatVisitor) null).when(jsonFormatVisitorWrapper0).expectStringFormat(any(com.fasterxml.jackson.databind.JavaType.class));
+    stdKeySerializer0.acceptJsonFormatVisitor(jsonFormatVisitorWrapper0, (JavaType) null);
+    assertFalse(stdKeySerializer0.usesObjectId());
+}",0,assertFalse(stdKeySerializer0.usesObjectId())
+project,0,test22,"public void test22() throws Throwable {
+    StdKeySerializer stdKeySerializer0 = new StdKeySerializer();
+    Integer integer0 = new Integer(0);
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, integer0, true);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream(1);
+    BufferedOutputStream bufferedOutputStream0 = new BufferedOutputStream(byteArrayOutputStream0, 3);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, (-3693), objectMapper0, bufferedOutputStream0);
+    JsonGeneratorDelegate jsonGeneratorDelegate0 = new JsonGeneratorDelegate(uTF8JsonGenerator0, false);
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    stdKeySerializer0.serialize(integer0, jsonGeneratorDelegate0, defaultSerializerProvider_Impl0);
+    assertFalse(stdKeySerializer0.usesObjectId());
+}",0,
+project,0,test33,"public void test33() throws Throwable {
+    StdKeySerializer stdKeySerializer0 = new StdKeySerializer();
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, ""i-"", true);
+    ByteArrayBuilder byteArrayBuilder0 = new ByteArrayBuilder(bufferRecycler0);
+    UTF8JsonGenerator uTF8JsonGenerator0 = new UTF8JsonGenerator(iOContext0, 115, (ObjectCodec) null, byteArrayBuilder0, byteArrayBuilder0.NO_BYTES, 1, false);
+    ObjectMapper objectMapper0 = new ObjectMapper((JsonFactory) null);
+    SerializerProvider serializerProvider0 = objectMapper0.getSerializerProvider();
+    MockDate mockDate0 = new MockDate(3, 55296, 0, 56319, 57343);
+    // Undeclared exception!
+    try {
+        stdKeySerializer0.serialize(mockDate0, uTF8JsonGenerator0, serializerProvider0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.SerializerProvider"", e);
+    }
+}",0,

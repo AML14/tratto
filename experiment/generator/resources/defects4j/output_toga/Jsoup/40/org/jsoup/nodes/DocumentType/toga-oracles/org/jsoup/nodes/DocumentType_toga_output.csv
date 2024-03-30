@@ -1,0 +1,42 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test22,"public void test22() throws Throwable {
+    DocumentType documentType0 = new DocumentType(""e`p|^x3[uC"", ""e`p|^x3[uC"", ""e`p|^x3[uC"", ""e`p|^x3[uC"");
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    // Undeclared exception!
+    try {
+        documentType0.outerHtmlHead((StringBuilder) null, 0, document_OutputSettings0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.DocumentType"", e);
+    }
+}",0,
+project,0,test33,"public void test33() throws Throwable {
+    DocumentType documentType0 = null;
+    try {
+        documentType0 = new DocumentType("""", """", """", (String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",0,
+project,0,test44,"public void test44() throws Throwable {
+    DocumentType documentType0 = new DocumentType(""big"", ""big"", ""big"", ""5YcO{Qh!-zLrhAvr}H"");
+    String string0 = documentType0.nodeName();
+    assertEquals(""#doctype"", string0);
+}",0,assertNotNull(string0)
+project,0,test55,"public void test55() throws Throwable {
+    DocumentType documentType0 = new DocumentType("" "", "" "", "" "", "" "");
+    String string0 = documentType0.toString();
+    assertEquals(""#doctype"", documentType0.nodeName());
+}",0,
+project,0,test56,"public void test56() throws Throwable {
+    DocumentType documentType0 = new DocumentType("" "", "" "", "" "", "" "");
+    String string0 = documentType0.toString();
+    assertEquals(""<!DOCTYPE>"", string0);
+}",0,assertNotNull(string0)

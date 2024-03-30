@@ -1,0 +1,1363 @@
+focal_method,test_prefix,docstring
+"//-----------------------------------------------------------------------
+/**
+ * Gets the number of weeks that this period represents.
+ *
+ * @return the number of weeks in the period
+ */
+public int getWeeks() {
+    return getValue();
+}","public void test01414() throws Throwable {
+    PeriodFormatterBuilder.Literal periodFormatterBuilder_Literal0 = new PeriodFormatterBuilder.Literal(""org.joda.time.format.PeriodFormatterBuilder$FieldFormatter"");
+    StringWriter stringWriter0 = new StringWriter();
+    Weeks weeks0 = Weeks.MIN_VALUE;
+    Locale locale0 = Locale.CHINA;
+    periodFormatterBuilder_Literal0.printTo((Writer) stringWriter0, (ReadablePeriod) weeks0, locale0);
+    assertEquals(Integer.MIN_VALUE, weeks0.getWeeks());
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Append a field suffix which applies only to the last appended field. If
+ * the field is not printed, neither is the suffix.
+ *
+ * @param text text to print after field only if field is printed
+ * @return this PeriodFormatterBuilder
+ * @throws IllegalStateException if no field exists to append to
+ * @see #appendPrefix
+ */
+public PeriodFormatterBuilder appendSuffix(String text) {
+    if (text == null) {
+        throw new IllegalArgumentException();
+    }
+    return appendSuffix(new SimpleAffix(text));
+}","public void test02929() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendMonths();
+    PeriodFormatterBuilder periodFormatterBuilder2 = periodFormatterBuilder0.appendSuffix("""");
+    assertSame(periodFormatterBuilder2, periodFormatterBuilder1);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Append a separator, which is output if fields are printed both before
+ * and after the separator.
+ * <p>
+ * For example, <code>builder.appendDays().appendSeparator("","").appendHours()</code>
+ * will only output the comma if both the days and hours fields are output.
+ * <p>
+ * The text will be parsed case-insensitively.
+ * <p>
+ * Note: appending a separator discontinues any further work on the latest
+ * appended field.
+ *
+ * @param text  the text to use as a separator
+ * @return this PeriodFormatterBuilder
+ * @throws IllegalStateException if this separator follows a previous one
+ */
+public PeriodFormatterBuilder appendSeparator(String text) {
+    return appendSeparator(text, text, null, true, true);
+}","public void test03030() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendSeparator(""org.joda.time.format.PeriodFormatterBuilder$FieldFormatter"");
+    assertSame(periodFormatterBuilder1, periodFormatterBuilder0);
+}",""
+"public PeriodFormatterBuilder appendSeparatorIfFieldsBefore(String text) {
+    return appendSeparator(text, text, null, true, false);
+}","public void test03131() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendPrefix("""", ""."");
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder1.appendSeparatorIfFieldsBefore(""~S~Lez\"" *"");
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Prefix not followed by field
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}","/**
+ * Append a separator, which is output only if fields are printed before the separator.
+ * <p>
+ * For example,
+ * <code>builder.appendDays().appendSeparatorIfFieldsBefore("","").appendHours()</code>
+ * will only output the comma if the days fields is output.
+ * <p>
+ * The text will be parsed case-insensitively.
+ * <p>
+ * Note: appending a separator discontinues any further work on the latest
+ * appended field.
+ *
+ * @param text  the text to use as a separator
+ * @return this PeriodFormatterBuilder
+ * @throws IllegalStateException if this separator follows a previous one
+ */"
+"public PeriodFormatterBuilder appendSeparatorIfFieldsAfter(String text) {
+    return appendSeparator(text, text, null, false, true);
+}","public void test03232() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder0.appendSeparatorIfFieldsAfter((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}","/**
+ * Append a separator, which is output only if fields are printed after the separator.
+ * <p>
+ * For example,
+ * <code>builder.appendDays().appendSeparatorIfFieldsAfter("","").appendHours()</code>
+ * will only output the comma if the hours fields is output.
+ * <p>
+ * The text will be parsed case-insensitively.
+ * <p>
+ * Note: appending a separator discontinues any further work on the latest
+ * appended field.
+ *
+ * @param text  the text to use as a separator
+ * @return this PeriodFormatterBuilder
+ * @throws IllegalStateException if this separator follows a previous one
+ */"
+"public PeriodFormatterBuilder appendSeparator(String text, String finalText, String[] variants) {
+    return appendSeparator(text, finalText, variants, true, true);
+}","public void test03333() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendMillis();
+    String[] stringArray0 = new String[19];
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder1.appendSeparator(""X4nac"", ""Cannot convert period to duration as "", stringArray0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * Append a separator, which is output if fields are printed both before
+ * and after the separator.
+ * <p>
+ * This method changes the separator depending on whether it is the last separator
+ * to be output.
+ * <p>
+ * For example, <code>builder.appendDays().appendSeparator("","", ""&"").appendHours().appendSeparator("","", ""&"").appendMinutes()</code>
+ * will output '1,2&3' if all three fields are output, '1&2' if two fields are output
+ * and '1' if just one field is output.
+ * <p>
+ * The text will be parsed case-insensitively.
+ * <p>
+ * Note: appending a separator discontinues any further work on the latest
+ * appended field.
+ *
+ * @param text  the text to use as a separator
+ * @param finalText  the text used used if this is the final separator to be printed
+ * @param variants  set of text values which are also acceptable when parsed
+ * @return this PeriodFormatterBuilder
+ * @throws IllegalStateException if this separator follows a previous one
+ */"
+"public PeriodFormatterBuilder appendSeparator(String text, String finalText, String[] variants) {
+    return appendSeparator(text, finalText, variants, true, true);
+}","public void test03434() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    String[] stringArray0 = new String[4];
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder0.appendSeparator((String) null, (String) null, stringArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}","/**
+ * Append a separator, which is output if fields are printed both before
+ * and after the separator.
+ * <p>
+ * This method changes the separator depending on whether it is the last separator
+ * to be output.
+ * <p>
+ * For example, <code>builder.appendDays().appendSeparator("","", ""&"").appendHours().appendSeparator("","", ""&"").appendMinutes()</code>
+ * will output '1,2&3' if all three fields are output, '1&2' if two fields are output
+ * and '1' if just one field is output.
+ * <p>
+ * The text will be parsed case-insensitively.
+ * <p>
+ * Note: appending a separator discontinues any further work on the latest
+ * appended field.
+ *
+ * @param text  the text to use as a separator
+ * @param finalText  the text used used if this is the final separator to be printed
+ * @param variants  set of text values which are also acceptable when parsed
+ * @return this PeriodFormatterBuilder
+ * @throws IllegalStateException if this separator follows a previous one
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Append a separator, which is output if fields are printed both before
+ * and after the separator.
+ * <p>
+ * For example, <code>builder.appendDays().appendSeparator("","").appendHours()</code>
+ * will only output the comma if both the days and hours fields are output.
+ * <p>
+ * The text will be parsed case-insensitively.
+ * <p>
+ * Note: appending a separator discontinues any further work on the latest
+ * appended field.
+ *
+ * @param text  the text to use as a separator
+ * @return this PeriodFormatterBuilder
+ * @throws IllegalStateException if this separator follows a previous one
+ */
+public PeriodFormatterBuilder appendSeparator(String text) {
+    return appendSeparator(text, text, null, true, true);
+}","public void test03535() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendPrefix("""");
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder1.appendSeparator("""");
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Prefix not followed by field
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}",""
+"public PeriodFormatterBuilder appendLiteral(String text) {
+    if (text == null) {
+        throw new IllegalArgumentException(""Literal must not be null"");
+    }
+    clearPrefix();
+    Literal literal = new Literal(text);
+    append0(literal, literal);
+    return this;
+}","public void test03636() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendPrefix(""F#2p;A};"");
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder1.appendLiteral("")"");
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Prefix not followed by field
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}","/**
+ * Instructs the printer to emit specific text, and the parser to expect it.
+ * The parser is case-insensitive.
+ *
+ * @return this PeriodFormatterBuilder
+ * @throws IllegalArgumentException if text is null
+ */"
+"public PeriodFormatterBuilder append(PeriodFormatter formatter) {
+    if (formatter == null) {
+        throw new IllegalArgumentException(""No formatter supplied"");
+    }
+    clearPrefix();
+    append0(formatter.getPrinter(), formatter.getParser());
+    return this;
+}","public void test03737() throws Throwable {
+    PeriodFormatterBuilder.Literal periodFormatterBuilder_Literal0 = new PeriodFormatterBuilder.Literal("""");
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendPrefix("" as this period contains years and years vary in length"", """");
+    PeriodFormatter periodFormatter0 = new PeriodFormatter(periodFormatterBuilder_Literal0, periodFormatterBuilder_Literal0);
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder1.append(periodFormatter0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Prefix not followed by field
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}","/**
+ * Appends another formatter.
+ *
+ * @return this PeriodFormatterBuilder
+ */"
+"public PeriodFormatterBuilder appendSeparator(String text, String finalText) {
+    return appendSeparator(text, finalText, null, true, true);
+}","public void test03838() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    LinkedList<Object> linkedList0 = new LinkedList<Object>();
+    PeriodFormatterBuilder.Composite periodFormatterBuilder_Composite0 = new PeriodFormatterBuilder.Composite(linkedList0);
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.append((PeriodPrinter) periodFormatterBuilder_Composite0, (PeriodParser) periodFormatterBuilder_Composite0);
+    PeriodFormatterBuilder periodFormatterBuilder2 = periodFormatterBuilder0.appendSeparator(""2:ZtbPCiDeu^5AK{"", """");
+    assertSame(periodFormatterBuilder2, periodFormatterBuilder1);
+}","/**
+ * Append a separator, which is output if fields are printed both before
+ * and after the separator.
+ * <p>
+ * This method changes the separator depending on whether it is the last separator
+ * to be output.
+ * <p>
+ * For example, <code>builder.appendDays().appendSeparator("","", ""&"").appendHours().appendSeparator("","", ""&"").appendMinutes()</code>
+ * will output '1,2&3' if all three fields are output, '1&2' if two fields are output
+ * and '1' if just one field is output.
+ * <p>
+ * The text will be parsed case-insensitively.
+ * <p>
+ * Note: appending a separator discontinues any further work on the latest
+ * appended field.
+ *
+ * @param text  the text to use as a separator
+ * @param finalText  the text used used if this is the final separator to be printed
+ * @return this PeriodFormatterBuilder
+ * @throws IllegalStateException if this separator follows a previous one
+ */"
+"public PeriodFormatterBuilder appendSeparatorIfFieldsBefore(String text) {
+    return appendSeparator(text, text, null, true, false);
+}","public void test03939() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder.Literal periodFormatterBuilder_Literal0 = PeriodFormatterBuilder.Literal.EMPTY;
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.append((PeriodPrinter) null, (PeriodParser) periodFormatterBuilder_Literal0);
+    PeriodFormatterBuilder periodFormatterBuilder2 = periodFormatterBuilder0.appendSeparatorIfFieldsBefore(""49qAspOEBX"");
+    assertSame(periodFormatterBuilder2, periodFormatterBuilder1);
+}","/**
+ * Append a separator, which is output only if fields are printed before the separator.
+ * <p>
+ * For example,
+ * <code>builder.appendDays().appendSeparatorIfFieldsBefore("","").appendHours()</code>
+ * will only output the comma if the days fields is output.
+ * <p>
+ * The text will be parsed case-insensitively.
+ * <p>
+ * Note: appending a separator discontinues any further work on the latest
+ * appended field.
+ *
+ * @param text  the text to use as a separator
+ * @return this PeriodFormatterBuilder
+ * @throws IllegalStateException if this separator follows a previous one
+ */"
+"public PeriodFormatterBuilder appendSeparator(String text, String finalText, String[] variants) {
+    return appendSeparator(text, finalText, variants, true, true);
+}","public void test04747() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendSeconds();
+    String[] stringArray0 = new String[0];
+    PeriodFormatterBuilder periodFormatterBuilder2 = periodFormatterBuilder1.appendSeparator(""ps$"", ""ps$"", stringArray0);
+    assertSame(periodFormatterBuilder0, periodFormatterBuilder2);
+}","/**
+ * Append a separator, which is output if fields are printed both before
+ * and after the separator.
+ * <p>
+ * This method changes the separator depending on whether it is the last separator
+ * to be output.
+ * <p>
+ * For example, <code>builder.appendDays().appendSeparator("","", ""&"").appendHours().appendSeparator("","", ""&"").appendMinutes()</code>
+ * will output '1,2&3' if all three fields are output, '1&2' if two fields are output
+ * and '1' if just one field is output.
+ * <p>
+ * The text will be parsed case-insensitively.
+ * <p>
+ * Note: appending a separator discontinues any further work on the latest
+ * appended field.
+ *
+ * @param text  the text to use as a separator
+ * @param finalText  the text used used if this is the final separator to be printed
+ * @param variants  set of text values which are also acceptable when parsed
+ * @return this PeriodFormatterBuilder
+ * @throws IllegalStateException if this separator follows a previous one
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Parses a {@code MutablePeriod} from the specified string.
+ * <p>
+ * This uses {@link ISOPeriodFormat#standard()}.
+ *
+ * @param str  the string to parse, not null
+ * @since 2.0
+ */
+@FromString
+public static MutablePeriod parse(String str) {
+    return parse(str, ISOPeriodFormat.standard());
+}","public void test04949() throws Throwable {
+    // Undeclared exception!
+    try {
+        MutablePeriod.parse(""org.joda.time.format.PeriodFormatterBuilder$Literal"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid format: \""org.joda.time.format.PeriodForma...\""
+        //
+        verifyException(""org.joda.time.format.PeriodFormatter"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Parses a {@code Period} from the specified string.
+ * <p>
+ * This uses {@link ISOPeriodFormat#standard()}.
+ *
+ * @param str  the string to parse, not null
+ * @since 2.0
+ */
+@FromString
+public static Period parse(String str) {
+    return parse(str, ISOPeriodFormat.standard());
+}","public void test05556() throws Throwable {
+    // Undeclared exception!
+    try {
+        Period.parse(""P;$"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Invalid format: \""P;$\"" is malformed at \"";$\""
+        //
+        verifyException(""org.joda.time.format.PeriodFormatter"", e);
+    }
+}",""
+"public PeriodParser toParser() {
+    if (iNotParser) {
+        return null;
+    }
+    return toFormatter().getParser();
+}","public void test07275() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    periodFormatterBuilder0.appendSeparatorIfFieldsAfter(""N4| mL+}:>t~[b2+"");
+    periodFormatterBuilder0.toParser();
+    PeriodParser periodParser0 = periodFormatterBuilder0.toParser();
+    assertNotNull(periodParser0);
+}","/**
+ * Internal method to create a PeriodParser instance using all the
+ * appended elements.
+ * <p>
+ * Most applications will not use this method.
+ * If you want a printer in an application, call {@link #toFormatter()}
+ * and just use the printing API.
+ * <p>
+ * Subsequent changes to this builder do not affect the returned parser.
+ *
+ * @return the newly created parser, null if builder cannot create a parser
+ */"
+"public boolean isParser() {
+    return (iParser != null);
+}","public void test07376() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendMillis();
+    periodFormatterBuilder1.appendSeparatorIfFieldsBefore(""U"");
+    PeriodFormatter periodFormatter0 = periodFormatterBuilder0.toFormatter();
+    assertTrue(periodFormatter0.isParser());
+}","/**
+ * Is this formatter capable of parsing.
+ *
+ * @return true if this is a parser
+ */"
+"public PeriodFormatterBuilder appendSeparator(String text, String finalText) {
+    return appendSeparator(text, finalText, null, true, true);
+}","public void test07477() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    periodFormatterBuilder0.appendPrefix(""org/joda/time/tz/data"");
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder0.appendSeparator(""%Ds:9=pzD"", ""4(Z~N<LUBT9sA"");
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Prefix not followed by field
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}","/**
+ * Append a separator, which is output if fields are printed both before
+ * and after the separator.
+ * <p>
+ * This method changes the separator depending on whether it is the last separator
+ * to be output.
+ * <p>
+ * For example, <code>builder.appendDays().appendSeparator("","", ""&"").appendHours().appendSeparator("","", ""&"").appendMinutes()</code>
+ * will output '1,2&3' if all three fields are output, '1&2' if two fields are output
+ * and '1' if just one field is output.
+ * <p>
+ * The text will be parsed case-insensitively.
+ * <p>
+ * Note: appending a separator discontinues any further work on the latest
+ * appended field.
+ *
+ * @param text  the text to use as a separator
+ * @param finalText  the text used used if this is the final separator to be printed
+ * @return this PeriodFormatterBuilder
+ * @throws IllegalStateException if this separator follows a previous one
+ */"
+"public PeriodFormatterBuilder appendSeparatorIfFieldsAfter(String text) {
+    return appendSeparator(text, text, null, false, true);
+}","public void test07578() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendHours();
+    PeriodFormatterBuilder periodFormatterBuilder2 = periodFormatterBuilder1.appendSeparator(""840PJ5:}KX7'Wr,EPHC"", ""840PJ5:}KX7'Wr,EPHC"");
+    PeriodFormatterBuilder.Literal periodFormatterBuilder_Literal0 = PeriodFormatterBuilder.Literal.EMPTY;
+    PeriodFormatter periodFormatter0 = new PeriodFormatter(periodFormatterBuilder_Literal0, periodFormatterBuilder_Literal0);
+    periodFormatterBuilder2.append(periodFormatter0);
+    PeriodFormatterBuilder periodFormatterBuilder3 = periodFormatterBuilder1.appendSeparatorIfFieldsAfter(""Qm+Z)Id=A6qLRQ^"");
+    assertSame(periodFormatterBuilder3, periodFormatterBuilder0);
+}","/**
+ * Append a separator, which is output only if fields are printed after the separator.
+ * <p>
+ * For example,
+ * <code>builder.appendDays().appendSeparatorIfFieldsAfter("","").appendHours()</code>
+ * will only output the comma if the hours fields is output.
+ * <p>
+ * The text will be parsed case-insensitively.
+ * <p>
+ * Note: appending a separator discontinues any further work on the latest
+ * appended field.
+ *
+ * @param text  the text to use as a separator
+ * @return this PeriodFormatterBuilder
+ * @throws IllegalStateException if this separator follows a previous one
+ */"
+"public PeriodFormatterBuilder appendSeparatorIfFieldsBefore(String text) {
+    return appendSeparator(text, text, null, true, false);
+}","public void test07679() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendSeparatorIfFieldsBefore(""LMODo<b;fS'"");
+    assertSame(periodFormatterBuilder1, periodFormatterBuilder0);
+}","/**
+ * Append a separator, which is output only if fields are printed before the separator.
+ * <p>
+ * For example,
+ * <code>builder.appendDays().appendSeparatorIfFieldsBefore("","").appendHours()</code>
+ * will only output the comma if the days fields is output.
+ * <p>
+ * The text will be parsed case-insensitively.
+ * <p>
+ * Note: appending a separator discontinues any further work on the latest
+ * appended field.
+ *
+ * @param text  the text to use as a separator
+ * @return this PeriodFormatterBuilder
+ * @throws IllegalStateException if this separator follows a previous one
+ */"
+"public PeriodFormatterBuilder appendSeparator(String text, String finalText) {
+    return appendSeparator(text, finalText, null, true, true);
+}","public void test07780() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder0.appendSeparator(""yk{$k&Ob4Ww "", (String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}","/**
+ * Append a separator, which is output if fields are printed both before
+ * and after the separator.
+ * <p>
+ * This method changes the separator depending on whether it is the last separator
+ * to be output.
+ * <p>
+ * For example, <code>builder.appendDays().appendSeparator("","", ""&"").appendHours().appendSeparator("","", ""&"").appendMinutes()</code>
+ * will output '1,2&3' if all three fields are output, '1&2' if two fields are output
+ * and '1' if just one field is output.
+ * <p>
+ * The text will be parsed case-insensitively.
+ * <p>
+ * Note: appending a separator discontinues any further work on the latest
+ * appended field.
+ *
+ * @param text  the text to use as a separator
+ * @param finalText  the text used used if this is the final separator to be printed
+ * @return this PeriodFormatterBuilder
+ * @throws IllegalStateException if this separator follows a previous one
+ */"
+"public PeriodFormatterBuilder appendSuffix(String singularText, String pluralText) {
+    if (singularText == null || pluralText == null) {
+        throw new IllegalArgumentException();
+    }
+    return appendSuffix(new PluralAffix(singularText, pluralText));
+}","public void test07881() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = ""iv|j!27lXl"";
+    stringArray0[1] = ""iv|j!27lXl"";
+    PeriodFormatterBuilder.Literal periodFormatterBuilder_Literal0 = PeriodFormatterBuilder.Literal.EMPTY;
+    PeriodFormatterBuilder.Separator periodFormatterBuilder_Separator0 = new PeriodFormatterBuilder.Separator("""", ""iv|j!27lXl"", stringArray0, periodFormatterBuilder_Literal0, periodFormatterBuilder_Literal0, true, false);
+    PeriodFormatterBuilder.SimpleAffix periodFormatterBuilder_SimpleAffix0 = new PeriodFormatterBuilder.SimpleAffix(""pw$"");
+    PeriodFormatterBuilder.FieldFormatter periodFormatterBuilder_FieldFormatter0 = new PeriodFormatterBuilder.FieldFormatter((-29), 86400000, 86400000, true, 86400000, (PeriodFormatterBuilder.FieldFormatter[]) null, periodFormatterBuilder_SimpleAffix0, periodFormatterBuilder_SimpleAffix0);
+    periodFormatterBuilder0.append((PeriodPrinter) periodFormatterBuilder_Separator0, (PeriodParser) periodFormatterBuilder_FieldFormatter0);
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder0.appendSuffix(""4/"", ""[mJ*#^"");
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // No field to apply suffix to
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}","/**
+ * Append a field suffix which applies only to the last appended field. If
+ * the field is not printed, neither is the suffix.
+ * <p>
+ * During parsing, the singular and plural versions are accepted whether or
+ * not the actual value matches plurality.
+ *
+ * @param singularText text to print if field value is one
+ * @param pluralText text to print if field value is not one
+ * @return this PeriodFormatterBuilder
+ * @throws IllegalStateException if no field exists to append to
+ * @see #appendPrefix
+ */"
+"public PeriodFormatterBuilder appendSuffix(String singularText, String pluralText) {
+    if (singularText == null || pluralText == null) {
+        throw new IllegalArgumentException();
+    }
+    return appendSuffix(new PluralAffix(singularText, pluralText));
+}","public void test07982() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder0.appendSuffix(""] |a"", (String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}","/**
+ * Append a field suffix which applies only to the last appended field. If
+ * the field is not printed, neither is the suffix.
+ * <p>
+ * During parsing, the singular and plural versions are accepted whether or
+ * not the actual value matches plurality.
+ *
+ * @param singularText text to print if field value is one
+ * @param pluralText text to print if field value is not one
+ * @return this PeriodFormatterBuilder
+ * @throws IllegalStateException if no field exists to append to
+ * @see #appendPrefix
+ */"
+"public PeriodFormatterBuilder appendSuffix(String singularText, String pluralText) {
+    if (singularText == null || pluralText == null) {
+        throw new IllegalArgumentException();
+    }
+    return appendSuffix(new PluralAffix(singularText, pluralText));
+}","public void test08083() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder0.appendSuffix((String) null, ""Builder has created neither a printer nor a parser"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}","/**
+ * Append a field suffix which applies only to the last appended field. If
+ * the field is not printed, neither is the suffix.
+ * <p>
+ * During parsing, the singular and plural versions are accepted whether or
+ * not the actual value matches plurality.
+ *
+ * @param singularText text to print if field value is one
+ * @param pluralText text to print if field value is not one
+ * @return this PeriodFormatterBuilder
+ * @throws IllegalStateException if no field exists to append to
+ * @see #appendPrefix
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Append a field suffix which applies only to the last appended field. If
+ * the field is not printed, neither is the suffix.
+ *
+ * @param text text to print after field only if field is printed
+ * @return this PeriodFormatterBuilder
+ * @throws IllegalStateException if no field exists to append to
+ * @see #appendPrefix
+ */
+public PeriodFormatterBuilder appendSuffix(String text) {
+    if (text == null) {
+        throw new IllegalArgumentException();
+    }
+    return appendSuffix(new SimpleAffix(text));
+}","public void test08184() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder0.appendSuffix((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Append a field suffix which applies only to the last appended field. If
+ * the field is not printed, neither is the suffix.
+ *
+ * @param text text to print after field only if field is printed
+ * @return this PeriodFormatterBuilder
+ * @throws IllegalStateException if no field exists to append to
+ * @see #appendPrefix
+ */
+public PeriodFormatterBuilder appendSuffix(String text) {
+    if (text == null) {
+        throw new IllegalArgumentException();
+    }
+    return appendSuffix(new SimpleAffix(text));
+}","public void test08285() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder0.appendSuffix("""");
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // No field to apply suffix to
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}",""
+"public PeriodFormatterBuilder appendPrefix(String singularText, String pluralText) {
+    if (singularText == null || pluralText == null) {
+        throw new IllegalArgumentException();
+    }
+    return appendPrefix(new PluralAffix(singularText, pluralText));
+}","public void test08386() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendPrefix(""org/joda/time/tz/data"");
+    PeriodFormatterBuilder periodFormatterBuilder2 = periodFormatterBuilder0.appendPrefix(""Asia/Yerevan"", """");
+    assertSame(periodFormatterBuilder2, periodFormatterBuilder1);
+}","/**
+ * Append a field prefix which applies only to the next appended field. If
+ * the field is not printed, neither is the prefix.
+ * <p>
+ * During parsing, the singular and plural versions are accepted whether
+ * or not the actual value matches plurality.
+ *
+ * @param singularText text to print if field value is one
+ * @param pluralText text to print if field value is not one
+ * @return this PeriodFormatterBuilder
+ * @see #appendSuffix
+ */"
+"public PeriodFormatterBuilder appendPrefix(String singularText, String pluralText) {
+    if (singularText == null || pluralText == null) {
+        throw new IllegalArgumentException();
+    }
+    return appendPrefix(new PluralAffix(singularText, pluralText));
+}","public void test08487() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder0.appendPrefix(""Y%<uO}'}=q7F6QTt/C"", (String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}","/**
+ * Append a field prefix which applies only to the next appended field. If
+ * the field is not printed, neither is the prefix.
+ * <p>
+ * During parsing, the singular and plural versions are accepted whether
+ * or not the actual value matches plurality.
+ *
+ * @param singularText text to print if field value is one
+ * @param pluralText text to print if field value is not one
+ * @return this PeriodFormatterBuilder
+ * @see #appendSuffix
+ */"
+"public PeriodFormatterBuilder appendPrefix(String singularText, String pluralText) {
+    if (singularText == null || pluralText == null) {
+        throw new IllegalArgumentException();
+    }
+    return appendPrefix(new PluralAffix(singularText, pluralText));
+}","public void test08588() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder0.appendPrefix((String) null, ""Cannot have two adjacent separators"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}","/**
+ * Append a field prefix which applies only to the next appended field. If
+ * the field is not printed, neither is the prefix.
+ * <p>
+ * During parsing, the singular and plural versions are accepted whether
+ * or not the actual value matches plurality.
+ *
+ * @param singularText text to print if field value is one
+ * @param pluralText text to print if field value is not one
+ * @return this PeriodFormatterBuilder
+ * @see #appendSuffix
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Append a field prefix which applies only to the next appended field. If
+ * the field is not printed, neither is the prefix.
+ *
+ * @param text text to print before field only if field is printed
+ * @return this PeriodFormatterBuilder
+ * @see #appendSuffix
+ */
+public PeriodFormatterBuilder appendPrefix(String text) {
+    if (text == null) {
+        throw new IllegalArgumentException();
+    }
+    return appendPrefix(new SimpleAffix(text));
+}","public void test08689() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder0.appendPrefix((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}",""
+"public PeriodFormatterBuilder append(PeriodPrinter printer, PeriodParser parser) {
+    if (printer == null && parser == null) {
+        throw new IllegalArgumentException(""No printer or parser supplied"");
+    }
+    clearPrefix();
+    append0(printer, parser);
+    return this;
+}","public void test08790() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendPrefix(""mJ^bQ? uQ"");
+    LinkedList<Object> linkedList0 = new LinkedList<Object>();
+    PeriodFormatterBuilder.Composite periodFormatterBuilder_Composite0 = new PeriodFormatterBuilder.Composite(linkedList0);
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder1.append((PeriodPrinter) periodFormatterBuilder_Composite0, (PeriodParser) periodFormatterBuilder_Composite0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Prefix not followed by field
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}","/**
+ * Appends a printer parser pair.
+ * <p>
+ * Either the printer or the parser may be null, in which case the builder will
+ * be unable to produce a parser or printer repectively.
+ *
+ * @param printer  appends a printer to the builder, null if printing is not supported
+ * @param parser  appends a parser to the builder, null if parsing is not supported
+ * @return this PeriodFormatterBuilder
+ * @throws IllegalArgumentException if both the printer and parser are null
+ */"
+"public PeriodFormatterBuilder appendLiteral(String text) {
+    if (text == null) {
+        throw new IllegalArgumentException(""Literal must not be null"");
+    }
+    clearPrefix();
+    Literal literal = new Literal(text);
+    append0(literal, literal);
+    return this;
+}","public void test08891() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder0.appendLiteral((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Literal must not be null
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}","/**
+ * Instructs the printer to emit specific text, and the parser to expect it.
+ * The parser is case-insensitive.
+ *
+ * @return this PeriodFormatterBuilder
+ * @throws IllegalArgumentException if text is null
+ */"
+"public PeriodFormatterBuilder appendLiteral(String text) {
+    if (text == null) {
+        throw new IllegalArgumentException(""Literal must not be null"");
+    }
+    clearPrefix();
+    Literal literal = new Literal(text);
+    append0(literal, literal);
+    return this;
+}","public void test08992() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendLiteral(""mJ^bQ? uQ"");
+    assertSame(periodFormatterBuilder0, periodFormatterBuilder1);
+}","/**
+ * Instructs the printer to emit specific text, and the parser to expect it.
+ * The parser is case-insensitive.
+ *
+ * @return this PeriodFormatterBuilder
+ * @throws IllegalArgumentException if text is null
+ */"
+"public PeriodFormatterBuilder append(PeriodFormatter formatter) {
+    if (formatter == null) {
+        throw new IllegalArgumentException(""No formatter supplied"");
+    }
+    clearPrefix();
+    append0(formatter.getPrinter(), formatter.getParser());
+    return this;
+}","public void test09093() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder0.append((PeriodFormatter) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // No formatter supplied
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}","/**
+ * Appends another formatter.
+ *
+ * @return this PeriodFormatterBuilder
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Clears out all the appended elements, allowing this builder to be reused.
+ */
+public void clear() {
+    iMinPrintedDigits = 1;
+    iPrintZeroSetting = PRINT_ZERO_RARELY_LAST;
+    iMaxParsedDigits = 10;
+    iRejectSignedValues = false;
+    iPrefix = null;
+    if (iElementPairs == null) {
+        iElementPairs = new ArrayList<Object>();
+    } else {
+        iElementPairs.clear();
+    }
+    iNotPrinter = false;
+    iNotParser = false;
+    iFieldFormatters = new FieldFormatter[10];
+}","public void test09194() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    periodFormatterBuilder0.clear();
+}",""
+"public PeriodPrinter toPrinter() {
+    if (iNotPrinter) {
+        return null;
+    }
+    return toFormatter().getPrinter();
+}","public void test09295() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder.Literal periodFormatterBuilder_Literal0 = new PeriodFormatterBuilder.Literal(""~z<$p"");
+    periodFormatterBuilder0.append((PeriodPrinter) null, (PeriodParser) periodFormatterBuilder_Literal0);
+    PeriodPrinter periodPrinter0 = periodFormatterBuilder0.toPrinter();
+    assertNull(periodPrinter0);
+}","/**
+ * Internal method to create a PeriodPrinter instance using all the
+ * appended elements.
+ * <p>
+ * Most applications will not use this method.
+ * If you want a printer in an application, call {@link #toFormatter()}
+ * and just use the printing API.
+ * <p>
+ * Subsequent changes to this builder do not affect the returned printer.
+ *
+ * @return the newly created printer, null if builder cannot create a printer
+ */"
+"public PeriodFormatterBuilder appendMillis3Digit() {
+    appendField(7, 3);
+    return this;
+}","public void test09699() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendMillis3Digit();
+    assertSame(periodFormatterBuilder0, periodFormatterBuilder1);
+}","/**
+ * Instruct the printer to emit an integer millis field, if supported.
+ * <p>
+ * The number of arsed digits can be controlled using {@link #maximumParsedDigits(int)}.
+ *
+ * @return this PeriodFormatterBuilder
+ */"
+"public PeriodFormatterBuilder appendSecondsWithOptionalMillis() {
+    appendField(SECONDS_OPTIONAL_MILLIS);
+    return this;
+}","public void test097100() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendSecondsWithOptionalMillis();
+    assertSame(periodFormatterBuilder0, periodFormatterBuilder1);
+}","/**
+ * Instruct the printer to emit a combined seconds and millis field, if supported.
+ * The millis will overflow into the seconds if necessary.
+ * The millis are only output if non-zero.
+ *
+ * @return this PeriodFormatterBuilder
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Append a separator, which is output if fields are printed both before
+ * and after the separator.
+ * <p>
+ * For example, <code>builder.appendDays().appendSeparator("","").appendHours()</code>
+ * will only output the comma if both the days and hours fields are output.
+ * <p>
+ * The text will be parsed case-insensitively.
+ * <p>
+ * Note: appending a separator discontinues any further work on the latest
+ * appended field.
+ *
+ * @param text  the text to use as a separator
+ * @return this PeriodFormatterBuilder
+ * @throws IllegalStateException if this separator follows a previous one
+ */
+public PeriodFormatterBuilder appendSeparator(String text) {
+    return appendSeparator(text, text, null, true, true);
+}","public void test098101() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder0.appendSeparator((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}",""
+"public PeriodFormatterBuilder minimumPrintedDigits(int minDigits) {
+    iMinPrintedDigits = minDigits;
+    return this;
+}","public void test099102() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.minimumPrintedDigits(702);
+    assertSame(periodFormatterBuilder0, periodFormatterBuilder1);
+}","/**
+ * Set the minimum digits printed for the next and following appended
+ * fields. By default, the minimum digits printed is one. If the field value
+ * is zero, it is not printed unless a printZero rule is applied.
+ *
+ * @return this PeriodFormatterBuilder
+ */"
+"public PeriodFormatterBuilder appendSuffix(String singularText, String pluralText) {
+    if (singularText == null || pluralText == null) {
+        throw new IllegalArgumentException();
+    }
+    return appendSuffix(new PluralAffix(singularText, pluralText));
+}","public void test100103() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendWeeks();
+    PeriodFormatterBuilder periodFormatterBuilder2 = periodFormatterBuilder0.appendSuffix(""o],"", ""o],"");
+    assertSame(periodFormatterBuilder2, periodFormatterBuilder1);
+}","/**
+ * Append a field suffix which applies only to the last appended field. If
+ * the field is not printed, neither is the suffix.
+ * <p>
+ * During parsing, the singular and plural versions are accepted whether or
+ * not the actual value matches plurality.
+ *
+ * @param singularText text to print if field value is one
+ * @param pluralText text to print if field value is not one
+ * @return this PeriodFormatterBuilder
+ * @throws IllegalStateException if no field exists to append to
+ * @see #appendPrefix
+ */"
+"public PeriodFormatterBuilder appendSeparator(String text, String finalText, String[] variants) {
+    return appendSeparator(text, finalText, variants, true, true);
+}","public void test101104() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    periodFormatterBuilder0.appendMonths();
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = """";
+    stringArray0[1] = """";
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendSeparator("""", """", stringArray0);
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder1.appendSeparator(""l\u0002&}j>4?g+\""<,"", ""org.joda.time.base.AbstractPartial"", stringArray0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Cannot have two adjacent separators
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}","/**
+ * Append a separator, which is output if fields are printed both before
+ * and after the separator.
+ * <p>
+ * This method changes the separator depending on whether it is the last separator
+ * to be output.
+ * <p>
+ * For example, <code>builder.appendDays().appendSeparator("","", ""&"").appendHours().appendSeparator("","", ""&"").appendMinutes()</code>
+ * will output '1,2&3' if all three fields are output, '1&2' if two fields are output
+ * and '1' if just one field is output.
+ * <p>
+ * The text will be parsed case-insensitively.
+ * <p>
+ * Note: appending a separator discontinues any further work on the latest
+ * appended field.
+ *
+ * @param text  the text to use as a separator
+ * @param finalText  the text used used if this is the final separator to be printed
+ * @param variants  set of text values which are also acceptable when parsed
+ * @return this PeriodFormatterBuilder
+ * @throws IllegalStateException if this separator follows a previous one
+ */"
+"public PeriodFormatterBuilder appendSeparatorIfFieldsBefore(String text) {
+    return appendSeparator(text, text, null, true, false);
+}","public void test102105() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder0.appendSeparatorIfFieldsBefore((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}","/**
+ * Append a separator, which is output only if fields are printed before the separator.
+ * <p>
+ * For example,
+ * <code>builder.appendDays().appendSeparatorIfFieldsBefore("","").appendHours()</code>
+ * will only output the comma if the days fields is output.
+ * <p>
+ * The text will be parsed case-insensitively.
+ * <p>
+ * Note: appending a separator discontinues any further work on the latest
+ * appended field.
+ *
+ * @param text  the text to use as a separator
+ * @return this PeriodFormatterBuilder
+ * @throws IllegalStateException if this separator follows a previous one
+ */"
+"public PeriodFormatterBuilder appendMinutes() {
+    appendField(MINUTES);
+    return this;
+}","public void test104107() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendMinutes();
+    assertSame(periodFormatterBuilder0, periodFormatterBuilder1);
+}","/**
+ * Instruct the printer to emit an integer minutes field, if supported.
+ * <p>
+ * The number of printed and parsed digits can be controlled using
+ * {@link #minimumPrintedDigits(int)} and {@link #maximumParsedDigits(int)}.
+ *
+ * @return this PeriodFormatterBuilder
+ */"
+"public PeriodFormatterBuilder printZeroNever() {
+    iPrintZeroSetting = PRINT_ZERO_NEVER;
+    return this;
+}","public void test105108() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.printZeroNever();
+    assertSame(periodFormatterBuilder1, periodFormatterBuilder0);
+}","/**
+ * Never print zero values for the next and following appended fields,
+ * unless no fields would be printed. If no fields are printed, the printer
+ * forces the last ""printZeroRarely"" field to print a zero.
+ * <p>
+ * This field setting is the default.
+ *
+ * @return this PeriodFormatterBuilder
+ */"
+"public PeriodFormatterBuilder maximumParsedDigits(int maxDigits) {
+    iMaxParsedDigits = maxDigits;
+    return this;
+}","public void test106109() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.maximumParsedDigits(0);
+    assertSame(periodFormatterBuilder0, periodFormatterBuilder1);
+}","/**
+ * Set the maximum digits parsed for the next and following appended
+ * fields. By default, the maximum digits parsed is ten.
+ *
+ * @return this PeriodFormatterBuilder
+ */"
+"public PeriodPrinter toPrinter() {
+    if (iNotPrinter) {
+        return null;
+    }
+    return toFormatter().getPrinter();
+}","public void test107110() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodPrinter periodPrinter0 = periodFormatterBuilder0.toPrinter();
+    assertNotNull(periodPrinter0);
+}","/**
+ * Internal method to create a PeriodPrinter instance using all the
+ * appended elements.
+ * <p>
+ * Most applications will not use this method.
+ * If you want a printer in an application, call {@link #toFormatter()}
+ * and just use the printing API.
+ * <p>
+ * Subsequent changes to this builder do not affect the returned printer.
+ *
+ * @return the newly created printer, null if builder cannot create a printer
+ */"
+"public PeriodFormatterBuilder printZeroRarelyFirst() {
+    iPrintZeroSetting = PRINT_ZERO_RARELY_FIRST;
+    return this;
+}","public void test108111() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.printZeroRarelyFirst();
+    assertSame(periodFormatterBuilder0, periodFormatterBuilder1);
+}","/**
+ * Never print zero values for the next and following appended fields,
+ * unless no fields would be printed. If no fields are printed, the printer
+ * forces the first ""printZeroRarely"" field to print a zero.
+ *
+ * @return this PeriodFormatterBuilder
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Instruct the printer to emit an integer years field, if supported.
+ * <p>
+ * The number of printed and parsed digits can be controlled using
+ * {@link #minimumPrintedDigits(int)} and {@link #maximumParsedDigits(int)}.
+ *
+ * @return this PeriodFormatterBuilder
+ */
+public PeriodFormatterBuilder appendYears() {
+    appendField(YEARS);
+    return this;
+}","public void test109112() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendYears();
+    assertSame(periodFormatterBuilder1, periodFormatterBuilder0);
+}",""
+"public PeriodFormatterBuilder printZeroIfSupported() {
+    iPrintZeroSetting = PRINT_ZERO_IF_SUPPORTED;
+    return this;
+}","public void test110113() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.printZeroIfSupported();
+    assertSame(periodFormatterBuilder1, periodFormatterBuilder0);
+}","/**
+ * Print zero values for the next and following appened fields only if the
+ * period supports it.
+ *
+ * @return this PeriodFormatterBuilder
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Append a field suffix which applies only to the last appended field. If
+ * the field is not printed, neither is the suffix.
+ *
+ * @param text text to print after field only if field is printed
+ * @return this PeriodFormatterBuilder
+ * @throws IllegalStateException if no field exists to append to
+ * @see #appendPrefix
+ */
+public PeriodFormatterBuilder appendSuffix(String text) {
+    if (text == null) {
+        throw new IllegalArgumentException();
+    }
+    return appendSuffix(new SimpleAffix(text));
+}","public void test111114() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendSeconds();
+    PeriodFormatterBuilder periodFormatterBuilder2 = periodFormatterBuilder1.appendSeparatorIfFieldsBefore(""c!58'_:^z+="");
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder2.appendSuffix("" ;u"");
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // No field to apply suffix to
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}",""
+"public PeriodFormatterBuilder rejectSignedValues(boolean v) {
+    iRejectSignedValues = v;
+    return this;
+}","public void test112115() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.rejectSignedValues(true);
+    assertSame(periodFormatterBuilder0, periodFormatterBuilder1);
+}","/**
+ * Reject signed values when parsing the next and following appended fields.
+ *
+ * @return this PeriodFormatterBuilder
+ */"
+"public PeriodFormatterBuilder printZeroAlways() {
+    iPrintZeroSetting = PRINT_ZERO_ALWAYS;
+    return this;
+}","public void test113116() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.printZeroAlways();
+    assertSame(periodFormatterBuilder0, periodFormatterBuilder1);
+}","/**
+ * Always print zero values for the next and following appended fields,
+ * even if the period doesn't support it. The parser requires values for
+ * fields that always print zero.
+ *
+ * @return this PeriodFormatterBuilder
+ */"
+"public PeriodFormatterBuilder printZeroRarelyLast() {
+    iPrintZeroSetting = PRINT_ZERO_RARELY_LAST;
+    return this;
+}","public void test114117() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.printZeroRarelyLast();
+    assertSame(periodFormatterBuilder0, periodFormatterBuilder1);
+}","/**
+ * Never print zero values for the next and following appended fields,
+ * unless no fields would be printed. If no fields are printed, the printer
+ * forces the last ""printZeroRarely"" field to print a zero.
+ * <p>
+ * This field setting is the default.
+ *
+ * @return this PeriodFormatterBuilder
+ */"
+"public PeriodFormatterBuilder appendSeparatorIfFieldsAfter(String text) {
+    return appendSeparator(text, text, null, false, true);
+}","public void test115118() throws Throwable {
+    PeriodFormatterBuilder periodFormatterBuilder0 = new PeriodFormatterBuilder();
+    PeriodFormatterBuilder periodFormatterBuilder1 = periodFormatterBuilder0.appendHours();
+    periodFormatterBuilder1.appendSeparator(""840PJ5:}KX7'Wr,EPHC"", ""840PJ5:}KX7'Wr,EPHC"");
+    // Undeclared exception!
+    try {
+        periodFormatterBuilder1.appendSeparatorIfFieldsAfter(""Qm+Z)Id=A6qLRQ^"");
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Cannot have two adjacent separators
+        //
+        verifyException(""org.joda.time.format.PeriodFormatterBuilder"", e);
+    }
+}","/**
+ * Append a separator, which is output only if fields are printed after the separator.
+ * <p>
+ * For example,
+ * <code>builder.appendDays().appendSeparatorIfFieldsAfter("","").appendHours()</code>
+ * will only output the comma if the hours fields is output.
+ * <p>
+ * The text will be parsed case-insensitively.
+ * <p>
+ * Note: appending a separator discontinues any further work on the latest
+ * appended field.
+ *
+ * @param text  the text to use as a separator
+ * @return this PeriodFormatterBuilder
+ * @throws IllegalStateException if this separator follows a previous one
+ */"

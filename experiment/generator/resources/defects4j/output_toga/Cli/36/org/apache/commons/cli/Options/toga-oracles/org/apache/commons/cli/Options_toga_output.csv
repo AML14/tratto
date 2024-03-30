@@ -1,0 +1,113 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    Options options0 = new Options();
+    Options options1 = options0.addOption("""", true, """");
+    assertSame(options1, options0);
+}",1,
+project,0,test011,"public void test011() throws Throwable {
+    Options options0 = new Options();
+    options0.addOption("""", """");
+    Option option0 = options0.getOption("""");
+    assertNotNull(option0);
+}",0,
+project,0,test012,"public void test012() throws Throwable {
+    Options options0 = new Options();
+    options0.addOption("""", """");
+    Option option0 = options0.getOption("""");
+    assertEquals((-1), option0.getArgs());
+}",0,
+project,0,test013,"public void test013() throws Throwable {
+    Options options0 = new Options();
+    options0.addOption("""", """");
+    Option option0 = options0.getOption("""");
+    assertFalse(option0.hasLongOpt());
+}",0,
+project,0,test024,"public void test024() throws Throwable {
+    Options options0 = new Options();
+    Collection<Option> collection0 = options0.getOptions();
+    assertNotNull(collection0);
+}",0,
+project,0,test046,"public void test046() throws Throwable {
+    Options options0 = new Options();
+    String string0 = options0.toString();
+    assertNotNull(string0);
+}",0,
+project,0,test057,"public void test057() throws Throwable {
+    Options options0 = new Options();
+    Option option0 = new Option("""", false, """");
+    OptionGroup optionGroup0 = options0.getOptionGroup(option0);
+    assertNull(optionGroup0);
+}",0,
+project,0,test068,"public void test068() throws Throwable {
+    Options options0 = new Options();
+    Collection<OptionGroup> collection0 = options0.getOptionGroups();
+    assertNotNull(collection0);
+}",0,
+project,0,test079,"public void test079() throws Throwable {
+    Options options0 = new Options();
+    OptionGroup optionGroup0 = new OptionGroup();
+    optionGroup0.setRequired(true);
+    Options options1 = options0.addOptionGroup(optionGroup0);
+    assertSame(options1, options0);
+}",0,
+project,0,test0810,"public void test0810() throws Throwable {
+    Options options0 = new Options();
+    OptionGroup optionGroup0 = new OptionGroup();
+    Option option0 = new Option(""4"", ""oi8UJ'BQWHc3s*q;-W"");
+    optionGroup0.addOption(option0);
+    Options options1 = options0.addOptionGroup(optionGroup0);
+    assertSame(options1, options0);
+}",0,
+project,0,test0911,"public void test0911() throws Throwable {
+    Options options0 = new Options();
+    options0.addOption(""3"", ""'"", true, ""org.apache.commons.cli.AlreadySelectedException"");
+    boolean boolean0 = options0.hasOption(""'"");
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test1012,"public void test1012() throws Throwable {
+    Options options0 = new Options();
+    Option option0 = new Option(""4"", ""oi8UJ'BQWHc3s*q;-W"");
+    option0.setRequired(true);
+    options0.addOption(option0);
+    Options options1 = options0.addOption(option0);
+    assertSame(options1, options0);
+}",0,
+project,0,test1113,"public void test1113() throws Throwable {
+    Options options0 = new Options();
+    Option option0 = options0.getOption((String) null);
+    assertNull(option0);
+}",0,assertNotNull(option0)
+project,0,test1518,"public void test1518() throws Throwable {
+    Options options0 = new Options();
+    boolean boolean0 = options0.hasOption(""KARG...]"");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test1619,"public void test1619() throws Throwable {
+    Options options0 = new Options();
+    options0.addOption("""", """");
+    boolean boolean0 = options0.hasOption("""");
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test1720,"public void test1720() throws Throwable {
+    Options options0 = new Options();
+    boolean boolean0 = options0.hasLongOption(""[/"");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test1821,"public void test1821() throws Throwable {
+    Options options0 = new Options();
+    Options options1 = options0.addOption("""", """", true, """");
+    boolean boolean0 = options1.hasLongOption("""");
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test1922,"public void test1922() throws Throwable {
+    Options options0 = new Options();
+    boolean boolean0 = options0.hasShortOption("" ]"");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test2023,"public void test2023() throws Throwable {
+    Options options0 = new Options();
+    Option option0 = new Option(""4"", ""oi8UJ'BQWHc3s*q;-W"");
+    options0.addOption(option0);
+    boolean boolean0 = options0.hasShortOption(""4"");
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)

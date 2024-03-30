@@ -1,0 +1,71 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test00,"public void test00() throws Throwable {
+    ArchiveStreamFactory archiveStreamFactory0 = new ArchiveStreamFactory();
+    FileDescriptor fileDescriptor0 = new FileDescriptor();
+    MockFileInputStream mockFileInputStream0 = new MockFileInputStream(fileDescriptor0);
+    // Undeclared exception!
+    try {
+        archiveStreamFactory0.createArchiveInputStream((InputStream) mockFileInputStream0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Mark is not supported.
+        //
+        verifyException(""org.apache.commons.compress.archivers.ArchiveStreamFactory"", e);
+    }
+}",0,
+project,0,test11,"public void test11() throws Throwable {
+    ArchiveStreamFactory archiveStreamFactory0 = new ArchiveStreamFactory();
+    // Undeclared exception!
+    try {
+        archiveStreamFactory0.createArchiveInputStream((InputStream) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Stream must not be null.
+        //
+        verifyException(""org.apache.commons.compress.archivers.ArchiveStreamFactory"", e);
+    }
+}",1,
+project,0,test22,"public void test22() throws Throwable {
+    ArchiveStreamFactory archiveStreamFactory0 = new ArchiveStreamFactory();
+    byte[] byteArray0 = new byte[0];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    try {
+        archiveStreamFactory0.createArchiveInputStream((InputStream) byteArrayInputStream0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // No Archiver found for the stream signature
+        //
+        verifyException(""org.apache.commons.compress.archivers.ArchiveStreamFactory"", e);
+    }
+}",0,
+project,0,test33,"public void test33() throws Throwable {
+    ArchiveStreamFactory archiveStreamFactory0 = new ArchiveStreamFactory();
+    MockFile mockFile0 = new MockFile(""cpio"", ""L_?Qx<(wwxMQxd~k}&"");
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(mockFile0, false);
+    MockPrintStream mockPrintStream0 = new MockPrintStream(mockFileOutputStream0, false);
+    try {
+        archiveStreamFactory0.createArchiveOutputStream("";Sb^XM}"", mockPrintStream0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Archiver: ;Sb^XM} not found.
+        //
+        verifyException(""org.apache.commons.compress.archivers.ArchiveStreamFactory"", e);
+    }
+}",1,
+project,0,test44,"public void test44() throws Throwable {
+    ArchiveStreamFactory archiveStreamFactory0 = new ArchiveStreamFactory();
+    PipedInputStream pipedInputStream0 = new PipedInputStream();
+    try {
+        archiveStreamFactory0.createArchiveInputStream(""org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream$UnicodeExtraFieldPolicy"", (InputStream) pipedInputStream0);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // Archiver: org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream$UnicodeExtraFieldPolicy not found.
+        //
+        verifyException(""org.apache.commons.compress.archivers.ArchiveStreamFactory"", e);
+    }
+}",1,

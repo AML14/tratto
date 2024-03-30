@@ -1,0 +1,1416 @@
+focal_method,test_prefix,docstring
+"public RealMatrix getCorrelationMatrix() {
+    return correlationMatrix;
+}","public void test000() throws Throwable {
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation();
+    double[] doubleArray0 = new double[1];
+    pearsonsCorrelation0.correlation(doubleArray0, doubleArray0);
+    // Undeclared exception!
+    try {
+        pearsonsCorrelation0.getCorrelationMatrix();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // invalid array dimensions. xArray has size 1; yArray has 1 elements
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}","/**
+ * Returns the correlation matrix
+ *
+ * @return correlation matrix
+ */"
+"public RealMatrix computeCorrelationMatrix(RealMatrix matrix) {
+    int nVars = matrix.getColumnDimension();
+    RealMatrix outMatrix = new BlockRealMatrix(nVars, nVars);
+    for (int i = 0; i < nVars; i++) {
+        for (int j = 0; j < i; j++) {
+            double corr = correlation(matrix.getColumn(i), matrix.getColumn(j));
+            outMatrix.setEntry(i, j, corr);
+            outMatrix.setEntry(j, i, corr);
+        }
+        outMatrix.setEntry(i, i, 1d);
+    }
+    return outMatrix;
+}","public void test011() throws Throwable {
+    double[] doubleArray0 = new double[8];
+    doubleArray0[0] = (-1848.880737);
+    doubleArray0[1] = (-685.77);
+    doubleArray0[2] = Double.NaN;
+    doubleArray0[3] = 0.0;
+    doubleArray0[4] = 256.93387;
+    doubleArray0[5] = 0.5;
+    doubleArray0[6] = (-558.41520548);
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    RealMatrix realMatrix0 = openMapRealVector0.outerProduct(doubleArray0);
+    DefaultRealMatrixPreservingVisitor defaultRealMatrixPreservingVisitor0 = new DefaultRealMatrixPreservingVisitor();
+    realMatrix0.walkInColumnOrder((RealMatrixPreservingVisitor) defaultRealMatrixPreservingVisitor0);
+    openMapRealVector0.mapSinToSelf();
+    Covariance covariance0 = new Covariance(realMatrix0);
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation(covariance0);
+    pearsonsCorrelation0.covarianceToCorrelation(realMatrix0);
+    PearsonsCorrelation pearsonsCorrelation1 = new PearsonsCorrelation(covariance0);
+    pearsonsCorrelation1.computeCorrelationMatrix(realMatrix0);
+}","/**
+ * Computes the correlation matrix for the columns of the
+ * input matrix.
+ *
+ * @param matrix matrix with columns representing variables to correlate
+ * @return correlation matrix
+ */"
+"public RealMatrix covarianceToCorrelation(RealMatrix covarianceMatrix) {
+    int nVars = covarianceMatrix.getColumnDimension();
+    RealMatrix outMatrix = new BlockRealMatrix(nVars, nVars);
+    for (int i = 0; i < nVars; i++) {
+        double sigma = Math.sqrt(covarianceMatrix.getEntry(i, i));
+        outMatrix.setEntry(i, i, 1d);
+        for (int j = 0; j < i; j++) {
+            double entry = covarianceMatrix.getEntry(i, j) / (sigma * Math.sqrt(covarianceMatrix.getEntry(j, j)));
+            outMatrix.setEntry(i, j, entry);
+            outMatrix.setEntry(j, i, entry);
+        }
+    }
+    return outMatrix;
+}","public void test022() throws Throwable {
+    double[] doubleArray0 = new double[1];
+    doubleArray0[0] = 1576.970357826;
+    Array2DRowRealMatrix array2DRowRealMatrix0 = new Array2DRowRealMatrix(doubleArray0);
+    RealMatrix realMatrix0 = array2DRowRealMatrix0.copy();
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation(realMatrix0);
+    // Undeclared exception!
+    try {
+        pearsonsCorrelation0.covarianceToCorrelation(realMatrix0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // insufficient data: only 1 rows and 1 columns.
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}","/**
+ * Derives a correlation matrix from a covariance matrix.
+ *
+ * <p>Uses the formula <br/>
+ * <code>r(X,Y) = cov(X,Y)/s(X)s(Y)</code> where
+ * <code>r(&middot,&middot;)</code> is the correlation coefficient and
+ * <code>s(&middot;)</code> means standard deviation.</p>
+ *
+ * @param covarianceMatrix the covariance matrix
+ * @return correlation matrix
+ */"
+"public RealMatrix getSubMatrix(final int[] selectedRows, final int[] selectedColumns) throws MatrixIndexException {
+    // safety checks
+    MatrixUtils.checkSubMatrixIndex(this, selectedRows, selectedColumns);
+    // copy entries
+    final RealMatrix subMatrix = createMatrix(selectedRows.length, selectedColumns.length);
+    subMatrix.walkInOptimizedOrder(new DefaultRealMatrixChangingVisitor() {
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public double visit(final int row, final int column, final double value) {
+            return getEntry(selectedRows[row], selectedColumns[column]);
+        }
+    });
+    return subMatrix;
+}","public void test033() throws Throwable {
+    double[] doubleArray0 = new double[4];
+    doubleArray0[0] = 1.0;
+    doubleArray0[1] = 0.0;
+    doubleArray0[2] = (-1.0);
+    doubleArray0[3] = (-66.4505339);
+    ArrayRealVector arrayRealVector0 = new ArrayRealVector(doubleArray0, false);
+    RealMatrix realMatrix0 = arrayRealVector0.outerProduct(doubleArray0);
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation(realMatrix0);
+    pearsonsCorrelation0.getCorrelationPValues();
+    RealMatrix realMatrix1 = pearsonsCorrelation0.getCorrelationStandardErrors();
+    pearsonsCorrelation0.computeCorrelationMatrix(realMatrix1);
+    RealMatrix realMatrix2 = pearsonsCorrelation0.getCorrelationMatrix();
+    arrayRealVector0.mapCos();
+    pearsonsCorrelation0.getCorrelationPValues();
+    pearsonsCorrelation0.covarianceToCorrelation(realMatrix2);
+    double[][] doubleArray1 = new double[5][8];
+    doubleArray1[0] = doubleArray0;
+    doubleArray1[1] = doubleArray0;
+    doubleArray1[2] = doubleArray0;
+    doubleArray1[3] = doubleArray0;
+    doubleArray1[4] = doubleArray0;
+    pearsonsCorrelation0.computeCorrelationMatrix(doubleArray1);
+    Array2DRowRealMatrix array2DRowRealMatrix0 = new Array2DRowRealMatrix(doubleArray0);
+    int[] intArray0 = new int[6];
+    intArray0[0] = 2935;
+    intArray0[1] = 4;
+    intArray0[2] = 1258;
+    intArray0[3] = 0;
+    intArray0[4] = (-579);
+    intArray0[5] = (-491);
+    array2DRowRealMatrix0.getSubMatrix(intArray0, intArray0);
+}","/**
+ * {@inheritDoc}
+ */"
+"public RealMatrix getCorrelationStandardErrors() {
+    int nVars = correlationMatrix.getColumnDimension();
+    double[][] out = new double[nVars][nVars];
+    for (int i = 0; i < nVars; i++) {
+        for (int j = 0; j < nVars; j++) {
+            double r = correlationMatrix.getEntry(i, j);
+            out[i][j] = Math.sqrt((1 - r * r) / (nObs - 2));
+        }
+    }
+    return new BlockRealMatrix(out);
+}","public void test044() throws Throwable {
+    double[] doubleArray0 = new double[4];
+    doubleArray0[0] = (-906.247551142);
+    doubleArray0[1] = 1875.0093145;
+    doubleArray0[2] = (-4416.001935064);
+    doubleArray0[3] = 2.0;
+    ArrayRealVector arrayRealVector0 = new ArrayRealVector(doubleArray0);
+    RealMatrix realMatrix0 = arrayRealVector0.outerProduct(doubleArray0);
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation(realMatrix0);
+    arrayRealVector0.append(2.0);
+    pearsonsCorrelation0.getCorrelationPValues();
+    RealMatrix realMatrix1 = pearsonsCorrelation0.getCorrelationStandardErrors();
+    double[] doubleArray1 = new double[3];
+    doubleArray1[0] = 2.0;
+    doubleArray1[1] = 2.0;
+    doubleArray1[2] = (-906.247551142);
+    pearsonsCorrelation0.correlation(doubleArray0, doubleArray1);
+    pearsonsCorrelation0.covarianceToCorrelation(realMatrix1);
+    pearsonsCorrelation0.getCorrelationStandardErrors();
+}","/**
+ * Returns a matrix of standard errors associated with the estimates
+ * in the correlation matrix.<br/>
+ * <code>getCorrelationStandardErrors().getEntry(i,j)</code> is the standard
+ * error associated with <code>getCorrelationMatrix.getEntry(i,j)</code>
+ * <p>The formula used to compute the standard error is <br/>
+ * <code>SE<sub>r</sub> = ((1 - r<sup>2</sup>) / (n - 2))<sup>1/2</sup></code>
+ * where <code>r</code> is the estimated correlation coefficient and
+ * <code>n</code> is the number of observations in the source dataset.</p>
+ *
+ * @return matrix of correlation standard errors
+ */"
+"public PearsonsCorrelation(double[][] data) {
+    this(new BlockRealMatrix(data));
+}","public void test055() throws Throwable {
+    double[][] doubleArray0 = new double[0][9];
+    PearsonsCorrelation pearsonsCorrelation0 = null;
+    try {
+        pearsonsCorrelation0 = new PearsonsCorrelation(doubleArray0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 0
+        //
+        verifyException(""org.apache.commons.math.linear.BlockRealMatrix"", e);
+    }
+}","/**
+ * Create a PearsonsCorrelation from a rectangular array
+ * whose columns represent values of variables to be correlated.
+ *
+ * @param data rectangular array with columns representing variables
+ * @throws IllegalArgumentException if the input data array is not
+ * rectangular with at least two rows and two columns.
+ */"
+"public PearsonsCorrelation(double[][] data) {
+    this(new BlockRealMatrix(data));
+}","public void test066() throws Throwable {
+    double[][] doubleArray0 = new double[9][1];
+    double[] doubleArray1 = new double[5];
+    doubleArray1[0] = (-593.71);
+    doubleArray1[1] = (-1922.8235464);
+    doubleArray1[2] = Double.POSITIVE_INFINITY;
+    doubleArray1[3] = 0.0;
+    doubleArray1[4] = 5128.626639;
+    doubleArray0[0] = doubleArray1;
+    double[] doubleArray2 = new double[9];
+    doubleArray2[0] = 5128.626639;
+    doubleArray2[1] = (-1922.8235464);
+    doubleArray2[2] = (-593.71);
+    doubleArray2[3] = (-3606.4);
+    doubleArray2[4] = (-1.0);
+    doubleArray2[5] = 5128.626639;
+    doubleArray2[6] = 660.5449;
+    doubleArray2[7] = Double.POSITIVE_INFINITY;
+    doubleArray2[8] = 0.0;
+    doubleArray0[1] = doubleArray2;
+    double[] doubleArray3 = new double[6];
+    doubleArray3[0] = 5128.626639;
+    doubleArray3[1] = Double.POSITIVE_INFINITY;
+    doubleArray3[2] = 0.0;
+    doubleArray3[3] = (-1.0);
+    doubleArray3[4] = 0.0;
+    doubleArray3[5] = 0.0;
+    doubleArray0[2] = doubleArray3;
+    double[] doubleArray4 = new double[8];
+    doubleArray4[0] = 660.5449;
+    doubleArray4[1] = 660.5449;
+    doubleArray4[2] = Double.POSITIVE_INFINITY;
+    doubleArray4[3] = 0.0;
+    doubleArray4[4] = Double.POSITIVE_INFINITY;
+    doubleArray4[5] = 5128.626639;
+    doubleArray4[6] = (-593.71);
+    doubleArray4[7] = 660.5449;
+    doubleArray0[3] = doubleArray4;
+    double[] doubleArray5 = new double[8];
+    doubleArray5[0] = (-1764.8267);
+    doubleArray5[1] = (-1922.8235464);
+    doubleArray5[2] = (-593.71);
+    doubleArray5[3] = 5128.626639;
+    doubleArray5[4] = (-1.0);
+    doubleArray5[5] = Double.POSITIVE_INFINITY;
+    doubleArray5[6] = 1732.210816056916;
+    doubleArray5[7] = Double.POSITIVE_INFINITY;
+    doubleArray0[4] = doubleArray5;
+    double[] doubleArray6 = new double[3];
+    doubleArray6[0] = (-1.0);
+    doubleArray6[1] = 1732.210816056916;
+    doubleArray6[2] = 1.0E-12;
+    doubleArray0[5] = doubleArray6;
+    double[] doubleArray7 = new double[3];
+    doubleArray7[0] = 1732.210816056916;
+    doubleArray7[1] = (-1764.8267);
+    doubleArray7[2] = (-1.0);
+    doubleArray0[6] = doubleArray7;
+    double[] doubleArray8 = new double[2];
+    doubleArray8[0] = 1588.085714508;
+    doubleArray8[1] = 1732.210816056916;
+    doubleArray0[7] = doubleArray8;
+    double[] doubleArray9 = new double[8];
+    doubleArray9[0] = 1732.210816056916;
+    doubleArray9[1] = 1.0E-12;
+    doubleArray9[2] = 1.0E-12;
+    doubleArray9[3] = 5128.626639;
+    doubleArray9[4] = 5128.626639;
+    doubleArray9[5] = (-1764.8267);
+    doubleArray9[6] = 0.0;
+    doubleArray9[7] = (-593.71);
+    doubleArray0[8] = doubleArray9;
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation(doubleArray0);
+}","/**
+ * Create a PearsonsCorrelation from a rectangular array
+ * whose columns represent values of variables to be correlated.
+ *
+ * @param data rectangular array with columns representing variables
+ * @throws IllegalArgumentException if the input data array is not
+ * rectangular with at least two rows and two columns.
+ */"
+"public double correlation(final double[] xArray, final double[] yArray) throws IllegalArgumentException {
+    SimpleRegression regression = new SimpleRegression();
+    if (xArray.length == yArray.length && xArray.length > 1) {
+        for (int i = 0; i < xArray.length; i++) {
+            regression.addData(xArray[i], yArray[i]);
+        }
+        return regression.getR();
+    } else {
+        throw MathRuntimeException.createIllegalArgumentException(""invalid array dimensions. xArray has size {0}; yArray has {1} elements"", xArray.length, yArray.length);
+    }
+}","public void test077() throws Throwable {
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation();
+    pearsonsCorrelation0.getCorrelationMatrix();
+    double[] doubleArray0 = new double[3];
+    doubleArray0[0] = 521.155319925311;
+    doubleArray0[1] = (-1613.817624);
+    doubleArray0[2] = 1.0;
+    double[] doubleArray1 = new double[3];
+    doubleArray1[0] = 1.0;
+    doubleArray1[1] = (-1613.817624);
+    doubleArray1[2] = 1.0;
+    pearsonsCorrelation0.correlation(doubleArray0, doubleArray1);
+}","/**
+ * Computes the Pearson's product-moment correlation coefficient between the two arrays.
+ *
+ * </p>Throws IllegalArgumentException if the arrays do not have the same length
+ * or their common length is less than 2</p>
+ *
+ * @param xArray first data array
+ * @param yArray second data array
+ * @return Returns Pearson's correlation coefficient for the two arrays
+ * @throws  IllegalArgumentException if the arrays lengths do not match or
+ * there is insufficient data
+ */"
+"public PearsonsCorrelation(Covariance covariance) {
+    RealMatrix covarianceMatrix = covariance.getCovarianceMatrix();
+    if (covarianceMatrix == null) {
+        throw MathRuntimeException.createIllegalArgumentException(""covariance matrix is null"");
+    }
+    nObs = covariance.getN();
+    correlationMatrix = covarianceToCorrelation(covarianceMatrix);
+}","public void test088() throws Throwable {
+    Covariance covariance0 = new Covariance();
+    PearsonsCorrelation pearsonsCorrelation0 = null;
+    try {
+        pearsonsCorrelation0 = new PearsonsCorrelation(covariance0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // covariance matrix is null
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}","/**
+ * Create a PearsonsCorrelation from a {@link Covariance}.  The correlation
+ * matrix is computed by scaling the Covariance's covariance matrix.
+ * The Covariance instance must have been created from a data matrix with
+ * columns representing variable values.
+ *
+ * @param covariance Covariance instance
+ */"
+"public RealMatrix getCorrelationPValues() throws MathException {
+    TDistribution tDistribution = new TDistributionImpl(nObs - 2);
+    int nVars = correlationMatrix.getColumnDimension();
+    double[][] out = new double[nVars][nVars];
+    for (int i = 0; i < nVars; i++) {
+        for (int j = 0; j < nVars; j++) {
+            if (i == j) {
+                out[i][j] = 0d;
+            } else {
+                double r = correlationMatrix.getEntry(i, j);
+                double t = Math.abs(r * Math.sqrt((nObs - 2) / (1 - r * r)));
+                out[i][j] = 2 * (1 - tDistribution.cumulativeProbability(t));
+            }
+        }
+    }
+    return new BlockRealMatrix(out);
+}","public void test099() throws Throwable {
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation((RealMatrix) null, 14);
+    pearsonsCorrelation0.getCorrelationPValues();
+}","/**
+ * Returns a matrix of p-values associated with the (two-sided) null
+ * hypothesis that the corresponding correlation coefficient is zero.
+ * <p><code>getCorrelationPValues().getEntry(i,j)</code> is the probability
+ * that a random variable distributed as <code>t<sub>n-2</sub></code> takes
+ * a value with absolute value greater than or equal to <br>
+ * <code>|r|((n - 2) / (1 - r<sup>2</sup>))<sup>1/2</sup></code></p>
+ * <p>The values in the matrix are sometimes referred to as the
+ * <i>significance</i> of the corresponding correlation coefficients.</p>
+ *
+ * @return matrix of p-values
+ * @throws MathException if an error occurs estimating probabilities
+ */"
+"public PearsonsCorrelation(double[][] data) {
+    this(new BlockRealMatrix(data));
+}","public void test1212() throws Throwable {
+    double[][] doubleArray0 = new double[0][8];
+    PearsonsCorrelation pearsonsCorrelation0 = null;
+    try {
+        pearsonsCorrelation0 = new PearsonsCorrelation(doubleArray0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 0
+        //
+        verifyException(""org.apache.commons.math.linear.BlockRealMatrix"", e);
+    }
+}","/**
+ * Create a PearsonsCorrelation from a rectangular array
+ * whose columns represent values of variables to be correlated.
+ *
+ * @param data rectangular array with columns representing variables
+ * @throws IllegalArgumentException if the input data array is not
+ * rectangular with at least two rows and two columns.
+ */"
+"public RealMatrix getCorrelationPValues() throws MathException {
+    TDistribution tDistribution = new TDistributionImpl(nObs - 2);
+    int nVars = correlationMatrix.getColumnDimension();
+    double[][] out = new double[nVars][nVars];
+    for (int i = 0; i < nVars; i++) {
+        for (int j = 0; j < nVars; j++) {
+            if (i == j) {
+                out[i][j] = 0d;
+            } else {
+                double r = correlationMatrix.getEntry(i, j);
+                double t = Math.abs(r * Math.sqrt((nObs - 2) / (1 - r * r)));
+                out[i][j] = 2 * (1 - tDistribution.cumulativeProbability(t));
+            }
+        }
+    }
+    return new BlockRealMatrix(out);
+}","public void test1313() throws Throwable {
+    double[][] doubleArray0 = new double[7][8];
+    double[] doubleArray1 = new double[5];
+    doubleArray1[0] = Double.POSITIVE_INFINITY;
+    doubleArray1[1] = (-101.951);
+    doubleArray1[2] = 0.0;
+    doubleArray1[3] = 0.0;
+    doubleArray1[4] = 0.0;
+    doubleArray0[0] = doubleArray1;
+    double[] doubleArray2 = new double[0];
+    doubleArray0[1] = doubleArray2;
+    double[] doubleArray3 = new double[5];
+    doubleArray3[0] = 0.0;
+    doubleArray3[1] = Double.POSITIVE_INFINITY;
+    doubleArray3[2] = Double.POSITIVE_INFINITY;
+    doubleArray3[3] = 0.0;
+    doubleArray3[4] = 0.0;
+    doubleArray0[2] = doubleArray3;
+    double[] doubleArray4 = new double[7];
+    doubleArray4[0] = (-101.951);
+    doubleArray4[1] = 0.0;
+    doubleArray4[2] = 0.0;
+    doubleArray4[3] = 0.0;
+    doubleArray4[4] = 0.0;
+    doubleArray4[5] = 0.0;
+    doubleArray4[6] = 0.0;
+    doubleArray0[3] = doubleArray4;
+    double[] doubleArray5 = new double[6];
+    doubleArray5[0] = 0.0;
+    doubleArray5[1] = 0.0;
+    doubleArray5[2] = 0.0;
+    doubleArray5[3] = 0.0;
+    doubleArray5[4] = 0.0;
+    doubleArray5[5] = 0.0;
+    doubleArray0[4] = doubleArray5;
+    double[] doubleArray6 = new double[8];
+    doubleArray6[0] = 0.0;
+    doubleArray6[1] = 0.0;
+    doubleArray6[2] = 0.0;
+    doubleArray6[3] = Double.POSITIVE_INFINITY;
+    doubleArray6[4] = 0.0;
+    doubleArray6[5] = 0.0;
+    doubleArray6[6] = 0.0;
+    doubleArray6[7] = 0.0;
+    doubleArray0[5] = doubleArray6;
+    double[] doubleArray7 = new double[8];
+    doubleArray7[0] = 3245.6196779150146;
+    doubleArray7[1] = 0.0;
+    doubleArray7[2] = 0.0;
+    doubleArray7[3] = 0.0;
+    doubleArray7[4] = Double.POSITIVE_INFINITY;
+    doubleArray7[5] = 0.0;
+    doubleArray7[6] = (-101.951);
+    doubleArray7[7] = 0.0;
+    doubleArray0[6] = doubleArray7;
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation(doubleArray0);
+    pearsonsCorrelation0.getCorrelationPValues();
+}","/**
+ * Returns a matrix of p-values associated with the (two-sided) null
+ * hypothesis that the corresponding correlation coefficient is zero.
+ * <p><code>getCorrelationPValues().getEntry(i,j)</code> is the probability
+ * that a random variable distributed as <code>t<sub>n-2</sub></code> takes
+ * a value with absolute value greater than or equal to <br>
+ * <code>|r|((n - 2) / (1 - r<sup>2</sup>))<sup>1/2</sup></code></p>
+ * <p>The values in the matrix are sometimes referred to as the
+ * <i>significance</i> of the corresponding correlation coefficients.</p>
+ *
+ * @return matrix of p-values
+ * @throws MathException if an error occurs estimating probabilities
+ */"
+"public PearsonsCorrelation(RealMatrix matrix) {
+    checkSufficientData(matrix);
+    nObs = matrix.getRowDimension();
+    correlationMatrix = computeCorrelationMatrix(matrix);
+}","public void test1414() throws Throwable {
+    RealMatrix realMatrix0 = null;
+    PearsonsCorrelation pearsonsCorrelation0 = null;
+    try {
+        pearsonsCorrelation0 = new PearsonsCorrelation((RealMatrix) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.stat.correlation.PearsonsCorrelation"", e);
+    }
+}","/**
+ * Create a PearsonsCorrelation from a RealMatrix whose columns
+ * represent variables to be correlated.
+ *
+ * @param matrix matrix with columns representing variables to correlate
+ */"
+"public PearsonsCorrelation(RealMatrix covarianceMatrix, int numberOfObservations) {
+    nObs = numberOfObservations;
+    correlationMatrix = covarianceToCorrelation(covarianceMatrix);
+}","public void test1515() throws Throwable {
+    RealMatrix realMatrix0 = null;
+    int int0 = 1404;
+    PearsonsCorrelation pearsonsCorrelation0 = null;
+    try {
+        pearsonsCorrelation0 = new PearsonsCorrelation((RealMatrix) null, 1404);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.stat.correlation.PearsonsCorrelation"", e);
+    }
+}","/**
+ * Create a PearsonsCorrelation from a covariance matrix.  The correlation
+ * matrix is computed by scaling the covariance matrix.
+ *
+ * @param covarianceMatrix covariance matrix
+ * @param numberOfObservations the number of observations in the dataset used to compute
+ * the covariance matrix
+ */"
+"public RealMatrix covarianceToCorrelation(RealMatrix covarianceMatrix) {
+    int nVars = covarianceMatrix.getColumnDimension();
+    RealMatrix outMatrix = new BlockRealMatrix(nVars, nVars);
+    for (int i = 0; i < nVars; i++) {
+        double sigma = Math.sqrt(covarianceMatrix.getEntry(i, i));
+        outMatrix.setEntry(i, i, 1d);
+        for (int j = 0; j < i; j++) {
+            double entry = covarianceMatrix.getEntry(i, j) / (sigma * Math.sqrt(covarianceMatrix.getEntry(j, j)));
+            outMatrix.setEntry(i, j, entry);
+            outMatrix.setEntry(j, i, entry);
+        }
+    }
+    return outMatrix;
+}","public void test1616() throws Throwable {
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(87);
+    double[] doubleArray0 = new double[6];
+    doubleArray0[0] = (double) 87;
+    doubleArray0[1] = (double) 87;
+    doubleArray0[2] = Double.POSITIVE_INFINITY;
+    doubleArray0[3] = 1.0E-12;
+    doubleArray0[4] = (double) 87;
+    doubleArray0[5] = (double) 87;
+    ArrayRealVector arrayRealVector0 = new ArrayRealVector(doubleArray0, doubleArray0);
+    ArrayRealVector arrayRealVector1 = new ArrayRealVector(doubleArray0, arrayRealVector0);
+    RealMatrix realMatrix0 = openMapRealVector0.outerProduct((RealVector) arrayRealVector1);
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation(realMatrix0, 87);
+    pearsonsCorrelation0.covarianceToCorrelation(realMatrix0);
+}","/**
+ * Derives a correlation matrix from a covariance matrix.
+ *
+ * <p>Uses the formula <br/>
+ * <code>r(X,Y) = cov(X,Y)/s(X)s(Y)</code> where
+ * <code>r(&middot,&middot;)</code> is the correlation coefficient and
+ * <code>s(&middot;)</code> means standard deviation.</p>
+ *
+ * @param covarianceMatrix the covariance matrix
+ * @return correlation matrix
+ */"
+"public PearsonsCorrelation(RealMatrix covarianceMatrix, int numberOfObservations) {
+    nObs = numberOfObservations;
+    correlationMatrix = covarianceToCorrelation(covarianceMatrix);
+}","public void test1717() throws Throwable {
+    Array2DRowRealMatrix array2DRowRealMatrix0 = new Array2DRowRealMatrix();
+    int int0 = 162;
+    PearsonsCorrelation pearsonsCorrelation0 = null;
+    try {
+        pearsonsCorrelation0 = new PearsonsCorrelation(array2DRowRealMatrix0, 162);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // invalid row dimension 0 (must be positive)
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}","/**
+ * Create a PearsonsCorrelation from a covariance matrix.  The correlation
+ * matrix is computed by scaling the covariance matrix.
+ *
+ * @param covarianceMatrix covariance matrix
+ * @param numberOfObservations the number of observations in the dataset used to compute
+ * the covariance matrix
+ */"
+"public PearsonsCorrelation(Covariance covariance) {
+    RealMatrix covarianceMatrix = covariance.getCovarianceMatrix();
+    if (covarianceMatrix == null) {
+        throw MathRuntimeException.createIllegalArgumentException(""covariance matrix is null"");
+    }
+    nObs = covariance.getN();
+    correlationMatrix = covarianceToCorrelation(covarianceMatrix);
+}","public void test1818() throws Throwable {
+    double[] doubleArray0 = new double[8];
+    doubleArray0[0] = 0.0;
+    doubleArray0[1] = (-685.77);
+    doubleArray0[2] = Double.NaN;
+    doubleArray0[3] = 0.0;
+    doubleArray0[4] = 256.93387;
+    doubleArray0[5] = 0.5;
+    doubleArray0[6] = (-558.41520548);
+    doubleArray0[7] = 2328.16;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    double[] doubleArray1 = new double[8];
+    doubleArray1[0] = 0.5;
+    doubleArray1[1] = 0.0;
+    doubleArray1[2] = 2328.16;
+    doubleArray1[3] = 605.03734;
+    doubleArray1[4] = (-685.77);
+    doubleArray1[5] = 0.0;
+    doubleArray1[6] = 2328.16;
+    doubleArray1[7] = 2328.16;
+    RealMatrix realMatrix0 = openMapRealVector0.outerProduct(doubleArray1);
+    Covariance covariance0 = new Covariance(realMatrix0);
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation(covariance0);
+}","/**
+ * Create a PearsonsCorrelation from a {@link Covariance}.  The correlation
+ * matrix is computed by scaling the Covariance's covariance matrix.
+ * The Covariance instance must have been created from a data matrix with
+ * columns representing variable values.
+ *
+ * @param covariance Covariance instance
+ */"
+"public RealMatrix computeCorrelationMatrix(RealMatrix matrix) {
+    int nVars = matrix.getColumnDimension();
+    RealMatrix outMatrix = new BlockRealMatrix(nVars, nVars);
+    for (int i = 0; i < nVars; i++) {
+        for (int j = 0; j < i; j++) {
+            double corr = correlation(matrix.getColumn(i), matrix.getColumn(j));
+            outMatrix.setEntry(i, j, corr);
+            outMatrix.setEntry(j, i, corr);
+        }
+        outMatrix.setEntry(i, i, 1d);
+    }
+    return outMatrix;
+}","public void test1919() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[0] = Double.NEGATIVE_INFINITY;
+    doubleArray0[1] = Double.NaN;
+    ArrayRealVector arrayRealVector0 = new ArrayRealVector(doubleArray0, true);
+    RealMatrix realMatrix0 = arrayRealVector0.outerProduct(doubleArray0);
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation(realMatrix0);
+    RealMatrix realMatrix1 = pearsonsCorrelation0.computeCorrelationMatrix(realMatrix0);
+    pearsonsCorrelation0.computeCorrelationMatrix(realMatrix1);
+    pearsonsCorrelation0.computeCorrelationMatrix(realMatrix0);
+}","/**
+ * Computes the correlation matrix for the columns of the
+ * input matrix.
+ *
+ * @param matrix matrix with columns representing variables to correlate
+ * @return correlation matrix
+ */"
+"public double correlation(final double[] xArray, final double[] yArray) throws IllegalArgumentException {
+    SimpleRegression regression = new SimpleRegression();
+    if (xArray.length == yArray.length && xArray.length > 1) {
+        for (int i = 0; i < xArray.length; i++) {
+            regression.addData(xArray[i], yArray[i]);
+        }
+        return regression.getR();
+    } else {
+        throw MathRuntimeException.createIllegalArgumentException(""invalid array dimensions. xArray has size {0}; yArray has {1} elements"", xArray.length, yArray.length);
+    }
+}","public void test2020() throws Throwable {
+    double[][] doubleArray0 = new double[1][9];
+    double[] doubleArray1 = new double[9];
+    doubleArray1[0] = (-2798.7);
+    doubleArray1[1] = 4288.547;
+    doubleArray1[2] = 3307.06579199932;
+    doubleArray1[3] = 2.0;
+    doubleArray1[4] = (-862.6);
+    doubleArray1[5] = 1054.93274987;
+    doubleArray1[6] = (-3815.667715);
+    doubleArray1[7] = (-607.33876934522);
+    doubleArray1[8] = 0.5;
+    doubleArray0[0] = doubleArray1;
+    BlockRealMatrix blockRealMatrix0 = new BlockRealMatrix(doubleArray0);
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation(blockRealMatrix0);
+    pearsonsCorrelation0.correlation(doubleArray0[0], doubleArray1);
+}","/**
+ * Computes the Pearson's product-moment correlation coefficient between the two arrays.
+ *
+ * </p>Throws IllegalArgumentException if the arrays do not have the same length
+ * or their common length is less than 2</p>
+ *
+ * @param xArray first data array
+ * @param yArray second data array
+ * @return Returns Pearson's correlation coefficient for the two arrays
+ * @throws  IllegalArgumentException if the arrays lengths do not match or
+ * there is insufficient data
+ */"
+"public RealMatrix getCorrelationStandardErrors() {
+    int nVars = correlationMatrix.getColumnDimension();
+    double[][] out = new double[nVars][nVars];
+    for (int i = 0; i < nVars; i++) {
+        for (int j = 0; j < nVars; j++) {
+            double r = correlationMatrix.getEntry(i, j);
+            out[i][j] = Math.sqrt((1 - r * r) / (nObs - 2));
+        }
+    }
+    return new BlockRealMatrix(out);
+}","public void test2323() throws Throwable {
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation();
+    // Undeclared exception!
+    try {
+        pearsonsCorrelation0.getCorrelationStandardErrors();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.stat.correlation.PearsonsCorrelation"", e);
+    }
+}","/**
+ * Returns a matrix of standard errors associated with the estimates
+ * in the correlation matrix.<br/>
+ * <code>getCorrelationStandardErrors().getEntry(i,j)</code> is the standard
+ * error associated with <code>getCorrelationMatrix.getEntry(i,j)</code>
+ * <p>The formula used to compute the standard error is <br/>
+ * <code>SE<sub>r</sub> = ((1 - r<sup>2</sup>) / (n - 2))<sup>1/2</sup></code>
+ * where <code>r</code> is the estimated correlation coefficient and
+ * <code>n</code> is the number of observations in the source dataset.</p>
+ *
+ * @return matrix of correlation standard errors
+ */"
+"public RealMatrix getCorrelationPValues() throws MathException {
+    TDistribution tDistribution = new TDistributionImpl(nObs - 2);
+    int nVars = correlationMatrix.getColumnDimension();
+    double[][] out = new double[nVars][nVars];
+    for (int i = 0; i < nVars; i++) {
+        for (int j = 0; j < nVars; j++) {
+            if (i == j) {
+                out[i][j] = 0d;
+            } else {
+                double r = correlationMatrix.getEntry(i, j);
+                double t = Math.abs(r * Math.sqrt((nObs - 2) / (1 - r * r)));
+                out[i][j] = 2 * (1 - tDistribution.cumulativeProbability(t));
+            }
+        }
+    }
+    return new BlockRealMatrix(out);
+}","public void test2525() throws Throwable {
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation();
+    double[][] doubleArray0 = new double[2][5];
+    double[] doubleArray1 = new double[9];
+    doubleArray1[0] = 0.0;
+    doubleArray1[1] = 0.0;
+    doubleArray1[2] = (-1.0);
+    doubleArray1[3] = (-1365.2048554110136);
+    doubleArray1[4] = (-1510.846127461015);
+    doubleArray1[5] = 1.0;
+    doubleArray1[6] = 3173.1;
+    doubleArray1[7] = (-3969.51);
+    doubleArray1[8] = (-607.7805);
+    doubleArray0[0] = doubleArray1;
+    double[] doubleArray2 = new double[8];
+    doubleArray2[0] = 0.0;
+    doubleArray2[1] = (-1365.2048554110136);
+    doubleArray2[2] = 0.0;
+    doubleArray2[3] = 1.0;
+    doubleArray2[4] = 0.0;
+    doubleArray2[5] = (-1510.846127461015);
+    doubleArray2[6] = (-1510.846127461015);
+    doubleArray2[7] = 0.0;
+    doubleArray0[1] = doubleArray2;
+    pearsonsCorrelation0.computeCorrelationMatrix(doubleArray0);
+    pearsonsCorrelation0.getCorrelationPValues();
+}","/**
+ * Returns a matrix of p-values associated with the (two-sided) null
+ * hypothesis that the corresponding correlation coefficient is zero.
+ * <p><code>getCorrelationPValues().getEntry(i,j)</code> is the probability
+ * that a random variable distributed as <code>t<sub>n-2</sub></code> takes
+ * a value with absolute value greater than or equal to <br>
+ * <code>|r|((n - 2) / (1 - r<sup>2</sup>))<sup>1/2</sup></code></p>
+ * <p>The values in the matrix are sometimes referred to as the
+ * <i>significance</i> of the corresponding correlation coefficients.</p>
+ *
+ * @return matrix of p-values
+ * @throws MathException if an error occurs estimating probabilities
+ */"
+"public RealMatrix getCorrelationStandardErrors() {
+    int nVars = correlationMatrix.getColumnDimension();
+    double[][] out = new double[nVars][nVars];
+    for (int i = 0; i < nVars; i++) {
+        for (int j = 0; j < nVars; j++) {
+            double r = correlationMatrix.getEntry(i, j);
+            out[i][j] = Math.sqrt((1 - r * r) / (nObs - 2));
+        }
+    }
+    return new BlockRealMatrix(out);
+}","public void test2626() throws Throwable {
+    double[] doubleArray0 = new double[4];
+    doubleArray0[0] = 1.0;
+    doubleArray0[1] = 0.0;
+    doubleArray0[2] = (-1.0);
+    doubleArray0[3] = (-66.4505339);
+    ArrayRealVector arrayRealVector0 = new ArrayRealVector(doubleArray0, false);
+    RealMatrix realMatrix0 = arrayRealVector0.outerProduct(doubleArray0);
+    PolynomialFunction polynomialFunction0 = new PolynomialFunction(doubleArray0);
+    arrayRealVector0.mapToSelf(polynomialFunction0);
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation(realMatrix0);
+    pearsonsCorrelation0.getCorrelationPValues();
+    RealMatrix realMatrix1 = pearsonsCorrelation0.getCorrelationStandardErrors();
+    pearsonsCorrelation0.computeCorrelationMatrix(realMatrix1);
+    RealMatrix realMatrix2 = pearsonsCorrelation0.getCorrelationMatrix();
+    arrayRealVector0.mapCos();
+    pearsonsCorrelation0.getCorrelationPValues();
+    pearsonsCorrelation0.covarianceToCorrelation(realMatrix2);
+    double[][] doubleArray1 = new double[5][8];
+    doubleArray1[0] = doubleArray0;
+    doubleArray1[1] = doubleArray0;
+    doubleArray1[2] = doubleArray0;
+    doubleArray1[3] = doubleArray0;
+    doubleArray1[4] = doubleArray0;
+    pearsonsCorrelation0.computeCorrelationMatrix(doubleArray1);
+    Array2DRowRealMatrix array2DRowRealMatrix0 = new Array2DRowRealMatrix(doubleArray0);
+    int[] intArray0 = new int[6];
+    intArray0[0] = 2935;
+    intArray0[1] = 4;
+    intArray0[2] = 1258;
+    intArray0[3] = 0;
+    intArray0[4] = (-579);
+    intArray0[5] = (-491);
+    array2DRowRealMatrix0.getSubMatrix(intArray0, intArray0);
+    RealMatrix realMatrix3 = array2DRowRealMatrix0.transpose();
+    pearsonsCorrelation0.covarianceToCorrelation(realMatrix3);
+    pearsonsCorrelation0.getCorrelationPValues();
+    pearsonsCorrelation0.getCorrelationStandardErrors();
+}","/**
+ * Returns a matrix of standard errors associated with the estimates
+ * in the correlation matrix.<br/>
+ * <code>getCorrelationStandardErrors().getEntry(i,j)</code> is the standard
+ * error associated with <code>getCorrelationMatrix.getEntry(i,j)</code>
+ * <p>The formula used to compute the standard error is <br/>
+ * <code>SE<sub>r</sub> = ((1 - r<sup>2</sup>) / (n - 2))<sup>1/2</sup></code>
+ * where <code>r</code> is the estimated correlation coefficient and
+ * <code>n</code> is the number of observations in the source dataset.</p>
+ *
+ * @return matrix of correlation standard errors
+ */"
+"public RealMatrix getCorrelationPValues() throws MathException {
+    TDistribution tDistribution = new TDistributionImpl(nObs - 2);
+    int nVars = correlationMatrix.getColumnDimension();
+    double[][] out = new double[nVars][nVars];
+    for (int i = 0; i < nVars; i++) {
+        for (int j = 0; j < nVars; j++) {
+            if (i == j) {
+                out[i][j] = 0d;
+            } else {
+                double r = correlationMatrix.getEntry(i, j);
+                double t = Math.abs(r * Math.sqrt((nObs - 2) / (1 - r * r)));
+                out[i][j] = 2 * (1 - tDistribution.cumulativeProbability(t));
+            }
+        }
+    }
+    return new BlockRealMatrix(out);
+}","public void test2727() throws Throwable {
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation();
+    double[] doubleArray0 = new double[4];
+    doubleArray0[0] = (-580.198013);
+    doubleArray0[1] = 58.9892943134;
+    doubleArray0[2] = 342.5167033145553;
+    doubleArray0[3] = (-688.1938338907);
+    double[] doubleArray1 = new double[8];
+    doubleArray1[0] = (-580.198013);
+    doubleArray1[1] = 58.9892943134;
+    doubleArray1[2] = (-688.1938338907);
+    doubleArray1[3] = 342.5167033145553;
+    doubleArray1[4] = (-580.198013);
+    doubleArray1[5] = (-580.198013);
+    doubleArray1[6] = (-580.198013);
+    doubleArray1[7] = 342.5167033145553;
+    pearsonsCorrelation0.correlation(doubleArray0, doubleArray1);
+    pearsonsCorrelation0.getCorrelationPValues();
+    pearsonsCorrelation0.getCorrelationPValues();
+}","/**
+ * Returns a matrix of p-values associated with the (two-sided) null
+ * hypothesis that the corresponding correlation coefficient is zero.
+ * <p><code>getCorrelationPValues().getEntry(i,j)</code> is the probability
+ * that a random variable distributed as <code>t<sub>n-2</sub></code> takes
+ * a value with absolute value greater than or equal to <br>
+ * <code>|r|((n - 2) / (1 - r<sup>2</sup>))<sup>1/2</sup></code></p>
+ * <p>The values in the matrix are sometimes referred to as the
+ * <i>significance</i> of the corresponding correlation coefficients.</p>
+ *
+ * @return matrix of p-values
+ * @throws MathException if an error occurs estimating probabilities
+ */"
+"public RealMatrix getCorrelationStandardErrors() {
+    int nVars = correlationMatrix.getColumnDimension();
+    double[][] out = new double[nVars][nVars];
+    for (int i = 0; i < nVars; i++) {
+        for (int j = 0; j < nVars; j++) {
+            double r = correlationMatrix.getEntry(i, j);
+            out[i][j] = Math.sqrt((1 - r * r) / (nObs - 2));
+        }
+    }
+    return new BlockRealMatrix(out);
+}","public void test2828() throws Throwable {
+    RealMatrix realMatrix0 = null;
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation((RealMatrix) null, 1667);
+    // Undeclared exception!
+    try {
+        pearsonsCorrelation0.getCorrelationStandardErrors();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.stat.correlation.PearsonsCorrelation"", e);
+    }
+}","/**
+ * Returns a matrix of standard errors associated with the estimates
+ * in the correlation matrix.<br/>
+ * <code>getCorrelationStandardErrors().getEntry(i,j)</code> is the standard
+ * error associated with <code>getCorrelationMatrix.getEntry(i,j)</code>
+ * <p>The formula used to compute the standard error is <br/>
+ * <code>SE<sub>r</sub> = ((1 - r<sup>2</sup>) / (n - 2))<sup>1/2</sup></code>
+ * where <code>r</code> is the estimated correlation coefficient and
+ * <code>n</code> is the number of observations in the source dataset.</p>
+ *
+ * @return matrix of correlation standard errors
+ */"
+"public RealMatrix getCorrelationPValues() throws MathException {
+    TDistribution tDistribution = new TDistributionImpl(nObs - 2);
+    int nVars = correlationMatrix.getColumnDimension();
+    double[][] out = new double[nVars][nVars];
+    for (int i = 0; i < nVars; i++) {
+        for (int j = 0; j < nVars; j++) {
+            if (i == j) {
+                out[i][j] = 0d;
+            } else {
+                double r = correlationMatrix.getEntry(i, j);
+                double t = Math.abs(r * Math.sqrt((nObs - 2) / (1 - r * r)));
+                out[i][j] = 2 * (1 - tDistribution.cumulativeProbability(t));
+            }
+        }
+    }
+    return new BlockRealMatrix(out);
+}","public void test2929() throws Throwable {
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation();
+    // Undeclared exception!
+    try {
+        pearsonsCorrelation0.getCorrelationPValues();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // degrees of freedom must be positive (-2)
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}","/**
+ * Returns a matrix of p-values associated with the (two-sided) null
+ * hypothesis that the corresponding correlation coefficient is zero.
+ * <p><code>getCorrelationPValues().getEntry(i,j)</code> is the probability
+ * that a random variable distributed as <code>t<sub>n-2</sub></code> takes
+ * a value with absolute value greater than or equal to <br>
+ * <code>|r|((n - 2) / (1 - r<sup>2</sup>))<sup>1/2</sup></code></p>
+ * <p>The values in the matrix are sometimes referred to as the
+ * <i>significance</i> of the corresponding correlation coefficients.</p>
+ *
+ * @return matrix of p-values
+ * @throws MathException if an error occurs estimating probabilities
+ */"
+"public PearsonsCorrelation(double[][] data) {
+    this(new BlockRealMatrix(data));
+}","public void test3030() throws Throwable {
+    double[][] doubleArray0 = new double[1][7];
+    double[] doubleArray1 = new double[5];
+    doubleArray1[0] = 0.0;
+    doubleArray1[1] = 465.937;
+    doubleArray1[2] = 584.5047380665944;
+    doubleArray1[3] = 0.0;
+    doubleArray1[4] = 2413.15284343;
+    doubleArray0[0] = doubleArray1;
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation(doubleArray0);
+}","/**
+ * Create a PearsonsCorrelation from a rectangular array
+ * whose columns represent values of variables to be correlated.
+ *
+ * @param data rectangular array with columns representing variables
+ * @throws IllegalArgumentException if the input data array is not
+ * rectangular with at least two rows and two columns.
+ */"
+"public PearsonsCorrelation(double[][] data) {
+    this(new BlockRealMatrix(data));
+}","public void test3131() throws Throwable {
+    double[][] doubleArrayArray0 = null;
+    PearsonsCorrelation pearsonsCorrelation0 = null;
+    try {
+        pearsonsCorrelation0 = new PearsonsCorrelation((double[][]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.linear.BlockRealMatrix"", e);
+    }
+}","/**
+ * Create a PearsonsCorrelation from a rectangular array
+ * whose columns represent values of variables to be correlated.
+ *
+ * @param data rectangular array with columns representing variables
+ * @throws IllegalArgumentException if the input data array is not
+ * rectangular with at least two rows and two columns.
+ */"
+"public double correlation(final double[] xArray, final double[] yArray) throws IllegalArgumentException {
+    SimpleRegression regression = new SimpleRegression();
+    if (xArray.length == yArray.length && xArray.length > 1) {
+        for (int i = 0; i < xArray.length; i++) {
+            regression.addData(xArray[i], yArray[i]);
+        }
+        return regression.getR();
+    } else {
+        throw MathRuntimeException.createIllegalArgumentException(""invalid array dimensions. xArray has size {0}; yArray has {1} elements"", xArray.length, yArray.length);
+    }
+}","public void test3232() throws Throwable {
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation();
+    double[] doubleArray0 = new double[0];
+    Array2DRowRealMatrix array2DRowRealMatrix0 = new Array2DRowRealMatrix(doubleArray0);
+    int int0 = 2892;
+    try {
+        pearsonsCorrelation0.correlation(doubleArray0, doubleArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // invalid array dimensions. xArray has size 0; yArray has 0 elements
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}","/**
+ * Computes the Pearson's product-moment correlation coefficient between the two arrays.
+ *
+ * </p>Throws IllegalArgumentException if the arrays do not have the same length
+ * or their common length is less than 2</p>
+ *
+ * @param xArray first data array
+ * @param yArray second data array
+ * @return Returns Pearson's correlation coefficient for the two arrays
+ * @throws  IllegalArgumentException if the arrays lengths do not match or
+ * there is insufficient data
+ */"
+"public PearsonsCorrelation(RealMatrix matrix) {
+    checkSufficientData(matrix);
+    nObs = matrix.getRowDimension();
+    correlationMatrix = computeCorrelationMatrix(matrix);
+}","public void test3333() throws Throwable {
+    int int0 = 41;
+    int int1 = 46;
+    Array2DRowRealMatrix array2DRowRealMatrix0 = new Array2DRowRealMatrix(41, 46);
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation(array2DRowRealMatrix0);
+}","/**
+ * Create a PearsonsCorrelation from a RealMatrix whose columns
+ * represent variables to be correlated.
+ *
+ * @param matrix matrix with columns representing variables to correlate
+ */"
+"public RealMatrix computeCorrelationMatrix(RealMatrix matrix) {
+    int nVars = matrix.getColumnDimension();
+    RealMatrix outMatrix = new BlockRealMatrix(nVars, nVars);
+    for (int i = 0; i < nVars; i++) {
+        for (int j = 0; j < i; j++) {
+            double corr = correlation(matrix.getColumn(i), matrix.getColumn(j));
+            outMatrix.setEntry(i, j, corr);
+            outMatrix.setEntry(j, i, corr);
+        }
+        outMatrix.setEntry(i, i, 1d);
+    }
+    return outMatrix;
+}","public void test3434() throws Throwable {
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation();
+    pearsonsCorrelation0.getCorrelationMatrix();
+    // Undeclared exception!
+    try {
+        pearsonsCorrelation0.computeCorrelationMatrix((RealMatrix) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.stat.correlation.PearsonsCorrelation"", e);
+    }
+}","/**
+ * Computes the correlation matrix for the columns of the
+ * input matrix.
+ *
+ * @param matrix matrix with columns representing variables to correlate
+ * @return correlation matrix
+ */"
+"public RealMatrix computeCorrelationMatrix(RealMatrix matrix) {
+    int nVars = matrix.getColumnDimension();
+    RealMatrix outMatrix = new BlockRealMatrix(nVars, nVars);
+    for (int i = 0; i < nVars; i++) {
+        for (int j = 0; j < i; j++) {
+            double corr = correlation(matrix.getColumn(i), matrix.getColumn(j));
+            outMatrix.setEntry(i, j, corr);
+            outMatrix.setEntry(j, i, corr);
+        }
+        outMatrix.setEntry(i, i, 1d);
+    }
+    return outMatrix;
+}","public void test3535() throws Throwable {
+    double[] doubleArray0 = new double[5];
+    doubleArray0[0] = (-1.0);
+    doubleArray0[1] = Double.POSITIVE_INFINITY;
+    doubleArray0[2] = 1494.044;
+    doubleArray0[3] = 1566.870848947;
+    doubleArray0[4] = (-476.9805963);
+    ArrayRealVector arrayRealVector0 = new ArrayRealVector(doubleArray0);
+    RealMatrix realMatrix0 = arrayRealVector0.outerProduct(doubleArray0);
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation(realMatrix0, 410);
+    pearsonsCorrelation0.computeCorrelationMatrix(realMatrix0);
+    pearsonsCorrelation0.covarianceToCorrelation(realMatrix0);
+    double[][] doubleArray1 = new double[5][1];
+    double[] doubleArray2 = new double[7];
+    doubleArray2[0] = (-476.9805963);
+    doubleArray2[1] = (-476.9805963);
+    doubleArray2[2] = 1566.870848947;
+    doubleArray2[3] = 1566.870848947;
+    doubleArray2[3] = 1566.870848947;
+    doubleArray2[5] = Double.POSITIVE_INFINITY;
+    doubleArray2[6] = Double.POSITIVE_INFINITY;
+    doubleArray1[0] = doubleArray2;
+    doubleArray1[1] = doubleArray0;
+    doubleArray1[2] = doubleArray0;
+    doubleArray1[3] = doubleArray0;
+    doubleArray1[4] = doubleArray0;
+    Array2DRowRealMatrix array2DRowRealMatrix0 = new Array2DRowRealMatrix(doubleArray0);
+    pearsonsCorrelation0.getCorrelationPValues();
+    pearsonsCorrelation0.correlation(doubleArray0, doubleArray0);
+    pearsonsCorrelation0.computeCorrelationMatrix((RealMatrix) array2DRowRealMatrix0);
+}","/**
+ * Computes the correlation matrix for the columns of the
+ * input matrix.
+ *
+ * @param matrix matrix with columns representing variables to correlate
+ * @return correlation matrix
+ */"
+"public RealMatrix covarianceToCorrelation(RealMatrix covarianceMatrix) {
+    int nVars = covarianceMatrix.getColumnDimension();
+    RealMatrix outMatrix = new BlockRealMatrix(nVars, nVars);
+    for (int i = 0; i < nVars; i++) {
+        double sigma = Math.sqrt(covarianceMatrix.getEntry(i, i));
+        outMatrix.setEntry(i, i, 1d);
+        for (int j = 0; j < i; j++) {
+            double entry = covarianceMatrix.getEntry(i, j) / (sigma * Math.sqrt(covarianceMatrix.getEntry(j, j)));
+            outMatrix.setEntry(i, j, entry);
+            outMatrix.setEntry(j, i, entry);
+        }
+    }
+    return outMatrix;
+}","public void test3636() throws Throwable {
+    double[] doubleArray0 = new double[9];
+    doubleArray0[0] = 1576.970357826;
+    Array2DRowRealMatrix array2DRowRealMatrix0 = new Array2DRowRealMatrix(doubleArray0);
+    RealMatrix realMatrix0 = array2DRowRealMatrix0.copy();
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation(realMatrix0);
+    // Undeclared exception!
+    try {
+        pearsonsCorrelation0.covarianceToCorrelation(realMatrix0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // insufficient data: only 9 rows and 1 columns.
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}","/**
+ * Derives a correlation matrix from a covariance matrix.
+ *
+ * <p>Uses the formula <br/>
+ * <code>r(X,Y) = cov(X,Y)/s(X)s(Y)</code> where
+ * <code>r(&middot,&middot;)</code> is the correlation coefficient and
+ * <code>s(&middot;)</code> means standard deviation.</p>
+ *
+ * @param covarianceMatrix the covariance matrix
+ * @return correlation matrix
+ */"
+"public double correlation(final double[] xArray, final double[] yArray) throws IllegalArgumentException {
+    SimpleRegression regression = new SimpleRegression();
+    if (xArray.length == yArray.length && xArray.length > 1) {
+        for (int i = 0; i < xArray.length; i++) {
+            regression.addData(xArray[i], yArray[i]);
+        }
+        return regression.getR();
+    } else {
+        throw MathRuntimeException.createIllegalArgumentException(""invalid array dimensions. xArray has size {0}; yArray has {1} elements"", xArray.length, yArray.length);
+    }
+}","public void test3737() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[0] = 1576.970357826;
+    Array2DRowRealMatrix array2DRowRealMatrix0 = new Array2DRowRealMatrix(doubleArray0);
+    Array2DRowRealMatrix array2DRowRealMatrix1 = (Array2DRowRealMatrix) array2DRowRealMatrix0.copy();
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation(array2DRowRealMatrix1);
+    try {
+        pearsonsCorrelation0.correlation(doubleArray0, doubleArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // insufficient data: only 2 rows and 1 columns.
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}","/**
+ * Computes the Pearson's product-moment correlation coefficient between the two arrays.
+ *
+ * </p>Throws IllegalArgumentException if the arrays do not have the same length
+ * or their common length is less than 2</p>
+ *
+ * @param xArray first data array
+ * @param yArray second data array
+ * @return Returns Pearson's correlation coefficient for the two arrays
+ * @throws  IllegalArgumentException if the arrays lengths do not match or
+ * there is insufficient data
+ */"
+"public RealMatrix getCorrelationStandardErrors() {
+    int nVars = correlationMatrix.getColumnDimension();
+    double[][] out = new double[nVars][nVars];
+    for (int i = 0; i < nVars; i++) {
+        for (int j = 0; j < nVars; j++) {
+            double r = correlationMatrix.getEntry(i, j);
+            out[i][j] = Math.sqrt((1 - r * r) / (nObs - 2));
+        }
+    }
+    return new BlockRealMatrix(out);
+}","public void test3838() throws Throwable {
+    double[] doubleArray0 = new double[8];
+    doubleArray0[0] = 0.0;
+    doubleArray0[1] = (-685.77);
+    doubleArray0[2] = Double.NaN;
+    doubleArray0[3] = Double.NaN;
+    doubleArray0[4] = 256.93387;
+    doubleArray0[5] = 0.5;
+    doubleArray0[6] = (-558.41520548);
+    doubleArray0[7] = 0.0;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    double[] doubleArray1 = new double[8];
+    doubleArray1[0] = 0.5;
+    doubleArray1[1] = (-685.77);
+    doubleArray1[2] = Double.NaN;
+    doubleArray1[3] = 605.03734;
+    doubleArray1[4] = (-685.77);
+    doubleArray1[5] = 0.0;
+    doubleArray1[6] = (-558.41520548);
+    doubleArray1[7] = 0.5;
+    RealMatrix realMatrix0 = openMapRealVector0.outerProduct(doubleArray1);
+    Covariance covariance0 = new Covariance(realMatrix0);
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation(covariance0);
+    pearsonsCorrelation0.correlation(doubleArray0, doubleArray0);
+    pearsonsCorrelation0.computeCorrelationMatrix(realMatrix0);
+    pearsonsCorrelation0.getCorrelationStandardErrors();
+}","/**
+ * Returns a matrix of standard errors associated with the estimates
+ * in the correlation matrix.<br/>
+ * <code>getCorrelationStandardErrors().getEntry(i,j)</code> is the standard
+ * error associated with <code>getCorrelationMatrix.getEntry(i,j)</code>
+ * <p>The formula used to compute the standard error is <br/>
+ * <code>SE<sub>r</sub> = ((1 - r<sup>2</sup>) / (n - 2))<sup>1/2</sup></code>
+ * where <code>r</code> is the estimated correlation coefficient and
+ * <code>n</code> is the number of observations in the source dataset.</p>
+ *
+ * @return matrix of correlation standard errors
+ */"
+"public PearsonsCorrelation(RealMatrix covarianceMatrix, int numberOfObservations) {
+    nObs = numberOfObservations;
+    correlationMatrix = covarianceToCorrelation(covarianceMatrix);
+}","public void test4141() throws Throwable {
+    ArrayRealVector arrayRealVector0 = new ArrayRealVector(1415);
+    ArrayRealVector arrayRealVector1 = new ArrayRealVector();
+    BlockRealMatrix blockRealMatrix0 = new BlockRealMatrix(1415, 1415);
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation(blockRealMatrix0, 1415);
+}","/**
+ * Create a PearsonsCorrelation from a covariance matrix.  The correlation
+ * matrix is computed by scaling the covariance matrix.
+ *
+ * @param covarianceMatrix covariance matrix
+ * @param numberOfObservations the number of observations in the dataset used to compute
+ * the covariance matrix
+ */"
+"public RealMatrix covarianceToCorrelation(RealMatrix covarianceMatrix) {
+    int nVars = covarianceMatrix.getColumnDimension();
+    RealMatrix outMatrix = new BlockRealMatrix(nVars, nVars);
+    for (int i = 0; i < nVars; i++) {
+        double sigma = Math.sqrt(covarianceMatrix.getEntry(i, i));
+        outMatrix.setEntry(i, i, 1d);
+        for (int j = 0; j < i; j++) {
+            double entry = covarianceMatrix.getEntry(i, j) / (sigma * Math.sqrt(covarianceMatrix.getEntry(j, j)));
+            outMatrix.setEntry(i, j, entry);
+            outMatrix.setEntry(j, i, entry);
+        }
+    }
+    return outMatrix;
+}","public void test4242() throws Throwable {
+    double[] doubleArray0 = new double[6];
+    doubleArray0[1] = 1068.0;
+    doubleArray0[2] = (-1531.0);
+    doubleArray0[3] = 1068.0;
+    doubleArray0[4] = 0.0;
+    ArrayRealVector arrayRealVector0 = new ArrayRealVector(doubleArray0);
+    RealMatrix realMatrix0 = arrayRealVector0.outerProduct(arrayRealVector0);
+    Covariance covariance0 = new Covariance(realMatrix0, false);
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation(covariance0);
+    pearsonsCorrelation0.getCorrelationPValues();
+    BlockRealMatrix blockRealMatrix0 = new BlockRealMatrix(2, 52);
+    pearsonsCorrelation0.covarianceToCorrelation(blockRealMatrix0);
+}","/**
+ * Derives a correlation matrix from a covariance matrix.
+ *
+ * <p>Uses the formula <br/>
+ * <code>r(X,Y) = cov(X,Y)/s(X)s(Y)</code> where
+ * <code>r(&middot,&middot;)</code> is the correlation coefficient and
+ * <code>s(&middot;)</code> means standard deviation.</p>
+ *
+ * @param covarianceMatrix the covariance matrix
+ * @return correlation matrix
+ */"
+"public RealMatrix computeCorrelationMatrix(double[][] data) {
+    return computeCorrelationMatrix(new BlockRealMatrix(data));
+}","public void test4343() throws Throwable {
+    double[] doubleArray0 = new double[8];
+    doubleArray0[0] = 3167.479412001;
+    doubleArray0[1] = (-685.77);
+    doubleArray0[2] = Double.NaN;
+    doubleArray0[3] = 0.0;
+    doubleArray0[4] = 256.93387;
+    doubleArray0[5] = 0.5;
+    doubleArray0[6] = (-558.41520548);
+    doubleArray0[5] = 2328.16;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    double[] doubleArray1 = new double[8];
+    doubleArray1[0] = 0.5;
+    doubleArray1[1] = 0.0;
+    doubleArray1[2] = 2328.16;
+    doubleArray1[3] = 605.03734;
+    doubleArray1[4] = (-685.77);
+    doubleArray1[5] = (-44.10011873687745);
+    doubleArray1[6] = 2328.16;
+    doubleArray1[7] = 2328.16;
+    RealMatrix realMatrix0 = openMapRealVector0.outerProduct(doubleArray1);
+    Covariance covariance0 = new Covariance(realMatrix0);
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation(covariance0);
+    pearsonsCorrelation0.getCorrelationPValues();
+    pearsonsCorrelation0.computeCorrelationMatrix((double[][]) null);
+}","/**
+ * Computes the correlation matrix for the columns of the
+ * input rectangular array.  The colums of the array represent values
+ * of variables to be correlated.
+ *
+ * @param data matrix with columns representing variables to correlate
+ * @return correlation matrix
+ */"
+"public PearsonsCorrelation(double[][] data) {
+    this(new BlockRealMatrix(data));
+}","public void test4444() throws Throwable {
+    double[][] doubleArray0 = new double[11][2];
+    double[] doubleArray1 = new double[7];
+    PearsonsCorrelation pearsonsCorrelation0 = new PearsonsCorrelation(doubleArray0);
+    pearsonsCorrelation0.computeCorrelationMatrix(doubleArray0);
+    doubleArray1[0] = 0.0;
+    doubleArray1[1] = (-277.0);
+    doubleArray1[2] = (-2583.958);
+    doubleArray1[3] = Double.POSITIVE_INFINITY;
+    doubleArray1[4] = (-2160.550794358975);
+    doubleArray1[5] = (-408.0);
+    doubleArray1[6] = 362.664248;
+    doubleArray0[0] = doubleArray1;
+    double[] doubleArray2 = new double[4];
+    doubleArray2[0] = 362.664248;
+    doubleArray2[1] = (-2583.958);
+    doubleArray2[2] = (-408.0);
+    doubleArray2[3] = (-2160.550794358975);
+    doubleArray0[1] = doubleArray2;
+    double[] doubleArray3 = new double[8];
+    doubleArray3[0] = (-2160.550794358975);
+    doubleArray3[1] = (-2160.550794358975);
+    doubleArray3[2] = (-277.0);
+    doubleArray3[3] = Double.POSITIVE_INFINITY;
+    doubleArray3[4] = 0.0;
+    doubleArray3[5] = (-277.0);
+    doubleArray3[6] = (-469.05062819);
+    doubleArray3[7] = (-277.0);
+    doubleArray0[2] = doubleArray3;
+    double[][] doubleArray4 = new double[3][3];
+    doubleArray4[0] = doubleArray2;
+    doubleArray4[1] = doubleArray1;
+    doubleArray4[2] = doubleArray3;
+    PearsonsCorrelation pearsonsCorrelation1 = new PearsonsCorrelation(doubleArray4);
+}","/**
+ * Create a PearsonsCorrelation from a rectangular array
+ * whose columns represent values of variables to be correlated.
+ *
+ * @param data rectangular array with columns representing variables
+ * @throws IllegalArgumentException if the input data array is not
+ * rectangular with at least two rows and two columns.
+ */"

@@ -1,0 +1,3955 @@
+focal_method,test_prefix,docstring
+"//-----------------------------------------------------------------------
+/**
+ * Parses a {@code LocalDateTime} from the specified string.
+ * <p>
+ * This uses {@link ISODateTimeFormat#localDateOptionalTimeParser()}.
+ *
+ * @param str  the string to parse, not null
+ * @since 2.0
+ */
+@FromString
+public static LocalDateTime parse(String str) {
+    return parse(str, ISODateTimeFormat.localDateOptionalTimeParser());
+}","public void test0011() throws Throwable {
+    LocalDateTime.parse(""h"");
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test0022() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime((-169817918680L), (DateTimeZone) null);
+    localDateTime0.toDate();
+}",""
+"public Property year() {
+    return new Property(this, getChronology().year());
+}","public void test0033() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    localDateTime0.year();
+}","/**
+ * Get the year property which provides access to advanced functionality.
+ *
+ * @return the year property
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Returns a copy of this datetime with the partial set of fields
+ * replacing those from this instance.
+ * <p>
+ * For example, if the partial is a <code>TimeOfDay</code> then the time fields
+ * would be changed in the returned instance.
+ * If the partial is null, then <code>this</code> is returned.
+ *
+ * @param partial  the partial set of fields to apply to this datetime, null ignored
+ * @return a copy of this datetime with a different set of fields
+ * @throws IllegalArgumentException if any value is invalid
+ */
+public LocalDateTime withFields(ReadablePartial partial) {
+    if (partial == null) {
+        return this;
+    }
+    return withLocalMillis(getChronology().set(partial, getLocalMillis()));
+}","public void test0044() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.withFields(localDateTime0);
+}",""
+"public LocalDateTime withWeekyear(int weekyear) {
+    return withLocalMillis(getChronology().weekyear().set(getLocalMillis(), weekyear));
+}","public void test0066() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.withWeekyear(32);
+}","/**
+ * Returns a copy of this datetime with the weekyear field updated.
+ * <p>
+ * The weekyear is the year that matches with the weekOfWeekyear field.
+ * In the standard ISO8601 week algorithm, the first week of the year
+ * is that in which at least 4 days are in the year. As a result of this
+ * definition, day 1 of the first week may be in the previous year.
+ * The weekyear allows you to query the effective year for that day.
+ * <p>
+ * LocalDateTime is immutable, so there are no set methods.
+ * Instead, this method returns a new instance with the value of
+ * weekyear changed.
+ *
+ * @param weekyear  the weekyear to set
+ * @return a copy of this object with the field set
+ * @throws IllegalArgumentException if the value is invalid
+ */"
+"public boolean isLeap() {
+    return getField().isLeap(getMillis());
+}","public void test0077() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    LocalDateTime.Property localDateTime_Property0 = localDateTime0.secondOfMinute();
+    localDateTime_Property0.isLeap();
+}","/**
+ * Gets whether this field is leap.
+ *
+ * @return true if a leap field
+ * @see DateTimeField#isLeap
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test0088() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    LocalDateTime.Property localDateTime_Property0 = localDateTime0.hourOfDay();
+    MockDate mockDate0 = new MockDate();
+    LocalDateTime localDateTime1 = localDateTime0.withFields(localDateTime0);
+    LocalDateTime localDateTime2 = localDateTime_Property0.roundHalfFloorCopy();
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.minuteOfHour();
+    dateTimeFieldType0.getRangeDurationType();
+    localDateTime1.property(dateTimeFieldType0);
+    System.setCurrentTimeMillis((-1L));
+    localDateTime2.toDate();
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the minimum value for the field ignoring the current time.
+ *
+ * @return the minimum value
+ * @see DateTimeField#getMinimumValue
+ */
+public int getMinimumValueOverall() {
+    return getField().getMinimumValue();
+}","public void test0099() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    LocalDateTime.Property localDateTime_Property0 = localDateTime0.weekOfWeekyear();
+    localDateTime_Property0.withMaximumValue();
+    localDateTime_Property0.getMinimumValueOverall();
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the minimum value for the field ignoring the current time.
+ *
+ * @return the minimum value
+ * @see DateTimeField#getMinimumValue
+ */
+public int getMinimumValueOverall() {
+    return getField().getMinimumValue();
+}","public void test01111() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    LocalDateTime.Property localDateTime_Property0 = localDateTime0.monthOfYear();
+    localDateTime_Property0.getMinimumValueOverall();
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Converts this object to a LocalDate with the same date and chronology.
+ *
+ * @return a LocalDate with the same date and chronology
+ */
+public LocalDate toLocalDate() {
+    return new LocalDate(getLocalMillis(), getChronology());
+}","public void test01313() throws Throwable {
+    int int0 = 0;
+    LocalDateTime localDateTime0 = new LocalDateTime(0, 12, 0, 12, 12, 64);
+    localDateTime0.withYearOfEra(int0);
+    // Undeclared exception!
+    try {
+        localDateTime0.toLocalDate();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 64 for secondOfMinute must be in the range [0,59]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Constructs a LocalDateTime from a <code>java.util.Calendar</code>
+ * using exactly the same field values.
+ * <p>
+ * Each field is queried from the Calendar and assigned to the LocalDateTime.
+ * This is useful if you have been using the Calendar as a local date,
+ * ignoring the zone.
+ * <p>
+ * One advantage of this method is that this method is unaffected if the
+ * version of the time zone data differs between the JDK and Joda-Time.
+ * That is because the local field values are transferred, calculated using
+ * the JDK time zone data and without using the Joda-Time time zone data.
+ * <p>
+ * This factory method ignores the type of the calendar and always
+ * creates a LocalDateTime with ISO chronology. It is expected that you
+ * will only pass in instances of <code>GregorianCalendar</code> however
+ * this is not validated.
+ *
+ * @param calendar  the Calendar to extract fields from, not null
+ * @return the created local date-time, not null
+ * @throws IllegalArgumentException if the calendar is null
+ * @throws IllegalArgumentException if the date is invalid for the ISO chronology
+ */
+public static LocalDateTime fromCalendarFields(Calendar calendar) {
+    if (calendar == null) {
+        throw new IllegalArgumentException(""The calendar must not be null"");
+    }
+    int yearOfEra = calendar.get(Calendar.YEAR);
+    return new LocalDateTime(yearOfEra, calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND), calendar.get(Calendar.MILLISECOND));
+}","public void test01414() throws Throwable {
+    Calendar calendar0 = MockCalendar.getInstance();
+    LocalDateTime.fromCalendarFields(calendar0);
+}",""
+"public LocalDateTime withFieldAdded(DurationFieldType fieldType, int amount) {
+    if (fieldType == null) {
+        throw new IllegalArgumentException(""Field must not be null"");
+    }
+    if (amount == 0) {
+        return this;
+    }
+    long instant = fieldType.getField(getChronology()).add(getLocalMillis(), amount);
+    return withLocalMillis(instant);
+}","public void test01515() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    DurationFieldType durationFieldType0 = DurationFieldType.weekyears();
+    localDateTime0.withFieldAdded(durationFieldType0, 15);
+}","/**
+ * Returns a copy of this datetime with the value of the specified
+ * field increased.
+ * <p>
+ * If the addition is zero or the field is null, then <code>this</code> is returned.
+ * <p>
+ * These three lines are equivalent:
+ * <pre>
+ * LocalDateTime added = dt.withFieldAdded(DurationFieldType.years(), 6);
+ * LocalDateTime added = dt.plusYears(6);
+ * LocalDateTime added = dt.plus(Period.years(6));
+ * </pre>
+ *
+ * @param fieldType  the field type to add to, not null
+ * @param amount  the amount to add
+ * @return a copy of this datetime with the field updated
+ * @throws IllegalArgumentException if the value is null or invalid
+ * @throws ArithmeticException if the result exceeds the internal capacity
+ */"
+"public int getWeekyear() {
+    return getChronology().weekyear().get(getLocalMillis());
+}","public void test01616() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(0);
+    LocalDateTime localDateTime0 = LocalDateTime.now(dateTimeZone0);
+    DurationFieldType durationFieldType0 = DurationFieldType.minutes();
+    LocalDateTime localDateTime1 = localDateTime0.withFieldAdded(durationFieldType0, 0);
+    Seconds seconds0 = Seconds.ZERO;
+    Duration duration0 = seconds0.toStandardDuration();
+    localDateTime1.withDurationAdded(duration0, 0);
+    localDateTime0.getLocalMillis();
+    localDateTime1.getWeekyear();
+}","/**
+ * Get the weekyear field value.
+ * <p>
+ * The weekyear is the year that matches with the weekOfWeekyear field.
+ * In the standard ISO8601 week algorithm, the first week of the year
+ * is that in which at least 4 days are in the year. As a result of this
+ * definition, day 1 of the first week may be in the previous year.
+ * The weekyear allows you to query the effective year for that day.
+ *
+ * @return the weekyear
+ */"
+"public static LocalDateTime now(Chronology chronology) {
+    if (chronology == null) {
+        throw new NullPointerException(""Chronology must not be null"");
+    }
+    return new LocalDateTime(chronology);
+}","public void test01717() throws Throwable {
+    ISOChronology iSOChronology0 = ISOChronology.getInstance();
+    LocalDateTime.now((Chronology) iSOChronology0);
+}","/**
+ * Obtains a {@code LocalDateTime} set to the current system millisecond time
+ * using the specified chronology.
+ * The resulting object does not use the zone.
+ *
+ * @param chronology  the chronology, not null
+ * @return the current date, not null
+ * @since 2.0
+ */"
+"public LocalDateTime plusMillis(int millis) {
+    if (millis == 0) {
+        return this;
+    }
+    long instant = getChronology().millis().add(getLocalMillis(), millis);
+    return withLocalMillis(instant);
+}","public void test01818() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    localDateTime0.plusMillis(2895);
+}","/**
+ * Returns a copy of this datetime plus the specified number of millis.
+ * <p>
+ * This LocalDateTime instance is immutable and unaffected by this method call.
+ * <p>
+ * The following three lines are identical in effect:
+ * <pre>
+ * LocalDateTime added = dt.plusMillis(6);
+ * LocalDateTime added = dt.plus(Period.millis(6));
+ * LocalDateTime added = dt.withFieldAdded(DurationFieldType.millis(), 6);
+ * </pre>
+ *
+ * @param millis  the amount of millis to add, may be negative
+ * @return the new LocalDateTime plus the increased millis
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test02020() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    LocalDate localDate0 = new LocalDate();
+    localDateTime0.equals(localDate0);
+    localDateTime0.toDate();
+}",""
+"public LocalDateTime minusSeconds(int seconds) {
+    if (seconds == 0) {
+        return this;
+    }
+    long instant = getChronology().seconds().subtract(getLocalMillis(), seconds);
+    return withLocalMillis(instant);
+}","public void test02121() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.minusSeconds(1202);
+}","/**
+ * Returns a copy of this datetime minus the specified number of seconds.
+ * <p>
+ * This LocalDateTime instance is immutable and unaffected by this method call.
+ * <p>
+ * The following three lines are identical in effect:
+ * <pre>
+ * LocalDateTime subtracted = dt.minusSeconds(6);
+ * LocalDateTime subtracted = dt.minus(Period.seconds(6));
+ * LocalDateTime subtracted = dt.withFieldAdded(DurationFieldType.seconds(), -6);
+ * </pre>
+ *
+ * @param seconds  the amount of seconds to subtract, may be negative
+ * @return the new LocalDateTime minus the increased seconds
+ */"
+"public LocalDateTime withMillisOfSecond(int millis) {
+    return withLocalMillis(getChronology().millisOfSecond().set(getLocalMillis(), millis));
+}","public void test02222() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.withMillisOfSecond(32);
+}","/**
+ * Returns a copy of this datetime with the millis of second field updated.
+ * <p>
+ * LocalDateTime is immutable, so there are no set methods.
+ * Instead, this method returns a new instance with the value of
+ * millis of second changed.
+ *
+ * @param millis  the millis of second to set
+ * @return a copy of this object with the field set
+ * @throws IllegalArgumentException if the value is invalid
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test02323() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    LocalDateTime localDateTime1 = localDateTime0.withDayOfWeek((-3077));
+    // Undeclared exception!
+    try {
+        localDateTime1.toDate();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value -3077 for dayOfWeek must be in the range [1,7]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test02424() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    localDateTime0.withMonthOfYear(255);
+    // Undeclared exception!
+    try {
+        localDateTime0.toDate();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 255 for monthOfYear must be in the range [1,12]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test02525() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.getYearOfCentury();
+    localDateTime0.toDate();
+}",""
+"public int compareTo(ReadablePartial partial) {
+    // override to perform faster
+    if (this == partial) {
+        return 0;
+    }
+    if (partial instanceof LocalDateTime) {
+        LocalDateTime other = (LocalDateTime) partial;
+        if (iChronology.equals(other.iChronology)) {
+            return (iLocalMillis < other.iLocalMillis ? -1 : (iLocalMillis == other.iLocalMillis ? 0 : 1));
+        }
+    }
+    return super.compareTo(partial);
+}","public void test02626() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    LocalDate localDate0 = LocalDate.now();
+    // Undeclared exception!
+    try {
+        localDateTime0.compareTo((ReadablePartial) localDate0);
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // ReadablePartial objects must have matching field types
+        //
+        verifyException(""org.joda.time.base.AbstractPartial"", e);
+    }
+}","/**
+ * Compares this partial with another returning an integer
+ * indicating the order.
+ * <p>
+ * The fields are compared in order, from largest to smallest.
+ * The first field that is non-equal is used to determine the result.
+ * <p>
+ * The specified object must be a partial instance whose field types
+ * match those of this partial.
+ *
+ * @param partial  an object to check against
+ * @return negative if this is less, zero if equal, positive if greater
+ * @throws ClassCastException if the partial is the wrong class
+ *  or if it has field types that don't match
+ * @throws NullPointerException if the partial is null
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test02727() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.getCenturyOfEra();
+    localDateTime0.toDate();
+}",""
+"public static DateTimeFieldType halfdayOfDay() {
+    return HALFDAY_OF_DAY_TYPE;
+}","public void test02828() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    localDateTime0.withDayOfMonth(736);
+    // Undeclared exception!
+    try {
+        DateTimeFieldType.halfdayOfDay();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 736 for dayOfMonth must be in the range [1,28]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}","/**
+ * Get the AM(0) PM(1) field type.
+ *
+ * @return the DateTimeFieldType constant
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test02929() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.withYear(569);
+    localDateTime0.toDate();
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test03030() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(0);
+    LocalDateTime localDateTime0 = LocalDateTime.now(dateTimeZone0);
+    LocalDateTime localDateTime1 = localDateTime0.minusHours(0);
+    localDateTime1.toDate();
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test03232() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.minusYears((-2147483598));
+    // Undeclared exception!
+    try {
+        localDateTime0.toDate();
+        fail(""Expecting exception: ArithmeticException"");
+    } catch (ArithmeticException e) {
+        //
+        // The calculation caused an overflow: 2014 + 2147483598
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test03333() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.year();
+    localDateTime0.withField(dateTimeFieldType0, (-1502));
+    localDateTime0.toDate();
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test03434() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.getMillisOfDay();
+    localDateTime0.toDate();
+}",""
+"public LocalDateTime plusMinutes(int minutes) {
+    if (minutes == 0) {
+        return this;
+    }
+    long instant = getChronology().minutes().add(getLocalMillis(), minutes);
+    return withLocalMillis(instant);
+}","public void test03535() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.plusMinutes(1217);
+}","/**
+ * Returns a copy of this datetime plus the specified number of minutes.
+ * <p>
+ * This LocalDateTime instance is immutable and unaffected by this method call.
+ * <p>
+ * The following three lines are identical in effect:
+ * <pre>
+ * LocalDateTime added = dt.plusMinutes(6);
+ * LocalDateTime added = dt.plus(Period.minutes(6));
+ * LocalDateTime added = dt.withFieldAdded(DurationFieldType.minutes(), 6);
+ * </pre>
+ *
+ * @param minutes  the amount of minutes to add, may be negative
+ * @return the new LocalDateTime plus the increased minutes
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Returns a copy of this datetime with the specified date,
+ * retaining the time fields.
+ * <p>
+ * If the date is already the date passed in, then <code>this</code> is returned.
+ * <p>
+ * To set a single field use the properties, for example:
+ * <pre>
+ * DateTime set = dt.monthOfYear().setCopy(6);
+ * </pre>
+ *
+ * @param year  the new year value
+ * @param monthOfYear  the new monthOfYear value
+ * @param dayOfMonth  the new dayOfMonth value
+ * @return a copy of this datetime with a different date
+ * @throws IllegalArgumentException if any value if invalid
+ */
+public LocalDateTime withDate(int year, int monthOfYear, int dayOfMonth) {
+    Chronology chrono = getChronology();
+    long instant = getLocalMillis();
+    instant = chrono.year().set(instant, year);
+    instant = chrono.monthOfYear().set(instant, monthOfYear);
+    instant = chrono.dayOfMonth().set(instant, dayOfMonth);
+    return withLocalMillis(instant);
+}","public void test03636() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.withDate((-90), (-90), (-90));
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test03737() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    localDateTime0.plusMillis(0);
+    localDateTime0.toDate();
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test03838() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.plusMonths(1480);
+    localDateTime0.toDate();
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the property object for the specified type, which contains many
+ * useful methods.
+ *
+ * @param fieldType  the field type to get the chronology for
+ * @return the property object
+ * @throws IllegalArgumentException if the field is null or unsupported
+ */
+public Property property(DateTimeFieldType fieldType) {
+    if (fieldType == null) {
+        throw new IllegalArgumentException(""The DateTimeFieldType must not be null"");
+    }
+    if (isSupported(fieldType) == false) {
+        throw new IllegalArgumentException(""Field '"" + fieldType + ""' is not supported"");
+    }
+    return new Property(this, fieldType.getField(getChronology()));
+}","public void test03939() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime(12, 12, 12, 5, 1);
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.weekyearOfCentury();
+    localDateTime0.property(dateTimeFieldType0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test04040() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime(1418L);
+    LocalDateTime localDateTime1 = localDateTime0.minusMillis(0);
+    localDateTime1.toDate();
+}",""
+"public LocalDateTime(Object instant, DateTimeZone zone) {
+    PartialConverter converter = ConverterManager.getInstance().getPartialConverter(instant);
+    Chronology chronology = converter.getChronology(instant, zone);
+    chronology = DateTimeUtils.getChronology(chronology);
+    iChronology = chronology.withUTC();
+    int[] values = converter.getPartialValues(this, instant, chronology, ISODateTimeFormat.localDateOptionalTimeParser());
+    iLocalMillis = iChronology.getDateTimeMillis(values[0], values[1], values[2], values[3]);
+}","public void test04141() throws Throwable {
+    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;
+    LocalDateTime localDateTime0 = null;
+    try {
+        localDateTime0 = new LocalDateTime(fixedDateTimeZone0, fixedDateTimeZone0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // No partial converter found for type: org.joda.time.tz.FixedDateTimeZone
+        //
+        verifyException(""org.joda.time.convert.ConverterManager"", e);
+    }
+}","/**
+ * Constructs an instance from an Object that represents a datetime,
+ * forcing the time zone to that specified.
+ * <p>
+ * If the object contains no chronology, <code>ISOChronology</code> is used.
+ * If the specified time zone is null, the default zone is used.
+ * Once the constructor is completed, the zone is no longer used.
+ * <p>
+ * The recognised object types are defined in
+ * {@link org.joda.time.convert.ConverterManager ConverterManager} and
+ * include ReadablePartial, ReadableInstant, String, Calendar and Date.
+ * The String formats are described by {@link ISODateTimeFormat#localDateOptionalTimeParser()}.
+ * The default String converter ignores the zone and only parses the field values.
+ *
+ * @param instant  the datetime object
+ * @param zone  the time zone
+ * @throws IllegalArgumentException if the instant is invalid
+ */"
+"public String toString(String pattern) {
+    if (pattern == null) {
+        return toString();
+    }
+    return DateTimeFormat.forPattern(pattern).print(this);
+}","public void test04343() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    LocalDateTime.Property localDateTime_Property0 = localDateTime0.yearOfCentury();
+    localDateTime_Property0.getLeapAmount();
+    Integer integer0 = new Integer(0);
+    localDateTime_Property0.addWrapFieldToCopy(0);
+    DateTimeFieldType.clockhourOfHalfday();
+    Integer integer1 = new Integer(0);
+    localDateTime0.toString(""org.joda.time.LocalDateTime$Property"");
+}","/**
+ * Output the date using the specified format pattern.
+ *
+ * @param pattern  the pattern specification, null means use <code>toString</code>
+ * @see org.joda.time.format.DateTimeFormat
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test04545() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.plus((ReadableDuration) null);
+    localDateTime0.toDate();
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test04646() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    localDateTime0.minus((ReadableDuration) null);
+    localDateTime0.toDate();
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test04747() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.withTime(23034375, 23034375, 23034375, 23034375);
+    // Undeclared exception!
+    try {
+        localDateTime0.toDate();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 23034375 for hourOfDay must be in the range [0,23]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test04848() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.getFieldType(883);
+    // Undeclared exception!
+    try {
+        localDateTime0.toDate();
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Invalid index: 883
+        //
+        verifyException(""org.joda.time.LocalDateTime"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Constructs an instance set to the current local time evaluated using
+ * ISO chronology in the default zone.
+ * <p>
+ * Once the constructor is completed, the zone is no longer used.
+ *
+ * @see #now()
+ */
+public LocalDateTime() {
+    this(DateTimeUtils.currentTimeMillis(), ISOChronology.getInstance());
+}","public void test04949() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.getDayOfYear();
+    LocalDateTime localDateTime1 = new LocalDateTime();
+}",""
+"public LocalDateTime minus(ReadablePeriod period) {
+    return withPeriodAdded(period, -1);
+}","public void test05050() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    MutablePeriod mutablePeriod0 = new MutablePeriod();
+    localDateTime0.minus((ReadablePeriod) mutablePeriod0);
+}","/**
+ * Returns a copy of this datetime with the specified period taken away.
+ * <p>
+ * If the amount is zero or null, then <code>this</code> is returned.
+ * <p>
+ * This method is typically used to subtract complex period instances.
+ * Subtracting one field is best achieved using methods
+ * like {@link #minusYears(int)}.
+ *
+ * @param period  the period to reduce this instant by
+ * @return a copy of this datetime with the period taken away
+ * @throws ArithmeticException if the result exceeds the internal capacity
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Returns a copy of this datetime with the hour of day field updated.
+ * <p>
+ * LocalDateTime is immutable, so there are no set methods.
+ * Instead, this method returns a new instance with the value of
+ * hour of day changed.
+ *
+ * @param hour  the hour of day to set
+ * @return a copy of this object with the field set
+ * @throws IllegalArgumentException if the value is invalid
+ */
+public LocalDateTime withHourOfDay(int hour) {
+    return withLocalMillis(getChronology().hourOfDay().set(getLocalMillis(), hour));
+}","public void test05151() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.withHourOfDay(1000);
+}",""
+"public Property dayOfWeek() {
+    return new Property(this, getChronology().dayOfWeek());
+}","public void test05252() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.dayOfWeek();
+}","/**
+ * Get the day of week property which provides access to advanced functionality.
+ *
+ * @return the day of week property
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test05353() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    Locale locale0 = Locale.CHINESE;
+    localDateTime0.toString(""|Er"", locale0);
+    // Undeclared exception!
+    try {
+        localDateTime0.toDate();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Illegal pattern component: r
+        //
+        verifyException(""org.joda.time.format.DateTimeFormat"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test05454() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    localDateTime0.plus((ReadablePeriod) null);
+    localDateTime0.toDate();
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test05555() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    Weeks weeks0 = Weeks.ONE;
+    Duration duration0 = weeks0.toStandardDuration();
+    localDateTime0.plus((ReadableDuration) duration0);
+    localDateTime0.toDate();
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Returns a copy of this datetime minus the specified number of hours.
+ * <p>
+ * This LocalDateTime instance is immutable and unaffected by this method call.
+ * <p>
+ * The following three lines are identical in effect:
+ * <pre>
+ * LocalDateTime subtracted = dt.minusHours(6);
+ * LocalDateTime subtracted = dt.minus(Period.hours(6));
+ * LocalDateTime subtracted = dt.withFieldAdded(DurationFieldType.hours(), -6);
+ * </pre>
+ *
+ * @param hours  the amount of hours to subtract, may be negative
+ * @return the new LocalDateTime minus the increased hours
+ */
+public LocalDateTime minusHours(int hours) {
+    if (hours == 0) {
+        return this;
+    }
+    long instant = getChronology().hours().subtract(getLocalMillis(), hours);
+    return withLocalMillis(instant);
+}","public void test05757() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    localDateTime0.minusHours(328);
+}",""
+"public Property millisOfSecond() {
+    return new Property(this, getChronology().millisOfSecond());
+}","public void test05858() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    localDateTime0.millisOfSecond();
+}","/**
+ * Get the millis of second property which provides access to advanced functionality.
+ *
+ * @return the millis of second property
+ */"
+"public int getWeekyear() {
+    return getChronology().weekyear().get(getLocalMillis());
+}","public void test05959() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.getWeekyear();
+}","/**
+ * Get the weekyear field value.
+ * <p>
+ * The weekyear is the year that matches with the weekOfWeekyear field.
+ * In the standard ISO8601 week algorithm, the first week of the year
+ * is that in which at least 4 days are in the year. As a result of this
+ * definition, day 1 of the first week may be in the previous year.
+ * The weekyear allows you to query the effective year for that day.
+ *
+ * @return the weekyear
+ */"
+"public LocalDateTime withYearOfEra(int yearOfEra) {
+    return withLocalMillis(getChronology().yearOfEra().set(getLocalMillis(), yearOfEra));
+}","public void test06060() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    localDateTime0.withYearOfEra(14);
+}","/**
+ * Returns a copy of this datetime with the year of era field updated.
+ * <p>
+ * LocalDateTime is immutable, so there are no set methods.
+ * Instead, this method returns a new instance with the value of
+ * year of era changed.
+ *
+ * @param yearOfEra  the year of era to set
+ * @return a copy of this object with the field set
+ * @throws IllegalArgumentException if the value is invalid
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test06161() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    localDateTime0.withEra(23118750);
+    // Undeclared exception!
+    try {
+        localDateTime0.toDate();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 23118750 for era must be in the range [0,1]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test06262() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.getValue(153);
+    // Undeclared exception!
+    try {
+        localDateTime0.toDate();
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Invalid index: 153
+        //
+        verifyException(""org.joda.time.LocalDateTime"", e);
+    }
+}",""
+"public Property weekyear() {
+    return new Property(this, getChronology().weekyear());
+}","public void test06363() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.weekyear();
+}","/**
+ * Get the weekyear property which provides access to advanced functionality.
+ *
+ * @return the weekyear property
+ */"
+"public LocalDateTime minusDays(int days) {
+    if (days == 0) {
+        return this;
+    }
+    long instant = getChronology().days().subtract(getLocalMillis(), days);
+    return withLocalMillis(instant);
+}","public void test06464() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    localDateTime0.minusDays((-198));
+}","/**
+ * Returns a copy of this datetime minus the specified number of days.
+ * <p>
+ * This LocalDateTime instance is immutable and unaffected by this method call.
+ * <p>
+ * The following three lines are identical in effect:
+ * <pre>
+ * LocalDateTime subtracted = dt.minusDays(6);
+ * LocalDateTime subtracted = dt.minus(Period.days(6));
+ * LocalDateTime subtracted = dt.withFieldAdded(DurationFieldType.days(), -6);
+ * </pre>
+ *
+ * @param days  the amount of days to subtract, may be negative
+ * @return the new LocalDateTime minus the increased days
+ */"
+"public LocalDateTime withMillisOfDay(int millis) {
+    return withLocalMillis(getChronology().millisOfDay().set(getLocalMillis(), millis));
+}","public void test06565() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.withMillisOfDay(1008);
+}","/**
+ * Returns a copy of this datetime with the millis of day field updated.
+ * <p>
+ * LocalDateTime is immutable, so there are no set methods.
+ * Instead, this method returns a new instance with the value of
+ * millis of day changed.
+ *
+ * @param millis  the millis of day to set
+ * @return a copy of this object with the field set
+ * @throws IllegalArgumentException if the value is invalid
+ */"
+"public LocalDateTime minusMonths(int months) {
+    if (months == 0) {
+        return this;
+    }
+    long instant = getChronology().months().subtract(getLocalMillis(), months);
+    return withLocalMillis(instant);
+}","public void test06666() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    localDateTime0.minusMonths((-2147451595));
+}","/**
+ * Returns a copy of this datetime minus the specified number of months.
+ * <p>
+ * This LocalDateTime instance is immutable and unaffected by this method call.
+ * <p>
+ * The following three lines are identical in effect:
+ * <pre>
+ * LocalDateTime subtracted = dt.minusMonths(6);
+ * LocalDateTime subtracted = dt.minus(Period.months(6));
+ * LocalDateTime subtracted = dt.withFieldAdded(DurationFieldType.months(), -6);
+ * </pre>
+ *
+ * @param months  the amount of months to subtract, may be negative
+ * @return the new LocalDateTime minus the increased months
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Returns a copy of this datetime plus the specified number of hours.
+ * <p>
+ * This LocalDateTime instance is immutable and unaffected by this method call.
+ * <p>
+ * The following three lines are identical in effect:
+ * <pre>
+ * LocalDateTime added = dt.plusHours(6);
+ * LocalDateTime added = dt.plus(Period.hours(6));
+ * LocalDateTime added = dt.withFieldAdded(DurationFieldType.hours(), 6);
+ * </pre>
+ *
+ * @param hours  the amount of hours to add, may be negative
+ * @return the new LocalDateTime plus the increased hours
+ */
+public LocalDateTime plusHours(int hours) {
+    if (hours == 0) {
+        return this;
+    }
+    long instant = getChronology().hours().add(getLocalMillis(), hours);
+    return withLocalMillis(instant);
+}","public void test06767() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.plusHours(40);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test06868() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    LocalDateTime localDateTime1 = localDateTime0.withWeekOfWeekyear(2390);
+    // Undeclared exception!
+    try {
+        localDateTime1.toDate();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 2390 for weekOfWeekyear must be in the range [1,52]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",""
+"public LocalDateTime withYearOfCentury(int yearOfCentury) {
+    return withLocalMillis(getChronology().yearOfCentury().set(getLocalMillis(), yearOfCentury));
+}","public void test06969() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.withYearOfCentury(1008);
+}","/**
+ * Returns a copy of this datetime with the year of century field updated.
+ * <p>
+ * LocalDateTime is immutable, so there are no set methods.
+ * Instead, this method returns a new instance with the value of
+ * year of century changed.
+ *
+ * @param yearOfCentury  the year of century to set
+ * @return a copy of this object with the field set
+ * @throws IllegalArgumentException if the value is invalid
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test07070() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.toDateTime();
+    localDateTime0.toDate();
+}",""
+"public Property dayOfYear() {
+    return new Property(this, getChronology().dayOfYear());
+}","public void test07171() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.dayOfYear();
+}","/**
+ * Get the day of year property which provides access to advanced functionality.
+ *
+ * @return the day of year property
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test07272() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.withCenturyOfEra(1217);
+    localDateTime0.toDate();
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Converts this object to a LocalDate with the same date and chronology.
+ *
+ * @return a LocalDate with the same date and chronology
+ */
+public LocalDate toLocalDate() {
+    return new LocalDate(getLocalMillis(), getChronology());
+}","public void test07474() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    localDateTime0.toLocalDate();
+}",""
+"public LocalDateTime withMinuteOfHour(int minute) {
+    return withLocalMillis(getChronology().minuteOfHour().set(getLocalMillis(), minute));
+}","public void test07575() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    localDateTime0.withMinuteOfHour((-665));
+}","/**
+ * Returns a copy of this datetime with the minute of hour field updated.
+ * <p>
+ * LocalDateTime is immutable, so there are no set methods.
+ * Instead, this method returns a new instance with the value of
+ * minute of hour changed.
+ *
+ * @param minute  the minute of hour to set
+ * @return a copy of this object with the field set
+ * @throws IllegalArgumentException if the value is invalid
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test07676() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    localDateTime0.era();
+    localDateTime0.toDate();
+}",""
+"public Property yearOfEra() {
+    return new Property(this, getChronology().yearOfEra());
+}","public void test07777() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.yearOfEra();
+}","/**
+ * Get the year of era property which provides access to advanced functionality.
+ *
+ * @return the year of era property
+ */"
+"public LocalDateTime minusMinutes(int minutes) {
+    if (minutes == 0) {
+        return this;
+    }
+    long instant = getChronology().minutes().subtract(getLocalMillis(), minutes);
+    return withLocalMillis(instant);
+}","public void test07878() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    localDateTime0.minusMinutes(23118750);
+}","/**
+ * Returns a copy of this datetime minus the specified number of minutes.
+ * <p>
+ * This LocalDateTime instance is immutable and unaffected by this method call.
+ * <p>
+ * The following three lines are identical in effect:
+ * <pre>
+ * LocalDateTime subtracted = dt.minusMinutes(6);
+ * LocalDateTime subtracted = dt.minus(Period.minutes(6));
+ * LocalDateTime subtracted = dt.withFieldAdded(DurationFieldType.minutes(), -6);
+ * </pre>
+ *
+ * @param minutes  the amount of minutes to subtract, may be negative
+ * @return the new LocalDateTime minus the increased minutes
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test07979() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.toLocalTime();
+    localDateTime0.toDate();
+}",""
+"public int getLeapAmount() {
+    return getField().getLeapAmount(getMillis());
+}","public void test08080() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.hourOfDay();
+    localDateTime0.toDate();
+    LocalDateTime.Property localDateTime_Property0 = localDateTime0.year();
+    localDateTime_Property0.setCopy(""{gmi"");
+    // Undeclared exception!
+    try {
+        localDateTime_Property0.getLeapAmount();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value \""{gmi\"" for year is not supported
+        //
+        verifyException(""org.joda.time.field.BaseDateTimeField"", e);
+    }
+}","/**
+ * Gets the amount by which this field is leap.
+ *
+ * @return the amount by which the field is leap
+ * @see DateTimeField#getLeapAmount
+ */"
+"public LocalDateTime plusSeconds(int seconds) {
+    if (seconds == 0) {
+        return this;
+    }
+    long instant = getChronology().seconds().add(getLocalMillis(), seconds);
+    return withLocalMillis(instant);
+}","public void test08181() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    localDateTime0.plusSeconds((-4));
+}","/**
+ * Returns a copy of this datetime plus the specified number of seconds.
+ * <p>
+ * This LocalDateTime instance is immutable and unaffected by this method call.
+ * <p>
+ * The following three lines are identical in effect:
+ * <pre>
+ * LocalDateTime added = dt.plusSeconds(6);
+ * LocalDateTime added = dt.plus(Period.seconds(6));
+ * LocalDateTime added = dt.withFieldAdded(DurationFieldType.seconds(), 6);
+ * </pre>
+ *
+ * @param seconds  the amount of seconds to add, may be negative
+ * @return the new LocalDateTime plus the increased seconds
+ */"
+"public int getYearOfEra() {
+    return getChronology().yearOfEra().get(getLocalMillis());
+}","public void test08282() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    localDateTime0.getYearOfEra();
+}","/**
+ * Get the year of era field value.
+ *
+ * @return the year of era
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test08383() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.minusMillis((-376));
+    localDateTime0.toDate();
+}",""
+"public int getDayOfWeek() {
+    return getChronology().dayOfWeek().get(getLocalMillis());
+}","public void test08484() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.getDayOfWeek();
+}","/**
+ * Get the day of week field value.
+ * <p>
+ * The values for the day of week are defined in {@link org.joda.time.DateTimeConstants}.
+ *
+ * @return the day of week
+ */"
+"public Property millisOfDay() {
+    return new Property(this, getChronology().millisOfDay());
+}","public void test08585() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    localDateTime0.millisOfDay();
+}","/**
+ * Get the millis of day property which provides access to advanced functionality.
+ *
+ * @return the millis of day property
+ */"
+"public static LocalDateTime now(DateTimeZone zone) {
+    if (zone == null) {
+        throw new NullPointerException(""Zone must not be null"");
+    }
+    return new LocalDateTime(zone);
+}","public void test08686() throws Throwable {
+    LocalDateTime.now((DateTimeZone) null);
+}","/**
+ * Obtains a {@code LocalDateTime} set to the current system millisecond time
+ * using <code>ISOChronology</code> in the specified time zone.
+ * The resulting object does not use the zone.
+ *
+ * @param zone  the time zone, not null
+ * @return the current date, not null
+ * @since 2.0
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test08787() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.minusYears(0);
+    localDateTime0.toDate();
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test08888() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.minusWeeks(103);
+    localDateTime0.toDate();
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test08989() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    LocalDateTime localDateTime1 = localDateTime0.withWeekyear((-1921));
+    localDateTime1.toDate();
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Output the date time in ISO8601 format (yyyy-MM-ddTHH:mm:ss.SSS).
+ *
+ * @return ISO8601 time formatted string.
+ */
+@ToString
+public String toString() {
+    return ISODateTimeFormat.dateTime().print(this);
+}","public void test09090() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.toString();
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test09191() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstance();
+    LocalDateTime localDateTime0 = LocalDateTime.now((Chronology) gJChronology0);
+    localDateTime0.toDate();
+}",""
+"public Property dayOfMonth() {
+    return new Property(this, getChronology().dayOfMonth());
+}","public void test09292() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.dayOfMonth();
+}","/**
+ * Get the day of month property which provides access to advanced functionality.
+ *
+ * @return the day of month property
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Returns a copy of this datetime plus the specified number of hours.
+ * <p>
+ * This LocalDateTime instance is immutable and unaffected by this method call.
+ * <p>
+ * The following three lines are identical in effect:
+ * <pre>
+ * LocalDateTime added = dt.plusHours(6);
+ * LocalDateTime added = dt.plus(Period.hours(6));
+ * LocalDateTime added = dt.withFieldAdded(DurationFieldType.hours(), 6);
+ * </pre>
+ *
+ * @param hours  the amount of hours to add, may be negative
+ * @return the new LocalDateTime plus the increased hours
+ */
+public LocalDateTime plusHours(int hours) {
+    if (hours == 0) {
+        return this;
+    }
+    long instant = getChronology().hours().add(getLocalMillis(), hours);
+    return withLocalMillis(instant);
+}","public void test09393() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.toLocalDate();
+    localDateTime0.plusHours(0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test09494() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    LocalDateTime localDateTime1 = localDateTime0.plusSeconds(0);
+    localDateTime1.toDate();
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test09595() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.fromCalendarFields((Calendar) null);
+    // Undeclared exception!
+    try {
+        localDateTime0.toDate();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The calendar must not be null
+        //
+        verifyException(""org.joda.time.LocalDateTime"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test09696() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    Locale locale0 = Locale.UK;
+    localDateTime0.toString((String) null, locale0);
+    localDateTime0.toDate();
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test09797() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    localDateTime0.plusYears(0);
+    localDateTime0.toDate();
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the property object for the specified type, which contains many
+ * useful methods.
+ *
+ * @param fieldType  the field type to get the chronology for
+ * @return the property object
+ * @throws IllegalArgumentException if the field is null or unsupported
+ */
+public Property property(DateTimeFieldType fieldType) {
+    if (fieldType == null) {
+        throw new IllegalArgumentException(""The DateTimeFieldType must not be null"");
+    }
+    if (isSupported(fieldType) == false) {
+        throw new IllegalArgumentException(""Field '"" + fieldType + ""' is not supported"");
+    }
+    return new Property(this, fieldType.getField(getChronology()));
+}","public void test09898() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.property((DateTimeFieldType) null);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test09999() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.hourOfDay();
+    localDateTime0.toDate();
+    LocalDateTime.Property localDateTime_Property0 = localDateTime0.year();
+    localDateTime_Property0.roundFloorCopy();
+    LocalDateTime localDateTime1 = localDateTime_Property0.roundCeilingCopy();
+    localDateTime0.withFields(localDateTime1);
+    localDateTime0.toDate();
+}",""
+"public String toString(String pattern) {
+    if (pattern == null) {
+        return toString();
+    }
+    return DateTimeFormat.forPattern(pattern).print(this);
+}","public void test100100() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    localDateTime0.toString(""Field must not be null"");
+}","/**
+ * Output the date using the specified format pattern.
+ *
+ * @param pattern  the pattern specification, null means use <code>toString</code>
+ * @see org.joda.time.format.DateTimeFormat
+ */"
+"public Property monthOfYear() {
+    return new Property(this, getChronology().monthOfYear());
+}","public void test101101() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    localDateTime0.monthOfYear();
+}","/**
+ * Get the month of year property which provides access to advanced functionality.
+ *
+ * @return the month of year property
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test103103() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.plusWeeks(112);
+    localDateTime0.toDate();
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the property object for the specified type, which contains many
+ * useful methods.
+ *
+ * @param fieldType  the field type to get the chronology for
+ * @return the property object
+ * @throws IllegalArgumentException if the field is null or unsupported
+ */
+public Property property(DateTimeFieldType fieldType) {
+    if (fieldType == null) {
+        throw new IllegalArgumentException(""The DateTimeFieldType must not be null"");
+    }
+    if (isSupported(fieldType) == false) {
+        throw new IllegalArgumentException(""Field '"" + fieldType + ""' is not supported"");
+    }
+    return new Property(this, fieldType.getField(getChronology()));
+}","public void test104104() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.weekOfWeekyear();
+    localDateTime0.property(dateTimeFieldType0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Constructs an instance set to the local time defined by the specified
+ * instant evaluated using ISO chronology in the default zone.
+ * <p>
+ * Once the constructor is completed, the zone is no longer used.
+ *
+ * @param instant  the milliseconds from 1970-01-01T00:00:00Z
+ */
+public LocalDateTime(long instant) {
+    this(instant, ISOChronology.getInstance());
+}","public void test105105() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime(1991562380481320L);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Gets the property object for the specified type, which contains many
+ * useful methods.
+ *
+ * @param fieldType  the field type to get the chronology for
+ * @return the property object
+ * @throws IllegalArgumentException if the field is null or unsupported
+ */
+public Property property(DateTimeFieldType fieldType) {
+    if (fieldType == null) {
+        throw new IllegalArgumentException(""The DateTimeFieldType must not be null"");
+    }
+    if (isSupported(fieldType) == false) {
+        throw new IllegalArgumentException(""Field '"" + fieldType + ""' is not supported"");
+    }
+    return new Property(this, fieldType.getField(getChronology()));
+}","public void test106106() throws Throwable {
+    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHours(0);
+    LocalDateTime localDateTime0 = LocalDateTime.now(dateTimeZone0);
+    localDateTime0.toDate();
+    localDateTime0.dayOfWeek();
+    DateTimeFieldType dateTimeFieldType0 = DateTimeFieldType.weekyear();
+    ISOChronology iSOChronology0 = ISOChronology.getInstance(dateTimeZone0);
+    Period period0 = new Period(1L, 1L, iSOChronology0);
+    Period period1 = period0.plusMillis(0);
+    Period period2 = period1.withMonths(0);
+    LocalDateTime localDateTime1 = localDateTime0.withPeriodAdded(period2, 0);
+    localDateTime1.property(dateTimeFieldType0);
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test107107() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    localDateTime0.withDayOfYear(23118774);
+    // Undeclared exception!
+    try {
+        localDateTime0.toDate();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Value 23118774 for dayOfYear must be in the range [1,365]
+        //
+        verifyException(""org.joda.time.field.FieldUtils"", e);
+    }
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test108108() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    LocalDateTime localDateTime1 = localDateTime0.withField((DateTimeFieldType) null, 12);
+    localDateTime1.toDate();
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test111111() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    LocalDateTime localDateTime1 = localDateTime0.minusMonths(0);
+    localDateTime0.isAfter(localDateTime1);
+    localDateTime0.toDate();
+}",""
+"public boolean isSupported(DurationFieldType type) {
+    if (type == null) {
+        return false;
+    }
+    return type.getField(getChronology()).isSupported();
+}","public void test112112() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    DurationFieldType durationFieldType0 = DurationFieldType.WEEKS_TYPE;
+    localDateTime0.isSupported(durationFieldType0);
+}","/**
+ * Checks if the duration type specified is supported by this
+ * local datetime and chronology.
+ *
+ * @param type  a duration type, usually obtained from DurationFieldType
+ * @return true if the field type is supported
+ */"
+"public Property minuteOfHour() {
+    return new Property(this, getChronology().minuteOfHour());
+}","public void test113113() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.minuteOfHour();
+}","/**
+ * Get the minute of hour field property which provides access to advanced functionality.
+ *
+ * @return the minute of hour property
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test114114() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    LocalDateTime.Property localDateTime_Property0 = localDateTime0.centuryOfEra();
+    Chronology chronology0 = localDateTime_Property0.getChronology();
+    LocalDateTime.now(chronology0);
+    localDateTime0.toDate();
+}",""
+"public int getMillisOfDay() {
+    return getChronology().millisOfDay().get(getLocalMillis());
+}","public void test115115() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.get((DateTimeFieldType) null);
+    // Undeclared exception!
+    try {
+        localDateTime0.getMillisOfDay();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The DateTimeFieldType must not be null
+        //
+        verifyException(""org.joda.time.LocalDateTime"", e);
+    }
+}","/**
+ * Get the millis of day field value.
+ *
+ * @return the millis of day
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test116116() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.getWeekOfWeekyear();
+    localDateTime0.toDate();
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test117117() throws Throwable {
+    GJChronology gJChronology0 = GJChronology.getInstanceUTC();
+    LocalDateTime localDateTime0 = new LocalDateTime((-29400194L), (Chronology) gJChronology0);
+    LocalDateTime localDateTime1 = localDateTime0.minusSeconds(0);
+    LocalDateTime localDateTime2 = localDateTime1.withWeekOfWeekyear(0);
+    localDateTime2.toDate();
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test118118() throws Throwable {
+    DateTimeFieldType.weekyear();
+    LocalDateTime localDateTime0 = new LocalDateTime((long) 0);
+    LocalDateTime localDateTime1 = localDateTime0.plusWeeks(0);
+    LocalDateTime.parse(""(%/GZG;C)v|9BXR7z"");
+    localDateTime1.toDate();
+}",""
+"public Property dayOfWeek() {
+    return new Property(this, getChronology().dayOfWeek());
+}","public void test119119() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.minusWeeks(0);
+    localDateTime0.dayOfWeek();
+}","/**
+ * Get the day of week property which provides access to advanced functionality.
+ *
+ * @return the day of week property
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Get the era field value.
+ *
+ * @return the era
+ */
+public int getEra() {
+    return getChronology().era().get(getLocalMillis());
+}","public void test120120() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.getEra();
+}",""
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test121121() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    localDateTime0.plusDays(0);
+    MockDate mockDate0 = new MockDate();
+    localDateTime0.toDate();
+}",""
+"@SuppressWarnings(""deprecation"")
+public static LocalDateTime fromDateFields(Date date) {
+    if (date == null) {
+        throw new IllegalArgumentException(""The date must not be null"");
+    }
+    // handle years in era BC
+    return new LocalDateTime(date.getYear() + 1900, date.getMonth() + 1, date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds(), (((int) (date.getTime() % 1000)) + 1000) % 1000);
+}","public void test122122() throws Throwable {
+    LocalDateTime.fromDateFields((Date) null);
+}","/**
+ * Constructs a LocalDateTime from a <code>java.util.Date</code>
+ * using exactly the same field values.
+ * <p>
+ * Each field is queried from the Date and assigned to the LocalDateTime.
+ * This is useful if you have been using the Date as a local date,
+ * ignoring the zone.
+ * <p>
+ * One advantage of this method is that this method is unaffected if the
+ * version of the time zone data differs between the JDK and Joda-Time.
+ * That is because the local field values are transferred, calculated using
+ * the JDK time zone data and without using the Joda-Time time zone data.
+ * <p>
+ * This factory method always creates a LocalDateTime with ISO chronology.
+ *
+ * @param date  the Date to extract fields from, not null
+ * @return the created local date-time, not null
+ * @throws IllegalArgumentException if the calendar is null
+ * @throws IllegalArgumentException if the date is invalid for the ISO chronology
+ */"
+"public static LocalDateTime now(Chronology chronology) {
+    if (chronology == null) {
+        throw new NullPointerException(""Chronology must not be null"");
+    }
+    return new LocalDateTime(chronology);
+}","public void test123123() throws Throwable {
+    LocalDateTime.now((Chronology) null);
+}","/**
+ * Obtains a {@code LocalDateTime} set to the current system millisecond time
+ * using the specified chronology.
+ * The resulting object does not use the zone.
+ *
+ * @param chronology  the chronology, not null
+ * @return the current date, not null
+ * @since 2.0
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test124124() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.isSupported((DurationFieldType) null);
+    localDateTime0.toDate();
+}",""
+"public String toString(String pattern) {
+    if (pattern == null) {
+        return toString();
+    }
+    return DateTimeFormat.forPattern(pattern).print(this);
+}","public void test125125() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.toString((String) null);
+}","/**
+ * Output the date using the specified format pattern.
+ *
+ * @param pattern  the pattern specification, null means use <code>toString</code>
+ * @see org.joda.time.format.DateTimeFormat
+ */"
+"public int compareTo(ReadablePartial partial) {
+    // override to perform faster
+    if (this == partial) {
+        return 0;
+    }
+    if (partial instanceof LocalDateTime) {
+        LocalDateTime other = (LocalDateTime) partial;
+        if (iChronology.equals(other.iChronology)) {
+            return (iLocalMillis < other.iLocalMillis ? -1 : (iLocalMillis == other.iLocalMillis ? 0 : 1));
+        }
+    }
+    return super.compareTo(partial);
+}","public void test127127() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.monthOfYear();
+    localDateTime0.compareTo((ReadablePartial) localDateTime0);
+}","/**
+ * Compares this partial with another returning an integer
+ * indicating the order.
+ * <p>
+ * The fields are compared in order, from largest to smallest.
+ * The first field that is non-equal is used to determine the result.
+ * <p>
+ * The specified object must be a partial instance whose field types
+ * match those of this partial.
+ *
+ * @param partial  an object to check against
+ * @return negative if this is less, zero if equal, positive if greater
+ * @throws ClassCastException if the partial is the wrong class
+ *  or if it has field types that don't match
+ * @throws NullPointerException if the partial is null
+ */"
+"public int compareTo(ReadablePartial partial) {
+    // override to perform faster
+    if (this == partial) {
+        return 0;
+    }
+    if (partial instanceof LocalDateTime) {
+        LocalDateTime other = (LocalDateTime) partial;
+        if (iChronology.equals(other.iChronology)) {
+            return (iLocalMillis < other.iLocalMillis ? -1 : (iLocalMillis == other.iLocalMillis ? 0 : 1));
+        }
+    }
+    return super.compareTo(partial);
+}","public void test128128() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    LocalDateTime localDateTime1 = localDateTime0.plusMillis(1385);
+    localDateTime0.compareTo((ReadablePartial) localDateTime1);
+}","/**
+ * Compares this partial with another returning an integer
+ * indicating the order.
+ * <p>
+ * The fields are compared in order, from largest to smallest.
+ * The first field that is non-equal is used to determine the result.
+ * <p>
+ * The specified object must be a partial instance whose field types
+ * match those of this partial.
+ *
+ * @param partial  an object to check against
+ * @return negative if this is less, zero if equal, positive if greater
+ * @throws ClassCastException if the partial is the wrong class
+ *  or if it has field types that don't match
+ * @throws NullPointerException if the partial is null
+ */"
+"//-----------------------------------------------------------------------
+/**
+ * Get the date time as a <code>java.util.Date</code>.
+ * <p>
+ * The <code>Date</code> object created has exactly the same fields as this
+ * date-time, except when the time would be invalid due to a daylight savings
+ * gap. In that case, the time will be set to the earliest valid time after the gap.
+ * <p>
+ * In the case of a daylight savings overlap, the earlier instant is selected.
+ * <p>
+ * Converting to a JDK Date is full of complications as the JDK Date constructor
+ * doesn't behave as you might expect around DST transitions. This method works
+ * by taking a first guess and then adjusting. This also handles the situation
+ * where the JDK time zone data differs from the Joda-Time time zone data.
+ *
+ * @return a Date initialised with this date-time, never null
+ * @since 2.0
+ */
+@SuppressWarnings(""deprecation"")
+public Date toDate() {
+    int dom = getDayOfMonth();
+    Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom, getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+    date.setTime(date.getTime() + getMillisOfSecond());
+    LocalDateTime check = LocalDateTime.fromDateFields(date);
+    if (check.isBefore(this)) {
+        // DST gap
+        // move forward in units of one minute until equal/after
+        while (check.isBefore(this)) {
+            date.setTime(date.getTime() + 60000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        // move back in units of one second until date wrong
+        while (check.isBefore(this) == false) {
+            date.setTime(date.getTime() - 1000);
+            check = LocalDateTime.fromDateFields(date);
+        }
+        date.setTime(date.getTime() + 1000);
+    } else if (check.equals(this)) {
+        // check for DST overlap
+        Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+        check = LocalDateTime.fromDateFields(earlier);
+        if (check.equals(this)) {
+            date = earlier;
+        }
+    }
+    return date;
+}","public void test129129() throws Throwable {
+    LocalDateTime localDateTime0 = new LocalDateTime();
+    localDateTime0.withFields((ReadablePartial) null);
+    localDateTime0.toDate();
+}",""
+"public boolean isSupported(DateTimeFieldType type) {
+    if (type == null) {
+        return false;
+    }
+    return type.getField(getChronology()).isSupported();
+}","public void test130130() throws Throwable {
+    LocalDateTime localDateTime0 = LocalDateTime.now();
+    localDateTime0.isSupported((DateTimeFieldType) null);
+}","/**
+ * Checks if the field type specified is supported by this
+ * local datetime and chronology.
+ * This can be used to avoid exceptions in {@link #get(DateTimeFieldType)}.
+ *
+ * @param type  a field type, usually obtained from DateTimeFieldType
+ * @return true if the field type is supported
+ */"

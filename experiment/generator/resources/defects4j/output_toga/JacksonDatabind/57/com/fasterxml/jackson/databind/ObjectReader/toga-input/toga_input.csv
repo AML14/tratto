@@ -1,0 +1,1268 @@
+focal_method,test_prefix,docstring
+"public ContextAttributes getAttributes() {
+    return _config.getAttributes();
+}","public void test000() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper((JsonFactory) null);
+    JsonNodeFactory jsonNodeFactory0 = new JsonNodeFactory(false);
+    ObjectReader objectReader0 = objectMapper0.reader(jsonNodeFactory0);
+    objectReader0.getAttributes();
+}","/**
+ * @since 2.3
+ */"
+"/*
+    /**********************************************************
+    /* Helper methods, data-binding
+    /**********************************************************
+     */
+/**
+ * Actual implementation of value reading+binding operation.
+ */
+protected Object _bind(JsonParser p, Object valueToUpdate) throws IOException {
+    /* First: may need to read the next token, to initialize state (either
+         * before first read from parser, or after previous token has been cleared)
+         */
+    Object result;
+    JsonToken t = _initForReading(p);
+    if (t == JsonToken.VALUE_NULL) {
+        if (valueToUpdate == null) {
+            DeserializationContext ctxt = createDeserializationContext(p);
+            result = _findRootDeserializer(ctxt).getNullValue(ctxt);
+        } else {
+            result = valueToUpdate;
+        }
+    } else if (t == JsonToken.END_ARRAY || t == JsonToken.END_OBJECT) {
+        result = valueToUpdate;
+    } else {
+        // pointing to event other than null
+        DeserializationContext ctxt = createDeserializationContext(p);
+        JsonDeserializer<Object> deser = _findRootDeserializer(ctxt);
+        if (_unwrapRoot) {
+            result = _unwrapAndDeserialize(p, ctxt, _valueType, deser);
+        } else {
+            if (valueToUpdate == null) {
+                result = deser.deserialize(p, ctxt);
+            } else {
+                deser.deserialize(p, ctxt, valueToUpdate);
+                result = valueToUpdate;
+            }
+        }
+    }
+    // Need to consume the token too
+    p.clearCurrentToken();
+    return result;
+}","public void test022() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<NullNode> class0 = NullNode.class;
+    ObjectReader objectReader0 = objectMapper0.readerFor(class0);
+    MissingNode.getInstance();
+    objectReader0._bind((JsonParser) null, objectMapper0);
+}",""
+"public <T> MappingIterator<T> readValues(File src) throws IOException, JsonProcessingException {
+    if (_dataFormatReaders != null) {
+        return _detectBindAndReadValues(_dataFormatReaders.findFormat(_inputStream(src)), false);
+    }
+    return _bindAndReadValues(_considerFilter(_parserFactory.createParser(src), true));
+}","public void test033() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    MockFile mockFile0 = new MockFile("" 8 2M|3[M4@{f"");
+    mockFile0.createNewFile();
+    objectReader0.readValues((File) mockFile0);
+}","/**
+ * Overloaded version of {@link #readValue(InputStream)}.
+ */"
+"public ObjectReader reader(DeserializationFeature feature) {
+    return _newReader(getDeserializationConfig().with(feature));
+}","public void test055() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    JsonFactory jsonFactory0 = new JsonFactory(objectMapper0);
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.USE_LONG_FOR_INTS;
+    objectReader0.without(deserializationFeature0);
+    DeserializationFeature deserializationFeature1 = DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS;
+    objectMapper0.reader(deserializationFeature1);
+}","/**
+ * Factory method for constructing {@link ObjectReader} with
+ * specified feature enabled (compared to settings that this
+ * mapper instance has).
+ * Note that the resulting instance is NOT usable as is,
+ * without defining expected value type.
+ */"
+"/*
+    /**********************************************************
+    /* Deserialization methods; reading sequence of values
+    /**********************************************************
+     */
+/**
+ *  Method for reading sequence of Objects from parser stream.
+ * <p>
+ *  Sequence can be either root-level ""unwrapped"" sequence (without surrounding
+ *  JSON array), or a sequence contained in a JSON Array.
+ *  In either case {@link JsonParser} must point to the first token of
+ *  the first element, OR not point to any token (in which case it is advanced
+ *  to the next token). This means, specifically, that for wrapped sequences,
+ *  parser MUST NOT point to the surrounding <code>START_ARRAY</code> but rather
+ *  to the token following it.
+ */
+public <T> MappingIterator<T> readValues(JsonParser p) throws IOException, JsonProcessingException {
+    DeserializationContext ctxt = createDeserializationContext(p);
+    // false -> do not close as caller gave parser instance
+    return _newIterator(p, ctxt, _findRootDeserializer(ctxt), false);
+}","public void test066() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT;
+    ObjectReader objectReader0 = objectMapper0.reader(deserializationFeature0);
+    Vector<ObjectReader> vector0 = new Vector<ObjectReader>();
+    DataFormatReaders dataFormatReaders0 = new DataFormatReaders(vector0);
+    ObjectReader[] objectReaderArray0 = new ObjectReader[3];
+    objectReaderArray0[0] = objectReader0;
+    objectReaderArray0[1] = objectReader0;
+    objectReaderArray0[2] = objectReader0;
+    DataFormatReaders dataFormatReaders1 = dataFormatReaders0.with(objectReaderArray0);
+    dataFormatReaders1.withMaxInputLookahead((-1094));
+    byte[] byteArray0 = new byte[4];
+    DataFormatReaders.Match dataFormatReaders_Match0 = dataFormatReaders1.findFormat(byteArray0, 1, 0);
+    dataFormatReaders_Match0.createParserWithMatch();
+    objectReader0.readValues((JsonParser) null);
+}",""
+"@SuppressWarnings(""resource"")
+public <T> MappingIterator<T> readValues(String json) throws IOException, JsonProcessingException {
+    if (_dataFormatReaders != null) {
+        _reportUndetectableSource(json);
+    }
+    JsonParser p = _considerFilter(_parserFactory.createParser(json), true);
+    _initForMultiRead(p);
+    p.nextToken();
+    DeserializationContext ctxt = createDeserializationContext(p);
+    return _newIterator(p, ctxt, _findRootDeserializer(ctxt), true);
+}","public void test088() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper((JsonFactory) null);
+    JsonNodeFactory jsonNodeFactory0 = new JsonNodeFactory(false);
+    ObjectReader objectReader0 = objectMapper0.reader(jsonNodeFactory0);
+    objectReader0.readValues((String) null);
+}","/**
+ * Overloaded version of {@link #readValue(InputStream)}.
+ *
+ * @param json String that contains JSON content to parse
+ */"
+"public <T> MappingIterator<T> readValues(URL src) throws IOException, JsonProcessingException {
+    if (_dataFormatReaders != null) {
+        return _detectBindAndReadValues(_dataFormatReaders.findFormat(_inputStream(src)), true);
+    }
+    return _bindAndReadValues(_considerFilter(_parserFactory.createParser(src), true));
+}","public void test099() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectMapper objectMapper1 = new ObjectMapper(objectMapper0);
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL;
+    ObjectReader objectReader0 = objectMapper1.reader(deserializationFeature0);
+    URL uRL0 = MockURL.getFtpExample();
+    // Undeclared exception!
+    try {
+        objectReader0.readValues(uRL0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.net.URL"", e);
+    }
+}","/**
+ * Overloaded version of {@link #readValue(InputStream)}.
+ *
+ * @param src URL to read to access JSON content to parse.
+ */"
+"@SuppressWarnings(""unchecked"")
+public <T> T readValue(File src) throws IOException, JsonProcessingException {
+    if (_dataFormatReaders != null) {
+        return (T) _detectBindAndClose(_dataFormatReaders.findFormat(_inputStream(src)), true);
+    }
+    return (T) _bindAndClose(_considerFilter(_parserFactory.createParser(src), false));
+}","public void test1010() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    MockFile mockFile0 = new MockFile(""No 'injectableValues' configured, can not inject value with id ["");
+    mockFile0.createNewFile();
+    objectMapper0.reader();
+    objectReader0.readValue((File) mockFile0);
+}",""
+"@SuppressWarnings(""resource"")
+public <T> MappingIterator<T> readValues(String json) throws IOException, JsonProcessingException {
+    if (_dataFormatReaders != null) {
+        _reportUndetectableSource(json);
+    }
+    JsonParser p = _considerFilter(_parserFactory.createParser(json), true);
+    _initForMultiRead(p);
+    p.nextToken();
+    DeserializationContext ctxt = createDeserializationContext(p);
+    return _newIterator(p, ctxt, _findRootDeserializer(ctxt), true);
+}","public void test1111() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper((JsonFactory) null);
+    JsonNodeFactory jsonNodeFactory0 = new JsonNodeFactory(true);
+    ObjectReader objectReader0 = objectMapper0.reader();
+    objectReader0.withType((TypeReference<?>) null);
+    String string0 = null;
+    objectReader0.readValues(string0);
+}","/**
+ * Overloaded version of {@link #readValue(InputStream)}.
+ *
+ * @param json String that contains JSON content to parse
+ */"
+"public ObjectReader with(Locale l) {
+    return _with(_config.with(l));
+}","public void test1212() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    ObjectReader objectReader0 = objectMapper0.readerForUpdating(jsonFactory0);
+    TokenFilter tokenFilter0 = TokenFilter.INCLUDE_ALL;
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.USE_BIG_INTEGER_FOR_INTS;
+    ObjectReader objectReader1 = objectMapper0.reader(deserializationFeature0);
+    objectReader1.with((Locale) null);
+    objectReader0.with((Locale) null);
+}",""
+"public ObjectReader withAttribute(Object key, Object value) {
+    return _with(_config.withAttribute(key, value));
+}","public void test1313() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    ObjectReader objectReader0 = objectMapper0.readerForUpdating(jsonFactory0);
+    TokenFilter tokenFilter0 = TokenFilter.INCLUDE_ALL;
+    TokenFilter tokenFilter1 = tokenFilter0.filterStartObject();
+    tokenFilter1.filterStartArray();
+    ArrayList<ObjectReader> arrayList0 = new ArrayList<ObjectReader>();
+    objectReader0.getAttributes();
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    JsonNodeFactory jsonNodeFactory0 = JsonNodeFactory.withExactBigDecimals(true);
+    BooleanNode booleanNode0 = jsonNodeFactory0.booleanNode(true);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, booleanNode0, true);
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT;
+    DeserializationFeature deserializationFeature1 = DeserializationFeature.EAGER_DESERIALIZER_FETCH;
+    DeserializationFeature[] deserializationFeatureArray0 = new DeserializationFeature[3];
+    deserializationFeatureArray0[0] = deserializationFeature1;
+    deserializationFeatureArray0[1] = deserializationFeature0;
+    deserializationFeatureArray0[2] = deserializationFeature1;
+    ObjectReader objectReader1 = objectReader0.withoutFeatures(deserializationFeatureArray0);
+    TypeFactory typeFactory0 = objectReader1.getTypeFactory();
+    Class<ArrayList> class0 = ArrayList.class;
+    CollectionType collectionType0 = typeFactory0.constructCollectionType(class0, class0);
+    ObjectNode objectNode0 = jsonNodeFactory0.objectNode();
+    CollectionType collectionType1 = collectionType0.withValueHandler(objectNode0);
+    objectReader1.withAttribute(collectionType1, tokenFilter0);
+}","/**
+ * @since 2.3
+ */"
+"/*
+    /**********************************************************
+    /* Life-cycle, fluent factory methods for FormatFeature (2.7)
+    /**********************************************************
+     */
+/**
+ * Method for constructing a new reader instance that is configured
+ * with specified feature enabled.
+ *
+ * @since 2.7
+ */
+public ObjectReader with(FormatFeature feature) {
+    return _with(_config.with(feature));
+}","public void test1414() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectMapper objectMapper1 = new ObjectMapper(objectMapper0);
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL;
+    DeserializationFeature[] deserializationFeatureArray0 = new DeserializationFeature[7];
+    deserializationFeatureArray0[0] = deserializationFeature0;
+    deserializationFeatureArray0[1] = deserializationFeature0;
+    deserializationFeatureArray0[2] = deserializationFeature0;
+    deserializationFeatureArray0[3] = deserializationFeature0;
+    deserializationFeatureArray0[4] = deserializationFeature0;
+    deserializationFeatureArray0[5] = deserializationFeature0;
+    deserializationFeatureArray0[6] = deserializationFeature0;
+    ObjectReader objectReader0 = objectMapper1.reader(deserializationFeature0, deserializationFeatureArray0);
+    objectReader0.with((FormatSchema) null);
+    objectReader0.with(deserializationFeature0);
+    FormatFeature formatFeature0 = mock(FormatFeature.class, new ViolatedAssumptionAnswer());
+    doReturn(0, 0).when(formatFeature0).getMask();
+    objectReader0.with(formatFeature0);
+}",""
+"public ObjectReader with(ContextAttributes attrs) {
+    return _with(_config.with(attrs));
+}","public void test1515() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper((JsonFactory) null);
+    JsonNodeFactory jsonNodeFactory0 = new JsonNodeFactory(false);
+    ObjectReader objectReader0 = objectMapper0.reader();
+    ContextAttributes contextAttributes0 = objectReader0.getAttributes();
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    DoubleNode doubleNode0 = DoubleNode.valueOf(2);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, doubleNode0, false);
+    PipedWriter pipedWriter0 = new PipedWriter();
+    PipedReader pipedReader0 = new PipedReader(pipedWriter0, 1);
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2, pipedReader0, objectReader0, charsToNameCanonicalizer0);
+    readerBasedJsonParser0.getSchema();
+    ObjectReader objectReader1 = objectReader0.with((FormatSchema) null);
+    objectReader1.with(contextAttributes0);
+}","/**
+ * @since 2.3
+ */"
+"public <T> MappingIterator<T> readValues(byte[] src, int offset, int length) throws IOException, JsonProcessingException {
+    if (_dataFormatReaders != null) {
+        return _detectBindAndReadValues(_dataFormatReaders.findFormat(src, offset, length), false);
+    }
+    return _bindAndReadValues(_considerFilter(_parserFactory.createParser(src), true));
+}","public void test1717() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    JsonFactory jsonFactory0 = new JsonFactory(objectMapper0);
+    objectReader0.readValues((byte[]) null, 0, 0);
+}","/**
+ * Overloaded version of {@link #readValue(InputStream)}.
+ */"
+"public ObjectReader withView(Class<?> activeView) {
+    return _with(_config.withView(activeView));
+}","public void test1818() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    JsonFactory jsonFactory0 = new JsonFactory(objectMapper0);
+    JsonParser.Feature jsonParser_Feature0 = JsonParser.Feature.AUTO_CLOSE_SOURCE;
+    JsonFactory jsonFactory1 = jsonFactory0.disable(jsonParser_Feature0);
+    ObjectMapper objectMapper1 = new ObjectMapper(jsonFactory1);
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.FAIL_ON_UNRESOLVED_OBJECT_IDS;
+    ObjectReader objectReader0 = objectMapper1.reader(deserializationFeature0);
+    Class<MapType> class0 = MapType.class;
+    objectReader0.withView(class0);
+}","/**
+ *  Method for constructing a new instance with configuration that
+ *  uses specified View for filtering.
+ * <p>
+ *  Note that the method does NOT change state of this reader, but
+ *  rather construct and returns a newly configured instance.
+ */"
+"public ObjectReader with(Locale l) {
+    return _with(_config.with(l));
+}","public void test1919() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.USE_BIG_INTEGER_FOR_INTS;
+    ObjectReader objectReader0 = objectMapper0.reader(deserializationFeature0);
+    objectReader0.with((Locale) null);
+    objectReader0.with((Locale) null);
+}",""
+"/*
+    /**********************************************************
+    /* Life-cycle, fluent factory methods for JsonParser.Features
+    /**********************************************************
+     */
+/**
+ * Method for constructing a new reader instance that is configured
+ * with specified feature enabled.
+ */
+public ObjectReader with(JsonParser.Feature feature) {
+    return _with(_config.with(feature));
+}","public void test2020() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    JsonParser.Feature jsonParser_Feature0 = JsonParser.Feature.IGNORE_UNDEFINED;
+    JsonFactory jsonFactory1 = jsonFactory0.disable(jsonParser_Feature0);
+    OutputDecorator outputDecorator0 = mock(OutputDecorator.class, new ViolatedAssumptionAnswer());
+    JsonFactory jsonFactory2 = jsonFactory1.setOutputDecorator(outputDecorator0);
+    DeserializerFactoryConfig deserializerFactoryConfig0 = new DeserializerFactoryConfig();
+    BeanDeserializerFactory beanDeserializerFactory0 = new BeanDeserializerFactory(deserializerFactoryConfig0);
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory2, (DefaultSerializerProvider) null, defaultDeserializationContext_Impl0);
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.USE_LONG_FOR_INTS;
+    ObjectReader objectReader0 = objectMapper0.reader(deserializationFeature0);
+    objectReader0.with(jsonParser_Feature0);
+}",""
+"public ObjectReader withoutAttribute(Object key) {
+    return _with(_config.withoutAttribute(key));
+}","public void test2121() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT;
+    ObjectReader objectReader0 = objectMapper0.reader(deserializationFeature0);
+    Vector<ObjectReader> vector0 = new Vector<ObjectReader>();
+    DataFormatReaders dataFormatReaders0 = new DataFormatReaders(vector0);
+    ObjectReader[] objectReaderArray0 = new ObjectReader[3];
+    objectReaderArray0[0] = objectReader0;
+    objectReaderArray0[1] = objectReader0;
+    objectReaderArray0[2] = objectReader0;
+    DataFormatReaders dataFormatReaders1 = dataFormatReaders0.with(objectReaderArray0);
+    DataFormatReaders dataFormatReaders2 = dataFormatReaders1.withMaxInputLookahead((-1094));
+    byte[] byteArray0 = new byte[4];
+    byteArray0[0] = (byte) 0;
+    byteArray0[1] = (byte) (-75);
+    byteArray0[2] = (byte) (-86);
+    byteArray0[3] = (byte) (-1);
+    dataFormatReaders2.findFormat(byteArray0, 0, 0);
+    ObjectReader objectReader1 = objectReader0.forType((JavaType) null);
+    BooleanNode booleanNode0 = BooleanNode.valueOf(false);
+    objectReader1.withoutAttribute(booleanNode0);
+}","/**
+ * @since 2.3
+ */"
+"@SuppressWarnings(""resource"")
+public <T> MappingIterator<T> readValues(String json) throws IOException, JsonProcessingException {
+    if (_dataFormatReaders != null) {
+        _reportUndetectableSource(json);
+    }
+    JsonParser p = _considerFilter(_parserFactory.createParser(json), true);
+    _initForMultiRead(p);
+    p.nextToken();
+    DeserializationContext ctxt = createDeserializationContext(p);
+    return _newIterator(p, ctxt, _findRootDeserializer(ctxt), true);
+}","public void test2323() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper((JsonFactory) null);
+    JsonNodeFactory jsonNodeFactory0 = new JsonNodeFactory(false);
+    ObjectReader objectReader0 = objectMapper0.reader();
+    Class<BooleanNode> class0 = BooleanNode.class;
+    objectReader0.withType(class0);
+    objectReader0.readValue(""?Y21r)y/2"");
+    String string0 = null;
+    objectReader0.readValues(string0);
+}","/**
+ * Overloaded version of {@link #readValue(InputStream)}.
+ *
+ * @param json String that contains JSON content to parse
+ */"
+"/*
+    /**********************************************************
+    /* Implementation of rest of ObjectCodec methods
+    /**********************************************************
+     */
+@Override
+public <T> T treeToValue(TreeNode n, Class<T> valueType) throws JsonProcessingException {
+    try {
+        return readValue(treeAsTokens(n), valueType);
+    } catch (JsonProcessingException e) {
+        throw e;
+    } catch (IOException e) {
+        // should not occur, no real i/o...
+        throw new IllegalArgumentException(e.getMessage(), e);
+    }
+}","public void test2626() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectMapper objectMapper1 = new ObjectMapper(objectMapper0);
+    ObjectReader objectReader0 = objectMapper1.reader();
+    TypeFactory.defaultInstance();
+    Class<DeserializationConfig> class0 = DeserializationConfig.class;
+    JsonNodeFactory jsonNodeFactory0 = JsonNodeFactory.withExactBigDecimals(false);
+    ConcurrentHashMap<String, JsonNode> concurrentHashMap0 = new ConcurrentHashMap<String, JsonNode>();
+    ObjectNode objectNode0 = new ObjectNode(jsonNodeFactory0, concurrentHashMap0);
+    ObjectNode objectNode1 = objectNode0.deepCopy();
+    ObjectNode objectNode2 = objectNode1.put((String) null, false);
+    ObjectNode objectNode3 = objectNode2.removeAll();
+    objectNode3.get((String) null);
+    objectReader0.treeToValue((TreeNode) null, class0);
+}",""
+"public ObjectReader withoutRootName() {
+    return _with(_config.withRootName(PropertyName.NO_NAME));
+}","public void test2727() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper((JsonFactory) null);
+    JsonNodeFactory jsonNodeFactory0 = new JsonNodeFactory(false);
+    ObjectReader objectReader0 = objectMapper0.reader();
+    objectReader0.getAttributes();
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    DoubleNode doubleNode0 = DoubleNode.valueOf(2);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, doubleNode0, false);
+    PipedWriter pipedWriter0 = new PipedWriter();
+    PipedReader pipedReader0 = new PipedReader(pipedWriter0, 1);
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 1, pipedReader0, objectMapper0, charsToNameCanonicalizer0);
+    readerBasedJsonParser0.getSchema();
+    ObjectReader objectReader1 = objectReader0.with((FormatSchema) null);
+    objectReader1.readValues((JsonParser) readerBasedJsonParser0, (JavaType) null);
+    objectReader0.withoutRootName();
+}","/**
+ *  Convenience method that is same as calling:
+ * <code>
+ *    withRootName("""")
+ * </code>
+ *  which will forcibly prevent use of root name wrapping when writing
+ *  values with this {@link ObjectReader}.
+ *
+ *  @since 2.6
+ */"
+"public InjectableValues getInjectableValues() {
+    return _injectableValues;
+}","public void test2828() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper((JsonFactory) null);
+    ObjectMapper objectMapper1 = new ObjectMapper(objectMapper0);
+    SerializationFeature serializationFeature0 = SerializationFeature.WRAP_ROOT_VALUE;
+    objectMapper1.configure(serializationFeature0, true);
+    ObjectReader objectReader0 = objectMapper1.reader((JsonNodeFactory) null);
+    objectReader0.createObjectNode();
+    objectReader0.getInjectableValues();
+}","/**
+ * @since 2.6
+ */"
+"public ObjectReader at(final JsonPointer pointer) {
+    return new ObjectReader(this, new JsonPointerBasedFilter(pointer));
+}","public void test3131() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT;
+    DeserializationFeature[] deserializationFeatureArray0 = new DeserializationFeature[3];
+    deserializationFeatureArray0[0] = deserializationFeature0;
+    DeserializationFeature deserializationFeature1 = DeserializationFeature.ACCEPT_FLOAT_AS_INT;
+    deserializationFeatureArray0[1] = deserializationFeature1;
+    deserializationFeatureArray0[2] = deserializationFeature0;
+    objectMapper0.reader(deserializationFeature0, deserializationFeatureArray0);
+    JsonFactory jsonFactory0 = new JsonFactory(objectMapper0);
+    JsonFactory jsonFactory1 = jsonFactory0.setRootValueSeparator(""JSON"");
+    MockFile mockFile0 = new MockFile((String) null, ""JSON"");
+    File file0 = MockFile.createTempFile(""JSON"", ""JSON"", (File) mockFile0);
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(file0);
+    jsonFactory1.createGenerator((OutputStream) mockFileOutputStream0);
+    jsonFactory1.createParser((char[]) null, 0, 0);
+    ObjectReader objectReader1 = objectReader0.with((Locale) null);
+    objectReader0.createArrayNode();
+    objectReader1.at((JsonPointer) null);
+}","/**
+ * Convenience method to bind from {@link JsonPointer}
+ * {@link JsonPointerBasedFilter} is registered and will be used for parsing later.
+ * @since 2.6
+ */"
+"public <T> MappingIterator<T> readValues(URL src) throws IOException, JsonProcessingException {
+    if (_dataFormatReaders != null) {
+        return _detectBindAndReadValues(_dataFormatReaders.findFormat(_inputStream(src)), true);
+    }
+    return _bindAndReadValues(_considerFilter(_parserFactory.createParser(src), true));
+}","public void test3333() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectMapper objectMapper1 = new ObjectMapper(objectMapper0);
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL;
+    DeserializationProblemHandler deserializationProblemHandler0 = mock(DeserializationProblemHandler.class, new ViolatedAssumptionAnswer());
+    objectMapper0.addHandler(deserializationProblemHandler0);
+    ObjectReader objectReader0 = objectMapper1.reader(deserializationFeature0);
+    DeserializationFeature deserializationFeature1 = DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES;
+    DeserializationFeature[] deserializationFeatureArray0 = new DeserializationFeature[3];
+    deserializationFeatureArray0[0] = deserializationFeature0;
+    deserializationFeatureArray0[1] = deserializationFeature0;
+    deserializationFeatureArray0[2] = deserializationFeature0;
+    objectReader0.with(deserializationFeature1, deserializationFeatureArray0);
+    URL uRL0 = MockURL.getFtpExample();
+    // Undeclared exception!
+    try {
+        objectReader0.readValues(uRL0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.net.URL"", e);
+    }
+}","/**
+ * Overloaded version of {@link #readValue(InputStream)}.
+ *
+ * @param src URL to read to access JSON content to parse.
+ */"
+"public ObjectReader withAttribute(Object key, Object value) {
+    return _with(_config.withAttribute(key, value));
+}","public void test3434() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    ObjectReader objectReader0 = objectMapper0.readerForUpdating(jsonFactory0);
+    TokenFilter tokenFilter0 = TokenFilter.INCLUDE_ALL;
+    TokenFilter tokenFilter1 = tokenFilter0.filterStartObject();
+    tokenFilter1.filterStartArray();
+    ArrayList<ObjectReader> arrayList0 = new ArrayList<ObjectReader>();
+    DataFormatReaders dataFormatReaders0 = new DataFormatReaders(arrayList0);
+    DataFormatReaders dataFormatReaders1 = dataFormatReaders0.with((ObjectReader[]) null);
+    MatchStrength matchStrength0 = MatchStrength.SOLID_MATCH;
+    DataFormatReaders dataFormatReaders2 = dataFormatReaders1.withOptimalMatch(matchStrength0);
+    dataFormatReaders1.withMaxInputLookahead(2950);
+    byte[] byteArray0 = new byte[0];
+    DataFormatReaders.Match dataFormatReaders_Match0 = dataFormatReaders0.findFormat(byteArray0, 1, (-237));
+    dataFormatReaders_Match0.createParserWithMatch();
+    objectReader0.readValues((JsonParser) null);
+    JsonParser.Feature[] jsonParser_FeatureArray0 = new JsonParser.Feature[0];
+    ObjectReader objectReader1 = objectReader0.withFeatures(jsonParser_FeatureArray0);
+    char[] charArray0 = new char[5];
+    charArray0[0] = '-';
+    charArray0[1] = 'm';
+    charArray0[2] = 'j';
+    charArray0[3] = '0';
+    charArray0[4] = 'E';
+    JsonParser jsonParser0 = jsonFactory0.createParser(charArray0, 0, 64);
+    TypeReference<DoubleNode> typeReference0 = (TypeReference<DoubleNode>) mock(TypeReference.class, new ViolatedAssumptionAnswer());
+    doReturn((Type) null).when(typeReference0).getType();
+    objectReader0.readValue(jsonParser0, (TypeReference<?>) typeReference0);
+    LongNode longNode0 = LongNode.valueOf(dataFormatReaders2.DEFAULT_MAX_INPUT_LOOKAHEAD);
+    boolean boolean0 = false;
+    boolean boolean1 = false;
+    FilteringParserDelegate filteringParserDelegate0 = new FilteringParserDelegate(jsonParser0, tokenFilter1, boolean0, boolean1);
+    objectReader1.withAttribute(longNode0, filteringParserDelegate0);
+}","/**
+ * @since 2.3
+ */"
+"public ObjectReader withValueToUpdate(Object value) {
+    if (value == _valueToUpdate)
+        return this;
+    if (value == null) {
+        throw new IllegalArgumentException(""cat not update null value"");
+    }
+    JavaType t;
+    /* no real benefit from pre-fetching, as updating readers are much
+         * less likely to be reused, and value type may also be forced
+         * with a later chained call...
+         */
+    if (_valueType == null) {
+        t = _config.constructType(value.getClass());
+    } else {
+        t = _valueType;
+    }
+    return _new(this, _config, t, _rootDeserializer, value, _schema, _injectableValues, _dataFormatReaders);
+}","public void test3636() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    ObjectReader objectReader0 = objectMapper0.readerForUpdating(jsonFactory0);
+    TokenFilter tokenFilter0 = TokenFilter.INCLUDE_ALL;
+    TokenFilter tokenFilter1 = tokenFilter0.filterStartObject();
+    tokenFilter1.filterStartArray();
+    ArrayList<ObjectReader> arrayList0 = new ArrayList<ObjectReader>();
+    objectReader0.getAttributes();
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    JsonNodeFactory jsonNodeFactory0 = JsonNodeFactory.withExactBigDecimals(true);
+    BooleanNode booleanNode0 = jsonNodeFactory0.booleanNode(true);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, booleanNode0, true);
+    PipedWriter pipedWriter0 = new PipedWriter();
+    PipedReader pipedReader0 = new PipedReader(pipedWriter0, 2243);
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2243, pipedReader0, objectReader0, charsToNameCanonicalizer0);
+    readerBasedJsonParser0.getSchema();
+    objectReader0.withValueToUpdate(bufferRecycler0);
+}","/**
+ *  Method for constructing a new instance with configuration that
+ *  updates passed Object (as root value), instead of constructing
+ *  a new value.
+ * <p>
+ *  Note that the method does NOT change state of this reader, but
+ *  rather construct and returns a newly configured instance.
+ */"
+"public ObjectReader without(DeserializationFeature first, DeserializationFeature... other) {
+    return _with(_config.without(first, other));
+}","public void test3737() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper((JsonFactory) null);
+    JsonNodeFactory jsonNodeFactory0 = new JsonNodeFactory(false);
+    ObjectReader objectReader0 = objectMapper0.reader();
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    FileSystemHandling.appendStringToFile((EvoSuiteFile) null, ""Called operation not supported for TokenBuffer"");
+    DoubleNode doubleNode0 = DoubleNode.valueOf(2);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, doubleNode0, false);
+    PipedWriter pipedWriter0 = new PipedWriter();
+    PipedReader pipedReader0 = new PipedReader(pipedWriter0, 1);
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 1, pipedReader0, objectMapper0, charsToNameCanonicalizer0);
+    readerBasedJsonParser0.getSchema();
+    ObjectReader objectReader1 = objectReader0.with((FormatSchema) null);
+    MockFile mockFile0 = new MockFile(""Attempted to unwrap single value array for single 'java.util.Date' value but there was more than a single value in the array"");
+    objectReader1.withValueToUpdate(doubleNode0);
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT;
+    objectReader0.without(deserializationFeature0, (DeserializationFeature[]) null);
+}","/**
+ * Method for constructing a new reader instance that is configured
+ * with specified features disabled.
+ */"
+"public JsonNode readTree(InputStream in) throws IOException, JsonProcessingException {
+    if (_dataFormatReaders != null) {
+        return _detectBindAndCloseAsTree(in);
+    }
+    return _bindAndCloseAsTree(_considerFilter(_parserFactory.createParser(in), false));
+}","public void test3838() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper((JsonFactory) null);
+    JsonNodeFactory jsonNodeFactory0 = new JsonNodeFactory(true);
+    ObjectReader objectReader0 = objectMapper0.reader();
+    byte[] byteArray0 = new byte[0];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, 54, (-769));
+    objectReader0.readTree((InputStream) byteArrayInputStream0);
+}","/**
+ *  Method that reads content from given input source,
+ *  using configuration of this reader, and binds it as JSON Tree.
+ * <p>
+ *  Note that if an object was specified with a call to
+ *  {@link #withValueToUpdate(Object)}
+ *  it will just be ignored; result is always a newly constructed
+ *  {@link JsonNode} instance.
+ */"
+"/*
+    /**********************************************************
+    /* Simple accessors
+    /**********************************************************
+     */
+public boolean isEnabled(DeserializationFeature f) {
+    return _config.isEnabled(f);
+}","public void test3939() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper((JsonFactory) null);
+    ObjectReader objectReader0 = objectMapper0.reader();
+    objectReader0.getAttributes();
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    DoubleNode.valueOf(2);
+    PipedWriter pipedWriter0 = new PipedWriter();
+    PipedReader pipedReader0 = new PipedReader(pipedWriter0, 1);
+    CharsToNameCanonicalizer.createRoot();
+    char[] charArray0 = new char[0];
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.USE_BIG_INTEGER_FOR_INTS;
+    objectReader0.isEnabled(deserializationFeature0);
+}",""
+"public ObjectReader with(Locale l) {
+    return _with(_config.with(l));
+}","public void test4040() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    FormatFeature[] formatFeatureArray0 = new FormatFeature[6];
+    FormatFeature formatFeature0 = mock(FormatFeature.class, new ViolatedAssumptionAnswer());
+    doReturn(0, 0, 0, 0, 0).when(formatFeature0).getMask();
+    formatFeatureArray0[0] = formatFeature0;
+    formatFeatureArray0[1] = formatFeature0;
+    formatFeatureArray0[2] = formatFeature0;
+    formatFeatureArray0[3] = formatFeature0;
+    formatFeatureArray0[4] = formatFeature0;
+    formatFeatureArray0[5] = formatFeature0;
+    objectReader0.withFeatures(formatFeatureArray0);
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.FAIL_ON_INVALID_SUBTYPE;
+    ObjectReader objectReader1 = objectMapper0.reader(deserializationFeature0);
+    objectReader1.with((Locale) null);
+    objectReader1.with((Locale) null);
+}",""
+"public ObjectReader with(TimeZone tz) {
+    return _with(_config.with(tz));
+}","public void test4141() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper((JsonFactory) null);
+    JsonNodeFactory jsonNodeFactory0 = new JsonNodeFactory(false);
+    ObjectReader objectReader0 = objectMapper0.reader();
+    objectReader0.getAttributes();
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    DoubleNode doubleNode0 = DoubleNode.valueOf(2);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, doubleNode0, false);
+    PipedWriter pipedWriter0 = new PipedWriter();
+    PipedReader pipedReader0 = new PipedReader(pipedWriter0, 1);
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 1, pipedReader0, objectMapper0, charsToNameCanonicalizer0);
+    readerBasedJsonParser0.getSchema();
+    ObjectReader objectReader1 = objectReader0.with((FormatSchema) null);
+    FormatFeature[] formatFeatureArray0 = new FormatFeature[6];
+    FormatFeature formatFeature0 = mock(FormatFeature.class, new ViolatedAssumptionAnswer());
+    doReturn(0, 0, 0, 0, 0).when(formatFeature0).getMask();
+    formatFeatureArray0[0] = formatFeature0;
+    formatFeatureArray0[1] = formatFeature0;
+    formatFeatureArray0[2] = formatFeature0;
+    formatFeatureArray0[3] = formatFeature0;
+    formatFeatureArray0[4] = formatFeature0;
+    formatFeatureArray0[5] = formatFeature0;
+    objectReader1.withFeatures(formatFeatureArray0);
+    TimeZone timeZone0 = TimeZone.getTimeZone(""i8)5_Ub%N^0o;,Xki`"");
+    objectReader1.with(timeZone0);
+}",""
+"public <T> MappingIterator<T> readValues(File src) throws IOException, JsonProcessingException {
+    if (_dataFormatReaders != null) {
+        return _detectBindAndReadValues(_dataFormatReaders.findFormat(_inputStream(src)), false);
+    }
+    return _bindAndReadValues(_considerFilter(_parserFactory.createParser(src), true));
+}","public void test4242() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.WRAP_EXCEPTIONS;
+    DeserializationFeature[] deserializationFeatureArray0 = new DeserializationFeature[3];
+    deserializationFeatureArray0[1] = deserializationFeature0;
+    deserializationFeatureArray0[2] = deserializationFeature0;
+    objectMapper0.reader();
+    objectMapper0.reader();
+    MockFile mockFile0 = new MockFile("" 8 2M|3[M4@{f"");
+    mockFile0.createNewFile();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    FormatFeature[] formatFeatureArray0 = new FormatFeature[6];
+    FormatFeature formatFeature0 = mock(FormatFeature.class, new ViolatedAssumptionAnswer());
+    doReturn(0, 0, 0, 0, 0).when(formatFeature0).getMask();
+    formatFeatureArray0[0] = formatFeature0;
+    formatFeatureArray0[1] = formatFeature0;
+    formatFeatureArray0[2] = formatFeature0;
+    formatFeatureArray0[3] = formatFeature0;
+    formatFeatureArray0[4] = formatFeature0;
+    formatFeatureArray0[5] = formatFeature0;
+    objectReader0.withoutFeatures(formatFeatureArray0);
+    objectReader0.readValues((File) mockFile0);
+}","/**
+ * Overloaded version of {@link #readValue(InputStream)}.
+ */"
+"/*
+    /**********************************************************
+    /* Deserialization methods; basic ones to support ObjectCodec first
+    /* (ones that take JsonParser)
+    /**********************************************************
+     */
+/**
+ *  Method that binds content read using given parser, using
+ *  configuration of this reader, including expected result type.
+ *  Value return is either newly constructed, or root value that
+ *  was specified with {@link #withValueToUpdate(Object)}.
+ * <p>
+ *  NOTE: this method never tries to auto-detect format, since actual
+ *  (data-format specific) parser is given.
+ */
+@SuppressWarnings(""unchecked"")
+public <T> T readValue(JsonParser p) throws IOException {
+    return (T) _bind(p, _valueToUpdate);
+}","public void test4343() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.WRAP_EXCEPTIONS;
+    DeserializationFeature[] deserializationFeatureArray0 = new DeserializationFeature[10];
+    deserializationFeatureArray0[0] = deserializationFeature0;
+    ObjectReader objectReader0 = objectMapper0.reader();
+    JsonNode jsonNode0 = objectReader0.createArrayNode();
+    JsonFactory jsonFactory0 = new JsonFactory();
+    JsonParser.Feature jsonParser_Feature0 = JsonParser.Feature.AUTO_CLOSE_SOURCE;
+    jsonFactory0.disable(jsonParser_Feature0);
+    JsonParser jsonParser0 = jsonFactory0.createParser(""JSON"");
+    JsonParser jsonParser1 = objectReader0._considerFilter(jsonParser0, true);
+    JsonParser jsonParser2 = objectMapper0.treeAsTokens(jsonNode0);
+    objectReader0._bindAsTree(jsonParser2);
+    Class<AbstractDeserializer> class0 = AbstractDeserializer.class;
+    ObjectReader objectReader1 = objectReader0.forType(class0);
+    objectReader0.withValueToUpdate(jsonParser0);
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    objectReader0.getAttributes();
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    DoubleNode.valueOf((-1105.0));
+    IOContext iOContext0 = new IOContext(bufferRecycler0, jsonParser2, true);
+    PipedWriter pipedWriter0 = new PipedWriter();
+    PipedReader pipedReader0 = new PipedReader(pipedWriter0, 1);
+    CharsToNameCanonicalizer.createRoot();
+    jsonParser1.getSchema();
+    ObjectReader objectReader2 = objectReader1.with((FormatSchema) null);
+    objectReader2.readValue(jsonParser2);
+}",""
+"@SuppressWarnings(""unchecked"")
+public <T> T readValue(File src) throws IOException, JsonProcessingException {
+    if (_dataFormatReaders != null) {
+        return (T) _detectBindAndClose(_dataFormatReaders.findFormat(_inputStream(src)), true);
+    }
+    return (T) _bindAndClose(_considerFilter(_parserFactory.createParser(src), false));
+}","public void test4444() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    MockFile mockFile0 = new MockFile(""No 'injectableValues' configured, can not inject value with id ["");
+    FileSystemHandling.shouldAllThrowIOExceptions();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    objectReader0.readValue((File) mockFile0);
+}",""
+"public boolean isEnabled(JsonParser.Feature f) {
+    return _parserFactory.isEnabled(f);
+}","public void test4545() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.WRAP_EXCEPTIONS;
+    DeserializationFeature[] deserializationFeatureArray0 = new DeserializationFeature[3];
+    deserializationFeatureArray0[1] = deserializationFeature0;
+    deserializationFeatureArray0[2] = deserializationFeature0;
+    ObjectReader objectReader0 = objectMapper0.reader();
+    JsonFactory jsonFactory0 = new JsonFactory(objectMapper0);
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, deserializationFeature0, true);
+    PipedReader pipedReader0 = new PipedReader();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 1, pipedReader0, objectReader0, charsToNameCanonicalizer0);
+    byte[] byteArray0 = new byte[8];
+    byteArray0[0] = (byte) (-92);
+    byteArray0[1] = (byte) 90;
+    byteArray0[2] = (byte) 23;
+    byteArray0[3] = (byte) 59;
+    byteArray0[4] = (byte) 1;
+    byteArray0[5] = (byte) 1;
+    byteArray0[6] = (byte) 74;
+    byteArray0[7] = (byte) (-64);
+    FileSystemHandling.appendDataToFile((EvoSuiteFile) null, byteArray0);
+    readerBasedJsonParser0.getSchema();
+    ObjectReader objectReader1 = objectReader0.with((FormatSchema) null);
+    MapperFeature mapperFeature0 = MapperFeature.DEFAULT_VIEW_INCLUSION;
+    objectReader1.withoutAttribute(mapperFeature0);
+    JsonParser.Feature jsonParser_Feature0 = JsonParser.Feature.ALLOW_NUMERIC_LEADING_ZEROS;
+    objectReader1.isEnabled(jsonParser_Feature0);
+}",""
+"/*
+    /**********************************************************
+    /* Helper methods, data-binding
+    /**********************************************************
+     */
+/**
+ * Actual implementation of value reading+binding operation.
+ */
+protected Object _bind(JsonParser p, Object valueToUpdate) throws IOException {
+    /* First: may need to read the next token, to initialize state (either
+         * before first read from parser, or after previous token has been cleared)
+         */
+    Object result;
+    JsonToken t = _initForReading(p);
+    if (t == JsonToken.VALUE_NULL) {
+        if (valueToUpdate == null) {
+            DeserializationContext ctxt = createDeserializationContext(p);
+            result = _findRootDeserializer(ctxt).getNullValue(ctxt);
+        } else {
+            result = valueToUpdate;
+        }
+    } else if (t == JsonToken.END_ARRAY || t == JsonToken.END_OBJECT) {
+        result = valueToUpdate;
+    } else {
+        // pointing to event other than null
+        DeserializationContext ctxt = createDeserializationContext(p);
+        JsonDeserializer<Object> deser = _findRootDeserializer(ctxt);
+        if (_unwrapRoot) {
+            result = _unwrapAndDeserialize(p, ctxt, _valueType, deser);
+        } else {
+            if (valueToUpdate == null) {
+                result = deser.deserialize(p, ctxt);
+            } else {
+                deser.deserialize(p, ctxt, valueToUpdate);
+                result = valueToUpdate;
+            }
+        }
+    }
+    // Need to consume the token too
+    p.clearCurrentToken();
+    return result;
+}","public void test4747() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.WRAP_EXCEPTIONS;
+    DeserializationFeature[] deserializationFeatureArray0 = new DeserializationFeature[2];
+    deserializationFeatureArray0[1] = deserializationFeature0;
+    JsonParser jsonParser0 = null;
+    ObjectReader objectReader0 = objectMapper0.reader(deserializationFeature0);
+    objectReader0.readValues((byte[]) null);
+    JsonParser jsonParser1 = null;
+    // Undeclared exception!
+    try {
+        objectReader0._bind(jsonParser0, jsonParser1);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.ObjectReader"", e);
+    }
+}",""
+"public InjectableValues getInjectableValues() {
+    return _injectableValues;
+}","public void test4848() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper((JsonFactory) null);
+    JsonNodeFactory jsonNodeFactory0 = new JsonNodeFactory(false);
+    ObjectReader objectReader0 = objectMapper0.reader();
+    objectReader0.getAttributes();
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    DoubleNode doubleNode0 = DoubleNode.valueOf(2);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, doubleNode0, false);
+    PipedWriter pipedWriter0 = new PipedWriter();
+    PipedReader pipedReader0 = new PipedReader(pipedWriter0, 1);
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2, pipedReader0, objectReader0, charsToNameCanonicalizer0);
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""l#"");
+    readerBasedJsonParser0.releaseBuffered((OutputStream) mockPrintStream0);
+    readerBasedJsonParser0.getSchema();
+    objectReader0.with((FormatSchema) null);
+    objectReader0.getInjectableValues();
+}","/**
+ * @since 2.6
+ */"
+"public ObjectReader withFormatDetection(DataFormatReaders readers) {
+    return _new(this, _config, _valueType, _rootDeserializer, _valueToUpdate, _schema, _injectableValues, readers);
+}","public void test5050() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ContextAttributes contextAttributes0 = ContextAttributes.Impl.getEmpty();
+    ObjectReader objectReader0 = objectMapper0.reader(contextAttributes0);
+    LinkedList<ObjectReader> linkedList0 = new LinkedList<ObjectReader>();
+    DataFormatReaders dataFormatReaders0 = new DataFormatReaders(linkedList0);
+    ObjectReader[] objectReaderArray0 = new ObjectReader[4];
+    objectReaderArray0[0] = objectReader0;
+    objectReaderArray0[1] = objectReader0;
+    objectReaderArray0[2] = objectReader0;
+    objectReaderArray0[3] = objectReader0;
+    DataFormatReaders dataFormatReaders1 = dataFormatReaders0.with(objectReaderArray0);
+    DataFormatReaders dataFormatReaders2 = dataFormatReaders1.withMaxInputLookahead(64);
+    objectReader0.withFormatDetection(dataFormatReaders2);
+}","/**
+ *  Fluent factory method for constructing a reader that will try to
+ *  auto-detect underlying data format, using specified
+ *  {@link DataFormatReaders}.
+ * <p>
+ *  NOTE: since format detection only works with byte sources, it is possible to
+ *  get a failure from some 'readValue()' methods. Also, if input can not be reliably
+ *  (enough) detected as one of specified types, an exception will be thrown.
+ *
+ *  @param readers DataFormatReaders to use for detecting underlying format.
+ *
+ *  @return Newly configured writer instance
+ *
+ *  @since 2.1
+ */"
+"public ObjectReader with(JsonFactory f) {
+    if (f == _parserFactory) {
+        return this;
+    }
+    ObjectReader r = _new(this, f);
+    // Also, try re-linking, if possible...
+    if (f.getCodec() == null) {
+        f.setCodec(r);
+    }
+    return r;
+}","public void test5252() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper((JsonFactory) null);
+    JsonNodeFactory jsonNodeFactory0 = new JsonNodeFactory(false);
+    ObjectReader objectReader0 = objectMapper0.reader();
+    objectReader0.getAttributes();
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    DoubleNode doubleNode0 = DoubleNode.valueOf(2);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, doubleNode0, false);
+    PipedWriter pipedWriter0 = new PipedWriter();
+    PipedReader pipedReader0 = new PipedReader(pipedWriter0, 1);
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2, pipedReader0, objectReader0, charsToNameCanonicalizer0);
+    readerBasedJsonParser0.getSchema();
+    ObjectReader objectReader1 = objectReader0.with((FormatSchema) null);
+    objectReader1._verifySchemaType((FormatSchema) null);
+    objectReader0.with((JsonFactory) null);
+}","/**
+ *  Method for constructing a new reader instance with configuration that uses
+ *  passed {@link JsonFactory} for constructing underlying Readers.
+ * <p>
+ *  NOTE: only factories that <b>DO NOT REQUIRE SPECIAL MAPPERS</b>
+ *  (that is, ones that return <code>false</code> for
+ *  {@link JsonFactory#requiresCustomCodec()}) can be used: trying
+ *  to use one that requires custom codec will throw exception
+ *
+ *  @since 2.1
+ */"
+"public ObjectReader withAttributes(Map<?, ?> attrs) {
+    return _with(_config.withAttributes(attrs));
+}","public void test5353() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    ObjectReader objectReader0 = objectMapper0.readerForUpdating(jsonFactory0);
+    TokenFilter tokenFilter0 = TokenFilter.INCLUDE_ALL;
+    tokenFilter0.includeElement(42);
+    TokenFilter tokenFilter1 = tokenFilter0.filterStartObject();
+    tokenFilter1.filterStartArray();
+    ArrayList<ObjectReader> arrayList0 = new ArrayList<ObjectReader>();
+    objectReader0.getAttributes();
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    JsonNodeFactory jsonNodeFactory0 = JsonNodeFactory.withExactBigDecimals(true);
+    BooleanNode booleanNode0 = jsonNodeFactory0.booleanNode(true);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, booleanNode0, true);
+    PipedWriter pipedWriter0 = new PipedWriter();
+    PipedReader pipedReader0 = new PipedReader(pipedWriter0, 2243);
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2243, pipedReader0, objectReader0, charsToNameCanonicalizer0);
+    readerBasedJsonParser0.getSchema();
+    objectReader0.withValueToUpdate(bufferRecycler0);
+    objectReader0.withAttributes((Map<?, ?>) null);
+}","/**
+ * @since 2.3
+ */"
+"public <T> MappingIterator<T> readValues(URL src) throws IOException, JsonProcessingException {
+    if (_dataFormatReaders != null) {
+        return _detectBindAndReadValues(_dataFormatReaders.findFormat(_inputStream(src)), true);
+    }
+    return _bindAndReadValues(_considerFilter(_parserFactory.createParser(src), true));
+}","public void test5454() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper((JsonFactory) null);
+    JsonNodeFactory jsonNodeFactory0 = new JsonNodeFactory(false);
+    ObjectReader objectReader0 = objectMapper0.reader();
+    objectReader0.getAttributes();
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    DoubleNode.valueOf(2);
+    PipedWriter pipedWriter0 = new PipedWriter();
+    PipedReader pipedReader0 = new PipedReader(pipedWriter0, 1);
+    CharsToNameCanonicalizer.createRoot();
+    objectReader0.withType((JavaType) null);
+    objectReader0.getConfig();
+    IntNode intNode0 = IntNode.valueOf(156);
+    JsonParser jsonParser0 = objectReader0.treeAsTokens(intNode0);
+    objectReader0._bindAndClose(jsonParser0);
+    URL uRL0 = MockURL.getFileExample();
+    objectReader0.readValues(uRL0);
+}","/**
+ * Overloaded version of {@link #readValue(InputStream)}.
+ *
+ * @param src URL to read to access JSON content to parse.
+ */"
+"public <T> MappingIterator<T> readValues(byte[] src, int offset, int length) throws IOException, JsonProcessingException {
+    if (_dataFormatReaders != null) {
+        return _detectBindAndReadValues(_dataFormatReaders.findFormat(src, offset, length), false);
+    }
+    return _bindAndReadValues(_considerFilter(_parserFactory.createParser(src), true));
+}","public void test5555() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    Stack<ObjectReader> stack0 = new Stack<ObjectReader>();
+    DataFormatReaders dataFormatReaders0 = new DataFormatReaders(stack0);
+    byte[] byteArray0 = null;
+    FileSystemHandling.appendStringToFile((EvoSuiteFile) null, """");
+    ObjectReader objectReader1 = objectReader0.withoutRootName();
+    DeserializationFeature[] deserializationFeatureArray0 = new DeserializationFeature[5];
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT;
+    deserializationFeatureArray0[0] = deserializationFeature0;
+    DeserializationFeature deserializationFeature1 = DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS;
+    deserializationFeatureArray0[1] = deserializationFeature1;
+    DeserializationFeature deserializationFeature2 = DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT;
+    deserializationFeatureArray0[2] = deserializationFeature2;
+    JsonFactory jsonFactory0 = new JsonFactory();
+    char[] charArray0 = new char[2];
+    charArray0[0] = 'i';
+    charArray0[1] = 'L';
+    JsonParser jsonParser0 = jsonFactory0.createParser(charArray0, 343, 64);
+    TokenFilter tokenFilter0 = TokenFilter.INCLUDE_ALL;
+    TokenFilter tokenFilter1 = tokenFilter0.filterStartObject();
+    FilteringParserDelegate filteringParserDelegate0 = new FilteringParserDelegate(jsonParser0, tokenFilter1, false, false);
+    filteringParserDelegate0.getSchema();
+    ObjectReader objectReader2 = objectReader1.with((FormatSchema) null);
+    objectReader1._verifySchemaType((FormatSchema) null);
+    ObjectReader objectReader3 = objectReader2.with(jsonFactory0);
+    objectReader3.at(""vl ;`A6wN-oG"");
+    int int0 = (-2725);
+    objectReader2.readValues(byteArray0, int0, dataFormatReaders0.DEFAULT_MAX_INPUT_LOOKAHEAD);
+}","/**
+ * Overloaded version of {@link #readValue(InputStream)}.
+ */"
+"@SuppressWarnings(""resource"")
+public <T> MappingIterator<T> readValues(String json) throws IOException, JsonProcessingException {
+    if (_dataFormatReaders != null) {
+        _reportUndetectableSource(json);
+    }
+    JsonParser p = _considerFilter(_parserFactory.createParser(json), true);
+    _initForMultiRead(p);
+    p.nextToken();
+    DeserializationContext ctxt = createDeserializationContext(p);
+    return _newIterator(p, ctxt, _findRootDeserializer(ctxt), true);
+}","public void test5656() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    InjectableValues.Std injectableValues_Std0 = new InjectableValues.Std();
+    InjectableValues.Std injectableValues_Std1 = injectableValues_Std0.addValue(""com.fasterxml.jackson.databind.SerializerProvider"", (Object) objectMapper0);
+    ObjectReader objectReader0 = objectMapper0.reader((InjectableValues) injectableValues_Std1);
+    JsonLocationInstantiator jsonLocationInstantiator0 = new JsonLocationInstantiator();
+    BaseSettings baseSettings0 = ObjectMapper.DEFAULT_BASE;
+    StdSubtypeResolver stdSubtypeResolver0 = new StdSubtypeResolver();
+    RootNameLookup rootNameLookup0 = new RootNameLookup();
+    DeserializationConfig deserializationConfig0 = new DeserializationConfig(baseSettings0, stdSubtypeResolver0, (SimpleMixInResolver) null, rootNameLookup0);
+    NamedType[] namedTypeArray0 = new NamedType[2];
+    Class<CollectionType> class0 = CollectionType.class;
+    NamedType namedType0 = new NamedType(class0);
+    namedTypeArray0[0] = namedType0;
+    NamedType namedType1 = new NamedType(class0, ""Illegal character ("");
+    namedTypeArray0[1] = namedType1;
+    stdSubtypeResolver0.registerSubtypes(namedTypeArray0);
+    jsonLocationInstantiator0.getDelegateType(deserializationConfig0);
+    JsonFactory jsonFactory0 = new JsonFactory(objectReader0);
+    BufferRecycler bufferRecycler0 = jsonFactory0._getBufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, jsonLocationInstantiator0, true);
+    PipedWriter pipedWriter0 = new PipedWriter();
+    PipedReader pipedReader0 = new PipedReader(pipedWriter0);
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    char[] charArray0 = new char[1];
+    charArray0[0] = 'f';
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 3, pipedReader0, objectMapper0, charsToNameCanonicalizer0, charArray0, (-1790), 1126, true);
+    readerBasedJsonParser0.getSchema();
+    ObjectReader objectReader1 = objectReader0.with((FormatSchema) null);
+    objectReader0._verifySchemaType((FormatSchema) null);
+    ObjectReader objectReader2 = objectReader1.with(jsonFactory0);
+    objectReader2.readValues(""]YxQ4,6^k=j5("");
+}","/**
+ * Overloaded version of {@link #readValue(InputStream)}.
+ *
+ * @param json String that contains JSON content to parse
+ */"
+"@SuppressWarnings(""unchecked"")
+public <T> T readValue(URL src) throws IOException, JsonProcessingException {
+    if (_dataFormatReaders != null) {
+        return (T) _detectBindAndClose(_dataFormatReaders.findFormat(_inputStream(src)), true);
+    }
+    return (T) _bindAndClose(_considerFilter(_parserFactory.createParser(src), false));
+}","public void test5757() throws Throwable {
+    JsonFactory jsonFactory0 = new JsonFactory();
+    ObjectMapper objectMapper0 = new ObjectMapper(jsonFactory0);
+    ObjectReader objectReader0 = objectMapper0.readerForUpdating(jsonFactory0);
+    TokenFilter tokenFilter0 = TokenFilter.INCLUDE_ALL;
+    TokenFilter tokenFilter1 = tokenFilter0.filterStartObject();
+    tokenFilter1.filterStartArray();
+    ArrayList<ObjectReader> arrayList0 = new ArrayList<ObjectReader>();
+    objectReader0.getAttributes();
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    JsonNodeFactory jsonNodeFactory0 = JsonNodeFactory.withExactBigDecimals(true);
+    BooleanNode booleanNode0 = jsonNodeFactory0.booleanNode(true);
+    IOContext iOContext0 = new IOContext(bufferRecycler0, booleanNode0, true);
+    PipedWriter pipedWriter0 = new PipedWriter();
+    PipedReader pipedReader0 = new PipedReader(pipedWriter0, 3);
+    iOContext0.allocReadIOBuffer();
+    CharsToNameCanonicalizer charsToNameCanonicalizer0 = CharsToNameCanonicalizer.createRoot();
+    ReaderBasedJsonParser readerBasedJsonParser0 = new ReaderBasedJsonParser(iOContext0, 2, pipedReader0, objectReader0, charsToNameCanonicalizer0);
+    readerBasedJsonParser0.getSchema();
+    objectReader0.withValueToUpdate(bufferRecycler0);
+    URL uRL0 = MockURL.getFileExample();
+    objectReader0.readValue(uRL0);
+}","/**
+ * Method that binds content read from given input source,
+ * using configuration of this reader.
+ * Value return is either newly constructed, or root value that
+ * was specified with {@link #withValueToUpdate(Object)}.
+ */"
+"public <T> MappingIterator<T> readValues(InputStream src) throws IOException, JsonProcessingException {
+    if (_dataFormatReaders != null) {
+        return _detectBindAndReadValues(_dataFormatReaders.findFormat(src), false);
+    }
+    return _bindAndReadValues(_considerFilter(_parserFactory.createParser(src), true));
+}","public void test5858() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    ObjectReader objectReader0 = objectMapper0.reader();
+    DeserializationFeature deserializationFeature0 = DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT;
+    DeserializationFeature[] deserializationFeatureArray0 = new DeserializationFeature[3];
+    deserializationFeatureArray0[0] = deserializationFeature0;
+    DeserializationFeature deserializationFeature1 = DeserializationFeature.ACCEPT_FLOAT_AS_INT;
+    deserializationFeatureArray0[1] = deserializationFeature1;
+    deserializationFeatureArray0[2] = deserializationFeature0;
+    ObjectReader objectReader1 = objectMapper0.reader(deserializationFeature0, deserializationFeatureArray0);
+    JsonFactory jsonFactory0 = new JsonFactory(objectMapper0);
+    JsonFactory jsonFactory1 = jsonFactory0.setRootValueSeparator(""JSON"");
+    MockFile mockFile0 = new MockFile((String) null, ""JSON"");
+    mockFile0.setWritable(true, true);
+    File file0 = MockFile.createTempFile(""JSON"", ""JSON"", (File) mockFile0);
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(file0);
+    jsonFactory1.createGenerator((OutputStream) mockFileOutputStream0);
+    jsonFactory1.createParser((char[]) null, 0, 0);
+    ObjectReader objectReader2 = objectReader0.with((Locale) null);
+    objectReader0.createArrayNode();
+    objectReader2.at((JsonPointer) null);
+    TokenFilter tokenFilter0 = TokenFilter.INCLUDE_ALL;
+    ObjectReader objectReader3 = new ObjectReader(objectReader1, tokenFilter0);
+    URL uRL0 = MockURL.getFileExample();
+    InputStream inputStream0 = objectReader3._inputStream(uRL0);
+    objectReader0.readValues(inputStream0);
+}","/**
+ *  Method for reading sequence of Objects from parser stream.
+ * <p>
+ *  Sequence can be either wrapped or unwrapped root-level sequence:
+ *  wrapped means that the elements are enclosed in JSON Array;
+ *  and unwrapped that elements are directly accessed at main level.
+ *  Assumption is that iff the first token of the document is
+ *  <code>START_ARRAY</code>, we have a wrapped sequence; otherwise
+ *  unwrapped. For wrapped sequences, leading <code>START_ARRAY</code>
+ *  is skipped, so that for both cases, underlying {@link JsonParser}
+ *  will point to what is expected to be the first token of the first
+ *  element.
+ * <p>
+ *  Note that the wrapped vs unwrapped logic means that it is NOT
+ *  possible to use this method for reading an unwrapped sequence
+ *  of elements written as JSON Arrays: to read such sequences, one
+ *  has to use {@link #readValues(JsonParser)}, making sure parser
+ *  points to the first token of the first element (i.e. the second
+ *  <code>START_ARRAY</code> which is part of the first element).
+ */"
+"@SuppressWarnings(""resource"")
+public <T> MappingIterator<T> readValues(String json) throws IOException, JsonProcessingException {
+    if (_dataFormatReaders != null) {
+        _reportUndetectableSource(json);
+    }
+    JsonParser p = _considerFilter(_parserFactory.createParser(json), true);
+    _initForMultiRead(p);
+    p.nextToken();
+    DeserializationContext ctxt = createDeserializationContext(p);
+    return _newIterator(p, ctxt, _findRootDeserializer(ctxt), true);
+}","public void test5959() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper((JsonFactory) null);
+    JsonNodeFactory jsonNodeFactory0 = new JsonNodeFactory(true);
+    ObjectReader objectReader0 = objectMapper0.reader();
+    objectReader0.without((FormatFeature) null);
+    String string0 = null;
+    objectReader0.readValues(string0);
+}","/**
+ * Overloaded version of {@link #readValue(InputStream)}.
+ *
+ * @param json String that contains JSON content to parse
+ */"

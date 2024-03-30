@@ -1,0 +1,768 @@
+focal_method,test_prefix,docstring
+"public int nextInt(int n) throws IllegalArgumentException {
+    if (n > 0) {
+        if ((n & -n) == n) {
+            return (int) ((n * (long) next(31)) >> 31);
+        }
+        int bits;
+        int val;
+        do {
+            bits = next(31);
+            val = bits % n;
+        } while (bits - val + (n - 1) < 0);
+        return val;
+    }
+    throw new NotStrictlyPositiveException(n);
+}","public void test000() throws Throwable {
+    MersenneTwister mersenneTwister0 = new MersenneTwister();
+    try {
+        mersenneTwister0.nextInt(0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // 0 is smaller than, or equal to, the minimum (0)
+        //
+        verifyException(""org.apache.commons.math3.random.BitsStreamGenerator"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ * <p>This default implementation is copied from Apache Harmony
+ * java.util.Random (r929253).</p>
+ *
+ * <p>Implementation notes: <ul>
+ * <li>If n is a power of 2, this method returns
+ * {@code (int) ((n * (long) next(31)) >> 31)}.</li>
+ *
+ * <li>If n is not a power of 2, what is returned is {@code next(31) % n}
+ * with {@code next(31)} values rejected (i.e. regenerated) until a
+ * value that is larger than the remainder of {@code Integer.MAX_VALUE / n}
+ * is generated. Rejection of this initial segment is necessary to ensure
+ * a uniform distribution.</li></ul></p>
+ */"
+"public void nextBytes(byte[] bytes) {
+    int i = 0;
+    final int iEnd = bytes.length - 3;
+    while (i < iEnd) {
+        final int random = next(32);
+        bytes[i] = (byte) (random & 0xff);
+        bytes[i + 1] = (byte) ((random >> 8) & 0xff);
+        bytes[i + 2] = (byte) ((random >> 16) & 0xff);
+        bytes[i + 3] = (byte) ((random >> 24) & 0xff);
+        i += 4;
+    }
+    int random = next(32);
+    while (i < bytes.length) {
+        bytes[i++] = (byte) (random & 0xff);
+        random = random >> 8;
+    }
+}","public void test011() throws Throwable {
+    Well19937a well19937a0 = new Well19937a();
+    byte[] byteArray0 = new byte[6];
+    well19937a0.nextBytes(byteArray0);
+    assertArrayEquals(new byte[] { (byte) (-110), (byte) (-65), (byte) 92, (byte) (-40), (byte) (-122), (byte) 22 }, byteArray0);
+}","/**
+ * {@inheritDoc}
+ */"
+"public void nextBytes(byte[] bytes) {
+    int i = 0;
+    final int iEnd = bytes.length - 3;
+    while (i < iEnd) {
+        final int random = next(32);
+        bytes[i] = (byte) (random & 0xff);
+        bytes[i + 1] = (byte) ((random >> 8) & 0xff);
+        bytes[i + 2] = (byte) ((random >> 16) & 0xff);
+        bytes[i + 3] = (byte) ((random >> 24) & 0xff);
+        i += 4;
+    }
+    int random = next(32);
+    while (i < bytes.length) {
+        bytes[i++] = (byte) (random & 0xff);
+        random = random >> 8;
+    }
+}","public void test022() throws Throwable {
+    int[] intArray0 = new int[3];
+    ISAACRandom iSAACRandom0 = new ISAACRandom(intArray0);
+    byte[] byteArray0 = new byte[3];
+    iSAACRandom0.nextBytes(byteArray0);
+    assertArrayEquals(new byte[] { (byte) 69, (byte) (-86), (byte) 97 }, byteArray0);
+}","/**
+ * {@inheritDoc}
+ */"
+"@Override
+public void setSeed(int[] seed) {
+    if (seed == null) {
+        setSeed(System.currentTimeMillis() + System.identityHashCode(this));
+        return;
+    }
+    final int seedLen = seed.length;
+    final int rslLen = rsl.length;
+    System.arraycopy(seed, 0, rsl, 0, Math.min(seedLen, rslLen));
+    if (seedLen < rslLen) {
+        for (int j = seedLen; j < rslLen; j++) {
+            long k = rsl[j - seedLen];
+            rsl[j] = (int) (0x6c078965L * (k ^ k >> 30) + j & 0xffffffffL);
+        }
+    }
+    initState();
+}","public void test033() throws Throwable {
+    int[] intArray0 = new int[0];
+    ISAACRandom iSAACRandom0 = new ISAACRandom(intArray0);
+    iSAACRandom0.setSeed(intArray0);
+    assertArrayEquals(new int[] {}, intArray0);
+}","/**
+ * {@inheritDoc}
+ */"
+"@Override
+public void setSeed(final long seed) {
+    setSeed(new int[] { (int) (seed >>> 32), (int) (seed & 0xffffffffl) });
+}","public void test044() throws Throwable {
+    Well1024a well1024a0 = new Well1024a((-246));
+    well1024a0.setSeed((long) (-246));
+}","/**
+ * Reinitialize the generator as if just built with the given long seed.
+ * <p>The state of the generator is exactly the same as a new
+ * generator built with the same seed.</p>
+ * @param seed the initial seed (64 bits integer)
+ */"
+"@Override
+public void setSeed(int seed) {
+    // we use a long masked by 0xffffffffL as a poor man unsigned int
+    long longMT = seed;
+    // NB: unlike original C code, we are working with java longs, the cast below makes masking unnecessary
+    mt[0] = (int) longMT;
+    for (mti = 1; mti < N; ++mti) {
+        // See Knuth TAOCP Vol2. 3rd Ed. P.106 for multiplier.
+        // initializer from the 2002-01-09 C version by Makoto Matsumoto
+        longMT = (1812433253l * (longMT ^ (longMT >> 30)) + mti) & 0xffffffffL;
+        mt[mti] = (int) longMT;
+    }
+    // Clear normal deviate cache
+    clear();
+}","public void test055() throws Throwable {
+    MersenneTwister mersenneTwister0 = new MersenneTwister();
+    mersenneTwister0.setSeed(1);
+}","/**
+ * Reinitialize the generator as if just built with the given int seed.
+ * <p>The state of the generator is exactly the same as a new
+ * generator built with the same seed.</p>
+ * @param seed the initial seed (32 bits integer)
+ */"
+"public long nextLong() {
+    final long high = ((long) next(32)) << 32;
+    final long low = ((long) next(32)) & 0xffffffffL;
+    return high | low;
+}","public void test066() throws Throwable {
+    int[] intArray0 = new int[20];
+    Well512a well512a0 = new Well512a(intArray0);
+    long long0 = well512a0.nextLong();
+    assertEquals(0L, long0);
+}","/**
+ * {@inheritDoc}
+ */"
+"public long nextLong() {
+    final long high = ((long) next(32)) << 32;
+    final long low = ((long) next(32)) & 0xffffffffL;
+    return high | low;
+}","public void test077() throws Throwable {
+    Well19937a well19937a0 = new Well19937a();
+    long long0 = well19937a0.nextLong();
+    assertEquals((-2856197429189667194L), long0);
+}","/**
+ * {@inheritDoc}
+ */"
+"public long nextLong() {
+    final long high = ((long) next(32)) << 32;
+    final long low = ((long) next(32)) & 0xffffffffL;
+    return high | low;
+}","public void test088() throws Throwable {
+    Well44497b well44497b0 = new Well44497b(1284L);
+    long long0 = well44497b0.nextLong();
+    assertEquals(4191224321352990188L, long0);
+}","/**
+ * {@inheritDoc}
+ */"
+"public int nextInt() {
+    return next(32);
+}","public void test089() throws Throwable {
+    Well44497b well44497b0 = new Well44497b(1284L);
+    long long0 = well44497b0.nextLong();
+    int int0 = well44497b0.nextInt();
+    assertEquals((-98967941), int0);
+}","/**
+ * {@inheritDoc}
+ */"
+"@Override
+public void setSeed(int[] seed) {
+    if (seed == null) {
+        setSeed(System.currentTimeMillis() + System.identityHashCode(this));
+        return;
+    }
+    setSeed(19650218);
+    int i = 1;
+    int j = 0;
+    for (int k = FastMath.max(N, seed.length); k != 0; k--) {
+        long l0 = (mt[i] & 0x7fffffffl) | ((mt[i] < 0) ? 0x80000000l : 0x0l);
+        long l1 = (mt[i - 1] & 0x7fffffffl) | ((mt[i - 1] < 0) ? 0x80000000l : 0x0l);
+        // non linear
+        long l = (l0 ^ ((l1 ^ (l1 >> 30)) * 1664525l)) + seed[j] + j;
+        mt[i] = (int) (l & 0xffffffffl);
+        i++;
+        j++;
+        if (i >= N) {
+            mt[0] = mt[N - 1];
+            i = 1;
+        }
+        if (j >= seed.length) {
+            j = 0;
+        }
+    }
+    for (int k = N - 1; k != 0; k--) {
+        long l0 = (mt[i] & 0x7fffffffl) | ((mt[i] < 0) ? 0x80000000l : 0x0l);
+        long l1 = (mt[i - 1] & 0x7fffffffl) | ((mt[i - 1] < 0) ? 0x80000000l : 0x0l);
+        // non linear
+        long l = (l0 ^ ((l1 ^ (l1 >> 30)) * 1566083941l)) - i;
+        mt[i] = (int) (l & 0xffffffffL);
+        i++;
+        if (i >= N) {
+            mt[0] = mt[N - 1];
+            i = 1;
+        }
+    }
+    // MSB is 1; assuring non-zero initial array
+    mt[0] = 0x80000000;
+    // Clear normal deviate cache
+    clear();
+}","public void test0910() throws Throwable {
+    MersenneTwister mersenneTwister0 = new MersenneTwister((-734));
+    int[] intArray0 = new int[0];
+    // Undeclared exception!
+    try {
+        mersenneTwister0.setSeed(intArray0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * Reinitialize the generator as if just built with the given int array seed.
+ * <p>The state of the generator is exactly the same as a new
+ * generator built with the same seed.</p>
+ * @param seed the initial seed (32 bits integers array), if null
+ * the seed of the generator will be the current system time plus the
+ * system identity hash code of this instance
+ */"
+"public long nextLong() {
+    final long high = ((long) next(32)) << 32;
+    final long low = ((long) next(32)) & 0xffffffffL;
+    return high | low;
+}","public void test1011() throws Throwable {
+    Well512a well512a0 = new Well512a((int[]) null);
+    well512a0.index = 32;
+    // Undeclared exception!
+    try {
+        well512a0.nextLong();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 32
+        //
+        verifyException(""org.apache.commons.math3.random.Well512a"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"public int nextInt(int n) throws IllegalArgumentException {
+    if (n > 0) {
+        if ((n & -n) == n) {
+            return (int) ((n * (long) next(31)) >> 31);
+        }
+        int bits;
+        int val;
+        do {
+            bits = next(31);
+            val = bits % n;
+        } while (bits - val + (n - 1) < 0);
+        return val;
+    }
+    throw new NotStrictlyPositiveException(n);
+}","public void test1112() throws Throwable {
+    Well44497b well44497b0 = new Well44497b(1345365059);
+    well44497b0.index = 1345365059;
+    // Undeclared exception!
+    try {
+        well44497b0.nextInt(3491);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * {@inheritDoc}
+ * <p>This default implementation is copied from Apache Harmony
+ * java.util.Random (r929253).</p>
+ *
+ * <p>Implementation notes: <ul>
+ * <li>If n is a power of 2, this method returns
+ * {@code (int) ((n * (long) next(31)) >> 31)}.</li>
+ *
+ * <li>If n is not a power of 2, what is returned is {@code next(31) % n}
+ * with {@code next(31)} values rejected (i.e. regenerated) until a
+ * value that is larger than the remainder of {@code Integer.MAX_VALUE / n}
+ * is generated. Rejection of this initial segment is necessary to ensure
+ * a uniform distribution.</li></ul></p>
+ */"
+"public int nextInt() {
+    return next(32);
+}","public void test1213() throws Throwable {
+    Well44497a well44497a0 = new Well44497a();
+    well44497a0.index = 3638;
+    // Undeclared exception!
+    try {
+        well44497a0.nextInt();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 3638
+        //
+        verifyException(""org.apache.commons.math3.random.Well44497a"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"public double nextGaussian() {
+    final double random;
+    if (Double.isNaN(nextGaussian)) {
+        // generate a new pair of gaussian numbers
+        final double x = nextDouble();
+        final double y = nextDouble();
+        final double alpha = 2 * FastMath.PI * x;
+        final double r = FastMath.sqrt(-2 * FastMath.log(y));
+        random = r * FastMath.cos(alpha);
+        nextGaussian = r * FastMath.sin(alpha);
+    } else {
+        // use the second element of the pair already generated
+        random = nextGaussian;
+        nextGaussian = Double.NaN;
+    }
+    return random;
+}","public void test1314() throws Throwable {
+    Well44497b well44497b0 = new Well44497b(4607182418800017428L);
+    well44497b0.index = 4704;
+    // Undeclared exception!
+    try {
+        well44497b0.nextGaussian();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"public float nextFloat() {
+    return next(23) * 0x1.0p-23f;
+}","public void test1415() throws Throwable {
+    Well44497a well44497a0 = new Well44497a((-1122L));
+    well44497a0.index = 3593;
+    // Undeclared exception!
+    try {
+        well44497a0.nextFloat();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 3593
+        //
+        verifyException(""org.apache.commons.math3.random.Well44497a"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"public double nextDouble() {
+    final long high = ((long) next(26)) << 26;
+    final int low = next(26);
+    return (high | low) * 0x1.0p-52d;
+}","public void test1516() throws Throwable {
+    int[] intArray0 = new int[1];
+    Well512a well512a0 = new Well512a(intArray0);
+    well512a0.index = 1330;
+    // Undeclared exception!
+    try {
+        well512a0.nextDouble();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 1330
+        //
+        verifyException(""org.apache.commons.math3.random.Well512a"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"public void nextBytes(byte[] bytes) {
+    int i = 0;
+    final int iEnd = bytes.length - 3;
+    while (i < iEnd) {
+        final int random = next(32);
+        bytes[i] = (byte) (random & 0xff);
+        bytes[i + 1] = (byte) ((random >> 8) & 0xff);
+        bytes[i + 2] = (byte) ((random >> 16) & 0xff);
+        bytes[i + 3] = (byte) ((random >> 24) & 0xff);
+        i += 4;
+    }
+    int random = next(32);
+    while (i < bytes.length) {
+        bytes[i++] = (byte) (random & 0xff);
+        random = random >> 8;
+    }
+}","public void test1617() throws Throwable {
+    Well44497b well44497b0 = new Well44497b();
+    // Undeclared exception!
+    try {
+        well44497b0.nextBytes((byte[]) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math3.random.BitsStreamGenerator"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"public void nextBytes(byte[] bytes) {
+    int i = 0;
+    final int iEnd = bytes.length - 3;
+    while (i < iEnd) {
+        final int random = next(32);
+        bytes[i] = (byte) (random & 0xff);
+        bytes[i + 1] = (byte) ((random >> 8) & 0xff);
+        bytes[i + 2] = (byte) ((random >> 16) & 0xff);
+        bytes[i + 3] = (byte) ((random >> 24) & 0xff);
+        i += 4;
+    }
+    int random = next(32);
+    while (i < bytes.length) {
+        bytes[i++] = (byte) (random & 0xff);
+        random = random >> 8;
+    }
+}","public void test1718() throws Throwable {
+    Well19937c well19937c0 = new Well19937c(1547);
+    well19937c0.index = (-254);
+    byte[] byteArray0 = new byte[1];
+    // Undeclared exception!
+    try {
+        well19937c0.nextBytes(byteArray0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // -254
+        //
+        verifyException(""org.apache.commons.math3.random.Well19937c"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"public boolean nextBoolean() {
+    return next(1) != 0;
+}","public void test1819() throws Throwable {
+    Well19937a well19937a0 = new Well19937a(0L);
+    well19937a0.index = 353;
+    well19937a0.index = 1303;
+    // Undeclared exception!
+    try {
+        well19937a0.nextBoolean();
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"public void clear() {
+    nextGaussian = Double.NaN;
+}","public void test1920() throws Throwable {
+    MersenneTwister mersenneTwister0 = new MersenneTwister((-2363));
+    mersenneTwister0.clear();
+}","/**
+ * Clears the cache used by the default implementation of
+ * {@link #nextGaussian}.
+ */"
+"public int nextInt(int n) throws IllegalArgumentException {
+    if (n > 0) {
+        if ((n & -n) == n) {
+            return (int) ((n * (long) next(31)) >> 31);
+        }
+        int bits;
+        int val;
+        do {
+            bits = next(31);
+            val = bits % n;
+        } while (bits - val + (n - 1) < 0);
+        return val;
+    }
+    throw new NotStrictlyPositiveException(n);
+}","public void test2021() throws Throwable {
+    MersenneTwister mersenneTwister0 = new MersenneTwister();
+    int int0 = mersenneTwister0.nextInt(1);
+    assertEquals(0, int0);
+}","/**
+ * {@inheritDoc}
+ * <p>This default implementation is copied from Apache Harmony
+ * java.util.Random (r929253).</p>
+ *
+ * <p>Implementation notes: <ul>
+ * <li>If n is a power of 2, this method returns
+ * {@code (int) ((n * (long) next(31)) >> 31)}.</li>
+ *
+ * <li>If n is not a power of 2, what is returned is {@code next(31) % n}
+ * with {@code next(31)} values rejected (i.e. regenerated) until a
+ * value that is larger than the remainder of {@code Integer.MAX_VALUE / n}
+ * is generated. Rejection of this initial segment is necessary to ensure
+ * a uniform distribution.</li></ul></p>
+ */"
+"public int nextInt(int n) throws IllegalArgumentException {
+    if (n > 0) {
+        if ((n & -n) == n) {
+            return (int) ((n * (long) next(31)) >> 31);
+        }
+        int bits;
+        int val;
+        do {
+            bits = next(31);
+            val = bits % n;
+        } while (bits - val + (n - 1) < 0);
+        return val;
+    }
+    throw new NotStrictlyPositiveException(n);
+}","public void test2122() throws Throwable {
+    Well44497b well44497b0 = new Well44497b(1345365059);
+    int int0 = well44497b0.nextInt(3491);
+    assertEquals(612, int0);
+}","/**
+ * {@inheritDoc}
+ * <p>This default implementation is copied from Apache Harmony
+ * java.util.Random (r929253).</p>
+ *
+ * <p>Implementation notes: <ul>
+ * <li>If n is a power of 2, this method returns
+ * {@code (int) ((n * (long) next(31)) >> 31)}.</li>
+ *
+ * <li>If n is not a power of 2, what is returned is {@code next(31) % n}
+ * with {@code next(31)} values rejected (i.e. regenerated) until a
+ * value that is larger than the remainder of {@code Integer.MAX_VALUE / n}
+ * is generated. Rejection of this initial segment is necessary to ensure
+ * a uniform distribution.</li></ul></p>
+ */"
+"public int nextInt(int n) throws IllegalArgumentException {
+    if (n > 0) {
+        if ((n & -n) == n) {
+            return (int) ((n * (long) next(31)) >> 31);
+        }
+        int bits;
+        int val;
+        do {
+            bits = next(31);
+            val = bits % n;
+        } while (bits - val + (n - 1) < 0);
+        return val;
+    }
+    throw new NotStrictlyPositiveException(n);
+}","public void test2223() throws Throwable {
+    Well44497b well44497b0 = new Well44497b();
+    try {
+        well44497b0.nextInt((int) (byte) (-8));
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // -8 is smaller than, or equal to, the minimum (0)
+        //
+        verifyException(""org.apache.commons.math3.random.BitsStreamGenerator"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ * <p>This default implementation is copied from Apache Harmony
+ * java.util.Random (r929253).</p>
+ *
+ * <p>Implementation notes: <ul>
+ * <li>If n is a power of 2, this method returns
+ * {@code (int) ((n * (long) next(31)) >> 31)}.</li>
+ *
+ * <li>If n is not a power of 2, what is returned is {@code next(31) % n}
+ * with {@code next(31)} values rejected (i.e. regenerated) until a
+ * value that is larger than the remainder of {@code Integer.MAX_VALUE / n}
+ * is generated. Rejection of this initial segment is necessary to ensure
+ * a uniform distribution.</li></ul></p>
+ */"
+"public double nextGaussian() {
+    final double random;
+    if (Double.isNaN(nextGaussian)) {
+        // generate a new pair of gaussian numbers
+        final double x = nextDouble();
+        final double y = nextDouble();
+        final double alpha = 2 * FastMath.PI * x;
+        final double r = FastMath.sqrt(-2 * FastMath.log(y));
+        random = r * FastMath.cos(alpha);
+        nextGaussian = r * FastMath.sin(alpha);
+    } else {
+        // use the second element of the pair already generated
+        random = nextGaussian;
+        nextGaussian = Double.NaN;
+    }
+    return random;
+}","public void test2324() throws Throwable {
+    MersenneTwister mersenneTwister0 = new MersenneTwister();
+    double double0 = mersenneTwister0.nextGaussian();
+    assertEquals((-0.05019949134629049), double0, 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public double nextGaussian() {
+    final double random;
+    if (Double.isNaN(nextGaussian)) {
+        // generate a new pair of gaussian numbers
+        final double x = nextDouble();
+        final double y = nextDouble();
+        final double alpha = 2 * FastMath.PI * x;
+        final double r = FastMath.sqrt(-2 * FastMath.log(y));
+        random = r * FastMath.cos(alpha);
+        nextGaussian = r * FastMath.sin(alpha);
+    } else {
+        // use the second element of the pair already generated
+        random = nextGaussian;
+        nextGaussian = Double.NaN;
+    }
+    return random;
+}","public void test2325() throws Throwable {
+    MersenneTwister mersenneTwister0 = new MersenneTwister();
+    double double0 = mersenneTwister0.nextGaussian();
+    double double1 = mersenneTwister0.nextGaussian();
+    assertEquals(0.5100163916463146, double1, 0.01);
+}","/**
+ * {@inheritDoc}
+ */"
+"public void nextBytes(byte[] bytes) {
+    int i = 0;
+    final int iEnd = bytes.length - 3;
+    while (i < iEnd) {
+        final int random = next(32);
+        bytes[i] = (byte) (random & 0xff);
+        bytes[i + 1] = (byte) ((random >> 8) & 0xff);
+        bytes[i + 2] = (byte) ((random >> 16) & 0xff);
+        bytes[i + 3] = (byte) ((random >> 24) & 0xff);
+        i += 4;
+    }
+    int random = next(32);
+    while (i < bytes.length) {
+        bytes[i++] = (byte) (random & 0xff);
+        random = random >> 8;
+    }
+}","public void test2426() throws Throwable {
+    Well44497b well44497b0 = new Well44497b(0L);
+    byte[] byteArray0 = new byte[5];
+    well44497b0.nextBytes(byteArray0);
+    assertArrayEquals(new byte[] { (byte) 75, (byte) 103, (byte) (-84), (byte) 57, (byte) (-48) }, byteArray0);
+}","/**
+ * {@inheritDoc}
+ */"
+"public long nextLong() {
+    final long high = ((long) next(32)) << 32;
+    final long low = ((long) next(32)) & 0xffffffffL;
+    return high | low;
+}","public void test2427() throws Throwable {
+    Well44497b well44497b0 = new Well44497b(0L);
+    byte[] byteArray0 = new byte[5];
+    well44497b0.nextBytes(byteArray0);
+    long long0 = well44497b0.nextLong();
+    assertEquals(5747328870099210361L, long0);
+}","/**
+ * {@inheritDoc}
+ */"
+"public boolean nextBoolean() {
+    return next(1) != 0;
+}","public void test2428() throws Throwable {
+    Well44497b well44497b0 = new Well44497b(0L);
+    byte[] byteArray0 = new byte[5];
+    well44497b0.nextBytes(byteArray0);
+    long long0 = well44497b0.nextLong();
+    boolean boolean0 = well44497b0.nextBoolean();
+    assertTrue(boolean0);
+}","/**
+ * {@inheritDoc}
+ */"
+"public boolean nextBoolean() {
+    return next(1) != 0;
+}","public void test2529() throws Throwable {
+    Well44497b well44497b0 = new Well44497b(0L);
+    boolean boolean0 = well44497b0.nextBoolean();
+    assertFalse(boolean0);
+}","/**
+ * {@inheritDoc}
+ */"
+"public float nextFloat() {
+    return next(23) * 0x1.0p-23f;
+}","public void test2630() throws Throwable {
+    MersenneTwister mersenneTwister0 = new MersenneTwister((-734));
+    float float0 = mersenneTwister0.nextFloat();
+    assertEquals(0.53628373F, float0, 0.01F);
+}","/**
+ * {@inheritDoc}
+ */"
+"public int nextInt() {
+    return next(32);
+}","public void test2731() throws Throwable {
+    MersenneTwister mersenneTwister0 = new MersenneTwister();
+    int int0 = mersenneTwister0.nextInt();
+    assertEquals(1140807170, int0);
+}","/**
+ * {@inheritDoc}
+ */"
+"public int nextInt(int n) throws IllegalArgumentException {
+    if (n > 0) {
+        if ((n & -n) == n) {
+            return (int) ((n * (long) next(31)) >> 31);
+        }
+        int bits;
+        int val;
+        do {
+            bits = next(31);
+            val = bits % n;
+        } while (bits - val + (n - 1) < 0);
+        return val;
+    }
+    throw new NotStrictlyPositiveException(n);
+}","public void test2732() throws Throwable {
+    MersenneTwister mersenneTwister0 = new MersenneTwister();
+    int int0 = mersenneTwister0.nextInt();
+    int int1 = mersenneTwister0.nextInt(1140807170);
+    assertEquals(157004938, int1);
+}","/**
+ * {@inheritDoc}
+ * <p>This default implementation is copied from Apache Harmony
+ * java.util.Random (r929253).</p>
+ *
+ * <p>Implementation notes: <ul>
+ * <li>If n is a power of 2, this method returns
+ * {@code (int) ((n * (long) next(31)) >> 31)}.</li>
+ *
+ * <li>If n is not a power of 2, what is returned is {@code next(31) % n}
+ * with {@code next(31)} values rejected (i.e. regenerated) until a
+ * value that is larger than the remainder of {@code Integer.MAX_VALUE / n}
+ * is generated. Rejection of this initial segment is necessary to ensure
+ * a uniform distribution.</li></ul></p>
+ */"
+"public double nextDouble() {
+    final long high = ((long) next(26)) << 26;
+    final int low = next(26);
+    return (high | low) * 0x1.0p-52d;
+}","public void test2833() throws Throwable {
+    MersenneTwister mersenneTwister0 = new MersenneTwister((-734));
+    double double0 = mersenneTwister0.nextDouble();
+    assertEquals(0.5362838158552343, double0, 0.01);
+}","/**
+ * {@inheritDoc}
+ */"

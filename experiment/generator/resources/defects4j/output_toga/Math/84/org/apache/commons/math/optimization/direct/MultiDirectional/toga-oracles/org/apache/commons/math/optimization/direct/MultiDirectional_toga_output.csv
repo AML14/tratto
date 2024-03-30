@@ -1,0 +1,67 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test00,"public void test00() throws Throwable {
+    MultiDirectional multiDirectional0 = new MultiDirectional(0.0, 1.1102230246251565E-14);
+    multiDirectional0.setMaxIterations((-2143));
+    try {
+        multiDirectional0.iterateSimplex((Comparator<RealPointValuePair>) null);
+        fail(""Expecting exception: Exception"");
+    } catch (Exception e) {
+        //
+        // org.evosuite.runtime.mock.java.lang.MockThrowable: Maximal number of iterations (-2,143) exceeded
+        //
+        verifyException(""org.apache.commons.math.optimization.direct.DirectSearchOptimizer"", e);
+    }
+}",0,
+project,0,test11,"public void test11() throws Throwable {
+    MultiDirectional multiDirectional0 = new MultiDirectional();
+    RealPointValuePair[] realPointValuePairArray0 = new RealPointValuePair[1];
+    double[] doubleArray0 = new double[2];
+    RealPointValuePair realPointValuePair0 = new RealPointValuePair(doubleArray0, (-4225.05309));
+    realPointValuePairArray0[0] = realPointValuePair0;
+    multiDirectional0.simplex = realPointValuePairArray0;
+    Comparator<RealPointValuePair> comparator0 = (Comparator<RealPointValuePair>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    // Undeclared exception!
+    try {
+        multiDirectional0.iterateSimplex(comparator0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test22,"public void test22() throws Throwable {
+    MultiDirectional multiDirectional0 = new MultiDirectional();
+    double[] doubleArray0 = new double[5];
+    doubleArray0[0] = (double) 306;
+    MultivariateVectorialFunction multivariateVectorialFunction0 = mock(MultivariateVectorialFunction.class, new ViolatedAssumptionAnswer());
+    doReturn((Object) doubleArray0, (Object) doubleArray0, (Object) doubleArray0, (Object) doubleArray0, (Object) doubleArray0).when(multivariateVectorialFunction0).value(any(double[].class));
+    LeastSquaresConverter leastSquaresConverter0 = new LeastSquaresConverter(multivariateVectorialFunction0, doubleArray0);
+    GoalType goalType0 = GoalType.MAXIMIZE;
+    // Undeclared exception!
+    multiDirectional0.optimize(leastSquaresConverter0, goalType0, doubleArray0);
+}",1,
+project,0,test33,"public void test33() throws Throwable {
+    MultiDirectional multiDirectional0 = new MultiDirectional((-163.956534124), (-163.956534124));
+    Comparator<RealPointValuePair> comparator0 = (Comparator<RealPointValuePair>) mock(Comparator.class, new ViolatedAssumptionAnswer());
+    // Undeclared exception!
+    try {
+        multiDirectional0.iterateSimplex(comparator0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.optimization.direct.MultiDirectional"", e);
+    }
+}",0,
+project,0,test44,"public void test44() throws Throwable {
+    MultiDirectional multiDirectional0 = new MultiDirectional();
+    double[] doubleArray0 = new double[5];
+    MultivariateVectorialFunction multivariateVectorialFunction0 = mock(MultivariateVectorialFunction.class, new ViolatedAssumptionAnswer());
+    doReturn((Object) doubleArray0, (Object) doubleArray0, (Object) doubleArray0, (Object) doubleArray0, (Object) doubleArray0).when(multivariateVectorialFunction0).value(any(double[].class));
+    LeastSquaresConverter leastSquaresConverter0 = new LeastSquaresConverter(multivariateVectorialFunction0, doubleArray0);
+    GoalType goalType0 = GoalType.MAXIMIZE;
+    // Undeclared exception!
+    multiDirectional0.optimize(leastSquaresConverter0, goalType0, doubleArray0);
+}",1,

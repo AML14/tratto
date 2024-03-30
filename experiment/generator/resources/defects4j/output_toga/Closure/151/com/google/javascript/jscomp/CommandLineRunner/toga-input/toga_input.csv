@@ -1,0 +1,129 @@
+focal_method,test_prefix,docstring
+"public boolean shouldRunCompiler() {
+    return this.isConfigValid;
+}","public void test00() throws Throwable {
+    String[] stringArray0 = new String[0];
+    CommandLineRunner commandLineRunner0 = new CommandLineRunner(stringArray0);
+    commandLineRunner0.createCompiler();
+    assertTrue(commandLineRunner0.shouldRunCompiler());
+}","/**
+ * @return Whether the configuration is valid.
+ */"
+"public static void main(String[] args) {
+    CommandLineRunner runner = new CommandLineRunner(args);
+    if (runner.shouldRunCompiler()) {
+        runner.run();
+    } else {
+        System.exit(-1);
+    }
+}","public void test11() throws Throwable {
+    String[] stringArray0 = new String[0];
+    // Undeclared exception!
+    try {
+        CommandLineRunner.main(stringArray0);
+        fail(""Expecting exception: System.SystemExitException"");
+    } catch (System.SystemExitException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.System"", e);
+    }
+}","/**
+ * Runs the Compiler. Exits cleanly in the event of an error.
+ */"
+"public boolean shouldRunCompiler() {
+    return this.isConfigValid;
+}","public void test22() throws Throwable {
+    String[] stringArray0 = new String[0];
+    CommandLineRunner commandLineRunner0 = new CommandLineRunner(stringArray0, (PrintStream) null, (PrintStream) null);
+    assertTrue(commandLineRunner0.shouldRunCompiler());
+}","/**
+ * @return Whether the configuration is valid.
+ */"
+"public static void main(String[] args) {
+    CommandLineRunner runner = new CommandLineRunner(args);
+    if (runner.shouldRunCompiler()) {
+        runner.run();
+    } else {
+        System.exit(-1);
+    }
+}","public void test33() throws Throwable {
+    String[] stringArray0 = new String[2];
+    stringArray0[0] = ""w3c_event3.js"";
+    stringArray0[1] = ""w3c_event3.js"";
+    // Undeclared exception!
+    try {
+        CommandLineRunner.main(stringArray0);
+        fail(""Expecting exception: System.SystemExitException"");
+    } catch (System.SystemExitException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.evosuite.runtime.System"", e);
+    }
+}","/**
+ * Runs the Compiler. Exits cleanly in the event of an error.
+ */"
+"protected CommandLineRunner(String[] args) {
+    super();
+    initConfigFromFlags(args, System.err);
+}","public void test44() throws Throwable {
+    String[] stringArray0 = new String[10];
+    stringArray0[0] = ""--A="";
+    CommandLineRunner commandLineRunner0 = null;
+    try {
+        commandLineRunner0 = new CommandLineRunner(stringArray0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // No match found
+        //
+        verifyException(""java.util.regex.Matcher"", e);
+    }
+}","/**
+ * Create a new command-line runner. You should only need to call
+ * the constructor if you're extending this class. Otherwise, the main
+ * method should instantiate it.
+ */"
+"@Override
+protected CompilerOptions createOptions() {
+    CompilerOptions options = new CompilerOptions();
+    options.setCodingConvention(new ClosureCodingConvention());
+    CompilationLevel level = flags.compilation_level;
+    level.setOptionsForCompilationLevel(options);
+    if (flags.debug) {
+        level.setDebugOptionsForCompilationLevel(options);
+    }
+    WarningLevel wLevel = flags.warning_level;
+    wLevel.setOptionsForWarningLevel(options);
+    for (FormattingOption formattingOption : flags.formatting) {
+        formattingOption.applyToOptions(options);
+    }
+    options.closurePass = flags.process_closure_primitives;
+    return options;
+}","public void test55() throws Throwable {
+    String[] stringArray0 = new String[0];
+    CommandLineRunner commandLineRunner0 = new CommandLineRunner(stringArray0);
+    CompilerOptions compilerOptions0 = commandLineRunner0.createOptions();
+    assertFalse(compilerOptions0.generatePseudoNames);
+}",""
+"@Override
+protected List<JSSourceFile> createExterns() throws FlagUsageException, IOException {
+    List<JSSourceFile> externs = super.createExterns();
+    if (flags.use_only_custom_externs || isInTestMode()) {
+        return externs;
+    } else {
+        List<JSSourceFile> defaultExterns = getDefaultExterns();
+        defaultExterns.addAll(externs);
+        return defaultExterns;
+    }
+}","public void test66() throws Throwable {
+    String[] stringArray0 = new String[0];
+    CommandLineRunner commandLineRunner0 = new CommandLineRunner(stringArray0);
+    Supplier<List<JSSourceFile>> supplier0 = (Supplier<List<JSSourceFile>>) mock(Supplier.class, new ViolatedAssumptionAnswer());
+    doReturn((Object) null).when(supplier0).get();
+    Function<Integer, Boolean> function0 = (Function<Integer, Boolean>) mock(Function.class, new ViolatedAssumptionAnswer());
+    commandLineRunner0.enableTestMode(supplier0, supplier0, (Supplier<List<JSModule>>) null, function0);
+    List<JSSourceFile> list0 = commandLineRunner0.createExterns();
+    assertNull(list0);
+}",""

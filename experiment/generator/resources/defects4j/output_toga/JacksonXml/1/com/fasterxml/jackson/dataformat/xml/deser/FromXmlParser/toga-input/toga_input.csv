@@ -1,0 +1,30 @@
+focal_method,test_prefix,docstring
+"/*
+    /**********************************************************
+    /* Life-cycle
+    /**********************************************************
+     */
+public FromXmlParser(IOContext ctxt, int genericParserFeatures, int xmlFeatures, ObjectCodec codec, XMLStreamReader xmlReader) {
+    super(genericParserFeatures);
+    _formatFeatures = xmlFeatures;
+    _ioContext = ctxt;
+    _objectCodec = codec;
+    _parsingContext = XmlReadContext.createRootContext(-1, -1);
+    // and thereby start a scope
+    _nextToken = JsonToken.START_OBJECT;
+    _xmlTokens = new XmlTokenStream(xmlReader, ctxt.getSourceReference());
+}","public void test00() throws Throwable {
+    BufferRecycler bufferRecycler0 = new BufferRecycler();
+    IOContext iOContext0 = new IOContext(bufferRecycler0, bufferRecycler0, true);
+    StreamReaderDelegate streamReaderDelegate0 = new StreamReaderDelegate();
+    FromXmlParser fromXmlParser0 = null;
+    try {
+        fromXmlParser0 = new FromXmlParser(iOContext0, 1, 0, (ObjectCodec) null, streamReaderDelegate0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""javax.xml.stream.util.StreamReaderDelegate"", e);
+    }
+}",""

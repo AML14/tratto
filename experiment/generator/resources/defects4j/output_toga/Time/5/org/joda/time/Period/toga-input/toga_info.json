@@ -1,0 +1,1346 @@
+{
+  "test07681" : {
+    "methodSignature" : "public static Period parse(String str, PeriodFormatter formatter)",
+    "methodName" : "parse",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test07681() throws Throwable {\n    PeriodPrinter periodPrinter0 = mock(PeriodPrinter.class, new ViolatedAssumptionAnswer());\n    PeriodFormatter periodFormatter0 = new PeriodFormatter(periodPrinter0, (PeriodParser) null);\n    Period.parse(\"q9@x}Ih6UM[t5o'F\", periodFormatter0);\n}",
+    "testName" : "test07681"
+  },
+  "test0000" : {
+    "methodSignature" : "public Period normalizedStandard(PeriodType type)",
+    "methodName" : "normalizedStandard",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0000() throws Throwable {\n    PeriodType periodType0 = PeriodType.months();\n    Period period0 = Period.days(12);\n    Period period1 = period0.minusMonths(83);\n    period1.normalizedStandard(periodType0);\n}",
+    "testName" : "test0000"
+  },
+  "test0088" : {
+    "methodSignature" : "public int getDays()",
+    "methodName" : "getDays",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0088() throws Throwable {\n    ISOChronology iSOChronology0 = ISOChronology.getInstance();\n    Period period0 = new Period((Object) null, iSOChronology0);\n    Period period1 = period0.minusMinutes(30);\n    Days days0 = period1.toStandardDays();\n    days0.getDays();\n}",
+    "testName" : "test0088"
+  },
+  "test118124" : {
+    "methodSignature" : "public Period plusYears(int years)",
+    "methodName" : "plusYears",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test118124() throws Throwable {\n    Days days0 = Days.SEVEN;\n    Duration duration0 = days0.toStandardDuration();\n    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;\n    DateTime dateTime0 = new DateTime((DateTimeZone) fixedDateTimeZone0);\n    PeriodType periodType0 = PeriodType.minutes();\n    Period period0 = duration0.toPeriodFrom((ReadableInstant) dateTime0, periodType0);\n    period0.plusYears(1203);\n}",
+    "testName" : "test118124"
+  },
+  "test0089" : {
+    "methodSignature" : "public Days toStandardDays()",
+    "methodName" : "toStandardDays",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0089() throws Throwable {\n    ISOChronology iSOChronology0 = ISOChronology.getInstance();\n    Period period0 = new Period((Object) null, iSOChronology0);\n    Period period1 = period0.minusMinutes(30);\n    Days days0 = period1.toStandardDays();\n}",
+    "testName" : "test0089"
+  },
+  "test06873" : {
+    "methodSignature" : "public Period plusMonths(int months)",
+    "methodName" : "plusMonths",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test06873() throws Throwable {\n    PeriodType periodType0 = PeriodType.millis();\n    Period period0 = new Period(0L, 0L, periodType0);\n    PeriodType.MONTH_INDEX = 61;\n    period0.plusMonths(61);\n}",
+    "testName" : "test06873"
+  },
+  "test04851" : {
+    "methodSignature" : "public Period withMinutes(int minutes)",
+    "methodName" : "withMinutes",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test04851() throws Throwable {\n    PeriodType periodType0 = PeriodType.yearWeekDay();\n    Period period0 = new Period((-1050L), periodType0);\n    period0.withMinutes(892);\n}",
+    "testName" : "test04851"
+  },
+  "test141147" : {
+    "methodSignature" : "public Seconds toStandardSeconds()",
+    "methodName" : "toStandardSeconds",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test141147() throws Throwable {\n    Period period0 = new Period();\n    Period period1 = period0.plusDays(2527);\n    Period period2 = period1.multipliedBy(2527);\n    period2.toStandardSeconds();\n}",
+    "testName" : "test141147"
+  },
+  "test135141" : {
+    "methodSignature" : "public Period(ReadablePartial start, ReadablePartial end)",
+    "methodName" : "Period",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test135141() throws Throwable {\n    LocalDateTime localDateTime0 = new LocalDateTime((Chronology) null);\n    Period period0 = new Period(localDateTime0, localDateTime0);\n}",
+    "testName" : "test135141"
+  },
+  "test08893" : {
+    "methodSignature" : "public Period minusMonths(int months)",
+    "methodName" : "minusMonths",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test08893() throws Throwable {\n    MockDate mockDate0 = new MockDate();\n    LocalDateTime localDateTime0 = LocalDateTime.fromDateFields(mockDate0);\n    PeriodType periodType0 = PeriodType.millis();\n    Period period0 = new Period(localDateTime0, localDateTime0, periodType0);\n    period0.minusMonths(1);\n}",
+    "testName" : "test08893"
+  },
+  "test05661" : {
+    "methodSignature" : "public Weeks toStandardWeeks()",
+    "methodName" : "toStandardWeeks",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test05661() throws Throwable {\n    Period period0 = Period.millis((-5326));\n    PeriodType.MONTH_INDEX = 3140;\n    period0.toStandardWeeks();\n}",
+    "testName" : "test05661"
+  },
+  "test01214" : {
+    "methodSignature" : "public Period withDays(int days)",
+    "methodName" : "withDays",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test01214() throws Throwable {\n    Duration duration0 = Duration.ZERO;\n    Period period0 = duration0.toPeriod();\n    Period period1 = period0.withDays(1500);\n}",
+    "testName" : "test01214"
+  },
+  "test097102" : {
+    "methodSignature" : "public Period minus(ReadablePeriod period)",
+    "methodName" : "minus",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test097102() throws Throwable {\n    PeriodType periodType0 = PeriodType.standard();\n    Period period0 = new Period((-1783), (-1783), (-990), (-1783), (-1783), (-1083), 805, 1783, periodType0);\n    PeriodType.MINUTE_INDEX = 3514;\n    period0.ZERO.minus(period0);\n}",
+    "testName" : "test097102"
+  },
+  "test03638" : {
+    "methodSignature" : "public int getHours()",
+    "methodName" : "getHours",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test03638() throws Throwable {\n    LocalTime localTime0 = new LocalTime(0L);\n    Period period0 = new Period(localTime0, localTime0, (PeriodType) null);\n    Period period1 = period0.withHours(174);\n    Period period2 = period1.ZERO.minus(period1);\n    int int0 = period2.getHours();\n}",
+    "testName" : "test03638"
+  },
+  "test174181" : {
+    "methodSignature" : "public static Period parse(String str)",
+    "methodName" : "parse",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test174181() throws Throwable {\n    Period.parse(\"Positive hours must not have negative minutes: \");\n}",
+    "testName" : "test174181"
+  },
+  "test129135" : {
+    "methodSignature" : "public Period(Object period, PeriodType type)",
+    "methodName" : "Period",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test129135() throws Throwable {\n    PeriodType periodType0 = PeriodType.hours();\n    Period period0 = new Period((Object) null, periodType0);\n}",
+    "testName" : "test129135"
+  },
+  "test04447" : {
+    "methodSignature" : "public Period withPeriodType(PeriodType type)",
+    "methodName" : "withPeriodType",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test04447() throws Throwable {\n    int[] intArray0 = new int[3];\n    PeriodType periodType0 = new PeriodType(\"7ht\", (DurationFieldType[]) null, intArray0);\n    Period period0 = new Period(15271875, (-207), 1, (-1115), 292271022, (-207), 4082, (-207));\n    period0.withPeriodType(periodType0);\n}",
+    "testName" : "test04447"
+  },
+  "test02426" : {
+    "methodSignature" : "public int getYears()",
+    "methodName" : "getYears",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test02426() throws Throwable {\n    Period period0 = new Period(26, (-1071), 1467, 12, 907, 139, 139, 12, (PeriodType) null);\n    int int0 = period0.getYears();\n}",
+    "testName" : "test02426"
+  },
+  "test01618" : {
+    "methodSignature" : "public int getMinutes()",
+    "methodName" : "getMinutes",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test01618() throws Throwable {\n    Period period0 = Period.minutes(648);\n    Period period1 = period0.plusDays((-2241));\n    Minutes minutes0 = period1.toStandardMinutes();\n    minutes0.getMinutes();\n}",
+    "testName" : "test01618"
+  },
+  "test146152" : {
+    "methodSignature" : "public Period plusDays(int days)",
+    "methodName" : "plusDays",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test146152() throws Throwable {\n    ISOChronology iSOChronology0 = ISOChronology.getInstance();\n    Period period0 = new Period((Object) null, iSOChronology0);\n    Period period1 = period0.plusDays(0);\n}",
+    "testName" : "test146152"
+  },
+  "test130136" : {
+    "methodSignature" : "public int getDays()",
+    "methodName" : "getDays",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test130136() throws Throwable {\n    LocalTime localTime0 = new LocalTime(0L);\n    Period period0 = new Period(localTime0, localTime0, (PeriodType) null);\n    int int0 = period0.getDays();\n}",
+    "testName" : "test130136"
+  },
+  "test113118" : {
+    "methodSignature" : "public boolean equals(Object period)",
+    "methodName" : "equals",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test113118() throws Throwable {\n    Duration duration0 = Duration.standardMinutes(60L);\n    PeriodType periodType0 = PeriodType.yearMonthDayTime();\n    Period period0 = duration0.toPeriod(periodType0);\n    Period period1 = period0.normalizedStandard(periodType0);\n    period1.equals((Object) period0);\n}",
+    "testName" : "test113118"
+  },
+  "test06065" : {
+    "methodSignature" : "public Hours toStandardHours()",
+    "methodName" : "toStandardHours",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test06065() throws Throwable {\n    Period period0 = new Period(3600000L, 3600000L);\n    Period period1 = period0.minusYears(7593750);\n    Period period2 = period1.plusMonths(0);\n    period2.toStandardHours();\n}",
+    "testName" : "test06065"
+  },
+  "test09297" : {
+    "methodSignature" : "public Period minusMillis(int millis)",
+    "methodName" : "minusMillis",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test09297() throws Throwable {\n    PeriodType periodType0 = PeriodType.minutes();\n    Period period0 = new Period((-4510L), 0L, periodType0);\n    period0.minusMillis(1);\n}",
+    "testName" : "test09297"
+  },
+  "test115121" : {
+    "methodSignature" : "public Period plusMillis(int millis)",
+    "methodName" : "plusMillis",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test115121() throws Throwable {\n    Period period0 = Period.seconds(2096);\n    Period period1 = period0.plusMillis(0);\n}",
+    "testName" : "test115121"
+  },
+  "test183191" : {
+    "methodSignature" : "public Period withMinutes(int minutes)",
+    "methodName" : "withMinutes",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test183191() throws Throwable {\n    Duration duration0 = Duration.standardDays(86400L);\n    PeriodType periodType0 = PeriodType.yearDayTime();\n    Period period0 = duration0.toPeriodTo((ReadableInstant) null, periodType0);\n    Period period1 = period0.withMinutes(0);\n}",
+    "testName" : "test183191"
+  },
+  "test08085" : {
+    "methodSignature" : "public Period normalizedStandard(PeriodType type)",
+    "methodName" : "normalizedStandard",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test08085() throws Throwable {\n    Period period0 = Period.months(8);\n    PeriodType periodType0 = PeriodType.yearMonthDay();\n    PeriodType.SECOND_INDEX = 8;\n    period0.normalizedStandard(periodType0);\n}",
+    "testName" : "test08085"
+  },
+  "test0011" : {
+    "methodSignature" : "public long getMillis()",
+    "methodName" : "getMillis",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0011() throws Throwable {\n    Period period0 = Period.minutes(648);\n    Period period1 = period0.plusDays((-2241));\n    Duration duration0 = period1.toStandardDuration();\n    duration0.getMillis();\n}",
+    "testName" : "test0011"
+  },
+  "test03234" : {
+    "methodSignature" : "public int getMinutes()",
+    "methodName" : "getMinutes",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test03234() throws Throwable {\n    PeriodType periodType0 = PeriodType.standard();\n    Period period0 = new Period((-1783), (-1783), (-990), (-1783), (-1783), (-1083), 805, (-1083), periodType0);\n    int int0 = period0.getMinutes();\n}",
+    "testName" : "test03234"
+  },
+  "test06469" : {
+    "methodSignature" : "public Days toStandardDays()",
+    "methodName" : "toStandardDays",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test06469() throws Throwable {\n    Period period0 = new Period((-41), (-3005), (-3005), (-41), (-3005), (-230), (-230), (-230));\n    Period period1 = period0.ZERO.withWeeks(317351877);\n    period1.toStandardDays();\n}",
+    "testName" : "test06469"
+  },
+  "test138144" : {
+    "methodSignature" : "public boolean equals(Object period)",
+    "methodName" : "equals",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test138144() throws Throwable {\n    Period period0 = Period.months(8);\n    Period period1 = period0.normalizedStandard();\n    period1.equals((Object) period0);\n}",
+    "testName" : "test138144"
+  },
+  "test07277" : {
+    "methodSignature" : "public Period plusHours(int hours)",
+    "methodName" : "plusHours",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test07277() throws Throwable {\n    Period period0 = Period.minutes(648);\n    PeriodType.HOUR_INDEX = 4289;\n    period0.plusHours(648);\n}",
+    "testName" : "test07277"
+  },
+  "test04043" : {
+    "methodSignature" : "public Period withWeeks(int weeks)",
+    "methodName" : "withWeeks",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test04043() throws Throwable {\n    Duration duration0 = Duration.standardMinutes(60L);\n    PeriodType periodType0 = PeriodType.yearMonthDayTime();\n    Period period0 = duration0.toPeriod(periodType0);\n    period0.withWeeks((-1));\n}",
+    "testName" : "test04043"
+  },
+  "test08489" : {
+    "methodSignature" : "public Period minusYears(int years)",
+    "methodName" : "minusYears",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test08489() throws Throwable {\n    Period period0 = Period.seconds((-5051));\n    PeriodType.YEAR_INDEX = (-5051);\n    period0.ZERO.minusYears(1574);\n}",
+    "testName" : "test08489"
+  },
+  "test102107" : {
+    "methodSignature" : "public int getMillis()",
+    "methodName" : "getMillis",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test102107() throws Throwable {\n    Period period0 = new Period((-41), (-3005), (-3005), (-41), (-3005), (-230), (-4053), (-230));\n    PeriodType.MILLI_INDEX = 17;\n    period0.ZERO.getMillis();\n}",
+    "testName" : "test102107"
+  },
+  "test05255" : {
+    "methodSignature" : "public Period withHours(int hours)",
+    "methodName" : "withHours",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test05255() throws Throwable {\n    Period period0 = Period.hours(0);\n    PeriodType.HOUR_INDEX = (-2094);\n    period0.withHours(8);\n}",
+    "testName" : "test05255"
+  },
+  "test121127" : {
+    "methodSignature" : "public Period plusHours(int hours)",
+    "methodName" : "plusHours",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test121127() throws Throwable {\n    Hours hours0 = Hours.SIX;\n    Days days0 = hours0.toStandardDays();\n    PeriodType periodType0 = days0.getPeriodType();\n    Period period0 = new Period(4540L, periodType0);\n    period0.plusHours(2025);\n}",
+    "testName" : "test121127"
+  },
+  "test157163" : {
+    "methodSignature" : "public static Period fieldDifference(ReadablePartial start, ReadablePartial end)",
+    "methodName" : "fieldDifference",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test157163() throws Throwable {\n    YearMonth yearMonth0 = new YearMonth(0L);\n    MonthDay monthDay0 = new MonthDay();\n    Period.fieldDifference(yearMonth0, monthDay0);\n}",
+    "testName" : "test157163"
+  },
+  "test02022" : {
+    "methodSignature" : "public long getStandardSeconds()",
+    "methodName" : "getStandardSeconds",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test02022() throws Throwable {\n    Period period0 = Period.ZERO;\n    Period period1 = period0.plusWeeks((-2230));\n    Duration duration0 = period1.toStandardDuration();\n    duration0.getStandardSeconds();\n}",
+    "testName" : "test02022"
+  },
+  "test02931" : {
+    "methodSignature" : "public int getSeconds()",
+    "methodName" : "getSeconds",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test02931() throws Throwable {\n    Period period0 = new Period((-3624), 10, (-2171), (-3624));\n    int int0 = period0.getSeconds();\n}",
+    "testName" : "test02931"
+  },
+  "test107112" : {
+    "methodSignature" : "public Period(Object period)",
+    "methodName" : "Period",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test107112() throws Throwable {\n    Integer integer0 = new Integer((-1976));\n    Period period0 = null;\n    period0 = new Period((Object) integer0);\n}",
+    "testName" : "test107112"
+  },
+  "test110115" : {
+    "methodSignature" : "public Period(long duration)",
+    "methodName" : "Period",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test110115() throws Throwable {\n    Period period0 = null;\n    period0 = new Period(1000000000000000000L);\n}",
+    "testName" : "test110115"
+  },
+  "test00910" : {
+    "methodSignature" : "public Weeks toStandardWeeks()",
+    "methodName" : "toStandardWeeks",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test00910() throws Throwable {\n    Period period0 = new Period();\n    Period period1 = period0.plusDays(2527);\n    Period period2 = period1.plusSeconds(2527);\n    Weeks weeks0 = period2.toStandardWeeks();\n}",
+    "testName" : "test00910"
+  },
+  "test04952" : {
+    "methodSignature" : "public Period withMinutes(int minutes)",
+    "methodName" : "withMinutes",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test04952() throws Throwable {\n    PeriodType periodType0 = PeriodType.yearMonthDayTime();\n    Period period0 = new Period(513, 0, 0, 513, 0, 0, 513, 0, periodType0);\n    PeriodType.MINUTE_INDEX = 12;\n    period0.ZERO.withMinutes((-550));\n}",
+    "testName" : "test04952"
+  },
+  "test00911" : {
+    "methodSignature" : "public int getWeeks()",
+    "methodName" : "getWeeks",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test00911() throws Throwable {\n    Period period0 = new Period();\n    Period period1 = period0.plusDays(2527);\n    Period period2 = period1.plusSeconds(2527);\n    Weeks weeks0 = period2.toStandardWeeks();\n    weeks0.getWeeks();\n}",
+    "testName" : "test00911"
+  },
+  "test126132" : {
+    "methodSignature" : "public Period minusHours(int hours)",
+    "methodName" : "minusHours",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test126132() throws Throwable {\n    CopticChronology copticChronology0 = CopticChronology.getInstanceUTC();\n    DateTime dateTime0 = DateTime.now((Chronology) copticChronology0);\n    PeriodType periodType0 = PeriodType.minutes();\n    Period period0 = new Period(dateTime0, dateTime0, periodType0);\n    period0.minusHours((-1522));\n}",
+    "testName" : "test126132"
+  },
+  "test163169" : {
+    "methodSignature" : "public Period normalizedStandard()",
+    "methodName" : "normalizedStandard",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test163169() throws Throwable {\n    Period period0 = new Period((-41), (-3005), (-3005), (-41), (-3005), (-230), (-230), (-230));\n    Period period1 = period0.normalizedStandard();\n}",
+    "testName" : "test163169"
+  },
+  "test149155" : {
+    "methodSignature" : "public Period plus(ReadablePeriod period)",
+    "methodName" : "plus",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test149155() throws Throwable {\n    Duration duration0 = Duration.standardDays(86400L);\n    Minutes minutes0 = duration0.toStandardMinutes();\n    PeriodType periodType0 = PeriodType.yearDayTime();\n    Period period0 = duration0.toPeriodTo((ReadableInstant) null, periodType0);\n    Period period1 = period0.plus(minutes0);\n}",
+    "testName" : "test149155"
+  },
+  "test152158" : {
+    "methodSignature" : "public Period withFieldAdded(DurationFieldType field, int value)",
+    "methodName" : "withFieldAdded",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test152158() throws Throwable {\n    ISOChronology iSOChronology0 = ISOChronology.getInstance();\n    Period period0 = new Period((Object) null, iSOChronology0);\n    Years years0 = Years.MIN_VALUE;\n    DurationFieldType durationFieldType0 = years0.getFieldType();\n    Period period1 = period0.withFieldAdded(durationFieldType0, (-420));\n}",
+    "testName" : "test152158"
+  },
+  "test133139" : {
+    "methodSignature" : "public Period(long duration, PeriodType type, Chronology chronology)",
+    "methodName" : "Period",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test133139() throws Throwable {\n    Period period0 = new Period(843L, (PeriodType) null, (Chronology) null);\n}",
+    "testName" : "test133139"
+  },
+  "test168175" : {
+    "methodSignature" : "public Period normalizedStandard(PeriodType type)",
+    "methodName" : "normalizedStandard",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test168175() throws Throwable {\n    Hours hours0 = Hours.TWO;\n    Duration duration0 = hours0.toStandardDuration();\n    Period period0 = duration0.toPeriod();\n    Period period1 = period0.plusMonths(2);\n    PeriodType periodType0 = PeriodType.yearDayTime();\n    period1.normalizedStandard(periodType0);\n}",
+    "testName" : "test168175"
+  },
+  "test06570" : {
+    "methodSignature" : "public Period plusYears(int years)",
+    "methodName" : "plusYears",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test06570() throws Throwable {\n    Period period0 = Period.minutes(648);\n    PeriodType.YEAR_INDEX = 4289;\n    period0.plusYears((-2241));\n}",
+    "testName" : "test06570"
+  },
+  "test08590" : {
+    "methodSignature" : "public Period minusWeeks(int weeks)",
+    "methodName" : "minusWeeks",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test08590() throws Throwable {\n    LocalTime localTime0 = LocalTime.now();\n    PeriodType periodType0 = PeriodType.time();\n    Period period0 = new Period(localTime0, localTime0, periodType0);\n    period0.minusWeeks(1525);\n}",
+    "testName" : "test08590"
+  },
+  "test171178" : {
+    "methodSignature" : "public Period(ReadableInstant startInstant, ReadableDuration duration)",
+    "methodName" : "Period",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test171178() throws Throwable {\n    Weeks weeks0 = Weeks.ZERO;\n    Duration duration0 = weeks0.toStandardDuration();\n    Period period0 = new Period((ReadableInstant) null, duration0);\n}",
+    "testName" : "test171178"
+  },
+  "test0022" : {
+    "methodSignature" : "public long getMillis()",
+    "methodName" : "getMillis",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0022() throws Throwable {\n    Period period0 = Period.hours(98);\n    Duration duration0 = period0.toStandardDuration();\n    duration0.getMillis();\n}",
+    "testName" : "test0022"
+  },
+  "test116122" : {
+    "methodSignature" : "public Period plusHours(int hours)",
+    "methodName" : "plusHours",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test116122() throws Throwable {\n    ISOChronology iSOChronology0 = ISOChronology.getInstanceUTC();\n    MutablePeriod mutablePeriod0 = new MutablePeriod(3712L, 3712L, iSOChronology0);\n    Period period0 = mutablePeriod0.toPeriod();\n    Period period1 = period0.plusHours(0);\n}",
+    "testName" : "test116122"
+  },
+  "test05762" : {
+    "methodSignature" : "public Seconds toStandardSeconds()",
+    "methodName" : "toStandardSeconds",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test05762() throws Throwable {\n    Period period0 = new Period(60L, 10000000000000000L, (Chronology) null);\n    period0.toStandardSeconds();\n}",
+    "testName" : "test05762"
+  },
+  "test06974" : {
+    "methodSignature" : "public Period plusMinutes(int minutes)",
+    "methodName" : "plusMinutes",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test06974() throws Throwable {\n    PeriodPrinter periodPrinter0 = mock(PeriodPrinter.class, new ViolatedAssumptionAnswer());\n    PeriodParser periodParser0 = mock(PeriodParser.class, new ViolatedAssumptionAnswer());\n    doReturn(0).when(periodParser0).parseInto(any(org.joda.time.ReadWritablePeriod.class), anyString(), anyInt(), any(java.util.Locale.class));\n    PeriodFormatter periodFormatter0 = new PeriodFormatter(periodPrinter0, periodParser0);\n    PeriodType periodType0 = PeriodType.yearMonthDay();\n    PeriodFormatter periodFormatter1 = periodFormatter0.withParseType(periodType0);\n    Period period0 = Period.parse(\"\", periodFormatter1);\n    period0.plusMinutes((-1226));\n}",
+    "testName" : "test06974"
+  },
+  "test137143" : {
+    "methodSignature" : "public boolean equals(Object period)",
+    "methodName" : "equals",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test137143() throws Throwable {\n    Period period0 = new Period();\n    PeriodType periodType0 = PeriodType.yearWeekDay();\n    Period period1 = period0.withYears(137);\n    Period period2 = period1.normalizedStandard(periodType0);\n    period2.equals((Object) period1);\n}",
+    "testName" : "test137143"
+  },
+  "test143149" : {
+    "methodSignature" : "public Period minusMillis(int millis)",
+    "methodName" : "minusMillis",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test143149() throws Throwable {\n    Period period0 = Period.millis(0);\n    Period period1 = period0.minusMillis(0);\n}",
+    "testName" : "test143149"
+  },
+  "test08994" : {
+    "methodSignature" : "public Period minusMonths(int months)",
+    "methodName" : "minusMonths",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test08994() throws Throwable {\n    Period period0 = Period.minutes(163);\n    PeriodType.MONTH_INDEX = 163;\n    period0.ZERO.minusMonths(6);\n}",
+    "testName" : "test08994"
+  },
+  "test154160" : {
+    "methodSignature" : "public Period withField(DurationFieldType field, int value)",
+    "methodName" : "withField",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test154160() throws Throwable {\n    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;\n    ISOChronology iSOChronology0 = ISOChronology.getInstance((DateTimeZone) fixedDateTimeZone0);\n    LenientChronology lenientChronology0 = LenientChronology.getInstance(iSOChronology0);\n    Period period0 = new Period((-870L), (-870L), lenientChronology0);\n    DurationFieldType durationFieldType0 = DurationFieldType.HOURS_TYPE;\n    Period period1 = period0.withField(durationFieldType0, 1000);\n}",
+    "testName" : "test154160"
+  },
+  "test07782" : {
+    "methodSignature" : "public static Period parse(String str, PeriodFormatter formatter)",
+    "methodName" : "parse",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test07782() throws Throwable {\n    Period.parse(\"up$s./(0_%:\", (PeriodFormatter) null);\n}",
+    "testName" : "test07782"
+  },
+  "test122128" : {
+    "methodSignature" : "public Period(Object period)",
+    "methodName" : "Period",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test122128() throws Throwable {\n    Period period0 = new Period((Object) null);\n}",
+    "testName" : "test122128"
+  },
+  "test099104" : {
+    "methodSignature" : "public int getWeeks()",
+    "methodName" : "getWeeks",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test099104() throws Throwable {\n    Period period0 = new Period((-3587L));\n    PeriodType.WEEK_INDEX = 12;\n    period0.getWeeks();\n}",
+    "testName" : "test099104"
+  },
+  "test181189" : {
+    "methodSignature" : "public boolean equals(Object period)",
+    "methodName" : "equals",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test181189() throws Throwable {\n    Period period0 = Period.weeks(0);\n    Period period1 = period0.ZERO.negated();\n    period1.equals((Object) period0);\n}",
+    "testName" : "test181189"
+  },
+  "test176184" : {
+    "methodSignature" : "public Period toPeriod()",
+    "methodName" : "toPeriod",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test176184() throws Throwable {\n    IslamicChronology islamicChronology0 = IslamicChronology.getInstanceUTC();\n    Period period0 = new Period(576L, (Chronology) islamicChronology0);\n    Period period1 = period0.toPeriod();\n}",
+    "testName" : "test176184"
+  },
+  "test03335" : {
+    "methodSignature" : "public int getMillis()",
+    "methodName" : "getMillis",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test03335() throws Throwable {\n    Period period0 = Period.millis(9);\n    int int0 = period0.getMillis();\n}",
+    "testName" : "test03335"
+  },
+  "test02527" : {
+    "methodSignature" : "public int getYears()",
+    "methodName" : "getYears",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test02527() throws Throwable {\n    Period period0 = new Period((-41), (-3005), (-3005), (-41), (-3005), (-230), (-4053), (-230));\n    int int0 = period0.getYears();\n}",
+    "testName" : "test02527"
+  },
+  "test127133" : {
+    "methodSignature" : "public int getYears()",
+    "methodName" : "getYears",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test127133() throws Throwable {\n    Period period0 = Period.hours(839);\n    int int0 = period0.getYears();\n}",
+    "testName" : "test127133"
+  },
+  "test160166" : {
+    "methodSignature" : "public Period plusWeeks(int weeks)",
+    "methodName" : "plusWeeks",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test160166() throws Throwable {\n    LocalTime localTime0 = new LocalTime();\n    Period period0 = Period.fieldDifference(localTime0, localTime0);\n    period0.plusWeeks(24);\n}",
+    "testName" : "test160166"
+  },
+  "test01315" : {
+    "methodSignature" : "public int getWeeks()",
+    "methodName" : "getWeeks",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test01315() throws Throwable {\n    PeriodType periodType0 = PeriodType.yearWeekDay();\n    PeriodType periodType1 = periodType0.withYearsRemoved();\n    Period period0 = new Period(30962844000000L, 31556952000L, periodType1);\n    Weeks weeks0 = period0.toStandardWeeks();\n    weeks0.getWeeks();\n}",
+    "testName" : "test01315"
+  },
+  "test04548" : {
+    "methodSignature" : "public Period withPeriodType(PeriodType type)",
+    "methodName" : "withPeriodType",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test04548() throws Throwable {\n    Period period0 = Period.weeks((-2274));\n    PeriodType periodType0 = PeriodType.days();\n    period0.withPeriodType(periodType0);\n}",
+    "testName" : "test04548"
+  },
+  "test148154" : {
+    "methodSignature" : "public Period plus(ReadablePeriod period)",
+    "methodName" : "plus",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test148154() throws Throwable {\n    PeriodType periodType0 = PeriodType.millis();\n    Period period0 = new Period(0L, 0L, periodType0);\n    Period period1 = period0.ZERO.plus((ReadablePeriod) null);\n}",
+    "testName" : "test148154"
+  },
+  "test03739" : {
+    "methodSignature" : "public int getDays()",
+    "methodName" : "getDays",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test03739() throws Throwable {\n    Period period0 = new Period();\n    Period period1 = period0.plusDays(2527);\n    Period period2 = period1.plusSeconds(2527);\n    int int0 = period2.getDays();\n}",
+    "testName" : "test03739"
+  },
+  "test132138" : {
+    "methodSignature" : "public int getMonths()",
+    "methodName" : "getMonths",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test132138() throws Throwable {\n    Period period0 = Period.minutes((-2229));\n    int int0 = period0.getMonths();\n}",
+    "testName" : "test132138"
+  },
+  "test165171" : {
+    "methodSignature" : "public int getDays()",
+    "methodName" : "getDays",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test165171() throws Throwable {\n    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;\n    ISOChronology iSOChronology0 = ISOChronology.getInstance((DateTimeZone) fixedDateTimeZone0);\n    LenientChronology lenientChronology0 = LenientChronology.getInstance(iSOChronology0);\n    Period period0 = new Period((-870L), (-870L), lenientChronology0);\n    Period period1 = period0.minusSeconds(1);\n    Days days0 = period1.toStandardDays();\n    days0.getDays();\n}",
+    "testName" : "test165171"
+  },
+  "test165172" : {
+    "methodSignature" : "public Days toStandardDays()",
+    "methodName" : "toStandardDays",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test165172() throws Throwable {\n    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;\n    ISOChronology iSOChronology0 = ISOChronology.getInstance((DateTimeZone) fixedDateTimeZone0);\n    LenientChronology lenientChronology0 = LenientChronology.getInstance(iSOChronology0);\n    Period period0 = new Period((-870L), (-870L), lenientChronology0);\n    Period period1 = period0.minusSeconds(1);\n    Days days0 = period1.toStandardDays();\n}",
+    "testName" : "test165172"
+  },
+  "test01719" : {
+    "methodSignature" : "public int getHours()",
+    "methodName" : "getHours",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test01719() throws Throwable {\n    Period period0 = Period.minutes(648);\n    Period period1 = period0.plusDays((-2241));\n    Hours hours0 = period1.toStandardHours();\n    hours0.getHours();\n}",
+    "testName" : "test01719"
+  },
+  "test111116" : {
+    "methodSignature" : "public Period(int years, int months, int weeks, int days, int hours, int minutes, int seconds, int millis, PeriodType type)",
+    "methodName" : "Period",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test111116() throws Throwable {\n    int[] intArray0 = new int[8];\n    PeriodType periodType0 = new PeriodType(\"7ht\", (DurationFieldType[]) null, intArray0);\n    Period period0 = null;\n    period0 = new Period((-2825), (-2825), 15271875, (-194), (-2825), (-2825), (-194), (-2825), periodType0);\n}",
+    "testName" : "test111116"
+  },
+  "test09398" : {
+    "methodSignature" : "public Period minusMillis(int millis)",
+    "methodName" : "minusMillis",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test09398() throws Throwable {\n    Period period0 = Period.millis(50);\n    PeriodType.MILLI_INDEX = 50;\n    period0.minusMillis((-934));\n}",
+    "testName" : "test09398"
+  },
+  "test08186" : {
+    "methodSignature" : "public Period normalizedStandard(PeriodType type)",
+    "methodName" : "normalizedStandard",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test08186() throws Throwable {\n    Period period0 = Period.minutes(10209375);\n    Period period1 = period0.plusDays(10209375);\n    PeriodType periodType0 = PeriodType.minutes();\n    period1.normalizedStandard(periodType0);\n}",
+    "testName" : "test08186"
+  },
+  "test0033" : {
+    "methodSignature" : "public long getMillis()",
+    "methodName" : "getMillis",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0033() throws Throwable {\n    Period period0 = Period.minutes(648);\n    Duration duration0 = period0.toStandardDuration();\n    duration0.getMillis();\n}",
+    "testName" : "test0033"
+  },
+  "test05356" : {
+    "methodSignature" : "public boolean equals(Object period)",
+    "methodName" : "equals",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test05356() throws Throwable {\n    Period period0 = new Period();\n    Period period1 = period0.plusDays(2527);\n    Period period2 = period1.plusSeconds(2527);\n    Period period3 = period1.ZERO.plusHours((-5051));\n    Hours hours0 = period2.toStandardHours();\n    period3.withFields(hours0);\n    period3.equals((Object) period0);\n}",
+    "testName" : "test05356"
+  },
+  "test159165" : {
+    "methodSignature" : "public static Period fieldDifference(ReadablePartial start, ReadablePartial end)",
+    "methodName" : "fieldDifference",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test159165() throws Throwable {\n    LocalDate localDate0 = LocalDate.now();\n    ZoneOffset zoneOffset0 = ZoneOffset.MAX;\n    TimeZone timeZone0 = TimeZone.getTimeZone((ZoneId) zoneOffset0);\n    Calendar calendar0 = MockCalendar.getInstance(timeZone0);\n    LocalTime localTime0 = LocalTime.fromCalendarFields(calendar0);\n    LocalDateTime localDateTime0 = localDate0.toLocalDateTime(localTime0);\n    Period.fieldDifference(localDateTime0, (ReadablePartial) null);\n}",
+    "testName" : "test159165"
+  },
+  "test05358" : {
+    "methodSignature" : "public int getHours()",
+    "methodName" : "getHours",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test05358() throws Throwable {\n    Period period0 = new Period();\n    Period period1 = period0.plusDays(2527);\n    Period period2 = period1.plusSeconds(2527);\n    Period period3 = period1.ZERO.plusHours((-5051));\n    Hours hours0 = period2.toStandardHours();\n    period3.withFields(hours0);\n    hours0.getHours();\n}",
+    "testName" : "test05358"
+  },
+  "test05357" : {
+    "methodSignature" : "public Period withFields(ReadablePeriod period)",
+    "methodName" : "withFields",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test05357() throws Throwable {\n    Period period0 = new Period();\n    Period period1 = period0.plusDays(2527);\n    Period period2 = period1.plusSeconds(2527);\n    Period period3 = period1.ZERO.plusHours((-5051));\n    Hours hours0 = period2.toStandardHours();\n    period3.withFields(hours0);\n}",
+    "testName" : "test05357"
+  },
+  "test06166" : {
+    "methodSignature" : "public Hours toStandardHours()",
+    "methodName" : "toStandardHours",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test06166() throws Throwable {\n    MockDate mockDate0 = new MockDate(0L);\n    LocalDateTime localDateTime0 = LocalDateTime.fromDateFields(mockDate0);\n    PeriodType periodType0 = PeriodType.millis();\n    Period period0 = new Period(localDateTime0, localDateTime0, periodType0);\n    PeriodType.MONTH_INDEX = 61;\n    period0.ZERO.toStandardHours();\n}",
+    "testName" : "test06166"
+  },
+  "test02123" : {
+    "methodSignature" : "public int getDays()",
+    "methodName" : "getDays",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test02123() throws Throwable {\n    Period period0 = Period.hours(839);\n    Days days0 = period0.toStandardDays();\n    days0.getDays();\n}",
+    "testName" : "test02123"
+  },
+  "test07378" : {
+    "methodSignature" : "public Period plusDays(int days)",
+    "methodName" : "plusDays",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test07378() throws Throwable {\n    DateTimeZone dateTimeZone0 = DateTimeZone.getDefault();\n    IslamicChronology islamicChronology0 = IslamicChronology.getInstance(dateTimeZone0);\n    LocalTime localTime0 = new LocalTime((-763L), (Chronology) islamicChronology0);\n    Period period0 = Period.fieldDifference(localTime0, localTime0);\n    period0.plusDays(1);\n}",
+    "testName" : "test07378"
+  },
+  "test100105" : {
+    "methodSignature" : "public int getSeconds()",
+    "methodName" : "getSeconds",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test100105() throws Throwable {\n    Period period0 = Period.months(8);\n    PeriodType.SECOND_INDEX = 8;\n    period0.getSeconds();\n}",
+    "testName" : "test100105"
+  },
+  "test04144" : {
+    "methodSignature" : "public Period withWeeks(int weeks)",
+    "methodName" : "withWeeks",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test04144() throws Throwable {\n    PeriodType periodType0 = PeriodType.standard();\n    Period period0 = new Period((-1783), (-1783), (-990), (-1783), (-1783), (-1083), 805, 1783, periodType0);\n    PeriodType.WEEK_INDEX = (-3076);\n    period0.withWeeks(3514);\n}",
+    "testName" : "test04144"
+  },
+  "test01820" : {
+    "methodSignature" : "public long getMillis()",
+    "methodName" : "getMillis",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test01820() throws Throwable {\n    Period period0 = Period.minutes(10209375);\n    Duration duration0 = period0.ZERO.toStandardDuration();\n    duration0.getMillis();\n}",
+    "testName" : "test01820"
+  },
+  "test096101" : {
+    "methodSignature" : "public Period minusDays(int days)",
+    "methodName" : "minusDays",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test096101() throws Throwable {\n    Period period0 = new Period();\n    PeriodType.DAY_INDEX = (-5051);\n    period0.minusDays((-5051));\n}",
+    "testName" : "test096101"
+  },
+  "test173180" : {
+    "methodSignature" : "public Period plusMinutes(int minutes)",
+    "methodName" : "plusMinutes",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test173180() throws Throwable {\n    MutableDateTime mutableDateTime0 = new MutableDateTime((-283L));\n    DateTime dateTime0 = mutableDateTime0.toDateTimeISO();\n    Period period0 = new Period(dateTime0, dateTime0);\n    PeriodType.MINUTE_INDEX = 1960;\n    period0.plusMinutes(3);\n}",
+    "testName" : "test173180"
+  },
+  "test03841" : {
+    "methodSignature" : "public Period withYears(int years)",
+    "methodName" : "withYears",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test03841() throws Throwable {\n    PeriodType periodType0 = PeriodType.yearWeekDay();\n    PeriodType periodType1 = periodType0.withYearsRemoved();\n    Period period0 = new Period(30962844000000L, 31556952000L, periodType1);\n    period0.withYears(263);\n}",
+    "testName" : "test03841"
+  },
+  "test105110" : {
+    "methodSignature" : "public Period(ReadableDuration duration, ReadableInstant endInstant, PeriodType type)",
+    "methodName" : "Period",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test105110() throws Throwable {\n    Hours hours0 = Hours.TWO;\n    Duration duration0 = hours0.toStandardDuration();\n    Instant instant0 = Instant.now();\n    MutableDateTime mutableDateTime0 = instant0.toMutableDateTime();\n    DurationFieldType[] durationFieldTypeArray0 = new DurationFieldType[5];\n    int[] intArray0 = new int[3];\n    PeriodType periodType0 = new PeriodType(\"\", durationFieldTypeArray0, intArray0);\n    Period period0 = null;\n    period0 = new Period(duration0, mutableDateTime0, periodType0);\n}",
+    "testName" : "test105110"
+  },
+  "test124130" : {
+    "methodSignature" : "public Period multipliedBy(int scalar)",
+    "methodName" : "multipliedBy",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test124130() throws Throwable {\n    Period period0 = new Period((-2233L));\n    period0.multipliedBy((-292269337));\n}",
+    "testName" : "test124130"
+  },
+  "test08691" : {
+    "methodSignature" : "public Period minusSeconds(int seconds)",
+    "methodName" : "minusSeconds",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test08691() throws Throwable {\n    LocalDate localDate0 = new LocalDate((Object) null);\n    Period period0 = Period.fieldDifference(localDate0, localDate0);\n    period0.minusSeconds(4645);\n}",
+    "testName" : "test08691"
+  },
+  "test184192" : {
+    "methodSignature" : "public Period withDays(int days)",
+    "methodName" : "withDays",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test184192() throws Throwable {\n    MockDate mockDate0 = new MockDate(0L);\n    LocalDateTime localDateTime0 = LocalDateTime.fromDateFields(mockDate0);\n    PeriodType periodType0 = PeriodType.millis();\n    Period period0 = new Period(localDateTime0, localDateTime0, periodType0);\n    period0.withDays(6);\n}",
+    "testName" : "test184192"
+  },
+  "test114120" : {
+    "methodSignature" : "public boolean equals(Object period)",
+    "methodName" : "equals",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test114120() throws Throwable {\n    Period period0 = Period.millis(0);\n    Period period1 = period0.multipliedBy(0);\n    period1.equals((Object) period0);\n}",
+    "testName" : "test114120"
+  },
+  "test0044" : {
+    "methodSignature" : "public long getMillis()",
+    "methodName" : "getMillis",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0044() throws Throwable {\n    Period period0 = new Period();\n    Period period1 = period0.plusSeconds(2527);\n    Duration duration0 = period1.toStandardDuration();\n    duration0.getMillis();\n}",
+    "testName" : "test0044"
+  },
+  "test139145" : {
+    "methodSignature" : "public Duration toStandardDuration()",
+    "methodName" : "toStandardDuration",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test139145() throws Throwable {\n    Period period0 = Period.years(4);\n    period0.toStandardDuration();\n}",
+    "testName" : "test139145"
+  },
+  "test05863" : {
+    "methodSignature" : "public Minutes toStandardMinutes()",
+    "methodName" : "toStandardMinutes",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test05863() throws Throwable {\n    Period period0 = Period.minutes(648);\n    Period period1 = period0.plusMonths((-1437));\n    period1.toStandardMinutes();\n}",
+    "testName" : "test05863"
+  },
+  "test07883" : {
+    "methodSignature" : "public static Period parse(String str, PeriodFormatter formatter)",
+    "methodName" : "parse",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test07883() throws Throwable {\n    PeriodPrinter periodPrinter0 = mock(PeriodPrinter.class, new ViolatedAssumptionAnswer());\n    PeriodParser periodParser0 = mock(PeriodParser.class, new ViolatedAssumptionAnswer());\n    doReturn(0).when(periodParser0).parseInto(any(org.joda.time.ReadWritablePeriod.class), anyString(), anyInt(), any(java.util.Locale.class));\n    PeriodFormatter periodFormatter0 = new PeriodFormatter(periodPrinter0, periodParser0);\n    Period.parse(\"GNI:>qN7Jhe)V\", periodFormatter0);\n}",
+    "testName" : "test07883"
+  },
+  "test06671" : {
+    "methodSignature" : "public Period plusSeconds(int seconds)",
+    "methodName" : "plusSeconds",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test06671() throws Throwable {\n    Instant instant0 = new Instant();\n    Period period0 = Period.hours(361);\n    Minutes minutes0 = period0.toStandardMinutes();\n    PeriodType periodType0 = minutes0.getPeriodType();\n    Period period1 = new Period(instant0, (ReadableDuration) null, periodType0);\n    period1.plusSeconds(361);\n}",
+    "testName" : "test06671"
+  },
+  "test103108" : {
+    "methodSignature" : "public int getDays()",
+    "methodName" : "getDays",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test103108() throws Throwable {\n    Period period0 = new Period();\n    PeriodType.DAY_INDEX = (-5051);\n    period0.getDays();\n}",
+    "testName" : "test103108"
+  },
+  "test120126" : {
+    "methodSignature" : "public int getHours()",
+    "methodName" : "getHours",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test120126() throws Throwable {\n    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHoursMinutes(0, 0);\n    EthiopicChronology ethiopicChronology0 = EthiopicChronology.getInstance(dateTimeZone0);\n    Period period0 = new Period((-1L), (Chronology) ethiopicChronology0);\n    int int0 = period0.getHours();\n}",
+    "testName" : "test120126"
+  },
+  "test156162" : {
+    "methodSignature" : "public Period withPeriodType(PeriodType type)",
+    "methodName" : "withPeriodType",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test156162() throws Throwable {\n    MockDate mockDate0 = new MockDate(0L);\n    LocalDateTime localDateTime0 = LocalDateTime.fromDateFields(mockDate0);\n    PeriodType periodType0 = PeriodType.millis();\n    Period period0 = new Period(localDateTime0, localDateTime0, periodType0);\n    Period period1 = period0.withPeriodType(periodType0);\n}",
+    "testName" : "test156162"
+  },
+  "test178186" : {
+    "methodSignature" : "public int getSeconds()",
+    "methodName" : "getSeconds",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test178186() throws Throwable {\n    Duration duration0 = Duration.standardMinutes(60L);\n    PeriodType periodType0 = PeriodType.yearMonthDayTime();\n    Period period0 = duration0.toPeriod(periodType0);\n    int int0 = period0.getSeconds();\n}",
+    "testName" : "test178186"
+  },
+  "test04649" : {
+    "methodSignature" : "public Period withMonths(int months)",
+    "methodName" : "withMonths",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test04649() throws Throwable {\n    Duration duration0 = Duration.millis(1000L);\n    Seconds seconds0 = duration0.toStandardSeconds();\n    PeriodType periodType0 = seconds0.getPeriodType();\n    Period period0 = new Period(duration0, (ReadableInstant) null, periodType0);\n    period0.withMonths(0);\n}",
+    "testName" : "test04649"
+  },
+  "test108113" : {
+    "methodSignature" : "public Period(long duration, PeriodType type, Chronology chronology)",
+    "methodName" : "Period",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test108113() throws Throwable {\n    DurationFieldType[] durationFieldTypeArray0 = new DurationFieldType[6];\n    DurationFieldType durationFieldType0 = DurationFieldType.HALFDAYS_TYPE;\n    durationFieldTypeArray0[0] = durationFieldType0;\n    durationFieldTypeArray0[1] = durationFieldTypeArray0[0];\n    DurationFieldType durationFieldType1 = DurationFieldType.ERAS_TYPE;\n    durationFieldTypeArray0[2] = durationFieldType1;\n    int[] intArray0 = new int[0];\n    PeriodType periodType0 = new PeriodType(\"Qm]yIx,DJinY*CNh},\", durationFieldTypeArray0, intArray0);\n    GJChronology gJChronology0 = GJChronology.getInstanceUTC();\n    Period period0 = null;\n    period0 = new Period((-2523L), periodType0, (Chronology) gJChronology0);\n}",
+    "testName" : "test108113"
+  },
+  "test02224" : {
+    "methodSignature" : "public int getDays()",
+    "methodName" : "getDays",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test02224() throws Throwable {\n    ISOChronology iSOChronology0 = ISOChronology.getInstance();\n    Period period0 = new Period((Object) null, iSOChronology0);\n    Period period1 = period0.withWeeks((-420));\n    Days days0 = period1.toStandardDays();\n    days0.getDays();\n}",
+    "testName" : "test02224"
+  },
+  "test05459" : {
+    "methodSignature" : "public Period withDays(int days)",
+    "methodName" : "withDays",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test05459() throws Throwable {\n    BuddhistChronology buddhistChronology0 = BuddhistChronology.getInstanceUTC();\n    DateTime dateTime0 = new DateTime((-563L), (Chronology) buddhistChronology0);\n    Period period0 = new Period(dateTime0, dateTime0);\n    PeriodType.DAY_INDEX = 522;\n    period0.ZERO.withDays(0);\n}",
+    "testName" : "test05459"
+  },
+  "test01416" : {
+    "methodSignature" : "public int getSeconds()",
+    "methodName" : "getSeconds",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test01416() throws Throwable {\n    Days days0 = Days.SEVEN;\n    Duration duration0 = days0.toStandardDuration();\n    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;\n    DateTime dateTime0 = new DateTime((DateTimeZone) fixedDateTimeZone0);\n    PeriodType periodType0 = PeriodType.minutes();\n    Period period0 = duration0.toPeriodFrom((ReadableInstant) dateTime0, periodType0);\n    Seconds seconds0 = period0.toStandardSeconds();\n    seconds0.getSeconds();\n}",
+    "testName" : "test01416"
+  },
+  "test03436" : {
+    "methodSignature" : "public int getMillis()",
+    "methodName" : "getMillis",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test03436() throws Throwable {\n    Period period0 = new Period(2, (-1863), 153692453, (-516), 153692453, (-516), 2, 153692453);\n    Period period1 = period0.ZERO.minusWeeks((-516));\n    Period period2 = period1.plusMillis((-1863));\n    int int0 = period2.getMillis();\n}",
+    "testName" : "test03436"
+  },
+  "test162168" : {
+    "methodSignature" : "public Period(ReadableInstant startInstant, ReadableInstant endInstant, PeriodType type)",
+    "methodName" : "Period",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test162168() throws Throwable {\n    int[] intArray0 = new int[3];\n    PeriodType periodType0 = new PeriodType(\"7ht\", (DurationFieldType[]) null, intArray0);\n    Period period0 = null;\n    period0 = new Period((ReadableInstant) null, (ReadableInstant) null, periodType0);\n}",
+    "testName" : "test162168"
+  },
+  "test151157" : {
+    "methodSignature" : "public Period withFieldAdded(DurationFieldType field, int value)",
+    "methodName" : "withFieldAdded",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test151157() throws Throwable {\n    Days days0 = Days.TWO;\n    Weeks weeks0 = days0.toStandardWeeks();\n    Duration duration0 = weeks0.toStandardDuration();\n    Period period0 = duration0.toPeriod();\n    period0.withFieldAdded((DurationFieldType) null, 683);\n}",
+    "testName" : "test151157"
+  },
+  "test125131" : {
+    "methodSignature" : "public Period(ReadableDuration duration, ReadableInstant endInstant)",
+    "methodName" : "Period",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test125131() throws Throwable {\n    Duration duration0 = new Duration(0L, 0L);\n    GJChronology gJChronology0 = GJChronology.getInstance();\n    Instant instant0 = gJChronology0.getGregorianCutover();\n    Period period0 = new Period(duration0, instant0);\n}",
+    "testName" : "test125131"
+  },
+  "test02628" : {
+    "methodSignature" : "public int getWeeks()",
+    "methodName" : "getWeeks",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test02628() throws Throwable {\n    Period period0 = new Period((-5051), 2527, 2527, 2527, 137, (-5051), (-1584), 137);\n    int int0 = period0.getWeeks();\n}",
+    "testName" : "test02628"
+  },
+  "test167174" : {
+    "methodSignature" : "public int getDays()",
+    "methodName" : "getDays",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test167174() throws Throwable {\n    Period period0 = Period.months(8);\n    Period period1 = period0.minusDays(8);\n    int int0 = period1.getDays();\n}",
+    "testName" : "test167174"
+  },
+  "test07075" : {
+    "methodSignature" : "public Period plusMillis(int millis)",
+    "methodName" : "plusMillis",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test07075() throws Throwable {\n    Minutes minutes0 = Minutes.THREE;\n    PeriodType periodType0 = minutes0.getPeriodType();\n    PeriodPrinter periodPrinter0 = mock(PeriodPrinter.class, new ViolatedAssumptionAnswer());\n    PeriodParser periodParser0 = mock(PeriodParser.class, new ViolatedAssumptionAnswer());\n    doReturn(2537).when(periodParser0).parseInto(any(org.joda.time.ReadWritablePeriod.class), anyString(), anyInt(), any(java.util.Locale.class));\n    PeriodFormatter periodFormatter0 = new PeriodFormatter(periodPrinter0, periodParser0);\n    PeriodFormatter periodFormatter1 = periodFormatter0.withParseType(periodType0);\n    Period period0 = Period.parse(\"\", periodFormatter1);\n    period0.plusMillis((-90));\n}",
+    "testName" : "test07075"
+  },
+  "test08287" : {
+    "methodSignature" : "public Period normalizedStandard()",
+    "methodName" : "normalizedStandard",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test08287() throws Throwable {\n    IslamicChronology islamicChronology0 = IslamicChronology.getInstanceUTC();\n    Period period0 = new Period(576L, (Chronology) islamicChronology0);\n    PeriodType.DAY_INDEX = (-1);\n    period0.normalizedStandard();\n}",
+    "testName" : "test08287"
+  },
+  "test05053" : {
+    "methodSignature" : "public Period withMillis(int millis)",
+    "methodName" : "withMillis",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test05053() throws Throwable {\n    Period period0 = Period.minutes(648);\n    PeriodType.MILLI_INDEX = (-1456);\n    period0.withMillis(648);\n}",
+    "testName" : "test05053"
+  },
+  "test164170" : {
+    "methodSignature" : "public int getMonths()",
+    "methodName" : "getMonths",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test164170() throws Throwable {\n    Period period0 = Period.years((-1877));\n    PeriodType.MONTH_INDEX = 0;\n    int int0 = period0.getMonths();\n}",
+    "testName" : "test164170"
+  },
+  "test170177" : {
+    "methodSignature" : "public Period(Object period, PeriodType type, Chronology chrono)",
+    "methodName" : "Period",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test170177() throws Throwable {\n    Object object0 = new Object();\n    PeriodType periodType0 = PeriodType.standard();\n    JulianChronology julianChronology0 = JulianChronology.getInstanceUTC();\n    Period period0 = null;\n    period0 = new Period(object0, periodType0, julianChronology0);\n}",
+    "testName" : "test170177"
+  },
+  "test0055" : {
+    "methodSignature" : "public int getSeconds()",
+    "methodName" : "getSeconds",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0055() throws Throwable {\n    Period period0 = Period.weeks(758);\n    Seconds seconds0 = period0.toStandardSeconds();\n    seconds0.getSeconds();\n}",
+    "testName" : "test0055"
+  },
+  "test119125" : {
+    "methodSignature" : "public Period plusYears(int years)",
+    "methodName" : "plusYears",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test119125() throws Throwable {\n    Days days0 = Days.SEVEN;\n    Duration duration0 = days0.toStandardDuration();\n    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;\n    DateTime dateTime0 = new DateTime((DateTimeZone) fixedDateTimeZone0);\n    PeriodType periodType0 = PeriodType.minutes();\n    Period period0 = duration0.toPeriodFrom((ReadableInstant) dateTime0, periodType0);\n    Period period1 = period0.plusYears(0);\n}",
+    "testName" : "test119125"
+  },
+  "test09095" : {
+    "methodSignature" : "public Period minusMinutes(int minutes)",
+    "methodName" : "minusMinutes",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test09095() throws Throwable {\n    LocalDate localDate0 = new LocalDate((Object) null);\n    Period period0 = Period.fieldDifference(localDate0, localDate0);\n    period0.minusMinutes(3877);\n}",
+    "testName" : "test09095"
+  },
+  "test07479" : {
+    "methodSignature" : "public Period plus(ReadablePeriod period)",
+    "methodName" : "plus",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test07479() throws Throwable {\n    PeriodType periodType0 = PeriodType.yearDay();\n    MutablePeriod mutablePeriod0 = new MutablePeriod(31536000000L, 413L, periodType0);\n    Minutes minutes0 = Minutes.standardMinutesIn(mutablePeriod0);\n    Period period0 = new Period(1440L, 604800L, periodType0);\n    period0.plus(minutes0);\n}",
+    "testName" : "test07479"
+  },
+  "test134140" : {
+    "methodSignature" : "public int getMillis()",
+    "methodName" : "getMillis",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test134140() throws Throwable {\n    ISOChronology iSOChronology0 = ISOChronology.getInstance();\n    Period period0 = new Period((Object) null, iSOChronology0);\n    int int0 = period0.ZERO.getMillis();\n}",
+    "testName" : "test134140"
+  },
+  "test04245" : {
+    "methodSignature" : "public Period withSeconds(int seconds)",
+    "methodName" : "withSeconds",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test04245() throws Throwable {\n    Days days0 = Days.SEVEN;\n    Duration duration0 = days0.toStandardDuration();\n    FixedDateTimeZone fixedDateTimeZone0 = (FixedDateTimeZone) DateTimeZone.UTC;\n    DateTime dateTime0 = new DateTime((DateTimeZone) fixedDateTimeZone0);\n    PeriodType periodType0 = PeriodType.minutes();\n    Period period0 = duration0.toPeriodFrom((ReadableInstant) dateTime0, periodType0);\n    period0.withSeconds(1000);\n}",
+    "testName" : "test04245"
+  },
+  "test140146" : {
+    "methodSignature" : "public Days toStandardDays()",
+    "methodName" : "toStandardDays",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test140146() throws Throwable {\n    Period period0 = new Period((-41), (-3005), (-3005), (-41), (-3005), (-230), (-230), (-230));\n    period0.toStandardDays();\n}",
+    "testName" : "test140146"
+  },
+  "test01012" : {
+    "methodSignature" : "public int getWeeks()",
+    "methodName" : "getWeeks",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test01012() throws Throwable {\n    Duration duration0 = Duration.standardMinutes(1000L);\n    Period period0 = duration0.toPeriod();\n    Weeks weeks0 = period0.toStandardWeeks();\n    weeks0.getWeeks();\n}",
+    "testName" : "test01012"
+  },
+  "test03032" : {
+    "methodSignature" : "public int getMonths()",
+    "methodName" : "getMonths",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test03032() throws Throwable {\n    Period period0 = Period.minutes((-2229));\n    Period period1 = period0.minusMonths((-2229));\n    int int0 = period1.getMonths();\n}",
+    "testName" : "test03032"
+  },
+  "test06267" : {
+    "methodSignature" : "public Duration toStandardDuration()",
+    "methodName" : "toStandardDuration",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test06267() throws Throwable {\n    Period period0 = Period.hours(98);\n    PeriodType.MINUTE_INDEX = (-935);\n    period0.toStandardDuration();\n}",
+    "testName" : "test06267"
+  },
+  "test09499" : {
+    "methodSignature" : "public Period minusHours(int hours)",
+    "methodName" : "minusHours",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test09499() throws Throwable {\n    Period period0 = new Period();\n    PeriodType.HOUR_INDEX = (-1330);\n    period0.minusHours(12825000);\n}",
+    "testName" : "test09499"
+  },
+  "test098103" : {
+    "methodSignature" : "public Period minus(ReadablePeriod period)",
+    "methodName" : "minus",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test098103() throws Throwable {\n    Period period0 = new Period((-3659), 445, 352, 0);\n    Hours hours0 = Hours.MIN_VALUE;\n    period0.minus(hours0);\n}",
+    "testName" : "test098103"
+  },
+  "test175182" : {
+    "methodSignature" : "public int getHours()",
+    "methodName" : "getHours",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test175182() throws Throwable {\n    Period period0 = new Period();\n    Hours hours0 = period0.toStandardHours();\n    Period period1 = period0.withFields(hours0);\n    hours0.getHours();\n}",
+    "testName" : "test175182"
+  },
+  "test175183" : {
+    "methodSignature" : "public Period withFields(ReadablePeriod period)",
+    "methodName" : "withFields",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test175183() throws Throwable {\n    Period period0 = new Period();\n    Hours hours0 = period0.toStandardHours();\n    Period period1 = period0.withFields(hours0);\n}",
+    "testName" : "test175183"
+  },
+  "test05964" : {
+    "methodSignature" : "public Minutes toStandardMinutes()",
+    "methodName" : "toStandardMinutes",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test05964() throws Throwable {\n    Period period0 = new Period(4341L, 4341L);\n    PeriodType.YEAR_INDEX = 1925;\n    period0.ZERO.toStandardMinutes();\n}",
+    "testName" : "test05964"
+  },
+  "test01921" : {
+    "methodSignature" : "public long getMillis()",
+    "methodName" : "getMillis",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test01921() throws Throwable {\n    GregorianChronology gregorianChronology0 = GregorianChronology.getInstance();\n    DateTime dateTime0 = DateTime.now((Chronology) gregorianChronology0);\n    Period period0 = new Period(dateTime0, dateTime0);\n    Period period1 = period0.withWeeks(1007);\n    Duration duration0 = period1.toStandardDuration();\n    duration0.getMillis();\n}",
+    "testName" : "test01921"
+  },
+  "test03942" : {
+    "methodSignature" : "public Period withYears(int years)",
+    "methodName" : "withYears",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test03942() throws Throwable {\n    Period period0 = Period.weeks(9);\n    PeriodType.YEAR_INDEX = 204;\n    period0.withYears(526);\n}",
+    "testName" : "test03942"
+  },
+  "test145151" : {
+    "methodSignature" : "public Period minusHours(int hours)",
+    "methodName" : "minusHours",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test145151() throws Throwable {\n    Duration duration0 = Duration.standardDays(86400L);\n    PeriodType periodType0 = PeriodType.yearDayTime();\n    Period period0 = duration0.toPeriodTo((ReadableInstant) null, periodType0);\n    Period period1 = period0.minusHours(0);\n}",
+    "testName" : "test145151"
+  },
+  "test114119" : {
+    "methodSignature" : "public Period multipliedBy(int scalar)",
+    "methodName" : "multipliedBy",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test114119() throws Throwable {\n    Period period0 = Period.millis(0);\n    Period period1 = period0.multipliedBy(0);\n}",
+    "testName" : "test114119"
+  },
+  "test08792" : {
+    "methodSignature" : "public Period minusSeconds(int seconds)",
+    "methodName" : "minusSeconds",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test08792() throws Throwable {\n    PeriodType.SECOND_INDEX = (-1783);\n    Period period0 = new Period();\n    period0.minusSeconds(170);\n}",
+    "testName" : "test08792"
+  },
+  "test07580" : {
+    "methodSignature" : "public Period plus(ReadablePeriod period)",
+    "methodName" : "plus",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test07580() throws Throwable {\n    PeriodType periodType0 = PeriodType.millis();\n    Period period0 = new Period(0L, 0L, periodType0);\n    PeriodType.HOUR_INDEX = 2351;\n    Hours hours0 = Hours.EIGHT;\n    period0.ZERO.plus(hours0);\n}",
+    "testName" : "test07580"
+  },
+  "test182190" : {
+    "methodSignature" : "public boolean equals(Object period)",
+    "methodName" : "equals",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test182190() throws Throwable {\n    Period period0 = Period.minutes(10209375);\n    Period period1 = period0.withSeconds(10209375);\n    period1.equals((Object) period0);\n}",
+    "testName" : "test182190"
+  },
+  "test0066" : {
+    "methodSignature" : "public int getMinutes()",
+    "methodName" : "getMinutes",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0066() throws Throwable {\n    Period period0 = Period.weeks(648);\n    Minutes minutes0 = period0.toStandardMinutes();\n    minutes0.getMinutes();\n}",
+    "testName" : "test0066"
+  },
+  "test150156" : {
+    "methodSignature" : "public Period withFieldAdded(DurationFieldType field, int value)",
+    "methodName" : "withFieldAdded",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test150156() throws Throwable {\n    DateTimeZone dateTimeZone0 = DateTimeZone.forOffsetHoursMinutes(0, 0);\n    EthiopicChronology ethiopicChronology0 = EthiopicChronology.getInstance(dateTimeZone0);\n    Period period0 = new Period((-1L), (Chronology) ethiopicChronology0);\n    DurationFieldType durationFieldType0 = DurationFieldType.WEEKS_TYPE;\n    Period period1 = period0.withFieldAdded(durationFieldType0, 0);\n}",
+    "testName" : "test150156"
+  },
+  "test04750" : {
+    "methodSignature" : "public Period withMonths(int months)",
+    "methodName" : "withMonths",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test04750() throws Throwable {\n    Period period0 = Period.months((-5051));\n    PeriodType.MONTH_INDEX = (-5);\n    period0.withMonths(1269);\n}",
+    "testName" : "test04750"
+  },
+  "test07984" : {
+    "methodSignature" : "public static Period parse(String str)",
+    "methodName" : "parse",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test07984() throws Throwable {\n    Period.parse((String) null);\n}",
+    "testName" : "test07984"
+  },
+  "test05560" : {
+    "methodSignature" : "public Weeks toStandardWeeks()",
+    "methodName" : "toStandardWeeks",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test05560() throws Throwable {\n    Period period0 = Period.months(2453);\n    period0.toStandardWeeks();\n}",
+    "testName" : "test05560"
+  },
+  "test101106" : {
+    "methodSignature" : "public int getMonths()",
+    "methodName" : "getMonths",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test101106() throws Throwable {\n    Period period0 = Period.months(8);\n    PeriodType.MONTH_INDEX = (-11);\n    period0.getMonths();\n}",
+    "testName" : "test101106"
+  },
+  "test158164" : {
+    "methodSignature" : "public static Period fieldDifference(ReadablePartial start, ReadablePartial end)",
+    "methodName" : "fieldDifference",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test158164() throws Throwable {\n    CopticChronology copticChronology0 = CopticChronology.getInstance();\n    YearMonth yearMonth0 = YearMonth.now((Chronology) copticChronology0);\n    LocalTime localTime0 = LocalTime.now();\n    Period.fieldDifference(yearMonth0, localTime0);\n}",
+    "testName" : "test158164"
+  },
+  "test06772" : {
+    "methodSignature" : "public Period plusSeconds(int seconds)",
+    "methodName" : "plusSeconds",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test06772() throws Throwable {\n    Days days0 = Days.TWO;\n    Weeks weeks0 = days0.toStandardWeeks();\n    Duration duration0 = weeks0.toStandardDuration();\n    ISOChronology iSOChronology0 = ISOChronology.getInstance((DateTimeZone) null);\n    Period period0 = duration0.toPeriod((Chronology) iSOChronology0);\n    PeriodType.SECOND_INDEX = (-1783);\n    period0.plusSeconds((-1783));\n}",
+    "testName" : "test06772"
+  },
+  "test179187" : {
+    "methodSignature" : "public Period(Object period, Chronology chrono)",
+    "methodName" : "Period",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test179187() throws Throwable {\n    IslamicChronology islamicChronology0 = IslamicChronology.getInstance((DateTimeZone) null);\n    Period period0 = null;\n    period0 = new Period(\"\", islamicChronology0);\n}",
+    "testName" : "test179187"
+  },
+  "test03537" : {
+    "methodSignature" : "public int getHours()",
+    "methodName" : "getHours",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test03537() throws Throwable {\n    Period period0 = new Period(26, (-1071), 1467, 12, 907, 139, 139, 12, (PeriodType) null);\n    int int0 = period0.getHours();\n}",
+    "testName" : "test03537"
+  },
+  "test106111" : {
+    "methodSignature" : "public Period(Object period, PeriodType type)",
+    "methodName" : "Period",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test106111() throws Throwable {\n    Object object0 = new Object();\n    PeriodType periodType0 = PeriodType.time();\n    Period period0 = null;\n    period0 = new Period(object0, periodType0);\n}",
+    "testName" : "test106111"
+  },
+  "test02325" : {
+    "methodSignature" : "public static Period parse(String str)",
+    "methodName" : "parse",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test02325() throws Throwable {\n    Period period0 = Period.parse(\"PT0S\");\n}",
+    "testName" : "test02325"
+  },
+  "test095100" : {
+    "methodSignature" : "public Period minusDays(int days)",
+    "methodName" : "minusDays",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test095100() throws Throwable {\n    PeriodType periodType0 = PeriodType.years();\n    Period period0 = new Period(745L, 745L, periodType0);\n    period0.minusDays(2622);\n}",
+    "testName" : "test095100"
+  },
+  "test01113" : {
+    "methodSignature" : "public Period withFieldAdded(DurationFieldType field, int value)",
+    "methodName" : "withFieldAdded",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test01113() throws Throwable {\n    LocalTime localTime0 = new LocalTime(0L);\n    Period period0 = new Period(localTime0, localTime0, (PeriodType) null);\n    Minutes minutes0 = Minutes.standardMinutesIn(period0);\n    Weeks weeks0 = minutes0.toStandardWeeks();\n    DurationFieldType durationFieldType0 = weeks0.getFieldType();\n    Period period1 = period0.withFieldAdded(durationFieldType0, 1599);\n}",
+    "testName" : "test01113"
+  },
+  "test02729" : {
+    "methodSignature" : "public int getWeeks()",
+    "methodName" : "getWeeks",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test02729() throws Throwable {\n    Period period0 = Period.months(8);\n    Period period1 = period0.ZERO.minusWeeks(2);\n    int int0 = period1.getWeeks();\n}",
+    "testName" : "test02729"
+  },
+  "test153159" : {
+    "methodSignature" : "public Period withField(DurationFieldType field, int value)",
+    "methodName" : "withField",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test153159() throws Throwable {\n    Period period0 = Period.millis((-1869));\n    period0.withField((DurationFieldType) null, (-1869));\n}",
+    "testName" : "test153159"
+  },
+  "test01517" : {
+    "methodSignature" : "public int getSeconds()",
+    "methodName" : "getSeconds",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test01517() throws Throwable {\n    LocalTime localTime0 = new LocalTime();\n    LocalTime localTime1 = localTime0.withLocalMillis(0L);\n    Period period0 = Period.fieldDifference(localTime0, localTime1);\n    Seconds seconds0 = period0.toStandardSeconds();\n    seconds0.getSeconds();\n}",
+    "testName" : "test01517"
+  },
+  "test169176" : {
+    "methodSignature" : "public Seconds toStandardSeconds()",
+    "methodName" : "toStandardSeconds",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test169176() throws Throwable {\n    Period period0 = new Period((-3624), 10, (-2171), (-3624));\n    PeriodType.SECOND_INDEX = (-2066);\n    period0.ZERO.toStandardSeconds();\n}",
+    "testName" : "test169176"
+  },
+  "test144150" : {
+    "methodSignature" : "public boolean equals(Object period)",
+    "methodName" : "equals",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test144150() throws Throwable {\n    Period period0 = Period.weeks(0);\n    Period period1 = period0.ZERO.plusSeconds(0);\n    period1.equals((Object) period0);\n}",
+    "testName" : "test144150"
+  },
+  "test07176" : {
+    "methodSignature" : "public Period plusMillis(int millis)",
+    "methodName" : "plusMillis",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test07176() throws Throwable {\n    Period period0 = Period.seconds(0);\n    PeriodType.MILLI_INDEX = (-1506);\n    period0.plusMillis(366);\n}",
+    "testName" : "test07176"
+  },
+  "test172179" : {
+    "methodSignature" : "public Period withMonths(int months)",
+    "methodName" : "withMonths",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test172179() throws Throwable {\n    IslamicChronology islamicChronology0 = IslamicChronology.getInstanceUTC();\n    Period period0 = new Period(576L, (Chronology) islamicChronology0);\n    Period period1 = period0.withMonths(67);\n}",
+    "testName" : "test172179"
+  },
+  "test09196" : {
+    "methodSignature" : "public Period minusMinutes(int minutes)",
+    "methodName" : "minusMinutes",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test09196() throws Throwable {\n    DurationFieldType[] durationFieldTypeArray0 = new DurationFieldType[1];\n    int[] intArray0 = new int[5];\n    PeriodType periodType0 = new PeriodType(\"cex7.&i]f^B5D{mU\", durationFieldTypeArray0, intArray0);\n    GregorianChronology gregorianChronology0 = GregorianChronology.getInstance();\n    Period period0 = new Period(0L, 0L, periodType0, gregorianChronology0);\n    period0.minusMinutes((-544));\n}",
+    "testName" : "test09196"
+  },
+  "test0077" : {
+    "methodSignature" : "public int getMinutes()",
+    "methodName" : "getMinutes",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test0077() throws Throwable {\n    PeriodType periodType0 = PeriodType.yearDayTime();\n    Period period0 = new Period((-4294967296L), periodType0);\n    Minutes minutes0 = period0.toStandardMinutes();\n    minutes0.getMinutes();\n}",
+    "testName" : "test0077"
+  },
+  "test117123" : {
+    "methodSignature" : "public Period plusMonths(int months)",
+    "methodName" : "plusMonths",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test117123() throws Throwable {\n    Duration duration0 = Duration.standardDays(86400L);\n    PeriodType periodType0 = PeriodType.yearDayTime();\n    Period period0 = duration0.toPeriodTo((ReadableInstant) null, periodType0);\n    period0.plusMonths(63);\n}",
+    "testName" : "test117123"
+  },
+  "test03133" : {
+    "methodSignature" : "public int getMinutes()",
+    "methodName" : "getMinutes",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test03133() throws Throwable {\n    Period period0 = Period.millis(0);\n    int int0 = period0.getMinutes();\n}",
+    "testName" : "test03133"
+  },
+  "test06368" : {
+    "methodSignature" : "public Days toStandardDays()",
+    "methodName" : "toStandardDays",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test06368() throws Throwable {\n    GregorianChronology gregorianChronology0 = GregorianChronology.getInstance();\n    DateTime dateTime0 = DateTime.now((Chronology) gregorianChronology0);\n    Period period0 = new Period(dateTime0, dateTime0);\n    PeriodType.MILLI_INDEX = (-933);\n    period0.toStandardDays();\n}",
+    "testName" : "test06368"
+  },
+  "test142148" : {
+    "methodSignature" : "public Period minus(ReadablePeriod period)",
+    "methodName" : "minus",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test142148() throws Throwable {\n    MutableDateTime mutableDateTime0 = new MutableDateTime(10080L);\n    Period period0 = new Period(mutableDateTime0, mutableDateTime0);\n    Period period1 = period0.ZERO.minus((ReadablePeriod) null);\n}",
+    "testName" : "test142148"
+  },
+  "test04346" : {
+    "methodSignature" : "public Period withSeconds(int seconds)",
+    "methodName" : "withSeconds",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test04346() throws Throwable {\n    Period period0 = Period.months(8);\n    PeriodType.SECOND_INDEX = 8;\n    period0.ZERO.withSeconds((-1877));\n}",
+    "testName" : "test04346"
+  },
+  "test136142" : {
+    "methodSignature" : "public int getMinutes()",
+    "methodName" : "getMinutes",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test136142() throws Throwable {\n    ISOChronology iSOChronology0 = ISOChronology.getInstance();\n    Period period0 = new Period((Object) null, iSOChronology0);\n    Minutes minutes0 = period0.toStandardMinutes();\n    minutes0.getMinutes();\n}",
+    "testName" : "test136142"
+  },
+  "test05154" : {
+    "methodSignature" : "public Period withHours(int hours)",
+    "methodName" : "withHours",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test05154() throws Throwable {\n    PeriodType periodType0 = PeriodType.millis();\n    Period period0 = new Period(0, 0, 0, 0, 0, 0, 0, 0, periodType0);\n    period0.withHours(18);\n}",
+    "testName" : "test05154"
+  },
+  "test104109" : {
+    "methodSignature" : "public Period(ReadableDuration duration, ReadableInstant endInstant, PeriodType type)",
+    "methodName" : "Period",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test104109() throws Throwable {\n    Hours hours0 = Hours.TWO;\n    Duration duration0 = hours0.toStandardDuration();\n    Instant instant0 = Instant.now();\n    MutableDateTime mutableDateTime0 = instant0.toMutableDateTime();\n    DurationFieldType[] durationFieldTypeArray0 = new DurationFieldType[5];\n    DurationFieldType durationFieldType0 = DurationFieldType.MONTHS_TYPE;\n    durationFieldTypeArray0[0] = durationFieldType0;\n    durationFieldTypeArray0[1] = durationFieldTypeArray0[0];\n    durationFieldTypeArray0[2] = durationFieldType0;\n    DurationFieldType durationFieldType1 = DurationFieldType.ERAS_TYPE;\n    durationFieldTypeArray0[3] = durationFieldType1;\n    int[] intArray0 = new int[3];\n    PeriodType periodType0 = new PeriodType(\"\", durationFieldTypeArray0, intArray0);\n    Period period0 = null;\n    period0 = new Period(duration0, mutableDateTime0, periodType0);\n}",
+    "testName" : "test104109"
+  },
+  "test08388" : {
+    "methodSignature" : "public Period minusYears(int years)",
+    "methodName" : "minusYears",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test08388() throws Throwable {\n    PeriodType periodType0 = PeriodType.millis();\n    Period period0 = new Period((-2289L), (-2289L), periodType0);\n    period0.minusYears((-36));\n}",
+    "testName" : "test08388"
+  },
+  "test123129" : {
+    "methodSignature" : "public int getWeeks()",
+    "methodName" : "getWeeks",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test123129() throws Throwable {\n    Period period0 = Period.months((-5051));\n    int int0 = period0.getWeeks();\n}",
+    "testName" : "test123129"
+  },
+  "test155161" : {
+    "methodSignature" : "public Period withFields(ReadablePeriod period)",
+    "methodName" : "withFields",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test155161() throws Throwable {\n    MutableDateTime mutableDateTime0 = new MutableDateTime(10080L);\n    Period period0 = new Period(mutableDateTime0, mutableDateTime0);\n    Period period1 = period0.ZERO.withFields((ReadablePeriod) null);\n}",
+    "testName" : "test155161"
+  },
+  "test177185" : {
+    "methodSignature" : "public Period withMillis(int millis)",
+    "methodName" : "withMillis",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test177185() throws Throwable {\n    PeriodType periodType0 = PeriodType.standard();\n    Period period0 = new Period((-1783), (-1783), (-990), (-1783), (-1783), (-1083), 805, 1783, periodType0);\n    Period period1 = period0.withMillis((-919));\n}",
+    "testName" : "test177185"
+  },
+  "test180188" : {
+    "methodSignature" : "public Period(ReadablePartial start, ReadablePartial end)",
+    "methodName" : "Period",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test180188() throws Throwable {\n    Period period0 = null;\n    period0 = new Period((ReadablePartial) null, (ReadablePartial) null);\n}",
+    "testName" : "test180188"
+  },
+  "test109114" : {
+    "methodSignature" : "public Period(long duration, PeriodType type)",
+    "methodName" : "Period",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test109114() throws Throwable {\n    DurationFieldType[] durationFieldTypeArray0 = new DurationFieldType[5];\n    DurationFieldType durationFieldType0 = DurationFieldType.MONTHS_TYPE;\n    durationFieldTypeArray0[0] = durationFieldType0;\n    durationFieldTypeArray0[1] = durationFieldType0;\n    durationFieldTypeArray0[2] = durationFieldType0;\n    DurationFieldType durationFieldType1 = DurationFieldType.ERAS_TYPE;\n    durationFieldTypeArray0[3] = durationFieldType1;\n    int[] intArray0 = new int[3];\n    PeriodType periodType0 = new PeriodType(\"\", durationFieldTypeArray0, intArray0);\n    Period period0 = null;\n    period0 = new Period((long) 83, periodType0);\n}",
+    "testName" : "test109114"
+  },
+  "test02830" : {
+    "methodSignature" : "public int getSeconds()",
+    "methodName" : "getSeconds",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test02830() throws Throwable {\n    Period period0 = Period.seconds(2679);\n    int int0 = period0.getSeconds();\n}",
+    "testName" : "test02830"
+  },
+  "test128134" : {
+    "methodSignature" : "public Period plusMinutes(int minutes)",
+    "methodName" : "plusMinutes",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test128134() throws Throwable {\n    Duration duration0 = Duration.millis(1000L);\n    Seconds seconds0 = duration0.toStandardSeconds();\n    PeriodType periodType0 = seconds0.getPeriodType();\n    Period period0 = new Period(duration0, (ReadableInstant) null, periodType0);\n    Period period1 = period0.ZERO.plusMinutes(0);\n}",
+    "testName" : "test128134"
+  },
+  "test161167" : {
+    "methodSignature" : "public static Period fieldDifference(ReadablePartial start, ReadablePartial end)",
+    "methodName" : "fieldDifference",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test161167() throws Throwable {\n    Period.fieldDifference((ReadablePartial) null, (ReadablePartial) null);\n}",
+    "testName" : "test161167"
+  },
+  "test147153" : {
+    "methodSignature" : "public Period plusWeeks(int weeks)",
+    "methodName" : "plusWeeks",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test147153() throws Throwable {\n    Duration duration0 = Duration.standardDays(86400L);\n    PeriodType periodType0 = PeriodType.yearDayTime();\n    Period period0 = duration0.toPeriodTo((ReadableInstant) null, periodType0);\n    Period period1 = period0.plusWeeks(0);\n}",
+    "testName" : "test147153"
+  },
+  "test131137" : {
+    "methodSignature" : "public int getMinutes()",
+    "methodName" : "getMinutes",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test131137() throws Throwable {\n    Period period0 = Period.minutes(10209375);\n    int int0 = period0.getMinutes();\n}",
+    "testName" : "test131137"
+  },
+  "test166173" : {
+    "methodSignature" : "public int getSeconds()",
+    "methodName" : "getSeconds",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test166173() throws Throwable {\n    Period period0 = new Period();\n    Seconds seconds0 = period0.toStandardSeconds();\n    seconds0.getSeconds();\n}",
+    "testName" : "test166173"
+  },
+  "test112117" : {
+    "methodSignature" : "public Period(int years, int months, int weeks, int days, int hours, int minutes, int seconds, int millis, PeriodType type)",
+    "methodName" : "Period",
+    "className" : "org.joda.time.Period",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test112117() throws Throwable {\n    PeriodType periodType0 = PeriodType.yearMonthDayTime();\n    Period period0 = null;\n    period0 = new Period((-1391), (-1391), (-4172), 2532, 488, 2532, 7, (-3906), periodType0);\n}",
+    "testName" : "test112117"
+  }
+}

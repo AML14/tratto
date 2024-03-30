@@ -1,0 +1,49 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test00,"public void test00() throws Throwable {
+    PreprocessorSymbolTable preprocessorSymbolTable0 = new PreprocessorSymbolTable((Node) null);
+    CompilerOptions.AliasTransformationHandler compilerOptions_AliasTransformationHandler0 = CompilerOptions.NULL_ALIAS_TRANSFORMATION_HANDLER;
+    ScopedAliases scopedAliases0 = new ScopedAliases((AbstractCompiler) null, preprocessorSymbolTable0, compilerOptions_AliasTransformationHandler0);
+    // Undeclared exception!
+    try {
+        scopedAliases0.process((Node) null, (Node) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.NodeTraversal"", e);
+    }
+}",0,
+project,0,test11,"public void test11() throws Throwable {
+    CompilerOptions.AliasTransformationHandler compilerOptions_AliasTransformationHandler0 = CompilerOptions.NULL_ALIAS_TRANSFORMATION_HANDLER;
+    Node node0 = new Node(105);
+    ScopedAliases scopedAliases0 = new ScopedAliases((AbstractCompiler) null, (PreprocessorSymbolTable) null, compilerOptions_AliasTransformationHandler0);
+    scopedAliases0.hotSwapScript(node0, node0);
+    assertEquals(8, Node.FLAG_NO_THROWS);
+}",0,
+project,0,test22,"public void test22() throws Throwable {
+    CompilerOptions.AliasTransformationHandler compilerOptions_AliasTransformationHandler0 = CompilerOptions.NULL_ALIAS_TRANSFORMATION_HANDLER;
+    Node node0 = new Node(105);
+    Node node1 = new Node(36, node0, node0);
+    ScopedAliases scopedAliases0 = new ScopedAliases((AbstractCompiler) null, (PreprocessorSymbolTable) null, compilerOptions_AliasTransformationHandler0);
+    scopedAliases0.hotSwapScript(node1, node0);
+    assertFalse(node0.isUnscopedQualifiedName());
+}",0,assertFalse(node0.isUnscopedQualifiedName())
+project,0,test33,"public void test33() throws Throwable {
+    Node node0 = Node.newString(""{3EnW'=AW"");
+    CompilerOptions.AliasTransformationHandler compilerOptions_AliasTransformationHandler0 = CompilerOptions.NULL_ALIAS_TRANSFORMATION_HANDLER;
+    PreprocessorSymbolTable preprocessorSymbolTable0 = new PreprocessorSymbolTable(node0);
+    ScopedAliases scopedAliases0 = new ScopedAliases((AbstractCompiler) null, preprocessorSymbolTable0, compilerOptions_AliasTransformationHandler0);
+    Node node1 = new Node(37, node0, node0);
+    scopedAliases0.hotSwapScript(node1, node0);
+    assertFalse(node0.isExprResult());
+}",0,assertTrue(node0.isExprResult())
+project,0,test44,"public void test44() throws Throwable {
+    Node node0 = Node.newString(""S("");
+    CompilerOptions.AliasTransformationHandler compilerOptions_AliasTransformationHandler0 = CompilerOptions.NULL_ALIAS_TRANSFORMATION_HANDLER;
+    Node node1 = new Node(16, node0, node0, node0, 54, 47);
+    PreprocessorSymbolTable preprocessorSymbolTable0 = new PreprocessorSymbolTable(node1);
+    ScopedAliases scopedAliases0 = new ScopedAliases((AbstractCompiler) null, preprocessorSymbolTable0, compilerOptions_AliasTransformationHandler0);
+    scopedAliases0.hotSwapScript(node0, node0);
+    assertFalse(node0.isTry());
+}",0,assertTrue(node0.isTry())

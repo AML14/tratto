@@ -1,0 +1,23 @@
+focal_method,test_prefix,docstring
+"public boolean isNumber() {
+    return this.getType() == Token.NUMBER;
+}","public void test00() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    CollapseProperties collapseProperties0 = new CollapseProperties(compiler0, true, true);
+    Node node0 = Node.newNumber(1.0);
+    collapseProperties0.process(node0, node0);
+    assertTrue(node0.isNumber());
+}",""
+"public boolean hasMoreThanOneChild() {
+    return first != null && first != last;
+}","public void test11() throws Throwable {
+    CollapseProperties collapseProperties0 = new CollapseProperties((AbstractCompiler) null, false, false);
+    Node node0 = Node.newNumber(1.0);
+    collapseProperties0.process(node0, node0);
+    assertFalse(node0.hasMoreThanOneChild());
+}","/**
+ * Check for more than one child more efficiently than by iterating over all
+ * the children as is done with Node.getChildCount().
+ *
+ * @return Whether the node more than one child.
+ */"

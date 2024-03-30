@@ -1,0 +1,90 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    Document document0 = Parser.parseBodyFragment(""<BasE"", ""<BasE"");
+    assertEquals(""<BasE"", document0.baseUri());
+}",0,assertNotNull(document0.baseUri())
+project,0,test011,"public void test011() throws Throwable {
+    Document document0 = Parser.parse(""<!-"", ""<!-"");
+    assertFalse(document0.isBlock());
+}",0,assertTrue(document0.isBlock())
+project,0,test022,"public void test022() throws Throwable {
+    Document document0 = Parser.parse(""<![CDATA["", ""<![CDATA["");
+    assertFalse(document0.isBlock());
+}",0,
+project,0,test033,"public void test033() throws Throwable {
+    Document document0 = Parser.parseBodyFragment(""=mS/d(jJ'>|<4{mL/>+"", ""=mS/d(jJ'>|<4{mL/>+"");
+    assertEquals(""#document"", document0.nodeName());
+}",0,assertNotNull(document0.nodeName())
+project,0,test044,"public void test044() throws Throwable {
+    Document document0 = Parser.parseBodyFragment(""<!--%s-->"", ""<!--%s-->"");
+    assertEquals(""<!--%s-->"", document0.baseUri());
+}",0,assertNotNull(document0.baseUri())
+project,0,test055,"public void test055() throws Throwable {
+    Document document0 = Parser.parse(""<?"", ""<?"");
+    assertEquals(""#root"", document0.tagName());
+}",0,
+project,0,test066,"public void test066() throws Throwable {
+    Document document0 = Parser.parse(""<!--"", ""<!--"");
+    assertEquals(""#document"", document0.nodeName());
+}",0,
+project,0,test077,"public void test077() throws Throwable {
+    Document document0 = Parser.parse(""</"", ""</"");
+    assertFalse(document0.isBlock());
+}",0,assertFalse(document0.isBlock())
+project,0,test088,"public void test088() throws Throwable {
+    Document document0 = Parser.parse(""htx<_"", ""htx<_"");
+    assertEquals(""htx<_"", document0.baseUri());
+}",0,assertNotNull(document0.baseUri())
+project,0,test099,"public void test099() throws Throwable {
+    Document document0 = Parser.parse(""<html>\n<head>\n</head>\n<body>\n</body>\n</html>\n<noframes></noframes>"", ""{K<BBrE"");
+    assertEquals(""{K<BBrE"", document0.baseUri());
+}",0,assertNotNull(document0.baseUri())
+project,0,test1010,"public void test1010() throws Throwable {
+    Document document0 = Parser.parse(""<title></title>\n<html>\n<head>\n</head>\n<body> {-QEx?AV]87\n</body>\n</html>"", ""<title></title>\n<html>\n<head>\n</head>\n<body> {-QEx?AV]87\n</body>\n</html>"");
+    assertEquals(""#document"", document0.nodeName());
+}",0,assertNotNull(document0.nodeName())
+project,0,test1111,"public void test1111() throws Throwable {
+    Document document0 = Parser.parse(""<html>\n<head>\n</head>\n<body>\n</body>\n</html><textarea></textarea>"", ""{K<BBrE"");
+    assertEquals(""{K<BBrE"", document0.baseUri());
+}",0,assertNotNull(document0.baseUri())
+project,0,test1212,"public void test1212() throws Throwable {
+    Document document0 = Parser.parse(""#C{<GWgL-=izCK"", ""#C{<GWgL-=izCK"");
+    assertFalse(document0.isBlock());
+}",0,
+project,0,test1313,"public void test1313() throws Throwable {
+    Document document0 = Parser.parseBodyFragment(""yFF5j='13a4s"", ""hcue"");
+    // Undeclared exception!
+    try {
+        document0.wrap(""<yff5j='13a4s>\n</yff5j='13a4s>\n<html>\n<head>\n</head>\n<body>\n yFF5j='13a4s\n</body>\n</html>"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Element"", e);
+    }
+}",0,
+project,0,test1414,"public void test1414() throws Throwable {
+    Document document0 = Parser.parse(""<html>\n<head>\n <title>#C{&lt;GWgL-=izCK</title>\n</head>\n<body> #C{<gwgl -=\""izCK\"">\n </gwgl>\n</body>\n</html>"", ""<html>\n<head>\n <title>#C{&lt;GWgL-=izCK</title>\n</head>\n<body> #C{<gwgl -=\""izCK\"">\n </gwgl>\n</body>\n</html>"");
+    assertEquals(""#document"", document0.nodeName());
+}",0,assertNotNull(document0.nodeName())
+project,0,test1515,"public void test1515() throws Throwable {
+    Document document0 = Parser.parse(""<PS{eoDT9=>$4K"", ""<PS{eoDT9=>$4K"");
+    assertFalse(document0.isBlock());
+}",0,
+project,0,test1616,"public void test1616() throws Throwable {
+    Document document0 = Parser.parse(""-<n]@]=M J-.y"", ""-<n]@]=M J-.y"");
+    assertEquals(""-<n]@]=M J-.y"", document0.baseUri());
+}",0,
+project,0,test1717,"public void test1717() throws Throwable {
+    Document document0 = Parser.parse(""<Br"", ""<Br"");
+    assertEquals(""#document"", document0.nodeName());
+}",0,assertNotNull(document0.nodeName())
+project,0,test1818,"public void test1818() throws Throwable {
+    Document document0 = Parser.parse(""]qG}x</InP3"", ""]qG}x</InP3"");
+    assertFalse(document0.isBlock());
+}",0,assertFalse(document0.isBlock())
+project,0,test1919,"public void test1919() throws Throwable {
+    Document document0 = Parser.parse(""<html>\n</html>\n<html>\n<head>\n</head>\n<body> a:;hpGDx1.c(|MX\n</body>\n</html>"", ""<html>\n</html>\n<html>\n<head>\n</head>\n<body> a:;hpGDx1.c(|MX\n</body>\n</html>"");
+    assertEquals(""<html>\n</html>\n<html>\n<head>\n</head>\n<body> a:;hpGDx1.c(|MX\n</body>\n</html>"", document0.baseUri());
+}",0,assertNotNull(document0.baseUri())

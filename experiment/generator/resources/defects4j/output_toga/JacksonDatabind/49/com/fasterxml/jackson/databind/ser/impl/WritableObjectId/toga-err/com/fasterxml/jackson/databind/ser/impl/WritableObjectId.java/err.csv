@@ -1,0 +1,12 @@
+com.fasterxml.jackson.databind.ser.impl.WritableObjectId,@Test(timeout = 4000)
+public void test45() throws Throwable {
+    ObjectIdGenerators.IntSequenceGenerator objectIdGenerators_IntSequenceGenerator0 = new ObjectIdGenerators.IntSequenceGenerator();
+    WritableObjectId writableObjectId0 = new WritableObjectId(objectIdGenerators_IntSequenceGenerator0);
+    JsonFactory jsonFactory0 = new JsonFactory();
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    JavaType javaType0 = TypeFactory.unknownType();
+    ObjectIdWriter objectIdWriter0 = new ObjectIdWriter(javaType0, (SerializableString) null, objectIdGenerators_IntSequenceGenerator0, defaultSerializerProvider_Impl0.DEFAULT_NULL_KEY_SERIALIZER, true);
+    JsonGenerator jsonGenerator0 = jsonFactory0.createGenerator((OutputStream) null);
+    writableObjectId0.writeAsField(jsonGenerator0, defaultSerializerProvider_Impl0, objectIdWriter0);
+    jsonGenerator0.canOmitFields();
+},ERROR,java.nio.file.NoSuchFileException,/home/star_usit_group/tratto/experiment/generator/resources/defects4j/temp/JacksonDatabind_49b/src/main/java/com/fasterxml/jackson/core/JsonGenerator.java

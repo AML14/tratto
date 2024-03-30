@@ -1,0 +1,558 @@
+focal_method,test_prefix,docstring
+"// Serialize
+//-----------------------------------------------------------------------
+/**
+ * <p>Serializes an {@code Object} to the specified stream.</p>
+ *
+ * <p>The stream will be closed once the object is written.
+ * This avoids the need for a finally clause, and maybe also exception
+ * handling, in the application code.</p>
+ *
+ * <p>The stream passed in is not buffered internally within this method.
+ * This is the responsibility of your application if desired.</p>
+ *
+ * @param obj  the object to serialize to bytes, may be null
+ * @param outputStream  the stream to write to, must not be null
+ * @throws IllegalArgumentException if {@code outputStream} is {@code null}
+ * @throws SerializationException (runtime) if the serialization fails
+ */
+public static void serialize(Serializable obj, OutputStream outputStream) {
+    if (outputStream == null) {
+        throw new IllegalArgumentException(""The OutputStream must not be null"");
+    }
+    ObjectOutputStream out = null;
+    try {
+        // stream closed in the finally
+        out = new ObjectOutputStream(outputStream);
+        out.writeObject(obj);
+    } catch (IOException ex) {
+        throw new SerializationException(ex);
+    } finally {
+        try {
+            if (out != null) {
+                out.close();
+            }
+        } catch (IOException ex) {
+            // NOPMD
+            // ignore close exception
+        }
+    }
+}","public void test000() throws Throwable {
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    BufferedOutputStream bufferedOutputStream0 = new BufferedOutputStream(pipedOutputStream0, 1982);
+    SerializationUtils.serialize((Serializable) (byte) 117, (OutputStream) bufferedOutputStream0);
+}",""
+"public static Object deserialize(byte[] objectData) {
+    if (objectData == null) {
+        throw new IllegalArgumentException(""The byte[] must not be null"");
+    }
+    ByteArrayInputStream bais = new ByteArrayInputStream(objectData);
+    return deserialize(bais);
+}","public void test011() throws Throwable {
+    byte[] byteArray0 = SerializationUtils.serialize((Serializable) null);
+    Object object0 = SerializationUtils.deserialize(byteArray0);
+    assertNull(object0);
+}","/**
+ * <p>Deserializes a single {@code Object} from an array of bytes.</p>
+ *
+ * @param objectData  the serialized object, must not be null
+ * @return the deserialized object
+ * @throws IllegalArgumentException if {@code objectData} is {@code null}
+ * @throws SerializationException (runtime) if the serialization fails
+ */"
+"public static byte[] serialize(Serializable obj) {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream(512);
+    serialize(obj, baos);
+    return baos.toByteArray();
+}","public void test022() throws Throwable {
+    Certificate[] certificateArray0 = new Certificate[8];
+    UnresolvedPermission unresolvedPermission0 = new UnresolvedPermission(""W("", ""org.apache.commons.lang3.SerializationUtils$ClassLoaderAwareObjectInputStream"", ""W("", certificateArray0);
+    // Undeclared exception!
+    try {
+        SerializationUtils.serialize((Serializable) unresolvedPermission0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.security.UnresolvedPermission"", e);
+    }
+}","/**
+ * <p>Serializes an {@code Object} to a byte array for
+ * storage/serialization.</p>
+ *
+ * @param obj  the object to serialize to bytes
+ * @return a byte[] with the converted Serializable
+ * @throws SerializationException (runtime) if the serialization fails
+ */"
+"public static Object deserialize(byte[] objectData) {
+    if (objectData == null) {
+        throw new IllegalArgumentException(""The byte[] must not be null"");
+    }
+    ByteArrayInputStream bais = new ByteArrayInputStream(objectData);
+    return deserialize(bais);
+}","public void test033() throws Throwable {
+    byte[] byteArray0 = new byte[1];
+    // Undeclared exception!
+    try {
+        SerializationUtils.deserialize(byteArray0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // java.io.EOFException
+        //
+        verifyException(""org.apache.commons.lang3.SerializationUtils"", e);
+    }
+}","/**
+ * <p>Deserializes a single {@code Object} from an array of bytes.</p>
+ *
+ * @param objectData  the serialized object, must not be null
+ * @return the deserialized object
+ * @throws IllegalArgumentException if {@code objectData} is {@code null}
+ * @throws SerializationException (runtime) if the serialization fails
+ */"
+"// Deserialize
+//-----------------------------------------------------------------------
+/**
+ * <p>Deserializes an {@code Object} from the specified stream.</p>
+ *
+ * <p>The stream will be closed once the object is written. This
+ * avoids the need for a finally clause, and maybe also exception
+ * handling, in the application code.</p>
+ *
+ * <p>The stream passed in is not buffered internally within this method.
+ * This is the responsibility of your application if desired.</p>
+ *
+ * @param inputStream  the serialized object input stream, must not be null
+ * @return the deserialized object
+ * @throws IllegalArgumentException if {@code inputStream} is {@code null}
+ * @throws SerializationException (runtime) if the serialization fails
+ */
+public static Object deserialize(InputStream inputStream) {
+    if (inputStream == null) {
+        throw new IllegalArgumentException(""The InputStream must not be null"");
+    }
+    ObjectInputStream in = null;
+    try {
+        // stream closed in the finally
+        in = new ObjectInputStream(inputStream);
+        return in.readObject();
+    } catch (ClassNotFoundException ex) {
+        throw new SerializationException(ex);
+    } catch (IOException ex) {
+        throw new SerializationException(ex);
+    } finally {
+        try {
+            if (in != null) {
+                in.close();
+            }
+        } catch (IOException ex) {
+            // NOPMD
+            // ignore close exception
+        }
+    }
+}","public void test044() throws Throwable {
+    BufferedInputStream bufferedInputStream0 = new BufferedInputStream((InputStream) null);
+    // Undeclared exception!
+    try {
+        SerializationUtils.deserialize((InputStream) bufferedInputStream0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // java.io.IOException: Stream closed
+        //
+        verifyException(""org.apache.commons.lang3.SerializationUtils"", e);
+    }
+}",""
+"public static Object deserialize(byte[] objectData) {
+    if (objectData == null) {
+        throw new IllegalArgumentException(""The byte[] must not be null"");
+    }
+    ByteArrayInputStream bais = new ByteArrayInputStream(objectData);
+    return deserialize(bais);
+}","public void test066() throws Throwable {
+    // Undeclared exception!
+    try {
+        SerializationUtils.deserialize((byte[]) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The byte[] must not be null
+        //
+        verifyException(""org.apache.commons.lang3.SerializationUtils"", e);
+    }
+}","/**
+ * <p>Deserializes a single {@code Object} from an array of bytes.</p>
+ *
+ * @param objectData  the serialized object, must not be null
+ * @return the deserialized object
+ * @throws IllegalArgumentException if {@code objectData} is {@code null}
+ * @throws SerializationException (runtime) if the serialization fails
+ */"
+"// Deserialize
+//-----------------------------------------------------------------------
+/**
+ * <p>Deserializes an {@code Object} from the specified stream.</p>
+ *
+ * <p>The stream will be closed once the object is written. This
+ * avoids the need for a finally clause, and maybe also exception
+ * handling, in the application code.</p>
+ *
+ * <p>The stream passed in is not buffered internally within this method.
+ * This is the responsibility of your application if desired.</p>
+ *
+ * @param inputStream  the serialized object input stream, must not be null
+ * @return the deserialized object
+ * @throws IllegalArgumentException if {@code inputStream} is {@code null}
+ * @throws SerializationException (runtime) if the serialization fails
+ */
+public static Object deserialize(InputStream inputStream) {
+    if (inputStream == null) {
+        throw new IllegalArgumentException(""The InputStream must not be null"");
+    }
+    ObjectInputStream in = null;
+    try {
+        // stream closed in the finally
+        in = new ObjectInputStream(inputStream);
+        return in.readObject();
+    } catch (ClassNotFoundException ex) {
+        throw new SerializationException(ex);
+    } catch (IOException ex) {
+        throw new SerializationException(ex);
+    } finally {
+        try {
+            if (in != null) {
+                in.close();
+            }
+        } catch (IOException ex) {
+            // NOPMD
+            // ignore close exception
+        }
+    }
+}","public void test077() throws Throwable {
+    DataInputStream dataInputStream0 = new DataInputStream((InputStream) null);
+    // Undeclared exception!
+    try {
+        SerializationUtils.deserialize((InputStream) dataInputStream0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.io.DataInputStream"", e);
+    }
+}",""
+"// Deserialize
+//-----------------------------------------------------------------------
+/**
+ * <p>Deserializes an {@code Object} from the specified stream.</p>
+ *
+ * <p>The stream will be closed once the object is written. This
+ * avoids the need for a finally clause, and maybe also exception
+ * handling, in the application code.</p>
+ *
+ * <p>The stream passed in is not buffered internally within this method.
+ * This is the responsibility of your application if desired.</p>
+ *
+ * @param inputStream  the serialized object input stream, must not be null
+ * @return the deserialized object
+ * @throws IllegalArgumentException if {@code inputStream} is {@code null}
+ * @throws SerializationException (runtime) if the serialization fails
+ */
+public static Object deserialize(InputStream inputStream) {
+    if (inputStream == null) {
+        throw new IllegalArgumentException(""The InputStream must not be null"");
+    }
+    ObjectInputStream in = null;
+    try {
+        // stream closed in the finally
+        in = new ObjectInputStream(inputStream);
+        return in.readObject();
+    } catch (ClassNotFoundException ex) {
+        throw new SerializationException(ex);
+    } catch (IOException ex) {
+        throw new SerializationException(ex);
+    } finally {
+        try {
+            if (in != null) {
+                in.close();
+            }
+        } catch (IOException ex) {
+            // NOPMD
+            // ignore close exception
+        }
+    }
+}","public void test088() throws Throwable {
+    // Undeclared exception!
+    try {
+        SerializationUtils.deserialize((InputStream) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The InputStream must not be null
+        //
+        verifyException(""org.apache.commons.lang3.SerializationUtils"", e);
+    }
+}",""
+"// Serialize
+//-----------------------------------------------------------------------
+/**
+ * <p>Serializes an {@code Object} to the specified stream.</p>
+ *
+ * <p>The stream will be closed once the object is written.
+ * This avoids the need for a finally clause, and maybe also exception
+ * handling, in the application code.</p>
+ *
+ * <p>The stream passed in is not buffered internally within this method.
+ * This is the responsibility of your application if desired.</p>
+ *
+ * @param obj  the object to serialize to bytes, may be null
+ * @param outputStream  the stream to write to, must not be null
+ * @throws IllegalArgumentException if {@code outputStream} is {@code null}
+ * @throws SerializationException (runtime) if the serialization fails
+ */
+public static void serialize(Serializable obj, OutputStream outputStream) {
+    if (outputStream == null) {
+        throw new IllegalArgumentException(""The OutputStream must not be null"");
+    }
+    ObjectOutputStream out = null;
+    try {
+        // stream closed in the finally
+        out = new ObjectOutputStream(outputStream);
+        out.writeObject(obj);
+    } catch (IOException ex) {
+        throw new SerializationException(ex);
+    } finally {
+        try {
+            if (out != null) {
+                out.close();
+            }
+        } catch (IOException ex) {
+            // NOPMD
+            // ignore close exception
+        }
+    }
+}","public void test1010() throws Throwable {
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    // Undeclared exception!
+    try {
+        SerializationUtils.serialize((Serializable) null, (OutputStream) pipedOutputStream0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // java.io.IOException: Pipe not connected
+        //
+        verifyException(""org.apache.commons.lang3.SerializationUtils"", e);
+    }
+}",""
+"// Serialize
+//-----------------------------------------------------------------------
+/**
+ * <p>Serializes an {@code Object} to the specified stream.</p>
+ *
+ * <p>The stream will be closed once the object is written.
+ * This avoids the need for a finally clause, and maybe also exception
+ * handling, in the application code.</p>
+ *
+ * <p>The stream passed in is not buffered internally within this method.
+ * This is the responsibility of your application if desired.</p>
+ *
+ * @param obj  the object to serialize to bytes, may be null
+ * @param outputStream  the stream to write to, must not be null
+ * @throws IllegalArgumentException if {@code outputStream} is {@code null}
+ * @throws SerializationException (runtime) if the serialization fails
+ */
+public static void serialize(Serializable obj, OutputStream outputStream) {
+    if (outputStream == null) {
+        throw new IllegalArgumentException(""The OutputStream must not be null"");
+    }
+    ObjectOutputStream out = null;
+    try {
+        // stream closed in the finally
+        out = new ObjectOutputStream(outputStream);
+        out.writeObject(obj);
+    } catch (IOException ex) {
+        throw new SerializationException(ex);
+    } finally {
+        try {
+            if (out != null) {
+                out.close();
+            }
+        } catch (IOException ex) {
+            // NOPMD
+            // ignore close exception
+        }
+    }
+}","public void test1111() throws Throwable {
+    Locale.FilteringMode locale_FilteringMode0 = Locale.FilteringMode.IGNORE_EXTENDED_RANGES;
+    // Undeclared exception!
+    try {
+        SerializationUtils.serialize((Serializable) locale_FilteringMode0, (OutputStream) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // The OutputStream must not be null
+        //
+        verifyException(""org.apache.commons.lang3.SerializationUtils"", e);
+    }
+}",""
+"// Clone
+//-----------------------------------------------------------------------
+/**
+ * <p>Deep clone an {@code Object} using serialization.</p>
+ *
+ * <p>This is many times slower than writing clone methods by hand
+ * on all objects in your object graph. However, for complex object
+ * graphs, or for those that don't support deep cloning this can
+ * be a simple alternative implementation. Of course all the objects
+ * must be {@code Serializable}.</p>
+ *
+ * @param <T> the type of the object involved
+ * @param object  the {@code Serializable} object to clone
+ * @return the cloned object
+ * @throws SerializationException (runtime) if the serialization fails
+ */
+public static <T extends Serializable> T clone(T object) {
+    if (object == null) {
+        return null;
+    }
+    byte[] objectData = serialize(object);
+    ByteArrayInputStream bais = new ByteArrayInputStream(objectData);
+    ClassLoaderAwareObjectInputStream in = null;
+    try {
+        // stream closed in the finally
+        in = new ClassLoaderAwareObjectInputStream(bais, object.getClass().getClassLoader());
+        /*
+             * when we serialize and deserialize an object,
+             * it is reasonable to assume the deserialized object
+             * is of the same type as the original serialized object
+             */
+        // see above
+        @SuppressWarnings(""unchecked"")
+        T readObject = (T) in.readObject();
+        return readObject;
+    } catch (ClassNotFoundException ex) {
+        throw new SerializationException(""ClassNotFoundException while reading cloned object data"", ex);
+    } catch (IOException ex) {
+        throw new SerializationException(""IOException while reading cloned object data"", ex);
+    } finally {
+        try {
+            if (in != null) {
+                in.close();
+            }
+        } catch (IOException ex) {
+            throw new SerializationException(""IOException on closing cloned object data InputStream."", ex);
+        }
+    }
+}","public void test1212() throws Throwable {
+    Integer integer0 = SerializationUtils.clone((Integer) null);
+    assertNull(integer0);
+}",""
+"// Serialize
+//-----------------------------------------------------------------------
+/**
+ * <p>Serializes an {@code Object} to the specified stream.</p>
+ *
+ * <p>The stream will be closed once the object is written.
+ * This avoids the need for a finally clause, and maybe also exception
+ * handling, in the application code.</p>
+ *
+ * <p>The stream passed in is not buffered internally within this method.
+ * This is the responsibility of your application if desired.</p>
+ *
+ * @param obj  the object to serialize to bytes, may be null
+ * @param outputStream  the stream to write to, must not be null
+ * @throws IllegalArgumentException if {@code outputStream} is {@code null}
+ * @throws SerializationException (runtime) if the serialization fails
+ */
+public static void serialize(Serializable obj, OutputStream outputStream) {
+    if (outputStream == null) {
+        throw new IllegalArgumentException(""The OutputStream must not be null"");
+    }
+    ObjectOutputStream out = null;
+    try {
+        // stream closed in the finally
+        out = new ObjectOutputStream(outputStream);
+        out.writeObject(obj);
+    } catch (IOException ex) {
+        throw new SerializationException(ex);
+    } finally {
+        try {
+            if (out != null) {
+                out.close();
+            }
+        } catch (IOException ex) {
+            // NOPMD
+            // ignore close exception
+        }
+    }
+}","public void test1313() throws Throwable {
+    SerializationUtils serializationUtils0 = new SerializationUtils();
+    Object[] objectArray0 = new Object[16];
+    objectArray0[2] = (Object) serializationUtils0;
+    File file0 = MockFile.createTempFile(""7Lky+ g.rE6v,k"", ""7Lky+ g.rE6v,k"");
+    MockPrintStream mockPrintStream0 = new MockPrintStream(file0);
+    // Undeclared exception!
+    try {
+        SerializationUtils.serialize((Serializable) objectArray0, (OutputStream) mockPrintStream0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // java.io.NotSerializableException: org.apache.commons.lang3.SerializationUtils
+        //
+        verifyException(""org.apache.commons.lang3.SerializationUtils"", e);
+    }
+}",""
+"// Clone
+//-----------------------------------------------------------------------
+/**
+ * <p>Deep clone an {@code Object} using serialization.</p>
+ *
+ * <p>This is many times slower than writing clone methods by hand
+ * on all objects in your object graph. However, for complex object
+ * graphs, or for those that don't support deep cloning this can
+ * be a simple alternative implementation. Of course all the objects
+ * must be {@code Serializable}.</p>
+ *
+ * @param <T> the type of the object involved
+ * @param object  the {@code Serializable} object to clone
+ * @return the cloned object
+ * @throws SerializationException (runtime) if the serialization fails
+ */
+public static <T extends Serializable> T clone(T object) {
+    if (object == null) {
+        return null;
+    }
+    byte[] objectData = serialize(object);
+    ByteArrayInputStream bais = new ByteArrayInputStream(objectData);
+    ClassLoaderAwareObjectInputStream in = null;
+    try {
+        // stream closed in the finally
+        in = new ClassLoaderAwareObjectInputStream(bais, object.getClass().getClassLoader());
+        /*
+             * when we serialize and deserialize an object,
+             * it is reasonable to assume the deserialized object
+             * is of the same type as the original serialized object
+             */
+        // see above
+        @SuppressWarnings(""unchecked"")
+        T readObject = (T) in.readObject();
+        return readObject;
+    } catch (ClassNotFoundException ex) {
+        throw new SerializationException(""ClassNotFoundException while reading cloned object data"", ex);
+    } catch (IOException ex) {
+        throw new SerializationException(""IOException while reading cloned object data"", ex);
+    } finally {
+        try {
+            if (in != null) {
+                in.close();
+            }
+        } catch (IOException ex) {
+            throw new SerializationException(""IOException on closing cloned object data InputStream."", ex);
+        }
+    }
+}","public void test1414() throws Throwable {
+    Integer integer0 = new Integer((-1));
+    Integer integer1 = SerializationUtils.clone(integer0);
+    assertEquals((-1), (int) integer1);
+}",""

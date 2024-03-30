@@ -1,0 +1,511 @@
+focal_method,test_prefix,docstring
+"public static boolean matches(byte[] signature, int length) {
+    if (length < TarConstants.VERSION_OFFSET + TarConstants.VERSIONLEN) {
+        return false;
+    }
+    if (ArchiveUtils.matchAsciiBuffer(TarConstants.MAGIC_POSIX, signature, TarConstants.MAGIC_OFFSET, TarConstants.MAGICLEN) && ArchiveUtils.matchAsciiBuffer(TarConstants.VERSION_POSIX, signature, TarConstants.VERSION_OFFSET, TarConstants.VERSIONLEN)) {
+        return true;
+    }
+    if (ArchiveUtils.matchAsciiBuffer(TarConstants.MAGIC_GNU, signature, TarConstants.MAGIC_OFFSET, TarConstants.MAGICLEN) && (ArchiveUtils.matchAsciiBuffer(TarConstants.VERSION_GNU_SPACE, signature, TarConstants.VERSION_OFFSET, TarConstants.VERSIONLEN) || ArchiveUtils.matchAsciiBuffer(TarConstants.VERSION_GNU_ZERO, signature, TarConstants.VERSION_OFFSET, TarConstants.VERSIONLEN))) {
+        return true;
+    }
+    // COMPRESS-107 - recognise Ant tar files
+    if (ArchiveUtils.matchAsciiBuffer(TarConstants.MAGIC_ANT, signature, TarConstants.MAGIC_OFFSET, TarConstants.MAGICLEN) && ArchiveUtils.matchAsciiBuffer(TarConstants.VERSION_ANT, signature, TarConstants.VERSION_OFFSET, TarConstants.VERSIONLEN)) {
+        return true;
+    }
+    return false;
+}","public void test011() throws Throwable {
+    byte[] byteArray0 = new byte[5];
+    byteArray0[0] = (byte) 0;
+    byteArray0[1] = (byte) 0;
+    byteArray0[2] = (byte) (-95);
+    byteArray0[3] = (byte) 98;
+    byteArray0[4] = (byte) 48;
+    boolean boolean0 = TarArchiveInputStream.matches(byteArray0, 0);
+    assertFalse(boolean0);
+}","/**
+ * Checks if the signature matches what is expected for a tar file.
+ *
+ * @param signature
+ *            the bytes to check
+ * @param length
+ *            the number of bytes to check
+ * @return true, if this stream is a tar archive stream, false otherwise
+ */"
+"public TarArchiveEntry(byte[] headerBuf) {
+    this();
+    parseTarHeader(headerBuf);
+}","public void test022() throws Throwable {
+    Enumeration<ByteArrayInputStream> enumeration0 = (Enumeration<ByteArrayInputStream>) mock(Enumeration.class, new ViolatedAssumptionAnswer());
+    doReturn(false).when(enumeration0).hasMoreElements();
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(enumeration0);
+    sequenceInputStream0.available();
+    int int0 = (-2350);
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(sequenceInputStream0, (-2350));
+    String string0 = ""C6<v;\""na3/E/)"";
+    byte byte0 = (byte) (-79);
+    long long0 = 3L;
+    byte[] byteArray0 = new byte[3];
+    byteArray0[0] = (byte) (-79);
+    byteArray0[1] = (byte) (-79);
+    byteArray0[2] = (byte) (-79);
+    TarArchiveEntry tarArchiveEntry0 = null;
+    try {
+        tarArchiveEntry0 = new TarArchiveEntry(byteArray0);
+        fail(""Expecting exception: ArrayIndexOutOfBoundsException"");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        //
+        // 99
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarUtils"", e);
+    }
+}","/**
+ * Construct an entry from an archive's header bytes. File is set
+ * to null.
+ *
+ * @param headerBuf The header bytes from a tar archive entry.
+ * @throws IllegalArgumentException if any of the numeric fields have an invalid format
+ */"
+"protected byte[] getLongNameData() throws IOException {
+    // read in the name
+    ByteArrayOutputStream longName = new ByteArrayOutputStream();
+    int length = 0;
+    while ((length = read(SMALL_BUF)) >= 0) {
+        longName.write(SMALL_BUF, 0, length);
+    }
+    getNextEntry();
+    if (currEntry == null) {
+        // Bugzilla: 40334
+        // Malformed tar file - long entry name not followed by entry
+        return null;
+    }
+    byte[] longNameData = longName.toByteArray();
+    // remove trailing null terminator(s)
+    length = longNameData.length;
+    while (length > 0 && longNameData[length - 1] == 0) {
+        --length;
+    }
+    if (length != longNameData.length) {
+        byte[] l = new byte[length];
+        System.arraycopy(longNameData, 0, l, 0, length);
+        longNameData = l;
+    }
+    return longNameData;
+}","public void test033() throws Throwable {
+    byte[] byteArray0 = new byte[2];
+    byteArray0[0] = (byte) (-25);
+    byteArray0[1] = (byte) (-78);
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, 200, (byte) (-78));
+    byteArrayInputStream0.skip((byte) (-25));
+    byteArrayInputStream0.close();
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(byteArrayInputStream0, 0);
+    tarArchiveInputStream0.getNextEntry();
+    tarArchiveInputStream0.getNextEntry();
+    byte[] byteArray1 = tarArchiveInputStream0.getLongNameData();
+    assertNull(byteArray1);
+}","/**
+ * Get the next entry in this tar archive as longname data.
+ *
+ * @return The next entry in the archive as longname data, or null.
+ * @throws IOException on error
+ */"
+"@Override
+public int read(byte[] buf, int offset, int numToRead) throws IOException {
+    int totalRead = 0;
+    if (hasHitEOF || entryOffset >= entrySize) {
+        return -1;
+    }
+    if (currEntry == null) {
+        throw new IllegalStateException(""No current tar entry"");
+    }
+    numToRead = Math.min(numToRead, available());
+    totalRead = is.read(buf, offset, numToRead);
+    count(totalRead);
+    if (totalRead == -1) {
+        hasHitEOF = true;
+    } else {
+        entryOffset += totalRead;
+    }
+    return totalRead;
+}","public void test034() throws Throwable {
+    byte[] byteArray0 = new byte[2];
+    byteArray0[0] = (byte) (-25);
+    byteArray0[1] = (byte) (-78);
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, 200, (byte) (-78));
+    byteArrayInputStream0.skip((byte) (-25));
+    byteArrayInputStream0.close();
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(byteArrayInputStream0, 0);
+    tarArchiveInputStream0.getNextEntry();
+    tarArchiveInputStream0.getNextEntry();
+    byte[] byteArray1 = tarArchiveInputStream0.getLongNameData();
+    tarArchiveInputStream0.getNextEntry();
+    tarArchiveInputStream0.parsePaxHeaders(byteArrayInputStream0);
+    tarArchiveInputStream0.markSupported();
+    int int0 = tarArchiveInputStream0.read(byteArray0, 0, (int) (byte) (-78));
+    assertEquals((-1), int0);
+}","/**
+ * Reads bytes from the current tar archive entry.
+ *
+ * This method is aware of the boundaries of the current
+ * entry in the archive and will deal with them as if they
+ * were this stream's start and EOF.
+ *
+ * @param buf The buffer into which to place bytes read.
+ * @param offset The offset at which to place bytes read.
+ * @param numToRead The number of bytes to read.
+ * @return The number of bytes read, or -1 at EOF.
+ * @throws IOException on error
+ */"
+"protected boolean isEOFRecord(byte[] record) {
+    return record == null || ArchiveUtils.isArrayZero(record, recordSize);
+}","public void test035() throws Throwable {
+    byte[] byteArray0 = new byte[2];
+    byteArray0[0] = (byte) (-25);
+    byteArray0[1] = (byte) (-78);
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, 200, (byte) (-78));
+    byteArrayInputStream0.skip((byte) (-25));
+    byteArrayInputStream0.close();
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(byteArrayInputStream0, 0);
+    tarArchiveInputStream0.getNextEntry();
+    tarArchiveInputStream0.getNextEntry();
+    byte[] byteArray1 = tarArchiveInputStream0.getLongNameData();
+    tarArchiveInputStream0.getNextEntry();
+    tarArchiveInputStream0.parsePaxHeaders(byteArrayInputStream0);
+    tarArchiveInputStream0.markSupported();
+    int int0 = tarArchiveInputStream0.read(byteArray0, 0, (int) (byte) (-78));
+    boolean boolean0 = tarArchiveInputStream0.isEOFRecord(byteArray0);
+    assertFalse(boolean0);
+}","/**
+ * Determine if an archive record indicate End of Archive. End of
+ * archive is indicated by a record that consists entirely of null bytes.
+ *
+ * @param record The record data to check.
+ * @return true if the record data is an End of Archive
+ */"
+"public long getBytesRead() {
+    return bytesRead;
+}","public void test036() throws Throwable {
+    byte[] byteArray0 = new byte[2];
+    byteArray0[0] = (byte) (-25);
+    byteArray0[1] = (byte) (-78);
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, 200, (byte) (-78));
+    byteArrayInputStream0.skip((byte) (-25));
+    byteArrayInputStream0.close();
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(byteArrayInputStream0, 0);
+    tarArchiveInputStream0.getNextEntry();
+    tarArchiveInputStream0.getNextEntry();
+    byte[] byteArray1 = tarArchiveInputStream0.getLongNameData();
+    tarArchiveInputStream0.getNextEntry();
+    tarArchiveInputStream0.parsePaxHeaders(byteArrayInputStream0);
+    tarArchiveInputStream0.markSupported();
+    int int0 = tarArchiveInputStream0.read(byteArray0, 0, (int) (byte) (-78));
+    boolean boolean0 = tarArchiveInputStream0.isEOFRecord(byteArray0);
+    int int1 = tarArchiveInputStream0.getRecordSize();
+    assertEquals(0L, tarArchiveInputStream0.getBytesRead());
+}","/**
+ * Returns the current number of bytes read from this stream.
+ * @return the number of read bytes
+ * @since 1.1
+ */"
+"public int getRecordSize() {
+    return recordSize;
+}","public void test037() throws Throwable {
+    byte[] byteArray0 = new byte[2];
+    byteArray0[0] = (byte) (-25);
+    byteArray0[1] = (byte) (-78);
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0, 200, (byte) (-78));
+    byteArrayInputStream0.skip((byte) (-25));
+    byteArrayInputStream0.close();
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(byteArrayInputStream0, 0);
+    tarArchiveInputStream0.getNextEntry();
+    tarArchiveInputStream0.getNextEntry();
+    byte[] byteArray1 = tarArchiveInputStream0.getLongNameData();
+    tarArchiveInputStream0.getNextEntry();
+    tarArchiveInputStream0.parsePaxHeaders(byteArrayInputStream0);
+    tarArchiveInputStream0.markSupported();
+    int int0 = tarArchiveInputStream0.read(byteArray0, 0, (int) (byte) (-78));
+    boolean boolean0 = tarArchiveInputStream0.isEOFRecord(byteArray0);
+    int int1 = tarArchiveInputStream0.getRecordSize();
+    assertEquals(512, int1);
+}","/**
+ * Get the record size being used by this stream's buffer.
+ *
+ * @return The TarBuffer record size.
+ */"
+"@Override
+public void close() throws IOException {
+    is.close();
+}","public void test059() throws Throwable {
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream((InputStream) null, 61, (String) null);
+    TarArchiveInputStream tarArchiveInputStream1 = new TarArchiveInputStream(tarArchiveInputStream0, 48, 256, (String) null);
+    // Undeclared exception!
+    try {
+        tarArchiveInputStream1.close();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarArchiveInputStream"", e);
+    }
+}","/**
+ * Closes this stream. Calls the TarBuffer's close() method.
+ * @throws IOException on error
+ */"
+"Map<String, String> parsePaxHeaders(InputStream i) throws IOException {
+    Map<String, String> headers = new HashMap<String, String>();
+    // Format is ""length keyword=value\n"";
+    while (true) {
+        // get length
+        int ch;
+        int len = 0;
+        int read = 0;
+        while ((ch = i.read()) != -1) {
+            read++;
+            if (ch == ' ') {
+                // End of length string
+                // Get keyword
+                ByteArrayOutputStream coll = new ByteArrayOutputStream();
+                while ((ch = i.read()) != -1) {
+                    read++;
+                    if (ch == '=') {
+                        // end of keyword
+                        String keyword = coll.toString(CharsetNames.UTF_8);
+                        // Get rest of entry
+                        byte[] rest = new byte[len - read];
+                        int got = IOUtils.readFully(i, rest);
+                        if (got != len - read) {
+                            throw new IOException(""Failed to read "" + ""Paxheader. Expected "" + (len - read) + "" bytes, read "" + got);
+                        }
+                        // Drop trailing NL
+                        String value = new String(rest, 0, len - read - 1, CharsetNames.UTF_8);
+                        headers.put(keyword, value);
+                        break;
+                    }
+                    coll.write((byte) ch);
+                }
+                // Processed single header
+                break;
+            }
+            len *= 10;
+            len += ch - '0';
+        }
+        if (ch == -1) {
+            // EOF
+            break;
+        }
+    }
+    return headers;
+}","public void test0610() throws Throwable {
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream((InputStream) null);
+    // Undeclared exception!
+    try {
+        tarArchiveInputStream0.parsePaxHeaders((InputStream) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarArchiveInputStream"", e);
+    }
+}",""
+"Map<String, String> parsePaxHeaders(InputStream i) throws IOException {
+    Map<String, String> headers = new HashMap<String, String>();
+    // Format is ""length keyword=value\n"";
+    while (true) {
+        // get length
+        int ch;
+        int len = 0;
+        int read = 0;
+        while ((ch = i.read()) != -1) {
+            read++;
+            if (ch == ' ') {
+                // End of length string
+                // Get keyword
+                ByteArrayOutputStream coll = new ByteArrayOutputStream();
+                while ((ch = i.read()) != -1) {
+                    read++;
+                    if (ch == '=') {
+                        // end of keyword
+                        String keyword = coll.toString(CharsetNames.UTF_8);
+                        // Get rest of entry
+                        byte[] rest = new byte[len - read];
+                        int got = IOUtils.readFully(i, rest);
+                        if (got != len - read) {
+                            throw new IOException(""Failed to read "" + ""Paxheader. Expected "" + (len - read) + "" bytes, read "" + got);
+                        }
+                        // Drop trailing NL
+                        String value = new String(rest, 0, len - read - 1, CharsetNames.UTF_8);
+                        headers.put(keyword, value);
+                        break;
+                    }
+                    coll.write((byte) ch);
+                }
+                // Processed single header
+                break;
+            }
+            len *= 10;
+            len += ch - '0';
+        }
+        if (ch == -1) {
+            // EOF
+            break;
+        }
+    }
+    return headers;
+}","public void test0711() throws Throwable {
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    PipedInputStream pipedInputStream0 = new PipedInputStream(pipedOutputStream0);
+    pipedOutputStream0.flush();
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(pipedInputStream0, 10240, 10240, ""org.apache.commons.compress.archivers.tar.TarArchiveInputStream"");
+    tarArchiveInputStream0.close();
+    try {
+        tarArchiveInputStream0.parsePaxHeaders(pipedInputStream0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Pipe closed
+        //
+        verifyException(""java.io.PipedInputStream"", e);
+    }
+}",""
+"public TarArchiveInputStream(InputStream is, int blockSize, String encoding) {
+    this(is, blockSize, TarConstants.DEFAULT_RCDSIZE, encoding);
+}","public void test0812() throws Throwable {
+    byte[] byteArray0 = new byte[5];
+    byteArray0[0] = (byte) 114;
+    byteArray0[1] = (byte) 0;
+    byteArray0[2] = (byte) 0;
+    byteArray0[3] = (byte) 42;
+    byteArray0[4] = (byte) 0;
+    TarArchiveInputStream.matches(byteArray0, (byte) 0);
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    DataInputStream dataInputStream0 = new DataInputStream(byteArrayInputStream0);
+    byteArrayInputStream0.skip(0L);
+    TarArchiveInputStream tarArchiveInputStream0 = null;
+    try {
+        tarArchiveInputStream0 = new TarArchiveInputStream(dataInputStream0, (byte) 0, ""_?pID9k@[EV-SwopsG"");
+        fail(""Expecting exception: IllegalCharsetNameException"");
+    } catch (IllegalCharsetNameException e) {
+        //
+        // _?pID9k@[EV-SwopsG
+        //
+        verifyException(""java.nio.charset.Charset"", e);
+    }
+}","/**
+ * Constructor for TarInputStream.
+ * @param is the input stream to use
+ * @param blockSize the block size to use
+ * @param encoding name of the encoding to use for file names
+ * @since 1.4
+ */"
+"public TarArchiveInputStream(InputStream is, int blockSize, int recordSize, String encoding) {
+    this.is = is;
+    this.hasHitEOF = false;
+    this.encoding = ZipEncodingHelper.getZipEncoding(encoding);
+    this.recordSize = recordSize;
+    this.blockSize = blockSize;
+}","public void test0913() throws Throwable {
+    byte[] byteArray0 = new byte[0];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(byteArrayInputStream0, 0);
+    TarArchiveInputStream tarArchiveInputStream1 = new TarArchiveInputStream(tarArchiveInputStream0, 0, 830);
+    String string0 = """";
+    TarArchiveInputStream tarArchiveInputStream2 = null;
+    try {
+        tarArchiveInputStream2 = new TarArchiveInputStream(tarArchiveInputStream1, 0, 0, """");
+        fail(""Expecting exception: IllegalCharsetNameException"");
+    } catch (IllegalCharsetNameException e) {
+        //
+        //
+        //
+        verifyException(""java.nio.charset.Charset"", e);
+    }
+}","/**
+ * Constructor for TarInputStream.
+ * @param is the input stream to use
+ * @param blockSize the block size to use
+ * @param recordSize the record size to use
+ * @param encoding name of the encoding to use for file names
+ * @since 1.4
+ */"
+"public TarArchiveInputStream(InputStream is, int blockSize, String encoding) {
+    this(is, blockSize, TarConstants.DEFAULT_RCDSIZE, encoding);
+}","public void test1014() throws Throwable {
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream((InputStream) null, 1902, 1902);
+    PushbackInputStream pushbackInputStream0 = new PushbackInputStream(tarArchiveInputStream0, 1902);
+    String string0 = ""O"";
+    TarArchiveInputStream tarArchiveInputStream1 = new TarArchiveInputStream(pushbackInputStream0, ""O"");
+    BufferedInputStream bufferedInputStream0 = new BufferedInputStream(tarArchiveInputStream1);
+    TarArchiveInputStream tarArchiveInputStream2 = null;
+    try {
+        tarArchiveInputStream2 = new TarArchiveInputStream(bufferedInputStream0, 256, """");
+        fail(""Expecting exception: IllegalCharsetNameException"");
+    } catch (IllegalCharsetNameException e) {
+        //
+        //
+        //
+        verifyException(""java.nio.charset.Charset"", e);
+    }
+}","/**
+ * Constructor for TarInputStream.
+ * @param is the input stream to use
+ * @param blockSize the block size to use
+ * @param encoding name of the encoding to use for file names
+ * @since 1.4
+ */"
+"public int getRecordSize() {
+    return recordSize;
+}","public void test1115() throws Throwable {
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    PipedInputStream pipedInputStream0 = new PipedInputStream(pipedOutputStream0);
+    byte[] byteArray0 = new byte[0];
+    pipedOutputStream0.write(byteArray0);
+    PushbackInputStream pushbackInputStream0 = new PushbackInputStream(pipedInputStream0);
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(pushbackInputStream0, 48, 23);
+    tarArchiveInputStream0.reset();
+    boolean boolean0 = tarArchiveInputStream0.isAtEOF();
+    assertEquals(23, tarArchiveInputStream0.getRecordSize());
+}","/**
+ * Get the record size being used by this stream's buffer.
+ *
+ * @return The TarBuffer record size.
+ */"
+"protected final boolean isAtEOF() {
+    return hasHitEOF;
+}","public void test1116() throws Throwable {
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    PipedInputStream pipedInputStream0 = new PipedInputStream(pipedOutputStream0);
+    byte[] byteArray0 = new byte[0];
+    pipedOutputStream0.write(byteArray0);
+    PushbackInputStream pushbackInputStream0 = new PushbackInputStream(pipedInputStream0);
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(pushbackInputStream0, 48, 23);
+    tarArchiveInputStream0.reset();
+    boolean boolean0 = tarArchiveInputStream0.isAtEOF();
+    assertFalse(boolean0);
+}",""
+"public int getRecordSize() {
+    return recordSize;
+}","public void test1218() throws Throwable {
+    Enumeration<InputStream> enumeration0 = (Enumeration<InputStream>) mock(Enumeration.class, new ViolatedAssumptionAnswer());
+    doReturn(false).when(enumeration0).hasMoreElements();
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(enumeration0);
+    TarArchiveInputStream tarArchiveInputStream0 = new TarArchiveInputStream(sequenceInputStream0);
+    byte[] byteArray0 = new byte[9];
+    byteArray0[0] = (byte) 98;
+    byteArray0[1] = (byte) 0;
+    byteArray0[2] = (byte) 122;
+    byteArray0[3] = (byte) 20;
+    byteArray0[4] = (byte) 42;
+    byteArray0[5] = (byte) 3;
+    byteArray0[6] = (byte) 0;
+    byteArray0[7] = (byte) 0;
+    byteArray0[8] = (byte) 11;
+    int int0 = tarArchiveInputStream0.read(byteArray0);
+    tarArchiveInputStream0.getCurrentEntry();
+    assertEquals(512, tarArchiveInputStream0.getRecordSize());
+}","/**
+ * Get the record size being used by this stream's buffer.
+ *
+ * @return The TarBuffer record size.
+ */"

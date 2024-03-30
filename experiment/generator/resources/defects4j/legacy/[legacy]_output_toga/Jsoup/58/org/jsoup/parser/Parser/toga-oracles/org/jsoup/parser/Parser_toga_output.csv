@@ -1,0 +1,60 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    Parser parser0 = Parser.xmlParser();
+    HtmlTreeBuilder htmlTreeBuilder0 = new HtmlTreeBuilder();
+    Parser parser1 = parser0.setTreeBuilder(htmlTreeBuilder0);
+    assertFalse(parser1.isTrackErrors());
+}",0,assertTrue(parser1.isTrackErrors())
+project,0,test011,"public void test011() throws Throwable {
+    String string0 = Parser.unescapeEntities(""meta[name=charset]"", true);
+    assertEquals(""meta[name=charset]"", string0);
+}",0,
+project,0,test022,"public void test022() throws Throwable {
+    Parser parser0 = Parser.htmlParser();
+    Parser parser1 = parser0.settings((ParseSettings) null);
+    assertFalse(parser1.isTrackErrors());
+}",0,assertFalse(parser1.isTrackErrors())
+project,0,test043,"public void test043() throws Throwable {
+    Document document0 = Parser.parseBodyFragment(""2f-J<xgD(UpF-F*>KB"", ""2f-J<xgD(UpF-F*>KB"");
+    assertEquals(""#root"", document0.tagName());
+}",0,assertNotNull(document0.tagName())
+project,0,test054,"public void test054() throws Throwable {
+    Document document0 = Parser.parseBodyFragmentRelaxed("""", """");
+    assertEquals("""", document0.location());
+}",0,assertNotNull(document0.location())
+project,0,test065,"public void test065() throws Throwable {
+    Parser parser0 = Parser.xmlParser();
+    assertFalse(parser0.isTrackErrors());
+}",0,assertTrue(parser0.isTrackErrors())
+project,0,test066,"public void test066() throws Throwable {
+    Parser parser0 = Parser.xmlParser();
+    Parser parser1 = parser0.setTrackErrors(1156);
+    Document document0 = parser1.parseInput("""", ""abs:"");
+    assertTrue(parser0.isTrackErrors());
+}",0,assertTrue(parser0.isTrackErrors())
+project,0,test067,"public void test067() throws Throwable {
+    Parser parser0 = Parser.xmlParser();
+    Parser parser1 = parser0.setTrackErrors(1156);
+    Document document0 = parser1.parseInput("""", ""abs:"");
+    assertEquals(""abs:"", document0.baseUri());
+}",0,assertNotNull(document0.baseUri())
+project,0,test078,"public void test078() throws Throwable {
+    Parser parser0 = Parser.htmlParser();
+    parser0.getErrors();
+    assertFalse(parser0.isTrackErrors());
+}",0,assertTrue(parser0.isTrackErrors())
+project,0,test089,"public void test089() throws Throwable {
+    Parser parser0 = Parser.htmlParser();
+    parser0.getTreeBuilder();
+    assertFalse(parser0.isTrackErrors());
+}",0,assertTrue(parser0.isTrackErrors())
+project,0,test0910,"public void test0910() throws Throwable {
+    Parser parser0 = Parser.htmlParser();
+    parser0.settings();
+    assertFalse(parser0.isTrackErrors());
+}",0,assertTrue(parser0.isTrackErrors())
+project,0,test1011,"public void test1011() throws Throwable {
+    Parser parser0 = Parser.htmlParser();
+    parser0.parseInput("""", """");
+    assertFalse(parser0.isTrackErrors());
+}",0,assertTrue(parser0.isTrackErrors())

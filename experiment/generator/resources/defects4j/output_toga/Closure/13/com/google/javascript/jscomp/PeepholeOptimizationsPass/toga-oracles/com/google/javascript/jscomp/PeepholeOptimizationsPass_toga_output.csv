@@ -1,0 +1,71 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test00,"public void test00() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    AbstractPeepholeOptimization[] abstractPeepholeOptimizationArray0 = new AbstractPeepholeOptimization[3];
+    PeepholeOptimizationsPass peepholeOptimizationsPass0 = new PeepholeOptimizationsPass(compiler0, abstractPeepholeOptimizationArray0);
+    AbstractCompiler abstractCompiler0 = peepholeOptimizationsPass0.getCompiler();
+    assertSame(abstractCompiler0, compiler0);
+}",0,
+project,0,test11,"public void test11() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    AbstractPeepholeOptimization[] abstractPeepholeOptimizationArray0 = new AbstractPeepholeOptimization[0];
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""3OY>dm"", ""3OY>dm"");
+    PeepholeOptimizationsPass peepholeOptimizationsPass0 = new PeepholeOptimizationsPass(compiler0, abstractPeepholeOptimizationArray0);
+    peepholeOptimizationsPass0.process(node0, node0);
+    peepholeOptimizationsPass0.process(node0, node0);
+    assertFalse(node0.isBreak());
+}",0,assertTrue(node0.isBreak())
+project,0,test22,"public void test22() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants(false);
+    PeepholeSubstituteAlternateSyntax peepholeSubstituteAlternateSyntax0 = new PeepholeSubstituteAlternateSyntax(false);
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""com.google.javascript.jscomp.PreprocessorSymbolTable"", ""com.google.javascript.jscomp.PreprocessorSymbolTable"");
+    PeepholeRemoveDeadCode peepholeRemoveDeadCode0 = new PeepholeRemoveDeadCode();
+    AbstractPeepholeOptimization[] abstractPeepholeOptimizationArray0 = new AbstractPeepholeOptimization[4];
+    abstractPeepholeOptimizationArray0[0] = (AbstractPeepholeOptimization) peepholeFoldConstants0;
+    abstractPeepholeOptimizationArray0[1] = (AbstractPeepholeOptimization) peepholeRemoveDeadCode0;
+    abstractPeepholeOptimizationArray0[2] = (AbstractPeepholeOptimization) peepholeFoldConstants0;
+    abstractPeepholeOptimizationArray0[3] = (AbstractPeepholeOptimization) peepholeSubstituteAlternateSyntax0;
+    node0.addChildToBack(node0);
+    PeepholeOptimizationsPass peepholeOptimizationsPass0 = new PeepholeOptimizationsPass(compiler0, abstractPeepholeOptimizationArray0);
+    peepholeOptimizationsPass0.process(node0, node0);
+    assertFalse(node0.hasMoreThanOneChild());
+}",0,assertFalse(node0.hasMoreThanOneChild())
+project,0,test23,"public void test23() throws Throwable {
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants(false);
+    PeepholeSubstituteAlternateSyntax peepholeSubstituteAlternateSyntax0 = new PeepholeSubstituteAlternateSyntax(false);
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""com.google.javascript.jscomp.PreprocessorSymbolTable"", ""com.google.javascript.jscomp.PreprocessorSymbolTable"");
+    PeepholeRemoveDeadCode peepholeRemoveDeadCode0 = new PeepholeRemoveDeadCode();
+    AbstractPeepholeOptimization[] abstractPeepholeOptimizationArray0 = new AbstractPeepholeOptimization[4];
+    abstractPeepholeOptimizationArray0[0] = (AbstractPeepholeOptimization) peepholeFoldConstants0;
+    abstractPeepholeOptimizationArray0[1] = (AbstractPeepholeOptimization) peepholeRemoveDeadCode0;
+    abstractPeepholeOptimizationArray0[2] = (AbstractPeepholeOptimization) peepholeFoldConstants0;
+    abstractPeepholeOptimizationArray0[3] = (AbstractPeepholeOptimization) peepholeSubstituteAlternateSyntax0;
+    node0.addChildToBack(node0);
+    PeepholeOptimizationsPass peepholeOptimizationsPass0 = new PeepholeOptimizationsPass(compiler0, abstractPeepholeOptimizationArray0);
+    peepholeOptimizationsPass0.process(node0, node0);
+    assertEquals(1, node0.getChildCount());
+}",0,"assertEquals(1, node0.getChildCount())"
+project,0,test34,"public void test34() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""3,Ydm"", "">i"");
+    AbstractPeepholeOptimization[] abstractPeepholeOptimizationArray0 = new AbstractPeepholeOptimization[3];
+    PeepholeSubstituteAlternateSyntax peepholeSubstituteAlternateSyntax0 = new PeepholeSubstituteAlternateSyntax(false);
+    abstractPeepholeOptimizationArray0[0] = (AbstractPeepholeOptimization) peepholeSubstituteAlternateSyntax0;
+    PeepholeFoldConstants peepholeFoldConstants0 = new PeepholeFoldConstants(false);
+    abstractPeepholeOptimizationArray0[1] = (AbstractPeepholeOptimization) peepholeFoldConstants0;
+    StatementFusion statementFusion0 = new StatementFusion();
+    abstractPeepholeOptimizationArray0[2] = (AbstractPeepholeOptimization) statementFusion0;
+    PeepholeOptimizationsPass peepholeOptimizationsPass0 = new PeepholeOptimizationsPass(compiler0, abstractPeepholeOptimizationArray0);
+    // Undeclared exception!
+    try {
+        peepholeOptimizationsPass0.process(node0, node0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.javascript.jscomp.StatementFusion"", e);
+    }
+}",0,

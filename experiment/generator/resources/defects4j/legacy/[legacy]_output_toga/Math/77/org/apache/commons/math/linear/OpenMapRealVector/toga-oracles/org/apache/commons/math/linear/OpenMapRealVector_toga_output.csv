@@ -1,0 +1,958 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    double[] doubleArray0 = new double[6];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.append(0.0);
+    assertEquals(0.0, openMapRealVector1.getSparcity(), 0.01);
+}",0,
+project,0,test001,"public void test001() throws Throwable {
+    double[] doubleArray0 = new double[6];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.append(0.0);
+    assertEquals(7, openMapRealVector1.getDimension());
+}",0,
+project,0,test002,"public void test002() throws Throwable {
+    double[] doubleArray0 = new double[6];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.append(0.0);
+    assertEquals(6, openMapRealVector0.getDimension());
+}",0,"assertEquals(0, openMapRealVector0.getDimension())"
+project,0,test013,"public void test013() throws Throwable {
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector((-30));
+    OpenMapRealVector openMapRealVector1 = new OpenMapRealVector((-30));
+    OpenIntToDoubleHashMap.Iterator openIntToDoubleHashMap_Iterator0 = mock(OpenIntToDoubleHashMap.Iterator.class, new ViolatedAssumptionAnswer());
+    doReturn(0).when(openIntToDoubleHashMap_Iterator0).key();
+    OpenMapRealVector.OpenMapEntry openMapRealVector_OpenMapEntry0 = openMapRealVector0.new OpenMapEntry(openIntToDoubleHashMap_Iterator0);
+    openMapRealVector_OpenMapEntry0.setValue((-30));
+    double double0 = openMapRealVector1.dotProduct(openMapRealVector0);
+    assertEquals((-0.03333333333333333), openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test014,"public void test014() throws Throwable {
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector((-30));
+    OpenMapRealVector openMapRealVector1 = new OpenMapRealVector((-30));
+    OpenIntToDoubleHashMap.Iterator openIntToDoubleHashMap_Iterator0 = mock(OpenIntToDoubleHashMap.Iterator.class, new ViolatedAssumptionAnswer());
+    doReturn(0).when(openIntToDoubleHashMap_Iterator0).key();
+    OpenMapRealVector.OpenMapEntry openMapRealVector_OpenMapEntry0 = openMapRealVector0.new OpenMapEntry(openIntToDoubleHashMap_Iterator0);
+    openMapRealVector_OpenMapEntry0.setValue((-30));
+    double double0 = openMapRealVector1.dotProduct(openMapRealVector0);
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test025,"public void test025() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    // Undeclared exception!
+    try {
+        openMapRealVector0.unitVector();
+        fail(""Expecting exception: ArithmeticException"");
+    } catch (ArithmeticException e) {
+        //
+        // cannot normalize a zero norm vector
+        //
+        verifyException(""org.apache.commons.math.MathRuntimeException"", e);
+    }
+}",0,
+project,0,test036,"public void test036() throws Throwable {
+    double[] doubleArray0 = new double[6];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    double[] doubleArray1 = openMapRealVector0.toArray();
+    assertEquals(6, doubleArray1.length);
+}",1,
+project,0,test037,"public void test037() throws Throwable {
+    double[] doubleArray0 = new double[6];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    double[] doubleArray1 = openMapRealVector0.toArray();
+    assertEquals(0.0, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test048,"public void test048() throws Throwable {
+    double[] doubleArray0 = new double[4];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    double double0 = openMapRealVector0.getSparcity();
+    assertEquals(4, openMapRealVector0.getDimension());
+}",0,"assertEquals(0, openMapRealVector0.getDimension())"
+project,0,test049,"public void test049() throws Throwable {
+    double[] doubleArray0 = new double[4];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    double double0 = openMapRealVector0.getSparcity();
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test0510,"public void test0510() throws Throwable {
+    double[] doubleArray0 = new double[1];
+    doubleArray0[0] = 1.0;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, 1.0);
+    double double0 = openMapRealVector0.getDistance((RealVector) openMapRealVector0);
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test0511,"public void test0511() throws Throwable {
+    double[] doubleArray0 = new double[1];
+    doubleArray0[0] = 1.0;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, 1.0);
+    double double0 = openMapRealVector0.getDistance((RealVector) openMapRealVector0);
+    assertEquals(1.0, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test0612,"public void test0612() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.mapAdd(2904.7477);
+    boolean boolean0 = openMapRealVector0.equals(openMapRealVector1);
+    assertFalse(openMapRealVector1.equals((Object) openMapRealVector0));
+}",0,
+project,0,test0613,"public void test0613() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.mapAdd(2904.7477);
+    boolean boolean0 = openMapRealVector0.equals(openMapRealVector1);
+    assertEquals(0.0, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test0614,"public void test0614() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.mapAdd(2904.7477);
+    boolean boolean0 = openMapRealVector0.equals(openMapRealVector1);
+    assertEquals(1.0, openMapRealVector1.getSparcity(), 0.01);
+}",0,
+project,0,test0615,"public void test0615() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.mapAdd(2904.7477);
+    boolean boolean0 = openMapRealVector0.equals(openMapRealVector1);
+    assertFalse(boolean0);
+}",0,
+project,0,test0716,"public void test0716() throws Throwable {
+    ArrayRealVector arrayRealVector0 = new ArrayRealVector(31, 2642.9524372);
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(arrayRealVector0);
+    try {
+        openMapRealVector0.setSubVector(31, (RealVector) arrayRealVector0);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+        //
+        // index 31 out of allowed range [0, 30]
+        //
+        verifyException(""org.apache.commons.math.linear.AbstractRealVector"", e);
+    }
+}",1,
+project,0,test0817,"public void test0817() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    assertEquals(2, openMapRealVector0.getDimension());
+}",0,"assertEquals(0, openMapRealVector0.getDimension())"
+project,0,test0818,"public void test0818() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.projection(doubleArray0);
+    assertEquals(1.0, openMapRealVector1.getSparcity(), 0.01);
+}",0,
+project,0,test0819,"public void test0819() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.projection(doubleArray0);
+    assertEquals(0.0, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test0920,"public void test0920() throws Throwable {
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector();
+    assertEquals(Double.NaN, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test1021,"public void test1021() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[1] = Double.NaN;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    RealVector realVector0 = openMapRealVector0.add(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.subtract(realVector0);
+    assertTrue(openMapRealVector1.equals((Object) openMapRealVector0));
+}",0,
+project,0,test1022,"public void test1022() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[1] = Double.NaN;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    RealVector realVector0 = openMapRealVector0.add(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.subtract(realVector0);
+    assertEquals(0.5, openMapRealVector1.getSparcity(), 0.01);
+}",0,
+project,0,test1023,"public void test1023() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[1] = Double.NaN;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    RealVector realVector0 = openMapRealVector0.add(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.subtract(realVector0);
+    assertNotSame(openMapRealVector1, openMapRealVector0);
+}",1,
+project,0,test1024,"public void test1024() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[1] = Double.NaN;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    RealVector realVector0 = openMapRealVector0.add(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.subtract(realVector0);
+    assertEquals(0.5, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test1226,"public void test1226() throws Throwable {
+    double[] doubleArray0 = new double[16];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, 0.0);
+    assertEquals(1.0, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test1227,"public void test1227() throws Throwable {
+    double[] doubleArray0 = new double[16];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, 0.0);
+    Double[] doubleArray1 = new Double[1];
+    doubleArray1[0] = (Double) openMapRealVector0.DEFAULT_ZERO_TOLERANCE;
+    OpenMapRealVector openMapRealVector1 = new OpenMapRealVector(doubleArray1);
+    assertEquals(1.0, openMapRealVector1.getSparcity(), 0.01);
+}",0,
+project,0,test1328,"public void test1328() throws Throwable {
+    Double[] doubleArray0 = new Double[8];
+    doubleArray0[0] = (Double) 1.0E-12;
+    OpenMapRealVector openMapRealVector0 = null;
+    try {
+        openMapRealVector0 = new OpenMapRealVector(doubleArray0, 393.1155872284155);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.apache.commons.math.linear.OpenMapRealVector"", e);
+    }
+}",0,
+project,0,test1429,"public void test1429() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = new OpenMapRealVector((RealVector) openMapRealVector0);
+    assertEquals(0.0, openMapRealVector1.getSparcity(), 0.01);
+}",0,
+project,0,test1430,"public void test1430() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = new OpenMapRealVector((RealVector) openMapRealVector0);
+    assertEquals(0.0, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test1431,"public void test1431() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = new OpenMapRealVector((RealVector) openMapRealVector0);
+    assertTrue(openMapRealVector1.equals((Object) openMapRealVector0));
+}",0,
+project,0,test1532,"public void test1532() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    ArrayRealVector arrayRealVector0 = new ArrayRealVector(doubleArray0);
+    openMapRealVector0.add((RealVector) arrayRealVector0);
+    assertEquals(0.0, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test1633,"public void test1633() throws Throwable {
+    double[] doubleArray0 = new double[12];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    RealVector realVector0 = openMapRealVector0.add((RealVector) openMapRealVector0);
+    assertNotSame(realVector0, openMapRealVector0);
+}",1,
+project,0,test1634,"public void test1634() throws Throwable {
+    double[] doubleArray0 = new double[12];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    RealVector realVector0 = openMapRealVector0.add((RealVector) openMapRealVector0);
+    assertEquals(0.0, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test1635,"public void test1635() throws Throwable {
+    double[] doubleArray0 = new double[12];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    RealVector realVector0 = openMapRealVector0.add((RealVector) openMapRealVector0);
+    assertTrue(realVector0.equals((Object) openMapRealVector0));
+}",0,
+project,0,test1736,"public void test1736() throws Throwable {
+    double[] doubleArray0 = new double[16];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, 0.0);
+    OpenMapRealVector openMapRealVector1 = new OpenMapRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector2 = openMapRealVector0.add(openMapRealVector1);
+    assertEquals(1.0, openMapRealVector2.getSparcity(), 0.01);
+}",0,
+project,0,test1737,"public void test1737() throws Throwable {
+    double[] doubleArray0 = new double[16];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, 0.0);
+    OpenMapRealVector openMapRealVector1 = new OpenMapRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector2 = openMapRealVector0.add(openMapRealVector1);
+    assertTrue(openMapRealVector2.equals((Object) openMapRealVector0));
+}",0,
+project,0,test1738,"public void test1738() throws Throwable {
+    double[] doubleArray0 = new double[16];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, 0.0);
+    OpenMapRealVector openMapRealVector1 = new OpenMapRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector2 = openMapRealVector0.add(openMapRealVector1);
+    assertNotSame(openMapRealVector2, openMapRealVector0);
+}",0,
+project,0,test1839,"public void test1839() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[1] = Double.NaN;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    double[] doubleArray1 = new double[2];
+    doubleArray1[0] = (-1474.733152693);
+    OpenMapRealVector openMapRealVector1 = new OpenMapRealVector(doubleArray1);
+    OpenMapRealVector openMapRealVector2 = openMapRealVector0.add(openMapRealVector1);
+    assertEquals(1.0, openMapRealVector2.getSparcity(), 0.01);
+}",0,
+project,0,test1840,"public void test1840() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[1] = Double.NaN;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    double[] doubleArray1 = new double[2];
+    doubleArray1[0] = (-1474.733152693);
+    OpenMapRealVector openMapRealVector1 = new OpenMapRealVector(doubleArray1);
+    OpenMapRealVector openMapRealVector2 = openMapRealVector0.add(openMapRealVector1);
+    assertEquals(0.5, openMapRealVector1.getSparcity(), 0.01);
+}",0,
+project,0,test1941,"public void test1941() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[0] = (double) 5;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, 5);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.append((RealVector) openMapRealVector0);
+    assertEquals(4, openMapRealVector1.getDimension());
+}",0,"assertEquals(0, openMapRealVector1.getDimension())"
+project,0,test1942,"public void test1942() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[0] = (double) 5;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, 5);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.append((RealVector) openMapRealVector0);
+    assertEquals(0.5, openMapRealVector1.getSparcity(), 0.01);
+}",0,
+project,0,test2043,"public void test2043() throws Throwable {
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(7);
+    ArrayRealVector arrayRealVector0 = new ArrayRealVector();
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.append((RealVector) arrayRealVector0);
+    assertEquals(7, openMapRealVector1.getDimension());
+}",0,"assertEquals(0, openMapRealVector1.getDimension())"
+project,0,test2044,"public void test2044() throws Throwable {
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(7);
+    ArrayRealVector arrayRealVector0 = new ArrayRealVector();
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.append((RealVector) arrayRealVector0);
+    assertNotSame(openMapRealVector1, openMapRealVector0);
+}",0,
+project,0,test2045,"public void test2045() throws Throwable {
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(7);
+    ArrayRealVector arrayRealVector0 = new ArrayRealVector();
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.append((RealVector) arrayRealVector0);
+    assertTrue(openMapRealVector1.equals((Object) openMapRealVector0));
+}",0,
+project,0,test2146,"public void test2146() throws Throwable {
+    double[] doubleArray0 = new double[12];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.append(doubleArray0);
+    assertEquals(0.0, openMapRealVector1.getSparcity(), 0.01);
+}",0,
+project,0,test2147,"public void test2147() throws Throwable {
+    double[] doubleArray0 = new double[12];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.append(doubleArray0);
+    assertEquals(24, openMapRealVector1.getDimension());
+}",0,"assertEquals(0, openMapRealVector1.getDimension())"
+project,0,test2248,"public void test2248() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[1] = Double.NaN;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    double double0 = openMapRealVector0.dotProduct(openMapRealVector0);
+    assertEquals(0.5, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test2249,"public void test2249() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[1] = Double.NaN;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    double double0 = openMapRealVector0.dotProduct(openMapRealVector0);
+    assertEquals(Double.NaN, double0, 0.01);
+}",0,
+project,0,test2350,"public void test2350() throws Throwable {
+    double[] doubleArray0 = new double[7];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    openMapRealVector0.dotProduct(doubleArray0);
+    assertEquals(0.0, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test2451,"public void test2451() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[1] = Double.NaN;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.ebeDivide((RealVector) openMapRealVector0);
+    boolean boolean0 = openMapRealVector1.equals(openMapRealVector0);
+    assertTrue(boolean0);
+}",0,
+project,0,test2452,"public void test2452() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[1] = Double.NaN;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.ebeDivide((RealVector) openMapRealVector0);
+    boolean boolean0 = openMapRealVector1.equals(openMapRealVector0);
+    assertNotSame(openMapRealVector1, openMapRealVector0);
+}",0,
+project,0,test2453,"public void test2453() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[1] = Double.NaN;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.ebeDivide((RealVector) openMapRealVector0);
+    boolean boolean0 = openMapRealVector1.equals(openMapRealVector0);
+    assertEquals(0.5, openMapRealVector1.getSparcity(), 0.01);
+}",0,
+project,0,test2554,"public void test2554() throws Throwable {
+    double[] doubleArray0 = new double[1];
+    doubleArray0[0] = 1.0;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, 1.0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.ebeDivide(doubleArray0);
+    assertTrue(openMapRealVector1.equals((Object) openMapRealVector0));
+}",0,
+project,0,test2555,"public void test2555() throws Throwable {
+    double[] doubleArray0 = new double[1];
+    doubleArray0[0] = 1.0;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, 1.0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.ebeDivide(doubleArray0);
+    assertEquals(1.0, openMapRealVector1.getSparcity(), 0.01);
+}",0,
+project,0,test2556,"public void test2556() throws Throwable {
+    double[] doubleArray0 = new double[1];
+    doubleArray0[0] = 1.0;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, 1.0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.ebeDivide(doubleArray0);
+    assertNotSame(openMapRealVector1, openMapRealVector0);
+}",0,
+project,0,test2657,"public void test2657() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[1] = Double.NaN;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.ebeMultiply((RealVector) openMapRealVector0);
+    assertEquals(0.5, openMapRealVector1.getSparcity(), 0.01);
+}",0,
+project,0,test2658,"public void test2658() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[1] = Double.NaN;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.ebeMultiply((RealVector) openMapRealVector0);
+    assertNotSame(openMapRealVector1, openMapRealVector0);
+}",1,
+project,0,test2659,"public void test2659() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[1] = Double.NaN;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.ebeMultiply((RealVector) openMapRealVector0);
+    assertEquals(0.5, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test2660,"public void test2660() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[1] = Double.NaN;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.ebeMultiply((RealVector) openMapRealVector0);
+    assertTrue(openMapRealVector1.equals((Object) openMapRealVector0));
+}",0,
+project,0,test2761,"public void test2761() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[0] = 1.0;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, 1.0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.ebeMultiply(doubleArray0);
+    assertEquals(0.5, openMapRealVector1.getSparcity(), 0.01);
+}",0,
+project,0,test2762,"public void test2762() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[0] = 1.0;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, 1.0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.ebeMultiply(doubleArray0);
+    assertNotSame(openMapRealVector1, openMapRealVector0);
+}",0,
+project,0,test2763,"public void test2763() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[0] = 1.0;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, 1.0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.ebeMultiply(doubleArray0);
+    assertTrue(openMapRealVector1.equals((Object) openMapRealVector0));
+}",0,
+project,0,test2864,"public void test2864() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, (-37.594487));
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.getSubVector(1, 1);
+    assertEquals(1.0, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test2865,"public void test2865() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, (-37.594487));
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.getSubVector(1, 1);
+    assertEquals(0.0, openMapRealVector1.getSparcity(), 0.01);
+}",0,
+project,0,test2866,"public void test2866() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, (-37.594487));
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.getSubVector(1, 1);
+    assertEquals(1, openMapRealVector1.getDimension());
+}",0,"assertEquals(1, openMapRealVector1.getDimension())"
+project,0,test2967,"public void test2967() throws Throwable {
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(Integer.MAX_VALUE, (-286.019692818355));
+    OpenIntToDoubleHashMap.Iterator openIntToDoubleHashMap_Iterator0 = mock(OpenIntToDoubleHashMap.Iterator.class, new ViolatedAssumptionAnswer());
+    doReturn(Integer.MAX_VALUE).when(openIntToDoubleHashMap_Iterator0).key();
+    OpenMapRealVector.OpenMapEntry openMapRealVector_OpenMapEntry0 = openMapRealVector0.new OpenMapEntry(openIntToDoubleHashMap_Iterator0);
+    openMapRealVector_OpenMapEntry0.setValue(1.0E-12);
+    openMapRealVector0.getSubVector(32, 32);
+    assertEquals(4.656612875245797E-10, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test3068,"public void test3068() throws Throwable {
+    double[] doubleArray0 = new double[16];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, 0.0);
+    double[] doubleArray1 = openMapRealVector0.getData();
+    assertEquals(16, doubleArray1.length);
+}",0,
+project,0,test3069,"public void test3069() throws Throwable {
+    double[] doubleArray0 = new double[16];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, 0.0);
+    double[] doubleArray1 = openMapRealVector0.getData();
+    assertEquals(1.0, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test3170,"public void test3170() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[0] = 1.0;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, 1.0);
+    OpenMapRealVector openMapRealVector1 = new OpenMapRealVector(doubleArray0, 1499.91);
+    double double0 = openMapRealVector1.getDistance((RealVector) openMapRealVector0);
+    assertEquals(1.0, double0, 0.01);
+}",0,
+project,0,test3171,"public void test3171() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[0] = 1.0;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, 1.0);
+    OpenMapRealVector openMapRealVector1 = new OpenMapRealVector(doubleArray0, 1499.91);
+    double double0 = openMapRealVector1.getDistance((RealVector) openMapRealVector0);
+    assertEquals(0.0, openMapRealVector1.getSparcity(), 0.01);
+}",0,
+project,0,test3272,"public void test3272() throws Throwable {
+    ArrayRealVector arrayRealVector0 = new ArrayRealVector(31, 2642.9524372);
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(arrayRealVector0);
+    double double0 = openMapRealVector0.getDistance((RealVector) arrayRealVector0);
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test3373,"public void test3373() throws Throwable {
+    double[] doubleArray0 = new double[12];
+    doubleArray0[1] = Double.NaN;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    double double0 = openMapRealVector0.getL1Distance(openMapRealVector0);
+    assertEquals(0.08333333333333333, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test3374,"public void test3374() throws Throwable {
+    double[] doubleArray0 = new double[12];
+    doubleArray0[1] = Double.NaN;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    double double0 = openMapRealVector0.getL1Distance(openMapRealVector0);
+    assertEquals(Double.NaN, double0, 0.01);
+}",0,
+project,0,test3575,"public void test3575() throws Throwable {
+    double[] doubleArray0 = new double[0];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    double double0 = openMapRealVector0.getL1Distance((RealVector) openMapRealVector0);
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test3676,"public void test3676() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    ArrayRealVector arrayRealVector0 = new ArrayRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    double double0 = openMapRealVector0.getL1Distance((RealVector) arrayRealVector0);
+    assertEquals(0.0, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test3677,"public void test3677() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    ArrayRealVector arrayRealVector0 = new ArrayRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    double double0 = openMapRealVector0.getL1Distance((RealVector) arrayRealVector0);
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test3778,"public void test3778() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[1] = Double.NaN;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    double double0 = openMapRealVector0.getLInfNorm();
+    assertEquals(0.5, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test3779,"public void test3779() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[1] = Double.NaN;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    double double0 = openMapRealVector0.getLInfNorm();
+    assertEquals(Double.NaN, double0, 0.01);
+}",0,
+project,0,test3880,"public void test3880() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[1] = Double.NaN;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    double double0 = openMapRealVector0.getLInfDistance((RealVector) openMapRealVector0);
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test3881,"public void test3881() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[1] = Double.NaN;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    double double0 = openMapRealVector0.getLInfDistance((RealVector) openMapRealVector0);
+    assertEquals(0.5, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test3982,"public void test3982() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[0] = 1.0;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, 1.0);
+    openMapRealVector0.mapSinToSelf();
+    OpenMapRealVector openMapRealVector1 = new OpenMapRealVector(doubleArray0, 1.0);
+    double double0 = openMapRealVector1.getLInfDistance((RealVector) openMapRealVector0);
+    assertEquals(0.5, openMapRealVector1.getSparcity(), 0.01);
+}",0,
+project,0,test3983,"public void test3983() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[0] = 1.0;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, 1.0);
+    openMapRealVector0.mapSinToSelf();
+    OpenMapRealVector openMapRealVector1 = new OpenMapRealVector(doubleArray0, 1.0);
+    double double0 = openMapRealVector1.getLInfDistance((RealVector) openMapRealVector0);
+    assertEquals(0.1585290151921035, double0, 0.01);
+}",0,
+project,0,test4084,"public void test4084() throws Throwable {
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector((-30));
+    OpenMapRealVector openMapRealVector1 = new OpenMapRealVector((-30));
+    OpenIntToDoubleHashMap.Iterator openIntToDoubleHashMap_Iterator0 = mock(OpenIntToDoubleHashMap.Iterator.class, new ViolatedAssumptionAnswer());
+    doReturn(0).when(openIntToDoubleHashMap_Iterator0).key();
+    OpenMapRealVector.OpenMapEntry openMapRealVector_OpenMapEntry0 = openMapRealVector0.new OpenMapEntry(openIntToDoubleHashMap_Iterator0);
+    openMapRealVector_OpenMapEntry0.setValue((-30));
+    double double0 = openMapRealVector1.getLInfDistance((RealVector) openMapRealVector0);
+    assertEquals((-0.03333333333333333), openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test4085,"public void test4085() throws Throwable {
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector((-30));
+    OpenMapRealVector openMapRealVector1 = new OpenMapRealVector((-30));
+    OpenIntToDoubleHashMap.Iterator openIntToDoubleHashMap_Iterator0 = mock(OpenIntToDoubleHashMap.Iterator.class, new ViolatedAssumptionAnswer());
+    doReturn(0).when(openIntToDoubleHashMap_Iterator0).key();
+    OpenMapRealVector.OpenMapEntry openMapRealVector_OpenMapEntry0 = openMapRealVector0.new OpenMapEntry(openIntToDoubleHashMap_Iterator0);
+    openMapRealVector_OpenMapEntry0.setValue((-30));
+    double double0 = openMapRealVector1.getLInfDistance((RealVector) openMapRealVector0);
+    assertEquals(0.0, double0, 0.01);
+}",0,
+project,0,test4186,"public void test4186() throws Throwable {
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector((-30));
+    OpenMapRealVector openMapRealVector1 = new OpenMapRealVector((-30));
+    OpenIntToDoubleHashMap.Iterator openIntToDoubleHashMap_Iterator0 = mock(OpenIntToDoubleHashMap.Iterator.class, new ViolatedAssumptionAnswer());
+    doReturn(2146857538).when(openIntToDoubleHashMap_Iterator0).key();
+    OpenMapRealVector.OpenMapEntry openMapRealVector_OpenMapEntry0 = openMapRealVector0.new OpenMapEntry(openIntToDoubleHashMap_Iterator0);
+    openMapRealVector_OpenMapEntry0.setValue(1.0E-12);
+    double double0 = openMapRealVector1.getLInfDistance((RealVector) openMapRealVector0);
+    assertEquals((-0.03333333333333333), openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test4187,"public void test4187() throws Throwable {
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector((-30));
+    OpenMapRealVector openMapRealVector1 = new OpenMapRealVector((-30));
+    OpenIntToDoubleHashMap.Iterator openIntToDoubleHashMap_Iterator0 = mock(OpenIntToDoubleHashMap.Iterator.class, new ViolatedAssumptionAnswer());
+    doReturn(2146857538).when(openIntToDoubleHashMap_Iterator0).key();
+    OpenMapRealVector.OpenMapEntry openMapRealVector_OpenMapEntry0 = openMapRealVector0.new OpenMapEntry(openIntToDoubleHashMap_Iterator0);
+    openMapRealVector_OpenMapEntry0.setValue(1.0E-12);
+    double double0 = openMapRealVector1.getLInfDistance((RealVector) openMapRealVector0);
+    assertEquals(1.0E-12, double0, 0.01);
+}",0,
+project,0,test4288,"public void test4288() throws Throwable {
+    ArrayRealVector arrayRealVector0 = new ArrayRealVector(31, 2642.9524372);
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(arrayRealVector0);
+    openMapRealVector0.unitize();
+    double double0 = openMapRealVector0.getLInfDistance((RealVector) arrayRealVector0);
+    assertEquals(2642.7728318979734, double0, 0.01);
+}",0,
+project,0,test4289,"public void test4289() throws Throwable {
+    ArrayRealVector arrayRealVector0 = new ArrayRealVector(31, 2642.9524372);
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(arrayRealVector0);
+    openMapRealVector0.unitize();
+    double double0 = openMapRealVector0.getLInfDistance((RealVector) arrayRealVector0);
+    assertEquals(1.0, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test4390,"public void test4390() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[1] = Double.NaN;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    boolean boolean0 = openMapRealVector0.isInfinite();
+    assertFalse(boolean0);
+}",1,
+project,0,test4391,"public void test4391() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[1] = Double.NaN;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    boolean boolean0 = openMapRealVector0.isInfinite();
+    assertEquals(0.5, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test4492,"public void test4492() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[0] = 1.0;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, 1.0);
+    boolean boolean0 = openMapRealVector0.isInfinite();
+    assertEquals(0.5, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test4493,"public void test4493() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[0] = 1.0;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, 1.0);
+    boolean boolean0 = openMapRealVector0.isInfinite();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4594,"public void test4594() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, (-2593.85329175));
+    OpenMapRealVector openMapRealVector1 = (OpenMapRealVector) openMapRealVector0.mapPow((-2593.85329175));
+    boolean boolean0 = openMapRealVector1.isInfinite();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4595,"public void test4595() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, (-2593.85329175));
+    OpenMapRealVector openMapRealVector1 = (OpenMapRealVector) openMapRealVector0.mapPow((-2593.85329175));
+    boolean boolean0 = openMapRealVector1.isInfinite();
+    assertEquals(1.0, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test4596,"public void test4596() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, (-2593.85329175));
+    OpenMapRealVector openMapRealVector1 = (OpenMapRealVector) openMapRealVector0.mapPow((-2593.85329175));
+    boolean boolean0 = openMapRealVector1.isInfinite();
+    assertEquals(1.0, openMapRealVector1.getSparcity(), 0.01);
+}",0,
+project,0,test4697,"public void test4697() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, (-597.076839365));
+    boolean boolean0 = openMapRealVector0.isNaN();
+    assertEquals(1.0, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test4698,"public void test4698() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, (-597.076839365));
+    boolean boolean0 = openMapRealVector0.isNaN();
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4799,"public void test4799() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[1] = Double.NaN;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    boolean boolean0 = openMapRealVector0.isNaN();
+    assertEquals(0.5, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test47100,"public void test47100() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[1] = Double.NaN;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    boolean boolean0 = openMapRealVector0.isNaN();
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test48101,"public void test48101() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[1] = Double.NaN;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    RealMatrix realMatrix0 = openMapRealVector0.outerProduct(doubleArray0);
+    assertEquals(0.5, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test48102,"public void test48102() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[1] = Double.NaN;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    RealMatrix realMatrix0 = openMapRealVector0.outerProduct(doubleArray0);
+    assertEquals(2, realMatrix0.getColumnDimension());
+}",0,"assertEquals(1, realMatrix0.getColumnDimension())"
+project,0,test48103,"public void test48103() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[1] = Double.NaN;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    RealMatrix realMatrix0 = openMapRealVector0.outerProduct(doubleArray0);
+    assertEquals(2, realMatrix0.getRowDimension());
+}",0,"assertEquals(1, realMatrix0.getRowDimension())"
+project,0,test49104,"public void test49104() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[0] = 1.0;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, 1.0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.subtract((RealVector) openMapRealVector0);
+    assertEquals(0.0, openMapRealVector1.getSparcity(), 0.01);
+}",0,
+project,0,test49105,"public void test49105() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[0] = 1.0;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, 1.0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.subtract((RealVector) openMapRealVector0);
+    assertFalse(openMapRealVector1.equals((Object) openMapRealVector0));
+}",0,
+project,0,test50106,"public void test50106() throws Throwable {
+    double[] doubleArray0 = new double[6];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    openMapRealVector0.setSubVector(0, doubleArray0);
+    assertEquals(0.0, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test51107,"public void test51107() throws Throwable {
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector((-30));
+    openMapRealVector0.set((-30));
+    assertEquals((-30), openMapRealVector0.getDimension());
+}",0,"assertEquals(0, openMapRealVector0.getDimension())"
+project,0,test52108,"public void test52108() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, (-2593.85329175));
+    openMapRealVector0.set(1455.0);
+    assertEquals(1.0, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test53109,"public void test53109() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[0] = 1.0;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, 1.0);
+    OpenMapRealVector openMapRealVector1 = new OpenMapRealVector(doubleArray0, 1499.91);
+    OpenMapRealVector openMapRealVector2 = openMapRealVector1.subtract((RealVector) openMapRealVector0);
+    assertNotSame(openMapRealVector2, openMapRealVector1);
+}",1,
+project,0,test53110,"public void test53110() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[0] = 1.0;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, 1.0);
+    OpenMapRealVector openMapRealVector1 = new OpenMapRealVector(doubleArray0, 1499.91);
+    OpenMapRealVector openMapRealVector2 = openMapRealVector1.subtract((RealVector) openMapRealVector0);
+    assertTrue(openMapRealVector2.equals((Object) openMapRealVector1));
+}",0,
+project,0,test53111,"public void test53111() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[0] = 1.0;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, 1.0);
+    OpenMapRealVector openMapRealVector1 = new OpenMapRealVector(doubleArray0, 1499.91);
+    OpenMapRealVector openMapRealVector2 = openMapRealVector1.subtract((RealVector) openMapRealVector0);
+    assertEquals(0.5, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test53112,"public void test53112() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[0] = 1.0;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, 1.0);
+    OpenMapRealVector openMapRealVector1 = new OpenMapRealVector(doubleArray0, 1499.91);
+    OpenMapRealVector openMapRealVector2 = openMapRealVector1.subtract((RealVector) openMapRealVector0);
+    assertEquals(0.0, openMapRealVector2.getSparcity(), 0.01);
+}",0,
+project,0,test54113,"public void test54113() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    RealVector realVector0 = openMapRealVector0.add(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.subtract(realVector0);
+    assertNotSame(openMapRealVector1, openMapRealVector0);
+}",1,
+project,0,test54114,"public void test54114() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    RealVector realVector0 = openMapRealVector0.add(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.subtract(realVector0);
+    assertEquals(0.0, openMapRealVector1.getSparcity(), 0.01);
+}",0,
+project,0,test54115,"public void test54115() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    RealVector realVector0 = openMapRealVector0.add(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.subtract(realVector0);
+    assertEquals(0.0, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test55116,"public void test55116() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[1] = Double.NaN;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    openMapRealVector0.hashCode();
+    assertEquals(0.5, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test56117,"public void test56117() throws Throwable {
+    double[] doubleArray0 = new double[7];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = new OpenMapRealVector(doubleArray0);
+    boolean boolean0 = openMapRealVector1.equals(openMapRealVector0);
+    assertTrue(boolean0);
+}",0,
+project,0,test56118,"public void test56118() throws Throwable {
+    double[] doubleArray0 = new double[7];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = new OpenMapRealVector(doubleArray0);
+    boolean boolean0 = openMapRealVector1.equals(openMapRealVector0);
+    assertEquals(0.0, openMapRealVector1.getSparcity(), 0.01);
+}",0,
+project,0,test57119,"public void test57119() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    boolean boolean0 = openMapRealVector0.equals(openMapRealVector0);
+    assertEquals(0.0, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test57120,"public void test57120() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    boolean boolean0 = openMapRealVector0.equals(openMapRealVector0);
+    assertTrue(boolean0);
+}",0,
+project,0,test58121,"public void test58121() throws Throwable {
+    double[] doubleArray0 = new double[6];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    boolean boolean0 = openMapRealVector0.equals((Object) null);
+    assertFalse(boolean0);
+}",0,
+project,0,test58122,"public void test58122() throws Throwable {
+    double[] doubleArray0 = new double[6];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    boolean boolean0 = openMapRealVector0.equals((Object) null);
+    assertEquals(0.0, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test59123,"public void test59123() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    boolean boolean0 = openMapRealVector0.equals("":/`q:0[Oe7aJ"");
+    assertEquals(0.0, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test59124,"public void test59124() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    boolean boolean0 = openMapRealVector0.equals("":/`q:0[Oe7aJ"");
+    assertFalse(boolean0);
+}",0,
+project,0,test60125,"public void test60125() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = new OpenMapRealVector(openMapRealVector0, 1);
+    boolean boolean0 = openMapRealVector0.equals(openMapRealVector1);
+    assertFalse(boolean0);
+}",0,
+project,0,test60126,"public void test60126() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = new OpenMapRealVector(openMapRealVector0, 1);
+    boolean boolean0 = openMapRealVector0.equals(openMapRealVector1);
+    assertEquals(3, openMapRealVector1.getDimension());
+}",0,"assertEquals(0, openMapRealVector1.getDimension())"
+project,0,test60127,"public void test60127() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = new OpenMapRealVector(openMapRealVector0, 1);
+    boolean boolean0 = openMapRealVector0.equals(openMapRealVector1);
+    assertEquals(0.0, openMapRealVector1.getSparcity(), 0.01);
+}",0,
+project,0,test60128,"public void test60128() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = new OpenMapRealVector(openMapRealVector0, 1);
+    boolean boolean0 = openMapRealVector0.equals(openMapRealVector1);
+    assertFalse(openMapRealVector1.equals((Object) openMapRealVector0));
+}",0,
+project,0,test61129,"public void test61129() throws Throwable {
+    double[] doubleArray0 = new double[7];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = new OpenMapRealVector(doubleArray0, Double.NaN);
+    boolean boolean0 = openMapRealVector0.equals(openMapRealVector1);
+    assertEquals(0.0, openMapRealVector0.getSparcity(), 0.01);
+}",0,
+project,0,test61130,"public void test61130() throws Throwable {
+    double[] doubleArray0 = new double[7];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = new OpenMapRealVector(doubleArray0, Double.NaN);
+    boolean boolean0 = openMapRealVector0.equals(openMapRealVector1);
+    assertFalse(boolean0);
+}",0,
+project,0,test61131,"public void test61131() throws Throwable {
+    double[] doubleArray0 = new double[7];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = new OpenMapRealVector(doubleArray0, Double.NaN);
+    boolean boolean0 = openMapRealVector0.equals(openMapRealVector1);
+    assertEquals(1.0, openMapRealVector1.getSparcity(), 0.01);
+}",0,
+project,0,test61132,"public void test61132() throws Throwable {
+    double[] doubleArray0 = new double[7];
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0);
+    OpenMapRealVector openMapRealVector1 = new OpenMapRealVector(doubleArray0, Double.NaN);
+    boolean boolean0 = openMapRealVector0.equals(openMapRealVector1);
+    assertFalse(openMapRealVector1.equals((Object) openMapRealVector0));
+}",0,
+project,0,test62133,"public void test62133() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[0] = 1.0;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, 1.0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.add(openMapRealVector0);
+    boolean boolean0 = openMapRealVector1.equals(openMapRealVector0);
+    assertFalse(boolean0);
+}",0,
+project,0,test62134,"public void test62134() throws Throwable {
+    double[] doubleArray0 = new double[2];
+    doubleArray0[0] = 1.0;
+    OpenMapRealVector openMapRealVector0 = new OpenMapRealVector(doubleArray0, 1.0);
+    OpenMapRealVector openMapRealVector1 = openMapRealVector0.add(openMapRealVector0);
+    boolean boolean0 = openMapRealVector1.equals(openMapRealVector0);
+    assertEquals(0.5, openMapRealVector1.getSparcity(), 0.01);
+}",0,

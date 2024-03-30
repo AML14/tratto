@@ -1,0 +1,121 @@
+com.fasterxml.jackson.databind.ser.BeanSerializerFactory,@Test(timeout = 4000)
+public void test000() throws Throwable {
+    BeanSerializerFactory beanSerializerFactory0 = BeanSerializerFactory.instance;
+    BeanPropertyWriter beanPropertyWriter0 = new BeanPropertyWriter();
+    Class<AnnotatedMethod>[] classArray0 = (Class<AnnotatedMethod>[]) Array.newInstance(Class.class, 1);
+    BeanPropertyWriter beanPropertyWriter1 = beanSerializerFactory0.constructFilteredBeanWriter(beanPropertyWriter0, classArray0);
+    beanPropertyWriter1.willSuppressNulls();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.fasterxml.jackson.databind.ser.BeanSerializerFactory,@Test(timeout = 4000)
+public void test022() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<CollectionLikeType> class0 = CollectionLikeType.class;
+    ObjectWriter objectWriter0 = objectMapper0.writerFor((Class<?>) class0);
+    objectWriter0.hasPrefetchedSerializer();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.fasterxml.jackson.databind.ser.BeanSerializerFactory,@Test(timeout = 4000)
+public void test044() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<ObjectIdResolver> class0 = ObjectIdResolver.class;
+    Class<Integer> class1 = Integer.class;
+    SimpleType simpleType0 = SimpleType.construct(class1);
+    MapType mapType0 = MapType.construct(class0, simpleType0, simpleType0);
+    ObjectWriter objectWriter0 = objectMapper0.writerFor((JavaType) mapType0);
+    objectWriter0.hasPrefetchedSerializer();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.fasterxml.jackson.databind.ser.BeanSerializerFactory,@Test(timeout = 4000)
+public void test055() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    BeanSerializerFactory beanSerializerFactory0 = BeanSerializerFactory.instance;
+    SimpleSerializers simpleSerializers0 = new SimpleSerializers();
+    SerializerFactory serializerFactory0 = beanSerializerFactory0.withAdditionalSerializers(simpleSerializers0);
+    objectMapper0.setSerializerFactory(serializerFactory0);
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.fasterxml.jackson.databind.ser.BeanSerializerFactory,@Test(timeout = 4000)
+public void test056() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    BeanSerializerFactory beanSerializerFactory0 = BeanSerializerFactory.instance;
+    SimpleSerializers simpleSerializers0 = new SimpleSerializers();
+    SerializerFactory serializerFactory0 = beanSerializerFactory0.withAdditionalSerializers(simpleSerializers0);
+    objectMapper0.setSerializerFactory(serializerFactory0);
+    Class<BasicBeanDescription> class0 = BasicBeanDescription.class;
+    ObjectWriter objectWriter0 = objectMapper0.writerFor((Class<?>) class0);
+    objectWriter0.hasPrefetchedSerializer();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.fasterxml.jackson.databind.ser.BeanSerializerFactory,@Test(timeout = 4000)
+public void test067() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    Class<MapperFeature> class0 = MapperFeature.class;
+    ObjectWriter objectWriter0 = objectMapper0.writerFor((Class<?>) class0);
+    objectWriter0.hasPrefetchedSerializer();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.fasterxml.jackson.databind.ser.BeanSerializerFactory,@Test(timeout = 4000)
+public void test078() throws Throwable {
+    SerializerFactoryConfig serializerFactoryConfig0 = new SerializerFactoryConfig();
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    BeanSerializerFactory beanSerializerFactory0 = new BeanSerializerFactory(serializerFactoryConfig0);
+    BeanSerializerBuilder beanSerializerBuilder0 = new BeanSerializerBuilder((BeanDescription) null);
+    BeanSerializerModifier beanSerializerModifier0 = mock(BeanSerializerModifier.class, new ViolatedAssumptionAnswer());
+    doReturn((List<BeanPropertyWriter>) null).when(beanSerializerModifier0).changeProperties(any(com.fasterxml.jackson.databind.SerializationConfig.class), any(com.fasterxml.jackson.databind.BeanDescription.class), anyList());
+    doReturn((JsonSerializer) null).when(beanSerializerModifier0).modifySerializer(any(com.fasterxml.jackson.databind.SerializationConfig.class), any(com.fasterxml.jackson.databind.BeanDescription.class), any(com.fasterxml.jackson.databind.JsonSerializer.class));
+    doReturn((List<BeanPropertyWriter>) null).when(beanSerializerModifier0).orderProperties(any(com.fasterxml.jackson.databind.SerializationConfig.class), any(com.fasterxml.jackson.databind.BeanDescription.class), anyList());
+    doReturn(beanSerializerBuilder0).when(beanSerializerModifier0).updateBuilder(any(com.fasterxml.jackson.databind.SerializationConfig.class), any(com.fasterxml.jackson.databind.BeanDescription.class), any(com.fasterxml.jackson.databind.ser.BeanSerializerBuilder.class));
+    SerializerFactory serializerFactory0 = beanSerializerFactory0.withSerializerModifier(beanSerializerModifier0);
+    objectMapper0.setSerializerFactory(serializerFactory0);
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.fasterxml.jackson.databind.ser.BeanSerializerFactory,@Test(timeout = 4000)
+public void test079() throws Throwable {
+    SerializerFactoryConfig serializerFactoryConfig0 = new SerializerFactoryConfig();
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    BeanSerializerFactory beanSerializerFactory0 = new BeanSerializerFactory(serializerFactoryConfig0);
+    BeanSerializerBuilder beanSerializerBuilder0 = new BeanSerializerBuilder((BeanDescription) null);
+    BeanSerializerModifier beanSerializerModifier0 = mock(BeanSerializerModifier.class, new ViolatedAssumptionAnswer());
+    doReturn((List<BeanPropertyWriter>) null).when(beanSerializerModifier0).changeProperties(any(com.fasterxml.jackson.databind.SerializationConfig.class), any(com.fasterxml.jackson.databind.BeanDescription.class), anyList());
+    doReturn((JsonSerializer) null).when(beanSerializerModifier0).modifySerializer(any(com.fasterxml.jackson.databind.SerializationConfig.class), any(com.fasterxml.jackson.databind.BeanDescription.class), any(com.fasterxml.jackson.databind.JsonSerializer.class));
+    doReturn((List<BeanPropertyWriter>) null).when(beanSerializerModifier0).orderProperties(any(com.fasterxml.jackson.databind.SerializationConfig.class), any(com.fasterxml.jackson.databind.BeanDescription.class), anyList());
+    doReturn(beanSerializerBuilder0).when(beanSerializerModifier0).updateBuilder(any(com.fasterxml.jackson.databind.SerializationConfig.class), any(com.fasterxml.jackson.databind.BeanDescription.class), any(com.fasterxml.jackson.databind.ser.BeanSerializerBuilder.class));
+    SerializerFactory serializerFactory0 = beanSerializerFactory0.withSerializerModifier(beanSerializerModifier0);
+    objectMapper0.setSerializerFactory(serializerFactory0);
+    Class<BeanSerializer> class0 = BeanSerializer.class;
+    ObjectWriter objectWriter0 = objectMapper0.writerFor((Class<?>) class0);
+    objectWriter0.hasPrefetchedSerializer();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.fasterxml.jackson.databind.ser.BeanSerializerFactory,@Test(timeout = 4000)
+public void test1113() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    MapperFeature mapperFeature0 = MapperFeature.REQUIRE_SETTERS_FOR_GETTERS;
+    objectMapper0.configure(mapperFeature0, true);
+    Class<ChronoLocalDate> class0 = ChronoLocalDate.class;
+    ObjectWriter objectWriter0 = objectMapper0.writerFor((Class<?>) class0);
+    objectWriter0.hasPrefetchedSerializer();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.fasterxml.jackson.databind.ser.BeanSerializerFactory,@Test(timeout = 4000)
+public void test1214() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    MapperFeature mapperFeature0 = MapperFeature.DEFAULT_VIEW_INCLUSION;
+    ObjectMapper objectMapper1 = objectMapper0.configure(mapperFeature0, false);
+    Class<TypeIdResolver> class0 = TypeIdResolver.class;
+    ObjectWriter objectWriter0 = objectMapper1.writerFor((Class<?>) class0);
+    objectWriter0.hasPrefetchedSerializer();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.fasterxml.jackson.databind.ser.BeanSerializerFactory,@Test(timeout = 4000)
+public void test1315() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    MapperFeature mapperFeature0 = MapperFeature.REQUIRE_SETTERS_FOR_GETTERS;
+    ObjectMapper objectMapper1 = objectMapper0.configure(mapperFeature0, true);
+    PropertyAccessor propertyAccessor0 = PropertyAccessor.ALL;
+    JsonAutoDetect.Visibility jsonAutoDetect_Visibility0 = JsonAutoDetect.Visibility.ANY;
+    objectMapper0.setVisibility(propertyAccessor0, jsonAutoDetect_Visibility0);
+    Class<BasicBeanDescription> class0 = BasicBeanDescription.class;
+    ObjectWriter objectWriter0 = objectMapper1.writerFor((Class<?>) class0);
+    objectWriter0.hasPrefetchedSerializer();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
+com.fasterxml.jackson.databind.ser.BeanSerializerFactory,@Test(timeout = 4000)
+public void test1416() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    MapperFeature mapperFeature0 = MapperFeature.CAN_OVERRIDE_ACCESS_MODIFIERS;
+    objectMapper0.configure(mapperFeature0, false);
+    Class<Module> class0 = Module.class;
+    ObjectWriter objectWriter0 = objectMapper0.writerFor((Class<?>) class0);
+    objectWriter0.hasPrefetchedSerializer();
+},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.

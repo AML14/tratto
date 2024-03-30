@@ -1,0 +1,853 @@
+focal_method,test_prefix,docstring
+"public ExternalTypeHandler start() {
+    return new ExternalTypeHandler(this);
+}","public void test000() throws Throwable {
+    ExternalTypeHandler.Builder externalTypeHandler_Builder0 = new ExternalTypeHandler.Builder((JavaType) null);
+    ExternalTypeHandler externalTypeHandler0 = externalTypeHandler_Builder0.build((BeanPropertyMap) null);
+    ExternalTypeHandler externalTypeHandler1 = externalTypeHandler0.start();
+    assertNotSame(externalTypeHandler0, externalTypeHandler1);
+}","/**
+ * Method called to start collection process by creating non-blueprint
+ * instances.
+ */"
+"@SuppressWarnings(""unchecked"")
+public boolean handleTypePropertyValue(JsonParser p, DeserializationContext ctxt, String propName, Object bean) throws IOException {
+    Object ob = _nameToPropertyIndex.get(propName);
+    if (ob == null) {
+        return false;
+    }
+    final String typeId = p.getText();
+    // 28-Nov-2016, tatu: For [databind#291], need separate handling
+    if (ob instanceof List<?>) {
+        boolean result = false;
+        for (Integer index : (List<Integer>) ob) {
+            if (_handleTypePropertyValue(p, ctxt, propName, bean, typeId, index.intValue())) {
+                result = true;
+            }
+        }
+        return result;
+    }
+    return _handleTypePropertyValue(p, ctxt, propName, bean, typeId, ((Integer) ob).intValue());
+}","public void test011() throws Throwable {
+    ExternalTypeHandler.Builder externalTypeHandler_Builder0 = ExternalTypeHandler.builder((JavaType) null);
+    ExternalTypeHandler externalTypeHandler0 = externalTypeHandler_Builder0.build((BeanPropertyMap) null);
+    boolean boolean0 = externalTypeHandler0.handleTypePropertyValue((JsonParser) null, (DeserializationContext) null, ""H&"", ""H&"");
+    assertFalse(boolean0);
+}","/**
+ * Method called to see if given property/value pair is an external type
+ * id; and if so handle it. This is <b>only</b> to be called in case
+ * containing POJO has similarly named property as the external type id AND
+ * value is of scalar type:
+ * otherwise {@link #handlePropertyValue} should be called instead.
+ */"
+"@SuppressWarnings(""unchecked"")
+public boolean handleTypePropertyValue(JsonParser p, DeserializationContext ctxt, String propName, Object bean) throws IOException {
+    Object ob = _nameToPropertyIndex.get(propName);
+    if (ob == null) {
+        return false;
+    }
+    final String typeId = p.getText();
+    // 28-Nov-2016, tatu: For [databind#291], need separate handling
+    if (ob instanceof List<?>) {
+        boolean result = false;
+        for (Integer index : (List<Integer>) ob) {
+            if (_handleTypePropertyValue(p, ctxt, propName, bean, typeId, index.intValue())) {
+                result = true;
+            }
+        }
+        return result;
+    }
+    return _handleTypePropertyValue(p, ctxt, propName, bean, typeId, ((Integer) ob).intValue());
+}","public void test022() throws Throwable {
+    ExternalTypeHandler.Builder externalTypeHandler_Builder0 = ExternalTypeHandler.builder((JavaType) null);
+    PropertyName propertyName0 = PropertyName.USE_DEFAULT;
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    ClassNameIdResolver classNameIdResolver0 = new ClassNameIdResolver((JavaType) null, typeFactory0);
+    Class<HashMap> class0 = HashMap.class;
+    Class<List> class1 = List.class;
+    MapType mapType0 = typeFactory0.constructMapType(class0, class0, class1);
+    JsonTypeInfo.As jsonTypeInfo_As0 = JsonTypeInfo.As.EXTERNAL_PROPERTY;
+    AsPropertyTypeDeserializer asPropertyTypeDeserializer0 = new AsPropertyTypeDeserializer((JavaType) null, classNameIdResolver0, ""S"", false, mapType0, jsonTypeInfo_As0);
+    Class<Annotation> class2 = Annotation.class;
+    Class<ResolverStyle> class3 = ResolverStyle.class;
+    AnnotationCollector.TwoAnnotations annotationCollector_TwoAnnotations0 = new AnnotationCollector.TwoAnnotations(class2, (Annotation) null, class3, (Annotation) null);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_REQUIRED_OR_OPTIONAL;
+    CreatorProperty creatorProperty0 = new CreatorProperty(propertyName0, mapType0, propertyName0, asPropertyTypeDeserializer0, annotationCollector_TwoAnnotations0, (AnnotatedParameter) null, 853, class1, propertyMetadata0);
+    externalTypeHandler_Builder0.addExternal(creatorProperty0, asPropertyTypeDeserializer0);
+    HashMap<String, List<PropertyName>> hashMap0 = new HashMap<String, List<PropertyName>>();
+    externalTypeHandler_Builder0.addExternal(creatorProperty0, asPropertyTypeDeserializer0);
+    TreeSet<SettableBeanProperty> treeSet0 = new TreeSet<SettableBeanProperty>();
+    BeanPropertyMap beanPropertyMap0 = BeanPropertyMap.construct((Collection<SettableBeanProperty>) treeSet0, false, (Map<String, List<PropertyName>>) hashMap0);
+    ExternalTypeHandler externalTypeHandler0 = externalTypeHandler_Builder0.build(beanPropertyMap0);
+    JsonFactory jsonFactory0 = new JsonFactory();
+    PipedWriter pipedWriter0 = new PipedWriter();
+    PipedReader pipedReader0 = new PipedReader(pipedWriter0);
+    JsonParser jsonParser0 = jsonFactory0.createParser((Reader) pipedReader0);
+    PlaceholderForType placeholderForType0 = new PlaceholderForType(3);
+    boolean boolean0 = externalTypeHandler0.handleTypePropertyValue(jsonParser0, (DeserializationContext) null, """", placeholderForType0);
+    assertFalse(boolean0);
+}","/**
+ * Method called to see if given property/value pair is an external type
+ * id; and if so handle it. This is <b>only</b> to be called in case
+ * containing POJO has similarly named property as the external type id AND
+ * value is of scalar type:
+ * otherwise {@link #handlePropertyValue} should be called instead.
+ */"
+"@SuppressWarnings(""unchecked"")
+public boolean handleTypePropertyValue(JsonParser p, DeserializationContext ctxt, String propName, Object bean) throws IOException {
+    Object ob = _nameToPropertyIndex.get(propName);
+    if (ob == null) {
+        return false;
+    }
+    final String typeId = p.getText();
+    // 28-Nov-2016, tatu: For [databind#291], need separate handling
+    if (ob instanceof List<?>) {
+        boolean result = false;
+        for (Integer index : (List<Integer>) ob) {
+            if (_handleTypePropertyValue(p, ctxt, propName, bean, typeId, index.intValue())) {
+                result = true;
+            }
+        }
+        return result;
+    }
+    return _handleTypePropertyValue(p, ctxt, propName, bean, typeId, ((Integer) ob).intValue());
+}","public void test033() throws Throwable {
+    ExternalTypeHandler.Builder externalTypeHandler_Builder0 = new ExternalTypeHandler.Builder((JavaType) null);
+    PropertyName propertyName0 = PropertyName.USE_DEFAULT;
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    ClassNameIdResolver classNameIdResolver0 = new ClassNameIdResolver((JavaType) null, typeFactory0);
+    Class<HashMap> class0 = HashMap.class;
+    Class<List> class1 = List.class;
+    MapType mapType0 = typeFactory0.constructMapType(class0, class0, class1);
+    JsonTypeInfo.As jsonTypeInfo_As0 = JsonTypeInfo.As.WRAPPER_ARRAY;
+    AsPropertyTypeDeserializer asPropertyTypeDeserializer0 = new AsPropertyTypeDeserializer((JavaType) null, classNameIdResolver0, ""Cannot find a deserializer for non-concrete Collection type "", true, mapType0, jsonTypeInfo_As0);
+    Class<Annotation> class2 = Annotation.class;
+    Class<ResolverStyle> class3 = ResolverStyle.class;
+    AnnotationCollector.TwoAnnotations annotationCollector_TwoAnnotations0 = new AnnotationCollector.TwoAnnotations(class2, (Annotation) null, class3, (Annotation) null);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_OPTIONAL;
+    CreatorProperty creatorProperty0 = new CreatorProperty(propertyName0, mapType0, propertyName0, asPropertyTypeDeserializer0, annotationCollector_TwoAnnotations0, (AnnotatedParameter) null, (-33), class1, propertyMetadata0);
+    externalTypeHandler_Builder0.addExternal(creatorProperty0, asPropertyTypeDeserializer0);
+    externalTypeHandler_Builder0.addExternal(creatorProperty0, asPropertyTypeDeserializer0);
+    HashMap<String, List<PropertyName>> hashMap0 = new HashMap<String, List<PropertyName>>();
+    TreeSet<SettableBeanProperty> treeSet0 = new TreeSet<SettableBeanProperty>();
+    BeanPropertyMap beanPropertyMap0 = BeanPropertyMap.construct((Collection<SettableBeanProperty>) treeSet0, true, (Map<String, List<PropertyName>>) hashMap0);
+    ExternalTypeHandler externalTypeHandler0 = externalTypeHandler_Builder0.build(beanPropertyMap0);
+    JsonFactory jsonFactory0 = new JsonFactory();
+    JsonParser jsonParser0 = jsonFactory0.createParser(""Cannot find a deserializer for non-concrete Collection type "");
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    ExternalTypeHandler externalTypeHandler1 = new ExternalTypeHandler(externalTypeHandler0);
+    FileDescriptor fileDescriptor0 = new FileDescriptor();
+    MockFileInputStream mockFileInputStream0 = new MockFileInputStream(fileDescriptor0);
+    BufferedInputStream bufferedInputStream0 = new BufferedInputStream(mockFileInputStream0);
+    boolean boolean0 = externalTypeHandler1.handleTypePropertyValue(jsonParser0, defaultDeserializationContext_Impl0, ""Cannot find a deserializer for non-concrete Collection type "", bufferedInputStream0);
+    assertTrue(boolean0);
+}","/**
+ * Method called to see if given property/value pair is an external type
+ * id; and if so handle it. This is <b>only</b> to be called in case
+ * containing POJO has similarly named property as the external type id AND
+ * value is of scalar type:
+ * otherwise {@link #handlePropertyValue} should be called instead.
+ */"
+"@SuppressWarnings(""unchecked"")
+public boolean handleTypePropertyValue(JsonParser p, DeserializationContext ctxt, String propName, Object bean) throws IOException {
+    Object ob = _nameToPropertyIndex.get(propName);
+    if (ob == null) {
+        return false;
+    }
+    final String typeId = p.getText();
+    // 28-Nov-2016, tatu: For [databind#291], need separate handling
+    if (ob instanceof List<?>) {
+        boolean result = false;
+        for (Integer index : (List<Integer>) ob) {
+            if (_handleTypePropertyValue(p, ctxt, propName, bean, typeId, index.intValue())) {
+                result = true;
+            }
+        }
+        return result;
+    }
+    return _handleTypePropertyValue(p, ctxt, propName, bean, typeId, ((Integer) ob).intValue());
+}","public void test044() throws Throwable {
+    ExternalTypeHandler.Builder externalTypeHandler_Builder0 = ExternalTypeHandler.builder((JavaType) null);
+    BeanProperty.Bogus beanProperty_Bogus0 = new BeanProperty.Bogus();
+    PropertyName propertyName0 = PropertyName.USE_DEFAULT;
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    ClassNameIdResolver classNameIdResolver0 = new ClassNameIdResolver((JavaType) null, typeFactory0);
+    Class<HashMap> class0 = HashMap.class;
+    Class<List> class1 = List.class;
+    MapType mapType0 = typeFactory0.constructMapType(class0, class0, class1);
+    JsonTypeInfo.As jsonTypeInfo_As0 = JsonTypeInfo.As.WRAPPER_OBJECT;
+    AsPropertyTypeDeserializer asPropertyTypeDeserializer0 = new AsPropertyTypeDeserializer((JavaType) null, classNameIdResolver0, ""com.fasterxml.jackson.databind.deser.impl.ExternalTypeHandler$Builder"", true, mapType0, jsonTypeInfo_As0);
+    Class<Annotation> class2 = Annotation.class;
+    Class<ResolverStyle> class3 = ResolverStyle.class;
+    AnnotationCollector.TwoAnnotations annotationCollector_TwoAnnotations0 = new AnnotationCollector.TwoAnnotations(class2, (Annotation) null, class3, (Annotation) null);
+    PropertyMetadata propertyMetadata0 = beanProperty_Bogus0.getMetadata();
+    CreatorProperty creatorProperty0 = new CreatorProperty(propertyName0, mapType0, propertyName0, asPropertyTypeDeserializer0, annotationCollector_TwoAnnotations0, (AnnotatedParameter) null, (-2671), class1, propertyMetadata0);
+    externalTypeHandler_Builder0.addExternal(creatorProperty0, asPropertyTypeDeserializer0);
+    HashMap<String, List<PropertyName>> hashMap0 = new HashMap<String, List<PropertyName>>();
+    TreeSet<SettableBeanProperty> treeSet0 = new TreeSet<SettableBeanProperty>();
+    BeanPropertyMap beanPropertyMap0 = BeanPropertyMap.construct((Collection<SettableBeanProperty>) treeSet0, true, (Map<String, List<PropertyName>>) hashMap0);
+    ExternalTypeHandler externalTypeHandler0 = externalTypeHandler_Builder0.build(beanPropertyMap0);
+    JsonFactory jsonFactory0 = new JsonFactory();
+    JsonParser jsonParser0 = jsonFactory0.createParser(""com.fasterxml.jackson.databind.deser.impl.ExternalTypeHandler$Builder"");
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    // Undeclared exception!
+    try {
+        externalTypeHandler0.handleTypePropertyValue(jsonParser0, defaultDeserializationContext_Impl0, ""com.fasterxml.jackson.databind.deser.impl.ExternalTypeHandler$Builder"", (Object) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.impl.ExternalTypeHandler"", e);
+    }
+}","/**
+ * Method called to see if given property/value pair is an external type
+ * id; and if so handle it. This is <b>only</b> to be called in case
+ * containing POJO has similarly named property as the external type id AND
+ * value is of scalar type:
+ * otherwise {@link #handlePropertyValue} should be called instead.
+ */"
+"@SuppressWarnings(""unchecked"")
+public boolean handlePropertyValue(JsonParser p, DeserializationContext ctxt, String propName, Object bean) throws IOException {
+    Object ob = _nameToPropertyIndex.get(propName);
+    if (ob == null) {
+        return false;
+    }
+    // 28-Nov-2016, tatu: For [databind#291], need separate handling
+    if (ob instanceof List<?>) {
+        Iterator<Integer> it = ((List<Integer>) ob).iterator();
+        Integer index = it.next();
+        ExtTypedProperty prop = _properties[index];
+        // For now, let's assume it's same type (either type id OR value)
+        // for all mappings, so we'll only check first one
+        if (prop.hasTypePropertyName(propName)) {
+            String typeId = p.getText();
+            p.skipChildren();
+            _typeIds[index] = typeId;
+            while (it.hasNext()) {
+                _typeIds[it.next()] = typeId;
+            }
+        } else {
+            @SuppressWarnings(""resource"")
+            TokenBuffer tokens = new TokenBuffer(p, ctxt);
+            tokens.copyCurrentStructure(p);
+            _tokens[index] = tokens;
+            while (it.hasNext()) {
+                _tokens[it.next()] = tokens;
+            }
+        }
+        return true;
+    }
+    // Otherwise only maps to a single value, in which case we can
+    // handle things in bit more optimal way...
+    int index = ((Integer) ob).intValue();
+    ExtTypedProperty prop = _properties[index];
+    boolean canDeserialize;
+    if (prop.hasTypePropertyName(propName)) {
+        _typeIds[index] = p.getText();
+        p.skipChildren();
+        canDeserialize = (bean != null) && (_tokens[index] != null);
+    } else {
+        @SuppressWarnings(""resource"")
+        TokenBuffer tokens = new TokenBuffer(p, ctxt);
+        tokens.copyCurrentStructure(p);
+        _tokens[index] = tokens;
+        canDeserialize = (bean != null) && (_typeIds[index] != null);
+    }
+    // Minor optimization: let's deserialize properties as soon as
+    // we have all pertinent information:
+    if (canDeserialize) {
+        String typeId = _typeIds[index];
+        // clear stored data, to avoid deserializing+setting twice:
+        _typeIds[index] = null;
+        _deserializeAndSet(p, ctxt, bean, index, typeId);
+        _tokens[index] = null;
+    }
+    return true;
+}","public void test055() throws Throwable {
+    ExternalTypeHandler.Builder externalTypeHandler_Builder0 = ExternalTypeHandler.builder((JavaType) null);
+    ExternalTypeHandler externalTypeHandler0 = externalTypeHandler_Builder0.build((BeanPropertyMap) null);
+    boolean boolean0 = externalTypeHandler0.handlePropertyValue((JsonParser) null, (DeserializationContext) null, ""com.fasterxml.jacksondatabind.1ontype.impl.AsExternalTypeSerializer"", (Object) null);
+    assertFalse(boolean0);
+}","/**
+ * Method called to ask handler to handle value of given property,
+ * at point where parser points to the first token of the value.
+ * Handling can mean either resolving type id it contains (if it matches type
+ * property name), or by buffering the value for further use.
+ *
+ * @return True, if the given property was properly handled
+ */"
+"@SuppressWarnings(""unchecked"")
+public boolean handlePropertyValue(JsonParser p, DeserializationContext ctxt, String propName, Object bean) throws IOException {
+    Object ob = _nameToPropertyIndex.get(propName);
+    if (ob == null) {
+        return false;
+    }
+    // 28-Nov-2016, tatu: For [databind#291], need separate handling
+    if (ob instanceof List<?>) {
+        Iterator<Integer> it = ((List<Integer>) ob).iterator();
+        Integer index = it.next();
+        ExtTypedProperty prop = _properties[index];
+        // For now, let's assume it's same type (either type id OR value)
+        // for all mappings, so we'll only check first one
+        if (prop.hasTypePropertyName(propName)) {
+            String typeId = p.getText();
+            p.skipChildren();
+            _typeIds[index] = typeId;
+            while (it.hasNext()) {
+                _typeIds[it.next()] = typeId;
+            }
+        } else {
+            @SuppressWarnings(""resource"")
+            TokenBuffer tokens = new TokenBuffer(p, ctxt);
+            tokens.copyCurrentStructure(p);
+            _tokens[index] = tokens;
+            while (it.hasNext()) {
+                _tokens[it.next()] = tokens;
+            }
+        }
+        return true;
+    }
+    // Otherwise only maps to a single value, in which case we can
+    // handle things in bit more optimal way...
+    int index = ((Integer) ob).intValue();
+    ExtTypedProperty prop = _properties[index];
+    boolean canDeserialize;
+    if (prop.hasTypePropertyName(propName)) {
+        _typeIds[index] = p.getText();
+        p.skipChildren();
+        canDeserialize = (bean != null) && (_tokens[index] != null);
+    } else {
+        @SuppressWarnings(""resource"")
+        TokenBuffer tokens = new TokenBuffer(p, ctxt);
+        tokens.copyCurrentStructure(p);
+        _tokens[index] = tokens;
+        canDeserialize = (bean != null) && (_typeIds[index] != null);
+    }
+    // Minor optimization: let's deserialize properties as soon as
+    // we have all pertinent information:
+    if (canDeserialize) {
+        String typeId = _typeIds[index];
+        // clear stored data, to avoid deserializing+setting twice:
+        _typeIds[index] = null;
+        _deserializeAndSet(p, ctxt, bean, index, typeId);
+        _tokens[index] = null;
+    }
+    return true;
+}","public void test066() throws Throwable {
+    ExternalTypeHandler.Builder externalTypeHandler_Builder0 = ExternalTypeHandler.builder((JavaType) null);
+    PropertyName propertyName0 = PropertyName.USE_DEFAULT;
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    ClassNameIdResolver classNameIdResolver0 = new ClassNameIdResolver((JavaType) null, typeFactory0);
+    Class<HashMap> class0 = HashMap.class;
+    Class<List> class1 = List.class;
+    MapType mapType0 = typeFactory0.constructMapType(class0, class0, class1);
+    JsonTypeInfo.As jsonTypeInfo_As0 = JsonTypeInfo.As.EXTERNAL_PROPERTY;
+    AsPropertyTypeDeserializer asPropertyTypeDeserializer0 = new AsPropertyTypeDeserializer((JavaType) null, classNameIdResolver0, ""S"", false, mapType0, jsonTypeInfo_As0);
+    Class<Annotation> class2 = Annotation.class;
+    Class<ResolverStyle> class3 = ResolverStyle.class;
+    AnnotationCollector.TwoAnnotations annotationCollector_TwoAnnotations0 = new AnnotationCollector.TwoAnnotations(class2, (Annotation) null, class3, (Annotation) null);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_REQUIRED_OR_OPTIONAL;
+    CreatorProperty creatorProperty0 = new CreatorProperty(propertyName0, mapType0, propertyName0, asPropertyTypeDeserializer0, annotationCollector_TwoAnnotations0, (AnnotatedParameter) null, 863, class1, propertyMetadata0);
+    externalTypeHandler_Builder0.addExternal(creatorProperty0, asPropertyTypeDeserializer0);
+    HashMap<String, List<PropertyName>> hashMap0 = new HashMap<String, List<PropertyName>>();
+    externalTypeHandler_Builder0.addExternal(creatorProperty0, asPropertyTypeDeserializer0);
+    TreeSet<SettableBeanProperty> treeSet0 = new TreeSet<SettableBeanProperty>();
+    BeanPropertyMap beanPropertyMap0 = BeanPropertyMap.construct((Collection<SettableBeanProperty>) treeSet0, false, (Map<String, List<PropertyName>>) hashMap0);
+    ExternalTypeHandler externalTypeHandler0 = externalTypeHandler_Builder0.build(beanPropertyMap0);
+    // Undeclared exception!
+    try {
+        externalTypeHandler0.handlePropertyValue((JsonParser) null, (DeserializationContext) null, """", asPropertyTypeDeserializer0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.util.TokenBuffer"", e);
+    }
+}","/**
+ * Method called to ask handler to handle value of given property,
+ * at point where parser points to the first token of the value.
+ * Handling can mean either resolving type id it contains (if it matches type
+ * property name), or by buffering the value for further use.
+ *
+ * @return True, if the given property was properly handled
+ */"
+"@SuppressWarnings(""unchecked"")
+public boolean handlePropertyValue(JsonParser p, DeserializationContext ctxt, String propName, Object bean) throws IOException {
+    Object ob = _nameToPropertyIndex.get(propName);
+    if (ob == null) {
+        return false;
+    }
+    // 28-Nov-2016, tatu: For [databind#291], need separate handling
+    if (ob instanceof List<?>) {
+        Iterator<Integer> it = ((List<Integer>) ob).iterator();
+        Integer index = it.next();
+        ExtTypedProperty prop = _properties[index];
+        // For now, let's assume it's same type (either type id OR value)
+        // for all mappings, so we'll only check first one
+        if (prop.hasTypePropertyName(propName)) {
+            String typeId = p.getText();
+            p.skipChildren();
+            _typeIds[index] = typeId;
+            while (it.hasNext()) {
+                _typeIds[it.next()] = typeId;
+            }
+        } else {
+            @SuppressWarnings(""resource"")
+            TokenBuffer tokens = new TokenBuffer(p, ctxt);
+            tokens.copyCurrentStructure(p);
+            _tokens[index] = tokens;
+            while (it.hasNext()) {
+                _tokens[it.next()] = tokens;
+            }
+        }
+        return true;
+    }
+    // Otherwise only maps to a single value, in which case we can
+    // handle things in bit more optimal way...
+    int index = ((Integer) ob).intValue();
+    ExtTypedProperty prop = _properties[index];
+    boolean canDeserialize;
+    if (prop.hasTypePropertyName(propName)) {
+        _typeIds[index] = p.getText();
+        p.skipChildren();
+        canDeserialize = (bean != null) && (_tokens[index] != null);
+    } else {
+        @SuppressWarnings(""resource"")
+        TokenBuffer tokens = new TokenBuffer(p, ctxt);
+        tokens.copyCurrentStructure(p);
+        _tokens[index] = tokens;
+        canDeserialize = (bean != null) && (_typeIds[index] != null);
+    }
+    // Minor optimization: let's deserialize properties as soon as
+    // we have all pertinent information:
+    if (canDeserialize) {
+        String typeId = _typeIds[index];
+        // clear stored data, to avoid deserializing+setting twice:
+        _typeIds[index] = null;
+        _deserializeAndSet(p, ctxt, bean, index, typeId);
+        _tokens[index] = null;
+    }
+    return true;
+}","public void test077() throws Throwable {
+    ExternalTypeHandler.Builder externalTypeHandler_Builder0 = ExternalTypeHandler.builder((JavaType) null);
+    BeanProperty.Bogus beanProperty_Bogus0 = new BeanProperty.Bogus();
+    PropertyName propertyName0 = beanProperty_Bogus0.getFullName();
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    ClassNameIdResolver classNameIdResolver0 = new ClassNameIdResolver((JavaType) null, typeFactory0);
+    Class<HashMap> class0 = HashMap.class;
+    Class<List> class1 = List.class;
+    MapType mapType0 = typeFactory0.constructMapType(class0, class0, class1);
+    JsonTypeInfo.As jsonTypeInfo_As0 = JsonTypeInfo.As.WRAPPER_ARRAY;
+    AsPropertyTypeDeserializer asPropertyTypeDeserializer0 = new AsPropertyTypeDeserializer((JavaType) null, classNameIdResolver0, """", true, mapType0, jsonTypeInfo_As0);
+    Class<Annotation> class2 = Annotation.class;
+    Class<ResolverStyle> class3 = ResolverStyle.class;
+    AnnotationCollector.TwoAnnotations annotationCollector_TwoAnnotations0 = new AnnotationCollector.TwoAnnotations(class2, (Annotation) null, class3, (Annotation) null);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_REQUIRED_OR_OPTIONAL;
+    CreatorProperty creatorProperty0 = new CreatorProperty(propertyName0, mapType0, propertyName0, asPropertyTypeDeserializer0, annotationCollector_TwoAnnotations0, (AnnotatedParameter) null, 44, class1, propertyMetadata0);
+    externalTypeHandler_Builder0.addExternal(creatorProperty0, asPropertyTypeDeserializer0);
+    HashMap<String, List<PropertyName>> hashMap0 = new HashMap<String, List<PropertyName>>();
+    TreeSet<SettableBeanProperty> treeSet0 = new TreeSet<SettableBeanProperty>();
+    BeanPropertyMap beanPropertyMap0 = BeanPropertyMap.construct((Collection<SettableBeanProperty>) treeSet0, true, (Map<String, List<PropertyName>>) hashMap0);
+    ExternalTypeHandler externalTypeHandler0 = externalTypeHandler_Builder0.build(beanPropertyMap0);
+    JsonFactory jsonFactory0 = new JsonFactory();
+    JsonParser jsonParser0 = jsonFactory0.createParser("""");
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    ExternalTypeHandler externalTypeHandler1 = new ExternalTypeHandler(externalTypeHandler0);
+    boolean boolean0 = externalTypeHandler1.handlePropertyValue(jsonParser0, defaultDeserializationContext_Impl0, """", creatorProperty0);
+    assertTrue(boolean0);
+}","/**
+ * Method called to ask handler to handle value of given property,
+ * at point where parser points to the first token of the value.
+ * Handling can mean either resolving type id it contains (if it matches type
+ * property name), or by buffering the value for further use.
+ *
+ * @return True, if the given property was properly handled
+ */"
+"@SuppressWarnings(""unchecked"")
+public boolean handlePropertyValue(JsonParser p, DeserializationContext ctxt, String propName, Object bean) throws IOException {
+    Object ob = _nameToPropertyIndex.get(propName);
+    if (ob == null) {
+        return false;
+    }
+    // 28-Nov-2016, tatu: For [databind#291], need separate handling
+    if (ob instanceof List<?>) {
+        Iterator<Integer> it = ((List<Integer>) ob).iterator();
+        Integer index = it.next();
+        ExtTypedProperty prop = _properties[index];
+        // For now, let's assume it's same type (either type id OR value)
+        // for all mappings, so we'll only check first one
+        if (prop.hasTypePropertyName(propName)) {
+            String typeId = p.getText();
+            p.skipChildren();
+            _typeIds[index] = typeId;
+            while (it.hasNext()) {
+                _typeIds[it.next()] = typeId;
+            }
+        } else {
+            @SuppressWarnings(""resource"")
+            TokenBuffer tokens = new TokenBuffer(p, ctxt);
+            tokens.copyCurrentStructure(p);
+            _tokens[index] = tokens;
+            while (it.hasNext()) {
+                _tokens[it.next()] = tokens;
+            }
+        }
+        return true;
+    }
+    // Otherwise only maps to a single value, in which case we can
+    // handle things in bit more optimal way...
+    int index = ((Integer) ob).intValue();
+    ExtTypedProperty prop = _properties[index];
+    boolean canDeserialize;
+    if (prop.hasTypePropertyName(propName)) {
+        _typeIds[index] = p.getText();
+        p.skipChildren();
+        canDeserialize = (bean != null) && (_tokens[index] != null);
+    } else {
+        @SuppressWarnings(""resource"")
+        TokenBuffer tokens = new TokenBuffer(p, ctxt);
+        tokens.copyCurrentStructure(p);
+        _tokens[index] = tokens;
+        canDeserialize = (bean != null) && (_typeIds[index] != null);
+    }
+    // Minor optimization: let's deserialize properties as soon as
+    // we have all pertinent information:
+    if (canDeserialize) {
+        String typeId = _typeIds[index];
+        // clear stored data, to avoid deserializing+setting twice:
+        _typeIds[index] = null;
+        _deserializeAndSet(p, ctxt, bean, index, typeId);
+        _tokens[index] = null;
+    }
+    return true;
+}","public void test088() throws Throwable {
+    ExternalTypeHandler.Builder externalTypeHandler_Builder0 = new ExternalTypeHandler.Builder((JavaType) null);
+    PropertyName propertyName0 = PropertyName.NO_NAME;
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    ClassNameIdResolver classNameIdResolver0 = new ClassNameIdResolver((JavaType) null, typeFactory0);
+    JsonTypeInfo.As jsonTypeInfo_As0 = JsonTypeInfo.As.EXISTING_PROPERTY;
+    AsPropertyTypeDeserializer asPropertyTypeDeserializer0 = new AsPropertyTypeDeserializer((JavaType) null, classNameIdResolver0, "" IXH0wcL,`"", false, (JavaType) null, jsonTypeInfo_As0);
+    Class<Annotation> class0 = Annotation.class;
+    AnnotationCollector.TwoAnnotations annotationCollector_TwoAnnotations0 = new AnnotationCollector.TwoAnnotations(class0, (Annotation) null, class0, (Annotation) null);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_REQUIRED;
+    CreatorProperty creatorProperty0 = new CreatorProperty(propertyName0, (JavaType) null, propertyName0, asPropertyTypeDeserializer0, annotationCollector_TwoAnnotations0, (AnnotatedParameter) null, 1145, classNameIdResolver0, propertyMetadata0);
+    externalTypeHandler_Builder0.addExternal(creatorProperty0, asPropertyTypeDeserializer0);
+    HashMap<String, List<PropertyName>> hashMap0 = new HashMap<String, List<PropertyName>>();
+    TreeSet<SettableBeanProperty> treeSet0 = new TreeSet<SettableBeanProperty>();
+    BeanPropertyMap beanPropertyMap0 = BeanPropertyMap.construct((Collection<SettableBeanProperty>) treeSet0, false, (Map<String, List<PropertyName>>) hashMap0);
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    ExternalTypeHandler externalTypeHandler0 = externalTypeHandler_Builder0.build(beanPropertyMap0);
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    // Undeclared exception!
+    try {
+        externalTypeHandler0.handlePropertyValue((JsonParser) null, defaultDeserializationContext_Impl0, """", treeSet0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.util.TokenBuffer"", e);
+    }
+}","/**
+ * Method called to ask handler to handle value of given property,
+ * at point where parser points to the first token of the value.
+ * Handling can mean either resolving type id it contains (if it matches type
+ * property name), or by buffering the value for further use.
+ *
+ * @return True, if the given property was properly handled
+ */"
+"@SuppressWarnings(""unchecked"")
+public boolean handlePropertyValue(JsonParser p, DeserializationContext ctxt, String propName, Object bean) throws IOException {
+    Object ob = _nameToPropertyIndex.get(propName);
+    if (ob == null) {
+        return false;
+    }
+    // 28-Nov-2016, tatu: For [databind#291], need separate handling
+    if (ob instanceof List<?>) {
+        Iterator<Integer> it = ((List<Integer>) ob).iterator();
+        Integer index = it.next();
+        ExtTypedProperty prop = _properties[index];
+        // For now, let's assume it's same type (either type id OR value)
+        // for all mappings, so we'll only check first one
+        if (prop.hasTypePropertyName(propName)) {
+            String typeId = p.getText();
+            p.skipChildren();
+            _typeIds[index] = typeId;
+            while (it.hasNext()) {
+                _typeIds[it.next()] = typeId;
+            }
+        } else {
+            @SuppressWarnings(""resource"")
+            TokenBuffer tokens = new TokenBuffer(p, ctxt);
+            tokens.copyCurrentStructure(p);
+            _tokens[index] = tokens;
+            while (it.hasNext()) {
+                _tokens[it.next()] = tokens;
+            }
+        }
+        return true;
+    }
+    // Otherwise only maps to a single value, in which case we can
+    // handle things in bit more optimal way...
+    int index = ((Integer) ob).intValue();
+    ExtTypedProperty prop = _properties[index];
+    boolean canDeserialize;
+    if (prop.hasTypePropertyName(propName)) {
+        _typeIds[index] = p.getText();
+        p.skipChildren();
+        canDeserialize = (bean != null) && (_tokens[index] != null);
+    } else {
+        @SuppressWarnings(""resource"")
+        TokenBuffer tokens = new TokenBuffer(p, ctxt);
+        tokens.copyCurrentStructure(p);
+        _tokens[index] = tokens;
+        canDeserialize = (bean != null) && (_typeIds[index] != null);
+    }
+    // Minor optimization: let's deserialize properties as soon as
+    // we have all pertinent information:
+    if (canDeserialize) {
+        String typeId = _typeIds[index];
+        // clear stored data, to avoid deserializing+setting twice:
+        _typeIds[index] = null;
+        _deserializeAndSet(p, ctxt, bean, index, typeId);
+        _tokens[index] = null;
+    }
+    return true;
+}","public void test099() throws Throwable {
+    ExternalTypeHandler.Builder externalTypeHandler_Builder0 = new ExternalTypeHandler.Builder((JavaType) null);
+    BeanProperty.Bogus beanProperty_Bogus0 = new BeanProperty.Bogus();
+    PropertyName propertyName0 = beanProperty_Bogus0.getFullName();
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    ClassNameIdResolver classNameIdResolver0 = new ClassNameIdResolver((JavaType) null, typeFactory0);
+    Class<HashMap> class0 = HashMap.class;
+    Class<List> class1 = List.class;
+    MapType mapType0 = typeFactory0.constructMapType(class0, class0, class1);
+    JsonTypeInfo.As jsonTypeInfo_As0 = JsonTypeInfo.As.WRAPPER_OBJECT;
+    AsPropertyTypeDeserializer asPropertyTypeDeserializer0 = new AsPropertyTypeDeserializer((JavaType) null, classNameIdResolver0, ""Cannot fnd a deserializer for non-conreteCollection type "", true, mapType0, jsonTypeInfo_As0);
+    Class<Annotation> class2 = Annotation.class;
+    Class<ResolverStyle> class3 = ResolverStyle.class;
+    AnnotationCollector.TwoAnnotations annotationCollector_TwoAnnotations0 = new AnnotationCollector.TwoAnnotations(class2, (Annotation) null, class3, (Annotation) null);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_OPTIONAL;
+    CreatorProperty creatorProperty0 = new CreatorProperty(propertyName0, mapType0, propertyName0, asPropertyTypeDeserializer0, annotationCollector_TwoAnnotations0, (AnnotatedParameter) null, 2, class1, propertyMetadata0);
+    externalTypeHandler_Builder0.addExternal(creatorProperty0, asPropertyTypeDeserializer0);
+    HashMap<String, List<PropertyName>> hashMap0 = new HashMap<String, List<PropertyName>>();
+    TreeSet<SettableBeanProperty> treeSet0 = new TreeSet<SettableBeanProperty>();
+    BeanPropertyMap beanPropertyMap0 = BeanPropertyMap.construct((Collection<SettableBeanProperty>) treeSet0, true, (Map<String, List<PropertyName>>) hashMap0);
+    ExternalTypeHandler externalTypeHandler0 = externalTypeHandler_Builder0.build(beanPropertyMap0);
+    JsonFactory jsonFactory0 = new JsonFactory();
+    JsonParser jsonParser0 = jsonFactory0.createParser(""Cannot fnd a deserializer for non-conreteCollection type "");
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    ExternalTypeHandler externalTypeHandler1 = new ExternalTypeHandler(externalTypeHandler0);
+    boolean boolean0 = externalTypeHandler1.handlePropertyValue(jsonParser0, defaultDeserializationContext_Impl0, ""Cannot fnd a deserializer for non-conreteCollection type "", (Object) null);
+    assertTrue(boolean0);
+}","/**
+ * Method called to ask handler to handle value of given property,
+ * at point where parser points to the first token of the value.
+ * Handling can mean either resolving type id it contains (if it matches type
+ * property name), or by buffering the value for further use.
+ *
+ * @return True, if the given property was properly handled
+ */"
+"@SuppressWarnings(""unchecked"")
+public boolean handlePropertyValue(JsonParser p, DeserializationContext ctxt, String propName, Object bean) throws IOException {
+    Object ob = _nameToPropertyIndex.get(propName);
+    if (ob == null) {
+        return false;
+    }
+    // 28-Nov-2016, tatu: For [databind#291], need separate handling
+    if (ob instanceof List<?>) {
+        Iterator<Integer> it = ((List<Integer>) ob).iterator();
+        Integer index = it.next();
+        ExtTypedProperty prop = _properties[index];
+        // For now, let's assume it's same type (either type id OR value)
+        // for all mappings, so we'll only check first one
+        if (prop.hasTypePropertyName(propName)) {
+            String typeId = p.getText();
+            p.skipChildren();
+            _typeIds[index] = typeId;
+            while (it.hasNext()) {
+                _typeIds[it.next()] = typeId;
+            }
+        } else {
+            @SuppressWarnings(""resource"")
+            TokenBuffer tokens = new TokenBuffer(p, ctxt);
+            tokens.copyCurrentStructure(p);
+            _tokens[index] = tokens;
+            while (it.hasNext()) {
+                _tokens[it.next()] = tokens;
+            }
+        }
+        return true;
+    }
+    // Otherwise only maps to a single value, in which case we can
+    // handle things in bit more optimal way...
+    int index = ((Integer) ob).intValue();
+    ExtTypedProperty prop = _properties[index];
+    boolean canDeserialize;
+    if (prop.hasTypePropertyName(propName)) {
+        _typeIds[index] = p.getText();
+        p.skipChildren();
+        canDeserialize = (bean != null) && (_tokens[index] != null);
+    } else {
+        @SuppressWarnings(""resource"")
+        TokenBuffer tokens = new TokenBuffer(p, ctxt);
+        tokens.copyCurrentStructure(p);
+        _tokens[index] = tokens;
+        canDeserialize = (bean != null) && (_typeIds[index] != null);
+    }
+    // Minor optimization: let's deserialize properties as soon as
+    // we have all pertinent information:
+    if (canDeserialize) {
+        String typeId = _typeIds[index];
+        // clear stored data, to avoid deserializing+setting twice:
+        _typeIds[index] = null;
+        _deserializeAndSet(p, ctxt, bean, index, typeId);
+        _tokens[index] = null;
+    }
+    return true;
+}","public void test1010() throws Throwable {
+    ExternalTypeHandler.Builder externalTypeHandler_Builder0 = new ExternalTypeHandler.Builder((JavaType) null);
+    BeanProperty.Bogus beanProperty_Bogus0 = new BeanProperty.Bogus();
+    PropertyName propertyName0 = PropertyName.USE_DEFAULT;
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    ClassNameIdResolver classNameIdResolver0 = new ClassNameIdResolver((JavaType) null, typeFactory0);
+    Class<HashMap> class0 = HashMap.class;
+    Class<List> class1 = List.class;
+    MapType mapType0 = typeFactory0.constructMapType(class0, class0, class1);
+    JsonTypeInfo.As jsonTypeInfo_As0 = JsonTypeInfo.As.WRAPPER_OBJECT;
+    AsPropertyTypeDeserializer asPropertyTypeDeserializer0 = new AsPropertyTypeDeserializer((JavaType) null, classNameIdResolver0, ""via me5d. "", true, mapType0, jsonTypeInfo_As0);
+    Class<Annotation> class2 = Annotation.class;
+    Class<ResolverStyle> class3 = ResolverStyle.class;
+    AnnotationCollector.TwoAnnotations annotationCollector_TwoAnnotations0 = new AnnotationCollector.TwoAnnotations(class2, (Annotation) null, class3, (Annotation) null);
+    PropertyMetadata propertyMetadata0 = beanProperty_Bogus0.getMetadata();
+    CreatorProperty creatorProperty0 = new CreatorProperty(propertyName0, mapType0, propertyName0, asPropertyTypeDeserializer0, annotationCollector_TwoAnnotations0, (AnnotatedParameter) null, (-2669), class1, propertyMetadata0);
+    externalTypeHandler_Builder0.addExternal(creatorProperty0, asPropertyTypeDeserializer0);
+    HashMap<String, List<PropertyName>> hashMap0 = new HashMap<String, List<PropertyName>>();
+    TreeSet<SettableBeanProperty> treeSet0 = new TreeSet<SettableBeanProperty>();
+    BeanPropertyMap beanPropertyMap0 = BeanPropertyMap.construct((Collection<SettableBeanProperty>) treeSet0, true, (Map<String, List<PropertyName>>) hashMap0);
+    ExternalTypeHandler externalTypeHandler0 = externalTypeHandler_Builder0.build(beanPropertyMap0);
+    JsonFactory jsonFactory0 = new JsonFactory();
+    JsonParser jsonParser0 = jsonFactory0.createParser(""via me5d. "");
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    ExternalTypeHandler externalTypeHandler1 = new ExternalTypeHandler(externalTypeHandler0);
+    boolean boolean0 = externalTypeHandler1.handlePropertyValue(jsonParser0, defaultDeserializationContext_Impl0, ""via me5d. "", classNameIdResolver0);
+    assertTrue(boolean0);
+}","/**
+ * Method called to ask handler to handle value of given property,
+ * at point where parser points to the first token of the value.
+ * Handling can mean either resolving type id it contains (if it matches type
+ * property name), or by buffering the value for further use.
+ *
+ * @return True, if the given property was properly handled
+ */"
+"public Object complete(JsonParser p, DeserializationContext ctxt, PropertyValueBuffer buffer, PropertyBasedCreator creator) throws IOException {
+    // first things first: deserialize all data buffered:
+    final int len = _properties.length;
+    Object[] values = new Object[len];
+    for (int i = 0; i < len; ++i) {
+        String typeId = _typeIds[i];
+        final ExtTypedProperty extProp = _properties[i];
+        if (typeId == null) {
+            // let's allow missing both type and property (may already have been set, too)
+            if (_tokens[i] == null) {
+                continue;
+            }
+            // but not just one
+            // 26-Oct-2012, tatu: As per [databind#94], must allow use of 'defaultImpl'
+            if (!extProp.hasDefaultType()) {
+                ctxt.reportInputMismatch(_beanType, ""Missing external type id property '%s'"", extProp.getTypePropertyName());
+            } else {
+                typeId = extProp.getDefaultTypeId();
+            }
+        } else if (_tokens[i] == null) {
+            SettableBeanProperty prop = extProp.getProperty();
+            ctxt.reportInputMismatch(_beanType, ""Missing property '%s' for external type id '%s'"", prop.getName(), _properties[i].getTypePropertyName());
+        }
+        values[i] = _deserialize(p, ctxt, i, typeId);
+        final SettableBeanProperty prop = extProp.getProperty();
+        // also: if it's creator prop, fill in
+        if (prop.getCreatorIndex() >= 0) {
+            buffer.assignParameter(prop, values[i]);
+            // [databind#999] And maybe there's creator property for type id too?
+            SettableBeanProperty typeProp = extProp.getTypeProperty();
+            // for now, should only be needed for creator properties, too
+            if ((typeProp != null) && (typeProp.getCreatorIndex() >= 0)) {
+                // 31-May-2018, tatu: [databind#1328] if id is NOT plain `String`, need to
+                //    apply deserializer... fun fun.
+                buffer.assignParameter(typeProp, typeId);
+            }
+        }
+    }
+    Object bean = creator.build(ctxt, buffer);
+    // third: assign non-creator properties
+    for (int i = 0; i < len; ++i) {
+        SettableBeanProperty prop = _properties[i].getProperty();
+        if (prop.getCreatorIndex() < 0) {
+            prop.set(bean, values[i]);
+        }
+    }
+    return bean;
+}","public void test1212() throws Throwable {
+    ExternalTypeHandler.Builder externalTypeHandler_Builder0 = new ExternalTypeHandler.Builder((JavaType) null);
+    PropertyName propertyName0 = PropertyName.NO_NAME;
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    ClassNameIdResolver classNameIdResolver0 = new ClassNameIdResolver((JavaType) null, typeFactory0);
+    JsonTypeInfo.As jsonTypeInfo_As0 = JsonTypeInfo.As.EXISTING_PROPERTY;
+    AsPropertyTypeDeserializer asPropertyTypeDeserializer0 = new AsPropertyTypeDeserializer((JavaType) null, classNameIdResolver0, "" gIXH0wcL,`"", false, (JavaType) null, jsonTypeInfo_As0);
+    Class<Annotation> class0 = Annotation.class;
+    AnnotationCollector.TwoAnnotations annotationCollector_TwoAnnotations0 = new AnnotationCollector.TwoAnnotations(class0, (Annotation) null, class0, (Annotation) null);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_REQUIRED;
+    CreatorProperty creatorProperty0 = new CreatorProperty(propertyName0, (JavaType) null, propertyName0, asPropertyTypeDeserializer0, annotationCollector_TwoAnnotations0, (AnnotatedParameter) null, 1145, classNameIdResolver0, propertyMetadata0);
+    externalTypeHandler_Builder0.addExternal(creatorProperty0, asPropertyTypeDeserializer0);
+    HashMap<String, List<PropertyName>> hashMap0 = new HashMap<String, List<PropertyName>>();
+    TreeSet<SettableBeanProperty> treeSet0 = new TreeSet<SettableBeanProperty>();
+    BeanPropertyMap beanPropertyMap0 = BeanPropertyMap.construct((Collection<SettableBeanProperty>) treeSet0, false, (Map<String, List<PropertyName>>) hashMap0);
+    ExternalTypeHandler externalTypeHandler0 = externalTypeHandler_Builder0.build(beanPropertyMap0);
+    ExternalTypeHandler externalTypeHandler1 = new ExternalTypeHandler(externalTypeHandler0);
+    BeanDeserializerFactory beanDeserializerFactory0 = BeanDeserializerFactory.instance;
+    DefaultDeserializationContext.Impl defaultDeserializationContext_Impl0 = new DefaultDeserializationContext.Impl(beanDeserializerFactory0);
+    PropertyValueBuffer propertyValueBuffer0 = new PropertyValueBuffer((JsonParser) null, defaultDeserializationContext_Impl0, 1145, (ObjectIdReader) null);
+    // Undeclared exception!
+    try {
+        externalTypeHandler1.complete((JsonParser) null, (DeserializationContext) defaultDeserializationContext_Impl0, propertyValueBuffer0, (PropertyBasedCreator) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.deser.impl.ExternalTypeHandler"", e);
+    }
+}","/**
+ * Variant called when creation of the POJO involves buffering of creator properties
+ * as well as property-based creator.
+ */"
+"public int getPropertyIndex() {
+    return _propertyIndex;
+}","public void test1313() throws Throwable {
+    ExternalTypeHandler.Builder externalTypeHandler_Builder0 = ExternalTypeHandler.builder((JavaType) null);
+    Class<ChronoLocalDate> class0 = ChronoLocalDate.class;
+    AnnotationCollector.TwoAnnotations annotationCollector_TwoAnnotations0 = new AnnotationCollector.TwoAnnotations(class0, (Annotation) null, class0, (Annotation) null);
+    PropertyMetadata propertyMetadata0 = PropertyMetadata.STD_OPTIONAL;
+    BeanProperty.Bogus beanProperty_Bogus0 = new BeanProperty.Bogus();
+    PropertyName propertyName0 = beanProperty_Bogus0.getFullName();
+    TypeFactory typeFactory0 = TypeFactory.defaultInstance();
+    ClassNameIdResolver classNameIdResolver0 = new ClassNameIdResolver((JavaType) null, typeFactory0);
+    AsExternalTypeDeserializer asExternalTypeDeserializer0 = new AsExternalTypeDeserializer((JavaType) null, classNameIdResolver0, (String) null, false, (JavaType) null);
+    CreatorProperty creatorProperty0 = new CreatorProperty(propertyName0, (JavaType) null, propertyName0, asExternalTypeDeserializer0, annotationCollector_TwoAnnotations0, (AnnotatedParameter) null, 0, annotationCollector_TwoAnnotations0, propertyMetadata0);
+    externalTypeHandler_Builder0.addExternal(creatorProperty0, asExternalTypeDeserializer0);
+    externalTypeHandler_Builder0.addExternal(creatorProperty0, asExternalTypeDeserializer0);
+    assertEquals((-1), creatorProperty0.getPropertyIndex());
+}","/**
+ * Method for accessing unique index of this property; indexes are
+ * assigned once all properties of a {@link BeanDeserializer} have
+ * been collected.
+ *
+ * @return Index of this property
+ */"

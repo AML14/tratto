@@ -1,0 +1,51 @@
+focal_method,test_prefix,docstring
+"/*
+    /**********************************************************
+    /* Construction, initialization
+    /**********************************************************
+     */
+/**
+ * @deprecated Since 2.1
+ */
+@Deprecated
+public EnumSerializer(EnumValues v) {
+    this(v, null);
+}","public void test000() throws Throwable {
+    EnumSerializer enumSerializer0 = null;
+    try {
+        enumSerializer0 = new EnumSerializer((EnumValues) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.ser.std.EnumSerializer"", e);
+    }
+}",""
+"@SuppressWarnings(""unchecked"")
+public static EnumSerializer construct(Class<?> enumClass, SerializationConfig config, BeanDescription beanDesc, JsonFormat.Value format) {
+    /* 08-Apr-2015, tatu: As per [databind#749], we can not statically determine
+         *   between name() and toString(), need to construct `EnumValues` with names,
+         *   handle toString() case dynamically (for example)
+         */
+    EnumValues v = EnumValues.constructFromName(config, (Class<Enum<?>>) enumClass);
+    Boolean serializeAsIndex = _isShapeWrittenUsingIndex(enumClass, format, true);
+    return new EnumSerializer(v, serializeAsIndex);
+}","public void test022() throws Throwable {
+    Class<Integer> class0 = Integer.class;
+    // Undeclared exception!
+    try {
+        EnumSerializer.construct(class0, (SerializationConfig) null, (BeanDescription) null, (JsonFormat.Value) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Can not determine enum constants for Class java.lang.Integer
+        //
+        verifyException(""com.fasterxml.jackson.databind.util.EnumValues"", e);
+    }
+}","/**
+ * Factory method used by {@link com.fasterxml.jackson.databind.ser.BasicSerializerFactory}
+ * for constructing serializer instance of Enum types.
+ *
+ * @since 2.1
+ */"

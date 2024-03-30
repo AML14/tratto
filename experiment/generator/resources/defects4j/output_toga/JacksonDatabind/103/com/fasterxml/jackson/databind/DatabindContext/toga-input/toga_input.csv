@@ -1,0 +1,454 @@
+focal_method,test_prefix,docstring
+"public <T> T reportBadDefinition(Class<?> type, String msg) throws JsonMappingException {
+    return reportBadDefinition(constructType(type), msg);
+}","public void test000() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    Class<TypeNameIdResolver> class0 = TypeNameIdResolver.class;
+    // Undeclared exception!
+    try {
+        defaultSerializerProvider_Impl0.reportBadDefinition((Class<?>) class0, ""Ud}q5e_0$j<~2-Y-1(Y"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.SerializerProvider"", e);
+    }
+}","/**
+ * @since 2.9
+ */"
+"/*
+    /**********************************************************
+    /* Type instantiation/resolution
+    /**********************************************************
+     */
+/**
+ * Convenience method for constructing {@link JavaType} for given JDK
+ * type (usually {@link java.lang.Class})
+ */
+public JavaType constructType(Type type) {
+    if (type == null) {
+        return null;
+    }
+    return getTypeFactory().constructType(type);
+}","public void test011() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    JavaType javaType0 = defaultSerializerProvider_Impl0.constructType((Type) null);
+    assertNull(javaType0);
+}",""
+"@Override
+public boolean isArrayType() {
+    return false;
+}","public void test033() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    SerializerProvider serializerProvider0 = objectMapper0.getSerializerProviderInstance();
+    Class<String> class0 = String.class;
+    SimpleType simpleType0 = SimpleType.constructUnsafe(class0);
+    JavaType javaType0 = serializerProvider0.constructSpecializedType(simpleType0, class0);
+    assertFalse(javaType0.isArrayType());
+}",""
+"public JavaType resolveSubType(JavaType baseType, String subClass) throws JsonMappingException {
+    // 30-Jan-2010, tatu: Most ids are basic class names; so let's first
+    //    check if any generics info is added; and only then ask factory
+    //    to do translation when necessary
+    if (subClass.indexOf('<') > 0) {
+        // note: may want to try combining with specialization (esp for EnumMap)?
+        // 17-Aug-2017, tatu: As per [databind#1735] need to ensure assignment
+        //    compatibility -- needed later anyway, and not doing so may open
+        //    security issues.
+        JavaType t = getTypeFactory().constructFromCanonical(subClass);
+        if (t.isTypeOrSubTypeOf(baseType.getRawClass())) {
+            return t;
+        }
+    } else {
+        Class<?> cls;
+        try {
+            cls = getTypeFactory().findClass(subClass);
+        } catch (ClassNotFoundException e) {
+            // let caller handle this problem
+            return null;
+        } catch (Exception e) {
+            throw invalidTypeIdException(baseType, subClass, String.format(""problem: (%s) %s"", e.getClass().getName(), e.getMessage()));
+        }
+        if (baseType.isTypeOrSuperTypeOf(cls)) {
+            return getTypeFactory().constructSpecializedType(baseType, cls);
+        }
+    }
+    throw invalidTypeIdException(baseType, subClass, ""Not a subtype"");
+}","public void test044() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    SerializerProvider serializerProvider0 = objectMapper0.getSerializerProviderInstance();
+    Class<ObjectIdGenerators.StringIdGenerator> class0 = ObjectIdGenerators.StringIdGenerator.class;
+    TypeFactory typeFactory0 = serializerProvider0.getTypeFactory();
+    JavaType javaType0 = typeFactory0.constructType((Type) class0);
+    try {
+        serializerProvider0.resolveSubType(javaType0, ""com.fasterxml.jackson.databind.type.MapType"");
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // Could not resolve type id 'com.fasterxml.jackson.databind.type.MapType' as a subtype of [simple type, class com.fasterxml.jackson.annotation.ObjectIdGenerators$StringIdGenerator]: Not a subtype
+        //
+        verifyException(""com.fasterxml.jackson.databind.exc.InvalidTypeIdException"", e);
+    }
+}","/**
+ * Lookup method called when code needs to resolve class name from input;
+ * usually simple lookup
+ *
+ * @since 2.9
+ */"
+"public JavaType resolveSubType(JavaType baseType, String subClass) throws JsonMappingException {
+    // 30-Jan-2010, tatu: Most ids are basic class names; so let's first
+    //    check if any generics info is added; and only then ask factory
+    //    to do translation when necessary
+    if (subClass.indexOf('<') > 0) {
+        // note: may want to try combining with specialization (esp for EnumMap)?
+        // 17-Aug-2017, tatu: As per [databind#1735] need to ensure assignment
+        //    compatibility -- needed later anyway, and not doing so may open
+        //    security issues.
+        JavaType t = getTypeFactory().constructFromCanonical(subClass);
+        if (t.isTypeOrSubTypeOf(baseType.getRawClass())) {
+            return t;
+        }
+    } else {
+        Class<?> cls;
+        try {
+            cls = getTypeFactory().findClass(subClass);
+        } catch (ClassNotFoundException e) {
+            // let caller handle this problem
+            return null;
+        } catch (Exception e) {
+            throw invalidTypeIdException(baseType, subClass, String.format(""problem: (%s) %s"", e.getClass().getName(), e.getMessage()));
+        }
+        if (baseType.isTypeOrSuperTypeOf(cls)) {
+            return getTypeFactory().constructSpecializedType(baseType, cls);
+        }
+    }
+    throw invalidTypeIdException(baseType, subClass, ""Not a subtype"");
+}","public void test055() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    // Undeclared exception!
+    try {
+        defaultSerializerProvider_Impl0.resolveSubType((JavaType) null, ""; expected type Converter or Class<Converter> instead"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.SerializerProvider"", e);
+    }
+}","/**
+ * Lookup method called when code needs to resolve class name from input;
+ * usually simple lookup
+ *
+ * @since 2.9
+ */"
+"public boolean hasContentType() {
+    return true;
+}","public void test066() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    SerializerProvider serializerProvider0 = objectMapper0.getSerializerProviderInstance();
+    PlaceholderForType placeholderForType0 = new PlaceholderForType(1024);
+    JavaType javaType0 = serializerProvider0.resolveSubType(placeholderForType0, ""com.fasterxml.jackson.databind.cfg.ConfigOverride$Empty"");
+    assertFalse(javaType0.hasContentType());
+}","/**
+ * Accessor that allows determining whether {@link #getContentType()} should
+ * return a non-null value (that is, there is a ""content type"") or not.
+ * True if {@link #isContainerType()} or {@link #isReferenceType()} return true.
+ *
+ * @since 2.8
+ */"
+"/*
+    /**********************************************************
+    /* Helper object construction
+    /**********************************************************
+     */
+public ObjectIdGenerator<?> objectIdGeneratorInstance(Annotated annotated, ObjectIdInfo objectIdInfo) throws JsonMappingException {
+    Class<?> implClass = objectIdInfo.getGeneratorType();
+    final MapperConfig<?> config = getConfig();
+    HandlerInstantiator hi = config.getHandlerInstantiator();
+    ObjectIdGenerator<?> gen = (hi == null) ? null : hi.objectIdGeneratorInstance(config, annotated, implClass);
+    if (gen == null) {
+        gen = (ObjectIdGenerator<?>) ClassUtil.createInstance(implClass, config.canOverrideAccessModifiers());
+    }
+    return gen.forScope(objectIdInfo.getScope());
+}","public void test077() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    SerializerProvider serializerProvider0 = objectMapper0.getSerializerProviderInstance();
+    ObjectIdInfo objectIdInfo0 = ObjectIdInfo.empty();
+    // Undeclared exception!
+    try {
+        serializerProvider0.objectIdGeneratorInstance((Annotated) null, objectIdInfo0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.util.ClassUtil"", e);
+    }
+}",""
+"public ObjectIdResolver objectIdResolverInstance(Annotated annotated, ObjectIdInfo objectIdInfo) {
+    Class<? extends ObjectIdResolver> implClass = objectIdInfo.getResolverType();
+    final MapperConfig<?> config = getConfig();
+    HandlerInstantiator hi = config.getHandlerInstantiator();
+    ObjectIdResolver resolver = (hi == null) ? null : hi.resolverIdGeneratorInstance(config, annotated, implClass);
+    if (resolver == null) {
+        resolver = ClassUtil.createInstance(implClass, config.canOverrideAccessModifiers());
+    }
+    return resolver;
+}","public void test088() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    SerializerProvider serializerProvider0 = objectMapper0.getSerializerProviderInstance();
+    ObjectIdInfo objectIdInfo0 = ObjectIdInfo.empty();
+    ObjectIdResolver objectIdResolver0 = serializerProvider0.objectIdResolverInstance((Annotated) null, objectIdInfo0);
+    assertNotNull(objectIdResolver0);
+}",""
+"@SuppressWarnings(""unchecked"")
+public Converter<Object, Object> converterInstance(Annotated annotated, Object converterDef) throws JsonMappingException {
+    if (converterDef == null) {
+        return null;
+    }
+    if (converterDef instanceof Converter<?, ?>) {
+        return (Converter<Object, Object>) converterDef;
+    }
+    if (!(converterDef instanceof Class)) {
+        throw new IllegalStateException(""AnnotationIntrospector returned Converter definition of type "" + converterDef.getClass().getName() + ""; expected type Converter or Class<Converter> instead"");
+    }
+    Class<?> converterClass = (Class<?>) converterDef;
+    // there are some known ""no class"" markers to consider too:
+    if (converterClass == Converter.None.class || ClassUtil.isBogusClass(converterClass)) {
+        return null;
+    }
+    if (!Converter.class.isAssignableFrom(converterClass)) {
+        throw new IllegalStateException(""AnnotationIntrospector returned Class "" + converterClass.getName() + ""; expected Class<Converter>"");
+    }
+    final MapperConfig<?> config = getConfig();
+    HandlerInstantiator hi = config.getHandlerInstantiator();
+    Converter<?, ?> conv = (hi == null) ? null : hi.converterInstance(config, annotated, converterClass);
+    if (conv == null) {
+        conv = (Converter<?, ?>) ClassUtil.createInstance(converterClass, config.canOverrideAccessModifiers());
+    }
+    return (Converter<Object, Object>) conv;
+}","public void test099() throws Throwable {
+    Class<ObjectIdGenerators.IntSequenceGenerator> class0 = ObjectIdGenerators.IntSequenceGenerator.class;
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    // Undeclared exception!
+    try {
+        defaultSerializerProvider_Impl0.converterInstance((Annotated) null, class0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // AnnotationIntrospector returned Class com.fasterxml.jackson.annotation.ObjectIdGenerators$IntSequenceGenerator; expected Class<Converter>
+        //
+        verifyException(""com.fasterxml.jackson.databind.DatabindContext"", e);
+    }
+}","/**
+ * Helper method to use to construct a {@link Converter}, given a definition
+ * that may be either actual converter instance, or Class for instantiating one.
+ *
+ * @since 2.2
+ */"
+"@SuppressWarnings(""unchecked"")
+public Converter<Object, Object> converterInstance(Annotated annotated, Object converterDef) throws JsonMappingException {
+    if (converterDef == null) {
+        return null;
+    }
+    if (converterDef instanceof Converter<?, ?>) {
+        return (Converter<Object, Object>) converterDef;
+    }
+    if (!(converterDef instanceof Class)) {
+        throw new IllegalStateException(""AnnotationIntrospector returned Converter definition of type "" + converterDef.getClass().getName() + ""; expected type Converter or Class<Converter> instead"");
+    }
+    Class<?> converterClass = (Class<?>) converterDef;
+    // there are some known ""no class"" markers to consider too:
+    if (converterClass == Converter.None.class || ClassUtil.isBogusClass(converterClass)) {
+        return null;
+    }
+    if (!Converter.class.isAssignableFrom(converterClass)) {
+        throw new IllegalStateException(""AnnotationIntrospector returned Class "" + converterClass.getName() + ""; expected Class<Converter>"");
+    }
+    final MapperConfig<?> config = getConfig();
+    HandlerInstantiator hi = config.getHandlerInstantiator();
+    Converter<?, ?> conv = (hi == null) ? null : hi.converterInstance(config, annotated, converterClass);
+    if (conv == null) {
+        conv = (Converter<?, ?>) ClassUtil.createInstance(converterClass, config.canOverrideAccessModifiers());
+    }
+    return (Converter<Object, Object>) conv;
+}","public void test1010() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    Converter<Object, Object> converter0 = defaultSerializerProvider_Impl0.converterInstance((Annotated) null, (Object) null);
+    assertNull(converter0);
+}","/**
+ * Helper method to use to construct a {@link Converter}, given a definition
+ * that may be either actual converter instance, or Class for instantiating one.
+ *
+ * @since 2.2
+ */"
+"@SuppressWarnings(""unchecked"")
+public Converter<Object, Object> converterInstance(Annotated annotated, Object converterDef) throws JsonMappingException {
+    if (converterDef == null) {
+        return null;
+    }
+    if (converterDef instanceof Converter<?, ?>) {
+        return (Converter<Object, Object>) converterDef;
+    }
+    if (!(converterDef instanceof Class)) {
+        throw new IllegalStateException(""AnnotationIntrospector returned Converter definition of type "" + converterDef.getClass().getName() + ""; expected type Converter or Class<Converter> instead"");
+    }
+    Class<?> converterClass = (Class<?>) converterDef;
+    // there are some known ""no class"" markers to consider too:
+    if (converterClass == Converter.None.class || ClassUtil.isBogusClass(converterClass)) {
+        return null;
+    }
+    if (!Converter.class.isAssignableFrom(converterClass)) {
+        throw new IllegalStateException(""AnnotationIntrospector returned Class "" + converterClass.getName() + ""; expected Class<Converter>"");
+    }
+    final MapperConfig<?> config = getConfig();
+    HandlerInstantiator hi = config.getHandlerInstantiator();
+    Converter<?, ?> conv = (hi == null) ? null : hi.converterInstance(config, annotated, converterClass);
+    if (conv == null) {
+        conv = (Converter<?, ?>) ClassUtil.createInstance(converterClass, config.canOverrideAccessModifiers());
+    }
+    return (Converter<Object, Object>) conv;
+}","public void test1111() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    // Undeclared exception!
+    try {
+        defaultSerializerProvider_Impl0.converterInstance((Annotated) null, defaultSerializerProvider_Impl0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // AnnotationIntrospector returned Converter definition of type com.fasterxml.jackson.databind.ser.DefaultSerializerProvider$Impl; expected type Converter or Class<Converter> instead
+        //
+        verifyException(""com.fasterxml.jackson.databind.DatabindContext"", e);
+    }
+}","/**
+ * Helper method to use to construct a {@link Converter}, given a definition
+ * that may be either actual converter instance, or Class for instantiating one.
+ *
+ * @since 2.2
+ */"
+"public Object createUsingDelegate(DeserializationContext ctxt, Object delegate) throws IOException {
+    return ctxt.handleMissingInstantiator(getValueClass(), this, null, ""no delegate creator specified"");
+}","public void test1212() throws Throwable {
+    Class<Object> class0 = Object.class;
+    ValueInstantiator.Base valueInstantiator_Base0 = new ValueInstantiator.Base(class0);
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DeserializationContext deserializationContext0 = objectMapper0.getDeserializationContext();
+    // Undeclared exception!
+    try {
+        valueInstantiator_Base0.createUsingDelegate(deserializationContext0, class0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.fasterxml.jackson.databind.DeserializationContext"", e);
+    }
+}","/**
+ * Method to called to create value instance from JSON Object using
+ * an intermediate ""delegate"" value to pass to createor method
+ */"
+"/*
+    /********************************************************
+    /* Error reporting
+    /********************************************************
+     */
+/**
+ * Helper method called to indicate problem; default behavior is to construct and
+ * throw a {@link JsonMappingException}, but in future may collect more than one
+ * and only throw after certain number, or at the end of serialization.
+ *
+ * @since 2.8
+ */
+public void reportMappingProblem(String message, Object... args) throws JsonMappingException {
+    throw mappingException(message, args);
+}","public void test1313() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    SerializerProvider serializerProvider0 = objectMapper0.getSerializerProvider();
+    Object[] objectArray0 = new Object[2];
+    try {
+        serializerProvider0.reportMappingProblem(""9O.2e I00Lq.ir;{"", objectArray0);
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // 9O.2e I00Lq.ir;{
+        //
+        verifyException(""com.fasterxml.jackson.databind.JsonMappingException"", e);
+    }
+}",""
+"protected String _quotedString(String desc) {
+    if (desc == null) {
+        return ""[N/A]"";
+    }
+    // !!! should we quote it? (in case there are control chars, linefeeds)
+    return String.format(""\""%s\"""", _truncate(desc));
+}","public void test1414() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    String string0 = ((DatabindContext) defaultSerializerProvider_Impl0)._quotedString(""No 'injectableValues' configured, cannot inject value with id [%s]"");
+    assertEquals(""\""No 'injectableValues' configured, cannot inject value with id [%s]\"""", string0);
+}","/**
+ * @since 2.9
+ */"
+"protected final String _truncate(String desc) {
+    if (desc == null) {
+        return """";
+    }
+    if (desc.length() <= MAX_ERROR_STR_LEN) {
+        return desc;
+    }
+    return desc.substring(0, MAX_ERROR_STR_LEN) + ""]...["" + desc.substring(desc.length() - MAX_ERROR_STR_LEN);
+}","public void test1515() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = (DefaultSerializerProvider.Impl) objectMapper0.getSerializerProviderInstance();
+    String string0 = ((DatabindContext) defaultSerializerProvider_Impl0)._truncate((String) null);
+    assertEquals("""", string0);
+}","/**
+ * @since 2.9
+ */"
+"protected String _quotedString(String desc) {
+    if (desc == null) {
+        return ""[N/A]"";
+    }
+    // !!! should we quote it? (in case there are control chars, linefeeds)
+    return String.format(""\""%s\"""", _truncate(desc));
+}","public void test1616() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    String string0 = ((DatabindContext) defaultSerializerProvider_Impl0)._quotedString((String) null);
+    assertEquals(""[N/A]"", string0);
+}","/**
+ * @since 2.9
+ */"
+"public String getTypeId() {
+    return _typeId;
+}","public void test1717() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    InvalidTypeIdException invalidTypeIdException0 = (InvalidTypeIdException) defaultSerializerProvider_Impl0.invalidTypeIdException((JavaType) null, ""tSN${-$n0's<mlR[IFN"", (String) null);
+    assertEquals(""tSN${-$n0's<mlR[IFN"", invalidTypeIdException0.getTypeId());
+}",""
+"protected String _desc(String desc) {
+    if (desc == null) {
+        return ""[N/A]"";
+    }
+    // !!! should we quote it? (in case there are control chars, linefeeds)
+    return _truncate(desc);
+}","public void test1818() throws Throwable {
+    ObjectMapper objectMapper0 = new ObjectMapper();
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = (DefaultSerializerProvider.Impl) objectMapper0.getSerializerProvider();
+    String string0 = ((DatabindContext) defaultSerializerProvider_Impl0)._desc(""; expcted type Converter or Class<Converter> instead"");
+    assertEquals(""; expcted type Converter or Class<Converter> instead"", string0);
+}","/**
+ * @since 2.9
+ */"
+"protected String _desc(String desc) {
+    if (desc == null) {
+        return ""[N/A]"";
+    }
+    // !!! should we quote it? (in case there are control chars, linefeeds)
+    return _truncate(desc);
+}","public void test1919() throws Throwable {
+    DefaultSerializerProvider.Impl defaultSerializerProvider_Impl0 = new DefaultSerializerProvider.Impl();
+    String string0 = ((DatabindContext) defaultSerializerProvider_Impl0)._desc((String) null);
+    assertEquals(""[N/A]"", string0);
+}","/**
+ * @since 2.9
+ */"

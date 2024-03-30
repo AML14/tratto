@@ -1,0 +1,345 @@
+focal_method,test_prefix,docstring
+"public int getChildCount() {
+    int c = 0;
+    for (Node n = first; n != null; n = n.next) c++;
+    return c;
+}","public void test000() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    CompilerOptions compilerOptions0 = compiler0.getOptions();
+    char[] charArray0 = new char[11];
+    NameAnonymousFunctionsMapped nameAnonymousFunctionsMapped0 = new NameAnonymousFunctionsMapped(compiler0);
+    VariableMap variableMap0 = nameAnonymousFunctionsMapped0.getFunctionMap();
+    RenameVars renameVars0 = new RenameVars(compiler0, (String) null, false, true, false, variableMap0, charArray0, compilerOptions0.aliasableStrings);
+    JSSourceFile jSSourceFile0 = JSSourceFile.fromFile("""", (Charset) null);
+    RenameVars.ProcessVars renameVars_ProcessVars0 = renameVars0.new ProcessVars(false);
+    CompilerInput compilerInput0 = new CompilerInput(jSSourceFile0);
+    renameVars_ProcessVars0.incCount("""", compilerInput0);
+    Node node0 = Node.newString(""wT8-q64:02hn!B!%"");
+    Node node1 = compiler0.parseTestCode(""Q<Uz^QD8"");
+    renameVars0.process(node0, node1);
+    renameVars0.process(node1, node1);
+    assertEquals(1, node1.getChildCount());
+}",""
+"VariableMap getVariableMap() {
+    return new VariableMap(renameMap);
+}","public void test011() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    CompilerOptions compilerOptions0 = compiler0.getOptions();
+    char[] charArray0 = new char[40];
+    RenameVars renameVars0 = new RenameVars(compiler0, (String) null, false, false, false, (VariableMap) null, charArray0, compilerOptions0.stripNamePrefixes);
+    VariableMap variableMap0 = renameVars0.getVariableMap();
+    assertNotNull(variableMap0);
+}","/**
+ * Gets the variable map.
+ */"
+"RenameVars(AbstractCompiler compiler, String prefix, boolean localRenamingOnly, boolean preserveAnonymousFunctionNames, boolean generatePseudoNames, VariableMap prevUsedRenameMap, @Nullable char[] reservedCharacters, @Nullable Set<String> reservedNames) {
+    this.compiler = compiler;
+    this.prefix = prefix == null ? """" : prefix;
+    this.localRenamingOnly = localRenamingOnly;
+    this.preserveAnonymousFunctionNames = preserveAnonymousFunctionNames;
+    this.generatePseudoNames = generatePseudoNames;
+    this.prevUsedRenameMap = prevUsedRenameMap;
+    this.reservedCharacters = reservedCharacters;
+    if (reservedNames == null) {
+        this.reservedNames = Sets.newHashSet();
+    } else {
+        this.reservedNames = Sets.newHashSet(reservedNames);
+    }
+}","public void test033() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    char[] charArray0 = new char[13];
+    RenameVars renameVars0 = new RenameVars(compiler0, ""0tI"", false, false, false, (VariableMap) null, charArray0, (Set<String>) null);
+}",""
+"public void process(Node externs, Node root) {
+    assignmentLog = new StringBuilder();
+    // Do variable reference counting.
+    NodeTraversal.traverse(compiler, externs, new ProcessVars(true));
+    NodeTraversal.traverse(compiler, root, new ProcessVars(false));
+    // Make sure that new names don't overlap with extern names.
+    reservedNames.addAll(externNames);
+    // Rename vars, sorted by frequency of occurrence to minimize code size.
+    SortedSet<Assignment> varsByFrequency = new TreeSet<Assignment>(FREQUENCY_COMPARATOR);
+    varsByFrequency.addAll(assignments.values());
+    // First try to reuse names from an earlier compilation.
+    if (prevUsedRenameMap != null) {
+        reusePreviouslyUsedVariableMap();
+    }
+    // Assign names, sorted by descending frequency to minimize code size.
+    assignNames(varsByFrequency);
+    boolean changed = false;
+    // Rename the globals!
+    for (Node n : globalNameNodes) {
+        String newName = getNewGlobalName(n);
+        // Note: if newName is null, then oldName is an extern.
+        if (newName != null) {
+            n.setString(newName);
+            changed = true;
+        }
+    }
+    // Rename the locals!
+    int count = 0;
+    for (Node n : localNameNodes) {
+        String newName = getNewLocalName(n, count);
+        if (newName != null) {
+            n.setString(newName);
+            changed = true;
+        }
+        count++;
+    }
+    if (changed) {
+        compiler.reportCodeChange();
+    }
+    // Lastly, write the name assignments to the debug log.
+    compiler.addToDebugLog(""JS var assignments:\n"" + assignmentLog);
+    assignmentLog = null;
+}","public void test044() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    CompilerOptions compilerOptions0 = compiler0.getOptions();
+    char[] charArray0 = new char[30];
+    RenameVars renameVars0 = new RenameVars(compiler0, (String) null, false, false, false, (VariableMap) null, charArray0, compilerOptions0.stripNamePrefixes);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    JSType[] jSTypeArray0 = new JSType[1];
+    Node node0 = jSTypeRegistry0.createParameters(jSTypeArray0);
+    renameVars0.process(node0, node0);
+    assertEquals(24, Node.LASTUSE_PROP);
+}","/**
+ * {@inheritDoc}
+ */"
+"public final int getEndLineno() {
+    return endLineno;
+}","public void test055() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    CompilerOptions compilerOptions0 = new CompilerOptions();
+    char[] charArray0 = new char[3];
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded("""", (String) null, ""is_dispatcher"");
+    JsAst jsAst0 = new JsAst(sourceFile_Preloaded0);
+    RenameVars renameVars0 = new RenameVars(compiler0, (String) null, true, false, false, (VariableMap) null, charArray0, compilerOptions0.stripNameSuffixes);
+    ScriptOrFnNode scriptOrFnNode0 = (ScriptOrFnNode) jsAst0.getAstRoot(compiler0);
+    renameVars0.process(scriptOrFnNode0, scriptOrFnNode0);
+    assertEquals((-1), scriptOrFnNode0.getEndLineno());
+}",""
+"public void process(Node externs, Node root) {
+    assignmentLog = new StringBuilder();
+    // Do variable reference counting.
+    NodeTraversal.traverse(compiler, externs, new ProcessVars(true));
+    NodeTraversal.traverse(compiler, root, new ProcessVars(false));
+    // Make sure that new names don't overlap with extern names.
+    reservedNames.addAll(externNames);
+    // Rename vars, sorted by frequency of occurrence to minimize code size.
+    SortedSet<Assignment> varsByFrequency = new TreeSet<Assignment>(FREQUENCY_COMPARATOR);
+    varsByFrequency.addAll(assignments.values());
+    // First try to reuse names from an earlier compilation.
+    if (prevUsedRenameMap != null) {
+        reusePreviouslyUsedVariableMap();
+    }
+    // Assign names, sorted by descending frequency to minimize code size.
+    assignNames(varsByFrequency);
+    boolean changed = false;
+    // Rename the globals!
+    for (Node n : globalNameNodes) {
+        String newName = getNewGlobalName(n);
+        // Note: if newName is null, then oldName is an extern.
+        if (newName != null) {
+            n.setString(newName);
+            changed = true;
+        }
+    }
+    // Rename the locals!
+    int count = 0;
+    for (Node n : localNameNodes) {
+        String newName = getNewLocalName(n, count);
+        if (newName != null) {
+            n.setString(newName);
+            changed = true;
+        }
+        count++;
+    }
+    if (changed) {
+        compiler.reportCodeChange();
+    }
+    // Lastly, write the name assignments to the debug log.
+    compiler.addToDebugLog(""JS var assignments:\n"" + assignmentLog);
+    assignmentLog = null;
+}","public void test066() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    CompilerOptions compilerOptions0 = compiler0.options_;
+    char[] charArray0 = new char[6];
+    SourceFile.Preloaded sourceFile_Preloaded0 = new SourceFile.Preloaded("""", (String) null, ""_R"");
+    JsAst jsAst0 = new JsAst(sourceFile_Preloaded0);
+    RenameVars renameVars0 = new RenameVars(compiler0, ""// Input %num%"", false, false, false, (VariableMap) null, charArray0, compilerOptions0.stripNameSuffixes);
+    Node node0 = jsAst0.getAstRoot(compiler0);
+    // Undeclared exception!
+    try {
+        renameVars0.process(node0, node0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // prefix must start with one of: [a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z, A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z, $]
+        //
+        verifyException(""com.google.javascript.jscomp.NameGenerator"", e);
+    }
+}","/**
+ * {@inheritDoc}
+ */"
+"public int getChildCount() {
+    int c = 0;
+    for (Node n = first; n != null; n = n.next) c++;
+    return c;
+}","public void test077() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    CompilerOptions compilerOptions0 = compiler0.getOptions();
+    char[] charArray0 = new char[11];
+    NameAnonymousFunctionsMapped nameAnonymousFunctionsMapped0 = new NameAnonymousFunctionsMapped(compiler0);
+    VariableMap variableMap0 = nameAnonymousFunctionsMapped0.getFunctionMap();
+    RenameVars renameVars0 = new RenameVars(compiler0, (String) null, false, true, false, variableMap0, charArray0, compilerOptions0.aliasableStrings);
+    JSSourceFile jSSourceFile0 = JSSourceFile.fromFile("""", (Charset) null);
+    RenameVars.ProcessVars renameVars_ProcessVars0 = renameVars0.new ProcessVars(false);
+    CompilerInput compilerInput0 = new CompilerInput(jSSourceFile0);
+    renameVars_ProcessVars0.incCount("""", compilerInput0);
+    renameVars_ProcessVars0.incCount("""", compilerInput0);
+    Node node0 = Node.newString(""wT8-q64:02hn!B!%"");
+    Node node1 = compiler0.parseTestCode(""Q<Uz^QD8"");
+    renameVars_ProcessVars0.incCount("" ="", compilerInput0);
+    renameVars0.process(node1, node0);
+    assertEquals(1, node1.getChildCount());
+}",""
+"public void process(Node externs, Node root) {
+    assignmentLog = new StringBuilder();
+    // Do variable reference counting.
+    NodeTraversal.traverse(compiler, externs, new ProcessVars(true));
+    NodeTraversal.traverse(compiler, root, new ProcessVars(false));
+    // Make sure that new names don't overlap with extern names.
+    reservedNames.addAll(externNames);
+    // Rename vars, sorted by frequency of occurrence to minimize code size.
+    SortedSet<Assignment> varsByFrequency = new TreeSet<Assignment>(FREQUENCY_COMPARATOR);
+    varsByFrequency.addAll(assignments.values());
+    // First try to reuse names from an earlier compilation.
+    if (prevUsedRenameMap != null) {
+        reusePreviouslyUsedVariableMap();
+    }
+    // Assign names, sorted by descending frequency to minimize code size.
+    assignNames(varsByFrequency);
+    boolean changed = false;
+    // Rename the globals!
+    for (Node n : globalNameNodes) {
+        String newName = getNewGlobalName(n);
+        // Note: if newName is null, then oldName is an extern.
+        if (newName != null) {
+            n.setString(newName);
+            changed = true;
+        }
+    }
+    // Rename the locals!
+    int count = 0;
+    for (Node n : localNameNodes) {
+        String newName = getNewLocalName(n, count);
+        if (newName != null) {
+            n.setString(newName);
+            changed = true;
+        }
+        count++;
+    }
+    if (changed) {
+        compiler.reportCodeChange();
+    }
+    // Lastly, write the name assignments to the debug log.
+    compiler.addToDebugLog(""JS var assignments:\n"" + assignmentLog);
+    assignmentLog = null;
+}","public void test088() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    char[] charArray0 = new char[1];
+    CompilerOptions compilerOptions0 = compiler0.getOptions();
+    RenameVars renameVars0 = new RenameVars(compiler0, (String) null, false, true, false, (VariableMap) null, charArray0, compilerOptions0.stripTypePrefixes);
+    JSSourceFile jSSourceFile0 = JSSourceFile.fromCode((String) null, (String) null);
+    RenameVars.ProcessVars renameVars_ProcessVars0 = renameVars0.new ProcessVars(false);
+    CompilerInput compilerInput0 = new CompilerInput(jSSourceFile0);
+    renameVars_ProcessVars0.incCount(""\uC911\uAD6D"", compilerInput0);
+    Node node0 = compiler0.parseTestCode(""\uC911\uAD6D"");
+    renameVars0.process(node0, node0);
+    assertEquals(7, Node.LOCAL_PROP);
+}","/**
+ * {@inheritDoc}
+ */"
+"public final String getSourceName() {
+    return sourceName;
+}","public void test099() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    CompilerOptions compilerOptions0 = compiler0.createDefaultOptions();
+    char[] charArray0 = new char[4];
+    NameAnonymousFunctionsMapped nameAnonymousFunctionsMapped0 = new NameAnonymousFunctionsMapped(compiler0);
+    VariableMap variableMap0 = nameAnonymousFunctionsMapped0.getFunctionMap();
+    RenameVars renameVars0 = new RenameVars(compiler0, (String) null, false, false, false, variableMap0, charArray0, compilerOptions0.aliasableStrings);
+    JSSourceFile jSSourceFile0 = JSSourceFile.fromFile("""", (Charset) null);
+    RenameVars.ProcessVars renameVars_ProcessVars0 = renameVars0.new ProcessVars(false);
+    CompilerInput compilerInput0 = new CompilerInput(jSSourceFile0);
+    renameVars_ProcessVars0.incCount(""L Ncgcm>eFoPL+&>o%Ew"", compilerInput0);
+    ScriptOrFnNode scriptOrFnNode0 = (ScriptOrFnNode) compiler0.parseTestCode("""");
+    renameVars0.process(scriptOrFnNode0, scriptOrFnNode0);
+    assertNull(scriptOrFnNode0.getSourceName());
+}",""
+"public void process(Node externs, Node root) {
+    assignmentLog = new StringBuilder();
+    // Do variable reference counting.
+    NodeTraversal.traverse(compiler, externs, new ProcessVars(true));
+    NodeTraversal.traverse(compiler, root, new ProcessVars(false));
+    // Make sure that new names don't overlap with extern names.
+    reservedNames.addAll(externNames);
+    // Rename vars, sorted by frequency of occurrence to minimize code size.
+    SortedSet<Assignment> varsByFrequency = new TreeSet<Assignment>(FREQUENCY_COMPARATOR);
+    varsByFrequency.addAll(assignments.values());
+    // First try to reuse names from an earlier compilation.
+    if (prevUsedRenameMap != null) {
+        reusePreviouslyUsedVariableMap();
+    }
+    // Assign names, sorted by descending frequency to minimize code size.
+    assignNames(varsByFrequency);
+    boolean changed = false;
+    // Rename the globals!
+    for (Node n : globalNameNodes) {
+        String newName = getNewGlobalName(n);
+        // Note: if newName is null, then oldName is an extern.
+        if (newName != null) {
+            n.setString(newName);
+            changed = true;
+        }
+    }
+    // Rename the locals!
+    int count = 0;
+    for (Node n : localNameNodes) {
+        String newName = getNewLocalName(n, count);
+        if (newName != null) {
+            n.setString(newName);
+            changed = true;
+        }
+        count++;
+    }
+    if (changed) {
+        compiler.reportCodeChange();
+    }
+    // Lastly, write the name assignments to the debug log.
+    compiler.addToDebugLog(""JS var assignments:\n"" + assignmentLog);
+    assignmentLog = null;
+}","public void test1010() throws Throwable {
+    NameAnonymousFunctionsMapped nameAnonymousFunctionsMapped0 = new NameAnonymousFunctionsMapped((AbstractCompiler) null);
+    VariableMap variableMap0 = nameAnonymousFunctionsMapped0.getFunctionMap();
+    char[] charArray0 = new char[5];
+    LinkedList<JSType> linkedList0 = new LinkedList<JSType>();
+    LightweightMessageFormatter lightweightMessageFormatter0 = new LightweightMessageFormatter((SourceExcerptProvider) null);
+    LoggerErrorManager loggerErrorManager0 = new LoggerErrorManager(lightweightMessageFormatter0, (Logger) null);
+    Compiler compiler0 = new Compiler(loggerErrorManager0);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    Node node0 = jSTypeRegistry0.createParametersWithVarArgs((List<JSType>) linkedList0);
+    InlineGetters inlineGetters0 = new InlineGetters((AbstractCompiler) null);
+    Set<String> set0 = inlineGetters0.externMethods;
+    RenameVars renameVars0 = new RenameVars(compiler0, ""DEFAULT"", false, false, true, variableMap0, charArray0, set0);
+    RenameVars.ProcessVars renameVars_ProcessVars0 = renameVars0.new ProcessVars(true);
+    SourceFile.Generator sourceFile_Generator0 = mock(SourceFile.Generator.class, new ViolatedAssumptionAnswer());
+    JSSourceFile jSSourceFile0 = JSSourceFile.fromGenerator(""com.google.javascript.jscomp.RenameVars$Assignment"", sourceFile_Generator0);
+    CompilerInput compilerInput0 = new CompilerInput(jSSourceFile0);
+    renameVars_ProcessVars0.incCount(""DEFAULT"", compilerInput0);
+    renameVars_ProcessVars0.incCount(""e w`ow!|v=\""n95"", compilerInput0);
+    renameVars0.process(node0, node0);
+    assertEquals(2, Node.BREAK_PROP);
+}","/**
+ * {@inheritDoc}
+ */"

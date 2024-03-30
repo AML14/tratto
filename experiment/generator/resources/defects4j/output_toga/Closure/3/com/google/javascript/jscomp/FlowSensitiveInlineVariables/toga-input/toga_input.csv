@@ -1,0 +1,53 @@
+focal_method,test_prefix,docstring
+"@Override
+public void process(Node externs, Node root) {
+    (new NodeTraversal(compiler, this)).traverseRoots(externs, root);
+}","public void test00() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    FlowSensitiveInlineVariables flowSensitiveInlineVariables0 = new FlowSensitiveInlineVariables(compiler0);
+    // Undeclared exception!
+    try {
+        flowSensitiveInlineVariables0.process((Node) null, (Node) null);
+        fail(""Expecting exception: RuntimeException"");
+    } catch (RuntimeException e) {
+    }
+}",""
+"public String getSourceName() {
+    return sourceName;
+}","public void test11() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    FlowSensitiveInlineVariables flowSensitiveInlineVariables0 = new FlowSensitiveInlineVariables(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, flowSensitiveInlineVariables0);
+    flowSensitiveInlineVariables0.exitScope(nodeTraversal0);
+    assertEquals("""", nodeTraversal0.getSourceName());
+}","/**
+ * Gets the current input source name.
+ *
+ * @return A string that may be empty, but not null
+ */"
+"public String getSourceName() {
+    return sourceName;
+}","public void test22() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    FlowSensitiveInlineVariables flowSensitiveInlineVariables0 = new FlowSensitiveInlineVariables(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, flowSensitiveInlineVariables0);
+    flowSensitiveInlineVariables0.visit(nodeTraversal0, (Node) null, (Node) null);
+    assertEquals("""", nodeTraversal0.getSourceName());
+}","/**
+ * Gets the current input source name.
+ *
+ * @return A string that may be empty, but not null
+ */"
+"public String getSourceName() {
+    return sourceName;
+}","public void test33() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    FlowSensitiveInlineVariables flowSensitiveInlineVariables0 = new FlowSensitiveInlineVariables(compiler0);
+    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, flowSensitiveInlineVariables0);
+    flowSensitiveInlineVariables0.enterScope(nodeTraversal0);
+    assertEquals("""", nodeTraversal0.getSourceName());
+}","/**
+ * Gets the current input source name.
+ *
+ * @return A string that may be empty, but not null
+ */"

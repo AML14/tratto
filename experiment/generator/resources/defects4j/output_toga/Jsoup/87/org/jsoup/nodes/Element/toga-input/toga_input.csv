@@ -1,0 +1,3527 @@
+focal_method,test_prefix,docstring
+"public String toString() {
+    return outerHtml();
+}","public void test0000() throws Throwable {
+    Document document0 = Document.createShell(""Jx0DNRLj<alwcB8)!l"");
+    document0.appendTo(document0);
+    // Undeclared exception!
+    document0.toString();
+}","/**
+ * Gets this node's outer HTML.
+ * @return outer HTML.
+ * @see #outerHtml()
+ */"
+"// performance sensitive
+public boolean hasClass(String className) {
+    final String classAttr = attributes().getIgnoreCase(""class"");
+    final int len = classAttr.length();
+    final int wantLen = className.length();
+    if (len == 0 || len < wantLen) {
+        return false;
+    }
+    // if both lengths are equal, only need compare the className with the attribute
+    if (len == wantLen) {
+        return className.equalsIgnoreCase(classAttr);
+    }
+    // otherwise, scan for whitespace and compare regions (with no string or arraylist allocations)
+    boolean inClass = false;
+    int start = 0;
+    for (int i = 0; i < len; i++) {
+        if (Character.isWhitespace(classAttr.charAt(i))) {
+            if (inClass) {
+                // white space ends a class name, compare it with the requested one, ignore case
+                if (i - start == wantLen && classAttr.regionMatches(true, start, className, 0, wantLen)) {
+                    return true;
+                }
+                inClass = false;
+            }
+        } else {
+            if (!inClass) {
+                // we're in a class name : keep the start of the substring
+                inClass = true;
+                start = i;
+            }
+        }
+    }
+    // check the last entry
+    if (inClass && len - start == wantLen) {
+        return classAttr.regionMatches(true, start, className, 0, wantLen);
+    }
+    return false;
+}","public void test0011() throws Throwable {
+    Element element0 = new Element(""qQn<6$94fs6)"");
+    Element element1 = element0.toggleClass(""<qQn<6$94fs6)>\n LM{u}E3,4vQN,%yK&lt;\n</qQn<6$94fs6)>"");
+    // Undeclared exception!
+    try {
+        element1.hasClass((String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Element"", e);
+    }
+}","/**
+ * Tests if this element has a class. Case insensitive.
+ * @param className name of class to check for
+ * @return true if it does, false if not
+ */"
+"public Elements getElementsByAttributeValueMatching(String key, String regex) {
+    Pattern pattern;
+    try {
+        pattern = Pattern.compile(regex);
+    } catch (PatternSyntaxException e) {
+        throw new IllegalArgumentException(""Pattern syntax error: "" + regex, e);
+    }
+    return getElementsByAttributeValueMatching(key, pattern);
+}","public void test0022() throws Throwable {
+    Element element0 = new Element(""EEfI]*c@.$$]K"");
+    element0.getElementsByAttributeValueMatching("" "", ""hmE%tkd0#,Z}M;zfFm4"");
+}","/**
+ * Find elements that have attributes whose values match the supplied regular expression.
+ * @param key name of the attribute
+ * @param regex regular expression to match against attribute values. You can use <a href=""http://java.sun.com/docs/books/tutorial/essential/regex/pattern.html#embedded"">embedded flags</a> (such as (?i) and (?m) to control regex options.
+ * @return elements that have attributes matching this regular expression
+ */"
+"public Elements getElementsByAttributeValueEnding(String key, String valueSuffix) {
+    return Collector.collect(new Evaluator.AttributeWithValueEnding(key, valueSuffix), this);
+}","public void test0033() throws Throwable {
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    Tag tag0 = Tag.valueOf(""C-^Yd0t&y ~o(}I;[u"", parseSettings0);
+    CDataNode cDataNode0 = new CDataNode("""");
+    Attributes attributes0 = cDataNode0.attributes();
+    PseudoTextElement pseudoTextElement0 = new PseudoTextElement(tag0, ""C-^Yd0t&y ~o(}I;[u"", attributes0);
+    pseudoTextElement0.getElementsByAttributeValueEnding(""y:42W$^2.M:\""_/HHT."", ""C-^Yd0t&y ~o(}I;[u"");
+}","/**
+ * Find elements that have attributes that end with the value suffix. Case insensitive.
+ *
+ * @param key name of the attribute
+ * @param valueSuffix end of the attribute value
+ * @return elements that have attributes that end with the value suffix
+ */"
+"public Elements previousElementSiblings() {
+    return nextElementSiblings(false);
+}","public void test0044() throws Throwable {
+    Document document0 = Document.createShell(""org.jsoup.nodes.DataNode"");
+    Element element0 = document0.appendElement(""org.jsoup.nodes.DataNode"");
+    Element element1 = element0.before((Node) document0);
+    element1.previousElementSiblings();
+}","/**
+ * Get each of the element siblings before this element.
+ *
+ * @return the previous element siblings, or an empty list if there are none.
+ */"
+"public Element insertChildren(int index, Node... children) {
+    Validate.notNull(children, ""Children collection to be inserted must not be null."");
+    int currentSize = childNodeSize();
+    // roll around
+    if (index < 0)
+        index += currentSize + 1;
+    Validate.isTrue(index >= 0 && index <= currentSize, ""Insert position out of bounds."");
+    addChildren(index, children);
+    return this;
+}","public void test0055() throws Throwable {
+    Document document0 = Parser.parse(""summary"", ""!x@}:d~k7M}nQ'_5E1"");
+    Element element0 = document0.body();
+    Node[] nodeArray0 = new Node[3];
+    // Undeclared exception!
+    try {
+        element0.insertChildren(0, nodeArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Array must not contain any null objects
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Inserts the given child nodes into this element at the specified index. Current nodes will be shifted to the
+ * right. The inserted nodes will be moved from their current parent. To prevent moving, copy the nodes first.
+ *
+ * @param index 0-based index to insert children at. Specify {@code 0} to insert at the start, {@code -1} at the
+ * end
+ * @param children child nodes to insert
+ * @return this element, for chaining.
+ */"
+"public Element insertChildren(int index, Node... children) {
+    Validate.notNull(children, ""Children collection to be inserted must not be null."");
+    int currentSize = childNodeSize();
+    // roll around
+    if (index < 0)
+        index += currentSize + 1;
+    Validate.isTrue(index >= 0 && index <= currentSize, ""Insert position out of bounds."");
+    addChildren(index, children);
+    return this;
+}","public void test0066() throws Throwable {
+    Document document0 = Parser.parse(""summary"", ""!x@}:d~k7M}nQ'_5E1"");
+    Element element0 = document0.empty();
+    Node[] nodeArray0 = new Node[3];
+    // Undeclared exception!
+    try {
+        element0.insertChildren(0, nodeArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Array must not contain any null objects
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Inserts the given child nodes into this element at the specified index. Current nodes will be shifted to the
+ * right. The inserted nodes will be moved from their current parent. To prevent moving, copy the nodes first.
+ *
+ * @param index 0-based index to insert children at. Specify {@code 0} to insert at the start, {@code -1} at the
+ * end
+ * @param children child nodes to insert
+ * @return this element, for chaining.
+ */"
+"public Element insertChildren(int index, Node... children) {
+    Validate.notNull(children, ""Children collection to be inserted must not be null."");
+    int currentSize = childNodeSize();
+    // roll around
+    if (index < 0)
+        index += currentSize + 1;
+    Validate.isTrue(index >= 0 && index <= currentSize, ""Insert position out of bounds."");
+    addChildren(index, children);
+    return this;
+}","public void test0077() throws Throwable {
+    Parser parser0 = Parser.xmlParser();
+    Document document0 = parser0.parseInput(""}"", ""}"");
+    Node[] nodeArray0 = new Node[3];
+    // Undeclared exception!
+    try {
+        document0.insertChildren((-2460), nodeArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Insert position out of bounds.
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Inserts the given child nodes into this element at the specified index. Current nodes will be shifted to the
+ * right. The inserted nodes will be moved from their current parent. To prevent moving, copy the nodes first.
+ *
+ * @param index 0-based index to insert children at. Specify {@code 0} to insert at the start, {@code -1} at the
+ * end
+ * @param children child nodes to insert
+ * @return this element, for chaining.
+ */"
+"public Element insertChildren(int index, Collection<? extends Node> children) {
+    Validate.notNull(children, ""Children collection to be inserted must not be null."");
+    int currentSize = childNodeSize();
+    // roll around
+    if (index < 0)
+        index += currentSize + 1;
+    Validate.isTrue(index >= 0 && index <= currentSize, ""Insert position out of bounds."");
+    ArrayList<Node> nodes = new ArrayList<>(children);
+    Node[] nodeArray = nodes.toArray(new Node[nodes.size()]);
+    addChildren(index, nodeArray);
+    return this;
+}","public void test0088() throws Throwable {
+    Document document0 = Document.createShell(""org.jsoup.nodes.Element$1"");
+    LinkedHashSet<Document> linkedHashSet0 = new LinkedHashSet<Document>();
+    // Undeclared exception!
+    try {
+        document0.insertChildren((-598), (Collection<? extends Node>) linkedHashSet0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Insert position out of bounds.
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Inserts the given child nodes into this element at the specified index. Current nodes will be shifted to the
+ * right. The inserted nodes will be moved from their current parent. To prevent moving, copy the nodes first.
+ *
+ * @param index 0-based index to insert children at. Specify {@code 0} to insert at the start, {@code -1} at the
+ * end
+ * @param children child nodes to insert
+ * @return this element, for chaining.
+ */"
+"void outerHtmlTail(Appendable accum, int depth, Document.OutputSettings out) throws IOException {
+    if (!(childNodes.isEmpty() && tag.isSelfClosing())) {
+        if (out.prettyPrint() && (!childNodes.isEmpty() && (tag.formatAsBlock() || (out.outline() && (childNodes.size() > 1 || (childNodes.size() == 1 && !(childNodes.get(0) instanceof TextNode)))))))
+            indent(accum, depth, out);
+        accum.append(""</"").append(tagName()).append('>');
+    }
+}","public void test0099() throws Throwable {
+    Tag tag0 = Tag.valueOf(""'Z\"":d*gb."");
+    Element element0 = new Element(tag0, ""ec Sm{(t%>PLe'>AZ"");
+    StringBuffer stringBuffer0 = new StringBuffer((CharSequence) ""ec Sm{(t%>PLe'>AZ"");
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    element0.outerHtmlTail(stringBuffer0, 1274, document_OutputSettings0);
+}",""
+"@Override
+void nodelistChanged() {
+    super.nodelistChanged();
+    shadowChildrenRef = null;
+}","public void test01010() throws Throwable {
+    Document document0 = Parser.parseBodyFragment(""&zthxQlbh7gpq`{urB"", ""&zthxQlbh7gpq`{urB"");
+    document0.nodelistChanged();
+}","/**
+ * Clears the cached shadow child elements.
+ */"
+"protected List<Node> ensureChildNodes() {
+    if (childNodes == EMPTY_NODES) {
+        childNodes = new NodeList(this, 4);
+    }
+    return childNodes;
+}","public void test01111() throws Throwable {
+    Document document0 = Parser.parse("".oqJf(4SF(-"", "".oqJf(4SF(-"");
+    document0.ensureChildNodes();
+}",""
+"@Override
+public Element wrap(String html) {
+    return (Element) super.wrap(html);
+}","public void test01212() throws Throwable {
+    Parser parser0 = Parser.xmlParser();
+    Document document0 = parser0.parseInput(""{ZI3k9(tZo"", ""{ZI3k9(tZo"");
+    document0.wrap(""{ZI3k9(tZo"");
+}","/**
+ * Wrap the supplied HTML around this element.
+ *
+ * @param html HTML to wrap around this element, e.g. {@code <div class=""head""></div>}. Can be arbitrarily deep.
+ * @return this element, for chaining.
+ */"
+"@Override
+public Element wrap(String html) {
+    return (Element) super.wrap(html);
+}","public void test01313() throws Throwable {
+    Document document0 = Document.createShell(""org.jsoup.nodes.Element$1"");
+    Element element0 = document0.body();
+    element0.wrap(""E~jv6+BPlyUKmY1"");
+}","/**
+ * Wrap the supplied HTML around this element.
+ *
+ * @param html HTML to wrap around this element, e.g. {@code <div class=""head""></div>}. Can be arbitrarily deep.
+ * @return this element, for chaining.
+ */"
+"public String wholeText() {
+    final StringBuilder accum = StringUtil.borrowBuilder();
+    NodeTraversor.traverse(new NodeVisitor() {
+
+        public void head(Node node, int depth) {
+            if (node instanceof TextNode) {
+                TextNode textNode = (TextNode) node;
+                accum.append(textNode.getWholeText());
+            }
+        }
+
+        public void tail(Node node, int depth) {
+        }
+    }, this);
+    return StringUtil.releaseBuilder(accum);
+}","public void test01414() throws Throwable {
+    Document document0 = Document.createShell(""8_ETU<]{!@.9<"");
+    document0.wholeText();
+}","/**
+ * Get the (unencoded) text of all children of this element, including any newlines and spaces present in the
+ * original.
+ *
+ * @return unencoded, un-normalized text
+ * @see #text()
+ */"
+"public Element val(String value) {
+    if (tagName().equals(""textarea""))
+        text(value);
+    else
+        attr(""value"", value);
+    return this;
+}","public void test01515() throws Throwable {
+    Document document0 = Document.createShell(""org.jsoup.nodes.Element$1"");
+    Element element0 = document0.body();
+    element0.val(""org.jsoup.nodes.Element$1"");
+}","/**
+ * Set the value of a form element (input, textarea, etc).
+ * @param value value to set
+ * @return this element (for chaining)
+ */"
+"public Element toggleClass(String className) {
+    Validate.notNull(className);
+    Set<String> classes = classNames();
+    if (classes.contains(className))
+        classes.remove(className);
+    else
+        classes.add(className);
+    classNames(classes);
+    return this;
+}","public void test01616() throws Throwable {
+    Document document0 = Parser.parse(""html"", ""html"");
+    document0.setSiblingIndex(1);
+    document0.toggleClass(""&XUeG%2"");
+}","/**
+ *     Toggle a class name on this element's {@code class} attribute: if present, remove it; otherwise add it.
+ *     @param className class name to toggle
+ *     @return this element
+ */"
+"public String text() {
+    final StringBuilder accum = StringUtil.borrowBuilder();
+    NodeTraversor.traverse(new NodeVisitor() {
+
+        public void head(Node node, int depth) {
+            if (node instanceof TextNode) {
+                TextNode textNode = (TextNode) node;
+                appendNormalisedText(accum, textNode);
+            } else if (node instanceof Element) {
+                Element element = (Element) node;
+                if (accum.length() > 0 && (element.isBlock() || element.tag.getName().equals(""br"")) && !TextNode.lastCharIsWhitespace(accum))
+                    accum.append(' ');
+            }
+        }
+
+        public void tail(Node node, int depth) {
+            // make sure there is a space between block tags and immediately following text nodes <div>One</div>Two should be ""One Two"".
+            if (node instanceof Element) {
+                Element element = (Element) node;
+                if (element.isBlock() && (node.nextSibling() instanceof TextNode) && !TextNode.lastCharIsWhitespace(accum))
+                    accum.append(' ');
+            }
+        }
+    }, this);
+    return StringUtil.releaseBuilder(accum).trim();
+}","public void test01717() throws Throwable {
+    Document document0 = new Document(""Dx1HW;:~(ZBeT"");
+    document0.text();
+}","/**
+ * Gets the combined text of this element and all its children. Whitespace is normalized and trimmed.
+ * <p>
+ * For example, given HTML {@code <p>Hello  <b>there</b> now! </p>}, {@code p.text()} returns {@code ""Hello there now!""}
+ *
+ * @return unencoded, normalized text, or empty string if none.
+ * @see #wholeText() if you don't want the text to be normalized.
+ * @see #ownText()
+ * @see #textNodes()
+ */"
+"/**
+ * Change the tag of this element. For example, convert a {@code <span>} to a {@code <div>} with
+ * {@code el.tagName(""div"");}.
+ *
+ * @param tagName new tag name for this element
+ * @return this element, for chaining
+ */
+public Element tagName(String tagName) {
+    Validate.notEmpty(tagName, ""Tag name must not be empty."");
+    // maintains the case option of the original parse
+    tag = Tag.valueOf(tagName, NodeUtils.parser(this).settings());
+    return this;
+}","public void test01818() throws Throwable {
+    Document document0 = Document.createShell(""2J"");
+    Element element0 = document0.head();
+    element0.tagName(""U9|:%@Orh-e@C"");
+}","/**
+ * Get the normalized name of this Element's tag. This will always be the lowercased version of the tag, regardless
+ * of the tag case preserving setting of the parser.
+ * @return
+ */"
+"/**
+ * Change the tag of this element. For example, convert a {@code <span>} to a {@code <div>} with
+ * {@code el.tagName(""div"");}.
+ *
+ * @param tagName new tag name for this element
+ * @return this element, for chaining
+ */
+public Element tagName(String tagName) {
+    Validate.notEmpty(tagName, ""Tag name must not be empty."");
+    // maintains the case option of the original parse
+    tag = Tag.valueOf(tagName, NodeUtils.parser(this).settings());
+    return this;
+}","public void test01919() throws Throwable {
+    Document document0 = Parser.parse("".oqJf(4SF(-"", "".oqJf(4SF(-"");
+    document0.tagName(""Could not parse nth-index '%s': unexpected format"");
+}","/**
+ * Get the normalized name of this Element's tag. This will always be the lowercased version of the tag, regardless
+ * of the tag case preserving setting of the parser.
+ * @return
+ */"
+"@Override
+public Element shallowClone() {
+    // simpler than implementing a clone version with no child copy
+    return new Element(tag, baseUri, attributes);
+}","public void test02020() throws Throwable {
+    Document document0 = Document.createShell(""YZtm_``3&_"");
+    Element element0 = document0.body();
+    element0.shallowClone();
+}",""
+"public Element prependChild(Node child) {
+    Validate.notNull(child);
+    addChildren(0, child);
+    return this;
+}","public void test02121() throws Throwable {
+    Document document0 = Parser.parseBodyFragment(""org.jsoup.nodes.Element"", ""org.jsoup.nodes.Element"");
+    Document document1 = document0.clone();
+    document1.prependChild(document0);
+}","/**
+ * Add a node to the start of this element's children.
+ *
+ * @param child node to add.
+ * @return this element, so that you can add more child nodes or elements.
+ */"
+"public Element prepend(String html) {
+    Validate.notNull(html);
+    List<Node> nodes = NodeUtils.parser(this).parseFragmentInput(html, this, baseUri());
+    addChildren(0, nodes.toArray(new Node[nodes.size()]));
+    return this;
+}","public void test02222() throws Throwable {
+    Document document0 = Parser.parseBodyFragmentRelaxed(""O5xo)t8;k }'"", """");
+    Element element0 = document0.head();
+    element0.prepend("""");
+}","/**
+ * Add inner HTML into this element. The supplied HTML will be parsed, and each node prepended to the start of the element's children.
+ * @param html HTML to add inside this element, before the existing HTML
+ * @return this element
+ * @see #html(String)
+ */"
+"@Override
+public final Element parent() {
+    return (Element) parentNode;
+}","public void test02323() throws Throwable {
+    Document document0 = Document.createShell(""ScriptDataDoubleEscapedDash"");
+    Element element0 = document0.head();
+    element0.parent();
+}",""
+"@Override
+public final Element parent() {
+    return (Element) parentNode;
+}","public void test02424() throws Throwable {
+    Parser parser0 = Parser.xmlParser();
+    Document document0 = parser0.parseInput(""}"", ""}"");
+    Element element0 = document0.doClone(document0);
+    element0.parent();
+}",""
+"public String ownText() {
+    StringBuilder sb = StringUtil.borrowBuilder();
+    ownText(sb);
+    return StringUtil.releaseBuilder(sb).trim();
+}","public void test02525() throws Throwable {
+    Parser parser0 = Parser.xmlParser();
+    Document document0 = parser0.parseInput(""-zSS]J}30h"", ""    "");
+    document0.ownText();
+}","/**
+ * Gets the text owned by this element only; does not get the combined text of all children.
+ * <p>
+ * For example, given HTML {@code <p>Hello <b>there</b> now!</p>}, {@code p.ownText()} returns {@code ""Hello now!""},
+ * whereas {@code p.text()} returns {@code ""Hello there now!""}.
+ * Note that the text within the {@code b} element is not returned, as it is not a direct child of the {@code p} element.
+ *
+ * @return unencoded text, or empty string if none.
+ * @see #text()
+ * @see #textNodes()
+ */"
+"public Element lastElementSibling() {
+    List<Element> siblings = parent().childElementsList();
+    return siblings.size() > 1 ? siblings.get(siblings.size() - 1) : null;
+}","public void test02626() throws Throwable {
+    Document document0 = Parser.parse(""summary"", """");
+    Element element0 = document0.body();
+    Element element1 = element0.empty();
+    element1.lastElementSibling();
+}","/**
+ * Gets the last element sibling of this element
+ * @return the last sibling that is an element (aka the parent's last element child)
+ */"
+"public boolean isBlock() {
+    return tag.isBlock();
+}","public void test02727() throws Throwable {
+    Document document0 = Document.createShell(""org.jsoup.nodes.Element$1"");
+    Element element0 = document0.body();
+    element0.isBlock();
+}","/**
+ * Test if this element is a block-level element. (E.g. {@code <div> == true} or an inline element
+ * {@code <p> == false}).
+ *
+ * @return true if block, false if not (and thus inline)
+ */"
+"public boolean is(Evaluator evaluator) {
+    return evaluator.matches((Element) this.root(), this);
+}","public void test02828() throws Throwable {
+    Document document0 = Parser.parseBodyFragmentRelaxed(""org.jsoupgnodes._lement"", ""2aU(8*wN9L"");
+    Element element0 = document0.body();
+    Evaluator.IsOnlyOfType evaluator_IsOnlyOfType0 = new Evaluator.IsOnlyOfType();
+    element0.is((Evaluator) evaluator_IsOnlyOfType0);
+}","/**
+ * Check if this element matches the given evaluator.
+ * @param evaluator an element evaluator
+ * @return if this element matches
+ */"
+"public Element html(String html) {
+    empty();
+    append(html);
+    return this;
+}","public void test02929() throws Throwable {
+    Document document0 = Parser.parseBodyFragment("""", """");
+    document0.html("""");
+}","/**
+ * Set this element's inner HTML. Clears the existing HTML first.
+ * @param html HTML to parse and set into this element
+ * @return this element
+ * @see #append(String)
+ */"
+"@Override
+public <T extends Appendable> T html(T appendable) {
+    final int size = childNodes.size();
+    for (int i = 0; i < size; i++) childNodes.get(i).outerHtml(appendable);
+    return appendable;
+}","public void test03030() throws Throwable {
+    Document document0 = new Document(""Dx1HW;:~(ZBeT"");
+    document0.html((PipedWriter) null);
+}",""
+"public String html() {
+    StringBuilder accum = StringUtil.borrowBuilder();
+    html(accum);
+    String html = StringUtil.releaseBuilder(accum);
+    return NodeUtils.outputSettings(this).prettyPrint() ? html.trim() : html;
+}","public void test03131() throws Throwable {
+    Document document0 = Document.createShell(""Split offset must be not be negative"");
+    Element element0 = document0.prependElement(""Split offset must be not be negative"");
+    element0.html();
+}","/**
+ * Retrieves the element's inner HTML. E.g. on a {@code <div>} with one empty {@code <p>}, would return
+ * {@code <p></p>}. (Whereas {@link #outerHtml()} would return {@code <div><p></p></div>}.)
+ *
+ * @return String of HTML.
+ * @see #outerHtml()
+ */"
+"@Override
+protected boolean hasAttributes() {
+    return attributes != null;
+}","public void test03232() throws Throwable {
+    Document document0 = Parser.parseBodyFragment("" "", "" "");
+    document0.hasAttributes();
+}",""
+"public Elements getElementsMatchingText(Pattern pattern) {
+    return Collector.collect(new Evaluator.Matches(pattern), this);
+}","public void test03333() throws Throwable {
+    Element element0 = new Element(""f"");
+    Pattern pattern0 = Pattern.compile(""f"", 2581);
+    element0.getElementsMatchingText(pattern0);
+}","/**
+ * Find elements whose text matches the supplied regular expression.
+ * @param pattern regular expression to match text against
+ * @return elements matching the supplied regular expression.
+ * @see Element#text()
+ */"
+"public Elements getElementsMatchingText(String regex) {
+    Pattern pattern;
+    try {
+        pattern = Pattern.compile(regex);
+    } catch (PatternSyntaxException e) {
+        throw new IllegalArgumentException(""Pattern syntax error: "" + regex, e);
+    }
+    return getElementsMatchingText(pattern);
+}","public void test03434() throws Throwable {
+    Document document0 = Document.createShell(""mS_3:Y2L|C.lPGbKT]"");
+    document0.getElementsMatchingText(""mS_3:Y2L|C.lPGbKT]"");
+}","/**
+ * Find elements whose text matches the supplied regular expression.
+ * @param regex regular expression to match text against. You can use <a href=""http://java.sun.com/docs/books/tutorial/essential/regex/pattern.html#embedded"">embedded flags</a> (such as (?i) and (?m) to control regex options.
+ * @return elements matching the supplied regular expression.
+ * @see Element#text()
+ */"
+"public Elements getElementsMatchingOwnText(Pattern pattern) {
+    return Collector.collect(new Evaluator.MatchesOwn(pattern), this);
+}","public void test03535() throws Throwable {
+    Document document0 = new Document(""W"");
+    Pattern pattern0 = Pattern.compile(""W"");
+    document0.getElementsMatchingOwnText(pattern0);
+}","/**
+ * Find elements whose own text matches the supplied regular expression.
+ * @param pattern regular expression to match text against
+ * @return elements matching the supplied regular expression.
+ * @see Element#ownText()
+ */"
+"public Elements getElementsContainingText(String searchText) {
+    return Collector.collect(new Evaluator.ContainsText(searchText), this);
+}","public void test03636() throws Throwable {
+    Document document0 = Document.createShell(""E[d7^n"");
+    document0.getElementsContainingText(""ZfDTY!n5h{"");
+}","/**
+ * Find elements that contain the specified string. The search is case insensitive. The text may appear directly
+ * in the element, or in any of its descendants.
+ * @param searchText to look for in the element's text
+ * @return elements that contain the string, case insensitive.
+ * @see Element#text()
+ */"
+"public Elements getElementsContainingOwnText(String searchText) {
+    return Collector.collect(new Evaluator.ContainsOwnText(searchText), this);
+}","public void test03737() throws Throwable {
+    Document document0 = Document.createShell(""mS_3:Y2L|C.lPGbKT]"");
+    document0.getElementsContainingOwnText(""$si"");
+}","/**
+ * Find elements that directly contain the specified string. The search is case insensitive. The text must appear directly
+ * in the element, not in any of its descendants.
+ * @param searchText to look for in the element's own text
+ * @return elements that contain the string, case insensitive.
+ * @see Element#ownText()
+ */"
+"public Elements getElementsByIndexLessThan(int index) {
+    return Collector.collect(new Evaluator.IndexLessThan(index), this);
+}","public void test03838() throws Throwable {
+    Document document0 = Parser.parse(""summary"", ""!x@}:d~k7M}nQ'_5E1"");
+    document0.getElementsByIndexLessThan(0);
+}","/**
+ * Find elements whose sibling index is less than the supplied index.
+ * @param index 0-based index
+ * @return elements less than index
+ */"
+"public Elements getElementsByIndexGreaterThan(int index) {
+    return Collector.collect(new Evaluator.IndexGreaterThan(index), this);
+}","public void test03939() throws Throwable {
+    Element element0 = new Element(""qQn<6$94fs6)"");
+    element0.getElementsByIndexGreaterThan(3437);
+}","/**
+ * Find elements whose sibling index is greater than the supplied index.
+ * @param index 0-based index
+ * @return elements greater than index
+ */"
+"public Elements getElementsByIndexEquals(int index) {
+    return Collector.collect(new Evaluator.IndexEquals(index), this);
+}","public void test04040() throws Throwable {
+    Document document0 = Parser.parse(""summary"", ""!x@}:d~k7M}nQ'_5E1"");
+    Element element0 = document0.body();
+    element0.getElementsByIndexEquals(0);
+}","/**
+ * Find elements whose sibling index is equal to the supplied index.
+ * @param index 0-based index
+ * @return elements equal to index
+ */"
+"public Elements getElementsByAttributeValueStarting(String key, String valuePrefix) {
+    return Collector.collect(new Evaluator.AttributeWithValueStarting(key, valuePrefix), this);
+}","public void test04141() throws Throwable {
+    Document document0 = Document.createShell(""E[d7^n"");
+    document0.getElementsByAttributeValueStarting(""|{h5Ptc}db#s98oV"", ""textarea"");
+}","/**
+ * Find elements that have attributes that start with the value prefix. Case insensitive.
+ *
+ * @param key name of the attribute
+ * @param valuePrefix start of attribute value
+ * @return elements that have attributes that start with the value prefix
+ */"
+"public Elements getElementsByAttributeValueEnding(String key, String valueSuffix) {
+    return Collector.collect(new Evaluator.AttributeWithValueEnding(key, valueSuffix), this);
+}","public void test04242() throws Throwable {
+    Document document0 = Parser.parse(""LS~9WRP0h`9{"", ""LS~9WRP0h`9{"");
+    Element element0 = document0.val(""value"");
+    element0.getElementsByAttributeValueEnding(""value"", ""value"");
+}","/**
+ * Find elements that have attributes that end with the value suffix. Case insensitive.
+ *
+ * @param key name of the attribute
+ * @param valueSuffix end of the attribute value
+ * @return elements that have attributes that end with the value suffix
+ */"
+"public Elements getElementsByAttributeValueContaining(String key, String match) {
+    return Collector.collect(new Evaluator.AttributeWithValueContaining(key, match), this);
+}","public void test04343() throws Throwable {
+    Document document0 = Parser.parseBodyFragment("" "", "" "");
+    document0.getElementsByAttributeValueContaining(""wHbu;j5KwVXd}"", "" "");
+}","/**
+ * Find elements that have attributes whose value contains the match string. Case insensitive.
+ *
+ * @param key name of the attribute
+ * @param match substring of value to search for
+ * @return elements that have attributes containing this text
+ */"
+"public Elements getElementsByAttribute(String key) {
+    Validate.notEmpty(key);
+    key = key.trim();
+    return Collector.collect(new Evaluator.Attribute(key), this);
+}","public void test04444() throws Throwable {
+    Document document0 = Parser.parse(""summary"", ""!x@}:d~k7M}nQ'_5E1"");
+    document0.getElementsByAttribute(""br"");
+}","/**
+ * Find elements that have a named attribute set. Case insensitive.
+ *
+ * @param key name of the attribute, e.g. {@code href}
+ * @return elements that have this attribute, empty if none
+ */"
+"public Element empty() {
+    childNodes.clear();
+    return this;
+}","public void test04545() throws Throwable {
+    Document document0 = Document.createShell(""wc4C628iW%TPp"");
+    document0.setSiblingIndex((-1475));
+    document0.empty();
+}","/**
+ * Remove all of the element's child nodes. Any attributes are left as-is.
+ * @return this element
+ */"
+"@Override
+protected Element doClone(Node parent) {
+    Element clone = (Element) super.doClone(parent);
+    clone.attributes = attributes != null ? attributes.clone() : null;
+    clone.baseUri = baseUri;
+    clone.childNodes = new NodeList(clone, childNodes.size());
+    // the children then get iterated and cloned in Node.clone
+    clone.childNodes.addAll(childNodes);
+    return clone;
+}","public void test04646() throws Throwable {
+    Element element0 = new Element(""body"");
+    CDataNode cDataNode0 = new CDataNode(""org.jsoup.nodes.Element"");
+    element0.doClone(cDataNode0);
+}",""
+"@Override
+public Document clone() {
+    Document clone = (Document) super.clone();
+    clone.outputSettings = this.outputSettings.clone();
+    return clone;
+}","public void test04747() throws Throwable {
+    Document document0 = Parser.parseBodyFragment(""inert"", ""_%:b"");
+    document0.clone();
+}",""
+"public Element classNames(Set<String> classNames) {
+    Validate.notNull(classNames);
+    if (classNames.isEmpty()) {
+        attributes().remove(""class"");
+    } else {
+        attributes().put(""class"", StringUtil.join(classNames, "" ""));
+    }
+    return this;
+}","public void test04848() throws Throwable {
+    Parser parser0 = Parser.xmlParser();
+    Document document0 = parser0.parseInput(""ScriptDataEscapedDash"", ""body"");
+    DocumentType documentType0 = new DocumentType(""body"", ""body"", ""html"", """", ""html"");
+    Element element0 = document0.doClone(documentType0);
+    LinkedHashSet<String> linkedHashSet0 = new LinkedHashSet<String>();
+    element0.classNames((Set<String>) linkedHashSet0);
+}","/**
+ *     Set the element's {@code class} attribute to the supplied class names.
+ *     @param classNames set of classes
+ *     @return this element, for chaining
+ */"
+"public Elements children() {
+    return new Elements(childElementsList());
+}","public void test04949() throws Throwable {
+    Parser parser0 = Parser.xmlParser();
+    Document document0 = parser0.parseInput(""mE"", ""mE"");
+    document0.children();
+}","/**
+ * Get this element's child elements.
+ * <p>
+ * This is effectively a filter on {@link #childNodes()} to get Element nodes.
+ * </p>
+ * @return child elements. If this element has no children, returns an empty list.
+ * @see #childNodes()
+ */"
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test05050() throws Throwable {
+    Element element0 = new Element(""-=9DB"");
+    element0.childNodeSize();
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test05151() throws Throwable {
+    Tag tag0 = Tag.valueOf(""bJ&g%s:dSe"");
+    Attributes attributes0 = new Attributes();
+    Element element0 = new Element(tag0, ""X@GA&__\""zL`<\""UIlq,*"", attributes0);
+    element0.baseUri();
+}",""
+"@Override
+public Attributes attributes() {
+    if (!hasAttributes())
+        attributes = new Attributes();
+    return attributes;
+}","public void test05252() throws Throwable {
+    ParseSettings parseSettings0 = ParseSettings.htmlDefault;
+    Tag tag0 = Tag.valueOf(""GyhKo9Ly{f3"", parseSettings0);
+    Attributes attributes0 = new Attributes();
+    Attributes attributes1 = attributes0.put(""GyhKo9Ly{f3"", ""GyhKo9Ly{f3"");
+    PseudoTextElement pseudoTextElement0 = new PseudoTextElement(tag0, ""GyhKo9Ly{f3"", attributes1);
+    pseudoTextElement0.attributes();
+}",""
+"public Element attr(String attributeKey, boolean attributeValue) {
+    attributes().put(attributeKey, attributeValue);
+    return this;
+}","public void test05353() throws Throwable {
+    Document document0 = Document.createShell(""c"");
+    Document document1 = document0.normalise();
+    document1.parentNode = (Node) document0;
+    document1.attr(""c"", true);
+}","/**
+ * Set a boolean attribute value on this element. Setting to <code>true</code> sets the attribute value to """" and
+ * marks the attribute as boolean so no value is written out. Setting to <code>false</code> removes the attribute
+ * with the same key if it exists.
+ *
+ * @param attributeKey the attribute key
+ * @param attributeValue the attribute value
+ *
+ * @return this element
+ */"
+"public Element attr(String attributeKey, boolean attributeValue) {
+    attributes().put(attributeKey, attributeValue);
+    return this;
+}","public void test05454() throws Throwable {
+    Document document0 = Parser.parseBodyFragment(""org.jsoup.nodes.Element"", ""org.jsoup.nodes.Element"");
+    document0.attr("" />"", true);
+}","/**
+ * Set a boolean attribute value on this element. Setting to <code>true</code> sets the attribute value to """" and
+ * marks the attribute as boolean so no value is written out. Setting to <code>false</code> removes the attribute
+ * with the same key if it exists.
+ *
+ * @param attributeKey the attribute key
+ * @param attributeValue the attribute value
+ *
+ * @return this element
+ */"
+"public Element attr(String attributeKey, String attributeValue) {
+    super.attr(attributeKey, attributeValue);
+    return this;
+}","public void test05555() throws Throwable {
+    Document document0 = Document.createShell("""");
+    Element element0 = document0.head();
+    element0.attr(""[^%s]"", ""rCQ"");
+}","/**
+ * Set an attribute value on this element. If this element already has an attribute with the
+ * key, its value is updated; otherwise, a new attribute is added.
+ *
+ * @return this element
+ */"
+"public Element appendTo(Element parent) {
+    Validate.notNull(parent);
+    parent.appendChild(this);
+    return this;
+}","public void test05656() throws Throwable {
+    Document document0 = Parser.parseBodyFragment(""inert"", ""_%:b"");
+    Tag tag0 = Tag.valueOf(""_%:b"");
+    Element element0 = new Element(tag0, ""_%:b"", (Attributes) null);
+    document0.appendTo(element0);
+}","/**
+ * Add this element to the supplied parent element, as its next child.
+ *
+ * @param parent element to which this element will be appended
+ * @return this element, so that you can continue modifying the element
+ */"
+"public Element appendTo(Element parent) {
+    Validate.notNull(parent);
+    parent.appendChild(this);
+    return this;
+}","public void test05757() throws Throwable {
+    Document document0 = Document.createShell(""ScriptDataDoubleEscapedDash"");
+    Element element0 = document0.head();
+    element0.appendTo(document0);
+}","/**
+ * Add this element to the supplied parent element, as its next child.
+ *
+ * @param parent element to which this element will be appended
+ * @return this element, so that you can continue modifying the element
+ */"
+"public Element appendChild(Node child) {
+    Validate.notNull(child);
+    // was - Node#addChildren(child). short-circuits an array create and a loop.
+    reparentChild(child);
+    ensureChildNodes();
+    childNodes.add(child);
+    child.setSiblingIndex(childNodes.size() - 1);
+    return this;
+}","public void test05858() throws Throwable {
+    Document document0 = Document.createShell(""YZtm_``3&_"");
+    Element element0 = document0.body();
+    element0.appendChild(document0);
+}","/**
+ * Add a node child node to this element.
+ *
+ * @param child node to add.
+ * @return this element, so that you can add more child nodes or elements.
+ */"
+"public Element appendChild(Node child) {
+    Validate.notNull(child);
+    // was - Node#addChildren(child). short-circuits an array create and a loop.
+    reparentChild(child);
+    ensureChildNodes();
+    childNodes.add(child);
+    child.setSiblingIndex(childNodes.size() - 1);
+    return this;
+}","public void test05959() throws Throwable {
+    Document document0 = Document.createShell(""YZtm_``3&_"");
+    Element element0 = document0.shallowClone();
+    element0.appendChild(document0);
+}","/**
+ * Add a node child node to this element.
+ *
+ * @param child node to add.
+ * @return this element, so that you can add more child nodes or elements.
+ */"
+"public Element append(String html) {
+    Validate.notNull(html);
+    List<Node> nodes = NodeUtils.parser(this).parseFragmentInput(html, this, baseUri());
+    addChildren(nodes.toArray(new Node[nodes.size()]));
+    return this;
+}","public void test06060() throws Throwable {
+    Document document0 = Document.createShell(""wc4C628iW%TPp"");
+    document0.setSiblingIndex((-1475));
+    document0.append("" "");
+}","/**
+ * Add inner HTML to this element. The supplied HTML will be parsed, and each node appended to the end of the children.
+ * @param html HTML to add inside this element, after the existing HTML
+ * @return this element
+ * @see #html(String)
+ */"
+"public Element append(String html) {
+    Validate.notNull(html);
+    List<Node> nodes = NodeUtils.parser(this).parseFragmentInput(html, this, baseUri());
+    addChildren(nodes.toArray(new Node[nodes.size()]));
+    return this;
+}","public void test06161() throws Throwable {
+    Element element0 = new Element(""~2a)IqaIp"");
+    element0.append("""");
+}","/**
+ * Add inner HTML to this element. The supplied HTML will be parsed, and each node appended to the end of the children.
+ * @param html HTML to add inside this element, after the existing HTML
+ * @return this element
+ * @see #html(String)
+ */"
+"public Element addClass(String className) {
+    Validate.notNull(className);
+    Set<String> classes = classNames();
+    classes.add(className);
+    classNames(classes);
+    return this;
+}","public void test06262() throws Throwable {
+    Document document0 = Document.createShell(""c"");
+    Document document1 = document0.normalise();
+    document1.parentNode = (Node) document0;
+    document1.addClass(""c"");
+}","/**
+ *     Add a class name to this element's {@code class} attribute.
+ *     @param className class name to add
+ *     @return this element
+ */"
+"@Override
+public Element wrap(String html) {
+    return (Element) super.wrap(html);
+}","public void test06363() throws Throwable {
+    Document document0 = Parser.parseBodyFragmentRelaxed(""samp"", ""samp"");
+    document0.parentNode = (Node) document0;
+    // Undeclared exception!
+    document0.wrap(""samp"");
+}","/**
+ * Wrap the supplied HTML around this element.
+ *
+ * @param html HTML to wrap around this element, e.g. {@code <div class=""head""></div>}. Can be arbitrarily deep.
+ * @return this element, for chaining.
+ */"
+"public Element val(String value) {
+    if (tagName().equals(""textarea""))
+        text(value);
+    else
+        attr(""value"", value);
+    return this;
+}","public void test06464() throws Throwable {
+    Document document0 = new Document(""Wu:"");
+    Element element0 = document0.prependChild(document0);
+    // Undeclared exception!
+    element0.val(""Xqwb+"");
+}","/**
+ * Set the value of a form element (input, textarea, etc).
+ * @param value value to set
+ * @return this element (for chaining)
+ */"
+"public Element toggleClass(String className) {
+    Validate.notNull(className);
+    Set<String> classes = classNames();
+    if (classes.contains(className))
+        classes.remove(className);
+    else
+        classes.add(className);
+    classNames(classes);
+    return this;
+}","public void test06565() throws Throwable {
+    Document document0 = Document.createShell(""Split offset must be not be negative"");
+    // Undeclared exception!
+    try {
+        document0.toggleClass((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ *     Toggle a class name on this element's {@code class} attribute: if present, remove it; otherwise add it.
+ *     @param className class name to toggle
+ *     @return this element
+ */"
+"@Override
+public Element text(String text) {
+    // overridden to not nuke doc structure
+    body().text(text);
+    return this;
+}","public void test06666() throws Throwable {
+    Document document0 = new Document(""Dx1HW;:~(ZBeT"");
+    // Undeclared exception!
+    try {
+        document0.text(""J^bT=H0;uiY"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Document"", e);
+    }
+}","/**
+ *     Set the text of the {@code body} of this document. Any existing nodes within the body will be cleared.
+ *     @param text unencoded text
+ *     @return this document
+ */"
+"/**
+ * Change the tag of this element. For example, convert a {@code <span>} to a {@code <div>} with
+ * {@code el.tagName(""div"");}.
+ *
+ * @param tagName new tag name for this element
+ * @return this element, for chaining
+ */
+public Element tagName(String tagName) {
+    Validate.notEmpty(tagName, ""Tag name must not be empty."");
+    // maintains the case option of the original parse
+    tag = Tag.valueOf(tagName, NodeUtils.parser(this).settings());
+    return this;
+}","public void test06767() throws Throwable {
+    Tag tag0 = Tag.valueOf(""{>p\""4k43#oE/"");
+    Attributes attributes0 = new Attributes();
+    PseudoTextElement pseudoTextElement0 = new PseudoTextElement(tag0, ""#root"", attributes0);
+    Element element0 = pseudoTextElement0.prependElement(""#root"");
+    element0.after((Node) pseudoTextElement0);
+    // Undeclared exception!
+    pseudoTextElement0.tagName(""{>p\""4k43#oE/"");
+}","/**
+ * Get the normalized name of this Element's tag. This will always be the lowercased version of the tag, regardless
+ * of the tag case preserving setting of the parser.
+ * @return
+ */"
+"/**
+ * Change the tag of this element. For example, convert a {@code <span>} to a {@code <div>} with
+ * {@code el.tagName(""div"");}.
+ *
+ * @param tagName new tag name for this element
+ * @return this element, for chaining
+ */
+public Element tagName(String tagName) {
+    Validate.notEmpty(tagName, ""Tag name must not be empty."");
+    // maintains the case option of the original parse
+    tag = Tag.valueOf(tagName, NodeUtils.parser(this).settings());
+    return this;
+}","public void test06868() throws Throwable {
+    Document document0 = Parser.parse("""", """");
+    // Undeclared exception!
+    try {
+        document0.tagName("""");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Tag name must not be empty.
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Get the normalized name of this Element's tag. This will always be the lowercased version of the tag, regardless
+ * of the tag case preserving setting of the parser.
+ * @return
+ */"
+"public Element selectFirst(String cssQuery) {
+    return Selector.selectFirst(cssQuery, this);
+}","public void test06969() throws Throwable {
+    Document document0 = Document.createShell(""E[d7^n"");
+    // Undeclared exception!
+    try {
+        document0.selectFirst(""<Yw])&|XWe?!'w"");
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Could not parse query '<Yw])&|XWe?!'w': unexpected token at '<Yw])&|XWe?!'w'
+        //
+        verifyException(""org.jsoup.select.QueryParser"", e);
+    }
+}","/**
+ * Find the first Element that matches the {@link Selector} CSS query, with this element as the starting context.
+ * <p>This is effectively the same as calling {@code element.select(query).first()}, but is more efficient as query
+ * execution stops on the first hit.</p>
+ * @param cssQuery cssQuery a {@link Selector} CSS-like query
+ * @return the first matching element, or <b>{@code null}</b> if there is no match.
+ */"
+"public Element selectFirst(String cssQuery) {
+    return Selector.selectFirst(cssQuery, this);
+}","public void test07070() throws Throwable {
+    Parser parser0 = Parser.xmlParser();
+    StringReader stringReader0 = new StringReader("""");
+    Document document0 = parser0.parseInput((Reader) stringReader0, """");
+    // Undeclared exception!
+    try {
+        document0.selectFirst((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Find the first Element that matches the {@link Selector} CSS query, with this element as the starting context.
+ * <p>This is effectively the same as calling {@code element.select(query).first()}, but is more efficient as query
+ * execution stops on the first hit.</p>
+ * @param cssQuery cssQuery a {@link Selector} CSS-like query
+ * @return the first matching element, or <b>{@code null}</b> if there is no match.
+ */"
+"public Elements select(String cssQuery) {
+    return Selector.select(cssQuery, this);
+}","public void test07171() throws Throwable {
+    Tag tag0 = Tag.valueOf(""bJ&g%s:dSe"");
+    Attributes attributes0 = new Attributes();
+    Element element0 = new Element(tag0, ""X@GA&__\""zL`<\""UIlq,*"", attributes0);
+    // Undeclared exception!
+    try {
+        element0.select(""X@GA&__\""zL`<\""UIlq,*"");
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Could not parse query 'X@GA&__\""zL`<\""UIlq,*': unexpected token at '@GA&__\""zL`<\""UIlq,*'
+        //
+        verifyException(""org.jsoup.select.QueryParser"", e);
+    }
+}","/**
+ * Find elements that match the {@link Selector} CSS query, with this element as the starting context. Matched elements
+ * may include this element, or any of its children.
+ * <p>
+ * This method is generally more powerful to use than the DOM-type {@code getElementBy*} methods, because
+ * multiple filters can be combined, e.g.:
+ * </p>
+ * <ul>
+ * <li>{@code el.select(""a[href]"")} - finds links ({@code a} tags with {@code href} attributes)
+ * <li>{@code el.select(""a[href*=example.com]"")} - finds links pointing to example.com (loosely)
+ * </ul>
+ * <p>
+ * See the query syntax documentation in {@link org.jsoup.select.Selector}.
+ * </p>
+ *
+ * @param cssQuery a {@link Selector} CSS-like query
+ * @return elements that match the query (empty if none match)
+ * @see org.jsoup.select.Selector
+ * @throws Selector.SelectorParseException (unchecked) on an invalid CSS query.
+ */"
+"public Elements select(String cssQuery) {
+    return Selector.select(cssQuery, this);
+}","public void test07272() throws Throwable {
+    Document document0 = Parser.parseBodyFragmentRelaxed("""", ""~n"");
+    // Undeclared exception!
+    try {
+        document0.select("""");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Find elements that match the {@link Selector} CSS query, with this element as the starting context. Matched elements
+ * may include this element, or any of its children.
+ * <p>
+ * This method is generally more powerful to use than the DOM-type {@code getElementBy*} methods, because
+ * multiple filters can be combined, e.g.:
+ * </p>
+ * <ul>
+ * <li>{@code el.select(""a[href]"")} - finds links ({@code a} tags with {@code href} attributes)
+ * <li>{@code el.select(""a[href*=example.com]"")} - finds links pointing to example.com (loosely)
+ * </ul>
+ * <p>
+ * See the query syntax documentation in {@link org.jsoup.select.Selector}.
+ * </p>
+ *
+ * @param cssQuery a {@link Selector} CSS-like query
+ * @return elements that match the query (empty if none match)
+ * @see org.jsoup.select.Selector
+ * @throws Selector.SelectorParseException (unchecked) on an invalid CSS query.
+ */"
+"public Element removeClass(String className) {
+    Validate.notNull(className);
+    Set<String> classes = classNames();
+    classes.remove(className);
+    classNames(classes);
+    return this;
+}","public void test07373() throws Throwable {
+    Document document0 = Parser.parse(""summary"", """");
+    // Undeclared exception!
+    try {
+        document0.removeClass((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ *     Remove a class name from this element's {@code class} attribute.
+ *     @param className class name to remove
+ *     @return this element
+ */"
+"public Element prependElement(String tagName) {
+    Element child = new Element(Tag.valueOf(tagName, NodeUtils.parser(this).settings()), baseUri());
+    prependChild(child);
+    return child;
+}","public void test07474() throws Throwable {
+    Document document0 = new Document("""");
+    // Undeclared exception!
+    try {
+        document0.prependElement("""");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Create a new element by tag name, and add it as the first child.
+ *
+ * @param tagName the name of the tag (e.g. {@code div}).
+ * @return the new element, to allow you to add content to it, e.g.:
+ *  {@code parent.prependElement(""h1"").attr(""id"", ""header"").text(""Welcome"");}
+ */"
+"public Element prependChild(Node child) {
+    Validate.notNull(child);
+    addChildren(0, child);
+    return this;
+}","public void test07575() throws Throwable {
+    Document document0 = Parser.parseBodyFragment(""JG#sgA$$!"", """");
+    document0.setParentNode(document0);
+    document0.empty();
+    // Undeclared exception!
+    try {
+        document0.prependChild(document0);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 0, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}","/**
+ * Add a node to the start of this element's children.
+ *
+ * @param child node to add.
+ * @return this element, so that you can add more child nodes or elements.
+ */"
+"void outerHtmlTail(Appendable accum, int depth, Document.OutputSettings out) throws IOException {
+    if (!(childNodes.isEmpty() && tag.isSelfClosing())) {
+        if (out.prettyPrint() && (!childNodes.isEmpty() && (tag.formatAsBlock() || (out.outline() && (childNodes.size() > 1 || (childNodes.size() == 1 && !(childNodes.get(0) instanceof TextNode)))))))
+            indent(accum, depth, out);
+        accum.append(""</"").append(tagName()).append('>');
+    }
+}","public void test07676() throws Throwable {
+    Document document0 = Parser.parseBodyFragment(""org.jsoup.nodes.Element"", ""org.jsoup.nodes.Element"");
+    CharBuffer charBuffer0 = CharBuffer.wrap((CharSequence) "" />"");
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    // Undeclared exception!
+    try {
+        document0.outerHtmlTail(charBuffer0, 0, document_OutputSettings0);
+        fail(""Expecting exception: ReadOnlyBufferException"");
+    } catch (ReadOnlyBufferException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.nio.StringCharBuffer"", e);
+    }
+}",""
+"void outerHtmlTail(Appendable accum, int depth, Document.OutputSettings out) throws IOException {
+    if (!(childNodes.isEmpty() && tag.isSelfClosing())) {
+        if (out.prettyPrint() && (!childNodes.isEmpty() && (tag.formatAsBlock() || (out.outline() && (childNodes.size() > 1 || (childNodes.size() == 1 && !(childNodes.get(0) instanceof TextNode)))))))
+            indent(accum, depth, out);
+        accum.append(""</"").append(tagName()).append('>');
+    }
+}","public void test07777() throws Throwable {
+    Element element0 = new Element(""LT"");
+    char[] charArray0 = new char[2];
+    CharBuffer charBuffer0 = CharBuffer.wrap(charArray0);
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    // Undeclared exception!
+    try {
+        element0.outerHtmlTail(charBuffer0, 0, document_OutputSettings0);
+        fail(""Expecting exception: BufferOverflowException"");
+    } catch (BufferOverflowException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.nio.CharBuffer"", e);
+    }
+}",""
+"void outerHtmlTail(Appendable accum, int depth, Document.OutputSettings out) throws IOException {
+    if (!(childNodes.isEmpty() && tag.isSelfClosing())) {
+        if (out.prettyPrint() && (!childNodes.isEmpty() && (tag.formatAsBlock() || (out.outline() && (childNodes.size() > 1 || (childNodes.size() == 1 && !(childNodes.get(0) instanceof TextNode)))))))
+            indent(accum, depth, out);
+        accum.append(""</"").append(tagName()).append('>');
+    }
+}","public void test07878() throws Throwable {
+    Document document0 = Document.createShell(""org.jsoup.nodes.Element$1"");
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    // Undeclared exception!
+    try {
+        document0.outerHtmlTail((Appendable) null, (-1432352094), document_OutputSettings0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"void outerHtmlTail(Appendable accum, int depth, Document.OutputSettings out) throws IOException {
+    if (!(childNodes.isEmpty() && tag.isSelfClosing())) {
+        if (out.prettyPrint() && (!childNodes.isEmpty() && (tag.formatAsBlock() || (out.outline() && (childNodes.size() > 1 || (childNodes.size() == 1 && !(childNodes.get(0) instanceof TextNode)))))))
+            indent(accum, depth, out);
+        accum.append(""</"").append(tagName()).append('>');
+    }
+}","public void test07979() throws Throwable {
+    Document document0 = Document.createShell(""8_ETU<]{!@.9<"");
+    StringBuffer stringBuffer0 = new StringBuffer((CharSequence) ""8_ETU<]{!@.9<"");
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    // Undeclared exception!
+    try {
+        document0.outerHtmlTail(stringBuffer0, (-1107), document_OutputSettings0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // width must be > 0
+        //
+        verifyException(""org.jsoup.internal.StringUtil"", e);
+    }
+}",""
+"public Element lastElementSibling() {
+    List<Element> siblings = parent().childElementsList();
+    return siblings.size() > 1 ? siblings.get(siblings.size() - 1) : null;
+}","public void test08080() throws Throwable {
+    Document document0 = Document.createShell(""org.jsoup.nodes.Element$1"");
+    // Undeclared exception!
+    try {
+        document0.lastElementSibling();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Element"", e);
+    }
+}","/**
+ * Gets the last element sibling of this element
+ * @return the last sibling that is an element (aka the parent's last element child)
+ */"
+"public boolean is(Evaluator evaluator) {
+    return evaluator.matches((Element) this.root(), this);
+}","public void test08181() throws Throwable {
+    Document document0 = new Document("""");
+    // Undeclared exception!
+    try {
+        document0.is((Evaluator) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Element"", e);
+    }
+}","/**
+ * Check if this element matches the given evaluator.
+ * @param evaluator an element evaluator
+ * @return if this element matches
+ */"
+"public boolean is(String cssQuery) {
+    return is(QueryParser.parse(cssQuery));
+}","public void test08282() throws Throwable {
+    Document document0 = Document.createShell(""2J"");
+    // Undeclared exception!
+    try {
+        document0.is(""tL%oKup3Pz=w@I]*O"");
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // Could not parse query 'tL%oKup3Pz=w@I]*O': unexpected token at '%oKup3Pz=w@I]*O'
+        //
+        verifyException(""org.jsoup.select.QueryParser"", e);
+    }
+}","/**
+ * Check if this element matches the given {@link Selector} CSS query.
+ * @param cssQuery a {@link Selector} CSS query
+ * @return if this element matches the query
+ */"
+"public Element insertChildren(int index, Node... children) {
+    Validate.notNull(children, ""Children collection to be inserted must not be null."");
+    int currentSize = childNodeSize();
+    // roll around
+    if (index < 0)
+        index += currentSize + 1;
+    Validate.isTrue(index >= 0 && index <= currentSize, ""Insert position out of bounds."");
+    addChildren(index, children);
+    return this;
+}","public void test08383() throws Throwable {
+    Document document0 = Parser.parse(""summary"", ""!x@}:d~k7M}nQ'_5E1"");
+    Node[] nodeArray0 = new Node[3];
+    nodeArray0[0] = (Node) document0;
+    nodeArray0[1] = (Node) document0;
+    nodeArray0[2] = (Node) document0;
+    // Undeclared exception!
+    try {
+        document0.insertChildren(0, nodeArray0);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 0, Size: 0
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}","/**
+ * Inserts the given child nodes into this element at the specified index. Current nodes will be shifted to the
+ * right. The inserted nodes will be moved from their current parent. To prevent moving, copy the nodes first.
+ *
+ * @param index 0-based index to insert children at. Specify {@code 0} to insert at the start, {@code -1} at the
+ * end
+ * @param children child nodes to insert
+ * @return this element, for chaining.
+ */"
+"public Element html(String html) {
+    empty();
+    append(html);
+    return this;
+}","public void test08484() throws Throwable {
+    Document document0 = new Document(""org.jsoup.nodes.DataNode"");
+    Element element0 = document0.appendElement(""c:$]:,sV"");
+    element0.before((Node) document0);
+    // Undeclared exception!
+    document0.html(""KKQ~>s~mAUwWzEH"");
+}","/**
+ * Set this element's inner HTML. Clears the existing HTML first.
+ * @param html HTML to parse and set into this element
+ * @return this element
+ * @see #append(String)
+ */"
+"public Element html(String html) {
+    empty();
+    append(html);
+    return this;
+}","public void test08585() throws Throwable {
+    Document document0 = new Document(""eD'*bNhe8Fl*m}32"");
+    // Undeclared exception!
+    try {
+        document0.html((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Set this element's inner HTML. Clears the existing HTML first.
+ * @param html HTML to parse and set into this element
+ * @return this element
+ * @see #append(String)
+ */"
+"@Override
+public <T extends Appendable> T html(T appendable) {
+    final int size = childNodes.size();
+    for (int i = 0; i < size; i++) childNodes.get(i).outerHtml(appendable);
+    return appendable;
+}","public void test08686() throws Throwable {
+    Document document0 = new Document(""=Bo9qZ`J}ywF"");
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    Document document1 = document0.outputSettings(document_OutputSettings0);
+    document_OutputSettings0.charset((Charset) null);
+    document1.appendElement(""AfterDoctypeName"");
+    StringWriter stringWriter0 = new StringWriter(54);
+    // Undeclared exception!
+    try {
+        document1.html(stringWriter0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",""
+"public boolean hasText() {
+    for (Node child : childNodes) {
+        if (child instanceof TextNode) {
+            TextNode textNode = (TextNode) child;
+            if (!textNode.isBlank())
+                return true;
+        } else if (child instanceof Element) {
+            Element el = (Element) child;
+            if (el.hasText())
+                return true;
+        }
+    }
+    return false;
+}","public void test08787() throws Throwable {
+    Document document0 = Document.createShell(""org.jsoup.nodes.Element$1"");
+    document0.childNodes = null;
+    // Undeclared exception!
+    try {
+        document0.hasText();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Element"", e);
+    }
+}","/**
+ *     Test if this element has any text content (that is not just whitespace).
+ *     @return true if element has non-blank text content.
+ */"
+"public Elements getElementsMatchingText(Pattern pattern) {
+    return Collector.collect(new Evaluator.Matches(pattern), this);
+}","public void test08888() throws Throwable {
+    Document document0 = Document.createShell(""Unexpected count of entities loaded"");
+    // Undeclared exception!
+    try {
+        document0.getElementsMatchingText((Pattern) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.select.Evaluator$Matches"", e);
+    }
+}","/**
+ * Find elements whose text matches the supplied regular expression.
+ * @param pattern regular expression to match text against
+ * @return elements matching the supplied regular expression.
+ * @see Element#text()
+ */"
+"public Elements getElementsMatchingText(String regex) {
+    Pattern pattern;
+    try {
+        pattern = Pattern.compile(regex);
+    } catch (PatternSyntaxException e) {
+        throw new IllegalArgumentException(""Pattern syntax error: "" + regex, e);
+    }
+    return getElementsMatchingText(pattern);
+}","public void test08989() throws Throwable {
+    Parser parser0 = Parser.xmlParser();
+    Document document0 = parser0.parseInput(""mE"", ""mE"");
+    // Undeclared exception!
+    try {
+        document0.getElementsMatchingText(""IT]bUjnNE,o[*.xh3y"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Pattern syntax error: IT]bUjnNE,o[*.xh3y
+        //
+        verifyException(""org.jsoup.nodes.Element"", e);
+    }
+}","/**
+ * Find elements whose text matches the supplied regular expression.
+ * @param regex regular expression to match text against. You can use <a href=""http://java.sun.com/docs/books/tutorial/essential/regex/pattern.html#embedded"">embedded flags</a> (such as (?i) and (?m) to control regex options.
+ * @return elements matching the supplied regular expression.
+ * @see Element#text()
+ */"
+"public Elements getElementsMatchingOwnText(Pattern pattern) {
+    return Collector.collect(new Evaluator.MatchesOwn(pattern), this);
+}","public void test09090() throws Throwable {
+    Document document0 = Parser.parse("".oqJf(4SF(-"", "".oqJf(4SF(-"");
+    // Undeclared exception!
+    try {
+        document0.getElementsMatchingOwnText((Pattern) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.select.Evaluator$MatchesOwn"", e);
+    }
+}","/**
+ * Find elements whose own text matches the supplied regular expression.
+ * @param pattern regular expression to match text against
+ * @return elements matching the supplied regular expression.
+ * @see Element#ownText()
+ */"
+"public Elements getElementsMatchingOwnText(String regex) {
+    Pattern pattern;
+    try {
+        pattern = Pattern.compile(regex);
+    } catch (PatternSyntaxException e) {
+        throw new IllegalArgumentException(""Pattern syntax error: "" + regex, e);
+    }
+    return getElementsMatchingOwnText(pattern);
+}","public void test09191() throws Throwable {
+    Document document0 = Document.createShell(""org.jsoup.nodes.Element$1"");
+    // Undeclared exception!
+    try {
+        document0.getElementsMatchingOwnText("")p(lx%q%6"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Pattern syntax error: )p(lx%q%6
+        //
+        verifyException(""org.jsoup.nodes.Element"", e);
+    }
+}","/**
+ * Find elements whose text matches the supplied regular expression.
+ * @param regex regular expression to match text against. You can use <a href=""http://java.sun.com/docs/books/tutorial/essential/regex/pattern.html#embedded"">embedded flags</a> (such as (?i) and (?m) to control regex options.
+ * @return elements matching the supplied regular expression.
+ * @see Element#ownText()
+ */"
+"// DOM type methods
+/**
+ * Finds elements, including and recursively under this element, with the specified tag name.
+ * @param tagName The tag name to search for (case insensitively).
+ * @return a matching unmodifiable list of elements. Will be empty if this element and none of its children match.
+ */
+public Elements getElementsByTag(String tagName) {
+    Validate.notEmpty(tagName);
+    tagName = normalize(tagName);
+    return Collector.collect(new Evaluator.Tag(tagName), this);
+}","public void test09292() throws Throwable {
+    Tag tag0 = Tag.valueOf(""Ay@Z^kD:[0gtH"");
+    Attributes attributes0 = new Attributes();
+    Element element0 = new Element(tag0, ""Ay@Z^kD:[0gtH"", attributes0);
+    // Undeclared exception!
+    try {
+        element0.getElementsByTag("""");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}",""
+"public Elements getElementsByIndexEquals(int index) {
+    return Collector.collect(new Evaluator.IndexEquals(index), this);
+}","public void test09393() throws Throwable {
+    Parser parser0 = Parser.xmlParser();
+    Document document0 = parser0.parseInput(""ScriptDataEscapedDash"", ""body"");
+    DocumentType documentType0 = new DocumentType(""body"", ""body"", ""html"", """", ""html"");
+    Element element0 = document0.doClone(documentType0);
+    // Undeclared exception!
+    try {
+        element0.getElementsByIndexEquals(4);
+        fail(""Expecting exception: ClassCastException"");
+    } catch (ClassCastException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * Find elements whose sibling index is equal to the supplied index.
+ * @param index 0-based index
+ * @return elements equal to index
+ */"
+"public Elements getElementsByClass(String className) {
+    Validate.notEmpty(className);
+    return Collector.collect(new Evaluator.Class(className), this);
+}","public void test09494() throws Throwable {
+    Parser parser0 = Parser.htmlParser();
+    StringReader stringReader0 = new StringReader(""X#\""D6r5qdy<$'b"");
+    Document document0 = parser0.parseInput((Reader) stringReader0, ""_J>8xxG"");
+    // Undeclared exception!
+    try {
+        document0.getElementsByClass("""");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Find elements that have this class, including or under this element. Case insensitive.
+ * <p>
+ * Elements can have multiple classes (e.g. {@code <div class=""header round first"">}. This method
+ * checks each class, so you can find the above with {@code el.getElementsByClass(""header"");}.
+ *
+ * @param className the name of the class to search for.
+ * @return elements with the supplied class name, empty if none
+ * @see #hasClass(String)
+ * @see #classNames()
+ */"
+"public Elements getElementsByAttributeValueNot(String key, String value) {
+    return Collector.collect(new Evaluator.AttributeWithValueNot(key, value), this);
+}","public void test09595() throws Throwable {
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    Tag tag0 = Tag.valueOf(""C-^Yd0t&y ~o(}I;[u"", parseSettings0);
+    CDataNode cDataNode0 = new CDataNode("""");
+    Attributes attributes0 = cDataNode0.attributes();
+    PseudoTextElement pseudoTextElement0 = new PseudoTextElement(tag0, ""C-^Yd0t&y ~o(}I;[u"", attributes0);
+    // Undeclared exception!
+    try {
+        pseudoTextElement0.getElementsByAttributeValueNot((String) null, ""bgsound"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Find elements that either do not have this attribute, or have it with a different value. Case insensitive.
+ *
+ * @param key name of the attribute
+ * @param value value of the attribute
+ * @return elements that do not have a matching attribute
+ */"
+"public Elements getElementsByAttributeValue(String key, String value) {
+    return Collector.collect(new Evaluator.AttributeWithValue(key, value), this);
+}","public void test09696() throws Throwable {
+    Document document0 = Parser.parse(""textarea"", ""textarea"");
+    // Undeclared exception!
+    try {
+        document0.getElementsByAttributeValue("""", ""<yhYGe.:UVj"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Find elements that have an attribute with the specific value. Case insensitive.
+ *
+ * @param key name of the attribute
+ * @param value value of the attribute
+ * @return elements that have this attribute with this value, empty if none
+ */"
+"public Element getElementById(String id) {
+    Validate.notEmpty(id);
+    Elements elements = Collector.collect(new Evaluator.Id(id), this);
+    if (elements.size() > 0)
+        return elements.get(0);
+    else
+        return null;
+}","public void test09797() throws Throwable {
+    Tag tag0 = Tag.valueOf("":matches(%s)"");
+    Element element0 = new Element(tag0, """");
+    // Undeclared exception!
+    try {
+        element0.getElementById("""");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Find an element by ID, including or under this element.
+ * <p>
+ * Note that this finds the first matching ID, starting with this element. If you search down from a different
+ * starting point, it is possible to find a different element by ID. For unique element by ID within a Document,
+ * use {@link Document#getElementById(String)}
+ * @param id The ID to search for.
+ * @return The first matching element by ID, starting with this element, or null if none found.
+ */"
+"public Element firstElementSibling() {
+    // todo: should firstSibling() exclude this?
+    List<Element> siblings = parent().childElementsList();
+    return siblings.size() > 1 ? siblings.get(0) : null;
+}","public void test09898() throws Throwable {
+    Parser parser0 = Parser.xmlParser();
+    Document document0 = parser0.parseInput(""{ZI3k9(tZo"", ""{ZI3k9(tZo"");
+    // Undeclared exception!
+    try {
+        document0.firstElementSibling();
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Element"", e);
+    }
+}","/**
+ * Gets the first element sibling of this element.
+ * @return the first sibling that is an element (aka the parent's first element child)
+ */"
+"public Element classNames(Set<String> classNames) {
+    Validate.notNull(classNames);
+    if (classNames.isEmpty()) {
+        attributes().remove(""class"");
+    } else {
+        attributes().put(""class"", StringUtil.join(classNames, "" ""));
+    }
+    return this;
+}","public void test09999() throws Throwable {
+    Document document0 = new Document("""");
+    // Undeclared exception!
+    try {
+        document0.classNames((Set<String>) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ *     Set the element's {@code class} attribute to the supplied class names.
+ *     @param classNames set of classes
+ *     @return this element, for chaining
+ */"
+"public Element attr(String attributeKey, String attributeValue) {
+    super.attr(attributeKey, attributeValue);
+    return this;
+}","public void test100100() throws Throwable {
+    Document document0 = Parser.parseBodyFragmentRelaxed(""samp"", ""samp"");
+    document0.parentNode = (Node) document0;
+    // Undeclared exception!
+    document0.attr("""", ""samp"");
+}","/**
+ * Set an attribute value on this element. If this element already has an attribute with the
+ * key, its value is updated; otherwise, a new attribute is added.
+ *
+ * @return this element
+ */"
+"public Element attr(String attributeKey, String attributeValue) {
+    super.attr(attributeKey, attributeValue);
+    return this;
+}","public void test101101() throws Throwable {
+    Document document0 = new Document(""`?)vQk9T<h9"");
+    // Undeclared exception!
+    try {
+        document0.attr((String) null, ""#doctype"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.parser.ParseSettings"", e);
+    }
+}","/**
+ * Set an attribute value on this element. If this element already has an attribute with the
+ * key, its value is updated; otherwise, a new attribute is added.
+ *
+ * @return this element
+ */"
+"public Element appendElement(String tagName) {
+    Element child = new Element(Tag.valueOf(tagName, NodeUtils.parser(this).settings()), baseUri());
+    appendChild(child);
+    return child;
+}","public void test102102() throws Throwable {
+    Element element0 = new Element(""7HWI B(^;]V8^*%yD="");
+    // Undeclared exception!
+    try {
+        element0.appendElement("""");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Create a new element by tag name, and add it as the last child.
+ *
+ * @param tagName the name of the tag (e.g. {@code div}).
+ * @return the new element, to allow you to add content to it, e.g.:
+ *  {@code parent.appendElement(""h1"").attr(""id"", ""header"").text(""Welcome"");}
+ */"
+"public Element appendChild(Node child) {
+    Validate.notNull(child);
+    // was - Node#addChildren(child). short-circuits an array create and a loop.
+    reparentChild(child);
+    ensureChildNodes();
+    childNodes.add(child);
+    child.setSiblingIndex(childNodes.size() - 1);
+    return this;
+}","public void test103103() throws Throwable {
+    Tag tag0 = Tag.valueOf(""dd"");
+    Element element0 = new Element(tag0, ""dd"");
+    // Undeclared exception!
+    try {
+        element0.appendChild((Node) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Add a node child node to this element.
+ *
+ * @param child node to add.
+ * @return this element, so that you can add more child nodes or elements.
+ */"
+"public Element append(String html) {
+    Validate.notNull(html);
+    List<Node> nodes = NodeUtils.parser(this).parseFragmentInput(html, this, baseUri());
+    addChildren(nodes.toArray(new Node[nodes.size()]));
+    return this;
+}","public void test104104() throws Throwable {
+    Document document0 = new Document(""org.jsoup.nodes.DataNode"");
+    Element element0 = document0.appendElement(""c:$]:,sV"");
+    element0.before((Node) document0);
+    // Undeclared exception!
+    document0.append(""EwTIK69F"");
+}","/**
+ * Add inner HTML to this element. The supplied HTML will be parsed, and each node appended to the end of the children.
+ * @param html HTML to add inside this element, after the existing HTML
+ * @return this element
+ * @see #html(String)
+ */"
+"@Override
+public Element after(Node node) {
+    return (Element) super.after(node);
+}","public void test105105() throws Throwable {
+    Document document0 = new Document(""org.jsoup.nodes.DataNode"");
+    Element element0 = document0.appendElement(""c:$]:,sV"");
+    Element element1 = element0.before((Node) document0);
+    // Undeclared exception!
+    try {
+        element1.after((Node) document0);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 2, Size: 1
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}","/**
+ * Insert the specified node into the DOM after this node (as a following sibling).
+ * @param node to add after this element
+ * @return this element, for chaining
+ * @see #before(Node)
+ */"
+"public Element(Tag tag, String baseUri) {
+    this(tag, baseUri, null);
+}","public void test106106() throws Throwable {
+    Element element0 = null;
+    try {
+        element0 = new Element((Tag) null, (String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Create a new Element from a tag and a base URI.
+ *
+ * @param tag element tag
+ * @param baseUri the base URI of this element. It is acceptable for the base URI to be an empty
+ *            string, but not null.
+ * @see Tag#valueOf(String, ParseSettings)
+ */"
+"public Element(String tag) {
+    this(Tag.valueOf(tag), """", new Attributes());
+}","public void test107107() throws Throwable {
+    Element element0 = null;
+    try {
+        element0 = new Element((String) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Create a new, standalone element.
+ * @param tag tag name
+ */"
+"public String html() {
+    StringBuilder accum = StringUtil.borrowBuilder();
+    html(accum);
+    String html = StringUtil.releaseBuilder(accum);
+    return NodeUtils.outputSettings(this).prettyPrint() ? html.trim() : html;
+}","public void test108108() throws Throwable {
+    Document document0 = Document.createShell(""Split offset must be not be negative"");
+    document0.html();
+}","/**
+ * Retrieves the element's inner HTML. E.g. on a {@code <div>} with one empty {@code <p>}, would return
+ * {@code <p></p>}. (Whereas {@link #outerHtml()} would return {@code <div><p></p></div>}.)
+ *
+ * @return String of HTML.
+ * @see #outerHtml()
+ */"
+"// performance sensitive
+public boolean hasClass(String className) {
+    final String classAttr = attributes().getIgnoreCase(""class"");
+    final int len = classAttr.length();
+    final int wantLen = className.length();
+    if (len == 0 || len < wantLen) {
+        return false;
+    }
+    // if both lengths are equal, only need compare the className with the attribute
+    if (len == wantLen) {
+        return className.equalsIgnoreCase(classAttr);
+    }
+    // otherwise, scan for whitespace and compare regions (with no string or arraylist allocations)
+    boolean inClass = false;
+    int start = 0;
+    for (int i = 0; i < len; i++) {
+        if (Character.isWhitespace(classAttr.charAt(i))) {
+            if (inClass) {
+                // white space ends a class name, compare it with the requested one, ignore case
+                if (i - start == wantLen && classAttr.regionMatches(true, start, className, 0, wantLen)) {
+                    return true;
+                }
+                inClass = false;
+            }
+        } else {
+            if (!inClass) {
+                // we're in a class name : keep the start of the substring
+                inClass = true;
+                start = i;
+            }
+        }
+    }
+    // check the last entry
+    if (inClass && len - start == wantLen) {
+        return classAttr.regionMatches(true, start, className, 0, wantLen);
+    }
+    return false;
+}","public void test109109() throws Throwable {
+    Document document0 = Parser.parse("".oqJf(4SF(-"", "".oqJf(4SF(-"");
+    document0.hasClass(""W)_}-39xb-/z^gU}O"");
+}","/**
+ * Tests if this element has a class. Case insensitive.
+ * @param className name of class to check for
+ * @return true if it does, false if not
+ */"
+"public Element classNames(Set<String> classNames) {
+    Validate.notNull(classNames);
+    if (classNames.isEmpty()) {
+        attributes().remove(""class"");
+    } else {
+        attributes().put(""class"", StringUtil.join(classNames, "" ""));
+    }
+    return this;
+}","public void test110110() throws Throwable {
+    Parser parser0 = Parser.xmlParser();
+    Document document0 = parser0.parseInput(""-zSS]J}30h"", ""    "");
+    Element element0 = document0.addClass(""-zSS]J}30h"");
+    Set<String> set0 = element0.classNames();
+    element0.classNames(set0);
+}","/**
+ *     Set the element's {@code class} attribute to the supplied class names.
+ *     @param classNames set of classes
+ *     @return this element, for chaining
+ */"
+"public Element classNames(Set<String> classNames) {
+    Validate.notNull(classNames);
+    if (classNames.isEmpty()) {
+        attributes().remove(""class"");
+    } else {
+        attributes().put(""class"", StringUtil.join(classNames, "" ""));
+    }
+    return this;
+}","public void test111111() throws Throwable {
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    Tag tag0 = Tag.valueOf(""Hcd,oq)aD/-g_X_;G"", parseSettings0);
+    CDataNode cDataNode0 = new CDataNode((String) null);
+    Attributes attributes0 = cDataNode0.attributes();
+    PseudoTextElement pseudoTextElement0 = new PseudoTextElement(tag0, ""Hcd,oq)aD/-g_X_;G"", attributes0);
+    Locale locale0 = new Locale("""", """");
+    Set<String> set0 = locale0.getUnicodeLocaleKeys();
+    pseudoTextElement0.classNames(set0);
+}","/**
+ *     Set the element's {@code class} attribute to the supplied class names.
+ *     @param classNames set of classes
+ *     @return this element, for chaining
+ */"
+"public String data() {
+    StringBuilder sb = StringUtil.borrowBuilder();
+    for (Node childNode : childNodes) {
+        if (childNode instanceof DataNode) {
+            DataNode data = (DataNode) childNode;
+            sb.append(data.getWholeData());
+        } else if (childNode instanceof Comment) {
+            Comment comment = (Comment) childNode;
+            sb.append(comment.getData());
+        } else if (childNode instanceof Element) {
+            Element element = (Element) childNode;
+            String elementData = element.data();
+            sb.append(elementData);
+        } else if (childNode instanceof CDataNode) {
+            // this shouldn't really happen because the html parser won't see the cdata as anything special when parsing script.
+            // but incase another type gets through.
+            CDataNode cDataNode = (CDataNode) childNode;
+            sb.append(cDataNode.getWholeText());
+        }
+    }
+    return StringUtil.releaseBuilder(sb);
+}","public void test112112() throws Throwable {
+    Document document0 = Parser.parseBodyFragmentRelaxed(""org.jsoupgnodes._lement"", ""2aU(8*wN9L"");
+    Element element0 = document0.body();
+    element0.data();
+}","/**
+ * Get the combined data of this element. Data is e.g. the inside of a {@code script} tag. Note that data is NOT the
+ * text of the element. Use {@link #text()} to get the text that would be visible to a user, and {@link #data()}
+ * for the contents of scripts, comments, CSS styles, etc.
+ *
+ * @return the data, or empty string if none
+ *
+ * @see #dataNodes()
+ */"
+"public int elementSiblingIndex() {
+    if (parent() == null)
+        return 0;
+    return indexInList(this, parent().childElementsList());
+}","public void test113113() throws Throwable {
+    Document document0 = Parser.parse("""", """");
+    document0.elementSiblingIndex();
+}","/**
+ * Get the list index of this element in its element sibling list. I.e. if this is the first element
+ * sibling, returns 0.
+ * @return position in element sibling list
+ */"
+"public int elementSiblingIndex() {
+    if (parent() == null)
+        return 0;
+    return indexInList(this, parent().childElementsList());
+}","public void test114114() throws Throwable {
+    Document document0 = Document.createShell(""org.jsoup.nodes.DataNode"");
+    Element element0 = document0.appendElement(""org.jsoup.nodes.DataNode"");
+    element0.elementSiblingIndex();
+}","/**
+ * Get the list index of this element in its element sibling list. I.e. if this is the first element
+ * sibling, returns 0.
+ * @return position in element sibling list
+ */"
+"public Element previousElementSibling() {
+    if (parentNode == null)
+        return null;
+    List<Element> siblings = parent().childElementsList();
+    Integer index = indexInList(this, siblings);
+    Validate.notNull(index);
+    if (index > 0)
+        return siblings.get(index - 1);
+    else
+        return null;
+}","public void test115115() throws Throwable {
+    Document document0 = Document.createShell(""c"");
+    Document document1 = document0.normalise();
+    document1.parentNode = (Node) document0;
+    document0.previousElementSibling();
+}","/**
+ * Gets the previous element sibling of this element.
+ * @return the previous element, or null if there is no previous element
+ * @see #nextElementSibling()
+ */"
+"public Element previousElementSibling() {
+    if (parentNode == null)
+        return null;
+    List<Element> siblings = parent().childElementsList();
+    Integer index = indexInList(this, siblings);
+    Validate.notNull(index);
+    if (index > 0)
+        return siblings.get(index - 1);
+    else
+        return null;
+}","public void test116116() throws Throwable {
+    Parser parser0 = Parser.xmlParser();
+    Document document0 = parser0.parseInput(""{ZI3k9(tZo"", ""{ZI3k9(tZo"");
+    Document document1 = document0.normalise();
+    Element element0 = document1.body();
+    element0.previousElementSibling();
+}","/**
+ * Gets the previous element sibling of this element.
+ * @return the previous element, or null if there is no previous element
+ * @see #nextElementSibling()
+ */"
+"@Override
+public Attributes attributes() {
+    if (!hasAttributes())
+        attributes = new Attributes();
+    return attributes;
+}","public void test117117() throws Throwable {
+    Document document0 = Document.createShell(""org.jsoup.nodes.DataNode"");
+    document0.attributes();
+}",""
+"// DOM type methods
+/**
+ * Finds elements, including and recursively under this element, with the specified tag name.
+ * @param tagName The tag name to search for (case insensitively).
+ * @return a matching unmodifiable list of elements. Will be empty if this element and none of its children match.
+ */
+public Elements getElementsByTag(String tagName) {
+    Validate.notEmpty(tagName);
+    tagName = normalize(tagName);
+    return Collector.collect(new Evaluator.Tag(tagName), this);
+}","public void test118118() throws Throwable {
+    Document document0 = Parser.parse(""textarea"", ""textarea"");
+    document0.getElementsByTag(""textarea"");
+}",""
+"public Elements children() {
+    return new Elements(childElementsList());
+}","public void test119119() throws Throwable {
+    Document document0 = Parser.parseBodyFragment("""", """");
+    document0.children();
+}","/**
+ * Get this element's child elements.
+ * <p>
+ * This is effectively a filter on {@link #childNodes()} to get Element nodes.
+ * </p>
+ * @return child elements. If this element has no children, returns an empty list.
+ * @see #childNodes()
+ */"
+"public String className() {
+    return attr(""class"").trim();
+}","public void test120120() throws Throwable {
+    Document document0 = Parser.parseBodyFragment("" "", "" "");
+    document0.className();
+}","/**
+ * Gets the literal value of this element's ""class"" attribute, which may include multiple class names, space
+ * separated. (E.g. on <code>&lt;div class=""header gray""&gt;</code> returns, ""<code>header gray</code>"")
+ * @return The literal class attribute, or <b>empty string</b> if no class attribute set.
+ */"
+"@Override
+public final Element parent() {
+    return (Element) parentNode;
+}","public void test121121() throws Throwable {
+    ParseSettings parseSettings0 = ParseSettings.preserveCase;
+    Tag tag0 = Tag.valueOf(""7KJ,.bH/A@L,UD5xLc:"", parseSettings0);
+    FormElement formElement0 = new FormElement(tag0, ""3mZ!-QI }(rk"", (Attributes) null);
+    formElement0.parent();
+}",""
+"public Element text(String text) {
+    Validate.notNull(text);
+    empty();
+    TextNode textNode = new TextNode(text);
+    appendChild(textNode);
+    return this;
+}","public void test122122() throws Throwable {
+    ParseSettings parseSettings0 = new ParseSettings(true, true);
+    Tag tag0 = Tag.valueOf(""|\"".ruG`_9wJs~"", parseSettings0);
+    FormElement formElement0 = new FormElement(tag0, ""    "", (Attributes) null);
+    formElement0.text(""|\"".ruG`_9wJs~"");
+}","/**
+ * Set the text of this element. Any existing contents (text or elements) will be cleared
+ * @param text unencoded text
+ * @return this element
+ */"
+"public Elements getElementsMatchingOwnText(Pattern pattern) {
+    return Collector.collect(new Evaluator.MatchesOwn(pattern), this);
+}","public void test123123() throws Throwable {
+    Document document0 = Document.createShell(""mS_3:Y2L|C.lPGbKT]"");
+    Pattern pattern0 = Pattern.compile("""", 1004);
+    document0.getElementsMatchingOwnText(pattern0);
+}","/**
+ * Find elements whose own text matches the supplied regular expression.
+ * @param pattern regular expression to match text against
+ * @return elements matching the supplied regular expression.
+ * @see Element#ownText()
+ */"
+"public String ownText() {
+    StringBuilder sb = StringUtil.borrowBuilder();
+    ownText(sb);
+    return StringUtil.releaseBuilder(sb).trim();
+}","public void test124124() throws Throwable {
+    Document document0 = Parser.parseBodyFragment("""", """");
+    document0.ownText();
+}","/**
+ * Gets the text owned by this element only; does not get the combined text of all children.
+ * <p>
+ * For example, given HTML {@code <p>Hello <b>there</b> now!</p>}, {@code p.ownText()} returns {@code ""Hello now!""},
+ * whereas {@code p.text()} returns {@code ""Hello there now!""}.
+ * Note that the text within the {@code b} element is not returned, as it is not a direct child of the {@code p} element.
+ *
+ * @return unencoded text, or empty string if none.
+ * @see #text()
+ * @see #textNodes()
+ */"
+"public Element attr(String attributeKey, String attributeValue) {
+    super.attr(attributeKey, attributeValue);
+    return this;
+}","public void test125125() throws Throwable {
+    Document document0 = Document.createShell(""LF_$>C%V6[t6<)"");
+    document0.attr(""LF_$>C%V6[t6<)"", """");
+}","/**
+ * Set an attribute value on this element. If this element already has an attribute with the
+ * key, its value is updated; otherwise, a new attribute is added.
+ *
+ * @return this element
+ */"
+"public boolean isBlock() {
+    return tag.isBlock();
+}","public void test126126() throws Throwable {
+    Document document0 = Document.createShell(""org.jsoup.nodes.Element$1"");
+    document0.isBlock();
+}","/**
+ * Test if this element is a block-level element. (E.g. {@code <div> == true} or an inline element
+ * {@code <p> == false}).
+ *
+ * @return true if block, false if not (and thus inline)
+ */"
+"public Element prependChild(Node child) {
+    Validate.notNull(child);
+    addChildren(0, child);
+    return this;
+}","public void test127127() throws Throwable {
+    Document document0 = Document.createShell(""E[d7^n"");
+    // Undeclared exception!
+    try {
+        document0.prependChild((Node) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Add a node to the start of this element's children.
+ *
+ * @param child node to add.
+ * @return this element, so that you can add more child nodes or elements.
+ */"
+"public Element(Tag tag, String baseUri, Attributes attributes) {
+    Validate.notNull(tag);
+    Validate.notNull(baseUri);
+    childNodes = EMPTY_NODES;
+    this.baseUri = baseUri;
+    this.attributes = attributes;
+    this.tag = tag;
+}","public void test128128() throws Throwable {
+    CDataNode cDataNode0 = new CDataNode(""A!W21O"");
+    Attributes attributes0 = cDataNode0.attributes();
+    Element element0 = null;
+    try {
+        element0 = new Element((Tag) null, ""A!W21O"", attributes0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Create a new, standalone Element. (Standalone in that is has no parent.)
+ *
+ * @param tag tag of this element
+ * @param baseUri the base URI
+ * @param attributes initial attributes
+ * @see #appendChild(Node)
+ * @see #appendElement(String)
+ */"
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test129129() throws Throwable {
+    Document document0 = Document.createShell(""E[d7^n"");
+    document0.childNodeSize();
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test130130() throws Throwable {
+    Document document0 = Parser.parseBodyFragment("""", """");
+    document0.baseUri();
+}",""
+"public String tagName() {
+    return tag.getName();
+}","public void test131131() throws Throwable {
+    Document document0 = Document.createShell(""YZtm_``3&_"");
+    document0.tagName();
+}","/**
+ * Get the name of the tag for this element. E.g. {@code div}. If you are using {@link ParseSettings#preserveCase
+ * case preserving parsing}, this will return the source's original case.
+ *
+ * @return the tag name
+ */"
+"@Override
+public String nodeName() {
+    return tag.getName();
+}","public void test132132() throws Throwable {
+    Element element0 = new Element(""~2a)IqaIp"");
+    element0.nodeName();
+}",""
+"public Elements getElementsByAttributeValueMatching(String key, Pattern pattern) {
+    return Collector.collect(new Evaluator.AttributeWithValueMatching(key, pattern), this);
+}","public void test133133() throws Throwable {
+    Document document0 = Parser.parse(""textarea"", ""textarea"");
+    Pattern pattern0 = Pattern.compile("""");
+    document0.getElementsByAttributeValueMatching(""<yhYGe.:UVj"", pattern0);
+}","/**
+ * Find elements that have attributes whose values match the supplied regular expression.
+ * @param key name of the attribute
+ * @param pattern compiled regular expression to match against attribute values
+ * @return elements that have attributes matching this regular expression
+ */"
+"public Tag tag() {
+    return tag;
+}","public void test134134() throws Throwable {
+    Element element0 = new Element(""qQn<6$94fs6)"");
+    element0.tag();
+}","/**
+ * Get the Tag for this element.
+ *
+ * @return the tag object
+ */"
+"@Override
+public Element clone() {
+    return (Element) super.clone();
+}","public void test135135() throws Throwable {
+    Document document0 = Parser.parseBodyFragmentRelaxed("""", ""~n"");
+    Element element0 = document0.head();
+    element0.clone();
+}",""
+"public String id() {
+    return attributes().getIgnoreCase(""id"");
+}","public void test136136() throws Throwable {
+    Document document0 = Parser.parseBodyFragmentRelaxed("""", ""v"");
+    document0.id();
+}","/**
+ * Get the {@code id} attribute of this element.
+ *
+ * @return The id attribute, if present, or an empty string if not.
+ */"
+"public Set<String> classNames() {
+    String[] names = classSplit.split(className());
+    Set<String> classNames = new LinkedHashSet<>(Arrays.asList(names));
+    // if classNames() was empty, would include an empty class
+    classNames.remove("""");
+    return classNames;
+}","public void test137137() throws Throwable {
+    Element element0 = new Element(""qQn<6$94fs6)"");
+    element0.classNames();
+}","/**
+ * Get all of the element's class names. E.g. on element {@code <div class=""header gray"">},
+ * returns a set of two elements {@code ""header"", ""gray""}. Note that modifications to this set are not pushed to
+ * the backing {@code class} attribute; use the {@link #classNames(java.util.Set)} method to persist them.
+ * @return set of classnames, empty if no class attribute
+ */"
+"public String outerHtml() {
+    StringBuilder accum = StringUtil.borrowBuilder();
+    outerHtml(accum);
+    return StringUtil.releaseBuilder(accum);
+}","public void test138138() throws Throwable {
+    Element element0 = new Element(""qQn<6$94fs6)"");
+    element0.outerHtml();
+}","/**
+ *     Get the outer HTML of this node. For example, on a {@code p} element, may return {@code <p>Para</p>}.
+ *     @return outer HTML
+ *     @see Element#html()
+ *     @see Element#text()
+ */"
+"@Override
+public <T extends Appendable> T html(T appendable) {
+    final int size = childNodes.size();
+    for (int i = 0; i < size; i++) childNodes.get(i).outerHtml(appendable);
+    return appendable;
+}","public void test139139() throws Throwable {
+    Document document0 = Document.createShell(""LF_$>C%V6[t6<)"");
+    PipedOutputStream pipedOutputStream0 = new PipedOutputStream();
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    CharsetEncoder charsetEncoder0 = document_OutputSettings0.prepareEncoder();
+    OutputStreamWriter outputStreamWriter0 = new OutputStreamWriter(pipedOutputStream0, charsetEncoder0);
+    document0.html(outputStreamWriter0);
+}",""
+"void outerHtmlHead(final Appendable accum, int depth, final Document.OutputSettings out) throws IOException {
+    if (out.prettyPrint() && (tag.formatAsBlock() || (parent() != null && parent().tag().formatAsBlock()) || out.outline())) {
+        if (accum instanceof StringBuilder) {
+            if (((StringBuilder) accum).length() > 0)
+                indent(accum, depth, out);
+        } else {
+            indent(accum, depth, out);
+        }
+    }
+    accum.append('<').append(tagName());
+    if (attributes != null)
+        attributes.html(accum, out);
+    // selfclosing includes unknown tags, isEmpty defines tags that are always empty
+    if (childNodes.isEmpty() && tag.isSelfClosing()) {
+        if (out.syntax() == Document.OutputSettings.Syntax.html && tag.isEmpty())
+            accum.append('>');
+        else
+            // <img> in html, <img /> in xml
+            accum.append("" />"");
+    } else
+        accum.append('>');
+}","public void test140140() throws Throwable {
+    Parser parser0 = Parser.htmlParser();
+    StringReader stringReader0 = new StringReader(""X#\""D6r5qdy<$'b"");
+    Document document0 = parser0.parseInput((Reader) stringReader0, ""_J>8xxG"");
+    Document.OutputSettings document_OutputSettings0 = new Document.OutputSettings();
+    Document.OutputSettings document_OutputSettings1 = document_OutputSettings0.prettyPrint(false);
+    StringBuilder stringBuilder0 = new StringBuilder((CharSequence) ""X#\""D6r5qdy<$'b"");
+    document0.outerHtmlHead(stringBuilder0, 1478, document_OutputSettings1);
+}",""
+"public String val() {
+    if (tagName().equals(""textarea""))
+        return text();
+    else
+        return attr(""value"");
+}","public void test141141() throws Throwable {
+    Document document0 = Parser.parse(""summary"", """");
+    document0.val();
+}","/**
+ * Get the value of a form element (input, textarea, etc).
+ * @return the value of the form element, or empty string if not set.
+ */"
+"public String data() {
+    StringBuilder sb = StringUtil.borrowBuilder();
+    for (Node childNode : childNodes) {
+        if (childNode instanceof DataNode) {
+            DataNode data = (DataNode) childNode;
+            sb.append(data.getWholeData());
+        } else if (childNode instanceof Comment) {
+            Comment comment = (Comment) childNode;
+            sb.append(comment.getData());
+        } else if (childNode instanceof Element) {
+            Element element = (Element) childNode;
+            String elementData = element.data();
+            sb.append(elementData);
+        } else if (childNode instanceof CDataNode) {
+            // this shouldn't really happen because the html parser won't see the cdata as anything special when parsing script.
+            // but incase another type gets through.
+            CDataNode cDataNode = (CDataNode) childNode;
+            sb.append(cDataNode.getWholeText());
+        }
+    }
+    return StringUtil.releaseBuilder(sb);
+}","public void test142142() throws Throwable {
+    Document document0 = Parser.parseBodyFragmentRelaxed(""org.jsoupgnodes._lement"", ""2aU(8*wN9L"");
+    document0.data();
+}","/**
+ * Get the combined data of this element. Data is e.g. the inside of a {@code script} tag. Note that data is NOT the
+ * text of the element. Use {@link #text()} to get the text that would be visible to a user, and {@link #data()}
+ * for the contents of scripts, comments, CSS styles, etc.
+ *
+ * @return the data, or empty string if none
+ *
+ * @see #dataNodes()
+ */"
+"public boolean hasText() {
+    for (Node child : childNodes) {
+        if (child instanceof TextNode) {
+            TextNode textNode = (TextNode) child;
+            if (!textNode.isBlank())
+                return true;
+        } else if (child instanceof Element) {
+            Element el = (Element) child;
+            if (el.hasText())
+                return true;
+        }
+    }
+    return false;
+}","public void test143143() throws Throwable {
+    Document document0 = Parser.parseBodyFragment(""Na [AVw_`e"", """");
+    document0.hasText();
+}","/**
+ *     Test if this element has any text content (that is not just whitespace).
+ *     @return true if element has non-blank text content.
+ */"
+"public boolean hasText() {
+    for (Node child : childNodes) {
+        if (child instanceof TextNode) {
+            TextNode textNode = (TextNode) child;
+            if (!textNode.isBlank())
+                return true;
+        } else if (child instanceof Element) {
+            Element el = (Element) child;
+            if (el.hasText())
+                return true;
+        }
+    }
+    return false;
+}","public void test144144() throws Throwable {
+    Document document0 = Document.createShell(""org.jsoup.nodes.Element$1"");
+    document0.hasText();
+}","/**
+ *     Test if this element has any text content (that is not just whitespace).
+ *     @return true if element has non-blank text content.
+ */"
+"public String text() {
+    final StringBuilder accum = StringUtil.borrowBuilder();
+    NodeTraversor.traverse(new NodeVisitor() {
+
+        public void head(Node node, int depth) {
+            if (node instanceof TextNode) {
+                TextNode textNode = (TextNode) node;
+                appendNormalisedText(accum, textNode);
+            } else if (node instanceof Element) {
+                Element element = (Element) node;
+                if (accum.length() > 0 && (element.isBlock() || element.tag.getName().equals(""br"")) && !TextNode.lastCharIsWhitespace(accum))
+                    accum.append(' ');
+            }
+        }
+
+        public void tail(Node node, int depth) {
+            // make sure there is a space between block tags and immediately following text nodes <div>One</div>Two should be ""One Two"".
+            if (node instanceof Element) {
+                Element element = (Element) node;
+                if (element.isBlock() && (node.nextSibling() instanceof TextNode) && !TextNode.lastCharIsWhitespace(accum))
+                    accum.append(' ');
+            }
+        }
+    }, this);
+    return StringUtil.releaseBuilder(accum).trim();
+}","public void test145145() throws Throwable {
+    Document document0 = Parser.parseBodyFragmentRelaxed(""samp"", ""samp"");
+    document0.parentNode = (Node) document0;
+    document0.text();
+}","/**
+ * Gets the combined text of this element and all its children. Whitespace is normalized and trimmed.
+ * <p>
+ * For example, given HTML {@code <p>Hello  <b>there</b> now! </p>}, {@code p.text()} returns {@code ""Hello there now!""}
+ *
+ * @return unencoded, normalized text, or empty string if none.
+ * @see #wholeText() if you don't want the text to be normalized.
+ * @see #ownText()
+ * @see #textNodes()
+ */"
+"static boolean preserveWhitespace(Node node) {
+    // looks only at this element and five levels up, to prevent recursion & needless stack searches
+    if (node instanceof Element) {
+        Element el = (Element) node;
+        int i = 0;
+        do {
+            if (el.tag.preserveWhitespace())
+                return true;
+            el = el.parent();
+            i++;
+        } while (i < 6 && el != null);
+    }
+    return false;
+}","public void test146146() throws Throwable {
+    Element.preserveWhitespace((Node) null);
+}",""
+"public Elements getElementsMatchingOwnText(String regex) {
+    Pattern pattern;
+    try {
+        pattern = Pattern.compile(regex);
+    } catch (PatternSyntaxException e) {
+        throw new IllegalArgumentException(""Pattern syntax error: "" + regex, e);
+    }
+    return getElementsMatchingOwnText(pattern);
+}","public void test147147() throws Throwable {
+    Document document0 = Parser.parse("".oqJf(4SF(-"", "".oqJf(4SF(-"");
+    document0.title("""");
+    document0.getElementsMatchingOwnText(""q2 jYUI./fmfAU#Zw"");
+}","/**
+ * Find elements whose text matches the supplied regular expression.
+ * @param regex regular expression to match text against. You can use <a href=""http://java.sun.com/docs/books/tutorial/essential/regex/pattern.html#embedded"">embedded flags</a> (such as (?i) and (?m) to control regex options.
+ * @return elements matching the supplied regular expression.
+ * @see Element#ownText()
+ */"
+"public Elements getElementsMatchingText(Pattern pattern) {
+    return Collector.collect(new Evaluator.Matches(pattern), this);
+}","public void test148148() throws Throwable {
+    Document document0 = Parser.parseBodyFragment(""(,l'Z"", """");
+    Element element0 = document0.appendText(""(,l'Z"");
+    Pattern pattern0 = Pattern.compile("""");
+    element0.getElementsMatchingText(pattern0);
+}","/**
+ * Find elements whose text matches the supplied regular expression.
+ * @param pattern regular expression to match text against
+ * @return elements matching the supplied regular expression.
+ * @see Element#text()
+ */"
+"public Element getElementById(String id) {
+    Validate.notEmpty(id);
+    Elements elements = Collector.collect(new Evaluator.Id(id), this);
+    if (elements.size() > 0)
+        return elements.get(0);
+    else
+        return null;
+}","public void test149149() throws Throwable {
+    Document document0 = Parser.parseBodyFragmentRelaxed("""", "":eq(%d)"");
+    document0.getElementById(""#"");
+}","/**
+ * Find an element by ID, including or under this element.
+ * <p>
+ * Note that this finds the first matching ID, starting with this element. If you search down from a different
+ * starting point, it is possible to find a different element by ID. For unique element by ID within a Document,
+ * use {@link Document#getElementById(String)}
+ * @param id The ID to search for.
+ * @return The first matching element by ID, starting with this element, or null if none found.
+ */"
+"public Element nextElementSibling() {
+    if (parentNode == null)
+        return null;
+    List<Element> siblings = parent().childElementsList();
+    Integer index = indexInList(this, siblings);
+    Validate.notNull(index);
+    if (siblings.size() > index + 1)
+        return siblings.get(index + 1);
+    else
+        return null;
+}","public void test150150() throws Throwable {
+    Parser parser0 = Parser.xmlParser();
+    Document document0 = parser0.parseInput(""}"", ""}"");
+    Element element0 = document0.doClone(document0);
+    element0.nextElementSibling();
+}","/**
+ * Gets the next sibling element of this element. E.g., if a {@code div} contains two {@code p}s,
+ * the {@code nextElementSibling} of the first {@code p} is the second {@code p}.
+ * <p>
+ * This is similar to {@link #nextSibling()}, but specifically finds only Elements
+ * </p>
+ * @return the next element, or null if there is no next element
+ * @see #previousElementSibling()
+ */"
+"public Element lastElementSibling() {
+    List<Element> siblings = parent().childElementsList();
+    return siblings.size() > 1 ? siblings.get(siblings.size() - 1) : null;
+}","public void test151151() throws Throwable {
+    Document document0 = Parser.parse(""summary"", """");
+    Element element0 = document0.body();
+    element0.lastElementSibling();
+}","/**
+ * Gets the last element sibling of this element
+ * @return the last sibling that is an element (aka the parent's last element child)
+ */"
+"public Element firstElementSibling() {
+    // todo: should firstSibling() exclude this?
+    List<Element> siblings = parent().childElementsList();
+    return siblings.size() > 1 ? siblings.get(0) : null;
+}","public void test152152() throws Throwable {
+    Document document0 = Parser.parseBodyFragmentRelaxed("""", ""~n"");
+    Element element0 = document0.head();
+    element0.firstElementSibling();
+}","/**
+ * Gets the first element sibling of this element.
+ * @return the first sibling that is an element (aka the parent's first element child)
+ */"
+"public Element firstElementSibling() {
+    // todo: should firstSibling() exclude this?
+    List<Element> siblings = parent().childElementsList();
+    return siblings.size() > 1 ? siblings.get(0) : null;
+}","public void test153153() throws Throwable {
+    Document document0 = Parser.parseBodyFragment(""}"", ""}"");
+    Element element0 = document0.doClone(document0);
+    element0.firstElementSibling();
+}","/**
+ * Gets the first element sibling of this element.
+ * @return the first sibling that is an element (aka the parent's first element child)
+ */"
+"public Element previousElementSibling() {
+    if (parentNode == null)
+        return null;
+    List<Element> siblings = parent().childElementsList();
+    Integer index = indexInList(this, siblings);
+    Validate.notNull(index);
+    if (index > 0)
+        return siblings.get(index - 1);
+    else
+        return null;
+}","public void test154154() throws Throwable {
+    Parser parser0 = Parser.xmlParser();
+    Document document0 = parser0.parseInput(""{ZI3k9(tZo"", ""{ZI3k9(tZo"");
+    document0.previousElementSibling();
+}","/**
+ * Gets the previous element sibling of this element.
+ * @return the previous element, or null if there is no previous element
+ * @see #nextElementSibling()
+ */"
+"public Elements previousElementSiblings() {
+    return nextElementSiblings(false);
+}","public void test155155() throws Throwable {
+    Document document0 = new Document(""org.jsoup.nodes.DataNode"");
+    Element element0 = document0.appendElement(""c:$]:,sV"");
+    element0.previousElementSiblings();
+}","/**
+ * Get each of the element siblings before this element.
+ *
+ * @return the previous element siblings, or an empty list if there are none.
+ */"
+"public Elements nextElementSiblings() {
+    return nextElementSiblings(true);
+}","public void test156156() throws Throwable {
+    Document document0 = Document.createShell(""org.jsoup.nodes.Element$1"");
+    Element element0 = document0.head();
+    element0.nextElementSiblings();
+}","/**
+ * Get each of the sibling elements that come after this element.
+ *
+ * @return each of the element siblings after this element, or an empty list if there are no next sibling elements
+ */"
+"public Element nextElementSibling() {
+    if (parentNode == null)
+        return null;
+    List<Element> siblings = parent().childElementsList();
+    Integer index = indexInList(this, siblings);
+    Validate.notNull(index);
+    if (siblings.size() > index + 1)
+        return siblings.get(index + 1);
+    else
+        return null;
+}","public void test157157() throws Throwable {
+    Parser parser0 = Parser.xmlParser();
+    Document document0 = parser0.parseInput(""2k\""7m\""K=hBC/7}"", ""org.jsoup.nodes.Element$2"");
+    document0.nextElementSibling();
+}","/**
+ * Gets the next sibling element of this element. E.g., if a {@code div} contains two {@code p}s,
+ * the {@code nextElementSibling} of the first {@code p} is the second {@code p}.
+ * <p>
+ * This is similar to {@link #nextSibling()}, but specifically finds only Elements
+ * </p>
+ * @return the next element, or null if there is no next element
+ * @see #previousElementSibling()
+ */"
+"public Element body() {
+    return findFirstElementByTagName(""body"", this);
+}","public void test158158() throws Throwable {
+    Document document0 = Document.createShell(""org.jsoup.nodes.Element$1"");
+    Element element0 = document0.body();
+    assertNotNull(element0);
+}","/**
+ *     Accessor to the document's {@code body} element.
+ *     @return {@code body}
+ */"
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test158159() throws Throwable {
+    Document document0 = Document.createShell(""org.jsoup.nodes.Element$1"");
+    Element element0 = document0.body();
+    Elements elements0 = element0.nextElementSiblings();
+    assertEquals(""org.jsoup.nodes.Element$1"", element0.baseUri());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test159161() throws Throwable {
+    Document document0 = new Document(""L;8l\""?PN"");
+    document0.siblingElements();
+    assertEquals(""L;8l\""?PN"", document0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test160162() throws Throwable {
+    Document document0 = new Document(""org.jsoup.nodes.DataNode"");
+    Element element0 = document0.appendElement(""c:$]:,sV"");
+    element0.before((Node) document0);
+    document0.cssSelector();
+    assertEquals(2, document0.childNodeSize());
+}",""
+"public Element insertChildren(int index, Node... children) {
+    Validate.notNull(children, ""Children collection to be inserted must not be null."");
+    int currentSize = childNodeSize();
+    // roll around
+    if (index < 0)
+        index += currentSize + 1;
+    Validate.isTrue(index >= 0 && index <= currentSize, ""Insert position out of bounds."");
+    addChildren(index, children);
+    return this;
+}","public void test161163() throws Throwable {
+    Document document0 = Parser.parseBodyFragment(""}"", ""}"");
+    Node[] nodeArray0 = new Node[8];
+    // Undeclared exception!
+    try {
+        document0.insertChildren(7, nodeArray0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Insert position out of bounds.
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Inserts the given child nodes into this element at the specified index. Current nodes will be shifted to the
+ * right. The inserted nodes will be moved from their current parent. To prevent moving, copy the nodes first.
+ *
+ * @param index 0-based index to insert children at. Specify {@code 0} to insert at the start, {@code -1} at the
+ * end
+ * @param children child nodes to insert
+ * @return this element, for chaining.
+ */"
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test162164() throws Throwable {
+    Document document0 = new Document("""");
+    Elements elements0 = document0.parents();
+    Element element0 = document0.insertChildren(0, (Collection<? extends Node>) elements0);
+    assertEquals(0, element0.childNodeSize());
+}",""
+"public Element insertChildren(int index, Collection<? extends Node> children) {
+    Validate.notNull(children, ""Children collection to be inserted must not be null."");
+    int currentSize = childNodeSize();
+    // roll around
+    if (index < 0)
+        index += currentSize + 1;
+    Validate.isTrue(index >= 0 && index <= currentSize, ""Insert position out of bounds."");
+    ArrayList<Node> nodes = new ArrayList<>(children);
+    Node[] nodeArray = nodes.toArray(new Node[nodes.size()]);
+    addChildren(index, nodeArray);
+    return this;
+}","public void test163165() throws Throwable {
+    Document document0 = new Document(""mark"");
+    Elements elements0 = document0.getElementsByIndexGreaterThan((-1203186048));
+    // Undeclared exception!
+    try {
+        document0.insertChildren((-1203186048), (Collection<? extends Node>) elements0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Insert position out of bounds.
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Inserts the given child nodes into this element at the specified index. Current nodes will be shifted to the
+ * right. The inserted nodes will be moved from their current parent. To prevent moving, copy the nodes first.
+ *
+ * @param index 0-based index to insert children at. Specify {@code 0} to insert at the start, {@code -1} at the
+ * end
+ * @param children child nodes to insert
+ * @return this element, for chaining.
+ */"
+"public Element insertChildren(int index, Collection<? extends Node> children) {
+    Validate.notNull(children, ""Children collection to be inserted must not be null."");
+    int currentSize = childNodeSize();
+    // roll around
+    if (index < 0)
+        index += currentSize + 1;
+    Validate.isTrue(index >= 0 && index <= currentSize, ""Insert position out of bounds."");
+    ArrayList<Node> nodes = new ArrayList<>(children);
+    Node[] nodeArray = nodes.toArray(new Node[nodes.size()]);
+    addChildren(index, nodeArray);
+    return this;
+}","public void test164166() throws Throwable {
+    Document document0 = Parser.parseBodyFragment(""B:[Ih@_g"", """");
+    Elements elements0 = document0.previousElementSiblings();
+    // Undeclared exception!
+    try {
+        document0.insertChildren(1621, (Collection<? extends Node>) elements0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Insert position out of bounds.
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Inserts the given child nodes into this element at the specified index. Current nodes will be shifted to the
+ * right. The inserted nodes will be moved from their current parent. To prevent moving, copy the nodes first.
+ *
+ * @param index 0-based index to insert children at. Specify {@code 0} to insert at the start, {@code -1} at the
+ * end
+ * @param children child nodes to insert
+ * @return this element, for chaining.
+ */"
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test165168() throws Throwable {
+    Document document0 = Parser.parseBodyFragmentRelaxed(""org.jsoupgnodes._lement"", ""2aU(8*wN9L"");
+    List<DataNode> list0 = document0.dataNodes();
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test165169() throws Throwable {
+    Document document0 = Parser.parseBodyFragmentRelaxed(""org.jsoupgnodes._lement"", ""2aU(8*wN9L"");
+    List<DataNode> list0 = document0.dataNodes();
+    assertEquals(""2aU(8*wN9L"", document0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test166170() throws Throwable {
+    Document document0 = Document.createShell(""E[d7^n"");
+    List<TextNode> list0 = document0.textNodes();
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test166171() throws Throwable {
+    Document document0 = Document.createShell(""E[d7^n"");
+    List<TextNode> list0 = document0.textNodes();
+    assertEquals(""E[d7^n"", document0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test167173() throws Throwable {
+    Document document0 = Parser.parse(""LS~9WRP0h`9{"", ""LS~9WRP0h`9{"");
+    Element element0 = document0.prependText(""value"");
+    element0.getElementsByIndexLessThan(4);
+    assertEquals(2, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test167174() throws Throwable {
+    Document document0 = Parser.parse(""LS~9WRP0h`9{"", ""LS~9WRP0h`9{"");
+    Element element0 = document0.prependText(""value"");
+    element0.getElementsByIndexLessThan(4);
+    assertEquals(""LS~9WRP0h`9{"", document0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test168175() throws Throwable {
+    Document document0 = Document.createShell(""head"");
+    document0.selectFirst(""br"");
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test168176() throws Throwable {
+    Document document0 = Document.createShell(""head"");
+    document0.selectFirst(""br"");
+    assertEquals(""head"", document0.baseUri());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test169177() throws Throwable {
+    Document document0 = Document.createShell(""org.jsoup.nodes.Element$1"");
+    document0.is(""dt"");
+    assertEquals(""org.jsoup.nodes.Element$1"", document0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test169178() throws Throwable {
+    Document document0 = Document.createShell(""org.jsoup.nodes.Element$1"");
+    document0.is(""dt"");
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test170179() throws Throwable {
+    Document document0 = new Document(""+J{L0$Y-}]"");
+    document0.getAllElements();
+    assertEquals(""+J{L0$Y-}]"", document0.baseUri());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test171180() throws Throwable {
+    Document document0 = Parser.parseBodyFragmentRelaxed(""org.jsoupgnodes._lement"", ""2aU(8*wN9L"");
+    Element element0 = document0.removeClass(""org.jsoupgnodes._lement"");
+    assertEquals(""2aU(8*wN9L"", element0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test171181() throws Throwable {
+    Document document0 = Parser.parseBodyFragmentRelaxed(""org.jsoupgnodes._lement"", ""2aU(8*wN9L"");
+    Element element0 = document0.removeClass(""org.jsoupgnodes._lement"");
+    assertEquals(1, element0.childNodeSize());
+}",""
+"@Override
+public Element before(String html) {
+    return (Element) super.before(html);
+}","public void test172182() throws Throwable {
+    Element element0 = new Element(""~2a)IqaIp"");
+    // Undeclared exception!
+    try {
+        element0.before("".>a"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Insert the specified HTML into the DOM before this element (as a preceding sibling).
+ *
+ * @param html HTML to add before this element
+ * @return this element, for chaining
+ * @see #after(String)
+ */"
+"public Elements getElementsByAttribute(String key) {
+    Validate.notEmpty(key);
+    key = key.trim();
+    return Collector.collect(new Evaluator.Attribute(key), this);
+}","public void test173183() throws Throwable {
+    Document document0 = Parser.parse(""summary"", """");
+    // Undeclared exception!
+    try {
+        document0.getElementsByAttribute("""");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Find elements that have a named attribute set. Case insensitive.
+ *
+ * @param key name of the attribute, e.g. {@code href}
+ * @return elements that have this attribute, empty if none
+ */"
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test174185() throws Throwable {
+    Document document0 = Parser.parseBodyFragmentRelaxed(""org.jsoupgnodes._lement"", ""2aU(8*wN9L"");
+    Elements elements0 = document0.getElementsByAttributeValueNot(""org.jsoupgnodes._lement"", ""2aU(8*wN9L"");
+    assertEquals(""2aU(8*wN9L"", document0.baseUri());
+}",""
+"@Override
+public Element after(Node node) {
+    return (Element) super.after(node);
+}","public void test175186() throws Throwable {
+    Tag tag0 = Tag.valueOf(""{>p\""4k43#oE/"");
+    Attributes attributes0 = new Attributes();
+    PseudoTextElement pseudoTextElement0 = new PseudoTextElement(tag0, ""#root"", attributes0);
+    // Undeclared exception!
+    try {
+        pseudoTextElement0.after((Node) pseudoTextElement0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Insert the specified node into the DOM after this node (as a following sibling).
+ * @param node to add after this element
+ * @return this element, for chaining
+ * @see #before(Node)
+ */"
+"public Elements getElementsByAttributeValueContaining(String key, String match) {
+    return Collector.collect(new Evaluator.AttributeWithValueContaining(key, match), this);
+}","public void test176187() throws Throwable {
+    Parser parser0 = Parser.xmlParser();
+    Document document0 = parser0.parseInput(""{ZI3k9(tZo"", ""{ZI3k9(tZo"");
+    // Undeclared exception!
+    try {
+        document0.getElementsByAttributeValueContaining("""", ""i3b|e\""s>4cqA."");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Find elements that have attributes whose value contains the match string. Case insensitive.
+ *
+ * @param key name of the attribute
+ * @param match substring of value to search for
+ * @return elements that have attributes containing this text
+ */"
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test177189() throws Throwable {
+    Document document0 = Parser.parseBodyFragmentRelaxed(""org.jsoupgnodes._lement"", ""2aU(8*wN9L"");
+    Elements elements0 = document0.getElementsContainingText(""org.jsoupgnodes._lement"");
+    assertEquals(""2aU(8*wN9L"", document0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test178190() throws Throwable {
+    Document document0 = Document.createShell(""Unexpected count of entities loaded"");
+    Elements elements0 = document0.getElementsByClass(""o|Lbl"");
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test178192() throws Throwable {
+    Document document0 = Document.createShell(""Unexpected count of entities loaded"");
+    Elements elements0 = document0.getElementsByClass(""o|Lbl"");
+    assertEquals(""Unexpected count of entities loaded"", document0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test179193() throws Throwable {
+    Document document0 = Parser.parseBodyFragmentRelaxed(""org.jsoupgnodes._lement"", ""2aU(8*wN9L"");
+    Evaluator.IsOnlyOfType evaluator_IsOnlyOfType0 = new Evaluator.IsOnlyOfType();
+    document0.is((Evaluator) evaluator_IsOnlyOfType0);
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test179194() throws Throwable {
+    Document document0 = Parser.parseBodyFragmentRelaxed(""org.jsoupgnodes._lement"", ""2aU(8*wN9L"");
+    Evaluator.IsOnlyOfType evaluator_IsOnlyOfType0 = new Evaluator.IsOnlyOfType();
+    document0.is((Evaluator) evaluator_IsOnlyOfType0);
+    assertEquals(""2aU(8*wN9L"", document0.baseUri());
+}",""
+"public Elements getElementsByAttributeValueMatching(String key, String regex) {
+    Pattern pattern;
+    try {
+        pattern = Pattern.compile(regex);
+    } catch (PatternSyntaxException e) {
+        throw new IllegalArgumentException(""Pattern syntax error: "" + regex, e);
+    }
+    return getElementsByAttributeValueMatching(key, pattern);
+}","public void test180195() throws Throwable {
+    Document document0 = Document.createShell("""");
+    // Undeclared exception!
+    try {
+        document0.getElementsByAttributeValueMatching("">gZ]aGLQ|YyQgo$_\""/0"", (String) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}","/**
+ * Find elements that have attributes whose values match the supplied regular expression.
+ * @param key name of the attribute
+ * @param regex regular expression to match against attribute values. You can use <a href=""http://java.sun.com/docs/books/tutorial/essential/regex/pattern.html#embedded"">embedded flags</a> (such as (?i) and (?m) to control regex options.
+ * @return elements that have attributes matching this regular expression
+ */"
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test182197() throws Throwable {
+    Document document0 = Document.createShell(""Split offset must be not be negative"");
+    document0.getElementsByAttributeStarting(""%xL!h?;FT|<lx_!~"");
+    assertEquals(""Split offset must be not be negative"", document0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test182198() throws Throwable {
+    Document document0 = Document.createShell(""Split offset must be not be negative"");
+    document0.getElementsByAttributeStarting(""%xL!h?;FT|<lx_!~"");
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public Element after(String html) {
+    return (Element) super.after(html);
+}","public void test183199() throws Throwable {
+    Document document0 = new Document(""dfn"");
+    // Undeclared exception!
+    try {
+        document0.after(""dfn"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Insert the specified HTML into the DOM after this element (as a following sibling).
+ *
+ * @param html HTML to add after this element
+ * @return this element, for chaining
+ * @see #before(String)
+ */"
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test184200() throws Throwable {
+    Document document0 = Parser.parseBodyFragment(""org.jsoup.nodes.Element"", ""org.jsoup.nodes.Element"");
+    document0.prepend(""org.jsoup.nodes.Element"");
+    assertEquals(2, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test185201() throws Throwable {
+    Document document0 = Document.createShell(""org.jsoup.nodes.Element$1"");
+    document0.select(""eKe"");
+    assertEquals(""org.jsoup.nodes.Element$1"", document0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test185202() throws Throwable {
+    Document document0 = Document.createShell(""org.jsoup.nodes.Element$1"");
+    document0.select(""eKe"");
+    assertEquals(1, document0.childNodeSize());
+}",""
+"public Elements getElementsByAttributeValueStarting(String key, String valuePrefix) {
+    return Collector.collect(new Evaluator.AttributeWithValueStarting(key, valuePrefix), this);
+}","public void test186203() throws Throwable {
+    Document document0 = Document.createShell(""Split offset must be not be negative"");
+    // Undeclared exception!
+    try {
+        document0.getElementsByAttributeValueStarting("""", ""%xL!h?;FT|<lx_!~"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // String must not be empty
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Find elements that have attributes that start with the value prefix. Case insensitive.
+ *
+ * @param key name of the attribute
+ * @param valuePrefix start of attribute value
+ * @return elements that have attributes that start with the value prefix
+ */"
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test187204() throws Throwable {
+    Document document0 = new Document(""org.jsoup.nodes.DataNode"");
+    document0.getElementsByAttributeValue("" />"", "" />"");
+    assertEquals(""org.jsoup.nodes.DataNode"", document0.baseUri());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test188205() throws Throwable {
+    Document document0 = new Document(""L;8l\""?PN"");
+    Element element0 = document0.attr(""L;8l\""?PN"", false);
+    assertEquals(""L;8l\""?PN"", element0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test189206() throws Throwable {
+    Document document0 = new Document(""org.jsoup.nodes.DataNode"");
+    document0.html(""KKQ~>s~mAUwWzEH"");
+    assertEquals(1, document0.childNodeSize());
+}",""
+"public String wholeText() {
+    final StringBuilder accum = StringUtil.borrowBuilder();
+    NodeTraversor.traverse(new NodeVisitor() {
+
+        public void head(Node node, int depth) {
+            if (node instanceof TextNode) {
+                TextNode textNode = (TextNode) node;
+                accum.append(textNode.getWholeText());
+            }
+        }
+
+        public void tail(Node node, int depth) {
+        }
+    }, this);
+    return StringUtil.releaseBuilder(accum);
+}","public void test190207() throws Throwable {
+    Parser parser0 = Parser.xmlParser();
+    Document document0 = parser0.parseInput(""{ZI3k9(tZo"", ""{ZI3k9(tZo"");
+    String string0 = document0.wholeText();
+    assertEquals(""{ZI3k9(tZo"", string0);
+}","/**
+ * Get the (unencoded) text of all children of this element, including any newlines and spaces present in the
+ * original.
+ *
+ * @return unencoded, un-normalized text
+ * @see #text()
+ */"
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test190208() throws Throwable {
+    Parser parser0 = Parser.xmlParser();
+    Document document0 = parser0.parseInput(""{ZI3k9(tZo"", ""{ZI3k9(tZo"");
+    String string0 = document0.wholeText();
+    assertEquals(""{ZI3k9(tZo"", document0.baseUri());
+}",""
+"@Override
+public Element before(Node node) {
+    return (Element) super.before(node);
+}","public void test191209() throws Throwable {
+    Document document0 = new Document(""org.jsoup.nodes.DataNode"");
+    // Undeclared exception!
+    try {
+        document0.before((Node) document0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ * Insert the specified node into the DOM before this node (as a preceding sibling).
+ * @param node to add before this element
+ * @return this Element, for chaining
+ * @see #after(Node)
+ */"
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test192210() throws Throwable {
+    Element element0 = new Element(""LF_$>C%V6[t6<)"");
+    element0.doSetBaseUri(""LF_$>C%V6[t6<)"");
+    assertEquals(""LF_$>C%V6[t6<)"", element0.baseUri());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test193211() throws Throwable {
+    Document document0 = new Document(""L;8l\""?PN"");
+    document0.addClass(""<iOZ :U6l^}(QHCFk "");
+    document0.cssSelector();
+    assertEquals(""L;8l\""?PN"", document0.baseUri());
+}",""
+"@Override
+public int childNodeSize() {
+    return childNodes.size();
+}","public void test194212() throws Throwable {
+    Document document0 = Parser.parseBodyFragment(""}"", ""}"");
+    Elements elements0 = document0.getElementsContainingOwnText(""}"");
+    assertEquals(1, document0.childNodeSize());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test194214() throws Throwable {
+    Document document0 = Parser.parseBodyFragment(""}"", ""}"");
+    Elements elements0 = document0.getElementsContainingOwnText(""}"");
+    assertEquals(""}"", document0.baseUri());
+}",""
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test195215() throws Throwable {
+    Document document0 = new Document(""L;8l\""?PN"");
+    document0.dataset();
+    assertEquals(""L;8l\""?PN"", document0.baseUri());
+}",""
+"public Element child(int index) {
+    return childElementsList().get(index);
+}","public void test196216() throws Throwable {
+    Document document0 = Parser.parseBodyFragmentRelaxed(""org.jsoup.nodes.Element"", ""2aU(8*wN9L"");
+    // Undeclared exception!
+    try {
+        document0.child(1448);
+        fail(""Expecting exception: IndexOutOfBoundsException"");
+    } catch (IndexOutOfBoundsException e) {
+        //
+        // Index: 1448, Size: 1
+        //
+        verifyException(""java.util.ArrayList"", e);
+    }
+}","/**
+ * Get a child element of this element, by its 0-based index number.
+ * <p>
+ * Note that an element can have both mixed Nodes and Elements as children. This method inspects
+ * a filtered list of children that are elements, and the index is based on that filtered list.
+ * </p>
+ *
+ * @param index the index number of the element to retrieve
+ * @return the child element, if it exists, otherwise throws an {@code IndexOutOfBoundsException}
+ * @see #childNode(int)
+ */"
+"@Override
+public String baseUri() {
+    return baseUri;
+}","public void test197217() throws Throwable {
+    Document document0 = new Document(""L;8l\""?PN"");
+    document0.getElementsMatchingText("""");
+    assertEquals(""L;8l\""?PN"", document0.baseUri());
+}",""
+"@Override
+public Element wrap(String html) {
+    return (Element) super.wrap(html);
+}","public void test198218() throws Throwable {
+    Document document0 = Document.createShell(""nowrap"");
+    // Undeclared exception!
+    try {
+        document0.wrap("":matchText"");
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.nodes.Node"", e);
+    }
+}","/**
+ * Wrap the supplied HTML around this element.
+ *
+ * @param html HTML to wrap around this element, e.g. {@code <div class=""head""></div>}. Can be arbitrarily deep.
+ * @return this element, for chaining.
+ */"

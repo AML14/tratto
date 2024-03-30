@@ -1,0 +1,164 @@
+focal_method,test_prefix,docstring
+"public boolean isValid(Document dirtyDocument) {
+    Validate.notNull(dirtyDocument);
+    Document clean = Document.createShell(dirtyDocument.baseUri());
+    int numDiscarded = copySafeNodes(dirtyDocument.body(), clean.body());
+    return numDiscarded == 0;
+}","public void test00() throws Throwable {
+    Whitelist whitelist0 = Whitelist.basicWithImages();
+    Cleaner cleaner0 = new Cleaner(whitelist0);
+    Document document0 = new Document("""");
+    // Undeclared exception!
+    try {
+        cleaner0.isValid(document0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.safety.Cleaner"", e);
+    }
+}","/**
+ *     Determines if the input document is valid, against the whitelist. It is considered valid if all the tags and attributes
+ *     in the input HTML are allowed by the whitelist.
+ *     <p/>
+ *     This method can be used as a validator for user input forms. An invalid document will still be cleaned successfully
+ *     using the {@link #clean(Document)} document. If using as a validator, it is recommended to still clean the document
+ *     to ensure enforced attributes are set correctly, and that the output is tidied.
+ *     @param dirtyDocument document to test
+ *     @return true if no tags or attributes need to be removed; false if they do
+ */"
+"public boolean isValid(Document dirtyDocument) {
+    Validate.notNull(dirtyDocument);
+    Document clean = Document.createShell(dirtyDocument.baseUri());
+    int numDiscarded = copySafeNodes(dirtyDocument.body(), clean.body());
+    return numDiscarded == 0;
+}","public void test11() throws Throwable {
+    Whitelist whitelist0 = Whitelist.basic();
+    Cleaner cleaner0 = new Cleaner(whitelist0);
+    // Undeclared exception!
+    try {
+        cleaner0.isValid((Document) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ *     Determines if the input document is valid, against the whitelist. It is considered valid if all the tags and attributes
+ *     in the input HTML are allowed by the whitelist.
+ *     <p/>
+ *     This method can be used as a validator for user input forms. An invalid document will still be cleaned successfully
+ *     using the {@link #clean(Document)} document. If using as a validator, it is recommended to still clean the document
+ *     to ensure enforced attributes are set correctly, and that the output is tidied.
+ *     @param dirtyDocument document to test
+ *     @return true if no tags or attributes need to be removed; false if they do
+ */"
+"public Document clean(Document dirtyDocument) {
+    Validate.notNull(dirtyDocument);
+    Document clean = Document.createShell(dirtyDocument.baseUri());
+    copySafeNodes(dirtyDocument.body(), clean.body());
+    return clean;
+}","public void test22() throws Throwable {
+    Whitelist whitelist0 = Whitelist.relaxed();
+    Cleaner cleaner0 = new Cleaner(whitelist0);
+    Document document0 = new Document(""lf.>\"""");
+    // Undeclared exception!
+    try {
+        cleaner0.clean(document0);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jsoup.safety.Cleaner"", e);
+    }
+}","/**
+ *     Creates a new, clean document, from the original dirty document, containing only elements allowed by the whitelist.
+ *     The original document is not modified. Only elements from the dirt document's <code>body</code> are used.
+ *     @param dirtyDocument Untrusted base document to clean.
+ *     @return cleaned document.
+ */"
+"public Document clean(Document dirtyDocument) {
+    Validate.notNull(dirtyDocument);
+    Document clean = Document.createShell(dirtyDocument.baseUri());
+    copySafeNodes(dirtyDocument.body(), clean.body());
+    return clean;
+}","public void test33() throws Throwable {
+    Whitelist whitelist0 = new Whitelist();
+    Cleaner cleaner0 = new Cleaner(whitelist0);
+    // Undeclared exception!
+    try {
+        cleaner0.clean((Document) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ *     Creates a new, clean document, from the original dirty document, containing only elements allowed by the whitelist.
+ *     The original document is not modified. Only elements from the dirt document's <code>body</code> are used.
+ *     @param dirtyDocument Untrusted base document to clean.
+ *     @return cleaned document.
+ */"
+"public boolean isValid(Document dirtyDocument) {
+    Validate.notNull(dirtyDocument);
+    Document clean = Document.createShell(dirtyDocument.baseUri());
+    int numDiscarded = copySafeNodes(dirtyDocument.body(), clean.body());
+    return numDiscarded == 0;
+}","public void test44() throws Throwable {
+    Whitelist whitelist0 = Whitelist.basic();
+    Cleaner cleaner0 = new Cleaner(whitelist0);
+    Document document0 = Document.createShell(""hT"");
+    document0.text(""hT"");
+    boolean boolean0 = cleaner0.isValid(document0);
+    assertTrue(boolean0);
+}","/**
+ *     Determines if the input document is valid, against the whitelist. It is considered valid if all the tags and attributes
+ *     in the input HTML are allowed by the whitelist.
+ *     <p/>
+ *     This method can be used as a validator for user input forms. An invalid document will still be cleaned successfully
+ *     using the {@link #clean(Document)} document. If using as a validator, it is recommended to still clean the document
+ *     to ensure enforced attributes are set correctly, and that the output is tidied.
+ *     @param dirtyDocument document to test
+ *     @return true if no tags or attributes need to be removed; false if they do
+ */"
+"public Document clean(Document dirtyDocument) {
+    Validate.notNull(dirtyDocument);
+    Document clean = Document.createShell(dirtyDocument.baseUri());
+    copySafeNodes(dirtyDocument.body(), clean.body());
+    return clean;
+}","public void test55() throws Throwable {
+    Whitelist whitelist0 = Whitelist.basic();
+    Cleaner cleaner0 = new Cleaner(whitelist0);
+    Document document0 = Document.createShell(""F~+?x1bgjG2'0"");
+    Document document1 = cleaner0.clean(document0);
+    assertNotSame(document1, document0);
+}","/**
+ *     Creates a new, clean document, from the original dirty document, containing only elements allowed by the whitelist.
+ *     The original document is not modified. Only elements from the dirt document's <code>body</code> are used.
+ *     @param dirtyDocument Untrusted base document to clean.
+ *     @return cleaned document.
+ */"
+"public Cleaner(Whitelist whitelist) {
+    Validate.notNull(whitelist);
+    this.whitelist = whitelist;
+}","public void test66() throws Throwable {
+    Cleaner cleaner0 = null;
+    try {
+        cleaner0 = new Cleaner((Whitelist) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Object must not be null
+        //
+        verifyException(""org.jsoup.helper.Validate"", e);
+    }
+}","/**
+ *     Create a new cleaner, that sanitizes documents using the supplied whitelist.
+ *     @param whitelist white-list to clean with
+ */"

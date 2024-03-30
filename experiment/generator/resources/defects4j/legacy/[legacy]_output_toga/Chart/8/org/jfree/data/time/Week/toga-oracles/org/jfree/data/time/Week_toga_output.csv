@@ -1,0 +1,981 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    Week week0 = new Week();
+    RegularTimePeriod regularTimePeriod0 = week0.next();
+    int int0 = week0.compareTo(regularTimePeriod0);
+    assertEquals(106750L, regularTimePeriod0.getSerialIndex());
+}",0,
+project,0,test001,"public void test001() throws Throwable {
+    Week week0 = new Week();
+    RegularTimePeriod regularTimePeriod0 = week0.next();
+    int int0 = week0.compareTo(regularTimePeriod0);
+    assertEquals((-1), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test002,"public void test002() throws Throwable {
+    Week week0 = new Week();
+    RegularTimePeriod regularTimePeriod0 = week0.next();
+    int int0 = week0.compareTo(regularTimePeriod0);
+    assertEquals(1392409281319L, regularTimePeriod0.getLastMillisecond());
+}",0,"assertEquals(0, regularTimePeriod0.getLastMillisecond())"
+project,0,test013,"public void test013() throws Throwable {
+    Year year0 = new Year(3388);
+    Week week0 = new Week(3388, year0);
+    Week week1 = new Week();
+    int int0 = week0.compareTo(week1);
+    assertEquals(1392409281319L, week1.getLastMillisecond());
+}",1,
+project,0,test014,"public void test014() throws Throwable {
+    Year year0 = new Year(3388);
+    Week week0 = new Week(3388, year0);
+    Week week1 = new Week();
+    int int0 = week0.compareTo(week1);
+    assertEquals(60, week0.getWeek());
+}",0,
+project,0,test015,"public void test015() throws Throwable {
+    Year year0 = new Year(3388);
+    Week week0 = new Week(3388, year0);
+    Week week1 = new Week();
+    int int0 = week0.compareTo(week1);
+    assertEquals(1374, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test016,"public void test016() throws Throwable {
+    Year year0 = new Year(3388);
+    Week week0 = new Week(3388, year0);
+    Week week1 = new Week();
+    int int0 = week0.compareTo(week1);
+    assertEquals(106749L, week1.getSerialIndex());
+}",0,
+project,0,test027,"public void test027() throws Throwable {
+    Week week0 = new Week();
+    week0.hashCode();
+    assertEquals(1392409281319L, week0.getLastMillisecond());
+}",1,
+project,0,test028,"public void test028() throws Throwable {
+    Week week0 = new Week();
+    week0.hashCode();
+    assertEquals(106749L, week0.getSerialIndex());
+}",0,"assertEquals(0, week0.getSerialIndex())"
+project,0,test039,"public void test039() throws Throwable {
+    Year year0 = new Year();
+    Week week0 = new Week(3388, year0);
+    Week week1 = new Week(3388, 3388);
+    boolean boolean0 = week0.equals(week1);
+    assertEquals(179624L, week1.getSerialIndex());
+}",0,
+project,0,test0310,"public void test0310() throws Throwable {
+    Year year0 = new Year();
+    Week week0 = new Week(3388, year0);
+    Week week1 = new Week(3388, 3388);
+    boolean boolean0 = week0.equals(week1);
+    assertEquals(1392409281319L, week1.getLastMillisecond());
+}",1,
+project,0,test0311,"public void test0311() throws Throwable {
+    Year year0 = new Year();
+    Week week0 = new Week(3388, year0);
+    Week week1 = new Week(3388, 3388);
+    boolean boolean0 = week0.equals(week1);
+    assertEquals(106802L, week0.getSerialIndex());
+}",0,"assertEquals(0, week0.getSerialIndex())"
+project,0,test0312,"public void test0312() throws Throwable {
+    Year year0 = new Year();
+    Week week0 = new Week(3388, year0);
+    Week week1 = new Week(3388, 3388);
+    boolean boolean0 = week0.equals(week1);
+    assertFalse(week1.equals((Object) week0));
+}",0,
+project,0,test0313,"public void test0313() throws Throwable {
+    Year year0 = new Year();
+    Week week0 = new Week(3388, year0);
+    Week week1 = new Week(3388, 3388);
+    boolean boolean0 = week0.equals(week1);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test0414,"public void test0414() throws Throwable {
+    Week week0 = new Week((-1869), (-1869));
+    Week week1 = new Week(53, (-1869));
+    boolean boolean0 = week0.equals(week1);
+    assertEquals((-99004L), week1.getSerialIndex());
+}",0,
+project,0,test0415,"public void test0415() throws Throwable {
+    Week week0 = new Week((-1869), (-1869));
+    Week week1 = new Week(53, (-1869));
+    boolean boolean0 = week0.equals(week1);
+    assertFalse(week1.equals((Object) week0));
+}",0,
+project,0,test0416,"public void test0416() throws Throwable {
+    Week week0 = new Week((-1869), (-1869));
+    Week week1 = new Week(53, (-1869));
+    boolean boolean0 = week0.equals(week1);
+    assertEquals(1392409281319L, week1.getLastMillisecond());
+}",1,
+project,0,test0417,"public void test0417() throws Throwable {
+    Week week0 = new Week((-1869), (-1869));
+    Week week1 = new Week(53, (-1869));
+    boolean boolean0 = week0.equals(week1);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test0518,"public void test0518() throws Throwable {
+    MockDate mockDate0 = new MockDate(0, 0, 8);
+    mockDate0.setTime(8);
+    SimpleTimeZone simpleTimeZone0 = new SimpleTimeZone(0, """");
+    Locale locale0 = Locale.FRENCH;
+    Week week0 = new Week(mockDate0, simpleTimeZone0, locale0);
+    Week week1 = (Week) week0.previous();
+    assertNotNull(week1);
+}",0,
+project,0,test0519,"public void test0519() throws Throwable {
+    MockDate mockDate0 = new MockDate(0, 0, 8);
+    mockDate0.setTime(8);
+    SimpleTimeZone simpleTimeZone0 = new SimpleTimeZone(0, """");
+    Locale locale0 = Locale.FRENCH;
+    Week week0 = new Week(mockDate0, simpleTimeZone0, locale0);
+    Week week1 = (Week) week0.previous();
+    Week week2 = (Week) week1.next();
+    assertEquals(52, week1.getWeek());
+}",0,
+project,0,test0520,"public void test0520() throws Throwable {
+    MockDate mockDate0 = new MockDate(0, 0, 8);
+    mockDate0.setTime(8);
+    SimpleTimeZone simpleTimeZone0 = new SimpleTimeZone(0, """");
+    Locale locale0 = Locale.FRENCH;
+    Week week0 = new Week(mockDate0, simpleTimeZone0, locale0);
+    Week week1 = (Week) week0.previous();
+    Week week2 = (Week) week1.next();
+    assertEquals(104411L, week2.getSerialIndex());
+}",0,"assertEquals(0, week2.getSerialIndex())"
+project,0,test0521,"public void test0521() throws Throwable {
+    MockDate mockDate0 = new MockDate(0, 0, 8);
+    mockDate0.setTime(8);
+    SimpleTimeZone simpleTimeZone0 = new SimpleTimeZone(0, """");
+    Locale locale0 = Locale.FRENCH;
+    Week week0 = new Week(mockDate0, simpleTimeZone0, locale0);
+    Week week1 = (Week) week0.previous();
+    Week week2 = (Week) week1.next();
+    assertEquals(1392409281319L, week2.getLastMillisecond());
+}",1,
+project,0,test0522,"public void test0522() throws Throwable {
+    MockDate mockDate0 = new MockDate(0, 0, 8);
+    mockDate0.setTime(8);
+    SimpleTimeZone simpleTimeZone0 = new SimpleTimeZone(0, """");
+    Locale locale0 = Locale.FRENCH;
+    Week week0 = new Week(mockDate0, simpleTimeZone0, locale0);
+    Week week1 = (Week) week0.previous();
+    Week week2 = (Week) week1.next();
+    assertNotNull(week2);
+}",0,
+project,0,test0623,"public void test0623() throws Throwable {
+    TimeZone timeZone0 = TimeZone.getDefault();
+    MockDate mockDate0 = new MockDate(0, 0, 0);
+    Week week0 = new Week(mockDate0, timeZone0);
+    RegularTimePeriod regularTimePeriod0 = week0.previous();
+    assertEquals((-2209075200001L), week0.getLastMillisecond());
+}",1,
+project,0,test0624,"public void test0624() throws Throwable {
+    TimeZone timeZone0 = TimeZone.getDefault();
+    MockDate mockDate0 = new MockDate(0, 0, 0);
+    Week week0 = new Week(mockDate0, timeZone0);
+    RegularTimePeriod regularTimePeriod0 = week0.previous();
+    assertNull(regularTimePeriod0);
+}",0,
+project,0,test0625,"public void test0625() throws Throwable {
+    TimeZone timeZone0 = TimeZone.getDefault();
+    MockDate mockDate0 = new MockDate(0, 0, 0);
+    Week week0 = new Week(mockDate0, timeZone0);
+    RegularTimePeriod regularTimePeriod0 = week0.previous();
+    assertEquals(1900, week0.getYearValue());
+}",0,"assertEquals(0, week0.getYearValue())"
+project,0,test0726,"public void test0726() throws Throwable {
+    Week week0 = new Week(0, 0);
+    int int0 = week0.getYearValue();
+    assertEquals(0L, week0.getSerialIndex());
+}",0,"assertEquals(0, week0.getSerialIndex())"
+project,0,test0727,"public void test0727() throws Throwable {
+    Week week0 = new Week(0, 0);
+    int int0 = week0.getYearValue();
+    assertEquals(1392409281319L, week0.getLastMillisecond());
+}",1,
+project,0,test0728,"public void test0728() throws Throwable {
+    Week week0 = new Week(0, 0);
+    int int0 = week0.getYearValue();
+    assertEquals(0, int0);
+}",0,
+project,0,test0829,"public void test0829() throws Throwable {
+    Week week0 = new Week((-1869), (-1869));
+    int int0 = week0.getYearValue();
+    assertEquals((-99134L), week0.getSerialIndex());
+}",0,"assertEquals(0, week0.getSerialIndex())"
+project,0,test0830,"public void test0830() throws Throwable {
+    Week week0 = new Week((-1869), (-1869));
+    int int0 = week0.getYearValue();
+    assertEquals(1392409281319L, week0.getLastMillisecond());
+}",1,
+project,0,test0831,"public void test0831() throws Throwable {
+    Week week0 = new Week((-1869), (-1869));
+    int int0 = week0.getYearValue();
+    assertEquals((-1869), int0);
+}",0,"assertEquals(0, int0)"
+project,0,test0932,"public void test0932() throws Throwable {
+    System.setCurrentTimeMillis(0L);
+    Week week0 = new Week();
+    week0.getYear();
+    assertEquals((-1L), week0.getLastMillisecond());
+}",1,
+project,0,test0933,"public void test0933() throws Throwable {
+    System.setCurrentTimeMillis(0L);
+    Week week0 = new Week();
+    week0.getYear();
+    assertEquals(104411L, week0.getSerialIndex());
+}",0,"assertEquals(0, week0.getSerialIndex())"
+project,0,test1034,"public void test1034() throws Throwable {
+    MockDate mockDate0 = new MockDate(0, 0, 8);
+    SimpleTimeZone simpleTimeZone0 = new SimpleTimeZone(0, """");
+    Locale locale0 = Locale.FRENCH;
+    Week week0 = new Week(mockDate0, simpleTimeZone0, locale0);
+    week0.getYear();
+    assertEquals((-2208384000001L), week0.getLastMillisecond());
+}",1,
+project,0,test1035,"public void test1035() throws Throwable {
+    MockDate mockDate0 = new MockDate(0, 0, 8);
+    SimpleTimeZone simpleTimeZone0 = new SimpleTimeZone(0, """");
+    Locale locale0 = Locale.FRENCH;
+    Week week0 = new Week(mockDate0, simpleTimeZone0, locale0);
+    week0.getYear();
+    assertEquals(2, week0.getWeek());
+}",0,
+project,0,test1136,"public void test1136() throws Throwable {
+    Week week0 = new Week(2014, 2014);
+    System.setCurrentTimeMillis((-1747L));
+    week0.getYear();
+    assertEquals(106708L, week0.getSerialIndex());
+}",0,"assertEquals(0, week0.getSerialIndex())"
+project,0,test1137,"public void test1137() throws Throwable {
+    Week week0 = new Week(2014, 2014);
+    System.setCurrentTimeMillis((-1747L));
+    week0.getYear();
+    assertEquals(1392409281319L, week0.getLastMillisecond());
+}",1,
+project,0,test1238,"public void test1238() throws Throwable {
+    Year year0 = new Year();
+    Week week0 = new Week(0, year0);
+    int int0 = week0.getWeek();
+    assertEquals(1392409281319L, week0.getLastMillisecond());
+}",1,
+project,0,test1239,"public void test1239() throws Throwable {
+    Year year0 = new Year();
+    Week week0 = new Week(0, year0);
+    int int0 = week0.getWeek();
+    assertEquals(0, int0);
+}",0,
+project,0,test1340,"public void test1340() throws Throwable {
+    Week week0 = new Week((-584), 2);
+    int int0 = week0.getWeek();
+    assertEquals(1392409281319L, week0.getLastMillisecond());
+}",1,
+project,0,test1341,"public void test1341() throws Throwable {
+    Week week0 = new Week((-584), 2);
+    int int0 = week0.getWeek();
+    assertEquals(34L, week0.getSerialIndex());
+}",0,
+project,0,test1342,"public void test1342() throws Throwable {
+    Week week0 = new Week((-584), 2);
+    int int0 = week0.getWeek();
+    assertEquals((-72), int0);
+}",0,
+project,0,test1443,"public void test1443() throws Throwable {
+    Week week0 = new Week(0, 0);
+    long long0 = week0.getSerialIndex();
+    assertEquals(0L, long0);
+}",0,"assertEquals(0, long0)"
+project,0,test1444,"public void test1444() throws Throwable {
+    Week week0 = new Week(0, 0);
+    long long0 = week0.getSerialIndex();
+    assertEquals(1392409281319L, week0.getLastMillisecond());
+}",1,
+project,0,test1545,"public void test1545() throws Throwable {
+    Week week0 = new Week(1491, (-41));
+    long long0 = week0.getSerialIndex();
+    assertEquals((-2218L), long0);
+}",0,"assertEquals(0, long0)"
+project,0,test1546,"public void test1546() throws Throwable {
+    Week week0 = new Week(1491, (-41));
+    long long0 = week0.getSerialIndex();
+    assertEquals(1392409281319L, week0.getLastMillisecond());
+}",1,
+project,0,test1648,"public void test1648() throws Throwable {
+    System.setCurrentTimeMillis(1L);
+    Week week0 = new Week(1928, 3432);
+    Locale locale0 = Locale.CANADA_FRENCH;
+    Calendar calendar0 = MockCalendar.getInstance(locale0);
+    long long0 = week0.getLastMillisecond(calendar0);
+    assertEquals(181776L, week0.getSerialIndex());
+}",0,"assertEquals(1, week0.getSerialIndex())"
+project,0,test1649,"public void test1649() throws Throwable {
+    System.setCurrentTimeMillis(1L);
+    Week week0 = new Week(1928, 3432);
+    Locale locale0 = Locale.CANADA_FRENCH;
+    Calendar calendar0 = MockCalendar.getInstance(locale0);
+    long long0 = week0.getLastMillisecond(calendar0);
+    assertEquals(0L, long0);
+}",0,"assertEquals(1, long0)"
+project,0,test1750,"public void test1750() throws Throwable {
+    Week week0 = new Week((-584), 2);
+    Locale locale0 = Locale.UK;
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar(week0.DEFAULT_TIME_ZONE, locale0);
+    long long0 = week0.getLastMillisecond((Calendar) mockGregorianCalendar0);
+    assertEquals(""org.evosuite.runtime.mock.java.util.MockGregorianCalendar[time=1392409281320,areFieldsSet=true,areAllFieldsSet=true,lenient=true,zone=sun.util.calendar.ZoneInfo[id=\""GMT\"",offset=0,dstSavings=0,useDaylight=false,transitions=0,lastRule=null],firstDayOfWeek=2,minimalDaysInFirstWeek=4,ERA=1,YEAR=2014,MONTH=1,WEEK_OF_YEAR=7,WEEK_OF_MONTH=2,DAY_OF_MONTH=14,DAY_OF_YEAR=45,DAY_OF_WEEK=6,DAY_OF_WEEK_IN_MONTH=2,AM_PM=1,HOUR=8,HOUR_OF_DAY=20,MINUTE=21,SECOND=21,MILLISECOND=320,ZONE_OFFSET=0,DST_OFFSET=0]"", mockGregorianCalendar0.toString());
+}",0,
+project,0,test1751,"public void test1751() throws Throwable {
+    Week week0 = new Week((-584), 2);
+    Locale locale0 = Locale.UK;
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar(week0.DEFAULT_TIME_ZONE, locale0);
+    long long0 = week0.getLastMillisecond((Calendar) mockGregorianCalendar0);
+    assertEquals(34L, week0.getSerialIndex());
+}",0,"assertEquals(0, week0.getSerialIndex())"
+project,0,test1752,"public void test1752() throws Throwable {
+    Week week0 = new Week((-584), 2);
+    Locale locale0 = Locale.UK;
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar(week0.DEFAULT_TIME_ZONE, locale0);
+    long long0 = week0.getLastMillisecond((Calendar) mockGregorianCalendar0);
+    assertEquals(1392409281319L, long0);
+}",0,"assertEquals(0, long0)"
+project,0,test1853,"public void test1853() throws Throwable {
+    System.setCurrentTimeMillis(1L);
+    Week week0 = new Week(1928, 3432);
+    long long0 = week0.getLastMillisecond();
+    assertEquals(181776L, week0.getSerialIndex());
+}",0,
+project,0,test1854,"public void test1854() throws Throwable {
+    System.setCurrentTimeMillis(1L);
+    Week week0 = new Week(1928, 3432);
+    long long0 = week0.getLastMillisecond();
+    assertEquals(0L, long0);
+}",1,
+project,0,test1955,"public void test1955() throws Throwable {
+    Year year0 = new Year();
+    Week week0 = new Week(0, year0);
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar((-2013), (-2013), (-13));
+    mockGregorianCalendar0.add(1, (-3570));
+    week0.getFirstMillisecond((Calendar) mockGregorianCalendar0);
+    assertEquals(""org.evosuite.runtime.mock.java.util.MockGregorianCalendar[time=?,areFieldsSet=false,areAllFieldsSet=true,lenient=true,zone=sun.util.calendar.ZoneInfo[id=\""GMT\"",offset=0,dstSavings=0,useDaylight=false,transitions=0,lastRule=null],firstDayOfWeek=1,minimalDaysInFirstWeek=1,ERA=0,YEAR=5752,MONTH=2,WEEK_OF_YEAR=12,WEEK_OF_MONTH=4,DAY_OF_MONTH=18,DAY_OF_YEAR=77,DAY_OF_WEEK=1,DAY_OF_WEEK_IN_MONTH=3,AM_PM=0,HOUR=0,HOUR_OF_DAY=0,MINUTE=0,SECOND=0,MILLISECOND=0,ZONE_OFFSET=0,DST_OFFSET=0]"", mockGregorianCalendar0.toString());
+}",0,
+project,0,test1956,"public void test1956() throws Throwable {
+    Year year0 = new Year();
+    Week week0 = new Week(0, year0);
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar((-2013), (-2013), (-13));
+    mockGregorianCalendar0.add(1, (-3570));
+    week0.getFirstMillisecond((Calendar) mockGregorianCalendar0);
+    assertEquals(106742L, week0.getSerialIndex());
+}",0,"assertEquals(0, week0.getSerialIndex())"
+project,0,test1957,"public void test1957() throws Throwable {
+    Year year0 = new Year();
+    Week week0 = new Week(0, year0);
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar((-2013), (-2013), (-13));
+    mockGregorianCalendar0.add(1, (-3570));
+    week0.getFirstMillisecond((Calendar) mockGregorianCalendar0);
+    assertEquals(1392409281319L, week0.getLastMillisecond());
+}",1,
+project,0,test2058,"public void test2058() throws Throwable {
+    MockDate mockDate0 = new MockDate((-3105), (-1835), (-1835), (-3105), (-1835), 0);
+    TimeZone timeZone0 = TimeZone.getDefault();
+    Locale locale0 = Locale.UK;
+    Week week0 = new Week(mockDate0, timeZone0, locale0);
+    long long0 = week0.getFirstMillisecond();
+    assertEquals((-105189809700000L), long0);
+}",1,
+project,0,test2059,"public void test2059() throws Throwable {
+    MockDate mockDate0 = new MockDate((-3105), (-1835), (-1835), (-3105), (-1835), 0);
+    TimeZone timeZone0 = TimeZone.getDefault();
+    Locale locale0 = Locale.UK;
+    Week week0 = new Week(mockDate0, timeZone0, locale0);
+    long long0 = week0.getFirstMillisecond();
+    assertEquals((-105189809700001L), week0.getLastMillisecond());
+}",1,
+project,0,test2060,"public void test2060() throws Throwable {
+    MockDate mockDate0 = new MockDate((-3105), (-1835), (-1835), (-3105), (-1835), 0);
+    TimeZone timeZone0 = TimeZone.getDefault();
+    Locale locale0 = Locale.UK;
+    Week week0 = new Week(mockDate0, timeZone0, locale0);
+    long long0 = week0.getFirstMillisecond();
+    assertEquals(72382L, week0.getSerialIndex());
+}",0,"assertEquals(0, week0.getSerialIndex())"
+project,0,test2161,"public void test2161() throws Throwable {
+    Year year0 = new Year();
+    Week week0 = new Week((-1803), year0);
+    // Undeclared exception!
+    try {
+        week0.peg((Calendar) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test2262,"public void test2262() throws Throwable {
+    Week week0 = new Week((-584), 2);
+    // Undeclared exception!
+    try {
+        week0.getLastMillisecond((Calendar) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.time.Week"", e);
+    }
+}",0,
+project,0,test2363,"public void test2363() throws Throwable {
+    Week week0 = new Week(3109, 273);
+    // Undeclared exception!
+    try {
+        week0.getFirstMillisecond((Calendar) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test2464,"public void test2464() throws Throwable {
+    Year year0 = new Year(2519);
+    Week week0 = new Week(2519, year0);
+    Week week1 = new Week(2519, 53);
+    // Undeclared exception!
+    try {
+        week0.compareTo(week1);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Year constructor: year (53) outside valid range.
+        //
+        verifyException(""org.jfree.data.time.Year"", e);
+    }
+}",0,
+project,0,test2565,"public void test2565() throws Throwable {
+    Week week0 = null;
+    try {
+        week0 = new Week((Date) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'time' argument.
+        //
+        verifyException(""org.jfree.data.time.Week"", e);
+    }
+}",0,
+project,0,test2666,"public void test2666() throws Throwable {
+    Week week0 = null;
+    try {
+        week0 = new Week((-1198), (Year) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""org.jfree.data.time.Week"", e);
+    }
+}",1,
+project,0,test2767,"public void test2767() throws Throwable {
+    Locale locale0 = Locale.ROOT;
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar(locale0);
+    Date date0 = mockGregorianCalendar0.getGregorianChange();
+    SimpleTimeZone simpleTimeZone0 = new SimpleTimeZone(0, "" xtWpkwS~n@zOF"");
+    Week week0 = new Week(date0, simpleTimeZone0, locale0);
+    week0.getFirstMillisecond((Calendar) mockGregorianCalendar0);
+    assertEquals((-12219292800001L), week0.getLastMillisecond());
+}",1,
+project,0,test2768,"public void test2768() throws Throwable {
+    Locale locale0 = Locale.ROOT;
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar(locale0);
+    Date date0 = mockGregorianCalendar0.getGregorianChange();
+    SimpleTimeZone simpleTimeZone0 = new SimpleTimeZone(0, "" xtWpkwS~n@zOF"");
+    Week week0 = new Week(date0, simpleTimeZone0, locale0);
+    week0.getFirstMillisecond((Calendar) mockGregorianCalendar0);
+    assertEquals(""org.evosuite.runtime.mock.java.util.MockGregorianCalendar[time=1392409281320,areFieldsSet=true,areAllFieldsSet=true,lenient=true,zone=sun.util.calendar.ZoneInfo[id=\""GMT\"",offset=0,dstSavings=0,useDaylight=false,transitions=0,lastRule=null],firstDayOfWeek=1,minimalDaysInFirstWeek=1,ERA=1,YEAR=2014,MONTH=1,WEEK_OF_YEAR=7,WEEK_OF_MONTH=3,DAY_OF_MONTH=14,DAY_OF_YEAR=45,DAY_OF_WEEK=6,DAY_OF_WEEK_IN_MONTH=2,AM_PM=1,HOUR=8,HOUR_OF_DAY=20,MINUTE=21,SECOND=21,MILLISECOND=320,ZONE_OFFSET=0,DST_OFFSET=0]"", mockGregorianCalendar0.toString());
+}",0,
+project,0,test2769,"public void test2769() throws Throwable {
+    Locale locale0 = Locale.ROOT;
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar(locale0);
+    Date date0 = mockGregorianCalendar0.getGregorianChange();
+    SimpleTimeZone simpleTimeZone0 = new SimpleTimeZone(0, "" xtWpkwS~n@zOF"");
+    Week week0 = new Week(date0, simpleTimeZone0, locale0);
+    week0.getFirstMillisecond((Calendar) mockGregorianCalendar0);
+    assertEquals(40, week0.getWeek());
+}",0,"assertEquals(1, week0.getWeek())"
+project,0,test2870,"public void test2870() throws Throwable {
+    SimpleTimeZone simpleTimeZone0 = new SimpleTimeZone(0, """");
+    Locale locale0 = Locale.FRANCE;
+    Week week0 = null;
+    try {
+        week0 = new Week((Date) null, simpleTimeZone0, locale0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'time' argument.
+        //
+        verifyException(""org.jfree.data.time.Week"", e);
+    }
+}",0,
+project,0,test2971,"public void test2971() throws Throwable {
+    Week week0 = new Week();
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar(0, 53, 87);
+    week0.peg(mockGregorianCalendar0);
+    week0.getFirstMillisecond();
+    assertEquals((-1L), week0.getLastMillisecond());
+}",1,
+project,0,test3072,"public void test3072() throws Throwable {
+    Week week0 = new Week();
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar(0, 53, 87);
+    week0.getFirstMillisecond((Calendar) mockGregorianCalendar0);
+    assertEquals(1392409281319L, week0.getLastMillisecond());
+}",1,
+project,0,test3073,"public void test3073() throws Throwable {
+    Week week0 = new Week();
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar(0, 53, 87);
+    week0.getFirstMillisecond((Calendar) mockGregorianCalendar0);
+    assertEquals(7, week0.getWeek());
+}",0,"assertEquals(0, week0.getWeek())"
+project,0,test3174,"public void test3174() throws Throwable {
+    Year year0 = new Year();
+    Week week0 = new Week(0, year0);
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar((-2013), (-2013), (-13));
+    long long0 = week0.getLastMillisecond((Calendar) mockGregorianCalendar0);
+    assertEquals((-1L), long0);
+}",0,"assertEquals(1, long0)"
+project,0,test3175,"public void test3175() throws Throwable {
+    Year year0 = new Year();
+    Week week0 = new Week(0, year0);
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar((-2013), (-2013), (-13));
+    long long0 = week0.getLastMillisecond((Calendar) mockGregorianCalendar0);
+    assertEquals(0, week0.getWeek());
+}",0,"assertEquals(0, week0.getWeek())"
+project,0,test3176,"public void test3176() throws Throwable {
+    Year year0 = new Year();
+    Week week0 = new Week(0, year0);
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar((-2013), (-2013), (-13));
+    long long0 = week0.getLastMillisecond((Calendar) mockGregorianCalendar0);
+    assertEquals(""org.evosuite.runtime.mock.java.util.MockGregorianCalendar[time=?,areFieldsSet=false,areAllFieldsSet=false,lenient=true,zone=sun.util.calendar.ZoneInfo[id=\""GMT\"",offset=0,dstSavings=0,useDaylight=false,transitions=0,lastRule=null],firstDayOfWeek=1,minimalDaysInFirstWeek=1,ERA=?,YEAR=-2013,MONTH=-2013,WEEK_OF_YEAR=?,WEEK_OF_MONTH=?,DAY_OF_MONTH=-13,DAY_OF_YEAR=?,DAY_OF_WEEK=?,DAY_OF_WEEK_IN_MONTH=?,AM_PM=0,HOUR=0,HOUR_OF_DAY=0,MINUTE=0,SECOND=0,MILLISECOND=?,ZONE_OFFSET=?,DST_OFFSET=?]"", mockGregorianCalendar0.toString());
+}",0,
+project,0,test3277,"public void test3277() throws Throwable {
+    Week week0 = new Week();
+    int int0 = week0.getWeek();
+    assertEquals(7, int0);
+}",0,"assertEquals(0, int0)"
+project,0,test3278,"public void test3278() throws Throwable {
+    Week week0 = new Week();
+    int int0 = week0.getWeek();
+    assertEquals(1392409281319L, week0.getLastMillisecond());
+}",1,
+project,0,test3379,"public void test3379() throws Throwable {
+    // Undeclared exception!
+    try {
+        Week.parseWeek(""Week -104, 2393"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Can't evaluate the year.
+        //
+        verifyException(""org.jfree.data.time.Week"", e);
+    }
+}",0,
+project,0,test3480,"public void test3480() throws Throwable {
+    // Undeclared exception!
+    try {
+        Week.parseWeek(""X`!}^UK15x(_zAC#.r"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Can't evaluate the year.
+        //
+        verifyException(""org.jfree.data.time.Week"", e);
+    }
+}",0,
+project,0,test3581,"public void test3581() throws Throwable {
+    // Undeclared exception!
+    try {
+        Week.parseWeek("""");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Could not find separator.
+        //
+        verifyException(""org.jfree.data.time.Week"", e);
+    }
+}",1,
+project,0,test3682,"public void test3682() throws Throwable {
+    Week week0 = Week.parseWeek((String) null);
+    assertNull(week0);
+}",1,
+project,0,test3783,"public void test3783() throws Throwable {
+    Year year0 = new Year();
+    Week week0 = new Week(0, year0);
+    Date date0 = week0.getEnd();
+    int int0 = week0.compareTo(date0);
+    assertEquals(1, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test3784,"public void test3784() throws Throwable {
+    Year year0 = new Year();
+    Week week0 = new Week(0, year0);
+    Date date0 = week0.getEnd();
+    int int0 = week0.compareTo(date0);
+    assertEquals(1392409281319L, week0.getLastMillisecond());
+}",1,
+project,0,test3785,"public void test3785() throws Throwable {
+    Year year0 = new Year();
+    Week week0 = new Week(0, year0);
+    Date date0 = week0.getEnd();
+    int int0 = week0.compareTo(date0);
+    assertEquals(106742L, week0.getSerialIndex());
+}",0,
+project,0,test3886,"public void test3886() throws Throwable {
+    Week week0 = new Week(3390, 3390);
+    RegularTimePeriod regularTimePeriod0 = week0.next();
+    int int0 = week0.compareTo(regularTimePeriod0);
+    assertEquals(179724L, regularTimePeriod0.getSerialIndex());
+}",0,"assertEquals(0, regularTimePeriod0.getSerialIndex())"
+project,0,test3887,"public void test3887() throws Throwable {
+    Week week0 = new Week(3390, 3390);
+    RegularTimePeriod regularTimePeriod0 = week0.next();
+    int int0 = week0.compareTo(regularTimePeriod0);
+    assertEquals((-1), int0);
+}",0,
+project,0,test3888,"public void test3888() throws Throwable {
+    Week week0 = new Week(3390, 3390);
+    RegularTimePeriod regularTimePeriod0 = week0.next();
+    int int0 = week0.compareTo(regularTimePeriod0);
+    assertEquals(1392409281319L, regularTimePeriod0.getLastMillisecond());
+}",0,"assertEquals(0, regularTimePeriod0.getLastMillisecond())"
+project,0,test3989,"public void test3989() throws Throwable {
+    Week week0 = new Week();
+    MockDate mockDate0 = new MockDate(53, 1, 1, (-496), 53);
+    Year year0 = new Year(mockDate0, week0.DEFAULT_TIME_ZONE);
+    int int0 = week0.compareTo(year0);
+    assertEquals(1392409281319L, week0.getLastMillisecond());
+}",1,
+project,0,test3990,"public void test3990() throws Throwable {
+    Week week0 = new Week();
+    MockDate mockDate0 = new MockDate(53, 1, 1, (-496), 53);
+    Year year0 = new Year(mockDate0, week0.DEFAULT_TIME_ZONE);
+    int int0 = week0.compareTo(year0);
+    assertEquals(106749L, week0.getSerialIndex());
+}",0,
+project,0,test3991,"public void test3991() throws Throwable {
+    Week week0 = new Week();
+    MockDate mockDate0 = new MockDate(53, 1, 1, (-496), 53);
+    Year year0 = new Year(mockDate0, week0.DEFAULT_TIME_ZONE);
+    int int0 = week0.compareTo(year0);
+    assertEquals(0, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test4092,"public void test4092() throws Throwable {
+    Year year0 = new Year(3388);
+    Week week0 = new Week(3388, year0);
+    Week week1 = new Week(3388, year0);
+    boolean boolean0 = week0.equals(week1);
+    assertEquals(1392409281319L, week1.getLastMillisecond());
+}",1,
+project,0,test4093,"public void test4093() throws Throwable {
+    Year year0 = new Year(3388);
+    Week week0 = new Week(3388, year0);
+    Week week1 = new Week(3388, year0);
+    boolean boolean0 = week0.equals(week1);
+    assertTrue(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4094,"public void test4094() throws Throwable {
+    Year year0 = new Year(3388);
+    Week week0 = new Week(3388, year0);
+    Week week1 = new Week(3388, year0);
+    boolean boolean0 = week0.equals(week1);
+    assertEquals(60, week1.getWeek());
+}",0,
+project,0,test4195,"public void test4195() throws Throwable {
+    Week week0 = new Week(3390, 3390);
+    RegularTimePeriod regularTimePeriod0 = week0.next();
+    assertNotNull(regularTimePeriod0);
+}",0,
+project,0,test4196,"public void test4196() throws Throwable {
+    Week week0 = new Week(3390, 3390);
+    RegularTimePeriod regularTimePeriod0 = week0.next();
+    boolean boolean0 = week0.equals(regularTimePeriod0);
+    assertEquals(1392409281319L, regularTimePeriod0.getLastMillisecond());
+}",0,"assertEquals(0, regularTimePeriod0.getLastMillisecond())"
+project,0,test4197,"public void test4197() throws Throwable {
+    Week week0 = new Week(3390, 3390);
+    RegularTimePeriod regularTimePeriod0 = week0.next();
+    boolean boolean0 = week0.equals(regularTimePeriod0);
+    assertEquals(179724L, regularTimePeriod0.getSerialIndex());
+}",0,"assertEquals(1, regularTimePeriod0.getSerialIndex())"
+project,0,test4198,"public void test4198() throws Throwable {
+    Week week0 = new Week(3390, 3390);
+    RegularTimePeriod regularTimePeriod0 = week0.next();
+    boolean boolean0 = week0.equals(regularTimePeriod0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test4299,"public void test4299() throws Throwable {
+    Year year0 = new Year(3388);
+    Week week0 = new Week(3388, year0);
+    Week week1 = new Week(3388, 1);
+    boolean boolean0 = week0.equals(week1);
+    assertEquals(1392409281319L, week1.getLastMillisecond());
+}",1,
+project,0,test42100,"public void test42100() throws Throwable {
+    Year year0 = new Year(3388);
+    Week week0 = new Week(3388, year0);
+    Week week1 = new Week(3388, 1);
+    boolean boolean0 = week0.equals(week1);
+    assertEquals(179624L, week0.getSerialIndex());
+}",0,"assertEquals(1, week0.getSerialIndex())"
+project,0,test42101,"public void test42101() throws Throwable {
+    Year year0 = new Year(3388);
+    Week week0 = new Week(3388, year0);
+    Week week1 = new Week(3388, 1);
+    boolean boolean0 = week0.equals(week1);
+    assertEquals(113L, week1.getSerialIndex());
+}",0,
+project,0,test42102,"public void test42102() throws Throwable {
+    Year year0 = new Year(3388);
+    Week week0 = new Week(3388, year0);
+    Week week1 = new Week(3388, 1);
+    boolean boolean0 = week0.equals(week1);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test43103,"public void test43103() throws Throwable {
+    Year year0 = new Year(2519);
+    Week week0 = new Week(2519, year0);
+    week0.equals(week0);
+    assertEquals(1392409281319L, week0.getLastMillisecond());
+}",1,
+project,0,test43104,"public void test43104() throws Throwable {
+    Year year0 = new Year(2519);
+    Week week0 = new Week(2519, year0);
+    week0.equals(week0);
+    assertEquals(133466L, week0.getSerialIndex());
+}",0,"assertEquals(0, week0.getSerialIndex())"
+project,0,test44105,"public void test44105() throws Throwable {
+    Week week0 = new Week();
+    boolean boolean0 = week0.equals(""Week 7, 2014"");
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)
+project,0,test44106,"public void test44106() throws Throwable {
+    Week week0 = new Week();
+    boolean boolean0 = week0.equals(""Week 7, 2014"");
+    assertEquals(1392409281319L, week0.getLastMillisecond());
+}",1,
+project,0,test44107,"public void test44107() throws Throwable {
+    Week week0 = new Week();
+    boolean boolean0 = week0.equals(""Week 7, 2014"");
+    assertEquals(106749L, week0.getSerialIndex());
+}",0,
+project,0,test45108,"public void test45108() throws Throwable {
+    MockDate mockDate0 = new MockDate((-969), (-1322), (-969), (-969), (-1322));
+    Week week0 = new Week(mockDate0);
+    RegularTimePeriod regularTimePeriod0 = week0.next();
+    assertEquals(43360L, regularTimePeriod0.getSerialIndex());
+}",0,
+project,0,test45109,"public void test45109() throws Throwable {
+    MockDate mockDate0 = new MockDate((-969), (-1322), (-969), (-969), (-1322));
+    Week week0 = new Week(mockDate0);
+    RegularTimePeriod regularTimePeriod0 = week0.next();
+    assertEquals(1392409281319L, regularTimePeriod0.getLastMillisecond());
+}",0,"assertEquals(0, regularTimePeriod0.getLastMillisecond())"
+project,0,test46110,"public void test46110() throws Throwable {
+    Week week0 = new Week(1, 1675);
+    RegularTimePeriod regularTimePeriod0 = week0.previous();
+    assertEquals(88776L, week0.getSerialIndex());
+}",0,"assertEquals(0, week0.getSerialIndex())"
+project,0,test46111,"public void test46111() throws Throwable {
+    Week week0 = new Week(1, 1675);
+    RegularTimePeriod regularTimePeriod0 = week0.previous();
+    assertEquals(1392409281319L, week0.getLastMillisecond());
+}",1,
+project,0,test46112,"public void test46112() throws Throwable {
+    Week week0 = new Week(1, 1675);
+    RegularTimePeriod regularTimePeriod0 = week0.previous();
+    assertNull(regularTimePeriod0);
+}",0,
+project,0,test47113,"public void test47113() throws Throwable {
+    MockDate mockDate0 = new MockDate(0, 0, 8);
+    mockDate0.setTime(8);
+    SimpleTimeZone simpleTimeZone0 = new SimpleTimeZone(0, """");
+    Locale locale0 = Locale.FRENCH;
+    Week week0 = new Week(mockDate0, simpleTimeZone0, locale0);
+    long long0 = week0.getLastMillisecond();
+    assertEquals(104411L, week0.getSerialIndex());
+}",0,"assertEquals(0, week0.getSerialIndex())"
+project,0,test47114,"public void test47114() throws Throwable {
+    MockDate mockDate0 = new MockDate(0, 0, 8);
+    mockDate0.setTime(8);
+    SimpleTimeZone simpleTimeZone0 = new SimpleTimeZone(0, """");
+    Locale locale0 = Locale.FRENCH;
+    Week week0 = new Week(mockDate0, simpleTimeZone0, locale0);
+    long long0 = week0.getLastMillisecond();
+    assertEquals(7L, long0);
+}",1,
+project,0,test48115,"public void test48115() throws Throwable {
+    MockDate mockDate0 = new MockDate((-1L));
+    TimeZone timeZone0 = TimeZone.getTimeZone(""4wmx)"");
+    Locale locale0 = Locale.KOREAN;
+    Week week0 = new Week(mockDate0, timeZone0, locale0);
+    RegularTimePeriod regularTimePeriod0 = week0.previous();
+    assertEquals(104409L, regularTimePeriod0.getSerialIndex());
+}",0,
+project,0,test48116,"public void test48116() throws Throwable {
+    MockDate mockDate0 = new MockDate((-1L));
+    TimeZone timeZone0 = TimeZone.getTimeZone(""4wmx)"");
+    Locale locale0 = Locale.KOREAN;
+    Week week0 = new Week(mockDate0, timeZone0, locale0);
+    RegularTimePeriod regularTimePeriod0 = week0.previous();
+    assertNotNull(regularTimePeriod0);
+}",0,
+project,0,test49117,"public void test49117() throws Throwable {
+    MockGregorianCalendar mockGregorianCalendar0 = new MockGregorianCalendar();
+    Date date0 = mockGregorianCalendar0.getGregorianChange();
+    SimpleTimeZone simpleTimeZone0 = new SimpleTimeZone((-981), ""Null 'day' argument."");
+    Week week0 = null;
+    try {
+        week0 = new Week(date0, simpleTimeZone0, (Locale) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'locale' argument.
+        //
+        verifyException(""org.jfree.data.time.Week"", e);
+    }
+}",0,
+project,0,test50118,"public void test50118() throws Throwable {
+    MockDate mockDate0 = new MockDate(1811, 1811, 9);
+    Week week0 = null;
+    try {
+        week0 = new Week(mockDate0, (TimeZone) null, (Locale) null);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'zone' argument.
+        //
+        verifyException(""org.jfree.data.time.Week"", e);
+    }
+}",0,
+project,0,test51119,"public void test51119() throws Throwable {
+    Week week0 = new Week();
+    RegularTimePeriod regularTimePeriod0 = week0.previous();
+    assertEquals(106748L, regularTimePeriod0.getSerialIndex());
+}",0,
+project,0,test51120,"public void test51120() throws Throwable {
+    Week week0 = new Week();
+    RegularTimePeriod regularTimePeriod0 = week0.previous();
+    assertEquals(1392409281319L, regularTimePeriod0.getLastMillisecond());
+}",0,"assertEquals(0, regularTimePeriod0.getLastMillisecond())"
+project,0,test52121,"public void test52121() throws Throwable {
+    Week week0 = new Week(0, 0);
+    week0.getFirstMillisecond();
+    assertEquals(0L, week0.getSerialIndex());
+}",0,"assertEquals(0, week0.getSerialIndex())"
+project,0,test52122,"public void test52122() throws Throwable {
+    Week week0 = new Week(0, 0);
+    week0.getFirstMillisecond();
+    assertEquals(1392409281319L, week0.getLastMillisecond());
+}",1,
+project,0,test53123,"public void test53123() throws Throwable {
+    Week week0 = new Week((-584), 2);
+    long long0 = week0.getSerialIndex();
+    assertEquals(1392409281319L, week0.getLastMillisecond());
+}",1,
+project,0,test53124,"public void test53124() throws Throwable {
+    Week week0 = new Week((-584), 2);
+    long long0 = week0.getSerialIndex();
+    assertEquals(34L, long0);
+}",0,"assertEquals(0, long0)"
+project,0,test54125,"public void test54125() throws Throwable {
+    MockDate mockDate0 = new MockDate(0, 0, 8);
+    SimpleTimeZone simpleTimeZone0 = new SimpleTimeZone(0, """");
+    Locale locale0 = Locale.FRENCH;
+    Week week0 = new Week(mockDate0, simpleTimeZone0, locale0);
+    String string0 = week0.toString();
+    assertEquals((-2208384000001L), week0.getLastMillisecond());
+}",1,
+project,0,test54126,"public void test54126() throws Throwable {
+    MockDate mockDate0 = new MockDate(0, 0, 8);
+    SimpleTimeZone simpleTimeZone0 = new SimpleTimeZone(0, """");
+    Locale locale0 = Locale.FRENCH;
+    Week week0 = new Week(mockDate0, simpleTimeZone0, locale0);
+    String string0 = week0.toString();
+    assertEquals(""Week 2, 1900"", string0);
+}",0,
+project,0,test55127,"public void test55127() throws Throwable {
+    MockDate mockDate0 = new MockDate(0, 0, 8);
+    SimpleTimeZone simpleTimeZone0 = new SimpleTimeZone(0, """");
+    Locale locale0 = Locale.FRENCH;
+    Week week0 = new Week(mockDate0, simpleTimeZone0, locale0);
+    int int0 = week0.getYearValue();
+    assertEquals((-2208384000001L), week0.getLastMillisecond());
+}",1,
+project,0,test55128,"public void test55128() throws Throwable {
+    MockDate mockDate0 = new MockDate(0, 0, 8);
+    SimpleTimeZone simpleTimeZone0 = new SimpleTimeZone(0, """");
+    Locale locale0 = Locale.FRENCH;
+    Week week0 = new Week(mockDate0, simpleTimeZone0, locale0);
+    int int0 = week0.getYearValue();
+    assertEquals(2, week0.getWeek());
+}",0,"assertEquals(1, week0.getWeek())"
+project,0,test55129,"public void test55129() throws Throwable {
+    MockDate mockDate0 = new MockDate(0, 0, 8);
+    SimpleTimeZone simpleTimeZone0 = new SimpleTimeZone(0, """");
+    Locale locale0 = Locale.FRENCH;
+    Week week0 = new Week(mockDate0, simpleTimeZone0, locale0);
+    int int0 = week0.getYearValue();
+    assertEquals(1900, int0);
+}",0,"assertEquals(1, int0)"
+project,0,test56130,"public void test56130() throws Throwable {
+    // Undeclared exception!
+    try {
+        Week.parseWeek(""Week 6, 2014"");
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Can't evaluate the week.
+        //
+        verifyException(""org.jfree.data.time.Week"", e);
+    }
+}",1,
+project,0,test57131,"public void test57131() throws Throwable {
+    MockDate mockDate0 = new MockDate(0, 0, 8);
+    SimpleTimeZone simpleTimeZone0 = new SimpleTimeZone(0, """");
+    Locale locale0 = Locale.FRENCH;
+    Week week0 = new Week(mockDate0, simpleTimeZone0, locale0);
+    long long0 = week0.getLastMillisecond();
+    assertEquals((-2208384000001L), long0);
+}",1,
+project,0,test57132,"public void test57132() throws Throwable {
+    MockDate mockDate0 = new MockDate(0, 0, 8);
+    SimpleTimeZone simpleTimeZone0 = new SimpleTimeZone(0, """");
+    Locale locale0 = Locale.FRENCH;
+    Week week0 = new Week(mockDate0, simpleTimeZone0, locale0);
+    long long0 = week0.getLastMillisecond();
+    assertEquals(2, week0.getWeek());
+}",0,"assertEquals(1, week0.getWeek())"
+project,0,test58133,"public void test58133() throws Throwable {
+    MockDate mockDate0 = new MockDate((-969), (-1322), (-969), (-969), (-1322));
+    Week week0 = new Week(mockDate0);
+    // Undeclared exception!
+    try {
+        week0.getYear();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Year constructor: year (818) outside valid range.
+        //
+        verifyException(""org.jfree.data.time.Year"", e);
+    }
+}",0,
+project,0,test59134,"public void test59134() throws Throwable {
+    SimpleTimeZone simpleTimeZone0 = new SimpleTimeZone(1020, ""org.jfree.data.time.Week"");
+    Week week0 = null;
+    try {
+        week0 = new Week((Date) null, simpleTimeZone0);
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // Null 'time' argument.
+        //
+        verifyException(""org.jfree.data.time.Week"", e);
+    }
+}",0,

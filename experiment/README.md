@@ -84,9 +84,32 @@ sudo cpan DBD::CSV
 
 ## 1.6 Defects4J
 
-To replicate the experiments with Defects4J, the Subversion command-line client tool must be installed.
-Execute `svn --version` command to check if the tool is installed in your machine, otherwise check the list of commands
+### 1.6.1 Dependencies
+
+To replicate the experiments with Defects4J, the following dependencies are required:
+
+1. `Subversion` command-line client tool. Execute `svn --version` command to check if the tool is installed in your machine, otherwise check the list of commands
 to install it in your machine, [here](https://command-not-found.com/svn).
+2. `Perl` and `cpan`. Execute `perl -v` command to check if the tool is installed in your machine, otherwise check the list of commands
+to install it in your machine, [here](https://command-not-found.com/cpan).
+3. `Cpanminus` and the `DBI` module. Execute `cpan -v` command to check if the tool is installed in your machine, otherwise check the list of commands
+to install it in your machine, [here](https://command-not-found.com/cpanm). To install the `DBI` module, execute the following command:
+    ```shell
+    sudo cpan
+    ```
+    and then, in the cpan shell, execute the following command:
+    ```shell
+    install DBI
+    ```
+    and
+    ```shell
+    install DBD::CSV
+    ```
+   **Important**: in linux-based systems, check that the `build-essential` package is installed in your machine, before to execute `install DBI`. Otherwise, install it with the following commands (on Ubuntu):
+    ```shell
+    sudo apt-get update
+    sudo apt-get install build-essential
+    ```
 
 # 2. Overview
 

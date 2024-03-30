@@ -1,0 +1,162 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test022,"public void test022() throws Throwable {
+    MockDate mockDate0 = new MockDate(60000, 60000, 60000, 16, 16);
+    String string0 = ISO8601Utils.format((Date) mockDate0);
+    assertEquals(""67064-04-10T16:16:00Z"", string0);
+}",0,
+project,0,test033,"public void test033() throws Throwable {
+    // Undeclared exception!
+    try {
+        ISO8601Utils.parse(""MM"", (ParsePosition) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.gson.internal.bind.util.ISO8601Utils"", e);
+    }
+}",1,
+project,0,test044,"public void test044() throws Throwable {
+    MockDate mockDate0 = new MockDate(3903L);
+    // Undeclared exception!
+    try {
+        ISO8601Utils.format((Date) mockDate0, true, (TimeZone) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+    }
+}",0,
+project,0,test055,"public void test055() throws Throwable {
+    // Undeclared exception!
+    try {
+        ISO8601Utils.format((Date) null, false);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.Calendar"", e);
+    }
+}",0,
+project,0,test066,"public void test066() throws Throwable {
+    ParsePosition parsePosition0 = new ParsePosition(1);
+    try {
+        ISO8601Utils.parse(""-00:00"", parsePosition0);
+        fail(""Expecting exception: ParseException"");
+    } catch (ParseException e) {
+        //
+        // Failed to parse date [\""-00:00']: Invalid number: 00:0
+        //
+        verifyException(""com.google.gson.internal.bind.util.ISO8601Utils"", e);
+    }
+}",1,
+project,0,test077,"public void test077() throws Throwable {
+    ParsePosition parsePosition0 = new ParsePosition(0);
+    try {
+        ISO8601Utils.parse(""Mismatching time zone indicator: "", parsePosition0);
+        fail(""Expecting exception: ParseException"");
+    } catch (ParseException e) {
+        //
+        // Failed to parse date [\""Mismatching time zone indicator: ']: Invalid number: Mism
+        //
+        verifyException(""com.google.gson.internal.bind.util.ISO8601Utils"", e);
+    }
+}",1,
+project,0,test088,"public void test088() throws Throwable {
+    ParsePosition parsePosition0 = new ParsePosition(2147483645);
+    try {
+        ISO8601Utils.parse(""4"", parsePosition0);
+        fail(""Expecting exception: ParseException"");
+    } catch (ParseException e) {
+        //
+        // Failed to parse date [\""4']: 4
+        //
+        verifyException(""com.google.gson.internal.bind.util.ISO8601Utils"", e);
+    }
+}",0,
+project,0,test099,"public void test099() throws Throwable {
+    ParsePosition parsePosition0 = new ParsePosition(3);
+    try {
+        ISO8601Utils.parse("""", parsePosition0);
+        fail(""Expecting exception: ParseException"");
+    } catch (ParseException e) {
+        //
+        // Failed to parse date [\""']: (java.lang.NumberFormatException)
+        //
+        verifyException(""com.google.gson.internal.bind.util.ISO8601Utils"", e);
+    }
+}",0,
+project,0,test1010,"public void test1010() throws Throwable {
+    ParsePosition parsePosition0 = new ParsePosition((-1201));
+    try {
+        ISO8601Utils.parse((String) null, parsePosition0);
+        fail(""Expecting exception: ParseException"");
+    } catch (ParseException e) {
+        //
+        // Failed to parse date [null]: (java.lang.NumberFormatException)
+        //
+        verifyException(""com.google.gson.internal.bind.util.ISO8601Utils"", e);
+    }
+}",0,
+project,0,test1111,"public void test1111() throws Throwable {
+    ParsePosition parsePosition0 = new ParsePosition(0);
+    ISO8601Utils.parse(""3938-06-04T16:18:16.000Z"", parsePosition0);
+    try {
+        ISO8601Utils.parse(""Mismatching time zone indicator: "", parsePosition0);
+        fail(""Expecting exception: ParseException"");
+    } catch (ParseException e) {
+        //
+        // Failed to parse date [\""Mismatching time zone indicator: ']: Invalid number: dica
+        //
+        verifyException(""com.google.gson.internal.bind.util.ISO8601Utils"", e);
+    }
+}",1,
+project,0,test1313,"public void test1313() throws Throwable {
+    ParsePosition parsePosition0 = new ParsePosition(1);
+    try {
+        ISO8601Utils.parse(""+0000"", parsePosition0);
+        fail(""Expecting exception: ParseException"");
+    } catch (ParseException e) {
+        //
+        // Failed to parse date [\""+0000']: +0000
+        //
+        verifyException(""com.google.gson.internal.bind.util.ISO8601Utils"", e);
+    }
+}",0,
+project,0,test1414,"public void test1414() throws Throwable {
+    MockDate mockDate0 = new MockDate(1, 1, 1);
+    SimpleTimeZone simpleTimeZone0 = new SimpleTimeZone(1, ""1901-02-01T00:00:00Z"");
+    String string0 = ISO8601Utils.format((Date) mockDate0, false, (TimeZone) simpleTimeZone0);
+    assertEquals(""1901-02-01T00:00:00+00:00"", string0);
+}",0,
+project,0,test1515,"public void test1515() throws Throwable {
+    MockDate mockDate0 = new MockDate((-48), (-48), (-48), (-48), (-48), (-48));
+    SimpleTimeZone simpleTimeZone0 = new SimpleTimeZone((-48), ""1847-11-10T23:11:12Z"");
+    String string0 = ISO8601Utils.format((Date) mockDate0, true, (TimeZone) simpleTimeZone0);
+    assertEquals(""1847-11-10T23:11:11.952-00:00"", string0);
+}",0,
+project,0,test1616,"public void test1616() throws Throwable {
+    MockDate mockDate0 = new MockDate(2254, (-2123), 2254, (-2123), (-496));
+    TimeZone timeZone0 = TimeZone.getDefault();
+    String string0 = ISO8601Utils.format((Date) mockDate0, true, timeZone0);
+    assertEquals(""3983-01-05T04:44:00.000Z"", string0);
+}",0,
+project,0,test1717,"public void test1717() throws Throwable {
+    MockDate mockDate0 = new MockDate(2254, (-2123), 2254, (-2123), (-496));
+    String string0 = ISO8601Utils.format((Date) mockDate0, false);
+    assertEquals(""3983-01-05T04:44:00Z"", string0);
+}",0,
+project,0,test1919,"public void test1919() throws Throwable {
+    // Undeclared exception!
+    try {
+        ISO8601Utils.format((Date) null);
+        fail(""Expecting exception: NullPointerException"");
+    } catch (NullPointerException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""java.util.Calendar"", e);
+    }
+}",0,

@@ -1,0 +1,28 @@
+org.apache.commons.codec.binary.BaseNCodecInputStream,@Test(timeout = 4000)
+public void test044() throws Throwable {
+    Enumeration<InputStream> enumeration0 = (Enumeration<InputStream>) mock(Enumeration.class, new ViolatedAssumptionAnswer());
+    doReturn(false).when(enumeration0).hasMoreElements();
+    SequenceInputStream sequenceInputStream0 = new SequenceInputStream(enumeration0);
+    Base32 base32_0 = new Base32();
+    byte[] byteArray0 = new byte[3];
+    BaseNCodecInputStream baseNCodecInputStream0 = new BaseNCodecInputStream(sequenceInputStream0, base32_0, true);
+    int int0 = baseNCodecInputStream0.read(byteArray0);
+},ERROR,java.nio.file.NoSuchFileException,/home/star_usit_group/tratto/experiment/generator/resources/defects4j/temp/Codec_12b/src/main/java/java/io/FilterInputStream.java
+org.apache.commons.codec.binary.BaseNCodecInputStream,@Test(timeout = 4000)
+public void test055() throws Throwable {
+    byte[] byteArray0 = new byte[5];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    Base32 base32_0 = new Base32(0);
+    BaseNCodecInputStream baseNCodecInputStream0 = new BaseNCodecInputStream(byteArrayInputStream0, base32_0, false);
+    int int0 = baseNCodecInputStream0.read();
+    byteArrayInputStream0.available();
+},ERROR,java.nio.file.NoSuchFileException,/home/star_usit_group/tratto/experiment/generator/resources/defects4j/temp/Codec_12b/src/main/java/java/io/ByteArrayInputStream.java
+org.apache.commons.codec.binary.BaseNCodecInputStream,@Test(timeout = 4000)
+public void test1213() throws Throwable {
+    byte[] byteArray0 = new byte[7];
+    ByteArrayInputStream byteArrayInputStream0 = new ByteArrayInputStream(byteArray0);
+    Base32 base32_0 = new Base32((byte) (-1), byteArray0, false);
+    BaseNCodecInputStream baseNCodecInputStream0 = new BaseNCodecInputStream(byteArrayInputStream0, base32_0, true);
+    int int0 = baseNCodecInputStream0.read();
+    byteArrayInputStream0.available();
+},ERROR,java.nio.file.NoSuchFileException,/home/star_usit_group/tratto/experiment/generator/resources/defects4j/temp/Codec_12b/src/main/java/java/io/ByteArrayInputStream.java

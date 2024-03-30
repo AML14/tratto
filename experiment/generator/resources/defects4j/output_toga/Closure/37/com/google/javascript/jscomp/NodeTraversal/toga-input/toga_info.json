@@ -1,0 +1,184 @@
+{
+  "test1313" : {
+    "methodSignature" : "public void traverse(Node root)",
+    "methodName" : "traverse",
+    "className" : "com.google.javascript.jscomp.NodeTraversal",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1313() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"\");\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, (NodeTraversal.Callback) null);\n    nodeTraversal0.traverse(node0);\n}",
+    "testName" : "test1313"
+  },
+  "test2424" : {
+    "methodSignature" : "public void process(Node externs, Node root)",
+    "methodName" : "process",
+    "className" : "com.google.javascript.jscomp.NodeTraversal",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test2424() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"(function(){})(y.protCtype);\");\n    CoalesceVariableNames coalesceVariableNames0 = new CoalesceVariableNames(compiler0, false);\n    coalesceVariableNames0.process(node0, node0);\n}",
+    "testName" : "test2424"
+  },
+  "test2121" : {
+    "methodSignature" : "public int getLineNumber()",
+    "methodName" : "getLineNumber",
+    "className" : "com.google.javascript.jscomp.NodeTraversal",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test2121() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"t\");\n    MakeDeclaredNamesUnique makeDeclaredNamesUnique0 = new MakeDeclaredNamesUnique();\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, makeDeclaredNamesUnique0);\n    nodeTraversal0.traverse(node0);\n    nodeTraversal0.getModule();\n    nodeTraversal0.getLineNumber();\n}",
+    "testName" : "test2121"
+  },
+  "test2222" : {
+    "methodSignature" : "public JSModule getModule()",
+    "methodName" : "getModule",
+    "className" : "com.google.javascript.jscomp.NodeTraversal",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test2222() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    MoveFunctionDeclarations moveFunctionDeclarations0 = new MoveFunctionDeclarations(compiler0);\n    compiler0.parseTestCode(\"could not determine the type of this expression\");\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, moveFunctionDeclarations0);\n    JSModule jSModule0 = nodeTraversal0.getModule();\n}",
+    "testName" : "test2222"
+  },
+  "test011" : {
+    "methodSignature" : "public String getSourceName()",
+    "methodName" : "getSourceName",
+    "className" : "com.google.javascript.jscomp.NodeTraversal",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test011() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseSyntheticCode(\"[source unknown]\", \"[source unknown]\");\n    Denormalize.StripConstantAnnotations denormalize_StripConstantAnnotations0 = new Denormalize.StripConstantAnnotations(compiler0);\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, denormalize_StripConstantAnnotations0);\n    Scope scope0 = new Scope(node0, compiler0);\n    nodeTraversal0.traverseAtScope(scope0);\n    nodeTraversal0.getSourceName();\n}",
+    "testName" : "test011"
+  },
+  "test033" : {
+    "methodSignature" : "public int getCharno()",
+    "methodName" : "getCharno",
+    "className" : "com.google.javascript.jscomp.NodeTraversal",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test033() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    MoveFunctionDeclarations moveFunctionDeclarations0 = new MoveFunctionDeclarations(compiler0);\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, moveFunctionDeclarations0);\n    Node node0 = Node.newString(\"iu[a\\\"+.Z<v)\");\n    JSError jSError0 = nodeTraversal0.makeError(node0, compiler0.OPTIMIZE_LOOP_ERROR, (String[]) null);\n    jSError0.getCharno();\n}",
+    "testName" : "test033"
+  },
+  "test055" : {
+    "methodSignature" : "public int getLineNumber()",
+    "methodName" : "getLineNumber",
+    "className" : "com.google.javascript.jscomp.NodeTraversal",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test055() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    StrictModeCheck strictModeCheck0 = new StrictModeCheck(compiler0);\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, strictModeCheck0);\n    Node node0 = compiler0.parseTestCode(\"com.google.javascript.jscomp.NodeTraversal$AbstractPostOrderCallback\");\n    nodeTraversal0.traverse(node0);\n    nodeTraversal0.getLineNumber();\n}",
+    "testName" : "test055"
+  },
+  "test077" : {
+    "methodSignature" : "public JSError makeError(Node n, CheckLevel level, DiagnosticType type, String... arguments)",
+    "methodName" : "makeError",
+    "className" : "com.google.javascript.jscomp.NodeTraversal",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test077() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, (NodeTraversal.Callback) null);\n    CheckLevel checkLevel0 = CheckLevel.WARNING;\n    nodeTraversal0.makeError((Node) null, checkLevel0, compiler0.OPTIMIZE_LOOP_ERROR, (String[]) null);\n}",
+    "testName" : "test077"
+  },
+  "test099" : {
+    "methodSignature" : "public Scope createScope(Node root, Scope parent)",
+    "methodName" : "createScope",
+    "className" : "com.google.javascript.jscomp.NodeTraversal",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test099() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"t\");\n    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);\n    typedScopeCreator0.createScope(node0, (Scope) null);\n}",
+    "testName" : "test099"
+  },
+  "test1616" : {
+    "methodSignature" : "public static void traverseRoots(AbstractCompiler compiler, Callback cb, Node... roots)",
+    "methodName" : "traverseRoots",
+    "className" : "com.google.javascript.jscomp.NodeTraversal",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1616() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    MoveFunctionDeclarations moveFunctionDeclarations0 = new MoveFunctionDeclarations(compiler0);\n    Node node0 = compiler0.parseTestCode(\"t\");\n    Node[] nodeArray0 = new Node[6];\n    nodeArray0[0] = node0;\n    Node node1 = new Node(45, node0);\n    nodeArray0[1] = node1;\n    NodeTraversal.traverseRoots((AbstractCompiler) compiler0, (NodeTraversal.Callback) moveFunctionDeclarations0, nodeArray0);\n}",
+    "testName" : "test1616"
+  },
+  "test2727" : {
+    "methodSignature" : "void process(CompilerPass p)",
+    "methodName" : "process",
+    "className" : "com.google.javascript.jscomp.NodeTraversal",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test2727() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    MoveFunctionDeclarations moveFunctionDeclarations0 = new MoveFunctionDeclarations(compiler0);\n    compiler0.process(moveFunctionDeclarations0);\n}",
+    "testName" : "test2727"
+  },
+  "test1717" : {
+    "methodSignature" : "public String getSourceName()",
+    "methodName" : "getSourceName",
+    "className" : "com.google.javascript.jscomp.NodeTraversal",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1717() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    MoveFunctionDeclarations moveFunctionDeclarations0 = new MoveFunctionDeclarations(compiler0);\n    Node node0 = compiler0.parseSyntheticCode(\"t\", \"t\");\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, moveFunctionDeclarations0);\n    nodeTraversal0.traverseInnerNode(node0, node0, (Scope) null);\n    nodeTraversal0.getSourceName();\n}",
+    "testName" : "test1717"
+  },
+  "test2828" : {
+    "methodSignature" : "protected void traverseInnerNode(Node node, Node parent, Scope refinedScope)",
+    "methodName" : "traverseInnerNode",
+    "className" : "com.google.javascript.jscomp.NodeTraversal",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test2828() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseSyntheticCode(\"[source unknown]\", \"[source unknown]\");\n    Scope scope0 = new Scope(node0, compiler0);\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, (NodeTraversal.Callback) null);\n    nodeTraversal0.traverseInnerNode((Node) null, node0, scope0);\n}",
+    "testName" : "test2828"
+  },
+  "test2525" : {
+    "methodSignature" : "public int getCharno()",
+    "methodName" : "getCharno",
+    "className" : "com.google.javascript.jscomp.NodeTraversal",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test2525() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseSyntheticCode(\"@TV(q`[Qqq4'uz)<\", \"var JSCompiler_stubMap = [];function JSCompiler_stubMethod(JSCompiler_stubMethod_id) {  return function() {    return JSCompiler_stubMap[JSCompiler_stubMethod_id].apply(        this, arguments);  };}function JSCompiler_unstubMethod(    JSCompiler_unstubMethod_id, JSCompiler_unstubMethod_body) {  return JSCompiler_stubMap[JSCompiler_unstubMethod_id] =       JSCompiler_unstubMethod_body;}\");\n    node0.getCharno();\n}",
+    "testName" : "test2525"
+  },
+  "test1515" : {
+    "methodSignature" : "public void process(Node externs, Node root)",
+    "methodName" : "process",
+    "className" : "com.google.javascript.jscomp.NodeTraversal",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1515() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseSyntheticCode(\"GPC(bbmyFZ:]-G\", \"GPC(bbmyFZ:]-G\");\n    StrictModeCheck strictModeCheck0 = new StrictModeCheck(compiler0);\n    strictModeCheck0.process(node0, node0);\n}",
+    "testName" : "test1515"
+  },
+  "test2626" : {
+    "methodSignature" : "public Node getEnclosingFunction()",
+    "methodName" : "getEnclosingFunction",
+    "className" : "com.google.javascript.jscomp.NodeTraversal",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test2626() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    MoveFunctionDeclarations moveFunctionDeclarations0 = new MoveFunctionDeclarations(compiler0);\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, moveFunctionDeclarations0);\n    Node node0 = nodeTraversal0.getEnclosingFunction();\n}",
+    "testName" : "test2626"
+  },
+  "test3030" : {
+    "methodSignature" : "public void traverse(Node root)",
+    "methodName" : "traverse",
+    "className" : "com.google.javascript.jscomp.NodeTraversal",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test3030() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = new Node(132);\n    Denormalize.StripConstantAnnotations denormalize_StripConstantAnnotations0 = new Denormalize.StripConstantAnnotations(compiler0);\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, denormalize_StripConstantAnnotations0);\n    nodeTraversal0.traverse(node0);\n}",
+    "testName" : "test3030"
+  },
+  "test2020" : {
+    "methodSignature" : "public int getLineNumber()",
+    "methodName" : "getLineNumber",
+    "className" : "com.google.javascript.jscomp.NodeTraversal",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test2020() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    MoveFunctionDeclarations moveFunctionDeclarations0 = new MoveFunctionDeclarations(compiler0);\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, moveFunctionDeclarations0);\n    Node node0 = Node.newString(2, \"\");\n    Scope scope0 = new Scope(node0, (ObjectType) null);\n    nodeTraversal0.traverseInnerNode(node0, node0, scope0);\n    int int0 = nodeTraversal0.getLineNumber();\n}",
+    "testName" : "test2020"
+  },
+  "test000" : {
+    "methodSignature" : "public void process(Node externs, Node root)",
+    "methodName" : "process",
+    "className" : "com.google.javascript.jscomp.NodeTraversal",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test000() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseTestCode(\"(function(t){})(y.prototype);\");\n    FlowSensitiveInlineVariables flowSensitiveInlineVariables0 = new FlowSensitiveInlineVariables(compiler0);\n    flowSensitiveInlineVariables0.process(node0, node0);\n}",
+    "testName" : "test000"
+  },
+  "test022" : {
+    "methodSignature" : "InputId getInputId()",
+    "methodName" : "getInputId",
+    "className" : "com.google.javascript.jscomp.NodeTraversal",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test022() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    GatherRawExports gatherRawExports0 = new GatherRawExports(compiler0);\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, gatherRawExports0);\n    InputId inputId0 = nodeTraversal0.getInputId();\n}",
+    "testName" : "test022"
+  },
+  "test044" : {
+    "methodSignature" : "public Node getCurrentNode()",
+    "methodName" : "getCurrentNode",
+    "className" : "com.google.javascript.jscomp.NodeTraversal",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test044() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    MoveFunctionDeclarations moveFunctionDeclarations0 = new MoveFunctionDeclarations(compiler0);\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, moveFunctionDeclarations0);\n    Node node0 = nodeTraversal0.getCurrentNode();\n}",
+    "testName" : "test044"
+  },
+  "test066" : {
+    "methodSignature" : "public double getProgress()",
+    "methodName" : "getProgress",
+    "className" : "com.google.javascript.jscomp.NodeTraversal",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test066() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    CheckDebuggerStatement checkDebuggerStatement0 = new CheckDebuggerStatement(compiler0);\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, checkDebuggerStatement0);\n    Compiler compiler1 = nodeTraversal0.getCompiler();\n    compiler1.getProgress();\n}",
+    "testName" : "test066"
+  },
+  "test088" : {
+    "methodSignature" : "Scope createInitialScope(Node root)",
+    "methodName" : "createInitialScope",
+    "className" : "com.google.javascript.jscomp.NodeTraversal",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test088() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseSyntheticCode(\"u:Kc\", \"u:Kc\");\n    TypedScopeCreator typedScopeCreator0 = new TypedScopeCreator(compiler0);\n    typedScopeCreator0.createInitialScope(node0);\n}",
+    "testName" : "test088"
+  },
+  "test1818" : {
+    "methodSignature" : "public String getSourceName()",
+    "methodName" : "getSourceName",
+    "className" : "com.google.javascript.jscomp.NodeTraversal",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1818() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    Node node0 = compiler0.parseSyntheticCode(\"7tq!!x`d*%KCgqtY\", \"7tq!!x`d*%KCgqtY\");\n    Scope scope0 = new Scope(node0, compiler0);\n    MakeDeclaredNamesUnique makeDeclaredNamesUnique0 = new MakeDeclaredNamesUnique();\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, makeDeclaredNamesUnique0);\n    nodeTraversal0.traverseInnerNode(node0, node0, scope0);\n    nodeTraversal0.getSourceName();\n}",
+    "testName" : "test1818"
+  },
+  "test2929" : {
+    "methodSignature" : "public boolean hasScope()",
+    "methodName" : "hasScope",
+    "className" : "com.google.javascript.jscomp.NodeTraversal",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test2929() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    MoveFunctionDeclarations moveFunctionDeclarations0 = new MoveFunctionDeclarations(compiler0);\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, moveFunctionDeclarations0);\n    boolean boolean0 = nodeTraversal0.hasScope();\n}",
+    "testName" : "test2929"
+  },
+  "test1919" : {
+    "methodSignature" : "public int getLineNumber()",
+    "methodName" : "getLineNumber",
+    "className" : "com.google.javascript.jscomp.NodeTraversal",
+    "testPrefix" : "@Test(timeout = 4000)\npublic void test1919() throws Throwable {\n    Compiler compiler0 = new Compiler();\n    MoveFunctionDeclarations moveFunctionDeclarations0 = new MoveFunctionDeclarations(compiler0);\n    NodeTraversal nodeTraversal0 = new NodeTraversal(compiler0, moveFunctionDeclarations0);\n    Node node0 = Node.newString(12, \"Z\", 12, 12);\n    Scope scope0 = new Scope(node0, (ObjectType) null);\n    nodeTraversal0.traverseInnerNode(node0, node0, scope0);\n    int int0 = nodeTraversal0.getLineNumber();\n}",
+    "testName" : "test1919"
+  }
+}

@@ -1,0 +1,1161 @@
+focal_method,test_prefix,docstring
+"@Override
+public void write(byte[] wBuf, int wOffset, int numToWrite) throws IOException {
+    if (!haveUnclosedEntry) {
+        throw new IllegalStateException(""No current tar entry"");
+    }
+    if (currBytes + numToWrite > currSize) {
+        throw new IOException(""request to write '"" + numToWrite + ""' bytes exceeds size in header of '"" + currSize + ""' bytes for entry '"" + currName + ""'"");
+        //
+        // We have to deal with assembly!!!
+        // The programmer can be writing little 32 byte chunks for all
+        // we know, and we must assemble complete records for writing.
+        // REVIEW Maybe this should be in TarBuffer? Could that help to
+        // eliminate some of the buffer copying.
+        //
+    }
+    if (assemLen > 0) {
+        if (assemLen + numToWrite >= recordBuf.length) {
+            int aLen = recordBuf.length - assemLen;
+            System.arraycopy(assemBuf, 0, recordBuf, 0, assemLen);
+            System.arraycopy(wBuf, wOffset, recordBuf, assemLen, aLen);
+            writeRecord(recordBuf);
+            currBytes += recordBuf.length;
+            wOffset += aLen;
+            numToWrite -= aLen;
+            assemLen = 0;
+        } else {
+            System.arraycopy(wBuf, wOffset, assemBuf, assemLen, numToWrite);
+            wOffset += numToWrite;
+            assemLen += numToWrite;
+            numToWrite = 0;
+        }
+    }
+    //
+    // When we get here we have EITHER:
+    // o An empty ""assemble"" buffer.
+    // o No bytes to write (numToWrite == 0)
+    //
+    while (numToWrite > 0) {
+        if (numToWrite < recordBuf.length) {
+            System.arraycopy(wBuf, wOffset, assemBuf, assemLen, numToWrite);
+            assemLen += numToWrite;
+            break;
+        }
+        writeRecord(wBuf, wOffset);
+        int num = recordBuf.length;
+        currBytes += num;
+        numToWrite -= num;
+        wOffset += num;
+    }
+}","public void test000() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(byteArrayOutputStream0);
+    tarArchiveOutputStream0.write((byte[]) null, (-3923), (-3923));
+}","/**
+ * Writes bytes to the current tar archive entry. This method
+ * is aware of the current entry and will throw an exception if
+ * you attempt to write bytes past the length specified for the
+ * current entry. The method is also (painfully) aware of the
+ * record buffering required by TarBuffer, and manages buffers
+ * that are not a multiple of recordsize in length, including
+ * assembling records from small buffers.
+ *
+ * @param wBuf The buffer to write to the archive.
+ * @param wOffset The offset in the buffer from which to get bytes.
+ * @param numToWrite The number of bytes to write.
+ * @throws IOException on error
+ */"
+"@Override
+public void close() throws IOException {
+    if (!finished) {
+        finish();
+    }
+    if (!closed) {
+        out.close();
+        closed = true;
+    }
+}","public void test011() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream(0);
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(byteArrayOutputStream0);
+    TarArchiveOutputStream tarArchiveOutputStream1 = new TarArchiveOutputStream(tarArchiveOutputStream0, 0, ""org.apache.commons.compress.archivers.dump.DumpArchiveConstants$SEGMENT_TYPE"");
+    tarArchiveOutputStream1.close();
+}","/**
+ * Closes the underlying OutputStream.
+ * @throws IOException on error
+ */"
+"@Override
+public void close() throws IOException {
+    if (!finished) {
+        finish();
+    }
+    if (!closed) {
+        out.close();
+        closed = true;
+    }
+}","public void test022() throws Throwable {
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream((OutputStream) null);
+    TarArchiveOutputStream tarArchiveOutputStream1 = new TarArchiveOutputStream(tarArchiveOutputStream0, 0);
+    tarArchiveOutputStream1.close();
+}","/**
+ * Closes the underlying OutputStream.
+ * @throws IOException on error
+ */"
+"@Override
+public void closeArchiveEntry() throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    if (!haveUnclosedEntry) {
+        throw new IOException(""No current entry to close"");
+    }
+    if (assemLen > 0) {
+        for (int i = assemLen; i < assemBuf.length; ++i) {
+            assemBuf[i] = 0;
+        }
+        writeRecord(assemBuf);
+        currBytes += assemLen;
+        assemLen = 0;
+    }
+    if (currBytes < currSize) {
+        throw new IOException(""entry '"" + currName + ""' closed at '"" + currBytes + ""' before the '"" + currSize + ""' bytes specified in the header were written"");
+    }
+    haveUnclosedEntry = false;
+}","public void test033() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(byteArrayOutputStream0);
+    try {
+        tarArchiveOutputStream0.closeArchiveEntry();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // No current entry to close
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarArchiveOutputStream"", e);
+    }
+}","/**
+ * Close an entry. This method MUST be called for all file
+ * entries that contain data. The reason is that we must
+ * buffer data written to the stream in order to satisfy
+ * the buffer's record based writes. Thus, there may be
+ * data fragments still being assembled that must be written
+ * to the output stream before this entry is closed and the
+ * next entry written.
+ * @throws IOException on error
+ */"
+"@Override
+public void closeArchiveEntry() throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    if (!haveUnclosedEntry) {
+        throw new IOException(""No current entry to close"");
+    }
+    if (assemLen > 0) {
+        for (int i = assemLen; i < assemBuf.length; ++i) {
+            assemBuf[i] = 0;
+        }
+        writeRecord(assemBuf);
+        currBytes += assemLen;
+        assemLen = 0;
+    }
+    if (currBytes < currSize) {
+        throw new IOException(""entry '"" + currName + ""' closed at '"" + currBytes + ""' before the '"" + currSize + ""' bytes specified in the header were written"");
+    }
+    haveUnclosedEntry = false;
+}","public void test044() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(byteArrayOutputStream0);
+    tarArchiveOutputStream0.setLongFileMode(1694);
+    tarArchiveOutputStream0.closeArchiveEntry();
+}","/**
+ * Close an entry. This method MUST be called for all file
+ * entries that contain data. The reason is that we must
+ * buffer data written to the stream in order to satisfy
+ * the buffer's record based writes. Thus, there may be
+ * data fragments still being assembled that must be written
+ * to the output stream before this entry is closed and the
+ * next entry written.
+ * @throws IOException on error
+ */"
+"@Override
+public void close() throws IOException {
+    if (!finished) {
+        finish();
+    }
+    if (!closed) {
+        out.close();
+        closed = true;
+    }
+}","public void test055() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream(0);
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(byteArrayOutputStream0);
+    HashMap<String, String> hashMap0 = new HashMap<String, String>();
+    tarArchiveOutputStream0.setBigNumberMode((-1573));
+    tarArchiveOutputStream0.getCount();
+    String string0 = ""=(3"";
+    MockURI.URI(""=(3"", ""Error parsing extra fields for entry: "", ""Error parsing extra fields for entry: "", ""=(3"", ""Error parsing extra fields for entry: "");
+    int int0 = 383;
+    TarArchiveOutputStream tarArchiveOutputStream1 = new TarArchiveOutputStream(tarArchiveOutputStream0, int0, string0);
+    tarArchiveOutputStream0.close();
+}","/**
+ * Closes the underlying OutputStream.
+ * @throws IOException on error
+ */"
+"@Override
+public void closeArchiveEntry() throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    if (!haveUnclosedEntry) {
+        throw new IOException(""No current entry to close"");
+    }
+    if (assemLen > 0) {
+        for (int i = assemLen; i < assemBuf.length; ++i) {
+            assemBuf[i] = 0;
+        }
+        writeRecord(assemBuf);
+        currBytes += assemLen;
+        assemLen = 0;
+    }
+    if (currBytes < currSize) {
+        throw new IOException(""entry '"" + currName + ""' closed at '"" + currBytes + ""' before the '"" + currSize + ""' bytes specified in the header were written"");
+    }
+    haveUnclosedEntry = false;
+}","public void test066() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(byteArrayOutputStream0, ""UNKNOWN"");
+    tarArchiveOutputStream0.closeArchiveEntry();
+}","/**
+ * Close an entry. This method MUST be called for all file
+ * entries that contain data. The reason is that we must
+ * buffer data written to the stream in order to satisfy
+ * the buffer's record based writes. Thus, there may be
+ * data fragments still being assembled that must be written
+ * to the output stream before this entry is closed and the
+ * next entry written.
+ * @throws IOException on error
+ */"
+"public void setBigNumberMode(int bigNumberMode) {
+    this.bigNumberMode = bigNumberMode;
+}","public void test077() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    BufferedOutputStream bufferedOutputStream0 = new BufferedOutputStream(byteArrayOutputStream0);
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(bufferedOutputStream0);
+    tarArchiveOutputStream0.flush();
+    tarArchiveOutputStream0.setBigNumberMode(0);
+}","/**
+ * Set the big number mode.
+ * This can be BIGNUMBER_ERROR(0), BIGNUMBER_POSIX(1) or BIGNUMBER_STAR(2).
+ * This specifies the treatment of big files (sizes &gt; TarConstants.MAXSIZE) and other numeric values to big to fit into a traditional tar header.
+ * Default is BIGNUMBER_ERROR.
+ * @param bigNumberMode the mode to use
+ * @since 1.4
+ */"
+"@Override
+public void close() throws IOException {
+    if (!finished) {
+        finish();
+    }
+    if (!closed) {
+        out.close();
+        closed = true;
+    }
+}","public void test088() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(byteArrayOutputStream0);
+    tarArchiveOutputStream0.setBigNumberMode(2);
+    tarArchiveOutputStream0.close();
+}","/**
+ * Closes the underlying OutputStream.
+ * @throws IOException on error
+ */"
+"void writePaxHeaders(TarArchiveEntry entry, String entryName, Map<String, String> headers) throws IOException {
+    String name = ""./PaxHeaders.X/"" + stripTo7Bits(entryName);
+    if (name.length() >= TarConstants.NAMELEN) {
+        name = name.substring(0, TarConstants.NAMELEN - 1);
+    }
+    TarArchiveEntry pex = new TarArchiveEntry(name, TarConstants.LF_PAX_EXTENDED_HEADER_LC);
+    transferModTime(entry, pex);
+    StringWriter w = new StringWriter();
+    for (Map.Entry<String, String> h : headers.entrySet()) {
+        String key = h.getKey();
+        String value = h.getValue();
+        int len = key.length() + value.length() + 3 + /* blank, equals and newline */
+        2;
+        String line = len + "" "" + key + ""="" + value + ""\n"";
+        int actualLength = line.getBytes(CharsetNames.UTF_8).length;
+        while (len != actualLength) {
+            // Adjust for cases where length < 10 or > 100
+            // or where UTF-8 encoding isn't a single octet
+            // per character.
+            // Must be in loop as size may go from 99 to 100 in
+            // first pass so we'd need a second.
+            len = actualLength;
+            line = len + "" "" + key + ""="" + value + ""\n"";
+            actualLength = line.getBytes(CharsetNames.UTF_8).length;
+        }
+        w.write(line);
+    }
+    byte[] data = w.toString().getBytes(CharsetNames.UTF_8);
+    pex.setSize(data.length);
+    putArchiveEntry(pex);
+    write(data);
+    closeArchiveEntry();
+}","public void test099() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(byteArrayOutputStream0);
+    tarArchiveOutputStream0.setAddPaxHeadersForNonAsciiNames(true);
+    TarArchiveEntry tarArchiveEntry0 = new TarArchiveEntry("""");
+    Map<String, String> map0 = ZoneId.SHORT_IDS;
+    tarArchiveOutputStream0.writePaxHeaders(tarArchiveEntry0, """", map0);
+}","/**
+ * Writes a PAX extended header with the given map as contents.
+ * @since 1.4
+ */"
+"@Override
+public void putArchiveEntry(ArchiveEntry archiveEntry) throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    TarArchiveEntry entry = (TarArchiveEntry) archiveEntry;
+    Map<String, String> paxHeaders = new HashMap<String, String>();
+    final String entryName = entry.getName();
+    boolean paxHeaderContainsPath = handleLongName(entry, entryName, paxHeaders, ""path"", TarConstants.LF_GNUTYPE_LONGNAME, ""file name"");
+    final String linkName = entry.getLinkName();
+    boolean paxHeaderContainsLinkPath = linkName != null && linkName.length() > 0 && handleLongName(entry, linkName, paxHeaders, ""linkpath"", TarConstants.LF_GNUTYPE_LONGLINK, ""link name"");
+    if (bigNumberMode == BIGNUMBER_POSIX) {
+        addPaxHeadersForBigNumbers(paxHeaders, entry);
+    } else if (bigNumberMode != BIGNUMBER_STAR) {
+        failForBigNumbers(entry);
+    }
+    if (addPaxHeadersForNonAsciiNames && !paxHeaderContainsPath && !ASCII.canEncode(entryName)) {
+        paxHeaders.put(""path"", entryName);
+    }
+    if (addPaxHeadersForNonAsciiNames && !paxHeaderContainsLinkPath && (entry.isLink() || entry.isSymbolicLink()) && !ASCII.canEncode(linkName)) {
+        paxHeaders.put(""linkpath"", linkName);
+    }
+    if (paxHeaders.size() > 0) {
+        writePaxHeaders(entry, entryName, paxHeaders);
+    }
+    entry.writeEntryHeader(recordBuf, zipEncoding, bigNumberMode == BIGNUMBER_STAR);
+    writeRecord(recordBuf);
+    currBytes = 0;
+    if (entry.isDirectory()) {
+        currSize = 0;
+    } else {
+        currSize = entry.getSize();
+    }
+    currName = entryName;
+    haveUnclosedEntry = true;
+}","public void test1010() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(byteArrayOutputStream0);
+    tarArchiveOutputStream0.putArchiveEntry((ArchiveEntry) null);
+}","/**
+ * Put an entry on the output stream. This writes the entry's
+ * header record and positions the output stream for writing
+ * the contents of the entry. Once this method is called, the
+ * stream is ready for calls to write() to write the entry's
+ * contents. Once the contents are written, closeArchiveEntry()
+ * <B>MUST</B> be called to ensure that all buffered data
+ * is completely written to the output stream.
+ *
+ * @param archiveEntry The TarEntry to be written to the archive.
+ * @throws IOException on error
+ * @throws ClassCastException if archiveEntry is not an instance of TarArchiveEntry
+ */"
+"@Override
+public void close() throws IOException {
+    if (!finished) {
+        finish();
+    }
+    if (!closed) {
+        out.close();
+        closed = true;
+    }
+}","public void test1111() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(byteArrayOutputStream0);
+    tarArchiveOutputStream0.close();
+}","/**
+ * Closes the underlying OutputStream.
+ * @throws IOException on error
+ */"
+"void writePaxHeaders(TarArchiveEntry entry, String entryName, Map<String, String> headers) throws IOException {
+    String name = ""./PaxHeaders.X/"" + stripTo7Bits(entryName);
+    if (name.length() >= TarConstants.NAMELEN) {
+        name = name.substring(0, TarConstants.NAMELEN - 1);
+    }
+    TarArchiveEntry pex = new TarArchiveEntry(name, TarConstants.LF_PAX_EXTENDED_HEADER_LC);
+    transferModTime(entry, pex);
+    StringWriter w = new StringWriter();
+    for (Map.Entry<String, String> h : headers.entrySet()) {
+        String key = h.getKey();
+        String value = h.getValue();
+        int len = key.length() + value.length() + 3 + /* blank, equals and newline */
+        2;
+        String line = len + "" "" + key + ""="" + value + ""\n"";
+        int actualLength = line.getBytes(CharsetNames.UTF_8).length;
+        while (len != actualLength) {
+            // Adjust for cases where length < 10 or > 100
+            // or where UTF-8 encoding isn't a single octet
+            // per character.
+            // Must be in loop as size may go from 99 to 100 in
+            // first pass so we'd need a second.
+            len = actualLength;
+            line = len + "" "" + key + ""="" + value + ""\n"";
+            actualLength = line.getBytes(CharsetNames.UTF_8).length;
+        }
+        w.write(line);
+    }
+    byte[] data = w.toString().getBytes(CharsetNames.UTF_8);
+    pex.setSize(data.length);
+    putArchiveEntry(pex);
+    write(data);
+    closeArchiveEntry();
+}","public void test1212() throws Throwable {
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""U,/rHn#&l+?3L1w"");
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(mockFileOutputStream0);
+    TarArchiveEntry tarArchiveEntry0 = new TarArchiveEntry(""U,/rHn#&l+?3L1w"");
+    Map<String, String> map0 = ZoneId.SHORT_IDS;
+    tarArchiveOutputStream0.writePaxHeaders(tarArchiveEntry0, ""U,/rHn#&l+?3L1w"", map0);
+}","/**
+ * Writes a PAX extended header with the given map as contents.
+ * @since 1.4
+ */"
+"void writePaxHeaders(TarArchiveEntry entry, String entryName, Map<String, String> headers) throws IOException {
+    String name = ""./PaxHeaders.X/"" + stripTo7Bits(entryName);
+    if (name.length() >= TarConstants.NAMELEN) {
+        name = name.substring(0, TarConstants.NAMELEN - 1);
+    }
+    TarArchiveEntry pex = new TarArchiveEntry(name, TarConstants.LF_PAX_EXTENDED_HEADER_LC);
+    transferModTime(entry, pex);
+    StringWriter w = new StringWriter();
+    for (Map.Entry<String, String> h : headers.entrySet()) {
+        String key = h.getKey();
+        String value = h.getValue();
+        int len = key.length() + value.length() + 3 + /* blank, equals and newline */
+        2;
+        String line = len + "" "" + key + ""="" + value + ""\n"";
+        int actualLength = line.getBytes(CharsetNames.UTF_8).length;
+        while (len != actualLength) {
+            // Adjust for cases where length < 10 or > 100
+            // or where UTF-8 encoding isn't a single octet
+            // per character.
+            // Must be in loop as size may go from 99 to 100 in
+            // first pass so we'd need a second.
+            len = actualLength;
+            line = len + "" "" + key + ""="" + value + ""\n"";
+            actualLength = line.getBytes(CharsetNames.UTF_8).length;
+        }
+        w.write(line);
+    }
+    byte[] data = w.toString().getBytes(CharsetNames.UTF_8);
+    pex.setSize(data.length);
+    putArchiveEntry(pex);
+    write(data);
+    closeArchiveEntry();
+}","public void test1313() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(byteArrayOutputStream0);
+    TarArchiveEntry tarArchiveEntry0 = new TarArchiveEntry(""=d,\""Cu"");
+    HashMap<String, String> hashMap0 = new HashMap<String, String>();
+    tarArchiveOutputStream0.writePaxHeaders(tarArchiveEntry0, ""=d,\""Cu"", hashMap0);
+}","/**
+ * Writes a PAX extended header with the given map as contents.
+ * @since 1.4
+ */"
+"@Override
+public void close() throws IOException {
+    if (!finished) {
+        finish();
+    }
+    if (!closed) {
+        out.close();
+        closed = true;
+    }
+}","public void test1414() throws Throwable {
+    MockPrintStream mockPrintStream0 = new MockPrintStream(""1?dV6#bN?N"");
+    MockPrintStream mockPrintStream1 = new MockPrintStream(mockPrintStream0, true);
+    PrintStream printStream0 = mockPrintStream1.append((CharSequence) ""1?dV6#bN?N"");
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(printStream0);
+    File file0 = MockFile.createTempFile(""1?dV6#bN?N"", ""1?dV6#bN?N"");
+    file0.setWritable(true);
+    file0.getCanonicalFile();
+    mockPrintStream1.flush();
+    file0.setReadable(true);
+    tarArchiveOutputStream0.createArchiveEntry(file0, ""R:'"");
+    tarArchiveOutputStream0.finish();
+    tarArchiveOutputStream0.getRecordSize();
+    tarArchiveOutputStream0.setBigNumberMode(33188);
+    tarArchiveOutputStream0.close();
+}","/**
+ * Closes the underlying OutputStream.
+ * @throws IOException on error
+ */"
+"@Override
+public ArchiveEntry createArchiveEntry(File inputFile, String entryName) throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    return new TarArchiveEntry(inputFile, entryName);
+}","public void test1515() throws Throwable {
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream("" \u0000"");
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(mockFileOutputStream0);
+    MockFile mockFile0 = new MockFile("", fileSpecPosition="", ""px&K"");
+    tarArchiveOutputStream0.createArchiveEntry(mockFile0, "" \u0000"");
+}",""
+"void writePaxHeaders(TarArchiveEntry entry, String entryName, Map<String, String> headers) throws IOException {
+    String name = ""./PaxHeaders.X/"" + stripTo7Bits(entryName);
+    if (name.length() >= TarConstants.NAMELEN) {
+        name = name.substring(0, TarConstants.NAMELEN - 1);
+    }
+    TarArchiveEntry pex = new TarArchiveEntry(name, TarConstants.LF_PAX_EXTENDED_HEADER_LC);
+    transferModTime(entry, pex);
+    StringWriter w = new StringWriter();
+    for (Map.Entry<String, String> h : headers.entrySet()) {
+        String key = h.getKey();
+        String value = h.getValue();
+        int len = key.length() + value.length() + 3 + /* blank, equals and newline */
+        2;
+        String line = len + "" "" + key + ""="" + value + ""\n"";
+        int actualLength = line.getBytes(CharsetNames.UTF_8).length;
+        while (len != actualLength) {
+            // Adjust for cases where length < 10 or > 100
+            // or where UTF-8 encoding isn't a single octet
+            // per character.
+            // Must be in loop as size may go from 99 to 100 in
+            // first pass so we'd need a second.
+            len = actualLength;
+            line = len + "" "" + key + ""="" + value + ""\n"";
+            actualLength = line.getBytes(CharsetNames.UTF_8).length;
+        }
+        w.write(line);
+    }
+    byte[] data = w.toString().getBytes(CharsetNames.UTF_8);
+    pex.setSize(data.length);
+    putArchiveEntry(pex);
+    write(data);
+    closeArchiveEntry();
+}","public void test1616() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(byteArrayOutputStream0);
+    HashMap<String, String> hashMap0 = new HashMap<String, String>();
+    TarArchiveOutputStream tarArchiveOutputStream1 = new TarArchiveOutputStream(tarArchiveOutputStream0);
+    TarArchiveEntry tarArchiveEntry0 = new TarArchiveEntry(""org.apache.commons.compress.archivers.dump.DumpArchiveEntry$TapeSegmentHeader"");
+    tarArchiveOutputStream1.writePaxHeaders(tarArchiveEntry0, ""ustar\u0000"", hashMap0);
+}","/**
+ * Writes a PAX extended header with the given map as contents.
+ * @since 1.4
+ */"
+"void writePaxHeaders(TarArchiveEntry entry, String entryName, Map<String, String> headers) throws IOException {
+    String name = ""./PaxHeaders.X/"" + stripTo7Bits(entryName);
+    if (name.length() >= TarConstants.NAMELEN) {
+        name = name.substring(0, TarConstants.NAMELEN - 1);
+    }
+    TarArchiveEntry pex = new TarArchiveEntry(name, TarConstants.LF_PAX_EXTENDED_HEADER_LC);
+    transferModTime(entry, pex);
+    StringWriter w = new StringWriter();
+    for (Map.Entry<String, String> h : headers.entrySet()) {
+        String key = h.getKey();
+        String value = h.getValue();
+        int len = key.length() + value.length() + 3 + /* blank, equals and newline */
+        2;
+        String line = len + "" "" + key + ""="" + value + ""\n"";
+        int actualLength = line.getBytes(CharsetNames.UTF_8).length;
+        while (len != actualLength) {
+            // Adjust for cases where length < 10 or > 100
+            // or where UTF-8 encoding isn't a single octet
+            // per character.
+            // Must be in loop as size may go from 99 to 100 in
+            // first pass so we'd need a second.
+            len = actualLength;
+            line = len + "" "" + key + ""="" + value + ""\n"";
+            actualLength = line.getBytes(CharsetNames.UTF_8).length;
+        }
+        w.write(line);
+    }
+    byte[] data = w.toString().getBytes(CharsetNames.UTF_8);
+    pex.setSize(data.length);
+    putArchiveEntry(pex);
+    write(data);
+    closeArchiveEntry();
+}","public void test1818() throws Throwable {
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""U,/rHn#&l+?3L1w"");
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(mockFileOutputStream0);
+    TarArchiveEntry tarArchiveEntry0 = new TarArchiveEntry(""U,/rHn#&l+?3L1w"");
+    HashMap<String, String> hashMap0 = new HashMap<String, String>();
+    tarArchiveOutputStream0.writePaxHeaders(tarArchiveEntry0, ""U,/rHn#&l+?3L1w"", hashMap0);
+}","/**
+ * Writes a PAX extended header with the given map as contents.
+ * @since 1.4
+ */"
+"@Override
+public void close() throws IOException {
+    if (!finished) {
+        finish();
+    }
+    if (!closed) {
+        out.close();
+        closed = true;
+    }
+}","public void test1919() throws Throwable {
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""U,/rHn#&l+?3QL1w"");
+    MockFile mockFile0 = new MockFile(""HzXff{LO[+G`'"", "" exceeds maximum signed long"");
+    TarArchiveEntry tarArchiveEntry0 = new TarArchiveEntry(mockFile0);
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(mockFileOutputStream0);
+    tarArchiveOutputStream0.putArchiveEntry(tarArchiveEntry0);
+    tarArchiveOutputStream0.close();
+}","/**
+ * Closes the underlying OutputStream.
+ * @throws IOException on error
+ */"
+"@Override
+public void putArchiveEntry(ArchiveEntry archiveEntry) throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    TarArchiveEntry entry = (TarArchiveEntry) archiveEntry;
+    Map<String, String> paxHeaders = new HashMap<String, String>();
+    final String entryName = entry.getName();
+    boolean paxHeaderContainsPath = handleLongName(entry, entryName, paxHeaders, ""path"", TarConstants.LF_GNUTYPE_LONGNAME, ""file name"");
+    final String linkName = entry.getLinkName();
+    boolean paxHeaderContainsLinkPath = linkName != null && linkName.length() > 0 && handleLongName(entry, linkName, paxHeaders, ""linkpath"", TarConstants.LF_GNUTYPE_LONGLINK, ""link name"");
+    if (bigNumberMode == BIGNUMBER_POSIX) {
+        addPaxHeadersForBigNumbers(paxHeaders, entry);
+    } else if (bigNumberMode != BIGNUMBER_STAR) {
+        failForBigNumbers(entry);
+    }
+    if (addPaxHeadersForNonAsciiNames && !paxHeaderContainsPath && !ASCII.canEncode(entryName)) {
+        paxHeaders.put(""path"", entryName);
+    }
+    if (addPaxHeadersForNonAsciiNames && !paxHeaderContainsLinkPath && (entry.isLink() || entry.isSymbolicLink()) && !ASCII.canEncode(linkName)) {
+        paxHeaders.put(""linkpath"", linkName);
+    }
+    if (paxHeaders.size() > 0) {
+        writePaxHeaders(entry, entryName, paxHeaders);
+    }
+    entry.writeEntryHeader(recordBuf, zipEncoding, bigNumberMode == BIGNUMBER_STAR);
+    writeRecord(recordBuf);
+    currBytes = 0;
+    if (entry.isDirectory()) {
+        currSize = 0;
+    } else {
+        currSize = entry.getSize();
+    }
+    currName = entryName;
+    haveUnclosedEntry = true;
+}","public void test2020() throws Throwable {
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream("" \u0000"");
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(mockFileOutputStream0);
+    tarArchiveOutputStream0.close();
+    CpioArchiveEntry cpioArchiveEntry0 = new CpioArchiveEntry("" \u0000"");
+    tarArchiveOutputStream0.putArchiveEntry(cpioArchiveEntry0);
+}","/**
+ * Put an entry on the output stream. This writes the entry's
+ * header record and positions the output stream for writing
+ * the contents of the entry. Once this method is called, the
+ * stream is ready for calls to write() to write the entry's
+ * contents. Once the contents are written, closeArchiveEntry()
+ * <B>MUST</B> be called to ensure that all buffered data
+ * is completely written to the output stream.
+ *
+ * @param archiveEntry The TarEntry to be written to the archive.
+ * @throws IOException on error
+ * @throws ClassCastException if archiveEntry is not an instance of TarArchiveEntry
+ */"
+"@Override
+public void close() throws IOException {
+    if (!finished) {
+        finish();
+    }
+    if (!closed) {
+        out.close();
+        closed = true;
+    }
+}","public void test2121() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    BufferedOutputStream bufferedOutputStream0 = new BufferedOutputStream(byteArrayOutputStream0);
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(bufferedOutputStream0);
+    tarArchiveOutputStream0.flush();
+    BufferedOutputStream bufferedOutputStream1 = new BufferedOutputStream(tarArchiveOutputStream0);
+    byte[] byteArray0 = new byte[0];
+    tarArchiveOutputStream0.close();
+    tarArchiveOutputStream0.close();
+}","/**
+ * Closes the underlying OutputStream.
+ * @throws IOException on error
+ */"
+"@Override
+public void close() throws IOException {
+    if (!finished) {
+        finish();
+    }
+    if (!closed) {
+        out.close();
+        closed = true;
+    }
+}","public void test2222() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(byteArrayOutputStream0);
+    tarArchiveOutputStream0.finish();
+    tarArchiveOutputStream0.close();
+}","/**
+ * Closes the underlying OutputStream.
+ * @throws IOException on error
+ */"
+"void writePaxHeaders(TarArchiveEntry entry, String entryName, Map<String, String> headers) throws IOException {
+    String name = ""./PaxHeaders.X/"" + stripTo7Bits(entryName);
+    if (name.length() >= TarConstants.NAMELEN) {
+        name = name.substring(0, TarConstants.NAMELEN - 1);
+    }
+    TarArchiveEntry pex = new TarArchiveEntry(name, TarConstants.LF_PAX_EXTENDED_HEADER_LC);
+    transferModTime(entry, pex);
+    StringWriter w = new StringWriter();
+    for (Map.Entry<String, String> h : headers.entrySet()) {
+        String key = h.getKey();
+        String value = h.getValue();
+        int len = key.length() + value.length() + 3 + /* blank, equals and newline */
+        2;
+        String line = len + "" "" + key + ""="" + value + ""\n"";
+        int actualLength = line.getBytes(CharsetNames.UTF_8).length;
+        while (len != actualLength) {
+            // Adjust for cases where length < 10 or > 100
+            // or where UTF-8 encoding isn't a single octet
+            // per character.
+            // Must be in loop as size may go from 99 to 100 in
+            // first pass so we'd need a second.
+            len = actualLength;
+            line = len + "" "" + key + ""="" + value + ""\n"";
+            actualLength = line.getBytes(CharsetNames.UTF_8).length;
+        }
+        w.write(line);
+    }
+    byte[] data = w.toString().getBytes(CharsetNames.UTF_8);
+    pex.setSize(data.length);
+    putArchiveEntry(pex);
+    write(data);
+    closeArchiveEntry();
+}","public void test2323() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(byteArrayOutputStream0);
+    TarArchiveEntry tarArchiveEntry0 = new TarArchiveEntry(""=d,\""Cu"");
+    HashMap<String, String> hashMap0 = new HashMap<String, String>();
+    hashMap0.put("""", """");
+    tarArchiveOutputStream0.writePaxHeaders(tarArchiveEntry0, ""=d,\""Cu"", hashMap0);
+}","/**
+ * Writes a PAX extended header with the given map as contents.
+ * @since 1.4
+ */"
+"public TarArchiveEntry(String name) {
+    this(name, false);
+}","public void test2424() throws Throwable {
+    String string0 = ""U,/rHn#&l+?3L1w"";
+    String string1 = """";
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream("""");
+    MockFile mockFile0 = new MockFile(""U,/rHn#&l+?3L1w"", """");
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(mockFileOutputStream0);
+    tarArchiveOutputStream0.close();
+    tarArchiveOutputStream0.createArchiveEntry(mockFile0, ""fuvDK`!h1Y"");
+    TarArchiveEntry tarArchiveEntry0 = null;
+    try {
+        tarArchiveEntry0 = new TarArchiveEntry(string1);
+        fail(""Expecting exception: IOException"");
+    } catch (Throwable e) {
+        //
+        // Stream has already been finished
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarArchiveOutputStream"", e);
+    }
+}","/**
+ * Construct an entry with only a name. This allows the programmer
+ * to construct the entry's header ""by hand"". File is set to null.
+ *
+ * @param name the entry name
+ */"
+"@Override
+public void closeArchiveEntry() throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    if (!haveUnclosedEntry) {
+        throw new IOException(""No current entry to close"");
+    }
+    if (assemLen > 0) {
+        for (int i = assemLen; i < assemBuf.length; ++i) {
+            assemBuf[i] = 0;
+        }
+        writeRecord(assemBuf);
+        currBytes += assemLen;
+        assemLen = 0;
+    }
+    if (currBytes < currSize) {
+        throw new IOException(""entry '"" + currName + ""' closed at '"" + currBytes + ""' before the '"" + currSize + ""' bytes specified in the header were written"");
+    }
+    haveUnclosedEntry = false;
+}","public void test2525() throws Throwable {
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream("" \u0000"");
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(mockFileOutputStream0);
+    tarArchiveOutputStream0.close();
+    tarArchiveOutputStream0.closeArchiveEntry();
+}","/**
+ * Close an entry. This method MUST be called for all file
+ * entries that contain data. The reason is that we must
+ * buffer data written to the stream in order to satisfy
+ * the buffer's record based writes. Thus, there may be
+ * data fragments still being assembled that must be written
+ * to the output stream before this entry is closed and the
+ * next entry written.
+ * @throws IOException on error
+ */"
+"void writePaxHeaders(TarArchiveEntry entry, String entryName, Map<String, String> headers) throws IOException {
+    String name = ""./PaxHeaders.X/"" + stripTo7Bits(entryName);
+    if (name.length() >= TarConstants.NAMELEN) {
+        name = name.substring(0, TarConstants.NAMELEN - 1);
+    }
+    TarArchiveEntry pex = new TarArchiveEntry(name, TarConstants.LF_PAX_EXTENDED_HEADER_LC);
+    transferModTime(entry, pex);
+    StringWriter w = new StringWriter();
+    for (Map.Entry<String, String> h : headers.entrySet()) {
+        String key = h.getKey();
+        String value = h.getValue();
+        int len = key.length() + value.length() + 3 + /* blank, equals and newline */
+        2;
+        String line = len + "" "" + key + ""="" + value + ""\n"";
+        int actualLength = line.getBytes(CharsetNames.UTF_8).length;
+        while (len != actualLength) {
+            // Adjust for cases where length < 10 or > 100
+            // or where UTF-8 encoding isn't a single octet
+            // per character.
+            // Must be in loop as size may go from 99 to 100 in
+            // first pass so we'd need a second.
+            len = actualLength;
+            line = len + "" "" + key + ""="" + value + ""\n"";
+            actualLength = line.getBytes(CharsetNames.UTF_8).length;
+        }
+        w.write(line);
+    }
+    byte[] data = w.toString().getBytes(CharsetNames.UTF_8);
+    pex.setSize(data.length);
+    putArchiveEntry(pex);
+    write(data);
+    closeArchiveEntry();
+}","public void test2626() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(byteArrayOutputStream0);
+    Map<String, String> map0 = ZoneId.SHORT_IDS;
+    TarArchiveEntry tarArchiveEntry0 = new TarArchiveEntry("""");
+    tarArchiveOutputStream0.writePaxHeaders(tarArchiveEntry0, """", map0);
+}","/**
+ * Writes a PAX extended header with the given map as contents.
+ * @since 1.4
+ */"
+"void writePaxHeaders(TarArchiveEntry entry, String entryName, Map<String, String> headers) throws IOException {
+    String name = ""./PaxHeaders.X/"" + stripTo7Bits(entryName);
+    if (name.length() >= TarConstants.NAMELEN) {
+        name = name.substring(0, TarConstants.NAMELEN - 1);
+    }
+    TarArchiveEntry pex = new TarArchiveEntry(name, TarConstants.LF_PAX_EXTENDED_HEADER_LC);
+    transferModTime(entry, pex);
+    StringWriter w = new StringWriter();
+    for (Map.Entry<String, String> h : headers.entrySet()) {
+        String key = h.getKey();
+        String value = h.getValue();
+        int len = key.length() + value.length() + 3 + /* blank, equals and newline */
+        2;
+        String line = len + "" "" + key + ""="" + value + ""\n"";
+        int actualLength = line.getBytes(CharsetNames.UTF_8).length;
+        while (len != actualLength) {
+            // Adjust for cases where length < 10 or > 100
+            // or where UTF-8 encoding isn't a single octet
+            // per character.
+            // Must be in loop as size may go from 99 to 100 in
+            // first pass so we'd need a second.
+            len = actualLength;
+            line = len + "" "" + key + ""="" + value + ""\n"";
+            actualLength = line.getBytes(CharsetNames.UTF_8).length;
+        }
+        w.write(line);
+    }
+    byte[] data = w.toString().getBytes(CharsetNames.UTF_8);
+    pex.setSize(data.length);
+    putArchiveEntry(pex);
+    write(data);
+    closeArchiveEntry();
+}","public void test2727() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(byteArrayOutputStream0);
+    TarArchiveEntry tarArchiveEntry0 = new TarArchiveEntry("""");
+    HashMap<String, String> hashMap0 = new HashMap<String, String>();
+    tarArchiveOutputStream0.writePaxHeaders(tarArchiveEntry0, """", hashMap0);
+}","/**
+ * Writes a PAX extended header with the given map as contents.
+ * @since 1.4
+ */"
+"@Override
+public void finish() throws IOException {
+    if (finished) {
+        throw new IOException(""This archive has already been finished"");
+    }
+    if (haveUnclosedEntry) {
+        throw new IOException(""This archives contains unclosed entries."");
+    }
+    writeEOFRecord();
+    writeEOFRecord();
+    padAsNeeded();
+    out.flush();
+    finished = true;
+}","public void test2828() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(byteArrayOutputStream0);
+    tarArchiveOutputStream0.finish();
+    try {
+        tarArchiveOutputStream0.finish();
+        fail(""Expecting exception: IOException"");
+    } catch (IOException e) {
+        //
+        // This archive has already been finished
+        //
+        verifyException(""org.apache.commons.compress.archivers.tar.TarArchiveOutputStream"", e);
+    }
+}","/**
+ * Ends the TAR archive without closing the underlying OutputStream.
+ *
+ * An archive consists of a series of file entries terminated by an
+ * end-of-archive entry, which consists of two 512 blocks of zero bytes.
+ * POSIX.1 requires two EOF records, like some other implementations.
+ *
+ * @throws IOException on error
+ */"
+"@Override
+public void closeArchiveEntry() throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    if (!haveUnclosedEntry) {
+        throw new IOException(""No current entry to close"");
+    }
+    if (assemLen > 0) {
+        for (int i = assemLen; i < assemBuf.length; ++i) {
+            assemBuf[i] = 0;
+        }
+        writeRecord(assemBuf);
+        currBytes += assemLen;
+        assemLen = 0;
+    }
+    if (currBytes < currSize) {
+        throw new IOException(""entry '"" + currName + ""' closed at '"" + currBytes + ""' before the '"" + currSize + ""' bytes specified in the header were written"");
+    }
+    haveUnclosedEntry = false;
+}","public void test2929() throws Throwable {
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream((OutputStream) null, 2268, 2268);
+    BufferedOutputStream bufferedOutputStream0 = new BufferedOutputStream(tarArchiveOutputStream0);
+    TarArchiveOutputStream tarArchiveOutputStream1 = new TarArchiveOutputStream(bufferedOutputStream0, (-744), (String) null);
+    tarArchiveOutputStream1.close();
+    tarArchiveOutputStream1.closeArchiveEntry();
+}","/**
+ * Close an entry. This method MUST be called for all file
+ * entries that contain data. The reason is that we must
+ * buffer data written to the stream in order to satisfy
+ * the buffer's record based writes. Thus, there may be
+ * data fragments still being assembled that must be written
+ * to the output stream before this entry is closed and the
+ * next entry written.
+ * @throws IOException on error
+ */"
+"@Override
+public void putArchiveEntry(ArchiveEntry archiveEntry) throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    TarArchiveEntry entry = (TarArchiveEntry) archiveEntry;
+    Map<String, String> paxHeaders = new HashMap<String, String>();
+    final String entryName = entry.getName();
+    boolean paxHeaderContainsPath = handleLongName(entry, entryName, paxHeaders, ""path"", TarConstants.LF_GNUTYPE_LONGNAME, ""file name"");
+    final String linkName = entry.getLinkName();
+    boolean paxHeaderContainsLinkPath = linkName != null && linkName.length() > 0 && handleLongName(entry, linkName, paxHeaders, ""linkpath"", TarConstants.LF_GNUTYPE_LONGLINK, ""link name"");
+    if (bigNumberMode == BIGNUMBER_POSIX) {
+        addPaxHeadersForBigNumbers(paxHeaders, entry);
+    } else if (bigNumberMode != BIGNUMBER_STAR) {
+        failForBigNumbers(entry);
+    }
+    if (addPaxHeadersForNonAsciiNames && !paxHeaderContainsPath && !ASCII.canEncode(entryName)) {
+        paxHeaders.put(""path"", entryName);
+    }
+    if (addPaxHeadersForNonAsciiNames && !paxHeaderContainsLinkPath && (entry.isLink() || entry.isSymbolicLink()) && !ASCII.canEncode(linkName)) {
+        paxHeaders.put(""linkpath"", linkName);
+    }
+    if (paxHeaders.size() > 0) {
+        writePaxHeaders(entry, entryName, paxHeaders);
+    }
+    entry.writeEntryHeader(recordBuf, zipEncoding, bigNumberMode == BIGNUMBER_STAR);
+    writeRecord(recordBuf);
+    currBytes = 0;
+    if (entry.isDirectory()) {
+        currSize = 0;
+    } else {
+        currSize = entry.getSize();
+    }
+    currName = entryName;
+    haveUnclosedEntry = true;
+}","public void test3030() throws Throwable {
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""0+f"");
+    MockFile mockFile0 = new MockFile(""U,/rHn#<l+?3L1P"", ""0+f"");
+    File file0 = MockFile.createTempFile(""U,/rHn#<l+?3L1P"", ""U,/rHn#<l+?3L1P"", (File) mockFile0);
+    TarArchiveEntry tarArchiveEntry0 = new TarArchiveEntry(file0);
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(mockFileOutputStream0);
+    tarArchiveOutputStream0.putArchiveEntry(tarArchiveEntry0);
+}","/**
+ * Put an entry on the output stream. This writes the entry's
+ * header record and positions the output stream for writing
+ * the contents of the entry. Once this method is called, the
+ * stream is ready for calls to write() to write the entry's
+ * contents. Once the contents are written, closeArchiveEntry()
+ * <B>MUST</B> be called to ensure that all buffered data
+ * is completely written to the output stream.
+ *
+ * @param archiveEntry The TarEntry to be written to the archive.
+ * @throws IOException on error
+ * @throws ClassCastException if archiveEntry is not an instance of TarArchiveEntry
+ */"
+"@Override
+public void closeArchiveEntry() throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    if (!haveUnclosedEntry) {
+        throw new IOException(""No current entry to close"");
+    }
+    if (assemLen > 0) {
+        for (int i = assemLen; i < assemBuf.length; ++i) {
+            assemBuf[i] = 0;
+        }
+        writeRecord(assemBuf);
+        currBytes += assemLen;
+        assemLen = 0;
+    }
+    if (currBytes < currSize) {
+        throw new IOException(""entry '"" + currName + ""' closed at '"" + currBytes + ""' before the '"" + currSize + ""' bytes specified in the header were written"");
+    }
+    haveUnclosedEntry = false;
+}","public void test3131() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(byteArrayOutputStream0);
+    HashMap<String, String> hashMap0 = new HashMap<String, String>();
+    TarArchiveEntry tarArchiveEntry0 = new TarArchiveEntry(""org.apache.commons.compress.archivers.dump.DumpArchiveEntry$TapeSegmentHeader"");
+    tarArchiveEntry0.setModTime((-4708L));
+    tarArchiveOutputStream0.writePaxHeaders(tarArchiveEntry0, ""ustar\u0000"", hashMap0);
+    tarArchiveOutputStream0.closeArchiveEntry();
+}","/**
+ * Close an entry. This method MUST be called for all file
+ * entries that contain data. The reason is that we must
+ * buffer data written to the stream in order to satisfy
+ * the buffer's record based writes. Thus, there may be
+ * data fragments still being assembled that must be written
+ * to the output stream before this entry is closed and the
+ * next entry written.
+ * @throws IOException on error
+ */"
+"@Override
+public void putArchiveEntry(ArchiveEntry archiveEntry) throws IOException {
+    if (finished) {
+        throw new IOException(""Stream has already been finished"");
+    }
+    TarArchiveEntry entry = (TarArchiveEntry) archiveEntry;
+    Map<String, String> paxHeaders = new HashMap<String, String>();
+    final String entryName = entry.getName();
+    boolean paxHeaderContainsPath = handleLongName(entry, entryName, paxHeaders, ""path"", TarConstants.LF_GNUTYPE_LONGNAME, ""file name"");
+    final String linkName = entry.getLinkName();
+    boolean paxHeaderContainsLinkPath = linkName != null && linkName.length() > 0 && handleLongName(entry, linkName, paxHeaders, ""linkpath"", TarConstants.LF_GNUTYPE_LONGLINK, ""link name"");
+    if (bigNumberMode == BIGNUMBER_POSIX) {
+        addPaxHeadersForBigNumbers(paxHeaders, entry);
+    } else if (bigNumberMode != BIGNUMBER_STAR) {
+        failForBigNumbers(entry);
+    }
+    if (addPaxHeadersForNonAsciiNames && !paxHeaderContainsPath && !ASCII.canEncode(entryName)) {
+        paxHeaders.put(""path"", entryName);
+    }
+    if (addPaxHeadersForNonAsciiNames && !paxHeaderContainsLinkPath && (entry.isLink() || entry.isSymbolicLink()) && !ASCII.canEncode(linkName)) {
+        paxHeaders.put(""linkpath"", linkName);
+    }
+    if (paxHeaders.size() > 0) {
+        writePaxHeaders(entry, entryName, paxHeaders);
+    }
+    entry.writeEntryHeader(recordBuf, zipEncoding, bigNumberMode == BIGNUMBER_STAR);
+    writeRecord(recordBuf);
+    currBytes = 0;
+    if (entry.isDirectory()) {
+        currSize = 0;
+    } else {
+        currSize = entry.getSize();
+    }
+    currName = entryName;
+    haveUnclosedEntry = true;
+}","public void test3333() throws Throwable {
+    MockFileOutputStream mockFileOutputStream0 = new MockFileOutputStream(""U,/rHn#&l+?3L1Tw"");
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(mockFileOutputStream0);
+    TarArchiveEntry tarArchiveEntry0 = new TarArchiveEntry(""U,/rHn#&l+?3L1Tw"");
+    MockDate mockDate0 = new MockDate(31, 31, 3251, 33188, 1);
+    tarArchiveEntry0.setModTime((Date) mockDate0);
+    HashMap<String, String> hashMap0 = new HashMap<String, String>();
+    tarArchiveOutputStream0.writePaxHeaders(tarArchiveEntry0, ""U,/rHn#&l+?3L1Tw"", hashMap0);
+    tarArchiveOutputStream0.putArchiveEntry(tarArchiveEntry0);
+}","/**
+ * Put an entry on the output stream. This writes the entry's
+ * header record and positions the output stream for writing
+ * the contents of the entry. Once this method is called, the
+ * stream is ready for calls to write() to write the entry's
+ * contents. Once the contents are written, closeArchiveEntry()
+ * <B>MUST</B> be called to ensure that all buffered data
+ * is completely written to the output stream.
+ *
+ * @param archiveEntry The TarEntry to be written to the archive.
+ * @throws IOException on error
+ * @throws ClassCastException if archiveEntry is not an instance of TarArchiveEntry
+ */"
+"void writePaxHeaders(TarArchiveEntry entry, String entryName, Map<String, String> headers) throws IOException {
+    String name = ""./PaxHeaders.X/"" + stripTo7Bits(entryName);
+    if (name.length() >= TarConstants.NAMELEN) {
+        name = name.substring(0, TarConstants.NAMELEN - 1);
+    }
+    TarArchiveEntry pex = new TarArchiveEntry(name, TarConstants.LF_PAX_EXTENDED_HEADER_LC);
+    transferModTime(entry, pex);
+    StringWriter w = new StringWriter();
+    for (Map.Entry<String, String> h : headers.entrySet()) {
+        String key = h.getKey();
+        String value = h.getValue();
+        int len = key.length() + value.length() + 3 + /* blank, equals and newline */
+        2;
+        String line = len + "" "" + key + ""="" + value + ""\n"";
+        int actualLength = line.getBytes(CharsetNames.UTF_8).length;
+        while (len != actualLength) {
+            // Adjust for cases where length < 10 or > 100
+            // or where UTF-8 encoding isn't a single octet
+            // per character.
+            // Must be in loop as size may go from 99 to 100 in
+            // first pass so we'd need a second.
+            len = actualLength;
+            line = len + "" "" + key + ""="" + value + ""\n"";
+            actualLength = line.getBytes(CharsetNames.UTF_8).length;
+        }
+        w.write(line);
+    }
+    byte[] data = w.toString().getBytes(CharsetNames.UTF_8);
+    pex.setSize(data.length);
+    putArchiveEntry(pex);
+    write(data);
+    closeArchiveEntry();
+}","public void test3535() throws Throwable {
+    ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+    TarArchiveOutputStream tarArchiveOutputStream0 = new TarArchiveOutputStream(byteArrayOutputStream0);
+    TarArchiveEntry tarArchiveEntry0 = new TarArchiveEntry(""\""<~C<|U r?]j"");
+    tarArchiveEntry0.setLinkName(""\""<~C<|U r?]j"");
+    HashMap<String, String> hashMap0 = new HashMap<String, String>();
+    tarArchiveOutputStream0.writePaxHeaders(tarArchiveEntry0, ""\""<~C<|U r?]j"", hashMap0);
+    tarArchiveOutputStream0.putArchiveEntry(tarArchiveEntry0);
+    tarArchiveOutputStream0.writePaxHeaders(tarArchiveEntry0, ""\""<~C<|U r?]j"", hashMap0);
+}","/**
+ * Writes a PAX extended header with the given map as contents.
+ * @since 1.4
+ */"

@@ -1,0 +1,246 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test000,"public void test000() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""com.google.javascript.jscomp.FunctionTypeBuilder$ImplementedTypeVXlidator"", ""com.google.javascript.jscomp.FunctionTypeBuilder$ImplementedTypeVXlidator"");
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""com.google.javascript.jscomp.FunctionTypeBuilder$ImplementedTypeVXlidator"", compiler0, node0, ""com.google.javascript.jscomp.FunctionTypeBuilder$ImplementedTypeVXlidator"", (Scope) null);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    JSType[] jSTypeArray0 = new JSType[7];
+    JSTypeNative jSTypeNative0 = JSTypeNative.REFERENCE_ERROR_FUNCTION_TYPE;
+    FunctionType functionType0 = jSTypeRegistry0.getNativeFunctionType(jSTypeNative0);
+    functionTypeBuilder0.inferFromOverriddenFunction(functionType0, node0);
+    Node node1 = jSTypeRegistry0.createParameters(jSTypeArray0);
+    functionTypeBuilder0.inferParameterTypes(node1, jSDocInfo0);
+    assertEquals(1, compiler0.getWarningCount());
+}",0,
+project,0,test011,"public void test011() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""JSC_OPTIONAL>ARG_AT_END"", ""JSC_OPTIONAL>ARG_AT_END"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""JSC_OPTIONAL>ARG_AT_END"", compiler0, node0, ""JSC_OPTIONAL>ARG_AT_END"", (Scope) null);
+    FunctionTypeBuilder.AstFunctionContents functionTypeBuilder_AstFunctionContents0 = new FunctionTypeBuilder.AstFunctionContents(node0);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.setContents(functionTypeBuilder_AstFunctionContents0);
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    functionTypeBuilder1.inferParameterTypes(jSDocInfo0);
+    // Undeclared exception!
+    try {
+        functionTypeBuilder1.buildAndRegister();
+        fail(""Expecting exception: IllegalArgumentException"");
+    } catch (IllegalArgumentException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",0,
+project,0,test056,"public void test056() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""d"", ""d"");
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""d"", compiler0, node0, ""d"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferParameterTypes(jSDocInfo0);
+    FunctionType functionType0 = functionTypeBuilder1.buildAndRegister();
+    functionTypeBuilder0.inferFromOverriddenFunction(functionType0, node0);
+    assertEquals(0, compiler0.getWarningCount());
+}",0,"assertEquals(0, compiler0.getWarningCount())"
+project,0,test057,"public void test057() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""d"", ""d"");
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""d"", compiler0, node0, ""d"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferParameterTypes(jSDocInfo0);
+    FunctionType functionType0 = functionTypeBuilder1.buildAndRegister();
+    functionTypeBuilder0.inferFromOverriddenFunction(functionType0, node0);
+    assertFalse(functionType0.isReturnTypeInferred());
+}",0,assertTrue(functionType0.isReturnTypeInferred())
+project,0,test078,"public void test078() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""q3\""5}\"""", ""q3\""5}\"""");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""q3\""5}\"""", compiler0, node0, ""q3\""5}\"""", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.setContents((FunctionTypeBuilder.FunctionContents) null);
+    assertSame(functionTypeBuilder1, functionTypeBuilder0);
+}",0,
+project,0,test089,"public void test089() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""@implemeots used without const:uctor or @intIrfce 4or `0}"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""@implemeots used without const:uctor or @intIrfce 4or `0}"", compiler0, node0, ""@implemeots used without const:uctor or @intIrfce 4or `0}"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferFromOverriddenFunction((FunctionType) null, node0);
+    assertSame(functionTypeBuilder0, functionTypeBuilder1);
+}",0,
+project,0,test0910,"public void test0910() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""J;Cs9PINAjoARGYdEN_"", ""J;Cs9PINAjoARGYdEN_"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""J;Cs9PINAjoARGYdEN_"", compiler0, node0, ""J;Cs9PINAjoARGYdEN_"", (Scope) null);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    FunctionType functionType0 = jSTypeRegistry0.createInterfaceType(""J;Cs9PINAjoARGYdEN_"", (Node) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferFromOverriddenFunction(functionType0, (Node) null);
+    assertSame(functionTypeBuilder0, functionTypeBuilder1);
+}",0,
+project,0,test1011,"public void test1011() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""J;C_OPTIONAL_ARG_ATEND"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""J;C_OPTIONAL_ARG_ATEND"", compiler0, node0, ""J;C_OPTIONAL_ARG_ATEND"", (Scope) null);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    JSTypeNative jSTypeNative0 = JSTypeNative.REGEXP_FUNCTION_TYPE;
+    FunctionType functionType0 = jSTypeRegistry0.getNativeFunctionType(jSTypeNative0);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferFromOverriddenFunction(functionType0, node0);
+    assertSame(functionTypeBuilder1, functionTypeBuilder0);
+}",0,
+project,0,test1112,"public void test1112() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""com.google.javascript.jscomp.FunctinTypeBuilder$ImplementedTypeVXlidator"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""com.google.javascript.jscomp.FunctinTypeBuilder$ImplementedTypeVXlidator"", compiler0, node0, ""com.google.javascript.jscomp.FunctinTypeBuilder$ImplementedTypeVXlidator"", (Scope) null);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    JSTypeNative jSTypeNative0 = JSTypeNative.FUNCTION_FUNCTION_TYPE;
+    FunctionType functionType0 = jSTypeRegistry0.getNativeFunctionType(jSTypeNative0);
+    functionTypeBuilder0.inferFromOverriddenFunction(functionType0, node0);
+    JSType[] jSTypeArray0 = new JSType[9];
+    Node node1 = jSTypeRegistry0.createParameters(jSTypeArray0);
+    functionTypeBuilder0.inferParameterTypes(node1, (JSDocInfo) null);
+    assertEquals(1, compiler0.getWarningCount());
+}",0,"assertEquals(1, compiler0.getWarningCount())"
+project,0,test1213,"public void test1213() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseSyntheticCode(""J;C_OPTINAL_ARG_ATEND"", ""J;C_OPTINAL_ARG_ATEND"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""J;C_OPTINAL_ARG_ATEND"", compiler0, node0, ""J;C_OPTINAL_ARG_ATEND"", (Scope) null);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    FunctionType functionType0 = jSTypeRegistry0.createFunctionType((JSType) null, node0);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferFromOverriddenFunction(functionType0, node0);
+    assertSame(functionTypeBuilder0, functionTypeBuilder1);
+}",0,
+project,0,test1314,"public void test1314() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""J;C_OPTIONAL_ARG_ATEND"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""J;C_OPTIONAL_ARG_ATEND"", compiler0, node0, ""J;C_OPTIONAL_ARG_ATEND"", (Scope) null);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    JSTypeNative jSTypeNative0 = JSTypeNative.NO_RESOLVED_TYPE;
+    FunctionType functionType0 = jSTypeRegistry0.getNativeFunctionType(jSTypeNative0);
+    functionTypeBuilder0.inferFromOverriddenFunction(functionType0, node0);
+    assertEquals(0, compiler0.getWarningCount());
+}",0,
+project,0,test1415,"public void test1415() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""SHRFu2Ur+qWU*w.9.~G"", ""SHRFu2Ur+qWU*w.9.~G"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""SHRFu2Ur+qWU*w.9.~G"", compiler0, node0, ""SHRFu2Ur+qWU*w.9.~G"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferReturnType((JSDocInfo) null);
+    assertSame(functionTypeBuilder1, functionTypeBuilder0);
+}",0,
+project,0,test1516,"public void test1516() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""SHRFu2Ur+qWU*w.9.~G"", ""SHRFu2Ur+qWU*w.9.~G"");
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""SHRFu2Ur+qWU*w.9.~G"", compiler0, node0, ""SHRFu2Ur+qWU*w.9.~G"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferReturnType(jSDocInfo0);
+    assertSame(functionTypeBuilder1, functionTypeBuilder0);
+}",0,
+project,0,test1617,"public void test1617() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, """", """");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder("""", compiler0, node0, """", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferInheritance((JSDocInfo) null);
+    assertSame(functionTypeBuilder1, functionTypeBuilder0);
+}",0,
+project,0,test1718,"public void test1718() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""d"", ""d"");
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""d"", compiler0, node0, ""d"", (Scope) null);
+    functionTypeBuilder0.inferInheritance(jSDocInfo0);
+    assertEquals(0, compiler0.getWarningCount());
+}",0,
+project,0,test1819,"public void test1819() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""JSC_OPTIONAL_ARG_AT_END"");
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""JSC_OPTIONAL_ARG_AT_END"", compiler0, node0, ""JSC_OPTIONAL_ARG_AT_END"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferParameterTypes(jSDocInfo0);
+    FunctionType functionType0 = functionTypeBuilder0.buildAndRegister();
+    functionTypeBuilder1.inferThisType(jSDocInfo0, functionType0);
+    functionTypeBuilder1.inferThisType(jSDocInfo0, functionType0);
+    assertFalse(functionType0.isReturnTypeInferred());
+}",0,assertTrue(functionType0.isReturnTypeInferred())
+project,0,test1920,"public void test1920() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""SHRFu2Ur+qWU*w.9.~G"", ""SHRFu2Ur+qWU*w.9.~G"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""SHRFu2Ur+qWU*w.9.~G"", compiler0, node0, ""SHRFu2Ur+qWU*w.9.~G"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferThisType((JSDocInfo) null, (JSType) null);
+    assertSame(functionTypeBuilder1, functionTypeBuilder0);
+}",0,
+project,0,test2021,"public void test2021() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""J;C_OPTINAL_ARG_AdEND"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""J;C_OPTINAL_ARG_AdEND"", compiler0, node0, ""J;C_OPTINAL_ARG_AdEND"", (Scope) null);
+    GlobalNamespace globalNamespace0 = new GlobalNamespace(compiler0, node0, node0);
+    JSType jSType0 = globalNamespace0.getTypeOfThis();
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferThisType((JSDocInfo) null, jSType0);
+    assertSame(functionTypeBuilder1, functionTypeBuilder0);
+}",0,
+project,0,test2122,"public void test2122() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""JSC_OPTIONAL_ARG_AT_END"", ""JSC_OPTIONAL_ARG_AT_END"");
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""JSC_OPTIONAL_ARG_AT_END"", compiler0, node0, ""JSC_OPTIONAL_ARG_AT_END"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferParameterTypes((Node) null, jSDocInfo0);
+    assertSame(functionTypeBuilder0, functionTypeBuilder1);
+}",0,
+project,0,test2223,"public void test2223() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""JSC_OPTIONAL_ARG_AT_END"", ""JSC_OPTIONAL_ARG_AT_END"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""JSC_OPTIONAL_ARG_AT_END"", compiler0, node0, ""JSC_OPTIONAL_ARG_AT_END"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferParameterTypes((Node) null, (JSDocInfo) null);
+    assertSame(functionTypeBuilder0, functionTypeBuilder1);
+}",0,
+project,0,test2324,"public void test2324() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""com.google.javascript.jscomp.FunctinTypeBuilder$ImplementedTypeVXlidator"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""com.google.javascript.jscomp.FunctinTypeBuilder$ImplementedTypeVXlidator"", compiler0, node0, ""com.google.javascript.jscomp.FunctinTypeBuilder$ImplementedTypeVXlidator"", (Scope) null);
+    JSTypeRegistry jSTypeRegistry0 = compiler0.getTypeRegistry();
+    JSType[] jSTypeArray0 = new JSType[9];
+    Node node1 = jSTypeRegistry0.createParameters(jSTypeArray0);
+    functionTypeBuilder0.inferParameterTypes(node1, (JSDocInfo) null);
+    assertEquals(0, compiler0.getWarningCount());
+}",0,"assertEquals(0, compiler0.getWarningCount())"
+project,0,test2425,"public void test2425() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""JSC_OPTIONAL>ARG_AT_END"", ""JSC_OPTIONAL>ARG_AT_END"");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""JSC_OPTIONAL>ARG_AT_END"", compiler0, node0, ""JSC_OPTIONAL>ARG_AT_END"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferTemplateTypeName((JSDocInfo) null);
+    assertSame(functionTypeBuilder0, functionTypeBuilder1);
+}",0,
+project,0,test2526,"public void test2526() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, """", """");
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder("""", compiler0, node0, """", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferTemplateTypeName(jSDocInfo0);
+    assertSame(functionTypeBuilder0, functionTypeBuilder1);
+}",0,
+project,0,test2627,"public void test2627() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""JSC_OPTIONjL_ARG_AT_END"", ""JSC_OPTIONjL_ARG_AT_END"");
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""JSC_OPTIONjL_ARG_AT_END"", compiler0, node0, ""JSC_OPTIONjL_ARG_AT_END"", (Scope) null);
+    FunctionTypeBuilder functionTypeBuilder1 = functionTypeBuilder0.inferParameterTypes(jSDocInfo0);
+    functionTypeBuilder1.buildAndRegister();
+    FunctionType functionType0 = functionTypeBuilder1.buildAndRegister();
+    assertFalse(functionType0.isReturnTypeInferred());
+}",0,assertTrue(functionType0.isReturnTypeInferred())
+project,0,test2728,"public void test2728() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""q3\""5}\"""", ""q3\""5}\"""");
+    FunctionTypeBuilder functionTypeBuilder0 = new FunctionTypeBuilder(""q3\""5}\"""", compiler0, node0, ""q3\""5}\"""", (Scope) null);
+    // Undeclared exception!
+    try {
+        functionTypeBuilder0.buildAndRegister();
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // All Function types must have params and a return type
+        //
+        verifyException(""com.google.javascript.jscomp.FunctionTypeBuilder"", e);
+    }
+}",0,
+project,0,test2829,"public void test2829() throws Throwable {
+    JSDocInfo jSDocInfo0 = new JSDocInfo();
+    boolean boolean0 = FunctionTypeBuilder.isFunctionTypeDeclaration(jSDocInfo0);
+    assertFalse(boolean0);
+}",0,assertTrue(boolean0)

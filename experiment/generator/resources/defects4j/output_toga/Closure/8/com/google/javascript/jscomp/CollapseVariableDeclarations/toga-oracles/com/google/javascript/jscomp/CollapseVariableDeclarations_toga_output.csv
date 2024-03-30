@@ -1,0 +1,22 @@
+project,bug_num,test_name,test_prefix,except_pred,assert_pred
+project,0,test00,"public void test00() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    AbstractCompiler.LifeCycleStage abstractCompiler_LifeCycleStage0 = AbstractCompiler.LifeCycleStage.NORMALIZED_OBFUSCATED;
+    compiler0.setLifeCycleStage(abstractCompiler_LifeCycleStage0);
+    CollapseVariableDeclarations collapseVariableDeclarations0 = null;
+    try {
+        collapseVariableDeclarations0 = new CollapseVariableDeclarations(compiler0);
+        fail(""Expecting exception: IllegalStateException"");
+    } catch (IllegalStateException e) {
+        //
+        // no message in exception (getMessage() returned null)
+        //
+        verifyException(""com.google.common.base.Preconditions"", e);
+    }
+}",0,
+project,0,test11,"public void test11() throws Throwable {
+    Compiler compiler0 = new Compiler();
+    Node node0 = compiler0.parseTestCode(""vgwa2=Vp=D"");
+    CollapseVariableDeclarations collapseVariableDeclarations0 = new CollapseVariableDeclarations(compiler0);
+    collapseVariableDeclarations0.process(node0, node0);
+}",0,
